@@ -17,7 +17,7 @@ class ObservationPhoto extends Realm.Object {
     id: true,
     photo: Photo.PHOTO_FIELDS,
     position: true,
-    uuid: true
+    uuid: true,
   } as const;
 
   needsSync( ) {
@@ -32,7 +32,7 @@ class ObservationPhoto extends Realm.Object {
     const localObsPhoto = {
       ...observationPhoto,
       _synced_at: new Date( ),
-      photo: Photo.mapApiToRealm( observationPhoto.photo, realm )
+      photo: Photo.mapApiToRealm( observationPhoto.photo, realm ),
     };
     return localObsPhoto;
   }
@@ -43,35 +43,35 @@ class ObservationPhoto extends Realm.Object {
       file: new FileUpload( {
         uri,
         name: uri?.split( "/" ).pop( ),
-        type: "image/jpeg"
-      } )
+        type: "image/jpeg",
+      } ),
     };
   }
 
   static mapPhotoForAttachingToObs(
     observationID: number,
-    observationPhoto: RealmObservationPhoto
+    observationPhoto: RealmObservationPhoto,
   ) {
     return {
       observation_photo: {
         uuid: observationPhoto.uuid,
         observation_id: observationID,
         photo_id: observationPhoto.photo.id,
-        position: observationPhoto.position
-      }
+        position: observationPhoto.position,
+      },
     };
   }
 
   static mapPhotoForUpdating(
     observationID: number,
-    observationPhoto: RealmObservationPhoto
+    observationPhoto: RealmObservationPhoto,
   ) {
     return {
       id: observationPhoto.uuid,
       observation_photo: {
         observation_id: observationID,
-        position: observationPhoto.position
-      }
+        position: observationPhoto.position,
+      },
     };
   }
 
@@ -79,15 +79,15 @@ class ObservationPhoto extends Realm.Object {
   // I think it is only called after certain transformations on the Realm result,
   // but it is not important for my current linear ticket so I'll skip typing it more
   static mapObservationPhotoForMyObsDefaultMode( observationPhoto: {
-    photo?: { url?: string, localFilePath?: string },
-    uuid?: string
+    photo?: { url?: string; localFilePath?: string };
+    uuid?: string;
   } ) {
     return {
       photo: {
         url: observationPhoto?.photo?.url,
-        localFilePath: observationPhoto?.photo?.localFilePath
+        localFilePath: observationPhoto?.photo?.localFilePath,
       },
-      uuid: observationPhoto?.uuid
+      uuid: observationPhoto?.uuid,
     };
   }
 
@@ -99,13 +99,13 @@ class ObservationPhoto extends Realm.Object {
       uuid: uuid.v4( ),
       photo,
       originalPhotoUri: uri,
-      position
+      position,
     };
   }
 
   static createObsPhotosWithPosition = async (
     photos: string[] | { image: { uri: string } }[],
-    { position, local }: { position: number, local: boolean }
+    { position, local }: { position: number; local: boolean },
   ) => {
     let photoPosition = position;
     return Promise.all(
@@ -114,11 +114,11 @@ class ObservationPhoto extends Realm.Object {
           local
             ? photo
             : photo?.image?.uri,
-          photoPosition
+          photoPosition,
         );
         photoPosition += 1;
         return newPhoto;
-      } )
+      } ),
     );
   };
 
@@ -128,10 +128,10 @@ class ObservationPhoto extends Realm.Object {
   // linear ticket so I'll skip typing it
   static async deleteRemotePhoto(
     uri: string,
-    currentObservation?: { observationPhotos?: { photo: { url?: string }, uuid: string }[] }
+    currentObservation?: { observationPhotos?: { photo: { url?: string }; uuid: string }[] },
   ) {
     const obsPhotoToDelete = currentObservation?.observationPhotos?.find(
-      p => p.photo?.url === uri
+      p => p.photo?.url === uri,
     );
 
     if ( obsPhotoToDelete ) {
@@ -155,7 +155,7 @@ class ObservationPhoto extends Realm.Object {
   // linear ticket so I'll skip typing it
   static async deletePhoto(
     uri: string,
-    currentObservation?: { observationPhotos?: { photo: { url?: string }, uuid: string }[] }
+    currentObservation?: { observationPhotos?: { photo: { url?: string }; uuid: string }[] },
   ) {
     if ( uri.includes( "https://" ) ) {
       ObservationPhoto.deleteRemotePhoto( uri, currentObservation );
@@ -170,16 +170,16 @@ class ObservationPhoto extends Realm.Object {
   // linear ticket so I'll skip typing it
   static mapObsPhotoUris(
     observation: {
-      observationPhotos?: { photo: RealmPhoto }[],
-      observation_photos?: { photo: RealmPhoto }[]
-    }
+      observationPhotos?: { photo: RealmPhoto }[];
+      observation_photos?: { photo: RealmPhoto }[];
+    },
   ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
     const obsPhotoUris = ( obsPhotos || [] ).map(
       // Ensure that if this URI is a remote thumbnail that we are resizing
       // a reasonably-sized image for Suggestions and not delivering a handful of
       // upsampled pixels
-      obsPhoto => Photo.displayLocalOrRemoteMediumPhoto( obsPhoto.photo )
+      obsPhoto => Photo.displayLocalOrRemoteMediumPhoto( obsPhoto.photo ),
     );
     return obsPhotoUris;
   }
@@ -190,13 +190,13 @@ class ObservationPhoto extends Realm.Object {
   // linear ticket so I'll skip typing it
   static mapInnerPhotos(
     observation: {
-      observationPhotos?: { photo: object }[],
-      observation_photos?: { photo: object }[]
-    }
+      observationPhotos?: { photo: object }[];
+      observation_photos?: { photo: object }[];
+    },
   ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
     const innerPhotos = ( obsPhotos || [] ).map(
-      obsPhoto => obsPhoto.photo
+      obsPhoto => obsPhoto.photo,
     );
     return innerPhotos;
   }
@@ -220,9 +220,9 @@ class ObservationPhoto extends Realm.Object {
       assignee: {
         type: "linkingObjects",
         objectType: "Observation",
-        property: "observationPhotos"
-      }
-    }
+        property: "observationPhotos",
+      },
+    },
   };
 }
 

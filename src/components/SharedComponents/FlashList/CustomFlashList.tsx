@@ -2,7 +2,7 @@ import { FlashList } from "@shopify/flash-list";
 import React, {
   useCallback,
   useEffect,
-  useRef
+  useRef,
 } from "react";
 import type { ViewabilityConfig } from "react-native";
 import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
@@ -10,7 +10,7 @@ import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
 const defaultViewabilityConfig: ViewabilityConfig = {
   minimumViewTime: 0,
   viewAreaCoveragePercentThreshold: 10,
-  waitForInteraction: false
+  waitForInteraction: false,
 };
 
 const CustomFlashList = props => {
@@ -140,13 +140,13 @@ const CustomFlashList = props => {
         if ( ref && typeof ref !== "function" && ref.current ) {
           ref.current.scrollToOffset( params );
         }
-      }
+      },
     };
   } );
 
   const viewabilityConfig = {
     ...defaultViewabilityConfig,
-    ...props.viewabilityConfig
+    ...props.viewabilityConfig,
   };
 
   return (

@@ -3,7 +3,7 @@
 import {
   ActivityIndicator,
   Body3,
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
@@ -56,7 +56,7 @@ const DQAVoteButtons = ( {
   loadingDisagree,
   loadingMetric,
   setVote,
-  removeVote
+  removeVote,
 }: Props ): React.Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );

@@ -3,18 +3,18 @@ import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import {
   TextInputSheet,
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback, useEffect,
-  useMemo, useReducer
+  useMemo, useReducer,
 } from "react";
 import { Alert, Platform } from "react-native";
 import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
 import {
   useAuthenticatedMutation,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
@@ -25,17 +25,16 @@ const { useRealm } = RealmContext;
 
 const textInputStyle = Platform.OS === "android"
   ? {
-    height: 125
+    height: 125,
   }
   : undefined;
 
-interface Taxon {
+interface Taxon extends Record<string, unknown> {
   id: number;
   ancestor_ids: number[];
-  [key: string]: unknown;
 }
 
-interface Observation {
+interface Observation extends Record<string, unknown> {
   uuid?: string;
   taxon?: Taxon;
   community_taxon?: Taxon;
@@ -43,7 +42,6 @@ interface Observation {
   user?: {
     prefers_community_taxa: boolean;
   };
-  [key: string]: unknown;
 }
 
 interface Identification {
@@ -81,7 +79,7 @@ const initialIdentState: IdentState = {
   newIdentification: null,
   showPotentialDisagreementSheet: false,
   showSuggestIdSheet: false,
-  identTaxon: null
+  identTaxon: null,
 };
 
 const SET_IDENT_TAXON = "SET_IDENT_TAXON";
@@ -100,7 +98,7 @@ const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
     case SHOW_POTENTIAL_DISAGREEMENT_SHEET:
       return {
         ...state,
-        showPotentialDisagreementSheet: true
+        showPotentialDisagreementSheet: true,
       };
     case SET_NEW_IDENTIFICATION:
       return {
@@ -108,8 +106,8 @@ const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
         newIdentification: {
           taxon: action.taxon,
           body: action.body,
-          vision: action.vision
-        }
+          vision: action.vision,
+        },
       };
     case CONFIRM_ID:
       return { ...state, showSuggestIdSheet: true };
@@ -118,31 +116,31 @@ const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
         ...state,
         showSuggestIdSheet: false,
         identTaxon: null,
-        newIdentification: null
+        newIdentification: null,
       };
     case HIDE_POTENTIAL_DISAGREEMENT_SHEET:
       return {
         ...state,
         showPotentialDisagreementSheet: false,
         identTaxon: null,
-        newIdentification: null
+        newIdentification: null,
       };
     case SHOW_EDIT_IDENT_BODY_SHEET:
       return {
         ...state,
-        identBodySheetShown: true
+        identBodySheetShown: true,
       };
     case HIDE_EDIT_IDENT_BODY_SHEET:
       return {
         ...state,
-        identBodySheetShown: false
+        identBodySheetShown: false,
       };
     case SUBMIT_IDENTIFICATION:
       return {
         ...state,
         showPotentialDisagreementSheet: false,
         showSuggestIdSheet: false,
-        newIdentification: null
+        newIdentification: null,
       };
     case SET_IDENT_TAXON:
       return { ...state, identTaxon: action.taxon };
@@ -153,12 +151,11 @@ const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
   }
 };
 
-interface RouteParams {
+interface RouteParams extends Record<string, unknown> {
   identAt?: string;
   identTaxonId?: number;
   identTaxonFromVision?: boolean;
   uuid?: string;
-  [key: string]: unknown;
 }
 
 interface Props {
@@ -186,7 +183,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   observation,
   remoteObsWasDeleted,
   showAddCommentSheet,
-  showAgreeWithIdSheet
+  showAgreeWithIdSheet,
 }: Props ) => {
   const { params } = useRoute();
   const routeParams = params as RouteParams;
@@ -194,7 +191,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     identAt,
     identTaxonId,
     identTaxonFromVision,
-    uuid
+    uuid,
   } = routeParams;
   const [state, dispatch] = useReducer( identReducer, initialIdentState );
 
@@ -205,7 +202,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     identTaxon,
     newIdentification,
     showPotentialDisagreementSheet,
-    showSuggestIdSheet
+    showSuggestIdSheet,
   } = state;
 
   const realm = useRealm( );
@@ -213,7 +210,7 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const hasComment = useMemo(
     ( ) => ( comment || newIdentification?.body || "" ).length > 0,
-    [comment, newIdentification?.body]
+    [comment, newIdentification?.body],
   );
 
   const showAddCommentHeader = useCallback( ( ) => {
@@ -230,7 +227,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   const onChangeIdentBody = useCallback( body => dispatch( {
     type: SET_NEW_IDENTIFICATION,
     taxon: newIdentification?.taxon,
-    body
+    body,
   } ), [newIdentification?.taxon] );
 
   const onCloseIdentBodySheet = useCallback( ( ) => {
@@ -238,7 +235,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   }, [] );
 
   const showErrorAlert = useCallback( error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
-    cancelable: true
+    cancelable: true,
   } ), [t] );
 
   const createIdentificationMutation = useAuthenticatedMutation(
@@ -258,8 +255,8 @@ const IdentificationSheets: React.FC<Props> = ( {
           error = t( "Couldnt-create-identification-unknown-error" );
         }
         showErrorAlert( error );
-      }
-    }
+      },
+    },
   );
 
   const hasPotentialDisagreement = useCallback( ( ) => {
@@ -283,7 +280,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     dispatch( {
       type: SET_NEW_IDENTIFICATION,
       taxon: identTaxon,
-      vision: identTaxonFromVision
+      vision: identTaxonFromVision,
     } );
   }, [identTaxon, identTaxonFromVision] );
 
@@ -304,7 +301,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     hideIdentificationSheets,
     hasPotentialDisagreement,
     observation,
-    setNewIdentification
+    setNewIdentification,
   ] );
 
   // Translates identification-related params to local state
@@ -316,7 +313,7 @@ const IdentificationSheets: React.FC<Props> = ( {
       }
       dispatch( {
         type: SET_IDENT_TAXON,
-        taxon
+        taxon,
       } );
     }
     if ( identTaxonId ) {
@@ -330,14 +327,14 @@ const IdentificationSheets: React.FC<Props> = ( {
     // cancel, then add another ID of taxon X, we still update the identTaxon
     identAt,
     identTaxonId,
-    realm
+    realm,
   ] );
 
   const onAgree = useCallback( ( ident: Identification ) => {
     const agreeParams = {
       observation_id: observation?.uuid,
       taxon_id: ident.taxon?.id,
-      body: ident.body
+      body: ident.body,
     };
 
     loadActivityItem( );
@@ -359,7 +356,7 @@ const IdentificationSheets: React.FC<Props> = ( {
       taxon_id: newIdentification.taxon.id,
       vision: newIdentification.vision,
       disagreement: potentialDisagree,
-      body: newIdentification?.body
+      body: newIdentification?.body,
     };
 
     loadActivityItem( );
@@ -375,7 +372,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     }
   }, [
     doSuggestId,
-    hasPotentialDisagreement
+    hasPotentialDisagreement,
   ] );
 
   const onPotentialDisagreePressed = useCallback( ( potentialDisagree?: boolean ) => {
@@ -397,8 +394,8 @@ const IdentificationSheets: React.FC<Props> = ( {
           error = t( "Couldnt-create-comment", { error: t( "Unknown-error" ) } );
         }
         showErrorAlert( error );
-      }
-    }
+      },
+    },
   );
 
   const onCommentAdded = useCallback( ( body: string ) => {
@@ -407,8 +404,8 @@ const IdentificationSheets: React.FC<Props> = ( {
       comment: {
         body,
         parent_id: uuid,
-        parent_type: "Observation"
-      }
+        parent_type: "Observation",
+      },
     } );
   }, [createCommentMutation, uuid, loadActivityItem] );
 

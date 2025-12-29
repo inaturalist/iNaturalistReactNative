@@ -6,20 +6,21 @@ import {
   Button,
   Heading1,
   Heading2,
-  ScrollViewWrapper
+  ScrollViewWrapper,
 } from "components/SharedComponents";
 import { fontMonoClass, View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { type PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
 import useLogs from "sharedHooks/useLogs";
 
+import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
-  DirectoryEntrySize,
-  formatAppSizeString, formatSizeUnits, getTotalDirectorySize
+  formatAppSizeString, formatSizeUnits, getTotalDirectorySize,
 } from "./hooks/useAppSize";
 
 const H1 = ( { children }: PropsWithChildren ) => (
@@ -46,7 +47,7 @@ const CODE = ( { children, optionalClassName }: CODEProps ) => (
     selectable
     className={classnames(
       fontMonoClass,
-      optionalClassName
+      optionalClassName,
     )}
   >
     {children}
@@ -55,26 +56,26 @@ const CODE = ( { children, optionalClassName }: CODEProps ) => (
 
 const modelFileName = Platform.select( {
   ios: Config.IOS_MODEL_FILE_NAME,
-  android: Config.ANDROID_MODEL_FILE_NAME
+  android: Config.ANDROID_MODEL_FILE_NAME,
 } );
 const taxonomyFileName = Platform.select( {
   ios: Config.IOS_TAXONOMY_FILE_NAME,
-  android: Config.ANDROID_TAXONOMY_FILE_NAME
+  android: Config.ANDROID_TAXONOMY_FILE_NAME,
 } );
 const geomodelFileName = Platform.select( {
   ios: Config.IOS_GEOMODEL_FILE_NAME,
-  android: Config.ANDROID_GEOMODEL_FILE_NAME
+  android: Config.ANDROID_GEOMODEL_FILE_NAME,
 } );
 const boldClassname = ( line: string, isDirectory = false ) => classnames(
   {
     "text-red font-bold": line.includes( "MB" ),
-    "text-blue": isDirectory
-  }
+    "text-blue": isDirectory,
+  },
 );
 
 interface DirectorySizesProps {
   directoryName: string;
-  directoryEntrySizes: DirectoryEntrySize[]
+  directoryEntrySizes: DirectoryEntrySize[];
 }
 
 /* eslint-disable i18next/no-literal-string */
@@ -166,8 +167,8 @@ const Developer = () => {
                     status: 422,
                     context: {
                       routeName: "MyObservations",
-                      timestamp: new Date().toISOString()
-                    }
+                      timestamp: new Date().toISOString(),
+                    },
                   } );
                 }}
                 text="TEST INATAPIERROR"
@@ -177,7 +178,7 @@ const Developer = () => {
                 onPress={() => {
                   throw new INatApiTooManyRequestsError( {
                     routeName: "TaxonDetails",
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
                   } );
                 }}
                 text="TEST API TOO MANY REQUESTS ERROR"

@@ -1,9 +1,9 @@
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   useCurrentUser,
   useLocationPermission,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
@@ -56,10 +56,10 @@ const ProjectsContainer = ( ) => {
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    projects
+    projects,
   } = useInfiniteProjectsScroll( {
     params: apiParams,
-    enabled: !_.isEmpty( apiParams )
+    enabled: !_.isEmpty( apiParams ),
   } );
 
   const tabs = [
@@ -68,14 +68,14 @@ const ProjectsContainer = ( ) => {
       text: t( "JOINED" ),
       onPress: () => {
         setCurrentTabId( TAB_ID.JOINED );
-      }
+      },
     },
     {
       id: TAB_ID.FEATURED,
       text: t( "FEATURED" ),
       onPress: () => {
         setCurrentTabId( TAB_ID.FEATURED );
-      }
+      },
     },
     {
       id: TAB_ID.NEARBY,
@@ -85,19 +85,25 @@ const ProjectsContainer = ( ) => {
           getCurrentUserLocation( );
         }
         setCurrentTabId( TAB_ID.NEARBY );
-      }
-    }
+      },
+    },
   ];
 
   if ( !currentUser ) {
     tabs.shift( );
   }
 
+  const handleFetchNextPage = useCallback( () => {
+    if ( currentTabId !== TAB_ID.FEATURED ) {
+      fetchNextPage();
+    }
+  }, [currentTabId, fetchNextPage] );
+
   return (
     <>
       <Projects
         currentTabId={currentTabId}
-        fetchNextPage={fetchNextPage}
+        fetchNextPage={handleFetchNextPage}
         hasPermissions={hasPermissions}
         isFetchingNextPage={isFetchingNextPage}
         isLoading={isFetching}

@@ -1,8 +1,5 @@
 // @flow
-import {
-  useNetInfo
-} from "@react-native-community/netinfo";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
 import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
@@ -11,21 +8,17 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useReducer,
-  useState
 } from "react";
 import { LogBox } from "react-native";
 import Observation from "realmModels/Observation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useCurrentUser,
-  useLocalObservation,
-  useObservationsUpdates
+  useObservationsUpdates,
 } from "sharedHooks";
-import useRemoteObservation, {
-  fetchRemoteObservationKey
+import {
+  fetchRemoteObservationKey,
 } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
@@ -38,11 +31,11 @@ const { useRealm } = RealmContext;
 // react navigation via the observation object. it doesn't seem to
 // actually be breaking anything, for the moment (May 2, 2022)
 LogBox.ignoreLogs( [
-  "Non-serializable values were found in the navigation state"
+  "Non-serializable values were found in the navigation state",
 ] );
 
 const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
-  ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) )
+  ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ),
 );
 
 const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
@@ -56,7 +49,7 @@ const initialState = {
   activityItems: [],
   addingActivityItem: false,
   observationShown: null,
-  showAddCommentSheet: false
+  showAddCommentSheet: false,
 };
 
 const reducer = ( state, action ) => {
@@ -67,8 +60,8 @@ const reducer = ( state, action ) => {
         observationShown: action.observationShown,
         activityItems: sortItems(
           action.observationShown?.identifications || [],
-          action.observationShown?.comments || []
-        )
+          action.observationShown?.comments || [],
+        ),
       };
     case ADD_ACTIVITY_ITEM:
       return {
@@ -77,51 +70,79 @@ const reducer = ( state, action ) => {
         addingActivityItem: false,
         activityItems: sortItems(
           action.observationShown?.identifications || [],
-          action.observationShown?.comments || []
-        )
+          action.observationShown?.comments || [],
+        ),
       };
     case LOADING_ACTIVITY_ITEM:
       return {
         ...state,
-        addingActivityItem: true
+        addingActivityItem: true,
       };
 
     case SHOW_AGREE_SHEET:
       return {
         ...state,
         showAgreeWithIdSheet: true,
-        agreeIdentification: action.agreeIdentification
+        agreeIdentification: action.agreeIdentification,
       };
     case HIDE_AGREE_SHEET:
       return {
         ...state,
         showAgreeWithIdSheet: false,
-        agreeIdentification: null
+        agreeIdentification: null,
       };
     case SET_ADD_COMMENT_SHEET:
       return {
         ...state,
         commentIsOptional: action.commentIsOptional,
-        showAddCommentSheet: action.showAddCommentSheet
+        showAddCommentSheet: action.showAddCommentSheet,
       };
     default:
       throw new Error( );
   }
 };
 
-const ObsDetailsDefaultModeContainer = ( ): Node => {
+type Props = {
+  belongsToCurrentUser: boolean,
+  currentUser: ?Object,
+  fetchRemoteObservationError: ?Object,
+  isConnected: boolean,
+  isRefetching: boolean,
+  localObservation: ?Object,
+  markDeletedLocally: Function,
+  markViewedLocally: Function,
+  observation: Object,
+  refetchRemoteObservation: Function,
+  remoteObservation: ?Object,
+  remoteObsWasDeleted: boolean,
+  setRemoteObsWasDeleted: Function,
+  targetActivityItemID?: ?number,
+  uuid: string
+}
+
+const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
   const setObservations = useStore( state => state.setObservations );
-  const currentUser = useCurrentUser( );
-  const { params } = useRoute();
-  const {
-    targetActivityItemID,
-    uuid
-  } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
-  const { isConnected } = useNetInfo( );
   const [state, dispatch] = useReducer( reducer, initialState );
-  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
+
+  const {
+    observation,
+    targetActivityItemID,
+    uuid,
+    localObservation,
+    markViewedLocally,
+    markDeletedLocally,
+    remoteObservation,
+    setRemoteObsWasDeleted,
+    fetchRemoteObservationError,
+    currentUser,
+    belongsToCurrentUser,
+    isRefetching,
+    refetchRemoteObservation,
+    isConnected,
+    remoteObsWasDeleted,
+  } = props;
 
   const {
     activityItems,
@@ -129,29 +150,9 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
     agreeIdentification,
     observationShown,
     showAddCommentSheet,
-    showAgreeWithIdSheet
+    showAgreeWithIdSheet,
   } = state;
   const queryClient = useQueryClient( );
-
-  const {
-    localObservation,
-    markDeletedLocally,
-    markViewedLocally
-  } = useLocalObservation( uuid );
-  const wasSynced = localObservation && localObservation?.wasSynced();
-
-  const fetchRemoteObservationEnabled = !!(
-    !remoteObsWasDeleted
-    && ( !localObservation || localObservation?.wasSynced( ) )
-    && isConnected
-  );
-
-  const {
-    remoteObservation,
-    refetchRemoteObservation,
-    isRefetching,
-    fetchRemoteObservationError
-  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
   useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
 
@@ -160,7 +161,8 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   // copy of this observation
   useEffect( ( ) => {
     setRemoteObsWasDeleted( fetchRemoteObservationError?.status === 404 );
-  }, [fetchRemoteObservationError?.status] );
+  }, [fetchRemoteObservationError?.status, setRemoteObsWasDeleted] );
+
   const confirmRemoteObsWasDeleted = useCallback( ( ) => {
     if ( localObservation ) {
       markDeletedLocally( );
@@ -169,44 +171,27 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
   }, [
     localObservation,
     markDeletedLocally,
-    navigation
+    navigation,
   ] );
 
-  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
+  const wasSynced = !!( localObservation && localObservation?.wasSynced() );
+
   const hasPhotos = observation?.observationPhotos?.length > 0;
-
-  // In theory the only situation in which an observation would not have a
-  // user is when a user is not signed but has made a new observation in the
-  // app. Also in theory that user should not be able to get to ObsDetail for
-  // those observations, just ObsEdit. But.... let's be safe.
-  const belongsToCurrentUser = (
-    observation?.user?.id === currentUser?.id
-    || ( !observation?.user && !observation?.id )
-  );
-
-  const isSimpleMode = useMemo( () => (
-    // Simple mode applies only when:
-    // 1. It's the current user's observation (or an observation being created)
-    // 2. AND the observation hasn't been synced yet
-    ( belongsToCurrentUser || !observation?.user )
-      && localObservation
-      && !localObservation.wasSynced()
-  ), [belongsToCurrentUser, localObservation, observation?.user] );
 
   const { data: subscriptions, refetch: refetchSubscriptions } = useAuthenticatedQuery(
     [
-      "fetchSubscriptions"
+      "fetchSubscriptions",
     ],
     optsWithAuth => fetchSubscriptions( { uuid, fields: "user_id" }, optsWithAuth ),
     {
-      enabled: !!( currentUser ) && !belongsToCurrentUser
-    }
+      enabled: !!( currentUser ) && !belongsToCurrentUser,
+    },
   );
 
   const invalidateRemoteObservationFetch = useCallback( ( ) => {
     if ( observation?.uuid ) {
       queryClient.invalidateQueries( {
-        queryKey: [fetchRemoteObservationKey, observation.uuid]
+        queryKey: [fetchRemoteObservationKey, observation.uuid],
       } );
     }
   }, [queryClient, observation?.uuid] );
@@ -216,14 +201,14 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
       invalidateRemoteObservationFetch( );
-    }, [invalidateRemoteObservationFetch] )
+    }, [invalidateRemoteObservationFetch] ),
   );
 
   useEffect( ( ) => {
     if ( !observationShown ) {
       dispatch( {
         type: SET_INITIAL_OBSERVATION,
-        observationShown: observation
+        observationShown: observation,
       } );
     }
   }, [observation, observationShown] );
@@ -234,33 +219,33 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
     if ( remoteObservation && !isRefetching ) {
       dispatch( {
         type: ADD_ACTIVITY_ITEM,
-        observationShown: Observation.mapApiToRealm( remoteObservation )
+        observationShown: Observation.mapApiToRealm( remoteObservation ),
       } );
     }
   }, [remoteObservation, isRefetching] );
 
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
-    !!currentUser && !!observation
+    !!currentUser && !!observation,
   );
 
   const openAddCommentSheet = useCallback( ( { isOptional = false } ) => {
     dispatch( {
       type: SET_ADD_COMMENT_SHEET,
       showAddCommentSheet: true,
-      commentIsOptional: isOptional || false
+      commentIsOptional: isOptional || false,
     } );
   }, [] );
 
   const hideAddCommentSheet = useCallback( ( ) => dispatch( {
     type: SET_ADD_COMMENT_SHEET,
     showAddCommentSheet: false,
-    comment: null
+    comment: null,
   } ), [] );
 
   const openAgreeWithIdSheet = useCallback( taxon => {
     dispatch( {
       type: SHOW_AGREE_SHEET,
-      agreeIdentification: { taxon }
+      agreeIdentification: { taxon },
     } );
   }, [] );
 
@@ -270,7 +255,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
       navigation.push( "Suggestions", {
         entryScreen: "ObsDetails",
         lastScreen: "ObsDetails",
-        hideSkip: true
+        hideSkip: true,
       } );
     } else {
       // Go directly to taxon search in case there are no photos
@@ -315,7 +300,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
     localObservation?.identifications,
     realm,
     refetchRemoteObservation,
-    uuid
+    uuid,
   ] );
 
   const handleCommentMutationSuccess = useCallback( data => {
@@ -325,7 +310,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
         const localComments = localObservation?.comments;
         const newComment = data[0];
         newComment.user = currentUser;
-        localComments.push( newComment );
+        localComments?.push( newComment );
       }, "setting local comment in ObsDetailsContainer" );
       const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
       dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
@@ -336,7 +321,7 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
     localObservation?.comments,
     realm,
     refetchRemoteObservation,
-    uuid
+    uuid,
   ] );
 
   const closeAgreeWithIdSheet = useCallback( ( ) => {
@@ -355,7 +340,6 @@ const ObsDetailsDefaultModeContainer = ( ): Node => {
         belongsToCurrentUser={belongsToCurrentUser}
         currentUser={currentUser}
         isConnected={isConnected}
-        isSimpleMode={isSimpleMode}
         navToSuggestions={navToSuggestions}
         observation={observationShown}
         openAddCommentSheet={openAddCommentSheet}

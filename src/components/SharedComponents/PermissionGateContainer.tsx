@@ -1,22 +1,25 @@
 import { useNavigation } from "@react-navigation/native";
 import Modal from "components/SharedComponents/Modal";
 import _ from "lodash";
+import type { PropsWithChildren } from "react";
 import React, {
-  PropsWithChildren,
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
-import { AppState, AppStateStatus, Platform } from "react-native";
-import {
+import type { AppStateStatus } from "react-native";
+import { AppState, Platform } from "react-native";
+import type {
   AndroidPermission,
-  checkMultiple,
   Permission,
-  PERMISSIONS,
   PermissionStatus,
+} from "react-native-permissions";
+import {
+  checkMultiple,
+  PERMISSIONS,
   requestMultiple,
-  RESULTS
+  RESULTS,
 } from "react-native-permissions";
 
 import PermissionGate from "./PermissionGate";
@@ -25,22 +28,22 @@ const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <
 const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
 
 let androidReadWritePermissions: AndroidPermission[] = [
-  PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION
+  PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION,
 ];
 if ( usesAndroid10Permissions ) {
   androidReadWritePermissions = [
     ...androidReadWritePermissions,
-    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
   ];
 } else if ( usesAndroid13Permissions ) {
   androidReadWritePermissions = [
     ...androidReadWritePermissions,
-    PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+    PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
   ];
 } else {
   androidReadWritePermissions = [
     ...androidReadWritePermissions,
-    PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+    PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
   ];
 }
 
@@ -49,7 +52,7 @@ let androidWritePermissions: AndroidPermission[] = [];
 if ( usesAndroid10Permissions ) {
   androidWritePermissions = [
     ...androidWritePermissions,
-    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
   ];
 }
 
@@ -104,7 +107,7 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
   if ( typeof ( multiResults ) !== "object" ) {
     throw new Error(
       "permissionResultFromMultiple received something other than an object. "
-      + "Make sure you're using it with checkMultiple and not check"
+      + "Make sure you're using it with checkMultiple and not check",
     );
   }
   if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
@@ -146,7 +149,7 @@ const PermissionGateContainer = ( {
   testID,
   title,
   titleDenied,
-  withoutNavigation
+  withoutNavigation,
 }: Props ) => {
   const [result, setResult] = useState<PermissionStatus | null>( null );
   const [modalShown, setModalShown] = useState( false );
@@ -208,7 +211,7 @@ const PermissionGateContainer = ( {
     navigation,
     permissionNeeded,
     result,
-    withoutNavigation
+    withoutNavigation,
   ] );
 
   // If permission was granted and there are no children to render, we can
@@ -244,7 +247,7 @@ const PermissionGateContainer = ( {
           await checkPermission();
         }
         prevAppState.current = nextAppState;
-      }
+      },
     );
 
     return () => {
@@ -264,7 +267,7 @@ const PermissionGateContainer = ( {
   }, [
     navigation,
     onModalHideProp,
-    withoutNavigation
+    withoutNavigation,
   ] );
 
   // If the result changes, notify the parent component
@@ -283,7 +286,7 @@ const PermissionGateContainer = ( {
     onPermissionDenied,
     onPermissionGranted,
     onPermissionLimited,
-    result
+    result,
   ] );
 
   // If permission granted and children are gated, let the children out

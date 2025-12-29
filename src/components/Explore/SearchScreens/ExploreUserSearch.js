@@ -4,14 +4,14 @@ import { fetchSearchResults } from "api/search";
 import {
   ButtonBar,
   SearchBar,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useState
+  useState,
 } from "react";
 import { useAuthenticatedQuery, useCurrentUser, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -20,7 +20,7 @@ import EmptySearchResults from "./EmptySearchResults";
 import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
-  offsetHeight: 4
+  offsetHeight: 4,
 } );
 
 type Props = {
@@ -34,16 +34,16 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const currentUser = useCurrentUser();
 
   // TODO: replace this with infinite scroll like ExploreFlashList
-  const { data: userList, isLoading, refetch } = useAuthenticatedQuery(
+  const { data: userList = [], isLoading, refetch } = useAuthenticatedQuery(
     ["fetchSearchResults", userQuery],
     optsWithAuth => fetchSearchResults(
       {
         q: userQuery,
         sources: "users",
-        fields: "user.id,user.login,user.icon_url,user.observations_count"
+        fields: "user.id,user.login,user.icon_url,user.observations_count",
       },
-      optsWithAuth
-    )
+      optsWithAuth,
+    ),
   );
 
   const onUserSelected = useCallback( async ( user, exclude ) => {
@@ -61,7 +61,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
       updateUser( null );
       closeModal();
     },
-    [updateUser, closeModal]
+    [updateUser, closeModal],
   );
 
   // TODO: pagination like in ExploreFlashList ?
@@ -83,7 +83,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
         }
       },
       isPrimary: false,
-      className: "w-1/2 mx-2"
+      className: "w-1/2 mx-2",
     },
     {
       title: t( "NOT-BY-ME" ),
@@ -93,8 +93,8 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
         }
       },
       isPrimary: false,
-      className: "w-1/2 mx-2"
-    }
+      className: "w-1/2 mx-2",
+    },
   ];
 
   return (

@@ -9,8 +9,8 @@ const useNavigateWithTaxonSelected = (
   // mysterious background nonsense happening after this screen loses focus
   unselectTaxon: () => void,
   options: {
-    vision: boolean
-  }
+    vision: boolean;
+  },
 ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -25,12 +25,12 @@ const useNavigateWithTaxonSelected = (
     if ( selectedTaxon === undefined ) {
       updateObservationKeys( {
         owners_identification_from_vision: false,
-        taxon: selectedTaxon
+        taxon: selectedTaxon,
       } );
     } else {
       updateObservationKeys( {
         owners_identification_from_vision: vision,
-        taxon: selectedTaxon
+        taxon: selectedTaxon,
       } );
     }
 
@@ -45,8 +45,8 @@ const useNavigateWithTaxonSelected = (
           uuid: currentObservation?.uuid,
           identTaxonId: selectedTaxon?.id,
           identTaxonFromVision: options?.vision,
-          identAt: Date.now()
-        } )
+          identAt: Date.now(),
+        } ),
       } );
     } else if ( entryScreen === "ObsEdit" ) {
       // Cant' go back b/c we might be on Suggestions OR TaxonSearch. Don't
@@ -67,7 +67,7 @@ const useNavigateWithTaxonSelected = (
     selectedTaxon,
     unselectTaxon,
     updateObservationKeys,
-    vision
+    vision,
   ] );
 };
 

@@ -3,7 +3,7 @@ import ObsListItem from "components/ObservationsFlashList/ObsListItem";
 import {
   Heading1,
   Heading2,
-  ScrollViewWrapper
+  ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -12,7 +12,7 @@ export function makeObservation( options = {} ) {
   return {
     uuid: faker.string.uuid( ),
     missingBasics: ( ) => false,
-    ...options
+    ...options,
   };
 }
 
@@ -22,7 +22,7 @@ export function makePhoto( options = { } ) {
     attribution: faker.lorem.sentence( ),
     licenseCode: "cc-by-nc",
     url: faker.image.url( ),
-    ...options
+    ...options,
   };
 }
 
@@ -30,7 +30,7 @@ export function makeObservationPhoto( options = {} ) {
   return {
     uuid: faker.string.uuid( ),
     photo: makePhoto( ),
-    ...options
+    ...options,
   };
 }
 
@@ -38,7 +38,7 @@ export function makeObservationSound( options = {} ) {
   return {
     uuid: faker.string.uuid( ),
     file_url: faker.system.filePath( ),
-    ...options
+    ...options,
   };
 }
 
@@ -51,7 +51,7 @@ const ObsListItemDemo = ( ) => (
       <Heading2 className="my-2">Photo</Heading2>
       <ObsListItem
         observation={makeObservation( {
-          observationPhotos: [makeObservationPhoto()]
+          observationPhotos: [makeObservationPhoto()],
         } )}
       />
       <Heading2 className="my-2">Photos</Heading2>
@@ -59,15 +59,15 @@ const ObsListItemDemo = ( ) => (
         observation={makeObservation( {
           observationPhotos: [
             makeObservationPhoto(),
-            makeObservationPhoto()
-          ]
+            makeObservationPhoto(),
+          ],
         } )}
       />
       <Heading2 className="my-2">Sound + Photo</Heading2>
       <ObsListItem
         observation={makeObservation( {
           observationPhotos: [makeObservationPhoto()],
-          observationSounds: [makeObservationSound()]
+          observationSounds: [makeObservationSound()],
         } )}
       />
       <Heading2 className="my-2">Sound + Photos</Heading2>
@@ -75,15 +75,15 @@ const ObsListItemDemo = ( ) => (
         observation={makeObservation( {
           observationPhotos: [
             makeObservationPhoto(),
-            makeObservationPhoto()
+            makeObservationPhoto(),
           ],
-          observationSounds: [makeObservationSound()]
+          observationSounds: [makeObservationSound()],
         } )}
       />
       <Heading2 className="my-2">Sound</Heading2>
       <ObsListItem
         observation={makeObservation( {
-          observationSounds: [makeObservationSound()]
+          observationSounds: [makeObservationSound()],
         } )}
       />
       <Heading2 className="my-2">No Media</Heading2>
@@ -97,8 +97,8 @@ const ObsListItemDemo = ( ) => (
             iconic_taxon_name: "Insecta",
             preferred_common_name: "Some weird insect",
             name: "Foo bar",
-            rank_level: 10
-          }
+            rank_level: 10,
+          },
         } )}
       />
       <Heading1 className="my-2">Upload statuses</Heading1>
@@ -110,7 +110,7 @@ const ObsListItemDemo = ( ) => (
       <ObsListItem
         observation={makeObservation( {
           needsSync: () => true,
-          missingBasics: () => true
+          missingBasics: () => true,
         } )}
         uploadProgress={0}
       />
@@ -132,7 +132,7 @@ const ObsListItemDemo = ( ) => (
       <ObsListItem
         observation={makeObservation( {
           uuid: "the-uuid",
-          identifications: [{ uuid: "another-uuid", current: true }]
+          identifications: [{ uuid: "another-uuid", current: true }],
         } )}
         uploadProgress={1}
       />

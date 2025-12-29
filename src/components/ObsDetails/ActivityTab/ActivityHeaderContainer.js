@@ -28,7 +28,7 @@ const ActivityHeaderContainer = ( {
   refetchRemoteObservation,
   geoprivacy,
   taxonGeoprivacy,
-  belongsToCurrentUser
+  belongsToCurrentUser,
 }:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( false );
   const [loading, setLoading] = useState( false );
@@ -55,8 +55,8 @@ const ActivityHeaderContainer = ( {
       },
       onError: () => {
         setLoading( false );
-      }
-    }
+      },
+    },
   );
 
   const deleteUserComment = () => {
@@ -75,16 +75,16 @@ const ActivityHeaderContainer = ( {
       },
       onError: () => {
         setLoading( false );
-      }
-    }
+      },
+    },
   );
 
   const updateCommentBody = comment => {
     const updateCommentParams = {
       id: item.uuid,
       comment: {
-        body: comment
-      }
+        body: comment,
+      },
     };
     setLoading( true );
     updateCommentMutation.mutate( updateCommentParams );
@@ -101,14 +101,14 @@ const ActivityHeaderContainer = ( {
       },
       onError: () => {
         setLoading( false );
-      }
-    }
+      },
+    },
   );
 
   const updateIdentification = identification => {
     const updateIdentificationParams = {
       id: item.uuid,
-      identification
+      identification,
     };
     setLoading( true );
     updateIdentificationMutation.mutate( updateIdentificationParams );

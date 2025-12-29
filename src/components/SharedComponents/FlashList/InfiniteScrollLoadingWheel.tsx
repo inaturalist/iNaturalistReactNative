@@ -5,17 +5,17 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  layout?: string,
-  isConnected?: boolean | null,
-  hideLoadingWheel: boolean,
-  explore?: boolean
+  layout?: string;
+  isConnected?: boolean | null;
+  hideLoadingWheel: boolean;
+  explore?: boolean;
 }
 
 const InfiniteScrollLoadingWheel = ( {
   hideLoadingWheel,
   isConnected = true,
   layout,
-  explore = false
+  explore = false,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -27,7 +27,7 @@ const InfiniteScrollLoadingWheel = ( {
   }
   return (
     <View className={classnames( loadingWheelClass, {
-      "border-t border-lightGray": layout === "list"
+      "border-t border-lightGray": layout === "list",
     } )}
     >
       {isConnected === false

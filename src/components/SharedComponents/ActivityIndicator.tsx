@@ -1,6 +1,7 @@
 import React from "react";
-import { ViewStyle } from "react-native";
-import { ActivityIndicator as RNPActivityIndicator, MD3Theme } from "react-native-paper";
+import type { ViewStyle } from "react-native";
+import type { MD3Theme } from "react-native-paper";
+import { ActivityIndicator as RNPActivityIndicator } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 interface Props {
@@ -20,7 +21,7 @@ const ActivityIndicator = ( {
   size = 100,
   style,
   testID,
-  theme
+  theme,
 }: Props ) => (
   <RNPActivityIndicator
     animating={animating}

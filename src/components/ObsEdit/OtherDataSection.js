@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  Heading4, TextInputSheet
+  Heading4, TextInputSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -19,7 +19,7 @@ type Props = {
 
 const OtherDataSection = ( {
   currentObservation,
-  updateObservationKeys
+  updateObservationKeys,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );
@@ -28,26 +28,26 @@ const OtherDataSection = ( {
 
   const geoprivacyOptions = [{
     label: t( "Open" ),
-    value: "open"
+    value: "open",
   },
   {
     label: t( "Obscured" ),
-    value: "obscured"
+    value: "obscured",
   },
   {
     label: t( "Private" ),
-    value: "private"
+    value: "private",
   }];
 
   // opposite of Seek (asking if wild, not if captive)
   const captiveOptions = [
     {
       label: t( "Data-quality-assessment-organism-is-wild" ),
-      value: false
+      value: false,
     },
     {
       label: t( "Organism-is-captive" ),
-      value: true
+      value: true,
     }];
 
   const currentGeoprivacyStatus = geoprivacyOptions
@@ -61,7 +61,7 @@ const OtherDataSection = ( {
           selectedValue={currentObservation?.geoprivacy}
           onPressClose={( ) => setShowGeoprivacySheet( false )}
           updateGeoprivacyStatus={value => updateObservationKeys( {
-            geoprivacy: value
+            geoprivacy: value,
           } )}
         />
       )}
@@ -70,7 +70,7 @@ const OtherDataSection = ( {
           selectedValue={currentObservation?.captive_flag || false}
           onPressClose={( ) => setShowWildStatusSheet( false )}
           updateCaptiveStatus={value => updateObservationKeys( {
-            captive_flag: value
+            captive_flag: value,
           } )}
         />
       )}
@@ -81,7 +81,7 @@ const OtherDataSection = ( {
           placeholder={t( "Add-optional-notes" )}
           initialInput={currentObservation?.description}
           confirm={textInput => updateObservationKeys( {
-            description: textInput
+            description: textInput,
           } )}
         />
       )}
@@ -92,7 +92,7 @@ const OtherDataSection = ( {
         handlePress={( ) => setShowGeoprivacySheet( true )}
         iconName="globe-outline"
         text={t( "Geoprivacy-status", {
-          status: currentGeoprivacyStatus?.label || geoprivacyOptions[0].label
+          status: currentGeoprivacyStatus?.label || geoprivacyOptions[0].label,
         } )}
       />
       <DropdownItem

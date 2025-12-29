@@ -3,29 +3,30 @@ import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteUserScroll = (
   queryKey: string,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   apiCall: Function,
-  ids: Array<object>,
+  ids: object[],
   newInputParams: object,
   options: {
-    enabled: boolean
-  }
+    enabled: boolean;
+  },
 ): object => {
   const baseParams = {
     ...newInputParams,
     // TODO: can change this once API pagination is working
-    per_page: 200
+    per_page: 200,
   };
 
   const {
     data,
     isFetching,
     fetchNextPage,
-    status
+    status,
   } = useAuthenticatedInfiniteQuery(
     [queryKey, baseParams],
     async ( { pageParam }, optsWithAuth ) => {
       const params = {
-        ...baseParams
+        ...baseParams,
       };
 
       if ( pageParam ) {
@@ -38,8 +39,8 @@ const useInfiniteUserScroll = (
     },
     {
       getNextPageParam: lastPage => lastPage.page + 1,
-      enabled: options.enabled
-    }
+      enabled: options.enabled,
+    },
   );
 
   const pages = data?.pages;
@@ -54,7 +55,7 @@ const useInfiniteUserScroll = (
     status,
     totalResults: pages?.[0]
       ? pages?.[0].total_results
-      : null
+      : null,
   };
 };
 

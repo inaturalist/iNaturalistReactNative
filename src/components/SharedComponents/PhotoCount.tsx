@@ -43,11 +43,11 @@ const PhotoCount = ( { count }: Props ) => {
           isRTL
             ? "right-0"
             : "left-0",
-          "text-center"
+          "text-center",
         )}
         style={{
           width: dim * 0.74,
-          height: dim * 0.74
+          height: dim * 0.74,
         }}
         maxFontSizeMultiplier={maxFontScale}
       >

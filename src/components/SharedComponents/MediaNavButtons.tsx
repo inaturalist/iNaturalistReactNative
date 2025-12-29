@@ -14,7 +14,7 @@ const BUTTON_DIM = 40;
 const SIDE_BUTTON_CLASSES = [
   "w-1/3",
   "h-full",
-  "bg-black"
+  "bg-black",
 ];
 
 const CHECKMARK_CLASSES = [
@@ -23,7 +23,7 @@ const CHECKMARK_CLASSES = [
   `h-[${BUTTON_DIM}px]`,
   `w-[${BUTTON_DIM}px]`,
   "justify-center",
-  "items-center"
+  "items-center",
 ];
 
 const CLOSE_CLASSES = [
@@ -32,7 +32,7 @@ const CLOSE_CLASSES = [
   `h-[${BUTTON_DIM}px]`,
   `w-[${BUTTON_DIM}px]`,
   "justify-center",
-  "items-center"
+  "items-center",
 ];
 
 interface Props {
@@ -54,7 +54,7 @@ const MediaNavButtons = ( {
   mediaCaptured,
   onClose,
   onConfirm,
-  rotatableAnimatedStyle
+  rotatableAnimatedStyle,
 }: Props ) => (
   <View
     className="h-32 flex-row justify-between items-center bg-black"

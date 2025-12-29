@@ -1,6 +1,6 @@
 // @flow
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,7 +13,7 @@ import React, {
   useCallback,
   useEffect,
   useReducer,
-  useState
+  useState,
 } from "react";
 import { Alert, LogBox } from "react-native";
 import Observation from "realmModels/Observation";
@@ -26,10 +26,10 @@ import {
   useLayoutPrefs,
   useLocalObservation,
   useObservationsUpdates,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import useRemoteObservation, {
-  fetchRemoteObservationKey
+  fetchRemoteObservationKey,
 } from "sharedHooks/useRemoteObservation";
 import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
@@ -43,11 +43,11 @@ const { useRealm } = RealmContext;
 // react navigation via the observation object. it doesn't seem to
 // actually be breaking anything, for the moment (May 2, 2022)
 LogBox.ignoreLogs( [
-  "Non-serializable values were found in the navigation state"
+  "Non-serializable values were found in the navigation state",
 ] );
 
 const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
-  ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) )
+  ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ),
 );
 
 const initialState = {
@@ -63,7 +63,7 @@ const initialState = {
   showAddCommentSheet: false,
   showPotentialDisagreementSheet: false,
   showSuggestIdSheet: false,
-  identTaxon: null
+  identTaxon: null,
 };
 
 const CLEAR_SUGGESTED_TAXON = "CLEAR_SUGGESTED_TAXON";
@@ -86,8 +86,8 @@ const reducer = ( state, action ) => {
         observationShown: action.observationShown,
         activityItems: sortItems(
           action.observationShown?.identifications || [],
-          action.observationShown?.comments || []
-        )
+          action.observationShown?.comments || [],
+        ),
       };
     case "ADD_ACTIVITY_ITEM":
       return {
@@ -96,50 +96,50 @@ const reducer = ( state, action ) => {
         addingActivityItem: false,
         activityItems: sortItems(
           action.observationShown?.identifications || [],
-          action.observationShown?.comments || []
-        )
+          action.observationShown?.comments || [],
+        ),
       };
     case "LOADING_ACTIVITY_ITEM":
       return {
         ...state,
-        addingActivityItem: true
+        addingActivityItem: true,
       };
     case SHOW_AGREE_SHEET:
       return {
         ...state,
         showAgreeWithIdSheet: true,
-        newIdentification: action.newIdentification
+        newIdentification: action.newIdentification,
       };
     case HIDE_AGREE_SHEET:
       return {
         ...state,
-        showAgreeWithIdSheet: false
+        showAgreeWithIdSheet: false,
       };
     case SET_ADD_COMMENT_SHEET:
       return {
         ...state,
         commentIsOptional: action.commentIsOptional,
-        showAddCommentSheet: action.showAddCommentSheet
+        showAddCommentSheet: action.showAddCommentSheet,
       };
     case SHOW_EDIT_IDENT_BODY_SHEET:
       return {
         ...state,
-        identBodySheetShown: true
+        identBodySheetShown: true,
       };
     case HIDE_EDIT_IDENT_BODY_SHEET:
       return {
         ...state,
-        identBodySheetShown: false
+        identBodySheetShown: false,
       };
     case "SHOW_SUGGEST_ID_SHEET":
       return {
         ...state,
-        showSuggestIdSheet: true
+        showSuggestIdSheet: true,
       };
     case "SHOW_POTENTIAL_DISAGREEMENT_SHEET":
       return {
         ...state,
-        showPotentialDisagreementSheet: true
+        showPotentialDisagreementSheet: true,
       };
     case SET_NEW_IDENTIFICATION:
       return {
@@ -147,8 +147,8 @@ const reducer = ( state, action ) => {
         newIdentification: {
           taxon: action.taxon,
           body: action.body,
-          vision: action.vision
-        }
+          vision: action.vision,
+        },
       };
     case SET_IDENT_TAXON:
       return { ...state, identTaxon: action.taxon };
@@ -161,14 +161,14 @@ const reducer = ( state, action ) => {
         ...state,
         showSuggestIdSheet: false,
         identTaxon: null,
-        newIdentification: null
+        newIdentification: null,
       };
     case HIDE_POTENTIAL_DISAGREEMENT_SHEET:
       return {
         ...state,
         showPotentialDisagreementSheet: false,
         identTaxon: null,
-        newIdentification: null
+        newIdentification: null,
       };
     default:
       throw new Error( );
@@ -179,7 +179,7 @@ const ObsDetailsContainer = ( ): Node => {
   const setObservations = useStore( state => state.setObservations );
   const {
     obsDetailsTab,
-    setObsDetailsTab
+    setObsDetailsTab,
   } = useLayoutPrefs( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute();
@@ -188,7 +188,7 @@ const ObsDetailsContainer = ( ): Node => {
     identTaxonId,
     identTaxonFromVision,
     targetActivityItemID,
-    uuid
+    uuid,
   } = params;
   const navigation = useNavigation( );
   const realm = useRealm( );
@@ -209,14 +209,14 @@ const ObsDetailsContainer = ( ): Node => {
     showAgreeWithIdSheet,
     showPotentialDisagreementSheet,
     showSuggestIdSheet,
-    identTaxon
+    identTaxon,
   } = state;
   const queryClient = useQueryClient( );
 
   const {
     localObservation,
     markDeletedLocally,
-    markViewedLocally
+    markViewedLocally,
   } = useLocalObservation( uuid );
 
   const fetchRemoteObservationEnabled = !!(
@@ -229,7 +229,7 @@ const ObsDetailsContainer = ( ): Node => {
     remoteObservation,
     refetchRemoteObservation,
     isRefetching,
-    fetchRemoteObservationError
+    fetchRemoteObservationError,
   } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
   useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
@@ -243,7 +243,7 @@ const ObsDetailsContainer = ( ): Node => {
       }
       dispatch( {
         type: SET_IDENT_TAXON,
-        taxon
+        taxon,
       } );
     }
     if ( identTaxonId ) {
@@ -257,7 +257,7 @@ const ObsDetailsContainer = ( ): Node => {
     // cancel, then add another ID of taxon X, we still update the identTaxon
     identAt,
     identTaxonId,
-    realm
+    realm,
   ] );
 
   // If we tried to get a remote observation but it no longer exists, the user
@@ -274,7 +274,7 @@ const ObsDetailsContainer = ( ): Node => {
   }, [
     localObservation,
     markDeletedLocally,
-    navigation
+    navigation,
   ] );
 
   const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
@@ -291,18 +291,18 @@ const ObsDetailsContainer = ( ): Node => {
 
   const { data: subscriptions, refetch: refetchSubscriptions } = useAuthenticatedQuery(
     [
-      "fetchSubscriptions"
+      "fetchSubscriptions",
     ],
     optsWithAuth => fetchSubscriptions( { uuid, fields: "user_id" }, optsWithAuth ),
     {
-      enabled: !!( currentUser ) && !belongsToCurrentUser
-    }
+      enabled: !!( currentUser ) && !belongsToCurrentUser,
+    },
   );
 
   const invalidateRemoteObservationFetch = useCallback( ( ) => {
     if ( observation?.uuid ) {
       queryClient.invalidateQueries( {
-        queryKey: [fetchRemoteObservationKey, observation.uuid]
+        queryKey: [fetchRemoteObservationKey, observation.uuid],
       } );
     }
   }, [queryClient, observation?.uuid] );
@@ -312,14 +312,14 @@ const ObsDetailsContainer = ( ): Node => {
     // and adds a remote id on the Suggestions screen
     useCallback( ( ) => {
       invalidateRemoteObservationFetch( );
-    }, [invalidateRemoteObservationFetch] )
+    }, [invalidateRemoteObservationFetch] ),
   );
 
   useEffect( ( ) => {
     if ( !observationShown ) {
       dispatch( {
         type: "SET_INITIAL_OBSERVATION",
-        observationShown: observation
+        observationShown: observation,
       } );
     }
   }, [observation, observationShown] );
@@ -330,7 +330,7 @@ const ObsDetailsContainer = ( ): Node => {
     if ( remoteObservation && !isRefetching ) {
       dispatch( {
         type: "ADD_ACTIVITY_ITEM",
-        observationShown: Observation.mapApiToRealm( remoteObservation )
+        observationShown: Observation.mapApiToRealm( remoteObservation ),
       } );
     }
   }, [remoteObservation, isRefetching] );
@@ -340,36 +340,36 @@ const ObsDetailsContainer = ( ): Node => {
       id: OBS_DETAILS_TAB.ACTIVITY,
       testID: "ObsDetails.ActivityTab",
       onPress: ( ) => setObsDetailsTab( OBS_DETAILS_TAB.ACTIVITY ),
-      text: t( "ACTIVITY" )
+      text: t( "ACTIVITY" ),
     },
     {
       id: OBS_DETAILS_TAB.DETAILS,
       testID: "ObsDetails.DetailsTab",
       onPress: () => setObsDetailsTab( OBS_DETAILS_TAB.DETAILS ),
-      text: t( "DETAILS" )
-    }
+      text: t( "DETAILS" ),
+    },
   ];
 
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
-    !!currentUser && !!observation
+    !!currentUser && !!observation,
   );
 
   const showErrorAlert = error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
-    cancelable: true
+    cancelable: true,
   } );
 
   const openAddCommentSheet = ( { isOptional = false } ) => {
     dispatch( {
       type: SET_ADD_COMMENT_SHEET,
       showAddCommentSheet: true,
-      commentIsOptional: isOptional || false
+      commentIsOptional: isOptional || false,
     } );
   };
 
   const hideAddCommentSheet = ( ) => dispatch( {
     type: SET_ADD_COMMENT_SHEET,
     showAddCommentSheet: false,
-    comment: null
+    comment: null,
   } );
 
   const createCommentMutation = useAuthenticatedMutation(
@@ -396,8 +396,8 @@ const ObsDetailsContainer = ( ): Node => {
           error = t( "Couldnt-create-comment", { error: t( "Unknown-error" ) } );
         }
         showErrorAlert( error );
-      }
-    }
+      },
+    },
   );
 
   const onCommentAdded = body => {
@@ -406,8 +406,8 @@ const ObsDetailsContainer = ( ): Node => {
       comment: {
         body,
         parent_id: uuid,
-        parent_type: "Observation"
-      }
+        parent_type: "Observation",
+      },
     } );
   };
 
@@ -445,8 +445,8 @@ const ObsDetailsContainer = ( ): Node => {
           error = t( "Couldnt-create-identification-unknown-error" );
         }
         showErrorAlert( error );
-      }
-    }
+      },
+    },
   );
 
   useEffect( () => {
@@ -466,7 +466,7 @@ const ObsDetailsContainer = ( ): Node => {
     dispatch( {
       type: SET_NEW_IDENTIFICATION,
       taxon: identTaxon,
-      vision: identTaxonFromVision
+      vision: identTaxonFromVision,
     } );
     if (
       observationTaxon
@@ -488,7 +488,7 @@ const ObsDetailsContainer = ( ): Node => {
     observation?.community_taxon,
     observation?.taxon,
     observation?.prefers_community_taxon,
-    observation?.user?.prefers_community_taxa
+    observation?.user?.prefers_community_taxa,
   ] );
 
   const navToSuggestions = ( ) => {
@@ -497,7 +497,7 @@ const ObsDetailsContainer = ( ): Node => {
       navigation.push( "Suggestions", {
         entryScreen: "ObsDetails",
         lastScreen: "ObsDetails",
-        hideSkip: true
+        hideSkip: true,
       } );
     } else {
       // Go directly to taxon search in case there are no photos
@@ -515,7 +515,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const closeAgreeWithIdSheet = ( ) => {
     dispatch( {
-      type: HIDE_AGREE_SHEET
+      type: HIDE_AGREE_SHEET,
     } );
   };
 
@@ -523,7 +523,7 @@ const ObsDetailsContainer = ( ): Node => {
     const agreeParams = {
       observation_id: observation?.uuid,
       taxon_id: ident.taxon?.id,
-      body: ident.body
+      body: ident.body,
     };
 
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
@@ -534,7 +534,7 @@ const ObsDetailsContainer = ( ): Node => {
   const openAgreeWithIdSheet = taxon => {
     dispatch( {
       type: SHOW_AGREE_SHEET,
-      newIdentification: { taxon }
+      newIdentification: { taxon },
     } );
   };
   const potentialDisagreeSheetDiscardChanges = ( ) => {
@@ -551,7 +551,7 @@ const ObsDetailsContainer = ( ): Node => {
       taxon_id: newIdentification.taxon.id,
       vision: newIdentification.vision,
       disagreement: potentialDisagree,
-      body: newIdentification?.body
+      body: newIdentification?.body,
     };
 
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
@@ -585,13 +585,13 @@ const ObsDetailsContainer = ( ): Node => {
   }, [
     doSuggestId,
     observation,
-    identTaxon
+    identTaxon,
   ] );
 
   const onPotentialDisagreePressed = potentialDisagree => {
     dispatch( {
       type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
-      showPotentialDisagreementSheet: false
+      showPotentialDisagreementSheet: false,
     } );
     doSuggestId( potentialDisagree );
   };
@@ -648,7 +648,7 @@ const ObsDetailsContainer = ( ): Node => {
       onChangeIdentBody={body => dispatch( {
         type: SET_NEW_IDENTIFICATION,
         taxon: newIdentification?.taxon,
-        body
+        body,
       } )}
       onCloseIdentBodySheet={() => {
         dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );

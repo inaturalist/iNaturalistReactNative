@@ -1,6 +1,6 @@
 import {
   refresh as refreshNetInfo,
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import Slider from "@react-native-community/slider";
 import { useFocusEffect } from "@react-navigation/native";
@@ -10,7 +10,7 @@ import React, {
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import { useTranslation } from "sharedHooks";
@@ -26,7 +26,7 @@ interface SoundSliderProps {
 
 const SoundSlider = ( { playBackState, onSlidingComplete }: SoundSliderProps ) => {
   const sliderStyle = {
-    width: "100%"
+    width: "100%",
   } as const;
   return (
     <Slider
@@ -58,7 +58,7 @@ const SoundContainer = ( {
   autoPlay,
   isVisible,
   sizeClass,
-  sound
+  sound,
 }: SoundContainerProps ) => {
   const needsInternet = sound.file_url.includes( "https://" );
   const { isConnected } = useNetInfo( );
@@ -78,11 +78,11 @@ const SoundContainer = ( {
     // Total duration of audio in milliseconds
     duration: 0,
     formattedCurrentPosition: "00:00",
-    formattedDuration: "00:00"
+    formattedDuration: "00:00",
   } );
 
   const mmss = useCallback( ( value: number ) => player.mmss(
-    Math.floor( value / 1000 )
+    Math.floor( value / 1000 ),
   ), [player] );
 
   const playSound = useCallback( ( position?: number ) => {
@@ -105,7 +105,7 @@ const SoundContainer = ( {
           currentPosition: playBackEvent.currentPosition,
           duration: playBackEvent.duration,
           formattedCurrentPosition: mmss( playBackEvent.currentPosition ),
-          formattedDuration: mmss( playBackEvent.duration )
+          formattedDuration: mmss( playBackEvent.duration ),
         } );
         // Update UI when playback is complete
         if ( playBackEvent.currentPosition >= playBackEvent.duration ) {
@@ -137,7 +137,7 @@ const SoundContainer = ( {
     player.removePlayBackListener( );
   }, [
     isVisible,
-    player
+    player,
   ] );
 
   // Tapping the button can play, pause, or resume
@@ -184,7 +184,7 @@ const SoundContainer = ( {
     isVisible,
     playBackState,
     sound,
-    stopSound
+    stopSound,
   ] );
 
   // User navigated to a different screen, stop playback. Note that this is
@@ -243,7 +243,7 @@ const SoundContainer = ( {
             setPlayBackState( {
               ...playBackState,
               currentPosition: value,
-              formattedCurrentPosition: mmss( value )
+              formattedCurrentPosition: mmss( value ),
             } );
             player.seekToPlayer( value )
               .catch( seekToPlayerError => {

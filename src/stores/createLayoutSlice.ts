@@ -18,7 +18,7 @@ const createLayoutSlice = set => ( {
   // undefined | true | false
   loggedInWhileInDefaultMode: undefined,
   setLoggedInWhileInDefaultMode: ( newValue: boolean ) => set(
-    { loggedInWhileInDefaultMode: newValue }
+    { loggedInWhileInDefaultMode: newValue },
   ),
   // Please put new stuff in this namespace so they will be saved to disk
   layout: {
@@ -35,8 +35,8 @@ const createLayoutSlice = set => ( {
         // and otherwise, advanced mode default is Suggestions
         screenAfterPhotoEvidence: newValue === true
           ? SCREEN_AFTER_PHOTO_EVIDENCE.MATCH
-          : SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS
-      }
+          : SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
+      },
     } ) ),
     // leaving isAdvancedSuggestionsMode here for backwards compatibility
     // for anyone who already set ObsEdit, but setting the default value
@@ -49,15 +49,15 @@ const createLayoutSlice = set => ( {
         screenAfterPhotoEvidence: newScreen,
         // let's stop using this isAdvancedSuggestionsMode value once users adjust their settings
         // so we can remove it in the future
-        isAdvancedSuggestionsMode: null
-      }
+        isAdvancedSuggestionsMode: null,
+      },
     } ) ),
     isAllAddObsOptionsMode: false,
     setIsAllAddObsOptionsMode: ( newValue: boolean ) => set( state => ( {
       layout: {
         ...state.layout,
-        isAllAddObsOptionsMode: newValue
-      }
+        isAllAddObsOptionsMode: newValue,
+      },
     } ) ),
     // State to control pivot cards and other onboarding material being shown only once
     shownOnce: {},
@@ -66,23 +66,23 @@ const createLayoutSlice = set => ( {
         ...state.layout,
         shownOnce: {
           ...state.layout.shownOnce,
-          [key]: true
-        }
-      }
+          [key]: true,
+        },
+      },
     } ) ),
     resetShownOnce: () => set( state => ( {
       layout: {
         ...state.layout,
-        shownOnce: {}
-      }
+        shownOnce: {},
+      },
     } ) ),
     // State to control login/signup banner being only shown once until dismissed by user
     loginBannerDismissed: false,
     setLoginBannerDismissed: () => set( state => ( {
       layout: {
         ...state.layout,
-        loginBannerDismissed: true
-      }
+        loginBannerDismissed: true,
+      },
     } ) ),
     // State to control some components that are only supposed to be shown immediately after
     // a user signs up
@@ -90,10 +90,10 @@ const createLayoutSlice = set => ( {
     setJustFinishedSignup: ( newValue: boolean ) => set( state => ( {
       layout: {
         ...state.layout,
-        justFinishedSignup: newValue
-      }
-    } ) )
-  }
+        justFinishedSignup: newValue,
+      },
+    } ) ),
+  },
 } );
 
 export default createLayoutSlice;

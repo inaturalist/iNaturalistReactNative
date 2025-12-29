@@ -1,6 +1,7 @@
 import { INatIconButton, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import { StatusBar } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -11,7 +12,7 @@ interface Props extends PropsWithChildren {
 
 const OnboardingModalBase = ( {
   closeModal,
-  children
+  children,
 }: Props ) => {
   const { t } = useTranslation( );
   return (

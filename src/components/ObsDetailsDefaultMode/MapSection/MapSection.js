@@ -1,7 +1,7 @@
 import {
   DetailsMap,
   Map,
-  Modal
+  Modal,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -25,7 +25,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
   const longitude = observation.privateLongitude || observation.longitude;
   const coordinateString = t( "Lat-Lon", {
     latitude,
-    longitude
+    longitude,
   } );
 
   const openMapScreen = useCallback( ( ) => setShowMapModal( true ), [] );
@@ -35,7 +35,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
   const tileMapParams = useMemo( ( ) => ( taxonId
     ? {
       taxon_id: taxonId,
-      verifiable: true
+      verifiable: true,
     }
     : null ), [taxonId] );
 
@@ -55,7 +55,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
     coordinateString,
     currentUser,
     observation,
-    tileMapParams
+    tileMapParams,
   ] );
 
   if ( !latitude ) {
@@ -63,7 +63,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
   }
 
   return (
-    <View className="h-[200px]">
+    <View testID="MapSection" className="h-[200px]">
       <Map
         mapHeight={200}
         observation={observation}

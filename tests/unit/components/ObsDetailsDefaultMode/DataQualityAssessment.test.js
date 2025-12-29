@@ -14,13 +14,13 @@ const mockObservation = factory( "LocalObservation", {
   longitude: Number( faker.location.longitude( ) ),
   taxon: {
     id: undefined,
-    rank_level: undefined
+    rank_level: undefined,
   },
   identifications: [],
   // casual is the default, so using needs_id here ensures test
   // is using our mock observation, not just showing the default screen
   quality_grade: "needs_id",
-  votes: []
+  votes: [],
 } );
 
 const mockUserID = "some_user_id";
@@ -29,30 +29,30 @@ const mockUserID = "some_user_id";
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: jest.fn( ( ) => ( {
-    id: mockUserID
-  } ) )
+    id: mockUserID,
+  } ) ),
 } ) );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
-    data: []
-  } )
+    data: [],
+  } ),
 } ) );
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
   default: () => ( {
-    mutate: mockMutate
-  } )
+    mutate: mockMutate,
+  } ),
 } ) );
 
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
   default: jest.fn( () => ( {
-    localObservation: mockObservation
-  } ) )
+    localObservation: mockObservation,
+  } ) ),
 } ) );
 
 jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
@@ -60,14 +60,14 @@ jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
   default: ( _uuid, _fetchRemoteEnabled ) => ( {
     remoteObservation: mockObservation,
     refetchRemoteObservation: jest.fn( ),
-    isRefetching: false
-  } )
+    isRefetching: false,
+  } ),
 } ) );
 
 useRoute.mockImplementation( ( ) => ( {
   params: {
-    observationUUID: mockObservation.uuid
-  }
+    observationUUID: mockObservation.uuid,
+  },
 } ) );
 
 describe( "Data Quality Assessment", ( ) => {
@@ -75,7 +75,7 @@ describe( "Data Quality Assessment", ( ) => {
     renderComponent( <DQAContainer /> );
 
     const qualityGrade = await screen.findByTestId(
-      `QualityGrade.${mockObservation.quality_grade}`
+      `QualityGrade.${mockObservation.quality_grade}`,
     );
     expect( qualityGrade ).toBeTruthy( );
   } );
@@ -84,7 +84,7 @@ describe( "Data Quality Assessment", ( ) => {
     renderComponent( <DQAContainer /> );
 
     const qualityGrade = await screen.findByText(
-      t( "Data-quality-assessment-title-needs-id" )
+      t( "Data-quality-assessment-title-needs-id" ),
     );
     expect( qualityGrade ).toBeTruthy( );
   } );
@@ -93,7 +93,7 @@ describe( "Data Quality Assessment", ( ) => {
     renderComponent( <DQAContainer /> );
 
     const qualityGrade = await screen.findByText(
-      t( "Data-quality-assessment-description-needs-id" )
+      t( "Data-quality-assessment-description-needs-id" ),
     );
     expect( qualityGrade ).toBeTruthy( );
   } );
@@ -102,19 +102,19 @@ describe( "Data Quality Assessment", ( ) => {
     renderComponent( <DQAContainer /> );
 
     const dateSpecified = await screen.findByText(
-      t( "Data-quality-assessment-date-specified" )
+      t( "Data-quality-assessment-date-specified" ),
     );
     const locationSpecified = await screen.findByText(
-      t( "Data-quality-assessment-location-specified" )
+      t( "Data-quality-assessment-location-specified" ),
     );
     const photosAndSounds = await screen.findByText(
-      t( "Data-quality-assessment-has-photos-or-sounds" )
+      t( "Data-quality-assessment-has-photos-or-sounds" ),
     );
     const idSupportedTwoOrMore = await screen.findByText(
-      t( "Data-quality-assessment-id-supported-by-two-or-more" )
+      t( "Data-quality-assessment-id-supported-by-two-or-more" ),
     );
     const communityTaxonSpeciesLevel = await screen.findByText(
-      t( "Data-quality-assessment-community-taxon-species-level-or-lower" )
+      t( "Data-quality-assessment-community-taxon-species-level-or-lower" ),
     );
     expect( dateSpecified ).toBeTruthy( );
     expect( locationSpecified ).toBeTruthy( );
@@ -127,19 +127,19 @@ describe( "Data Quality Assessment", ( ) => {
     renderComponent( <DQAContainer /> );
 
     const dateAccurate = await screen.findByText(
-      t( "Data-quality-assessment-date-is-accurate" )
+      t( "Data-quality-assessment-date-is-accurate" ),
     );
     const locationAccurate = await screen.findByText(
-      t( "Data-quality-assessment-location-is-accurate" )
+      t( "Data-quality-assessment-location-is-accurate" ),
     );
     const organismWild = await screen.findByText(
-      t( "Data-quality-assessment-organism-is-wild" )
+      t( "Data-quality-assessment-organism-is-wild" ),
     );
     const organismEvidence = await screen.findByText(
-      t( "Data-quality-assessment-evidence-of-organism" )
+      t( "Data-quality-assessment-evidence-of-organism" ),
     );
     const recentEvidence = await screen.findByText(
-      t( "Data-quality-assessment-recent-evidence-of-organism" )
+      t( "Data-quality-assessment-recent-evidence-of-organism" ),
     );
     expect( dateAccurate ).toBeTruthy( );
     expect( locationAccurate ).toBeTruthy( );
@@ -152,10 +152,10 @@ describe( "Data Quality Assessment", ( ) => {
     renderComponent( <DQAContainer /> );
 
     const title = await screen.findByText(
-      t( "ABOUT-THE-DQA" )
+      t( "ABOUT-THE-DQA" ),
     );
     const description = await screen.findByText(
-      t( "About-the-DQA-description" )
+      t( "About-the-DQA-description" ),
     );
     expect( title ).toBeTruthy( );
     expect( description ).toBeTruthy( );

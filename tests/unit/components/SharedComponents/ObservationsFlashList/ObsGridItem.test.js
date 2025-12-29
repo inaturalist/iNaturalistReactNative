@@ -6,27 +6,27 @@ import factory from "tests/factory";
 describe( "ObsGridItem", () => {
   describe( "for an observation with a photo", ( ) => {
     const observationWithPhoto = factory( "LocalObservation", {
-      observationPhotos: [factory( "LocalObservationPhoto" )]
+      observationPhotos: [factory( "LocalObservationPhoto" )],
     } );
 
     it( "should render", () => {
       const photo = factory( "LocalPhoto", {
-        url: "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
+        url: "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
       } );
       const observationWithStablePhotoUrl = factory( "LocalObservation", {
         uuid: "00000000-0000-0000-0000-000000000000",
         observationPhotos: [
           factory( "LocalObservationPhoto", {
-            photo
-          } )
-        ]
+            photo,
+          } ),
+        ],
       } );
       render(
         <ObsGridItem
           observation={observationWithStablePhotoUrl}
           uploadState={{ uploadProgress: false }}
           photo={photo}
-        />
+        />,
       );
       expect( screen ).toMatchSnapshot();
     } );
@@ -40,7 +40,7 @@ describe( "ObsGridItem", () => {
           observation={observationWithPhoto}
           uploadState={{ uploadProgress: false }}
           photo={photo}
-        />
+        />,
       );
       expect( await screen.findByTestId( "ObsList.photo" ) ).toBeTruthy( );
     } );
@@ -48,7 +48,7 @@ describe( "ObsGridItem", () => {
 
   describe( "for an observation without a photo", ( ) => {
     const observationWithoutPhoto = factory( "LocalObservation", {
-      uuid: "00000000-0000-0000-0000-000000000000"
+      uuid: "00000000-0000-0000-0000-000000000000",
     } );
 
     it( "should render", ( ) => {
@@ -56,7 +56,7 @@ describe( "ObsGridItem", () => {
         <ObsGridItem
           observation={observationWithoutPhoto}
           uploadState={{ uploadProgress: false }}
-        />
+        />,
       );
       expect( screen ).toMatchSnapshot();
     } );
@@ -66,7 +66,7 @@ describe( "ObsGridItem", () => {
         <ObsGridItem
           observation={observationWithoutPhoto}
           uploadState={{ uploadProgress: false }}
-        />
+        />,
       );
       expect( await screen.findByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeTruthy( );
     } );

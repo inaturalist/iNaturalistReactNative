@@ -16,11 +16,12 @@ import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores";
 import { log } from "sharedHelpers/logger";
 import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
+import { logFirebaseEvent } from "sharedHelpers/tracking";
 import {
   useDebugMode,
   useLayoutPrefs,
   usePerformance,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
@@ -31,7 +32,7 @@ import {
   handleCaptureError,
   handleClassifierError,
   handleDeviceNotSupported,
-  handleLog
+  handleLog,
 } from "../helpers";
 import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
@@ -75,7 +76,7 @@ const AICamera = ( {
   takePhotoOptions,
   userLocation,
   hasLocationPermissions,
-  requestLocationPermissions
+  requestLocationPermissions,
 }: Props ): Node => {
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
@@ -91,10 +92,10 @@ const AICamera = ( {
     pinchToZoom,
     showZoomButton,
     zoomTextValue,
-    resetZoom
+    resetZoom,
   } = useZoom( device );
   const {
-    rotatableAnimatedStyle
+    rotatableAnimatedStyle,
   } = useRotation( );
   const {
     confidenceThreshold,
@@ -108,7 +109,7 @@ const AICamera = ( {
     setConfidenceThreshold,
     setFPS,
     setNumStoredResults,
-    setCropRatio
+    setCropRatio,
   } = usePredictions( );
   const [inactive, setInactive] = React.useState( false );
   const [initialVolume, setInitialVolume] = useState( null );
@@ -148,7 +149,7 @@ const AICamera = ( {
   const { t } = useTranslation();
 
   const { loadTime } = usePerformance( {
-    isLoading: camera?.current !== null
+    isLoading: camera?.current !== null,
   } );
   if ( isDebugMode( ) && loadTime ) {
     logger.info( loadTime );
@@ -172,6 +173,7 @@ const AICamera = ( {
   const handleTakePhoto = useCallback( async ( ) => {
     await logStage( sentinelFileName, "take_photo_start" );
     setHasTakenPhoto( true );
+    logFirebaseEvent( "ai_camera_shutter_tap", { hasLocationPermissions } );
     // this feels a little duplicative, but we're currently using aICameraSuggestion
     // to show the loading screen in Suggestions *without* setting an observation.taxon,
     // and we're using visionResult to populate ObsEdit *with* the taxon
@@ -187,7 +189,7 @@ const AICamera = ( {
       replaceExisting: true,
       inactivateCallback: () => setInactive( true ),
       navigateImmediately: true,
-      visionResult
+      visionResult,
     } );
     setHasTakenPhoto( false );
   }, [
@@ -195,7 +197,8 @@ const AICamera = ( {
     setAICameraSuggestion,
     sentinelFileName,
     takePhotoAndStoreUri,
-    result
+    result,
+    hasLocationPermissions,
   ] );
 
   useEffect( () => {
@@ -228,7 +231,12 @@ const AICamera = ( {
 
   const handleClose = async ( ) => {
     await deleteSentinelFile( sentinelFileName );
-    navigation.goBack( );
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsTab",
+      params: {
+        screen: "ObsList",
+      },
+    } );
   };
 
   return (
@@ -266,7 +274,7 @@ const AICamera = ( {
           0.001,
           isTablet && isLandscapeMode
             ? 0.3
-            : 1
+            : 1,
         ]}
         className="w-full h-[219px]"
       >
@@ -274,7 +282,7 @@ const AICamera = ( {
           className={classnames( "self-center", {
             "w-[493px]": isTablet,
             "w-[346px] top-8": !isTablet,
-            "top-14": insets.top > 0
+            "top-14": insets.top > 0,
           } )}
         >
           {showPrediction && result

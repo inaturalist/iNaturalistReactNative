@@ -1,12 +1,12 @@
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import {
   LOCATION_PERMISSIONS,
-  permissionResultFromMultiple
+  permissionResultFromMultiple,
 } from "components/SharedComponents/PermissionGateContainer";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   checkMultiple,
-  RESULTS
+  RESULTS,
 } from "react-native-permissions";
 
 // PermissionGate callbacks need to use useCallback, otherwise they'll
@@ -17,6 +17,10 @@ export interface LocationPermissionCallbacks {
   onPermissionBlocked?: ( ) => void;
   onModalHide?: ( ) => void;
 }
+
+export type RenderLocationPermissionsGateFunction = (
+  callbacks: LocationPermissionCallbacks | undefined
+) => React.JSX.Element | null;
 
 /**
  * A hook to check and request location permissions.
@@ -33,56 +37,60 @@ const useLocationPermission = ( ) => {
 
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
-  const renderPermissionsGate = useCallback( ( callbacks?: LocationPermissionCallbacks ) => {
-    const {
-      onPermissionGranted,
-      onPermissionDenied,
-      onPermissionBlocked,
-      onModalHide
-    } = callbacks || { };
+  const renderPermissionsGate: RenderLocationPermissionsGateFunction
+    = useCallback(
+      ( callbacks?: LocationPermissionCallbacks ) => {
+        const {
+          onPermissionGranted,
+          onPermissionDenied,
+          onPermissionBlocked,
+          onModalHide,
+        } = callbacks || {};
 
-    // this prevents infinite rerenders of the LocationPermissionGate component
-    if ( !showPermissionGate ) {
-      return null;
-    }
+        // this prevents infinite rerenders of the LocationPermissionGate component
+        if ( !showPermissionGate ) {
+          return null;
+        }
 
-    return (
-      <LocationPermissionGate
-        permissionNeeded
-        withoutNavigation
-        onModalHide={( ) => {
-          setShowPermissionGate( false );
-          if ( onModalHide ) onModalHide( );
-        }}
-        onPermissionGranted={( ) => {
-          setShowPermissionGate( false );
-          setHasPermissions( true );
-          setHasBlockedPermissions( false );
-          if ( onPermissionGranted ) onPermissionGranted( );
-        }}
-        onPermissionDenied={( ) => {
-          if ( onPermissionDenied ) onPermissionDenied( );
-        }}
-        onPermissionBlocked={( ) => {
-          setHasPermissions( false );
-          setHasBlockedPermissions( true );
-          setShowPermissionGate( true );
-          if ( onPermissionBlocked ) onPermissionBlocked( );
-        }}
-      />
+        return (
+          <LocationPermissionGate
+            permissionNeeded
+            withoutNavigation
+            onModalHide={() => {
+              setShowPermissionGate( false );
+              if ( onModalHide ) onModalHide();
+            }}
+            onPermissionGranted={() => {
+              setShowPermissionGate( false );
+              setHasPermissions( true );
+              setHasBlockedPermissions( false );
+              if ( onPermissionGranted ) onPermissionGranted();
+            }}
+            onPermissionDenied={() => {
+              if ( onPermissionDenied ) onPermissionDenied();
+            }}
+            onPermissionBlocked={() => {
+              setHasPermissions( false );
+              setHasBlockedPermissions( true );
+              setShowPermissionGate( true );
+              if ( onPermissionBlocked ) onPermissionBlocked();
+            }}
+          />
+        );
+      },
+      [showPermissionGate],
     );
-  }, [showPermissionGate] );
 
   // This gets exported and used as a dependency, so it needs to have
   // referential stability
   const requestPermissions = useCallback(
     ( ) => setShowPermissionGate( true ),
-    []
+    [],
   );
 
   const checkPermissions = useCallback( async () => {
     const permissionsResult = permissionResultFromMultiple(
-      await checkMultiple( LOCATION_PERMISSIONS )
+      await checkMultiple( LOCATION_PERMISSIONS ),
     );
     if ( permissionsResult === RESULTS.GRANTED ) {
       setHasPermissions( true );
@@ -104,7 +112,7 @@ const useLocationPermission = ( ) => {
     renderPermissionsGate,
     requestPermissions,
     hasBlockedPermissions,
-    checkPermissions
+    checkPermissions,
   };
 };
 

@@ -228,9 +228,6 @@ Closes-explanation = Closes explanation
 # appear when you first install the app
 Closes-introduction = Closes introduction
 # Accessibility hint for button that closes the help that
-# appears when you start a new observation for the first time
-Closes-new-observation-explanation = Closes new observation explanation.
-Closes-new-observation-options = Closes new observation options.
 Closes-withdraw-id-sheet = Closes "Withdraw ID" sheet
 # Heading for a section that describes people and organizations that
 # collaborate with iNaturalist
@@ -274,7 +271,7 @@ Couldnt-create-comment = Couldn't create comment
 Couldnt-create-identification-error = Couldn't create identification { $error }
 Couldnt-create-identification-unknown-error = Couldn't create identification, unknown error.
 CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
-Create-an-observation-evidence = Create an observation with no evidence
+Create-observation-with-no-evidence = Create observation with no evidence
 DATA-QUALITY = DATA QUALITY
 DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
 # Label for button that navigates users to the data quality screen
@@ -560,9 +557,8 @@ Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
 I-agree-to-the-Terms-of-Use = <0>I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (</0><1>required</1><0>).</0>
 Iconic-taxon-name = Iconic taxon name: { $iconicTaxon }
+ID-in-Camera = ID in Camera
 ID-Suggestions = ID Suggestions
-# Short for: Identify with AI. Label for a button that will load identifications for a given photo/sound
-ID-WITH-AI = ID WITH AI
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 IDENTIFICATION = IDENTIFICATION
@@ -575,7 +571,8 @@ IDENTIFICATIONS-WITHOUT-NUMBER =
     }
 Identifiers = Identifiers
 Identifiers-View = Identifiers View
-Identify-an-organism = Identify an organism
+# Short for: Identify with AI. Label for a button that will load identifications for a given photo/sound
+IDENTIFY = IDENTIFY
 # Title of screen asking for permission to access the camera
 Identify-organisms-in-real-time-with-your-camera = Identify organisms in real time with your camera
 # Onboarding slides
@@ -754,6 +751,9 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+Navigates-to-log-in-screen = Navigates to log in screen
+# Accessibility hint for the main menu bottom tab
+Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-match-screen = Navigates to match screen
 Navigates-to-notifications = Navigates to notifications
 Navigates-to-observation-details = Navigates to observation details screen
@@ -889,7 +889,6 @@ Opens-AI-camera = Opens AI camera.
 # Accessibility hint for a button that opens a form for editing a comment
 Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
-Opens-the-side-drawer-menu = Opens the side drawer menu.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
@@ -1144,7 +1143,6 @@ Show-observation-options = Show observation options.
 Showing-offline-search-results--taxa = Showing offline search results. To search for more species, try again when connected to the Internet.
 # Label for button that shows identification suggestions
 Shows-identification-suggestions = Shows identification suggestions
-Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
 # Accessibility hint for button that shows observation creation options
 Shows-observation-creation-options = Shows observation creation options
 # Accessibility label for a button that allows user to sign in with their Apple account
@@ -1210,8 +1208,8 @@ Switches-to-tab = Switches to { $tab } tab.
 Sync-observations = Sync observations
 Syncing = Syncing...
 # Help text for the button that opens the multi-capture camera
-Take-multiple-photos-of-a-single-organism = Take multiple photos of a single organism
 Take-photo = Take photo
+Take-photos = Take photos
 # label in project requirements
 Taxa = Taxa
 TAXON = TAXON
@@ -1279,7 +1277,7 @@ Unreviewed-observations-only = Unreviewed observations only
 Upload-Complete = Upload Complete
 Upload-in-progress = Upload in progress
 UPLOAD-NOW = UPLOAD NOW
-Upload-photos-from-your-photo-library = Upload multiple photos from your photo library
+Upload-photos = Upload photos
 Upload-Progress = Upload { $uploadProgress } percent complete
 UPLOAD-TO-INATURALIST = UPLOAD TO INATURALIST
 # Shows the number of observations a user can upload to iNat from my observations page
@@ -1301,7 +1299,6 @@ Uploading-x-of-y-observations =
        *[other] Uploading { $currentUploadCount } of { $total } observations
     }
 Use-iNaturalist-to-identify-any-living-thing = Use iNaturalist to identify any living thing
-Use-iNaturalists-AI-Camera = Use iNaturalist's AI Camera to identify organisms in real time
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = USE LOCATION
 Use-the-devices-other-camera = Use the device's other camera.

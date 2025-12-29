@@ -6,7 +6,7 @@ import QueueItem from "realmModels/QueueItem";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
-  useAuthenticatedMutation
+  useAuthenticatedMutation,
 } from "sharedHooks";
 
 const logger = log.extend( "useWorkQueue" );
@@ -36,7 +36,7 @@ const useWorkQueue = ( ) => {
 
         const apiToken = await getJWT( );
         const options = {
-          api_token: apiToken
+          api_token: apiToken,
         };
         const updatedUser = await fetchUserMe( { }, options );
         // logger.info( `Received updated user data from API: ${JSON.stringify( updatedUser )}` );
@@ -58,13 +58,14 @@ const useWorkQueue = ( ) => {
         // logger.info( "Marking queue item as failed" );
         QueueItem.markAsFailed( realm, dequeuedItemId );
         setDequeuedItemId( null );
-      }
-    }
+      },
+    },
   );
 
   useEffect( ( ) => {
     if ( realm === null || realm.isClosed ) {
-      return;
+      // Satisfy the useEffect return type by returning a destructor function.
+      return () => {};
     }
     const queuedItems = realm.objects( "QueueItem" );
     // logger.info( `Initial queue size: ${queuedItems?.length}` );
@@ -99,7 +100,6 @@ const useWorkQueue = ( ) => {
         }
       }
     } );
-    // eslint-disable-next-line consistent-return
     return ( ) => {
       // logger.info( "Removing queue listeners" );
       // remember to remove listeners to avoid async updates

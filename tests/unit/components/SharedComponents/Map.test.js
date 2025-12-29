@@ -12,8 +12,8 @@ jest.mock( "sharedHooks/useLocationPermission", () => ( {
   default: ( ) => ( {
     hasPermissions: true,
     renderPermissionsGate: jest.fn(),
-    requestPermissions: jest.fn()
-  } )
+    requestPermissions: jest.fn(),
+  } ),
 } ) );
 
 describe( "Map", ( ) => {
@@ -28,7 +28,7 @@ describe( "Map", ( ) => {
       <Map
         withPressableObsTiles
         tileMapParams={{ taxon_id: taxonId }}
-      />
+      />,
     );
     const tiles = await screen.findByTestId( "Map.UrlTile" );
     const { urlTemplate } = tiles.props;
@@ -42,9 +42,9 @@ describe( "Map", ( ) => {
         showLocationIndicator
         observation={{
           latitude: Number( faker.location.latitude( ) ),
-          longitude: Number( faker.location.longitude( ) )
+          longitude: Number( faker.location.longitude( ) ),
         }}
-      />
+      />,
     );
     const testId = "Map.LocationIndicator";
     expect( screen.getByTestId( testId ) ).toBeTruthy();

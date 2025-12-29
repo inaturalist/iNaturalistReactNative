@@ -6,7 +6,7 @@ import { fetchSpeciesCounts, searchObservations } from "api/observations";
 import fetchPlace from "api/places";
 import {
   fetchMembership,
-  fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject
+  fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject,
 } from "api/projects";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
@@ -37,9 +37,9 @@ const ProjectDetailsContainer = ( ): Node => {
         header_image_url: true,
         project_type: true,
         description: true,
-        current_user_is_member: true
-      }
-    }, optsWithAuth )
+        current_user_is_member: true,
+      },
+    }, optsWithAuth ),
   );
 
   const fetchProjectPlaceQueryKey = ["projectPlace", "fetchPlace", project?.place_id];
@@ -47,8 +47,8 @@ const ProjectDetailsContainer = ( ): Node => {
   const { data: projectPlace } = useAuthenticatedQuery(
     fetchProjectPlaceQueryKey,
     optsWithAuth => fetchPlace( project?.place_id, {
-      fields: "all"
-    }, optsWithAuth )
+      fields: "all",
+    }, optsWithAuth ),
   );
 
   const { data: projectMembers } = useAuthenticatedQuery(
@@ -57,23 +57,23 @@ const ProjectDetailsContainer = ( ): Node => {
       id,
       order_by: "login",
       fields: {
-        user: User.LIMITED_FIELDS
-      }
-    }, optsWithAuth )
+        user: User.LIMITED_FIELDS,
+      },
+    }, optsWithAuth ),
   );
 
   const { data: projectPosts } = useAuthenticatedQuery(
     ["fetchProjectPosts", id],
     optsWithAuth => fetchProjectPosts( {
-      id
-    }, optsWithAuth )
+      id,
+    }, optsWithAuth ),
   );
 
   const { data: projectStats } = useAuthenticatedQuery(
     ["searchObservations", id],
     ( ) => searchObservations( {
-      project_id: id
-    } )
+      project_id: id,
+    } ),
   );
 
   const { data: usersObservations } = useAuthenticatedQuery(
@@ -82,31 +82,31 @@ const ProjectDetailsContainer = ( ): Node => {
       {
         project_id: id,
         user_id: currentUser?.id,
-        per_page: 0
+        per_page: 0,
       },
-      optsWithAuth
+      optsWithAuth,
     ),
     {
-      enabled: !!currentUser
-    }
+      enabled: !!currentUser,
+    },
   );
 
   const { data: speciesCounts } = useAuthenticatedQuery(
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
-      project_id: id
-    } )
+      project_id: id,
+    } ),
   );
 
   const membershipQueryKey = ["fetchMembership", id];
   const { data: currentMembership } = useAuthenticatedQuery(
     membershipQueryKey,
     optsWithAuth => fetchMembership( {
-      id
+      id,
     }, optsWithAuth ),
     {
-      enabled: !!( currentUser )
-    }
+      enabled: !!( currentUser ),
+    },
   );
 
   const queryClient = useQueryClient( );
@@ -120,8 +120,8 @@ const ProjectDetailsContainer = ( ): Node => {
       onError: error => {
         logger.error( "could not join project: ", project.id, error );
       },
-      onSettled: ( ) => setLoading( false )
-    }
+      onSettled: ( ) => setLoading( false ),
+    },
   );
 
   const createLeaveProjectMutation = useAuthenticatedMutation(
@@ -133,8 +133,8 @@ const ProjectDetailsContainer = ( ): Node => {
       onError: error => {
         logger.error( "could not leave project: ", project.id, error );
       },
-      onSettled: ( ) => setLoading( false )
-    }
+      onSettled: ( ) => setLoading( false ),
+    },
   );
 
   const handleJoinProjectPress = ( ) => {
@@ -146,8 +146,8 @@ const ProjectDetailsContainer = ( ): Node => {
         screen: "Login",
         params: {
           prevScreen: "ProjectDetails",
-          projectId: project.id
-        }
+          projectId: project.id,
+        },
       } );
     }
   };
@@ -163,7 +163,7 @@ const ProjectDetailsContainer = ( ): Node => {
       species_count: speciesCounts?.total_results,
       current_user_is_member: currentMembership === 1,
       current_user_observations_count: usersObservations?.total_results,
-      place: projectPlace
+      place: projectPlace,
     };
   }, [
     project,
@@ -173,7 +173,7 @@ const ProjectDetailsContainer = ( ): Node => {
     speciesCounts?.total_results,
     currentMembership,
     usersObservations?.total_results,
-    projectPlace
+    projectPlace,
   ] );
 
   return (

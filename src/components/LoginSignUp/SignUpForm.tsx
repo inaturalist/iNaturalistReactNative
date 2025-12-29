@@ -3,7 +3,8 @@ import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useEffect, useRef, useState } from "react";
-import { TextInput, TouchableWithoutFeedback } from "react-native";
+import type { TextInput } from "react-native";
+import { TouchableWithoutFeedback } from "react-native";
 
 import { emailAvailable } from "./AuthenticationService";
 import Error from "./Error";
@@ -41,8 +42,8 @@ const SignUpForm = ( ) => {
     if ( isAvailable ) {
       navigation.navigate( "SignUpConfirmation", {
         user: {
-          email
-        }
+          email,
+        },
       } );
     } else {
       setError( t( "That-email-is-already-associated-with-an-account" ) );

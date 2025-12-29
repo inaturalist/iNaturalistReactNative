@@ -3,7 +3,7 @@ import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useRef, useState } from "react";
-import { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
+import type { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 import colors from "styles/tailwindColors";
 
 interface ButtonProps {
@@ -15,7 +15,7 @@ interface ButtonProps {
   disabled?: boolean;
   forceDark?: boolean;
   icon?: string;
-  iconPosition?: string,
+  iconPosition?: string;
   level?: string;
   loading?: boolean;
   onPress: ( _event?: GestureResponderEvent ) => void;
@@ -33,7 +33,7 @@ const setStyles = ( {
   forceDark,
   isFocus,
   isPrimary,
-  isWarning
+  isWarning,
 }: {
   className?: string;
   disabled?: boolean;
@@ -51,13 +51,13 @@ const setStyles = ( {
     "px-[10px]",
     "py-[13px]",
     "rounded-lg",
-    tailwindFontBold
+    tailwindFontBold,
   ];
   const textClasses = [
     "text-center",
     disabled
       ? "text-white/50"
-      : "text-white"
+      : "text-white",
   ];
 
   if ( className ) {
@@ -139,7 +139,7 @@ const setStyles = ( {
 // };
 
 const activityIndicatorColor = ( {
-  isPrimary, isWarning, isFocus
+  isPrimary, isWarning, isFocus,
 }: {
   isPrimary: boolean;
   isWarning: boolean;
@@ -176,7 +176,7 @@ const Button = ( {
   dropdown,
   maxFontSizeMultiplier = 1.5,
   debounceTime = 300,
-  preventMultipleTaps = true
+  preventMultipleTaps = true,
 }: ButtonProps ) => {
   const [isProcessing, setIsProcessing] = useState( false );
   const onPressRef = useRef( onPress );
@@ -193,7 +193,7 @@ const Button = ( {
     forceDark,
     isFocus,
     isPrimary,
-    isWarning
+    isWarning,
   } );
   // Dark mode styles can be set with this function, but is scheduled to be worked on post-MVP
   // setDarkStyles( {
@@ -241,7 +241,7 @@ const Button = ( {
           className="mr-3 absolute right-0"
           color={!isNeutral
             ? activityIndicatorColor( {
-              isPrimary, isWarning, isFocus
+              isPrimary, isWarning, isFocus,
             } )
             : undefined}
         />

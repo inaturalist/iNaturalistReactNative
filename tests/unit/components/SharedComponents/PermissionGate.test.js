@@ -10,7 +10,7 @@ describe( "PermissionGate", ( ) => {
         requestPermission={jest.fn( )}
         grantStatus={null}
         onClose={jest.fn( )}
-      />
+      />,
     );
     expect( screen.getByText( "GRANT PERMISSION" ) ).toBeTruthy( );
   } );
@@ -21,7 +21,7 @@ describe( "PermissionGate", ( ) => {
         requestPermission={jest.fn( )}
         grantStatus={RESULTS.DENIED}
         onClose={jest.fn( )}
-      />
+      />,
     );
     expect( screen.getByText( "GRANT PERMISSION" ) ).toBeTruthy( );
   } );
@@ -32,7 +32,7 @@ describe( "PermissionGate", ( ) => {
         requestPermission={jest.fn( )}
         grantStatus={RESULTS.BLOCKED}
         onClose={jest.fn( )}
-      />
+      />,
     );
     expect( screen.getByText( "OPEN SETTINGS" ) ).toBeTruthy( );
   } );
@@ -43,7 +43,7 @@ describe( "PermissionGate", ( ) => {
         requestPermission={jest.fn( )}
         grantStatus={RESULTS.BLOCKED}
         onClose={jest.fn( )}
-      />
+      />,
     );
     expect( screen.getByText( /You’ve denied permission/ ) ).toBeTruthy( );
   } );

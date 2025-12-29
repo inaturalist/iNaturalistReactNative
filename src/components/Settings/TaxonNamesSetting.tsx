@@ -1,17 +1,18 @@
 import {
   Body2,
   Heading4,
-  RadioButtonRow
+  RadioButtonRow,
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback } from "react";
 import {
-  View
+  View,
 } from "react-native";
-import User, { TaxonNamesSettings } from "realmModels/User";
+import type { TaxonNamesSettings } from "realmModels/User";
+import User from "realmModels/User";
 import {
   useCurrentUser,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 const { useRealm } = RealmContext;

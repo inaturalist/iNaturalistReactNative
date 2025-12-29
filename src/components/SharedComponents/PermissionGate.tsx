@@ -5,25 +5,26 @@ import {
   Heading2,
   INatIcon,
   INatIconButton,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import {
   ImageBackground,
-  View
+  View,
 } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useState } from "react";
 import {
   Linking,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { PermissionStatus, RESULTS } from "react-native-permissions";
+import type { PermissionStatus } from "react-native-permissions";
+import { RESULTS } from "react-native-permissions";
 import colors from "styles/tailwindColors";
 
 const BACKGROUND_IMAGE_STYLE = {
   opacity: 0.33,
-  backgroundColor: "black"
+  backgroundColor: "black",
 } as const;
 
 const isTablet = DeviceInfo.isTablet();
@@ -54,7 +55,7 @@ const PermissionGate = ( {
   buttonText = t( "GRANT-PERMISSION" ),
   image = require( "images/background/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
   onClose,
-  testID
+  testID,
 }: Props ) => {
   const [isLargeFontScale, setIsLargeFontScale] = useState( false );
 
@@ -73,7 +74,7 @@ const PermissionGate = ( {
         className={classnames(
           "w-full",
           "h-full",
-          "items-center"
+          "items-center",
         )}
       >
         <INatIconButton
@@ -94,7 +95,7 @@ const PermissionGate = ( {
               ? "justify-center"
               : "justify-end",
             "p-5",
-            "items-center"
+            "items-center",
           )}
         >
           { icon && (
@@ -118,7 +119,7 @@ const PermissionGate = ( {
                 "text-center text-white",
                 isLargeFontScale
                   ? "mt-0"
-                  : "mt-5"
+                  : "mt-5",
               )}
               maxFontSizeMultiplier={1.3}
             >

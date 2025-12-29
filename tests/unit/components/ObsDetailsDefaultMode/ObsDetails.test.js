@@ -20,9 +20,9 @@ const mockObservation = factory( "LocalObservation", {
         id: faker.number.int( ),
         attribution: faker.lorem.sentence( ),
         licenseCode: "cc-by-nc",
-        url: faker.image.url( )
-      }
-    } )
+        url: faker.image.url( ),
+      },
+    } ),
   ],
   taxon: factory( "LocalTaxon", {
     name: faker.person.firstName( ),
@@ -33,15 +33,15 @@ const mockObservation = factory( "LocalObservation", {
       id: faker.number.int( ),
       attribution: faker.lorem.sentence( ),
       licenseCode: "cc-by-nc",
-      url: faker.image.url( )
-    }
+      url: faker.image.url( ),
+    },
   } ),
   user: factory( "LocalUser", {
     login: faker.internet.userName( ),
     iconUrl: faker.image.url( ),
-    locale: "en"
+    locale: "en",
   } ),
-  identifications: []
+  identifications: [],
 } );
 const mockNoEvidenceObservation = factory( "LocalObservation", {
   _created_at: faker.date.past( ),
@@ -56,40 +56,40 @@ const mockNoEvidenceObservation = factory( "LocalObservation", {
       id: faker.number.int( ),
       attribution: faker.lorem.sentence( ),
       licenseCode: "cc-by-nc",
-      url: faker.image.url( )
-    }
+      url: faker.image.url( ),
+    },
   } ),
   user: factory( "LocalUser", {
     login: faker.internet.userName( ),
     iconUrl: faker.image.url( ),
-    locale: "en"
+    locale: "en",
   } ),
-  identifications: []
+  identifications: [],
 } );
 mockNoEvidenceObservation.observationPhotos = [];
 mockNoEvidenceObservation.observationSounds = [];
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
   iconUrl: faker.image.url( ),
-  id: "1234"
+  id: "1234",
 } );
 
 jest.mock( "sharedHooks/useLocalObservation", () => ( {
   __esModule: true,
   default: jest.fn( () => ( {
-    localObservation: null
-  } ) )
+    localObservation: null,
+  } ) ),
 } ) );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: () => mockUser
+  default: () => mockUser,
 } ) );
 
 const mockNavigate = jest.fn();
 
 useRoute.mockImplementation( ( ) => ( {
-  params: { uuid: mockObservation.uuid }
+  params: { uuid: mockObservation.uuid },
 } ) );
 
 jest.mock( "@react-navigation/native", () => {
@@ -101,35 +101,59 @@ jest.mock( "@react-navigation/native", () => {
       navigate: mockNavigate,
       addListener: jest.fn(),
       setOptions: jest.fn(),
-      canGoBack: jest.fn()
-    } )
+      canGoBack: jest.fn(),
+    } ),
   };
 } );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: jest.fn( () => ( {
-    data: mockObservation
-  } ) )
+    data: mockObservation,
+  } ) ),
 } ) );
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
   default: ( ) => ( {
-    mutate: mockMutate
-  } )
+    mutate: mockMutate,
+  } ),
 } ) );
 
 jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
   __esModule: true,
   default: jest.fn( () => ( {
-    refetch: jest.fn()
-  } ) )
+    refetch: jest.fn(),
+  } ) ),
 } ) );
 
-const renderObsDetails = ( ) => renderComponent(
-  <ObsDetailsContainer />
+const mockRefetchRemoteObservation = jest.fn();
+const mockMarkViewedLocally = jest.fn();
+const mockMarkDeletedLocally = jest.fn();
+const mockSetRemoteObsWasDeleted = jest.fn();
+
+const defaultProps = {
+  belongsToCurrentUser: false,
+  currentUser: mockUser,
+  fetchRemoteObservationError: null,
+  isConnected: true,
+  isRefetching: false,
+  isSimpleMode: false,
+  localObservation: null,
+  markDeletedLocally: mockMarkDeletedLocally,
+  markViewedLocally: mockMarkViewedLocally,
+  observation: mockObservation,
+  refetchRemoteObservation: mockRefetchRemoteObservation,
+  remoteObservation: mockObservation,
+  remoteObsWasDeleted: false,
+  setRemoteObsWasDeleted: mockSetRemoteObsWasDeleted,
+  targetActivityItemID: null,
+  uuid: mockObservation.uuid,
+};
+
+const renderObsDetails = ( props = {} ) => renderComponent(
+  <ObsDetailsContainer {...defaultProps} {...props} />,
 );
 
 describe( "ObsDetails", () => {
@@ -151,12 +175,16 @@ describe( "ObsDetails", () => {
   describe( "Observation with no evidence", () => {
     beforeEach( () => {
       useAuthenticatedQuery.mockReturnValue( {
-        data: mockNoEvidenceObservation
+        data: mockNoEvidenceObservation,
       } );
     } );
 
     it( "should render fallback image icon instead of photos", async () => {
-      renderObsDetails( );
+      renderObsDetails( {
+        observation: mockNoEvidenceObservation,
+        remoteObservation: mockNoEvidenceObservation,
+        uuid: mockNoEvidenceObservation.uuid,
+      } );
 
       const labelText = t( "Observation-has-no-photos-and-no-sounds" );
       const fallbackImage = await screen.findByLabelText( labelText );
@@ -165,7 +193,7 @@ describe( "ObsDetails", () => {
 
     afterEach( () => {
       useAuthenticatedQuery.mockReturnValue( {
-        data: mockObservation
+        data: mockObservation,
       } );
     } );
   } );
@@ -176,27 +204,33 @@ describe( "ObsDetails", () => {
         taxon: factory( "RemoteTaxon", {
           preferred_common_name: "Red Fox",
           name: "Vulpes vulpes",
-          is_active: true
+          is_active: true,
         } ),
-        user: factory( "RemoteUser" )
+        user: factory( "RemoteUser" ),
       } );
       const otherUserObservation = mockObservation;
       otherUserObservation.identifications = [
-        firstIdentification
+        firstIdentification,
       ];
 
       jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
-        localObservation: null
+        localObservation: null,
       } ) );
 
       useAuthenticatedQuery.mockReturnValue( {
-        data: otherUserObservation
+        data: otherUserObservation,
       } );
 
       jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockUser );
-      renderObsDetails( );
+      renderObsDetails( {
+        observation: otherUserObservation,
+        remoteObservation: otherUserObservation,
+        uuid: otherUserObservation.uuid,
+        belongsToCurrentUser: false,
+        localObservation: null,
+      } );
       const agreeButton = screen.getByTestId(
-        `ActivityItem.AgreeIdButton.${firstIdentification.taxon.id}`
+        `ActivityItem.AgreeIdButton.${firstIdentification.taxon.id}`,
       );
       expect( agreeButton ).toBeTruthy( );
       fireEvent.press( agreeButton );
@@ -206,8 +240,8 @@ describe( "ObsDetails", () => {
       expect( mockMutate ).toHaveBeenCalledWith( {
         identification: {
           observation_id: otherUserObservation.uuid,
-          taxon_id: firstIdentification.taxon.id
-        }
+          taxon_id: firstIdentification.taxon.id,
+        },
       } );
     } );
   } );

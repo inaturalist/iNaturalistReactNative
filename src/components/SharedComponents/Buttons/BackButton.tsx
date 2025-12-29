@@ -2,11 +2,12 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "components/styledComponents";
 import React from "react";
+import type { ImageStyle, StyleProp } from "react-native";
 import {
-  I18nManager, ImageStyle, Platform, StyleProp
+  I18nManager, Platform,
 } from "react-native";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -26,20 +27,20 @@ const REACT_NAVIGATION_BACK_BUTTON_STYLES = {
       ios: {
         padding: 10,
         paddingLeft: 8,
-        paddingRight: 22
+        paddingRight: 22,
       },
       default: {
         paddingVertical: 3,
-        paddingHorizontal: 11
-      }
-    } )
+        paddingHorizontal: 11,
+      },
+    } ),
   },
   icon: Platform.select( {
     ios: {
       height: 21,
-      width: 13
-    }
-  } )
+      width: 13,
+    },
+  } ),
 };
 
 const BackButton = ( {
@@ -47,7 +48,7 @@ const BackButton = ( {
   onPress,
   inCustomHeader,
   customStyles,
-  testID = "BackButton"
+  testID = "BackButton",
 }: Props ) => {
   const { isRTL } = I18nManager;
   const navigation = useNavigation();
@@ -59,7 +60,7 @@ const BackButton = ( {
     !inCustomHeader && REACT_NAVIGATION_BACK_BUTTON_STYLES.icon,
     Boolean( tintColor ) && { tintColor },
     customStyles,
-    isRTL && { transform: [{ rotateY: "180deg" }] }
+    isRTL && { transform: [{ rotateY: "180deg" }] },
   ];
 
   const backImage = ( ) => (

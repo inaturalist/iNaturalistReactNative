@@ -1,19 +1,19 @@
 // @flow
 import {
   faveObservation,
-  unfaveObservation
+  unfaveObservation,
 } from "api/observations";
 import classNames from "classnames";
 import {
   ActivityIndicator,
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { Alert } from "react-native";
 import {
   useAuthenticatedMutation,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -28,7 +28,7 @@ const FaveButton = ( {
   observation,
   currentUser,
   afterToggleFave = ( ) => undefined,
-  top = false
+  top = false,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const uuid = observation?.uuid;
@@ -45,7 +45,7 @@ const FaveButton = ( {
     return null;
   }, [
     currentUser,
-    observation
+    observation,
   ] );
 
   const [isFaved, setIsFaved] = useState( observationFaved || false );
@@ -59,7 +59,7 @@ const FaveButton = ( {
       t( "Error-title" ),
       msg,
       [{ text: t( "OK" ) }],
-      { cancelable: true }
+      { cancelable: true },
     );
   };
 
@@ -74,8 +74,8 @@ const FaveButton = ( {
         showErrorAlert( error );
         setIsFaved( true );
         setLoading( false );
-      }
-    }
+      },
+    },
   );
 
   const createFaveMutation = useAuthenticatedMutation(
@@ -89,8 +89,8 @@ const FaveButton = ( {
         showErrorAlert( error );
         setIsFaved( false );
         setLoading( false );
-      }
-    }
+      },
+    },
   );
 
   const toggleFave = useCallback( ( ) => {
@@ -108,7 +108,7 @@ const FaveButton = ( {
     createFaveMutation,
     createUnfaveMutation,
     isFaved,
-    uuid
+    uuid,
   ] );
 
   if ( !observation ) {
@@ -119,7 +119,7 @@ const FaveButton = ( {
     return (
       <ActivityIndicator
         className={classNames( "absolute bottom-5 right-5", {
-          "top-0": top
+          "top-0": top,
         } )}
         size={25}
       />
@@ -135,7 +135,7 @@ const FaveButton = ( {
       onPress={toggleFave}
       color={colors.white}
       className={classNames( "absolute bottom-3 right-3", {
-        "top-0": top
+        "top-0": top,
       } )}
       accessibilityLabel={isFaved
         ? t( "Remove-favorite" )

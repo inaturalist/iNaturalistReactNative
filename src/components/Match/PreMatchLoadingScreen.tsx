@@ -1,21 +1,23 @@
 import {
-  ActivityIndicator, Body1, INatIconButton
+  ActivityIndicator, Body1, INatIconButton,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useRef } from "react";
-import { Animated, ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
+import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 const fade = ( value: number ) => ( {
   toValue: value,
   duration: 100,
-  useNativeDriver: true
+  useNativeDriver: true,
 } );
 
 interface Props {
   isLoading: boolean;
-  onSkip: ( ) => void;
+  // TODO rm unused onSkip prop https://linear.app/inaturalist/issue/MOB-1068/remove-unused-onskip-prop
+  onSkip?: ( ) => void;
 }
 
 const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
@@ -26,7 +28,7 @@ const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
     if ( isLoading ) {
       Animated.sequence( [
         // fade screen out to partial opacity and don't fade back in for pre-match loading screen
-        Animated.timing( fadeAnimation, fade( 0.8 ) )
+        Animated.timing( fadeAnimation, fade( 0.8 ) ),
       ] ).start( );
     }
   }, [isLoading, fadeAnimation] );
@@ -37,14 +39,14 @@ const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
     width: "100%",
     backgroundColor: colors.black,
     opacity: fadeAnimation,
-    zIndex: 999
+    zIndex: 999,
   };
 
   const viewStyle: ViewStyle = {
     position: "absolute",
     height: "100%",
     width: "100%",
-    zIndex: 1000
+    zIndex: 1000,
   };
 
   if ( !isLoading ) {

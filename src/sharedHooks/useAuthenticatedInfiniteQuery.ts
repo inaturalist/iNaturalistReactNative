@@ -1,5 +1,6 @@
 import { useRoute } from "@react-navigation/native";
-import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions } from "@tanstack/react-query";
+import type { QueryKey, UseInfiniteQueryOptions } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import i18n from "i18next";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
@@ -11,8 +12,8 @@ interface QueryFunctionOptions {
 }
 
 type QueryFunction<T> = ( params: {
-  pageParam: number,
-  locale?: string
+  pageParam: number;
+  locale?: string;
 }, options: QueryFunctionOptions ) => Promise<T>;
 
 type QueryOptions<TQueryFnData, TData> = Omit<UseInfiniteQueryOptions<
@@ -31,7 +32,7 @@ type QueryOptions<TQueryFnData, TData> = Omit<UseInfiniteQueryOptions<
 const useAuthenticatedInfiniteQuery = <TQueryFnData, TData>(
   queryKey: QueryKey,
   queryFunction: QueryFunction<TQueryFnData>,
-  queryOptions: QueryOptions<TQueryFnData, TData>
+  queryOptions: QueryOptions<TQueryFnData, TData>,
 ) => {
   const route = useRoute( );
   const currentUser = useCurrentUser( );
@@ -44,7 +45,7 @@ const useAuthenticatedInfiniteQuery = <TQueryFnData, TData>(
     queryFn: async ( { pageParam } ) => {
       const params = {
         pageParam,
-        ...( !currentUser && { locale } )
+        ...( !currentUser && { locale } ),
       };
       // logger.info( queryKey, "queryKey in useAuthenticatedInfiniteQuery" );
       // Note, getJWT() takes care of fetching a new token if the existing
@@ -52,17 +53,17 @@ const useAuthenticatedInfiniteQuery = <TQueryFnData, TData>(
       // fetching from RNSInfo becomes a performance issue
       const apiToken = await getJWT( queryOptions.allowAnonymousJWT );
       const options = {
-        api_token: apiToken
+        api_token: apiToken,
       };
       return queryFunction( params, options );
     },
     retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
       queryKey,
       routeName: route?.name,
-      routeParams: route?.params
+      routeParams: route?.params,
     } ),
     retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
-    ...queryOptions
+    ...queryOptions,
   } );
 };
 

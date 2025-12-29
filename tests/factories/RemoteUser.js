@@ -10,11 +10,11 @@ export default define( "RemoteUser", faker => ( {
   created_at: "2000-05-09T01:17:05-01:00",
   updated_at: "2000-05-09T01:17:05-01:00",
   site: {
-    name: faker.string.sample()
+    name: faker.string.sample(),
   },
   observations_count: faker.number.int(),
   species_count: faker.number.int(),
   identifications_count: faker.number.int(),
   journal_posts_count: faker.number.int(),
-  monthly_supporter: false
+  monthly_supporter: false,
 } ) );

@@ -10,7 +10,7 @@ class ObservationSound extends Realm.Object {
   static OBSERVATION_SOUNDS_FIELDS = {
     id: true,
     uuid: true,
-    sound: Sound.SOUND_FIELDS
+    sound: Sound.SOUND_FIELDS,
   };
 
   needsSync( ) {
@@ -24,7 +24,7 @@ class ObservationSound extends Realm.Object {
   static async new( observationSound ) {
     return {
       ...observationSound,
-      uuid: uuid.v4( )
+      uuid: uuid.v4( ),
     };
   }
 
@@ -32,7 +32,7 @@ class ObservationSound extends Realm.Object {
     const localObsSound = {
       ...observationSound,
       _synced_at: new Date( ),
-      sound: Sound.mapApiToRealm( observationSound.sound, realm )
+      sound: Sound.mapApiToRealm( observationSound.sound, realm ),
     };
     return localObsSound;
   }
@@ -47,8 +47,8 @@ class ObservationSound extends Realm.Object {
       file: new FileUpload( {
         uri: Sound.getLocalSoundUri( observationSound.sound.file_url ),
         name: `${observationSound.uuid}.${fileExt}`,
-        type: `audio/${fileExt}`
-      } )
+        type: `audio/${fileExt}`,
+      } ),
     };
   }
 
@@ -56,13 +56,13 @@ class ObservationSound extends Realm.Object {
     return {
       "observation_sound[observation_id]": id,
       "observation_sound[sound_id]": observationSound.id,
-      "observation_sound[uuid]": observationSound.uuid
+      "observation_sound[uuid]": observationSound.uuid,
     };
   }
 
   static mapObservationSoundForMyObsDefaultMode( obsSound ) {
     return {
-      uuid: obsSound?.uuid
+      uuid: obsSound?.uuid,
     };
   }
 
@@ -98,9 +98,9 @@ class ObservationSound extends Realm.Object {
       assignee: {
         type: "linkingObjects",
         objectType: "Observation",
-        property: "observationSounds"
-      }
-    }
+        property: "observationSounds",
+      },
+    },
   };
 }
 

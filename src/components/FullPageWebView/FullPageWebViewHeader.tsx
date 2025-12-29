@@ -1,4 +1,5 @@
-import { getHeaderTitle, HeaderTitleProps } from "@react-navigation/elements";
+import type { HeaderTitleProps } from "@react-navigation/elements";
+import { getHeaderTitle } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading4 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
@@ -22,17 +23,17 @@ interface Props {
 }
 
 const HEADER_STYLE = {
-  backgroundColor: "white"
+  backgroundColor: "white",
 } as const;
 
 const BACK_BUTTON_STYLE = {
   position: "relative",
-  start: 11
+  start: 11,
 } as const;
 
 const FullPageWebViewHeader = ( {
   route,
-  options
+  options,
 }: Props ) => {
   const insets = useSafeAreaInsets();
 
@@ -56,7 +57,7 @@ const FullPageWebViewHeader = ( {
         ...( options.headerShadowVisible && dropShadow ),
         paddingTop: insets.top,
         paddingLeft: insets.left,
-        paddingRight: insets.right
+        paddingRight: insets.right,
       }}
     >
       <View
@@ -66,7 +67,7 @@ const FullPageWebViewHeader = ( {
           "flex-row",
           "h-[78px]",
           "items-center",
-          "justify-between"
+          "justify-between",
         )}
       >
         <BackButton

@@ -1,22 +1,22 @@
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback } from "react";
+import type { ListRenderItemInfo } from "react-native";
 import { FlatList } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  before?: Node;
+  before?: React.ReactNode;
   chosen: string[];
-  onTaxonChosen: Function;
+  onTaxonChosen: ( taxon: string ) => void;
   testID?: string;
   withoutUnknown?: boolean;
 };
 
 const STYLESHEET = {
-  alignItems: "center"
+  alignItems: "center",
 } as const;
 
 const ICONIC_TAXA = [
@@ -33,7 +33,7 @@ const ICONIC_TAXA = [
   "actinopterygii",
   "chromista",
   "protozoa",
-  "unknown"
+  "unknown",
 ];
 
 const IconicTaxonChooser = ( {
@@ -41,13 +41,13 @@ const IconicTaxonChooser = ( {
   chosen = [],
   onTaxonChosen,
   testID,
-  withoutUnknown
-}: Props ): Node => {
+  withoutUnknown,
+}: Props ) => {
   const { t } = useTranslation( );
   const iconicTaxonIcons = withoutUnknown
     ? ICONIC_TAXA.filter( taxon => taxon !== "unknown" )
     : ICONIC_TAXA;
-  const renderIcon = useCallback( ( { item: iconicTaxonName } ) => {
+  const renderIcon = useCallback( ( { item: iconicTaxonName }: ListRenderItemInfo<string> ) => {
     const isSelected = chosen.indexOf( iconicTaxonName ) >= 0;
     return (
       <View
@@ -56,12 +56,12 @@ const IconicTaxonChooser = ( {
             "border-darkGray border border-[2px] mr-4 justify-center items-center",
             "h-[36px] w-[36px] rounded-full",
             {
-              "bg-darkGray": isSelected
-            }
+              "bg-darkGray": isSelected,
+            },
           )
         }
         accessibilityState={{
-          selected: isSelected
+          selected: isSelected,
         }}
         testID={`IconicTaxonButton.${iconicTaxonName}`}
       >
@@ -71,7 +71,9 @@ const IconicTaxonChooser = ( {
           onPress={( ) => {
             onTaxonChosen( iconicTaxonName );
           }}
-          color={isSelected && colors.white}
+          color={isSelected
+            ? colors.white
+            : undefined}
           accessibilityLabel={
             t( "Iconic-taxon-name", { iconicTaxon: iconicTaxonName } )
           }
@@ -85,7 +87,7 @@ const IconicTaxonChooser = ( {
   }, [
     chosen,
     onTaxonChosen,
-    t
+    t,
   ] );
 
   const renderHeader = useCallback( ( ) => {

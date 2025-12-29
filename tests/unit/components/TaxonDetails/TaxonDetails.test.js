@@ -1,6 +1,6 @@
 import { NavigationContainer, useNavigationState, useRoute } from "@react-navigation/native";
 import {
-  fireEvent, render, screen, waitFor
+  fireEvent, render, screen, waitFor,
 } from "@testing-library/react-native";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import INatPaperProvider from "providers/INatPaperProvider";
@@ -20,17 +20,17 @@ const mockTaxon = factory( "RemoteTaxon", {
   rank_level: 27,
   preferred_common_name: faker.person.fullName( ),
   default_photo: {
-    square_url: faker.image.url( )
+    square_url: faker.image.url( ),
   },
   ancestors: [{
     id: faker.number.int( ),
     preferred_common_name: faker.person.fullName( ),
     name: faker.person.fullName( ),
-    rank: "class"
+    rank: "class",
   }],
   taxonPhotos: [{
-    photo: factory( "RemotePhoto" )
-  }]
+    photo: factory( "RemotePhoto" ),
+  }],
 } );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -39,13 +39,13 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useRoute: jest.fn( ),
     useNavigation: jest.fn( ),
-    useNavigationState: jest.fn( )
+    useNavigationState: jest.fn( ),
   };
 } );
 
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
-  icon_url: faker.image.url( )
+  icon_url: faker.image.url( ),
 } );
 
 const exploreRoute = { name: "Explore" };
@@ -57,12 +57,12 @@ const taxonSearchRoute = { name: "TaxonSearch" };
 const obsDetailsRoute = {
   name: "ObsDetails",
   params: {
-    uuid: faker.string.uuid( )
-  }
+    uuid: faker.string.uuid( ),
+  },
 };
 const aiCameraRoute = {
   name: "Camera",
-  params: { camera: "AI" }
+  params: { camera: "AI" },
 };
 
 const renderTaxonDetails = ( ) => render(
@@ -70,7 +70,7 @@ const renderTaxonDetails = ( ) => render(
     <NavigationContainer>
       <TaxonDetails />
     </NavigationContainer>
-  </INatPaperProvider>
+  </INatPaperProvider>,
 );
 
 jest.mock(
@@ -80,9 +80,9 @@ jest.mock(
     default: jest.fn( ( ) => ( {
       data: null,
       isLoading: false,
-      isError: false
-    } ) )
-  } )
+      isError: false,
+    } ) ),
+  } ),
 );
 
 jest.mock(
@@ -90,14 +90,14 @@ jest.mock(
   ( ) => ( {
     __esModule: true,
     default: jest.fn( ( ) => ( {
-      data: null
-    } ) )
-  } )
+      data: null,
+    } ) ),
+  } ),
 );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: ( ) => null
+  default: ( ) => null,
 } ) );
 
 describe( "TaxonDetails", ( ) => {
@@ -110,10 +110,10 @@ describe( "TaxonDetails", ( ) => {
     useAuthenticatedQuery.mockImplementation( ( ) => ( {
       data: mockTaxon,
       isLoading: false,
-      isError: false
+      isError: false,
     } ) );
     useRoute.mockImplementation( ( ) => ( {
-      params: { id: mockTaxon.id }
+      params: { id: mockTaxon.id },
     } ) );
   } );
 
@@ -141,7 +141,7 @@ describe( "TaxonDetails", ( ) => {
   describe( "select button", ( ) => {
     beforeAll( ( ) => {
       useRoute.mockImplementation( ( ) => ( {
-        params: { id: mockTaxon.id }
+        params: { id: mockTaxon.id },
       } ) );
       jest.useFakeTimers( );
     } );
@@ -168,7 +168,7 @@ describe( "TaxonDetails", ( ) => {
           exploreRoute,
           obsDetailsRoute,
           suggestionsRoute,
-          taxonDetailsRoute
+          taxonDetailsRoute,
         ] );
       } );
 
@@ -236,17 +236,17 @@ describe( "TaxonDetails", ( ) => {
   describe( "for taxon with Wikipedia content", ( ) => {
     const mockTaxonWithWikipedia = factory( "RemoteTaxon", {
       wikipedia_summary: faker.lorem.paragraph( ),
-      wikipedia_url: faker.internet.url( )
+      wikipedia_url: faker.internet.url( ),
     } );
 
     beforeEach( ( ) => {
       useAuthenticatedQuery.mockImplementation( ( ) => ( {
         data: mockTaxonWithWikipedia,
         isLoading: false,
-        isError: false
+        isError: false,
       } ) );
       useRoute.mockImplementation( ( ) => ( {
-        params: { id: mockTaxonWithWikipedia.id }
+        params: { id: mockTaxonWithWikipedia.id },
       } ) );
     } );
 

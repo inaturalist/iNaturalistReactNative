@@ -14,7 +14,7 @@ import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 const GroupPhotosContainer = ( ): Node => {
   const navigation = useNavigation( );
   const {
-    screenAfterPhotoEvidence, isDefaultMode
+    screenAfterPhotoEvidence, isDefaultMode,
   } = useLayoutPrefs( );
   const setObservations = useStore( state => state.setObservations );
   const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
@@ -31,8 +31,8 @@ const GroupPhotosContainer = ( ): Node => {
       headerTitle: t( "Group-Photos" ),
       headerSubtitle: t( "X-PHOTOS-X-OBSERVATIONS", {
         photoCount: totalPhotos,
-        observationCount: groupedPhotos.length
-      } )
+        observationCount: groupedPhotos.length,
+      } ),
     } );
   }, [totalPhotos, groupedPhotos, navigation] );
 
@@ -68,7 +68,7 @@ const GroupPhotosContainer = ( ): Node => {
         newObsList.push( newObs );
       } else {
         const filteredPhotos = obsPhotos.filter(
-          item => !orderedPhotos.includes( item )
+          item => !orderedPhotos.includes( item ),
         );
         if ( filteredPhotos.length > 0 ) {
           newObsList.push( { photos: filteredPhotos } );
@@ -122,7 +122,7 @@ const GroupPhotosContainer = ( ): Node => {
     groupedPhotos.forEach( obs => {
       const obsPhotos = obs.photos;
       const filteredGroupedPhotos = obsPhotos.filter(
-        item => !orderedPhotos.includes( item )
+        item => !orderedPhotos.includes( item ),
       );
       if ( filteredGroupedPhotos.length > 0 ) {
         removedFromGroup.push( { photos: filteredGroupedPhotos } );
@@ -137,7 +137,7 @@ const GroupPhotosContainer = ( ): Node => {
   const navBasedOnUserSettings = async ( ) => {
     setIsCreatingObservations( true );
     const newObservations = await Promise.all( groupedPhotos.map(
-      ( { photos } ) => Observation.createObservationWithPhotos( photos )
+      ( { photos } ) => Observation.createObservationWithPhotos( photos ),
     ) );
     // If there are default attributes for new observations, assign them
     setObservations( newObservations.map( ( newObs, idx ) => ( {
@@ -145,7 +145,7 @@ const GroupPhotosContainer = ( ): Node => {
         ? firstObservationDefaults
         : {}
       ),
-      ...newObs
+      ...newObs,
     } ) ) );
     setIsCreatingObservations( false );
     if ( newObservations.length === 1 ) {
@@ -154,8 +154,8 @@ const GroupPhotosContainer = ( ): Node => {
           screen: "Match",
           params: {
             entryScreen: "GroupPhotos",
-            lastScreen: "GroupPhotos"
-          }
+            lastScreen: "GroupPhotos",
+          },
         } );
       }
 
@@ -164,8 +164,8 @@ const GroupPhotosContainer = ( ): Node => {
         screen: screenAfterPhotoEvidence,
         params: {
           entryScreen: "GroupPhotos",
-          lastScreen: "GroupPhotos"
-        }
+          lastScreen: "GroupPhotos",
+        },
       } );
     }
     return navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );

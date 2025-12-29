@@ -5,5 +5,5 @@ export default define( "RemotePhoto", faker => ( {
   attribution: "(c) username, some rights reserved (CC BY-NC)",
   license_code: "cc-by-nc",
   url: faker.image.url( ),
-  uuid: faker.string.uuid( )
+  uuid: faker.string.uuid( ),
 } ) );

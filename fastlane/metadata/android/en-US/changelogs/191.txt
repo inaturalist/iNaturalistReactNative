@@ -1,0 +1,8 @@
+UPDATED
+* Minor updates to AI camera
+* Remove gradient from grid items on Group Photos screen
+
+FIXED
+* Crash on Explore Filters while searching for users
+* An issue with loading on projects
+* Feedback modal cannot reopen after dismissal by swipe

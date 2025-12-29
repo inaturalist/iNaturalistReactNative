@@ -2,11 +2,11 @@ import {
   Body1,
   Button,
   Heading1,
-  Heading2
+  Heading2,
 } from "components/SharedComponents";
 import {
   SafeAreaView,
-  ScrollView
+  ScrollView,
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { ErrorInfo, PropsWithChildren } from "react";

@@ -9,7 +9,7 @@ import { renderComponent } from "tests/helpers/render";
 const mockUser = factory( "LocalUser", {
   id: 0,
   login: faker.internet.userName( ),
-  iconUrl: faker.image.url( )
+  iconUrl: faker.image.url( ),
 } );
 
 describe( "ActivityHeaderKebabMenu", () => {
@@ -19,9 +19,9 @@ describe( "ActivityHeaderKebabMenu", () => {
       user: mockUser,
       category: "Identification",
       taxon: factory( "LocalTaxon", {
-        name: "Miner's Lettuce"
+        name: "Miner's Lettuce",
       } ),
-      current: true
+      current: true,
     } );
     renderComponent(
       <ActivityHeader
@@ -33,7 +33,7 @@ describe( "ActivityHeaderKebabMenu", () => {
         deleteComment={jest.fn()}
         withdrawOrRestoreIdentification={jest.fn()}
         onItemFlagged={jest.fn()}
-      />
+      />,
     );
 
     expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
@@ -45,9 +45,9 @@ describe( "ActivityHeaderKebabMenu", () => {
       user: mockUser,
       category: "Identification",
       taxon: factory( "LocalTaxon", {
-        name: "Miner's Lettuce"
+        name: "Miner's Lettuce",
       } ),
-      current: true
+      current: true,
     } );
     renderComponent(
       <ActivityHeader
@@ -59,7 +59,7 @@ describe( "ActivityHeaderKebabMenu", () => {
         deleteComment={jest.fn()}
         withdrawOrRestoreIdentification={jest.fn()}
         onItemFlagged={jest.fn()}
-      />
+      />,
     );
 
     expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
@@ -73,9 +73,9 @@ describe( "ActivityHeaderKebabMenu", () => {
       user: mockUser,
       category: "Identification",
       taxon: factory( "LocalTaxon", {
-        name: "Miner's Lettuce"
+        name: "Miner's Lettuce",
       } ),
-      current: false
+      current: false,
     } );
     renderComponent(
       <ActivityHeader
@@ -87,7 +87,7 @@ describe( "ActivityHeaderKebabMenu", () => {
         deleteComment={jest.fn()}
         withdrawOrRestoreIdentification={jest.fn()}
         onItemFlagged={jest.fn()}
-      />
+      />,
     );
 
     expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
@@ -99,8 +99,8 @@ describe( "ActivityHeaderKebabMenu", () => {
     const mockId = factory( "LocalComment", {
       body: "hello",
       taxon: factory( "LocalTaxon", {
-        name: "Miner's Lettuce"
-      } )
+        name: "Miner's Lettuce",
+      } ),
     } );
     renderComponent(
       <ActivityHeader
@@ -112,7 +112,7 @@ describe( "ActivityHeaderKebabMenu", () => {
         deleteComment={jest.fn()}
         withdrawOrRestoreIdentification={jest.fn()}
         onItemFlagged={jest.fn()}
-      />
+      />,
     );
 
     expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
@@ -126,9 +126,9 @@ describe( "ActivityHeaderKebabMenu", () => {
       user: mockUser,
       category: "Identification",
       taxon: factory( "LocalTaxon", {
-        name: "Miner's Lettuce"
+        name: "Miner's Lettuce",
       } ),
-      current: true
+      current: true,
     } );
     renderComponent(
       <ActivityHeader
@@ -140,7 +140,7 @@ describe( "ActivityHeaderKebabMenu", () => {
         deleteComment={jest.fn()}
         withdrawOrRestoreIdentification={jest.fn()}
         onItemFlagged={jest.fn()}
-      />
+      />,
     );
 
     expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
@@ -153,8 +153,8 @@ describe( "ActivityHeaderKebabMenu", () => {
     const mockId = factory( "LocalComment", {
       body: "hello",
       taxon: factory( "LocalTaxon", {
-        name: "Miner's Lettuce"
-      } )
+        name: "Miner's Lettuce",
+      } ),
     } );
     renderComponent(
       <ActivityHeader
@@ -166,7 +166,7 @@ describe( "ActivityHeaderKebabMenu", () => {
         deleteComment={jest.fn()}
         withdrawOrRestoreIdentification={jest.fn()}
         onItemFlagged={jest.fn()}
-      />
+      />,
     );
 
     expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );

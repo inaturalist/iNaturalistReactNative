@@ -1,25 +1,25 @@
 import { useNavigation } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect, useMemo
+  useCallback, useEffect, useMemo,
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import type { RealmObservation } from "realmModels/types";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import {
   UPLOAD_CANCELLED,
   UPLOAD_COMPLETE,
-  UPLOAD_IN_PROGRESS
+  UPLOAD_IN_PROGRESS,
 } from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
 import { handleUploadError } from "uploaders";
 import uploadObservation from "uploaders/observationUploader";
 import { RECOVERY_BY } from "uploaders/utils/errorHandling";
 import {
-  INCREMENT_SINGLE_UPLOAD_PROGRESS
+  INCREMENT_SINGLE_UPLOAD_PROGRESS,
 } from "uploaders/utils/progressTracker";
 
 export const MS_BEFORE_TOOLBAR_RESET = 5_000;
@@ -35,7 +35,7 @@ export default ( canUpload: boolean ) => {
   const completeUploads = useStore( state => state.completeUploads );
   const currentUpload = useStore( state => state.currentUpload );
   const removeDeletedObsFromUploadQueue = useStore(
-    state => state.removeDeletedObsFromUploadQueue
+    state => state.removeDeletedObsFromUploadQueue,
   );
   const removeFromUploadQueue = useStore( state => state.removeFromUploadQueue );
   const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
@@ -86,7 +86,7 @@ export default ( canUpload: boolean ) => {
     resetNumUnsyncedObs,
     resetSyncToolbar,
     resetUploadObservationsSlice,
-    uploadStatus
+    uploadStatus,
   ] );
 
   useEffect( ( ) => {
@@ -96,13 +96,13 @@ export default ( canUpload: boolean ) => {
         const uuid = increments[0];
         const increment = increments[1];
         updateTotalUploadProgress( uuid, increment );
-      }
+      },
     );
     return ( ) => {
       EventRegister?.removeEventListener( progressListener as string );
     };
   }, [
-    updateTotalUploadProgress
+    updateTotalUploadProgress,
   ] );
 
   const uploadObservationAndCatchError = useCallback( async ( observation: RealmObservation ) => {
@@ -159,7 +159,7 @@ export default ( canUpload: boolean ) => {
     t,
     uploadQueue,
     navigation,
-    stopAllUploads
+    stopAllUploads,
   ] );
 
   useEffect( ( ) => {
@@ -167,7 +167,7 @@ export default ( canUpload: boolean ) => {
       const lastQueuedUuid = uploadQueue[uploadQueue.length - 1];
       const localObservation = realm.objectForPrimaryKey<RealmObservation>(
         "Observation",
-        lastQueuedUuid
+        lastQueuedUuid,
       );
       if ( localObservation ) {
         await uploadObservationAndCatchError( localObservation );
@@ -189,7 +189,7 @@ export default ( canUpload: boolean ) => {
     realm,
     uploadObservationAndCatchError,
     uploadQueue,
-    uploadStatus
+    uploadStatus,
   ] );
 
   const createUploadQueueAllUnsynced = useCallback( ( skipSomeUuids: string[] | undefined ) => {
@@ -216,13 +216,13 @@ export default ( canUpload: boolean ) => {
     setCannotUploadObservations,
     setStartUploadObservations,
     setTotalToolbarIncrements,
-    unsyncedUuids
+    unsyncedUuids,
   ] );
 
   const startUploadObservations = useCallback( async ( skipSomeUuids: string[] | undefined ) => {
     createUploadQueueAllUnsynced( skipSomeUuids );
   }, [
-    createUploadQueueAllUnsynced
+    createUploadQueueAllUnsynced,
   ] );
 
   const startUploadsFromMultiObsEdit = useCallback( async ( ) => {
@@ -234,11 +234,11 @@ export default ( canUpload: boolean ) => {
   }, [
     canUpload,
     setCannotUploadObservations,
-    setStartUploadObservations
+    setStartUploadObservations,
   ] );
 
   return {
     startUploadObservations,
-    startUploadsFromMultiObsEdit
+    startUploadsFromMultiObsEdit,
   };
 };

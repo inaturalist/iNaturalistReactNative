@@ -1,5 +1,5 @@
 import { RealmContext } from "providers/contexts";
-import { Results } from "realm";
+import type { Results } from "realm";
 import type { RealmComment, RealmIdentification, RealmObservation } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -27,7 +27,7 @@ const useLocalObservation = ( uuid: string ): UseLocalObservation => {
       },
       markViewedLocally: ( ) => {
         throw new Error( "UUID is required to mark local observation as viewed" );
-      }
+      },
     };
   }
 
@@ -41,7 +41,7 @@ const useLocalObservation = ( uuid: string ): UseLocalObservation => {
       },
       markViewedLocally: ( ) => {
         throw new Error( "Trying to mark non-existing local observation as viewed" );
-      }
+      },
     };
   }
 
@@ -65,21 +65,21 @@ const useLocalObservation = ( uuid: string ): UseLocalObservation => {
         return this.comments
           ? this.comments.filtered( "hidden == false" )
           : [];
-      }
+      },
     },
     visibleIdentifications: {
       get() {
         return this.identifications
           ? this.identifications.filtered( "hidden == false" )
           : [];
-      }
-    }
+      },
+    },
   } );
 
   return {
     localObservation: observation,
     markDeletedLocally,
-    markViewedLocally
+    markViewedLocally,
   };
 };
 

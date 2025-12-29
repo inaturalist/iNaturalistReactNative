@@ -1,5 +1,6 @@
 import type { ApiUser } from "api/types";
-import Realm, { ObjectSchema } from "realm";
+import type { ObjectSchema } from "realm";
+import Realm from "realm";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 import type { RealmUser } from "./types";
@@ -17,14 +18,14 @@ class User extends Realm.Object {
     name: true,
     observations_count: true,
     prefers_common_names: true,
-    prefers_scientific_name_first: true
+    prefers_scientific_name_first: true,
   };
 
   static LIMITED_FIELDS = {
     icon_url: true,
     id: true,
     login: true,
-    observations_count: true
+    observations_count: true,
   };
 
   // getting user icon data from production instead of staging
@@ -53,7 +54,7 @@ class User extends Realm.Object {
       icon_url: {
         type: "string",
         mapTo: "iconUrl",
-        optional: true
+        optional: true,
       },
       locale: "string?",
       login: "string?",
@@ -62,8 +63,8 @@ class User extends Realm.Object {
       prefers_common_names: "bool?",
       prefers_community_taxa: "bool?",
       prefers_scientific_name_first: "bool?",
-      signedIn: "bool?"
-    }
+      signedIn: "bool?",
+    },
   };
 }
 

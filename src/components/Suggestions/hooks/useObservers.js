@@ -8,21 +8,21 @@ const params = {
   fields: {
     user: {
       login: true,
-      name: true
-    }
-  }
+      name: true,
+    },
+  },
 };
 
-const useObservers = ( taxonIds: Array<number> ): Array<string> => {
+const useObservers = ( taxonIds: number[] ): string[] => {
   const { data } = useAuthenticatedQuery(
     ["fetchObservers", taxonIds],
     ( ) => fetchObservers( {
       ...params,
-      taxon_ids: taxonIds
+      taxon_ids: taxonIds,
     } ),
     {
-      enabled: !!( taxonIds?.length > 0 )
-    }
+      enabled: !!( taxonIds?.length > 0 ),
+    },
   );
 
   return data?.results?.map( result => result.user.login );

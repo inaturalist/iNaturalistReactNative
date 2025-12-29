@@ -53,7 +53,7 @@ const places: Places = {
   1017: "Constituency",
   1018: "Local Authority",
   1019: "Poblacion",
-  1020: "Delegation"
+  1020: "Delegation",
 };
 
 export default places;

@@ -4,9 +4,10 @@ import INatIcon from "components/SharedComponents/INatIcon";
 // Directly imported, not from index.js to avoid circular dependency
 import UserIcon from "components/SharedComponents/UserIcon";
 import {
-  Pressable, View
+  Pressable, View,
 } from "components/styledComponents";
-import React, { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import type { TextProps } from "react-native";
 import User from "realmModels/User";
@@ -29,7 +30,7 @@ const InlineUserBase = ( {
   isConnected,
   TextComponent,
   testID,
-  useBigIcon = false
+  useBigIcon = false,
 }: Props ) => {
   const navigation = useNavigation();
   const userImgUri = User.uri( user );

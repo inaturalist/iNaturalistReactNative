@@ -6,7 +6,7 @@ import {
   Heading4,
   ScrollViewWrapper,
   Tabs,
-  UnderlinedLink
+  UnderlinedLink,
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
@@ -30,7 +30,7 @@ const About = ( ) => {
     navigation.navigate( "FullPageWebView", {
       title: t( "TERMS-OF-USE" ),
       initialUrl: url,
-      loggedIn: false
+      loggedIn: false,
     } );
   };
 
@@ -39,7 +39,7 @@ const About = ( ) => {
     navigation.navigate( "FullPageWebView", {
       title: t( "PRIVACY-POLICY" ),
       initialUrl: url,
-      loggedIn: false
+      loggedIn: false,
     } );
   };
 
@@ -48,7 +48,7 @@ const About = ( ) => {
     navigation.navigate( "FullPageWebView", {
       title: t( "COMMUNITY-GUIDELINES" ),
       initialUrl: url,
-      loggedIn: false
+      loggedIn: false,
     } );
   };
 
@@ -68,15 +68,15 @@ const About = ( ) => {
             text: t( "ABOUT" ),
             onPress: () => {
               setActiveTab( aboutID );
-            }
+            },
           },
           {
             id: teamID,
             text: t( "TEAM" ),
             onPress: () => {
               setActiveTab( teamID );
-            }
-          }
+            },
+          },
         ]}
         activeId={activeTab}
       />

@@ -8,16 +8,16 @@ import { renderComponent } from "tests/helpers/render";
 jest.mock( "react-native/Libraries/Share/Share", () => ( {
   __esModule: true,
   default: {
-    share: jest.fn( () => Promise.resolve( "mockResolve" ) )
-  }
+    share: jest.fn( () => Promise.resolve( "mockResolve" ) ),
+  },
 } ) );
 
 jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   __esModule: true,
   default: {
     OS: "ios",
-    select: jest.fn()
-  }
+    select: jest.fn(),
+  },
 } ) );
 
 const observationId = 1234;

@@ -15,7 +15,7 @@ const project = ( latitude: number, longitude: number ) => {
 
   return [
     ( 256 * ( 0.5 + longitude / 360 ) ),
-    ( 256 * ( 0.5 - Math.log( ( 1 + siny ) / ( 1 - siny ) ) / ( 4 * Math.PI ) ) )
+    ( 256 * ( 0.5 - Math.log( ( 1 + siny ) / ( 1 - siny ) ) / ( 4 * Math.PI ) ) ),
   ];
 };
 
@@ -29,7 +29,7 @@ const createUTFPosition = ( zoomLevel: number, latitude: number, longitude: numb
 
   const pixelCoordinate = [
     worldCoordinate[0] * scale,
-    worldCoordinate[1] * scale
+    worldCoordinate[1] * scale,
   ];
 
   mPixelPositionX = ( pixelCoordinate[0] - mTilePositionX * TILE_SIZE );
@@ -39,7 +39,7 @@ const createUTFPosition = ( zoomLevel: number, latitude: number, longitude: numb
     mPixelPositionX,
     mPixelPositionY,
     mTilePositionX,
-    mTilePositionY
+    mTilePositionY,
   };
 };
 

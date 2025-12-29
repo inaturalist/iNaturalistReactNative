@@ -3,11 +3,12 @@ import { fetchSearchResults } from "api/search";
 import type { ApiOpts } from "api/types";
 import {
   Body3,
-  SearchBar
+  SearchBar,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useRef } from "react";
-import { Keyboard, TextInput } from "react-native";
+import type { TextInput } from "react-native";
+import { Keyboard } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { getShadow } from "styles/global";
 
@@ -28,7 +29,7 @@ interface Props {
 }
 
 const LocationSearch = ( {
-  locationName = "", updateLocationName, selectPlaceResult, hidePlaceResults
+  locationName = "", updateLocationName, selectPlaceResult, hidePlaceResults,
 }: Props ) => {
   const queryClient = useQueryClient( );
   const locationInput = useRef<TextInput>( undefined );
@@ -37,14 +38,14 @@ const LocationSearch = ( {
   queryClient.invalidateQueries( { queryKey: ["fetchSearchResults"] } );
 
   const {
-    data: placeResults
+    data: placeResults,
   } = useAuthenticatedQuery(
     ["fetchSearchResults", locationName],
     ( optsWithAuth: ApiOpts ) => fetchSearchResults( {
       q: locationName,
       sources: "places",
-      fields: "place,place.display_name,place.point_geojson"
-    }, optsWithAuth )
+      fields: "place,place.display_name,place.point_geojson",
+    }, optsWithAuth ),
   );
 
   return (

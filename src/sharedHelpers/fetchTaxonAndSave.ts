@@ -1,6 +1,7 @@
 import { fetchTaxon } from "api/taxa";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import Realm, { UpdateMode } from "realm";
+import type Realm from "realm";
+import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
@@ -12,7 +13,7 @@ async function fetchTaxonAndSave(
   id: number,
   realm: Realm,
   params: Record<string, unknown> = {},
-  opts: Options = {}
+  opts: Options = {},
 ) {
   const options = { ...opts };
   if ( !options.api_token ) {
@@ -25,7 +26,7 @@ async function fetchTaxonAndSave(
     realm.create(
       Taxon,
       Taxon.forUpdate( mappedRemoteTaxon ),
-      UpdateMode.Modified
+      UpdateMode.Modified,
     );
   }, "saving remote taxon in ObsDetails" );
   return mappedRemoteTaxon;

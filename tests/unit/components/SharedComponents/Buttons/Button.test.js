@@ -36,5 +36,5 @@ describe.each( [["primary"], ["warning"], ["focus"], ["neutral"]] )(
         // expect( button ).toBeAccessible();
       } );
     } );
-  }
+  },
 );
