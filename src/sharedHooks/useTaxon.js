@@ -7,7 +7,7 @@ import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useCurrentUser
+  useCurrentUser,
 } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -55,21 +55,21 @@ const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Objec
 
   const params = {
     fields: Taxon.LIMITED_TAXON_FIELDS,
-    ...( !currentUser && { locale } )
+    ...( !currentUser && { locale } ),
   };
 
   const {
     data: remoteTaxon,
     error,
     isLoading,
-    refetch
+    refetch,
   } = useAuthenticatedQuery(
     ["fetchTaxon", taxonId],
     optsWithAuth => fetchTaxon( taxonId, params, optsWithAuth ),
     {
       enabled,
-      retry: retryQuery
-    }
+      retry: retryQuery,
+    },
   );
 
   const mappedRemoteTaxon = remoteTaxon
@@ -81,7 +81,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Objec
       realm.create(
         "Taxon",
         Taxon.forUpdate( mappedRemoteTaxon ),
-        "modified"
+        "modified",
       );
     }, "saving remote taxon in useTaxon" );
   }
@@ -93,7 +93,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Objec
     refetch,
     taxon: localTaxon || mappedRemoteTaxon || taxon,
     // Apparently useQuery isLoading is true if the query is disabled
-    isLoading: enabled && isLoading
+    isLoading: enabled && isLoading,
   };
 };
 

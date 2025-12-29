@@ -25,7 +25,7 @@ const checkmarkClasses = [
   `h-[${CAMERA_BUTTON_DIM}px]`,
   `w-[${CAMERA_BUTTON_DIM}px]`,
   "justify-center",
-  "items-center"
+  "items-center",
 ].join( " " );
 
 const cameraOptionsClasses = [
@@ -34,7 +34,7 @@ const cameraOptionsClasses = [
   "items-center",
   "justify-center",
   "rounded-full",
-  `w-[${CAMERA_BUTTON_DIM}px]`
+  `w-[${CAMERA_BUTTON_DIM}px]`,
 ].join( " " );
 
 interface Props {
@@ -70,7 +70,7 @@ const CameraButtonPlaceholder = ( { extraClassName }: { extraClassName?: string 
       // "bg-deeppink",
       `w-[${CAMERA_BUTTON_DIM}px]`,
       `h-[${CAMERA_BUTTON_DIM}px]`,
-      extraClassName
+      extraClassName,
     )}
   />
 );
@@ -95,7 +95,7 @@ const TabletButtons = ( {
   useLocation,
   toggleLocation,
   isDefaultMode,
-  deleteSentinelFile
+  deleteSentinelFile,
 }: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -104,7 +104,7 @@ const TabletButtons = ( {
     "mr-5",
     "p-0",
     "right-0",
-    "h-full"
+    "h-full",
   ];
 
   return (
@@ -155,7 +155,7 @@ const TabletButtons = ( {
       <View
         className={classnames(
           cameraOptionsClasses,
-          { "mt-[25px]": photosTaken }
+          { "mt-[25px]": photosTaken },
         )}
       >
         <CloseButton

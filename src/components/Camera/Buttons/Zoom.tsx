@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { Body3 } from "components/SharedComponents";
 import {
-  CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE
+  CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE,
 } from "components/SharedComponents/Buttons/TransparentCircleButton";
 import { Pressable } from "components/styledComponents";
 import React from "react";
@@ -23,7 +23,7 @@ const Zoom = ( {
   rotatableAnimatedStyle,
   handleZoomButtonPress,
   zoomClassName,
-  zoomTextValue
+  zoomTextValue,
 }: Props ) => {
   const { t } = useTranslation();
 

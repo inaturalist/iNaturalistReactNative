@@ -8,8 +8,8 @@ const mockTaxon = factory( "RemoteTaxon", {
   name: "Aves",
   preferred_common_name: "Birds",
   default_photo: {
-    url: ""
-  }
+    url: "",
+  },
 } );
 
 const taxonWithIconicTaxonPhoto = factory( "LocalTaxon", {
@@ -17,8 +17,8 @@ const taxonWithIconicTaxonPhoto = factory( "LocalTaxon", {
   preferred_common_name: "Peafowl",
   iconic_taxon_name: "Aves",
   default_photo: {
-    url: "some url"
-  }
+    url: "some url",
+  },
 } );
 
 describe( "DisplayTaxon", () => {
@@ -39,11 +39,11 @@ describe( "DisplayTaxon", () => {
       <DisplayTaxon
         taxon={taxonWithIconicTaxonPhoto}
         handlePress={( ) => undefined}
-      />
+      />,
     );
 
     expect(
-      screen.getByTestId( "DisplayTaxon.image" ).props.source
+      screen.getByTestId( "DisplayTaxon.image" ).props.source,
     ).toStrictEqual( { uri: taxonWithIconicTaxonPhoto?.default_photo?.url } );
   } );
 
@@ -53,11 +53,11 @@ describe( "DisplayTaxon", () => {
         taxon={taxonWithIconicTaxonPhoto}
         handlePress={( ) => undefined}
         withdrawn
-      />
+      />,
     );
 
     expect(
-      screen.getByTestId( "DisplayTaxon.image" )
+      screen.getByTestId( "DisplayTaxon.image" ),
     ).toHaveStyle( { opacity: 0.5 } );
   } );
 } );

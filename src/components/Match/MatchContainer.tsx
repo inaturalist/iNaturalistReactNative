@@ -1,33 +1,33 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { ApiPhoto, ApiSuggestion } from "api/types";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
 import {
-  FETCH_STATUS_LOADING,
-  FETCH_STATUS_OFFLINE_ERROR,
-  FETCH_STATUS_OFFLINE_FETCHED,
-  FETCH_STATUS_OFFLINE_SKIPPED,
-  FETCH_STATUS_ONLINE_ERROR,
-  FETCH_STATUS_ONLINE_FETCHED,
-  FETCH_STATUS_ONLINE_SKIPPED,
-  initialSuggestions
+  FETCH_STATUSES,
 } from "components/Suggestions/SuggestionsContainer";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
-  useEffect, useReducer, useRef, useState
+  useEffect, useReducer, useRef, useState,
 } from "react";
+import type { ScrollView } from "react-native";
+import type { RealmPhoto, RealmTaxon } from "realmModels/types";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
 import {
-  useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition
+  useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import {
+  internalUseSuggestionsInitialSuggestions,
+} from "sharedHooks/useSuggestions/filterSuggestions";
 import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
 
@@ -35,52 +35,90 @@ import tryToReplaceWithLocalTaxon from "./helpers/tryToReplaceWithLocalTaxon";
 import Match from "./Match";
 import PreMatchLoadingScreen from "./PreMatchLoadingScreen";
 
-const setQueryKey = ( selectedPhotoUri, shouldUseEvidenceLocation ) => [
+interface ImageParamsType {
+  uri?: string;
+  image: {
+    uri: string;
+    name: string;
+    type: string;
+  };
+  lat?: number;
+  lng?: number;
+}
+
+interface NavParams {
+  id?: number | string;
+  firstPhotoID?: number | string;
+  representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
+}
+
+interface State {
+  onlineFetchStatus: FETCH_STATUSES;
+  offlineFetchStatus: FETCH_STATUSES;
+  scoreImageParams: ImageParamsType | null;
+  queryKey: ( string | { shouldUseEvidenceLocation: boolean } )[];
+  shouldUseEvidenceLocation: boolean;
+  orderedSuggestions: ApiSuggestion[];
+}
+
+export type MatchButtonAction = "save" | "discard";
+
+type Action =
+  | { type: "SET_UPLOAD_PARAMS"; scoreImageParams: ImageParamsType }
+  | { type: "SET_ONLINE_FETCH_STATUS"; onlineFetchStatus: FETCH_STATUSES }
+  | { type: "SET_OFFLINE_FETCH_STATUS"; offlineFetchStatus: FETCH_STATUSES }
+  | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean }
+  | { type: "ORDER_SUGGESTIONS"; orderedSuggestions: ApiSuggestion[] };
+
+const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
   "scoreImage",
   selectedPhotoUri,
-  { shouldUseEvidenceLocation }
+  { shouldUseEvidenceLocation },
 ];
 
-const initialState = {
-  onlineFetchStatus: FETCH_STATUS_LOADING,
-  offlineFetchStatus: FETCH_STATUS_LOADING,
+const initialState: State = {
+  onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
+  offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
   scoreImageParams: null,
   queryKey: [],
   shouldUseEvidenceLocation: false,
-  orderedSuggestions: []
+  orderedSuggestions: [],
 };
 
-const reducer = ( state, action ) => {
+const reducer = ( state: State, action: Action ): State => {
   switch ( action.type ) {
     case "SET_UPLOAD_PARAMS":
       return {
         ...state,
         scoreImageParams: action.scoreImageParams,
-        queryKey: setQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation )
+        queryKey: getQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation ),
       };
     case "SET_ONLINE_FETCH_STATUS":
       return {
         ...state,
-        onlineFetchStatus: action.onlineFetchStatus
+        onlineFetchStatus: action.onlineFetchStatus,
       };
     case "SET_OFFLINE_FETCH_STATUS":
       return {
         ...state,
-        offlineFetchStatus: action.offlineFetchStatus
+        offlineFetchStatus: action.offlineFetchStatus,
       };
     case "SET_LOCATION":
       return {
         ...state,
-        onlineFetchStatus: FETCH_STATUS_LOADING,
-        offlineFetchStatus: FETCH_STATUS_LOADING,
+        onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
+        offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
-        queryKey: setQueryKey( action.scoreImageParams.image.uri, action.shouldUseEvidenceLocation )
+        queryKey: getQueryKey(
+          action.scoreImageParams.image.uri,
+          action.shouldUseEvidenceLocation,
+        ),
       };
     case "ORDER_SUGGESTIONS":
       return {
         ...state,
-        orderedSuggestions: action.orderedSuggestions
+        orderedSuggestions: action.orderedSuggestions,
       };
     default:
       throw new Error( );
@@ -91,16 +129,16 @@ const { useRealm } = RealmContext;
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
   const isDebug = isDebugMode( );
-  const scrollRef = useRef( null );
+  const scrollRef = useRef<ScrollView>( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NativeStackNavigationProp<Record<string, NavParams>>>( );
   const {
     hasPermissions,
     renderPermissionsGate,
-    requestPermissions
+    requestPermissions,
   } = useLocationPermission( );
 
   const obsPhotos = currentObservation?.observationPhotos;
@@ -110,20 +148,23 @@ const MatchContainer = ( ) => {
 
   const realm = useRealm( );
   const exitObservationFlow = useExitObservationFlow( {
-    skipStoreReset: true
+    skipStoreReset: true,
   } );
 
   const { isConnected } = useNetInfo( );
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
-  const [topSuggestion, setTopSuggestion] = useState( );
-  const [iconicTaxon, setIconicTaxon] = useState( );
-  const [currentUserLocation, setCurrentUserLocation] = useState( null );
+  const [topSuggestion, setTopSuggestion] = useState<ApiSuggestion>( );
+  const [iconicTaxon, setIconicTaxon] = useState<RealmTaxon>( );
+  const [currentUserLocation, setCurrentUserLocation] = useState<{
+    latitude?: number;
+    longitude?: number;
+  } | null>( null );
 
   const [state, dispatch] = useReducer( reducer, {
     ...initialState,
-    shouldUseEvidenceLocation: evidenceHasLocation
+    shouldUseEvidenceLocation: evidenceHasLocation,
   } );
 
   const stopFirebaseTrace = useStore( state => state.stopFirebaseTrace );
@@ -134,37 +175,38 @@ const MatchContainer = ( ) => {
     offlineFetchStatus,
     queryKey,
     shouldUseEvidenceLocation,
-    orderedSuggestions
+    orderedSuggestions,
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
-      && onlineFetchStatus === FETCH_STATUS_LOADING;
+      && onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
 
-  const onlineSuggestionsAttempted = onlineFetchStatus === FETCH_STATUS_ONLINE_FETCHED
-      || onlineFetchStatus === FETCH_STATUS_ONLINE_ERROR;
+  const onlineSuggestionsAttempted
+     = onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED
+      || onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_ONLINE_ERROR;
 
   const onFetchError = useCallback(
     ( { isOnline }: { isOnline: boolean } ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
-          onlineFetchStatus: FETCH_STATUS_ONLINE_ERROR
+          onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_ERROR,
         } );
       } else {
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_ERROR
+          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_ERROR,
         } );
         // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+        if ( onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING ) {
           dispatch( {
             type: "SET_ONLINE_FETCH_STATUS",
-            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+            onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_SKIPPED,
           } );
         }
       }
     },
-    [onlineFetchStatus]
+    [onlineFetchStatus],
   );
 
   const onFetched = useCallback(
@@ -172,29 +214,29 @@ const MatchContainer = ( ) => {
       if ( isOnline ) {
         dispatch( {
           type: "SET_ONLINE_FETCH_STATUS",
-          onlineFetchStatus: FETCH_STATUS_ONLINE_FETCHED
+          onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_FETCHED,
         } );
         // Currently we start offline only when online has an error, so
         // we can register offline as skipped if online is successful
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_SKIPPED
+          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_SKIPPED,
         } );
       } else {
         dispatch( {
           type: "SET_OFFLINE_FETCH_STATUS",
-          offlineFetchStatus: FETCH_STATUS_OFFLINE_FETCHED
+          offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_OFFLINE_FETCHED,
         } );
         // If offline is finished, and online still in loading state it means it never started
-        if ( onlineFetchStatus === FETCH_STATUS_LOADING ) {
+        if ( onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING ) {
           dispatch( {
             type: "SET_ONLINE_FETCH_STATUS",
-            onlineFetchStatus: FETCH_STATUS_ONLINE_SKIPPED
+            onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_ONLINE_SKIPPED,
           } );
         }
       }
     },
-    [onlineFetchStatus]
+    [onlineFetchStatus],
   );
 
   const {
@@ -203,17 +245,17 @@ const MatchContainer = ( ) => {
     onlineSuggestionsUpdatedAt,
     suggestions,
     usingOfflineSuggestions,
-    refetchSuggestions
+    refetchSuggestions,
   } = useSuggestions( observationPhoto, {
     shouldFetchOnlineSuggestions,
     onFetchError,
     onFetched,
     scoreImageParams,
     queryKey,
-    onlineSuggestionsAttempted
+    onlineSuggestionsAttempted,
   } );
 
-  const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
+  const [currentPlaceGuess, setCurrentPlaceGuess] = useState<string>( );
   const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
 
   const scrollToTop = useCallback( () => {
@@ -223,15 +265,15 @@ const MatchContainer = ( ) => {
   }, [] );
 
   const [needLocation, setNeedLocation] = useState(
-    shouldFetchObservationLocation( currentObservation )
+    shouldFetchObservationLocation( currentObservation ),
   );
-  const shouldFetchLocation = hasPermissions && needLocation;
+  const shouldFetchLocation = !!( hasPermissions && needLocation );
 
   const {
     isFetchingLocation,
     stopWatch,
     subscriptionId,
-    userLocation
+    userLocation,
   } = useWatchPosition( { shouldFetchLocation } );
 
   const navToLocationPicker = useCallback( ( ) => {
@@ -269,12 +311,12 @@ const MatchContainer = ( ) => {
     const newScoreImageParams = {
       ...scoreImageParams,
       lat: currentUserLocation?.latitude,
-      lng: currentUserLocation?.longitude
+      lng: currentUserLocation?.longitude,
     };
     dispatch( {
       type: "SET_LOCATION",
       shouldUseEvidenceLocation: true,
-      scoreImageParams: newScoreImageParams
+      scoreImageParams: newScoreImageParams,
     } );
     refetchSuggestions();
     setHasRefetchedSuggestions( true );
@@ -285,7 +327,7 @@ const MatchContainer = ( ) => {
     scoreImageParams,
     scrollToTop,
     currentUserLocation?.latitude,
-    currentUserLocation?.longitude
+    currentUserLocation?.longitude,
   ] );
 
   useEffect( () => {
@@ -297,7 +339,7 @@ const MatchContainer = ( ) => {
     getCurrentUserPlaceName,
     handleRefetchSuggestions,
     hasRefetchedSuggestions,
-    suggestions
+    suggestions,
   ] );
 
   useEffect( ( ) => {
@@ -318,7 +360,7 @@ const MatchContainer = ( ) => {
     subscriptionId,
     currentUserLocation,
     scoreImageParams,
-    getCurrentUserPlaceName
+    getCurrentUserPlaceName,
   ] );
 
   useEffect( () => {
@@ -326,7 +368,7 @@ const MatchContainer = ( ) => {
     updateObservationKeys( { place_guess: currentPlaceGuess } );
   }, [currentPlaceGuess, updateObservationKeys] );
 
-  const onSuggestionChosen = useCallback( selection => {
+  const onSuggestionChosen = useCallback( ( selection: ApiSuggestion ) => {
     const suggestionsList = [...orderedSuggestions];
 
     // make sure to reorder the list by confidence score
@@ -335,12 +377,12 @@ const MatchContainer = ( ) => {
     const sortedList = _.orderBy(
       suggestionsList,
       suggestion => suggestion.combined_score,
-      ["desc"]
+      ["desc"],
     );
 
     const chosenIndex = _.findIndex(
       sortedList,
-      suggestion => suggestion.taxon.id === selection.taxon.id
+      suggestion => suggestion.taxon.id === selection.taxon.id,
     );
     if ( chosenIndex !== -1 ) {
       // Set new top suggestion
@@ -348,14 +390,14 @@ const MatchContainer = ( ) => {
       // We can set the entire list here since we are filtering out the top suggestion in render
       dispatch( {
         type: "ORDER_SUGGESTIONS",
-        orderedSuggestions: sortedList
+        orderedSuggestions: sortedList,
       } );
     }
     scrollToTop( );
     // TODO: should this set owners_identification_from_vision: false?
   }, [orderedSuggestions, scrollToTop] );
 
-  const createUploadParams = useCallback( async ( uri, showLocation ) => {
+  const createUploadParams = useCallback( async ( uri: string, showLocation: boolean ) => {
     const newImageParams = await flattenUploadParams( uri );
     if ( showLocation && currentObservation?.latitude ) {
       newImageParams.lat = currentObservation?.latitude;
@@ -363,7 +405,7 @@ const MatchContainer = ( ) => {
     }
     return newImageParams;
   }, [
-    currentObservation
+    currentObservation,
   ] );
 
   const setImageParams = useCallback( async ( ) => {
@@ -376,7 +418,7 @@ const MatchContainer = ( ) => {
     createUploadParams,
     isConnected,
     observationPhoto,
-    shouldUseEvidenceLocation
+    shouldUseEvidenceLocation,
   ] );
 
   useEffect( ( ) => {
@@ -384,7 +426,11 @@ const MatchContainer = ( ) => {
       // resizeImage crashes if trying to resize an https:// photo while there is no internet
       // in this situation, we can skip creating upload parameters since we're loading
       // offline suggestions anyway
-      if ( !hasLoadedRef.current && _.isEqual( initialSuggestions, suggestions ) ) {
+      if ( !hasLoadedRef.current
+        // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
+        // we shouldn't rely on implementation internals to consumer drive state
+        && _.isEqual( internalUseSuggestionsInitialSuggestions, suggestions )
+      ) {
         hasLoadedRef.current = true;
         setImageParams( );
       }
@@ -399,18 +445,18 @@ const MatchContainer = ( ) => {
 
     const orderedList = [...suggestions.otherSuggestions];
     if ( suggestions?.topSuggestion ) {
-      setTopSuggestion( suggestions?.topSuggestion );
-      orderedList.unshift( suggestions?.topSuggestion );
+      setTopSuggestion( suggestions.topSuggestion );
+      orderedList.unshift( suggestions.topSuggestion );
     }
     // make sure list is in order of confidence score
     const sortedList = _.orderBy(
       orderedList,
       suggestion => suggestion.combined_score,
-      ["desc"]
+      ["desc"],
     );
     dispatch( {
       type: "ORDER_SUGGESTIONS",
-      orderedSuggestions: sortedList
+      orderedSuggestions: sortedList,
     } );
   }, [suggestions] );
 
@@ -423,11 +469,11 @@ const MatchContainer = ( ) => {
   const topSuggestionInRealm = realm.objects( "Taxon" ).filtered( "id IN $0", [taxonId] );
   const topSuggestionWithLocalTaxon = tryToReplaceWithLocalTaxon(
     topSuggestionInRealm,
-    topSuggestion
+    topSuggestion,
   );
 
-  const suggestionsLoading = onlineFetchStatus === FETCH_STATUS_LOADING
-    || offlineFetchStatus === FETCH_STATUS_LOADING;
+  const suggestionsLoading = onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING
+    || offlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
 
   useEffect( ( ) => {
     if (
@@ -437,35 +483,36 @@ const MatchContainer = ( ) => {
       // This should capture a case where online and offline have had a chance to load
       stopFirebaseTrace(
         FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
-        { [FIREBASE_TRACE_ATTRIBUTES.ONLINE]: `${!usingOfflineSuggestions}` }
+        { [FIREBASE_TRACE_ATTRIBUTES.ONLINE]: `${!usingOfflineSuggestions}` },
       );
     }
   }, [
     onlineSuggestionsAttempted,
     suggestionsLoading,
     stopFirebaseTrace,
-    usingOfflineSuggestions
+    usingOfflineSuggestions,
   ] );
 
   // Remove the top suggestion from the list of other suggestions
   const otherSuggestions = orderedSuggestions
     .filter( suggestion => suggestion.taxon.id !== taxonId );
 
-  const navToTaxonDetails = photo => {
-    const navParams = { id: taxonId };
+  const navToTaxonDetails
+  = ( photo?: ApiPhoto | RealmPhoto ) => {
+    const navParams: NavParams = { id: taxonId };
     if ( !photo?.isRepresentativeButOtherTaxon ) {
-      navParams.firstPhotoID = photo.id;
+      navParams.firstPhotoID = photo?.id;
     } else {
       navParams.representativePhoto = photo;
     }
     navigation.push( "TaxonDetails", navParams );
   };
 
-  const handleSaveOrDiscardPress = async action => {
+  const handleSaveOrDiscardPress = async ( action: MatchButtonAction ) => {
     if ( action === "save" ) {
       updateObservationKeys( {
         taxon: taxon || iconicTaxon,
-        owners_identification_from_vision: true
+        owners_identification_from_vision: true,
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
     }
@@ -510,7 +557,7 @@ const MatchContainer = ( ) => {
           // navigate to the location picker (if granted we just continue fetching the location)
           onModalHide: ( ) => {
             if ( !hasPermissions ) navToLocationPicker( );
-          }
+          },
         } )}
         {/* eslint-disable i18next/no-literal-string */}
         {/* eslint-disable react/jsx-one-expression-per-line */}

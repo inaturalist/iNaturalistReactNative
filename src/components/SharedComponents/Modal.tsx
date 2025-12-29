@@ -7,11 +7,11 @@ import RNModal from "react-native-modal";
 interface Props {
   showModal: boolean;
   closeModal: () => void;
-  modal: React.ReactNode,
+  modal: React.ReactNode;
   backdropOpacity?: number;
   fullScreen?: boolean;
-  onModalHide?: () => void,
-  style?: ViewStyle,
+  onModalHide?: () => void;
+  style?: ViewStyle;
   animationIn?: string;
   animationOut?: string;
   disableSwipeDirection?: boolean;
@@ -20,12 +20,12 @@ interface Props {
 
 const modalStyle = {
   flex: 1,
-  justifyContent: "flex-end"
+  justifyContent: "flex-end",
 } as const;
 
 const fullScreenModalStyle = {
   ...modalStyle,
-  margin: 0
+  margin: 0,
 } as const;
 
 // accessibility might not work on Android because of backdrop
@@ -42,7 +42,7 @@ const Modal = ( {
   modal,
   onModalHide,
   showModal,
-  style
+  style,
 }: Props ) => {
   const swipeDirection = disableSwipeDirection
     ? undefined
@@ -62,7 +62,7 @@ const Modal = ( {
         ...( fullScreen
           ? fullScreenModalStyle
           : modalStyle
-        )
+        ),
       }}
       backdropOpacity={backdropOpacity}
       onModalHide={onModalHide}

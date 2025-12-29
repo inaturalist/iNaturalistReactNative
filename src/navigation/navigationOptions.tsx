@@ -3,7 +3,6 @@ import { fontMedium } from "appConstants/fontFamilies";
 import FullPageWebViewHeader from "components/FullPageWebView/FullPageWebViewHeader";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import React from "react";
-import { View } from "react-native";
 import colors from "styles/tailwindColors";
 
 import FadeInView from "./FadeInView";
@@ -18,7 +17,7 @@ const baseHeaderOptions = {
   headerShown: true,
   headerBackButtonDisplayMode: "minimal",
   headerShadowVisible: false,
-  headerLeft: () => <BackButton inCustomHeader testID="header-back-button" />
+  headerLeft: () => <BackButton inCustomHeader testID="header-back-button" />,
 } as const;
 
 const showHeader = {
@@ -29,8 +28,8 @@ const showHeader = {
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
   headerTitleStyle: {
     fontSize: 24,
-    fontFamily: fontMedium
-  }
+    fontFamily: fontMedium,
+  },
 } as const;
 
 const showLongHeader = {
@@ -41,60 +40,47 @@ const showLongHeader = {
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
   headerTitleStyle: {
     fontSize: 16,
-    fontFamily: fontMedium
-  }
+    fontFamily: fontMedium,
+  },
 } as const;
 
 export const hideHeaderLeft = {
   ...showHeader,
   headerLeft: null,
-  headerBackVisible: false
+  headerBackVisible: false,
 } as const;
 
 const showSimpleCustomHeader = {
   header: FullPageWebViewHeader,
-  headerShadowVisible: true
+  headerShadowVisible: true,
 } as const;
 
 const hideHeader = {
-  headerShown: false
+  headerShown: false,
 } as const;
 
 const blankHeaderTitle = {
-  headerTitle: ""
+  headerTitle: "",
 } as const;
 
 const removeBottomBorder = {
   headerBackground: ( ) => (
     // eslint-disable-next-line react-native/no-inline-styles
     <HeaderBackground style={{ bottomBorderColor: "white" }} />
-  )
-} as const;
-
-// this removes the default hamburger menu from header
-const hideDrawerHeaderLeft = {
-  headerLeft: ( ) => (
-    <View />
-  )
+  ),
 } as const;
 
 const preventSwipeToGoBack = {
-  gestureEnabled: false
-} as const;
-
-const isDrawerScreen = {
-  animation: "none"
+  gestureEnabled: false,
 } as const;
 
 export {
   blankHeaderTitle,
   fadeInComponent,
-  hideDrawerHeaderLeft,
   hideHeader,
-  isDrawerScreen,
   preventSwipeToGoBack,
   removeBottomBorder,
   showHeader,
   showLongHeader,
-  showSimpleCustomHeader
+  showSimpleCustomHeader,
 };

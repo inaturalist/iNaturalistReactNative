@@ -5,13 +5,13 @@ import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const mockObservers = [
-  faker.person.fullName( ), faker.person.fullName( ), faker.person.fullName( )
+  faker.person.fullName( ), faker.person.fullName( ), faker.person.fullName( ),
 ];
 
 const renderAttribution = ( ) => renderComponent(
   <Attribution
     observers={mockObservers}
-  />
+  />,
 );
 
 describe( "Attribution", ( ) => {

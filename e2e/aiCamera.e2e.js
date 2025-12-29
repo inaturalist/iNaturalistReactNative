@@ -1,5 +1,5 @@
 import {
-  by, device, element, waitFor
+  by, device, element, waitFor,
 } from "detox";
 
 import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
@@ -46,7 +46,7 @@ describe( "AICamera", () => {
       const otherSuggestionsTitle = element( by.text( "OTHER SUGGESTIONS" ) );
       await waitFor( otherSuggestionsTitle ).toBeVisible( ).withTimeout( 30_000 );
       const firstSuggestion = element( by.id( /SuggestionsList\.taxa\..*/ ) ).atIndex(
-        0
+        0,
       );
       await waitFor( firstSuggestion ).toBeVisible().withTimeout( TIMEOUT );
       const suggestionAttributes = await firstSuggestion.getAttributes();
@@ -64,9 +64,9 @@ describe( "AICamera", () => {
 
       // Check that the display taxon name is visible
       const displayTaxonName = element( by.id( `display-taxon-name.${taxonID}` ) ).atIndex(
-        0
+        0,
       );
       await waitFor( displayTaxonName ).toBeVisible().withTimeout( TIMEOUT );
-    }
+    },
   );
 } );

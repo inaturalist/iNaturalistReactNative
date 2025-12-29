@@ -14,13 +14,13 @@ import { useTranslation } from "sharedHooks";
 import SavedMatchHeaderRight from "./SavedMatchHeaderRight";
 
 interface Props {
-  observation: RealmObservation,
-  navToTaxonDetails: ( ) => void,
+  observation: RealmObservation;
+  navToTaxonDetails: ( ) => void;
 }
 
 const SavedMatch = ( {
   observation,
-  navToTaxonDetails
+  navToTaxonDetails,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );

@@ -2,7 +2,7 @@
 
 import type {
   ApiObservationsSearchParams,
-  ApiObservationsSearchResponse
+  ApiObservationsSearchResponse,
 } from "api/types";
 import { addSeconds, formatISO, parseISO } from "date-fns";
 import { last } from "lodash";
@@ -23,7 +23,7 @@ interface ApiObservationsSearchParamsForInfiniteQuery extends ApiObservationsSea
 // above.
 function getNextPageParamForExplore(
   lastPage: ApiObservationsSearchResponse,
-  params: ApiObservationsSearchParams
+  params: ApiObservationsSearchParams,
 ) {
   const lastObs = last( lastPage.results );
   const orderBy = params.order_by;
@@ -115,5 +115,5 @@ function addPageParamsForExplore( params: ApiObservationsSearchParamsForInfinite
 
 export {
   addPageParamsForExplore,
-  getNextPageParamForExplore
+  getNextPageParamForExplore,
 };

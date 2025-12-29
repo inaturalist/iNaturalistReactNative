@@ -5,19 +5,19 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   observation: {
-    private_place_guess?: string
+    private_place_guess?: string;
   };
 }
 
 const SimpleObservationLocation = ( {
-  observation
+  observation,
 }: Props ) => {
   const { t } = useTranslation( );
   const displayLocation = checkCamelAndSnakeCase(
     observation,
     observation.private_place_guess
       ? "privatePlaceGuess"
-      : "placeGuess"
+      : "placeGuess",
   );
 
   if ( !observation ) {
@@ -31,7 +31,7 @@ const SimpleObservationLocation = ( {
       accessible
       accessibilityLabel={t( "Location" )}
       accessibilityValue={{
-        text: displayLocation
+        text: displayLocation,
       }}
     >
       {displayLocation}

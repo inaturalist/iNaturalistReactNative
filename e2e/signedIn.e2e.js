@@ -1,5 +1,5 @@
 import {
-  by, device, element, expect, waitFor
+  by, device, element, expect, waitFor,
 } from "detox";
 
 import { iNatE2eAfterEach, iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
@@ -25,7 +25,7 @@ describe( "Signed in user", () => {
     await expect( element( by.id( "observe-without-evidence-button" ) ) ).toBeVisible();
     // Observe without evidence
     const obsWithoutEvidenceButton = element(
-      by.id( "observe-without-evidence-button" )
+      by.id( "observe-without-evidence-button" ),
     );
     await expect( obsWithoutEvidenceButton ).toBeVisible();
     await obsWithoutEvidenceButton.tap();

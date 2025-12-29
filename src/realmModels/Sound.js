@@ -9,7 +9,7 @@ class Sound extends Realm.Object {
     id: true,
     attribution: true,
     license_code: true,
-    file_url: true
+    file_url: true,
   };
 
   static schema = {
@@ -25,14 +25,14 @@ class Sound extends Realm.Object {
       id: "int?",
       attribution: "string?",
       license_code: { type: "string", mapTo: "licenseCode", optional: true },
-      file_url: "string?"
-    }
+      file_url: "string?",
+    },
   };
 
   static mapApiToRealm( sound, _realm = null ) {
     const localSound = {
       ...sound,
-      _synced_at: new Date( )
+      _synced_at: new Date( ),
     };
     localSound.licenseCode = localSound.licenseCode || sound?.license_code;
     return localSound;
@@ -57,14 +57,14 @@ class Sound extends Realm.Object {
     let { file_url } = sound;
     if ( sound?.file_url.match( /file:\/\// ) ) {
       file_url = await Sound.moveFromCacheToDocumentDirectory( sound.file_url, {
-        basename: uuid.v4()
+        basename: uuid.v4(),
       } );
       // this needs a protocol for the sound player to play it when it's local
       file_url = `file://${file_url}`;
     }
     return {
       ...sound,
-      file_url
+      file_url,
     };
     /* eslint-enable camelcase */
   }
@@ -88,7 +88,7 @@ class Sound extends Realm.Object {
     const json = super.toJSON( );
     return {
       ...json,
-      licenseCode: json.license_code
+      licenseCode: json.license_code,
     };
   }
 }

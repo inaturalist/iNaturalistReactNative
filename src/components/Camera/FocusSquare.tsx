@@ -4,7 +4,7 @@ import React from "react";
 import { Animated } from "react-native";
 
 interface Props {
-  animatedStyle: object
+  animatedStyle: object;
 }
 
 const FocusSquare = ( { animatedStyle }: Props ) => {

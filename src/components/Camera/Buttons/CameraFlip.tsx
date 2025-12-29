@@ -10,7 +10,7 @@ interface Props {
 
 const CameraFlip = ( {
   flipCamera,
-  cameraFlipClasses
+  cameraFlipClasses,
 }: Props ) => {
   const { t } = useTranslation( );
 

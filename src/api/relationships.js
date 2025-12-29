@@ -5,7 +5,7 @@ import inatjs from "inaturalistjs";
 import handleError from "./error";
 
 const PARAMS = {
-  fields: "all"
+  fields: "all",
 };
 
 const fetchRelationships = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
@@ -48,5 +48,5 @@ export {
   createRelationships,
   deleteRelationships,
   fetchRelationships,
-  updateRelationships
+  updateRelationships,
 };

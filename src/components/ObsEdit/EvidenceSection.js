@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
   ActivityIndicator,
-  Body2, Body3, Body4, Heading4, INatIcon
+  Body2, Body3, Body4, Heading4, INatIcon,
 } from "components/SharedComponents";
 import { MAX_SOUNDS_ALLOWED } from "components/SoundRecorder/SoundRecorder";
 import { Pressable, View } from "components/styledComponents";
@@ -20,18 +20,18 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 type Props = {
   currentObservation: Object,
   isFetchingLocation: boolean,
-  locationTextClassNames: Array<string>,
+  locationTextClassNames: string[],
   passesEvidenceTest: Function,
-  observationPhotos: Array<Object>,
+  observationPhotos: Object[],
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
-  observationSounds?: Array<{
+  observationSounds?: {
     id?: number,
     sound: {
       file_url: string,
     },
     uuid: string
-  }>,
+  }[],
   onLocationPress: ( ) => void,
   updateObservationKeys: Function
 }
@@ -45,7 +45,7 @@ const EvidenceSection = ( {
   showAddEvidenceSheet,
   observationSounds,
   onLocationPress,
-  updateObservationKeys
+  updateObservationKeys,
 }: Props ): Node => {
   const { t } = useTranslation( );
   // TODO fix this hack, and not with a workaround like
@@ -80,7 +80,7 @@ const EvidenceSection = ( {
     return t( "Lat-Lon-Acc", {
       latitude,
       longitude,
-      accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" )
+      accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" ),
     } );
   };
 
@@ -128,7 +128,7 @@ const EvidenceSection = ( {
               // This line makes sure the icon is centered in the height
               // of the Body2 label next to it
               "h-[19px] items-center justify-center",
-              isFetchingLocation && "bottom-5"
+              isFetchingLocation && "bottom-5",
             )}
           >
             <INatIcon size={14} name="map-marker-outline" />

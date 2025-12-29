@@ -2,50 +2,50 @@ import { useAppState } from "@react-native-community/hooks";
 import { useIsFocused } from "@react-navigation/native";
 import {
   Camera,
-  useCameraFormat
+  useCameraFormat,
 } from "components/Camera/helpers/visionCameraWrapper";
 import useFocusTap from "components/Camera/hooks/useFocusTap";
 import React, {
-  useCallback
+  useCallback,
 } from "react";
 import {
-  Dimensions, Platform, StyleSheet
+  Dimensions, Platform, StyleSheet,
 } from "react-native";
 import type {
   PanGesture,
-  PinchGesture
+  PinchGesture,
 } from "react-native-gesture-handler";
 import {
   Gesture,
-  GestureDetector
+  GestureDetector,
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import type {
-  CameraDevice, CameraDeviceFormat, CameraProps, CameraRuntimeError
+  CameraDevice, CameraDeviceFormat, CameraProps, CameraRuntimeError,
 } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
 
 const ReanimatedCamera = Reanimated.createAnimatedComponent( Camera );
 Reanimated.addWhitelistedNativeProps( {
-  zoom: true
+  zoom: true,
 } );
 
 interface Props {
-  animatedProps: CameraProps,
-  cameraRef: React.RefObject<Camera | null>,
-  cameraScreen: "standard" | "ai",
-  debugFormat: CameraDeviceFormat | undefined,
-  device: CameraDevice,
-  frameProcessor?: () => void,
-  onCameraError: ( error: CameraRuntimeError ) => void,
-  onCaptureError: ( error: CameraRuntimeError ) => void,
-  onClassifierError: ( error: CameraRuntimeError ) => void,
-  onDeviceNotSupported: ( error: CameraRuntimeError ) => void,
-  panToZoom: PanGesture,
-  pinchToZoom: PinchGesture,
-  resizeMode?: "cover" | "contain",
-  inactive?: boolean
+  animatedProps: CameraProps;
+  cameraRef: React.RefObject<Camera | null>;
+  cameraScreen: "standard" | "ai";
+  debugFormat: CameraDeviceFormat | undefined;
+  device: CameraDevice;
+  frameProcessor?: () => void;
+  onCameraError: ( error: CameraRuntimeError ) => void;
+  onCaptureError: ( error: CameraRuntimeError ) => void;
+  onClassifierError: ( error: CameraRuntimeError ) => void;
+  onDeviceNotSupported: ( error: CameraRuntimeError ) => void;
+  panToZoom: PanGesture;
+  pinchToZoom: PinchGesture;
+  resizeMode?: "cover" | "contain";
+  inactive?: boolean;
 }
 
 // A container for the Camera component
@@ -64,11 +64,11 @@ const CameraView = ( {
   panToZoom,
   pinchToZoom,
   resizeMode,
-  inactive
+  inactive,
 }: Props ) => {
   const {
     animatedStyle,
-    tapToFocus
+    tapToFocus,
   } = useFocusTap( cameraRef, device.supportsFocus );
 
   // check if camera page is active
@@ -87,15 +87,15 @@ const CameraView = ( {
     {
       videoAspectRatio: cameraScreen === "standard"
         ? standardVideoAspectRatio
-        : aiVideoAspectRatio
+        : aiVideoAspectRatio,
     },
     {
       photoAspectRatio: cameraScreen === "standard"
         ? standardPhotoAspectRatio
-        : aiPhotoAspectRatio
+        : aiPhotoAspectRatio,
     },
     { photoResolution: "max" },
-    { videoResolution: "max" }
+    { videoResolution: "max" },
   ] );
   if ( Platform.OS === "android" ) {
     console.log( "Android is not using a specific camera format because we never got around to" );
@@ -154,8 +154,8 @@ const CameraView = ( {
       onClassifierError,
       onDeviceNotSupported,
       onCaptureError,
-      onCameraError
-    ]
+      onCameraError,
+    ],
   );
 
   // Note that overflow-hidden handles what seems to be a bug in android in

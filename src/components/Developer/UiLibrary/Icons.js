@@ -1,7 +1,7 @@
 import {
   Body1,
   INatIcon,
-  ScrollViewWrapper
+  ScrollViewWrapper,
 } from "components/SharedComponents";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import { View } from "components/styledComponents";

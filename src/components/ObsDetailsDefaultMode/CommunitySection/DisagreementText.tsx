@@ -11,15 +11,15 @@ interface Props {
     preferred_common_name?: string;
     rank: string;
     rank_level: number;
-  },
-  username: string,
-  withdrawn?: boolean
+  };
+  username: string;
+  withdrawn?: boolean;
 }
 
 // TODO replace when we've properly typed Realm object
 interface User {
   prefers_common_names?: boolean;
-  prefers_scientific_name_first?: boolean
+  prefers_scientific_name_first?: boolean;
 }
 
 const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
@@ -40,7 +40,7 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
     currentUser?.prefers_common_names,
     currentUser?.prefers_scientific_name_first,
     taxon,
-    withdrawn
+    withdrawn,
   ] );
 
   return (
@@ -55,7 +55,7 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
         i18nKey="Disagreement"
         values={{ username }}
         components={[
-          showTaxonName( Body4 )
+          showTaxonName( Body4 ),
         ]}
       />
     </Body4>

@@ -5,20 +5,20 @@ import React from "react";
 interface Props {
   commonName: string;
   scientificNameFirst?: boolean;
-  isCurrentTaxon?: boolean
+  isCurrentTaxon?: boolean;
 }
 
 const TaxonomyCommonName = ( {
   commonName,
   scientificNameFirst,
-  isCurrentTaxon
+  isCurrentTaxon,
 }: Props ) => (
   <Body2
     className={
       classnames( {
         "font-bold mr-1": !scientificNameFirst,
         "text-inatGreen": isCurrentTaxon,
-        underline: !isCurrentTaxon && !scientificNameFirst
+        underline: !isCurrentTaxon && !scientificNameFirst,
       } )
     }
   >

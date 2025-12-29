@@ -1,4 +1,3 @@
-// @flow
 import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import {
   Body1,
@@ -9,17 +8,16 @@ import {
   List2,
   OfflineNotice,
   ScrollViewWrapper,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 // eslint-disable-next-line max-len
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 import colors from "styles/tailwindColors";
 
-const titleOption = option => {
+const titleOption = ( option: string ) => {
   switch ( option ) {
     case "research":
       return t( "Data-quality-assessment-title-research" );
@@ -30,7 +28,7 @@ const titleOption = option => {
   }
 };
 
-const titleDescription = option => {
+const titleDescription = ( option: string ) => {
   switch ( option ) {
     case "research":
       return t( "Data-quality-assessment-description-research" );
@@ -40,20 +38,22 @@ const titleDescription = option => {
       return t( "Data-quality-assessment-description-casual" );
   }
 };
-type Props = {
-  checkTest: Function,
-  ifMajorityAgree: Function,
-  isConnected?: boolean,
-  loadingAgree: boolean,
-  loadingDisagree: boolean,
-  loadingMetric: string,
-  qualityGrade: string,
-  qualityMetrics: Object,
-  recheckisConnected: Function,
-  removeMetricVote: Function,
-  removeNeedsIDVote: Function,
-  setMetricVote: Function,
-  setNeedsIDVote: Function,
+interface Props {
+  checkTest: ( metric: string ) => boolean;
+  ifMajorityAgree: ( metric: string ) => boolean | null;
+  isConnected?: boolean;
+  loadingAgree: boolean;
+  loadingDisagree: boolean;
+  loadingMetric: string;
+  qualityGrade: string;
+  // There's no type definition for qualityMetrics available yet;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  qualityMetrics: any;
+  recheckisConnected: ( ) => void;
+  removeMetricVote: ( ) => void;
+  removeNeedsIDVote: ( ) => void;
+  setMetricVote: ( ) => void;
+  setNeedsIDVote: ( ) => void;
 }
 
 const DataQualityAssessment = ( {
@@ -69,14 +69,14 @@ const DataQualityAssessment = ( {
   removeMetricVote,
   removeNeedsIDVote,
   setMetricVote,
-  setNeedsIDVote
-}: Props ): Node => {
+  setNeedsIDVote,
+}: Props ) => {
   const isResearchGrade = qualityGrade === "research";
   const sectionClass = "flex-row my-[14px] space-x-[11px]";
   const voteClass = "flex-row mr-[15px] my-[7px] justify-between";
   const listTextClass = "flex-row shrink space-x-[11px] mr-[11px] items-center";
 
-  const renderMetricIndicator = metric => {
+  const renderMetricIndicator = ( metric: string ) => {
     const ifAgree = ifMajorityAgree( metric );
     if ( ifAgree || ifAgree === null ) {
       return (
@@ -97,7 +97,7 @@ const DataQualityAssessment = ( {
     );
   };
 
-  const renderIndicator = metric => {
+  const renderIndicator = ( metric: string ) => {
     const ifAgree = checkTest( metric );
     if ( ifAgree || ifAgree === null ) {
       return (
@@ -177,7 +177,7 @@ const DataQualityAssessment = ( {
           {renderIndicator( "rank" )}
           <Body3>
             {t(
-              "Data-quality-assessment-community-taxon-species-level-or-lower"
+              "Data-quality-assessment-community-taxon-species-level-or-lower",
             )}
           </Body3>
         </View>
@@ -292,7 +292,7 @@ const DataQualityAssessment = ( {
       <View className="flex-row items-center mt-5 py-2 pl-4 pr-[30px] bg-lightGray">
         <Body3 className="flex-1 mr-1">
           {t(
-            "Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence"
+            "Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence",
           )}
         </Body3>
         <DQAVoteButtons

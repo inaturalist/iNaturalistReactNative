@@ -4,7 +4,7 @@ import {
   ButtonBar,
   DisplayTaxon,
   INatIcon,
-  List2
+  List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -40,7 +40,7 @@ const AgreeWithIDSheet = ( {
   hidden,
   identification,
   onAgree,
-  onPressClose
+  onPressClose,
 }: Props ): Node => {
   const buttons = [
     {
@@ -51,8 +51,8 @@ const AgreeWithIDSheet = ( {
       testID: "ObsDetail.AgreeId.cvSuggestionsButton",
       accessibilityRole: "link",
       accessibilityHint: t( "Navigates-to-suggest-identification" ),
-      level: "primary"
-    }
+      level: "primary",
+    },
   ];
 
   if ( identification.body ) {
@@ -64,7 +64,7 @@ const AgreeWithIDSheet = ( {
       },
       className: "mx-2 flex-1",
       testID: "ObsDetail.AgreeId.EditCommentButton",
-      accessibilityHint: t( "Opens-edit-comment-form" )
+      accessibilityHint: t( "Opens-edit-comment-form" ),
     } );
   } else {
     buttons.unshift( {
@@ -75,7 +75,7 @@ const AgreeWithIDSheet = ( {
       },
       className: "mx-2 flex-1",
       testID: "ObsDetail.AgreeId.commentButton",
-      accessibilityHint: t( "Opens-add-comment-form" )
+      accessibilityHint: t( "Opens-add-comment-form" ),
     } );
   }
 

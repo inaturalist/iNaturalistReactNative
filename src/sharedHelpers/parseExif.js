@@ -8,7 +8,7 @@ class UsePhotoExifDateFormatError extends Error {}
 
 // https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
 Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
-  value: "UsePhotoExifDateFormatError"
+  value: "UsePhotoExifDateFormatError",
 } );
 
 // Parses EXIF date time into a date object
@@ -63,11 +63,11 @@ export const formatExifDateAsString = ( datetime: string ): string => {
 
 // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
 // in case the first photo is missing EXIF
-export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Promise<Object> => {
+export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise<Object> => {
   const unifiedExif = {};
 
   const responses = await Promise.allSettled( photoUris.map( parseExif ) );
-  const allExifPhotos: Array<{
+  const allExifPhotos: {
     latitude: number,
     longitude: number,
     positional_accuracy: number,
@@ -75,12 +75,12 @@ export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Pr
   // Flow will complain that value is undefined, but the filter call ensures
   // that it isn't
   // $FlowIgnore
-  }> = responses.filter( r => r.value ).map( r => r.value );
+  }[] = responses.filter( r => r.value ).map( r => r.value );
 
   allExifPhotos.filter( x => x ).forEach(
     currentPhotoExif => {
       const {
-        latitude, longitude, positional_accuracy: positionalAccuracy, date
+        latitude, longitude, positional_accuracy: positionalAccuracy, date,
       } = currentPhotoExif;
 
       if ( !unifiedExif.latitude ) {
@@ -95,7 +95,7 @@ export const readExifFromMultiplePhotos = async ( photoUris: Array<string> ): Pr
       if ( positionalAccuracy && !unifiedExif.positional_accuracy ) {
         unifiedExif.positional_accuracy = positionalAccuracy;
       }
-    }
+    },
   );
   return unifiedExif;
 };

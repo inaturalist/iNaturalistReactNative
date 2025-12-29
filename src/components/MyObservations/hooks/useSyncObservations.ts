@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { INatApiError } from "api/error";
 import { deleteRemoteObservation } from "api/observations";
@@ -11,7 +11,7 @@ import {
   AUTOMATIC_SYNC_IN_PROGRESS,
   BEGIN_AUTOMATIC_SYNC,
   BEGIN_MANUAL_SYNC,
-  MANUAL_SYNC_IN_PROGRESS
+  MANUAL_SYNC_IN_PROGRESS,
 } from "stores/createSyncObservationsSlice";
 import useStore from "stores/useStore";
 
@@ -22,7 +22,7 @@ const { useRealm } = RealmContext;
 
 const useSyncObservations = (
   currentUserId: number,
-  startUploadObservations: ( _skipSomeUuids: string[] | undefined ) => void
+  startUploadObservations: ( _skipSomeUuids: string[] | undefined ) => void,
 ) => {
   const { isConnected } = useNetInfo( );
   const loggedIn = !!( currentUserId );
@@ -54,8 +54,8 @@ const useSyncObservations = (
       onError: ( deleteObservationError: Error ) => {
         setDeletionError( deleteObservationError?.message );
         throw deleteObservationError;
-      }
-    }
+      },
+    },
   );
 
   const deleteLocalObservations = useCallback( async ( ) => {
@@ -99,7 +99,7 @@ const useSyncObservations = (
     deleteQueue,
     handleRemoteDeletion,
     realm,
-    startNextDeletion
+    startNextDeletion,
   ] );
 
   const fetchRemoteDeletions = useCallback( async ( ) => {
@@ -119,7 +119,7 @@ const useSyncObservations = (
       throw syncRemoteError;
     }
   }, [
-    realm
+    realm,
   ] );
 
   const fetchRemoteObservations = useCallback( async ( ) => {
@@ -138,7 +138,7 @@ const useSyncObservations = (
   }, [
     realm,
     currentUserId,
-    deletionsCompletedAt
+    deletionsCompletedAt,
   ] );
 
   const signalAborted = autoSyncAbortController && autoSyncAbortController.signal.aborted;
@@ -168,7 +168,7 @@ const useSyncObservations = (
     deleteLocalObservations,
     fetchRemoteDeletions,
     fetchRemoteObservations,
-    signalAborted
+    signalAborted,
   ] );
 
   interface Options {
@@ -211,7 +211,7 @@ const useSyncObservations = (
     fetchRemoteObservations,
     loggedIn,
     resetSyncToolbar,
-    startUploadObservations
+    startUploadObservations,
   ] );
 
   useEffect( ( ) => {
@@ -226,7 +226,7 @@ const useSyncObservations = (
   }, [syncingStatus, syncManually, setSyncingStatus] );
 
   return {
-    syncManually
+    syncManually,
   };
 };
 

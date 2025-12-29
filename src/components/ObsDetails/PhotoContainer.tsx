@@ -25,22 +25,22 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
     imageSources.push( {
       uri: photo.url,
       width: 75,
-      height: 75
+      height: 75,
     } );
     imageSources.push( {
       uri: photo.url.replace( "square", "small" ),
       width: 240,
-      height: 240
+      height: 240,
     } );
     imageSources.push( {
       uri: photo.url.replace( "square", "medium" ),
       width: 500,
-      height: 500
+      height: 500,
     } );
     imageSources.push( {
       uri: photo.url.replace( "square", "large" ),
       width: 1024,
-      height: 1024
+      height: 1024,
     } );
   }
 
@@ -52,7 +52,7 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
       className={classnames(
         "h-72",
         "w-screen",
-        loadSuccess === false && "hidden"
+        loadSuccess === false && "hidden",
       )}
       style={style}
       resizeMode="contain"
@@ -88,7 +88,7 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
       {loadSuccess === false && (
         <View className={classnames(
           "h-72",
-          "w-screen"
+          "w-screen",
         )}
         >
           <OfflineNotice

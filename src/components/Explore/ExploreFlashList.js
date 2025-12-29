@@ -1,6 +1,6 @@
 // @flow
 import {
-  ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel
+  ActivityIndicator, Body3, CustomFlashList, InfiniteScrollLoadingWheel,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
@@ -11,7 +11,7 @@ import { useTranslation } from "sharedHooks";
 type Props = {
   canFetch?: boolean,
   contentContainerStyle?: Object,
-  data: Array<Object>,
+  data: Object[],
   fetchNextPage: boolean,
   hideLoadingWheel: boolean,
   isFetchingNextPage: boolean,
@@ -39,7 +39,7 @@ const ExploreFlashList = ( {
   renderItem,
   renderItemSeparator,
   testID,
-  totalResults
+  totalResults,
 }: Props ): Node => {
   const { t } = useTranslation( );
 

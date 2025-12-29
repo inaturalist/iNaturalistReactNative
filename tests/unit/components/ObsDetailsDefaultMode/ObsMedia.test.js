@@ -19,36 +19,36 @@ const mockObservation = factory( "LocalObservation", {
         id: faker.number.int( ),
         attribution: faker.lorem.sentence( ),
         licenseCode: "cc-by-nc",
-        url: faker.image.url( )
-      }
-    } )
-  ]
+        url: faker.image.url( ),
+      },
+    } ),
+  ],
 } );
 
 const mockPhotos = _.compact(
-  Array.from( mockObservation.observationPhotos ).map( op => op.photo )
+  Array.from( mockObservation.observationPhotos ).map( op => op.photo ),
 );
 
 const expectedImageSource = [
   {
     height: 75,
     uri: mockObservation.observationPhotos[0].photo.url,
-    width: 75
+    width: 75,
   },
   {
     height: 240,
     uri: mockObservation.observationPhotos[0].photo.url,
-    width: 240
+    width: 240,
   }, {
     height: 500,
     uri: mockObservation.observationPhotos[0].photo.url,
-    width: 500
+    width: 500,
   },
   {
     height: 1024,
     uri: mockObservation.observationPhotos[0].photo.url,
-    width: 1024
-  }
+    width: 1024,
+  },
 ];
 
 describe( "ObsMedia", () => {

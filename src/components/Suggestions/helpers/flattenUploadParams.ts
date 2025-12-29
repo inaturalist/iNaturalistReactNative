@@ -7,14 +7,14 @@ const outputPath = computerVisionPath;
 
 type FlattenUploadArgs = {
   image: {
-    uri: string,
-    name: string,
-    type: string
-  }
+    uri: string;
+    name: string;
+    type: string;
+  };
 }
 
 const flattenUploadParams = async (
-  uri: string
+  uri: string,
 ): Promise<FlattenUploadArgs> => {
   await RNFS.mkdir( outputPath );
   const uploadUri = await resizeImage( uri, {
@@ -23,15 +23,15 @@ const flattenUploadParams = async (
     // and want to preserve the aspect ratio (not crunch the image down into a square)
     // for the best results
     width: 640,
-    outputPath
+    outputPath,
   } );
 
   const params: FlattenUploadArgs = {
     image: new FileUpload( {
       uri: uploadUri,
       name: "photo.jpeg",
-      type: "image/jpeg"
-    } )
+      type: "image/jpeg",
+    } ),
   };
 
   return params;

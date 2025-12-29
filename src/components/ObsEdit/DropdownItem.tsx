@@ -1,5 +1,5 @@
 import {
-  Body2, INatIcon
+  Body2, INatIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
@@ -15,7 +15,7 @@ const DropdownItem = ( {
   accessibilityLabel,
   handlePress,
   iconName,
-  text
+  text,
 }: Props ) => (
   <Pressable
     accessibilityRole="button"

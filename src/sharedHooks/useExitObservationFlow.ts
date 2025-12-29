@@ -12,10 +12,10 @@ interface ObsFlowParams {
     previousScreen?: {
       name: string;
       params: {
-        uuid?: string
-      }
-    }
-  }
+        uuid?: string;
+      };
+    };
+  };
 }
 
 interface Options {
@@ -50,14 +50,14 @@ export default function useExitObservationFlow( exitOptions ) {
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsTab",
         params: {
-          screen: "ObsList"
-        }
+          screen: "ObsList",
+        },
       } );
     }
   }, [
     navigation,
     params,
     resetObservationFlowSlice,
-    exitOptions
+    exitOptions,
   ] );
 }

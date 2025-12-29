@@ -1,11 +1,11 @@
 import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import type { ImageStyle, StyleProp } from "react-native";
+import { Image } from "react-native";
 import Photo from "realmModels/Photo";
 import type Sound from "realmModels/Sound";
 import type { RealmPhoto, RealmSound } from "realmModels/types";
 import type { ImageDimensions } from "sharedHelpers/getImageDimensions";
-import getImageDimensions from "sharedHelpers/getImageDimensions";
 
 import PhotoContainer from "./PhotoContainer";
 import SoundContainer from "./SoundContainer";
@@ -40,7 +40,7 @@ interface Props {
 
 const MasonryLayout = ( { items, onImagePress }: Props ) => {
   const [columns, setColumns] = useState<HydratedItem[][]>(
-    Array.from( { length: numColumns }, () => [] )
+    Array.from( { length: numColumns }, () => [] ),
   );
 
   useEffect( () => {
@@ -52,7 +52,7 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
         if ( isSound( item ) ) {
           return item;
         }
-        const imageDimensions = await getImageDimensions( photoUrl( item ) );
+        const imageDimensions = await Image.getSize( photoUrl( item ) );
         return Object.assign( item, imageDimensions );
       } );
 
@@ -74,13 +74,13 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
     width: "100%",
     height: undefined,
     aspectRatio: item.width / item.height,
-    marginBottom: spacing
+    marginBottom: spacing,
   } );
 
   const renderImage = (
     item: PhotoItemWithDimensions & OriginalIndex,
     index: number,
-    column: number
+    column: number,
   ) => (
     <PhotoContainer
       key={`MasonryLayout.column${column}.photo_${index}`}
@@ -103,7 +103,7 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
   const renderItem = (
     item: HydratedItem,
     index: number,
-    column: number
+    column: number,
   ) => ( isSound( item )
     ? renderSound( item, index, column )
     : renderImage( item, index, column ) );

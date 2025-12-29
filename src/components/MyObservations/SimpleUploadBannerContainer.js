@@ -4,16 +4,16 @@ import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions, PixelRatio } from "react-native";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import {
   AUTOMATIC_SYNC_IN_PROGRESS,
-  MANUAL_SYNC_IN_PROGRESS
+  MANUAL_SYNC_IN_PROGRESS,
 } from "stores/createSyncObservationsSlice";
 import {
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
-  UPLOAD_PENDING
+  UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
 
@@ -32,7 +32,7 @@ type Props = {
 const SimpleUploadBannerContainer = ( {
   handleSyncButtonPress,
   numUploadableObservations,
-  currentUser
+  currentUser,
 }: Props ): Node => {
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
@@ -54,10 +54,10 @@ const SimpleUploadBannerContainer = ( {
   // being uploaded even though 5 obs need upload
   const translationParams = useMemo( ( ) => ( {
     total: initialNumObservationsInQueue,
-    currentUploadCount: Math.min( numUploadsAttempted, initialNumObservationsInQueue )
+    currentUploadCount: Math.min( numUploadsAttempted, initialNumObservationsInQueue ),
   } ), [
     initialNumObservationsInQueue,
-    numUploadsAttempted
+    numUploadsAttempted,
   ] );
 
   const { t } = useTranslation( );
@@ -92,7 +92,7 @@ const SimpleUploadBannerContainer = ( {
   const getStatus = useCallback( ( ) => {
     const status = {
       styling: "black-on-white",
-      text: ""
+      text: "",
     };
 
     if ( manualSyncInProgress ) {
@@ -102,7 +102,7 @@ const SimpleUploadBannerContainer = ( {
 
     const deletionParams = {
       total: initialNumDeletionsInQueue,
-      currentDeleteCount
+      currentDeleteCount,
     };
     if ( initialNumDeletionsInQueue > 0 ) {
       if ( deletionsComplete ) {
@@ -147,7 +147,7 @@ const SimpleUploadBannerContainer = ( {
     t,
     translationParams,
     uploadInProgress,
-    uploadsComplete
+    uploadsComplete,
   ] );
 
   const errorText = useMemo( ( ) => {
@@ -168,7 +168,7 @@ const SimpleUploadBannerContainer = ( {
     automaticSyncInProgress,
     t,
     totalUploadErrors,
-    uploadMultiError
+    uploadMultiError,
   ] );
 
   const status = getStatus( );

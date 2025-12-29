@@ -1,12 +1,12 @@
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import {
   LOCATION_PERMISSIONS,
-  permissionResultFromMultiple
+  permissionResultFromMultiple,
 } from "components/SharedComponents/PermissionGateContainer";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   checkMultiple,
-  RESULTS
+  RESULTS,
 } from "react-native-permissions";
 
 // PermissionGate callbacks need to use useCallback, otherwise they'll
@@ -44,7 +44,7 @@ const useLocationPermission = ( ) => {
           onPermissionGranted,
           onPermissionDenied,
           onPermissionBlocked,
-          onModalHide
+          onModalHide,
         } = callbacks || {};
 
         // this prevents infinite rerenders of the LocationPermissionGate component
@@ -78,19 +78,19 @@ const useLocationPermission = ( ) => {
           />
         );
       },
-      [showPermissionGate]
+      [showPermissionGate],
     );
 
   // This gets exported and used as a dependency, so it needs to have
   // referential stability
   const requestPermissions = useCallback(
     ( ) => setShowPermissionGate( true ),
-    []
+    [],
   );
 
   const checkPermissions = useCallback( async () => {
     const permissionsResult = permissionResultFromMultiple(
-      await checkMultiple( LOCATION_PERMISSIONS )
+      await checkMultiple( LOCATION_PERMISSIONS ),
     );
     if ( permissionsResult === RESULTS.GRANTED ) {
       setHasPermissions( true );
@@ -112,7 +112,7 @@ const useLocationPermission = ( ) => {
     renderPermissionsGate,
     requestPermissions,
     hasBlockedPermissions,
-    checkPermissions
+    checkPermissions,
   };
 };
 

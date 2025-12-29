@@ -3,7 +3,7 @@ import { zustandStorage } from "stores/useStore";
 
 const DEBUG_MODE = "debugMode";
 
-const useDebugMode = ( ): { isDebug: boolean, toggleDebug: () => void } => {
+const useDebugMode = ( ): { isDebug: boolean; toggleDebug: () => void } => {
   const [isDebug, setDebug] = useState( false );
 
   useEffect( ( ) => {
@@ -22,7 +22,7 @@ const useDebugMode = ( ): { isDebug: boolean, toggleDebug: () => void } => {
 
   return {
     isDebug,
-    toggleDebug
+    toggleDebug,
   };
 };
 

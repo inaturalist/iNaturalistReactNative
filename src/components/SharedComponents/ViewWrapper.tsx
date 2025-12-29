@@ -20,13 +20,13 @@ const ViewWrapper = ( {
   isDebug,
   wrapperClassName,
   testID,
-  useTopInset = true
+  useTopInset = true,
 }: Props ) => {
   const insets = useSafeAreaInsets();
   const viewStyle = {
     paddingTop: useTopInset
       ? insets.top
-      : 0
+      : 0,
   };
   return (
     <View
@@ -36,7 +36,7 @@ const ViewWrapper = ( {
         wrapperClassName,
         isDebug
           ? "border-2 border-deepPink"
-          : null
+          : null,
       )}
       style={viewStyle}
       testID={testID}

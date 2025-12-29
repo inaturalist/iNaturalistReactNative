@@ -10,8 +10,8 @@ jest.mock( "sharedHooks/useInfiniteObservationsScroll", () => ( {
   default: () => ( {
     data: [],
     isFetchingNextPage: true,
-    fetchNextPage: mockOnEndReached
-  } )
+    fetchNextPage: mockOnEndReached,
+  } ),
 } ) );
 
 describe( "ObservationsView", () => {
@@ -20,7 +20,7 @@ describe( "ObservationsView", () => {
       <ObservationsFlashList
         hideLoadingWheel={false}
         isConnected
-      />
+      />,
     );
 
     const loadingWheel = screen.getByTestId( "InfiniteScrollLoadingWheel.loading" );
@@ -32,7 +32,7 @@ describe( "ObservationsView", () => {
       <ObservationsFlashList
         hideLoadingWheel={false}
         isConnected={false}
-      />
+      />,
     );
 
     const noInternet = screen.getByText( /An Internet connection is required/ );
@@ -44,7 +44,7 @@ describe( "ObservationsView", () => {
       <ObservationsFlashList
         hideLoadingWheel
         isConnected
-      />
+      />,
     );
 
     const footerView = screen.getByTestId( "InfiniteScrollLoadingWheel.footerView" );
@@ -59,7 +59,7 @@ describe( "ObservationsView", () => {
         isConnected
         data={[]}
         status="loading"
-      />
+      />,
     );
 
     const initialLoading = screen.getByTestId( "ObservationsFlashList.loading" );
@@ -73,7 +73,7 @@ describe( "ObservationsView", () => {
         isConnected
         data={[]}
         showNoResults
-      />
+      />,
     );
 
     const noResultsText = screen.getByText( /No results found/ );

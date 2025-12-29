@@ -1,12 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import React, { useCallback, useEffect } from "react";
 import type { RealmObservation } from "realmModels/types";
 import {
   useNavigateToObsEdit,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const SavedMatchHeaderRight = ( {
-  observation
+  observation,
 }: Props ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -35,13 +35,13 @@ const SavedMatchHeaderRight = ( {
     [
       observation,
       navigateToObsEdit,
-      t
-    ]
+      t,
+    ],
   );
 
   useEffect(
     ( ) => navigation.setOptions( { headerRight } ),
-    [headerRight, navigation]
+    [headerRight, navigation],
   );
 
   return null;

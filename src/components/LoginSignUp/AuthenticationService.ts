@@ -9,7 +9,7 @@ import {
   photoLibraryPhotosPath,
   photoUploadPath,
   rotatedOriginalPhotosPath,
-  soundUploadPath
+  soundUploadPath,
 } from "appConstants/paths";
 import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
@@ -57,7 +57,7 @@ interface AuthCache {
 const authCache: AuthCache = {
   isLoggedIn: null,
   lastChecked: null,
-  cacheTimeout: 5000
+  cacheTimeout: 5000,
 };
 
 /**
@@ -138,8 +138,8 @@ const createAPI = ( additionalHeaders?: { [header: string]: string } ) => create
   headers: {
     "User-Agent": getUserAgent(),
     "X-Installation-ID": getInstallID( ),
-    ...additionalHeaders
-  }
+    ...additionalHeaders,
+  },
 } );
 
 /**
@@ -187,13 +187,13 @@ const getUsername = async (): Promise<string> => getSensitiveItem( "username" );
  */
 const signOut = async (
   options: {
-    realm?: Realm,
-    clearRealm?: boolean,
-    queryClient?: QueryClient
+    realm?: Realm;
+    clearRealm?: boolean;
+    queryClient?: QueryClient;
   } = {
     clearRealm: false,
-    queryClient: undefined
-  }
+    queryClient: undefined,
+  },
 ) => {
   // This makes sure also any cookies will be deleted too (MOB-589)
   const apiClient = createAPI();
@@ -256,7 +256,7 @@ const encodeJWT = ( payload: object, key: string, algorithm?: string ) => {
     algorithm,
     JSON.stringify( { alg: algorithm, typ: "JWT" } ),
     JSON.stringify( payload ),
-    key
+    key,
   );
 };
 
@@ -268,7 +268,7 @@ const encodeJWT = ( payload: object, key: string, algorithm?: string ) => {
 const getAnonymousJWT = (): string => {
   const claims = {
     application: Platform.OS,
-    exp: Date.now() / 1000 + 300
+    exp: Date.now() / 1000 + 300,
   };
 
   return encodeJWT( claims, Config.JWT_ANONYMOUS_API_SECRET || "not-a-real-secret", "HS512" );
@@ -283,7 +283,7 @@ const getAnonymousJWT = (): string => {
  */
 const getJWT = async (
   allowAnonymousJWT = false,
-  logContext: string | null = null
+  logContext: string | null = null,
 ): Promise<string | null> => {
   let jwtToken: string | undefined = await getSensitiveItem( "jwtToken" );
   const storedJwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
@@ -339,7 +339,7 @@ const getJWT = async (
     if ( !response.ok ) {
       logger.error(
         `JWT [${logContext}]: Token refresh failed - status: ${response.status}`,
-        `- originalError: ${response.originalError} - problem: ${response.problem}`
+        `- originalError: ${response.originalError} - problem: ${response.problem}`,
       );
       // this deletes the user JWT and saved login details when a user is not
       // actually signed in anymore for example, if they installed, deleted,
@@ -376,7 +376,7 @@ const getJWT = async (
 const showErrorAlert = ( errorText: string ) => {
   Alert.alert(
     "",
-    errorText
+    errorText,
   );
 };
 
@@ -412,7 +412,7 @@ interface UserDetails {
 
 async function afterVerifyCredentials(
   tokenResponse: ApiResponse<OauthTokenResponse>,
-  apiClient: ApisauceInstance
+  apiClient: ApisauceInstance,
 ): Promise<UserDetails | null> {
   if ( !tokenResponse.ok ) {
     showErrorAlert( errorDescriptionFromResponse( tokenResponse ) );
@@ -430,9 +430,9 @@ async function afterVerifyCredentials(
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "User-Agent": getUserAgent( )
-      }
-    }
+        "User-Agent": getUserAgent( ),
+      },
+    },
   );
 
   if ( !usersEditResponse.ok ) {
@@ -441,7 +441,7 @@ async function afterVerifyCredentials(
       console.error(
         "verifyCredentials failed when calling /users/edit.json - ",
         usersEditResponse.problem,
-        usersEditResponse.status
+        usersEditResponse.status,
       );
     }
 
@@ -457,7 +457,7 @@ async function afterVerifyCredentials(
   return {
     accessToken,
     username: iNatUsername,
-    userId: iNatID
+    userId: iNatID,
   };
 }
 
@@ -471,7 +471,7 @@ async function afterVerifyCredentials(
  */
 async function verifyCredentials(
   username: string,
-  password: string
+  password: string,
 ): Promise<UserDetails | null> {
   const formData = {
     format: "json",
@@ -480,7 +480,7 @@ async function verifyCredentials(
     client_secret: Config.OAUTH_CLIENT_SECRET,
     password,
     username,
-    locale: i18next.language
+    locale: i18next.language,
   };
 
   const apiClient = createAPI();
@@ -517,13 +517,13 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
   // try to fetch user data (especially for loading user icon) from userMe
   const apiToken = await getJWT( );
   const options = {
-    api_token: apiToken
+    api_token: apiToken,
   };
   const remoteUser = await fetchUserMe( { }, options ) as ApiUser;
   const localUser = remoteUser
     ? {
       ...remoteUser,
-      signedIn: true
+      signedIn: true,
     }
     : currentUser;
 
@@ -550,7 +550,7 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
 const authenticateUser = async (
   username: string,
   password: string,
-  realm: Realm
+  realm: Realm,
 ): Promise<boolean> => {
   const userDetails = await verifyCredentials( username, password );
 
@@ -560,7 +560,7 @@ const authenticateUser = async (
 async function authenticateUserByAssertion(
   assertionType: "apple" | "google",
   assertion: string,
-  realm: Realm
+  realm: Realm,
 ) {
   const apiClient = createAPI( { Accept: "application/json" } );
   const formData = {
@@ -568,18 +568,18 @@ async function authenticateUserByAssertion(
     client_secret: Config.OAUTH_CLIENT_SECRET,
     locale: i18next.language,
     assertion,
-    assertion_type: assertionType
+    assertion_type: assertionType,
   };
   const tokenResponse = await apiClient.post<OauthTokenResponse>(
     "/oauth/assertion_token",
-    formData
+    formData,
   );
   const userDetails = await afterVerifyCredentials( tokenResponse, apiClient );
   return afterAuthenticateUser( userDetails, realm );
 }
 
 interface CreateUserResponse {
-  errors?: string[]
+  errors?: string[];
 }
 
 /**
@@ -599,8 +599,8 @@ const registerUser = async ( user: { password: string } ) => {
     user: {
       ...user,
       password_confirmation: user.password,
-      locale: locales[0].languageCode
-    }
+      locale: locales[0].languageCode,
+    },
   };
 
   const api = createAPI();
@@ -610,7 +610,7 @@ const registerUser = async ( user: { password: string } ) => {
     console.error(
       "registerUser failed when calling /users.json - ",
       response.problem,
-      response.status
+      response.status,
     );
     return response.data?.errors?.[0];
   }
@@ -637,8 +637,8 @@ interface ChangePasswordResponse {
 const resetPassword = async ( email: string ) => {
   const formData = {
     user: {
-      email
-    }
+      email,
+    },
   };
 
   const api = createAPI( );
@@ -664,7 +664,7 @@ const emailAvailable = async ( email: string ) => {
   // try to fetch user data (especially for loading user icon) from userMe
   const apiToken = await getAnonymousJWT( );
   const options = {
-    api_token: apiToken
+    api_token: apiToken,
   };
   const response = await fetchUserEmailAvailable( email, options ) as { available: boolean };
   return response?.available;
@@ -683,5 +683,5 @@ export {
   isLoggedIn,
   registerUser,
   resetPassword,
-  signOut
+  signOut,
 };

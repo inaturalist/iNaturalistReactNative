@@ -12,11 +12,11 @@ interface Props extends TextInputProps {
 
 const CONTENT_STYLE = {
   top: 2,
-  lineHeight: 18
+  lineHeight: 18,
 };
 
 const OUTLINE_STYLE = {
-  borderRadius: 8
+  borderRadius: 8,
 };
 
 const LoginSignUpInputField = forwardRef( ( {
@@ -28,7 +28,7 @@ const LoginSignUpInputField = forwardRef( ( {
   onChangeText,
   secureTextEntry = false,
   testID,
-  textContentType
+  textContentType,
 }: Props, ref: Ref<RNTextInput> ) => (
   <View className="mx-2 mt-[20px]">
     <Heading4 className="color-white mb-[12px]">

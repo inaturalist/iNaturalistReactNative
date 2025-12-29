@@ -3,7 +3,7 @@ import {
   mockSortDevices,
   mockUseCameraDevice,
   mockUseCameraDevices,
-  mockUseCameraFormat
+  mockUseCameraFormat,
 } from "tests/vision-camera/vision-camera";
 
 export const Camera = mockCamera;
@@ -12,6 +12,6 @@ export const useCameraDevice = mockUseCameraDevice;
 export const useCameraDevices = mockUseCameraDevices;
 export const useCameraFormat = mockUseCameraFormat;
 export const VisionCameraProxy = {
-  initFrameProcessorPlugin: jest.fn( )
+  initFrameProcessorPlugin: jest.fn( ),
 };
 export const useFrameProcessor = jest.fn( );

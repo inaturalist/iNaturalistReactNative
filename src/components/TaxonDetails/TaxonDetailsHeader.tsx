@@ -6,22 +6,22 @@ import {
   Heading3,
   INatIconButton,
   KebabMenu,
-  OverlayHeader
+  OverlayHeader,
 } from "components/SharedComponents";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import _ from "lodash";
 import React, { useState } from "react";
 import {
   Alert,
   Platform,
-  Share
+  Share,
 } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 const TAXON_URL = "https://www.inaturalist.org/taxa";
@@ -43,7 +43,7 @@ const TaxonDetailsHeader = ( {
   taxon,
   hasTitle,
   headerRightType,
-  onPressSearch
+  onPressSearch,
 }: Props ) => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const { t } = useTranslation( );
@@ -74,7 +74,7 @@ const TaxonDetailsHeader = ( {
           onPress={async ( ) => {
             const sharingOptions = {
               url: "",
-              message: ""
+              message: "",
             };
 
             if ( Platform.OS === "ios" ) {

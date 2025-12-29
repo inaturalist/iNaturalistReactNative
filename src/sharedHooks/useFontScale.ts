@@ -1,11 +1,11 @@
 import {
   useEffect,
-  useState
+  useState,
 } from "react";
 import DeviceInfo from "react-native-device-info";
 
 const useFontScale = ( ): {
-  isLargeFontScale: boolean
+  isLargeFontScale: boolean;
 } => {
   const [isLargeFontScale, setIsLargeFontScale] = useState<boolean>( false );
 
@@ -17,7 +17,7 @@ const useFontScale = ( ): {
   }, [] );
 
   return {
-    isLargeFontScale
+    isLargeFontScale,
   };
 };
 

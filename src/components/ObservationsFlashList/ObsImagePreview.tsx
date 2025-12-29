@@ -11,7 +11,9 @@ import colors from "styles/tailwindColors";
 import ObsImage from "./ObsImage";
 
 const ICON_DROP_SHADOW = getShadow( {
-  offsetHeight: 1
+  offsetHeight: 1,
+  shadowOpacity: 1,
+  shadowRadius: 1,
 } );
 
 interface Props extends PropsWithChildren {
@@ -35,6 +37,7 @@ interface Props extends PropsWithChildren {
   useShortGradient?: boolean;
   white?: boolean;
   width?: string;
+  hideGradientOverlay?: boolean;
 }
 
 const ObsImagePreview = ( {
@@ -56,7 +59,8 @@ const ObsImagePreview = ( {
   testID,
   useShortGradient,
   white = false,
-  width = "w-[62px]"
+  width = "w-[62px]",
+  hideGradientOverlay = false,
 }: Props ) => {
   const borderRadius = isSmall
     ? "rounded-lg"
@@ -69,7 +73,7 @@ const ObsImagePreview = ( {
     borderRadius,
     height,
     className,
-    width
+    width,
   ];
 
   const renderPhotoCount = useCallback( ( ) => {
@@ -83,8 +87,9 @@ const ObsImagePreview = ( {
             "right-1",
             isMultiplePhotosTop
               ? "top-1"
-              : "bottom-1"
+              : "bottom-1",
           )}
+          style={ICON_DROP_SHADOW}
         >
           <INatIcon name="photos-outline" color={colors.white} size={16} />
         </View>
@@ -99,8 +104,9 @@ const ObsImagePreview = ( {
           "p-2",
           isMultiplePhotosTop
             ? "top-0"
-            : "bottom-0"
+            : "bottom-0",
         )}
+        style={ICON_DROP_SHADOW}
       >
         { obsPhotosCount !== 0
           && <PhotoCount count={obsPhotosCount} /> }
@@ -110,7 +116,7 @@ const ObsImagePreview = ( {
     hidePhotoCount,
     isMultiplePhotosTop,
     isSmall,
-    obsPhotosCount
+    obsPhotosCount,
   ] );
 
   const renderSelectable = useCallback( ( ) => {
@@ -124,8 +130,8 @@ const ObsImagePreview = ( {
             {
               "bg-white": selected,
               "w-[24px] h-[24px]": selected,
-              "w-[24px] h-[24px] border-2 border-white": !selected
-            }
+              "w-[24px] h-[24px] border-2 border-white": !selected,
+            },
           )}
           style={ICON_DROP_SHADOW}
         >
@@ -139,6 +145,7 @@ const ObsImagePreview = ( {
   }, [selectable, selected] );
 
   const renderGradient = useCallback( ( ) => {
+    if ( hideGradientOverlay ) return null;
     if ( isSmall ) return null;
     if ( useShortGradient ) {
       return (
@@ -158,7 +165,7 @@ const ObsImagePreview = ( {
         end={{ x: 0, y: 0.75 }}
       />
     );
-  }, [isSmall, useShortGradient] );
+  }, [isSmall, useShortGradient, hideGradientOverlay] );
 
   const renderSoundIcon = useCallback( ( ) => {
     if ( !hasSound ) return null;
@@ -177,7 +184,7 @@ const ObsImagePreview = ( {
     return (
       <View
         className={classNames( "absolute left-0 top-0 p-1", {
-          "p-2": !isSmall
+          "p-2": !isSmall,
         } )}
         style={ICON_DROP_SHADOW}
       >

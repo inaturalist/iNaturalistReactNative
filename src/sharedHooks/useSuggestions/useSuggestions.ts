@@ -1,12 +1,15 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import _ from "lodash";
 import { useMemo } from "react";
 
 import filterSuggestions from "./filterSuggestions";
+import type { UseSuggestionsOptions, UseSuggestionsResult } from "./types";
 import useOfflineSuggestions from "./useOfflineSuggestions";
 import useOnlineSuggestions from "./useOnlineSuggestions";
 
-export const useSuggestions = ( photoUri, options ) => {
+export const useSuggestions = (
+  photoUri: string,
+  options: UseSuggestionsOptions,
+): UseSuggestionsResult => {
   const { isConnected } = useNetInfo( );
   const {
     shouldFetchOnlineSuggestions,
@@ -14,7 +17,7 @@ export const useSuggestions = ( photoUri, options ) => {
     onFetched,
     scoreImageParams,
     queryKey,
-    onlineSuggestionsAttempted
+    onlineSuggestionsAttempted,
   } = options;
 
   const {
@@ -23,13 +26,13 @@ export const useSuggestions = ( photoUri, options ) => {
     onlineSuggestions,
     refetch: refetchOnlineSuggestions,
     timedOut,
-    resetTimeout
+    resetTimeout,
   } = useOnlineSuggestions( {
     onFetchError,
     onFetched,
     scoreImageParams,
     queryKey,
-    shouldFetchOnlineSuggestions
+    shouldFetchOnlineSuggestions,
   } );
 
   const onlineSuggestionsResponse = {
@@ -37,7 +40,7 @@ export const useSuggestions = ( photoUri, options ) => {
     onlineSuggestionsError,
     onlineSuggestions,
     timedOut,
-    resetTimeout
+    resetTimeout,
   };
 
   // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
@@ -53,13 +56,13 @@ export const useSuggestions = ( photoUri, options ) => {
 
   const {
     offlineSuggestions,
-    refetchOfflineSuggestions
+    refetchOfflineSuggestions,
   } = useOfflineSuggestions( photoUri, {
     onFetched,
     onFetchError,
     latitude: scoreImageParams?.lat,
     longitude: scoreImageParams?.lng,
-    tryOfflineSuggestions
+    tryOfflineSuggestions,
   } );
 
   const refetchSuggestions = () => {
@@ -72,17 +75,17 @@ export const useSuggestions = ( photoUri, options ) => {
   };
 
   const usingOfflineSuggestions = tryOfflineSuggestions || (
-    offlineSuggestions?.results?.length > 0
+    ( offlineSuggestions?.results?.length || 0 ) > 0
       && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
   );
 
-  const hasOnlineSuggestionResults = onlineSuggestions?.results?.length > 0;
+  const hasOnlineSuggestionResults = ( onlineSuggestions?.results?.length || 0 ) > 0;
 
   const unfilteredSuggestions = useMemo(
     ( ) => ( hasOnlineSuggestionResults
-      ? onlineSuggestions.results || []
-      : offlineSuggestions.results || [] ),
-    [hasOnlineSuggestionResults, onlineSuggestions, offlineSuggestions]
+      ? onlineSuggestions?.results || []
+      : offlineSuggestions?.results || [] ),
+    [hasOnlineSuggestionResults, onlineSuggestions, offlineSuggestions],
   );
 
   const commonAncestor = hasOnlineSuggestionResults
@@ -93,12 +96,12 @@ export const useSuggestions = ( photoUri, options ) => {
   const suggestions = useMemo(
     ( ) => filterSuggestions(
       unfilteredSuggestions,
-      commonAncestor
+      commonAncestor,
     ),
     [
       unfilteredSuggestions,
-      commonAncestor
-    ]
+      commonAncestor,
+    ],
   );
 
   return {
@@ -106,7 +109,7 @@ export const useSuggestions = ( photoUri, options ) => {
     suggestions,
     usingOfflineSuggestions,
     urlWillCrashOffline,
-    refetchSuggestions
+    refetchSuggestions,
   };
 };
 

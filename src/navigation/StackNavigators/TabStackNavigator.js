@@ -15,6 +15,7 @@ import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjec
 import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Help from "components/Help/Help";
+import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import Notifications from "components/Notifications/Notifications";
 import DQAContainer from "components/ObsDetails/DQAContainer";
@@ -38,16 +39,15 @@ import {
   fadeInComponent,
   hideHeader,
   hideHeaderLeft,
-  isDrawerScreen,
   preventSwipeToGoBack,
   removeBottomBorder,
   showHeader,
-  showLongHeader
+  showLongHeader,
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
 import {
-  useLayoutPrefs
+  useLayoutPrefs,
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -124,16 +124,12 @@ const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
-const FadeInNotifications = ( ) => fadeInComponent( <Notifications /> );
-const FadeInRootExplore = ( ) => fadeInComponent( <RootExploreContainer /> );
-const FadeInMyObservations = ( ) => fadeInComponent( <MyObservationsContainer /> );
 const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
-const FadeInExploreContainer = ( ) => fadeInComponent( <ExploreContainer /> );
 const FadeInObsDetailsDefaultModeScreensWrapper = ( ) => fadeInComponent(
-  <ObsDetailsDefaultModeScreensWrapper />
+  <ObsDetailsDefaultModeScreensWrapper />,
 );
 const FadeInObsDetailsContainer = ( ) => fadeInComponent(
-  <ObsDetailsContainer />
+  <ObsDetailsContainer />,
 );
 const FadeInDQAContainer = ( ) => fadeInComponent( <DQAContainer /> );
 const FadeInProjectsContainer = ( ) => fadeInComponent( <ProjectsContainer /> );
@@ -153,49 +149,49 @@ const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,
   headerTitle: notificationsTitle,
   headerTitleAlign: "center",
-  animation: "none"
 };
 
 const DQA_OPTIONS = {
   ...showLongHeader,
-  headerTitle: dqaTitle
+  headerTitle: dqaTitle,
 };
 
 const USER_PROFILE_OPTIONS = {
   ...showHeader,
   ...blankHeaderTitle,
-  ...removeBottomBorder
+  ...removeBottomBorder,
 };
 
 const LIST_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
-  lazy: true
+  lazy: true,
 };
 
 const OBS_DETAILS_OPTIONS = {
   ...showHeader,
-  ...blankHeaderTitle
+  ...blankHeaderTitle,
 };
 
 const Stack = createNativeStackNavigator( );
 
-export const SCREEN_NAME_OBS_LIST = "ObsList";
+export const SCREEN_NAME_MENU = "Menu";
 export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
+export const SCREEN_NAME_OBS_LIST = "ObsList";
 export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
 
 const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
   const initialRouteName = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
   const {
-    isDefaultMode
+    isDefaultMode,
   } = useLayoutPrefs( );
   return (
     <Stack.Navigator
       initialRouteName={initialRouteName}
       screenOptions={{
         headerBackButtonDisplayMode: "minimal",
-        headerTintColor: colors.darkGray
+        headerTintColor: colors.darkGray,
       }}
     >
       {/* Screens with no header */}
@@ -203,24 +199,32 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         screenOptions={{ ...hideHeader }}
       >
         <Stack.Screen
-          name={SCREEN_NAME_OBS_LIST}
-          component={FadeInMyObservations}
+          name={SCREEN_NAME_MENU}
+          component={Menu}
           options={{
             ...preventSwipeToGoBack,
-            animation: "none"
+            animation: "none",
+          }}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME_OBS_LIST}
+          component={MyObservationsContainer}
+          options={{
+            ...preventSwipeToGoBack,
+            animation: "none",
           }}
         />
         <Stack.Screen
           name={SCREEN_NAME_ROOT_EXPLORE}
-          component={FadeInRootExplore}
+          component={RootExploreContainer}
           options={{
             ...preventSwipeToGoBack,
-            animation: "none"
+            animation: "none",
           }}
         />
         <Stack.Screen
           name="Explore"
-          component={FadeInExploreContainer}
+          component={ExploreContainer}
         />
         {isDefaultMode
           ? (
@@ -240,7 +244,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
       </Stack.Group>
       <Stack.Screen
         name={SCREEN_NAME_NOTIFICATIONS}
-        component={FadeInNotifications}
+        component={Notifications}
         options={NOTIFICATIONS_OPTIONS}
       />
       <Stack.Screen
@@ -257,23 +261,22 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
       {/* Project Stack Group */}
       <Stack.Group
         screenOptions={{
-          ...blankHeaderTitle
+          ...blankHeaderTitle,
         }}
       >
         <Stack.Screen
           name="Projects"
           component={FadeInProjectsContainer}
           options={{
-            ...isDrawerScreen,
             ...removeBottomBorder,
-            ...preventSwipeToGoBack
+            ...preventSwipeToGoBack,
           }}
         />
         <Stack.Screen
           name="ProjectDetails"
           component={FadeInProjectDetailsContainer}
           options={{
-            ...showHeader
+            ...showHeader,
           }}
         />
         <Stack.Screen
@@ -281,7 +284,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
           component={FadeInProjectRequirements}
           options={{
             ...showHeader,
-            headerTitle: projectRequirementsTitle
+            headerTitle: projectRequirementsTitle,
           }}
         />
         <Stack.Screen
@@ -308,10 +311,9 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
       {/* Developer Stack Group */}
       <Stack.Group
         screenOptions={{
-          ...isDrawerScreen,
           headerStyle: { backgroundColor: "deeppink", color: "white" },
           headerTintColor: "white",
-          headerTitleStyle: { color: "white" }
+          headerTitleStyle: { color: "white" },
         }}
       >
         <Stack.Screen
@@ -340,67 +342,63 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
       <Stack.Group
         screenOptions={{
           headerTitleAlign: "center",
-          ...removeBottomBorder
+          ...removeBottomBorder,
         }}
       >
         <Stack.Screen
           name="ExploreTaxonSearch"
           component={ExploreTaxonSearch}
           options={{
-            headerTitle: taxonSearchTitle
+            headerTitle: taxonSearchTitle,
           }}
         />
         <Stack.Screen
           name="ExploreLocationSearch"
           component={ExploreLocationSearch}
           options={{
-            headerTitle: locationSearchTitle
+            headerTitle: locationSearchTitle,
           }}
         />
         <Stack.Screen
           name="ExploreUserSearch"
           component={ExploreUserSearch}
           options={{
-            headerTitle: userSearchTitle
+            headerTitle: userSearchTitle,
           }}
         />
         <Stack.Screen
           name="ExploreProjectSearch"
           component={ExploreProjectSearch}
           options={{
-            headerTitle: projectSearchTitle
+            headerTitle: projectSearchTitle,
           }}
         />
         <Stack.Screen
           name="Settings"
           component={FadeInSettings}
           options={{
-            ...isDrawerScreen,
-            headerTitle: settingsTitle
+            headerTitle: settingsTitle,
           }}
         />
         <Stack.Screen
           name="About"
           component={FadeInAbout}
           options={{
-            ...isDrawerScreen,
-            headerTitle: aboutTitle
+            headerTitle: aboutTitle,
           }}
         />
         <Stack.Screen
           name="Donate"
           component={FadeInDonate}
           options={{
-            ...isDrawerScreen,
-            headerTitle: donateTitle
+            headerTitle: donateTitle,
           }}
         />
         <Stack.Screen
           name="Help"
           component={FadeInHelp}
           options={{
-            ...isDrawerScreen,
-            headerTitle: helpTitle
+            headerTitle: helpTitle,
           }}
         />
       </Stack.Group>
