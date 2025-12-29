@@ -66,90 +66,80 @@ const Match = ( {
 
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
+  const hasNoSuggestions = !topSuggestion && otherSuggestions.length === 0;
+  const hasOnlyOtherSuggestions = !topSuggestion && otherSuggestions.length > 0;
 
-  // In case there are no suggestions, at all
-  if ( !topSuggestion && otherSuggestions.length === 0 ) {
-    return (
+  const headerContent = suggestionsLoading
+    ? <ActivityIndicator size={33} />
+    : (
       <>
-        <ScrollViewWrapper scrollRef={scrollRef}>
-          <View className={matchCardClassTop}>
-            {
-              suggestionsLoading
-                ? (
-                  <ActivityIndicator size={33} />
-                )
-                : (
-                  <Body2>
-                    {t( "The-AI-is-not-confident-Upload-to-ask-the-community" )}
-                  </Body2>
-                )
-            }
-          </View>
-          <PhotosSection
-            taxon={taxon}
-            obsPhotos={obsPhotos}
-            navToTaxonDetails={navToTaxonDetails}
-          />
-          { !suggestionsLoading
-          && (
-            <View className="mt-5">
-              <Heading3 className="mx-5">
-                {t( "Do-you-know-what-group-this-is-in" )}
-              </Heading3>
-              <IconicSuggestionsScroll
-                iconicTaxonChosen={iconicTaxon}
-                onIconicTaxonChosen={setIconicTaxon}
-              />
-              <Body2 className="mx-5 my-[30px]">
-                {t( "If-you-save-this-observation-and-upload-it-to-iNaturalist" )}
-              </Body2>
-              <Body2 className="mx-3 my-[30px]">
-                {t( "Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer" )}
-              </Body2>
-              {!latitude && (
-                <Button
-                  className="mx-4 mb-[30px]"
-                  level="neutral"
-                  text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
-                  loading={isFetchingLocation}
-                  disabled={isFetchingLocation}
-                  onPress={handleAddLocationPressed}
-                  accessibilityLabel={t( "Edit-location" )}
-                  accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
-                />
-              )}
-            </View>
-          )}
-        </ScrollViewWrapper>
-        <SaveDiscardButtons
-          handlePress={handleSaveOrDiscardPress}
-        />
+        {topSuggestion && <MatchHeader topSuggestion={topSuggestion} />}
+        {hasNoSuggestions && (
+          <Body2>
+            {t( "The-AI-is-not-confident-Upload-to-ask-the-community" )}
+          </Body2>
+        )}
+        {hasOnlyOtherSuggestions && (
+          <Body2>
+            {t( "The-AI-is-not-confident-It-may-be-one-of-the-IDs-below" )}
+          </Body2>
+        )}
       </>
     );
-  }
-  // In case there are suggestions but no top suggestion
-  if ( !topSuggestion ) {
-    return (
-      <>
-        <ScrollViewWrapper scrollRef={scrollRef}>
-          <View className={matchCardClassTop}>
+
+  return (
+    <>
+      <ScrollViewWrapper scrollRef={scrollRef}>
+        <View className={matchCardClassTop}>
+          {headerContent}
+        </View>
+        <PhotosSection
+          representativePhoto={topSuggestion?.taxon?.representative_photo}
+          taxon={taxon}
+          obsPhotos={obsPhotos}
+          navToTaxonDetails={navToTaxonDetails}
+        />
+        {topSuggestion && (
+          <>
+            <View className="border-[1.5px] border-white" />
+            {!latitude
+              ? (
+                <EmptyMapSection
+                  handleAddLocationPressed={handleAddLocationPressed}
+                  isFetchingLocation={isFetchingLocation}
+                />
+              )
+              : (
+                <MapSection observation={observation} taxon={taxon} />
+              )}
+            <LocationSection
+              belongsToCurrentUser
+              observation={observation}
+            />
+            <View className={matchCardClassBottom} />
             {
-              suggestionsLoading
-                ? (
-                  <ActivityIndicator size={33} />
-                )
-                : (
-                  <Body2>
-                    {t( "The-AI-is-not-confident-It-may-be-one-of-the-IDs-below" )}
-                  </Body2>
-                )
+              isConnected && (
+                <Button
+                  className="mx-4 mb-[30px]"
+                  level="primary"
+                  text={taxon?.rank_level === 10
+                    ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
+                    : t( "LEARN-MORE-ABOUT-THIS-GROUP" )}
+                  onPress={navToTaxonDetails}
+                  accessibilityHint={t( "Navigates-to-taxon-details" )}
+                />
+              )
             }
-          </View>
-          <PhotosSection
-            taxon={taxon}
-            obsPhotos={obsPhotos}
-            navToTaxonDetails={navToTaxonDetails}
-          />
+            <View className="mb-[30px]">
+              <AdditionalSuggestionsScroll
+                onSuggestionChosen={onSuggestionChosen}
+                otherSuggestions={otherSuggestions}
+                suggestionsLoading={suggestionsLoading}
+              />
+            </View>
+          </>
+        )}
+        {hasOnlyOtherSuggestions && (
           <View className="mt-5 mb-[30px]">
             <AdditionalSuggestionsScroll
               noTopSuggestion
@@ -158,80 +148,24 @@ const Match = ( {
               suggestionsLoading={suggestionsLoading}
             />
           </View>
-          {!latitude && (
-            <Button
-              className="mx-4 mb-[30px]"
-              level="neutral"
-              text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
-              onPress={handleAddLocationPressed}
-              loading={isFetchingLocation}
-              disabled={isFetchingLocation}
-              accessibilityLabel={t( "Edit-location" )}
-              accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+        )}
+        {hasNoSuggestions && !suggestionsLoading && (
+          <View className="mt-5">
+            <Heading3 className="mx-5">
+              {t( "Do-you-know-what-group-this-is-in" )}
+            </Heading3>
+            <IconicSuggestionsScroll
+              iconicTaxonChosen={iconicTaxon}
+              onIconicTaxonChosen={setIconicTaxon}
             />
-          )}
-        </ScrollViewWrapper>
-        <SaveDiscardButtons
-          handlePress={handleSaveOrDiscardPress}
-        />
-      </>
-    );
-  }
-
-  return (
-    <>
-      <ScrollViewWrapper scrollRef={scrollRef}>
-        <View className={matchCardClassTop}>
-          {
-            suggestionsLoading
-              ? (
-                <ActivityIndicator size={33} />
-              )
-              : <MatchHeader topSuggestion={topSuggestion} />
-          }
-        </View>
-        <PhotosSection
-          representativePhoto={topSuggestion?.taxon?.representative_photo}
-          taxon={taxon}
-          obsPhotos={obsPhotos}
-          navToTaxonDetails={navToTaxonDetails}
-        />
-        <View className="border-[1.5px] border-white" />
-        {!latitude
-          ? (
-            <EmptyMapSection
-              handleAddLocationPressed={handleAddLocationPressed}
-              isFetchingLocation={isFetchingLocation}
-            />
-          )
-          : (
-            <MapSection observation={observation} taxon={taxon} />
-          )}
-        <LocationSection
-          belongsToCurrentUser
-          observation={observation}
-        />
-        <View className={matchCardClassBottom} />
-        {
-          isConnected && (
-            <Button
-              className="mx-4 mb-[30px]"
-              level="primary"
-              text={taxon?.rank_level === 10
-                ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
-                : t( "LEARN-MORE-ABOUT-THIS-GROUP" )}
-              onPress={navToTaxonDetails}
-              accessibilityHint={t( "Navigates-to-taxon-details" )}
-            />
-          )
-        }
-        <View className="mb-[30px]">
-          <AdditionalSuggestionsScroll
-            onSuggestionChosen={onSuggestionChosen}
-            otherSuggestions={otherSuggestions}
-            suggestionsLoading={suggestionsLoading}
-          />
-        </View>
+            <Body2 className="mx-5 my-[30px]">
+              {t( "If-you-save-this-observation-and-upload-it-to-iNaturalist" )}
+            </Body2>
+            <Body2 className="mx-3 my-[30px]">
+              {t( "Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer" )}
+            </Body2>
+          </View>
+        )}
         {!latitude && (
           <Button
             className="mx-4 mb-[30px]"
