@@ -11,22 +11,22 @@ import SoundContainer from "./SoundContainer";
 
 type Props = {
   loading: boolean,
-  photos: Array<{
+  photos: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
-  sounds?: Array<{
+  }[],
+  sounds?: {
     file_url: string
-  }>
+  }[]
 }
 
 const ObsMedia = ( {
   loading,
   photos = [],
-  sounds = []
+  sounds = [],
 }: Props ): Node => {
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -45,7 +45,7 @@ const ObsMedia = ( {
       : (
         <PhotoContainer photo={item} onPress={() => setMediaViewerVisible( true )} />
       ) ),
-    [setMediaViewerVisible, items, index]
+    [setMediaViewerVisible, items, index],
   );
 
   const currentPhotoUrl = index >= photos.length

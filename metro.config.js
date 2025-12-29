@@ -10,7 +10,7 @@
 const { getDefaultConfig, mergeConfig } = require( "@react-native/metro-config" );
 
 const {
-  resolver: { sourceExts, assetExts }
+  resolver: { sourceExts, assetExts },
 } = getDefaultConfig();
 
 const localPackagePaths = [
@@ -25,7 +25,7 @@ const localPackagePaths = [
  */
 const config = {
   transformer: {
-    babelTransformerPath: require.resolve( "react-native-svg-transformer" )
+    babelTransformerPath: require.resolve( "react-native-svg-transformer/react-native" ),
   },
   resolver: {
     assetExts: assetExts.filter( ext => ext !== "svg" ),
@@ -33,9 +33,9 @@ const config = {
       process.env.MOCK_MODE === "e2e"
         ? ["e2e-mock", ...sourceExts, "svg"]
         : [...sourceExts, "svg"],
-    nodeModulesPaths: [...localPackagePaths]
+    nodeModulesPaths: [...localPackagePaths],
   },
-  watchFolders: [...localPackagePaths]
+  watchFolders: [...localPackagePaths],
 };
 
 module.exports = mergeConfig( getDefaultConfig( __dirname ), config );

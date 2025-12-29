@@ -3,7 +3,8 @@ import classNames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback, useRef, useState } from "react";
-import { Keyboard, TextInput as RNTextInput } from "react-native";
+import type { TextInput as RNTextInput } from "react-native";
+import { Keyboard } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -17,7 +18,7 @@ interface Props {
   containerClass?: string;
   handleTextChange: ( _text: string ) => void;
   hasShadow?: boolean;
-  input?: React.RefObject<RNTextInput | null> | React.MutableRefObject<RNTextInput | undefined>,
+  input?: React.RefObject<RNTextInput | null> | React.MutableRefObject<RNTextInput | undefined>;
   placeholder?: string;
   testID?: string;
   value: string;
@@ -36,7 +37,7 @@ const SearchBar = ( {
   placeholder,
   testID,
   value,
-  debounceTime = 300
+  debounceTime = 300,
 }: Props ) => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -59,7 +60,7 @@ const SearchBar = ( {
   const outlineStyle = {
     borderColor: "lightgray",
     borderRadius: 8,
-    borderWidth: 1
+    borderWidth: 1,
   } as const;
 
   const style = {
@@ -68,7 +69,7 @@ const SearchBar = ( {
       : {} ),
     fontSize: 16,
     lineHeight: 18,
-    paddingRight: 28
+    paddingRight: 28,
   } as const;
 
   // kind of tricky to change the font here:
@@ -78,9 +79,9 @@ const SearchBar = ( {
       bodyLarge:
         {
           ...theme.fonts.bodyLarge,
-          fontFamily: fontRegular
-        }
-    }
+          fontFamily: fontRegular,
+        },
+    },
   } as const;
 
   return (

@@ -1,20 +1,21 @@
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import type { RouteProp } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import { authenticateUser } from "components/LoginSignUp/AuthenticationService";
 import {
-  Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2
+  Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2,
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useRef, useState,
 } from "react";
 import { Trans } from "react-i18next";
+import type { TextInput } from "react-native";
 import {
   Platform,
-  TextInput,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
@@ -27,7 +28,7 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 const { useRealm } = RealmContext;
 
 interface Props {
-  scrollViewRef?: React.Ref
+  scrollViewRef?: React.Ref;
 }
 
 interface LoginFormParams {
@@ -37,11 +38,11 @@ interface LoginFormParams {
 }
 
 type ParamList = {
-  LoginFormParams: LoginFormParams
+  LoginFormParams: LoginFormParams;
 }
 
 const LoginForm = ( {
-  scrollViewRef
+  scrollViewRef,
 }: Props ) => {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
@@ -104,9 +105,9 @@ const LoginForm = ( {
         params: {
           screen: "ProjectDetails",
           params: {
-            id: params?.projectId
-          }
-        }
+            id: params?.projectId,
+          },
+        },
       } );
     } else {
       navigation.getParent( )?.goBack( );
@@ -115,7 +116,7 @@ const LoginForm = ( {
     navigation,
     params,
     isDefaultMode,
-    setLoggedInWhileInDefaultMode
+    setLoggedInWhileInDefaultMode,
   ] );
 
   const scrollToItem = useCallback( ( ) => {
@@ -124,7 +125,7 @@ const LoginForm = ( {
       ( _, y ) => {
         scrollViewRef.current.scrollTo( { y, animated: true } );
       },
-      () => console.log( "Failed to measure" )
+      () => console.log( "Failed to measure" ),
     );
   }, [scrollViewRef] );
 
@@ -185,7 +186,7 @@ const LoginForm = ( {
           "self-center mt-[31px] underline",
           // When the keyboard is up this pushes the form up enough to cut
           // off the username label on some devices
-          !keyboardShown && "mb-[35px]"
+          !keyboardShown && "mb-[35px]",
         )}
         i18nKey="Dont-have-an-account"
         onPress={( ) => navigation.navigate( "SignUp" )}
@@ -197,7 +198,7 @@ const LoginForm = ( {
           <Body1
             key="1"
             className="text-white font-Lato-Bold"
-          />
+          />,
         ]}
       />
     </>
@@ -280,7 +281,7 @@ const LoginForm = ( {
         {error && <Error error={error} />}
         <Button
           className={classnames( "mt-[30px]", {
-            "mt-5": error
+            "mt-5": error,
           } )}
           disabled={( !loginAgain && !email ) || !password}
           forceDark
@@ -291,7 +292,7 @@ const LoginForm = ( {
               ? currentUser.login
               : email.trim( ),
             password,
-            realm
+            realm,
           ) )}
           testID="Login.loginButton"
           text={t( "LOG-IN" )}

@@ -7,7 +7,7 @@ import { CHUCKS_PAD as sampleObservation } from "../../src/appConstants/e2e";
 const apiHost = Config.OAUTH_API_URL;
 
 const testUsernameAllowlist = [
-  "inaturalist-test"
+  "inaturalist-test",
 ];
 
 const userAgent = "iNaturalistRN/e2e";
@@ -15,14 +15,14 @@ const userAgent = "iNaturalistRN/e2e";
 inatjs.setConfig( {
   apiURL: Config.API_URL,
   writeApiURL: Config.API_URL,
-  userAgent
+  userAgent,
 } );
 
 // programatically dismisses announcements for user and resets to a lone sample observation
 // in order to set up consistent testing conditions and remove need to wait for announcements
 export default async function resetUserForTesting() {
   console.log(
-    "Test user reset: dismissing announcements and resetting observations..."
+    "Test user reset: dismissing announcements and resetting observations...",
   );
 
   if ( !testUsernameAllowlist.includes( Config.E2E_TEST_USERNAME ) ) {
@@ -35,8 +35,8 @@ export default async function resetUserForTesting() {
   const apiClient = create( {
     baseURL: apiHost,
     headers: {
-      "User-Agent": userAgent
-    }
+      "User-Agent": userAgent,
+    },
   } );
 
   await apiClient.get( "/logout" );
@@ -48,7 +48,7 @@ export default async function resetUserForTesting() {
     client_secret: Config.OAUTH_CLIENT_SECRET,
     username: Config.E2E_TEST_USERNAME,
     password: Config.E2E_TEST_PASSWORD,
-    locale: "en"
+    locale: "en",
   };
 
   const tokenResponse = await apiClient.post( "/oauth/token", formData );
@@ -59,7 +59,7 @@ export default async function resetUserForTesting() {
   const jwtResponse = await apiClient.get( "/users/api_token.json" );
 
   const opts = {
-    api_token: jwtResponse.data.api_token
+    api_token: jwtResponse.data.api_token,
   };
 
   const announcementSearchParams = {
@@ -68,13 +68,13 @@ export default async function resetUserForTesting() {
     per_page: 20,
     fields: {
       id: true,
-      dismissible: true
-    }
+      dismissible: true,
+    },
   };
 
   const announcementResponse = await inatjs.announcements.search(
     announcementSearchParams,
-    opts
+    opts,
   );
 
   const announcementIdsToDismiss = announcementResponse
@@ -85,10 +85,14 @@ export default async function resetUserForTesting() {
   console.log( `Dismissing ${announcementIdsToDismiss.length} announcements` );
 
   await Promise.all( announcementIdsToDismiss.map( async id => {
-    await inatjs.announcements.dismiss(
-      { id },
-      opts
-    );
+    try {
+      await inatjs.announcements.dismiss(
+        { id },
+        opts,
+      );
+    } catch ( _error ) {
+      console.log( `Could not delete announcement: ${id}. Moving on...` );
+    }
   } ) );
   const usersEditResponse = await apiClient.get(
     "/users/edit.json",
@@ -96,9 +100,9 @@ export default async function resetUserForTesting() {
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "User-Agent": userAgent
-      }
-    }
+        "User-Agent": userAgent,
+      },
+    },
   );
 
   const userId = usersEditResponse.data.id;
@@ -127,7 +131,7 @@ export default async function resetUserForTesting() {
     try {
       await inatjs.observations.delete(
         { uuid },
-        opts
+        opts,
       );
     } catch ( _error ) {
       console.log( `Could not delete observation: ${uuid}. Moving on...` );
@@ -138,17 +142,17 @@ export default async function resetUserForTesting() {
   const sampleObservationParams = {
     observation: {
       latitude: sampleObservation.latitude,
-      longitude: sampleObservation.longitude
-    }
+      longitude: sampleObservation.longitude,
+    },
   };
   await inatjs.observations.create(
     sampleObservationParams,
-    opts
+    opts,
   );
 
   await apiClient.get( "/logout" );
 
   console.log(
-    "Test user reset: announcements dismissed and observations reset"
+    "Test user reset: announcements dismissed and observations reset",
   );
 }

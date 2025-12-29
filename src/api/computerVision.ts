@@ -9,13 +9,13 @@ const PARAMS = {
   fields: {
     combined_score: true,
     vision_score: true,
-    taxon: Taxon.LIMITED_TAXON_FIELDS
-  }
+    taxon: Taxon.LIMITED_TAXON_FIELDS,
+  },
 };
 
 const scoreImage = async (
   params = {},
-  opts = {}
+  opts = {},
 ): Promise<object> => {
   try {
     return inatjs.computervision.score_image( { ...PARAMS, ...params }, opts );

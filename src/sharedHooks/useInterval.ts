@@ -17,10 +17,10 @@ function useInterval( callback:() => void, delay: number | null ) {
       }
     }
     if ( delay === null ) {
-      return;
+      // Satisfy the useEffect return type by returning a destructor function.
+      return () => {};
     }
     const id = setInterval( tick, delay );
-    // eslint-disable-next-line consistent-return
     return () => clearInterval( id );
   }, [delay] );
 }

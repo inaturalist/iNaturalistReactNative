@@ -3,7 +3,7 @@ import { create } from "apisauce";
 // eslint-disable-next-line import/no-cycle
 import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService";
 import Config from "react-native-config";
-import { transportFunctionType } from "react-native-logs";
+import type { transportFunctionType } from "react-native-logs";
 import { getInstallID } from "sharedHelpers/installData";
 
 const API_HOST: string
@@ -13,11 +13,11 @@ const api = create( {
   baseURL: API_HOST,
   headers: {
     "User-Agent": getUserAgent( ),
-    "X-Installation-ID": getInstallID( )
-  }
+    "X-Installation-ID": getInstallID( ),
+  },
 } );
 
-function isError( error: { message?: string, stack?: string } ) {
+function isError( error: { message?: string; stack?: string } ) {
   if ( error instanceof Error ) return true;
   if ( error?.stack && error?.message ) return true;
   return false;
@@ -71,16 +71,16 @@ const iNatLogstashTransport: transportFunctionType = async props => {
     context: props.extension,
     timestamp: new Date().toISOString(),
     error_type: errorType,
-    backtrace
+    backtrace,
   };
   try {
     await api.post( "/log", formData, {
       headers: {
         Authorization: [
           userToken,
-          anonymousToken
-        ].flat( ).join( ", " )
-      }
+          anonymousToken,
+        ].flat( ).join( ", " ),
+      },
     } );
   } catch ( e ) {
     const postLogError = e as Error;

@@ -7,13 +7,13 @@ import {
   DisplayTaxonName,
   Heading1,
   Subheading1,
-  Subheading2
+  Subheading2,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 type Props = {
@@ -25,7 +25,7 @@ type Props = {
 const CommunityTaxon = ( {
   belongsToCurrentUser,
   isSimpleMode = false,
-  observation
+  observation,
 }: Props ): Node => {
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -38,7 +38,7 @@ const CommunityTaxon = ( {
     // Ensure button mashing doesn't open multiple TaxonDetails instances
     key: `${route.key}-CommunityTaxon-TaxonDetails-${taxonId}`,
     name: "TaxonDetails",
-    params: { id: taxonId }
+    params: { id: taxonId },
   } );
 
   const showCommunityTaxon = ( ) => {

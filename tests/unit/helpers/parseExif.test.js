@@ -3,7 +3,7 @@ import {
   formatExifDateAsString,
   parseExif,
   parseExifDateToLocalTimezone,
-  readExifFromMultiplePhotos
+  readExifFromMultiplePhotos,
 } from "sharedHelpers/parseExif";
 import faker from "tests/helpers/faker";
 
@@ -21,7 +21,7 @@ const MOCK_READ_EXIF_RESPONSE = {
   longitude: EXPECTED_EXIF_LONGITUDE,
   latitude: EXPECTED_EXIF_LATITUDE,
   positional_accuracy: EXPECTED_EXIF_POSITIONAL_ACCURACY,
-  date: EXPECTED_EXIF_DATE
+  date: EXPECTED_EXIF_DATE,
 };
 const mockReadExif = jest.fn( async _photoUri => MOCK_READ_EXIF_RESPONSE );
 
@@ -73,7 +73,7 @@ describe( "readExifFromMultiplePhotos", ( ) => {
       .mockResolvedValueOnce( MOCK_READ_EXIF_RESPONSE );
     const unified = await readExifFromMultiplePhotos( [
       faker.image.url(),
-      faker.image.url()
+      faker.image.url(),
     ] );
     expect( unified.observed_on_string ).toBeTruthy( );
   } );

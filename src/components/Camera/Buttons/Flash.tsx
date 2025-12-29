@@ -2,7 +2,7 @@ import classnames from "classnames";
 // eslint-disable-next-line max-len
 import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
 import React from "react";
-import { GestureResponderEvent, ViewStyle } from "react-native";
+import type { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
 import type { TakePhotoOptions } from "react-native-vision-camera";
@@ -23,7 +23,7 @@ const Flash = ( {
   toggleFlash,
   hasFlash,
   takePhotoOptions,
-  flashClassName
+  flashClassName,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -49,7 +49,7 @@ const Flash = ( {
       className={classnames(
         "m-0",
         "border-0",
-        flashClassName
+        flashClassName,
       )}
     >
       <TransparentCircleButton

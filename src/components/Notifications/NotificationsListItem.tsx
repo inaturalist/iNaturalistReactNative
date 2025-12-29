@@ -8,7 +8,7 @@ import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 
 type Props = {
-  notification: Notification
+  notification: Notification;
 };
 
 const NotificationsListItem = ( { notification }: Props ) => {
@@ -23,15 +23,15 @@ const NotificationsListItem = ( { notification }: Props ) => {
         "flex-row items-center justify-between pl-[15px] py-[11px]",
         {
           "bg-inatGreen/10": !viewedStatus,
-          "bg-white": viewedStatus
+          "bg-white": viewedStatus,
 
-        }
+        },
       )}
       onPress={( ) => {
         setObsDetailsTab( OBS_DETAILS_TAB.ACTIVITY );
         navigation.push( "ObsDetails", {
           uuid: notification.resource_uuid,
-          targetActivityItemID: notification.identification_id || notification.comment_id
+          targetActivityItemID: notification.identification_id || notification.comment_id,
         } );
       }}
     >
@@ -42,7 +42,7 @@ const NotificationsListItem = ( { notification }: Props ) => {
             "h-[10px] w-[10px] rounded-full",
             viewedStatus
               ? "border border-lightGray"
-              : "bg-inatGreen"
+              : "bg-inatGreen",
           )}
         />
       </View>

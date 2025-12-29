@@ -1,13 +1,13 @@
 import {
   act,
   screen,
-  userEvent
+  userEvent,
 } from "@testing-library/react-native";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import {
   renderApp,
-  renderAppWithObservations
+  renderAppWithObservations,
 } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -20,7 +20,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -31,8 +31,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -42,17 +42,16 @@ afterAll( uniqueRealmAfterAll );
 const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useSuggestions/useOnlineSuggestions", ( ) => jest.fn( () => ( {
-  dataUpdatedAt: new Date( ),
+  dataUpdatedAt: 1764627659, // arbitrary epoch timestamp, 1/1/2000
   error: null,
-  loadingOnlineSuggestions: false,
   onlineSuggestions: {
-    results: []
-  }
+    results: [],
+  },
 } ) ) );
 
 beforeEach( async () => {
   setStoreStateLayout( {
-    isDefaultMode: false
+    isDefaultMode: false,
   } );
 } );
 
@@ -90,8 +89,8 @@ describe( "MediaViewer navigation", ( ) => {
       wasSynced: jest.fn( ( ) => false ),
       observationPhotos: [
         factory( "LocalObservationPhoto" ),
-        factory( "LocalObservationPhoto" )
-      ]
+        factory( "LocalObservationPhoto" ),
+      ],
     } );
     const observations = [observation];
     useStore.setState( { observations } );
@@ -104,7 +103,7 @@ describe( "MediaViewer navigation", ( ) => {
     async function navigateToObsEdit( ) {
       await renderAppWithObservations( observations, __filename );
       const observationGridItem = await screen.findByTestId(
-        `MyObservations.obsGridItem.${observation.uuid}`
+        `MyObservations.obsGridItem.${observation.uuid}`,
       );
       await actor.press( observationGridItem );
     }
@@ -115,7 +114,9 @@ describe( "MediaViewer navigation", ( ) => {
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
       await act( async ( ) => actor.press( obsEditPhotos[0] ) );
       expect(
-        await screen.findByTestId( `CustomImageZoom.${observation.observationPhotos[0].photo.url}` )
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observationPhotos[0].photo.url}`,
+        ),
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       ).toBeOnTheScreen( );
     } );
@@ -126,11 +127,13 @@ describe( "MediaViewer navigation", ( ) => {
       expect( obsEditPhotos.length ).toEqual( observation.observationPhotos.length );
       await act( async ( ) => actor.press( obsEditPhotos[1] ) );
       expect(
-        await screen.findByTestId( `CustomImageZoom.${observation.observationPhotos[1].photo.url}` )
+        await screen.findByTestId(
+          `CustomImageZoom.${observation.observationPhotos[1].photo.url}`,
+        ),
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       ).toBeOnTheScreen( );
       expect(
-        screen.queryByTestId( `CustomImageZoom.${observation.observationPhotos[0].photo.url}` )
+        screen.queryByTestId( `CustomImageZoom.${observation.observationPhotos[0].photo.url}` ),
       ).toBeFalsy( );
     } );
 
@@ -155,7 +158,7 @@ describe( "MediaViewer navigation", ( ) => {
 
     beforeEach( ( ) => {
       setStoreStateLayout( {
-        isAllAddObsOptionsMode: true
+        isAllAddObsOptionsMode: true,
       } );
     } );
 

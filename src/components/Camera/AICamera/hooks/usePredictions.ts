@@ -1,6 +1,6 @@
 import { RealmContext } from "providers/contexts";
 import { useState } from "react";
-import { Result } from "vision-camera-plugin-inatvision";
+import type { Result } from "vision-camera-plugin-inatvision";
 
 const { useRealm } = RealmContext;
 
@@ -42,7 +42,7 @@ const usePredictions = ( ) => {
         name: p.name,
         rank_level: p.rank_level,
         combined_score: p.combined_score,
-        taxon_id: p.taxon_id
+        taxon_id: p.taxon_id,
       } ) )
       .sort( ( a, b ) => a.rank_level - b.rank_level );
     const branchIDs = branch.map( t => t.taxon_id );
@@ -56,10 +56,10 @@ const usePredictions = ( ) => {
           rank_level: finestPrediction.rank_level,
           id: finestPrediction.taxon_id,
           name: finestPrediction.name,
-          iconic_taxon_name: iconicTaxon?.name
+          iconic_taxon_name: iconicTaxon?.name,
         },
         combined_score: finestPrediction.combined_score,
-        timestamp: cvResult.timestamp
+        timestamp: cvResult.timestamp,
       };
     }
     setResult( prediction );
@@ -78,7 +78,7 @@ const usePredictions = ( ) => {
     setConfidenceThreshold,
     setFPS,
     setNumStoredResults,
-    setCropRatio
+    setCropRatio,
   };
 };
 

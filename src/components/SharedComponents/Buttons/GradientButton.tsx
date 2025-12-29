@@ -2,7 +2,7 @@ import { INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
-import { GestureResponderEvent } from "react-native";
+import type { GestureResponderEvent } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -23,11 +23,11 @@ const GradientButton = ( {
   accessibilityLabel,
   accessibilityHint,
   iconName,
-  iconSize
+  iconSize,
 }: Props ) => {
-  const handleLongPress = _event => {
+  const handleLongPress = ( event: GestureResponderEvent ) => {
     if ( onLongPress ) {
-      onLongPress( _event );
+      onLongPress( event );
     }
   };
 
@@ -43,7 +43,7 @@ const GradientButton = ( {
       accessibilityHint={accessibilityHint || t( "Opens-AI-camera" )}
       accessibilityRole="button"
       accessibilityState={{
-        disabled: false
+        disabled: false,
       }}
     >
       <LinearGradient

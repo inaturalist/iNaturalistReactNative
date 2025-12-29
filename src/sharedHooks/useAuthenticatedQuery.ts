@@ -11,14 +11,14 @@ interface QueryOptions {
   retry?: boolean;
 }
 
-type QueryFunction = ( options: { api_token: string | null } ) => Promise<unknown>;
+type QueryFunction<Response> = ( options: { api_token: string | null } ) => Promise<Response>;
 
 // Should work like React Query's useQuery except it calls the queryFunction
 // with an object that includes the JWT
-const useAuthenticatedQuery = (
+const useAuthenticatedQuery = <Response>(
   queryKey: string[],
-  queryFunction: QueryFunction,
-  queryOptions: QueryOptions = {}
+  queryFunction: QueryFunction<Response>,
+  queryOptions: QueryOptions = {},
 ) => {
   const [userLoggedIn, setUserLoggedIn] = useState<boolean | null>( LOGGED_IN_UNKNOWN );
 
@@ -49,20 +49,20 @@ const useAuthenticatedQuery = (
       // fetching from RNSInfo becomes a performance issue
       const apiToken = await getJWT( queryOptions.allowAnonymousJWT );
       const options = {
-        api_token: apiToken
+        api_token: apiToken,
       };
       return queryFunction( options );
     },
     ...queryOptions,
     retry: queryOptions.retry !== false
       ? ( failureCount, error ) => reactQueryRetry( failureCount, error, {
-        queryKey
+        queryKey,
       } )
       : false,
     retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
     // Authenticated queries should not run until we know whether or not the
     // user is signed in
-    enabled: userLoggedIn !== LOGGED_IN_UNKNOWN && queryOptions.enabled
+    enabled: userLoggedIn !== LOGGED_IN_UNKNOWN && queryOptions.enabled,
   } );
 };
 

@@ -2,7 +2,7 @@ import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import * as rnImagePicker from "react-native-image-picker";
@@ -19,7 +19,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -30,8 +30,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -43,17 +43,17 @@ beforeAll( async () => {
 } );
 
 const mockAsset = [{
-  uri: faker.image.url( )
+  uri: faker.image.url( ),
 }];
 
 const mockMultipleAssets = [{
-  uri: faker.image.url( )
+  uri: faker.image.url( ),
 }, {
-  uri: faker.image.url( )
+  uri: faker.image.url( ),
 }];
 
 jest.mock( "react-native-image-picker", ( ) => ( {
-  launchImageLibrary: jest.fn( )
+  launchImageLibrary: jest.fn( ),
 } ) );
 
 const actor = userEvent.setup( );
@@ -75,15 +75,15 @@ describe( "PhotoLibrary navigation", ( ) => {
     setStoreStateLayout( {
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
       isDefaultMode: false,
-      isAllAddObsOptionsMode: true
+      isAllAddObsOptionsMode: true,
     } );
   } );
 
   it( "advances to GroupPhotos when multiple photos are selected", async ( ) => {
     jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
       ( ) => ( {
-        assets: mockMultipleAssets
-      } )
+        assets: mockMultipleAssets,
+      } ),
     );
     renderApp( );
     await navigateToPhotoImporter( );
@@ -98,8 +98,8 @@ describe( "PhotoLibrary navigation", ( ) => {
   it( "advances to ObsEdit when one photo is selected", async ( ) => {
     jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
       ( ) => ( {
-        assets: mockAsset
-      } )
+        assets: mockAsset,
+      } ),
     );
     renderApp( );
     await navigateToPhotoImporter( );
@@ -116,12 +116,12 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
     setStoreStateLayout( {
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
       isDefaultMode: false,
-      isAllAddObsOptionsMode: true
+      isAllAddObsOptionsMode: true,
     } );
   } );
   it( "advances to Suggestions when one photo is selected", async () => {
     jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation( () => ( {
-      assets: mockAsset
+      assets: mockAsset,
     } ) );
     renderApp();
     await navigateToPhotoImporter();

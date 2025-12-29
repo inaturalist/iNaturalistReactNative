@@ -1,10 +1,10 @@
 import {
   TaxonResult,
-  TaxonSearch
+  TaxonSearch,
 } from "components/SharedComponents";
 import React, {
   useCallback,
-  useState
+  useState,
 } from "react";
 import { useTaxonSearch, useTranslation } from "sharedHooks";
 
@@ -19,7 +19,7 @@ const SuggestionsTaxonSearch = ( ) => {
   useNavigateWithTaxonSelected(
     selectedTaxon,
     ( ) => setSelectedTaxon( null ),
-    { vision: false }
+    { vision: false },
   );
 
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (

@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
@@ -8,7 +8,7 @@ import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
   useEffect, useRef,
-  useState
+  useState,
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
@@ -23,10 +23,10 @@ import {
   useNavigateToObsEdit,
   useObservationsUpdates,
   useStoredLayout,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import {
-  UPLOAD_PENDING
+  UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
 
@@ -36,14 +36,14 @@ import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservationsEmptySimple from "./MyObservationsEmptySimple";
 import MyObservationsSimple, {
   OBSERVATIONS_TAB,
-  TAXA_TAB
+  TAXA_TAB,
 } from "./MyObservationsSimple";
 
 const { useRealm } = RealmContext;
 
 interface SpeciesCount {
-  count: number,
-  taxon: RealmTaxon
+  count: number;
+  taxon: RealmTaxon;
 }
 
 interface SyncOptions {
@@ -83,7 +83,7 @@ const MyObservationsContainer = ( ): React.FC => {
 
   const {
     observationList: observations,
-    totalResults: totalResultsLocal
+    totalResults: totalResultsLocal,
   } = useLocalObservations( );
   const prevObservationsLength = useRef( observations.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -96,7 +96,7 @@ const MyObservationsContainer = ( ): React.FC => {
   const { startUploadObservations } = useUploadObservations( canUpload );
   const { syncManually } = useSyncObservations(
     currentUserId,
-    startUploadObservations
+    startUploadObservations,
   );
 
   useObservationsUpdates( !!currentUser );
@@ -106,11 +106,11 @@ const MyObservationsContainer = ( ): React.FC => {
     fetchNextPage,
     isFetchingNextPage,
     status,
-    totalResults: totalResultsRemote
+    totalResults: totalResultsRemote,
   } = useInfiniteObservationsScroll( {
     params: {
-      user_id: currentUserId
-    }
+      user_id: currentUserId,
+    },
   } );
 
   const [showLoginSheet, setShowLoginSheet] = useState( false );
@@ -125,7 +125,7 @@ const MyObservationsContainer = ( ): React.FC => {
     if ( !isConnected ) {
       Alert.alert(
         t( "Internet-Connection-Required" ),
-        t( "Please-try-again-when-you-are-connected-to-the-internet" )
+        t( "Please-try-again-when-you-are-connected-to-the-internet" ),
       );
     }
     return isConnected;
@@ -153,7 +153,7 @@ const MyObservationsContainer = ( ): React.FC => {
     syncManually,
     confirmInternetConnection,
     confirmLoggedIn,
-    isDefaultMode
+    isDefaultMode,
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
@@ -181,7 +181,7 @@ const MyObservationsContainer = ( ): React.FC => {
     realm,
     setStartUploadObservations,
     uploadQueue,
-    uploadStatus
+    uploadStatus,
   ] );
 
   // 20241107 amanda - this seems to be a culprit for the tab bar being less
@@ -203,8 +203,8 @@ const MyObservationsContainer = ( ): React.FC => {
     }, [
       startAutomaticSync,
       setNumUnuploadedObservations,
-      realm
-    ] )
+      realm,
+    ] ),
   );
 
   const handlePullToRefresh = useCallback( async ( ) => {
@@ -220,7 +220,7 @@ const MyObservationsContainer = ( ): React.FC => {
       listRef.current.scrollToOffset( { offset: myObsOffsetToRestore } );
     }
   }, [
-    myObsOffsetToRestore
+    myObsOffsetToRestore,
   ] );
 
   // API call fetching obs has completed but results are not yet stored in realm
@@ -243,9 +243,9 @@ const MyObservationsContainer = ( ): React.FC => {
   const onScroll = ( scrollEvent: {
     nativeEvent: {
       contentOffset: {
-        y: number
-      }
-    }
+        y: number;
+      };
+    };
   } ) => setMyObsOffset( scrollEvent.nativeEvent.contentOffset.y );
 
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
@@ -253,7 +253,7 @@ const MyObservationsContainer = ( ): React.FC => {
   const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
 
   let numTotalTaxaLocal: number | undefined;
-  const localObservedSpeciesCount: Array<SpeciesCount> = [];
+  const localObservedSpeciesCount: SpeciesCount[] = [];
   if ( !currentUser ) {
     // Calculate obs and leaf taxa counts from local observations
     const distinctTaxonObs = realm.objects<RealmObservation>( "Observation" )
@@ -289,19 +289,19 @@ const MyObservationsContainer = ( ): React.FC => {
     isFetchingNextPage: isFetchingTaxa,
     fetchNextPage: fetchMoreTaxa,
     totalResults: numTotalTaxaRemote,
-    refetch: refetchTaxa
+    refetch: refetchTaxa,
   } = useInfiniteScroll(
     "MyObsSimple-fetchSpeciesCounts",
     fetchSpeciesCounts,
     {
       user_id: currentUser?.id,
       fields: {
-        taxon: Taxon.LIMITED_TAXON_FIELDS
-      }
+        taxon: Taxon.LIMITED_TAXON_FIELDS,
+      },
     },
     {
-      enabled: !!currentUser
-    }
+      enabled: !!currentUser,
+    },
   );
 
   const numTotalTaxa = typeof ( numTotalTaxaRemote ) === "number"

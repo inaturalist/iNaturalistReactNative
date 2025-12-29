@@ -1,4 +1,4 @@
-import { INatApiError } from "api/error";
+import type { INatApiError } from "api/error";
 import type { TFunction } from "i18next";
 
 export enum RECOVERY_BY {
@@ -17,12 +17,12 @@ export class RecoverableError extends Error {
 }
 // https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
 Object.defineProperty( RecoverableError.prototype, "name", {
-  value: "RecoverableError"
+  value: "RecoverableError",
 } );
 
 function handleUploadError(
   uploadError: Error | INatApiError | RecoverableError,
-  t: TFunction
+  t: TFunction,
 ): {
   message: string;
   recoveryPossible: boolean;
@@ -53,7 +53,7 @@ function handleUploadError(
   const errorResponse = {
     message,
     recoveryPossible,
-    recoveryBy
+    recoveryBy,
   };
   return errorResponse;
 }

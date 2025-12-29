@@ -17,7 +17,7 @@ const initialStoreState = useStore.getState( );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -28,8 +28,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -41,11 +41,11 @@ beforeEach( async ( ) => {
   const mockUser = factory( "LocalUser", {
     login: faker.internet.userName( ),
     iconUrl: faker.image.url( ),
-    locale: "en"
+    locale: "en",
   } );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
   const mockedPermissions = {
-    "ios.permission.LOCATION": "granted"
+    "ios.permission.LOCATION": "granted",
   };
 
   jest.spyOn( ReactNativePermissions, "checkMultiple" )
@@ -68,7 +68,7 @@ describe( "ObsEdit offline", ( ) => {
 
     // Mock NetInfo so it says internet is not reachable
     NetInfo.fetch.mockImplementation( async ( ) => ( {
-      isConnected: false
+      isConnected: false,
     } ) );
   } );
 
@@ -82,9 +82,9 @@ describe( "ObsEdit offline", ( ) => {
         coords: {
           latitude: 1,
           longitude: 1,
-          accuracy: 9
+          accuracy: 9,
         },
-        timestamp: Date.now( )
+        timestamp: Date.now( ),
       } ) );
       const mockWatchPosition = jest.fn( ( success, _error, _options ) => {
         setTimeout( ( ) => mockWatchPositionSuccess( success ), 100 );
@@ -92,14 +92,14 @@ describe( "ObsEdit offline", ( ) => {
       } );
       Geolocation.watchPosition.mockImplementation( mockWatchPosition );
       const observation = factory( "LocalObservation", {
-        observationPhotos: []
+        observationPhotos: [],
       } );
       useStore.setState( {
         observations: [observation],
-        currentObservation: observation
+        currentObservation: observation,
       } );
       renderAppWithComponent(
-        <ObsEdit />
+        <ObsEdit />,
       );
       await screen.findByTestId( "EvidenceSection.fetchingLocationIndicator" );
       await waitFor( ( ) => {

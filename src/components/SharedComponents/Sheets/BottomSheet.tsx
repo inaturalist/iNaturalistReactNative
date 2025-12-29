@@ -1,5 +1,5 @@
 import BottomSheet, {
-  BottomSheetModal, BottomSheetScrollView
+  BottomSheetModal, BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
@@ -8,7 +8,7 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
-  useRef
+  useRef,
 } from "react";
 import { Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -18,7 +18,10 @@ const { width } = Dimensions.get( "window" );
 const marginOnWide = {
   marginHorizontal: width > 500
     ? ( width - 500 ) / 2
-    : 0
+    : 0,
+  borderTopLeftRadius: 24,
+  borderTopRightRadius: 24,
+  overflow: "hidden",
 };
 
 // eslint-disable-next-line
@@ -29,14 +32,16 @@ interface Props {
   hidden?: boolean;
   hideCloseButton?: boolean;
   headerText?: string;
-  onLayout?: Function;
+  onLayout?: ( event: object ) => void;
   // Callback when the user presses the close button or backdrop, not whenever the sheet
   // closes
-  onPressClose?: Function;
-  snapPoints?: Array<string>;
+  onPressClose?: ( ) => void;
+  snapPoints?: string[];
   insideModal?: boolean;
   keyboardShouldPersistTaps?: string;
   testID?: string;
+  containerClass?: string;
+  scrollEnabled?: boolean;
 }
 
 const StandardBottomSheet = ( {
@@ -49,7 +54,9 @@ const StandardBottomSheet = ( {
   snapPoints,
   insideModal,
   keyboardShouldPersistTaps = "never",
-  testID
+  containerClass,
+  testID,
+  scrollEnabled = true,
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -60,7 +67,7 @@ const StandardBottomSheet = ( {
   const insets = useSafeAreaInsets( );
 
   const handleClose = useCallback( ( ) => {
-    onPressClose( );
+    if ( onPressClose ) onPressClose( );
 
     if ( insideModal ) {
       sheetRef.current?.collapse( );
@@ -106,30 +113,37 @@ const StandardBottomSheet = ( {
       ref={sheetRef}
       style={marginOnWide}
       accessible={false}
+      onDismiss={handleClose}
     >
       <BottomSheetScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+        scrollEnabled={scrollEnabled}
       >
         <View
           className={classnames(
             "pt-7",
             insets.bottom > 0
               ? "pb-7"
-              : null
+              : null,
+            containerClass,
           )}
           onLayout={onLayout}
           // Not ideal, but @gorhom/bottom-sheet components don't support
           // testID
           testID={testID}
         >
-          <View className="mx-12 flex">
-            <Heading4
-              testID="bottom-sheet-header"
-              className="w-full text-center"
-            >
-              {headerText}
-            </Heading4>
-          </View>
+          {!headerText
+            ? null
+            : (
+              <View className="mx-12 flex">
+                <Heading4
+                  testID="bottom-sheet-header"
+                  className="w-full text-center"
+                >
+                  {headerText}
+                </Heading4>
+              </View>
+            )}
           {children}
           {!hideCloseButton && (
             <INatIconButton

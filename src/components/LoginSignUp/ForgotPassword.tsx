@@ -1,13 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { WarningSheet } from "components/SharedComponents";
-import { ScrollView } from "components/styledComponents";
+import type { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useCallback, useState } from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { openInbox } from "sharedHelpers/mail";
 
 import {
-  resetPassword
+  resetPassword,
 } from "./AuthenticationService";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import Header from "./Header";
@@ -15,7 +15,7 @@ import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
 type RenderProps = {
   // eslint-disable-next-line react/no-unused-prop-types
-  scrollViewRef: { current: null | React.Ref<typeof ScrollView> }
+  scrollViewRef: { current: null | React.Ref<typeof ScrollView> };
 };
 
 const ForgotPassword = ( ) => {

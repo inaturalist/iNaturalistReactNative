@@ -11,10 +11,10 @@ import ActivityItem from "./ActivityItem";
 type Props = {
   observation:Object,
   refetchRemoteObservation: Function,
-  activityItems: Array<Object>,
+  activityItems: Object[],
   openAgreeWithIdSheet: Function,
   isConnected: boolean,
-  targetItemID: number,
+  targetItemID: ?number,
   // TODO change to LayoutEvent from react-native if/when switching to TS
   onLayoutTargetItem: ( event: Object ) => void
 }
@@ -26,7 +26,7 @@ const CommunitySection = ( {
   openAgreeWithIdSheet,
   isConnected,
   targetItemID,
-  onLayoutTargetItem
+  onLayoutTargetItem,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -52,9 +52,9 @@ const CommunitySection = ( {
         item.toJSON
           ? item.toJSON( )
           : item
-      )
+      ),
     ),
-    [activityItems]
+    [activityItems],
   );
 
   const indexOfFirstTaxonDisplayed = taxonId => stableItems

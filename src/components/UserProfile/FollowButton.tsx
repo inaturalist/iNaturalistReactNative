@@ -1,5 +1,5 @@
 import {
-  Button
+  Button,
 } from "components/SharedComponents";
 import { t } from "i18next";
 import React from "react";
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const FollowButton = ( {
-  following, follow, unfollow, loading
+  following, follow, unfollow, loading,
 }: Props ) => {
   if ( following ) {
     return (

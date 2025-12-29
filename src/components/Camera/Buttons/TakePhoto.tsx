@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import {
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
@@ -19,7 +19,7 @@ interface Props {
 const TakePhoto = ( {
   takePhoto,
   disabled,
-  showPrediction
+  showPrediction,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -35,8 +35,8 @@ const TakePhoto = ( {
         "justify-center",
         "items-center",
         {
-          "opacity-50": disabled
-        }
+          "opacity-50": disabled,
+        },
       )}
       onPress={takePhoto}
       accessibilityLabel={t( "Take-photo" )}
@@ -51,7 +51,7 @@ const TakePhoto = ( {
           <View
             className={classnames(
               borderClass,
-              "bg-inatGreen items-center justify-center border-accessibleGreen"
+              "bg-inatGreen items-center justify-center border-accessibleGreen",
             )}
           >
             <INatIcon

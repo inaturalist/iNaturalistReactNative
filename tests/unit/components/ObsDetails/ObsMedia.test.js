@@ -2,13 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react-native";
 import ObsMedia from "components/ObsDetails/ObsMedia";
 import _ from "lodash";
 import React from "react";
-import { Image } from "react-native";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
-
-Image.getSize = jest.fn( ( uri, callback ) => {
-  callback( { width: 1024, height: 768 } );
-} );
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
@@ -19,36 +14,36 @@ const mockObservation = factory( "LocalObservation", {
         id: faker.number.int( ),
         attribution: faker.lorem.sentence( ),
         licenseCode: "cc-by-nc",
-        url: faker.image.url( )
-      }
-    } )
-  ]
+        url: faker.image.url( ),
+      },
+    } ),
+  ],
 } );
 
 const mockPhotos = _.compact(
-  Array.from( mockObservation.observationPhotos ).map( op => op.photo )
+  Array.from( mockObservation.observationPhotos ).map( op => op.photo ),
 );
 
 const expectedImageSource = [
   {
     height: 75,
     uri: mockObservation.observationPhotos[0].photo.url,
-    width: 75
+    width: 75,
   },
   {
     height: 240,
     uri: mockObservation.observationPhotos[0].photo.url,
-    width: 240
+    width: 240,
   }, {
     height: 500,
     uri: mockObservation.observationPhotos[0].photo.url,
-    width: 500
+    width: 500,
   },
   {
     height: 1024,
     uri: mockObservation.observationPhotos[0].photo.url,
-    width: 1024
-  }
+    width: 1024,
+  },
 ];
 
 describe( "ObsMedia", () => {

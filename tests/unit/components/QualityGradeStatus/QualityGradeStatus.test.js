@@ -24,5 +24,5 @@ describe.each( [["research"], ["needs_id"], ["casual"]] )(
       // Disabled during the update to RN 0.78
       // expect( qualityGradeStatus ).toBeAccessible();
     } );
-  }
+  },
 );

@@ -2,58 +2,53 @@ import { RealmContext } from "providers/contexts";
 import {
   useCallback,
   useEffect,
-  useState
+  useState,
 } from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
 import { predictImage } from "sharedHelpers/mlModel";
-import { Prediction } from "vision-camera-plugin-inatvision";
+import type { Prediction } from "vision-camera-plugin-inatvision";
+
+import type { UseSuggestionsOfflineSuggestion } from "./types";
 
 const logger = log.extend( "useOfflineSuggestions" );
 
 const { useRealm } = RealmContext;
 
-interface OfflineSuggestion {
-  combined_score: number;
-  taxon: {
-    id: number;
-    name: string;
-    rank_level: number;
-    iconic_taxon_name: string | undefined;
-  };
-}
-
 const useOfflineSuggestions = (
   photoUri: string,
   options: {
-    onFetchError: ( _p: { isOnline: boolean } ) => void,
-    onFetched: ( _p: { isOnline: boolean } ) => void,
-    latitude: number,
-    longitude: number,
-    tryOfflineSuggestions: boolean
-  }
+    onFetchError: ( _p: { isOnline: boolean } ) => void;
+    onFetched: ( _p: { isOnline: boolean } ) => void;
+    latitude?: number;
+    longitude?: number;
+    tryOfflineSuggestions: boolean;
+  },
 ): {
   offlineSuggestions: {
-    results: OfflineSuggestion[],
-    commonAncestor: OfflineSuggestion | undefined
+    results: UseSuggestionsOfflineSuggestion[];
+    commonAncestor?: UseSuggestionsOfflineSuggestion;
   };
   refetchOfflineSuggestions: () => void;
 } => {
   const realm = useRealm( );
   const [offlineSuggestions, setOfflineSuggestions] = useState<{
-    results: OfflineSuggestion[],
-    commonAncestor: OfflineSuggestion | undefined
+    results: UseSuggestionsOfflineSuggestion[];
+    commonAncestor?: UseSuggestionsOfflineSuggestion;
   }>( { results: [], commonAncestor: undefined } );
   const [error, setError] = useState( null );
 
   const {
-    onFetchError, onFetched, latitude, longitude, tryOfflineSuggestions
+    onFetchError, onFetched, latitude, longitude, tryOfflineSuggestions,
   } = options;
 
   const predictOffline = useCallback( async ( ) => {
     let rawPredictions = [];
     let commonAncestor;
     try {
-      const location = { latitude, longitude };
+      const location = ( typeof latitude === "number" && typeof longitude === "number" )
+        ? { latitude, longitude }
+        : undefined;
       const result = await predictImage( photoUri, location );
       rawPredictions = result.predictions;
       // Destructuring here leads to different errors from the linter.
@@ -67,17 +62,13 @@ const useOfflineSuggestions = (
     // similar to what we're doing in the AICamera to get iconic taxon name,
     // but we're offline so we only need the local list from realm
     // and don't need to fetch taxon from the API
-    const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
-    const iconicTaxaIds = iconicTaxa.map( t => t.id );
-    const iconicTaxaLookup: {
-      [key: number]: string
-    } = iconicTaxa.reduce( ( acc, t ) => {
-      acc[t.id] = t.name;
-      return acc;
-    }, { } );
+    const iconicTaxa = realm.objects<RealmTaxon>( "Taxon" ).filtered( "isIconic = true" );
+    const iconicTaxaLookup = Object.fromEntries(
+      iconicTaxa.map( t => [t.id, t.name] ),
+    );
 
     // This function handles either regular or common ancestor predictions as input objects.
-    const formatPrediction = ( prediction: Prediction ): OfflineSuggestion => {
+    const formatPrediction = ( prediction: Prediction ): UseSuggestionsOfflineSuggestion => {
       // The "lowest" ancestor_id that matches an iconic taxon
       // is the iconic taxon of this prediction.
       const iconicTaxonId = prediction.ancestor_ids
@@ -85,12 +76,7 @@ const useOfflineSuggestions = (
         // a list of ancestor ids from tip to root of taxonomy
         // e.g. Aves is included in Animalia
         .reverse()
-        .find( id => iconicTaxaIds.includes( id ) );
-      let iconicTaxonName;
-      if ( iconicTaxonId !== undefined ) {
-        iconicTaxonName = iconicTaxaLookup[iconicTaxonId];
-      }
-
+        .find( id => id in iconicTaxaLookup );
       const id = prediction.taxon_id;
 
       return {
@@ -99,8 +85,10 @@ const useOfflineSuggestions = (
           id,
           name: prediction.name,
           rank_level: prediction.rank_level,
-          iconic_taxon_name: iconicTaxonName
-        }
+          iconic_taxon_name: iconicTaxonId !== undefined
+            ? iconicTaxaLookup[iconicTaxonId]
+            : undefined,
+        },
       };
     };
 
@@ -113,7 +101,7 @@ const useOfflineSuggestions = (
 
     const returnValue = {
       results: formattedPredictions,
-      commonAncestor: commonAncestorSuggestion
+      commonAncestor: commonAncestorSuggestion,
     };
 
     setOfflineSuggestions( returnValue );
@@ -143,14 +131,14 @@ const useOfflineSuggestions = (
     photoUri,
     tryOfflineSuggestions,
     setError,
-    onFetchError
+    onFetchError,
   ] );
 
   if ( error ) throw error;
 
   return {
     offlineSuggestions,
-    refetchOfflineSuggestions
+    refetchOfflineSuggestions,
   };
 };
 

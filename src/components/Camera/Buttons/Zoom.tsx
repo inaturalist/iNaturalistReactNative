@@ -1,11 +1,11 @@
 import classnames from "classnames";
 import { Body3 } from "components/SharedComponents";
 import {
-  CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE
+  CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE,
 } from "components/SharedComponents/Buttons/TransparentCircleButton";
 import { Pressable } from "components/styledComponents";
 import React from "react";
-import { GestureResponderEvent, ViewStyle } from "react-native";
+import type { GestureResponderEvent, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
@@ -23,7 +23,7 @@ const Zoom = ( {
   rotatableAnimatedStyle,
   handleZoomButtonPress,
   zoomClassName,
-  zoomTextValue
+  zoomTextValue,
 }: Props ) => {
   const { t } = useTranslation();
 

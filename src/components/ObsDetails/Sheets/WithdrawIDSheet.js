@@ -2,7 +2,7 @@
 import {
   BottomSheet,
   ButtonBar,
-  DisplayTaxon
+  DisplayTaxon,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -30,7 +30,7 @@ const showTaxon = taxon => {
 const WithdrawIDSheet = ( {
   onPressClose,
   updateIdentification,
-  taxon
+  taxon,
 }: Props ): Node => {
   const buttons = [
     {
@@ -42,7 +42,7 @@ const WithdrawIDSheet = ( {
       testID: "ObsDetail.WithdrawId.cancel",
       accessibilityRole: "button",
       accessibilityHint: t( "Closes-withdraw-id-sheet" ),
-      level: "secondary"
+      level: "secondary",
     },
     {
       text: t( "WITHDRAW-ID" ),
@@ -54,8 +54,8 @@ const WithdrawIDSheet = ( {
       testID: "ObsDetail.WithdrawId.withdraw",
       accessibilityRole: "button",
       accessibilityHint: t( "Withdraws-identification" ),
-      level: "primary"
-    }
+      level: "primary",
+    },
   ];
   return (
     <BottomSheet

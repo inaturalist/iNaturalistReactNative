@@ -1,10 +1,10 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchProjectMembers } from "api/projects";
 import {
-  ActivityIndicator, InfiniteScrollLoadingWheel
+  ActivityIndicator, InfiniteScrollLoadingWheel,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
@@ -24,29 +24,29 @@ const ProjectMembers = ( ) => {
     id,
     order_by: "login",
     fields: {
-      user: User.LIMITED_FIELDS
-    }
+      user: User.LIMITED_FIELDS,
+    },
   };
 
   const {
     data: projectMembers,
     fetchNextPage,
     isFetchingNextPage,
-    totalResults: totalMembers
+    totalResults: totalMembers,
   } = useInfiniteScroll(
     queryKey,
     fetchProjectMembers,
     queryParams,
     {
-      enabled: true
-    }
+      enabled: true,
+    },
   );
 
   const headerOptions = useMemo( ( ) => ( {
     headerTitle: title,
     headerSubtitle: t( "X-MEMBERS", {
-      count: totalMembers || 0
-    } )
+      count: totalMembers || 0,
+    } ),
   } ), [title, totalMembers, t] );
 
   const renderFooter = useCallback( ( ) => (

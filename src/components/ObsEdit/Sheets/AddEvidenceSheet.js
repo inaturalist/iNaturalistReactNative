@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  BottomSheet, EvidenceButton, List2
+  BottomSheet, EvidenceButton, List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -18,7 +18,7 @@ type Props = {
 const AddEvidenceSheet = ( {
   disableAddingMoreEvidence,
   hidden,
-  onClose
+  onClose,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -46,7 +46,7 @@ const AddEvidenceSheet = ( {
               // can return to ObsEdit
               navigation.push( "Camera", {
                 addEvidence: true,
-                camera: "Standard"
+                camera: "Standard",
               } );
             }}
             disabled={disableAddingMoreEvidence}
@@ -59,7 +59,7 @@ const AddEvidenceSheet = ( {
               // Show photo library, but skip group photos phase
               navigation.navigate( "NoBottomTabStackNavigator", {
                 screen: "PhotoLibrary",
-                params: { skipGroupPhotos: true }
+                params: { skipGroupPhotos: true },
               } );
             }}
             disabled={disableAddingMoreEvidence}
@@ -71,7 +71,7 @@ const AddEvidenceSheet = ( {
             handlePress={( ) => {
               navigation.navigate(
                 "NoBottomTabStackNavigator",
-                { screen: "SoundRecorder", params: { addEvidence: true } }
+                { screen: "SoundRecorder", params: { addEvidence: true } },
               );
             }}
             disabled={disableAddingMoreEvidence}

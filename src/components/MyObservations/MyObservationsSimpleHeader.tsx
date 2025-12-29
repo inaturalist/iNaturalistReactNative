@@ -1,21 +1,21 @@
 import {
   HeaderUser,
   Heading3,
-  RotatingINatIconButton
+  RotatingINatIconButton,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import type {
-  RealmUser
+  RealmUser,
 } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import {
-  MANUAL_SYNC_IN_PROGRESS
+  MANUAL_SYNC_IN_PROGRESS,
 } from "stores/createSyncObservationsSlice";
 import {
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
-  UPLOAD_PENDING
+  UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -33,7 +33,7 @@ const MyObservationsSimpleHeader = ( {
   currentUser,
   handleSyncButtonPress,
   isConnected,
-  numUploadableObservations
+  numUploadableObservations,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -90,7 +90,7 @@ const MyObservationsSimpleHeader = ( {
             color={String(
               numUploadableObservations > 0
                 ? colors?.inatGreen
-                : colors?.darkGray
+                : colors?.darkGray,
             )}
             rotating={rotating}
             disabled={rotating}

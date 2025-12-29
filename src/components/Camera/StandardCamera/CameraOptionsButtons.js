@@ -41,7 +41,7 @@ const CameraOptionsButtons = ( {
   takePhotoOptions,
   handleZoomButtonPress,
   zoomTextValue,
-  showZoomButton
+  showZoomButton,
 }: Props ): Node => {
   const renderPhoneCameraOptions = () => (
     <>

@@ -7,7 +7,7 @@ type PerformanceType = {
 
 const usePerformance = ( {
   screenName,
-  isLoading
+  isLoading,
 }: PerformanceType ) => {
   const [startTime, setStartTime] = useState( 0 );
   const [loadTime, setLoadTime] = useState( "" );
@@ -32,7 +32,7 @@ const usePerformance = ( {
   }, [isLoading, startTime, screenName] );
 
   return {
-    loadTime
+    loadTime,
   };
 };
 

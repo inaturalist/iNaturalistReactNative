@@ -24,7 +24,7 @@ const CameraNavButtons = ( {
   handleClose,
   photosTaken,
   rotatableAnimatedStyle,
-  takePhoto
+  takePhoto,
 }: Props ): Node => {
   const takePhotoButton = useMemo( ( ) => (
     <TakePhoto

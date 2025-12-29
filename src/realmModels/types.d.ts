@@ -92,26 +92,39 @@ interface RealmIdentification extends RealmObject {
   user: RealmUser;
 }
 
+// https://github.com/inaturalist/iNaturalistAPI/blob/08e3aade068c50e02d0caf7a59c69ea87b70bc6e/lib/views/swagger_v1.yml.ejs#L2319-L2333
+export type License =
+  | "cc-by"
+  | "cc-by-nc"
+  | "cc-by-nd"
+  | "cc-by-sa"
+  | "cc-by-nc-nd"
+  | "cc-by-nc-sa"
+  | "cc0"
+
 export interface RealmObservationPojo {
   _created_at?: Date;
   _synced_at?: Date;
   captive_flag: boolean | null;
-  comments: Array<RealmComment>;
+  comments: RealmComment[];
   comments_viewed?: boolean;
   description: string | null;
   geoprivacy: string | null;
-  identifications: Array<RealmIdentification>;
+  identifications: RealmIdentification[];
   identifications_viewed?: boolean;
   latitude: number | null;
+  license_code: License | null;
   longitude: number | null;
   obscured?: boolean;
-  observationPhotos: Array<RealmObservationPhotoPojo>;
-  observationSounds: Array<RealmObservationSoundPojo>;
+  observationPhotos: RealmObservationPhotoPojo[];
+  observationSounds: RealmObservationSoundPojo[];
   observed_on?: string;
   observed_on_string: string | null;
   observed_time_zone?: string;
   owners_identification_from_vision: boolean | null;
   place_guess: string | null;
+  privateLatitude: number | null;
+  privateLongitude: number | null;
   positional_accuracy: number | null;
   species_guess: string | null;
   taxon_id: number | null;
@@ -119,14 +132,15 @@ export interface RealmObservationPojo {
   taxon_geoprivacy?: "open" | "private" | "obscured" | null;
   time_observed_at?: string;
   timeObservedAt?: string;
+  user: RealmUser;
   uuid: string;
 }
 
 export interface RealmObservation extends RealmObservationPojo {
   missingBasics: ( ) => boolean;
   needsSync: ( ) => boolean;
-  observationPhotos: Array<RealmObservationPhoto>;
-  observationSounds: Array<RealmObservationSound>;
+  observationPhotos: RealmObservationPhoto[];
+  observationSounds: RealmObservationSound[];
   unviewed: ( ) => boolean;
   updateNeedsSync: ( ) => boolean;
   viewed: ( ) => boolean;

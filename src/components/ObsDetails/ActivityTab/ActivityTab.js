@@ -11,7 +11,7 @@ import ActivityItem from "./ActivityItem";
 type Props = {
   observation:Object,
   refetchRemoteObservation: Function,
-  activityItems: Array<Object>,
+  activityItems: Object[],
   openAgreeWithIdSheet: Function,
   isConnected: boolean,
   targetItemID: number,
@@ -26,7 +26,7 @@ const ActivityTab = ( {
   openAgreeWithIdSheet,
   isConnected,
   targetItemID,
-  onLayoutTargetItem
+  onLayoutTargetItem,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -52,9 +52,9 @@ const ActivityTab = ( {
         item.toJSON
           ? item.toJSON( )
           : item
-      )
+      ),
     ),
-    [activityItems]
+    [activityItems],
   );
 
   const indexOfFirstTaxonDisplayed = taxonId => stableItems

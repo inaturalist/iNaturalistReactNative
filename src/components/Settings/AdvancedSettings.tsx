@@ -1,14 +1,14 @@
 import {
   Body2,
-  RadioButtonRow
+  RadioButtonRow,
 } from "components/SharedComponents";
 import React from "react";
 import {
-  View
+  View,
 } from "react-native";
 import {
   useLayoutPrefs,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 
@@ -18,7 +18,7 @@ const AdvancedSettings = ( ) => {
     isAllAddObsOptionsMode,
     setIsAllAddObsOptionsMode,
     screenAfterPhotoEvidence,
-    setScreenAfterPhotoEvidence
+    setScreenAfterPhotoEvidence,
   } = useLayoutPrefs();
 
   const renderSettingDescription = description => (

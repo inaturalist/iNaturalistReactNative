@@ -8,5 +8,5 @@ export default iconSet;
 export const {
   Button,
   getImageSource,
-  getImageSourceSync
+  getImageSourceSync,
 } = iconSet;

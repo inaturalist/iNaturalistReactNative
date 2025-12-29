@@ -11,7 +11,7 @@ const ConfidenceInterval = ( { confidence = 0, activeColor = "bg-white" }: Props
   const ActiveDot = (
     <View className={classnames(
       "h-[4px] w-[4px] rounded-full",
-      activeColor
+      activeColor,
     )}
     />
   );

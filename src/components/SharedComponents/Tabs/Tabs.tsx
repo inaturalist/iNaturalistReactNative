@@ -1,9 +1,10 @@
 import Divider from "components/SharedComponents/Divider/Divider";
 import Heading4 from "components/SharedComponents/Typography/Heading4";
-import Heading5 from "components/SharedComponents/Typography/Heading5";
+import type Heading5 from "components/SharedComponents/Typography/Heading5";
 import { View } from "components/styledComponents";
 import React from "react";
-import { GestureResponderEvent, TouchableOpacity } from "react-native";
+import type { GestureResponderEvent } from "react-native";
+import { TouchableOpacity } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -32,14 +33,14 @@ const Tabs = ( {
   activeColor = String( colors?.darkGray ),
   tabs = [],
   TabComponent,
-  TextComponent = Heading4
+  TextComponent = Heading4,
 }: Props ) => {
   const { t } = useTranslation();
   return (
     <>
       <View className="flex flex-row" accessibilityRole="tablist">
         {tabs.map( ( {
-          id, text, onPress, testID
+          id, text, onPress, testID,
         } ) => {
           const active = activeId === id;
           return (
@@ -56,7 +57,7 @@ const Tabs = ( {
                 accessibilityHint={t( "Switches-to-tab", { tab: text } )}
                 accessibilityState={{
                   selected: active,
-                  expanded: active
+                  expanded: active,
                 }}
               >
                 {

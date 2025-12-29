@@ -7,7 +7,7 @@ import {
   COMMON_ANCESTOR_RANK_TYPE,
   getPredictionsForImage,
   getPredictionsForLocation,
-  MODE
+  MODE,
 } from "vision-camera-plugin-inatvision";
 
 const modelFiles = {
@@ -21,27 +21,27 @@ const modelFiles = {
   IOSGEOMODEL: "geomodel.mlmodelc",
   ANDROIDMODEL: Config.ANDROID_MODEL_FILE_NAME,
   ANDROIDTAXONOMY: Config.ANDROID_TAXONOMY_FILE_NAME,
-  ANDROIDGEOMODEL: Config.ANDROID_GEOMODEL_FILE_NAME
+  ANDROIDGEOMODEL: Config.ANDROID_GEOMODEL_FILE_NAME,
 };
 
 export const modelPath: string = Platform.select( {
   ios: `${RNFS.MainBundlePath}/${modelFiles.IOSMODEL}`,
-  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDMODEL}`
+  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDMODEL}`,
 } );
 
 export const taxonomyPath: string = Platform.select( {
   ios: `${RNFS.MainBundlePath}/${modelFiles.IOSTAXONOMY}`,
-  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`
+  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`,
 } );
 
 export const geomodelPath: string = Platform.select( {
   ios: `${RNFS.MainBundlePath}/${modelFiles.IOSGEOMODEL}`,
-  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDGEOMODEL}`
+  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDGEOMODEL}`,
 } );
 
 export const modelVersion = Config.CV_MODEL_VERSION;
 
-export const predictImage = ( uri: string, location: Location ) => {
+export const predictImage = ( uri: string, location?: Location ) => {
   // Ensure uri is actually well-formed and try to make it well-formed if it's
   // a path
   let url;
@@ -69,14 +69,14 @@ export const predictImage = ( uri: string, location: Location ) => {
       ? location
       : undefined,
     mode: MODE.COMMON_ANCESTOR,
-    commonAncestorRankType: COMMON_ANCESTOR_RANK_TYPE.UNRESTRICTED
+    commonAncestorRankType: COMMON_ANCESTOR_RANK_TYPE.UNRESTRICTED,
   } );
 };
 
 export const predictLocation = ( location: Location ) => getPredictionsForLocation( {
   geomodelPath,
   taxonomyPath,
-  location
+  location,
 } );
 
 const addCameraFilesAndroid = () => {
@@ -88,7 +88,7 @@ const addCameraFilesAndroid = () => {
       .catch( error => {
         console.log(
           error,
-          `error moving file from ${source} to ${destination}`
+          `error moving file from ${source} to ${destination}`,
         );
       } );
   };
@@ -108,7 +108,7 @@ const addCameraFilesAndroid = () => {
     } else {
       Alert.alert(
         i18next.t( "No-model-found" ),
-        i18next.t( "During-app-start-no-model-found" )
+        i18next.t( "During-app-start-no-model-found" ),
       );
     }
   } );

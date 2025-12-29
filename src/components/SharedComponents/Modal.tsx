@@ -1,17 +1,18 @@
 import * as React from "react";
-import { ViewStyle } from "react-native";
-import RNModal, { type SupportedAnimation } from "react-native-modal";
+import type { ViewStyle } from "react-native";
+import type { SupportedAnimation } from "react-native-modal";
+import RNModal from "react-native-modal";
 
 // repurposed from Seek: https://github.com/inaturalist/SeekReactNative/blob/main/components/UIComponents/Modals/Modal.js
 
 interface Props {
   showModal: boolean;
   closeModal: () => void;
-  modal: React.ReactNode,
+  modal: React.ReactNode;
   backdropOpacity?: number;
   fullScreen?: boolean;
-  onModalHide?: () => void,
-  style?: ViewStyle,
+  onModalHide?: () => void;
+  style?: ViewStyle;
   animationIn?: SupportedAnimation;
   animationOut?: SupportedAnimation;
   disableSwipeDirection?: boolean;
@@ -20,12 +21,12 @@ interface Props {
 
 const modalStyle = {
   flex: 1,
-  justifyContent: "flex-end"
+  justifyContent: "flex-end",
 } as const;
 
 const fullScreenModalStyle = {
   ...modalStyle,
-  margin: 0
+  margin: 0,
 } as const;
 
 // accessibility might not work on Android because of backdrop
@@ -42,7 +43,7 @@ const Modal = ( {
   modal,
   onModalHide,
   showModal,
-  style
+  style,
 }: Props ) => {
   const swipeDirection = disableSwipeDirection
     ? undefined
@@ -62,7 +63,7 @@ const Modal = ( {
         ...( fullScreen
           ? fullScreenModalStyle
           : modalStyle
-        )
+        ),
       }}
       backdropOpacity={backdropOpacity}
       onModalHide={onModalHide}

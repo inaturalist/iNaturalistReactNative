@@ -1,5 +1,5 @@
 import {
-  QueryClientProvider
+  QueryClientProvider,
 } from "@tanstack/react-query";
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
@@ -14,7 +14,7 @@ import { signIn, signOut } from "tests/helpers/user";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -25,8 +25,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -48,7 +48,7 @@ const renderMyObs = ( ) => (
 
 test( "Measure MyObservations renders", async () => {
   await measureRenders(
-    renderMyObs( )
+    renderMyObs( ),
   );
 } );
 

@@ -4,7 +4,7 @@
 
 import {
   useSharedValue as useWorkletSharedValue,
-  Worklets
+  Worklets,
 } from "react-native-worklets-core";
 
 // This patch is currently required because we are using react-native-vision-camera v4.0.3
@@ -33,7 +33,7 @@ const usePatchedRunAsync = ( ) => {
         frame.decrementRefCount();
         isAsyncContextBusy.value = false;
       }
-    }
+    },
   );
 
   function customRunAsync( frame, func ) {

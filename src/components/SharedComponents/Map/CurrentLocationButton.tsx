@@ -17,16 +17,19 @@ const CurrentLocationButton = ( {
   currentLocationButtonClassName,
   onPress,
   showCurrentLocationButton,
-  renderPermissionsGate
+  renderPermissionsGate,
 }: Props ) => {
   const { t } = useTranslation( );
-  return showCurrentLocationButton && (
+  if ( !showCurrentLocationButton ) {
+    return null;
+  }
+  return (
     <>
       <INatIconButton
         icon="location-crosshairs"
         className={classnames(
           "absolute bottom-5 right-5 bg-white rounded-full",
-          currentLocationButtonClassName
+          currentLocationButtonClassName,
         )}
         style={DROP_SHADOW}
         accessibilityLabel={t( "Zoom-to-current-location" )}

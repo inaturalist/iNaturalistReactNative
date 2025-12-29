@@ -12,7 +12,7 @@ import type { Node } from "react";
 import React, {
   useCallback, useEffect,
   useMemo,
-  useState
+  useState,
 } from "react";
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
@@ -29,7 +29,7 @@ import {
   handleCameraError,
   handleCaptureError,
   handleClassifierError,
-  handleDeviceNotSupported
+  handleDeviceNotSupported,
 } from "../helpers";
 import CameraNavButtons from "./CameraNavButtons";
 import CameraOptionsButtons from "./CameraOptionsButtons";
@@ -53,7 +53,7 @@ type Props = {
   takingPhoto: boolean,
   takePhotoAndStoreUri: Function,
   takePhotoOptions: Object,
-  newPhotoUris: Array<Object>,
+  newPhotoUris: Object[],
   setNewPhotoUris: Function
 };
 
@@ -68,7 +68,7 @@ const StandardCamera = ( {
   takePhotoAndStoreUri,
   takePhotoOptions,
   newPhotoUris,
-  setNewPhotoUris
+  setNewPhotoUris,
 }: Props ): Node => {
   "use no memo";
 
@@ -80,17 +80,17 @@ const StandardCamera = ( {
     pinchToZoom,
     resetZoom,
     showZoomButton,
-    zoomTextValue
+    zoomTextValue,
   } = useZoom( device );
   const {
     rotatableAnimatedStyle,
-    rotation
+    rotation,
   } = useRotation( );
   const navigation = useNavigation( );
   const insets = useSafeAreaInsets();
 
   const { loadTime } = usePerformance( {
-    isLoading: camera?.current !== null
+    isLoading: camera?.current !== null,
   } );
   if ( isDebugMode( ) && loadTime ) {
     logger.info( loadTime );
@@ -103,7 +103,7 @@ const StandardCamera = ( {
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...cameraUris, ...photoLibraryUris].length,
-    [cameraUris, photoLibraryUris]
+    [cameraUris, photoLibraryUris],
   );
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
@@ -120,7 +120,7 @@ const StandardCamera = ( {
   const {
     handleBackButtonPress,
     setShowDiscardSheet,
-    showDiscardSheet
+    showDiscardSheet,
   } = useBackPress( photosTaken );
 
   useFocusEffect(
@@ -132,7 +132,7 @@ const StandardCamera = ( {
       // for this hook
       // eslint-disable-next-line react-hooks/react-compiler
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [] )
+    }, [] ),
   );
 
   const deletePhotoByUri = useCallback( async ( photoUri: string ) => {

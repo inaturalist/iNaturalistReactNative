@@ -1,27 +1,27 @@
+import type { ApiSuggestion } from "api/types";
 import calculateConfidence from "components/Match/calculateConfidence";
 import {
   Body2,
   Body4,
   DisplayTaxonName,
   Heading1,
-  Subheading2
+  Subheading2,
 } from "components/SharedComponents";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import React from "react";
-import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
+const HIGH_CONFIDENCE_THRESHOLD = 93;
+const LIKELY_CONFIDENCE_THRESHOLD = 50;
+
 interface Props {
-  topSuggestion?: {
-    combined_score?: number;
-    score?: number;
-    taxon: RealmTaxon;
-  };
+  topSuggestion?: ApiSuggestion;
+  hideObservationStatus?: boolean;
 }
 
-const MatchHeader = ( { topSuggestion }: Props ) => {
+const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {
   const { t } = useTranslation( );
   const taxon = topSuggestion?.taxon;
 
@@ -35,14 +35,18 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
 
   const observationStatus = ( ) => {
     let confidenceType = "may_have_observed";
-    if ( confidence >= 93 ) {
-      confidenceType = "observed";
-    } else if ( confidence >= 50 && confidence < 93 ) {
-      confidenceType = "likely_observed";
+    if ( confidence ) {
+      if ( confidence >= HIGH_CONFIDENCE_THRESHOLD ) {
+        confidenceType = "observed";
+      } else if (
+        confidence >= LIKELY_CONFIDENCE_THRESHOLD && confidence < HIGH_CONFIDENCE_THRESHOLD
+      ) {
+        confidenceType = "likely_observed";
+      }
     }
 
     let rankDescription = "organism";
-    if ( taxon.rank_level === 10 ) {
+    if ( taxon?.rank_level === 10 ) {
       rankDescription = "species";
     }
 
@@ -89,17 +93,19 @@ const MatchHeader = ( { topSuggestion }: Props ) => {
 
   return (
     <View>
-      <Body2 className="mb-2">{generateCongratulatoryText( )}</Body2>
+      {!hideObservationStatus && <Body2 className="mb-2">{generateCongratulatoryText( )}</Body2>}
       <View className="flex-row justify-between items-center">
         {showSuggestedTaxon( )}
-        <View className="justify-end items-center ml-5">
-          <Subheading2 className="text-inatGreen mb-2">
-            {t( "X-percent", { count: confidence } )}
-          </Subheading2>
-          <Body4 className="text-inatGreen">
-            {t( "Confidence--label" )}
-          </Body4>
-        </View>
+        { !hideObservationStatus && (
+          <View className="justify-end items-center ml-5">
+            <Subheading2 className="text-inatGreen mb-2">
+              {t( "X-percent", { count: confidence } )}
+            </Subheading2>
+            <Body4 className="text-inatGreen">
+              {t( "Confidence--label" )}
+            </Body4>
+          </View>
+        )}
       </View>
     </View>
   );

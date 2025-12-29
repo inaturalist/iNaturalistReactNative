@@ -10,12 +10,12 @@ const mockTaxon = factory( "LocalTaxon" );
 const mockIdentification = factory( "LocalIdentification", {
   uuid: "123456789",
   user: factory( "LocalUser" ),
-  taxon: mockTaxon
+  taxon: mockTaxon,
 } );
 
 const mockIdentificationWithHiddenContent = {
   ...mockIdentification,
-  hidden: true
+  hidden: true,
 };
 
 describe( "ActivityItem", () => {
@@ -24,7 +24,7 @@ describe( "ActivityItem", () => {
       <ActivityItem
         item={mockIdentification}
         key={mockIdentification.uuid}
-      />
+      />,
     );
     const accessibleName = accessibleTaxonName( mockTaxon, null, i18next.t );
     const navToTaxonDetailsLabel = screen.getByLabelText( accessibleName );
@@ -40,10 +40,10 @@ describe( "ActivityItem", () => {
         key={mockIdentification.uuid}
         openAgreeWithIdSheet={jest.fn()}
         userAgreedId=""
-      />
+      />,
     );
     const agreeButton = await screen.findByTestId(
-      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`
+      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`,
     );
     await waitFor( ( ) => {
       expect( agreeButton ).toBeTruthy( );
@@ -59,10 +59,10 @@ describe( "ActivityItem", () => {
         key={mockIdentification.uuid}
         openAgreeWithIdSheet={jest.fn()}
         userAgreedId=""
-      />
+      />,
     );
     const agreeButton = screen.queryByTestId(
-      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`
+      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`,
     );
     await waitFor( ( ) => {
       expect( agreeButton ).toBeFalsy( );
@@ -75,10 +75,10 @@ describe( "ActivityItem", () => {
         currentUserId="000"
         isFirstDisplay={false}
         item={mockIdentification}
-      />
+      />,
     );
     const agreeButton = screen.queryByTestId(
-      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`
+      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`,
     );
     await waitFor( ( ) => {
       expect( agreeButton ).toBeFalsy( );
@@ -93,10 +93,10 @@ describe( "ActivityItem", () => {
         isFirstDisplay
         item={mockIdentification}
         openAgreeWithIdSheet={mockopenAgreeWithIdSheet}
-      />
+      />,
     );
     const agreeButton = await screen.findByTestId(
-      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`
+      `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`,
     );
     fireEvent.press( agreeButton );
     expect( mockopenAgreeWithIdSheet ).toHaveBeenCalledWith( mockIdentification.taxon );
@@ -107,7 +107,7 @@ describe( "ActivityItem", () => {
       <ActivityItem
         currentUserId="000"
         item={mockIdentificationWithHiddenContent}
-      />
+      />,
     );
     const activityItem = screen.queryByTestId( "ObsDetailsDefaultMode.ActivityItem" );
     expect( activityItem ).toBeFalsy( );
@@ -118,7 +118,7 @@ describe( "ActivityItem", () => {
       <ActivityItem
         currentUserId="000"
         item={mockIdentification}
-      />
+      />,
     );
     const activityItem = screen.queryByTestId( "ObsDetailsDefaultMode.ActivityItem" );
     expect( activityItem ).toBeVisible( );

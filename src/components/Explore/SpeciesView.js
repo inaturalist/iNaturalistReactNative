@@ -5,7 +5,7 @@ import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem";
 import i18n from "i18next";
 import _ from "lodash";
 import {
-  useExplore
+  useExplore,
 } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useEffect, useMemo, useState } from "react";
@@ -14,7 +14,7 @@ import {
   useCurrentUser,
   useGridLayout,
   useInfiniteScroll,
-  useQuery
+  useQuery,
 } from "sharedHooks";
 
 import ExploreFlashList from "./ExploreFlashList";
@@ -30,7 +30,7 @@ const SpeciesView = ( {
   canFetch,
   isConnected,
   queryParams,
-  handleUpdateCount
+  handleUpdateCount,
 }: Props ): Node => {
   // 20240814 - amanda: not sure if we actually need observedTaxonIds in state in the long
   // run, but for now, it prevents flickering when a user scrolls and new species are loaded
@@ -42,7 +42,7 @@ const SpeciesView = ( {
   const {
     flashListStyle,
     gridItemStyle,
-    numColumns
+    numColumns,
   } = useGridLayout( );
 
   // query all of current users seen species if "not by me" explore filter
@@ -53,17 +53,17 @@ const SpeciesView = ( {
       ttl: -1,
       fields: {
         taxon: {
-          id: true
-        }
-      }
+          id: true,
+        },
+      },
     } ),
     {
-      enabled: ( !!currentUser && !!excludeUser )
-    }
+      enabled: ( !!currentUser && !!excludeUser ),
+    },
   );
 
   const pageObservedTaxonIdsAll = useMemo( ( ) => seenByCurrentUserAll?.results?.map(
-    r => r.taxon.id
+    r => r.taxon.id,
   ) || [], [seenByCurrentUserAll?.results] );
 
   const params = excludeUser
@@ -76,7 +76,7 @@ const SpeciesView = ( {
     data,
     isFetchingNextPage,
     fetchNextPage,
-    totalResults
+    totalResults,
   } = useInfiniteScroll(
     "fetchSpeciesCounts",
     fetchSpeciesCounts,
@@ -84,12 +84,12 @@ const SpeciesView = ( {
       ...params,
       ...( !currentUser && { locale } ),
       fields: {
-        taxon: Taxon.LIMITED_TAXON_FIELDS
-      }
+        taxon: Taxon.LIMITED_TAXON_FIELDS,
+      },
     },
     {
-      enabled: canFetch
-    }
+      enabled: canFetch,
+    },
   );
 
   const taxonIds = data.map( r => r.taxon.id );
@@ -101,17 +101,17 @@ const SpeciesView = ( {
       taxon_id: taxonIds,
       fields: {
         taxon: {
-          id: true
-        }
-      }
+          id: true,
+        },
+      },
     } ),
     {
-      enabled: !!( taxonIds.length > 0 && currentUser )
-    }
+      enabled: !!( taxonIds.length > 0 && currentUser ),
+    },
   );
 
   const pageObservedTaxonIds = useMemo( ( ) => seenByCurrentUser?.results?.map(
-    r => r.taxon.id
+    r => r.taxon.id,
   ) || [], [seenByCurrentUser?.results] );
 
   useEffect( ( ) => {
@@ -147,7 +147,7 @@ const SpeciesView = ( {
 
   const contentContainerStyle = useMemo( ( ) => ( {
     ...flashListStyle,
-    paddingTop: 50
+    paddingTop: 50,
   } ), [flashListStyle] );
 
   return (
