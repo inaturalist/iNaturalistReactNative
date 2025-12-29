@@ -41,12 +41,15 @@ const useAuthenticatedInfiniteQuery = <TQueryFnData, TData>(
   const locale = i18n?.language ?? "en";
 
   return useInfiniteQuery( {
-    queryKey: [...queryKey, queryOptions.allowAnonymousJWT, currentUser, locale],
-    queryFn: async ( { pageParam } ) => {
-      const params = {
-        pageParam,
-        ...( !currentUser && { locale } ),
-      };
+    // TODO: `queryKey` should be extended to include the `locale` type that gets added.
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: [...queryKey, queryOptions.allowAnonymousJWT, currentUser],
+    // TODO: The following `params` type should permit the `locale` type that gets added.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    queryFn: async ( params: any ) => {
+      if ( !currentUser ) {
+        params.locale = locale;
+      }
       // logger.info( queryKey, "queryKey in useAuthenticatedInfiniteQuery" );
       // Note, getJWT() takes care of fetching a new token if the existing
       // one is expired. We *could* store the token in state with useState if
