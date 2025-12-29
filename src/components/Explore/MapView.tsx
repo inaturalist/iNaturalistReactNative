@@ -12,7 +12,9 @@ import {
 import React, {
   useEffect, useMemo, useRef, useState,
 } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 import type { Region } from "react-native-maps";
+import type RNMapView from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
@@ -34,7 +36,7 @@ const DROP_SHADOW = getShadow( {
 } );
 
 const activityIndicatorSize = 50;
-const centeredLoadingWheel = {
+const centeredLoadingWheel: StyleProp<ViewStyle> = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -78,7 +80,7 @@ const MapView = ( {
   const [showRedoSearchButton, setShowRedoSearchButton] = useState( false );
   const isFirstRender = useRef( true );
 
-  const mapRef = useRef( null );
+  const mapRef = useRef<RNMapView | null>( null );
 
   const nearbyRegion = useMemo( () => ( {
     latitude: exploreState.lat,
@@ -120,7 +122,11 @@ const MapView = ( {
       // but per user feedback, we want to show users a more zoomed in view
       // when they're looking at NEARBY view
       if ( nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined ) {
-        mapRef.current.animateToRegion( nearbyRegion );
+        mapRef.current.animateToRegion( {
+          ...nearbyRegion,
+          latitude: nearbyRegion.latitude,
+          longitude: nearbyRegion.longitude
+        } );
       }
       return;
     }
@@ -146,6 +152,7 @@ const MapView = ( {
   const handleRedoSearch = async ( ) => {
     setShowRedoSearchButton( false );
     const currentBounds = await mapRef?.current?.getMapBoundaries( );
+    if ( !currentBounds ) { return; }
     dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA } );
     dispatch( {
       type: EXPLORE_ACTION.SET_MAP_BOUNDARIES,
@@ -169,7 +176,11 @@ const MapView = ( {
   const initialRegion: Region = useMemo( () => {
     if ( exploreState.placeMode === PLACE_MODE.NEARBY ) {
       if ( nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined ) {
-        return nearbyRegion;
+        return {
+          ...nearbyRegion,
+          latitude: nearbyRegion.latitude,
+          longitude: nearbyRegion.longitude
+        };
       }
     }
 
