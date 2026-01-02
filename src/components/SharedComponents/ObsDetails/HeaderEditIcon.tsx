@@ -14,7 +14,7 @@ interface Props {
   observation: RealmObservation;
 }
 
-const ObsEditHeaderRight = ( {
+const HeaderEditIcon = ( {
   observation,
 }: Props ) => {
   const navigation = useNavigation( );
@@ -47,4 +47,4 @@ const ObsEditHeaderRight = ( {
   return null;
 };
 
-export default ObsEditHeaderRight;
+export default HeaderEditIcon;

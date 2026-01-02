@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import ObsEditHeaderRight from "components/SharedComponents/ObsDetails/ObsEditHeaderRight";
+import HeaderEditIcon from "components/SharedComponents/ObsDetails/HeaderEditIcon";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
@@ -15,7 +15,7 @@ jest.mock( "@react-navigation/native", () => ( {
   } ),
 } ) );
 
-describe( "ObsEditHeaderRight", () => {
+describe( "HeaderEditIcon", () => {
   const mockObservation = factory( "LocalObservation" );
 
   beforeEach( () => {
@@ -23,7 +23,7 @@ describe( "ObsEditHeaderRight", () => {
   } );
 
   it( "sets navigation header options", () => {
-    renderComponent( <ObsEditHeaderRight observation={mockObservation} /> );
+    renderComponent( <HeaderEditIcon observation={mockObservation} /> );
 
     expect( mockSetOptions ).toHaveBeenCalledWith(
       expect.objectContaining( {
@@ -41,7 +41,7 @@ describe( "ObsEditHeaderRight", () => {
       setMyObsOffsetToRestore,
     } );
 
-    renderComponent( <ObsEditHeaderRight observation={mockObservation} /> );
+    renderComponent( <HeaderEditIcon observation={mockObservation} /> );
 
     const headerRightCall = mockSetOptions.mock.calls[0][0];
     const HeaderRightComponent = headerRightCall.headerRight;

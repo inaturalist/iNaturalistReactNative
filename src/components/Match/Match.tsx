@@ -7,6 +7,7 @@ import MapSection
 import {
   Body2, Button, Heading3, ScrollViewWrapper,
 } from "components/SharedComponents";
+import HeaderEditIcon from "components/SharedComponents/ObsDetails/HeaderEditIcon";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
@@ -79,6 +80,7 @@ const Match = ( {
             hasNoSuggestions={hasNoSuggestions}
             hasOnlyOtherSuggestions={hasOnlyOtherSuggestions}
           />
+          <HeaderEditIcon observation={observation} />
         </View>
         <PhotosSection
           representativePhoto={topSuggestion?.taxon?.representative_photo}

@@ -5,7 +5,7 @@ import PhotosSection from "components/Match/PhotosSection";
 import LocationSection from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
 import MapSection from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import { Button, ScrollViewWrapper } from "components/SharedComponents";
-import ObsEditHeaderRight from "components/SharedComponents/ObsDetails/ObsEditHeaderRight";
+import HeaderEditIcon from "components/SharedComponents/ObsDetails/HeaderEditIcon";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
@@ -29,7 +29,7 @@ const SavedMatch = ( {
 
   return (
     <ScrollViewWrapper testID="SavedMatch.container">
-      <ObsEditHeaderRight observation={observation} />
+      <HeaderEditIcon observation={observation} />
       <View className={`${matchCardClassTop} mt-[10px]`}>
         <MatchHeader hideObservationStatus topSuggestion={observation} />
       </View>
