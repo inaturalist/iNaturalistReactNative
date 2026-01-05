@@ -46,10 +46,16 @@ const ObsEditHeader = ( {
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    exitObservationFlow( {
-      navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
-    } );
-  }, [currentObservation?.uuid, exitObservationFlow, navigation] );
+    if ( params?.lastScreen === "Match" ) {
+      exitObservationFlow( {
+        navigate: ( ) => navigation.goBack( ),
+      } );
+    } else {
+      exitObservationFlow( {
+        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
+      } );
+    }
+  }, [currentObservation?.uuid, exitObservationFlow, navigation, params?.lastScreen] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
@@ -86,6 +92,12 @@ const ObsEditHeader = ( {
   const handleBackButtonPress = useCallback( ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
+    } else if ( params?.lastScreen === "Match" ) {
+      if ( unsavedChanges ) {
+        setDiscardChangesSheetVisible( true );
+      } else {
+        navigation.goBack( );
+      }
     } else if ( shouldNavigateBack ) {
       navigation.goBack( );
     } else if ( !savedLocally || savedOrUploadedMultiObsFlow === true ) {

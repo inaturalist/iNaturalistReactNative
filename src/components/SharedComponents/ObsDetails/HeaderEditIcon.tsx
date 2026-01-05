@@ -25,7 +25,7 @@ const HeaderEditIcon = ( {
     ( ) => (
       <INatIconButton
         testID="ObsEditIcon"
-        onPress={() => navigateToObsEdit( observation )}
+        onPress={() => navigateToObsEdit( observation, "Match" )}
         icon="pencil"
         color={String( colors?.darkGray )}
         accessibilityLabel={t( "Edit" )}
