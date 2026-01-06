@@ -36,6 +36,7 @@ import { getInstallID } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
+import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -145,7 +146,9 @@ const AppWithProviders = ( ) => {
   const colorScheme = useColorScheme( );
   const darkModeStyleWrapper = { flex: 1, colorScheme };
 
+  // note: automatically disabled in Production builds
   useTanStackQueryDevTools( queryClient );
+  useNetworkActivityDevTools();
 
   return (
     <QueryClientProvider client={queryClient}>
