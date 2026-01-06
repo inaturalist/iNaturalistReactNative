@@ -12,10 +12,12 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   observation: RealmObservation;
+  lastScreen?: string;
 }
 
 const HeaderEditIcon = ( {
   observation,
+  lastScreen,
 }: Props ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -25,7 +27,7 @@ const HeaderEditIcon = ( {
     ( ) => (
       <INatIconButton
         testID="ObsEditIcon"
-        onPress={() => navigateToObsEdit( observation, "Match" )}
+        onPress={() => navigateToObsEdit( observation, lastScreen )}
         icon="pencil"
         color={String( colors?.darkGray )}
         accessibilityLabel={t( "Edit" )}
@@ -36,6 +38,7 @@ const HeaderEditIcon = ( {
       observation,
       navigateToObsEdit,
       t,
+      lastScreen,
     ],
   );
 
