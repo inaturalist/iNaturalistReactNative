@@ -80,7 +80,7 @@ const Match = ( {
             hasNoSuggestions={hasNoSuggestions}
             hasOnlyOtherSuggestions={hasOnlyOtherSuggestions}
           />
-          <HeaderEditIcon observation={observation} />
+          <HeaderEditIcon observation={observation} lastScreen="Match" />
         </View>
         <PhotosSection
           representativePhoto={topSuggestion?.taxon?.representative_photo}

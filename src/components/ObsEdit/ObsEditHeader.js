@@ -22,12 +22,14 @@ const { useRealm } = RealmContext;
 
 type Props = {
   observations: Object[],
-  currentObservation: Object
+  currentObservation: Object,
+  hasBeenUpdated: boolean,
 }
 
 const ObsEditHeader = ( {
   observations,
   currentObservation,
+  hasBeenUpdated,
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const updateObservations = useStore( state => state.updateObservations );
@@ -46,16 +48,10 @@ const ObsEditHeader = ( {
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    if ( params?.lastScreen === "Match" ) {
-      exitObservationFlow( {
-        navigate: ( ) => navigation.goBack( ),
-      } );
-    } else {
-      exitObservationFlow( {
-        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
-      } );
-    }
-  }, [currentObservation?.uuid, exitObservationFlow, navigation, params?.lastScreen] );
+    exitObservationFlow( {
+      navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
+    } );
+  }, [currentObservation?.uuid, exitObservationFlow, navigation] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
@@ -92,9 +88,12 @@ const ObsEditHeader = ( {
   const handleBackButtonPress = useCallback( ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
-    } else if ( params?.lastScreen === "Match" ) {
-      if ( unsavedChanges ) {
-        setDiscardChangesSheetVisible( true );
+    } else if ( params?.lastScreen === "Match" && unsavedChanges ) {
+      // When coming from the match screen, we don't have a version of the match to roll back to
+      // so if there are changes, they need to restart
+      // In the future, we'll support a rollback https://linear.app/inaturalist/issue/MOB-1091/match-screen-edit-flow-should-roll-back-changes-on-back-navigation
+      if ( hasBeenUpdated ) {
+        setDiscardObservationSheetVisible( true );
       } else {
         navigation.goBack( );
       }
@@ -118,6 +117,7 @@ const ObsEditHeader = ( {
     savedOrUploadedMultiObsFlow,
     shouldNavigateBack,
     unsavedChanges,
+    hasBeenUpdated,
   ] );
 
   const renderBackButton = useCallback( ( ) => {
