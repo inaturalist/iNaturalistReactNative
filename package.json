@@ -158,6 +158,7 @@
     "@react-native/metro-config": "0.80.2",
     "@react-native/typescript-config": "0.80.2",
     "@rozenite/metro": "^1.1.0",
+    "@rozenite/tanstack-query-plugin": "^1.1.0",
     "@stylistic/eslint-plugin": "^3.1.0",
     "@tanstack/eslint-plugin-query": "^5.28.11",
     "@testing-library/jest-native": "^5.4.3",

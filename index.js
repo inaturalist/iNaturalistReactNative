@@ -35,6 +35,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { getInstallID } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
+import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -143,6 +144,8 @@ const queryClient = new QueryClient( {
 const AppWithProviders = ( ) => {
   const colorScheme = useColorScheme( );
   const darkModeStyleWrapper = { flex: 1, colorScheme };
+
+  useTanStackQueryDevTools( queryClient );
 
   return (
     <QueryClientProvider client={queryClient}>
