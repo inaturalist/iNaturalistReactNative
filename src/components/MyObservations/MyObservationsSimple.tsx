@@ -17,9 +17,11 @@ import {
   Tabs,
   ViewWrapper,
 } from "components/SharedComponents";
+import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
+import SortSheet from "components/SharedComponents/Sheets/SortSheet";
 import { View } from "components/styledComponents";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
@@ -125,6 +127,12 @@ const MyObservationsSimple = ( {
     ...flashListStyle,
     paddingTop: 10,
   } ), [flashListStyle] );
+
+  const [showSortSheet, setShowSortSheet] = useState<boolean>( false );
+
+  const activeItemType = activeTab === OBSERVATIONS_TAB
+    ? "observations"
+    : "taxa";
 
   const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
     const taxonId = speciesCount.taxon.id;
@@ -317,33 +325,56 @@ const MyObservationsSimple = ( {
               layout={layout}
               updateObservationsView={toggleLayout}
             />
+            <SortButton
+              onPress={() => setShowSortSheet( true )}
+              accessibilityLabel={t( "Sort-observations" )}
+            />
           </>
         ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
-          <CustomFlashList
-            canFetch={!!currentUser}
-            contentContainerStyle={taxaFlashListStyle}
-            data={taxa}
-            hideLoadingWheel
-            isConnected={isConnected}
-            keyExtractor={(
-              item: SpeciesCount,
-            ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
-            layout="grid"
-            numColumns={numColumns}
-            renderItem={renderTaxaItem}
-            totalResults={numTotalTaxa}
-            onEndReached={
-              currentUser
-                ? fetchMoreTaxa
-                : undefined
-            }
-            refreshing={isFetchingTaxa}
-            ListFooterComponent={renderTaxaFooter}
-          />
+          <>
+            <CustomFlashList
+              canFetch={!!currentUser}
+              contentContainerStyle={taxaFlashListStyle}
+              data={taxa}
+              hideLoadingWheel
+              isConnected={isConnected}
+              keyExtractor={(
+                item: SpeciesCount,
+              ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
+              layout="grid"
+              numColumns={numColumns}
+              renderItem={renderTaxaItem}
+              totalResults={numTotalTaxa}
+              onEndReached={
+                currentUser
+                  ? fetchMoreTaxa
+                  : undefined
+              }
+              refreshing={isFetchingTaxa}
+              ListFooterComponent={renderTaxaFooter}
+            />
+            <SortButton
+              onPress={() => setShowSortSheet( true )}
+              accessibilityLabel={t( "Sort-species" )}
+            />
+          </>
         )}
         { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
+      {showSortSheet && (
+        <SortSheet
+          itemType={activeItemType}
+          selectedValue={activeItemType === "observations"
+            ? "created_at_desc"
+            : "count_desc"}
+          onConfirm={() => {
+            // TODO: update to new sort id
+            setShowSortSheet( false );
+          }}
+          onPressClose={() => setShowSortSheet( false )}
+        />
+      )}
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {isDefaultMode && (
         <>

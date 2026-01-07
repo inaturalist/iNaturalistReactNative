@@ -729,6 +729,8 @@
   "Sorry-we-dont-know-how-to-open-that-URL": "Sorry, we don't know how to open that URL: { $url }",
   "SORT-BY": "SORT BY",
   "Sort-by": "Sort by",
+  "Sort-observations": "Sort observations",
+  "Sort-species": "Sort species",
   "sound-playback-separator": "/",
   "Sound-recorder": "Sound recorder",
   "sound-recorder-help-A-recording-of": "A recording of 5-15 seconds is best to help identifiers.",

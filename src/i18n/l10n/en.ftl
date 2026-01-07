@@ -1163,6 +1163,10 @@ Sorry-this-observation-was-deleted = Sorry, this observation was deleted
 Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that URL: { $url }
 SORT-BY = SORT BY
 Sort-by = Sort by
+# Accessibility label for a button that allows users to sort observations
+Sort-observations = Sort observations
+# Accessibility label for a button that allows users to sort taxa
+Sort-species = Sort species
 # Character separating current position and total duration when playing a
 # sound, e.g. 00:12 / 03:00 uses "/" as the separator. This can be anything,
 # but it should be very short.
