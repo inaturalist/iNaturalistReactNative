@@ -1,7 +1,8 @@
-import { Body4 } from "components/SharedComponents";
+import { Body3, Body4 } from "components/SharedComponents";
 import { t } from "i18next";
 import React from "react";
 import type { License, RealmObservation } from "realmModels/types";
+import { useLayoutPrefs } from "sharedHooks";
 
 interface Props {
   observation: RealmObservation;
@@ -31,18 +32,26 @@ const renderRestrictions = ( licenseCode: License | null ) => {
 // lifted from web:
 // https://github.com/inaturalist/inaturalist/blob/768b9263931ebeea229bbc47d8442ca6b0377d45/app/webpack/shared/components/observation_attribution.jsx
 const Attribution = ( { observation }: Props ) => {
+  const { isDefaultMode } = useLayoutPrefs( );
+  console.log( "attribution observation", observation );
   const { user } = observation;
   const userName = user
     ? ( user.name || user.login )
     : t( "Unknown--user" );
+  const [BodyTag, attributionClass, attributionText] = isDefaultMode
+    ? [Body3, "mt-3", t( "Observation-Copyright", {
+      userName,
+      restrictions: renderRestrictions( observation.license_code ),
+    } )]
+    : [Body4, "", t( "Observation-Attribution", {
+      userName,
+      restrictions: renderRestrictions( observation.license_code ),
+    } )];
 
   return (
-    <Body4>
-      {t( "Observation-Copyright", {
-        userName,
-        restrictions: renderRestrictions( observation.license_code ),
-      } )}
-    </Body4>
+    <BodyTag className={attributionClass}>
+      {attributionText}
+    </BodyTag>
   );
 };
 
