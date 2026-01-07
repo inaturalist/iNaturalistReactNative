@@ -1,6 +1,10 @@
 // @flow
+import FloatingButtons from "components/ObsDetailsSharedComponents/ActivityTab/FloatingButtons";
+import ObsMediaDisplayContainer from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplayContainer";
+import AgreeWithIDSheet from "components/ObsDetailsSharedComponents/Sheets/AgreeWithIDSheet";
 import PotentialDisagreementSheet from
-  "components/ObsDetails/Sheets/PotentialDisagreementSheet";
+  "components/ObsDetailsSharedComponents/Sheets/PotentialDisagreementSheet";
+import SuggestIDSheet from "components/ObsDetailsSharedComponents/Sheets/SuggestIDSheet";
 import {
   ActivityIndicator,
   HideView,
@@ -20,13 +24,9 @@ import {
 
 import ObsDetailsHeaderRight from "../ObsDetailsDefaultMode/ObsDetailsDefaultModeHeaderRight";
 import ActivityTab from "./ActivityTab/ActivityTab";
-import FloatingButtons from "./ActivityTab/FloatingButtons";
 import DetailsTab from "./DetailsTab/DetailsTab";
 import FaveButton from "./FaveButton";
 import ObsDetailsOverview from "./ObsDetailsOverview";
-import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
-import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
-import SuggestIDSheet from "./Sheets/SuggestIDSheet";
 
 const isTablet = DeviceInfo.isTablet();
 

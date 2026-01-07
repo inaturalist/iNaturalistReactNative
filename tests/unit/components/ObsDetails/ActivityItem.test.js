@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
+import ActivityItem from "components/ObsDetailsSharedComponents/ActivityTab/ActivityItem";
 import i18next from "i18next";
 import React from "react";
 import { accessibleTaxonName } from "sharedHelpers/taxon";

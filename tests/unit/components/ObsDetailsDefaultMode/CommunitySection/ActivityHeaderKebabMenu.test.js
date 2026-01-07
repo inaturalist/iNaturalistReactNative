@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import ActivityHeader from "components/ObsDetailsDefaultMode/CommunitySection/ActivityHeader";
+import ActivityHeader from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeader";
 import { t } from "i18next";
 import React from "react";
 import factory from "tests/factory";

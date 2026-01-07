@@ -1,7 +1,10 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import ActivityHeaderContainer from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeaderContainer";
+import DisagreementText from "components/ObsDetailsSharedComponents/ActivityTab/DisagreementText";
 import {
+  Body4,
   Divider, INatIconButton, UserText,
 } from "components/SharedComponents";
 import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
@@ -13,9 +16,6 @@ import _ from "lodash";
 import type { Node } from "react";
 import React from "react";
 
-import ActivityHeaderContainer from "./ActivityHeaderContainer";
-import DisagreementText from "./DisagreementText";
-
 type Props = {
   currentUserId?: number,
   isFirstDisplay: boolean,
@@ -26,7 +26,8 @@ type Props = {
   userAgreedId?: string,
   geoprivacy: string,
   taxonGeoprivacy: string,
-  belongsToCurrentUser: boolean
+  belongsToCurrentUser: boolean,
+  showExplainerText?: boolean
 }
 
 const ActivityItem = ( {
@@ -40,6 +41,7 @@ const ActivityItem = ( {
   geoprivacy,
   taxonGeoprivacy,
   belongsToCurrentUser,
+  showExplainerText = false,
 }: Props ): Node => {
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -73,7 +75,7 @@ const ActivityItem = ( {
   }
 
   return (
-    <View className="flex-column" testID="ObsDetails.ActivityItem">
+    <View className="flex-column" testID="ActivityItem">
       <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
           item={item}
@@ -115,6 +117,21 @@ const ActivityItem = ( {
             withdrawn={idWithdrawn}
           />
         )}
+        {/*
+          Only show explainer text if we are on the user's obs, if it is an ID of this user
+          and the user has in total less than 10 obs (handled in HOC)
+        */}
+        { showExplainerText
+          && belongsToCurrentUser
+          && taxon
+          && user?.id === currentUserId
+          && (
+            <Body4 className="py-2 font-Lato-Italic">
+              {t(
+                "This-is-your-identification-other-people-may-help-confirm-it",
+              )}
+            </Body4>
+          )}
       </View>
       <Divider />
     </View>

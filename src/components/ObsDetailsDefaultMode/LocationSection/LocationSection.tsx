@@ -1,3 +1,4 @@
+import ObscurationExplanation from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
 import {
   DateDisplay,
   Heading5,
@@ -9,8 +10,6 @@ import { t } from "i18next";
 import React from "react";
 import type { RealmObservation } from "realmModels/types";
 import { useCurrentUser } from "sharedHooks";
-
-import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
   belongsToCurrentUser: boolean;

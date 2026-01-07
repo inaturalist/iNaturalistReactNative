@@ -1,13 +1,13 @@
 // @flow
 
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import MasonryLayout from "components/ObsDetails/MasonryLayout";
+import PhotoContainer from "components/ObsDetailsSharedComponents/Media/PhotoContainer";
+import SoundContainer from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import { ActivityIndicator, Carousel, CarouselDots } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
-
-import PhotoContainer from "./PhotoContainer";
-import SoundContainer from "./SoundContainer";
 
 type Props = {
   loading: boolean,
@@ -20,13 +20,15 @@ type Props = {
   }[],
   sounds?: {
     file_url: string
-  }[]
+  }[],
+  tablet?: boolean
 }
 
 const ObsMedia = ( {
   loading,
   photos = [],
   sounds = [],
+  tablet = false,
 }: Props ): Node => {
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -82,9 +84,23 @@ const ObsMedia = ( {
     </>
   );
 
+  const renderTablet = () => (
+    <View className="w-full h-full">
+      <MasonryLayout
+        items={items}
+        onImagePress={newIndex => {
+          setIndex( newIndex );
+          setMediaViewerVisible( true );
+        }}
+      />
+    </View>
+  );
+
   return (
     <View className="relative">
-      {renderPhone( )}
+      {!tablet
+        ? renderPhone( )
+        : renderTablet( )}
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}

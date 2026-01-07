@@ -1,3 +1,5 @@
+import FloatingButtons from "components/ObsDetailsSharedComponents/ActivityTab/FloatingButtons";
+import ObsMediaDisplayContainer from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplayContainer";
 import {
   ActivityIndicator,
 } from "components/SharedComponents";
@@ -12,7 +14,6 @@ import {
 } from "sharedHooks";
 
 import CommunitySection from "./CommunitySection/CommunitySection";
-import FloatingButtons from "./CommunitySection/FloatingButtons";
 import CommunityTaxon from "./CommunityTaxon";
 import DetailsSection from "./DetailsSection/DetailsSection";
 import LocationSection from "./LocationSection/LocationSection";
@@ -21,7 +22,6 @@ import MoreSection from "./MoreSection/MoreSection";
 import NotesSection from "./NotesSection/NotesSection";
 import ObsDetailsDefaultModeHeaderRight from "./ObsDetailsDefaultModeHeaderRight";
 import ObserverDetails from "./ObserverDetails";
-import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import StatusSection from "./StatusSection/StatusSection";
 
 const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";

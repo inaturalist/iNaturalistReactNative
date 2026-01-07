@@ -1,6 +1,9 @@
 import { useRoute } from "@react-navigation/native";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
+import AgreeWithIDSheet from "components/ObsDetailsSharedComponents/Sheets/AgreeWithIDSheet";
+import PotentialDisagreementSheet from "components/ObsDetailsSharedComponents/Sheets/PotentialDisagreementSheet";
+import SuggestIDSheet from "components/ObsDetailsSharedComponents/Sheets/SuggestIDSheet";
 import {
   TextInputSheet,
   WarningSheet,
@@ -16,10 +19,6 @@ import {
   useAuthenticatedMutation,
   useTranslation,
 } from "sharedHooks";
-
-import AgreeWithIDSheet from "./Sheets/AgreeWithIDSheet";
-import PotentialDisagreementSheet from "./Sheets/PotentialDisagreementSheet";
-import SuggestIDSheet from "./Sheets/SuggestIDSheet";
 
 const { useRealm } = RealmContext;
 

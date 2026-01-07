@@ -3,11 +3,10 @@
 import { deleteComments, updateComment } from "api/comments";
 import { updateIdentification as apiUpdateIdentification } from "api/identifications";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
+import ActivityHeader from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeader";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-
-import ActivityHeader from "./ActivityHeader";
 
 type Props = {
   classNameMargin?: string,

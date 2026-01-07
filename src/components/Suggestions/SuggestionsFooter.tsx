@@ -1,3 +1,4 @@
+import Attribution from "components/ObsDetailsSharedComponents/DetailsTab/Attribution";
 import {
   Body1,
   Body3,
@@ -9,8 +10,6 @@ import { View } from "components/styledComponents";
 import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
-
-import Attribution from "./Attribution";
 
 type Props = {
   debugData: {
