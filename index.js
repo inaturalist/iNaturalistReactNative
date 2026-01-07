@@ -1,5 +1,3 @@
-// @flow
-
 // Recommendation from the uuid library is to import get-random-values before
 // uuid, so we're importing it first thing in the entry point.
 // https://www.npmjs.com/package/uuid#react-native--expo
