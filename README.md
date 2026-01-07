@@ -41,7 +41,7 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 
 ### Rozenite (React Native DevTools plugins)
 
-You may optionally, as an environment variable, set the Rozenite env var to enable the Rozenite React Native DevTools plugins: `WITH_ROZENITE=true npm start`. This makes the installed Rozentite plugins available in React Native DevTools in their respective tabs.
+You may optionally, as an environment variable, set the Rozenite env var to enable the Rozenite React Native DevTools plugins: `WITH_ROZENITE=true npm start`. This makes the installed Rozenite plugins available in React Native DevTools in their respective tabs.
 
 ### Running with staging environment
 
