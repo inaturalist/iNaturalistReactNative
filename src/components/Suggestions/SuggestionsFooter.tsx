@@ -1,4 +1,3 @@
-import Attribution from "components/ObsDetailsSharedComponents/DetailsTab/Attribution";
 import {
   Body1,
   Body3,
@@ -7,6 +6,7 @@ import {
   Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import Attribution from "components/Suggestions/Attribution";
 import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";

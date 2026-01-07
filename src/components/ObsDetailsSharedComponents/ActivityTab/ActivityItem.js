@@ -1,7 +1,8 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import ActivityHeaderContainer from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeaderContainer";
+import ActivityHeaderContainer
+  from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeaderContainer";
 import DisagreementText from "components/ObsDetailsSharedComponents/ActivityTab/DisagreementText";
 import {
   Body4,
@@ -27,7 +28,8 @@ type Props = {
   geoprivacy: string,
   taxonGeoprivacy: string,
   belongsToCurrentUser: boolean,
-  showExplainerText?: boolean
+  showExplainerText?: boolean,
+  showStatus?: boolean,
 }
 
 const ActivityItem = ( {
@@ -42,6 +44,7 @@ const ActivityItem = ( {
   taxonGeoprivacy,
   belongsToCurrentUser,
   showExplainerText = false,
+  showStatus,
 }: Props ): Node => {
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -75,7 +78,7 @@ const ActivityItem = ( {
   }
 
   return (
-    <View className="flex-column" testID="ActivityItem">
+    <View className="flex-column" testID="ObsDetails.ActivityItem">
       <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
           item={item}
@@ -85,6 +88,7 @@ const ActivityItem = ( {
           geoprivacy={geoprivacy}
           taxonGeoprivacy={taxonGeoprivacy}
           belongsToCurrentUser={belongsToCurrentUser}
+          showStatus={showStatus}
         />
         {taxon && (
           <View className="flex-row items-center justify-between mb-4 mt-1">

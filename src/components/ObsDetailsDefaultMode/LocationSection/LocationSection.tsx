@@ -1,4 +1,5 @@
-import ObscurationExplanation from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
+import ObscurationExplanation
+  from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
 import {
   DateDisplay,
   Heading5,

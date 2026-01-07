@@ -1,6 +1,7 @@
 // @flow
 
-import ObscurationExplanation from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
+import ObscurationExplanation
+  from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
 import {
   ObservationLocation,
 } from "components/SharedComponents";

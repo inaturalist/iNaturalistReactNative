@@ -1,6 +1,7 @@
 import Clipboard from "@react-native-clipboard/clipboard";
 import DetailsMapHeader from "components/ObsDetailsSharedComponents/DetailsTab/DetailsMapHeader";
-import ObscurationExplanation from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
+import ObscurationExplanation
+  from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
 import {
   Button,
   DetailsMap,

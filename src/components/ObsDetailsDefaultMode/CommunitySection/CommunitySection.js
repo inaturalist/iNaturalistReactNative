@@ -91,6 +91,7 @@ const CommunitySection = ( {
               taxonGeoprivacy={taxonGeoprivacy}
               belongsToCurrentUser={belongsToCurrentUser}
               showExplainerText={currentUser?.observations_count < 10}
+              showStatus={false}
             />
           </View>
         ) )}

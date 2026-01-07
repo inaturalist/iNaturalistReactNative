@@ -16,7 +16,8 @@ type Props = {
   refetchRemoteObservation?: Function,
   geoprivacy: string,
   taxonGeoprivacy: string,
-  belongsToCurrentUser: boolean
+  belongsToCurrentUser: boolean,
+  showStatus?: boolean
 }
 
 const ActivityHeaderContainer = ( {
@@ -28,6 +29,7 @@ const ActivityHeaderContainer = ( {
   geoprivacy,
   taxonGeoprivacy,
   belongsToCurrentUser,
+  showStatus,
 }:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( false );
   const [loading, setLoading] = useState( false );
@@ -128,6 +130,7 @@ const ActivityHeaderContainer = ( {
       geoprivacy={geoprivacy}
       taxonGeoprivacy={taxonGeoprivacy}
       belongsToCurrentUser={belongsToCurrentUser}
+      showStatus={showStatus}
     />
   );
 };

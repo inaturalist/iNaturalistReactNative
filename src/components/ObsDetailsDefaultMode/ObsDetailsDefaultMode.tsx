@@ -1,5 +1,6 @@
 import FloatingButtons from "components/ObsDetailsSharedComponents/ActivityTab/FloatingButtons";
-import ObsMediaDisplayContainer from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplayContainer";
+import ObsMediaDisplayContainer
+  from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplayContainer";
 import {
   ActivityIndicator,
 } from "components/SharedComponents";

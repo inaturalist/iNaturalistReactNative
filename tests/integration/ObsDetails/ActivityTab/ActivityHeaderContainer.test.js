@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import ActivityHeaderContainer from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeaderContainer";
+import ActivityHeaderContainer
+  from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeaderContainer";
 import inatjs from "inaturalistjs";
 import React from "react";
 import factory, { makeResponse } from "tests/factory";

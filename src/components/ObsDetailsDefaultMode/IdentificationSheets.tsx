@@ -2,7 +2,8 @@ import { useRoute } from "@react-navigation/native";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import AgreeWithIDSheet from "components/ObsDetailsSharedComponents/Sheets/AgreeWithIDSheet";
-import PotentialDisagreementSheet from "components/ObsDetailsSharedComponents/Sheets/PotentialDisagreementSheet";
+import PotentialDisagreementSheet
+  from "components/ObsDetailsSharedComponents/Sheets/PotentialDisagreementSheet";
 import SuggestIDSheet from "components/ObsDetailsSharedComponents/Sheets/SuggestIDSheet";
 import {
   TextInputSheet,

@@ -1,6 +1,7 @@
 // @flow
 import FloatingButtons from "components/ObsDetailsSharedComponents/ActivityTab/FloatingButtons";
-import ObsMediaDisplayContainer from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplayContainer";
+import ObsMediaDisplayContainer
+  from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplayContainer";
 import AgreeWithIDSheet from "components/ObsDetailsSharedComponents/Sheets/AgreeWithIDSheet";
 import PotentialDisagreementSheet from
   "components/ObsDetailsSharedComponents/Sheets/PotentialDisagreementSheet";

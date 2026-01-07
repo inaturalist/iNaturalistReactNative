@@ -109,7 +109,7 @@ describe( "ActivityItem", () => {
         item={mockIdentificationWithHiddenContent}
       />,
     );
-    const activityItem = screen.queryByTestId( "ObsDetailsDefaultMode.ActivityItem" );
+    const activityItem = screen.queryByTestId( "ObsDetails.ActivityItem" );
     expect( activityItem ).toBeFalsy( );
   } );
 
@@ -120,7 +120,7 @@ describe( "ActivityItem", () => {
         item={mockIdentification}
       />,
     );
-    const activityItem = screen.queryByTestId( "ObsDetailsDefaultMode.ActivityItem" );
+    const activityItem = screen.queryByTestId( "ObsDetails.ActivityItem" );
     expect( activityItem ).toBeVisible( );
   } );
 } );
