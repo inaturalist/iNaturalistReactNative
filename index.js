@@ -31,7 +31,7 @@ import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { getInstallID } from "sharedHelpers/installData";
+import { getInstallID, store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
@@ -151,7 +151,8 @@ const AppWithProviders = ( ) => {
   useNetworkActivityDevTools();
   useMMKVDevTools( {
     storages: {
-      "zustand-storage": zustandMMKVBackingStorage,
+      "persisted-zustand": zustandMMKVBackingStorage,
+      "install-data": installDataMMKVStorage,
     },
   } );
 
