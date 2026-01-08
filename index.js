@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
+import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 import {
   QueryClient,
   QueryClientProvider,
@@ -35,6 +36,7 @@ import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
+import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -147,6 +149,11 @@ const AppWithProviders = ( ) => {
   // note: automatically disabled in Production builds
   useTanStackQueryDevTools( queryClient );
   useNetworkActivityDevTools();
+  useMMKVDevTools( {
+    storages: {
+      "zustand-storage": zustandMMKVBackingStorage,
+    },
+  } );
 
   return (
     <QueryClientProvider client={queryClient}>
