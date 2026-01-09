@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { MMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -11,8 +10,7 @@ import createObservationFlowSlice from "./createObservationFlowSlice";
 import createRootExploreSlice from "./createRootExploreSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
 import createUploadObservationsSlice from "./createUploadObservationsSlice";
-
-export const storage = new MMKV( );
+import storage from "./zustandMMKVBackingStorage";
 
 // TODO do *not* export this. This allows any consumer to overwrite *any* part
 // of state, circumventing any getter/setter logic we have in the stores. If

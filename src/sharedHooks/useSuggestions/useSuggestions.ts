@@ -1,12 +1,15 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import _ from "lodash";
 import { useMemo } from "react";
 
 import filterSuggestions from "./filterSuggestions";
+import type { UseSuggestionsOptions, UseSuggestionsResult } from "./types";
 import useOfflineSuggestions from "./useOfflineSuggestions";
 import useOnlineSuggestions from "./useOnlineSuggestions";
 
-export const useSuggestions = ( photoUri, options ) => {
+export const useSuggestions = (
+  photoUri: string,
+  options: UseSuggestionsOptions,
+): UseSuggestionsResult => {
   const { isConnected } = useNetInfo( );
   const {
     shouldFetchOnlineSuggestions,
@@ -72,16 +75,16 @@ export const useSuggestions = ( photoUri, options ) => {
   };
 
   const usingOfflineSuggestions = tryOfflineSuggestions || (
-    offlineSuggestions?.results?.length > 0
+    ( offlineSuggestions?.results?.length || 0 ) > 0
       && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
   );
 
-  const hasOnlineSuggestionResults = onlineSuggestions?.results?.length > 0;
+  const hasOnlineSuggestionResults = ( onlineSuggestions?.results?.length || 0 ) > 0;
 
   const unfilteredSuggestions = useMemo(
     ( ) => ( hasOnlineSuggestionResults
-      ? onlineSuggestions.results || []
-      : offlineSuggestions.results || [] ),
+      ? onlineSuggestions?.results || []
+      : offlineSuggestions?.results || [] ),
     [hasOnlineSuggestionResults, onlineSuggestions, offlineSuggestions],
   );
 

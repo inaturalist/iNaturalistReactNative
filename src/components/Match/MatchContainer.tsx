@@ -9,7 +9,6 @@ import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
 import {
   FETCH_STATUSES,
-  initialSuggestions,
 } from "components/Suggestions/SuggestionsContainer";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
@@ -26,6 +25,9 @@ import {
   useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import {
+  internalUseSuggestionsInitialSuggestions,
+} from "sharedHooks/useSuggestions/filterSuggestions";
 import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
 
@@ -68,7 +70,7 @@ type Action =
   | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean }
   | { type: "ORDER_SUGGESTIONS"; orderedSuggestions: ApiSuggestion[] };
 
-const setQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
+const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
   "scoreImage",
   selectedPhotoUri,
   { shouldUseEvidenceLocation },
@@ -89,7 +91,7 @@ const reducer = ( state: State, action: Action ): State => {
       return {
         ...state,
         scoreImageParams: action.scoreImageParams,
-        queryKey: setQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation ),
+        queryKey: getQueryKey( action.scoreImageParams.image.uri, state.shouldUseEvidenceLocation ),
       };
     case "SET_ONLINE_FETCH_STATUS":
       return {
@@ -108,7 +110,7 @@ const reducer = ( state: State, action: Action ): State => {
         offlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
         scoreImageParams: action.scoreImageParams,
         shouldUseEvidenceLocation: action.shouldUseEvidenceLocation,
-        queryKey: setQueryKey(
+        queryKey: getQueryKey(
           action.scoreImageParams.image.uri,
           action.shouldUseEvidenceLocation,
         ),
@@ -424,7 +426,11 @@ const MatchContainer = ( ) => {
       // resizeImage crashes if trying to resize an https:// photo while there is no internet
       // in this situation, we can skip creating upload parameters since we're loading
       // offline suggestions anyway
-      if ( !hasLoadedRef.current && _.isEqual( initialSuggestions, suggestions ) ) {
+      if ( !hasLoadedRef.current
+        // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
+        // we shouldn't rely on implementation internals to consumer drive state
+        && _.isEqual( internalUseSuggestionsInitialSuggestions, suggestions )
+      ) {
         hasLoadedRef.current = true;
         setImageParams( );
       }
@@ -439,8 +445,8 @@ const MatchContainer = ( ) => {
 
     const orderedList = [...suggestions.otherSuggestions];
     if ( suggestions?.topSuggestion ) {
-      setTopSuggestion( suggestions?.topSuggestion );
-      orderedList.unshift( suggestions?.topSuggestion );
+      setTopSuggestion( suggestions.topSuggestion );
+      orderedList.unshift( suggestions.topSuggestion );
     }
     // make sure list is in order of confidence score
     const sortedList = _.orderBy(
