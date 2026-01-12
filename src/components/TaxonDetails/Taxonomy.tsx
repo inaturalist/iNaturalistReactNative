@@ -26,7 +26,6 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
     navigation.push( "TaxonDetails", {
       // Ensure button mashing doesn't open multiple TaxonDetails instances
       key: `${route.key}-Taxonomy-TaxonDetails-${taxonId}`,
-      name: "TaxonDetails",
       id: taxonId,
       hideNavButtons,
       usesVision: false,
