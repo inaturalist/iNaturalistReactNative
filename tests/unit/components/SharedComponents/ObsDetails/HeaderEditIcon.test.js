@@ -54,7 +54,7 @@ describe( "HeaderEditIcon", () => {
     fireEvent.press( editButton );
 
     expect( prepareObsEdit ).toHaveBeenCalledWith( mockObservation );
-    expect( mockNavigate ).toHaveBeenCalledWith( "ObsEdit" );
+    expect( mockNavigate ).toHaveBeenCalledWith( "ObsEdit", undefined );
     expect( setMyObsOffsetToRestore ).toHaveBeenCalled();
   } );
 } );
