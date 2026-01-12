@@ -38,6 +38,7 @@ const ObsEdit = ( ): Node => {
   const [needLocation, setNeedLocation] = useState(
     shouldFetchObservationLocation( currentObservation ),
   );
+  const [hasUserEdited, setHasUserEdited] = useState( false );
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
   const {
@@ -81,6 +82,11 @@ const ObsEdit = ( ): Node => {
     resetUploadObservationsSlice( );
   }, [resetUploadObservationsSlice] );
 
+  const updateObservationKeysFromUserInteraction = useCallback( ( ...args ) => {
+    setHasUserEdited( true );
+    updateObservationKeys( ...args );
+  }, [updateObservationKeys] );
+
   const navToLocationPicker = useCallback( ( ) => {
     stopWatch( subscriptionId );
     navigation.navigate( "LocationPicker" );
@@ -113,6 +119,7 @@ const ObsEdit = ( ): Node => {
           <ObsEditHeader
             currentObservation={currentObservation}
             observations={observations}
+            hasUserEdited={hasUserEdited}
           />
           {currentObservation && (
             <View
@@ -139,16 +146,19 @@ const ObsEdit = ( ): Node => {
                   passesEvidenceTest={passesEvidenceTest}
                   setPassesEvidenceTest={setPassesEvidenceTest}
                   updateObservationKeys={updateObservationKeys}
+                  updateObservationKeysFromUserInteraction={
+                    updateObservationKeysFromUserInteraction
+                  }
                 />
                 <IdentificationSection
                   currentObservation={currentObservation}
                   resetScreen={resetScreen}
                   setResetScreen={setResetScreen}
-                  updateObservationKeys={updateObservationKeys}
+                  updateObservationKeys={updateObservationKeysFromUserInteraction}
                 />
                 <OtherDataSection
                   currentObservation={currentObservation}
-                  updateObservationKeys={updateObservationKeys}
+                  updateObservationKeys={updateObservationKeysFromUserInteraction}
                 />
               </Animated.View>
             </View>
