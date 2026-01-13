@@ -1,45 +1,46 @@
 /* eslint-disable i18next/no-literal-string */
 import {
-  Body1,
-  Button,
+  SwitchRow,
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
 import React from "react";
-import { Switch } from "react-native-paper";
 import { useFeatureFlagForDebug } from "sharedHooks/useFeatureFlag";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import colors from "styles/tailwindColors";
 
-import { H1, P } from "./DeveloperSharedComponents";
+import { H1, H2 } from "./DeveloperSharedComponents";
+
+const trimFlagName = ( featureFlagKey: FeatureFlag ) => featureFlagKey.replace( "Enabled", "" );
+
+const getStatusText = ( enabled: boolean ) => ( enabled
+  ? "Enabled"
+  : "Disabled" );
 
 const FeatureFlagToggle = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } ) => {
-  const bloop = useFeatureFlagForDebug( featureFlagKey );
-  console.log( bloop );
   const {
     resolvedValue,
     rawValue,
     overrideValue,
-    hasOverride,
     setOverride,
     clearOverride,
-  } = bloop;
+  } = useFeatureFlagForDebug( featureFlagKey );
+  const hasOverride = overrideValue !== null;
   return (
     <>
-      <View className="flex-row items-center ">
-        <Switch
-          value={resolvedValue}
-          disabled={!hasOverride}
-          onValueChange={() => setOverride( !resolvedValue )}
-          color={colors.inatGreen}
+      <H2>{`${trimFlagName( featureFlagKey )}: ${getStatusText( resolvedValue )}`}</H2>
+      <SwitchRow
+        label={`Override default value of ${rawValue}`}
+        value={hasOverride}
+        onValueChange={() => ( hasOverride
+          ? clearOverride()
+          : setOverride( rawValue ) )}
+      />
+      {hasOverride && (
+        <SwitchRow
+          label="Enable"
+          value={overrideValue}
+          onValueChange={() => setOverride( !overrideValue )}
+          classNames="mt-[15px]"
         />
-        <Body1 className="ml-3 flex-1">{featureFlagKey}</Body1>
-        {hasOverride
-          ? <Button onPress={clearOverride} text="Reset" />
-          : <Button onPress={() => setOverride( !rawValue )} text="Override" />}
-      </View>
-      <P>
-        {`Resolved: ${resolvedValue}, Raw: ${rawValue}, Override: ${overrideValue}`}
-      </P>
+      )}
     </>
   );
 };

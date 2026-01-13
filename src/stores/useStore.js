@@ -79,6 +79,7 @@ const useStore = create( persist(
       // Vestigial un-namespaced values in the layout slice
       isAdvancedUser: state.isAdvancedUser,
       obsDetailsTab: state.obsDetailsTab,
+      featureFlagDebugOverrides: state.featureFlagDebugOverrides,
 
       // Dynamically select all values in the layout slice's namespace
       layout: ( Object.keys( state.layout ).reduce( ( memo, key ) => {
