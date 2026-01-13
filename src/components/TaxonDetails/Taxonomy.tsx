@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import {
   Button,
   Heading4,
@@ -17,21 +17,15 @@ interface Props {
 const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
   const [viewChildren, setViewChildren] = useState( false );
   const navigation = useNavigation( );
-  const route = useRoute( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const scientificNameFirst = currentUser?.prefers_scientific_name_first;
 
   const navigateToTaxonDetails = ( taxonId: number ) => (
-    navigation.navigate( {
-      // Ensure button mashing doesn't open multiple TaxonDetails instances
-      key: `${route.key}-Taxonomy-TaxonDetails-${taxonId}`,
-      name: "TaxonDetails",
-      params: {
-        id: taxonId,
-        hideNavButtons,
-        usesVision: false,
-      },
+    navigation.push( "TaxonDetails", {
+      id: taxonId,
+      hideNavButtons,
+      usesVision: false,
     } )
   );
 
