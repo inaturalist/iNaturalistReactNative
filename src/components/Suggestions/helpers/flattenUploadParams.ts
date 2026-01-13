@@ -5,7 +5,7 @@ import resizeImage from "sharedHelpers/resizeImage";
 
 const outputPath = computerVisionPath;
 
-type FlattenUploadArgs = {
+interface FlattenUploadArgs {
   image: {
     uri: string;
     name: string;

@@ -12,7 +12,7 @@ import {
   useCurrentUser, useTaxon, useTranslation,
 } from "sharedHooks";
 
-type Props = {
+interface Props {
   fetchRemote?: boolean;
   fromLocal?: boolean;
   handlePress?: ( ) => void;

@@ -5,7 +5,7 @@ import { log } from "../../../../react-native-logs.config";
 
 const logger = log.extend( "CameraView" );
 
-type Event = {
+interface Event {
   log: string;
 }
 

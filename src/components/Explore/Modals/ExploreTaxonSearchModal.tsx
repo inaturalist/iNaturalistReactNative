@@ -5,13 +5,13 @@ import Modal from "components/SharedComponents/Modal";
 import React from "react";
 import type { RealmTaxon } from "realmModels/types";
 
-type Props = {
+interface Props {
   closeModal: ( ) => void;
   hideInfoButton?: boolean;
   onPressInfo?: ( ) => void;
   showModal: boolean;
   updateTaxon: ( taxon: RealmTaxon | null ) => void;
-};
+}
 
 const ExploreTaxonSearchModal = ( {
   closeModal,

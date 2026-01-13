@@ -15,7 +15,7 @@ import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
-type Props = {
+interface Props {
   reset: ( email: string ) => Promise<void>;
   scrollViewRef?: { current: null | ElementRef<typeof ScrollView> };
 }

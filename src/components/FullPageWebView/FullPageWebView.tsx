@@ -51,7 +51,7 @@ const LoadingView = ( ) => (
   </View>
 );
 
-type FullPageWebViewParams = {
+interface FullPageWebViewParams {
   initialUrl: string;
   blurEvent?: string;
   title?: string;
@@ -61,11 +61,11 @@ type FullPageWebViewParams = {
   shouldLoadUrl?: ( url: string ) => boolean;
 }
 
-type ParamList = {
+interface ParamList {
   FullPageWebView: FullPageWebViewParams;
 }
 
-type WebViewSource = {
+interface WebViewSource {
   uri: string;
   headers?: {
     Authorization?: string | null;
