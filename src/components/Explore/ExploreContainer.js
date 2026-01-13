@@ -12,8 +12,9 @@ import {
 } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
-import { useCurrentUser, useDebugMode } from "sharedHooks";
+import { useCurrentUser, useFeatureFlag } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
@@ -25,7 +26,7 @@ import useParams from "./hooks/useParams";
 const ExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
-  const { isDebug } = useDebugMode();
+  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
 
   const exploreView = useStore( state => state.exploreView );
   const setExploreView = useStore( state => state.setExploreView );
@@ -136,7 +137,7 @@ const ExploreContainerWithContext = ( ): Node => {
 
   return (
     <>
-      {!isDebug
+      {!exploreV2Enabled
         ? (
           <Explore
             canFetch={canFetch}
