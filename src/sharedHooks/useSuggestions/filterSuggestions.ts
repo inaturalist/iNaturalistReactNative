@@ -78,22 +78,9 @@ const filterSuggestions = (
 
   // online or offline common ancestor
   if ( commonAncestor ) {
-    const sortableCommonAncestor = {
-      ...commonAncestor,
-      // TODO MOB-1081: we can normalize the suggs earlier b/c we shouldn't worry here
-      // general context: https://github.com/inaturalist/iNaturalistReactNative/blob/505980d3359876a0af383f2ffcc481921f0eb778/src/components/Match/calculateConfidence.ts#L10-L12
-      // online suggs have `score` but _redact_ `combined_score` for commonAncestor https://github.com/inaturalist/iNaturalistAPI/blob/main/lib/controllers/v1/computervision_controller.js#L389
-      // the offline suggs have `combined_score` but don't have `score`
-      // the codebase tends assumes `combined_score` for whenever that matters
-      // the following catches when we're in a "fake" onlineSugg and shims "score" in
-      // `in` operator used for OnlineSuggestion type refinement
-      combined_score: !commonAncestor.combined_score && "score" in commonAncestor
-        ? commonAncestor.score
-        : commonAncestor.combined_score,
-    };
     return {
       ...newSuggestions,
-      topSuggestion: sortableCommonAncestor,
+      topSuggestion: commonAncestor,
       topSuggestionType: TopSuggestionType.TOP_SUGGESTION_COMMON_ANCESTOR,
     };
   }
