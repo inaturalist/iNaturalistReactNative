@@ -33,7 +33,7 @@ const renderRestrictions = ( licenseCode: License | null ) => {
 // https://github.com/inaturalist/inaturalist/blob/768b9263931ebeea229bbc47d8442ca6b0377d45/app/webpack/shared/components/observation_attribution.jsx
 const Attribution = ( { observation }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs( );
-  console.log( "attribution observation", observation );
+
   const { user } = observation;
   const userName = user
     ? ( user.name || user.login )
