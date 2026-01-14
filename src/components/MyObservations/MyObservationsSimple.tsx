@@ -22,6 +22,7 @@ import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashLi
 import SortSheet from "components/SharedComponents/Sheets/SortSheet";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo, useState } from "react";
+import { Alert } from "react-native";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
@@ -31,6 +32,7 @@ import type {
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
+import type { SpeciesSortOptionId } from "types/sorting";
 
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
@@ -55,6 +57,7 @@ export interface Props {
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
   listRef?: React.RefObject<FlashListRef<RealmObservation> | null>;
+  taxaListRef?: React.RefObject<FlashListRef<SpeciesCount> | null>;
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
@@ -64,8 +67,10 @@ export interface Props {
   onScroll?: ( ) => void;
   setActiveTab: ( newTab: string ) => void;
   setShowLoginSheet: ( newValue: boolean ) => void;
+  setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SpeciesSortOptionId>>;
   showLoginSheet: boolean;
   showNoResults: boolean;
+  speciesSortOptionId: SpeciesSortOptionId;
   taxa?: SpeciesCount[];
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
@@ -96,6 +101,7 @@ const MyObservationsSimple = ( {
   layout,
   listRef,
   numTotalObservations,
+  taxaListRef,
   numTotalTaxa,
   numUnuploadedObservations,
   observations,
@@ -104,8 +110,10 @@ const MyObservationsSimple = ( {
   onScroll,
   setActiveTab,
   setShowLoginSheet,
+  setSpeciesSortOptionId,
   showLoginSheet,
   showNoResults,
+  speciesSortOptionId,
   taxa,
   toggleLayout,
   fetchMoreTaxa,
@@ -254,6 +262,23 @@ const MyObservationsSimple = ( {
     return null;
   };
 
+  function showOfflineAlert( t: ( _: string ) => string ) {
+    Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
+  }
+
+  const handleSortConfirm = ( optionId: string ) => {
+    if ( currentUser && !isConnected ) {
+      showOfflineAlert( t );
+      return;
+    }
+    if ( activeItemType === "observations" ) {
+      // TODO: set observations sort id
+    } else {
+      setSpeciesSortOptionId( optionId );
+    }
+    setShowSortSheet( false );
+  };
+
   const handlePivotCardGridItemPress = ( ) => {
     const { uuid } = observations[0];
     navigation.navigate( {
@@ -325,15 +350,16 @@ const MyObservationsSimple = ( {
               layout={layout}
               updateObservationsView={toggleLayout}
             />
-            <SortButton
+            {/* <SortButton
               onPress={() => setShowSortSheet( true )}
               accessibilityLabel={t( "Sort-observations" )}
-            />
+            /> */}
           </>
         ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
           <>
             <CustomFlashList
+              ref={taxaListRef}
               canFetch={!!currentUser}
               contentContainerStyle={taxaFlashListStyle}
               data={taxa}
@@ -367,11 +393,8 @@ const MyObservationsSimple = ( {
           itemType={activeItemType}
           selectedValue={activeItemType === "observations"
             ? "created_at_desc"
-            : "count_desc"}
-          onConfirm={() => {
-            // TODO: update to new sort id
-            setShowSortSheet( false );
-          }}
+            : speciesSortOptionId}
+          onConfirm={optionId => handleSortConfirm( optionId )}
           onPressClose={() => setShowSortSheet( false )}
         />
       )}

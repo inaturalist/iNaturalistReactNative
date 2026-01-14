@@ -1,8 +1,7 @@
 import React from "react";
+import type { SortItemType } from "types/sorting";
 
 import RadioButtonSheet from "./RadioButtonSheet";
-
-export type SortItemType = "observations" | "taxa";
 
 // TODO: add to translations
 export const OBSERVATION_SORT_OPTIONS = {
@@ -26,16 +25,6 @@ export const OBSERVATION_SORT_OPTIONS = {
     label: "Date Observed: Oldest",
     text: "Observations with the oldest date appear first",
   },
-  taxonomy: {
-    value: "taxonomy",
-    label: "Taxonomy",
-    text: "Observations appear in taxonomic order",
-  },
-  name_asc: {
-    value: "name_asc",
-    label: "Alphabetical",
-    text: "Observations appear in alphabetical order",
-  },
 } as const;
 
 export const TAXA_SORT_OPTIONS = {
@@ -49,16 +38,6 @@ export const TAXA_SORT_OPTIONS = {
     label: "Least Observed",
     text: "Species with the least observations appear first",
   },
-  taxonomy: {
-    value: "taxonomy",
-    label: "Taxonomy",
-    text: "Species appear in taxonomic order",
-  },
-  name_asc: {
-    value: "name_asc",
-    label: "Alphabetical",
-    text: "Species appear in alphabetical order",
-  },
 } as const;
 
 interface Props {
@@ -66,9 +45,6 @@ interface Props {
   selectedValue: string;
   onConfirm: ( sortBy: string ) => void;
   onPressClose: () => void;
-  insideModal?: boolean;
-  testID?: string;
-
 }
 
 const SortSheet = ( {
@@ -76,8 +52,6 @@ const SortSheet = ( {
   selectedValue,
   onConfirm,
   onPressClose,
-  insideModal,
-  testID,
 }: Props ) => {
   const radioValues = itemType === "observations"
     ? OBSERVATION_SORT_OPTIONS
@@ -95,8 +69,6 @@ const SortSheet = ( {
       selectedValue={selectedValue}
       confirm={onConfirm}
       onPressClose={onPressClose}
-      insideModal={insideModal}
-      testID={testID}
     />
   );
 };
