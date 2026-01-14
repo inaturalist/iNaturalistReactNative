@@ -67,6 +67,7 @@ const Menu = ( ) => {
   const navigation = useNavigation( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
+  console.log( { currentUser } );
   const { t } = useTranslation( );
   const insets = useSafeAreaInsets();
 
@@ -160,14 +161,46 @@ const Menu = ( ) => {
       showOfflineAlert( t );
       return false;
     }
-    const mode = isDefaultMode( )
-      ? "DEFAULT:"
-      : "ADVANCED:";
-    feedbackLogger.info( mode, text );
+    const getCountBreakpoint = ( count: number ) => {
+      if ( count >= 1000 ) {
+        return "1000+";
+      }
+      if ( count >= 100 ) {
+        return "100-999";
+      }
+      if ( count >= 10 ) {
+        return "10-99";
+      }
+      if ( count >= 1 ) {
+        return "1-9";
+      }
+      return "0";
+    };
+    const feedbackWithContext = [
+      text,
+      "------------",
+      "Feedback Context:",
+      `Signed In: ${currentUser
+        ? "yes"
+        : "no"}`,
+      `Username: ${currentUser
+        ? currentUser.login
+        : "loggedout"}`,
+      `Mode: ${isDefaultMode( )
+        ? "default"
+        : "advanced"}`,
+      `Uploaded Observations: ${currentUser
+        ? getCountBreakpoint( currentUser.observations_count || 0 )
+        : "loggedout"}`,
+      `Identifications: ${currentUser
+        ? getCountBreakpoint( currentUser.identifications_count || 0 )
+        : "loggedout"}`,
+    ].join( "\n" );
+    feedbackLogger.info( feedbackWithContext );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
     setModalState( null );
     return true;
-  }, [isConnected, t] );
+  }, [currentUser, isConnected, t] );
 
   return (
     <ScrollView
