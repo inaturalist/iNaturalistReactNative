@@ -16,6 +16,7 @@ import { RealmContext } from "providers/contexts";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Observation from "realmModels/Observation";
 import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useTranslation } from "sharedHooks";
@@ -160,6 +161,7 @@ const Menu = ( ) => {
       showOfflineAlert( t );
       return false;
     }
+    const localOnlyObsCount = Observation.filterUnsyncedObservations( realm ).length;
     const getCountBreakpoint = ( count: number ) => {
       if ( count >= 1000 ) {
         return "1000+";
@@ -184,22 +186,27 @@ const Menu = ( ) => {
         : "no"}`,
       `Username: ${currentUser
         ? currentUser.login
-        : "loggedout"}`,
+        : "loggedout"
+      }`,
       `Mode: ${isDefaultMode( )
         ? "default"
-        : "advanced"}`,
+        : "advanced"
+      }`,
       `Uploaded Observations: ${currentUser
         ? getCountBreakpoint( currentUser.observations_count || 0 )
-        : "loggedout"}`,
+        : "loggedout"
+      }`,
+      `Unuploaded Device-Local Observations: ${getCountBreakpoint( localOnlyObsCount )}`,
       `Identifications: ${currentUser
         ? getCountBreakpoint( currentUser.identifications_count || 0 )
-        : "loggedout"}`,
+        : "loggedout"
+      }`,
     ].join( "\n" );
     feedbackLogger.info( feedbackWithContext );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
     setModalState( null );
     return true;
-  }, [currentUser, isConnected, t] );
+  }, [currentUser, isConnected, realm, t] );
 
   return (
     <ScrollView
