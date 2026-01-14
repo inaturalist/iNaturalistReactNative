@@ -18,6 +18,7 @@ import { Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Observation from "realmModels/Observation";
 import User from "realmModels/User";
+import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore, { zustandStorage } from "stores/useStore";
@@ -162,21 +163,13 @@ const Menu = ( ) => {
       return false;
     }
     const localOnlyObsCount = Observation.filterUnsyncedObservations( realm ).length;
-    const getCountBreakpoint = ( count: number ) => {
-      if ( count >= 1000 ) {
-        return "1000+";
-      }
-      if ( count >= 100 ) {
-        return "100-999";
-      }
-      if ( count >= 10 ) {
-        return "10-99";
-      }
-      if ( count >= 1 ) {
-        return "1-9";
-      }
-      return "0";
-    };
+    const getCountBreakpoint = ( count: number ) => valueToBreakpoint( count, [
+      [0, "0"],
+      [1, "1-9"],
+      [10, "10-99"],
+      [100, "100-999"],
+      [1000, "1000+"],
+    ] );
     const feedbackWithContext = [
       text,
       "------------",
