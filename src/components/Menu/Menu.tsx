@@ -67,7 +67,6 @@ const Menu = ( ) => {
   const navigation = useNavigation( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
-  console.log( { currentUser } );
   const { t } = useTranslation( );
   const insets = useSafeAreaInsets();
 
