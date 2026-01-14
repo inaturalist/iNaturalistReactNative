@@ -176,8 +176,8 @@ interface DefaultLocation {
   radius?: number;
 }
 
-type ExploreProviderProps = {children: React.ReactNode}
-type State = {
+interface ExploreProviderProps {children: React.ReactNode}
+interface State {
   casual: boolean;
   created_d1: string | null | undefined;
   created_d2: string | null | undefined;

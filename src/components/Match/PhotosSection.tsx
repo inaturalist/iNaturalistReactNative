@@ -13,7 +13,7 @@ import { Image as RNImage } from "react-native";
 import Photo from "realmModels/Photo";
 import type { RealmObservationPhoto, RealmPhoto, RealmTaxon } from "realmModels/types";
 
-type Props = {
+interface Props {
   representativePhoto?: ApiPhoto;
   taxon?: ApiTaxon | RealmTaxon;
   obsPhotos: RealmObservationPhoto[];

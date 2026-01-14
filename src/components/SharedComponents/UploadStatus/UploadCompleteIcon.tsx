@@ -3,7 +3,7 @@ import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 
-type Props = {
+interface Props {
   iconClasses: string[];
   completeColor: string;
 }

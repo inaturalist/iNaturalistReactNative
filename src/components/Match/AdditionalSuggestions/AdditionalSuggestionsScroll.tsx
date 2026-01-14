@@ -9,7 +9,7 @@ import { useTranslation } from "sharedHooks";
 
 import SuggestionsResult from "./SuggestionsResult";
 
-type Props = {
+interface Props {
   noTopSuggestion?: boolean;
   otherSuggestions: ApiSuggestion[];
   suggestionsLoading: boolean;

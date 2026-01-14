@@ -30,7 +30,7 @@ export const matchCardClassTop
 export const matchCardClassBottom
   = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
-type Props = {
+interface Props {
   observation: RealmObservation;
   obsPhotos: RealmObservationPhoto[];
   handleSaveOrDiscardPress: ( action: MatchButtonAction ) => void;

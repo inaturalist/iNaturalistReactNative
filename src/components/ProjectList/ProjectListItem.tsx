@@ -15,10 +15,10 @@ import formatProjectDate from "../Projects/helpers/displayDates";
 
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
-type Props = {
+interface Props {
   item?: ApiProject | null;
   isHeader?: boolean;
-};
+}
 
 const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   const { t, i18n } = useTranslation( );

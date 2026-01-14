@@ -17,7 +17,7 @@ interface Props {
   hidden: boolean;
 }
 
-type ObsCreateItem = {
+interface ObsCreateItem {
   text: string;
   icon: string;
   onPress: ( ) => void;

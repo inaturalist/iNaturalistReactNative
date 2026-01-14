@@ -14,9 +14,9 @@ const HEIGHT = 4;
 const PROGRESS_WIDTH = width / 2;
 const DURATION = 1200;
 
-type IndeterminateProgressBarProps = {
+interface IndeterminateProgressBarProps {
   color?: string;
-};
+}
 
 const IndeterminateProgressBar = ( {
   color,

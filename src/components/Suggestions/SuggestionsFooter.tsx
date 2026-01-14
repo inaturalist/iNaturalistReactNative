@@ -12,7 +12,7 @@ import { useDebugMode, useTranslation } from "sharedHooks";
 
 import Attribution from "./Attribution";
 
-type Props = {
+interface Props {
   debugData: {
     onlineFetchStatus: string;
     offlineFetchStatus: string;
@@ -44,7 +44,7 @@ type Props = {
   shouldUseEvidenceLocation: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   toggleLocation: Function;
-};
+}
 
 const SuggestionsFooter = ( {
   debugData,
