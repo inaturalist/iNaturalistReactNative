@@ -65,23 +65,7 @@ export const BREAKPOINTS = reduce( screens, ( memo, widthString, breakpoint ) =>
   return memo;
 }, { } as Record<string, number> );
 
-export const getBreakpoint = ( screenWidth: number ) => {
-  if ( screenWidth >= BREAKPOINTS["2xl"] ) {
-    return "2xl";
-  }
-  if ( screenWidth >= BREAKPOINTS.xl ) {
-    return "xl";
-  }
-  if ( screenWidth >= BREAKPOINTS.lg ) {
-    return "lg";
-  }
-  if ( screenWidth >= BREAKPOINTS.md ) {
-    return "md";
-  }
-  return "sm";
-};
-
-export const getBreakpointV2 = ( screenWidth: number ) => valueToBreakpoint( screenWidth, [
+const getBreakpoint = ( screenWidth: number ) => valueToBreakpoint( screenWidth, [
   // duplicate "sm" here to maintain "sm" as the minimum, but leave room for maybe "xs"
   // to be added as a new breakpoint which would have its own breakpoint and replace "sm" as the 0
   [0, "sm"],

@@ -1,4 +1,4 @@
-import { getBreakpoint, getBreakpointV2, valueToBreakpoint } from "sharedHelpers/breakpoint";
+import getBreakpoint, { valueToBreakpoint } from "sharedHelpers/breakpoint";
 
 describe( "breakpoint helpers", () => {
   describe( "valueToBreakpoint", () => {
@@ -28,38 +28,25 @@ describe( "breakpoint helpers", () => {
     } );
   } );
 
-  const sharedTestCases = [
-    // main focus on sm => md because of sm's role
-    // as a non-zero breakpoint _but also_ as the default breakpoint / floor breakpoint
-    [0, "sm"],
-    [239, "sm"],
-    [240, "sm"],
-    [241, "sm"],
-    [319, "sm"],
-    [320, "md"],
-    [321, "md"],
-    [321, "md"],
-    [1365, "xl"],
-    [1366, "2xl"],
-    [1367, "2xl"],
-  ];
-
   describe( "getBreakpoint", () => {
-    test.each( sharedTestCases )(
+    test.each( [
+      // main focus on sm => md because of sm's role
+      // as a non-zero breakpoint _but also_ as the default breakpoint / floor breakpoint
+      [0, "sm"],
+      [239, "sm"],
+      [240, "sm"],
+      [241, "sm"],
+      [319, "sm"],
+      [320, "md"],
+      [321, "md"],
+      [321, "md"],
+      [1365, "xl"],
+      [1366, "2xl"],
+      [1367, "2xl"],
+    ] )(
       "should return appropriate media query label for screenWidth",
       ( screenWidth, expected ) => {
         const result = getBreakpoint( screenWidth );
-
-        expect( result ).toBe( expected );
-      },
-    );
-  } );
-
-  describe( "getBreakpointV2", () => {
-    test.each( sharedTestCases )(
-      "should return appropriate media query label for screenWidth",
-      ( screenWidth, expected ) => {
-        const result = getBreakpointV2( screenWidth );
 
         expect( result ).toBe( expected );
       },
