@@ -352,7 +352,7 @@ const MyObservationsSimple = ( {
             />
             {/* <SortButton
               onPress={() => setShowSortSheet( true )}
-              accessibilityLabel={t( "Sort-observations" )}
+              accessibilityLabel={t( "Change-observations-sort-order" )}
             /> */}
           </>
         ) }
@@ -382,7 +382,7 @@ const MyObservationsSimple = ( {
             />
             <SortButton
               onPress={() => setShowSortSheet( true )}
-              accessibilityLabel={t( "Sort-species" )}
+              accessibilityLabel={t( "Change-species-sort-order" )}
             />
           </>
         )}

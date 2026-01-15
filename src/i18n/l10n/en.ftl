@@ -193,7 +193,11 @@ Change-date = Change date
 CHANGE-END-DATE = CHANGE END DATE
 # Label for a button that changes a selected end date
 Change-end-date = Change end date
+# Accessibility label for a button that allows users to sort observations
+Change-observations-sort-order = Change observations sort order
 Change-project = Change project
+# Accessibility label for a button that allows users to sort taxa
+Change-species-sort-order = Change species sort order
 # Label for a button that changes a selected start date
 CHANGE-START-DATE = CHANGE START DATE
 # Label for a button that changes a selected start date
@@ -311,6 +315,10 @@ Data-quality-assessment-title-research = This observation is Research Grade!
 DATE = DATE
 # label in project requirements
 Date = Date
+# Label for observations sort order, this option is selected by default
+Date-Added-Newest-Default = Date Added: Newest (Default)
+# Label for observations sort order
+Date-Added-Oldest = Date Added: Oldest
 # Date formatting using date-fns
 # Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
@@ -328,7 +336,11 @@ DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed
 DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
+# Label for observations sort order
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
+# Label for observations sort order
+Date-Observed-Oldest = Date Observed: Oldest
 # Label for controls over a range of dates
 Date-Range = Date Range
 # Label for controls over a range of dates
@@ -686,6 +698,8 @@ Learn-from-people-who-verify-and-refine-your-identifications = Learn from people
 Learn-More = Learn More
 LEARN-MORE-ABOUT-THIS-GROUP = LEARN MORE ABOUT THIS GROUP
 LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
+# Label for species sort order
+Least-Observed = Least Observed
 LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
 # Asking for confirmation if the user wants to leave this project
@@ -735,6 +749,8 @@ More = More
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
+# Label for species sort order, this option is selected by default
+Most-Observed-Default = Most Observed (Default)
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
@@ -849,8 +865,12 @@ Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-View = Observations View
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 # Might be used when the number is represented using an image or other
 # element, not text
 OBSERVATIONS-WITHOUT-NUMBER =
@@ -1164,9 +1184,10 @@ Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that 
 SORT-BY = SORT BY
 Sort-by = Sort by
 # Accessibility label for a button that allows users to sort observations
-Sort-observations = Sort observations
-# Accessibility label for a button that allows users to sort taxa
-Sort-species = Sort species
+# Label for observations sort menu
+SORT-OBSERVATIONS = SORT OBSERVATIONS
+# Label for species sort menu
+SORT-SPECIES = SORT SPECIES
 # Character separating current position and total duration when playing a
 # sound, e.g. 00:12 / 03:00 uses "/" as the separator. This can be anything,
 # but it should be very short.
@@ -1184,6 +1205,8 @@ Sounds = Sounds
 Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 Species = Species
 Species-View = Species View
+Species-with-the-least-observations-appear-first = Species with the least observations appear first
+Species-with-the-most-observations-appear-first = Species with the most observations appear first
 SPECIES-WITHOUT-NUMBER =
     { $count ->
         [one] SPECIES

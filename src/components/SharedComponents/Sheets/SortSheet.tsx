@@ -1,44 +1,44 @@
 import React from "react";
+import { useTranslation } from "sharedHooks";
 import type { SortItemType } from "types/sorting";
 
 import RadioButtonSheet from "./RadioButtonSheet";
 
-// TODO: add to translations
-export const OBSERVATION_SORT_OPTIONS = {
+const getObservationSortOptions = ( t: ( key: string ) => string ) => ( {
   created_at_desc: {
     value: "created_at_desc",
-    label: "Date Added: Newest (Default)",
-    text: "Observations added recently appear first",
+    label: t( "Date-Added-Newest-Default" ),
+    text: t( "Observations-added-recently-appear-first" ),
   },
   created_at_asc: {
     value: "created_at_asc",
-    label: "Date Added: Oldest",
-    text: "Observations added least recently appear first",
+    label: t( "Date-Added-Oldest" ),
+    text: t( "Observations-added-least-recently-appear-first" ),
   },
   observed_at_desc: {
     value: "observed_at_desc",
-    label: "Date Observed: Newest",
-    text: "Observations with the most recent date appear first",
+    label: t( "Date-Observed-Newest" ),
+    text: t( "Observations-with-the-most-recent-date-appear-first" ),
   },
   observed_at_asc: {
     value: "observed_at_asc",
-    label: "Date Observed: Oldest",
-    text: "Observations with the oldest date appear first",
+    label: t( "Date-Observed-Oldest" ),
+    text: t( "Observations-with-the-oldest-date-appear-first" ),
   },
-} as const;
+} as const );
 
-export const TAXA_SORT_OPTIONS = {
+const getTaxaSortOptions = ( t: ( key: string ) => string ) => ( {
   count_desc: {
     value: "count_desc",
-    label: "Most Observed (Default)",
-    text: "Species with the most observations appear first",
+    label: t( "Most-Observed-Default" ),
+    text: t( "Species-with-the-most-observations-appear-first" ),
   },
   count_asc: {
     value: "count_asc",
-    label: "Least Observed",
-    text: "Species with the least observations appear first",
+    label: t( "Least-Observed" ),
+    text: t( "Species-with-the-least-observations-appear-first" ),
   },
-} as const;
+} as const );
 
 interface Props {
   itemType: SortItemType;
@@ -53,14 +53,15 @@ const SortSheet = ( {
   onConfirm,
   onPressClose,
 }: Props ) => {
-  const radioValues = itemType === "observations"
-    ? OBSERVATION_SORT_OPTIONS
-    : TAXA_SORT_OPTIONS;
+  const { t } = useTranslation( );
 
-  // TODO: add to translations
+  const radioValues = itemType === "observations"
+    ? getObservationSortOptions( t )
+    : getTaxaSortOptions( t );
+
   const headerText = itemType === "observations"
-    ? "SORT OBSERVATIONS"
-    : "SORT SPECIES";
+    ? t( "SORT-OBSERVATIONS" )
+    : t( "SORT-SPECIES" );
 
   return (
     <RadioButtonSheet
