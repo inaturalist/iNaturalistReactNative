@@ -1,12 +1,11 @@
 // @flow
+import ActivityItem from "components/ObsDetailsSharedComponents/ActivityTab/ActivityItem";
 import { Body2 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { compact } from "lodash";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-
-import ActivityItem from "./ActivityItem";
 
 type Props = {
   observation:Object,

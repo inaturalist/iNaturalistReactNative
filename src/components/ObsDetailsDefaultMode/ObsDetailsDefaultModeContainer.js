@@ -3,6 +3,8 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
 import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
+import useMarkViewedMutation
+  from "components/ObsDetailsSharedComponents/hooks/useMarkViewedMutation";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -22,7 +24,6 @@ import {
 } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
-import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
 import ObsDetailsDefaultMode from "./ObsDetailsDefaultMode";
 
 const { useRealm } = RealmContext;

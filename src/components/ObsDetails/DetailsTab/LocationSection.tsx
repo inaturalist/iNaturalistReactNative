@@ -1,4 +1,7 @@
 import Clipboard from "@react-native-clipboard/clipboard";
+import DetailsMapHeader from "components/ObsDetailsSharedComponents/DetailsTab/DetailsMapHeader";
+import ObscurationExplanation
+  from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
 import {
   Button,
   DetailsMap,
@@ -14,9 +17,6 @@ import React, { useCallback, useMemo, useState } from "react";
 import createOpenLink from "react-native-open-maps";
 import type Observation from "realmModels/Observation";
 import { useCurrentUser } from "sharedHooks";
-
-import DetailsMapHeader from "./DetailsMapHeader";
-import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
   observation: Observation;

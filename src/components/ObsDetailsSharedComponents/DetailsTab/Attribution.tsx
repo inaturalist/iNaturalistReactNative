@@ -1,15 +1,14 @@
-// @flow
-
-import { Body3 } from "components/SharedComponents";
+import { Body3, Body4 } from "components/SharedComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
+import type { License, RealmObservation } from "realmModels/types";
+import { useLayoutPrefs } from "sharedHooks";
 
-type Props = {
-  observation: Object
+interface Props {
+  observation: RealmObservation;
 }
 
-const renderRestrictions = ( licenseCode: string ) => {
+const renderRestrictions = ( licenseCode: License | null ) => {
   switch ( licenseCode ) {
     case "cc0":
       return t( "no-rights-reserved-cc0" );
@@ -32,19 +31,27 @@ const renderRestrictions = ( licenseCode: string ) => {
 
 // lifted from web:
 // https://github.com/inaturalist/inaturalist/blob/768b9263931ebeea229bbc47d8442ca6b0377d45/app/webpack/shared/components/observation_attribution.jsx
-const Attribution = ( { observation }: Props ): Node => {
+const Attribution = ( { observation }: Props ) => {
+  const { isDefaultMode } = useLayoutPrefs( );
+
   const { user } = observation;
   const userName = user
     ? ( user.name || user.login )
     : t( "Unknown--user" );
+  const [BodyTag, attributionClass, attributionText] = isDefaultMode
+    ? [Body3, "mt-3", t( "Observation-Copyright", {
+      userName,
+      restrictions: renderRestrictions( observation.license_code ),
+    } )]
+    : [Body4, "", t( "Observation-Attribution", {
+      userName,
+      restrictions: renderRestrictions( observation.license_code ),
+    } )];
 
   return (
-    <Body3 className="mt-3">
-      {t( "Observation-Copyright", {
-        userName,
-        restrictions: renderRestrictions( observation.license_code ),
-      } )}
-    </Body3>
+    <BodyTag className={attributionClass}>
+      {attributionText}
+    </BodyTag>
   );
 };
 

@@ -47,7 +47,7 @@ const mockObservationWithProjects = {
 };
 
 const mockAttribution = <View testID="mock-attribution" />;
-jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
+jest.mock( "components/ObsDetailsSharedComponents/DetailsTab/Attribution", () => ( {
   __esModule: true,
   default: () => mockAttribution,
 } ) );

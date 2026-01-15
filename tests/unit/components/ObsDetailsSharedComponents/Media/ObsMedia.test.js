@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react-native";
-import ObsMedia from "components/ObsDetails/ObsMedia";
+import ObsMedia from "components/ObsDetailsSharedComponents/Media/ObsMedia";
 import _ from "lodash";
 import React from "react";
 import factory from "tests/factory";
