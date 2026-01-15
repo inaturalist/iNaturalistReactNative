@@ -10,7 +10,7 @@ import IconicSuggestion from "./IconicSuggestion";
 
 const { useRealm } = RealmContext;
 
-type Props = {
+interface Props {
   iconicTaxonChosen?: RealmTaxon;
   onIconicTaxonChosen: ( taxon: RealmTaxon ) => void;
 }

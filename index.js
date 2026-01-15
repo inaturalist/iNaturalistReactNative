@@ -1,5 +1,3 @@
-// @flow
-
 // Recommendation from the uuid library is to import get-random-values before
 // uuid, so we're importing it first thing in the entry point.
 // https://www.npmjs.com/package/uuid#react-native--expo
@@ -15,6 +13,7 @@ import {
 } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
+import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 import {
   QueryClient,
   QueryClientProvider,
@@ -32,9 +31,12 @@ import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { getInstallID } from "sharedHelpers/installData";
+import { getInstallID, store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
+import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
+import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
+import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -143,6 +145,16 @@ const queryClient = new QueryClient( {
 const AppWithProviders = ( ) => {
   const colorScheme = useColorScheme( );
   const darkModeStyleWrapper = { flex: 1, colorScheme };
+
+  // note: automatically disabled in Production builds
+  useTanStackQueryDevTools( queryClient );
+  useNetworkActivityDevTools();
+  useMMKVDevTools( {
+    storages: {
+      "persisted-zustand": zustandMMKVBackingStorage,
+      "install-data": installDataMMKVStorage,
+    },
+  } );
 
   return (
     <QueryClientProvider client={queryClient}>

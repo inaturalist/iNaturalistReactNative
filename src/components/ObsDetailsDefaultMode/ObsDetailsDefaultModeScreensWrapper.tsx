@@ -12,7 +12,7 @@ import {
 
 import SavedMatchContainer from "./SavedMatch/SavedMatchContainer";
 
-type RouteParams = {
+interface RouteParams {
     targetActivityItemID?: number;
     uuid: string;
 }

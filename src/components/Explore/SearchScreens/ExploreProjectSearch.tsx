@@ -20,10 +20,10 @@ const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
 } );
 
-type Props = {
+interface Props {
   closeModal: ( ) => void;
   updateProject: ( project: ApiProject ) => void;
-};
+}
 
 const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
   const [projectQuery, setProjectQuery] = useState( "" );

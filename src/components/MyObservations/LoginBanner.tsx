@@ -17,7 +17,7 @@ const DROP_SHADOW = getShadow( {
   shadowRadius: 2,
 } );
 
-type Props = {
+interface Props {
   currentUser: RealmUser | null;
 }
 

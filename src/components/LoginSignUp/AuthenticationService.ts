@@ -28,7 +28,7 @@ import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirecto
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep, unlink } from "sharedHelpers/util";
 import { isDebugMode } from "sharedHooks/useDebugMode";
-import { storage } from "stores/useStore";
+import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 
 const logger = log.extend( "AuthenticationService" );
 // The remote transport in the default logger uses many of the methods in this
@@ -240,7 +240,7 @@ const signOut = async (
   await removeAllFilesFromDirectory( soundUploadPath );
 
   // delete all keys from mmkv
-  storage.clearAll( );
+  zustandMMKVBackingStorage.clearAll( );
   RNRestart.restart( );
 };
 

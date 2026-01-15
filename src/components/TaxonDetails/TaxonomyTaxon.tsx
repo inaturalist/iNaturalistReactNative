@@ -1,7 +1,8 @@
 import {
   INatIcon,
+  PressableWithDebounce,
 } from "components/SharedComponents";
-import { Pressable, Text, View } from "components/styledComponents";
+import { Text, View } from "components/styledComponents";
 import React from "react";
 import { accessibleTaxonName, generateTaxonPieces } from "sharedHelpers/taxon";
 
@@ -58,7 +59,7 @@ const TaxonomyTaxon = ( {
   );
 
   return (
-    <Pressable
+    <PressableWithDebounce
       accessibilityRole="link"
       className="flex-row py-2"
       key={taxon.id}
@@ -96,7 +97,7 @@ const TaxonomyTaxon = ( {
           }
         </Text>
       </View>
-    </Pressable>
+    </PressableWithDebounce>
   );
 };
 

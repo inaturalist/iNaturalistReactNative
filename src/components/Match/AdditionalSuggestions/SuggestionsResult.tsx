@@ -14,7 +14,7 @@ import {
   useCurrentUser, useTranslation,
 } from "sharedHooks";
 
-type Props = {
+interface Props {
   confidence: number | null;
   handlePress?: ( ) => void;
   taxon: RealmTaxon | ApiTaxon;

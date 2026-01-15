@@ -11,7 +11,7 @@ import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
 
-type Props = {
+interface Props {
   debugData: {
     onlineFetchStatus: string;
     offlineFetchStatus: string;
@@ -43,7 +43,7 @@ type Props = {
   shouldUseEvidenceLocation: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   toggleLocation: Function;
-};
+}
 
 const SuggestionsFooter = ( {
   debugData,

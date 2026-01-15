@@ -13,10 +13,10 @@ import ForgotPasswordForm from "./ForgotPasswordForm";
 import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
-type RenderProps = {
+interface RenderProps {
   // eslint-disable-next-line react/no-unused-prop-types
   scrollViewRef: { current: null | React.Ref<typeof ScrollView> };
-};
+}
 
 const ForgotPassword = ( ) => {
   const navigation = useNavigation( );
