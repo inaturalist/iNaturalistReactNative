@@ -1,5 +1,6 @@
 // @flow
 import classnames from "classnames";
+import ObsMedia from "components/ObsDetailsSharedComponents/Media/ObsMedia";
 import {
   INatIcon,
   PhotoCount,
@@ -12,18 +13,18 @@ import {
 } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-import ObsMedia from "./ObsMedia";
-
 type Props = {
   loading: boolean,
   photos: Object[],
-  sounds: Object[]
+  sounds: Object[],
+  tablet?: boolean
 }
 
 const ObsMediaDisplay = ( {
   loading,
   photos = [],
   sounds = [],
+  tablet = false,
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -36,6 +37,7 @@ const ObsMediaDisplay = ( {
           loading={loading}
           photos={photos}
           sounds={sounds}
+          tablet={tablet}
         />
         {!loading && items.length > 1 && (
           <View className="absolute bottom-5 left-5">
@@ -49,7 +51,10 @@ const ObsMediaDisplay = ( {
   return (
     <View
       className={classnames(
-        "bg-black flex-row justify-center items-center h-72",
+        "bg-black flex-row justify-center items-center",
+        tablet
+          ? "h-full"
+          : "h-72",
       )}
       accessible
       accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}

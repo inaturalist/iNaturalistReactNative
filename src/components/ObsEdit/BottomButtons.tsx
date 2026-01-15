@@ -18,7 +18,7 @@ export const SAVE = "save";
 
 export type ButtonType = typeof SAVE | typeof UPLOAD | null;
 
-type Props = {
+interface Props {
   buttonPressed: ButtonType;
   canSaveOnly: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type

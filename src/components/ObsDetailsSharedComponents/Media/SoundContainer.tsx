@@ -46,7 +46,7 @@ const SoundSlider = ( { playBackState, onSlidingComplete }: SoundSliderProps ) =
 };
 
 interface SoundContainerProps {
-  autoPlay: boolean;
+  autoPlay?: boolean;
   isVisible: boolean;
   sizeClass: string;
   sound: {

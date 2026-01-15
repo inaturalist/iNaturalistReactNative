@@ -24,6 +24,7 @@ type Props = {
   isConnected?: boolean,
   item: Object,
   loading: boolean,
+  showStatus?: boolean,
   updateCommentBody: Function,
   updateIdentification: Function,
   geoprivacy: string,
@@ -40,6 +41,7 @@ const ActivityHeader = ( {
   isConnected,
   item,
   loading,
+  showStatus = true,
   updateCommentBody,
   updateIdentification,
   geoprivacy,
@@ -74,6 +76,8 @@ const ActivityHeader = ( {
   ] );
 
   const renderStatus = useCallback( () => {
+    if ( !showStatus ) return null;
+
     if ( flagged ) {
       return (
         <Body4 maxFontSizeMultiplier={1}>
@@ -116,6 +120,7 @@ const ActivityHeader = ( {
     category,
     flagged,
     idWithdrawn,
+    showStatus,
   ] );
 
   return (

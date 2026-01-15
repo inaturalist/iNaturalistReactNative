@@ -24,7 +24,7 @@ const NAME_DISPLAY_SCI = "sci";
 type NameDisplayPref =
   typeof NAME_DISPLAY_COM_SCI | typeof NAME_DISPLAY_SCI_COM | typeof NAME_DISPLAY_SCI;
 
-type Props = {
+interface Props {
   onChange: ( options: TaxonNamesSettings ) => void;
 }
 

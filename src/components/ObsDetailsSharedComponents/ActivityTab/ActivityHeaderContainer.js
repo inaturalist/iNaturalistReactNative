@@ -3,11 +3,10 @@
 import { deleteComments, updateComment } from "api/comments";
 import { updateIdentification as apiUpdateIdentification } from "api/identifications";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
+import ActivityHeader from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeader";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-
-import ActivityHeader from "./ActivityHeader";
 
 type Props = {
   classNameMargin?: string,
@@ -17,7 +16,8 @@ type Props = {
   refetchRemoteObservation?: Function,
   geoprivacy: string,
   taxonGeoprivacy: string,
-  belongsToCurrentUser: boolean
+  belongsToCurrentUser: boolean,
+  showStatus?: boolean
 }
 
 const ActivityHeaderContainer = ( {
@@ -29,6 +29,7 @@ const ActivityHeaderContainer = ( {
   geoprivacy,
   taxonGeoprivacy,
   belongsToCurrentUser,
+  showStatus,
 }:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( false );
   const [loading, setLoading] = useState( false );
@@ -129,6 +130,7 @@ const ActivityHeaderContainer = ( {
       geoprivacy={geoprivacy}
       taxonGeoprivacy={taxonGeoprivacy}
       belongsToCurrentUser={belongsToCurrentUser}
+      showStatus={showStatus}
     />
   );
 };

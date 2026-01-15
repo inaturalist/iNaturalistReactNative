@@ -7,6 +7,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import { fetchSubscriptions } from "api/observations";
+import useMarkViewedMutation
+  from "components/ObsDetailsSharedComponents/hooks/useMarkViewedMutation";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -34,7 +36,6 @@ import useRemoteObservation, {
 import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
-import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
 import ObsDetails from "./ObsDetails";
 
 const { useRealm } = RealmContext;

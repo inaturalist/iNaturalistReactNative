@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-type PerformanceType = {
+interface PerformanceType {
   screenName?: string; // name of the screen to profile; helpful if not using logger
   isLoading: boolean | undefined; // indicate whether data finished loading
-};
+}
 
 const usePerformance = ( {
   screenName,

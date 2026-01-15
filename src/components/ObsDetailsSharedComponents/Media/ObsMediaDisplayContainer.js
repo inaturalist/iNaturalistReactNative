@@ -1,9 +1,8 @@
 // @flow
+import ObsMediaDisplay from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplay";
 import _ from "lodash";
 import type { Node } from "react";
 import React, { useMemo } from "react";
-
-import ObsMediaDisplay from "./ObsMediaDisplay";
 
 type Props = {
   observation: Object,

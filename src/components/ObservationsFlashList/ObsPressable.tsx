@@ -6,7 +6,7 @@ import { useTranslation } from "sharedHooks";
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
 
-type Props = {
+interface Props {
   currentUser: object;
   queued: boolean;
   explore: boolean;
@@ -22,7 +22,7 @@ type Props = {
   observation: RealmObservation;
   uploadProgress: number;
   unsynced: boolean;
-};
+}
 
 const ObsPressable = ( {
   currentUser,

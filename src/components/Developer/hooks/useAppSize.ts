@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 
-export type DirectoryEntrySize = {
+export interface DirectoryEntrySize {
   name: string;
   size: number;
 }
@@ -120,7 +120,7 @@ export function getTotalDirectorySize( directoryItems: DirectoryEntrySize[] ): n
   return totalSize;
 }
 
-type AppSize = {
+interface AppSize {
   [directoryName: string]: DirectoryEntrySize[];
 }
 
