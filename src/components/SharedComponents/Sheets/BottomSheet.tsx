@@ -33,8 +33,7 @@ interface Props {
   hideCloseButton?: boolean;
   headerText?: string;
   onLayout?: ( event: object ) => void;
-  // Callback when the user presses the close button or backdrop, not whenever the sheet
-  // closes
+  // OnPressClose *does* get called whenever bottom sheet is dismissed
   onPressClose?: ( ) => void;
   snapPoints?: string[];
   insideModal?: boolean;
@@ -42,6 +41,8 @@ interface Props {
   testID?: string;
   containerClass?: string;
   scrollEnabled?: boolean;
+  // Use this prop for side effects of tapping backdrop or close icon
+  onBackgroundOrCloseIconPress?: ( ) => void;
 }
 
 const StandardBottomSheet = ( {
@@ -57,6 +58,7 @@ const StandardBottomSheet = ( {
   containerClass,
   testID,
   scrollEnabled = true,
+  onBackgroundOrCloseIconPress,
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -66,20 +68,25 @@ const StandardBottomSheet = ( {
   const sheetRef = useRef<BottomSheet>( null );
   const insets = useSafeAreaInsets( );
 
-  const handleClose = useCallback( ( ) => {
+  const handleCloseFromUserInput = useCallback( ( ) => {
+    if ( onBackgroundOrCloseIconPress ) onBackgroundOrCloseIconPress( );
     if ( onPressClose ) onPressClose( );
+  }, [onBackgroundOrCloseIconPress, onPressClose] );
+
+  const handleClose = useCallback( ( ) => {
+    handleCloseFromUserInput( );
 
     if ( insideModal ) {
       sheetRef.current?.collapse( );
     } else {
       sheetRef.current?.dismiss( );
     }
-  }, [insideModal, onPressClose] );
+  }, [insideModal, handleCloseFromUserInput] );
 
   const renderBackdrop = props => (
     <BottomSheetStandardBackdrop
       props={props}
-      onPress={onPressClose}
+      onPress={handleCloseFromUserInput}
     />
   );
 

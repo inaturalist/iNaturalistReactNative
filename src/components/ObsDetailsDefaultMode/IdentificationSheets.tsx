@@ -224,12 +224,6 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const editIdentBody = useCallback( ( ) => dispatch( { type: SHOW_EDIT_IDENT_BODY_SHEET } ), [] );
 
-  const onChangeIdentBody = useCallback( body => dispatch( {
-    type: SET_NEW_IDENTIFICATION,
-    taxon: newIdentification?.taxon,
-    body,
-  } ), [newIdentification?.taxon] );
-
   const onCloseIdentBodySheet = useCallback( ( ) => {
     dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );
   }, [] );
@@ -346,7 +340,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     dispatch( { type: HIDE_POTENTIAL_DISAGREEMENT_SHEET } );
   }, [] );
 
-  const doSuggestId = useCallback( ( potentialDisagree?: boolean ) => {
+  const doSuggestId = useCallback( ( potentialDisagree?: boolean, comment?: string ) => {
     if ( !newIdentification?.taxon ) {
       throw new Error( "Cannot create an identification without a taxon" );
     }
@@ -356,12 +350,17 @@ const IdentificationSheets: React.FC<Props> = ( {
       taxon_id: newIdentification.taxon.id,
       vision: newIdentification.vision,
       disagreement: potentialDisagree,
-      body: newIdentification?.body,
+      body: comment,
     };
 
     loadActivityItem( );
     createIdentificationMutation.mutate( { identification: idParams } );
   }, [createIdentificationMutation, newIdentification, uuid, loadActivityItem] );
+
+  const onSuggestIdWithComment = useCallback( ( body: string ) => {
+    doSuggestId( undefined, body );
+    dispatch( { type: SUBMIT_IDENTIFICATION } );
+  }, [doSuggestId] );
 
   const onSuggestId = useCallback( ( ) => {
     if ( hasPotentialDisagreement( ) ) {
@@ -380,7 +379,9 @@ const IdentificationSheets: React.FC<Props> = ( {
     doSuggestId( potentialDisagree );
   }, [doSuggestId] );
 
-  const suggestIdSheetDiscardChanges = useCallback( ( ) => dispatch( { type: DISCARD_ID } ), [] );
+  const suggestIdSheetDiscardChanges = useCallback( ( ) => {
+    dispatch( { type: DISCARD_ID } );
+  }, [] );
 
   const createCommentMutation = useAuthenticatedMutation(
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
@@ -446,14 +447,14 @@ const IdentificationSheets: React.FC<Props> = ( {
           headerText={addCommentHeaderText}
           textInputStyle={textInputStyle}
           initialInput={newIdentification?.body}
-          confirm={onChangeIdentBody}
+          confirm={onSuggestIdWithComment}
         />
       )}
       {showSuggestIdSheet && (
         <SuggestIDSheet
           editIdentBody={editIdentBody}
           hidden={identBodySheetShown}
-          onPressClose={suggestIdSheetDiscardChanges}
+          onBackgroundOrCloseIconPress={suggestIdSheetDiscardChanges}
           onSuggestId={onSuggestId}
           identification={newIdentification}
         />
