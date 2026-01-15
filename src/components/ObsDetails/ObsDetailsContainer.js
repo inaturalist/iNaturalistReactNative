@@ -582,6 +582,7 @@ const ObsDetailsContainer = ( ): Node => {
       dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
     } else {
       doSuggestId();
+      dispatch( { type: DISCARD_ID } );
     }
   }, [
     doSuggestId,

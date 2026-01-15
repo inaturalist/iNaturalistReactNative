@@ -74,14 +74,14 @@ const StandardBottomSheet = ( {
   }, [onBackgroundOrCloseIconPress, onPressClose] );
 
   const handleClose = useCallback( ( ) => {
-    handleCloseFromUserInput( );
+    if ( onPressClose ) onPressClose( );
 
     if ( insideModal ) {
       sheetRef.current?.collapse( );
     } else {
       sheetRef.current?.dismiss( );
     }
-  }, [insideModal, handleCloseFromUserInput] );
+  }, [insideModal, onPressClose] );
 
   const renderBackdrop = props => (
     <BottomSheetStandardBackdrop
@@ -155,7 +155,7 @@ const StandardBottomSheet = ( {
           {!hideCloseButton && (
             <INatIconButton
               icon="close"
-              onPress={handleClose}
+              onPress={handleCloseFromUserInput}
               size={19}
               className="absolute top-3.5 right-3"
               accessibilityState={{ disabled: hidden }}

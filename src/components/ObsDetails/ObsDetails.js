@@ -333,9 +333,9 @@ const ObsDetails = ( {
         <SuggestIDSheet
           editIdentBody={editIdentBody}
           hidden={identBodySheetShown}
-          onPressClose={suggestIdSheetDiscardChanges}
           onSuggestId={onSuggestId}
           identification={newIdentification}
+          onBackgroundOrCloseIconPress={suggestIdSheetDiscardChanges}
         />
       )}
       {showPotentialDisagreementSheet && newIdentification && (

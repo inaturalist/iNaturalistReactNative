@@ -141,6 +141,7 @@ const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
         showPotentialDisagreementSheet: false,
         showSuggestIdSheet: false,
         newIdentification: null,
+        identTaxon: null,
       };
     case SET_IDENT_TAXON:
       return { ...state, identTaxon: action.taxon };
@@ -358,8 +359,8 @@ const IdentificationSheets: React.FC<Props> = ( {
   }, [createIdentificationMutation, newIdentification, uuid, loadActivityItem] );
 
   const onSuggestIdWithComment = useCallback( ( body: string ) => {
-    doSuggestId( undefined, body );
     dispatch( { type: SUBMIT_IDENTIFICATION } );
+    doSuggestId( undefined, body );
   }, [doSuggestId] );
 
   const onSuggestId = useCallback( ( ) => {
