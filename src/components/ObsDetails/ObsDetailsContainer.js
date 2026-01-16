@@ -50,6 +50,7 @@ LogBox.ignoreLogs( [
 const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
   ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ),
 );
+
 const CLEAR_SUGGESTED_TAXON = "CLEAR_SUGGESTED_TAXON";
 const CONFIRM_ID = "CONFIRM_ID";
 const DISCARD_ID = "DISCARD_ID";
