@@ -79,7 +79,6 @@ const reducer = ( state, action ) => {
         ...state,
         addingActivityItem: true,
       };
-
     case SHOW_AGREE_SHEET:
       return {
         ...state,
