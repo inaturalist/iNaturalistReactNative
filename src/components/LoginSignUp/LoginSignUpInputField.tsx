@@ -1,13 +1,13 @@
 import { Heading4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Ref } from "react";
-import React, { forwardRef } from "react";
+import React from "react";
 import type { TextInput as RNTextInput, TextInputProps } from "react-native";
 import { TextInput } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 interface Props extends TextInputProps {
   headerText: string;
+  ref?: React.Ref<RNTextInput>;
 }
 
 const CONTENT_STYLE = {
@@ -19,17 +19,18 @@ const OUTLINE_STYLE = {
   borderRadius: 8,
 };
 
-const LoginSignUpInputField = forwardRef( ( {
+const LoginSignUpInputField = ( {
   accessibilityLabel,
   autoComplete,
   headerText,
   inputMode,
   keyboardType,
   onChangeText,
+  ref,
   secureTextEntry = false,
   testID,
   textContentType,
-}: Props, ref: Ref<RNTextInput> ) => (
+}: Props ) => (
   <View className="mx-2 mt-[20px]">
     <Heading4 className="color-white mb-[12px]">
       {headerText}
@@ -54,6 +55,6 @@ const LoginSignUpInputField = forwardRef( ( {
       textContentType={textContentType}
     />
   </View>
-) );
+);
 
 export default LoginSignUpInputField;
