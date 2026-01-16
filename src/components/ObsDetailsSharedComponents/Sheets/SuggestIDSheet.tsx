@@ -7,7 +7,6 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 
 interface Props {
@@ -16,10 +15,8 @@ interface Props {
     body?: string;
     taxon: { id: number };
   };
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  onSuggestId:Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  editIdentBody: Function;
+  onSuggestId: ( ) => void;
+  editIdentBody: () => void;
   onBackgroundOrCloseIconPress?: ( ) => void;
 }
 
@@ -29,7 +26,7 @@ const SuggestIDSheet = ( {
   onSuggestId,
   editIdentBody,
   onBackgroundOrCloseIconPress,
-}: Props ): Node => (
+}: Props ): React.ReactNode => (
   <BottomSheet
     headerText={t( "SUGGEST-ID" )}
     hidden={hidden}
