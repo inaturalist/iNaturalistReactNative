@@ -12,10 +12,12 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   observation: RealmObservation;
+  lastScreen?: string;
 }
 
-const SavedMatchHeaderRight = ( {
+const HeaderEditIcon = ( {
   observation,
+  lastScreen,
 }: Props ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -24,8 +26,8 @@ const SavedMatchHeaderRight = ( {
   const headerRight = useCallback(
     ( ) => (
       <INatIconButton
-        testID="SavedMatch.editButton"
-        onPress={() => navigateToObsEdit( observation )}
+        testID="ObsEditIcon"
+        onPress={() => navigateToObsEdit( observation, lastScreen )}
         icon="pencil"
         color={String( colors?.darkGray )}
         accessibilityLabel={t( "Edit" )}
@@ -36,6 +38,7 @@ const SavedMatchHeaderRight = ( {
       observation,
       navigateToObsEdit,
       t,
+      lastScreen,
     ],
   );
 
@@ -47,4 +50,4 @@ const SavedMatchHeaderRight = ( {
   return null;
 };
 
-export default SavedMatchHeaderRight;
+export default HeaderEditIcon;

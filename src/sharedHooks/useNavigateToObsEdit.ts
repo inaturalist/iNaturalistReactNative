@@ -9,9 +9,14 @@ function useNavigateToObsEdit() {
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
 
-  function navigateToObsEdit( localObservation: RealmObservation ) {
+  function navigateToObsEdit( localObservation: RealmObservation, lastScreen?: string ) {
     prepareObsEdit( localObservation );
-    navigation.navigate( "ObsEdit" );
+    navigation.navigate(
+      "ObsEdit",
+      lastScreen
+        ? { lastScreen }
+        : undefined,
+    );
     setMyObsOffsetToRestore();
   }
 

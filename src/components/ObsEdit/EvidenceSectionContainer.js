@@ -25,7 +25,8 @@ type Props = {
   onLocationPress: ( ) => void,
   passesEvidenceTest: boolean,
   setPassesEvidenceTest: Function,
-  updateObservationKeys: Function
+  updateObservationKeys: Function,
+  updateObservationKeysFromUserInteraction: Function
 }
 
 const EvidenceSectionContainer = ( {
@@ -35,6 +36,7 @@ const EvidenceSectionContainer = ( {
   passesEvidenceTest,
   setPassesEvidenceTest,
   updateObservationKeys,
+  updateObservationKeysFromUserInteraction,
 }: Props ): Node => {
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const isNewObs = !!currentObservation?._synced_at
@@ -175,7 +177,7 @@ const EvidenceSectionContainer = ( {
       passesEvidenceTest={fullEvidenceTest}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
-      updateObservationKeys={updateObservationKeys}
+      updateObservationKeys={updateObservationKeysFromUserInteraction}
     />
   );
 };
