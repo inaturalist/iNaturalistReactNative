@@ -12,23 +12,4 @@ const useFeatureFlag = ( featureFlagKey: FeatureFlag ) => {
   return featureFlagConfig[featureFlagKey];
 };
 
-export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
-  const resolvedValue = useFeatureFlag( featureFlagKey );
-
-  const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
-  const featureFlagOverrides
-    = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
-  const setOverride = useStore( ( state: FeatureFlagSlice ) => state.setFeatureFlagDebugOverride );
-
-  const rawValue = featureFlagConfig[featureFlagKey];
-  const overrideValue = featureFlagOverrides[featureFlagKey];
-  return {
-    resolvedValue,
-    rawValue,
-    overrideValue,
-    setOverride: ( enabled: boolean ) => setOverride( featureFlagKey, enabled ),
-    clearOverride: () => setOverride( featureFlagKey, null ),
-  };
-};
-
 export default useFeatureFlag;
