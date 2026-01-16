@@ -58,6 +58,7 @@ const HIDE_AGREE_SHEET = "HIDE_AGREE_SHEET";
 const HIDE_EDIT_IDENT_BODY_SHEET = "HIDE_EDIT_IDENT_BODY_SHEET";
 const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
 const SET_ADD_COMMENT_SHEET = "SET_ADD_COMMENT_SHEET";
+const SET_INITIAL_OBSERVATION = "SET_INITIAL_OBSERVATION";
 const SET_IDENT_TAXON = "SET_IDENT_TAXON";
 const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
 const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
@@ -81,7 +82,7 @@ const initialState = {
 
 const reducer = ( state, action ) => {
   switch ( action.type ) {
-    case "SET_INITIAL_OBSERVATION":
+    case SET_INITIAL_OBSERVATION:
       return {
         ...state,
         observationShown: action.observationShown,
@@ -319,7 +320,7 @@ const ObsDetailsContainer = ( ): Node => {
   useEffect( ( ) => {
     if ( !observationShown ) {
       dispatch( {
-        type: "SET_INITIAL_OBSERVATION",
+        type: SET_INITIAL_OBSERVATION,
         observationShown: observation,
       } );
     }
