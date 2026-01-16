@@ -20,17 +20,13 @@ import Observation from "realmModels/Observation";
 import User from "realmModels/User";
 import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
-import { useCurrentUser, useTranslation } from "sharedHooks";
-import useStore, { zustandStorage } from "stores/useStore";
+import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
+import { zustandStorage } from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import MenuItem from "./MenuItem";
 
 const { useRealm } = RealmContext;
-
-function isDefaultMode( ) {
-  return useStore.getState( ).layout.isDefaultMode === true;
-}
 
 interface BaseMenuOption {
   label: string;
@@ -74,6 +70,7 @@ const Menu = ( ) => {
 
   const { isConnected } = useNetInfo( );
 
+  const layoutPrefs = useLayoutPrefs();
   const [modalState, setModalState] = useState<MenuModalState | null>( null );
 
   const menuItems: Record<string, MenuOption> = {
@@ -157,12 +154,12 @@ const Menu = ( ) => {
     navigation.goBack( );
   };
 
-  const onSubmitFeedback = useCallback( ( text: string ) => {
+  const onSubmitFeedback = useCallback( ( feedbackText: string ) => {
     if ( !isConnected ) {
       showOfflineAlert( t );
       return false;
     }
-    const localOnlyObsCount = Observation.filterUnsyncedObservations( realm ).length;
+    const locallySavedOnlyObservations = Observation.filterUnsyncedObservations( realm ).length;
     const getCountBreakpoint = ( count: number ) => valueToBreakpoint( count, [
       [0, "0"],
       [1, "1-9"],
@@ -170,36 +167,54 @@ const Menu = ( ) => {
       [100, "100-999"],
       [1000, "1000+"],
     ] );
-    const feedbackWithContext = [
-      text,
-      "------------",
-      "Feedback Context:",
-      `Signed In: ${currentUser
-        ? "yes"
-        : "no"}`,
-      `Username: ${currentUser
-        ? currentUser.login
-        : "loggedout"
-      }`,
-      `Mode: ${isDefaultMode( )
-        ? "default"
-        : "advanced"
-      }`,
-      `Uploaded Observations: ${currentUser
-        ? getCountBreakpoint( currentUser.observations_count || 0 )
-        : "loggedout"
-      }`,
-      `Unuploaded Device-Local Observations: ${getCountBreakpoint( localOnlyObsCount )}`,
-      `Identifications: ${currentUser
-        ? getCountBreakpoint( currentUser.identifications_count || 0 )
-        : "loggedout"
-      }`,
-    ].join( "\n" );
+    const {
+      isDefaultMode,
+      isAllAddObsOptionsMode,
+      screenAfterPhotoEvidence,
+    } = layoutPrefs;
+    const modeContext = ( isDefaultMode
+      ? {
+        mode: "default",
+        observationButtonMode: "default",
+        screenAfterPhotoEvidence: "default",
+      }
+      : {
+        mode: "advanced",
+        observationButtonMode: isAllAddObsOptionsMode
+          ? "Obs Sheet"
+          : "AI Camera",
+        screenAfterPhotoEvidence,
+      } );
+    const loggedInContext = currentUser
+      ? {
+        loggedIn: "Yes",
+        username: currentUser.login,
+        identifications: typeof currentUser.identifications_count === "number"
+          ? getCountBreakpoint( currentUser.identifications_count )
+          : "NA",
+        remoteObservations: typeof currentUser.observations_count === "number"
+          ? getCountBreakpoint( currentUser.observations_count )
+          : "NA",
+      }
+      : {
+        loggedIn: "No",
+        username: "loggedout",
+        identifications: "loggedout",
+        remoteObservations: "loggedout",
+      };
+    const feedbackWithContext = {
+      text: feedbackText,
+      ...modeContext,
+      ...loggedInContext,
+      // can have unsynced obs when logged out
+      locallySavedOnlyObservations,
+    };
+    // we're logging structured data here that is parsed in Grafana
     feedbackLogger.info( feedbackWithContext );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
     setModalState( null );
     return true;
-  }, [currentUser, isConnected, realm, t] );
+  }, [currentUser, isConnected, layoutPrefs, realm, t] );
 
   return (
     <ScrollView
