@@ -136,11 +136,6 @@ const reducer = ( state, action ) => {
         ...state,
         identBodySheetShown: false,
       };
-    case "SHOW_SUGGEST_ID_SHEET":
-      return {
-        ...state,
-        showSuggestIdSheet: true,
-      };
     case SHOW_POTENTIAL_DISAGREEMENT_SHEET:
       return {
         ...state,
