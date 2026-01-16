@@ -59,6 +59,7 @@ const HIDE_EDIT_IDENT_BODY_SHEET = "HIDE_EDIT_IDENT_BODY_SHEET";
 const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
 const SET_ADD_COMMENT_SHEET = "SET_ADD_COMMENT_SHEET";
 const SET_INITIAL_OBSERVATION = "SET_INITIAL_OBSERVATION";
+const ADD_ACTIVITY_ITEM = "ADD_ACTIVITY_ITEM";
 const SET_IDENT_TAXON = "SET_IDENT_TAXON";
 const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
 const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
@@ -91,7 +92,7 @@ const reducer = ( state, action ) => {
           action.observationShown?.comments || [],
         ),
       };
-    case "ADD_ACTIVITY_ITEM":
+    case ADD_ACTIVITY_ITEM:
       return {
         ...state,
         observationShown: action.observationShown,
@@ -331,7 +332,7 @@ const ObsDetailsContainer = ( ): Node => {
     // new activity items after a refetch
     if ( remoteObservation && !isRefetching ) {
       dispatch( {
-        type: "ADD_ACTIVITY_ITEM",
+        type: ADD_ACTIVITY_ITEM,
         observationShown: Observation.mapApiToRealm( remoteObservation ),
       } );
     }
@@ -387,7 +388,7 @@ const ObsDetailsContainer = ( ): Node => {
             localComments.push( newComment );
           }, "setting local comment in ObsDetailsContainer" );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-          dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+          dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
         }
       },
       onError: e => {
@@ -434,7 +435,7 @@ const ObsDetailsContainer = ( ): Node => {
           }, "setting local identification in ObsDetailsContainer" );
           if ( uuid ) {
             const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-            dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+            dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
             dispatch( { type: CLEAR_SUGGESTED_TAXON } );
           }
         }
