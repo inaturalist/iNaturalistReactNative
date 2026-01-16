@@ -60,10 +60,12 @@ const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
 const SET_ADD_COMMENT_SHEET = "SET_ADD_COMMENT_SHEET";
 const SET_INITIAL_OBSERVATION = "SET_INITIAL_OBSERVATION";
 const ADD_ACTIVITY_ITEM = "ADD_ACTIVITY_ITEM";
+const LOADING_ACTIVITY_ITEM = "LOADING_ACTIVITY_ITEM";
 const SET_IDENT_TAXON = "SET_IDENT_TAXON";
 const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
 const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
 const SHOW_EDIT_IDENT_BODY_SHEET = "SHOW_EDIT_IDENT_BODY_SHEET";
+const SHOW_POTENTIAL_DISAGREEMENT_SHEET = "SHOW_POTENTIAL_DISAGREEMENT_SHEET";
 
 const initialState = {
   activityItems: [],
@@ -102,7 +104,7 @@ const reducer = ( state, action ) => {
           action.observationShown?.comments || [],
         ),
       };
-    case "LOADING_ACTIVITY_ITEM":
+    case LOADING_ACTIVITY_ITEM:
       return {
         ...state,
         addingActivityItem: true,
@@ -139,7 +141,7 @@ const reducer = ( state, action ) => {
         ...state,
         showSuggestIdSheet: true,
       };
-    case "SHOW_POTENTIAL_DISAGREEMENT_SHEET":
+    case SHOW_POTENTIAL_DISAGREEMENT_SHEET:
       return {
         ...state,
         showPotentialDisagreementSheet: true,
@@ -404,7 +406,7 @@ const ObsDetailsContainer = ( ): Node => {
   );
 
   const onCommentAdded = body => {
-    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
+    dispatch( { type: LOADING_ACTIVITY_ITEM } );
     createCommentMutation.mutate( {
       comment: {
         body,
@@ -476,7 +478,7 @@ const ObsDetailsContainer = ( ): Node => {
       && identTaxon.id !== observationTaxon.id
       && observationTaxon.ancestor_ids.includes( identTaxon.id )
     ) {
-      dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
+      dispatch( { type: SHOW_POTENTIAL_DISAGREEMENT_SHEET } );
     } else {
       dispatch( { type: CONFIRM_ID } );
     }
@@ -529,7 +531,7 @@ const ObsDetailsContainer = ( ): Node => {
       body: ident.body,
     };
 
-    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
+    dispatch( { type: LOADING_ACTIVITY_ITEM } );
     createIdentificationMutation.mutate( { identification: agreeParams } );
     closeAgreeWithIdSheet( );
   };
@@ -557,7 +559,7 @@ const ObsDetailsContainer = ( ): Node => {
       body: newIdentification?.body,
     };
 
-    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
+    dispatch( { type: LOADING_ACTIVITY_ITEM } );
     createIdentificationMutation.mutate( { identification: idParams } );
   }, [createIdentificationMutation, newIdentification, uuid] );
 
@@ -581,7 +583,7 @@ const ObsDetailsContainer = ( ): Node => {
       && identTaxon?.id !== observationTaxon.id
       && observationTaxon.ancestor_ids.includes( identTaxon?.id )
     ) {
-      dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
+      dispatch( { type: SHOW_POTENTIAL_DISAGREEMENT_SHEET } );
     } else {
       doSuggestId();
     }
@@ -593,7 +595,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const onPotentialDisagreePressed = potentialDisagree => {
     dispatch( {
-      type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
+      type: SHOW_POTENTIAL_DISAGREEMENT_SHEET,
       showPotentialDisagreementSheet: false,
     } );
     doSuggestId( potentialDisagree );
