@@ -50,6 +50,17 @@ LogBox.ignoreLogs( [
 const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
   ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ),
 );
+const CLEAR_SUGGESTED_TAXON = "CLEAR_SUGGESTED_TAXON";
+const CONFIRM_ID = "CONFIRM_ID";
+const DISCARD_ID = "DISCARD_ID";
+const HIDE_AGREE_SHEET = "HIDE_AGREE_SHEET";
+const HIDE_EDIT_IDENT_BODY_SHEET = "HIDE_EDIT_IDENT_BODY_SHEET";
+const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
+const SET_ADD_COMMENT_SHEET = "SET_ADD_COMMENT_SHEET";
+const SET_IDENT_TAXON = "SET_IDENT_TAXON";
+const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
+const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
+const SHOW_EDIT_IDENT_BODY_SHEET = "SHOW_EDIT_IDENT_BODY_SHEET";
 
 const initialState = {
   activityItems: [],
@@ -66,18 +77,6 @@ const initialState = {
   showSuggestIdSheet: false,
   identTaxon: null,
 };
-
-const CLEAR_SUGGESTED_TAXON = "CLEAR_SUGGESTED_TAXON";
-const CONFIRM_ID = "CONFIRM_ID";
-const DISCARD_ID = "DISCARD_ID";
-const HIDE_AGREE_SHEET = "HIDE_AGREE_SHEET";
-const HIDE_EDIT_IDENT_BODY_SHEET = "HIDE_EDIT_IDENT_BODY_SHEET";
-const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
-const SET_ADD_COMMENT_SHEET = "SET_ADD_COMMENT_SHEET";
-const SET_IDENT_TAXON = "SET_IDENT_TAXON";
-const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
-const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
-const SHOW_EDIT_IDENT_BODY_SHEET = "SHOW_EDIT_IDENT_BODY_SHEET";
 
 const reducer = ( state, action ) => {
   switch ( action.type ) {
