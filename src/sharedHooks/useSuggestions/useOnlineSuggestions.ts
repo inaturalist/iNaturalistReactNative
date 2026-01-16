@@ -17,6 +17,15 @@ import {
 } from "sharedHooks";
 
 import type { ScoreImageParams, UseSuggestionsOnlineSuggestion } from "./types";
+import { predictOffline } from "./useOfflineSuggestions";
+
+const executeOnRandomPercentile = ( operation: () => void, integerPercentChance: number ) => {
+  if ( Math.random() * 100 <= integerPercentChance ) {
+    operation();
+  }
+};
+
+const SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE = 1;
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
 
@@ -42,10 +51,35 @@ interface UseOnlineSuggestionsResponse {
   refetch: () => void;
 }
 
+interface OnlineSuggestionsApiResponse {
+  results: UseSuggestionsOnlineSuggestion[];
+  common_ancestor?: Omit<UseSuggestionsOnlineSuggestion, "combined_score">;
+}
+
 interface OnlineSuggestionsQueryResponse {
   results: UseSuggestionsOnlineSuggestion[];
   common_ancestor?: UseSuggestionsOnlineSuggestion;
 }
+
+const normalizeApiResponseForCommonAncestor
+  = ( apiSuggestions: OnlineSuggestionsApiResponse ): OnlineSuggestionsQueryResponse => {
+    // TODO MOB-1081: maybe we can catch this shim earlier?
+    // general context: https://github.com/inaturalist/iNaturalistReactNative/blob/505980d3359876a0af383f2ffcc481921f0eb778/src/components/Match/calculateConfidence.ts#L10-L12
+    // online suggs have `score` but _redact_ `combined_score` for commonAncestor https://github.com/inaturalist/iNaturalistAPI/blob/main/lib/controllers/v1/computervision_controller.js#L389
+    // the offline suggs have `combined_score` but don't have `score`
+    // the codebase tends assumes `combined_score` for whenever that matters
+    // the following catches when we're in a "fake" onlineSugg and shims "score" in
+    const normalizedCommonAncestor = apiSuggestions.common_ancestor
+      ? {
+        ...apiSuggestions.common_ancestor,
+        combined_score: apiSuggestions.common_ancestor.score,
+      }
+      : undefined;
+    return {
+      results: apiSuggestions.results,
+      common_ancestor: normalizedCommonAncestor,
+    };
+  };
 
 const useOnlineSuggestions = (
   options: OnlineSuggestionOptions,
@@ -82,7 +116,27 @@ const useOnlineSuggestions = (
         ...scoreImageParams,
         ...( !currentUser && { locale } ),
       };
-      return scoreImage( params, optsWithAuth ) as Promise<OnlineSuggestionsQueryResponse>;
+      const suggestionsResponse
+        = await scoreImage( params, optsWithAuth ) as OnlineSuggestionsApiResponse;
+      const normalizedOnlineSuggestionsResponse
+        = normalizeApiResponseForCommonAncestor( suggestionsResponse );
+
+      // experiment to compare online & offline suggestion results
+      // imperatively fire-and-forgetted in online query to circumvent existing stateful mutex logic
+      executeOnRandomPercentile( () => {
+        if ( scoreImageParams && scoreImageParams.image ) {
+          predictOffline( {
+            latitude: scoreImageParams.lat,
+            longitude: scoreImageParams.lng,
+            photoUri: scoreImageParams.image.uri,
+            realm,
+          } );
+          // TODO: log results
+        }
+      }, SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE );
+      // end experiment
+
+      return normalizedOnlineSuggestionsResponse;
     },
     {
       enabled: !!shouldFetchOnlineSuggestions
