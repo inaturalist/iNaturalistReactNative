@@ -43,6 +43,12 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 
 You may optionally, as an environment variable, set the Rozenite env var to enable the Rozenite React Native DevTools plugins: `WITH_ROZENITE=true npm start`. This makes the installed Rozenite plugins available in React Native DevTools in their respective tabs.
 
+### Debug Mode and Feature Flags
+
+"Debug Mode" can be enabled in the app by opening the "About" screen and tapping the version number three times. This enables the "Debug" screen in the Menu which includes a some additional app info and utilities. Additionally, when enabled, some parts of the app additionally render useful debugging info and debugging buttons.
+
+The "Debug" screen also allows for toggling ([Feature Flags](https://en.wikipedia.org/wiki/Feature_toggle)) on and off. Feature Flags are sometimes used in our development to test new features or hide incremental development progress. The default values for whether a feature flag is enabled or not is defined in source ([`createFeatureFlagSlice.ts](https://github.com/inaturalist/iNaturalistReactNative/blob/477604016aaeb0b0553c0569854e49cda40069d0/src/stores/createFeatureFlagSlice.ts#L9)) which determines what typical users will see. In testing, it is often helpful to dynamically toggle features on and off. The debug screen lists each active feature flag and allows for overriding their default values. These overrides are not persisted so will reset to defaults on app launch.
+
 ### Running with staging environment
 
 If you're on staff you can configure the app to read from and write to our staging server. Override `API_URL` to a staging API domain, either using local `.env.staging` file, or overriding the environment variable when calling `npm start`, e.g. `API_URL=http://example.com npm start -- --reset-cache`.
