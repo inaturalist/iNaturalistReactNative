@@ -11,7 +11,6 @@ import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  forwardRef,
   useCallback,
   useMemo,
   useState,
@@ -53,13 +52,14 @@ type Props = {
   onEndReached: Function,
   onLayout?: Function,
   onScroll?: Function,
+  ref?: Function,
   renderHeader?: Function,
   showNoResults?: boolean,
   showObservationsEmptyScreen?: boolean,
   testID: string
 };
 
-const ObservationsFlashList: Function = forwardRef( ( {
+const ObservationsFlashList: Function = ( {
   contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
@@ -79,11 +79,12 @@ const ObservationsFlashList: Function = forwardRef( ( {
   onEndReached,
   onLayout,
   onScroll,
+  ref,
   renderHeader,
   showNoResults,
   showObservationsEmptyScreen,
   testID,
-}: Props, ref ): Node => {
+}: Props ): Node => {
   const {
     isDefaultMode,
   } = useLayoutPrefs( );
@@ -304,6 +305,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
       testID={testID}
     />
   );
-} );
+};
 
 export default ObservationsFlashList;

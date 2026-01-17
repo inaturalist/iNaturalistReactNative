@@ -1,29 +1,31 @@
 import { getCurrentRoute } from "navigation/navigationUtils";
 import React from "react";
-import type { GestureResponderEvent, PressableProps } from "react-native";
+import type { GestureResponderEvent, PressableProps, View } from "react-native";
 import { Pressable } from "react-native";
 import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "PressableWithTracking" );
 
-const PressableWithTracking = React.forwardRef<typeof Pressable, PressableProps>(
-  ( props, ref ) => {
-    const { onPress, ...otherProps } = props;
+interface Props extends PressableProps {
+  ref?: React.Ref<View>;
+}
 
-    const handlePressWithTracking = ( event: GestureResponderEvent ) => {
-      if ( otherProps?.testID ) {
-        const currentRoute = getCurrentRoute( );
-        logger.info( `Button tap: ${otherProps?.testID}-${currentRoute?.name || "undefined"}` );
-      }
+const PressableWithTracking = ( props: Props ) => {
+  const { onPress, ref, ...otherProps } = props;
 
-      if ( onPress ) {
-        onPress( event );
-      }
-    };
+  const handlePressWithTracking = ( event: GestureResponderEvent ) => {
+    if ( otherProps?.testID ) {
+      const currentRoute = getCurrentRoute( );
+      logger.info( `Button tap: ${otherProps?.testID}-${currentRoute?.name || "undefined"}` );
+    }
 
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <Pressable {...otherProps} onPress={handlePressWithTracking} ref={ref} />;
-  },
-);
+    if ( onPress ) {
+      onPress( event );
+    }
+  };
+
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <Pressable {...otherProps} onPress={handlePressWithTracking} ref={ref} />;
+};
 
 export default PressableWithTracking;
