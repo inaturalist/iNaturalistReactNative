@@ -51,6 +51,22 @@ const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
   ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ),
 );
 
+const CLEAR_SUGGESTED_TAXON = "CLEAR_SUGGESTED_TAXON";
+const CONFIRM_ID = "CONFIRM_ID";
+const DISCARD_ID = "DISCARD_ID";
+const HIDE_AGREE_SHEET = "HIDE_AGREE_SHEET";
+const HIDE_EDIT_IDENT_BODY_SHEET = "HIDE_EDIT_IDENT_BODY_SHEET";
+const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
+const SET_ADD_COMMENT_SHEET = "SET_ADD_COMMENT_SHEET";
+const SET_INITIAL_OBSERVATION = "SET_INITIAL_OBSERVATION";
+const ADD_ACTIVITY_ITEM = "ADD_ACTIVITY_ITEM";
+const LOADING_ACTIVITY_ITEM = "LOADING_ACTIVITY_ITEM";
+const SET_IDENT_TAXON = "SET_IDENT_TAXON";
+const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
+const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
+const SHOW_EDIT_IDENT_BODY_SHEET = "SHOW_EDIT_IDENT_BODY_SHEET";
+const SHOW_POTENTIAL_DISAGREEMENT_SHEET = "SHOW_POTENTIAL_DISAGREEMENT_SHEET";
+
 const initialState = {
   activityItems: [],
   addingActivityItem: false,
@@ -67,21 +83,9 @@ const initialState = {
   identTaxon: null,
 };
 
-const CLEAR_SUGGESTED_TAXON = "CLEAR_SUGGESTED_TAXON";
-const CONFIRM_ID = "CONFIRM_ID";
-const DISCARD_ID = "DISCARD_ID";
-const HIDE_AGREE_SHEET = "HIDE_AGREE_SHEET";
-const HIDE_EDIT_IDENT_BODY_SHEET = "HIDE_EDIT_IDENT_BODY_SHEET";
-const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
-const SET_ADD_COMMENT_SHEET = "SET_ADD_COMMENT_SHEET";
-const SET_IDENT_TAXON = "SET_IDENT_TAXON";
-const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
-const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
-const SHOW_EDIT_IDENT_BODY_SHEET = "SHOW_EDIT_IDENT_BODY_SHEET";
-
 const reducer = ( state, action ) => {
   switch ( action.type ) {
-    case "SET_INITIAL_OBSERVATION":
+    case SET_INITIAL_OBSERVATION:
       return {
         ...state,
         observationShown: action.observationShown,
@@ -90,7 +94,7 @@ const reducer = ( state, action ) => {
           action.observationShown?.comments || [],
         ),
       };
-    case "ADD_ACTIVITY_ITEM":
+    case ADD_ACTIVITY_ITEM:
       return {
         ...state,
         observationShown: action.observationShown,
@@ -100,7 +104,7 @@ const reducer = ( state, action ) => {
           action.observationShown?.comments || [],
         ),
       };
-    case "LOADING_ACTIVITY_ITEM":
+    case LOADING_ACTIVITY_ITEM:
       return {
         ...state,
         addingActivityItem: true,
@@ -132,12 +136,7 @@ const reducer = ( state, action ) => {
         ...state,
         identBodySheetShown: false,
       };
-    case "SHOW_SUGGEST_ID_SHEET":
-      return {
-        ...state,
-        showSuggestIdSheet: true,
-      };
-    case "SHOW_POTENTIAL_DISAGREEMENT_SHEET":
+    case SHOW_POTENTIAL_DISAGREEMENT_SHEET:
       return {
         ...state,
         showPotentialDisagreementSheet: true,
@@ -319,7 +318,7 @@ const ObsDetailsContainer = ( ): Node => {
   useEffect( ( ) => {
     if ( !observationShown ) {
       dispatch( {
-        type: "SET_INITIAL_OBSERVATION",
+        type: SET_INITIAL_OBSERVATION,
         observationShown: observation,
       } );
     }
@@ -330,7 +329,7 @@ const ObsDetailsContainer = ( ): Node => {
     // new activity items after a refetch
     if ( remoteObservation && !isRefetching ) {
       dispatch( {
-        type: "ADD_ACTIVITY_ITEM",
+        type: ADD_ACTIVITY_ITEM,
         observationShown: Observation.mapApiToRealm( remoteObservation ),
       } );
     }
@@ -386,7 +385,7 @@ const ObsDetailsContainer = ( ): Node => {
             localComments.push( newComment );
           }, "setting local comment in ObsDetailsContainer" );
           const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-          dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+          dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
         }
       },
       onError: e => {
@@ -402,7 +401,7 @@ const ObsDetailsContainer = ( ): Node => {
   );
 
   const onCommentAdded = body => {
-    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
+    dispatch( { type: LOADING_ACTIVITY_ITEM } );
     createCommentMutation.mutate( {
       comment: {
         body,
@@ -433,7 +432,7 @@ const ObsDetailsContainer = ( ): Node => {
           }, "setting local identification in ObsDetailsContainer" );
           if ( uuid ) {
             const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-            dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+            dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
             dispatch( { type: CLEAR_SUGGESTED_TAXON } );
           }
         }
@@ -474,7 +473,7 @@ const ObsDetailsContainer = ( ): Node => {
       && identTaxon.id !== observationTaxon.id
       && observationTaxon.ancestor_ids.includes( identTaxon.id )
     ) {
-      dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
+      dispatch( { type: SHOW_POTENTIAL_DISAGREEMENT_SHEET } );
     } else {
       dispatch( { type: CONFIRM_ID } );
     }
@@ -527,7 +526,7 @@ const ObsDetailsContainer = ( ): Node => {
       body: ident.body,
     };
 
-    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
+    dispatch( { type: LOADING_ACTIVITY_ITEM } );
     createIdentificationMutation.mutate( { identification: agreeParams } );
     closeAgreeWithIdSheet( );
   };
@@ -555,7 +554,7 @@ const ObsDetailsContainer = ( ): Node => {
       body: newIdentification?.body,
     };
 
-    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
+    dispatch( { type: LOADING_ACTIVITY_ITEM } );
     createIdentificationMutation.mutate( { identification: idParams } );
   }, [createIdentificationMutation, newIdentification, uuid] );
 
@@ -579,7 +578,7 @@ const ObsDetailsContainer = ( ): Node => {
       && identTaxon?.id !== observationTaxon.id
       && observationTaxon.ancestor_ids.includes( identTaxon?.id )
     ) {
-      dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
+      dispatch( { type: SHOW_POTENTIAL_DISAGREEMENT_SHEET } );
     } else {
       doSuggestId();
     }
@@ -591,7 +590,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const onPotentialDisagreePressed = potentialDisagree => {
     dispatch( {
-      type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET",
+      type: SHOW_POTENTIAL_DISAGREEMENT_SHEET,
       showPotentialDisagreementSheet: false,
     } );
     doSuggestId( potentialDisagree );

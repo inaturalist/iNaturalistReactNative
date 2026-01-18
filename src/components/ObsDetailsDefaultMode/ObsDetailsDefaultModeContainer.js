@@ -79,7 +79,6 @@ const reducer = ( state, action ) => {
         ...state,
         addingActivityItem: true,
       };
-
     case SHOW_AGREE_SHEET:
       return {
         ...state,
@@ -292,7 +291,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
       }, "setting local identification in ObsDetailsContainer" );
       if ( uuid ) {
         const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-        dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+        dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
       }
     }
   }, [
@@ -314,7 +313,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
         localComments?.push( newComment );
       }, "setting local comment in ObsDetailsContainer" );
       const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-      dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+      dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
     }
   }, [
     belongsToCurrentUser,
