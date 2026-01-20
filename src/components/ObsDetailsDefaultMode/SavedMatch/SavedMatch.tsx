@@ -30,7 +30,7 @@ const SavedMatch = ( {
   return (
     <ScrollViewWrapper testID="SavedMatch.container">
       <HeaderEditIcon observation={observation} />
-      <View className={`${matchCardClassTop} mt-[10px]`}>
+      <View className={matchCardClassTop}>
         <MatchHeader hideObservationStatus topSuggestion={observation} />
       </View>
       <PhotosSection
