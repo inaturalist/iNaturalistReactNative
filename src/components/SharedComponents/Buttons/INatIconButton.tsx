@@ -30,7 +30,6 @@ interface Props extends PropsWithChildren {
   icon?: string;
   // Only show the icon with all the same layout, don't make it a button
   iconOnly?: boolean;
-  isDarkModeEnabled?: boolean;
   onPress: ( _event?: GestureResponderEvent ) => void;
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
@@ -66,7 +65,6 @@ const INatIconButton = ( {
   height = MIN_ACCESSIBLE_DIM,
   icon,
   iconOnly,
-  isDarkModeEnabled = false,
   onPress,
   preventTransparency,
   size = 18,
@@ -165,7 +163,6 @@ const INatIconButton = ( {
           <INatIcon
             name={icon}
             size={size}
-            isDarkModeEnabled={isDarkModeEnabled}
             color={String( color || colors?.darkGray )}
           />
         )
