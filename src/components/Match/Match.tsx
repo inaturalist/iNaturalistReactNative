@@ -85,7 +85,7 @@ const Match = ( {
                   </Body2>
                 )
             }
-            <HeaderEditIcon observation={observation} />
+            <HeaderEditIcon observation={observation} lastScreen="Match" />
           </View>
           <PhotosSection
             taxon={taxon}
