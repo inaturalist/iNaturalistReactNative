@@ -1,4 +1,4 @@
-import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
+import ActivityItem from "components/ObsDetailsSharedComponents/ActivityTab/ActivityItem";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   ActivityCount,

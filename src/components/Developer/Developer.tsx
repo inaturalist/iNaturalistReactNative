@@ -4,14 +4,11 @@ import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
 import {
   Button,
-  Heading1,
-  Heading2,
   ScrollViewWrapper,
   WarningSheet,
 } from "components/SharedComponents";
-import { fontMonoClass, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { PropsWithChildren } from "react";
 import React, { useState } from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
@@ -19,41 +16,14 @@ import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
 import useLogs from "sharedHooks/useLogs";
 
+import {
+  CODE, H1, H2, P,
+} from "./DeveloperSharedComponents";
+import FeatureFlags from "./FeatureFlags";
 import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
   formatAppSizeString, formatSizeUnits, getTotalDirectorySize,
 } from "./hooks/useAppSize";
-
-const H1 = ( { children }: PropsWithChildren ) => (
-  <Heading1 className="mt-3 mb-2">
-    {children}
-  </Heading1>
-);
-const H2 = ( { children }: PropsWithChildren ) => (
-  <Heading2 className="mt-3 mb-2">
-    {children}
-  </Heading2>
-);
-const P = ( { children }: PropsWithChildren ) => (
-  <Text selectable className="mb-2">
-    {children}
-  </Text>
-);
-
-interface CODEProps extends PropsWithChildren {
-  optionalClassName?: string;
-}
-const CODE = ( { children, optionalClassName }: CODEProps ) => (
-  <Text
-    selectable
-    className={classnames(
-      fontMonoClass,
-      optionalClassName,
-    )}
-  >
-    {children}
-  </Text>
-);
 
 const modelFileName = Platform.select( {
   ios: Config.IOS_MODEL_FILE_NAME,
@@ -248,6 +218,7 @@ const Developer = () => {
           <Text className="font-bold">Geomodel: </Text>
           <Text selectable>{geomodelFileName}</Text>
         </View>
+        <FeatureFlags />
         <H1>Paths</H1>
         <H2>Documents</H2>
         <P>

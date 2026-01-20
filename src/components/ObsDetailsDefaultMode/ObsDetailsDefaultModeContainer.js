@@ -3,6 +3,8 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
 import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
+import useMarkViewedMutation
+  from "components/ObsDetailsSharedComponents/hooks/useMarkViewedMutation";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -22,7 +24,6 @@ import {
 } from "sharedHooks/useRemoteObservation";
 import useStore from "stores/useStore";
 
-import useMarkViewedMutation from "./hooks/useMarkViewedMutation";
 import ObsDetailsDefaultMode from "./ObsDetailsDefaultMode";
 
 const { useRealm } = RealmContext;
@@ -78,7 +79,6 @@ const reducer = ( state, action ) => {
         ...state,
         addingActivityItem: true,
       };
-
     case SHOW_AGREE_SHEET:
       return {
         ...state,
@@ -291,7 +291,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
       }, "setting local identification in ObsDetailsContainer" );
       if ( uuid ) {
         const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-        dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+        dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
       }
     }
   }, [
@@ -313,7 +313,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
         localComments?.push( newComment );
       }, "setting local comment in ObsDetailsContainer" );
       const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-      dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+      dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
     }
   }, [
     belongsToCurrentUser,

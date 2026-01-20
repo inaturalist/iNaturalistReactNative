@@ -6,11 +6,10 @@ import {
   Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import Attribution from "components/Suggestions/Attribution";
 import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
-
-import Attribution from "./Attribution";
 
 interface Props {
   debugData: {

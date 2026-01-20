@@ -11,6 +11,7 @@ export interface TaxonNamesSettings {
 }
 class User extends Realm.Object {
   static FIELDS = {
+    identifications_count: true,
     icon_url: true,
     id: true,
     locale: true,
@@ -51,6 +52,7 @@ class User extends Realm.Object {
     primaryKey: "id",
     properties: {
       id: "int",
+      identifications_count: "int?",
       icon_url: {
         type: "string",
         mapTo: "iconUrl",

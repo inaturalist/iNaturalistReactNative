@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
+import Attribution from "components/ObsDetailsSharedComponents/DetailsTab/Attribution";
 import {
   Body4,
   Button,
@@ -20,7 +21,6 @@ import { Alert, Platform, Share } from "react-native";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import colors from "styles/tailwindColors";
 
-import Attribution from "./Attribution";
 import LocationSection from "./LocationSection";
 import ProjectSection from "./ProjectSection";
 

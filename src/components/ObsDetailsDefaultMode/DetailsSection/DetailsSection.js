@@ -1,6 +1,7 @@
 // @flow
 
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
+import Attribution from "components/ObsDetailsSharedComponents/DetailsTab/Attribution";
 import {
   Body3,
   DateDisplay,
@@ -12,7 +13,6 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 
-import Attribution from "./Attribution";
 import GeoprivacyStatus from "./GeoprivacyStatus";
 
 type Props = {
