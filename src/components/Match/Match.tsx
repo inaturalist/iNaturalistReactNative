@@ -7,6 +7,7 @@ import MapSection
 import {
   ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper,
 } from "components/SharedComponents";
+import HeaderEditIcon from "components/SharedComponents/ObsDetails/HeaderEditIcon";
 import { View } from "components/styledComponents";
 import _ from "lodash";
 import React from "react";
@@ -84,6 +85,7 @@ const Match = ( {
                   </Body2>
                 )
             }
+            <HeaderEditIcon observation={observation} />
           </View>
           <PhotosSection
             taxon={taxon}
@@ -144,6 +146,7 @@ const Match = ( {
                   </Body2>
                 )
             }
+            <HeaderEditIcon observation={observation} />
           </View>
           <PhotosSection
             taxon={taxon}
@@ -189,6 +192,7 @@ const Match = ( {
               )
               : <MatchHeader topSuggestion={topSuggestion} />
           }
+          <HeaderEditIcon observation={observation} />
         </View>
         <PhotosSection
           representativePhoto={topSuggestion?.taxon?.representative_photo}
