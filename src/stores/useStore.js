@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import createExploreSlice from "./createExploreSlice";
+import createFeatureFlagSlice from "./createFeatureFlagSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
 import createMyObsSlice from "./createMyObsSlice";
@@ -31,6 +32,7 @@ const useStore = create( persist(
     // Let's make our slices
     const slices = [
       createExploreSlice( ...args ),
+      createFeatureFlagSlice( ...args ),
       createFirebaseTraceSlice( ...args ),
       createLayoutSlice( ...args ),
       createMyObsSlice( ...args ),

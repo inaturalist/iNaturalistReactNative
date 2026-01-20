@@ -146,6 +146,7 @@ module.exports = {
         caughtErrorsIgnorePattern: "^_",
       },
     ],
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
     "@typescript-eslint/no-require-imports": ["error", {
       allow: ["\\.(png|jpg|jpeg|gif|svg)$"],
     }],
@@ -170,6 +171,7 @@ module.exports = {
     {
       files: ["*.js", "*.jsx"],
       rules: {
+        "@typescript-eslint/consistent-type-definitions": "off",
         "@typescript-eslint/no-unsafe-function-type": "off",
         "@typescript-eslint/no-wrapper-object-types": "off",
         "@typescript-eslint/no-require-imports": "off",

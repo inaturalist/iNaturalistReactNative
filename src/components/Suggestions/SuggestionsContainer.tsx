@@ -50,19 +50,19 @@ const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boole
   { shouldUseEvidenceLocation },
 ];
 
-export type Suggestion = {
+export interface Suggestion {
   combined_score: number;
   taxon: {
     id: number;
     name: string;
   };
-};
+}
 
-export type Suggestions = {
+export interface Suggestions {
   otherSuggestions: Suggestion[];
   topSuggestion: Suggestion | null;
   topSuggestionType: TopSuggestionType;
-};
+}
 
 const initialState = {
   onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,

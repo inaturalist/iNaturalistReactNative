@@ -1,10 +1,9 @@
+import PhotoContainer from "components/ObsDetailsSharedComponents/Media/PhotoContainer";
+import SoundContainer from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import Photo from "realmModels/Photo";
-
-import PhotoContainer from "./PhotoContainer";
-import SoundContainer from "./SoundContainer";
 
 const numColumns = 2;
 const spacing = 6;

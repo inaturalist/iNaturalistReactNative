@@ -5,7 +5,7 @@ import React from "react";
 import CircularProgressBase from "react-native-circular-progress-indicator";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
+interface Props {
   color: string;
   progress: number;
   iconClasses: string[];

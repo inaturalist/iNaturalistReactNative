@@ -37,7 +37,7 @@ interface LoginFormParams {
   projectId?: number;
 }
 
-type ParamList = {
+interface ParamList {
   LoginFormParams: LoginFormParams;
 }
 

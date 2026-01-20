@@ -13,7 +13,7 @@ const DROP_SHADOW = getShadow( {
   shadowOpacity: 0.2,
 } );
 
-type Props = {
+interface Props {
   handlePress: ( action: MatchButtonAction ) => void;
 }
 

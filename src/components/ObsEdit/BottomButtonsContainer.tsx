@@ -20,7 +20,7 @@ import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
 const { useRealm } = RealmContext;
 
-type Props = {
+interface Props {
   passesEvidenceTest: boolean;
   observations: object[];
   currentObservation: RealmObservation;

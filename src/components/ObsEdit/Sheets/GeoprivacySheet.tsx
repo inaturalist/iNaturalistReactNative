@@ -11,7 +11,7 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Geoprivacy = null | GEOPRIVACY_OPEN | GEOPRIVACY_OBSCURED | GEOPRIVACY_PRIVATE;
 
-type Props = {
+interface Props {
   onPressClose: ( ) => void;
   selectedValue?: Geoprivacy;
   updateGeoprivacyStatus: ( Geoprivacy ) => void;

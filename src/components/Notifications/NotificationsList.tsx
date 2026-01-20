@@ -13,7 +13,7 @@ import type { RealmUser } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
-type Props = {
+interface Props {
   currentUser: RealmUser | null;
   data: Notification[];
   isError?: boolean;
@@ -24,7 +24,7 @@ type Props = {
   onRefresh: ( ) => void;
   refreshing: boolean;
   reload: ( ) => void;
-};
+}
 
 interface RenderItemProps {
   // It is used, not sure what the problem is
