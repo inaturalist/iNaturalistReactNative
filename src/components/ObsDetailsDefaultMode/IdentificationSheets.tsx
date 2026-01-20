@@ -93,7 +93,7 @@ const SHOW_EDIT_IDENT_BODY_SHEET = "SHOW_EDIT_IDENT_BODY_SHEET";
 const SHOW_POTENTIAL_DISAGREEMENT_SHEET = "SHOW_POTENTIAL_DISAGREEMENT_SHEET";
 const SUBMIT_IDENTIFICATION = "SUBMIT_IDENTIFICATION";
 
-const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
+export const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
   switch ( action.type ) {
     case SHOW_POTENTIAL_DISAGREEMENT_SHEET:
       return {

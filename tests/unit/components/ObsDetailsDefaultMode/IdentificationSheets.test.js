@@ -1,6 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
+import IdentificationSheets,
+{ identReducer } from "components/ObsDetailsDefaultMode/IdentificationSheets";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
@@ -177,6 +178,67 @@ describe( "IdentificationSheets", () => {
           },
         } );
       } );
+    } );
+  } );
+
+  describe( "identReducer", () => {
+    const initialState = {
+      comment: null,
+      commentIsOptional: false,
+      identBodySheetShown: false,
+      newIdentification: null,
+      showPotentialDisagreementSheet: false,
+      showSuggestIdSheet: false,
+      identTaxon: null,
+    };
+
+    it( "handles SET_NEW_IDENTIFICATION action", () => {
+      const testTaxon = { id: 123, name: "Test Taxon" };
+      const action = {
+        type: "SET_NEW_IDENTIFICATION",
+        taxon: testTaxon,
+        body: "Test comment",
+        vision: true,
+      };
+      const newState = identReducer( initialState, action );
+
+      expect( newState.newIdentification ).toEqual( {
+        taxon: testTaxon,
+        body: "Test comment",
+        vision: true,
+      } );
+    } );
+
+    it( "handles DISCARD_ID action", () => {
+      const stateWithData = {
+        ...initialState,
+        showSuggestIdSheet: true,
+        identTaxon: { id: 123 },
+        newIdentification: { taxon: { id: 123 } },
+      };
+      const action = { type: "DISCARD_ID" };
+      const newState = identReducer( stateWithData, action );
+
+      expect( newState.showSuggestIdSheet ).toBe( false );
+      expect( newState.identTaxon ).toBeNull();
+      expect( newState.newIdentification ).toBeNull();
+    } );
+
+    it( "handles SUBMIT_IDENTIFICATION action", () => {
+      const stateWithData = {
+        ...initialState,
+        showPotentialDisagreementSheet: true,
+        showSuggestIdSheet: true,
+        newIdentification: { taxon: { id: 123 } },
+        identTaxon: { id: 123 },
+      };
+      const action = { type: "SUBMIT_IDENTIFICATION" };
+      const newState = identReducer( stateWithData, action );
+
+      expect( newState.showPotentialDisagreementSheet ).toBe( false );
+      expect( newState.showSuggestIdSheet ).toBe( false );
+      expect( newState.newIdentification ).toBeNull();
+      expect( newState.identTaxon ).toBeNull();
     } );
   } );
 } );
