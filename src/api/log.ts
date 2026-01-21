@@ -18,7 +18,7 @@ const api = create( {
   },
 } );
 
-// at least: does it look enough like an Error for logging purposes
+// at least answers: does it look enough like an Error for logging purposes?
 function isError( value: unknown ): value is { message?: string; stack?: string } {
   if ( value instanceof Error ) {
     return true;
@@ -29,6 +29,11 @@ function isError( value: unknown ): value is { message?: string; stack?: string 
   return false;
 }
 
+// if we have anything that looks like:
+// [someObj, 'asdfasdf', 3, { extra: { id: 1, ... } }]
+// where the _last_ rest param is an obj w/ exaclty one `extra` property w/ primitive fields,
+// we infer that last item as intended for the special `extra` API field
+// we return that separately and strip it from the "normal" rest params for later handling
 function extractExtra( rawMsg: unknown ) {
   const nonExtraResult = {
     messageParams: rawMsg,
@@ -75,6 +80,7 @@ const iNatLogstashTransport: transportFunctionType<iNatLogstashTransportOptions>
   // and making sure we have an auth token are some of a few cases where we really do want
   // to squelch all errors to avoid recursion
 
+  // pull potential `extra` out of the rest params
   const { messageParams, extra } = extractExtra( props.rawMsg );
 
   let userToken;
