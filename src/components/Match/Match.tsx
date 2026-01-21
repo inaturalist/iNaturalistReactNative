@@ -85,7 +85,7 @@ const Match = ( {
                   </Body2>
                 )
             }
-            <HeaderEditIcon observation={observation} lastScreen="Match" />
+            <HeaderEditIcon observation={observation} lastScreen="Match" taxon={iconicTaxon} />
           </View>
           <PhotosSection
             taxon={taxon}
@@ -146,7 +146,7 @@ const Match = ( {
                   </Body2>
                 )
             }
-            <HeaderEditIcon observation={observation} />
+            <HeaderEditIcon observation={observation} lastScreen="Match" />
           </View>
           <PhotosSection
             taxon={taxon}
@@ -192,7 +192,7 @@ const Match = ( {
               )
               : <MatchHeader topSuggestion={topSuggestion} />
           }
-          <HeaderEditIcon observation={observation} />
+          <HeaderEditIcon observation={observation} lastScreen="Match" taxon={taxon} />
         </View>
         <PhotosSection
           representativePhoto={topSuggestion?.taxon?.representative_photo}
