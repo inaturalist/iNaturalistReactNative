@@ -9,7 +9,7 @@ import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
-  useColorScheme, Alert, AppRegistry, View,
+  Alert, AppRegistry,
 } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
@@ -143,9 +143,6 @@ const queryClient = new QueryClient( {
 } );
 
 const AppWithProviders = ( ) => {
-  const colorScheme = useColorScheme( );
-  const darkModeStyleWrapper = { flex: 1, colorScheme };
-
   // note: automatically disabled in Production builds
   useTanStackQueryDevTools( queryClient );
   useNetworkActivityDevTools();
@@ -163,13 +160,11 @@ const AppWithProviders = ( ) => {
           <INatPaperProvider>
             <GestureHandlerRootView className="flex-1">
               <BottomSheetModalProvider>
-                <View style={darkModeStyleWrapper}>
-                  <OfflineNavigationGuard>
-                    <ErrorBoundary>
-                      <App />
-                    </ErrorBoundary>
-                  </OfflineNavigationGuard>
-                </View>
+                <OfflineNavigationGuard>
+                  <ErrorBoundary>
+                    <App />
+                  </ErrorBoundary>
+                </OfflineNavigationGuard>
               </BottomSheetModalProvider>
             </GestureHandlerRootView>
           </INatPaperProvider>

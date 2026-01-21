@@ -63,7 +63,6 @@ module.exports = {
       black: "#000000",
       darkGray: "#454545",
       darkGrayDisabled: "#828181",
-      darkModeGray: "#232323",
       inatGreen: "#74AC00",
       inatGreenDisabled: "#B9D580",
       inatGreenDisabledDark: "#3A5600",

@@ -107,37 +107,6 @@ const setStyles = ( {
   return { buttonClasses, textClasses };
 };
 
-// Dark mode styles can be set with this function, but si scheduled to be worked on post-MVP
-// const setDarkStyles = ( {
-//   buttonClasses,
-//   textClasses,
-//   isPrimary,
-//   isFocus,
-//   disabled,
-//   forceDark
-// } ) => {
-//   if ( isPrimary ) {
-//     buttonClasses.push(
-//       disabled
-//         ? ""
-//         : "dark:bg-white"
-//     );
-//     textClasses.push(
-//       disabled
-//         ? "dark:text-darkGray/50"
-//         : "dark:text-darkGray"
-//     );
-//   } else if ( isFocus ) {
-//     if ( !forceDark ) {
-//       buttonClasses.push(
-//         disabled
-//           ? "dark:bg-inatGreenDisabledDark"
-//           : ""
-//       );
-//     }
-//   }
-// };
-
 const activityIndicatorColor = ( {
   isPrimary, isWarning, isFocus,
 }: {
@@ -195,16 +164,6 @@ const Button = ( {
     isPrimary,
     isWarning,
   } );
-  // Dark mode styles can be set with this function, but is scheduled to be worked on post-MVP
-  // setDarkStyles( {
-  //   buttonClasses,
-  //   textClasses,
-  //   isWarning,
-  //   isPrimary,
-  //   isFocus,
-  //   disabled,
-  //   forceDark
-  // } );
 
   const handlePress = ( event?: GestureResponderEvent ) => {
     if ( !preventMultipleTaps ) {
