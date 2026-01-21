@@ -29,10 +29,42 @@ function isError( value: unknown ): value is { message?: string; stack?: string 
   return false;
 }
 
-const withExtraSuffix = "WithExtra";
+function extractExtra( rawMsg: unknown ) {
+  const nonExtraResult = {
+    messageParams: rawMsg,
+    extra: undefined,
+  };
+
+  // make sure we least look like [...someItems, maybeExtra]
+  if ( !Array.isArray( rawMsg ) || rawMsg.length < 2 ) {
+    return nonExtraResult;
+  }
+  // make sure maybeExtra looks like { extra: ??? }
+  const extraWrapperCandidate = rawMsg.at( -1 );
+  if (
+    !isObject( extraWrapperCandidate )
+    // limit to _exactly_ just this property to minimize accidentally classifying `extra`
+    || Object.keys( extraWrapperCandidate ).length !== 1
+    || !( "extra" in extraWrapperCandidate )
+  ) {
+    return nonExtraResult;
+  }
+  // make sure our extra is actually valid for the API
+  const { extra: extraCandidate } = extraWrapperCandidate;
+  if ( !isObjectWithPrimitiveValues( extraCandidate ) ) {
+    console.warn( "[ERROR log.ts] `extra` must be a non-nested object with primitive values" );
+    return nonExtraResult;
+  }
+  return {
+    // the rest of the log handling should act as if extra was separate from the rest params
+    messageParams: rawMsg.slice( 0, -1 ),
+    extra: extraCandidate,
+  };
+}
 
 // our transport has no options but this needs to be explicitly `object` for generic typing
 type iNatLogstashTransportOptions = object;
+
 // Custom transport for posting to iNat API logging
 const iNatLogstashTransport: transportFunctionType<iNatLogstashTransportOptions> = async props => {
   // Don't bother to log from dev builds
@@ -43,37 +75,7 @@ const iNatLogstashTransport: transportFunctionType<iNatLogstashTransportOptions>
   // and making sure we have an auth token are some of a few cases where we really do want
   // to squelch all errors to avoid recursion
 
-  const level = props.level.text;
-
-  let messageParams = props.rawMsg;
-  let extra;
-
-  // if the `WithExtra` variant of a log function is called, we treat the last
-  // rest parameter as the extra object as if it'd been called as a separate argument
-  // This is going to change immediately, I'm just using this earlier implementation
-  // as a functional checkpoint.
-  // ----
-  // handle this validation before anything else because this should _ideally_ be a
-  // (loud) dev-only issue _noticed_ in dev.
-  // we also want to massage `rawMsg` first to account for standard non-extra args
-  if ( level.endsWith( withExtraSuffix ) ) {
-    const hasValidWithExtraArguments = Array.isArray( props.rawMsg )
-      && props.rawMsg.length >= 2
-      && isObjectWithPrimitiveValues( props.rawMsg.at( -1 ) );
-
-    if ( !hasValidWithExtraArguments ) {
-      console.error( `[ERROR log.ts] Invalid Arguments for ${level}` );
-      return;
-    }
-    // we've validated the last arg from params is _correctly_ a valid `extra` object
-    // so grab that and slice every param _except_ that one for further params handling
-    // eslint-disable-next-line prefer-destructuring
-    extra = ( props.rawMsg as unknown[] ).at( -1 );
-    messageParams = ( props.rawMsg as unknown[] ).slice( 0, -1 );
-  } else {
-    // otherwise, every param should be treated as part of the message
-    messageParams = props.rawMsg;
-  }
+  const { messageParams, extra } = extractExtra( props.rawMsg );
 
   let userToken;
   try {
@@ -115,7 +117,7 @@ const iNatLogstashTransport: transportFunctionType<iNatLogstashTransportOptions>
     message = messageParams;
   }
   const formData = {
-    level: level.replace( withExtraSuffix, "" ),
+    level: props.level.text,
     message,
     context: props.extension,
     extra,

@@ -16,23 +16,16 @@ transport.push( iNatLogstashTransport );
 
 const config = {
   dateFormat: "iso",
-  levels: {
-    debug: 0,
-    debugWithExtra: 0,
-    info: 1,
-    infoWithExtra: 1,
-    warn: 2,
-    warnWithExtra: 2,
-    error: 3,
-    errorWithExtra: 3,
-  },
   // eslint-disable-next-line no-undef
   severity: __DEV__
     ? "debug"
     : "info",
   transport,
   transportOptions: {
-    FS: RNFS,
+    // TS TODO: this type is "fixed" in next minor version bump of rn-logs
+    // https://github.com/mowispace/react-native-logs/commit/df7444279525b7fa88c1509655d8fb6e7582b9cb#diff-c7efff41b2f47cae54e9c83fbe3156db0f1ef1bf405e0750c94d6a10bb74e5a0L110
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    FS: RNFS as any,
     fileName,
   },
 };

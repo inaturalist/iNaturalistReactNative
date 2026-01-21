@@ -209,7 +209,7 @@ const Menu = ( ) => {
       // can have unsynced obs when logged out
       locallySavedOnlyObservations,
     };
-    feedbackLogger.infoWithExtra( feedbackText, feedbackContext );
+    feedbackLogger.info( feedbackText, { extra: feedbackContext } );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
     setModalState( null );
     return true;
