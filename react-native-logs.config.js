@@ -16,6 +16,16 @@ transport.push( iNatLogstashTransport );
 
 const config = {
   dateFormat: "iso",
+  levels: {
+    debug: 0,
+    debugWithExtra: 0,
+    info: 1,
+    infoWithExtra: 1,
+    warn: 2,
+    warnWithExtra: 2,
+    error: 3,
+    errorWithExtra: 3,
+  },
   // eslint-disable-next-line no-undef
   severity: __DEV__
     ? "debug"
