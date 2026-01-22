@@ -52,6 +52,9 @@ type Props = {
   onEndReached: Function,
   onLayout?: Function,
   onScroll?: Function,
+  // this ref is being forwarded to the underlying CustomFlashList and used as an imperative handle
+  // so the parent can control behavior like scrolling; it's typed as Function because there's not
+  // a good way to capture this otherwise with Flow.
   ref?: Function,
   renderHeader?: Function,
   showNoResults?: boolean,
