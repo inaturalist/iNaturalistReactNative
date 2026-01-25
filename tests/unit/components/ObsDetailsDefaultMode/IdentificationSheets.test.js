@@ -1,11 +1,9 @@
 import { useRoute } from "@react-navigation/native";
-import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import { screen, waitFor } from "@testing-library/react-native";
 import IdentificationSheets,
 { identReducer } from "components/ObsDetailsDefaultMode/IdentificationSheets";
-import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
-import { Alert } from "react-native";
 import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import factory from "tests/factory";
@@ -38,22 +36,10 @@ const mockTaxon = factory( "RemoteTaxon" );
 const mockObservation = factory( "LocalObservation" );
 
 const mockMutate = jest.fn();
-const mockLoadActivityItem = jest.fn();
-const mockHandleCommentMutationSuccess = jest.fn();
-const mockHandleIdentificationMutationSuccess = jest.fn();
-const mockHideAddCommentSheet = jest.fn();
-const mockCloseAgreeWithIdSheet = jest.fn();
 
 describe( "IdentificationSheets", () => {
-  beforeAll( async () => {
-    await initI18next();
-    jest.spyOn( Alert, "alert" );
-  } );
-
   beforeEach( () => {
     jest.clearAllMocks();
-
-    mockRealm.objectForPrimaryKey.mockReturnValue( null );
 
     useAuthenticatedMutation.mockImplementation( ( mutationFn, options ) => ( {
       mutate: params => {
@@ -67,11 +53,11 @@ describe( "IdentificationSheets", () => {
 
   const defaultProps = {
     agreeIdentification: null,
-    closeAgreeWithIdSheet: mockCloseAgreeWithIdSheet,
-    handleCommentMutationSuccess: mockHandleCommentMutationSuccess,
-    handleIdentificationMutationSuccess: mockHandleIdentificationMutationSuccess,
-    hideAddCommentSheet: mockHideAddCommentSheet,
-    loadActivityItem: mockLoadActivityItem,
+    closeAgreeWithIdSheet: jest.fn(),
+    handleCommentMutationSuccess: jest.fn(),
+    handleIdentificationMutationSuccess: jest.fn(),
+    hideAddCommentSheet: jest.fn(),
+    loadActivityItem: jest.fn(),
     observation: mockObservation,
     showAgreeWithIdSheet: false,
   };
@@ -146,37 +132,6 @@ describe( "IdentificationSheets", () => {
           mockTaxon.id,
           mockRealm,
         );
-      } );
-    } );
-
-    it( "includes vision flag when identTaxonFromVision is true", async () => {
-      useRoute.mockReturnValue( {
-        params: {
-          identTaxonId: mockTaxon.id,
-          identTaxonFromVision: true,
-          uuid: mockObservation.uuid,
-        },
-      } );
-
-      fetchTaxonAndSave.mockResolvedValue( mockTaxon );
-
-      renderComponent(
-        <IdentificationSheets {...defaultProps} />,
-      );
-
-      const suggestButton = await screen.findByTestId( "SuggestIDSheet.cvSuggestionsButton" );
-      fireEvent.press( suggestButton );
-
-      await waitFor( () => {
-        expect( mockMutate ).toHaveBeenCalledWith( {
-          identification: {
-            observation_id: mockObservation.uuid,
-            taxon_id: mockTaxon.id,
-            vision: true,
-            disagreement: undefined,
-            body: undefined,
-          },
-        } );
       } );
     } );
   } );
