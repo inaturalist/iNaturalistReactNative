@@ -129,7 +129,7 @@
     "react-native-render-html": "^6.3.4",
     "react-native-restart": "^0.0.27",
     "react-native-safe-area-context": "^5.6.2",
-    "react-native-screens": "4.13.1",
+    "react-native-screens": "4.15.4",
     "react-native-sensitive-info": "^6.0.0-alpha.9",
     "react-native-share-menu": "github:inaturalist/react-native-share-menu#iNaturalistReactNative",
     "react-native-store-review": "^0.4.3",
