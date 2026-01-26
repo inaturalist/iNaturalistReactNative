@@ -1,4 +1,4 @@
-import iNatLogstashTransport from "api/log";
+import iNatLogstashTransport, { enhanceLoggerWithExtra } from "api/log";
 import RNFS from "react-native-fs";
 import {
   consoleTransport,
@@ -24,7 +24,7 @@ const sharedConfig = {
   },
 };
 
-const log = logger.createLogger( {
+const baseLog = logger.createLogger( {
   ...sharedConfig,
   transport: [
     consoleTransport,
@@ -32,6 +32,13 @@ const log = logger.createLogger( {
     iNatLogstashTransport,
   ],
 } );
+
+// given the general react-native-logs logger with debug(), warn(), etx,
+// add wrappers for debugWithExtra(), etc which provides more intentional
+// log interfaces for the iNatLogstash API `extra` proprty. `iNatLogstashTransport`
+// handles this extra data specially while other transports treat it as any other normal
+// log param.
+const log = enhanceLoggerWithExtra( baseLog );
 
 const logWithoutRemote = logger.createLogger( {
   ...sharedConfig,
