@@ -219,7 +219,7 @@
     "eslint-plugin-react-hooks": "^6.0.0-rc.1"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
