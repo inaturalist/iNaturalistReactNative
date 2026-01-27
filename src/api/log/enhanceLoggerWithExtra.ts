@@ -1,7 +1,7 @@
-// tl;dr: to support `extra`, we "wrap" certain input to react-native-logs and then "unwrap" it
-// when handling it in our iNat-specific log handler. lil janky.
-
 import { isObjectWithPrimitiveValues } from "sharedHelpers/runtimeTypeUtil";
+
+// tl;dr: to support `extra`, we "wrap" certain input to react-native-logs and then "unwrap" it
+// when handling it in our iNat-specific log handler
 
 // iNat's /log REST API supports an `extra` field for sending structured data
 // in addition to the log message.
