@@ -46,6 +46,12 @@ import MyObservationsSimple, {
 
 const { useRealm } = RealmContext;
 
+export enum ACTIVE_SHEET {
+  NONE = "NONE",
+  LOGIN = "LOGIN",
+  SORT = "SORT",
+}
+
 interface SyncOptions {
   unuploadedObsMissingBasicsIDs?: string[];
   skipUploads?: boolean;
@@ -114,7 +120,7 @@ const MyObservationsContainer = ( ): React.FC => {
     },
   } );
 
-  const [showLoginSheet, setShowLoginSheet] = useState( false );
+  const [openSheet, setOpenSheet] = useState<ACTIVE_SHEET>( ACTIVE_SHEET.NONE );
 
   const [speciesSortOptionId, setSpeciesSortOptionId]
     = useState<SpeciesSortOptionId>( "count_desc" );
@@ -137,7 +143,7 @@ const MyObservationsContainer = ( ): React.FC => {
 
   const confirmLoggedIn = useCallback( ( ) => {
     if ( !currentUser ) {
-      setShowLoginSheet( true );
+      setOpenSheet( ACTIVE_SHEET.LOGIN );
     }
     return currentUser;
   }, [currentUser] );
@@ -435,11 +441,11 @@ const MyObservationsContainer = ( ): React.FC => {
       onEndReached={fetchNextPage}
       onListLayout={restoreScrollOffset}
       onScroll={onScroll}
+      openSheet={openSheet}
       refetchTaxa={refetchTaxa}
       setActiveTab={setActiveTab}
-      setShowLoginSheet={setShowLoginSheet}
+      setOpenSheet={setOpenSheet}
       setSpeciesSortOptionId={setSpeciesSortOptionId}
-      showLoginSheet={showLoginSheet}
       showNoResults={showNoResults}
       speciesSortOptionId={speciesSortOptionId}
       taxa={taxa}

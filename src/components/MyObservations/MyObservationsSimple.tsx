@@ -21,7 +21,7 @@ import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
 import SortSheet from "components/SharedComponents/Sheets/SortSheet";
 import { View } from "components/styledComponents";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Alert } from "react-native";
 import Photo from "realmModels/Photo";
 import type {
@@ -36,6 +36,7 @@ import type { SpeciesSortOptionId } from "types/sorting";
 
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
+import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import SimpleErrorHeader from "./SimpleErrorHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
@@ -65,10 +66,10 @@ export interface Props {
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
+  openSheet: ACTIVE_SHEET;
   setActiveTab: ( newTab: string ) => void;
-  setShowLoginSheet: ( newValue: boolean ) => void;
+  setOpenSheet: ( value: ACTIVE_SHEET ) => void;
   setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SpeciesSortOptionId>>;
-  showLoginSheet: boolean;
   showNoResults: boolean;
   speciesSortOptionId: SpeciesSortOptionId;
   taxa?: SpeciesCount[];
@@ -108,10 +109,10 @@ const MyObservationsSimple = ( {
   onEndReached,
   onListLayout,
   onScroll,
+  openSheet,
   setActiveTab,
-  setShowLoginSheet,
+  setOpenSheet,
   setSpeciesSortOptionId,
-  showLoginSheet,
   showNoResults,
   speciesSortOptionId,
   taxa,
@@ -135,8 +136,6 @@ const MyObservationsSimple = ( {
     ...flashListStyle,
     paddingTop: 10,
   } ), [flashListStyle] );
-
-  const [showSortSheet, setShowSortSheet] = useState<boolean>( false );
 
   const activeItemType = activeTab === OBSERVATIONS_TAB
     ? "observations"
@@ -276,7 +275,7 @@ const MyObservationsSimple = ( {
     } else {
       setSpeciesSortOptionId( optionId );
     }
-    setShowSortSheet( false );
+    setOpenSheet( ACTIVE_SHEET.NONE );
   };
 
   const handlePivotCardGridItemPress = ( ) => {
@@ -351,7 +350,7 @@ const MyObservationsSimple = ( {
               updateObservationsView={toggleLayout}
             />
             {/* <SortButton
-              onPress={() => setShowSortSheet( true )}
+              onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
               accessibilityLabel={t( "Change-observations-sort-order" )}
             /> */}
           </>
@@ -381,24 +380,24 @@ const MyObservationsSimple = ( {
               ListFooterComponent={renderTaxaFooter}
             />
             <SortButton
-              onPress={() => setShowSortSheet( true )}
+              onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
               accessibilityLabel={t( "Change-species-sort-order" )}
             />
           </>
         )}
         { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
-      {showSortSheet && (
+      {openSheet === ACTIVE_SHEET.SORT && (
         <SortSheet
           itemType={activeItemType}
           selectedValue={activeItemType === "observations"
             ? "created_at_desc"
             : speciesSortOptionId}
           onConfirm={optionId => handleSortConfirm( optionId )}
-          onPressClose={() => setShowSortSheet( false )}
+          onPressClose={() => setOpenSheet( ACTIVE_SHEET.NONE )}
         />
       )}
-      {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
+      {openSheet === ACTIVE_SHEET.LOGIN && <LoginSheet setShowLoginSheet={setOpenSheet} />}
       {isDefaultMode && (
         <>
           {/* These four cards should show only in default mode */}
