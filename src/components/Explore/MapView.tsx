@@ -125,7 +125,7 @@ const MapView = ( {
         mapRef.current.animateToRegion( {
           ...nearbyRegion,
           latitude: nearbyRegion.latitude,
-          longitude: nearbyRegion.longitude
+          longitude: nearbyRegion.longitude,
         } );
       }
       return;
@@ -179,7 +179,7 @@ const MapView = ( {
         return {
           ...nearbyRegion,
           latitude: nearbyRegion.latitude,
-          longitude: nearbyRegion.longitude
+          longitude: nearbyRegion.longitude,
         };
       }
     }
