@@ -1,0 +1,3 @@
+UPDATED
+* Removed partially implemented dark mode
+* Maintenance and performance improvements
