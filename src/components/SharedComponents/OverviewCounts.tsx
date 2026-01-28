@@ -4,7 +4,6 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
-import type { PressableProps } from "react-native";
 import colors from "styles/tailwindColors";
 
 interface Counts {
@@ -17,9 +16,9 @@ interface Counts {
 
 interface Props {
   counts: Counts;
-  onObservationPressed: PressableProps["onPress"];
-  onSpeciesPressed: PressableProps["onPress"];
-  onMembersPressed: PressableProps["onPress"];
+  onObservationPressed: () => void;
+  onSpeciesPressed: () => void;
+  onMembersPressed?: () => void;
 }
 
 interface CountProps {
@@ -33,7 +32,7 @@ interface CountPressableProps {
   count: number;
   icon: string;
   label: string;
-  onPress?: PressableProps["onPress"];
+  onPress?: () => void;
 }
 
 const Count = ( {
