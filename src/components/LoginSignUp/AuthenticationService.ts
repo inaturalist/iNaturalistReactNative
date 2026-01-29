@@ -18,7 +18,8 @@ import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
 import RNRestart from "react-native-restart";
-import RNSInfo, { isSensitiveInfoError, SensitiveInfoError } from "react-native-sensitive-info";
+import type { SensitiveInfoError } from "react-native-sensitive-info";
+import RNSInfo, { isSensitiveInfoError } from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
@@ -98,7 +99,7 @@ async function getSensitiveItem( key: string, options = {} ) {
 async function setSensitiveItem( key: string, value: string, options = {} ) {
   const actualOptions = {
     ...options,
-    accessControl: "none" as const
+    accessControl: "none" as const,
   };
   try {
     const result = await RNSInfo.setItem( key, value, actualOptions );
@@ -109,7 +110,7 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
       const setItemError = e as SensitiveInfoError;
       if ( isDebugMode( ) ) {
         localLogger.info(
-          `RNSInfo.setItem error for ${key}, ${setItemError.code} ${setItemError.message}`
+          `RNSInfo.setItem error for ${key}, ${setItemError.code} ${setItemError.message}`,
         );
       }
     }
@@ -127,7 +128,7 @@ async function deleteSensitiveItem( key: string, options = {} ) {
       const deleteItemError = e as SensitiveInfoError;
       if ( isDebugMode() ) {
         localLogger.info(
-          `RNSInfo.deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`
+          `RNSInfo.deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`,
         );
       }
     }
