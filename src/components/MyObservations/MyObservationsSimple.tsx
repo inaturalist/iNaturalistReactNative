@@ -17,9 +17,12 @@ import {
   Tabs,
   ViewWrapper,
 } from "components/SharedComponents";
+import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
+import SortSheet from "components/SharedComponents/Sheets/SortSheet";
 import { View } from "components/styledComponents";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import { Alert } from "react-native";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
@@ -29,6 +32,7 @@ import type {
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
+import type { SpeciesSortOptionId } from "types/sorting";
 
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
@@ -53,6 +57,7 @@ export interface Props {
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
   listRef?: React.RefObject<FlashListRef<RealmObservation> | null>;
+  taxaListRef?: React.RefObject<FlashListRef<SpeciesCount> | null>;
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
@@ -62,8 +67,10 @@ export interface Props {
   onScroll?: ( ) => void;
   setActiveTab: ( newTab: string ) => void;
   setShowLoginSheet: ( newValue: boolean ) => void;
+  setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SpeciesSortOptionId>>;
   showLoginSheet: boolean;
   showNoResults: boolean;
+  speciesSortOptionId: SpeciesSortOptionId;
   taxa?: SpeciesCount[];
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
@@ -94,6 +101,7 @@ const MyObservationsSimple = ( {
   layout,
   listRef,
   numTotalObservations,
+  taxaListRef,
   numTotalTaxa,
   numUnuploadedObservations,
   observations,
@@ -102,8 +110,10 @@ const MyObservationsSimple = ( {
   onScroll,
   setActiveTab,
   setShowLoginSheet,
+  setSpeciesSortOptionId,
   showLoginSheet,
   showNoResults,
+  speciesSortOptionId,
   taxa,
   toggleLayout,
   fetchMoreTaxa,
@@ -125,6 +135,12 @@ const MyObservationsSimple = ( {
     ...flashListStyle,
     paddingTop: 10,
   } ), [flashListStyle] );
+
+  const [showSortSheet, setShowSortSheet] = useState<boolean>( false );
+
+  const activeItemType = activeTab === OBSERVATIONS_TAB
+    ? "observations"
+    : "taxa";
 
   const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
     const taxonId = speciesCount.taxon.id;
@@ -246,6 +262,23 @@ const MyObservationsSimple = ( {
     return null;
   };
 
+  function showOfflineAlert( t: ( _: string ) => string ) {
+    Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
+  }
+
+  const handleSortConfirm = ( optionId: string ) => {
+    if ( currentUser && !isConnected ) {
+      showOfflineAlert( t );
+      return;
+    }
+    if ( activeItemType === "observations" ) {
+      // TODO: set observations sort id
+    } else {
+      setSpeciesSortOptionId( optionId );
+    }
+    setShowSortSheet( false );
+  };
+
   const handlePivotCardGridItemPress = ( ) => {
     const { uuid } = observations[0];
     navigation.navigate( {
@@ -317,33 +350,54 @@ const MyObservationsSimple = ( {
               layout={layout}
               updateObservationsView={toggleLayout}
             />
+            {/* <SortButton
+              onPress={() => setShowSortSheet( true )}
+              accessibilityLabel={t( "Change-observations-sort-order" )}
+            /> */}
           </>
         ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
-          <CustomFlashList
-            canFetch={!!currentUser}
-            contentContainerStyle={taxaFlashListStyle}
-            data={taxa}
-            hideLoadingWheel
-            isConnected={isConnected}
-            keyExtractor={(
-              item: SpeciesCount,
-            ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
-            layout="grid"
-            numColumns={numColumns}
-            renderItem={renderTaxaItem}
-            totalResults={numTotalTaxa}
-            onEndReached={
-              currentUser
-                ? fetchMoreTaxa
-                : undefined
-            }
-            refreshing={isFetchingTaxa}
-            ListFooterComponent={renderTaxaFooter}
-          />
+          <>
+            <CustomFlashList
+              ref={taxaListRef}
+              canFetch={!!currentUser}
+              contentContainerStyle={taxaFlashListStyle}
+              data={taxa}
+              hideLoadingWheel
+              isConnected={isConnected}
+              keyExtractor={(
+                item: SpeciesCount,
+              ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
+              layout="grid"
+              numColumns={numColumns}
+              renderItem={renderTaxaItem}
+              totalResults={numTotalTaxa}
+              onEndReached={
+                currentUser
+                  ? fetchMoreTaxa
+                  : undefined
+              }
+              refreshing={isFetchingTaxa}
+              ListFooterComponent={renderTaxaFooter}
+            />
+            <SortButton
+              onPress={() => setShowSortSheet( true )}
+              accessibilityLabel={t( "Change-species-sort-order" )}
+            />
+          </>
         )}
         { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
+      {showSortSheet && (
+        <SortSheet
+          itemType={activeItemType}
+          selectedValue={activeItemType === "observations"
+            ? "created_at_desc"
+            : speciesSortOptionId}
+          onConfirm={optionId => handleSortConfirm( optionId )}
+          onPressClose={() => setShowSortSheet( false )}
+        />
+      )}
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
       {isDefaultMode && (
         <>
