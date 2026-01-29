@@ -7,6 +7,8 @@ import type { transportFunctionType } from "react-native-logs";
 import { getInstallID } from "sharedHelpers/installData";
 import { isObject, isObjectWithPrimitiveValues } from "sharedHelpers/runtimeTypeUtil";
 
+import { extraSentinelKey } from "./enhanceLoggerWithExtra";
+
 const API_HOST: string
     = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
 
@@ -29,9 +31,9 @@ function isError( value: unknown ): value is { message?: string; stack?: string 
   return false;
 }
 
-// if we have anything that looks like:
-// [someObj, 'asdfasdf', 3, { extra: { id: 1, ... } }]
-// where the _last_ rest param is an obj w/ exaclty one `extra` property w/ primitive fields,
+// If we have anything that looks like:
+// [someObj, 'asdfasdf', 3, { [extraSentinelKey]: { id: 1, ... } }]
+// where the _last_ rest param is an obj w/ exactly this sentinel property w/ primitive fields,
 // we infer that last item as intended for the special `extra` API field
 // we return that separately and strip it from the "normal" rest params for later handling
 function extractExtra( rawMsg: unknown ) {
@@ -50,12 +52,12 @@ function extractExtra( rawMsg: unknown ) {
     !isObject( extraWrapperCandidate )
     // limit to _exactly_ just this property to minimize accidentally classifying `extra`
     || Object.keys( extraWrapperCandidate ).length !== 1
-    || !( "extra" in extraWrapperCandidate )
+    || !( extraSentinelKey in extraWrapperCandidate )
   ) {
     return nonExtraResult;
   }
   // make sure our extra is actually valid for the API
-  const { extra: extraCandidate } = extraWrapperCandidate;
+  const extraCandidate = extraWrapperCandidate[extraSentinelKey];
   if ( !isObjectWithPrimitiveValues( extraCandidate ) ) {
     console.warn( "[ERROR log.ts] `extra` must be a non-nested object with primitive values" );
     return nonExtraResult;
@@ -149,5 +151,7 @@ const iNatLogstashTransport: transportFunctionType<iNatLogstashTransportOptions>
     throw postLogError;
   }
 };
+
+export { default as enhanceLoggerWithExtra } from "./enhanceLoggerWithExtra";
 
 export default iNatLogstashTransport;
