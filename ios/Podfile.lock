@@ -1910,7 +1910,7 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
     - SocketRocket
-  - react-native-cameraroll (7.8.3):
+  - react-native-cameraroll (7.10.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -3839,7 +3839,7 @@ SPEC CHECKSUMS:
   React-logger: a913317214a26565cd4c045347edf1bcacb80a3f
   React-Mapbuffer: 017336879e2e0fb7537bbc08c24f34e2384c9260
   React-microtasksnativemodule: 63ee6730cec233feab9cdcc0c100dc28a12e4165
-  react-native-cameraroll: 578caa294bd61b165ffeb90c5ace8d81fc8b842f
+  react-native-cameraroll: ae31ba7ee17d31c5ee05d7bb248742e3af482783
   react-native-config: ea75335a7cca1d3326de1da384227e580a7c082e
   react-native-exif-reader: 0a3beb46ef9f33e4dda5f50795a01b6b510c1459
   react-native-geocoder-reborn: a3c3d8460910309e750609c373b6887ec6f67a8f
