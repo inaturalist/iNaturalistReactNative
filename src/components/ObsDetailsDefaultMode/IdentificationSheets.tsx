@@ -67,7 +67,7 @@ type IdentAction =
   | { type: "DISCARD_ID" }
   | { type: "HIDE_EDIT_IDENT_BODY_SHEET" }
   | { type: "HIDE_POTENTIAL_DISAGREEMENT_SHEET" }
-  | { type: "SET_NEW_IDENTIFICATION"; taxon?: Taxon; body?: string; vision?: boolean }
+  | { type: "SET_NEW_IDENTIFICATION"; taxon: Taxon; body?: string; vision?: boolean }
   | { type: "SHOW_EDIT_IDENT_BODY_SHEET" }
   | { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" }
   | { type: "SUBMIT_IDENTIFICATION" };
@@ -94,6 +94,7 @@ const SHOW_POTENTIAL_DISAGREEMENT_SHEET = "SHOW_POTENTIAL_DISAGREEMENT_SHEET";
 const SUBMIT_IDENTIFICATION = "SUBMIT_IDENTIFICATION";
 
 export const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
+  console.log( "identReducer action:", action, state );
   switch ( action.type ) {
     case SHOW_POTENTIAL_DISAGREEMENT_SHEET:
       return {
@@ -140,6 +141,7 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
         ...state,
         showPotentialDisagreementSheet: false,
         showSuggestIdSheet: false,
+        identBodySheetShown: false,
         newIdentification: null,
         identTaxon: null,
       };
@@ -271,57 +273,75 @@ const IdentificationSheets: React.FC<Props> = ( {
         && observationTaxon.ancestor_ids.includes( identTaxon?.id );
   }, [identTaxon?.id, observation] );
 
-  const setNewIdentification = useCallback( ( ) => {
-    dispatch( {
-      type: SET_NEW_IDENTIFICATION,
-      taxon: identTaxon,
-      vision: identTaxonFromVision,
-    } );
-  }, [identTaxon, identTaxonFromVision] );
-
-  const hideIdentificationSheets = !identTaxon
-    || showPotentialDisagreementSheet
-    || showSuggestIdSheet
-    || identBodySheetShown;
-
-  useEffect( () => {
-    if ( hideIdentificationSheets ) return;
-    setNewIdentification( );
-    if ( hasPotentialDisagreement( ) ) {
-      dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
-    } else {
-      dispatch( { type: CONFIRM_ID } );
-    }
-  }, [
-    hideIdentificationSheets,
-    hasPotentialDisagreement,
-    observation,
-    setNewIdentification,
-  ] );
-
-  // Translates identification-related params to local state
+  // Translates identification-related params to local state and shows appropriate sheet
   useEffect( ( ) => {
-    async function fetchAndSet() {
+    let cancelled = false;
+
+    async function handleIdentificationNavigation() {
+      if ( !identTaxonId ) {
+        dispatch( { type: CLEAR_SUGGESTED_TAXON } );
+        return;
+      }
+
+      // Fetch the taxon if needed
       let taxon = realm.objectForPrimaryKey( "Taxon", identTaxonId );
       if ( !taxon ) {
         taxon = await fetchTaxonAndSave( identTaxonId, realm );
       }
+
+      if ( cancelled ) return;
+
+      // Set the taxon in state
       dispatch( {
         type: SET_IDENT_TAXON,
         taxon,
       } );
+
+      // Set up the new identification
+      dispatch( {
+        type: SET_NEW_IDENTIFICATION,
+        taxon,
+        vision: identTaxonFromVision,
+      } );
+
+      // Determine if this would be a potential disagreement
+      // based on disagreement code in iNat web
+      // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
+      let observationTaxon = observation?.taxon;
+
+      const doesNotPreferCommunityTaxon = observation.prefers_community_taxon === false
+        || ( observation.user?.prefers_community_taxa === false
+        && observation.prefers_community_taxon === null );
+
+      if ( doesNotPreferCommunityTaxon ) {
+        observationTaxon = observation?.community_taxon || observation.taxon;
+      }
+
+      const isDisagreement = observationTaxon
+        && taxon.id !== observationTaxon.id
+        && observationTaxon.ancestor_ids.includes( taxon.id );
+
+      // Show the appropriate sheet
+      if ( isDisagreement ) {
+        dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
+      } else {
+        dispatch( { type: CONFIRM_ID } );
+      }
     }
-    if ( identTaxonId ) {
-      fetchAndSet();
-    } else {
-      dispatch( { type: CLEAR_SUGGESTED_TAXON } );
-    }
+
+    handleIdentificationNavigation();
+
+    return () => {
+      cancelled = true;
+    };
   }, [
     // This should change with every new navigation event back to ObsDetails,
     // so even if identTaxonId doesn't change, e.g. you add an ID of taxon X,
     // cancel, then add another ID of taxon X, we still update the identTaxon
     identAt,
     identTaxonId,
+    identTaxonFromVision,
+    observation,
     realm,
   ] );
 
