@@ -100,7 +100,7 @@
     "react-native-audio-recorder-player": "^3.6.7",
     "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-circular-progress-indicator": "^4.4.2",
-    "react-native-config": "^1.5.3",
+    "react-native-config": "^1.6.1",
     "react-native-device-info": "^14.0.4",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-event-listeners": "^1.0.7",
