@@ -41,8 +41,6 @@ interface Props {
   testID?: string;
   containerClass?: string;
   scrollEnabled?: boolean;
-  // Use this prop for side effects of tapping backdrop or close icon
-  onBackgroundOrCloseIconPress?: ( ) => void;
 }
 
 const StandardBottomSheet = ( {
@@ -58,7 +56,6 @@ const StandardBottomSheet = ( {
   containerClass,
   testID,
   scrollEnabled = true,
-  onBackgroundOrCloseIconPress,
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -67,11 +64,6 @@ const StandardBottomSheet = ( {
   const { t } = useTranslation( );
   const sheetRef = useRef<BottomSheet>( null );
   const insets = useSafeAreaInsets( );
-
-  const handleCloseFromUserInput = useCallback( ( ) => {
-    if ( onBackgroundOrCloseIconPress ) onBackgroundOrCloseIconPress( );
-    if ( onPressClose ) onPressClose( );
-  }, [onBackgroundOrCloseIconPress, onPressClose] );
 
   const handleClose = useCallback( ( ) => {
     if ( onPressClose ) onPressClose( );
@@ -86,7 +78,7 @@ const StandardBottomSheet = ( {
   const renderBackdrop = props => (
     <BottomSheetStandardBackdrop
       props={props}
-      onPress={handleCloseFromUserInput}
+      onPress={handleClose}
     />
   );
 
@@ -155,7 +147,7 @@ const StandardBottomSheet = ( {
           {!hideCloseButton && (
             <INatIconButton
               icon="close"
-              onPress={handleCloseFromUserInput}
+              onPress={handleClose}
               size={19}
               className="absolute top-3.5 right-3"
               accessibilityState={{ disabled: hidden }}

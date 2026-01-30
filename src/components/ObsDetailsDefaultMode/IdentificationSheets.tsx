@@ -59,14 +59,12 @@ interface IdentState {
   newIdentification: Identification | null;
   showPotentialDisagreementSheet: boolean;
   showSuggestIdSheet: boolean;
-  identTaxon: Taxon | null;
+  identTaxon?: Taxon | null;
 }
 
 type IdentAction =
-  | { type: "SET_IDENT_TAXON"; taxon: Taxon }
   | { type: "CLEAR_SUGGESTED_TAXON" }
   | { type: "CONFIRM_ID" }
-  | { type: "DISCARD_ID" }
   | { type: "HIDE_EDIT_IDENT_BODY_SHEET" }
   | { type: "HIDE_POTENTIAL_DISAGREEMENT_SHEET" }
   | { type: "SET_NEW_IDENTIFICATION"; taxon?: Taxon; body?: string; vision?: boolean }
@@ -84,10 +82,8 @@ const initialIdentState: IdentState = {
   identTaxon: null,
 };
 
-const SET_IDENT_TAXON = "SET_IDENT_TAXON";
 const CLEAR_SUGGESTED_TAXON = "CLEAR_SUGGESTED_TAXON";
 const CONFIRM_ID = "CONFIRM_ID";
-const DISCARD_ID = "DISCARD_ID";
 const HIDE_EDIT_IDENT_BODY_SHEET = "HIDE_EDIT_IDENT_BODY_SHEET";
 const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
 const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
@@ -110,16 +106,10 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
           body: action.body,
           vision: action.vision,
         },
+        identTaxon: action.taxon,
       };
     case CONFIRM_ID:
       return { ...state, showSuggestIdSheet: true };
-    case DISCARD_ID:
-      return {
-        ...state,
-        showSuggestIdSheet: false,
-        identTaxon: null,
-        newIdentification: null,
-      };
     case HIDE_POTENTIAL_DISAGREEMENT_SHEET:
       return {
         ...state,
@@ -146,8 +136,6 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
         newIdentification: null,
         identTaxon: null,
       };
-    case SET_IDENT_TAXON:
-      return { ...state, identTaxon: action.taxon };
     case CLEAR_SUGGESTED_TAXON:
       return { ...state, identTaxon: null };
     default:
@@ -246,7 +234,7 @@ const IdentificationSheets: React.FC<Props> = ( {
           dispatch( { type: CLEAR_SUGGESTED_TAXON } );
         }
       },
-      onError: e => {
+      onError: ( e: Error ) => {
         let error = null;
         if ( e ) {
           error = t( "Couldnt-create-identification-error", { error: e.message } );
@@ -264,7 +252,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     },
   );
 
-  const hasPotentialDisagreement = useCallback( ( ) => {
+  const hasPotentialDisagreement = useCallback( ( taxon: Taxon | null | undefined ) => {
     // based on disagreement code in iNat web
     // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
     let observationTaxon = observation?.taxon;
@@ -277,9 +265,9 @@ const IdentificationSheets: React.FC<Props> = ( {
       observationTaxon = observation?.community_taxon || observation.taxon;
     }
     return observationTaxon
-        && identTaxon?.id !== observationTaxon.id
-        && observationTaxon.ancestor_ids.includes( identTaxon?.id );
-  }, [identTaxon?.id, observation] );
+        && taxon?.id !== observationTaxon.id
+        && observationTaxon.ancestor_ids.includes( taxon?.id );
+  }, [observation] );
 
   // Translates identification-related params to local state and shows appropriate sheet
   useEffect( ( ) => {
@@ -299,12 +287,6 @@ const IdentificationSheets: React.FC<Props> = ( {
 
       if ( cancelled ) return;
 
-      // Set the taxon in state
-      dispatch( {
-        type: SET_IDENT_TAXON,
-        taxon,
-      } );
-
       // Set up the new identification
       dispatch( {
         type: SET_NEW_IDENTIFICATION,
@@ -312,24 +294,8 @@ const IdentificationSheets: React.FC<Props> = ( {
         vision: identTaxonFromVision,
       } );
 
-      // Determine if this would be a potential disagreement
-      // based on disagreement code in iNat web
-      // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
-      let observationTaxon = observation?.taxon;
+      const isDisagreement = hasPotentialDisagreement( taxon );
 
-      const doesNotPreferCommunityTaxon = observation.prefers_community_taxon === false
-        || ( observation.user?.prefers_community_taxa === false
-        && observation.prefers_community_taxon === null );
-
-      if ( doesNotPreferCommunityTaxon ) {
-        observationTaxon = observation?.community_taxon || observation.taxon;
-      }
-
-      const isDisagreement = observationTaxon
-        && taxon.id !== observationTaxon.id
-        && observationTaxon.ancestor_ids.includes( taxon.id );
-
-      // Show the appropriate sheet
       if ( isDisagreement ) {
         dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
       } else {
@@ -349,7 +315,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     identAt,
     identTaxonId,
     identTaxonFromVision,
-    observation,
+    hasPotentialDisagreement,
     realm,
   ] );
 
@@ -397,7 +363,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   }, [newIdentification] );
 
   const onSuggestId = useCallback( ( ) => {
-    if ( hasPotentialDisagreement( ) ) {
+    if ( hasPotentialDisagreement( identTaxon ) ) {
       dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
     } else {
       doSuggestId();
@@ -405,21 +371,18 @@ const IdentificationSheets: React.FC<Props> = ( {
   }, [
     doSuggestId,
     hasPotentialDisagreement,
+    identTaxon,
   ] );
 
   const onPotentialDisagreePressed = useCallback( ( potentialDisagree?: boolean ) => {
     doSuggestId( potentialDisagree );
   }, [doSuggestId] );
 
-  const suggestIdSheetDiscardChanges = useCallback( ( ) => {
-    dispatch( { type: DISCARD_ID } );
-  }, [] );
-
   const createCommentMutation = useAuthenticatedMutation(
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
       onSuccess: data => handleCommentMutationSuccess( data ),
-      onError: e => {
+      onError: ( e: Error ) => {
         let error = null;
         if ( e ) {
           error = t( "Couldnt-create-comment", { error: e.message } );
@@ -472,6 +435,7 @@ const IdentificationSheets: React.FC<Props> = ( {
           confirm={confirmCommentFromCommentSheet}
         />
       )}
+      {/* Sheet for adding comment w/ ID */}
       {identBodySheetShown && (
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
@@ -486,7 +450,6 @@ const IdentificationSheets: React.FC<Props> = ( {
         <SuggestIDSheet
           editIdentBody={editIdentBody}
           hidden={identBodySheetShown}
-          onBackgroundOrCloseIconPress={suggestIdSheetDiscardChanges}
           onSuggestId={onSuggestId}
           identification={newIdentification}
         />
