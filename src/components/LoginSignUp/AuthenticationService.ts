@@ -182,10 +182,8 @@ const isLoggedIn = async (): Promise<boolean> => {
 
 /**
  * Returns the logged-in username
- *
- * @returns {Promise<boolean>}
  */
-const getUsername = async (): Promise<string> => getSensitiveItem( "username" );
+const getUsername = async () => getSensitiveItem( "username" );
 
 /**
  * Signs out the user
