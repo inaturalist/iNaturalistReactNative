@@ -10,6 +10,8 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 
+import org.inaturalist.iNaturalistMobile.EmailIntentPackage;
+
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
@@ -18,6 +20,7 @@ class MainApplication : Application(), ReactApplication {
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               // add(MyReactNativePackage())
+              add(EmailIntentPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
