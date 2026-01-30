@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { ViewStyle } from "react-native";
+import type { SupportedAnimation } from "react-native-modal";
 import RNModal from "react-native-modal";
 
 // repurposed from Seek: https://github.com/inaturalist/SeekReactNative/blob/main/components/UIComponents/Modals/Modal.js
@@ -12,8 +13,8 @@ interface Props {
   fullScreen?: boolean;
   onModalHide?: () => void;
   style?: ViewStyle;
-  animationIn?: string;
-  animationOut?: string;
+  animationIn?: SupportedAnimation;
+  animationOut?: SupportedAnimation;
   disableSwipeDirection?: boolean;
   noAnimation?: boolean;
 }
@@ -53,7 +54,7 @@ const Modal = ( {
       onBackdropPress={closeModal}
       onSwipeComplete={closeModal}
       // Always close the modal when Android back button pressed
-      onRequestClose={closeModal}
+      onBackButtonPress={closeModal}
       swipeDirection={swipeDirection}
       useNativeDriverForBackdrop
       useNativeDriver
