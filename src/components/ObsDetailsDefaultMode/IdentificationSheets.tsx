@@ -1,4 +1,6 @@
-import { useRoute } from "@react-navigation/native";
+import type { ParamListBase } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import AgreeWithIDSheet from "components/ObsDetailsSharedComponents/Sheets/AgreeWithIDSheet";
@@ -67,7 +69,7 @@ type IdentAction =
   | { type: "DISCARD_ID" }
   | { type: "HIDE_EDIT_IDENT_BODY_SHEET" }
   | { type: "HIDE_POTENTIAL_DISAGREEMENT_SHEET" }
-  | { type: "SET_NEW_IDENTIFICATION"; taxon: Taxon; body?: string; vision?: boolean }
+  | { type: "SET_NEW_IDENTIFICATION"; taxon?: Taxon; body?: string; vision?: boolean }
   | { type: "SHOW_EDIT_IDENT_BODY_SHEET" }
   | { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" }
   | { type: "SUBMIT_IDENTIFICATION" };
@@ -94,7 +96,6 @@ const SHOW_POTENTIAL_DISAGREEMENT_SHEET = "SHOW_POTENTIAL_DISAGREEMENT_SHEET";
 const SUBMIT_IDENTIFICATION = "SUBMIT_IDENTIFICATION";
 
 export const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
-  console.log( "identReducer action:", action, state );
   switch ( action.type ) {
     case SHOW_POTENTIAL_DISAGREEMENT_SHEET:
       return {
@@ -189,6 +190,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   showAgreeWithIdSheet,
 }: Props ) => {
   const { params } = useRoute();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const routeParams = params as RouteParams;
   const {
     identAt,
@@ -252,6 +254,12 @@ const IdentificationSheets: React.FC<Props> = ( {
           error = t( "Couldnt-create-identification-unknown-error" );
         }
         showErrorAlert( error );
+      },
+      onSettled: () => {
+        // Clear params gotten via useRoute to prevent re-showing sheets
+        navigation.setParams(
+          { identAt: undefined, identTaxonId: undefined, identTaxonFromVision: undefined },
+        );
       },
     },
   );
@@ -361,7 +369,9 @@ const IdentificationSheets: React.FC<Props> = ( {
     dispatch( { type: HIDE_POTENTIAL_DISAGREEMENT_SHEET } );
   }, [] );
 
-  const doSuggestId = useCallback( ( potentialDisagree?: boolean, comment?: string ) => {
+  const doSuggestId = useCallback( ( potentialDisagree?: boolean ) => {
+    dispatch( { type: SUBMIT_IDENTIFICATION } );
+
     if ( !newIdentification?.taxon ) {
       throw new Error( "Cannot create an identification without a taxon" );
     }
@@ -371,23 +381,25 @@ const IdentificationSheets: React.FC<Props> = ( {
       taxon_id: newIdentification.taxon.id,
       vision: newIdentification.vision,
       disagreement: potentialDisagree,
-      body: comment,
+      body: newIdentification.body,
     };
 
     loadActivityItem( );
     createIdentificationMutation.mutate( { identification: idParams } );
   }, [createIdentificationMutation, newIdentification, uuid, loadActivityItem] );
 
-  const onSuggestIdWithComment = useCallback( ( body: string ) => {
-    dispatch( { type: SUBMIT_IDENTIFICATION } );
-    doSuggestId( undefined, body );
-  }, [doSuggestId] );
+  const onChangeIdentBody = useCallback( ( body: string ) => {
+    dispatch( {
+      type: SET_NEW_IDENTIFICATION,
+      taxon: newIdentification?.taxon,
+      body,
+    } );
+  }, [newIdentification] );
 
   const onSuggestId = useCallback( ( ) => {
     if ( hasPotentialDisagreement( ) ) {
       dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
     } else {
-      dispatch( { type: SUBMIT_IDENTIFICATION } );
       doSuggestId();
     }
   }, [
@@ -396,7 +408,6 @@ const IdentificationSheets: React.FC<Props> = ( {
   ] );
 
   const onPotentialDisagreePressed = useCallback( ( potentialDisagree?: boolean ) => {
-    dispatch( { type: SUBMIT_IDENTIFICATION } );
     doSuggestId( potentialDisagree );
   }, [doSuggestId] );
 
@@ -468,7 +479,7 @@ const IdentificationSheets: React.FC<Props> = ( {
           headerText={addCommentHeaderText}
           textInputStyle={textInputStyle}
           initialInput={newIdentification?.body}
-          confirm={onSuggestIdWithComment}
+          confirm={onChangeIdentBody}
         />
       )}
       {showSuggestIdSheet && (
