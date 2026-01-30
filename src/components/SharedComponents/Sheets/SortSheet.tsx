@@ -2,39 +2,40 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 import type { SortItemType } from "types/sorting";
 
+import { OBSERVATION_SORT_BY, SPECIES_SORT_BY } from "../../../types/sorting";
 import RadioButtonSheet from "./RadioButtonSheet";
 
 const getObservationSortOptions = ( t: ( key: string ) => string ) => ( {
-  created_at_desc: {
-    value: "created_at_desc",
+  [OBSERVATION_SORT_BY.CREATED_AT_DESC]: {
+    value: OBSERVATION_SORT_BY.CREATED_AT_DESC,
     label: t( "Date-Added-Newest-Default" ),
     text: t( "Observations-added-recently-appear-first" ),
   },
-  created_at_asc: {
-    value: "created_at_asc",
+  [OBSERVATION_SORT_BY.CREATED_AT_ASC]: {
+    value: OBSERVATION_SORT_BY.CREATED_AT_ASC,
     label: t( "Date-Added-Oldest" ),
     text: t( "Observations-added-least-recently-appear-first" ),
   },
-  observed_at_desc: {
-    value: "observed_at_desc",
+  [OBSERVATION_SORT_BY.OBSERVED_AT_DESC]: {
+    value: OBSERVATION_SORT_BY.OBSERVED_AT_DESC,
     label: t( "Date-Observed-Newest" ),
     text: t( "Observations-with-the-most-recent-date-appear-first" ),
   },
-  observed_at_asc: {
-    value: "observed_at_asc",
+  [OBSERVATION_SORT_BY.OBSERVED_AT_ASC]: {
+    value: OBSERVATION_SORT_BY.OBSERVED_AT_ASC,
     label: t( "Date-Observed-Oldest" ),
     text: t( "Observations-with-the-oldest-date-appear-first" ),
   },
 } as const );
 
 const getTaxaSortOptions = ( t: ( key: string ) => string ) => ( {
-  count_desc: {
-    value: "count_desc",
+  [SPECIES_SORT_BY.COUNT_DESC]: {
+    value: SPECIES_SORT_BY.COUNT_DESC,
     label: t( "Most-Observed-Default" ),
     text: t( "Species-with-the-most-observations-appear-first" ),
   },
-  count_asc: {
-    value: "count_asc",
+  [SPECIES_SORT_BY.COUNT_ASC]: {
+    value: SPECIES_SORT_BY.COUNT_ASC,
     label: t( "Least-Observed" ),
     text: t( "Species-with-the-least-observations-appear-first" ),
   },
@@ -42,7 +43,7 @@ const getTaxaSortOptions = ( t: ( key: string ) => string ) => ( {
 
 interface Props {
   itemType: SortItemType;
-  selectedValue: string;
+  selectedValue: SPECIES_SORT_BY;
   onConfirm: ( sortBy: string ) => void;
   onPressClose: () => void;
 }

@@ -32,8 +32,9 @@ import type {
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
-import type { SpeciesSortOptionId } from "types/sorting";
 
+import type { SPECIES_SORT_BY } from "../../types/sorting";
+import { OBSERVATION_SORT_BY } from "../../types/sorting";
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
@@ -69,9 +70,9 @@ export interface Props {
   openSheet: ACTIVE_SHEET;
   setActiveTab: ( newTab: string ) => void;
   setOpenSheet: ( value: ACTIVE_SHEET ) => void;
-  setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SpeciesSortOptionId>>;
+  setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SPECIES_SORT_BY>>;
   showNoResults: boolean;
-  speciesSortOptionId: SpeciesSortOptionId;
+  speciesSortOptionId: SPECIES_SORT_BY;
   taxa?: SpeciesCount[];
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
@@ -265,7 +266,7 @@ const MyObservationsSimple = ( {
     Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
   }
 
-  const handleSortConfirm = ( optionId: string ) => {
+  const handleSortConfirm = ( optionId: SPECIES_SORT_BY ) => {
     if ( currentUser && !isConnected ) {
       showOfflineAlert( t );
       return;
@@ -391,7 +392,7 @@ const MyObservationsSimple = ( {
         <SortSheet
           itemType={activeItemType}
           selectedValue={activeItemType === "observations"
-            ? "created_at_desc"
+            ? OBSERVATION_SORT_BY.CREATED_AT_DESC
             : speciesSortOptionId}
           onConfirm={optionId => handleSortConfirm( optionId )}
           onPressClose={() => setOpenSheet( ACTIVE_SHEET.NONE )}

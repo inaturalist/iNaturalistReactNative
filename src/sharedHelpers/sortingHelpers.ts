@@ -1,32 +1,13 @@
 import type {
-  ObservationSort, ObservationSortOptionId, SpeciesCount, SpeciesSort, SpeciesSortOptionId,
+  SpeciesCount,
+  SpeciesSort,
 } from "types/sorting";
 
-export const OBSERVATION_SORT_MAP: Record<
-  ObservationSortOptionId,
-  ObservationSort
-> = {
-  created_at_desc: {
-    by: "created_at",
-    direction: "desc",
-  },
-  created_at_asc: {
-    by: "created_at",
-    direction: "asc",
-  },
-  observed_at_desc: {
-    by: "observed_at",
-    direction: "desc",
-  },
-  observed_at_asc: {
-    by: "observed_at",
-    direction: "asc",
-  },
-};
+import { SPECIES_SORT_BY } from "../types/sorting";
 
-export const SPECIES_SORT_MAP: Record<SpeciesSortOptionId, SpeciesSort> = {
-  count_desc: { by: "count", direction: "desc" },
-  count_asc: { by: "count", direction: "asc" },
+const SPECIES_SORT_MAP: Record<SPECIES_SORT_BY, SpeciesSort> = {
+  [SPECIES_SORT_BY.COUNT_DESC]: { by: "count", direction: "desc" },
+  [SPECIES_SORT_BY.COUNT_ASC]: { by: "count", direction: "asc" },
 };
 
 /**
@@ -35,7 +16,7 @@ export const SPECIES_SORT_MAP: Record<SpeciesSortOptionId, SpeciesSort> = {
  * @param sortOptionId: the selected sort option
  */
 export function mapSpeciesSortToAPIParams(
-  sortOptionId: SpeciesSortOptionId,
+  sortOptionId: SPECIES_SORT_BY,
 ): { order_by?: string; order?: string } | null {
   const sortConfig = SPECIES_SORT_MAP[sortOptionId];
   if ( !sortConfig ) {
@@ -60,7 +41,7 @@ export function mapSpeciesSortToAPIParams(
  */
 export function sortSpeciesCounts<T extends SpeciesCount>(
   speciesCounts: T[],
-  sortOptionId: SpeciesSortOptionId,
+  sortOptionId: SPECIES_SORT_BY,
 ): T[] {
   const sortConfig = SPECIES_SORT_MAP[sortOptionId];
   if ( !sortConfig ) {

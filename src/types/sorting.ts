@@ -22,12 +22,14 @@ export interface SpeciesCount {
   taxon: RealmTaxon;
 }
 
-export type ObservationSortOptionId =
-  | "created_at_desc"
-  | "created_at_asc"
-  | "observed_at_desc"
-  | "observed_at_asc"
+export enum OBSERVATION_SORT_BY {
+  CREATED_AT_DESC = "CREATED_AT_DESC",
+  CREATED_AT_ASC = "CREATED_AT_ASC",
+  OBSERVED_AT_DESC = "OBSERVED_AT_DESC",
+  OBSERVED_AT_ASC = "OBSERVED_AT_ASC",
+}
 
-export type SpeciesSortOptionId =
-  | "count_desc"
-  | "count_asc"
+export enum SPECIES_SORT_BY {
+  COUNT_DESC = "COUNT_DESC",
+  COUNT_ASC = "COUNT_ASC",
+}

@@ -33,8 +33,9 @@ import {
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
-import type { SpeciesCount, SpeciesSortOptionId } from "types/sorting";
+import type { SpeciesCount } from "types/sorting";
 
+import { SPECIES_SORT_BY } from "../../types/sorting";
 import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
@@ -123,7 +124,7 @@ const MyObservationsContainer = ( ): React.FC => {
   const [openSheet, setOpenSheet] = useState<ACTIVE_SHEET>( ACTIVE_SHEET.NONE );
 
   const [speciesSortOptionId, setSpeciesSortOptionId]
-    = useState<SpeciesSortOptionId>( "count_desc" );
+    = useState<SPECIES_SORT_BY>( SPECIES_SORT_BY.COUNT_DESC );
 
   const toggleLayout = ( ) => {
     writeLayoutToStorage( layout === "grid"
