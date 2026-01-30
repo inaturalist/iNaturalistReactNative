@@ -7,7 +7,9 @@ import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
-  useEffect, useMemo, useRef,
+  useEffect,
+  useMemo,
+  useRef,
   useState,
 } from "react";
 import { Alert } from "react-native";
@@ -390,20 +392,6 @@ const MyObservationsContainer = ( ): React.FC => {
     localObservedSpeciesCount,
     speciesSortOptionId,
   ] );
-
-  useEffect( () => {
-    if ( activeTab === TAXA_TAB ) {
-      // Scroll to top
-      if ( taxaListRef.current ) {
-        taxaListRef.current.scrollToOffset( { offset: 0, animated: true } );
-      }
-
-      // Refetch data with new sort params for logged-in users
-      if ( currentUser ) {
-        refetchTaxa( );
-      }
-    }
-  }, [speciesSortOptionId, activeTab, currentUser, refetchTaxa] );
 
   if ( !layout ) { return null; }
 

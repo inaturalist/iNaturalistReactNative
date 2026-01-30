@@ -282,6 +282,14 @@ const MyObservationsSimple = ( {
       // TODO: set observations sort id
     } else {
       setSpeciesSortOptionId( optionId );
+
+      // scroll to the top of the newly sorted list
+      // the timeout ensures that the scroll happens after data is re-sorted for logged-out users
+      setTimeout( () => {
+        if ( taxaListRef?.current ) {
+          taxaListRef.current.scrollToOffset( { offset: 0, animated: true } );
+        }
+      }, 0 );
     }
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
