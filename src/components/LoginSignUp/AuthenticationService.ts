@@ -324,6 +324,9 @@ const getJWT = async (
     // than 25 mins (safe margin) - ask for a new one
 
     const accessToken = await getSensitiveItem( "accessToken" );
+    // accessToken should always be a string here, since we're logged in,
+    // i.e. in the function call to loggedIn() above we must have found accessToken
+    // to not be null at least in the last 5000 ms
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     let response;
     try {
