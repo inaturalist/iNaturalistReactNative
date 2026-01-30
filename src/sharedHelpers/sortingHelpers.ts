@@ -1,6 +1,8 @@
 import type {
+  SortDirection,
   SpeciesCount,
   SpeciesSort,
+  SpeciesSortBy,
 } from "types/sorting";
 
 import { SPECIES_SORT_BY } from "../types/sorting";
@@ -17,7 +19,7 @@ const SPECIES_SORT_MAP: Record<SPECIES_SORT_BY, SpeciesSort> = {
  */
 export function mapSpeciesSortToAPIParams(
   sortOptionId: SPECIES_SORT_BY,
-): { order_by?: string; order?: string } | null {
+): { order_by: SpeciesSortBy; order: SortDirection } | null {
   const sortConfig = SPECIES_SORT_MAP[sortOptionId];
   if ( !sortConfig ) {
     return null;

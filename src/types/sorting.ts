@@ -4,6 +4,9 @@ export type SortItemType = "observations" | "taxa";
 
 export type SortDirection = "asc" | "desc";
 
+// eventually this will be a union type that accounts for different types of sorting, i.e. name
+export type SpeciesSortBy = "count"
+
 export interface ObservationSort {
   by:
     | "created_at"
@@ -12,8 +15,7 @@ export interface ObservationSort {
 }
 
 export interface SpeciesSort {
-  by:
-    | "count";
+  by: SpeciesSortBy;
   direction?: SortDirection;
 }
 

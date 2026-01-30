@@ -263,7 +263,10 @@ const MyObservationsContainer = ( ): React.FC => {
   const numOfUserSpecies = zustandStorage.getItem( "numOfUserSpecies" );
   const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
 
-  const { leafTaxonIds, numTotalTaxaLocal } = useMemo( () => {
+  const { leafTaxonIds, numTotalTaxaLocal } = useMemo<{
+    leafTaxonIds: number[];
+    numTotalTaxaLocal: number | undefined;
+  }>( () => {
     if ( currentUser ) {
       return { leafTaxonIds: [], numTotalTaxaLocal: undefined };
     }

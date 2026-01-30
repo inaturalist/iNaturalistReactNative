@@ -26,12 +26,12 @@ import { Alert } from "react-native";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
-  RealmTaxon,
   RealmUser,
 } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
+import type { SpeciesCount } from "types/sorting";
 
 import { SPECIES_SORT_BY } from "../../types/sorting";
 import Announcements from "./Announcements";
@@ -41,11 +41,6 @@ import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import SimpleErrorHeader from "./SimpleErrorHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
-
-interface SpeciesCount {
-  count: number;
-  taxon: RealmTaxon;
-}
 
 export interface Props {
   activeTab: string;
@@ -274,13 +269,13 @@ const MyObservationsSimple = ( {
     return null;
   };
 
-  function showOfflineAlert( t: ( _: string ) => string ) {
+  function showOfflineAlert( ) {
     Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
   }
 
   const handleSortConfirm = ( optionId: SPECIES_SORT_BY ) => {
     if ( currentUser && !isConnected ) {
-      showOfflineAlert( t );
+      showOfflineAlert( );
       return;
     }
     if ( activeItemType === "observations" ) {
