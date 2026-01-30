@@ -181,11 +181,6 @@ const isLoggedIn = async (): Promise<boolean> => {
 };
 
 /**
- * Returns the logged-in username
- */
-const getUsername = async () => getSensitiveItem( "username" );
-
-/**
  * Signs out the user
  *
  * @returns {Promise<void>}
@@ -627,7 +622,7 @@ const registerUser = async ( user: { password: string } ) => {
 };
 
 const isCurrentUser = async ( username: string ): Promise<boolean> => {
-  const currentUsername = await getUsername( );
+  const currentUsername = await getSensitiveItem( "username" );
   return username === currentUsername;
 };
 
@@ -686,7 +681,6 @@ export {
   emailAvailable,
   getAnonymousJWT,
   getJWT,
-  getUsername,
   isCurrentUser,
   isLoggedIn,
   registerUser,
