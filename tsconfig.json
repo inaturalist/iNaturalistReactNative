@@ -21,7 +21,6 @@
     },
     "types": ["nativewind/types"],
   },
-  "exclude": [
-    "flow-typed"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["flow-typed", "**/node_modules", "**/Pods"]
 }

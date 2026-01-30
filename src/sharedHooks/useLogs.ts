@@ -29,6 +29,17 @@ async function getLogContents() {
   }
 }
 
+async function deleteLogFile() {
+  try {
+    await RNFS.unlink( logFilePath );
+  } catch ( readFileError ) {
+    if ( readFileError instanceof Error && readFileError.message.match( /no such file/ ) ) {
+      return;
+    }
+    throw readFileError;
+  }
+}
+
 const useLogs = ( ) => {
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
@@ -87,6 +98,7 @@ const useLogs = ( ) => {
   return {
     shareLogFile,
     emailLogFile,
+    deleteLogFile,
     getLogContents,
   };
 };

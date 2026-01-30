@@ -1,0 +1,2 @@
+NEW
+* Debug menu for feature flags

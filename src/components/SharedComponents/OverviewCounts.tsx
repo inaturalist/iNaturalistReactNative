@@ -1,5 +1,3 @@
-// @flow
-
 import {
   ActivityIndicator, Body2, Heading6, INatIcon,
 } from "components/SharedComponents";
@@ -8,25 +6,33 @@ import { t } from "i18next";
 import * as React from "react";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  counts: Object,
-  onObservationPressed: Function,
-  onSpeciesPressed: Function,
-  onMembersPressed: Function
+interface Counts {
+  observations_count: number;
+  species_count: number;
+  identifications_count: number;
+  members_count: number;
+  journal_posts_count: number;
 }
 
-type CountProps = {
-  count: number,
-  icon: string,
-  label: string
+interface Props {
+  counts: Counts;
+  onObservationPressed: () => void;
+  onSpeciesPressed: () => void;
+  onMembersPressed?: () => void;
 }
 
-type CountPressableProps = {
-  accessibilityLabel: string,
-  count: number,
-  icon: string,
-  label: string,
-  onPress?: Function
+interface CountProps {
+  count: number;
+  icon: string;
+  label: string;
+}
+
+interface CountPressableProps {
+  accessibilityLabel: string;
+  count: number;
+  icon: string;
+  label: string;
+  onPress?: () => void;
 }
 
 const Count = ( {
@@ -78,7 +84,7 @@ const CountPressable = ( {
 
 const OverviewCounts = ( {
   counts, onObservationPressed, onSpeciesPressed, onMembersPressed,
-}: Props ): React.Node => (
+}: Props ) => (
   <View className="flex-row mt-[30px]">
     <CountPressable
       accessibilityLabel={t( "See-observations-by-this-user-in-Explore" )}

@@ -3,7 +3,6 @@ import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
-  forwardRef,
   useCallback,
   useEffect,
   useMemo,
@@ -68,6 +67,7 @@ interface Props {
   onPanDrag?: () => void;
   onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
   openMapScreen?: () => void;
+  ref?: React.Ref<MapView>;
   region?: Region;
   regionToAnimate?: Region;
   scrollEnabled?: boolean;
@@ -87,7 +87,7 @@ interface Props {
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
-const Map = forwardRef( ( {
+const Map = ( {
   children,
   className = "flex-1",
   currentLocationButtonClassName,
@@ -102,6 +102,7 @@ const Map = forwardRef( ( {
   onPanDrag = ( ) => undefined,
   onRegionChangeComplete,
   openMapScreen,
+  ref,
   region,
   regionToAnimate,
   scrollEnabled = true,
@@ -117,7 +118,7 @@ const Map = forwardRef( ( {
   withPressableObsTiles,
   zoomEnabled = true,
   zoomTapEnabled = true,
-}: Props, ref ) => {
+}: Props ) => {
   const tilesMarkedVisible = useRef( false );
   const [performanceMetrics, setPerformanceMetrics] = useState( {
     mapReadyTime: 0,
@@ -621,6 +622,6 @@ const Map = forwardRef( ( {
       )}
     </View>
   );
-} );
+};
 
 export default Map;
