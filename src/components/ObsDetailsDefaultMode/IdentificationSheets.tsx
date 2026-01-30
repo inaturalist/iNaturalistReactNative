@@ -217,13 +217,11 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const editIdentBody = useCallback( ( ) => dispatch( { type: SHOW_EDIT_IDENT_BODY_SHEET } ), [] );
 
-  const onChangeIdentBody = useCallback( ( body: string ) => {
-    dispatch( {
-      type: SET_NEW_IDENTIFICATION,
-      taxon: newIdentification?.taxon,
-      body,
-    } );
-  }, [newIdentification?.taxon] );
+  const onChangeIdentBody = useCallback( ( body: string ) => dispatch( {
+    type: SET_NEW_IDENTIFICATION,
+    taxon: newIdentification?.taxon,
+    body,
+  } ), [newIdentification?.taxon] );
 
   const onCloseIdentBodySheet = useCallback( ( ) => {
     dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );
