@@ -4,7 +4,6 @@ declare module "styles/tailwindColors" {
     black: string;
     darkGray: string;
     darkGrayDisabled: string;
-    darkModeGray: string;
     inatGreen: string;
     inatGreenDisabled: string;
     inatGreenDisabledDark: string;

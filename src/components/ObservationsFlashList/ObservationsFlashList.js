@@ -11,7 +11,6 @@ import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  forwardRef,
   useCallback,
   useMemo,
   useState,
@@ -53,13 +52,17 @@ type Props = {
   onEndReached: Function,
   onLayout?: Function,
   onScroll?: Function,
+  // this ref is being forwarded to the underlying CustomFlashList and used as an imperative handle
+  // so the parent can control behavior like scrolling; it's typed as Function because there's not
+  // a good way to capture this otherwise with Flow.
+  ref?: Function,
   renderHeader?: Function,
   showNoResults?: boolean,
   showObservationsEmptyScreen?: boolean,
   testID: string
 };
 
-const ObservationsFlashList: Function = forwardRef( ( {
+const ObservationsFlashList: Function = ( {
   contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
@@ -79,11 +82,12 @@ const ObservationsFlashList: Function = forwardRef( ( {
   onEndReached,
   onLayout,
   onScroll,
+  ref,
   renderHeader,
   showNoResults,
   showObservationsEmptyScreen,
   testID,
-}: Props, ref ): Node => {
+}: Props ): Node => {
   const {
     isDefaultMode,
   } = useLayoutPrefs( );
@@ -304,6 +308,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
       testID={testID}
     />
   );
-} );
+};
 
 export default ObservationsFlashList;

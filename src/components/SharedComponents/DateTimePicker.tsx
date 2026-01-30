@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Appearance } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 interface Props {
@@ -24,8 +23,6 @@ const DatePicker = ( {
   const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>( undefined );
   const [isTimeVisible, setisTimeVisible] = React.useState( false );
 
-  const colorScheme = Appearance.getColorScheme( );
-
   const _toggleDateTimePicker = ( ) => {
     setisTimeVisible( false );
     toggleDateTimePicker( );
@@ -36,7 +33,8 @@ const DatePicker = ( {
       <DateTimePicker
         display="spinner"
         customHeaderIOS={EmptyHeader}
-        isDarkModeEnabled={colorScheme === "dark"}
+        isDarkModeEnabled={false}
+        themeVariant="light"
         isVisible={isDateTimePickerVisible}
         maximumDate={new Date( )}
         mode="time"
@@ -55,7 +53,8 @@ const DatePicker = ( {
     <DateTimePicker
       display="spinner"
       customHeaderIOS={EmptyHeader}
-      isDarkModeEnabled={colorScheme === "dark"}
+      isDarkModeEnabled={false}
+      themeVariant="light"
       isVisible={isDateTimePickerVisible}
       maximumDate={new Date( )}
       mode="date"
