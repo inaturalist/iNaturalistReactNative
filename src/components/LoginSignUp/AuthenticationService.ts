@@ -290,7 +290,7 @@ const getJWT = async (
   allowAnonymousJWT = false,
   logContext: string | null = null,
 ): Promise<string | null> => {
-  let jwtToken: string | undefined = await getSensitiveItem( "jwtToken" );
+  let jwtToken: string | null | undefined = await getSensitiveItem( "jwtToken" );
   const storedJwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
   let jwtGeneratedAt: number | null = null;
   if ( storedJwtGeneratedAt ) {
