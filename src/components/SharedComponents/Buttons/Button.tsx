@@ -197,7 +197,6 @@ const Button = ( {
       {loading && (
         <ActivityIndicator
           size={18}
-          className="mr-3 absolute right-0"
           color={!isNeutral
             ? activityIndicatorColor( {
               isPrimary, isWarning, isFocus,
