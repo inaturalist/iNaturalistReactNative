@@ -17,7 +17,6 @@ interface Props {
   };
   onSuggestId: ( ) => void;
   editIdentBody: () => void;
-  onBackgroundOrCloseIconPress?: ( ) => void;
 }
 
 const SuggestIDSheet = ( {
@@ -25,12 +24,10 @@ const SuggestIDSheet = ( {
   identification,
   onSuggestId,
   editIdentBody,
-  onBackgroundOrCloseIconPress,
 }: Props ): React.ReactNode => (
   <BottomSheet
     headerText={t( "SUGGEST-ID" )}
     hidden={hidden}
-    onBackgroundOrCloseIconPress={onBackgroundOrCloseIconPress}
   >
     <>
       <View className="mx-[26px] space-y-[11px] my-[15px]">

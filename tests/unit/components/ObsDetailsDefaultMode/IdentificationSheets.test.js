@@ -164,21 +164,6 @@ describe( "IdentificationSheets", () => {
       } );
     } );
 
-    it( "handles DISCARD_ID action", () => {
-      const stateWithData = {
-        ...initialState,
-        showSuggestIdSheet: true,
-        identTaxon: { id: 123 },
-        newIdentification: { taxon: { id: 123 } },
-      };
-      const action = { type: "DISCARD_ID" };
-      const newState = identReducer( stateWithData, action );
-
-      expect( newState.showSuggestIdSheet ).toBe( false );
-      expect( newState.identTaxon ).toBeNull();
-      expect( newState.newIdentification ).toBeNull();
-    } );
-
     it( "handles SUBMIT_IDENTIFICATION action", () => {
       const stateWithData = {
         ...initialState,

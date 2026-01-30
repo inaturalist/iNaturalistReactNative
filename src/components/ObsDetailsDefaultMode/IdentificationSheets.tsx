@@ -217,6 +217,14 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const editIdentBody = useCallback( ( ) => dispatch( { type: SHOW_EDIT_IDENT_BODY_SHEET } ), [] );
 
+  const onChangeIdentBody = useCallback( ( body: string ) => {
+    dispatch( {
+      type: SET_NEW_IDENTIFICATION,
+      taxon: newIdentification?.taxon,
+      body,
+    } );
+  }, [newIdentification?.taxon] );
+
   const onCloseIdentBodySheet = useCallback( ( ) => {
     dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );
   }, [] );
@@ -279,7 +287,6 @@ const IdentificationSheets: React.FC<Props> = ( {
         return;
       }
 
-      // Fetch the taxon if needed
       let taxon = realm.objectForPrimaryKey( "Taxon", identTaxonId );
       if ( !taxon ) {
         taxon = await fetchTaxonAndSave( identTaxonId, realm );
@@ -287,7 +294,6 @@ const IdentificationSheets: React.FC<Props> = ( {
 
       if ( cancelled ) return;
 
-      // Set up the new identification
       dispatch( {
         type: SET_NEW_IDENTIFICATION,
         taxon,
@@ -347,20 +353,12 @@ const IdentificationSheets: React.FC<Props> = ( {
       taxon_id: newIdentification.taxon.id,
       vision: newIdentification.vision,
       disagreement: potentialDisagree,
-      body: newIdentification.body,
+      body: newIdentification?.body,
     };
 
     loadActivityItem( );
     createIdentificationMutation.mutate( { identification: idParams } );
   }, [createIdentificationMutation, newIdentification, uuid, loadActivityItem] );
-
-  const onChangeIdentBody = useCallback( ( body: string ) => {
-    dispatch( {
-      type: SET_NEW_IDENTIFICATION,
-      taxon: newIdentification?.taxon,
-      body,
-    } );
-  }, [newIdentification] );
 
   const onSuggestId = useCallback( ( ) => {
     if ( hasPotentialDisagreement( identTaxon ) ) {

@@ -78,7 +78,7 @@ const StandardBottomSheet = ( {
   const renderBackdrop = props => (
     <BottomSheetStandardBackdrop
       props={props}
-      onPress={handleClose}
+      onPress={onPressClose}
     />
   );
 
