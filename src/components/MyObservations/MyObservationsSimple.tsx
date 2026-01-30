@@ -14,12 +14,12 @@ import {
   InfiniteScrollLoadingWheel,
   OfflineNotice,
   PerformanceDebugView,
+  RadioButtonSheet,
   Tabs,
   ViewWrapper,
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
-import SortSheet from "components/SharedComponents/Sheets/SortSheet";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
 import { Alert } from "react-native";
@@ -33,8 +33,7 @@ import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-import type { SPECIES_SORT_BY } from "../../types/sorting";
-import { OBSERVATION_SORT_BY } from "../../types/sorting";
+import { SPECIES_SORT_BY } from "../../types/sorting";
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
@@ -141,6 +140,19 @@ const MyObservationsSimple = ( {
   const activeItemType = activeTab === OBSERVATIONS_TAB
     ? "observations"
     : "taxa";
+
+  const taxaSortOptions = {
+    [SPECIES_SORT_BY.COUNT_DESC]: {
+      value: SPECIES_SORT_BY.COUNT_DESC,
+      label: t( "Most-Observed-Default" ),
+      text: t( "Species-with-the-most-observations-appear-first" ),
+    },
+    [SPECIES_SORT_BY.COUNT_ASC]: {
+      value: SPECIES_SORT_BY.COUNT_ASC,
+      label: t( "Least-Observed" ),
+      text: t( "Species-with-the-least-observations-appear-first" ),
+    },
+  };
 
   const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
     const taxonId = speciesCount.taxon.id;
@@ -389,12 +401,11 @@ const MyObservationsSimple = ( {
         { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
       {openSheet === ACTIVE_SHEET.SORT && (
-        <SortSheet
-          itemType={activeItemType}
-          selectedValue={activeItemType === "observations"
-            ? OBSERVATION_SORT_BY.CREATED_AT_DESC
-            : speciesSortOptionId}
-          onConfirm={optionId => handleSortConfirm( optionId )}
+        <RadioButtonSheet
+          headerText={t( "SORT-SPECIES" )}
+          radioValues={taxaSortOptions}
+          selectedValue={speciesSortOptionId}
+          confirm={optionId => handleSortConfirm( optionId as SPECIES_SORT_BY )}
           onPressClose={() => setOpenSheet( ACTIVE_SHEET.NONE )}
         />
       )}

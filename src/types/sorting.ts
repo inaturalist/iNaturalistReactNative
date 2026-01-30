@@ -22,13 +22,6 @@ export interface SpeciesCount {
   taxon: RealmTaxon;
 }
 
-export enum OBSERVATION_SORT_BY {
-  CREATED_AT_DESC = "CREATED_AT_DESC",
-  CREATED_AT_ASC = "CREATED_AT_ASC",
-  OBSERVED_AT_DESC = "OBSERVED_AT_DESC",
-  OBSERVED_AT_ASC = "OBSERVED_AT_ASC",
-}
-
 export enum SPECIES_SORT_BY {
   COUNT_DESC = "COUNT_DESC",
   COUNT_ASC = "COUNT_ASC",
