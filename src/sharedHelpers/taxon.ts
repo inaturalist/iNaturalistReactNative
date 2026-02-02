@@ -1,4 +1,5 @@
-import _ from "lodash";
+import map from "lodash/map";
+import trim from "lodash/trim";
 
 const uncapitalized = new Set( [
   "à",
@@ -69,9 +70,9 @@ export const capitalizeCommonName = ( name: string ) => {
   if ( !name ) {
     return name;
   }
-  const commonNamePieces = _.trim( name ).split( /\s+/ );
+  const commonNamePieces = trim( name ).split( /\s+/ );
 
-  return _.map( commonNamePieces, ( piece, i ) => {
+  return map( commonNamePieces, ( piece, i ) => {
     const lowercasePiece = piece.toLowerCase();
 
     if ( i > 0 && uncapitalized.has( lowercasePiece ) ) {
@@ -126,7 +127,7 @@ export const generateTaxonPieces = ( taxon: Taxon ): TaxonDisplayData => {
     // found here, but is needed in iNat Next:
     // https://github.com/inaturalist/inaturalist/blob/c578c11d00ed97940f0b6d8aa0793b6afd765824/app/assets/javascripts/ang/models/taxon.js.erb#L155
     const multipleLexicons = taxon.preferred_common_name.split( "·" );
-    taxonDisplayData.commonName = _.map(
+    taxonDisplayData.commonName = map(
       multipleLexicons,
       ( lexicon => capitalizeCommonName( lexicon )
       ),

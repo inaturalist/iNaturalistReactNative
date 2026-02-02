@@ -1,6 +1,8 @@
 // eslint-disable-next-line
 import { Realm } from "@realm/react";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
+import remove from "lodash/remove";
+import pull from "lodash/pull";
 import Photo from "realmModels/Photo";
 import Sound from "realmModels/Sound";
 
@@ -30,11 +32,11 @@ const DEFAULT_STATE = {
 };
 
 const removeObsSoundFromObservation = ( currentObservation, uri ) => {
-  if ( _.isEmpty( currentObservation ) ) { return []; }
+  if ( isEmpty( currentObservation ) ) { return []; }
   const updatedObservation = currentObservation;
   const obsSounds = Array.from( currentObservation?.observationSounds );
   if ( obsSounds.length > 0 ) {
-    _.remove(
+    remove(
       obsSounds,
       obsSound => (
         obsSound.sound.file_url === uri
@@ -82,10 +84,10 @@ const createObservationFlowSlice = ( set, get ) => ( {
       }
     }
 
-    const newCameraUris = [..._.pull( state.cameraUris, uri )];
+    const newCameraUris = [...pull( state.cameraUris, uri )];
     return {
       cameraUris: newCameraUris,
-      evidenceToAdd: [..._.pull( state.evidenceToAdd, uri )],
+      evidenceToAdd: [...pull( state.evidenceToAdd, uri )],
       observations: newObservations,
       currentObservation: newObservation
         ? observationToJSON( newObservation )
