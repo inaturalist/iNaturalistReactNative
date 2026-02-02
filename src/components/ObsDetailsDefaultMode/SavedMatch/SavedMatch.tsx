@@ -6,7 +6,6 @@ import LocationSection from "components/ObsDetailsDefaultMode/LocationSection/Lo
 import MapSection from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import { Button, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import _ from "lodash";
 import React from "react";
 import type { RealmObservation } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
