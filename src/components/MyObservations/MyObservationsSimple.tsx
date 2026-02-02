@@ -132,10 +132,6 @@ const MyObservationsSimple = ( {
     paddingTop: 10,
   } ), [flashListStyle] );
 
-  const activeItemType = activeTab === OBSERVATIONS_TAB
-    ? "observations"
-    : "taxa";
-
   const taxaSortOptions = {
     [SPECIES_SORT_BY.COUNT_DESC]: {
       value: SPECIES_SORT_BY.COUNT_DESC,
@@ -278,19 +274,16 @@ const MyObservationsSimple = ( {
       showOfflineAlert( );
       return;
     }
-    if ( activeItemType === "observations" ) {
-      // TODO: set observations sort id
-    } else {
-      setSpeciesSortOptionId( optionId );
+    setSpeciesSortOptionId( optionId );
 
-      // scroll to the top of the newly sorted list
-      // the timeout ensures that the scroll happens after data is re-sorted for logged-out users
-      setTimeout( () => {
-        if ( taxaListRef?.current ) {
-          taxaListRef.current.scrollToOffset( { offset: 0, animated: true } );
-        }
-      }, 0 );
-    }
+    // scroll to the top of the newly sorted list
+    // the timeout ensures that the scroll happens after data is re-sorted for logged-out users
+    setTimeout( () => {
+      if ( taxaListRef?.current ) {
+        taxaListRef.current.scrollToOffset( { offset: 0, animated: true } );
+      }
+    }, 0 );
+
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
 
