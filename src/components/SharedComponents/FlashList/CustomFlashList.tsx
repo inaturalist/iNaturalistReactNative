@@ -122,27 +122,22 @@ const CustomFlashList = props => {
 
   // To be called when new data is received
   // This needs to be exposed so it can be called from parent component
-  React.useImperativeHandle( ref, ( ) => ( {
-    notifyDataFetched: itemsCount => {
-      if ( fetchInProgress.current ) {
-        flashListTracker.endDataFetch( itemsCount );
-        fetchInProgress.current = false;
-      } else {
-        flashListTracker.beginDataFetch( );
-        flashListTracker.endDataFetch( itemsCount );
-      }
-    },
-    scrollToOffset: params => {
-      if ( internalRef.current ) {
-        internalRef.current.scrollToOffset( params );
-      }
-    },
-    scrollToIndex: params => {
-      if ( internalRef.current ) {
-        internalRef.current.scrollToIndex( params );
-      }
-    },
-  } ) );
+  React.useImperativeHandle( ref, () => {
+    const flashListMethods = internalRef.current || {};
+
+    return {
+      ...flashListMethods,
+      notifyDataFetched: itemsCount => {
+        if ( fetchInProgress.current ) {
+          flashListTracker.endDataFetch( itemsCount );
+          fetchInProgress.current = false;
+        } else {
+          flashListTracker.beginDataFetch();
+          flashListTracker.endDataFetch( itemsCount );
+        }
+      },
+    };
+  } );
 
   const viewabilityConfig = {
     ...defaultViewabilityConfig,
