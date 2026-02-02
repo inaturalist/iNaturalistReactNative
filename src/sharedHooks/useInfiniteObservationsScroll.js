@@ -1,7 +1,9 @@
 // @flow
 
 import { searchObservations } from "api/observations";
-import { flatten, last, noop } from "lodash";
+import flatten from "lodash/flatten";
+import last from "lodash/last";
+import noop from "lodash/noop";
 import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useMemo, useRef,

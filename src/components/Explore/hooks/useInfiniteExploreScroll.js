@@ -2,7 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
-import { flatten } from "lodash";
+import flatten from "lodash/flatten";
 import { useCallback, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery } from "sharedHooks";
