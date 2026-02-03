@@ -238,7 +238,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     cancelable: true,
   } ), [t] );
 
-  const createIdentificationMutation = useAuthenticatedMutation(
+  const { mutate: createIdentificationMutate } = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
@@ -338,9 +338,9 @@ const IdentificationSheets: React.FC<Props> = ( {
     };
 
     loadActivityItem( );
-    createIdentificationMutation.mutate( { identification: agreeParams } );
+    createIdentificationMutate( { identification: agreeParams } );
     closeAgreeWithIdSheet( );
-  }, [closeAgreeWithIdSheet, createIdentificationMutation, observation?.uuid, loadActivityItem] );
+  }, [closeAgreeWithIdSheet, createIdentificationMutate, observation?.uuid, loadActivityItem] );
 
   const potentialDisagreeSheetDiscardChanges = useCallback( ( ) => {
     dispatch( { type: HIDE_POTENTIAL_DISAGREEMENT_SHEET } );
@@ -360,8 +360,8 @@ const IdentificationSheets: React.FC<Props> = ( {
     };
 
     loadActivityItem( );
-    createIdentificationMutation.mutate( { identification: idParams } );
-  }, [createIdentificationMutation, newIdentification, uuid, loadActivityItem] );
+    createIdentificationMutate( { identification: idParams } );
+  }, [createIdentificationMutate, newIdentification, uuid, loadActivityItem] );
 
   const onSuggestId = useCallback( ( ) => {
     if ( hasPotentialDisagreement( ) ) {
@@ -382,7 +382,7 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const suggestIdSheetDiscardChanges = useCallback( ( ) => dispatch( { type: DISCARD_ID } ), [] );
 
-  const createCommentMutation = useAuthenticatedMutation(
+  const { mutate: createCommentMutate } = useAuthenticatedMutation(
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
       onSuccess: data => handleCommentMutationSuccess( data ),
@@ -400,14 +400,14 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const onCommentAdded = useCallback( ( body: string ) => {
     loadActivityItem( );
-    createCommentMutation.mutate( {
+    createCommentMutate( {
       comment: {
         body,
         parent_id: uuid,
         parent_type: "Observation",
       },
     } );
-  }, [createCommentMutation, uuid, loadActivityItem] );
+  }, [createCommentMutate, uuid, loadActivityItem] );
 
   const confirmCommentFromCommentSheet = useCallback( ( newComment: string ) => {
     if ( !commentIsOptional ) {
