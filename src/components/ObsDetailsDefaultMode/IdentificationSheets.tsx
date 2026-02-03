@@ -55,7 +55,7 @@ interface Identification {
 interface IdentState {
   comment: string | null;
   commentIsOptional: boolean;
-  identBodySheetShown: boolean;
+  showIdentBodySheet: boolean;
   newIdentification: Identification | null;
   showPotentialDisagreementSheet: boolean;
   showSuggestIdSheet: boolean;
@@ -76,7 +76,7 @@ type IdentAction =
 const initialIdentState: IdentState = {
   comment: null,
   commentIsOptional: false,
-  identBodySheetShown: false,
+  showIdentBodySheet: false,
   newIdentification: null,
   showPotentialDisagreementSheet: false,
   showSuggestIdSheet: false,
@@ -122,19 +122,19 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
     case SHOW_EDIT_IDENT_BODY_SHEET:
       return {
         ...state,
-        identBodySheetShown: true,
+        showIdentBodySheet: true,
       };
     case HIDE_EDIT_IDENT_BODY_SHEET:
       return {
         ...state,
-        identBodySheetShown: false,
+        showIdentBodySheet: false,
       };
     case SUBMIT_IDENTIFICATION:
       return {
         ...state,
         showPotentialDisagreementSheet: false,
         showSuggestIdSheet: false,
-        identBodySheetShown: false,
+        showIdentBodySheet: false,
         newIdentification: null,
         identTaxon: null,
       };
@@ -195,7 +195,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   const {
     comment,
     commentIsOptional,
-    identBodySheetShown,
+    showIdentBodySheet,
     identTaxon,
     newIdentification,
     showPotentialDisagreementSheet,
@@ -423,7 +423,7 @@ const IdentificationSheets: React.FC<Props> = ( {
         <AgreeWithIDSheet
           onAgree={onAgree}
           editIdentBody={editIdentBody}
-          hidden={identBodySheetShown}
+          hidden={showIdentBodySheet}
           onPressClose={closeAgreeWithIdSheet}
           identification={agreeIdentification}
         />
@@ -440,7 +440,7 @@ const IdentificationSheets: React.FC<Props> = ( {
         />
       )}
       {/* Sheet for adding comment w/ ID */}
-      {identBodySheetShown && (
+      {showIdentBodySheet && (
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
           onPressClose={onCloseIdentBodySheet}
@@ -453,7 +453,7 @@ const IdentificationSheets: React.FC<Props> = ( {
       {showSuggestIdSheet && (
         <SuggestIDSheet
           editIdentBody={editIdentBody}
-          hidden={identBodySheetShown}
+          hidden={showIdentBodySheet}
           onSuggestId={onSuggestId}
           identification={newIdentification}
           onPressClose={hideSuggestedIdSheet}

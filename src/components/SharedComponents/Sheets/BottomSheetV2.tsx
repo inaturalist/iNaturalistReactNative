@@ -7,19 +7,22 @@ import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback, useEffect, useRef } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
 const { width } = Dimensions.get( "window" );
-const marginOnWide = {
-  marginHorizontal: width > 500
-    ? ( width - 500 ) / 2
-    : 0,
-  borderTopLeftRadius: 24,
-  borderTopRightRadius: 24,
-  overflow: "hidden" as const,
-};
+
+const styles = StyleSheet.create( {
+  marginOnWide: {
+    marginHorizontal: width > 500
+      ? ( width - 500 ) / 2
+      : 0,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    overflow: "hidden",
+  },
+} );
 
 // eslint-disable-next-line
 const noHandle = ( ) => <></>;
@@ -72,7 +75,7 @@ const BottomSheetV2 = ( {
       handleComponent={noHandle}
       index={0}
       ref={sheetRef}
-      style={marginOnWide}
+      style={styles.marginOnWide}
       accessible={false}
       onDismiss={onDismiss}
     >
