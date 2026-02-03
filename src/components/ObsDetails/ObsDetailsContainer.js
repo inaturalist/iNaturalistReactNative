@@ -411,7 +411,7 @@ const ObsDetailsContainer = ( ): Node => {
     } );
   };
 
-  const { mutate: createIdentificationMutate } = useAuthenticatedMutation(
+  const createIdentificationMutation = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
@@ -527,7 +527,7 @@ const ObsDetailsContainer = ( ): Node => {
     };
 
     dispatch( { type: LOADING_ACTIVITY_ITEM } );
-    createIdentificationMutate( { identification: agreeParams } );
+    createIdentificationMutation.mutate( { identification: agreeParams } );
     closeAgreeWithIdSheet( );
   };
 
@@ -555,8 +555,8 @@ const ObsDetailsContainer = ( ): Node => {
     };
 
     dispatch( { type: LOADING_ACTIVITY_ITEM } );
-    createIdentificationMutate( { identification: idParams } );
-  }, [createIdentificationMutate, newIdentification, uuid] );
+    createIdentificationMutation.mutate( { identification: idParams } );
+  }, [createIdentificationMutation, newIdentification, uuid] );
 
   const onSuggestId = useCallback( ( ) => {
     if ( !observation ) return;
