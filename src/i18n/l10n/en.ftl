@@ -313,16 +313,16 @@ DATE = DATE
 Date = Date
 # Date formatting using date-fns
 # Used for things like User Profile join date
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-long = PP
 # Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-month-day = MMM d
 # Use when only showing an observations month and year
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-month-year = MMM yyyy
 # Short date, e.g. on notifications from over a year ago
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-short = M/d/yy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
@@ -350,20 +350,20 @@ datetime-difference-minutes = { $count }m
 # Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
 datetime-difference-weeks = { $count }w
 # Longer datetime, e.g. when editing an observation
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 datetime-format-long = Pp
 # Longer datetime with time zone, e.g. when editing an observation and we know
 # the time zone See complete list of formatting styles at
-# https://date-fns.org/v2.29.3/docs/format and time zone formatting
+# https://date-fns.org/v3.6.0/docs/format and time zone formatting
 # characters at
 # https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-long-with-zone = Pp (zzz)
 # Shorter datetime, e.g. on observation detail view
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 datetime-format-short = M/d/yy h:mm a
 # Shorter datetime with time zone, e.g. on observation detail view
 # See complete list of formatting styles at
-# https://date-fns.org/v2.29.3/docs/format and time zone formatting
+# https://date-fns.org/v3.6.0/docs/format and time zone formatting
 # characters at
 # https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-short-with-zone = M/d/yy h:mm a zzz
