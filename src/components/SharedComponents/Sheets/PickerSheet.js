@@ -39,6 +39,8 @@ const PickerSheet = ( {
       onPressClose={onPressClose}
       headerText={headerText}
       insideModal={insideModal}
+      scrollEnabled={false}
+      enablePanDownToClose={false}
     >
       <View className="p-5">
         <Picker
