@@ -210,7 +210,7 @@ const Menu = ( ) => {
       locallySavedOnlyObservations,
     };
     // we're logging structured data here that is parsed in Grafana
-    feedbackLogger.info( feedbackWithContext );
+    feedbackLogger.info( JSON.stringify( feedbackWithContext ) );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
     setModalState( null );
     return true;
