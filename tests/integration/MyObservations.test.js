@@ -6,7 +6,7 @@ import { MS_BEFORE_TOOLBAR_RESET } from "components/MyObservations/hooks/useUplo
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
-import { flatten } from "lodash";
+import flatten from "lodash/flatten";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util";

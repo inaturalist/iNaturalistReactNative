@@ -3,7 +3,7 @@ import {
   Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import _ from "lodash";
+import find from "lodash/find";
 import * as React from "react";
 import { Trans } from "react-i18next";
 import { openExternalWebBrowser } from "sharedHelpers/util";
@@ -43,7 +43,7 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
   const displaySourceListText = ( ) => {
     let url = baseUrl;
 
-    const listedTaxon = _.find( taxon.listed_taxa, lt => (
+    const listedTaxon = find( taxon.listed_taxa, lt => (
       lt.place.id === taxon.establishment_means.place.id
       && lt.establishment_means === establishmentMeans
     ) );

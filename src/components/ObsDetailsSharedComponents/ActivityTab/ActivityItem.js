@@ -13,7 +13,7 @@ import {
   View,
 } from "components/styledComponents";
 import { t } from "i18next";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import type { Node } from "react";
 import React from "react";
 
@@ -109,7 +109,7 @@ const ActivityItem = ( {
             )}
           </View>
         )}
-        { !_.isEmpty( item?.body ) && (
+        { !isEmpty( item?.body ) && (
           <View className="flex-row">
             <UserText text={item.body} />
           </View>

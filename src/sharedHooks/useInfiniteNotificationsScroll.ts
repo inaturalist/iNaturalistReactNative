@@ -5,7 +5,7 @@ import type {
   ApiObservationsUpdatesParams,
   ApiOpts,
 } from "api/types";
-import { flatten } from "lodash";
+import flatten from "lodash/flatten";
 import { RealmContext } from "providers/contexts";
 import type Realm from "realm";
 import Observation from "realmModels/Observation";

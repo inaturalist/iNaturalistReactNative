@@ -2,7 +2,7 @@
 import ActivityItem from "components/ObsDetailsSharedComponents/ActivityTab/ActivityItem";
 import { Body2 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { compact } from "lodash";
+import compact from "lodash/compact";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";

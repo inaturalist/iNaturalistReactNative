@@ -1,4 +1,5 @@
-import _ from "lodash";
+import indexOf from "lodash/indexOf";
+import last from "lodash/last";
 import {
   useCallback,
   useEffect,
@@ -68,11 +69,11 @@ const useZoom = ( device: CameraDevice ): object => {
   }, [device?.isMultiCam, minZoom, neutralZoom, zoom, startZoom] );
 
   const handleZoomButtonPress = ( ) => {
-    if ( zoomTextValue === _.last( zoomButtonOptions ) ) {
+    if ( zoomTextValue === last( zoomButtonOptions ) ) {
       zoom.set( withSpring( zoomButtonValues[0] ) );
       setZoomTextValue( zoomButtonOptions[0] );
     } else {
-      const zoomIndex = _.indexOf( zoomButtonOptions, zoomTextValue );
+      const zoomIndex = indexOf( zoomButtonOptions, zoomTextValue );
       zoom.set( withSpring( zoomButtonValues[zoomIndex + 1] ) );
       setZoomTextValue( zoomButtonOptions[zoomIndex + 1] );
     }
