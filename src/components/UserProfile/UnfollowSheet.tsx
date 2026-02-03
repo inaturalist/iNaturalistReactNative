@@ -19,11 +19,11 @@ const UnfollowSheet = ( {
 }: Props ) => {
   const { t } = useTranslation( );
 
-  const updateRelationshipsMutation = useAuthenticatedMutation(
+  const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
     ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth ),
   );
 
-  const unfollowUser = ( ) => updateRelationshipsMutation.mutate( {
+  const unfollowUser = ( ) => updateRelationshipsMutate( {
     id: relationship.id,
     relationship: {
       following: false,
