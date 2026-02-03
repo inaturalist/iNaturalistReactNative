@@ -43,7 +43,7 @@ const useSyncObservations = (
 
   const realm = useRealm( );
 
-  const handleRemoteDeletion = useAuthenticatedMutation(
+  const { mutateAsync } = useAuthenticatedMutation(
     ( params: object, optsWithAuth: object ) => deleteRemoteObservation( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
@@ -74,7 +74,7 @@ const useSyncObservations = (
         Observation.deleteLocalObservation( realm, uuid );
       } else {
         try {
-          await handleRemoteDeletion.mutateAsync( { uuid } );
+          await mutateAsync( { uuid } );
         } catch ( _error ) {
           // In case of failure, clear the pending deletion flag after some time
           // to allow retrying later
@@ -97,7 +97,7 @@ const useSyncObservations = (
   }, [
     completeLocalDeletions,
     deleteQueue,
-    handleRemoteDeletion,
+    mutateAsync,
     realm,
     startNextDeletion,
   ] );
