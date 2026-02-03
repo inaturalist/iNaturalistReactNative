@@ -23,6 +23,8 @@ const CustomFlashList = props => {
   const ignoreInitialEvents = useRef( true );
   const fetchInProgress = useRef( false );
 
+  const internalRef = useRef( null );
+
   const {
     ref,
     onMomentumScrollEnd,
@@ -120,25 +122,18 @@ const CustomFlashList = props => {
 
   // To be called when new data is received
   // This needs to be exposed so it can be called from parent component
-  React.useImperativeHandle( ref, ( ) => {
-    const originalRef = typeof ref === "function"
-      ? {} // Function refs can't be read, only written
-      : ( ref?.current || {} );
+  React.useImperativeHandle( ref, () => {
+    const flashListMethods = internalRef.current || {};
 
     return {
-      ...originalRef,
+      ...flashListMethods,
       notifyDataFetched: itemsCount => {
         if ( fetchInProgress.current ) {
           flashListTracker.endDataFetch( itemsCount );
           fetchInProgress.current = false;
         } else {
-          flashListTracker.beginDataFetch( );
+          flashListTracker.beginDataFetch();
           flashListTracker.endDataFetch( itemsCount );
-        }
-      },
-      scrollToOffset: params => {
-        if ( ref && typeof ref !== "function" && ref.current ) {
-          ref.current.scrollToOffset( params );
         }
       },
     };
@@ -151,7 +146,7 @@ const CustomFlashList = props => {
 
   return (
     <FlashList
-      ref={ref}
+      ref={internalRef}
       initialNumToRender={5}
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.2}

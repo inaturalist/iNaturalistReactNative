@@ -4,8 +4,8 @@ import {
   Image, LinearGradient, Pressable, View,
 } from "components/styledComponents";
 import React from "react";
-import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
+import type { SpeciesCount } from "types/sorting";
 
 const imageClassNames = [
   "max-h-[210px]",
@@ -15,11 +15,6 @@ const imageClassNames = [
   "h-[62px]",
   "rounded-2xl",
 ];
-
-interface SpeciesCount {
-  count: number;
-  taxon: RealmTaxon;
-}
 
 export interface Props {
   accessibleName: string;
