@@ -70,7 +70,8 @@ type IdentAction =
   | { type: "SET_NEW_IDENTIFICATION"; taxon?: Taxon; body?: string; vision?: boolean }
   | { type: "SHOW_EDIT_IDENT_BODY_SHEET" }
   | { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" }
-  | { type: "SUBMIT_IDENTIFICATION" };
+  | { type: "SUBMIT_IDENTIFICATION" }
+  | { type: "HIDE_SUGGESTED_ID_SHEET" };
 
 const initialIdentState: IdentState = {
   comment: null,
@@ -90,6 +91,7 @@ const SET_NEW_IDENTIFICATION = "SET_NEW_IDENTIFICATION";
 const SHOW_EDIT_IDENT_BODY_SHEET = "SHOW_EDIT_IDENT_BODY_SHEET";
 const SHOW_POTENTIAL_DISAGREEMENT_SHEET = "SHOW_POTENTIAL_DISAGREEMENT_SHEET";
 const SUBMIT_IDENTIFICATION = "SUBMIT_IDENTIFICATION";
+const HIDE_SUGGESTED_ID_SHEET = "HIDE_SUGGESTED_ID_SHEET";
 
 export const identReducer = ( state: IdentState, action: IdentAction ): IdentState => {
   switch ( action.type ) {
@@ -138,6 +140,8 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
       };
     case CLEAR_SUGGESTED_TAXON:
       return { ...state, identTaxon: null };
+    case HIDE_SUGGESTED_ID_SHEET:
+      return { ...state, showSuggestIdSheet: false };
     default:
       return state;
   }
@@ -407,6 +411,10 @@ const IdentificationSheets: React.FC<Props> = ( {
     }
   }, [commentIsOptional, onCommentAdded] );
 
+  const hideSuggestedIdSheet = ( ) => {
+    dispatch( { type: HIDE_SUGGESTED_ID_SHEET } );
+  };
+
   const addCommentHeaderText = showAddCommentHeader( );
 
   return (
@@ -448,6 +456,7 @@ const IdentificationSheets: React.FC<Props> = ( {
           hidden={identBodySheetShown}
           onSuggestId={onSuggestId}
           identification={newIdentification}
+          onPressClose={hideSuggestedIdSheet}
         />
       )}
       {showPotentialDisagreementSheet && newIdentification && (

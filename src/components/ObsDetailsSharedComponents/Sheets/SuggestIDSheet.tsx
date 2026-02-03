@@ -1,5 +1,5 @@
 import {
-  BottomSheet,
+  BottomSheetV2,
   Button,
   DisplayTaxon,
   INatIcon,
@@ -17,6 +17,7 @@ interface Props {
   };
   onSuggestId: ( ) => void;
   editIdentBody: () => void;
+  onPressClose?: () => void;
 }
 
 const SuggestIDSheet = ( {
@@ -24,10 +25,12 @@ const SuggestIDSheet = ( {
   identification,
   onSuggestId,
   editIdentBody,
+  onPressClose,
 }: Props ): React.ReactNode => (
-  <BottomSheet
+  <BottomSheetV2
     headerText={t( "SUGGEST-ID" )}
     hidden={hidden}
+    onPressClose={onPressClose}
   >
     <>
       <View className="mx-[26px] space-y-[11px] my-[15px]">
@@ -90,7 +93,7 @@ const SuggestIDSheet = ( {
         />
       </View>
     </>
-  </BottomSheet>
+  </BottomSheetV2>
 );
 
 export default SuggestIDSheet;
