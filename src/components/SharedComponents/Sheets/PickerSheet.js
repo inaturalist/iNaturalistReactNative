@@ -41,6 +41,7 @@ const PickerSheet = ( {
       insideModal={insideModal}
       scrollEnabled={false}
       enablePanDownToClose={false}
+      enableContentPanningGesture={false}
     >
       <View className="p-5">
         <Picker

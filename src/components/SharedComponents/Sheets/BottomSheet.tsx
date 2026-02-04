@@ -42,6 +42,7 @@ interface Props {
   containerClass?: string;
   scrollEnabled?: boolean;
   enablePanDownToClose?: boolean;
+  enableContentPanningGesture?: boolean;
 }
 
 const StandardBottomSheet = ( {
@@ -58,6 +59,7 @@ const StandardBottomSheet = ( {
   testID,
   scrollEnabled = true,
   enablePanDownToClose = true,
+  enableContentPanningGesture = true,
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -116,6 +118,7 @@ const StandardBottomSheet = ( {
       accessible={false}
       onDismiss={handleClose}
       enablePanDownToClose={enablePanDownToClose}
+      enableContentPanningGesture={enableContentPanningGesture}
     >
       <BottomSheetScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
