@@ -33,30 +33,24 @@ const FollowButtonContainer = ( {
 
   const following = relationship?.following;
 
-  const createRelationshipsMutation = useAuthenticatedMutation(
+  const { mutate: createRelationshipsMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => createRelationships( params, optsWithAuth ),
+    {
+      onSuccess: () => {
+        refetchRelationship();
+        setLoading( false );
+      },
+      onError: error => {
+        setLoading( false );
+        logger.error( error );
+        Alert.alert( t( "Something-went-wrong" ) );
+      },
+    },
   );
 
   const updateRelationshipsMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
   );
-
-  const createRelationshipsMutate = ( ) => createRelationshipsMutation.mutate( {
-    relationship: {
-      friend_id: userId,
-      following: true,
-    },
-  }, {
-    onSuccess: () => {
-      refetchRelationship();
-      setLoading( false );
-    },
-    onError: error => {
-      setLoading( false );
-      logger.error( error );
-      Alert.alert( t( "Something-went-wrong" ) );
-    },
-  } );
 
   const updateRelationshipsMutate = ( ) => updateRelationshipsMutation.mutate( {
     id: relationship?.id,
@@ -79,7 +73,12 @@ const FollowButtonContainer = ( {
     if ( relationship ) {
       updateRelationshipsMutate();
     } else {
-      createRelationshipsMutate();
+      createRelationshipsMutate( {
+        relationship: {
+          friend_id: userId,
+          following: true,
+        },
+      } );
     }
   };
 
