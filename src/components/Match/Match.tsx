@@ -1,5 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import type { ApiPhoto, ApiSuggestion } from "api/types";
+import type { ApiPhoto, ApiSuggestion, ApiTaxon } from "api/types";
 import LocationSection
   from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
 import MapSection
@@ -45,6 +45,7 @@ interface Props {
   scrollRef: React.RefObject<ScrollView | null>;
   iconicTaxon?: RealmTaxon;
   setIconicTaxon: ( taxon: RealmTaxon ) => void;
+  taxonToSave?: ApiTaxon;
 }
 
 const Match = ( {
@@ -61,6 +62,7 @@ const Match = ( {
   scrollRef,
   iconicTaxon,
   setIconicTaxon,
+  taxonToSave,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
@@ -192,7 +194,7 @@ const Match = ( {
               )
               : <MatchHeader topSuggestion={topSuggestion} />
           }
-          <HeaderEditIcon observation={observation} lastScreen="Match" taxon={taxon} />
+          <HeaderEditIcon observation={observation} lastScreen="Match" taxon={taxonToSave} />
         </View>
         <PhotosSection
           representativePhoto={topSuggestion?.taxon?.representative_photo}
