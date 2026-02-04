@@ -5,7 +5,7 @@ import {
   P,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { round } from "lodash";
+import round from "lodash/round";
 import React from "react";
 import colors from "styles/tailwindColors";
 

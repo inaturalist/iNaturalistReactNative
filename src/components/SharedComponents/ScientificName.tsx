@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { Body3 } from "components/SharedComponents";
-import { random } from "lodash";
+import random from "lodash/random";
 import React from "react";
 import type { TextProps } from "react-native";
 import Taxon from "realmModels/Taxon";

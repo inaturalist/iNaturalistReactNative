@@ -1,5 +1,5 @@
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
-import _ from "lodash";
+import remove from "lodash/remove";
 import type { RealmObservation } from "realmModels/types";
 import type { StateCreator } from "zustand";
 
@@ -268,7 +268,7 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
     observation.currentIncrements = observation.totalIncrements;
 
     // return the new queue without the uuid of the object already deleted remotely
-    const queueWithDeleted = _.remove( uploadQueue, uuidInQueue => uuidInQueue !== uuid );
+    const queueWithDeleted = remove( uploadQueue, uuidInQueue => uuidInQueue !== uuid );
 
     return ( {
       uploadQueue: queueWithDeleted,

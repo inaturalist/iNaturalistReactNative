@@ -5,7 +5,7 @@ import type {
   ApiObservationsSearchResponse,
 } from "api/types";
 import { addSeconds, formatISO, parseISO } from "date-fns";
-import { last } from "lodash";
+import last from "lodash/last";
 
 interface ApiObservationsSearchParamsForInfiniteQuery extends ApiObservationsSearchParams {
   pageParam: number | string | undefined | null;

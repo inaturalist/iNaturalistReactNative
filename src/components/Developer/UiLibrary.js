@@ -6,7 +6,7 @@ import {
 import {
   Pressable,
 } from "components/styledComponents";
-import { sortBy } from "lodash";
+import sortBy from "lodash/sortBy";
 import type { Node } from "react";
 import React from "react";
 import {

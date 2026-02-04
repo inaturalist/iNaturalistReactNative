@@ -34,9 +34,10 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { getInstallID, store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
-import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
-import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
 import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
+import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
+import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
+import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -152,6 +153,7 @@ const AppWithProviders = ( ) => {
       "install-data": installDataMMKVStorage,
     },
   } );
+  useRequireProfilerDevTools();
 
   return (
     <QueryClientProvider client={queryClient}>

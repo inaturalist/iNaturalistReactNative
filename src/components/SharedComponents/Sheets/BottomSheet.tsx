@@ -33,8 +33,7 @@ interface Props {
   hideCloseButton?: boolean;
   headerText?: string;
   onLayout?: ( event: object ) => void;
-  // Callback when the user presses the close button or backdrop, not whenever the sheet
-  // closes
+  // OnPressClose *does* get called whenever bottom sheet is dismissed
   onPressClose?: ( ) => void;
   snapPoints?: string[];
   insideModal?: boolean;

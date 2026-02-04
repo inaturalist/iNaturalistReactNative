@@ -5,7 +5,7 @@ import {
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import { ActivityIndicator, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import _ from "lodash";
+import sortBy from "lodash/sortBy";
 import React from "react";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
@@ -131,12 +131,12 @@ const ProjectRequirements = ( ) => {
     ),
   } );
 
-  const includedTaxonList = _.sortBy(
+  const includedTaxonList = sortBy(
     filterRules( "in_taxon?" ),
     r => r.taxon.name,
   );
 
-  const excludedTaxonList = _.sortBy(
+  const excludedTaxonList = sortBy(
     filterRules( "not_in_taxon?" ),
     r => r.taxon.name,
   );
@@ -160,8 +160,8 @@ const ProjectRequirements = ( ) => {
     } ),
   } );
 
-  const includedPlaces = _.sortBy( filterRules( "observed_in_place?" ), r => r.place.display_name );
-  const excludedPlaces = _.sortBy(
+  const includedPlaces = sortBy( filterRules( "observed_in_place?" ), r => r.place.display_name );
+  const excludedPlaces = sortBy(
     filterRules( "not_observed_in_place?" ),
     r => r.place.display_name,
   );
@@ -178,8 +178,8 @@ const ProjectRequirements = ( ) => {
   const membersOnly = getFieldValue( project?.search_parameters
     ?.filter( pref => pref.field === "members_only" ) );
 
-  const includedUsers = _.sortBy( filterRules( "observed_by_user?" ), r => r.user.login );
-  const excludedUsers = _.sortBy( filterRules( "not_observed_by_user?" ), r => r.user.login );
+  const includedUsers = sortBy( filterRules( "observed_by_user?" ), r => r.user.login );
+  const excludedUsers = sortBy( filterRules( "not_observed_by_user?" ), r => r.user.login );
   const userRule = RULES.find( r => r.name === t( "Users" ) );
 
   const createUserObject = user => ( {
