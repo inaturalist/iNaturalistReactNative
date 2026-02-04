@@ -378,7 +378,7 @@ const IdentificationSheets: React.FC<Props> = ( {
     doSuggestId( potentialDisagree );
   }, [doSuggestId] );
 
-  const createCommentMutation = useAuthenticatedMutation(
+  const { mutate: createCommentMutate } = useAuthenticatedMutation(
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
       onSuccess: data => handleCommentMutationSuccess( data ),
