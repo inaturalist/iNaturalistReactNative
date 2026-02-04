@@ -1,4 +1,4 @@
-import _ from "lodash";
+import merge from "lodash/merge";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -91,7 +91,7 @@ const useStore = create( persist(
     storage: createJSONStorage( () => zustandStorage ),
     // We need to deep merge to persist nested objects, like layout
     // https://zustand.docs.pmnd.rs/middlewares/persist#persisting-a-state-with-nested-objects
-    merge: ( persisted, current ) => _.merge( current, persisted ),
+    merge: ( persisted, current ) => merge( current, persisted ),
   },
 ) );
 

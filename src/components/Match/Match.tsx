@@ -8,7 +8,6 @@ import {
   ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import _ from "lodash";
 import React from "react";
 import type { ScrollView } from "react-native";
 import type {

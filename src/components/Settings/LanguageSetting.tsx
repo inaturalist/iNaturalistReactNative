@@ -6,7 +6,6 @@ import {
   PickerSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import changeLanguage from "sharedHelpers/changeLanguage";
 import { useTranslation } from "sharedHooks";

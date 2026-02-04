@@ -1,5 +1,5 @@
 import { View } from "components/styledComponents";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React from "react";
 import { Animated } from "react-native";
 

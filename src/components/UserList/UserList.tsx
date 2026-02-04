@@ -4,7 +4,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
-import _ from "lodash";
+import has from "lodash/has";
 import React from "react";
 import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
@@ -42,7 +42,7 @@ const UserList = ( {
   const renderItem = ( { item } ) => {
     // results in explore search are nested differently
     // than in project members at the moment
-    const userItem = _.has( item, "user" )
+    const userItem = has( item, "user" )
       ? item
       : { user: item };
     const observationCount = item?.observation_count || item?.observations_count;

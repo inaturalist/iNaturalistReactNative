@@ -14,7 +14,8 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { compact, groupBy } from "lodash";
+import compact from "lodash/compact";
+import groupBy from "lodash/groupBy";
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 import Observation from "realmModels/Observation";

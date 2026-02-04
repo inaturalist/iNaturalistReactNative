@@ -1,6 +1,6 @@
 // @flow
 import ObsMediaDisplay from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplay";
-import _ from "lodash";
+import compact from "lodash/compact";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 
@@ -15,7 +15,7 @@ type Props = {
 // the first place? We are not deleting them, so what's happening
 // to them and why?
 function jsonifyPotentialRealmObjects( objects ) {
-  return _.compact(
+  return compact(
     Array.from( objects || [] ).map(
       object => (
         object.toJSON
