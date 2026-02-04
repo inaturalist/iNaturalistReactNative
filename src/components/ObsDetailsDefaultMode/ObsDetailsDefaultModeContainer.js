@@ -94,7 +94,6 @@ const reducer = ( state, action ) => {
     case SET_ADD_COMMENT_SHEET:
       return {
         ...state,
-        commentIsOptional: action.commentIsOptional,
         showAddCommentSheet: action.showAddCommentSheet,
       };
     default:
@@ -228,18 +227,16 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     !!currentUser && !!observation,
   );
 
-  const openAddCommentSheet = useCallback( ( { isOptional = false } ) => {
+  const openAddCommentSheet = useCallback( ( ) => {
     dispatch( {
       type: SET_ADD_COMMENT_SHEET,
       showAddCommentSheet: true,
-      commentIsOptional: isOptional || false,
     } );
   }, [] );
 
   const hideAddCommentSheet = useCallback( ( ) => dispatch( {
     type: SET_ADD_COMMENT_SHEET,
     showAddCommentSheet: false,
-    comment: null,
   } ), [] );
 
   const openAgreeWithIdSheet = useCallback( taxon => {
