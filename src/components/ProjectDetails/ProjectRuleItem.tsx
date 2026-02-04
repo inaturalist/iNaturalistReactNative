@@ -1,7 +1,8 @@
 import classnames from "classnames";
 import { Body3, Button, DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
+import take from "lodash/take";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
@@ -55,15 +56,15 @@ const ProjectRuleItem = ( { rule }: Props ) => {
   ) );
 
   const showRuleDetails = ( ) => {
-    if ( _.isEmpty( rule?.inclusions ) && _.isEmpty( rule?.exclusions ) ) {
+    if ( isEmpty( rule?.inclusions ) && isEmpty( rule?.exclusions ) ) {
       return showRules( rule?.defaults );
     }
     return (
       <>
-        {!_.isEmpty( rule?.inclusions ) && showRules( hideFullList
-          ? _.take( rule?.inclusions, 20 )
+        {!isEmpty( rule?.inclusions ) && showRules( hideFullList
+          ? take( rule?.inclusions, 20 )
           : rule?.inclusions )}
-        {( !_.isEmpty( rule?.exclusions ) && !hideFullList ) && (
+        {( !isEmpty( rule?.exclusions ) && !hideFullList ) && (
           <>
             <Body3 className="flex-row pb-1">{t( "except" )}</Body3>
             {showRules( rule?.exclusions )}

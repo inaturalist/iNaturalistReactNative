@@ -1,4 +1,4 @@
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { useCallback, useState } from "react";
 import {
   useCurrentUser,
@@ -59,7 +59,7 @@ const ProjectsContainer = ( ) => {
     projects,
   } = useInfiniteProjectsScroll( {
     params: apiParams,
-    enabled: !_.isEmpty( apiParams ),
+    enabled: !isEmpty( apiParams ),
   } );
 
   const tabs = [

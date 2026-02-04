@@ -19,7 +19,8 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import i18n from "i18next";
-import _, { compact } from "lodash";
+import compact from "lodash/compact";
+import find from "lodash/find";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
@@ -119,7 +120,7 @@ const TaxonDetails = ( ): Node => {
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
-    ? _.find( usableRoutes.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
+    ? find( usableRoutes.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
     : null;
   const { localObservation } = useLocalObservation( obsUuid );
   const { remoteObservation } = useRemoteObservation(

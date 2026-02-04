@@ -11,7 +11,6 @@ import {
 import {
   View,
 } from "components/styledComponents";
-import _ from "lodash";
 import React, { useState } from "react";
 import {
   Alert,

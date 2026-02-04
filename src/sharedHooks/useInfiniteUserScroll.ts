@@ -1,4 +1,4 @@
-import { flatten } from "lodash";
+import flatten from "lodash/flatten";
 import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 const useInfiniteUserScroll = (

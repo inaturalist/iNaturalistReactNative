@@ -9,7 +9,6 @@ import {
 } from "components/SharedComponents";
 import HeaderEditIcon from "components/SharedComponents/ObsDetails/HeaderEditIcon";
 import { View } from "components/styledComponents";
-import _ from "lodash";
 import React from "react";
 import type { ScrollView } from "react-native";
 import type {

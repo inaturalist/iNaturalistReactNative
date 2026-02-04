@@ -10,7 +10,9 @@ import flattenUploadParams from "components/Suggestions/helpers/flattenUploadPar
 import {
   FETCH_STATUSES,
 } from "components/Suggestions/SuggestionsContainer";
-import _ from "lodash";
+import findIndex from "lodash/findIndex";
+import isEqual from "lodash/isEqual";
+import orderBy from "lodash/orderBy";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
@@ -374,13 +376,13 @@ const MatchContainer = ( ) => {
     // make sure to reorder the list by confidence score
     // for when a user taps multiple suggestions and pushes a new top suggestion to
     // the top of the list
-    const sortedList = _.orderBy(
+    const sortedList = orderBy(
       suggestionsList,
       suggestion => suggestion.combined_score,
       ["desc"],
     );
 
-    const chosenIndex = _.findIndex(
+    const chosenIndex = findIndex(
       sortedList,
       suggestion => suggestion.taxon.id === selection.taxon.id,
     );
@@ -429,7 +431,7 @@ const MatchContainer = ( ) => {
       if ( !hasLoadedRef.current
         // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
         // we shouldn't rely on implementation internals to consumer drive state
-        && _.isEqual( internalUseSuggestionsInitialSuggestions, suggestions )
+        && isEqual( internalUseSuggestionsInitialSuggestions, suggestions )
       ) {
         hasLoadedRef.current = true;
         setImageParams( );
@@ -449,7 +451,7 @@ const MatchContainer = ( ) => {
       orderedList.unshift( suggestions.topSuggestion );
     }
     // make sure list is in order of confidence score
-    const sortedList = _.orderBy(
+    const sortedList = orderBy(
       orderedList,
       suggestion => suggestion.combined_score,
       ["desc"],

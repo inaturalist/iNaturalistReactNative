@@ -189,6 +189,7 @@ const Menu = ( ) => {
       ? {
         loggedIn: "Yes",
         username: currentUser.login,
+        userId: currentUser.id,
         identifications: typeof currentUser.identifications_count === "number"
           ? getCountBreakpoint( currentUser.identifications_count )
           : "NA",
@@ -202,15 +203,13 @@ const Menu = ( ) => {
         identifications: "loggedout",
         remoteObservations: "loggedout",
       };
-    const feedbackWithContext = {
-      text: feedbackText,
+    const feedbackContext = {
       ...modeContext,
       ...loggedInContext,
       // can have unsynced obs when logged out
       locallySavedOnlyObservations,
     };
-    // we're logging structured data here that is parsed in Grafana
-    feedbackLogger.info( feedbackWithContext );
+    feedbackLogger.infoWithExtra( feedbackText, feedbackContext );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
     setModalState( null );
     return true;

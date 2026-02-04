@@ -193,7 +193,11 @@ Change-date = Change date
 CHANGE-END-DATE = CHANGE END DATE
 # Label for a button that changes a selected end date
 Change-end-date = Change end date
+# Accessibility label for a button that allows users to sort observations
+Change-observations-sort-order = Change observations sort order
 Change-project = Change project
+# Accessibility label for a button that allows users to sort taxa
+Change-species-sort-order = Change species sort order
 # Label for a button that changes a selected start date
 CHANGE-START-DATE = CHANGE START DATE
 # Label for a button that changes a selected start date
@@ -313,16 +317,16 @@ DATE = DATE
 Date = Date
 # Date formatting using date-fns
 # Used for things like User Profile join date
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-long = PP
 # Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-month-day = MMM d
 # Use when only showing an observations month and year
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-month-year = MMM yyyy
 # Short date, e.g. on notifications from over a year ago
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-short = M/d/yy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
@@ -350,20 +354,20 @@ datetime-difference-minutes = { $count }m
 # Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
 datetime-difference-weeks = { $count }w
 # Longer datetime, e.g. when editing an observation
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 datetime-format-long = Pp
 # Longer datetime with time zone, e.g. when editing an observation and we know
 # the time zone See complete list of formatting styles at
-# https://date-fns.org/v2.29.3/docs/format and time zone formatting
+# https://date-fns.org/v3.6.0/docs/format and time zone formatting
 # characters at
 # https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-long-with-zone = Pp (zzz)
 # Shorter datetime, e.g. on observation detail view
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 datetime-format-short = M/d/yy h:mm a
 # Shorter datetime with time zone, e.g. on observation detail view
 # See complete list of formatting styles at
-# https://date-fns.org/v2.29.3/docs/format and time zone formatting
+# https://date-fns.org/v3.6.0/docs/format and time zone formatting
 # characters at
 # https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-short-with-zone = M/d/yy h:mm a zzz
@@ -686,6 +690,8 @@ Learn-from-people-who-verify-and-refine-your-identifications = Learn from people
 Learn-More = Learn More
 LEARN-MORE-ABOUT-THIS-GROUP = LEARN MORE ABOUT THIS GROUP
 LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
+# Label for species sort order
+Least-Observed = Least Observed
 LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
 # Asking for confirmation if the user wants to leave this project
@@ -735,6 +741,8 @@ More = More
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
+# Label for species sort order, this option is selected by default
+Most-Observed-Default = Most Observed (Default)
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
@@ -1163,6 +1171,9 @@ Sorry-this-observation-was-deleted = Sorry, this observation was deleted
 Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that URL: { $url }
 SORT-BY = SORT BY
 Sort-by = Sort by
+# Accessibility label for a button that allows users to sort observations
+# Label for species sort menu
+SORT-SPECIES = SORT SPECIES
 # Character separating current position and total duration when playing a
 # sound, e.g. 00:12 / 03:00 uses "/" as the separator. This can be anything,
 # but it should be very short.
@@ -1180,6 +1191,8 @@ Sounds = Sounds
 Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 Species = Species
 Species-View = Species View
+Species-with-the-least-observations-appear-first = Species with the least observations appear first
+Species-with-the-most-observations-appear-first = Species with the most observations appear first
 SPECIES-WITHOUT-NUMBER =
     { $count ->
         [one] SPECIES
