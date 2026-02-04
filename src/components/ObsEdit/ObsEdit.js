@@ -36,7 +36,6 @@ const ObsEdit = ( ): Node => {
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
   const [needLocation, setNeedLocation] = useState(
-    // take a look 👀
     shouldFetchObservationLocation( currentObservation ),
   );
   const isFocused = useIsFocused( );
