@@ -35,7 +35,7 @@ const useMarkViewedMutation = (
     !!currentUser && !!observation,
   );
 
-  const markViewedMutation = useAuthenticatedMutation(
+  const { mutate: markViewedMutate } = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
     {
       onSuccess: ( ) => {
@@ -64,13 +64,13 @@ const useMarkViewedMutation = (
     if ( localObservation && localObservation.viewed( ) ) return;
 
     setIsMarkingViewed( true );
-    markViewedMutation.mutate( { id: uuid } );
+    markViewedMutate( { id: uuid } );
   }, [
     currentUser,
     localObservation,
     remoteObservation,
     uuid,
-    markViewedMutation,
+    markViewedMutate,
     isMarkingViewed,
   ] );
 };

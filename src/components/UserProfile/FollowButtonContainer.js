@@ -33,53 +33,51 @@ const FollowButtonContainer = ( {
 
   const following = relationship?.following;
 
-  const createRelationshipsMutation = useAuthenticatedMutation(
+  const { mutate: createRelationshipsMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => createRelationships( params, optsWithAuth ),
+    {
+      onSuccess: () => {
+        refetchRelationship();
+        setLoading( false );
+      },
+      onError: error => {
+        setLoading( false );
+        logger.error( error );
+        Alert.alert( t( "Something-went-wrong" ) );
+      },
+    },
   );
 
-  const updateRelationshipsMutation = useAuthenticatedMutation(
+  const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
+    {
+      onSuccess: () => {
+        refetchRelationship();
+        setLoading( false );
+      },
+      onError: error => {
+        setLoading( false );
+        logger.error( error );
+        Alert.alert( t( "Something-went-wrong" ) );
+      },
+    },
   );
-
-  const createRelationshipsMutate = ( ) => createRelationshipsMutation.mutate( {
-    relationship: {
-      friend_id: userId,
-      following: true,
-    },
-  }, {
-    onSuccess: () => {
-      refetchRelationship();
-      setLoading( false );
-    },
-    onError: error => {
-      setLoading( false );
-      logger.error( error );
-      Alert.alert( t( "Something-went-wrong" ) );
-    },
-  } );
-
-  const updateRelationshipsMutate = ( ) => updateRelationshipsMutation.mutate( {
-    id: relationship?.id,
-    relationship: {
-      following: true,
-    },
-  }, {
-    onSuccess: () => {
-      refetchRelationship();
-      setLoading( false );
-    },
-    onError: error => {
-      setLoading( false );
-      logger.error( error );
-      Alert.alert( t( "Something-went-wrong" ) );
-    },
-  } );
 
   const follow = () => {
     if ( relationship ) {
-      updateRelationshipsMutate();
+      updateRelationshipsMutate( {
+        id: relationship?.id,
+        relationship: {
+          following: true,
+        },
+      } );
     } else {
-      createRelationshipsMutate();
+      createRelationshipsMutate( {
+        relationship: {
+          friend_id: userId,
+          following: true,
+        },
+      } );
     }
   };
 

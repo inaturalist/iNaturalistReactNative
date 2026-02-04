@@ -52,7 +52,7 @@ const HeaderKebabMenu = ( {
     }
   };
 
-  const toggleSubscription = useAuthenticatedMutation(
+  const { mutate: toggleSubscriptionMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => createSubscription( params, optsWithAuth ),
     {
       onSuccess: () => {
@@ -67,7 +67,7 @@ const HeaderKebabMenu = ( {
   const toggleSubscriptionOnPress = async ( ) => {
     setKebabMenuVisible( false );
     try {
-      return await toggleSubscription.mutate( { uuid } );
+      return await toggleSubscriptionMutate( { uuid } );
     } catch ( error ) {
       Alert.alert( error.message );
       return null;

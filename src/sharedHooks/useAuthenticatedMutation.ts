@@ -1,4 +1,4 @@
-import type { MutationKey } from "@tanstack/react-query";
+import type { UseMutationOptions } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
@@ -6,11 +6,6 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { log } from "../../react-native-logs.config";
 
 const logger = log.extend( "useAuthenticatedMutation" );
-
-interface MutationOptions {
-  mutationKey?: MutationKey;
-  throwOnError?: boolean;
-}
 
 type MutationFunction<Response> = (
   params: unknown, options: { api_token: string | null }
@@ -25,7 +20,7 @@ type MutationError = any;
 // with an object that includes the JWT
 const useAuthenticatedMutation = <Response>(
   mutationFunction: MutationFunction<Response>,
-  mutationOptions: MutationOptions = {},
+  mutationOptions: UseMutationOptions = {},
 ) => useMutation<Response, MutationError>( {
   mutationFn: async params => {
     // Note, getJWTToken() takes care of fetching a new token if the existing

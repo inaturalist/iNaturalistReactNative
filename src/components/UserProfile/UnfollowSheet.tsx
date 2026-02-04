@@ -19,24 +19,18 @@ const UnfollowSheet = ( {
 }: Props ) => {
   const { t } = useTranslation( );
 
-  const updateRelationshipsMutation = useAuthenticatedMutation(
-    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth ),
+  const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
+    {
+      onSuccess: () => {
+        setShowUnfollowSheet( false );
+        refetchRelationship();
+      },
+      onError: error => {
+        Alert.alert( "Error Following/Unfollowing", error );
+      },
+    },
   );
-
-  const unfollowUser = ( ) => updateRelationshipsMutation.mutate( {
-    id: relationship.id,
-    relationship: {
-      following: false,
-    },
-  }, {
-    onSuccess: () => {
-      setShowUnfollowSheet( false );
-      refetchRelationship();
-    },
-    onError: error => {
-      Alert.alert( "Error Following/Unfollowing", error );
-    },
-  } );
 
   return (
     <WarningSheet
@@ -47,7 +41,14 @@ const UnfollowSheet = ( {
       buttonText={t( "UNFOLLOW" )}
       handleSecondButtonPress={( ) => setShowUnfollowSheet( false )}
       confirm={( ) => {
-        if ( relationship ) unfollowUser();
+        if ( relationship ) {
+          updateRelationshipsMutate( {
+            id: relationship.id,
+            relationship: {
+              following: false,
+            },
+          } );
+        }
       }}
     />
   );
