@@ -1,8 +1,8 @@
-// @flow
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
+import type { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
+import type { ApiComment, ApiIdentification } from "api/types";
 import { RealmContext } from "providers/contexts";
 import {
   useCallback,
@@ -10,6 +10,7 @@ import {
   useReducer,
 } from "react";
 import Observation from "realmModels/Observation";
+import type { RealmObservation, RealmTaxon, RealmUser } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
@@ -22,8 +23,15 @@ import useStore from "stores/useStore";
 
 const { useRealm } = RealmContext;
 
-const sortItems = ( ids, comments ) => ids.concat( [...comments] ).sort(
-  ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ),
+interface ActivityItem {
+  created_at: string;
+}
+
+const sortItems = (
+  ids: ActivityItem[],
+  comments: ActivityItem[],
+): ActivityItem[] => ids.concat( [...comments] ).sort(
+  ( a, b ) => ( new Date( a.created_at ).getTime() - new Date( b.created_at ).getTime() ),
 );
 
 const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
@@ -33,7 +41,28 @@ const SET_INITIAL_OBSERVATION = "SET_INITIAL_OBSERVATION";
 const ADD_ACTIVITY_ITEM = "ADD_ACTIVITY_ITEM";
 const LOADING_ACTIVITY_ITEM = "LOADING_ACTIVITY_ITEM";
 
-const initialState = {
+interface AgreeIdentification {
+  taxon: RealmTaxon;
+}
+
+interface State {
+  activityItems: ActivityItem[];
+  addingActivityItem: boolean;
+  agreeIdentification: AgreeIdentification | null;
+  observationShown: RealmObservation | null;
+  showAddCommentSheet: boolean;
+  showAgreeWithIdSheet: boolean;
+}
+
+type Action =
+  | { type: typeof SET_INITIAL_OBSERVATION; observationShown: RealmObservation }
+  | { type: typeof ADD_ACTIVITY_ITEM; observationShown: RealmObservation }
+  | { type: typeof LOADING_ACTIVITY_ITEM }
+  | { type: typeof SHOW_AGREE_SHEET; agreeIdentification: AgreeIdentification }
+  | { type: typeof HIDE_AGREE_SHEET }
+  | { type: typeof SET_ADD_COMMENT_SHEET; showAddCommentSheet: boolean };
+
+const initialState: State = {
   activityItems: [],
   addingActivityItem: false,
   agreeIdentification: null,
@@ -42,7 +71,7 @@ const initialState = {
   showAgreeWithIdSheet: false,
 };
 
-const reducer = ( state, action ) => {
+const reducer = ( state: State, action: Action ): State => {
   switch ( action.type ) {
     case SET_INITIAL_OBSERVATION:
       return {
@@ -86,54 +115,54 @@ const reducer = ( state, action ) => {
         showAddCommentSheet: action.showAddCommentSheet,
       };
     default:
-      throw new Error( );
+      return state;
   }
 };
 
-type UseObsDetailsSharedLogicParams = {
-  observation: Object,
-  uuid: string,
-  targetActivityItemID?: ?number,
-  localObservation: ?Object,
-  remoteObservation: ?Object,
-  markViewedLocally: ( ) => void,
-  markDeletedLocally: ( ) => void,
-  setRemoteObsWasDeleted: ( deleted: boolean ) => void,
-  fetchRemoteObservationError: ?Object,
-  currentUser: ?Object,
-  belongsToCurrentUser: boolean,
-  isRefetching: boolean,
-  refetchRemoteObservation: ( ) => void,
-  isConnected: boolean,
-  remoteObsWasDeleted: boolean,
+interface UseObsDetailsSharedLogicParams {
+  observation: RealmObservation;
+  uuid: string;
+  targetActivityItemID?: number | null;
+  localObservation: RealmObservation | null;
+  remoteObservation: RealmObservation | null;
+  markViewedLocally: ( ) => void;
+  markDeletedLocally: ( ) => void;
+  setRemoteObsWasDeleted: ( deleted: boolean ) => void;
+  fetchRemoteObservationError: { status?: number } | null;
+  currentUser: RealmUser | null;
+  belongsToCurrentUser: boolean;
+  isRefetching: boolean;
+  refetchRemoteObservation: ( ) => void;
+  isConnected: boolean;
+  remoteObsWasDeleted: boolean;
 }
 
-type UseObsDetailsSharedLogicReturn = {
+interface UseObsDetailsSharedLogicReturn {
   // State
-  activityItems: Object[],
-  addingActivityItem: boolean,
-  agreeIdentification: ?Object,
-  observationShown: ?Object,
-  showAddCommentSheet: boolean,
-  showAgreeWithIdSheet: boolean,
+  activityItems: ActivityItem[];
+  addingActivityItem: boolean;
+  agreeIdentification: AgreeIdentification | null;
+  observationShown: RealmObservation | null;
+  showAddCommentSheet: boolean;
+  showAgreeWithIdSheet: boolean;
 
   // Computed
-  hasPhotos: boolean,
-  subscriptionResults: Object[],
-  wasSynced: boolean,
+  hasPhotos: boolean;
+  subscriptionResults: unknown[];
+  wasSynced: boolean;
 
   // Callbacks
-  openAddCommentSheet: () => void,
-  hideAddCommentSheet: () => void,
-  openAgreeWithIdSheet: ( taxon: Object ) => void,
-  closeAgreeWithIdSheet: () => void,
-  navToSuggestions: () => void,
-  invalidateQueryAndRefetch: () => void,
-  handleIdentificationMutationSuccess: ( data: Object[] ) => void,
-  handleCommentMutationSuccess: ( data: Object[] ) => void,
-  confirmRemoteObsWasDeleted: () => void,
-  loadActivityItem: () => void,
-  refetchSubscriptions: () => void,
+  openAddCommentSheet: () => void;
+  hideAddCommentSheet: () => void;
+  openAgreeWithIdSheet: ( taxon: RealmTaxon ) => void;
+  closeAgreeWithIdSheet: () => void;
+  navToSuggestions: () => void;
+  invalidateQueryAndRefetch: () => void;
+  handleIdentificationMutationSuccess: ( data: ApiIdentification[] ) => void;
+  handleCommentMutationSuccess: ( data: ApiComment[] ) => void;
+  confirmRemoteObsWasDeleted: () => void;
+  loadActivityItem: () => void;
+  refetchSubscriptions: () => void;
 }
 
 const useObsDetailsSharedLogic = (
@@ -154,7 +183,7 @@ const useObsDetailsSharedLogic = (
   } = params;
 
   const setObservations = useStore( state => state.setObservations );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NavigationProp<ParamListBase>>( );
   const realm = useRealm( );
   const [state, dispatch] = useReducer( reducer, initialState );
   const queryClient = useQueryClient( );
@@ -252,7 +281,7 @@ const useObsDetailsSharedLogic = (
     showAddCommentSheet: false,
   } ), [] );
 
-  const openAgreeWithIdSheet = useCallback( taxon => {
+  const openAgreeWithIdSheet = useCallback( ( taxon: RealmTaxon ) => {
     dispatch( {
       type: SHOW_AGREE_SHEET,
       agreeIdentification: { taxon },
@@ -283,7 +312,7 @@ const useObsDetailsSharedLogic = (
     ? subscriptions?.results
     : [];
 
-  const handleIdentificationMutationSuccess = useCallback( data => {
+  const handleIdentificationMutationSuccess = useCallback( ( data: ApiIdentification[] ) => {
     refetchRemoteObservation( );
     if ( belongsToCurrentUser ) {
       const createdIdent = data[0];
@@ -313,7 +342,7 @@ const useObsDetailsSharedLogic = (
     uuid,
   ] );
 
-  const handleCommentMutationSuccess = useCallback( data => {
+  const handleCommentMutationSuccess = useCallback( ( data: ApiComment[] ) => {
     refetchRemoteObservation( );
     if ( belongsToCurrentUser ) {
       safeRealmWrite( realm, ( ) => {
