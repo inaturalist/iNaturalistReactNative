@@ -95,7 +95,7 @@ const DQAContainer = ( ): React.Node => {
     }
   }, [isRefetching, setNotLoading] );
 
-  const faveMutation = useAuthenticatedMutation(
+  const { mutate: faveMutate } = useAuthenticatedMutation(
     ( faveParams, optsWithAuth ) => faveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
@@ -107,7 +107,7 @@ const DQAContainer = ( ): React.Node => {
     },
   );
 
-  const unfaveMutation = useAuthenticatedMutation(
+  const { mutate: unfaveMutate } = useAuthenticatedMutation(
     ( faveParams, optsWithAuth ) => unfaveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
@@ -119,7 +119,7 @@ const DQAContainer = ( ): React.Node => {
     },
   );
 
-  const createQualityMetricMutation = useAuthenticatedMutation(
+  const { mutate: createQualityMetricMutate } = useAuthenticatedMutation(
     ( qualityMetricParams, optsWithAuth ) => setQualityMetric( qualityMetricParams, optsWithAuth ),
     {
       onSuccess: async ( ) => {
@@ -128,7 +128,7 @@ const DQAContainer = ( ): React.Node => {
         setNotLoading( );
       },
       onError: error => {
-        logger.error( "createQualityMetricMutation failure", error );
+        logger.error( "createQualityMetricMutate failure", error );
         setHideErrorSheet( false );
       },
     },
@@ -143,7 +143,7 @@ const DQAContainer = ( ): React.Node => {
       agree: vote,
       ttyl: -1,
     };
-    createQualityMetricMutation.mutate( qualityMetricParams );
+    createQualityMetricMutate( qualityMetricParams );
   };
 
   // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
@@ -158,10 +158,10 @@ const DQAContainer = ( ): React.Node => {
         ? "no"
         : "yes",
     };
-    faveMutation.mutate( faveParams );
+    faveMutate( faveParams );
   };
 
-  const removeQualityMetricMutation = useAuthenticatedMutation(
+  const { mutate: removeQualityMetricMutate } = useAuthenticatedMutation(
     ( deleteParams, options ) => deleteQualityMetric( deleteParams, options ),
     {
       onSuccess: async ( ) => {
@@ -170,7 +170,7 @@ const DQAContainer = ( ): React.Node => {
         setNotLoading( );
       },
       onError: error => {
-        logger.error( "removeQualityMetricMutation failed", error );
+        logger.error( "removeQualityMetricMutate failed", error );
         setHideErrorSheet( false );
       },
     },
@@ -184,7 +184,7 @@ const DQAContainer = ( ): React.Node => {
       metric,
       ttyl: -1,
     };
-    removeQualityMetricMutation.mutate( qualityMetricParams );
+    removeQualityMetricMutate( qualityMetricParams );
   };
 
   // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
@@ -196,7 +196,7 @@ const DQAContainer = ( ): React.Node => {
       id: observationUUID,
       scope: "needs_id",
     };
-    unfaveMutation.mutate( unfaveParams );
+    unfaveMutate( unfaveParams );
   };
 
   const ifMajorityAgree = metric => {

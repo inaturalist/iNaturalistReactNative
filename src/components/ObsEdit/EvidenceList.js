@@ -169,7 +169,7 @@ const EvidenceList = ( {
     setDeleting( false );
   }, [mediaUris, setSelectedMediaUri] );
 
-  const deleteObservationSoundMutation = useAuthenticatedMutation(
+  const { mutate: deleteObservationSoundMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteRemoteObservationSound( params, optsWithAuth ),
   );
 
@@ -194,7 +194,7 @@ const EvidenceList = ( {
     // If sound was synced, delete the remote copy immediately and then remove
     // the local
     if ( obsSound?.id ) {
-      deleteObservationSoundMutation.mutate( { uuid: obsSound.uuid }, {
+      deleteObservationSoundMutate( { uuid: obsSound.uuid }, {
         onSuccess: removeLocalSound,
         onError: deleteRemoteObservationSoundError => {
           setDeleting( false );
@@ -215,7 +215,7 @@ const EvidenceList = ( {
   }, [
     afterMediaDeleted,
     currentObservation?.uuid,
-    deleteObservationSoundMutation,
+    deleteObservationSoundMutate,
     deleteSoundFromObservation,
     realm,
     observationSounds,
