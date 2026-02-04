@@ -20,7 +20,7 @@ const UnfollowSheet = ( {
   const { t } = useTranslation( );
 
   const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
-    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth ),
+    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
     {
       onSuccess: () => {
         setShowUnfollowSheet( false );
