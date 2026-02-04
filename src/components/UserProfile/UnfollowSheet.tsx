@@ -32,13 +32,6 @@ const UnfollowSheet = ( {
     },
   );
 
-  const unfollowUser = ( ) => updateRelationshipsMutate( {
-    id: relationship.id,
-    relationship: {
-      following: false,
-    },
-  } );
-
   return (
     <WarningSheet
       onPressClose={( ) => setShowUnfollowSheet( false )}
@@ -48,7 +41,14 @@ const UnfollowSheet = ( {
       buttonText={t( "UNFOLLOW" )}
       handleSecondButtonPress={( ) => setShowUnfollowSheet( false )}
       confirm={( ) => {
-        if ( relationship ) unfollowUser();
+        if ( relationship ) {
+          updateRelationshipsMutate( {
+            id: relationship.id,
+            relationship: {
+              following: false,
+            },
+          } );
+        }
       }}
     />
   );
