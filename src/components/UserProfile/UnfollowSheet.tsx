@@ -21,20 +21,21 @@ const UnfollowSheet = ( {
 
   const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
     ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth ),
+    {
+      onSuccess: () => {
+        setShowUnfollowSheet( false );
+        refetchRelationship();
+      },
+      onError: error => {
+        Alert.alert( "Error Following/Unfollowing", error );
+      },
+    },
   );
 
   const unfollowUser = ( ) => updateRelationshipsMutate( {
     id: relationship.id,
     relationship: {
       following: false,
-    },
-  }, {
-    onSuccess: () => {
-      setShowUnfollowSheet( false );
-      refetchRelationship();
-    },
-    onError: error => {
-      Alert.alert( "Error Following/Unfollowing", error );
     },
   } );
 
