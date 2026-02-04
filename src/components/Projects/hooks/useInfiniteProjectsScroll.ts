@@ -1,5 +1,5 @@
 import { searchProjects } from "api/projects";
-import _, { flatten } from "lodash";
+import flatten from "lodash/flatten";
 import {
   useAuthenticatedInfiniteQuery,
 } from "sharedHooks";

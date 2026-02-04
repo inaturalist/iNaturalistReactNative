@@ -63,7 +63,7 @@ const FaveButton = ( {
     );
   };
 
-  const createUnfaveMutation = useAuthenticatedMutation(
+  const { mutate: createUnfaveMutate } = useAuthenticatedMutation(
     ( faveOrUnfaveParams, optsWithAuth ) => unfaveObservation( faveOrUnfaveParams, optsWithAuth ),
     {
       onSuccess: ( ) => {
@@ -78,7 +78,7 @@ const FaveButton = ( {
     },
   );
 
-  const createFaveMutation = useAuthenticatedMutation(
+  const { mutate: createFaveMutate } = useAuthenticatedMutation(
     ( faveOrUnfaveParams, optsWithAuth ) => faveObservation( faveOrUnfaveParams, optsWithAuth ),
     {
       onSuccess: ( ) => {
@@ -98,15 +98,15 @@ const FaveButton = ( {
     setLoading( true );
     if ( isFaved ) {
       setIsFaved( false );
-      createUnfaveMutation.mutate( { uuid } );
+      createUnfaveMutate( { uuid } );
     } else {
       setIsFaved( true );
-      createFaveMutation.mutate( { uuid } );
+      createFaveMutate( { uuid } );
     }
   }, [
     currentUser,
-    createFaveMutation,
-    createUnfaveMutation,
+    createFaveMutate,
+    createUnfaveMutate,
     isFaved,
     uuid,
   ] );

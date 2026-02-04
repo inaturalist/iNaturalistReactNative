@@ -10,7 +10,7 @@ import {
   TaxonResult,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { capitalize } from "lodash";
+import capitalize from "lodash/capitalize";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";

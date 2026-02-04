@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react-native";
 import ObsMedia from "components/ObsDetailsSharedComponents/Media/ObsMedia";
-import _ from "lodash";
+import compact from "lodash/compact";
 import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -20,7 +20,7 @@ const mockObservation = factory( "LocalObservation", {
   ],
 } );
 
-const mockPhotos = _.compact(
+const mockPhotos = compact(
   Array.from( mockObservation.observationPhotos ).map( op => op.photo ),
 );
 

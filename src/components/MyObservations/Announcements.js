@@ -72,7 +72,7 @@ const Announcements = ( {
     },
   );
 
-  const dismissAnnouncementMutation = useAuthenticatedMutation(
+  const { mutate: dismissAnnouncementMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => dismissAnnouncement( params, optsWithAuth ),
     {
       onSuccess: () => {
@@ -105,7 +105,7 @@ const Announcements = ( {
   const { id, dismissible, body } = topAnnouncement;
 
   const dismiss = async () => {
-    dismissAnnouncementMutation.mutate( { id } );
+    dismissAnnouncementMutate( { id } );
   };
 
   if ( isRefetching ) {

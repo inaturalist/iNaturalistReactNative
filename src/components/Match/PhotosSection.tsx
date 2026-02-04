@@ -7,7 +7,7 @@ import {
 import {
   Image, Pressable, View,
 } from "components/styledComponents";
-import _, { compact } from "lodash";
+import compact from "lodash/compact";
 import React, { useEffect, useState } from "react";
 import { Image as RNImage } from "react-native";
 import Photo from "realmModels/Photo";

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import Modal from "components/SharedComponents/Modal";
-import _ from "lodash";
+import find from "lodash/find";
 import type { PropsWithChildren } from "react";
 import React, {
   useCallback,
@@ -110,16 +110,16 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
       + "Make sure you're using it with checkMultiple and not check",
     );
   }
-  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
+  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
     return RESULTS.BLOCKED;
   }
-  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.DENIED ) ) {
+  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.DENIED ) ) {
     return RESULTS.DENIED;
   }
-  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
+  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
     return RESULTS.UNAVAILABLE;
   }
-  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.LIMITED ) ) {
+  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.LIMITED ) ) {
     return RESULTS.LIMITED;
   }
   return RESULTS.GRANTED;

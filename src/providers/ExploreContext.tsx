@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
-import { isEqual } from "lodash";
+import isEqual from "lodash/isEqual";
 import * as React from "react";
 import type { LatLng } from "react-native-maps";
 

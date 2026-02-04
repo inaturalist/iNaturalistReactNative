@@ -33,8 +33,7 @@ interface Props {
   hideCloseButton?: boolean;
   headerText?: string;
   onLayout?: ( event: object ) => void;
-  // Callback when the user presses the close button or backdrop, not whenever the sheet
-  // closes
+  // OnPressClose *does* get called whenever bottom sheet is dismissed
   onPressClose?: ( ) => void;
   snapPoints?: string[];
   insideModal?: boolean;
@@ -42,6 +41,8 @@ interface Props {
   testID?: string;
   containerClass?: string;
   scrollEnabled?: boolean;
+  enablePanDownToClose?: boolean;
+  enableContentPanningGesture?: boolean;
 }
 
 const StandardBottomSheet = ( {
@@ -57,6 +58,8 @@ const StandardBottomSheet = ( {
   containerClass,
   testID,
   scrollEnabled = true,
+  enablePanDownToClose = true,
+  enableContentPanningGesture = true,
 }: Props ): Node => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
@@ -114,6 +117,8 @@ const StandardBottomSheet = ( {
       style={marginOnWide}
       accessible={false}
       onDismiss={handleClose}
+      enablePanDownToClose={enablePanDownToClose}
+      enableContentPanningGesture={enableContentPanningGesture}
     >
       <BottomSheetScrollView
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}

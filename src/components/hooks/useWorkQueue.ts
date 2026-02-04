@@ -18,7 +18,7 @@ const useWorkQueue = ( ) => {
   const [dequeuedItemId, setDequeuedItemId] = useState( null );
 
   // we probably don't want this user mutation logic in the useWorkQueue in the long run
-  const updateUserMutation = useAuthenticatedMutation(
+  const { mutate: updateUserMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => {
       logger.info( `Sending API request to update user with params: ${JSON.stringify( params )}` );
       return updateUsers( params, optsWithAuth );
@@ -51,7 +51,7 @@ const useWorkQueue = ( ) => {
           // const updatedRealmUser = realm.objectForPrimaryKey( "User", updatedUser.id );
           // eslint-disable-next-line max-len
           // logger.info( `Updated user in Realm: prefers_common_names=${updatedRealmUser.prefers_common_names}, prefers_scientific_name_first=${updatedRealmUser.prefers_scientific_name_first}` );
-        }, "modifying user via remote fetch in updateUserMutation" );
+        }, "modifying user via remote fetch in updateUserMutate" );
       },
       onError: userUpdateError => {
         logger.error( `User update failed for item ID: ${dequeuedItemId}`, userUpdateError );
@@ -95,7 +95,7 @@ const useWorkQueue = ( ) => {
             //   logger.info( "Initiating taxon names update with API" );
             // }
             setDequeuedItemId( id );
-            updateUserMutation.mutate( dequeuedPayload );
+            updateUserMutate( dequeuedPayload );
           }
         }
       }
@@ -105,7 +105,7 @@ const useWorkQueue = ( ) => {
       // remember to remove listeners to avoid async updates
       queuedItems?.removeAllListeners( );
     };
-  }, [realm, updateUserMutation, dequeuedItemId] );
+  }, [realm, updateUserMutate, dequeuedItemId] );
 };
 
 export default useWorkQueue;

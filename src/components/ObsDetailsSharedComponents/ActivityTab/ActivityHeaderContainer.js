@@ -45,7 +45,7 @@ const ActivityHeaderContainer = ( {
     isActiveUserTheCurrentUser( );
   }, [user] );
 
-  const deleteCommentMutation = useAuthenticatedMutation(
+  const { mutate: deleteCommentMutate } = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => deleteComments( uuid, optsWithAuth ),
     {
       onSuccess: ( ) => {
@@ -62,10 +62,10 @@ const ActivityHeaderContainer = ( {
 
   const deleteUserComment = () => {
     setLoading( true );
-    deleteCommentMutation.mutate( item.uuid );
+    deleteCommentMutate( item.uuid );
   };
 
-  const updateCommentMutation = useAuthenticatedMutation(
+  const { mutate: updateCommentMutate } = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => updateComment( uuid, optsWithAuth ),
     {
       onSuccess: () => {
@@ -88,10 +88,10 @@ const ActivityHeaderContainer = ( {
       },
     };
     setLoading( true );
-    updateCommentMutation.mutate( updateCommentParams );
+    updateCommentMutate( updateCommentParams );
   };
 
-  const updateIdentificationMutation = useAuthenticatedMutation(
+  const { mutate: updateIdentificationMutate } = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => apiUpdateIdentification( uuid, optsWithAuth ),
     {
       onSuccess: () => {
@@ -112,7 +112,7 @@ const ActivityHeaderContainer = ( {
       identification,
     };
     setLoading( true );
-    updateIdentificationMutation.mutate( updateIdentificationParams );
+    updateIdentificationMutate( updateIdentificationParams );
   };
 
   return (
