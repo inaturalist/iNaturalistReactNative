@@ -20,6 +20,7 @@ interface Props {
   isFetching?: boolean;
   isInitialLoading?: boolean;
   isConnected: boolean | null;
+  loadingTimedOut: boolean;
   onEndReached: ( ) => void;
   onRefresh: ( ) => void;
   refreshing: boolean;
@@ -39,6 +40,7 @@ const NotificationsList = ( {
   isFetching,
   isInitialLoading,
   isConnected,
+  loadingTimedOut,
   onEndReached,
   onRefresh,
   reload,
@@ -59,6 +61,12 @@ const NotificationsList = ( {
   ), [isFetching, isConnected, data.length] );
 
   const renderEmptyComponent = useCallback( ( ) => {
+    // show an offline/retry state if the user isn't connected or this request just takes too long
+    if ( isConnected === false || loadingTimedOut ) {
+      return <OfflineNotice onPress={reload} />;
+    }
+
+    // Loading
     if ( isInitialLoading ) {
       return (
         <View className="h-full justify-center">
@@ -67,10 +75,7 @@ const NotificationsList = ( {
       );
     }
 
-    if ( isConnected === false ) {
-      return <OfflineNotice onPress={reload} />;
-    }
-
+    // Empty/error state
     let msg = t( "No-Notifications-Found" );
     let msg2 = null;
     if ( !currentUser ) {
@@ -92,6 +97,7 @@ const NotificationsList = ( {
     isError,
     isInitialLoading,
     isConnected,
+    loadingTimedOut,
     reload,
     t,
   ] );
