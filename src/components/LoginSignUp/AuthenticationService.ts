@@ -19,7 +19,7 @@ import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
 import RNRestart from "react-native-restart";
 import type { SensitiveInfoError } from "react-native-sensitive-info";
-import RNSInfo, { isSensitiveInfoError } from "react-native-sensitive-info";
+import RNSInfo, { ErrorCode, isSensitiveInfoError } from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
@@ -82,7 +82,7 @@ async function getSensitiveItem( key: string, options = {} ) {
       const getItemError = e as SensitiveInfoError;
       if ( isDebugMode() ) {
         switch ( getItemError.code ) {
-          case "E_NOT_FOUND":
+          case ErrorCode.NOT_FOUND:
             // Value doesn't exist
             localLogger.info( `RNSInfo.getItem not available for ${key}` );
             break;
