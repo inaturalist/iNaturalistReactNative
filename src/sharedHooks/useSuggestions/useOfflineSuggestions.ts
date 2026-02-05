@@ -127,7 +127,6 @@ const useOfflineSuggestions = (
       onFetched( { isOnline: false } );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch ( predictOfflineError: any ) {
-      onFetchError( { isOnline: false } );
       // TODO: throw error in a way that doesnt potentially bubble up
       onFetchError( { isOnline: false } );
       setError( predictOfflineError );

@@ -61,7 +61,7 @@ interface OnlineSuggestionsQueryResponse {
   common_ancestor?: UseSuggestionsOnlineSuggestion;
 }
 
-const normalizeApiResponseForCommonAncestor
+const shimApiResponseForCommonAncestor
   = ( apiSuggestions: OnlineSuggestionsApiResponse ): OnlineSuggestionsQueryResponse => {
     // TODO MOB-1081: maybe we can catch this shim earlier?
     // general context: https://github.com/inaturalist/iNaturalistReactNative/blob/505980d3359876a0af383f2ffcc481921f0eb778/src/components/Match/calculateConfidence.ts#L10-L12
@@ -69,7 +69,7 @@ const normalizeApiResponseForCommonAncestor
     // the offline suggs have `combined_score` but don't have `score`
     // the codebase tends assumes `combined_score` for whenever that matters
     // the following catches when we're in a "fake" onlineSugg and shims "score" in
-    const normalizedCommonAncestor = apiSuggestions.common_ancestor
+    const shimmedCommonAncestor = apiSuggestions.common_ancestor
       ? {
         ...apiSuggestions.common_ancestor,
         combined_score: apiSuggestions.common_ancestor.score,
@@ -77,7 +77,7 @@ const normalizeApiResponseForCommonAncestor
       : undefined;
     return {
       results: apiSuggestions.results,
-      common_ancestor: normalizedCommonAncestor,
+      common_ancestor: shimmedCommonAncestor,
     };
   };
 
@@ -116,15 +116,11 @@ const useOnlineSuggestions = (
         ...scoreImageParams,
         ...( !currentUser && { locale } ),
       };
-      const suggestionsResponse
-        = await scoreImage( params, optsWithAuth ) as OnlineSuggestionsApiResponse;
-      const normalizedOnlineSuggestionsResponse
-        = normalizeApiResponseForCommonAncestor( suggestionsResponse );
 
       // experiment to compare online & offline suggestion results
       // imperatively fire-and-forgetted in online query to circumvent existing stateful mutex logic
       executeOnRandomPercentile( () => {
-        if ( scoreImageParams && scoreImageParams.image ) {
+        if ( scoreImageParams ) {
           predictOffline( {
             latitude: scoreImageParams.lat,
             longitude: scoreImageParams.lng,
@@ -136,11 +132,14 @@ const useOnlineSuggestions = (
       }, SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE );
       // end experiment
 
-      return normalizedOnlineSuggestionsResponse;
+      const suggestionsResponse
+        = await scoreImage( params, optsWithAuth ) as OnlineSuggestionsApiResponse;
+
+      return shimApiResponseForCommonAncestor( suggestionsResponse );
     },
     {
       enabled: !!shouldFetchOnlineSuggestions
-        && !!( scoreImageParams?.image ),
+        && !!scoreImageParams,
       allowAnonymousJWT: true,
     },
   );
