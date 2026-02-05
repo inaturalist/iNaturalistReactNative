@@ -165,23 +165,19 @@ interface UseObsDetailsSharedLogicReturn {
   refetchSubscriptions: () => void;
 }
 
-const useObsDetailsSharedLogic = (
-  params: UseObsDetailsSharedLogicParams,
-): UseObsDetailsSharedLogicReturn => {
-  const {
-    observation,
-    uuid,
-    localObservation,
-    markDeletedLocally,
-    remoteObservation,
-    setRemoteObsWasDeleted,
-    fetchRemoteObservationError,
-    currentUser,
-    belongsToCurrentUser,
-    isRefetching,
-    refetchRemoteObservation,
-  } = params;
-
+const useObsDetailsSharedLogic = ( {
+  observation,
+  uuid,
+  localObservation,
+  markDeletedLocally,
+  remoteObservation,
+  setRemoteObsWasDeleted,
+  fetchRemoteObservationError,
+  currentUser,
+  belongsToCurrentUser,
+  isRefetching,
+  refetchRemoteObservation,
+}: UseObsDetailsSharedLogicParams ): UseObsDetailsSharedLogicReturn => {
   const setObservations = useStore( state => state.setObservations );
   const navigation = useNavigation<NavigationProp<ParamListBase>>( );
   const realm = useRealm( );
