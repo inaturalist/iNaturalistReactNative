@@ -5,12 +5,11 @@ import PhotosSection from "components/Match/PhotosSection";
 import LocationSection from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
 import MapSection from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import { Button, ScrollViewWrapper } from "components/SharedComponents";
+import HeaderEditIcon from "components/SharedComponents/ObsDetails/HeaderEditIcon";
 import { View } from "components/styledComponents";
 import React from "react";
 import type { RealmObservation } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
-
-import SavedMatchHeaderRight from "./SavedMatchHeaderRight";
 
 interface Props {
   observation: RealmObservation;
@@ -29,8 +28,8 @@ const SavedMatch = ( {
 
   return (
     <ScrollViewWrapper testID="SavedMatch.container">
-      <SavedMatchHeaderRight observation={observation} />
-      <View className={`${matchCardClassTop} mt-[10px]`}>
+      <HeaderEditIcon observation={observation} />
+      <View className={matchCardClassTop}>
         <MatchHeader hideObservationStatus topSuggestion={observation} />
       </View>
       <PhotosSection

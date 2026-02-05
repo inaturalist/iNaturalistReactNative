@@ -1,5 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import type { ApiPhoto, ApiSuggestion } from "api/types";
+import type { ApiPhoto, ApiSuggestion, ApiTaxon } from "api/types";
 import LocationSection
   from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
 import MapSection
@@ -7,6 +7,7 @@ import MapSection
 import {
   ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper,
 } from "components/SharedComponents";
+import HeaderEditIcon from "components/SharedComponents/ObsDetails/HeaderEditIcon";
 import { View } from "components/styledComponents";
 import React from "react";
 import type { ScrollView } from "react-native";
@@ -43,6 +44,7 @@ interface Props {
   scrollRef: React.RefObject<ScrollView | null>;
   iconicTaxon?: RealmTaxon;
   setIconicTaxon: ( taxon: RealmTaxon ) => void;
+  taxonToSave?: ApiTaxon;
 }
 
 const Match = ( {
@@ -59,6 +61,7 @@ const Match = ( {
   scrollRef,
   iconicTaxon,
   setIconicTaxon,
+  taxonToSave,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
@@ -83,6 +86,7 @@ const Match = ( {
                   </Body2>
                 )
             }
+            <HeaderEditIcon observation={observation} lastScreen="Match" taxon={iconicTaxon} />
           </View>
           <PhotosSection
             taxon={taxon}
@@ -143,6 +147,7 @@ const Match = ( {
                   </Body2>
                 )
             }
+            <HeaderEditIcon observation={observation} lastScreen="Match" />
           </View>
           <PhotosSection
             taxon={taxon}
@@ -188,6 +193,7 @@ const Match = ( {
               )
               : <MatchHeader topSuggestion={topSuggestion} />
           }
+          <HeaderEditIcon observation={observation} lastScreen="Match" taxon={taxonToSave} />
         </View>
         <PhotosSection
           representativePhoto={topSuggestion?.taxon?.representative_photo}

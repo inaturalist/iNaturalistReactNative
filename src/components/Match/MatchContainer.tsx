@@ -546,6 +546,7 @@ const MatchContainer = ( ) => {
           scrollRef={scrollRef}
           iconicTaxon={iconicTaxon}
           setIconicTaxon={setIconicTaxon}
+          taxonToSave={taxon}
         />
         {renderPermissionsGate( {
           // If the user grants location permission while on this screen,
