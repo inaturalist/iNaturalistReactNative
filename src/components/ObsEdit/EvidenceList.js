@@ -5,7 +5,8 @@ import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIcon, INatIconButton } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
-import _ from "lodash";
+import findIndex from "lodash/findIndex";
+import sortBy from "lodash/sortBy";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -69,12 +70,11 @@ const EvidenceList = ( {
     const newObsPhotos = observationPhotos.map( ( obsPhoto => {
       const { photo } = obsPhoto;
       const photoUri = Photo.displayLocalOrRemoteSquarePhoto( photo );
-      const newPosition = _.findIndex( newPhotoPositions, p => p === photoUri );
+      const newPosition = findIndex( newPhotoPositions, p => p === photoUri );
       obsPhoto.position = newPosition;
       return obsPhoto;
     } ) );
-    const sortedObsPhotos = _.sortBy( newObsPhotos, obsPhoto => obsPhoto.position );
-
+    const sortedObsPhotos = sortBy( newObsPhotos, obsPhoto => obsPhoto.position );
     updateObservationKeys( {
       observationPhotos: sortedObsPhotos,
     } );
@@ -169,7 +169,7 @@ const EvidenceList = ( {
     setDeleting( false );
   }, [mediaUris, setSelectedMediaUri] );
 
-  const deleteObservationSoundMutation = useAuthenticatedMutation(
+  const { mutate: deleteObservationSoundMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteRemoteObservationSound( params, optsWithAuth ),
   );
 
@@ -194,7 +194,7 @@ const EvidenceList = ( {
     // If sound was synced, delete the remote copy immediately and then remove
     // the local
     if ( obsSound?.id ) {
-      deleteObservationSoundMutation.mutate( { uuid: obsSound.uuid }, {
+      deleteObservationSoundMutate( { uuid: obsSound.uuid }, {
         onSuccess: removeLocalSound,
         onError: deleteRemoteObservationSoundError => {
           setDeleting( false );
@@ -215,7 +215,7 @@ const EvidenceList = ( {
   }, [
     afterMediaDeleted,
     currentObservation?.uuid,
-    deleteObservationSoundMutation,
+    deleteObservationSoundMutate,
     deleteSoundFromObservation,
     realm,
     observationSounds,

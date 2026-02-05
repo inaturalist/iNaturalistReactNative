@@ -3,7 +3,6 @@
 import { fetchSpeciesCounts } from "api/observations";
 import ExploreTaxonGridItem from "components/Explore/ExploreTaxonGridItem";
 import i18n from "i18next";
-import _ from "lodash";
 import {
   useExplore,
 } from "providers/ExploreContext";

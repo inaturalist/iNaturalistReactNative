@@ -6,7 +6,7 @@ import {
   isFuture,
   parseISO,
 } from "date-fns";
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 import type { Node } from "react";
 import React, {
   useCallback,

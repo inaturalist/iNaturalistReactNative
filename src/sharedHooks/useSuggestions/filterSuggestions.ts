@@ -1,4 +1,6 @@
-import _ from "lodash";
+import find from "lodash/find";
+import orderBy from "lodash/orderBy";
+import remove from "lodash/remove";
 
 import isolateHumans, { humanFilter } from "./isolateHumans";
 import type { UseSuggestionsSuggestion } from "./types";
@@ -29,7 +31,7 @@ const filterSuggestions = (
   suggestionsToFilter: UseSuggestionsSuggestion[],
   commonAncestor?: UseSuggestionsSuggestion,
 ) => {
-  const sortedSuggestions = _.orderBy(
+  const sortedSuggestions = orderBy(
     // TODO: handling humans is implemented in the vision-plugin, can it be removed here?
     isolateHumans( suggestionsToFilter ),
     "combined_score",
@@ -58,14 +60,14 @@ const filterSuggestions = (
     };
   }
 
-  const suggestionAboveThreshold = _.find(
+  const suggestionAboveThreshold = find(
     sortedSuggestions,
     s => s.combined_score > TOP_RESULT_SCORE_THRESHOLD,
   );
 
   if ( suggestionAboveThreshold ) {
     // make sure we're not returning the top suggestion in Other Suggestions
-    const firstSuggestion = _.remove(
+    const firstSuggestion = remove(
       sortedSuggestions,
       s => s.taxon.id === suggestionAboveThreshold.taxon.id,
     ).at( 0 );

@@ -3,8 +3,10 @@ import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
+import { ACTIVE_SHEET } from "./MyObservationsContainer";
+
 interface Props {
-  setShowLoginSheet: ( show: boolean ) => void;
+  setShowLoginSheet: ( value: ACTIVE_SHEET ) => void;
 }
 
 const LoginSheet = ( { setShowLoginSheet }: Props ) => {
@@ -13,13 +15,13 @@ const LoginSheet = ( { setShowLoginSheet }: Props ) => {
 
   return (
     <WarningSheet
-      onPressClose={( ) => setShowLoginSheet( false )}
+      onPressClose={( ) => setShowLoginSheet( ACTIVE_SHEET.NONE )}
       buttonType="focus"
       headerText={t( "PLEASE-LOG-IN" )}
       text={t( "To-sync-your-observations-to-iNaturalist" )}
       buttonText={t( "LOG-IN-TO-INATURALIST" )}
       confirm={( ) => {
-        setShowLoginSheet( false );
+        setShowLoginSheet( ACTIVE_SHEET.NONE );
         navigation.navigate( "LoginStackNavigator" );
       }}
     />

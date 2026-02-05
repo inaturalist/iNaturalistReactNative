@@ -4,7 +4,7 @@ import {
 import { View } from "components/styledComponents";
 import React from "react";
 
-type Props = {
+interface Props {
   label: string;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   LabelComponent?: Function;

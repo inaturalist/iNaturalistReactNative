@@ -1,6 +1,6 @@
-type Places = {
+interface Places {
   [key: number]: string;
-};
+}
 
 const places: Places = {
   0: "Undefined",

@@ -1,8 +1,9 @@
-import _ from "lodash";
+import merge from "lodash/merge";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import createExploreSlice from "./createExploreSlice";
+import createFeatureFlagSlice from "./createFeatureFlagSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
 import createMyObsSlice from "./createMyObsSlice";
@@ -31,6 +32,7 @@ const useStore = create( persist(
     // Let's make our slices
     const slices = [
       createExploreSlice( ...args ),
+      createFeatureFlagSlice( ...args ),
       createFirebaseTraceSlice( ...args ),
       createLayoutSlice( ...args ),
       createMyObsSlice( ...args ),
@@ -89,7 +91,7 @@ const useStore = create( persist(
     storage: createJSONStorage( () => zustandStorage ),
     // We need to deep merge to persist nested objects, like layout
     // https://zustand.docs.pmnd.rs/middlewares/persist#persisting-a-state-with-nested-objects
-    merge: ( persisted, current ) => _.merge( current, persisted ),
+    merge: ( persisted, current ) => merge( current, persisted ),
   },
 ) );
 

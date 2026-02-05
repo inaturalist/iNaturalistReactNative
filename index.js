@@ -9,7 +9,7 @@ import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
-  useColorScheme, Alert, AppRegistry, View,
+  Alert, AppRegistry,
 } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
@@ -34,9 +34,10 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { getInstallID, store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
-import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
-import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
 import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
+import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
+import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
+import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -143,9 +144,6 @@ const queryClient = new QueryClient( {
 } );
 
 const AppWithProviders = ( ) => {
-  const colorScheme = useColorScheme( );
-  const darkModeStyleWrapper = { flex: 1, colorScheme };
-
   // note: automatically disabled in Production builds
   useTanStackQueryDevTools( queryClient );
   useNetworkActivityDevTools();
@@ -155,6 +153,7 @@ const AppWithProviders = ( ) => {
       "install-data": installDataMMKVStorage,
     },
   } );
+  useRequireProfilerDevTools();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -163,13 +162,11 @@ const AppWithProviders = ( ) => {
           <INatPaperProvider>
             <GestureHandlerRootView className="flex-1">
               <BottomSheetModalProvider>
-                <View style={darkModeStyleWrapper}>
-                  <OfflineNavigationGuard>
-                    <ErrorBoundary>
-                      <App />
-                    </ErrorBoundary>
-                  </OfflineNavigationGuard>
-                </View>
+                <OfflineNavigationGuard>
+                  <ErrorBoundary>
+                    <App />
+                  </ErrorBoundary>
+                </OfflineNavigationGuard>
               </BottomSheetModalProvider>
             </GestureHandlerRootView>
           </INatPaperProvider>

@@ -1,0 +1,8 @@
+NEW
+* Sort species list on Me tab by count of observations per species
+
+FIXED
+* ID with comment
+
+UPDATED
+* Various minor performance improvements and dependency updates

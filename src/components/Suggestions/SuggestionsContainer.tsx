@@ -3,7 +3,7 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import _ from "lodash";
+import isEqual from "lodash/isEqual";
 import React, {
   useCallback,
   useEffect,
@@ -50,19 +50,19 @@ const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boole
   { shouldUseEvidenceLocation },
 ];
 
-export type Suggestion = {
+export interface Suggestion {
   combined_score: number;
   taxon: {
     id: number;
     name: string;
   };
-};
+}
 
-export type Suggestions = {
+export interface Suggestions {
   otherSuggestions: Suggestion[];
   topSuggestion: Suggestion | null;
   topSuggestionType: TopSuggestionType;
-};
+}
 
 const initialState = {
   onlineFetchStatus: FETCH_STATUSES.FETCH_STATUS_LOADING,
@@ -373,7 +373,7 @@ const SuggestionsContainer = ( ) => {
   const shouldSetImageParams = useMemo(
     // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
     // we shouldn't rely on implementation internals to consumer drive state
-    () => _.isEqual( internalUseSuggestionsInitialSuggestions, suggestions ),
+    () => isEqual( internalUseSuggestionsInitialSuggestions, suggestions ),
     [suggestions],
   );
 

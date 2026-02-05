@@ -7,13 +7,13 @@ import { FlatList } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
+interface Props {
   before?: React.ReactNode;
   chosen: string[];
   onTaxonChosen: ( taxon: string ) => void;
   testID?: string;
   withoutUnknown?: boolean;
-};
+}
 
 const STYLESHEET = {
   alignItems: "center",

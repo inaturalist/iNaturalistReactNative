@@ -14,33 +14,33 @@ import {
   InfiniteScrollLoadingWheel,
   OfflineNotice,
   PerformanceDebugView,
+  RadioButtonSheet,
   Tabs,
   ViewWrapper,
 } from "components/SharedComponents";
+import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
+import { Alert } from "react-native";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
-  RealmTaxon,
   RealmUser,
 } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
+import type { SpeciesCount } from "types/sorting";
 
+import { SPECIES_SORT_BY } from "../../types/sorting";
 import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
+import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import SimpleErrorHeader from "./SimpleErrorHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
-
-interface SpeciesCount {
-  count: number;
-  taxon: RealmTaxon;
-}
 
 export interface Props {
   activeTab: string;
@@ -53,6 +53,7 @@ export interface Props {
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
   listRef?: React.RefObject<FlashListRef<RealmObservation> | null>;
+  taxaListRef?: React.RefObject<FlashListRef<SpeciesCount> | null>;
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
@@ -60,10 +61,12 @@ export interface Props {
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
+  openSheet: ACTIVE_SHEET;
   setActiveTab: ( newTab: string ) => void;
-  setShowLoginSheet: ( newValue: boolean ) => void;
-  showLoginSheet: boolean;
+  setOpenSheet: ( value: ACTIVE_SHEET ) => void;
+  setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SPECIES_SORT_BY>>;
   showNoResults: boolean;
+  speciesSortOptionId: SPECIES_SORT_BY;
   taxa?: SpeciesCount[];
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
@@ -94,16 +97,19 @@ const MyObservationsSimple = ( {
   layout,
   listRef,
   numTotalObservations,
+  taxaListRef,
   numTotalTaxa,
   numUnuploadedObservations,
   observations,
   onEndReached,
   onListLayout,
   onScroll,
+  openSheet,
   setActiveTab,
-  setShowLoginSheet,
-  showLoginSheet,
+  setOpenSheet,
+  setSpeciesSortOptionId,
   showNoResults,
+  speciesSortOptionId,
   taxa,
   toggleLayout,
   fetchMoreTaxa,
@@ -125,6 +131,19 @@ const MyObservationsSimple = ( {
     ...flashListStyle,
     paddingTop: 10,
   } ), [flashListStyle] );
+
+  const taxaSortOptions = {
+    [SPECIES_SORT_BY.COUNT_DESC]: {
+      value: SPECIES_SORT_BY.COUNT_DESC,
+      label: t( "Most-Observed-Default" ),
+      text: t( "Species-with-the-most-observations-appear-first" ),
+    },
+    [SPECIES_SORT_BY.COUNT_ASC]: {
+      value: SPECIES_SORT_BY.COUNT_ASC,
+      label: t( "Least-Observed" ),
+      text: t( "Species-with-the-least-observations-appear-first" ),
+    },
+  };
 
   const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
     const taxonId = speciesCount.taxon.id;
@@ -246,6 +265,28 @@ const MyObservationsSimple = ( {
     return null;
   };
 
+  function showOfflineAlert( ) {
+    Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
+  }
+
+  const handleSortConfirm = ( optionId: SPECIES_SORT_BY ) => {
+    if ( currentUser && !isConnected ) {
+      showOfflineAlert( );
+      return;
+    }
+    setSpeciesSortOptionId( optionId );
+
+    // scroll to the top of the newly sorted list
+    // the timeout ensures that the scroll happens after data is re-sorted for logged-out users
+    setTimeout( () => {
+      if ( taxaListRef?.current ) {
+        taxaListRef.current.scrollToOffset( { offset: 0, animated: true } );
+      }
+    }, 0 );
+
+    setOpenSheet( ACTIVE_SHEET.NONE );
+  };
+
   const handlePivotCardGridItemPress = ( ) => {
     const { uuid } = observations[0];
     navigation.navigate( {
@@ -317,34 +358,54 @@ const MyObservationsSimple = ( {
               layout={layout}
               updateObservationsView={toggleLayout}
             />
+            {/* <SortButton
+              onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
+              accessibilityLabel={t( "Change-observations-sort-order" )}
+            /> */}
           </>
         ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
-          <CustomFlashList
-            canFetch={!!currentUser}
-            contentContainerStyle={taxaFlashListStyle}
-            data={taxa}
-            hideLoadingWheel
-            isConnected={isConnected}
-            keyExtractor={(
-              item: SpeciesCount,
-            ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
-            layout="grid"
-            numColumns={numColumns}
-            renderItem={renderTaxaItem}
-            totalResults={numTotalTaxa}
-            onEndReached={
-              currentUser
-                ? fetchMoreTaxa
-                : undefined
-            }
-            refreshing={isFetchingTaxa}
-            ListFooterComponent={renderTaxaFooter}
-          />
+          <>
+            <CustomFlashList
+              ref={taxaListRef}
+              canFetch={!!currentUser}
+              contentContainerStyle={taxaFlashListStyle}
+              data={taxa}
+              hideLoadingWheel
+              isConnected={isConnected}
+              keyExtractor={(
+                item: SpeciesCount,
+              ) => `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`}
+              layout="grid"
+              numColumns={numColumns}
+              renderItem={renderTaxaItem}
+              totalResults={numTotalTaxa}
+              onEndReached={
+                currentUser
+                  ? fetchMoreTaxa
+                  : undefined
+              }
+              refreshing={isFetchingTaxa}
+              ListFooterComponent={renderTaxaFooter}
+            />
+            <SortButton
+              onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
+              accessibilityLabel={t( "Change-species-sort-order" )}
+            />
+          </>
         )}
         { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
-      {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
+      {openSheet === ACTIVE_SHEET.SORT && (
+        <RadioButtonSheet
+          headerText={t( "SORT-SPECIES" )}
+          radioValues={taxaSortOptions}
+          selectedValue={speciesSortOptionId}
+          confirm={optionId => handleSortConfirm( optionId as SPECIES_SORT_BY )}
+          onPressClose={() => setOpenSheet( ACTIVE_SHEET.NONE )}
+        />
+      )}
+      {openSheet === ACTIVE_SHEET.LOGIN && <LoginSheet setShowLoginSheet={setOpenSheet} />}
       {isDefaultMode && (
         <>
           {/* These four cards should show only in default mode */}

@@ -1,6 +1,6 @@
 // @flow
 
-import SoundContainer from "components/ObsDetails/SoundContainer";
+import SoundContainer from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import {
   TransparentCircleButton,
 } from "components/SharedComponents";

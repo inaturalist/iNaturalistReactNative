@@ -3,7 +3,6 @@ import classnames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -32,8 +31,6 @@ const NotificationsIcon = ( {
     height,
   };
 
-  const isDebug = isDebugMode( );
-
   if ( unread ) {
     return (
       <View
@@ -46,7 +43,6 @@ const NotificationsIcon = ( {
             ? colors.inatGreen
             : colors.darkGray}
           size={size}
-          isDarkModeEnabled={isDebug}
         />
         <View
           className={classnames(
@@ -79,7 +75,6 @@ const NotificationsIcon = ( {
   return (
     <INatIconButton
       icon={icon}
-      isDarkModeEnabled={isDebug}
       color={active
         ? colors.inatGreen
         : colors.darkGray}

@@ -8,7 +8,6 @@ import {
   ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import _ from "lodash";
 import React from "react";
 import type { ScrollView } from "react-native";
 import type {
@@ -30,7 +29,7 @@ export const matchCardClassTop
 export const matchCardClassBottom
   = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
-type Props = {
+interface Props {
   observation: RealmObservation;
   obsPhotos: RealmObservationPhoto[];
   handleSaveOrDiscardPress: ( action: MatchButtonAction ) => void;

@@ -7,9 +7,9 @@ import { useLayoutPrefs } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 
-type Props = {
+interface Props {
   notification: Notification;
-};
+}
 
 const NotificationsListItem = ( { notification }: Props ) => {
   const { setObsDetailsTab } = useLayoutPrefs( );

@@ -5,12 +5,12 @@ import {
   rotatedOriginalPhotosPath,
   soundUploadPath,
 } from "appConstants/paths";
-import _ from "lodash";
+import orderBy from "lodash/orderBy";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 
-export type DirectoryEntrySize = {
+export interface DirectoryEntrySize {
   name: string;
   size: number;
 }
@@ -105,7 +105,7 @@ export function formatAppSizeString( name: string, size: number ): string {
 
 export async function getDirectoryEntrySizes( directory: string ): Promise<DirectoryEntrySize[]> {
   const entries = await RNFS.readDir( directory );
-  const sortedEntries = _.orderBy( entries, "size", "desc" );
+  const sortedEntries = orderBy( entries, "size", "desc" );
   return sortedEntries.map( ( { name, size } ) => ( {
     name,
     size,
@@ -120,7 +120,7 @@ export function getTotalDirectorySize( directoryItems: DirectoryEntrySize[] ): n
   return totalSize;
 }
 
-type AppSize = {
+interface AppSize {
   [directoryName: string]: DirectoryEntrySize[];
 }
 

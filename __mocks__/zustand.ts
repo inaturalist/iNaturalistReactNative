@@ -1,6 +1,6 @@
 // Mostly from https://github.com/pmndrs/zustand/blob/main/docs/guides/testing.md#jest
 
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import type * as zustand from "zustand";
 
 const { create: actualCreate, createStore: actualCreateStore }
