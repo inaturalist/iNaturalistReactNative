@@ -1,5 +1,6 @@
 import { RealmContext } from "providers/contexts";
 import {
+  useCallback,
   useEffect,
   useState,
 } from "react";
@@ -115,7 +116,7 @@ const useOfflineSuggestions = (
     onFetchError, onFetched, latitude, longitude, tryOfflineSuggestions,
   } = options;
 
-  const refetchOfflineSuggestions = async () => {
+  const fetchOfflineSuggestions = useCallback( async () => {
     try {
       const suggestions = await predictOffline( {
         latitude,
@@ -127,40 +128,22 @@ const useOfflineSuggestions = (
       onFetched( { isOnline: false } );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch ( predictOfflineError: any ) {
-      // TODO: throw error in a way that doesnt potentially bubble up
       onFetchError( { isOnline: false } );
       setError( predictOfflineError );
     }
-  };
+  }, [latitude, longitude, onFetchError, onFetched, photoUri, realm] );
 
   useEffect( ( ) => {
-    const fetchOfflineSuggestions = async () => {
-      if ( photoUri && tryOfflineSuggestions ) {
-        try {
-          const suggestions = await predictOffline( {
-            latitude,
-            longitude,
-            photoUri,
-            realm,
-          } );
-          setOfflineSuggestions( suggestions );
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch ( predictOfflineError: any ) {
-          // For some reason if you throw here, it doesn't actually buble up. Is
-        // an effect callback run in a promise?
-          onFetchError( { isOnline: false } );
-          setError( predictOfflineError );
-        }
-      }
-    };
-    fetchOfflineSuggestions();
-  }, [photoUri, tryOfflineSuggestions, setError, onFetchError, latitude, longitude, realm] );
+    if ( tryOfflineSuggestions ) {
+      fetchOfflineSuggestions();
+    }
+  }, [fetchOfflineSuggestions, tryOfflineSuggestions] );
 
   if ( error ) throw error;
 
   return {
     offlineSuggestions,
-    refetchOfflineSuggestions,
+    refetchOfflineSuggestions: fetchOfflineSuggestions,
   };
 };
 

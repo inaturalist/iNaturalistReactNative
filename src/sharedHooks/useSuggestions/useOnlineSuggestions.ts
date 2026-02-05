@@ -119,15 +119,17 @@ const useOnlineSuggestions = (
 
       // experiment to compare online & offline suggestion results
       // imperatively fire-and-forgetted in online query to circumvent existing stateful mutex logic
-      executeOnRandomPercentile( () => {
+      executeOnRandomPercentile( async () => {
         if ( scoreImageParams ) {
-          predictOffline( {
-            latitude: scoreImageParams.lat,
-            longitude: scoreImageParams.lng,
-            photoUri: scoreImageParams.image.uri,
-            realm,
-          } );
-          // TODO: log results
+          // TODO: log "background" experiment responses & errors
+          try {
+            await predictOffline( {
+              latitude: scoreImageParams.lat,
+              longitude: scoreImageParams.lng,
+              photoUri: scoreImageParams.image.uri,
+              realm,
+            } );
+          } catch ( _error ) { /* empty */ }
         }
       }, SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE );
       // end experiment
