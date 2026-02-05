@@ -76,7 +76,7 @@
     "@rozenite/tanstack-query-plugin": "^1.1.0",
     "@sayem314/react-native-keep-awake": "^1.3.1",
     "@shopify/flash-list": "^2.2.0",
-    "@tanstack/react-query": "^5.90.18",
+    "@tanstack/react-query": "^5.90.20",
     "apisauce": "^3.2.0",
     "classnames": "^2.5.1",
     "date-fns": "^3.6.0",
