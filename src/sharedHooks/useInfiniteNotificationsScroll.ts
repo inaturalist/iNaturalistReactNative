@@ -102,7 +102,14 @@ const useInfiniteNotificationsScroll = (
     [notificationParams],
   );
 
-  const infQueryResult = useAuthenticatedInfiniteQuery(
+  const {
+    data,
+    isFetching,
+    isInitialLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+  } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }: { pageParam: number }, optsWithAuth: ApiOpts ) => {
       const params = { ...BASE_PARAMS, ...notificationParams };
@@ -155,19 +162,19 @@ const useInfiniteNotificationsScroll = (
   // We want to timeout and show an offline/retry state if this request takes too long
   useEffect( () => {
     // Reset if we get data
-    if ( infQueryResult.data !== undefined && !infQueryResult.isFetching ) {
+    if ( data !== undefined && !isFetching ) {
       setLoadingTimedOut( false );
       return undefined;
     }
 
     // Don't set timer if not loading
-    if ( !infQueryResult.isFetching ) {
+    if ( !isFetching ) {
       return undefined;
     }
 
     // Set a timeout and cancel the query if we hit the limit
     const timer = setTimeout( () => {
-      if ( infQueryResult.data === undefined && infQueryResult.isFetching ) {
+      if ( data === undefined && isFetching ) {
         queryClient.cancelQueries( { queryKey } );
         setLoadingTimedOut( true );
       }
@@ -175,26 +182,26 @@ const useInfiniteNotificationsScroll = (
 
     // eslint-disable-next-line consistent-return
     return () => clearTimeout( timer );
-  }, [infQueryResult.data, infQueryResult.isFetching, queryKey, queryClient] );
+  }, [data, isFetching, queryKey, queryClient] );
 
   // Reset when user manually retries
   useEffect( () => {
-    if ( infQueryResult.isFetching ) {
+    if ( isFetching ) {
       setLoadingTimedOut( false );
     }
-  }, [infQueryResult.isFetching] );
+  }, [isFetching] );
 
   return {
-    refetch: infQueryResult.refetch,
-    isError: infQueryResult.isError,
-    isFetching: infQueryResult.isFetching,
-    isInitialLoading: infQueryResult.isInitialLoading,
+    refetch,
+    isError,
+    isFetching,
+    isInitialLoading,
     loadingTimedOut,
     // Disable fetchNextPage if signed out
     fetchNextPage: currentUser
-      ? infQueryResult.fetchNextPage
+      ? fetchNextPage
       : ( ) => undefined,
-    notifications: flatten( infQueryResult?.data?.pages ),
+    notifications: flatten( data?.pages ),
   };
 };
 
