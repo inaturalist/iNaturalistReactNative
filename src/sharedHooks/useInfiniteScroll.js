@@ -34,12 +34,23 @@ const useInfiniteScroll = (
 
       return apiCall( params, optsWithAuth );
     },
+    // TO DO: we need to properly type queryOptions in useAuthenticatedInfiniteQuery
+    /* eslint-disable consistent-return */
     {
-      getNextPageParam: lastPage => ( lastPage
-        ? lastPage.page + 1
-        : 1 ),
+      getNextPageParam: lastPage => {
+        if ( !lastPage ) return undefined;
+
+        const totalResultsCount = lastPage.total_results;
+        const totalFetchedCount = lastPage.page * baseParams.per_page;
+
+        return totalFetchedCount < totalResultsCount
+          ? lastPage.page + 1
+          : undefined;
+      },
+
       enabled: options?.enabled,
     },
+    /* eslint-enable consistent-return */
   );
 
   const pages = data?.pages || [];
