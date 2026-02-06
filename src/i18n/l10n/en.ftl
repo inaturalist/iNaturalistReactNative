@@ -762,7 +762,6 @@ Navigates-to-explore = Navigates to explore
 Navigates-to-log-in-screen = Navigates to log in screen
 # Accessibility hint for the main menu bottom tab
 Navigates-to-main-menu = Navigates to main menu.
-Navigates-to-match-screen = Navigates to match screen
 Navigates-to-notifications = Navigates to notifications
 Navigates-to-observation-details = Navigates to observation details screen
 Navigates-to-observation-edit-screen = Navigate to observation edit screen
@@ -1160,8 +1159,6 @@ Sign-in-with-Apple-Failed = Sign in with Apple Failed
 # Accessibility label for button that allows user to sign in with their Google account
 Sign-in-with-Google = Sign in with Google
 Sign-in-with-Google-Failed = Sign in with Google Failed
-# Accessibility label on loading screen from AICamera -> Match which skips loading online suggestions
-Skip-additional-suggestions = Skip additional suggestions
 Skip-for-now = Skip for now
 # Generic error message
 Something-went-wrong = Something went wrong.
