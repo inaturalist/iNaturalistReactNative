@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { fetchObservationUpdates, fetchRemoteObservations } from "api/observations";
 import type {
   ApiNotification,
@@ -7,11 +8,14 @@ import type {
 } from "api/types";
 import flatten from "lodash/flatten";
 import { RealmContext } from "providers/contexts";
+import { useEffect, useMemo, useState } from "react";
 import type Realm from "realm";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
+
+const LOADING_TIMEOUT = 5000;
 
 // Extends API response with data we need in this app
 export interface Notification extends ApiNotification {
@@ -24,6 +28,7 @@ interface InfiniteNotificationsScrollResponse {
   isError?: boolean;
   isFetching?: boolean;
   isInitialLoading?: boolean;
+  loadingTimedOut: boolean;
   notifications: Notification[];
   refetch: ( ) => void;
 }
@@ -89,10 +94,22 @@ const useInfiniteNotificationsScroll = (
 ): InfiniteNotificationsScrollResponse => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
+  const queryClient = useQueryClient();
+  const [loadingTimedOut, setLoadingTimedOut] = useState( false );
 
-  const queryKey = ["useInfiniteNotificationsScroll", JSON.stringify( notificationParams )];
+  const queryKey = useMemo(
+    () => ["useInfiniteNotificationsScroll", JSON.stringify( notificationParams )],
+    [notificationParams],
+  );
 
-  const infQueryResult = useAuthenticatedInfiniteQuery(
+  const {
+    data,
+    isFetching,
+    isInitialLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+  } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }: { pageParam: number }, optsWithAuth: ApiOpts ) => {
       const params = { ...BASE_PARAMS, ...notificationParams };
@@ -142,16 +159,49 @@ const useInfiniteNotificationsScroll = (
     },
   );
 
+  // We want to timeout and show an offline/retry state if this request takes too long
+  useEffect( () => {
+    // Reset if we get data
+    if ( data !== undefined && !isFetching ) {
+      setLoadingTimedOut( false );
+      return undefined;
+    }
+
+    // Don't set timer if not loading
+    if ( !isFetching ) {
+      return undefined;
+    }
+
+    // Set a timeout and cancel the query if we hit the limit
+    const timer = setTimeout( () => {
+      if ( data === undefined && isFetching ) {
+        queryClient.cancelQueries( { queryKey } );
+        setLoadingTimedOut( true );
+      }
+    }, LOADING_TIMEOUT );
+
+    // eslint-disable-next-line consistent-return
+    return () => clearTimeout( timer );
+  }, [data, isFetching, queryKey, queryClient] );
+
+  // Reset when user manually retries
+  useEffect( () => {
+    if ( isFetching ) {
+      setLoadingTimedOut( false );
+    }
+  }, [isFetching] );
+
   return {
-    refetch: infQueryResult.refetch,
-    isError: infQueryResult.isError,
-    isFetching: infQueryResult.isFetching,
-    isInitialLoading: infQueryResult.isInitialLoading,
+    refetch,
+    isError,
+    isFetching,
+    isInitialLoading,
+    loadingTimedOut,
     // Disable fetchNextPage if signed out
     fetchNextPage: currentUser
-      ? infQueryResult.fetchNextPage
+      ? fetchNextPage
       : ( ) => undefined,
-    notifications: flatten( infQueryResult?.data?.pages ),
+    notifications: flatten( data?.pages ),
   };
 };
 
