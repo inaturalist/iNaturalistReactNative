@@ -56,7 +56,7 @@ export interface UseSuggestionsResult {
 type MaybeLatLng = { lat: number; lng: number } | { lat: undefined; lng: undefined };
 
 export type ScoreImageParams = MaybeLatLng & {
-  image?: {
+  image: {
     uri: string;
     name: string;
     type: string;
