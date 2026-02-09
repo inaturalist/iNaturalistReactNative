@@ -101,7 +101,6 @@ const ObsDetailsContainer = ( ): Node => {
   } = useObsDetailsSharedLogic( {
     observation,
     uuid,
-    targetActivityItemID,
     localObservation,
     remoteObservation,
     markViewedLocally,
@@ -112,8 +111,6 @@ const ObsDetailsContainer = ( ): Node => {
     belongsToCurrentUser,
     isRefetching,
     refetchRemoteObservation,
-    isConnected,
-    remoteObsWasDeleted,
   } );
 
   const tabs = [

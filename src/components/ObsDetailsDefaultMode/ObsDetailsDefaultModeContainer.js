@@ -79,7 +79,6 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
   } = useObsDetailsSharedLogic( {
     observation,
     uuid,
-    targetActivityItemID,
     localObservation,
     remoteObservation,
     markViewedLocally,
@@ -90,8 +89,6 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     belongsToCurrentUser,
     isRefetching,
     refetchRemoteObservation,
-    isConnected,
-    remoteObsWasDeleted,
   } );
 
   return observationShown && (

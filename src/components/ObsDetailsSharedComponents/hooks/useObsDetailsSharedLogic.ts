@@ -2,7 +2,7 @@ import type { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
-import type { ApiComment, ApiIdentification } from "api/types";
+import type { ApiComment, ApiIdentification, ApiObservation } from "api/types";
 import { RealmContext } from "providers/contexts";
 import {
   useCallback,
@@ -31,7 +31,7 @@ const sortItems = (
   ids: ActivityItem[],
   comments: ActivityItem[],
 ): ActivityItem[] => ids.concat( [...comments] ).sort(
-  ( a, b ) => ( new Date( a.created_at ).getTime() - new Date( b.created_at ).getTime() ),
+  ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ),
 );
 
 const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
@@ -49,14 +49,14 @@ interface State {
   activityItems: ActivityItem[];
   addingActivityItem: boolean;
   agreeIdentification: AgreeIdentification | null;
-  observationShown: RealmObservation | null;
+  observationShown: ApiObservation | null;
   showAddCommentSheet: boolean;
   showAgreeWithIdSheet: boolean;
 }
 
 type Action =
-  | { type: typeof SET_INITIAL_OBSERVATION; observationShown: RealmObservation }
-  | { type: typeof ADD_ACTIVITY_ITEM; observationShown: RealmObservation }
+  | { type: typeof SET_INITIAL_OBSERVATION; observationShown: ApiObservation }
+  | { type: typeof ADD_ACTIVITY_ITEM; observationShown: ApiObservation }
   | { type: typeof LOADING_ACTIVITY_ITEM }
   | { type: typeof SHOW_AGREE_SHEET; agreeIdentification: AgreeIdentification }
   | { type: typeof HIDE_AGREE_SHEET }
@@ -122,7 +122,6 @@ const reducer = ( state: State, action: Action ): State => {
 interface UseObsDetailsSharedLogicParams {
   observation: RealmObservation;
   uuid: string;
-  targetActivityItemID?: number | null;
   localObservation: RealmObservation | null;
   remoteObservation: RealmObservation | null;
   markViewedLocally: ( ) => void;
@@ -133,8 +132,6 @@ interface UseObsDetailsSharedLogicParams {
   belongsToCurrentUser: boolean;
   isRefetching: boolean;
   refetchRemoteObservation: ( ) => void;
-  isConnected: boolean;
-  remoteObsWasDeleted: boolean;
 }
 
 interface UseObsDetailsSharedLogicReturn {
@@ -147,7 +144,6 @@ interface UseObsDetailsSharedLogicReturn {
   showAgreeWithIdSheet: boolean;
 
   // Computed
-  hasPhotos: boolean;
   subscriptionResults: unknown[];
   wasSynced: boolean;
 
@@ -377,7 +373,6 @@ const useObsDetailsSharedLogic = ( {
     showAgreeWithIdSheet,
 
     // Computed
-    hasPhotos,
     subscriptionResults,
     wasSynced,
 
