@@ -78,6 +78,7 @@ const MapView = ( {
   const { t } = useTranslation( );
   const { state: exploreState, dispatch, defaultExploreLocation } = useExplore( );
   const [showRedoSearchButton, setShowRedoSearchButton] = useState( false );
+  const [regionToAnimate, setRegionToAnimate] = useState<Region | undefined>( undefined );
   const isFirstRender = useRef( true );
 
   const mapRef = useRef<RNMapView | null>( null );
@@ -116,13 +117,12 @@ const MapView = ( {
 
     // since we're using initialRegion, we need to animate to the correct zoom level
     // when a user switches back to NEARBY or WORLDWIDE
-    if ( mapRef.current
-        && exploreState.placeMode === PLACE_MODE.NEARBY ) {
+    if ( exploreState.placeMode === PLACE_MODE.NEARBY ) {
       // Note: we do get observationBounds back from the API for nearby
       // but per user feedback, we want to show users a more zoomed in view
       // when they're looking at NEARBY view
       if ( nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined ) {
-        mapRef.current.animateToRegion( {
+        setRegionToAnimate( {
           ...nearbyRegion,
           latitude: nearbyRegion.latitude,
           longitude: nearbyRegion.longitude,
@@ -132,13 +132,13 @@ const MapView = ( {
     }
     if ( mapRef.current
       && exploreState.placeMode === PLACE_MODE.WORLDWIDE ) {
-      mapRef.current.animateToRegion( worldwideRegion );
+      setRegionToAnimate( worldwideRegion );
     }
     if ( mapRef.current
       && exploreState.placeMode === PLACE_MODE.PLACE ) {
       if ( observationBounds ) {
         const newRegion = getMapRegion( observationBounds );
-        mapRef.current.animateToRegion( newRegion );
+        setRegionToAnimate( newRegion );
       }
     }
   }, [
@@ -229,6 +229,7 @@ const MapView = ( {
         currentLocationButtonClassName="left-5 bottom-20"
         onPanDrag={handlePanDrag}
         initialRegion={initialRegion}
+        regionToAnimate={regionToAnimate}
         showCurrentLocationButton
         showSwitchMapTypeButton
         showsCompass={false}
