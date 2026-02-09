@@ -99,6 +99,7 @@ const StandardBottomSheet = ( {
     handleSnapPress( );
   }, [hidden, handleSnapPress] );
 
+  // To me, this implies this is a good candidate for splitting into 2 components
   const BottomSheetComponent = insideModal
     ? BottomSheet
     : BottomSheetModal;
