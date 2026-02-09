@@ -11,6 +11,7 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import type { RealmObservation, RealmTaxon, RealmUser } from "realmModels/types";
+import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
@@ -71,6 +72,8 @@ const initialState: State = {
   showAgreeWithIdSheet: false,
 };
 
+const logger = log.extend( "useObsDetailsSharedLogic" );
+
 const reducer = ( state: State, action: Action ): State => {
   switch ( action.type ) {
     case SET_INITIAL_OBSERVATION:
@@ -115,6 +118,7 @@ const reducer = ( state: State, action: Action ): State => {
         showAddCommentSheet: action.showAddCommentSheet,
       };
     default:
+      logger.error( "Unknown action in useObsDetailsSharedLogic reducer: ", action );
       return state;
   }
 };
