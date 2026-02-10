@@ -599,8 +599,6 @@ lane :prod do
 
   # Get all build numbers between the last released version and the current build number
   build_number = get_build_number( xcodeproj: XCODEPROJ )
-  published_build_number = app_store_build_number
-  new_build_numbers = ( ( published_build_number.to_i + 1 )..build_number.to_i ).to_a
 
   upload_to_app_store(
     build_number: build_number,
