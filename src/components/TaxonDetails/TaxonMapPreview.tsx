@@ -69,7 +69,7 @@ const TaxonMapPreview = ( {
           mapViewClassName="-mx-3"
           observation={observation}
           openMapScreen={() => setShowMapModal( true )}
-          region={region}
+          initialRegion={region}
           scrollEnabled={false}
           tileMapParams={obsParams}
           withObsTiles
@@ -93,7 +93,7 @@ const TaxonMapPreview = ( {
           style={{ margin: 0 }}
           modal={(
             <DetailsMap
-              region={region}
+              initialRegion={region}
               observation={observation}
               closeModal={( ) => setShowMapModal( false )}
               tileMapParams={obsParams}
