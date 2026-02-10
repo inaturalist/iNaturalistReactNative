@@ -78,7 +78,7 @@ const MapView = ( {
   const { t } = useTranslation( );
   const { state: exploreState, dispatch, defaultExploreLocation } = useExplore( );
   const [showRedoSearchButton, setShowRedoSearchButton] = useState( false );
-  const [regionToAnimate, setRegionToAnimate] = useState<Region | undefined>( undefined );
+  const [regionToAnimate, setRegionToAnimate] = useState<Region | null>( null );
   const isFirstRender = useRef( true );
 
   const mapRef = useRef<RNMapView | null>( null );

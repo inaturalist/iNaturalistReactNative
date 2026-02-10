@@ -374,9 +374,8 @@ const Map = ( {
   useEffect(
     ( ) => {
       if ( Platform.OS === "android" && androidAnimateRegion ) {
-        const curRegion = androidLocalRegion;
         const newRegion = {
-          ...curRegion, // provides defaults for latitudeDelta and longitudeDelta
+          ...androidLocalRegion, // provides defaults for latitudeDelta and longitudeDelta
           ...androidAnimateRegion,
         };
         setTimeout(
