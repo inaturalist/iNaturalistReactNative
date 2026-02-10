@@ -2,14 +2,10 @@ import { useNavigation } from "@react-navigation/native";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
-import {
-  Button,
-  ScrollViewWrapper,
-  WarningSheet,
-} from "components/SharedComponents";
+import { Button, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { useState } from "react";
+import React from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
