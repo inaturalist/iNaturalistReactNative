@@ -180,6 +180,23 @@ const isLoggedIn = async (): Promise<boolean> => {
  */
 const getUsername = async (): Promise<string> => getSensitiveItem( "username" );
 
+export const clearRealm = ( realm: Realm ) => {
+  // Delete all the records in the realm db, including the ones accessible
+  // through the copy of realm provided by RealmProvider
+  realm.beginTransaction();
+  try {
+    realm.deleteAll( );
+    realm.commitTransaction( );
+  } catch ( _realmError ) {
+    realm.cancelTransaction( );
+    // If we failed to wipe all the data in realm, delete the realm file.
+    // Note that deleting the realm file *all* the time seems to cause
+    // problems in Android when the app is force quit, as in sometimes it
+    // seems to just delete the file even if you didn't sign out
+    Realm.deleteFile( realmConfig );
+  }
+};
+
 /**
  * Signs out the user
  *
@@ -200,23 +217,8 @@ const signOut = async (
   // Don't await on this endpoint, to not delay the signout process
   apiClient.get( "/logout" );
 
-  if ( options.clearRealm ) {
-    if ( options.realm ) {
-      // Delete all the records in the realm db, including the ones accessible
-      // through the copy of realm provided by RealmProvider
-      options.realm.beginTransaction();
-      try {
-        options.realm.deleteAll( );
-        options.realm.commitTransaction( );
-      } catch ( _realmError ) {
-        options.realm.cancelTransaction( );
-        // If we failed to wipe all the data in realm, delete the realm file.
-        // Note that deleting the realm file *all* the time seems to cause
-        // problems in Android when the app is force quit, as in sometimes it
-        // seems to just delete the file even if you didn't sign out
-        Realm.deleteFile( realmConfig );
-      }
-    }
+  if ( options.clearRealm && options.realm ) {
+    clearRealm( options.realm );
   }
   // Delete the React Query cache. FWIW, this should *not* be optional, but
   // the checkForSignedInUser needs to call this and that doesn't have access
