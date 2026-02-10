@@ -136,7 +136,7 @@ const DiagnosticDeletionScreen = () => {
               operations[modalState].operation( queryClient, realm );
               closeModal();
             }}
-            buttonText="operations[modalState].label"
+            buttonText="Delete"
             loading={false}
           />
         )}
