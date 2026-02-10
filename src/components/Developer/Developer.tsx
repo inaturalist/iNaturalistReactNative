@@ -96,47 +96,6 @@ const AppFileSizes = () => {
   );
 };
 
-const deleteLogFileConfirmDescription = [
-  "Are you sure you want to delete your log file?",
-  "You may lose helpful debugging context.",
-  "Consider saving your current logs through the 'Share' button. before deleting.",
-].join( " " );
-const LogOptions = () => {
-  const navigation = useNavigation( );
-  const { deleteLogFile } = useLogs();
-  const [deleteLogFileModalOpen, setDeleteLogFileModalOpen] = useState( false );
-  const closeModal = () => setDeleteLogFileModalOpen( false );
-  return (
-    <>
-      <Button
-        onPress={() => navigation.navigate( "log" )}
-        text="LOG"
-        className="mb-5"
-      />
-      <Button
-        onPress={() => setDeleteLogFileModalOpen( true )}
-        text="DELETE LOG FILE"
-        className="mb-5"
-      />
-      {deleteLogFileModalOpen && (
-        <WarningSheet
-          onPressClose={() => closeModal()}
-          headerText="Delete Log File?"
-          text={deleteLogFileConfirmDescription}
-          handleSecondButtonPress={() => closeModal()}
-          secondButtonText="Cancel"
-          confirm={() => {
-            deleteLogFile();
-            closeModal();
-          }}
-          buttonText="Delete Log File"
-          loading={false}
-        />
-      )}
-    </>
-  );
-};
-
 const Developer = () => {
   const toggleRTLandLTR = async ( ) => {
     const { isRTL, forceRTL } = I18nManager;
@@ -149,7 +108,11 @@ const Developer = () => {
   return (
     <ScrollViewWrapper>
       <View className="p-5">
-        <LogOptions />
+        <Button
+          onPress={() => navigation.navigate( "log" )}
+          text="LOG"
+          className="mb-5"
+        />
         <Button
           onPress={() => navigation.navigate( "LoginStackNavigator" )}
           text="LOG IN AGAIN"
@@ -205,6 +168,11 @@ const Developer = () => {
             </>
           )
         }
+        <Button
+          onPress={() => navigation.navigate( "DiagnosticDeletions" )}
+          text="DIAGNOSTIC DELETIONS"
+          className="mb-5"
+        />
         <H1>Computer Vision</H1>
         <View className="flex-row">
           <Text className="font-bold">Model: </Text>
