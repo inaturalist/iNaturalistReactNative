@@ -70,7 +70,18 @@ const clearAuthCache = ( ): void => {
 };
 
 async function getSensitiveItem( key: string, options = {} ) {
-  const exists = await RNSInfo.hasItem( key, options );
+  let exists;
+  try {
+    exists = await RNSInfo.hasItem( key, options );
+  } catch ( e ) {
+    if ( isSensitiveInfoError( e ) ) {
+      const hasItemError = e as SensitiveInfoError;
+      localLogger.info(
+        `RNSInfo.hasItem error for ${key}: ${hasItemError.message}`,
+      );
+    }
+    throw e;
+  }
   if ( !exists ) {
     return null;
   }
