@@ -10,7 +10,7 @@ module.exports = {
   extends: [
     "airbnb",
     "plugin:i18next/recommended",
-    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "plugin:@tanstack/query/recommended",
     "plugin:react-native-a11y/ios",
     "plugin:@typescript-eslint/recommended",
   ],

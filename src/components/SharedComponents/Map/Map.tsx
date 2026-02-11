@@ -68,7 +68,6 @@ interface Props {
   onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
   openMapScreen?: () => void;
   ref?: React.Ref<MapView>;
-  region?: Region;
   regionToAnimate?: Region;
   scrollEnabled?: boolean;
   showCurrentLocationButton?: boolean;
@@ -103,7 +102,6 @@ const Map = ( {
   onRegionChangeComplete,
   openMapScreen,
   ref,
-  region,
   regionToAnimate,
   scrollEnabled = true,
   showCurrentLocationButton,
@@ -194,6 +192,8 @@ const Map = ( {
     animateToRegion( {
       latitude: regionToAnimate.latitude,
       longitude: regionToAnimate.longitude,
+      latitudeDelta: regionToAnimate.latitudeDelta,
+      longitudeDelta: regionToAnimate.longitudeDelta,
     } );
   }, [
     regionToAnimate,
@@ -234,9 +234,6 @@ const Map = ( {
   const setRegion = ( ) => {
     if ( Platform.OS !== "android" && initialRegion ) {
       return null;
-    }
-    if ( region?.latitude ) {
-      return region;
     }
     return Platform.OS === "android"
       ? androidLocalRegion
@@ -377,9 +374,8 @@ const Map = ( {
   useEffect(
     ( ) => {
       if ( Platform.OS === "android" && androidAnimateRegion ) {
-        const curRegion = androidLocalRegion || region;
         const newRegion = {
-          ...curRegion, // provides defaults for latitudeDelta and longitudeDelta
+          ...androidLocalRegion, // provides defaults for latitudeDelta and longitudeDelta
           ...androidAnimateRegion,
         };
         setTimeout(
@@ -391,7 +387,6 @@ const Map = ( {
     [
       androidAnimateRegion,
       androidLocalRegion,
-      region,
       handleRegionChangeComplete,
     ],
   );

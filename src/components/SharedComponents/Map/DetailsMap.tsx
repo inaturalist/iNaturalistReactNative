@@ -27,7 +27,7 @@ interface Props {
   headerTitle?: React.ReactNode;
   // TODO MOB-1038: reconcile the type issues here requiring the intersection
   observation?: Observation & RealmObservation;
-  region?: Region;
+  initialRegion?: Region;
   tileMapParams: Record<string, string> | null;
 }
 
@@ -68,7 +68,7 @@ const DetailsMap = ( {
   coordinateString,
   headerTitle,
   observation,
-  region,
+  initialRegion,
   tileMapParams,
 }: Props ) => {
   const insets = useSafeAreaInsets();
@@ -114,7 +114,7 @@ const DetailsMap = ( {
         <Map
           mapHeight="100%"
           observation={observation}
-          region={region}
+          initialRegion={initialRegion}
           showCurrentLocationButton
           showSwitchMapTypeButton
           tileMapParams={tileMapParams}

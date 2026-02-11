@@ -11,6 +11,13 @@ import { Dimensions, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
+// This component is an iteration on BottomSheet.
+// The main motivation was to avoid messing with the inconsistent use of the
+// onPressClose prop, whis gets passed to onDismiss and called differently depending
+// on whether the X button or backdrop is pressed.
+
+// To start, it contains just what's necessary for the usage in SuggestIDSheet.
+
 const { width } = Dimensions.get( "window" );
 
 const styles = StyleSheet.create( {
