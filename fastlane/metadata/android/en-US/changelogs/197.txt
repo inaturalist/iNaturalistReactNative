@@ -1,0 +1,9 @@
+NEW
+* Button to edit a new observation directly from the match screen
+
+FIXED
+* Scrolling issue in the language picker sheet
+* Infinite spinner on various screens
+
+UPDATED
+* Various performance improvements and dependency updates
