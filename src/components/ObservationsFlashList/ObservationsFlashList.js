@@ -269,7 +269,7 @@ const ObservationsFlashList: Function = ( {
     if ( fetchFromLastObservation && data.length > 0 ) {
       const lastObservation = data[data.length - 1];
       const lastId = lastObservation?.id;
-      if ( lastId ) {
+      if ( lastId && !lastObservation?.empty ) {
         fetchFromLastObservation( lastId );
         return;
       }
