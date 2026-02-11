@@ -7,7 +7,6 @@ import {
   Pressable,
 } from "components/styledComponents";
 import sortBy from "lodash/sortBy";
-import type { Node } from "react";
 import React from "react";
 import {
   FlatList,
@@ -28,7 +27,7 @@ const ITEMS = sortBy( [
 ], item => item.title );
 ITEMS.push( { title: "Everything Else", component: "Misc" } );
 
-const UiLibrary = (): Node => {
+const UiLibrary = () => {
   const navigation = useNavigation( );
   return (
     <ViewWrapper>
