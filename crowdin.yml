@@ -30,6 +30,9 @@ files:
   - source: /fastlane/metadata/ios/default/subtitle.txt
     dest: /ReactNative/metadata/ios/subtitle.txt
     translation: /fastlane/metadata/ios/%osx_locale%/subtitle.txt
+  - source: /fastlane/metadata/ios/default/release_notes.txt
+    dest: /ReactNative/metadata/ios/release_notes.txt
+    translation: /fastlane/metadata/ios/%osx_locale%/release_notes.txt
     # Strings for PlayStore description etc
     # Note: this uses the Crowdin locale with some custom mapping in metadata/i18ncli.js
   - source: /fastlane/metadata/android/en-US/full_description.txt
