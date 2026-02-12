@@ -13,7 +13,7 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import type { ButtonType } from "./BottomButtons";
+import type { ButtonType, ButtonTypeNonNull } from "./BottomButtons";
 import BottomButtons, { UPLOAD } from "./BottomButtons";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
@@ -157,7 +157,7 @@ const BottomButtonsContainer = ( {
     passesEvidenceTest,
   ] );
 
-  const handlePress = useCallback( ( type: ButtonType ) => {
+  const handlePress = useCallback( ( type: ButtonTypeNonNull ) => {
     if ( showMissingEvidence( ) ) { return; }
     setLoading( true );
     setButtonPressed( type );
