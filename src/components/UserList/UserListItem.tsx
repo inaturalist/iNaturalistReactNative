@@ -1,6 +1,8 @@
 import {
-  Body1, INatIcon,
-  List2, UserIcon,
+  Body1,
+  INatIcon,
+  List2,
+  UserIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
