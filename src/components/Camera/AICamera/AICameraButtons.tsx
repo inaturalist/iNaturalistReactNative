@@ -29,17 +29,12 @@ interface Props {
   numStoredResults?: number;
   rotatableAnimatedStyle: ViewStyle;
   debugFormat?: CameraDeviceFormat;
-  // Those five are debug only so I don't bother with types
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setConfidenceThreshold?: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setCropRatio?: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setFPS?: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setNumStoredResults?: Function;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   changeDebugFormat?: Function;
+  setConfidenceThreshold: ( value: number ) => void;
+  setCropRatio: ( value: number ) => void;
+  setFPS: ( value: number ) => void;
+  setNumStoredResults: ( value: number ) => void;
   showPrediction: boolean;
   showZoomButton: boolean;
   takePhoto: () => Promise<void>;
