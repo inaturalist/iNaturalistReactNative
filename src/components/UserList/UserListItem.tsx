@@ -12,8 +12,7 @@ import { useTranslation } from "sharedHooks";
 interface Props {
   item: object;
   countText: string;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  onPress?: Function;
+  onPress?: ( ) => void;
   accessibilityLabel?: string;
   pressable?: boolean;
 }
