@@ -25,10 +25,8 @@ interface Props {
   observations: object[];
   currentObservation: RealmObservation;
   currentObservationIndex: number;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setCurrentObservationIndex: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  transitionAnimation: Function;
+  setCurrentObservationIndex: ( index: number, observations: object[] ) => void;
+  transitionAnimation: ( ) => void;
 }
 
 const BottomButtonsContainer = ( {
