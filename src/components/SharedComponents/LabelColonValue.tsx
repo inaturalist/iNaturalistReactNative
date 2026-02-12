@@ -3,15 +3,14 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
+import type { TextProps } from "react-native";
 
 interface Props {
   label: string;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  LabelComponent?: Function;
+  LabelComponent?: React.ComponentType<TextProps>;
   valueSelectable?: boolean;
   value: string | number;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  ValueComponent?: Function;
+  ValueComponent?: React.ComponentType<TextProps>;
 }
 
 const LabelColonValue = ( {
