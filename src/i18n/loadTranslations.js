@@ -50,6 +50,7 @@ export default locale => {
   if ( locale === "gd" ) { return require( "./l10n/gd.ftl.json" ); }
   if ( locale === "fr" ) { return require( "./l10n/fr.ftl.json" ); }
   if ( locale === "fr-CA" ) { return require( "./l10n/fr-CA.ftl.json" ); }
+  if ( locale === "fo" ) { return require( "./l10n/fo.ftl.json" ); }
   if ( locale === "fil" ) { return require( "./l10n/fil.ftl.json" ); }
   if ( locale === "fi" ) { return require( "./l10n/fi.ftl.json" ); }
   if ( locale === "fa" ) { return require( "./l10n/fa.ftl.json" ); }
@@ -104,6 +105,7 @@ export const SUPPORTED_LOCALES = [
   "fa",
   "fi",
   "fil",
+  "fo",
   "fr",
   "fr-CA",
   "gd",
