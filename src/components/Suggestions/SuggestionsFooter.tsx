@@ -39,8 +39,7 @@ interface Props {
   hideSkip?: boolean;
   observers: string[];
   shouldUseEvidenceLocation: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  toggleLocation: Function;
+  toggleLocation: ( options: { showLocation: boolean } ) => void;
 }
 
 const SuggestionsFooter = ( {
