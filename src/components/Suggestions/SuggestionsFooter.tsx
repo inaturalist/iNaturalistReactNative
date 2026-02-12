@@ -36,8 +36,7 @@ interface Props {
   };
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   handleSkip: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  hideLocationToggleButton: Function;
+  hideLocationToggleButton: boolean;
   hideSkip?: boolean;
   observers: string[];
   shouldUseEvidenceLocation: boolean;
