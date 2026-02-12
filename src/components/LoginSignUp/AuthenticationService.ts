@@ -69,7 +69,12 @@ const clearAuthCache = ( ): void => {
   authCache.lastChecked = null;
 };
 
-async function getSensitiveItem( key: string, options = {} ) {
+async function getSensitiveItem(
+  key: string,
+  options = {
+    keychainService: "app" as const,
+  },
+) {
   let exists;
   try {
     exists = await RNSInfo.hasItem( key, options );
@@ -109,6 +114,7 @@ async function getSensitiveItem( key: string, options = {} ) {
 
 async function setSensitiveItem( key: string, value: string, options = {} ) {
   const actualOptions = {
+    keychainService: "app" as const,
     ...options,
     accessControl: "none" as const,
   };
@@ -129,7 +135,12 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
   }
 }
 
-async function deleteSensitiveItem( key: string, options = {} ) {
+async function deleteSensitiveItem(
+  key: string,
+  options = {
+    keychainService: "app" as const,
+  },
+) {
   try {
     const result = await RNSInfo.deleteItem( key, options );
     clearAuthCache( );
