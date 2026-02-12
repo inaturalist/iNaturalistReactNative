@@ -71,7 +71,7 @@ const BottomButtonsContainer = ( {
   const canUpload = !!( currentUser && isConnected );
   const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
 
-  const setNextScreen = useCallback( async ( type: ButtonType ) => {
+  const setNextScreen = useCallback( async ( type: ButtonTypeNonNull ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
     if ( savedObservation && observations?.length > 1 ) {
       transitionAnimation();
