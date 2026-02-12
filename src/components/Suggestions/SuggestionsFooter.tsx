@@ -34,8 +34,7 @@ interface Props {
       };
     };
   };
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  handleSkip: Function;
+  handleSkip: ( ) => void;
   hideLocationToggleButton: boolean;
   hideSkip?: boolean;
   observers: string[];
