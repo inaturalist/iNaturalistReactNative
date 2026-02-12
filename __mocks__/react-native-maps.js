@@ -1,9 +1,12 @@
 const React = require( "react" );
 const { View } = require( "react-native" );
 
-const MockMapView = ( { children, ...props } ) => (
-  React.createElement( View, props, children )
-);
+const MockMapView = React.forwardRef( ( { children, ...props }, ref ) => {
+  React.useImperativeHandle( ref, () => ( {
+    animateToRegion: () => {},
+  } ) );
+  return React.createElement( View, props, children );
+} );
 
 const MockUrlTile = ( { testID, urlTemplate, ...props } ) => (
   React.createElement( View, { testID, urlTemplate, ...props } )
