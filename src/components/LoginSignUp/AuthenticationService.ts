@@ -114,6 +114,8 @@ async function getSensitiveItem(
 
 async function setSensitiveItem( key: string, value: string, options = {} ) {
   const actualOptions = {
+    // I put the key as overridable by actual options propped in,
+    // in case someone wants to build a separate slice at one point.
     keychainService: "app" as const,
     ...options,
     accessControl: "none" as const,
