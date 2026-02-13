@@ -14,6 +14,9 @@ import NotificationsTab, {
   OWNER_TAB,
 } from "./NotificationsTab";
 
+const OWNER_TAB_PARAMS = { observations_by: "owner" } as const;
+const FOLLOWING_TAB_PARAMS = { observations_by: "following" } as const;
+
 const Notifications = ( ) => {
   const [activeTab, setActiveTab] = useState<typeof OWNER_TAB | typeof OTHER_TAB>( OWNER_TAB );
   const { t } = useTranslation();
@@ -44,14 +47,14 @@ const Notifications = ( ) => {
       {activeTab === OWNER_TAB && (
         <NotificationsContainer
           currentUser={currentUser}
-          notificationParams={{ observations_by: "owner" }}
+          notificationParams={OWNER_TAB_PARAMS}
           onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OWNER_TAB )}
         />
       )}
       {activeTab === OTHER_TAB && (
         <NotificationsContainer
           currentUser={currentUser}
-          notificationParams={{ observations_by: "following" }}
+          notificationParams={FOLLOWING_TAB_PARAMS}
           onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OTHER_TAB )}
         />
       )}
