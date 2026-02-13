@@ -17,12 +17,12 @@ export const UPLOAD = "upload";
 export const SAVE = "save";
 
 export type ButtonType = typeof SAVE | typeof UPLOAD | null;
+export type ButtonTypeNonNull = typeof SAVE | typeof UPLOAD;
 
 interface Props {
   buttonPressed: ButtonType;
   canSaveOnly: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  handlePress: Function;
+  handlePress: ( type: ButtonTypeNonNull ) => void;
   loading: boolean;
   showFocusedChangesButton: boolean;
   showFocusedUploadButton: boolean;

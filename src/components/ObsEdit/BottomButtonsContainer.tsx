@@ -13,7 +13,7 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-import type { ButtonType } from "./BottomButtons";
+import type { ButtonType, ButtonTypeNonNull } from "./BottomButtons";
 import BottomButtons, { UPLOAD } from "./BottomButtons";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
@@ -25,10 +25,8 @@ interface Props {
   observations: object[];
   currentObservation: RealmObservation;
   currentObservationIndex: number;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setCurrentObservationIndex: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  transitionAnimation: Function;
+  setCurrentObservationIndex: ( index: number, observations: object[] ) => void;
+  transitionAnimation: ( ) => void;
 }
 
 const BottomButtonsContainer = ( {
@@ -71,7 +69,7 @@ const BottomButtonsContainer = ( {
   const canUpload = !!( currentUser && isConnected );
   const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
 
-  const setNextScreen = useCallback( async ( type: ButtonType ) => {
+  const setNextScreen = useCallback( async ( type: ButtonTypeNonNull ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
     if ( savedObservation && observations?.length > 1 ) {
       transitionAnimation();
@@ -157,7 +155,7 @@ const BottomButtonsContainer = ( {
     passesEvidenceTest,
   ] );
 
-  const handlePress = useCallback( ( type: ButtonType ) => {
+  const handlePress = useCallback( ( type: ButtonTypeNonNull ) => {
     if ( showMissingEvidence( ) ) { return; }
     setLoading( true );
     setButtonPressed( type );

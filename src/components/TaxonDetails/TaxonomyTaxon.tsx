@@ -15,8 +15,7 @@ interface Props {
   isCurrentTaxon?: boolean;
   navigateToTaxonDetails: ( _taxonId: number ) => void;
   scientificNameFirst?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  t: Function;
+  t: ( key: string, options: object ) => string;
   taxon: {
     id: number;
     name: string;

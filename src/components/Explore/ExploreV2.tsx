@@ -52,7 +52,7 @@ interface Props {
   placeMode: string;
   queryParams: object;
   renderLocationPermissionsGate: RenderLocationPermissionsGateFunction;
-  requestLocationPermissions: () => void;
+  requestLocationPermissions: ( ) => void;
 }
 
 const ExploreV2 = ( {
