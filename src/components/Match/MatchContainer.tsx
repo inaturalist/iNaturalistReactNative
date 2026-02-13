@@ -10,13 +10,12 @@ import flattenUploadParams from "components/Suggestions/helpers/flattenUploadPar
 import {
   FETCH_STATUSES,
 } from "components/Suggestions/SuggestionsContainer";
-import findIndex from "lodash/findIndex";
-import isEqual from "lodash/isEqual";
+import { isEqual } from "lodash";
 import orderBy from "lodash/orderBy";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
-  useEffect, useReducer, useRef, useState,
+  useEffect, useMemo, useReducer, useRef, useState,
 } from "react";
 import type { ScrollView } from "react-native";
 import type { RealmPhoto, RealmTaxon } from "realmModels/types";
@@ -60,7 +59,6 @@ interface State {
   scoreImageParams: ImageParamsType | null;
   queryKey: ( string | { shouldUseEvidenceLocation: boolean } )[];
   shouldUseEvidenceLocation: boolean;
-  orderedSuggestions: ApiSuggestion[];
 }
 
 export type MatchButtonAction = "save" | "discard";
@@ -84,7 +82,6 @@ const initialState: State = {
   scoreImageParams: null,
   queryKey: [],
   shouldUseEvidenceLocation: false,
-  orderedSuggestions: [],
 };
 
 const reducer = ( state: State, action: Action ): State => {
@@ -116,11 +113,6 @@ const reducer = ( state: State, action: Action ): State => {
           action.scoreImageParams.image.uri,
           action.shouldUseEvidenceLocation,
         ),
-      };
-    case "ORDER_SUGGESTIONS":
-      return {
-        ...state,
-        orderedSuggestions: action.orderedSuggestions,
       };
     default:
       throw new Error( );
@@ -157,7 +149,6 @@ const MatchContainer = ( ) => {
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 
-  const [topSuggestion, setTopSuggestion] = useState<ApiSuggestion>( );
   const [iconicTaxon, setIconicTaxon] = useState<RealmTaxon>( );
   const [currentUserLocation, setCurrentUserLocation] = useState<{
     latitude?: number;
@@ -177,7 +168,6 @@ const MatchContainer = ( ) => {
     offlineFetchStatus,
     queryKey,
     shouldUseEvidenceLocation,
-    orderedSuggestions,
   } = state;
 
   const shouldFetchOnlineSuggestions = ( hasPermissions !== undefined )
@@ -257,8 +247,30 @@ const MatchContainer = ( ) => {
     onlineSuggestionsAttempted,
   } );
 
-  const [currentPlaceGuess, setCurrentPlaceGuess] = useState<string>( );
   const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
+  const [selectedSuggestionId, setSelectedSuggestionId] = useState<number | null>( null );
+
+  const orderedSuggestions = useMemo( () => {
+    if ( !suggestions || suggestions.length === 0 ) return [];
+
+    const orderedList = [...suggestions.otherSuggestions];
+    if ( suggestions?.topSuggestion ) {
+      orderedList.unshift( suggestions.topSuggestion );
+    }
+
+    return orderBy(
+      orderedList,
+      suggestion => suggestion.combined_score,
+      ["desc"],
+    );
+  }, [suggestions] );
+
+  const topSuggestion = useMemo( () => {
+    if ( selectedSuggestionId ) {
+      return orderedSuggestions.find( s => s.taxon.id === selectedSuggestionId );
+    }
+    return suggestions?.topSuggestion;
+  }, [suggestions, orderedSuggestions, selectedSuggestionId] );
 
   const scrollToTop = useCallback( () => {
     if ( scrollRef.current ) {
@@ -300,14 +312,10 @@ const MatchContainer = ( ) => {
       const placeGuess
       = await fetchPlaceName( currentUserLocation?.latitude, currentUserLocation?.longitude );
       if ( placeGuess ) {
-        // Cannot call updateObservationKeys directly from here, since fetchPlaceName might take
-        // a while to return, in the meantime the current copy of the observation might have
-        // changed, so we update the observation from useEffect of currentPlaceGuess, so it will
-        // always have the latest copy of the current observation (see GH issue #584)
-        setCurrentPlaceGuess( placeGuess );
+        updateObservationKeys( { place_guess: placeGuess } );
       }
     }
-  }, [currentUserLocation] );
+  }, [currentUserLocation, updateObservationKeys] );
 
   const handleRefetchSuggestions = useCallback( () => {
     const newScoreImageParams = {
@@ -333,71 +341,34 @@ const MatchContainer = ( ) => {
   ] );
 
   useEffect( () => {
-    if ( currentUserLocation?.latitude && !hasRefetchedSuggestions && suggestions ) {
+    if ( !scoreImageParams ) return;
+    if ( userLocation === currentUserLocation ) return;
+    if ( !userLocation?.latitude ) return;
+
+    setCurrentUserLocation( userLocation );
+    updateObservationKeys( userLocation );
+
+    getCurrentUserPlaceName();
+
+    if ( !hasRefetchedSuggestions && suggestions ) {
       handleRefetchSuggestions();
     }
   }, [
-    currentUserLocation,
-    getCurrentUserPlaceName,
-    handleRefetchSuggestions,
-    hasRefetchedSuggestions,
-    suggestions,
-  ] );
-
-  useEffect( ( ) => {
-    if ( !scoreImageParams ) return;
-    if ( userLocation === currentUserLocation ) {
-      return;
-    }
-    if ( userLocation?.latitude ) {
-      setCurrentUserLocation( userLocation );
-      getCurrentUserPlaceName( );
-      updateObservationKeys( userLocation );
-    }
-  }, [
     userLocation,
-    updateObservationKeys,
-    handleRefetchSuggestions,
-    stopWatch,
-    subscriptionId,
     currentUserLocation,
     scoreImageParams,
+    suggestions,
+    hasRefetchedSuggestions,
+    updateObservationKeys,
     getCurrentUserPlaceName,
+    handleRefetchSuggestions,
   ] );
 
-  useEffect( () => {
-    if ( !currentPlaceGuess ) return;
-    updateObservationKeys( { place_guess: currentPlaceGuess } );
-  }, [currentPlaceGuess, updateObservationKeys] );
-
   const onSuggestionChosen = useCallback( ( selection: ApiSuggestion ) => {
-    const suggestionsList = [...orderedSuggestions];
-
-    // make sure to reorder the list by confidence score
-    // for when a user taps multiple suggestions and pushes a new top suggestion to
-    // the top of the list
-    const sortedList = orderBy(
-      suggestionsList,
-      suggestion => suggestion.combined_score,
-      ["desc"],
-    );
-
-    const chosenIndex = findIndex(
-      sortedList,
-      suggestion => suggestion.taxon.id === selection.taxon.id,
-    );
-    if ( chosenIndex !== -1 ) {
-      // Set new top suggestion
-      setTopSuggestion( sortedList[chosenIndex] );
-      // We can set the entire list here since we are filtering out the top suggestion in render
-      dispatch( {
-        type: "ORDER_SUGGESTIONS",
-        orderedSuggestions: sortedList,
-      } );
-    }
+    setSelectedSuggestionId( selection.taxon.id );
     scrollToTop( );
     // TODO: should this set owners_identification_from_vision: false?
-  }, [orderedSuggestions, scrollToTop] );
+  }, [scrollToTop] );
 
   const createUploadParams = useCallback( async ( uri: string, showLocation: boolean ) => {
     const newImageParams = await flattenUploadParams( uri );
@@ -439,28 +410,6 @@ const MatchContainer = ( ) => {
     } );
     return unsubscribe;
   }, [navigation, setImageParams, suggestions] );
-
-  useEffect( ( ) => {
-    if ( !suggestions || suggestions.length === 0 ) {
-      return;
-    }
-
-    const orderedList = [...suggestions.otherSuggestions];
-    if ( suggestions?.topSuggestion ) {
-      setTopSuggestion( suggestions.topSuggestion );
-      orderedList.unshift( suggestions.topSuggestion );
-    }
-    // make sure list is in order of confidence score
-    const sortedList = orderBy(
-      orderedList,
-      suggestion => suggestion.combined_score,
-      ["desc"],
-    );
-    dispatch( {
-      type: "ORDER_SUGGESTIONS",
-      orderedSuggestions: sortedList,
-    } );
-  }, [suggestions] );
 
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
