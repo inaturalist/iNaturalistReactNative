@@ -1,4 +1,5 @@
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import type { NavigationRoute, ParamListBase } from "@react-navigation/native";
 import { CommonActions } from "@react-navigation/native";
 import {
   SCREEN_NAME_MENU,
@@ -53,6 +54,22 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   };
 
   const resetStack = useCallback( ( tabName: TabName, screenName: ScreenName ) => {
+    const navState = navigation.getState( );
+    // copy existing stack routes so we don't lose state for tabs we're not resetting
+    const newStacks: Partial<NavigationRoute<ParamListBase, string>>[]
+    = navState.routes.slice();
+    const replaceIndex = newStacks.findIndex( r => r.name === tabName );
+    // add reset stack
+    newStacks.splice( replaceIndex, 1, {
+      name: tabName,
+      state: {
+        index: 0,
+        routes: [
+          { name: screenName },
+        ],
+      },
+    } );
+
     navigation.dispatch(
       CommonActions.reset( {
         index: 0,
@@ -60,17 +77,8 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
           {
             name: "TabNavigator",
             state: {
-              routes: [
-                {
-                  name: tabName,
-                  state: {
-                    index: 0,
-                    routes: [
-                      { name: screenName },
-                    ],
-                  },
-                },
-              ],
+              index: navState.index,
+              routes: newStacks,
             },
           },
         ],
