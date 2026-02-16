@@ -16,6 +16,7 @@ import type { StyleProp, ViewStyle } from "react-native";
 import type { Region } from "react-native-maps";
 import type RNMapView from "react-native-maps";
 import { useTranslation } from "sharedHooks";
+import type { RenderLocationPermissionsGateFunction } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
 
 const NEARBY_DELTA = 0.02;
@@ -61,10 +62,8 @@ interface Props {
   };
   isLoading: boolean;
   hasLocationPermissions?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  renderLocationPermissionsGate: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  requestLocationPermissions: Function;
+  renderLocationPermissionsGate: RenderLocationPermissionsGateFunction;
+  requestLocationPermissions: ( ) => void;
 }
 
 const MapView = ( {
