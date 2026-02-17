@@ -98,7 +98,6 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       onPress: ( ) => {
         const isCurrentTab = SCREEN_NAME_MENU === activeTab;
         if ( isCurrentTab ) {
-          // Reset stack to initial route when tapping active tab
           resetStack( "MenuTab", SCREEN_NAME_MENU );
         } else {
           navigation.navigate( "MenuTab" );
@@ -115,7 +114,6 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       onPress: ( ) => {
         const isCurrentTab = SCREEN_NAME_ROOT_EXPLORE === activeTab;
         if ( isCurrentTab ) {
-          // Reset stack to initial route when tapping active tab
           resetStack( "ExploreTab", SCREEN_NAME_ROOT_EXPLORE );
         } else {
           navigation.navigate( "ExploreTab" );
@@ -133,7 +131,6 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       onPress: ( ) => {
         const isCurrentTab = SCREEN_NAME_OBS_LIST === activeTab;
         if ( isCurrentTab ) {
-          // Reset stack to initial route when tapping active tab
           resetStack( "ObservationsTab", SCREEN_NAME_OBS_LIST );
         } else {
           navigation.navigate( "ObservationsTab" );
@@ -150,7 +147,6 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       onPress: ( ) => {
         const isCurrentTab = SCREEN_NAME_NOTIFICATIONS === activeTab;
         if ( isCurrentTab ) {
-          // Reset stack to initial route when tapping active tab
           resetStack( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS );
         } else {
           navigation.navigate( "NotificationsTab" );
