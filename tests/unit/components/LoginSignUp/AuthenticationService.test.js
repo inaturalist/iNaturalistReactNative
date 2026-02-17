@@ -1,7 +1,7 @@
 import {
   API_HOST,
   authenticateUser,
-  isCurrentUser,
+  getUsername,
   isLoggedIn,
   registerUser,
   signOut,
@@ -36,7 +36,7 @@ test( "authenticates user", async ( ) => {
   await expect( authenticateUser( USERNAME, PASSWORD, global.realm ) ).resolves.toEqual( true );
 
   // Make sure user is logged in
-  await expect( isCurrentUser( USERNAME ) ).resolves.toEqual( true );
+  await expect( getUsername() ).resolves.toEqual( USERNAME );
   await expect( isLoggedIn() ).resolves.toEqual( true );
 
   // Sign out
@@ -64,7 +64,7 @@ test( "registers user", async ( ) => {
   await expect( authenticateUser( USERNAME, PASSWORD, global.realm ) ).resolves.toEqual( true );
 
   // Make sure user is logged in
-  await expect( isCurrentUser( USERNAME ) ).resolves.toEqual( true );
+  await expect( getUsername() ).resolves.toEqual( USERNAME );
   await expect( isLoggedIn() ).resolves.toEqual( true );
 
   // Sign out

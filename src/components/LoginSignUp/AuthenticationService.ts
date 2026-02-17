@@ -18,8 +18,7 @@ import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
 import RNRestart from "react-native-restart";
-import type { SensitiveInfoError } from "react-native-sensitive-info";
-import RNSInfo, { ErrorCode, isSensitiveInfoError } from "react-native-sensitive-info";
+import RNSInfo from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
@@ -27,7 +26,7 @@ import { getInstallID } from "sharedHelpers/installData";
 import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { unlink } from "sharedHelpers/util";
+import { sleep, unlink } from "sharedHelpers/util";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 
@@ -70,62 +69,42 @@ const clearAuthCache = ( ): void => {
 };
 
 async function getSensitiveItem( key: string, options = {} ) {
-  let exists;
-  try {
-    exists = await RNSInfo.hasItem( key, options );
-  } catch ( e ) {
-    if ( isSensitiveInfoError( e ) ) {
-      const hasItemError = e as SensitiveInfoError;
-      localLogger.info(
-        `RNSInfo.hasItem error for ${key}: ${hasItemError.message}`,
-      );
-    }
-    throw e;
-  }
-  if ( !exists ) {
-    return null;
-  }
-
   try {
     return await RNSInfo.getItem( key, options );
   } catch ( e ) {
-    if ( isSensitiveInfoError( e ) ) {
-      const getItemError = e as SensitiveInfoError;
-      if ( isDebugMode() ) {
-        switch ( getItemError.code ) {
-          case ErrorCode.NOT_FOUND:
-            // Value doesn't exist
-            localLogger.info( `RNSInfo.getItem not available for ${key}` );
-            break;
-          default:
-            localLogger.info( `RNSInfo.getItem unknown error for ${key}: ${getItemError.message}` );
-            break;
-        }
-      }
+    if ( isDebugMode() ) {
+      localLogger.info( `RNSInfo.getItem not available for ${key}, sleeping` );
     }
-    throw e;
+    const getItemError = e as Error;
+    if ( getItemError.message.match( /Protected data not available yet/ ) ) {
+      await sleep( 1_000 );
+      return RNSInfo.getItem( key, options );
+    }
+    if ( isDebugMode() ) {
+      localLogger.info( `RNSInfo.getItem not available for ${key} after sleeping, throwing` );
+    }
+    throw getItemError;
   }
 }
 
 async function setSensitiveItem( key: string, value: string, options = {} ) {
-  const actualOptions = {
-    ...options,
-    accessControl: "none" as const,
-  };
   try {
-    const result = await RNSInfo.setItem( key, value, actualOptions );
+    const result = await RNSInfo.setItem( key, value, options );
     clearAuthCache( );
     return result;
   } catch ( e ) {
-    if ( isSensitiveInfoError( e ) ) {
-      const setItemError = e as SensitiveInfoError;
-      if ( isDebugMode( ) ) {
-        localLogger.info(
-          `RNSInfo.setItem error for ${key}, ${setItemError.code} ${setItemError.message}`,
-        );
-      }
+    if ( isDebugMode( ) ) {
+      localLogger.info( `RNSInfo.setItem not available for ${key}, sleeping` );
     }
-    throw e;
+    const setItemError = e as Error;
+    if ( setItemError.message.match( /Protected data not available yet/ ) ) {
+      await sleep( 1_000 );
+      return RNSInfo.setItem( key, value, options );
+    }
+    if ( isDebugMode( ) ) {
+      localLogger.info( `RNSInfo.setItem not available for ${key} after sleeping, throwing` );
+    }
+    throw setItemError;
   }
 }
 
@@ -135,15 +114,18 @@ async function deleteSensitiveItem( key: string, options = {} ) {
     clearAuthCache( );
     return result;
   } catch ( e ) {
-    if ( isSensitiveInfoError( e ) ) {
-      const deleteItemError = e as SensitiveInfoError;
-      if ( isDebugMode() ) {
-        localLogger.info(
-          `RNSInfo.deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`,
-        );
-      }
+    if ( isDebugMode( ) ) {
+      localLogger.info( `RNSInfo.deleteItem not available for ${key}, sleeping` );
     }
-    throw e;
+    const deleteItemError = e as Error;
+    if ( deleteItemError.message.match( /Protected data not available yet/ ) ) {
+      await sleep( 500 );
+      return RNSInfo.deleteItem( key, options );
+    }
+    if ( isDebugMode( ) ) {
+      localLogger.info( `RNSInfo.deleteItem not available after sleeping for ${key}, throwing` );
+    }
+    throw deleteItemError;
   }
 }
 
@@ -190,6 +172,13 @@ const isLoggedIn = async (): Promise<boolean> => {
     return false;
   }
 };
+
+/**
+ * Returns the logged-in username
+ *
+ * @returns {Promise<boolean>}
+ */
+const getUsername = async (): Promise<string> => getSensitiveItem( "username" );
 
 /**
  * Signs out the user
@@ -296,7 +285,7 @@ const getJWT = async (
   allowAnonymousJWT = false,
   logContext: string | null = null,
 ): Promise<string | null> => {
-  let jwtToken: string | null | undefined = await getSensitiveItem( "jwtToken" );
+  let jwtToken: string | undefined = await getSensitiveItem( "jwtToken" );
   const storedJwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
   let jwtGeneratedAt: number | null = null;
   if ( storedJwtGeneratedAt ) {
@@ -328,9 +317,6 @@ const getJWT = async (
     // than 25 mins (safe margin) - ask for a new one
 
     const accessToken = await getSensitiveItem( "accessToken" );
-    // accessToken should always be a string here, since we're logged in,
-    // i.e. in the function call to loggedIn() above we must have found accessToken
-    // to not be null at least in the last 5000 ms
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     let response;
     try {
@@ -633,7 +619,7 @@ const registerUser = async ( user: { password: string } ) => {
 };
 
 const isCurrentUser = async ( username: string ): Promise<boolean> => {
-  const currentUsername = await getSensitiveItem( "username" );
+  const currentUsername = await getUsername( );
   return username === currentUsername;
 };
 
@@ -692,6 +678,7 @@ export {
   emailAvailable,
   getAnonymousJWT,
   getJWT,
+  getUsername,
   isCurrentUser,
   isLoggedIn,
   registerUser,
