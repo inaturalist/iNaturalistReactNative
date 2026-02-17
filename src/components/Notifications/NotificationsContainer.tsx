@@ -32,6 +32,7 @@ const NotificationsContainer = ( {
     isError,
     isFetching,
     isInitialLoading,
+    loadingTimedOut,
     notifications,
     refetch,
   } = useInfiniteNotificationsScroll( notificationParams );
@@ -69,6 +70,7 @@ const NotificationsContainer = ( {
       isFetching={isFetching}
       isInitialLoading={isInitialLoading}
       isConnected={isConnected}
+      loadingTimedOut={loadingTimedOut}
       onEndReached={fetchNextPage}
       reload={refetch}
       refreshing={refreshing}
