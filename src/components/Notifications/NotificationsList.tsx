@@ -13,6 +13,8 @@ import type { RealmUser } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
+const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
+
 interface Props {
   currentUser: RealmUser | null;
   data: Notification[];
@@ -50,8 +52,6 @@ const NotificationsList = ( {
   const renderItem = useCallback( ( { item }: RenderItemProps ) => (
     <NotificationsListItem notification={item} />
   ), [] );
-
-  const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
   const footerComponent = useMemo( ( ) => (
     <InfiniteScrollLoadingWheel
@@ -112,7 +112,7 @@ const NotificationsList = ( {
 
   return (
     <CustomFlashList
-      ItemSeparatorComponent={renderItemSeparator}
+      ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={emptyComponent}
       ListFooterComponent={footerComponent}
       data={data}
