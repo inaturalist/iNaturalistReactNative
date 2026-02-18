@@ -120,6 +120,7 @@ const PhotoLibrary = ( ): Node => {
 
     // According to the native code of the image picker library, it never rejects the promise,
     // just returns a response object with errorCode
+    // https://github.com/react-native-image-picker/react-native-image-picker?tab=readme-ov-file#Asset-Object
     const response = await ImagePicker.launchImageLibrary( {
       selectionLimit: fromAICamera
         ? FROM_AICAMERA_MAX_PHOTOS_ALLOWED
