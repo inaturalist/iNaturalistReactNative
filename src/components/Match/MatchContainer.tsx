@@ -395,21 +395,15 @@ const MatchContainer = ( ) => {
   ] );
 
   useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "focus", ( ) => {
-      // resizeImage crashes if trying to resize an https:// photo while there is no internet
-      // in this situation, we can skip creating upload parameters since we're loading
-      // offline suggestions anyway
-      if ( !hasLoadedRef.current
-        // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
-        // we shouldn't rely on implementation internals to consumer drive state
-        && isEqual( internalUseSuggestionsInitialSuggestions, suggestions )
-      ) {
-        hasLoadedRef.current = true;
-        setImageParams( );
-      }
-    } );
-    return unsubscribe;
-  }, [navigation, setImageParams, suggestions] );
+    if ( !hasLoadedRef.current
+      // TODO: part of MOB-1081, see `internalUseSuggestionsInitialSuggestions`
+      // we shouldn't rely on implementation internals to consumer drive state
+      && isEqual( internalUseSuggestionsInitialSuggestions, suggestions )
+    ) {
+      hasLoadedRef.current = true;
+      setImageParams( );
+    }
+  }, [setImageParams, suggestions] );
 
   const taxon = topSuggestion?.taxon;
   const taxonId = taxon?.id;
