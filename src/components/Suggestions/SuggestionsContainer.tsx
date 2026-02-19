@@ -71,7 +71,6 @@ const initialState = {
   mediaViewerVisible: false,
   queryKey: [],
   selectedPhotoUri: null,
-  selectedTaxon: null,
   shouldUseEvidenceLocation: false,
 };
 
@@ -91,11 +90,6 @@ const reducer = ( state, action ) => {
         selectedPhotoUri: action.selectedPhotoUri,
         scoreImageParams: action.scoreImageParams,
         queryKey: getQueryKey( action.selectedPhotoUri, state.shouldUseEvidenceLocation ),
-      };
-    case "SELECT_TAXON":
-      return {
-        ...state,
-        selectedTaxon: action.selectedTaxon,
       };
     case "SET_ONLINE_FETCH_STATUS":
       return {
@@ -176,7 +170,6 @@ const SuggestionsContainer = ( ) => {
     mediaViewerVisible,
     queryKey,
     selectedPhotoUri,
-    selectedTaxon,
     shouldUseEvidenceLocation,
   } = state;
 
@@ -270,18 +263,7 @@ const SuggestionsContainer = ( ) => {
     currentObservation,
   ] );
 
-  const setSelectedTaxon = taxon => {
-    dispatch( {
-      type: "SELECT_TAXON",
-      selectedTaxon: taxon,
-    } );
-  };
-
-  useNavigateWithTaxonSelected(
-    selectedTaxon,
-    ( ) => setSelectedTaxon( null ),
-    { vision: true },
-  );
+  const navigateWithTaxonSelected = useNavigateWithTaxonSelected( { vision: true } );
 
   const onPressPhoto = useCallback(
     async ( uri: string ) => {
@@ -421,14 +403,14 @@ const SuggestionsContainer = ( ) => {
     <>
       <Suggestions
         debugData={debugData}
-        handleSkip={( ) => setSelectedTaxon( undefined )}
+        handleSkip={( ) => navigateWithTaxonSelected( undefined )}
         hideLocationToggleButton={hideLocationToggleButton}
         hideSkip={params?.hideSkip}
         improveWithLocationButtonOnPress={improveWithLocationButtonOnPress}
         isLoading={isLoading}
         shouldUseEvidenceLocation={shouldUseEvidenceLocation}
         onPressPhoto={onPressPhoto}
-        onTaxonChosen={setSelectedTaxon}
+        onTaxonChosen={navigateWithTaxonSelected}
         photoUris={photoUris}
         reloadSuggestions={reloadSuggestions}
         selectedPhotoUri={selectedPhotoUri}

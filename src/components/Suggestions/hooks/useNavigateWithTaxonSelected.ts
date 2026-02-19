@@ -1,13 +1,8 @@
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect } from "react";
+import { useCallback } from "react";
 import useStore from "stores/useStore";
 
 const useNavigateWithTaxonSelected = (
-  // Navigation happens when a taxon was selected
-  selectedTaxon: object | null | undefined,
-  // After navigation we need to unselect the taxon so we don't have
-  // mysterious background nonsense happening after this screen loses focus
-  unselectTaxon: () => void,
   options: {
     vision: boolean;
   },
@@ -19,9 +14,7 @@ const useNavigateWithTaxonSelected = (
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const vision = options?.vision;
 
-  useEffect( ( ) => {
-    if ( selectedTaxon === null ) { return; }
-
+  const navigateWithTaxonSelected = useCallback( ( selectedTaxon: object | undefined ) => {
     if ( selectedTaxon === undefined ) {
       updateObservationKeys( {
         owners_identification_from_vision: false,
@@ -55,20 +48,17 @@ const useNavigateWithTaxonSelected = (
     } else {
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }
-
-    // If we've navigated, there's no need to run this effect again
-    unselectTaxon( );
   }, [
     currentObservation?.uuid,
     entryScreen,
     lastScreen,
     navigation,
     options?.vision,
-    selectedTaxon,
-    unselectTaxon,
     updateObservationKeys,
     vision,
   ] );
+
+  return navigateWithTaxonSelected;
 };
 
 export default useNavigateWithTaxonSelected;
