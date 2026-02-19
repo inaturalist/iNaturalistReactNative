@@ -267,7 +267,7 @@ const MatchContainer = ( ) => {
   }, [] );
 
   const [needLocation, setNeedLocation] = useState(
-    shouldFetchObservationLocation( currentObservation ),
+    () => shouldFetchObservationLocation( currentObservation ),
   );
   const shouldFetchLocation = !!( hasPermissions && needLocation );
 
