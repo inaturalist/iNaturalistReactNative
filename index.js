@@ -39,11 +39,14 @@ import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
 import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 
+import { enableFreeze } from "react-native-screens";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
 
 const logger = log.extend( "index.js" );
+
+enableFreeze( true );
 
 // Log all unhandled promise rejections in release builds. Otherwise they will
 // die in silence. Debug builds have a more useful UI w/ desymbolicated stack
