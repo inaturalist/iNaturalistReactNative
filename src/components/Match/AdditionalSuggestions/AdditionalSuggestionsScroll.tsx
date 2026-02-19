@@ -32,14 +32,11 @@ const AdditionalSuggestionsScroll = ( {
   const suggestionsRef = useRef<ApiSuggestion[]>( [] );
 
   useEffect( () => {
-    suggestionsRef.current = otherSuggestions || [];
-  }, [otherSuggestions] );
-
-  useEffect( () => {
     // reset when suggestions changes (like, when suggestion is pressed or location added)
     setMaxHeight( 0 );
     setIsVisible( false );
     measuredItemsRef.current = new Set();
+    suggestionsRef.current = otherSuggestions || [];
   }, [otherSuggestions] );
 
   const updateMaxHeight = useCallback( ( height: number, itemId?: number ) => {
