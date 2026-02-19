@@ -37,6 +37,16 @@ class RNSInfo {
     clearAuthCache();
   } );
 
+  static hasItem = jest.fn( async ( k, o ) => {
+    RNSInfo.validateString( k );
+
+    const serviceName = RNSInfo.getServiceName( o );
+    const service = RNSInfo.stores.get( serviceName );
+
+    if ( service ) { return service.has( k ); }
+    return false;
+  } );
+
   static getItem = jest.fn( async ( k, o ) => {
     RNSInfo.validateString( k );
 
