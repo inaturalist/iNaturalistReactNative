@@ -27,6 +27,8 @@ import StatusSection from "./StatusSection/StatusSection";
 
 const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
 
+const EMPTY_ACTIVITY_ITEMS: object[] = [];
+
 interface Props {
   activityItems: object[];
   addingActivityItem: boolean;
@@ -47,7 +49,7 @@ interface Props {
 }
 
 const ObsDetailsDefaultMode = ( {
-  activityItems = [],
+  activityItems = EMPTY_ACTIVITY_ITEMS,
   addingActivityItem,
   belongsToCurrentUser,
   currentUser,
