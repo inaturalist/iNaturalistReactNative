@@ -2909,7 +2909,7 @@ PODS:
     - React
   - RNAppleAuthentication (2.4.0):
     - React-Core
-  - RNAudioRecorderPlayer (3.6.7):
+  - RNAudioRecorderPlayer (3.6.14):
     - React-Core
   - RNCClipboard (1.16.3):
     - boost
@@ -4028,7 +4028,7 @@ SPEC CHECKSUMS:
   ReactNativeExceptionHandler: a23922ca00122b050ae9412f960061791c232c47
   RealmJS: 1c37c6bdfe060f4caa0f9175aa0eedb962622ee1
   RNAppleAuthentication: 8d313d93fe2238d6b7ff0a39c67ebcf298d96653
-  RNAudioRecorderPlayer: fa079748b34d15cd3b7b6a5d47b286bae6d5d49b
+  RNAudioRecorderPlayer: b5ed41ccfe72a211a870bfe09ab36c046eb27d2a
   RNCClipboard: e560338bf6cc4656a09ff90610b62ddc0dbdad65
   RNCPicker: 70fd0622147f0ca1b9c5e1be2069a4fb2e8ec461
   RNDateTimePicker: ca1dc7e24d0b4839877f0ab619e7bca5db715289
