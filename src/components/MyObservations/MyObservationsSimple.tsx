@@ -42,7 +42,7 @@ import SimpleErrorHeader from "./SimpleErrorHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
 
-export interface Props {
+interface Props {
   activeTab: string;
   currentUser?: RealmUser;
   fetchFromLastObservation: ( id: number ) => void;
