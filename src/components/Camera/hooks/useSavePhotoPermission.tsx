@@ -12,7 +12,7 @@ import SavePhotoPermissionGate from "../SavePhotoPermissionGate";
 
 // PermissionGate callbacks need to use useCallback, otherwise they'll
 // trigger re-renders if/when they change
-export interface SavePhotoPermissionCallbacks {
+interface SavePhotoPermissionCallbacks {
   onPermissionGranted?: ( ) => void;
   onPermissionDenied?: ( ) => void;
   onPermissionBlocked?: ( ) => void;
