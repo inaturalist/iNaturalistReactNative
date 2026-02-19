@@ -21,7 +21,7 @@ const ObsNotificationText = ( { notification }: Props ) => {
   let content: string | React.ReactElement<typeof Trans> = `unknown notification type: ${type}`;
   const resourceOwner = notification.resource?.user;
 
-  const transComponents = [<List2 className="font-bold pr-[2px]" />];
+  const transComponents = [<List2 key="0" className="font-bold pr-[2px]" />];
   if ( notification.viewerOwnsResource ) {
     const transValues = { userName: notifierUser.login };
     if ( type === "Comment" ) {

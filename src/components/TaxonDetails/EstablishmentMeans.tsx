@@ -63,8 +63,9 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
         i18nKey="Source-List"
         values={{ source: listedTaxon.list.title }}
         components={[
-          <Body2 />,
+          <Body2 key="0" />,
           <Body2
+            key="1"
             className="text-inatGreen underline"
             onPress={( ) => openExternalWebBrowser( url )}
           />,
