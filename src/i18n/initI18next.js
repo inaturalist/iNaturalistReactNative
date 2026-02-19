@@ -43,7 +43,7 @@ export function getInatLocaleFromSystemLocale() {
   return inatLocale;
 }
 
-export function getInatNextLocale() {
+function getInatNextLocale() {
   const currentLocale = zustandStorage.getItem( "currentLocale" );
   return currentLocale || getInatLocaleFromSystemLocale( );
 }
