@@ -6,7 +6,7 @@ import type { UseSuggestionsOptions, UseSuggestionsResult } from "./types";
 import useOfflineSuggestions from "./useOfflineSuggestions";
 import useOnlineSuggestions from "./useOnlineSuggestions";
 
-export const useSuggestions = (
+const useSuggestions = (
   photoUri: string,
   options: UseSuggestionsOptions,
 ): UseSuggestionsResult => {
