@@ -8,10 +8,12 @@ import {
   OfflineNotice,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import type { RealmUser } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
+
+const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
 interface Props {
   currentUser: RealmUser | null;
@@ -51,16 +53,14 @@ const NotificationsList = ( {
     <NotificationsListItem notification={item} />
   ), [] );
 
-  const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
-
-  const renderFooter = useCallback( ( ) => (
+  const footerComponent = useMemo( ( ) => (
     <InfiniteScrollLoadingWheel
       hideLoadingWheel={!isFetching || data?.length === 0}
       isConnected={isConnected}
     />
   ), [isFetching, isConnected, data.length] );
 
-  const renderEmptyComponent = useCallback( ( ) => {
+  const emptyComponent = useMemo( ( ) => {
     // show an offline/retry state if the user isn't connected or this request just takes too long
     if ( isConnected === false || loadingTimedOut ) {
       return <OfflineNotice onPress={reload} />;
@@ -112,9 +112,9 @@ const NotificationsList = ( {
 
   return (
     <CustomFlashList
-      ItemSeparatorComponent={renderItemSeparator}
-      ListEmptyComponent={renderEmptyComponent}
-      ListFooterComponent={renderFooter}
+      ItemSeparatorComponent={ItemSeparator}
+      ListEmptyComponent={emptyComponent}
+      ListFooterComponent={footerComponent}
       data={data}
       keyExtractor={( item: Notification ) => item.id}
       onEndReached={onEndReached}
