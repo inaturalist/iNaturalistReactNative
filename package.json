@@ -91,7 +91,7 @@
     "linkify-plugin-mention": "^4.3.2",
     "linkifyjs": "^4.3.2",
     "lodash": "^4.17.23",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^14.1.1",
     "nativewind": "^2.0.11",
     "react": "19.1.0",
     "react-dom": "19.1.0",
