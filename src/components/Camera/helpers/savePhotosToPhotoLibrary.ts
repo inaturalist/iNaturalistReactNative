@@ -21,8 +21,7 @@ const logger = log.extend( "savePhotosToPhotoLibrary" );
 // doesn't need to be tested... but hooks are complicated and this hook might
 // be too complicated, so this at least makes it easy to test this one part
 // ~~~kueda20240614
-// $FlowIgnore
-export async function savePhotosToPhotoLibrary(
+async function savePhotosToPhotoLibrary(
   uris: [string],
   location: object,
 ) {
