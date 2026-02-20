@@ -1,24 +1,33 @@
 import { t } from "i18next";
-import { Alert, Linking, Platform } from "react-native";
+import {
+  Alert, Linking, NativeModules, Platform
+} from "react-native";
 import Mailer from "react-native-mail";
+
+const { EmailIntentModule } = NativeModules;
 
 function openInboxError() {
   Alert.alert( t( "No-email-app-installed" ), t( "No-email-app-installed-body-check-other" ) );
 }
 
 export async function openInbox() {
-  let isSupported;
   try {
-    isSupported = await Linking.canOpenURL( "message:0" );
-  } catch ( _canOpenURLError ) {
+    if ( Platform.OS === "android" ) {
+      EmailIntentModule.openEmailClient();
+    } else {
+      const supported = await Linking.canOpenURL( "message:0" );
+      if ( supported ) {
+        try {
+          await Linking.openURL( "message:0" );
+        } catch ( openURLError ) {
+          Alert.alert( t( "Something-went-wrong" ), openURLError.message );
+        }
+      } else {
+        openInboxError();
+      }
+    }
+  } catch ( _error ) {
     openInboxError();
-    return;
-  }
-  if ( !isSupported ) openInboxError();
-  try {
-    await Linking.openURL( "message:0" );
-  } catch ( openURLError ) {
-    Alert.alert( t( "Something-went-wrong" ), openURLError.message );
   }
 }
 
