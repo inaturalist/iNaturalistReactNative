@@ -1,10 +1,26 @@
 PODS:
+  - AFNetworking (3.2.0):
+    - AFNetworking/NSURLSession (= 3.2.0)
+    - AFNetworking/Reachability (= 3.2.0)
+    - AFNetworking/Security (= 3.2.0)
+    - AFNetworking/Serialization (= 3.2.0)
+    - AFNetworking/UIKit (= 3.2.0)
+  - AFNetworking/NSURLSession (3.2.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.0)
+  - AFNetworking/Security (3.2.0)
+  - AFNetworking/Serialization (3.2.0)
+  - AFNetworking/UIKit (3.2.0):
+    - AFNetworking/NSURLSession
   - AppAuth (1.7.6):
     - AppAuth/Core (= 1.7.6)
     - AppAuth/ExternalUserAgent (= 1.7.6)
   - AppAuth/Core (1.7.6)
   - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
+  - ARSafariActivity (1.0.4)
   - boost (1.84.0)
   - BVLinearGradient (2.8.3):
     - React-Core
@@ -161,12 +177,16 @@ PODS:
     - hermes-engine/Pre-built (= 0.81.5)
   - hermes-engine/Pre-built (0.81.5)
   - InaturalistMobileNativeScreens (0.0.0):
+    - AFNetworking (= 3.2.0)
+    - ARSafariActivity
     - boost
     - DoubleConversion
     - fast_float
     - fmt
     - glog
     - hermes-engine
+    - Mantle (= 1.5.8)
+    - NSString_stripHtml (= 0.1.0)
     - RCT-Folly
     - RCT-Folly/Fabric
     - RCTRequired
@@ -187,13 +207,19 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - SocketRocket
+    - SVPullToRefresh (= 0.4.1)
+    - UIColor-HTMLColors (= 1.0.0)
     - Yoga
+  - Mantle (1.5.8):
+    - Mantle/extobjc (= 1.5.8)
+  - Mantle/extobjc (1.5.8)
   - Mute (0.6.1)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
+  - NSString_stripHtml (0.1.0)
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
@@ -3503,6 +3529,8 @@ PODS:
     - SocketRocket
     - Yoga
   - SocketRocket (0.7.1)
+  - SVPullToRefresh (0.4.1)
+  - UIColor-HTMLColors (1.0.0)
   - VisionCamera (4.7.3):
     - VisionCamera/Core (= 4.7.3)
     - VisionCamera/FrameProcessors (= 4.7.3)
@@ -3671,7 +3699,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AFNetworking
     - AppAuth
+    - ARSafariActivity
     - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
@@ -3690,12 +3720,16 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - Mantle
     - Mute
     - nanopb
+    - NSString_stripHtml
     - PromisesObjC
     - PromisesSwift
     - React-Codegen
     - SocketRocket
+    - SVPullToRefresh
+    - UIColor-HTMLColors
 
 EXTERNAL SOURCES:
   boost:
@@ -3939,7 +3973,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AFNetworking: 2287d2a061a9695bdfe6ea82f484e56d76ee2631
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
+  ARSafariActivity: eccf8d928f242a6a290437afd27ed7178b7eadcc
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
@@ -3967,9 +4003,11 @@ SPEC CHECKSUMS:
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: 9f4dfe93326146a1c99eb535b1cb0b857a3cd172
-  InaturalistMobileNativeScreens: 42a73b1d79ff47aa6c78d77354db3c64d21e0829
+  InaturalistMobileNativeScreens: 27f517db27875cb0bd2961d917ca23eece63a47a
+  Mantle: f03b2b606c3f0cabd80214ad8a2fed6b464a7359
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
+  NSString_stripHtml: ba10acfb1c0f7f687055f8e4300a8a78e142f1ea
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
@@ -4080,6 +4118,8 @@ SPEC CHECKSUMS:
   RNSVG: f2979aa72b14050b9220415c19de398f9cec9aaf
   SensitiveInfo: 09107b865dc23b4e9c0a61ec01385387bf3391a8
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
+  UIColor-HTMLColors: ce7466daa46e5c8a68a4fb137909b37b30f034f1
   VisionCamera: 0044a94f7489f19e19d5938e97dfc36f4784af3c
   VisionCameraPluginInatVision: d29c27577b88822f59906fd8d3550054cffdbe55
   Yoga: cc4a6600d61e4e9276e860d4d68eebb834a050ba
