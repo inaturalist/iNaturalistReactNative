@@ -7,7 +7,7 @@ const nativeStyle = {
 };
 const News = ( ) => (
   <View className="flex-1">
-    <InaturalistMobileNativeScreensView style={nativeStyle} color="red" />
+    <InaturalistMobileNativeScreensView style={nativeStyle} />
   </View>
 );
 
