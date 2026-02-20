@@ -1,0 +1,28 @@
+{
+  "name": "inaturalist-mobile-native-screens",
+  "version": "0.0.0",
+  "description": "The native screens of the iNaturalist app",
+  "main": "src/index",
+  "codegenConfig": {
+    "name": "InaturalistMobileNativeScreensViewSpec",
+    "type": "all",
+    "jsSrcsDir": "src"
+  },
+  "author": "Johannes Klein <johannes.t.klein@gmail.com> (https://github.com/jtklein)",
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/jtklein/inaturalist-mobile-native-screens#readme",
+  "create-react-native-library": {
+    "type": "fabric-view",
+    "languages": "kotlin-objc",
+    "tools": [
+      "eslint",
+      "jest",
+      "lefthook",
+      "release-it"
+    ],
+    "version": "0.57.2"
+  },
+  "peerDependencies": {
+    "react-native": "*"
+  }
+}
