@@ -149,19 +149,6 @@
     ExplorePost *post = [self.posts objectAtIndex:indexPath.item];
 
     [self performSegueWithIdentifier:@"detail" sender:post];
-    // if (self.navigationController) {
-    //    [self performSegueWithIdentifier:@"detail" sender:post];
-    // } else {
-    //     // Embedded in native view (e.g. React Native): present detail modally from Activity storyboard
-    //     NSBundle *bundle = [NSBundle bundleForClass:[SiteNewsViewController class]];
-    //     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Activity" bundle:bundle];
-    //     NewsItemViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewsItemViewController"];
-    //     vc.post = post;
-    //     UIViewController *root = self.view.window.rootViewController;
-    //     if (root) {
-    //         [root presentViewController:vc animated:YES completion:nil];
-    //     }
-    // }
 }
 
 #pragma mark - UIControl targets
