@@ -6,7 +6,12 @@
   "codegenConfig": {
     "name": "InaturalistMobileNativeScreensViewSpec",
     "type": "all",
-    "jsSrcsDir": "src"
+    "jsSrcsDir": "src",
+    "ios": {
+      "componentProvider": {
+        "InaturalistMobileNativeScreensView": "InaturalistMobileNativeScreensView"
+      }
+    }
   },
   "author": "Johannes Klein <johannes.t.klein@gmail.com> (https://github.com/jtklein)",
   "license": "UNLICENSED",
@@ -14,12 +19,7 @@
   "create-react-native-library": {
     "type": "fabric-view",
     "languages": "kotlin-objc",
-    "tools": [
-      "eslint",
-      "jest",
-      "lefthook",
-      "release-it"
-    ],
+    "tools": ["eslint", "jest", "lefthook", "release-it"],
     "version": "0.57.2"
   },
   "peerDependencies": {
