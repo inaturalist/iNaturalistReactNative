@@ -787,6 +787,7 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
+NEWS = NEWS
 # Error message when no camera can be found
 No-Camera-Available = No Camera Available
 # Alert dialog title when attempting to send email but no email is installed

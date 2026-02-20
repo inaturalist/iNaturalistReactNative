@@ -299,6 +299,21 @@ const Menu = ( ) => {
         </View>
       </View>
 
+      <View className="bg-red">
+        <MenuItem
+          item={{
+            label: t( "NEWS" ),
+            icon: "news",
+          }}
+          onPress={() => navigation.navigate( "TabNavigator", {
+            screen: "MenuTab",
+            params: {
+              screen: "News",
+            },
+          } )}
+        />
+      </View>
+
       {modalState === MenuModalState.ConfirmLogout && (
         <WarningSheet
           onPressClose={() => setModalState( null )}

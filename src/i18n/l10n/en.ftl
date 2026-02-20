@@ -784,6 +784,7 @@ Needs-ID--quality-grade = Needs ID
 New-Observation = New Observation
 # Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
+NEWS = NEWS
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
