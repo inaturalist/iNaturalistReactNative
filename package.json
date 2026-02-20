@@ -85,6 +85,7 @@
     "i18next-fluent": "^2.0.0",
     "i18next-resources-to-backend": "^1.2.0",
     "inaturalistjs": "github:inaturalist/inaturalistjs",
+    "inaturalist-mobile-native-screens": "file:./modules/native-screens",
     "intl-pluralrules": "^2.0.1",
     "jsrsasign": "^11.1.0",
     "linkify-html": "^4.3.2",
