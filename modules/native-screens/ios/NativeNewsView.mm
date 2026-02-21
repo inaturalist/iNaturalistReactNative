@@ -3,9 +3,9 @@
 #import <React/RCTConversions.h>
 #import <UIKit/UIKit.h>
 
-#import <react/renderer/components/NativeNewsViewSpec/ComponentDescriptors.h>
-#import <react/renderer/components/NativeNewsViewSpec/Props.h>
-#import <react/renderer/components/NativeNewsViewSpec/RCTComponentViewHelpers.h>
+#import <react/renderer/components/InaturalistMobileNativeScreensViewSpec/ComponentDescriptors.h>
+#import <react/renderer/components/InaturalistMobileNativeScreensViewSpec/Props.h>
+#import <react/renderer/components/InaturalistMobileNativeScreensViewSpec/RCTComponentViewHelpers.h>
 
 #import "RCTFabricComponentsPlugins.h"
 #import "SiteNewsViewController.h"
