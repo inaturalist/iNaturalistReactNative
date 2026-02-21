@@ -1,5 +1,5 @@
 import { View } from "components/styledComponents";
-import { InaturalistMobileNativeScreensView } from "inaturalist-mobile-native-screens";
+import { NativeNewsView } from "inaturalist-mobile-native-screens";
 import React from "react";
 
 const nativeStyle = {
@@ -7,7 +7,7 @@ const nativeStyle = {
 };
 const News = ( ) => (
   <View className="flex-1">
-    <InaturalistMobileNativeScreensView style={nativeStyle} />
+    <NativeNewsView style={nativeStyle} />
   </View>
 );
 

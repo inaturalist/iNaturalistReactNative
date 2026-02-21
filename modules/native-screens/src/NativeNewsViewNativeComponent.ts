@@ -7,4 +7,4 @@ interface NativeProps extends ViewProps {
   color?: ColorValue;
 }
 
-export default codegenNativeComponent<NativeProps>( "InaturalistMobileNativeScreensView" );
+export default codegenNativeComponent<NativeProps>( "NativeNewsView" );

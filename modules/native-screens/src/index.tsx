@@ -1,4 +1,4 @@
 export {
-  default as InaturalistMobileNativeScreensView,
-} from "./InaturalistMobileNativeScreensViewNativeComponent";
-export * from "./InaturalistMobileNativeScreensViewNativeComponent";
+  default as NativeNewsView,
+} from "./NativeNewsViewNativeComponent";
+export * from "./NativeNewsViewNativeComponent";

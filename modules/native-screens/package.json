@@ -9,7 +9,7 @@
     "jsSrcsDir": "src",
     "ios": {
       "componentProvider": {
-        "InaturalistMobileNativeScreensView": "InaturalistMobileNativeScreensView"
+        "NativeNewsView": "NativeNewsView"
       }
     }
   },
