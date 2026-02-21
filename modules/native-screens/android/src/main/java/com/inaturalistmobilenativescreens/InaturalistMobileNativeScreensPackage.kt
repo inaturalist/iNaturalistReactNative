@@ -8,7 +8,10 @@ import com.facebook.react.uimanager.ViewManager
 
 class InaturalistMobileNativeScreensViewPackage : BaseReactPackage() {
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-    return listOf(InaturalistMobileNativeScreensViewManager())
+    return listOf(
+      InaturalistMobileNativeScreensViewManager(),
+      NativeAddToProjectsViewManager()
+    )
   }
 
   override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? = null
