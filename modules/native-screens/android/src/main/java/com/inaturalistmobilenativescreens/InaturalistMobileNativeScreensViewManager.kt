@@ -30,11 +30,6 @@ class InaturalistMobileNativeScreensViewManager : SimpleViewManager<InaturalistM
     return InaturalistMobileNativeScreensView(context)
   }
 
-  @ReactProp(name = "color")
-  override fun setColor(view: InaturalistMobileNativeScreensView?, color: Int?) {
-    view?.setBackgroundColor(color ?: Color.TRANSPARENT)
-  }
-
   companion object {
     const val NAME = "InaturalistMobileNativeScreensView"
   }
