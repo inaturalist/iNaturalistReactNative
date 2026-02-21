@@ -9,8 +9,6 @@
     "jsSrcsDir": "src",
     "ios": {
       "componentProvider": {
-        "NativeAddToProjectsView": "NativeAddToProjectsView",
-        "NativeLeaderboardView": "NativeLeaderboardView",
         "NativeNewsView": "NativeNewsView"
       }
     }
