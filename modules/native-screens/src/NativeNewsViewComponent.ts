@@ -3,4 +3,8 @@ import {
   codegenNativeComponent,
 } from "react-native";
 
-export default codegenNativeComponent<ViewProps>( "NativeNewsView" );
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+interface NativeProps extends ViewProps {
+}
+
+export default codegenNativeComponent<NativeProps>( "NativeNewsView" );
