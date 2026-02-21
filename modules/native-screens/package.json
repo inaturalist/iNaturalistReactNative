@@ -9,7 +9,8 @@
     "jsSrcsDir": "src",
     "ios": {
       "componentProvider": {
-        "NativeNewsView": "NativeNewsView"
+        "NativeNewsView": "NativeNewsView",
+        "NativeAddToProjectsView": "NativeAddToProjectsView"
       }
     }
   },

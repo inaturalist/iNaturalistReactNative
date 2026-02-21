@@ -1,4 +1,4 @@
-export {
-  default as NativeNewsView,
-} from "./NativeNewsViewNativeComponent";
-export * from "./NativeNewsViewNativeComponent";
+import NativeAddToProjectsView from "./NativeAddToProjectsViewNativeComponent";
+import NativeNewsView from "./NativeNewsViewNativeComponent";
+
+export { NativeAddToProjectsView, NativeNewsView };
