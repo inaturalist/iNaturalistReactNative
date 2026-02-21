@@ -1,4 +1,5 @@
 import NativeAddToProjectsView from "./NativeAddToProjectsViewComponent";
+import NativeLeaderboardView from "./NativeLeaderboardViewComponent";
 import NativeNewsView from "./NativeNewsViewComponent";
 
-export { NativeAddToProjectsView, NativeNewsView };
+export { NativeAddToProjectsView, NativeLeaderboardView, NativeNewsView };
