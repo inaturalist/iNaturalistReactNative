@@ -1,5 +1,5 @@
 import { View } from "components/styledComponents";
-import { NativeNewsView } from "inaturalist-mobile-native-screens";
+import NativeNewsView from "inaturalist-mobile-native-screens";
 import React from "react";
 
 const nativeStyle = {
