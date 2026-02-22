@@ -64,4 +64,6 @@ android {
 
 dependencies {
   implementation "com.facebook.react:react-android"
+  implementation "androidx.fragment:fragment-ktx:1.6.2"
+  implementation project(":inaturalist-mobile-native-screens:library")
 }
