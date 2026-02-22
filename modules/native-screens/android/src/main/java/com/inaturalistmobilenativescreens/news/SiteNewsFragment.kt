@@ -21,9 +21,9 @@ import com.inaturalistmobilenativescreens.R
  */
 class SiteNewsFragment : Fragment() {
 
-    private var listView: PullToRefreshListView? = null
-    private var loading: ProgressBar? = null
-    private var empty: View? = null
+    private var mNewsList: PullToRefreshListView? = null
+    private var mLoadingNews: ProgressBar? = null
+    private var mNewsEmpty: View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +39,8 @@ class SiteNewsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        listView = null
-        loading = null
-        empty = null
+        mNewsList = null
+        mLoadingNews = null
+        mNewsEmpty = null
     }
 }
