@@ -1,4 +1,4 @@
-package com.inaturalistmobilenativescreens.news;
+package com.inaturalistmobilenativescreens.legacy;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,6 +47,10 @@ import java.util.ArrayList;
  * from the existing BaseFragmentActivity (adapter, API, etc.).
  */
 public class SiteNewsFragment extends Fragment {
+    private static final String VIEW_TYPE_NEWS = "news";
+
+    private static final int REFRESH_TYPE_NONE = 0;
+    private static final int REFRESH_TYPE_NEWS = 3;
 
     private ProgressBar mLoadingNews;
     private TextView mNewsEmpty;
@@ -69,6 +73,8 @@ public class SiteNewsFragment extends Fragment {
         mNewsEmpty = (TextView) view.findViewById(R.id.empty);
         mNewsEmpty.setText(R.string.no_news_yet);
         mNewsList = (PullToRefreshListView) view.findViewById(R.id.list);
+
+        initPullToRefreshList(mNewsList, view);
     }
 
     @Override
@@ -77,5 +83,30 @@ public class SiteNewsFragment extends Fragment {
         mNewsList = null;
         mLoadingNews = null;
         mNewsEmpty = null;
+    }
+
+    private void initPullToRefreshList(PullToRefreshListView pullToRefresh, View view) {
+        pullToRefresh.getLoadingLayoutProxy().setPullLabel(getResources().getString(R.string.pull_to_refresh));
+        pullToRefresh.getLoadingLayoutProxy().setReleaseLabel(getResources().getString(R.string.release_to_refresh));
+        pullToRefresh.getLoadingLayoutProxy().setRefreshingLabel(getResources().getString(R.string.refreshing));
+        pullToRefresh.setReleaseRatio(2.5f);
+
+        pullToRefresh.setEmptyView(view.findViewById(R.id.empty));
+
+        pullToRefresh.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                refreshActivities();
+            }
+        });
+    }
+
+    private void refreshActivities() {
+        Intent serviceIntent;
+
+        // Get the user's news
+        serviceIntent = new Intent(INaturalistService.ACTION_GET_NEWS, null, getContext(), INaturalistService.class);
+
+        INaturalistService.callService(getContext(), serviceIntent);
     }
 }

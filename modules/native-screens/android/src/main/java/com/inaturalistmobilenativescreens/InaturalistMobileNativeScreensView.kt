@@ -6,7 +6,7 @@ import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.facebook.react.uimanager.ThemedReactContext
-import com.inaturalistmobilenativescreens.news.SiteNewsFragment
+import com.inaturalistmobilenativescreens.legacy.SiteNewsFragment
 
 class InaturalistMobileNativeScreensView : android.widget.FrameLayout {
 

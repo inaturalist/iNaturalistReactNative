@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Resources that should not be translated / renamed -->
+	<string name="app_title">iNaturalist</string>
+    <string-array name="default_obs_action_values">
+        <item>show_options</item>
+        <item>take_photo</item>
+        <item>choose_image</item>
+        <item>record_sound</item>
+        <item>choose_sound</item>
+        <item>no_media</item>
+    </string-array>
+    
+	<!-- These organization names (used in the license chooser) - should not be translated -->
+	<string name="gbif">GBIF</string>
+	<string name="wikimedia">Wikimedia</string>
+
+	<string-array name="explore_order_values">
+		<item>desc</item>
+		<item>asc</item>
+	</string-array>
+	<string-array name="explore_order_by_values">
+		<item>created_at</item>
+		<item>observed_on</item>
+		<item>updated_at</item>
+		<!--<item>votes</item>-->
+		<item>random</item>
+	</string-array>
+	<string-array name="tutorial_images">
+		<item>slide_logo</item>
+		<item>slide_observe</item>
+		<item>slide_share</item>
+		<item>slide_learn</item>
+		<item>slide_contribute</item>
+	</string-array>
+	<string-array name="tutorial_layouts">
+		<item>tutorial_page_first</item>
+		<item>tutorial_page</item>
+		<item>tutorial_page</item>
+		<item>tutorial_page</item>
+		<item>tutorial_page</item>
+		<item>tutorial_page_get_started</item>
+	</string-array>
+	<string-array name="geoprivacy_values">
+		<item>open</item>
+		<item>obscured</item>
+		<item>private</item>
+	</string-array>
+	<!-- Package names of apps that we do not allow sharing their photos/sounds into iNaturalist (see https://github.com/inaturalist/iNaturalistAndroid/issues/811) -->
+	<string-array name="blocklisted_sharing_apps">
+		<item>com.labs.merlinbirdid.app</item>
+	</string-array>
+	<!-- Language codes. Note that order must match up with language_names below -->
+	<string-array name="language_values">
+		<item/>
+		<item>ar</item>
+		<item>be</item>
+		<item>bg</item>
+		<item>bs</item>
+		<item>ca</item>
+		<item>cs</item>
+		<item>da</item>
+		<item>de</item>
+		<item>el</item>
+		<item>en</item>
+		<item>eo</item>
+		<item>es</item>
+		<item>es-rAR</item>
+		<item>es-rCO</item>
+		<item>es-rES</item>
+		<item>es-rMX</item>
+		<item>et</item>
+		<item>eu</item>
+		<item>fa</item>
+		<item>fi</item>
+		<item>fr</item>
+		<item>fr-rCA</item>
+		<item>gl</item>
+		<item>he</item>
+		<item>he-rIL</item>
+		<item>hi</item>
+		<item>hr</item>
+		<item>hu</item>
+		<item>fa</item>
+		<item>id</item>
+		<item>it</item>
+		<item>ja</item>
+		<item>ka</item>
+		<item>kk</item>
+		<item>kn</item>
+		<item>ko</item>
+		<item>lb</item>
+		<item>lt</item>
+		<item>lv</item>
+		<item>mi</item>
+		<item>mk</item>
+		<item>ml-rIN</item>
+		<item>mr</item>
+		<item>ms</item>
+		<item>nb</item>
+		<item>nl</item>
+		<item>no</item>
+		<item>pl</item>
+		<item>pt</item>
+		<item>pt-rBR</item>
+		<item>pt-rPT</item>
+		<item>ro</item>
+		<item>ru</item>
+		<item>sat</item>
+		<item>sr-rCS</item>
+		<item>sk</item>
+		<item>si-rLK</item>
+		<item>sl</item>
+		<item>sq</item>
+		<item>sv</item>
+		<item>sv-rSE</item>
+		<item>sw</item>
+		<item>th</item>
+		<item>tr</item>
+		<item>uk</item>
+		<item>vi</item>
+		<item>zh-rCN</item>
+		<item>zh-rHK</item>
+		<item>zh-rTW</item>
+	</string-array>
+	<!-- Language names in those language. Note that order must match up with language_values above -->
+	<string-array name="language_names">
+		<item>@string/use_device_language_settings</item>
+		<item>عربى</item>
+		<item>беларуская мова</item>
+		<item>Български</item>
+		<item>Bosanski</item>
+		<item>Català</item>
+		<item>Čeština</item>
+		<item>Dansk</item>
+		<item>Deutsch</item>
+		<item>Ελληνικά</item>
+		<item>English</item>
+		<item>Esperanto</item>
+		<item>Español</item>
+		<item>Español (Argentina)</item>
+		<item>Español (Colombia)</item>
+		<item>Español (España)</item>
+		<item>Español (Mexico)</item>
+		<item>Eesti Keel</item>
+		<item>Euskara</item>
+		<item>فارسی</item>
+		<item>Suomi</item>
+		<item>Français</item>
+		<item>Français (Canada)</item>
+		<item>Galego</item>
+		<item>עברית</item>
+		<item>עברית (ישראל)</item>
+		<item>हिन्दी</item>
+		<item>Hrvatski</item>
+		<item>Magyar</item>
+		<item>فارسی</item>
+		<item>Bahasa Indonesia</item>
+		<item>Italiano</item>
+		<item>日本語</item>
+		<item>ქართული ენა</item>
+		<item>қазақша</item>
+		<item>ಕನ್ನಡ</item>
+		<item>한국어</item>
+		<item>Lëtzebuergesch</item>
+		<item>Lietuvių Kalba</item>
+		<item>latviešu valoda</item>
+		<item>Māori</item>
+		<item>Македонски</item>
+		<item>മലയാളം</item>
+		<item>मराठी</item>
+		<item>Bahasa Melayu</item>
+		<item>Norsk Bokmål</item>
+		<item>Nederlands</item>
+		<item>Norsk</item>
+		<item>Polski</item>
+		<item>Português</item>
+		<item>Português (Brazil)</item>
+		<item>Português (Portugal)</item>
+		<item>Română</item>
+		<item>Русский</item>
+		<item>ᱥᱟᱱᱛᱟᱲᱤ</item>
+		<item>srpski</item>
+		<item>Slovenčina</item>
+		<item>සිංහල</item>
+		<item>slovenščina</item>
+		<item>Shqipe</item>
+		<item>Svenska</item>
+		<item>Svenska (Sverige)</item>
+		<item>Kiswahili</item>
+		<item>ภาษาไทย</item>
+		<item>Türkçe</item>
+		<item>Українська</item>
+		<item>Tiếng Việt</item>
+		<item>中文 (中国)</item>
+		<item>中文 (香港)</item>
+		<item>中文 (台湾)</item>
+	</string-array>
+</resources>
