@@ -1,11 +1,11 @@
-Try the iNaturalist app!
+Próbáld ki az iNaturalist alkalmazást!
 
-Quick identification: Point your camera at a plant, animal, or other organism to get an instant identification.
+Gyors azonosítás: Irányítsd a kamerádat egy növényre, állatra vagy más élőlényre, hogy azonnali azonosítást kapj.
 
-More ways to observe: Press and hold the camera button for more observation options, like recording sounds  and adding multiple photos.
+További megfigyelési módok: tarsd nyomva a kamera gombot további megfigyelési lehetőségekért, például hangfelvételért és több fotó hozzáadásáért.
 
-Keep up with other naturalists: Check your notifications to see when other people in the iNaturalist community add identifications or ask questions about your observations.
+Tartsd a lépést a többi természetbaráttal: értesítést kaphatsz, mikor a közösség tagjai beazonosítják a megfigyeléseidet, vagy kérdéseket tesznek fel a azokról.
 
-Set your preferences: If you're a longtime user and want your app experience to feel more like earlier versions of iNaturalist, you can! Go into Settings, enable Advanced Mode, then select "Edit Observation" in the middle section.
+Állítsd be a preferenciáidat: Ha már régóta használod az alkalmazást, és azt szeretnéd, hogy az inkább az iNaturalist korábbi verzióihoz hasonlítson, akkor azt is beállíthatod! Menj a Beállításokba, kapcsold be a Haladó módot, majd válaszd a "Megfigyelés szerkesztése" opciót a középső szakaszban.
 
-Thank you for using iNaturalist! Please let us know what you think about the app by using the Feedback form available in the main menu.
+Köszönjük, hogy használod az iNaturalist-ot! Kérjük, küldj visszajelzést az alkalmazásról a főmenüben elérhető Visszajelzés űrlapon keresztül.
