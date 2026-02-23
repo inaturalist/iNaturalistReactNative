@@ -36,9 +36,11 @@ const ICONIC_TAXA = [
   "unknown",
 ];
 
+const EMPTY_CHOSEN: string[] = [];
+
 const IconicTaxonChooser = ( {
   before,
-  chosen = [],
+  chosen = EMPTY_CHOSEN,
   onTaxonChosen,
   testID,
   withoutUnknown,
