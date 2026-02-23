@@ -13,8 +13,9 @@ import {
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts";
 import React, {
-  useCallback, useEffect,
-  useMemo, useReducer,
+  useCallback,
+  useEffect,
+  useReducer,
 } from "react";
 import { Alert, Platform } from "react-native";
 import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
@@ -205,10 +206,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   const realm = useRealm( );
   const { t } = useTranslation( );
 
-  const hasComment = useMemo(
-    ( ) => ( comment || newIdentification?.body || "" ).length > 0,
-    [comment, newIdentification?.body],
-  );
+  const hasComment = ( comment || newIdentification?.body || "" ).length > 0;
 
   const showAddCommentHeader = useCallback( ( ) => {
     if ( hasComment ) {
