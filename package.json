@@ -83,7 +83,7 @@
     "date-fns-tz": "^3.2.0",
     "i18next": "^23.10.1",
     "i18next-fluent": "^2.0.0",
-    "i18next-resources-to-backend": "^1.2.0",
+    "i18next-resources-to-backend": "^1.2.1",
     "inaturalistjs": "github:inaturalist/inaturalistjs",
     "intl-pluralrules": "^2.0.1",
     "jsrsasign": "^11.1.0",
