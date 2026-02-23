@@ -110,7 +110,6 @@ const FrameProcessorCamera = ( {
       InatVision.resetStoredResults();
       resetCameraOnFocus();
     };
-    console.log( "AI cam foc listeners" );
     const unsubscribeFocus = navigation.addListener( "focus", resetAll );
     const unsubscribeBlur = navigation.addListener( "blur", resetAll );
 
