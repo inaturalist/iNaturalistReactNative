@@ -1,0 +1,5 @@
+FIXED
+* Flickering notifications loading circle
+
+UPDATED
+* Minor performance improvements
