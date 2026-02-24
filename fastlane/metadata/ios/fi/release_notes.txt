@@ -1,11 +1,11 @@
-Try the iNaturalist app!
+Kokeile iNaturalist-sovellusta!
 
-Quick identification: Point your camera at a plant, animal, or other organism to get an instant identification.
+Nopea tunnistus: Suuntaa kamerasi kasviin, eläimeen tai muuhun eliöön saadaksesi välittömän tunnistuksen.
 
-More ways to observe: Press and hold the camera button for more observation options, like recording sounds  and adding multiple photos.
+Lisää tapoja havainnoida: Paina ja pidä kameran painiketta pohjassa saadaksesi lisää havaintovaihtoehtoja, kuten äänien tallentamista ja useiden kuvien lisäämistä.
 
-Keep up with other naturalists: Check your notifications to see when other people in the iNaturalist community add identifications or ask questions about your observations.
+Pysy ajan tasalla muiden luonnontutkijoiden kanssa: Tarkista ilmoituksesi nähdäksesi, kun muut iNaturalist-yhteisön jäsenet lisäävät tunnistuksia tai kysyvät havainnoistasi.
 
-Set your preferences: If you're a longtime user and want your app experience to feel more like earlier versions of iNaturalist, you can! Go into Settings, enable Advanced Mode, then select "Edit Observation" in the middle section.
+Määritä asetukset: Jos olet pitkän linjan käyttäjä ja haluat sovelluksen tuntuvan enemmän iNaturalistin aiemmilta versioilta, voit valita niin! Mene asetuksiin, ota Advanced Mode käyttöön ja valitse keskellä olevasta osiosta "Muokkaa havaintoa".
 
-Thank you for using iNaturalist! Please let us know what you think about the app by using the Feedback form available in the main menu.
+Kiitos, että käytit iNaturalistia! Kerrothan meille mielipiteesi sovelluksesta käyttämällä päävalikosta löytyvää palautelomaketta.
