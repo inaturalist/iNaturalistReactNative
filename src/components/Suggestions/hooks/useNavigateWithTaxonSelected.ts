@@ -37,7 +37,7 @@ const useNavigateWithTaxonSelected = (
         ...StackActions.popTo( "ObsDetails", {
           uuid: currentObservation?.uuid,
           identTaxonId: selectedTaxon?.id,
-          identTaxonFromVision: options?.vision,
+          identTaxonFromVision: vision,
           identAt: Date.now(),
         } ),
       } );
@@ -53,7 +53,6 @@ const useNavigateWithTaxonSelected = (
     entryScreen,
     lastScreen,
     navigation,
-    options?.vision,
     updateObservationKeys,
     vision,
   ] );

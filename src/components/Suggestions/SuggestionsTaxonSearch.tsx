@@ -15,7 +15,7 @@ const SuggestionsTaxonSearch = ( ) => {
   const { taxa, isLoading, isLocal } = useTaxonSearch( taxonQuery );
   const { t } = useTranslation( );
 
-  const navigateWithTaxonSelected = useNavigateWithTaxonSelected( { vision: true } );
+  const navigateWithTaxonSelected = useNavigateWithTaxonSelected( { vision: false } );
 
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
