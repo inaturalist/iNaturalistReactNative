@@ -77,7 +77,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
           {
             name: "TabNavigator",
             state: {
-              index: navState.index,
+              index: replaceIndex,
               routes: newStacks,
             },
           },
@@ -96,12 +96,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       accessibilityHint: t( "Navigates-to-main-menu" ),
       size: 32,
       onPress: ( ) => {
-        const isCurrentTab = SCREEN_NAME_MENU === activeTab;
-        if ( isCurrentTab ) {
-          resetStack( "MenuTab", SCREEN_NAME_MENU );
-        } else {
-          navigation.navigate( "MenuTab" );
-        }
+        resetStack( "MenuTab", SCREEN_NAME_MENU );
       },
       active: SCREEN_NAME_MENU === activeTab,
     },
@@ -145,12 +140,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       accessibilityHint: t( "Navigates-to-notifications" ),
       size: 32,
       onPress: ( ) => {
-        const isCurrentTab = SCREEN_NAME_NOTIFICATIONS === activeTab;
-        if ( isCurrentTab ) {
-          resetStack( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS );
-        } else {
-          navigation.navigate( "NotificationsTab" );
-        }
+        resetStack( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS );
       },
       active: SCREEN_NAME_NOTIFICATIONS === activeTab,
     },
