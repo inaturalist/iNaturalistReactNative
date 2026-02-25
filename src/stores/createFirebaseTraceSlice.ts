@@ -49,7 +49,7 @@ const applyTraceAttributes = (
   }
 };
 
-export interface FirebaseTraceSlice {
+interface FirebaseTraceSlice {
   activeFirebaseTraces: Record<string, TraceData>;
   startFirebaseTrace: ( traceId: string, attributes: FirebaseTraceAttributes ) => Promise<void>;
   stopFirebaseTrace: ( traceId: string, attributes: FirebaseTraceAttributes ) => Promise<void>;

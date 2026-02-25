@@ -16,7 +16,7 @@ const imageClassNames = [
   "rounded-2xl",
 ];
 
-export interface Props {
+interface Props {
   accessibleName: string;
   navToTaxonDetails: ( ) => void;
   source: {

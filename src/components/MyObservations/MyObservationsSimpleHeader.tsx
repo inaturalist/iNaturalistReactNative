@@ -22,7 +22,7 @@ import colors from "styles/tailwindColors";
 
 import SimpleUploadBannerContainer from "./SimpleUploadBannerContainer";
 
-export interface Props {
+interface Props {
   currentUser?: RealmUser;
   numUploadableObservations: number;
   handleSyncButtonPress: ( ) => void;

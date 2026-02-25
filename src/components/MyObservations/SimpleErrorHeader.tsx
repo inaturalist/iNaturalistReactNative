@@ -10,7 +10,7 @@ import colors from "styles/tailwindColors";
 
 import Announcements from "./Announcements";
 
-export interface Props {
+interface Props {
   isConnected: boolean;
 }
 

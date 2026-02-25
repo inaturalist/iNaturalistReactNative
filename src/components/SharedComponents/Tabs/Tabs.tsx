@@ -28,10 +28,12 @@ interface Props {
   TextComponent?: typeof Heading4 | typeof Heading5;
 }
 
+const EMPTY_TABS: Tab[] = [];
+
 const Tabs = ( {
   activeId,
   activeColor = String( colors?.darkGray ),
-  tabs = [],
+  tabs = EMPTY_TABS,
   TabComponent,
   TextComponent = Heading4,
 }: Props ) => {

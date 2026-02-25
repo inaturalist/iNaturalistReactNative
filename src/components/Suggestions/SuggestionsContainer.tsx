@@ -50,7 +50,7 @@ const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boole
   { shouldUseEvidenceLocation },
 ];
 
-export interface Suggestion {
+interface Suggestion {
   combined_score: number;
   taxon: {
     id: number;
@@ -58,7 +58,7 @@ export interface Suggestion {
   };
 }
 
-export interface Suggestions {
+interface Suggestions {
   otherSuggestions: Suggestion[];
   topSuggestion: Suggestion | null;
   topSuggestionType: TopSuggestionType;

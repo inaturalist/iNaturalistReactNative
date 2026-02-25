@@ -23,7 +23,7 @@ const savePhotoToDocumentsDirectory = async (
       outputPath: path,
     },
   );
-  // Remove original photo
+  // Remove original temp photo
   await unlink( cameraPhoto.path );
   return image;
 };

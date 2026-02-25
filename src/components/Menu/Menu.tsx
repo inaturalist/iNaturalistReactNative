@@ -48,7 +48,7 @@ interface MenuOptionWithOnPress extends BaseMenuOption {
 
 export type MenuOption = MenuOptionWithNavigation | MenuOptionWithOnPress;
 
-export enum MenuModalState {
+enum MenuModalState {
   ConfirmLogout = "confirmLogout",
   ProvideFeedback = "provideFeedback"
 }

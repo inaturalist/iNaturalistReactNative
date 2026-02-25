@@ -16,6 +16,8 @@ const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
 } );
 
+const EMPTY_TAXA: RealmTaxon[] = [];
+
 interface Props {
   query?: string;
   setQuery: ( newQuery: string ) => void;
@@ -33,7 +35,7 @@ const TaxonSearch = ( {
   query = "",
   renderItem,
   setQuery,
-  taxa = [],
+  taxa = EMPTY_TAXA,
 }: Props ) => {
   const { t } = useTranslation( );
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
