@@ -31,7 +31,9 @@ const CrosshairCircle = ( { accuracy }: Props ) => {
       <View
         className={
           classnames(
-            "h-[254px] w-[254px] bg-transparent rounded-full border-[5px]",
+            // The circle is set a percentage here so that we can calculate the map zoom level
+            // to show the circle with a diameter equal to the accuracy radius of the observation
+            "w-[62%] aspect-square bg-transparent rounded-full border-[5px]",
             {
               "border-inatGreen": accuracyTest === "pass",
               "border-warningYellow border-dashed": accuracyTest === "acceptable",
@@ -41,9 +43,9 @@ const CrosshairCircle = ( { accuracy }: Props ) => {
         }
       >
         {/* vertical crosshair */}
-        <View className={classnames( "h-[244px] border border-darkGray absolute left-[122px]" )} />
+        <View className={classnames( "h-[100%] border border-darkGray absolute left-[50%]" )} />
         {/* horizontal crosshair */}
-        <View className={classnames( "w-[244px] border border-darkGray absolute top-[122px]" )} />
+        <View className={classnames( "w-[100%] border border-darkGray absolute top-[50%]" )} />
       </View>
       <View className="absolute left-[234px]">
         {accuracyTest === "pass" && (
