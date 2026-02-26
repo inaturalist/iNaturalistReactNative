@@ -67,8 +67,7 @@ type Action =
   | { type: "SET_UPLOAD_PARAMS"; scoreImageParams: ImageParamsType }
   | { type: "SET_ONLINE_FETCH_STATUS"; onlineFetchStatus: FETCH_STATUSES }
   | { type: "SET_OFFLINE_FETCH_STATUS"; offlineFetchStatus: FETCH_STATUSES }
-  | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean }
-  | { type: "ORDER_SUGGESTIONS"; orderedSuggestions: ApiSuggestion[] };
+  | { type: "SET_LOCATION"; scoreImageParams: ImageParamsType; shouldUseEvidenceLocation: boolean };
 
 const getQueryKey = ( selectedPhotoUri: string, shouldUseEvidenceLocation: boolean ) => [
   "scoreImage",
@@ -248,7 +247,7 @@ const MatchContainer = ( ) => {
   } );
 
   const [hasRefetchedSuggestions, setHasRefetchedSuggestions] = useState( false );
-  const [selectedSuggestionId, setSelectedSuggestionId] = useState<number | null>( null );
+  const [selectedSuggestionId, setSelectedSuggestionId] = useState<number | undefined>( undefined );
 
   const orderedSuggestions = useMemo( () => {
     if ( !suggestions || suggestions.length === 0 ) return [];
