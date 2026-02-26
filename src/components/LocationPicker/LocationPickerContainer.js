@@ -20,7 +20,7 @@ import LocationPicker from "./LocationPicker";
 const DELTA = 0.02;
 const CROSSHAIRRADIUS = 254 / 2;
 
-const setInitialRegion = currentObservation => {
+const setInitialRegion = ( currentObservation, radiusToMapHeight ) => {
   const latitude = currentObservation?.privateLatitude
     || currentObservation?.latitude;
   const longitude = currentObservation?.privateLongitude
@@ -28,13 +28,13 @@ const setInitialRegion = currentObservation => {
 
   const latitudeDelta = latitude && currentObservation?.positional_accuracy
     // We want to show the map zoomed to the exact level where the radius of the crosshair on top
-    // represents the positional accuracy of the observation, so we multiply by
-    // 2 to get the diameter and by 1.62 because the crosshair circle is set to fill 62% of the
-    // map width
+    // represents the positional accuracy of the observation, so we need to convert the positional
+    // accuracy in meters to a latitude delta and then adjust based on the ratio of the crosshair
+    // radius to the map height.
     ? metersToLatitudeDelta(
       currentObservation?.positional_accuracy,
       latitude,
-    ) * 2 * 1.62
+    ) / radiusToMapHeight
     : 90;
   const longitudeDelta = longitude && currentObservation?.positional_accuracy
     ? latitudeDelta
@@ -169,7 +169,7 @@ const LocationPickerContainer = ( ): Node => {
 
   console.log( "region", region );
 
-  const initialRegion = setInitialRegion( currentObservation );
+  const initialRegion = setInitialRegion( currentObservation, radiusToMapHeight );
 
   const onRegionChangeComplete = async newRegion => {
     // prevent initial map render from resetting the coordinates and locationName
