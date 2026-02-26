@@ -1,18 +1,16 @@
 import classnames from "classnames";
+import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import {
   INatIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import type { ViewStyle } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 const DROP_SHADOW = getShadow( { offsetHeight: 4 } );
-const isTablet = DeviceInfo.isTablet();
 
 interface Props {
   takePhoto: () => Promise<void>;
@@ -54,7 +52,7 @@ const TakePhoto = ( {
     >
       {showPrediction
         ? (
-          <Animated.View style={!isTablet && rotatableAnimatedStyle}>
+          <RotatableIconWrapper rotatableAnimatedStyle={rotatableAnimatedStyle}>
             <View
               className={classnames(
                 borderClass,
@@ -67,7 +65,7 @@ const TakePhoto = ( {
                 color={colors.white}
               />
             </View>
-          </Animated.View>
+          </RotatableIconWrapper>
         )
         : <View className={borderClass} />}
     </Pressable>
