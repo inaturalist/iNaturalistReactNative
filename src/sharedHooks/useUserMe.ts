@@ -1,3 +1,8 @@
+import {
+  getAnalytics,
+  setAnalyticsCollectionEnabled,
+} from "@react-native-firebase/analytics";
+import { getPerformance } from "@react-native-firebase/perf";
 import { fetchUserMe } from "api/users";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
@@ -39,6 +44,11 @@ const useUserMe = ( options: UseUserMeOptions ) => {
       safeRealmWrite( realm, ( ) => {
         realm.create( User, remoteUser, UpdateMode.Modified );
       }, "modifying current user via remote fetch in useUserMe" );
+    }
+    if ( remoteUser ) {
+      const enableCollection = !remoteUser.prefers_no_tracking;
+      setAnalyticsCollectionEnabled( getAnalytics(), enableCollection );
+      getPerformance().setPerformanceCollectionEnabled( enableCollection );
     }
   }, [
     realm,
