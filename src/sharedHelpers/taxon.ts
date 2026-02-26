@@ -2,27 +2,29 @@ import map from "lodash/map";
 import trim from "lodash/trim";
 
 const uncapitalized = new Set( [
-  "à",
-  "a",
-  "and",
+  "a", // Spanish
+  "and", // English
   "atau", // Indonesian
-  "con",
+  "con", // Spanish
   "da",
   "dal",
   "dan", // Indonesian
-  "de",
+  "de", // Spanish
   "dei",
-  "del",
-  "des",
+  "del", // Spanish
+  "des", // French
   "di",
   "du",
-  "e",
+  "e", // Spanish
   "in",
   "la",
-  "o",
-  "of",
-  "on",
-  "the",
+  "o", // Spanish
+  "of", // English
+  "on", // English
+  "the", // English
+  "u",
+  "y", // Spanish
+  "à", // French
 ] );
 
 const capitalize = ( s: string ) => {
