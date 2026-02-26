@@ -4,22 +4,28 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
+import type { ViewStyle } from "react-native";
+import DeviceInfo from "react-native-device-info";
+import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 const DROP_SHADOW = getShadow( { offsetHeight: 4 } );
+const isTablet = DeviceInfo.isTablet();
 
 interface Props {
   takePhoto: () => Promise<void>;
   disabled: boolean;
   showPrediction?: boolean;
+  rotatableAnimatedStyle?: ViewStyle;
 }
 
 const TakePhoto = ( {
   takePhoto,
   disabled,
   showPrediction,
+  rotatableAnimatedStyle,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -48,18 +54,20 @@ const TakePhoto = ( {
     >
       {showPrediction
         ? (
-          <View
-            className={classnames(
-              borderClass,
-              "bg-inatGreen items-center justify-center border-accessibleGreen",
-            )}
-          >
-            <INatIcon
-              name="sparkly-label"
-              size={32}
-              color={colors.white}
-            />
-          </View>
+          <Animated.View style={!isTablet && rotatableAnimatedStyle}>
+            <View
+              className={classnames(
+                borderClass,
+                "bg-inatGreen items-center justify-center border-accessibleGreen",
+              )}
+            >
+              <INatIcon
+                name="sparkly-label"
+                size={32}
+                color={colors.white}
+              />
+            </View>
+          </Animated.View>
         )
         : <View className={borderClass} />}
     </Pressable>
