@@ -163,7 +163,7 @@ const LocationPickerContainer = ( ): Node => {
 
   const initialRegion = setInitialRegion( currentObservation );
 
-  const onRegionChangeComplete = async newRegion => {
+  const onRegionChangeComplete = useCallback( async newRegion => {
     // prevent initial map render from resetting the coordinates and locationName
     if ( isFirstMapRender ) {
       dispatch( { type: "HANDLE_FIRST_MAP_RENDER" } );
@@ -178,7 +178,7 @@ const LocationPickerContainer = ( ): Node => {
       region: newRegion,
       accuracy: newAccuracy,
     } );
-  };
+  }, [isFirstMapRender] );
 
   const updateLocationName = useCallback( name => {
     dispatch( { type: "UPDATE_LOCATION_NAME", locationName: name } );
