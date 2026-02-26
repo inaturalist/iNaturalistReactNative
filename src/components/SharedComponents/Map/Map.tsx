@@ -82,6 +82,7 @@ interface Props {
   withPressableObsTiles?: boolean;
   zoomEnabled?: boolean;
   zoomTapEnabled?: boolean;
+  onMapLayout?: ( event: { nativeEvent: { layout: { width: number; height: number } } } ) => void;
 }
 
 // TODO: fallback to another map library
@@ -116,6 +117,7 @@ const Map = ( {
   withPressableObsTiles,
   zoomEnabled = true,
   zoomTapEnabled = true,
+  onMapLayout,
 }: Props ) => {
   const tilesMarkedVisible = useRef( false );
   const [performanceMetrics, setPerformanceMetrics] = useState( {
@@ -520,6 +522,7 @@ const Map = ( {
       style={mapContainerStyle}
       testID="MapView"
       className={mapContainerClass}
+      onLayout={onMapLayout}
     >
       {renderDebugZoomLevel( )}
       <MapView

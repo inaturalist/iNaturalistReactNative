@@ -238,6 +238,11 @@ const LocationPickerContainer = ( ): Node => {
     navigation.goBack( );
   };
 
+  const onMapLayout = event => {
+    const { height } = event.nativeEvent.layout;
+    console.log( "height", height );
+  };
+
   return (
     <LocationPicker
       accuracy={accuracy}
@@ -254,6 +259,7 @@ const LocationPickerContainer = ( ): Node => {
       regionToAnimate={regionToAnimate}
       selectPlaceResult={selectPlaceResult}
       updateLocationName={updateLocationName}
+      onMapLayout={onMapLayout}
     />
   );
 };
