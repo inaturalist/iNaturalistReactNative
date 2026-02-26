@@ -61,6 +61,24 @@ export function metersToLatitudeDelta( meters: number, latitude: number ): numbe
   return latitudeDelta;
 }
 
+function metersPerDegreeLatitude( latitude: number ): number {
+  const phi = ( latitude * Math.PI ) / 180;
+
+  return (
+    111132.92
+    - 559.82 * Math.cos( 2 * phi )
+    + 1.175 * Math.cos( 4 * phi )
+    - 0.0023 * Math.cos( 6 * phi )
+  );
+}
+
+export function latitudeDeltaToMeters(
+  latitudeDelta: number,
+  latitude: number,
+): number {
+  return latitudeDelta * metersPerDegreeLatitude( latitude );
+}
+
 export function getMapRegion( totalBounds: MapBoundaries ): Region {
   const {
     nelat, nelng, swlat, swlng,
