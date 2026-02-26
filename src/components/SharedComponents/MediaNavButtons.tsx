@@ -4,11 +4,7 @@ import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import DeviceInfo from "react-native-device-info";
 import type { AnimatedStyle } from "react-native-reanimated";
-import Animated from "react-native-reanimated";
-
-const isTablet = DeviceInfo.isTablet();
 
 const BUTTON_DIM = 40;
 
@@ -77,15 +73,15 @@ const MediaNavButtons = ( {
     {captureButton}
     {mediaCaptured && !confirmHidden
       ? (
-        <Animated.View
-          style={!isTablet && rotatableAnimatedStyle}
-          className={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )}
+        <RotatableIconWrapper
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
+          containerClass={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )}
         >
           <GreenCheckmark
             disabled={disabled}
             handleCheckmarkPress={onConfirm}
           />
-        </Animated.View>
+        </RotatableIconWrapper>
       )
       : (
         <View className={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )} />
