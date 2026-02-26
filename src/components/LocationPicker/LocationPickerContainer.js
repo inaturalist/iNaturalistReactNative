@@ -26,10 +26,14 @@ const setInitialRegion = currentObservation => {
     || currentObservation?.longitude;
 
   const latitudeDelta = latitude && currentObservation?.positional_accuracy
+    // We want to show the map zoomed to the exact level where the radius of the crosshair on top
+    // represents the positional accuracy of the observation, so we multiply by
+    // 2 to get the diameter and by 1.62 because the crosshair circle is set to fill 62% of the
+    // map width
     ? metersToLatitudeDelta(
       currentObservation?.positional_accuracy,
       latitude,
-    )
+    ) * 2 * 1.62
     : 90;
   const longitudeDelta = longitude && currentObservation?.positional_accuracy
     ? latitudeDelta
@@ -57,11 +61,14 @@ const initializeMap = ( state, action ) => {
   };
 
   if ( newMap.region.latitude !== 0.0 ) {
-    newMap.region.latitudeDelta = metersToLatitudeDelta(
-      newMap.accuracy,
-      newMap.region.latitude,
-    );
-    newMap.region.longitudeDelta = newMap.region.latitudeDelta;
+    // We want to show the map zoomed to the exact level where the radius of the crosshair on top
+    // represents the positional accuracy of the observation, so we multiply by
+    // 2 to get the diameter and by 1.62 because the crosshair circle is set to fill 62% of the
+    // map width
+    const latitudeDelta
+      = metersToLatitudeDelta( newMap.accuracy, newMap.region.latitude ) * 2 * 1.62;
+    newMap.region.latitudeDelta = latitudeDelta;
+    newMap.region.longitudeDelta = latitudeDelta;
   }
   return newMap;
 };
@@ -160,6 +167,8 @@ const LocationPickerContainer = ( ): Node => {
     region,
     regionToAnimate,
   } = state;
+
+  console.log( "region", region );
 
   const initialRegion = setInitialRegion( currentObservation );
 
