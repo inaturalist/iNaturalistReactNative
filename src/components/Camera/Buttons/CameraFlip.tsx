@@ -1,11 +1,10 @@
+import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { TransparentCircleButton } from "components/SharedComponents";
 import React from "react";
 import type {
   GestureResponderEvent,
   ViewStyle,
 } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
@@ -13,8 +12,6 @@ interface Props {
   cameraFlipClasses?: string;
   rotatableAnimatedStyle?: ViewStyle;
 }
-
-const isTablet = DeviceInfo.isTablet();
 
 const CameraFlip = ( {
   flipCamera,
@@ -24,7 +21,7 @@ const CameraFlip = ( {
   const { t } = useTranslation( );
 
   return (
-    <Animated.View style={!isTablet && rotatableAnimatedStyle}>
+    <RotatableIconWrapper rotatableAnimatedStyle={rotatableAnimatedStyle}>
       <TransparentCircleButton
         optionalClasses={cameraFlipClasses}
         onPress={flipCamera}
@@ -32,7 +29,7 @@ const CameraFlip = ( {
         accessibilityHint={t( "Use-the-devices-other-camera" )}
         icon="rotate"
       />
-    </Animated.View>
+    </RotatableIconWrapper>
   );
 };
 
