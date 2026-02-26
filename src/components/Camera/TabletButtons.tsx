@@ -1,11 +1,10 @@
 import classnames from "classnames";
 import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon";
+import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import type { GestureResponderEvent, ViewStyle } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import Animated from "react-native-reanimated";
 import type { TakePhotoOptions } from "react-native-vision-camera";
 
 import CameraFlip from "./Buttons/CameraFlip";
@@ -14,8 +13,6 @@ import GreenCheckmark from "./Buttons/GreenCheckmark";
 import Location from "./Buttons/Location";
 import TakePhoto from "./Buttons/TakePhoto";
 import Zoom from "./Buttons/Zoom";
-
-const isTablet = DeviceInfo.isTablet();
 
 const CAMERA_BUTTON_DIM = 40;
 
@@ -142,16 +139,16 @@ const TabletButtons = ( {
           showPrediction={showPrediction}
         />
       </View>
-      { photosTaken && (
-        <Animated.View
-          style={!isTablet && rotatableAnimatedStyle}
-          className={classnames( checkmarkClasses )}
+      {photosTaken && (
+        <RotatableIconWrapper
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
+          containerClass={classnames( checkmarkClasses )}
         >
           <GreenCheckmark
             handleCheckmarkPress={handleCheckmarkPress || ( () => null )}
           />
-        </Animated.View>
-      ) }
+        </RotatableIconWrapper>
+      )}
       <View
         className={classnames(
           cameraOptionsClasses,
