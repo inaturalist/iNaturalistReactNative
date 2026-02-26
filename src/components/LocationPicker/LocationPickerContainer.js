@@ -1,7 +1,10 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { metersToLatitudeDelta } from "components/SharedComponents/Map/helpers/mapHelpers";
+import {
+  latitudeDeltaToMeters,
+  metersToLatitudeDelta,
+} from "components/SharedComponents/Map/helpers/mapHelpers";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -9,16 +12,12 @@ import React, {
   useReducer,
   useState,
 } from "react";
-import { Dimensions } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useStore from "stores/useStore";
 
 import LocationPicker from "./LocationPicker";
 
-const { width } = Dimensions.get( "screen" );
-
 const DELTA = 0.02;
-const CROSSHAIRLENGTH = 254;
 const CROSSHAIRRADIUS = 254 / 2;
 
 const setInitialRegion = currentObservation => {
@@ -74,9 +73,6 @@ const initializeMap = ( state, action ) => {
   }
   return newMap;
 };
-
-const estimatedAccuracy = longitudeDelta => longitudeDelta * 1000 * (
-  ( CROSSHAIRLENGTH / width ) * 100 );
 
 const DEFAULT_REGION = {
   latitude: 0.0,
@@ -159,7 +155,6 @@ const LocationPickerContainer = ( ): Node => {
 
   const [state, dispatch] = useReducer( reducer, initialState );
   const [radiusToMapHeight, setRadiusToMapHeight] = useState( 0 );
-  console.log( "radiusToMapHeight", radiusToMapHeight );
 
   const {
     accuracy,
@@ -182,7 +177,12 @@ const LocationPickerContainer = ( ): Node => {
       dispatch( { type: "HANDLE_FIRST_MAP_RENDER" } );
       return;
     }
-    const newAccuracy = estimatedAccuracy( newRegion.longitudeDelta );
+    // We calculate accuracy in meters as the distance represented by the radius of the crosshair
+    // circle on top of the map. The circle has a fixed size in pixels the map height can vary
+    // by device. We convert to meters based on the current map zoom level (latitudeDelta) and
+    // the ratio of the crosshair radius to the map height.
+    const newAccuracy = radiusToMapHeight
+      * latitudeDeltaToMeters( newRegion.latitudeDelta, newRegion.latitude );
 
     const placeName = await fetchPlaceName( newRegion.latitude, newRegion.longitude );
     dispatch( {
