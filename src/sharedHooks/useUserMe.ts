@@ -48,7 +48,9 @@ const useUserMe = ( options: UseUserMeOptions ) => {
     if ( remoteUser ) {
       const enableCollection = !remoteUser.prefers_no_tracking;
       setAnalyticsCollectionEnabled( getAnalytics(), enableCollection );
-      getPerformance().setPerformanceCollectionEnabled( enableCollection );
+      // This looks unusual but is actually the preferred solution
+      // https://github.com/invertase/react-native-firebase/blob/81a0f1910955a0295b6b308d5c08c17af0384b04/packages/perf/lib/index.d.ts#L459
+      getPerformance().dataCollectionEnabled = enableCollection;
     }
   }, [
     realm,
