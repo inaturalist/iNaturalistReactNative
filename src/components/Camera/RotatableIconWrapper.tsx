@@ -16,13 +16,19 @@ const RotatableIconWrapper = ( {
   children,
   rotatableAnimatedStyle,
   containerClass,
-}: Props ) => (
-  <Animated.View
-    style={!isTablet && rotatableAnimatedStyle}
-    className={containerClass}
-  >
-    {children}
-  </Animated.View>
-);
+}: Props ) => {
+  if ( isTablet || !rotatableAnimatedStyle ) {
+    return children;
+  }
+
+  return (
+    <Animated.View
+      style={rotatableAnimatedStyle}
+      className={containerClass}
+    >
+      {children}
+    </Animated.View>
+  );
+};
 
 export default RotatableIconWrapper;
