@@ -49,18 +49,6 @@ export function obscurationCellForLatLng( lat: number, lng: number ) {
   };
 }
 
-// Adapted from iNat Android LocationChooserActivity.java computeOffset function
-const EARTH_RADIUS = 6371000; // Earth radius in meters
-export function metersToLatitudeDelta( meters: number, latitude: number ): number {
-  // Calculate latitude delta in radians
-  const latitudeDeltaRadians
-    = meters / ( EARTH_RADIUS * Math.cos( ( latitude * Math.PI ) / 180 ) );
-
-  // Convert latitude delta to degrees
-  const latitudeDelta = ( latitudeDeltaRadians * 180 ) / Math.PI;
-  return latitudeDelta;
-}
-
 function metersPerDegreeLatitude( latitude: number ): number {
   const phi = ( latitude * Math.PI ) / 180;
 
@@ -70,6 +58,13 @@ function metersPerDegreeLatitude( latitude: number ): number {
     + 1.175 * Math.cos( 4 * phi )
     - 0.0023 * Math.cos( 6 * phi )
   );
+}
+
+export function metersToLatitudeDelta(
+  meters: number,
+  latitude: number,
+): number {
+  return meters / metersPerDegreeLatitude( latitude );
 }
 
 export function latitudeDeltaToMeters(
