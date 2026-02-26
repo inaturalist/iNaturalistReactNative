@@ -130,7 +130,7 @@ const TabletButtons = ( {
       />
       <CameraFlip
         flipCamera={flipCamera}
-        cameraFlipClasses="m-0"
+        cameraFlipClassName="m-0"
       />
       <View className="mt-[40px] mb-[40px]">
         <TakePhoto

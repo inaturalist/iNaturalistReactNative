@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { TransparentCircleButton } from "components/SharedComponents";
 import React from "react";
@@ -9,21 +10,23 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   flipCamera: ( _event: GestureResponderEvent ) => void;
-  cameraFlipClasses?: string;
+  cameraFlipClassName?: string;
   rotatableAnimatedStyle?: ViewStyle;
 }
 
 const CameraFlip = ( {
   flipCamera,
-  cameraFlipClasses,
+  cameraFlipClassName,
   rotatableAnimatedStyle,
 }: Props ) => {
   const { t } = useTranslation( );
 
   return (
-    <RotatableIconWrapper rotatableAnimatedStyle={rotatableAnimatedStyle}>
+    <RotatableIconWrapper
+      rotatableAnimatedStyle={rotatableAnimatedStyle}
+      containerClass={classNames( cameraFlipClassName )}
+    >
       <TransparentCircleButton
-        optionalClasses={cameraFlipClasses}
         onPress={flipCamera}
         accessibilityLabel={t( "Flip-camera" )}
         accessibilityHint={t( "Use-the-devices-other-camera" )}
