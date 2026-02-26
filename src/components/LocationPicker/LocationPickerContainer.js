@@ -7,6 +7,7 @@ import React, {
   useCallback,
   useEffect,
   useReducer,
+  useState,
 } from "react";
 import { Dimensions } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
@@ -18,6 +19,7 @@ const { width } = Dimensions.get( "screen" );
 
 const DELTA = 0.02;
 const CROSSHAIRLENGTH = 254;
+const CROSSHAIRRADIUS = 254 / 2;
 
 const setInitialRegion = currentObservation => {
   const latitude = currentObservation?.privateLatitude
@@ -156,6 +158,8 @@ const LocationPickerContainer = ( ): Node => {
   const navigation = useNavigation( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
+  const [radiusToMapHeight, setRadiusToMapHeight] = useState( 0 );
+  console.log( "radiusToMapHeight", radiusToMapHeight );
 
   const {
     accuracy,
@@ -240,7 +244,7 @@ const LocationPickerContainer = ( ): Node => {
 
   const onMapLayout = event => {
     const { height } = event.nativeEvent.layout;
-    console.log( "height", height );
+    setRadiusToMapHeight( CROSSHAIRRADIUS / height );
   };
 
   return (
