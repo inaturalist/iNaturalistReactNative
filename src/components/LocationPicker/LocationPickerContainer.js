@@ -8,7 +8,7 @@ import {
 import type { Node } from "react";
 import React, {
   useCallback,
-  useEffect,
+  // useEffect,
   useReducer,
   useState,
 } from "react";
@@ -20,7 +20,10 @@ import LocationPicker from "./LocationPicker";
 const DELTA = 0.02;
 const CROSSHAIRRADIUS = 254 / 2;
 
-const setInitialRegion = ( currentObservation, radiusToMapHeight ) => {
+const setInitialRegion = ( currentObservation, radiusToMapHeight, mapDimensionsRatio ) => {
+  if ( !radiusToMapHeight || !mapDimensionsRatio ) {
+    return null;
+  }
   const latitude = currentObservation?.privateLatitude
     || currentObservation?.latitude;
   const longitude = currentObservation?.privateLongitude
@@ -37,7 +40,7 @@ const setInitialRegion = ( currentObservation, radiusToMapHeight ) => {
     ) / radiusToMapHeight
     : 90;
   const longitudeDelta = longitude && currentObservation?.positional_accuracy
-    ? latitudeDelta
+    ? latitudeDelta * mapDimensionsRatio
     : 180;
 
   return {
@@ -50,29 +53,29 @@ const setInitialRegion = ( currentObservation, radiusToMapHeight ) => {
   };
 };
 
-const initializeMap = ( state, action ) => {
-  const newMap = {
-    ...state,
-    accuracy: action.currentObservation?.positional_accuracy,
-    locationName: action.currentObservation?.place_guess,
-    region: {
-      ...state.region,
-      ...setInitialRegion( action.currentObservation ),
-    },
-  };
+// const initializeMap = ( state, action ) => {
+//   const newMap = {
+//     ...state,
+//     accuracy: action.currentObservation?.positional_accuracy,
+//     locationName: action.currentObservation?.place_guess,
+//     region: {
+//       ...state.region,
+//       ...setInitialRegion( action.currentObservation ),
+//     },
+//   };
 
-  if ( newMap.region.latitude !== 0.0 ) {
-    // We want to show the map zoomed to the exact level where the radius of the crosshair on top
-    // represents the positional accuracy of the observation, so we multiply by
-    // 2 to get the diameter and by 1.62 because the crosshair circle is set to fill 62% of the
-    // map width
-    const latitudeDelta
-      = metersToLatitudeDelta( newMap.accuracy, newMap.region.latitude ) * 2 * 1.62;
-    newMap.region.latitudeDelta = latitudeDelta;
-    newMap.region.longitudeDelta = latitudeDelta;
-  }
-  return newMap;
-};
+//   if ( newMap.region.latitude !== 0.0 ) {
+//     // We want to show the map zoomed to the exact level where the radius of the crosshair on top
+//     // represents the positional accuracy of the observation, so we multiply by
+//     // 2 to get the diameter and by 1.62 because the crosshair circle is set to fill 62% of the
+//     // map width
+//     const latitudeDelta
+//       = metersToLatitudeDelta( newMap.accuracy, newMap.region.latitude ) * 2 * 1.62;
+//     newMap.region.latitudeDelta = latitudeDelta;
+//     newMap.region.longitudeDelta = latitudeDelta;
+//   }
+//   return newMap;
+// };
 
 const DEFAULT_REGION = {
   latitude: 0.0,
@@ -119,10 +122,10 @@ const reducer = ( state, action ) => {
         accuracy: action.accuracy,
         loading: false,
       };
-    case "INITIALIZE_MAP": {
-      const newMap = initializeMap( state, action );
-      return newMap;
-    }
+    // case "INITIALIZE_MAP": {
+    //   const newMap = initializeMap( state, action );
+    //   return newMap;
+    // }
     case "SELECT_PLACE_RESULT":
       return {
         ...state,
@@ -154,7 +157,8 @@ const LocationPickerContainer = ( ): Node => {
   const navigation = useNavigation( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
-  const [radiusToMapHeight, setRadiusToMapHeight] = useState( 0 );
+  const [radiusToMapHeight, setRadiusToMapHeight] = useState( undefined );
+  const [mapDimensionsRatio, setMapDimensionsRatio] = useState( undefined );
 
   const {
     accuracy,
@@ -167,14 +171,20 @@ const LocationPickerContainer = ( ): Node => {
     regionToAnimate,
   } = state;
 
-  console.log( "region", region );
-
-  const initialRegion = setInitialRegion( currentObservation, radiusToMapHeight );
+  const initialRegion = setInitialRegion(
+    currentObservation,
+    radiusToMapHeight,
+    mapDimensionsRatio,
+  );
 
   const onRegionChangeComplete = async newRegion => {
     // prevent initial map render from resetting the coordinates and locationName
     if ( isFirstMapRender ) {
       dispatch( { type: "HANDLE_FIRST_MAP_RENDER" } );
+      return;
+    }
+    // We need this ratio to calculate accuracy
+    if ( radiusToMapHeight === undefined ) {
       return;
     }
     // We calculate accuracy in meters as the distance represented by the radius of the crosshair
@@ -198,16 +208,16 @@ const LocationPickerContainer = ( ): Node => {
   }, [] );
 
   // make sure map always reflects the current observation lat/lng
-  useEffect(
-    ( ) => {
-      const unsubscribe = navigation.addListener( "focus", ( ) => {
-        dispatch( { type: "INITIALIZE_MAP", currentObservation } );
-      } );
+  // useEffect(
+  //   ( ) => {
+  //     const unsubscribe = navigation.addListener( "focus", ( ) => {
+  //       dispatch( { type: "INITIALIZE_MAP", currentObservation } );
+  //     } );
 
-      return unsubscribe;
-    },
-    [navigation, currentObservation],
-  );
+  //     return unsubscribe;
+  //   },
+  //   [navigation, currentObservation],
+  // );
 
   const selectPlaceResult = place => {
     const { coordinates } = place.point_geojson;
@@ -243,8 +253,9 @@ const LocationPickerContainer = ( ): Node => {
   };
 
   const onMapLayout = event => {
-    const { height } = event.nativeEvent.layout;
+    const { height, width } = event.nativeEvent.layout;
     setRadiusToMapHeight( CROSSHAIRRADIUS / height );
+    setMapDimensionsRatio( width / height );
   };
 
   return (
