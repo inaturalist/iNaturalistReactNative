@@ -115,7 +115,8 @@ const AICamera = ( {
   const [initialVolume, setInitialVolume] = useState( null );
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
-  const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
+  const [userDisabledLocation, setUserDisabledLocation] = useState( false );
+  const useLocation = hasLocationPermissions && !userDisabledLocation;
   const [locationStatusVisible, setLocationStatusVisible] = useState( false );
 
   const [debugFormatIndex, setDebugFormatIndex] = useState( 0 );
@@ -131,7 +132,7 @@ const AICamera = ( {
       requestLocationPermissions( );
       return;
     }
-    setUseLocation( prev => !prev );
+    setUserDisabledLocation( prev => !prev );
     // Always show status when button is pressed
     setLocationStatusVisible( true );
   };
@@ -139,12 +140,6 @@ const AICamera = ( {
   const handleLocationStatusEnd = ( ) => {
     setLocationStatusVisible( false );
   };
-
-  useEffect( ( ) => {
-    if ( hasLocationPermissions ) {
-      setUseLocation( true );
-    }
-  }, [hasLocationPermissions] );
 
   const { t } = useTranslation();
 
