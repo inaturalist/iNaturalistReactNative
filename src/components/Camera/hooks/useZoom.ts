@@ -84,10 +84,10 @@ const useZoom = ( device: CameraDevice ): object => {
     startZoom.set( zoom.get() );
   }, [startZoom, zoom] );
 
-  const resetZoom = ( ) => {
+  const resetZoom = useCallback( ( ) => {
     zoom.set( initialZoom );
     setZoomTextValue( initialZoomTextValue );
-  };
+  }, [initialZoom, initialZoomTextValue, zoom] );
 
   const updateZoomTextValue = useCallback( ( newZoom: number ) => {
     const closestZoomTextValue = zoomButtonOptions.reduce(
