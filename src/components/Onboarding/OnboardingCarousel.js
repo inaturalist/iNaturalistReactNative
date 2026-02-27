@@ -29,7 +29,6 @@ import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useOnboardingShown } from "sharedHelpers/installData";
-import { logFirebaseEvent } from "sharedHelpers/tracking";
 import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
@@ -77,7 +76,6 @@ const OnboardingCarousel = ( ) => {
   const [imagesLoaded, setImagesLoaded] = useState( false );
 
   const closeModal = () => {
-    logFirebaseEvent( "onboarding_close_pressed", { current_slide: currentIndex } );
     setOnboardingShown( true );
   };
 
@@ -319,10 +317,6 @@ const OnboardingCarousel = ( ) => {
                 forceDark
                 text={t( "CONTINUE" )}
                 onPress={() => {
-                  logFirebaseEvent(
-                    "onboarding_continue_pressed",
-                    { current_slide: currentIndex },
-                  );
                   const isLastSlide = carouselRef.current?.getCurrentIndex()
                     >= ONBOARDING_SLIDES.length - 1;
                   if ( isLastSlide ) {
