@@ -1,6 +1,7 @@
 import map from "lodash/map";
 import trim from "lodash/trim";
 
+// This collection mirrors web's: https://github.com/inaturalist/inaturalist/blob/main/app/assets/javascripts/ang/models/taxon.js.erb#L187
 const uncapitalized = new Set( [
   "a", // Spanish
   "and", // English
