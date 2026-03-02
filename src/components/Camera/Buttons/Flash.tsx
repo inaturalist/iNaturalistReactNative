@@ -1,14 +1,11 @@
 import classnames from "classnames";
+import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 // eslint-disable-next-line max-len
 import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
 import React from "react";
 import type { GestureResponderEvent, ViewStyle } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import Animated from "react-native-reanimated";
 import type { TakePhotoOptions } from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
-
-const isTablet = DeviceInfo.isTablet();
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
@@ -44,13 +41,9 @@ const Flash = ( {
   }
 
   return (
-    <Animated.View
-      style={!isTablet && rotatableAnimatedStyle}
-      className={classnames(
-        "m-0",
-        "border-0",
-        flashClassName,
-      )}
+    <RotatableIconWrapper
+      rotatableAnimatedStyle={rotatableAnimatedStyle}
+      containerClass={classnames( "m-0", "border-0", flashClassName )}
     >
       <TransparentCircleButton
         onPress={toggleFlash}
@@ -59,7 +52,7 @@ const Flash = ( {
         accessibilityHint={accessibilityHint}
         icon={name}
       />
-    </Animated.View>
+    </RotatableIconWrapper>
   );
 };
 
