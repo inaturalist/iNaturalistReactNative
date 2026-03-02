@@ -49,7 +49,6 @@ import colors from "styles/tailwindColors";
 import placeGuessText from "../helpers/placeGuessText";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
-import ExploreUserSearchModal from "./ExploreUserSearchModal";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
@@ -141,7 +140,6 @@ const FilterModalV2 = ( {
   const [openSheet, setOpenSheet] = useState( NONE );
   const [showTaxonSearchModal, setShowTaxonSearchModal] = useState( false );
   const [showLocationSearchModal, setShowLocationSearchModal] = useState( false );
-  const [showUserSearchModal, setShowUserSearchModal] = useState( false );
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
@@ -837,7 +835,7 @@ const FilterModalV2 = ( {
                     accessibilityRole="button"
                     accessibilityLabel={t( "Change-user" )}
                     onPress={() => {
-                      setShowUserSearchModal( true );
+                      navigation.navigate( "ExploreSearch", { initialSearchMode: "users" } );
                     }}
                   >
                     <UserListItem
@@ -861,7 +859,7 @@ const FilterModalV2 = ( {
                   <Button
                     text={t( "FILTER-BY-A-USER" )}
                     onPress={() => {
-                      setShowUserSearchModal( true );
+                      navigation.navigate( "ExploreSearch", { initialSearchMode: "users" } );
                     }}
                     accessibilityLabel={t( "Filter" )}
                   />
@@ -1349,12 +1347,6 @@ const FilterModalV2 = ( {
         requestPermissions={requestLocationPermissions}
         showModal={showLocationSearchModal}
         updateLocation={updateLocation}
-      />
-      <ExploreUserSearchModal
-        showModal={showUserSearchModal}
-        currentUser={currentUser}
-        closeModal={() => { setShowUserSearchModal( false ); }}
-        updateUser={updateUser}
       />
     </ViewWrapper>
   );
