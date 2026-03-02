@@ -88,6 +88,15 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
 
   const activeTab = getActiveTab( );
 
+  const getTopScreenOfTab = useCallback( ( tabName: TabName ): string | undefined => {
+    const navState = navigation.getState( );
+    const tabRoute = navState.routes.find( r => r.name === tabName );
+    const tabState = tabRoute?.state;
+    if ( !tabState || !tabState.routes ) return;
+    const topRoute = tabState.routes[tabState.index ?? tabState.routes.length - 1];
+    return topRoute?.name;
+  }, [navigation] );
+
   const tabs: TabConfig[] = useMemo( ( ) => ( [
     {
       icon: "hamburger-menu",
@@ -96,6 +105,11 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       accessibilityHint: t( "Navigates-to-main-menu" ),
       size: 32,
       onPress: ( ) => {
+        const isCurrentTab = SCREEN_NAME_MENU === activeTab;
+        const topScreen = getTopScreenOfTab( "MenuTab" );
+        if ( topScreen === SCREEN_NAME_MENU && !isCurrentTab ) {
+          navigation.navigate( "MenuTab" );
+        }
         resetStack( "MenuTab", SCREEN_NAME_MENU );
       },
       active: SCREEN_NAME_MENU === activeTab,
@@ -140,6 +154,11 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       accessibilityHint: t( "Navigates-to-notifications" ),
       size: 32,
       onPress: ( ) => {
+        const isCurrentTab = SCREEN_NAME_NOTIFICATIONS === activeTab;
+        const topScreen = getTopScreenOfTab( "NotificationsTab" );
+        if ( topScreen === SCREEN_NAME_NOTIFICATIONS && !isCurrentTab ) {
+          navigation.navigate( "NotificationsTab" );
+        }
         resetStack( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS );
       },
       active: SCREEN_NAME_NOTIFICATIONS === activeTab,
@@ -150,6 +169,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
     navigation,
     t,
     resetStack,
+    getTopScreenOfTab,
   ] );
 
   return (
