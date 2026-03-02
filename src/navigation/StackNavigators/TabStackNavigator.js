@@ -10,6 +10,7 @@ import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreFiltersContainer from "components/Explore/ExploreFiltersContainer";
+import ExploreSearchContainer from "components/Explore/ExploreSearchContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
 import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
@@ -230,6 +231,10 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         <Stack.Screen
           name="ExploreFilters"
           component={ExploreFiltersContainer}
+        />
+        <Stack.Screen
+          name="ExploreSearch"
+          component={ExploreSearchContainer}
         />
         {isDefaultMode
           ? (
