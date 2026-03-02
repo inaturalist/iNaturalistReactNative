@@ -52,10 +52,10 @@ const ExploreFiltersContainerWithContext = () => {
   );
 };
 
-const ExploreFiltersModal = () => (
+const ExploreFiltersContainer = () => (
   <ExploreProvider>
     <ExploreFiltersContainerWithContext />
   </ExploreProvider>
 );
 
-export default ExploreFiltersModal;
+export default ExploreFiltersContainer;
