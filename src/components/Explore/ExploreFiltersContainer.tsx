@@ -1,19 +1,24 @@
 import { useNavigation } from "@react-navigation/native";
 import type { ApiPlace, ApiProject } from "api/types";
+import {
+  ExploreProvider,
+} from "providers/ExploreContext";
 import React from "react";
 
 import FilterModalV2 from "./Modals/FilterModalV2";
 
-const ExploreFiltersContainer = ( ) => {
-  const navigation = useNavigation( );
+const ExploreFiltersContainerWithContext = () => {
+  const navigation = useNavigation();
 
-  const closeModal = ( ) => {
-    navigation.goBack( );
+  const closeModal = () => {
+    navigation.goBack();
   };
 
-  const updateTaxon = ( taxon: {
+  const updateTaxon = (
+    taxon: {
       name: string;
-    } | null ) => {
+    } | null,
+  ) => {
     console.log( " Not implemented in ExploreV2 yet", taxon );
   };
 
@@ -21,9 +26,11 @@ const ExploreFiltersContainer = ( ) => {
     console.log( " Not implemented in ExploreV2 yet", location );
   };
 
-  const updateUser = ( user: {
-        login: string;
-    } | null ) => {
+  const updateUser = (
+    user: {
+      login: string;
+    } | null,
+  ) => {
     console.log( " Not implemented in ExploreV2 yet", user );
   };
 
@@ -45,4 +52,10 @@ const ExploreFiltersContainer = ( ) => {
   );
 };
 
-export default ExploreFiltersContainer;
+const ExploreFiltersModal = () => (
+  <ExploreProvider>
+    <ExploreFiltersContainerWithContext />
+  </ExploreProvider>
+);
+
+export default ExploreFiltersModal;
