@@ -88,13 +88,15 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
 
   const activeTab = getActiveTab( );
 
-  const getTopScreenOfTab = useCallback( ( tabName: TabName ): string | undefined => {
+  const getTopScreenOfTab = useCallback( ( tabName: TabName ): string | null => {
     const navState = navigation.getState( );
     const tabRoute = navState.routes.find( r => r.name === tabName );
     const tabState = tabRoute?.state;
-    if ( !tabState || !tabState.routes ) return;
-    const topRoute = tabState.routes[tabState.index ?? tabState.routes.length - 1];
-    return topRoute?.name;
+    if ( tabState && tabState.routes ) {
+      const topRoute = tabState.routes[tabState.index ?? tabState.routes.length - 1];
+      return topRoute?.name;
+    }
+    return null;
   }, [navigation] );
 
   const tabs: TabConfig[] = useMemo( ( ) => ( [
@@ -109,8 +111,9 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
         const topScreen = getTopScreenOfTab( "MenuTab" );
         if ( topScreen === SCREEN_NAME_MENU && !isCurrentTab ) {
           navigation.navigate( "MenuTab" );
+        } else {
+          resetStack( "MenuTab", SCREEN_NAME_MENU );
         }
-        resetStack( "MenuTab", SCREEN_NAME_MENU );
       },
       active: SCREEN_NAME_MENU === activeTab,
     },
@@ -158,8 +161,9 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
         const topScreen = getTopScreenOfTab( "NotificationsTab" );
         if ( topScreen === SCREEN_NAME_NOTIFICATIONS && !isCurrentTab ) {
           navigation.navigate( "NotificationsTab" );
+        } else {
+          resetStack( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS );
         }
-        resetStack( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS );
       },
       active: SCREEN_NAME_NOTIFICATIONS === activeTab,
     },
