@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiPlace, ApiProject } from "api/types";
+import type { ApiProject } from "api/types";
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
@@ -42,12 +42,10 @@ import {
 } from "providers/ExploreContext";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
-import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
 
 const DROP_SHADOW = getShadow( {
@@ -60,11 +58,8 @@ const { useRealm } = RealmContext;
 interface Props {
   closeModal: () => void;
   filterByIconicTaxonUnknown: () => void;
-  renderLocationPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
-  requestLocationPermissions: ( ) => void;
   // TODO: type this properly when taxon has a type
   updateTaxon: ( taxon: null | { name: string } ) => void;
-  updateLocation: ( location: "worldwide" | ApiPlace ) => void;
   // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
   updateUser: ( user: null | { login: string } ) => void;
   updateProject: ( project: ApiProject ) => void;
@@ -73,10 +68,7 @@ interface Props {
 const FilterModalV2 = ( {
   closeModal,
   filterByIconicTaxonUnknown,
-  renderLocationPermissionsGate,
-  requestLocationPermissions,
   updateTaxon,
-  updateLocation,
   updateUser,
   updateProject,
 }: Props ) => {
@@ -139,7 +131,6 @@ const FilterModalV2 = ( {
   const CONFIRMATION = "CONFIRMATION";
   const [openSheet, setOpenSheet] = useState( NONE );
   const [showTaxonSearchModal, setShowTaxonSearchModal] = useState( false );
-  const [showLocationSearchModal, setShowLocationSearchModal] = useState( false );
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
@@ -774,7 +765,7 @@ const FilterModalV2 = ( {
                 <Button
                   text={t( "EDIT-LOCATION" )}
                   onPress={() => {
-                    setShowLocationSearchModal( true );
+                    navigation.navigate( "ExploreSearch", { initialSearchMode: "location" } );
                   }}
                   accessibilityLabel={t( "Edit" )}
                 />
@@ -1340,13 +1331,6 @@ const FilterModalV2 = ( {
         showModal={showTaxonSearchModal}
         onPressInfo={( ) => { closeModal(); }}
         updateTaxon={updateTaxon}
-      />
-      <ExploreLocationSearchModal
-        closeModal={() => { setShowLocationSearchModal( false ); }}
-        renderPermissionsGate={renderLocationPermissionsGate}
-        requestPermissions={requestLocationPermissions}
-        showModal={showLocationSearchModal}
-        updateLocation={updateLocation}
       />
     </ViewWrapper>
   );

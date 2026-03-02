@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiPlace, ApiProject } from "api/types";
+import type { ApiProject } from "api/types";
 import {
   ExploreProvider,
 } from "providers/ExploreContext";
@@ -22,10 +22,6 @@ const ExploreFiltersContainerWithContext = () => {
     console.log( " Not implemented in ExploreV2 yet", taxon );
   };
 
-  const updateLocation = ( location: "worldwide" | ApiPlace ) => {
-    console.log( " Not implemented in ExploreV2 yet", location );
-  };
-
   const updateUser = (
     user: {
       login: string;
@@ -45,7 +41,6 @@ const ExploreFiltersContainerWithContext = () => {
       // renderLocationPermissionsGate={renderPermissionsGate}
       // requestLocationPermissions={requestLocationPermissions}
       updateTaxon={updateTaxon}
-      updateLocation={updateLocation}
       updateUser={updateUser}
       updateProject={updateProject}
     />
