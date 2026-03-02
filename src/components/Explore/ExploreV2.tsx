@@ -183,7 +183,7 @@ const ExploreV2 = ( {
       </ViewWrapper>
       {/*
         Leaving this here so that it is easier to reason about differences between Explore
-        and ExploreRedesign.
+        and ExploreV2.
       */}
       {null}
     </>
