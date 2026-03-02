@@ -14,6 +14,10 @@ const ExploreFiltersContainerWithContext = () => {
     navigation.goBack();
   };
 
+  const filterByIconicTaxonUnknown = () => {
+    console.log( " Not implemented in ExploreV2 yet" );
+  };
+
   const updateTaxon = (
     taxon: {
       name: string;
@@ -37,9 +41,7 @@ const ExploreFiltersContainerWithContext = () => {
   return (
     <FilterModalV2
       closeModal={closeModal}
-      // filterByIconicTaxonUnknown={filterByIconicTaxonUnknown}
-      // renderLocationPermissionsGate={renderPermissionsGate}
-      // requestLocationPermissions={requestLocationPermissions}
+      filterByIconicTaxonUnknown={filterByIconicTaxonUnknown}
       updateTaxon={updateTaxon}
       updateUser={updateUser}
       updateProject={updateProject}
