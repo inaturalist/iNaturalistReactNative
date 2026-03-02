@@ -46,7 +46,6 @@ import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
-import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
@@ -130,7 +129,6 @@ const FilterModalV2 = ( {
   const PHOTO_LICENSING = "PHOTO_LICENSING";
   const CONFIRMATION = "CONFIRMATION";
   const [openSheet, setOpenSheet] = useState( NONE );
-  const [showTaxonSearchModal, setShowTaxonSearchModal] = useState( false );
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
@@ -693,12 +691,12 @@ const FilterModalV2 = ( {
                   accessibilityRole="button"
                   accessibilityLabel={t( "Change-taxon" )}
                   onPress={() => {
-                    setShowTaxonSearchModal( true );
+                    navigation.navigate( "ExploreSearch", { initialSearchMode: "taxon" } );
                   }}
                 >
                   <DisplayTaxon
                     handlePress={() => {
-                      setShowTaxonSearchModal( true );
+                      navigation.navigate( "ExploreSearch", { initialSearchMode: "taxon" } );
                     }}
                     taxon={taxon || "unknown"}
                   />
@@ -718,7 +716,7 @@ const FilterModalV2 = ( {
                 <Button
                   text={t( "SEARCH-FOR-A-TAXON" )}
                   onPress={() => {
-                    setShowTaxonSearchModal( true );
+                    navigation.navigate( "ExploreSearch", { initialSearchMode: "taxon" } );
                   }}
                   accessibilityLabel={t( "Search" )}
                 />
@@ -1326,12 +1324,6 @@ const FilterModalV2 = ( {
           insideModal
         />
       )}
-      <ExploreTaxonSearchModal
-        closeModal={() => { setShowTaxonSearchModal( false ); }}
-        showModal={showTaxonSearchModal}
-        onPressInfo={( ) => { closeModal(); }}
-        updateTaxon={updateTaxon}
-      />
     </ViewWrapper>
   );
 };
