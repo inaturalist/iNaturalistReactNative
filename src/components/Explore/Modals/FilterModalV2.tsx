@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import type { ApiPlace, ApiProject } from "api/types";
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge";
@@ -47,7 +48,6 @@ import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
-import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
 import ExploreUserSearchModal from "./ExploreUserSearchModal";
 
@@ -81,6 +81,7 @@ const FilterModalV2 = ( {
   updateUser,
   updateProject,
 }: Props ) => {
+  const navigation = useNavigation();
   const { t } = useTranslation();
   const realm = useRealm();
   const currentUser = useCurrentUser();
@@ -141,7 +142,6 @@ const FilterModalV2 = ( {
   const [showTaxonSearchModal, setShowTaxonSearchModal] = useState( false );
   const [showLocationSearchModal, setShowLocationSearchModal] = useState( false );
   const [showUserSearchModal, setShowUserSearchModal] = useState( false );
-  const [showProjectSearchModal, setShowProjectSearchModal] = useState( false );
 
   const sortByButtonText = () => {
     switch ( sortBy ) {
@@ -880,7 +880,7 @@ const FilterModalV2 = ( {
                     accessibilityRole="button"
                     accessibilityLabel={t( "Change-project" )}
                     onPress={() => {
-                      setShowProjectSearchModal( true );
+                      navigation.navigate( "ExploreSearch", { initialSearchMode: "projects" } );
                     }}
                   >
                     <ProjectListItem item={project} />
@@ -900,7 +900,7 @@ const FilterModalV2 = ( {
                   <Button
                     text={t( "FILTER-BY-A-PROJECT" )}
                     onPress={() => {
-                      setShowProjectSearchModal( true );
+                      navigation.navigate( "ExploreSearch", { initialSearchMode: "projects" } );
                     }}
                     accessibilityLabel={t( "Filter" )}
                   />
@@ -1355,11 +1355,6 @@ const FilterModalV2 = ( {
         currentUser={currentUser}
         closeModal={() => { setShowUserSearchModal( false ); }}
         updateUser={updateUser}
-      />
-      <ExploreProjectSearchModal
-        showModal={showProjectSearchModal}
-        closeModal={() => { setShowProjectSearchModal( false ); }}
-        updateProject={updateProject}
       />
     </ViewWrapper>
   );
