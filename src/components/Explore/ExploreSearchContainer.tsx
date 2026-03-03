@@ -22,8 +22,6 @@ const ExploreSearchContainerWithContext = () => {
     requestPermissions,
   } = useLocationPermission( );
 
-  console.log( "params", params );
-
   const initialSearchMode = params?.initialSearchMode || "none";
 
   const closeModal = () => {
