@@ -1202,6 +1202,7 @@ Start-upload = Start upload
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Starts recording sound
 Stay-on-this-screen = Stay on this screen while your location loads.
+Still-loading = Still loading...
 Still-need-help = Still need help? You can file a support request here.
 # Button or accessibility label for an interactive element that stops an upload
 Stop-upload = Stop upload
