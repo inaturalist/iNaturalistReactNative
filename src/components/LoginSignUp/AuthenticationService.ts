@@ -1,3 +1,8 @@
+import {
+  getAnalytics,
+  setAnalyticsCollectionEnabled,
+} from "@react-native-firebase/analytics";
+import { getPerformance } from "@react-native-firebase/perf";
 import type { QueryClient } from "@tanstack/query-core";
 import type { ApiUser } from "api/types";
 import { getUserAgent } from "api/userAgent";
@@ -246,6 +251,10 @@ const signOut = async (
   // the checkForSignedInUser needs to call this and that doesn't have access
   // to the React Query context (maybe it could...)
   options.queryClient?.getQueryCache( ).clear( );
+
+  // Disable firebase data collection on signout
+  setAnalyticsCollectionEnabled( getAnalytics(), false );
+  getPerformance().dataCollectionEnabled = false;
 
   // switch the app back to the system locale when a user signs out
   const systemLocale = getInatLocaleFromSystemLocale( );
