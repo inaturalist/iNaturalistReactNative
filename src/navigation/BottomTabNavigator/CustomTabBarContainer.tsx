@@ -82,8 +82,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
     }
 
     // If pressing the currently active tab, reset its stack
-    const isCurrentTab = targetScreenName === activeTab;
-    if ( isCurrentTab ) {
+    if ( targetTabName === activeTabName ) {
       const idx = newStacks.findIndex( r => r.name === targetTabName );
       newStacks.splice( idx, 1, {
         name: targetTabName,
@@ -111,7 +110,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
     } else {
       navigation.navigate( targetTabName );
     }
-  }, [navigation, activeTab, activeTabName] );
+  }, [navigation, activeTabName] );
 
   const tabs: TabConfig[] = useMemo( ( ) => ( [
     {
