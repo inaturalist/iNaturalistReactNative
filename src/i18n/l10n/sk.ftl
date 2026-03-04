@@ -808,6 +808,7 @@ Start-must-be-before-end = Počiatočný dátum musí byť pred dátumom ukonče
 Start-upload = Spustiť nahrávanie
 Starts-recording-sound = Spustí nahrávanie zvuku
 Stay-on-this-screen = Pri načítaní polohy zostaňte na tejto obrazovke.
+Still-loading = Still loading...
 Still-need-help = Stále potrebujete pomoc? Tu môžete podať žiadosť o podporu.
 Stop-upload = Zastaviť nahrávanie
 Stop-verb = Ukončiť

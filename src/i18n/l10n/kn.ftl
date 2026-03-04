@@ -808,6 +808,7 @@ Start-must-be-before-end = The start date must be before the end date.
 Start-upload = Start upload
 Starts-recording-sound = Starts recording sound
 Stay-on-this-screen = Stay on this screen while your location loads.
+Still-loading = Still loading...
 Still-need-help = Still need help? You can file a support request here.
 Stop-upload = Stop upload
 Stop-verb = ನಿಲ್ಲಿಸಿ
