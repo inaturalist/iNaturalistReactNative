@@ -569,6 +569,10 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
     changeLanguage( remoteUser?.locale );
   }
 
+  const enableCollection = !remoteUser?.prefers_no_tracking;
+  setAnalyticsCollectionEnabled( getAnalytics(), enableCollection );
+  getPerformance().dataCollectionEnabled = enableCollection;
+
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
