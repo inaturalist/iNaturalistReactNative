@@ -10,7 +10,6 @@ import {
   TextInput,
   View,
 } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -20,7 +19,7 @@ import { Platform, Text } from "react-native";
 import useLogs from "sharedHooks/useLogs";
 
 /* eslint-disable i18next/no-literal-string */
-const Log = (): Node => {
+const Log = () => {
   const navigation = useNavigation( );
   const { emailLogFile, shareLogFile, getLogContents } = useLogs( );
   const [logContents, setLogContents] = useState( "" );

@@ -4,6 +4,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import About from "components/About";
 import Developer from "components/Developer/Developer";
+import DiagnosticDeletionScreen from "components/Developer/DiagnosticDeletionScreen";
 import Log from "components/Developer/Log";
 import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
@@ -121,6 +122,10 @@ const uiLibTitle = () => <Heading4 className="text-white">UI LIBRARY</Heading4>;
 const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</Heading4>;
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
+const diagnosticDeletionTitle = () => (
+  // eslint-disable-next-line i18next/no-literal-string
+  <Heading4 className="text-white">DIAGNOSTIC DELETIONS</Heading4>
+);
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
@@ -336,6 +341,11 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
           component={Log}
           name="log"
           options={{ headerTitle: logTitle }}
+        />
+        <Stack.Screen
+          component={DiagnosticDeletionScreen}
+          name="DiagnosticDeletions"
+          options={{ headerTitle: diagnosticDeletionTitle }}
         />
       </Stack.Group>
       {/* Header with no bottom border */}
