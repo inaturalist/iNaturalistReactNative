@@ -22,10 +22,14 @@ export const logFirebaseEvent = (
 };
 
 export const setFirebaseDataCollection = ( enabled: boolean ) => {
-  setAnalyticsCollectionEnabled( getAnalytics(), enabled );
-  // This looks unusual but is actually the preferred solution
-  // https://github.com/invertase/react-native-firebase/blob/81a0f1910955a0295b6b308d5c08c17af0384b04/packages/perf/lib/index.d.ts#L459
-  getPerformance().dataCollectionEnabled = enabled;
+  try {
+    setAnalyticsCollectionEnabled( getAnalytics(), enabled );
+    // This looks unusual but is actually the preferred solution
+    // https://github.com/invertase/react-native-firebase/blob/81a0f1910955a0295b6b308d5c08c17af0384b04/packages/perf/lib/index.d.ts#L459
+    getPerformance().dataCollectionEnabled = enabled;
+  } catch ( error ) {
+    logger.error( "Error setting firebase data collection", JSON.stringify( error ) );
+  }
 };
 
 export const logFirebaseScreenView = (
