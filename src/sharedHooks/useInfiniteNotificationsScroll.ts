@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { fetchObservationUpdates, fetchRemoteObservations } from "api/observations";
 import type {
   ApiNotification,
@@ -28,7 +27,7 @@ interface InfiniteNotificationsScrollResponse {
   isError?: boolean;
   isFetching?: boolean;
   isInitialLoading?: boolean;
-  loadingTimedOut: boolean;
+  showStillLoadingMessage: boolean;
   notifications: Notification[];
   refetch: ( ) => void;
 }
@@ -94,8 +93,7 @@ const useInfiniteNotificationsScroll = (
 ): InfiniteNotificationsScrollResponse => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
-  const queryClient = useQueryClient();
-  const [loadingTimedOut, setLoadingTimedOut] = useState( false );
+  const [showStillLoadingMessage, setShowStillLoadingMessage] = useState( false );
 
   const queryKey = useMemo(
     () => ["useInfiniteNotificationsScroll", JSON.stringify( notificationParams )],
@@ -159,11 +157,11 @@ const useInfiniteNotificationsScroll = (
     },
   );
 
-  // We want to timeout and show an offline/retry state if this request takes too long
+  // After 5 seconds of loading, we add a "Still loading..." message to the UI
   useEffect( () => {
     // Reset if we get data
     if ( data !== undefined && !isFetching ) {
-      setLoadingTimedOut( false );
+      setShowStillLoadingMessage( false );
       return undefined;
     }
 
@@ -172,22 +170,20 @@ const useInfiniteNotificationsScroll = (
       return undefined;
     }
 
-    // Set a timeout and cancel the query if we hit the limit
     const timer = setTimeout( () => {
       if ( data === undefined && isFetching ) {
-        queryClient.cancelQueries( { queryKey } );
-        setLoadingTimedOut( true );
+        setShowStillLoadingMessage( true );
       }
     }, LOADING_TIMEOUT );
 
     // eslint-disable-next-line consistent-return
     return () => clearTimeout( timer );
-  }, [data, isFetching, queryKey, queryClient] );
+  }, [data, isFetching] );
 
   // Reset when user manually retries
   useEffect( () => {
     if ( isFetching ) {
-      setLoadingTimedOut( false );
+      setShowStillLoadingMessage( false );
     }
   }, [isFetching] );
 
@@ -196,7 +192,7 @@ const useInfiniteNotificationsScroll = (
     isError,
     isFetching,
     isInitialLoading,
-    loadingTimedOut,
+    showStillLoadingMessage,
     // Disable fetchNextPage if signed out
     fetchNextPage: currentUser
       ? fetchNextPage

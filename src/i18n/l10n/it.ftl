@@ -808,6 +808,7 @@ Start-must-be-before-end = La data di inizio deve essere precedente alla data di
 Start-upload = Avvia il caricamento
 Starts-recording-sound = Avvia la registrazione del suono
 Stay-on-this-screen = Rimani su questa schermata mentre la tua posizione viene caricata.
+Still-loading = Still loading...
 Still-need-help = Hai ancora bisogno di aiuto? Puoi inviare una richiesta di supporto qui.
 Stop-upload = Termina caricamento
 Stop-verb = Interrompi

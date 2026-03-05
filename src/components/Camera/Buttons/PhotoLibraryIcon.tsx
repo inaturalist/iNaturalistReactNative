@@ -1,10 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { INatIconButton } from "components/SharedComponents";
 import React from "react";
 import type { ViewStyle } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -13,8 +12,6 @@ interface Props {
   deleteSentinelFile: ( ) => Promise<void>;
   disabled?: boolean;
 }
-
-const isTablet = DeviceInfo.isTablet();
 
 const PhotoLibraryIcon = ( {
   rotatableAnimatedStyle,
@@ -25,9 +22,9 @@ const PhotoLibraryIcon = ( {
   const navigation = useNavigation( );
 
   return (
-    <Animated.View
-      style={!isTablet && rotatableAnimatedStyle}
-      className="m-0 border-0"
+    <RotatableIconWrapper
+      rotatableAnimatedStyle={rotatableAnimatedStyle}
+      containerClass="m-0 border-0"
     >
       <INatIconButton
         className={classnames(
@@ -55,7 +52,7 @@ const PhotoLibraryIcon = ( {
         height={62}
         disabled={disabled}
       />
-    </Animated.View>
+    </RotatableIconWrapper>
   );
 };
 

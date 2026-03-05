@@ -814,6 +814,7 @@ Start-must-be-before-end = Startdatum måste vara före slutdatumet.
 Start-upload = Starta uppladdning
 Starts-recording-sound = Startar ljudinspelning
 Stay-on-this-screen = Var kvar på den här sidan medan din plats laddas.
+Still-loading = Still loading...
 Still-need-help = Behöver du fortfarande hjälp? Du kan skicka in en supportförfrågan här.
 Stop-upload = Stoppa uppladdning
 Stop-verb = Stoppa

@@ -167,7 +167,9 @@ const usePrepareStoreAndNavigate = ( ) => {
       await updateObsWithCameraPhotos( addPhotoPermissionResult, userLocation, logStageIfAICamera );
       await deleteStageIfAICamera( );
       setSentinelFileName( null );
-      return navigation.goBack( );
+      return navigation.canGoBack()
+        ? navigation.goBack()
+        : navigation.navigate( "ObsEdit", { lastScreen: "Camera" } );
     }
 
     await createObsWithCameraPhotos(

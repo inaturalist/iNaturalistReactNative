@@ -104,7 +104,12 @@ const AICameraButtons = ( {
         className="absolute left-0 bottom-[17px] h-full justify-end flex gap-y-9"
         pointerEvents="box-none"
       >
-        <View><Close handleClose={handleClose} /></View>
+        <View>
+          <Close
+            handleClose={handleClose}
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+          />
+        </View>
       </View>
       <View
         className="absolute right-0 bottom-[6px] h-full justify-end items-end flex gap-y-9"
@@ -155,7 +160,12 @@ const AICameraButtons = ( {
             rotatableAnimatedStyle={rotatableAnimatedStyle}
           />
         </View>
-        <View><CameraFlip flipCamera={flipCamera} /></View>
+        <View>
+          <CameraFlip
+            flipCamera={flipCamera}
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+          />
+        </View>
         <View>
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
@@ -169,6 +179,7 @@ const AICameraButtons = ( {
           disabled={!modelLoaded || takingPhoto}
           takePhoto={takePhoto}
           showPrediction={showPrediction}
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
         />
       </View>
     </View>
