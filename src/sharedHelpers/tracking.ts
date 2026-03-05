@@ -1,6 +1,8 @@
 import {
   getAnalytics, logEvent,
+  setAnalyticsCollectionEnabled,
 } from "@react-native-firebase/analytics";
+import { getPerformance } from "@react-native-firebase/perf";
 import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "tracking.ts" );
@@ -17,6 +19,13 @@ export const logFirebaseEvent = (
   } catch ( error ) {
     logger.error( "Error logging firebase event", JSON.stringify( error ) );
   }
+};
+
+export const setFirebaseDataCollection = ( enabled: boolean ) => {
+  setAnalyticsCollectionEnabled( getAnalytics(), enabled );
+  // This looks unusual but is actually the preferred solution
+  // https://github.com/invertase/react-native-firebase/blob/81a0f1910955a0295b6b308d5c08c17af0384b04/packages/perf/lib/index.d.ts#L459
+  getPerformance().dataCollectionEnabled = enabled;
 };
 
 export const logFirebaseScreenView = (

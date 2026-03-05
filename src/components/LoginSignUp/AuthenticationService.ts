@@ -1,8 +1,3 @@
-import {
-  getAnalytics,
-  setAnalyticsCollectionEnabled,
-} from "@react-native-firebase/analytics";
-import { getPerformance } from "@react-native-firebase/perf";
 import type { QueryClient } from "@tanstack/query-core";
 import type { ApiUser } from "api/types";
 import { getUserAgent } from "api/userAgent";
@@ -32,6 +27,7 @@ import { getInstallID } from "sharedHelpers/installData";
 import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { setFirebaseDataCollection } from "sharedHelpers/tracking";
 import { unlink } from "sharedHelpers/util";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
@@ -253,8 +249,7 @@ const signOut = async (
   options.queryClient?.getQueryCache( ).clear( );
 
   // Disable firebase data collection on signout
-  setAnalyticsCollectionEnabled( getAnalytics(), false );
-  getPerformance().dataCollectionEnabled = false;
+  setFirebaseDataCollection( false );
 
   // switch the app back to the system locale when a user signs out
   const systemLocale = getInatLocaleFromSystemLocale( );
@@ -569,9 +564,9 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
     changeLanguage( remoteUser?.locale );
   }
 
-  const enableCollection = !remoteUser?.prefers_no_tracking;
-  setAnalyticsCollectionEnabled( getAnalytics(), enableCollection );
-  getPerformance().dataCollectionEnabled = enableCollection;
+  if ( remoteUser ) {
+    setFirebaseDataCollection( !remoteUser.prefers_no_tracking );
+  }
 
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );

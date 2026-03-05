@@ -1,14 +1,10 @@
-import {
-  getAnalytics,
-  setAnalyticsCollectionEnabled,
-} from "@react-native-firebase/analytics";
-import { getPerformance } from "@react-native-firebase/perf";
 import { fetchUserMe } from "api/users";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect } from "react";
 import { UpdateMode } from "realm";
 import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { setFirebaseDataCollection } from "sharedHelpers/tracking";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -46,11 +42,7 @@ const useUserMe = ( options: UseUserMeOptions ) => {
       }, "modifying current user via remote fetch in useUserMe" );
     }
     if ( remoteUser ) {
-      const enableCollection = !remoteUser.prefers_no_tracking;
-      setAnalyticsCollectionEnabled( getAnalytics(), enableCollection );
-      // This looks unusual but is actually the preferred solution
-      // https://github.com/invertase/react-native-firebase/blob/81a0f1910955a0295b6b308d5c08c17af0384b04/packages/perf/lib/index.d.ts#L459
-      getPerformance().dataCollectionEnabled = enableCollection;
+      setFirebaseDataCollection( !remoteUser.prefers_no_tracking );
     }
   }, [
     realm,
