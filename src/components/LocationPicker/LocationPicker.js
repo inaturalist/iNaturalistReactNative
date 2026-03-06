@@ -33,7 +33,8 @@ type Props = {
   region: Object,
   regionToAnimate: Object,
   selectPlaceResult: Function,
-  updateLocationName: Function
+  updateLocationName: Function,
+  onMapLayout: Function,
 };
 
 const LocationPicker = ( {
@@ -51,6 +52,7 @@ const LocationPicker = ( {
   region,
   selectPlaceResult,
   updateLocationName,
+  onMapLayout,
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -108,6 +110,7 @@ const LocationPicker = ( {
             showsCompass={false}
             showsUserLocation
             testID="LocationPicker.Map"
+            onMapLayout={onMapLayout}
           />
         </View>
         <Footer handleSave={handleSave} />
