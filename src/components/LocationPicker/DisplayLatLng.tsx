@@ -1,22 +1,22 @@
-// @flow
-
 import {
   Body4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( );
 
-type Props = {
-  region: Object,
-  accuracy: number
-};
+interface Props {
+  region: {
+    latitude: number;
+    longitude: number;
+  };
+  accuracy: number;
+}
 
-const DisplayLatLng = ( { region, accuracy }: Props ): Node => {
+const DisplayLatLng = ( { region, accuracy }: Props ) => {
   const { t } = useTranslation( );
   let displayLocation = "";
   if ( region.latitude && region.longitude ) {
