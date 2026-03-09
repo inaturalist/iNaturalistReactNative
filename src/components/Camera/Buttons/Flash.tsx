@@ -3,13 +3,13 @@ import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 // eslint-disable-next-line max-len
 import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
 import React from "react";
-import type { GestureResponderEvent, ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import type { TakePhotoOptions } from "react-native-vision-camera";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
-  toggleFlash: ( _event: GestureResponderEvent ) => void;
+  toggleFlash: ( ) => void;
   hasFlash?: boolean;
   takePhotoOptions: TakePhotoOptions;
   flashClassName?: string;
