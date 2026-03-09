@@ -8,7 +8,7 @@ import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
 import { View } from "components/styledComponents";
 import React from "react";
-import type { GestureResponderEvent, ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDeviceFormat, TakePhotoOptions } from "react-native-vision-camera";
 import { useLayoutPrefs } from "sharedHooks";
@@ -18,10 +18,10 @@ import AIDebugButton from "./AIDebugButton";
 const isTablet = DeviceInfo.isTablet();
 
 interface Props {
-  handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
+  handleZoomButtonPress: ( ) => void;
   confidenceThreshold?: number;
   cropRatio?: string;
-  flipCamera: ( _event: GestureResponderEvent ) => void;
+  flipCamera: ( ) => void;
   fps?: number;
   handleClose: ( ) => void;
   hasFlash: boolean;
@@ -39,10 +39,10 @@ interface Props {
   takePhoto: () => Promise<void>;
   takePhotoOptions: TakePhotoOptions;
   takingPhoto: boolean;
-  toggleFlash: ( _event: GestureResponderEvent ) => void;
+  toggleFlash: ( ) => void;
   zoomTextValue: string;
   useLocation: boolean;
-  toggleLocation: ( _event: GestureResponderEvent ) => void;
+  toggleLocation: ( ) => void;
   deleteSentinelFile: ( ) => Promise<void>;
 }
 
