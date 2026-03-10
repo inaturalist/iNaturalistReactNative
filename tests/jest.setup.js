@@ -107,11 +107,15 @@ jest.mock( "react-native-restart", ( ) => ( {
 jest.mock( "@react-native-firebase/analytics", () => ( {
   getAnalytics: jest.fn( ),
   logEvent: jest.fn( ),
+  setAnalyticsCollectionEnabled: jest.fn( ),
 } ) );
 
 jest.mock( "@react-native-firebase/perf", () => ( {
   startFirebaseTrace: jest.fn( ),
   stopFirebaseTrace: jest.fn( ),
+  getPerformance: jest.fn( ( ) => ( {
+    dataCollectionEnabled: true,
+  } ) ),
 } ) );
 
 // see https://stackoverflow.com/questions/42268673/jest-test-animated-view-for-react-native-app
