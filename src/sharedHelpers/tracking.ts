@@ -21,7 +21,7 @@ export const logFirebaseEvent = (
   }
 };
 
-export const setFirebaseDataCollection = ( enabled: boolean ) => {
+export const setFirebaseDataCollectionEnabled = ( enabled: boolean ) => {
   try {
     setAnalyticsCollectionEnabled( getAnalytics(), enabled );
     // This looks unusual but is actually the preferred solution

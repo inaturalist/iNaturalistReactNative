@@ -27,7 +27,7 @@ import { getInstallID } from "sharedHelpers/installData";
 import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { setFirebaseDataCollection } from "sharedHelpers/tracking";
+import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
 import { unlink } from "sharedHelpers/util";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
@@ -249,7 +249,7 @@ const signOut = async (
   options.queryClient?.getQueryCache( ).clear( );
 
   // Disable firebase data collection on signout
-  setFirebaseDataCollection( false );
+  setFirebaseDataCollectionEnabled( false );
 
   // switch the app back to the system locale when a user signs out
   const systemLocale = getInatLocaleFromSystemLocale( );
@@ -565,7 +565,7 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
   }
 
   if ( remoteUser ) {
-    setFirebaseDataCollection( !remoteUser.prefers_no_tracking );
+    setFirebaseDataCollectionEnabled( !remoteUser.prefers_no_tracking );
   }
 
   safeRealmWrite( realm, ( ) => {

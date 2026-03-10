@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react";
 import { UpdateMode } from "realm";
 import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { setFirebaseDataCollection } from "sharedHelpers/tracking";
+import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -42,7 +42,7 @@ const useUserMe = ( options: UseUserMeOptions ) => {
       }, "modifying current user via remote fetch in useUserMe" );
     }
     if ( remoteUser ) {
-      setFirebaseDataCollection( !remoteUser.prefers_no_tracking );
+      setFirebaseDataCollectionEnabled( !remoteUser.prefers_no_tracking );
     }
   }, [
     realm,
