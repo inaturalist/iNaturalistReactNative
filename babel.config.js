@@ -26,13 +26,8 @@ module.exports = {
         uploaders: "./src/uploaders",
       },
     }],
-    // Reanimated plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
-    [
-      "react-native-reanimated/plugin",
-      {
-        processNestedWorklets: true,
-      },
-    ],
+    // Reanimated 4: use worklets plugin (must be listed last). See migration 3.x -> 4.x.
+    "react-native-worklets/plugin",
   ],
   env: {
     production: {

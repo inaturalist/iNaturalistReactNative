@@ -15,6 +15,7 @@ import {
 } from "providers/ExploreContext";
 import React, {
   useCallback,
+  useMemo,
   useState,
 } from "react";
 import { FlatList } from "react-native";
@@ -28,6 +29,8 @@ import ExploreSearchHeader from "./ExploreSearchHeader";
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
 } );
+
+const Footer = ( ) => <View className="h-[336px]" />;
 
 interface Props {
   closeModal: () => void;
@@ -124,15 +127,13 @@ const ExploreLocationSearch = ( {
     }
   };
 
-  const renderEmptyList = ( ) => (
+  const emptyListComponent = useMemo( ( ) => (
     <EmptySearchResults
       isLoading={isLoading}
       searchQuery={locationName}
       refetch={refetch}
     />
-  );
-
-  const renderFooter = ( ) => <View className="h-[336px]" />;
+  ), [isLoading, locationName, refetch] );
 
   const buttons = [
     {
@@ -175,8 +176,8 @@ const ExploreLocationSearch = ( {
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        ListEmptyComponent={renderEmptyList}
-        ListFooterComponent={renderFooter}
+        ListEmptyComponent={emptyListComponent}
+        ListFooterComponent={Footer}
       />
       {renderPermissionsGate( { onPermissionGranted: setNearbyLocation } )}
     </ViewWrapper>

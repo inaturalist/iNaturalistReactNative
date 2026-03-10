@@ -30,7 +30,7 @@ interface Props extends PropsWithChildren {
   icon?: string;
   // Only show the icon with all the same layout, don't make it a button
   iconOnly?: boolean;
-  onPress: ( _event?: GestureResponderEvent ) => void;
+  onPress: ( _event: GestureResponderEvent ) => void;
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
   preventTransparency?: boolean;
@@ -178,7 +178,7 @@ const INatIconButton = ( {
     );
   }
 
-  const handlePressWithTracking = ( event?: GestureResponderEvent ) => {
+  const handlePressWithTracking = ( event: GestureResponderEvent ) => {
     if ( testID ) {
       const currentRoute = getCurrentRoute( );
       logger.info( `Button tap: ${testID}-${currentRoute?.name || "undefined"}` );

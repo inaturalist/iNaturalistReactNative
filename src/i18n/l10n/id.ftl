@@ -808,6 +808,7 @@ Start-must-be-before-end = Tanggal awal harus sebelum tanggal akhir.
 Start-upload = Mulai pengunggahan
 Starts-recording-sound = Mulai merekam suara
 Stay-on-this-screen = Tetap di layar ini sementara lokasi Anda dimuat.
+Still-loading = Masih memuat...
 Still-need-help = Masih perlu bantuan? Kamu bisa mengajukan permintaan bantuan di sini.
 Stop-upload = Berhenti mengunggah
 Stop-verb = Hentikan

@@ -39,14 +39,12 @@ const AddEvidenceSheet = ( {
           <EvidenceButton
             icon="camera"
             handlePress={( ) => {
-              // Since we're on ObsEdit, the "Camera" screen might already be in
-              // the stack, e.g. the AICamera, so if we use navigate() we risk
-              // going *back* to it and popping ObsEdit off the stack. Instead,
-              // we *push* another instance of that screen on to the stack so we
-              // can return to ObsEdit
-              navigation.push( "Camera", {
-                addEvidence: true,
-                camera: "Standard",
+              navigation.navigate( "NoBottomTabStackNavigator", {
+                screen: "Camera",
+                params: {
+                  addEvidence: true,
+                  camera: "Standard",
+                },
               } );
             }}
             disabled={disableAddingMoreEvidence}
