@@ -48,6 +48,7 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
         "value": {},
       }
     }
+    nativeID="2"
     testID="UploadIcon.complete.undefined"
   >
     <View
@@ -307,6 +308,7 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
           }
         }
         jestInlineStyle={{}}
+        nativeID="1"
         style={
           [
             [
@@ -511,6 +513,7 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
               }
             }
             jestInlineStyle={{}}
+            nativeID="0"
             style={
               [
                 [

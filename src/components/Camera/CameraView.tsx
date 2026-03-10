@@ -27,9 +27,6 @@ import type {
 import FocusSquare from "./FocusSquare";
 
 const ReanimatedCamera = Reanimated.createAnimatedComponent( Camera );
-Reanimated.addWhitelistedNativeProps( {
-  zoom: true,
-} );
 
 interface Props {
   animatedProps: CameraProps;
