@@ -34,6 +34,22 @@ type ScreenName =
 
 type Props = BottomTabBarProps;
 
+// Reset Menu and Notifications stacks when navigating away from them
+const resetOnLeaveTabScreenTuples: [TabName, ScreenName][] = [
+  ["MenuTab", SCREEN_NAME_MENU],
+  ["NotificationsTab", SCREEN_NAME_NOTIFICATIONS],
+];
+
+const getActiveTab = ( activeTabName: TabName ): ScreenName => {
+  switch ( activeTabName ) {
+    case "MenuTab": return SCREEN_NAME_MENU;
+    case "ExploreTab": return SCREEN_NAME_ROOT_EXPLORE;
+    case "ObservationsTab": return SCREEN_NAME_OBS_LIST;
+    case "NotificationsTab": return SCREEN_NAME_NOTIFICATIONS;
+    default: return SCREEN_NAME_OBS_LIST;
+  }
+};
+
 const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -43,17 +59,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
 
   const userIconUri = useMemo( ( ) => User.uri( currentUser ), [currentUser] );
 
-  const getActiveTab = ( ): ScreenName => {
-    switch ( activeTabName ) {
-      case "MenuTab": return SCREEN_NAME_MENU;
-      case "ExploreTab": return SCREEN_NAME_ROOT_EXPLORE;
-      case "ObservationsTab": return SCREEN_NAME_OBS_LIST;
-      case "NotificationsTab": return SCREEN_NAME_NOTIFICATIONS;
-      default: return SCREEN_NAME_OBS_LIST;
-    }
-  };
-
-  const activeTab = getActiveTab( );
+  const activeTab = getActiveTab( activeTabName );
 
   const handleTabPress = useCallback( (
     targetTabName: TabName,
@@ -64,13 +70,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       = navState.routes.slice();
     let needsReset = false;
 
-    // Reset Menu and Notifications stacks when navigating away from them
-    const resetOnLeave: [TabName, ScreenName][] = [
-      ["MenuTab", SCREEN_NAME_MENU],
-      ["NotificationsTab", SCREEN_NAME_NOTIFICATIONS],
-    ];
-
-    for ( const [tabName, screenName] of resetOnLeave ) {
+    for ( const [tabName, screenName] of resetOnLeaveTabScreenTuples ) {
       if ( activeTabName === tabName && targetTabName !== tabName ) {
         const idx = newStacks.findIndex( r => r.name === activeTabName );
         newStacks.splice( idx, 1, {
