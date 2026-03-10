@@ -4,20 +4,15 @@ import { useNavigation } from "@react-navigation/native";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
-  usePerformance,
   useShare,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 
 import AppStateListener from "./AppStateListener";
 import useLinking from "./hooks/useLinking";
 import NetworkService from "./NetworkService";
 import StartupService from "./StartupService";
-
-const logger = log.extend( "App" );
 
 type SharedItem = {
   mimeType: string,
@@ -54,13 +49,6 @@ type Props = {
 // normally we would never do this in code
 const App = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
-  const { loadTime } = usePerformance( {
-    screenName: "App",
-  } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
-
   // attempting to make sure that navigation is only called once
   // for performance reasons
   const onShare = useCallback(

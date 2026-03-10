@@ -144,6 +144,7 @@ const AICamera = ( {
   const { t } = useTranslation();
 
   const { loadTime } = usePerformance( {
+    screenName: "AICamera",
     isLoading: camera?.current !== null,
   } );
   if ( isDebugMode( ) && loadTime ) {

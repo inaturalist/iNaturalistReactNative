@@ -90,6 +90,7 @@ const StandardCamera = ( {
   const insets = useSafeAreaInsets();
 
   const { loadTime } = usePerformance( {
+    screenName: "StandardCamera",
     isLoading: camera?.current !== null,
   } );
   if ( isDebugMode( ) && loadTime ) {

@@ -13,9 +13,6 @@ import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
 import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
-import {
-  usePerformance,
-} from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import { zustandStorage } from "stores/useStore";
 
@@ -59,14 +56,6 @@ const checkForPreviousCrash = async ( ) => {
 const StartupService = ( ) => {
   const realm = useRealm( );
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0]?.isValid( );
-  const { loadTime } = usePerformance( {
-    screenName: "StartupService",
-    isLoading: false,
-  } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
-
   useEffect( ( ) => {
     const initializeApp = async ( ) => {
       const checkForSignedInUser = async ( ) => {

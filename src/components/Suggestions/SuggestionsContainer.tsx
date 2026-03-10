@@ -292,6 +292,7 @@ const SuggestionsContainer = ( ) => {
     || offlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
 
   const { loadTime } = usePerformance( {
+    screenName: "Suggestions",
     isLoading,
   } );
   if ( isDebugMode( ) && loadTime ) {

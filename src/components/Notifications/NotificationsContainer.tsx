@@ -38,6 +38,7 @@ const NotificationsContainer = ( {
   } = useInfiniteNotificationsScroll( notificationParams );
 
   const { loadTime } = usePerformance( {
+    screenName: "Notifications",
     isLoading: isInitialLoading,
   } );
   if ( isDebugMode( ) ) {

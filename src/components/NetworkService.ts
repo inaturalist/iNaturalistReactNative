@@ -1,24 +1,12 @@
-import { log } from "sharedHelpers/logger";
 import {
   useIconicTaxa,
-  useObservationUpdatesWhenFocused, usePerformance,
+  useObservationUpdatesWhenFocused,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 
 import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
 import useWorkQueue from "./hooks/useWorkQueue";
 
-const logger = log.extend( "NetworkService" );
-
 const NetworkService = ( ) => {
-  const { loadTime } = usePerformance( {
-    screenName: "NetworkService",
-    isLoading: false,
-  } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
-
   useObservationUpdatesWhenFocused( );
 
   useIconicTaxa( { reload: true } );
