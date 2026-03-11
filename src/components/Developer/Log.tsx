@@ -1,9 +1,6 @@
 /* eslint-disable i18next/no-literal-string */
-import { useNavigation } from "@react-navigation/native";
 import {
-  Button,
   Heading4,
-  INatIconButton,
   ScrollViewWrapper,
 } from "components/SharedComponents";
 import {
@@ -12,42 +9,14 @@ import {
   View,
 } from "components/styledComponents";
 import React, {
-  useCallback,
   useEffect,
   useState,
 } from "react";
 import { Platform, Text } from "react-native";
 
-import { emailLogFile, getLogContents, shareLogFile } from "./logManagementHelpers";
+import { getLogContents } from "./logManagementHelpers";
 
 const Log = () => {
-  const navigation = useNavigation( );
-  const headerRight = useCallback( ( ) => (
-    <>
-      { Platform.OS === "ios" && (
-        <View className="mr-3">
-          <INatIconButton
-            icon="share"
-            onPress={shareLogFile}
-            accessibilityLabel="Email logs"
-            accessibilityHint="Opens email app"
-            color="white"
-          />
-        </View>
-      ) }
-      <Button
-        className="p-2"
-        onPress={emailLogFile}
-        text="Email log"
-      />
-    </>
-  ), [] );
-
-  useEffect(
-    ( ) => navigation.setOptions( { headerRight } ),
-    [headerRight, navigation],
-  );
-
   const [content, setContent] = useState<{text: string; length: number} | null>( null );
 
   useEffect( ( ) => {
