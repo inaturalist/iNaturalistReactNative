@@ -3,6 +3,7 @@ import {
   SwitchRow,
 } from "components/SharedComponents";
 import React from "react";
+import { View } from "react-native";
 import { useFeatureFlag } from "sharedHooks";
 import type { FeatureFlagSlice } from "stores/createFeatureFlagSlice";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
@@ -71,12 +72,12 @@ const FeatureFlagToggle = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } 
 const FeatureFlags = () => {
   const featureFlagKeys = Object.values( FeatureFlag );
   return (
-    <>
+    <View className="mb-5">
       <H1>Feature Flags</H1>
       {featureFlagKeys.map( featureFlagKey => (
         <FeatureFlagToggle key={featureFlagKey} featureFlagKey={featureFlagKey} />
       ) )}
-    </>
+    </View>
   );
 };
 

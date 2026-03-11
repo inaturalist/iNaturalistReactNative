@@ -1,8 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
 import {
-  Button,
   Heading4,
-  INatIconButton,
   ScrollViewWrapper,
 } from "components/SharedComponents";
 import {
@@ -12,55 +9,34 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback,
   useEffect,
   useState,
 } from "react";
 import { Platform, Text } from "react-native";
-import useLogs from "sharedHooks/useLogs";
+import { getLogContents } from "sharedHooks/useLogs";
 
 /* eslint-disable i18next/no-literal-string */
 const Log = (): Node => {
-  const navigation = useNavigation( );
-  const { emailLogFile, shareLogFile, getLogContents } = useLogs( );
-  const [logContents, setLogContents] = useState( "" );
-  const headerRight = useCallback( ( ) => (
-    <>
-      { Platform.OS === "ios" && (
-        <View className="mr-3">
-          <INatIconButton
-            icon="share"
-            onPress={shareLogFile}
-            accessibilityLabel="Email logs"
-            accessibilityHint="Opens email app"
-            color="white"
-          />
-        </View>
-      ) }
-      <Button
-        className="p-2"
-        onPress={emailLogFile}
-        text="Email log"
-      />
-    </>
-  ), [emailLogFile, shareLogFile] );
-
-  useEffect(
-    ( ) => navigation.setOptions( { headerRight } ),
-    [headerRight, navigation],
-  );
+  const [content, setContent] = useState( null );
 
   useEffect( ( ) => {
-    getLogContents( ).then( stuff => setLogContents( stuff ) );
-  } );
+    getLogContents( ).then( logContents => {
+      const lines = logContents.split( "\n" );
+      const trimmedContent = lines
+        .slice( lines.length - 1000, lines.length )
+        .join( "\n" );
+      setContent( { text: trimmedContent, length: lines.length } );
+    } );
+  }, [] );
 
-  const lines = logContents.split( "\n" );
-  const content = lines.slice( lines.length - 1000, lines.length ).join( "\n" );
+  if ( !content ) {
+    return null;
+  }
 
   return (
     <ScrollViewWrapper>
       <View className="p-5">
-        { lines.length > 1000 && (
+        { content.length > 1000 && (
           <Heading4>Last 1000 lines of log</Heading4>
         ) }
         {Platform.OS === "ios"
@@ -69,7 +45,7 @@ const Log = (): Node => {
             // https://github.com/facebook/react-native/issues/13938#issuecomment-520590673
             <TextInput
               accessibilityLabel="Text input field"
-              value={content}
+              value={content.text}
               editable={false}
               multiline
             />

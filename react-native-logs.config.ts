@@ -6,8 +6,15 @@ import {
   logger,
 } from "react-native-logs";
 
-const fileName = "inaturalist-rn-log.txt";
-const logFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+const logFileNameV1 = "inaturalist-rn-log.txt";
+const logFilePath = `${RNFS.DocumentDirectoryPath}/${logFileNameV1}`;
+
+const logFileNamePrefix = "inaturalist-rn-log";
+const logFileName = `${logFileNamePrefix}.{date-today}.txt`;
+
+const logFileDirectory = `${RNFS.DocumentDirectoryPath}/logs3`;
+
+RNFS.mkdir( logFileDirectory );
 
 const sharedConfig = {
   dateFormat: "iso",
@@ -20,7 +27,9 @@ const sharedConfig = {
     // https://github.com/mowispace/react-native-logs/commit/df7444279525b7fa88c1509655d8fb6e7582b9cb#diff-c7efff41b2f47cae54e9c83fbe3156db0f1ef1bf405e0750c94d6a10bb74e5a0L110
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     FS: RNFS as any,
-    fileName,
+    fileName: logFileName,
+    filePath: logFileDirectory,
+    fileNameDateType: "iso" as const,
   },
 };
 
@@ -50,6 +59,8 @@ const logWithoutRemote = logger.createLogger( {
 
 export {
   log,
+  logFileDirectory,
+  logFileNamePrefix,
   logFilePath,
   logWithoutRemote,
 };

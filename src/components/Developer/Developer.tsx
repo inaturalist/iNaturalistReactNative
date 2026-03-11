@@ -14,7 +14,7 @@ import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
-import useLogs from "sharedHooks/useLogs";
+import useLogs, { deleteLogFile, temporaryLogForSharingPath } from "sharedHooks/useLogs";
 
 import {
   CODE, H1, H2, P,
@@ -103,21 +103,47 @@ const deleteLogFileConfirmDescription = [
 ].join( " " );
 const LogOptions = () => {
   const navigation = useNavigation( );
-  const { deleteLogFile } = useLogs();
   const [deleteLogFileModalOpen, setDeleteLogFileModalOpen] = useState( false );
   const closeModal = () => setDeleteLogFileModalOpen( false );
+
+  const {
+    shareLogFile, emailLogFile, logsReadyForSharing, prepareLogForSharing,
+  } = useLogs();
   return (
     <>
+      <H1>Application Logs</H1>
       <Button
         onPress={() => navigation.navigate( "log" )}
-        text="LOG"
+        text="RECENT LOGS"
         className="mb-5"
       />
       <Button
         onPress={() => setDeleteLogFileModalOpen( true )}
-        text="DELETE LOG FILE"
+        text="DELETE LOG FILES"
         className="mb-5"
       />
+      {logsReadyForSharing
+        ? (
+          <>
+            <Button
+              onPress={emailLogFile}
+              text={t( "EMAIL-DEBUG-LOGS" )}
+              className="mb-5"
+            />
+            <Button
+              onPress={shareLogFile}
+              text={t( "SHARE-DEBUG-LOGS" )}
+              className="mb-5"
+            />
+          </>
+        )
+        : (
+          <Button
+            onPress={prepareLogForSharing}
+            text="PREPARE LOGS FOR SHARE / EMAIL"
+            className="mb-5"
+          />
+        )}
       {deleteLogFileModalOpen && (
         <WarningSheet
           onPressClose={() => closeModal()}
@@ -145,11 +171,13 @@ const Developer = () => {
   };
 
   const navigation = useNavigation( );
-  const { shareLogFile, emailLogFile } = useLogs();
   return (
     <ScrollViewWrapper>
       <View className="p-5">
+
         <LogOptions />
+
+        <H1>Debug tools</H1>
         <Button
           onPress={() => navigation.navigate( "LoginStackNavigator" )}
           text="LOG IN AGAIN"
@@ -202,9 +230,27 @@ const Developer = () => {
                 text="TOGGLE RTL<>LTR"
                 className="mb-5"
               />
+              <Button
+                onPress={async () => {
+                  console.log( "starting" );
+                  try {
+                    console.log( { temporaryLogForSharingPath } );
+                    const contents = await RNFS.readFile( temporaryLogForSharingPath );
+                    console.log( contents );
+                  } catch ( error ) {
+                    console.log( error );
+                  }
+                  console.log( "done" );
+                }}
+                text="TOGGLE RTL<>LTR"
+                className="mb-5"
+              />
             </>
           )
         }
+
+        <FeatureFlags />
+
         <H1>Computer Vision</H1>
         <View className="flex-row">
           <Text className="font-bold">Model: </Text>
@@ -218,7 +264,6 @@ const Developer = () => {
           <Text className="font-bold">Geomodel: </Text>
           <Text selectable>{geomodelFileName}</Text>
         </View>
-        <FeatureFlags />
         <H1>Paths</H1>
         <H2>Documents</H2>
         <P>
@@ -240,19 +285,9 @@ const Developer = () => {
         <P>
           <CODE>{getUserAgent()}</CODE>
         </P>
+
         <AppFileSizes />
-        <H1>Log file contents</H1>
-        <Button
-          level="focus"
-          onPress={emailLogFile}
-          text={t( "EMAIL-DEBUG-LOGS" )}
-          className="mb-5"
-        />
-        <Button
-          onPress={shareLogFile}
-          text={t( "SHARE-DEBUG-LOGS" )}
-          className="mb-5"
-        />
+
       </View>
     </ScrollViewWrapper>
   );
