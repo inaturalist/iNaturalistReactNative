@@ -70,7 +70,6 @@ exports[`PhotoCarousel renders correctly 1`] = `
             }
           }
           jestInlineStyle={{}}
-          nativeID="0"
           style={
             [
               {
@@ -248,7 +247,6 @@ exports[`PhotoCarousel renders correctly 1`] = `
             }
           }
           jestInlineStyle={{}}
-          nativeID="1"
           style={
             [
               {
@@ -426,7 +424,6 @@ exports[`PhotoCarousel renders correctly 1`] = `
             }
           }
           jestInlineStyle={{}}
-          nativeID="2"
           style={
             [
               {
@@ -648,7 +645,6 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
             }
           }
           jestInlineStyle={{}}
-          nativeID="3"
           style={
             [
               {
@@ -831,7 +827,6 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
             }
           }
           jestInlineStyle={{}}
-          nativeID="4"
           style={
             [
               {
@@ -1014,7 +1009,6 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
             }
           }
           jestInlineStyle={{}}
-          nativeID="5"
           style={
             [
               {
