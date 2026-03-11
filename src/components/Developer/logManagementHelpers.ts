@@ -8,7 +8,7 @@ import {
 import RNFS from "react-native-fs";
 import Mailer from "react-native-mail";
 
-import { logFilePath } from "../../react-native-logs.config";
+import { logFilePath } from "../../../react-native-logs.config";
 
 export async function getLogContents() {
   try {
