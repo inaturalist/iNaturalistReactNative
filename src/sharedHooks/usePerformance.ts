@@ -1,7 +1,5 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
-import { useEffect, useRef, useState } from "react";
+import NetInfo from "@react-native-community/netinfo";
+import { useEffect, useRef } from "react";
 import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "usePerformance" );
@@ -11,63 +9,40 @@ const SLOW_LOAD_THRESHOLD_MS = 5000;
 interface PerformanceType {
   screenName?: string; // name of the screen to profile; helpful if not using logger
   isLoading: boolean | undefined; // indicate whether data finished loading
-  slowLoadThresholdMs?: number;
 }
 
 const usePerformance = ( {
   screenName,
   isLoading,
-  slowLoadThresholdMs = SLOW_LOAD_THRESHOLD_MS,
-}: PerformanceType ) => {
-  const [startTime, setStartTime] = useState( 0 );
-  const [loadTime, setLoadTime] = useState( "" );
+}: PerformanceType ): void => {
+  const startTime = useRef( 0 );
   const slowLoadFired = useRef( false );
-  const { isConnected } = useNetInfo( );
-  const isConnectedRef = useRef( isConnected );
 
   useEffect( ( ) => {
-    isConnectedRef.current = isConnected;
-  }, [isConnected] );
+    if ( startTime.current === 0 ) {
+      startTime.current = global.performance.now( );
+    }
+    if ( isLoading ) return;
 
-  useEffect( ( ) => {
-    const getPerformanceReport = ( ) => {
-      const endTime = global.performance.now( );
-      const timeToRender = endTime - startTime;
-      const loadTimeMessage = `Load Time: ${timeToRender.toFixed( 0 )} milliseconds`;
-      const logMessage = screenName
-        ? `${screenName} ${loadTimeMessage}`
-        : loadTimeMessage;
+    const endTime = global.performance.now( );
+    const timeToRender = endTime - startTime.current;
 
-      setLoadTime( logMessage );
-
-      if (
-        !slowLoadFired.current
-        && timeToRender >= slowLoadThresholdMs
-      ) {
-        slowLoadFired.current = true;
-        const name = screenName || "Unknown";
+    if ( !slowLoadFired.current && timeToRender >= SLOW_LOAD_THRESHOLD_MS ) {
+      slowLoadFired.current = true;
+      const name = screenName || "Unknown";
+      NetInfo.fetch( ).then( state => {
         logger.warnWithExtra(
           `Slow load: ${name} ${timeToRender.toFixed( 0 )}ms`,
           {
             screen_name: name,
             load_time_ms: Math.round( timeToRender ),
-            is_online: isConnectedRef.current,
+            is_online: state.isConnected,
             trigger_type: "slow_load",
           },
         );
-      }
-    };
-    if ( startTime === 0 ) {
-      setStartTime( global.performance.now() );
+      } );
     }
-    if ( !isLoading ) {
-      getPerformanceReport();
-    }
-  }, [isLoading, startTime, screenName, slowLoadThresholdMs] );
-
-  return {
-    loadTime,
-  };
+  }, [isLoading, screenName] );
 };
 
 export default usePerformance;

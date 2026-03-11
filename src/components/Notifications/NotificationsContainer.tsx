@@ -6,11 +6,7 @@ import type { ApiObservationsUpdatesParams } from "api/types";
 import NotificationsList from "components/Notifications/NotificationsList";
 import React, { useEffect, useState } from "react";
 import type { RealmUser } from "realmModels/types";
-import { log } from "sharedHelpers/logger";
 import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
-
-const logger = log.extend( "NotificationsContainer" );
 
 interface Props {
   currentUser: RealmUser | null;
@@ -37,13 +33,10 @@ const NotificationsContainer = ( {
     refetch,
   } = useInfiniteNotificationsScroll( notificationParams );
 
-  const { loadTime } = usePerformance( {
+  usePerformance( {
     screenName: "Notifications",
     isLoading: isInitialLoading,
   } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
 
   useEffect( ( ) => {
     const unsubscribe = navigation.addListener( "focus", ( ) => {
