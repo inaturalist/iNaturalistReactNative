@@ -1,0 +1,6 @@
+FIXED
+* Disable third-party analytics for unauthenticated users and users that opted-out
+* Back navigation when adding evidence
+UPDATED
+* Minor package and performance updates
+* Reduce app's memory usage by resetting stacks on navigation away
