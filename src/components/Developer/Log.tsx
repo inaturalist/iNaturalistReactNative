@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string */
 import { useNavigation } from "@react-navigation/native";
 import {
   Button,
@@ -10,7 +11,6 @@ import {
   TextInput,
   View,
 } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -20,8 +20,7 @@ import { Platform, Text } from "react-native";
 
 import { emailLogFile, getLogContents, shareLogFile } from "./logManagementHelpers";
 
-/* eslint-disable i18next/no-literal-string */
-const Log = (): Node => {
+const Log = () => {
   const navigation = useNavigation( );
   const headerRight = useCallback( ( ) => (
     <>
@@ -49,7 +48,7 @@ const Log = (): Node => {
     [headerRight, navigation],
   );
 
-  const [content, setContent] = useState( null );
+  const [content, setContent] = useState<{text: string; length: number} | null>( null );
 
   useEffect( ( ) => {
     getLogContents( ).then( logContents => {
@@ -84,7 +83,7 @@ const Log = (): Node => {
           )
           : (
             // Android can do word selections just with <Text>
-            <Text className={`text-xs h-fit mb-5 ${fontMonoClass}`} selectable>{content}</Text>
+            <Text className={`text-xs h-fit mb-5 ${fontMonoClass}`} selectable>{content.text}</Text>
           )}
       </View>
     </ScrollViewWrapper>
