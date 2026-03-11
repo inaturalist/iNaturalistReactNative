@@ -14,7 +14,7 @@ import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
-import useLogs from "sharedHooks/useLogs";
+import { deleteLogFile, emailLogFile, shareLogFile } from "sharedHooks/useLogs";
 
 import {
   CODE, H1, H2, P,
@@ -103,7 +103,6 @@ const deleteLogFileConfirmDescription = [
 ].join( " " );
 const LogOptions = () => {
   const navigation = useNavigation( );
-  const { deleteLogFile } = useLogs();
   const [deleteLogFileModalOpen, setDeleteLogFileModalOpen] = useState( false );
   const closeModal = () => setDeleteLogFileModalOpen( false );
   return (
@@ -145,7 +144,6 @@ const Developer = () => {
   };
 
   const navigation = useNavigation( );
-  const { shareLogFile, emailLogFile } = useLogs();
   return (
     <ScrollViewWrapper>
       <View className="p-5">

@@ -17,12 +17,11 @@ import React, {
   useState,
 } from "react";
 import { Platform, Text } from "react-native";
-import useLogs from "sharedHooks/useLogs";
+import { emailLogFile, getLogContents, shareLogFile } from "sharedHooks/useLogs";
 
 /* eslint-disable i18next/no-literal-string */
 const Log = (): Node => {
   const navigation = useNavigation( );
-  const { emailLogFile, shareLogFile, getLogContents } = useLogs( );
   const [logContents, setLogContents] = useState( "" );
   const headerRight = useCallback( ( ) => (
     <>
@@ -43,7 +42,7 @@ const Log = (): Node => {
         text="Email log"
       />
     </>
-  ), [emailLogFile, shareLogFile] );
+  ), [] );
 
   useEffect(
     ( ) => navigation.setOptions( { headerRight } ),

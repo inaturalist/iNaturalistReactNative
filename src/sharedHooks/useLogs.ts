@@ -1,11 +1,4 @@
-// Hook for reading log content and sharing it. Use react-native-logs.config
-// for writing logs
-
 import { t } from "i18next";
-import {
-  useCallback,
-  useMemo,
-} from "react";
 import { Alert, Platform, Share } from "react-native";
 import {
   getBuildNumber,
@@ -17,7 +10,7 @@ import Mailer from "react-native-mail";
 
 import { logFilePath } from "../../react-native-logs.config";
 
-async function getLogContents() {
+export async function getLogContents() {
   try {
     const contents = await RNFS.readFile( logFilePath );
     return contents.split( "\n" ).join( "\n" );
@@ -29,7 +22,7 @@ async function getLogContents() {
   }
 }
 
-async function deleteLogFile() {
+export async function deleteLogFile() {
   try {
     await RNFS.unlink( logFilePath );
   } catch ( readFileError ) {
@@ -40,24 +33,26 @@ async function deleteLogFile() {
   }
 }
 
-const useLogs = ( ) => {
-  const appVersion = getVersion();
-  const buildVersion = getBuildNumber();
-  const device = getSystemName();
-  const emailParams = useMemo( ( ) => ( {
-    subject: `iNat RN ${device} Logs (version ${appVersion} - ${buildVersion})`,
-    recipients: ["help+mobile@inaturalist.org"],
-  } ), [device, appVersion, buildVersion] );
+const appVersion = getVersion();
+const buildVersion = getBuildNumber();
+const device = getSystemName();
+const emailParams = {
+  subject: `iNat RN ${device} Logs (version ${appVersion} - ${buildVersion})`,
+  recipients: ["help+mobile@inaturalist.org"],
+};
 
-  const shareLogFile = useCallback( ( ) => Share.share(
+export async function shareLogFile() {
+  Share.share(
     {
       title: emailParams.subject,
       url: logFilePath,
     },
     emailParams,
-  ), [emailParams] );
+  );
+}
 
-  const emailLogFile = useCallback( ( ) => Mailer.mail(
+export async function emailLogFile( ) {
+  Mailer.mail(
     {
       ...emailParams,
       isHTML: true,
@@ -90,17 +85,5 @@ const useLogs = ( ) => {
       }
       Alert.alert( error, event );
     },
-  ), [
-    emailParams,
-    shareLogFile,
-  ] );
-
-  return {
-    shareLogFile,
-    emailLogFile,
-    deleteLogFile,
-    getLogContents,
-  };
-};
-
-export default useLogs;
+  );
+}
