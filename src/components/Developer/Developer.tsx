@@ -14,7 +14,6 @@ import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
-import { deleteLogFile, emailLogFile, shareLogFile } from "sharedHooks/useLogs";
 
 import {
   CODE, H1, H2, P,
@@ -24,6 +23,7 @@ import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
   formatAppSizeString, formatSizeUnits, getTotalDirectorySize,
 } from "./hooks/useAppSize";
+import { deleteLogFile, emailLogFile, shareLogFile } from "./logManagementHelpers";
 
 const modelFileName = Platform.select( {
   ios: Config.IOS_MODEL_FILE_NAME,

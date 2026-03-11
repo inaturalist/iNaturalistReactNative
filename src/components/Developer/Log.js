@@ -17,12 +17,12 @@ import React, {
   useState,
 } from "react";
 import { Platform, Text } from "react-native";
-import { emailLogFile, getLogContents, shareLogFile } from "sharedHooks/useLogs";
+
+import { emailLogFile, getLogContents, shareLogFile } from "./logManagementHelpers";
 
 /* eslint-disable i18next/no-literal-string */
 const Log = (): Node => {
   const navigation = useNavigation( );
-  const [logContents, setLogContents] = useState( "" );
   const headerRight = useCallback( ( ) => (
     <>
       { Platform.OS === "ios" && (
@@ -49,17 +49,26 @@ const Log = (): Node => {
     [headerRight, navigation],
   );
 
-  useEffect( ( ) => {
-    getLogContents( ).then( stuff => setLogContents( stuff ) );
-  } );
+  const [content, setContent] = useState( null );
 
-  const lines = logContents.split( "\n" );
-  const content = lines.slice( lines.length - 1000, lines.length ).join( "\n" );
+  useEffect( ( ) => {
+    getLogContents( ).then( logContents => {
+      const lines = logContents.split( "\n" );
+      const trimmedContent = lines
+        .slice( lines.length - 1000, lines.length )
+        .join( "\n" );
+      setContent( { text: trimmedContent, length: lines.length } );
+    } );
+  }, [] );
+
+  if ( !content ) {
+    return null;
+  }
 
   return (
     <ScrollViewWrapper>
       <View className="p-5">
-        { lines.length > 1000 && (
+        { content.length > 1000 && (
           <Heading4>Last 1000 lines of log</Heading4>
         ) }
         {Platform.OS === "ios"
@@ -68,7 +77,7 @@ const Log = (): Node => {
             // https://github.com/facebook/react-native/issues/13938#issuecomment-520590673
             <TextInput
               accessibilityLabel="Text input field"
-              value={content}
+              value={content.text}
               editable={false}
               multiline
             />
