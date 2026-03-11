@@ -6,9 +6,9 @@ import type { Node } from "react";
 import React, { useCallback } from "react";
 import {
   useCurrentUser,
+  useDroppedFrames,
   useShare,
 } from "sharedHooks";
-import useDroppedFrames from "sharedHooks/useDroppedFrames";
 
 import AppStateListener from "./AppStateListener";
 import useLinking from "./hooks/useLinking";

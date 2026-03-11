@@ -91,7 +91,10 @@ const StartupService = ( ) => {
           const realmBytes = realm?.path
             ? ( await RNFS.stat( realm.path ) ).size
             : 0;
-          const logFileBytes = ( await RNFS.stat( logFilePath ) ).size;
+          const logFileExists = await RNFS.exists( logFilePath );
+          const logFileBytes = logFileExists
+            ? ( await RNFS.stat( logFilePath ) ).size
+            : 0;
           logger.infoWithExtra( "storage_metrics", {
             realm_db_bytes: realmBytes,
             mmkv_bytes: zustandMMKVBackingStorage.size,

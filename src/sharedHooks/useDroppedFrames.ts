@@ -1,8 +1,6 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
+import NetInfo from "@react-native-community/netinfo";
 import { getCurrentRoute } from "navigation/navigationUtils";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { AppState } from "react-native";
 import { log } from "sharedHelpers/logger";
 
@@ -11,14 +9,7 @@ const logger = log.extend( "useDroppedFrames" );
 const FRAME_DROP_THRESHOLD_MS = 100;
 const REPORTING_COOLDOWN_MS = 10_000;
 
-const useDroppedFrames = () => {
-  const { isConnected } = useNetInfo( );
-  const isConnectedRef = useRef( isConnected );
-
-  useEffect( () => {
-    isConnectedRef.current = isConnected;
-  }, [isConnected] );
-
+const useDroppedFrames = (): void => {
   useEffect( () => {
     const sessionStartTime = global.performance.now( );
     let lastFrameTime = 0;
@@ -44,13 +35,19 @@ const useDroppedFrames = () => {
           if ( msSinceLast >= REPORTING_COOLDOWN_MS ) {
             lastReportTime = now;
             const screenName = getCurrentRoute( )?.name ?? "Unknown";
-            logger.warnWithExtra( "dropped_frames", {
-              screen_name: screenName,
-              frame_delta_ms: Math.round( delta ),
-              is_online: isConnectedRef.current,
-              drop_count_in_session: dropCount,
-              ms_since_last_report: Math.round( msSinceLast ),
-              session_duration_ms: Math.round( now - sessionStartTime ),
+            const frameDropMs = Math.round( delta );
+            const dropCountInSession = dropCount;
+            const msSinceLastReport = Math.round( msSinceLast );
+            const sessionDurationMs = Math.round( now - sessionStartTime );
+            NetInfo.fetch( ).then( state => {
+              logger.warnWithExtra( "dropped_frames", {
+                screen_name: screenName,
+                frame_delta_ms: frameDropMs,
+                is_online: state.isConnected,
+                drop_count_in_session: dropCountInSession,
+                ms_since_last_report: msSinceLastReport,
+                session_duration_ms: sessionDurationMs,
+              } );
             } );
           }
         }
@@ -60,6 +57,7 @@ const useDroppedFrames = () => {
     };
 
     const startLoop = () => {
+      stopLoop( );
       lastFrameTime = 0;
       rafId = global.requestAnimationFrame( frameCallback );
     };

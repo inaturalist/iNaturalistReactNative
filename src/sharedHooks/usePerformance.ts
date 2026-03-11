@@ -23,6 +23,11 @@ const usePerformance = ( {
   const [loadTime, setLoadTime] = useState( "" );
   const slowLoadFired = useRef( false );
   const { isConnected } = useNetInfo( );
+  const isConnectedRef = useRef( isConnected );
+
+  useEffect( ( ) => {
+    isConnectedRef.current = isConnected;
+  }, [isConnected] );
 
   useEffect( ( ) => {
     const getPerformanceReport = ( ) => {
@@ -46,7 +51,7 @@ const usePerformance = ( {
           {
             screen_name: name,
             load_time_ms: Math.round( timeToRender ),
-            is_online: isConnected,
+            is_online: isConnectedRef.current,
             trigger_type: "slow_load",
           },
         );
@@ -58,7 +63,7 @@ const usePerformance = ( {
     if ( !isLoading ) {
       getPerformanceReport();
     }
-  }, [isLoading, startTime, screenName, slowLoadThresholdMs, isConnected] );
+  }, [isLoading, startTime, screenName, slowLoadThresholdMs] );
 
   return {
     loadTime,
