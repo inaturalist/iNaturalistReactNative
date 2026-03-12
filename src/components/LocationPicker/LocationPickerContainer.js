@@ -8,7 +8,7 @@ import {
 import type { Node } from "react";
 import React, {
   useCallback,
-  // useEffect,
+  useEffect,
   useReducer,
   useState,
 } from "react";
@@ -53,29 +53,19 @@ const setInitialRegion = ( currentObservation, radiusToMapHeight, mapDimensionsR
   };
 };
 
-// const initializeMap = ( state, action ) => {
-//   const newMap = {
-//     ...state,
-//     accuracy: action.currentObservation?.positional_accuracy,
-//     locationName: action.currentObservation?.place_guess,
-//     region: {
-//       ...state.region,
-//       ...setInitialRegion( action.currentObservation ),
-//     },
-//   };
-
-//   if ( newMap.region.latitude !== 0.0 ) {
-//     // We want to show the map zoomed to the exact level where the radius of the crosshair on top
-//     // represents the positional accuracy of the observation, so we multiply by
-//     // 2 to get the diameter and by 1.62 because the crosshair circle is set to fill 62% of the
-//     // map width
-//     const latitudeDelta
-//       = metersToLatitudeDelta( newMap.accuracy, newMap.region.latitude ) * 2 * 1.62;
-//     newMap.region.latitudeDelta = latitudeDelta;
-//     newMap.region.longitudeDelta = latitudeDelta;
-//   }
-//   return newMap;
-// };
+const initializeMap = ( state, action ) => {
+  const newMap = {
+    ...state,
+    accuracy: action.currentObservation?.positional_accuracy,
+    locationName: action.currentObservation?.place_guess,
+    region: setInitialRegion(
+      action.currentObservation,
+      action.radiusToMapHeight,
+      action.mapDimensionsRatio,
+    ),
+  };
+  return newMap;
+};
 
 const DEFAULT_REGION = {
   latitude: 0.0,
@@ -122,10 +112,10 @@ const reducer = ( state, action ) => {
         accuracy: action.accuracy,
         loading: false,
       };
-    // case "INITIALIZE_MAP": {
-    //   const newMap = initializeMap( state, action );
-    //   return newMap;
-    // }
+    case "INITIALIZE_MAP": {
+      const newMap = initializeMap( state, action );
+      return newMap;
+    }
     case "SELECT_PLACE_RESULT":
       return {
         ...state,
@@ -208,16 +198,18 @@ const LocationPickerContainer = ( ): Node => {
   }, [] );
 
   // make sure map always reflects the current observation lat/lng
-  // useEffect(
-  //   ( ) => {
-  //     const unsubscribe = navigation.addListener( "focus", ( ) => {
-  //       dispatch( { type: "INITIALIZE_MAP", currentObservation } );
-  //     } );
+  useEffect(
+    ( ) => {
+      const unsubscribe = navigation.addListener( "focus", ( ) => {
+        dispatch( {
+          type: "INITIALIZE_MAP", currentObservation, radiusToMapHeight, mapDimensionsRatio,
+        } );
+      } );
 
-  //     return unsubscribe;
-  //   },
-  //   [navigation, currentObservation],
-  // );
+      return unsubscribe;
+    },
+    [navigation, currentObservation, radiusToMapHeight, mapDimensionsRatio],
+  );
 
   const selectPlaceResult = place => {
     const { coordinates } = place.point_geojson;
