@@ -11,12 +11,14 @@ import React, {
   useReducer,
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import { log } from "sharedHelpers/logger";
 import {
   useLastScreen,
   useLocationPermission,
   usePerformance,
   useSuggestions,
 } from "sharedHooks";
+import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   internalUseSuggestionsInitialSuggestions,
 } from "sharedHooks/useSuggestions/filterSuggestions";
@@ -29,6 +31,8 @@ import useClearComputerVisionDirectory from "./hooks/useClearComputerVisionDirec
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 import Suggestions from "./Suggestions";
 import TaxonSearchButton from "./TaxonSearchButton";
+
+const logger = log.extend( "SuggestionsContainer" );
 
 export enum FETCH_STATUSES {
   FETCH_STATUS_LOADING = "loading",
@@ -287,10 +291,12 @@ const SuggestionsContainer = ( ) => {
   const isLoading = onlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING
     || offlineFetchStatus === FETCH_STATUSES.FETCH_STATUS_LOADING;
 
-  usePerformance( {
-    screenName: "Suggestions",
+  const { loadTime } = usePerformance( {
     isLoading,
   } );
+  if ( isDebugMode( ) && loadTime ) {
+    logger.info( loadTime );
+  }
 
   const toggleLocation = useCallback( async ( { showLocation }: { showLocation: boolean } ) => {
     const newImageParams = await createUploadParams( selectedPhotoUri, showLocation );
