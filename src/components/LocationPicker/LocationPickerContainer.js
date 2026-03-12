@@ -17,7 +17,6 @@ import useStore from "stores/useStore";
 
 import LocationPicker from "./LocationPicker";
 
-const DELTA = 0.02;
 const CROSSHAIRRADIUS = 254 / 2;
 
 const setInitialRegion = ( currentObservation, radiusToMapHeight, mapDimensionsRatio ) => {
@@ -70,13 +69,6 @@ const initializeMap = ( state, action ) => {
   return newMap;
 };
 
-const DEFAULT_REGION = {
-  latitude: 0.0,
-  longitude: 0.0,
-  latitudeDelta: DELTA,
-  longitudeDelta: DELTA,
-};
-
 const initialState = {
   accuracy: 0,
   hidePlaceResults: true,
@@ -84,8 +76,8 @@ const initialState = {
   loading: true,
   locationName: "",
   mapType: "standard",
-  region: DEFAULT_REGION,
-  regionToAnimate: null,
+  region: undefined,
+  regionToAnimate: undefined,
 };
 
 const reducer = ( state, action ) => {
