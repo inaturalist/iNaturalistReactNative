@@ -814,6 +814,7 @@ Start-must-be-before-end = De begindatum moet voor de einddatum liggen.
 Start-upload = Beginnen met uploaden
 Starts-recording-sound = Start het opnemen van geluid
 Stay-on-this-screen = Blijf op dit scherm terwijl je locatie wordt geladen.
+Still-loading = Nog steeds aan het laden...
 Still-need-help = Heb je nog hulp nodig? Je kunt hier een ondersteuningsverzoek indienen.
 Stop-upload = Upload stoppen
 Stop-verb = Stop

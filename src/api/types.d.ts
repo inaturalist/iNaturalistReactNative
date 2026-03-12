@@ -100,6 +100,7 @@ export interface ApiUser {
   id?: number;
   locale?: string;
   login?: string;
+  prefers_no_tracking?: boolean;
 }
 
 export interface ApiComment {

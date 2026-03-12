@@ -808,6 +808,7 @@ Start-must-be-before-end = תאריך ההתחלה חייב להיות לפני 
 Start-upload = התחל בהעלאה
 Starts-recording-sound = מתחיל להקליט קול
 Stay-on-this-screen = יש להישאר במסך זה בזמן שהמיקום שלך נטען.
+Still-loading = Still loading...
 Still-need-help = עדיין צריכ.ה לעזרה? באפשרותך להגיש בקשת תמיכה כאן.
 Stop-upload = הפסקת סנכרון
 Stop-verb = עצור

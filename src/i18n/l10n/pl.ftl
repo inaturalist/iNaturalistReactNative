@@ -814,6 +814,7 @@ Start-must-be-before-end = Data rozpoczęcia musi przypadać przed datą zakońc
 Start-upload = Rozpocznij przesyłanie
 Starts-recording-sound = Rozpoczyna nagrywanie dźwięku
 Stay-on-this-screen = Pozostań na tym ekranie, gdy Twoja lokalizacja się ładuje.
+Still-loading = Still loading...
 Still-need-help = Nadal potrzebujesz pomocy? Możesz złożyć wniosek o pomoc techniczną tutaj.
 Stop-upload = Zatrzymywanie przesyłania
 Stop-verb = Stop
