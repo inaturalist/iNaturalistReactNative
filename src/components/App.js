@@ -7,11 +7,11 @@ import React, { useCallback } from "react";
 import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
+  useDroppedFrames,
   usePerformance,
   useShare,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
-import useDroppedFrames from "sharedHooks/useDroppedFrames";
 
 import AppStateListener from "./AppStateListener";
 import useLinking from "./hooks/useLinking";

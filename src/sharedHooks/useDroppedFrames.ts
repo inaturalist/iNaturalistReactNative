@@ -6,6 +6,9 @@ import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "useDroppedFrames" );
 
+// How many dropped frames this will cover depends on the phone's refresh rate
+// either 60Hz (16.67ms per frame) or 120Hz (8.33ms per frame) is typical
+// I think 100 might be low but we'll see what kind of volume we see and can adjust if needed
 const FRAME_DROP_THRESHOLD_MS = 100;
 const REPORTING_COOLDOWN_MS = 10_000;
 
@@ -36,7 +39,7 @@ const useDroppedFrames = (): void => {
             lastReportTime = now;
             const screenName = getCurrentRoute( )?.name ?? "Unknown";
             const frameDropMs = Math.round( delta );
-            const dropCountInSession = dropCount;
+            const dropCountSinceForeground = dropCount;
             const msSinceLastReport = Math.round( msSinceLast );
             const sessionDurationMs = Math.round( now - sessionStartTime );
             NetInfo.fetch( ).then( state => {
@@ -44,7 +47,7 @@ const useDroppedFrames = (): void => {
                 screen_name: screenName,
                 frame_delta_ms: frameDropMs,
                 is_online: state.isConnected,
-                drop_count_in_session: dropCountInSession,
+                drop_count_since_foreground: dropCountSinceForeground,
                 ms_since_last_report: msSinceLastReport,
                 session_duration_ms: sessionDurationMs,
               } );
@@ -60,6 +63,8 @@ const useDroppedFrames = (): void => {
       stopLoop( );
       lastFrameTime = 0;
       dropCount = 0;
+      // Reset so the first drop after each foreground resumption is always reported
+      lastReportTime = -REPORTING_COOLDOWN_MS;
       rafId = global.requestAnimationFrame( frameCallback );
     };
 
