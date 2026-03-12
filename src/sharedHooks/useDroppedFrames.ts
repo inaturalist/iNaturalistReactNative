@@ -8,8 +8,9 @@ const logger = log.extend( "useDroppedFrames" );
 
 // How many dropped frames this will cover depends on the phone's refresh rate
 // either 60Hz (16.67ms per frame) or 120Hz (8.33ms per frame) is typical
-// I think 100 might be low but we'll see what kind of volume we see and can adjust if needed
-const FRAME_DROP_THRESHOLD_MS = 100;
+// On my iPhone 17, normal navigation that didn't appear sluggish to me could show up to 300ms
+// That in mind, 600 might still be a bit low for older devices
+const FRAME_DROP_THRESHOLD_MS = 600;
 const REPORTING_COOLDOWN_MS = 10_000;
 
 const useDroppedFrames = (): void => {
