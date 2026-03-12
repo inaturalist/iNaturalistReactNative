@@ -40,7 +40,7 @@ const useDroppedFrames = (): void => {
             const msSinceLastReport = Math.round( msSinceLast );
             const sessionDurationMs = Math.round( now - sessionStartTime );
             NetInfo.fetch( ).then( state => {
-              logger.warnWithExtra( "dropped_frames", {
+              logger.infoWithExtra( "dropped_frames", {
                 screen_name: screenName,
                 frame_delta_ms: frameDropMs,
                 is_online: state.isConnected,
@@ -48,7 +48,7 @@ const useDroppedFrames = (): void => {
                 ms_since_last_report: msSinceLastReport,
                 session_duration_ms: sessionDurationMs,
               } );
-            } );
+            } ).catch( e => logger.warn( "useDroppedFrames NetInfo fetch failed", e ) );
           }
         }
       }
@@ -59,6 +59,7 @@ const useDroppedFrames = (): void => {
     const startLoop = () => {
       stopLoop( );
       lastFrameTime = 0;
+      dropCount = 0;
       rafId = global.requestAnimationFrame( frameCallback );
     };
 
