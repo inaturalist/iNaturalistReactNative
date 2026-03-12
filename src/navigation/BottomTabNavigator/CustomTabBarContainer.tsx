@@ -34,6 +34,22 @@ type ScreenName =
 
 type Props = BottomTabBarProps;
 
+// Reset Menu and Notifications stacks when navigating away from them
+const resetOnLeaveTabScreenTuples: [TabName, ScreenName][] = [
+  ["MenuTab", SCREEN_NAME_MENU],
+  ["NotificationsTab", SCREEN_NAME_NOTIFICATIONS],
+];
+
+const getActiveTab = ( activeTabName: TabName ): ScreenName => {
+  switch ( activeTabName ) {
+    case "MenuTab": return SCREEN_NAME_MENU;
+    case "ExploreTab": return SCREEN_NAME_ROOT_EXPLORE;
+    case "ObservationsTab": return SCREEN_NAME_OBS_LIST;
+    case "NotificationsTab": return SCREEN_NAME_NOTIFICATIONS;
+    default: return SCREEN_NAME_OBS_LIST;
+  }
+};
+
 const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -43,61 +59,58 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
 
   const userIconUri = useMemo( ( ) => User.uri( currentUser ), [currentUser] );
 
-  const getActiveTab = ( ): ScreenName => {
-    switch ( activeTabName ) {
-      case "MenuTab": return SCREEN_NAME_MENU;
-      case "ExploreTab": return SCREEN_NAME_ROOT_EXPLORE;
-      case "ObservationsTab": return SCREEN_NAME_OBS_LIST;
-      case "NotificationsTab": return SCREEN_NAME_NOTIFICATIONS;
-      default: return SCREEN_NAME_OBS_LIST;
-    }
-  };
+  const activeTab = getActiveTab( activeTabName );
 
-  const resetStack = useCallback( ( tabName: TabName, screenName: ScreenName ) => {
+  const handleTabPress = useCallback( (
+    targetTabName: TabName,
+    targetScreenName: ScreenName,
+  ) => {
     const navState = navigation.getState( );
-    // copy existing stack routes so we don't lose state for tabs we're not resetting
     const newStacks: Partial<NavigationRoute<ParamListBase, string>>[]
-    = navState.routes.slice();
-    const replaceIndex = newStacks.findIndex( r => r.name === tabName );
-    // add reset stack
-    newStacks.splice( replaceIndex, 1, {
-      name: tabName,
-      state: {
-        index: 0,
-        routes: [
-          { name: screenName },
-        ],
-      },
-    } );
+      = navState.routes.slice();
+    let needsReset = false;
 
-    navigation.dispatch(
-      CommonActions.reset( {
-        index: 0,
-        routes: [
-          {
-            name: "TabNavigator",
-            state: {
-              index: replaceIndex,
-              routes: newStacks,
-            },
-          },
-        ],
-      } ),
-    );
-  }, [navigation] );
-
-  const activeTab = getActiveTab( );
-
-  const getTopScreenOfTab = useCallback( ( tabName: TabName ): string | null => {
-    const navState = navigation.getState( );
-    const tabRoute = navState.routes.find( r => r.name === tabName );
-    const tabState = tabRoute?.state;
-    if ( tabState && tabState.routes ) {
-      const topRoute = tabState.routes[tabState.index ?? tabState.routes.length - 1];
-      return topRoute?.name;
+    for ( const [tabName, screenName] of resetOnLeaveTabScreenTuples ) {
+      if ( activeTabName === tabName && targetTabName !== tabName ) {
+        const idx = newStacks.findIndex( r => r.name === activeTabName );
+        newStacks.splice( idx, 1, {
+          name: activeTabName,
+          state: { index: 0, routes: [{ name: screenName }] },
+        } );
+        needsReset = true;
+      }
     }
-    return null;
-  }, [navigation] );
+
+    // If pressing the currently active tab, reset its stack
+    if ( targetTabName === activeTabName ) {
+      const idx = newStacks.findIndex( r => r.name === targetTabName );
+      newStacks.splice( idx, 1, {
+        name: targetTabName,
+        state: { index: 0, routes: [{ name: targetScreenName }] },
+      } );
+      needsReset = true;
+    }
+
+    if ( needsReset ) {
+      const targetIndex = newStacks.findIndex( r => r.name === targetTabName );
+      navigation.dispatch(
+        CommonActions.reset( {
+          index: 0,
+          routes: [
+            {
+              name: "TabNavigator",
+              state: {
+                index: targetIndex,
+                routes: newStacks,
+              },
+            },
+          ],
+        } ),
+      );
+    } else {
+      navigation.navigate( targetTabName );
+    }
+  }, [navigation, activeTabName] );
 
   const tabs: TabConfig[] = useMemo( ( ) => ( [
     {
@@ -106,15 +119,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       accessibilityLabel: t( "Menu" ),
       accessibilityHint: t( "Navigates-to-main-menu" ),
       size: 32,
-      onPress: ( ) => {
-        const isCurrentTab = SCREEN_NAME_MENU === activeTab;
-        const topScreen = getTopScreenOfTab( "MenuTab" );
-        if ( topScreen === SCREEN_NAME_MENU && !isCurrentTab ) {
-          navigation.navigate( "MenuTab" );
-        } else {
-          resetStack( "MenuTab", SCREEN_NAME_MENU );
-        }
-      },
+      onPress: ( ) => handleTabPress( "MenuTab", SCREEN_NAME_MENU ),
       active: SCREEN_NAME_MENU === activeTab,
     },
     {
@@ -123,14 +128,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       accessibilityLabel: t( "Explore" ),
       accessibilityHint: t( "Navigates-to-explore" ),
       size: 31,
-      onPress: ( ) => {
-        const isCurrentTab = SCREEN_NAME_ROOT_EXPLORE === activeTab;
-        if ( isCurrentTab ) {
-          resetStack( "ExploreTab", SCREEN_NAME_ROOT_EXPLORE );
-        } else {
-          navigation.navigate( "ExploreTab" );
-        }
-      },
+      onPress: ( ) => handleTabPress( "ExploreTab", SCREEN_NAME_ROOT_EXPLORE ),
       active: SCREEN_NAME_ROOT_EXPLORE === activeTab,
     },
     {
@@ -140,14 +138,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       accessibilityLabel: t( "My-Observations--bottom-tab" ),
       accessibilityHint: t( "Navigates-to-your-observations" ),
       size: 40,
-      onPress: ( ) => {
-        const isCurrentTab = SCREEN_NAME_OBS_LIST === activeTab;
-        if ( isCurrentTab ) {
-          resetStack( "ObservationsTab", SCREEN_NAME_OBS_LIST );
-        } else {
-          navigation.navigate( "ObservationsTab" );
-        }
-      },
+      onPress: ( ) => handleTabPress( "ObservationsTab", SCREEN_NAME_OBS_LIST ),
       active: SCREEN_NAME_OBS_LIST === activeTab,
     },
     {
@@ -156,24 +147,14 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       accessibilityLabel: t( "Notifications--bottom-tab" ),
       accessibilityHint: t( "Navigates-to-notifications" ),
       size: 32,
-      onPress: ( ) => {
-        const isCurrentTab = SCREEN_NAME_NOTIFICATIONS === activeTab;
-        const topScreen = getTopScreenOfTab( "NotificationsTab" );
-        if ( topScreen === SCREEN_NAME_NOTIFICATIONS && !isCurrentTab ) {
-          navigation.navigate( "NotificationsTab" );
-        } else {
-          resetStack( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS );
-        }
-      },
+      onPress: ( ) => handleTabPress( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS ),
       active: SCREEN_NAME_NOTIFICATIONS === activeTab,
     },
   ] ), [
     activeTab,
     userIconUri,
-    navigation,
     t,
-    resetStack,
-    getTopScreenOfTab,
+    handleTabPress,
   ] );
 
   return (

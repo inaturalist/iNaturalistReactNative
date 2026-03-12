@@ -27,6 +27,7 @@ import { getInstallID } from "sharedHelpers/installData";
 import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
 import { unlink } from "sharedHelpers/util";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
@@ -246,6 +247,9 @@ const signOut = async (
   // the checkForSignedInUser needs to call this and that doesn't have access
   // to the React Query context (maybe it could...)
   options.queryClient?.getQueryCache( ).clear( );
+
+  // Disable firebase data collection on signout
+  setFirebaseDataCollectionEnabled( false );
 
   // switch the app back to the system locale when a user signs out
   const systemLocale = getInatLocaleFromSystemLocale( );
@@ -558,6 +562,10 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
     // user locale preference from web should be saved to realm on sign in
     // and we can also update the app language from web
     changeLanguage( remoteUser?.locale );
+  }
+
+  if ( remoteUser ) {
+    setFirebaseDataCollectionEnabled( !remoteUser.prefers_no_tracking );
   }
 
   safeRealmWrite( realm, ( ) => {
