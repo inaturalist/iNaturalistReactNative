@@ -56,6 +56,19 @@ const LocationPicker = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
+  let regionToDisplay;
+  if ( region && region?.latitude !== 0 && region.longitude !== 0 ) {
+    regionToDisplay = region;
+  } else {
+    regionToDisplay = initialRegion;
+  }
+  if ( !regionToDisplay ) {
+    regionToDisplay = {
+      latitude: 0,
+      longitude: 0,
+    };
+  }
+
   return (
     <KeyboardDismissableView>
       <ViewWrapper testID="location-picker">
@@ -76,7 +89,7 @@ const LocationPicker = ( {
           </View>
           <View className="z-10">
             <DisplayLatLng
-              region={region}
+              region={regionToDisplay}
               accuracy={accuracy}
             />
           </View>
