@@ -11,11 +11,11 @@ import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   Easing,
   interpolate,
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 import colors from "styles/tailwindColors";
 
 type ConfettiProps = PropsWithChildren<{
@@ -85,7 +85,7 @@ const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
       },
       finished => {
         if ( finished ) {
-          runOnJS( setAutoDestroy )( true );
+          scheduleOnRN( setAutoDestroy, true );
         }
       },
     ) );
