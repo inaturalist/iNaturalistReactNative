@@ -6,17 +6,18 @@ import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import { LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import RNFS from "react-native-fs";
 import Orientation from "react-native-orientation-locker";
 import Realm from "realm";
 import clearCaches from "sharedHelpers/clearCaches";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
-import { log, logFilePath } from "sharedHelpers/logger";
+import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
 import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
+import {
+  usePerformance,
+} from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import { zustandStorage } from "stores/useStore";
-import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 
 // Ignore warnings about 3rd parties that haven't implemented the new
 // NativeEventEmitter interface methods yet. As of 20230517, this is coming
@@ -58,6 +59,14 @@ const checkForPreviousCrash = async ( ) => {
 const StartupService = ( ) => {
   const realm = useRealm( );
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0]?.isValid( );
+  const { loadTime } = usePerformance( {
+    screenName: "StartupService",
+    isLoading: false,
+  } );
+  if ( isDebugMode( ) ) {
+    logger.info( loadTime );
+  }
+
   useEffect( ( ) => {
     const initializeApp = async ( ) => {
       const checkForSignedInUser = async ( ) => {
@@ -85,27 +94,6 @@ const StartupService = ( ) => {
       logger.info(
         `App version: ${DeviceInfo.getVersion()}, build: ${DeviceInfo.getBuildNumber()}`,
       );
-
-      const logStorageMetrics = async ( ) => {
-        try {
-          const realmBytes = realm?.path
-            ? ( await RNFS.stat( realm.path ) ).size
-            : 0;
-          const logFileExists = await RNFS.exists( logFilePath );
-          const logFileBytes = logFileExists
-            ? ( await RNFS.stat( logFilePath ) ).size
-            : 0;
-          logger.infoWithExtra( "storage_metrics", {
-            realm_db_bytes: realmBytes,
-            mmkv_bytes: zustandMMKVBackingStorage.size,
-            install_data_bytes: store.size,
-            log_file_bytes: logFileBytes,
-          } );
-        } catch ( e ) {
-          logger.info( "storage_metrics collection failed", e );
-        }
-      };
-      await logStorageMetrics( );
 
       try {
         await checkForSignedInUser( );
