@@ -11,6 +11,7 @@ import {
   useShare,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDroppedFrames from "sharedHooks/useDroppedFrames";
 
 import AppStateListener from "./AppStateListener";
 import useLinking from "./hooks/useLinking";
@@ -72,6 +73,7 @@ const App = ( { children }: Props ): Node => {
 
   useLinking( currentUser );
   useShare( onShare );
+  useDroppedFrames( );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code
