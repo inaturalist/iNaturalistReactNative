@@ -228,14 +228,15 @@ const LocationPickerContainer = ( ): Node => {
   const onMapReady = ( ) => dispatch( { type: "HANDLE_MAP_READY" } );
 
   const handleSave = ( ) => {
-    const keysToUpdate = {
-      latitude: region.latitude,
-      longitude: region.longitude,
-      positional_accuracy: accuracy,
-      place_guess: locationName,
-    };
-
-    updateObservationKeys( keysToUpdate );
+    if ( region ) {
+      const keysToUpdate = {
+        latitude: region.latitude,
+        longitude: region.longitude,
+        positional_accuracy: accuracy,
+        place_guess: locationName,
+      };
+      updateObservationKeys( keysToUpdate );
+    }
     navigation.goBack( );
   };
 
