@@ -58,12 +58,15 @@ const initializeMap = ( state, action ) => {
     ...state,
     accuracy: action.currentObservation?.positional_accuracy,
     locationName: action.currentObservation?.place_guess,
-    region: setInitialRegion(
-      action.currentObservation,
-      action.radiusToMapHeight,
-      action.mapDimensionsRatio,
-    ),
   };
+  const initialRegion = setInitialRegion(
+    action.currentObservation,
+    action.radiusToMapHeight,
+    action.mapDimensionsRatio,
+  );
+  if ( initialRegion !== null ) {
+    newMap.region = initialRegion;
+  }
   return newMap;
 };
 
