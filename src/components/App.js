@@ -7,6 +7,7 @@ import React, { useCallback } from "react";
 import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
+  useDroppedFrames,
   usePerformance,
   useShare,
 } from "sharedHooks";
@@ -72,6 +73,7 @@ const App = ( { children }: Props ): Node => {
 
   useLinking( currentUser );
   useShare( onShare );
+  useDroppedFrames( );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

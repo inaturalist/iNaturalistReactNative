@@ -4,6 +4,7 @@ export { default as useAuthenticatedQuery } from "./useAuthenticatedQuery";
 export { default as useCurrentUser } from "./useCurrentUser";
 export { default as useDebugMode } from "./useDebugMode";
 export { default as useDeviceOrientation } from "./useDeviceOrientation";
+export { default as useDroppedFrames } from "./useDroppedFrames";
 export { default as useExitObservationFlow } from "./useExitObservationFlow";
 export { default as useFeatureFlag } from "./useFeatureFlag";
 export { default as useFontScale } from "./useFontScale";
