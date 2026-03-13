@@ -118,6 +118,35 @@ export async function getLegacyLogfileExists() {
   return RNFS.exists( legacyLogfilePath );
 }
 
+export const temporaryLogForSharingPath
+= `${RNFS.TemporaryDirectoryPath}/${logFileNamePrefix}-recent.txt`;
+
+const concatenateLogsForSharing = async () => {
+  // this will overwrite / clear an existing temp one if it exists
+  await RNFS.writeFile( temporaryLogForSharingPath, "" );
+
+  const mostRecentLogs = ( await getSortedDailyLogFileInfo( 20 ) )
+    // we want to start with the oldest and _add_ newer ones as we go
+    .reverse();
+
+  for ( const { path } of mostRecentLogs.reverse() ) {
+    // eslint-disable-next-line no-await-in-loop
+    const chunkContents = await RNFS.readFile( path );
+    // eslint-disable-next-line no-await-in-loop
+    await RNFS.appendFile( temporaryLogForSharingPath, chunkContents );
+  }
+};
+
+export async function shareRecentLogs( ) {
+  await concatenateLogsForSharing();
+  return shareLogFile( temporaryLogForSharingPath );
+}
+
+export async function emailRecentLogs( ) {
+  await concatenateLogsForSharing();
+  return emailLogFile( temporaryLogForSharingPath );
+}
+
 export async function shareLegacyLogFile( ) {
   return shareLogFile( legacyLogfilePath );
 }
@@ -143,7 +172,6 @@ async function getRecentLogContents() {
     // intentionally making file reads serial
     // eslint-disable-next-line no-await-in-loop
     const contents = await RNFS.readFile( logPath );
-    console.log( { logPath, contents } );
     aggregatedContents += contents;
   }
   return aggregatedContents;

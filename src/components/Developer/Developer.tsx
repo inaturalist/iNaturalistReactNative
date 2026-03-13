@@ -28,8 +28,10 @@ import useAppSize, {
 import {
   deleteLegacyLogFile,
   emailLegacyLogFile,
+  emailRecentLogs,
   getLegacyLogfileExists,
   shareLegacyLogFile,
+  shareRecentLogs,
 } from "./logManagementHelpers";
 
 const modelFileName = Platform.select( {
@@ -119,6 +121,10 @@ const LogOptions = ( ) => {
     getLegacyLogfileExists().then( exists => setHasLegacylogFile( exists ) );
   }, [] );
 
+  // sharing our rolling logs involves writing a temp aggregate file, so
+  // we need to make sure we enforce one "share" at a time
+  const [isSharing, setIsSharing] = useState( false );
+
   const navigation = useNavigation();
   const [deleteLogFileModalOpen, setDeleteLogFileModalOpen] = useState( false );
 
@@ -132,12 +138,22 @@ const LogOptions = ( ) => {
         className="mb-5"
       />
       <Button
-        onPress={emailLegacyLogFile}
+        onPress={async () => {
+          setIsSharing( true );
+          await emailRecentLogs();
+          setIsSharing( false );
+        }}
+        disabled={isSharing}
         text={t( "EMAIL-DEBUG-LOGS" )}
         className="mb-5"
       />
       <Button
-        onPress={shareLegacyLogFile}
+        onPress={async () => {
+          setIsSharing( true );
+          await shareRecentLogs();
+          setIsSharing( false );
+        }}
+        disabled={isSharing}
         text={t( "SHARE-DEBUG-LOGS" )}
         className="mb-5"
       />
