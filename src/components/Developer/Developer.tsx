@@ -11,7 +11,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
@@ -28,6 +28,7 @@ import useAppSize, {
 import {
   deleteLegacyLogFile,
   emailLegacyLogFile,
+  getLegacyLogfileExists,
   shareLegacyLogFile,
 } from "./logManagementHelpers";
 
@@ -106,14 +107,25 @@ const deleteLogFileConfirmDescription = [
   "You may lose helpful debugging context.",
   "Consider saving your current logs through the 'Share' button. before deleting.",
 ].join( " " );
-const LogOptions = () => {
-  const navigation = useNavigation( );
+const legacyLogFileDescription = [
+  "It looks like you have a log file from an older version of the app.",
+  "App logs will no longer get added to this file, but you still may view and export this file.",
+  "These files incidentally got a little too big sometimes, so you may want to use the button",
+  "below to delete it and free up storage.",
+].join( " " );
+const LogOptions = ( ) => {
+  const [hasLegacylogFile, setHasLegacylogFile] = useState<null | boolean>( null );
+  useEffect( () => {
+    getLegacyLogfileExists().then( exists => setHasLegacylogFile( exists ) );
+  }, [] );
+
+  const navigation = useNavigation();
   const [deleteLogFileModalOpen, setDeleteLogFileModalOpen] = useState( false );
 
   const closeModal = () => setDeleteLogFileModalOpen( false );
   return (
     <>
-      <H1>Application Logs</H1>
+      {/* <H1>Application Logs</H1>
       <Button
         onPress={() => navigation.navigate( "log" )}
         text="LOG"
@@ -128,12 +140,34 @@ const LogOptions = () => {
         onPress={shareLegacyLogFile}
         text={t( "SHARE-DEBUG-LOGS" )}
         className="mb-5"
-      />
-      <Button
-        onPress={() => setDeleteLogFileModalOpen( true )}
-        text="DELETE LOG FILE"
-        className="mb-5"
-      />
+      /> */}
+
+      {hasLegacylogFile && (
+        <>
+          <H1>Application Logs (Legacy)</H1>
+          <Text className="mb-5">{legacyLogFileDescription}</Text>
+          <Button
+            onPress={() => navigation.navigate( "log" )}
+            text="LOG"
+            className="mb-5"
+          />
+          <Button
+            onPress={emailLegacyLogFile}
+            text={t( "EMAIL-DEBUG-LOGS" )}
+            className="mb-5"
+          />
+          <Button
+            onPress={shareLegacyLogFile}
+            text={t( "SHARE-DEBUG-LOGS" )}
+            className="mb-5"
+          />
+          <Button
+            onPress={() => setDeleteLogFileModalOpen( true )}
+            text="DELETE LOG FILE"
+            className="mb-5"
+          />
+        </>
+      )}
       {deleteLogFileModalOpen && (
         <WarningSheet
           onPressClose={() => closeModal()}
@@ -174,12 +208,12 @@ const ComputerVisionStats = () => {
 };
 
 const DebugTools = () => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation();
 
-  const toggleRTLandLTR = async ( ) => {
+  const toggleRTLandLTR = async () => {
     const { isRTL, forceRTL } = I18nManager;
     await forceRTL( !isRTL );
-    RNRestart.restart( );
+    RNRestart.restart();
   };
   return (
     <>

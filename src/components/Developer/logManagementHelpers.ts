@@ -88,6 +88,10 @@ async function emailLogFile( path: string ) {
   );
 }
 
+export async function getLegacyLogfileExists() {
+  return RNFS.exists( legacyLogfilePath );
+}
+
 export async function shareLegacyLogFile( ) {
   return shareLogFile( legacyLogfilePath );
 }
