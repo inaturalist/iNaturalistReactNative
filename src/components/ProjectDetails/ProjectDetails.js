@@ -109,7 +109,7 @@ const ProjectDetails = ( {
     />
   );
 
-  const iconClassName = "h-[134px] w-[134px] rounded-full bg-white -top-6";
+  const iconClassName = "h-[90px] w-[90px] rounded-full bg-white -top-6";
 
   const displayProjectIcon = icon => {
     const productionIcon = icon?.replace( "staticdev", "static" );
