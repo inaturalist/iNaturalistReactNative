@@ -125,7 +125,7 @@ const LogOptions = ( ) => {
   const closeModal = () => setDeleteLogFileModalOpen( false );
   return (
     <>
-      {/* <H1>Application Logs</H1>
+      <H1>Application Logs</H1>
       <Button
         onPress={() => navigation.navigate( "log" )}
         text="LOG"
@@ -140,14 +140,14 @@ const LogOptions = ( ) => {
         onPress={shareLegacyLogFile}
         text={t( "SHARE-DEBUG-LOGS" )}
         className="mb-5"
-      /> */}
+      />
 
       {hasLegacylogFile && (
         <>
           <H1>Application Logs (Legacy)</H1>
           <Text className="mb-5">{legacyLogFileDescription}</Text>
           <Button
-            onPress={() => navigation.navigate( "log" )}
+            onPress={() => navigation.navigate( "log", { isLegacyLogs: true } )}
             text="LOG"
             className="mb-5"
           />

@@ -1,5 +1,8 @@
 /* eslint-disable i18next/no-literal-string */
 import {
+  useRoute,
+} from "@react-navigation/native";
+import {
   Heading4,
   ScrollViewWrapper,
 } from "components/SharedComponents";
@@ -14,13 +17,16 @@ import React, {
 } from "react";
 import { Platform, Text } from "react-native";
 
-import { getLogContents } from "./logManagementHelpers";
+import { getLegacyLogContents } from "./logManagementHelpers";
 
 const Log = () => {
   const [content, setContent] = useState<{text: string; length: number} | null>( null );
 
+  const { params } = useRoute();
+  console.log( { isLegacyLogs: params.isLegacyLogs } );
+
   useEffect( ( ) => {
-    getLogContents( ).then( logContents => {
+    getLegacyLogContents( ).then( logContents => {
       const lines = logContents.split( "\n" );
       const trimmedContent = lines
         .slice( lines.length - 1000, lines.length )
