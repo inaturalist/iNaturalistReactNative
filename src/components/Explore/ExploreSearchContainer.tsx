@@ -1,3 +1,4 @@
+import type { RouteProp } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { ApiPlace, ApiProject, ApiTaxon } from "api/types";
 import { View } from "components/styledComponents";
@@ -15,7 +16,8 @@ import ExploreUserSearch from "./SearchScreens/ExploreUserSearch";
 
 const ExploreSearchContainerWithContext = () => {
   const navigation = useNavigation();
-  const { params } = useRoute( );
+  const { params } = useRoute<RouteProp<Record<string, { initialSearchMode?: string }>, string>>( );
+
   const {
     hasPermissions,
     renderPermissionsGate,
