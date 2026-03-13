@@ -162,7 +162,7 @@ const LocationPickerContainer = ( ): Node => {
     mapDimensionsRatio,
   );
 
-  const onRegionChangeComplete = async newRegion => {
+  const onRegionChangeComplete = useCallback( async newRegion => {
     // prevent initial map render from resetting the coordinates and locationName
     if ( isFirstMapRender ) {
       dispatch( { type: "HANDLE_FIRST_MAP_RENDER" } );
@@ -186,7 +186,7 @@ const LocationPickerContainer = ( ): Node => {
       region: newRegion,
       accuracy: newAccuracy,
     } );
-  };
+  }, [isFirstMapRender, radiusToMapHeight] );
 
   const updateLocationName = useCallback( name => {
     dispatch( { type: "UPDATE_LOCATION_NAME", locationName: name } );
@@ -225,7 +225,7 @@ const LocationPickerContainer = ( ): Node => {
   };
 
   const onCurrentLocationPress = ( ) => dispatch( { type: "HANDLE_CURRENT_LOCATION_PRESS" } );
-  const onMapReady = ( ) => dispatch( { type: "HANDLE_MAP_READY" } );
+  const onMapReady = useCallback( ( ) => dispatch( { type: "HANDLE_MAP_READY" } ), [] );
 
   const handleSave = ( ) => {
     if ( region ) {
