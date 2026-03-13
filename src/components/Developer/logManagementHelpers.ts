@@ -1,4 +1,5 @@
 import { t } from "i18next";
+import { useEffect, useState } from "react";
 import { Alert, Platform, Share } from "react-native";
 import {
   getBuildNumber,
@@ -8,12 +9,37 @@ import {
 import RNFS from "react-native-fs";
 import Mailer from "react-native-mail";
 
-import { legacyLogfilePath } from "../../../react-native-logs.config";
+import {
+  legacyLogfilePath,
+  logFileDirectory,
+  logFileNamePrefix,
+} from "../../../react-native-logs.config";
+
+const getSortedDailyLogFileInfo = async ( n: number ) => {
+  const dir = await RNFS.readDir( logFileDirectory );
+  const sortedLogFiles = dir
+    .filter( ( { name } ) => name.startsWith( logFileNamePrefix ) )
+    .map( ( { name, size, path } ) => {
+      // assumes log files will be prefix.yyyy-mm-dd.txt
+      const dateString = name.split( "." )[1];
+      // RN-logs doesn't zero-pad months/days, so we have to parse date in order to sort
+      return {
+        name,
+        path,
+        size,
+        date: Date.parse( dateString ),
+      };
+    } )
+    // flipped for descending
+    .sort( ( a, b ) => b.date - a.date );
+
+  return sortedLogFiles.slice( 0, n );
+};
 
 export async function getLegacyLogContents() {
   try {
     const contents = await RNFS.readFile( legacyLogfilePath );
-    return contents.split( "\n" ).join( "\n" );
+    return `Legacy\n${contents}`;
   } catch ( readFileError ) {
     if ( readFileError instanceof Error && readFileError.message.match( /no such file/ ) ) {
       return "";
@@ -98,4 +124,49 @@ export async function shareLegacyLogFile( ) {
 
 export async function emailLegacyLogFile( ) {
   return emailLogFile( legacyLogfilePath );
+}
+
+interface LogPreview {
+  text: string;
+  length: number;
+}
+
+async function getRecentLogContents() {
+  // we don't need to be precise here, we can jam 10 together and limit it later
+  const recentLogsPaths = ( await getSortedDailyLogFileInfo( 10 ) )
+    .map( foo => foo.path )
+    // we want to start with the oldest and _add_ newer ones as we go
+    .reverse();
+
+  let aggregatedContents = "";
+  for ( const logPath of recentLogsPaths ) {
+    // intentionally making file reads serial
+    // eslint-disable-next-line no-await-in-loop
+    const contents = await RNFS.readFile( logPath );
+    console.log( { logPath, contents } );
+    aggregatedContents += contents;
+  }
+  return aggregatedContents;
+}
+
+export function useLogPreview( { legacy }: { legacy: boolean } ): LogPreview | null {
+  const [logPreview, setLogPreview] = useState<LogPreview | null>( null );
+
+  useEffect( ( ) => {
+    const getLogPreview = async () => {
+      const logContents = legacy
+        ? await getLegacyLogContents()
+        : await getRecentLogContents();
+
+      const lines = logContents.split( "\n" );
+      const trimmedContent = lines
+        .slice( lines.length - 1000, lines.length )
+        .join( "\n" );
+      setLogPreview( { text: trimmedContent, length: lines.length } );
+    };
+
+    getLogPreview();
+  }, [legacy] );
+
+  return logPreview;
 }

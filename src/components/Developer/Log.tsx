@@ -11,38 +11,22 @@ import {
   TextInput,
   View,
 } from "components/styledComponents";
-import React, {
-  useEffect,
-  useState,
-} from "react";
+import React from "react";
 import { Platform, Text } from "react-native";
 
-import { getLegacyLogContents } from "./logManagementHelpers";
+import { useLogPreview } from "./logManagementHelpers";
 
 const Log = () => {
-  const [content, setContent] = useState<{text: string; length: number} | null>( null );
-
   const { params } = useRoute();
-  console.log( { isLegacyLogs: params.isLegacyLogs } );
-
-  useEffect( ( ) => {
-    getLegacyLogContents( ).then( logContents => {
-      const lines = logContents.split( "\n" );
-      const trimmedContent = lines
-        .slice( lines.length - 1000, lines.length )
-        .join( "\n" );
-      setContent( { text: trimmedContent, length: lines.length } );
-    } );
-  }, [] );
-
-  if ( !content ) {
+  const logPreview = useLogPreview( { legacy: !!params?.isLegacyLogs } );
+  if ( !logPreview ) {
     return null;
   }
 
   return (
     <ScrollViewWrapper>
       <View className="p-5">
-        { content.length > 1000 && (
+        { logPreview.length > 1000 && (
           <Heading4>Last 1000 lines of log</Heading4>
         ) }
         {Platform.OS === "ios"
@@ -51,14 +35,19 @@ const Log = () => {
             // https://github.com/facebook/react-native/issues/13938#issuecomment-520590673
             <TextInput
               accessibilityLabel="Text input field"
-              value={content.text}
+              value={logPreview.text}
               editable={false}
               multiline
             />
           )
           : (
             // Android can do word selections just with <Text>
-            <Text className={`text-xs h-fit mb-5 ${fontMonoClass}`} selectable>{content.text}</Text>
+            <Text
+              className={`text-xs h-fit mb-5 ${fontMonoClass}`}
+              selectable
+            >
+              {logPreview.text}
+            </Text>
           )}
       </View>
     </ScrollViewWrapper>
