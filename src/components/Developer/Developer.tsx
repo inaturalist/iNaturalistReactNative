@@ -1,3 +1,5 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable i18next/no-literal-string */
 import { useNavigation } from "@react-navigation/native";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
@@ -49,7 +51,6 @@ interface DirectorySizesProps {
   directoryEntrySizes: DirectoryEntrySize[];
 }
 
-/* eslint-disable i18next/no-literal-string */
 const DirectoryFileSizes = ( { directoryName, directoryEntrySizes }: DirectorySizesProps ) => {
   const totalDirectorySize = formatSizeUnits( getTotalDirectorySize( directoryEntrySizes ) );
   return (
@@ -148,115 +149,133 @@ const LogOptions = () => {
   );
 };
 
-const Developer = () => {
+const ComputerVisionStats = () => {
+  return (
+    <>
+      <H1>Computer Vision</H1>
+      <View className="flex-row">
+        <Text className="font-bold">Model: </Text>
+        <Text selectable>{modelFileName}</Text>
+      </View>
+      <View className="flex-row">
+        <Text className="font-bold">Taxonomy: </Text>
+        <Text selectable>{taxonomyFileName}</Text>
+      </View>
+      <View className="flex-row mb-5">
+        <Text className="font-bold">Geomodel: </Text>
+        <Text selectable>{geomodelFileName}</Text>
+      </View>
+    </>
+  );
+};
+
+const DebugTools = () => {
+  const navigation = useNavigation( );
+
   const toggleRTLandLTR = async ( ) => {
     const { isRTL, forceRTL } = I18nManager;
     await forceRTL( !isRTL );
     RNRestart.restart( );
   };
+  return (
+    <>
+      <H1>Debug tools</H1>
+      <Button
+        onPress={() => navigation.navigate( "LoginStackNavigator" )}
+        text="LOG IN AGAIN"
+        className="mb-5"
+      />
+      { // eslint-disable-next-line no-undef
+        __DEV__ && (
+          <>
+            <Button
+              onPress={() => navigation.navigate( "UILibrary" )}
+              text="UI LIBRARY"
+              className="mb-5"
+            />
+            <Button
+              onPress={() => { throw new Error( "Test error" ); }}
+              text="TEST ERROR"
+              className="mb-5"
+            />
+            <Button
+              onPress={() => {
+                throw new INatApiError( {
+                  error: "Test error",
+                  status: 422,
+                  context: {
+                    routeName: "MyObservations",
+                    timestamp: new Date().toISOString(),
+                  },
+                } );
+              }}
+              text="TEST INATAPIERROR"
+              className="mb-5"
+            />
+            <Button
+              onPress={() => {
+                throw new INatApiTooManyRequestsError( {
+                  routeName: "TaxonDetails",
+                  timestamp: new Date().toISOString(),
+                } );
+              }}
+              text="TEST API TOO MANY REQUESTS ERROR"
+              className="mb-5"
+            />
+            <Button
+              onPress={async () => { throw new Error( "Test error in promise" ); }}
+              text="TEST UNHANDLED PROMISE REJECTION"
+              className="mb-5"
+            />
+            <Button
+              onPress={toggleRTLandLTR}
+              text="TOGGLE RTL<>LTR"
+              className="mb-5"
+            />
+          </>
+        )
+      }
+    </>
+  );
+};
 
-  const navigation = useNavigation( );
+const PathStats = () => {
+  return (
+    <>
+      <H1>Paths</H1>
+      <H2>Documents</H2>
+      <P>
+        <CODE>{RNFS.DocumentDirectoryPath}</CODE>
+      </P>
+      <H2>Caches</H2>
+      <P>
+        <CODE>{RNFS.CachesDirectoryPath}</CODE>
+      </P>
+      <H2>Config.API_URL</H2>
+      <P>
+        <CODE>{Config.API_URL}</CODE>
+      </P>
+      <H2>Config.API_URL</H2>
+      <P>
+        <CODE>{Config.API_URL}</CODE>
+      </P>
+      <H2>getUserAgent()</H2>
+      <P>
+        <CODE>{getUserAgent()}</CODE>
+      </P>
+    </>
+  );
+};
+
+const Developer = () => {
   return (
     <ScrollViewWrapper>
       <View className="p-5">
-
         <LogOptions />
-
-        <H1>Debug tools</H1>
-        <Button
-          onPress={() => navigation.navigate( "LoginStackNavigator" )}
-          text="LOG IN AGAIN"
-          className="mb-5"
-        />
-        { // eslint-disable-next-line no-undef
-          __DEV__ && (
-            <>
-              <Button
-                onPress={() => navigation.navigate( "UILibrary" )}
-                text="UI LIBRARY"
-                className="mb-5"
-              />
-              <Button
-                onPress={() => { throw new Error( "Test error" ); }}
-                text="TEST ERROR"
-                className="mb-5"
-              />
-              <Button
-                onPress={() => {
-                  throw new INatApiError( {
-                    error: "Test error",
-                    status: 422,
-                    context: {
-                      routeName: "MyObservations",
-                      timestamp: new Date().toISOString(),
-                    },
-                  } );
-                }}
-                text="TEST INATAPIERROR"
-                className="mb-5"
-              />
-              <Button
-                onPress={() => {
-                  throw new INatApiTooManyRequestsError( {
-                    routeName: "TaxonDetails",
-                    timestamp: new Date().toISOString(),
-                  } );
-                }}
-                text="TEST API TOO MANY REQUESTS ERROR"
-                className="mb-5"
-              />
-              <Button
-                onPress={async () => { throw new Error( "Test error in promise" ); }}
-                text="TEST UNHANDLED PROMISE REJECTION"
-                className="mb-5"
-              />
-              <Button
-                onPress={toggleRTLandLTR}
-                text="TOGGLE RTL<>LTR"
-                className="mb-5"
-              />
-            </>
-          )
-        }
-
-        <H1>Computer Vision</H1>
-        <View className="flex-row">
-          <Text className="font-bold">Model: </Text>
-          <Text selectable>{modelFileName}</Text>
-        </View>
-        <View className="flex-row">
-          <Text className="font-bold">Taxonomy: </Text>
-          <Text selectable>{taxonomyFileName}</Text>
-        </View>
-        <View className="flex-row mb-5">
-          <Text className="font-bold">Geomodel: </Text>
-          <Text selectable>{geomodelFileName}</Text>
-        </View>
-
+        <DebugTools />
+        <ComputerVisionStats />
         <FeatureFlags />
-
-        <H1>Paths</H1>
-        <H2>Documents</H2>
-        <P>
-          <CODE>{RNFS.DocumentDirectoryPath}</CODE>
-        </P>
-        <H2>Caches</H2>
-        <P>
-          <CODE>{RNFS.CachesDirectoryPath}</CODE>
-        </P>
-        <H2>Config.API_URL</H2>
-        <P>
-          <CODE>{Config.API_URL}</CODE>
-        </P>
-        <H2>Config.API_URL</H2>
-        <P>
-          <CODE>{Config.API_URL}</CODE>
-        </P>
-        <H2>getUserAgent()</H2>
-        <P>
-          <CODE>{getUserAgent()}</CODE>
-        </P>
-
+        <PathStats />
         <AppFileSizes />
       </View>
 
