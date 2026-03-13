@@ -177,6 +177,7 @@ node_modules/react-native/Libraries/polyfills/.*
 .*/node_modules/react-native/scripts/generate-provider-cli.js
 .*/node_modules/react-native/src/private/components/virtualview/VirtualView.js
 .*/node_modules/react-native/src/private/components/virtualview/VirtualViewNativeComponent.js
+.*/node_modules/react-native/src/private/components/virtualview/VirtualViewExperimentalNativeComponent.js
 
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*
