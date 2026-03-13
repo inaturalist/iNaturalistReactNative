@@ -8,11 +8,11 @@ import {
 import RNFS from "react-native-fs";
 import Mailer from "react-native-mail";
 
-import { logFilePath } from "../../../react-native-logs.config";
+import { legacyLogfilePath } from "../../../react-native-logs.config";
 
 export async function getLogContents() {
   try {
-    const contents = await RNFS.readFile( logFilePath );
+    const contents = await RNFS.readFile( legacyLogfilePath );
     return contents.split( "\n" ).join( "\n" );
   } catch ( readFileError ) {
     if ( readFileError instanceof Error && readFileError.message.match( /no such file/ ) ) {
@@ -24,12 +24,12 @@ export async function getLogContents() {
 
 export async function deleteLogFile() {
   try {
-    await RNFS.unlink( logFilePath );
-  } catch ( readFileError ) {
-    if ( readFileError instanceof Error && readFileError.message.match( /no such file/ ) ) {
+    await RNFS.unlink( legacyLogfilePath );
+  } catch ( deleteFileError ) {
+    if ( deleteFileError instanceof Error && deleteFileError.message.match( /no such file/ ) ) {
       return;
     }
-    throw readFileError;
+    throw deleteFileError;
   }
 }
 
@@ -45,7 +45,7 @@ export async function shareLogFile() {
   Share.share(
     {
       title: emailParams.subject,
-      url: logFilePath,
+      url: legacyLogfilePath,
     },
     emailParams,
   );
@@ -58,7 +58,7 @@ export async function emailLogFile( ) {
       isHTML: true,
       attachments: [
         {
-          path: logFilePath,
+          path: legacyLogfilePath,
           mimeType: "txt",
         },
       ],
