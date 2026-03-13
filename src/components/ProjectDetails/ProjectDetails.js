@@ -153,14 +153,6 @@ const ProjectDetails = ( {
           {displayProjectIcon( project?.icon )}
         </ImageBackground>
       </View>
-
-      {/* <Image
-          source={{ uri: project.icon }}
-          className="h-[70px] w-[70px] rounded-full bottom-6 z-100 bg-white"
-          testID="ProjectDetails.projectIcon"
-          accessibilityIgnoresInvertColors
-        /> */}
-      {/* </ImageBackground> */}
       <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
         <Subheading1>
