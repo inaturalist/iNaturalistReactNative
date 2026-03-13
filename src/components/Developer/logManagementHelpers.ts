@@ -10,7 +10,7 @@ import Mailer from "react-native-mail";
 
 import { legacyLogfilePath } from "../../../react-native-logs.config";
 
-export async function getLogContents() {
+export async function getLegacyLogContents() {
   try {
     const contents = await RNFS.readFile( legacyLogfilePath );
     return contents.split( "\n" ).join( "\n" );
@@ -22,7 +22,7 @@ export async function getLogContents() {
   }
 }
 
-export async function deleteLogFile() {
+export async function deleteLegacyLogFile() {
   try {
     await RNFS.unlink( legacyLogfilePath );
   } catch ( deleteFileError ) {
@@ -41,24 +41,24 @@ const emailParams = {
   recipients: ["help+mobile@inaturalist.org"],
 };
 
-export async function shareLogFile() {
-  Share.share(
+async function shareLogFile( path:string ) {
+  return Share.share(
     {
       title: emailParams.subject,
-      url: legacyLogfilePath,
+      url: path,
     },
     emailParams,
   );
 }
 
-export async function emailLogFile( ) {
+async function emailLogFile( path: string ) {
   Mailer.mail(
     {
       ...emailParams,
       isHTML: true,
       attachments: [
         {
-          path: legacyLogfilePath,
+          path,
           mimeType: "txt",
         },
       ],
@@ -77,7 +77,7 @@ export async function emailLogFile( ) {
             },
             {
               text: t( "Share" ),
-              onPress: () => shareLogFile( ),
+              onPress: () => shareLogFile( path ),
             },
           ],
         );
@@ -86,4 +86,12 @@ export async function emailLogFile( ) {
       Alert.alert( error, event );
     },
   );
+}
+
+export async function shareLegacyLogFile( ) {
+  return shareLogFile( legacyLogfilePath );
+}
+
+export async function emailLegacyLogFile( ) {
+  return emailLogFile( legacyLogfilePath );
 }

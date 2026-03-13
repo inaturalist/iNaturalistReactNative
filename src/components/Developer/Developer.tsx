@@ -25,7 +25,11 @@ import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
   formatAppSizeString, formatSizeUnits, getTotalDirectorySize,
 } from "./hooks/useAppSize";
-import { deleteLogFile, emailLogFile, shareLogFile } from "./logManagementHelpers";
+import {
+  deleteLegacyLogFile,
+  emailLegacyLogFile,
+  shareLegacyLogFile,
+} from "./logManagementHelpers";
 
 const modelFileName = Platform.select( {
   ios: Config.IOS_MODEL_FILE_NAME,
@@ -116,12 +120,12 @@ const LogOptions = () => {
         className="mb-5"
       />
       <Button
-        onPress={emailLogFile}
+        onPress={emailLegacyLogFile}
         text={t( "EMAIL-DEBUG-LOGS" )}
         className="mb-5"
       />
       <Button
-        onPress={shareLogFile}
+        onPress={shareLegacyLogFile}
         text={t( "SHARE-DEBUG-LOGS" )}
         className="mb-5"
       />
@@ -138,7 +142,7 @@ const LogOptions = () => {
           handleSecondButtonPress={() => closeModal()}
           secondButtonText="Cancel"
           confirm={() => {
-            deleteLogFile();
+            deleteLegacyLogFile();
             closeModal();
           }}
           buttonText="Delete Log File"
