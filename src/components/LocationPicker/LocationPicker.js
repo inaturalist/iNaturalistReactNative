@@ -33,7 +33,8 @@ type Props = {
   region: Object,
   regionToAnimate: Object,
   selectPlaceResult: Function,
-  updateLocationName: Function
+  updateLocationName: Function,
+  onMapLayout: Function,
 };
 
 const LocationPicker = ( {
@@ -51,8 +52,22 @@ const LocationPicker = ( {
   region,
   selectPlaceResult,
   updateLocationName,
+  onMapLayout,
 }: Props ): Node => {
   const { t } = useTranslation( );
+
+  let regionToDisplay;
+  if ( region && region?.latitude !== 0 && region.longitude !== 0 ) {
+    regionToDisplay = region;
+  } else {
+    regionToDisplay = initialRegion;
+  }
+  if ( !regionToDisplay ) {
+    regionToDisplay = {
+      latitude: 0,
+      longitude: 0,
+    };
+  }
 
   return (
     <KeyboardDismissableView>
@@ -74,7 +89,7 @@ const LocationPicker = ( {
           </View>
           <View className="z-10">
             <DisplayLatLng
-              region={region}
+              region={regionToDisplay}
               accuracy={accuracy}
             />
           </View>
@@ -108,6 +123,7 @@ const LocationPicker = ( {
             showsCompass={false}
             showsUserLocation
             testID="LocationPicker.Map"
+            onMapLayout={onMapLayout}
           />
         </View>
         <Footer handleSave={handleSave} />

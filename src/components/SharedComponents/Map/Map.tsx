@@ -82,6 +82,7 @@ interface Props {
   withPressableObsTiles?: boolean;
   zoomEnabled?: boolean;
   zoomTapEnabled?: boolean;
+  onMapLayout?: ( event: { nativeEvent: { layout: { width: number; height: number } } } ) => void;
 }
 
 // TODO: fallback to another map library
@@ -116,6 +117,7 @@ const Map = ( {
   withPressableObsTiles,
   zoomEnabled = true,
   zoomTapEnabled = true,
+  onMapLayout,
 }: Props ) => {
   const tilesMarkedVisible = useRef( false );
   const [performanceMetrics, setPerformanceMetrics] = useState( {
@@ -423,12 +425,6 @@ const Map = ( {
     ? fuzzRegion( unfuzzedMapRegion )
     : unfuzzedMapRegion;
 
-  // In Android, we maintain initialRegion as state localRegion and
-  // pass undefined to parameter initialRegion.
-  const mapInitialRegion = Platform.OS === "android"
-    ? undefined
-    : initialRegion;
-
   const renderDebugZoomLevel = ( ) => {
     if ( isDebug ) {
       return (
@@ -520,12 +516,13 @@ const Map = ( {
       style={mapContainerStyle}
       testID="MapView"
       className={mapContainerClass}
+      onLayout={onMapLayout}
     >
       {renderDebugZoomLevel( )}
       <MapView
         cameraZoomRange={cameraZoomRange}
         className={className}
-        initialRegion={mapInitialRegion}
+        initialRegion={initialRegion}
         loadingEnabled
         loadingIndicatorColor={colors.inatGreen}
         mapType={currentMapType}

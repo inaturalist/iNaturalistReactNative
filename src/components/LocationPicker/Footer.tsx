@@ -1,11 +1,10 @@
 import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import type { GestureResponderEvent } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
-  handleSave: ( _event?: GestureResponderEvent ) => void;
+  handleSave: ( ) => void;
 }
 
 const Footer = ( { handleSave }: Props ) => {
