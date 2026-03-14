@@ -6,8 +6,19 @@ import {
   logger,
 } from "react-native-logs";
 
-const fileName = "inaturalist-rn-log.txt";
-const logFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+// before introducing {date-today} rolling logs, we had a single logfile
+// we still want to allow users to retreive this logfile but heads up, they may be _big_ like 100MB
+const legacyLogfileName = "inaturalist-rn-log.txt";
+export const legacyLogfilePath = `${RNFS.DocumentDirectoryPath}/${legacyLogfileName}`;
+
+export const logFileNamePrefix = "inaturalist-rn-log";
+const logFileName = `${logFileNamePrefix}.{date-today}.txt`;
+
+export const logFileDirectory = `${RNFS.DocumentDirectoryPath}/logs`;
+
+RNFS.exists( logFileDirectory ).then( exists => ( exists
+  ? Promise.resolve()
+  : RNFS.mkdir( logFileDirectory ) ) );
 
 const sharedConfig = {
   dateFormat: "iso",
@@ -20,7 +31,10 @@ const sharedConfig = {
     // https://github.com/mowispace/react-native-logs/commit/df7444279525b7fa88c1509655d8fb6e7582b9cb#diff-c7efff41b2f47cae54e9c83fbe3156db0f1ef1bf405e0750c94d6a10bb74e5a0L110
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     FS: RNFS as any,
-    fileName,
+    fileName: logFileName,
+    filePath: logFileDirectory,
+    // logname.{date-today}.txt => logname.2026-3-11.txt (note, no padded 0)
+    fileNameDateType: "iso" as const,
   },
 };
 
@@ -38,18 +52,12 @@ const baseLog = logger.createLogger( {
 // log interfaces for the iNatLogstash API `extra` proprty. `iNatLogstashTransport`
 // handles this extra data specially while other transports treat it as any other normal
 // log param.
-const log = enhanceLoggerWithExtra( baseLog );
+export const log = enhanceLoggerWithExtra( baseLog );
 
-const logWithoutRemote = logger.createLogger( {
+export const logWithoutRemote = logger.createLogger( {
   ...sharedConfig,
   transport: [
     consoleTransport,
     fileAsyncTransport,
   ],
 } );
-
-export {
-  log,
-  logFilePath,
-  logWithoutRemote,
-};
