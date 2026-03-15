@@ -1,9 +1,8 @@
 import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import type React from "react";
 import {
-  useCallback, useMemo, useRef, useState,
+  useCallback, useMemo, useState,
 } from "react";
-import { Animated } from "react-native";
 import type {
   GestureStateChangeEvent,
   TapGestureHandlerEventPayload,
@@ -11,49 +10,46 @@ import type {
 import {
   Gesture,
 } from "react-native-gesture-handler";
+import {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 const HALF_SIZE_FOCUS_BOX = 33;
 
-interface Coordinates {
+export interface Coordinates {
   x: number;
   y: number;
 }
 
 const useFocusTap = ( cameraRef: React.RefObject<Camera | null>, supportsFocus: boolean ) => {
   const [tappedCoordinates, setTappedCoordinates] = useState<Coordinates | null>( null );
-  const focusOpacity = useRef( new Animated.Value( 0 ) ).current;
+  const focusOpacity = useSharedValue( 0 );
+  const focusLeft = useSharedValue( 0 );
+  const focusTop = useSharedValue( 0 );
 
-  const animatedStyle = useMemo( ( ) => {
-    if ( !tappedCoordinates ) { return {}; }
-    return ( {
-      left: tappedCoordinates.x - HALF_SIZE_FOCUS_BOX,
-      top: tappedCoordinates.y - HALF_SIZE_FOCUS_BOX,
-      opacity: focusOpacity,
-    } );
-  }, [tappedCoordinates, focusOpacity] );
+  const animatedStyle = useAnimatedStyle( ( ) => ( {
+    left: focusLeft.value,
+    top: focusTop.value,
+    width: HALF_SIZE_FOCUS_BOX * 2,
+    height: HALF_SIZE_FOCUS_BOX * 2,
+    opacity: focusOpacity.value,
+  } ) );
 
   type TapEvent = GestureStateChangeEvent<TapGestureHandlerEventPayload>;
   const onFocus = useCallback( async ( { x, y }: TapEvent ) => {
     // If the device doesn't support focus, we don't want the camera to focus
-    if ( supportsFocus ) {
-      cameraRef?.current?.focus( { x, y } );
+    if ( !supportsFocus ) {
+      return;
     }
-    // Show the focus square at the tapped coordinates even if we do not actually set the focus
-    focusOpacity.setValue( 1 );
+    cameraRef?.current?.focus( { x, y } );
+    focusLeft.set( x - HALF_SIZE_FOCUS_BOX );
+    focusTop.set( y - HALF_SIZE_FOCUS_BOX );
+    focusOpacity.set( 1 );
     setTappedCoordinates( { x, y } );
-    Animated.timing(
-      focusOpacity,
-      {
-        toValue: 0,
-        duration: 2000,
-        useNativeDriver: true,
-      },
-    ).start( );
-  }, [
-    cameraRef,
-    supportsFocus,
-    focusOpacity,
-  ] );
+    focusOpacity.set( withTiming( 0, { duration: 2000 } ) );
+  }, [cameraRef, focusLeft, focusTop, focusOpacity, supportsFocus] );
 
   const tapToFocus = useMemo( ( ) => Gesture.Tap( )
     .runOnJS( true )
