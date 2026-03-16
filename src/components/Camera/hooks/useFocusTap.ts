@@ -16,6 +16,7 @@ import {
   withTiming,
 } from "react-native-reanimated";
 
+// This is dictated by the size of the FocusSquare.tsx, which is 66px.
 const HALF_SIZE_FOCUS_BOX = 33;
 
 export interface Coordinates {
@@ -32,8 +33,6 @@ const useFocusTap = ( cameraRef: React.RefObject<Camera | null>, supportsFocus: 
   const animatedStyle = useAnimatedStyle( ( ) => ( {
     left: focusLeft.value,
     top: focusTop.value,
-    width: HALF_SIZE_FOCUS_BOX * 2,
-    height: HALF_SIZE_FOCUS_BOX * 2,
     opacity: focusOpacity.value,
   } ) );
 
