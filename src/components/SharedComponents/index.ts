@@ -40,6 +40,7 @@ export { default as LabelColonValue } from "./LabelColonValue";
 export { default as DetailsMap } from "./Map/DetailsMap";
 export { default as Map } from "./Map/Map";
 export { default as MediaNavButtons } from "./MediaNavButtons";
+export { default as MentionTextInput } from "./MentionTextInput";
 export { default as Modal } from "./Modal";
 export { default as Mortal } from "./Mortal";
 export { default as ObservationLocation } from "./ObservationLocation";

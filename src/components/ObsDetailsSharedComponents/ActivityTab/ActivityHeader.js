@@ -176,6 +176,7 @@ const ActivityHeader = ( {
 
         {( currentUser && showEditCommentSheet ) && (
           <TextInputSheet
+            enableMentions
             onPressClose={() => setShowEditCommentSheet( false )}
             headerText={t( "EDIT-COMMENT" )}
             initialInput={item.body}
