@@ -23,12 +23,12 @@ const FadeInView = ( { children }: Props ) => {
   } );
 
   const animatedStyle = useAnimatedStyle( ( ) => ( {
-    flex: 1,
     opacity: opacity.value,
   } ) );
 
   return (
     <Animated.View
+      className="flex-1"
       style={animatedStyle}
     >
       {children}
