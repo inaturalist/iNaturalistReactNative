@@ -811,6 +811,7 @@ Start-must-be-before-end = Alkamispäivän on oltava ennen päättymispäivää.
 Start-upload = Aloita lataus
 Starts-recording-sound = Aloita äänen nauhoitus
 Stay-on-this-screen = Pysy tällä näytöllä kun sijaintisi latautuu.
+Still-loading = Lataa edelleen...
 Still-need-help = Tarvitsetko vielä apua? Voit tehdä tukipyynnön täällä.
 Stop-upload = Lopeta lataus
 Stop-verb = Pysäytä

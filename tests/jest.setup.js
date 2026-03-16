@@ -55,6 +55,11 @@ jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
+// Reanimated 4.2 + Worklets 0.7: Jest loads native worklets which fails in Node. See:
+// https://github.com/software-mansion/react-native-reanimated/discussions/8806
+// we can remove this once the fix is released
+jest.mock( "react-native-worklets", () => require( "react-native-worklets/src/mock" ) );
+
 require( "react-native-reanimated" ).setUpTests();
 
 // Some test environments may need a little more time
@@ -107,11 +112,15 @@ jest.mock( "react-native-restart", ( ) => ( {
 jest.mock( "@react-native-firebase/analytics", () => ( {
   getAnalytics: jest.fn( ),
   logEvent: jest.fn( ),
+  setAnalyticsCollectionEnabled: jest.fn( ),
 } ) );
 
 jest.mock( "@react-native-firebase/perf", () => ( {
   startFirebaseTrace: jest.fn( ),
   stopFirebaseTrace: jest.fn( ),
+  getPerformance: jest.fn( ( ) => ( {
+    dataCollectionEnabled: true,
+  } ) ),
 } ) );
 
 // see https://stackoverflow.com/questions/42268673/jest-test-animated-view-for-react-native-app

@@ -12,12 +12,12 @@ import {
 import {
   Extrapolation,
   interpolate,
-  runOnJS,
   useAnimatedProps,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
 import type { CameraDevice, CameraProps } from "react-native-vision-camera";
+import { scheduleOnRN } from "react-native-worklets";
 
 // This is taken from react-native-vision library itself: https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/Constants.ts#L19 https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/CameraPage.tsx#L34
 
@@ -84,10 +84,10 @@ const useZoom = ( device: CameraDevice ): object => {
     startZoom.set( zoom.get() );
   }, [startZoom, zoom] );
 
-  const resetZoom = ( ) => {
+  const resetZoom = useCallback( ( ) => {
     zoom.set( initialZoom );
     setZoomTextValue( initialZoomTextValue );
-  };
+  }, [initialZoom, initialZoomTextValue, zoom] );
 
   const updateZoomTextValue = useCallback( ( newZoom: number ) => {
     const closestZoomTextValue = zoomButtonOptions.reduce(
@@ -115,7 +115,7 @@ const useZoom = ( device: CameraDevice ): object => {
     );
     zoom.set( newZoom );
 
-    runOnJS( updateZoomTextValue )( newZoom );
+    scheduleOnRN( updateZoomTextValue, newZoom );
   }, [maxZoomWithPinch, minZoom, updateZoomTextValue, startZoom, zoom] );
 
   const animatedProps = useAnimatedProps < CameraProps >(

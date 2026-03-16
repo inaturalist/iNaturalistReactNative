@@ -1,16 +1,12 @@
-// eslint-disable-next-line max-len
+import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
 import React from "react";
-import type { GestureResponderEvent, ViewStyle } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import Animated from "react-native-reanimated";
+import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
-
-const isTablet = DeviceInfo.isTablet();
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
-  toggleLocation: ( _event: GestureResponderEvent ) => void;
+  toggleLocation: ( ) => void;
   useLocation?: boolean;
 }
 
@@ -35,9 +31,9 @@ const Location = ( {
   }
 
   return (
-    <Animated.View
-      style={!isTablet && rotatableAnimatedStyle}
-      className="m-0 border-0"
+    <RotatableIconWrapper
+      rotatableAnimatedStyle={rotatableAnimatedStyle}
+      containerClass="m-0 border-0"
     >
       <TransparentCircleButton
         onPress={toggleLocation}
@@ -46,7 +42,7 @@ const Location = ( {
         accessibilityHint={accessibilityHint}
         icon={name}
       />
-    </Animated.View>
+    </RotatableIconWrapper>
   );
 };
 

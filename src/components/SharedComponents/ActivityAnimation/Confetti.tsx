@@ -11,11 +11,11 @@ import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   Easing,
   interpolate,
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 import colors from "styles/tailwindColors";
 
 type ConfettiProps = PropsWithChildren<{
@@ -85,7 +85,7 @@ const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
       },
       finished => {
         if ( finished ) {
-          runOnJS( setAutoDestroy )( true );
+          scheduleOnRN( setAutoDestroy, true );
         }
       },
     ) );
@@ -157,14 +157,10 @@ const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
 // Helpers
 
 function clamp( value: number, lowerBound: number, upperBound: number ) {
-  "worklet";
-
   return Math.min( Math.max( lowerBound, value ), upperBound );
 }
 
 function getRandomStartEndCoordinates() {
-  "worklet";
-
   // First, generate a start x between 0 and 1
   // then subtract that from 1 to get the end x
   // In this way, we now that the end x will always
@@ -178,14 +174,10 @@ function getRandomStartEndCoordinates() {
 }
 
 function randomNumberInRange( min: number, max: number ) {
-  "worklet";
-
   return Math.random() * ( max - min ) + min;
 }
 
 function getAnimationConfigForElement( duration: number, index: number, count: number ) {
-  "worklet";
-
   // In a nutshell, to constrain the duration
   // of each element and also to ensure that it is evenly
   // distributing the elements across the duration [0, 1]

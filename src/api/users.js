@@ -24,6 +24,7 @@ const REMOTE_USER_FIELDS = {
   species_count: true,
   updated_at: true,
   prefers_common_names: true,
+  prefers_no_tracking: true,
   prefers_scientific_name_first: true,
 };
 

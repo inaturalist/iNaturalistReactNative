@@ -1,0 +1,10 @@
+FIXED
+* Tapping X on Photo permission gate shows a black screen
+* Can't open camera from edit observation
+* Notifications timing out too early
+* Capitalizing of common names in some languages
+* Some problems with slow navigation
+
+UPDATED
+* All buttons in the camera rotate
+* Few minor package updates

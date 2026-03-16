@@ -1,6 +1,7 @@
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
 import {
   ActivityIndicator,
+  Body1,
   Body2,
   CustomFlashList,
   CustomRefreshControl,
@@ -22,7 +23,7 @@ interface Props {
   isFetching?: boolean;
   isInitialLoading?: boolean;
   isConnected: boolean | null;
-  loadingTimedOut: boolean;
+  showStillLoadingMessage: boolean;
   onEndReached: ( ) => void;
   onRefresh: ( ) => void;
   refreshing: boolean;
@@ -42,7 +43,7 @@ const NotificationsList = ( {
   isFetching,
   isInitialLoading,
   isConnected,
-  loadingTimedOut,
+  showStillLoadingMessage,
   onEndReached,
   onRefresh,
   reload,
@@ -61,16 +62,20 @@ const NotificationsList = ( {
   ), [isFetching, isConnected, data.length] );
 
   const emptyComponent = useMemo( ( ) => {
-    // show an offline/retry state if the user isn't connected or this request just takes too long
-    if ( isConnected === false || loadingTimedOut ) {
+    // Offline/retry when disconnected or request fails
+    if ( isConnected === false || isError ) {
       return <OfflineNotice onPress={reload} />;
     }
 
-    // Loading
     if ( isInitialLoading ) {
       return (
         <View className="h-full justify-center">
           <ActivityIndicator size={50} />
+          {showStillLoadingMessage && (
+            <Body1 className="mt-4 text-center mx-12">
+              {t( "Still-loading" )}
+            </Body1>
+          )}
         </View>
       );
     }
@@ -81,9 +86,6 @@ const NotificationsList = ( {
     if ( !currentUser ) {
       msg = t( "Once-you-create-and-upload-observations" );
       msg2 = t( "You-will-see-notifications" );
-    }
-    if ( isError ) {
-      msg = t( "Something-went-wrong" );
     }
 
     return (
@@ -97,7 +99,7 @@ const NotificationsList = ( {
     isError,
     isInitialLoading,
     isConnected,
-    loadingTimedOut,
+    showStillLoadingMessage,
     reload,
     t,
   ] );

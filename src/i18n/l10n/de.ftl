@@ -808,6 +808,7 @@ Start-must-be-before-end = Das Startdatum muss vor dem Enddatum liegen.
 Start-upload = Hochladen beginnen
 Starts-recording-sound = Startet die Tonaufnahme
 Stay-on-this-screen = Warte, während der Standort geladen wird.
+Still-loading = Wird noch geladen ...
 Still-need-help = Benötigst du noch Hilfe? Hier kannst du eine Support-Anfrage stellen.
 Stop-upload = Hochladen abbrechen
 Stop-verb = Stopp

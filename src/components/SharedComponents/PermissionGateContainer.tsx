@@ -263,7 +263,16 @@ const PermissionGateContainer = ( {
     if ( onModalHideProp ) {
       onModalHideProp( );
     }
-    if ( !withoutNavigation ) navigation.goBack( );
+    if ( !withoutNavigation ) {
+      if ( navigation.canGoBack() ) {
+        navigation.goBack();
+      } else {
+        navigation.navigate( "TabNavigator", {
+          screen: "ObservationsTab",
+          params: { screen: "ObsList" },
+        } );
+      }
+    }
   }, [
     navigation,
     onModalHideProp,
