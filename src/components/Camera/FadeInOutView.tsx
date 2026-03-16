@@ -28,10 +28,6 @@ const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
   }, [opacity, takingPhoto] );
 
   const animatedStyle = useAnimatedStyle( () => ( {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    backgroundColor: colors.black,
     opacity: opacity.value,
   } ) );
 
@@ -39,7 +35,7 @@ const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
     <>
       <Animated.View
         pointerEvents="none"
-        className="items-center justify-center"
+        className="items-center justify-center bg-black absolute h-full w-full"
         style={animatedStyle}
       />
       {( takingPhoto && cameraType === "AI" ) && (
