@@ -101,10 +101,10 @@ const StartupService = ( ) => {
         try {
           const realmBytes = realm?.path
             ? ( await RNFS.stat( realm.path ).catch( () => ( { size: 0 } ) ) ).size
-            : 0;
+            : "NA";
           const logFileBytes = logFilePath
             ? ( await RNFS.stat( logFilePath ).catch( () => ( { size: 0 } ) ) ).size
-            : 0;
+            : "NA";
           logger.infoWithExtra( "storage_metrics", {
             realm_db_bytes: realmBytes,
             mmkv_bytes: zustandMMKVBackingStorage.size,
