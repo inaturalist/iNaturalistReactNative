@@ -111,6 +111,8 @@ const addCameraFilesAndroid = () => {
         i18next.t( "During-app-start-no-model-found" ),
       );
     }
+  } ).catch( error => {
+    console.error( "Failed to read camera assets directory: ", error );
   } );
 };
 

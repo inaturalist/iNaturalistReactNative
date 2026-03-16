@@ -174,7 +174,8 @@ const StandardCamera = ( {
       VolumeManager.getVolume()
         .then( volume => {
           setInitialVolume( volume.volume );
-        } );
+        } )
+        .catch( e => logger.info( "Failed to get volume: ", e ) );
     }
 
     const volumeListener = VolumeManager.addVolumeListener( ( ) => {

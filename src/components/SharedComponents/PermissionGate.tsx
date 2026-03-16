@@ -62,7 +62,7 @@ const PermissionGate = ( {
   DeviceInfo.getFontScale().then( fontScale => {
     if ( fontScale > 1.4 ) setIsLargeFontScale( true );
     else setIsLargeFontScale( false );
-  } );
+  } ).catch( e => console.error( "Failed to get font scale: ", e ) );
 
   return (
     <ViewWrapper wrapperClassName="bg-black" testID={testID}>
