@@ -6,7 +6,6 @@ import { TextInput, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
 import React, {
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -57,27 +56,27 @@ const MentionTextInput = ( {
   const { t } = useTranslation( );
   const Input = InputComponent ?? TextInput;
 
-  const mentionQuery = useMemo( ( ) => getMentionQuery( value ), [value] );
   const [debouncedQuery, setDebouncedQuery] = useState( "" );
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>( null );
 
-  useEffect( ( ) => {
+  const handleChangeText = useCallback( ( text: string ) => {
+    onChangeText( text );
+
     if ( debounceRef.current ) {
       clearTimeout( debounceRef.current );
-      debounceRef.current = null;
     }
-    if ( mentionQuery === "" ) {
+
+    const query = getMentionQuery( text );
+    if ( query === "" ) {
       setDebouncedQuery( "" );
-      return ( ) => { };
+      return;
     }
+
     debounceRef.current = setTimeout( ( ) => {
-      setDebouncedQuery( mentionQuery );
+      setDebouncedQuery( query );
       debounceRef.current = null;
     }, DEBOUNCE_MS );
-    return ( ) => {
-      if ( debounceRef.current ) clearTimeout( debounceRef.current );
-    };
-  }, [mentionQuery] );
+  }, [onChangeText] );
 
   const { users, isLoading } = useUserSearch( debouncedQuery );
 
@@ -93,7 +92,7 @@ const MentionTextInput = ( {
     [value, onChangeText],
   );
 
-  const showList = mentionQuery.length > 0;
+  const showList = getMentionQuery( value ).length > 0;
 
   const inputStyle = useMemo( ( ) => {
     if ( !showList ) return style;
@@ -134,7 +133,7 @@ const MentionTextInput = ( {
         maxFontSizeMultiplier={maxFontSizeMultiplier}
         maxLength={maxLength}
         multiline={multiline}
-        onChangeText={onChangeText}
+        onChangeText={handleChangeText}
         placeholder={placeholder}
         style={inputStyle}
         testID={testID}
