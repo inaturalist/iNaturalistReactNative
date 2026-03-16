@@ -70,9 +70,11 @@ const UserListItem = ( {
               {user?.login}
             </Body1>
           )}
-          <List2 className="mt-1" maxFontSizeMultiplier={1.5}>
-            {countText}
-          </List2>
+          {!!countText && (
+            <List2 className="mt-1" maxFontSizeMultiplier={1.5}>
+              {countText}
+            </List2>
+          )}
         </View>
       </View>
     </UserListItemContainer>
