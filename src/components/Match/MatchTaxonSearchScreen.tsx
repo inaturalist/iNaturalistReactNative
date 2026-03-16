@@ -46,8 +46,7 @@ const MatchTaxonSearchScreen = ( ) => {
         params: {
           screen: "ObsList",
         },
-      } ) )
-      .catch( e => console.error( "Failed to save observation: ", e ) );
+      } ) );
 
     setSelectedTaxon( null );
   }, [

@@ -202,7 +202,7 @@ const FullPageWebView = ( ) => {
               Authorization: jwt,
             },
           } );
-        } ).catch( e => logger.info( "Failed to get JWT for WebView: ", e ) );
+        } );
       }
       // TODO: I am not sure how to make the react compiler happy here, so I disabled it
       // for this hook

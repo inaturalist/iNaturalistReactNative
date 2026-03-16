@@ -50,7 +50,7 @@ const ShareSheet = () => {
     // @ts-expect-error data has any type here, but the actual type should come from the library
     ShareMenuReactView.data().then( ( { data } ) => {
       setSharedData( data );
-    } ).catch( e => console.error( "Failed to get share data: ", e ) );
+    } );
   }, [] );
 
   const {

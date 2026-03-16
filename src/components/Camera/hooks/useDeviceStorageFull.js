@@ -29,7 +29,7 @@ const useDeviceStorageFull = ( ) => {
     if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
       setDeviceStorageFull( true );
     }
-  } ).catch( e => console.error( "Failed to get free disk storage: ", e ) );
+  } );
 
   return {
     deviceStorageFull,

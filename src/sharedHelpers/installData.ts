@@ -27,7 +27,7 @@ if ( legacyStore.getAllKeys().length > 0 ) {
         RNFS.unlink( item.path );
       }
     } );
-  } ).catch( e => console.error( "Failed to clean up legacy MMKV files: ", e ) );
+  } );
 }
 
 export function getInstallID( ) {

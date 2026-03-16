@@ -51,7 +51,7 @@ const Log = (): Node => {
   );
 
   useEffect( ( ) => {
-    getLogContents( ).then( stuff => setLogContents( stuff ) ).catch( e => console.error( e ) );
+    getLogContents( ).then( stuff => setLogContents( stuff ) );
   } );
 
   const lines = logContents.split( "\n" );
