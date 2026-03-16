@@ -6,20 +6,19 @@ import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import { LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import RNFS from "react-native-fs";
 import Orientation from "react-native-orientation-locker";
 import Realm from "realm";
 import clearCaches from "sharedHelpers/clearCaches";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
-import { log, logFilePath } from "sharedHelpers/logger";
+import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
 import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
+import getStorageMetrics from "sharedHelpers/storageMetrics";
 import {
   usePerformance,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import { zustandStorage } from "stores/useStore";
-import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 
 // Ignore warnings about 3rd parties that haven't implemented the new
 // NativeEventEmitter interface methods yet. As of 20230517, this is coming
@@ -99,17 +98,8 @@ const StartupService = ( ) => {
 
       const logStorageMetrics = async ( ) => {
         try {
-          const realmBytes = realm?.path
-            ? ( await RNFS.stat( realm.path ).catch( () => ( { size: 0 } ) ) ).size
-            : "NA";
-          const logFileBytes = logFilePath
-            ? ( await RNFS.stat( logFilePath ).catch( () => ( { size: 0 } ) ) ).size
-            : "NA";
-          logger.infoWithExtra( "storage_metrics", {
-            realm_db_bytes: realmBytes,
-            mmkv_bytes: zustandMMKVBackingStorage.size,
-            log_file_bytes: logFileBytes,
-          } );
+          const metrics = await getStorageMetrics( realm?.path );
+          logger.infoWithExtra( "storage_metrics", metrics );
         } catch ( e ) {
           logger.info( "storage_metrics collection failed", e );
         }
