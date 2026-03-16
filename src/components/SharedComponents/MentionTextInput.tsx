@@ -83,11 +83,11 @@ const MentionTextInput = ( {
 
   const handleSelectUser = useCallback(
     ( item: { login?: string } ) => {
-      const login = item?.login;
-      if ( !login ) return;
+      const username = item?.login;
+      if ( !username ) return;
       const lastAt = getLastAtIndex( value );
       if ( lastAt < 0 ) return;
-      const newValue = `${value.slice( 0, lastAt )}@${login} `;
+      const newValue = `${value.slice( 0, lastAt )}@${username} `;
       onChangeText( newValue );
     },
     [value, onChangeText],
@@ -97,11 +97,11 @@ const MentionTextInput = ( {
 
   const inputStyle = useMemo( ( ) => {
     if ( !showList ) return style;
-    const flat = StyleSheet.flatten( style );
-    if ( typeof flat?.height === "number" ) {
+    const flattenedStyles = StyleSheet.flatten( style );
+    if ( typeof flattenedStyles?.height === "number" ) {
       return [
         style,
-        { height: Math.max( flat.height - MENTION_LIST_MAX_HEIGHT, MIN_INPUT_HEIGHT ) },
+        { height: Math.max( flattenedStyles.height - MENTION_LIST_MAX_HEIGHT, MIN_INPUT_HEIGHT ) },
       ];
     }
     return style;
