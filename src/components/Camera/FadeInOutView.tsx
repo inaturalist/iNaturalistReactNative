@@ -1,6 +1,11 @@
 import { ActivityIndicator } from "components/SharedComponents";
-import React, { useEffect, useRef } from "react";
-import { Animated } from "react-native";
+import React, { useEffect } from "react";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated";
 import colors from "styles/tailwindColors";
 
 interface Props {
@@ -8,37 +13,34 @@ interface Props {
   cameraType: string;
 }
 
-const fade = value => ( {
-  toValue: value,
-  duration: 100,
-  useNativeDriver: true,
-} );
-
 const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
-  const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
+  const opacity = useSharedValue( 0 );
 
   useEffect( ( ) => {
     if ( takingPhoto ) {
-      Animated.sequence( [
-        Animated.timing( fadeAnimation, fade( 1 ) ),
-        Animated.timing( fadeAnimation, fade( 0 ) ),
-      ] ).start( );
+      opacity.set(
+        withSequence(
+          withTiming( 1, { duration: 100 } ),
+          withTiming( 0, { duration: 100 } ),
+        ),
+      );
     }
-  }, [takingPhoto, fadeAnimation] );
+  }, [opacity, takingPhoto] );
+
+  const animatedStyle = useAnimatedStyle( () => ( {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    backgroundColor: colors.black,
+    opacity: opacity.value,
+  } ) );
 
   return (
     <>
       <Animated.View
         pointerEvents="none"
         className="items-center justify-center"
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{
-          position: "absolute",
-          height: "100%",
-          width: "100%",
-          backgroundColor: colors.black,
-          opacity: fadeAnimation,
-        }}
+        style={animatedStyle}
       />
       {( takingPhoto && cameraType === "AI" ) && (
         <ActivityIndicator
