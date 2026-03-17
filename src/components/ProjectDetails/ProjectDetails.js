@@ -109,7 +109,7 @@ const ProjectDetails = ( {
     />
   );
 
-  const iconClassName = "h-[134px] w-[134px] rounded-full bg-white -top-6";
+  const iconClassName = "h-[90px] w-[90px] rounded-full bg-white -top-6";
 
   const displayProjectIcon = icon => {
     const productionIcon = icon?.replace( "staticdev", "static" );
@@ -153,14 +153,6 @@ const ProjectDetails = ( {
           {displayProjectIcon( project?.icon )}
         </ImageBackground>
       </View>
-
-      {/* <Image
-          source={{ uri: project.icon }}
-          className="h-[70px] w-[70px] rounded-full bottom-6 z-100 bg-white"
-          testID="ProjectDetails.projectIcon"
-          accessibilityIgnoresInvertColors
-        /> */}
-      {/* </ImageBackground> */}
       <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
         <Subheading1>

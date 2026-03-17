@@ -9,6 +9,8 @@ import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
+import ExploreFiltersContainer from "components/Explore/ExploreFiltersContainer";
+import ExploreSearchContainer from "components/Explore/ExploreSearchContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
 import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
@@ -121,6 +123,8 @@ const uiLibTitle = () => <Heading4 className="text-white">UI LIBRARY</Heading4>;
 const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</Heading4>;
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
+// eslint-disable-next-line i18next/no-literal-string
+const legacyLogTitle = () => <Heading4 className="text-white">LOG (LEGACY)</Heading4>;
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
@@ -225,6 +229,14 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         <Stack.Screen
           name="Explore"
           component={ExploreContainer}
+        />
+        <Stack.Screen
+          name="ExploreFilters"
+          component={ExploreFiltersContainer}
+        />
+        <Stack.Screen
+          name="ExploreSearch"
+          component={ExploreSearchContainer}
         />
         {isDefaultMode
           ? (
@@ -335,7 +347,11 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         <Stack.Screen
           component={Log}
           name="log"
-          options={{ headerTitle: logTitle }}
+          options={( { route } ) => ( {
+            headerTitle: route?.params?.isLegacyLogs
+              ? legacyLogTitle
+              : logTitle,
+          } )}
         />
       </Stack.Group>
       {/* Header with no bottom border */}

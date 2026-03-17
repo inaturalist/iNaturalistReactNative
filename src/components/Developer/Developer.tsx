@@ -1,3 +1,5 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable i18next/no-literal-string */
 import { useNavigation } from "@react-navigation/native";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
@@ -9,12 +11,11 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
-import useLogs from "sharedHooks/useLogs";
 
 import {
   CODE, H1, H2, P,
@@ -24,6 +25,14 @@ import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
   formatAppSizeString, formatSizeUnits, getTotalDirectorySize,
 } from "./hooks/useAppSize";
+import {
+  deleteLegacyLogFile,
+  emailLegacyLogFile,
+  emailRecentLogs,
+  getLegacyLogfileExists,
+  shareLegacyLogFile,
+  shareRecentLogs,
+} from "./logManagementHelpers";
 
 const modelFileName = Platform.select( {
   ios: Config.IOS_MODEL_FILE_NAME,
@@ -49,7 +58,6 @@ interface DirectorySizesProps {
   directoryEntrySizes: DirectoryEntrySize[];
 }
 
-/* eslint-disable i18next/no-literal-string */
 const DirectoryFileSizes = ( { directoryName, directoryEntrySizes }: DirectorySizesProps ) => {
   const totalDirectorySize = formatSizeUnits( getTotalDirectorySize( directoryEntrySizes ) );
   return (
@@ -101,23 +109,81 @@ const deleteLogFileConfirmDescription = [
   "You may lose helpful debugging context.",
   "Consider saving your current logs through the 'Share' button. before deleting.",
 ].join( " " );
-const LogOptions = () => {
-  const navigation = useNavigation( );
-  const { deleteLogFile } = useLogs();
+const legacyLogFileDescription = [
+  "It looks like you have a log file from an older version of the app.",
+  "App logs will no longer get added to this file, but you still may view and export this file.",
+  "These files incidentally got a little too big sometimes, so you may want to use the button",
+  "below to delete it and free up storage.",
+].join( " " );
+const LogOptions = ( ) => {
+  const [hasLegacylogFile, setHasLegacylogFile] = useState<null | boolean>( null );
+  useEffect( () => {
+    getLegacyLogfileExists().then( exists => setHasLegacylogFile( exists ) );
+  }, [] );
+
+  // sharing our rolling logs involves writing a temp aggregate file, so
+  // we need to make sure we enforce one "share" at a time
+  const [isSharing, setIsSharing] = useState( false );
+
+  const navigation = useNavigation();
   const [deleteLogFileModalOpen, setDeleteLogFileModalOpen] = useState( false );
+
   const closeModal = () => setDeleteLogFileModalOpen( false );
   return (
     <>
+      <H1>Application Logs</H1>
       <Button
         onPress={() => navigation.navigate( "log" )}
         text="LOG"
         className="mb-5"
       />
       <Button
-        onPress={() => setDeleteLogFileModalOpen( true )}
-        text="DELETE LOG FILE"
+        onPress={async () => {
+          setIsSharing( true );
+          await emailRecentLogs();
+          setIsSharing( false );
+        }}
+        disabled={isSharing}
+        text={t( "EMAIL-DEBUG-LOGS" )}
         className="mb-5"
       />
+      <Button
+        onPress={async () => {
+          setIsSharing( true );
+          await shareRecentLogs();
+          setIsSharing( false );
+        }}
+        disabled={isSharing}
+        text={t( "SHARE-DEBUG-LOGS" )}
+        className="mb-5"
+      />
+
+      {hasLegacylogFile && (
+        <>
+          <H1>Application Logs (Legacy)</H1>
+          <Text className="mb-5">{legacyLogFileDescription}</Text>
+          <Button
+            onPress={() => navigation.navigate( "log", { isLegacyLogs: true } )}
+            text="LOG"
+            className="mb-5"
+          />
+          <Button
+            onPress={emailLegacyLogFile}
+            text={t( "EMAIL-DEBUG-LOGS" )}
+            className="mb-5"
+          />
+          <Button
+            onPress={shareLegacyLogFile}
+            text={t( "SHARE-DEBUG-LOGS" )}
+            className="mb-5"
+          />
+          <Button
+            onPress={() => setDeleteLogFileModalOpen( true )}
+            text="DELETE LOG FILE"
+            className="mb-5"
+          />
+        </>
+      )}
       {deleteLogFileModalOpen && (
         <WarningSheet
           onPressClose={() => closeModal()}
@@ -126,7 +192,7 @@ const LogOptions = () => {
           handleSecondButtonPress={() => closeModal()}
           secondButtonText="Cancel"
           confirm={() => {
-            deleteLogFile();
+            deleteLegacyLogFile();
             closeModal();
           }}
           buttonText="Delete Log File"
@@ -137,123 +203,136 @@ const LogOptions = () => {
   );
 };
 
-const Developer = () => {
-  const toggleRTLandLTR = async ( ) => {
+const ComputerVisionStats = () => {
+  return (
+    <>
+      <H1>Computer Vision</H1>
+      <View className="flex-row">
+        <Text className="font-bold">Model: </Text>
+        <Text selectable>{modelFileName}</Text>
+      </View>
+      <View className="flex-row">
+        <Text className="font-bold">Taxonomy: </Text>
+        <Text selectable>{taxonomyFileName}</Text>
+      </View>
+      <View className="flex-row mb-5">
+        <Text className="font-bold">Geomodel: </Text>
+        <Text selectable>{geomodelFileName}</Text>
+      </View>
+    </>
+  );
+};
+
+const DebugTools = () => {
+  const navigation = useNavigation();
+
+  const toggleRTLandLTR = async () => {
     const { isRTL, forceRTL } = I18nManager;
     await forceRTL( !isRTL );
-    RNRestart.restart( );
+    RNRestart.restart();
   };
+  return (
+    <>
+      <H1>Debug tools</H1>
+      <Button
+        onPress={() => navigation.navigate( "LoginStackNavigator" )}
+        text="LOG IN AGAIN"
+        className="mb-5"
+      />
+      { // eslint-disable-next-line no-undef
+        __DEV__ && (
+          <>
+            <Button
+              onPress={() => navigation.navigate( "UILibrary" )}
+              text="UI LIBRARY"
+              className="mb-5"
+            />
+            <Button
+              onPress={() => { throw new Error( "Test error" ); }}
+              text="TEST ERROR"
+              className="mb-5"
+            />
+            <Button
+              onPress={() => {
+                throw new INatApiError( {
+                  error: "Test error",
+                  status: 422,
+                  context: {
+                    routeName: "MyObservations",
+                    timestamp: new Date().toISOString(),
+                  },
+                } );
+              }}
+              text="TEST INATAPIERROR"
+              className="mb-5"
+            />
+            <Button
+              onPress={() => {
+                throw new INatApiTooManyRequestsError( {
+                  routeName: "TaxonDetails",
+                  timestamp: new Date().toISOString(),
+                } );
+              }}
+              text="TEST API TOO MANY REQUESTS ERROR"
+              className="mb-5"
+            />
+            <Button
+              onPress={async () => { throw new Error( "Test error in promise" ); }}
+              text="TEST UNHANDLED PROMISE REJECTION"
+              className="mb-5"
+            />
+            <Button
+              onPress={toggleRTLandLTR}
+              text="TOGGLE RTL<>LTR"
+              className="mb-5"
+            />
+          </>
+        )
+      }
+    </>
+  );
+};
 
-  const navigation = useNavigation( );
-  const { shareLogFile, emailLogFile } = useLogs();
+const PathStats = () => {
+  return (
+    <>
+      <H1>Paths</H1>
+      <H2>Documents</H2>
+      <P>
+        <CODE>{RNFS.DocumentDirectoryPath}</CODE>
+      </P>
+      <H2>Caches</H2>
+      <P>
+        <CODE>{RNFS.CachesDirectoryPath}</CODE>
+      </P>
+      <H2>Config.API_URL</H2>
+      <P>
+        <CODE>{Config.API_URL}</CODE>
+      </P>
+      <H2>Config.API_URL</H2>
+      <P>
+        <CODE>{Config.API_URL}</CODE>
+      </P>
+      <H2>getUserAgent()</H2>
+      <P>
+        <CODE>{getUserAgent()}</CODE>
+      </P>
+    </>
+  );
+};
+
+const Developer = () => {
   return (
     <ScrollViewWrapper>
       <View className="p-5">
         <LogOptions />
-        <Button
-          onPress={() => navigation.navigate( "LoginStackNavigator" )}
-          text="LOG IN AGAIN"
-          className="mb-5"
-        />
-        { // eslint-disable-next-line no-undef
-          __DEV__ && (
-            <>
-              <Button
-                onPress={() => navigation.navigate( "UILibrary" )}
-                text="UI LIBRARY"
-                className="mb-5"
-              />
-              <Button
-                onPress={() => { throw new Error( "Test error" ); }}
-                text="TEST ERROR"
-                className="mb-5"
-              />
-              <Button
-                onPress={() => {
-                  throw new INatApiError( {
-                    error: "Test error",
-                    status: 422,
-                    context: {
-                      routeName: "MyObservations",
-                      timestamp: new Date().toISOString(),
-                    },
-                  } );
-                }}
-                text="TEST INATAPIERROR"
-                className="mb-5"
-              />
-              <Button
-                onPress={() => {
-                  throw new INatApiTooManyRequestsError( {
-                    routeName: "TaxonDetails",
-                    timestamp: new Date().toISOString(),
-                  } );
-                }}
-                text="TEST API TOO MANY REQUESTS ERROR"
-                className="mb-5"
-              />
-              <Button
-                onPress={async () => { throw new Error( "Test error in promise" ); }}
-                text="TEST UNHANDLED PROMISE REJECTION"
-                className="mb-5"
-              />
-              <Button
-                onPress={toggleRTLandLTR}
-                text="TOGGLE RTL<>LTR"
-                className="mb-5"
-              />
-            </>
-          )
-        }
-        <H1>Computer Vision</H1>
-        <View className="flex-row">
-          <Text className="font-bold">Model: </Text>
-          <Text selectable>{modelFileName}</Text>
-        </View>
-        <View className="flex-row">
-          <Text className="font-bold">Taxonomy: </Text>
-          <Text selectable>{taxonomyFileName}</Text>
-        </View>
-        <View className="flex-row mb-5">
-          <Text className="font-bold">Geomodel: </Text>
-          <Text selectable>{geomodelFileName}</Text>
-        </View>
+        <DebugTools />
+        <ComputerVisionStats />
         <FeatureFlags />
-        <H1>Paths</H1>
-        <H2>Documents</H2>
-        <P>
-          <CODE>{RNFS.DocumentDirectoryPath}</CODE>
-        </P>
-        <H2>Caches</H2>
-        <P>
-          <CODE>{RNFS.CachesDirectoryPath}</CODE>
-        </P>
-        <H2>Config.API_URL</H2>
-        <P>
-          <CODE>{Config.API_URL}</CODE>
-        </P>
-        <H2>Config.API_URL</H2>
-        <P>
-          <CODE>{Config.API_URL}</CODE>
-        </P>
-        <H2>getUserAgent()</H2>
-        <P>
-          <CODE>{getUserAgent()}</CODE>
-        </P>
+        <PathStats />
         <AppFileSizes />
-        <H1>Log file contents</H1>
-        <Button
-          level="focus"
-          onPress={emailLogFile}
-          text={t( "EMAIL-DEBUG-LOGS" )}
-          className="mb-5"
-        />
-        <Button
-          onPress={shareLogFile}
-          text={t( "SHARE-DEBUG-LOGS" )}
-          className="mb-5"
-        />
       </View>
+
     </ScrollViewWrapper>
   );
 };

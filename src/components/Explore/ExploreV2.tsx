@@ -1,4 +1,5 @@
 import { refresh } from "@react-native-community/netinfo";
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body2,
@@ -7,7 +8,7 @@ import {
   OfflineNotice,
   ViewWrapper,
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { PLACE_MODE } from "providers/ExploreContext";
 import React from "react";
 import { Alert } from "react-native";
@@ -66,6 +67,7 @@ const ExploreV2 = ( {
   renderLocationPermissionsGate,
   requestLocationPermissions,
 }: Props ) => {
+  const navigation = useNavigation();
   const { t } = useTranslation( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" ) as {
     layout: EXPLORE_OBSERVATIONS_LAYOUT | null;
@@ -143,6 +145,13 @@ const ExploreV2 = ( {
     <>
       <ViewWrapper testID="ExploreV2" wrapperClassName="overflow-hidden">
         <View className="flex-1 overflow-hidden">
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => navigation.navigate( "ExploreFilters" )}
+          >
+            {/* eslint-disable-next-line i18next/no-literal-string */}
+            <Body2>TODO: Header Link to Filters</Body2>
+          </Pressable>
           {currentExploreView === "observations" && (
             <ObservationsViewBar
               layout={layout}
@@ -183,7 +192,7 @@ const ExploreV2 = ( {
       </ViewWrapper>
       {/*
         Leaving this here so that it is easier to reason about differences between Explore
-        and ExploreRedesign.
+        and ExploreV2.
       */}
       {null}
     </>
