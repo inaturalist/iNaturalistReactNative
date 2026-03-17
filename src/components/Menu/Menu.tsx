@@ -20,6 +20,7 @@ import Observation from "realmModels/Observation";
 import User from "realmModels/User";
 import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
+import getStorageMetrics from "sharedHelpers/storageMetrics";
 import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -154,7 +155,7 @@ const Menu = ( ) => {
     navigation.goBack( );
   };
 
-  const onSubmitFeedback = useCallback( ( feedbackText: string ) => {
+  const onSubmitFeedback = useCallback( async ( feedbackText: string ) => {
     if ( !isConnected ) {
       showOfflineAlert( t );
       return false;
@@ -203,11 +204,13 @@ const Menu = ( ) => {
         identifications: "loggedout",
         remoteObservations: "loggedout",
       };
+    const storageMetrics = await getStorageMetrics( realm?.path ).catch( () => ( {} ) );
     const feedbackContext = {
       ...modeContext,
       ...loggedInContext,
       // can have unsynced obs when logged out
       locallySavedOnlyObservations,
+      ...storageMetrics,
     };
     feedbackLogger.infoWithExtra( feedbackText, feedbackContext );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
