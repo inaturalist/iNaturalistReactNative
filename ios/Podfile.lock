@@ -3259,7 +3259,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNShareMenu (6.0.0):
+  - RNShareMenu (7.1.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -4061,7 +4061,7 @@ SPEC CHECKSUMS:
   RNPermissions: 79345e03d8bede3692368496ec89dcc4768585b5
   RNReanimated: 372fdfc5e6abdf42bddf588e206d15aedf46121a
   RNScreens: 4f2aed147a2775017923789d8a0a2d377712ec2e
-  RNShareMenu: 8871da57c9d3ed2b94d30c784d6f67d062e3b016
+  RNShareMenu: 3dc0dc1780a4e3427dadcab01d9cd8e4da0e44fd
   RNStoreReview: 8f6061907efb6474757db004ee8faac728fd2ada
   RNSVG: f2979aa72b14050b9220415c19de398f9cec9aaf
   RNWorklets: ca03ce776c15a592ef0700386071466810c41ea0
