@@ -88,7 +88,9 @@ target "iNaturalistReactNative" do
 
     installer.pods_project.targets.each do | target |
       target.build_configurations.each do | build_config |
+        build_config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
         build_config.build_settings["APPLICATION_EXTENSION_API_ONLY"] = "NO"
+        build_config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "$(inherited)"
       end
     end
 
