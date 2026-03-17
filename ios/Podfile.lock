@@ -2923,7 +2923,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNCPicker (2.11.1):
+  - RNCPicker (2.11.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -4048,7 +4048,7 @@ SPEC CHECKSUMS:
   RNAppleAuthentication: 8d313d93fe2238d6b7ff0a39c67ebcf298d96653
   RNAudioRecorderPlayer: b5ed41ccfe72a211a870bfe09ab36c046eb27d2a
   RNCClipboard: e560338bf6cc4656a09ff90610b62ddc0dbdad65
-  RNCPicker: 70fd0622147f0ca1b9c5e1be2069a4fb2e8ec461
+  RNCPicker: 35fc66f352403cdfe99d53b541f5180482ca2bc5
   RNDateTimePicker: ca1dc7e24d0b4839877f0ab619e7bca5db715289
   RNDeviceInfo: 36d7f232bfe7c9b5c494cb7793230424ed32c388
   RNFBAnalytics: dde6d2c82b0152c782771c542bfe10e2fda1f535
