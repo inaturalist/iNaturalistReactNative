@@ -22,14 +22,21 @@ const getSortedDailyLogFileInfo = async ( n: number ) => {
     .map( ( { name, size, path } ) => {
       // assumes log files will be prefix.yyyy-mm-dd.txt
       const dateString = name.split( "." )[1];
+      const date = Date.parse( dateString );
+      if ( isNaN( date ) ) {
+        // just log to console, this would only happen if a file is intentionally stuffed in here
+        console.warn( `Unable to parse date from rolling logfile: ${path}` );
+        return null;
+      }
       // RN-logs doesn't zero-pad months/days, so we have to parse date in order to sort
       return {
         name,
         path,
         size,
-        date: Date.parse( dateString ),
+        date,
       };
     } )
+    .filter( a => !!a )
     // flipped for descending
     .sort( ( a, b ) => b.date - a.date );
 
@@ -129,7 +136,7 @@ const concatenateLogsForSharing = async () => {
     // we want to start with the oldest and _add_ newer ones as we go
     .reverse();
 
-  for ( const { path } of mostRecentLogs.reverse() ) {
+  for ( const { path } of mostRecentLogs ) {
     // eslint-disable-next-line no-await-in-loop
     const chunkContents = await RNFS.readFile( path );
     // eslint-disable-next-line no-await-in-loop
@@ -160,7 +167,7 @@ interface LogPreview {
   length: number;
 }
 
-async function getRecentLogContents() {
+async function getRecentLogContentPreview() {
   // we don't need to be precise here, we can jam 10 together and limit it later
   const recentLogsPaths = ( await getSortedDailyLogFileInfo( 10 ) )
     .map( foo => foo.path )
@@ -184,7 +191,7 @@ export function useLogPreview( { legacy }: { legacy: boolean } ): LogPreview | n
     const getLogPreview = async () => {
       const logContents = legacy
         ? await getLegacyLogContents()
-        : await getRecentLogContents();
+        : await getRecentLogContentPreview();
 
       const lines = logContents.split( "\n" );
       const trimmedContent = lines
