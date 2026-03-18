@@ -15,6 +15,11 @@ import { ScrollView, StyleSheet } from "react-native";
 import { useTranslation } from "sharedHooks";
 import useUserSearch from "sharedHooks/useUserSearch";
 
+// Matches @username at the end of the input string.
+// \B ensures @ doesn't follow a word char (prevents matching emails)
+// Username must start with a letter
+// $ anchor means mentions only trigger when typing at the end of the text;
+// editing mid-text won't show the dropdown (would require cursor tracking)
 const MENTION_MATCH = /\B@([A-Za-z][\w-]*)$/;
 const DEBOUNCE_MS = 400;
 const MENTION_LIST_MAX_HEIGHT = 200;
