@@ -2,37 +2,33 @@ import {
   useFocusEffect,
 } from "@react-navigation/native";
 import * as React from "react";
-import { Animated } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 interface Props {
   children: React.JSX.Element;
 }
 
 const FadeInView = ( { children }: Props ) => {
-  const fadeAnim = React.useRef( new Animated.Value( 0 ) ).current; // Initial value for opacity: 0
+  const opacity = useSharedValue( 0 );
 
   useFocusEffect( () => {
-    Animated.timing( fadeAnim, {
-      toValue: 1,
-      duration: 250,
-      useNativeDriver: true,
-    } ).start();
+    opacity.set( withTiming( 1, { duration: 250 } ) );
     return () => {
-      Animated.timing( fadeAnim, {
-        toValue: 0,
-        duration: 250,
-        useNativeDriver: true,
-      } ).start();
+      opacity.set( withTiming( 0, { duration: 250 } ) );
     };
   } );
 
-  const animatedStyle = {
-    flex: 1,
-    opacity: fadeAnim, // Bind opacity to animated value
-  };
+  const animatedStyle = useAnimatedStyle( ( ) => ( {
+    opacity: opacity.value,
+  } ) );
 
   return (
-    <Animated.View // Special animatable View
+    <Animated.View
+      className="flex-1"
       style={animatedStyle}
     >
       {children}
