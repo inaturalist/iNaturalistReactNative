@@ -83,9 +83,7 @@ const MentionTextInput = ( {
   const handleSelectUser = useCallback(
     ( item: { login?: string } ) => {
       const username = item?.login;
-      if ( !username ) return;
       const lastAt = getLastAtIndex( value );
-      if ( lastAt < 0 ) return;
       const newValue = `${value.slice( 0, lastAt )}@${username} `;
       onChangeText( newValue );
     },
@@ -106,23 +104,19 @@ const MentionTextInput = ( {
     return style;
   }, [style, showList] );
 
-  const emptyListContent = useMemo( ( ) => {
-    if ( !showList ) return null;
-    if ( isLoading ) {
-      return (
-        <View className="p-4 items-center justify-center min-h-[200px]">
-          <ActivityIndicator size="small" />
-        </View>
-      );
-    }
-    return (
+  const emptyListContent = isLoading
+    ? (
+      <View className="p-4 items-center justify-center min-h-[200px]">
+        <ActivityIndicator size="small" />
+      </View>
+    )
+    : (
       <View className="p-4 min-h-[200px]">
         <Body3 className="text-center text-darkGray">
           {t( "No-results-found-for-that-search" )}
         </Body3>
       </View>
     );
-  }, [showList, isLoading, t] );
 
   return (
     <View className="flex-1">
@@ -147,7 +141,7 @@ const MentionTextInput = ( {
             {users.length === 0
               ? emptyListContent
               : users.map( ( item, index ) => (
-                <View key={item?.id}>
+                <View key={item.id}>
                   {index > 0 && <View className="border-b border-lightGray" />}
                   <UserListItem
                     item={{ user: item }}
