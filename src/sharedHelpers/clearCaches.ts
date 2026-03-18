@@ -1,5 +1,9 @@
 import {
-  photoLibraryPhotosPath, photoUploadPath, rotatedOriginalPhotosPath, soundUploadPath,
+  computerVisionPath,
+  photoLibraryPhotosPath,
+  photoUploadPath,
+  rotatedOriginalPhotosPath,
+  soundUploadPath,
 } from "appConstants/paths";
 import { log } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
@@ -27,6 +31,11 @@ const clearRotatedOriginalPhotosDirectory = async ( ) => {
 
 const clearGalleryPhotos = async ( ) => {
   await removeAllFilesFromDirectory( photoLibraryPhotosPath );
+};
+
+const clearComputerVisionPhotos = async ( ) => {
+  // Clears resized images used for inatjs.computervision.score_image
+  await removeAllFilesFromDirectory( computerVisionPath );
 };
 
 // this hook checks to see which localFilePaths are still needed in photoUploads/
@@ -77,9 +86,12 @@ const clearCaches = async ( isDebugMode, realm ) => {
   // clear original, large-sized photos
   await clearRotatedOriginalPhotosDirectory( );
   await clearGalleryPhotos( );
+  await clearComputerVisionPhotos( );
   await clearSyncedMediaForUpload( realm );
   if ( isDebugMode ) {
-    logger.info( "cleared rotated original photos, gallery, and synced media caches" );
+    logger.info(
+      "cleared rotated original photos, gallery, computer vision, and synced media caches",
+    );
   }
 };
 
