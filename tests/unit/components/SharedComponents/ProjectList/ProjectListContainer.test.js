@@ -13,11 +13,31 @@ const mockProjects = [
   } ),
 ];
 
-describe( "ProjectList", () => {
+const mockObservationUuid = "00000000-0000-0000-0000-000000000001";
+
+jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    remoteObservation: {
+      project_observations: mockProjects.map( project => ( { project } ) ),
+      non_traditional_projects: [],
+    },
+    refetchRemoteObservation: jest.fn( ),
+    isRefetching: false,
+    fetchRemoteObservationError: null,
+  } ),
+} ) );
+
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( { data: null } ),
+} ) );
+
+describe( "ProjectListContainer", () => {
   beforeAll( ( ) => {
     useRoute.mockImplementation( ( ) => ( {
       params: {
-        projects: mockProjects,
+        observationUuid: mockObservationUuid,
       },
     } ) );
   } );

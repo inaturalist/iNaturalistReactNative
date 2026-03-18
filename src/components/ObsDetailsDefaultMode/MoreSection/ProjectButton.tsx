@@ -6,6 +6,7 @@ import React, { useMemo } from "react";
 // TODO: can we get a centralized type/interface for our realm objects, here observation and project
 interface Props {
   observation: {
+    uuid: string;
     project_observations: {
       project: object;
     }[];
@@ -18,14 +19,10 @@ interface Props {
 const ProjectButton = ( { observation }: Props ) => {
   const navigation = useNavigation( );
 
-  const traditionalProjects = observation?.project_observations?.map( p => p.project ) || [];
-  const nonTraditionalProjects = observation?.non_traditional_projects?.map( p => p.project ) || [];
-
-  const traditionalProjectCount = traditionalProjects.length;
-  const nonTraditionalProjectCount = nonTraditionalProjects.length;
+  const traditionalProjectCount = observation?.project_observations?.length || 0;
+  const nonTraditionalProjectCount = observation?.non_traditional_projects?.length || 0;
 
   const totalProjectCount = traditionalProjectCount + nonTraditionalProjectCount;
-  const allProjects = traditionalProjects.concat( nonTraditionalProjects );
 
   const headerOptions = useMemo( ( ) => ( {
     headerTitle: t( "Observation" ),
@@ -42,7 +39,7 @@ const ProjectButton = ( { observation }: Props ) => {
     <Body3
       className="underline mt-[11px]"
       onPress={( ) => navigation.navigate( "ProjectList", {
-        projects: allProjects,
+        observationUuid: observation.uuid,
         headerOptions,
       } )}
     >

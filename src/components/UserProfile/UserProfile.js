@@ -198,7 +198,7 @@ const UserProfile = ( ): Node => {
           <Button
             text={t( "VIEW-PROJECTS" )}
             onPress={( ) => navigation.navigate( "ProjectList", {
-              projects,
+              userId,
               headerOptions: projectsHeaderOptions,
             } )}
           />

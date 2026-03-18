@@ -1,19 +1,55 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { fetchUserProjects } from "api/users";
 import {
   Body1,
   ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect } from "react";
-import { useTranslation } from "sharedHooks";
+import Observation from "realmModels/Observation";
+import {
+  useAuthenticatedQuery,
+  useRemoteObservation,
+  useTranslation,
+} from "sharedHooks";
 
 import ProjectList from "./ProjectList";
 
 const ProjectListContainer = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { projects, headerOptions } = params;
+  const { observationUuid, userId, headerOptions } = params;
   const { t } = useTranslation( );
+
+  const { remoteObservation } = useRemoteObservation(
+    observationUuid,
+    !!observationUuid,
+  );
+
+  const traditionalProjects = remoteObservation?.project_observations?.map(
+    p => p.project,
+  ) || [];
+  const nonTraditionalProjects = remoteObservation?.non_traditional_projects?.map(
+    p => p.project,
+  ) || [];
+  const observationProjects = traditionalProjects.concat( nonTraditionalProjects );
+
+  const { data: userProjects } = useAuthenticatedQuery(
+    ["fetchUserProjects", userId],
+    optsWithAuth => fetchUserProjects(
+      {
+        id: userId,
+        per_page: 200,
+        fields: Observation.PROJECT_FIELDS,
+      },
+      optsWithAuth,
+    ),
+    { enabled: !!userId },
+  );
+
+  const projects = observationUuid
+    ? observationProjects
+    : userProjects;
 
   useEffect( ( ) => {
     navigation.setOptions( headerOptions );
