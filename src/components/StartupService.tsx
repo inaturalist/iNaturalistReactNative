@@ -101,7 +101,7 @@ const StartupService = ( ) => {
           const metrics = await getStorageMetrics( realm?.path );
           logger.infoWithExtra( "storage_metrics", metrics );
         } catch ( e ) {
-          logger.info( "storage_metrics collection failed", e );
+          logger.error( "storage_metrics collection failed", e );
         }
       };
       await logStorageMetrics( );
