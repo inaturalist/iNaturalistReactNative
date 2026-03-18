@@ -128,7 +128,7 @@ const StartupService = ( ) => {
         }
         // Run startup tasks when app launches
         if ( realm?.path ) {
-          await clearCaches( isDebugMode( ), realm );
+          await clearCaches( realm );
         }
       } catch ( error ) {
         logger.error( "Startup service error:", error );
