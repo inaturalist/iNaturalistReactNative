@@ -25,7 +25,7 @@ type Props = {
   buttonText: string,
   confirm: Function,
   description?: string,
-  enableMentions?: boolean,
+  mentionsEnabled?: boolean,
   onPressClose: Function,
   headerText: string,
   initialInput?: string,
@@ -60,7 +60,7 @@ const TextInputSheet = ( {
   buttonText,
   confirm,
   description,
-  enableMentions = false,
+  mentionsEnabled = false,
   onPressClose,
   headerText,
   initialInput,
@@ -121,7 +121,7 @@ const TextInputSheet = ( {
           </View>
         ) }
         <View className="border rounded-lg border-lightGray p-3 pt-1">
-          {enableMentions
+          {mentionsEnabled
             ? (
               <MentionTextInput
                 accessibilityLabel="Text input field"

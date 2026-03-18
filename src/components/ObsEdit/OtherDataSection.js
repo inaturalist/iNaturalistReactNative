@@ -76,7 +76,7 @@ const OtherDataSection = ( {
       )}
       {showNotesSheet && (
         <TextInputSheet
-          enableMentions
+          mentionsEnabled
           onPressClose={( ) => setShowNotesSheet( false )}
           headerText={t( "NOTES" )}
           placeholder={t( "Add-optional-notes" )}
