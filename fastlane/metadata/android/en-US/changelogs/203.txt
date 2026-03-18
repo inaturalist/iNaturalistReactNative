@@ -3,6 +3,7 @@ FIXED
 * Reset password form field obscured by keyboard
 * Writing logs to smaller files
 * Accuracy circle in location picker
+
 UPDATED
 * When sharing from Photos open the app directly
 * Minor package and performance updates
