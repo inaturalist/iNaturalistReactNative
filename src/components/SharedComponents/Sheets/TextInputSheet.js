@@ -124,9 +124,9 @@ const TextInputSheet = ( {
           {mentionsEnabled
             ? (
               <MentionTextInput
+                InputComponent={BottomSheetTextInput}
                 accessibilityLabel="Text input field"
                 autoFocus
-                InputComponent={BottomSheetTextInput}
                 keyboardType="default"
                 maxLength={maxLength}
                 maxFontSizeMultiplier={2}
