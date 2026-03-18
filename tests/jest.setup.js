@@ -38,11 +38,17 @@ jest.mock( "../react-native-logs.config", () => {
       info: msg => console.info( msg ),
       warn: msg => console.warn( msg ),
       error: msg => console.error( msg ),
+      debugWithExtra: msg => console.debug( msg ),
+      infoWithExtra: msg => console.info( msg ),
+      warnWithExtra: msg => console.warn( msg ),
+      errorWithExtra: msg => console.error( msg ),
     } ) ),
   };
   return {
     log,
-    logFilePath: "inaturalist-rn-log.txt",
+    legacyLogfilePath: "inaturalist-rn-log.txt",
+    logFileNamePrefix: "inaturalist-rn-log",
+    logFileDirectory: "logs",
     logWithoutRemote: log,
   };
 } );
