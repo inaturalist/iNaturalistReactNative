@@ -30,7 +30,7 @@ const LOGIN_SCREEN_OPTIONS = {
   contentStyle: {
     backgroundColor: "black",
   },
-};
+} as const;
 
 const LoginStackNavigator = ( ) => (
   <Stack.Navigator>
