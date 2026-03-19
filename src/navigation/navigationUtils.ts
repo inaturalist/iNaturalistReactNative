@@ -1,6 +1,8 @@
 import { createNavigationContainerRef } from "@react-navigation/native";
 
-export const navigationRef = createNavigationContainerRef();
+import type { RootStackParamList } from "./types";
+
+export const navigationRef = createNavigationContainerRef<RootStackParamList>( );
 
 // Returns current active route
 export function getCurrentRoute() {
