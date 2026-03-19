@@ -1,5 +1,3 @@
-// @flow
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView";
@@ -13,7 +11,6 @@ import {
   hideHeaderLeft,
   showSimpleCustomHeader,
 } from "navigation/navigationOptions";
-import type { Node } from "react";
 import React from "react";
 
 const Stack = createNativeStackNavigator( );
@@ -34,7 +31,7 @@ const LOGIN_SCREEN_OPTIONS = {
   },
 };
 
-const LoginStackNavigator = ( ): Node => (
+const LoginStackNavigator = ( ) => (
   <Stack.Navigator>
     <Stack.Screen
       name="Login"
