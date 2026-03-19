@@ -26,10 +26,10 @@ export type OnboardingStackParamList = {
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type BottomTabParamList = {
-  MenuTab: { initialRouteName: string };
-  ExploreTab: { initialRouteName: string };
-  ObservationsTab: { initialRouteName: string };
-  NotificationsTab: { initialRouteName: string };
+  MenuTab: { initialRouteName: "Menu" };
+  ExploreTab: { initialRouteName: "RootExplore" };
+  ObservationsTab: { initialRouteName: "ObsList" };
+  NotificationsTab: { initialRouteName: "Notifications" };
 };
 
 export type BottomTabProps = BottomTabScreenProps<BottomTabParamList>;
