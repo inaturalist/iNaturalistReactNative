@@ -1,5 +1,3 @@
-// @flow
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Please don't change this to an aliased path or the e2e mock will not get
@@ -22,7 +20,6 @@ import {
   hideHeader,
   hideHeaderLeft,
 } from "navigation/navigationOptions";
-import type { Node } from "react";
 import React from "react";
 
 import SharedStackScreens from "./SharedStackScreens";
@@ -103,7 +100,7 @@ const SoundRecorderWithPermission = ( ) => fadeInComponent(
   </Mortal>,
 );
 
-const NoBottomTabStackNavigator = ( ): Node => (
+const NoBottomTabStackNavigator = ( ) => (
   <Stack.Navigator
     screenOptions={{
       headerBackButtonDisplayMode: "minimal",
