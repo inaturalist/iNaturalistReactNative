@@ -345,7 +345,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         />
         <Stack.Screen
           component={Log}
-          name="log"
+          name="Log"
           options={( { route } ) => ( {
             headerTitle: route?.params?.isLegacyLogs
               ? legacyLogTitle
