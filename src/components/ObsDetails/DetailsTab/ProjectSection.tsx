@@ -1,4 +1,6 @@
+import type { ParamListBase } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ApiObservation } from "api/types";
 import {
   Button,
@@ -17,7 +19,7 @@ interface Props {
 }
 
 const ProjectSection = ( { observation }: Props ) => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
 
   const traditionalProjectCount = observation?.project_observations?.length || 0;
   const nonTraditionalProjectCount = observation?.non_traditional_projects?.length || 0;
