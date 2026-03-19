@@ -98,11 +98,19 @@ const PhotoLibrary = ( ) => {
 
     const movedImages = await Promise.all( selectedImages.map( async ( { image } ) => {
       const { fileName, uri } = image;
+      if ( !fileName ) {
+        throw new Error( "No fileName in pick photo response" );
+      }
       const destPath = `${path}/${fileName}`;
+      let sourcePath = `${RNFS.TemporaryDirectoryPath}/${fileName}`;
       // Get image from uri on android. TemporaryDirectoryPath results in an ANR
-      const sourcePath = Platform.OS === "android"
-        ? uri
-        : `${RNFS.TemporaryDirectoryPath}/${fileName}`;
+      if ( Platform.OS === "android" ) {
+        if ( !uri ) {
+          throw new Error( "No URI in pick photo response" );
+        }
+        sourcePath = uri;
+      }
+
       await RNFS.moveFile( sourcePath, destPath );
       return {
         image: {
