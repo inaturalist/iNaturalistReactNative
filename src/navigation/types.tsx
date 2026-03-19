@@ -16,6 +16,37 @@ export type OnboardingStackParamList = {
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type TabStackParamList = {
+  Menu: undefined;
+  ObsList: undefined;
+  RootExplore: undefined;
+  Explore: undefined;
+  ExploreFilters: undefined;
+  ExploreSearch: undefined;
+  ObsDetails: undefined;
+  Notifications: undefined;
+  UserProfile: undefined;
+  DataQualityAssessment: undefined;
+  Projects: undefined;
+  ProjectDetails: undefined;
+  ProjectRequirements: undefined;
+  ProjectMembers: undefined;
+  ProjectList: undefined;
+  FollowersList: undefined;
+  FollowingList: undefined;
+  Debug: undefined;
+  UILibrary: undefined;
+  UiLibraryItem: undefined;
+  Log: { isLegacyLogs: boolean };
+  Settings: undefined;
+  About: undefined;
+  Donate: undefined;
+  Help: undefined;
+};
+
+// Note from the documentation:
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type BottomTabParamList = {
   MenuTab: { initialRouteName: "Menu" };
   ExploreTab: { initialRouteName: "RootExplore" };
@@ -56,37 +87,6 @@ export type RootStackParamList = {
   TabNavigator: NavigatorScreenParams<BottomTabParamList>;
   NoBottomTabStackNavigator: NavigatorScreenParams<NoBottomTabStackParamList>;
   LoginStackNavigator: NavigatorScreenParams<LoginStackParamList>;
-};
-
-// Note from the documentation:
-// The type containing the mapping must be a type alias. It cannot be an interface.
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type TabStackParamList = {
-  Menu: undefined;
-  ObsList: undefined;
-  RootExplore: undefined;
-  Explore: undefined;
-  ExploreFilters: undefined;
-  ExploreSearch: undefined;
-  ObsDetails: undefined;
-  Notifications: undefined;
-  UserProfile: undefined;
-  DataQualityAssessment: undefined;
-  Projects: undefined;
-  ProjectDetails: undefined;
-  ProjectRequirements: undefined;
-  ProjectMembers: undefined;
-  ProjectList: undefined;
-  FollowersList: undefined;
-  FollowingList: undefined;
-  Debug: undefined;
-  UILibrary: undefined;
-  UiLibraryItem: undefined;
-  Log: { isLegacyLogs: boolean };
-  Settings: undefined;
-  About: undefined;
-  Donate: undefined;
-  Help: undefined;
 };
 
 // Note from the documentation:
