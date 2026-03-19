@@ -33,12 +33,16 @@ const MAX_PHOTOS_ALLOWED = Platform.select( {
 
 const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
+interface PreviousScreenParams {
+  uuid?: string;
+}
+
 interface RouteParams {
   skipGroupPhotos?: boolean;
   fromGroupPhotos?: boolean;
   fromAICamera?: boolean;
   cmonBack?: boolean;
-  previousScreen?: Route<string> | null;
+  previousScreen?: Route<string, PreviousScreenParams> | null;
 }
 
 const PhotoLibrary = ( ) => {
@@ -168,6 +172,10 @@ const PhotoLibrary = ( ) => {
 
         // Determine if we need to go back to ObsList or ObsDetails screen
       } else if ( params && params.previousScreen && params.previousScreen.name === "ObsDetails" ) {
+        // If the uuid is undefined we need to error out here or ObsDetails doesn't work
+        if ( !params.previousScreen.params?.uuid ) {
+          throw new Error( "No UUID found to route to ObsDetails screen" );
+        }
         navigateToObsDetails( navigation, params.previousScreen.params.uuid );
       } else if ( params?.cmonBack && navigation.canGoBack() ) {
         navigation.goBack();
