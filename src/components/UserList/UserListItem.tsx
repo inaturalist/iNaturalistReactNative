@@ -9,13 +9,22 @@ import React from "react";
 import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
+type IconVariant = "small" | "medium" | "large";
+
 interface Props {
   item: object;
   countText: string;
   onPress?: ( ) => void;
   accessibilityLabel?: string;
   pressable?: boolean;
+  iconVariant?: IconVariant;
 }
+
+const ICON_VARIANT_SIZE: Record<IconVariant, number> = {
+  small: 22,
+  medium: 62,
+  large: 134,
+};
 
 const UserListItem = ( {
   item,
@@ -23,9 +32,13 @@ const UserListItem = ( {
   onPress,
   accessibilityLabel: accessibilityLabelProp,
   pressable = true,
+  iconVariant,
 }: Props ) => {
   const { t } = useTranslation( );
   const user = item?.user;
+  const fallbackIconSize = iconVariant
+    ? ICON_VARIANT_SIZE[iconVariant]
+    : 40;
 
   const UserListItemContainer = pressable
     ? ( { children } ) => (
@@ -54,11 +67,18 @@ const UserListItem = ( {
     <UserListItemContainer>
       <View className="flex-row items-center w-5/6">
         {user?.icon_url
-          ? <UserIcon uri={User.uri( user )} medium />
+          ? (
+            <UserIcon
+              uri={User.uri( user )}
+              small={iconVariant === "small"}
+              medium={iconVariant === "medium"}
+              large={iconVariant === "large"}
+            />
+          )
           : (
             <INatIcon
               name="person"
-              size={62}
+              size={fallbackIconSize}
             />
           )}
         <View className="ml-3 shrink">

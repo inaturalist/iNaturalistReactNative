@@ -62,6 +62,7 @@ const UserList = ( {
           }
         }}
         accessibilityLabel={accessibilityLabel}
+        iconVariant="medium"
       />
     );
   };
