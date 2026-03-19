@@ -60,14 +60,20 @@ export type TabStackParamList = {
   Help: undefined;
 };
 
+// Params for TabStackNavigator when hosted inside BottomTabNavigator, including which
+// inner stack screen should be shown first (see BottomTabNavigator initialParams).
+interface TabParams {
+  initialRouteName: keyof TabStackParamList;
+}
+
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type BottomTabParamList = {
-  MenuTab: { initialRouteName: "Menu" };
-  ExploreTab: { initialRouteName: "RootExplore" };
-  ObservationsTab: { initialRouteName: "ObsList" };
-  NotificationsTab: { initialRouteName: "Notifications" };
+  MenuTab: NavigatorScreenParams<TabStackParamList> & TabParams;
+  ExploreTab: NavigatorScreenParams<TabStackParamList> & TabParams;
+  ObservationsTab: NavigatorScreenParams<TabStackParamList> & TabParams;
+  NotificationsTab: NavigatorScreenParams<TabStackParamList> & TabParams;
 };
 
 // Note from the documentation:
