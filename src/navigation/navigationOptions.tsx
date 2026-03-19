@@ -46,7 +46,7 @@ const showLongHeader = {
 
 export const hideHeaderLeft = {
   ...showHeader,
-  headerLeft: null,
+  headerLeft: ( ) => null,
   headerBackVisible: false,
 } as const;
 
