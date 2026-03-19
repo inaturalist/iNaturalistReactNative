@@ -111,30 +111,35 @@ export type RootStackParamList = {
 
 export type RootStackScreenProps = NativeStackScreenProps<RootStackParamList>;
 
-export type OnboardingStackScreenProps = CompositeScreenProps<
-  NativeStackScreenProps<OnboardingStackParamList>,
-  RootStackScreenProps
->;
+export type OnboardingStackScreenProps<T extends keyof OnboardingStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<OnboardingStackParamList, T>,
+    RootStackScreenProps
+  >;
 
-export type BottomTabProps = CompositeScreenProps<
-  BottomTabScreenProps<BottomTabParamList>,
-  RootStackScreenProps
->;
+export type BottomTabProps =
+  CompositeScreenProps<
+    BottomTabScreenProps<BottomTabParamList>,
+    RootStackScreenProps
+  >;
 
-export type TabStackScreenProps = CompositeScreenProps<
-  NativeStackScreenProps<TabStackParamList>,
-  BottomTabProps
->;
+export type TabStackScreenProps<T extends keyof TabStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<TabStackParamList, T>,
+    BottomTabProps
+  >;
 
-export type NoBottomTabStackScreenProps = CompositeScreenProps<
-  NativeStackScreenProps<NoBottomTabStackParamList>,
-  RootStackScreenProps
->;
+export type NoBottomTabStackScreenProps<T extends keyof NoBottomTabStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<NoBottomTabStackParamList, T>,
+    RootStackScreenProps
+  >;
 
-export type LoginStackScreenProps = CompositeScreenProps<
-  NativeStackScreenProps<LoginStackParamList>,
-  RootStackScreenProps
->;
+export type LoginStackScreenProps<T extends keyof LoginStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<LoginStackParamList, T>,
+    RootStackScreenProps
+  >;
 
 // https://reactnavigation.org/docs/typescript/?config=dynamic#specifying-default-types-for-usenavigation-link-ref-etc
 declare global {
