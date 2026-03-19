@@ -44,7 +44,7 @@ import {
   showHeader,
   showLongHeader,
 } from "navigation/navigationOptions";
-import type { TabStackParamList } from "navigation/types";
+import type { BottomTabProps, TabStackParamList } from "navigation/types";
 import React from "react";
 import {
   useLayoutPrefs,
@@ -52,10 +52,6 @@ import {
 import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
-
-interface TabStackNavigatorProps {
-  route?: object;
-}
 
 const aboutTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
@@ -182,8 +178,9 @@ export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
 export const SCREEN_NAME_OBS_LIST = "ObsList";
 export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
 
-const TabStackNavigator = ( { route }: TabStackNavigatorProps ) => {
-  const initialRouteName = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
+const TabStackNavigator = ( { route }: BottomTabProps ) => {
+  const initialRouteName
+    = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
   const {
     isDefaultMode,

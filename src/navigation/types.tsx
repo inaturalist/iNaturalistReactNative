@@ -3,6 +3,8 @@
  * https://reactnavigation.org/docs/typescript/?config=dynamic
  */
 
+import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -29,6 +31,8 @@ export type BottomTabParamList = {
   ObservationsTab: { initialRouteName: string };
   NotificationsTab: { initialRouteName: string };
 };
+
+export type BottomTabProps = BottomTabScreenProps<BottomTabParamList>;
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
