@@ -1,3 +1,4 @@
+import type { RouteProp } from "@react-navigation/native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import {
   photoLibraryPhotosPath,
@@ -31,6 +32,12 @@ const MAX_PHOTOS_ALLOWED = Platform.select( {
 
 const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
+interface RouteParams {
+  skipGroupPhotos?: boolean;
+  fromGroupPhotos?: boolean;
+  fromAICamera?: boolean;
+}
+
 const PhotoLibrary = ( ) => {
   const {
     screenAfterPhotoEvidence, isDefaultMode,
@@ -49,7 +56,8 @@ const PhotoLibrary = ( ) => {
   const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
   const exitObservationsFlow = useExitObservationsFlow( );
 
-  const { params } = useRoute( );
+  const { params } = useRoute<RouteProp<Record<string, RouteParams>, string>>( );
+
   const skipGroupPhotos = params
     ? params.skipGroupPhotos
     : false;
