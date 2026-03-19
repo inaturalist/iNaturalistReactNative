@@ -11,9 +11,10 @@ import {
   hideHeaderLeft,
   showSimpleCustomHeader,
 } from "navigation/navigationOptions";
+import type { LoginStackParamList } from "navigation/types";
 import React from "react";
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator<LoginStackParamList>( );
 
 const LoginCloseButton = ( ) => (
   <CloseButton
