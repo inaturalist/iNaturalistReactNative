@@ -20,6 +20,7 @@ import {
   mapSpeciesSortToAPIParams,
   sortSpeciesCounts,
 } from "sharedHelpers/sortingHelpers";
+import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -208,12 +209,23 @@ const MyObservationsContainer = ( ): React.FC => {
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
       if ( isActive ) {
+        // expectSync must be called before markScreenReached so that syncDone
+        // is already false when markScreenReached's tryEmit runs, preventing
+        // premature TTI emission before the sync cascade completes
+        startupPerformanceTracker.expectSync( );
+        startupPerformanceTracker.markScreenReached( {
+          target_screen: "MyObservations",
+          auth_state: currentUser
+            ? "signed_in"
+            : "signed_out",
+        } );
         startAutomaticSync( );
       }
       return () => {
         isActive = false;
       };
     }, [
+      currentUser,
       startAutomaticSync,
       setNumUnuploadedObservations,
       realm,
