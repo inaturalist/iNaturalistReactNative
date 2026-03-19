@@ -5,7 +5,6 @@ import {
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, {
   useCallback,
   useState,
@@ -32,7 +31,7 @@ const MAX_PHOTOS_ALLOWED = Platform.select( {
 
 const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
-const PhotoLibrary = ( ): Node => {
+const PhotoLibrary = ( ) => {
   const {
     screenAfterPhotoEvidence, isDefaultMode,
   } = useLayoutPrefs( );
