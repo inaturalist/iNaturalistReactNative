@@ -79,6 +79,7 @@ export type TabStackParamList = {
   FollowersList: undefined;
   FollowingList: undefined;
   Debug: undefined;
+  UILibrary: undefined;
   UiLibraryItem: undefined;
   Log: undefined;
   ExploreTaxonSearch: undefined;
