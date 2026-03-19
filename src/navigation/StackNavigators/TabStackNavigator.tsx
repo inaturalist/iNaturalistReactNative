@@ -1,5 +1,3 @@
-// @flow
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import About from "components/About";
@@ -46,7 +44,6 @@ import {
   showHeader,
   showLongHeader,
 } from "navigation/navigationOptions";
-import type { Node } from "react";
 import React from "react";
 import {
   useLayoutPrefs,
@@ -55,9 +52,9 @@ import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
 
-type TabStackNavigatorProps = {
-  route?: Object
-};
+interface TabStackNavigatorProps {
+  route?: object;
+}
 
 const aboutTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
@@ -184,7 +181,7 @@ export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
 export const SCREEN_NAME_OBS_LIST = "ObsList";
 export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
 
-const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
+const TabStackNavigator = ( { route }: TabStackNavigatorProps ) => {
   const initialRouteName = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
   const {
