@@ -1,19 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
+import type { ApiObservation } from "api/types";
 import { Body3 } from "components/SharedComponents";
 import { t } from "i18next";
 import React, { useMemo } from "react";
 
-// TODO: can we get a centralized type/interface for our realm objects, here observation and project
 interface Props {
-  observation: {
-    uuid: string;
-    project_observations: {
-      project: object;
-    }[];
-    non_traditional_projects: {
-      project: object;
-    }[];
-  };
+  observation: Pick<ApiObservation, "uuid" | "project_observations" | "non_traditional_projects">;
 }
 
 const ProjectButton = ( { observation }: Props ) => {

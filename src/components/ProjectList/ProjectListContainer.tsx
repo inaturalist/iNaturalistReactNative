@@ -1,4 +1,6 @@
+import type { RouteProp } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import type { ApiProject } from "api/types";
 import { fetchUserProjects } from "api/users";
 import {
   Body1,
@@ -15,9 +17,20 @@ import {
 
 import ProjectList from "./ProjectList";
 
+interface ProjectListRouteParams {
+  [name: string]: {
+    observationUuid?: string;
+    userId?: number;
+    headerOptions: {
+      headerTitle?: string;
+      headerSubtitle?: string;
+    };
+  };
+}
+
 const ProjectListContainer = ( ) => {
   const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const { params } = useRoute<RouteProp<ProjectListRouteParams, "ProjectList">>( );
   const { observationUuid, userId, headerOptions } = params;
   const { t } = useTranslation( );
 
@@ -35,7 +48,7 @@ const ProjectListContainer = ( ) => {
   const observationProjects = traditionalProjects.concat( nonTraditionalProjects );
 
   const { data: userProjects } = useAuthenticatedQuery(
-    ["fetchUserProjects", userId],
+    ["fetchUserProjects", `${userId}`],
     optsWithAuth => fetchUserProjects(
       {
         id: userId,
@@ -47,9 +60,9 @@ const ProjectListContainer = ( ) => {
     { enabled: !!userId },
   );
 
-  const projects = observationUuid
+  const projects: ApiProject[] = observationUuid
     ? observationProjects
-    : userProjects;
+    : ( userProjects ?? [] );
 
   useEffect( ( ) => {
     navigation.setOptions( headerOptions );
