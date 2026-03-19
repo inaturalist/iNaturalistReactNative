@@ -1,5 +1,5 @@
-import type { HeaderTitleProps } from "@react-navigation/elements";
 import { getHeaderTitle } from "@react-navigation/elements";
+import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import classNames from "classnames";
 import { Heading4 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
@@ -7,20 +7,6 @@ import { View } from "components/styledComponents";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { dropShadow } from "styles/global";
-
-type HeaderTitle = string | ( ( props: HeaderTitleProps ) => React.ReactNode ) | undefined;
-
-interface Props {
-  route: {
-    name: string;
-  };
-  options: {
-    title?: string | undefined;
-    headerTitle?: HeaderTitle;
-    headerStyle?: object;
-    headerShadowVisible?: boolean;
-  };
-}
 
 const HEADER_STYLE = {
   backgroundColor: "white",
@@ -34,7 +20,7 @@ const BACK_BUTTON_STYLE = {
 const FullPageWebViewHeader = ( {
   route,
   options,
-}: Props ) => {
+}: NativeStackHeaderProps ) => {
   const insets = useSafeAreaInsets();
 
   const getTitle = (): string | React.ReactNode => {
