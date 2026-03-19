@@ -20,11 +20,12 @@ import {
   hideHeader,
   hideHeaderLeft,
 } from "navigation/navigationOptions";
+import type { NoBottomTabStackParamList } from "navigation/types";
 import React from "react";
 
 import SharedStackScreens from "./SharedStackScreens";
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator<NoBottomTabStackParamList>( );
 
 const soundRecorderTitle = () => (
   <Heading4 className="text-white" accessibilityRole="header" numberOfLines={1}>
