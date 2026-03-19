@@ -82,10 +82,6 @@ export type TabStackParamList = {
   UILibrary: undefined;
   UiLibraryItem: undefined;
   Log: { isLegacyLogs: boolean };
-  ExploreTaxonSearch: undefined;
-  ExploreLocationSearch: undefined;
-  ExploreUserSearch: undefined;
-  ExploreProjectSearch: undefined;
   Settings: undefined;
   About: undefined;
   Donate: undefined;

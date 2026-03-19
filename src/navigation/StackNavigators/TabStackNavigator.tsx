@@ -10,10 +10,6 @@ import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreFiltersContainer from "components/Explore/ExploreFiltersContainer";
 import ExploreSearchContainer from "components/Explore/ExploreSearchContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
-import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
-import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
-import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
-import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Help from "components/Help/Help";
 import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
@@ -68,11 +64,6 @@ const helpTitle = () => (
     {t( "HELP" )}
   </Heading4>
 );
-const locationSearchTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SEARCH-LOCATION" )}
-  </Heading4>
-);
 const dqaTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
     {t( "DATA-QUALITY-ASSESSMENT" )}
@@ -81,21 +72,6 @@ const dqaTitle = () => (
 const projectRequirementsTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
     {t( "PROJECT-REQUIREMENTS" )}
-  </Heading4>
-);
-const projectSearchTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SEARCH-PROJECTS" )}
-  </Heading4>
-);
-const taxonSearchTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SEARCH-TAXA" )}
-  </Heading4>
-);
-const userSearchTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SEARCH-USERS" )}
   </Heading4>
 );
 const settingsTitle = () => (
@@ -360,34 +336,6 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           ...removeBottomBorder,
         }}
       >
-        <Stack.Screen
-          name="ExploreTaxonSearch"
-          component={ExploreTaxonSearch}
-          options={{
-            headerTitle: taxonSearchTitle,
-          }}
-        />
-        <Stack.Screen
-          name="ExploreLocationSearch"
-          component={ExploreLocationSearch}
-          options={{
-            headerTitle: locationSearchTitle,
-          }}
-        />
-        <Stack.Screen
-          name="ExploreUserSearch"
-          component={ExploreUserSearch}
-          options={{
-            headerTitle: userSearchTitle,
-          }}
-        />
-        <Stack.Screen
-          name="ExploreProjectSearch"
-          component={ExploreProjectSearch}
-          options={{
-            headerTitle: projectSearchTitle,
-          }}
-        />
         <Stack.Screen
           name="Settings"
           component={FadeInSettings}
