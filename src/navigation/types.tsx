@@ -4,7 +4,23 @@
  */
 
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import type { NavigatorScreenParams } from "@react-navigation/native";
+import type { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+// Note from the documentation:
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type SharedStackParamList = {
+  ObsEdit: undefined;
+  LocationPicker: undefined;
+  TaxonDetails: undefined;
+  PhotoSharing: undefined;
+  Match: undefined;
+  Suggestions: undefined;
+  SuggestionsTaxonSearch: undefined;
+  MatchTaxonSearchScreen: undefined;
+  FullPageWebView: undefined;
+};
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
@@ -54,8 +70,6 @@ export type BottomTabParamList = {
   NotificationsTab: { initialRouteName: "Notifications" };
 };
 
-export type BottomTabProps = BottomTabScreenProps<BottomTabParamList>;
-
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -89,20 +103,27 @@ export type RootStackParamList = {
   LoginStackNavigator: NavigatorScreenParams<LoginStackParamList>;
 };
 
-// Note from the documentation:
-// The type containing the mapping must be a type alias. It cannot be an interface.
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type SharedStackParamList = {
-  ObsEdit: undefined;
-  LocationPicker: undefined;
-  TaxonDetails: undefined;
-  PhotoSharing: undefined;
-  Match: undefined;
-  Suggestions: undefined;
-  SuggestionsTaxonSearch: undefined;
-  MatchTaxonSearchScreen: undefined;
-  FullPageWebView: undefined;
-};
+export type RootStackScreenProps = NativeStackScreenProps<RootStackParamList>;
+
+export type OnboardingStackScreenProps = CompositeScreenProps<
+  NativeStackScreenProps<OnboardingStackParamList>,
+  RootStackScreenProps
+>;
+
+export type BottomTabProps = CompositeScreenProps<
+  BottomTabScreenProps<BottomTabParamList>,
+  RootStackScreenProps
+>;
+
+export type NoBottomTabStackScreenProps = CompositeScreenProps<
+  NativeStackScreenProps<NoBottomTabStackParamList>,
+  RootStackScreenProps
+>;
+
+export type LoginStackScreenProps = CompositeScreenProps<
+  NativeStackScreenProps<LoginStackParamList>,
+  RootStackScreenProps
+>;
 
 // https://reactnavigation.org/docs/typescript/?config=dynamic#specifying-default-types-for-usenavigation-link-ref-etc
 declare global {
