@@ -16,7 +16,8 @@ import {
   View,
 } from "react-native";
 import RNFS from "react-native-fs";
-import * as ImagePicker from "react-native-image-picker";
+import type { Asset } from "react-native-image-picker";
+import { launchImageLibrary } from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
@@ -92,7 +93,7 @@ const PhotoLibrary = ( ) => {
   }, [navigation, screenAfterPhotoEvidence, isDefaultMode] );
 
   const moveImagesToDocumentsDirectory = async ( selectedImages:
-    { image: ImagePicker.Asset }[] ) => {
+    { image: Asset }[] ) => {
     const path = photoLibraryPhotosPath;
     await RNFS.mkdir( path );
 
@@ -140,7 +141,7 @@ const PhotoLibrary = ( ) => {
     // According to the native code of the image picker library, it never rejects the promise,
     // just returns a response object with errorCode
     // https://github.com/react-native-image-picker/react-native-image-picker?tab=readme-ov-file#Asset-Object
-    const response = await ImagePicker.launchImageLibrary( {
+    const response = await launchImageLibrary( {
       selectionLimit: fromAICamera
         ? FROM_AICAMERA_MAX_PHOTOS_ALLOWED
         : MAX_PHOTOS_ALLOWED,
