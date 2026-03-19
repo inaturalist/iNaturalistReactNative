@@ -83,7 +83,8 @@ const PhotoLibrary = ( ) => {
     } );
   }, [navigation, screenAfterPhotoEvidence, isDefaultMode] );
 
-  const moveImagesToDocumentsDirectory = async selectedImages => {
+  const moveImagesToDocumentsDirectory = async ( selectedImages:
+    { image: ImagePicker.Asset }[] ) => {
     const path = photoLibraryPhotosPath;
     await RNFS.mkdir( path );
 
