@@ -50,7 +50,7 @@ const FadeInMatchContainer = ( ) => fadeInComponent(
 );
 
 const BASE_SCREEN_OPTIONS = {
-  cardStyle: {
+  contentStyle: {
     backgroundColor: "rgba(0,0,0,0)",
     opacity: 1,
   },
