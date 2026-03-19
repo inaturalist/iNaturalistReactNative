@@ -210,7 +210,7 @@ const PhotoLibrary = ( ) => {
         evidenceToAdd: [...evidenceToAdd, ...importedPhotoUris],
       } );
       const obsPhotos = await ObservationPhoto
-        .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos } );
+        .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos, local: false } );
 
       // If the current observation is not synced, update the EXIF data from imported photos
       const unsynced = !currentObservation?._synced_at;
