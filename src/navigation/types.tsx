@@ -44,6 +44,18 @@ export type NoBottomTabStackParamList = {
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type LoginStackParamList = {
+  Login: undefined;
+  SignUp: undefined;
+  ForgotPassword: undefined;
+  LearnMore: undefined;
+  SignUpConfirmation: undefined;
+  FullPageWebView: undefined;
+};
+
+// Note from the documentation:
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type SharedStackParamList = {
   ObsEdit: undefined;
   LocationPicker: undefined;
