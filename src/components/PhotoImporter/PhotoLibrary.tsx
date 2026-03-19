@@ -124,7 +124,7 @@ const PhotoLibrary = ( ) => {
     return movedImages;
   };
 
-  const showPhotoLibrary = React.useCallback( async () => {
+  const showPhotoLibrary = useCallback( async () => {
     if ( photoLibraryShown ) {
       return;
     }
