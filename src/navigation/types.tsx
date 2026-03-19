@@ -91,11 +91,19 @@ export type NoBottomTabStackParamList = {
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type LoginStackParamList = {
-  Login: undefined;
+  Login: {
+    emailConfirmed?: boolean;
+    prevScreen?: string;
+    projectId?: number;
+  };
   SignUp: undefined;
   ForgotPassword: undefined;
   LearnMore: undefined;
-  SignUpConfirmation: undefined;
+  SignUpConfirmation: {
+    user: {
+      email: string;
+    };
+  };
   FullPageWebView: undefined;
 };
 

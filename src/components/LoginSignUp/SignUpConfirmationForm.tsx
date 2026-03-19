@@ -7,6 +7,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import type { LoginStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
@@ -26,10 +27,8 @@ const { useRealm } = RealmContext;
 const SignUpConfirmationForm = ( ) => {
   const realm = useRealm( );
   const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const { user }: {
-    email: string;
-  } = params;
+  const { params } = useRoute<LoginStackScreenProps<"SignUpConfirmation">["route"]>();
+  const { user } = params;
 
   const setJustFinishedSignup = useStore( state => state.layout.setJustFinishedSignup );
 
