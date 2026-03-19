@@ -19,6 +19,7 @@ import {
   showHeader,
   showSimpleCustomHeader,
 } from "navigation/navigationOptions";
+import type { SharedStackParamList } from "navigation/types";
 import React from "react";
 
 const suggestionsTitle = () => (
@@ -32,7 +33,7 @@ const taxonSearchTitle = () => (
   </Heading4>
 );
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator<SharedStackParamList>( );
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
