@@ -53,7 +53,7 @@ const PhotoLibrary = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
-  const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
+  const numOfObsPhotos: number = currentObservation?.observationPhotos?.length || 0;
   const exitObservationsFlow = useExitObservationsFlow( );
 
   const { params } = useRoute<RouteProp<Record<string, RouteParams>, string>>( );
