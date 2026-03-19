@@ -115,6 +115,11 @@ export type BottomTabProps = CompositeScreenProps<
   RootStackScreenProps
 >;
 
+export type TabStackScreenProps = CompositeScreenProps<
+  NativeStackScreenProps<TabStackParamList>,
+  BottomTabProps
+>;
+
 export type NoBottomTabStackScreenProps = CompositeScreenProps<
   NativeStackScreenProps<NoBottomTabStackParamList>,
   RootStackScreenProps
