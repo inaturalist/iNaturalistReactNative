@@ -38,13 +38,13 @@ const CAMERA_SCREEN_OPTIONS = {
   contentStyle: {
     backgroundColor: "black",
   },
-};
+} as const;
 
 const GROUP_PHOTOS_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
   lazy: true,
-};
+} as const;
 
 const SOUND_RECORDER_OPTIONS = {
   ...hideHeaderLeft,
@@ -54,7 +54,7 @@ const SOUND_RECORDER_OPTIONS = {
   headerTintColor: "white",
   headerTitle: soundRecorderTitle,
   headerTitleAlign: "center",
-};
+} as const;
 
 const CameraContainerWithPermission = ( ) => fadeInComponent(
   <Mortal>
