@@ -182,7 +182,7 @@ const PhotoLibrary = ( ) => {
       return;
     }
 
-    const importedPhotoUris = selectedImages.map( x => x.uri );
+    const importedPhotoUris = selectedImages.map( x => x.image.uri );
 
     if ( skipGroupPhotos ) {
       // add evidence to existing observation
