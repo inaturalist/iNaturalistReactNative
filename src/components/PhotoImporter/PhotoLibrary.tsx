@@ -37,6 +37,7 @@ interface RouteParams {
   skipGroupPhotos?: boolean;
   fromGroupPhotos?: boolean;
   fromAICamera?: boolean;
+  cmonBack?: boolean;
 }
 
 const PhotoLibrary = ( ) => {
