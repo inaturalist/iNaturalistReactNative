@@ -4,16 +4,7 @@
  */
 
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-
-// Note from the documentation:
-// The type containing the mapping must be a type alias. It cannot be an interface.
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type RootStackParamList = {
-  OnboardingStackNavigator: undefined;
-  TabNavigator: undefined;
-  NoBottomTabStackNavigator: undefined;
-  LoginStackNavigator: undefined;
-};
+import type { NavigatorScreenParams } from "@react-navigation/native";
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
@@ -55,6 +46,16 @@ export type LoginStackParamList = {
   LearnMore: undefined;
   SignUpConfirmation: undefined;
   FullPageWebView: undefined;
+};
+
+// Note from the documentation:
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type RootStackParamList = {
+  OnboardingStackNavigator: NavigatorScreenParams<OnboardingStackParamList>;
+  TabNavigator: NavigatorScreenParams<BottomTabParamList>;
+  NoBottomTabStackNavigator: NavigatorScreenParams<NoBottomTabStackParamList>;
+  LoginStackNavigator: NavigatorScreenParams<LoginStackParamList>;
 };
 
 // Note from the documentation:
