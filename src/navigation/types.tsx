@@ -56,6 +56,40 @@ export type LoginStackParamList = {
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type TabStackParamList = {
+  Menu: undefined;
+  ObsList: undefined;
+  RootExplore: undefined;
+  Explore: undefined;
+  ExploreFilters: undefined;
+  ExploreSearch: undefined;
+  ObsDetails: undefined;
+  Notifications: undefined;
+  UserProfile: undefined;
+  DataQualityAssessment: undefined;
+  Projects: undefined;
+  ProjectDetails: undefined;
+  ProjectRequirements: undefined;
+  ProjectMembers: undefined;
+  ProjectList: undefined;
+  FollowersList: undefined;
+  FollowingList: undefined;
+  Debug: undefined;
+  UiLibraryItem: undefined;
+  Log: undefined;
+  ExploreTaxonSearch: undefined;
+  ExploreLocationSearch: undefined;
+  ExploreUserSearch: undefined;
+  ExploreProjectSearch: undefined;
+  Settings: undefined;
+  About: undefined;
+  Donate: undefined;
+  Help: undefined;
+};
+
+// Note from the documentation:
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type SharedStackParamList = {
   ObsEdit: undefined;
   LocationPicker: undefined;

@@ -44,6 +44,7 @@ import {
   showHeader,
   showLongHeader,
 } from "navigation/navigationOptions";
+import type { TabStackParamList } from "navigation/types";
 import React from "react";
 import {
   useLayoutPrefs,
@@ -174,7 +175,7 @@ const OBS_DETAILS_OPTIONS = {
   ...blankHeaderTitle,
 };
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator<TabStackParamList>( );
 
 export const SCREEN_NAME_MENU = "Menu";
 export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
