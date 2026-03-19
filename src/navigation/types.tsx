@@ -12,3 +12,10 @@ export type RootStackParamList = {
   NoBottomTabStackNavigator: undefined;
   LoginStackNavigator: undefined;
 };
+
+// Note from the documentation:
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type OnboardingStackParamList = {
+  Onboarding: undefined;
+};
