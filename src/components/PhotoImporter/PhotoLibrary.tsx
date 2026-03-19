@@ -89,11 +89,11 @@ const PhotoLibrary = ( ) => {
     await RNFS.mkdir( path );
 
     const movedImages = await Promise.all( selectedImages.map( async ( { image } ) => {
-      const { fileName } = image;
+      const { fileName, uri } = image;
       const destPath = `${path}/${fileName}`;
       // Get image from uri on android. TemporaryDirectoryPath results in an ANR
       const sourcePath = Platform.OS === "android"
-        ? image.uri
+        ? uri
         : `${RNFS.TemporaryDirectoryPath}/${fileName}`;
       await RNFS.moveFile( sourcePath, destPath );
       return {
