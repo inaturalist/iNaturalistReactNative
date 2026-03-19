@@ -103,3 +103,12 @@ export type SharedStackParamList = {
   MatchTaxonSearchScreen: undefined;
   FullPageWebView: undefined;
 };
+
+// https://reactnavigation.org/docs/typescript/?config=dynamic#specifying-default-types-for-usenavigation-link-ref-etc
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace ReactNavigation {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    interface RootParamList extends RootStackParamList {}
+  }
+}
