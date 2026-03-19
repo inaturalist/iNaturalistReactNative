@@ -176,6 +176,12 @@ const OBS_DETAILS_OPTIONS = {
   ...blankHeaderTitle,
 } as const;
 
+const DEBUG_GROUP_SCREEN_OPTIONS = {
+  headerStyle: { backgroundColor: "deeppink", color: "white" },
+  headerTintColor: "white",
+  headerTitleStyle: { color: "white" },
+} as const;
+
 const Stack = createNativeStackNavigator<TabStackParamList>( );
 
 export const SCREEN_NAME_MENU = "Menu";
@@ -319,11 +325,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
       </Stack.Group>
       {/* Developer Stack Group */}
       <Stack.Group
-        screenOptions={{
-          headerStyle: { backgroundColor: "deeppink", color: "white" },
-          headerTintColor: "white",
-          headerTitleStyle: { color: "white" },
-        }}
+        screenOptions={DEBUG_GROUP_SCREEN_OPTIONS}
       >
         <Stack.Screen
           name="Debug"
