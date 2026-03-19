@@ -142,6 +142,11 @@ const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
 const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
 const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
 
+const BASE_SCREEN_OPTIONS = {
+  headerBackButtonDisplayMode: "minimal",
+  headerTintColor: colors.darkGray,
+} as const;
+
 const NOTIFICATIONS_OPTIONS = {
   ...preventSwipeToGoBack,
   ...hideHeaderLeft,
@@ -188,10 +193,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
   return (
     <Stack.Navigator
       initialRouteName={initialRouteName}
-      screenOptions={{
-        headerBackButtonDisplayMode: "minimal",
-        headerTintColor: colors.darkGray,
-      }}
+      screenOptions={BASE_SCREEN_OPTIONS}
     >
       {/* Screens with no header */}
       <Stack.Group
