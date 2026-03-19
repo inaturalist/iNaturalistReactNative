@@ -1,5 +1,3 @@
-// @flow
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView";
@@ -21,7 +19,6 @@ import {
   showHeader,
   showSimpleCustomHeader,
 } from "navigation/navigationOptions";
-import type { Node } from "react";
 import React from "react";
 
 const suggestionsTitle = () => (
@@ -54,7 +51,7 @@ const FadeInMatchContainer = ( ) => fadeInComponent(
 // These screens need to be within the NoBottomTabStackNavigator
 // as well as the TabStackNavigator to retain navigation history
 
-const SharedStackScreens = ( ): Node => (
+const SharedStackScreens = ( ) => (
   <Stack.Group
     screenOptions={{
       cardStyle: {
