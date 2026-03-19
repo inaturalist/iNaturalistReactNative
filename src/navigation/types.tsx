@@ -29,3 +29,22 @@ export type BottomTabParamList = {
   ObservationsTab: { initialRouteName: string };
   NotificationsTab: { initialRouteName: string };
 };
+
+// Note from the documentation:
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type NoBottomTabStackParamList = {
+  Camera: undefined;
+  PhotoLibrary: undefined;
+  GroupPhotos: undefined;
+  SoundRecorder: undefined;
+  ObsEdit: undefined;
+  LocationPicker: undefined;
+  TaxonDetails: undefined;
+  PhotoSharing: undefined;
+  Match: undefined;
+  Suggestions: undefined;
+  SuggestionsTaxonSearch: undefined;
+  MatchTaxonSearchScreen: undefined;
+  FullPageWebView: undefined;
+};
