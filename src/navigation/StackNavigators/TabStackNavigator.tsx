@@ -151,29 +151,29 @@ const NOTIFICATIONS_OPTIONS = {
   ...hideHeaderLeft,
   headerTitle: notificationsTitle,
   headerTitleAlign: "center",
-};
+} as const;
 
 const DQA_OPTIONS = {
   ...showLongHeader,
   headerTitle: dqaTitle,
-};
+} as const;
 
 const USER_PROFILE_OPTIONS = {
   ...showHeader,
   ...blankHeaderTitle,
   ...removeBottomBorder,
-};
+} as const;
 
 const LIST_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
   lazy: true,
-};
+} as const;
 
 const OBS_DETAILS_OPTIONS = {
   ...showHeader,
   ...blankHeaderTitle,
-};
+} as const;
 
 const Stack = createNativeStackNavigator<TabStackParamList>( );
 
