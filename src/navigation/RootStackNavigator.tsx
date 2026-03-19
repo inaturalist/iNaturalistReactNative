@@ -7,8 +7,9 @@ import { useOnboardingShown } from "sharedHelpers/installData";
 
 import BottomTabNavigator from "./BottomTabNavigator";
 import { hideHeader, preventSwipeToGoBack } from "./navigationOptions";
+import type { RootStackParamList } from "./types";
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator<RootStackParamList>( );
 
 // DEVELOPERS: do you need to add any screens here? This is the RootStack.
 // All the rest of our screens live in:
