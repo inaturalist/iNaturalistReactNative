@@ -49,18 +49,18 @@ const FadeInMatchContainer = ( ) => fadeInComponent(
   <MatchContainer />,
 );
 
+const BASE_SCREEN_OPTIONS = {
+  cardStyle: {
+    backgroundColor: "rgba(0,0,0,0)",
+    opacity: 1,
+  },
+} as const;
+
 // These screens need to be within the NoBottomTabStackNavigator
 // as well as the TabStackNavigator to retain navigation history
 
 const SharedStackScreens = ( ) => (
-  <Stack.Group
-    screenOptions={{
-      cardStyle: {
-        backgroundColor: "rgba(0,0,0,0)",
-        opacity: 1,
-      },
-    }}
-  >
+  <Stack.Group screenOptions={BASE_SCREEN_OPTIONS}>
     {/* Screens with hidden header */}
     <Stack.Group
       screenOptions={{
