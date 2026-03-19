@@ -1,4 +1,4 @@
-import type { RouteProp } from "@react-navigation/native";
+import type { Route, RouteProp } from "@react-navigation/native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import {
   photoLibraryPhotosPath,
@@ -38,6 +38,7 @@ interface RouteParams {
   fromGroupPhotos?: boolean;
   fromAICamera?: boolean;
   cmonBack?: boolean;
+  previousScreen?: Route<string> | null;
 }
 
 const PhotoLibrary = ( ) => {
