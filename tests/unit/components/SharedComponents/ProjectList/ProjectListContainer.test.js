@@ -13,6 +13,15 @@ const mockProjects = [
   } ),
 ];
 
+const mockNonTraditionalProjects = [
+  factory( "RemoteProject", {
+    title: "non_traditional_project_1",
+  } ),
+  factory( "RemoteProject", {
+    title: "non_traditional_project_2",
+  } ),
+];
+
 const mockObservationUuid = "00000000-0000-0000-0000-000000000001";
 
 jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
@@ -20,7 +29,7 @@ jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
   default: ( ) => ( {
     remoteObservation: {
       project_observations: mockProjects.map( project => ( { project } ) ),
-      non_traditional_projects: [],
+      non_traditional_projects: mockNonTraditionalProjects.map( project => ( { project } ) ),
     },
     refetchRemoteObservation: jest.fn( ),
     isRefetching: false,
@@ -28,25 +37,62 @@ jest.mock( "sharedHooks/useRemoteObservation", ( ) => ( {
   } ),
 } ) );
 
+const mockUseAuthenticatedQuery = jest.fn( ( ) => ( { data: null } ) );
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
-  default: ( ) => ( { data: null } ),
+  default: ( ...args ) => mockUseAuthenticatedQuery( ...args ),
 } ) );
 
 describe( "ProjectListContainer", () => {
-  beforeAll( ( ) => {
-    useRoute.mockImplementation( ( ) => ( {
-      params: {
-        observationUuid: mockObservationUuid,
-      },
-    } ) );
+  describe( "observationUuid path", () => {
+    beforeAll( ( ) => {
+      useRoute.mockImplementation( ( ) => ( {
+        params: {
+          observationUuid: mockObservationUuid,
+        },
+      } ) );
+    } );
+
+    it( "should display a list with all project titles", async () => {
+      render( <ProjectListContainer /> );
+      const firstProjectTitle = await screen.findByText( mockProjects[0].title );
+      expect( firstProjectTitle ).toBeVisible( );
+      const secondProjectTitle = await screen.findByText( mockProjects[1].title );
+      expect( secondProjectTitle ).toBeVisible( );
+      const firstTitle = await screen.findByText( mockNonTraditionalProjects[0].title );
+      expect( firstTitle ).toBeVisible( );
+      const secondTitle = await screen.findByText( mockNonTraditionalProjects[1].title );
+      expect( secondTitle ).toBeVisible( );
+    } );
   } );
 
-  it( "should display a list with all project titles", async () => {
-    render( <ProjectListContainer /> );
-    const firstProjectTitle = await screen.findByText( mockProjects[0].title );
-    expect( firstProjectTitle ).toBeVisible( );
-    const secondProjectTitle = await screen.findByText( mockProjects[1].title );
-    expect( secondProjectTitle ).toBeVisible( );
+  describe( "userId path", () => {
+    const mockUserId = 123;
+
+    beforeAll( ( ) => {
+      useRoute.mockImplementation( ( ) => ( {
+        params: {
+          userId: mockUserId,
+        },
+      } ) );
+      mockUseAuthenticatedQuery.mockReturnValue( { data: mockProjects } );
+    } );
+
+    it( "should display a list with all project titles from user projects", async () => {
+      render( <ProjectListContainer /> );
+      const firstProjectTitle = await screen.findByText( mockProjects[0].title );
+      expect( firstProjectTitle ).toBeVisible( );
+      const secondProjectTitle = await screen.findByText( mockProjects[1].title );
+      expect( secondProjectTitle ).toBeVisible( );
+    } );
+
+    it( "should call useAuthenticatedQuery with the correct query key", ( ) => {
+      render( <ProjectListContainer /> );
+      expect( mockUseAuthenticatedQuery ).toHaveBeenCalledWith(
+        ["fetchUserProjects", mockUserId],
+        expect.any( Function ),
+        expect.objectContaining( { enabled: true } ),
+      );
+    } );
   } );
 } );
