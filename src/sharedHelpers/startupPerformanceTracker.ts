@@ -5,8 +5,8 @@ import { log } from "sharedHelpers/logger";
 const logger = log.extend( "StartupPerformanceTracker" );
 
 interface ScreenMeta {
-  target_screen: "MyObservations" | "OnboardingCarousel";
-  auth_state: "signed_in" | "signed_out";
+  targetScreen: "MyObservations" | "OnboardingCarousel";
+  loggedIn: boolean;
 }
 
 // Module-level state — the module itself is the singleton
@@ -61,8 +61,8 @@ const tryEmit = () => {
       jsBundleLoadedMs,
       nativeLaunchMs,
       startType: "cold",
-      targetScreen: screenMeta!.target_screen,
-      authState: screenMeta!.auth_state,
+      targetScreen: screenMeta!.targetScreen,
+      loggedIn: screenMeta!.loggedIn,
     } );
   } catch ( e ) {
     logger.info( "startup_tti collection failed", e );

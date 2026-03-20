@@ -190,8 +190,8 @@ const OnboardingCarousel = ( ) => {
   // Reached on iOS once images are loaded, and immediately on Android.
   // The tracker's emitted guard makes repeated render calls safe.
   markScreenReached( {
-    target_screen: "OnboardingCarousel",
-    auth_state: "signed_out",
+    targetScreen: "OnboardingCarousel",
+    loggedIn: false,
   } );
 
   return (

@@ -217,10 +217,8 @@ const MyObservationsContainer = ( ): React.FC => {
         // premature TTI emission before the sync cascade completes
         expectSync( );
         markScreenReached( {
-          target_screen: "MyObservations",
-          auth_state: currentUser
-            ? "signed_in"
-            : "signed_out",
+          targetScreen: "MyObservations",
+          loggedIn: !!currentUser,
         } );
         startAutomaticSync( );
       }
