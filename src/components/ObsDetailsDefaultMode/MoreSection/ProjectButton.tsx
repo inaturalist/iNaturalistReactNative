@@ -7,7 +7,7 @@ import { t } from "i18next";
 import React, { useMemo } from "react";
 
 interface Props {
-  observation: Pick<ApiObservation, "uuid" | "project_observations" | "non_traditional_projects">;
+  observation: ApiObservation;
 }
 
 const ProjectButton = ( { observation }: Props ) => {

@@ -15,7 +15,7 @@ const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
 interface Props {
-  observation: Pick<ApiObservation, "uuid" | "project_observations" | "non_traditional_projects">;
+  observation: ApiObservation;
 }
 
 const ProjectSection = ( { observation }: Props ) => {
