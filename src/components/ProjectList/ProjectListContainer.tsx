@@ -48,7 +48,7 @@ const ProjectListContainer = ( ) => {
   const observationProjects = traditionalProjects.concat( nonTraditionalProjects );
 
   const { data: userProjects } = useAuthenticatedQuery(
-    ["fetchUserProjects", `${userId}`],
+    ["fetchUserProjects", userId],
     optsWithAuth => fetchUserProjects(
       {
         id: userId,
