@@ -430,6 +430,7 @@ const IdentificationSheets: React.FC<Props> = ( {
       {showAddCommentSheet && (
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
+          mentionsEnabled
           onPressClose={hideAddCommentSheet}
           headerText={addCommentHeaderText}
           textInputStyle={textInputStyle}
@@ -441,6 +442,7 @@ const IdentificationSheets: React.FC<Props> = ( {
       {showIdentBodySheet && (
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
+          mentionsEnabled
           onPressClose={onCloseIdentBodySheet}
           headerText={addCommentHeaderText}
           textInputStyle={textInputStyle}

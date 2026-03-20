@@ -5,11 +5,12 @@ import { fontRegular } from "appConstants/fontFamilies";
 import classnames from "classnames";
 import {
   Body3, BottomSheet, Button,
+  MentionTextInput,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useMemo, useRef, useState } from "react";
-import { Keyboard, Platform } from "react-native";
+import React, { useMemo, useState } from "react";
+import { Keyboard } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useTranslation from "sharedHooks/useTranslation";
@@ -24,6 +25,7 @@ type Props = {
   buttonText: string,
   confirm: Function,
   description?: string,
+  mentionsEnabled?: boolean,
   onPressClose: Function,
   headerText: string,
   initialInput?: string,
@@ -58,6 +60,7 @@ const TextInputSheet = ( {
   buttonText,
   confirm,
   description,
+  mentionsEnabled = false,
   onPressClose,
   headerText,
   initialInput,
@@ -65,7 +68,6 @@ const TextInputSheet = ( {
   placeholder,
   textInputStyle,
 }: Props ): Node => {
-  const textInputRef = useRef( );
   const [input, setInput] = useState( initialInput );
   const { t } = useTranslation( );
   const { nonKeyboardHeight } = useKeyboardInfo( TARGET_INPUT_HEIGHT );
@@ -108,6 +110,9 @@ const TextInputSheet = ( {
           setSheetHeight( height );
         }
       }}
+      scrollEnabled={false}
+      enablePanDownToClose={false}
+      enableContentPanningGesture={false}
     >
       <View className="p-5 pb-0">
         { description && description.length > 0 && (
@@ -116,22 +121,38 @@ const TextInputSheet = ( {
           </View>
         ) }
         <View className="border rounded-lg border-lightGray p-3 pt-1">
-          <BottomSheetTextInput
-            ref={textInputRef}
-            accessibilityLabel="Text input field"
-            keyboardType="default"
-            maxLength={maxLength}
-            multiline
-            onChangeText={text => {
-              setInput( text );
-            }}
-            placeholder={placeholder}
-            testID="TextInputSheet.notes"
-            style={[inputStyle, textInputStyle]}
-            autoFocus
-            defaultValue={input}
-            maxFontSizeMultiplier={2}
-          />
+          {mentionsEnabled
+            ? (
+              <MentionTextInput
+                InputComponent={BottomSheetTextInput}
+                accessibilityLabel="Text input field"
+                autoFocus
+                keyboardType="default"
+                maxLength={maxLength}
+                maxFontSizeMultiplier={2}
+                multiline
+                onChangeText={setInput}
+                placeholder={placeholder}
+                style={[inputStyle, textInputStyle]}
+                testID="TextInputSheet.notes"
+                value={input ?? ""}
+              />
+            )
+            : (
+              <BottomSheetTextInput
+                accessibilityLabel="Text input field"
+                autoFocus
+                keyboardType="default"
+                maxLength={maxLength}
+                maxFontSizeMultiplier={2}
+                multiline
+                onChangeText={setInput}
+                placeholder={placeholder}
+                style={[inputStyle, textInputStyle]}
+                testID="TextInputSheet.notes"
+                value={input ?? ""}
+              />
+            )}
           <View
             className={classnames(
               "flex-row",
@@ -144,12 +165,7 @@ const TextInputSheet = ( {
               <CharLimit current={input?.length} limit={maxLength} t={t} />
             ) }
             <Pressable
-              onPress={() => {
-                textInputRef?.current?.clear();
-                if ( Platform.OS === "android" ) {
-                  setInput( "" );
-                }
-              }}
+              onPress={() => setInput( "" )}
               accessibilityHint={t( "Deletes-entered-text" )}
               accessibilityRole="button"
             >

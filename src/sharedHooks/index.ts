@@ -34,4 +34,5 @@ export { default as useTaxon } from "./useTaxon";
 export { default as useTaxonSearch } from "./useTaxonSearch";
 export { default as useTranslation } from "./useTranslation";
 export { default as useUserMe } from "./useUserMe";
+export { default as useUserSearch } from "./useUserSearch";
 export { default as useWatchPosition } from "./useWatchPosition";
