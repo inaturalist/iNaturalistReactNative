@@ -3,7 +3,7 @@
 // https://www.npmjs.com/package/uuid#react-native--expo
 // eslint-disable-next-line simple-import-sort/imports
 import "react-native-get-random-values";
-import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
+import { beginColdStart } from "sharedHelpers/startupPerformanceTracker";
 
 // React Native doesn't have a functional URL as of Feb 2024
 import "react-native-url-polyfill/auto";
@@ -44,7 +44,7 @@ import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
 
-startupPerformanceTracker.beginColdStart();
+beginColdStart();
 
 const logger = log.extend( "index.js" );
 

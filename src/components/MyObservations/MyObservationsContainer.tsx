@@ -20,7 +20,10 @@ import {
   mapSpeciesSortToAPIParams,
   sortSpeciesCounts,
 } from "sharedHelpers/sortingHelpers";
-import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
+import {
+  expectSync,
+  markScreenReached,
+} from "sharedHelpers/startupPerformanceTracker";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -212,8 +215,8 @@ const MyObservationsContainer = ( ): React.FC => {
         // expectSync must be called before markScreenReached so that syncDone
         // is already false when markScreenReached's tryEmit runs, preventing
         // premature TTI emission before the sync cascade completes
-        startupPerformanceTracker.expectSync( );
-        startupPerformanceTracker.markScreenReached( {
+        expectSync( );
+        markScreenReached( {
           target_screen: "MyObservations",
           auth_state: currentUser
             ? "signed_in"

@@ -29,7 +29,7 @@ import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useOnboardingShown } from "sharedHelpers/installData";
-import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
+import { markScreenReached } from "sharedHelpers/startupPerformanceTracker";
 import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
@@ -189,7 +189,7 @@ const OnboardingCarousel = ( ) => {
 
   // Reached on iOS once images are loaded, and immediately on Android.
   // The tracker's emitted guard makes repeated render calls safe.
-  startupPerformanceTracker.markScreenReached( {
+  markScreenReached( {
     target_screen: "OnboardingCarousel",
     auth_state: "signed_out",
   } );
