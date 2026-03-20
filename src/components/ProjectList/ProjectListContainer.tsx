@@ -17,15 +17,17 @@ import {
 
 import ProjectList from "./ProjectList";
 
+interface HeaderOptions {
+  headerTitle?: string;
+  headerSubtitle?: string;
+}
+
+type ProjectListParams =
+  | { observationUuid: string; userId?: never; headerOptions: HeaderOptions }
+  | { userId: number; observationUuid?: never; headerOptions: HeaderOptions };
+
 interface ProjectListRouteParams {
-  [name: string]: {
-    observationUuid?: string;
-    userId?: number;
-    headerOptions: {
-      headerTitle?: string;
-      headerSubtitle?: string;
-    };
-  };
+  [name: string]: ProjectListParams;
 }
 
 const ProjectListContainer = ( ) => {
