@@ -23,7 +23,7 @@ const getMark = ( name: string ): PerformanceEntry | undefined => (
 const isReady = () => startupServiceDone && syncDone !== false && screenMeta !== null;
 
 const tryEmit = () => {
-  if ( emitted || !isReady() ) { return; }
+  if ( emitted || !isReady() || !screenMeta ) { return; }
   emitted = true;
 
   try {
@@ -61,8 +61,8 @@ const tryEmit = () => {
       jsBundleLoadedMs,
       nativeLaunchMs,
       startType: "cold",
-      targetScreen: screenMeta!.targetScreen,
-      loggedIn: screenMeta!.loggedIn,
+      targetScreen: screenMeta.targetScreen,
+      loggedIn: screenMeta.loggedIn,
     } );
   } catch ( e ) {
     logger.info( "startup_tti collection failed", e );
