@@ -2,7 +2,7 @@ import type { PerformanceEntry } from "react-native-performance";
 import performance from "react-native-performance";
 import { log } from "sharedHelpers/logger";
 
-const logger = log.extend( "StartupPerformanceTracker" );
+const logger = log.extend( "startupPerformanceTracker" );
 
 interface ScreenMeta {
   targetScreen: "MyObservations" | "OnboardingCarousel";
