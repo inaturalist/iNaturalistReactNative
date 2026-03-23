@@ -109,16 +109,21 @@ const PhotoLibrary = ( ) => {
         throw new Error( "No fileName in pick photo response" );
       }
       const destPath = `${path}/${fileName}`;
-      let sourcePath = `${RNFS.TemporaryDirectoryPath}/${fileName}`;
-      // Get image from uri on android. TemporaryDirectoryPath results in an ANR
-      if ( Platform.OS === "android" ) {
-        if ( !uri ) {
-          throw new Error( "No URI in pick photo response" );
-        }
-        sourcePath = uri;
-      }
+      const getSourcePath = Platform.select( {
+        ios: ( ) => `${RNFS.TemporaryDirectoryPath}/${fileName}`,
+        // Get image from uri on android. TemporaryDirectoryPath results in an ANR.
+        android: ( ) => {
+          if ( !uri ) {
+            throw new Error( "No URI in pick photo response" );
+          }
+          return uri;
+        },
+        default: ( ) => {
+          throw new Error( `Unsupported platform for moving picked photo: ${Platform.OS}` );
+        },
+      } );
 
-      await RNFS.moveFile( sourcePath, destPath );
+      await RNFS.moveFile( getSourcePath(), destPath );
       return {
         image: {
           ...image,
