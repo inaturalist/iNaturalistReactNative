@@ -39,16 +39,8 @@ class User extends Realm.Object {
     return User.uri( user )?.replace( "medium", "large" );
   }
 
-  static smallUri( user?: RealmUser | ApiUser ) {
-    return User.uri( user )?.replace( "medium", "small" );
-  }
-
   static thumbUri( user?: RealmUser | ApiUser ) {
     return User.uri( user )?.replace( "medium", "thumb" );
-  }
-
-  static squareUri( user?: RealmUser | ApiUser ) {
-    return User.uri( user )?.replace( "medium", "square" );
   }
 
   static currentUser( realm: Realm ) {
