@@ -1,10 +1,13 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import { log } from "sharedHelpers/logger";
 
 import handleError from "./error";
 
-// I tried doing this in Observaiton.js but got mysterious Realm errors. More
+const logger = log.extend( "observations" );
+
+// I tried doing this in Observation.js but got mysterious Realm errors. More
 // could be here, but this solves an immediate problem with schema mismatch
 function mapObsPhotoToLocalSchema( obsPhoto ) {
   obsPhoto.photo.licenseCode = obsPhoto.photo.licenseCode
@@ -19,7 +22,24 @@ function mapToLocalSchema( observation ) {
 
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<Object> => {
   try {
+    const startedAt = Date.now( );
     const response = await inatjs.observations.search( params, opts );
+    const elapsedMs = Date.now( ) - startedAt;
+    // Wrapping this in try/catch just in case something goes wrong with logging,
+    // we don't want to fail the whole request just because of that
+    try {
+      logger.infoWithExtra(
+        "EXPERIMENTAL COMPARISON: querying API v2 with fields",
+        {
+          hasFields: !!params?.fields,
+          durationMs: elapsedMs,
+          // Not sure if asking for smaller page has performance benefits, but log it just in case
+          per_page: params?.per_page,
+        },
+      );
+    } catch ( e ) {
+      logger.error( "Error logging experimental comparison", e );
+    }
     response.results = response.results.map( mapToLocalSchema );
     return response;
   } catch ( e ) {
