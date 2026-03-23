@@ -29,10 +29,12 @@ export type OnboardingStackParamList = {
   Onboarding: undefined;
 };
 
+// Tab-only routes (not from SharedStackScreens). Intersected with SharedStackParamList
+// so TabStackParamList matches TabStackNavigator + SharedStackScreens.
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type TabStackParamList = {
+export type BaseTabStackParamList = {
   Menu: undefined;
   ObsList: undefined;
   RootExplore: undefined;
@@ -60,10 +62,12 @@ export type TabStackParamList = {
   Help: undefined;
 };
 
+export type TabStackParamList = BaseTabStackParamList & SharedStackParamList;
+
 // Params for TabStackNavigator when hosted inside BottomTabNavigator, including which
 // inner stack screen should be shown first (see BottomTabNavigator initialParams).
 interface TabParams {
-  initialRouteName: keyof TabStackParamList;
+  initialRouteName: keyof BaseTabStackParamList;
 }
 
 // Note from the documentation:
@@ -76,16 +80,19 @@ export type BottomTabParamList = {
   NotificationsTab: NavigatorScreenParams<TabStackParamList> & TabParams;
 };
 
+// Camera / import flow only; shared screens come from SharedStackScreens.
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type NoBottomTabStackParamList = {
+export type BaseNoBottomTabStackParamList = {
   Camera: undefined;
   PhotoLibrary: undefined;
   GroupPhotos: undefined;
   SoundRecorder: undefined;
-  ObsEdit: undefined;
 };
+
+export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
+  SharedStackParamList;
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
