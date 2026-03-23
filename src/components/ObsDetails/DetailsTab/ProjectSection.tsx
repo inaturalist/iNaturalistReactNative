@@ -9,7 +9,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { useMemo } from "react";
+import React from "react";
 
 const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
@@ -25,13 +25,6 @@ const ProjectSection = ( { observation }: Props ) => {
   const nonTraditionalProjectCount = observation?.non_traditional_projects?.length || 0;
 
   const totalProjectCount = traditionalProjectCount + nonTraditionalProjectCount;
-
-  const headerOptions = useMemo( ( ) => ( {
-    headerTitle: t( "Observation" ),
-    headerSubtitle: t( "X-PROJECTS", {
-      projectCount: totalProjectCount,
-    } ),
-  } ), [totalProjectCount] );
 
   if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
     return null;
@@ -49,7 +42,6 @@ const ProjectSection = ( { observation }: Props ) => {
           text={t( "VIEW-PROJECTS" )}
           onPress={( ) => navigation.navigate( "ProjectList", {
             observationUuid: observation.uuid,
-            headerOptions,
           } )}
         />
       </View>

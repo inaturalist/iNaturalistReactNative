@@ -7,7 +7,7 @@ import {
   ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import {
   useAuthenticatedQuery,
@@ -17,14 +17,9 @@ import {
 
 import ProjectList from "./ProjectList";
 
-interface HeaderOptions {
-  headerTitle?: string;
-  headerSubtitle?: string;
-}
-
 type ProjectListParams =
-  | { observationUuid: string; userId?: never; headerOptions: HeaderOptions }
-  | { userId: number; observationUuid?: never; headerOptions: HeaderOptions };
+  | { observationUuid: string; userId?: never; userLogin?: never }
+  | { userId: number; userLogin: string; observationUuid?: never };
 
 interface ProjectListRouteParams {
   [name: string]: ProjectListParams;
@@ -33,7 +28,7 @@ interface ProjectListRouteParams {
 const ProjectListContainer = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ProjectListRouteParams, "ProjectList">>( );
-  const { observationUuid, userId, headerOptions } = params;
+  const { observationUuid, userId, userLogin } = params;
   const { t } = useTranslation( );
 
   const { remoteObservation } = useRemoteObservation(
@@ -62,12 +57,31 @@ const ProjectListContainer = ( ) => {
     { enabled: !!userId },
   );
 
+  const headerOptions = useMemo( ( ) => {
+    if ( observationUuid ) {
+      if ( !remoteObservation ) return null;
+      const projectCount = ( remoteObservation.project_observations?.length || 0 )
+        + ( remoteObservation.non_traditional_projects?.length || 0 );
+      return {
+        headerTitle: t( "Observation" ),
+        headerSubtitle: t( "X-PROJECTS", { projectCount } ),
+      };
+    }
+    if ( !userProjects ) return null;
+    return {
+      headerTitle: userLogin,
+      headerSubtitle: t( "JOINED-X-PROJECTS", { count: userProjects.length } ),
+    };
+  }, [observationUuid, remoteObservation, userLogin, userProjects, t] );
+
   const projects: ApiProject[] = observationUuid
     ? observationProjects
     : ( userProjects ?? [] );
 
   useEffect( ( ) => {
-    navigation.setOptions( headerOptions );
+    if ( headerOptions ) {
+      navigation.setOptions( headerOptions );
+    }
   }, [headerOptions, navigation] );
 
   return (
