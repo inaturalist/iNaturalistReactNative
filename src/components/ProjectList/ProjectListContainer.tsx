@@ -3,6 +3,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import type { ApiProject } from "api/types";
 import { fetchUserProjects } from "api/users";
 import {
+  ActivityIndicator,
   Body1,
   ViewWrapper,
 } from "components/SharedComponents";
@@ -44,7 +45,7 @@ const ProjectListContainer = ( ) => {
   ) || [];
   const observationProjects = traditionalProjects.concat( nonTraditionalProjects );
 
-  const { data: userProjects } = useAuthenticatedQuery(
+  const { data: userProjects, isLoading: userProjectsLoading } = useAuthenticatedQuery(
     ["fetchUserProjects", userId],
     optsWithAuth => fetchUserProjects(
       {
@@ -78,11 +79,23 @@ const ProjectListContainer = ( ) => {
     ? observationProjects
     : ( userProjects ?? [] );
 
+  const isLoading = observationUuid
+    ? !remoteObservation
+    : userProjectsLoading;
+
   useEffect( ( ) => {
     if ( headerOptions ) {
       navigation.setOptions( headerOptions );
     }
   }, [headerOptions, navigation] );
+
+  if ( isLoading ) {
+    return (
+      <ViewWrapper>
+        <ActivityIndicator size={50} />
+      </ViewWrapper>
+    );
+  }
 
   return (
     <ViewWrapper useTopInset={false}>
