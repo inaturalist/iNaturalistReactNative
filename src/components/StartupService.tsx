@@ -1,6 +1,7 @@
 import Geolocation from "@react-native-community/geolocation";
 import NetInfo from "@react-native-community/netinfo";
 import { onlineManager } from "@tanstack/react-query";
+import { getUserAgent } from "api/userAgent";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
@@ -32,6 +33,9 @@ Realm.setLogLevel( "warn" );
 // with no rendering required, per issue #1770
 NetInfo.configure( {
   reachabilityUrl: "https://www.inaturalist.org/ping",
+  reachabilityHeaders: {
+    "User-Agent": getUserAgent( ),
+  },
 } );
 
 const isTablet = DeviceInfo.isTablet( );
