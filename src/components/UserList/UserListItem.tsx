@@ -32,7 +32,7 @@ const UserListItem = ( {
   onPress,
   accessibilityLabel: accessibilityLabelProp,
   pressable = true,
-  iconVariant,
+  iconVariant = "medium",
 }: Props ) => {
   const { t } = useTranslation( );
   const user = item?.user;
