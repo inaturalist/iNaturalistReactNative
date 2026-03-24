@@ -68,7 +68,9 @@ const UserListItem = ( {
         {user?.icon_url
           ? (
             <UserIcon
-              uri={User.uri( user )}
+              uri={iconVariant === "small"
+                ? User.thumbUri( user )
+                : User.uri( user )}
               small={iconVariant === "small"}
               medium={iconVariant === "medium"}
             />
