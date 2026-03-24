@@ -11,12 +11,16 @@ import {
 import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { logFirebaseEvent } from "sharedHelpers/tracking";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
 } from "sharedHooks";
+import useStore from "stores/useStore";
+import { v4 as uuidv4 } from "uuid";
 
 import type { ScoreImageParams, UseSuggestionsOnlineSuggestion } from "./types";
+import type { OfflineSuggestionsResponse } from "./useOfflineSuggestions";
 import { predictOffline } from "./useOfflineSuggestions";
 
 const executeOnRandomPercentile = ( operation: () => void, integerPercentChance: number ) => {
@@ -81,6 +85,57 @@ const shimApiResponseForCommonAncestor
     };
   };
 
+// GA has very limited support for structured data. Only certain built-in events have support for
+// non-primitive data structures. We're piggybacking on those built-ins for this reporting.
+// These are then mapped to more appropriately named suggestion events using "event modifications"
+// in the Firebase Events Config.
+// https://developers.google.com/analytics/devguides/collection/ga4/reference/events?client_type=gtag#purchase
+const offlineEventName = "purchase";
+// https://developers.google.com/analytics/devguides/collection/ga4/reference/events?client_type=gtag#view_item_list
+const onlineEventName = "view_item_list";
+// similarly, GA, at least through Firebase, doesn't seem to respect custom properties on `items`
+// so we're using the generic "item_category" properties which will also be remapped.
+const taxonIdPropertyName = "item_category";
+const taxonScorePropertyName = "item_category2";
+
+const logSuggestionAnalytics = (
+  optimisticObservationUuid: string,
+  offlineSuggestions: OfflineSuggestionsResponse,
+  onlineSuggestions: OnlineSuggestionsQueryResponse,
+) => {
+  const transactionId = uuidv4();
+
+  logFirebaseEvent( offlineEventName, {
+    transactionId,
+    optimisticObservationUuid,
+    prediction_source: "offline",
+    commonAncestorTaxonId: offlineSuggestions.commonAncestor?.taxon.id ?? "NA",
+    commonAncestorCombinedScore: offlineSuggestions.commonAncestor?.combined_score ?? "NA",
+    items: offlineSuggestions.results
+      .slice( 0, 10 )
+      .map( suggestion => ( {
+        item_id: String( suggestion.taxon.id ),
+        [taxonIdPropertyName]: String( suggestion.taxon.id ),
+        [taxonScorePropertyName]: String( suggestion.combined_score ),
+      } ) ),
+  } );
+
+  logFirebaseEvent( onlineEventName, {
+    transactionId,
+    optimisticObservationUuid,
+    prediction_source: "online",
+    commonAncestorTaxonId: onlineSuggestions.common_ancestor?.taxon.id ?? "NA",
+    commonAncestorCombinedScore: onlineSuggestions.common_ancestor?.combined_score ?? "NA",
+    items: onlineSuggestions.results
+      .slice( 0, 10 )
+      .map( suggestion => ( {
+        item_id: String( suggestion.taxon.id ),
+        [taxonIdPropertyName]: String( suggestion.taxon.id ),
+        [taxonScorePropertyName]: String( suggestion.combined_score ),
+      } ) ),
+  } );
+};
+
 const useOnlineSuggestions = (
   options: OnlineSuggestionOptions,
 ): UseOnlineSuggestionsResponse => {
@@ -100,6 +155,8 @@ const useOnlineSuggestions = (
   // Use locale in case there is no user session
   const locale = i18n?.language ?? "en";
 
+  const getCurrentObservation = useStore( state => state.getCurrentObservation );
+
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
   // uploading images
@@ -112,32 +169,40 @@ const useOnlineSuggestions = (
   } = useAuthenticatedQuery<OnlineSuggestionsQueryResponse>(
     queryKey,
     async optsWithAuth => {
+      const obsUuid = getCurrentObservation().uuid;
       const params = {
         ...scoreImageParams,
         ...( !currentUser && { locale } ),
       };
 
-      // experiment to compare online & offline suggestion results
-      // imperatively fire-and-forgetted in online query to circumvent existing stateful mutex logic
-      executeOnRandomPercentile( async () => {
-        if ( scoreImageParams ) {
-          // TODO: log "background" experiment responses & errors
-          try {
-            await predictOffline( {
-              latitude: scoreImageParams.lat,
-              longitude: scoreImageParams.lng,
-              photoUri: scoreImageParams.image.uri,
-              realm,
-            } );
-          } catch ( _error ) { /* empty */ }
-        }
-      }, SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE );
-      // end experiment
-
       const suggestionsResponse
         = await scoreImage( params, optsWithAuth ) as OnlineSuggestionsApiResponse;
 
-      return shimApiResponseForCommonAncestor( suggestionsResponse );
+      // there's a slight discrepancy between online/offline responses which this smooths over for
+      // the eventual UI
+      const shimmedOnlineResponse = shimApiResponseForCommonAncestor( suggestionsResponse );
+
+      // experiment to compare online & offline suggestion results
+      // imperatively fire-and-forgetted in online query to circumvent existing stateful mutex logic
+      executeOnRandomPercentile( async () => {
+        if ( !scoreImageParams ) {
+          return;
+        }
+
+        try {
+          const offlineResult = await predictOffline( {
+            latitude: scoreImageParams.lat,
+            longitude: scoreImageParams.lng,
+            photoUri: scoreImageParams.image.uri,
+            realm,
+          } );
+
+          logSuggestionAnalytics( obsUuid, offlineResult, shimmedOnlineResponse );
+        } catch ( _error ) { /* empty */ }
+      }, SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE );
+      // end experiment
+
+      return shimmedOnlineResponse;
     },
     {
       enabled: !!shouldFetchOnlineSuggestions
