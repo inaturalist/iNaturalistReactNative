@@ -25,7 +25,7 @@ module.exports = {
         "ios/build/Build/Products/Debug-iphonesimulator/iNaturalistReactNative.app",
       build:
         /* eslint-disable-next-line max-len */
-        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build ONLY_ACTIVE_ARCH=YES EXCLUDED_ARCHS[sdk=iphonesimulator*]=x86_64",
     },
     "ios.release": {
       type: "ios.app",
@@ -33,7 +33,7 @@ module.exports = {
         "ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app",
       build:
         /* eslint-disable-next-line max-len */
-        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build ONLY_ACTIVE_ARCH=YES EXCLUDED_ARCHS[sdk=iphonesimulator*]=x86_64",
     },
     "android.debug": {
       type: "android.apk",
