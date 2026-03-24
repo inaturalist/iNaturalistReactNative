@@ -7,11 +7,12 @@ import TabStackNavigator, {
   SCREEN_NAME_OBS_LIST,
   SCREEN_NAME_ROOT_EXPLORE,
 } from "navigation/StackNavigators/TabStackNavigator";
+import type { BottomTabParamList } from "navigation/types";
 import React from "react";
 
 import CustomTabBarContainer from "./CustomTabBarContainer";
 
-const Tab = createBottomTabNavigator( );
+const Tab = createBottomTabNavigator<BottomTabParamList>( );
 
 /* eslint-disable react/jsx-props-no-spreading */
 

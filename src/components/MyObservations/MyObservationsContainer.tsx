@@ -61,7 +61,7 @@ interface SyncOptions {
   skipSomeUploads?: string[];
 }
 
-const MyObservationsContainer = ( ): React.FC => {
+const MyObservationsContainer = ( ) => {
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );

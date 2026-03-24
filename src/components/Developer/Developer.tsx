@@ -133,7 +133,7 @@ const LogOptions = ( ) => {
     <>
       <H1>Application Logs</H1>
       <Button
-        onPress={() => navigation.navigate( "log" )}
+        onPress={() => navigation.navigate( "Log" )}
         text="LOG"
         className="mb-5"
       />
@@ -163,7 +163,7 @@ const LogOptions = ( ) => {
           <H1>Application Logs (Legacy)</H1>
           <Text className="mb-5">{legacyLogFileDescription}</Text>
           <Button
-            onPress={() => navigation.navigate( "log", { isLegacyLogs: true } )}
+            onPress={() => navigation.navigate( "Log", { isLegacyLogs: true } )}
             text="LOG"
             className="mb-5"
           />

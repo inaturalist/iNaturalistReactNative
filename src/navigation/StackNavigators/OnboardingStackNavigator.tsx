@@ -1,12 +1,11 @@
-// @flow
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OnboardingCarousel from "components/Onboarding/OnboardingCarousel";
-import type { Node } from "react";
+import type { OnboardingStackParamList } from "navigation/types";
 import React from "react";
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator<OnboardingStackParamList>( );
 
-const OnboardingStackNavigator = ( ): Node => (
+const OnboardingStackNavigator = ( ) => (
   <Stack.Navigator>
     <Stack.Screen
       name="Onboarding"

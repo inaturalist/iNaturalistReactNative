@@ -1,5 +1,3 @@
-// @flow
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Please don't change this to an aliased path or the e2e mock will not get
@@ -22,12 +20,12 @@ import {
   hideHeader,
   hideHeaderLeft,
 } from "navigation/navigationOptions";
-import type { Node } from "react";
+import type { NoBottomTabStackParamList } from "navigation/types";
 import React from "react";
 
 import SharedStackScreens from "./SharedStackScreens";
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator<NoBottomTabStackParamList>( );
 
 const soundRecorderTitle = () => (
   <Heading4 className="text-white" accessibilityRole="header" numberOfLines={1}>
@@ -40,13 +38,13 @@ const CAMERA_SCREEN_OPTIONS = {
   contentStyle: {
     backgroundColor: "black",
   },
-};
+} as const;
 
 const GROUP_PHOTOS_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
   lazy: true,
-};
+} as const;
 
 const SOUND_RECORDER_OPTIONS = {
   ...hideHeaderLeft,
@@ -56,7 +54,7 @@ const SOUND_RECORDER_OPTIONS = {
   headerTintColor: "white",
   headerTitle: soundRecorderTitle,
   headerTitleAlign: "center",
-};
+} as const;
 
 const CameraContainerWithPermission = ( ) => fadeInComponent(
   <Mortal>
@@ -103,7 +101,7 @@ const SoundRecorderWithPermission = ( ) => fadeInComponent(
   </Mortal>,
 );
 
-const NoBottomTabStackNavigator = ( ): Node => (
+const NoBottomTabStackNavigator = ( ) => (
   <Stack.Navigator
     screenOptions={{
       headerBackButtonDisplayMode: "minimal",

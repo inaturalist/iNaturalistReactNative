@@ -2,6 +2,7 @@
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "baseUrl": ".",
+    "moduleResolution": "bundler",
     "paths": {
       "*": ["src/*"],
       "appConstants": ["src/appConstants"],
@@ -19,6 +20,7 @@
       "styles": ["src/styles"],
       "tests": ["tests"],
     },
+    "strict": true,
     "types": ["nativewind/types"],
   },
   "include": ["**/*.ts", "**/*.tsx"],
