@@ -35,10 +35,6 @@ class User extends Realm.Object {
     return iconUrl?.replace( "staticdev", "static" );
   }
 
-  static largeUri( user?: RealmUser | ApiUser ) {
-    return User.uri( user )?.replace( "medium", "large" );
-  }
-
   static thumbUri( user?: RealmUser | ApiUser ) {
     return User.uri( user )?.replace( "medium", "thumb" );
   }
