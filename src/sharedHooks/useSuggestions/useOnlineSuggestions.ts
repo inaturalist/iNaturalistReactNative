@@ -136,6 +136,20 @@ const logSuggestionAnalytics = (
   } );
 };
 
+function startOfflineExperimentInBackground(
+  obsUuid: string,
+  shimmedOnlineResponse: OnlineSuggestionsQueryResponse,
+  offlineSuggestionOperation: () => Promise<OfflineSuggestionsResponse>,
+) {
+  executeOnRandomPercentile( async () => {
+    try {
+      const offlineResult = await offlineSuggestionOperation();
+
+      logSuggestionAnalytics( obsUuid, offlineResult, shimmedOnlineResponse );
+    } catch ( _error ) { /* empty */ }
+  }, SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE );
+}
+
 const useOnlineSuggestions = (
   options: OnlineSuggestionOptions,
 ): UseOnlineSuggestionsResponse => {
@@ -182,25 +196,18 @@ const useOnlineSuggestions = (
       // the eventual UI
       const shimmedOnlineResponse = shimApiResponseForCommonAncestor( suggestionsResponse );
 
-      // experiment to compare online & offline suggestion results
-      // imperatively fire-and-forgetted in online query to circumvent existing stateful mutex logic
-      executeOnRandomPercentile( async () => {
-        if ( !scoreImageParams ) {
-          return;
-        }
-
-        try {
-          const offlineResult = await predictOffline( {
+      if ( !!scoreImageParams && typeof obsUuid === "string" ) {
+        startOfflineExperimentInBackground(
+          obsUuid,
+          shimmedOnlineResponse,
+          () => predictOffline( {
             latitude: scoreImageParams.lat,
             longitude: scoreImageParams.lng,
             photoUri: scoreImageParams.image.uri,
             realm,
-          } );
-
-          logSuggestionAnalytics( obsUuid, offlineResult, shimmedOnlineResponse );
-        } catch ( _error ) { /* empty */ }
-      }, SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE );
-      // end experiment
+          } ),
+        );
+      }
 
       return shimmedOnlineResponse;
     },
