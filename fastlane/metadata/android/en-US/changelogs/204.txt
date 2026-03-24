@@ -1,0 +1,10 @@
+NEW
+* Mentions autocomplete
+
+FIXED
+* Allow android users to upload images from their photo picker (thanks, Brendan!)
+* Clearing of a photos cache on startup in default mode
+
+UPDATED
+* Increased performance logging
+* Minor package and performance updates
