@@ -18,11 +18,14 @@ interface ObsFlowParams {
   };
 }
 
+interface ExitOptions {
+  skipStoreReset?: boolean;
+}
 interface Options {
   navigate?: ( ) => void;
 }
 
-export default function useExitObservationFlow( exitOptions ) {
+export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ObsFlowParams, string>>( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
