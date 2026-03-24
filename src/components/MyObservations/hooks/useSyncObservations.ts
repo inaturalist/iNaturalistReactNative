@@ -6,7 +6,6 @@ import { deleteRemoteObservation } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
-import { markSyncComplete } from "sharedHelpers/startupPerformanceTracker";
 import { useAuthenticatedMutation } from "sharedHooks";
 import {
   AUTOMATIC_SYNC_IN_PROGRESS,
@@ -162,7 +161,6 @@ const useSyncObservations = (
 
     if ( !signalAborted ) {
       completeSync( );
-      markSyncComplete( );
     }
   }, [
     canSync,

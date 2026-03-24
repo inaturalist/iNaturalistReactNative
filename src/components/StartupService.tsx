@@ -13,7 +13,6 @@ import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
 import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
-import { markStartupServiceComplete } from "sharedHelpers/startupPerformanceTracker";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
 import {
   usePerformance,
@@ -134,8 +133,6 @@ const StartupService = ( ) => {
       } catch ( error ) {
         logger.error( "Startup service error:", error );
       }
-
-      markStartupServiceComplete();
     };
 
     initializeApp( );

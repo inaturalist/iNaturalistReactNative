@@ -21,8 +21,7 @@ import {
   sortSpeciesCounts,
 } from "sharedHelpers/sortingHelpers";
 import {
-  expectSync,
-  markScreenReached,
+  emitStartupTTI,
 } from "sharedHelpers/startupPerformanceTracker";
 import {
   useCurrentUser,
@@ -211,19 +210,19 @@ const MyObservationsContainer = ( ): React.FC => {
       let isActive = true;
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
+      let idleCallbackId = 0;
       if ( isActive ) {
-        // expectSync must be called before markScreenReached so that syncDone
-        // is already false when markScreenReached's tryEmit runs, preventing
-        // premature TTI emission before the sync cascade completes
-        expectSync( );
-        markScreenReached( {
-          targetScreen: "MyObservations",
-          loggedIn: !!currentUser,
+        idleCallbackId = requestIdleCallback( ( ) => {
+          emitStartupTTI( {
+            targetScreen: "MyObservations",
+            loggedIn: !!currentUser,
+          } );
         } );
         startAutomaticSync( );
       }
       return () => {
         isActive = false;
+        if ( idleCallbackId ) { cancelIdleCallback( idleCallbackId ); }
       };
     }, [
       currentUser,

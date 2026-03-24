@@ -29,7 +29,7 @@ import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useOnboardingShown } from "sharedHelpers/installData";
-import { markScreenReached } from "sharedHelpers/startupPerformanceTracker";
+import { emitStartupTTI } from "sharedHelpers/startupPerformanceTracker";
 import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
@@ -167,6 +167,19 @@ const OnboardingCarousel = ( ) => {
     } );
   }, [ONBOARDING_SLIDES, totalImages] );
 
+  useEffect( ( ) => {
+    let idleCallbackId = 0;
+    if ( Platform.OS === "android" || imagesLoaded ) {
+      idleCallbackId = requestIdleCallback( ( ) => {
+        emitStartupTTI( {
+          targetScreen: "OnboardingCarousel",
+          loggedIn: false,
+        } );
+      } );
+    }
+    return () => { if ( idleCallbackId ) { cancelIdleCallback( idleCallbackId ); } };
+  }, [imagesLoaded] );
+
   // TODO: On Android release build imagesLoaded never switched from false to true, and
   // this screen was stuck in a loading state. On iOS it worked as expected.
   // Disabling it now on Android to make a new release possible.
@@ -186,13 +199,6 @@ const OnboardingCarousel = ( ) => {
       </ImageBackground>
     );
   }
-
-  // Reached on iOS once images are loaded, and immediately on Android.
-  // The tracker's emitted guard makes repeated render calls safe.
-  markScreenReached( {
-    targetScreen: "OnboardingCarousel",
-    loggedIn: false,
-  } );
 
   return (
     <ViewWrapper wrapperClassName="bg-black">
