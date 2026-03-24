@@ -9,7 +9,7 @@ import React from "react";
 import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
-type IconVariant = "small" | "medium" | "large";
+type IconVariant = "small" | "medium";
 
 interface Props {
   item: object;
@@ -23,7 +23,6 @@ interface Props {
 const ICON_VARIANT_SIZE: Record<IconVariant, number> = {
   small: 22,
   medium: 62,
-  large: 134,
 };
 
 const UserListItem = ( {
@@ -72,7 +71,6 @@ const UserListItem = ( {
               uri={User.uri( user )}
               small={iconVariant === "small"}
               medium={iconVariant === "medium"}
-              large={iconVariant === "large"}
             />
           )
           : (
