@@ -23,11 +23,13 @@ const { useRealm } = RealmContext;
 type Props = {
   observations: Object[],
   currentObservation: Object,
+  rollback: () => void,
 }
 
 const ObsEditHeader = ( {
   observations,
   currentObservation,
+  rollback,
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const updateObservations = useStore( state => state.updateObservations );
@@ -46,10 +48,21 @@ const ObsEditHeader = ( {
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    exitObservationFlow( {
-      navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
-    } );
-  }, [currentObservation?.uuid, exitObservationFlow, navigation] );
+    if ( params?.lastScreen === "Match" ) {
+      rollback( );
+      navigation.goBack( );
+    } else {
+      exitObservationFlow( {
+        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
+      } );
+    }
+  }, [
+    currentObservation?.uuid,
+    exitObservationFlow,
+    navigation,
+    params?.lastScreen,
+    rollback,
+  ] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
@@ -86,12 +99,9 @@ const ObsEditHeader = ( {
   const handleBackButtonPress = useCallback( ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
-    } else if ( params?.lastScreen === "Match" && unsavedChanges ) {
-      // When coming from the match screen, we don't have a version of the match to roll back to
-      // so if there are changes, they need to restart
-      // In the future, we'll support a rollback https://linear.app/inaturalist/issue/MOB-1091/match-screen-edit-flow-should-roll-back-changes-on-back-navigation
+    } else if ( params?.lastScreen === "Match" ) {
       if ( unsavedChanges ) {
-        setDiscardObservationSheetVisible( true );
+        setDiscardChangesSheetVisible( true );
       } else {
         navigation.goBack( );
       }

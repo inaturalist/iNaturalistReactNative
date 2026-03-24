@@ -8,7 +8,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Animated } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
-import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedHooks";
+import {
+  useCurrentUser,
+  useLocationPermission,
+  useObsEditRollback,
+  useWatchPosition,
+} from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 
@@ -45,6 +50,8 @@ const ObsEdit = ( ): Node => {
     renderPermissionsGate: renderLocationPermissionGate,
     requestPermissions: requestLocationPermission,
   } = useLocationPermission( );
+
+  const { rollback } = useObsEditRollback( );
 
   const fadeAnim = React.useRef( new Animated.Value( 1 ) ).current;
 
@@ -113,6 +120,7 @@ const ObsEdit = ( ): Node => {
           <ObsEditHeader
             currentObservation={currentObservation}
             observations={observations}
+            rollback={rollback}
           />
           {currentObservation && (
             <View
