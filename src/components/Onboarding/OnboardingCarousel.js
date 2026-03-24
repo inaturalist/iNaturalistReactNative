@@ -29,7 +29,7 @@ import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useOnboardingShown } from "sharedHelpers/installData";
-import { emitStartupTTI } from "sharedHelpers/startupPerformanceTracker";
+import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
@@ -171,7 +171,7 @@ const OnboardingCarousel = ( ) => {
     let idleCallbackId = 0;
     if ( Platform.OS === "android" || imagesLoaded ) {
       idleCallbackId = requestIdleCallback( ( ) => {
-        emitStartupTTI( {
+        startupPerformanceTracker.emitStartupTTI( {
           targetScreen: "OnboardingCarousel",
           loggedIn: false,
         } );

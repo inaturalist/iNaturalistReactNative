@@ -20,9 +20,7 @@ import {
   mapSpeciesSortToAPIParams,
   sortSpeciesCounts,
 } from "sharedHelpers/sortingHelpers";
-import {
-  emitStartupTTI,
-} from "sharedHelpers/startupPerformanceTracker";
+import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -213,7 +211,7 @@ const MyObservationsContainer = ( ): React.FC => {
       let idleCallbackId = 0;
       if ( isActive ) {
         idleCallbackId = requestIdleCallback( ( ) => {
-          emitStartupTTI( {
+          startupPerformanceTracker.emitStartupTTI( {
             targetScreen: "MyObservations",
             loggedIn: !!currentUser,
           } );
