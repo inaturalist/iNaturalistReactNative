@@ -11,25 +11,15 @@ import {
 import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { logFirebaseEvent } from "sharedHelpers/tracking";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
 } from "sharedHooks";
 import useStore from "stores/useStore";
-import { v4 as uuidv4 } from "uuid";
 
+import { startOfflineExperimentInBackground } from "./suggestionComparisonExperiment";
 import type { ScoreImageParams, UseSuggestionsOnlineSuggestion } from "./types";
-import type { OfflineSuggestionsResponse } from "./useOfflineSuggestions";
 import { predictOffline } from "./useOfflineSuggestions";
-
-const executeOnRandomPercentile = ( operation: () => void, integerPercentChance: number ) => {
-  if ( Math.random() * 100 <= integerPercentChance ) {
-    operation();
-  }
-};
-
-const SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE = 1;
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
 
@@ -60,7 +50,7 @@ interface OnlineSuggestionsApiResponse {
   common_ancestor?: Omit<UseSuggestionsOnlineSuggestion, "combined_score">;
 }
 
-interface OnlineSuggestionsQueryResponse {
+export interface OnlineSuggestionsQueryResponse {
   results: UseSuggestionsOnlineSuggestion[];
   common_ancestor?: UseSuggestionsOnlineSuggestion;
 }
@@ -84,71 +74,6 @@ const shimApiResponseForCommonAncestor
       common_ancestor: shimmedCommonAncestor,
     };
   };
-
-// GA has very limited support for structured data. Only certain built-in events have support for
-// non-primitive data structures. We're piggybacking on those built-ins for this reporting.
-// These are then mapped to more appropriately named suggestion events using "event modifications"
-// in the Firebase Events Config.
-// https://developers.google.com/analytics/devguides/collection/ga4/reference/events?client_type=gtag#purchase
-const offlineEventName = "purchase";
-// https://developers.google.com/analytics/devguides/collection/ga4/reference/events?client_type=gtag#view_item_list
-const onlineEventName = "view_item_list";
-// similarly, GA, at least through Firebase, doesn't seem to respect custom properties on `items`
-// so we're using the generic "item_category" properties which will also be remapped.
-const taxonIdPropertyName = "item_category";
-const taxonScorePropertyName = "item_category2";
-
-const logSuggestionAnalytics = (
-  optimisticObservationUuid: string,
-  offlineSuggestions: OfflineSuggestionsResponse,
-  onlineSuggestions: OnlineSuggestionsQueryResponse,
-) => {
-  const transactionId = uuidv4();
-
-  logFirebaseEvent( offlineEventName, {
-    transactionId,
-    optimisticObservationUuid,
-    prediction_source: "offline",
-    commonAncestorTaxonId: offlineSuggestions.commonAncestor?.taxon.id ?? "NA",
-    commonAncestorCombinedScore: offlineSuggestions.commonAncestor?.combined_score ?? "NA",
-    items: offlineSuggestions.results
-      .slice( 0, 10 )
-      .map( suggestion => ( {
-        item_id: String( suggestion.taxon.id ),
-        [taxonIdPropertyName]: String( suggestion.taxon.id ),
-        [taxonScorePropertyName]: String( suggestion.combined_score ),
-      } ) ),
-  } );
-
-  logFirebaseEvent( onlineEventName, {
-    transactionId,
-    optimisticObservationUuid,
-    prediction_source: "online",
-    commonAncestorTaxonId: onlineSuggestions.common_ancestor?.taxon.id ?? "NA",
-    commonAncestorCombinedScore: onlineSuggestions.common_ancestor?.combined_score ?? "NA",
-    items: onlineSuggestions.results
-      .slice( 0, 10 )
-      .map( suggestion => ( {
-        item_id: String( suggestion.taxon.id ),
-        [taxonIdPropertyName]: String( suggestion.taxon.id ),
-        [taxonScorePropertyName]: String( suggestion.combined_score ),
-      } ) ),
-  } );
-};
-
-function startOfflineExperimentInBackground(
-  obsUuid: string,
-  shimmedOnlineResponse: OnlineSuggestionsQueryResponse,
-  offlineSuggestionOperation: () => Promise<OfflineSuggestionsResponse>,
-) {
-  executeOnRandomPercentile( async () => {
-    try {
-      const offlineResult = await offlineSuggestionOperation();
-
-      logSuggestionAnalytics( obsUuid, offlineResult, shimmedOnlineResponse );
-    } catch ( _error ) { /* empty */ }
-  }, SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE );
-}
 
 const useOnlineSuggestions = (
   options: OnlineSuggestionOptions,
