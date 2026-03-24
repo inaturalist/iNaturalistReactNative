@@ -3,7 +3,6 @@
 // https://www.npmjs.com/package/uuid#react-native--expo
 // eslint-disable-next-line simple-import-sort/imports
 import "react-native-get-random-values";
-
 // React Native doesn't have a functional URL as of Feb 2024
 import "react-native-url-polyfill/auto";
 

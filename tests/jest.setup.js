@@ -20,6 +20,9 @@ global.ReanimatedDataMock = {
   now: () => 0,
 };
 
+global.requestIdleCallback = callback => setTimeout( callback, 0 );
+global.cancelIdleCallback = id => clearTimeout( id );
+
 jest.mock( "react-native-volume-manager", () => ( {
   VolumeManager: {
     getVolume: jest.fn( () => Promise.resolve( 0.5 ) ),
