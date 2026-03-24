@@ -49,7 +49,13 @@ jobs:
     - name: Setup Ruby version according to .ruby-version with cached gems
       uses: ruby/setup-ruby@v1
       with:
-        bundler-cache: true        
+        bundler-cache: true
+        
+    # https://github.com/Iterable/react-native-sdk/issues/778#issuecomment-3550033246
+    - name: Install missing Xcode components
+      run: |
+        sudo xcodebuild -downloadComponent MetalToolchain
+        sudo xcodebuild -runFirstLaunch
 
     - name: Cache node modules
       uses: actions/cache@v4
