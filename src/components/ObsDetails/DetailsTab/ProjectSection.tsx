@@ -1,4 +1,7 @@
+import type { ParamListBase } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { ApiObservation } from "api/types";
 import {
   Button,
   Divider,
@@ -6,41 +9,22 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { useMemo } from "react";
+import React from "react";
 
 const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
-// TODO: can we get a centralized type/interface for our realm objects, here observation and project
 interface Props {
-  observation: {
-    project_observations: {
-      project: object;
-    }[];
-    non_traditional_projects: {
-      project: object;
-    }[];
-  };
+  observation: ApiObservation;
 }
 
 const ProjectSection = ( { observation }: Props ) => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
 
-  const traditionalProjects = observation?.project_observations?.map( p => p.project ) || [];
-  const nonTraditionalProjects = observation?.non_traditional_projects?.map( p => p.project ) || [];
-
-  const traditionalProjectCount = traditionalProjects.length;
-  const nonTraditionalProjectCount = nonTraditionalProjects.length;
+  const traditionalProjectCount = observation?.project_observations?.length || 0;
+  const nonTraditionalProjectCount = observation?.non_traditional_projects?.length || 0;
 
   const totalProjectCount = traditionalProjectCount + nonTraditionalProjectCount;
-  const allProjects = traditionalProjects.concat( nonTraditionalProjects );
-
-  const headerOptions = useMemo( ( ) => ( {
-    headerTitle: t( "Observation" ),
-    headerSubtitle: t( "X-PROJECTS", {
-      projectCount: totalProjectCount,
-    } ),
-  } ), [totalProjectCount] );
 
   if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
     return null;
@@ -57,8 +41,7 @@ const ProjectSection = ( { observation }: Props ) => {
         <Button
           text={t( "VIEW-PROJECTS" )}
           onPress={( ) => navigation.navigate( "ProjectList", {
-            projects: allProjects,
-            headerOptions,
+            observationUuid: observation.uuid,
           } )}
         />
       </View>

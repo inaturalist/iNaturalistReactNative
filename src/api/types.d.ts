@@ -137,15 +137,21 @@ export interface ApiRecord {
   updated_at?: string;
 }
 
+export interface ApiProjectObservation {
+  project: ApiProject;
+}
+
 export interface ApiObservation extends ApiRecord {
+  comments?: ApiComment[];
+  identifications?: ApiIdentification[];
+  non_traditional_projects?: ApiProjectObservation[];
   observation_photos?: ApiObservationPhoto[];
   observation_sounds?: ApiObservationSound[];
+  project_observations?: ApiProjectObservation[];
+  taxon?: ApiTaxon;
   time_observed_at?: string;
   user?: ApiUser;
   uuid: string;
-  comments?: ApiComment[];
-  identifications?: ApiIdentification[];
-  taxon?: ApiTaxon;
 }
 
 export interface ApiSuggestion {

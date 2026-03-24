@@ -2,7 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchRelationships } from "api/relationships";
-import { fetchRemoteUser, fetchUserProjects } from "api/users";
+import { fetchRemoteUser } from "api/users";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
   Body2,
@@ -18,8 +18,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useMemo, useState } from "react";
-import Observation from "realmModels/Observation";
+import React, { useCallback, useState } from "react";
 import User from "realmModels/User";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
 import {
@@ -53,34 +52,7 @@ const UserProfile = ( ): Node => {
 
   const user = remoteUser || null;
 
-  const userProjectsQueryKey = ["fetchUserProjects", userId];
   const relationshipsQueryKey = ["fetchRelationships", user?.login];
-
-  const {
-    data: projects,
-  } = useAuthenticatedQuery(
-    userProjectsQueryKey,
-    optsWithAuth => fetchUserProjects(
-      {
-        id: userId,
-        per_page: 200,
-        fields: Observation.PROJECT_FIELDS,
-      },
-      optsWithAuth,
-    ),
-    {
-      enabled: !!( userId ),
-    },
-  );
-
-  const totalProjectCount = projects?.length;
-
-  const projectsHeaderOptions = useMemo( ( ) => ( {
-    headerTitle: user?.login,
-    headerSubtitle: t( "JOINED-X-PROJECTS", {
-      count: totalProjectCount,
-    } ),
-  } ), [totalProjectCount, t, user] );
 
   const {
     data: relationships,
@@ -198,8 +170,8 @@ const UserProfile = ( ): Node => {
           <Button
             text={t( "VIEW-PROJECTS" )}
             onPress={( ) => navigation.navigate( "ProjectList", {
-              projects,
-              headerOptions: projectsHeaderOptions,
+              userId,
+              userLogin: user.login,
             } )}
           />
         </View>
