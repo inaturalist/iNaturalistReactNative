@@ -162,7 +162,7 @@ const PhotoCarousel = ( {
                         testID={`PhotoCarousel.deletePhoto.${photoUri}`}
                         accessibilityLabel={t( "Delete-photo" )}
                         onPress={( ) => {
-                          onDelete( photoUri );
+                          onDelete?.( photoUri );
                           if ( photoUris.length === 1 && deletePhotoMode ) {
                             setDeletePhotoMode( false );
                           }

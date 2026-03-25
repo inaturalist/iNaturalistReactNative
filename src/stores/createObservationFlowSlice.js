@@ -212,6 +212,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     evidenceToAdd: snapshot.evidenceToAdd,
     newPhotoUris: snapshot.newPhotoUris,
     unsavedChanges: snapshot.unsavedChanges,
+    rollbackSnapshot: null,
   } ),
   setRollbackSnapshot: ( ) => set( state => ( {
     rollbackSnapshot: {
