@@ -140,17 +140,24 @@ export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise
 
       const {
         GPSLatitude,
+        GPSLatitudeRef,
         GPSLongitude,
+        GPSLongitudeRef,
         GPSHPositioningError,
       } = currentPhotoExif;
 
       const date = normalizeExifDateToLegacyFormat( currentPhotoExif );
 
-      if ( !unifiedExif.latitude ) {
-        unifiedExif.latitude = GPSLatitude;
+      if ( !unifiedExif.latitude && GPSLatitude ) {
+        unifiedExif.latitude
+          = GPSLatitudeRef === "S"
+            ? -GPSLatitude
+            : GPSLatitude;
       }
-      if ( !unifiedExif.longitude ) {
-        unifiedExif.longitude = GPSLongitude;
+      if ( !unifiedExif.longitude && GPSLongitude ) {
+        unifiedExif.longitude = GPSLongitudeRef === "W"
+          ? -GPSLongitude
+          : GPSLongitude;
       }
       if ( !unifiedExif.observed_on_string ) {
         unifiedExif.observed_on_string = formatExifDateAsString( date ) || null;
