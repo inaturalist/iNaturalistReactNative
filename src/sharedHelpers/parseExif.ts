@@ -75,6 +75,9 @@ Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
 export const parseExifDateToLocalTimezone = ( datetime: string ): Date | null => {
   if ( !datetime ) return null;
 
+  // Previously: react-native-exif-reader formats the date based on GMT time,
+  // so we create a date object here using GMT time, not the user's local timezone
+
   // We intentionally interpret EXIF datetime as "GMT/UTC wall time" (not the
   // user's local timezone) and later format as an ISO string without timezone.
   const isoDate = `${datetime}Z`;
