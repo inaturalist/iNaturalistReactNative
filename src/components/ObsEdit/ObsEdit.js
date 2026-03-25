@@ -51,7 +51,7 @@ const ObsEdit = ( ): Node => {
     requestPermissions: requestLocationPermission,
   } = useLocationPermission( );
 
-  const { rollback } = useObsEditRollback( );
+  const { rollback, isFromMatch } = useObsEditRollback( );
 
   const fadeAnim = React.useRef( new Animated.Value( 1 ) ).current;
 
@@ -119,6 +119,7 @@ const ObsEdit = ( ): Node => {
         >
           <ObsEditHeader
             currentObservation={currentObservation}
+            isFromMatch={isFromMatch}
             observations={observations}
             rollback={rollback}
           />

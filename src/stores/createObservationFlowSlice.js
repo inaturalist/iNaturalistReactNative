@@ -29,6 +29,7 @@ const DEFAULT_STATE = {
   totalSavedObservations: 0,
   sentinelFileName: null,
   newPhotoUris: [],
+  rollbackSnapshot: null,
 };
 
 const removeObsSoundFromObservation = ( currentObservation, uri ) => {
@@ -211,6 +212,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     newPhotoUris: snapshot.newPhotoUris,
     unsavedChanges: snapshot.unsavedChanges,
   } ),
+  setRollbackSnapshot: snapshot => set( { rollbackSnapshot: snapshot } ),
 } );
 
 export default createObservationFlowSlice;

@@ -1,6 +1,8 @@
 // @flow
 
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  StackActions, useFocusEffect, useNavigation, useRoute,
+} from "@react-navigation/native";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -23,12 +25,14 @@ const { useRealm } = RealmContext;
 type Props = {
   observations: Object[],
   currentObservation: Object,
+  isFromMatch: boolean,
   rollback: () => void,
 }
 
 const ObsEditHeader = ( {
   observations,
   currentObservation,
+  isFromMatch,
   rollback,
 }: Props ): Node => {
   const unsavedChanges = useStore( state => state.unsavedChanges );
@@ -48,9 +52,9 @@ const ObsEditHeader = ( {
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    if ( params?.lastScreen === "Match" ) {
+    if ( isFromMatch ) {
       rollback( );
-      navigation.goBack( );
+      navigation.dispatch( StackActions.popTo( "Match" ) );
     } else {
       exitObservationFlow( {
         navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
@@ -59,8 +63,8 @@ const ObsEditHeader = ( {
   }, [
     currentObservation?.uuid,
     exitObservationFlow,
+    isFromMatch,
     navigation,
-    params?.lastScreen,
     rollback,
   ] );
 
@@ -99,11 +103,11 @@ const ObsEditHeader = ( {
   const handleBackButtonPress = useCallback( ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
-    } else if ( params?.lastScreen === "Match" ) {
+    } else if ( isFromMatch ) {
       if ( unsavedChanges ) {
         setDiscardChangesSheetVisible( true );
       } else {
-        navigation.goBack( );
+        navigation.dispatch( StackActions.popTo( "Match" ) );
       }
     } else if ( shouldNavigateBack ) {
       navigation.goBack( );
@@ -119,6 +123,7 @@ const ObsEditHeader = ( {
   }, [
     currentObservation?.uuid,
     exitObservationFlow,
+    isFromMatch,
     navigation,
     params?.lastScreen,
     savedLocally,
