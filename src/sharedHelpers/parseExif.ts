@@ -26,7 +26,7 @@ export const parseExifDateToLocalTimezone = ( datetime: string ): Date | null =>
 };
 
 // Parses EXIF date time into a date object
-export const parseExif = async ( photoUri?: string ): Promise<object> => {
+export const parseExif = async ( photoUri?: string ): Promise<object | null> => {
   try {
     return readExif( photoUri );
   } catch ( e ) {
@@ -43,7 +43,8 @@ export interface ExifToWrite {
   positional_accuracy?: number | null;
 }
 
-export const writeExifToFile = async ( photoUri?: string, exif: ExifToWrite ): Promise<object> => {
+export const writeExifToFile = async ( photoUri?: string, exif: ExifToWrite ):
+Promise<object | null> => {
   try {
     return writeLocation( photoUri, exif );
   } catch ( e ) {
