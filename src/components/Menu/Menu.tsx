@@ -240,7 +240,7 @@ const Menu = ( ) => {
         remoteObservations: "loggedout",
       };
     const storageMetrics = await getStorageMetrics( realm?.path ).catch( () => ( {} ) );
-    const deviceMetrics = await getDeviceMetricsForFeedback();
+    const deviceMetrics = await getDeviceMetricsForFeedback().catch( () => ( {} ) );
     const feedbackContext = {
       ...modeContext,
       ...loggedInContext,
