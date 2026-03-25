@@ -1,5 +1,6 @@
 // eslint-disable-next-line
 import { Realm } from "@realm/react";
+import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
 import remove from "lodash/remove";
 import pull from "lodash/pull";
@@ -212,7 +213,18 @@ const createObservationFlowSlice = ( set, get ) => ( {
     newPhotoUris: snapshot.newPhotoUris,
     unsavedChanges: snapshot.unsavedChanges,
   } ),
-  setRollbackSnapshot: snapshot => set( { rollbackSnapshot: snapshot } ),
+  setRollbackSnapshot: ( ) => set( state => ( {
+    rollbackSnapshot: {
+      observations: cloneDeep( state.observations ),
+      currentObservationIndex: state.currentObservationIndex,
+      cameraUris: [...state.cameraUris],
+      cameraRollUris: [...state.cameraRollUris],
+      photoLibraryUris: [...state.photoLibraryUris],
+      evidenceToAdd: [...state.evidenceToAdd],
+      newPhotoUris: [...state.newPhotoUris],
+      unsavedChanges: state.unsavedChanges,
+    },
+  } ) ),
 } );
 
 export default createObservationFlowSlice;
