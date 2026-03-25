@@ -107,7 +107,10 @@ export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise
     positional_accuracy?: number;
   } = {};
 
-  const responses = await Promise.allSettled( photoUris.map( Exify.read ) );
+  const normalizedUris = photoUris.map( uri => ( uri.startsWith( "/" )
+    ? `file://${uri}`
+    : uri ) );
+  const responses = await Promise.allSettled( normalizedUris.map( Exify.read ) );
   console.log( "responses", responses );
   const allExifPhotos = responses
     .filter( r => r.status === "fulfilled" )

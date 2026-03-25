@@ -67,6 +67,20 @@ describe( "readExifFromMultiplePhotos", ( ) => {
     expect( unified.observed_on_string ).toEqual( EXPECTED_OBSERVED_ON_STRING );
   } );
 
+  it( "should normalize bare filesystem paths for Exify (Android)", async ( ) => {
+    const barePath = "/data/user/0/org.inaturalist.iNaturalistMobile/files/galleryPhotos/test.jpg";
+    const expectedExifyUri = `file://${barePath}`;
+
+    Exify.read.mockImplementation( async uri => {
+      expect( uri ).toEqual( expectedExifyUri );
+      return MOCK_READ_EXIF_RESPONSE;
+    } );
+
+    const unified = await readExifFromMultiplePhotos( [barePath] );
+    expect( unified.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
+    expect( unified.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
+  } );
+
   it( "should handle EXIF datetime with a different timezone offset", async ( ) => {
     Exify.read
       .mockRejectedValueOnce( new Error( "failed to catch test error" ) )
