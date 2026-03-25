@@ -1,6 +1,7 @@
 import type { RouteProp } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 import { useCallback, useEffect } from "react";
+import { selectCanRollbackToMatch } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 interface ObsEditRollbackParams {
@@ -31,7 +32,7 @@ function useObsEditRollback( ): { rollback: ( ) => void; canRollbackToMatch: boo
     }
   }, [restoreRollbackSnapshot, rollbackSnapshot] );
 
-  const canRollbackToMatch = useStore( state => state.canRollbackToMatch( ) );
+  const canRollbackToMatch = useStore( selectCanRollbackToMatch );
 
   return { rollback, canRollbackToMatch };
 }

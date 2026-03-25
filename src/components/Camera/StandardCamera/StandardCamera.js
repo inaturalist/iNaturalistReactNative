@@ -23,6 +23,7 @@ import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import { useDeviceOrientation, usePerformance } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
+import { selectCanRollbackToMatch } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 import {
@@ -100,7 +101,7 @@ const StandardCamera = ( {
   const prepareCamera = useStore( state => state.prepareCamera );
   const photoLibraryUris = useStore( state => state.photoLibraryUris );
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
-  const canRollbackToMatch = useStore( state => state.canRollbackToMatch( ) );
+  const canRollbackToMatch = useStore( selectCanRollbackToMatch );
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...cameraUris, ...photoLibraryUris].length,

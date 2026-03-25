@@ -29,10 +29,7 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ObsFlowParams, string>>( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
-  const clearRollbackSnapshot = useCallback(
-    ( ) => useStore.setState( { rollbackSnapshot: null } ),
-    [],
-  );
+  const clearRollbackSnapshot = useStore( state => state.clearRollbackSnapshot );
 
   return useCallback( ( options: Options = {} ) => {
     // In theory everything that needs to be saved has been saved at this
