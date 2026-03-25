@@ -31,7 +31,10 @@ function useObsEditRollback( ): { rollback: ( ) => void; isFromMatch: boolean } 
     }
   }, [restoreRollbackSnapshot, rollbackSnapshot] );
 
-  const isFromMatch = rollbackSnapshot !== null;
+  const currentObservation = useStore( state => state.currentObservation );
+  const isFromMatch = rollbackSnapshot !== null
+    && rollbackSnapshot.observations[rollbackSnapshot.currentObservationIndex]?.uuid
+      === currentObservation?.uuid;
 
   return { rollback, isFromMatch };
 }
