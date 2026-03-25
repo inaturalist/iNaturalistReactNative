@@ -15,7 +15,7 @@ interface Props {
   isLandscapeMode?: boolean;
   isLargeScreen?: boolean;
   isTablet?: boolean;
-  onDelete: ( _uri: string ) => void;
+  onDelete?: ( _uri: string ) => void;
   photoUris: string[];
   rotation?: { value: number };
   takingPhoto: boolean;

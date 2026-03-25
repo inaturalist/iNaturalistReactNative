@@ -45,6 +45,7 @@ const EvidenceList = ( {
 
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const deleteSoundFromObservation = useStore( state => state.deleteSoundFromObservation );
+  const rollbackSnapshot = useStore( state => state.rollbackSnapshot );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const savingPhoto = useStore( state => state.savingPhoto );
   const realm = useRealm( );
@@ -61,6 +62,18 @@ const EvidenceList = ( {
   const photoUris = observationPhotos?.map(
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo ),
   );
+
+  // In the Match flow, identify the original photo from the frozen snapshot
+  // so we can prevent its deletion. Using the snapshot (not current state)
+  // makes this immune to drag-reorder changes.
+  const originalPhotoUri = useMemo( ( ) => {
+    if ( !rollbackSnapshot ) return null;
+    const snapshotObs = rollbackSnapshot.observations[rollbackSnapshot.currentObservationIndex];
+    const snapshotPhotos = snapshotObs?.observationPhotos;
+    if ( !snapshotPhotos?.length ) return null;
+    const sorted = sortBy( snapshotPhotos, op => op.position );
+    return Photo.displayLocalOrRemoteSquarePhoto( sorted[0].photo );
+  }, [rollbackSnapshot] );
   const mediaUris = useMemo( ( ) => ( [
     ...photoUris,
     ...observationSounds.map( obsSound => obsSound.sound.file_url ),
@@ -174,10 +187,11 @@ const EvidenceList = ( {
   );
 
   const onDeletePhoto = useCallback( async uriToDelete => {
+    if ( uriToDelete === originalPhotoUri ) return;
     await ObservationPhoto.deletePhoto( uriToDelete, currentObservation );
     deletePhotoFromObservation( uriToDelete );
     afterMediaDeleted( );
-  }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation] );
+  }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation, originalPhotoUri] );
 
   const onDeleteSound = useCallback( async uriToDelete => {
     const obsSound = observationSounds.find( os => os.sound.file_url === uriToDelete );

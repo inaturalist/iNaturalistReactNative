@@ -25,7 +25,7 @@ interface Props {
   isTablet?: boolean;
   rotation?: SharedValue<number>;
   photoUris: string[];
-  onDelete: ( _uri: string ) => void;
+  onDelete?: ( _uri: string ) => void;
 }
 
 export const SMALL_PHOTO_DIM = 42;
@@ -111,10 +111,10 @@ const PhotoCarousel = ( {
   ] );
 
   const showDeletePhotoMode = useCallback( ( ) => {
-    if ( deletePhotoFromObservation ) {
+    if ( deletePhotoFromObservation && onDelete ) {
       setDeletePhotoMode( mode => !mode );
     }
-  }, [deletePhotoFromObservation] );
+  }, [deletePhotoFromObservation, onDelete] );
 
   const viewPhotoAtIndex = useCallback( ( index: number ) => {
     setTappedPhotoIndex( index );
@@ -286,13 +286,15 @@ const PhotoCarousel = ( {
           : photoPreviewsList
       }
       <MediaViewerModal
-        editable
+        editable={!!onDelete}
         showModal={tappedPhotoIndex >= 0}
         onClose={( ) => setTappedPhotoIndex( -1 )}
-        onDeletePhoto={async ( photoUri: string ) => {
-          await onDelete( photoUri );
-          setTappedPhotoIndex( tappedPhotoIndex - 1 );
-        }}
+        onDeletePhoto={onDelete
+          ? async ( photoUri: string ) => {
+            await onDelete( photoUri );
+            setTappedPhotoIndex( tappedPhotoIndex - 1 );
+          }
+          : undefined}
         uri={photoUris[tappedPhotoIndex]}
         photos={photoUris.map( uri => ( { url: uri } ) )}
       />
