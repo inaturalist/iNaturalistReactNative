@@ -87,32 +87,6 @@ export const parseExifDateToLocalTimezone = ( datetime: string ): Date | null =>
   return zonedDate;
 };
 
-export interface ExifToWrite {
-  latitude?: number | null;
-  longitude?: number | null;
-  positional_accuracy?: number | null;
-}
-
-export const writeExifToFile = async ( photoUri?: string, exif: ExifToWrite ):
-Promise<object | null> => {
-  try {
-    if ( !photoUri ) return null;
-
-    // Exify uses standard EXIF keys, not iNat's internal field names.
-    const tags: ExifTags = {};
-    if ( typeof exif?.latitude === "number" ) tags.GPSLatitude = exif.latitude;
-    if ( typeof exif?.longitude === "number" ) tags.GPSLongitude = exif.longitude;
-    if ( typeof exif?.positional_accuracy === "number" ) {
-      tags.GPSHPositioningError = exif.positional_accuracy;
-    }
-
-    return Exify.write( photoUri, tags );
-  } catch ( e ) {
-    console.error( e, "Couldn't write EXIF" );
-    return null;
-  }
-};
-
 export const formatExifDateAsString = ( datetime: string ): string => {
   const zonedDate = parseExifDateToLocalTimezone( datetime );
   // this returns a string, in the same format as photos which fall back to the
