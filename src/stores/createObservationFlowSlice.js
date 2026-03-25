@@ -214,7 +214,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     unsavedChanges: snapshot.unsavedChanges,
     rollbackSnapshot: null,
   } ),
-  isFromMatch: ( ) => {
+  canRollbackToMatch: ( ) => {
     const { rollbackSnapshot, currentObservation } = get( );
     return rollbackSnapshot !== null
       && rollbackSnapshot.observations[rollbackSnapshot.currentObservationIndex]?.uuid

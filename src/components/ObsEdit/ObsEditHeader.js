@@ -13,7 +13,7 @@ import React, {
 } from "react";
 import { BackHandler } from "react-native";
 import Observation from "realmModels/Observation";
-import { useExitObservationFlow, useTranslation } from "sharedHooks";
+import { useExitObservationFlow, useObsEditRollback, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
@@ -25,16 +25,13 @@ const { useRealm } = RealmContext;
 type Props = {
   observations: Object[],
   currentObservation: Object,
-  isFromMatch: boolean,
-  rollback: () => void,
 }
 
 const ObsEditHeader = ( {
   observations,
   currentObservation,
-  isFromMatch,
-  rollback,
 }: Props ): Node => {
+  const { rollback, canRollbackToMatch } = useObsEditRollback( );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const updateObservations = useStore( state => state.updateObservations );
   const savedOrUploadedMultiObsFlow = useStore( state => state.savedOrUploadedMultiObsFlow );
@@ -52,7 +49,7 @@ const ObsEditHeader = ( {
 
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
-    if ( isFromMatch ) {
+    if ( canRollbackToMatch ) {
       rollback( );
       navigation.dispatch( StackActions.popTo( "Match" ) );
     } else {
@@ -63,7 +60,7 @@ const ObsEditHeader = ( {
   }, [
     currentObservation?.uuid,
     exitObservationFlow,
-    isFromMatch,
+    canRollbackToMatch,
     navigation,
     rollback,
   ] );
@@ -103,7 +100,7 @@ const ObsEditHeader = ( {
   const handleBackButtonPress = useCallback( ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
-    } else if ( isFromMatch ) {
+    } else if ( canRollbackToMatch ) {
       if ( unsavedChanges ) {
         setDiscardChangesSheetVisible( true );
       } else {
@@ -123,7 +120,7 @@ const ObsEditHeader = ( {
   }, [
     currentObservation?.uuid,
     exitObservationFlow,
-    isFromMatch,
+    canRollbackToMatch,
     navigation,
     params?.lastScreen,
     savedLocally,

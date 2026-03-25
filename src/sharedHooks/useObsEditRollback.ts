@@ -9,7 +9,7 @@ interface ObsEditRollbackParams {
   };
 }
 
-function useObsEditRollback( ): { rollback: ( ) => void; isFromMatch: boolean } {
+function useObsEditRollback( ): { rollback: ( ) => void; canRollbackToMatch: boolean } {
   const { params } = useRoute<RouteProp<ObsEditRollbackParams, string>>( );
   const rollbackSnapshot = useStore( state => state.rollbackSnapshot );
   const setRollbackSnapshot = useStore( state => state.setRollbackSnapshot );
@@ -31,9 +31,9 @@ function useObsEditRollback( ): { rollback: ( ) => void; isFromMatch: boolean } 
     }
   }, [restoreRollbackSnapshot, rollbackSnapshot] );
 
-  const isFromMatch = useStore( state => state.isFromMatch( ) );
+  const canRollbackToMatch = useStore( state => state.canRollbackToMatch( ) );
 
-  return { rollback, isFromMatch };
+  return { rollback, canRollbackToMatch };
 }
 
 export default useObsEditRollback;

@@ -11,7 +11,6 @@ import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservation
 import {
   useCurrentUser,
   useLocationPermission,
-  useObsEditRollback,
   useWatchPosition,
 } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -50,8 +49,6 @@ const ObsEdit = ( ): Node => {
     renderPermissionsGate: renderLocationPermissionGate,
     requestPermissions: requestLocationPermission,
   } = useLocationPermission( );
-
-  const { rollback, isFromMatch } = useObsEditRollback( );
 
   const fadeAnim = React.useRef( new Animated.Value( 1 ) ).current;
 
@@ -119,9 +116,7 @@ const ObsEdit = ( ): Node => {
         >
           <ObsEditHeader
             currentObservation={currentObservation}
-            isFromMatch={isFromMatch}
             observations={observations}
-            rollback={rollback}
           />
           {currentObservation && (
             <View
