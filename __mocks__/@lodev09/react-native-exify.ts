@@ -1,4 +1,2 @@
-export default {
-  read: jest.fn( ),
-  write: jest.fn( ),
-};
+export const read = jest.fn( );
+export const write = jest.fn( );
