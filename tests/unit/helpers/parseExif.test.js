@@ -1,7 +1,6 @@
-import { readExif } from "react-native-exif-reader";
+import * as Exify from "@lodev09/react-native-exify";
 import {
   formatExifDateAsString,
-  parseExif,
   parseExifDateToLocalTimezone,
   readExifFromMultiplePhotos,
 } from "sharedHelpers/parseExif";
@@ -9,21 +8,28 @@ import faker from "tests/helpers/faker";
 
 // Expected EXIF metadata of the above file
 
-// Note that react-native-exif-reader returns dates as strings in a format
-// that are standardized but really particular
+// Note that previously react-native-exif-reader returned dates as strings in a format
+// that are standardized but really particular, I added the parsing of exif dates into this
+// particular format to parseExif
 const EXPECTED_EXIF_DATE = "2018-03-07T08:19:49.000";
+const EXPECTED_OBSERVED_ON_STRING = "2018-03-07T08:19:49";
 const EXPECTED_EXIF_LATITUDE = 38.07480555555556;
 const EXPECTED_EXIF_LONGITUDE = -122.85112777777778;
 const EXPECTED_EXIF_POSITIONAL_ACCURACY = 5;
 
-// Change the mock implementation to return the values we want
+// react-native-exify returns EXIF tags, not the app's normalized field names.
 const MOCK_READ_EXIF_RESPONSE = {
-  longitude: EXPECTED_EXIF_LONGITUDE,
-  latitude: EXPECTED_EXIF_LATITUDE,
-  positional_accuracy: EXPECTED_EXIF_POSITIONAL_ACCURACY,
-  date: EXPECTED_EXIF_DATE,
+  GPSLatitude: EXPECTED_EXIF_LATITUDE,
+  GPSLongitude: EXPECTED_EXIF_LONGITUDE,
+  GPSHPositioningError: EXPECTED_EXIF_POSITIONAL_ACCURACY,
+  // exify returns DateTimeOriginal in EXIF format: "YYYY:MM:DD HH:mm:ss"
+  DateTimeOriginal: "2018:03:07 08:19:49",
 };
-const mockReadExif = jest.fn( async _photoUri => MOCK_READ_EXIF_RESPONSE );
+
+const MOCK_READ_EXIF_RESPONSE_OTHER_TIME_ZONE = {
+  ...MOCK_READ_EXIF_RESPONSE,
+  OffsetTimeOriginal: "+01:00",
+};
 
 describe( "parseExifDateToLocalTimezone", () => {
   it( "should parse a date string in the format react-native-exif-reader returns", () => {
@@ -35,22 +41,6 @@ describe( "parseExifDateToLocalTimezone", () => {
   } );
 } );
 
-describe( "parseExif", () => {
-  beforeEach( ( ) => {
-    readExif.mockImplementation( mockReadExif );
-  } );
-  afterEach( ( ) => {
-    readExif.mockReset( );
-  } );
-  it( "should parse and return exif data when given a photo uri", async () => {
-    const exif = await parseExif( faker.image.url() );
-    expect( exif.date ).toEqual( EXPECTED_EXIF_DATE );
-    expect( exif.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
-    expect( exif.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
-    expect( exif.positional_accuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );
-  } );
-} );
-
 describe( "formatExifDateAsString", () => {
   it( "should return date in a string format ready to upload to server", () => {
     const dateString = formatExifDateAsString( EXPECTED_EXIF_DATE );
@@ -59,22 +49,37 @@ describe( "formatExifDateAsString", () => {
 } );
 
 describe( "readExifFromMultiplePhotos", ( ) => {
-  beforeEach( ( ) => readExif.mockReset( ) );
+  beforeEach( ( ) => Exify.read.mockReset( ) );
 
   it( "should return an object if EXIF fails to parse for one photo", async ( ) => {
-    readExif.mockRejectedValueOnce( new Error( "failed to catch test error" ) );
+    Exify.read.mockRejectedValueOnce( new Error( "failed to catch test error" ) );
     const unified = await readExifFromMultiplePhotos( [faker.image.url()] );
     expect( unified ).toEqual( {} );
   } );
 
-  it( "should return an object if EXIF fails to parse for all photos", async ( ) => {
-    readExif
+  it( "should merge coords/accuracy/date from one successful EXIF read", async ( ) => {
+    Exify.read.mockResolvedValueOnce( MOCK_READ_EXIF_RESPONSE );
+    const unified = await readExifFromMultiplePhotos( [faker.image.url()] );
+
+    expect( unified.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
+    expect( unified.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
+    expect( unified.positional_accuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );
+    expect( unified.observed_on_string ).toEqual( EXPECTED_OBSERVED_ON_STRING );
+  } );
+
+  it( "should handle EXIF datetime with a different timezone offset", async ( ) => {
+    Exify.read
       .mockRejectedValueOnce( new Error( "failed to catch test error" ) )
-      .mockResolvedValueOnce( MOCK_READ_EXIF_RESPONSE );
+      .mockResolvedValueOnce( MOCK_READ_EXIF_RESPONSE_OTHER_TIME_ZONE );
     const unified = await readExifFromMultiplePhotos( [
       faker.image.url(),
       faker.image.url(),
     ] );
-    expect( unified.observed_on_string ).toBeTruthy( );
+
+    // "2018-03-07 08:19:49" at "+01:00" should become UTC "2018-03-07 07:19:49"
+    expect( unified.observed_on_string ).toEqual( "2018-03-07T07:19:49" );
+    expect( unified.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
+    expect( unified.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
+    expect( unified.positional_accuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );
   } );
 } );
