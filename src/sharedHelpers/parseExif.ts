@@ -2,6 +2,9 @@ import type { ExifTags } from "@lodev09/react-native-exify";
 import * as Exify from "@lodev09/react-native-exify";
 import { toZonedTime } from "date-fns-tz";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
+import { log } from "sharedHelpers/logger";
+
+const logger = log.extend( "parseExif.ts" );
 
 class UsePhotoExifDateFormatError extends Error {}
 
@@ -72,7 +75,7 @@ Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
 } );
 
 // Parses EXIF date time into a date object
-export const parseExifDateToLocalTimezone = ( datetime: string ): Date | null => {
+export const parseExifDateToLocalTimezone = ( datetime: string | null ): Date | null => {
   if ( !datetime ) return null;
 
   // Previously: react-native-exif-reader formats the date based on GMT time,
@@ -90,7 +93,7 @@ export const parseExifDateToLocalTimezone = ( datetime: string ): Date | null =>
   return zonedDate;
 };
 
-export const formatExifDateAsString = ( datetime: string ): string => {
+export const formatExifDateAsString = ( datetime: string | null ): string => {
   const zonedDate = parseExifDateToLocalTimezone( datetime );
   // this returns a string, in the same format as photos which fall back to the
   // photo timestamp instead of exif data
@@ -107,20 +110,31 @@ export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise
     positional_accuracy?: number;
   } = {};
 
+  // TODO: when uri starts with content check if we have required permission
+  // Android Read content:// (Android < 10) READ_EXTERNAL_STORAGE
+  // Android Read content:// (Android 10+) READ_MEDIA_IMAGES + ACCESS_MEDIA_LOCATION
   const normalizedUris = photoUris.map( uri => ( uri.startsWith( "/" )
     ? `file://${uri}`
     : uri ) );
-  const responses = await Promise.allSettled( normalizedUris.map( Exify.read ) );
-  console.log( "responses", responses );
+  const responses = await Promise.allSettled( normalizedUris.map( uri => Exify.read( uri ) ) );
+
+  // If any of the EXIF reads were rejected, log the reasons, but do continue
+  const rejectedReasons = responses
+    .filter( r => r.status === "rejected" )
+    .map( r => r.reason );
+  if ( rejectedReasons.length > 0 ) {
+    rejectedReasons.forEach(
+      reason => logger.error( "Failed to read EXIF data from a photo:", reason ),
+    );
+  }
+
   const allExifPhotos = responses
     .filter( r => r.status === "fulfilled" )
     .filter( r => r.value )
     .map( r => r.value );
-
   allExifPhotos
     .filter( x => x )
     .forEach( currentPhotoExif => {
-      console.log( "currentPhotoExif", currentPhotoExif );
       // TODO: TS says currentPhotoExif could be null, but the filters should exclude null ?
       if ( !currentPhotoExif ) return;
 
