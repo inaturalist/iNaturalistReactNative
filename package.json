@@ -184,7 +184,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "chalk": "^5.4.1",
     "decompress": "^4.2.1",
-    "detox": "^20.41.1",
+    "detox": "^20.50.1",
     "dotenv": "^16.4.7",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
