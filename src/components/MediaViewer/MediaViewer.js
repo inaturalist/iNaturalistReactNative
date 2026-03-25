@@ -27,6 +27,7 @@ type Props = {
   deleting?: boolean,
   // Optional component to use as the header
   header?: Function,
+  nonDeletableUri?: string | null,
   onClose?: Function,
   onDeletePhoto?: Function,
   onDeleteSound?: Function,
@@ -48,6 +49,7 @@ const MediaViewer = ( {
   editable,
   deleting,
   header,
+  nonDeletableUri,
   onClose = ( ) => undefined,
   onDeletePhoto,
   onDeleteSound,
@@ -133,6 +135,7 @@ const MediaViewer = ( {
       <MainMediaDisplay
         autoPlaySound={autoPlaySound}
         editable={editable}
+        nonDeletableUri={nonDeletableUri}
         photos={photos}
         sounds={sounds}
         onClose={onClose}

@@ -262,6 +262,7 @@ const EvidenceList = ( {
       <MediaViewerModal
         editable
         deleting={deleting}
+        nonDeletableUri={originalPhotoUri}
         onClose={( ) => setSelectedMediaUri( null )}
         onDeletePhoto={onDeletePhoto}
         onDeleteSound={onDeleteSound}

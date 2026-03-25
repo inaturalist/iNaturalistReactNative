@@ -28,6 +28,7 @@ type Props = {
   editable?: boolean,
   // $FlowIgnore
   horizontalScroll: unknown,
+  nonDeletableUri?: string | null,
   onDeletePhoto?: Function,
   onClose?: Function,
   onDeleteSound?: Function,
@@ -49,6 +50,7 @@ const MainMediaDisplay = ( {
   autoPlaySound,
   editable,
   horizontalScroll,
+  nonDeletableUri,
   onDeletePhoto = ( ) => undefined,
   onDeleteSound = ( ) => undefined,
   onClose = ( ) => undefined,
@@ -77,7 +79,9 @@ const MainMediaDisplay = ( {
 
   const renderPhoto = useCallback( photo => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
+    const photoUri = Photo.getLocalPhotoUri( photo.localFilePath ) || photo.url;
     const hasAttribution = photo?.attribution;
+    const canDelete = editable && photoUri !== nonDeletableUri;
     return (
       <View>
         <CustomImageZoom
@@ -86,14 +90,11 @@ const MainMediaDisplay = ( {
           selectedMediaIndex={selectedMediaIndex}
         />
         {
-          editable
+          canDelete
             ? (
               <View className="absolute bottom-4 right-4">
                 <TransparentCircleButton
-                  onPress={( ) => onDeletePhoto(
-                    Photo.getLocalPhotoUri( photo.localFilePath )
-                    || photo.url,
-                  )}
+                  onPress={( ) => onDeletePhoto( photoUri )}
                   icon="trash-outline"
                   color={colors.white}
                   accessibilityLabel={deletePhotoLabel}
@@ -116,6 +117,7 @@ const MainMediaDisplay = ( {
   }, [
     deletePhotoLabel,
     editable,
+    nonDeletableUri,
     onDeletePhoto,
     selectedMediaIndex,
   ] );
