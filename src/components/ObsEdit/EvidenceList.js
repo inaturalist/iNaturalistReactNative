@@ -187,11 +187,10 @@ const EvidenceList = ( {
   );
 
   const onDeletePhoto = useCallback( async uriToDelete => {
-    if ( uriToDelete === originalPhotoUri ) return;
     await ObservationPhoto.deletePhoto( uriToDelete, currentObservation );
     deletePhotoFromObservation( uriToDelete );
     afterMediaDeleted( );
-  }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation, originalPhotoUri] );
+  }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation] );
 
   const onDeleteSound = useCallback( async uriToDelete => {
     const obsSound = observationSounds.find( os => os.sound.file_url === uriToDelete );
