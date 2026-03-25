@@ -29,6 +29,10 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
   const navigation = useNavigation( );
   const { params } = useRoute<RouteProp<ObsFlowParams, string>>( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
+  const clearRollbackSnapshot = useCallback(
+    ( ) => useStore.setState( { rollbackSnapshot: null } ),
+    [],
+  );
 
   return useCallback( ( options: Options = {} ) => {
     // In theory everything that needs to be saved has been saved at this
@@ -40,6 +44,10 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
       // to rerender with no currentObservation, which means useSuggestions crashes from
       // having no photo passed in, and many parts of the UI also result in crashes
       resetObservationFlowSlice( );
+    } else {
+      // Even when skipping the full reset (e.g. MatchContainer), clear the
+      // rollback snapshot since leaving the flow means rollback is no longer relevant
+      clearRollbackSnapshot( );
     }
 
     const previousScreen = params && params.previousScreen
@@ -58,6 +66,7 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
       } );
     }
   }, [
+    clearRollbackSnapshot,
     navigation,
     params,
     resetObservationFlowSlice,
