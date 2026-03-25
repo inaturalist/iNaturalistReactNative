@@ -100,7 +100,7 @@ const StandardCamera = ( {
   const prepareCamera = useStore( state => state.prepareCamera );
   const photoLibraryUris = useStore( state => state.photoLibraryUris );
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
-  const rollbackSnapshot = useStore( state => state.rollbackSnapshot );
+  const isFromMatch = useStore( state => state.isFromMatch( ) );
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...cameraUris, ...photoLibraryUris].length,
@@ -209,7 +209,7 @@ const StandardCamera = ( {
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
         photoUris={cameraUris}
-        onDelete={rollbackSnapshot
+        onDelete={isFromMatch
           ? undefined
           : deletePhotoByUri}
       />

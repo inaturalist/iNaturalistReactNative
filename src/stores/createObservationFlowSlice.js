@@ -214,6 +214,12 @@ const createObservationFlowSlice = ( set, get ) => ( {
     unsavedChanges: snapshot.unsavedChanges,
     rollbackSnapshot: null,
   } ),
+  isFromMatch: ( ) => {
+    const { rollbackSnapshot, currentObservation } = get( );
+    return rollbackSnapshot !== null
+      && rollbackSnapshot.observations[rollbackSnapshot.currentObservationIndex]?.uuid
+        === currentObservation?.uuid;
+  },
   setRollbackSnapshot: ( ) => set( state => ( {
     rollbackSnapshot: {
       observations: cloneDeep( state.observations ),
