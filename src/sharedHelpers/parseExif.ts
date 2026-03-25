@@ -1,5 +1,3 @@
-// @flow
-
 import { toZonedTime } from "date-fns-tz";
 import { readExif, writeLocation } from "react-native-exif-reader";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
@@ -12,7 +10,7 @@ Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
 } );
 
 // Parses EXIF date time into a date object
-export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
+export const parseExifDateToLocalTimezone = ( datetime: string ): Date | null => {
   if ( !datetime ) return null;
 
   // react-native-exif-reader formats the date based on GMT time,
@@ -28,7 +26,7 @@ export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
 };
 
 // Parses EXIF date time into a date object
-export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
+export const parseExif = async ( photoUri?: string ): Promise<object> => {
   try {
     return readExif( photoUri );
   } catch ( e ) {
@@ -45,7 +43,7 @@ export interface ExifToWrite {
   positional_accuracy?: number | null;
 }
 
-export const writeExifToFile = async ( photoUri: ?string, exif: ExifToWrite ): Promise<Object> => {
+export const writeExifToFile = async ( photoUri?: string, exif: ExifToWrite ): Promise<object> => {
   try {
     return writeLocation( photoUri, exif );
   } catch ( e ) {
@@ -63,15 +61,15 @@ export const formatExifDateAsString = ( datetime: string ): string => {
 
 // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
 // in case the first photo is missing EXIF
-export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise<Object> => {
+export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise<object> => {
   const unifiedExif = {};
 
   const responses = await Promise.allSettled( photoUris.map( parseExif ) );
   const allExifPhotos: {
-    latitude: number,
-    longitude: number,
-    positional_accuracy: number,
-    date: string
+    latitude: number;
+    longitude: number;
+    positional_accuracy: number;
+    date: string;
   // Flow will complain that value is undefined, but the filter call ensures
   // that it isn't
   // $FlowIgnore
