@@ -110,7 +110,7 @@ export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise
     positional_accuracy?: number;
   } = {};
 
-  // TODO: when uri starts with content check if we have required permission
+  // TODO: when uri starts with content do we need to check if we have required permission
   // Android Read content:// (Android < 10) READ_EXTERNAL_STORAGE
   // Android Read content:// (Android 10+) READ_MEDIA_IMAGES + ACCESS_MEDIA_LOCATION
   const normalizedUris = photoUris.map( uri => ( uri.startsWith( "/" )
