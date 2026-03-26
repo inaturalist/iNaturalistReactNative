@@ -86,20 +86,25 @@ export const backupObservationPhotos = async (
 export const restoreObservationPhotos = async (
   backupMappings: BackupMapping[],
 ): Promise<void> => {
-  await Promise.all(
-    backupMappings.map( async mapping => {
-      const backupExists = await RNFS.exists( mapping.backupPath );
-      if ( !backupExists ) {
-        throw new Error(
-          `restoreObservationPhotos: backup missing: ${mapping.backupPath}`,
-        );
-      }
-      const originalExists = await RNFS.exists( mapping.originalPath );
-      if ( originalExists ) {
-        await unlink( mapping.originalPath );
-      }
-      await RNFS.copyFile( mapping.backupPath, mapping.originalPath );
-    } ),
-  );
-  await clearRollbackPhotos( );
+  try {
+    await Promise.all(
+      backupMappings.map( async mapping => {
+        const backupExists = await RNFS.exists( mapping.backupPath );
+        if ( !backupExists ) {
+          logger.warn(
+            `restoreObservationPhotos: backup missing: ${mapping.backupPath}`,
+          );
+          return;
+        }
+        const originalExists = await RNFS.exists( mapping.originalPath );
+        if ( originalExists ) {
+          await unlink( mapping.originalPath );
+        }
+        await RNFS.copyFile( mapping.backupPath, mapping.originalPath );
+      } ),
+    );
+    await clearRollbackPhotos( );
+  } catch ( e ) {
+    logger.error( `restoreObservationPhotos error: ${e}` );
+  }
 };
