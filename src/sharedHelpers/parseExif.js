@@ -1,8 +1,11 @@
 // @flow
 
+import { TZDate } from "@date-fns/tz";
 import { toZonedTime } from "date-fns-tz";
 import { readExif, writeLocation } from "react-native-exif-reader";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
+
+const useTzDate = false;
 
 class UsePhotoExifDateFormatError extends Error {}
 
@@ -18,7 +21,11 @@ export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
   // react-native-exif-reader formats the date based on GMT time,
   // so we create a date object here using GMT time, not the user's local timezone
   const isoDate = `${datetime}Z`;
-  const zonedDate = toZonedTime( isoDate, "GMT" );
+  const zonedDate = useTzDate
+    // this def isn't right yet, we're getting (GMT+0) but ironically
+    // (and confusingly), we're apparently expecting UTC
+    ? new TZDate( isoDate, "UTC" )
+    : toZonedTime( isoDate, "GMT" );
 
   if ( !zonedDate || zonedDate.toString( ).match( /invalid/i ) ) {
     throw new UsePhotoExifDateFormatError( "Date was not formatted correctly" );

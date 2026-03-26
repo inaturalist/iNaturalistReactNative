@@ -4,6 +4,7 @@
 // names that are specific to particular views,
 // like "myObsDateFormat"
 
+import { TZDate } from "@date-fns/tz";
 import {
   differenceInDays,
   differenceInHours,
@@ -324,12 +325,9 @@ function formatDateString(
   }
 
   try {
-    return formatInTimeZone(
-      parseISO( isoDateString ),
-      timeZone,
-      fmt,
-      { locale: dateFnsLocale( i18n.language ) },
-    );
+    const tZDate = new TZDate( dateString, timeZone );
+    const formatted = format( tZDate, fmt, { locale: dateFnsLocale( i18n.language ) } );
+    return formatted;
   } catch ( error ) {
     console.warn( "Error formatting date", error );
     // In case of: RangeError: Incorrect timeZone information provided

@@ -5,6 +5,19 @@
 import "react-native-get-random-values";
 // React Native doesn't have a functional URL as of Feb 2024
 import "react-native-url-polyfill/auto";
+import "@formatjs/intl-getcanonicallocales/polyfill.js";
+
+import "@formatjs/intl-locale/polyfill.js";
+
+import "@formatjs/intl-pluralrules/polyfill-force.js";
+import "@formatjs/intl-pluralrules/locale-data/en.js";
+
+import "@formatjs/intl-numberformat/polyfill-force.js";
+import "@formatjs/intl-numberformat/locale-data/en.js";
+
+import "@formatjs/intl-datetimeformat/polyfill-force.js";
+import "@formatjs/intl-datetimeformat/locale-data/en.js";
+import "@formatjs/intl-datetimeformat/add-all-tz.js"; //
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
