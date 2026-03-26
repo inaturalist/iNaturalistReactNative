@@ -23,6 +23,8 @@ import {
 } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
+const TARGET_SPACING = 10;
+
 const Webshell = makeWebshell(
   WebView,
   new HandleLinkPressFeature( { preventDefault: true } ),
@@ -59,16 +61,20 @@ const Announcements = ( {
   const flashListHorizontalPadding = flashListStyle.paddingLeft || 0;
   const flashListTopPadding = flashListStyle.paddingTop || 0;
   const outerHorizontalSpacing = layout === "grid"
-    ? Math.max( 10 - flashListHorizontalPadding, 0 )
+    ? TARGET_SPACING - flashListHorizontalPadding
     : 10;
   const outerTopSpacing = layout === "grid"
-    ? Math.max( 10 - flashListTopPadding, 0 )
+    ? TARGET_SPACING - flashListTopPadding
     : 10;
+  const outerBottomSpacing = layout === "grid"
+    ? TARGET_SPACING - flashListTopPadding
+    : 0;
 
   const onLinkPress = async target => openExternalWebBrowser( target.uri );
   const announcementContainerStyle = {
     marginHorizontal: outerHorizontalSpacing,
     marginTop: outerTopSpacing,
+    marginBottom: outerBottomSpacing,
   };
 
   const apiParams = {
