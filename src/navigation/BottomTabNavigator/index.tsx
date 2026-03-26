@@ -11,6 +11,7 @@ import type { BottomTabParamList } from "navigation/types";
 import React from "react";
 
 import CustomTabBarContainer from "./CustomTabBarContainer";
+import tabScreenOptions from "./tabScreenOptions";
 
 const Tab = createBottomTabNavigator<BottomTabParamList>( );
 
@@ -28,12 +29,7 @@ const BottomTabs = ( ) => {
         initialRouteName="ObservationsTab"
         tabBar={renderTabBar}
         backBehavior="history"
-        screenOptions={{
-          lazy: true,
-          freezeOnBlur: true,
-          headerShown: false,
-          animation: "fade",
-        }}
+        screenOptions={tabScreenOptions}
       >
         <Tab.Screen
           name="MenuTab"

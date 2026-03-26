@@ -1,5 +1,9 @@
 module.exports = {
   root: true,
+  globals: {
+    requestIdleCallback: "readonly",
+    cancelIdleCallback: "readonly",
+  },
   parser: "@typescript-eslint/parser",
   parserOptions: {
     requireConfigFile: false,

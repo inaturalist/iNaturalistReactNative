@@ -75,20 +75,25 @@ const createObservationFlowSlice = ( set, get ) => ( {
   deletePhotoFromObservation: uri => set( state => {
     const newObservations = [...state.observations];
     let newObservation = null;
-
     if ( newObservations.length > 0 ) {
       newObservation = newObservations[state.currentObservationIndex];
       const index = newObservation.observationPhotos.findIndex(
         op => ( Photo.getLocalPhotoUri( op.photo?.localFilePath ) || op.photo?.url ) === uri,
       );
       if ( index > -1 ) {
-        newObservation.observationPhotos.splice( index, 1 );
+        newObservation = {
+          ...newObservation,
+          observationPhotos: [
+            ...newObservation.observationPhotos.slice( 0, index ),
+            ...newObservation.observationPhotos.slice( index + 1 ),
+          ],
+        };
+        newObservations[state.currentObservationIndex] = newObservation;
       }
     }
 
-    const newCameraUris = [...pull( state.cameraUris, uri )];
     return {
-      cameraUris: newCameraUris,
+      cameraUris: [...pull( state.cameraUris, uri )],
       evidenceToAdd: [...pull( state.evidenceToAdd, uri )],
       observations: newObservations,
       currentObservation: newObservation
