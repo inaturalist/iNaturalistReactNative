@@ -7,26 +7,10 @@ import { log } from "sharedHelpers/logger";
 const logger = log.extend( "parseExif.ts" );
 
 class UsePhotoExifDateFormatError extends Error {}
-
-const normalizeOffsetToMilliseconds = ( offsetTime?: string ): number | null => {
-  if ( !offsetTime ) return null;
-
-  // Common patterns:
-  // +01:00
-  // -07:00
-  // Z
-  if ( offsetTime === "Z" || offsetTime === "z" ) return 0;
-
-  const match = offsetTime.match( /^([+-])(\d{2}):?(\d{2})$/ );
-  if ( !match ) return null;
-
-  const sign = match[1] === "+"
-    ? 1
-    : -1;
-  const hours = Number( match[2] );
-  const minutes = Number( match[3] );
-  return sign * ( ( hours * 60 + minutes ) * 60 * 1000 );
-};
+// https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
+Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
+  value: "UsePhotoExifDateFormatError",
+} );
 
 // Normalizes EXIF date/time tags to the same string format that
 // `parseExifDateToLocalTimezone` historically expects:
@@ -38,12 +22,16 @@ const normalizeExifDateToLegacyFormat = ( tags: ExifTags ): string | null => {
   const dateTime = tags?.DateTimeOriginal || tags?.DateTime;
   if ( !dateTime ) return null;
 
+  // TODO: As far as I can see in the exif-reader native code, this was read and used but in the end
+  // it was actually stripped as well from the returned date string. So the returned date string was
+  // similar to "dateTime" here, only with different delimiter. E.g. a photo from Australia with an
+  // exif time of "2026:01:05 18:37:19" and an offset of "+11:00" was returned as
+  // "2026-01-05T18:37:19.000".
   // https://github.com/inaturalist/react-native-exif-reader/blob/f6112fa506a189d4f297316323ef9e1d76d4cedd/ios/ExifReader.swift#L23-L31
   // +01:00
   // -07:00
-  const offsetTime
-    = tags?.OffsetTimeDigitized || tags?.OffsetTime || tags?.OffsetTimeOriginal;
-  const offsetMs = normalizeOffsetToMilliseconds( offsetTime );
+  // const offsetTime
+  //   = tags?.OffsetTimeDigitized || tags?.OffsetTime || tags?.OffsetTimeOriginal;
 
   // Expected inputs:
   // - "2018:03:07 08:19:49"
@@ -59,21 +47,10 @@ const normalizeExifDateToLegacyFormat = ( tags: ExifTags ): string | null => {
   const minute = Number( match[5] );
   const second = Number( match[6] );
 
-  // If we have an offset, treat the EXIF datetime as a local time at that offset and
-  // convert to UTC. Otherwise we treat the EXIF datetime as UTC to match the previous
-  // (react-native-exif-reader) behavior.
-  const utcMs
-    = offsetMs != null
-      ? Date.UTC( year, month - 1, day, hour, minute, second ) - offsetMs
-      : Date.UTC( year, month - 1, day, hour, minute, second );
+  const utcMs = Date.UTC( year, month - 1, day, hour, minute, second );
 
   return new Date( utcMs ).toISOString().replace( /Z$/, "" );
 };
-
-// https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
-Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
-  value: "UsePhotoExifDateFormatError",
-} );
 
 // Parses EXIF date time into a date object
 export const parseExifDateToLocalTimezone = ( datetime: string | null ): Date | null => {
@@ -81,9 +58,6 @@ export const parseExifDateToLocalTimezone = ( datetime: string | null ): Date | 
 
   // Previously: react-native-exif-reader formats the date based on GMT time,
   // so we create a date object here using GMT time, not the user's local timezone
-
-  // We intentionally interpret EXIF datetime as "GMT/UTC wall time" (not the
-  // user's local timezone) and later format as an ISO string without timezone.
   const isoDate = `${datetime}Z`;
   const zonedDate = toZonedTime( isoDate, "GMT" );
 
@@ -98,7 +72,9 @@ export const formatExifDateAsString = ( datetime: string | null ): string => {
   const zonedDate = parseExifDateToLocalTimezone( datetime );
   // this returns a string, in the same format as photos which fall back to the
   // photo timestamp instead of exif data
-  return formatISONoTimezone( zonedDate );
+  const test = formatISONoTimezone( zonedDate );
+  console.log( "test", test );
+  return test;
 };
 
 // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
@@ -160,6 +136,7 @@ export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise
       }
       if ( !unifiedExif.observed_on_string ) {
         const date = normalizeExifDateToLegacyFormat( currentPhotoExif );
+        console.log( "date", date );
         unifiedExif.observed_on_string = formatExifDateAsString( date ) || null;
       }
       if ( GPSHPositioningError && !unifiedExif.positional_accuracy ) {
