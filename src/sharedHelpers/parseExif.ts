@@ -47,12 +47,8 @@ const normalizeExifDateToLegacyFormat = ( tags: ExifTags ): string | null => {
 
   // Expected inputs:
   // - "2018:03:07 08:19:49"
-  // - "2018-03-07 08:19:49"
-  // - "2018:03:07T08:19:49"
-  // - "2018-03-07T08:19:49"
   const match = dateTime.match(
-    // eslint-disable-next-line no-useless-escape
-    /^(\d{4})[:\-](\d{2})[:\-](\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?$/,
+    /^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$/,
   );
   if ( !match ) return null;
 
