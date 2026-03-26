@@ -1,7 +1,6 @@
 import type { RouteProp } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
-import { useCallback, useEffect, useRef } from "react";
-import type { BackupMapping } from "sharedHelpers/rollbackPhotos";
+import { useCallback, useEffect } from "react";
 import {
   backupObservationPhotos,
   restoreObservationPhotos,
@@ -32,16 +31,18 @@ function useObsEditRollback( ): ObsEditRollbackReturn {
   const currentObservationIndex = useStore(
     state => state.currentObservationIndex,
   );
-  const backupMappingsRef = useRef<BackupMapping[]>( [] );
+  const backupMappings = useStore( state => state.backupMappings );
+  const setBackupMappings = useStore( state => state.setBackupMappings );
 
   useEffect( ( ) => {
     if ( !hasSnapshot && params?.lastScreen === "Match" ) {
       setRollbackSnapshot( );
       const doBackup = async ( ) => {
-        backupMappingsRef.current = await backupObservationPhotos(
+        const mappings = await backupObservationPhotos(
           observations,
           currentObservationIndex,
         );
+        setBackupMappings( mappings );
       };
       doBackup( );
     }
@@ -52,11 +53,11 @@ function useObsEditRollback( ): ObsEditRollbackReturn {
   ] );
 
   const rollback = useCallback( async ( ) => {
-    if ( backupMappingsRef.current.length > 0 ) {
-      await restoreObservationPhotos( backupMappingsRef.current );
+    if ( backupMappings.length > 0 ) {
+      await restoreObservationPhotos( backupMappings );
     }
     restoreRollbackSnapshot( );
-  }, [restoreRollbackSnapshot] );
+  }, [backupMappings, restoreRollbackSnapshot] );
 
   return { rollback, canRollbackToMatch };
 }

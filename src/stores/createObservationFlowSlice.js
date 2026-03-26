@@ -31,6 +31,7 @@ const DEFAULT_STATE = {
   sentinelFileName: null,
   newPhotoUris: [],
   rollbackSnapshot: null,
+  backupMappings: [],
 };
 
 const removeObsSoundFromObservation = ( currentObservation, uri ) => {
@@ -221,9 +222,11 @@ const createObservationFlowSlice = ( set, get ) => ( {
       newPhotoUris: snapshot.newPhotoUris,
       unsavedChanges: snapshot.unsavedChanges,
       rollbackSnapshot: null,
+      backupMappings: [],
     };
   } ),
-  clearRollbackSnapshot: ( ) => set( { rollbackSnapshot: null } ),
+  setBackupMappings: mappings => set( { backupMappings: mappings } ),
+  clearRollbackSnapshot: ( ) => set( { rollbackSnapshot: null, backupMappings: [] } ),
   setRollbackSnapshot: ( ) => set( state => ( {
     rollbackSnapshot: {
       observations: cloneDeep( state.observations ),
