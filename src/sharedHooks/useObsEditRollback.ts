@@ -21,7 +21,6 @@ interface ObsEditRollbackReturn {
 
 function useObsEditRollback( ): ObsEditRollbackReturn {
   const { params } = useRoute<RouteProp<ObsEditRollbackParams, string>>( );
-  const hasSnapshot = useStore( state => state.rollbackSnapshot !== null );
   const setRollbackSnapshot = useStore( state => state.setRollbackSnapshot );
   const restoreRollbackSnapshot = useStore(
     state => state.restoreRollbackSnapshot,
@@ -35,7 +34,7 @@ function useObsEditRollback( ): ObsEditRollbackReturn {
   const setBackupMappings = useStore( state => state.setBackupMappings );
 
   useEffect( ( ) => {
-    if ( !hasSnapshot && params?.lastScreen === "Match" ) {
+    if ( !canRollbackToMatch && params?.lastScreen === "Match" ) {
       setRollbackSnapshot( );
       const doBackup = async ( ) => {
         const mappings = await backupObservationPhotos(
@@ -47,10 +46,12 @@ function useObsEditRollback( ): ObsEditRollbackReturn {
       doBackup( );
     }
   }, [
+    canRollbackToMatch,
+    currentObservationIndex,
+    observations,
     params?.lastScreen,
-    hasSnapshot,
-    setRollbackSnapshot,
-  ] );
+    setBackupMappings,
+    setRollbackSnapshot] );
 
   const rollback = useCallback( async ( ) => {
     if ( backupMappings.length > 0 ) {
