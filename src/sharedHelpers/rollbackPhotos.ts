@@ -92,6 +92,10 @@ export const restoreObservationPhotos = async (
           `restoreObservationPhotos: backup missing: ${mapping.backupPath}`,
         );
       }
+      const originalExists = await RNFS.exists( mapping.originalPath );
+      if ( originalExists ) {
+        await RNFS.unlink( mapping.originalPath );
+      }
       await RNFS.copyFile( mapping.backupPath, mapping.originalPath );
     } ),
   );
