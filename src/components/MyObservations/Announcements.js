@@ -125,6 +125,13 @@ const Announcements = ( {
     .sort( ( a, b ) => new Date( a.start ) - new Date( b.start ) );
   const topAnnouncement = homeAnnouncements[0];
   const { id, dismissible, body } = topAnnouncement;
+  const announcementHtml = `
+  <html>
+    <body style="margin: 0; padding: 0;">
+      ${body}
+    </body>
+  </html>
+`;
 
   const dismiss = async () => {
     dismissAnnouncementMutate( { id } );
@@ -143,7 +150,7 @@ const Announcements = ( {
       <AutoheightWebView
         onDOMLinkPress={onLinkPress}
         originWhitelist={["*"]}
-        source={{ html: body }}
+        source={{ html: announcementHtml }}
         scrollEnabled={false}
         testID="announcements-webview"
       />
