@@ -32,12 +32,17 @@ const normalizeOffsetToMilliseconds = ( offsetTime?: string ): number | null => 
 // `parseExifDateToLocalTimezone` historically expects:
 //   "YYYY-MM-DDTHH:mm:ss" (no timezone suffix)
 const normalizeExifDateToLegacyFormat = ( tags: ExifTags ): string | null => {
-  const dateTime
-    = tags?.DateTimeOriginal || tags?.DateTimeDigitized || tags?.DateTime;
+  // https://github.com/inaturalist/react-native-exif-reader/blob/f6112fa506a189d4f297316323ef9e1d76d4cedd/ios/ExifReader.swift#L52-L53
+  // https://github.com/inaturalist/react-native-exif-reader/blob/f6112fa506a189d4f297316323ef9e1d76d4cedd/android/src/main/java/com/reactnativeexifreader/ExifReaderModule.java#L203-L223
+  // "yyyy:MM:dd HH:mm:ss"
+  const dateTime = tags?.DateTimeOriginal || tags?.DateTime;
   if ( !dateTime ) return null;
 
+  // https://github.com/inaturalist/react-native-exif-reader/blob/f6112fa506a189d4f297316323ef9e1d76d4cedd/ios/ExifReader.swift#L23-L31
+  // +01:00
+  // -07:00
   const offsetTime
-    = tags?.OffsetTimeOriginal || tags?.OffsetTimeDigitized || tags?.OffsetTime;
+    = tags?.OffsetTimeDigitized || tags?.OffsetTime || tags?.OffsetTimeOriginal;
   const offsetMs = normalizeOffsetToMilliseconds( offsetTime );
 
   // Expected inputs:
@@ -146,8 +151,6 @@ export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise
         GPSHPositioningError,
       } = currentPhotoExif;
 
-      const date = normalizeExifDateToLegacyFormat( currentPhotoExif );
-
       if ( !unifiedExif.latitude && GPSLatitude ) {
         unifiedExif.latitude
           = GPSLatitudeRef === "S"
@@ -160,6 +163,7 @@ export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise
           : GPSLongitude;
       }
       if ( !unifiedExif.observed_on_string ) {
+        const date = normalizeExifDateToLegacyFormat( currentPhotoExif );
         unifiedExif.observed_on_string = formatExifDateAsString( date ) || null;
       }
       if ( GPSHPositioningError && !unifiedExif.positional_accuracy ) {
