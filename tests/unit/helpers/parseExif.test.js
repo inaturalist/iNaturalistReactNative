@@ -1,9 +1,5 @@
 import * as Exify from "@lodev09/react-native-exify";
-import {
-  formatExifDateAsString,
-  parseExifDateToLocalTimezone,
-  readExifFromMultiplePhotos,
-} from "sharedHelpers/parseExif";
+import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
 import faker from "tests/helpers/faker";
 
 // Expected EXIF metadata of the above file
@@ -11,7 +7,6 @@ import faker from "tests/helpers/faker";
 // Note that previously react-native-exif-reader returned dates as strings in a format
 // that are standardized but really particular, I added the parsing of exif dates into this
 // particular format to parseExif
-const EXPECTED_EXIF_DATE = "2018-03-07T08:19:49.000";
 const EXPECTED_OBSERVED_ON_STRING = "2018-03-07T08:19:49";
 const EXPECTED_EXIF_LATITUDE = 38.07480555555556;
 const EXPECTED_EXIF_LONGITUDE = -122.85112777777778;
@@ -30,26 +25,6 @@ const MOCK_READ_EXIF_RESPONSE_OTHER_TIME_ZONE = {
   ...MOCK_READ_EXIF_RESPONSE,
   OffsetTimeOriginal: "+01:00",
 };
-
-describe( "parseExifDateToLocalTimezone", () => {
-  it( "should parse a date string in the format react-native-exif-reader returns", () => {
-    const date = parseExifDateToLocalTimezone( EXPECTED_EXIF_DATE );
-    expect( date ).toBeInstanceOf( Date );
-    expect( date.getFullYear() ).toEqual( 2018 );
-    expect( date.getMonth() ).toEqual( 2 );
-    expect( date.getDate() ).toEqual( 7 );
-    expect( date.getHours() ).toEqual( 8 );
-    expect( date.getMinutes() ).toEqual( 19 );
-    expect( date.getSeconds() ).toEqual( 49 );
-  } );
-} );
-
-describe( "formatExifDateAsString", () => {
-  it( "should return date in a string format ready to upload to server", () => {
-    const dateString = formatExifDateAsString( EXPECTED_EXIF_DATE );
-    expect( typeof dateString ).toBe( "string" );
-  } );
-} );
 
 describe( "readExifFromMultiplePhotos", ( ) => {
   beforeEach( ( ) => Exify.read.mockReset( ) );
