@@ -3,8 +3,7 @@ import RNFS from "react-native-fs";
 import type { RealmObservationPojo } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
-
-import { unlink } from "./util";
+import { unlink } from "sharedHelpers/util";
 
 const logger = log.extend( "rollbackPhotos" );
 
