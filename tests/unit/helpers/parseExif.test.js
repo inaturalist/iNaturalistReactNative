@@ -12,8 +12,7 @@ import faker from "tests/helpers/faker";
 // that are standardized but really particular, I added the parsing of exif dates into this
 // particular format to parseExif
 const EXPECTED_EXIF_DATE = "2018-03-07T08:19:49.000";
-// Swift exif-reader parity: civil time from DateTimeOriginal + .SSS (no UTC shift)
-const EXPECTED_OBSERVED_ON_STRING = "2018-03-07T08:19:49.000";
+const EXPECTED_OBSERVED_ON_STRING = "2018-03-07T08:19:49";
 const EXPECTED_EXIF_LATITUDE = 38.07480555555556;
 const EXPECTED_EXIF_LONGITUDE = -122.85112777777778;
 const EXPECTED_EXIF_POSITIONAL_ACCURACY = 5;
@@ -91,8 +90,8 @@ describe( "readExifFromMultiplePhotos", ( ) => {
       faker.image.url(),
     ] );
 
-    // Same wall clock as iOS (offset tags do not change the formatted civil time)
-    expect( unified.observed_on_string ).toEqual( "2018-03-07T08:19:49.000" );
+    // "2018-03-07 08:19:49" at "+01:00" should become UTC "2018-03-07 07:19:49"
+    expect( unified.observed_on_string ).toEqual( "2018-03-07T07:19:49" );
     expect( unified.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
     expect( unified.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
     expect( unified.positional_accuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );

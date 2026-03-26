@@ -8,45 +8,65 @@ const logger = log.extend( "parseExif.ts" );
 
 class UsePhotoExifDateFormatError extends Error {}
 
-const pad2 = ( n: number ) => String( n ).padStart( 2, "0" );
+const normalizeOffsetToMilliseconds = ( offsetTime?: string ): number | null => {
+  if ( !offsetTime ) return null;
 
-/**
- * Milliseconds for `yyyy-MM-dd'T'HH:mm:ss.SSS` (Swift `DateFormatter` `.SSS`).
- * iOS exif-reader parsed `DateTimeOriginal` without subseconds; `.SSS` is usually `.000`.
- * If the EXIF string includes a fractional part, we honor it.
- */
-const tripleFromFractionalSeconds = ( fractional?: string ): string => {
-  if ( !fractional ) return "000";
-  const digits = fractional.replace( /\D/g, "" );
-  if ( !digits ) return "000";
-  return digits.padEnd( 3, "0" ).slice( 0, 3 );
+  // Common patterns:
+  // +01:00
+  // -07:00
+  // Z
+  if ( offsetTime === "Z" || offsetTime === "z" ) return 0;
+
+  const match = offsetTime.match( /^([+-])(\d{2}):?(\d{2})$/ );
+  if ( !match ) return null;
+
+  const sign = match[1] === "+"
+    ? 1
+    : -1;
+  const hours = Number( match[2] );
+  const minutes = Number( match[3] );
+  return sign * ( ( hours * 60 + minutes ) * 60 * 1000 );
 };
 
-/**
- * Matches iOS `react-native-exif-reader` **`response["date"]`** string:
- * - **Only** `DateTimeOriginal` (not Digitized / DateTime fallbacks).
- * - `yyyy-MM-dd'T'HH:mm:ss.SSS` from the EXIF civil clock (Swift parses in the photo
- *   offset zone then formats; digits match `DateTimeOriginal` for typical tags).
- */
-export const observedOnStringFromExifTags = ( tags: ExifTags ): string | null => {
-  const dateTimeOriginal = tags.DateTimeOriginal;
-  if ( !dateTimeOriginal ) return null;
+// Normalizes EXIF date/time tags to the same string format that
+// `parseExifDateToLocalTimezone` historically expects:
+//   "YYYY-MM-DDTHH:mm:ss" (no timezone suffix)
+const normalizeExifDateToLegacyFormat = ( tags: ExifTags ): string | null => {
+  const dateTime
+    = tags?.DateTimeOriginal || tags?.DateTimeDigitized || tags?.DateTime;
+  if ( !dateTime ) return null;
 
-  const match = dateTimeOriginal.match(
+  const offsetTime
+    = tags?.OffsetTimeOriginal || tags?.OffsetTimeDigitized || tags?.OffsetTime;
+  const offsetMs = normalizeOffsetToMilliseconds( offsetTime );
+
+  // Expected inputs:
+  // - "2018:03:07 08:19:49"
+  // - "2018-03-07 08:19:49"
+  // - "2018:03:07T08:19:49"
+  // - "2018-03-07T08:19:49"
+  const match = dateTime.match(
     // eslint-disable-next-line no-useless-escape
     /^(\d{4})[:\-](\d{2})[:\-](\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?$/,
   );
   if ( !match ) return null;
 
-  const y = Number( match[1] );
-  const mo = Number( match[2] );
-  const d = Number( match[3] );
-  const h = Number( match[4] );
-  const mi = Number( match[5] );
-  const s = Number( match[6] );
-  const subSec = tripleFromFractionalSeconds( match[7] );
+  const year = Number( match[1] );
+  const month = Number( match[2] );
+  const day = Number( match[3] );
+  const hour = Number( match[4] );
+  const minute = Number( match[5] );
+  const second = Number( match[6] );
 
-  return `${y}-${pad2( mo )}-${pad2( d )}T${pad2( h )}:${pad2( mi )}:${pad2( s )}.${subSec}`;
+  // If we have an offset, treat the EXIF datetime as a local time at that offset and
+  // convert to UTC. Otherwise we treat the EXIF datetime as UTC to match the previous
+  // (react-native-exif-reader) behavior.
+  const utcMs
+    = offsetMs != null
+      ? Date.UTC( year, month - 1, day, hour, minute, second ) - offsetMs
+      : Date.UTC( year, month - 1, day, hour, minute, second );
+
+  return new Date( utcMs ).toISOString().replace( /Z$/, "" );
 };
 
 // https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
@@ -126,6 +146,8 @@ export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise
         GPSHPositioningError,
       } = currentPhotoExif;
 
+      const date = normalizeExifDateToLegacyFormat( currentPhotoExif );
+
       if ( !unifiedExif.latitude && GPSLatitude ) {
         unifiedExif.latitude
           = GPSLatitudeRef === "S"
@@ -138,7 +160,7 @@ export const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise
           : GPSLongitude;
       }
       if ( !unifiedExif.observed_on_string ) {
-        unifiedExif.observed_on_string = observedOnStringFromExifTags( currentPhotoExif ) ?? null;
+        unifiedExif.observed_on_string = formatExifDateAsString( date ) || null;
       }
       if ( GPSHPositioningError && !unifiedExif.positional_accuracy ) {
         unifiedExif.positional_accuracy = GPSHPositioningError;
