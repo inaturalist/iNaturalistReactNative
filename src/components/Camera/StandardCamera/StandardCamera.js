@@ -23,7 +23,6 @@ import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import { useDeviceOrientation, usePerformance } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
-import { selectCanRollbackToMatch } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 import {
@@ -101,7 +100,6 @@ const StandardCamera = ( {
   const prepareCamera = useStore( state => state.prepareCamera );
   const photoLibraryUris = useStore( state => state.photoLibraryUris );
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
-  const canRollbackToMatch = useStore( selectCanRollbackToMatch );
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...cameraUris, ...photoLibraryUris].length,
@@ -210,9 +208,7 @@ const StandardCamera = ( {
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
         photoUris={cameraUris}
-        onDelete={canRollbackToMatch
-          ? undefined
-          : deletePhotoByUri}
+        onDelete={deletePhotoByUri}
       />
       <View className="relative flex-1">
         {device && (

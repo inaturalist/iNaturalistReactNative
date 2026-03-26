@@ -9,6 +9,8 @@ export const photoLibraryPhotosPath = `${RNFS.DocumentDirectoryPath}/galleryPhot
 
 export const photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
 
+export const rollbackPhotosPath = `${RNFS.DocumentDirectoryPath}/rollbackPhotos`;
+
 export const rotatedOriginalPhotosPath = `${RNFS.DocumentDirectoryPath}/rotatedOriginalPhotos`;
 
 export const sentinelFilePath = `${RNFS.DocumentDirectoryPath}/sentinelFiles`;

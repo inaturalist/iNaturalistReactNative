@@ -47,10 +47,10 @@ const ObsEditHeader = ( {
   const exitObservationFlow = useExitObservationFlow( );
   const realm = useRealm( );
 
-  const discardChanges = useCallback( ( ) => {
+  const discardChanges = useCallback( async ( ) => {
     setDiscardChangesSheetVisible( false );
     if ( canRollbackToMatch ) {
-      rollback( );
+      await rollback( );
       navigation.dispatch( StackActions.popTo( "Match" ) );
     } else {
       exitObservationFlow( {

@@ -45,7 +45,6 @@ const EvidenceList = ( {
 
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const deleteSoundFromObservation = useStore( state => state.deleteSoundFromObservation );
-  const rollbackSnapshot = useStore( state => state.rollbackSnapshot );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const savingPhoto = useStore( state => state.savingPhoto );
   const realm = useRealm( );
@@ -63,17 +62,6 @@ const EvidenceList = ( {
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo ),
   );
 
-  // In the Match flow, identify the original photo from the frozen snapshot
-  // so we can prevent its deletion. Using the snapshot (not current state)
-  // makes this immune to drag-reorder changes.
-  const originalPhotoUri = useMemo( ( ) => {
-    if ( !rollbackSnapshot ) return null;
-    const snapshotObs = rollbackSnapshot.observations[rollbackSnapshot.currentObservationIndex];
-    const snapshotPhotos = snapshotObs?.observationPhotos;
-    if ( !snapshotPhotos?.length ) return null;
-    const sorted = sortBy( snapshotPhotos, op => op.position );
-    return Photo.displayLocalOrRemoteSquarePhoto( sorted[0].photo );
-  }, [rollbackSnapshot] );
   const mediaUris = useMemo( ( ) => ( [
     ...photoUris,
     ...observationSounds.map( obsSound => obsSound.sound.file_url ),
@@ -261,7 +249,6 @@ const EvidenceList = ( {
       <MediaViewerModal
         editable
         deleting={deleting}
-        nonDeletableUri={originalPhotoUri}
         onClose={( ) => setSelectedMediaUri( null )}
         onDeletePhoto={onDeletePhoto}
         onDeleteSound={onDeleteSound}

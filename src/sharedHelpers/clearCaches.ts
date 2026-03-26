@@ -8,6 +8,7 @@ import {
 import { log } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory";
+import { clearRollbackPhotos } from "sharedHelpers/rollbackPhotos";
 
 const logger = log.extend( "clearCaches.ts" );
 
@@ -88,12 +89,13 @@ const clearCaches = async realm => {
   await clearRotatedOriginalPhotosDirectory( );
   await clearGalleryPhotos( );
   await clearComputerVisionPhotos( );
+  await clearRollbackPhotos( );
   await clearSyncedMediaForUpload( realm );
   const endTime = Date.now( );
   const duration = endTime - startTime;
   logger.info(
-    "cleared rotated original photos, gallery, computer vision, and synced media caches "
-    + `in ${duration}ms`,
+    "cleared rotated original photos, gallery, computer vision, rollback photos, "
+    + `and synced media caches in ${duration}ms`,
   );
 };
 

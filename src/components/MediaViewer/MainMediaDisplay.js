@@ -28,7 +28,6 @@ type Props = {
   editable?: boolean,
   // $FlowIgnore
   horizontalScroll: unknown,
-  nonDeletableUri?: string | null,
   onDeletePhoto?: Function,
   onClose?: Function,
   onDeleteSound?: Function,
@@ -50,7 +49,6 @@ const MainMediaDisplay = ( {
   autoPlaySound,
   editable,
   horizontalScroll,
-  nonDeletableUri,
   onDeletePhoto = ( ) => undefined,
   onDeleteSound = ( ) => undefined,
   onClose = ( ) => undefined,
@@ -81,7 +79,7 @@ const MainMediaDisplay = ( {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
     const photoUri = Photo.getLocalPhotoUri( photo.localFilePath ) || photo.url;
     const hasAttribution = photo?.attribution;
-    const canDelete = editable && photoUri !== nonDeletableUri;
+    const canDelete = editable;
     return (
       <View>
         <CustomImageZoom
@@ -117,7 +115,6 @@ const MainMediaDisplay = ( {
   }, [
     deletePhotoLabel,
     editable,
-    nonDeletableUri,
     onDeletePhoto,
     selectedMediaIndex,
   ] );
