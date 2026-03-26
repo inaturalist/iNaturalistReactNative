@@ -12,16 +12,18 @@ import Announcements from "./Announcements";
 
 interface Props {
   isConnected: boolean;
+  layout: "list" | "grid";
 }
 
 const SimpleErrorHeader = ( {
   isConnected,
+  layout,
 }: Props ) => {
   const { t } = useTranslation( );
 
   return (
     <>
-      <Announcements isConnected={isConnected} />
+      <Announcements isConnected={isConnected} layout={layout} />
       <View className="flex-row items-center px-[32px] py-[20px]">
         <CircleDots
           color={colors.darkGray}

@@ -350,8 +350,8 @@ const MyObservationsSimple = ( {
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
               renderHeader={currentUser && ( obsMissingBasicsExist
-                ? <SimpleErrorHeader isConnected={isConnected} />
-                : <Announcements isConnected={isConnected} /> )}
+                ? <SimpleErrorHeader isConnected={isConnected} layout={layout} />
+                : <Announcements isConnected={isConnected} layout={layout} /> )}
             />
             <ObservationsViewBar
               hideMap

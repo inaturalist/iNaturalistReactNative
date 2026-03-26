@@ -18,6 +18,7 @@ import { openExternalWebBrowser } from "sharedHelpers/util";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
+  useGridLayout,
   useTranslation,
 } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
@@ -43,17 +44,32 @@ const AutoheightWebView = ( webshellProps ): Node => {
 };
 
 type Props = {
-  isConnected: boolean
+  isConnected: boolean,
+  layout: "list" | "grid"
 }
 
 const Announcements = ( {
   isConnected,
+  layout,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
+  const { flashListStyle } = useGridLayout( layout );
+  const flashListHorizontalPadding = flashListStyle.paddingLeft || 0;
+  const flashListTopPadding = flashListStyle.paddingTop || 0;
+  const outerHorizontalSpacing = layout === "grid"
+    ? Math.max( 10 - flashListHorizontalPadding, 0 )
+    : 10;
+  const outerTopSpacing = layout === "grid"
+    ? Math.max( 10 - flashListTopPadding, 0 )
+    : 10;
 
   const onLinkPress = async target => openExternalWebBrowser( target.uri );
+  const announcementContainerStyle = {
+    marginHorizontal: outerHorizontalSpacing,
+    marginTop: outerTopSpacing,
+  };
 
   const apiParams = {
     locale: currentUser?.locale || "en",
@@ -115,6 +131,7 @@ const Announcements = ( {
   return (
     <View
       className="bg-white"
+      style={announcementContainerStyle}
       testID="announcements-container"
     >
       <AutoheightWebView
