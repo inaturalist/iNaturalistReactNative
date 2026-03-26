@@ -202,17 +202,21 @@ const createObservationFlowSlice = ( set, get ) => ( {
   setAICameraSuggestion: suggestion => set( {
     aICameraSuggestion: suggestion,
   } ),
-  restoreRollbackSnapshot: snapshot => set( {
-    observations: snapshot.observations,
-    currentObservation: snapshot.observations[snapshot.currentObservationIndex],
-    currentObservationIndex: snapshot.currentObservationIndex,
-    cameraUris: snapshot.cameraUris,
-    cameraRollUris: snapshot.cameraRollUris,
-    photoLibraryUris: snapshot.photoLibraryUris,
-    evidenceToAdd: snapshot.evidenceToAdd,
-    newPhotoUris: snapshot.newPhotoUris,
-    unsavedChanges: snapshot.unsavedChanges,
-    rollbackSnapshot: null,
+  restoreRollbackSnapshot: ( ) => set( state => {
+    const snapshot = state.rollbackSnapshot;
+    if ( !snapshot ) return {};
+    return {
+      observations: snapshot.observations,
+      currentObservation: snapshot.observations[snapshot.currentObservationIndex],
+      currentObservationIndex: snapshot.currentObservationIndex,
+      cameraUris: snapshot.cameraUris,
+      cameraRollUris: snapshot.cameraRollUris,
+      photoLibraryUris: snapshot.photoLibraryUris,
+      evidenceToAdd: snapshot.evidenceToAdd,
+      newPhotoUris: snapshot.newPhotoUris,
+      unsavedChanges: snapshot.unsavedChanges,
+      rollbackSnapshot: null,
+    };
   } ),
   clearRollbackSnapshot: ( ) => set( { rollbackSnapshot: null } ),
   setRollbackSnapshot: ( ) => set( state => ( {

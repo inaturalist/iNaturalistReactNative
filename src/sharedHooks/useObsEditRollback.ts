@@ -12,27 +12,24 @@ interface ObsEditRollbackParams {
 
 function useObsEditRollback( ): { rollback: ( ) => void; canRollbackToMatch: boolean } {
   const { params } = useRoute<RouteProp<ObsEditRollbackParams, string>>( );
-  const rollbackSnapshot = useStore( state => state.rollbackSnapshot );
+  const hasSnapshot = useStore( state => state.rollbackSnapshot !== null );
   const setRollbackSnapshot = useStore( state => state.setRollbackSnapshot );
   const restoreRollbackSnapshot = useStore( state => state.restoreRollbackSnapshot );
+  const canRollbackToMatch = useStore( selectCanRollbackToMatch );
 
   useEffect( ( ) => {
-    if ( rollbackSnapshot === null && params?.lastScreen === "Match" ) {
+    if ( !hasSnapshot && params?.lastScreen === "Match" ) {
       setRollbackSnapshot( );
     }
   }, [
     params?.lastScreen,
-    rollbackSnapshot,
+    hasSnapshot,
     setRollbackSnapshot,
   ] );
 
   const rollback = useCallback( ( ) => {
-    if ( rollbackSnapshot ) {
-      restoreRollbackSnapshot( rollbackSnapshot );
-    }
-  }, [restoreRollbackSnapshot, rollbackSnapshot] );
-
-  const canRollbackToMatch = useStore( selectCanRollbackToMatch );
+    restoreRollbackSnapshot( );
+  }, [restoreRollbackSnapshot] );
 
   return { rollback, canRollbackToMatch };
 }
