@@ -47,7 +47,6 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
       // rollback snapshot since leaving the flow means rollback is no longer relevant
       clearRollbackSnapshot( );
     }
-    // Fire-and-forget — navigation must not be blocked by file I/O
     void clearRollbackPhotos( );
 
     const previousScreen = params && params.previousScreen

@@ -1,5 +1,6 @@
 import type { RouteProp } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
+import type { SharedStackParamList } from "navigation/types";
 import { useCallback, useEffect, useRef } from "react";
 import {
   backupObservationPhotos,
@@ -8,19 +9,13 @@ import {
 import { selectCanRollbackToMatch } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
-interface ObsEditRollbackParams {
-  [name: string]: {
-    lastScreen?: string;
-  };
-}
-
 interface ObsEditRollbackReturn {
   rollback: ( ) => Promise<void>;
   canRollbackToMatch: boolean;
 }
 
 function useObsEditRollback( ): ObsEditRollbackReturn {
-  const { params } = useRoute<RouteProp<ObsEditRollbackParams, string>>( );
+  const { params } = useRoute<RouteProp<SharedStackParamList, "ObsEdit">>( );
   const setRollbackSnapshot = useStore( state => state.setRollbackSnapshot );
   const restoreRollbackSnapshot = useStore(
     state => state.restoreRollbackSnapshot,

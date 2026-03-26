@@ -23,7 +23,7 @@ export const clearRollbackPhotos = async ( ): Promise<void> => {
     await removeAllFilesFromDirectory( rollbackPhotosPath );
     const dirExists = await RNFS.exists( rollbackPhotosPath );
     if ( dirExists ) {
-      await RNFS.unlink( rollbackPhotosPath );
+      await unlink( rollbackPhotosPath );
     }
   } catch ( e ) {
     logger.error( `clearRollbackPhotos error: ${e}` );
