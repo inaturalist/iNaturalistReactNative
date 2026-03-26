@@ -17,12 +17,12 @@ const EXPECTED_EXIF_LATITUDE = 38.07480555555556;
 const EXPECTED_EXIF_LONGITUDE = -122.85112777777778;
 const EXPECTED_EXIF_POSITIONAL_ACCURACY = 5;
 
-// react-native-exify returns EXIF tags, not the app's normalized field names.
+// react-native-exify returns these EXIF tags, see interface ExifTags
 const MOCK_READ_EXIF_RESPONSE = {
   GPSLatitude: EXPECTED_EXIF_LATITUDE,
   GPSLongitude: EXPECTED_EXIF_LONGITUDE,
   GPSHPositioningError: EXPECTED_EXIF_POSITIONAL_ACCURACY,
-  // exify returns DateTimeOriginal in EXIF format: "YYYY:MM:DD HH:mm:ss"
+  // exify returns DateTimeOriginal in EXIF format: "yyyy:MM:dd HH:mm:ss"
   DateTimeOriginal: "2018:03:07 08:19:49",
 };
 
@@ -38,6 +38,9 @@ describe( "parseExifDateToLocalTimezone", () => {
     expect( date.getFullYear() ).toEqual( 2018 );
     expect( date.getMonth() ).toEqual( 2 );
     expect( date.getDate() ).toEqual( 7 );
+    expect( date.getHours() ).toEqual( 8 );
+    expect( date.getMinutes() ).toEqual( 19 );
+    expect( date.getSeconds() ).toEqual( 49 );
   } );
 } );
 
@@ -90,8 +93,7 @@ describe( "readExifFromMultiplePhotos", ( ) => {
       faker.image.url(),
     ] );
 
-    // "2018-03-07 08:19:49" at "+01:00" should become UTC "2018-03-07 07:19:49"
-    expect( unified.observed_on_string ).toEqual( "2018-03-07T07:19:49" );
+    expect( unified.observed_on_string ).toEqual( EXPECTED_OBSERVED_ON_STRING );
     expect( unified.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
     expect( unified.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
     expect( unified.positional_accuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );
