@@ -1,5 +1,5 @@
 import * as Exify from "@lodev09/react-native-exify";
-import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
+import readExifFromMultiplePhotos from "sharedHelpers/parseExif";
 import faker from "tests/helpers/faker";
 
 // Expected EXIF metadata of the above file
