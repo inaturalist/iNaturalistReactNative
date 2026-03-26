@@ -1,8 +1,10 @@
 import { photoUploadPath, rollbackPhotosPath } from "appConstants/paths";
 import RNFS from "react-native-fs";
-import type { RealmObservation } from "realmModels/types";
+import type { RealmObservationPojo } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
+
+import { unlink } from "./util";
 
 const logger = log.extend( "rollbackPhotos" );
 
@@ -30,7 +32,7 @@ export const clearRollbackPhotos = async ( ): Promise<void> => {
 };
 
 export const backupObservationPhotos = async (
-  observations: RealmObservation[],
+  observations: RealmObservationPojo[],
   currentObservationIndex: number,
 ): Promise<BackupMapping[]> => {
   try {
@@ -94,7 +96,7 @@ export const restoreObservationPhotos = async (
       }
       const originalExists = await RNFS.exists( mapping.originalPath );
       if ( originalExists ) {
-        await RNFS.unlink( mapping.originalPath );
+        await unlink( mapping.originalPath );
       }
       await RNFS.copyFile( mapping.backupPath, mapping.originalPath );
     } ),

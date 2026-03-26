@@ -1,6 +1,6 @@
 import type { RouteProp } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   backupObservationPhotos,
   restoreObservationPhotos,
@@ -33,18 +33,15 @@ function useObsEditRollback( ): ObsEditRollbackReturn {
   const backupMappings = useStore( state => state.backupMappings );
   const setBackupMappings = useStore( state => state.setBackupMappings );
 
+  const hasBackedUp = useRef( false );
+
   useEffect( ( ) => {
-    if ( !canRollbackToMatch && params?.lastScreen === "Match" ) {
-      setRollbackSnapshot( );
-      const doBackup = async ( ) => {
-        const mappings = await backupObservationPhotos(
-          observations,
-          currentObservationIndex,
-        );
-        setBackupMappings( mappings );
-      };
-      doBackup( );
-    }
+    if ( hasBackedUp.current || canRollbackToMatch || params?.lastScreen !== "Match" ) return;
+
+    hasBackedUp.current = true;
+    setRollbackSnapshot( );
+    backupObservationPhotos( observations, currentObservationIndex )
+      .then( setBackupMappings );
   }, [
     canRollbackToMatch,
     currentObservationIndex,

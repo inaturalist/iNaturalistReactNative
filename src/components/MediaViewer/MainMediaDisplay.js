@@ -77,9 +77,7 @@ const MainMediaDisplay = ( {
 
   const renderPhoto = useCallback( photo => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
-    const photoUri = Photo.getLocalPhotoUri( photo.localFilePath ) || photo.url;
     const hasAttribution = photo?.attribution;
-    const canDelete = editable;
     return (
       <View>
         <CustomImageZoom
@@ -88,11 +86,15 @@ const MainMediaDisplay = ( {
           selectedMediaIndex={selectedMediaIndex}
         />
         {
-          canDelete
+          editable
             ? (
               <View className="absolute bottom-4 right-4">
                 <TransparentCircleButton
-                  onPress={( ) => onDeletePhoto( photoUri )}
+                  onPress={
+                    ( ) => onDeletePhoto(
+                      Photo.getLocalPhotoUri( photo.localFilePath ) || photo.url,
+                    )
+                  }
                   icon="trash-outline"
                   color={colors.white}
                   accessibilityLabel={deletePhotoLabel}
