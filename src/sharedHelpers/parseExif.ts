@@ -39,12 +39,12 @@ const formatExifDateAsString = ( tags: ExifTags ): string | null => {
 
   const year = Number( match[1] );
   const month = Number( match[2] );
-  const day = Number( match[3] );
+  const date = Number( match[3] );
   const hour = Number( match[4] );
   const minute = Number( match[5] );
   const second = Number( match[6] );
 
-  const utcMs = Date.UTC( year, month - 1, day, hour, minute, second );
+  const utcMs = Date.UTC( year, month - 1, date, hour, minute, second );
 
   const utcDate = new Date( utcMs ).toISOString();
 
