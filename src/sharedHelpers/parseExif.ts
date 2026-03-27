@@ -63,7 +63,7 @@ const formatExifDateAsString = ( tags: ExifTags ): string | null => {
 
 // Parse the EXIF of all photos - fill out details (lat/lng/date) from all of these,
 // in case the first photo is missing EXIF
-const readExifFromMultiplePhotos = async ( photoUris: string[] ): Promise<object> => {
+const readExifFromMultiplePhotos = async ( photoUris: string[] ) => {
   const unifiedExif: {
     latitude?: number;
     longitude?: number;
