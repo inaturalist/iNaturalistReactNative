@@ -6,7 +6,7 @@ import pull from "lodash/pull";
 import remove from "lodash/remove";
 import Photo from "realmModels/Photo";
 import Sound from "realmModels/Sound";
-import type { RealmObservationPojo } from "realmModels/types";
+import type { RealmObservation, RealmObservationPojo } from "realmModels/types";
 import type { BackupMapping } from "sharedHelpers/rollbackPhotos";
 import type { StateCreator } from "zustand";
 
@@ -133,20 +133,17 @@ const removeObsSoundFromObservation = (
         || Sound.getLocalSoundUri( obsSound.sound.file_url ) === uri
       ),
     );
-    updatedObservation!.observationSounds = obsSounds;
-    return [updatedObservation!];
+    updatedObservation.observationSounds = obsSounds;
+    return [updatedObservation];
   }
-  return [currentObservation!];
+  return [currentObservation];
 };
 
 const observationToJSON = (
-  observation: RealmObservationPojo | Realm.Object | null | undefined,
-): RealmObservationPojo | null => {
-  if ( observation == null ) { return null; }
-  return observation instanceof Realm.Object
-    ? observation.toJSON( ) as RealmObservationPojo
-    : observation;
-};
+  observation: RealmObservationPojo | RealmObservation | null,
+): RealmObservationPojo | null => ( observation instanceof Realm.Object
+  ? observation.toJSON( ) as RealmObservationPojo
+  : observation );
 
 const updateObservationKeysWithState = (
   keysAndValues: Partial<RealmObservationPojo>,
