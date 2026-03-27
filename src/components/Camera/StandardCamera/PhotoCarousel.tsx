@@ -286,6 +286,7 @@ const PhotoCarousel = ( {
           : photoPreviewsList
       }
       <MediaViewerModal
+        editable
         showModal={tappedPhotoIndex >= 0}
         onClose={( ) => setTappedPhotoIndex( -1 )}
         onDeletePhoto={async ( photoUri: string ) => {
