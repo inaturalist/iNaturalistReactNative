@@ -128,7 +128,7 @@ const GroupPhotos = ( {
   };
 
   return (
-    <ViewWrapper>
+    <ViewWrapper useTopInset={false}>
       <CustomFlashList
         ListHeaderComponent={renderHeader}
         contentContainerStyle={flashListStyle}
