@@ -20,6 +20,7 @@ import {
   mapSpeciesSortToAPIParams,
   sortSpeciesCounts,
 } from "sharedHelpers/sortingHelpers";
+import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -61,7 +62,7 @@ interface SyncOptions {
   skipSomeUploads?: string[];
 }
 
-const MyObservationsContainer = ( ): React.FC => {
+const MyObservationsContainer = ( ) => {
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );
@@ -207,13 +208,22 @@ const MyObservationsContainer = ( ): React.FC => {
       let isActive = true;
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
+      let idleCallbackId = 0;
       if ( isActive ) {
+        idleCallbackId = requestIdleCallback( ( ) => {
+          startupPerformanceTracker.emitStartupTTI( {
+            targetScreen: "MyObservations",
+            loggedIn: !!currentUser,
+          } );
+        } );
         startAutomaticSync( );
       }
       return () => {
         isActive = false;
+        if ( idleCallbackId ) { cancelIdleCallback( idleCallbackId ); }
       };
     }, [
+      currentUser,
       startAutomaticSync,
       setNumUnuploadedObservations,
       realm,

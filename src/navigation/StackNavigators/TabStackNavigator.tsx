@@ -1,5 +1,3 @@
-// @flow
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import About from "components/About";
@@ -12,10 +10,6 @@ import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreFiltersContainer from "components/Explore/ExploreFiltersContainer";
 import ExploreSearchContainer from "components/Explore/ExploreSearchContainer";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
-import ExploreLocationSearch from "components/Explore/SearchScreens/ExploreLocationSearch";
-import ExploreProjectSearch from "components/Explore/SearchScreens/ExploreProjectSearch";
-import ExploreTaxonSearch from "components/Explore/SearchScreens/ExploreTaxonSearch";
-import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Help from "components/Help/Help";
 import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
@@ -46,7 +40,7 @@ import {
   showHeader,
   showLongHeader,
 } from "navigation/navigationOptions";
-import type { Node } from "react";
+import type { BottomTabProps, TabStackParamList } from "navigation/types";
 import React from "react";
 import {
   useLayoutPrefs,
@@ -54,10 +48,6 @@ import {
 import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
-
-type TabStackNavigatorProps = {
-  route?: Object
-};
 
 const aboutTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
@@ -74,11 +64,6 @@ const helpTitle = () => (
     {t( "HELP" )}
   </Heading4>
 );
-const locationSearchTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SEARCH-LOCATION" )}
-  </Heading4>
-);
 const dqaTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
     {t( "DATA-QUALITY-ASSESSMENT" )}
@@ -87,21 +72,6 @@ const dqaTitle = () => (
 const projectRequirementsTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
     {t( "PROJECT-REQUIREMENTS" )}
-  </Heading4>
-);
-const projectSearchTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SEARCH-PROJECTS" )}
-  </Heading4>
-);
-const taxonSearchTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SEARCH-TAXA" )}
-  </Heading4>
-);
-const userSearchTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SEARCH-USERS" )}
   </Heading4>
 );
 const settingsTitle = () => (
@@ -148,44 +118,56 @@ const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
 const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
 const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
 
+const BASE_SCREEN_OPTIONS = {
+  headerBackButtonDisplayMode: "minimal",
+  headerTintColor: colors.darkGray,
+} as const;
+
 const NOTIFICATIONS_OPTIONS = {
   ...preventSwipeToGoBack,
   ...hideHeaderLeft,
   headerTitle: notificationsTitle,
   headerTitleAlign: "center",
-};
+} as const;
 
 const DQA_OPTIONS = {
   ...showLongHeader,
   headerTitle: dqaTitle,
-};
+} as const;
 
 const USER_PROFILE_OPTIONS = {
   ...showHeader,
   ...blankHeaderTitle,
   ...removeBottomBorder,
-};
+} as const;
 
 const LIST_OPTIONS = {
   header: ContextHeader,
   alignStart: true,
   lazy: true,
-};
+} as const;
 
 const OBS_DETAILS_OPTIONS = {
   ...showHeader,
   ...blankHeaderTitle,
-};
+} as const;
 
-const Stack = createNativeStackNavigator( );
+const DEBUG_GROUP_SCREEN_OPTIONS = {
+  headerStyle: { backgroundColor: "deeppink", color: "white" },
+  headerTintColor: "white",
+  headerTitleStyle: { color: "white" },
+} as const;
+
+const Stack = createNativeStackNavigator<TabStackParamList>( );
 
 export const SCREEN_NAME_MENU = "Menu";
 export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
 export const SCREEN_NAME_OBS_LIST = "ObsList";
 export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
 
-const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
-  const initialRouteName = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
+const TabStackNavigator = ( { route }: BottomTabProps ) => {
+  const initialRouteName
+    = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
   const {
     isDefaultMode,
@@ -193,10 +175,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
   return (
     <Stack.Navigator
       initialRouteName={initialRouteName}
-      screenOptions={{
-        headerBackButtonDisplayMode: "minimal",
-        headerTintColor: colors.darkGray,
-      }}
+      screenOptions={BASE_SCREEN_OPTIONS}
     >
       {/* Screens with no header */}
       <Stack.Group
@@ -322,11 +301,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
       </Stack.Group>
       {/* Developer Stack Group */}
       <Stack.Group
-        screenOptions={{
-          headerStyle: { backgroundColor: "deeppink", color: "white" },
-          headerTintColor: "white",
-          headerTitleStyle: { color: "white" },
-        }}
+        screenOptions={DEBUG_GROUP_SCREEN_OPTIONS}
       >
         <Stack.Screen
           name="Debug"
@@ -346,7 +321,7 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
         />
         <Stack.Screen
           component={Log}
-          name="log"
+          name="Log"
           options={( { route } ) => ( {
             headerTitle: route?.params?.isLegacyLogs
               ? legacyLogTitle
@@ -361,34 +336,6 @@ const TabStackNavigator = ( { route }: TabStackNavigatorProps ): Node => {
           ...removeBottomBorder,
         }}
       >
-        <Stack.Screen
-          name="ExploreTaxonSearch"
-          component={ExploreTaxonSearch}
-          options={{
-            headerTitle: taxonSearchTitle,
-          }}
-        />
-        <Stack.Screen
-          name="ExploreLocationSearch"
-          component={ExploreLocationSearch}
-          options={{
-            headerTitle: locationSearchTitle,
-          }}
-        />
-        <Stack.Screen
-          name="ExploreUserSearch"
-          component={ExploreUserSearch}
-          options={{
-            headerTitle: userSearchTitle,
-          }}
-        />
-        <Stack.Screen
-          name="ExploreProjectSearch"
-          component={ExploreProjectSearch}
-          options={{
-            headerTitle: projectSearchTitle,
-          }}
-        />
         <Stack.Screen
           name="Settings"
           component={FadeInSettings}

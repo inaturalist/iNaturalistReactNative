@@ -12,7 +12,7 @@ import {
 import ProjectListItem from "./ProjectListItem";
 
 interface Props {
-  projects: object[];
+  projects: ApiProject[];
   ListEmptyComponent?: React.JSX.Element;
   ListFooterComponent?: React.JSX.Element;
   onEndReached?: ( ) => void;
@@ -60,7 +60,7 @@ const ProjectList = ( {
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={ListFooterComponent}
       data={projects}
-      keyExtractor={item => item.id}
+      keyExtractor={( item: ApiProject ) => item.id}
       onEndReached={onEndReached}
       renderItem={renderProject}
       testID="ProjectList"

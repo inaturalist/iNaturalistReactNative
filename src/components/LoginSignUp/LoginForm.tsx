@@ -1,4 +1,3 @@
-import type { RouteProp } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import { authenticateUser } from "components/LoginSignUp/AuthenticationService";
@@ -7,6 +6,7 @@ import {
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
+import type { LoginStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback, useEffect, useRef, useState,
@@ -31,21 +31,11 @@ interface Props {
   scrollViewRef?: React.Ref;
 }
 
-interface LoginFormParams {
-  emailConfirmed?: boolean;
-  prevScreen?: string;
-  projectId?: number;
-}
-
-interface ParamList {
-  LoginFormParams: LoginFormParams;
-}
-
 const LoginForm = ( {
   scrollViewRef,
 }: Props ) => {
   const navigation = useNavigation( );
-  const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
+  const { params } = useRoute<LoginStackScreenProps<"Login">["route"]>();
   const emailConfirmed = params?.emailConfirmed;
   // For debug reasons, we can send the user here to log in again, but we must ensure
   // that only the currently logged in user can log in again. And no other user account

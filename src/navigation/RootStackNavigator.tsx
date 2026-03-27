@@ -2,13 +2,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
 import NoBottomTabStackNavigator from "navigation/StackNavigators/NoBottomTabStackNavigator";
 import OnboardingStackNavigator from "navigation/StackNavigators/OnboardingStackNavigator";
+import type { RootStackParamList } from "navigation/types";
 import * as React from "react";
 import { useOnboardingShown } from "sharedHelpers/installData";
 
 import BottomTabNavigator from "./BottomTabNavigator";
 import { hideHeader, preventSwipeToGoBack } from "./navigationOptions";
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator<RootStackParamList>( );
 
 // DEVELOPERS: do you need to add any screens here? This is the RootStack.
 // All the rest of our screens live in:

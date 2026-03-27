@@ -1,3 +1,4 @@
+import type { Route, RouteProp } from "@react-navigation/native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import {
   photoLibraryPhotosPath,
@@ -5,7 +6,6 @@ import {
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, {
   useCallback,
   useState,
@@ -16,7 +16,8 @@ import {
   View,
 } from "react-native";
 import RNFS from "react-native-fs";
-import * as ImagePicker from "react-native-image-picker";
+import type { Asset } from "react-native-image-picker";
+import { launchImageLibrary } from "react-native-image-picker";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
@@ -32,7 +33,19 @@ const MAX_PHOTOS_ALLOWED = Platform.select( {
 
 const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
-const PhotoLibrary = ( ): Node => {
+interface PreviousScreenParams {
+  uuid?: string;
+}
+
+interface RouteParams {
+  skipGroupPhotos?: boolean;
+  fromGroupPhotos?: boolean;
+  fromAICamera?: boolean;
+  cmonBack?: boolean;
+  previousScreen?: Route<string, PreviousScreenParams> | null;
+}
+
+const PhotoLibrary = ( ) => {
   const {
     screenAfterPhotoEvidence, isDefaultMode,
   } = useLayoutPrefs( );
@@ -47,10 +60,11 @@ const PhotoLibrary = ( ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
-  const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
+  const numOfObsPhotos: number = currentObservation?.observationPhotos?.length || 0;
   const exitObservationsFlow = useExitObservationsFlow( );
 
-  const { params } = useRoute( );
+  const { params } = useRoute<RouteProp<Record<string, RouteParams>, string>>( );
+
   const skipGroupPhotos = params
     ? params.skipGroupPhotos
     : false;
@@ -84,18 +98,32 @@ const PhotoLibrary = ( ): Node => {
     } );
   }, [navigation, screenAfterPhotoEvidence, isDefaultMode] );
 
-  const moveImagesToDocumentsDirectory = async selectedImages => {
+  const moveImagesToDocumentsDirectory = async ( selectedImages:
+    { image: Asset }[] ) => {
     const path = photoLibraryPhotosPath;
     await RNFS.mkdir( path );
 
     const movedImages = await Promise.all( selectedImages.map( async ( { image } ) => {
-      const { fileName } = image;
+      const { fileName, uri } = image;
+      if ( !fileName ) {
+        throw new Error( "No fileName in pick photo response" );
+      }
       const destPath = `${path}/${fileName}`;
-      // Get image from uri on android. TemporaryDirectoryPath results in an ANR
-      const sourcePath = Platform.OS === "android"
-        ? image.uri
-        : `${RNFS.TemporaryDirectoryPath}/${fileName}`;
-      await RNFS.moveFile( sourcePath, destPath );
+      const getSourcePath = Platform.select( {
+        ios: ( ) => `${RNFS.TemporaryDirectoryPath}/${fileName}`,
+        // Get image from uri on android. TemporaryDirectoryPath results in an ANR.
+        android: ( ) => {
+          if ( !uri ) {
+            throw new Error( "No URI in pick photo response" );
+          }
+          return uri;
+        },
+        default: ( ) => {
+          throw new Error( `Unsupported platform for moving picked photo: ${Platform.OS}` );
+        },
+      } );
+
+      await RNFS.moveFile( getSourcePath(), destPath );
       return {
         image: {
           ...image,
@@ -108,7 +136,7 @@ const PhotoLibrary = ( ): Node => {
     return movedImages;
   };
 
-  const showPhotoLibrary = React.useCallback( async () => {
+  const showPhotoLibrary = useCallback( async () => {
     if ( photoLibraryShown ) {
       return;
     }
@@ -124,7 +152,7 @@ const PhotoLibrary = ( ): Node => {
     // According to the native code of the image picker library, it never rejects the promise,
     // just returns a response object with errorCode
     // https://github.com/react-native-image-picker/react-native-image-picker?tab=readme-ov-file#Asset-Object
-    const response = await ImagePicker.launchImageLibrary( {
+    const response = await launchImageLibrary( {
       selectionLimit: fromAICamera
         ? FROM_AICAMERA_MAX_PHOTOS_ALLOWED
         : MAX_PHOTOS_ALLOWED,
@@ -149,6 +177,10 @@ const PhotoLibrary = ( ): Node => {
 
         // Determine if we need to go back to ObsList or ObsDetails screen
       } else if ( params && params.previousScreen && params.previousScreen.name === "ObsDetails" ) {
+        // If the uuid is undefined we need to error out here or ObsDetails doesn't work
+        if ( !params.previousScreen.params?.uuid ) {
+          throw new Error( "No UUID found to route to ObsDetails screen" );
+        }
         navigateToObsDetails( navigation, params.previousScreen.params.uuid );
       } else if ( params?.cmonBack && navigation.canGoBack() ) {
         navigation.goBack();
@@ -174,7 +206,7 @@ const PhotoLibrary = ( ): Node => {
       return;
     }
 
-    const importedPhotoUris = selectedImages.map( x => x.uri );
+    const importedPhotoUris = selectedImages.map( x => x.image.uri );
 
     if ( skipGroupPhotos ) {
       // add evidence to existing observation
@@ -183,7 +215,7 @@ const PhotoLibrary = ( ): Node => {
         evidenceToAdd: [...evidenceToAdd, ...importedPhotoUris],
       } );
       const obsPhotos = await ObservationPhoto
-        .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos } );
+        .createObsPhotosWithPosition( selectedImages, { position: numOfObsPhotos, local: false } );
 
       // If the current observation is not synced, update the EXIF data from imported photos
       const unsynced = !currentObservation?._synced_at;

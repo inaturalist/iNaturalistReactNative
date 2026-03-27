@@ -29,6 +29,7 @@ import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useOnboardingShown } from "sharedHelpers/installData";
+import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import colors from "styles/tailwindColors";
 
 const SlideItem = props => {
@@ -165,6 +166,19 @@ const OnboardingCarousel = ( ) => {
         .catch( error => console.error( "Error loading image:", error ) );
     } );
   }, [ONBOARDING_SLIDES, totalImages] );
+
+  useEffect( ( ) => {
+    let idleCallbackId = 0;
+    if ( Platform.OS === "android" || imagesLoaded ) {
+      idleCallbackId = requestIdleCallback( ( ) => {
+        startupPerformanceTracker.emitStartupTTI( {
+          targetScreen: "OnboardingCarousel",
+          loggedIn: false,
+        } );
+      } );
+    }
+    return () => { if ( idleCallbackId ) { cancelIdleCallback( idleCallbackId ); } };
+  }, [imagesLoaded] );
 
   // TODO: On Android release build imagesLoaded never switched from false to true, and
   // this screen was stuck in a loading state. On iOS it worked as expected.

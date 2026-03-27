@@ -1,5 +1,3 @@
-// @flow
-
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView";
@@ -21,7 +19,7 @@ import {
   showHeader,
   showSimpleCustomHeader,
 } from "navigation/navigationOptions";
-import type { Node } from "react";
+import type { SharedStackParamList } from "navigation/types";
 import React from "react";
 
 const suggestionsTitle = () => (
@@ -35,7 +33,7 @@ const taxonSearchTitle = () => (
   </Heading4>
 );
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator<SharedStackParamList>( );
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
@@ -51,18 +49,18 @@ const FadeInMatchContainer = ( ) => fadeInComponent(
   <MatchContainer />,
 );
 
+const BASE_SCREEN_OPTIONS = {
+  contentStyle: {
+    backgroundColor: "rgba(0,0,0,0)",
+    opacity: 1,
+  },
+} as const;
+
 // These screens need to be within the NoBottomTabStackNavigator
 // as well as the TabStackNavigator to retain navigation history
 
-const SharedStackScreens = ( ): Node => (
-  <Stack.Group
-    screenOptions={{
-      cardStyle: {
-        backgroundColor: "rgba(0,0,0,0)",
-        opacity: 1,
-      },
-    }}
-  >
+const SharedStackScreens = ( ) => (
+  <Stack.Group screenOptions={BASE_SCREEN_OPTIONS}>
     {/* Screens with hidden header */}
     <Stack.Group
       screenOptions={{
