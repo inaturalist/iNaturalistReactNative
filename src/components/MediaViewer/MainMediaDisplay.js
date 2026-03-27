@@ -90,11 +90,10 @@ const MainMediaDisplay = ( {
             ? (
               <View className="absolute bottom-4 right-4">
                 <TransparentCircleButton
-                  onPress={
-                    ( ) => onDeletePhoto(
-                      Photo.getLocalPhotoUri( photo.localFilePath ) || photo.url,
-                    )
-                  }
+                  onPress={( ) => onDeletePhoto(
+                    Photo.getLocalPhotoUri( photo.localFilePath )
+                    || photo.url,
+                  )}
                   icon="trash-outline"
                   color={colors.white}
                   accessibilityLabel={deletePhotoLabel}

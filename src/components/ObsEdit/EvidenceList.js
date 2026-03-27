@@ -61,7 +61,6 @@ const EvidenceList = ( {
   const photoUris = observationPhotos?.map(
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo ),
   );
-
   const mediaUris = useMemo( ( ) => ( [
     ...photoUris,
     ...observationSounds.map( obsSound => obsSound.sound.file_url ),
