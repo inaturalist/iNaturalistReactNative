@@ -18,13 +18,10 @@ import { openExternalWebBrowser } from "sharedHelpers/util";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useGridLayout,
   useTranslation,
 } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import colors from "styles/tailwindColors";
-
-const TARGET_SPACING = 10;
 
 const Webshell = makeWebshell(
   WebView,
@@ -48,35 +45,16 @@ const AutoheightWebView = ( webshellProps ): Node => {
 
 type Props = {
   isConnected: boolean,
-  layout: "list" | "grid"
 }
 
 const Announcements = ( {
   isConnected,
-  layout,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
-  const { flashListStyle } = useGridLayout( layout );
-  const flashListHorizontalPadding = flashListStyle.paddingLeft || 0;
-  const flashListTopPadding = flashListStyle.paddingTop || 0;
-  const outerHorizontalSpacing = layout === "grid"
-    ? TARGET_SPACING - flashListHorizontalPadding
-    : 10;
-  const outerTopSpacing = layout === "grid"
-    ? TARGET_SPACING - flashListTopPadding
-    : 10;
-  const outerBottomSpacing = layout === "grid"
-    ? TARGET_SPACING - flashListTopPadding
-    : 0;
 
   const onLinkPress = async target => openExternalWebBrowser( target.uri );
-  const announcementContainerStyle = {
-    marginHorizontal: outerHorizontalSpacing,
-    marginTop: outerTopSpacing,
-    marginBottom: outerBottomSpacing,
-  };
 
   const apiParams = {
     locale: currentUser?.locale || "en",
@@ -145,7 +123,6 @@ const Announcements = ( {
   return (
     <View
       className="bg-white"
-      style={announcementContainerStyle}
       testID="announcements-container"
     >
       <AutoheightWebView
@@ -159,7 +136,7 @@ const Announcements = ( {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t( "Dismiss-announcement" )}
-          className="absolute top-[-10px] right-[-10px] h-[44px] w-[44px] items-center
+          className="absolute top-0 right-0 h-[44px] w-[44px] items-center
           justify-center z-10"
           onPress={dismiss}
           testID="announcements-dismiss"
