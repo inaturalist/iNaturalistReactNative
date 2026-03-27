@@ -1,10 +1,9 @@
-// eslint-disable-next-line
 import { Realm } from "@realm/react";
+import type { ApiSuggestion } from "api/types";
 import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
-import remove from "lodash/remove";
 import pull from "lodash/pull";
-import type { ApiSuggestion } from "api/types";
+import remove from "lodash/remove";
 import Photo from "realmModels/Photo";
 import Sound from "realmModels/Sound";
 import type { RealmObservationPojo } from "realmModels/types";
@@ -40,7 +39,7 @@ interface PhotoImporterOptions {
   firstObservationDefaults?: Partial<RealmObservationPojo>;
 }
 
-interface ObservationFlowSlice {
+interface ObservationFlowState {
   aICameraSuggestion: ApiSuggestion | null;
   cameraRollUris: string[];
   currentObservation: RealmObservationPojo | null;
@@ -60,6 +59,9 @@ interface ObservationFlowSlice {
   rollbackSnapshot: RollbackSnapshot | null;
   backupMappings: BackupMapping[];
   firstObservationDefaults?: Partial<RealmObservationPojo>;
+}
+
+interface ObservationFlowActions {
   deletePhotoFromObservation: ( uri: string ) => void;
   deleteSoundFromObservation: ( uri: string ) => void;
   resetObservationFlowSlice: ( ) => void;
@@ -87,31 +89,33 @@ interface ObservationFlowSlice {
   setRollbackSnapshot: ( ) => void;
 }
 
-const DEFAULT_STATE = {
-  aICameraSuggestion: null as ApiSuggestion | null,
-  cameraRollUris: [] as string[],
-  currentObservation: null as RealmObservationPojo | null,
+type ObservationFlowSlice = ObservationFlowState & ObservationFlowActions;
+
+const DEFAULT_STATE: ObservationFlowState = {
+  aICameraSuggestion: null,
+  cameraRollUris: [],
+  currentObservation: null,
   currentObservationIndex: 0,
-  evidenceToAdd: [] as string[],
-  photoLibraryUris: [] as string[],
-  groupedPhotos: [] as GroupedPhoto[],
-  observations: [] as RealmObservationPojo[],
+  evidenceToAdd: [],
+  photoLibraryUris: [],
+  groupedPhotos: [],
+  observations: [],
   // Track when any obs was last marked as viewed so we know when to update
   // the notifications indicator
-  observationMarkedAsViewedAt: null as Date | null,
+  observationMarkedAsViewedAt: null,
   // Array of URIs of photos taken in the camera. These should be fully
   // processed, including rotation or any other transformations. It might
   // also include URIs of other photos that need to be visible as previews in
   // the camera
-  cameraUris: [] as string[],
+  cameraUris: [],
   savingPhoto: false,
   savedOrUploadedMultiObsFlow: false,
   unsavedChanges: false,
   totalSavedObservations: 0,
-  sentinelFileName: null as string | null,
-  newPhotoUris: [] as string[],
-  rollbackSnapshot: null as RollbackSnapshot | null,
-  backupMappings: [] as BackupMapping[],
+  sentinelFileName: null,
+  newPhotoUris: [],
+  rollbackSnapshot: null,
+  backupMappings: [],
 };
 
 const removeObsSoundFromObservation = (
@@ -137,9 +141,12 @@ const removeObsSoundFromObservation = (
 
 const observationToJSON = (
   observation: RealmObservationPojo | Realm.Object | null | undefined,
-): RealmObservationPojo => ( observation instanceof Realm.Object
-  ? observation.toJSON( ) as RealmObservationPojo
-  : observation as RealmObservationPojo );
+): RealmObservationPojo | null => {
+  if ( observation == null ) { return null; }
+  return observation instanceof Realm.Object
+    ? observation.toJSON( ) as RealmObservationPojo
+    : observation;
+};
 
 const updateObservationKeysWithState = (
   keysAndValues: Partial<RealmObservationPojo>,
