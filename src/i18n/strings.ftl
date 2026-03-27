@@ -437,7 +437,8 @@ DISCARD-X-OBSERVATIONS =
     }
 # Onboarding header (underneath the logo)
 DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
-DISMISS = DISMISS
+# Label for a button that dismisses announcments
+Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST

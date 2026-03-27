@@ -9,8 +9,8 @@ import makeWebshell, {
 } from "@formidable-webview/webshell";
 import { useQueryClient } from "@tanstack/react-query";
 import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
-import { ActivityIndicator, Button } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { ActivityIndicator, INatIcon } from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { WebView } from "react-native-webview";
@@ -22,6 +22,7 @@ import {
   useTranslation,
 } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import colors from "styles/tailwindColors";
 
 const TARGET_SPACING = 10;
 
@@ -155,12 +156,24 @@ const Announcements = ( {
         testID="announcements-webview"
       />
       {dismissible && (
-        <Button
-          className="m-3"
-          text={t( "DISMISS" )}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t( "Dismiss-announcement" )}
+          className="absolute top-[-10px] right-[-10px] h-[44px] w-[44px] items-center
+          justify-center z-10"
           onPress={dismiss}
           testID="announcements-dismiss"
-        />
+        >
+          <View
+            className="h-[24px] w-[24px] items-center justify-center rounded-full bg-darkGray/50"
+          >
+            <INatIcon
+              name="close"
+              color={colors.white}
+              size={11}
+            />
+          </View>
+        </Pressable>
       )}
     </View>
   );
