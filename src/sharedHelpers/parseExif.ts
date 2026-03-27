@@ -23,7 +23,7 @@ const formatExifDateAsString = ( tags: ExifTags ): string | null => {
   // it was actually stripped as well from the returned date string. So the returned date string was
   // similar to "dateTime" here, only with different delimiter. E.g. a photo from Australia with an
   // exif time of "2026:01:05 18:37:19" and an offset of "+11:00" was returned as
-  // "2026-01-05T18:37:19.000".
+  // "2026-01-05T18:37:19.000". (Only used on iOS)
   // https://github.com/inaturalist/react-native-exif-reader/blob/f6112fa506a189d4f297316323ef9e1d76d4cedd/ios/ExifReader.swift#L23-L31
   // +01:00
   // -07:00
