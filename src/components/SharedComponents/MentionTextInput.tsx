@@ -153,6 +153,7 @@ const MentionTextInput = ( {
                     countText=""
                     onPress={( ) => handleSelectUser( item )}
                     accessibilityLabel={t( "Select-user" )}
+                    iconVariant="mention"
                   />
                 </View>
               ) )}

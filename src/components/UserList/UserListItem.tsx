@@ -9,7 +9,7 @@ import React from "react";
 import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
-type IconVariant = "small" | "medium" | "large";
+type IconVariant = "mention" | "medium";
 
 interface Props {
   item: object;
@@ -21,9 +21,8 @@ interface Props {
 }
 
 const ICON_VARIANT_SIZE: Record<IconVariant, number> = {
-  small: 22,
+  mention: 40,
   medium: 62,
-  large: 134,
 };
 
 const UserListItem = ( {
@@ -32,13 +31,10 @@ const UserListItem = ( {
   onPress,
   accessibilityLabel: accessibilityLabelProp,
   pressable = true,
-  iconVariant,
+  iconVariant = "medium",
 }: Props ) => {
   const { t } = useTranslation( );
   const user = item?.user;
-  const fallbackIconSize = iconVariant
-    ? ICON_VARIANT_SIZE[iconVariant]
-    : 40;
 
   const UserListItemContainer = pressable
     ? ( { children } ) => (
@@ -70,15 +66,13 @@ const UserListItem = ( {
           ? (
             <UserIcon
               uri={User.uri( user )}
-              small={iconVariant === "small"}
               medium={iconVariant === "medium"}
-              large={iconVariant === "large"}
             />
           )
           : (
             <INatIcon
               name="person"
-              size={fallbackIconSize}
+              size={ICON_VARIANT_SIZE[iconVariant]}
             />
           )}
         <View className="ml-3 shrink">
