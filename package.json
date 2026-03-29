@@ -87,7 +87,7 @@
     "i18next-resources-to-backend": "^1.2.1",
     "inaturalistjs": "github:inaturalist/inaturalistjs",
     "intl-pluralrules": "^2.0.1",
-    "jsrsasign": "^11.1.0",
+    "jsrsasign": "^11.1.1",
     "linkify-html": "^4.3.2",
     "linkify-plugin-mention": "^4.3.2",
     "linkifyjs": "^4.3.2",
