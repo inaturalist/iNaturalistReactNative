@@ -9,15 +9,9 @@ import "@formatjs/intl-getcanonicallocales/polyfill.js";
 
 import "@formatjs/intl-locale/polyfill.js";
 
-import "@formatjs/intl-pluralrules/polyfill-force.js";
-import "@formatjs/intl-pluralrules/locale-data/en.js";
-
-import "@formatjs/intl-numberformat/polyfill-force.js";
-import "@formatjs/intl-numberformat/locale-data/en.js";
-
-import "@formatjs/intl-datetimeformat/polyfill-force.js";
+import "@formatjs/intl-datetimeformat/polyfill.js";
 import "@formatjs/intl-datetimeformat/locale-data/en.js";
-import "@formatjs/intl-datetimeformat/add-all-tz.js"; //
+import "@formatjs/intl-datetimeformat/add-all-tz.js";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
@@ -53,7 +47,11 @@ import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
-import { getUserAgent } from "./src/api/userAgent";
+import { getUserAgent } from "./src/api/userAgent"; //
+
+if ( "__setDefaultTimeZone" in Intl.DateTimeFormat ) {
+  Intl.DateTimeFormat.__setDefaultTimeZone( "America/Chicago" );
+}
 
 const logger = log.extend( "index.js" );
 

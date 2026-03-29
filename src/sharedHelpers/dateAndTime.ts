@@ -326,8 +326,20 @@ function formatDateString(
 
   try {
     const tZDate = new TZDate( dateString, timeZone );
-    const formatted = format( tZDate, fmt, { locale: dateFnsLocale( i18n.language ) } );
+    // const formatted = format( tZDate, fmt );
+    const format = new Intl.DateTimeFormat( "de-DE", {
+      day: "numeric",
+      month: "numeric",
+      year: "2-digit",
+      minute: "numeric",
+      hour: "numeric",
+      timeZoneName: "short",
+      timeZone,
+    } );
+    const formatted = format.format( tZDate );
+    console.log( format.resolvedOptions() );
     return formatted;
+    // return formatted;
   } catch ( error ) {
     console.warn( "Error formatting date", error );
     // In case of: RangeError: Incorrect timeZone information provided
