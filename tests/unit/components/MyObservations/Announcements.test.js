@@ -116,7 +116,7 @@ describe( "Announcements", () => {
 
       await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 
-      const button = screen.queryByTestId( "announcements-dismiss" );
+      const button = screen.queryByLabelText( "Dismiss announcement" );
       expect( button ).toBeNull();
     } );
   } );
@@ -134,9 +134,8 @@ describe( "Announcements", () => {
 
       await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 
-      const button = await screen.findByTestId( "announcements-dismiss" );
+      const button = await screen.findByLabelText( "Dismiss announcement" );
       expect( button ).toBeTruthy();
-      expect( button.props.accessibilityLabel ).toBe( "Dismiss announcement" );
     } );
   } );
 
