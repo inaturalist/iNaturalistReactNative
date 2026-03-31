@@ -1,7 +1,6 @@
 import {
   rotatedOriginalPhotosPath,
 } from "appConstants/paths";
-import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 import type {
   PhotoFile,
@@ -15,9 +14,7 @@ const savePhotoToDocumentsDirectory = async (
   const filename = cameraPhoto.path.split( "/" ).at( -1 );
   const newPath = `${path}/${filename}`;
   await RNFS.moveFile( cameraPhoto.path, newPath );
-  return Platform.OS === "android"
-    ? `file://${newPath}`
-    : newPath;
+  return newPath;
 };
 
 export default savePhotoToDocumentsDirectory;
