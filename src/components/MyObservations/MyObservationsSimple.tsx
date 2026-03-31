@@ -237,6 +237,33 @@ const MyObservationsSimple = ( {
     />
   );
 
+  const observationsHeader = ( ) => {
+    const headerContent = obsMissingBasicsExist
+      ? <SimpleErrorHeader isConnected={isConnected} />
+      : <Announcements isConnected={isConnected} />;
+
+    if ( layout !== "grid" ) {
+      return headerContent;
+    }
+
+    const TARGET_SPACING = 10;
+
+    // our HALF_GUTTER margin value is 7.5, so when we try to cancel it out around announcements we
+    // can get odd rounding behavior that causes 1px margins. Using Math.ceil accounts for this.
+    return (
+      <View
+        style={{
+          marginTop: -Math.ceil( flashListStyle.paddingTop ),
+          marginLeft: -Math.ceil( flashListStyle.paddingLeft ),
+          marginRight: -Math.ceil( flashListStyle.paddingRight ),
+          marginBottom: TARGET_SPACING - flashListStyle.paddingTop,
+        }}
+      >
+        {headerContent}
+      </View>
+    );
+  };
+
   const dataFilledWithEmptyBoxes = useMemo( ( ) => {
     const data = observations;
     // In grid layout fill up to 8 items to make sure the grid is filled
@@ -349,9 +376,7 @@ const MyObservationsSimple = ( {
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
-              renderHeader={currentUser && ( obsMissingBasicsExist
-                ? <SimpleErrorHeader isConnected={isConnected} />
-                : <Announcements isConnected={isConnected} /> )}
+              renderHeader={observationsHeader}
             />
             <ObservationsViewBar
               hideMap

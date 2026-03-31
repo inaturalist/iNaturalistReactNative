@@ -225,7 +225,7 @@
   "DISCARD-SOUND--question": "DISCARD SOUND?",
   "DISCARD-X-OBSERVATIONS": "{ $count ->\n  [one] DISCARD OBSERVATION\n *[other] DISCARD { $count } OBSERVATIONS\n}",
   "DISCOVER-NATURE-AROUND-YOU": "DISCOVER NATURE AROUND YOU",
-  "DISMISS": "DISMISS",
+  "Dismiss-announcement": "Dismiss announcement",
   "Do-you-know-what-group-this-is-in": "Do you know what group this is in?",
   "DONATE": "DONATE",
   "DONATE-TO-INATURALIST": "DONATE TO INATURALIST",
