@@ -155,17 +155,27 @@ const PhotoLibrary = ( ) => {
     // According to the native code of the image picker library, it never rejects the promise,
     // just returns a response object with errorCode
     // https://github.com/react-native-image-picker/react-native-image-picker?tab=readme-ov-file#Asset-Object
-    const response = await launchImageLibrary( {
-      selectionLimit: fromAICamera
-        ? FROM_AICAMERA_MAX_PHOTOS_ALLOWED
-        : MAX_PHOTOS_ALLOWED,
-      mediaType: "photo",
-      includeBase64: false,
-      // forceOldAndroidPhotoPicker is necessary because the "new" picker strips key EXIF data
-      forceOldAndroidPhotoPicker: true,
-      chooserTitle: t( "Import-Photos-From" ),
-      presentationStyle: "overFullScreen",
-    } );
+    let response;
+    try {
+      // Adding a try/catch anyway. The error state described in https://linear.app/inaturalist/issue/MOB-90/importing-photo-while-offline-in-android-gets-stuck-on-photogallery
+      // is now fixed but matches the screen state shown if I manually throw an error here
+      response = await launchImageLibrary( {
+        selectionLimit: fromAICamera
+          ? FROM_AICAMERA_MAX_PHOTOS_ALLOWED
+          : MAX_PHOTOS_ALLOWED,
+        mediaType: "photo",
+        includeBase64: false,
+        // forceOldAndroidPhotoPicker is necessary because the "new" picker strips key EXIF data
+        forceOldAndroidPhotoPicker: true,
+        chooserTitle: t( "Import-Photos-From" ),
+        presentationStyle: "overFullScreen",
+      } );
+    } catch ( launchError ) {
+      logger.error( "launchImageLibrary threw unexpectedly", launchError );
+      setPhotoLibraryShown( false );
+      exitObservationsFlow();
+      return;
+    }
 
     if ( !response || response.didCancel || !response.assets || response.errorCode ) {
       // User cancelled selection of photos - close current screen
