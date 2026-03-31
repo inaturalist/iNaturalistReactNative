@@ -53,15 +53,6 @@ subprojects { sub ->
                     && it.android.defaultConfig.minSdkVersion.apiLevel < rootProject.ext.minSdkVersion) {
                     it.android.defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
                 }
-                // Resolve duplicate native library conflicts for androidTest APKs.
-                // react-native-worklets-core bundles .so files that also come from
-                // hermes-android, causing duplicates when building per-module test APKs.
-                it.android.packagingOptions {
-                    pickFirst '**/libhermesvm.so'
-                    pickFirst '**/libhermestooling.so'
-                    pickFirst '**/libjsi.so'
-                    pickFirst '**/libc++_shared.so'
-                }
             }
         }
     }
