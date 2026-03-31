@@ -37,9 +37,9 @@ allprojects {
     }
 }
 
-// Force minSdkVersion for libraries that hardcode a lower value than the project's.
-// This is needed for assembleAndroidTest (used by Detox) which builds per-module
-// test APKs that would otherwise fail manifest merging.
+// Force minSdkVersion for libraries that hardcode a lower value than the project's
+// (e.g. react-native-mail). This is needed for assembleAndroidTest (used by Detox)
+// which builds per-module test APKs that would otherwise fail manifest merging.
 subprojects { sub ->
     if (sub.state.executed) {
         if (sub.hasProperty('android') && sub.android.defaultConfig.minSdkVersion != null
