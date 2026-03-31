@@ -23,9 +23,14 @@ interface OfflineRequestOptions {
   realm: Realm;
 }
 
+export interface OfflineSuggestionsResponse {
+  results: UseSuggestionsOfflineSuggestion[];
+  commonAncestor?: UseSuggestionsOfflineSuggestion;
+}
+
 export const predictOffline = async ( {
   latitude, longitude, photoUri, realm,
-}: OfflineRequestOptions ) => {
+}: OfflineRequestOptions ): Promise<OfflineSuggestionsResponse> => {
   let rawPredictions = [];
   let commonAncestor;
   try {
