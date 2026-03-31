@@ -1,9 +1,14 @@
 // @flow
-import { Body4, INatIconButton, UserIcon } from "components/SharedComponents";
+import { Body4, INatIcon, UserIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import NotificationsIconContainer from "navigation/BottomTabNavigator/NotificationsIconContainer";
 import * as React from "react";
 import colors from "styles/tailwindColors";
+
+type IconFrameProps = {
+  children: React.Node,
+  testID: string,
+};
 
 type Props = {
   testID: string,
@@ -11,13 +16,19 @@ type Props = {
   onPress: Function,
   userIconUri?: string,
   accessibilityLabel: string,
-  accessibilityRole?: string,
   accessibilityHint?: string,
   active: boolean,
-  size: number,
-  width?: number,
-  height?: number
+  size: number
 };
+
+const IconFrame = ( { children, testID }: IconFrameProps ) => (
+  <View
+    className="h-9 w-9 items-center justify-center"
+    testID={testID}
+  >
+    {children}
+  </View>
+);
 
 const NavButton = ( {
   testID,
@@ -28,52 +39,41 @@ const NavButton = ( {
   active,
   accessibilityLabel,
   accessibilityHint,
-  width = 44,
-  height = 44,
 }: Props ): React.Node => {
-  /* eslint-disable react/jsx-props-no-spreading */
-  const sharedProps = {
-    testID,
-    width,
-    height,
-  };
-
   let iconComponent;
   if ( userIconUri ) {
     iconComponent = (
-      <View
-        className="flex items-center justify-center"
-        {...sharedProps}
-      >
-        <UserIcon uri={userIconUri} active={active} />
-      </View>
+      <IconFrame testID={testID}>
+        <UserIcon uri={userIconUri} active={active} size={size} />
+      </IconFrame>
     );
   } else if ( icon === "notifications-bell" ) {
     iconComponent = (
-      <NotificationsIconContainer
-        icon={icon}
-        size={size}
-        active={active}
-        {...sharedProps}
-      />
+      <IconFrame testID={testID}>
+        <NotificationsIconContainer
+          icon={icon}
+          size={size}
+          active={active}
+        />
+      </IconFrame>
     );
   } else {
     iconComponent = (
-      <INatIconButton
-        icon={icon}
-        iconOnly
-        color={active
-          ? colors.inatGreen
-          : colors.darkGray}
-        size={size}
-        {...sharedProps}
-      />
+      <IconFrame testID={testID}>
+        <INatIcon
+          name={icon}
+          color={active
+            ? colors.inatGreen
+            : colors.darkGray}
+          size={size}
+        />
+      </IconFrame>
     );
   }
 
   return (
     <Pressable
-      className="flex-column items-center justify-end"
+      className="min-h-[44px] min-w-[44px] items-center justify-end"
       onPress={onPress}
       key={`NavButton-${accessibilityLabel}`}
       accessibilityLabel={accessibilityLabel}
@@ -88,8 +88,8 @@ const NavButton = ( {
       <Body4
         numberOfLines={1}
         className={active
-          ? "text-inatGreen"
-          : "text-darkGray"}
+          ? "mt-[2px] text-inatGreen"
+          : "mt-[2px] text-darkGray"}
         maxFontSizeMultiplier={1.2}
       >
         {accessibilityLabel}
