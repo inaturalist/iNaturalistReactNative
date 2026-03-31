@@ -57,7 +57,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   const activeTabIndex = state?.index;
   const activeTabName = state?.routes[activeTabIndex]?.name as TabName;
 
-  const userIconUri = useMemo( ( ) => User.uri( currentUser ), [currentUser] );
+  const userIconUri = useMemo( ( ) => User.thumbUri( currentUser ), [currentUser] );
 
   const activeTab = getActiveTab( activeTabName );
 
