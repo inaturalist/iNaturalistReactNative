@@ -152,7 +152,11 @@ android {
 
 dependencies {
     // Detox Android setup
-    androidTestImplementation('com.wix:detox:+')
+    androidTestImplementation('com.wix:detox:+') {
+        // accessibility-test-framework pulls in protobuf-lite:3.0.1 which conflicts
+        // with protobuf-javalite:3.25.5 used by Firebase, crashing the app on launch
+        exclude group: 'com.google.protobuf', module: 'protobuf-lite'
+    }
     implementation 'androidx.appcompat:appcompat:1.1.0'
     // Detox end
 
