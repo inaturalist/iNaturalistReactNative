@@ -8,6 +8,7 @@ module Fastlane
         # https://github.com/fastlane/fastlane/blob/master/spaceship/docs/AppStoreConnect.md#login,
         # but it seems to work
         Spaceship::Tunes.login
+        Spaceship::Tunes.select_team( team_id: itc_team_id, team_name: nil )
         ios_bundle_id = CredentialsManager::AppfileConfig.try_fetch_value( :app_identifier )
         app = Spaceship::ConnectAPI::App.find( ios_bundle_id )
         builds = app.get_builds
