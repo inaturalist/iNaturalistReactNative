@@ -11,21 +11,15 @@ import {
 import useStore from "stores/useStore";
 
 type Props = {
-  testID: string,
   icon: string,
   active:boolean,
   size: number,
-  width?: number,
-  height?: number
 };
 
 const NotificationsIconContainer = ( {
-  testID,
   size,
   icon,
   active,
-  width,
-  height,
 }: Props ): Node => {
   const [hasUnread, setHasUnread] = useState( false );
   const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
@@ -64,9 +58,6 @@ const NotificationsIconContainer = ( {
       unread={hasUnread}
       active={active}
       size={size}
-      testID={testID}
-      width={width}
-      height={height}
     />
   );
 };
