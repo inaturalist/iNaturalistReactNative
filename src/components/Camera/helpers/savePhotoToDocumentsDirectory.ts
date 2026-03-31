@@ -12,7 +12,7 @@ const savePhotoToDocumentsDirectory = async (
   const path = rotatedOriginalPhotosPath;
   await RNFS.mkdir( path );
   const filename = cameraPhoto.path.split( "/" ).at( -1 );
-  const newPath = `${path}/${filename}`;
+  const newPath = `file://${path}/${filename}`;
   await RNFS.moveFile( cameraPhoto.path, newPath );
   return newPath;
 };
