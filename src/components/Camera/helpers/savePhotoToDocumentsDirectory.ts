@@ -5,27 +5,16 @@ import RNFS from "react-native-fs";
 import type {
   PhotoFile,
 } from "react-native-vision-camera";
-import resizeImage from "sharedHelpers/resizeImage";
-import { unlink } from "sharedHelpers/util";
 
 const savePhotoToDocumentsDirectory = async (
   cameraPhoto: PhotoFile,
 ) => {
   const path = rotatedOriginalPhotosPath;
   await RNFS.mkdir( path );
-  // Move the image with ImageResizer (for legacy reasons, because we
-  // used to use it to rotate the photo)
-  const image = await resizeImage(
-    cameraPhoto.path,
-    {
-      width: cameraPhoto.width,
-      height: cameraPhoto.height,
-      outputPath: path,
-    },
-  );
-  // Remove original temp photo
-  await unlink( cameraPhoto.path );
-  return image;
+  const filename = cameraPhoto.path.split( "/" ).at( -1 );
+  const newPath = `${path}/${filename}`;
+  await RNFS.moveFile( cameraPhoto.path, newPath );
+  return newPath;
 };
 
 export default savePhotoToDocumentsDirectory;
