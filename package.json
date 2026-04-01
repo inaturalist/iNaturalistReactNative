@@ -47,6 +47,7 @@
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.11",
     "@candlefinance/faster-image": "^1.7.2",
+    "@dr.pogodin/react-native-fs": "^2.22.0",
     "@formidable-webview/webshell": "^2.6.0",
     "@gorhom/bottom-sheet": "^5.2.8",
     "@invertase/react-native-apple-authentication": "^2.4.0",
@@ -108,7 +109,6 @@
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-event-listeners": "^1.0.7",
     "react-native-exception-handler": "^2.10.10",
-    "react-native-fs": "^2.20.0",
     "react-native-geocoder-reborn": "^0.9.0",
     "react-native-gesture-handler": "^2.30.0",
     "react-native-get-random-values": "^2.0.0",
