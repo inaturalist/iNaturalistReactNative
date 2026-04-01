@@ -32,6 +32,15 @@ module.exports = {
       teardownTimeout: 900000,
     },
   },
+  artifacts: {
+    rootDir: "e2e/artifacts",
+    plugins: {
+      screenshot: {
+        shouldTakeAutomaticSnapshots: true,
+        keepOnlyFailedTestsArtifacts: true,
+      },
+    },
+  },
   apps: {
     "ios.debug": {
       type: "ios.app",
