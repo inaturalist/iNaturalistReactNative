@@ -14,12 +14,12 @@ const PARAMS = {
   fields: MESSAGE_FIELDS,
 };
 
-const searchMessages = async ( params: object = {}, opts: object = {} ): Promise<object> => {
+const searchMessages = async (params: object = {}, opts: object = {}): Promise<object> => {
   try {
-    const { results } = await inatjs.messages.search( { ...PARAMS, ...params }, opts );
+    const { results } = await inatjs.messages.search({ ...PARAMS, ...params }, opts);
     return results;
-  } catch ( e ) {
-    return handleError( e as Error, { context: { functionName: "searchMessages", opts } } );
+  } catch (e) {
+    return handleError(e as Error, { context: { functionName: "searchMessages", opts } });
   }
 };
 

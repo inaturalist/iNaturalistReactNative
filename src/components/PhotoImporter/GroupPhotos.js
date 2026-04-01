@@ -33,7 +33,7 @@ type Props = {
   totalPhotos: number
 }
 
-const GroupPhotos = ( {
+const GroupPhotos = ({
   combinePhotos,
   groupedPhotos,
   isCreatingObservations,
@@ -43,43 +43,43 @@ const GroupPhotos = ( {
   selectObservationPhotos,
   separatePhotos,
   totalPhotos,
-}: Props ): Node => {
-  const navigation = useNavigation( );
+}: Props): Node => {
+  const navigation = useNavigation();
   const {
     flashListStyle,
     gridItemStyle,
     gridItemWidth,
     numColumns,
-  } = useGridLayout( );
-  const [buttonBarHeight, setButtonBarHeight] = useState( null );
-  const extractKey = ( item, index ) => ( item.empty
+  } = useGridLayout();
+  const [buttonBarHeight, setButtonBarHeight] = useState(null);
+  const extractKey = (item, index) => (item.empty
     ? "empty"
-    : `${item.photos[0].uri}${index}` );
+    : `${item.photos[0].uri}${index}`);
 
   const noObsSelected = selectedObservations.length === 0;
   const oneObsSelected = selectedObservations.length === 1;
   const obsWithMultiplePhotosSelected
     = selectedObservations?.[0]?.photos?.length > 1;
 
-  const renderImage = useCallback( item => (
+  const renderImage = useCallback(item => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
       selectObservationPhotos={selectObservationPhotos}
       style={gridItemStyle}
     />
-  ), [gridItemStyle, selectedObservations, selectObservationPhotos] );
+  ), [gridItemStyle, selectedObservations, selectObservationPhotos]);
 
-  const addPhotos = useCallback( () => {
-    navigation.navigate( "NoBottomTabStackNavigator", {
+  const addPhotos = useCallback(() => {
+    navigation.navigate("NoBottomTabStackNavigator", {
       screen: "PhotoLibrary",
       params: { fromGroupPhotos: true },
-    } );
-  }, [navigation] );
+    });
+  }, [navigation]);
 
   // $FlowIgnore
-  const renderItem = useCallback( ( { item } ) => {
-    if ( item.empty ) {
+  const renderItem = useCallback(({ item }) => {
+    if (item.empty) {
       return (
         <Pressable
           accessibilityRole="button"
@@ -98,12 +98,12 @@ const GroupPhotos = ( {
       );
     }
     // $FlowIgnore
-    return renderImage( item );
-  }, [gridItemStyle, renderImage, addPhotos] );
+    return renderImage(item);
+  }, [gridItemStyle, renderImage, addPhotos]);
 
-  const renderHeader = ( ) => (
+  const renderHeader = () => (
     <View className="m-5">
-      <Body2>{t( "Group-photos-onboarding" )}</Body2>
+      <Body2>{t("Group-photos-onboarding")}</Body2>
     </View>
   );
 
@@ -111,16 +111,16 @@ const GroupPhotos = ( {
     const {
       height,
     } = event.nativeEvent.layout;
-    setButtonBarHeight( height );
+    setButtonBarHeight(height);
   };
 
-  const data = useMemo( ( ) => {
-    const newData = [].concat( groupedPhotos );
-    if ( totalPhotos < MAX_PHOTOS_ALLOWED ) {
-      newData.push( { empty: true } );
+  const data = useMemo(() => {
+    const newData = [].concat(groupedPhotos);
+    if (totalPhotos < MAX_PHOTOS_ALLOWED) {
+      newData.push({ empty: true });
     }
     return newData;
-  }, [groupedPhotos, totalPhotos] );
+  }, [groupedPhotos, totalPhotos]);
 
   const extraData = {
     selectedObservations,
@@ -154,7 +154,7 @@ const GroupPhotos = ( {
             color={colors.white}
             backgroundColor={colors.darkGray}
             className="m-4"
-            accessibilityLabel={t( "Combine-Photos" )}
+            accessibilityLabel={t("Combine-Photos")}
             disabled={noObsSelected || oneObsSelected}
             onPress={combinePhotos}
           />
@@ -165,7 +165,7 @@ const GroupPhotos = ( {
             color={colors.white}
             backgroundColor={colors.darkGray}
             className="m-4"
-            accessibilityLabel={t( "Separate-Photos" )}
+            accessibilityLabel={t("Separate-Photos")}
             disabled={!obsWithMultiplePhotosSelected}
             onPress={separatePhotos}
           />
@@ -176,7 +176,7 @@ const GroupPhotos = ( {
             color={colors.white}
             backgroundColor={colors.warningRed}
             className="m-4"
-            accessibilityLabel={t( "Remove-Photos" )}
+            accessibilityLabel={t("Remove-Photos")}
             disabled={noObsSelected}
             onPress={removePhotos}
           />
@@ -190,7 +190,7 @@ const GroupPhotos = ( {
         <Button
           className="max-w-[500px] w-full"
           level="focus"
-          text={t( "IMPORT-X-OBSERVATIONS", { count: groupedPhotos.length } )}
+          text={t("IMPORT-X-OBSERVATIONS", { count: groupedPhotos.length })}
           onPress={navBasedOnUserSettings}
           testID="GroupPhotos.next"
           loading={isCreatingObservations}

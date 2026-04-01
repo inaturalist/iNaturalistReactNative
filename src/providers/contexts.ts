@@ -11,7 +11,7 @@ import realmConfig from "realmModels/index";
 // checkOnRealmPath( "before creating realm context" );
 
 // TODO: How to use Realm with TS
-const RealmContext = createRealmContext( realmConfig );
+const RealmContext = createRealmContext(realmConfig);
 
 export {
   // eslint-disable-next-line import/prefer-default-export

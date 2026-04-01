@@ -15,12 +15,12 @@ interface Props {
   notification: Notification;
 }
 
-const ObsNotification = ( { notification }: Props ) => {
-  const { i18n } = useTranslation( );
+const ObsNotification = ({ notification }: Props) => {
+  const { i18n } = useTranslation();
   const { notifier_type: type } = notification;
 
   const renderIcon = () => {
-    switch ( type ) {
+    switch (type) {
       case "Identification":
         return "label-outline";
       case "Comment":
@@ -41,16 +41,16 @@ const ObsNotification = ( { notification }: Props ) => {
             type
               && (
                 <INatIcon
-                  name={renderIcon( )}
+                  name={renderIcon()}
                   size={14}
-                  color={String( colors?.darkGray )}
+                  color={String(colors?.darkGray)}
                 />
               )
           }
           {notification.created_at
             && (
               <Body4>
-                {formatDifferenceForHumans( notification.created_at, i18n )}
+                {formatDifferenceForHumans(notification.created_at, i18n)}
               </Body4>
             )}
         </View>

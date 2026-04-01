@@ -1,8 +1,8 @@
-const fs = require( "fs" );
-const { version } = require( "./package.json" );
+const fs = require("fs");
+const { version } = require("./package.json");
 
-const buildGradle = fs.readFileSync( "./android/app/build.gradle", "utf8" );
-const versionCode = buildGradle.match( /versionCode (\d+)/ )[1];
+const buildGradle = fs.readFileSync("./android/app/build.gradle", "utf8");
+const versionCode = buildGradle.match(/versionCode (\d+)/)[1];
 const apkFilenamePrefix = `org.inaturalist.iNaturalistMobile-v${version}+${versionCode}`;
 
 /** @type {Detox.DetoxConfig} */

@@ -13,9 +13,9 @@ interface Props {
   currentUser: { login: string; id: number };
   isChild?: boolean;
   isCurrentTaxon?: boolean;
-  navigateToTaxonDetails: ( _taxonId: number ) => void;
+  navigateToTaxonDetails: (_taxonId: number) => void;
   scientificNameFirst?: boolean;
-  t: ( key: string, options: object ) => string;
+  t: (key: string, options: object) => string;
   taxon: {
     id: number;
     name: string;
@@ -25,7 +25,7 @@ interface Props {
   };
 }
 
-const TaxonomyTaxon = ( {
+const TaxonomyTaxon = ({
   currentUser,
   isChild,
   isCurrentTaxon,
@@ -33,15 +33,15 @@ const TaxonomyTaxon = ( {
   scientificNameFirst,
   t,
   taxon,
-}: Props ) => {
+}: Props) => {
   const {
     commonName,
     scientificNamePieces,
     rankPiece,
     rankLevel,
     rank,
-  } = generateTaxonPieces( taxon );
-  const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+  } = generateTaxonPieces(taxon);
+  const accessibleName = accessibleTaxonName(taxon, currentUser, t);
   const sciNameComponent = (
     <TaxonomyScientificName
       hasCommonName={!!commonName}
@@ -63,7 +63,7 @@ const TaxonomyTaxon = ( {
       className="flex-row py-2"
       key={taxon.id}
       disabled={isCurrentTaxon}
-      onPress={() => navigateToTaxonDetails( taxon.id )}
+      onPress={() => navigateToTaxonDetails(taxon.id)}
       accessibilityLabel={accessibleName}
       accessibilityState={{
         disabled: isCurrentTaxon,

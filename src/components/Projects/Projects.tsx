@@ -29,7 +29,7 @@ const HEADER_HEIGHT_WITHOUT_TABS = 80;
 
 interface Props {
   currentTabId: TAB_ID;
-  fetchNextPage: ( ) => void;
+  fetchNextPage: () => void;
   hasPermissions: boolean | undefined;
   isFetchingNextPage: boolean;
   isLoading: boolean;
@@ -37,11 +37,11 @@ interface Props {
   projects: object[];
   requestPermissions: () => void;
   searchInput: string;
-  setSearchInput: ( _text: string ) => void;
+  setSearchInput: (_text: string) => void;
   tabs: Tab[];
 }
 
-const Projects = ( {
+const Projects = ({
   currentTabId,
   fetchNextPage,
   hasPermissions,
@@ -53,38 +53,38 @@ const Projects = ( {
   searchInput,
   setSearchInput,
   tabs,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const { isConnected } = useNetInfo( );
+}: Props) => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const { isConnected } = useNetInfo();
 
   const hideLoadingWheel = !isFetchingNextPage || projects?.length === 0;
 
-  useEffect( ( ) => {
-    const headerLeft = ( ) => (
+  useEffect(() => {
+    const headerLeft = () => (
       <>
         <INatIcon
           name="briefcase"
           size={25}
         />
-        <Heading1 className="pl-2 pt-1">{t( "Projects" )}</Heading1>
+        <Heading1 className="pl-2 pt-1">{t("Projects")}</Heading1>
       </>
     );
 
-    navigation.setOptions( {
+    navigation.setOptions({
       headerLeft,
-    } );
-  }, [navigation, t] );
+    });
+  }, [navigation, t]);
 
-  const renderFooter = useCallback( ( ) => (
+  const renderFooter = useCallback(() => (
     <InfiniteScrollLoadingWheel
       hideLoadingWheel={hideLoadingWheel}
       isConnected={isConnected}
     />
-  ), [hideLoadingWheel, isConnected] );
+  ), [hideLoadingWheel, isConnected]);
 
-  const renderEmptyList = ( ) => {
-    if ( isLoading ) {
+  const renderEmptyList = () => {
+    if (isLoading) {
       <ActivityIndicator size={50} />;
     } else {
       return (
@@ -95,24 +95,24 @@ const Projects = ( {
           emptyItemHeight={90}
           containerClassName="self-center w-full"
         >
-          <Body1 className="self-center">{t( "No-projects-match-that-search" )}</Body1>
+          <Body1 className="self-center">{t("No-projects-match-that-search")}</Body1>
           <View className="p-4 mt-2">
             <Button
               level="neutral"
-              text={t( "RESET-SEARCH" )}
-              onPress={( ) => setSearchInput( "" )}
+              text={t("RESET-SEARCH")}
+              onPress={() => setSearchInput("")}
             />
           </View>
         </FlashListEmptyWrapper>
       );
     }
 
-    if ( searchInput.length === 0 ) {
-      if ( currentTabId === TAB_ID.JOINED && !memberId ) {
+    if (searchInput.length === 0) {
+      if (currentTabId === TAB_ID.JOINED && !memberId) {
         return (
           <View className="items-center">
-            <Body1>{t( "You-havent-joined-any-projects-yet" )}</Body1>
-            <Body1 className="mt-5">{t( "You-can-click-join-on-the-project-page" )}</Body1>
+            <Body1>{t("You-havent-joined-any-projects-yet")}</Body1>
+            <Body1 className="mt-5">{t("You-can-click-join-on-the-project-page")}</Body1>
           </View>
         );
       }
@@ -121,19 +121,19 @@ const Projects = ( {
     return null;
   };
 
-  const renderList = ( ) => {
+  const renderList = () => {
     // hasPermission undefined means we haven't checked for location permissions yet
     // false means the user has denied or not yet given location permissions
-    if ( currentTabId === TAB_ID.NEARBY && hasPermissions === false ) {
+    if (currentTabId === TAB_ID.NEARBY && hasPermissions === false) {
       return (
         <View className="flex-1 justify-center p-4">
           <View className="items-center">
-            <Body2>{t( "To-view-nearby-projects-please-enable-location" )}</Body2>
+            <Body2>{t("To-view-nearby-projects-please-enable-location")}</Body2>
           </View>
           <Button
             className="mt-5"
-            text={t( "ALLOW-LOCATION-ACCESS" )}
-            accessibilityHint={t( "Opens-location-permission-prompt" )}
+            text={t("ALLOW-LOCATION-ACCESS")}
+            accessibilityHint={t("Opens-location-permission-prompt")}
             level="focus"
             onPress={requestPermissions}
           />
@@ -141,7 +141,7 @@ const Projects = ( {
       );
     }
 
-    if ( isLoading && projects.length === 0 ) {
+    if (isLoading && projects.length === 0) {
       return <ActivityIndicator size={50} />;
     }
 
@@ -163,8 +163,8 @@ const Projects = ( {
           handleTextChange={setSearchInput}
           value={searchInput}
           testID="ProjectSearch.input"
-          placeholder={t( "Search-for-a-project" )}
-          clearSearch={( ) => setSearchInput( "" )}
+          placeholder={t("Search-for-a-project")}
+          clearSearch={() => setSearchInput("")}
         />
       </View>
       {searchInput.length === 0 && (
@@ -173,7 +173,7 @@ const Projects = ( {
           <View className="mb-3" />
         </>
       )}
-      {renderList( )}
+      {renderList()}
     </View>
   );
 };

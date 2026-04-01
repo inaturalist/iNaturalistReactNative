@@ -23,21 +23,21 @@ const BASE_STYLE = {
 
 const FONTS = [fontRegular, ...defaultSystemFonts];
 
-const Wikipedia = ( { taxon }: Props ) => {
+const Wikipedia = ({ taxon }: Props) => {
   const { width } = useWindowDimensions();
   const { t } = useTranslation();
 
-  const openWikipedia = ( ) => {
-    openExternalWebBrowser( taxon.wikipedia_url );
+  const openWikipedia = () => {
+    openExternalWebBrowser(taxon.wikipedia_url);
   };
 
-  if ( !taxon.wikipedia_summary || taxon.wikipedia_summary.length === 0 ) {
+  if (!taxon.wikipedia_summary || taxon.wikipedia_summary.length === 0) {
     return null;
   }
 
   return (
     <>
-      <Heading4 className="mb-3">{t( "WIKIPEDIA" )}</Heading4>
+      <Heading4 className="mb-3">{t("WIKIPEDIA")}</Heading4>
       <HTML
         contentWidth={width}
         source={{ html: taxon.wikipedia_summary }}
@@ -52,7 +52,7 @@ const Wikipedia = ( { taxon }: Props ) => {
           testID="TaxonDetails.wikipedia"
           className="my-3 color-inatGreen underline"
         >
-          {t( "Read-more-on-Wikipedia" )}
+          {t("Read-more-on-Wikipedia")}
 
         </Body2>
       ) }

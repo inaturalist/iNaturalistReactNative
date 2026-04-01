@@ -8,90 +8,90 @@ import {
 import { View } from "components/styledComponents";
 import React from "react";
 
-export function makeObservation( options = {} ) {
+export function makeObservation(options = {}) {
   return {
-    uuid: faker.string.uuid( ),
-    missingBasics: ( ) => false,
+    uuid: faker.string.uuid(),
+    missingBasics: () => false,
     ...options,
   };
 }
 
-export function makePhoto( options = { } ) {
+export function makePhoto(options = { }) {
   return {
-    id: faker.number.int( ),
-    attribution: faker.lorem.sentence( ),
+    id: faker.number.int(),
+    attribution: faker.lorem.sentence(),
     licenseCode: "cc-by-nc",
-    url: faker.image.url( ),
+    url: faker.image.url(),
     ...options,
   };
 }
 
-export function makeObservationPhoto( options = {} ) {
+export function makeObservationPhoto(options = {}) {
   return {
-    uuid: faker.string.uuid( ),
-    photo: makePhoto( ),
+    uuid: faker.string.uuid(),
+    photo: makePhoto(),
     ...options,
   };
 }
 
-export function makeObservationSound( options = {} ) {
+export function makeObservationSound(options = {}) {
   return {
-    uuid: faker.string.uuid( ),
-    file_url: faker.system.filePath( ),
+    uuid: faker.string.uuid(),
+    file_url: faker.system.filePath(),
     ...options,
   };
 }
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const ObsListItemDemo = ( ) => (
+const ObsListItemDemo = () => (
   <ScrollViewWrapper>
     <View className="p-2">
       <Heading1 className="my-2">Media Preview</Heading1>
       <Heading2 className="my-2">Photo</Heading2>
       <ObsListItem
-        observation={makeObservation( {
+        observation={makeObservation({
           observationPhotos: [makeObservationPhoto()],
-        } )}
+        })}
       />
       <Heading2 className="my-2">Photos</Heading2>
       <ObsListItem
-        observation={makeObservation( {
+        observation={makeObservation({
           observationPhotos: [
             makeObservationPhoto(),
             makeObservationPhoto(),
           ],
-        } )}
+        })}
       />
       <Heading2 className="my-2">Sound + Photo</Heading2>
       <ObsListItem
-        observation={makeObservation( {
+        observation={makeObservation({
           observationPhotos: [makeObservationPhoto()],
           observationSounds: [makeObservationSound()],
-        } )}
+        })}
       />
       <Heading2 className="my-2">Sound + Photos</Heading2>
       <ObsListItem
-        observation={makeObservation( {
+        observation={makeObservation({
           observationPhotos: [
             makeObservationPhoto(),
             makeObservationPhoto(),
           ],
           observationSounds: [makeObservationSound()],
-        } )}
+        })}
       />
       <Heading2 className="my-2">Sound</Heading2>
       <ObsListItem
-        observation={makeObservation( {
+        observation={makeObservation({
           observationSounds: [makeObservationSound()],
-        } )}
+        })}
       />
       <Heading2 className="my-2">No Media</Heading2>
       <ObsListItem
         observation={makeObservation()}
       />
       <ObsListItem
-        observation={makeObservation( {
+        observation={makeObservation({
           taxon: {
             id: 123,
             iconic_taxon_name: "Insecta",
@@ -99,19 +99,19 @@ const ObsListItemDemo = ( ) => (
             name: "Foo bar",
             rank_level: 10,
           },
-        } )}
+        })}
       />
       <Heading1 className="my-2">Upload statuses</Heading1>
       <Heading2 className="my-2">Synced</Heading2>
       <ObsListItem
-        observation={makeObservation( { _synced_at: new Date( ) } )}
+        observation={makeObservation({ _synced_at: new Date() })}
       />
       <Heading2 className="my-2">Edit needed</Heading2>
       <ObsListItem
-        observation={makeObservation( {
+        observation={makeObservation({
           needsSync: () => true,
           missingBasics: () => true,
-        } )}
+        })}
         uploadProgress={0}
       />
       <Heading2 className="my-2">Upload needed</Heading2>
@@ -130,10 +130,10 @@ const ObsListItemDemo = ( ) => (
       />
       <Heading2 className="my-2">Upload complete, w/ animation, w/ ID</Heading2>
       <ObsListItem
-        observation={makeObservation( {
+        observation={makeObservation({
           uuid: "the-uuid",
           identifications: [{ uuid: "another-uuid", current: true }],
-        } )}
+        })}
         uploadProgress={1}
       />
       <Heading2 className="my-2">Upload complete, before animation</Heading2>

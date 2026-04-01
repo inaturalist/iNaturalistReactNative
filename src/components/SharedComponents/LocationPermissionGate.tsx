@@ -14,7 +14,7 @@ interface Props extends PropsWithChildren {
   withoutNavigation?: boolean;
 }
 
-const LocationPermissionGate = ( {
+const LocationPermissionGate = ({
   children,
   permissionNeeded,
   onModalHide,
@@ -22,16 +22,16 @@ const LocationPermissionGate = ( {
   onPermissionDenied,
   onPermissionBlocked,
   withoutNavigation,
-}: Props ) => (
+}: Props) => (
   <PermissionGateContainer
     permissions={LOCATION_PERMISSIONS}
-    title={t( "Improve-suggestions-by-using-your-location" )}
-    titleDenied={t( "Please-allow-Location-Access" )}
-    body={t( "iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions" )}
-    blockedPrompt={t( "Youve-previously-denied-location-permissions" )}
-    buttonText={t( "USE-LOCATION" )}
+    title={t("Improve-suggestions-by-using-your-location")}
+    titleDenied={t("Please-allow-Location-Access")}
+    body={t("iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions")}
+    blockedPrompt={t("Youve-previously-denied-location-permissions")}
+    buttonText={t("USE-LOCATION")}
     icon="map-marker-outline"
-    image={require( "images/background/landon-parenteau-EEuDMqRYbx0-unsplash.jpg" )}
+    image={require("images/background/landon-parenteau-EEuDMqRYbx0-unsplash.jpg")}
     permissionNeeded={permissionNeeded}
     onModalHide={onModalHide}
     onPermissionGranted={onPermissionGranted}

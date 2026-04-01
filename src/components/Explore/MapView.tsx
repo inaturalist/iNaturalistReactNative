@@ -31,10 +31,10 @@ const worldwideRegion = {
   longitudeDelta: WORLDWIDE_DELTA,
 };
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
   elevation: 6,
-} );
+});
 
 const activityIndicatorSize = 50;
 const centeredLoadingWheel: StyleProp<ViewStyle> = {
@@ -42,8 +42,8 @@ const centeredLoadingWheel: StyleProp<ViewStyle> = {
   top: "50%",
   left: "50%",
   transform: [
-    { translateX: -( activityIndicatorSize / 2 ) },
-    { translateY: -( activityIndicatorSize / 2 ) },
+    { translateX: -(activityIndicatorSize / 2) },
+    { translateY: -(activityIndicatorSize / 2) },
   ],
   backgroundColor: "rgba(0,0,0,0)",
   alignItems: "center",
@@ -63,34 +63,34 @@ interface Props {
   isLoading: boolean;
   hasLocationPermissions?: boolean;
   renderLocationPermissionsGate: RenderLocationPermissionsGateFunction;
-  requestLocationPermissions: ( ) => void;
+  requestLocationPermissions: () => void;
 }
 
-const MapView = ( {
+const MapView = ({
   observationBounds,
   queryParams,
   isLoading,
   hasLocationPermissions,
   renderLocationPermissionsGate,
   requestLocationPermissions,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const { state: exploreState, dispatch, defaultExploreLocation } = useExplore( );
-  const [showRedoSearchButton, setShowRedoSearchButton] = useState( false );
-  const [regionToAnimate, setRegionToAnimate] = useState<Region | null>( null );
-  const isFirstRender = useRef( true );
+}: Props) => {
+  const { t } = useTranslation();
+  const { state: exploreState, dispatch, defaultExploreLocation } = useExplore();
+  const [showRedoSearchButton, setShowRedoSearchButton] = useState(false);
+  const [regionToAnimate, setRegionToAnimate] = useState<Region | null>(null);
+  const isFirstRender = useRef(true);
 
-  const mapRef = useRef<RNMapView | null>( null );
+  const mapRef = useRef<RNMapView | null>(null);
 
-  const nearbyRegion = useMemo( () => ( {
+  const nearbyRegion = useMemo(() => ({
     latitude: exploreState.lat,
     longitude: exploreState.lng,
     latitudeDelta: NEARBY_DELTA,
     longitudeDelta: NEARBY_DELTA,
-  } ), [exploreState.lat, exploreState.lng] );
+  }), [exploreState.lat, exploreState.lng]);
 
-  const regionFromCoordinates = useMemo( ( ) => {
-    if ( exploreState.place?.point_geojson?.coordinates ) {
+  const regionFromCoordinates = useMemo(() => {
+    if (exploreState.place?.point_geojson?.coordinates) {
       const [longitude, latitude] = exploreState.place.point_geojson.coordinates;
       return {
         latitude,
@@ -100,44 +100,44 @@ const MapView = ( {
       };
     }
     return null;
-  }, [exploreState.place] );
+  }, [exploreState.place]);
 
-  useEffect( ( ) => {
+  useEffect(() => {
     // Skip animation on first render
-    if ( isFirstRender.current ) {
+    if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
 
-    if ( mapRef.current
-      && exploreState.placeMode === PLACE_MODE.MAP_AREA ) {
+    if (mapRef.current
+      && exploreState.placeMode === PLACE_MODE.MAP_AREA) {
       return;
     }
 
     // since we're using initialRegion, we need to animate to the correct zoom level
     // when a user switches back to NEARBY or WORLDWIDE
-    if ( exploreState.placeMode === PLACE_MODE.NEARBY ) {
+    if (exploreState.placeMode === PLACE_MODE.NEARBY) {
       // Note: we do get observationBounds back from the API for nearby
       // but per user feedback, we want to show users a more zoomed in view
       // when they're looking at NEARBY view
-      if ( nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined ) {
-        setRegionToAnimate( {
+      if (nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined) {
+        setRegionToAnimate({
           ...nearbyRegion,
           latitude: nearbyRegion.latitude,
           longitude: nearbyRegion.longitude,
-        } );
+        });
       }
       return;
     }
-    if ( mapRef.current
-      && exploreState.placeMode === PLACE_MODE.WORLDWIDE ) {
-      setRegionToAnimate( worldwideRegion );
+    if (mapRef.current
+      && exploreState.placeMode === PLACE_MODE.WORLDWIDE) {
+      setRegionToAnimate(worldwideRegion);
     }
-    if ( mapRef.current
-      && exploreState.placeMode === PLACE_MODE.PLACE ) {
-      if ( observationBounds ) {
-        const newRegion = getMapRegion( observationBounds );
-        setRegionToAnimate( newRegion );
+    if (mapRef.current
+      && exploreState.placeMode === PLACE_MODE.PLACE) {
+      if (observationBounds) {
+        const newRegion = getMapRegion(observationBounds);
+        setRegionToAnimate(newRegion);
       }
     }
   }, [
@@ -146,14 +146,14 @@ const MapView = ( {
     regionFromCoordinates,
     observationBounds,
     exploreState.place?.id,
-  ] );
+  ]);
 
-  const handleRedoSearch = async ( ) => {
-    setShowRedoSearchButton( false );
-    const currentBounds = await mapRef?.current?.getMapBoundaries( );
-    if ( !currentBounds ) { return; }
-    dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA } );
-    dispatch( {
+  const handleRedoSearch = async () => {
+    setShowRedoSearchButton(false);
+    const currentBounds = await mapRef?.current?.getMapBoundaries();
+    if (!currentBounds) { return; }
+    dispatch({ type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA });
+    dispatch({
       type: EXPLORE_ACTION.SET_MAP_BOUNDARIES,
       mapBoundaries: {
         swlat: currentBounds.southWest.latitude,
@@ -161,7 +161,7 @@ const MapView = ( {
         nelat: currentBounds.northEast.latitude,
         nelng: currentBounds.northEast.longitude,
       },
-    } );
+    });
   };
 
   const tileMapParams = {
@@ -172,9 +172,9 @@ const MapView = ( {
   delete tileMapParams.order;
   delete tileMapParams.orderBy;
 
-  const initialRegion: Region = useMemo( () => {
-    if ( exploreState.placeMode === PLACE_MODE.NEARBY ) {
-      if ( nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined ) {
+  const initialRegion: Region = useMemo(() => {
+    if (exploreState.placeMode === PLACE_MODE.NEARBY) {
+      if (nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined) {
         return {
           ...nearbyRegion,
           latitude: nearbyRegion.latitude,
@@ -183,26 +183,26 @@ const MapView = ( {
       }
     }
 
-    if ( exploreState.placeMode === PLACE_MODE.PLACE ) {
-      if ( regionFromCoordinates ) {
+    if (exploreState.placeMode === PLACE_MODE.PLACE) {
+      if (regionFromCoordinates) {
         return regionFromCoordinates;
       }
     }
 
     return worldwideRegion;
-  }, [exploreState.placeMode, nearbyRegion, regionFromCoordinates] );
+  }, [exploreState.placeMode, nearbyRegion, regionFromCoordinates]);
 
-  const handlePanDrag = ( ) => setShowRedoSearchButton( true );
+  const handlePanDrag = () => setShowRedoSearchButton(true);
 
-  const handleCurrentLocationPress = async ( ) => {
-    if ( hasLocationPermissions ) {
-      const exploreLocation = await defaultExploreLocation( );
-      dispatch( {
+  const handleCurrentLocationPress = async () => {
+    if (hasLocationPermissions) {
+      const exploreLocation = await defaultExploreLocation();
+      dispatch({
         type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
         exploreLocation,
-      } );
+      });
     } else {
-      requestLocationPermissions( );
+      requestLocationPermissions();
     }
   };
 
@@ -215,7 +215,7 @@ const MapView = ( {
             style={DROP_SHADOW}
           >
             <Button
-              text={t( "REDO-SEARCH-IN-MAP-AREA" )}
+              text={t("REDO-SEARCH-IN-MAP-AREA")}
               level="focus"
               className="top-[60px] absolute self-center"
               onPress={handleRedoSearch}
@@ -244,7 +244,7 @@ const MapView = ( {
           <ActivityIndicator size={activityIndicatorSize} />
         </View>
       )}
-      {renderLocationPermissionsGate( { onPermissionGranted: handleCurrentLocationPress } )}
+      {renderLocationPermissionsGate({ onPermissionGranted: handleCurrentLocationPress })}
     </View>
   );
 };

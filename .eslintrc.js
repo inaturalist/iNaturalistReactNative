@@ -80,7 +80,6 @@ module.exports = {
     "no-void": 0,
     "prefer-destructuring": [2, { object: true, array: false }],
     quotes: [2, "double"],
-    "space-in-parens": [2, "always"],
     "max-classes-per-file": 0,
     "module-resolver/use-alias": 2,
     "multiline-ternary": ["error", "always"],

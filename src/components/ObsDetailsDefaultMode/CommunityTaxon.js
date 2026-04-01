@@ -22,30 +22,30 @@ type Props = {
   observation: Object,
 }
 
-const CommunityTaxon = ( {
+const CommunityTaxon = ({
   belongsToCurrentUser,
   isSimpleMode = false,
   observation,
-}: Props ): Node => {
-  const navigation = useNavigation( );
-  const route = useRoute( );
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { t } = useTranslation();
 
   const communityTaxon = observation?.taxon;
   const taxonId = communityTaxon?.id || "unknown";
 
-  const handlePress = ( ) => navigation.navigate( {
+  const handlePress = () => navigation.navigate({
     // Ensure button mashing doesn't open multiple TaxonDetails instances
     key: `${route.key}-CommunityTaxon-TaxonDetails-${taxonId}`,
     name: "TaxonDetails",
     params: { id: taxonId },
-  } );
+  });
 
-  const showCommunityTaxon = ( ) => {
-    if ( !communityTaxon ) {
+  const showCommunityTaxon = () => {
+    if (!communityTaxon) {
       return (
         <View className="justify-center ml-1">
-          <Subheading2>{t( "Unknown--taxon" )}</Subheading2>
+          <Subheading2>{t("Unknown--taxon")}</Subheading2>
         </View>
       );
     }
@@ -55,7 +55,7 @@ const CommunityTaxon = ( {
         <DisplayTaxon
           taxon={communityTaxon}
           testID={`ObsDetails.taxon.${taxonId}`}
-          accessibilityHint={t( "Navigates-to-taxon-details" )}
+          accessibilityHint={t("Navigates-to-taxon-details")}
           handlePress={handlePress}
           topTextComponent={Subheading2}
           bottomTextComponent={Body1}
@@ -71,7 +71,7 @@ const CommunityTaxon = ( {
           <DisplayTaxonName
             taxon={communityTaxon}
             testID={`ObsDetails.taxon.${taxonId}`}
-            accessibilityHint={t( "Navigates-to-taxon-details" )}
+            accessibilityHint={t("Navigates-to-taxon-details")}
             topTextComponent={Heading1}
             bottomTextComponent={Subheading1}
           />
@@ -88,7 +88,7 @@ const CommunityTaxon = ( {
         ? "flex-row items-center"
         : "flex-row my-[11px] items-center"}
       >
-        {observation && showCommunityTaxon( )}
+        {observation && showCommunityTaxon()}
       </View>
       {
         (
@@ -98,8 +98,8 @@ const CommunityTaxon = ( {
           <Body4 className="mx-3 mt-0 mb-2 italic">
             {
               belongsToCurrentUser
-                ? t( "You-have-opted-out-of-the-Community-Taxon" )
-                : t( "This-observer-has-opted-out-of-the-Community-Taxon" )
+                ? t("You-have-opted-out-of-the-Community-Taxon")
+                : t("This-observer-has-opted-out-of-the-Community-Taxon")
             }
           </Body4>
         )

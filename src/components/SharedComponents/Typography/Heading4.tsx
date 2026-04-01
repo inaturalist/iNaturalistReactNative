@@ -4,7 +4,7 @@ import type { TextProps } from "react-native";
 
 import InatText from "./InatText";
 
-const Heading4 = ( props: TextProps ) => (
+const Heading4 = (props: TextProps) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <InatText className={`text-md tracking-widest ${tailwindFontBold}`} {...props} />
 );

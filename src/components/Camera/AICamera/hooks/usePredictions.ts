@@ -15,22 +15,22 @@ interface StoredResult {
   timestamp: number;
 }
 
-const usePredictions = ( ) => {
-  const realm = useRealm( );
-  const [result, setResult] = useState<StoredResult | null>( null );
-  const [resultTimestamp, setResultTimestamp] = useState<number | undefined>( undefined );
-  const [modelLoaded, setModelLoaded] = useState( false );
-  const [confidenceThreshold, setConfidenceThreshold] = useState( 70 );
-  const [fps, setFPS] = useState( 1 );
-  const [numStoredResults, setNumStoredResults] = useState( 5 );
-  const [cropRatio, setCropRatio] = useState( 1 );
-  const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
+const usePredictions = () => {
+  const realm = useRealm();
+  const [result, setResult] = useState<StoredResult | null>(null);
+  const [resultTimestamp, setResultTimestamp] = useState<number | undefined>(undefined);
+  const [modelLoaded, setModelLoaded] = useState(false);
+  const [confidenceThreshold, setConfidenceThreshold] = useState(70);
+  const [fps, setFPS] = useState(1);
+  const [numStoredResults, setNumStoredResults] = useState(5);
+  const [cropRatio, setCropRatio] = useState(1);
+  const iconicTaxa = realm?.objects("Taxon").filtered("isIconic = true");
 
-  const handleTaxaDetected = ( cvResult: Result ) => {
-    if ( cvResult && !modelLoaded ) {
-      setModelLoaded( true );
+  const handleTaxaDetected = (cvResult: Result) => {
+    if (cvResult && !modelLoaded) {
+      setModelLoaded(true);
     }
-    setResultTimestamp( cvResult.timestamp );
+    setResultTimestamp(cvResult.timestamp);
     let prediction = null;
     const { predictions } = cvResult;
     // As of react-native-worklets-core v1.3.0 there is a discrepancy in the way
@@ -38,19 +38,19 @@ const usePredictions = ( ) => {
     // to be used with ...spread syntax or Object.assign which we might be using in other
     // places that reference these prediction objects here so better to create a real JS object here
     const branch = predictions
-      .map( p => ( {
+      .map(p => ({
         name: p.name,
         rank_level: p.rank_level,
         combined_score: p.combined_score,
         taxon_id: p.taxon_id,
-      } ) )
-      .sort( ( a, b ) => a.rank_level - b.rank_level );
-    const branchIDs = branch.map( t => t.taxon_id );
-    if ( branch.length > 0 ) {
+      }))
+      .sort((a, b) => a.rank_level - b.rank_level);
+    const branchIDs = branch.map(t => t.taxon_id);
+    if (branch.length > 0) {
       const finestPrediction = branch[0];
       // Try to find a known iconic taxon in the model results so we can show
       // an icon if we can't show a photo
-      const iconicTaxon = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 );
+      const iconicTaxon = iconicTaxa?.find(t => branchIDs.indexOf(t.id) >= 0);
       prediction = {
         taxon: {
           rank_level: finestPrediction.rank_level,
@@ -62,7 +62,7 @@ const usePredictions = ( ) => {
         timestamp: cvResult.timestamp,
       };
     }
-    setResult( prediction );
+    setResult(prediction);
   };
 
   return {

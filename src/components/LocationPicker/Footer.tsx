@@ -4,11 +4,11 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
-  handleSave: ( ) => void;
+  handleSave: () => void;
 }
 
-const Footer = ( { handleSave }: Props ) => {
-  const { t } = useTranslation( );
+const Footer = ({ handleSave }: Props) => {
+  const { t } = useTranslation();
 
   return (
     <View className="h-[73px] justify-center">
@@ -16,7 +16,7 @@ const Footer = ( { handleSave }: Props ) => {
         className="mx-[25px]"
         onPress={handleSave}
         testID="LocationPicker.saveButton"
-        text={t( "SAVE-LOCATION" )}
+        text={t("SAVE-LOCATION")}
         level="neutral"
       />
     </View>

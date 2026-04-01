@@ -26,120 +26,120 @@ const mockLocalTaxon = {
   },
 };
 
-jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+jest.mock("sharedHooks/useAuthenticatedQuery", () => ({
   __esModule: true,
-  default: () => ( {
+  default: () => ({
     data: mockTaxonPrediction,
-  } ),
-} ) );
+  }),
+}));
 
-jest.mock( "sharedHooks/useTaxon", () => ( {
+jest.mock("sharedHooks/useTaxon", () => ({
   __esModule: true,
-  default: () => ( { taxon: mockLocalTaxon } ),
-} ) );
+  default: () => ({ taxon: mockLocalTaxon }),
+}));
 
 const mockModelLoaded = {
-  handleTaxaDetected: jest.fn( ),
+  handleTaxaDetected: jest.fn(),
   modelLoaded: false,
   result: null,
 };
 
-jest.mock( "components/Camera/AICamera/hooks/usePredictions", () => ( {
+jest.mock("components/Camera/AICamera/hooks/usePredictions", () => ({
   __esModule: true,
   default: () => mockModelLoaded,
-} ) );
+}));
 
-jest.mock( "components/Camera/hooks/useZoom", () => ( {
+jest.mock("components/Camera/hooks/useZoom", () => ({
   __esModule: true,
-  default: () => ( {
+  default: () => ({
     animatedProps: {},
   }
   ),
-} ) );
+}));
 
-describe( "AI Camera", ( ) => {
-  it( "shows a taxon prediction when result & rank_level < 40", async () => {
-    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+describe("AI Camera", () => {
+  it("shows a taxon prediction when result & rank_level < 40", async () => {
+    jest.spyOn(usePredictions, "default").mockImplementation(() => ({
       ...mockModelLoaded,
       result: {
         taxon: mockTaxonPrediction,
       },
-    } ) );
-    render( <AICamera /> );
+    }));
+    render(<AICamera />);
 
-    const taxonResult = screen.getByTestId( `AICamera.taxa.${mockTaxonPrediction.id}` );
+    const taxonResult = screen.getByTestId(`AICamera.taxa.${mockTaxonPrediction.id}`);
 
-    expect( taxonResult ).toBeVisible( );
-  } );
+    expect(taxonResult).toBeVisible();
+  });
 
-  it( "shows scan area text when rank_level > 40", async () => {
-    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+  it("shows scan area text when rank_level > 40", async () => {
+    jest.spyOn(usePredictions, "default").mockImplementation(() => ({
       ...mockModelLoaded,
       modelLoaded: true,
       result: {
         taxon: mockTaxonNoPrediction,
       },
-    } ) );
-    render( <AICamera /> );
+    }));
+    render(<AICamera />);
 
     const scanText = screen.getByText(
-      i18next.t( "Point-the-camera-at-an-animal-plant-or-fungus" ),
+      i18next.t("Point-the-camera-at-an-animal-plant-or-fungus"),
     );
 
-    expect( scanText ).toBeVisible( );
-  } );
+    expect(scanText).toBeVisible();
+  });
 
-  it( "shows loading text when model not yet loaded", async () => {
-    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+  it("shows loading text when model not yet loaded", async () => {
+    jest.spyOn(usePredictions, "default").mockImplementation(() => ({
       ...mockModelLoaded,
       modelLoaded: false,
-    } ) );
-    render( <AICamera /> );
+    }));
+    render(<AICamera />);
 
-    const loadingText = screen.getByText( i18next.t( "Loading-iNaturalists-AI-Camera" ) );
+    const loadingText = screen.getByText(i18next.t("Loading-iNaturalists-AI-Camera"));
 
-    expect( loadingText ).toBeVisible( );
-  } );
+    expect(loadingText).toBeVisible();
+  });
 
-  it( "displays taxon photo if taxon exists in realm", ( ) => {
-    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+  it("displays taxon photo if taxon exists in realm", () => {
+    jest.spyOn(usePredictions, "default").mockImplementation(() => ({
       ...mockModelLoaded,
       modelLoaded: true,
       result: {
         taxon: mockLocalTaxon,
       },
-    } ) );
-    render( <AICamera /> );
+    }));
+    render(<AICamera />);
 
-    const taxonPhoto = screen.getByTestId( "ObsList.photo" );
+    const taxonPhoto = screen.getByTestId("ObsList.photo");
 
-    expect( taxonPhoto.props.source ).toMatchObject(
+    expect(taxonPhoto.props.source).toMatchObject(
       {
         url: mockLocalTaxon.default_photo.url,
       },
     );
-  } );
+  });
 
-  it( "displays iconic taxon icon if taxon does not exist in realm", ( ) => {
-    jest.spyOn( useTaxon, "default" ).mockImplementation( () => ( {
+  it("displays iconic taxon icon if taxon does not exist in realm", () => {
+    jest.spyOn(useTaxon, "default").mockImplementation(() => ({
       taxon: {
         ...mockLocalTaxon,
         default_photo: {
           url: null,
         },
       },
-    } ) );
-    jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
+    }));
+    jest.spyOn(usePredictions, "default").mockImplementation(() => ({
       ...mockModelLoaded,
       modelLoaded: true,
       result: {
         taxon: mockLocalTaxon,
       },
-    } ) );
-    render( <AICamera /> );
+    }));
+    render(<AICamera />);
 
-    const taxonIcon = screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" );
+    const taxonIcon = screen.getByTestId("IconicTaxonName.iconicTaxonIcon");
 
-    expect( taxonIcon ).toBeVisible( );
-  } );
-} );
+    expect(taxonIcon).toBeVisible();
+  });
+});

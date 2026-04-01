@@ -35,9 +35,9 @@ interface CountPressableProps {
   onPress?: () => void;
 }
 
-const Count = ( {
+const Count = ({
   count, label, icon,
-}: CountProps ) => (
+}: CountProps) => (
   <View
     className="w-1/4 items-center"
   >
@@ -49,19 +49,19 @@ const Count = ( {
       />
     </View>
     {typeof count === "number"
-      ? <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
+      ? <Body2 className="mt-2">{t("Intl-number", { val: count })}</Body2>
       : <ActivityIndicator size={25} />}
     <Heading6 className="mt-2 text-center">{label}</Heading6>
   </View>
 );
 
-const CountPressable = ( {
+const CountPressable = ({
   accessibilityLabel,
   count,
   icon,
   label,
   onPress,
-}: CountPressableProps ) => (
+}: CountPressableProps) => (
   <Pressable
     onPress={onPress}
     accessibilityRole="button"
@@ -76,49 +76,49 @@ const CountPressable = ( {
       />
     </View>
     {typeof count === "number"
-      ? <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
+      ? <Body2 className="mt-2">{t("Intl-number", { val: count })}</Body2>
       : <ActivityIndicator className="mt-2" size={20} />}
     <Heading6 className="mt-2 text-center">{label}</Heading6>
   </Pressable>
 );
 
-const OverviewCounts = ( {
+const OverviewCounts = ({
   counts, onObservationPressed, onSpeciesPressed, onMembersPressed,
-}: Props ) => (
+}: Props) => (
   <View className="flex-row mt-[30px]">
     <CountPressable
-      accessibilityLabel={t( "See-observations-by-this-user-in-Explore" )}
+      accessibilityLabel={t("See-observations-by-this-user-in-Explore")}
       count={counts.observations_count}
-      label={t( "OBSERVATIONS-WITHOUT-NUMBER", { count: counts.observations_count } )}
+      label={t("OBSERVATIONS-WITHOUT-NUMBER", { count: counts.observations_count })}
       icon="binoculars"
       onPress={onObservationPressed}
     />
     <CountPressable
-      accessibilityLabel={t( "See-species-observed-by-this-user-in-Explore" )}
+      accessibilityLabel={t("See-species-observed-by-this-user-in-Explore")}
       count={counts.species_count}
-      label={t( "SPECIES-WITHOUT-NUMBER", { count: counts.species_count } )}
+      label={t("SPECIES-WITHOUT-NUMBER", { count: counts.species_count })}
       icon="leaf"
       onPress={onSpeciesPressed}
     />
-    {typeof ( counts.identifications_count ) === "number" && (
+    {typeof (counts.identifications_count) === "number" && (
       <Count
         count={counts.identifications_count}
-        label={t( "IDENTIFICATIONS-WITHOUT-NUMBER", { count: counts.identifications_count } )}
+        label={t("IDENTIFICATIONS-WITHOUT-NUMBER", { count: counts.identifications_count })}
         icon="label"
       />
     )}
-    {( typeof ( counts.members_count ) === "number" || onMembersPressed !== undefined ) && (
+    {(typeof (counts.members_count) === "number" || onMembersPressed !== undefined) && (
       <CountPressable
-        accessibilityLabel={t( "See-project-members" )}
+        accessibilityLabel={t("See-project-members")}
         count={counts.members_count}
-        label={t( "MEMBERS-WITHOUT-NUMBER", { count: counts.members_count } )}
+        label={t("MEMBERS-WITHOUT-NUMBER", { count: counts.members_count })}
         icon="person"
         onPress={onMembersPressed}
       />
     )}
     <Count
       count={counts.journal_posts_count}
-      label={t( "JOURNAL-POSTS-WITHOUT-NUMBER", { count: counts.journal_posts_count } )}
+      label={t("JOURNAL-POSTS-WITHOUT-NUMBER", { count: counts.journal_posts_count })}
       icon="book"
     />
   </View>

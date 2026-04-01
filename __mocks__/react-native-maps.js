@@ -1,31 +1,31 @@
-const React = require( "react" );
-const { View } = require( "react-native" );
+const React = require("react");
+const { View } = require("react-native");
 
-const MockMapView = React.forwardRef( ( { children, ...props }, ref ) => {
-  React.useImperativeHandle( ref, () => ( {
+const MockMapView = React.forwardRef(({ children, ...props }, ref) => {
+  React.useImperativeHandle(ref, () => ({
     animateToRegion: () => {},
-  } ) );
-  return React.createElement( View, props, children );
-} );
+  }));
+  return React.createElement(View, props, children);
+});
 
-const MockUrlTile = ( { testID, urlTemplate, ...props } ) => (
-  React.createElement( View, { testID, urlTemplate, ...props } )
+const MockUrlTile = ({ testID, urlTemplate, ...props }) => (
+  React.createElement(View, { testID, urlTemplate, ...props })
 );
 
-const MockMarker = ( { children, ...props } ) => (
-  React.createElement( View, props, children )
+const MockMarker = ({ children, ...props }) => (
+  React.createElement(View, props, children)
 );
 
-const MockCircle = ( { children, ...props } ) => (
-  React.createElement( View, props, children )
+const MockCircle = ({ children, ...props }) => (
+  React.createElement(View, props, children)
 );
 
-const MockOverlay = ( { children, ...props } ) => (
-  React.createElement( View, props, children )
+const MockOverlay = ({ children, ...props }) => (
+  React.createElement(View, props, children)
 );
 
-const MockCallout = ( { children, ...props } ) => (
-  React.createElement( View, props, children )
+const MockCallout = ({ children, ...props }) => (
+  React.createElement(View, props, children)
 );
 
 const MAP_TYPES = {

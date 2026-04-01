@@ -18,16 +18,16 @@ import {
 } from "react-native-permissions";
 
 export function getCurrentPosition(
-  success: ( position: GeolocationResponse ) => void,
-  error?: ( error: GeolocationError ) => void,
+  success: (position: GeolocationResponse) => void,
+  error?: (error: GeolocationError) => void,
   options?: GeolocationOptions,
 ) {
-  return Geolocation.getCurrentPosition( success, error, options );
+  return Geolocation.getCurrentPosition(success, error, options);
 }
 
 export function watchPosition(
-  success: ( position: GeolocationResponse ) => void,
-  error?: ( error: GeolocationError ) => void,
+  success: (position: GeolocationResponse) => void,
+  error?: (error: GeolocationError) => void,
   options?: {
     interval?: number;
     fastestInterval?: number;
@@ -38,11 +38,11 @@ export function watchPosition(
     useSignificantChanges?: boolean;
   },
 ) {
-  return Geolocation.watchPosition( success, error, options );
+  return Geolocation.watchPosition(success, error, options);
 }
 
-export function clearWatch( watchID: number ) {
-  Geolocation.clearWatch( watchID );
+export function clearWatch(watchID: number) {
+  Geolocation.clearWatch(watchID);
 }
 
 // Issue reference for getCurrentPosition bug on Android:
@@ -54,29 +54,29 @@ export function clearWatch( watchID: number ) {
 export const highAccuracyOptions = {
   enableHighAccuracy: true,
   timeout: 10000,
-  ...( Platform.OS === "ios" && { maximumAge: 0 } ),
+  ...(Platform.OS === "ios" && { maximumAge: 0 }),
 } as const;
 
 export const lowAccuracyOptions = {
   enableHighAccuracy: false,
   timeout: 2000,
-  ...( Platform.OS === "ios" && { maximumAge: 0 } ),
+  ...(Platform.OS === "ios" && { maximumAge: 0 }),
 } as const;
 
 export const getCurrentPositionWithOptions = (
   options: GeolocationOptions,
 ): Promise<GeolocationResponse> => new Promise(
-  ( resolve, reject ) => {
-    getCurrentPosition( resolve, reject, options );
+  (resolve, reject) => {
+    getCurrentPosition(resolve, reject, options);
   },
 );
 
-export const checkLocationPermissions = async ( ) => {
+export const checkLocationPermissions = async () => {
   const permissionResult = permissionResultFromMultiple(
-    await checkMultiple( LOCATION_PERMISSIONS ),
+    await checkMultiple(LOCATION_PERMISSIONS),
   );
 
-  if ( permissionResult !== RESULTS.GRANTED ) {
+  if (permissionResult !== RESULTS.GRANTED) {
     return null;
   }
   return permissionResult;

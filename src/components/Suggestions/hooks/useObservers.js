@@ -13,19 +13,19 @@ const params = {
   },
 };
 
-const useObservers = ( taxonIds: number[] ): string[] => {
+const useObservers = (taxonIds: number[]): string[] => {
   const { data } = useAuthenticatedQuery(
     ["fetchObservers", taxonIds],
-    ( ) => fetchObservers( {
+    () => fetchObservers({
       ...params,
       taxon_ids: taxonIds,
-    } ),
+    }),
     {
-      enabled: !!( taxonIds?.length > 0 ),
+      enabled: !!(taxonIds?.length > 0),
     },
   );
 
-  return data?.results?.map( result => result.user.login );
+  return data?.results?.map(result => result.user.login);
 };
 
 export default useObservers;

@@ -15,19 +15,19 @@ interface Props {
   count: number;
 }
 
-const PhotoCount = ( { count }: Props ) => {
-  const { t } = useTranslation( );
+const PhotoCount = ({ count }: Props) => {
+  const { t } = useTranslation();
   const { isRTL } = I18nManager;
-  const theme = useTheme( );
+  const theme = useTheme();
   const fontScale = PixelRatio.getFontScale();
   const dim = fontScale * BASE_DIM;
-  const maxFontScale = Math.ceil( fontScale );
-  if ( count === 0 ) {
+  const maxFontScale = Math.ceil(fontScale);
+  if (count === 0) {
     return <INatIcon name="noevidence" size={dim} color={theme.colors.inverseOnSurface} />;
   }
 
   let photoCount = count;
-  if ( count > 99 ) {
+  if (count > 99) {
     photoCount = 99;
   }
 
@@ -51,7 +51,7 @@ const PhotoCount = ( { count }: Props ) => {
         }}
         maxFontSizeMultiplier={maxFontScale}
       >
-        {t( "Intl-number", { val: photoCount } )}
+        {t("Intl-number", { val: photoCount })}
       </Body3>
       <Svg
         height={dim}

@@ -32,24 +32,24 @@ const REMOTE_USER_PARAMS = {
   fields: REMOTE_USER_FIELDS,
 };
 
-const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const fetchUserMe = async (params: Object = {}, opts: Object = {}): Promise<?Object> => {
   try {
-    const response = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
+    const response = await inatjs.users.me({ ...REMOTE_USER_PARAMS, ...params, ...opts });
     return response?.results[0];
-  } catch ( e ) {
-    return handleError( e, { throw: true } );
+  } catch (e) {
+    return handleError(e, { throw: true });
   }
 };
 
-const fetchUserProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const fetchUserProjects = async (params: Object = {}, opts: Object = {}): Promise<?Object> => {
   try {
     const response = await inatjs.users.projects(
       params,
       opts,
     );
     return response?.results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchUserProjects", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchUserProjects", opts } });
   }
 };
 
@@ -58,16 +58,16 @@ const fetchRemoteUser = async (
   params: Object = {},
   opts: Object = {},
 ): Promise<?Object> => {
-  if ( !id ) return null;
+  if (!id) return null;
   try {
-    const { results } = await inatjs.users.fetch( id, {
+    const { results } = await inatjs.users.fetch(id, {
       ...REMOTE_USER_PARAMS,
       ...params,
       ...opts,
-    } );
+    });
     return results[0];
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchRemoteUser", id, opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchRemoteUser", id, opts } });
   }
 };
 
@@ -77,9 +77,9 @@ const fetchUsers = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    return await inatjs.users.fetch( ids, params, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchUsers", ids, opts } } );
+    return await inatjs.users.fetch(ids, params, opts);
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchUsers", ids, opts } });
   }
 };
 
@@ -89,13 +89,13 @@ const blockUser = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const response = await inatjs.users.block( { id }, {
+    const response = await inatjs.users.block({ id }, {
       ...params,
       ...opts,
-    } );
+    });
     return response;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "blockUser", id, opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "blockUser", id, opts } });
   }
 };
 
@@ -105,13 +105,13 @@ const muteUser = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const response = await inatjs.users.mute( { id }, {
+    const response = await inatjs.users.mute({ id }, {
       ...params,
       ...opts,
-    } );
+    });
     return response;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "muteUser", id, opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "muteUser", id, opts } });
   }
 };
 
@@ -121,13 +121,13 @@ const unblockUser = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const response = await inatjs.users.unblock( { id }, {
+    const response = await inatjs.users.unblock({ id }, {
       ...params,
       ...opts,
-    } );
+    });
     return response;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "unblockUser", id, opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "unblockUser", id, opts } });
   }
 };
 
@@ -137,21 +137,21 @@ const unmuteUser = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const response = await inatjs.users.unmute( { id }, {
+    const response = await inatjs.users.unmute({ id }, {
       ...params,
       ...opts,
-    } );
+    });
     return response;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "unmuteUser", id, opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "unmuteUser", id, opts } });
   }
 };
 
-const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const updateUsers = async (params: Object = {}, opts: Object = {}): Promise<?Object> => {
   try {
-    return await inatjs.users.update( params, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "updateUsers", opts } } );
+    return await inatjs.users.update(params, opts);
+  } catch (e) {
+    return handleError(e, { context: { functionName: "updateUsers", opts } });
   }
 };
 
@@ -161,9 +161,9 @@ const fetchUserEmailAvailable = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    return await inatjs.users.emailAvailable( { email }, { ...params, ...opts } );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchUserEmailAvailable", email, opts } } );
+    return await inatjs.users.emailAvailable({ email }, { ...params, ...opts });
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchUserEmailAvailable", email, opts } });
   }
 };
 

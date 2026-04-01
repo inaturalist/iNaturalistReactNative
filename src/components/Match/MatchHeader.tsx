@@ -21,22 +21,22 @@ interface Props {
   hideObservationStatus?: boolean;
 }
 
-const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {
-  const { t } = useTranslation( );
+const MatchHeader = ({ topSuggestion, hideObservationStatus }: Props) => {
+  const { t } = useTranslation();
   const taxon = topSuggestion?.taxon;
 
-  if ( !topSuggestion ) {
+  if (!topSuggestion) {
     return null;
   }
 
-  const confidence = calculateConfidence( topSuggestion );
+  const confidence = calculateConfidence(topSuggestion);
 
   const suggestedTaxon = taxon;
 
-  const observationStatus = ( ) => {
+  const observationStatus = () => {
     let confidenceType = "may_have_observed";
-    if ( confidence ) {
-      if ( confidence >= HIGH_CONFIDENCE_THRESHOLD ) {
+    if (confidence) {
+      if (confidence >= HIGH_CONFIDENCE_THRESHOLD) {
         confidenceType = "observed";
       } else if (
         confidence >= LIKELY_CONFIDENCE_THRESHOLD && confidence < HIGH_CONFIDENCE_THRESHOLD
@@ -46,42 +46,42 @@ const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {
     }
 
     let rankDescription = "organism";
-    if ( taxon?.rank_level === 10 ) {
+    if (taxon?.rank_level === 10) {
       rankDescription = "species";
     }
 
     return { confidenceType, rankDescription };
   };
 
-  const generateCongratulatoryText = ( ) => {
+  const generateCongratulatoryText = () => {
     let congratulatoryText;
-    const { confidenceType, rankDescription } = observationStatus( );
+    const { confidenceType, rankDescription } = observationStatus();
 
-    if ( confidenceType === "observed" ) {
-      if ( rankDescription === "species" ) {
-        congratulatoryText = t( "You-observed-this-species" );
-      } else if ( rankDescription === "organism" ) {
-        congratulatoryText = t( "You-observed-a-species-in-this-group" );
+    if (confidenceType === "observed") {
+      if (rankDescription === "species") {
+        congratulatoryText = t("You-observed-this-species");
+      } else if (rankDescription === "organism") {
+        congratulatoryText = t("You-observed-a-species-in-this-group");
       }
     }
-    if ( confidenceType === "likely_observed" ) {
-      if ( rankDescription === "species" ) {
-        congratulatoryText = t( "You-likely-observed-this-species" );
-      } else if ( rankDescription === "organism" ) {
-        congratulatoryText = t( "You-likely-observed-a-species-in-this-group" );
+    if (confidenceType === "likely_observed") {
+      if (rankDescription === "species") {
+        congratulatoryText = t("You-likely-observed-this-species");
+      } else if (rankDescription === "organism") {
+        congratulatoryText = t("You-likely-observed-a-species-in-this-group");
       }
     }
-    if ( confidenceType === "may_have_observed" ) {
-      if ( rankDescription === "species" ) {
-        congratulatoryText = t( "You-may-have-observed-this-species" );
-      } else if ( rankDescription === "organism" ) {
-        congratulatoryText = t( "You-may-have-observed-a-species-in-this-group" );
+    if (confidenceType === "may_have_observed") {
+      if (rankDescription === "species") {
+        congratulatoryText = t("You-may-have-observed-this-species");
+      } else if (rankDescription === "organism") {
+        congratulatoryText = t("You-may-have-observed-a-species-in-this-group");
       }
     }
     return congratulatoryText;
   };
 
-  const showSuggestedTaxon = ( ) => (
+  const showSuggestedTaxon = () => (
     <View className="shrink">
       <DisplayTaxonName
         taxon={suggestedTaxon}
@@ -93,16 +93,16 @@ const MatchHeader = ( { topSuggestion, hideObservationStatus }: Props ) => {
 
   return (
     <View>
-      {!hideObservationStatus && <Body2 className="mb-2">{generateCongratulatoryText( )}</Body2>}
+      {!hideObservationStatus && <Body2 className="mb-2">{generateCongratulatoryText()}</Body2>}
       <View className="flex-row justify-between items-center">
-        {showSuggestedTaxon( )}
+        {showSuggestedTaxon()}
         { !hideObservationStatus && (
           <View className="justify-end items-center ml-5">
             <Subheading2 className="text-inatGreen mb-2">
-              {t( "X-percent", { count: confidence } )}
+              {t("X-percent", { count: confidence })}
             </Subheading2>
             <Body4 className="text-inatGreen">
-              {t( "Confidence--label" )}
+              {t("Confidence--label")}
             </Body4>
           </View>
         )}

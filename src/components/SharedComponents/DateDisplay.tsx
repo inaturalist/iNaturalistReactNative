@@ -23,13 +23,13 @@ interface Props {
   literalTime?: boolean;
   maxFontSizeMultiplier?: number;
   taxonGeoprivacy?: string;
-  textComponent?: ( props ) => React.JSX.Element;
+  textComponent?: (props) => React.JSX.Element;
   // Convert the time to the this time zone; otherwise display in the
   // current / local time zone
   timeZone?: string;
 }
 
-const DateDisplay = ( {
+const DateDisplay = ({
   asDifference,
   belongsToCurrentUser,
   classNameMargin,
@@ -42,12 +42,12 @@ const DateDisplay = ( {
   taxonGeoprivacy,
   textComponent: TextComponentProp,
   timeZone,
-}: Props ) => {
-  const { i18n } = useTranslation( );
+}: Props) => {
+  const { i18n } = useTranslation();
   const { isDebug } = useDebugMode();
 
   let TextComponent = TextComponentProp;
-  if ( !TextComponent ) {
+  if (!TextComponent) {
     TextComponent = Body4;
   }
 
@@ -56,17 +56,17 @@ const DateDisplay = ( {
     || geoprivacy === "private"
     || taxonGeoprivacy === "private";
 
-  const formattedDate = useMemo( () => {
-    if ( isDebug ) {
+  const formattedDate = useMemo(() => {
+    if (isDebug) {
       return dateString;
     }
-    if ( !belongsToCurrentUser && dateObscured ) {
-      return formatMonthYearDate( dateString, i18n );
+    if (!belongsToCurrentUser && dateObscured) {
+      return formatMonthYearDate(dateString, i18n);
     }
-    if ( asDifference ) {
-      return formatDifferenceForHumans( dateString, i18n );
+    if (asDifference) {
+      return formatDifferenceForHumans(dateString, i18n);
     }
-    return formatApiDatetime( dateString, i18n, { literalTime, timeZone } );
+    return formatApiDatetime(dateString, i18n, { literalTime, timeZone });
   }, [
     asDifference,
     belongsToCurrentUser,
@@ -76,16 +76,16 @@ const DateDisplay = ( {
     i18n,
     literalTime,
     timeZone,
-  ] );
+  ]);
 
   return (
-    <View className={classNames( "flex flex-row items-center", classNameMargin )}>
+    <View className={classNames("flex flex-row items-center", classNameMargin)}>
       {!hideIcon && <INatIcon name="date" size={13} />}
       <TextComponent
         className={!hideIcon && "ml-[5px]"}
         maxFontSizeMultiplier={maxFontSizeMultiplier}
       >
-        { `${label || ""} ${formattedDate}`.trim( ) }
+        { `${label || ""} ${formattedDate}`.trim() }
       </TextComponent>
     </View>
   );

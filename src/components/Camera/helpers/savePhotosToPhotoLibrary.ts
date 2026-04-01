@@ -12,7 +12,7 @@ import { log } from "sharedHelpers/logger";
 
 import { displayName as appName } from "../../../../app.json";
 
-const logger = log.extend( "savePhotosToPhotoLibrary" );
+const logger = log.extend("savePhotosToPhotoLibrary");
 
 // Save URIs to camera photo library (if a photo was taken using the app,
 // we want it accessible in the camera's folder, as if the user has taken those photos
@@ -26,10 +26,10 @@ async function savePhotosToPhotoLibrary(
   location: object,
 ) {
   const readWritePermissionResult = permissionResultFromMultiple(
-    await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS ),
+    await checkMultiple(READ_WRITE_MEDIA_PERMISSIONS),
   );
   const savedPhotoUris = await uris.reduce(
-    async ( memo, uri ) => {
+    async (memo, uri) => {
       const savedUris = await memo;
       try {
         const saveOptions = {};
@@ -38,31 +38,31 @@ async function savePhotosToPhotoLibrary(
         // b/c it might come immediately after asking for *add only*
         // permission, so we're checking to see if we have that permission
         // and skipping the album if we don't
-        if ( readWritePermissionResult === RESULTS.GRANTED ) {
+        if (readWritePermissionResult === RESULTS.GRANTED) {
           saveOptions.type = "photo";
           // Note: we do not translate our brand name, so this should not be
           // globalized
           saveOptions.album = appName;
         }
-        if ( location ) {
+        if (location) {
           saveOptions.latitude = location.latitude;
           saveOptions.longitude = location.longitude;
           saveOptions.horizontalAccuracy = location.positional_accuracy;
         }
-        const savedPhotoUri = await CameraRoll.save( uri, saveOptions );
-        savedUris.push( savedPhotoUri );
+        const savedPhotoUri = await CameraRoll.save(uri, saveOptions);
+        savedUris.push(savedPhotoUri);
         return savedUris;
-      } catch ( cameraRollSaveError ) {
+      } catch (cameraRollSaveError) {
         // should never get here since in usePrepareStoreAndNavigate we check for device full
         // and skip saving to photo library
         if (
-          cameraRollSaveError.message.match( /No space left on device/ )
-          || cameraRollSaveError.message.match( /PHPhotosErrorDomain error 3305/ )
+          cameraRollSaveError.message.match(/No space left on device/)
+          || cameraRollSaveError.message.match(/PHPhotosErrorDomain error 3305/)
         ) {
           Alert.alert(
-            t( "Not-enough-space-left-on-device" ),
-            t( "Not-enough-space-left-on-device-try-again" ),
-            [{ text: t( "OK" ) }],
+            t("Not-enough-space-left-on-device"),
+            t("Not-enough-space-left-on-device-try-again"),
+            [{ text: t("OK") }],
           );
           return savedUris;
         }
@@ -72,8 +72,8 @@ async function savePhotosToPhotoLibrary(
         // happens, but we're still seeing this in the logs. They should be
         // prompted to grant permission the next time they try so this is
         // probably safe to ignore.
-        if ( !cameraRollSaveError.message.match( /error 3311/ ) ) {
-          logger.error( cameraRollSaveError );
+        if (!cameraRollSaveError.message.match(/error 3311/)) {
+          logger.error(cameraRollSaveError);
           return savedUris;
         }
         throw cameraRollSaveError;
@@ -82,7 +82,7 @@ async function savePhotosToPhotoLibrary(
     // We need the initial value even if we're not using it, otherwise reduce
     // will treat the first item in the array as the initial value and not
     // call the reducer function on it
-    Promise.resolve( [] ),
+    Promise.resolve([]),
   );
   return savedPhotoUris;
 }

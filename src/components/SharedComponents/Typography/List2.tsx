@@ -6,7 +6,7 @@ import { Text } from "react-native";
 
 import { TYPOGRAPHY_CLASSES } from "./InatText";
 
-const List2 = ( props: TextProps ) => (
+const List2 = (props: TextProps) => (
   <Text
     maxFontSizeMultiplier={2}
     className={classnames(

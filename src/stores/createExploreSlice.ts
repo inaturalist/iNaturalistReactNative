@@ -6,12 +6,12 @@ const DEFAULT_STATE = {
 
 interface ExploreSlice {
   exploreView: string;
-  setExploreView: ( _view: string ) => void;
+  setExploreView: (_view: string) => void;
 }
 
-const createExploreSlice: StateCreator<ExploreSlice> = set => ( {
+const createExploreSlice: StateCreator<ExploreSlice> = set => ({
   ...DEFAULT_STATE,
-  setExploreView: exploreView => set( ( ) => ( { exploreView } ) ),
-} );
+  setExploreView: exploreView => set(() => ({ exploreView })),
+});
 
 export default createExploreSlice;

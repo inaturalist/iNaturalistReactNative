@@ -7,18 +7,18 @@ interface Props extends TaxonGridItemProps {
   count?: number;
 }
 
-const ExploreTaxonGridItem = ( {
+const ExploreTaxonGridItem = ({
   count,
   showSpeciesSeenCheckmark = false,
   style,
   taxon,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   return (
     <TaxonGridItem
       headerText={
-        typeof ( count ) === "number"
-          ? t( "X-Observations", { count } )
+        typeof (count) === "number"
+          ? t("X-Observations", { count })
           : undefined
       }
       showSpeciesSeenCheckmark={showSpeciesSeenCheckmark}

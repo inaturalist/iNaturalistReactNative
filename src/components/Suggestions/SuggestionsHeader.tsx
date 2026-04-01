@@ -9,16 +9,16 @@ import ObsPhotoSelectionList from "./ObsPhotoSelectionList";
 import SuggestionsOffline from "./SuggestionsOffline";
 
 interface Props {
-  onPressPhoto: ( _uri: string ) => void;
+  onPressPhoto: (_uri: string) => void;
   photoUris: string[];
-  reloadSuggestions: ( ) => void;
+  reloadSuggestions: () => void;
   selectedPhotoUri: string;
   showOfflineText: boolean;
   improveWithLocationButtonOnPress: () => void;
   showImproveWithLocationButton: boolean;
 }
 
-const SuggestionsHeader = ( {
+const SuggestionsHeader = ({
   onPressPhoto,
   photoUris,
   reloadSuggestions,
@@ -26,8 +26,8 @@ const SuggestionsHeader = ( {
   showOfflineText,
   improveWithLocationButtonOnPress,
   showImproveWithLocationButton,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   return (
     <>
@@ -41,8 +41,8 @@ const SuggestionsHeader = ( {
       {showImproveWithLocationButton && (
         <View className="mx-5 mt-5">
           <Button
-            text={t( "IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION" )}
-            accessibilityHint={t( "Opens-location-permission-prompt" )}
+            text={t("IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION")}
+            accessibilityHint={t("Opens-location-permission-prompt")}
             level="focus"
             onPress={improveWithLocationButtonOnPress}
           />

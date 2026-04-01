@@ -13,15 +13,15 @@ interface Props {
   white?: boolean;
 }
 
-const IconicTaxonIcon = ( {
+const IconicTaxonIcon = ({
   iconicTaxonName,
   imageClassName,
   isBackground = false,
   size = 30,
   white = false,
-}: Props ) => {
+}: Props) => {
   let color;
-  if ( white ) {
+  if (white) {
     color = isBackground
       ? colors.mediumGrayGhost
       : colors.white;
@@ -44,7 +44,7 @@ const IconicTaxonIcon = ( {
     >
       <INatIcon
         name={iconicTaxonName
-          ? `iconic-${iconicTaxonName?.toLowerCase( )}`
+          ? `iconic-${iconicTaxonName?.toLowerCase()}`
           : "iconic-unknown"}
         size={size}
         color={color}

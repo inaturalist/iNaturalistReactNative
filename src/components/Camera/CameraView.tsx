@@ -26,7 +26,7 @@ import type {
 
 import FocusSquare from "./FocusSquare";
 
-const ReanimatedCamera = Reanimated.createAnimatedComponent( Camera );
+const ReanimatedCamera = Reanimated.createAnimatedComponent(Camera);
 
 interface Props {
   animatedProps: CameraProps;
@@ -35,10 +35,10 @@ interface Props {
   debugFormat: CameraDeviceFormat | undefined;
   device: CameraDevice;
   frameProcessor?: () => void;
-  onCameraError: ( error: CameraRuntimeError ) => void;
-  onCaptureError: ( error: CameraRuntimeError ) => void;
-  onClassifierError: ( error: CameraRuntimeError ) => void;
-  onDeviceNotSupported: ( error: CameraRuntimeError ) => void;
+  onCameraError: (error: CameraRuntimeError) => void;
+  onCaptureError: (error: CameraRuntimeError) => void;
+  onClassifierError: (error: CameraRuntimeError) => void;
+  onDeviceNotSupported: (error: CameraRuntimeError) => void;
   panToZoom: PanGesture;
   pinchToZoom: PinchGesture;
   resizeMode?: "cover" | "contain";
@@ -47,7 +47,7 @@ interface Props {
 
 // A container for the Camera component
 // that has logic that applies to both use cases in StandardCamera and AICamera
-const CameraView = ( {
+const CameraView = ({
   animatedProps,
   cameraRef,
   cameraScreen,
@@ -62,26 +62,26 @@ const CameraView = ( {
   pinchToZoom,
   resizeMode,
   inactive,
-}: Props ) => {
+}: Props) => {
   const {
     animatedStyle,
     tapToFocus,
     tappedCoordinates,
-  } = useFocusTap( cameraRef, device.supportsFocus );
+  } = useFocusTap(cameraRef, device.supportsFocus);
 
   // check if camera page is active
-  const isFocused = useIsFocused( );
-  const appState = useAppState( );
+  const isFocused = useIsFocused();
+  const appState = useAppState();
   const isActive = !inactive && isFocused && appState === "active";
 
   // Select the camera format based on the screen aspect ratio on ai camera as it is full-screen
-  const screen = Dimensions.get( "screen" );
+  const screen = Dimensions.get("screen");
   const aiVideoAspectRatio = screen.height / screen.width;
   const aiPhotoAspectRatio = screen.height / screen.width;
   const standardVideoAspectRatio = 4 / 3;
   const standardPhotoAspectRatio = 4 / 3;
   // Select a format that provides the highest resolution for photos and videos
-  const iosFormat = useCameraFormat( device, [
+  const iosFormat = useCameraFormat(device, [
     {
       videoAspectRatio: cameraScreen === "standard"
         ? standardVideoAspectRatio
@@ -94,50 +94,50 @@ const CameraView = ( {
     },
     { photoResolution: "max" },
     { videoResolution: "max" },
-  ] );
-  if ( Platform.OS === "android" ) {
-    console.log( "Android is not using a specific camera format because we never got around to" );
+  ]);
+  if (Platform.OS === "android") {
+    console.log("Android is not using a specific camera format because we never got around to");
   }
   const format = Platform.OS === "ios"
     ? iosFormat
     : undefined;
   // Set the exposure to the middle of the min and max exposure
-  const exposure = ( device.maxExposure + device.minExposure ) / 2;
+  const exposure = (device.maxExposure + device.minExposure) / 2;
 
   const onError = useCallback(
-    ( error: CameraRuntimeError ) => {
+    (error: CameraRuntimeError) => {
       // { code: string, message: string, cause?: {} }
-      console.log( "error", error );
+      console.log("error", error);
       // If there is no error code, log the error
       // and return because we don't know what to do with it
-      if ( !error.code ) {
-        console.log( "Camera runtime error without error code:" );
-        console.log( "error", error );
+      if (!error.code) {
+        console.log("Camera runtime error without error code:");
+        console.log("error", error);
         return;
       }
 
       // If it is a "device/" error, return the error code
-      if ( error.code.includes( "device/" ) ) {
-        console.log( "error :>> ", error );
-        onDeviceNotSupported( error );
+      if (error.code.includes("device/")) {
+        console.log("error :>> ", error);
+        onDeviceNotSupported(error);
         return;
       }
 
-      if ( error.code.includes( "capture/" ) ) {
-        console.log( "error :>> ", error );
-        onCaptureError( error );
+      if (error.code.includes("capture/")) {
+        console.log("error :>> ", error);
+        onCaptureError(error);
         return;
       }
 
       // If the error code is "frame-processor/unavailable" handle the error as classifier error
-      if ( error.code === "frame-processor/unavailable" ) {
-        onClassifierError( error );
+      if (error.code === "frame-processor/unavailable") {
+        onClassifierError(error);
         return;
       }
 
-      if ( error.code.includes( "permission/" ) ) {
-        console.log( "error :>> ", error );
-        if ( error.code === "permission/camera-permission-denied" ) {
+      if (error.code.includes("permission/")) {
+        console.log("error :>> ", error);
+        if (error.code === "permission/camera-permission-denied") {
           // No camera permission
           // In Seek we do not have a PermissionGate wrapper component,
           // so we need to handle this error there.
@@ -146,7 +146,7 @@ const CameraView = ( {
           return;
         }
       }
-      onCameraError( error );
+      onCameraError(error);
     },
     [
       onClassifierError,
@@ -161,7 +161,7 @@ const CameraView = ( {
   return (
     <>
       <GestureDetector
-        gesture={Gesture.Simultaneous( tapToFocus, panToZoom, pinchToZoom )}
+        gesture={Gesture.Simultaneous(tapToFocus, panToZoom, pinchToZoom)}
         className="overflow-hidden"
       >
         <ReanimatedCamera

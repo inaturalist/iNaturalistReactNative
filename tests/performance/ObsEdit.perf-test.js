@@ -7,12 +7,12 @@ import { measureRenders } from "reassure";
 import { queryClient } from "tests/helpers/render";
 
 // Mock inaturalistjs so test suite can run
-jest.mock( "inaturalistjs" );
+jest.mock("inaturalistjs");
 
-test( "Measure ObsEdit renders", async () => {
+test("Measure ObsEdit renders", async () => {
   await measureRenders(
     <QueryClientProvider client={queryClient}>
       <ObsEdit />
     </QueryClientProvider>,
   );
-} );
+});

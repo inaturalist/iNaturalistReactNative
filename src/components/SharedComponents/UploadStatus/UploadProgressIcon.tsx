@@ -12,17 +12,17 @@ interface Props {
   uniqueKey?: string;
 }
 
-const UploadProgressIcon = ( {
+const UploadProgressIcon = ({
   color,
   progress,
   iconClasses,
   uniqueKey,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   return (
     <View
-      className={classnames( iconClasses, "justify-center", "items-center" )}
-      accessibilityLabel={t( "Upload-in-progress" )}
+      className={classnames(iconClasses, "justify-center", "items-center")}
+      accessibilityLabel={t("Upload-in-progress")}
       testID={`UploadIcon.progress.${uniqueKey}`}
     >
       <View className="absolute">

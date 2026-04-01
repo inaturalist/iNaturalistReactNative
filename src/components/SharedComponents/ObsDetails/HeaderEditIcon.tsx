@@ -17,27 +17,27 @@ interface Props {
   taxon?: ApiTaxon | RealmTaxon;
 }
 
-const HeaderEditIcon = ( {
+const HeaderEditIcon = ({
   observation,
   lastScreen,
   taxon,
-}: Props ) => {
-  const navigation = useNavigation( );
-  const { t } = useTranslation( );
-  const navigateToObsEdit = useNavigateToObsEdit( );
+}: Props) => {
+  const navigation = useNavigation();
+  const { t } = useTranslation();
+  const navigateToObsEdit = useNavigateToObsEdit();
 
-  const handleEditPress = useCallback( ( ) => {
-    navigateToObsEdit( observation, lastScreen, taxon );
-  }, [taxon, navigateToObsEdit, observation, lastScreen] );
+  const handleEditPress = useCallback(() => {
+    navigateToObsEdit(observation, lastScreen, taxon);
+  }, [taxon, navigateToObsEdit, observation, lastScreen]);
 
   const headerRight = useCallback(
-    ( ) => (
+    () => (
       <INatIconButton
         testID="ObsEditIcon"
         onPress={handleEditPress}
         icon="pencil"
-        color={String( colors?.darkGray )}
-        accessibilityLabel={t( "Edit" )}
+        color={String(colors?.darkGray)}
+        accessibilityLabel={t("Edit")}
         size={22}
       />
     ),
@@ -48,7 +48,7 @@ const HeaderEditIcon = ( {
   );
 
   useEffect(
-    ( ) => navigation.setOptions( { headerRight } ),
+    () => navigation.setOptions({ headerRight }),
     [headerRight, navigation],
   );
 

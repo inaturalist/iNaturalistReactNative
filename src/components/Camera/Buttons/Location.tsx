@@ -6,28 +6,28 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
-  toggleLocation: ( ) => void;
+  toggleLocation: () => void;
   useLocation?: boolean;
 }
 
-const Location = ( {
+const Location = ({
   rotatableAnimatedStyle,
   toggleLocation,
   useLocation,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   let testID = "";
   let accessibilityHint = "";
   let name = "";
-  if ( useLocation ) {
+  if (useLocation) {
     name = "map-marker-outline";
     testID = "location-button-label-location";
-    accessibilityHint = t( "Disable-location" );
+    accessibilityHint = t("Disable-location");
   } else {
     name = "map-marker-outline-off";
     testID = "location-button-label-location-off";
-    accessibilityHint = t( "Enable-location" );
+    accessibilityHint = t("Enable-location");
   }
 
   return (
@@ -38,7 +38,7 @@ const Location = ( {
       <TransparentCircleButton
         onPress={toggleLocation}
         testID={testID}
-        accessibilityLabel={t( "Location" )}
+        accessibilityLabel={t("Location")}
         accessibilityHint={accessibilityHint}
         icon={name}
       />

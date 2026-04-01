@@ -24,41 +24,41 @@ const modelFiles = {
   ANDROIDGEOMODEL: Config.ANDROID_GEOMODEL_FILE_NAME,
 };
 
-export const modelPath: string = Platform.select( {
+export const modelPath: string = Platform.select({
   ios: `${RNFS.MainBundlePath}/${modelFiles.IOSMODEL}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDMODEL}`,
-} );
+});
 
-export const taxonomyPath: string = Platform.select( {
+export const taxonomyPath: string = Platform.select({
   ios: `${RNFS.MainBundlePath}/${modelFiles.IOSTAXONOMY}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`,
-} );
+});
 
-export const geomodelPath: string = Platform.select( {
+export const geomodelPath: string = Platform.select({
   ios: `${RNFS.MainBundlePath}/${modelFiles.IOSGEOMODEL}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDGEOMODEL}`,
-} );
+});
 
 export const modelVersion = Config.CV_MODEL_VERSION;
 
-export const predictImage = ( uri: string, location?: Location ) => {
+export const predictImage = (uri: string, location?: Location) => {
   // Ensure uri is actually well-formed and try to make it well-formed if it's
   // a path
   let url;
   try {
-    url = new URL( uri );
-  } catch ( _urlError ) {
+    url = new URL(uri);
+  } catch (_urlError) {
     try {
-      url = new URL( `file://${uri}` );
-    } catch ( _urlError2 ) {
+      url = new URL(`file://${uri}`);
+    } catch (_urlError2) {
       // will handle when url is blank
     }
   }
-  if ( !url ) {
-    throw new Error( `predictImage received invalid URI: ${uri}` );
+  if (!url) {
+    throw new Error(`predictImage received invalid URI: ${uri}`);
   }
   const hasLocation = location?.latitude != null && location?.longitude != null;
-  return getPredictionsForImage( {
+  return getPredictionsForImage({
     uri: url.toString(),
     modelPath,
     taxonomyPath,
@@ -70,53 +70,53 @@ export const predictImage = ( uri: string, location?: Location ) => {
       : undefined,
     mode: MODE.COMMON_ANCESTOR,
     commonAncestorRankType: COMMON_ANCESTOR_RANK_TYPE.UNRESTRICTED,
-  } );
+  });
 };
 
-export const predictLocation = ( location: Location ) => getPredictionsForLocation( {
+export const predictLocation = (location: Location) => getPredictionsForLocation({
   geomodelPath,
   taxonomyPath,
   location,
-} );
+});
 
 const addCameraFilesAndroid = () => {
-  const copyFilesAndroid = ( source, destination ) => {
-    RNFS.copyFileAssets( source, destination )
-      .then( () => {
-        console.log( `moved file from ${source} to ${destination}` );
-      } )
-      .catch( error => {
+  const copyFilesAndroid = (source, destination) => {
+    RNFS.copyFileAssets(source, destination)
+      .then(() => {
+        console.log(`moved file from ${source} to ${destination}`);
+      })
+      .catch(error => {
         console.log(
           error,
           `error moving file from ${source} to ${destination}`,
         );
-      } );
+      });
   };
 
-  RNFS.readDirAssets( "camera" ).then( results => {
+  RNFS.readDirAssets("camera").then(results => {
     const model = modelFiles.ANDROIDMODEL;
     const taxonomy = modelFiles.ANDROIDTAXONOMY;
     const geomodel = modelFiles.ANDROIDGEOMODEL;
 
-    const hasModel = results.find( r => r.name === model );
+    const hasModel = results.find(r => r.name === model);
 
     // Android writes over existing files
-    if ( hasModel !== undefined ) {
-      copyFilesAndroid( `camera/${model}`, modelPath );
-      copyFilesAndroid( `camera/${taxonomy}`, taxonomyPath );
-      copyFilesAndroid( `camera/${geomodel}`, geomodelPath );
+    if (hasModel !== undefined) {
+      copyFilesAndroid(`camera/${model}`, modelPath);
+      copyFilesAndroid(`camera/${taxonomy}`, taxonomyPath);
+      copyFilesAndroid(`camera/${geomodel}`, geomodelPath);
     } else {
       Alert.alert(
-        i18next.t( "No-model-found" ),
-        i18next.t( "During-app-start-no-model-found" ),
+        i18next.t("No-model-found"),
+        i18next.t("During-app-start-no-model-found"),
       );
     }
-  } );
+  });
 };
 
-export const addARCameraFiles = ( ) => {
+export const addARCameraFiles = () => {
   // RNFS overwrites whatever files existed before
-  if ( Platform.OS === "android" ) {
-    addCameraFilesAndroid( );
+  if (Platform.OS === "android") {
+    addCameraFilesAndroid();
   }
 };

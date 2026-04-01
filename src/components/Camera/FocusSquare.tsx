@@ -9,8 +9,8 @@ interface Props {
   tappedCoordinates: Coordinates | null;
 }
 
-const FocusSquare = ( { animatedStyle, tappedCoordinates }: Props ) => {
-  if ( !tappedCoordinates ) { return null; }
+const FocusSquare = ({ animatedStyle, tappedCoordinates }: Props) => {
+  if (!tappedCoordinates) { return null; }
   return (
     <Animated.View
       className="w-[66px] h-[66px] absolute border-2 border-yellow rounded-xs"

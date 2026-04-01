@@ -6,7 +6,7 @@ import React from "react";
 
 interface Props {
   accessibilityLabel: string;
-  onTaxonChosen: ( ) => void;
+  onTaxonChosen: () => void;
   suggestion: {
     taxon: {
       id: number;
@@ -19,15 +19,15 @@ interface Props {
   };
 }
 
-const Suggestion = ( {
+const Suggestion = ({
   accessibilityLabel,
   suggestion,
   onTaxonChosen,
-}: Props ) => (
+}: Props) => (
   <TaxonResult
     accessibilityLabel={accessibilityLabel}
     activeColor="bg-inatGreen"
-    confidencePercentage={calculateConfidence( suggestion )}
+    confidencePercentage={calculateConfidence(suggestion)}
     confidencePosition="text"
     fetchRemote={false}
     first

@@ -17,96 +17,96 @@ type Props = {
   updateObservationKeys: Function
 }
 
-const OtherDataSection = ( {
+const OtherDataSection = ({
   currentObservation,
   updateObservationKeys,
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );
-  const [showWildStatusSheet, setShowWildStatusSheet] = useState( false );
-  const [showNotesSheet, setShowNotesSheet] = useState( false );
+}: Props): Node => {
+  const { t } = useTranslation();
+  const [showGeoprivacySheet, setShowGeoprivacySheet] = useState(false);
+  const [showWildStatusSheet, setShowWildStatusSheet] = useState(false);
+  const [showNotesSheet, setShowNotesSheet] = useState(false);
 
   const geoprivacyOptions = [{
-    label: t( "Open" ),
+    label: t("Open"),
     value: "open",
   },
   {
-    label: t( "Obscured" ),
+    label: t("Obscured"),
     value: "obscured",
   },
   {
-    label: t( "Private" ),
+    label: t("Private"),
     value: "private",
   }];
 
   // opposite of Seek (asking if wild, not if captive)
   const captiveOptions = [
     {
-      label: t( "Data-quality-assessment-organism-is-wild" ),
+      label: t("Data-quality-assessment-organism-is-wild"),
       value: false,
     },
     {
-      label: t( "Organism-is-captive" ),
+      label: t("Organism-is-captive"),
       value: true,
     }];
 
   const currentGeoprivacyStatus = geoprivacyOptions
-    .find( e => e.value === currentObservation?.geoprivacy );
+    .find(e => e.value === currentObservation?.geoprivacy);
   const currentCaptiveStatus = captiveOptions
-    .find( e => e.value === currentObservation?.captive_flag );
+    .find(e => e.value === currentObservation?.captive_flag);
   return (
     <View className="mx-5 mt-6">
       {showGeoprivacySheet && (
         <GeoprivacySheet
           selectedValue={currentObservation?.geoprivacy}
-          onPressClose={( ) => setShowGeoprivacySheet( false )}
-          updateGeoprivacyStatus={value => updateObservationKeys( {
+          onPressClose={() => setShowGeoprivacySheet(false)}
+          updateGeoprivacyStatus={value => updateObservationKeys({
             geoprivacy: value,
-          } )}
+          })}
         />
       )}
       {showWildStatusSheet && (
         <WildStatusSheet
           selectedValue={currentObservation?.captive_flag || false}
-          onPressClose={( ) => setShowWildStatusSheet( false )}
-          updateCaptiveStatus={value => updateObservationKeys( {
+          onPressClose={() => setShowWildStatusSheet(false)}
+          updateCaptiveStatus={value => updateObservationKeys({
             captive_flag: value,
-          } )}
+          })}
         />
       )}
       {showNotesSheet && (
         <TextInputSheet
           mentionsEnabled
-          onPressClose={( ) => setShowNotesSheet( false )}
-          headerText={t( "NOTES" )}
-          placeholder={t( "Add-optional-notes" )}
+          onPressClose={() => setShowNotesSheet(false)}
+          headerText={t("NOTES")}
+          placeholder={t("Add-optional-notes")}
           initialInput={currentObservation?.description}
-          confirm={textInput => updateObservationKeys( {
+          confirm={textInput => updateObservationKeys({
             description: textInput,
-          } )}
+          })}
         />
       )}
-      <Heading4 className="pb-[10px]">{t( "OTHER-DATA" )}</Heading4>
+      <Heading4 className="pb-[10px]">{t("OTHER-DATA")}</Heading4>
 
       <DropdownItem
-        accessibilityLabel={t( "Select-geoprivacy-status" )}
-        handlePress={( ) => setShowGeoprivacySheet( true )}
+        accessibilityLabel={t("Select-geoprivacy-status")}
+        handlePress={() => setShowGeoprivacySheet(true)}
         iconName="globe-outline"
-        text={t( "Geoprivacy-status", {
+        text={t("Geoprivacy-status", {
           status: currentGeoprivacyStatus?.label || geoprivacyOptions[0].label,
-        } )}
+        })}
       />
       <DropdownItem
-        accessibilityLabel={t( "Select-captive-or-cultivated-status" )}
-        handlePress={( ) => setShowWildStatusSheet( true )}
+        accessibilityLabel={t("Select-captive-or-cultivated-status")}
+        handlePress={() => setShowWildStatusSheet(true)}
         iconName="pot-outline"
         text={currentCaptiveStatus?.label || captiveOptions[0].label}
       />
       <DropdownItem
-        accessibilityLabel={t( "Add-optional-notes" )}
-        handlePress={( ) => setShowNotesSheet( true )}
+        accessibilityLabel={t("Add-optional-notes")}
+        handlePress={() => setShowNotesSheet(true)}
         iconName="pencil-outline"
-        text={currentObservation?.description || t( "Add-optional-notes" )}
+        text={currentObservation?.description || t("Add-optional-notes")}
       />
     </View>
   );

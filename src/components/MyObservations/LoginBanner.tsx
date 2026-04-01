@@ -11,29 +11,29 @@ import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 2,
   shadowOpacity: 1,
   shadowRadius: 2,
-} );
+});
 
 interface Props {
   currentUser: RealmUser | null;
 }
 
-const LoginBanner = ( {
+const LoginBanner = ({
   currentUser,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
-  const loginBannerDismissed = useStore( state => state.layout.loginBannerDismissed );
-  const setLoginBannerDismissed = useStore( state => state.layout.setLoginBannerDismissed );
+  const loginBannerDismissed = useStore(state => state.layout.loginBannerDismissed);
+  const setLoginBannerDismissed = useStore(state => state.layout.setLoginBannerDismissed);
 
   const dismissLoginBanner = () => {
     setLoginBannerDismissed();
   };
 
-  if ( !currentUser && !loginBannerDismissed ) {
+  if (!currentUser && !loginBannerDismissed) {
     return (
       <View className="z-20">
         <View
@@ -44,7 +44,7 @@ const LoginBanner = ( {
               className="absolute top-0 right-0 justify-center items-center h-[44px] w-[44px] z-20"
               accessibilityRole="button"
               onPress={() => dismissLoginBanner()}
-              accessibilityLabel={t( "Close" )}
+              accessibilityLabel={t("Close")}
             >
               <View className="
                 justify-center
@@ -75,7 +75,7 @@ const LoginBanner = ( {
                 bg-white
                 rounded-xl
                 z-10"
-                onPress={() => navigation.navigate( "LoginStackNavigator" )}
+                onPress={() => navigation.navigate("LoginStackNavigator")}
                 disabled={false}
               >
                 <INatIcon
@@ -84,7 +84,7 @@ const LoginBanner = ( {
                   color={colors.inatGreen}
                 />
                 <Body2 maxFontSizeMultiplier={1}>
-                  {t( "Already-have-an-iNaturalist-account" )}
+                  {t("Already-have-an-iNaturalist-account")}
                 </Body2>
               </Pressable>
             </View>

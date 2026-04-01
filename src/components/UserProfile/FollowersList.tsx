@@ -21,13 +21,13 @@ import {
   useTranslation,
 } from "sharedHooks";
 
-const FollowersList = ( ) => {
-  const { isConnected } = useNetInfo( );
-  const currentUser = useCurrentUser( );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+const FollowersList = () => {
+  const { isConnected } = useNetInfo();
+  const currentUser = useCurrentUser();
+  const navigation = useNavigation();
+  const { params } = useRoute();
   const { user } = params;
-  const { t } = useTranslation( );
+  const { t } = useTranslation();
 
   const userId = user?.id;
 
@@ -51,20 +51,20 @@ const FollowersList = ( ) => {
     },
   );
 
-  const followersHeaderOptions = useMemo( ( ) => ( {
+  const followersHeaderOptions = useMemo(() => ({
     headerTitle: user?.login,
-    headerSubtitle: t( "X-FOLLOWERS", {
+    headerSubtitle: t("X-FOLLOWERS", {
       count: totalResults,
-    } ),
-  } ), [totalResults, t, user] );
+    }),
+  }), [totalResults, t, user]);
 
-  useEffect( ( ) => {
-    if ( totalResults !== undefined && totalResults !== null ) {
-      navigation.setOptions( followersHeaderOptions );
+  useEffect(() => {
+    if (totalResults !== undefined && totalResults !== null) {
+      navigation.setOptions(followersHeaderOptions);
     }
-  }, [followersHeaderOptions, navigation, totalResults] );
+  }, [followersHeaderOptions, navigation, totalResults]);
 
-  if ( !followers ) {
+  if (!followers) {
     return null;
   }
 
@@ -86,7 +86,7 @@ const FollowersList = ( ) => {
             : (
               <View className="self-center mt-5 p-4">
                 <Body1 className="align-center text-center">
-                  {t( "This-user-has-no-followers" )}
+                  {t("This-user-has-no-followers")}
                 </Body1>
               </View>
             )

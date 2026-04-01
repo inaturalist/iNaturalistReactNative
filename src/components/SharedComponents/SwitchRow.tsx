@@ -17,13 +17,13 @@ interface Props {
   icon?: string;
   label?: string;
   labelComponent?: React.JSX.Element;
-  onValueChange: ( newValue: boolean ) => void;
+  onValueChange: (newValue: boolean) => void;
   smallLabel?: boolean;
   testID?: string;
   disabled?: boolean;
 }
 
-const SwitchRow = ( {
+const SwitchRow = ({
   value,
   classNames,
   description,
@@ -34,10 +34,10 @@ const SwitchRow = ( {
   smallLabel = false,
   testID,
   disabled = false,
-}: Props ) => {
-  const handlePress = ( _e: GestureResponderEvent ) => {
-    if ( !disabled ) {
-      onValueChange( !value );
+}: Props) => {
+  const handlePress = (_e: GestureResponderEvent) => {
+    if (!disabled) {
+      onValueChange(!value);
     }
   };
 

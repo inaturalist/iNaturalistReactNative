@@ -20,40 +20,40 @@ import MultipleObservationsUploadStatus from "./MultipleObservationsUploadStatus
 import ObsEditHeader from "./ObsEditHeader";
 import OtherDataSection from "./OtherDataSection";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: -2,
-} );
+});
 
-const ObsEdit = ( ): Node => {
-  const navigation = useNavigation( );
-  const currentObservation = useStore( state => state.currentObservation );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const observations = useStore( state => state.observations );
-  const setCurrentObservationIndex = useStore( state => state.setCurrentObservationIndex );
-  const updateObservationKeys = useStore( state => state.updateObservationKeys );
-  const resetUploadObservationsSlice = useStore( state => state.resetUploadObservationsSlice );
-  const savedOrUploadedMultiObsFlow = useStore( state => state.savedOrUploadedMultiObsFlow );
-  const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
-  const [resetScreen, setResetScreen] = useState( false );
+const ObsEdit = (): Node => {
+  const navigation = useNavigation();
+  const currentObservation = useStore(state => state.currentObservation);
+  const currentObservationIndex = useStore(state => state.currentObservationIndex);
+  const observations = useStore(state => state.observations);
+  const setCurrentObservationIndex = useStore(state => state.setCurrentObservationIndex);
+  const updateObservationKeys = useStore(state => state.updateObservationKeys);
+  const resetUploadObservationsSlice = useStore(state => state.resetUploadObservationsSlice);
+  const savedOrUploadedMultiObsFlow = useStore(state => state.savedOrUploadedMultiObsFlow);
+  const [passesEvidenceTest, setPassesEvidenceTest] = useState(false);
+  const [resetScreen, setResetScreen] = useState(false);
   const [needLocation, setNeedLocation] = useState(
-    shouldFetchObservationLocation( currentObservation ),
+    shouldFetchObservationLocation(currentObservation),
   );
-  const isFocused = useIsFocused( );
-  const currentUser = useCurrentUser( );
+  const isFocused = useIsFocused();
+  const currentUser = useCurrentUser();
   const {
     hasPermissions: hasLocationPermission,
     renderPermissionsGate: renderLocationPermissionGate,
     requestPermissions: requestLocationPermission,
-  } = useLocationPermission( );
+  } = useLocationPermission();
 
-  const fadeAnim = React.useRef( new Animated.Value( 1 ) ).current;
+  const fadeAnim = React.useRef(new Animated.Value(1)).current;
 
   const fade = () => {
-    Animated.timing( fadeAnim, {
+    Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 250,
       useNativeDriver: true,
-    } ).start( fadeAnim.setValue( 0 ) );
+    }).start(fadeAnim.setValue(0));
   };
 
   const animatedStyle = {
@@ -69,39 +69,39 @@ const ObsEdit = ( ): Node => {
     stopWatch,
     subscriptionId,
     userLocation,
-  } = useWatchPosition( { shouldFetchLocation } );
+  } = useWatchPosition({ shouldFetchLocation });
 
-  useEffect( ( ) => {
-    if ( userLocation?.latitude ) {
-      updateObservationKeys( userLocation );
+  useEffect(() => {
+    if (userLocation?.latitude) {
+      updateObservationKeys(userLocation);
     }
-  }, [userLocation, updateObservationKeys] );
+  }, [userLocation, updateObservationKeys]);
 
-  useEffect( ( ) => {
-    resetUploadObservationsSlice( );
-  }, [resetUploadObservationsSlice] );
+  useEffect(() => {
+    resetUploadObservationsSlice();
+  }, [resetUploadObservationsSlice]);
 
-  const navToLocationPicker = useCallback( ( ) => {
-    stopWatch( subscriptionId );
-    navigation.navigate( "LocationPicker" );
-  }, [stopWatch, subscriptionId, navigation] );
+  const navToLocationPicker = useCallback(() => {
+    stopWatch(subscriptionId);
+    navigation.navigate("LocationPicker");
+  }, [stopWatch, subscriptionId, navigation]);
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
-  const hasLocation = !!( latitude && longitude );
-  const onLocationPress = ( ) => {
-    if ( !hasLocation && !hasLocationPermission ) {
-      requestLocationPermission( );
+  const hasLocation = !!(latitude && longitude);
+  const onLocationPress = () => {
+    if (!hasLocation && !hasLocationPermission) {
+      requestLocationPermission();
     } else {
-      navToLocationPicker( );
+      navToLocationPicker();
     }
   };
 
-  if ( !isFocused ) return null;
+  if (!isFocused) return null;
 
   // This should never, ever happen
-  if ( currentObservation?.user && currentUser && currentUser.id !== currentObservation.user.id ) {
-    throw new Error( "User tried to edit observation they do not own" );
+  if (currentObservation?.user && currentUser && currentUser.id !== currentObservation.user.id) {
+    throw new Error("User tried to edit observation they do not own");
   }
 
   return (
@@ -117,7 +117,7 @@ const ObsEdit = ( ): Node => {
           {currentObservation && (
             <View
               className="bg-white rounded-t-3xl mt-1 mb-5"
-              style={( observations.length > 1 )
+              style={(observations.length > 1)
                 ? DROP_SHADOW
                 : undefined}
             >
@@ -166,17 +166,17 @@ const ObsEdit = ( ): Node => {
           transitionAnimation={fade}
         />
       )}
-      {renderLocationPermissionGate( {
+      {renderLocationPermissionGate({
         // If the user grants location permission while on this screen,
         // we want to start watching the location no matter how the observation
         // was created (camera, sound recorder, etc.)
-        onPermissionGranted: ( ) => setNeedLocation( true ),
+        onPermissionGranted: () => setNeedLocation(true),
         // If the user does not give location permissions in any form,
         // navigate to the location picker (if granted we just continue fetching the location)
-        onModalHide: ( ) => {
-          if ( !hasLocationPermission ) navToLocationPicker();
+        onModalHide: () => {
+          if (!hasLocationPermission) navToLocationPicker();
         },
-      } )}
+      })}
     </>
   );
 };

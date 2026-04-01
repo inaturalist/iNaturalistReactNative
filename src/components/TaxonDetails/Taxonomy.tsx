@@ -14,27 +14,27 @@ interface Props {
   hideNavButtons: boolean;
 }
 
-const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
-  const [viewChildren, setViewChildren] = useState( false );
-  const navigation = useNavigation( );
-  const { t } = useTranslation( );
-  const currentUser = useCurrentUser( );
+const Taxonomy = ({ taxon: currentTaxon, hideNavButtons }: Props) => {
+  const [viewChildren, setViewChildren] = useState(false);
+  const navigation = useNavigation();
+  const { t } = useTranslation();
+  const currentUser = useCurrentUser();
   const scientificNameFirst = currentUser?.prefers_scientific_name_first;
 
-  const navigateToTaxonDetails = ( taxonId: number ) => (
-    navigation.push( "TaxonDetails", {
+  const navigateToTaxonDetails = (taxonId: number) => (
+    navigation.push("TaxonDetails", {
       id: taxonId,
       hideNavButtons,
       usesVision: false,
-    } )
+    })
   );
 
   return (
     <View className="mb-5">
       <Heading4 className="my-3">
-        {t( "TAXONOMY-header" )}
+        {t("TAXONOMY-header")}
       </Heading4>
-      {currentTaxon.ancestors?.map( ancestor => (
+      {currentTaxon.ancestors?.map(ancestor => (
         <TaxonomyTaxon
           currentUser={currentUser}
           key={ancestor.id}
@@ -43,7 +43,7 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
           t={t}
           taxon={ancestor}
         />
-      ) )}
+      ))}
       <TaxonomyTaxon
         currentUser={currentUser}
         isCurrentTaxon
@@ -53,7 +53,7 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
         t={t}
         taxon={currentTaxon}
       />
-      {viewChildren && currentTaxon?.children?.map( child => (
+      {viewChildren && currentTaxon?.children?.map(child => (
         <TaxonomyTaxon
           currentUser={currentUser}
           isChild
@@ -63,12 +63,12 @@ const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
           t={t}
           taxon={child}
         />
-      ) )}
+      ))}
       {!viewChildren && currentTaxon?.children && (
         <Button
           className="mt-3"
-          onPress={( ) => setViewChildren( true )}
-          text={t( "VIEW-CHILDREN-TAXA" )}
+          onPress={() => setViewChildren(true)}
+          text={t("VIEW-CHILDREN-TAXA")}
         />
       )}
     </View>

@@ -12,11 +12,11 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import User from "realmModels/User";
 import { useInfiniteScroll, useTranslation } from "sharedHooks";
 
-const ProjectMembers = ( ) => {
-  const { isConnected } = useNetInfo( );
-  const navigation = useNavigation( );
-  const { t } = useTranslation( );
-  const { params } = useRoute( );
+const ProjectMembers = () => {
+  const { isConnected } = useNetInfo();
+  const navigation = useNavigation();
+  const { t } = useTranslation();
+  const { params } = useRoute();
   const { id, title } = params;
 
   const queryKey = ["projectMembers", "fetchProjectMembers", id];
@@ -42,28 +42,28 @@ const ProjectMembers = ( ) => {
     },
   );
 
-  const headerOptions = useMemo( ( ) => ( {
+  const headerOptions = useMemo(() => ({
     headerTitle: title,
-    headerSubtitle: t( "X-MEMBERS", {
+    headerSubtitle: t("X-MEMBERS", {
       count: totalMembers || 0,
-    } ),
-  } ), [title, totalMembers, t] );
+    }),
+  }), [title, totalMembers, t]);
 
-  const renderFooter = useCallback( ( ) => (
+  const renderFooter = useCallback(() => (
     <InfiniteScrollLoadingWheel
       hideLoadingWheel={!isFetchingNextPage}
       layout="list"
       isConnected={isConnected}
     />
-  ), [isConnected, isFetchingNextPage] );
+  ), [isConnected, isFetchingNextPage]);
 
-  useEffect( ( ) => {
-    navigation.setOptions( headerOptions );
-  }, [navigation, headerOptions] );
+  useEffect(() => {
+    navigation.setOptions(headerOptions);
+  }, [navigation, headerOptions]);
 
-  const renderEmptyComponent = useCallback( ( ) => (
+  const renderEmptyComponent = useCallback(() => (
     <ActivityIndicator size={50} />
-  ), [] );
+  ), []);
 
   return (
     <View className="flex-1 bg-white">

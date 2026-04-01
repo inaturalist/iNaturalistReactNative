@@ -23,7 +23,7 @@ const checkmarkClasses = [
   `w-[${CAMERA_BUTTON_DIM}px]`,
   "justify-center",
   "items-center",
-].join( " " );
+].join(" ");
 
 const cameraOptionsClasses = [
   "bg-black/50",
@@ -32,34 +32,34 @@ const cameraOptionsClasses = [
   "justify-center",
   "rounded-full",
   `w-[${CAMERA_BUTTON_DIM}px]`,
-].join( " " );
+].join(" ");
 
 interface Props {
-  handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
+  handleZoomButtonPress: (_event: GestureResponderEvent) => void;
   disabled: boolean;
   disabledPhotoLibrary: boolean;
-  flipCamera: ( _event: GestureResponderEvent ) => void;
-  handleCheckmarkPress?: ( _event: GestureResponderEvent ) => void;
-  handleClose?: ( _event: GestureResponderEvent ) => void;
+  flipCamera: (_event: GestureResponderEvent) => void;
+  handleCheckmarkPress?: (_event: GestureResponderEvent) => void;
+  handleClose?: (_event: GestureResponderEvent) => void;
   hasFlash?: boolean;
   hasPhotoLibraryButton?: boolean;
   photosTaken?: boolean;
   rotatableAnimatedStyle: ViewStyle;
   showPrediction?: boolean;
   showZoomButton: boolean;
-  takePhoto: ( ) => Promise<void>;
+  takePhoto: () => Promise<void>;
   takePhotoOptions: TakePhotoOptions;
-  toggleFlash: ( _event: GestureResponderEvent ) => void;
+  toggleFlash: (_event: GestureResponderEvent) => void;
   zoomTextValue: string;
   useLocation: boolean;
-  toggleLocation: ( _event: GestureResponderEvent ) => void;
+  toggleLocation: (_event: GestureResponderEvent) => void;
   isDefaultMode: boolean;
-  deleteSentinelFile: ( ) => Promise<void>;
+  deleteSentinelFile: () => Promise<void>;
 }
 
 // Empty space where a camera button should be so buttons don't jump around
 // when they appear or disappear
-const CameraButtonPlaceholder = ( { extraClassName }: { extraClassName?: string } ) => (
+const CameraButtonPlaceholder = ({ extraClassName }: { extraClassName?: string }) => (
   <View
     accessibilityElementsHidden
     aria-hidden
@@ -72,7 +72,7 @@ const CameraButtonPlaceholder = ( { extraClassName }: { extraClassName?: string 
   />
 );
 
-const TabletButtons = ( {
+const TabletButtons = ({
   handleZoomButtonPress,
   disabled,
   disabledPhotoLibrary,
@@ -93,7 +93,7 @@ const TabletButtons = ( {
   toggleLocation,
   isDefaultMode,
   deleteSentinelFile,
-}: Props ) => {
+}: Props) => {
   const tabletCameraOptionsClasses = [
     "absolute",
     "items-center",
@@ -105,7 +105,7 @@ const TabletButtons = ( {
   ];
 
   return (
-    <View className={classnames( tabletCameraOptionsClasses )} pointerEvents="box-none">
+    <View className={classnames(tabletCameraOptionsClasses)} pointerEvents="box-none">
       { photosTaken && <CameraButtonPlaceholder extraClassName="mb-[25px]" /> }
       {!isDefaultMode && (
         <Location
@@ -142,10 +142,10 @@ const TabletButtons = ( {
       {photosTaken && (
         <RotatableIconWrapper
           rotatableAnimatedStyle={rotatableAnimatedStyle}
-          containerClass={classnames( checkmarkClasses )}
+          containerClass={classnames(checkmarkClasses)}
         >
           <GreenCheckmark
-            handleCheckmarkPress={handleCheckmarkPress || ( () => null )}
+            handleCheckmarkPress={handleCheckmarkPress || (() => null)}
           />
         </RotatableIconWrapper>
       )}

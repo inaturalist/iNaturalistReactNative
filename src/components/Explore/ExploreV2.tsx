@@ -26,10 +26,10 @@ import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
   elevation: 6,
-} );
+});
 
 enum EXPLORE_VIEW {
   OBSERVATIONS = "observations",
@@ -47,16 +47,16 @@ enum EXPLORE_OBSERVATIONS_LAYOUT {
 interface Props {
   canFetch?: boolean;
   currentExploreView: EXPLORE_VIEW;
-  handleUpdateCount: ( exploreView: EXPLORE_VIEW, totalResults: number ) => void;
+  handleUpdateCount: (exploreView: EXPLORE_VIEW, totalResults: number) => void;
   hasLocationPermissions?: boolean;
   isConnected: boolean;
   placeMode: string;
   queryParams: object;
   renderLocationPermissionsGate: RenderLocationPermissionsGateFunction;
-  requestLocationPermissions: ( ) => void;
+  requestLocationPermissions: () => void;
 }
 
-const ExploreV2 = ( {
+const ExploreV2 = ({
   canFetch,
   currentExploreView,
   handleUpdateCount,
@@ -66,17 +66,17 @@ const ExploreV2 = ( {
   queryParams,
   renderLocationPermissionsGate,
   requestLocationPermissions,
-}: Props ) => {
+}: Props) => {
   const navigation = useNavigation();
-  const { t } = useTranslation( );
-  const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" ) as {
+  const { t } = useTranslation();
+  const { layout, writeLayoutToStorage } = useStoredLayout("exploreObservationsLayout") as {
     layout: EXPLORE_OBSERVATIONS_LAYOUT | null;
-    writeLayoutToStorage: ( newValue: EXPLORE_OBSERVATIONS_LAYOUT ) => void;
+    writeLayoutToStorage: (newValue: EXPLORE_OBSERVATIONS_LAYOUT) => void;
   };
-  const { isDebug } = useDebugMode( );
+  const { isDebug } = useDebugMode();
 
-  const renderMainContent = ( ) => {
-    if ( isConnected === false ) {
+  const renderMainContent = () => {
+    if (isConnected === false) {
       return (
         <OfflineNotice
           onPress={() => refresh()}
@@ -84,18 +84,18 @@ const ExploreV2 = ( {
       );
     }
     // hasLocationPermissions === undefined means we haven't checked for location permissions yet
-    if ( placeMode === PLACE_MODE.NEARBY && hasLocationPermissions === false ) {
+    if (placeMode === PLACE_MODE.NEARBY && hasLocationPermissions === false) {
       return (
         <View className="flex-1 justify-center p-4">
           <View className="items-center">
-            <Body2>{t( "To-view-nearby-organisms-please-enable-location" )}</Body2>
+            <Body2>{t("To-view-nearby-organisms-please-enable-location")}</Body2>
           </View>
           <Button
             className="mt-5"
-            text={t( "ALLOW-LOCATION-ACCESS" )}
-            accessibilityHint={t( "Opens-location-permission-prompt" )}
+            text={t("ALLOW-LOCATION-ACCESS")}
+            accessibilityHint={t("Opens-location-permission-prompt")}
             level="focus"
-            onPress={( ) => requestLocationPermissions()}
+            onPress={() => requestLocationPermissions()}
           />
         </View>
       );
@@ -147,7 +147,7 @@ const ExploreV2 = ( {
         <View className="flex-1 overflow-hidden">
           <Pressable
             accessibilityRole="button"
-            onPress={() => navigation.navigate( "ExploreFilters" )}
+            onPress={() => navigation.navigate("ExploreFilters")}
           >
             {/* eslint-disable-next-line i18next/no-literal-string */}
             <Body2>TODO: Header Link to Filters</Body2>
@@ -183,7 +183,7 @@ const ExploreV2 = ( {
               onPress={() => {
                 Alert.alert(
                   "ExploreV2 Info",
-                  `queryParams: ${JSON.stringify( queryParams )}`,
+                  `queryParams: ${JSON.stringify(queryParams)}`,
                 );
               }}
             />

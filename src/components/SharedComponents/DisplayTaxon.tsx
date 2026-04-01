@@ -19,7 +19,7 @@ interface Props {
   withdrawn?: boolean;
 }
 
-const DisplayTaxon = ( {
+const DisplayTaxon = ({
   accessibilityHint,
   accessibilityLabel,
   bottomTextComponent,
@@ -28,9 +28,9 @@ const DisplayTaxon = ( {
   testID,
   topTextComponent,
   withdrawn,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const currentUser = useCurrentUser( );
+}: Props) => {
+  const { t } = useTranslation();
+  const currentUser = useCurrentUser();
 
   const imageClassName = "w-[62px] h-[62px] rounded-lg";
 
@@ -39,7 +39,7 @@ const DisplayTaxon = ( {
     : taxon?.iconic_taxon_name;
 
   const taxonPhoto = taxon?.default_photo?.url;
-  const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+  const accessibleName = accessibleTaxonName(taxon, currentUser, t);
 
   return (
     <Pressable

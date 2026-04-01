@@ -25,7 +25,7 @@ type Props = {
   totalResults: number
 };
 
-const ExploreFlashList = ( {
+const ExploreFlashList = ({
   canFetch,
   contentContainerStyle,
   data,
@@ -40,35 +40,35 @@ const ExploreFlashList = ( {
   renderItemSeparator,
   testID,
   totalResults,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
-  const renderFooter = useCallback( ( ) => (
+  const renderFooter = useCallback(() => (
     <InfiniteScrollLoadingWheel
       hideLoadingWheel={hideLoadingWheel}
       layout={layout}
       explore
       isConnected={isConnected}
     />
-  ), [hideLoadingWheel, layout, isConnected] );
+  ), [hideLoadingWheel, layout, isConnected]);
 
-  const renderLoading = useCallback( ( ) => {
-    if ( totalResults === 0 ) {
+  const renderLoading = useCallback(() => {
+    if (totalResults === 0) {
       return (
-        <Body3 className="align-center">{t( "No-results-found-try-different-search" )}</Body3> );
+        <Body3 className="align-center">{t("No-results-found-try-different-search")}</Body3>);
     }
-    return ( <ActivityIndicator size={50} testID="ExploreFlashList.loading" /> );
-  }, [totalResults, t] );
+    return (<ActivityIndicator size={50} testID="ExploreFlashList.loading" />);
+  }, [totalResults, t]);
 
-  const renderEmptyComponent = useCallback( ( ) => (
+  const renderEmptyComponent = useCallback(() => (
     <View className="self-center mt-[150px] p-4">
       {canFetch
         ? (
           renderLoading()
         )
-        : <Body3 className="align-center">{t( "No-results-found-try-different-search" )}</Body3>}
+        : <Body3 className="align-center">{t("No-results-found-try-different-search")}</Body3>}
     </View>
-  ), [canFetch, renderLoading, t] );
+  ), [canFetch, renderLoading, t]);
 
   return layout === "user"
     ? (

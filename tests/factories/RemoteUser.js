@@ -1,6 +1,6 @@
 import { define } from "factoria";
 
-export default define( "RemoteUser", faker => ( {
+export default define("RemoteUser", faker => ({
   name: faker.person.fullName(),
   login: faker.internet.userName(),
   email: faker.internet.email(),
@@ -17,4 +17,4 @@ export default define( "RemoteUser", faker => ( {
   identifications_count: faker.number.int(),
   journal_posts_count: faker.number.int(),
   monthly_supporter: false,
-} ) );
+}));

@@ -13,53 +13,53 @@ import { renderComponent } from "tests/helpers/render";
 //   legacyFakeTimers: true
 // } );
 
-const mockObservation = factory( "LocalObservation", {
+const mockObservation = factory("LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
   time_observed_at: "2023-12-14T21:07:41-09:30",
-  latitude: Number( faker.location.latitude( ) ),
-  longitude: Number( faker.location.longitude( ) ),
-  description: faker.lorem.paragraph( ),
+  latitude: Number(faker.location.latitude()),
+  longitude: Number(faker.location.longitude()),
+  description: faker.lorem.paragraph(),
   quality_grade: "casual",
-} );
+});
 
 const mockObservationWithTaxon = {
   ...mockObservation,
-  taxon: factory( "LocalTaxon" ),
+  taxon: factory("LocalTaxon"),
 };
 
 const baseUrl = `${TILE_URL}/grid/{z}/{x}/{y}.png`;
 
-describe( "MapSection", ( ) => {
-  test( "should display map if user is online", ( ) => {
-    renderComponent( <MapSection observation={mockObservation} /> );
+describe("MapSection", () => {
+  test("should display map if user is online", () => {
+    renderComponent(<MapSection observation={mockObservation} />);
 
-    const map = screen.queryByTestId( "MapView" );
-    expect( map ).toBeTruthy( );
+    const map = screen.queryByTestId("MapView");
+    expect(map).toBeTruthy();
 
-    const noInternet = screen.queryByRole( "image", { name: "wifi-off" } );
-    expect( noInternet ).toBeNull( );
-  } );
+    const noInternet = screen.queryByRole("image", { name: "wifi-off" });
+    expect(noInternet).toBeNull();
+  });
 
-  test( "should show tiles on map for given taxon", ( ) => {
-    renderComponent( <MapSection observation={mockObservationWithTaxon} /> );
+  test("should show tiles on map for given taxon", () => {
+    renderComponent(<MapSection observation={mockObservationWithTaxon} />);
 
-    const map = screen.queryByTestId( "MapView" );
-    expect( map ).toBeTruthy( );
+    const map = screen.queryByTestId("MapView");
+    expect(map).toBeTruthy();
 
-    const tiles = screen.getByTestId( "Map.UrlTile" );
-    expect( tiles ).toBeVisible( );
+    const tiles = screen.getByTestId("Map.UrlTile");
+    expect(tiles).toBeVisible();
     const { urlTemplate } = tiles.props;
-    expect( urlTemplate )
-      .toMatch( new RegExp( `^${baseUrl}.*taxon_id=${mockObservationWithTaxon.taxon.id}` ) );
-  } );
+    expect(urlTemplate)
+      .toMatch(new RegExp(`^${baseUrl}.*taxon_id=${mockObservationWithTaxon.taxon.id}`));
+  });
 
-  test( "should not show tiles for observation with no taxon id", ( ) => {
-    renderComponent( <MapSection observation={mockObservation} /> );
+  test("should not show tiles for observation with no taxon id", () => {
+    renderComponent(<MapSection observation={mockObservation} />);
 
-    const map = screen.queryByTestId( "MapView" );
-    expect( map ).toBeTruthy( );
+    const map = screen.queryByTestId("MapView");
+    expect(map).toBeTruthy();
 
-    const tiles = screen.queryByTestId( "Map.UrlTile" );
-    expect( tiles ).toBeFalsy( );
-  } );
-} );
+    const tiles = screen.queryByTestId("Map.UrlTile");
+    expect(tiles).toBeFalsy();
+  });
+});

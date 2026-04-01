@@ -34,15 +34,15 @@ interface Props {
       };
     };
   };
-  handleSkip: ( ) => void;
+  handleSkip: () => void;
   hideLocationToggleButton: boolean;
   hideSkip?: boolean;
   observers: string[];
   shouldUseEvidenceLocation: boolean;
-  toggleLocation: ( options: { showLocation: boolean } ) => void;
+  toggleLocation: (options: { showLocation: boolean }) => void;
 }
 
-const SuggestionsFooter = ( {
+const SuggestionsFooter = ({
   debugData,
   handleSkip,
   hideLocationToggleButton,
@@ -50,9 +50,9 @@ const SuggestionsFooter = ( {
   observers,
   shouldUseEvidenceLocation,
   toggleLocation,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const { isDebug } = useDebugMode( );
+}: Props) => {
+  const { t } = useTranslation();
+  const { isDebug } = useDebugMode();
 
   return (
     <View className="mb-6">
@@ -62,16 +62,16 @@ const SuggestionsFooter = ( {
             {shouldUseEvidenceLocation
               ? (
                 <Button
-                  text={t( "IGNORE-LOCATION" )}
-                  onPress={( ) => toggleLocation( { showLocation: false } )}
-                  accessibilityLabel={t( "Search-suggestions-without-location" )}
+                  text={t("IGNORE-LOCATION")}
+                  onPress={() => toggleLocation({ showLocation: false })}
+                  accessibilityLabel={t("Search-suggestions-without-location")}
                 />
               )
               : (
                 <Button
-                  text={t( "USE-LOCATION" )}
-                  onPress={( ) => toggleLocation( { showLocation: true } )}
-                  accessibilityLabel={t( "Search-suggestions-with-location" )}
+                  text={t("USE-LOCATION")}
+                  onPress={() => toggleLocation({ showLocation: true })}
+                  accessibilityLabel={t("Search-suggestions-with-location")}
                 />
 
               )}
@@ -84,9 +84,9 @@ const SuggestionsFooter = ( {
           className="underline text-center py-6"
           onPress={handleSkip}
           accessibilityRole="link"
-          accessibilityHint={t( "Navigates-to-observation-edit-screen" )}
+          accessibilityHint={t("Navigates-to-observation-edit-screen")}
         >
-          {t( "Add-an-ID-Later" )}
+          {t("Add-an-ID-Later")}
         </Body1>
       ) }
       {/* eslint-disable i18next/no-literal-string */}
@@ -95,16 +95,16 @@ const SuggestionsFooter = ( {
       { isDebug && (
         <View className="bg-deeppink text-white p-3">
           <Heading4 className="text-white">Diagnostics</Heading4>
-          <Body3 className="text-white">Online fetch status: {JSON.stringify( debugData?.onlineFetchStatus )}</Body3>
-          <Body3 className="text-white">Online fetch status: {JSON.stringify( debugData?.offlineFetchStatus )}</Body3>
-          <Body3 className="text-white">Online suggestions URI: {JSON.stringify( debugData?.selectedPhotoUri )}</Body3>
-          <Body3 className="text-white">Online suggestions updated at: {formatISONoTimezone( debugData?.onlineSuggestionsUpdatedAt )}</Body3>
-          <Body3 className="text-white">Online suggestions timed out: {JSON.stringify( debugData?.timedOut )}</Body3>
-          <Body3 className="text-white">Online suggestions using location: {JSON.stringify( debugData?.shouldUseEvidenceLocation )}</Body3>
-          <Body3 className="text-white">Top suggestion type: {JSON.stringify( debugData?.topSuggestionType )}</Body3>
-          <Body3 className="text-white">Num online suggestions: {JSON.stringify( debugData?.onlineSuggestions?.results.length )}</Body3>
-          <Body3 className="text-white">Using offline suggestions: {JSON.stringify( debugData?.usingOfflineSuggestions )}</Body3>
-          <Body3 className="text-white">Error loading online: {JSON.stringify( debugData?.onlineSuggestionsError )}</Body3>
+          <Body3 className="text-white">Online fetch status: {JSON.stringify(debugData?.onlineFetchStatus)}</Body3>
+          <Body3 className="text-white">Online fetch status: {JSON.stringify(debugData?.offlineFetchStatus)}</Body3>
+          <Body3 className="text-white">Online suggestions URI: {JSON.stringify(debugData?.selectedPhotoUri)}</Body3>
+          <Body3 className="text-white">Online suggestions updated at: {formatISONoTimezone(debugData?.onlineSuggestionsUpdatedAt)}</Body3>
+          <Body3 className="text-white">Online suggestions timed out: {JSON.stringify(debugData?.timedOut)}</Body3>
+          <Body3 className="text-white">Online suggestions using location: {JSON.stringify(debugData?.shouldUseEvidenceLocation)}</Body3>
+          <Body3 className="text-white">Top suggestion type: {JSON.stringify(debugData?.topSuggestionType)}</Body3>
+          <Body3 className="text-white">Num online suggestions: {JSON.stringify(debugData?.onlineSuggestions?.results.length)}</Body3>
+          <Body3 className="text-white">Using offline suggestions: {JSON.stringify(debugData?.usingOfflineSuggestions)}</Body3>
+          <Body3 className="text-white">Error loading online: {JSON.stringify(debugData?.onlineSuggestionsError)}</Body3>
           { debugData?.usingOfflineSuggestions && (
             <View className="mb-3">
               <Body3 className="text-white">Offline Scores</Body3>
@@ -112,12 +112,12 @@ const SuggestionsFooter = ( {
                 <Body4 className="text-white grow">Taxon</Body4>
                 <Body4 className="text-white w-[20%]">Score</Body4>
               </View>
-              { debugData.suggestions?.otherSuggestions?.filter( Boolean ).map( suggestion => (
+              { debugData.suggestions?.otherSuggestions?.filter(Boolean).map(suggestion => (
                 <View key={`sugg-debug-${suggestion.taxon.id}`} className="flex-row">
                   <Body4 className="text-white grow">{suggestion.taxon.name}</Body4>
-                  <Body4 className="text-white w-[20%]">{Number( suggestion.combined_score ).toFixed( 4 )}</Body4>
+                  <Body4 className="text-white w-[20%]">{Number(suggestion.combined_score).toFixed(4)}</Body4>
                 </View>
-              ) )}
+              ))}
             </View>
           )}
           { debugData.onlineSuggestions?.results && (
@@ -128,13 +128,13 @@ const SuggestionsFooter = ( {
                 <Body4 className="text-white w-[20%]">Combined</Body4>
                 <Body4 className="text-white w-[20%]">Vision</Body4>
               </View>
-              { debugData.onlineSuggestions?.results?.filter( Boolean ).map( suggestion => (
+              { debugData.onlineSuggestions?.results?.filter(Boolean).map(suggestion => (
                 <View key={`sugg-debug-${suggestion.taxon.id}`} className="flex-row">
                   <Body4 className="text-white grow">{suggestion.taxon.name}</Body4>
-                  <Body4 className="text-white w-[20%]">{Number( suggestion.combined_score ).toFixed( 4 )}</Body4>
-                  <Body4 className="text-white w-[20%]">{Number( suggestion.vision_score ).toFixed( 4 )}</Body4>
+                  <Body4 className="text-white w-[20%]">{Number(suggestion.combined_score).toFixed(4)}</Body4>
+                  <Body4 className="text-white w-[20%]">{Number(suggestion.vision_score).toFixed(4)}</Body4>
                 </View>
-              ) )}
+              ))}
             </>
           )}
         </View>

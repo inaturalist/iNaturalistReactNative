@@ -16,9 +16,9 @@ const logFileName = `${logFileNamePrefix}.{date-today}.txt`;
 
 export const logFileDirectory = `${RNFS.DocumentDirectoryPath}/logs`;
 
-RNFS.exists( logFileDirectory ).then( exists => ( exists
+RNFS.exists(logFileDirectory).then(exists => (exists
   ? Promise.resolve()
-  : RNFS.mkdir( logFileDirectory ) ) );
+  : RNFS.mkdir(logFileDirectory)));
 
 const sharedConfig = {
   dateFormat: "iso",
@@ -38,26 +38,26 @@ const sharedConfig = {
   },
 };
 
-const baseLog = logger.createLogger( {
+const baseLog = logger.createLogger({
   ...sharedConfig,
   transport: [
     consoleTransport,
     fileAsyncTransport,
     iNatLogstashTransport,
   ],
-} );
+});
 
 // given the general react-native-logs logger with debug(), warn(), etx,
 // add wrappers for debugWithExtra(), etc which provides more intentional
 // log interfaces for the iNatLogstash API `extra` proprty. `iNatLogstashTransport`
 // handles this extra data specially while other transports treat it as any other normal
 // log param.
-export const log = enhanceLoggerWithExtra( baseLog );
+export const log = enhanceLoggerWithExtra(baseLog);
 
-export const logWithoutRemote = logger.createLogger( {
+export const logWithoutRemote = logger.createLogger({
   ...sharedConfig,
   transport: [
     consoleTransport,
     fileAsyncTransport,
   ],
-} );
+});

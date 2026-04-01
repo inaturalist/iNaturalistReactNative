@@ -17,8 +17,8 @@ type Props = {
 }
 
 const showTaxon = taxon => {
-  if ( !taxon ) {
-    return <Text>{t( "Unknown-organism" )}</Text>;
+  if (!taxon) {
+    return <Text>{t("Unknown-organism")}</Text>;
   }
   return (
     <View className="flex-row mx-[15px]">
@@ -27,45 +27,45 @@ const showTaxon = taxon => {
   );
 };
 
-const WithdrawIDSheet = ( {
+const WithdrawIDSheet = ({
   onPressClose,
   updateIdentification,
   taxon,
-}: Props ): Node => {
+}: Props): Node => {
   const buttons = [
     {
-      text: t( "CANCEL" ),
-      onPress: ( ) => {
+      text: t("CANCEL"),
+      onPress: () => {
         onPressClose();
       },
       className: "mx-2",
       testID: "ObsDetail.WithdrawId.cancel",
       accessibilityRole: "button",
-      accessibilityHint: t( "Closes-withdraw-id-sheet" ),
+      accessibilityHint: t("Closes-withdraw-id-sheet"),
       level: "secondary",
     },
     {
-      text: t( "WITHDRAW-ID" ),
-      onPress: ( ) => {
-        updateIdentification( { current: false } );
+      text: t("WITHDRAW-ID"),
+      onPress: () => {
+        updateIdentification({ current: false });
         onPressClose();
       },
       className: "mx-2 grow",
       testID: "ObsDetail.WithdrawId.withdraw",
       accessibilityRole: "button",
-      accessibilityHint: t( "Withdraws-identification" ),
+      accessibilityHint: t("Withdraws-identification"),
       level: "primary",
     },
   ];
   return (
     <BottomSheet
       onPressClose={onPressClose}
-      headerText={t( "WITHDRAW-ID-QUESTION" )}
+      headerText={t("WITHDRAW-ID-QUESTION")}
     >
       <View
         className="mx-[26px] space-y-[11px] my-[15px]"
       >
-        {showTaxon( taxon )}
+        {showTaxon(taxon)}
         <ButtonBar buttonConfiguration={buttons} containerClass="pt-[15px]" />
       </View>
     </BottomSheet>

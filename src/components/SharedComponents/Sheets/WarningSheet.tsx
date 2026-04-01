@@ -22,7 +22,7 @@ interface Props {
   text?: string;
 }
 
-const WarningSheet = ( {
+const WarningSheet = ({
   buttonText,
   buttonType,
   confirm,
@@ -35,7 +35,7 @@ const WarningSheet = ( {
   secondButtonText,
   testID,
   text,
-}: Props ) => {
+}: Props) => {
   const buttons: ButtonConfiguration[] = [
     {
       title: buttonText,
@@ -48,12 +48,12 @@ const WarningSheet = ( {
     },
   ];
 
-  if ( secondButtonText && handleSecondButtonPress ) {
-    buttons.unshift( {
+  if (secondButtonText && handleSecondButtonPress) {
+    buttons.unshift({
       title: secondButtonText,
       isPrimary: false,
       onPress: handleSecondButtonPress,
-    } );
+    });
   }
 
   return (

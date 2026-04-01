@@ -7,7 +7,7 @@ interface Props {
   explore?: boolean;
   layout: "horizontal" | "vertical";
   observation: RealmObservation;
-  onPress: ( ) => void;
+  onPress: () => void;
   progress?: number;
   queued: boolean;
   showObsStatus?: boolean;
@@ -15,7 +15,7 @@ interface Props {
   isSimpleObsStatus?: boolean;
 }
 
-const ObsUploadStatus = ( {
+const ObsUploadStatus = ({
   classNameMargin,
   explore = false,
   onPress,
@@ -26,10 +26,10 @@ const ObsUploadStatus = ( {
   showObsStatus = false,
   white = false,
   isSimpleObsStatus = false,
-}: Props ) => {
-  const showUploadStatus = typeof ( progress ) === "number";
+}: Props) => {
+  const showUploadStatus = typeof (progress) === "number";
   const hideStatus = !showUploadStatus && !showObsStatus && !explore;
-  const showObsStatusOnly = ( !showUploadStatus && showObsStatus ) || explore;
+  const showObsStatusOnly = (!showUploadStatus && showObsStatus) || explore;
 
   const obsStatus = (
     <ObsStatus
@@ -42,11 +42,11 @@ const ObsUploadStatus = ( {
     />
   );
 
-  if ( hideStatus ) {
+  if (hideStatus) {
     return null;
   }
 
-  if ( showObsStatusOnly ) {
+  if (showObsStatusOnly) {
     return obsStatus;
   }
 

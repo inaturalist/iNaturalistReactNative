@@ -5,11 +5,11 @@ import React from "react";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-const DROP_SHADOW = getShadow( );
+const DROP_SHADOW = getShadow();
 
 // Styling the outer element to be the white background wasn't looking right
 // in android, so instead we insert smaller white circle behind the icon
-const SpeciesSeenCheckmark = ( ) => (
+const SpeciesSeenCheckmark = () => (
   <View
     className="rounded-full items-center"
     style={DROP_SHADOW}

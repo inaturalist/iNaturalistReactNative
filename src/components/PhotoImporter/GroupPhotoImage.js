@@ -12,15 +12,15 @@ type Props = {
   style?: Object
 }
 
-const GroupPhotoImage = ( {
+const GroupPhotoImage = ({
   item,
   selectedObservations,
   selectObservationPhotos,
   style,
-}: Props ): Node => {
+}: Props): Node => {
   const firstPhoto = item.photos[0];
-  const isSelected = selectedObservations.includes( item );
-  const handlePress = ( ) => selectObservationPhotos( isSelected, item );
+  const isSelected = selectedObservations.includes(item);
+  const handlePress = () => selectObservationPhotos(isSelected, item);
 
   const source = firstPhoto && { uri: firstPhoto.image.uri };
 

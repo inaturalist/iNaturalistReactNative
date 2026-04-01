@@ -18,18 +18,18 @@ import { useTranslation } from "sharedHooks";
 
 // To start, it contains just what's necessary for the usage in SuggestIDSheet.
 
-const { width } = Dimensions.get( "window" );
+const { width } = Dimensions.get("window");
 
-const styles = StyleSheet.create( {
+const styles = StyleSheet.create({
   marginOnWide: {
     marginHorizontal: width > 500
-      ? ( width - 500 ) / 2
+      ? (width - 500) / 2
       : 0,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     overflow: "hidden",
   },
-} );
+});
 
 // eslint-disable-next-line
 const noHandle = ( ) => <></>;
@@ -38,40 +38,40 @@ interface Props {
   children: React.JSX.Element;
   hidden?: boolean;
   headerText?: string;
-  onPressClose?: ( ) => void;
-  onDismiss?: ( ) => void;
+  onPressClose?: () => void;
+  onDismiss?: () => void;
 }
 
-const BottomSheetV2 = ( {
+const BottomSheetV2 = ({
   children,
   hidden,
   headerText,
   onPressClose,
   onDismiss,
-}: Props ): React.JSX.Element | null => {
-  const { t } = useTranslation( );
-  const sheetRef = useRef<BottomSheetModal>( null );
-  const insets = useSafeAreaInsets( );
+}: Props): React.JSX.Element | null => {
+  const { t } = useTranslation();
+  const sheetRef = useRef<BottomSheetModal>(null);
+  const insets = useSafeAreaInsets();
 
-  const handlePressClose = useCallback( ( ) => {
-    if ( onPressClose ) {
-      onPressClose( );
+  const handlePressClose = useCallback(() => {
+    if (onPressClose) {
+      onPressClose();
     }
-  }, [onPressClose] );
+  }, [onPressClose]);
 
-  const renderBackdrop = ( props: BottomSheetBackdropProps ) => (
+  const renderBackdrop = (props: BottomSheetBackdropProps) => (
     <BottomSheetStandardBackdrop
       props={props}
       onPress={handlePressClose}
     />
   );
 
-  useEffect( ( ) => {
-    if ( hidden ) { return; }
-    sheetRef.current?.present( );
-  }, [hidden] );
+  useEffect(() => {
+    if (hidden) { return; }
+    sheetRef.current?.present();
+  }, [hidden]);
 
-  if ( hidden ) {
+  if (hidden) {
     return null;
   }
 
@@ -113,7 +113,7 @@ const BottomSheetV2 = ( {
             onPress={handlePressClose}
             size={19}
             className="absolute top-3.5 right-3"
-            accessibilityLabel={t( "Close" )}
+            accessibilityLabel={t("Close")}
           />
         </View>
       </BottomSheetScrollView>

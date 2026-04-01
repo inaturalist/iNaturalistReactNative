@@ -13,23 +13,23 @@ interface Props {
   cameraType: string;
 }
 
-const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
-  const opacity = useSharedValue( 0 );
+const FadeInOutView = ({ takingPhoto, cameraType }: Props) => {
+  const opacity = useSharedValue(0);
 
-  useEffect( ( ) => {
-    if ( takingPhoto ) {
+  useEffect(() => {
+    if (takingPhoto) {
       opacity.set(
         withSequence(
-          withTiming( 1, { duration: 100 } ),
-          withTiming( 0, { duration: 100 } ),
+          withTiming(1, { duration: 100 }),
+          withTiming(0, { duration: 100 }),
         ),
       );
     }
-  }, [opacity, takingPhoto] );
+  }, [opacity, takingPhoto]);
 
-  const animatedStyle = useAnimatedStyle( () => ( {
+  const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
-  } ) );
+  }));
 
   return (
     <>
@@ -38,7 +38,7 @@ const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
         className="items-center justify-center bg-black absolute h-full w-full"
         style={animatedStyle}
       />
-      {( takingPhoto && cameraType === "AI" ) && (
+      {(takingPhoto && cameraType === "AI") && (
         <ActivityIndicator
           size={50}
           color={colors.white}

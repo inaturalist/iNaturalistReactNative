@@ -30,12 +30,12 @@ const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >
 let androidReadWritePermissions: AndroidPermission[] = [
   PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION,
 ];
-if ( usesAndroid10Permissions ) {
+if (usesAndroid10Permissions) {
   androidReadWritePermissions = [
     ...androidReadWritePermissions,
     PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
   ];
-} else if ( usesAndroid13Permissions ) {
+} else if (usesAndroid13Permissions) {
   androidReadWritePermissions = [
     ...androidReadWritePermissions,
     PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
@@ -49,7 +49,7 @@ if ( usesAndroid10Permissions ) {
 
 // TODO does this really work for Android above 10?
 let androidWritePermissions: AndroidPermission[] = [];
-if ( usesAndroid10Permissions ) {
+if (usesAndroid10Permissions) {
   androidWritePermissions = [
     ...androidWritePermissions,
     PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
@@ -103,23 +103,23 @@ interface Props extends PropsWithChildren {
 interface MultiResult {
   [permission: string]: PermissionStatus;
 }
-export function permissionResultFromMultiple( multiResults: MultiResult ) {
-  if ( typeof ( multiResults ) !== "object" ) {
+export function permissionResultFromMultiple(multiResults: MultiResult) {
+  if (typeof (multiResults) !== "object") {
     throw new Error(
       "permissionResultFromMultiple received something other than an object. "
       + "Make sure you're using it with checkMultiple and not check",
     );
   }
-  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
+  if (find(multiResults, (permResult, _perm) => permResult === RESULTS.BLOCKED)) {
     return RESULTS.BLOCKED;
   }
-  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.DENIED ) ) {
+  if (find(multiResults, (permResult, _perm) => permResult === RESULTS.DENIED)) {
     return RESULTS.DENIED;
   }
-  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
+  if (find(multiResults, (permResult, _perm) => permResult === RESULTS.UNAVAILABLE)) {
     return RESULTS.UNAVAILABLE;
   }
-  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.LIMITED ) ) {
+  if (find(multiResults, (permResult, _perm) => permResult === RESULTS.LIMITED)) {
     return RESULTS.LIMITED;
   }
   return RESULTS.GRANTED;
@@ -130,7 +130,7 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
 // to grant it if the user hasn't asked not to be bothered again. In the
 // future we might want to extend this to always show a custom view before
 // asking the user for a permission.
-const PermissionGateContainer = ( {
+const PermissionGateContainer = ({
   blockedPrompt,
   body,
   body2,
@@ -150,30 +150,30 @@ const PermissionGateContainer = ( {
   title,
   titleDenied,
   withoutNavigation,
-}: Props ) => {
-  const [result, setResult] = useState<PermissionStatus | null>( null );
-  const [modalShown, setModalShown] = useState( false );
-  const prevAppState = useRef<AppStateStatus>( AppState.currentState );
+}: Props) => {
+  const [result, setResult] = useState<PermissionStatus | null>(null);
+  const [modalShown, setModalShown] = useState(false);
+  const prevAppState = useRef<AppStateStatus>(AppState.currentState);
 
   const navigation = useNavigation();
 
-  const requestPermission = useCallback( async ( ) => {
-    const requestResult = await requestMultiple( permissions );
-    setResult( permissionResultFromMultiple( requestResult ) );
-  }, [permissions] );
+  const requestPermission = useCallback(async () => {
+    const requestResult = await requestMultiple(permissions);
+    setResult(permissionResultFromMultiple(requestResult));
+  }, [permissions]);
 
-  const checkPermission = useCallback( async ( ) => {
-    const checkResult = await checkMultiple( permissions );
-    setResult( permissionResultFromMultiple( checkResult ) );
-  }, [permissions] );
+  const checkPermission = useCallback(async () => {
+    const checkResult = await checkMultiple(permissions);
+    setResult(permissionResultFromMultiple(checkResult));
+  }, [permissions]);
 
-  useEffect( () => {
-    if ( result === null && permissionNeeded ) {
-      checkPermission( );
+  useEffect(() => {
+    if (result === null && permissionNeeded) {
+      checkPermission();
     }
-  }, [checkPermission, result, permissionNeeded] );
+  }, [checkPermission, result, permissionNeeded]);
 
-  useEffect( ( ) => {
+  useEffect(() => {
     if (
       permissionNeeded
       && result !== RESULTS.GRANTED
@@ -181,27 +181,27 @@ const PermissionGateContainer = ( {
       && result !== null
     ) {
       // This is a workaround for the modal not showing after updating to RN0.76
-      const timeout = setTimeout( ( ) => {
-        setModalShown( true );
-      }, 300 );
-      return () => clearTimeout( timeout );
+      const timeout = setTimeout(() => {
+        setModalShown(true);
+      }, 300);
+      return () => clearTimeout(timeout);
     }
     if (
-      ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
+      (result === RESULTS.GRANTED || result === RESULTS.LIMITED)
       && !children
     ) {
-      setModalShown( false );
-      return ( ) => undefined;
+      setModalShown(false);
+      return () => undefined;
     }
-    if ( result === RESULTS.BLOCKED ) {
-      setModalShown( false );
-      return ( ) => undefined;
+    if (result === RESULTS.BLOCKED) {
+      setModalShown(false);
+      return () => undefined;
     }
-    if ( !withoutNavigation ) {
-      const unsubscribe = navigation.addListener( "focus", async () => {
-        await checkPermission( );
-        setModalShown( true );
-      } );
+    if (!withoutNavigation) {
+      const unsubscribe = navigation.addListener("focus", async () => {
+        await checkPermission();
+        setModalShown(true);
+      });
       return unsubscribe;
     }
     return () => undefined;
@@ -212,36 +212,36 @@ const PermissionGateContainer = ( {
     permissionNeeded,
     result,
     withoutNavigation,
-  ] );
+  ]);
 
   // If permission was granted and there are no children to render, we can
   // just hide the modal and do nothing
-  useEffect( ( ) => {
+  useEffect(() => {
     if (
-      ( result === RESULTS.GRANTED || result === RESULTS.LIMITED )
+      (result === RESULTS.GRANTED || result === RESULTS.LIMITED)
       && !children
     ) {
-      setModalShown( false );
+      setModalShown(false);
     }
-  }, [result, children] );
+  }, [result, children]);
 
-  useEffect( ( ) => {
+  useEffect(() => {
     // permission already denied
-    if ( result === RESULTS.BLOCKED ) {
-      setModalShown( true );
+    if (result === RESULTS.BLOCKED) {
+      setModalShown(true);
     }
-  }, [result] );
+  }, [result]);
 
   // If the app just returned to the foreground, check permission again,
   // e.g. when the user leaves to change permission in system settings,
   // then comes back, if permissions were previously blocked, we want to check again
-  useEffect( () => {
-    if ( result !== RESULTS.BLOCKED ) return () => undefined;
+  useEffect(() => {
+    if (result !== RESULTS.BLOCKED) return () => undefined;
     const subscription = AppState.addEventListener(
       "change",
-      async ( nextAppState: AppStateStatus ) => {
+      async (nextAppState: AppStateStatus) => {
         if (
-          prevAppState.current.match( /inactive|background/ )
+          prevAppState.current.match(/inactive|background/)
           && nextAppState === "active"
         ) {
           await checkPermission();
@@ -253,42 +253,42 @@ const PermissionGateContainer = ( {
     return () => {
       subscription?.remove();
     };
-  }, [result, checkPermission] );
+  }, [result, checkPermission]);
 
-  const closeModal = useCallback( ( ) => {
-    setModalShown( false );
-  }, [] );
+  const closeModal = useCallback(() => {
+    setModalShown(false);
+  }, []);
 
-  const onModalHide = useCallback( ( ) => {
-    if ( onModalHideProp ) {
-      onModalHideProp( );
+  const onModalHide = useCallback(() => {
+    if (onModalHideProp) {
+      onModalHideProp();
     }
-    if ( !withoutNavigation ) {
-      if ( navigation.canGoBack() ) {
+    if (!withoutNavigation) {
+      if (navigation.canGoBack()) {
         navigation.goBack();
       } else {
-        navigation.navigate( "TabNavigator", {
+        navigation.navigate("TabNavigator", {
           screen: "ObservationsTab",
           params: { screen: "ObsList" },
-        } );
+        });
       }
     }
   }, [
     navigation,
     onModalHideProp,
     withoutNavigation,
-  ] );
+  ]);
 
   // If the result changes, notify the parent component
-  useEffect( ( ) => {
-    if ( onPermissionDenied && result === RESULTS.DENIED ) {
-      onPermissionDenied( );
-    } else if ( onPermissionGranted && result === RESULTS.GRANTED ) {
-      onPermissionGranted( );
-    } else if ( onPermissionLimited && result === RESULTS.LIMITED ) {
-      onPermissionLimited( );
-    } else if ( onPermissionBlocked && result === RESULTS.BLOCKED ) {
-      onPermissionBlocked( );
+  useEffect(() => {
+    if (onPermissionDenied && result === RESULTS.DENIED) {
+      onPermissionDenied();
+    } else if (onPermissionGranted && result === RESULTS.GRANTED) {
+      onPermissionGranted();
+    } else if (onPermissionLimited && result === RESULTS.LIMITED) {
+      onPermissionLimited();
+    } else if (onPermissionBlocked && result === RESULTS.BLOCKED) {
+      onPermissionBlocked();
     }
   }, [
     onPermissionBlocked,
@@ -296,7 +296,7 @@ const PermissionGateContainer = ( {
     onPermissionGranted,
     onPermissionLimited,
     result,
-  ] );
+  ]);
 
   // If permission granted and children are gated, let the children out
   if (
@@ -309,7 +309,7 @@ const PermissionGateContainer = ( {
     return children;
   }
 
-  if ( !result ) return null;
+  if (!result) return null;
 
   return (
     <Modal

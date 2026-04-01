@@ -16,36 +16,36 @@ type Props = {
   options: Object,
 };
 
-const ContextHeader = ( {
+const ContextHeader = ({
   navigation, route, options,
-}: Props ): Node => {
+}: Props): Node => {
   const insets = useSafeAreaInsets();
 
   const customTitleComponent = typeof options.headerTitle === "function";
   const subtitle = options.headerSubtitle;
 
   const getTitle = () => {
-    if ( options.headerTitle && !customTitleComponent ) {
+    if (options.headerTitle && !customTitleComponent) {
       return options.headerTitle;
     }
 
-    if ( options.title ) {
+    if (options.title) {
       return options.title;
     }
 
-    return getHeaderTitle( options, route.name );
+    return getHeaderTitle(options, route.name);
   };
 
-  const handleBackNavigation = ( ) => {
-    if ( navigation.canGoBack( ) ) {
-      navigation.goBack( );
+  const handleBackNavigation = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
     } else {
-      navigation.navigate( "TabNavigator", {
+      navigation.navigate("TabNavigator", {
         screen: "ObservationsTab",
         params: {
           screen: "ObsList",
         },
-      } );
+      });
     }
   };
 
@@ -71,7 +71,7 @@ const ContextHeader = ( {
       className="bg-white"
       style={{
         ...options.headerStyle,
-        ...( options.headerShadowVisible && dropShadow ),
+        ...(options.headerShadowVisible && dropShadow),
         paddingTop: insets.top,
       }}
     >

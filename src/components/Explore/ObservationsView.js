@@ -35,9 +35,9 @@ type Props = {
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
 
-const { width: defaultScreenWidth } = Dimensions.get( "screen" );
+const { width: defaultScreenWidth } = Dimensions.get("screen");
 
-const ObservationsView = ( {
+const ObservationsView = ({
   canFetch,
   layout,
   queryParams,
@@ -45,22 +45,22 @@ const ObservationsView = ( {
   hasLocationPermissions,
   renderLocationPermissionsGate,
   requestLocationPermissions,
-}: Props ): Node => {
-  const currentUser = useCurrentUser( );
+}: Props): Node => {
+  const currentUser = useCurrentUser();
   const { state } = useExplore();
   const { excludeUser } = state;
 
   // get total count of current users obs
   const { data: currentUserObs } = useQuery(
     ["fetchCurrentUserObservations"],
-    ( ) => searchObservations( {
+    () => searchObservations({
       user_id: currentUser?.id,
       ...queryParams,
       fields: {
       },
-    } ),
+    }),
     {
-      enabled: ( !!currentUser && !!excludeUser ),
+      enabled: (!!currentUser && !!excludeUser),
     },
   );
 
@@ -72,10 +72,10 @@ const ObservationsView = ( {
     totalBounds,
     totalResults,
     isLoading,
-  } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
+  } = useInfiniteExploreScroll({ params: queryParams, enabled: canFetch });
 
   const curUserObsCount = currentUserObs?.total_results;
-  const totalCount = ( excludeUser && currentUserObs && observations.length > 0 )
+  const totalCount = (excludeUser && currentUserObs && observations.length > 0)
     ? totalResults - curUserObsCount
     : totalResults;
 
@@ -84,15 +84,15 @@ const ObservationsView = ( {
     isTablet,
     screenHeight,
     screenWidth,
-  } = useDeviceOrientation( );
+  } = useDeviceOrientation();
 
-  useEffect( ( ) => {
-    handleUpdateCount( "observations", totalCount );
-  }, [handleUpdateCount, totalCount] );
+  useEffect(() => {
+    handleUpdateCount("observations", totalCount);
+  }, [handleUpdateCount, totalCount]);
 
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useNetInfo();
 
-  if ( !layout ) { return null; }
+  if (!layout) { return null; }
 
   // We're rendering the map for grid and list views because we need the map
   // to zoom to the nearby location and calculate the query bounding box even
@@ -103,9 +103,9 @@ const ObservationsView = ( {
   // on screen otherwise. This also prevents both the list and the map from
   // re-rendering every time you leave Explore and come back
   let containerWidth = defaultScreenWidth;
-  if ( isTablet ) {
+  if (isTablet) {
     containerWidth = screenWidth;
-  } else if ( screenWidth ) {
+  } else if (screenWidth) {
     containerWidth = isLandscapeMode
       ? screenHeight
       : screenWidth;

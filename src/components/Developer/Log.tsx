@@ -18,8 +18,8 @@ import { useLogPreview } from "./logManagementHelpers";
 
 const Log = () => {
   const { params } = useRoute();
-  const logPreview = useLogPreview( { legacy: !!params?.isLegacyLogs } );
-  if ( !logPreview ) {
+  const logPreview = useLogPreview({ legacy: !!params?.isLegacyLogs });
+  if (!logPreview) {
     return null;
   }
 

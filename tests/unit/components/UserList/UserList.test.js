@@ -4,22 +4,22 @@ import React from "react";
 import factory from "tests/factory";
 
 const mockFollowers = [
-  factory( "RemoteUser", {
+  factory("RemoteUser", {
     observation_count: 35,
-  } ),
+  }),
 ];
 
-describe( "UserList", () => {
-  it( "should render first follower in followers list", async ( ) => {
-    render( <UserList users={mockFollowers} /> );
-    const follower = await screen.findByText( mockFollowers[0].login );
-    expect( follower ).toBeVisible();
-  } );
+describe("UserList", () => {
+  it("should render first follower in followers list", async () => {
+    render(<UserList users={mockFollowers} />);
+    const follower = await screen.findByText(mockFollowers[0].login);
+    expect(follower).toBeVisible();
+  });
 
-  it( "should render observation count of first follower", async ( ) => {
-    render( <UserList users={mockFollowers} /> );
+  it("should render observation count of first follower", async () => {
+    render(<UserList users={mockFollowers} />);
     const observationCount = await screen
-      .findByText( `${mockFollowers[0].observation_count} Observations` );
-    expect( observationCount ).toBeVisible();
-  } );
-} );
+      .findByText(`${mockFollowers[0].observation_count} Observations`);
+    expect(observationCount).toBeVisible();
+  });
+});

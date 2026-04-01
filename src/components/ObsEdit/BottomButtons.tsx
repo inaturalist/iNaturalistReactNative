@@ -8,10 +8,10 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: -3,
   shadowOpacity: 0.2,
-} );
+});
 
 export const UPLOAD = "upload";
 export const SAVE = "save";
@@ -22,7 +22,7 @@ export type ButtonTypeNonNull = typeof SAVE | typeof UPLOAD;
 interface Props {
   buttonPressed: ButtonType;
   canSaveOnly: boolean;
-  handlePress: ( type: ButtonTypeNonNull ) => void;
+  handlePress: (type: ButtonTypeNonNull) => void;
   loading: boolean;
   showFocusedChangesButton: boolean;
   showFocusedUploadButton: boolean;
@@ -30,7 +30,7 @@ interface Props {
   wasSynced: boolean;
 }
 
-const BottomButtons = ( {
+const BottomButtons = ({
   buttonPressed,
   canSaveOnly,
   handlePress,
@@ -39,8 +39,8 @@ const BottomButtons = ( {
   showFocusedUploadButton,
   showHalfOpacity,
   wasSynced,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   const isSaving = buttonPressed === SAVE && loading;
   const disabled = buttonPressed !== null;
@@ -48,9 +48,9 @@ const BottomButtons = ( {
   const saveChangesButton = (
     <Button
       className="px-[25px]"
-      onPress={( ) => handlePress( SAVE )}
+      onPress={() => handlePress(SAVE)}
       testID="ObsEdit.saveChangesButton"
-      text={t( "SAVE-CHANGES" )}
+      text={t("SAVE-CHANGES")}
       level={showFocusedChangesButton
         ? "focus"
         : "neutral"}
@@ -60,8 +60,8 @@ const BottomButtons = ( {
   );
 
   const saveButton = {
-    title: t( "SAVE" ),
-    onPress: ( ) => handlePress( SAVE ),
+    title: t("SAVE"),
+    onPress: () => handlePress(SAVE),
     isPrimary: false,
     testID: "ObsEdit.saveButton",
     disabled,
@@ -71,8 +71,8 @@ const BottomButtons = ( {
   };
 
   const uploadButton = {
-    title: t( "UPLOAD-NOW" ),
-    onPress: ( ) => handlePress( UPLOAD ),
+    title: t("UPLOAD-NOW"),
+    onPress: () => handlePress(UPLOAD),
     isPrimary: true,
     testID: "ObsEdit.uploadButton",
     loading: buttonPressed === UPLOAD && loading,
@@ -85,8 +85,8 @@ const BottomButtons = ( {
 
   const buttonConfiguration = [saveButton, uploadButton];
 
-  const renderButtons = ( ) => {
-    if ( canSaveOnly ) {
+  const renderButtons = () => {
+    if (canSaveOnly) {
       return (
         <ButtonBar
           buttonConfiguration={[{ ...saveButton, className: "grow" }]}
@@ -94,7 +94,7 @@ const BottomButtons = ( {
         />
       );
     }
-    if ( wasSynced ) {
+    if (wasSynced) {
       return (
         <ButtonBar>
           {saveChangesButton}
@@ -108,12 +108,12 @@ const BottomButtons = ( {
 
   return (
     <View
-      className={classnames( "bg-white", {
+      className={classnames("bg-white", {
         "opacity-50": showHalfOpacity,
-      } )}
+      })}
       style={DROP_SHADOW}
     >
-      { renderButtons( ) }
+      { renderButtons() }
     </View>
   );
 };

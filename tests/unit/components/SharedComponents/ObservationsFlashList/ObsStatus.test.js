@@ -6,40 +6,40 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockObservation = factory( "LocalObservation", {
+const mockObservation = factory("LocalObservation", {
   identifications: [
-    factory( "LocalIdentification", {
+    factory("LocalIdentification", {
       current: true,
-    } ),
-    factory( "LocalIdentification", {
+    }),
+    factory("LocalIdentification", {
       current: false,
-    } ),
+    }),
   ],
   comments: [],
-} );
+});
 
-describe( "ObsStatus", () => {
-  it( "displays count for current ids, not withdrawn ids", () => {
+describe("ObsStatus", () => {
+  it("displays count for current ids, not withdrawn ids", () => {
     renderComponent(
       <ObsStatus
         observation={mockObservation}
       />,
     );
 
-    const idCount = screen.getByText( /1/ );
+    const idCount = screen.getByText(/1/);
 
-    expect( idCount ).toBeVisible( );
-  } );
+    expect(idCount).toBeVisible();
+  });
 
-  it( "displays comment count", () => {
+  it("displays comment count", () => {
     renderComponent(
       <ObsStatus
         observation={mockObservation}
       />,
     );
 
-    const commentCount = screen.getByText( /0/ );
+    const commentCount = screen.getByText(/0/);
 
-    expect( commentCount ).toBeVisible( );
-  } );
-} );
+    expect(commentCount).toBeVisible();
+  });
+});

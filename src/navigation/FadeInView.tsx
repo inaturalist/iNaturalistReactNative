@@ -12,19 +12,19 @@ interface Props {
   children: React.JSX.Element;
 }
 
-const FadeInView = ( { children }: Props ) => {
-  const opacity = useSharedValue( 0 );
+const FadeInView = ({ children }: Props) => {
+  const opacity = useSharedValue(0);
 
-  useFocusEffect( () => {
-    opacity.set( withTiming( 1, { duration: 250 } ) );
+  useFocusEffect(() => {
+    opacity.set(withTiming(1, { duration: 250 }));
     return () => {
-      opacity.set( withTiming( 0, { duration: 250 } ) );
+      opacity.set(withTiming(0, { duration: 250 }));
     };
-  } );
+  });
 
-  const animatedStyle = useAnimatedStyle( ( ) => ( {
+  const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
-  } ) );
+  }));
 
   return (
     <Animated.View

@@ -56,15 +56,15 @@ class FlashListPerformanceTracker {
   }
 
   markItemsVisible(): void {
-    if ( this.itemsVisibleStartTime === 0 ) {
+    if (this.itemsVisibleStartTime === 0) {
       this.itemsVisibleStartTime = Date.now();
       this.itemsVisibleDuration = this.itemsVisibleStartTime - this.screenLoadTime;
     }
   }
 
-  beginScrollEvent( y: number ): void {
+  beginScrollEvent(y: number): void {
     // Only one scroll event can be tracked at a time
-    if ( !this.currentScrollEvent ) {
+    if (!this.currentScrollEvent) {
       this.currentScrollEvent = {
         startTime: Date.now(),
         endTime: 0,
@@ -77,15 +77,15 @@ class FlashListPerformanceTracker {
     }
   }
 
-  endScrollEvent( y: number ): void {
-    if ( this.currentScrollEvent ) {
+  endScrollEvent(y: number): void {
+    if (this.currentScrollEvent) {
       const now = Date.now();
       this.currentScrollEvent.endTime = now;
       this.currentScrollEvent.duration = now - this.currentScrollEvent.startTime;
       this.currentScrollEvent.endY = y;
-      this.currentScrollEvent.scrollDistance = Math.abs( y - this.currentScrollEvent.startY );
+      this.currentScrollEvent.scrollDistance = Math.abs(y - this.currentScrollEvent.startY);
 
-      this.scrollEvents.push( this.currentScrollEvent );
+      this.scrollEvents.push(this.currentScrollEvent);
       this.currentScrollEvent = null;
     }
   }
@@ -94,24 +94,24 @@ class FlashListPerformanceTracker {
     this.fetchStartTime = Date.now();
   }
 
-  endDataFetch( itemsCount: number ): void {
-    if ( this.fetchStartTime > 0 ) {
+  endDataFetch(itemsCount: number): void {
+    if (this.fetchStartTime > 0) {
       const endTime = Date.now();
       const fetchDuration = Date.now() - this.fetchStartTime;
-      this.fetchEvents.push( {
+      this.fetchEvents.push({
         startTime: this.fetchStartTime,
         endTime,
         duration: fetchDuration,
         itemsCount,
-      } );
+      });
 
       this.persistentMetrics.lastFetchTime = fetchDuration;
       this.persistentMetrics.lastFetchTimestamp = endTime;
 
       this.persistentMetrics.fetchCount += 1;
       this.persistentMetrics.avgFetchTime
-        = ( ( this.persistentMetrics.avgFetchTime
-          * ( this.persistentMetrics.fetchCount - 1 ) ) + fetchDuration )
+        = ((this.persistentMetrics.avgFetchTime
+          * (this.persistentMetrics.fetchCount - 1)) + fetchDuration)
         / this.persistentMetrics.fetchCount;
 
       this.lastFetchItemCount = itemsCount;
@@ -121,7 +121,7 @@ class FlashListPerformanceTracker {
   }
 
   getLastScrollMetrics() {
-    if ( this.scrollEvents.length === 0 ) {
+    if (this.scrollEvents.length === 0) {
       return null;
     }
     return this.scrollEvents[this.scrollEvents.length - 1];
@@ -129,15 +129,15 @@ class FlashListPerformanceTracker {
 
   getAverageFetchTime() {
     const currentSessionAvg = this.fetchEvents.length > 0
-      ? Math.round( this.fetchEvents.reduce( ( sum, event ) => sum + event.duration, 0 )
-      / this.fetchEvents.length )
+      ? Math.round(this.fetchEvents.reduce((sum, event) => sum + event.duration, 0)
+      / this.fetchEvents.length)
       : 0;
 
-    return Math.max( currentSessionAvg, Math.round( this.persistentMetrics.avgFetchTime ) );
+    return Math.max(currentSessionAvg, Math.round(this.persistentMetrics.avgFetchTime));
   }
 
   getLastFetchTime(): number | null {
-    if ( this.fetchEvents.length > 0 ) {
+    if (this.fetchEvents.length > 0) {
       return this.fetchEvents[this.fetchEvents.length - 1].duration;
     }
 
@@ -153,14 +153,14 @@ class FlashListPerformanceTracker {
     lastFetchTime: number | null;
     } {
     const avg = this.scrollEvents.length > 0
-      ? this.scrollEvents.reduce( ( sum, event ) => sum + event.duration, 0 )
+      ? this.scrollEvents.reduce((sum, event) => sum + event.duration, 0)
         / this.scrollEvents.length
       : 0;
 
     return {
       itemsVisibleTime: this.itemsVisibleDuration,
       scrollEvents: this.scrollEvents.length,
-      avgScrollDuration: Math.round( avg ),
+      avgScrollDuration: Math.round(avg),
       avgFetchTime: this.getAverageFetchTime(),
       lastFetchTime: this.getLastFetchTime(),
       totalFetches: this.fetchEvents.length

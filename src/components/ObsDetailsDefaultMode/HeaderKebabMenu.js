@@ -19,22 +19,22 @@ type Props = {
   subscriptions: Object
 }
 
-const HeaderKebabMenu = ( {
+const HeaderKebabMenu = ({
   observationId,
   uuid,
   refetchSubscriptions,
   subscriptions,
-}: Props ): Node => {
-  const currentUser = useCurrentUser( );
-  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
+}: Props): Node => {
+  const currentUser = useCurrentUser();
+  const [kebabMenuVisible, setKebabMenuVisible] = useState(false);
 
-  const url = `${observationsUrl}/${observationId?.toString( )}`;
+  const url = `${observationsUrl}/${observationId?.toString()}`;
   const sharingOptions = {
     url: "",
     message: "",
   };
 
-  if ( Platform.OS === "ios" ) {
+  if (Platform.OS === "ios") {
     sharingOptions.url = url;
   } else {
     sharingOptions.message = url;
@@ -42,34 +42,34 @@ const HeaderKebabMenu = ( {
 
   const isSubscribed = subscriptions?.length > 0;
 
-  const handleShare = async ( ) => {
-    setKebabMenuVisible( false );
+  const handleShare = async () => {
+    setKebabMenuVisible(false);
     try {
-      return await Share.share( sharingOptions );
-    } catch ( error ) {
-      Alert.alert( error.message );
+      return await Share.share(sharingOptions);
+    } catch (error) {
+      Alert.alert(error.message);
       return null;
     }
   };
 
   const { mutate: toggleSubscriptionMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => createSubscription( params, optsWithAuth ),
+    (params, optsWithAuth) => createSubscription(params, optsWithAuth),
     {
       onSuccess: () => {
         refetchSubscriptions();
       },
       onError: error => {
-        Alert.alert( error.message );
+        Alert.alert(error.message);
       },
     },
   );
 
-  const toggleSubscriptionOnPress = async ( ) => {
-    setKebabMenuVisible( false );
+  const toggleSubscriptionOnPress = async () => {
+    setKebabMenuVisible(false);
     try {
-      return await toggleSubscriptionMutate( { uuid } );
-    } catch ( error ) {
-      Alert.alert( error.message );
+      return await toggleSubscriptionMutate({ uuid });
+    } catch (error) {
+      Alert.alert(error.message);
       return null;
     }
   };
@@ -78,22 +78,22 @@ const HeaderKebabMenu = ( {
     <KebabMenu
       visible={kebabMenuVisible}
       setVisible={setKebabMenuVisible}
-      accessibilityLabel={t( "Observation-options" )}
-      accessibilityHint={t( "Show-observation-options" )}
+      accessibilityLabel={t("Observation-options")}
+      accessibilityHint={t("Show-observation-options")}
       large
     >
       <KebabMenu.Item
         isFirst
         onPress={handleShare}
-        title={t( "Share" )}
+        title={t("Share")}
         testID="MenuItem.Share"
       />
-      {!!currentUser && ( isSubscribed
+      {!!currentUser && (isSubscribed
         ? (
           <KebabMenu.Item
             isFirst
             onPress={toggleSubscriptionOnPress}
-            title={t( "Ignore-notifications" )}
+            title={t("Ignore-notifications")}
             testID="MenuItem.IgnoreNotifications"
           />
         )
@@ -101,10 +101,10 @@ const HeaderKebabMenu = ( {
           <KebabMenu.Item
             isFirst
             onPress={toggleSubscriptionOnPress}
-            title={t( "Enable-notifications" )}
+            title={t("Enable-notifications")}
             testID="MenuItem.EnableNotifications"
           />
-        ) )}
+        ))}
     </KebabMenu>
   );
 };

@@ -45,38 +45,38 @@ type Props = {
   setSelectedMediaIndex: Function
 }
 
-const MainMediaDisplay = ( {
+const MainMediaDisplay = ({
   autoPlaySound,
   editable,
   horizontalScroll,
-  onDeletePhoto = ( ) => undefined,
-  onDeleteSound = ( ) => undefined,
-  onClose = ( ) => undefined,
+  onDeletePhoto = () => undefined,
+  onDeleteSound = () => undefined,
+  onClose = () => undefined,
   photos,
   sounds = [],
   selectedMediaIndex,
   setSelectedMediaIndex,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
   const panRef = useRef();
   const listRef = useRef();
-  const { screenWidth } = useDeviceOrientation( );
-  const [displayHeight, setDisplayHeight] = useState( 0 );
-  const [zooming, setZooming] = useState( false );
+  const { screenWidth } = useDeviceOrientation();
+  const [displayHeight, setDisplayHeight] = useState(0);
+  const [zooming, setZooming] = useState(false);
   const atFirstItem = selectedMediaIndex === 0;
-  const items = useMemo( ( ) => ( [
-    ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
-    ...sounds.map( sound => ( { ...sound, type: "sound" } ) ),
-  ] ), [photos, sounds] );
+  const items = useMemo(() => ([
+    ...photos.map(photo => ({ ...photo, type: "photo" })),
+    ...sounds.map(sound => ({ ...sound, type: "sound" })),
+  ]), [photos, sounds]);
   const atLastItem = selectedMediaIndex === items.length - 1;
 
   // t changes a lot, but these strings don't, so using them as useCallback
   // dependencies keeps that method from getting redefined a lot
-  const deletePhotoLabel = t( "Delete-photo" );
-  const deleteSoundLabel = t( "Delete-sound" );
+  const deletePhotoLabel = t("Delete-photo");
+  const deleteSoundLabel = t("Delete-sound");
 
-  const renderPhoto = useCallback( photo => {
-    const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
+  const renderPhoto = useCallback(photo => {
+    const uri = Photo.displayLocalOrRemoteLargePhoto(photo);
     const hasAttribution = photo?.attribution;
     return (
       <View>
@@ -90,8 +90,8 @@ const MainMediaDisplay = ( {
             ? (
               <View className="absolute bottom-4 right-4">
                 <TransparentCircleButton
-                  onPress={( ) => onDeletePhoto(
-                    Photo.getLocalPhotoUri( photo.localFilePath )
+                  onPress={() => onDeletePhoto(
+                    Photo.getLocalPhotoUri(photo.localFilePath)
                     || photo.url,
                   )}
                   icon="trash-outline"
@@ -118,9 +118,9 @@ const MainMediaDisplay = ( {
     editable,
     onDeletePhoto,
     selectedMediaIndex,
-  ] );
+  ]);
 
-  const renderSound = useCallback( sound => (
+  const renderSound = useCallback(sound => (
     <View
       className="justify-center items-center"
       style={{
@@ -132,13 +132,13 @@ const MainMediaDisplay = ( {
         autoPlay={autoPlaySound}
         sizeClass="h-72 w-screen"
         sound={sound}
-        isVisible={items.indexOf( sound ) === selectedMediaIndex}
+        isVisible={items.indexOf(sound) === selectedMediaIndex}
       />
       {
         editable && (
           <View className="absolute bottom-4 right-4">
             <TransparentCircleButton
-              onPress={( ) => onDeleteSound( sound.file_url )}
+              onPress={() => onDeleteSound(sound.file_url)}
               icon="trash-outline"
               color={colors.white}
               accessibilityLabel={deleteSoundLabel}
@@ -156,35 +156,35 @@ const MainMediaDisplay = ( {
     onDeleteSound,
     screenWidth,
     selectedMediaIndex,
-  ] );
+  ]);
 
-  const renderItem = useCallback( ( { item } ) => (
+  const renderItem = useCallback(({ item }) => (
     item.type === "photo"
-      ? renderPhoto( item )
-      : renderSound( item )
+      ? renderPhoto(item)
+      : renderSound(item)
   ), [
     renderPhoto,
     renderSound,
-  ] );
+  ]);
 
   // need getItemLayout for setting initial scroll index
-  const getItemLayout = useCallback( ( data, idx ) => ( {
+  const getItemLayout = useCallback((data, idx) => ({
     length: screenWidth,
     offset: screenWidth * idx,
     index: idx,
-  } ), [screenWidth] );
+  }), [screenWidth]);
 
-  const handleScrollLeft = useCallback( index => {
-    if ( atFirstItem ) { return; }
-    setSelectedMediaIndex( index );
-  }, [atFirstItem, setSelectedMediaIndex] );
+  const handleScrollLeft = useCallback(index => {
+    if (atFirstItem) { return; }
+    setSelectedMediaIndex(index);
+  }, [atFirstItem, setSelectedMediaIndex]);
 
-  const handleScrollRight = useCallback( index => {
-    if ( atLastItem ) { return; }
-    setSelectedMediaIndex( index );
-  }, [atLastItem, setSelectedMediaIndex] );
+  const handleScrollRight = useCallback(index => {
+    if (atLastItem) { return; }
+    setSelectedMediaIndex(index);
+  }, [atLastItem, setSelectedMediaIndex]);
 
-  const handleScrollEndDrag = useCallback( e => {
+  const handleScrollEndDrag = useCallback(e => {
     const { contentOffset, layoutMeasurement } = e.nativeEvent;
     const { x } = contentOffset;
 
@@ -192,36 +192,36 @@ const MainMediaDisplay = ( {
 
     // https://gist.github.com/dozsolti/6d01d0f96d9abced3450a2e6149a2bc3?permalink_comment_id=4107663#gistcomment-4107663
     const index = Math.floor(
-      Math.floor( x ) / Math.floor( layoutMeasurement.width ),
+      Math.floor(x) / Math.floor(layoutMeasurement.width),
     );
 
-    if ( x > currentOffset ) {
-      handleScrollRight( index );
-    } else if ( x < currentOffset ) {
-      handleScrollLeft( index );
+    if (x > currentOffset) {
+      handleScrollRight(index);
+    } else if (x < currentOffset) {
+      handleScrollLeft(index);
     }
   }, [
     handleScrollLeft,
     handleScrollRight,
     screenWidth,
     selectedMediaIndex,
-  ] );
+  ]);
 
-  const onGestureEvent = useCallback( event => {
+  const onGestureEvent = useCallback(event => {
     const { translationY, velocityY } = event.nativeEvent;
 
-    if ( translationY > 50 && velocityY > 500 ) {
+    if (translationY > 50 && velocityY > 500) {
       // Close media viewer on swipe up
       onClose();
     }
-  }, [onClose] );
+  }, [onClose]);
 
   return (
     <View
       className="flex-1"
       onLayout={event => {
         const { height } = event.nativeEvent.layout;
-        setDisplayHeight( height );
+        setDisplayHeight(height);
       }}
     >
       <GestureHandlerRootView>

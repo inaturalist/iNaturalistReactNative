@@ -8,10 +8,10 @@ import React from "react";
 
 interface Props {
   props: BottomSheetBackdropProps;
-  onPress: ( ) => void;
+  onPress: () => void;
 }
 
-const BottomSheetStandardBackdrop = ( { props, onPress }: Props ) => (
+const BottomSheetStandardBackdrop = ({ props, onPress }: Props) => (
   <BottomSheetBackdrop
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}

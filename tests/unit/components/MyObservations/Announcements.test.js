@@ -22,15 +22,15 @@ const mockDismissibleAnnouncement = {
   placement: "mobile/home",
 };
 
-jest.mock( "inaturalistjs", () => ( {
+jest.mock("inaturalistjs", () => ({
   __esModule: true,
   default: {
     announcements: {
-      search: jest.fn( () => Promise.resolve( {} ) ),
-      dismiss: jest.fn( () => Promise.resolve( {} ) ),
+      search: jest.fn(() => Promise.resolve({})),
+      dismiss: jest.fn(() => Promise.resolve({})),
     },
   },
-} ) );
+}));
 
 const mockUser = {
   id: 1,
@@ -46,119 +46,119 @@ const wrappedAnnouncementHtml = body => `
   </html>
 `;
 
-jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+jest.mock("sharedHooks/useCurrentUser", () => ({
   __esModule: true,
-  default: ( ) => mockUser,
-} ) );
+  default: () => mockUser,
+}));
 
 const containerID = "announcements-container";
 
-beforeAll( ( ) => {
-  jest.useFakeTimers( );
-} );
+beforeAll(() => {
+  jest.useFakeTimers();
+});
 
-describe( "Announcements", () => {
-  beforeEach( ( ) => {
-    inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {
+describe("Announcements", () => {
+  beforeEach(() => {
+    inaturalistjs.announcements.search.mockReturnValue(Promise.resolve({
       total_results: 0,
       results: [],
-    } ) );
-  } );
+    }));
+  });
 
-  test( "should call inaturalistjs with locale as param", async () => {
-    renderComponent( <Announcements isConnected /> );
-    await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalledWith(
-      expect.objectContaining( { locale: "en" } ),
+  test("should call inaturalistjs with locale as param", async () => {
+    renderComponent(<Announcements isConnected />);
+    await waitFor(() => expect(inaturalistjs.announcements.search).toHaveBeenCalledWith(
+      expect.objectContaining({ locale: "en" }),
       expect.anything(),
-    ) );
-  } );
+    ));
+  });
 
-  test( "should not render without announcements", async () => {
-    renderComponent( <Announcements isConnected /> );
+  test("should not render without announcements", async () => {
+    renderComponent(<Announcements isConnected />);
 
-    await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
+    await waitFor(() => expect(inaturalistjs.announcements.search).toHaveBeenCalled());
 
-    const container = screen.queryByTestId( containerID );
-    expect( container ).toBeNull();
-  } );
+    const container = screen.queryByTestId(containerID);
+    expect(container).toBeNull();
+  });
 
-  describe( "with announcement", () => {
-    beforeEach( ( ) => {
-      inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {
+  describe("with announcement", () => {
+    beforeEach(() => {
+      inaturalistjs.announcements.search.mockReturnValue(Promise.resolve({
         total_results: 1,
         results: [mockAnnouncement],
-      } ) );
-    } );
+      }));
+    });
 
-    test( "should render correctly", async () => {
-      renderComponent( <Announcements isConnected /> );
+    test("should render correctly", async () => {
+      renderComponent(<Announcements isConnected />);
 
-      await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
+      await waitFor(() => expect(inaturalistjs.announcements.search).toHaveBeenCalled());
 
-      const container = await screen.findByTestId( containerID );
-      expect( container ).toBeTruthy();
-    } );
+      const container = await screen.findByTestId(containerID);
+      expect(container).toBeTruthy();
+    });
 
-    test( "should show body text", async () => {
-      renderComponent( <Announcements isConnected /> );
+    test("should show body text", async () => {
+      renderComponent(<Announcements isConnected />);
 
-      await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
+      await waitFor(() => expect(inaturalistjs.announcements.search).toHaveBeenCalled());
 
-      const webview = await screen.findByTestId( "announcements-webview" );
-      expect( webview ).toBeTruthy();
-      expect( webview.props.source ).toStrictEqual( {
-        html: wrappedAnnouncementHtml( mockAnnouncement.body ),
-      } );
-    } );
+      const webview = await screen.findByTestId("announcements-webview");
+      expect(webview).toBeTruthy();
+      expect(webview.props.source).toStrictEqual({
+        html: wrappedAnnouncementHtml(mockAnnouncement.body),
+      });
+    });
 
-    test( "should not show dismiss button", async () => {
-      renderComponent( <Announcements isConnected /> );
+    test("should not show dismiss button", async () => {
+      renderComponent(<Announcements isConnected />);
 
-      await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
+      await waitFor(() => expect(inaturalistjs.announcements.search).toHaveBeenCalled());
 
-      const button = screen.queryByLabelText( "Dismiss announcement" );
-      expect( button ).toBeNull();
-    } );
-  } );
+      const button = screen.queryByLabelText("Dismiss announcement");
+      expect(button).toBeNull();
+    });
+  });
 
-  describe( "with dismissible announcement", () => {
-    beforeEach( ( ) => {
-      inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {
+  describe("with dismissible announcement", () => {
+    beforeEach(() => {
+      inaturalistjs.announcements.search.mockReturnValue(Promise.resolve({
         total_results: 1,
         results: [mockDismissibleAnnouncement],
-      } ) );
-    } );
+      }));
+    });
 
-    test( "should show dismiss button", async () => {
-      renderComponent( <Announcements isConnected /> );
+    test("should show dismiss button", async () => {
+      renderComponent(<Announcements isConnected />);
 
-      await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
+      await waitFor(() => expect(inaturalistjs.announcements.search).toHaveBeenCalled());
 
-      const button = await screen.findByLabelText( "Dismiss announcement" );
-      expect( button ).toBeTruthy();
-    } );
-  } );
+      const button = await screen.findByLabelText("Dismiss announcement");
+      expect(button).toBeTruthy();
+    });
+  });
 
-  describe( "with multiple announcements", () => {
-    beforeEach( ( ) => {
-      inaturalistjs.announcements.search.mockReturnValue( Promise.resolve( {
+  describe("with multiple announcements", () => {
+    beforeEach(() => {
+      inaturalistjs.announcements.search.mockReturnValue(Promise.resolve({
         total_results: 2,
         // Oldest last here
         results: [mockDismissibleAnnouncement, mockAnnouncement],
-      } ) );
-    } );
+      }));
+    });
 
-    test( "show announcement with oldest start date", async () => {
-      renderComponent( <Announcements isConnected /> );
+    test("show announcement with oldest start date", async () => {
+      renderComponent(<Announcements isConnected />);
 
-      await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
+      await waitFor(() => expect(inaturalistjs.announcements.search).toHaveBeenCalled());
 
       // Test for oldest announcement
-      const webview = await screen.findByTestId( "announcements-webview" );
-      expect( webview ).toBeTruthy();
-      expect( webview.props.source ).toStrictEqual( {
-        html: wrappedAnnouncementHtml( mockAnnouncement.body ),
-      } );
-    } );
-  } );
-} );
+      const webview = await screen.findByTestId("announcements-webview");
+      expect(webview).toBeTruthy();
+      expect(webview.props.source).toStrictEqual({
+        html: wrappedAnnouncementHtml(mockAnnouncement.body),
+      });
+    });
+  });
+});

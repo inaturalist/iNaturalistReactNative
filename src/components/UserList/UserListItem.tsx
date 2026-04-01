@@ -14,7 +14,7 @@ type IconVariant = "mention" | "medium";
 interface Props {
   item: object;
   countText: string;
-  onPress?: ( ) => void;
+  onPress?: () => void;
   accessibilityLabel?: string;
   pressable?: boolean;
   iconVariant?: IconVariant;
@@ -25,19 +25,19 @@ const ICON_VARIANT_SIZE: Record<IconVariant, number> = {
   medium: 62,
 };
 
-const UserListItem = ( {
+const UserListItem = ({
   item,
   countText,
   onPress,
   accessibilityLabel: accessibilityLabelProp,
   pressable = true,
   iconVariant = "medium",
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   const user = item?.user;
 
   const UserListItemContainer = pressable
-    ? ( { children } ) => (
+    ? ({ children }) => (
       <Pressable
         accessibilityRole={
           onPress
@@ -47,13 +47,13 @@ const UserListItem = ( {
         className="flex-row items-center mx-3 my-2"
         testID={`UserProfile.${user?.id}`}
         onPress={onPress}
-        accessibilityLabel={accessibilityLabelProp || t( "Navigates-to-user-profile" )}
+        accessibilityLabel={accessibilityLabelProp || t("Navigates-to-user-profile")}
         accessibilityState={{ disabled: false }}
       >
         { children }
       </Pressable>
     )
-    : ( { children } ) => (
+    : ({ children }) => (
       <View className="flex-row items-center" testID={`UserProfile.${user?.id}`}>
         { children }
       </View>
@@ -65,7 +65,7 @@ const UserListItem = ( {
         {user?.icon_url
           ? (
             <UserIcon
-              uri={User.uri( user )}
+              uri={User.uri(user)}
               medium={iconVariant === "medium"}
             />
           )

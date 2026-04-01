@@ -45,8 +45,8 @@ const Misc = (): Node => {
   const { t } = useTranslation();
   const currentUser = useCurrentUser();
   const userId = currentUser?.id;
-  const [isChecked, setIsChecked] = useState( false );
-  const realm = useRealm( );
+  const [isChecked, setIsChecked] = useState(false);
+  const realm = useRealm();
   const exampleId = {
     body: "",
     category: "leading",
@@ -83,9 +83,9 @@ const Misc = (): Node => {
     iconic_taxon_name: "Aves",
     isIconic: true,
   };
-  const taxonWithPhoto = realm.objects( "Taxon" ).filtered( "defaultPhoto.url != nil" )[0] || aves;
-  const species = realm.objects( "Taxon" )
-    .filtered( "preferred_common_name != nil AND rank = 'species'" )[0];
+  const taxonWithPhoto = realm.objects("Taxon").filtered("defaultPhoto.url != nil")[0] || aves;
+  const species = realm.objects("Taxon")
+    .filtered("preferred_common_name != nil AND rank = 'species'")[0];
 
   return (
     <ViewWrapper>
@@ -99,7 +99,7 @@ const Misc = (): Node => {
         <Checkbox
           text="This is a checkbox"
           isChecked={isChecked}
-          onPress={( ) => setIsChecked( !isChecked )}
+          onPress={() => setIsChecked(!isChecked)}
         />
         <Heading2 className="my-2">User Icons</Heading2>
         <View className="flex flex-row justify-between mb-3">
@@ -136,14 +136,14 @@ const Misc = (): Node => {
               id: "TAB1",
               text: "TAB1",
               onPress: () => {
-                console.log( "TAB1" );
+                console.log("TAB1");
               },
             },
             {
               id: "TAB2",
               text: "TAB2",
               onPress: () => {
-                console.log( "TAB2" );
+                console.log("TAB2");
               },
             },
           ]}
@@ -252,14 +252,14 @@ const Misc = (): Node => {
             <Body2>Small Number</Body2>
             <ActivityCount
               count={10}
-              accessibilityLabel={t( "x-comments", { count: 10 } )}
+              accessibilityLabel={t("x-comments", { count: 10 })}
             />
           </View>
           <View>
             <Body2>Large Number</Body2>
             <ActivityCount
               count={20000}
-              accessibilityLabel={t( "x-comments", { count: 10 } )}
+              accessibilityLabel={t("x-comments", { count: 10 })}
             />
           </View>
           <View className="bg-darkGray">
@@ -267,7 +267,7 @@ const Misc = (): Node => {
             <ActivityCount
               count={3}
               white
-              accessibilityLabel={t( "x-comments", { count: 3 } )}
+              accessibilityLabel={t("x-comments", { count: 3 })}
             />
           </View>
         </View>
@@ -342,8 +342,8 @@ const Misc = (): Node => {
         <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
         <IconicTaxonChooser
           chosen={["aves"]}
-          before={<Button text={t( "ADD-AN-ID" )} className="rounded-full" />}
-          onTaxonChosen={taxon => console.log( "taxon selected:", taxon )}
+          before={<Button text={t("ADD-AN-ID")} className="rounded-full" />}
+          onTaxonChosen={taxon => console.log("taxon selected:", taxon)}
         />
         <Heading1 className="my-2">DisplayTaxonName</Heading1>
         <Heading2 className="my-2">Color</Heading2>
@@ -385,7 +385,7 @@ const Misc = (): Node => {
         <RadioButtonRow
           value="radio1"
           checked
-          onPress={() => console.log( "radio1" )}
+          onPress={() => console.log("radio1")}
           label="Radio 1"
           description="This is a description"
         />

@@ -64,74 +64,74 @@ const SCROLL_VIEW_STYLE = {
   flexGrow: 1,
 };
 
-const logger = log.extend( "TaxonDetails" );
+const logger = log.extend("TaxonDetails");
 
 const { useRealm } = RealmContext;
 
 const isTablet = DeviceInfo.isTablet();
 
-const TaxonDetails = ( ): Node => {
+const TaxonDetails = (): Node => {
   // Local state
-  const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const [sheetVisible, setSheetVisible] = useState( false );
-  const [mediaIndex, setMediaIndex] = useState( 0 );
+  const [invertToWhiteBackground, setInvertToWhiteBackground] = useState(false);
+  const [mediaViewerVisible, setMediaViewerVisible] = useState(false);
+  const [sheetVisible, setSheetVisible] = useState(false);
+  const [mediaIndex, setMediaIndex] = useState(0);
 
   // Plug into global state
-  const updateObservationKeys = useStore( state => state.updateObservationKeys );
-  const currentEditingObservation = useStore( state => state.currentObservation );
-  const getCurrentObservation = useStore( state => state.getCurrentObservation );
-  const setExploreView = useStore( state => state.setExploreView );
-  const cameraRollUris = useStore( state => state.cameraRollUris );
-  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
+  const updateObservationKeys = useStore(state => state.updateObservationKeys);
+  const currentEditingObservation = useStore(state => state.currentObservation);
+  const getCurrentObservation = useStore(state => state.getCurrentObservation);
+  const setExploreView = useStore(state => state.setExploreView);
+  const cameraRollUris = useStore(state => state.cameraRollUris);
+  const resetMyObsOffsetToRestore = useStore(state => state.resetMyObsOffsetToRestore);
 
   // Hooks
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const navigation = useNavigation();
+  const { params } = useRoute();
   const {
     id, hideNavButtons, firstPhotoID, representativePhoto,
   } = params;
   const insets = useSafeAreaInsets();
-  const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
-  const { remoteUser } = useUserMe( );
-  const exitObservationFlow = useExitObservationFlow( {
+  const { t } = useTranslation();
+  const { isConnected } = useNetInfo();
+  const { remoteUser } = useUserMe();
+  const exitObservationFlow = useExitObservationFlow({
     skipStoreReset: true,
-  } );
-  const realm = useRealm( );
-  const currentUser = useCurrentUser( );
+  });
+  const realm = useRealm();
+  const currentUser = useCurrentUser();
 
   // Figure out where the user navigated from
-  const navState = useNavigationState( nav => nav );
-  const history = navState?.routes.map( r => r.name ) || [];
+  const navState = useNavigationState(nav => nav);
+  const history = navState?.routes.map(r => r.name) || [];
   // Assume the stack was reset by the last instance of Explore, even though
   // we still support backing out beyond that
   const usableStackIndex = Math.max(
     0,
-    history.lastIndexOf( "Explore" ),
-    history.lastIndexOf( "RootExplore" ),
+    history.lastIndexOf("Explore"),
+    history.lastIndexOf("RootExplore"),
   );
-  const usableHistory = history.slice( usableStackIndex, history.length );
-  const fromObsDetails = usableHistory.includes( "ObsDetails" );
-  const fromSuggestions = usableHistory.includes( "Suggestions" );
-  const fromObsEdit = usableHistory.includes( "ObsEdit" );
-  const fromMatch = usableHistory.includes( "Match" );
-  const usableRoutes = navState?.routes.slice( usableStackIndex, history.length ) || [];
+  const usableHistory = history.slice(usableStackIndex, history.length);
+  const fromObsDetails = usableHistory.includes("ObsDetails");
+  const fromSuggestions = usableHistory.includes("Suggestions");
+  const fromObsEdit = usableHistory.includes("ObsEdit");
+  const fromMatch = usableHistory.includes("Match");
+  const usableRoutes = navState?.routes.slice(usableStackIndex, history.length) || [];
 
   // previous ObsDetails observation uuid
   const obsUuid = fromObsDetails
-    ? find( usableRoutes.slice().reverse(), r => r.name === "ObsDetails" ).params.uuid
+    ? find(usableRoutes.slice().reverse(), r => r.name === "ObsDetails").params.uuid
     : null;
-  const { localObservation } = useLocalObservation( obsUuid );
+  const { localObservation } = useLocalObservation(obsUuid);
   const { remoteObservation } = useRemoteObservation(
     obsUuid,
     !localObservation && !currentEditingObservation,
   );
   let mappableObservation = currentEditingObservation;
-  if ( localObservation ) {
+  if (localObservation) {
     mappableObservation = localObservation;
-  } else if ( remoteObservation ) {
-    mappableObservation = Observation.mapApiToRealm( remoteObservation );
+  } else if (remoteObservation) {
+    mappableObservation = Observation.mapApiToRealm(remoteObservation);
   }
 
   const showSelectButton = fromSuggestions || fromObsEdit;
@@ -146,16 +146,16 @@ const TaxonDetails = ( ): Node => {
   const identFromVision = [
     "Match",
     "Suggestions",
-  ].includes( prevScreen ) && params?.usesVision !== false;
+  ].includes(prevScreen) && params?.usesVision !== false;
 
-  const localTaxon = realm.objectForPrimaryKey( "Taxon", id );
+  const localTaxon = realm.objectForPrimaryKey("Taxon", id);
 
   // Use locale in case there is no user session
   const locale = i18n?.language ?? "en";
 
   const taxonFetchParams = {
     place_id: remoteUser?.place_id,
-    ...( !currentUser && { locale } ),
+    ...(!currentUser && { locale }),
   };
 
   // Note that we want to authenticate this to localize names, desc language, etc.
@@ -166,14 +166,14 @@ const TaxonDetails = ( ): Node => {
     error,
   } = useAuthenticatedQuery(
     ["fetchTaxon", id],
-    optsWithAuth => fetchTaxonAndSave( id, realm, taxonFetchParams, optsWithAuth ),
+    optsWithAuth => fetchTaxonAndSave(id, realm, taxonFetchParams, optsWithAuth),
   );
 
   const taxon = remoteTaxon || localTaxon;
 
   const { data: seenByCurrentUser } = useQuery(
     ["fetchSpeciesCounts", taxon?.id],
-    ( ) => fetchSpeciesCounts( {
+    () => fetchSpeciesCounts({
       user_id: currentUser?.id,
       taxon_id: taxon?.id,
       fields: {
@@ -181,61 +181,61 @@ const TaxonDetails = ( ): Node => {
           id: true,
         },
       },
-    } ),
+    }),
     {
-      enabled: !!( taxon && taxon?.id !== 0 && taxon?.rank_level <= 10 && currentUser ),
+      enabled: !!(taxon && taxon?.id !== 0 && taxon?.rank_level <= 10 && currentUser),
     },
   );
 
-  useEffect( ( ) => {
-    if ( error ) {
-      logger.error( "Failed to retrieve taxon", error );
+  useEffect(() => {
+    if (error) {
+      logger.error("Failed to retrieve taxon", error);
     }
-  }, [error] );
+  }, [error]);
 
   const currentUserHasSeenTaxon = seenByCurrentUser?.total_results === 1;
 
   const photos = compact(
     taxon?.taxonPhotos
-      ? taxon.taxonPhotos.map( taxonPhoto => taxonPhoto.photo )
+      ? taxon.taxonPhotos.map(taxonPhoto => taxonPhoto.photo)
       : [taxon?.defaultPhoto],
   );
   // Move the first photo to top if it was passed in as a prop
-  if ( firstPhotoID ) {
-    const firstPhotoIndex = photos.findIndex( photo => photo.id === firstPhotoID );
-    if ( firstPhotoIndex > 0 ) {
-      const firstPhoto = photos.splice( firstPhotoIndex, 1 );
-      photos.unshift( firstPhoto[0] );
+  if (firstPhotoID) {
+    const firstPhotoIndex = photos.findIndex(photo => photo.id === firstPhotoID);
+    if (firstPhotoIndex > 0) {
+      const firstPhoto = photos.splice(firstPhotoIndex, 1);
+      photos.unshift(firstPhoto[0]);
     }
   }
   // Add the representative photo to the top of the list
-  if ( representativePhoto ) {
-    photos.unshift( representativePhoto );
+  if (representativePhoto) {
+    photos.unshift(representativePhoto);
   }
 
-  const updateTaxon = useCallback( ( ) => {
-    updateObservationKeys( {
+  const updateTaxon = useCallback(() => {
+    updateObservationKeys({
       taxon,
       owners_identification_from_vision: identFromVision,
-    } );
+    });
   }, [
     taxon,
     updateObservationKeys,
     identFromVision,
-  ] );
+  ]);
 
   // Close the sheet, save, the obs, any additional UI futzing required
-  const saveObservationFromSheet = useCallback( async ( ) => {
-    setSheetVisible( false );
-    updateTaxon( );
+  const saveObservationFromSheet = useCallback(async () => {
+    setSheetVisible(false);
+    updateTaxon();
     // We need the updated currentObservation immediately to pass to saveObservation
-    const currentObservation = getCurrentObservation( );
+    const currentObservation = getCurrentObservation();
     const isNewObs = !currentObservation?._created_at;
-    await saveObservation( currentObservation, cameraRollUris, realm );
+    await saveObservation(currentObservation, cameraRollUris, realm);
     // If we are saving a new observations, reset the stored my obs offset to
     // restore b/c we want MyObs rendered in its default state with this new
     // observation visible at the top
-    if ( isNewObs ) {
+    if (isNewObs) {
       resetMyObsOffsetToRestore();
     }
   }, [
@@ -244,41 +244,41 @@ const TaxonDetails = ( ): Node => {
     realm,
     resetMyObsOffsetToRestore,
     updateTaxon,
-  ] );
+  ]);
 
-  const saveForLater = useCallback( async ( ) => {
-    await saveObservationFromSheet( );
-    exitObservationFlow( );
+  const saveForLater = useCallback(async () => {
+    await saveObservationFromSheet();
+    exitObservationFlow();
   }, [
     exitObservationFlow,
     saveObservationFromSheet,
-  ] );
+  ]);
 
-  const uploadNow = useCallback( async ( ) => {
-    await saveObservationFromSheet( );
-    exitObservationFlow( {
-      navigate: ( ) => navigation.navigate( "LoginStackNavigator" ),
-    } );
-  }, [exitObservationFlow, navigation, saveObservationFromSheet] );
+  const uploadNow = useCallback(async () => {
+    await saveObservationFromSheet();
+    exitObservationFlow({
+      navigate: () => navigation.navigate("LoginStackNavigator"),
+    });
+  }, [exitObservationFlow, navigation, saveObservationFromSheet]);
 
-  const renderHeader = useCallback( ( { onClose } ) => (
+  const renderHeader = useCallback(({ onClose }) => (
     <TaxonDetailsMediaViewerHeader
       showSpeciesSeenCheckmark={currentUserHasSeenTaxon}
       taxon={taxon}
       onClose={onClose}
     />
-  ), [taxon, currentUserHasSeenTaxon] );
+  ), [taxon, currentUserHasSeenTaxon]);
 
-  const displayTaxonDetails = ( ) => {
-    if ( isLoading ) {
+  const displayTaxonDetails = () => {
+    if (isLoading) {
       return <View className="m-3 flex-1 h-full justify-center"><ActivityIndicator /></View>;
     }
 
-    if ( error?.message?.match( /Network request failed/ ) ) {
+    if (error?.message?.match(/Network request failed/)) {
       return (
         <View className="py-[93px]">
           <OfflineNotice
-            onPress={( ) => {
+            onPress={() => {
               refresh();
               refetch();
             }}
@@ -287,11 +287,11 @@ const TaxonDetails = ( ): Node => {
       );
     }
 
-    if ( error ) {
-      return <Body1 className="mx-3">{ t( "Something-went-wrong" ) }</Body1>;
+    if (error) {
+      return <Body1 className="mx-3">{ t("Something-went-wrong") }</Body1>;
     }
 
-    if ( !taxon ) return null;
+    if (!taxon) return null;
 
     return (
       <View className="mx-3">
@@ -313,7 +313,7 @@ const TaxonDetails = ( ): Node => {
 
   const showExploreButton = !hideNavButtons && isConnected && !fromMatch;
 
-  const displayTaxonTitle = useCallback( ( ) => (
+  const displayTaxonTitle = useCallback(() => (
     <View
       className="w-full flex-row items-center pl-5 pr-5 pb-5"
       pointerEvents="box-none"
@@ -327,15 +327,15 @@ const TaxonDetails = ( ): Node => {
         <View className="ml-2">
           <INatIconButton
             icon="magnifying-glass"
-            onPress={( ) => {
-              setExploreView( "observations" );
-              navigation.navigate( "Explore", {
+            onPress={() => {
+              setExploreView("observations");
+              navigation.navigate("Explore", {
                 taxon,
                 worldwide: true,
-              } );
+              });
             }}
-            accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
-            accessibilityHint={t( "Navigates-to-explore" )}
+            accessibilityLabel={t("See-observations-of-this-taxon-in-explore")}
+            accessibilityHint={t("Navigates-to-explore")}
             size={20}
             color={colors.white}
             className="bg-inatGreen rounded-full"
@@ -352,13 +352,13 @@ const TaxonDetails = ( ): Node => {
     setExploreView,
     t,
     taxon,
-  ] );
+  ]);
 
   const displayTaxonMedia = () => {
-    if ( isConnected === false ) {
+    if (isConnected === false) {
       return (
         <OfflineNotice
-          onPress={( ) => {
+          onPress={() => {
             refresh();
             refetch();
           }}
@@ -377,23 +377,23 @@ const TaxonDetails = ( ): Node => {
   };
 
   const bulletedText = [
-    t( "Get-your-identification-verified-by-real-people" ),
-    t( "Share-your-observation-where-it-can-help-scientists" ),
+    t("Get-your-identification-verified-by-real-people"),
+    t("Share-your-observation-where-it-can-help-scientists"),
   ];
 
   const handleScroll = e => {
     const scrollY = e.nativeEvent.contentOffset.y;
-    const shouldInvert = !!( scrollY > 150 );
-    if ( shouldInvert !== invertToWhiteBackground ) {
-      setInvertToWhiteBackground( shouldInvert );
+    const shouldInvert = !!(scrollY > 150);
+    if (shouldInvert !== invertToWhiteBackground) {
+      setInvertToWhiteBackground(shouldInvert);
     }
   };
 
   // Choose what kind of header to show
   let headerRightType = TAXON_DETAILS_HEADER_RIGHT_OPTIONS;
-  if ( hideNavButtons ) {
+  if (hideNavButtons) {
     headerRightType = undefined;
-  } else if ( fromMatch ) {
+  } else if (fromMatch) {
     headerRightType = TAXON_DETAILS_HEADER_RIGHT_SEARCH;
   }
 
@@ -426,7 +426,7 @@ const TaxonDetails = ( ): Node => {
           headerRightType={headerRightType}
           onPressSearch={
             fromMatch
-              ? ( ) => navigation.navigate( "MatchTaxonSearchScreen" )
+              ? () => navigation.navigate("MatchTaxonSearchScreen")
               : undefined
           }
           taxon={taxon}
@@ -443,12 +443,12 @@ const TaxonDetails = ( ): Node => {
             </View>
           </View>
           <View className="bg-white py-5 h-full flex-1">
-            {displayTaxonDetails( )}
+            {displayTaxonDetails()}
           </View>
         </View>
         <MediaViewerModal
           showModal={mediaViewerVisible}
-          onClose={( ) => setMediaViewerVisible( false )}
+          onClose={() => setMediaViewerVisible(false)}
           photos={photos}
           header={renderHeader}
         />
@@ -456,10 +456,10 @@ const TaxonDetails = ( ): Node => {
       {fromMatch && (
         <MatchSaveDiscardButtons
           handlePress={async action => {
-            if ( action === "save" ) {
-              await saveObservationFromSheet( );
+            if (action === "save") {
+              await saveObservationFromSheet();
             }
-            exitObservationFlow( );
+            exitObservationFlow();
           }}
         />
       )}
@@ -469,21 +469,21 @@ const TaxonDetails = ( ): Node => {
             testID="TaxonDetails.SelectButton"
             className="max-w-[500px] w-full"
             level="focus"
-            text={t( "SELECT-THIS-TAXON" )}
-            onPress={( ) => {
-              if ( fromSuggestions && !currentUser ) {
-                setSheetVisible( true );
+            text={t("SELECT-THIS-TAXON")}
+            onPress={() => {
+              if (fromSuggestions && !currentUser) {
+                setSheetVisible(true);
               } else {
-                updateTaxon( );
-                if ( fromObsDetails ) {
+                updateTaxon();
+                if (fromObsDetails) {
                   const obsDetailsParam = {
                     uuid: obsUuid,
                     identTaxonId: taxon?.id,
                     identAt: Date.now(),
                   };
-                  navigation.navigate( "ObsDetails", obsDetailsParam );
+                  navigation.navigate("ObsDetails", obsDetailsParam);
                 } else {
-                  navigation.navigate( "ObsEdit" );
+                  navigation.navigate("ObsEdit");
                 }
               }
             }}
@@ -500,35 +500,35 @@ const TaxonDetails = ( ): Node => {
       )}
       <BottomSheet
         hidden={!sheetVisible}
-        onPressClose={() => setSheetVisible( false )}
-        headerText={t( "UPLOAD-TO-INATURALIST" )}
+        onPressClose={() => setSheetVisible(false)}
+        headerText={t("UPLOAD-TO-INATURALIST")}
       >
         <View className="p-4">
           <View className="px-3">
             <List2>
-              {t( "By-uploading-your-observation-to-iNaturalist-you-can" )}
+              {t("By-uploading-your-observation-to-iNaturalist-you-can")}
             </List2>
             <View className="mt-3">
-              {bulletedText.map( string => (
+              {bulletedText.map(string => (
                 <View className="flex-row" key={string}>
                   <List2>{"\u2022 "}</List2>
                   <List2>{string}</List2>
                 </View>
-              ) )}
+              ))}
             </View>
             <List2 className="mt-3">
-              {t( "Just-make-sure-the-organism-is-wild" )}
+              {t("Just-make-sure-the-organism-is-wild")}
             </List2>
           </View>
           <Button
             onPress={() => uploadNow()}
-            text={t( "UPLOAD-NOW" )}
+            text={t("UPLOAD-NOW")}
             className="mt-5"
             level="focus"
           />
           <Button
             onPress={() => saveForLater()}
-            text={t( "SAVE-FOR-LATER" )}
+            text={t("SAVE-FOR-LATER")}
             className="mt-5"
           />
         </View>

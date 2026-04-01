@@ -9,35 +9,35 @@ import { useAuthenticatedQuery } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
-const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
+const useIconicTaxa = (options: { reload: boolean } = { reload: false }) => {
   const { reload } = options;
-  const realm = useRealm( );
-  const [isUpdatingRealm, setIsUpdatingRealm] = useState<boolean>( );
-  const enabled = !!( reload );
+  const realm = useRealm();
+  const [isUpdatingRealm, setIsUpdatingRealm] = useState<boolean>();
+  const enabled = !!(reload);
 
   const queryKey = ["useIconicTaxa", reload];
   const { data: iconicTaxa } = useAuthenticatedQuery(
     queryKey,
-    ( optsWithAuth: ApiOpts ) => searchTaxa( { iconic: true }, optsWithAuth ),
+    (optsWithAuth: ApiOpts) => searchTaxa({ iconic: true }, optsWithAuth),
     { enabled },
   );
 
-  useEffect( ( ) => {
-    if ( iconicTaxa?.length > 0 && !isUpdatingRealm ) {
-      setIsUpdatingRealm( true );
-      safeRealmWrite( realm, ( ) => {
-        iconicTaxa.forEach( ( taxon: ApiTaxon ) => {
+  useEffect(() => {
+    if (iconicTaxa?.length > 0 && !isUpdatingRealm) {
+      setIsUpdatingRealm(true);
+      safeRealmWrite(realm, () => {
+        iconicTaxa.forEach((taxon: ApiTaxon) => {
           realm.create(
             "Taxon",
-            Taxon.forUpdate( taxon, { isIconic: true } ),
+            Taxon.forUpdate(taxon, { isIconic: true }),
             UpdateMode.Modified,
           );
-        } );
-      }, "modifying iconic taxa in useIconicTaxa" );
+        });
+      }, "modifying iconic taxa in useIconicTaxa");
     }
-  }, [iconicTaxa, realm, isUpdatingRealm] );
+  }, [iconicTaxa, realm, isUpdatingRealm]);
 
-  return realm?.objects( "Taxon" ).filtered( "isIconic = true" );
+  return realm?.objects("Taxon").filtered("isIconic = true");
 };
 
 export default useIconicTaxa;

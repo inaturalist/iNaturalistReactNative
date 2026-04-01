@@ -12,29 +12,29 @@ const { useRealm } = RealmContext;
 
 interface Props {
   iconicTaxonChosen?: RealmTaxon;
-  onIconicTaxonChosen: ( taxon: RealmTaxon ) => void;
+  onIconicTaxonChosen: (taxon: RealmTaxon) => void;
 }
 
-const IconicSuggestionsScroll = ( {
+const IconicSuggestionsScroll = ({
   iconicTaxonChosen,
   onIconicTaxonChosen,
-}: Props ) => {
+}: Props) => {
   const realm = useRealm();
 
-  const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
+  const iconicTaxa = realm?.objects("Taxon").filtered("isIconic = true");
 
   const handleIconicSuggestionPress = useCallback(
-    ( iconicTaxon: RealmTaxon ) => {
-      onIconicTaxonChosen( iconicTaxon );
+    (iconicTaxon: RealmTaxon) => {
+      onIconicTaxonChosen(iconicTaxon);
     },
     [onIconicTaxonChosen],
   );
 
-  const renderItem = ( { item: taxon }: { item: RealmTaxon } ) => {
+  const renderItem = ({ item: taxon }: { item: RealmTaxon }) => {
     const selected = iconicTaxonChosen?.id === taxon?.id;
     return (
       <IconicSuggestion
-        handlePress={() => handleIconicSuggestionPress( taxon )}
+        handlePress={() => handleIconicSuggestionPress(taxon)}
         taxon={taxon}
         selected={selected}
       />
@@ -48,7 +48,7 @@ const IconicSuggestionsScroll = ( {
         ListHeaderComponent={renderHeader}
         horizontal
         renderItem={renderItem}
-        keyExtractor={( item: RealmTaxon ) => `${item?.id}`}
+        keyExtractor={(item: RealmTaxon) => `${item?.id}`}
         data={iconicTaxa}
       />
     </View>

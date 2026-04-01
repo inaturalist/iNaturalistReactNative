@@ -15,36 +15,36 @@ interface Props {
   projects: ApiProject[];
   ListEmptyComponent?: React.JSX.Element;
   ListFooterComponent?: React.JSX.Element;
-  onEndReached?: ( ) => void;
-  onPress?: ( project: ApiProject ) => void;
+  onEndReached?: () => void;
+  onPress?: (project: ApiProject) => void;
   accessibilityLabel?: string;
 }
 
-const ProjectList = ( {
+const ProjectList = ({
   projects,
   ListEmptyComponent,
   ListFooterComponent,
   onEndReached,
   onPress,
   accessibilityLabel,
-}: Props ) => {
-  const navigation = useNavigation( );
-  const { t } = useTranslation( );
+}: Props) => {
+  const navigation = useNavigation();
+  const { t } = useTranslation();
 
-  const renderProject = ( { item: project }: { item: ApiProject } ) => (
+  const renderProject = ({ item: project }: { item: ApiProject }) => (
     <Pressable
       className="px-4 py-1.5"
-      onPress={( ) => {
-        if ( onPress ) {
-          onPress( project );
+      onPress={() => {
+        if (onPress) {
+          onPress(project);
         } else {
-          navigation.navigate( "ProjectDetails", { id: project.id } );
+          navigation.navigate("ProjectDetails", { id: project.id });
         }
       }}
       testID={`Project.${project.id}`}
       accessible
       accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel || t( "Navigates-to-project-details" )}
+      accessibilityLabel={accessibilityLabel || t("Navigates-to-project-details")}
     >
       <ProjectListItem item={project} />
     </Pressable>
@@ -60,7 +60,7 @@ const ProjectList = ( {
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={ListFooterComponent}
       data={projects}
-      keyExtractor={( item: ApiProject ) => item.id}
+      keyExtractor={(item: ApiProject) => item.id}
       onEndReached={onEndReached}
       renderItem={renderProject}
       testID="ProjectList"

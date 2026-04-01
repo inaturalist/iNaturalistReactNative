@@ -12,7 +12,7 @@ const savePhotoToDocumentsDirectory = async (
   cameraPhoto: PhotoFile,
 ) => {
   const path = rotatedOriginalPhotosPath;
-  await RNFS.mkdir( path );
+  await RNFS.mkdir(path);
   // Move the image with ImageResizer (for legacy reasons, because we
   // used to use it to rotate the photo)
   const image = await resizeImage(
@@ -24,7 +24,7 @@ const savePhotoToDocumentsDirectory = async (
     },
   );
   // Remove original temp photo
-  await unlink( cameraPhoto.path );
+  await unlink(cameraPhoto.path);
   return image;
 };
 

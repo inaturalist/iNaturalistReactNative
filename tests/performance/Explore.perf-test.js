@@ -7,12 +7,12 @@ import { measureRenders } from "reassure";
 import { queryClient } from "tests/helpers/render";
 
 // Mock inaturalistjs so test suite can run
-jest.mock( "inaturalistjs" );
+jest.mock("inaturalistjs");
 
-test( "Measure Explore renders", async () => {
+test("Measure Explore renders", async () => {
   await measureRenders(
     <QueryClientProvider client={queryClient}>
       <RootExploreContainer />
     </QueryClientProvider>,
   );
-} );
+});

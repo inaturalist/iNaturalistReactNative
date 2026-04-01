@@ -20,17 +20,17 @@ type Props = {
   tablet?: boolean
 }
 
-const ObsMediaDisplay = ( {
+const ObsMediaDisplay = ({
   loading,
   photos = [],
   sounds = [],
   tablet = false,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
   const items = [...photos, ...sounds];
 
-  if ( items.length > 0 || loading ) {
+  if (items.length > 0 || loading) {
     return (
       <View className="bg-black">
         <ObsMedia
@@ -57,7 +57,7 @@ const ObsMediaDisplay = ( {
           : "h-72",
       )}
       accessible
-      accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}
+      accessibilityLabel={t("Observation-has-no-photos-and-no-sounds")}
     >
       <INatIcon name="noevidence" size={96} color={colors.white} />
     </View>

@@ -17,93 +17,93 @@ interface Props {
   representativePhoto?: ApiPhoto;
   taxon?: ApiTaxon | RealmTaxon;
   obsPhotos: RealmObservationPhoto[];
-  navToTaxonDetails: ( photo: ApiPhoto | RealmPhoto ) => void;
+  navToTaxonDetails: (photo: ApiPhoto | RealmPhoto) => void;
   hideTaxonPhotos?: boolean;
 }
 
-const PhotosSection = ( {
+const PhotosSection = ({
   representativePhoto,
   taxon,
   obsPhotos,
   navToTaxonDetails,
   hideTaxonPhotos,
-}: Props ) => {
-  const [displayPortraitLayout, setDisplayPortraitLayout] = useState<boolean | null>( null );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+}: Props) => {
+  const [displayPortraitLayout, setDisplayPortraitLayout] = useState<boolean | null>(null);
+  const [mediaViewerVisible, setMediaViewerVisible] = useState(false);
 
   const localTaxonPhotos = taxon?.taxonPhotos;
   const observationPhoto = obsPhotos?.[0]?.photo?.url
-  || Photo.getLocalPhotoUri( obsPhotos?.[0]?.photo?.localFilePath );
+  || Photo.getLocalPhotoUri(obsPhotos?.[0]?.photo?.localFilePath);
 
   const taxonPhotos = compact(
     localTaxonPhotos
-      ? localTaxonPhotos.map( taxonPhoto => ( { ...taxonPhoto.photo } ) )
+      ? localTaxonPhotos.map(taxonPhoto => ({ ...taxonPhoto.photo }))
       : [taxon?.defaultPhoto],
   );
   // don't show the iconic taxon photo which is a mashup of 9 bestTaxonPhotos
-  if ( taxon?.isIconic ) {
-    taxonPhotos.splice( 0 );
+  if (taxon?.isIconic) {
+    taxonPhotos.splice(0);
   }
 
   // If the representative photo is already included in taxonPhotos, don't add it but move
   // it to the start of the list.
   let firstPhoto;
-  if ( representativePhoto && taxonPhotos.some( photo => photo.id === representativePhoto.id ) ) {
-    const repPhotoIndex = taxonPhotos.findIndex( photo => photo.id === representativePhoto.id );
+  if (representativePhoto && taxonPhotos.some(photo => photo.id === representativePhoto.id)) {
+    const repPhotoIndex = taxonPhotos.findIndex(photo => photo.id === representativePhoto.id);
     // The first photo to show is the realm version of the representative photo
-    firstPhoto = taxonPhotos.splice( repPhotoIndex, 1 )[0];
-  } else if ( representativePhoto ) {
+    firstPhoto = taxonPhotos.splice(repPhotoIndex, 1)[0];
+  } else if (representativePhoto) {
     // This is possible because a representative photo can be from a different taxon, e.g. children
     // of common ancestors. In this case, the representative photo is not included in taxonPhotos.
     firstPhoto = { ...representativePhoto, isRepresentativeButOtherTaxon: true };
   }
   // Add the representative photo at the start of the list of taxon bestTaxonPhotos.
-  const taxonPhotosWithRepPhoto = compact( [
+  const taxonPhotosWithRepPhoto = compact([
     firstPhoto,
     ...taxonPhotos,
-  ] );
-  const bestTaxonPhotos = taxonPhotosWithRepPhoto.slice( 0, 3 );
+  ]);
+  const bestTaxonPhotos = taxonPhotosWithRepPhoto.slice(0, 3);
 
   const observationPhotos = compact(
     obsPhotos
-      ? obsPhotos.map( obsPhoto => obsPhoto.photo )
+      ? obsPhotos.map(obsPhoto => obsPhoto.photo)
       : [],
   );
 
-  useEffect( ( ) => {
-    const checkImageOrientation = async ( ) => {
-      if ( observationPhoto ) {
-        const imageDimensions = await RNImage.getSize( observationPhoto );
-        if ( imageDimensions.width < imageDimensions.height ) {
-          setDisplayPortraitLayout( true );
+  useEffect(() => {
+    const checkImageOrientation = async () => {
+      if (observationPhoto) {
+        const imageDimensions = await RNImage.getSize(observationPhoto);
+        if (imageDimensions.width < imageDimensions.height) {
+          setDisplayPortraitLayout(true);
         } else {
-          setDisplayPortraitLayout( false );
+          setDisplayPortraitLayout(false);
         }
       }
     };
-    checkImageOrientation( );
-  }, [observationPhoto] );
+    checkImageOrientation();
+  }, [observationPhoto]);
 
-  const getLayoutClasses = ( ) => {
+  const getLayoutClasses = () => {
     // Basic layout: no taxon bestTaxonPhotos + obs photo a square
     let containerClass = "flex-row";
     let observationPhotoClass = "w-full h-full";
     let taxonPhotosContainerClass;
     let taxonPhotoClass;
-    if ( !hideTaxonPhotos ) {
+    if (!hideTaxonPhotos) {
       // If there is only one taxon photo: obs photo a square,
       // taxon photo a square in the lower right corner of the obs photo
-      if ( bestTaxonPhotos.length === 1 ) {
+      if (bestTaxonPhotos.length === 1) {
         containerClass = "flex-row relative";
         observationPhotoClass = "w-full h-full";
         taxonPhotosContainerClass = "absolute bottom-0 right-0 w-1/3 h-1/3";
         taxonPhotoClass = "w-full h-full border-l-[3px] border-t-[3px] border-white";
       }
-      if ( bestTaxonPhotos.length > 1 ) {
-        if ( displayPortraitLayout ) {
+      if (bestTaxonPhotos.length > 1) {
+        if (displayPortraitLayout) {
           containerClass = "flex-row";
           observationPhotoClass = "w-2/3 h-full pr-[3px]";
-          if ( bestTaxonPhotos.length === 2 ) {
+          if (bestTaxonPhotos.length === 2) {
             taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
             taxonPhotoClass = "w-full h-1/2";
           } else {
@@ -113,7 +113,7 @@ const PhotosSection = ( {
         } else {
           containerClass = "flex-col";
           observationPhotoClass = "w-full h-2/3 pb-[3px]";
-          if ( bestTaxonPhotos.length === 2 ) {
+          if (bestTaxonPhotos.length === 2) {
             taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
             taxonPhotoClass = "w-1/2 h-full";
           } else {
@@ -133,10 +133,10 @@ const PhotosSection = ( {
 
   const layoutClasses = getLayoutClasses();
 
-  const renderObservationPhoto = ( ) => (
+  const renderObservationPhoto = () => (
     <Pressable
       accessibilityRole="button"
-      onPress={() => setMediaViewerVisible( true )}
+      onPress={() => setMediaViewerVisible(true)}
       accessibilityState={{ disabled: false }}
       className={classnames(
         "relative",
@@ -145,7 +145,7 @@ const PhotosSection = ( {
     >
       <Image
         testID="MatchScreen.ObsPhoto"
-        source={{ uri: Photo.displayLargePhoto( observationPhoto ) }}
+        source={{ uri: Photo.displayLargePhoto(observationPhoto) }}
         className="w-full h-full"
         accessibilityIgnoresInvertColors
       />
@@ -158,16 +158,16 @@ const PhotosSection = ( {
     </Pressable>
   );
 
-  const renderTaxonPhotos = ( ) => (
+  const renderTaxonPhotos = () => (
     <View className={classnames(
       "flex",
       layoutClasses?.taxonPhotosContainerClass,
     )}
     >
-      {bestTaxonPhotos.map( photo => (
+      {bestTaxonPhotos.map(photo => (
         <Pressable
           accessibilityRole="button"
-          onPress={() => navToTaxonDetails( photo )}
+          onPress={() => navToTaxonDetails(photo)}
           accessibilityState={{ disabled: false }}
           key={photo.id}
           className={classnames(
@@ -179,28 +179,28 @@ const PhotosSection = ( {
             testID={`TaxonDetails.photo.${photo.id}`}
             className="w-full h-full"
             source={{
-              uri: Photo.displayMediumPhoto( photo.url ),
+              uri: Photo.displayMediumPhoto(photo.url),
             }}
             accessibilityIgnoresInvertColors
           />
         </Pressable>
-      ) )}
+      ))}
     </View>
   );
 
-  if ( displayPortraitLayout === null ) {
+  if (displayPortraitLayout === null) {
     return (
       <View className="h-[390px]" />
     );
   }
 
   return (
-    <View className={classnames( "h-[390px] overflow-hidden", layoutClasses.containerClass )}>
-      {renderObservationPhoto( )}
-      {!hideTaxonPhotos && bestTaxonPhotos.length > 0 && renderTaxonPhotos( )}
+    <View className={classnames("h-[390px] overflow-hidden", layoutClasses.containerClass)}>
+      {renderObservationPhoto()}
+      {!hideTaxonPhotos && bestTaxonPhotos.length > 0 && renderTaxonPhotos()}
       <MediaViewerModal
         showModal={mediaViewerVisible}
-        onClose={( ) => setMediaViewerVisible( false )}
+        onClose={() => setMediaViewerVisible(false)}
         uri={observationPhoto}
         photos={observationPhotos}
       />

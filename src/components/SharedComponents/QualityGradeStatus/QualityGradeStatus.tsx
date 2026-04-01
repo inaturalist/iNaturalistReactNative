@@ -17,22 +17,22 @@ const qualityGradeSVG = (
   color: string,
   opacity: number,
 ) => {
-  if ( qualityGrade === "research" ) {
+  if (qualityGrade === "research") {
     return (
       <ResearchGrade
         accessible
-        accessibilityLabel={t( "Quality-Grade-Research--label" )}
+        accessibilityLabel={t("Quality-Grade-Research--label")}
         testID="QualityGrade.research"
         color={color}
         opacity={opacity}
       />
     );
   }
-  if ( qualityGrade === "needs_id" ) {
+  if (qualityGrade === "needs_id") {
     return (
       <NeedsIdGrade
         accessible
-        accessibilityLabel={t( "Quality-Grade-Needs-ID--label" )}
+        accessibilityLabel={t("Quality-Grade-Needs-ID--label")}
         testID="QualityGrade.needs_id"
         color={color}
         opacity={opacity}
@@ -42,7 +42,7 @@ const qualityGradeSVG = (
   return (
     <CasualGrade
       accessible
-      accessibilityLabel={t( "Quality-Grade-Casual--label" )}
+      accessibilityLabel={t("Quality-Grade-Casual--label")}
       testID="QualityGrade.casual"
       color={color}
       opacity={opacity}
@@ -50,11 +50,11 @@ const qualityGradeSVG = (
   );
 };
 
-const QualityGradeStatus = ( { qualityGrade, color, opacity }: Props ) => {
+const QualityGradeStatus = ({ qualityGrade, color, opacity }: Props) => {
   const svgColor = color || colors.darkGray;
   const svgOpacity = opacity || 1;
   return (
-    <View>{qualityGradeSVG( qualityGrade, svgColor, svgOpacity )}</View>
+    <View>{qualityGradeSVG(qualityGrade, svgColor, svgOpacity)}</View>
   );
 };
 

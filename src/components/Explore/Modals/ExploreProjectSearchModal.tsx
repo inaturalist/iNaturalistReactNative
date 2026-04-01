@@ -6,14 +6,14 @@ import React from "react";
 interface Props {
   showModal: boolean;
   closeModal: () => void;
-  updateProject: ( project: ApiProject ) => void;
+  updateProject: (project: ApiProject) => void;
 }
 
-const ExploreProjectSearchModal = ( {
+const ExploreProjectSearchModal = ({
   showModal,
   closeModal,
   updateProject,
-}: Props ) => (
+}: Props) => (
   <Modal
     showModal={showModal}
     fullScreen

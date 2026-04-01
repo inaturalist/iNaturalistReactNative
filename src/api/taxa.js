@@ -35,14 +35,14 @@ const PARAMS = {
   fields: FIELDS,
 };
 
-function mapTaxonPhotoToLocalSchema( taxonPhoto ) {
+function mapTaxonPhotoToLocalSchema(taxonPhoto) {
   taxonPhoto.photo.licenseCode = taxonPhoto.photo.licenseCode
     || taxonPhoto.photo.license_code;
   return taxonPhoto;
 }
-function mapToLocalSchema( taxon ) {
-  taxon.taxonPhotos = taxon?.taxonPhotos?.map( mapTaxonPhotoToLocalSchema );
-  taxon.taxon_photos = taxon?.taxon_photos?.map( mapTaxonPhotoToLocalSchema );
+function mapToLocalSchema(taxon) {
+  taxon.taxonPhotos = taxon?.taxonPhotos?.map(mapTaxonPhotoToLocalSchema);
+  taxon.taxon_photos = taxon?.taxon_photos?.map(mapTaxonPhotoToLocalSchema);
   return taxon;
 }
 
@@ -83,26 +83,26 @@ async function fetchTaxon(
         wikipedia_summary: true,
       },
     };
-    const response = await inatjs.taxa.fetch( id, fetchParams, opts );
-    if ( typeof id === "number" ) {
+    const response = await inatjs.taxa.fetch(id, fetchParams, opts);
+    if (typeof id === "number") {
       const results = response?.results;
-      if ( !results || results.length === 0 ) return null;
+      if (!results || results.length === 0) return null;
 
-      return mapToLocalSchema( results[0] );
+      return mapToLocalSchema(results[0]);
     }
     return response;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchTaxon", id, opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchTaxon", id, opts } });
   }
 }
 
-async function searchTaxa( params: Object = {}, opts: Object = {} ): Promise<?Object> {
+async function searchTaxa(params: Object = {}, opts: Object = {}): Promise<?Object> {
   try {
     const searchParams = { ...PARAMS, ...params };
-    const { results } = await inatjs.taxa.search( searchParams, opts );
+    const { results } = await inatjs.taxa.search(searchParams, opts);
     return results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "searchTaxa", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "searchTaxa", opts } });
   }
 }
 

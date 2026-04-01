@@ -5,23 +5,23 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 const mockIdentifiers = [{
-  ...factory( "RemoteUser" ),
+  ...factory("RemoteUser"),
   count: 3,
 }, {
-  ...factory( "RemoteUser" ),
+  ...factory("RemoteUser"),
   count: 1,
 }];
 
-jest.mock( "sharedHooks/useInfiniteScroll", () => ( {
+jest.mock("sharedHooks/useInfiniteScroll", () => ({
   __esModule: true,
-  default: () => ( {
+  default: () => ({
     data: mockIdentifiers,
     isFetchingNextPage: true,
-  } ),
-} ) );
+  }),
+}));
 
-describe( "IdentifiersView", () => {
-  it( "should show a footer loading wheel when new identifiers are fetched", ( ) => {
+describe("IdentifiersView", () => {
+  it("should show a footer loading wheel when new identifiers are fetched", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel={false}
@@ -29,11 +29,11 @@ describe( "IdentifiersView", () => {
       />,
     );
 
-    const loadingWheel = screen.getByTestId( "InfiniteScrollLoadingWheel.loading" );
-    expect( loadingWheel ).toBeVisible( );
-  } );
+    const loadingWheel = screen.getByTestId("InfiniteScrollLoadingWheel.loading");
+    expect(loadingWheel).toBeVisible();
+  });
 
-  it( "should show no internet text when user is offline", ( ) => {
+  it("should show no internet text when user is offline", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel={false}
@@ -41,11 +41,11 @@ describe( "IdentifiersView", () => {
       />,
     );
 
-    const noInternet = screen.getByText( /An Internet connection is required/ );
-    expect( noInternet ).toBeVisible( );
-  } );
+    const noInternet = screen.getByText(/An Internet connection is required/);
+    expect(noInternet).toBeVisible();
+  });
 
-  it( "should show a footer view when loading wheel is hidden", ( ) => {
+  it("should show a footer view when loading wheel is hidden", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel
@@ -53,11 +53,11 @@ describe( "IdentifiersView", () => {
       />,
     );
 
-    const footerView = screen.getByTestId( "InfiniteScrollLoadingWheel.footerView" );
-    expect( footerView ).toBeVisible( );
-  } );
+    const footerView = screen.getByTestId("InfiniteScrollLoadingWheel.footerView");
+    expect(footerView).toBeVisible();
+  });
 
-  it( "should show loading wheel before initial data loads", ( ) => {
+  it("should show loading wheel before initial data loads", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel
@@ -67,11 +67,11 @@ describe( "IdentifiersView", () => {
       />,
     );
 
-    const initialLoading = screen.getByTestId( "ExploreFlashList.loading" );
-    expect( initialLoading ).toBeVisible( );
-  } );
+    const initialLoading = screen.getByTestId("ExploreFlashList.loading");
+    expect(initialLoading).toBeVisible();
+  });
 
-  it( "should show no results text when no data is found", ( ) => {
+  it("should show no results text when no data is found", () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel
@@ -80,11 +80,11 @@ describe( "IdentifiersView", () => {
       />,
     );
 
-    const noResultsText = screen.getByText( /No results found/ );
-    expect( noResultsText ).toBeVisible( );
-  } );
+    const noResultsText = screen.getByText(/No results found/);
+    expect(noResultsText).toBeVisible();
+  });
 
-  it( "should show number of identifications a user has", async ( ) => {
+  it("should show number of identifications a user has", async () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel
@@ -94,7 +94,7 @@ describe( "IdentifiersView", () => {
       />,
     );
 
-    const identificationCount = await screen.findByText( "3 Identifications" );
-    expect( identificationCount ).toBeVisible( );
-  } );
-} );
+    const identificationCount = await screen.findByText("3 Identifications");
+    expect(identificationCount).toBeVisible();
+  });
+});

@@ -22,92 +22,92 @@ const removeSyncedFilesFromDirectory = async (
   directoryPath: string,
   filesToKeep: string[] = [],
 ) => {
-  const directoryExists = await RNFS.exists( directoryPath );
-  if ( !directoryExists ) {
+  const directoryExists = await RNFS.exists(directoryPath);
+  if (!directoryExists) {
     return null;
   }
 
-  const files = await RNFS.readDir( directoryPath );
+  const files = await RNFS.readDir(directoryPath);
   let totalSize = 0;
   const fileDetails: FileDetails[] = [];
   const deletionPromises = Promise.all(
-    files.map( async file => {
+    files.map(async file => {
       let skipFile = false;
 
-      if ( file.mtime ) {
+      if (file.mtime) {
         const age = Date.now() - file.mtime.getTime();
         // If this is too fresh to delete, skip. Maybe the file got writte
         // before the observation was written to realm and we're going to need
         // it in a few seconds
-        if ( age < TRASHABLE_VINTAGE_MS ) {
+        if (age < TRASHABLE_VINTAGE_MS) {
           skipFile = true;
         }
       }
       const { name, path } = file;
 
-      if ( filesToKeep.includes( name ) ) {
+      if (filesToKeep.includes(name)) {
         skipFile = true;
       }
 
-      if ( skipFile ) {
-        const fileStat = await RNFS.stat( file.path );
+      if (skipFile) {
+        const fileStat = await RNFS.stat(file.path);
         totalSize += fileStat.size;
-        fileDetails.push( {
+        fileDetails.push({
           name,
           path: file.path,
           size: fileStat.size,
           modifiedTime: fileStat.mtime,
-        } );
+        });
 
         return;
       }
 
-      console.log( `Deleting old file: ${path}` );
-      await unlink( path );
-    } ),
+      console.log(`Deleting old file: ${path}`);
+      await unlink(path);
+    }),
   );
 
-  if ( totalSize <= MAX_FOLDER_SIZE ) {
+  if (totalSize <= MAX_FOLDER_SIZE) {
     return deletionPromises;
   }
 
   // Folder size is still too big - delete the oldest biggest files first
 
-  console.log( `Folder size exceeds limit. Current size: ${totalSize} bytes` );
+  console.log(`Folder size exceeds limit. Current size: ${totalSize} bytes`);
 
   // Filter out files that are to be kept (e.g. unsynced files)
-  let deletableFiles = fileDetails.filter( file => !filesToKeep.includes( file.name ) );
+  let deletableFiles = fileDetails.filter(file => !filesToKeep.includes(file.name));
 
   // Filter out files that are too new
   const now = Date.now();
   deletableFiles = deletableFiles.filter(
-    file => now - new Date( file.modifiedTime ).getTime() >= TOO_NEW_THRESHOLD,
+    file => now - new Date(file.modifiedTime).getTime() >= TOO_NEW_THRESHOLD,
   );
 
   // Sort files by size (descending) and modified time (ascending)
-  deletableFiles.sort( ( a, b ) => b.size - a.size || a.modifiedTime - b.modifiedTime );
+  deletableFiles.sort((a, b) => b.size - a.size || a.modifiedTime - b.modifiedTime);
 
   // Keep deleting files until we're below the max folder threshold
   let reducedSize = totalSize;
 
   const filesToDelete:string[] = [];
 
-  deletableFiles.forEach( file => {
-    if ( reducedSize <= MAX_FOLDER_SIZE ) return;
+  deletableFiles.forEach(file => {
+    if (reducedSize <= MAX_FOLDER_SIZE) return;
 
-    console.log( `Deleted: ${file.path} (${file.size} bytes)` );
+    console.log(`Deleted: ${file.path} (${file.size} bytes)`);
     reducedSize -= file.size;
-    filesToDelete.push( file.path );
-  } );
+    filesToDelete.push(file.path);
+  });
 
-  if ( reducedSize > MAX_FOLDER_SIZE ) {
-    console.warn( "Unable to reduce folder size below threshold with current rules." );
+  if (reducedSize > MAX_FOLDER_SIZE) {
+    console.warn("Unable to reduce folder size below threshold with current rules.");
   } else {
-    console.log( `Folder size is now under limit: ${reducedSize} bytes` );
+    console.log(`Folder size is now under limit: ${reducedSize} bytes`);
   }
 
   return Promise.all(
-    [deletionPromises, ...filesToDelete.map( async path => RNFS.unlink( path ) )],
+    [deletionPromises, ...filesToDelete.map(async path => RNFS.unlink(path))],
   );
 };
 

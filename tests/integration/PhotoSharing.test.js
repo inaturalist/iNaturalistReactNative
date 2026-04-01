@@ -5,18 +5,18 @@ import { renderApp } from "tests/helpers/render";
 
 const JPEG = "image/jpeg";
 
-const mockNavigate = jest.fn( );
+const mockNavigate = jest.fn();
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
-    useNavigation: ( ) => ( {
+    useNavigation: () => ({
       navigate: mockNavigate,
       addListener: mockNavigate,
-    } ),
+    }),
   };
-} );
+});
 
 const mockIOSPhoto = {
   mimeType: JPEG,
@@ -28,70 +28,70 @@ const mockAndroidPhoto = {
   data: "file://photo.jpg",
 };
 
-const setupShareMocks = ( ) => {
+const setupShareMocks = () => {
   const mockListeners = [];
 
-  ShareMenu.getInitialShare.mockImplementation( callback => {
+  ShareMenu.getInitialShare.mockImplementation(callback => {
     ShareMenu.__initialShareCallback = callback;
-  } );
+  });
 
-  ShareMenu.addNewShareListener.mockImplementation( callback => {
-    const listener = { callback, remove: jest.fn( ) };
-    mockListeners.push( listener );
+  ShareMenu.addNewShareListener.mockImplementation(callback => {
+    const listener = { callback, remove: jest.fn() };
+    mockListeners.push(listener);
     return listener;
-  } );
+  });
 
   return {
     simulateInitialShare: shareData => {
-      ShareMenu.__initialShareCallback?.( shareData );
+      ShareMenu.__initialShareCallback?.(shareData);
     },
     simulateNewShare: shareData => {
-      mockListeners.forEach( listener => listener.callback( shareData ) );
+      mockListeners.forEach(listener => listener.callback(shareData));
     },
-    reset: ( ) => {
+    reset: () => {
       mockListeners.length = 0;
       ShareMenu.__initialShareCallback = null;
     },
   };
 };
 
-describe( "Sharing photos into the app", ( ) => {
+describe("Sharing photos into the app", () => {
   let shareHelpers;
 
-  beforeEach( ( ) => {
-    shareHelpers = setupShareMocks( );
-  } );
+  beforeEach(() => {
+    shareHelpers = setupShareMocks();
+  });
 
-  afterEach( ( ) => {
-    shareHelpers.reset( );
+  afterEach(() => {
+    shareHelpers.reset();
     // test iOS as default, but test Android in a few specific tests
     Platform.OS = "ios";
-  } );
+  });
 
-  it( "should handle iOS photo share on app launch", async ( ) => {
-    renderApp( );
+  it("should handle iOS photo share on app launch", async () => {
+    renderApp();
 
-    await act( async ( ) => {
-      shareHelpers.simulateInitialShare( mockIOSPhoto );
-    } );
+    await act(async () => {
+      shareHelpers.simulateInitialShare(mockIOSPhoto);
+    });
 
-    expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
+    expect(mockNavigate).toHaveBeenCalledWith("NoBottomTabStackNavigator", {
       screen: "PhotoSharing",
-      params: { item: expect.objectContaining( { mimeType: "image/jpeg" } ) },
-    } );
-  } );
+      params: { item: expect.objectContaining({ mimeType: "image/jpeg" }) },
+    });
+  });
 
-  it( "should handle Android photo share on app launch", async ( ) => {
+  it("should handle Android photo share on app launch", async () => {
     Platform.OS = "android";
-    renderApp( );
+    renderApp();
 
-    await act( async ( ) => {
-      shareHelpers.simulateInitialShare( mockAndroidPhoto );
-    } );
+    await act(async () => {
+      shareHelpers.simulateInitialShare(mockAndroidPhoto);
+    });
 
-    expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
+    expect(mockNavigate).toHaveBeenCalledWith("NoBottomTabStackNavigator", {
       screen: "PhotoSharing",
-      params: { item: expect.objectContaining( { mimeType: "image/jpeg" } ) },
-    } );
-  } );
-} );
+      params: { item: expect.objectContaining({ mimeType: "image/jpeg" }) },
+    });
+  });
+});

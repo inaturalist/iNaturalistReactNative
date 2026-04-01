@@ -13,94 +13,94 @@ const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
   mockRealmIdentifier,
 );
-jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
-jest.mock( "providers/contexts", ( ) => {
-  const originalModule = jest.requireActual( "providers/contexts" );
+jest.mock("realmModels/index", () => mockRealmModelsIndex);
+jest.mock("providers/contexts", () => {
+  const originalModule = jest.requireActual("providers/contexts");
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      useRealm: () => global.mockRealms[mockRealmIdentifier],
+      useQuery: () => [],
     },
   };
-} );
-beforeAll( uniqueRealmBeforeAll );
-afterAll( uniqueRealmAfterAll );
+});
+beforeAll(uniqueRealmBeforeAll);
+afterAll(uniqueRealmAfterAll);
 // /UNIQUE REALM SETUP
 
-const mockObservation = factory( "LocalObservation", {
-  _created_at: faker.date.past( ),
+const mockObservation = factory("LocalObservation", {
+  _created_at: faker.date.past(),
   created_at: "2022-11-27T19:07:41-08:00",
   time_observed_at: "2023-12-14T21:07:41-09:30",
   observationPhotos: [
-    factory( "LocalObservationPhoto", {
+    factory("LocalObservationPhoto", {
       photo: {
-        id: faker.number.int( ),
-        attribution: faker.lorem.sentence( ),
+        id: faker.number.int(),
+        attribution: faker.lorem.sentence(),
         licenseCode: "cc-by-nc",
-        url: faker.image.url( ),
+        url: faker.image.url(),
       },
-    } ),
+    }),
   ],
-  taxon: factory( "LocalTaxon", {
-    name: faker.person.firstName( ),
+  taxon: factory("LocalTaxon", {
+    name: faker.person.firstName(),
     rank: "species",
     rank_level: 10,
-    preferred_common_name: faker.person.fullName( ),
+    preferred_common_name: faker.person.fullName(),
     defaultPhoto: {
-      id: faker.number.int( ),
-      attribution: faker.lorem.sentence( ),
+      id: faker.number.int(),
+      attribution: faker.lorem.sentence(),
       licenseCode: "cc-by-nc",
-      url: faker.image.url( ),
+      url: faker.image.url(),
     },
-  } ),
-  user: factory( "LocalUser", {
-    login: faker.internet.userName( ),
-    iconUrl: faker.image.url( ),
+  }),
+  user: factory("LocalUser", {
+    login: faker.internet.userName(),
+    iconUrl: faker.image.url(),
     locale: "en",
-  } ),
+  }),
   identifications: [],
-} );
+});
 
 const mockPush = jest.fn();
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
-    useNavigation: () => ( {
+    useNavigation: () => ({
       push: mockPush,
       setOptions: jest.fn(),
-    } ),
+    }),
   };
-} );
+});
 
-describe( "SavedMatch", ( ) => {
-  beforeEach( async ( ) => {
-    jest.clearAllMocks( );
-  } );
+describe("SavedMatch", () => {
+  beforeEach(async () => {
+    jest.clearAllMocks();
+  });
 
-  it( "should not show learn more button when offline", async ( ) => {
-    useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-    renderAppWithComponent( <SavedMatchContainer observation={mockObservation} /> );
-    const learnMoreButton = screen.queryByText( t( "LEARN-MORE-ABOUT-THIS-SPECIES" ) );
-    expect( learnMoreButton ).toBeFalsy( );
-  } );
+  it("should not show learn more button when offline", async () => {
+    useNetInfo.mockImplementation(() => ({ isConnected: false }));
+    renderAppWithComponent(<SavedMatchContainer observation={mockObservation} />);
+    const learnMoreButton = screen.queryByText(t("LEARN-MORE-ABOUT-THIS-SPECIES"));
+    expect(learnMoreButton).toBeFalsy();
+  });
 
-  it( "should not show map section for no latitude", async ( ) => {
-    renderAppWithComponent( <SavedMatchContainer observation={mockObservation} /> );
-    const mapSection = screen.queryByTestId( "MapSection" );
-    expect( mapSection ).toBeFalsy( );
-  } );
+  it("should not show map section for no latitude", async () => {
+    renderAppWithComponent(<SavedMatchContainer observation={mockObservation} />);
+    const mapSection = screen.queryByTestId("MapSection");
+    expect(mapSection).toBeFalsy();
+  });
 
-  const mockObservationWithLatitude = factory( "LocalObservation", {
-    latitude: faker.location.latitude( ),
-  } );
+  const mockObservationWithLatitude = factory("LocalObservation", {
+    latitude: faker.location.latitude(),
+  });
 
-  it( "should show map section when latitude is present", async ( ) => {
-    renderAppWithComponent( <SavedMatchContainer observation={mockObservationWithLatitude} /> );
-    const mapSection = screen.queryByTestId( "MapSection" );
-    expect( mapSection ).toBeTruthy( );
-  } );
-} );
+  it("should show map section when latitude is present", async () => {
+    renderAppWithComponent(<SavedMatchContainer observation={mockObservationWithLatitude} />);
+    const mapSection = screen.queryByTestId("MapSection");
+    expect(mapSection).toBeTruthy();
+  });
+});

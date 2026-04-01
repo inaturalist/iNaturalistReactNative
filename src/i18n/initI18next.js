@@ -26,17 +26,17 @@ import { zustandStorage } from "stores/useStore";
 // generate before building the app
 import loadTranslations, { SUPPORTED_LOCALES } from "./loadTranslations";
 
-function cleanLocaleName( locale ) {
-  return locale.replace( "_", "-" ).replace( /@.*/, "" );
+function cleanLocaleName(locale) {
+  return locale.replace("_", "-").replace(/@.*/, "");
 }
 
 export function getInatLocaleFromSystemLocale() {
-  const systemLocale = RNLocalize.getLocales( )?.[0]?.languageTag || "en";
-  const candidateLocale = cleanLocaleName( systemLocale );
+  const systemLocale = RNLocalize.getLocales()?.[0]?.languageTag || "en";
+  const candidateLocale = cleanLocaleName(systemLocale);
   let inatLocale = candidateLocale;
-  if ( !SUPPORTED_LOCALES.includes( candidateLocale ) ) {
-    const lang = candidateLocale.split( "-" )[0];
-    inatLocale = SUPPORTED_LOCALES.includes( lang )
+  if (!SUPPORTED_LOCALES.includes(candidateLocale)) {
+    const lang = candidateLocale.split("-")[0];
+    inatLocale = SUPPORTED_LOCALES.includes(lang)
       ? lang
       : "en";
   }
@@ -44,11 +44,11 @@ export function getInatLocaleFromSystemLocale() {
 }
 
 function getInatNextLocale() {
-  const currentLocale = zustandStorage.getItem( "currentLocale" );
-  return currentLocale || getInatLocaleFromSystemLocale( );
+  const currentLocale = zustandStorage.getItem("currentLocale");
+  return currentLocale || getInatLocaleFromSystemLocale();
 }
 
-const LOCALE = cleanLocaleName( getInatNextLocale( ) );
+const LOCALE = cleanLocaleName(getInatNextLocale());
 
 export const I18NEXT_CONFIG = {
   // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
@@ -67,44 +67,44 @@ export const I18NEXT_CONFIG = {
     fluentBundleOptions: {
       useIsolating: false,
       functions: {
-        VOWORCON: ( [txt] ) => (
-          "aeiou".indexOf( txt[0].toLowerCase( ) ) >= 0
+        VOWORCON: ([txt]) => (
+          "aeiou".indexOf(txt[0].toLowerCase()) >= 0
             ? "vow"
             : "con"
         ),
-        JOIN: ( args, opts = {} ) => args
-          .filter( Boolean )
-          .filter( s => typeof ( s ) === "string" )
-          .join( opts.separator ),
+        JOIN: (args, opts = {}) => args
+          .filter(Boolean)
+          .filter(s => typeof (s) === "string")
+          .join(opts.separator),
       },
     },
   },
   // All languages should fallback to English, some regional variants should
   // fall back to another region
   fallbackLng: code => {
-    if ( !code ) {
+    if (!code) {
       return ["en"];
     }
     const fallbacks = [];
-    if ( code.match( /^es-/ ) ) {
-      fallbacks.push( "es" );
-    } else if ( code.match( /^fr-/ ) ) {
-      fallbacks.push( "fr" );
-    } else if ( code.match( /^pt-/ ) ) {
-      fallbacks.push( "pt" );
+    if (code.match(/^es-/)) {
+      fallbacks.push("es");
+    } else if (code.match(/^fr-/)) {
+      fallbacks.push("fr");
+    } else if (code.match(/^pt-/)) {
+      fallbacks.push("pt");
     }
     return [...fallbacks, "en"];
   },
 };
 
-export default async function initI18next( config = {} ) {
+export default async function initI18next(config = {}) {
   // Initialize and configure i18next
   return i18next
-    .use( initReactI18next )
-    .use( Fluent )
-    .use( resourcesToBackend( ( locale, namespace, callback ) => {
+    .use(initReactI18next)
+    .use(Fluent)
+    .use(resourcesToBackend((locale, namespace, callback) => {
       // Note that we're not using i18next namespaces at present
-      callback( null, loadTranslations( locale ) );
-    } ) )
-    .init( { ...I18NEXT_CONFIG, ...config } );
+      callback(null, loadTranslations(locale));
+    }))
+    .init({ ...I18NEXT_CONFIG, ...config });
 }

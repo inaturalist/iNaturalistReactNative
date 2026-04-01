@@ -9,20 +9,20 @@ import SignUpForm from "./SignUpForm";
 const TARGET_NON_KEYBOARD_HEIGHT = 440;
 const IMAGE_STYLE = { opacity: 0.5 };
 
-const SignUp = ( ) => {
+const SignUp = () => {
   const {
     keyboardShown,
-  } = useKeyboardInfo( TARGET_NON_KEYBOARD_HEIGHT );
+  } = useKeyboardInfo(TARGET_NON_KEYBOARD_HEIGHT);
 
   const hideHeader = keyboardShown;
 
   return (
     <LoginSignUpWrapper
-      backgroundSource={require( "images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
+      backgroundSource={require("images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg")}
       imageStyle={IMAGE_STYLE}
     >
       <Header
-        headerText={t( "Join-a-global-community-for-nature" )}
+        headerText={t("Join-a-global-community-for-nature")}
         hideHeader={hideHeader}
       />
       <SignUpForm />

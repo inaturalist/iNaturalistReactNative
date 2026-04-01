@@ -26,11 +26,11 @@ interface ProjectListRouteParams {
   [name: string]: ProjectListParams;
 }
 
-const ProjectListContainer = ( ) => {
-  const navigation = useNavigation( );
-  const { params } = useRoute<RouteProp<ProjectListRouteParams, "ProjectList">>( );
+const ProjectListContainer = () => {
+  const navigation = useNavigation();
+  const { params } = useRoute<RouteProp<ProjectListRouteParams, "ProjectList">>();
   const { observationUuid, userId, userLogin } = params;
-  const { t } = useTranslation( );
+  const { t } = useTranslation();
 
   const { remoteObservation } = useRemoteObservation(
     observationUuid,
@@ -43,7 +43,7 @@ const ProjectListContainer = ( ) => {
   const nonTraditionalProjects = remoteObservation?.non_traditional_projects?.map(
     p => p.project,
   ) || [];
-  const observationProjects = traditionalProjects.concat( nonTraditionalProjects );
+  const observationProjects = traditionalProjects.concat(nonTraditionalProjects);
 
   const { data: userProjects, isLoading: userProjectsLoading } = useAuthenticatedQuery(
     ["fetchUserProjects", userId],
@@ -58,38 +58,38 @@ const ProjectListContainer = ( ) => {
     { enabled: !!userId },
   );
 
-  const headerOptions = useMemo( ( ) => {
-    if ( observationUuid ) {
-      if ( !remoteObservation ) return null;
-      const projectCount = ( remoteObservation.project_observations?.length || 0 )
-        + ( remoteObservation.non_traditional_projects?.length || 0 );
+  const headerOptions = useMemo(() => {
+    if (observationUuid) {
+      if (!remoteObservation) return null;
+      const projectCount = (remoteObservation.project_observations?.length || 0)
+        + (remoteObservation.non_traditional_projects?.length || 0);
       return {
-        headerTitle: t( "Observation" ),
-        headerSubtitle: t( "X-PROJECTS", { projectCount } ),
+        headerTitle: t("Observation"),
+        headerSubtitle: t("X-PROJECTS", { projectCount }),
       };
     }
-    if ( !userProjects ) return null;
+    if (!userProjects) return null;
     return {
       headerTitle: userLogin,
-      headerSubtitle: t( "JOINED-X-PROJECTS", { count: userProjects.length } ),
+      headerSubtitle: t("JOINED-X-PROJECTS", { count: userProjects.length }),
     };
-  }, [observationUuid, remoteObservation, userLogin, userProjects, t] );
+  }, [observationUuid, remoteObservation, userLogin, userProjects, t]);
 
   const projects: ApiProject[] = observationUuid
     ? observationProjects
-    : ( userProjects ?? [] );
+    : (userProjects ?? []);
 
   const isLoading = observationUuid
     ? !remoteObservation
     : userProjectsLoading;
 
-  useEffect( ( ) => {
-    if ( headerOptions ) {
-      navigation.setOptions( headerOptions );
+  useEffect(() => {
+    if (headerOptions) {
+      navigation.setOptions(headerOptions);
     }
-  }, [headerOptions, navigation] );
+  }, [headerOptions, navigation]);
 
-  if ( isLoading ) {
+  if (isLoading) {
     return (
       <ViewWrapper>
         <ActivityIndicator size={50} />
@@ -105,7 +105,7 @@ const ProjectListContainer = ( ) => {
         ListEmptyComponent={(
           <View className="self-center mt-5 p-4">
             <Body1 className="align-center text-center">
-              {t( "This-user-has-not-joined-any-projects" )}
+              {t("This-user-has-not-joined-any-projects")}
             </Body1>
           </View>
         )}

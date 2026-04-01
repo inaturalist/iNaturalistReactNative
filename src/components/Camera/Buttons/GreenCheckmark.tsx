@@ -8,20 +8,20 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   disabled?: boolean;
-  handleCheckmarkPress: ( _event: GestureResponderEvent ) => void;
+  handleCheckmarkPress: (_event: GestureResponderEvent) => void;
 }
 
-const GreenCheckmark = ( {
+const GreenCheckmark = ({
   disabled,
   handleCheckmarkPress,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   return (
     <INatIconButton
       onPress={handleCheckmarkPress}
-      accessibilityLabel={t( "View-suggestions" )}
-      accessibilityHint={t( "Shows-identification-suggestions" )}
+      accessibilityLabel={t("View-suggestions")}
+      accessibilityHint={t("Shows-identification-suggestions")}
       disabled={disabled}
       icon="checkmark-circle"
       color={colors.inatGreen}

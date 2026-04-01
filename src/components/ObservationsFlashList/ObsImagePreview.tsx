@@ -10,11 +10,11 @@ import colors from "styles/tailwindColors";
 
 import ObsImage from "./ObsImage";
 
-const ICON_DROP_SHADOW = getShadow( {
+const ICON_DROP_SHADOW = getShadow({
   offsetHeight: 1,
   shadowOpacity: 1,
   shadowRadius: 1,
-} );
+});
 
 interface Props extends PropsWithChildren {
   className?: string;
@@ -40,7 +40,7 @@ interface Props extends PropsWithChildren {
   hideGradientOverlay?: boolean;
 }
 
-const ObsImagePreview = ( {
+const ObsImagePreview = ({
   children,
   className,
   hasSound = false,
@@ -61,7 +61,7 @@ const ObsImagePreview = ( {
   white = false,
   width = "w-[62px]",
   hideGradientOverlay = false,
-}: Props ) => {
+}: Props) => {
   const borderRadius = isSmall
     ? "rounded-lg"
     : "rounded-2xl";
@@ -76,10 +76,10 @@ const ObsImagePreview = ( {
     width,
   ];
 
-  const renderPhotoCount = useCallback( ( ) => {
-    if ( obsPhotosCount <= 1 || hidePhotoCount ) return null;
+  const renderPhotoCount = useCallback(() => {
+    if (obsPhotosCount <= 1 || hidePhotoCount) return null;
 
-    if ( isSmall ) {
+    if (isSmall) {
       return (
         <View
           className={classNames(
@@ -117,10 +117,10 @@ const ObsImagePreview = ( {
     isMultiplePhotosTop,
     isSmall,
     obsPhotosCount,
-  ] );
+  ]);
 
-  const renderSelectable = useCallback( ( ) => {
-    if ( selectable ) {
+  const renderSelectable = useCallback(() => {
+    if (selectable) {
       return (
         <View
           className={classNames(
@@ -142,12 +142,12 @@ const ObsImagePreview = ( {
       );
     }
     return null;
-  }, [selectable, selected] );
+  }, [selectable, selected]);
 
-  const renderGradient = useCallback( ( ) => {
-    if ( hideGradientOverlay ) return null;
-    if ( isSmall ) return null;
-    if ( useShortGradient ) {
+  const renderGradient = useCallback(() => {
+    if (hideGradientOverlay) return null;
+    if (isSmall) return null;
+    if (useShortGradient) {
       return (
         <LinearGradient
           colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
@@ -165,12 +165,12 @@ const ObsImagePreview = ( {
         end={{ x: 0, y: 0.75 }}
       />
     );
-  }, [isSmall, useShortGradient, hideGradientOverlay] );
+  }, [isSmall, useShortGradient, hideGradientOverlay]);
 
-  const renderSoundIcon = useCallback( ( ) => {
-    if ( !hasSound ) return null;
+  const renderSoundIcon = useCallback(() => {
+    if (!hasSound) return null;
 
-    if ( isSmall ) {
+    if (isSmall) {
       return (
         <View
           className="absolute left-1 bottom-1"
@@ -183,24 +183,24 @@ const ObsImagePreview = ( {
 
     return (
       <View
-        className={classNames( "absolute left-0 top-0 p-1", {
+        className={classNames("absolute left-0 top-0 p-1", {
           "p-2": !isSmall,
-        } )}
+        })}
         style={ICON_DROP_SHADOW}
       >
         <INatIcon name="sound" color={colors.white} size={18} />
       </View>
     );
-  }, [hasSound, isSmall] );
+  }, [hasSound, isSmall]);
 
   let content;
 
-  if ( isSmall && ( obsPhotosCount === 0 && !source?.uri ) ) {
-    imageClassNames.push( "justify-center", "items-center", "border-2" );
-    if ( white ) imageClassNames.push( "border-white" );
+  if (isSmall && (obsPhotosCount === 0 && !source?.uri)) {
+    imageClassNames.push("justify-center", "items-center", "border-2");
+    if (white) imageClassNames.push("border-white");
   }
 
-  if ( isSmall && obsPhotosCount === 0 && hasSound ) {
+  if (isSmall && obsPhotosCount === 0 && hasSound) {
     content = <INatIcon name="sound" color={colors.darkGray} size={24} />;
   } else {
     content = (
@@ -217,10 +217,10 @@ const ObsImagePreview = ( {
               : 100
           }
         />
-        {renderGradient( )}
-        {renderSelectable( )}
-        {renderPhotoCount( )}
-        {renderSoundIcon( )}
+        {renderGradient()}
+        {renderSelectable()}
+        {renderPhotoCount()}
+        {renderSoundIcon()}
         {children}
       </>
     );
@@ -228,7 +228,7 @@ const ObsImagePreview = ( {
 
   return (
     <View
-      className={classNames( imageClassNames )}
+      className={classNames(imageClassNames)}
       style={style}
       testID={testID}
     >

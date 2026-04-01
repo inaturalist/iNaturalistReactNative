@@ -5,21 +5,21 @@ import Header from "./Header";
 import LoginForm from "./LoginForm";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
-const Login = ( ) => {
-  const renderLoginForm = useCallback( ( { scrollViewRef } ) => (
+const Login = () => {
+  const renderLoginForm = useCallback(({ scrollViewRef }) => (
     <>
       <Header
-        headerText={t( "A-global-community-for-nature" )}
+        headerText={t("A-global-community-for-nature")}
       />
       <LoginForm
         scrollViewRef={scrollViewRef}
       />
     </>
-  ), [] );
+  ), []);
 
   return (
     <LoginSignUpWrapper
-      backgroundSource={require( "images/background/toucan.jpg" )}
+      backgroundSource={require("images/background/toucan.jpg")}
     >
       {renderLoginForm}
     </LoginSignUpWrapper>

@@ -13,36 +13,36 @@ const useAuthenticatedInfiniteQuery = (
   queryFunction: Function,
   queryOptions: object = {},
 ): object => {
-  const route = useRoute( );
-  const currentUser = useCurrentUser( );
+  const route = useRoute();
+  const currentUser = useCurrentUser();
 
   // Use locale in case there is no user session
   const locale = i18n?.language ?? "en";
 
-  return useInfiniteQuery( {
+  return useInfiniteQuery({
     queryKey: [...queryKey, queryOptions.allowAnonymousJWT, currentUser],
     queryFn: async params => {
-      if ( !currentUser ) {
+      if (!currentUser) {
         params.locale = locale;
       }
       // logger.info( queryKey, "queryKey in useAuthenticatedInfiniteQuery" );
       // Note, getJWT() takes care of fetching a new token if the existing
       // one is expired. We *could* store the token in state with useState if
       // fetching from RNSInfo becomes a performance issue
-      const apiToken = await getJWT( queryOptions.allowAnonymousJWT );
+      const apiToken = await getJWT(queryOptions.allowAnonymousJWT);
       const options = {
         api_token: apiToken,
       };
-      return queryFunction( params, options );
+      return queryFunction(params, options);
     },
-    retry: ( failureCount, error ) => reactQueryRetry( failureCount, error, {
+    retry: (failureCount, error) => reactQueryRetry(failureCount, error, {
       queryKey,
       routeName: route?.name,
       routeParams: route?.params,
-    } ),
-    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
+    }),
+    retryDelay: (failureCount, error) => handleRetryDelay(failureCount, error),
     ...queryOptions,
-  } );
+  });
 };
 
 export default useAuthenticatedInfiniteQuery;

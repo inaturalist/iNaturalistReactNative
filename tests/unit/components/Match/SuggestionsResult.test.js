@@ -4,9 +4,9 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-describe( "SuggestionsResult", () => {
-  it( "renders and displays taxon name, image, and confidence", () => {
-    const apiTaxon = factory( "RemoteTaxon", {
+describe("SuggestionsResult", () => {
+  it("renders and displays taxon name, image, and confidence", () => {
+    const apiTaxon = factory("RemoteTaxon", {
       id: 745,
       name: "Silphium perfoliatum",
       preferred_common_name: "Cup Plant",
@@ -15,7 +15,7 @@ describe( "SuggestionsResult", () => {
       representative_photo: {
         url: "https://example.com/cupplant.jpg",
       },
-    } );
+    });
 
     renderComponent(
       <SuggestionsResult
@@ -25,17 +25,17 @@ describe( "SuggestionsResult", () => {
       />,
     );
 
-    expect( screen.getByText( "Cup Plant" ) ).toBeVisible();
-    expect( screen.getByText( "Silphium perfoliatum" ) ).toBeVisible();
-    expect( screen.getByText( "87% confidence" ) ).toBeVisible();
-    expect( screen.getByTestId( "SuggestionsResult.745.photo" ) ).toBeVisible();
-  } );
+    expect(screen.getByText("Cup Plant")).toBeVisible();
+    expect(screen.getByText("Silphium perfoliatum")).toBeVisible();
+    expect(screen.getByText("87% confidence")).toBeVisible();
+    expect(screen.getByTestId("SuggestionsResult.745.photo")).toBeVisible();
+  });
 
-  it( "handles non valid Realm taxon and returns null", () => {
-    const invalidTaxon = factory( "LocalTaxon", {
+  it("handles non valid Realm taxon and returns null", () => {
+    const invalidTaxon = factory("LocalTaxon", {
       id: 746,
       name: "Silphium laciniatum",
-    } );
+    });
 
     invalidTaxon.isValid = () => false;
 
@@ -47,12 +47,12 @@ describe( "SuggestionsResult", () => {
       />,
     );
 
-    expect( screen.queryByText( "Silphium laciniatum" ) ).toBeFalsy();
-  } );
+    expect(screen.queryByText("Silphium laciniatum")).toBeFalsy();
+  });
 
-  it( "calls handlePress when pressed", () => {
+  it("calls handlePress when pressed", () => {
     const mockHandlePress = jest.fn();
-    const taxon = factory( "RemoteTaxon", { id: 747 } );
+    const taxon = factory("RemoteTaxon", { id: 747 });
 
     renderComponent(
       <SuggestionsResult
@@ -63,15 +63,15 @@ describe( "SuggestionsResult", () => {
       />,
     );
 
-    const button = screen.getByTestId( "SuggestionsResult.747" );
-    fireEvent.press( button );
+    const button = screen.getByTestId("SuggestionsResult.747");
+    fireEvent.press(button);
 
-    expect( mockHandlePress ).toHaveBeenCalled();
-  } );
+    expect(mockHandlePress).toHaveBeenCalled();
+  });
 
-  it( "calls updateMaxHeight with measured height on layout", () => {
+  it("calls updateMaxHeight with measured height on layout", () => {
     const mockUpdateMaxHeight = jest.fn();
-    const taxon = factory( "RemoteTaxon", { id: 748 } );
+    const taxon = factory("RemoteTaxon", { id: 748 });
 
     renderComponent(
       <SuggestionsResult
@@ -82,15 +82,15 @@ describe( "SuggestionsResult", () => {
       />,
     );
 
-    const layoutView = screen.getByTestId( "SuggestionsResult.748" ).parent;
-    fireEvent( layoutView, "layout", {
+    const layoutView = screen.getByTestId("SuggestionsResult.748").parent;
+    fireEvent(layoutView, "layout", {
       nativeEvent: {
         layout: {
           height: 120,
         },
       },
-    } );
+    });
 
-    expect( mockUpdateMaxHeight ).toHaveBeenCalledWith( 120 );
-  } );
-} );
+    expect(mockUpdateMaxHeight).toHaveBeenCalledWith(120);
+  });
+});

@@ -8,19 +8,19 @@ interface Props {
   observationUUID: string;
 }
 
-const DQAButton = ( { observationUUID }: Props ) => {
-  const navigation = useNavigation( );
-  const currentUser = useCurrentUser( );
+const DQAButton = ({ observationUUID }: Props) => {
+  const navigation = useNavigation();
+  const currentUser = useCurrentUser();
 
-  if ( !currentUser ) {
+  if (!currentUser) {
     return null;
   }
   return (
     <Body3
       className="underline mt-[11px]"
-      onPress={() => navigation.navigate( "DataQualityAssessment", { observationUUID } )}
+      onPress={() => navigation.navigate("DataQualityAssessment", { observationUUID })}
     >
-      {t( "Data-Quality-Assessment" )}
+      {t("Data-Quality-Assessment")}
     </Body3>
   );
 };

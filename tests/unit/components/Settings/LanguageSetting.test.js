@@ -7,46 +7,46 @@ import useStore from "stores/useStore";
 import { makeResponse } from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const initialStoreState = useStore.getState( );
+const initialStoreState = useStore.getState();
 
-beforeAll( async ( ) => {
-  useStore.setState( initialStoreState, true );
+beforeAll(async () => {
+  useStore.setState(initialStoreState, true);
   // userEvent recommends fake timers
-  jest.useFakeTimers( );
-} );
+  jest.useFakeTimers();
+});
 
-beforeEach( ( ) => {
+beforeEach(() => {
   // reset the picker for each test
-  i18n.changeLanguage( "en" );
-} );
+  i18n.changeLanguage("en");
+});
 
-describe( "LanguageSetting", ( ) => {
-  it( "should display and allow user to change locales from web list", async ( ) => {
-    inatjs.translations.locales.mockResolvedValue( makeResponse( [{
+describe("LanguageSetting", () => {
+  it("should display and allow user to change locales from web list", async () => {
+    inatjs.translations.locales.mockResolvedValue(makeResponse([{
       language_in_locale: "Slovenský",
       locale: "sk",
     }, {
       language_in_locale: "Español (Colombia)",
       locale: "es-CO",
-    }] ) );
+    }]));
 
-    renderComponent( <LanguageSetting onChange={jest.fn( )} /> );
+    renderComponent(<LanguageSetting onChange={jest.fn()} />);
 
-    expect( i18n.language ).toEqual( "en" );
-    const changeLanguageButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
-    expect( changeLanguageButton ).toBeVisible( );
-    fireEvent.press( changeLanguageButton );
+    expect(i18n.language).toEqual("en");
+    const changeLanguageButton = await screen.findByText(/CHANGE APP LANGUAGE/);
+    expect(changeLanguageButton).toBeVisible();
+    fireEvent.press(changeLanguageButton);
 
-    const picker = await screen.findByTestId( "ReactNativePicker" );
-    expect( picker ).toBeVisible( );
+    const picker = await screen.findByTestId("ReactNativePicker");
+    expect(picker).toBeVisible();
 
-    expect( picker.props.selectedIndex ).toStrictEqual( 0 );
+    expect(picker.props.selectedIndex).toStrictEqual(0);
     // trigger a change to the UI, selecting the second element
-    fireEvent( picker, "onValueChange", "es-CO" );
-    expect( picker.props.selectedIndex ).toStrictEqual( 1 );
-    const confirmText = await screen.findByText( "CONFIRM" );
-    expect( confirmText ).toBeVisible( );
-    fireEvent.press( confirmText );
-    expect( i18n.language ).toEqual( "es-CO" );
-  } );
-} );
+    fireEvent(picker, "onValueChange", "es-CO");
+    expect(picker.props.selectedIndex).toStrictEqual(1);
+    const confirmText = await screen.findByText("CONFIRM");
+    expect(confirmText).toBeVisible();
+    fireEvent.press(confirmText);
+    expect(i18n.language).toEqual("es-CO");
+  });
+});

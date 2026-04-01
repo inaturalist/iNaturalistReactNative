@@ -19,7 +19,7 @@ type Props = {
   height?: number
 };
 
-const NavButton = ( {
+const NavButton = ({
   testID,
   size,
   icon,
@@ -30,7 +30,7 @@ const NavButton = ( {
   accessibilityHint,
   width = 44,
   height = 44,
-}: Props ): React.Node => {
+}: Props): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
     testID,
@@ -39,7 +39,7 @@ const NavButton = ( {
   };
 
   let iconComponent;
-  if ( userIconUri ) {
+  if (userIconUri) {
     iconComponent = (
       <View
         className="flex items-center justify-center"
@@ -48,7 +48,7 @@ const NavButton = ( {
         <UserIcon uri={userIconUri} active={active} />
       </View>
     );
-  } else if ( icon === "notifications-bell" ) {
+  } else if (icon === "notifications-bell") {
     iconComponent = (
       <NotificationsIconContainer
         icon={icon}

@@ -44,7 +44,7 @@ type Props = {
   uuid: string
 }
 
-const ObsDetails = ( {
+const ObsDetails = ({
   activityItems,
   addingActivityItem,
   belongsToCurrentUser,
@@ -63,24 +63,24 @@ const ObsDetails = ( {
   tabs,
   targetActivityItemID,
   uuid,
-}: Props ): Node => {
-  const scrollViewRef = useRef( );
+}: Props): Node => {
+  const scrollViewRef = useRef();
 
   const {
     setHeightOfContentAboveSection: setHeightOfContentAboveActivityTab,
     setOffsetToActivityItem,
-  } = useScrollToOffset( scrollViewRef );
+  } = useScrollToOffset(scrollViewRef);
 
   // If the user just added an activity item and we're waiting for it to load,
   // scroll to the bottom where it will be visible. Also provides immediate
   // feedback that the user's action had an effect
-  useEffect( ( ) => {
-    if ( addingActivityItem ) {
-      scrollViewRef?.current?.scrollToEnd( );
+  useEffect(() => {
+    if (addingActivityItem) {
+      scrollViewRef?.current?.scrollToEnd();
     }
-  }, [addingActivityItem] );
+  }, [addingActivityItem]);
 
-  const renderActivityTab = ( ) => (
+  const renderActivityTab = () => (
     <HideView show={showActivityTab}>
       <ActivityTab
         activityItems={activityItems}
@@ -94,7 +94,7 @@ const ObsDetails = ( {
     </HideView>
   );
 
-  const renderDetailsTab = ( ) => (
+  const renderDetailsTab = () => (
     <HideView noInitialRender show={!showActivityTab}>
       <DetailsTab
         currentUser={currentUser}
@@ -103,7 +103,7 @@ const ObsDetails = ( {
     </HideView>
   );
 
-  const renderHeaderRight = ( ) => (
+  const renderHeaderRight = () => (
     <ObsDetailsHeaderRight
       belongsToCurrentUser={belongsToCurrentUser}
       observationId={observation?.id}
@@ -147,12 +147,12 @@ const ObsDetails = ( {
           <View
             onLayout={event => {
               const { layout } = event.nativeEvent;
-              setHeightOfContentAboveActivityTab( layout );
+              setHeightOfContentAboveActivityTab(layout);
             }}
           />
           <View className="bg-white h-full">
-            {renderActivityTab( )}
-            {renderDetailsTab( )}
+            {renderActivityTab()}
+            {renderDetailsTab()}
             {addingActivityItem && (
               <View className="flex-row items-center justify-center p-10">
                 <ActivityIndicator size={50} />
@@ -168,7 +168,7 @@ const ObsDetails = ( {
           />
         )}
       </View>
-      {renderHeaderRight( )}
+      {renderHeaderRight()}
     </View>
   );
 
@@ -181,11 +181,11 @@ const ObsDetails = ( {
         scrollEventThrottle={16}
         endFillColor="white"
       >
-        {renderHeaderRight( )}
+        {renderHeaderRight()}
         <View
           onLayout={event => {
             const { layout } = event.nativeEvent;
-            setHeightOfContentAboveActivityTab( layout );
+            setHeightOfContentAboveActivityTab(layout);
           }}
         >
           <View>
@@ -208,8 +208,8 @@ const ObsDetails = ( {
           </View>
         </View>
         <View className="bg-white h-full">
-          {renderActivityTab( )}
-          {renderDetailsTab( )}
+          {renderActivityTab()}
+          {renderDetailsTab()}
           {addingActivityItem && (
             <View className="flex-row items-center justify-center p-10">
               <ActivityIndicator size={50} />

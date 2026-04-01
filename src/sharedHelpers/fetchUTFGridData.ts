@@ -12,23 +12,23 @@ const EXPANSION_PIXELS = 16;
 const TILE_SIZE = 256;
 const EMPTY_KEY = "";
 
-const decodeId = ( id: number ): number => {
+const decodeId = (id: number): number => {
   let decodedId = id;
-  if ( id >= 93 ) decodedId -= 1;
-  if ( id >= 35 ) decodedId -= 1;
+  if (id >= 93) decodedId -= 1;
+  if (id >= 35) decodedId -= 1;
   decodedId -= 32;
   return decodedId;
 };
 
-const getKeyForPixel = ( row: number, col: number, json: UTFGrid ): string => {
+const getKeyForPixel = (row: number, col: number, json: UTFGrid): string => {
   let id = 0;
 
-  if ( ( row >= 0 ) && ( col >= 0 )
-    && ( row < json.grid.length ) && ( col < json.grid.length ) ) {
-    id = json.grid[row].charCodeAt( col );
-    id = decodeId( id );
+  if ((row >= 0) && (col >= 0)
+    && (row < json.grid.length) && (col < json.grid.length)) {
+    id = json.grid[row].charCodeAt(col);
+    id = decodeId(id);
 
-    if ( id < 0 || id >= json.keys.length ) {
+    if (id < 0 || id >= json.keys.length) {
       id = 0;
     }
   }
@@ -43,33 +43,33 @@ const getKeyForPixelExpansive = (
   y: number,
   json: UTFGrid,
 ): string | null => {
-  if ( !json?.grid ) return null;
+  if (!json?.grid) return null;
   const factor = TILE_SIZE / json.grid.length;
 
   // Convert x/y to row/column, while making sure it's within the bounds of the grid
   const initialRow = Math.floor(
-    Math.min( Math.max( y / factor, 0 ), json.grid.length - 1 ),
+    Math.min(Math.max(y / factor, 0), json.grid.length - 1),
   );
   const initialCol = Math.floor(
-    Math.min( Math.max( x / factor, 0 ), json.grid.length - 1 ),
+    Math.min(Math.max(x / factor, 0), json.grid.length - 1),
   );
 
-  let key = getKeyForPixel( initialRow, initialCol, json );
-  if ( key !== EMPTY_KEY ) return key;
+  let key = getKeyForPixel(initialRow, initialCol, json);
+  if (key !== EMPTY_KEY) return key;
 
   // Search nearby pixels
 
   // Search up to EXPANSION_PIXELS pixels away from all directions -
   // Slowly expand the search grid around the current pixel
-  for ( let radius = 1; radius <= EXPANSION_PIXELS; radius += 1 ) {
-    for ( let row = initialRow - radius; row <= initialRow + radius; row += 1 ) {
-      for ( let col = initialCol - radius; col <= initialCol + radius; col += 1 ) {
-        if ( row !== initialRow - radius && row !== initialRow + radius
-          && col !== initialCol - radius && col !== initialCol + radius ) {
+  for (let radius = 1; radius <= EXPANSION_PIXELS; radius += 1) {
+    for (let row = initialRow - radius; row <= initialRow + radius; row += 1) {
+      for (let col = initialCol - radius; col <= initialCol + radius; col += 1) {
+        if (row !== initialRow - radius && row !== initialRow + radius
+          && col !== initialCol - radius && col !== initialCol + radius) {
           // Skip the iteration for points that are not on the perimeter of the current square
         } else {
-          key = getKeyForPixel( row, col, json );
-          if ( key !== EMPTY_KEY ) {
+          key = getKeyForPixel(row, col, json);
+          if (key !== EMPTY_KEY) {
             return key;
           }
         }
@@ -88,12 +88,12 @@ const getDataForPixel = (
   y: number,
   json: UTFGrid | null | undefined,
 ): unknown | null => {
-  if ( !json || !json?.data || !json?.grid ) return null;
+  if (!json || !json?.data || !json?.grid) return null;
 
-  const key = getKeyForPixelExpansive( x, y, json );
+  const key = getKeyForPixelExpansive(x, y, json);
 
   // Non existent key
-  if ( key === null || !json.data[key] ) { return null; }
+  if (key === null || !json.data[key]) { return null; }
 
   return json.data[key];
 };

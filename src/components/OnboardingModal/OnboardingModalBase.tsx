@@ -10,11 +10,11 @@ interface Props extends PropsWithChildren {
   closeModal: () => void;
 }
 
-const OnboardingModalBase = ( {
+const OnboardingModalBase = ({
   closeModal,
   children,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   return (
     <ViewWrapper wrapperClassName="bg-white/0">
       <StatusBar barStyle="light-content" backgroundColor="black" />
@@ -32,8 +32,8 @@ const OnboardingModalBase = ( {
             color={colors?.white}
             size={19}
             onPress={closeModal}
-            accessibilityLabel={t( "Close" )}
-            accessibilityHint={t( "Closes-explanation" )}
+            accessibilityLabel={t("Close")}
+            accessibilityHint={t("Closes-explanation")}
           />
         </View>
 

@@ -22,14 +22,14 @@ interface Props extends PropsWithChildren {
   white: boolean;
   layout: "horizontal" | "vertical";
   needsEdit?: boolean;
-  onPress: ( ) => void;
+  onPress: () => void;
   progress: number;
   uniqueKey: string;
   queued: boolean;
   obsStatus: ReactComponent;
 }
 
-const UploadStatus = ( {
+const UploadStatus = ({
   white = false,
   layout,
   needsEdit,
@@ -38,39 +38,39 @@ const UploadStatus = ( {
   uniqueKey,
   queued,
   obsStatus,
-}: Props ) => {
+}: Props) => {
   const { isDefaultMode } = useLayoutPrefs();
-  const { t } = useTranslation( );
-  const completeColor = ( white
+  const { t } = useTranslation();
+  const completeColor = (white
     ? colors.white
-    : colors.inatGreen ) as string;
-  const color = ( white
+    : colors.inatGreen) as string;
+  const color = (white
     ? colors.white
-    : colors.darkGray ) as string;
+    : colors.darkGray) as string;
 
-  const accessibilityLabelText = ( ) => {
-    if ( progress < 0.05 ) {
-      return t( "Saved-Observation" );
+  const accessibilityLabelText = () => {
+    if (progress < 0.05) {
+      return t("Saved-Observation");
     }
-    if ( progress < 1 ) {
-      return t( "Upload-Progress", { uploadProgress: progress * 100 } );
+    if (progress < 1) {
+      return t("Upload-Progress", { uploadProgress: progress * 100 });
     }
-    return t( "Upload-Complete" );
+    return t("Upload-Complete");
   };
 
   const wrapperClassName = layout === "vertical"
-    ? classnames( "items-center justify-center w-[49px]" )
+    ? classnames("items-center justify-center w-[49px]")
     : "w-[44px]";
 
-  const displayUploadStatus = ( ) => {
-    if ( progress === 0 && !queued ) {
+  const displayUploadStatus = () => {
+    if (progress === 0 && !queued) {
       return (
         <View className={wrapperClassName}>
           <INatIconButton
             accessibilityLabel={
               needsEdit
-                ? t( "Edit-Observation" )
-                : t( "Start-upload" )
+                ? t("Edit-Observation")
+                : t("Start-upload")
             }
             testID={
               needsEdit
@@ -81,7 +81,7 @@ const UploadStatus = ( {
           >
             <CircleDots
               color={color}
-              className={classnames( iconClasses )}
+              className={classnames(iconClasses)}
             >
               <INatIcon
                 name={
@@ -98,13 +98,13 @@ const UploadStatus = ( {
       );
     }
 
-    if ( progress === 0 && queued ) {
+    if (progress === 0 && queued) {
       return (
         <View className={wrapperClassName}>
           <CircleDots
             animated
             color={color}
-            className={classnames( iconClasses )}
+            className={classnames(iconClasses)}
           >
             <INatIcon
               name="upload-arrow"
@@ -116,7 +116,7 @@ const UploadStatus = ( {
       );
     }
 
-    if ( progress < 1 ) {
+    if (progress < 1) {
       return (
         <View className={wrapperClassName}>
           <UploadProgressIcon
@@ -129,7 +129,7 @@ const UploadStatus = ( {
       );
     }
 
-    if ( !isDefaultMode && layout === "vertical" ) {
+    if (!isDefaultMode && layout === "vertical") {
       return (
         <FadeOutFadeInIcon
           uniqueKey={uniqueKey}
@@ -163,7 +163,7 @@ const UploadStatus = ( {
   return (
     <View
       accessible
-      accessibilityLabel={accessibilityLabelText( )}
+      accessibilityLabel={accessibilityLabelText()}
       className={classnames(
         "justify-center",
         layout === "horizontal"
@@ -171,7 +171,7 @@ const UploadStatus = ( {
           : "h-[65px]",
       )}
     >
-      {displayUploadStatus( )}
+      {displayUploadStatus()}
     </View>
   );
 };

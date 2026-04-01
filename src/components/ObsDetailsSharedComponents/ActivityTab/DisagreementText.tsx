@@ -22,10 +22,10 @@ interface User {
   prefers_scientific_name_first?: boolean;
 }
 
-const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
-  const currentUser = useCurrentUser( ) as User;
+const DisagreementText = ({ taxon, username, withdrawn }: Props) => {
+  const currentUser = useCurrentUser() as User;
 
-  const showTaxonName = useCallback( ( fontComponent: FC ) => (
+  const showTaxonName = useCallback((fontComponent: FC) => (
     <DisplayTaxonName
       layout="horizontal"
       prefersCommonNames={currentUser?.prefers_common_names}
@@ -41,7 +41,7 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
     currentUser?.prefers_scientific_name_first,
     taxon,
     withdrawn,
-  ] );
+  ]);
 
   return (
     <Body4
@@ -55,7 +55,7 @@ const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
         i18nKey="Disagreement"
         values={{ username }}
         components={[
-          showTaxonName( Body4 ),
+          showTaxonName(Body4),
         ]}
       />
     </Body4>

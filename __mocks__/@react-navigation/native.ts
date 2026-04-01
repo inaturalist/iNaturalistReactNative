@@ -5,16 +5,16 @@
 // helper around components with useFocusEffect
 // https://reactnavigation.org/docs/testing/#best-practices
 
-const actualNav = jest.requireActual( "@react-navigation/native" );
+const actualNav = jest.requireActual("@react-navigation/native");
 
-const useRoute = jest.fn( ( ) => ( { params: {} } ) );
+const useRoute = jest.fn(() => ({ params: {} }));
 
-const useNavigation = ( ) => ( {
-  addListener: jest.fn( ),
-  canGoBack: jest.fn( ( ) => true ),
-  goBack: jest.fn( ),
-  setOptions: jest.fn( ),
-} );
+const useNavigation = () => ({
+  addListener: jest.fn(),
+  canGoBack: jest.fn(() => true),
+  goBack: jest.fn(),
+  setOptions: jest.fn(),
+});
 
 module.exports = {
   ...actualNav,

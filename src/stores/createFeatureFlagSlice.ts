@@ -46,18 +46,18 @@ export interface FeatureFlagSlice {
    *
    * DO NOT call this anywhere except from the Feature Flag management in the "Debug" screen
    */
-  setFeatureFlagDebugOverride: ( featureFlagKey: FeatureFlag, override: boolean | null ) => void;
+  setFeatureFlagDebugOverride: (featureFlagKey: FeatureFlag, override: boolean | null) => void;
 }
 
-const createFeatureFlagSlice: StateCreator<FeatureFlagSlice> = set => ( {
+const createFeatureFlagSlice: StateCreator<FeatureFlagSlice> = set => ({
   ...DEFAULT_STATE,
-  setFeatureFlagDebugOverride: ( featureFlagKey, override ) => set( state => ( {
+  setFeatureFlagDebugOverride: (featureFlagKey, override) => set(state => ({
     ...state,
     featureFlagDebugOverrides: {
       ...state.featureFlagDebugOverrides,
       [featureFlagKey]: override,
     },
-  } ) ),
-} );
+  })),
+});
 
 export default createFeatureFlagSlice;

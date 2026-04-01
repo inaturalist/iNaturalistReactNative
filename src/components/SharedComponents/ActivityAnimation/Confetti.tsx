@@ -31,9 +31,9 @@ type AnimatedElementProps = PropsWithChildren<{
 }>
 
 const AnimatedElement = memo(
-  ( {
+  ({
     index, count, children, duration, animation,
-  }: AnimatedElementProps ) => {
+  }: AnimatedElementProps) => {
     const {
       start, end, rotation, startTime, endTime, scale,
     } = getAnimationConfigForElement(
@@ -42,64 +42,64 @@ const AnimatedElement = memo(
       count,
     );
     const { width, height } = useWindowDimensions();
-    const style = useAnimatedStyle( () => ( {
+    const style = useAnimatedStyle(() => ({
       opacity: 0.8,
       position: "absolute",
       transform: [
         {
           translateX: interpolate(
-            animation.get( ),
+            animation.get(),
             [startTime, endTime],
             [start.x * width, end.x * width],
           ),
         },
         {
           translateY: interpolate(
-            animation.get( ),
+            animation.get(),
             [startTime, endTime],
-            [start.y * height, ( end.y * height ) / 2],
+            [start.y * height, (end.y * height) / 2],
           ),
         },
         {
-          rotate: `${interpolate( animation.get( ), [startTime, endTime], [0, rotation] )}rad`,
+          rotate: `${interpolate(animation.get(), [startTime, endTime], [0, rotation])}rad`,
         },
         {
           scale,
         },
       ],
-    } ) );
+    }));
     return <Animated.View style={style}>{children}</Animated.View>;
   },
 );
 
-const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
-  const animation = useSharedValue( 0 );
-  const [autoDestroy, setAutoDestroy] = useState( false );
+const Confetti = ({ count, duration = 5000 }: ConfettiProps) => {
+  const animation = useSharedValue(0);
+  const [autoDestroy, setAutoDestroy] = useState(false);
 
-  useEffect( () => {
-    animation.set( withTiming(
+  useEffect(() => {
+    animation.set(withTiming(
       1,
       {
         duration,
         easing: Easing.linear,
       },
       finished => {
-        if ( finished ) {
-          scheduleOnRN( setAutoDestroy, true );
+        if (finished) {
+          scheduleOnRN(setAutoDestroy, true);
         }
       },
-    ) );
+    ));
   }, [
     animation,
     duration,
-  ] );
+  ]);
 
-  const fadeOutBeforeDestroy = useSharedValue( 300 / duration );
-  const stylez = useAnimatedStyle( () => ( {
-    opacity: interpolate( animation.get( ), [1 - fadeOutBeforeDestroy.get( ), 1], [1, 0] ),
-  } ) );
+  const fadeOutBeforeDestroy = useSharedValue(300 / duration);
+  const stylez = useAnimatedStyle(() => ({
+    opacity: interpolate(animation.get(), [1 - fadeOutBeforeDestroy.get(), 1], [1, 0]),
+  }));
 
-  if ( autoDestroy ) {
+  if (autoDestroy) {
     return null;
   }
 
@@ -122,7 +122,7 @@ const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
 
   return (
     <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFillObject, stylez]}>
-      {[...Array( count ).keys()].map( i => {
+      {[...Array(count).keys()].map(i => {
         // With the index loop through the iconicTaxonIcons multiple times
         const randomIconicTaxon = iconicTaxonIcons[i % iconicTaxonIcons.length];
         return (
@@ -149,15 +149,15 @@ const Confetti = ( { count, duration = 5000 }: ConfettiProps ) => {
             </View>
           </AnimatedElement>
         );
-      } )}
+      })}
     </Animated.View>
   );
 };
 
 // Helpers
 
-function clamp( value: number, lowerBound: number, upperBound: number ) {
-  return Math.min( Math.max( lowerBound, value ), upperBound );
+function clamp(value: number, lowerBound: number, upperBound: number) {
+  return Math.min(Math.max(lowerBound, value), upperBound);
 }
 
 function getRandomStartEndCoordinates() {
@@ -167,34 +167,34 @@ function getRandomStartEndCoordinates() {
   // be on the opposite side of the screen from the start x
   // We want a range between [0, 1] because we will
   // multiply this with the screen width/height.
-  const x = randomNumberInRange( 0, 1 );
-  const y = randomNumberInRange( 1, 1.3 );
+  const x = randomNumberInRange(0, 1);
+  const y = randomNumberInRange(1, 1.3);
   // y -> -x
-  return { start: { x, y: 0 }, end: { x: randomNumberInRange( 0, 1.5 ) - x, y } };
+  return { start: { x, y: 0 }, end: { x: randomNumberInRange(0, 1.5) - x, y } };
 }
 
-function randomNumberInRange( min: number, max: number ) {
-  return Math.random() * ( max - min ) + min;
+function randomNumberInRange(min: number, max: number) {
+  return Math.random() * (max - min) + min;
 }
 
-function getAnimationConfigForElement( duration: number, index: number, count: number ) {
+function getAnimationConfigForElement(duration: number, index: number, count: number) {
   // In a nutshell, to constrain the duration
   // of each element and also to ensure that it is evenly
   // distributing the elements across the duration [0, 1]
   const minDuration = duration / 4;
-  const maxDuration = clamp( 2000, minDuration, duration * 0.7 );
+  const maxDuration = clamp(2000, minDuration, duration * 0.7);
   const minDurationFraction = minDuration / duration;
   const maxDurationFraction = maxDuration / duration;
   // Distribute the start times evenly across the duration, based on index and count
   // between [0, 1 - maxDurationFraction]
-  const startTime = ( index / count ) * ( 1 - maxDurationFraction );
-  const animationDuration = randomNumberInRange( minDurationFraction, maxDurationFraction );
+  const startTime = (index / count) * (1 - maxDurationFraction);
+  const animationDuration = randomNumberInRange(minDurationFraction, maxDurationFraction);
   return {
     ...getRandomStartEndCoordinates(),
     startTime, // from [0, .5]
-    endTime: clamp( startTime + animationDuration, 0, 1 ), // from [startTime, 1]:
-    rotation: randomNumberInRange( 0, 1 ) * Math.PI, // max 2PI (360deg)
-    scale: randomNumberInRange( 0.7, 2 ),
+    endTime: clamp(startTime + animationDuration, 0, 1), // from [startTime, 1]:
+    rotation: randomNumberInRange(0, 1) * Math.PI, // max 2PI (360deg)
+    scale: randomNumberInRange(0.7, 2),
   };
 }
 

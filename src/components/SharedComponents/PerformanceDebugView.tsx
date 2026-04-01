@@ -16,16 +16,16 @@ interface PerformanceDebugViewProps {
   refreshInterval?: number | null;
 }
 
-const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ( {
+const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ({
   showItemCountMetrics = true,
   showListMetrics = true,
   showScrollMetrics = true,
   position = "bottom-left",
   className = "",
   refreshInterval = 1000,
-} ) => {
-  const { isDebug } = useDebugMode( );
-  const [, setRefreshCounter] = useState( 0 );
+}) => {
+  const { isDebug } = useDebugMode();
+  const [, setRefreshCounter] = useState(0);
   const listMetrics = flashListTracker.getSummary();
 
   // make sure these values aren't undefined when initializing to avoid
@@ -47,18 +47,18 @@ const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ( {
     "bottom-right": "bottom-[280px] right-5",
   };
 
-  useEffect( () => {
-    if ( isDebug && refreshInterval !== null ) {
-      const interval = setInterval( () => {
-        setRefreshCounter( prev => prev + 1 );
-      }, refreshInterval );
+  useEffect(() => {
+    if (isDebug && refreshInterval !== null) {
+      const interval = setInterval(() => {
+        setRefreshCounter(prev => prev + 1);
+      }, refreshInterval);
 
-      return ( ) => clearInterval( interval );
+      return () => clearInterval(interval);
     }
-    return ( ) => undefined;
-  }, [refreshInterval, isDebug] );
+    return () => undefined;
+  }, [refreshInterval, isDebug]);
 
-  if ( !isDebug ) {
+  if (!isDebug) {
     return null;
   }
 

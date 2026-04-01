@@ -40,7 +40,7 @@ type Props = {
   isSimpleObsStatus?: boolean
 };
 
-const ObsListItem = ( {
+const ObsListItem = ({
   currentUser,
   explore = false,
   hideMetadata,
@@ -53,10 +53,10 @@ const ObsListItem = ( {
   hideObsUploadStatus,
   hideObsStatus = false,
   isSimpleObsStatus,
-}: Props ): Node => {
+}: Props): Node => {
   const { t } = useTranslation();
-  const uploadStatus = useStore( state => state.uploadStatus );
-  const { isDebug } = useDebugMode( );
+  const uploadStatus = useStore(state => state.uploadStatus);
+  const { isDebug } = useDebugMode();
 
   // made an API change so we're no longer storing user for every observation in realm,
   // because we already know all observations belong to the logged in user. so we need
@@ -73,9 +73,9 @@ const ObsListItem = ( {
     && observation.missing_basics
   );
 
-  const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
+  const qualityGrade = checkCamelAndSnakeCase(observation, "qualityGrade");
 
-  const displayTaxonName = useMemo( ( ) => (
+  const displayTaxonName = useMemo(() => (
     <DisplayTaxonName
       taxon={observation?.taxon}
       keyBase={observation?.uuid}
@@ -87,7 +87,7 @@ const ObsListItem = ( {
     currentUser?.prefers_scientific_name_first,
     observation?.taxon,
     observation?.uuid,
-  ] );
+  ]);
 
   return (
     <View
@@ -98,12 +98,12 @@ const ObsListItem = ( {
         <ObsImagePreview
           source={{
             uri: Photo.displayLocalOrRemoteSquarePhoto(
-              photoFromObservation( observation ),
+              photoFromObservation(observation),
             ),
           }}
-          obsPhotosCount={photoCountFromObservation( observation )}
+          obsPhotosCount={photoCountFromObservation(observation)}
           hidePhotoCount={missingBasics}
-          hasSound={observationHasSound( observation )}
+          hasSound={observationHasSound(observation)}
           opaque={!!currentUser && unsynced}
           isSmall
           iconicTaxonName={observation.taxon?.iconic_taxon_name}
@@ -144,7 +144,7 @@ const ObsListItem = ( {
         )}
         {!hideRGLabel && qualityGrade === "research" && (
           <Heading6 className="mt-[10px] text-inatGreen">
-            {t( "RESEARCH-GRADE--quality-grade" )}
+            {t("RESEARCH-GRADE--quality-grade")}
           </Heading6>
         )}
       </View>

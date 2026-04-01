@@ -9,7 +9,7 @@ import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
 import FollowButton from "./FollowButton";
 
-const logger = log.extend( "FollowButtonContainer" );
+const logger = log.extend("FollowButtonContainer");
 
 type Props = {
   currentUser: Object,
@@ -20,82 +20,82 @@ type Props = {
   userId: number,
 };
 
-const FollowButtonContainer = ( {
+const FollowButtonContainer = ({
   currentUser,
   refetchRelationship,
   relationship,
   setShowLoginSheet,
   setShowUnfollowSheet,
   userId,
-}: Props ): Node => {
-  const [loading, setLoading] = useState( false );
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const following = relationship?.following;
 
   const { mutate: createRelationshipsMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => createRelationships( params, optsWithAuth ),
+    (params, optsWithAuth) => createRelationships(params, optsWithAuth),
     {
       onSuccess: () => {
         refetchRelationship();
-        setLoading( false );
+        setLoading(false);
       },
       onError: error => {
-        setLoading( false );
-        logger.error( error );
-        Alert.alert( t( "Something-went-wrong" ) );
+        setLoading(false);
+        logger.error(error);
+        Alert.alert(t("Something-went-wrong"));
       },
     },
   );
 
   const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
+    (params, optsWithAuth) => updateRelationships(params, optsWithAuth),
     {
       onSuccess: () => {
         refetchRelationship();
-        setLoading( false );
+        setLoading(false);
       },
       onError: error => {
-        setLoading( false );
-        logger.error( error );
-        Alert.alert( t( "Something-went-wrong" ) );
+        setLoading(false);
+        logger.error(error);
+        Alert.alert(t("Something-went-wrong"));
       },
     },
   );
 
   const follow = () => {
-    if ( relationship ) {
-      updateRelationshipsMutate( {
+    if (relationship) {
+      updateRelationshipsMutate({
         id: relationship?.id,
         relationship: {
           following: true,
         },
-      } );
+      });
     } else {
-      createRelationshipsMutate( {
+      createRelationshipsMutate({
         relationship: {
           friend_id: userId,
           following: true,
         },
-      } );
+      });
     }
   };
 
   const followUser = () => {
-    if ( !currentUser ) {
-      setShowLoginSheet( true );
+    if (!currentUser) {
+      setShowLoginSheet(true);
       return;
     }
-    setLoading( true );
+    setLoading(true);
     follow();
   };
 
-  const unfollowUser = ( ) => {
-    if ( !currentUser ) {
-      setShowLoginSheet( true );
+  const unfollowUser = () => {
+    if (!currentUser) {
+      setShowLoginSheet(true);
       return;
     }
-    setShowUnfollowSheet( true );
+    setShowUnfollowSheet(true);
   };
 
   return (

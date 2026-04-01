@@ -43,26 +43,26 @@ interface Props {
   onClose: () => void;
   testID?: string;
 }
-const PermissionGate = ( {
+const PermissionGate = ({
   requestPermission,
   grantStatus,
   icon,
-  title = t( "Grant-Permission-title" ),
-  titleDenied = t( "Please-Grant-Permission" ),
+  title = t("Grant-Permission-title"),
+  titleDenied = t("Please-Grant-Permission"),
   body,
   body2,
-  blockedPrompt = t( "Youve-denied-permission-prompt" ),
-  buttonText = t( "GRANT-PERMISSION" ),
-  image = require( "images/background/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
+  blockedPrompt = t("Youve-denied-permission-prompt"),
+  buttonText = t("GRANT-PERMISSION"),
+  image = require("images/background/bart-zimny-W5XTTLpk1-I-unsplash.jpg"),
   onClose,
   testID,
-}: Props ) => {
-  const [isLargeFontScale, setIsLargeFontScale] = useState( false );
+}: Props) => {
+  const [isLargeFontScale, setIsLargeFontScale] = useState(false);
 
-  DeviceInfo.getFontScale().then( fontScale => {
-    if ( fontScale > 1.4 ) setIsLargeFontScale( true );
-    else setIsLargeFontScale( false );
-  } );
+  DeviceInfo.getFontScale().then(fontScale => {
+    if (fontScale > 1.4) setIsLargeFontScale(true);
+    else setIsLargeFontScale(false);
+  });
 
   return (
     <ViewWrapper wrapperClassName="bg-black" testID={testID}>
@@ -81,9 +81,9 @@ const PermissionGate = ( {
           testID="close-permission-gate"
           icon="close"
           color={colors.white}
-          onPress={() => onClose( )}
+          onPress={() => onClose()}
           className="absolute top-2 right-2 z-10"
-          accessibilityLabel={t( "Close-permission-request-screen" )}
+          accessibilityLabel={t("Close-permission-request-screen")}
         />
         <View
           className={classnames(
@@ -135,8 +135,8 @@ const PermissionGate = ( {
             ? (
               <Button
                 level="focus"
-                onPress={( ) => Linking.openSettings( )}
-                text={t( "OPEN-SETTINGS" )}
+                onPress={() => Linking.openSettings()}
+                text={t("OPEN-SETTINGS")}
                 className="w-full mt-10"
               />
             )

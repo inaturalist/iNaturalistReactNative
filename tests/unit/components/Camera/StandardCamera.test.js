@@ -7,9 +7,9 @@ import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-jest.mock( "components/MediaViewer/MediaViewerModal", ( ) => jest.fn( ( ) => null ) );
+jest.mock("components/MediaViewer/MediaViewerModal", () => jest.fn(() => null));
 
-const initialStoreState = useStore.getState( );
+const initialStoreState = useStore.getState();
 
 const mockPhotoUris = [
   "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
@@ -17,77 +17,77 @@ const mockPhotoUris = [
   "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
 ];
 
-const mockObservation = factory( "RemoteObservation", {
+const mockObservation = factory("RemoteObservation", {
   observationPhotos: [
-    factory( "RemoteObservationPhoto", {
-      photo: factory( "RemotePhoto", {
+    factory("RemoteObservationPhoto", {
+      photo: factory("RemotePhoto", {
         url: mockPhotoUris[0],
-      } ),
-    } ),
-    factory( "RemoteObservationPhoto", {
-      photo: factory( "RemotePhoto", {
+      }),
+    }),
+    factory("RemoteObservationPhoto", {
+      photo: factory("RemotePhoto", {
         url: mockPhotoUris[1],
-      } ),
-    } ),
-    factory( "RemoteObservationPhoto", {
-      photo: factory( "RemotePhoto", {
+      }),
+    }),
+    factory("RemoteObservationPhoto", {
+      photo: factory("RemotePhoto", {
         url: mockPhotoUris[2],
-      } ),
-    } ),
+      }),
+    }),
   ],
-} );
+});
 
-const renderCamera = ( ) => renderComponent(
+const renderCamera = () => renderComponent(
   <StandardCamera
     camera={{}}
     device={{}}
-    setNewPhotoUris={jest.fn( )}
+    setNewPhotoUris={jest.fn()}
     newPhotoUris={[]}
   />,
 );
 
-beforeAll( async () => {
-  useStore.setState( initialStoreState, true );
-} );
+beforeAll(async () => {
+  useStore.setState(initialStoreState, true);
+});
 
-describe( "StandardCamera", ( ) => {
-  beforeEach( ( ) => {
-    useStore.setState( {
+describe("StandardCamera", () => {
+  beforeEach(() => {
+    useStore.setState({
       currentObservation: mockObservation,
       observations: [mockObservation],
-    } );
-  } );
-  it( "deletes a photo on long press", async ( ) => {
-    renderCamera( );
-    const { cameraUris } = useStore.getState( );
+    });
+  });
+  it("deletes a photo on long press", async () => {
+    renderCamera();
+    const { cameraUris } = useStore.getState();
     const photoImage = screen.getByTestId(
       `PhotoCarousel.displayPhoto.${cameraUris[2]}`,
     );
     const predeletedPhoto = screen.queryByTestId(
       `PhotoCarousel.displayPhoto.${cameraUris[2]}`,
     );
-    expect( predeletedPhoto ).toBeVisible( );
+    expect(predeletedPhoto).toBeVisible();
 
-    fireEvent( photoImage, "onLongPress" );
+    fireEvent(photoImage, "onLongPress");
     const deleteMode = screen.getByTestId(
       `PhotoCarousel.deletePhoto.${cameraUris[2]}`,
     );
-    await waitFor( ( ) => {
-      expect( deleteMode ).toBeVisible( );
-    } );
-    fireEvent.press( deleteMode );
+    await waitFor(() => {
+      expect(deleteMode).toBeVisible();
+    });
+    fireEvent.press(deleteMode);
 
-    renderCamera( );
+    renderCamera();
 
     const undeletedPhoto = screen.getByTestId(
       `PhotoCarousel.displayPhoto.${cameraUris[1]}`,
     );
-    expect( undeletedPhoto ).toBeVisible( );
+    expect(undeletedPhoto).toBeVisible();
     const deletedPhoto = screen.queryByTestId(
       `PhotoCarousel.displayPhoto.${cameraUris[2]}`,
     );
-    await waitFor( ( ) => {
-      expect( deletedPhoto ).toBeFalsy( );
-    } );
-  } );
-} );
+    await waitFor(() => {
+      expect(deletedPhoto).toBeFalsy();
+    });
+  });
+});

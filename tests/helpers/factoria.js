@@ -4,12 +4,12 @@
 // `function`` keyword here so that `this` refers to the actual factoria
 // object and not the global scope
 // eslint-disable-next-line import/prefer-default-export
-export function toJSON( ) {
+export function toJSON() {
   const json = {};
-  Object.keys( this ).forEach( key => {
-    if ( typeof ( this[key] ) !== "function" ) {
+  Object.keys(this).forEach(key => {
+    if (typeof (this[key]) !== "function") {
       json[key] = this[key];
     }
-  } );
+  });
   return json;
 }

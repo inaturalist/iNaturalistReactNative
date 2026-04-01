@@ -3,9 +3,9 @@ import OnboardingCarousel from "components/Onboarding/OnboardingCarousel";
 import type { OnboardingStackParamList } from "navigation/types";
 import React from "react";
 
-const Stack = createNativeStackNavigator<OnboardingStackParamList>( );
+const Stack = createNativeStackNavigator<OnboardingStackParamList>();
 
-const OnboardingStackNavigator = ( ) => (
+const OnboardingStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen
       name="Onboarding"

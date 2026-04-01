@@ -27,15 +27,15 @@ import ExploreV2 from "./ExploreV2";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
 import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 
-const RootExploreContainerWithContext = ( ): Node => {
-  const navigation = useNavigation( );
-  const { isConnected } = useNetInfo( );
-  const currentUser = useCurrentUser( );
-  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
-  const rootExploreView = useStore( state => state.rootExploreView );
-  const setRootExploreView = useStore( state => state.setRootExploreView );
-  const rootStoredParams = useStore( state => state.rootStoredParams );
-  const setRootStoredParams = useStore( state => state.setRootStoredParams );
+const RootExploreContainerWithContext = (): Node => {
+  const navigation = useNavigation();
+  const { isConnected } = useNetInfo();
+  const currentUser = useCurrentUser();
+  const exploreV2Enabled = useFeatureFlag(FeatureFlag.ExploreV2Enabled);
+  const rootExploreView = useStore(state => state.rootExploreView);
+  const setRootExploreView = useStore(state => state.setRootExploreView);
+  const rootStoredParams = useStore(state => state.rootStoredParams);
+  const setRootStoredParams = useStore(state => state.setRootStoredParams);
 
   const {
     hasPermissions: hasLocationPermissions,
@@ -43,90 +43,90 @@ const RootExploreContainerWithContext = ( ): Node => {
     requestPermissions: requestLocationPermissions,
     hasBlockedPermissions: hasBlockedLocationPermissions,
     checkPermissions,
-  } = useLocationPermission( );
+  } = useLocationPermission();
   const previousHasLocationPermissions = useRef();
 
   const {
     state, dispatch, makeSnapshot, defaultExploreLocation,
-  } = useExplore( );
+  } = useExplore();
 
-  const [showFiltersModal, setShowFiltersModal] = useState( false );
+  const [showFiltersModal, setShowFiltersModal] = useState(false);
 
-  const [canFetch, setCanFetch] = useState( false );
+  const [canFetch, setCanFetch] = useState(false);
 
-  useEffect( () => {
+  useEffect(() => {
     async function locationPermissionsChanged() {
-      if ( hasLocationPermissions && !previousHasLocationPermissions.current
-        && state.placeMode === PLACE_MODE.NEARBY && !state.lat ) {
+      if (hasLocationPermissions && !previousHasLocationPermissions.current
+        && state.placeMode === PLACE_MODE.NEARBY && !state.lat) {
         const exploreLocation = await defaultExploreLocation();
-        dispatch( {
+        dispatch({
           type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
           exploreLocation,
-        } );
+        });
       }
 
       previousHasLocationPermissions.current = hasLocationPermissions;
     }
 
     locationPermissionsChanged();
-  }, [defaultExploreLocation, dispatch, hasLocationPermissions, state] );
+  }, [defaultExploreLocation, dispatch, hasLocationPermissions, state]);
 
-  useEffect( () => {
-    if ( state.placeMode === PLACE_MODE.NEARBY ) {
+  useEffect(() => {
+    if (state.placeMode === PLACE_MODE.NEARBY) {
       checkPermissions();
     }
-  }, [checkPermissions, state] );
+  }, [checkPermissions, state]);
 
-  const updateLocation = useCallback( async ( place: Object ) => {
+  const updateLocation = useCallback(async (place: Object) => {
     checkPermissions();
-    if ( place === "worldwide" ) {
-      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
-      dispatch( {
+    if (place === "worldwide") {
+      dispatch({ type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE });
+      dispatch({
         type: EXPLORE_ACTION.SET_PLACE,
         placeId: null,
-      } );
-    } else if ( place === "nearby" ) {
-      const exploreLocation = await defaultExploreLocation( );
+      });
+    } else if (place === "nearby") {
+      const exploreLocation = await defaultExploreLocation();
       // exploreLocation has a placeMode already
       // dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
-      dispatch( {
+      dispatch({
         type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
         exploreLocation,
-      } );
+      });
     } else {
-      navigation.setParams( { place } );
-      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE } );
-      dispatch( {
+      navigation.setParams({ place });
+      dispatch({ type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE });
+      dispatch({
         type: EXPLORE_ACTION.SET_PLACE,
         place,
         placeId: place?.id,
         placeGuess: place?.display_name,
-      } );
+      });
     }
-  }, [checkPermissions, defaultExploreLocation, dispatch, navigation] );
+  }, [checkPermissions, defaultExploreLocation, dispatch, navigation]);
 
   // Object | null
-  const updateUser = ( user: Object, exclude ) => {
-    if ( exclude ) {
-      dispatch( {
+  const updateUser = (user: Object, exclude) => {
+    if (exclude) {
+      dispatch({
         type: EXPLORE_ACTION.EXCLUDE_USER,
         excludeUser: user,
-      } );
+      });
     } else {
-      dispatch( {
+      dispatch({
         type: EXPLORE_ACTION.SET_USER,
         user,
         userId: user?.id,
-      } );
+      });
     }
   };
 
-  const updateProject = ( project: Object ) => {
-    dispatch( {
+  const updateProject = (project: Object) => {
+    dispatch({
       type: EXPLORE_ACTION.SET_PROJECT,
       project,
       projectId: project?.id,
-    } );
+    });
   };
 
   const filteredParams = mapParamsToAPI(
@@ -145,72 +145,72 @@ const RootExploreContainerWithContext = ( ): Node => {
     isFetching: isFetchingHeaderCount,
     handleUpdateCount,
     setIsFetching: setIsFetchingHeaderCount,
-  } = useExploreHeaderCount( );
+  } = useExploreHeaderCount();
 
-  const closeFiltersModal = ( ) => {
+  const closeFiltersModal = () => {
     checkPermissions();
-    setShowFiltersModal( false );
+    setShowFiltersModal(false);
   };
 
-  const openFiltersModal = ( ) => {
-    setShowFiltersModal( true );
-    makeSnapshot( );
+  const openFiltersModal = () => {
+    setShowFiltersModal(true);
+    makeSnapshot();
   };
 
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "focus", ( ) => {
-      const storedState = Object.keys( rootStoredParams ).length > 0 || false;
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      const storedState = Object.keys(rootStoredParams).length > 0 || false;
 
-      if ( storedState ) {
-        dispatch( { type: EXPLORE_ACTION.USE_STORED_STATE, storedState: rootStoredParams } );
+      if (storedState) {
+        dispatch({ type: EXPLORE_ACTION.USE_STORED_STATE, storedState: rootStoredParams });
       }
-    } );
+    });
 
     return unsubscribe;
-  }, [navigation, dispatch, rootStoredParams] );
+  }, [navigation, dispatch, rootStoredParams]);
 
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "blur", ( ) => {
-      setRootStoredParams( state );
-    } );
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", () => {
+      setRootStoredParams(state);
+    });
 
     return unsubscribe;
-  }, [navigation, setRootStoredParams, state] );
+  }, [navigation, setRootStoredParams, state]);
 
-  useEffect( () => {
-    if ( state.placeMode === PLACE_MODE.NEARBY
+  useEffect(() => {
+    if (state.placeMode === PLACE_MODE.NEARBY
         && hasLocationPermissions
-        && state.lat === undefined ) {
-      updateLocation( "nearby" );
+        && state.lat === undefined) {
+      updateLocation("nearby");
     }
   }, [
     updateLocation,
     hasLocationPermissions,
     state.placeMode,
-    state.lat] );
+    state.lat]);
 
-  useEffect( () => {
-    if ( hasBlockedLocationPermissions && state.placeMode === PLACE_MODE.NEARBY ) {
-      updateLocation( "worldwide" );
+  useEffect(() => {
+    if (hasBlockedLocationPermissions && state.placeMode === PLACE_MODE.NEARBY) {
+      updateLocation("worldwide");
     }
-  }, [hasBlockedLocationPermissions, state.placeMode, updateLocation] );
+  }, [hasBlockedLocationPermissions, state.placeMode, updateLocation]);
 
   // Subviews need the ability to imperatively start fetching, e.g. when the
   // user switches from species to obs view
-  const startFetching = useCallback( ( ) => {
-    if ( hasLocationPermissions || state?.placeMode !== PLACE_MODE.NEARBY ) {
-      setIsFetchingHeaderCount( true );
-      setCanFetch( true );
+  const startFetching = useCallback(() => {
+    if (hasLocationPermissions || state?.placeMode !== PLACE_MODE.NEARBY) {
+      setIsFetchingHeaderCount(true);
+      setCanFetch(true);
     }
   }, [
     hasLocationPermissions,
     setIsFetchingHeaderCount,
     state?.placeMode,
-  ] );
+  ]);
 
-  useEffect( ( ) => {
-    startFetching( );
-  }, [startFetching] );
+  useEffect(() => {
+    startFetching();
+  }, [startFetching]);
 
   return (
     <>
@@ -222,7 +222,7 @@ const RootExploreContainerWithContext = ( ): Node => {
             count={count}
             hideBackButton
             filterByIconicTaxonUnknown={
-              () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
+              () => dispatch({ type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN })
             }
             currentExploreView={rootExploreView}
             setCurrentExploreView={setRootExploreView}
@@ -232,7 +232,7 @@ const RootExploreContainerWithContext = ( ): Node => {
             openFiltersModal={openFiltersModal}
             queryParams={queryParams}
             showFiltersModal={showFiltersModal}
-            updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
+            updateTaxon={taxon => dispatch({ type: EXPLORE_ACTION.CHANGE_TAXON, taxon })}
             updateLocation={updateLocation}
             updateUser={updateUser}
             updateProject={updateProject}
@@ -256,12 +256,12 @@ const RootExploreContainerWithContext = ( ): Node => {
             requestLocationPermissions={requestLocationPermissions}
           />
         )}
-      {renderPermissionsGate( {
-        onPermissionGranted: async ( ) => {
-          await updateLocation( "nearby" );
-          startFetching( );
+      {renderPermissionsGate({
+        onPermissionGranted: async () => {
+          await updateLocation("nearby");
+          startFetching();
         },
-      } )}
+      })}
     </>
   );
 };

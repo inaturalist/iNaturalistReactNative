@@ -13,17 +13,17 @@ interface Props extends PropsWithChildren {
   emptyItemHeight: number;
 }
 
-const FlashListEmptyWrapper = ( {
+const FlashListEmptyWrapper = ({
   children,
   containerClassName,
   headerHeight: HEADER_HEIGHT,
   emptyItemHeight: EMPTY_ITEM_HEIGHT,
-}: Props ) => {
-  const insets = useSafeAreaInsets( );
-  const { height } = useWindowDimensions( );
+}: Props) => {
+  const insets = useSafeAreaInsets();
+  const { height } = useWindowDimensions();
 
   const outerViewHeight = (
-    height + insets.top - HEADER_HEIGHT - FOOTER_HEIGHT - ( EMPTY_ITEM_HEIGHT / 2 )
+    height + insets.top - HEADER_HEIGHT - FOOTER_HEIGHT - (EMPTY_ITEM_HEIGHT / 2)
   ) * 0.5;
 
   return (
@@ -40,7 +40,7 @@ const FlashListEmptyWrapper = ( {
       )}
       style={{ height: outerViewHeight }}
     >
-      <View className={classnames( "top-[50%]" )}>
+      <View className={classnames("top-[50%]")}>
         {children}
       </View>
     </View>

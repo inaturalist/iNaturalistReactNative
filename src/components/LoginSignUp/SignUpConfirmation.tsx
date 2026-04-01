@@ -6,12 +6,12 @@ import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 import SignUpConfirmationForm from "./SignUpConfirmationForm";
 
-const SignUpConfirmation = ( ) => (
-  <LoginSignUpWrapper backgroundSource={require( "images/background/plants.jpg" )}>
+const SignUpConfirmation = () => (
+  <LoginSignUpWrapper backgroundSource={require("images/background/plants.jpg")}>
     <ScrollView
       keyboardShouldPersistTaps="always"
     >
-      <Header headerText={t( "Join-a-global-community-for-nature" )} />
+      <Header headerText={t("Join-a-global-community-for-nature")} />
       <SignUpConfirmationForm />
     </ScrollView>
   </LoginSignUpWrapper>

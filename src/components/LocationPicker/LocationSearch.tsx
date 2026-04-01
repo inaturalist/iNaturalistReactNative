@@ -12,7 +12,7 @@ import { Keyboard } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( );
+const DROP_SHADOW = getShadow();
 
 interface Place {
   id: string;
@@ -23,29 +23,29 @@ interface Place {
 }
 interface Props {
   locationName: string;
-  updateLocationName: ( _text: string ) => void;
-  selectPlaceResult: ( _place: Place ) => void;
+  updateLocationName: (_text: string) => void;
+  selectPlaceResult: (_place: Place) => void;
   hidePlaceResults: boolean;
 }
 
-const LocationSearch = ( {
+const LocationSearch = ({
   locationName = "", updateLocationName, selectPlaceResult, hidePlaceResults,
-}: Props ) => {
-  const queryClient = useQueryClient( );
-  const locationInput = useRef<TextInput>( undefined );
+}: Props) => {
+  const queryClient = useQueryClient();
+  const locationInput = useRef<TextInput>(undefined);
 
   // this seems necessary for clearing the cache between searches
-  queryClient.invalidateQueries( { queryKey: ["fetchSearchResults"] } );
+  queryClient.invalidateQueries({ queryKey: ["fetchSearchResults"] });
 
   const {
     data: placeResults,
   } = useAuthenticatedQuery(
     ["fetchSearchResults", locationName],
-    ( optsWithAuth: ApiOpts ) => fetchSearchResults( {
+    (optsWithAuth: ApiOpts) => fetchSearchResults({
       q: locationName,
       sources: "places",
       fields: "place,place.display_name,place.point_geojson",
-    }, optsWithAuth ),
+    }, optsWithAuth),
   );
 
   return (
@@ -55,8 +55,8 @@ const LocationSearch = ( {
         handleTextChange={locationText => {
           // only update location name when a user is typing,
           // not when a user selects a location from the dropdown
-          if ( locationInput?.current?.isFocused( ) ) {
-            updateLocationName( locationText );
+          if (locationInput?.current?.isFocused()) {
+            updateLocationName(locationText);
           }
         }}
         value={locationName}
@@ -69,19 +69,19 @@ const LocationSearch = ( {
         className="absolute top-[65px] right-[26px] left-[26px] bg-white rounded-lg z-100"
         style={DROP_SHADOW}
       >
-        {!hidePlaceResults && placeResults?.map( ( place: Place ) => (
+        {!hidePlaceResults && placeResults?.map((place: Place) => (
           <Pressable
             accessibilityRole="button"
             key={place.id}
             className="p-2 border-[0.5px] border-lightGray"
-            onPress={( ) => {
-              selectPlaceResult( place );
-              Keyboard.dismiss( );
+            onPress={() => {
+              selectPlaceResult(place);
+              Keyboard.dismiss();
             }}
           >
             <Body3>{place.display_name}</Body3>
           </Pressable>
-        ) )}
+        ))}
       </View>
     </>
   );

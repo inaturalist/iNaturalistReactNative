@@ -15,28 +15,28 @@ const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
   mockRealmIdentifier,
 );
-jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
-jest.mock( "providers/contexts", ( ) => {
-  const originalModule = jest.requireActual( "providers/contexts" );
+jest.mock("realmModels/index", () => mockRealmModelsIndex);
+jest.mock("providers/contexts", () => {
+  const originalModule = jest.requireActual("providers/contexts");
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      useRealm: () => global.mockRealms[mockRealmIdentifier],
+      useQuery: () => [],
     },
   };
-} );
-beforeAll( uniqueRealmBeforeAll );
-afterAll( uniqueRealmAfterAll );
+});
+beforeAll(uniqueRealmBeforeAll);
+afterAll(uniqueRealmAfterAll);
 // /UNIQUE REALM SETUP
 
-const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
-  iconUrl: faker.image.url( ),
+const mockUser = factory("LocalUser", {
+  login: faker.internet.userName(),
+  iconUrl: faker.image.url(),
   locale: "en",
-} );
+});
 
 // const mockSpanishUser = factory( "LocalUser", {
 //   login: faker.internet.userName( ),
@@ -44,28 +44,28 @@ const mockUser = factory( "LocalUser", {
 //   locale: "es"
 // } );
 
-beforeEach( ( ) => {
-  setStoreStateLayout( {
+beforeEach(() => {
+  setStoreStateLayout({
     isDefaultMode: false,
     isAllAddObsOptionsMode: true,
-  } );
-} );
+  });
+});
 
-describe( "MyObservations", ( ) => {
-  describe( "localization for current user", ( ) => {
-    afterEach( async ( ) => {
-      signOut( { realm: global.mockRealms[__filename] } );
-    } );
-    it( "should be English by default", async ( ) => {
-      expect( mockUser.locale ).toEqual( "en" );
-      await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-      renderAppWithComponent( <MyObservationsContainer /> );
-      await waitFor( ( ) => {
+describe("MyObservations", () => {
+  describe("localization for current user", () => {
+    afterEach(async () => {
+      signOut({ realm: global.mockRealms[__filename] });
+    });
+    it("should be English by default", async () => {
+      expect(mockUser.locale).toEqual("en");
+      await signIn(mockUser, { realm: global.mockRealms[__filename] });
+      renderAppWithComponent(<MyObservationsContainer />);
+      await waitFor(() => {
         // since we haven't loaded any observations in here, user will see the empty screen
         // after logging in
-        expect( screen.getByText( /Use iNaturalist to identify any living thing/ ) ).toBeTruthy( );
-      } );
-    } );
+        expect(screen.getByText(/Use iNaturalist to identify any living thing/)).toBeTruthy();
+      });
+    });
 
     // 20240730 - amanda - hiding these since we're not soft launching with internationalization
 
@@ -101,5 +101,5 @@ describe( "MyObservations", ( ) => {
     //     expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
     //   }
     // );
-  } );
-} );
+  });
+});

@@ -32,7 +32,7 @@ type Props = {
   showStatus?: boolean,
 }
 
-const ActivityItem = ( {
+const ActivityItem = ({
   currentUserId,
   isFirstDisplay,
   isConnected,
@@ -45,9 +45,9 @@ const ActivityItem = ( {
   belongsToCurrentUser,
   showExplainerText = false,
   showStatus,
-}: Props ): Node => {
-  const navigation = useNavigation( );
-  const route = useRoute( );
+}: Props): Node => {
+  const navigation = useNavigation();
+  const route = useRoute();
   const { taxon, user, disagreement } = item;
   const isCurrent = item.current !== undefined
     ? item.current
@@ -62,18 +62,18 @@ const ActivityItem = ( {
     && isFirstDisplay
     && currentUserId;
 
-  const navToTaxonDetails = ( ) => (
-    navigation.navigate( {
+  const navToTaxonDetails = () => (
+    navigation.navigate({
       // Ensure button mashing doesn't open multiple TaxonDetails instances
       key: `${route.key}-ActivityItem-TaxonDetails-${taxon?.id}`,
       name: "TaxonDetails",
       params: { id: taxon?.id },
-    } )
+    })
   );
 
   // we're doing this filtering directly in useRemoteObservation and useLocalObservation
   // to make sure we're not displaying hidden content, but this is an extra safeguard
-  if ( isHidden ) {
+  if (isHidden) {
     return null;
   }
 
@@ -95,21 +95,21 @@ const ActivityItem = ( {
             <DisplayTaxon
               taxon={taxon}
               handlePress={navToTaxonDetails}
-              accessibilityHint={t( "Navigates-to-taxon-details" )}
+              accessibilityHint={t("Navigates-to-taxon-details")}
               withdrawn={idWithdrawn}
             />
             { showAgreeButton && (
               <INatIconButton
                 testID={`ActivityItem.AgreeIdButton.${item.taxon.id}`}
-                onPress={( ) => openAgreeWithIdSheet( item.taxon )}
+                onPress={() => openAgreeWithIdSheet(item.taxon)}
                 icon="id-agree"
                 size={33}
-                accessibilityLabel={t( "Agree" )}
+                accessibilityLabel={t("Agree")}
               />
             )}
           </View>
         )}
-        { !isEmpty( item?.body ) && (
+        { !isEmpty(item?.body) && (
           <View className="flex-row">
             <UserText text={item.body} />
           </View>

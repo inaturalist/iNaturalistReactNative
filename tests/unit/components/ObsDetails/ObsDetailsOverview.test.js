@@ -5,14 +5,14 @@ import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
-const mockTaxon = factory( "RemoteTaxon", {
-  name: faker.person.firstName( ),
+const mockTaxon = factory("RemoteTaxon", {
+  name: faker.person.firstName(),
   rank: "genus",
-  preferred_common_name: faker.person.fullName( ),
-} );
+  preferred_common_name: faker.person.fullName(),
+});
 
-describe( "ObsDetailsOverview", () => {
-  it( "displays unknown text if no taxon", async ( ) => {
+describe("ObsDetailsOverview", () => {
+  it("displays unknown text if no taxon", async () => {
     renderComponent(
       <ObsDetailsOverview
         observation={{
@@ -21,11 +21,11 @@ describe( "ObsDetailsOverview", () => {
       />,
     );
 
-    const unknownText = screen.getByText( /Unknown/ );
-    expect( unknownText ).toBeVisible( );
-  } );
+    const unknownText = screen.getByText(/Unknown/);
+    expect(unknownText).toBeVisible();
+  });
 
-  it( "displays taxon", async ( ) => {
+  it("displays taxon", async () => {
     renderComponent(
       <ObsDetailsOverview
         observation={{
@@ -34,7 +34,7 @@ describe( "ObsDetailsOverview", () => {
       />,
     );
 
-    const taxonName = screen.getByText( mockTaxon.name );
-    expect( taxonName ).toBeVisible( );
-  } );
-} );
+    const taxonName = screen.getByText(mockTaxon.name);
+    expect(taxonName).toBeVisible();
+  });
+});

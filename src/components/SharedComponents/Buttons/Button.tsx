@@ -18,7 +18,7 @@ interface ButtonProps {
   iconPosition?: string;
   level?: string;
   loading?: boolean;
-  onPress: ( _event?: GestureResponderEvent ) => void;
+  onPress: (_event?: GestureResponderEvent) => void;
   testID?: string;
   text: string;
   dropdown?: boolean;
@@ -27,7 +27,7 @@ interface ButtonProps {
   preventMultipleTaps?: boolean;
 }
 
-const setStyles = ( {
+const setStyles = ({
   className,
   disabled,
   forceDark,
@@ -41,7 +41,7 @@ const setStyles = ( {
   isFocus: boolean;
   isPrimary: boolean;
   isWarning: boolean;
-} ) => {
+}) => {
   const buttonClasses = [
     "max-w-[500px]",
     "active:opacity-75",
@@ -60,74 +60,74 @@ const setStyles = ( {
       : "text-white",
   ];
 
-  if ( className ) {
-    buttonClasses.push( className );
+  if (className) {
+    buttonClasses.push(className);
   }
 
-  if ( isWarning ) {
-    buttonClasses.push( disabled
+  if (isWarning) {
+    buttonClasses.push(disabled
       ? "bg-warningRedDisabled"
-      : "bg-warningRed" );
-  } else if ( isPrimary ) {
-    if ( forceDark ) {
-      buttonClasses.push( disabled
+      : "bg-warningRed");
+  } else if (isPrimary) {
+    if (forceDark) {
+      buttonClasses.push(disabled
         ? "bg-mediumGray"
-        : "bg-white" );
-      textClasses.push( disabled
+        : "bg-white");
+      textClasses.push(disabled
         ? "text-black/50"
-        : "text-black" );
+        : "text-black");
     } else {
-      buttonClasses.push( disabled
+      buttonClasses.push(disabled
         ? "bg-darkGrayDisabled"
-        : "bg-darkGray" );
-      textClasses.push( disabled
+        : "bg-darkGray");
+      textClasses.push(disabled
         ? "text-white/50"
-        : "text-white" );
+        : "text-white");
     }
-  } else if ( isFocus ) {
-    if ( forceDark ) {
-      buttonClasses.push( disabled
+  } else if (isFocus) {
+    if (forceDark) {
+      buttonClasses.push(disabled
         ? "bg-inatGreenDisabledDark"
-        : "bg-inatGreen" );
+        : "bg-inatGreen");
     } else {
-      buttonClasses.push( disabled
+      buttonClasses.push(disabled
         ? "bg-inatGreenDisabled"
-        : "bg-inatGreen" );
+        : "bg-inatGreen");
     }
   } else {
-    buttonClasses.push( "border border-[3px]" );
-    buttonClasses.push( disabled
+    buttonClasses.push("border border-[3px]");
+    buttonClasses.push(disabled
       ? "border-darkGrayDisabled"
-      : "border-darkGray bg-white" );
-    textClasses.push( disabled
+      : "border-darkGray bg-white");
+    textClasses.push(disabled
       ? "text-darkGrayDisabled"
-      : "text-darkGray" );
+      : "text-darkGray");
   }
 
   return { buttonClasses, textClasses };
 };
 
-const activityIndicatorColor = ( {
+const activityIndicatorColor = ({
   isPrimary, isWarning, isFocus,
 }: {
   isPrimary: boolean;
   isWarning: boolean;
   isFocus: boolean;
-} ) => {
-  if ( isPrimary ) {
+}) => {
+  if (isPrimary) {
     return colors.white;
   }
-  if ( isFocus ) {
+  if (isFocus) {
     return colors.white;
   }
-  if ( isWarning ) {
+  if (isWarning) {
     return colors.white;
   }
   // Default color of ActivityIndicator is primary anyways, but we need to return something
   return colors.darkGray;
 };
 
-const Button = ( {
+const Button = ({
   accessibilityHint,
   accessibilityLabel,
   accessibilityRole,
@@ -146,9 +146,9 @@ const Button = ( {
   maxFontSizeMultiplier = 1.5,
   debounceTime = 300,
   preventMultipleTaps = true,
-}: ButtonProps ) => {
-  const [isProcessing, setIsProcessing] = useState( false );
-  const onPressRef = useRef( onPress );
+}: ButtonProps) => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const onPressRef = useRef(onPress);
 
   onPressRef.current = onPress;
 
@@ -156,36 +156,36 @@ const Button = ( {
   const isWarning = level === "warning";
   const isFocus = level === "focus";
   const isNeutral = !isPrimary && !isWarning && !isFocus;
-  const { buttonClasses, textClasses } = setStyles( {
+  const { buttonClasses, textClasses } = setStyles({
     className,
     disabled,
     forceDark,
     isFocus,
     isPrimary,
     isWarning,
-  } );
+  });
 
-  const handlePress = ( event?: GestureResponderEvent ) => {
-    if ( !preventMultipleTaps ) {
-      return onPressRef.current( event );
+  const handlePress = (event?: GestureResponderEvent) => {
+    if (!preventMultipleTaps) {
+      return onPressRef.current(event);
     }
 
-    setIsProcessing( true );
-    onPressRef.current( event );
+    setIsProcessing(true);
+    onPressRef.current(event);
 
-    setTimeout( ( ) => {
-      setIsProcessing( false );
-    }, debounceTime );
+    setTimeout(() => {
+      setIsProcessing(false);
+    }, debounceTime);
     return null;
   };
 
-  const isDisabled = disabled || ( preventMultipleTaps && isProcessing );
+  const isDisabled = disabled || (preventMultipleTaps && isProcessing);
 
   return (
     <Pressable
       style={style}
       onPress={handlePress}
-      className={classnames( buttonClasses )}
+      className={classnames(buttonClasses)}
       disabled={isDisabled}
       testID={testID}
       // has no accessibilityLabel prop because then the button text is read as label
@@ -199,26 +199,26 @@ const Button = ( {
           size={18}
           className="mr-3 absolute right-0"
           color={!isNeutral
-            ? activityIndicatorColor( {
+            ? activityIndicatorColor({
               isPrimary, isWarning, isFocus,
-            } )
+            })
             : undefined}
         />
       )}
-      {( icon && iconPosition === "left" ) && (
+      {(icon && iconPosition === "left") && (
         <View className="mr-2">
           {icon}
         </View>
       )}
       <Heading4
-        className={classnames( textClasses )}
+        className={classnames(textClasses)}
         testID={`${testID || "RNButton"}.text`}
         maxFontSizeMultiplier={maxFontSizeMultiplier}
         numberOfLines={3}
       >
         {text}
       </Heading4>
-      {( icon && iconPosition === "right" ) && (
+      {(icon && iconPosition === "right") && (
         <View className="ml-4">
           {icon}
         </View>

@@ -27,24 +27,24 @@ const MIN_INPUT_HEIGHT = 80;
 
 interface MentionTextInputProps extends Omit<TextInputProps, "value" | "onChangeText"> {
   value: string;
-  onChangeText: ( text: string ) => void;
+  onChangeText: (text: string) => void;
   InputComponent?: React.ComponentType<TextInputProps>;
 }
 
-function getMentionQuery( value: string ): string {
-  const match = value.match( MENTION_MATCH );
+function getMentionQuery(value: string): string {
+  const match = value.match(MENTION_MATCH);
   return match
     ? match[1]
     : "";
 }
 
-function getLastAtIndex( value: string ): number {
-  const match = value.match( MENTION_MATCH );
-  if ( !match || match.index === undefined ) return -1;
+function getLastAtIndex(value: string): number {
+  const match = value.match(MENTION_MATCH);
+  if (!match || match.index === undefined) return -1;
   return match.index;
 }
 
-const MentionTextInput = ( {
+const MentionTextInput = ({
   accessibilityLabel,
   autoFocus,
   InputComponent,
@@ -57,57 +57,57 @@ const MentionTextInput = ( {
   style,
   testID,
   value,
-}: MentionTextInputProps ) => {
-  const { t } = useTranslation( );
+}: MentionTextInputProps) => {
+  const { t } = useTranslation();
   const Input = InputComponent ?? TextInput;
 
-  const [debouncedQuery, setDebouncedQuery] = useState( "" );
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>( null );
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleChangeText = useCallback( ( text: string ) => {
-    onChangeText( text );
+  const handleChangeText = useCallback((text: string) => {
+    onChangeText(text);
 
-    if ( debounceRef.current ) {
-      clearTimeout( debounceRef.current );
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
     }
 
-    const query = getMentionQuery( text );
-    if ( query === "" ) {
-      setDebouncedQuery( "" );
+    const query = getMentionQuery(text);
+    if (query === "") {
+      setDebouncedQuery("");
       return;
     }
 
-    debounceRef.current = setTimeout( ( ) => {
-      setDebouncedQuery( query );
+    debounceRef.current = setTimeout(() => {
+      setDebouncedQuery(query);
       debounceRef.current = null;
-    }, DEBOUNCE_MS );
-  }, [onChangeText] );
+    }, DEBOUNCE_MS);
+  }, [onChangeText]);
 
-  const { users, isLoading } = useUserSearch( debouncedQuery );
+  const { users, isLoading } = useUserSearch(debouncedQuery);
 
   const handleSelectUser = useCallback(
-    ( item: { login?: string } ) => {
+    (item: { login?: string }) => {
       const username = item?.login;
-      const lastAt = getLastAtIndex( value );
-      const newValue = `${value.slice( 0, lastAt )}@${username} `;
-      onChangeText( newValue );
+      const lastAt = getLastAtIndex(value);
+      const newValue = `${value.slice(0, lastAt)}@${username} `;
+      onChangeText(newValue);
     },
     [value, onChangeText],
   );
 
-  const showList = getMentionQuery( value ).length > 0;
+  const showList = getMentionQuery(value).length > 0;
 
-  const inputStyle = useMemo( ( ) => {
-    if ( !showList ) return style;
-    const flattenedStyles = StyleSheet.flatten( style );
-    if ( typeof flattenedStyles?.height === "number" ) {
+  const inputStyle = useMemo(() => {
+    if (!showList) return style;
+    const flattenedStyles = StyleSheet.flatten(style);
+    if (typeof flattenedStyles?.height === "number") {
       return [
         style,
-        { height: Math.max( flattenedStyles.height - MENTION_LIST_MAX_HEIGHT, MIN_INPUT_HEIGHT ) },
+        { height: Math.max(flattenedStyles.height - MENTION_LIST_MAX_HEIGHT, MIN_INPUT_HEIGHT) },
       ];
     }
     return style;
-  }, [style, showList] );
+  }, [style, showList]);
 
   const emptyListContent = isLoading
     ? (
@@ -118,7 +118,7 @@ const MentionTextInput = ( {
     : (
       <View className="p-4 min-h-[200px]">
         <Body3 className="text-center text-darkGray">
-          {t( "No-results-found-for-that-search" )}
+          {t("No-results-found-for-that-search")}
         </Body3>
       </View>
     );
@@ -145,18 +145,18 @@ const MentionTextInput = ( {
           <ScrollView keyboardShouldPersistTaps="handled">
             {users.length === 0
               ? emptyListContent
-              : users.map( ( item, index ) => (
+              : users.map((item, index) => (
                 <View key={item.id}>
                   {index > 0 && <View className="border-b border-lightGray" />}
                   <UserListItem
                     item={{ user: item }}
                     countText=""
-                    onPress={( ) => handleSelectUser( item )}
-                    accessibilityLabel={t( "Select-user" )}
+                    onPress={() => handleSelectUser(item)}
+                    accessibilityLabel={t("Select-user")}
                     iconVariant="mention"
                   />
                 </View>
-              ) )}
+              ))}
           </ScrollView>
         </View>
       )}

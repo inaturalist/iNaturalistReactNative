@@ -14,10 +14,10 @@ const createIdentification = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const { results } = await inatjs.identifications.create( { ...PARAMS, ...params }, opts );
+    const { results } = await inatjs.identifications.create({ ...PARAMS, ...params }, opts);
     return results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "createIdentification", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "createIdentification", opts } });
   }
 };
 
@@ -26,10 +26,10 @@ const updateIdentification = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const { results } = await inatjs.identifications.update( { ...PARAMS, ...params }, opts );
+    const { results } = await inatjs.identifications.update({ ...PARAMS, ...params }, opts);
     return results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "updateIdentification", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "updateIdentification", opts } });
   }
 };
 

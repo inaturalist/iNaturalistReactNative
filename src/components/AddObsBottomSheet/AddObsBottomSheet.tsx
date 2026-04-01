@@ -10,86 +10,86 @@ import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  closeBottomSheet: ( ) => void;
-  navAndCloseBottomSheet: ( screen: string, params?: {
+  closeBottomSheet: () => void;
+  navAndCloseBottomSheet: (screen: string, params?: {
     camera?: string;
-  } ) => void;
+  }) => void;
   hidden: boolean;
 }
 
 interface ObsCreateItem {
   text: string;
   icon: string;
-  onPress: ( ) => void;
+  onPress: () => void;
   testID: string;
   accessibilityLabel: string;
   accessibilityHint: string;
 }
 
-const majorVersionIOS = parseInt( String( Platform.Version ), 10 );
-const AI_CAMERA_SUPPORTED = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
-  || ( Platform.OS === "android" && Platform.Version > 21 );
+const majorVersionIOS = parseInt(String(Platform.Version), 10);
+const AI_CAMERA_SUPPORTED = (Platform.OS === "ios" && majorVersionIOS >= 11)
+  || (Platform.OS === "android" && Platform.Version > 21);
 
 const GREEN_CIRCLE_CLASS = "bg-inatGreen rounded-full h-[36px] w-[36px] mb-2";
 const ROW_CLASS = "flex-row justify-center space-x-4 w-full flex-1";
 
-const AddObsBottomSheet = ( {
+const AddObsBottomSheet = ({
   closeBottomSheet, navAndCloseBottomSheet, hidden,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
-  const prepareObsEdit = useStore( state => state.prepareObsEdit );
+  const prepareObsEdit = useStore(state => state.prepareObsEdit);
 
-  const obsCreateItems = useMemo( ( ) => ( {
+  const obsCreateItems = useMemo(() => ({
     aiCamera: {
-      text: t( "ID-in-Camera" ),
+      text: t("ID-in-Camera"),
       icon: "aicamera",
-      onPress: ( ) => navAndCloseBottomSheet( "Camera", { camera: "AI" } ),
+      onPress: () => navAndCloseBottomSheet("Camera", { camera: "AI" }),
       testID: "aicamera-button",
-      accessibilityLabel: t( "AI-Camera" ),
-      accessibilityHint: t( "Navigates-to-AI-camera" ),
+      accessibilityLabel: t("AI-Camera"),
+      accessibilityHint: t("Navigates-to-AI-camera"),
     },
     standardCamera: {
-      text: t( "Take-photos" ),
+      text: t("Take-photos"),
       icon: "camera",
-      onPress: ( ) => navAndCloseBottomSheet( "Camera", { camera: "Standard" } ),
+      onPress: () => navAndCloseBottomSheet("Camera", { camera: "Standard" }),
       testID: "camera-button",
-      accessibilityLabel: t( "Camera" ),
-      accessibilityHint: t( "Navigates-to-camera" ),
+      accessibilityLabel: t("Camera"),
+      accessibilityHint: t("Navigates-to-camera"),
     },
     photoLibrary: {
-      text: t( "Upload-photos" ),
+      text: t("Upload-photos"),
       icon: "photo-library",
-      onPress: ( ) => navAndCloseBottomSheet( "PhotoLibrary" ),
+      onPress: () => navAndCloseBottomSheet("PhotoLibrary"),
       testID: "import-media-button",
-      accessibilityLabel: t( "Photo-importer" ),
-      accessibilityHint: t( "Navigates-to-photo-importer" ),
+      accessibilityLabel: t("Photo-importer"),
+      accessibilityHint: t("Navigates-to-photo-importer"),
     },
     soundRecorder: {
-      text: t( "Record-a-sound" ),
+      text: t("Record-a-sound"),
       icon: "microphone",
-      onPress: ( ) => navAndCloseBottomSheet( "SoundRecorder" ),
+      onPress: () => navAndCloseBottomSheet("SoundRecorder"),
       testID: "record-sound-button",
-      accessibilityLabel: t( "Sound-recorder" ),
-      accessibilityHint: t( "Navigates-to-sound-recorder" ),
+      accessibilityLabel: t("Sound-recorder"),
+      accessibilityHint: t("Navigates-to-sound-recorder"),
     },
     noEvidence: {
-      text: t( "Create-observation-with-no-evidence" ),
+      text: t("Create-observation-with-no-evidence"),
       icon: "noevidence",
-      onPress: async ( ) => {
-        const newObservation = await Observation.new( );
-        prepareObsEdit( newObservation );
-        navAndCloseBottomSheet( "ObsEdit" );
+      onPress: async () => {
+        const newObservation = await Observation.new();
+        prepareObsEdit(newObservation);
+        navAndCloseBottomSheet("ObsEdit");
       },
       testID: "observe-without-evidence-button",
-      accessibilityLabel: t( "Observation-with-no-evidence" ),
-      accessibilityHint: t( "Navigates-to-observation-edit-screen" ),
+      accessibilityLabel: t("Observation-with-no-evidence"),
+      accessibilityHint: t("Navigates-to-observation-edit-screen"),
     },
-  } ), [
+  }), [
     navAndCloseBottomSheet,
     prepareObsEdit,
     t,
-  ] );
+  ]);
 
   const optionRows = AI_CAMERA_SUPPORTED
     ? [
@@ -101,14 +101,14 @@ const AddObsBottomSheet = ( {
       [obsCreateItems.soundRecorder, obsCreateItems.photoLibrary],
     ];
 
-  const renderAddObsIcon = ( {
+  const renderAddObsIcon = ({
     accessibilityHint,
     accessibilityLabel,
     icon,
     onPress,
     testID,
     text,
-  }: ObsCreateItem ) => (
+  }: ObsCreateItem) => (
     <Pressable
       key={testID}
       className="bg-white w-1/2 flex-column items-center py-4 rounded-lg flex-1 shadow-sm
@@ -122,7 +122,7 @@ const AddObsBottomSheet = ( {
         className={GREEN_CIRCLE_CLASS}
         accessibilityHint={accessibilityHint}
         accessibilityLabel={accessibilityLabel}
-        color={String( colors?.white )}
+        color={String(colors?.white)}
         icon={icon}
         onPress={onPress}
         size={icon === "aicamera"
@@ -144,11 +144,11 @@ const AddObsBottomSheet = ( {
     >
       <View className="flex-column gap-y-4 pb-4 px-4">
 
-        {optionRows.map( row => (
-          <View key={row.map( i => i.testID ).join( "-" )} className={ROW_CLASS}>
-            {row.map( item => renderAddObsIcon( item ) )}
+        {optionRows.map(row => (
+          <View key={row.map(i => i.testID).join("-")} className={ROW_CLASS}>
+            {row.map(item => renderAddObsIcon(item))}
           </View>
-        ) )}
+        ))}
 
         <Pressable
           className="bg-mediumGray w-full flex-row items-center py-[10px] px-5 rounded-lg
@@ -161,7 +161,7 @@ const AddObsBottomSheet = ( {
           <View className="mr-2">
             <INatIcon
               name={obsCreateItems.noEvidence.icon}
-              color={String( colors?.darkGray )}
+              color={String(colors?.darkGray)}
               size={24}
             />
           </View>

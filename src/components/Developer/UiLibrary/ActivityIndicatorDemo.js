@@ -4,7 +4,7 @@ import {
 import { View } from "components/styledComponents";
 import React from "react";
 
-const ActivityIndicatorDemo = ( ) => (
+const ActivityIndicatorDemo = () => (
   <View className="flex-row justify-between p-4">
     <ActivityIndicator />
     <ActivityIndicator color="orange" />

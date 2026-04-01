@@ -6,14 +6,14 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
-  updateUser: ( user: null | { login: string } ) => void;
+  updateUser: (user: null | { login: string }) => void;
 }
 
-const ExploreUserSearchModal = ( {
+const ExploreUserSearchModal = ({
   showModal,
   closeModal,
   updateUser,
-}: Props ) => (
+}: Props) => (
   <Modal
     showModal={showModal}
     fullScreen

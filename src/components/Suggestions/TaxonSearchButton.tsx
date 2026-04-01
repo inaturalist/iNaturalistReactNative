@@ -7,17 +7,17 @@ import {
   useTranslation,
 } from "sharedHooks";
 
-const TaxonSearchButton = ( ) => {
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+const TaxonSearchButton = () => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const { params } = useRoute();
   const { entryScreen, lastScreen } = params;
 
   return (
     <INatIconButton
       icon="magnifying-glass"
       onPress={
-        ( ) => navigation.navigate(
+        () => navigation.navigate(
           "SuggestionsTaxonSearch",
           {
             entryScreen,
@@ -27,7 +27,7 @@ const TaxonSearchButton = ( ) => {
           },
         )
       }
-      accessibilityLabel={t( "Search" )}
+      accessibilityLabel={t("Search")}
     />
   );
 };

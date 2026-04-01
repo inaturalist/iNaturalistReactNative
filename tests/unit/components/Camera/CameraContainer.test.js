@@ -10,76 +10,76 @@ import { renderComponent } from "tests/helpers/render";
 
 const mockedNavigate = jest.fn();
 
-const mockTaxon = factory( "RemoteTaxon" );
+const mockTaxon = factory("RemoteTaxon");
 
-jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+jest.mock("sharedHooks/useAuthenticatedQuery", () => ({
   __esModule: true,
-  default: () => ( {
+  default: () => ({
     data: mockTaxon,
-  } ),
-} ) );
+  }),
+}));
 
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
-    useNavigation: () => ( {
+    useNavigation: () => ({
       navigate: mockedNavigate,
       addListener: () => jest.fn(),
-    } ),
-    useRoute: () => ( {} ),
-    useFocusEffect: () => ( {} ),
+    }),
+    useRoute: () => ({}),
+    useFocusEffect: () => ({}),
   };
-} );
+});
 
 const mockView = <View />;
-jest.mock( "components/Camera/CameraView", () => ( {
-  __esModule: true,
-  default: ( ) => mockView,
-} ) );
-
-jest.mock( "components/Camera/FadeInOutView", () => ( {
+jest.mock("components/Camera/CameraView", () => ({
   __esModule: true,
   default: () => mockView,
-} ) );
+}));
 
-jest.mock( "components/Camera/StandardCamera/PhotoPreview", () => ( {
+jest.mock("components/Camera/FadeInOutView", () => ({
   __esModule: true,
   default: () => mockView,
-} ) );
+}));
 
-jest.mock( "components/Camera/AICamera/FrameProcessorCamera", () => ( {
+jest.mock("components/Camera/StandardCamera/PhotoPreview", () => ({
   __esModule: true,
   default: () => mockView,
-} ) );
+}));
 
-function renderCameraContainer( ) {
-  return renderComponent( <CameraContainer /> );
+jest.mock("components/Camera/AICamera/FrameProcessorCamera", () => ({
+  __esModule: true,
+  default: () => mockView,
+}));
+
+function renderCameraContainer() {
+  return renderComponent(<CameraContainer />);
 }
 
-describe( "CameraContainer", ( ) => {
-  beforeAll( async ( ) => {
-    jest.useFakeTimers( );
-  } );
+describe("CameraContainer", () => {
+  beforeAll(async () => {
+    jest.useFakeTimers();
+  });
 
-  it( "should not have accessibility errors", async ( ) => {
-    renderCameraContainer( );
+  it("should not have accessibility errors", async () => {
+    renderCameraContainer();
     // const cameraWithDevice = await screen.findByTestId( "CameraWithDevice" );
     // Disabled during the update to RN 0.78
     // expect( cameraWithDevice ).toBeAccessible();
-  } );
+  });
 
-  it( "should first render with flash disabled", async () => {
-    renderCameraContainer( );
-    await screen.findByTestId( "flash-button-label-flash-off" );
-  } );
+  it("should first render with flash disabled", async () => {
+    renderCameraContainer();
+    await screen.findByTestId("flash-button-label-flash-off");
+  });
 
-  it( "should change to flash enabled on button press", async () => {
-    renderCameraContainer( );
+  it("should change to flash enabled on button press", async () => {
+    renderCameraContainer();
     const flashButton = await screen.findByTestId(
       "flash-button-label-flash-off",
     );
-    fireEvent.press( flashButton );
-    await screen.findByTestId( "flash-button-label-flash" );
-  } );
-} );
+    fireEvent.press(flashButton);
+    await screen.findByTestId("flash-button-label-flash");
+  });
+});

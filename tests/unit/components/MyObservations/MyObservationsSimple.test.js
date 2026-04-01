@@ -8,17 +8,17 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 const mockObservations = [
-  factory( "LocalObservation", {
+  factory("LocalObservation", {
     comments: [
-      factory( "LocalComment" ),
-      factory( "LocalComment" ),
-      factory( "LocalComment" ),
+      factory("LocalComment"),
+      factory("LocalComment"),
+      factory("LocalComment"),
     ],
-    observationPhotos: [factory( "LocalObservationPhoto" )],
-  } ),
-  factory( "LocalObservation", {
-    observationPhotos: [factory( "LocalObservationPhoto" )],
-  } ),
+    observationPhotos: [factory("LocalObservationPhoto")],
+  }),
+  factory("LocalObservation", {
+    observationPhotos: [factory("LocalObservationPhoto")],
+  }),
 ];
 
 const DEVICE_ORIENTATION_PHONE_PORTRAIT = {
@@ -53,67 +53,67 @@ const DEVICE_ORIENTATION_PHONE_LANDSCAPE = {
 //   screenHeight: 820
 // };
 
-jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
+jest.mock("sharedHooks/useDeviceOrientation", () => ({
   __esModule: true,
-  default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) ),
-} ) );
+  default: jest.fn(() => (DEVICE_ORIENTATION_PHONE_PORTRAIT)),
+}));
 
 const renderMyObservations = layout => renderComponent(
   <MyObservationsSimple
     layout={layout}
     observations={mockObservations}
-    onEndReached={jest.fn( )}
-    toggleLayout={jest.fn( )}
-    setShowLoginSheet={jest.fn( )}
+    onEndReached={jest.fn()}
+    toggleLayout={jest.fn()}
+    setShowLoginSheet={jest.fn()}
     activeTab={OBSERVATIONS_TAB}
   />,
 );
 
-describe( "MyObservationsSimple", () => {
-  beforeAll( async () => {
-    jest.useFakeTimers( );
-  } );
+describe("MyObservationsSimple", () => {
+  beforeAll(async () => {
+    jest.useFakeTimers();
+  });
 
-  it( "renders an observation", async () => {
-    renderMyObservations( "list" );
+  it("renders an observation", async () => {
+    renderMyObservations("list");
     const obs = mockObservations[0];
 
     // Test that a card got rendered for the test obs
-    const card = await screen.findByTestId( `MyObservations.obsListItem.${obs.uuid}` );
-    expect( card ).toBeTruthy();
-  } );
+    const card = await screen.findByTestId(`MyObservations.obsListItem.${obs.uuid}`);
+    expect(card).toBeTruthy();
+  });
 
-  it( "renders multiple observations", async () => {
-    renderMyObservations( "list" );
+  it("renders multiple observations", async () => {
+    renderMyObservations("list");
     // Awaiting the first observation because using await in the forEach errors out
     const firstObs = mockObservations[0];
-    await screen.findByTestId( `MyObservations.obsListItem.${firstObs.uuid}` );
-    mockObservations.forEach( obs => {
+    await screen.findByTestId(`MyObservations.obsListItem.${firstObs.uuid}`);
+    mockObservations.forEach(obs => {
       expect(
-        screen.getByTestId( `MyObservations.obsListItem.${obs.uuid}` ),
+        screen.getByTestId(`MyObservations.obsListItem.${obs.uuid}`),
       ).toBeTruthy();
-    } );
+    });
     // TODO: some things are still happening in the background so I unmount here,
     // better probably to mock away those things happening in the background for this test
     screen.unmount();
-  } );
+  });
 
-  it( "render grid view", ( ) => {
-    renderMyObservations( "grid" );
-    mockObservations.forEach( obs => {
-      expect( screen.getByTestId( `MyObservations.obsGridItem.${obs.uuid}` ) ).toBeTruthy();
-    } );
-  } );
+  it("render grid view", () => {
+    renderMyObservations("grid");
+    mockObservations.forEach(obs => {
+      expect(screen.getByTestId(`MyObservations.obsGridItem.${obs.uuid}`)).toBeTruthy();
+    });
+  });
 
-  describe( "grid view", ( ) => {
-    describe( "portrait orientation", ( ) => {
-      describe( "on a phone", ( ) => {
-        it( "should have 2 columns", async ( ) => {
-          renderMyObservations( "grid" );
-          const list = screen.getByTestId( "MyObservationsAnimatedList" );
-          expect( list.props.numColumns ).toEqual( 2 );
-        } );
-      } );
+  describe("grid view", () => {
+    describe("portrait orientation", () => {
+      describe("on a phone", () => {
+        it("should have 2 columns", async () => {
+          renderMyObservations("grid");
+          const list = screen.getByTestId("MyObservationsAnimatedList");
+          expect(list.props.numColumns).toEqual(2);
+        });
+      });
       // describe( "on a tablet", ( ) => {
       //   beforeEach( ( ) => {
       //     DeviceInfo.isTablet.mockReturnValue( true );
@@ -125,16 +125,16 @@ describe( "MyObservationsSimple", () => {
       //     expect( list.props.numColumns ).toEqual( 4 );
       //   } );
       // } );
-    } );
-    describe( "landscape orientation", ( ) => {
-      describe( "on a phone", ( ) => {
-        it( "should have 2 columns", async ( ) => {
-          useDeviceOrientation.mockImplementation( ( ) => DEVICE_ORIENTATION_PHONE_LANDSCAPE );
-          renderMyObservations( "grid" );
-          const list = screen.getByTestId( "MyObservationsAnimatedList" );
-          expect( list.props.numColumns ).toEqual( 2 );
-        } );
-      } );
+    });
+    describe("landscape orientation", () => {
+      describe("on a phone", () => {
+        it("should have 2 columns", async () => {
+          useDeviceOrientation.mockImplementation(() => DEVICE_ORIENTATION_PHONE_LANDSCAPE);
+          renderMyObservations("grid");
+          const list = screen.getByTestId("MyObservationsAnimatedList");
+          expect(list.props.numColumns).toEqual(2);
+        });
+      });
       // describe( "on a tablet", ( ) => {
       //   beforeEach( ( ) => {
       //     DeviceInfo.isTablet.mockReturnValue( true );
@@ -146,6 +146,6 @@ describe( "MyObservationsSimple", () => {
       //     expect( list.props.numColumns ).toEqual( 6 );
       //   } );
       // } );
-    } );
-  } );
-} );
+    });
+  });
+});

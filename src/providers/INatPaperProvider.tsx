@@ -22,10 +22,10 @@ const theme = {
 
 const renderCustomIcon = (
   // eslint-disable-next-line react/jsx-props-no-spreading
-  ( props: React.ComponentProps<typeof INatIcon> ) => <INatIcon {...props} />
+  (props: React.ComponentProps<typeof INatIcon>) => <INatIcon {...props} />
 );
 
-const INatPaperProvider = ( { children }: React.PropsWithChildren ) => (
+const INatPaperProvider = ({ children }: React.PropsWithChildren) => (
   <PaperProvider
     settings={{
       icon: renderCustomIcon,

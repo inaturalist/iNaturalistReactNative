@@ -15,12 +15,12 @@ interface Props extends PropsWithChildren {
   testID: string;
 }
 
-const OverlayHeader = ( {
+const OverlayHeader = ({
   children,
   invertToWhiteBackground,
   headerRight,
   testID,
-}: Props ) => (
+}: Props) => (
   <View className={
     classnames(
       "w-full justify-between items-center flex-row px-[13px] h-[44px]",

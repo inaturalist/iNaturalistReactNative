@@ -21,11 +21,11 @@ export function mapSpeciesSortToAPIParams(
   sortOptionId: SPECIES_SORT_BY,
 ): { order_by: SpeciesSortBy; order: SortDirection } | null {
   const sortConfig = SPECIES_SORT_MAP[sortOptionId];
-  if ( !sortConfig ) {
+  if (!sortConfig) {
     return null;
   }
 
-  switch ( sortConfig.by ) {
+  switch (sortConfig.by) {
     case "count":
       return {
         order_by: "count",
@@ -46,20 +46,20 @@ export function sortSpeciesCounts<T extends SpeciesCount>(
   sortOptionId: SPECIES_SORT_BY,
 ): T[] {
   const sortConfig = SPECIES_SORT_MAP[sortOptionId];
-  if ( !sortConfig ) {
+  if (!sortConfig) {
     return speciesCounts;
   }
 
   const sorted = [...speciesCounts];
 
-  switch ( sortConfig.by ) {
+  switch (sortConfig.by) {
     case "count": {
-      sorted.sort( ( a, b ) => {
+      sorted.sort((a, b) => {
         const diff = a.count - b.count;
         return sortConfig.direction === "asc"
           ? diff
           : -diff;
-      } );
+      });
       break;
     }
     default:

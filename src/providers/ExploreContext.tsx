@@ -285,7 +285,7 @@ type Action = {type: EXPLORE_ACTION.RESET}
   | {type: EXPLORE_ACTION.SET_PHOTO_LICENSE; photoLicense: PHOTO_LICENSE}
   | {type: EXPLORE_ACTION.SET_MAP_BOUNDARIES; mapBoundaries: MapBoundaries}
   | {type: EXPLORE_ACTION.USE_STORED_STATE; storedState: State}
-type Dispatch = ( action: Action ) => void
+type Dispatch = (action: Action) => void
 
 const ExploreContext = React.createContext<
   {
@@ -297,7 +297,7 @@ const ExploreContext = React.createContext<
     discardChanges(): void;
     numberOfFilters: number;
     defaultExploreLocation(): Promise<DefaultLocation>;
-      } | undefined>( undefined );
+      } | undefined>(undefined);
 
 // Every key in this object represents a numbered filter in the UI
 const calculatedFilters = {
@@ -350,14 +350,14 @@ const initialState: State = {
 };
 
 // Checks if the date is in the format XXXX-XX-XX
-function isValidDateFormat( date: string ): boolean {
+function isValidDateFormat(date: string): boolean {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
-  return regex.test( date );
+  return regex.test(date);
 }
 
-async function defaultExploreLocation( ): Promise<DefaultLocation> {
-  const location = await fetchCoarseUserLocation( );
-  if ( !location || !location.latitude ) {
+async function defaultExploreLocation(): Promise<DefaultLocation> {
+  const location = await fetchCoarseUserLocation();
+  if (!location || !location.latitude) {
     return {
       placeMode: PLACE_MODE.WORLDWIDE,
       lat: undefined,
@@ -386,8 +386,8 @@ async function defaultExploreLocation( ): Promise<DefaultLocation> {
 // Note: if an action needs to remove a value from state, do not `delete` it.
 // Instead, set it to undefined. This helps us detect changes to the default
 // state
-function exploreReducer( state: State, action: Action ) {
-  switch ( action.type ) {
+function exploreReducer(state: State, action: Action) {
+  switch (action.type) {
     // Reset the state to the initial state, but place mode
     // should be set to worldwide no matter if location and not nearby
     case EXPLORE_ACTION.RESET:
@@ -403,7 +403,7 @@ function exploreReducer( state: State, action: Action ) {
         ...action.storedState,
         iconic_taxa: undefined,
       };
-      if ( action.taxon ) {
+      if (action.taxon) {
         newState.taxon = action.taxon;
         newState.taxon_id = action.taxon.id;
       } else {
@@ -535,8 +535,8 @@ function exploreReducer( state: State, action: Action ) {
         months: null,
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT:
-      if ( !isValidDateFormat( action.observedOn ) ) {
-        throw new Error( "Invalid date format given" );
+      if (!isValidDateFormat(action.observedOn)) {
+        throw new Error("Invalid date format given");
       }
       return {
         ...state,
@@ -547,11 +547,11 @@ function exploreReducer( state: State, action: Action ) {
         months: null,
       };
     case EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE:
-      if ( !isValidDateFormat( action.d1 ) ) {
-        throw new Error( "Invalid date format given" );
+      if (!isValidDateFormat(action.d1)) {
+        throw new Error("Invalid date format given");
       }
-      if ( !isValidDateFormat( action.d2 ) ) {
-        throw new Error( "Invalid date format given" );
+      if (!isValidDateFormat(action.d2)) {
+        throw new Error("Invalid date format given");
       }
       return {
         ...state,
@@ -579,8 +579,8 @@ function exploreReducer( state: State, action: Action ) {
         created_d2: null,
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT:
-      if ( !isValidDateFormat( action.createdOn ) ) {
-        throw new Error( "Invalid date format given" );
+      if (!isValidDateFormat(action.createdOn)) {
+        throw new Error("Invalid date format given");
       }
       return {
         ...state,
@@ -590,11 +590,11 @@ function exploreReducer( state: State, action: Action ) {
         created_d2: null,
       };
     case EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE:
-      if ( !isValidDateFormat( action.createdD1 ) ) {
-        throw new Error( "Invalid date format given" );
+      if (!isValidDateFormat(action.createdD1)) {
+        throw new Error("Invalid date format given");
       }
-      if ( !isValidDateFormat( action.createdD2 ) ) {
-        throw new Error( "Invalid date format given" );
+      if (!isValidDateFormat(action.createdD2)) {
+        throw new Error("Invalid date format given");
       }
       return {
         ...state,
@@ -646,37 +646,37 @@ function exploreReducer( state: State, action: Action ) {
         ...action.storedState,
       };
     default: {
-      throw new Error( `Unhandled action type: ${( action as Action ).type}` );
+      throw new Error(`Unhandled action type: ${(action as Action).type}`);
     }
   }
 }
 
-const ExploreProvider = ( { children }: ExploreProviderProps ) => {
-  const [state, dispatch] = React.useReducer( exploreReducer, initialState );
+const ExploreProvider = ({ children }: ExploreProviderProps) => {
+  const [state, dispatch] = React.useReducer(exploreReducer, initialState);
 
   // To store a snapshot of the state, e.g when the user opens the filters modal
-  const [snapshot, setSnapshot] = React.useState<State | undefined>( undefined );
-  const makeSnapshot = () => setSnapshot( state );
+  const [snapshot, setSnapshot] = React.useState<State | undefined>(undefined);
+  const makeSnapshot = () => setSnapshot(state);
 
   const differsFromSnapshot: boolean = React.useMemo(
-    () => !isEqual( snapshot, state ),
+    () => !isEqual(snapshot, state),
     [state, snapshot],
   );
 
   const discardChanges = () => {
-    if ( !snapshot ) {
+    if (!snapshot) {
       return;
     }
-    dispatch( { type: EXPLORE_ACTION.DISCARD, snapshot } );
+    dispatch({ type: EXPLORE_ACTION.DISCARD, snapshot });
   };
 
-  const isNotInitialState: boolean = Object.keys( initialState ).some(
+  const isNotInitialState: boolean = Object.keys(initialState).some(
     key => initialState[key] !== state[key],
   );
 
-  let numberOfFilters: number = Object.keys( calculatedFilters ).reduce(
-    ( count, key ) => {
-      if ( state[key] !== calculatedFilters[key] ) {
+  let numberOfFilters: number = Object.keys(calculatedFilters).reduce(
+    (count, key) => {
+      if (state[key] !== calculatedFilters[key]) {
         return count + 1;
       }
       return count;
@@ -684,7 +684,7 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
     0,
   );
   // If both low and high rank filters are set, we only count one filter
-  if ( state.lrank && state.hrank ) {
+  if (state.lrank && state.hrank) {
     numberOfFilters -= 1;
   }
 
@@ -705,9 +705,9 @@ const ExploreProvider = ( { children }: ExploreProviderProps ) => {
 };
 
 function useExplore() {
-  const context = React.useContext( ExploreContext );
-  if ( context === undefined ) {
-    throw new Error( "useExplore must be used within a ExploreProvider" );
+  const context = React.useContext(ExploreContext);
+  if (context === undefined) {
+    throw new Error("useExplore must be used within a ExploreProvider");
   }
   return context;
 }

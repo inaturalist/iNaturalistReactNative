@@ -8,23 +8,23 @@ import { useTranslation } from "sharedHooks";
 
 export const OBSERVATIONS_TAB = "observations";
 
-const StatTab = ( { id, numTotalObservations, numTotalTaxa } ) => {
-  const { t } = useTranslation( );
+const StatTab = ({ id, numTotalObservations, numTotalTaxa }) => {
+  const { t } = useTranslation();
   let stat: number | undefined;
   let label: string;
-  if ( id === OBSERVATIONS_TAB ) {
+  if (id === OBSERVATIONS_TAB) {
     stat = numTotalObservations;
-    label = t( "X-OBSERVATIONS--below-number", { count: numTotalObservations } );
+    label = t("X-OBSERVATIONS--below-number", { count: numTotalObservations });
   } else {
     stat = numTotalTaxa;
-    label = t( "X-SPECIES--below-number", { count: numTotalTaxa } );
+    label = t("X-SPECIES--below-number", { count: numTotalTaxa });
   }
   return (
     <View className="items-center p-3">
       <Body1 className="mb-[4px]">
         {
-          typeof ( stat ) === "number"
-            ? t( "Intl-number", { val: stat } )
+          typeof (stat) === "number"
+            ? t("Intl-number", { val: stat })
             : "--"
         }
       </Body1>

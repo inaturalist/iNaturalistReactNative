@@ -14,19 +14,19 @@ interface Props {
   withGeoprivacy?: boolean;
 }
 
-const ObservationLocation = ( {
+const ObservationLocation = ({
   classNameMargin,
   details,
   observation,
   withCoordinates,
   withGeoprivacy,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
   let displayLocation = useMemo(
-    ( ) => checkCamelAndSnakeCase(
+    () => checkCamelAndSnakeCase(
       observation,
       observation.private_place_guess
         ? "privatePlaceGuess"
@@ -35,51 +35,51 @@ const ObservationLocation = ( {
     [observation],
   );
 
-  const displayGeoprivacy = useMemo( ( ) => {
-    if ( geoprivacy === "obscured" ) {
-      return t( "Obscured" );
-    } if ( geoprivacy === "private" ) {
-      return t( "Private" );
+  const displayGeoprivacy = useMemo(() => {
+    if (geoprivacy === "obscured") {
+      return t("Obscured");
+    } if (geoprivacy === "private") {
+      return t("Private");
     }
-    return t( "Open" );
-  }, [geoprivacy, t] );
+    return t("Open");
+  }, [geoprivacy, t]);
 
-  const displayCoords = useMemo( ( ) => {
+  const displayCoords = useMemo(() => {
     if (
-      typeof ( observation?.latitude ) !== "number"
-      && typeof ( observation.privateLatitude ) !== "number"
+      typeof (observation?.latitude) !== "number"
+      && typeof (observation.privateLatitude) !== "number"
     ) return null;
-    const accuracy = observation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" );
-    if ( typeof ( observation.privateLatitude ) === "number" ) {
-      return t( "Lat-Lon-Acc", {
+    const accuracy = observation?.positional_accuracy?.toFixed(0) || t("none--accuracy");
+    if (typeof (observation.privateLatitude) === "number") {
+      return t("Lat-Lon-Acc", {
         latitude: observation.privateLatitude,
         longitude: observation.privateLongitude,
         accuracy,
-      } );
+      });
     }
-    return t( "Lat-Lon-Acc", {
+    return t("Lat-Lon-Acc", {
       latitude: observation.latitude,
       longitude: observation.longitude,
       accuracy,
-    } );
-  }, [observation, t] );
+    });
+  }, [observation, t]);
 
-  if ( !displayLocation ) {
-    if ( displayCoords && !details ) {
+  if (!displayLocation) {
+    if (displayCoords && !details) {
       displayLocation = displayCoords;
     } else {
-      displayLocation = t( "No-Location" );
+      displayLocation = t("No-Location");
     }
   }
-  const showGeoprivacy = useCallback( ( ) => {
+  const showGeoprivacy = useCallback(() => {
     let displayPrivacy = displayGeoprivacy;
-    if ( displayPrivacy === "private" ) {
+    if (displayPrivacy === "private") {
       displayPrivacy = "Private";
     }
-    if ( displayPrivacy === "obscured" ) {
+    if (displayPrivacy === "obscured") {
       displayPrivacy = "Obscured";
     }
-    if ( displayPrivacy === null || displayPrivacy === "open" ) {
+    if (displayPrivacy === null || displayPrivacy === "open") {
       displayPrivacy = "Open";
     }
     const geoprivacyInner = (
@@ -89,7 +89,7 @@ const ObservationLocation = ( {
           numberOfLines={1}
           ellipsizeMode="tail"
         >
-          {t( "Geoprivacy-status", { status: t( displayPrivacy ) } )}
+          {t("Geoprivacy-status", { status: t(displayPrivacy) })}
         </Body4>
       </View>
     );
@@ -101,9 +101,9 @@ const ObservationLocation = ( {
   }, [
     displayGeoprivacy,
     t,
-  ] );
+  ]);
 
-  const inner = useMemo( ( ) => (
+  const inner = useMemo(() => (
     <View className="flex-col space-y-[11px]">
       <Body4
         className="text-darkGray"
@@ -111,7 +111,7 @@ const ObservationLocation = ( {
       >
         {displayLocation}
       </Body4>
-      {( ( details || withCoordinates ) && displayCoords )
+      {((details || withCoordinates) && displayCoords)
        && (
          <Body4
            className="text-darkGray"
@@ -127,33 +127,33 @@ const ObservationLocation = ( {
     displayCoords,
     displayLocation,
     withCoordinates,
-  ] );
+  ]);
 
   const locationIcon = () => {
-    if ( geoprivacy === "private" || taxonGeoprivacy === "private" ) {
+    if (geoprivacy === "private" || taxonGeoprivacy === "private") {
       return "private";
     }
-    if ( geoprivacy === "obscured" || taxonGeoprivacy === "obscured" ) {
+    if (geoprivacy === "obscured" || taxonGeoprivacy === "obscured") {
       return "obscured";
     }
     return "location";
   };
 
-  if ( !observation ) {
+  if (!observation) {
     return null;
   }
 
   return (
     <View
-      className={classNames( "flex flex-col", classNameMargin )}
+      className={classNames("flex flex-col", classNameMargin)}
       accessible
-      accessibilityLabel={t( "Location" )}
+      accessibilityLabel={t("Location")}
       accessibilityValue={{
         text: displayLocation,
       }}
     >
       <ContentWithIcon icon={locationIcon()} size={13}>{ inner }</ContentWithIcon>
-      {( details || withGeoprivacy ) && showGeoprivacy()}
+      {(details || withGeoprivacy) && showGeoprivacy()}
     </View>
   );
 };

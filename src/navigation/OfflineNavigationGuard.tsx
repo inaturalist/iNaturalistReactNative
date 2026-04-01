@@ -11,30 +11,30 @@ import { useTranslation } from "sharedHooks";
 
 import { navigationRef } from "./navigationUtils";
 
-const OfflineNavigationGuard = ( { children }: PropsWithChildren ) => {
-  const routeNameRef = useRef( navigationRef.current?.getCurrentRoute()?.name );
-  const { isConnected } = useNetInfo( );
-  const { t } = useTranslation( );
+const OfflineNavigationGuard = ({ children }: PropsWithChildren) => {
+  const routeNameRef = useRef(navigationRef.current?.getCurrentRoute()?.name);
+  const { isConnected } = useNetInfo();
+  const { t } = useTranslation();
 
-  useReactNavigationDevTools( { ref: navigationRef } );
+  useReactNavigationDevTools({ ref: navigationRef });
 
   // if a user tries to navigate to the Login screen while they're
   // offline, they'll see this no internet alert and automatically land
   // back on the screen they came from
-  const onStateChange = ( ) => {
+  const onStateChange = () => {
     const previousRouteName = routeNameRef.current;
-    const currentRouteName = navigationRef.current?.getCurrentRoute( )?.name;
+    const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
     // Basic screen tracking with Firebase Analytics
-    if ( previousRouteName !== currentRouteName && currentRouteName ) {
-      logFirebaseScreenView( currentRouteName );
+    if (previousRouteName !== currentRouteName && currentRouteName) {
+      logFirebaseScreenView(currentRouteName);
     }
-    if ( currentRouteName === "Login" && !isConnected ) {
+    if (currentRouteName === "Login" && !isConnected) {
       // return to previous screen if offline
-      navigationRef.current?.goBack( );
-      if ( !isConnected ) {
+      navigationRef.current?.goBack();
+      if (!isConnected) {
         Alert.alert(
-          t( "Internet-Connection-Required" ),
-          t( "Please-try-again-when-you-are-connected-to-the-internet" ),
+          t("Internet-Connection-Required"),
+          t("Please-try-again-when-you-are-connected-to-the-internet"),
         );
       }
     }

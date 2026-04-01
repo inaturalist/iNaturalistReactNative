@@ -6,23 +6,23 @@ import { useTranslation } from "sharedHooks";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
 
 interface Props {
-  setShowLoginSheet: ( value: ACTIVE_SHEET ) => void;
+  setShowLoginSheet: (value: ACTIVE_SHEET) => void;
 }
 
-const LoginSheet = ( { setShowLoginSheet }: Props ) => {
-  const navigation = useNavigation( );
-  const { t } = useTranslation( );
+const LoginSheet = ({ setShowLoginSheet }: Props) => {
+  const navigation = useNavigation();
+  const { t } = useTranslation();
 
   return (
     <WarningSheet
-      onPressClose={( ) => setShowLoginSheet( ACTIVE_SHEET.NONE )}
+      onPressClose={() => setShowLoginSheet(ACTIVE_SHEET.NONE)}
       buttonType="focus"
-      headerText={t( "PLEASE-LOG-IN" )}
-      text={t( "To-sync-your-observations-to-iNaturalist" )}
-      buttonText={t( "LOG-IN-TO-INATURALIST" )}
-      confirm={( ) => {
-        setShowLoginSheet( ACTIVE_SHEET.NONE );
-        navigation.navigate( "LoginStackNavigator" );
+      headerText={t("PLEASE-LOG-IN")}
+      text={t("To-sync-your-observations-to-iNaturalist")}
+      buttonText={t("LOG-IN-TO-INATURALIST")}
+      confirm={() => {
+        setShowLoginSheet(ACTIVE_SHEET.NONE);
+        navigation.navigate("LoginStackNavigator");
       }}
     />
   );

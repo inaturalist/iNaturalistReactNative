@@ -16,19 +16,19 @@ async function fetchTaxonAndSave(
   opts: Options = {},
 ) {
   const options = { ...opts };
-  if ( !options.api_token ) {
-    options.api_token = await getJWT( );
+  if (!options.api_token) {
+    options.api_token = await getJWT();
   }
   // Casting is necessary until fetchTaxon is typed to return Taxon.
-  const remoteTaxon = await fetchTaxon( id, params, options ) as Taxon;
-  const mappedRemoteTaxon = Taxon.mapApiToRealm( remoteTaxon, realm );
-  safeRealmWrite( realm, ( ) => {
+  const remoteTaxon = await fetchTaxon(id, params, options) as Taxon;
+  const mappedRemoteTaxon = Taxon.mapApiToRealm(remoteTaxon, realm);
+  safeRealmWrite(realm, () => {
     realm.create(
       Taxon,
-      Taxon.forUpdate( mappedRemoteTaxon ),
+      Taxon.forUpdate(mappedRemoteTaxon),
       UpdateMode.Modified,
     );
-  }, "saving remote taxon in ObsDetails" );
+  }, "saving remote taxon in ObsDetails");
   return mappedRemoteTaxon;
 }
 

@@ -9,10 +9,10 @@ interface Props {
   };
 }
 
-const SimpleObservationLocation = ( {
+const SimpleObservationLocation = ({
   observation,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   const displayLocation = checkCamelAndSnakeCase(
     observation,
     observation.private_place_guess
@@ -20,7 +20,7 @@ const SimpleObservationLocation = ( {
       : "placeGuess",
   );
 
-  if ( !observation ) {
+  if (!observation) {
     return null;
   }
 
@@ -29,7 +29,7 @@ const SimpleObservationLocation = ( {
       className="text-darkGray"
       ellipsizeMode="tail"
       accessible
-      accessibilityLabel={t( "Location" )}
+      accessibilityLabel={t("Location")}
       accessibilityValue={{
         text: displayLocation,
       }}

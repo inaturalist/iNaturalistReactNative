@@ -20,15 +20,15 @@ interface Props {
   isHeader?: boolean;
 }
 
-const ProjectListItem = ( { item, isHeader = false }: Props ) => {
-  const { t, i18n } = useTranslation( );
+const ProjectListItem = ({ item, isHeader = false }: Props) => {
+  const { t, i18n } = useTranslation();
 
-  const { projectDate, shouldDisplayDateRange } = formatProjectDate( item, t, i18n );
+  const { projectDate, shouldDisplayDateRange } = formatProjectDate(item, t, i18n);
   const displayDateRange = shouldDisplayDateRange && !isHeader;
 
   const iconClassName = "w-[62px] h-[62px] rounded-lg bg-white mr-3";
 
-  const displayBriefcase = ( ) => (
+  const displayBriefcase = () => (
     <INatIcon
       name="briefcase"
       size={26}
@@ -37,9 +37,9 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   );
 
   const displayProjectIcon = icon => {
-    const productionIcon = icon?.replace( "staticdev", "static" );
+    const productionIcon = icon?.replace("staticdev", "static");
 
-    if ( productionIcon === defaultProjectIcon ) {
+    if (productionIcon === defaultProjectIcon) {
       return (
         <View className={
           classnames(
@@ -50,14 +50,14 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
           )
         }
         >
-          {displayBriefcase( )}
+          {displayBriefcase()}
         </View>
       );
     }
     return (
       <FasterImageView
         className={
-          classnames( iconClassName )
+          classnames(iconClassName)
         }
         source={{
           url: productionIcon,
@@ -70,18 +70,18 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
     );
   };
 
-  if ( !item ) { return null; }
+  if (!item) { return null; }
   return (
     <View
       className="flex-row items-center shrink py-1"
     >
-      {displayProjectIcon( item?.icon )}
+      {displayProjectIcon(item?.icon)}
       <View className="shrink ml-3">
         <Body1>{item.title}</Body1>
         <List2 className="mt-2">
           {displayDateRange
             ? projectDate
-            : displayProjectType( item.project_type, t )}
+            : displayProjectType(item.project_type, t)}
         </List2>
       </View>
     </View>

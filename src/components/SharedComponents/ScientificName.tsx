@@ -22,7 +22,7 @@ interface Props {
   maxFontSizeMultiplier: number;
 }
 
-const ScientificName = ( {
+const ScientificName = ({
   fontComponent,
   isHorizontal,
   isTitle,
@@ -35,16 +35,16 @@ const ScientificName = ( {
   taxonId,
   textClassName,
   maxFontSizeMultiplier,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
+}: Props) => {
+  const { t } = useTranslation();
+  const scientificNameArray = scientificNamePieces?.map((piece, index) => {
     const isItalics = piece !== rankPiece && rankLevel && (
       rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
     );
-    const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal )
+    const spaceChar = ((index !== scientificNamePieces.length - 1) || isHorizontal)
       ? " "
       : "";
-    const text = ( isFirst || index !== scientificNamePieces.length - 1 )
+    const text = (isFirst || index !== scientificNamePieces.length - 1)
       ? piece + spaceChar
       : piece;
     const FontComponent = fontComponent || Body3;
@@ -52,7 +52,7 @@ const ScientificName = ( {
     return (
       <FontComponent
         maxFontSizeMultiplier={maxFontSizeMultiplier}
-        key={`DisplayTaxonName-${keyBase}-${taxonId}-${rankLevel}-${piece}-${random( 0, 10000 )}`}
+        key={`DisplayTaxonName-${keyBase}-${taxonId}-${rankLevel}-${piece}-${random(0, 10000)}`}
         className={classNames(
           "font-normal",
           textClassName,
@@ -65,11 +65,11 @@ const ScientificName = ( {
         {text}
       </FontComponent>
     );
-  } );
+  });
 
-  if ( rank && rankLevel && rankLevel > Taxon.SPECIES_LEVEL ) {
-    scientificNameArray.unshift( " " );
-    scientificNameArray.unshift( translatedRank( rank, t ) );
+  if (rank && rankLevel && rankLevel > Taxon.SPECIES_LEVEL) {
+    scientificNameArray.unshift(" ");
+    scientificNameArray.unshift(translatedRank(rank, t));
   }
 
   return (

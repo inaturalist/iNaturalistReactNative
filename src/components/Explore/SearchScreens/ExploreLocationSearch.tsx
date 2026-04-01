@@ -26,35 +26,35 @@ import { getShadow } from "styles/global";
 import EmptySearchResults from "./EmptySearchResults";
 import ExploreSearchHeader from "./ExploreSearchHeader";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
-} );
+});
 
-const Footer = ( ) => <View className="h-[336px]" />;
+const Footer = () => <View className="h-[336px]" />;
 
 interface Props {
   closeModal: () => void;
   hasPermissions?: boolean;
   renderPermissionsGate: RenderLocationPermissionsGateFunction;
-  requestPermissions: ( ) => void;
-  updateLocation: ( location: "worldwide" | ApiPlace ) => void;
+  requestPermissions: () => void;
+  updateLocation: (location: "worldwide" | ApiPlace) => void;
 }
 
-const ExploreLocationSearch = ( {
+const ExploreLocationSearch = ({
   closeModal,
   hasPermissions,
   renderPermissionsGate,
   requestPermissions,
   updateLocation,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const { dispatch, defaultExploreLocation } = useExplore( );
+}: Props) => {
+  const { t } = useTranslation();
+  const { dispatch, defaultExploreLocation } = useExplore();
 
-  const [locationName, setLocationName] = useState( "" );
+  const [locationName, setLocationName] = useState("");
 
   const resetPlace = useCallback(
-    ( ) => {
-      updateLocation( "worldwide" );
+    () => {
+      updateLocation("worldwide");
       closeModal();
     },
     [updateLocation, closeModal],
@@ -81,20 +81,20 @@ const ExploreLocationSearch = ( {
     },
   );
 
-  const onPlaceSelected = useCallback( ( place: ApiPlace ) => {
-    updateLocation( place );
+  const onPlaceSelected = useCallback((place: ApiPlace) => {
+    updateLocation(place);
     closeModal();
-  }, [updateLocation, closeModal] );
+  }, [updateLocation, closeModal]);
 
   const renderItem = useCallback(
-    ( item: { item: ApiPlace} ) => {
+    (item: { item: ApiPlace}) => {
       const { item: place } = item;
       return (
         <Pressable
           accessibilityRole="button"
           key={place.id}
           className="p-3 border-[0.5px] border-lightGray"
-          onPress={() => onPlaceSelected( place )}
+          onPress={() => onPlaceSelected(place)}
         >
           <Body1>{place.display_name}</Body1>
           {!!place.place_type && (
@@ -108,42 +108,42 @@ const ExploreLocationSearch = ( {
 
   const data = placeResults || [];
 
-  const setNearbyLocation = useCallback( ( ) => {
-    async function getNearbyLocation( ) {
-      const exploreLocation = await defaultExploreLocation( );
+  const setNearbyLocation = useCallback(() => {
+    async function getNearbyLocation() {
+      const exploreLocation = await defaultExploreLocation();
       // exploreLocation has a placeMode already
       // dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
-      dispatch( { type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation } );
+      dispatch({ type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation });
       closeModal();
     }
-    getNearbyLocation( );
-  }, [dispatch, defaultExploreLocation, closeModal] );
+    getNearbyLocation();
+  }, [dispatch, defaultExploreLocation, closeModal]);
 
   const onNearbyPressed = () => {
-    if ( hasPermissions ) {
-      setNearbyLocation( );
+    if (hasPermissions) {
+      setNearbyLocation();
     } else {
-      requestPermissions( );
+      requestPermissions();
     }
   };
 
-  const emptyListComponent = useMemo( ( ) => (
+  const emptyListComponent = useMemo(() => (
     <EmptySearchResults
       isLoading={isLoading}
       searchQuery={locationName}
       refetch={refetch}
     />
-  ), [isLoading, locationName, refetch] );
+  ), [isLoading, locationName, refetch]);
 
   const buttons = [
     {
-      title: t( "NEARBY" ),
+      title: t("NEARBY"),
       onPress: onNearbyPressed,
       isPrimary: false,
       className: "w-1/2 mx-6",
     },
     {
-      title: t( "WORLDWIDE" ),
+      title: t("WORLDWIDE"),
       onPress: resetPlace,
       isPrimary: false,
       className: "w-1/2 mx-6",
@@ -154,7 +154,7 @@ const ExploreLocationSearch = ( {
     <ViewWrapper testID="explore-location-search">
       <ExploreSearchHeader
         closeModal={closeModal}
-        headerText={t( "SEARCH-LOCATION" )}
+        headerText={t("SEARCH-LOCATION")}
         resetFilters={resetPlace}
         testID="ExploreLocationSearch.close"
       />
@@ -164,7 +164,7 @@ const ExploreLocationSearch = ( {
       >
         <View className="px-6">
           <SearchBar
-            handleTextChange={locationText => setLocationName( locationText )}
+            handleTextChange={locationText => setLocationName(locationText)}
             value={locationName}
             testID="ExploreLocationSearch.locationSearch"
           />
@@ -179,7 +179,7 @@ const ExploreLocationSearch = ( {
         ListEmptyComponent={emptyListComponent}
         ListFooterComponent={Footer}
       />
-      {renderPermissionsGate( { onPermissionGranted: setNearbyLocation } )}
+      {renderPermissionsGate({ onPermissionGranted: setNearbyLocation })}
     </ViewWrapper>
   );
 };

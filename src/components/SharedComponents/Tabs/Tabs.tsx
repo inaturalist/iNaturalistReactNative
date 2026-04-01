@@ -12,7 +12,7 @@ export interface Tab {
   id: string;
   text: string;
   testID?: string;
-  onPress: ( _event: GestureResponderEvent ) => void;
+  onPress: (_event: GestureResponderEvent) => void;
 }
 
 export interface TabComponentProps {
@@ -30,33 +30,33 @@ interface Props {
 
 const EMPTY_TABS: Tab[] = [];
 
-const Tabs = ( {
+const Tabs = ({
   activeId,
-  activeColor = String( colors?.darkGray ),
+  activeColor = String(colors?.darkGray),
   tabs = EMPTY_TABS,
   TabComponent,
   TextComponent = Heading4,
-}: Props ) => {
+}: Props) => {
   const { t } = useTranslation();
   return (
     <>
       <View className="flex flex-row" accessibilityRole="tablist">
-        {tabs.map( ( {
+        {tabs.map(({
           id, text, onPress, testID,
-        } ) => {
+        }) => {
           const active = activeId === id;
           return (
             <View key={id} className="flex-1">
               <TouchableOpacity
-                onPress={( ...args ) => {
-                  if ( !active ) {
-                    onPress( ...args );
+                onPress={(...args) => {
+                  if (!active) {
+                    onPress(...args);
                   }
                 }}
                 testID={testID || `${id}-tab`}
                 accessibilityRole="tab"
                 accessibilityLabel={text}
-                accessibilityHint={t( "Switches-to-tab", { tab: text } )}
+                accessibilityHint={t("Switches-to-tab", { tab: text })}
                 accessibilityState={{
                   selected: active,
                   expanded: active,
@@ -84,7 +84,7 @@ const Tabs = ( {
               </TouchableOpacity>
             </View>
           );
-        } )}
+        })}
       </View>
       <Divider />
     </>

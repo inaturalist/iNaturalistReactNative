@@ -18,7 +18,7 @@ type Props = {
   updateProject: Function
 };
 
-const ExploreFiltersModal = ( {
+const ExploreFiltersModal = ({
   showModal,
   closeModal,
   filterByIconicTaxonUnknown,
@@ -28,7 +28,7 @@ const ExploreFiltersModal = ( {
   updateLocation,
   updateUser,
   updateProject,
-}: Props ): Node => (
+}: Props): Node => (
   <Modal
     showModal={showModal}
     fullScreen

@@ -12,13 +12,13 @@ import { H1, H2 } from "./DeveloperSharedComponents";
 
 // setting feature flag overrides is "dangerous" in the sense that we don't want to accidentally
 // set them in application code so this is colocated with the only code that _should_
-const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
-  const resolvedValue = useFeatureFlag( featureFlagKey );
+const useFeatureFlagForDebug = (featureFlagKey: FeatureFlag) => {
+  const resolvedValue = useFeatureFlag(featureFlagKey);
 
-  const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
+  const featureFlagConfig = useStore((state: FeatureFlagSlice) => state.featureFlagConfig);
   const featureFlagOverrides
-    = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
-  const setOverride = useStore( ( state: FeatureFlagSlice ) => state.setFeatureFlagDebugOverride );
+    = useStore((state: FeatureFlagSlice) => state.featureFlagDebugOverrides);
+  const setOverride = useStore((state: FeatureFlagSlice) => state.setFeatureFlagDebugOverride);
 
   const rawValue = featureFlagConfig[featureFlagKey];
   const overrideValue = featureFlagOverrides[featureFlagKey];
@@ -26,41 +26,41 @@ const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
     resolvedValue,
     rawValue,
     overrideValue,
-    setOverride: ( enabled: boolean ) => setOverride( featureFlagKey, enabled ),
-    clearOverride: () => setOverride( featureFlagKey, null ),
+    setOverride: (enabled: boolean) => setOverride(featureFlagKey, enabled),
+    clearOverride: () => setOverride(featureFlagKey, null),
   };
 };
 
-const trimFlagName = ( featureFlagKey: FeatureFlag ) => featureFlagKey.replace( "Enabled", "" );
+const trimFlagName = (featureFlagKey: FeatureFlag) => featureFlagKey.replace("Enabled", "");
 
-const getStatusText = ( enabled: boolean ) => ( enabled
+const getStatusText = (enabled: boolean) => (enabled
   ? "Enabled"
-  : "Disabled" );
+  : "Disabled");
 
-const FeatureFlagToggle = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } ) => {
+const FeatureFlagToggle = ({ featureFlagKey }: { featureFlagKey: FeatureFlag }) => {
   const {
     resolvedValue,
     rawValue,
     overrideValue,
     setOverride,
     clearOverride,
-  } = useFeatureFlagForDebug( featureFlagKey );
+  } = useFeatureFlagForDebug(featureFlagKey);
   const hasOverride = overrideValue !== null;
   return (
     <>
-      <H2>{`${trimFlagName( featureFlagKey )}: ${getStatusText( resolvedValue )}`}</H2>
+      <H2>{`${trimFlagName(featureFlagKey)}: ${getStatusText(resolvedValue)}`}</H2>
       <SwitchRow
         label={`Override default value of ${rawValue}`}
         value={hasOverride}
-        onValueChange={() => ( hasOverride
+        onValueChange={() => (hasOverride
           ? clearOverride()
-          : setOverride( rawValue ) )}
+          : setOverride(rawValue))}
       />
       {hasOverride && (
         <SwitchRow
           label="Enable"
           value={overrideValue}
-          onValueChange={() => setOverride( !overrideValue )}
+          onValueChange={() => setOverride(!overrideValue)}
           classNames="mt-[15px]"
         />
       )}
@@ -69,13 +69,13 @@ const FeatureFlagToggle = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } 
 };
 
 const FeatureFlags = () => {
-  const featureFlagKeys = Object.values( FeatureFlag );
+  const featureFlagKeys = Object.values(FeatureFlag);
   return (
     <>
       <H1>Feature Flags</H1>
-      {featureFlagKeys.map( featureFlagKey => (
+      {featureFlagKeys.map(featureFlagKey => (
         <FeatureFlagToggle key={featureFlagKey} featureFlagKey={featureFlagKey} />
-      ) )}
+      ))}
     </>
   );
 };

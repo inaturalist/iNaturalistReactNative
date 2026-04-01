@@ -9,10 +9,10 @@ const setQualityMetric = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const response = await inatjs.observations.setQualityMetric( params, opts );
+    const response = await inatjs.observations.setQualityMetric(params, opts);
     return response.results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "setQualityMetric", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "setQualityMetric", opts } });
   }
 };
 
@@ -21,10 +21,10 @@ const deleteQualityMetric = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const { results } = await inatjs.observations.deleteQualityMetric( params, opts );
+    const { results } = await inatjs.observations.deleteQualityMetric(params, opts);
     return results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "deleteQualityMetric", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "deleteQualityMetric", opts } });
   }
 };
 
@@ -33,10 +33,10 @@ const fetchQualityMetrics = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const response = await inatjs.observations.qualityMetrics( params, opts );
+    const response = await inatjs.observations.qualityMetrics(params, opts);
     return response.results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchQualityMetrics", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchQualityMetrics", opts } });
   }
 };
 

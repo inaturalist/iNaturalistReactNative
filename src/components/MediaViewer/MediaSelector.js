@@ -30,24 +30,24 @@ type Props = {
 const SMALL_ITEM_CLASS = "rounded-sm w-[42px] h-[42px] mx-[6px] my-[12px]";
 const LARGE_ITEM_CLASS = "rounded-md w-[83px] h-[83px] mx-[10px] my-[20px]";
 
-const PhotoSelector = ( {
+const PhotoSelector = ({
   isLargeScreen,
   photos,
   scrollToIndex,
   selectedMediaIndex,
   sounds = [],
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
   const items = [
-    ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
-    ...sounds.map( sound => ( { ...sound, type: "sound" } ) ),
+    ...photos.map(photo => ({ ...photo, type: "photo" })),
+    ...sounds.map(sound => ({ ...sound, type: "sound" })),
   ];
 
-  const renderItem = useCallback( ( { item, index } ) => (
+  const renderItem = useCallback(({ item, index }) => (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={t( "View-photo" )}
-      onPress={( ) => scrollToIndex( index )}
+      accessibilityLabel={t("View-photo")}
+      onPress={() => scrollToIndex(index)}
       className={classnames(
         "overflow-hidden",
         {
@@ -63,7 +63,7 @@ const PhotoSelector = ( {
         item.type === "photo"
           ? (
             <Image
-              source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( item ) }}
+              source={{ uri: Photo.displayLocalOrRemoteSquarePhoto(item) }}
               accessibilityIgnoresInvertColors
               className="w-full h-full"
             />
@@ -84,7 +84,7 @@ const PhotoSelector = ( {
     scrollToIndex,
     selectedMediaIndex,
     t,
-  ] );
+  ]);
 
   return (
     <View>

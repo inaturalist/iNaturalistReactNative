@@ -4,11 +4,11 @@ import React from "react";
 
 const text = "Heading1";
 
-describe( "Heading1", () => {
-  it( "renders correctly", () => {
-    render( <Heading1>{text}</Heading1> );
+describe("Heading1", () => {
+  it("renders correctly", () => {
+    render(<Heading1>{text}</Heading1>);
 
     // Snapshot test
-    expect( screen ).toMatchSnapshot();
-  } );
-} );
+    expect(screen).toMatchSnapshot();
+  });
+});

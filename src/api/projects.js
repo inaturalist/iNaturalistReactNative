@@ -20,10 +20,10 @@ const fetchProjects = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const { results } = await inatjs.projects.fetch( id, params, opts );
+    const { results } = await inatjs.projects.fetch(id, params, opts);
     return results[0];
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchProjects", id, opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchProjects", id, opts } });
   }
 };
 
@@ -32,9 +32,9 @@ const fetchProjectMembers = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    return await inatjs.projects.members( params, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchProjectMembers", opts } } );
+    return await inatjs.projects.members(params, opts);
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchProjectMembers", opts } });
   }
 };
 
@@ -43,43 +43,43 @@ const fetchProjectPosts = async (
   opts: Object = {},
 ): Promise<?Object> => {
   try {
-    const response = await inatjs.projects.posts( params, opts );
+    const response = await inatjs.projects.posts(params, opts);
     return response.total_results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchProjectPosts", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchProjectPosts", opts } });
   }
 };
 
-const searchProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const searchProjects = async (params: Object = {}, opts: Object = {}): Promise<?Object> => {
   try {
-    return await inatjs.projects.search( { ...PARAMS, ...params }, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "searchProjects", opts } } );
+    return await inatjs.projects.search({ ...PARAMS, ...params }, opts);
+  } catch (e) {
+    return handleError(e, { context: { functionName: "searchProjects", opts } });
   }
 };
 
-const joinProject = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const joinProject = async (params: Object = {}, opts: Object = {}): Promise<?Object> => {
   try {
-    return await inatjs.projects.join( { ...PARAMS, ...params }, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "joinProject", opts } } );
+    return await inatjs.projects.join({ ...PARAMS, ...params }, opts);
+  } catch (e) {
+    return handleError(e, { context: { functionName: "joinProject", opts } });
   }
 };
 
-const leaveProject = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const leaveProject = async (params: Object = {}, opts: Object = {}): Promise<?Object> => {
   try {
-    return await inatjs.projects.leave( { ...PARAMS, ...params }, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "leaveProject", opts } } );
+    return await inatjs.projects.leave({ ...PARAMS, ...params }, opts);
+  } catch (e) {
+    return handleError(e, { context: { functionName: "leaveProject", opts } });
   }
 };
 
-const fetchMembership = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const fetchMembership = async (params: Object = {}, opts: Object = {}): Promise<?Object> => {
   try {
-    const response = await inatjs.projects.membership( { ...PARAMS, ...params }, opts );
+    const response = await inatjs.projects.membership({ ...PARAMS, ...params }, opts);
     return response.total_results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchMembership", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "fetchMembership", opts } });
   }
 };
 

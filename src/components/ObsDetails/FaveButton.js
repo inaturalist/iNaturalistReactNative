@@ -24,84 +24,84 @@ type Props = {
   top?: boolean
 }
 
-const FaveButton = ( {
+const FaveButton = ({
   observation,
   currentUser,
-  afterToggleFave = ( ) => undefined,
+  afterToggleFave = () => undefined,
   top = false,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
   const uuid = observation?.uuid;
-  const [loading, setLoading] = useState( false );
+  const [loading, setLoading] = useState(false);
 
-  const observationFaved = useMemo( ( ) => {
-    if ( !observation ) return null;
-    const faves = observation.votes?.filter( vote => vote?.vote_scope === null ) || [];
+  const observationFaved = useMemo(() => {
+    if (!observation) return null;
+    const faves = observation.votes?.filter(vote => vote?.vote_scope === null) || [];
 
-    if ( currentUser && faves.length > 0 ) {
-      const viewerFaved = faves.find( fave => fave.user_id === currentUser.id );
+    if (currentUser && faves.length > 0) {
+      const viewerFaved = faves.find(fave => fave.user_id === currentUser.id);
       return !!viewerFaved;
     }
     return null;
   }, [
     currentUser,
     observation,
-  ] );
+  ]);
 
-  const [isFaved, setIsFaved] = useState( observationFaved || false );
+  const [isFaved, setIsFaved] = useState(observationFaved || false);
 
   const showErrorAlert = error => {
-    let msg = error?.json?.errors.map( err => err.message ).join( "; " );
-    if ( error.status === 401 ) {
-      msg = t( "You-need-log-in-to-do-that" );
+    let msg = error?.json?.errors.map(err => err.message).join("; ");
+    if (error.status === 401) {
+      msg = t("You-need-log-in-to-do-that");
     }
     Alert.alert(
-      t( "Error-title" ),
+      t("Error-title"),
       msg,
-      [{ text: t( "OK" ) }],
+      [{ text: t("OK") }],
       { cancelable: true },
     );
   };
 
   const { mutate: createUnfaveMutate } = useAuthenticatedMutation(
-    ( faveOrUnfaveParams, optsWithAuth ) => unfaveObservation( faveOrUnfaveParams, optsWithAuth ),
+    (faveOrUnfaveParams, optsWithAuth) => unfaveObservation(faveOrUnfaveParams, optsWithAuth),
     {
-      onSuccess: ( ) => {
-        afterToggleFave( false );
-        setLoading( false );
+      onSuccess: () => {
+        afterToggleFave(false);
+        setLoading(false);
       },
       onError: error => {
-        showErrorAlert( error );
-        setIsFaved( true );
-        setLoading( false );
+        showErrorAlert(error);
+        setIsFaved(true);
+        setLoading(false);
       },
     },
   );
 
   const { mutate: createFaveMutate } = useAuthenticatedMutation(
-    ( faveOrUnfaveParams, optsWithAuth ) => faveObservation( faveOrUnfaveParams, optsWithAuth ),
+    (faveOrUnfaveParams, optsWithAuth) => faveObservation(faveOrUnfaveParams, optsWithAuth),
     {
-      onSuccess: ( ) => {
-        afterToggleFave( true );
-        setLoading( false );
+      onSuccess: () => {
+        afterToggleFave(true);
+        setLoading(false);
       },
       onError: error => {
-        showErrorAlert( error );
-        setIsFaved( false );
-        setLoading( false );
+        showErrorAlert(error);
+        setIsFaved(false);
+        setLoading(false);
       },
     },
   );
 
-  const toggleFave = useCallback( ( ) => {
-    if ( !currentUser ) return;
-    setLoading( true );
-    if ( isFaved ) {
-      setIsFaved( false );
-      createUnfaveMutate( { uuid } );
+  const toggleFave = useCallback(() => {
+    if (!currentUser) return;
+    setLoading(true);
+    if (isFaved) {
+      setIsFaved(false);
+      createUnfaveMutate({ uuid });
     } else {
-      setIsFaved( true );
-      createFaveMutate( { uuid } );
+      setIsFaved(true);
+      createFaveMutate({ uuid });
     }
   }, [
     currentUser,
@@ -109,18 +109,18 @@ const FaveButton = ( {
     createUnfaveMutate,
     isFaved,
     uuid,
-  ] );
+  ]);
 
-  if ( !observation ) {
+  if (!observation) {
     return null;
   }
 
-  if ( loading ) {
+  if (loading) {
     return (
       <ActivityIndicator
-        className={classNames( "absolute bottom-5 right-5", {
+        className={classNames("absolute bottom-5 right-5", {
           "top-0": top,
-        } )}
+        })}
         size={25}
       />
     );
@@ -134,12 +134,12 @@ const FaveButton = ( {
       size={25}
       onPress={toggleFave}
       color={colors.white}
-      className={classNames( "absolute bottom-3 right-3", {
+      className={classNames("absolute bottom-3 right-3", {
         "top-0": top,
-      } )}
+      })}
       accessibilityLabel={isFaved
-        ? t( "Remove-favorite" )
-        : t( "Add-favorite" )}
+        ? t("Remove-favorite")
+        : t("Add-favorite")}
     />
   );
 };

@@ -54,7 +54,7 @@ const DEFAULT_CONFIDENCE_THRESHOLD = 70;
 const DEFAULT_NUM_STORED_RESULTS = 5;
 const DEFAULT_CROP_RATIO = 1.0;
 
-const FrameProcessorCamera = ( {
+const FrameProcessorCamera = ({
   animatedProps,
   cameraRef,
   confidenceThreshold = DEFAULT_CONFIDENCE_THRESHOLD,
@@ -76,100 +76,100 @@ const FrameProcessorCamera = ( {
   resetCameraOnFocus,
   userLocation,
   useLocation,
-}: Props ): Node => {
-  const sentinelFileName = useStore( state => state.sentinelFileName );
-  const { isDefaultMode } = useLayoutPrefs( );
-  const [lastTimestamp, setLastTimestamp] = useState( undefined );
+}: Props): Node => {
+  const sentinelFileName = useStore(state => state.sentinelFileName);
+  const { isDefaultMode } = useLayoutPrefs();
+  const [lastTimestamp, setLastTimestamp] = useState(undefined);
 
   const navigation = useNavigation();
 
-  const framesProcessingTime = useRef( [] );
+  const framesProcessingTime = useRef([]);
 
   // When useLocation changes, we need to reset the stored results
-  useEffect( () => {
+  useEffect(() => {
     InatVision.resetStoredResults();
-  }, [useLocation] );
+  }, [useLocation]);
 
-  useEffect( () => {
+  useEffect(() => {
     // This registers a listener for the frame processor plugin's log events
     // iOS part exposes no logging, so calling it would crash
-    if ( Platform.OS === "android" ) {
-      InatVision.addLogListener( event => {
+    if (Platform.OS === "android") {
+      InatVision.addLogListener(event => {
         // The vision-plugin events are in this format { log: "string" }
-        onLog( event );
-      } );
+        onLog(event);
+      });
     }
 
     return () => {
       InatVision.removeLogListener();
     };
-  }, [onLog] );
+  }, [onLog]);
 
-  useEffect( () => {
+  useEffect(() => {
     const resetAll = () => {
       InatVision.resetStoredResults();
       resetCameraOnFocus();
     };
-    const unsubscribeFocus = navigation.addListener( "focus", resetAll );
-    const unsubscribeBlur = navigation.addListener( "blur", resetAll );
+    const unsubscribeFocus = navigation.addListener("focus", resetAll);
+    const unsubscribeBlur = navigation.addListener("blur", resetAll);
 
     return () => {
       unsubscribeFocus();
       unsubscribeBlur();
     };
-  }, [navigation, resetCameraOnFocus] );
+  }, [navigation, resetCameraOnFocus]);
 
-  const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
-    setLastTimestamp( result.timestamp );
-    framesProcessingTime.current.push( timeTaken );
-    if ( framesProcessingTime.current.length === 10 ) {
-      const avgTime = framesProcessingTime.current.reduce( ( a, b ) => a + b, 0 ) / 10;
-      onLog( { log: `Average frame processing time over 10 frames: ${avgTime}ms` } );
+  const handleResults = Worklets.createRunOnJS((result, timeTaken) => {
+    setLastTimestamp(result.timestamp);
+    framesProcessingTime.current.push(timeTaken);
+    if (framesProcessingTime.current.length === 10) {
+      const avgTime = framesProcessingTime.current.reduce((a, b) => a + b, 0) / 10;
+      onLog({ log: `Average frame processing time over 10 frames: ${avgTime}ms` });
       framesProcessingTime.current = [];
     }
-    onTaxaDetected( result );
-  } );
+    onTaxaDetected(result);
+  });
 
-  const handleError = Worklets.createRunOnJS( error => {
-    onClassifierError( error );
-  } );
+  const handleError = Worklets.createRunOnJS(error => {
+    onClassifierError(error);
+  });
 
-  const patchedRunAsync = usePatchedRunAsync( );
+  const patchedRunAsync = usePatchedRunAsync();
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
   const useGeomodel = isDefaultMode
     ? hasUserLocation
-    : ( useLocation && hasUserLocation );
+    : (useLocation && hasUserLocation);
   // The vision-plugin has a function to look up the location of the user in a h3 gridded world
   // unfortunately, I was not able to run this new function in the worklets directly,
   // so we need to do this here before calling the useFrameProcessor hook.
   // For predictions from file this function runs in the vision-plugin code directly.
   const geoModelCellLocation = hasUserLocation
-    ? InatVision.getCellLocation( userLocation )
+    ? InatVision.getCellLocation(userLocation)
     : null;
   const frameProcessor = useFrameProcessor(
     frame => {
       "worklet";
 
-      if ( takingPhoto ) {
+      if (takingPhoto) {
         return;
       }
       const timestamp = Date.now();
       // If there is no lastTimestamp, i.e. the first time this runs do not compare
-      if ( lastTimestamp ) {
+      if (lastTimestamp) {
         const timeSinceLastFrame = timestamp - lastTimestamp;
-        if ( timeSinceLastFrame < 1000 / fps ) {
+        if (timeSinceLastFrame < 1000 / fps) {
           return;
         }
       }
 
-      patchedRunAsync( frame, ( ) => {
+      patchedRunAsync(frame, () => {
         "worklet";
 
         // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
         // react-native-worklets-core documentation for what is supported in those worklets.
         const timeBefore = Date.now();
         try {
-          const result = InatVision.inatVision( frame, {
+          const result = InatVision.inatVision(frame, {
             version: modelVersion,
             modelPath,
             taxonomyPath,
@@ -183,15 +183,15 @@ const FrameProcessorCamera = ( {
               longitude: geoModelCellLocation?.longitude,
               elevation: geoModelCellLocation?.elevation,
             },
-          } );
+          });
           const timeAfter = Date.now();
           const timeTaken = timeAfter - timeBefore;
-          handleResults( result, timeTaken );
-        } catch ( classifierError ) {
-          console.log( `Error: ${classifierError.message}` );
-          handleError( classifierError );
+          handleResults(result, timeTaken);
+        } catch (classifierError) {
+          console.log(`Error: ${classifierError.message}`);
+          handleError(classifierError);
         }
-      } );
+      });
     },
     [
       patchedRunAsync,
@@ -216,20 +216,20 @@ const FrameProcessorCamera = ( {
       device={device}
       frameProcessor={frameProcessor}
       onCameraError={async error => {
-        onCameraError( error );
-        await logStage( sentinelFileName, "fallback_camera_error" );
+        onCameraError(error);
+        await logStage(sentinelFileName, "fallback_camera_error");
       }}
       onCaptureError={async error => {
-        onCaptureError( error );
-        await logStage( sentinelFileName, "camera_capture_error" );
+        onCaptureError(error);
+        await logStage(sentinelFileName, "camera_capture_error");
       }}
       onClassifierError={async error => {
-        onClassifierError( error );
-        await logStage( sentinelFileName, "camera_classifier_error" );
+        onClassifierError(error);
+        await logStage(sentinelFileName, "camera_classifier_error");
       }}
       onDeviceNotSupported={async error => {
-        onDeviceNotSupported( error );
-        await logStage( sentinelFileName, "camera_device_not_supported_error" );
+        onDeviceNotSupported(error);
+        await logStage(sentinelFileName, "camera_device_not_supported_error");
       }}
       panToZoom={panToZoom}
       pinchToZoom={pinchToZoom}

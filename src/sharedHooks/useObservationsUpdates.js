@@ -10,7 +10,7 @@ const { useRealm } = RealmContext;
 
 export const fetchObservationUpdatesKey = "fetchObservationUpdates";
 
-const useObservationsUpdates = ( enabled: boolean ): Object => {
+const useObservationsUpdates = (enabled: boolean): Object => {
   const realm = useRealm();
 
   // Request params for fetching unviewed updates
@@ -26,8 +26,8 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     refetch,
   } = useAuthenticatedQuery(
     [fetchObservationUpdatesKey],
-    optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
-    { enabled: !!( enabled ) },
+    optsWithAuth => fetchObservationUpdates(baseParams, optsWithAuth),
+    { enabled: !!(enabled) },
   );
 
   /*
@@ -60,17 +60,17 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     ]
   */
 
-  useEffect( ( ) => {
+  useEffect(() => {
     // Looping through all unviewed updates
-    const remoteUnviewed = data?.filter( result => result.viewed === false );
-    safeRealmWrite( realm, ( ) => {
-      remoteUnviewed?.forEach( update => {
+    const remoteUnviewed = data?.filter(result => result.viewed === false);
+    safeRealmWrite(realm, () => {
+      remoteUnviewed?.forEach(update => {
         // Get the observation from local realm that matches the update's resource_uuid
         const existingObs = realm?.objectForPrimaryKey(
           "Observation",
           update.resource_uuid,
         );
-        if ( !existingObs ) {
+        if (!existingObs) {
           return;
         }
         // If both comments and identifications are already unviewed, nothing to do here
@@ -84,7 +84,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
         if (
           existingObs.comments_viewed || existingObs.comments_viewed === null
         ) {
-          if ( update.comment_id ) {
+          if (update.comment_id) {
             existingObs.comments_viewed = false;
           }
         }
@@ -92,13 +92,13 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
         if (
           existingObs.identifications_viewed || existingObs.identifications_viewed === null
         ) {
-          if ( update.identification_id ) {
+          if (update.identification_id) {
             existingObs.identifications_viewed = false;
           }
         }
-      } );
-    }, "setting comments and/or identifications false in useObservationsUpdates" );
-  }, [data, realm] );
+      });
+    }, "setting comments and/or identifications false in useObservationsUpdates");
+  }, [data, realm]);
 
   return { refetch };
 };

@@ -11,7 +11,7 @@ import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Observation from "realmModels/Observation";
 
-const queryClient = new QueryClient( {
+const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // No need to do default retries in tests
@@ -21,7 +21,7 @@ const queryClient = new QueryClient( {
       gcTime: Infinity,
     },
   },
-} );
+});
 
 const mockNavigationTheme = {
   ...DefaultTheme,
@@ -36,7 +36,7 @@ const mockNavigationTheme = {
   },
 };
 
-function renderComponent( component, update = null, renderOptions = {} ) {
+function renderComponent(component, update = null, renderOptions = {}) {
   const renderMethod = update || render;
   return renderMethod(
     <QueryClientProvider client={queryClient}>
@@ -54,23 +54,23 @@ function renderComponent( component, update = null, renderOptions = {} ) {
   );
 }
 
-function renderAppWithComponent( component, update = null ) {
-  return renderComponent( <App>{ component }</App>, update );
+function renderAppWithComponent(component, update = null) {
+  return renderComponent(<App>{ component }</App>, update);
 }
 
-function renderApp( update = null ) {
-  return renderAppWithComponent( null, update );
+function renderApp(update = null) {
+  return renderAppWithComponent(null, update);
 }
 
 async function renderAppWithObservations(
   observations,
   realmIdentifier,
 ) {
-  if ( observations.length > 0 ) {
-    await Promise.all( observations.map( async observation => {
+  if (observations.length > 0) {
+    await Promise.all(observations.map(async observation => {
       // If it looks like it was supposed to be unsynced, save it like a new
       // local obs
-      if ( observation.needsSync && observation.needsSync( ) ) {
+      if (observation.needsSync && observation.needsSync()) {
         // Save the mock observation in Realm
         return Observation.saveLocalObservationForUpload(
           observations[0],
@@ -78,25 +78,25 @@ async function renderAppWithObservations(
         );
       }
       // Otherwise save it like a remote obs
-      return new Promise( resolve => {
+      return new Promise(resolve => {
         resolve(
-          Observation.upsertRemoteObservations( [observation], global.mockRealms[realmIdentifier] ),
+          Observation.upsertRemoteObservations([observation], global.mockRealms[realmIdentifier]),
         );
-      } );
-    } ) );
+      });
+    }));
   }
   // Render the whole app with all the navigators
-  renderAppWithComponent( );
+  renderAppWithComponent();
   // If we don't wait for the obs to render we get errors about things
   // happening outside of act(). Most tests will do this anyway, but this
   // caused me a lot of confusion when I was trying to debug other problems
   // by removing code until I was just rendering the stack navigator... and
   // that was still erroring out. Hopefully this will prevent that particular
   // point of confusion in the future. ~~~kueda 20240104
-  await screen.findByTestId( `MyObservations.obsGridItem.${observations[0].uuid}` );
+  await screen.findByTestId(`MyObservations.obsGridItem.${observations[0].uuid}`);
 }
 
-function wrapInNavigationContainer( component ) {
+function wrapInNavigationContainer(component) {
   return (
     <NavigationContainer>
       {component}
@@ -104,7 +104,7 @@ function wrapInNavigationContainer( component ) {
   );
 }
 
-function wrapInQueryClientContainer( component ) {
+function wrapInQueryClientContainer(component) {
   return (
     <QueryClientProvider client={queryClient}>
       {component}
@@ -112,7 +112,7 @@ function wrapInQueryClientContainer( component ) {
   );
 }
 
-const Wrapper = ( { children } ) => (
+const Wrapper = ({ children }) => (
   <QueryClientProvider client={queryClient}>
     <INatPaperProvider>
       <GestureHandlerRootView className="flex-1">
@@ -128,10 +128,10 @@ const Wrapper = ( { children } ) => (
   </QueryClientProvider>
 );
 
-function renderHookInApp( hookToRender ) {
-  return renderHook( hookToRender, {
+function renderHookInApp(hookToRender) {
+  return renderHook(hookToRender, {
     wrapper: Wrapper,
-  } );
+  });
 }
 
 export {

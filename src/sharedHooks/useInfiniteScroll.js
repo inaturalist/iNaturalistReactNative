@@ -25,20 +25,20 @@ const useInfiniteScroll = (
     status,
   } = useAuthenticatedInfiniteQuery(
     [queryKey, baseParams],
-    async ( { pageParam = 1 }, optsWithAuth ) => {
+    async ({ pageParam = 1 }, optsWithAuth) => {
       const params = {
         ...baseParams,
       };
 
       params.page = pageParam;
 
-      return apiCall( params, optsWithAuth );
+      return apiCall(params, optsWithAuth);
     },
     // TO DO: we need to properly type queryOptions in useAuthenticatedInfiniteQuery
     /* eslint-disable consistent-return */
     {
       getNextPageParam: lastPage => {
-        if ( !lastPage ) return undefined;
+        if (!lastPage) return undefined;
 
         const totalResultsCount = lastPage.total_results;
         const totalFetchedCount = lastPage.page * baseParams.per_page;
@@ -54,7 +54,7 @@ const useInfiniteScroll = (
   );
 
   const pages = data?.pages || [];
-  const allResults = pages?.map( page => page?.results ).flat( Infinity ).filter( Boolean );
+  const allResults = pages?.map(page => page?.results).flat(Infinity).filter(Boolean);
 
   return {
     data: allResults,

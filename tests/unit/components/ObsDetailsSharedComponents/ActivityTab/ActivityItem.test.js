@@ -6,32 +6,32 @@ import { accessibleTaxonName } from "sharedHelpers/taxon";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockTaxon = factory( "LocalTaxon" );
-const mockIdentification = factory( "LocalIdentification", {
+const mockTaxon = factory("LocalTaxon");
+const mockIdentification = factory("LocalIdentification", {
   uuid: "123456789",
-  user: factory( "LocalUser" ),
+  user: factory("LocalUser"),
   taxon: mockTaxon,
-} );
+});
 
 const mockIdentificationWithHiddenContent = {
   ...mockIdentification,
   hidden: true,
 };
 
-describe( "ActivityItem", () => {
-  it( "renders name of identification taxon", async ( ) => {
+describe("ActivityItem", () => {
+  it("renders name of identification taxon", async () => {
     renderComponent(
       <ActivityItem
         item={mockIdentification}
         key={mockIdentification.uuid}
       />,
     );
-    const accessibleName = accessibleTaxonName( mockTaxon, null, i18next.t );
-    const navToTaxonDetailsLabel = screen.getByLabelText( accessibleName );
-    expect( navToTaxonDetailsLabel ).toBeTruthy( );
-  } );
+    const accessibleName = accessibleTaxonName(mockTaxon, null, i18next.t);
+    const navToTaxonDetailsLabel = screen.getByLabelText(accessibleName);
+    expect(navToTaxonDetailsLabel).toBeTruthy();
+  });
 
-  it( "renders agree button if user is logged in", async ( ) => {
+  it("renders agree button if user is logged in", async () => {
     renderComponent(
       <ActivityItem
         currentUserId="000"
@@ -45,12 +45,12 @@ describe( "ActivityItem", () => {
     const agreeButton = await screen.findByTestId(
       `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`,
     );
-    await waitFor( ( ) => {
-      expect( agreeButton ).toBeTruthy( );
-    } );
-  } );
+    await waitFor(() => {
+      expect(agreeButton).toBeTruthy();
+    });
+  });
 
-  it( "does not render agree button if user is logged out", async ( ) => {
+  it("does not render agree button if user is logged out", async () => {
     renderComponent(
       <ActivityItem
         currentUserId={undefined}
@@ -64,12 +64,12 @@ describe( "ActivityItem", () => {
     const agreeButton = screen.queryByTestId(
       `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`,
     );
-    await waitFor( ( ) => {
-      expect( agreeButton ).toBeFalsy( );
-    } );
-  } );
+    await waitFor(() => {
+      expect(agreeButton).toBeFalsy();
+    });
+  });
 
-  it( "does not render agree button on second taxon display", async ( ) => {
+  it("does not render agree button on second taxon display", async () => {
     renderComponent(
       <ActivityItem
         currentUserId="000"
@@ -80,12 +80,12 @@ describe( "ActivityItem", () => {
     const agreeButton = screen.queryByTestId(
       `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`,
     );
-    await waitFor( ( ) => {
-      expect( agreeButton ).toBeFalsy( );
-    } );
-  } );
+    await waitFor(() => {
+      expect(agreeButton).toBeFalsy();
+    });
+  });
 
-  it( "shows agree sheet with correct taxon", async ( ) => {
+  it("shows agree sheet with correct taxon", async () => {
     const mockopenAgreeWithIdSheet = jest.fn();
     renderComponent(
       <ActivityItem
@@ -98,19 +98,19 @@ describe( "ActivityItem", () => {
     const agreeButton = await screen.findByTestId(
       `ActivityItem.AgreeIdButton.${mockIdentification.taxon.id}`,
     );
-    fireEvent.press( agreeButton );
-    expect( mockopenAgreeWithIdSheet ).toHaveBeenCalledWith( mockIdentification.taxon );
-  } );
+    fireEvent.press(agreeButton);
+    expect(mockopenAgreeWithIdSheet).toHaveBeenCalledWith(mockIdentification.taxon);
+  });
 
-  it( "renders withdrawn id label", async ( ) => {
-    const mockId = factory( "LocalIdentification", {
+  it("renders withdrawn id label", async () => {
+    const mockId = factory("LocalIdentification", {
       uuid: "123456789",
-      user: factory( "LocalUser" ),
-      taxon: factory( "LocalTaxon", {
+      user: factory("LocalUser"),
+      taxon: factory("LocalTaxon", {
         name: "Miner's Lettuce",
-      } ),
+      }),
       current: false,
-    } );
+    });
     renderComponent(
       <ActivityItem
         currentUserId="000"
@@ -120,31 +120,31 @@ describe( "ActivityItem", () => {
       />,
     );
 
-    const idWithdrawn = await screen.findByText( "ID Withdrawn" );
-    await waitFor( ( ) => {
-      expect( idWithdrawn ).toBeTruthy( );
-    } );
-  } );
+    const idWithdrawn = await screen.findByText("ID Withdrawn");
+    await waitFor(() => {
+      expect(idWithdrawn).toBeTruthy();
+    });
+  });
 
-  it( "should not show hidden content", async ( ) => {
+  it("should not show hidden content", async () => {
     renderComponent(
       <ActivityItem
         currentUserId="000"
         item={mockIdentificationWithHiddenContent}
       />,
     );
-    const activityItem = screen.queryByTestId( "ObsDetails.ActivityItem" );
-    expect( activityItem ).toBeFalsy( );
-  } );
+    const activityItem = screen.queryByTestId("ObsDetails.ActivityItem");
+    expect(activityItem).toBeFalsy();
+  });
 
-  it( "should show unhidden content", async ( ) => {
+  it("should show unhidden content", async () => {
     renderComponent(
       <ActivityItem
         currentUserId="000"
         item={mockIdentification}
       />,
     );
-    const activityItem = screen.queryByTestId( "ObsDetails.ActivityItem" );
-    expect( activityItem ).toBeVisible( );
-  } );
-} );
+    const activityItem = screen.queryByTestId("ObsDetails.ActivityItem");
+    expect(activityItem).toBeVisible();
+  });
+});

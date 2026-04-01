@@ -34,29 +34,29 @@ type Props = {
   textInputStyle?: Object
 }
 
-const CharLimit = ( { current = 0, limit = 1, t } ) => {
+const CharLimit = ({ current = 0, limit = 1, t }) => {
   let currentColor = "text-darkGrayDisabled";
-  if ( current / limit >= 1 ) {
+  if (current / limit >= 1) {
     currentColor = "text-warningRed";
-  } else if ( current / limit > 0.9 ) {
+  } else if (current / limit > 0.9) {
     currentColor = "text-warningRedDisabled";
   }
   return (
     <View className="flex-row space-x-1">
       <Body3 className={`${currentColor}`}>
-        { t( "Intl-number", { val: current } ) }
+        { t("Intl-number", { val: current }) }
       </Body3>
       <Body3 className="text-darkGrayDisabled">
         /
       </Body3>
       <Body3 className="text-darkGrayDisabled">
-        { t( "Intl-number", { val: limit } ) }
+        { t("Intl-number", { val: limit }) }
       </Body3>
     </View>
   );
 };
 
-const TextInputSheet = ( {
+const TextInputSheet = ({
   buttonText,
   confirm,
   description,
@@ -67,19 +67,19 @@ const TextInputSheet = ( {
   maxLength,
   placeholder,
   textInputStyle,
-}: Props ): Node => {
-  const [input, setInput] = useState( initialInput );
-  const { t } = useTranslation( );
-  const { nonKeyboardHeight } = useKeyboardInfo( TARGET_INPUT_HEIGHT );
-  const { top: topInset } = useSafeAreaInsets( );
-  const [sheetHeight, setSheetHeight] = useState( 0 );
+}: Props): Node => {
+  const [input, setInput] = useState(initialInput);
+  const { t } = useTranslation();
+  const { nonKeyboardHeight } = useKeyboardInfo(TARGET_INPUT_HEIGHT);
+  const { top: topInset } = useSafeAreaInsets();
+  const [sheetHeight, setSheetHeight] = useState(0);
 
   // disable if user hasn't changed existing text
-  const confirmButtonDisabled = initialInput === input || ( !input && !initialInput );
+  const confirmButtonDisabled = initialInput === input || (!input && !initialInput);
 
-  const inputStyle = useMemo( ( ) => ( {
+  const inputStyle = useMemo(() => ({
     height: Math.min(
-      TARGET_INPUT_HEIGHT - ( sheetHeight - nonKeyboardHeight ) - topInset,
+      TARGET_INPUT_HEIGHT - (sheetHeight - nonKeyboardHeight) - topInset,
       TARGET_INPUT_HEIGHT,
     ),
     fontFamily: fontRegular,
@@ -87,15 +87,15 @@ const TextInputSheet = ( {
     lineHeight: 17,
     color: colors.darkGray,
     textAlignVertical: "top",
-  } ), [
+  }), [
     nonKeyboardHeight,
     sheetHeight,
     topInset,
-  ] );
+  ]);
 
-  const dismissKeyboardAndClose = ( ) => {
-    Keyboard.dismiss( );
-    onPressClose( );
+  const dismissKeyboardAndClose = () => {
+    Keyboard.dismiss();
+    onPressClose();
   };
 
   return (
@@ -106,8 +106,8 @@ const TextInputSheet = ( {
       onLayout={event => {
         const { height } = event.nativeEvent.layout;
         // Only do this once. Device height isn't going to change
-        if ( sheetHeight === 0 ) {
-          setSheetHeight( height );
+        if (sheetHeight === 0) {
+          setSheetHeight(height);
         }
       }}
       scrollEnabled={false}
@@ -165,11 +165,11 @@ const TextInputSheet = ( {
               <CharLimit current={input?.length} limit={maxLength} t={t} />
             ) }
             <Pressable
-              onPress={() => setInput( "" )}
-              accessibilityHint={t( "Deletes-entered-text" )}
+              onPress={() => setInput("")}
+              accessibilityHint={t("Deletes-entered-text")}
               accessibilityRole="button"
             >
-              <Body3>{t( "Clear" )}</Body3>
+              <Body3>{t("Clear")}</Body3>
             </Pressable>
           </View>
         </View>
@@ -178,13 +178,13 @@ const TextInputSheet = ( {
           className="mt-5"
           disabled={confirmButtonDisabled}
           level="primary"
-          text={buttonText || t( "DONE" )}
+          text={buttonText || t("DONE")}
           onPress={() => {
             // If the confirm() callback returns false, something went wrong
             // and the user may need to edit the text or do something else
             // before we close the sheet
-            if ( confirm( input ) !== false ) {
-              dismissKeyboardAndClose( );
+            if (confirm(input) !== false) {
+              dismissKeyboardAndClose();
             }
           }}
         />

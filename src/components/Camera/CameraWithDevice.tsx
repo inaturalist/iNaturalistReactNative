@@ -8,14 +8,14 @@ import type { UserLocation } from "sharedHooks/useWatchPosition";
 import AICamera from "./AICamera/AICamera";
 import StandardCamera from "./StandardCamera/StandardCamera";
 
-const isTablet = DeviceInfo.isTablet( );
+const isTablet = DeviceInfo.isTablet();
 
 interface Props {
   cameraType: string;
   device: CameraDevice;
   camera: object;
-  flipCamera: ( ) => void;
-  handleCheckmarkPress: ( ) => void;
+  flipCamera: () => void;
+  handleCheckmarkPress: () => void;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   toggleFlash: Function;
   takingPhoto: boolean;
@@ -30,7 +30,7 @@ interface Props {
   requestLocationPermissions: () => void;
 }
 
-const CameraWithDevice = ( {
+const CameraWithDevice = ({
   cameraType,
   device,
   camera,
@@ -45,8 +45,8 @@ const CameraWithDevice = ( {
   userLocation,
   hasLocationPermissions,
   requestLocationPermissions,
-}: Props ) => {
-  const { isLandscapeMode } = useDeviceOrientation( );
+}: Props) => {
+  const { isLandscapeMode } = useDeviceOrientation();
   const flexDirection = isTablet && isLandscapeMode
     ? "flex-row"
     : "flex-col";

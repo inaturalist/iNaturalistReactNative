@@ -1,12 +1,12 @@
 import React from "react";
 import { RefreshControl } from "react-native";
 
-const CustomRefreshControl = ( {
+const CustomRefreshControl = ({
   accessibilityLabel,
   refreshing,
   onRefresh,
   ...props
-} ) => (
+}) => (
   <RefreshControl
     accessibilityLabel={accessibilityLabel}
     onRefresh={onRefresh}

@@ -14,10 +14,10 @@ import { Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
-const { width } = Dimensions.get( "window" );
+const { width } = Dimensions.get("window");
 const marginOnWide = {
   marginHorizontal: width > 500
-    ? ( width - 500 ) / 2
+    ? (width - 500) / 2
     : 0,
   borderTopLeftRadius: 24,
   borderTopRightRadius: 24,
@@ -32,9 +32,9 @@ interface Props {
   hidden?: boolean;
   hideCloseButton?: boolean;
   headerText?: string;
-  onLayout?: ( event: object ) => void;
+  onLayout?: (event: object) => void;
   // OnPressClose *does* get called whenever bottom sheet is dismissed
-  onPressClose?: ( ) => void;
+  onPressClose?: () => void;
   snapPoints?: string[];
   insideModal?: boolean;
   keyboardShouldPersistTaps?: string;
@@ -45,7 +45,7 @@ interface Props {
   enableContentPanningGesture?: boolean;
 }
 
-const StandardBottomSheet = ( {
+const StandardBottomSheet = ({
   children,
   hidden,
   hideCloseButton = false,
@@ -60,24 +60,24 @@ const StandardBottomSheet = ( {
   scrollEnabled = true,
   enablePanDownToClose = true,
   enableContentPanningGesture = true,
-}: Props ): Node => {
-  if ( snapPoints ) {
-    throw new Error( "BottomSheet does not accept snapPoints as a prop." );
+}: Props): Node => {
+  if (snapPoints) {
+    throw new Error("BottomSheet does not accept snapPoints as a prop.");
   }
 
-  const { t } = useTranslation( );
-  const sheetRef = useRef<BottomSheet>( null );
-  const insets = useSafeAreaInsets( );
+  const { t } = useTranslation();
+  const sheetRef = useRef<BottomSheet>(null);
+  const insets = useSafeAreaInsets();
 
-  const handleClose = useCallback( ( ) => {
-    if ( onPressClose ) onPressClose( );
+  const handleClose = useCallback(() => {
+    if (onPressClose) onPressClose();
 
-    if ( insideModal ) {
-      sheetRef.current?.collapse( );
+    if (insideModal) {
+      sheetRef.current?.collapse();
     } else {
-      sheetRef.current?.dismiss( );
+      sheetRef.current?.dismiss();
     }
-  }, [insideModal, onPressClose] );
+  }, [insideModal, onPressClose]);
 
   const renderBackdrop = props => (
     <BottomSheetStandardBackdrop
@@ -86,25 +86,25 @@ const StandardBottomSheet = ( {
     />
   );
 
-  const handleSnapPress = useCallback( ( ) => {
-    if ( insideModal ) {
-      sheetRef.current?.expand( );
+  const handleSnapPress = useCallback(() => {
+    if (insideModal) {
+      sheetRef.current?.expand();
     } else {
-      sheetRef.current?.present( );
+      sheetRef.current?.present();
     }
-  }, [insideModal] );
+  }, [insideModal]);
 
-  useEffect( ( ) => {
-    if ( hidden ) { return; }
-    handleSnapPress( );
-  }, [hidden, handleSnapPress] );
+  useEffect(() => {
+    if (hidden) { return; }
+    handleSnapPress();
+  }, [hidden, handleSnapPress]);
 
   // To me, this implies this is a good candidate for splitting into 2 components
   const BottomSheetComponent = insideModal
     ? BottomSheet
     : BottomSheetModal;
 
-  if ( hidden ) {
+  if (hidden) {
     return null;
   }
 
@@ -158,7 +158,7 @@ const StandardBottomSheet = ( {
               size={19}
               className="absolute top-3.5 right-3"
               accessibilityState={{ disabled: hidden }}
-              accessibilityLabel={t( "Close" )}
+              accessibilityLabel={t("Close")}
             />
           )}
         </View>

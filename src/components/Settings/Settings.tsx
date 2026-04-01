@@ -17,17 +17,17 @@ import {
 import AdvancedSettings from "./AdvancedSettings";
 import LoggedInDefaultSettings from "./LoggedInDefaultSettings";
 
-const Settings = ( ) => {
+const Settings = () => {
   const { t } = useTranslation();
-  const currentUser = useCurrentUser( );
+  const currentUser = useCurrentUser();
   const {
     isDefaultMode,
     setIsDefaultMode,
-  } = useLayoutPrefs( );
+  } = useLayoutPrefs();
 
-  const handleValueChange = useCallback( ( newValue: boolean ) => {
-    setIsDefaultMode( !newValue );
-  }, [setIsDefaultMode] );
+  const handleValueChange = useCallback((newValue: boolean) => {
+    setIsDefaultMode(!newValue);
+  }, [setIsDefaultMode]);
 
   // maybe there's a less confusing way to do this,
   // but this worked for my brain on a deadline
@@ -37,14 +37,14 @@ const Settings = ( ) => {
     <ScrollViewWrapper>
       <StatusBar barStyle="dark-content" />
       <View className="p-4">
-        <Heading4 className="mb-[15px]">{t( "ADVANCED-SETTINGS" )}</Heading4>
+        <Heading4 className="mb-[15px]">{t("ADVANCED-SETTINGS")}</Heading4>
         <SwitchRow
           testID="advanced-interface-switch"
           classNames="ml-[6px]"
           smallLabel
           value={isAdvancedMode}
           onValueChange={handleValueChange}
-          label={t( "Advanced-Mode" )}
+          label={t("Advanced-Mode")}
         />
         {isAdvancedMode && <AdvancedSettings />}
         {currentUser && <LoggedInDefaultSettings />}

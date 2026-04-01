@@ -1,6 +1,6 @@
 import mockNodePath from "path";
 
-export default ( {
+export default ({
   createResizedImage: jest.fn(
     async (
       path,
@@ -11,8 +11,8 @@ export default ( {
       _rotation,
       outputPath,
     ) => {
-      const filename = mockNodePath.basename( path );
-      return { uri: mockNodePath.join( outputPath, filename ) };
+      const filename = mockNodePath.basename(path);
+      return { uri: mockNodePath.join(outputPath, filename) };
     },
   ),
-} );
+});

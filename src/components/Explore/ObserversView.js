@@ -16,12 +16,12 @@ type Props = {
 
 const LIST_STYLE = { paddingTop: 44 };
 
-const ObserversView = ( {
+const ObserversView = ({
   canFetch,
   isConnected,
   queryParams,
   handleUpdateCount,
-}: Props ): Node => {
+}: Props): Node => {
   const {
     data,
     isFetchingNextPage,
@@ -42,9 +42,9 @@ const ObserversView = ( {
     },
   );
 
-  useEffect( ( ) => {
-    handleUpdateCount( "observers", totalResults );
-  }, [totalResults, handleUpdateCount] );
+  useEffect(() => {
+    handleUpdateCount("observers", totalResults);
+  }, [totalResults, handleUpdateCount]);
 
   return (
     <ExploreFlashList

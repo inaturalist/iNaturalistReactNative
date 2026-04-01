@@ -45,55 +45,55 @@ const testData = [
   ],
 ];
 
-describe( "ObservationLocation", () => {
-  it( "should be accessible", () => {
+describe("ObservationLocation", () => {
+  it("should be accessible", () => {
     // const mockObservation = factory( "RemoteObservation" );
     // Disabled during the update to RN 0.78
     // expect(
     //   <ObservationLocation observation={mockObservation} />
     // ).toBeAccessible();
-  } );
+  });
 
-  it.each( testData )( "%s", async ( a, obsData, expectedResult ) => {
-    const mockObservation = factory( "RemoteObservation", obsData );
+  it.each(testData)("%s", async (a, obsData, expectedResult) => {
+    const mockObservation = factory("RemoteObservation", obsData);
 
     render(
       <ObservationLocation observation={mockObservation} details />,
     );
-    expect( await screen.findByText( new RegExp( expectedResult ) ) ).toBeTruthy();
-  } );
+    expect(await screen.findByText(new RegExp(expectedResult))).toBeTruthy();
+  });
 
-  it( "renders obscured icon if obscured", async () => {
+  it("renders obscured icon if obscured", async () => {
     const mockObservation = {
       taxon_geoprivacy: "obscured",
     };
     render(
       <ObservationLocation observation={mockObservation} />,
     );
-    expect( await screen.findByTestId(
+    expect(await screen.findByTestId(
       `ContentWithIcon.${mockObservation.taxon_geoprivacy}`,
-    ) ).toBeTruthy( );
-  } );
+    )).toBeTruthy();
+  });
 
-  it( "renders private icon if private", async () => {
+  it("renders private icon if private", async () => {
     const mockObservation = {
       taxon_geoprivacy: "private",
     };
     render(
       <ObservationLocation observation={mockObservation} />,
     );
-    expect( await screen.findByTestId(
+    expect(await screen.findByTestId(
       `ContentWithIcon.${mockObservation.taxon_geoprivacy}`,
-    ) ).toBeTruthy( );
-  } );
+    )).toBeTruthy();
+  });
 
-  it( "renders loaction icon if not obscured", async () => {
-    const mockObservation = factory( "RemoteObservation" );
+  it("renders loaction icon if not obscured", async () => {
+    const mockObservation = factory("RemoteObservation");
     render(
       <ObservationLocation observation={mockObservation} />,
     );
-    expect( await screen.findByTestId(
+    expect(await screen.findByTestId(
       "ContentWithIcon.location",
-    ) ).toBeTruthy( );
-  } );
-} );
+    )).toBeTruthy();
+  });
+});

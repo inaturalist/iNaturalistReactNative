@@ -15,12 +15,12 @@ const CONTENT_CONTAINER_STYLE = {
   minHeight: "100%",
 } as const;
 
-const ScrollViewWrapper = ( {
+const ScrollViewWrapper = ({
   children,
   testID,
   style,
   scrollRef,
-}: Props ) => {
+}: Props) => {
   const dismissKeyboard = () => Keyboard.dismiss();
 
   return (

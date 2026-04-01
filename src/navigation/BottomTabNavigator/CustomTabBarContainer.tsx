@@ -40,8 +40,8 @@ const resetOnLeaveTabScreenTuples: [TabName, ScreenName][] = [
   ["NotificationsTab", SCREEN_NAME_NOTIFICATIONS],
 ];
 
-const getActiveTab = ( activeTabName: TabName ): ScreenName => {
-  switch ( activeTabName ) {
+const getActiveTab = (activeTabName: TabName): ScreenName => {
+  switch (activeTabName) {
     case "MenuTab": return SCREEN_NAME_MENU;
     case "ExploreTab": return SCREEN_NAME_ROOT_EXPLORE;
     case "ObservationsTab": return SCREEN_NAME_OBS_LIST;
@@ -50,51 +50,51 @@ const getActiveTab = ( activeTabName: TabName ): ScreenName => {
   }
 };
 
-const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
-  const { t } = useTranslation( );
-  const currentUser = useCurrentUser( );
+const CustomTabBarContainer: React.FC<Props> = ({ navigation, state }) => {
+  const { t } = useTranslation();
+  const currentUser = useCurrentUser();
 
   const activeTabIndex = state?.index;
   const activeTabName = state?.routes[activeTabIndex]?.name as TabName;
 
-  const userIconUri = useMemo( ( ) => User.uri( currentUser ), [currentUser] );
+  const userIconUri = useMemo(() => User.uri(currentUser), [currentUser]);
 
-  const activeTab = getActiveTab( activeTabName );
+  const activeTab = getActiveTab(activeTabName);
 
-  const handleTabPress = useCallback( (
+  const handleTabPress = useCallback((
     targetTabName: TabName,
     targetScreenName: ScreenName,
   ) => {
-    const navState = navigation.getState( );
+    const navState = navigation.getState();
     const newStacks: Partial<NavigationRoute<ParamListBase, string>>[]
       = navState.routes.slice();
     let needsReset = false;
 
-    for ( const [tabName, screenName] of resetOnLeaveTabScreenTuples ) {
-      if ( activeTabName === tabName && targetTabName !== tabName ) {
-        const idx = newStacks.findIndex( r => r.name === activeTabName );
-        newStacks.splice( idx, 1, {
+    for (const [tabName, screenName] of resetOnLeaveTabScreenTuples) {
+      if (activeTabName === tabName && targetTabName !== tabName) {
+        const idx = newStacks.findIndex(r => r.name === activeTabName);
+        newStacks.splice(idx, 1, {
           name: activeTabName,
           state: { index: 0, routes: [{ name: screenName }] },
-        } );
+        });
         needsReset = true;
       }
     }
 
     // If pressing the currently active tab, reset its stack
-    if ( targetTabName === activeTabName ) {
-      const idx = newStacks.findIndex( r => r.name === targetTabName );
-      newStacks.splice( idx, 1, {
+    if (targetTabName === activeTabName) {
+      const idx = newStacks.findIndex(r => r.name === targetTabName);
+      newStacks.splice(idx, 1, {
         name: targetTabName,
         state: { index: 0, routes: [{ name: targetScreenName }] },
-      } );
+      });
       needsReset = true;
     }
 
-    if ( needsReset ) {
-      const targetIndex = newStacks.findIndex( r => r.name === targetTabName );
+    if (needsReset) {
+      const targetIndex = newStacks.findIndex(r => r.name === targetTabName);
       navigation.dispatch(
-        CommonActions.reset( {
+        CommonActions.reset({
           index: 0,
           routes: [
             {
@@ -105,57 +105,57 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
               },
             },
           ],
-        } ),
+        }),
       );
     } else {
-      navigation.navigate( targetTabName );
+      navigation.navigate(targetTabName);
     }
-  }, [navigation, activeTabName] );
+  }, [navigation, activeTabName]);
 
-  const tabs: TabConfig[] = useMemo( ( ) => ( [
+  const tabs: TabConfig[] = useMemo(() => ([
     {
       icon: "hamburger-menu",
       testID: SCREEN_NAME_MENU,
-      accessibilityLabel: t( "Menu" ),
-      accessibilityHint: t( "Navigates-to-main-menu" ),
+      accessibilityLabel: t("Menu"),
+      accessibilityHint: t("Navigates-to-main-menu"),
       size: 32,
-      onPress: ( ) => handleTabPress( "MenuTab", SCREEN_NAME_MENU ),
+      onPress: () => handleTabPress("MenuTab", SCREEN_NAME_MENU),
       active: SCREEN_NAME_MENU === activeTab,
     },
     {
       icon: "magnifying-glass",
       testID: SCREEN_NAME_ROOT_EXPLORE,
-      accessibilityLabel: t( "Explore" ),
-      accessibilityHint: t( "Navigates-to-explore" ),
+      accessibilityLabel: t("Explore"),
+      accessibilityHint: t("Navigates-to-explore"),
       size: 31,
-      onPress: ( ) => handleTabPress( "ExploreTab", SCREEN_NAME_ROOT_EXPLORE ),
+      onPress: () => handleTabPress("ExploreTab", SCREEN_NAME_ROOT_EXPLORE),
       active: SCREEN_NAME_ROOT_EXPLORE === activeTab,
     },
     {
       icon: "person",
       userIconUri,
       testID: "NavButton.personIcon",
-      accessibilityLabel: t( "My-Observations--bottom-tab" ),
-      accessibilityHint: t( "Navigates-to-your-observations" ),
+      accessibilityLabel: t("My-Observations--bottom-tab"),
+      accessibilityHint: t("Navigates-to-your-observations"),
       size: 40,
-      onPress: ( ) => handleTabPress( "ObservationsTab", SCREEN_NAME_OBS_LIST ),
+      onPress: () => handleTabPress("ObservationsTab", SCREEN_NAME_OBS_LIST),
       active: SCREEN_NAME_OBS_LIST === activeTab,
     },
     {
       icon: "notifications-bell",
       testID: SCREEN_NAME_NOTIFICATIONS,
-      accessibilityLabel: t( "Notifications--bottom-tab" ),
-      accessibilityHint: t( "Navigates-to-notifications" ),
+      accessibilityLabel: t("Notifications--bottom-tab"),
+      accessibilityHint: t("Navigates-to-notifications"),
       size: 32,
-      onPress: ( ) => handleTabPress( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS ),
+      onPress: () => handleTabPress("NotificationsTab", SCREEN_NAME_NOTIFICATIONS),
       active: SCREEN_NAME_NOTIFICATIONS === activeTab,
     },
-  ] ), [
+  ]), [
     activeTab,
     userIconUri,
     t,
     handleTabPress,
-  ] );
+  ]);
 
   return (
     <CustomTabBar

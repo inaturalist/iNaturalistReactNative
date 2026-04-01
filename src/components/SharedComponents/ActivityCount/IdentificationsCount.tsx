@@ -11,13 +11,13 @@ interface Props {
     white?: boolean;
 }
 
-const IdentificationsCount = ( {
+const IdentificationsCount = ({
   count,
   filled = false,
   classNameMargin,
   testID,
   white,
-}: Props ) => {
+}: Props) => {
   const { t } = useTranslation();
 
   // 03072023 amanda - applying chris' bandaid fix from PR #515: https://github.com/inaturalist/iNaturalistReactNative/pull/515
@@ -26,9 +26,9 @@ const IdentificationsCount = ( {
   try {
     // not exactly sure why this causes a consistent error every time you run android
     // for the first time...
-    identificationA11yLabel = t( "x-identifications", { count } );
-  } catch ( e ) {
-    console.warn( e );
+    identificationA11yLabel = t("x-identifications", { count });
+  } catch (e) {
+    console.warn(e);
   }
 
   return (

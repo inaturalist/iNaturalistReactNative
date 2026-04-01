@@ -10,10 +10,10 @@ import {
 } from "sharedHooks";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: -3,
   shadowOpacity: 0.2,
-} );
+});
 
 type Props = {
   navToSuggestions: Function,
@@ -21,12 +21,12 @@ type Props = {
   openAddCommentSheet: Function
 }
 
-const FloatingButtons = ( {
+const FloatingButtons = ({
   navToSuggestions,
   openAddCommentSheet,
   showAddCommentSheet,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
   return (
     <View
@@ -34,20 +34,20 @@ const FloatingButtons = ( {
       style={DROP_SHADOW}
     >
       <Button
-        text={t( "COMMENT" )}
+        text={t("COMMENT")}
         onPress={openAddCommentSheet}
         className="w-[48%]"
         testID="ObsDetail.commentButton"
         disabled={showAddCommentSheet}
-        accessibilityHint={t( "Opens-add-comment-form" )}
+        accessibilityHint={t("Opens-add-comment-form")}
       />
       <Button
-        text={t( "SUGGEST-ID" )}
+        text={t("SUGGEST-ID")}
         onPress={navToSuggestions}
         className="w-[48%]"
         testID="ObsDetail.cvSuggestionsButton"
         accessibilityRole="link"
-        accessibilityHint={t( "Shows-identification-suggestions" )}
+        accessibilityHint={t("Shows-identification-suggestions")}
       />
     </View>
   );

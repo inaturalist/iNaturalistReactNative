@@ -15,7 +15,7 @@ interface Props {
   scientificNameFirst?: boolean;
 }
 
-const TaxonomyScientificName = ( {
+const TaxonomyScientificName = ({
   rank,
   scientificNamePieces,
   rankLevel,
@@ -23,15 +23,15 @@ const TaxonomyScientificName = ( {
   isCurrentTaxon,
   hasCommonName,
   scientificNameFirst,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const underline = ( !hasCommonName || scientificNameFirst ) && !isCurrentTaxon;
+}: Props) => {
+  const { t } = useTranslation();
+  const underline = (!hasCommonName || scientificNameFirst) && !isCurrentTaxon;
   // italics part ported over from DisplayTaxonName
-  const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
+  const scientificNameComponent = scientificNamePieces?.map((piece, index) => {
     const isItalics = piece !== rankPiece && (
       rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
     );
-    const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) )
+    const spaceChar = ((index !== scientificNamePieces.length - 1))
       ? " "
       : "";
     const text = piece + spaceChar;
@@ -40,33 +40,33 @@ const TaxonomyScientificName = ( {
       <Body2
         key={text}
         className={
-          classnames( {
+          classnames({
             italic: isItalics,
             "font-bold": !hasCommonName || scientificNameFirst,
             "text-inatGreen": isCurrentTaxon,
-          } )
+          })
         }
       >
         {text}
       </Body2>
     );
-  } );
+  });
 
   return (
     <Body2 className={
-      classnames( {
+      classnames({
         underline,
         "text-inatGreen": isCurrentTaxon,
         "-ml-1 ": !hasCommonName,
         "font-bold": scientificNameFirst,
-      } )
+      })
     }
     >
       {hasCommonName && !scientificNameFirst && (
         <Body2 className={
-          classnames( {
+          classnames({
             "text-inatGreen": isCurrentTaxon,
-          } )
+          })
         }
         >
           (
@@ -75,23 +75,23 @@ const TaxonomyScientificName = ( {
       {rankLevel > 10 && (
         <Body2
           className={
-            classnames( {
+            classnames({
               "font-bold": !hasCommonName || scientificNameFirst,
               underline,
               "text-inatGreen": isCurrentTaxon,
-            } )
+            })
           }
         >
-          { translatedRank( rank, t ) }
+          { translatedRank(rank, t) }
         </Body2>
       )}
       { " " }
       {scientificNameComponent}
       {hasCommonName && !scientificNameFirst && (
         <Body2 className={
-          classnames( {
+          classnames({
             "text-inatGreen": isCurrentTaxon,
-          } )
+          })
         }
         >
           )

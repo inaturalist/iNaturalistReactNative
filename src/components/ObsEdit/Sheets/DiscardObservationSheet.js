@@ -19,22 +19,22 @@ type Props = {
   onSave?: Function
 }
 
-const DiscardObservationSheet = ( {
+const DiscardObservationSheet = ({
   onPressClose,
   discardObservation,
   observations,
   onSave,
-}: Props ): Node => {
-  const realm = useRealm( );
-  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
+}: Props): Node => {
+  const realm = useRealm();
+  const resetObservationFlowSlice = useStore(state => state.resetObservationFlowSlice);
   const multipleObservations = observations.length > 1;
 
   // Note that this should only happen after import when ObsEdit has
   // multiple observations to save, none of which should have
   // corresponding photos in cameraRollPhotos, so there's no need to
   // write EXIF for those.
-  const saveAllObservations = async ( ) => Promise.all(
-    observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) ),
+  const saveAllObservations = async () => Promise.all(
+    observations.map(o => Observation.saveLocalObservationForUpload(o, realm)),
   );
 
   const discardObservationandReset = () => {
@@ -47,19 +47,19 @@ const DiscardObservationSheet = ( {
       onPressClose={onPressClose}
       confirm={discardObservationandReset}
       headerText={multipleObservations
-        ? t( "DISCARD-X-OBSERVATIONS", { count: observations.length } )
-        : t( "DISCARD-OBSERVATION" )}
+        ? t("DISCARD-X-OBSERVATIONS", { count: observations.length })
+        : t("DISCARD-OBSERVATION")}
       text={multipleObservations
-        ? t( "By-exiting-your-observations-not-saved" )
-        : t( "By-exiting-observation-not-saved" )}
-      handleSecondButtonPress={( ) => {
-        saveAllObservations( );
-        if ( typeof ( onSave ) === "function" ) onSave( );
+        ? t("By-exiting-your-observations-not-saved")
+        : t("By-exiting-observation-not-saved")}
+      handleSecondButtonPress={() => {
+        saveAllObservations();
+        if (typeof (onSave) === "function") onSave();
       }}
-      secondButtonText={multipleObservations && t( "SAVE-ALL" )}
+      secondButtonText={multipleObservations && t("SAVE-ALL")}
       buttonText={multipleObservations
-        ? t( "DISCARD-ALL" )
-        : t( "DISCARD-OBSERVATION" )}
+        ? t("DISCARD-ALL")
+        : t("DISCARD-OBSERVATION")}
     />
   );
 };

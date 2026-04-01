@@ -9,11 +9,11 @@ class MapPerformanceTracker {
 
   private tilesVisibleDuration: number;
 
-  constructor( ) {
-    this.reset( );
+  constructor() {
+    this.reset();
   }
 
-  reset( ): void {
+  reset(): void {
     // Timestamps
     this.screenLoadTime = Date.now();
     this.mapReadyStartTime = 0;
@@ -24,19 +24,19 @@ class MapPerformanceTracker {
     this.tilesVisibleDuration = 0;
   }
 
-  markMapReady( ): void {
+  markMapReady(): void {
     this.mapReadyStartTime = Date.now();
     this.mapReadyDuration = this.mapReadyStartTime - this.screenLoadTime;
   }
 
-  markTilesVisible( ): void {
-    if ( this.tilesVisibleStartTime === 0 ) {
+  markTilesVisible(): void {
+    if (this.tilesVisibleStartTime === 0) {
       this.tilesVisibleStartTime = Date.now();
       this.tilesVisibleDuration = this.tilesVisibleStartTime - this.screenLoadTime;
     }
   }
 
-  getSummary( ): { mapReadyTime: number; tilesVisibleTime: number } {
+  getSummary(): { mapReadyTime: number; tilesVisibleTime: number } {
     return {
       mapReadyTime: this.mapReadyDuration,
       tilesVisibleTime: this.tilesVisibleDuration,
@@ -44,5 +44,5 @@ class MapPerformanceTracker {
   }
 }
 
-const mapTracker = new MapPerformanceTracker( );
+const mapTracker = new MapPerformanceTracker();
 export default mapTracker;

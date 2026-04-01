@@ -9,19 +9,19 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   isFetchingLocation: boolean;
-  handleAddLocationPressed: ( ) => void;
+  handleAddLocationPressed: () => void;
 }
 
-const EmptyMapSection = ( {
+const EmptyMapSection = ({
   isFetchingLocation,
   handleAddLocationPressed,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   return (
     <View>
       <ImageBackground
         className="w-full h-[230px] flex justify-center"
-        source={require( "images/topographic-map.png" )}
+        source={require("images/topographic-map.png")}
         accessibilityIgnoresInvertColors
       >
         <View
@@ -37,12 +37,12 @@ const EmptyMapSection = ( {
         <Button
           className="mt-5 mx-4 border-0"
           level="neutral"
-          text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+          text={t("ADD-LOCATION-FOR-BETTER-IDS")}
           onPress={handleAddLocationPressed}
           loading={isFetchingLocation}
           disabled={isFetchingLocation}
-          accessibilityLabel={t( "Edit-location" )}
-          accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+          accessibilityLabel={t("Edit-location")}
+          accessibilityHint={t("Add-location-to-refresh-suggestions")}
         />
       </ImageBackground>
     </View>

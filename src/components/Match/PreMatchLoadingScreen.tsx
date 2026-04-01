@@ -8,28 +8,28 @@ import { Animated } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-const fade = ( value: number ) => ( {
+const fade = (value: number) => ({
   toValue: value,
   duration: 100,
   useNativeDriver: true,
-} );
+});
 
 interface Props {
   isLoading: boolean;
 }
 
-const PreMatchLoadingScreen = ( { isLoading }: Props ) => {
-  const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
-  const { t } = useTranslation( );
+const PreMatchLoadingScreen = ({ isLoading }: Props) => {
+  const fadeAnimation = useRef(new Animated.Value(0)).current;
+  const { t } = useTranslation();
 
-  useEffect( ( ) => {
-    if ( isLoading ) {
-      Animated.sequence( [
+  useEffect(() => {
+    if (isLoading) {
+      Animated.sequence([
         // fade screen out to partial opacity and don't fade back in for pre-match loading screen
-        Animated.timing( fadeAnimation, fade( 0.8 ) ),
-      ] ).start( );
+        Animated.timing(fadeAnimation, fade(0.8)),
+      ]).start();
     }
-  }, [isLoading, fadeAnimation] );
+  }, [isLoading, fadeAnimation]);
 
   const animatedStyle: ViewStyle = {
     position: "absolute",
@@ -47,7 +47,7 @@ const PreMatchLoadingScreen = ( { isLoading }: Props ) => {
     zIndex: 1000,
   };
 
-  if ( !isLoading ) {
+  if (!isLoading) {
     return null;
   }
 
@@ -57,10 +57,10 @@ const PreMatchLoadingScreen = ( { isLoading }: Props ) => {
       <View style={viewStyle}>
         <View className="flex-1 items-center justify-center">
           <Body1 className="text-white">
-            {t( "Analyzing-for-the-best-identification" )}
+            {t("Analyzing-for-the-best-identification")}
           </Body1>
           <Body1 className="text-white mt-2 mb-[29px]">
-            {t( "This-may-take-a-few-seconds" )}
+            {t("This-may-take-a-few-seconds")}
           </Body1>
           <ActivityIndicator
             size={50}

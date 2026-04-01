@@ -21,10 +21,10 @@ interface SoundSliderProps {
     currentPosition: number;
     duration: number;
   };
-  onSlidingComplete: ( value: number ) => void;
+  onSlidingComplete: (value: number) => void;
 }
 
-const SoundSlider = ( { playBackState, onSlidingComplete }: SoundSliderProps ) => {
+const SoundSlider = ({ playBackState, onSlidingComplete }: SoundSliderProps) => {
   const sliderStyle = {
     width: "100%",
   } as const;
@@ -54,45 +54,45 @@ interface SoundContainerProps {
   };
 }
 
-const SoundContainer = ( {
+const SoundContainer = ({
   autoPlay,
   isVisible,
   sizeClass,
   sound,
-}: SoundContainerProps ) => {
-  const needsInternet = sound.file_url.includes( "https://" );
-  const { isConnected } = useNetInfo( );
-  const playerRef = useRef( new AudioRecorderPlayer( ) );
+}: SoundContainerProps) => {
+  const needsInternet = sound.file_url.includes("https://");
+  const { isConnected } = useNetInfo();
+  const playerRef = useRef(new AudioRecorderPlayer());
   const player = playerRef.current;
-  const { t } = useTranslation( );
+  const { t } = useTranslation();
   // Track whether or not the sound is playing
-  const [playing, setPlaying] = useState( false );
+  const [playing, setPlaying] = useState(false);
 
   // Track whether the user swiped away since last playing
-  const [swipedAway, setSwipedAway] = useState( false );
+  const [swipedAway, setSwipedAway] = useState(false);
 
   // Current progress and total duration of playback
-  const [playBackState, setPlayBackState] = useState( {
+  const [playBackState, setPlayBackState] = useState({
     // Current position of playback in milliseconds
     currentPosition: 0,
     // Total duration of audio in milliseconds
     duration: 0,
     formattedCurrentPosition: "00:00",
     formattedDuration: "00:00",
-  } );
+  });
 
-  const mmss = useCallback( ( value: number ) => player.mmss(
-    Math.floor( value / 1000 ),
-  ), [player] );
+  const mmss = useCallback((value: number) => player.mmss(
+    Math.floor(value / 1000),
+  ), [player]);
 
-  const playSound = useCallback( ( position?: number ) => {
-    async function playSoundAsync( ) {
-      await player.startPlayer( sound.file_url );
-      if ( position ) {
+  const playSound = useCallback((position?: number) => {
+    async function playSoundAsync() {
+      await player.startPlayer(sound.file_url);
+      if (position) {
         try {
-          await player.seekToPlayer( position );
-        } catch ( seekPlayerError ) {
-          if ( seekPlayerError instanceof Error && seekPlayerError.message.match( /Player has already stopped/ ) ) {
+          await player.seekToPlayer(position);
+        } catch (seekPlayerError) {
+          if (seekPlayerError instanceof Error && seekPlayerError.message.match(/Player has already stopped/)) {
             // Something else might be wrong, but it's not really something to
             // bother the user with
             return;
@@ -100,50 +100,50 @@ const SoundContainer = ( {
           throw seekPlayerError;
         }
       }
-      player.addPlayBackListener( playBackEvent => {
-        setPlayBackState( {
+      player.addPlayBackListener(playBackEvent => {
+        setPlayBackState({
           currentPosition: playBackEvent.currentPosition,
           duration: playBackEvent.duration,
-          formattedCurrentPosition: mmss( playBackEvent.currentPosition ),
-          formattedDuration: mmss( playBackEvent.duration ),
-        } );
+          formattedCurrentPosition: mmss(playBackEvent.currentPosition),
+          formattedDuration: mmss(playBackEvent.duration),
+        });
         // Update UI when playback is complete
-        if ( playBackEvent.currentPosition >= playBackEvent.duration ) {
-          setPlaying( false );
+        if (playBackEvent.currentPosition >= playBackEvent.duration) {
+          setPlaying(false);
         }
-      } );
+      });
     }
-    setSwipedAway( false );
-    setPlaying( true );
-    playSoundAsync( );
-    return ( ) => {
-      player.removePlayBackListener( );
+    setSwipedAway(false);
+    setPlaying(true);
+    playSoundAsync();
+    return () => {
+      player.removePlayBackListener();
     };
-  }, [player, sound.file_url, mmss] );
+  }, [player, sound.file_url, mmss]);
 
-  const stopSound = useCallback( async ( ) => {
-    setPlaying( false );
-    setSwipedAway( !isVisible );
+  const stopSound = useCallback(async () => {
+    setPlaying(false);
+    setSwipedAway(!isVisible);
     try {
-      await player.pausePlayer( );
-    } catch ( pausePlayerError ) {
-      if ( pausePlayerError instanceof Error && pausePlayerError.message.match( /Player has already stopped/ ) ) {
+      await player.pausePlayer();
+    } catch (pausePlayerError) {
+      if (pausePlayerError instanceof Error && pausePlayerError.message.match(/Player has already stopped/)) {
         // Something else might be wrong, but it's not really something to
         // bother the user with
         return;
       }
       throw pausePlayerError;
     }
-    player.removePlayBackListener( );
+    player.removePlayBackListener();
   }, [
     isVisible,
     player,
-  ] );
+  ]);
 
   // Tapping the button can play, pause, or resume
-  const togglePlay = useCallback( ( ) => {
-    if ( playing ) {
-      stopSound( );
+  const togglePlay = useCallback(() => {
+    if (playing) {
+      stopSound();
     } else if (
       playBackState.currentPosition > 0
       && playBackState.currentPosition < playBackState.duration
@@ -151,20 +151,20 @@ const SoundContainer = ( {
       // player.resumePlayer() doesn't work if another sound was played after
       // this one was paused, so if we swiped away, we re-init the player and
       // seek to the previous position
-      if ( swipedAway ) {
-        playSound( playBackState.currentPosition );
+      if (swipedAway) {
+        playSound(playBackState.currentPosition);
       } else {
         // If we haven't swiped away, we can use resumePlayer, which also
         // seems to not cause the progress to jump back to 0 and then to the
         // current position
-        setPlaying( true );
+        setPlaying(true);
         // resumePlayer seemed to make slider stop when audio kept playing
         // when toggle was pressed repeatedly
         // occasionally jumps back to 0, havent been able to repicate consistently.
-        playSound( playBackState.currentPosition );
+        playSound(playBackState.currentPosition);
       }
     } else {
-      playSound( );
+      playSound();
     }
   }, [
     playBackState.currentPosition,
@@ -172,38 +172,38 @@ const SoundContainer = ( {
     playing,
     playSound,
     swipedAway,
-    stopSound] );
+    stopSound]);
 
   // If the sound is no longer visible in the carousel (i.e. user swiped to a
   // different media item), stop playback
-  useEffect( ( ) => {
-    if ( !isVisible ) {
-      stopSound( );
+  useEffect(() => {
+    if (!isVisible) {
+      stopSound();
     }
   }, [
     isVisible,
     playBackState,
     sound,
     stopSound,
-  ] );
+  ]);
 
   // User navigated to a different screen, stop playback. Note that this is
   // only using the cleanup function of useCallback
-  useFocusEffect( useCallback( ( ) => async ( ) => {
-    await stopSound( );
-  }, [stopSound] ) );
+  useFocusEffect(useCallback(() => async () => {
+    await stopSound();
+  }, [stopSound]));
 
   // if autoPlay was selected and this is visible, start playback automatically
-  useEffect( ( ) => {
-    if ( isVisible && autoPlay ) {
-      playSound( );
+  useEffect(() => {
+    if (isVisible && autoPlay) {
+      playSound();
     }
-  }, [autoPlay, isVisible, playSound] );
+  }, [autoPlay, isVisible, playSound]);
 
-  if ( isConnected === false && needsInternet ) {
+  if (isConnected === false && needsInternet) {
     return (
       <OfflineNotice
-        onPress={( ) => refreshNetInfo( )}
+        onPress={() => refreshNetInfo()}
         color="white"
       />
     );
@@ -231,7 +231,7 @@ const SoundContainer = ( {
             {playBackState.formattedCurrentPosition}
           </Body1>
         </View>
-        <Body1 className="text-white mx-1 self-center">{ t( "sound-playback-separator" ) }</Body1>
+        <Body1 className="text-white mx-1 self-center">{ t("sound-playback-separator") }</Body1>
         <Body1 className="text-white w-full items-start">
           {playBackState.formattedDuration}
         </Body1>
@@ -240,19 +240,19 @@ const SoundContainer = ( {
         <SoundSlider
           playBackState={playBackState}
           onSlidingComplete={value => {
-            setPlayBackState( {
+            setPlayBackState({
               ...playBackState,
               currentPosition: value,
-              formattedCurrentPosition: mmss( value ),
-            } );
-            player.seekToPlayer( value )
-              .catch( seekToPlayerError => {
-                if ( seekToPlayerError.message.match( /Player is null/ ) ) {
+              formattedCurrentPosition: mmss(value),
+            });
+            player.seekToPlayer(value)
+              .catch(seekToPlayerError => {
+                if (seekToPlayerError.message.match(/Player is null/)) {
                   // Occurs when player reaches end of audio and tries to seek.
                   return;
                 }
                 throw seekToPlayerError;
-              } );
+              });
           }}
         />
       </View>

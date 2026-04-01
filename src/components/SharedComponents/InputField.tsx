@@ -5,7 +5,7 @@ import { Platform } from "react-native";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  handleTextChange: ( text: string ) => void;
+  handleTextChange: (text: string) => void;
   placeholder: string;
   text: string;
   type: TextInputIOSProps["textContentType"];
@@ -14,18 +14,18 @@ interface Props {
 
 // same code as Seek:
 // https://github.com/inaturalist/SeekReactNative/blob/main/components/UIComponents/InputField.js
-const InputField = ( {
+const InputField = ({
   handleTextChange,
   placeholder,
   text,
   type,
   testID,
-}: Props ) => {
+}: Props) => {
   let keyboardType: KeyboardTypeOptions = "default";
 
-  if ( type === "emailAddress" ) {
+  if (type === "emailAddress") {
     keyboardType = "email-address";
-  } else if ( Platform.OS === "android" && type !== "password" ) {
+  } else if (Platform.OS === "android" && type !== "password") {
     // adding this to turn off autosuggestions on Android
     keyboardType = "visible-password";
   }

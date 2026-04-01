@@ -4,33 +4,33 @@ import {
   useCallback, useMemo, useState,
 } from "react";
 
-const useExploreHeaderCount = ( ): Object => {
-  const [count, setCount] = useState( {
+const useExploreHeaderCount = (): Object => {
+  const [count, setCount] = useState({
     observations: null,
     species: null,
     observers: null,
     identifiers: null,
-  } );
-  const [isFetching, setIsFetching] = useState( false );
+  });
+  const [isFetching, setIsFetching] = useState(false);
 
-  const updateCount = useCallback( newCount => {
-    setCount( {
+  const updateCount = useCallback(newCount => {
+    setCount({
       ...count,
       ...newCount,
-    } );
-    setIsFetching( false );
-  }, [count] );
+    });
+    setIsFetching(false);
+  }, [count]);
 
-  const memoizedCount = useMemo( ( ) => count, [count] );
+  const memoizedCount = useMemo(() => count, [count]);
 
-  const handleUpdateCount = ( exploreView, totalResults ) => {
-    if ( totalResults === null ) {
+  const handleUpdateCount = (exploreView, totalResults) => {
+    if (totalResults === null) {
       return;
     }
-    if ( count[exploreView] !== totalResults ) {
-      updateCount( { [exploreView]: totalResults } );
-    } else if ( count[exploreView] === totalResults && isFetching ) {
-      setIsFetching( false );
+    if (count[exploreView] !== totalResults) {
+      updateCount({ [exploreView]: totalResults });
+    } else if (count[exploreView] === totalResults && isFetching) {
+      setIsFetching(false);
     }
   };
 

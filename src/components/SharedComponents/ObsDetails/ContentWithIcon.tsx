@@ -10,14 +10,14 @@ interface Props extends PropsWithChildren {
   classNameMargin?: string;
 }
 
-const ContentWithIcon = ( {
+const ContentWithIcon = ({
   icon,
   size,
   classNameMargin,
   children,
-}: Props ) => (
+}: Props) => (
   <View
-    className={classNames( "flex-row space-x-[5px]", classNameMargin )}
+    className={classNames("flex-row space-x-[5px]", classNameMargin)}
     testID={`ContentWithIcon.${icon}`}
   >
     <INatIcon name={icon} size={size} />

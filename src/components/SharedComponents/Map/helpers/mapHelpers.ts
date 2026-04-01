@@ -8,55 +8,55 @@ export const OBSCURATION_CELL_SIZE = 0.2;
 // tiles should be requested from tiles.inaturalist.org for better resource
 // balancing
 const API_URL = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
-export const TILE_URL = API_URL.match( /api\.inaturalist\.org/ )
-  ? API_URL.replace( "api.inaturalist", "tiles.inaturalist" )
+export const TILE_URL = API_URL.match(/api\.inaturalist\.org/)
+  ? API_URL.replace("api.inaturalist", "tiles.inaturalist")
   : API_URL;
 const POINT_TILES_ENDPOINT = `${TILE_URL}/points`;
 
-export function calculateZoom( width: number, delta: number ) {
-  return Math.log2( 360 * ( width / 256 / delta ) ) + 1;
+export function calculateZoom(width: number, delta: number) {
+  return Math.log2(360 * (width / 256 / delta)) + 1;
 }
 
 // Kind of the inverse of calculateZoom. Probably not actually accurate for
 // longitude, but works for our purposes
-export function zoomToDeltas( zoom: number, screenWidth: number, screenHeight: number ) {
-  const longitudeDelta = screenWidth / 256 / ( 2 ** zoom / 360 );
-  const latitudeDelta = screenHeight / 256 / ( 2 ** zoom / 360 );
+export function zoomToDeltas(zoom: number, screenWidth: number, screenHeight: number) {
+  const longitudeDelta = screenWidth / 256 / (2 ** zoom / 360);
+  const latitudeDelta = screenHeight / 256 / (2 ** zoom / 360);
   return [latitudeDelta, longitudeDelta];
 }
 
 // Adapted from
 // https://github.com/inaturalist/inaturalist/blob/main/app/assets/javascripts/inaturalist/map3.js.erb#L1500
-export function obscurationCellForLatLng( lat: number, lng: number ) {
+export function obscurationCellForLatLng(lat: number, lng: number) {
   const coords = [lat, lng];
   const firstCorner = [
-    coords[0] - ( coords[0] % OBSCURATION_CELL_SIZE ),
-    coords[1] - ( coords[1] % OBSCURATION_CELL_SIZE ),
+    coords[0] - (coords[0] % OBSCURATION_CELL_SIZE),
+    coords[1] - (coords[1] % OBSCURATION_CELL_SIZE),
   ];
   const secondCorner = [firstCorner[0], firstCorner[1]];
-  coords.forEach( ( value, index ) => {
-    if ( value < secondCorner[index] ) {
+  coords.forEach((value, index) => {
+    if (value < secondCorner[index]) {
       secondCorner[index] -= OBSCURATION_CELL_SIZE;
     } else {
       secondCorner[index] += OBSCURATION_CELL_SIZE;
     }
-  } );
+  });
   return {
-    minLat: Math.min( firstCorner[0], secondCorner[0] ),
-    minLng: Math.min( firstCorner[1], secondCorner[1] ),
-    maxLat: Math.max( firstCorner[0], secondCorner[0] ),
-    maxLng: Math.max( firstCorner[1], secondCorner[1] ),
+    minLat: Math.min(firstCorner[0], secondCorner[0]),
+    minLng: Math.min(firstCorner[1], secondCorner[1]),
+    maxLat: Math.max(firstCorner[0], secondCorner[0]),
+    maxLng: Math.max(firstCorner[1], secondCorner[1]),
   };
 }
 
-function metersPerDegreeLatitude( latitude: number ): number {
-  const phi = ( latitude * Math.PI ) / 180;
+function metersPerDegreeLatitude(latitude: number): number {
+  const phi = (latitude * Math.PI) / 180;
 
   return (
     111132.92
-    - 559.82 * Math.cos( 2 * phi )
-    + 1.175 * Math.cos( 4 * phi )
-    - 0.0023 * Math.cos( 6 * phi )
+    - 559.82 * Math.cos(2 * phi)
+    + 1.175 * Math.cos(4 * phi)
+    - 0.0023 * Math.cos(6 * phi)
   );
 }
 
@@ -64,33 +64,33 @@ export function metersToLatitudeDelta(
   meters: number,
   latitude: number,
 ): number {
-  return meters / metersPerDegreeLatitude( latitude );
+  return meters / metersPerDegreeLatitude(latitude);
 }
 
 export function latitudeDeltaToMeters(
   latitudeDelta: number,
   latitude: number,
 ): number {
-  return latitudeDelta * metersPerDegreeLatitude( latitude );
+  return latitudeDelta * metersPerDegreeLatitude(latitude);
 }
 
-export function getMapRegion( totalBounds: MapBoundaries ): Region {
+export function getMapRegion(totalBounds: MapBoundaries): Region {
   const {
     nelat, nelng, swlat, swlng,
   } = totalBounds;
   // Deltas shouldn't be negative
-  const latDelta = Math.abs( Number( nelat ) - Number( swlat ) );
-  const lngDelta = Math.abs( Number( nelng ) - Number( swlng ) );
-  const lat = nelat - ( latDelta / 2 );
-  const lng = nelng - ( lngDelta / 2 );
+  const latDelta = Math.abs(Number(nelat) - Number(swlat));
+  const lngDelta = Math.abs(Number(nelng) - Number(swlng));
+  const lat = nelat - (latDelta / 2);
+  const lng = nelng - (lngDelta / 2);
 
   return {
     latitude: lat,
     longitude: lng,
     // Pad the detlas so the user sees the full range, make sure we don't
     // specify impossible deltas like 190 degrees of latitude
-    latitudeDelta: Math.min( latDelta + latDelta * 0.4, 89 ),
-    longitudeDelta: Math.min( lngDelta + lngDelta * 0.4, 179 ),
+    latitudeDelta: Math.min(latDelta + latDelta * 0.4, 89),
+    longitudeDelta: Math.min(lngDelta + lngDelta * 0.4, 179),
   };
 }
 
@@ -99,7 +99,7 @@ export async function fetchObservationUUID(
   latLng: LatLng,
   params: Record<string, unknown>,
 ) {
-  const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
+  const UTFPosition = createUTFPosition(currentZoom, latLng.latitude, latLng.longitude);
   const {
     mTilePositionX,
     mTilePositionY,
@@ -110,8 +110,8 @@ export async function fetchObservationUUID(
     ...params,
     style: "geotilegrid",
   };
-  const gridQuery = Object.keys( tilesParams )
-    .map( key => `${key}=${tilesParams[key]}` ).join( "&" );
+  const gridQuery = Object.keys(tilesParams)
+    .map(key => `${key}=${tilesParams[key]}`).join("&");
 
   const gridUrl = `${POINT_TILES_ENDPOINT}/${currentZoom}/${mTilePositionX}/${mTilePositionY}`
     + ".grid.json";
@@ -124,10 +124,10 @@ export async function fetchObservationUUID(
     },
   };
 
-  const response = await fetch( gridUrlTemplate, options );
-  const json = await response.json( );
+  const response = await fetch(gridUrlTemplate, options);
+  const json = await response.json();
 
-  const observation = getDataForPixel( mPixelPositionX, mPixelPositionY, json );
+  const observation = getDataForPixel(mPixelPositionX, mPixelPositionY, json);
   const uuid = observation?.uuid;
   return uuid;
 }

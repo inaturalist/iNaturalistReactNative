@@ -37,7 +37,7 @@ type Props = {
   onMapLayout: Function,
 };
 
-const LocationPicker = ( {
+const LocationPicker = ({
   accuracy,
   handleSave,
   hidePlaceResults,
@@ -53,16 +53,16 @@ const LocationPicker = ( {
   selectPlaceResult,
   updateLocationName,
   onMapLayout,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
   let regionToDisplay;
-  if ( region && region?.latitude !== 0 && region.longitude !== 0 ) {
+  if (region && region?.latitude !== 0 && region.longitude !== 0) {
     regionToDisplay = region;
   } else {
     regionToDisplay = initialRegion;
   }
-  if ( !regionToDisplay ) {
+  if (!regionToDisplay) {
     regionToDisplay = {
       latitude: 0,
       longitude: 0,
@@ -73,7 +73,7 @@ const LocationPicker = ( {
     <KeyboardDismissableView>
       <ViewWrapper testID="location-picker">
         <View className="justify-center">
-          <Heading4 className="self-center my-4">{t( "EDIT-LOCATION" )}</Heading4>
+          <Heading4 className="self-center my-4">{t("EDIT-LOCATION")}</Heading4>
           <View className="absolute right-2">
             <CloseButton darkGray size={19} />
           </View>

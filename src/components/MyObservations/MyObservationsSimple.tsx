@@ -45,10 +45,10 @@ import StatTab from "./StatTab";
 interface Props {
   activeTab: string;
   currentUser?: RealmUser;
-  fetchFromLastObservation: ( id: number ) => void;
-  handleIndividualUploadPress: ( uuid: string ) => void;
-  handlePullToRefresh: ( ) => void;
-  handleSyncButtonPress: ( _p: { unuploadedObsMissingBasicsIDs: string[] } ) => void;
+  fetchFromLastObservation: (id: number) => void;
+  handleIndividualUploadPress: (uuid: string) => void;
+  handlePullToRefresh: () => void;
+  handleSyncButtonPress: (_p: { unuploadedObsMissingBasicsIDs: string[] }) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
@@ -58,22 +58,22 @@ interface Props {
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
   observations: RealmObservation[];
-  onEndReached: ( ) => void;
-  onListLayout?: ( ) => void;
-  onScroll?: ( ) => void;
+  onEndReached: () => void;
+  onListLayout?: () => void;
+  onScroll?: () => void;
   openSheet: ACTIVE_SHEET;
-  setActiveTab: ( newTab: string ) => void;
-  setOpenSheet: ( value: ACTIVE_SHEET ) => void;
+  setActiveTab: (newTab: string) => void;
+  setOpenSheet: (value: ACTIVE_SHEET) => void;
   setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SPECIES_SORT_BY>>;
   showNoResults: boolean;
   speciesSortOptionId: SPECIES_SORT_BY;
   taxa?: SpeciesCount[];
-  toggleLayout: ( ) => void;
-  fetchMoreTaxa: ( ) => void;
+  toggleLayout: () => void;
+  fetchMoreTaxa: () => void;
   isFetchingTaxa?: boolean;
   justFinishedSignup: boolean;
   loggedInWhileInDefaultMode?: boolean;
-  refetchTaxa: ( ) => void;
+  refetchTaxa: () => void;
 }
 
 interface TaxaFlashListRenderItemProps {
@@ -85,7 +85,7 @@ interface TaxaFlashListRenderItemProps {
 export const OBSERVATIONS_TAB = "observations";
 export const TAXA_TAB = "taxa";
 
-const MyObservationsSimple = ( {
+const MyObservationsSimple = ({
   activeTab,
   currentUser,
   fetchFromLastObservation,
@@ -117,47 +117,47 @@ const MyObservationsSimple = ( {
   justFinishedSignup,
   loggedInWhileInDefaultMode = false,
   refetchTaxa,
-}: Props ) => {
-  const { isDefaultMode } = useLayoutPrefs( );
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const route = useRoute( );
+}: Props) => {
+  const { isDefaultMode } = useLayoutPrefs();
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const route = useRoute();
   const {
     flashListStyle,
     gridItemStyle,
     numColumns,
-  } = useGridLayout( );
-  const taxaFlashListStyle = useMemo( ( ) => ( {
+  } = useGridLayout();
+  const taxaFlashListStyle = useMemo(() => ({
     ...flashListStyle,
     paddingTop: 10,
-  } ), [flashListStyle] );
+  }), [flashListStyle]);
 
   const taxaSortOptions = {
     [SPECIES_SORT_BY.COUNT_DESC]: {
       value: SPECIES_SORT_BY.COUNT_DESC,
-      label: t( "Most-Observed-Default" ),
-      text: t( "Species-with-the-most-observations-appear-first" ),
+      label: t("Most-Observed-Default"),
+      text: t("Species-with-the-most-observations-appear-first"),
     },
     [SPECIES_SORT_BY.COUNT_ASC]: {
       value: SPECIES_SORT_BY.COUNT_ASC,
-      label: t( "Least-Observed" ),
-      text: t( "Species-with-the-least-observations-appear-first" ),
+      label: t("Least-Observed"),
+      text: t("Species-with-the-least-observations-appear-first"),
     },
   };
 
-  const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
+  const renderTaxaItem = useCallback(({ item: speciesCount }: TaxaFlashListRenderItemProps) => {
     const taxonId = speciesCount.taxon.id;
-    const navToTaxonDetails = ( ) => (
+    const navToTaxonDetails = () => (
       // Again, not sure how to placate TypeScript w/ React Navigation
-      navigation.navigate( {
+      navigation.navigate({
         // Ensure button mashing doesn't open multiple TaxonDetails instances
         key: `${route.key}-TaxonGridItem-TaxonDetails-${taxonId}`,
         name: "TaxonDetails",
         params: { id: taxonId },
-      } )
+      })
     );
 
-    const accessibleName = accessibleTaxonName( speciesCount.taxon, currentUser, t );
+    const accessibleName = accessibleTaxonName(speciesCount.taxon, currentUser, t);
 
     const source = {
       uri: Photo.displayLocalOrRemoteMediumPhoto(
@@ -185,10 +185,10 @@ const MyObservationsSimple = ( {
     navigation,
     route.key,
     t,
-  ] );
+  ]);
 
-  const renderTaxaFooter = useCallback( ( ) => {
-    if ( isFetchingTaxa ) {
+  const renderTaxaFooter = useCallback(() => {
+    if (isFetchingTaxa) {
       return (
         <InfiniteScrollLoadingWheel
           hideLoadingWheel={false}
@@ -197,10 +197,10 @@ const MyObservationsSimple = ( {
         />
       );
     }
-    if ( !taxa?.length ) {
+    if (!taxa?.length) {
       return (
         <View className="w-full h-full p-5 justify-center align-center text-center">
-          <Body1 className="text-center">{ t( "You-havent-observed-any-species-yet" ) }</Body1>
+          <Body1 className="text-center">{ t("You-havent-observed-any-species-yet") }</Body1>
         </View>
       );
     }
@@ -211,25 +211,25 @@ const MyObservationsSimple = ( {
     isFetchingTaxa,
     t,
     taxa?.length,
-  ] );
+  ]);
 
-  const unuploadedObsMissingBasicsIDs = useMemo( () => (
+  const unuploadedObsMissingBasicsIDs = useMemo(() => (
     observations
-      .filter( o => o.needs_sync && o.missing_basics )
-      .map( o => o.uuid )
-  ), [observations] );
+      .filter(o => o.needs_sync && o.missing_basics)
+      .map(o => o.uuid)
+  ), [observations]);
 
   const numUnuploadedObsMissingBasics = unuploadedObsMissingBasicsIDs.length;
-  const obsMissingBasicsExist = useMemo( ( ) => (
+  const obsMissingBasicsExist = useMemo(() => (
     numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
-  ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
+  ), [numUnuploadedObservations, numUnuploadedObsMissingBasics]);
 
   // if user is not logged in, we'll consider all obs 'uploadable' to shepherd people to login flow
   const numUploadableObservations = isDefaultMode && !!currentUser
     ? numUnuploadedObservations - numUnuploadedObsMissingBasics
     : numUnuploadedObservations;
 
-  const renderTabComponent = ( { id } ) => (
+  const renderTabComponent = ({ id }) => (
     <StatTab
       id={id}
       numTotalObservations={numTotalObservations}
@@ -237,12 +237,12 @@ const MyObservationsSimple = ( {
     />
   );
 
-  const observationsHeader = ( ) => {
+  const observationsHeader = () => {
     const headerContent = obsMissingBasicsExist
       ? <SimpleErrorHeader isConnected={isConnected} />
       : <Announcements isConnected={isConnected} />;
 
-    if ( layout !== "grid" ) {
+    if (layout !== "grid") {
       return headerContent;
     }
 
@@ -253,9 +253,9 @@ const MyObservationsSimple = ( {
     return (
       <View
         style={{
-          marginTop: -Math.ceil( flashListStyle.paddingTop ),
-          marginLeft: -Math.ceil( flashListStyle.paddingLeft ),
-          marginRight: -Math.ceil( flashListStyle.paddingRight ),
+          marginTop: -Math.ceil(flashListStyle.paddingTop),
+          marginLeft: -Math.ceil(flashListStyle.paddingLeft),
+          marginRight: -Math.ceil(flashListStyle.paddingRight),
           marginBottom: TARGET_SPACING - flashListStyle.paddingTop,
         }}
       >
@@ -264,25 +264,25 @@ const MyObservationsSimple = ( {
     );
   };
 
-  const dataFilledWithEmptyBoxes = useMemo( ( ) => {
+  const dataFilledWithEmptyBoxes = useMemo(() => {
     const data = observations;
     // In grid layout fill up to 8 items to make sure the grid is filled
     // but don't add the empty boxes at the end of a long existing list
-    if ( layout === "grid" && data.length < 8 ) {
+    if (layout === "grid" && data.length < 8) {
     // Fill up to 8 items to make sure the grid is filled
-      const emptyBoxes = new Array( 8 - ( data.length % 8 ) ).fill( { empty: true } );
+      const emptyBoxes = new Array(8 - (data.length % 8)).fill({ empty: true });
       // Add random id to empty boxes to ensure they are unique
-      const emptyBoxesWithId = emptyBoxes.map( ( box, index ) => ( {
+      const emptyBoxesWithId = emptyBoxes.map((box, index) => ({
         ...box,
         id: `empty-${index}`,
-      } ) );
+      }));
       return [...data, ...emptyBoxesWithId];
     }
     return data;
-  }, [observations, layout] );
+  }, [observations, layout]);
 
-  const renderOfflineNotice = ( ) => {
-    if ( isConnected === false ) {
+  const renderOfflineNotice = () => {
+    if (isConnected === false) {
       return (
         <View className="flex-1 items-center justify-center">
           <OfflineNotice onPress={refetchTaxa} />
@@ -292,35 +292,35 @@ const MyObservationsSimple = ( {
     return null;
   };
 
-  function showOfflineAlert( ) {
-    Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
+  function showOfflineAlert() {
+    Alert.alert(t("You-are-offline"), t("Please-try-again-when-you-are-online"));
   }
 
-  const handleSortConfirm = ( optionId: SPECIES_SORT_BY ) => {
-    if ( currentUser && !isConnected ) {
-      showOfflineAlert( );
+  const handleSortConfirm = (optionId: SPECIES_SORT_BY) => {
+    if (currentUser && !isConnected) {
+      showOfflineAlert();
       return;
     }
-    setSpeciesSortOptionId( optionId );
+    setSpeciesSortOptionId(optionId);
 
     // scroll to the top of the newly sorted list
     // the timeout ensures that the scroll happens after data is re-sorted for logged-out users
-    setTimeout( () => {
-      if ( taxaListRef?.current ) {
-        taxaListRef.current.scrollToOffset( { offset: 0, animated: true } );
+    setTimeout(() => {
+      if (taxaListRef?.current) {
+        taxaListRef.current.scrollToOffset({ offset: 0, animated: true });
       }
-    }, 0 );
+    }, 0);
 
-    setOpenSheet( ACTIVE_SHEET.NONE );
+    setOpenSheet(ACTIVE_SHEET.NONE);
   };
 
-  const handlePivotCardGridItemPress = ( ) => {
+  const handlePivotCardGridItemPress = () => {
     const { uuid } = observations[0];
-    navigation.navigate( {
+    navigation.navigate({
       key: `Obs-0-${uuid}`,
       name: "ObsDetails",
       params: { uuid },
-    } );
+    });
   };
 
   return (
@@ -331,22 +331,22 @@ const MyObservationsSimple = ( {
           isConnected={isConnected}
           numUploadableObservations={numUploadableObservations}
           handleSyncButtonPress={() => {
-            handleSyncButtonPress( { unuploadedObsMissingBasicsIDs } );
+            handleSyncButtonPress({ unuploadedObsMissingBasicsIDs });
           }}
         />
         <Tabs
-          activeColor={String( colors?.inatGreen )}
+          activeColor={String(colors?.inatGreen)}
           activeId={activeTab}
           tabs={[
             {
               id: OBSERVATIONS_TAB,
-              text: t( "Observations" ),
-              onPress: () => setActiveTab( OBSERVATIONS_TAB ),
+              text: t("Observations"),
+              onPress: () => setActiveTab(OBSERVATIONS_TAB),
             },
             {
               id: TAXA_TAB,
-              text: t( "Species" ),
-              onPress: () => setActiveTab( TAXA_TAB ),
+              text: t("Species"),
+              onPress: () => setActiveTab(TAXA_TAB),
             },
           ]}
           TabComponent={renderTabComponent}
@@ -389,7 +389,7 @@ const MyObservationsSimple = ( {
             /> */}
           </>
         ) }
-        { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
+        { (activeTab === TAXA_TAB && taxa.length > 0) && (
           <>
             <CustomFlashList
               ref={taxaListRef}
@@ -414,20 +414,20 @@ const MyObservationsSimple = ( {
               ListFooterComponent={renderTaxaFooter}
             />
             <SortButton
-              onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
-              accessibilityLabel={t( "Change-species-sort-order" )}
+              onPress={() => setOpenSheet(ACTIVE_SHEET.SORT)}
+              accessibilityLabel={t("Change-species-sort-order")}
             />
           </>
         )}
-        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
+        { (activeTab === TAXA_TAB && taxa.length === 0) && renderOfflineNotice()}
       </ViewWrapper>
       {openSheet === ACTIVE_SHEET.SORT && (
         <RadioButtonSheet
-          headerText={t( "SORT-SPECIES" )}
+          headerText={t("SORT-SPECIES")}
           radioValues={taxaSortOptions}
           selectedValue={speciesSortOptionId}
-          confirm={optionId => handleSortConfirm( optionId as SPECIES_SORT_BY )}
-          onPressClose={() => setOpenSheet( ACTIVE_SHEET.NONE )}
+          confirm={optionId => handleSortConfirm(optionId as SPECIES_SORT_BY)}
+          onPressClose={() => setOpenSheet(ACTIVE_SHEET.NONE)}
         />
       )}
       {openSheet === ACTIVE_SHEET.LOGIN && <LoginSheet setShowLoginSheet={setOpenSheet} />}
@@ -438,7 +438,7 @@ const MyObservationsSimple = ( {
             triggerCondition={numTotalObservations === 1}
             imageComponentOptions={{
               onImageComponentPress: handlePivotCardGridItemPress,
-              accessibilityHint: t( "Navigates-to-observation-details" ),
+              accessibilityHint: t("Navigates-to-observation-details"),
               imageComponent: (
                 <ObsGridItem
                   observation={observations[0]}

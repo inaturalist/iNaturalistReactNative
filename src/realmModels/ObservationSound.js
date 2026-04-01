@@ -13,46 +13,46 @@ class ObservationSound extends Realm.Object {
     sound: Sound.SOUND_FIELDS,
   };
 
-  needsSync( ) {
+  needsSync() {
     return !this._synced_at || this._synced_at <= this._updated_at;
   }
 
-  wasSynced( ) {
+  wasSynced() {
     return this._synced_at !== null;
   }
 
-  static async new( observationSound ) {
+  static async new(observationSound) {
     return {
       ...observationSound,
-      uuid: uuid.v4( ),
+      uuid: uuid.v4(),
     };
   }
 
-  static mapApiToRealm( observationSound, realm = null ) {
+  static mapApiToRealm(observationSound, realm = null) {
     const localObsSound = {
       ...observationSound,
-      _synced_at: new Date( ),
-      sound: Sound.mapApiToRealm( observationSound.sound, realm ),
+      _synced_at: new Date(),
+      sound: Sound.mapApiToRealm(observationSound.sound, realm),
     };
     return localObsSound;
   }
 
-  static mapSoundForUpload( id, observationSound ) {
+  static mapSoundForUpload(id, observationSound) {
     const fileExt = Platform.OS === "android"
       ? "mp4"
       : "m4a";
 
     return {
       uuid: observationSound.uuid,
-      file: new FileUpload( {
-        uri: Sound.getLocalSoundUri( observationSound.sound.file_url ),
+      file: new FileUpload({
+        uri: Sound.getLocalSoundUri(observationSound.sound.file_url),
         name: `${observationSound.uuid}.${fileExt}`,
         type: `audio/${fileExt}`,
-      } ),
+      }),
     };
   }
 
-  static mapSoundForAttachingToObs( id, observationSound ) {
+  static mapSoundForAttachingToObs(id, observationSound) {
     return {
       "observation_sound[observation_id]": id,
       "observation_sound[sound_id]": observationSound.id,
@@ -60,22 +60,22 @@ class ObservationSound extends Realm.Object {
     };
   }
 
-  static mapObservationSoundForMyObsDefaultMode( obsSound ) {
+  static mapObservationSoundForMyObsDefaultMode(obsSound) {
     return {
       uuid: obsSound?.uuid,
     };
   }
 
-  static async deleteLocalObservationSound( realm, uri, obsUUID ) {
+  static async deleteLocalObservationSound(realm, uri, obsUUID) {
     // delete uri on disk
-    Sound.deleteSoundFromDeviceStorage( uri );
-    const realmObs = realm.objectForPrimaryKey( "Observation", obsUUID );
+    Sound.deleteSoundFromDeviceStorage(uri);
+    const realmObs = realm.objectForPrimaryKey("Observation", obsUUID);
     const obsSoundToDelete = realmObs?.observationSounds
-      .find( p => p.file_url === uri );
-    if ( obsSoundToDelete ) {
-      safeRealmWrite( realm, ( ) => {
-        realm?.delete( obsSoundToDelete );
-      }, "deleting local observation sound in ObservationSound" );
+      .find(p => p.file_url === uri);
+    if (obsSoundToDelete) {
+      safeRealmWrite(realm, () => {
+        realm?.delete(obsSoundToDelete);
+      }, "deleting local observation sound in ObservationSound");
     }
   }
 

@@ -17,30 +17,30 @@ import { t } from "i18next";
 import React from "react";
 import colors from "styles/tailwindColors";
 
-const titleOption = ( option: string ) => {
-  switch ( option ) {
+const titleOption = (option: string) => {
+  switch (option) {
     case "research":
-      return t( "Data-quality-assessment-title-research" );
+      return t("Data-quality-assessment-title-research");
     case "needs_id":
-      return t( "Data-quality-assessment-title-needs-id" );
+      return t("Data-quality-assessment-title-needs-id");
     default:
-      return t( "Data-quality-assessment-title-casual" );
+      return t("Data-quality-assessment-title-casual");
   }
 };
 
-const titleDescription = ( option: string ) => {
-  switch ( option ) {
+const titleDescription = (option: string) => {
+  switch (option) {
     case "research":
-      return t( "Data-quality-assessment-description-research" );
+      return t("Data-quality-assessment-description-research");
     case "needs_id":
-      return t( "Data-quality-assessment-description-needs-id" );
+      return t("Data-quality-assessment-description-needs-id");
     default:
-      return t( "Data-quality-assessment-description-casual" );
+      return t("Data-quality-assessment-description-casual");
   }
 };
 interface Props {
-  checkTest: ( metric: string ) => boolean;
-  ifMajorityAgree: ( metric: string ) => boolean | null;
+  checkTest: (metric: string) => boolean;
+  ifMajorityAgree: (metric: string) => boolean | null;
   isConnected?: boolean;
   loadingAgree: boolean;
   loadingDisagree: boolean;
@@ -49,14 +49,14 @@ interface Props {
   // There's no type definition for qualityMetrics available yet;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   qualityMetrics: any;
-  recheckisConnected: ( ) => void;
-  removeMetricVote: ( ) => void;
-  removeNeedsIDVote: ( ) => void;
-  setMetricVote: ( ) => void;
-  setNeedsIDVote: ( ) => void;
+  recheckisConnected: () => void;
+  removeMetricVote: () => void;
+  removeNeedsIDVote: () => void;
+  setMetricVote: () => void;
+  setNeedsIDVote: () => void;
 }
 
-const DataQualityAssessment = ( {
+const DataQualityAssessment = ({
   checkTest,
   ifMajorityAgree,
   isConnected,
@@ -70,15 +70,15 @@ const DataQualityAssessment = ( {
   removeNeedsIDVote,
   setMetricVote,
   setNeedsIDVote,
-}: Props ) => {
+}: Props) => {
   const isResearchGrade = qualityGrade === "research";
   const sectionClass = "flex-row my-[14px] space-x-[11px]";
   const voteClass = "flex-row mr-[15px] my-[7px] justify-between";
   const listTextClass = "flex-row shrink space-x-[11px] mr-[11px] items-center";
 
-  const renderMetricIndicator = ( metric: string ) => {
-    const ifAgree = ifMajorityAgree( metric );
-    if ( ifAgree || ifAgree === null ) {
+  const renderMetricIndicator = (metric: string) => {
+    const ifAgree = ifMajorityAgree(metric);
+    if (ifAgree || ifAgree === null) {
       return (
         <INatIcon
           testID="DQA.pass"
@@ -97,11 +97,11 @@ const DataQualityAssessment = ( {
     );
   };
 
-  const renderIndicator = ( metric: string ) => {
-    const ifAgree = checkTest( metric );
-    if ( ifAgree || ifAgree === null ) {
+  const renderIndicator = (metric: string) => {
+    const ifAgree = checkTest(metric);
+    if (ifAgree || ifAgree === null) {
       return (
-        <INatIcon name="checkmark-circle" size={19} color={colors.inatGreen} /> );
+        <INatIcon name="checkmark-circle" size={19} color={colors.inatGreen} />);
     }
     return (
       <INatIcon
@@ -112,10 +112,10 @@ const DataQualityAssessment = ( {
     );
   };
 
-  if ( isConnected === false ) {
+  if (isConnected === false) {
     return (
       <ViewWrapper>
-        <OfflineNotice onPress={( ) => recheckisConnected( )} />
+        <OfflineNotice onPress={() => recheckisConnected()} />
       </ViewWrapper>
     );
   }
@@ -141,40 +141,40 @@ const DataQualityAssessment = ( {
               color={colors.inatGreen}
             />
           )}
-          <Body1 className="text-darkGray">{titleOption( qualityGrade )}</Body1>
+          <Body1 className="text-darkGray">{titleOption(qualityGrade)}</Body1>
         </View>
-        <List2 className="text-darkGray">{titleDescription( qualityGrade )}</List2>
+        <List2 className="text-darkGray">{titleDescription(qualityGrade)}</List2>
       </View>
       <Divider />
       <View className="mx-[15px]">
         <View className={sectionClass}>
-          {renderIndicator( "date" )}
-          <Body3>{t( "Data-quality-assessment-date-specified" )}</Body3>
+          {renderIndicator("date")}
+          <Body3>{t("Data-quality-assessment-date-specified")}</Body3>
         </View>
         <Divider />
 
         <View className={sectionClass}>
-          {renderIndicator( "location" )}
-          <Body3>{t( "Data-quality-assessment-location-specified" )}</Body3>
+          {renderIndicator("location")}
+          <Body3>{t("Data-quality-assessment-location-specified")}</Body3>
         </View>
         <Divider />
 
         <View className={sectionClass}>
-          {renderIndicator( "evidence" )}
-          <Body3>{t( "Data-quality-assessment-has-photos-or-sounds" )}</Body3>
+          {renderIndicator("evidence")}
+          <Body3>{t("Data-quality-assessment-has-photos-or-sounds")}</Body3>
         </View>
         <Divider />
 
         <View className={sectionClass}>
-          {renderIndicator( "id_supported" )}
+          {renderIndicator("id_supported")}
           <Body3>
-            {t( "Data-quality-assessment-id-supported-by-two-or-more" )}
+            {t("Data-quality-assessment-id-supported-by-two-or-more")}
           </Body3>
         </View>
         <Divider />
 
         <View className={sectionClass}>
-          {renderIndicator( "rank" )}
+          {renderIndicator("rank")}
           <Body3>
             {t(
               "Data-quality-assessment-community-taxon-species-level-or-lower",
@@ -185,8 +185,8 @@ const DataQualityAssessment = ( {
 
         <View className={voteClass}>
           <View className={listTextClass}>
-            {renderMetricIndicator( "date" )}
-            <Body3>{t( "Data-quality-assessment-date-is-accurate" )}</Body3>
+            {renderMetricIndicator("date")}
+            <Body3>{t("Data-quality-assessment-date-is-accurate")}</Body3>
           </View>
           <DQAVoteButtons
             metric="date"
@@ -202,8 +202,8 @@ const DataQualityAssessment = ( {
 
         <View className={voteClass}>
           <View className={listTextClass}>
-            {renderMetricIndicator( "location" )}
-            <Body3>{t( "Data-quality-assessment-location-is-accurate" )}</Body3>
+            {renderMetricIndicator("location")}
+            <Body3>{t("Data-quality-assessment-location-is-accurate")}</Body3>
           </View>
           <DQAVoteButtons
             metric="location"
@@ -219,8 +219,8 @@ const DataQualityAssessment = ( {
 
         <View className={voteClass}>
           <View className={listTextClass}>
-            {renderMetricIndicator( "wild" )}
-            <Body3>{t( "Data-quality-assessment-organism-is-wild" )}</Body3>
+            {renderMetricIndicator("wild")}
+            <Body3>{t("Data-quality-assessment-organism-is-wild")}</Body3>
           </View>
           <DQAVoteButtons
             metric="wild"
@@ -236,8 +236,8 @@ const DataQualityAssessment = ( {
 
         <View className={voteClass}>
           <View className={listTextClass}>
-            {renderMetricIndicator( "evidence" )}
-            <Body3>{t( "Data-quality-assessment-evidence-of-organism" )}</Body3>
+            {renderMetricIndicator("evidence")}
+            <Body3>{t("Data-quality-assessment-evidence-of-organism")}</Body3>
           </View>
           <DQAVoteButtons
             metric="evidence"
@@ -253,9 +253,9 @@ const DataQualityAssessment = ( {
 
         <View className={voteClass}>
           <View className={listTextClass}>
-            {renderMetricIndicator( "recent" )}
+            {renderMetricIndicator("recent")}
             <Body3>
-              {t( "Data-quality-assessment-recent-evidence-of-organism" )}
+              {t("Data-quality-assessment-recent-evidence-of-organism")}
             </Body3>
           </View>
           <DQAVoteButtons
@@ -272,8 +272,8 @@ const DataQualityAssessment = ( {
 
         <View className={voteClass}>
           <View className={listTextClass}>
-            {renderMetricIndicator( "subject" )}
-            <Body3>{t( "Data-quality-assessment-single-subject" )}</Body3>
+            {renderMetricIndicator("subject")}
+            <Body3>{t("Data-quality-assessment-single-subject")}</Body3>
           </View>
           <DQAVoteButtons
             metric="subject"
@@ -307,8 +307,8 @@ const DataQualityAssessment = ( {
       </View>
 
       <View className="my-[30px] mx-[15px] space-y-[11px]">
-        <Heading4>{t( "ABOUT-THE-DQA" )}</Heading4>
-        <List2>{t( "About-the-DQA-description" )}</List2>
+        <Heading4>{t("ABOUT-THE-DQA")}</Heading4>
+        <List2>{t("About-the-DQA-description")}</List2>
       </View>
     </ScrollViewWrapper>
   );

@@ -13,12 +13,12 @@ interface Props extends PropsWithChildren {
 
 const isTablet = DeviceInfo.isTablet();
 
-const RotatableIconWrapper = ( {
+const RotatableIconWrapper = ({
   children,
   rotatableAnimatedStyle,
   containerClass,
-}: Props ) => {
-  if ( isTablet || !rotatableAnimatedStyle ) {
+}: Props) => {
+  if (isTablet || !rotatableAnimatedStyle) {
     return (
       <View className={containerClass}>
         {children}

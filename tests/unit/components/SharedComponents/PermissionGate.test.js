@@ -3,52 +3,52 @@ import PermissionGate from "components/SharedComponents/PermissionGate";
 import React from "react";
 import { RESULTS } from "react-native-permissions";
 
-describe( "PermissionGate", ( ) => {
-  it( "should show the GRANT PERMISSION button when permission unknown", ( ) => {
+describe("PermissionGate", () => {
+  it("should show the GRANT PERMISSION button when permission unknown", () => {
     render(
       <PermissionGate
-        requestPermission={jest.fn( )}
+        requestPermission={jest.fn()}
         grantStatus={null}
-        onClose={jest.fn( )}
+        onClose={jest.fn()}
       />,
     );
-    expect( screen.getByText( "GRANT PERMISSION" ) ).toBeTruthy( );
-  } );
+    expect(screen.getByText("GRANT PERMISSION")).toBeTruthy();
+  });
 
-  it( "should show the GRANT PERMISSION button when permission blocked", ( ) => {
+  it("should show the GRANT PERMISSION button when permission blocked", () => {
     render(
       <PermissionGate
-        requestPermission={jest.fn( )}
+        requestPermission={jest.fn()}
         grantStatus={RESULTS.DENIED}
-        onClose={jest.fn( )}
+        onClose={jest.fn()}
       />,
     );
-    expect( screen.getByText( "GRANT PERMISSION" ) ).toBeTruthy( );
-  } );
+    expect(screen.getByText("GRANT PERMISSION")).toBeTruthy();
+  });
 
-  it( "should show the OPEN SETTINGS button when permission blocked", ( ) => {
+  it("should show the OPEN SETTINGS button when permission blocked", () => {
     render(
       <PermissionGate
-        requestPermission={jest.fn( )}
+        requestPermission={jest.fn()}
         grantStatus={RESULTS.BLOCKED}
-        onClose={jest.fn( )}
+        onClose={jest.fn()}
       />,
     );
-    expect( screen.getByText( "OPEN SETTINGS" ) ).toBeTruthy( );
-  } );
+    expect(screen.getByText("OPEN SETTINGS")).toBeTruthy();
+  });
 
-  it( "should show the blockedPrompt when permission blocked", ( ) => {
+  it("should show the blockedPrompt when permission blocked", () => {
     render(
       <PermissionGate
-        requestPermission={jest.fn( )}
+        requestPermission={jest.fn()}
         grantStatus={RESULTS.BLOCKED}
-        onClose={jest.fn( )}
+        onClose={jest.fn()}
       />,
     );
-    expect( screen.getByText( /You’ve denied permission/ ) ).toBeTruthy( );
-  } );
+    expect(screen.getByText(/You’ve denied permission/)).toBeTruthy();
+  });
 
-  it( "should be accessible", ( ) => {
+  it("should be accessible", () => {
     // Disabled during the update to RN 0.78
     // expect(
     //   <PermissionGate
@@ -57,5 +57,5 @@ describe( "PermissionGate", ( ) => {
     //     onClose={jest.fn( )}
     //   />
     // ).toBeAccessible( );
-  } );
-} );
+  });
+});

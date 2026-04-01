@@ -3,17 +3,17 @@ import { getShadow } from "styles/global";
 
 import INatIconButton from "./INatIconButton";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
   elevation: 6,
-} );
+});
 
 interface Props {
   onPress: () => void;
   accessibilityLabel: string;
 }
 
-const SortButton = ( { onPress, accessibilityLabel }: Props ) => (
+const SortButton = ({ onPress, accessibilityLabel }: Props) => (
   <INatIconButton
     icon="sort"
     size={24}

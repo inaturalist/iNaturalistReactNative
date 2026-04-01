@@ -16,16 +16,16 @@ const CONTAINER_STYLE = {
 interface Props {
   ListEmptyComponent?: React.JSX.Element;
   ListFooterComponent?: React.JSX.Element;
-  onEndReached?: ( ) => void;
+  onEndReached?: () => void;
   refreshing?: boolean;
   users: object[];
-  onPress?: ( ) => void;
+  onPress?: () => void;
   accessibilityLabel?: string;
   keyboardShouldPersistTaps?: string;
   contentContainerStyle?: ViewStyle;
 }
 
-const UserList = ( {
+const UserList = ({
   ListEmptyComponent,
   ListFooterComponent,
   onEndReached,
@@ -35,14 +35,14 @@ const UserList = ( {
   accessibilityLabel,
   keyboardShouldPersistTaps,
   contentContainerStyle,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
+}: Props) => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
 
-  const renderItem = ( { item } ) => {
+  const renderItem = ({ item }) => {
     // results in explore search are nested differently
     // than in project members at the moment
-    const userItem = has( item, "user" )
+    const userItem = has(item, "user")
       ? item
       : { user: item };
     const observationCount = item?.observation_count || item?.observations_count;
@@ -51,14 +51,14 @@ const UserList = ( {
         item={userItem}
         countText={
           item?.count
-            ? t( "X-Identifications", { count: item?.count } )
-            : t( "X-Observations", { count: observationCount } )
+            ? t("X-Identifications", { count: item?.count })
+            : t("X-Observations", { count: observationCount })
         }
-        onPress={( ) => {
-          if ( onPress ) {
-            onPress( item );
+        onPress={() => {
+          if (onPress) {
+            onPress(item);
           } else {
-            navigation.navigate( "UserProfile", { userId: userItem?.user?.id } );
+            navigation.navigate("UserProfile", { userId: userItem?.user?.id });
           }
         }}
         accessibilityLabel={accessibilityLabel}
@@ -66,7 +66,7 @@ const UserList = ( {
     );
   };
 
-  const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
+  const renderItemSeparator = () => <View className="border-b border-lightGray" />;
 
   return (
     <CustomFlashList

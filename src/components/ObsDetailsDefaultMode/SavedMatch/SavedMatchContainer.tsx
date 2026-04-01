@@ -8,12 +8,12 @@ interface Props {
   observation: RealmObservation;
 }
 
-const SavedMatchContainer = ( { observation }: Props ) => {
-  const navigation = useNavigation<NativeStackNavigationProp<Record<string, { id?: number }>>>( );
+const SavedMatchContainer = ({ observation }: Props) => {
+  const navigation = useNavigation<NativeStackNavigationProp<Record<string, { id?: number }>>>();
 
   const navToTaxonDetails = () => {
     const navParams = { id: observation.taxon?.id };
-    navigation.push( "TaxonDetails", navParams );
+    navigation.push("TaxonDetails", navParams);
   };
 
   return (

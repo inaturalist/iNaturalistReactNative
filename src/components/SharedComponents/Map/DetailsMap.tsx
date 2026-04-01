@@ -35,15 +35,15 @@ interface FloatingActionButtonProps {
   accessibilityLabel: string;
   buttonClassName: string;
   icon: string;
-  onPress: ( event?: GestureResponderEvent ) => void;
+  onPress: (event?: GestureResponderEvent) => void;
 }
 
-const FloatingActionButton = ( {
+const FloatingActionButton = ({
   accessibilityLabel,
   buttonClassName,
   icon,
   onPress,
-}: FloatingActionButtonProps ) => {
+}: FloatingActionButtonProps) => {
   const fabClassNames = classnames(
     "absolute",
     "bg-white",
@@ -54,7 +54,7 @@ const FloatingActionButton = ( {
 
   return (
     <INatIconButton
-      style={getShadow( )}
+      style={getShadow()}
       className={fabClassNames}
       icon={icon}
       onPress={onPress}
@@ -63,27 +63,27 @@ const FloatingActionButton = ( {
   );
 };
 
-const DetailsMap = ( {
+const DetailsMap = ({
   closeModal,
   coordinateString,
   headerTitle,
   observation,
   initialRegion,
   tileMapParams,
-}: Props ) => {
+}: Props) => {
   const insets = useSafeAreaInsets();
 
-  const [showNotificationModal, setShowNotificationModal] = useState( false );
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
 
   const closeShowNotificationModal = () => {
-    setShowNotificationModal( false );
+    setShowNotificationModal(false);
   };
   const copyCoordinates = () => {
-    if ( coordinateString ) {
-      Clipboard.setString( coordinateString );
-      setShowNotificationModal( true );
+    if (coordinateString) {
+      Clipboard.setString(coordinateString);
+      setShowNotificationModal(true);
       // notification disappears after 2 secs
-      setTimeout( closeShowNotificationModal, 2000 );
+      setTimeout(closeShowNotificationModal, 2000);
     }
   };
 
@@ -92,9 +92,9 @@ const DetailsMap = ( {
   const canViewCoordinates = !observation?.obscured || observation?.privateLatitude;
 
   const shareMap = () => {
-    if ( !latitude || !longitude ) return;
+    if (!latitude || !longitude) return;
     // takes in a provider prop but opens in browser instead of in app(google maps on iOS)
-    openMap( { query: `${latitude}, ${longitude}` } );
+    openMap({ query: `${latitude}, ${longitude}` });
   };
 
   return (
@@ -105,10 +105,10 @@ const DetailsMap = ( {
       >
         <HeaderBackButton
           tintColor={colors.darkGray}
-          onPress={( ) => closeModal()}
+          onPress={() => closeModal()}
           displayMode="minimal"
         />
-        {headerTitle || <Heading2 className="m-0">{t( "Map-Area" )}</Heading2>}
+        {headerTitle || <Heading2 className="m-0">{t("Map-Area")}</Heading2>}
       </View>
       <View className="flex-1">
         <Map
@@ -120,18 +120,18 @@ const DetailsMap = ( {
           tileMapParams={tileMapParams}
           withObsTiles={tileMapParams !== null}
         >
-          { ( observation && canViewCoordinates ) && (
+          { (observation && canViewCoordinates) && (
             <>
               <FloatingActionButton
                 icon="copy"
-                onPress={( ) => copyCoordinates( )}
-                accessibilityLabel={t( "Copy-coordinates" )}
+                onPress={() => copyCoordinates()}
+                accessibilityLabel={t("Copy-coordinates")}
                 buttonClassName="top-0 left-0"
               />
               <FloatingActionButton
                 icon="share"
-                onPress={( ) => shareMap( )}
-                accessibilityLabel={t( "Share-map" )}
+                onPress={() => shareMap()}
+                accessibilityLabel={t("Share-map")}
                 buttonClassName="top-0 right-0"
               />
             </>
@@ -146,7 +146,7 @@ const DetailsMap = ( {
         animationIn="fadeIn"
         animationOut="fadeOut"
         showModal={showNotificationModal}
-        closeModal={( ) => closeShowNotificationModal( )}
+        closeModal={() => closeShowNotificationModal()}
         modal={(
           <CoordinatesCopiedNotification />
         )}

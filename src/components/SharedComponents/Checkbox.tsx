@@ -7,23 +7,23 @@ interface Props {
   transparent?: boolean;
   accessibilityLabel: string;
   isChecked: boolean;
-  onPress: ( _checked: boolean ) => void;
+  onPress: (_checked: boolean) => void;
   text?: string;
 }
 
-const Checkbox = ( {
+const Checkbox = ({
   transparent = false,
   accessibilityLabel,
   isChecked = false,
   onPress,
   text,
-}: Props ) => {
-  const renderCheckboxText = useMemo( ( ) => {
-    if ( !text ) { return null; }
+}: Props) => {
+  const renderCheckboxText = useMemo(() => {
+    if (!text) { return null; }
     return <Body2 className="ml-3 flex-shrink">{text}</Body2>;
-  }, [text] );
+  }, [text]);
 
-  const renderIcon = useMemo( ( ) => ( isChecked
+  const renderIcon = useMemo(() => (isChecked
     ? (
       <INatIcon
         name="checkmark"
@@ -31,7 +31,7 @@ const Checkbox = ( {
         size={19}
       />
     )
-    : null ), [isChecked] );
+    : null), [isChecked]);
 
   const checkedBorderColor = colors.inatGreen;
   const uncheckedBorderColor = transparent

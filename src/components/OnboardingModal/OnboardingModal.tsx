@@ -21,7 +21,7 @@ interface Slide {
   checkbox2?: string;
   imageComponentOptions?: {
     imageComponent: React.ReactNode;
-    onImageComponentPress: ( ) => void;
+    onImageComponentPress: () => void;
     accessibilityHint: string;
   };
 }
@@ -39,53 +39,53 @@ interface Props {
   };
 }
 
-const OnboardingModal = ( {
+const OnboardingModal = ({
   showKey, triggerCondition, slides, altActionButton, altCloseButton,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   // Controls wether to show the modal, and to show it only once to the user
-  const shownOnce = useStore( state => state.layout.shownOnce );
-  const setShownOnce = useStore( state => state.layout.setShownOnce );
+  const shownOnce = useStore(state => state.layout.shownOnce);
+  const setShownOnce = useStore(state => state.layout.setShownOnce);
   const showModal = !shownOnce[showKey] && triggerCondition;
   const closeModal = () => {
-    setShownOnce( showKey );
+    setShownOnce(showKey);
   };
 
-  const [currentSlideIndex, setCurrentSlideIndex] = React.useState( 0 );
+  const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
   const currentSlide = slides[currentSlideIndex];
 
-  const handleNext = ( ) => {
-    if ( currentSlideIndex < slides.length - 1 ) {
-      setCurrentSlideIndex( prev => prev + 1 );
+  const handleNext = () => {
+    if (currentSlideIndex < slides.length - 1) {
+      setCurrentSlideIndex(prev => prev + 1);
     }
   };
 
-  const handlePrevious = ( ) => {
-    if ( currentSlideIndex > 0 ) {
-      setCurrentSlideIndex( prev => prev - 1 );
+  const handlePrevious = () => {
+    if (currentSlideIndex > 0) {
+      setCurrentSlideIndex(prev => prev - 1);
     }
   };
 
-  const renderAltActionButton = ( ) => {
-    if ( currentSlideIndex !== slides.length - 1 ) { return null; }
-    if ( !altActionButton ) { return null; }
+  const renderAltActionButton = () => {
+    if (currentSlideIndex !== slides.length - 1) { return null; }
+    if (!altActionButton) { return null; }
     return (
       <Button
         className="mt-5"
         level="focus"
         text={altActionButton.text}
         onPress={() => {
-          altActionButton.onPress( );
-          closeModal( );
+          altActionButton.onPress();
+          closeModal();
         }}
       />
     );
   };
 
-  const renderCloseButton = ( ) => {
-    if ( currentSlideIndex !== slides.length - 1 ) { return null; }
-    if ( altCloseButton ) {
+  const renderCloseButton = () => {
+    if (currentSlideIndex !== slides.length - 1) { return null; }
+    if (altCloseButton) {
       return (
         <UnderlinedLink
           className="mt-5 self-center"
@@ -96,11 +96,11 @@ const OnboardingModal = ( {
       );
     }
     return (
-      <Button className="mt-5" level="focus" text={t( "CONTINUE" )} onPress={closeModal} />
+      <Button className="mt-5" level="focus" text={t("CONTINUE")} onPress={closeModal} />
     );
   };
 
-  const renderCheckboxRow = ( checkboxText: string ) => (
+  const renderCheckboxRow = (checkboxText: string) => (
     <View className="flex-row">
       <View
         className="bg-inatGreen w-[15px] h-[15px] rounded-sm items-center justify-center mt-0.5"
@@ -125,9 +125,9 @@ const OnboardingModal = ( {
       {currentSlide?.imageComponentOptions?.imageComponent && (
         <Pressable
           className="self-center mt-5"
-          onPress={( ) => {
-            currentSlide?.imageComponentOptions?.onImageComponentPress( );
-            closeModal( );
+          onPress={() => {
+            currentSlide?.imageComponentOptions?.onImageComponentPress();
+            closeModal();
           }}
           accessibilityRole="link"
           accessibilityHint={currentSlide?.imageComponentOptions?.accessibilityHint}
@@ -150,9 +150,9 @@ const OnboardingModal = ( {
       }
       {currentSlide.description && <Body3 className="mt-5">{currentSlide.description}</Body3>}
       {currentSlide.checkbox1 && (
-        <View className="mt-3">{renderCheckboxRow( currentSlide.checkbox1 )}</View>
+        <View className="mt-3">{renderCheckboxRow(currentSlide.checkbox1)}</View>
       )}
-      {currentSlide.checkbox2 && renderCheckboxRow( currentSlide.checkbox2 )}
+      {currentSlide.checkbox2 && renderCheckboxRow(currentSlide.checkbox2)}
       {currentSlide.description2 && <Body3 className="mt-3">{currentSlide.description2}</Body3>}
       {/* Slide Navigation */}
       {slides.length > 1 && (
@@ -163,26 +163,26 @@ const OnboardingModal = ( {
                 icon="chevron-left-circle"
                 size={26}
                 onPress={handlePrevious}
-                accessibilityLabel={t( "Previous-slide" )}
+                accessibilityLabel={t("Previous-slide")}
               />
             )}
           </View>
           <View>
             <Heading3>
-              {t( "X-of-Y", {
+              {t("X-of-Y", {
                 x: currentSlideIndex + 1,
                 y: slides.length,
-              } )}
+              })}
             </Heading3>
           </View>
           <View className="w-16 flex items-end">
-            {( currentSlideIndex !== slides.length - 1 )
+            {(currentSlideIndex !== slides.length - 1)
           && (
             <INatIconButton
               icon="chevron-right-circle"
               size={26}
               onPress={handleNext}
-              accessibilityLabel={t( "Next-slide" )}
+              accessibilityLabel={t("Next-slide")}
             />
           )}
           </View>

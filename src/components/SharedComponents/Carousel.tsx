@@ -12,16 +12,16 @@ import {
 } from "react-native";
 
 interface Props extends FlatListProps<object> {
-  onSlideScroll: ( index: number ) => void;
+  onSlideScroll: (index: number) => void;
 }
 
-const Carousel = ( props: Props ) => (
+const Carousel = (props: Props) => (
   <FlatList
     horizontal
     pagingEnabled
     showsHorizontalScrollIndicator={false}
     onMomentumScrollEnd={e => {
-      if ( typeof ( props.onSlideScroll ) !== "function" ) {
+      if (typeof (props.onSlideScroll) !== "function") {
         return;
       }
       // The carousel is the container of all the slides
@@ -38,9 +38,9 @@ const Carousel = ( props: Props ) => (
 
       // https://gist.github.com/dozsolti/6d01d0f96d9abced3450a2e6149a2bc3?permalink_comment_id=4107663#gistcomment-4107663
       const newIndex = Math.floor(
-        Math.floor( effectiveOffset ) / Math.floor( slideSize.width ),
+        Math.floor(effectiveOffset) / Math.floor(slideSize.width),
       );
-      props.onSlideScroll( newIndex );
+      props.onSlideScroll(newIndex);
     }}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}

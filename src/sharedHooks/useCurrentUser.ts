@@ -5,11 +5,11 @@ import User from "realmModels/User";
 
 const { useRealm } = RealmContext;
 
-const useCurrentUser = ( ): User | null => {
-  const realm = useRealm( );
-  const [currentUser, setCurrentUser] = useState<User | null>( null );
-  useEffect( ( ) => {
-    const realmResults = realm.objects( User ).filtered( "signedIn == true" );
+const useCurrentUser = (): User | null => {
+  const realm = useRealm();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  useEffect(() => {
+    const realmResults = realm.objects(User).filtered("signedIn == true");
 
     // Sets the current user if one is detected, unsets it if not
     const listener = (
@@ -17,33 +17,33 @@ const useCurrentUser = ( ): User | null => {
       changes: Realm.CollectionChangeSet,
     ) => {
       if (
-        ( changes.deletions && changes.deletions.length > 0 )
-        || !collection[0]?.isValid( )
+        (changes.deletions && changes.deletions.length > 0)
+        || !collection[0]?.isValid()
       ) {
-        setCurrentUser( null );
+        setCurrentUser(null);
       } else {
-        setCurrentUser( collection[0] );
+        setCurrentUser(collection[0]);
       }
     };
 
     // Run the listener on the results for the first time
-    listener( realmResults, {
+    listener(realmResults, {
       insertions: [],
       deletions: [],
       newModifications: [],
       oldModifications: [],
-    } );
+    });
 
     // Add the listener
-    realmResults?.addListener( listener );
+    realmResults?.addListener(listener);
 
     // Remove the listener when this dismounts
-    return ( ) => {
-      realmResults?.removeListener( listener );
+    return () => {
+      realmResults?.removeListener(listener);
     };
-  }, [realm] );
+  }, [realm]);
 
-  return currentUser?.isValid( )
+  return currentUser?.isValid()
     ? currentUser
     : null;
 };

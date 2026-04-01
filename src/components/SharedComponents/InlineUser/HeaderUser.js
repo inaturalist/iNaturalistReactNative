@@ -16,7 +16,7 @@ type Props = {
   isConnected: boolean
 };
 
-const HeaderUser = ( { user, isConnected }: Props ): Node => (
+const HeaderUser = ({ user, isConnected }: Props): Node => (
   <InlineUserBase
     user={user}
     isConnected={isConnected}

@@ -34,24 +34,24 @@ interface Props {
   hasTitle?: boolean;
   headerRightType?: typeof OPTIONS | typeof SEARCH;
   // By default this navigates to SuggestionsTaxonSearch
-  onPressSearch?: ( ) => void;
+  onPressSearch?: () => void;
 }
 
-const TaxonDetailsHeader = ( {
+const TaxonDetailsHeader = ({
   invertToWhiteBackground,
   taxon,
   hasTitle,
   headerRightType,
   onPressSearch,
-}: Props ) => {
-  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
-  const { t } = useTranslation( );
+}: Props) => {
+  const [kebabMenuVisible, setKebabMenuVisible] = useState(false);
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const taxonUrl = `${TAXON_URL}/${taxon?.id}`;
 
   let headerRight;
-  if ( headerRightType === OPTIONS ) {
+  if (headerRightType === OPTIONS) {
     headerRight = (
       <KebabMenu
         visible={kebabMenuVisible}
@@ -62,56 +62,56 @@ const TaxonDetailsHeader = ( {
         <KebabMenu.Item
           isFirst
           testID="MenuItem.OpenInBrowser"
-          onPress={( ) => {
-            openExternalWebBrowser( taxonUrl );
-            setKebabMenuVisible( false );
+          onPress={() => {
+            openExternalWebBrowser(taxonUrl);
+            setKebabMenuVisible(false);
           }}
-          title={t( "View-in-browser" )}
+          title={t("View-in-browser")}
         />
         <KebabMenu.Item
           testID="MenuItem.Share"
-          onPress={async ( ) => {
+          onPress={async () => {
             const sharingOptions = {
               url: "",
               message: "",
             };
 
-            if ( Platform.OS === "ios" ) {
+            if (Platform.OS === "ios") {
               sharingOptions.url = taxonUrl;
             } else {
               sharingOptions.message = taxonUrl;
             }
 
-            setKebabMenuVisible( false );
+            setKebabMenuVisible(false);
 
             try {
-              return await Share.share( sharingOptions );
-            } catch ( err ) {
-              Alert.alert( ( err as Error ).message );
+              return await Share.share(sharingOptions);
+            } catch (err) {
+              Alert.alert((err as Error).message);
               return null;
             }
           }}
-          title={t( "Share" )}
+          title={t("Share")}
         />
       </KebabMenu>
     );
-  } else if ( headerRightType === SEARCH ) {
+  } else if (headerRightType === SEARCH) {
     headerRight = (
       <INatIconButton
         icon="magnifying-glass"
         onPress={
-          typeof ( onPressSearch ) === "function"
-            ? ( ) => onPressSearch()
-            : ( ) => navigation.navigate( "SuggestionsTaxonSearch" )
+          typeof (onPressSearch) === "function"
+            ? () => onPressSearch()
+            : () => navigation.navigate("SuggestionsTaxonSearch")
         }
-        accessibilityLabel={t( "Search" )}
+        accessibilityLabel={t("Search")}
       />
     );
   }
 
   return (
     <View
-      className={classnames( "h-16 transparent z-10" )}
+      className={classnames("h-16 transparent z-10")}
     >
       <OverlayHeader
         testID="TaxonDetails.BackButton"

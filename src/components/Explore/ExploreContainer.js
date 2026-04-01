@@ -23,74 +23,74 @@ import mapParamsToAPI from "./helpers/mapParamsToAPI";
 import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 import useParams from "./hooks/useParams";
 
-const ExploreContainerWithContext = ( ): Node => {
-  const navigation = useNavigation( );
-  const { isConnected } = useNetInfo( );
-  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
+const ExploreContainerWithContext = (): Node => {
+  const navigation = useNavigation();
+  const { isConnected } = useNetInfo();
+  const exploreV2Enabled = useFeatureFlag(FeatureFlag.ExploreV2Enabled);
 
-  const exploreView = useStore( state => state.exploreView );
-  const setExploreView = useStore( state => state.setExploreView );
+  const exploreView = useStore(state => state.exploreView);
+  const setExploreView = useStore(state => state.setExploreView);
 
   const {
     hasPermissions: hasLocationPermissions,
     renderPermissionsGate,
     requestPermissions: requestLocationPermissions,
-  } = useLocationPermission( );
+  } = useLocationPermission();
 
   const currentUser = useCurrentUser();
 
   const { state, dispatch, makeSnapshot } = useExplore();
 
-  const [showFiltersModal, setShowFiltersModal] = useState( false );
+  const [showFiltersModal, setShowFiltersModal] = useState(false);
 
   // Whether or not we can fetch results, *not* whether or not we *are*
   // fetching results. This will be set when we know what data the user wants
   // to view and whether we have the permissions we need to show it, e.g.
   // location permissions to show nearby obs
-  const [canFetch, setCanFetch] = useState( false );
+  const [canFetch, setCanFetch] = useState(false);
 
-  useParams( );
+  useParams();
 
-  const updateLocation = ( place: Object ) => {
-    if ( place === "worldwide" ) {
-      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE } );
-      dispatch( {
+  const updateLocation = (place: Object) => {
+    if (place === "worldwide") {
+      dispatch({ type: EXPLORE_ACTION.SET_PLACE_MODE_WORLDWIDE });
+      dispatch({
         type: EXPLORE_ACTION.SET_PLACE,
         placeId: null,
-      } );
+      });
     } else {
-      navigation.setParams( { place } );
-      dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE } );
-      dispatch( {
+      navigation.setParams({ place });
+      dispatch({ type: EXPLORE_ACTION.SET_PLACE_MODE_PLACE });
+      dispatch({
         type: EXPLORE_ACTION.SET_PLACE,
         place,
         placeId: place?.id,
         placeGuess: place?.display_name,
-      } );
+      });
     }
   };
 
-  const updateUser = ( user: Object, exclude = false ) => {
-    if ( exclude ) {
-      dispatch( {
+  const updateUser = (user: Object, exclude = false) => {
+    if (exclude) {
+      dispatch({
         type: EXPLORE_ACTION.EXCLUDE_USER,
         excludeUser: user,
-      } );
+      });
     } else {
-      dispatch( {
+      dispatch({
         type: EXPLORE_ACTION.SET_USER,
         user,
         userId: user?.id,
-      } );
+      });
     }
   };
 
-  const updateProject = ( project: Object ) => {
-    dispatch( {
+  const updateProject = (project: Object) => {
+    dispatch({
       type: EXPLORE_ACTION.SET_PROJECT,
       project,
       projectId: project?.id,
-    } );
+    });
   };
 
   const filteredParams = mapParamsToAPI(
@@ -109,31 +109,31 @@ const ExploreContainerWithContext = ( ): Node => {
     isFetching: isFetchingHeaderCount,
     handleUpdateCount,
     setIsFetching: setIsFetchingHeaderCount,
-  } = useExploreHeaderCount( );
+  } = useExploreHeaderCount();
 
-  const closeFiltersModal = ( ) => setShowFiltersModal( false );
+  const closeFiltersModal = () => setShowFiltersModal(false);
 
-  const openFiltersModal = ( ) => {
-    setShowFiltersModal( true );
-    makeSnapshot( );
+  const openFiltersModal = () => {
+    setShowFiltersModal(true);
+    makeSnapshot();
   };
 
   // Subviews need the ability to imperatively start fetching, e.g. when the
   // user switches from species to obs view
-  const startFetching = useCallback( ( ) => {
-    if ( hasLocationPermissions || state?.placeMode !== PLACE_MODE.NEARBY ) {
-      setIsFetchingHeaderCount( true );
-      setCanFetch( true );
+  const startFetching = useCallback(() => {
+    if (hasLocationPermissions || state?.placeMode !== PLACE_MODE.NEARBY) {
+      setIsFetchingHeaderCount(true);
+      setCanFetch(true);
     }
   }, [
     hasLocationPermissions,
     setIsFetchingHeaderCount,
     state?.placeMode,
-  ] );
+  ]);
 
-  useEffect( ( ) => {
-    startFetching( );
-  }, [startFetching] );
+  useEffect(() => {
+    startFetching();
+  }, [startFetching]);
 
   return (
     <>
@@ -148,14 +148,14 @@ const ExploreContainerWithContext = ( ): Node => {
             handleUpdateCount={handleUpdateCount}
             hideBackButton={false}
             filterByIconicTaxonUnknown={
-              () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
+              () => dispatch({ type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN })
             }
             isConnected={isConnected}
             isFetchingHeaderCount={isFetchingHeaderCount}
             openFiltersModal={openFiltersModal}
             queryParams={queryParams}
             showFiltersModal={showFiltersModal}
-            updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
+            updateTaxon={taxon => dispatch({ type: EXPLORE_ACTION.CHANGE_TAXON, taxon })}
             updateLocation={updateLocation}
             updateUser={updateUser}
             updateProject={updateProject}
@@ -179,9 +179,9 @@ const ExploreContainerWithContext = ( ): Node => {
             requestLocationPermissions={requestLocationPermissions}
           />
         )}
-      {renderPermissionsGate( {
+      {renderPermissionsGate({
         onPermissionGranted: startFetching,
-      } ) }
+      }) }
     </>
   );
 };

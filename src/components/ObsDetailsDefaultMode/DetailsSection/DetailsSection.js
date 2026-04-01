@@ -19,33 +19,33 @@ type Props = {
   observation: Object
 }
 
-const DetailsSection = ( { observation }: Props ): Node => {
+const DetailsSection = ({ observation }: Props): Node => {
   const application = observation?.application?.name;
 
-  if ( !observation ) return null;
+  if (!observation) return null;
 
   return (
     <View className="mx-4 mt-8">
-      <Heading3>{t( "Details" )}</Heading3>
+      <Heading3>{t("Details")}</Heading3>
       <GeoprivacyStatus geoprivacy={observation?.geoprivacy} />
       <Attribution observation={observation} />
       <View className="mt-3">
         <DateDisplay
-          label={t( "Date-uploaded-on-header-short" )}
-          dateString={checkCamelAndSnakeCase( observation, "createdAt" )}
+          label={t("Date-uploaded-on-header-short")}
+          dateString={checkCamelAndSnakeCase(observation, "createdAt")}
           hideIcon
           textComponent={Body3}
         />
       </View>
       {application && (
         <Body3 className="mt-3">
-          {t( "Uploaded-via-application", { application } )}
+          {t("Uploaded-via-application", { application })}
         </Body3>
       )}
       <View className="mt-3">
         <LabelColonValue
           label="ID"
-          value={String( observation.id )}
+          value={String(observation.id)}
           valueSelectable
           LabelComponent={Body3}
           ValueComponent={Body3}

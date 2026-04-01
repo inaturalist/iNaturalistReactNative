@@ -1,3 +1,3 @@
-const permissions = require( "react-native-permissions/mock" );
+const permissions = require("react-native-permissions/mock");
 
 module.exports = permissions;

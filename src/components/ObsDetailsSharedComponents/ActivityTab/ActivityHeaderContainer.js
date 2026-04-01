@@ -20,7 +20,7 @@ type Props = {
   showStatus?: boolean
 }
 
-const ActivityHeaderContainer = ( {
+const ActivityHeaderContainer = ({
   classNameMargin,
   idWithdrawn,
   isConnected,
@@ -30,52 +30,52 @@ const ActivityHeaderContainer = ( {
   taxonGeoprivacy,
   belongsToCurrentUser,
   showStatus,
-}:Props ): Node => {
-  const [currentUser, setCurrentUser] = useState( false );
-  const [loading, setLoading] = useState( false );
+}:Props): Node => {
+  const [currentUser, setCurrentUser] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { user } = item;
 
-  const flagged = item.flags?.some( flag => !flag.resolved );
+  const flagged = item.flags?.some(flag => !flag.resolved);
 
-  useEffect( ( ) => {
-    const isActiveUserTheCurrentUser = async ( ) => {
-      const current = await isCurrentUser( user?.login );
-      setCurrentUser( current );
+  useEffect(() => {
+    const isActiveUserTheCurrentUser = async () => {
+      const current = await isCurrentUser(user?.login);
+      setCurrentUser(current);
     };
-    isActiveUserTheCurrentUser( );
-  }, [user] );
+    isActiveUserTheCurrentUser();
+  }, [user]);
 
   const { mutate: deleteCommentMutate } = useAuthenticatedMutation(
-    ( uuid, optsWithAuth ) => deleteComments( uuid, optsWithAuth ),
+    (uuid, optsWithAuth) => deleteComments(uuid, optsWithAuth),
     {
-      onSuccess: ( ) => {
-        setLoading( false );
-        if ( refetchRemoteObservation ) {
-          refetchRemoteObservation( );
+      onSuccess: () => {
+        setLoading(false);
+        if (refetchRemoteObservation) {
+          refetchRemoteObservation();
         }
       },
       onError: () => {
-        setLoading( false );
+        setLoading(false);
       },
     },
   );
 
   const deleteUserComment = () => {
-    setLoading( true );
-    deleteCommentMutate( item.uuid );
+    setLoading(true);
+    deleteCommentMutate(item.uuid);
   };
 
   const { mutate: updateCommentMutate } = useAuthenticatedMutation(
-    ( uuid, optsWithAuth ) => updateComment( uuid, optsWithAuth ),
+    (uuid, optsWithAuth) => updateComment(uuid, optsWithAuth),
     {
       onSuccess: () => {
-        setLoading( false );
-        if ( refetchRemoteObservation ) {
-          refetchRemoteObservation( );
+        setLoading(false);
+        if (refetchRemoteObservation) {
+          refetchRemoteObservation();
         }
       },
       onError: () => {
-        setLoading( false );
+        setLoading(false);
       },
     },
   );
@@ -87,21 +87,21 @@ const ActivityHeaderContainer = ( {
         body: comment,
       },
     };
-    setLoading( true );
-    updateCommentMutate( updateCommentParams );
+    setLoading(true);
+    updateCommentMutate(updateCommentParams);
   };
 
   const { mutate: updateIdentificationMutate } = useAuthenticatedMutation(
-    ( uuid, optsWithAuth ) => apiUpdateIdentification( uuid, optsWithAuth ),
+    (uuid, optsWithAuth) => apiUpdateIdentification(uuid, optsWithAuth),
     {
       onSuccess: () => {
-        setLoading( false );
-        if ( refetchRemoteObservation ) {
-          refetchRemoteObservation( );
+        setLoading(false);
+        if (refetchRemoteObservation) {
+          refetchRemoteObservation();
         }
       },
       onError: () => {
-        setLoading( false );
+        setLoading(false);
       },
     },
   );
@@ -111,8 +111,8 @@ const ActivityHeaderContainer = ( {
       id: item.uuid,
       identification,
     };
-    setLoading( true );
-    updateIdentificationMutate( updateIdentificationParams );
+    setLoading(true);
+    updateIdentificationMutate(updateIdentificationParams);
   };
 
   return (

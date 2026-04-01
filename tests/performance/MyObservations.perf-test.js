@@ -16,64 +16,64 @@ const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
   mockRealmIdentifier,
 );
-jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
-jest.mock( "providers/contexts", ( ) => {
-  const originalModule = jest.requireActual( "providers/contexts" );
+jest.mock("realmModels/index", () => mockRealmModelsIndex);
+jest.mock("providers/contexts", () => {
+  const originalModule = jest.requireActual("providers/contexts");
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      useRealm: () => global.mockRealms[mockRealmIdentifier],
+      useQuery: () => [],
     },
   };
-} );
-beforeAll( uniqueRealmBeforeAll );
-afterAll( uniqueRealmAfterAll );
+});
+beforeAll(uniqueRealmBeforeAll);
+afterAll(uniqueRealmAfterAll);
 // /UNIQUE REALM SETUP
 
-const mockUser = factory( "LocalUser" );
+const mockUser = factory("LocalUser");
 
 // Mock inaturalistjs so test suite can run
-jest.mock( "inaturalistjs" );
+jest.mock("inaturalistjs");
 
-const mockObservation = factory( "LocalObservation" );
+const mockObservation = factory("LocalObservation");
 
-const renderMyObs = ( ) => (
+const renderMyObs = () => (
   <QueryClientProvider client={queryClient}>
     <MyObservationsContainer />
   </QueryClientProvider>
 );
 
-test( "Measure MyObservations renders", async () => {
+test("Measure MyObservations renders", async () => {
   await measureRenders(
-    renderMyObs( ),
+    renderMyObs(),
   );
-} );
+});
 
-describe( "scenario", ( ) => {
-  beforeEach( async ( ) => {
-    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-    safeRealmWrite( global.mockRealms[__filename], ( ) => {
-      global.mockRealms[__filename].create( "Observation", mockObservation );
-    }, "write Observation, MyObs.perf-test" );
-  } );
+describe("scenario", () => {
+  beforeEach(async () => {
+    await signIn(mockUser, { realm: global.mockRealms[__filename] });
+    safeRealmWrite(global.mockRealms[__filename], () => {
+      global.mockRealms[__filename].create("Observation", mockObservation);
+    }, "write Observation, MyObs.perf-test");
+  });
 
-  afterEach( ( ) => {
-    signOut( { realm: global.mockRealms[__filename] } );
-  } );
+  afterEach(() => {
+    signOut({ realm: global.mockRealms[__filename] });
+  });
 
-  test( "Test tapping sync button", async () => {
+  test("Test tapping sync button", async () => {
     const scenario = async () => {
-      const syncIcon = screen.getByTestId( "SyncButton" );
-      expect( syncIcon ).toBeVisible( );
-      fireEvent.press( syncIcon );
-      const syncingText = screen.queryByText( /Syncing.../ );
-      expect( syncingText ).toBeVisible( );
-      await waitForElementToBeRemoved( ( ) => screen.queryByText( /Syncing.../ ) );
+      const syncIcon = screen.getByTestId("SyncButton");
+      expect(syncIcon).toBeVisible();
+      fireEvent.press(syncIcon);
+      const syncingText = screen.queryByText(/Syncing.../);
+      expect(syncingText).toBeVisible();
+      await waitForElementToBeRemoved(() => screen.queryByText(/Syncing.../));
     };
 
-    await measureRenders( renderMyObs( ), { scenario } );
-  } );
-} );
+    await measureRenders(renderMyObs(), { scenario });
+  });
+});

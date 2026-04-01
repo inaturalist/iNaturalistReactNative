@@ -10,12 +10,12 @@ interface Props {
   description: string | null;
 }
 
-const NotesSection = ( { description }: Props ) => {
-  if ( !description ) return null;
+const NotesSection = ({ description }: Props) => {
+  if (!description) return null;
 
   return (
     <View className="mx-4 mt-4">
-      <Heading3>{t( "Notes" )}</Heading3>
+      <Heading3>{t("Notes")}</Heading3>
       <UserText>{description}</UserText>
     </View>
   );

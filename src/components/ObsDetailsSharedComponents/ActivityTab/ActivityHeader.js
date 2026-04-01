@@ -32,7 +32,7 @@ type Props = {
   belongsToCurrentUser: boolean
 }
 
-const ActivityHeader = ( {
+const ActivityHeader = ({
   classNameMargin,
   currentUser,
   deleteComment,
@@ -47,18 +47,18 @@ const ActivityHeader = ( {
   geoprivacy,
   taxonGeoprivacy,
   belongsToCurrentUser,
-}:Props ): Node => {
-  const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
-  const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
-  const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
+}:Props): Node => {
+  const [showEditCommentSheet, setShowEditCommentSheet] = useState(false);
+  const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState(false);
+  const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState(false);
   const { category, user, vision } = item;
 
   const itemType = item.category
     ? "Identification"
     : "Comment";
 
-  const renderIcon = useCallback( () => {
-    if ( idWithdrawn ) {
+  const renderIcon = useCallback(() => {
+    if (idWithdrawn) {
       return (
         <View className="opacity-50">
           <INatIcon name="ban" color={colors.primary} size={22} />
@@ -66,46 +66,46 @@ const ActivityHeader = ( {
       );
     }
 
-    if ( vision ) return <INatIcon name="sparkly-label" size={22} />;
-    if ( flagged ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
+    if (vision) return <INatIcon name="sparkly-label" size={22} />;
+    if (flagged) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
   }, [
     flagged,
     idWithdrawn,
     vision,
-  ] );
+  ]);
 
-  const renderStatus = useCallback( () => {
-    if ( !showStatus ) return null;
+  const renderStatus = useCallback(() => {
+    if (!showStatus) return null;
 
-    if ( flagged ) {
+    if (flagged) {
       return (
         <Body4 maxFontSizeMultiplier={1}>
-          {t( "Flagged" )}
+          {t("Flagged")}
         </Body4>
       );
     }
-    if ( idWithdrawn ) {
+    if (idWithdrawn) {
       return (
         <Body4 maxFontSizeMultiplier={1}>
-          { t( "ID-Withdrawn" )}
+          { t("ID-Withdrawn")}
         </Body4>
       );
     }
-    if ( category ) {
+    if (category) {
       let categoryText;
-      switch ( category ) {
+      switch (category) {
         case "improving":
-          categoryText = t( "improving--identification" );
+          categoryText = t("improving--identification");
           break;
         case "maverick":
-          categoryText = t( "maverick--identification" );
+          categoryText = t("maverick--identification");
           break;
         case "leading":
-          categoryText = t( "leading--identification" );
+          categoryText = t("leading--identification");
           break;
         default:
-          categoryText = t( "supporting--identification" );
+          categoryText = t("supporting--identification");
       }
       return (
         <Body4 maxFontSizeMultiplier={1}>
@@ -121,10 +121,10 @@ const ActivityHeader = ( {
     flagged,
     idWithdrawn,
     showStatus,
-  ] );
+  ]);
 
   return (
-    <View className={classnames( "flex-row justify-between", classNameMargin )}>
+    <View className={classnames("flex-row justify-between", classNameMargin)}>
       <InlineUser user={user} isConnected={isConnected} />
       <View className="flex-row items-center space-x-[15px] -mr-[15px]">
         {renderIcon()}
@@ -166,31 +166,31 @@ const ActivityHeader = ( {
               />
             )
         }
-        {( currentUser && showWithdrawIDSheet ) && (
+        {(currentUser && showWithdrawIDSheet) && (
           <WithdrawIDSheet
-            onPressClose={() => setShowWithdrawIDSheet( false )}
+            onPressClose={() => setShowWithdrawIDSheet(false)}
             taxon={item.taxon}
             updateIdentification={updateIdentification}
           />
         )}
 
-        {( currentUser && showEditCommentSheet ) && (
+        {(currentUser && showEditCommentSheet) && (
           <TextInputSheet
             mentionsEnabled
-            onPressClose={() => setShowEditCommentSheet( false )}
-            headerText={t( "EDIT-COMMENT" )}
+            onPressClose={() => setShowEditCommentSheet(false)}
+            headerText={t("EDIT-COMMENT")}
             initialInput={item.body}
-            confirm={textInput => updateCommentBody( textInput )}
+            confirm={textInput => updateCommentBody(textInput)}
           />
         )}
-        {( currentUser && showDeleteCommentSheet ) && (
+        {(currentUser && showDeleteCommentSheet) && (
           <WarningSheet
-            onPressClose={( ) => setShowDeleteCommentSheet( false )}
-            headerText={t( "DELETE-COMMENT--question" )}
+            onPressClose={() => setShowDeleteCommentSheet(false)}
+            headerText={t("DELETE-COMMENT--question")}
             confirm={deleteComment}
-            buttonText={t( "DELETE" )}
-            handleSecondButtonPress={( ) => setShowDeleteCommentSheet( false )}
-            secondButtonText={t( "CANCEL" )}
+            buttonText={t("DELETE")}
+            handleSecondButtonPress={() => setShowDeleteCommentSheet(false)}
+            secondButtonText={t("CANCEL")}
           />
         )}
       </View>

@@ -33,7 +33,7 @@ const filterSuggestions = (
 ) => {
   const sortedSuggestions = orderBy(
     // TODO: handling humans is implemented in the vision-plugin, can it be removed here?
-    isolateHumans( suggestionsToFilter ),
+    isolateHumans(suggestionsToFilter),
     "combined_score",
     "desc",
   );
@@ -43,7 +43,7 @@ const filterSuggestions = (
     otherSuggestions: sortedSuggestions,
   };
   // no suggestions
-  if ( sortedSuggestions.length === 0 ) {
+  if (sortedSuggestions.length === 0) {
     return {
       ...newSuggestions,
       otherSuggestions: [],
@@ -51,7 +51,7 @@ const filterSuggestions = (
     };
   }
   // human top suggestion
-  if ( sortedSuggestions.find( humanFilter ) ) {
+  if (sortedSuggestions.find(humanFilter)) {
     return {
       ...newSuggestions,
       topSuggestion: sortedSuggestions[0],
@@ -65,12 +65,12 @@ const filterSuggestions = (
     s => s.combined_score > TOP_RESULT_SCORE_THRESHOLD,
   );
 
-  if ( suggestionAboveThreshold ) {
+  if (suggestionAboveThreshold) {
     // make sure we're not returning the top suggestion in Other Suggestions
     const firstSuggestion = remove(
       sortedSuggestions,
       s => s.taxon.id === suggestionAboveThreshold.taxon.id,
-    ).at( 0 );
+    ).at(0);
     return {
       ...newSuggestions,
       topSuggestion: firstSuggestion,
@@ -79,7 +79,7 @@ const filterSuggestions = (
   }
 
   // online or offline common ancestor
-  if ( commonAncestor ) {
+  if (commonAncestor) {
     return {
       ...newSuggestions,
       topSuggestion: commonAncestor,

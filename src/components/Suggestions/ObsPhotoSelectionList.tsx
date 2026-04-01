@@ -9,24 +9,24 @@ import { useTranslation } from "sharedHooks";
 interface Props {
   photoUris: string[];
   selectedPhotoUri: string;
-  onPressPhoto: ( _uri: string ) => void;
+  onPressPhoto: (_uri: string) => void;
 }
 
-const ObsPhotoSelectionList = ( {
+const ObsPhotoSelectionList = ({
   photoUris, selectedPhotoUri, onPressPhoto,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
-  const renderPhoto = useCallback( ( { item } ) => (
+  const renderPhoto = useCallback(({ item }) => (
     <Pressable
       accessibilityRole="button"
-      onPress={( ) => {
-        onPressPhoto( item );
+      onPress={() => {
+        onPressPhoto(item);
       }}
       className={classnames(
         "w-[83px] h-[83px] justify-center mx-1.5 rounded-lg",
       )}
-      accessibilityLabel={t( "Select-photo" )}
+      accessibilityLabel={t("Select-photo")}
       testID={`ObsPhotoSelectionList.${item}`}
     >
       <View
@@ -45,7 +45,7 @@ const ObsPhotoSelectionList = ( {
         />
       </View>
     </Pressable>
-  ), [selectedPhotoUri, onPressPhoto, t] );
+  ), [selectedPhotoUri, onPressPhoto, t]);
 
   return (
     <FlatList

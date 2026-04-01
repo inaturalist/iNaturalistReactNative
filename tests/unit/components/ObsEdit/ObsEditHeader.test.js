@@ -10,19 +10,19 @@ import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render
 const mockHeaderBackButton = <View testID="ObsEdit.BackButton">Mocked Back</View>;
 
 // Note: HeaderBackButton has accessibility issues
-jest.mock( "@react-navigation/elements", () => ( {
-  ...jest.requireActual( "@react-navigation/elements" ),
+jest.mock("@react-navigation/elements", () => ({
+  ...jest.requireActual("@react-navigation/elements"),
   HeaderBackButton: jest.fn()
-    .mockImplementation( ( ) => mockHeaderBackButton ),
-} ) );
+    .mockImplementation(() => mockHeaderBackButton),
+}));
 
 const mockObservations = [
-  factory( "LocalObservation" ),
-  factory( "LocalObservation" ),
+  factory("LocalObservation"),
+  factory("LocalObservation"),
 ];
 
-describe( "ObsEditHeader", () => {
-  it( "has no accessibility errors", () => {
+describe("ObsEditHeader", () => {
+  it("has no accessibility errors", () => {
     const button = wrapInNavigationContainer(
       <ObsEditHeader
         observations={mockObservations}
@@ -30,38 +30,38 @@ describe( "ObsEditHeader", () => {
     );
 
     // Disabled during the update to RN 0.78
-    expect( button ).toBeTruthy();
+    expect(button).toBeTruthy();
     // expect( button ).toBeAccessible();
-  } );
+  });
 
-  it( "renders a header title with 1 observation", async () => {
+  it("renders a header title with 1 observation", async () => {
     renderComponent(
       <ObsEditHeader
         observations={[mockObservations[1]]}
       />,
     );
 
-    const headerText = await screen.findByText( /New Observation/ );
+    const headerText = await screen.findByText(/New Observation/);
 
-    expect( headerText ).toBeVisible();
-  } );
+    expect(headerText).toBeVisible();
+  });
 
-  it( "renders a header title with multiple observations", async () => {
+  it("renders a header title with multiple observations", async () => {
     renderComponent(
       <ObsEditHeader
         observations={mockObservations}
       />,
     );
 
-    const headerText = await screen.findByText( /2 Observations/ );
+    const headerText = await screen.findByText(/2 Observations/);
 
-    expect( headerText ).toBeVisible();
-  } );
+    expect(headerText).toBeVisible();
+  });
 
-  it( "renders edit header title when observation is saved locally", async () => {
-    const observation = factory( "LocalObservation", {
-      _created_at: faker.date.past( ),
-    } );
+  it("renders edit header title when observation is saved locally", async () => {
+    const observation = factory("LocalObservation", {
+      _created_at: faker.date.past(),
+    });
     renderComponent(
       <ObsEditHeader
         currentObservation={observation}
@@ -69,32 +69,32 @@ describe( "ObsEditHeader", () => {
       />,
     );
 
-    const headerText = await screen.findByText( /Edit Observation/ );
+    const headerText = await screen.findByText(/Edit Observation/);
 
-    expect( headerText ).toBeVisible();
-  } );
+    expect(headerText).toBeVisible();
+  });
 
-  it( "renders a kebab menu", async () => {
+  it("renders a kebab menu", async () => {
     renderComponent(
       <ObsEditHeader
         observations={mockObservations}
       />,
     );
 
-    const kebabLabel = await screen.findByLabelText( /Menu/ );
+    const kebabLabel = await screen.findByLabelText(/Menu/);
 
-    expect( kebabLabel ).toBeVisible();
-  } );
+    expect(kebabLabel).toBeVisible();
+  });
 
-  it( "renders a back button", () => {
+  it("renders a back button", () => {
     renderComponent(
       <ObsEditHeader
         observations={mockObservations}
       />,
     );
 
-    const backButtonId = screen.getByTestId( "ObsEdit.BackButton" );
+    const backButtonId = screen.getByTestId("ObsEdit.BackButton");
 
-    expect( backButtonId ).toBeVisible( );
-  } );
-} );
+    expect(backButtonId).toBeVisible();
+  });
+});

@@ -21,16 +21,16 @@ const ONE_WEEK_MS = (
 );
 
 // $FlowIgnore
-const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Object => {
-  const realm = useRealm( );
+const useTaxon = (taxon: Object, fetchRemote = true, retryQuery = true): Object => {
+  const realm = useRealm();
   // taxon id is returned as a string, not a number, from CV model
-  const taxonId = Number( taxon?.id );
+  const taxonId = Number(taxon?.id);
 
-  const localTaxon = taxonId && realm.objectForPrimaryKey( "Taxon", taxonId );
+  const localTaxon = taxonId && realm.objectForPrimaryKey("Taxon", taxonId);
 
   const canFetchTaxon = !!taxonId;
   const outOfDate = localTaxon
-    ? ( localTaxon._synced_at && ( Date.now( ) - localTaxon._synced_at > ONE_WEEK_MS ) )
+    ? (localTaxon._synced_at && (Date.now() - localTaxon._synced_at > ONE_WEEK_MS))
     : false;
   const missingRequiredAttributes = localTaxon
     ? (
@@ -47,7 +47,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Objec
     // Sync if missing a common name or default photo from being saved in Realm while offline
     || missingRequiredAttributes
   );
-  const enabled = !!( canFetchTaxon && fetchRemote && localTaxonNeedsSync );
+  const enabled = !!(canFetchTaxon && fetchRemote && localTaxonNeedsSync);
 
   const currentUser = useCurrentUser();
   // Use locale in case there is no user session
@@ -55,7 +55,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Objec
 
   const params = {
     fields: Taxon.LIMITED_TAXON_FIELDS,
-    ...( !currentUser && { locale } ),
+    ...(!currentUser && { locale }),
   };
 
   const {
@@ -65,7 +65,7 @@ const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Objec
     refetch,
   } = useAuthenticatedQuery(
     ["fetchTaxon", taxonId],
-    optsWithAuth => fetchTaxon( taxonId, params, optsWithAuth ),
+    optsWithAuth => fetchTaxon(taxonId, params, optsWithAuth),
     {
       enabled,
       retry: retryQuery,
@@ -73,17 +73,17 @@ const useTaxon = ( taxon: Object, fetchRemote = true, retryQuery = true ): Objec
   );
 
   const mappedRemoteTaxon = remoteTaxon
-    ? Taxon.mapApiToRealm( remoteTaxon, realm )
+    ? Taxon.mapApiToRealm(remoteTaxon, realm)
     : null;
 
-  if ( localTaxonNeedsSync && mappedRemoteTaxon ) {
-    safeRealmWrite( realm, ( ) => {
+  if (localTaxonNeedsSync && mappedRemoteTaxon) {
+    safeRealmWrite(realm, () => {
       realm.create(
         "Taxon",
-        Taxon.forUpdate( mappedRemoteTaxon ),
+        Taxon.forUpdate(mappedRemoteTaxon),
         "modified",
       );
-    }, "saving remote taxon in useTaxon" );
+    }, "saving remote taxon in useTaxon");
   }
 
   // Local is best, local-ish version of remote will be available sooner, use

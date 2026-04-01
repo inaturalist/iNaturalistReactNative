@@ -9,14 +9,14 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   sizeClassName: string;
-  onLongPress?: ( _event: GestureResponderEvent ) => void;
-  onPress: ( _event: GestureResponderEvent ) => void;
+  onLongPress?: (_event: GestureResponderEvent) => void;
+  onPress: (_event: GestureResponderEvent) => void;
   accessibilityLabel?: string;
   accessibilityHint?: string;
   iconName?: string;
   iconSize?: number;
 }
-const GradientButton = ( {
+const GradientButton = ({
   sizeClassName,
   onLongPress,
   onPress,
@@ -24,10 +24,10 @@ const GradientButton = ( {
   accessibilityHint,
   iconName,
   iconSize,
-}: Props ) => {
-  const handleLongPress = ( event: GestureResponderEvent ) => {
-    if ( onLongPress ) {
-      onLongPress( event );
+}: Props) => {
+  const handleLongPress = (event: GestureResponderEvent) => {
+    if (onLongPress) {
+      onLongPress(event);
     }
   };
 
@@ -40,7 +40,7 @@ const GradientButton = ( {
       onPress={onPress}
       disabled={false}
       accessibilityLabel={accessibilityLabel}
-      accessibilityHint={accessibilityHint || t( "Opens-AI-camera" )}
+      accessibilityHint={accessibilityHint || t("Opens-AI-camera")}
       accessibilityRole="button"
       accessibilityState={{
         disabled: false,

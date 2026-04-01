@@ -9,17 +9,17 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
-  deleteSentinelFile: ( ) => Promise<void>;
+  deleteSentinelFile: () => Promise<void>;
   disabled?: boolean;
 }
 
-const PhotoLibraryIcon = ( {
+const PhotoLibraryIcon = ({
   rotatableAnimatedStyle,
   deleteSentinelFile,
   disabled,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
+}: Props) => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
 
   return (
     <RotatableIconWrapper
@@ -37,16 +37,16 @@ const PhotoLibraryIcon = ( {
         )}
         onPress={() => {
           deleteSentinelFile();
-          navigation.push( "PhotoLibrary", {
+          navigation.push("PhotoLibrary", {
             cmonBack: true,
             lastScreen: "Camera",
             fromAICamera: true,
-          } );
+          });
         }}
-        accessibilityLabel={t( "Photo-importer" )}
-        accessibilityHint={t( "Navigates-to-photo-importer" )}
+        accessibilityLabel={t("Photo-importer")}
+        accessibilityHint={t("Navigates-to-photo-importer")}
         icon="photo-library"
-        color={( colors?.white as string ) || "white"}
+        color={(colors?.white as string) || "white"}
         size={26}
         width={62}
         height={62}

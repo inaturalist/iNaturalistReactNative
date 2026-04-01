@@ -11,13 +11,13 @@ interface Props {
     white?: boolean;
 }
 
-const CommentsCount = ( {
+const CommentsCount = ({
   count,
   filled = false,
   classNameMargin,
   testID,
   white,
-}: Props ) => {
+}: Props) => {
   const { t } = useTranslation();
 
   // 03072023 amanda - applying chris' bandaid fix from PR #515: https://github.com/inaturalist/iNaturalistReactNative/pull/515
@@ -26,9 +26,9 @@ const CommentsCount = ( {
   try {
     // not exactly sure why this causes a consistent error every time you run android
     // for the first time...
-    commentA11yLabel = t( "x-comments", { count } );
-  } catch ( e ) {
-    console.warn( e );
+    commentA11yLabel = t("x-comments", { count });
+  } catch (e) {
+    console.warn(e);
   }
 
   return (

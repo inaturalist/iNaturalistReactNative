@@ -9,7 +9,7 @@ const GEOCODER_TIMEOUT = 2500;
 const TIMEOUT_ERROR_MESSAGE = "Geocoder timeout";
 
 // lifted from SeekReactNative repo
-const setPlaceName = ( results: GeocodingObject[] ): string => {
+const setPlaceName = (results: GeocodingObject[]): string => {
   let placeName = "";
 
   const {
@@ -21,47 +21,47 @@ const setPlaceName = ( results: GeocodingObject[] ): string => {
   // this seems to be preferred formatting for iNat web
   // TODO: localize formatting
   // TODO: throttle requests on iOS so this doesn't error out in location picker
-  const appendName = ( name: string ) => ( placeName.length > 0
+  const appendName = (name: string) => (placeName.length > 0
     ? `, ${name}`
-    : name );
+    : name);
 
-  if ( streetName ) {
+  if (streetName) {
     placeName += streetName;
   }
-  if ( locality ) {
-    placeName += appendName( locality );
+  if (locality) {
+    placeName += appendName(locality);
   }
-  if ( adminArea ) {
-    placeName += appendName( adminArea );
+  if (adminArea) {
+    placeName += appendName(adminArea);
   }
-  if ( countryCode ) {
-    placeName += appendName( countryCode );
+  if (countryCode) {
+    placeName += appendName(countryCode);
   }
   return placeName;
 };
 
-const fetchPlaceName = async ( lat?: number, lng?: number ): Promise<string | null> => {
-  if ( !lat || !lng ) { return null; }
-  const { isConnected } = await NetInfo.fetch( );
-  if ( !isConnected ) { return null; }
+const fetchPlaceName = async (lat?: number, lng?: number): Promise<string | null> => {
+  if (!lat || !lng) { return null; }
+  const { isConnected } = await NetInfo.fetch();
+  if (!isConnected) { return null; }
   try {
-    const timeoutPromise: Promise<never> = new Promise( ( _, reject ) => {
-      setTimeout( ( ) => reject( new Error( TIMEOUT_ERROR_MESSAGE ) ), GEOCODER_TIMEOUT );
-    } );
+    const timeoutPromise: Promise<never> = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(TIMEOUT_ERROR_MESSAGE)), GEOCODER_TIMEOUT);
+    });
 
     // Race the geocoder against the timeout
-    const results = await Promise.race( [
-      Geocoder.geocodePosition( { lat, lng } ),
+    const results = await Promise.race([
+      Geocoder.geocodePosition({ lat, lng }),
       timeoutPromise,
-    ] );
-    if ( results.length === 0 || typeof results !== "object" ) { return null; }
-    return setPlaceName( results as GeocodingObject[] );
-  } catch ( geocoderError ) {
-    if ( ( geocoderError as Error )?.message === TIMEOUT_ERROR_MESSAGE ) {
-      console.warn( "Geocoder operation timed out" );
+    ]);
+    if (results.length === 0 || typeof results !== "object") { return null; }
+    return setPlaceName(results as GeocodingObject[]);
+  } catch (geocoderError) {
+    if ((geocoderError as Error)?.message === TIMEOUT_ERROR_MESSAGE) {
+      console.warn("Geocoder operation timed out");
       return null;
     }
-    if ( !( geocoderError as Error )?.message?.includes( "geocodePosition failed" ) ) {
+    if (!(geocoderError as Error)?.message?.includes("geocodePosition failed")) {
       throw geocoderError;
     }
     return null;

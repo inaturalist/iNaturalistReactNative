@@ -8,28 +8,28 @@ type Props = {
   geoprivacy: string | null
 };
 
-const GeoprivacyStatus = ( {
+const GeoprivacyStatus = ({
   geoprivacy,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
-  const displayGeoprivacy = useMemo( ( ) => {
-    if ( geoprivacy === "obscured" ) {
-      return t( "Obscured" );
-    } if ( geoprivacy === "private" ) {
-      return t( "Private" );
+  const displayGeoprivacy = useMemo(() => {
+    if (geoprivacy === "obscured") {
+      return t("Obscured");
+    } if (geoprivacy === "private") {
+      return t("Private");
     }
-    return t( "Open" );
-  }, [geoprivacy, t] );
+    return t("Open");
+  }, [geoprivacy, t]);
 
   let displayPrivacy = displayGeoprivacy;
-  if ( displayPrivacy === "private" ) {
+  if (displayPrivacy === "private") {
     displayPrivacy = "Private";
   }
-  if ( displayPrivacy === "obscured" ) {
+  if (displayPrivacy === "obscured") {
     displayPrivacy = "Obscured";
   }
-  if ( displayPrivacy === null || displayPrivacy === "open" ) {
+  if (displayPrivacy === null || displayPrivacy === "open") {
     displayPrivacy = "Open";
   }
 
@@ -39,7 +39,7 @@ const GeoprivacyStatus = ( {
       numberOfLines={1}
       ellipsizeMode="tail"
     >
-      {t( "Geoprivacy-status", { status: t( displayPrivacy ) } )}
+      {t("Geoprivacy-status", { status: t(displayPrivacy) })}
     </Body3>
   );
 };

@@ -19,18 +19,18 @@ type Props = {
   height?: number
 };
 
-const NotificationsIconContainer = ( {
+const NotificationsIconContainer = ({
   testID,
   size,
   icon,
   active,
   width,
   height,
-}: Props ): Node => {
-  const [hasUnread, setHasUnread] = useState( false );
-  const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
-  const currentUser = useCurrentUser( );
-  const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
+}: Props): Node => {
+  const [hasUnread, setHasUnread] = useState(false);
+  const [numFetchIntervals, setNumFetchIntervals] = useState(0);
+  const currentUser = useCurrentUser();
+  const observationMarkedAsViewedAt = useStore(state => state.observationMarkedAsViewedAt);
 
   const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
     [
@@ -42,21 +42,21 @@ const NotificationsIconContainer = ( {
       // observation, because that might make the indicator go away
       observationMarkedAsViewedAt,
     ],
-    optsWithAuth => fetchUnviewedObservationUpdatesCount( {}, optsWithAuth ),
+    optsWithAuth => fetchUnviewedObservationUpdatesCount({}, optsWithAuth),
     {
-      enabled: !!( currentUser ),
+      enabled: !!(currentUser),
     },
   );
 
   // Show icon when there are unread updates
-  useEffect( () => {
-    setHasUnread( unviewedUpdatesCount > 0 );
-  }, [unviewedUpdatesCount] );
+  useEffect(() => {
+    setHasUnread(unviewedUpdatesCount > 0);
+  }, [unviewedUpdatesCount]);
 
   // Fetch new updates count every minute by changing the request key
-  useInterval( () => {
-    setNumFetchIntervals( numFetchIntervals + 1 );
-  }, 60_000 );
+  useInterval(() => {
+    setNumFetchIntervals(numFetchIntervals + 1);
+  }, 60_000);
 
   return (
     <NotificationsIcon

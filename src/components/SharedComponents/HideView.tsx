@@ -14,20 +14,20 @@ interface Props extends PropsWithChildren {
 }
 
 // to free up memory
-const HideView = ( {
+const HideView = ({
   noInitialRender = false,
   show = false,
   children,
-}: Props ) => {
-  const [rendered, setRendered] = useState( false );
+}: Props) => {
+  const [rendered, setRendered] = useState(false);
 
-  useEffect( () => {
-    if ( show ) {
-      setRendered( true );
+  useEffect(() => {
+    if (show) {
+      setRendered(true);
     }
-  }, [show] );
+  }, [show]);
 
-  if ( noInitialRender && !rendered && !show ) {
+  if (noInitialRender && !rendered && !show) {
     return null;
   }
 

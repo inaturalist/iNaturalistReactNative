@@ -3,9 +3,9 @@ import EmptyMapSection from "components/Match/EmptyMapSection";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
-describe( "EmptyMapSection", () => {
+describe("EmptyMapSection", () => {
   const mockHandleAddLocationPressed = jest.fn();
-  it( "displays the location indicator icon", () => {
+  it("displays the location indicator icon", () => {
     renderComponent(
       <EmptyMapSection
         isFetchingLocation={false}
@@ -13,11 +13,11 @@ describe( "EmptyMapSection", () => {
       />,
     );
 
-    const locationIndicator = screen.getByTestId( "Map.LocationIndicator" );
-    expect( locationIndicator ).toBeVisible();
-  } );
+    const locationIndicator = screen.getByTestId("Map.LocationIndicator");
+    expect(locationIndicator).toBeVisible();
+  });
 
-  it( "calls handleAddLocationPressed when button is pressed", () => {
+  it("calls handleAddLocationPressed when button is pressed", () => {
     renderComponent(
       <EmptyMapSection
         isFetchingLocation={false}
@@ -25,13 +25,13 @@ describe( "EmptyMapSection", () => {
       />,
     );
 
-    const button = screen.getByText( "ADD LOCATION FOR BETTER IDS" );
-    fireEvent.press( button );
+    const button = screen.getByText("ADD LOCATION FOR BETTER IDS");
+    fireEvent.press(button);
 
-    expect( mockHandleAddLocationPressed ).toHaveBeenCalled();
-  } );
+    expect(mockHandleAddLocationPressed).toHaveBeenCalled();
+  });
 
-  it( "shows loading state when isFetchingLocation is true", () => {
+  it("shows loading state when isFetchingLocation is true", () => {
     renderComponent(
       <EmptyMapSection
         isFetchingLocation
@@ -39,7 +39,7 @@ describe( "EmptyMapSection", () => {
       />,
     );
 
-    const button = screen.getByLabelText( "Edit location" );
-    expect( button.props.accessibilityState.disabled ).toBe( true );
-  } );
-} );
+    const button = screen.getByLabelText("Edit location");
+    expect(button.props.accessibilityState.disabled).toBe(true);
+  });
+});

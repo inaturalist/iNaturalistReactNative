@@ -13,21 +13,21 @@ import {
 const DETAILS = [
   `Build ${getBuildNumber()}`,
   `${getSystemName()} ${getSystemVersion()}`,
-  getDeviceId( ),
-  getDeviceType( ),
+  getDeviceId(),
+  getDeviceType(),
 ];
 
-async function getOtherDetails( ) {
-  DETAILS.push( `${getBrand( )}` );
-  if ( Platform.OS === "android" ) {
-    DETAILS.push( `SDK ${await getApiLevel( )}` );
+async function getOtherDetails() {
+  DETAILS.push(`${getBrand()}`);
+  if (Platform.OS === "android") {
+    DETAILS.push(`SDK ${await getApiLevel()}`);
   }
 }
-getOtherDetails( );
+getOtherDetails();
 
 // User agent being used, when calling the iNat APIs
-function getUserAgent( ) {
-  return `iNaturalistRN/${getVersion()} (${DETAILS.join( "; " )})`;
+function getUserAgent() {
+  return `iNaturalistRN/${getVersion()} (${DETAILS.join("; ")})`;
 }
 
 export {

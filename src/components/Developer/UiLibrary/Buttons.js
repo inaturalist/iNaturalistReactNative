@@ -18,8 +18,8 @@ import colors from "styles/tailwindColors";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const Buttons = ( ) => {
-  const [loading, setLoading] = useState( false );
+const Buttons = () => {
+  const [loading, setLoading] = useState(false);
   return (
     <ScrollViewWrapper>
       <View className="p-4">
@@ -29,28 +29,28 @@ const Buttons = ( ) => {
           level="primary"
           text="PRIMARY BUTTON"
           loading={loading}
-          onPress={() => setLoading( !loading )}
+          onPress={() => setLoading(!loading)}
           accessibilityHint="Describes the result of performing the tap action on this element."
         />
         <Button
           className="mb-2"
           text="NEUTRAL BUTTON"
           loading={loading}
-          onPress={() => setLoading( !loading )}
+          onPress={() => setLoading(!loading)}
         />
         <Button
           className="mb-2"
           level="focus"
           text="FOCUS BUTTON"
           loading={loading}
-          onPress={() => setLoading( !loading )}
+          onPress={() => setLoading(!loading)}
         />
         <Button
           className="mb-2"
           level="warning"
           text="WARNING BUTTON"
           loading={loading}
-          onPress={() => setLoading( !loading )}
+          onPress={() => setLoading(!loading)}
         />
         <Button
           className="mb-2"
@@ -70,7 +70,7 @@ const Buttons = ( ) => {
         <Button
           className="mb-2"
           text="Tap to show alert"
-          onPress={() => Alert.alert( "You Tapped a Button", "Or did you click it? Fight me." )}
+          onPress={() => Alert.alert("You Tapped a Button", "Or did you click it? Fight me.")}
         />
 
         <Heading2>Multiple Buttons With Focus</Heading2>
@@ -127,7 +127,7 @@ const Buttons = ( ) => {
             <INatIconButton
               icon="compass-rose-outline"
               className="my-2"
-              onPress={() => Alert.alert( "", "You tapped!" )}
+              onPress={() => Alert.alert("", "You tapped!")}
               accessibilityLabel="Explore"
               size={25}
             />
@@ -137,7 +137,7 @@ const Buttons = ( ) => {
             <INatIconButton
               icon="plus"
               className="my-2"
-              onPress={() => Alert.alert( "", "You tapped!" )}
+              onPress={() => Alert.alert("", "You tapped!")}
               mode="contained"
               backgroundColor={colors.inatGreen}
               color={colors.white}
@@ -149,7 +149,7 @@ const Buttons = ( ) => {
             <INatIconButton
               icon="notifications-bell"
               className="my-2"
-              onPress={() => Alert.alert( "", "You tapped!" )}
+              onPress={() => Alert.alert("", "You tapped!")}
               color={colors.warningRed}
               size={25}
               accessibilityLabel="Notifications"

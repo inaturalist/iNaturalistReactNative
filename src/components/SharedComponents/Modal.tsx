@@ -31,7 +31,7 @@ const fullScreenModalStyle = {
 // accessibility might not work on Android because of backdrop
 // https://github.com/react-native-modal/react-native-modal/issues/525
 
-const Modal = ( {
+const Modal = ({
   animationIn,
   animationOut,
   backdropOpacity,
@@ -43,7 +43,7 @@ const Modal = ( {
   onModalHide,
   showModal,
   style,
-}: Props ) => {
+}: Props) => {
   const swipeDirection = disableSwipeDirection
     ? undefined
     : "down";
@@ -59,7 +59,7 @@ const Modal = ( {
       useNativeDriver
       style={{
         ...style,
-        ...( fullScreen
+        ...(fullScreen
           ? fullScreenModalStyle
           : modalStyle
         ),

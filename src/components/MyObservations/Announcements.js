@@ -25,20 +25,20 @@ import colors from "styles/tailwindColors";
 
 const Webshell = makeWebshell(
   WebView,
-  new HandleLinkPressFeature( { preventDefault: true } ),
+  new HandleLinkPressFeature({ preventDefault: true }),
   new HandleHTMLDimensionsFeature(),
-  new ForceResponsiveViewportFeature( { maxScale: 1 } ),
-  new ForceElementSizeFeature( {
+  new ForceResponsiveViewportFeature({ maxScale: 1 }),
+  new ForceElementSizeFeature({
     target: "body",
     heightValue: "auto",
     widthValue: "auto",
-  } ),
+  }),
 );
 
-const AutoheightWebView = ( webshellProps ): Node => {
-  const { autoheightWebshellProps } = useAutoheight( {
+const AutoheightWebView = (webshellProps): Node => {
+  const { autoheightWebshellProps } = useAutoheight({
     webshellProps,
-  } );
+  });
   // eslint-disable-next-line react/jsx-props-no-spreading
   return <Webshell {...autoheightWebshellProps} />;
 };
@@ -47,14 +47,14 @@ type Props = {
   isConnected: boolean,
 }
 
-const Announcements = ( {
+const Announcements = ({
   isConnected,
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  const queryClient = useQueryClient( );
-  const currentUser = useCurrentUser( );
+}: Props): Node => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const currentUser = useCurrentUser();
 
-  const onLinkPress = async target => openExternalWebBrowser( target.uri );
+  const onLinkPress = async target => openExternalWebBrowser(target.uri);
 
   const apiParams = {
     locale: currentUser?.locale || "en",
@@ -67,18 +67,18 @@ const Announcements = ( {
     isRefetching,
   } = useAuthenticatedQuery(
     ["searchAnnouncements", apiParams],
-    optsWithAuth => searchAnnouncements( apiParams, optsWithAuth ),
+    optsWithAuth => searchAnnouncements(apiParams, optsWithAuth),
     {
-      enabled: !!( currentUser ),
+      enabled: !!(currentUser),
     },
   );
 
   const { mutate: dismissAnnouncementMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => dismissAnnouncement( params, optsWithAuth ),
+    (params, optsWithAuth) => dismissAnnouncement(params, optsWithAuth),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries( { queryKey: ["searchAnnouncements"] } );
-        if ( refetchAnnouncements ) {
+        queryClient.invalidateQueries({ queryKey: ["searchAnnouncements"] });
+        if (refetchAnnouncements) {
           refetchAnnouncements();
         }
       },
@@ -88,20 +88,20 @@ const Announcements = ( {
     },
   );
 
-  if ( !isConnected ) {
+  if (!isConnected) {
     return null;
   }
-  if ( !currentUser ) {
+  if (!currentUser) {
     return null;
   }
-  if ( !announcements || announcements.length === 0 ) {
+  if (!announcements || announcements.length === 0) {
     return null;
   }
 
   // Array of { id, body, dismissible }
   const homeAnnouncements = announcements
     // Sort by start date, oldest first
-    .sort( ( a, b ) => new Date( a.start ) - new Date( b.start ) );
+    .sort((a, b) => new Date(a.start) - new Date(b.start));
   const topAnnouncement = homeAnnouncements[0];
   const { id, dismissible, body } = topAnnouncement;
   const announcementHtml = `
@@ -113,10 +113,10 @@ const Announcements = ( {
 `;
 
   const dismiss = async () => {
-    dismissAnnouncementMutate( { id } );
+    dismissAnnouncementMutate({ id });
   };
 
-  if ( isRefetching ) {
+  if (isRefetching) {
     return <ActivityIndicator size={32} />;
   }
 
@@ -135,7 +135,7 @@ const Announcements = ( {
       {dismissible && (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={t( "Dismiss-announcement" )}
+          accessibilityLabel={t("Dismiss-announcement")}
           className="absolute top-0 right-0 h-[44px] w-[44px] items-center
           justify-center z-10"
           onPress={dismiss}

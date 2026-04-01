@@ -17,7 +17,7 @@ type Props = {
   updateIdentification: Function,
 }
 
-const ActivityItemKebabMenu = ( {
+const ActivityItemKebabMenu = ({
   current,
   currentUser,
   itemType,
@@ -25,42 +25,42 @@ const ActivityItemKebabMenu = ( {
   setShowEditCommentSheet,
   setShowWithdrawIDSheet,
   updateIdentification,
-}:Props ): Node => {
-  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
+}:Props): Node => {
+  const [kebabMenuVisible, setKebabMenuVisible] = useState(false);
 
-  if ( !currentUser ) {
+  if (!currentUser) {
     // flags removed from mvp
     // placeholder for kebabmenu
     return <View className="h-[44px] mr-[15px]" />;
   }
 
-  if ( itemType === "Identification" ) {
+  if (itemType === "Identification") {
     return (
       <KebabMenu
         visible={kebabMenuVisible}
         setVisible={setKebabMenuVisible}
-        accessibilityLabel={t( "Identification-options" )}
+        accessibilityLabel={t("Identification-options")}
       >
         {current === true
           ? (
             <KebabMenu.Item
               isFirst
-              onPress={async ( ) => {
-                setShowWithdrawIDSheet( true );
-                setKebabMenuVisible( false );
+              onPress={async () => {
+                setShowWithdrawIDSheet(true);
+                setKebabMenuVisible(false);
               }}
-              title={t( "Withdraw" )}
+              title={t("Withdraw")}
               testID="MenuItem.Withdraw"
             />
           )
           : (
             <KebabMenu.Item
               isFirst
-              onPress={async ( ) => {
-                updateIdentification( { current: true } );
-                setKebabMenuVisible( false );
+              onPress={async () => {
+                updateIdentification({ current: true });
+                setKebabMenuVisible(false);
               }}
-              title={t( "Restore" )}
+              title={t("Restore")}
             />
           )}
       </KebabMenu>
@@ -71,22 +71,22 @@ const ActivityItemKebabMenu = ( {
     <KebabMenu
       visible={kebabMenuVisible}
       setVisible={setKebabMenuVisible}
-      accessibilityLabel={t( "Comment-options" )}
+      accessibilityLabel={t("Comment-options")}
     >
       <KebabMenu.Item
-        onPress={async ( ) => {
-          setShowEditCommentSheet( true );
-          setKebabMenuVisible( false );
+        onPress={async () => {
+          setShowEditCommentSheet(true);
+          setKebabMenuVisible(false);
         }}
-        title={t( "Edit-comment" )}
+        title={t("Edit-comment")}
         testID="MenuItem.EditComment"
       />
       <KebabMenu.Item
-        onPress={async ( ) => {
-          setShowDeleteCommentSheet( true );
-          setKebabMenuVisible( false );
+        onPress={async () => {
+          setShowDeleteCommentSheet(true);
+          setKebabMenuVisible(false);
         }}
-        title={t( "Delete-comment" )}
+        title={t("Delete-comment")}
         testID="MenuItem.DeleteComment"
       />
     </KebabMenu>

@@ -29,36 +29,36 @@ class Sound extends Realm.Object {
     },
   };
 
-  static mapApiToRealm( sound, _realm = null ) {
+  static mapApiToRealm(sound, _realm = null) {
     const localSound = {
       ...sound,
-      _synced_at: new Date( ),
+      _synced_at: new Date(),
     };
     localSound.licenseCode = localSound.licenseCode || sound?.license_code;
     return localSound;
   }
 
-  static async moveFromCacheToDocumentDirectory( srcPath, options = {} ) {
-    const srcFileName = srcPath.split( "/" ).at( -1 );
-    const srcFileExt = srcFileName.split( "." ).at( -1 );
+  static async moveFromCacheToDocumentDirectory(srcPath, options = {}) {
+    const srcFileName = srcPath.split("/").at(-1);
+    const srcFileExt = srcFileName.split(".").at(-1);
     let fileName = srcFileName;
-    if ( options.basename ) {
+    if (options.basename) {
       fileName = `${options.basename}.${srcFileExt}`;
     }
-    await RNFS.mkdir( soundUploadPath );
+    await RNFS.mkdir(soundUploadPath);
     const dstPath = `${soundUploadPath}/${fileName}`;
 
-    await RNFS.moveFile( srcPath, dstPath );
+    await RNFS.moveFile(srcPath, dstPath);
     return dstPath;
   }
 
-  static async new( sound ) {
+  static async new(sound) {
     /* eslint-disable camelcase */
     let { file_url } = sound;
-    if ( sound?.file_url.match( /file:\/\// ) ) {
-      file_url = await Sound.moveFromCacheToDocumentDirectory( sound.file_url, {
+    if (sound?.file_url.match(/file:\/\//)) {
+      file_url = await Sound.moveFromCacheToDocumentDirectory(sound.file_url, {
         basename: uuid.v4(),
-      } );
+      });
       // this needs a protocol for the sound player to play it when it's local
       file_url = `file://${file_url}`;
     }
@@ -71,21 +71,21 @@ class Sound extends Realm.Object {
 
   // this is necessary because sounds, like photos, cannot be found reliably
   // without this, local sounds will not be available for upload when the app updates
-  static getLocalSoundUri( localPathOrUri ) {
-    const pieces = localPathOrUri?.split( "soundUploads/" );
-    if ( !pieces || pieces.length <= 1 ) return null;
+  static getLocalSoundUri(localPathOrUri) {
+    const pieces = localPathOrUri?.split("soundUploads/");
+    if (!pieces || pieces.length <= 1) return null;
     return `file://${soundUploadPath}/${pieces[1]}`;
   }
 
-  static deleteSoundFromDeviceStorage( path ) {
-    unlink( path );
+  static deleteSoundFromDeviceStorage(path) {
+    unlink(path);
   }
 
   // An unpleasant hack around another unpleasant hack, i.e. when we "need" to
   // convert Realm objects to JSON and we apparently lose attributions
   // defined with mapTo
-  toJSON( ) {
-    const json = super.toJSON( );
+  toJSON() {
+    const json = super.toJSON();
     return {
       ...json,
       licenseCode: json.license_code,

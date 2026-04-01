@@ -16,20 +16,20 @@ import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from 
 
 import ProjectDetails from "./ProjectDetails";
 
-const logger = log.extend( "ProjectDetailsContainer" );
+const logger = log.extend("ProjectDetailsContainer");
 
-const ProjectDetailsContainer = ( ): Node => {
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+const ProjectDetailsContainer = (): Node => {
+  const navigation = useNavigation();
+  const { params } = useRoute();
   const { id } = params;
-  const currentUser = useCurrentUser( );
-  const [loading, setLoading] = useState( false );
+  const currentUser = useCurrentUser();
+  const [loading, setLoading] = useState(false);
 
   const fetchProjectsQueryKey = ["projectDetails", "fetchProjects", id];
 
   const { data: project } = useAuthenticatedQuery(
     fetchProjectsQueryKey,
-    optsWithAuth => fetchProjects( id, {
+    optsWithAuth => fetchProjects(id, {
       fields: {
         id: true,
         title: true,
@@ -39,41 +39,41 @@ const ProjectDetailsContainer = ( ): Node => {
         description: true,
         current_user_is_member: true,
       },
-    }, optsWithAuth ),
+    }, optsWithAuth),
   );
 
   const fetchProjectPlaceQueryKey = ["projectPlace", "fetchPlace", project?.place_id];
 
   const { data: projectPlace } = useAuthenticatedQuery(
     fetchProjectPlaceQueryKey,
-    optsWithAuth => fetchPlace( project?.place_id, {
+    optsWithAuth => fetchPlace(project?.place_id, {
       fields: "all",
-    }, optsWithAuth ),
+    }, optsWithAuth),
   );
 
   const { data: projectMembers } = useAuthenticatedQuery(
     ["fetchProjectMembers", id],
-    optsWithAuth => fetchProjectMembers( {
+    optsWithAuth => fetchProjectMembers({
       id,
       order_by: "login",
       fields: {
         user: User.LIMITED_FIELDS,
       },
-    }, optsWithAuth ),
+    }, optsWithAuth),
   );
 
   const { data: projectPosts } = useAuthenticatedQuery(
     ["fetchProjectPosts", id],
-    optsWithAuth => fetchProjectPosts( {
+    optsWithAuth => fetchProjectPosts({
       id,
-    }, optsWithAuth ),
+    }, optsWithAuth),
   );
 
   const { data: projectStats } = useAuthenticatedQuery(
     ["searchObservations", id],
-    ( ) => searchObservations( {
+    () => searchObservations({
       project_id: id,
-    } ),
+    }),
   );
 
   const { data: usersObservations } = useAuthenticatedQuery(
@@ -93,67 +93,67 @@ const ProjectDetailsContainer = ( ): Node => {
 
   const { data: speciesCounts } = useAuthenticatedQuery(
     ["fetchSpeciesCounts", id],
-    ( ) => fetchSpeciesCounts( {
+    () => fetchSpeciesCounts({
       project_id: id,
-    } ),
+    }),
   );
 
   const membershipQueryKey = ["fetchMembership", id];
   const { data: currentMembership } = useAuthenticatedQuery(
     membershipQueryKey,
-    optsWithAuth => fetchMembership( {
+    optsWithAuth => fetchMembership({
       id,
-    }, optsWithAuth ),
+    }, optsWithAuth),
     {
-      enabled: !!( currentUser ),
+      enabled: !!(currentUser),
     },
   );
 
-  const queryClient = useQueryClient( );
+  const queryClient = useQueryClient();
 
   const { mutate: joinProjectMutate } = useAuthenticatedMutation(
-    ( joinParams, optsWithAuth ) => joinProject( joinParams, optsWithAuth ),
+    (joinParams, optsWithAuth) => joinProject(joinParams, optsWithAuth),
     {
-      onSuccess: ( ) => {
-        queryClient.invalidateQueries( membershipQueryKey );
+      onSuccess: () => {
+        queryClient.invalidateQueries(membershipQueryKey);
       },
       onError: error => {
-        logger.error( "could not join project: ", project.id, error );
+        logger.error("could not join project: ", project.id, error);
       },
-      onSettled: ( ) => setLoading( false ),
+      onSettled: () => setLoading(false),
     },
   );
 
   const { mutate: leaveProjectMutate } = useAuthenticatedMutation(
-    ( leaveParams, optsWithAuth ) => leaveProject( leaveParams, optsWithAuth ),
+    (leaveParams, optsWithAuth) => leaveProject(leaveParams, optsWithAuth),
     {
-      onSuccess: ( ) => {
-        queryClient.invalidateQueries( membershipQueryKey );
+      onSuccess: () => {
+        queryClient.invalidateQueries(membershipQueryKey);
       },
       onError: error => {
-        logger.error( "could not leave project: ", project.id, error );
+        logger.error("could not leave project: ", project.id, error);
       },
-      onSettled: ( ) => setLoading( false ),
+      onSettled: () => setLoading(false),
     },
   );
 
-  const handleJoinProjectPress = ( ) => {
-    if ( currentUser ) {
-      setLoading( true );
-      joinProjectMutate( { id } );
+  const handleJoinProjectPress = () => {
+    if (currentUser) {
+      setLoading(true);
+      joinProjectMutate({ id });
     } else {
-      navigation.navigate( "LoginStackNavigator", {
+      navigation.navigate("LoginStackNavigator", {
         screen: "Login",
         params: {
           prevScreen: "ProjectDetails",
           projectId: project.id,
         },
-      } );
+      });
     }
   };
 
-  const enrichedProject = useMemo( () => {
-    if ( !project ) return null;
+  const enrichedProject = useMemo(() => {
+    if (!project) return null;
 
     return {
       ...project,
@@ -174,15 +174,15 @@ const ProjectDetailsContainer = ( ): Node => {
     currentMembership,
     usersObservations?.total_results,
     projectPlace,
-  ] );
+  ]);
 
   return (
     <ProjectDetails
       project={enrichedProject}
       joinProject={handleJoinProjectPress}
-      leaveProject={( ) => {
-        setLoading( true );
-        leaveProjectMutate( { id } );
+      leaveProject={() => {
+        setLoading(true);
+        leaveProjectMutate({ id });
       }}
       loadingProjectMembership={loading}
     />

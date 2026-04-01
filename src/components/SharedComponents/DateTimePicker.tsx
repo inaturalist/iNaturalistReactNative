@@ -4,31 +4,31 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 interface Props {
   date?: Date;
   toggleDateTimePicker: () => void;
-  onDatePicked: ( date: Date ) => void;
+  onDatePicked: (date: Date) => void;
   isDateTimePickerVisible: boolean;
   datetime?: boolean;
 }
 
 // using component from Seek: https://github.com/inaturalist/SeekReactNative/blob/64ae3df185fffe751aff40ab17e3ff2dd8a74e42/components/UIComponents/DateTimePicker.js
 
-const EmptyHeader = ( ) => null;
+const EmptyHeader = () => null;
 
-const DatePicker = ( {
+const DatePicker = ({
   date,
   datetime = false,
   isDateTimePickerVisible,
   onDatePicked,
   toggleDateTimePicker,
-}: Props ) => {
-  const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>( undefined );
-  const [isTimeVisible, setisTimeVisible] = React.useState( false );
+}: Props) => {
+  const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>(undefined);
+  const [isTimeVisible, setisTimeVisible] = React.useState(false);
 
-  const _toggleDateTimePicker = ( ) => {
-    setisTimeVisible( false );
-    toggleDateTimePicker( );
+  const _toggleDateTimePicker = () => {
+    setisTimeVisible(false);
+    toggleDateTimePicker();
   };
 
-  if ( datetime && isTimeVisible ) {
+  if (datetime && isTimeVisible) {
     return (
       <DateTimePicker
         display="spinner"
@@ -36,12 +36,12 @@ const DatePicker = ( {
         isDarkModeEnabled={false}
         themeVariant="light"
         isVisible={isDateTimePickerVisible}
-        maximumDate={new Date( )}
+        maximumDate={new Date()}
         mode="time"
         onCancel={_toggleDateTimePicker}
         onConfirm={selectedDate => {
-          onDatePicked( selectedDate );
-          _toggleDateTimePicker( );
+          onDatePicked(selectedDate);
+          _toggleDateTimePicker();
         }}
         date={selectedDateNoTime}
       />
@@ -56,19 +56,19 @@ const DatePicker = ( {
       isDarkModeEnabled={false}
       themeVariant="light"
       isVisible={isDateTimePickerVisible}
-      maximumDate={new Date( )}
+      maximumDate={new Date()}
       mode="date"
       onCancel={_toggleDateTimePicker}
       onConfirm={selectedDate => {
-        if ( datetime ) {
-          setSelectedDateNoTime( selectedDateNoTime );
-          setisTimeVisible( true );
+        if (datetime) {
+          setSelectedDateNoTime(selectedDateNoTime);
+          setisTimeVisible(true);
         } else {
-          onDatePicked( selectedDate );
-          _toggleDateTimePicker( );
+          onDatePicked(selectedDate);
+          _toggleDateTimePicker();
         }
       }}
-      date={date || new Date( )}
+      date={date || new Date()}
     />
   );
 };

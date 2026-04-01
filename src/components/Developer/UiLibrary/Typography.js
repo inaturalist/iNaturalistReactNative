@@ -20,7 +20,7 @@ import React from "react";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const Typography = ( ) => {
+const Typography = () => {
   const userText = `
     User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
   `.trim();

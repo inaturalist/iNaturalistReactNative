@@ -15,9 +15,9 @@ export const OWNER_TAB = "owner";
 export const OTHER_TAB = "other";
 export const NOTIFICATIONS_REFRESHED = "notifications-refreshed";
 
-const NotificationsTab = ( { id, text }: TabComponentProps ) => {
-  const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
-  const currentUser = useCurrentUser( );
+const NotificationsTab = ({ id, text }: TabComponentProps) => {
+  const observationMarkedAsViewedAt = useStore(state => state.observationMarkedAsViewedAt);
+  const currentUser = useCurrentUser();
 
   const { data: numUnviewed, refetch } = useAuthenticatedQuery(
     [
@@ -28,7 +28,7 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
       observationMarkedAsViewedAt,
       id,
     ],
-    ( optsWithAuth: ApiOpts ) => fetchUnviewedObservationUpdatesCount(
+    (optsWithAuth: ApiOpts) => fetchUnviewedObservationUpdatesCount(
       {
         observations_by: id === OWNER_TAB
           ? "owner"
@@ -37,23 +37,23 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
       optsWithAuth,
     ),
     {
-      enabled: !!( currentUser ),
+      enabled: !!(currentUser),
     },
   );
 
-  useEffect( ( ) => {
+  useEffect(() => {
     const listener = EventRegister.addEventListener(
       NOTIFICATIONS_REFRESHED,
-      ( tabId: string ) => {
-        if ( tabId === id ) {
-          refetch( );
+      (tabId: string) => {
+        if (tabId === id) {
+          refetch();
         }
       },
     );
-    return ( ) => {
-      EventRegister?.removeEventListener( listener as string );
+    return () => {
+      EventRegister?.removeEventListener(listener as string);
     };
-  }, [id, refetch] );
+  }, [id, refetch]);
 
   return (
     <View className="flex-row px-3 pt-4 pb-3 justify-center items-center">
@@ -63,7 +63,7 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
       >
         { text }
       </Heading4>
-      { Number( numUnviewed ) > 0 && (
+      { Number(numUnviewed) > 0 && (
         <View className="h-[6px] w-[6px] ml-1 rounded-full bg-inatGreen" />
       ) }
     </View>

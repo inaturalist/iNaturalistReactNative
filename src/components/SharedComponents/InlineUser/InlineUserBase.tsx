@@ -25,23 +25,23 @@ interface Props extends PropsWithChildren {
   useBigIcon?: boolean;
 }
 
-const InlineUserBase = ( {
+const InlineUserBase = ({
   user,
   isConnected,
   TextComponent,
   testID,
   useBigIcon = false,
-}: Props ) => {
+}: Props) => {
   const navigation = useNavigation();
-  const userImgUri = User.thumbUri( user );
+  const userImgUri = User.thumbUri(user);
   const userHandle = user?.login;
   const currentUser = useCurrentUser();
   const isCurrentUser = user?.id === currentUser?.id;
 
-  const { t } = useTranslation( );
+  const { t } = useTranslation();
 
   const renderUserIcon = () => {
-    if ( !userImgUri || ( !isConnected && !isCurrentUser ) ) {
+    if (!userImgUri || (!isConnected && !isCurrentUser)) {
       return (
         <INatIcon
           testID={`${testID}.FallbackPicture`}
@@ -62,10 +62,10 @@ const InlineUserBase = ( {
       testID={testID}
       className="flex flex-row items-center shrink"
       accessibilityRole="link"
-      accessibilityLabel={t( "User", { userHandle } )}
-      accessibilityHint={t( "Navigates-to-user-profile" )}
+      accessibilityLabel={t("User", { userHandle })}
+      accessibilityHint={t("Navigates-to-user-profile")}
       onPress={() => {
-        navigation.navigate( "UserProfile", { userId: user?.id } );
+        navigation.navigate("UserProfile", { userId: user?.id });
       }}
     >
       <View className="mr-[7px]">{renderUserIcon()}</View>

@@ -18,9 +18,9 @@ const scoreImage = async (
   opts = {},
 ): Promise<object> => {
   try {
-    return inatjs.computervision.score_image( { ...PARAMS, ...params }, opts );
-  } catch ( e ) {
-    return handleError( e as Error, { context: { functionName: "scoreImage", opts } } );
+    return inatjs.computervision.score_image({ ...PARAMS, ...params }, opts);
+  } catch (e) {
+    return handleError(e as Error, { context: { functionName: "scoreImage", opts } });
   }
 };
 

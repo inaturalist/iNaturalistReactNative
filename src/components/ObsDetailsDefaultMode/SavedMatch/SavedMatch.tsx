@@ -13,15 +13,15 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   observation: RealmObservation;
-  navToTaxonDetails: ( ) => void;
+  navToTaxonDetails: () => void;
 }
 
-const SavedMatch = ( {
+const SavedMatch = ({
   observation,
   navToTaxonDetails,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
+}: Props) => {
+  const { t } = useTranslation();
+  const { isConnected } = useNetInfo();
 
   const latitude = observation?.privateLatitude || observation?.latitude;
   const { taxon } = observation;
@@ -53,10 +53,10 @@ const SavedMatch = ( {
             className="mx-4 mb-[30px]"
             level="primary"
             text={taxon?.rank_level === 10
-              ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
-              : t( "LEARN-MORE-ABOUT-THIS-GROUP" )}
+              ? t("LEARN-MORE-ABOUT-THIS-SPECIES")
+              : t("LEARN-MORE-ABOUT-THIS-GROUP")}
             onPress={navToTaxonDetails}
-            accessibilityHint={t( "Navigates-to-taxon-details" )}
+            accessibilityHint={t("Navigates-to-taxon-details")}
           />
         )
       }

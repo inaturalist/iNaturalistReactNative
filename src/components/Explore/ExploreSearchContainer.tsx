@@ -16,13 +16,13 @@ import ExploreUserSearch from "./SearchScreens/ExploreUserSearch";
 
 const ExploreSearchContainerWithContext = () => {
   const navigation = useNavigation();
-  const { params } = useRoute<RouteProp<Record<string, { initialSearchMode?: string }>, string>>( );
+  const { params } = useRoute<RouteProp<Record<string, { initialSearchMode?: string }>, string>>();
 
   const {
     hasPermissions,
     renderPermissionsGate,
     requestPermissions,
-  } = useLocationPermission( );
+  } = useLocationPermission();
 
   const initialSearchMode = params?.initialSearchMode || "none";
 
@@ -35,33 +35,33 @@ const ExploreSearchContainerWithContext = () => {
       name: string;
     } | null,
   ) => {
-    console.log( "Not implemented in ExploreV2 yet.", taxon );
+    console.log("Not implemented in ExploreV2 yet.", taxon);
   };
 
-  const updateLocation = ( location: "worldwide" | ApiPlace ) => {
-    console.log( "Not implemented in ExploreV2 yet.", location );
+  const updateLocation = (location: "worldwide" | ApiPlace) => {
+    console.log("Not implemented in ExploreV2 yet.", location);
   };
 
-  const updateUser = ( user: null | { login: string } ) => {
-    console.log( "Not implemented in ExploreV2 yet.", user );
+  const updateUser = (user: null | { login: string }) => {
+    console.log("Not implemented in ExploreV2 yet.", user);
   };
-  const updateProject = ( project: null | ApiProject ) => {
-    console.log( "Not implemented in ExploreV2 yet.", project );
+  const updateProject = (project: null | ApiProject) => {
+    console.log("Not implemented in ExploreV2 yet.", project);
   };
 
-  if ( initialSearchMode === "taxon" ) {
+  if (initialSearchMode === "taxon") {
     return (
       <ExploreTaxonSearch
         closeModal={closeModal}
-        onPressInfo={( taxon: RealmTaxon | ApiTaxon ) => {
-          navigation.push( "TaxonDetails", { id: taxon.id } );
+        onPressInfo={(taxon: RealmTaxon | ApiTaxon) => {
+          navigation.push("TaxonDetails", { id: taxon.id });
         }}
         updateTaxon={updateTaxon}
       />
     );
   }
 
-  if ( initialSearchMode === "location" ) {
+  if (initialSearchMode === "location") {
     return (
       <ExploreLocationSearch
         closeModal={closeModal}
@@ -73,13 +73,13 @@ const ExploreSearchContainerWithContext = () => {
     );
   }
 
-  if ( initialSearchMode === "users" ) {
+  if (initialSearchMode === "users") {
     return (
       <ExploreUserSearch closeModal={closeModal} updateUser={updateUser} />
     );
   }
 
-  if ( initialSearchMode === "projects" ) {
+  if (initialSearchMode === "projects") {
     return (
       <ExploreProjectSearch
         closeModal={closeModal}
@@ -90,7 +90,7 @@ const ExploreSearchContainerWithContext = () => {
 
   return (
     <View>
-      {renderPermissionsGate( {} )}
+      {renderPermissionsGate({})}
     </View>
   );
 };

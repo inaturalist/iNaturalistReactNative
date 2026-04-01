@@ -8,11 +8,11 @@ interface Props {
   completeColor: string;
 }
 
-const UploadCompleteIcon = ( {
+const UploadCompleteIcon = ({
   iconClasses,
   completeColor,
-}: Props ) => (
-  <View className={classnames( iconClasses )} testID="UploadStatus.Complete">
+}: Props) => (
+  <View className={classnames(iconClasses)} testID="UploadStatus.Complete">
     <INatIcon
       size={28}
       name="upload-complete"

@@ -14,16 +14,16 @@ const defaultViewabilityConfig: ViewabilityConfig = {
 };
 
 const CustomFlashList = props => {
-  const isFirstRender = useRef( true );
-  const lastContentOffset = useRef( 0 );
+  const isFirstRender = useRef(true);
+  const lastContentOffset = useRef(0);
 
-  const scrollStartPosition = useRef( 0 );
-  const scrollStartTime = useRef( 0 );
-  const isUserScrolling = useRef( false );
-  const ignoreInitialEvents = useRef( true );
-  const fetchInProgress = useRef( false );
+  const scrollStartPosition = useRef(0);
+  const scrollStartTime = useRef(0);
+  const isUserScrolling = useRef(false);
+  const ignoreInitialEvents = useRef(true);
+  const fetchInProgress = useRef(false);
 
-  const internalRef = useRef( null );
+  const internalRef = useRef(null);
 
   const {
     ref,
@@ -34,40 +34,40 @@ const CustomFlashList = props => {
     ...otherProps
   } = props;
 
-  useEffect( ( ) => {
-    if ( isFirstRender.current ) {
-      flashListTracker.reset( );
+  useEffect(() => {
+    if (isFirstRender.current) {
+      flashListTracker.reset();
       isFirstRender.current = false;
 
-      const timer = setTimeout( () => {
+      const timer = setTimeout(() => {
         ignoreInitialEvents.current = false;
-      }, 1000 );
+      }, 1000);
 
-      return () => clearTimeout( timer );
+      return () => clearTimeout(timer);
     }
-    return ( ) => undefined;
-  }, [] );
+    return () => undefined;
+  }, []);
 
-  const handleViewableItemsChanged = useCallback( info => {
-    if ( info.viewableItems.length > 0 ) {
-      flashListTracker.markItemsVisible( );
+  const handleViewableItemsChanged = useCallback(info => {
+    if (info.viewableItems.length > 0) {
+      flashListTracker.markItemsVisible();
     }
 
-    if ( onViewableItemsChanged ) {
-      onViewableItemsChanged( info );
+    if (onViewableItemsChanged) {
+      onViewableItemsChanged(info);
     }
-  }, [onViewableItemsChanged] );
+  }, [onViewableItemsChanged]);
 
-  const handleScroll = useCallback( event => {
+  const handleScroll = useCallback(event => {
     lastContentOffset.current = event.nativeEvent.contentOffset.y;
 
-    if ( onScroll ) {
-      onScroll( event );
+    if (onScroll) {
+      onScroll(event);
     }
-  }, [onScroll] );
+  }, [onScroll]);
 
-  const handleScrollBeginDrag = useCallback( event => {
-    if ( ignoreInitialEvents.current ) return;
+  const handleScrollBeginDrag = useCallback(event => {
+    if (ignoreInitialEvents.current) return;
 
     const { y } = event.nativeEvent.contentOffset;
 
@@ -75,69 +75,69 @@ const CustomFlashList = props => {
     scrollStartTime.current = Date.now();
     isUserScrolling.current = true;
 
-    flashListTracker.beginScrollEvent( y );
-  }, [] );
+    flashListTracker.beginScrollEvent(y);
+  }, []);
 
-  const handleScrollEndDrag = useCallback( event => {
-    if ( ignoreInitialEvents.current || !isUserScrolling.current ) return;
+  const handleScrollEndDrag = useCallback(event => {
+    if (ignoreInitialEvents.current || !isUserScrolling.current) return;
 
     const { y } = event.nativeEvent.contentOffset;
 
     isUserScrolling.current = false;
-    flashListTracker.endScrollEvent( y );
+    flashListTracker.endScrollEvent(y);
 
     fetchInProgress.current = true;
-    flashListTracker.beginDataFetch( );
-  }, [] );
+    flashListTracker.beginDataFetch();
+  }, []);
 
-  const handleMomentumScrollEnd = useCallback( event => {
-    if ( onMomentumScrollEnd ) {
-      onMomentumScrollEnd( event );
+  const handleMomentumScrollEnd = useCallback(event => {
+    if (onMomentumScrollEnd) {
+      onMomentumScrollEnd(event);
     }
 
-    if ( isUserScrolling.current && !ignoreInitialEvents.current ) {
+    if (isUserScrolling.current && !ignoreInitialEvents.current) {
       const { y } = event.nativeEvent.contentOffset;
       isUserScrolling.current = false;
-      flashListTracker.endScrollEvent( y );
+      flashListTracker.endScrollEvent(y);
 
-      if ( !fetchInProgress.current ) {
+      if (!fetchInProgress.current) {
         fetchInProgress.current = true;
         flashListTracker.beginDataFetch();
       }
     }
-  }, [onMomentumScrollEnd] );
+  }, [onMomentumScrollEnd]);
 
-  const handleEndReached = useCallback( ( ) => {
-    if ( ignoreInitialEvents.current ) return;
+  const handleEndReached = useCallback(() => {
+    if (ignoreInitialEvents.current) return;
 
-    if ( !fetchInProgress.current ) {
+    if (!fetchInProgress.current) {
       fetchInProgress.current = true;
-      flashListTracker.beginDataFetch( );
+      flashListTracker.beginDataFetch();
     }
 
-    if ( onEndReached ) {
-      onEndReached( );
+    if (onEndReached) {
+      onEndReached();
     }
-  }, [onEndReached] );
+  }, [onEndReached]);
 
   // To be called when new data is received
   // This needs to be exposed so it can be called from parent component
-  React.useImperativeHandle( ref, () => {
+  React.useImperativeHandle(ref, () => {
     const flashListMethods = internalRef.current || {};
 
     return {
       ...flashListMethods,
       notifyDataFetched: itemsCount => {
-        if ( fetchInProgress.current ) {
-          flashListTracker.endDataFetch( itemsCount );
+        if (fetchInProgress.current) {
+          flashListTracker.endDataFetch(itemsCount);
           fetchInProgress.current = false;
         } else {
           flashListTracker.beginDataFetch();
-          flashListTracker.endDataFetch( itemsCount );
+          flashListTracker.endDataFetch(itemsCount);
         }
       },
     };
-  } );
+  });
 
   const viewabilityConfig = {
     ...defaultViewabilityConfig,

@@ -23,20 +23,20 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
     targetActivityItemID,
     uuid,
   } = params as RouteParams;
-  const currentUser = useCurrentUser( );
-  const isConnected = !!useNetInfo( ).isConnected;
+  const currentUser = useCurrentUser();
+  const isConnected = !!useNetInfo().isConnected;
 
-  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
+  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState(false);
 
   const {
     localObservation,
     markDeletedLocally,
     markViewedLocally,
-  } = useLocalObservation( uuid );
+  } = useLocalObservation(uuid);
 
   const fetchRemoteObservationEnabled = !!(
     !remoteObsWasDeleted
-    && ( !localObservation || localObservation?.wasSynced( ) )
+    && (!localObservation || localObservation?.wasSynced())
     && isConnected
   );
 
@@ -45,9 +45,9 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
     refetchRemoteObservation,
     isRefetching,
     fetchRemoteObservationError,
-  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
+  } = useRemoteObservation(uuid, fetchRemoteObservationEnabled);
 
-  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
+  const observation = localObservation || Observation.mapApiToRealm(remoteObservation);
 
   // In theory the only situation in which an observation would not have a
   // user is when a user is not signed but has made a new observation in the
@@ -55,19 +55,19 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
   // those observations, just ObsEdit. But.... let's be safe.
   const belongsToCurrentUser = (
     observation?.user?.id === currentUser?.id
-    || ( !observation?.user && !observation?.id )
+    || (!observation?.user && !observation?.id)
   );
 
-  const showSavedMatch = useMemo( () => (
+  const showSavedMatch = useMemo(() => (
     // Saved match screen is used when:
     // 1. It's the current user's observation (or an observation being created)
     // 2. AND the observation hasn't been synced yet
-    !!( ( belongsToCurrentUser || !observation?.user )
+    !!((belongsToCurrentUser || !observation?.user)
       && localObservation
-      && !localObservation.wasSynced() )
-  ), [belongsToCurrentUser, localObservation, observation?.user] );
+      && !localObservation.wasSynced())
+  ), [belongsToCurrentUser, localObservation, observation?.user]);
 
-  if ( showSavedMatch ) {
+  if (showSavedMatch) {
     return (
       <SavedMatchContainer
         observation={observation}

@@ -20,7 +20,7 @@ import type { IOptions } from "sanitize-html";
 import sanitizeHtml from "sanitize-html";
 import colors from "styles/tailwindColors";
 
-const ALLOWED_TAGS = ( `
+const ALLOWED_TAGS = (`
   a
   abbr
   acronym
@@ -63,15 +63,15 @@ const ALLOWED_TAGS = ( `
   tr
   tt
   ul
-` ).split( /\s+/m ).filter( e => e !== "" );
+`).split(/\s+/m).filter(e => e !== "");
 
 const ALLOWED_ATTRIBUTES_NAMES = (
   "href src width height alt cite title class name abbr value align target rel"
-).split( " " );
+).split(" ");
 
 const ALLOWED_ATTRIBUTES: Record<string, string[]> = { a: ["href"] };
-ALLOWED_TAGS.filter( tag => tag !== "a" )
-  .forEach( tag => { ALLOWED_ATTRIBUTES[tag] = ALLOWED_ATTRIBUTES_NAMES; } );
+ALLOWED_TAGS.filter(tag => tag !== "a")
+  .forEach(tag => { ALLOWED_ATTRIBUTES[tag] = ALLOWED_ATTRIBUTES_NAMES; });
 
 const SANITIZE_HTML_CONFIG: IOptions = {
   allowedTags: ALLOWED_TAGS,
@@ -82,9 +82,9 @@ const SANITIZE_HTML_CONFIG: IOptions = {
 const MENTION_TITLE = "mention_";
 
 const LINKIFY_OPTIONS: Opts = {
-  attributes: ( _href, type, token ) => {
+  attributes: (_href, type, token) => {
     // Only for mentions we add a title attribute
-    if ( type === "mention" ) {
+    if (type === "mention") {
       return {
         title: `${MENTION_TITLE}${token}`,
       };
@@ -103,38 +103,38 @@ interface Props extends React.PropsWithChildren {
   htmlStyle?: object;
 }
 
-const UserText = ( {
+const UserText = ({
   children,
   htmlStyle,
   text: textProp,
-} : Props ) => {
-  const navigation = useNavigation( );
+} : Props) => {
+  const navigation = useNavigation();
 
   // Allow stringified children to serve as text if no prop provided
-  const text = textProp || children?.toString( ) || "";
-  const { width } = useWindowDimensions( );
-  let html = trim( text );
+  const text = textProp || children?.toString() || "";
+  const { width } = useWindowDimensions();
+  let html = trim(text);
 
   // replace ampersands in URL params with entities so they don't get
   // interpretted by safeHtml
-  html = html.replace( /&(\w+=)/g, "&amp;$1" );
+  html = html.replace(/&(\w+=)/g, "&amp;$1");
 
-  const md = new MarkdownIt( {
+  const md = new MarkdownIt({
     html: true,
     breaks: true,
-  } );
+  });
 
-  md.renderer.rules.table_open = ( ) => "<table class=\"table\">\n";
+  md.renderer.rules.table_open = () => "<table class=\"table\">\n";
 
-  html = md.render( html );
+  html = md.render(html);
 
-  html = sanitizeHtml( html, SANITIZE_HTML_CONFIG );
+  html = sanitizeHtml(html, SANITIZE_HTML_CONFIG);
   // Note: markdown-it has a linkifier option too, but it does not allow you
   // to specify attributes like nofollow, so we're using linkifyjs, but we
   // are ignoring URLs in the existing tags that might have them like <a> and
   // <code>
 
-  html = linkifyHtml( html, LINKIFY_OPTIONS );
+  html = linkifyHtml(html, LINKIFY_OPTIONS);
   const baseStyle: MixedStyleDeclaration = {
     fontFamily: fontRegular,
     fontSize: 16,
@@ -153,19 +153,19 @@ const UserText = ( {
 
   const renderersProps: Partial<RenderersProps> = {
     a: {
-      onPress: ( event, href, htmlAttribs ) => {
-        if ( htmlAttribs.title && htmlAttribs.title.includes( MENTION_TITLE ) ) {
-          event.preventDefault( );
+      onPress: (event, href, htmlAttribs) => {
+        if (htmlAttribs.title && htmlAttribs.title.includes(MENTION_TITLE)) {
+          event.preventDefault();
           // This is a mention, so we want to navigate to user profile screen
           // Mentions anchors have a custom title from linkify, we strip it and the preceding @
           const login = htmlAttribs.title
-            .replace( MENTION_TITLE, "" )
-            .replace( /^@/, "" );
-          navigation.push( "UserProfile", { login } );
+            .replace(MENTION_TITLE, "")
+            .replace(/^@/, "");
+          navigation.push("UserProfile", { login });
           return;
         }
         // This is any other regular link
-        Linking.openURL( href );
+        Linking.openURL(href);
       },
     },
   };
@@ -185,4 +185,4 @@ const UserText = ( {
 };
 
 // Memoize to prevent excessive re-renders when HTML component is in a list
-export default React.memo( UserText, ( oldProps, newProps ) => isEqual( oldProps, newProps ) );
+export default React.memo(UserText, (oldProps, newProps) => isEqual(oldProps, newProps));

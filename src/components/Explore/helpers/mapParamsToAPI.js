@@ -9,7 +9,7 @@ import {
   WILD_STATUS,
 } from "providers/ExploreContext";
 
-const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
+const mapParamsToAPI = (params: Object, currentUser: Object): Object => {
   const RESEARCH = "research";
   const NEEDS_ID = "needs_id";
   const CASUAL = "casual";
@@ -22,9 +22,9 @@ const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
   const ASC = "asc";
 
   // Remove all params that are falsy
-  const filteredParams = Object.entries( params ).reduce(
-    ( newParams, [key, value] ) => {
-      if ( value ) {
+  const filteredParams = Object.entries(params).reduce(
+    (newParams, [key, value]) => {
+      if (value) {
         newParams[key] = value;
       }
       return newParams;
@@ -35,74 +35,74 @@ const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
   // DATE_UPLOADED_NEWEST is the default sort order
   filteredParams.order_by = CREATED_AT;
   filteredParams.order = DESC;
-  if ( params.sortBy === SORT_BY.DATE_UPLOADED_OLDEST ) {
+  if (params.sortBy === SORT_BY.DATE_UPLOADED_OLDEST) {
     filteredParams.order_by = CREATED_AT;
     filteredParams.order = ASC;
   }
-  if ( params.sortBy === SORT_BY.DATE_OBSERVED_NEWEST ) {
+  if (params.sortBy === SORT_BY.DATE_OBSERVED_NEWEST) {
     filteredParams.order_by = OBSERVED_ON;
     filteredParams.order = DESC;
   }
-  if ( params.sortBy === SORT_BY.DATE_OBSERVED_OLDEST ) {
+  if (params.sortBy === SORT_BY.DATE_OBSERVED_OLDEST) {
     filteredParams.order_by = OBSERVED_ON;
     filteredParams.order = ASC;
   }
-  if ( params.sortBy === SORT_BY.MOST_FAVED ) {
+  if (params.sortBy === SORT_BY.MOST_FAVED) {
     filteredParams.order_by = VOTES;
     filteredParams.order = DESC;
   }
 
   filteredParams.quality_grade = [];
-  if ( params.researchGrade ) {
-    filteredParams.quality_grade.push( RESEARCH );
+  if (params.researchGrade) {
+    filteredParams.quality_grade.push(RESEARCH);
   }
-  if ( params.needsID ) {
-    filteredParams.quality_grade.push( NEEDS_ID );
+  if (params.needsID) {
+    filteredParams.quality_grade.push(NEEDS_ID);
   }
-  if ( params.casual ) {
-    filteredParams.quality_grade.push( CASUAL );
+  if (params.casual) {
+    filteredParams.quality_grade.push(CASUAL);
     delete filteredParams.verifiable;
   }
 
-  if ( filteredParams.months ) {
+  if (filteredParams.months) {
     filteredParams.month = filteredParams.months;
     delete filteredParams.months;
   }
 
   // MEDIA.ALL is the default media filter and for it we don't need to pass any params
-  if ( params.media === MEDIA.PHOTOS ) {
+  if (params.media === MEDIA.PHOTOS) {
     filteredParams.photos = true;
-  } else if ( params.media === MEDIA.SOUNDS ) {
+  } else if (params.media === MEDIA.SOUNDS) {
     filteredParams.sounds = true;
-  } else if ( params.media === MEDIA.NONE ) {
+  } else if (params.media === MEDIA.NONE) {
     filteredParams.photos = false;
     filteredParams.sounds = false;
   }
 
   // ESTABLISHMENT_MEAN.ANY is the default here and for it we don't need to pass any params
-  if ( params.establishmentMean === ESTABLISHMENT_MEAN.NATIVE ) {
+  if (params.establishmentMean === ESTABLISHMENT_MEAN.NATIVE) {
     filteredParams.native = true;
-  } else if ( params.establishmentMean === ESTABLISHMENT_MEAN.INTRODUCED ) {
+  } else if (params.establishmentMean === ESTABLISHMENT_MEAN.INTRODUCED) {
     filteredParams.introduced = true;
-  } else if ( params.establishmentMean === ESTABLISHMENT_MEAN.ENDEMIC ) {
+  } else if (params.establishmentMean === ESTABLISHMENT_MEAN.ENDEMIC) {
     filteredParams.endemic = true;
   }
 
-  if ( params.wildStatus === WILD_STATUS.WILD ) {
+  if (params.wildStatus === WILD_STATUS.WILD) {
     filteredParams.captive = false;
-  } else if ( params.wildStatus === WILD_STATUS.CAPTIVE ) {
+  } else if (params.wildStatus === WILD_STATUS.CAPTIVE) {
     filteredParams.captive = true;
   }
 
-  if ( params.reviewedFilter === REVIEWED.REVIEWED ) {
+  if (params.reviewedFilter === REVIEWED.REVIEWED) {
     filteredParams.reviewed = true;
     filteredParams.viewer_id = currentUser?.id;
-  } else if ( params.reviewedFilter === REVIEWED.UNREVIEWED ) {
+  } else if (params.reviewedFilter === REVIEWED.UNREVIEWED) {
     filteredParams.reviewed = false;
     filteredParams.viewer_id = currentUser?.id;
   }
 
-  if ( params.photoLicense !== PHOTO_LICENSE.ALL ) {
+  if (params.photoLicense !== PHOTO_LICENSE.ALL) {
     // How license filter maps to the API
     const licenseParams = {
       [PHOTO_LICENSE.CC0]: "cc0",

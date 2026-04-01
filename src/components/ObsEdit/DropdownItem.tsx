@@ -11,12 +11,12 @@ interface Props {
   text: string;
 }
 
-const DropdownItem = ( {
+const DropdownItem = ({
   accessibilityLabel,
   handlePress,
   iconName,
   text,
-}: Props ) => (
+}: Props) => (
   <Pressable
     accessibilityRole="button"
     className="flex-row ml-1 items-start flex-1 py-[10px]"

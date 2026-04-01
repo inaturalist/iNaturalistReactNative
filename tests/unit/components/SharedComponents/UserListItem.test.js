@@ -3,13 +3,13 @@ import React from "react";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 
-const mockUser = factory( "RemoteUser", {
+const mockUser = factory("RemoteUser", {
   login: "test123",
-  id: faker.number.int( ),
-} );
+  id: faker.number.int(),
+});
 
-describe( "UserListItem", ( ) => {
-  it( "should be accessible", ( ) => {
+describe("UserListItem", () => {
+  it("should be accessible", () => {
     const userListItem = (
       <UserListItem
         item={{
@@ -19,8 +19,8 @@ describe( "UserListItem", ( ) => {
         countText="X-Observations"
       />
     );
-    expect( userListItem ).toBeTruthy();
+    expect(userListItem).toBeTruthy();
     // Disabled during the update to RN 0.78
     // expect( userListItem ).toBeAccessible();
-  } );
-} );
+  });
+});

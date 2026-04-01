@@ -10,26 +10,26 @@ interface Props {
   observation: ApiObservation;
 }
 
-const ProjectButton = ( { observation }: Props ) => {
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
+const ProjectButton = ({ observation }: Props) => {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const traditionalProjectCount = observation?.project_observations?.length || 0;
   const nonTraditionalProjectCount = observation?.non_traditional_projects?.length || 0;
 
   const totalProjectCount = traditionalProjectCount + nonTraditionalProjectCount;
 
-  if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
+  if (totalProjectCount === 0 || typeof totalProjectCount !== "number") {
     return null;
   }
 
   return (
     <Body3
       className="underline mt-[11px]"
-      onPress={( ) => navigation.navigate( "ProjectList", {
+      onPress={() => navigation.navigate("ProjectList", {
         observationUuid: observation.uuid,
-      } )}
+      })}
     >
-      {t( "Projects" )}
+      {t("Projects")}
     </Body3>
   );
 };

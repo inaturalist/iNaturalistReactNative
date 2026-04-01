@@ -17,13 +17,13 @@ interface Props {
   icon?: string;
   label?: string;
   labelComponent?: React.JSX.Element;
-  onPress: ( _e: GestureResponderEvent ) => void;
+  onPress: (_e: GestureResponderEvent) => void;
   smallLabel?: boolean;
   testID?: string;
   value: string;
 }
 
-const RadioButtonRow = ( {
+const RadioButtonRow = ({
   checked,
   classNames,
   description,
@@ -34,7 +34,7 @@ const RadioButtonRow = ( {
   smallLabel = false,
   testID,
   value,
-}: Props ) => {
+}: Props) => {
   const status = checked
     ? "checked"
     : "unchecked";

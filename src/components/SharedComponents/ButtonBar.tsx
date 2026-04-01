@@ -5,13 +5,13 @@ import type { PropsWithChildren } from "react";
 import React from "react";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: -2,
-} );
+});
 
 export interface ButtonConfiguration {
   title: string;
-  onPress: ( ) => void;
+  onPress: () => void;
   isPrimary: boolean;
   className?: string;
   disabled?: boolean;
@@ -27,13 +27,13 @@ interface Props extends PropsWithChildren {
 }
 
 // Ensure this component is placed outside of scroll views
-const ButtonBar = ( {
+const ButtonBar = ({
   containerClass,
   children,
   buttonConfiguration,
   onLayout,
   sticky,
-}: Props ) => {
+}: Props) => {
   const layoutClassNames = sticky
     ? "absolute bottom-0"
     : null;
@@ -51,7 +51,7 @@ const ButtonBar = ( {
       onLayout={onLayout}
       style={DROP_SHADOW}
     >
-      {buttonConfiguration && buttonConfiguration.map( button => {
+      {buttonConfiguration && buttonConfiguration.map(button => {
         const {
           title, onPress, isPrimary, ...props
         } = button;
@@ -70,7 +70,7 @@ const ButtonBar = ( {
             {...props}
           />
         );
-      } )}
+      })}
       {children}
     </View>
   );

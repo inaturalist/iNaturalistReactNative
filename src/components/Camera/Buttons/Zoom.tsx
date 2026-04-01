@@ -11,33 +11,33 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
-  handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
+  handleZoomButtonPress: (_event: GestureResponderEvent) => void;
   zoomClassName?: string;
   zoomTextValue: string;
 }
 
-const Zoom = ( {
+const Zoom = ({
   rotatableAnimatedStyle,
   handleZoomButtonPress,
   zoomClassName,
   zoomTextValue,
-}: Props ) => {
+}: Props) => {
   const { t } = useTranslation();
 
   return (
     <RotatableIconWrapper
       rotatableAnimatedStyle={rotatableAnimatedStyle}
-      containerClass={classnames( zoomClassName )}
+      containerClass={classnames(zoomClassName)}
     >
       <Pressable
-        className={classnames( CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE )}
+        className={classnames(CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE)}
         onPress={handleZoomButtonPress}
         accessibilityRole="button"
-        accessibilityLabel={t( "Change-zoom" )}
+        accessibilityLabel={t("Change-zoom")}
         accessibilityState={{ disabled: false }}
       >
         <Body3 className="text-s text-white">
-          {t( "zoom-x", { zoom: Number( zoomTextValue ) } )}
+          {t("zoom-x", { zoom: Number(zoomTextValue) })}
         </Body3>
       </Pressable>
     </RotatableIconWrapper>

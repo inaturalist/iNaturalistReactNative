@@ -19,8 +19,8 @@ import LocationPicker from "./LocationPicker";
 
 const CROSSHAIRRADIUS = 254 / 2;
 
-const setInitialRegion = ( currentObservation, radiusToMapHeight, mapDimensionsRatio ) => {
-  if ( !radiusToMapHeight || !mapDimensionsRatio ) {
+const setInitialRegion = (currentObservation, radiusToMapHeight, mapDimensionsRatio) => {
+  if (!radiusToMapHeight || !mapDimensionsRatio) {
     return null;
   }
   const latitude = currentObservation?.privateLatitude
@@ -52,7 +52,7 @@ const setInitialRegion = ( currentObservation, radiusToMapHeight, mapDimensionsR
   };
 };
 
-const initializeMap = ( state, action ) => {
+const initializeMap = (state, action) => {
   const newMap = {
     ...state,
     accuracy: action.currentObservation?.positional_accuracy,
@@ -63,7 +63,7 @@ const initializeMap = ( state, action ) => {
     action.radiusToMapHeight,
     action.mapDimensionsRatio,
   );
-  if ( initialRegion !== null ) {
+  if (initialRegion !== null) {
     newMap.region = initialRegion;
   }
   return newMap;
@@ -80,8 +80,8 @@ const initialState = {
   regionToAnimate: undefined,
 };
 
-const reducer = ( state, action ) => {
-  switch ( action.type ) {
+const reducer = (state, action) => {
+  switch (action.type) {
     case "HANDLE_CURRENT_LOCATION_PRESS":
       return {
         ...state,
@@ -108,7 +108,7 @@ const reducer = ( state, action ) => {
         loading: false,
       };
     case "INITIALIZE_MAP": {
-      const newMap = initializeMap( state, action );
+      const newMap = initializeMap(state, action);
       return newMap;
     }
     case "SELECT_PLACE_RESULT":
@@ -132,18 +132,18 @@ const reducer = ( state, action ) => {
         hidePlaceResults: false,
       };
     default:
-      throw new Error( );
+      throw new Error();
   }
 };
 
-const LocationPickerContainer = ( ): Node => {
-  const currentObservation = useStore( state => state.currentObservation );
-  const updateObservationKeys = useStore( state => state.updateObservationKeys );
-  const navigation = useNavigation( );
+const LocationPickerContainer = (): Node => {
+  const currentObservation = useStore(state => state.currentObservation);
+  const updateObservationKeys = useStore(state => state.updateObservationKeys);
+  const navigation = useNavigation();
 
-  const [state, dispatch] = useReducer( reducer, initialState );
-  const [radiusToMapHeight, setRadiusToMapHeight] = useState( undefined );
-  const [mapDimensionsRatio, setMapDimensionsRatio] = useState( undefined );
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [radiusToMapHeight, setRadiusToMapHeight] = useState(undefined);
+  const [mapDimensionsRatio, setMapDimensionsRatio] = useState(undefined);
 
   const {
     accuracy,
@@ -162,14 +162,14 @@ const LocationPickerContainer = ( ): Node => {
     mapDimensionsRatio,
   );
 
-  const onRegionChangeComplete = useCallback( async newRegion => {
+  const onRegionChangeComplete = useCallback(async newRegion => {
     // prevent initial map render from resetting the coordinates and locationName
-    if ( isFirstMapRender ) {
-      dispatch( { type: "HANDLE_FIRST_MAP_RENDER" } );
+    if (isFirstMapRender) {
+      dispatch({ type: "HANDLE_FIRST_MAP_RENDER" });
       return;
     }
     // We need this ratio to calculate accuracy
-    if ( radiusToMapHeight === undefined ) {
+    if (radiusToMapHeight === undefined) {
       return;
     }
     // We calculate accuracy in meters as the distance represented by the radius of the crosshair
@@ -177,29 +177,29 @@ const LocationPickerContainer = ( ): Node => {
     // by device. We convert to meters based on the current map zoom level (latitudeDelta) and
     // the ratio of the crosshair radius to the map height.
     const newAccuracy = radiusToMapHeight
-      * latitudeDeltaToMeters( newRegion.latitudeDelta, newRegion.latitude );
+      * latitudeDeltaToMeters(newRegion.latitudeDelta, newRegion.latitude);
 
-    const placeName = await fetchPlaceName( newRegion.latitude, newRegion.longitude );
-    dispatch( {
+    const placeName = await fetchPlaceName(newRegion.latitude, newRegion.longitude);
+    dispatch({
       type: "HANDLE_REGION_CHANGE",
       locationName: placeName || "",
       region: newRegion,
       accuracy: newAccuracy,
-    } );
-  }, [isFirstMapRender, radiusToMapHeight] );
+    });
+  }, [isFirstMapRender, radiusToMapHeight]);
 
-  const updateLocationName = useCallback( name => {
-    dispatch( { type: "UPDATE_LOCATION_NAME", locationName: name } );
-  }, [] );
+  const updateLocationName = useCallback(name => {
+    dispatch({ type: "UPDATE_LOCATION_NAME", locationName: name });
+  }, []);
 
   // make sure map always reflects the current observation lat/lng
   useEffect(
-    ( ) => {
-      const unsubscribe = navigation.addListener( "focus", ( ) => {
-        dispatch( {
+    () => {
+      const unsubscribe = navigation.addListener("focus", () => {
+        dispatch({
           type: "INITIALIZE_MAP", currentObservation, radiusToMapHeight, mapDimensionsRatio,
-        } );
-      } );
+        });
+      });
 
       return unsubscribe;
     },
@@ -208,7 +208,7 @@ const LocationPickerContainer = ( ): Node => {
 
   const selectPlaceResult = place => {
     const { coordinates } = place.point_geojson;
-    dispatch( {
+    dispatch({
       type: "SELECT_PLACE_RESULT",
       locationName: place.display_name,
       region: {
@@ -221,29 +221,29 @@ const LocationPickerContainer = ( ): Node => {
         latitude: coordinates[1],
         longitude: coordinates[0],
       },
-    } );
+    });
   };
 
-  const onCurrentLocationPress = ( ) => dispatch( { type: "HANDLE_CURRENT_LOCATION_PRESS" } );
-  const onMapReady = useCallback( ( ) => dispatch( { type: "HANDLE_MAP_READY" } ), [] );
+  const onCurrentLocationPress = () => dispatch({ type: "HANDLE_CURRENT_LOCATION_PRESS" });
+  const onMapReady = useCallback(() => dispatch({ type: "HANDLE_MAP_READY" }), []);
 
-  const handleSave = ( ) => {
-    if ( region ) {
+  const handleSave = () => {
+    if (region) {
       const keysToUpdate = {
         latitude: region.latitude,
         longitude: region.longitude,
         positional_accuracy: accuracy,
         place_guess: locationName,
       };
-      updateObservationKeys( keysToUpdate );
+      updateObservationKeys(keysToUpdate);
     }
-    navigation.goBack( );
+    navigation.goBack();
   };
 
   const onMapLayout = event => {
     const { height, width } = event.nativeEvent.layout;
-    setRadiusToMapHeight( CROSSHAIRRADIUS / height );
-    setMapDimensionsRatio( width / height );
+    setRadiusToMapHeight(CROSSHAIRRADIUS / height);
+    setMapDimensionsRatio(width / height);
   };
 
   return (

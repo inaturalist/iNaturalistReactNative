@@ -15,35 +15,35 @@ import {
 interface Props {
   fetchRemote?: boolean;
   fromLocal?: boolean;
-  handlePress?: ( ) => void;
+  handlePress?: () => void;
   taxon: RealmTaxon | ApiTaxon;
   testID?: string;
   selected?: boolean;
 }
 
-const IconicSuggestion = ( {
+const IconicSuggestion = ({
   fetchRemote = true,
   fromLocal = true,
   handlePress,
   taxon: taxonProp,
   testID = `IconicSuggestion.${taxonProp?.id}`,
   selected,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const currentUser = useCurrentUser( );
+}: Props) => {
+  const { t } = useTranslation();
+  const currentUser = useCurrentUser();
 
   // thinking about future performance, it might make more sense to batch
   // network requests for useTaxon instead of making individual API calls.
   // right now, this fetches a single taxon at a time on AI camera &
   // a short list of taxa from offline Suggestions
-  const { taxon: localTaxon } = useTaxon( taxonProp, fetchRemote );
+  const { taxon: localTaxon } = useTaxon(taxonProp, fetchRemote);
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;
-  const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
+  const accessibleName = accessibleTaxonName(usableTaxon, currentUser, t);
 
   // useTaxon could return null, and it's at least remotely possible taxonProp is null
-  if ( !usableTaxon ) return null;
+  if (!usableTaxon) return null;
 
   const taxonImage = {
     uri: usableTaxon?.default_photo?.url
@@ -65,9 +65,9 @@ const IconicSuggestion = ( {
       accessibilityRole="button"
       accessibilityLabel={accessibleName}
       className={cardContent}
-      onPress={( ) => {
-        if ( handlePress !== undefined ) {
-          handlePress( );
+      onPress={() => {
+        if (handlePress !== undefined) {
+          handlePress();
         }
       }}
       testID={testID}

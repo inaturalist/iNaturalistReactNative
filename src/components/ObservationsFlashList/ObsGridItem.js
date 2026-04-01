@@ -28,7 +28,7 @@ type Props = {
   testID?: string
 };
 
-const ObsGridItem = ( {
+const ObsGridItem = ({
   currentUser,
   explore,
   height = "w-[200px]",
@@ -40,8 +40,8 @@ const ObsGridItem = ( {
   uploadProgress,
   testID,
   width = "w-[200px]",
-}: Props ): Node => {
-  const displayTaxonName = useMemo( ( ) => (
+}: Props): Node => {
+  const displayTaxonName = useMemo(() => (
     <DisplayTaxonName
       bottomTextComponent={Body2}
       color="text-white"
@@ -58,20 +58,20 @@ const ObsGridItem = ( {
     currentUser?.prefers_scientific_name_first,
     observation?.taxon,
     observation?.uuid,
-  ] );
+  ]);
 
-  const photo = photoFromObservation( observation );
+  const photo = photoFromObservation(observation);
 
   return (
     <ObsImagePreview
       source={{
-        uri: Photo.displayLocalOrRemoteMediumPhoto( photo ),
+        uri: Photo.displayLocalOrRemoteMediumPhoto(photo),
       }}
       width={width}
       height={height}
       style={style}
-      obsPhotosCount={photoCountFromObservation( observation )}
-      hasSound={observationHasSound( observation )}
+      obsPhotosCount={photoCountFromObservation(observation)}
+      hasSound={observationHasSound(observation)}
       isMultiplePhotosTop
       testID={testID || `MyObservations.obsGridItem.${observation.uuid}`}
       useShortGradient={!explore}

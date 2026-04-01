@@ -13,32 +13,32 @@ type Props = {
   updateCaptiveStatus: Function
 }
 
-const WildStatusSheet = ( {
+const WildStatusSheet = ({
   onPressClose,
   selectedValue,
   updateCaptiveStatus,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
   const radioValues = {
     wild: {
-      label: t( "Wild" ),
-      text: t( "This-is-a-wild-organism" ),
+      label: t("Wild"),
+      text: t("This-is-a-wild-organism"),
       value: false,
     },
     captive: {
-      label: t( "Captive-Cultivated" ),
-      text: t( "This-organism-was-placed-by-humans" ),
+      label: t("Captive-Cultivated"),
+      text: t("This-organism-was-placed-by-humans"),
       value: true,
     },
   };
 
   return (
     <RadioButtonSheet
-      headerText={t( "WILD-STATUS" )}
+      headerText={t("WILD-STATUS")}
       confirm={checkBoxValue => {
-        updateCaptiveStatus( checkBoxValue );
-        onPressClose( );
+        updateCaptiveStatus(checkBoxValue);
+        onPressClose();
       }}
       onPressClose={onPressClose}
       radioValues={radioValues}

@@ -15,13 +15,13 @@ interface Props extends PropsWithChildren {
   useTopInset?: boolean;
 }
 
-const ViewWrapper = ( {
+const ViewWrapper = ({
   children,
   isDebug,
   wrapperClassName,
   testID,
   useTopInset = true,
-}: Props ) => {
+}: Props) => {
   const insets = useSafeAreaInsets();
   const viewStyle = {
     paddingTop: useTopInset

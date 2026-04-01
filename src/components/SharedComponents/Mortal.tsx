@@ -12,19 +12,19 @@ import React, { useCallback, useState } from "react";
  * Morghulis!
  * @see https://www.corstianboerman.com/blog/2020-09-05/force-a-component-to-unmount-with-react-navigation
  */
-const Mortal = ( { children }: PropsWithChildren ) => {
-  const [isVisible, setIsVisible] = useState( false );
+const Mortal = ({ children }: PropsWithChildren) => {
+  const [isVisible, setIsVisible] = useState(false);
   useFocusEffect(
-    useCallback( ( ) => {
-      setIsVisible( true );
+    useCallback(() => {
+      setIsVisible(true);
 
-      return ( ) => {
-        setIsVisible( false );
+      return () => {
+        setIsVisible(false);
       };
-    }, [] ),
+    }, []),
   );
 
-  if ( !isVisible ) return null;
+  if (!isVisible) return null;
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{ children }</>;

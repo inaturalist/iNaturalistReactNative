@@ -9,45 +9,45 @@ interface Props {
     id: number;
   };
   refetchRelationship: () => void;
-  setShowUnfollowSheet: ( show: boolean ) => void;
+  setShowUnfollowSheet: (show: boolean) => void;
 }
 
-const UnfollowSheet = ( {
+const UnfollowSheet = ({
   relationship,
   setShowUnfollowSheet,
   refetchRelationship,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
+    (params, optsWithAuth) => updateRelationships(params, optsWithAuth),
     {
       onSuccess: () => {
-        setShowUnfollowSheet( false );
+        setShowUnfollowSheet(false);
         refetchRelationship();
       },
       onError: error => {
-        Alert.alert( "Error Following/Unfollowing", error );
+        Alert.alert("Error Following/Unfollowing", error);
       },
     },
   );
 
   return (
     <WarningSheet
-      onPressClose={( ) => setShowUnfollowSheet( false )}
-      secondButtonText={t( "CANCEL" )}
+      onPressClose={() => setShowUnfollowSheet(false)}
+      secondButtonText={t("CANCEL")}
       buttonType="warning"
-      headerText={t( "UNFOLLOW-USER" )}
-      buttonText={t( "UNFOLLOW" )}
-      handleSecondButtonPress={( ) => setShowUnfollowSheet( false )}
-      confirm={( ) => {
-        if ( relationship ) {
-          updateRelationshipsMutate( {
+      headerText={t("UNFOLLOW-USER")}
+      buttonText={t("UNFOLLOW")}
+      handleSecondButtonPress={() => setShowUnfollowSheet(false)}
+      confirm={() => {
+        if (relationship) {
+          updateRelationshipsMutate({
             id: relationship.id,
             relationship: {
               following: false,
             },
-          } );
+          });
         }
       }}
     />

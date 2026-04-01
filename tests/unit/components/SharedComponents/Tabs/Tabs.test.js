@@ -20,34 +20,34 @@ const tabs = [
   },
 ];
 
-describe( "Tabs", () => {
-  it( "should render correctly", () => {
-    render( <Tabs tabs={tabs} activeId={TAB_1} /> );
+describe("Tabs", () => {
+  it("should render correctly", () => {
+    render(<Tabs tabs={tabs} activeId={TAB_1} />);
 
-    expect( screen ).toMatchSnapshot();
-  } );
+    expect(screen).toMatchSnapshot();
+  });
 
-  it( "should not have accessibility errors", () => {
+  it("should not have accessibility errors", () => {
     // const tabComp = <Tabs tabs={tabs} activeId={TAB_1} />;
 
     // Disabled during the update to RN 0.78
     // expect( tabComp ).toBeAccessible();
-  } );
+  });
 
-  it( "should be clicked and display proper text", async () => {
-    render( <Tabs tabs={tabs} activeId={TAB_1} /> );
-    const tab1 = await screen.findByLabelText( TAB_1 );
-    const tab2 = await screen.findByLabelText( TAB_2 );
+  it("should be clicked and display proper text", async () => {
+    render(<Tabs tabs={tabs} activeId={TAB_1} />);
+    const tab1 = await screen.findByLabelText(TAB_1);
+    const tab2 = await screen.findByLabelText(TAB_2);
 
-    expect( tab1 ).toBeTruthy();
-    expect( tab2 ).toBeTruthy();
-    expect( tab1 ).toBeSelected();
-    expect( tab1 ).toBeExpanded();
-    expect( tab2 ).not.toBeSelected();
-    expect( tab2 ).toBeCollapsed();
+    expect(tab1).toBeTruthy();
+    expect(tab2).toBeTruthy();
+    expect(tab1).toBeSelected();
+    expect(tab1).toBeExpanded();
+    expect(tab2).not.toBeSelected();
+    expect(tab2).toBeCollapsed();
 
-    fireEvent.press( tab2 );
-    expect( tab1Click ).not.toHaveBeenCalled();
-    expect( tab2Click ).toHaveBeenCalled();
-  } );
-} );
+    fireEvent.press(tab2);
+    expect(tab1Click).not.toHaveBeenCalled();
+    expect(tab2Click).toHaveBeenCalled();
+  });
+});

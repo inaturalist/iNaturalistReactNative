@@ -11,14 +11,14 @@ interface Props extends PropsWithChildren {
   accessibilityRole?: AccessibilityRole;
   style?: ViewStyle;
   className?: string;
-  onPress: ( _event?: GestureResponderEvent ) => void;
+  onPress: (_event?: GestureResponderEvent) => void;
   testID?: string;
   disabled: boolean;
   debounceTime?: number;
   preventMultipleTaps?: boolean;
 }
 
-const PressableWithDebounce = ( {
+const PressableWithDebounce = ({
   accessibilityHint,
   accessibilityLabel,
   accessibilityRole,
@@ -30,30 +30,30 @@ const PressableWithDebounce = ( {
   children,
   debounceTime = 400,
   preventMultipleTaps = true,
-}: Props ) => {
-  const [isProcessing, setIsProcessing] = useState( false );
-  const onPressRef = useRef( onPress );
+}: Props) => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const onPressRef = useRef(onPress);
 
   onPressRef.current = onPress;
 
-  const handleOnPress = ( event?: GestureResponderEvent ) => {
-    if ( !preventMultipleTaps ) {
-      onPressRef.current( event );
+  const handleOnPress = (event?: GestureResponderEvent) => {
+    if (!preventMultipleTaps) {
+      onPressRef.current(event);
       return;
     }
 
-    if ( isProcessing ) return;
+    if (isProcessing) return;
 
-    setIsProcessing( true );
+    setIsProcessing(true);
 
-    onPressRef.current( event );
+    onPressRef.current(event);
 
-    setTimeout( ( ) => {
-      setIsProcessing( false );
-    }, debounceTime );
+    setTimeout(() => {
+      setIsProcessing(false);
+    }, debounceTime);
   };
 
-  const isDisabled = disabled || ( preventMultipleTaps && isProcessing );
+  const isDisabled = disabled || (preventMultipleTaps && isProcessing);
 
   return (
     <Pressable

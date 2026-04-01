@@ -5,11 +5,11 @@ import {
   prepareObservationForUpload,
 } from "uploaders";
 
-jest.mock( "realmModels/Observation", () => ( {
+jest.mock("realmModels/Observation", () => ({
   mapObservationForUpload: jest.fn(),
-} ) );
+}));
 
-const mockObservation = factory( "LocalObservation", {
+const mockObservation = factory("LocalObservation", {
   _synced_at: null,
   observed_on_string: "2024-05-02",
   latitude: 1.2345,
@@ -18,20 +18,20 @@ const mockObservation = factory( "LocalObservation", {
     id: 123,
   },
   observationPhotos: [
-    factory( "LocalObservationPhoto", {
+    factory("LocalObservationPhoto", {
       photo: {
-        url: `${faker.image.url( )}/100`,
+        url: `${faker.image.url()}/100`,
         position: 0,
       },
-    } ),
-    factory( "LocalObservationPhoto", {
+    }),
+    factory("LocalObservationPhoto", {
       photo: {
-        url: `${faker.image.url( )}/200`,
+        url: `${faker.image.url()}/200`,
         position: 1,
       },
-    } ),
+    }),
   ],
-} );
+});
 
 const mappedObservation = {
   captive_flag: null,
@@ -48,13 +48,13 @@ const mappedObservation = {
   uuid: mockObservation.uuid,
 };
 
-describe( "prepareObservationForUpload", () => {
-  afterEach( () => {
+describe("prepareObservationForUpload", () => {
+  afterEach(() => {
     jest.clearAllMocks();
-  } );
+  });
 
-  test( "should call Observation.mapObservationForUpload with the observation", () => {
-    Observation.mapObservationForUpload.mockReturnValue( {
+  test("should call Observation.mapObservationForUpload with the observation", () => {
+    Observation.mapObservationForUpload.mockReturnValue({
       captive_flag: null,
       description: null,
       geoprivacy: null,
@@ -67,42 +67,42 @@ describe( "prepareObservationForUpload", () => {
       species_guess: null,
       taxon_id: mockObservation.taxon && mockObservation.taxon.id,
       uuid: mockObservation.uuid,
-    } );
+    });
 
-    prepareObservationForUpload( mockObservation );
+    prepareObservationForUpload(mockObservation);
 
-    expect( Observation.mapObservationForUpload ).toHaveBeenCalledWith( mockObservation );
-  } );
+    expect(Observation.mapObservationForUpload).toHaveBeenCalledWith(mockObservation);
+  });
 
-  test( "should remove null values from the mapped observation", () => {
-    Observation.mapObservationForUpload.mockReturnValue( mappedObservation );
+  test("should remove null values from the mapped observation", () => {
+    Observation.mapObservationForUpload.mockReturnValue(mappedObservation);
 
-    const result = prepareObservationForUpload( mockObservation );
+    const result = prepareObservationForUpload(mockObservation);
 
-    expect( result ).toEqual( {
+    expect(result).toEqual({
       latitude: mockObservation.latitude,
       longitude: mockObservation.longitude,
       observed_on_string: mockObservation.observed_on_string,
       taxon_id: mockObservation.taxon && mockObservation.taxon.id,
       uuid: mockObservation.uuid,
-    } );
-  } );
+    });
+  });
 
-  test( "should handle empty field values correctly", () => {
-    Observation.mapObservationForUpload.mockReturnValue( {
+  test("should handle empty field values correctly", () => {
+    Observation.mapObservationForUpload.mockReturnValue({
       ...mappedObservation,
       description: "",
-    } );
+    });
 
-    const result = prepareObservationForUpload( mockObservation );
+    const result = prepareObservationForUpload(mockObservation);
 
-    expect( result ).toEqual( {
+    expect(result).toEqual({
       latitude: mockObservation.latitude,
       longitude: mockObservation.longitude,
       observed_on_string: mockObservation.observed_on_string,
       taxon_id: mockObservation.taxon && mockObservation.taxon.id,
       uuid: mockObservation.uuid,
       description: "",
-    } );
-  } );
-} );
+    });
+  });
+});

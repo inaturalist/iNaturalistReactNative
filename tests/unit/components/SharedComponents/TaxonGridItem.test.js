@@ -7,49 +7,49 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockTaxon = factory( "RemoteTaxon" );
+const mockTaxon = factory("RemoteTaxon");
 
-const mockedNavigate = jest.fn( );
+const mockedNavigate = jest.fn();
 
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
-    useNavigation: () => ( {
+    useNavigation: () => ({
       navigate: mockedNavigate,
-    } ),
-    useRoute: ( ) => ( {
+    }),
+    useRoute: () => ({
 
-    } ),
-    useNavigationState: jest.fn( ),
+    }),
+    useNavigationState: jest.fn(),
   };
-} );
+});
 
-jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+jest.mock("sharedHooks/useAuthenticatedQuery", () => ({
   __esModule: true,
-  default: ( ) => ( {
+  default: () => ({
     data: {
       total_results: 0,
     },
-  } ),
-} ) );
+  }),
+}));
 
-const renderTaxonGridItem = ( ) => renderComponent(
+const renderTaxonGridItem = () => renderComponent(
   <TaxonGridItem taxon={mockTaxon} />,
 );
 
-describe( "TaxonGridItem", ( ) => {
-  it( "should be accessible", ( ) => {
+describe("TaxonGridItem", () => {
+  it("should be accessible", () => {
     // Disabled during the update to RN 0.78
     // expect( <TaxonGridItem taxon={mockTaxon} /> ).toBeAccessible();
-  } );
+  });
 
-  it( "should navigate to user profile on tap", ( ) => {
-    renderTaxonGridItem( );
-    fireEvent.press( screen.getByTestId( `TaxonGridItem.Pressable.${mockTaxon.id}` ) );
-    expect( mockedNavigate ).toHaveBeenCalledWith( expect.objectContaining( {
+  it("should navigate to user profile on tap", () => {
+    renderTaxonGridItem();
+    fireEvent.press(screen.getByTestId(`TaxonGridItem.Pressable.${mockTaxon.id}`));
+    expect(mockedNavigate).toHaveBeenCalledWith(expect.objectContaining({
       name: "TaxonDetails",
       params: { id: mockTaxon.id },
-    } ) );
-  } );
-} );
+    }));
+  });
+});

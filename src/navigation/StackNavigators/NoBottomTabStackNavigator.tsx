@@ -25,11 +25,11 @@ import React from "react";
 
 import SharedStackScreens from "./SharedStackScreens";
 
-const Stack = createNativeStackNavigator<NoBottomTabStackParamList>( );
+const Stack = createNativeStackNavigator<NoBottomTabStackParamList>();
 
 const soundRecorderTitle = () => (
   <Heading4 className="text-white" accessibilityRole="header" numberOfLines={1}>
-    {t( "RECORD-NEW-SOUND" )}
+    {t("RECORD-NEW-SOUND")}
   </Heading4>
 );
 
@@ -56,17 +56,17 @@ const SOUND_RECORDER_OPTIONS = {
   headerTitleAlign: "center",
 } as const;
 
-const CameraContainerWithPermission = ( ) => fadeInComponent(
+const CameraContainerWithPermission = () => fadeInComponent(
   <Mortal>
     <PermissionGateContainer
       permissions={CAMERA_PERMISSIONS}
-      title={t( "Identify-organisms-in-real-time-with-your-camera" )}
-      titleDenied={t( "Please-allow-Camera-Access" )}
-      body={t( "Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos" )}
-      blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
-      buttonText={t( "OBSERVE-ORGANISMS" )}
+      title={t("Identify-organisms-in-real-time-with-your-camera")}
+      titleDenied={t("Please-allow-Camera-Access")}
+      body={t("Use-the-iNaturalist-camera-to-see-real-time-identifications-and-take-photos")}
+      blockedPrompt={t("Youve-previously-denied-camera-permissions")}
+      buttonText={t("OBSERVE-ORGANISMS")}
       icon="camera"
-      image={require( "images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
+      image={require("images/background/viviana-rishe-j2330n6bg3I-unsplash.jpg")}
     >
       <CameraContainer />
     </PermissionGateContainer>
@@ -80,28 +80,28 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
 // albums, but for now this works. ~~~~kueda20240829
 
 // TODO verify this is true for Android
-const PhotoLibraryContainerWithPermission = ( ) => (
+const PhotoLibraryContainerWithPermission = () => (
   <PhotoLibrary />
 );
 
-const SoundRecorderWithPermission = ( ) => fadeInComponent(
+const SoundRecorderWithPermission = () => fadeInComponent(
   <Mortal>
     <PermissionGateContainer
       permissions={AUDIO_PERMISSIONS}
-      title={t( "Record-animal-sounds" )}
-      titleDenied={t( "Please-allow-Microphone-Access" )}
-      body={t( "Use-your-devices-microphone-to-record-animal-sounds-and-share-them" )}
-      blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
-      buttonText={t( "RECORD-SOUND" )}
+      title={t("Record-animal-sounds")}
+      titleDenied={t("Please-allow-Microphone-Access")}
+      body={t("Use-your-devices-microphone-to-record-animal-sounds-and-share-them")}
+      blockedPrompt={t("Youve-previously-denied-microphone-permissions")}
+      buttonText={t("RECORD-SOUND")}
       icon="microphone"
-      image={require( "images/background/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
+      image={require("images/background/azmaan-baluch-_ra6NcejHVs-unsplash.jpg")}
     >
       <SoundRecorder />
     </PermissionGateContainer>
   </Mortal>,
 );
 
-const NoBottomTabStackNavigator = ( ) => (
+const NoBottomTabStackNavigator = () => (
   <Stack.Navigator
     screenOptions={{
       headerBackButtonDisplayMode: "minimal",
@@ -133,7 +133,7 @@ const NoBottomTabStackNavigator = ( ) => (
         options={SOUND_RECORDER_OPTIONS}
       />
     </Stack.Group>
-    {SharedStackScreens( )}
+    {SharedStackScreens()}
   </Stack.Navigator>
 );
 

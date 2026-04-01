@@ -44,7 +44,7 @@ interface MenuOptionWithNavigation extends BaseMenuOption {
 }
 
 interface MenuOptionWithOnPress extends BaseMenuOption {
-  onPress: ( ) => void;
+  onPress: () => void;
   navigation?: never;
 }
 
@@ -55,10 +55,10 @@ enum MenuModalState {
   ProvideFeedback = "provideFeedback"
 }
 
-const feedbackLogger = log.extend( "feedback" );
+const feedbackLogger = log.extend("feedback");
 
-function showOfflineAlert( t: ( _: string ) => string ) {
-  Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
+function showOfflineAlert(t: (_: string) => string) {
+  Alert.alert(t("You-are-offline"), t("Please-try-again-when-you-are-online"));
 }
 
 const getDeviceMetricsForFeedback = async () => {
@@ -67,25 +67,25 @@ const getDeviceMetricsForFeedback = async () => {
   const usedDiskSpaceBytes = diskCapacityBytes - freeDiskBytes;
 
   const gBBytes = 1024 * 1024 * 1024;
-  const toGBString = ( bytes: number ) => {
+  const toGBString = (bytes: number) => {
     const gBs = bytes / gBBytes;
-    return `${gBs.toFixed( 2 )}GB`;
+    return `${gBs.toFixed(2)}GB`;
   };
 
   const diskUsageSummary
-    = `${toGBString( usedDiskSpaceBytes )} / ${toGBString( diskCapacityBytes )}`;
+    = `${toGBString(usedDiskSpaceBytes)} / ${toGBString(diskCapacityBytes)}`;
 
   const firstInstallInEpochSeconds = await DeviceInfo.getFirstInstallTime();
-  const firstInstallTimestamp = new Date( firstInstallInEpochSeconds ).toISOString();
+  const firstInstallTimestamp = new Date(firstInstallInEpochSeconds).toISOString();
 
   const millisecondsSinceThisLaunch = await DeviceInfo.getStartupTime();
 
-  const secondsSinceThisLaunch = ( Date.now() - millisecondsSinceThisLaunch ) / 1000;
-  const minutesPart = Math.floor( secondsSinceThisLaunch / 60 );
-  const secondsPart = Math.floor( secondsSinceThisLaunch % 60 );
+  const secondsSinceThisLaunch = (Date.now() - millisecondsSinceThisLaunch) / 1000;
+  const minutesPart = Math.floor(secondsSinceThisLaunch / 60);
+  const secondsPart = Math.floor(secondsSinceThisLaunch % 60);
   const timeSinceLaunchedSummary = `${minutesPart}m${secondsPart}s`;
 
-  const isDeviceInLowPowerState = ( await DeviceInfo.getPowerState() ).lowPowerMode;
+  const isDeviceInLowPowerState = (await DeviceInfo.getPowerState()).lowPowerMode;
 
   return {
     diskUsageSummary,
@@ -95,80 +95,80 @@ const getDeviceMetricsForFeedback = async () => {
   };
 };
 
-const Menu = ( ) => {
-  const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
-  const realm = useRealm( );
-  const navigation = useNavigation( );
-  const queryClient = useQueryClient( );
-  const currentUser = useCurrentUser( );
-  const { t } = useTranslation( );
+const Menu = () => {
+  const isDebug = zustandStorage.getItem("debugMode") === "true";
+  const realm = useRealm();
+  const navigation = useNavigation();
+  const queryClient = useQueryClient();
+  const currentUser = useCurrentUser();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useNetInfo();
 
   const layoutPrefs = useLayoutPrefs();
-  const [modalState, setModalState] = useState<MenuModalState | null>( null );
+  const [modalState, setModalState] = useState<MenuModalState | null>(null);
 
   const menuItems: Record<string, MenuOption> = {
     projects: {
-      label: t( "PROJECTS" ),
+      label: t("PROJECTS"),
       navigation: "Projects",
       icon: "briefcase",
     },
     about: {
-      label: t( "ABOUT" ),
+      label: t("ABOUT"),
       navigation: "About",
       icon: "inaturalist",
     },
     donate: {
-      label: t( "DONATE" ),
+      label: t("DONATE"),
       navigation: "Donate",
       icon: "heart",
       color: colors.inatGreen,
     },
     help: {
-      label: t( "HELP" ),
+      label: t("HELP"),
       navigation: "Help",
       icon: "help-circle",
     },
     settings: {
       testID: "settings",
-      label: t( "SETTINGS" ),
+      label: t("SETTINGS"),
       navigation: "Settings",
       icon: "gear",
     },
 
     feedback: {
-      label: t( "FEEDBACK" ),
+      label: t("FEEDBACK"),
       icon: "feedback",
       onPress: () => {
-        if ( isConnected ) {
-          setModalState( MenuModalState.ProvideFeedback );
+        if (isConnected) {
+          setModalState(MenuModalState.ProvideFeedback);
         } else {
-          showOfflineAlert( t );
+          showOfflineAlert(t);
         }
       },
     },
 
-    ...( currentUser
+    ...(currentUser
       ? {
         logout: {
-          label: t( "LOG-OUT" ),
+          label: t("LOG-OUT"),
           icon: "door-exit",
-          onPress: () => setModalState( MenuModalState.ConfirmLogout ),
+          onPress: () => setModalState(MenuModalState.ConfirmLogout),
           isLogout: true,
         },
       }
       : {
         login: {
-          label: t( "LOG-IN" ),
+          label: t("LOG-IN"),
           icon: "door-enter",
           color: colors.inatGreen,
-          onPress: () => navigation.navigate( "LoginStackNavigator" ),
+          onPress: () => navigation.navigate("LoginStackNavigator"),
         },
-      } ),
+      }),
 
-    ...( isDebug
+    ...(isDebug
       ? {
         debug: {
           label: "DEBUG",
@@ -177,38 +177,38 @@ const Menu = ( ) => {
           color: "deeppink",
         },
       }
-      : {} ),
+      : {}),
   };
 
-  const onSignOut = async ( ) => {
-    await signOut( { realm, clearRealm: true, queryClient } );
-    setModalState( null );
+  const onSignOut = async () => {
+    await signOut({ realm, clearRealm: true, queryClient });
+    setModalState(null);
 
     // TODO might be necessary to restart the app at this point. We just
     // deleted the realm file on disk, but the RealmProvider may still have a
     // copy of realm in local state
-    navigation.goBack( );
+    navigation.goBack();
   };
 
-  const onSubmitFeedback = useCallback( async ( feedbackText: string ) => {
-    if ( !isConnected ) {
-      showOfflineAlert( t );
+  const onSubmitFeedback = useCallback(async (feedbackText: string) => {
+    if (!isConnected) {
+      showOfflineAlert(t);
       return false;
     }
-    const locallySavedOnlyObservations = Observation.filterUnsyncedObservations( realm ).length;
-    const getCountBreakpoint = ( count: number ) => valueToBreakpoint( count, [
+    const locallySavedOnlyObservations = Observation.filterUnsyncedObservations(realm).length;
+    const getCountBreakpoint = (count: number) => valueToBreakpoint(count, [
       [0, "0"],
       [1, "1-9"],
       [10, "10-99"],
       [100, "100-999"],
       [1000, "1000+"],
-    ] );
+    ]);
     const {
       isDefaultMode,
       isAllAddObsOptionsMode,
       screenAfterPhotoEvidence,
     } = layoutPrefs;
-    const modeContext = ( isDefaultMode
+    const modeContext = (isDefaultMode
       ? {
         mode: "default",
         observationButtonMode: "default",
@@ -220,17 +220,17 @@ const Menu = ( ) => {
           ? "Obs Sheet"
           : "AI Camera",
         screenAfterPhotoEvidence,
-      } );
+      });
     const loggedInContext = currentUser
       ? {
         loggedIn: "Yes",
         username: currentUser.login,
         userId: currentUser.id,
         identifications: typeof currentUser.identifications_count === "number"
-          ? getCountBreakpoint( currentUser.identifications_count )
+          ? getCountBreakpoint(currentUser.identifications_count)
           : "NA",
         remoteObservations: typeof currentUser.observations_count === "number"
-          ? getCountBreakpoint( currentUser.observations_count )
+          ? getCountBreakpoint(currentUser.observations_count)
           : "NA",
       }
       : {
@@ -239,8 +239,8 @@ const Menu = ( ) => {
         identifications: "loggedout",
         remoteObservations: "loggedout",
       };
-    const storageMetrics = await getStorageMetrics( realm?.path ).catch( () => ( {} ) );
-    const deviceMetrics = await getDeviceMetricsForFeedback().catch( () => ( {} ) );
+    const storageMetrics = await getStorageMetrics(realm?.path).catch(() => ({}));
+    const deviceMetrics = await getDeviceMetricsForFeedback().catch(() => ({}));
     const feedbackContext = {
       ...modeContext,
       ...loggedInContext,
@@ -249,11 +249,11 @@ const Menu = ( ) => {
       ...storageMetrics,
       ...deviceMetrics,
     };
-    feedbackLogger.infoWithExtra( feedbackText, feedbackContext );
-    Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
-    setModalState( null );
+    feedbackLogger.infoWithExtra(feedbackText, feedbackContext);
+    Alert.alert(t("Feedback-Submitted"), t("Thank-you-for-sharing-your-feedback"));
+    setModalState(null);
     return true;
-  }, [currentUser, isConnected, layoutPrefs, realm, t] );
+  }, [currentUser, isConnected, layoutPrefs, realm, t]);
 
   return (
     <ScrollView
@@ -269,21 +269,21 @@ const Menu = ( ) => {
           accessibilityRole="button"
           accessibilityHint={
             currentUser
-              ? t( "Navigates-to-user-profile" )
-              : t( "Navigates-to-log-in-screen" )
+              ? t("Navigates-to-user-profile")
+              : t("Navigates-to-log-in-screen")
           }
           className="px-[26px] pt-[68px] pb-[31px] border-b border-lightGray"
-          onPress={( ) => {
-            if ( !currentUser ) {
-              navigation.navigate( "LoginStackNavigator" );
+          onPress={() => {
+            if (!currentUser) {
+              navigation.navigate("LoginStackNavigator");
             } else {
-              navigation.navigate( "TabNavigator", {
+              navigation.navigate("TabNavigator", {
                 screen: "ObservationsTab",
                 params: {
                   screen: "UserProfile",
                   params: { userId: currentUser.id },
                 },
-              } );
+              });
             }
           }}
         >
@@ -291,7 +291,7 @@ const Menu = ( ) => {
             {currentUser
               ? (
                 <UserIcon
-                  uri={User.uri( currentUser )}
+                  uri={User.uri(currentUser)}
                   medium
                 />
               )
@@ -306,11 +306,11 @@ const Menu = ( ) => {
               <Body1>
                 {currentUser
                   ? currentUser?.login
-                  : t( "Log-in-to-iNaturalist" )}
+                  : t("Log-in-to-iNaturalist")}
               </Body1>
               {currentUser && (
                 <List2>
-                  {t( "X-Observations", { count: currentUser.observations_count } )}
+                  {t("X-Observations", { count: currentUser.observations_count })}
                 </List2>
               )}
             </View>
@@ -319,45 +319,45 @@ const Menu = ( ) => {
 
         {/* Menu Items */}
         <View>
-          {Object.entries( menuItems ).map( ( [key, item] ) => (
+          {Object.entries(menuItems).map(([key, item]) => (
             <MenuItem
               key={key}
               item={item}
               onPress={() => {
-                if ( item.navigation ) {
-                  navigation.navigate( "TabNavigator", {
+                if (item.navigation) {
+                  navigation.navigate("TabNavigator", {
                     screen: "MenuTab",
                     params: {
                       screen: menuItems[key].navigation,
                     },
-                  } );
+                  });
                 }
                 item.onPress?.();
               }}
             />
-          ) )}
+          ))}
         </View>
       </View>
 
       {modalState === MenuModalState.ConfirmLogout && (
         <WarningSheet
-          onPressClose={() => setModalState( null )}
-          headerText={t( "LOG-OUT--question" )}
-          text={t( "Are-you-sure-you-want-to-log-out" )}
-          handleSecondButtonPress={() => setModalState( null )}
-          secondButtonText={t( "CANCEL" )}
+          onPressClose={() => setModalState(null)}
+          headerText={t("LOG-OUT--question")}
+          text={t("Are-you-sure-you-want-to-log-out")}
+          handleSecondButtonPress={() => setModalState(null)}
+          secondButtonText={t("CANCEL")}
           confirm={onSignOut}
-          buttonText={t( "LOG-OUT" )}
+          buttonText={t("LOG-OUT")}
           loading={false}
         />
       )}
       {modalState === MenuModalState.ProvideFeedback && (
         <TextInputSheet
-          buttonText={t( "SUBMIT" )}
-          onPressClose={() => setModalState( null )}
-          headerText={t( "FEEDBACK" )}
+          buttonText={t("SUBMIT")}
+          onPressClose={() => setModalState(null)}
+          headerText={t("FEEDBACK")}
           confirm={onSubmitFeedback}
-          description={t( "Thanks-for-using-any-suggestions" )}
+          description={t("Thanks-for-using-any-suggestions")}
           maxLength={1000}
         />
       )}

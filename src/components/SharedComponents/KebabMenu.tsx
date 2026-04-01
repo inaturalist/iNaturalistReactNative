@@ -10,7 +10,7 @@ interface Props extends PropsWithChildren {
   accessibilityHint?: string;
   accessibilityLabel?: string;
   large?: boolean;
-  setVisible: ( visible: boolean ) => void;
+  setVisible: (visible: boolean) => void;
   visible: boolean;
   white?: boolean;
 }
@@ -45,7 +45,7 @@ const MENU_ITEM_TITLE_STYLE = {
   color: colors.darkGray,
 } as const;
 
-const KebabMenu = ( {
+const KebabMenu = ({
   accessibilityHint,
   accessibilityLabel,
   children,
@@ -53,10 +53,10 @@ const KebabMenu = ( {
   setVisible,
   visible,
   white,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const openMenu = ( ) => setVisible( true );
-  const closeMenu = ( ) => setVisible( false );
+}: Props) => {
+  const { t } = useTranslation();
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
 
   const anchorButton = (
     <INatIconButton
@@ -66,8 +66,8 @@ const KebabMenu = ( {
       size={large
         ? 28
         : 15}
-      accessibilityLabel={accessibilityLabel || t( "Menu" )}
-      accessibilityHint={accessibilityHint || t( "Open-menu" )}
+      accessibilityLabel={accessibilityLabel || t("Menu")}
+      accessibilityHint={accessibilityHint || t("Open-menu")}
       color={white
         ? colors.white
         : colors.darkGray}
@@ -89,17 +89,17 @@ const KebabMenu = ( {
 interface KebabMenuItemProps {
   accessibilityLabel?: string;
   isFirst?: boolean;
-  onPress: ( ) => void;
+  onPress: () => void;
   testID?: string;
   title: string;
 }
-const KebabMenuItem = ( {
+const KebabMenuItem = ({
   accessibilityLabel,
   isFirst,
   onPress,
   testID,
   title,
-}: KebabMenuItemProps ) => (
+}: KebabMenuItemProps) => (
   <Menu.Item
     accessibilityLabel={accessibilityLabel}
     testID={testID}

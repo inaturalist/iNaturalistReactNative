@@ -24,29 +24,29 @@ type Props = {
   tablet?: boolean
 }
 
-const ObsMedia = ( {
+const ObsMedia = ({
   loading,
   photos = [],
   sounds = [],
   tablet = false,
-}: Props ): Node => {
-  const [index, setIndex] = useState( 0 );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+}: Props): Node => {
+  const [index, setIndex] = useState(0);
+  const [mediaViewerVisible, setMediaViewerVisible] = useState(false);
 
-  const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
+  const items = useMemo(() => ([...photos, ...sounds]), [photos, sounds]);
 
   const CarouselSlide = useCallback(
-    ( { item } ) => ( item.file_url
+    ({ item }) => (item.file_url
       ? (
         <SoundContainer
           sizeClass="h-72 w-screen"
           sound={item}
-          isVisible={items.indexOf( item ) === index}
+          isVisible={items.indexOf(item) === index}
         />
       )
       : (
-        <PhotoContainer photo={item} onPress={() => setMediaViewerVisible( true )} />
-      ) ),
+        <PhotoContainer photo={item} onPress={() => setMediaViewerVisible(true)} />
+      )),
     [setMediaViewerVisible, items, index],
   );
 
@@ -62,7 +62,7 @@ const ObsMedia = ( {
     </View>
   );
 
-  const renderPhone = ( ) => (
+  const renderPhone = () => (
     <>
       {loading
         ? loadingIndicator
@@ -89,8 +89,8 @@ const ObsMedia = ( {
       <MasonryLayout
         items={items}
         onImagePress={newIndex => {
-          setIndex( newIndex );
-          setMediaViewerVisible( true );
+          setIndex(newIndex);
+          setMediaViewerVisible(true);
         }}
       />
     </View>
@@ -99,11 +99,11 @@ const ObsMedia = ( {
   return (
     <View className="relative">
       {!tablet
-        ? renderPhone( )
-        : renderTablet( )}
+        ? renderPhone()
+        : renderTablet()}
       <MediaViewerModal
         showModal={mediaViewerVisible}
-        onClose={( ) => setMediaViewerVisible( false )}
+        onClose={() => setMediaViewerVisible(false)}
         uri={currentPhotoUrl}
         photos={photos}
         sounds={sounds}

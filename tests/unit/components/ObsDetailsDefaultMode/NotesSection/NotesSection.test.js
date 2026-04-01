@@ -12,16 +12,16 @@ import { renderComponent } from "tests/helpers/render";
 //   legacyFakeTimers: true
 // } );
 
-const mockObservation = factory( "LocalObservation", {
+const mockObservation = factory("LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
-  description: faker.lorem.paragraph( ),
-} );
+  description: faker.lorem.paragraph(),
+});
 
-describe( "NotesSection", ( ) => {
-  test( "should show description of observation", async ( ) => {
-    renderComponent( <NotesSection description={mockObservation.description} /> );
+describe("NotesSection", () => {
+  test("should show description of observation", async () => {
+    renderComponent(<NotesSection description={mockObservation.description} />);
 
-    const description = await screen.findByText( mockObservation.description );
-    expect( description ).toBeTruthy( );
-  } );
-} );
+    const description = await screen.findByText(mockObservation.description);
+    expect(description).toBeTruthy();
+  });
+});

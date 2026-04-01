@@ -86,8 +86,8 @@ import type { i18n as i18next } from "i18next";
 // e.g. Breton users will see French dates, including French month
 // abbreviations. The only solution is to contribute new locales to date-fns:
 // https://date-fns.org/v4.1.0/docs/I18n-Contribution-Guide
-function dateFnsLocale( i18nextLanguage: string ) {
-  switch ( i18nextLanguage ) {
+function dateFnsLocale(i18nextLanguage: string) {
+  switch (i18nextLanguage) {
     case "ar":
       return ar;
     case "be":
@@ -215,75 +215,75 @@ function dateFnsLocale( i18nextLanguage: string ) {
   }
 }
 
-function formatISONoTimezone( date: Date | null ): string {
-  if ( !date ) {
+function formatISONoTimezone(date: Date | null): string {
+  if (!date) {
     return "";
   }
-  const formattedISODate = formatISO( date );
-  if ( !formattedISODate ) {
+  const formattedISODate = formatISO(date);
+  if (!formattedISODate) {
     return "";
   }
   // Always take the first part of the time/date string,
   // without any extra timezone, etc (just "2022-12-31T23:59:59")
-  return formattedISODate.substring( 0, 19 );
+  return formattedISODate.substring(0, 19);
 }
 
 // two options for observed_on_string in uploader are:
 // 2020-03-01 00:00 or 2021-03-24T14:40:25
 // this is using the second format
 // https://github.com/inaturalist/inaturalist/blob/b12f16099fc8ad0c0961900d644507f6952bec66/spec/controllers/observation_controller_api_spec.rb#L161
-function formatDateStringFromTimestamp( timestamp: number ) {
-  if ( !timestamp ) {
+function formatDateStringFromTimestamp(timestamp: number) {
+  if (!timestamp) {
     return "";
   }
-  const date = fromUnixTime( timestamp );
-  return formatISONoTimezone( date );
+  const date = fromUnixTime(timestamp);
+  return formatISONoTimezone(date);
 }
 
-function getNowISO( ) {
+function getNowISO() {
   return formatDateStringFromTimestamp(
-    getUnixTime( new Date( ) ),
+    getUnixTime(new Date()),
   );
 }
 
 // Some components, like DatePicker, do not support seconds, so we're
 // returning a date, without timezone and without seconds
 // (just "2022-12-31T23:59")
-function formatISONoSeconds( date: Date ) {
-  const isoDate = formatISO( date );
-  const isoDateNoSeconds = isoDate.substring( 0, 16 );
+function formatISONoSeconds(date: Date) {
+  const isoDate = formatISO(date);
+  const isoDateNoSeconds = isoDate.substring(0, 16);
   return isoDateNoSeconds;
 }
 
-function formatDifferenceForHumans( date: Date | string, i18n: i18next ) {
+function formatDifferenceForHumans(date: Date | string, i18n: i18next) {
   const d = typeof date === "string"
-    ? parseISO( date )
-    : new Date( date );
+    ? parseISO(date)
+    : new Date(date);
   const now = new Date();
 
-  const days = differenceInDays( now, d );
+  const days = differenceInDays(now, d);
 
-  if ( days <= 30 ) {
+  if (days <= 30) {
     // Less than 30 days ago - display as 3m (mins), 3h (hours), 3d (days) or 3w (weeks)
-    if ( days < 1 ) {
-      const hours = differenceInHours( now, d );
-      if ( hours < 1 ) {
-        const minutes = differenceInMinutes( now, d );
-        return i18n.t( "datetime-difference-minutes", { count: minutes } );
+    if (days < 1) {
+      const hours = differenceInHours(now, d);
+      if (hours < 1) {
+        const minutes = differenceInMinutes(now, d);
+        return i18n.t("datetime-difference-minutes", { count: minutes });
       }
-      return i18n.t( "datetime-difference-hours", { count: hours } );
-    } if ( days < 7 ) {
-      return i18n.t( "datetime-difference-days", { count: days } );
+      return i18n.t("datetime-difference-hours", { count: hours });
+    } if (days < 7) {
+      return i18n.t("datetime-difference-days", { count: days });
     }
-    return i18n.t( "datetime-difference-weeks", { count: Math.floor( days / 7 ) } );
+    return i18n.t("datetime-difference-weeks", { count: Math.floor(days / 7) });
   }
-  const formatOpts = { locale: dateFnsLocale( i18n.language ) };
-  if ( getYear( now ) !== getYear( d ) ) {
+  const formatOpts = { locale: dateFnsLocale(i18n.language) };
+  if (getYear(now) !== getYear(d)) {
     // Previous year(s)
-    return format( d, i18n.t( "date-format-short" ), formatOpts );
+    return format(d, i18n.t("date-format-short"), formatOpts);
   }
   // Current year
-  return format( d, i18n.t( "date-format-month-day" ), formatOpts );
+  return format(d, i18n.t("date-format-month-day"), formatOpts);
 }
 
 interface FormatDateStringOptions {
@@ -304,45 +304,45 @@ function formatDateString(
   i18n: i18next,
   options: FormatDateStringOptions = { },
 ) {
-  if ( !dateString || dateString === "" ) {
+  if (!dateString || dateString === "") {
     return options.missing === undefined
-      ? i18n.t( "Missing-Date" )
+      ? i18n.t("Missing-Date")
       : options.missing;
   }
   let timeZone = (
     // If we received a time zone, display the time in the requested zone
     options.timeZone
     // Otherwise use the system / local time zone
-    || Intl.DateTimeFormat( ).resolvedOptions( ).timeZone
+    || Intl.DateTimeFormat().resolvedOptions().timeZone
   );
   let isoDateString = dateString;
-  if ( options.literalTime ) {
-    isoDateString = dateString.replace( /[+-]\d\d:\d\d/, "" );
-    isoDateString = isoDateString.replace( "Z", "" );
+  if (options.literalTime) {
+    isoDateString = dateString.replace(/[+-]\d\d:\d\d/, "");
+    isoDateString = isoDateString.replace("Z", "");
     // eslint-disable-next-line prefer-destructuring
-    timeZone = Intl.DateTimeFormat( ).resolvedOptions( ).timeZone;
+    timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 
   try {
     return formatInTimeZone(
-      parseISO( isoDateString ),
+      parseISO(isoDateString),
       timeZone,
       fmt,
-      { locale: dateFnsLocale( i18n.language ) },
+      { locale: dateFnsLocale(i18n.language) },
     );
-  } catch ( error ) {
-    console.warn( "Error formatting date", error );
+  } catch (error) {
+    console.warn("Error formatting date", error);
     // In case of: RangeError: Incorrect timeZone information provided
-    if ( error instanceof RangeError ) {
+    if (error instanceof RangeError) {
       // Remove timezone (zzz) from format string
-      fmt = fmt.replace( / zzz/g, "" );
+      fmt = fmt.replace(/ zzz/g, "");
       return format(
-        parseISO( isoDateString ),
+        parseISO(isoDateString),
         fmt,
-        { locale: dateFnsLocale( i18n.language ) },
+        { locale: dateFnsLocale(i18n.language) },
       );
     }
-    return i18n.t( "Missing-Date" );
+    return i18n.t("Missing-Date");
   }
 }
 
@@ -351,7 +351,7 @@ function formatMonthYearDate(
   i18n: i18next,
   options: FormatDateStringOptions = {},
 ) {
-  return formatDateString( dateString, i18n.t( "date-format-month-year" ), i18n, options );
+  return formatDateString(dateString, i18n.t("date-format-month-year"), i18n, options);
 }
 
 function formatLongDate(
@@ -359,7 +359,7 @@ function formatLongDate(
   i18n: i18next,
   options: FormatDateStringOptions = {},
 ) {
-  return formatDateString( dateString, i18n.t( "date-format-long" ), i18n, options );
+  return formatDateString(dateString, i18n.t("date-format-long"), i18n, options);
 }
 
 function formatLongDatetime(
@@ -368,9 +368,9 @@ function formatLongDatetime(
   options: FormatDateStringOptions = {},
 ) {
   const fmt = options.literalTime && !options.timeZone
-    ? i18n.t( "datetime-format-long" )
-    : i18n.t( "datetime-format-long-with-zone" );
-  return formatDateString( dateString, fmt, i18n, options );
+    ? i18n.t("datetime-format-long")
+    : i18n.t("datetime-format-long-with-zone");
+  return formatDateString(dateString, fmt, i18n, options);
 }
 
 function formatApiDatetime(
@@ -378,20 +378,20 @@ function formatApiDatetime(
   i18n: i18next,
   options: FormatDateStringOptions = {},
 ) {
-  const hasTime = String( dateString ).includes( "T" );
-  if ( hasTime ) {
+  const hasTime = String(dateString).includes("T");
+  if (hasTime) {
     return formatDateString(
       dateString,
       options.literalTime && !options.timeZone
-        ? i18n.t( "datetime-format-short" )
-        : i18n.t( "datetime-format-short-with-zone" ),
+        ? i18n.t("datetime-format-short")
+        : i18n.t("datetime-format-short-with-zone"),
       i18n,
       options,
     );
   }
   return formatDateString(
     dateString,
-    i18n.t( "date-format-short" ),
+    i18n.t("date-format-short"),
     i18n,
     options,
   );
@@ -410,37 +410,37 @@ function formatProjectsApiDatetimeLong(
   i18n: i18next,
   options: FormatDateStringOptions = {},
 ) {
-  const hasTime = String( dateString ).includes( "T" );
-  if ( hasTime ) {
-    return formatDateString( dateString, i18n.t( "datetime-format-long" ), i18n, options );
+  const hasTime = String(dateString).includes("T");
+  if (hasTime) {
+    return formatDateString(dateString, i18n.t("datetime-format-long"), i18n, options);
   }
-  if ( dateString?.includes( "/" ) ) {
+  if (dateString?.includes("/")) {
     // Convert from 2025/08/01 to 2025-08-01, so the date parsing function won't crash
-    dateString = dateString.replace( /\//g, "-" );
+    dateString = dateString.replace(/\//g, "-");
   }
-  const hasTimezoneOffset = String( dateString ).includes( ":" );
-  if ( hasTimezoneOffset ) {
-    const dateWithoutOffset = dateString.split( " " )[0];
+  const hasTimezoneOffset = String(dateString).includes(":");
+  if (hasTimezoneOffset) {
+    const dateWithoutOffset = dateString.split(" ")[0];
     return formatDateString(
       dateWithoutOffset,
-      i18n.t( "date-format-long" ),
+      i18n.t("date-format-long"),
       i18n,
       options,
     );
   }
-  const hasComma = String( dateString ).includes( "," );
-  if ( hasComma ) {
-    const parsedDate = parse( dateString, "MMMM d, yyyy", new Date( ) );
+  const hasComma = String(dateString).includes(",");
+  if (hasComma) {
+    const parsedDate = parse(dateString, "MMMM d, yyyy", new Date());
 
     return formatDateString(
-      formatISO( parsedDate ),
-      i18n.t( "date-format-long" ),
+      formatISO(parsedDate),
+      i18n.t("date-format-long"),
       i18n,
       options,
     );
   }
 
-  return formatDateString( dateString, i18n.t( "date-format-long" ), i18n, options );
+  return formatDateString(dateString, i18n.t("date-format-long"), i18n, options);
 }
 
 export {

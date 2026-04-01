@@ -29,13 +29,13 @@ interface TaxonResultProps {
   fetchRemote?: boolean;
   first?: boolean;
   fromLocal?: boolean;
-  handleCheckmarkPress: ( taxon: object ) => void;
+  handleCheckmarkPress: (taxon: object) => void;
   handleRemovePress?: () => void;
-  handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
+  handleTaxonOrEditPress?: (_event?: GestureResponderEvent) => void;
   hideInfoButton?: boolean;
   hideNavButtons?: boolean;
   lastScreen?: string | null;
-  onPressInfo?: ( taxon: object ) => void;
+  onPressInfo?: (taxon: object) => void;
   showCheckmark?: boolean;
   showEditButton?: boolean;
   showRemoveButton?: boolean;
@@ -50,7 +50,7 @@ interface TaxonResultMainProps extends PropsWithChildren {
   className?: string;
 }
 
-const TaxonResult = ( {
+const TaxonResult = ({
   accessibilityLabel,
   activeColor,
   asListItem = true,
@@ -77,11 +77,11 @@ const TaxonResult = ( {
   unpressable = false,
   vision = false,
   white = false,
-}: TaxonResultProps ) => {
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
+}: TaxonResultProps) => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
 
-  const currentUser = useCurrentUser( );
+  const currentUser = useCurrentUser();
 
   // thinking about future performance, it might make more sense to batch
   // network requests for useTaxon instead of making individual API calls.
@@ -95,39 +95,39 @@ const TaxonResult = ( {
   const usableTaxon = fromLocal
     ? localTaxon
     : taxonProp;
-  const accessibleName = accessibleTaxonName( usableTaxon, currentUser, t );
+  const accessibleName = accessibleTaxonName(usableTaxon, currentUser, t);
   // A representative photo is dependant on the actual image that was scored by computer vision
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
-  const representativePhoto = ( taxonProp as ApiTaxon )?.representative_photo;
+  const representativePhoto = (taxonProp as ApiTaxon)?.representative_photo;
   // I have seen the RealmTaxon that is accessed here get invalidated and deleted
   // while this screen is still in stack and therefore the app erroring out.
   // Have not had time to investigate further, but this is a workaround for now.
   const taxonImagePointer = representativePhoto
-      || ( usableTaxon as ApiTaxon )?.default_photo
-      || ( usableTaxon as RealmTaxon )?.defaultPhoto;
-  const taxonImage = React.useMemo( () => ( { ...taxonImagePointer } ), [taxonImagePointer] );
+      || (usableTaxon as ApiTaxon)?.default_photo
+      || (usableTaxon as RealmTaxon)?.defaultPhoto;
+  const taxonImage = React.useMemo(() => ({ ...taxonImagePointer }), [taxonImagePointer]);
 
   const taxonImageSource = { uri: taxonImage?.url };
 
   const isRepresentativeButOtherTaxon = representativePhoto
     && !localTaxon?.taxonPhotos?.some(
-      ( tp: RealmTaxonPhoto ) => tp.photo.id === representativePhoto.id,
+      (tp: RealmTaxonPhoto) => tp.photo.id === representativePhoto.id,
     );
 
-  const navToTaxonDetails = React.useCallback( ( ) => {
+  const navToTaxonDetails = React.useCallback(() => {
     const params = {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,
       vision,
     };
-    if ( !isRepresentativeButOtherTaxon ) {
+    if (!isRepresentativeButOtherTaxon) {
       params.firstPhotoID = taxonImage?.id;
     } else {
       params.representativePhoto = taxonImage;
     }
-    navigation.push( "TaxonDetails", params );
+    navigation.push("TaxonDetails", params);
   }, [
     hideNavButtons,
     lastScreen,
@@ -136,8 +136,8 @@ const TaxonResult = ( {
     vision,
     taxonImage,
     isRepresentativeButOtherTaxon,
-  ] );
-  const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
+  ]);
+  const TaxonResultMain = React.useCallback((props: TaxonResultMainProps) => (
     unpressable
       // eslint-disable-next-line react/jsx-props-no-spreading
       ? <View {...props}>{ props.children }</View>
@@ -149,7 +149,7 @@ const TaxonResult = ( {
           accessible
           accessibilityRole="link"
           accessibilityLabel={accessibleName}
-          accessibilityHint={t( "Navigates-to-taxon-details" )}
+          accessibilityHint={t("Navigates-to-taxon-details")}
         >
           { props.children }
         </Pressable>
@@ -160,10 +160,10 @@ const TaxonResult = ( {
     navToTaxonDetails,
     t,
     unpressable,
-  ] );
+  ]);
 
   // useTaxon could return null, and it's at least remotely possible taxonProp is null
-  if ( !usableTaxon ) return null;
+  if (!usableTaxon) return null;
 
   return (
     <View
@@ -181,9 +181,9 @@ const TaxonResult = ( {
     >
       <TaxonResultMain
         className={
-          classnames( "flex-row items-center shrink", {
+          classnames("flex-row items-center shrink", {
             "py-3": asListItem,
-          } )
+          })
         }
       >
         <View className="w-[62px] h-[62px] justify-center relative">
@@ -197,7 +197,7 @@ const TaxonResult = ( {
             white={white}
             isBackground={false}
           />
-          {!!( confidence && confidencePosition === "photo" ) && (
+          {!!(confidence && confidencePosition === "photo") && (
             <View className="absolute -bottom-4 w-full items-center">
               <ConfidenceInterval
                 confidence={confidence}
@@ -217,12 +217,12 @@ const TaxonResult = ( {
             scientificNameFirst={currentUser?.prefers_scientific_name_first}
             prefersCommonNames={currentUser?.prefers_common_names}
           />
-          {!!( ( confidence || confidencePercentage ) && confidencePosition === "text" ) && (
+          {!!((confidence || confidencePercentage) && confidencePosition === "text") && (
             <View className="mt-1 w-[62px]">
               {confidencePercentage
                 ? (
                   <Body3 className="color-inatGreen">
-                    {t( "X-percent", { count: confidencePercentage } )}
+                    {t("X-percent", { count: confidencePercentage })}
                   </Body3>
                 )
                 : (
@@ -241,20 +241,20 @@ const TaxonResult = ( {
             <INatIconButton
               icon="info-circle-outline"
               size={22}
-              onPress={( ) => {
-                if ( typeof ( onPressInfo ) === "function" ) {
-                  onPressInfo( usableTaxon );
+              onPress={() => {
+                if (typeof (onPressInfo) === "function") {
+                  onPressInfo(usableTaxon);
                   return;
                 }
-                navToTaxonDetails( );
+                navToTaxonDetails();
               }}
               color={String(
                 clearBackground
                   ? colors?.white
                   : colors?.darkGray,
               )}
-              accessibilityLabel={t( "More-info" )}
-              accessibilityHint={t( "Navigates-to-taxon-details" )}
+              accessibilityLabel={t("More-info")}
+              accessibilityHint={t("Navigates-to-taxon-details")}
             />
           )}
           { showCheckmark && (
@@ -267,7 +267,7 @@ const TaxonResult = ( {
                   ? colors?.white
                   : colors?.darkGray,
               )}
-              onPress={() => handleCheckmarkPress( usableTaxon )}
+              onPress={() => handleCheckmarkPress(usableTaxon)}
               accessibilityLabel={accessibilityLabel}
               testID={`${testID}.checkmark`}
             />
@@ -278,8 +278,8 @@ const TaxonResult = ( {
                   icon="edit"
                   size={20}
                   onPress={handleTaxonOrEditPress}
-                  accessibilityLabel={t( "Edit-identification" )}
-                  accessibilityHint={t( "Edits-this-observations-taxon" )}
+                  accessibilityLabel={t("Edit-identification")}
+                  accessibilityHint={t("Edits-this-observations-taxon")}
                 />
               )}
           { showRemoveButton && handleRemovePress
@@ -288,8 +288,8 @@ const TaxonResult = ( {
                 icon="close"
                 size={20}
                 onPress={handleRemovePress}
-                accessibilityLabel={t( "Remove-identification" )}
-                accessibilityHint={t( "Removes-this-observations-taxon" )}
+                accessibilityLabel={t("Remove-identification")}
+                accessibilityHint={t("Removes-this-observations-taxon")}
               />
             )}
         </View>

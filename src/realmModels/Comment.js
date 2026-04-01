@@ -14,7 +14,7 @@ class Comment extends Realm.Object {
     user: User && User.FIELDS,
   };
 
-  static mapCommentForMyObsAdvancedMode( comment ) {
+  static mapCommentForMyObsAdvancedMode(comment) {
     return {
       uuid: comment.uuid,
     };

@@ -65,8 +65,8 @@ export type ScoreImageParams = MaybeLatLng & {
 
 export interface UseSuggestionsOptions {
   shouldFetchOnlineSuggestions: boolean;
-  onFetchError: ( options: { isOnline: boolean } ) => void;
-  onFetched: ( options: { isOnline: boolean } ) => void;
+  onFetchError: (options: { isOnline: boolean }) => void;
+  onFetched: (options: { isOnline: boolean }) => void;
   scoreImageParams?: ScoreImageParams;
   queryKey: string[];
   onlineSuggestionsAttempted: boolean;

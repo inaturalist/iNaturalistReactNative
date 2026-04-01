@@ -23,16 +23,16 @@ type Props = {
 // Note re: dark mode: react-native-picker automatically handles user preferences when it comes
 // to the color of the text, so when we add dark mode, we can remove the explicit styling.
 
-const PickerSheet = ( {
+const PickerSheet = ({
   onPressClose,
   confirm,
   headerText,
   pickerValues,
   selectedValue,
   insideModal,
-}: Props ): Node => {
+}: Props): Node => {
   const { t } = useTranslation();
-  const [selection, setSelection] = useState( selectedValue );
+  const [selection, setSelection] = useState(selectedValue);
 
   return (
     <BottomSheet
@@ -46,25 +46,25 @@ const PickerSheet = ( {
       <View className="p-5">
         <Picker
           selectedValue={selection}
-          onValueChange={itemValue => setSelection( itemValue )}
+          onValueChange={itemValue => setSelection(itemValue)}
           testID="ReactNativePicker"
           itemStyle={{ color: colors.black }}
         >
-          {Object.keys( pickerValues ).map( k => (
+          {Object.keys(pickerValues).map(k => (
             <Picker.Item
               key={k}
               label={pickerValues[k].label}
               value={pickerValues[k].value}
               color={colors.black}
             />
-          ) )}
+          ))}
         </Picker>
         <Button
           level="primary"
-          text={t( "CONFIRM" )}
-          onPress={() => confirm( selection )}
+          text={t("CONFIRM")}
+          onPress={() => confirm(selection)}
           className="mt-[15px]"
-          accessibilityLabel={t( "CONFIRM" )}
+          accessibilityLabel={t("CONFIRM")}
         />
       </View>
     </BottomSheet>

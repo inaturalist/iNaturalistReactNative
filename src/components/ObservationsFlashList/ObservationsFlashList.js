@@ -30,7 +30,7 @@ import ObsPressable from "./ObsPressable";
 
 const { useRealm } = RealmContext;
 
-const AnimatedFlashList = Animated.createAnimatedComponent( CustomFlashList );
+const AnimatedFlashList = Animated.createAnimatedComponent(CustomFlashList);
 
 type Props = {
   contentContainerStyle?: Object,
@@ -62,7 +62,7 @@ type Props = {
   testID: string
 };
 
-const ObservationsFlashList: Function = ( {
+const ObservationsFlashList: Function = ({
   contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
@@ -87,22 +87,22 @@ const ObservationsFlashList: Function = ( {
   showNoResults,
   showObservationsEmptyScreen,
   testID,
-}: Props ): Node => {
+}: Props): Node => {
   const {
     isDefaultMode,
-  } = useLayoutPrefs( );
-  const realm = useRealm( );
-  const currentUser = useCurrentUser( );
-  const navigation = useNavigation( );
-  const navigateToObsEdit = useNavigateToObsEdit( );
-  const uploadQueue = useStore( state => state.uploadQueue );
-  const totalUploadProgress = useStore( state => state.totalUploadProgress );
-  const [refreshing, setRefreshing] = useState( false );
+  } = useLayoutPrefs();
+  const realm = useRealm();
+  const currentUser = useCurrentUser();
+  const navigation = useNavigation();
+  const navigateToObsEdit = useNavigateToObsEdit();
+  const uploadQueue = useStore(state => state.uploadQueue);
+  const totalUploadProgress = useStore(state => state.totalUploadProgress);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = async ( ) => {
-    setRefreshing( true );
-    await handlePullToRefresh( );
-    setRefreshing( false );
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await handlePullToRefresh();
+    setRefreshing(false);
   };
 
   const {
@@ -110,12 +110,12 @@ const ObservationsFlashList: Function = ( {
     gridItemStyle,
     gridItemWidth,
     numColumns,
-  } = useGridLayout( layout );
-  const { t } = useTranslation( );
+  } = useGridLayout(layout);
+  const { t } = useTranslation();
 
-  const renderItem = useCallback( ( { item: observation } ) => {
+  const renderItem = useCallback(({ item: observation }) => {
     // Empty box
-    if ( observation.empty ) {
+    if (observation.empty) {
       return (
         <View
           className="rounded-[15px] border-dotted border-4 border-lightGray"
@@ -124,28 +124,28 @@ const ObservationsFlashList: Function = ( {
       );
     }
     const { uuid } = observation;
-    const onUploadButtonPress = ( ) => handleIndividualUploadPress( uuid );
+    const onUploadButtonPress = () => handleIndividualUploadPress(uuid);
     // 20240529 amanda - filtering in realm is a fast way to look up sync status
-    const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, observation );
-    const obsUploadState = totalUploadProgress.find( o => o.uuid === uuid );
+    const obsNeedsSync = RealmObservation.isUnsyncedObservation(realm, observation);
+    const obsUploadState = totalUploadProgress.find(o => o.uuid === uuid);
     const uploadProgress = obsNeedsSync
       ? obsUploadState?.totalProgress || 0
       : obsUploadState?.totalProgress;
 
-    const queued = uploadQueue.includes( uuid );
+    const queued = uploadQueue.includes(uuid);
 
-    const onItemPress = ( ) => {
-      if ( obsNeedsSync && !isDefaultMode ) {
-        const realmObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
-        navigateToObsEdit( realmObservation );
+    const onItemPress = () => {
+      if (obsNeedsSync && !isDefaultMode) {
+        const realmObservation = realm.objectForPrimaryKey("Observation", observation.uuid);
+        navigateToObsEdit(realmObservation);
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
         // ObsDetails doesn't get pushed onto the stack twice after multiple taps
-        navigation.navigate( {
+        navigation.navigate({
           key: `Obs-${obsListKey}-${uuid}`,
           name: "ObsDetails",
           params: { uuid },
-        } );
+        });
       }
     };
 
@@ -191,16 +191,16 @@ const ObservationsFlashList: Function = ( {
     realm,
     totalUploadProgress,
     uploadQueue,
-  ] );
+  ]);
 
-  const renderItemSeparator = useCallback( ( ) => {
-    if ( layout === "grid" ) {
+  const renderItemSeparator = useCallback(() => {
+    if (layout === "grid") {
       return null;
     }
     return <View className="border-b border-lightGray" />;
-  }, [layout] );
+  }, [layout]);
 
-  const renderFooter = useCallback( ( ) => (
+  const renderFooter = useCallback(() => (
     <InfiniteScrollLoadingWheel
       explore={explore}
       hideLoadingWheel={hideLoadingWheel}
@@ -212,10 +212,10 @@ const ObservationsFlashList: Function = ( {
     hideLoadingWheel,
     isConnected,
     layout,
-  ] );
+  ]);
 
-  const contentContainerStyle = useMemo( ( ) => {
-    if ( layout === "list" ) { return contentContainerStyleProp; }
+  const contentContainerStyle = useMemo(() => {
+    if (layout === "list") { return contentContainerStyleProp; }
     return {
       ...flashListStyle,
       ...contentContainerStyleProp,
@@ -224,14 +224,14 @@ const ObservationsFlashList: Function = ( {
     contentContainerStyleProp,
     flashListStyle,
     layout,
-  ] );
+  ]);
 
-  const renderEmptyComponent = useCallback( ( ) => {
+  const renderEmptyComponent = useCallback(() => {
     const showEmptyScreen = showObservationsEmptyScreen
       ? null
       : (
         <Body3 className="self-center mt-[150px]">
-          {t( "No-results-found-try-different-search" )}
+          {t("No-results-found-try-different-search")}
         </Body3>
       );
 
@@ -246,7 +246,7 @@ const ObservationsFlashList: Function = ( {
     showObservationsEmptyScreen,
     showNoResults,
     t,
-  ] );
+  ]);
 
   const extraData = {
     gridItemWidth,
@@ -257,30 +257,30 @@ const ObservationsFlashList: Function = ( {
   // react thinks we've rendered a second item w/ a duplicate key
   const keyExtractor = item => item.uuid || item.id;
 
-  const onMomentumScrollEnd = useCallback( ( ) => {
-    if ( dataCanBeFetched ) {
-      onEndReached( );
+  const onMomentumScrollEnd = useCallback(() => {
+    if (dataCanBeFetched) {
+      onEndReached();
     }
-  }, [dataCanBeFetched, onEndReached] );
+  }, [dataCanBeFetched, onEndReached]);
 
-  const handleEndReached = useCallback( ( ) => {
-    if ( !dataCanBeFetched || explore ) return;
+  const handleEndReached = useCallback(() => {
+    if (!dataCanBeFetched || explore) return;
 
-    if ( fetchFromLastObservation && data.length > 0 ) {
+    if (fetchFromLastObservation && data.length > 0) {
       const lastObservation = data[data.length - 1];
       const lastId = lastObservation?.id;
-      if ( lastId && !lastObservation?.empty ) {
-        fetchFromLastObservation( lastId );
+      if (lastId && !lastObservation?.empty) {
+        fetchFromLastObservation(lastId);
         return;
       }
     }
 
-    onEndReached( );
-  }, [dataCanBeFetched, fetchFromLastObservation, data, onEndReached, explore] );
+    onEndReached();
+  }, [dataCanBeFetched, fetchFromLastObservation, data, onEndReached, explore]);
 
   const refreshControl = (
     <CustomRefreshControl
-      accessibilityLabel={t( "Pull-to-refresh-and-sync-observations" )}
+      accessibilityLabel={t("Pull-to-refresh-and-sync-observations")}
       refreshing={refreshing}
       onRefresh={onRefresh}
     />

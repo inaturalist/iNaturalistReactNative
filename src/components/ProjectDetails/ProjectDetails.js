@@ -44,64 +44,64 @@ type Props = {
   loadingProjectMembership: boolean
 }
 
-const ProjectDetails = ( {
+const ProjectDetails = ({
   project, joinProject, leaveProject, loadingProjectMembership,
-}: Props ): Node => {
-  const setExploreView = useStore( state => state.setExploreView );
+}: Props): Node => {
+  const setExploreView = useStore(state => state.setExploreView);
 
-  const { t, i18n } = useTranslation( );
-  const navigation = useNavigation( );
+  const { t, i18n } = useTranslation();
+  const navigation = useNavigation();
 
-  const { writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
+  const { writeLayoutToStorage } = useStoredLayout("exploreObservationsLayout");
 
-  const [openSheet, setOpenSheet] = useState( NONE );
+  const [openSheet, setOpenSheet] = useState(NONE);
 
   const onObservationPressed = useCallback(
-    ( toMap: boolean ) => {
-      setExploreView( "observations" );
-      if ( toMap ) {
-        writeLayoutToStorage( "map" );
+    (toMap: boolean) => {
+      setExploreView("observations");
+      if (toMap) {
+        writeLayoutToStorage("map");
       }
-      navigation.navigate( "Explore", {
+      navigation.navigate("Explore", {
         project,
         // If selected project has no place_id, show map in worldwide mode
         worldwide: !project?.place,
         place: project?.place,
-      } );
+      });
     },
     [navigation, project, setExploreView, writeLayoutToStorage],
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => {
-      setExploreView( "species" );
-      navigation.navigate( "Explore", {
+    () => {
+      setExploreView("species");
+      navigation.navigate("Explore", {
         project,
         worldwide: true,
-      } );
+      });
     },
     [navigation, project, setExploreView],
   );
 
   const onMembersPressed = useCallback(
-    ( ) => {
-      navigation.navigate( "ProjectMembers", {
+    () => {
+      navigation.navigate("ProjectMembers", {
         id: project?.id,
         title: project?.title,
-      } );
+      });
     },
     [navigation, project],
   );
 
-  if ( !project ) {
+  if (!project) {
     return null;
   }
 
   const userTextStyle = { lineHeight: 26 };
 
-  const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
+  const { projectDate, shouldDisplayDateRange } = formatProjectDate(project, t, i18n);
 
-  const displayBriefcase = ( ) => (
+  const displayBriefcase = () => (
     <INatIcon
       name="briefcase"
       size={66}
@@ -112,9 +112,9 @@ const ProjectDetails = ( {
   const iconClassName = "h-[90px] w-[90px] rounded-full bg-white -top-6";
 
   const displayProjectIcon = icon => {
-    const productionIcon = icon?.replace( "staticdev", "static" );
+    const productionIcon = icon?.replace("staticdev", "static");
 
-    if ( productionIcon === defaultProjectIcon ) {
+    if (productionIcon === defaultProjectIcon) {
       return (
         <View className={
           classnames(
@@ -123,7 +123,7 @@ const ProjectDetails = ( {
           )
         }
         >
-          {displayBriefcase( )}
+          {displayBriefcase()}
         </View>
       );
     }
@@ -139,7 +139,7 @@ const ProjectDetails = ( {
 
   const backgroundImageSource = project?.header_image_url
     ? { uri: project.header_image_url }
-    : require( "images/background/project_banner.jpg" );
+    : require("images/background/project_banner.jpg");
 
   return (
     <ScrollViewWrapper testID="project-details">
@@ -150,7 +150,7 @@ const ProjectDetails = ( {
           testID="ProjectDetails.headerImage"
           accessibilityIgnoresInvertColors
         >
-          {displayProjectIcon( project?.icon )}
+          {displayProjectIcon(project?.icon)}
         </ImageBackground>
       </View>
       <View className="mx-4 pb-8">
@@ -158,7 +158,7 @@ const ProjectDetails = ( {
         <Subheading1>
           {shouldDisplayDateRange
             ? projectDate
-            : displayProjectType( project.project_type, t )}
+            : displayProjectType(project.project_type, t)}
         </Subheading1>
         <OverviewCounts
           counts={{
@@ -167,44 +167,44 @@ const ProjectDetails = ( {
             members_count: project.members_count,
             journal_posts_count: project.journal_posts_count,
           }}
-          onObservationPressed={() => onObservationPressed( false )}
+          onObservationPressed={() => onObservationPressed(false)}
           onSpeciesPressed={onSpeciesPressed}
           onMembersPressed={onMembersPressed}
         />
-        <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
+        <Heading4 className="mt-7">{t("ABOUT")}</Heading4>
         {project?.description && (
           <UserText text={project.description} htmlStyle={userTextStyle} />
         )}
         {project.project_type === "collection" && (
           <>
             <Heading4 className="mb-3 mt-5">
-              {t( "PROJECT-REQUIREMENTS" )}
+              {t("PROJECT-REQUIREMENTS")}
             </Heading4>
             <Button
               className="mb-5"
               level="neutral"
-              text={t( "VIEW-PROJECT-REQUIREMENTS" )}
-              onPress={( ) => navigation.navigate( "ProjectRequirements", { id: project.id } )}
+              text={t("VIEW-PROJECT-REQUIREMENTS")}
+              onPress={() => navigation.navigate("ProjectRequirements", { id: project.id })}
             />
           </>
         )}
-        <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
+        <Heading4 className="mb-3">{t("MAP")}</Heading4>
         <Button
           level="neutral"
-          text={t( "VIEW-IN-EXPLORE" )}
-          onPress={() => onObservationPressed( true )}
+          text={t("VIEW-IN-EXPLORE")}
+          onPress={() => onObservationPressed(true)}
         />
         <Heading4 className="mb-3 mt-5">
           {!project.current_user_is_member
-            ? t( "JOIN-PROJECT" )
-            : t( "LEAVE-PROJECT" )}
+            ? t("JOIN-PROJECT")
+            : t("LEAVE-PROJECT")}
         </Heading4>
         {!project.current_user_is_member
           ? (
             <Button
               level="neutral"
-              text={t( "JOIN" )}
-              onPress={() => setOpenSheet( JOIN )}
+              text={t("JOIN")}
+              onPress={() => setOpenSheet(JOIN)}
               loading={loadingProjectMembership}
               disabled={loadingProjectMembership}
             />
@@ -212,8 +212,8 @@ const ProjectDetails = ( {
           : (
             <Button
               level="neutral"
-              text={t( "LEAVE" )}
-              onPress={() => setOpenSheet( LEAVE )}
+              text={t("LEAVE")}
+              onPress={() => setOpenSheet(LEAVE)}
               loading={loadingProjectMembership}
               disabled={loadingProjectMembership}
             />
@@ -222,44 +222,44 @@ const ProjectDetails = ( {
         <Body4
           className="underline mt-[11px]"
           accessibilityRole="link"
-          onPress={async () => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
+          onPress={async () => openExternalWebBrowser(`${PROJECT_URL}/${project.id}`)}
         >
-          {t( "View-in-browser" )}
+          {t("View-in-browser")}
         </Body4>
       </View>
       {openSheet === JOIN && (
         <WarningSheet
-          onPressClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet(NONE)}
           confirm={() => {
             joinProject();
-            setOpenSheet( NONE );
+            setOpenSheet(NONE);
           }}
-          headerText={t( "JOIN-PROJECT--question" )}
-          buttonText={t( "JOIN" )}
-          handleSecondButtonPress={() => setOpenSheet( NONE )}
-          secondButtonText={t( "CANCEL" )}
+          headerText={t("JOIN-PROJECT--question")}
+          buttonText={t("JOIN")}
+          handleSecondButtonPress={() => setOpenSheet(NONE)}
+          secondButtonText={t("CANCEL")}
           loading={loadingProjectMembership}
           buttonType="primary"
         />
       )}
       {openSheet === LEAVE && (
         <WarningSheet
-          onPressClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet(NONE)}
           confirm={() => {
             leaveProject();
-            setOpenSheet( NONE );
+            setOpenSheet(NONE);
           }}
-          headerText={t( "LEAVE-PROJECT--question" )}
+          headerText={t("LEAVE-PROJECT--question")}
           text={
             project.project_type === ""
             && project?.current_user_observations_count > 0
-            && t( "If-you-leave-x-of-your-observations-removed", {
+            && t("If-you-leave-x-of-your-observations-removed", {
               count: project?.current_user_observations_count,
-            } )
+            })
           }
-          buttonText={t( "LEAVE" )}
-          handleSecondButtonPress={() => setOpenSheet( NONE )}
-          secondButtonText={t( "CANCEL" )}
+          buttonText={t("LEAVE")}
+          handleSecondButtonPress={() => setOpenSheet(NONE)}
+          secondButtonText={t("CANCEL")}
           loading={loadingProjectMembership}
         />
       )}

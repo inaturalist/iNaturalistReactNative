@@ -23,13 +23,13 @@ export interface Notification extends ApiNotification {
 }
 
 interface InfiniteNotificationsScrollResponse {
-  fetchNextPage: ( ) => void;
+  fetchNextPage: () => void;
   isError?: boolean;
   isFetching?: boolean;
   isInitialLoading?: boolean;
   showStillLoadingMessage: boolean;
   notifications: Notification[];
-  refetch: ( ) => void;
+  refetch: () => void;
 }
 
 const UPDATE_FIELDS = {
@@ -82,8 +82,8 @@ async function fetchObsByUUIDs(
     },
     authOptions,
   );
-  if ( options.save ) {
-    Observation.upsertRemoteObservations( observations, realm );
+  if (options.save) {
+    Observation.upsertRemoteObservations(observations, realm);
   }
   return observations;
 }
@@ -91,12 +91,12 @@ async function fetchObsByUUIDs(
 const useInfiniteNotificationsScroll = (
   notificationParams: ApiObservationsUpdatesParams = {},
 ): InfiniteNotificationsScrollResponse => {
-  const currentUser = useCurrentUser( );
-  const realm = useRealm( );
-  const [showStillLoadingMessage, setShowStillLoadingMessage] = useState( false );
+  const currentUser = useCurrentUser();
+  const realm = useRealm();
+  const [showStillLoadingMessage, setShowStillLoadingMessage] = useState(false);
 
   const queryKey = useMemo(
-    () => ["useInfiniteNotificationsScroll", JSON.stringify( notificationParams )],
+    () => ["useInfiniteNotificationsScroll", JSON.stringify(notificationParams)],
     [notificationParams],
   );
 
@@ -109,10 +109,10 @@ const useInfiniteNotificationsScroll = (
     fetchNextPage,
   } = useAuthenticatedInfiniteQuery(
     queryKey,
-    async ( { pageParam }: { pageParam: number }, optsWithAuth: ApiOpts ) => {
+    async ({ pageParam }: { pageParam: number }, optsWithAuth: ApiOpts) => {
       const params = { ...BASE_PARAMS, ...notificationParams };
 
-      if ( pageParam ) {
+      if (pageParam) {
         params.page = pageParam;
       } else {
         params.page = 1;
@@ -127,65 +127,65 @@ const useInfiniteNotificationsScroll = (
       const updatesWithContent = response?.filter(
         update => update.comment || update.identification,
       ) || [];
-      const obsUUIDs = updatesWithContent.map( obsUpdate => obsUpdate.resource_uuid );
-      if ( obsUUIDs.length > 0 ) {
+      const obsUUIDs = updatesWithContent.map(obsUpdate => obsUpdate.resource_uuid);
+      if (obsUUIDs.length > 0) {
         const observations = await fetchObsByUUIDs(
           obsUUIDs,
           optsWithAuth,
           realm,
           { save: params.observations_by === "owner" },
         );
-        if ( observations ) {
-          return updatesWithContent.map( ( update: Notification ) => {
+        if (observations) {
+          return updatesWithContent.map((update: Notification) => {
             const resource = observations.find(
-              ( o: ApiObservation ) => o.uuid === update.resource_uuid,
+              (o: ApiObservation) => o.uuid === update.resource_uuid,
             );
             update.resource = resource;
             update.viewerOwnsResource = resource?.user?.id === currentUser?.id;
             return update;
-          } );
+          });
         }
       }
 
       return updatesWithContent;
     },
     {
-      getNextPageParam: ( lastPage, allPages ) => ( lastPage.length > 0
+      getNextPageParam: (lastPage, allPages) => (lastPage.length > 0
         ? allPages.length + 1
-        : undefined ),
-      enabled: !!( currentUser ),
+        : undefined),
+      enabled: !!(currentUser),
     },
   );
 
   // After 5 seconds of loading, we add a "Still loading..." message to the UI
-  useEffect( () => {
+  useEffect(() => {
     // Reset if we get data
-    if ( data !== undefined && !isFetching ) {
-      setShowStillLoadingMessage( false );
+    if (data !== undefined && !isFetching) {
+      setShowStillLoadingMessage(false);
       return undefined;
     }
 
     // Don't set timer if not loading
-    if ( !isFetching ) {
+    if (!isFetching) {
       return undefined;
     }
 
-    const timer = setTimeout( () => {
-      if ( data === undefined && isFetching ) {
-        setShowStillLoadingMessage( true );
+    const timer = setTimeout(() => {
+      if (data === undefined && isFetching) {
+        setShowStillLoadingMessage(true);
       }
-    }, LOADING_TIMEOUT );
+    }, LOADING_TIMEOUT);
 
     // eslint-disable-next-line consistent-return
-    return () => clearTimeout( timer );
-  }, [data, isFetching] );
+    return () => clearTimeout(timer);
+  }, [data, isFetching]);
 
   // Reset when user manually retries
-  useEffect( () => {
-    if ( isFetching ) {
-      setShowStillLoadingMessage( false );
+  useEffect(() => {
+    if (isFetching) {
+      setShowStillLoadingMessage(false);
     }
-  }, [isFetching] );
+  }, [isFetching]);
 
   return {
     refetch,
@@ -196,8 +196,8 @@ const useInfiniteNotificationsScroll = (
     // Disable fetchNextPage if signed out
     fetchNextPage: currentUser
       ? fetchNextPage
-      : ( ) => undefined,
-    notifications: flatten( data?.pages ),
+      : () => undefined,
+    notifications: flatten(data?.pages),
   };
 };
 

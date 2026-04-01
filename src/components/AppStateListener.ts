@@ -8,34 +8,34 @@ import {
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
-const logger = log.extend( "AppStateListener" );
+const logger = log.extend("AppStateListener");
 
-const AppStateListener = ( ) => {
-  const { loadTime } = usePerformance( {
+const AppStateListener = () => {
+  const { loadTime } = usePerformance({
     screenName: "AppStateListener",
     isLoading: false,
-  } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
+  });
+  if (isDebugMode()) {
+    logger.info(loadTime);
   }
-  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
-  const [deviceStorageFullShown, setDeviceStorageFullShown] = useState( false );
+  const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull();
+  const [deviceStorageFullShown, setDeviceStorageFullShown] = useState(false);
 
-  useEffect( ( ) => {
-    const subscription = AppState.addEventListener( "change", nextAppState => {
-      if ( nextAppState === "active" ) {
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", nextAppState => {
+      if (nextAppState === "active") {
         // Check storage and show alert as needed when app becomes active
-        if ( deviceStorageFull && !deviceStorageFullShown ) {
-          showStorageFullAlert( );
-          setDeviceStorageFullShown( true );
+        if (deviceStorageFull && !deviceStorageFullShown) {
+          showStorageFullAlert();
+          setDeviceStorageFullShown(true);
         }
 
-        focusManager.setFocused( true );
+        focusManager.setFocused(true);
       }
-    } );
+    });
 
-    return ( ) => subscription.remove( );
-  }, [deviceStorageFull, deviceStorageFullShown, showStorageFullAlert] );
+    return () => subscription.remove();
+  }, [deviceStorageFull, deviceStorageFullShown, showStorageFullAlert]);
 
   return null;
 };

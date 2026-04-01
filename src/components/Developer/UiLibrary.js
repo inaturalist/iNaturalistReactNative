@@ -14,7 +14,7 @@ import {
 } from "react-native";
 
 // Note: you need to add here and in UiLibraryItem
-const ITEMS = sortBy( [
+const ITEMS = sortBy([
   { title: "Activity Indicator", component: "ActivityIndicatorDemo" },
   { title: "Buttons", component: "Buttons" },
   { title: "Floating Action Bar", component: "FloatingActionBarDemo" },
@@ -25,19 +25,19 @@ const ITEMS = sortBy( [
   { title: "ObsGridItem", component: "ObsGridItemDemo" },
   { title: "TaxonGridItem", component: "TaxonGridItemDemo" },
   { title: "PivotCards", component: "PivotCardsDemo" },
-], item => item.title );
-ITEMS.push( { title: "Everything Else", component: "Misc" } );
+], item => item.title);
+ITEMS.push({ title: "Everything Else", component: "Misc" });
 
 const UiLibrary = (): Node => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation();
   return (
     <ViewWrapper>
       <FlatList
         data={ITEMS}
-        renderItem={( { item } ) => (
+        renderItem={({ item }) => (
           <Pressable
             accessibilityRole="link"
-            onPress={( ) => navigation.navigate( "UiLibraryItem", item )}
+            onPress={() => navigation.navigate("UiLibraryItem", item)}
             className="p-4 border-b-[1px] border-mediumGray"
           >
             <Body1>{ item.title }</Body1>

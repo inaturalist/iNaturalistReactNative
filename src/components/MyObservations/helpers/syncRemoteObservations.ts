@@ -3,7 +3,7 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import Observation from "realmModels/Observation";
 import { sleep } from "sharedHelpers/util";
 
-async function syncRemoteObservations( realm, currentUserId: number, deletionsCompletedAt: Date ) {
+async function syncRemoteObservations(realm, currentUserId: number, deletionsCompletedAt: Date) {
   const searchParams = {
     user_id: currentUserId,
     per_page: 50,
@@ -15,16 +15,16 @@ async function syncRemoteObservations( realm, currentUserId: number, deletionsCo
   // deleted, so we check to see if deletions recently completed and if
   // they did, make sure 10s have elapsed since deletions complated before
   // fetching new obs
-  if ( deletionsCompletedAt ) {
-    const msSinceDeletionsCompleted = ( Date.now( ) - deletionsCompletedAt.getTime( ) );
-    if ( msSinceDeletionsCompleted < 5_000 ) {
+  if (deletionsCompletedAt) {
+    const msSinceDeletionsCompleted = (Date.now() - deletionsCompletedAt.getTime());
+    if (msSinceDeletionsCompleted < 5_000) {
       const naptime = 10_000 - msSinceDeletionsCompleted;
-      await sleep( naptime );
+      await sleep(naptime);
     }
   }
-  const apiToken = await getJWT( );
-  const { results } = await searchObservations( searchParams, { api_token: apiToken } );
-  await Observation.upsertRemoteObservations( results, realm );
+  const apiToken = await getJWT();
+  const { results } = await searchObservations(searchParams, { api_token: apiToken });
+  await Observation.upsertRemoteObservations(results, realm);
 }
 
 export default syncRemoteObservations;

@@ -27,33 +27,33 @@ const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
 const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
-const LocationSection = ( { observation }: Props ) => {
-  const currentUser = useCurrentUser( );
-  const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
-  const [showMapModal, setShowMapModal] = useState( false );
+const LocationSection = ({ observation }: Props) => {
+  const currentUser = useCurrentUser();
+  const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState(false);
+  const [showMapModal, setShowMapModal] = useState(false);
   const showShareOptions = observation && !!(
     !observation.obscured || observation.privateLatitude
   );
   const latitude = observation.privateLatitude || observation.latitude;
   const longitude = observation.privateLongitude || observation.longitude;
-  const coordinateString = t( "Lat-Lon", {
+  const coordinateString = t("Lat-Lon", {
     latitude,
     longitude,
-  } );
+  });
 
-  const openMapScreen = useCallback( ( ) => setShowMapModal( true ), [] );
+  const openMapScreen = useCallback(() => setShowMapModal(true), []);
 
   const taxonId = observation?.taxon?.id;
 
-  const tileMapParams = useMemo( ( ) => ( taxonId
+  const tileMapParams = useMemo(() => (taxonId
     ? {
       taxon_id: taxonId,
       verifiable: true,
     }
-    : null ), [taxonId] );
+    : null), [taxonId]);
 
   const displayMap = useCallback(
-    ( ) => (
+    () => (
       <Map
         mapHeight={230}
         observation={observation}
@@ -73,10 +73,10 @@ const LocationSection = ( { observation }: Props ) => {
     ],
   );
 
-  const showModalMap = useMemo( ( ) => (
+  const showModalMap = useMemo(() => (
     <DetailsMap
       coordinateString={coordinateString}
-      closeModal={( ) => setShowMapModal( false )}
+      closeModal={() => setShowMapModal(false)}
       observation={observation}
       tileMapParams={tileMapParams}
       showLocationIndicator
@@ -89,12 +89,12 @@ const LocationSection = ( { observation }: Props ) => {
     currentUser,
     observation,
     tileMapParams,
-  ] );
+  ]);
 
   return (
     <>
       <View className="flex-row justify-between items-center mt-[8px] mx-[15px]">
-        <Heading4 className={headingClass}>{t( "LOCATION" )}</Heading4>
+        <Heading4 className={headingClass}>{t("LOCATION")}</Heading4>
         {showShareOptions && (
           <KebabMenu
             visible={locationKebabMenuVisible}
@@ -102,33 +102,33 @@ const LocationSection = ( { observation }: Props ) => {
           >
             <KebabMenu.Item
               isFirst
-              title={t( "Share-location" )}
+              title={t("Share-location")}
               onPress={() => createOpenLink(
                 { query: `${latitude},${longitude}` },
               )}
             />
             <KebabMenu.Item
-              title={t( "Copy-coordinates" )}
-              onPress={() => Clipboard.setString( coordinateString )}
+              title={t("Copy-coordinates")}
+              onPress={() => Clipboard.setString(coordinateString)}
             />
           </KebabMenu>
         )}
       </View>
-      {( observation.latitude || observation.private_latitude ) && (
+      {(observation.latitude || observation.private_latitude) && (
         <>
-          { displayMap( ) }
+          { displayMap() }
           <Button
-            text={t( "EXPAND-MAP" )}
+            text={t("EXPAND-MAP")}
             className="mb-4 mt-[20px] mx-[15px]"
             onPress={() => {
-              setShowMapModal( true );
+              setShowMapModal(true);
             }}
           />
           <Modal
             animationIn="fadeIn"
             animationOut="fadeOut"
             showModal={showMapModal}
-            closeModal={( ) => setShowMapModal( false )}
+            closeModal={() => setShowMapModal(false)}
             disableSwipeDirection
             style={DETAILS_MAP_MODAL_STYLE}
             modal={showModalMap}

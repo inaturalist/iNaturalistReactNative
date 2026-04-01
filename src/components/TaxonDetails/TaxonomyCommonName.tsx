@@ -8,18 +8,18 @@ interface Props {
   isCurrentTaxon?: boolean;
 }
 
-const TaxonomyCommonName = ( {
+const TaxonomyCommonName = ({
   commonName,
   scientificNameFirst,
   isCurrentTaxon,
-}: Props ) => (
+}: Props) => (
   <Body2
     className={
-      classnames( {
+      classnames({
         "font-bold mr-1": !scientificNameFirst,
         "text-inatGreen": isCurrentTaxon,
         underline: !isCurrentTaxon && !scientificNameFirst,
-      } )
+      })
     }
   >
     {scientificNameFirst && commonName && "("}

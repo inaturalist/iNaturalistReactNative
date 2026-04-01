@@ -11,29 +11,29 @@ import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 
-const initialPersistedStoreState = useStore.getState( );
+const initialPersistedStoreState = useStore.getState();
 
-const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
-  icon_url: faker.image.url( ),
-} );
+const mockUser = factory("LocalUser", {
+  login: faker.internet.userName(),
+  icon_url: faker.image.url(),
+});
 
-jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+jest.mock("sharedHooks/useCurrentUser", () => ({
   __esModule: true,
   default: () => undefined,
-} ) );
+}));
 
-jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
+jest.mock("sharedHooks/useAuthenticatedQuery", () => ({
   __esModule: true,
-  default: () => ( {
+  default: () => ({
     data: 0,
-  } ),
-} ) );
+  }),
+}));
 
-describe( "CustomTabBar", () => {
-  beforeEach( ( ) => {
+describe("CustomTabBar", () => {
+  beforeEach(() => {
     jest.useFakeTimers();
-  } );
+  });
 
   // it( "should render correctly", async () => {
   //   renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
@@ -41,71 +41,71 @@ describe( "CustomTabBar", () => {
   //   await expect( screen ).toMatchSnapshot();
   // } );
 
-  it( "should not have accessibility errors", async () => {
+  it("should not have accessibility errors", async () => {
     // const tabBar = <CustomTabBarContainer navigation={jest.fn( )} />;
 
     // Disabled during the update to RN 0.78
     // await expect( tabBar ).toBeAccessible();
-  } );
+  });
 
-  it( "should display person icon while user is logged out", async () => {
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+  it("should display person icon while user is logged out", async () => {
+    renderComponent(<CustomTabBarContainer navigation={jest.fn()} />);
 
-    const personIcon = screen.getByTestId( "NavButton.personIcon" );
-    await expect( personIcon ).toBeVisible( );
-  } );
+    const personIcon = screen.getByTestId("NavButton.personIcon");
+    await expect(personIcon).toBeVisible();
+  });
 
-  it( "should display avatar while user is logged in", async () => {
-    jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockUser );
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+  it("should display avatar while user is logged in", async () => {
+    jest.spyOn(useCurrentUser, "default").mockImplementation(() => mockUser);
+    renderComponent(<CustomTabBarContainer navigation={jest.fn()} />);
 
-    const avatar = screen.getByTestId( "UserIcon.photo" );
-    await expect( avatar ).toBeVisible( );
-  } );
+    const avatar = screen.getByTestId("UserIcon.photo");
+    await expect(avatar).toBeVisible();
+  });
 
-  it( "should display person icon when connectivity is low", async ( ) => {
-    useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+  it("should display person icon when connectivity is low", async () => {
+    useNetInfo.mockImplementation(() => ({ isConnected: false }));
+    renderComponent(<CustomTabBarContainer navigation={jest.fn()} />);
 
-    const personIcon = screen.getByTestId( "NavButton.personIcon" );
-    await expect( personIcon ).toBeVisible( );
-  } );
-} );
+    const personIcon = screen.getByTestId("NavButton.personIcon");
+    await expect(personIcon).toBeVisible();
+  });
+});
 
-describe( "CustomTabBar with advanced user layout", () => {
-  beforeAll( ( ) => {
-    setStoreStateLayout( {
+describe("CustomTabBar with advanced user layout", () => {
+  beforeAll(() => {
+    setStoreStateLayout({
       isAllAddObsOptionsMode: true,
-    } );
-  } );
+    });
+  });
 
-  afterAll( ( ) => {
-    useStore.setState( initialPersistedStoreState );
-  } );
+  afterAll(() => {
+    useStore.setState(initialPersistedStoreState);
+  });
 
-  beforeEach( ( ) => {
+  beforeEach(() => {
     jest.resetAllMocks();
-    useNetInfo.mockImplementation( ( ) => ( { isConnected: true } ) );
+    useNetInfo.mockImplementation(() => ({ isConnected: true }));
     // Re-establish the safe area context mock after resetAllMocks
-    const safeAreaContext = require( "react-native-safe-area-context" );
-    safeAreaContext.useSafeAreaInsets.mockImplementation( () => ( {
+    const safeAreaContext = require("react-native-safe-area-context");
+    safeAreaContext.useSafeAreaInsets.mockImplementation(() => ({
       top: 0,
       right: 0,
       bottom: 0,
       left: 0,
-    } ) );
-  } );
+    }));
+  });
 
-  it( "should render correctly", async () => {
-    renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
+  it("should render correctly", async () => {
+    renderComponent(<CustomTabBarContainer navigation={jest.fn()} />);
 
-    await expect( screen ).toMatchSnapshot();
-  } );
+    await expect(screen).toMatchSnapshot();
+  });
 
-  it( "should not have accessibility errors", async () => {
+  it("should not have accessibility errors", async () => {
     // const tabBar = <CustomTabBarContainer navigation={jest.fn( )} />;
 
     // Disabled during the update to RN 0.78
     // await expect( tabBar ).toBeAccessible();
-  } );
-} );
+  });
+});

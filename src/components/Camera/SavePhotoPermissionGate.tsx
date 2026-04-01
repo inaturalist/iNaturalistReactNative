@@ -11,22 +11,22 @@ interface Props {
   onModalHide: () => void;
 }
 
-const SavePhotoPermissionGate = ( {
+const SavePhotoPermissionGate = ({
   onPhotoPermissionGranted,
   onPhotoPermissionBlocked,
   permissionNeeded,
   onModalHide,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   return (
     <PermissionGateContainer
       permissions={WRITE_MEDIA_PERMISSIONS}
-      title={t( "Save-photos-to-your-library" )}
-      titleDenied={t( "Save-photos-to-your-library" )}
-      body={t( "iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-library" )}
-      buttonText={t( "SAVE-PHOTOS" )}
+      title={t("Save-photos-to-your-library")}
+      titleDenied={t("Save-photos-to-your-library")}
+      body={t("iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-library")}
+      buttonText={t("SAVE-PHOTOS")}
       icon="photo-library"
-      image={require( "images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg" )}
+      image={require("images/background/birger-strahl-ksiGE4hMiso-unsplash.jpg")}
       onModalHide={onModalHide}
       onPermissionGranted={onPhotoPermissionGranted}
       onPermissionBlocked={onPhotoPermissionBlocked}

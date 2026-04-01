@@ -10,8 +10,8 @@ import useDeviceOrientation, {
   PORTRAIT_UPSIDE_DOWN,
 } from "sharedHooks/useDeviceOrientation";
 
-const rotationValue = ( deviceOrientation: string | undefined ) => {
-  switch ( deviceOrientation ) {
+const rotationValue = (deviceOrientation: string | undefined) => {
+  switch (deviceOrientation) {
     case LANDSCAPE_LEFT:
       return -90;
     case LANDSCAPE_RIGHT:
@@ -23,23 +23,23 @@ const rotationValue = ( deviceOrientation: string | undefined ) => {
   }
 };
 
-const useRotation = ( ) => {
-  const { deviceOrientation } = useDeviceOrientation( );
+const useRotation = () => {
+  const { deviceOrientation } = useDeviceOrientation();
 
-  const rotation = useSharedValue( 0 );
+  const rotation = useSharedValue(0);
 
-  useEffect( ( ) => {
-    rotation.set( rotationValue( deviceOrientation ) );
-  }, [deviceOrientation, rotation] );
+  useEffect(() => {
+    rotation.set(rotationValue(deviceOrientation));
+  }, [deviceOrientation, rotation]);
 
   const rotatableAnimatedStyle = useAnimatedStyle(
-    () => ( {
+    () => ({
       transform: [
         {
-          rotateZ: withTiming( `${-1 * ( rotation.get( ) || 0 )}deg` ),
+          rotateZ: withTiming(`${-1 * (rotation.get() || 0)}deg`),
         },
       ],
-    } ),
+    }),
   );
 
   return {

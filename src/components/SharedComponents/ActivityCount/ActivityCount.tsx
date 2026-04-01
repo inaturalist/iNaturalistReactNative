@@ -15,22 +15,22 @@ interface Props {
   classNameMargin?: string;
 }
 
-const ActivityCount = ( {
+const ActivityCount = ({
   accessibilityLabel,
   white,
   count,
   icon,
   testID,
   classNameMargin,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   return (
     <View
-      className={classNames( "flex-row items-center", classNameMargin )}
+      className={classNames("flex-row items-center", classNameMargin)}
       accessible
       accessibilityLabel={
-        accessibilityLabel || t( "Intl-number", { val: count || 0 } )
+        accessibilityLabel || t("Intl-number", { val: count || 0 })
       }
     >
       <INatIcon
@@ -41,10 +41,10 @@ const ActivityCount = ( {
         size={14}
       />
       <Body3
-        className={classNames( "ml-1.5", white && "text-white" )}
+        className={classNames("ml-1.5", white && "text-white")}
         testID={testID}
       >
-        {t( "Intl-number", { val: count || 0 } )}
+        {t("Intl-number", { val: count || 0 })}
       </Body3>
     </View>
   );

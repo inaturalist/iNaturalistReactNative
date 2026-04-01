@@ -19,23 +19,23 @@ const AVES = {
   isIconic: true,
 };
 
-function makeTaxonWithPhoto( options = {} ) {
+function makeTaxonWithPhoto(options = {}) {
   return {
-    _synced_at: faker.date.past( ),
-    id: faker.number.int( ),
+    _synced_at: faker.date.past(),
+    id: faker.number.int(),
     is_active: true,
-    name: faker.person.fullName( ),
-    preferred_common_name: faker.person.fullName( ),
+    name: faker.person.fullName(),
+    preferred_common_name: faker.person.fullName(),
     rank: "species",
     rank_level: 10,
-    default_photo: makePhoto( ),
+    default_photo: makePhoto(),
     ...options,
   };
 }
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const TaxonResultDemo = ( ) => (
+const TaxonResultDemo = () => (
   <ScrollViewWrapper>
     <View className="p-2">
       <Heading1>Remote data loading</Heading1>

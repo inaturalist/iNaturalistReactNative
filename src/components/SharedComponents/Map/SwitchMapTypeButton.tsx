@@ -7,36 +7,36 @@ import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( );
+const DROP_SHADOW = getShadow();
 
 interface Props {
   currentMapType?: string;
   mapType?: string;
-  setCurrentMapType: ( mapType: string|number ) => void;
+  setCurrentMapType: (mapType: string|number) => void;
   showSwitchMapTypeButton?: boolean;
   switchMapTypeButtonClassName?: string;
 }
 
-const SwitchMapTypeButton = ( {
+const SwitchMapTypeButton = ({
   currentMapType,
   mapType,
   setCurrentMapType,
   showSwitchMapTypeButton,
   switchMapTypeButtonClassName,
-}: Props ) => {
-  const { t } = useTranslation( );
-  useEffect( () => {
-    const value = zustandStorage.getItem( "mapType" );
-    if ( value && !mapType ) {
+}: Props) => {
+  const { t } = useTranslation();
+  useEffect(() => {
+    const value = zustandStorage.getItem("mapType");
+    if (value && !mapType) {
       // Load last saved map type (unless explicitly overridden by the parent
       // of the Map component)
-      setCurrentMapType( value );
+      setCurrentMapType(value);
     }
-  }, [mapType, setCurrentMapType] );
+  }, [mapType, setCurrentMapType]);
 
-  const changeMapType = ( newMapType: string ) => {
-    setCurrentMapType( newMapType );
-    zustandStorage.setItem( "mapType", newMapType );
+  const changeMapType = (newMapType: string) => {
+    setCurrentMapType(newMapType);
+    zustandStorage.setItem("mapType", newMapType);
   };
 
   return showSwitchMapTypeButton && (
@@ -49,14 +49,14 @@ const SwitchMapTypeButton = ( {
       style={DROP_SHADOW}
       accessibilityLabel={
         currentMapType === "standard"
-          ? t( "Standard--map-type" )
-          : t( "Satellite--map-type" )
+          ? t("Standard--map-type")
+          : t("Satellite--map-type")
       }
-      accessibilityHint={t( "Toggle-map-type" )}
-      onPress={( ) => {
-        changeMapType( currentMapType === "standard"
+      accessibilityHint={t("Toggle-map-type")}
+      onPress={() => {
+        changeMapType(currentMapType === "standard"
           ? "hybrid"
-          : "standard" );
+          : "standard");
       }}
     />
   );

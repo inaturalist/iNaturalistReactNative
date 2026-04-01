@@ -16,11 +16,11 @@ interface UseUserMeOptions {
   updateRealm?: boolean;
 }
 
-const useUserMe = ( options: UseUserMeOptions ) => {
-  const realm = useRealm( );
-  const currentUser = useCurrentUser( );
+const useUserMe = (options: UseUserMeOptions) => {
+  const realm = useRealm();
+  const currentUser = useCurrentUser();
   const updateRealm = options?.updateRealm;
-  const enabled = !!( currentUser );
+  const enabled = !!(currentUser);
 
   const {
     data: remoteUser,
@@ -29,32 +29,32 @@ const useUserMe = ( options: UseUserMeOptions ) => {
     dataUpdatedAt,
   } = useAuthenticatedQuery(
     ["fetchUserMe"],
-    optsWithAuth => fetchUserMe( { }, optsWithAuth ),
+    optsWithAuth => fetchUserMe({ }, optsWithAuth),
     {
       enabled,
     },
   );
 
-  const updateUser = useCallback( ( ) => {
-    if ( remoteUser && updateRealm ) {
-      safeRealmWrite( realm, ( ) => {
-        realm.create( User, remoteUser, UpdateMode.Modified );
-      }, "modifying current user via remote fetch in useUserMe" );
+  const updateUser = useCallback(() => {
+    if (remoteUser && updateRealm) {
+      safeRealmWrite(realm, () => {
+        realm.create(User, remoteUser, UpdateMode.Modified);
+      }, "modifying current user via remote fetch in useUserMe");
     }
-    if ( remoteUser ) {
-      setFirebaseDataCollectionEnabled( !remoteUser.prefers_no_tracking );
+    if (remoteUser) {
+      setFirebaseDataCollectionEnabled(!remoteUser.prefers_no_tracking);
     }
   }, [
     realm,
     remoteUser,
     updateRealm,
-  ] );
+  ]);
 
-  useEffect( ( ) => {
-    if ( dataUpdatedAt && updateUser ) {
-      updateUser( );
+  useEffect(() => {
+    if (dataUpdatedAt && updateUser) {
+      updateUser();
     }
-  }, [dataUpdatedAt, updateUser] );
+  }, [dataUpdatedAt, updateUser]);
 
   return {
     remoteUser,

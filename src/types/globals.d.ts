@@ -7,11 +7,11 @@ interface IdleDeadline {
   timeRemaining(): number;
 }
 
-type IdleRequestCallback = ( deadline: IdleDeadline ) => void;
+type IdleRequestCallback = (deadline: IdleDeadline) => void;
 
 declare function requestIdleCallback(
   callback: IdleRequestCallback,
   options?: IdleRequestOptions
 ): number;
 
-declare function cancelIdleCallback( handle: number ): void;
+declare function cancelIdleCallback(handle: number): void;

@@ -7,7 +7,7 @@ import colors from "styles/tailwindColors";
 
 import FadeInView from "./FadeInView";
 
-const fadeInComponent = ( component: React.JSX.Element ): React.JSX.Element => (
+const fadeInComponent = (component: React.JSX.Element): React.JSX.Element => (
   <FadeInView>
     {component}
   </FadeInView>
@@ -46,7 +46,7 @@ const showLongHeader = {
 
 export const hideHeaderLeft = {
   ...showHeader,
-  headerLeft: ( ) => null,
+  headerLeft: () => null,
   headerBackVisible: false,
 } as const;
 
@@ -64,7 +64,7 @@ const blankHeaderTitle = {
 } as const;
 
 const removeBottomBorder = {
-  headerBackground: ( ) => (
+  headerBackground: () => (
     // eslint-disable-next-line react-native/no-inline-styles
     <HeaderBackground style={{ bottomBorderColor: "white" }} />
   ),

@@ -23,16 +23,16 @@ interface Props {
   debugFormat: CameraDeviceFormat | null;
   changeDebugFormat: () => void;
   confidenceThreshold: number;
-  setConfidenceThreshold: ( value: number ) => void;
+  setConfidenceThreshold: (value: number) => void;
   fps: number;
-  setFPS: ( value: number ) => void;
+  setFPS: (value: number) => void;
   numStoredResults: number;
-  setNumStoredResults: ( value: number ) => void;
+  setNumStoredResults: (value: number) => void;
   cropRatio: number;
-  setCropRatio: ( value: number ) => void;
+  setCropRatio: (value: number) => void;
 }
 
-const AIDebugButton = ( {
+const AIDebugButton = ({
   debugFormat,
   changeDebugFormat,
   confidenceThreshold,
@@ -43,11 +43,11 @@ const AIDebugButton = ( {
   setNumStoredResults,
   cropRatio,
   setCropRatio,
-}: Props ) => {
-  const [modalVisible, setModalVisible] = useState( false );
-  const [slideIndex, setSlideIndex] = useState( 0 );
-  const { isDebug } = useDebugMode( );
-  if ( !isDebug ) return null;
+}: Props) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const { isDebug } = useDebugMode();
+  if (!isDebug) return null;
 
   return (
     <View className="flex-row justify-end">
@@ -60,7 +60,7 @@ const AIDebugButton = ( {
           CIRCLE_SIZE,
         )}
         backgroundColor={colors.deeppink}
-        onPress={() => setModalVisible( true )}
+        onPress={() => setModalVisible(true)}
         accessibilityLabel="Debug"
         accessibilityHint="Show debug tools"
         icon="gear"
@@ -70,7 +70,7 @@ const AIDebugButton = ( {
       <Portal>
         <Modal
           visible={modalVisible}
-          onDismiss={() => setModalVisible( false )}
+          onDismiss={() => setModalVisible(false)}
           // eslint-disable-next-line react-native/no-inline-styles
           contentContainerStyle={{ margin: 20 }}
         >
@@ -78,7 +78,7 @@ const AIDebugButton = ( {
             {slideIndex === 0 && (
               <>
                 <Button
-                  onPress={() => setSlideIndex( 1 )}
+                  onPress={() => setSlideIndex(1)}
                   className="bg-white"
                   text="Show camera options"
                 />
@@ -117,7 +117,7 @@ const AIDebugButton = ( {
             {slideIndex === 1 && (
               <>
                 <Button
-                  onPress={() => setSlideIndex( 0 )}
+                  onPress={() => setSlideIndex(0)}
                   className="bg-white"
                   text="Show prediction options"
                 />
@@ -125,7 +125,7 @@ const AIDebugButton = ( {
                 <Heading4 className="text-white">Debug camera format:</Heading4>
                 {/* eslint-disable-next-line react-native/no-inline-styles */}
                 <Text className="text-white" style={{ fontSize: 8 }}>
-                  {JSON.stringify( debugFormat, null, 2 )}
+                  {JSON.stringify(debugFormat, null, 2)}
                 </Text>
                 <Button
                   onPress={() => changeDebugFormat()}

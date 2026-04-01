@@ -22,40 +22,40 @@ type Props = {
   observation: Object,
 }
 
-const ObsDetailsOverview = ( {
+const ObsDetailsOverview = ({
   belongsToCurrentUser,
   isConnected,
   observation,
-}: Props ): Node => {
-  const navigation = useNavigation( );
-  const route = useRoute( );
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { t } = useTranslation();
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
   const communityTaxon = observation?.taxon;
 
-  const showCommunityTaxon = ( ) => {
-    if ( !communityTaxon ) {
+  const showCommunityTaxon = () => {
+    if (!communityTaxon) {
       return (
         <View className="justify-center ml-1">
-          <Body1>{t( "Unknown--taxon" )}</Body1>
+          <Body1>{t("Unknown--taxon")}</Body1>
         </View>
       );
     }
     return (
       <DisplayTaxon
         taxon={communityTaxon}
-        handlePress={( ) => (
-          navigation.navigate( {
+        handlePress={() => (
+          navigation.navigate({
             // Ensure button mashing doesn't open multiple TaxonDetails instances
             key: `${route.key}-ObsDetailsOverview-TaxonDetails-${communityTaxon.id}`,
             name: "TaxonDetails",
             params: { id: communityTaxon.id },
-          } )
+          })
         )}
         testID={`ObsDetails.taxon.${communityTaxon.id}`}
-        accessibilityHint={t( "Navigates-to-taxon-details" )}
+        accessibilityHint={t("Navigates-to-taxon-details")}
       />
     );
   };
@@ -81,7 +81,7 @@ const ObsDetailsOverview = ( {
       </View>
       <View className="flex-row my-[11px] mx-3 items-center">
         <View className="shrink">
-          {observation && showCommunityTaxon( )}
+          {observation && showCommunityTaxon()}
         </View>
         <View className="ml-auto">
           <ObsStatus layout="vertical" observation={observation} />
@@ -95,8 +95,8 @@ const ObsDetailsOverview = ( {
           <Body4 className="mx-3 mt-0 mb-2 italic">
             {
               belongsToCurrentUser
-                ? t( "You-have-opted-out-of-the-Community-Taxon" )
-                : t( "This-observer-has-opted-out-of-the-Community-Taxon" )
+                ? t("You-have-opted-out-of-the-Community-Taxon")
+                : t("This-observer-has-opted-out-of-the-Community-Taxon")
             }
           </Body4>
         )

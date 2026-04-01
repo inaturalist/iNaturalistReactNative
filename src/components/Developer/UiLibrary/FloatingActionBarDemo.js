@@ -8,7 +8,7 @@ import colors from "styles/tailwindColors";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const FloatingActionBarDemo = ( ) => (
+const FloatingActionBarDemo = () => (
   <FloatingActionBar
     position="bottomEnd"
     containerClass="mx-4 px-2 pb-2 rounded-md"

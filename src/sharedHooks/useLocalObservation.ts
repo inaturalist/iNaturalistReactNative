@@ -12,69 +12,69 @@ interface Observation extends RealmObservation {
 
 interface UseLocalObservation {
   localObservation: Observation | null;
-  markDeletedLocally: ( ) => void;
-  markViewedLocally: ( ) => void;
+  markDeletedLocally: () => void;
+  markViewedLocally: () => void;
 }
 
-const useLocalObservation = ( uuid: string ): UseLocalObservation => {
-  const realm = useRealm( );
+const useLocalObservation = (uuid: string): UseLocalObservation => {
+  const realm = useRealm();
 
-  if ( !uuid ) {
+  if (!uuid) {
     return {
       localObservation: null,
-      markDeletedLocally: ( ) => {
-        throw new Error( "UUID is required to update local observation" );
+      markDeletedLocally: () => {
+        throw new Error("UUID is required to update local observation");
       },
-      markViewedLocally: ( ) => {
-        throw new Error( "UUID is required to mark local observation as viewed" );
+      markViewedLocally: () => {
+        throw new Error("UUID is required to mark local observation as viewed");
       },
     };
   }
 
-  const observation = realm.objectForPrimaryKey( "Observation", uuid );
+  const observation = realm.objectForPrimaryKey("Observation", uuid);
 
-  if ( !observation ) {
+  if (!observation) {
     return {
       localObservation: null,
-      markDeletedLocally: ( ) => {
-        throw new Error( "Trying to update non-existing local observation" );
+      markDeletedLocally: () => {
+        throw new Error("Trying to update non-existing local observation");
       },
-      markViewedLocally: ( ) => {
-        throw new Error( "Trying to mark non-existing local observation as viewed" );
+      markViewedLocally: () => {
+        throw new Error("Trying to mark non-existing local observation as viewed");
       },
     };
   }
 
-  const markDeletedLocally = ( ) => {
-    safeRealmWrite( realm, ( ) => {
-      observation._deleted_at = new Date( );
-    }, "adding _deleted_at date in ObsDetailsContainer" );
+  const markDeletedLocally = () => {
+    safeRealmWrite(realm, () => {
+      observation._deleted_at = new Date();
+    }, "adding _deleted_at date in ObsDetailsContainer");
   };
 
-  const markViewedLocally = ( ) => {
-    safeRealmWrite( realm, ( ) => {
+  const markViewedLocally = () => {
+    safeRealmWrite(realm, () => {
       // Flags if all comments and identifications have been viewed
       observation.comments_viewed = true;
       observation.identifications_viewed = true;
-    }, "marking viewed locally in ObsDetailsContainer" );
+    }, "marking viewed locally in ObsDetailsContainer");
   };
 
-  Object.defineProperties( observation, {
+  Object.defineProperties(observation, {
     visibleComments: {
       get() {
         return this.comments
-          ? this.comments.filtered( "hidden == false" )
+          ? this.comments.filtered("hidden == false")
           : [];
       },
     },
     visibleIdentifications: {
       get() {
         return this.identifications
-          ? this.identifications.filtered( "hidden == false" )
+          ? this.identifications.filtered("hidden == false")
           : [];
       },
     },
-  } );
+  });
 
   return {
     localObservation: observation,

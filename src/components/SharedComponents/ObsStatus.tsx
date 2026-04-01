@@ -19,24 +19,24 @@ interface Props {
   isSimpleObsStatus?: boolean;
 }
 
-const ObsStatus = ( {
+const ObsStatus = ({
   observation,
   white,
   layout = "vertical",
   classNameMargin,
   testID,
   isSimpleObsStatus,
-}: Props ) => {
+}: Props) => {
   const margin = layout === "vertical"
     ? "mb-1 ml-1"
     : "mr-2";
 
   const identificationsFilled = observation?.identifications_viewed === false;
-  const showCurrentIdCount = useCallback( ( ) => {
+  const showCurrentIdCount = useCallback(() => {
     let numCurrentIdents = observation?.identifications?.filter(
       id => id.current === true,
     )?.length || 0;
-    if ( numCurrentIdents === 0 && observation?.taxon ) {
+    if (numCurrentIdents === 0 && observation?.taxon) {
       numCurrentIdents = 1;
     }
 
@@ -48,10 +48,10 @@ const ObsStatus = ( {
         filled={identificationsFilled}
       />
     );
-  }, [observation, margin, white, identificationsFilled] );
+  }, [observation, margin, white, identificationsFilled]);
 
   const commentsFilled = observation?.comments_viewed === false;
-  const showCommentCount = useCallback( ( ) => {
+  const showCommentCount = useCallback(() => {
     const numComments = observation?.comments?.length || 0;
 
     return (
@@ -63,10 +63,10 @@ const ObsStatus = ( {
         testID="ObsStatus.commentsCount"
       />
     );
-  }, [observation, margin, white, commentsFilled] );
+  }, [observation, margin, white, commentsFilled]);
 
-  const showQualityGrade = useCallback( ( ) => {
-    const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
+  const showQualityGrade = useCallback(() => {
+    const qualityGrade = checkCamelAndSnakeCase(observation, "qualityGrade");
     const iconColorResearchCheck = qualityGrade === "research"
       ? colors.inatGreen
       : colors.darkGray;
@@ -74,13 +74,13 @@ const ObsStatus = ( {
       ? colors.white
       : iconColorResearchCheck;
     return <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />;
-  }, [observation, white] );
+  }, [observation, white]);
 
-  if ( isSimpleObsStatus ) {
-    if ( identificationsFilled || commentsFilled ) {
+  if (isSimpleObsStatus) {
+    if (identificationsFilled || commentsFilled) {
       return (
         <View
-          className={classNames( "flex-1 justify-center items-end", classNameMargin )}
+          className={classNames("flex-1 justify-center items-end", classNameMargin)}
           testID={testID}
         >
           <View
@@ -94,14 +94,14 @@ const ObsStatus = ( {
 
   return (
     <View
-      className={classNames( {
+      className={classNames({
         "flex-row": layout === "horizontal",
-      }, classNameMargin )}
+      }, classNameMargin)}
       testID={testID}
     >
-      {showCurrentIdCount( )}
-      {showCommentCount( )}
-      {showQualityGrade( )}
+      {showCurrentIdCount()}
+      {showCommentCount()}
+      {showQualityGrade()}
     </View>
   );
 };

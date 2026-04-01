@@ -17,23 +17,23 @@ const PARAMS = {
   placement: "mobile",
 };
 
-const searchAnnouncements = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+const searchAnnouncements = async (params: Object = {}, opts: Object = {}): Promise<?Object> => {
   try {
     const { results } = await inatjs.announcements.search(
       { ...PARAMS, ...params },
       opts,
     );
     return results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "searchAnnouncements", opts } } );
+  } catch (e) {
+    return handleError(e, { context: { functionName: "searchAnnouncements", opts } });
   }
 };
 
-const dismissAnnouncement = async ( params: Object = {}, opts: Object = {} ): Promise<?number> => {
+const dismissAnnouncement = async (params: Object = {}, opts: Object = {}): Promise<?number> => {
   try {
-    return await inatjs.announcements.dismiss( params, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "dismissAnnouncement", opts } } );
+    return await inatjs.announcements.dismiss(params, opts);
+  } catch (e) {
+    return handleError(e, { context: { functionName: "dismissAnnouncement", opts } });
   }
 };
 

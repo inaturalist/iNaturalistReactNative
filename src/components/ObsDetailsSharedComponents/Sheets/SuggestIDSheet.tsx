@@ -15,27 +15,27 @@ interface Props {
     body?: string;
     taxon: { id: number };
   };
-  onSuggestId: ( ) => void;
+  onSuggestId: () => void;
   editIdentBody: () => void;
   onPressClose?: () => void;
 }
 
-const SuggestIDSheet = ( {
+const SuggestIDSheet = ({
   hidden,
   identification,
   onSuggestId,
   editIdentBody,
   onPressClose,
-}: Props ): React.ReactNode => (
+}: Props): React.ReactNode => (
   <BottomSheetV2
-    headerText={t( "SUGGEST-ID" )}
+    headerText={t("SUGGEST-ID")}
     hidden={hidden}
     onPressClose={onPressClose}
   >
     <>
       <View className="mx-[26px] space-y-[11px] my-[15px]">
         <List2>
-          {t( "Would-you-like-to-suggest-the-following-identification" )}
+          {t("Would-you-like-to-suggest-the-following-identification")}
         </List2>
         { identification.body && (
           <View
@@ -54,16 +54,16 @@ const SuggestIDSheet = ( {
                 <DisplayTaxon taxon={identification.taxon} />
               </View>
             )
-            : <List2>{t( "Unknown-organism" )}</List2>
+            : <List2>{t("Unknown-organism")}</List2>
         }
       </View>
       <View className="flex-row justify-evenly mx-3 mb-3">
         {identification.body
           ? (
             <Button
-              text={t( "EDIT-COMMENT" )}
-              onPress={( ) => {
-                editIdentBody( );
+              text={t("EDIT-COMMENT")}
+              onPress={() => {
+                editIdentBody();
               }}
               className="mx-2 flex-1"
               testID="SuggestID.EditCommentButton"
@@ -71,24 +71,24 @@ const SuggestIDSheet = ( {
           )
           : (
             <Button
-              text={t( "ADD-COMMENT" )}
-              onPress={( ) => {
-                editIdentBody( );
+              text={t("ADD-COMMENT")}
+              onPress={() => {
+                editIdentBody();
               }}
               className="mx-2 flex-1"
               testID="SuggestID.commentButton"
-              accessibilityHint={t( "Opens-add-comment-form" )}
+              accessibilityHint={t("Opens-add-comment-form")}
             />
           )}
         <Button
-          text={t( "SUGGEST-ID" )}
-          onPress={( ) => {
-            onSuggestId( );
+          text={t("SUGGEST-ID")}
+          onPress={() => {
+            onSuggestId();
           }}
           className="mx-2 flex-1"
           testID="SuggestIDSheet.cvSuggestionsButton"
           accessibilityRole="link"
-          accessibilityHint={t( "Adds-ID" )}
+          accessibilityHint={t("Adds-ID")}
           level="primary"
         />
       </View>

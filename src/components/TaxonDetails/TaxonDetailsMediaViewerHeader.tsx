@@ -16,11 +16,11 @@ const BACK_BUTTON_STYLE = {
   marginLeft: 10,
 };
 
-const TaxonDetailsMediaViewerHeader = ( {
+const TaxonDetailsMediaViewerHeader = ({
   onClose,
   showSpeciesSeenCheckmark,
   taxon,
-}: Props ) => (
+}: Props) => (
   <View className="bg-white w-full flex-row pt-4 pb-4 pr-4 items-start">
     <BackButton
       inCustomHeader

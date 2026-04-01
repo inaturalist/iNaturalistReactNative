@@ -30,25 +30,25 @@ class User extends Realm.Object {
   };
 
   // getting user icon data from production instead of staging
-  static uri( user?: RealmUser | ApiUser ) {
-    const iconUrl = ( user as ApiUser )?.icon_url || ( user as RealmUser )?.iconUrl;
-    return iconUrl?.replace( "staticdev", "static" );
+  static uri(user?: RealmUser | ApiUser) {
+    const iconUrl = (user as ApiUser)?.icon_url || (user as RealmUser)?.iconUrl;
+    return iconUrl?.replace("staticdev", "static");
   }
 
-  static thumbUri( user?: RealmUser | ApiUser ) {
-    return User.uri( user )?.replace( "medium", "thumb" );
+  static thumbUri(user?: RealmUser | ApiUser) {
+    return User.uri(user)?.replace("medium", "thumb");
   }
 
-  static currentUser( realm: Realm ) {
-    return realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  static currentUser(realm: Realm) {
+    return realm.objects("User").filtered("signedIn == true")[0];
   }
 
-  static updatePreferences( realm: Realm, newPreferences: TaxonNamesSettings ) {
-    const currentUser = User.currentUser( realm );
-    safeRealmWrite( realm, ( ) => {
+  static updatePreferences(realm: Realm, newPreferences: TaxonNamesSettings) {
+    const currentUser = User.currentUser(realm);
+    safeRealmWrite(realm, () => {
       currentUser.prefers_common_names = newPreferences.prefers_common_names;
       currentUser.prefers_scientific_name_first = newPreferences.prefers_scientific_name_first;
-    }, "updating user preferences" );
+    }, "updating user preferences");
   }
 
   static schema: ObjectSchema = {

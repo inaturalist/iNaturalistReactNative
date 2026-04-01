@@ -7,7 +7,7 @@ interface Props {
   activeColor?: string;
 }
 
-const ConfidenceInterval = ( { confidence = 0, activeColor = "bg-white" }: Props ) => {
+const ConfidenceInterval = ({ confidence = 0, activeColor = "bg-white" }: Props) => {
   const ActiveDot = (
     <View className={classnames(
       "h-[4px] w-[4px] rounded-full",
@@ -19,10 +19,10 @@ const ConfidenceInterval = ( { confidence = 0, activeColor = "bg-white" }: Props
 
   const dots = [];
 
-  for ( let key = 1; key <= 5; key += 1 ) {
-    dots.push( key <= confidence
-      ? React.cloneElement( ActiveDot, { key } )
-      : React.cloneElement( Dot, { key } ) );
+  for (let key = 1; key <= 5; key += 1) {
+    dots.push(key <= confidence
+      ? React.cloneElement(ActiveDot, { key })
+      : React.cloneElement(Dot, { key }));
   }
 
   return (

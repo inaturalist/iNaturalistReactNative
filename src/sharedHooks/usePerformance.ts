@@ -5,31 +5,31 @@ interface PerformanceType {
   isLoading: boolean | undefined; // indicate whether data finished loading
 }
 
-const usePerformance = ( {
+const usePerformance = ({
   screenName,
   isLoading,
-}: PerformanceType ) => {
-  const [startTime, setStartTime] = useState( 0 );
-  const [loadTime, setLoadTime] = useState( "" );
+}: PerformanceType) => {
+  const [startTime, setStartTime] = useState(0);
+  const [loadTime, setLoadTime] = useState("");
 
-  useEffect( ( ) => {
-    const getPerformanceReport = ( ) => {
-      const endTime = global.performance.now( );
+  useEffect(() => {
+    const getPerformanceReport = () => {
+      const endTime = global.performance.now();
       const timeToRender = endTime - startTime;
-      const loadTimeMessage = `Load Time: ${timeToRender.toFixed( 0 )} milliseconds`;
+      const loadTimeMessage = `Load Time: ${timeToRender.toFixed(0)} milliseconds`;
       const logMessage = screenName
         ? `${screenName} ${loadTimeMessage}`
         : loadTimeMessage;
 
-      setLoadTime( logMessage );
+      setLoadTime(logMessage);
     };
-    if ( startTime === 0 ) {
-      setStartTime( global.performance.now() );
+    if (startTime === 0) {
+      setStartTime(global.performance.now());
     }
-    if ( !isLoading ) {
+    if (!isLoading) {
       getPerformanceReport();
     }
-  }, [isLoading, startTime, screenName] );
+  }, [isLoading, startTime, screenName]);
 
   return {
     loadTime,

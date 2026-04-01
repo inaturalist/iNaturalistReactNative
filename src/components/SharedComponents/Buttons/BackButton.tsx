@@ -23,7 +23,7 @@ interface Props {
 // https://github.com/react-navigation/react-navigation/blob/395410a7a751492ad846c7723dd33b55891173e1/packages/elements/src/Header/HeaderBackButton.tsx
 const REACT_NAVIGATION_BACK_BUTTON_STYLES = {
   container: {
-    ...Platform.select( {
+    ...Platform.select({
       ios: {
         padding: 10,
         paddingLeft: 8,
@@ -33,49 +33,49 @@ const REACT_NAVIGATION_BACK_BUTTON_STYLES = {
         paddingVertical: 3,
         paddingHorizontal: 11,
       },
-    } ),
+    }),
   },
-  icon: Platform.select( {
+  icon: Platform.select({
     ios: {
       height: 21,
       width: 13,
     },
-  } ),
+  }),
 };
 
-const BackButton = ( {
+const BackButton = ({
   color = colors.darkGray,
   onPress,
   inCustomHeader,
   customStyles,
   testID = "BackButton",
-}: Props ) => {
+}: Props) => {
   const { isRTL } = I18nManager;
   const navigation = useNavigation();
-  const canGoBack = navigation?.canGoBack( );
+  const canGoBack = navigation?.canGoBack();
   const tintColor = color || colors.darkGray;
-  const { t } = useTranslation( );
+  const { t } = useTranslation();
 
   const imageStyles: StyleProp<ImageStyle> = [
     !inCustomHeader && REACT_NAVIGATION_BACK_BUTTON_STYLES.icon,
-    Boolean( tintColor ) && { tintColor },
+    Boolean(tintColor) && { tintColor },
     customStyles,
     isRTL && { transform: [{ rotateY: "180deg" }] },
   ];
 
-  const backImage = ( ) => (
+  const backImage = () => (
     <Image
-      accessibilityLabel={t( "Go-back" )}
+      accessibilityLabel={t("Go-back")}
       accessibilityIgnoresInvertColors
       fadeDuration={0}
       resizeMode="contain"
-      source={require( "images/backIcons/back-icon.png" )}
+      source={require("images/backIcons/back-icon.png")}
       style={imageStyles}
       testID="Image.BackButton"
     />
   );
 
-  if ( onPress || canGoBack ) {
+  if (onPress || canGoBack) {
     return (
       <HeaderBackButton
         backImage={backImage}

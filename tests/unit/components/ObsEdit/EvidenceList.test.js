@@ -5,61 +5,61 @@ import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const initialStoreState = useStore.getState( );
+const initialStoreState = useStore.getState();
 
 const observationPhotos = [
-  factory( "RemoteObservationPhoto" ),
-  factory( "RemoteObservationPhoto" ),
+  factory("RemoteObservationPhoto"),
+  factory("RemoteObservationPhoto"),
 ];
 
-const mockObservation = factory( "LocalObservation", {
+const mockObservation = factory("LocalObservation", {
   observationPhotos,
-} );
+});
 
-const renderEvidenceList = ( ) => renderComponent(
+const renderEvidenceList = () => renderComponent(
   <EvidenceList />,
 );
 
-describe( "EvidenceList", ( ) => {
-  beforeAll( ( ) => {
-    useStore.setState( initialStoreState, true );
-  } );
+describe("EvidenceList", () => {
+  beforeAll(() => {
+    useStore.setState(initialStoreState, true);
+  });
 
-  it( "should display add evidence button", ( ) => {
-    useStore.setState( {
+  it("should display add evidence button", () => {
+    useStore.setState({
       observations: [mockObservation],
       currentObservation: mockObservation,
-    } );
-    renderEvidenceList( );
+    });
+    renderEvidenceList();
 
-    expect( screen.getByTestId( "EvidenceList.add" ) ).toBeVisible( );
-  } );
+    expect(screen.getByTestId("EvidenceList.add")).toBeVisible();
+  });
 
-  it( "should display loading wheel if photo is saving", ( ) => {
-    useStore.setState( {
+  it("should display loading wheel if photo is saving", () => {
+    useStore.setState({
       observations: [mockObservation],
       currentObservation: mockObservation,
       savingPhoto: true,
-    } );
-    renderEvidenceList( );
+    });
+    renderEvidenceList();
 
-    expect( screen.getByTestId( "EvidenceList.saving" ) ).toBeVisible( );
-  } );
+    expect(screen.getByTestId("EvidenceList.saving")).toBeVisible();
+  });
 
-  it( "should render all observation photos", ( ) => {
-    useStore.setState( {
+  it("should render all observation photos", () => {
+    useStore.setState({
       observations: [mockObservation],
       currentObservation: mockObservation,
-    } );
-    renderEvidenceList( );
+    });
+    renderEvidenceList();
 
-    expect( screen.getByTestId( `EvidenceList.${observationPhotos[0].photo.url}` ) ).toBeVisible( );
-    expect( screen.getByTestId( `EvidenceList.${observationPhotos[1].photo.url}` ) ).toBeVisible( );
-  } );
+    expect(screen.getByTestId(`EvidenceList.${observationPhotos[0].photo.url}`)).toBeVisible();
+    expect(screen.getByTestId(`EvidenceList.${observationPhotos[1].photo.url}`)).toBeVisible();
+  });
 
-  it( "should display an empty list when observation has no observation photos", ( ) => {
-    renderEvidenceList( [] );
-    expect( screen.getByTestId( "EvidenceList.add" ) ).toBeVisible( );
-    expect( screen.queryByTestId( "ObsEdit.photo" ) ).toBeFalsy( );
-  } );
-} );
+  it("should display an empty list when observation has no observation photos", () => {
+    renderEvidenceList([]);
+    expect(screen.getByTestId("EvidenceList.add")).toBeVisible();
+    expect(screen.queryByTestId("ObsEdit.photo")).toBeFalsy();
+  });
+});

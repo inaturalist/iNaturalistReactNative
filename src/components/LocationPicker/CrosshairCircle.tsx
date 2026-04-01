@@ -9,11 +9,11 @@ import WarningText from "./WarningText";
 export const DESIRED_LOCATION_ACCURACY = 100;
 export const REQUIRED_LOCATION_ACCURACY = 500_000;
 
-const checkAccuracy = ( accuracy: number ) => {
-  if ( accuracy < DESIRED_LOCATION_ACCURACY ) {
+const checkAccuracy = (accuracy: number) => {
+  if (accuracy < DESIRED_LOCATION_ACCURACY) {
     return "pass";
   }
-  if ( accuracy < REQUIRED_LOCATION_ACCURACY ) {
+  if (accuracy < REQUIRED_LOCATION_ACCURACY) {
     return "acceptable";
   }
   return "fail";
@@ -23,8 +23,8 @@ interface Props {
   accuracy: number;
 }
 
-const CrosshairCircle = ( { accuracy }: Props ) => {
-  const accuracyTest = checkAccuracy( accuracy );
+const CrosshairCircle = ({ accuracy }: Props) => {
+  const accuracyTest = checkAccuracy(accuracy);
 
   return (
     <View pointerEvents="none">
@@ -41,9 +41,9 @@ const CrosshairCircle = ( { accuracy }: Props ) => {
         }
       >
         {/* vertical crosshair */}
-        <View className={classnames( "h-[244px] border border-darkGray absolute left-[122px]" )} />
+        <View className={classnames("h-[244px] border border-darkGray absolute left-[122px]")} />
         {/* horizontal crosshair */}
-        <View className={classnames( "w-[244px] border border-darkGray absolute top-[122px]" )} />
+        <View className={classnames("w-[244px] border border-darkGray absolute top-[122px]")} />
       </View>
       <View className="absolute left-[234px]">
         {accuracyTest === "pass" && (

@@ -16,12 +16,12 @@ type Props = {
 
 const LIST_STYLE = { paddingTop: 44 };
 
-const IdentifiersView = ( {
+const IdentifiersView = ({
   canFetch,
   isConnected,
   queryParams,
   handleUpdateCount,
-}: Props ): Node => {
+}: Props): Node => {
   const {
     data,
     fetchNextPage,
@@ -42,9 +42,9 @@ const IdentifiersView = ( {
     },
   );
 
-  useEffect( ( ) => {
-    handleUpdateCount( "identifiers", totalResults );
-  }, [totalResults, handleUpdateCount] );
+  useEffect(() => {
+    handleUpdateCount("identifiers", totalResults);
+  }, [totalResults, handleUpdateCount]);
 
   return (
     <ExploreFlashList

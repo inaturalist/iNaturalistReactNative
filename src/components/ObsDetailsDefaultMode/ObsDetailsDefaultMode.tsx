@@ -48,7 +48,7 @@ interface Props {
   uuid: string;
 }
 
-const ObsDetailsDefaultMode = ( {
+const ObsDetailsDefaultMode = ({
   activityItems = EMPTY_ACTIVITY_ITEMS,
   addingActivityItem,
   belongsToCurrentUser,
@@ -65,13 +65,13 @@ const ObsDetailsDefaultMode = ( {
   targetActivityItemID,
   wasSynced,
   uuid,
-}: Props ) => {
-  const scrollViewRef = useRef<typeof ScrollView | null>( null );
+}: Props) => {
+  const scrollViewRef = useRef<typeof ScrollView | null>(null);
 
   const {
     setHeightOfContentAboveSection: setHeightOfContentAboveCommunitySection,
     setOffsetToActivityItem,
-  } = useScrollToOffset( scrollViewRef );
+  } = useScrollToOffset(scrollViewRef);
 
   const isSavedObservationByCurrentUser = belongsToCurrentUser && !wasSynced;
 
@@ -96,7 +96,7 @@ const ObsDetailsDefaultMode = ( {
         <View
           onLayout={event => {
             const { layout } = event.nativeEvent;
-            setHeightOfContentAboveCommunitySection( layout );
+            setHeightOfContentAboveCommunitySection(layout);
           }}
         >
           <ObserverDetails

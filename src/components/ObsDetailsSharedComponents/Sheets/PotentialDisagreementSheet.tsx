@@ -13,21 +13,21 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
   onPressClose: () => void;
-  onPotentialDisagreePressed: ( _checkedValue: string ) => void;
+  onPotentialDisagreePressed: (_checkedValue: string) => void;
   newTaxon: RealmTaxon | ApiTaxon;
   oldTaxon: RealmTaxon | ApiTaxon;
 }
 
-const PotentialDisagreementSheet = ( {
+const PotentialDisagreementSheet = ({
   onPressClose,
   onPotentialDisagreePressed,
   newTaxon,
   oldTaxon,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const currentUser = useCurrentUser( );
+}: Props) => {
+  const { t } = useTranslation();
+  const currentUser = useCurrentUser();
 
-  const showTaxonName = ( reactKey: string, taxon: object, fontComponent: React.FC ) => (
+  const showTaxonName = (reactKey: string, taxon: object, fontComponent: React.FC) => (
     <DisplayTaxonName
       key={reactKey}
       bottomTextComponent={fontComponent}
@@ -49,7 +49,7 @@ const PotentialDisagreementSheet = ( {
           i18nKey="Potential-disagreement-unsure"
           components={[
             <Body1 key="0" />,
-            showTaxonName( "1", newTaxon, Body1 ),
+            showTaxonName("1", newTaxon, Body1),
           ]}
         />
       ),
@@ -61,7 +61,7 @@ const PotentialDisagreementSheet = ( {
           i18nKey="Potential-disagreement-disagree"
           components={[
             <Body1 key="0" />,
-            showTaxonName( "1", newTaxon, Body1 ),
+            showTaxonName("1", newTaxon, Body1),
           ]}
         />
       ),
@@ -73,7 +73,7 @@ const PotentialDisagreementSheet = ( {
       i18nKey="Potential-disagreement-description"
       components={[
         <List2 key="0" />,
-        showTaxonName( "1", oldTaxon, List2 ),
+        showTaxonName("1", oldTaxon, List2),
       ]}
     />
   );
@@ -87,12 +87,12 @@ const PotentialDisagreementSheet = ( {
   return (
     <RadioButtonSheet
       buttonRowClassName="mt-4"
-      headerText={t( "POTENTIAL-DISAGREEMENT" )}
+      headerText={t("POTENTIAL-DISAGREEMENT")}
       confirm={checkBoxValue => {
-        onPotentialDisagreePressed( checkBoxValue );
-        onPressClose( );
+        onPotentialDisagreePressed(checkBoxValue);
+        onPressClose();
       }}
-      confirmText={t( "SUBMIT-ID-SUGGESTION" )}
+      confirmText={t("SUBMIT-ID-SUGGESTION")}
       onPressClose={onPressClose}
       radioValues={radioValues}
       selectedValue={radioValues.unsure.value}

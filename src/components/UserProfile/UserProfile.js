@@ -31,20 +31,20 @@ import useStore from "stores/useStore";
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
 
-const UserProfile = ( ): Node => {
-  const setExploreView = useStore( state => state.setExploreView );
-  const navigation = useNavigation( );
-  const currentUser = useCurrentUser( );
-  const { params } = useRoute( );
+const UserProfile = (): Node => {
+  const setExploreView = useStore(state => state.setExploreView);
+  const navigation = useNavigation();
+  const currentUser = useCurrentUser();
+  const { params } = useRoute();
   const { userId, login } = params;
-  const [showLoginSheet, setShowLoginSheet] = useState( false );
-  const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
-  const { t, i18n } = useTranslation( );
+  const [showLoginSheet, setShowLoginSheet] = useState(false);
+  const [showUnfollowSheet, setShowUnfollowSheet] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const fetchId = userId || login;
   const { data: remoteUser, isError, error } = useAuthenticatedQuery(
     ["fetchRemoteUser", fetchId],
-    optsWithAuth => fetchRemoteUser( fetchId, {}, optsWithAuth ),
+    optsWithAuth => fetchRemoteUser(fetchId, {}, optsWithAuth),
     {
       enabled: !!fetchId,
     },
@@ -59,21 +59,21 @@ const UserProfile = ( ): Node => {
     refetch,
   } = useAuthenticatedQuery(
     relationshipsQueryKey,
-    optsWithAuth => fetchRelationships( {
+    optsWithAuth => fetchRelationships({
       q: user?.login,
       fields: "following,friend_user,id",
       ttl: -1,
       per_page: 500,
-    }, optsWithAuth ),
+    }, optsWithAuth),
     {
       enabled: !!currentUser,
     },
   );
   const results = relationships?.results;
   let hasRelationshipWithCurrentUser = null;
-  if ( results?.length > 0 ) {
+  if (results?.length > 0) {
     hasRelationshipWithCurrentUser = results
-      .find( relationship => relationship.friendUser.id === userId );
+      .find(relationship => relationship.friendUser.id === userId);
   }
 
   // useEffect( ( ) => {
@@ -90,37 +90,37 @@ const UserProfile = ( ): Node => {
   // }, [navigation, user, currentUser] );
 
   const onObservationPressed = useCallback(
-    ( ) => {
-      setExploreView( "observations" );
-      navigation.navigate( "Explore", {
+    () => {
+      setExploreView("observations");
+      navigation.navigate("Explore", {
         user,
         worldwide: true,
-      } );
+      });
     },
     [navigation, user, setExploreView],
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => {
-      setExploreView( "species" );
-      navigation.navigate( "Explore", {
+    () => {
+      setExploreView("species");
+      navigation.navigate("Explore", {
         user,
         worldwide: true,
-      } );
+      });
     },
     [navigation, user, setExploreView],
   );
 
-  if ( isError && error?.status === 404 ) {
+  if (isError && error?.status === 404) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Heading4>{t( "ERROR" )}</Heading4>
-        <List2>{t( "That-user-profile-doesnt-exist" )}</List2>
+        <Heading4>{t("ERROR")}</Heading4>
+        <List2>{t("That-user-profile-doesnt-exist")}</List2>
       </View>
     );
   }
 
-  if ( !user ) {
+  if (!user) {
     return null;
   }
 
@@ -130,12 +130,12 @@ const UserProfile = ( ): Node => {
         className="items-center"
         testID={`UserProfile.${userId}`}
       >
-        <UserIcon uri={User.uri( user )} large />
+        <UserIcon uri={User.uri(user)} large />
         <Heading1 className="mt-3" selectable>{user?.login}</Heading1>
         <Subheading1 className="mt-1">{user.name}</Subheading1>
-        {( user?.roles || [] ).indexOf( "admin" ) >= 0 && (
+        {(user?.roles || []).indexOf("admin") >= 0 && (
           <Heading4 className="mt-1">
-            {t( "INATURALIST-STAFF", { inaturalist: "INATURALIST" } )}
+            {t("INATURALIST-STAFF", { inaturalist: "INATURALIST" })}
           </Heading4>
         )}
       </View>
@@ -159,45 +159,45 @@ const UserProfile = ( ): Node => {
         )}
         { user?.description && (
           <View className="mt-[30px]">
-            <Heading4 className="mb-2">{t( "ABOUT" )}</Heading4>
+            <Heading4 className="mb-2">{t("ABOUT")}</Heading4>
             <UserText text={user?.description} />
           </View>
         ) }
         <View className="mt-8 mb-8">
           <Heading4 className="mb-[11px]">
-            {t( "PROJECTS" )}
+            {t("PROJECTS")}
           </Heading4>
           <Button
-            text={t( "VIEW-PROJECTS" )}
-            onPress={( ) => navigation.navigate( "ProjectList", {
+            text={t("VIEW-PROJECTS")}
+            onPress={() => navigation.navigate("ProjectList", {
               userId,
               userLogin: user.login,
-            } )}
+            })}
           />
         </View>
         <View className="mb-8">
           <Heading4 className="mb-[11px]">
-            {t( "PEOPLE--title" )}
+            {t("PEOPLE--title")}
           </Heading4>
           <Button
-            text={t( "VIEW-FOLLOWERS" )}
-            onPress={( ) => navigation.navigate( "FollowersList", { user } )}
+            text={t("VIEW-FOLLOWERS")}
+            onPress={() => navigation.navigate("FollowersList", { user })}
           />
           <Button
             className="mt-6"
-            text={t( "VIEW-FOLLOWING" )}
-            onPress={( ) => navigation.navigate( "FollowingList", { user } )}
+            text={t("VIEW-FOLLOWING")}
+            onPress={() => navigation.navigate("FollowingList", { user })}
           />
         </View>
         <Body2 className="mb-5">
-          {t( "Joined-date", { date: formatLongDate( user.created_at, i18n ) } )}
+          {t("Joined-date", { date: formatLongDate(user.created_at, i18n) })}
         </Body2>
         <Body2 className="mb-5">
-          {t( "Last-Active-date", { date: formatLongDate( user.updated_at, i18n ) } )}
+          {t("Last-Active-date", { date: formatLongDate(user.updated_at, i18n) })}
         </Body2>
         {user.site && (
           <Body2 className="mb-5">
-            {t( "Affiliation", { site: user.site.name } )}
+            {t("Affiliation", { site: user.site.name })}
           </Body2>
         )}
         {/* TODO fix this when we know whether the user is a donor and prefers to show it */}

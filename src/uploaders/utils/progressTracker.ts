@@ -8,8 +8,8 @@ function emitProgress(
   observationUUID: string,
   increment: number,
 ) {
-  if ( !observationUUID ) {
-    console.warn( "Attempted to emit progress for undefined observationUUID" );
+  if (!observationUUID) {
+    console.warn("Attempted to emit progress for undefined observationUUID");
     return;
   }
   EventRegister.emit(
@@ -18,17 +18,17 @@ function emitProgress(
   );
 }
 
-function trackObservationUpload( observationUUID: string ) {
+function trackObservationUpload(observationUUID: string) {
   return {
-    start: () => emitProgress( observationUUID, HALF_INCREMENT ),
-    complete: () => emitProgress( observationUUID, HALF_INCREMENT ),
+    start: () => emitProgress(observationUUID, HALF_INCREMENT),
+    complete: () => emitProgress(observationUUID, HALF_INCREMENT),
   };
 }
 
-function trackEvidenceUpload( observationUUID: string ) {
+function trackEvidenceUpload(observationUUID: string) {
   return {
-    uploaded: () => emitProgress( observationUUID, HALF_INCREMENT ),
-    attached: () => emitProgress( observationUUID, HALF_INCREMENT ),
+    uploaded: () => emitProgress(observationUUID, HALF_INCREMENT),
+    attached: () => emitProgress(observationUUID, HALF_INCREMENT),
   };
 }
 

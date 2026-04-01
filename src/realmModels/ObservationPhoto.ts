@@ -20,31 +20,31 @@ class ObservationPhoto extends Realm.Object {
     uuid: true,
   } as const;
 
-  needsSync( ) {
+  needsSync() {
     return !this._synced_at || this._synced_at <= this._updated_at;
   }
 
-  wasSynced( ) {
+  wasSynced() {
     return this._synced_at !== null;
   }
 
-  static mapApiToRealm( observationPhoto: ApiObservationPhoto, realm = null ) {
+  static mapApiToRealm(observationPhoto: ApiObservationPhoto, realm = null) {
     const localObsPhoto = {
       ...observationPhoto,
-      _synced_at: new Date( ),
-      photo: Photo.mapApiToRealm( observationPhoto.photo, realm ),
+      _synced_at: new Date(),
+      photo: Photo.mapApiToRealm(observationPhoto.photo, realm),
     };
     return localObsPhoto;
   }
 
-  static mapPhotoForUpload( photo: RealmPhoto ) {
-    const uri = Photo.getLocalPhotoUri( photo.localFilePath );
+  static mapPhotoForUpload(photo: RealmPhoto) {
+    const uri = Photo.getLocalPhotoUri(photo.localFilePath);
     return {
-      file: new FileUpload( {
+      file: new FileUpload({
         uri,
-        name: uri?.split( "/" ).pop( ),
+        name: uri?.split("/").pop(),
         type: "image/jpeg",
-      } ),
+      }),
     };
   }
 
@@ -78,10 +78,10 @@ class ObservationPhoto extends Realm.Object {
   // TODO: I don't know how what the type for this is outside of this context,
   // I think it is only called after certain transformations on the Realm result,
   // but it is not important for my current linear ticket so I'll skip typing it more
-  static mapObservationPhotoForMyObsDefaultMode( observationPhoto: {
+  static mapObservationPhotoForMyObsDefaultMode(observationPhoto: {
     photo?: { url?: string; localFilePath?: string };
     uuid?: string;
-  } ) {
+  }) {
     return {
       photo: {
         url: observationPhoto?.photo?.url,
@@ -91,12 +91,12 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static async new( uri: string, position: number ) {
-    const photo = await Photo.new( uri );
+  static async new(uri: string, position: number) {
+    const photo = await Photo.new(uri);
     return {
-      _created_at: new Date( ),
-      _updated_at: new Date( ),
-      uuid: uuid.v4( ),
+      _created_at: new Date(),
+      _updated_at: new Date(),
+      uuid: uuid.v4(),
       photo,
       originalPhotoUri: uri,
       position,
@@ -109,7 +109,7 @@ class ObservationPhoto extends Realm.Object {
   ) => {
     let photoPosition = position;
     return Promise.all(
-      photos.map( async photo => {
+      photos.map(async photo => {
         const newPhoto = ObservationPhoto.new(
           local
             ? photo
@@ -118,7 +118,7 @@ class ObservationPhoto extends Realm.Object {
         );
         photoPosition += 1;
         return newPhoto;
-      } ),
+      }),
     );
   };
 
@@ -134,19 +134,19 @@ class ObservationPhoto extends Realm.Object {
       p => p.photo?.url === uri,
     );
 
-    if ( obsPhotoToDelete ) {
+    if (obsPhotoToDelete) {
       // Removing this require breaks tests, so I am leaving it here
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { getJWT } = require( "components/LoginSignUp/AuthenticationService" );
-      const apiToken = await getJWT( );
+      const { getJWT } = require("components/LoginSignUp/AuthenticationService");
+      const apiToken = await getJWT();
       const options = { api_token: apiToken };
-      await inatjs.observation_photos.delete( { id: obsPhotoToDelete.uuid }, options );
+      await inatjs.observation_photos.delete({ id: obsPhotoToDelete.uuid }, options);
     }
   }
 
-  static async deleteLocalPhoto( uri: string ) {
+  static async deleteLocalPhoto(uri: string) {
     // delete uri on disk
-    Photo.deletePhotoFromDeviceStorage( uri );
+    Photo.deletePhotoFromDeviceStorage(uri);
   }
 
   // TODO: I don't know how what the type for currentObservation is outside of this context here,
@@ -157,10 +157,10 @@ class ObservationPhoto extends Realm.Object {
     uri: string,
     currentObservation?: { observationPhotos?: { photo: { url?: string }; uuid: string }[] },
   ) {
-    if ( uri.includes( "https://" ) ) {
-      ObservationPhoto.deleteRemotePhoto( uri, currentObservation );
+    if (uri.includes("https://")) {
+      ObservationPhoto.deleteRemotePhoto(uri, currentObservation);
     } else {
-      ObservationPhoto.deleteLocalPhoto( uri );
+      ObservationPhoto.deleteLocalPhoto(uri);
     }
   }
 
@@ -175,11 +175,11 @@ class ObservationPhoto extends Realm.Object {
     },
   ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
-    const obsPhotoUris = ( obsPhotos || [] ).map(
+    const obsPhotoUris = (obsPhotos || []).map(
       // Ensure that if this URI is a remote thumbnail that we are resizing
       // a reasonably-sized image for Suggestions and not delivering a handful of
       // upsampled pixels
-      obsPhoto => Photo.displayLocalOrRemoteMediumPhoto( obsPhoto.photo ),
+      obsPhoto => Photo.displayLocalOrRemoteMediumPhoto(obsPhoto.photo),
     );
     return obsPhotoUris;
   }
@@ -195,7 +195,7 @@ class ObservationPhoto extends Realm.Object {
     },
   ) {
     const obsPhotos = observation?.observationPhotos || observation?.observation_photos;
-    const innerPhotos = ( obsPhotos || [] ).map(
+    const innerPhotos = (obsPhotos || []).map(
       obsPhoto => obsPhoto.photo,
     );
     return innerPhotos;

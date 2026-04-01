@@ -4,8 +4,8 @@ import { useAuthenticatedQuery } from "sharedHooks";
 
 const USER_SEARCH_FIELDS = "user.id,user.login,user.icon_url,user.observations_count";
 
-const useUserSearch = ( query: string ) => {
-  const trimmedQuery = query.trim( );
+const useUserSearch = (query: string) => {
+  const trimmedQuery = query.trim();
   const shouldFetch = trimmedQuery.length > 0;
 
   const {
@@ -14,7 +14,7 @@ const useUserSearch = ( query: string ) => {
     refetch,
   } = useAuthenticatedQuery<ApiUser[] | null>(
     ["fetchSearchResults", "users", trimmedQuery],
-    ( optsWithAuth: ApiOpts ) => fetchSearchResults(
+    (optsWithAuth: ApiOpts) => fetchSearchResults(
       {
         q: trimmedQuery,
         sources: "users",

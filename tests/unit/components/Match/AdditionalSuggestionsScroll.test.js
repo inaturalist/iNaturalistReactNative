@@ -5,8 +5,8 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-describe( "AdditionalSuggestionsScroll", () => {
-  it( "returns null when not loading and otherSuggestions is empty", () => {
+describe("AdditionalSuggestionsScroll", () => {
+  it("returns null when not loading and otherSuggestions is empty", () => {
     renderComponent(
       <AdditionalSuggestionsScroll
         otherSuggestions={[]}
@@ -15,11 +15,11 @@ describe( "AdditionalSuggestionsScroll", () => {
       />,
     );
 
-    expect( screen.queryByText( "It might also be" ) ).toBeFalsy();
-    expect( screen.queryByText( "It might be one of these" ) ).toBeFalsy();
-  } );
+    expect(screen.queryByText("It might also be")).toBeFalsy();
+    expect(screen.queryByText("It might be one of these")).toBeFalsy();
+  });
 
-  it( "shows ActivityIndicator when suggestionsLoading is true", () => {
+  it("shows ActivityIndicator when suggestionsLoading is true", () => {
     renderComponent(
       <AdditionalSuggestionsScroll
         otherSuggestions={[]}
@@ -27,13 +27,13 @@ describe( "AdditionalSuggestionsScroll", () => {
         onSuggestionChosen={jest.fn()}
       />,
     );
-    expect( screen.getByRole( "progressbar" ) ).toBeVisible();
-  } );
+    expect(screen.getByRole("progressbar")).toBeVisible();
+  });
 
-  it( "renders heading when noTopSuggestion is true", () => {
+  it("renders heading when noTopSuggestion is true", () => {
     const suggestions = [
       {
-        taxon: factory( "RemoteTaxon" ),
+        taxon: factory("RemoteTaxon"),
         combined_score: 85,
       },
     ];
@@ -47,6 +47,6 @@ describe( "AdditionalSuggestionsScroll", () => {
       />,
     );
 
-    expect( screen.getByText( "It might be one of these" ) ).toBeVisible();
-  } );
-} );
+    expect(screen.getByText("It might be one of these")).toBeVisible();
+  });
+});

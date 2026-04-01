@@ -37,9 +37,9 @@ import DiscardChangesSheet from "./DiscardChangesSheet";
 import useBackPress from "./hooks/useBackPress";
 import PhotoPreview from "./PhotoPreview";
 
-const logger = log.extend( "StandardCamera" );
+const logger = log.extend("StandardCamera");
 
-const isTablet = DeviceInfo.isTablet( );
+const isTablet = DeviceInfo.isTablet();
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
@@ -57,7 +57,7 @@ type Props = {
   setNewPhotoUris: Function
 };
 
-const StandardCamera = ( {
+const StandardCamera = ({
   camera,
   device,
   flipCamera,
@@ -69,7 +69,7 @@ const StandardCamera = ( {
   takePhotoOptions,
   newPhotoUris,
   setNewPhotoUris,
-}: Props ): Node => {
+}: Props): Node => {
   "use no memo";
 
   const hasFlash = device?.hasFlash;
@@ -81,36 +81,36 @@ const StandardCamera = ( {
     resetZoom,
     showZoomButton,
     zoomTextValue,
-  } = useZoom( device );
+  } = useZoom(device);
   const {
     rotatableAnimatedStyle,
     rotation,
-  } = useRotation( );
-  const navigation = useNavigation( );
+  } = useRotation();
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
-  const { loadTime } = usePerformance( {
+  const { loadTime } = usePerformance({
     isLoading: camera?.current !== null,
-  } );
-  if ( isDebugMode( ) && loadTime ) {
-    logger.info( loadTime );
+  });
+  if (isDebugMode() && loadTime) {
+    logger.info(loadTime);
   }
 
-  const cameraUris = useStore( state => state.cameraUris );
-  const prepareCamera = useStore( state => state.prepareCamera );
-  const photoLibraryUris = useStore( state => state.photoLibraryUris );
-  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
+  const cameraUris = useStore(state => state.cameraUris);
+  const prepareCamera = useStore(state => state.prepareCamera);
+  const photoLibraryUris = useStore(state => state.photoLibraryUris);
+  const deletePhotoFromObservation = useStore(state => state.deletePhotoFromObservation);
 
   const totalObsPhotoUris = useMemo(
-    ( ) => [...cameraUris, ...photoLibraryUris].length,
+    () => [...cameraUris, ...photoLibraryUris].length,
     [cameraUris, photoLibraryUris],
   );
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
-  const [showAlert, setShowAlert] = useState( false );
-  const [initialVolume, setInitialVolume] = useState( null );
+  const [showAlert, setShowAlert] = useState(false);
+  const [initialVolume, setInitialVolume] = useState(null);
 
-  const { screenWidth } = useDeviceOrientation( );
+  const { screenWidth } = useDeviceOrientation();
 
   // newPhotoUris tracks photos taken in *this* instance of the camera. The
   // camera might be instantiated with several cameraUris or
@@ -121,84 +121,84 @@ const StandardCamera = ( {
     handleBackButtonPress,
     setShowDiscardSheet,
     showDiscardSheet,
-  } = useBackPress( photosTaken );
+  } = useBackPress(photosTaken);
 
   useFocusEffect(
-    useCallback( ( ) => {
+    useCallback(() => {
       // Reset camera zoom every time we get into a fresh camera view
-      resetZoom( );
+      resetZoom();
       prepareCamera();
       // TODO: I am not sure how to make the react compiler happy here, so I disabled it
       // for this hook
       // eslint-disable-next-line react-hooks/react-compiler
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [] ),
+    }, []),
   );
 
-  const deletePhotoByUri = useCallback( async ( photoUri: string ) => {
-    if ( !deletePhotoFromObservation ) return;
-    deletePhotoFromObservation( photoUri );
-    await ObservationPhoto.deletePhoto( photoUri );
-    setNewPhotoUris( newPhotoUris.filter( uri => uri !== photoUri ) );
-  }, [deletePhotoFromObservation, newPhotoUris, setNewPhotoUris] );
+  const deletePhotoByUri = useCallback(async (photoUri: string) => {
+    if (!deletePhotoFromObservation) return;
+    deletePhotoFromObservation(photoUri);
+    await ObservationPhoto.deletePhoto(photoUri);
+    setNewPhotoUris(newPhotoUris.filter(uri => uri !== photoUri));
+  }, [deletePhotoFromObservation, newPhotoUris, setNewPhotoUris]);
 
   const onFlipCamera = () => {
-    resetZoom( );
-    flipCamera( );
+    resetZoom();
+    flipCamera();
   };
 
   const containerClasses = ["flex-1"];
-  if ( isTablet && isLandscapeMode ) {
-    containerClasses.push( "flex-row" );
+  if (isTablet && isLandscapeMode) {
+    containerClasses.push("flex-row");
   }
 
-  const handleDiscard = useCallback( ( ) => {
-    newPhotoUris.forEach( uri => {
-      deletePhotoByUri( uri );
-    } );
-    setNewPhotoUris( [] );
-    navigation.goBack( );
-  }, [deletePhotoByUri, navigation, newPhotoUris, setNewPhotoUris] );
+  const handleDiscard = useCallback(() => {
+    newPhotoUris.forEach(uri => {
+      deletePhotoByUri(uri);
+    });
+    setNewPhotoUris([]);
+    navigation.goBack();
+  }, [deletePhotoByUri, navigation, newPhotoUris, setNewPhotoUris]);
 
-  const handleTakePhoto = useCallback( ( ) => {
-    if ( disallowAddingPhotos ) {
-      setShowAlert( true );
+  const handleTakePhoto = useCallback(() => {
+    if (disallowAddingPhotos) {
+      setShowAlert(true);
       return;
     }
-    takePhotoAndStoreUri( );
-  }, [disallowAddingPhotos, takePhotoAndStoreUri] );
+    takePhotoAndStoreUri();
+  }, [disallowAddingPhotos, takePhotoAndStoreUri]);
 
-  useEffect( () => {
-    if ( initialVolume === null ) {
+  useEffect(() => {
+    if (initialVolume === null) {
       // Fetch the current volume to set the initial state
       VolumeManager.getVolume()
-        .then( volume => {
-          setInitialVolume( volume.volume );
-        } );
+        .then(volume => {
+          setInitialVolume(volume.volume);
+        });
     }
 
-    const volumeListener = VolumeManager.addVolumeListener( ( ) => {
-      if ( initialVolume !== null ) {
+    const volumeListener = VolumeManager.addVolumeListener(() => {
+      if (initialVolume !== null) {
         // Hardware volume button pressed - take a photo
         handleTakePhoto();
 
         // Revert the volume to its previous state
-        VolumeManager.setVolume( initialVolume );
+        VolumeManager.setVolume(initialVolume);
       }
-    } );
+    });
 
     // Suppress the native volume UI
-    VolumeManager.showNativeVolumeUI( { enabled: false } );
+    VolumeManager.showNativeVolumeUI({ enabled: false });
 
     return () => {
       volumeListener.remove();
-      VolumeManager.showNativeVolumeUI( { enabled: true } );
+      VolumeManager.showNativeVolumeUI({ enabled: true });
     };
-  }, [handleTakePhoto, initialVolume] );
+  }, [handleTakePhoto, initialVolume]);
 
   return (
     <View
-      className={classnames( containerClasses )}
+      className={classnames(containerClasses)}
       style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       <PhotoPreview
@@ -250,8 +250,8 @@ const StandardCamera = ( {
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         takePhoto={handleTakePhoto}
       />
-      <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
-        {t( "You-can-only-add-20-photos-per-observation" )}
+      <Snackbar visible={showAlert} onDismiss={() => setShowAlert(false)}>
+        {t("You-can-only-add-20-photos-per-observation")}
       </Snackbar>
       <DiscardChangesSheet
         setShowDiscardSheet={setShowDiscardSheet}

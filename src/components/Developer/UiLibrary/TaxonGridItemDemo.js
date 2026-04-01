@@ -11,10 +11,10 @@ import React from "react";
 
 import { makePhoto } from "./ObsListItemDemo";
 
-function makeTaxon( options = {} ) {
+function makeTaxon(options = {}) {
   return {
-    uuid: faker.string.uuid( ),
-    id: faker.number.int( ),
+    uuid: faker.string.uuid(),
+    id: faker.number.int(),
     name: faker.person.fullName(),
     preferred_common_name: faker.person.fullName(),
     rank: "species",
@@ -23,10 +23,10 @@ function makeTaxon( options = {} ) {
   };
 }
 
-export function makeTaxonPhoto( options = {} ) {
+export function makeTaxonPhoto(options = {}) {
   return {
-    uuid: faker.string.uuid( ),
-    photo: makePhoto( ),
+    uuid: faker.string.uuid(),
+    photo: makePhoto(),
     ...options,
   };
 }
@@ -38,32 +38,32 @@ const STYLE = {
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const TaxonGridItemDemo = ( ) => (
+const TaxonGridItemDemo = () => (
   <ExploreProvider>
     <ScrollViewWrapper>
       <View className="p-2">
         <Heading1>Media Preview</Heading1>
         <Heading2 className="my-2">Photo</Heading2>
         <TaxonGridItem
-          taxon={makeTaxon( {
-            default_photo: makePhoto( ),
-          } )}
+          taxon={makeTaxon({
+            default_photo: makePhoto(),
+          })}
           style={STYLE}
         />
         <Heading2 className="my-2">No Media</Heading2>
         <TaxonGridItem taxon={makeTaxon()} style={STYLE} />
         <Heading2 className="my-2">No Media w/ Iconic Taxon</Heading2>
         <TaxonGridItem
-          taxon={makeTaxon( {
+          taxon={makeTaxon({
             iconic_taxon_name: "Arachnida",
-          } )}
+          })}
           style={STYLE}
         />
         <Heading2 className="my-2">Species Seen</Heading2>
         <TaxonGridItem
-          taxon={makeTaxon( {
-            default_photo: makePhoto( ),
-          } )}
+          taxon={makeTaxon({
+            default_photo: makePhoto(),
+          })}
           showSpeciesSeenCheckmark
           style={STYLE}
         />

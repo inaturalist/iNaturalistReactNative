@@ -10,7 +10,7 @@ const useSuggestions = (
   photoUri: string,
   options: UseSuggestionsOptions,
 ): UseSuggestionsResult => {
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useNetInfo();
   const {
     shouldFetchOnlineSuggestions,
     onFetchError,
@@ -27,13 +27,13 @@ const useSuggestions = (
     refetch: refetchOnlineSuggestions,
     timedOut,
     resetTimeout,
-  } = useOnlineSuggestions( {
+  } = useOnlineSuggestions({
     onFetchError,
     onFetched,
     scoreImageParams,
     queryKey,
     shouldFetchOnlineSuggestions,
-  } );
+  });
 
   const onlineSuggestionsResponse = {
     onlineSuggestionsUpdatedAt,
@@ -46,45 +46,45 @@ const useSuggestions = (
   // 20240815 amanda - it's conceivable that we would want to use a cached image here eventually,
   // since the user can see the small square version of this image in MyObs/ObsDetails already
   // but for now, passing in an https photo to predictImage while offline crashes the app
-  const urlWillCrashOffline = photoUri?.includes( "https://" ) && !isConnected;
+  const urlWillCrashOffline = photoUri?.includes("https://") && !isConnected;
 
   // skip to offline suggestions if internet connection is spotty
   const tryOfflineSuggestions = !urlWillCrashOffline && (
     timedOut
-    || ( !onlineSuggestions && onlineSuggestionsAttempted )
+    || (!onlineSuggestions && onlineSuggestionsAttempted)
   );
 
   const {
     offlineSuggestions,
     refetchOfflineSuggestions,
-  } = useOfflineSuggestions( photoUri, {
+  } = useOfflineSuggestions(photoUri, {
     onFetched,
     onFetchError,
     latitude: scoreImageParams?.lat,
     longitude: scoreImageParams?.lng,
     tryOfflineSuggestions,
-  } );
+  });
 
   const refetchSuggestions = () => {
-    if ( shouldFetchOnlineSuggestions ) {
+    if (shouldFetchOnlineSuggestions) {
       refetchOnlineSuggestions();
     }
-    if ( tryOfflineSuggestions ) {
+    if (tryOfflineSuggestions) {
       refetchOfflineSuggestions();
     }
   };
 
   const usingOfflineSuggestions = tryOfflineSuggestions || (
-    ( offlineSuggestions?.results?.length || 0 ) > 0
-      && ( !onlineSuggestions || onlineSuggestions?.results?.length === 0 )
+    (offlineSuggestions?.results?.length || 0) > 0
+      && (!onlineSuggestions || onlineSuggestions?.results?.length === 0)
   );
 
-  const hasOnlineSuggestionResults = ( onlineSuggestions?.results?.length || 0 ) > 0;
+  const hasOnlineSuggestionResults = (onlineSuggestions?.results?.length || 0) > 0;
 
   const unfilteredSuggestions = useMemo(
-    ( ) => ( hasOnlineSuggestionResults
+    () => (hasOnlineSuggestionResults
       ? onlineSuggestions?.results || []
-      : offlineSuggestions?.results || [] ),
+      : offlineSuggestions?.results || []),
     [hasOnlineSuggestionResults, onlineSuggestions, offlineSuggestions],
   );
 
@@ -94,7 +94,7 @@ const useSuggestions = (
 
   // since we can calculate this, there's no need to store it in state
   const suggestions = useMemo(
-    ( ) => filterSuggestions(
+    () => filterSuggestions(
       unfilteredSuggestions,
       commonAncestor,
     ),

@@ -6,7 +6,7 @@ import {
 
 const ITEMS_PER_PAGE = 20;
 
-const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object ): object => {
+const useInfiniteProjectsScroll = ({ params: newInputParams, enabled }: object): object => {
   const baseParams = {
     ...newInputParams,
     per_page: ITEMS_PER_PAGE,
@@ -35,23 +35,23 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
     fetchNextPage,
   } = useAuthenticatedInfiniteQuery(
     queryKey,
-    async ( { pageParam }, optsWithAuth ) => {
+    async ({ pageParam }, optsWithAuth) => {
       const params = {
         ...baseParams,
       };
 
-      if ( pageParam ) {
+      if (pageParam) {
         params.page = pageParam;
       } else {
         params.page = 1;
       }
-      return searchProjects( params, optsWithAuth );
+      return searchProjects(params, optsWithAuth);
     },
     // TO DO: we need to properly type queryOptions in useAuthenticatedInfiniteQuery
     /* eslint-disable consistent-return */
     {
       getNextPageParam: lastPage => {
-        if ( !lastPage ) return undefined;
+        if (!lastPage) return undefined;
         const totalProjectCount = lastPage.total_results;
         const totalFetchedCount = lastPage.page * ITEMS_PER_PAGE;
         return totalFetchedCount < totalProjectCount
@@ -64,16 +64,16 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
   );
 
   const pages = data?.pages;
-  const allResults = pages?.map( page => page?.results );
-  const projects = flatten( allResults ).sort( ( a, b ) => {
-    if ( a.title < b.title ) {
+  const allResults = pages?.map(page => page?.results);
+  const projects = flatten(allResults).sort((a, b) => {
+    if (a.title < b.title) {
       return -1;
     }
-    if ( a.title > b.title ) {
+    if (a.title > b.title) {
       return 1;
     }
     return 0;
-  } );
+  });
 
   return {
     isFetching,

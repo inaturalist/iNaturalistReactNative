@@ -66,76 +66,76 @@ const SlideItem = props => {
   );
 };
 
-const OnboardingCarousel = ( ) => {
+const OnboardingCarousel = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [onboardingShown, setOnboardingShown] = useOnboardingShown();
   const { width } = useWindowDimensions();
-  const { t } = useTranslation( );
-  const carouselRef = useRef( null );
-  const progress = useSharedValue( 0 );
-  const [currentIndex, setCurrentIndex] = useState( 0 );
-  const [imagesLoaded, setImagesLoaded] = useState( false );
+  const { t } = useTranslation();
+  const carouselRef = useRef(null);
+  const progress = useSharedValue(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   const closeModal = () => {
-    setOnboardingShown( true );
+    setOnboardingShown(true);
   };
 
   const paginationColor = colors.white;
-  const backgroundAnimation1 = useAnimatedStyle( () => {
+  const backgroundAnimation1 = useAnimatedStyle(() => {
     const opacity = interpolate(
       progress.get(),
       [-1, 0, 1], // Fade in/out around current index
       [0, 1, 0], // Opacity transitions
     );
     return { opacity };
-  } );
+  });
 
-  const backgroundAnimation2 = useAnimatedStyle( () => {
+  const backgroundAnimation2 = useAnimatedStyle(() => {
     const opacity = interpolate(
       progress.get(),
       [0, 1, 2], // Fade in/out around current index
       [0, 1, 0], // Opacity transitions
     );
     return { opacity };
-  } );
+  });
 
-  const backgroundAnimation3 = useAnimatedStyle( () => {
+  const backgroundAnimation3 = useAnimatedStyle(() => {
     const opacity = interpolate(
       progress.get(),
       [1, 2, 3], // Fade in/out around current index
       [0, 1, 0], // Opacity transitions
     );
     return { opacity };
-  } );
+  });
 
-  const ONBOARDING_SLIDES = useMemo( ( ) => ( [
+  const ONBOARDING_SLIDES = useMemo(() => ([
     {
       icon: null,
       iconProps: { width: 70, height: 70 },
-      title: t( "Identify-species-anywhere" ),
-      text: t( "Get-an-instant-ID-of-any-plant-animal-fungus" ),
-      background: require( "images/background/karsten-winegeart-RAgWH6ldps0-unsplash-cropped.jpg" ),
+      title: t("Identify-species-anywhere"),
+      text: t("Get-an-instant-ID-of-any-plant-animal-fungus"),
+      background: require("images/background/karsten-winegeart-RAgWH6ldps0-unsplash-cropped.jpg"),
       backgroundAnimation: backgroundAnimation1,
     },
     {
       icon: OnBoardingIcon2,
       iconProps: { width: 100, height: 100 },
-      title: t( "Connect-with-expert-naturalists" ),
-      text: t( "Experts-help-verify-and-improve-IDs" ),
-      background: require( "images/background/shane-rounce-DNkoNXQti3c-unsplash.jpg" ),
+      title: t("Connect-with-expert-naturalists"),
+      text: t("Experts-help-verify-and-improve-IDs"),
+      background: require("images/background/shane-rounce-DNkoNXQti3c-unsplash.jpg"),
       backgroundAnimation: backgroundAnimation2,
     },
     {
       icon: OnBoardingIcon3,
       iconProps: { width: 70, height: 70 },
-      title: t( "Help-protect-species" ),
-      text: t( "Verified-IDs-are-used-for-science-and-conservation" ),
-      background: require( "images/background/sk-yeong-cXpdNdqp7eY-unsplash.jpg" ),
+      title: t("Help-protect-species"),
+      text: t("Verified-IDs-are-used-for-science-and-conservation"),
+      background: require("images/background/sk-yeong-cXpdNdqp7eY-unsplash.jpg"),
       backgroundAnimation: backgroundAnimation3,
     },
-  ] ), [backgroundAnimation1, backgroundAnimation2, backgroundAnimation3, t] );
+  ]), [backgroundAnimation1, backgroundAnimation2, backgroundAnimation3, t]);
 
-  const renderItem = ( { style, index, item } ) => (
+  const renderItem = ({ style, index, item }) => (
     <SlideItem
       key={`OnboardingCarouselSlide-${item.title}`}
       index={index}
@@ -147,48 +147,48 @@ const OnboardingCarousel = ( ) => {
   const totalImages = ONBOARDING_SLIDES.length;
 
   // Preload images; show splash screen in meantime
-  useEffect( () => {
-    const imageSources = ONBOARDING_SLIDES.map( slide => slide.background );
+  useEffect(() => {
+    const imageSources = ONBOARDING_SLIDES.map(slide => slide.background);
 
     let loadedCount = 0;
 
     // Preload each image
-    imageSources.forEach( source => {
-      Image.prefetch( Image.resolveAssetSource( source ).uri )
-        .then( ( ) => {
+    imageSources.forEach(source => {
+      Image.prefetch(Image.resolveAssetSource(source).uri)
+        .then(() => {
           loadedCount += 1;
-          if ( loadedCount === totalImages ) {
-            setTimeout( ( ) => {
-              setImagesLoaded( true );
-            }, 500 );
+          if (loadedCount === totalImages) {
+            setTimeout(() => {
+              setImagesLoaded(true);
+            }, 500);
           }
-        } )
-        .catch( error => console.error( "Error loading image:", error ) );
-    } );
-  }, [ONBOARDING_SLIDES, totalImages] );
+        })
+        .catch(error => console.error("Error loading image:", error));
+    });
+  }, [ONBOARDING_SLIDES, totalImages]);
 
-  useEffect( ( ) => {
+  useEffect(() => {
     let idleCallbackId = 0;
-    if ( Platform.OS === "android" || imagesLoaded ) {
-      idleCallbackId = requestIdleCallback( ( ) => {
-        startupPerformanceTracker.emitStartupTTI( {
+    if (Platform.OS === "android" || imagesLoaded) {
+      idleCallbackId = requestIdleCallback(() => {
+        startupPerformanceTracker.emitStartupTTI({
           targetScreen: "OnboardingCarousel",
           loggedIn: false,
-        } );
-      } );
+        });
+      });
     }
-    return () => { if ( idleCallbackId ) { cancelIdleCallback( idleCallbackId ); } };
-  }, [imagesLoaded] );
+    return () => { if (idleCallbackId) { cancelIdleCallback(idleCallbackId); } };
+  }, [imagesLoaded]);
 
   // TODO: On Android release build imagesLoaded never switched from false to true, and
   // this screen was stuck in a loading state. On iOS it worked as expected.
   // Disabling it now on Android to make a new release possible.
-  if ( Platform.OS === "android"
+  if (Platform.OS === "android"
     ? false
-    : !imagesLoaded ) {
+    : !imagesLoaded) {
     return (
       <ImageBackground
-        source={require( "images/background/daniel-olah-YNUFtf4qyh0-unsplash.jpg" )}
+        source={require("images/background/daniel-olah-YNUFtf4qyh0-unsplash.jpg")}
         className="flex-1 items-center justify-center"
       >
         <INatIcon
@@ -213,7 +213,7 @@ const OnboardingCarousel = ( ) => {
           accessibilityElementsHidden
           importantForAccessibility="no"
         >
-          {ONBOARDING_SLIDES.map( item => (
+          {ONBOARDING_SLIDES.map(item => (
             <Animated.View
               key={`OnboardingCarouselBackground-${item.title}`}
               className="absolute w-full h-full"
@@ -225,7 +225,7 @@ const OnboardingCarousel = ( ) => {
                 accessibilityIgnoresInvertColors
               />
             </Animated.View>
-          ) )}
+          ))}
         </View>
         <View
           className="flex flex-col w-full h-full items-center"
@@ -240,9 +240,9 @@ const OnboardingCarousel = ( ) => {
             color={colors.white}
             size={19}
             className="absolute z-10 top-[15px] right-[10px]"
-            onPress={( ) => closeModal( )}
-            accessibilityLabel={t( "Close" )}
-            accessibilityHint={t( "Closes-introduction" )}
+            onPress={() => closeModal()}
+            accessibilityLabel={t("Close")}
+            accessibilityHint={t("Closes-introduction")}
           />
           <View pointerEvents="none" className="items-center absolute top-[82px]">
             <INatLogo
@@ -253,7 +253,7 @@ const OnboardingCarousel = ( ) => {
               importantForAccessibility="no"
             />
             <Heading4 className="text-white mt-[15px]">
-              {t( "DISCOVER-NATURE-AROUND-YOU" )}
+              {t("DISCOVER-NATURE-AROUND-YOU")}
             </Heading4>
           </View>
 
@@ -265,12 +265,12 @@ const OnboardingCarousel = ( ) => {
               width={width}
               loop={false}
               scrollAnimationDuration={400}
-              onProgressChange={( offsetProgress, absoluteProgress ) => {
-                setCurrentIndex( Math.round( absoluteProgress ) );
-                progress.set( absoluteProgress );
+              onProgressChange={(offsetProgress, absoluteProgress) => {
+                setCurrentIndex(Math.round(absoluteProgress));
+                progress.set(absoluteProgress);
               }}
               onScrollEnd={() => {
-                setCurrentIndex( carouselRef.current?.getCurrentIndex() );
+                setCurrentIndex(carouselRef.current?.getCurrentIndex());
               }}
               renderItem={renderItem}
             />
@@ -329,14 +329,14 @@ const OnboardingCarousel = ( ) => {
                 className="w-full"
                 level="primary"
                 forceDark
-                text={t( "CONTINUE" )}
+                text={t("CONTINUE")}
                 onPress={() => {
                   const isLastSlide = carouselRef.current?.getCurrentIndex()
                     >= ONBOARDING_SLIDES.length - 1;
-                  if ( isLastSlide ) {
+                  if (isLastSlide) {
                     closeModal();
                   } else {
-                    carouselRef.current?.scrollTo( { count: 1, animated: true } );
+                    carouselRef.current?.scrollTo({ count: 1, animated: true });
                   }
                 }}
               />

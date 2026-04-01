@@ -18,32 +18,32 @@ interface Props {
   visible: boolean;
 }
 
-const LocationStatus = ( { useLocation, visible, onAnimationEnd }: Props ) => {
+const LocationStatus = ({ useLocation, visible, onAnimationEnd }: Props) => {
   const { t } = useTranslation();
-  const opacity = useSharedValue( 0 );
-  const animatedStyle = useAnimatedStyle( () => ( {
-    opacity: opacity.get( ),
-  } ) );
+  const opacity = useSharedValue(0);
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.get(),
+  }));
 
-  useEffect( () => {
-    if ( visible ) {
+  useEffect(() => {
+    if (visible) {
       opacity.set(
         withSequence(
-          withTiming( 1, { duration: 200 } ),
+          withTiming(1, { duration: 200 }),
           withDelay(
             2000,
-            withTiming( 0, { duration: 200 }, finished => {
-              if ( finished && onAnimationEnd ) {
-                scheduleOnRN( onAnimationEnd );
+            withTiming(0, { duration: 200 }, finished => {
+              if (finished && onAnimationEnd) {
+                scheduleOnRN(onAnimationEnd);
               }
-            } ),
+            }),
           ),
         ),
       );
     }
-  }, [visible, onAnimationEnd, opacity] );
+  }, [visible, onAnimationEnd, opacity]);
 
-  if ( !visible ) {
+  if (!visible) {
     return null;
   }
 
@@ -51,8 +51,8 @@ const LocationStatus = ( { useLocation, visible, onAnimationEnd }: Props ) => {
     ? "map-marker-outline"
     : "map-marker-outline-off";
   const text = useLocation
-    ? t( "Using-location" )
-    : t( "Ignoring-location" );
+    ? t("Using-location")
+    : t("Ignoring-location");
 
   return (
     <Animated.View style={animatedStyle}>

@@ -15,10 +15,10 @@ type Props = {
   isConnected: boolean,
   targetItemID: number,
   // TODO change to LayoutEvent from react-native if/when switching to TS
-  onLayoutTargetItem: ( event: Object ) => void
+  onLayoutTargetItem: (event: Object) => void
 }
 
-const ActivityTab = ( {
+const ActivityTab = ({
   observation,
   refetchRemoteObservation,
   activityItems,
@@ -26,30 +26,30 @@ const ActivityTab = ( {
   isConnected,
   targetItemID,
   onLayoutTargetItem,
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  const currentUser = useCurrentUser( );
+}: Props): Node => {
+  const { t } = useTranslation();
+  const currentUser = useCurrentUser();
   const userId = currentUser?.id;
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
   const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
 
   // finds the user's most recent id
-  const findRecentUserAgreedToID = ( ) => {
+  const findRecentUserAgreedToID = () => {
     const currentIds = observation?.identifications;
-    const userAgree = currentIds?.filter( id => id.user?.id === userId );
+    const userAgree = currentIds?.filter(id => id.user?.id === userId);
     return userAgree?.length > 0 && userAgree[userAgree.length - 1].current
       ? userAgree[userAgree.length - 1]?.taxon?.id
       : undefined;
   };
 
-  const userAgreedToId = findRecentUserAgreedToID( );
+  const userAgreedToId = findRecentUserAgreedToID();
 
   const stableItems = useMemo(
-    ( ) => compact( activityItems ).map(
+    () => compact(activityItems).map(
       item => (
         item.toJSON
-          ? item.toJSON( )
+          ? item.toJSON()
           : item
       ),
     ),
@@ -57,29 +57,29 @@ const ActivityTab = ( {
   );
 
   const indexOfFirstTaxonDisplayed = taxonId => stableItems
-    .findIndex( item => item?.taxon?.id === taxonId );
+    .findIndex(item => item?.taxon?.id === taxonId);
 
   return (
     <View testID="ActivityTab">
       {stableItems.length === 0
         ? (
           <Body2 className="text-center mt-12 px-[45px]">
-            {t( "This-observation-has-no-comments-or-identifications-yet" )}
+            {t("This-observation-has-no-comments-or-identifications-yet")}
           </Body2>
         )
-        : stableItems.map( ( item, index ) => (
+        : stableItems.map((item, index) => (
           <View
             onLayout={event => {
-              if ( targetItemID === item?.id ) {
+              if (targetItemID === item?.id) {
                 const { layout } = event.nativeEvent;
-                onLayoutTargetItem( layout );
+                onLayoutTargetItem(layout);
               }
             }}
             key={item.uuid}
           >
             <ActivityItem
               currentUserId={userId}
-              isFirstDisplay={index === indexOfFirstTaxonDisplayed( item.taxon?.id )}
+              isFirstDisplay={index === indexOfFirstTaxonDisplayed(item.taxon?.id)}
               isConnected={isConnected}
               item={item}
               openAgreeWithIdSheet={openAgreeWithIdSheet}
@@ -90,7 +90,7 @@ const ActivityTab = ( {
               belongsToCurrentUser={belongsToCurrentUser}
             />
           </View>
-        ) )}
+        ))}
     </View>
   );
 };

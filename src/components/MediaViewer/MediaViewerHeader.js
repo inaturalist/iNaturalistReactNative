@@ -15,19 +15,19 @@ type Props = {
   soundCount?: number
 };
 
-const MediaViewerHeader = ( {
+const MediaViewerHeader = ({
   photoCount = 0,
   onClose,
   soundCount = 0,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
-  let headerText = t( "X-PHOTOS", { photoCount } );
-  if ( soundCount > 0 ) {
-    if ( photoCount === 0 ) {
-      headerText = t( "X-SOUNDS", { count: soundCount } );
+  let headerText = t("X-PHOTOS", { photoCount });
+  if (soundCount > 0) {
+    if (photoCount === 0) {
+      headerText = t("X-SOUNDS", { count: soundCount });
     } else {
-      headerText = t( "X-PHOTOS-Y-SOUNDS", { photoCount, soundCount } );
+      headerText = t("X-PHOTOS-Y-SOUNDS", { photoCount, soundCount });
     }
   }
 

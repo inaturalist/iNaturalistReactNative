@@ -10,7 +10,7 @@ import colors from "styles/tailwindColors";
 interface Props {
   before?: React.ReactNode;
   chosen: string[];
-  onTaxonChosen: ( taxon: string ) => void;
+  onTaxonChosen: (taxon: string) => void;
   testID?: string;
   withoutUnknown?: boolean;
 }
@@ -38,19 +38,19 @@ const ICONIC_TAXA = [
 
 const EMPTY_CHOSEN: string[] = [];
 
-const IconicTaxonChooser = ( {
+const IconicTaxonChooser = ({
   before,
   chosen = EMPTY_CHOSEN,
   onTaxonChosen,
   testID,
   withoutUnknown,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   const iconicTaxonIcons = withoutUnknown
-    ? ICONIC_TAXA.filter( taxon => taxon !== "unknown" )
+    ? ICONIC_TAXA.filter(taxon => taxon !== "unknown")
     : ICONIC_TAXA;
-  const renderIcon = useCallback( ( { item: iconicTaxonName }: ListRenderItemInfo<string> ) => {
-    const isSelected = chosen.indexOf( iconicTaxonName ) >= 0;
+  const renderIcon = useCallback(({ item: iconicTaxonName }: ListRenderItemInfo<string>) => {
+    const isSelected = chosen.indexOf(iconicTaxonName) >= 0;
     return (
       <View
         className={
@@ -70,17 +70,17 @@ const IconicTaxonChooser = ( {
         <INatIconButton
           icon={`iconic-${iconicTaxonName}`}
           size={22}
-          onPress={( ) => {
-            onTaxonChosen( iconicTaxonName );
+          onPress={() => {
+            onTaxonChosen(iconicTaxonName);
           }}
           color={isSelected
             ? colors.white
             : undefined}
           accessibilityLabel={
-            t( "Iconic-taxon-name", { iconicTaxon: iconicTaxonName } )
+            t("Iconic-taxon-name", { iconicTaxon: iconicTaxonName })
           }
           accessibilityHint={
-            t( "Selects-iconic-taxon-X-for-identification", { iconicTaxon: iconicTaxonName } )
+            t("Selects-iconic-taxon-X-for-identification", { iconicTaxon: iconicTaxonName })
           }
           testID={`INatIconButton.IconicTaxonButton.${iconicTaxonName}`}
         />
@@ -90,10 +90,10 @@ const IconicTaxonChooser = ( {
     chosen,
     onTaxonChosen,
     t,
-  ] );
+  ]);
 
-  const renderHeader = useCallback( ( ) => {
-    if ( before ) {
+  const renderHeader = useCallback(() => {
+    if (before) {
       return (
         <View className="mr-4">
           {before}
@@ -101,7 +101,7 @@ const IconicTaxonChooser = ( {
       );
     }
     return null;
-  }, [before] );
+  }, [before]);
 
   return (
     <FlatList

@@ -15,7 +15,7 @@ interface Props {
   isLandscapeMode?: boolean;
   isLargeScreen?: boolean;
   isTablet?: boolean;
-  onDelete: ( _uri: string ) => void;
+  onDelete: (_uri: string) => void;
   photoUris: string[];
   rotation?: { value: number };
   takingPhoto: boolean;
@@ -27,7 +27,7 @@ const STYLE = {
   flexShrink: 1,
 } as const;
 
-const PhotoPreview = ( {
+const PhotoPreview = ({
   isLandscapeMode,
   isLargeScreen,
   isTablet,
@@ -35,8 +35,8 @@ const PhotoPreview = ( {
   photoUris,
   rotation,
   takingPhoto,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   const wrapperDim = isLargeScreen
     ? LARGE_PHOTO_DIM + LARGE_PHOTO_GUTTER * 2
     : SMALL_PHOTO_DIM + SMALL_PHOTO_GUTTER * 2;
@@ -50,10 +50,10 @@ const PhotoPreview = ( {
         "w-full",
       )}
     >
-      {t( "Photos-you-take-will-appear-here" )}
+      {t("Photos-you-take-will-appear-here")}
     </Subheading1>
   );
-  if ( isTablet && isLandscapeMode ) {
+  if (isTablet && isLandscapeMode) {
     noPhotosNotice = (
       <Subheading1
         className={classnames(
@@ -67,7 +67,7 @@ const PhotoPreview = ( {
           "top-[50%]",
         )}
       >
-        {t( "Photos-you-take-will-appear-here" )}
+        {t("Photos-you-take-will-appear-here")}
       </Subheading1>
     );
   }
@@ -76,7 +76,7 @@ const PhotoPreview = ( {
     width?: number | string;
     height?: number;
   } = {};
-  if ( isTablet && isLandscapeMode ) {
+  if (isTablet && isLandscapeMode) {
     dynamicStyle.width = wrapperDim;
   } else {
     dynamicStyle.height = wrapperDim;

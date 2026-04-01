@@ -12,15 +12,15 @@ import type { RealmTaxon } from "realmModels/types";
 import { useKeyboardInfo, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
-} );
+});
 
 const EMPTY_TAXA: RealmTaxon[] = [];
 
 interface Props {
   query?: string;
-  setQuery: ( newQuery: string ) => void;
+  setQuery: (newQuery: string) => void;
   isLoading?: boolean;
   isLocal?: boolean;
   renderItem: (
@@ -29,18 +29,18 @@ interface Props {
   taxa: RealmTaxon[];
 }
 
-const TaxonSearch = ( {
+const TaxonSearch = ({
   isLoading = false,
   isLocal = false,
   query = "",
   renderItem,
   setQuery,
   taxa = EMPTY_TAXA,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
+}: Props) => {
+  const { t } = useTranslation();
+  const { keyboardHeight, keyboardShown } = useKeyboardInfo();
 
-  const renderEmptyList = useCallback( ( ) => (
+  const renderEmptyList = useCallback(() => (
     query.length > 0
       ? (
         <EmptySearchResults
@@ -50,15 +50,15 @@ const TaxonSearch = ( {
         />
       )
       : null
-  ), [query.length, isLoading] );
+  ), [query.length, isLoading]);
 
   // Make sure all of the results can be scrolled to even with the keyboard
   // up
-  const renderFooter = useCallback( ( ) => (
+  const renderFooter = useCallback(() => (
     keyboardShown
       ? <View className={`h-[${keyboardHeight}px]`} />
       : null
-  ), [keyboardHeight, keyboardShown] );
+  ), [keyboardHeight, keyboardShown]);
 
   return (
     <ViewWrapper useTopInset={false}>
@@ -78,7 +78,7 @@ const TaxonSearch = ( {
               <INatIcon name="offline" size={34} />
             </View>
             <Body2 className="flex-1">
-              { t( "Showing-offline-search-results--taxa" )}
+              { t("Showing-offline-search-results--taxa")}
             </Body2>
           </View>
         ) }
@@ -87,7 +87,7 @@ const TaxonSearch = ( {
         keyboardShouldPersistTaps="always"
         data={taxa}
         renderItem={renderItem}
-        keyExtractor={taxon => String( taxon.id )}
+        keyExtractor={taxon => String(taxon.id)}
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}
       />

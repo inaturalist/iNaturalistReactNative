@@ -21,42 +21,42 @@ interface Props {
   };
 }
 
-const EstablishmentMeans = ( { taxon }: Props ) => {
-  const { t } = useTranslation( );
+const EstablishmentMeans = ({ taxon }: Props) => {
+  const { t } = useTranslation();
 
   const establishmentMeans = taxon?.establishment_means?.establishment_means;
 
-  const displayEstablishmentMeansText = ( ) => {
+  const displayEstablishmentMeansText = () => {
     const placeName = taxon?.establishment_means?.place.display_name;
-    if ( establishmentMeans === "native" ) {
-      return t( "Native-to-place", { place: placeName } );
+    if (establishmentMeans === "native") {
+      return t("Native-to-place", { place: placeName });
     }
-    if ( establishmentMeans === "introduced" ) {
-      return t( "Introduced-to-place", { place: placeName } );
+    if (establishmentMeans === "introduced") {
+      return t("Introduced-to-place", { place: placeName });
     }
-    if ( establishmentMeans === "endemic" ) {
-      return t( "Endemic-to-place", { place: placeName } );
+    if (establishmentMeans === "endemic") {
+      return t("Endemic-to-place", { place: placeName });
     }
     return "";
   };
 
-  const displaySourceListText = ( ) => {
+  const displaySourceListText = () => {
     let url = baseUrl;
 
-    const listedTaxon = find( taxon.listed_taxa, lt => (
+    const listedTaxon = find(taxon.listed_taxa, lt => (
       lt.place.id === taxon.establishment_means.place.id
       && lt.establishment_means === establishmentMeans
-    ) );
+    ));
 
     // refer to web implementation:
     // https://github.com/inaturalist/inaturalist/blob/aedd35bd74bfb2a6d8c6c98427f25f9b5222410e/app/webpack/taxa/show/containers/establishment_header_container.js
-    if ( listedTaxon ) {
+    if (listedTaxon) {
       url += `/listed_taxa/${listedTaxon.id}`;
-    } else if ( taxon.establishment_means.id ) {
+    } else if (taxon.establishment_means.id) {
       url += `/listed_taxa/${taxon.establishment_means.id}`;
     }
 
-    if ( !listedTaxon?.list?.title ) return null;
+    if (!listedTaxon?.list?.title) return null;
 
     return (
       <Trans
@@ -67,7 +67,7 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
           <Body2
             key="1"
             className="text-inatGreen underline"
-            onPress={( ) => openExternalWebBrowser( url )}
+            onPress={() => openExternalWebBrowser(url)}
           />,
         ]}
       />
@@ -77,11 +77,11 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
   return taxon?.establishment_means
     ? (
       <View className="mb-6">
-        <Heading4 className="mb-3">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
+        <Heading4 className="mb-3">{t("ESTABLISHMENT-MEANS")}</Heading4>
         <Body2>
-          {displayEstablishmentMeansText( )}
+          {displayEstablishmentMeansText()}
           {" "}
-          {displaySourceListText( )}
+          {displaySourceListText()}
         </Body2>
       </View>
     )

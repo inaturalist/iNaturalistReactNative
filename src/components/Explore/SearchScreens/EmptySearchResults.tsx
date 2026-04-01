@@ -13,30 +13,30 @@ import {
 interface Props {
   isLoading: boolean;
   searchQuery: string;
-  refetch?: ( ) => void;
+  refetch?: () => void;
   skipOfflineNotice?: boolean;
 }
 
-const EmptySearchResults = ( {
+const EmptySearchResults = ({
   isLoading,
   searchQuery,
   refetch,
   skipOfflineNotice,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
+}: Props) => {
+  const { t } = useTranslation();
+  const { isConnected } = useNetInfo();
 
-  if ( searchQuery === "" ) {
+  if (searchQuery === "") {
     return null;
   }
-  if ( isConnected === false && !skipOfflineNotice && refetch ) {
+  if (isConnected === false && !skipOfflineNotice && refetch) {
     return (
       <View className="pt-[50px]">
         <OfflineNotice onPress={refetch} />
       </View>
     );
   }
-  if ( isLoading ) {
+  if (isLoading) {
     return (
       <View className="p-4">
         <ActivityIndicator size={40} />
@@ -44,7 +44,7 @@ const EmptySearchResults = ( {
     );
   }
   return (
-    <Body2 className="text-center pt-[50px]">{t( "No-results-found-for-that-search" )}</Body2>
+    <Body2 className="text-center pt-[50px]">{t("No-results-found-for-that-search")}</Body2>
   );
 };
 

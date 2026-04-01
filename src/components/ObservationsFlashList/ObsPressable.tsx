@@ -15,8 +15,8 @@ interface Props {
   hideObsStatus?: boolean;
   isSimpleObsStatus?: boolean;
   hideRGLabel?: boolean;
-  onUploadButtonPress: ( ) => void;
-  onItemPress: ( ) => void;
+  onUploadButtonPress: () => void;
+  onItemPress: () => void;
   gridItemStyle: object;
   layout: "list" | "grid";
   observation: RealmObservation;
@@ -24,7 +24,7 @@ interface Props {
   unsynced: boolean;
 }
 
-const ObsPressable = ( {
+const ObsPressable = ({
   currentUser,
   queued,
   explore,
@@ -40,8 +40,8 @@ const ObsPressable = ( {
   observation,
   uploadProgress,
   unsynced,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   return (
     <Pressable
@@ -49,8 +49,8 @@ const ObsPressable = ( {
       onPress={onItemPress}
       accessibilityRole="link"
       accessibilityHint={unsynced
-        ? t( "Navigates-to-observation-edit-screen" )
-        : t( "Navigates-to-observation-details" )}
+        ? t("Navigates-to-observation-edit-screen")
+        : t("Navigates-to-observation-details")}
       disabled={queued}
     >
       {

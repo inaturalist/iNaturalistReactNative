@@ -7,20 +7,20 @@ import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermiss
 interface Props {
   closeModal: () => void;
   hasPermissions?: boolean;
-  renderPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
-  requestPermissions: ( ) => void;
+  renderPermissionsGate: (options: LocationPermissionCallbacks) => React.FC;
+  requestPermissions: () => void;
   showModal: boolean;
-  updateLocation: ( location: "worldwide" | ApiPlace ) => void;
+  updateLocation: (location: "worldwide" | ApiPlace) => void;
 }
 
-const ExploreLocationSearchModal = ( {
+const ExploreLocationSearchModal = ({
   closeModal,
   hasPermissions,
   renderPermissionsGate,
   requestPermissions,
   showModal,
   updateLocation,
-}: Props ) => (
+}: Props) => (
   <Modal
     showModal={showModal}
     fullScreen

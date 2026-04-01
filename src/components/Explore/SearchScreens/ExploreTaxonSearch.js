@@ -22,39 +22,39 @@ type Props = {
   updateTaxon: Function
 };
 
-const ExploreTaxonSearch = ( {
+const ExploreTaxonSearch = ({
   closeModal,
   hideInfoButton,
   onPressInfo,
   updateTaxon,
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  const [taxonQuery, setTaxonQuery] = useState( "" );
+}: Props): Node => {
+  const { t } = useTranslation();
+  const [taxonQuery, setTaxonQuery] = useState("");
 
   const {
     taxa,
     isLoading,
     isLocal,
-  } = useTaxonSearch( taxonQuery );
+  } = useTaxonSearch(taxonQuery);
 
-  const onTaxonSelected = useCallback( async newTaxon => {
-    updateTaxon( newTaxon );
+  const onTaxonSelected = useCallback(async newTaxon => {
+    updateTaxon(newTaxon);
     closeModal();
-  }, [closeModal, updateTaxon] );
+  }, [closeModal, updateTaxon]);
 
   const resetTaxon = useCallback(
-    ( ) => {
-      updateTaxon( null );
+    () => {
+      updateTaxon(null);
       closeModal();
     },
     [updateTaxon, closeModal],
   );
 
-  const renderItem = useCallback( ( { item: taxon, index } ) => (
+  const renderItem = useCallback(({ item: taxon, index }) => (
     <TaxonResult
       first={index === 0}
       fetchRemote={false}
-      handleTaxonOrEditPress={() => onTaxonSelected( taxon )}
+      handleTaxonOrEditPress={() => onTaxonSelected(taxon)}
       hideInfoButton={hideInfoButton}
       onPressInfo={onPressInfo}
       showCheckmark={false}
@@ -65,13 +65,13 @@ const ExploreTaxonSearch = ( {
     hideInfoButton,
     onPressInfo,
     onTaxonSelected,
-  ] );
+  ]);
 
   return (
     <ViewWrapper>
       <ExploreSearchHeader
         closeModal={closeModal}
-        headerText={t( "SEARCH-TAXA" )}
+        headerText={t("SEARCH-TAXA")}
         resetFilters={resetTaxon}
         testID="ExploreTaxonSearch.close"
       />

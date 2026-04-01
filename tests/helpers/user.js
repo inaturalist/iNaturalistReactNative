@@ -21,55 +21,55 @@ const rnsiOptions = {
   keychainService: "app",
 };
 
-async function signOut( options = {} ) {
+async function signOut(options = {}) {
   const realm = options.realm || global.realm;
   i18next.language = undefined;
   // As mentioned above, clean up the component tree so we don't have after
   // effects related to deleting all realm objects.
   // Note: if we ever write tests explicitly testing UI sign out, we might
   // want to write an optional exception to this step
-  cleanup( );
+  cleanup();
   // This is the nuclear option, maybe revisit if it's a source of bugs
-  safeRealmWrite( realm, ( ) => {
-    realm.deleteAll( );
-  }, "deleting entire realm in signOut function, user.js" );
-  const systemLocale = getInatLocaleFromSystemLocale( );
-  changeLanguage( systemLocale );
-  await RNSInfo.deleteItem( "username", rnsiOptions );
-  await RNSInfo.deleteItem( "jwtToken", rnsiOptions );
-  await RNSInfo.deleteItem( "jwtGeneratedAt", rnsiOptions );
-  await RNSInfo.deleteItem( "accessToken", rnsiOptions );
-  clearAuthCache( );
-  inatjs.users.me.mockClear( );
+  safeRealmWrite(realm, () => {
+    realm.deleteAll();
+  }, "deleting entire realm in signOut function, user.js");
+  const systemLocale = getInatLocaleFromSystemLocale();
+  changeLanguage(systemLocale);
+  await RNSInfo.deleteItem("username", rnsiOptions);
+  await RNSInfo.deleteItem("jwtToken", rnsiOptions);
+  await RNSInfo.deleteItem("jwtGeneratedAt", rnsiOptions);
+  await RNSInfo.deleteItem("accessToken", rnsiOptions);
+  clearAuthCache();
+  inatjs.users.me.mockClear();
 }
 
-async function signIn( user, options = {} ) {
+async function signIn(user, options = {}) {
   const realm = options.realm || global.realm;
-  await RNSInfo.setItem( "username", user.login, rnsiOptions );
-  await RNSInfo.setItem( "jwtToken", TEST_JWT, rnsiOptions );
-  await RNSInfo.setItem( "jwtGeneratedAt", Date.now( ).toString( ), rnsiOptions );
-  await RNSInfo.setItem( "accessToken", TEST_ACCESS_TOKEN, rnsiOptions );
-  clearAuthCache( );
-  inatjs.users.me.mockResolvedValue( makeResponse( [user] ) );
+  await RNSInfo.setItem("username", user.login, rnsiOptions);
+  await RNSInfo.setItem("jwtToken", TEST_JWT, rnsiOptions);
+  await RNSInfo.setItem("jwtGeneratedAt", Date.now().toString(), rnsiOptions);
+  await RNSInfo.setItem("accessToken", TEST_ACCESS_TOKEN, rnsiOptions);
+  clearAuthCache();
+  inatjs.users.me.mockResolvedValue(makeResponse([user]));
   user.signedIn = true;
-  safeRealmWrite( realm, ( ) => {
-    realm.create( "User", user, "modified" );
-  }, "signing user in, user.js" );
-  if ( user?.locale ) {
-    changeLanguage( user.locale );
+  safeRealmWrite(realm, () => {
+    realm.create("User", user, "modified");
+  }, "signing user in, user.js");
+  if (user?.locale) {
+    changeLanguage(user.locale);
   }
-  nock( API_HOST )
-    .post( "/oauth/token" )
-    .reply( 200, { access_token: TEST_ACCESS_TOKEN } )
-    .get( "/users/edit.json" )
-    .reply( 200, { login: user.login, id: user.id } );
-  nock( API_HOST, {
+  nock(API_HOST)
+    .post("/oauth/token")
+    .reply(200, { access_token: TEST_ACCESS_TOKEN })
+    .get("/users/edit.json")
+    .reply(200, { login: user.login, id: user.id });
+  nock(API_HOST, {
     reqheaders: {
       authorization: `Bearer ${TEST_ACCESS_TOKEN}`,
     },
-  } )
-    .get( "/users/api_token.json" )
-    .reply( 200, { api_token: "some-jwt" } );
+  })
+    .get("/users/api_token.json")
+    .reply(200, { api_token: "some-jwt" });
 }
 
 export {

@@ -24,35 +24,35 @@ const logSuggestionAnalytics = (
 ) => {
   const transactionId = uuidv4();
 
-  logFirebaseEvent( offlineEventName, {
+  logFirebaseEvent(offlineEventName, {
     transactionId,
     optimisticObservationUuid,
     prediction_source: "offline",
     commonAncestorTaxonId: offlineSuggestions.commonAncestor?.taxon.id ?? "NA",
     commonAncestorCombinedScore: offlineSuggestions.commonAncestor?.combined_score ?? "NA",
     items: offlineSuggestions.results
-      .slice( 0, 10 )
-      .map( suggestion => ( {
-        item_id: String( suggestion.taxon.id ),
-        [taxonIdPropertyName]: String( suggestion.taxon.id ),
-        [taxonScorePropertyName]: String( suggestion.combined_score ),
-      } ) ),
-  } );
+      .slice(0, 10)
+      .map(suggestion => ({
+        item_id: String(suggestion.taxon.id),
+        [taxonIdPropertyName]: String(suggestion.taxon.id),
+        [taxonScorePropertyName]: String(suggestion.combined_score),
+      })),
+  });
 
-  logFirebaseEvent( onlineEventName, {
+  logFirebaseEvent(onlineEventName, {
     transactionId,
     optimisticObservationUuid,
     prediction_source: "online",
     commonAncestorTaxonId: onlineSuggestions.common_ancestor?.taxon.id ?? "NA",
     commonAncestorCombinedScore: onlineSuggestions.common_ancestor?.combined_score ?? "NA",
     items: onlineSuggestions.results
-      .slice( 0, 10 )
-      .map( suggestion => ( {
-        item_id: String( suggestion.taxon.id ),
-        [taxonIdPropertyName]: String( suggestion.taxon.id ),
-        [taxonScorePropertyName]: String( suggestion.combined_score ),
-      } ) ),
-  } );
+      .slice(0, 10)
+      .map(suggestion => ({
+        item_id: String(suggestion.taxon.id),
+        [taxonIdPropertyName]: String(suggestion.taxon.id),
+        [taxonScorePropertyName]: String(suggestion.combined_score),
+      })),
+  });
 };
 
 const experimentChanceIntegerPercentage = 1;
@@ -63,13 +63,13 @@ export const startOfflineExperimentInBackground = async (
   shimmedOnlineResponse: OnlineSuggestionsQueryResponse,
   offlineSuggestionOperation: () => Promise<OfflineSuggestionsResponse>,
 ) => {
-  if ( Math.random() * 100 > experimentChanceIntegerPercentage ) {
+  if (Math.random() * 100 > experimentChanceIntegerPercentage) {
     return;
   }
 
   try {
     const offlineResult = await offlineSuggestionOperation();
 
-    logSuggestionAnalytics( obsUuid, offlineResult, shimmedOnlineResponse );
-  } catch ( _error ) { /* empty */ }
+    logSuggestionAnalytics(obsUuid, offlineResult, shimmedOnlineResponse);
+  } catch (_error) { /* empty */ }
 };

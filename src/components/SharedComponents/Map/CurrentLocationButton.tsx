@@ -4,7 +4,7 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( );
+const DROP_SHADOW = getShadow();
 
 interface Props {
   currentLocationButtonClassName?: string;
@@ -13,14 +13,14 @@ interface Props {
   renderPermissionsGate: () => React.JSX.Element;
 }
 
-const CurrentLocationButton = ( {
+const CurrentLocationButton = ({
   currentLocationButtonClassName,
   onPress,
   showCurrentLocationButton,
   renderPermissionsGate,
-}: Props ) => {
-  const { t } = useTranslation( );
-  if ( !showCurrentLocationButton ) {
+}: Props) => {
+  const { t } = useTranslation();
+  if (!showCurrentLocationButton) {
     return null;
   }
   return (
@@ -32,11 +32,11 @@ const CurrentLocationButton = ( {
           currentLocationButtonClassName,
         )}
         style={DROP_SHADOW}
-        accessibilityLabel={t( "Zoom-to-current-location" )}
+        accessibilityLabel={t("Zoom-to-current-location")}
         onPress={onPress}
         testID="Map.CurrentLocationButton"
       />
-      {renderPermissionsGate( )}
+      {renderPermissionsGate()}
     </>
   );
 };

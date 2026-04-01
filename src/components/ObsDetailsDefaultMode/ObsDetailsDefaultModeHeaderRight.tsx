@@ -21,28 +21,28 @@ interface Props {
   subscriptions: object;
 }
 
-const ObsDetailsDefaultModeHeaderRight = ( {
+const ObsDetailsDefaultModeHeaderRight = ({
   belongsToCurrentUser,
   observationId,
   uuid,
   refetchSubscriptions,
   subscriptions,
-}: Props ) => {
-  const navigation = useNavigation( );
-  const { localObservation } = useLocalObservation( uuid );
-  const { t } = useTranslation( );
-  const navigateToObsEdit = useNavigateToObsEdit( );
+}: Props) => {
+  const navigation = useNavigation();
+  const { localObservation } = useLocalObservation(uuid);
+  const { t } = useTranslation();
+  const navigateToObsEdit = useNavigateToObsEdit();
 
   const headerRight = useCallback(
-    ( ) => ( belongsToCurrentUser
+    () => (belongsToCurrentUser
       ? (
         <INatIconButton
           testID="ObsDetail.editButton"
           // TODO remove cast when useLocalObservation converted to typescript
-          onPress={() => navigateToObsEdit( localObservation as RealmObservation )}
+          onPress={() => navigateToObsEdit(localObservation as RealmObservation)}
           icon="pencil"
-          color={String( colors?.darkGray )}
-          accessibilityLabel={t( "Edit" )}
+          color={String(colors?.darkGray)}
+          accessibilityLabel={t("Edit")}
         />
       )
       : (
@@ -52,7 +52,7 @@ const ObsDetailsDefaultModeHeaderRight = ( {
           uuid={uuid}
           refetchSubscriptions={refetchSubscriptions}
         />
-      ) ),
+      )),
     [
       uuid,
       belongsToCurrentUser,
@@ -66,7 +66,7 @@ const ObsDetailsDefaultModeHeaderRight = ( {
   );
 
   useEffect(
-    ( ) => navigation.setOptions( { headerRight } ),
+    () => navigation.setOptions({ headerRight }),
     [headerRight, navigation],
   );
 

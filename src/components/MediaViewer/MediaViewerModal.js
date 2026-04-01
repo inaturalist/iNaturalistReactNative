@@ -28,19 +28,19 @@ type Props = {
   uri?: string | null
 }
 
-const MediaViewerModal = ( {
+const MediaViewerModal = ({
   autoPlaySound,
   editable,
   deleting,
   header,
-  onClose = ( ) => undefined,
+  onClose = () => undefined,
   onDeletePhoto,
   onDeleteSound,
   photos = [],
   showModal,
   sounds,
   uri,
-}: Props ): Node => (
+}: Props): Node => (
   <Modal
     showModal={showModal}
     fullScreen

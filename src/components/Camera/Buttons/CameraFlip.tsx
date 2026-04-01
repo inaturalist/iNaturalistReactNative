@@ -9,27 +9,27 @@ import type {
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  flipCamera: ( _event: GestureResponderEvent ) => void;
+  flipCamera: (_event: GestureResponderEvent) => void;
   cameraFlipClassName?: string;
   rotatableAnimatedStyle?: ViewStyle;
 }
 
-const CameraFlip = ( {
+const CameraFlip = ({
   flipCamera,
   cameraFlipClassName,
   rotatableAnimatedStyle,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   return (
     <RotatableIconWrapper
       rotatableAnimatedStyle={rotatableAnimatedStyle}
-      containerClass={classNames( cameraFlipClassName )}
+      containerClass={classNames(cameraFlipClassName)}
     >
       <TransparentCircleButton
         onPress={flipCamera}
-        accessibilityLabel={t( "Flip-camera" )}
-        accessibilityHint={t( "Use-the-devices-other-camera" )}
+        accessibilityLabel={t("Flip-camera")}
+        accessibilityHint={t("Use-the-devices-other-camera")}
         icon="rotate"
       />
     </RotatableIconWrapper>

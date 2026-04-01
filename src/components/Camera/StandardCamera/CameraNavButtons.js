@@ -15,25 +15,25 @@ type Props = {
   handleClose: Function,
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
-  takePhoto: ( ) => void,
+  takePhoto: () => void,
 }
 
-const CameraNavButtons = ( {
+const CameraNavButtons = ({
   disabled,
   handleCheckmarkPress,
   handleClose,
   photosTaken,
   rotatableAnimatedStyle,
   takePhoto,
-}: Props ): Node => {
-  const takePhotoButton = useMemo( ( ) => (
+}: Props): Node => {
+  const takePhotoButton = useMemo(() => (
     <TakePhoto
       disabled={disabled}
       takePhoto={takePhoto}
     />
-  ), [disabled, takePhoto] );
+  ), [disabled, takePhoto]);
 
-  if ( isTablet ) return null;
+  if (isTablet) return null;
 
   return (
     <View testID="CameraNavButtons">

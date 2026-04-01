@@ -6,31 +6,31 @@ import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
 const observations = [
-  factory( "RemoteObservation", {
+  factory("RemoteObservation", {
   // Oakland, CA latlng
     latitude: 37.804855,
     longitude: -122.272504,
-  } ),
+  }),
 ];
 
-const mockPlaceResult = factory( "RemotePlace", {
+const mockPlaceResult = factory("RemotePlace", {
   display_name: "New York",
   point_geojson: {
     coordinates: [
-      Number( faker.location.longitude( ) ),
-      Number( faker.location.latitude( ) ),
+      Number(faker.location.longitude()),
+      Number(faker.location.latitude()),
     ],
   },
-} );
+});
 
-jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+jest.mock("sharedHooks/useAuthenticatedQuery", () => ({
   __esModule: true,
-  default: ( ) => ( {
+  default: () => ({
     data: [mockPlaceResult],
-  } ),
-} ) );
+  }),
+}));
 
-const mockSelectPlaceResult = jest.fn( );
+const mockSelectPlaceResult = jest.fn();
 const mockRegion = {
   latitude: observations[0].latitude,
   longitude: observations[0].longitude,
@@ -42,7 +42,7 @@ const renderLocationPicker = region => renderComponent(
   <LocationPicker
     region={region}
     locationName="Oakland, CA"
-    updateLocationName={location => jest.fn( location )}
+    updateLocationName={location => jest.fn(location)}
     hidePlaceResults={false}
     selectPlaceResult={mockSelectPlaceResult}
     mapType="standard"
@@ -50,52 +50,52 @@ const renderLocationPicker = region => renderComponent(
   />,
 );
 
-describe( "LocationPicker", () => {
+describe("LocationPicker", () => {
   it(
     "should display latitude corresponding with location name",
-    async ( ) => {
-      renderLocationPicker( mockRegion );
-      await screen.findByText( new RegExp( observations[0].latitude ) );
+    async () => {
+      renderLocationPicker(mockRegion);
+      await screen.findByText(new RegExp(observations[0].latitude));
     },
   );
 
   it(
     "should show search results when a user changes search text",
-    async ( ) => {
-      renderLocationPicker( mockRegion );
-      const input = screen.getByTestId( "LocationPicker.locationSearch" );
-      expect( input ).toBeVisible( );
-      await screen.findByText( new RegExp( observations[0].latitude ) );
-      fireEvent.changeText( input, "New" );
-      await screen.findByText( mockPlaceResult.display_name );
+    async () => {
+      renderLocationPicker(mockRegion);
+      const input = screen.getByTestId("LocationPicker.locationSearch");
+      expect(input).toBeVisible();
+      await screen.findByText(new RegExp(observations[0].latitude));
+      fireEvent.changeText(input, "New");
+      await screen.findByText(mockPlaceResult.display_name);
     },
   );
 
   it(
     "should update map with new place results when a user taps a place in dropdown",
-    async ( ) => {
-      renderLocationPicker( mockRegion );
-      const input = screen.getByTestId( "LocationPicker.locationSearch" );
-      await screen.findByText( new RegExp( observations[0].latitude ) );
-      fireEvent.changeText( input, "New" );
-      const placeResult = screen.getByText( mockPlaceResult.display_name );
-      expect( placeResult ).toBeVisible( );
-      fireEvent.press( placeResult );
-      expect( mockSelectPlaceResult ).toHaveBeenCalledTimes( 1 );
-      renderLocationPicker( {
+    async () => {
+      renderLocationPicker(mockRegion);
+      const input = screen.getByTestId("LocationPicker.locationSearch");
+      await screen.findByText(new RegExp(observations[0].latitude));
+      fireEvent.changeText(input, "New");
+      const placeResult = screen.getByText(mockPlaceResult.display_name);
+      expect(placeResult).toBeVisible();
+      fireEvent.press(placeResult);
+      expect(mockSelectPlaceResult).toHaveBeenCalledTimes(1);
+      renderLocationPicker({
         ...mockRegion,
         latitude: mockPlaceResult.point_geojson.coordinates[1],
         longitude: mockPlaceResult.point_geojson.coordinates[0],
-      } );
+      });
       await screen.findByText(
-        new RegExp( mockPlaceResult.point_geojson.coordinates[0] ),
+        new RegExp(mockPlaceResult.point_geojson.coordinates[0]),
       );
     },
   );
 
-  it( "should not have a minimum zoom level", async ( ) => {
-    renderLocationPicker( mockRegion );
-    const map = screen.getByTestId( "LocationPicker.Map" );
-    expect( map ).toHaveProp( "minZoomLevel", 0 );
-  } );
-} );
+  it("should not have a minimum zoom level", async () => {
+    renderLocationPicker(mockRegion);
+    const map = screen.getByTestId("LocationPicker.Map");
+    expect(map).toHaveProp("minZoomLevel", 0);
+  });
+});

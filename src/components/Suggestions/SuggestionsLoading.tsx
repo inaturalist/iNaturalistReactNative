@@ -12,21 +12,21 @@ import useStore from "stores/useStore";
 import Suggestion from "./Suggestion";
 
 interface Props {
-  onTaxonChosen: ( ) => void;
+  onTaxonChosen: () => void;
 }
 
-const SuggestionsLoading = ( {
+const SuggestionsLoading = ({
   onTaxonChosen,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const aiCameraSuggestion = useStore( state => state.aICameraSuggestion );
+}: Props) => {
+  const { t } = useTranslation();
+  const aiCameraSuggestion = useStore(state => state.aICameraSuggestion);
   const hasAICameraSuggestion = aiCameraSuggestion !== null;
 
-  const displayAICameraSuggestion = ( ) => (
+  const displayAICameraSuggestion = () => (
     <>
       <View className="pt-6" />
       <Suggestion
-        accessibilityLabel={t( "Choose-taxon" )}
+        accessibilityLabel={t("Choose-taxon")}
         suggestion={aiCameraSuggestion}
         onTaxonChosen={onTaxonChosen}
       />
@@ -36,8 +36,8 @@ const SuggestionsLoading = ( {
   return (
     <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
       <ActivityIndicator size={50} />
-      <Body1 className="pt-6">{t( "iNaturalist-is-loading-ID-suggestions" )}</Body1>
-      {hasAICameraSuggestion && displayAICameraSuggestion( )}
+      <Body1 className="pt-6">{t("iNaturalist-is-loading-ID-suggestions")}</Body1>
+      {hasAICameraSuggestion && displayAICameraSuggestion()}
     </View>
   );
 };

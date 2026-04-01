@@ -8,11 +8,11 @@ const mockProject = {
   project_type: "collection",
 };
 
-describe( "ProjectListItem", () => {
-  it( "should be accessible", () => {
+describe("ProjectListItem", () => {
+  it("should be accessible", () => {
     const projectListItem = <ProjectListItem item={mockProject} />;
     // Disabled during the update to RN 0.78
-    expect( projectListItem ).toBeTruthy();
+    expect(projectListItem).toBeTruthy();
     // expect( projectListItem ).toBeAccessible();
-  } );
-} );
+  });
+});

@@ -5,11 +5,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Animated, Keyboard } from "react-native";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
   shadowOpacity: 0.4,
   shadowRadius: 8,
-} );
+});
 
 const BOTTOM_ANIMATION_START = 100;
 const TOP_ANIMATION_START = -100;
@@ -26,47 +26,47 @@ interface Props extends PropsWithChildren {
 
 // Ensure this component is placed outside of scroll views
 
-const FloatingActionBar = ( {
+const FloatingActionBar = ({
   position = "bottomEnd",
   endY = null,
   containerClass,
   children,
   show,
   footerHeight: FOOTER_HEIGHT,
-}: Props ) => {
+}: Props) => {
   const bottomPosition = FOOTER_HEIGHT + FOOTER_PADDING;
-  const [keyboardHeight, setKeyboardHeight] = useState( 0 );
-  const [keyboardOpen, setKeyboardOpen] = useState( false );
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
   const isBottom = position === "bottomEnd" || position === "bottomStart";
   const start = isBottom
     ? BOTTOM_ANIMATION_START + bottomPosition
     : TOP_ANIMATION_START;
   const animate = useMemo(
-    () => new Animated.Value( show
+    () => new Animated.Value(show
       ? start
-      : 0 ),
+      : 0),
     [start, show],
   );
 
-  useEffect( () => {
+  useEffect(() => {
     const showSubscription = Keyboard.addListener(
       "keyboardDidShow",
       event => {
-        setKeyboardHeight( event.endCoordinates.height );
-        setKeyboardOpen( true );
+        setKeyboardHeight(event.endCoordinates.height);
+        setKeyboardOpen(true);
       },
     );
-    const hideSubscription = Keyboard.addListener( "keyboardDidHide", () => {
-      setKeyboardOpen( false );
-    } );
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardOpen(false);
+    });
 
     return () => {
-      showSubscription?.remove( );
-      hideSubscription?.remove( );
+      showSubscription?.remove();
+      hideSubscription?.remove();
     };
-  }, [] );
+  }, []);
 
-  useEffect( () => {
+  useEffect(() => {
     const sharedParams = {
       velocity: 1,
       tension: 2,
@@ -78,11 +78,11 @@ const FloatingActionBar = ( {
       ? 0
       : start;
 
-    Animated.spring( animate, {
+    Animated.spring(animate, {
       ...sharedParams,
       toValue,
-    } ).start();
-  }, [keyboardOpen, keyboardHeight, position, show, animate, start] );
+    }).start();
+  }, [keyboardOpen, keyboardHeight, position, show, animate, start]);
 
   const effectiveKeyboardHeight = keyboardOpen
     ? keyboardHeight
@@ -93,11 +93,11 @@ const FloatingActionBar = ( {
     right?: number;
   } = {};
 
-  if ( position.includes( "bottom" ) ) {
-    positionStyle.bottom = ( endY ?? bottomPosition ) + effectiveKeyboardHeight;
+  if (position.includes("bottom")) {
+    positionStyle.bottom = (endY ?? bottomPosition) + effectiveKeyboardHeight;
   }
 
-  if ( position.includes( "End" ) ) {
+  if (position.includes("End")) {
     positionStyle.right = 0;
   }
 
@@ -113,7 +113,7 @@ const FloatingActionBar = ( {
       }}
     >
       <View
-        className={classNames( "bg-white", containerClass )}
+        className={classNames("bg-white", containerClass)}
         style={DROP_SHADOW}
       >
         {children}

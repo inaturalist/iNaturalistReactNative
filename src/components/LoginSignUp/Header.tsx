@@ -8,10 +8,10 @@ interface Props {
   hideHeader?: boolean;
 }
 
-const Header = ( { headerText, hideHeader }: Props ) => {
-  if ( hideHeader ) { return null; }
+const Header = ({ headerText, hideHeader }: Props) => {
+  if (hideHeader) { return null; }
 
-  const renderLogo = ( ) => (
+  const renderLogo = () => (
     <INaturalistLogo width="234" height="43" />
   );
   return (

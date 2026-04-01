@@ -8,51 +8,51 @@ const testFunc = jest.fn();
 const TEST_TEXT = "Centipedes";
 
 const TestComponent = () => {
-  useEffect( () => {
+  useEffect(() => {
     testFunc();
-  }, [] );
+  }, []);
 
   return <Text>{TEST_TEXT}</Text>;
 };
 
-describe( "HideView", () => {
-  afterEach( () => {
+describe("HideView", () => {
+  afterEach(() => {
     jest.clearAllMocks();
-  } );
+  });
 
-  test( "should show component correctly", () => {
+  test("should show component correctly", () => {
     render(
       <HideView show>
         <TestComponent />
       </HideView>,
     );
 
-    expect( testFunc ).toHaveBeenCalledTimes( 1 );
+    expect(testFunc).toHaveBeenCalledTimes(1);
 
-    expect( screen.queryByText( TEST_TEXT ) ).toBeVisible();
-  } );
+    expect(screen.queryByText(TEST_TEXT)).toBeVisible();
+  });
 
-  test( "should hide component correctly", () => {
+  test("should hide component correctly", () => {
     render(
       <HideView show={false}>
         <TestComponent />
       </HideView>,
     );
 
-    expect( testFunc ).toHaveBeenCalledTimes( 1 );
+    expect(testFunc).toHaveBeenCalledTimes(1);
     expect(
-      screen.queryByText( TEST_TEXT, { includeHiddenElements: true } ),
+      screen.queryByText(TEST_TEXT, { includeHiddenElements: true }),
     ).not.toBeVisible();
-  } );
+  });
 
-  test( "should not render hidden component", () => {
+  test("should not render hidden component", () => {
     render(
       <HideView show={false} noInitialRender>
         <TestComponent />
       </HideView>,
     );
 
-    expect( testFunc ).not.toHaveBeenCalled();
-    expect( screen.queryByText( TEST_TEXT ) ).not.toBeTruthy();
-  } );
-} );
+    expect(testFunc).not.toHaveBeenCalled();
+    expect(screen.queryByText(TEST_TEXT)).not.toBeTruthy();
+  });
+});

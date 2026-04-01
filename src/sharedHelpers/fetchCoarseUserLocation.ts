@@ -14,14 +14,14 @@ interface UserLocation {
   altitudinal_accuracy: number | null;
 }
 
-const fetchCoarseUserLocation = async ( ): Promise<UserLocation | null> => {
-  const permissionResult = await checkLocationPermissions( );
-  if ( permissionResult === null ) {
+const fetchCoarseUserLocation = async (): Promise<UserLocation | null> => {
+  const permissionResult = await checkLocationPermissions();
+  if (permissionResult === null) {
     return null;
   }
 
   try {
-    const { coords } = await getCurrentPositionWithOptions( lowAccuracyOptions );
+    const { coords } = await getCurrentPositionWithOptions(lowAccuracyOptions);
     const userLocation = {
       latitude: coords.latitude,
       longitude: coords.longitude,
@@ -30,8 +30,8 @@ const fetchCoarseUserLocation = async ( ): Promise<UserLocation | null> => {
       altitudinal_accuracy: coords.altitudeAccuracy,
     };
     return userLocation;
-  } catch ( e ) {
-    console.warn( e, "couldn't get latLng" );
+  } catch (e) {
+    console.warn(e, "couldn't get latLng");
   }
   return null;
 };

@@ -5,23 +5,23 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 const mockObservers = [{
-  ...factory( "RemoteUser" ),
+  ...factory("RemoteUser"),
   observation_count: 7,
 }, {
-  ...factory( "RemoteUser" ),
+  ...factory("RemoteUser"),
   observation_count: 44,
 }];
 
-jest.mock( "sharedHooks/useInfiniteScroll", () => ( {
+jest.mock("sharedHooks/useInfiniteScroll", () => ({
   __esModule: true,
-  default: () => ( {
+  default: () => ({
     data: mockObservers,
     isFetchingNextPage: true,
-  } ),
-} ) );
+  }),
+}));
 
-describe( "ObserversView", () => {
-  it( "should show number of observations a user has", async ( ) => {
+describe("ObserversView", () => {
+  it("should show number of observations a user has", async () => {
     renderComponent(
       <ExploreFlashList
         hideLoadingWheel
@@ -31,7 +31,7 @@ describe( "ObserversView", () => {
       />,
     );
 
-    const identificationCount = await screen.findByText( "7 Observations" );
-    expect( identificationCount ).toBeVisible( );
-  } );
-} );
+    const identificationCount = await screen.findByText("7 Observations");
+    expect(identificationCount).toBeVisible();
+  });
+});

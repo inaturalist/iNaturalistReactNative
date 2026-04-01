@@ -17,11 +17,11 @@ interface Props {
   observation: RealmObservation;
 }
 
-const LocationSection = ( {
+const LocationSection = ({
   belongsToCurrentUser,
   observation,
-}: Props ) => {
-  const currentUser = useCurrentUser( );
+}: Props) => {
+  const currentUser = useCurrentUser();
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
   const hasLocation = observation?.privateLatitude != null || observation?.latitude != null;
@@ -33,13 +33,13 @@ const LocationSection = ( {
           !hasLocation
             ? (
               <Heading5 className="mb-2">
-                {t( "OBSERVED-AT--label" )}
+                {t("OBSERVED-AT--label")}
               </Heading5>
             )
             : (
               <>
                 <Heading5 className="mb-2">
-                  {t( "OBSERVED-IN--label" )}
+                  {t("OBSERVED-IN--label")}
                 </Heading5>
                 <SimpleObservationLocation
                   observation={observation}

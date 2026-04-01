@@ -10,13 +10,13 @@ import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-const DROP_SHADOW = getShadow( );
+const DROP_SHADOW = getShadow();
 
 interface Props {
   autoFocus?: boolean;
   clearSearch?: () => void;
   containerClass?: string;
-  handleTextChange: ( _text: string ) => void;
+  handleTextChange: (_text: string) => void;
   hasShadow?: boolean;
   input?: React.RefObject<RNTextInput | null> | React.MutableRefObject<RNTextInput | undefined>;
   placeholder?: string;
@@ -27,7 +27,7 @@ interface Props {
 
 // Ensure this component is placed outside of scroll views
 
-const SearchBar = ( {
+const SearchBar = ({
   autoFocus = true,
   clearSearch,
   containerClass,
@@ -38,24 +38,24 @@ const SearchBar = ( {
   testID,
   value,
   debounceTime = 300,
-}: Props ) => {
-  const theme = useTheme( );
-  const { t } = useTranslation( );
-  const [localValue, setLocalValue] = useState( value );
+}: Props) => {
+  const theme = useTheme();
+  const { t } = useTranslation();
+  const [localValue, setLocalValue] = useState(value);
 
-  const debounceTimeout = useRef<ReturnType<typeof setTimeout>>( undefined );
+  const debounceTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const debouncedHandleTextChange = useCallback( ( text: string ) => {
-    setLocalValue( text );
+  const debouncedHandleTextChange = useCallback((text: string) => {
+    setLocalValue(text);
 
-    if ( debounceTimeout.current ) {
-      clearTimeout( debounceTimeout.current );
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
     }
 
-    debounceTimeout.current = setTimeout( ( ) => {
-      handleTextChange( text );
-    }, debounceTime );
-  }, [handleTextChange, debounceTime] );
+    debounceTimeout.current = setTimeout(() => {
+      handleTextChange(text);
+    }, debounceTime);
+  }, [handleTextChange, debounceTime]);
 
   const outlineStyle = {
     borderColor: "lightgray",
@@ -64,9 +64,9 @@ const SearchBar = ( {
   } as const;
 
   const style = {
-    ...( hasShadow
+    ...(hasShadow
       ? DROP_SHADOW
-      : {} ),
+      : {}),
     fontSize: 16,
     lineHeight: 18,
     paddingRight: 28,
@@ -85,10 +85,10 @@ const SearchBar = ( {
   } as const;
 
   return (
-    <View className={classNames( "flex justify-center", containerClass )}>
+    <View className={classNames("flex justify-center", containerClass)}>
       <TextInput
         ref={input}
-        accessibilityLabel={t( "Search-for-a-taxon" )}
+        accessibilityLabel={t("Search-for-a-taxon")}
         activeUnderlineColor={colors.darkGray}
         autoFocus={autoFocus}
         dense
@@ -109,12 +109,12 @@ const SearchBar = ( {
           <View className="absolute right-0">
             <INatIconButton
               icon="close"
-              accessibilityLabel={t( "Close-search" )}
+              accessibilityLabel={t("Close-search")}
               size={18}
               onPress={() => {
                 Keyboard.dismiss();
                 clearSearch();
-                setLocalValue( "" );
+                setLocalValue("");
               }}
             />
           </View>

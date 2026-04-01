@@ -19,7 +19,7 @@ export const TYPOGRAPHY_STYLE = {
   textAlign: "left",
 };
 
-const InatText = ( props: ComponentPropsWithoutRef<typeof Text> ) => (
+const InatText = (props: ComponentPropsWithoutRef<typeof Text>) => (
   <Text
     maxFontSizeMultiplier={2}
     className={classnames(

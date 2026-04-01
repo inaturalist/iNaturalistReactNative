@@ -14,29 +14,29 @@ interface Props {
   uri?: string;
 }
 
-const UserIcon = ( {
+const UserIcon = ({
   active,
   large,
   medium,
   size: sizeProp,
   small,
   uri,
-}: Props ) => {
-  const getSize = ( ) => {
-    if ( sizeProp ) return sizeProp;
-    if ( small ) {
+}: Props) => {
+  const getSize = () => {
+    if (sizeProp) return sizeProp;
+    if (small) {
       return 22;
     }
-    if ( large ) {
+    if (large) {
       return 134;
     }
-    if ( medium ) {
+    if (medium) {
       return 62;
     }
     return 40;
   };
 
-  const size = getSize( );
+  const size = getSize();
 
   // For unknown reasons, the green border doesn't show up on Android using nativewind classNames
   // but it works with style, might warrant further investigation or an issue in nativewind
@@ -58,7 +58,7 @@ const UserIcon = ( {
             source={{
               uri,
             }}
-            className={classNames( "rounded-full", active && "border-[3px] border-inatGreen" )}
+            className={classNames("rounded-full", active && "border-[3px] border-inatGreen")}
           />
         </View>
       )

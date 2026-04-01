@@ -14,7 +14,7 @@ interface Props {
   theme?: MD3Theme;
 }
 
-const ActivityIndicator = ( {
+const ActivityIndicator = ({
   animating,
   color = colors.inatGreen,
   hidesWhenStopped,
@@ -22,7 +22,7 @@ const ActivityIndicator = ( {
   style,
   testID,
   theme,
-}: Props ) => (
+}: Props) => (
   <RNPActivityIndicator
     animating={animating}
     color={color}

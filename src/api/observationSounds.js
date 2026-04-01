@@ -9,9 +9,9 @@ const deleteRemoteObservationSound = async (
   opts: Object = {},
 ) : Promise<?Object> => {
   try {
-    return await inatjs.observation_sounds.delete( params, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "deleteRemoteObservationSound", opts } } );
+    return await inatjs.observation_sounds.delete(params, opts);
+  } catch (e) {
+    return handleError(e, { context: { functionName: "deleteRemoteObservationSound", opts } });
   }
 };
 

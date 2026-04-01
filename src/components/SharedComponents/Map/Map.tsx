@@ -41,7 +41,7 @@ const CURRENT_LOCATION_ZOOM_LEVEL = 20; // target zoom level when user hits curr
 const MIN_ZOOM_LEVEL = 0; // default in react-native-maps, for Google Maps only
 const MIN_CENTER_COORDINATE_DISTANCE = 5;
 
-const getDefaultRegion = ( initialLatitude, initialLongitude ) => ( {
+const getDefaultRegion = (initialLatitude, initialLongitude) => ({
   latitude: initialLatitude || 25, // Default to something US centric
   longitude: initialLongitude || -85, // Default to something US centric
   latitudeDelta: initialLatitude
@@ -50,7 +50,7 @@ const getDefaultRegion = ( initialLatitude, initialLongitude ) => ( {
   longitudeDelta: initialLatitude
     ? 0.2
     : 100,
-} );
+});
 
 interface Props {
   children?: React.ReactNode;
@@ -65,7 +65,7 @@ interface Props {
   onCurrentLocationPress?: () => void;
   onMapReady?: () => void;
   onPanDrag?: () => void;
-  onRegionChangeComplete?: ( _r: Region, _b: BoundingBox | undefined ) => void;
+  onRegionChangeComplete?: (_r: Region, _b: BoundingBox | undefined) => void;
   openMapScreen?: () => void;
   ref?: React.Ref<MapView>;
   regionToAnimate?: Region;
@@ -82,12 +82,12 @@ interface Props {
   withPressableObsTiles?: boolean;
   zoomEnabled?: boolean;
   zoomTapEnabled?: boolean;
-  onMapLayout?: ( event: { nativeEvent: { layout: { width: number; height: number } } } ) => void;
+  onMapLayout?: (event: { nativeEvent: { layout: { width: number; height: number } } }) => void;
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
-const Map = ( {
+const Map = ({
   children,
   className = "flex-1",
   currentLocationButtonClassName,
@@ -98,8 +98,8 @@ const Map = ( {
   mapViewClassName,
   observation,
   onCurrentLocationPress,
-  onMapReady = ( ) => undefined,
-  onPanDrag = ( ) => undefined,
+  onMapReady = () => undefined,
+  onPanDrag = () => undefined,
   onRegionChangeComplete,
   openMapScreen,
   ref,
@@ -118,37 +118,37 @@ const Map = ( {
   zoomEnabled = true,
   zoomTapEnabled = true,
   onMapLayout,
-}: Props ) => {
-  const tilesMarkedVisible = useRef( false );
-  const [performanceMetrics, setPerformanceMetrics] = useState( {
+}: Props) => {
+  const tilesMarkedVisible = useRef(false);
+  const [performanceMetrics, setPerformanceMetrics] = useState({
     mapReadyTime: 0,
     tilesVisibleTime: 0,
-  } );
-  const { isDebug } = useDebugMode( );
-  const { screenWidth, screenHeight } = useDeviceOrientation( );
-  const [currentZoom, setCurrentZoom] = useState( 0 );
-  const navigation = useNavigation( );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  });
+  const { isDebug } = useDebugMode();
+  const { screenWidth, screenHeight } = useDeviceOrientation();
+  const [currentZoom, setCurrentZoom] = useState(0);
+  const navigation = useNavigation();
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission();
   const [userLocation, setUserLocation] = useState<{
     accuracy: number;
     latitude: number;
     longitude: number;
-  } | undefined | null>( null );
-  const mapViewRef = useRef<MapView>( undefined );
-  const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
-  const [showsUserLocation, setShowsUserLocation] = useState( showsUserLocationProp );
+  } | undefined | null>(null);
+  const mapViewRef = useRef<MapView>(undefined);
+  const [currentMapType, setCurrentMapType] = useState(mapType || "standard");
+  const [showsUserLocation, setShowsUserLocation] = useState(showsUserLocationProp);
 
   let defaultInitialRegion = null;
 
-  if ( observation ) {
-    if ( observation.obscured && !observation.privateLatitude ) {
+  if (observation) {
+    if (observation.obscured && !observation.privateLatitude) {
       const obscurationCell = obscurationCellForLatLng(
         observation.latitude,
         observation.longitude,
       );
       defaultInitialRegion = {
-        latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
-        longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
+        latitude: obscurationCell.minLat + (OBSCURATION_CELL_SIZE / 2),
+        longitude: obscurationCell.minLng + (OBSCURATION_CELL_SIZE / 2),
         latitudeDelta: 0.3,
         longitudeDelta: 0.3,
       };
@@ -171,70 +171,70 @@ const Map = ( {
   // In Android, onMapReady does not fire when we pass parameter region instead
   // of parameter initialRegion. This state allows us to fire onMapReady and
   // fire it only once. This state is always false in iOS.
-  const [onMapReadyHasFiredAndroid, setOnMapReadyHasFiredAndroid] = useState( false );
+  const [onMapReadyHasFiredAndroid, setOnMapReadyHasFiredAndroid] = useState(false);
 
   // In Android, animateToRegion animates to the given region but the map then
   // immediately returns to the previous region. We fake a gesture to the
   // desired region to make it stick. This state stores the region for this
   // gesture. This state is always null in iOS.
-  const [androidAnimateRegion, setAndroidAnimateRegion] = useState<Region|null>( null );
+  const [androidAnimateRegion, setAndroidAnimateRegion] = useState<Region|null>(null);
 
-  const animateToRegion = ( newRegion: Region ) => {
-    mapViewRef.current?.animateToRegion( newRegion );
-    if ( Platform.OS === "android" ) {
-      setAndroidAnimateRegion( newRegion );
+  const animateToRegion = (newRegion: Region) => {
+    mapViewRef.current?.animateToRegion(newRegion);
+    if (Platform.OS === "android") {
+      setAndroidAnimateRegion(newRegion);
     }
   };
 
-  useEffect( ( ) => {
+  useEffect(() => {
     // in LocationPicker we're setting initialRegion to eliminate jitteriness
     // when scrolling, which means we also must use this method to reset the map
     // when searching for a location by typing a place name and selecting place coordinates
-    if ( !regionToAnimate || !mapViewRef.current ) { return; }
-    animateToRegion( {
+    if (!regionToAnimate || !mapViewRef.current) { return; }
+    animateToRegion({
       latitude: regionToAnimate.latitude,
       longitude: regionToAnimate.longitude,
       latitudeDelta: regionToAnimate.latitudeDelta,
       longitudeDelta: regionToAnimate.longitudeDelta,
-    } );
+    });
   }, [
     regionToAnimate,
-  ] );
+  ]);
 
-  const params = useMemo( ( ) => {
+  const params = useMemo(() => {
     const newTileParams = { ...tileMapParams };
     delete newTileParams.order;
     delete newTileParams.order_by;
     delete newTileParams.per_page;
     return newTileParams;
-  }, [tileMapParams] );
+  }, [tileMapParams]);
 
-  const onMapPressForObsLyr = useCallback( async ( latLng: LatLng ) => {
-    const uuid = await fetchObservationUUID( currentZoom, latLng, params );
-    if ( uuid ) {
-      navigation.push( "ObsDetails", { uuid } );
+  const onMapPressForObsLyr = useCallback(async (latLng: LatLng) => {
+    const uuid = await fetchObservationUUID(currentZoom, latLng, params);
+    if (uuid) {
+      navigation.push("ObsDetails", { uuid });
     }
-  }, [params, currentZoom, navigation] );
+  }, [params, currentZoom, navigation]);
 
-  const onPermissionGranted = async ( ) => {
-    const currentLocation = await fetchCoarseUserLocation( );
-    if ( currentLocation && mapViewRef?.current ) {
-      animateToRegion( {
+  const onPermissionGranted = async () => {
+    const currentLocation = await fetchCoarseUserLocation();
+    if (currentLocation && mapViewRef?.current) {
+      animateToRegion({
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
-        latitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude ),
-        longitudeDelta: metersToLatitudeDelta( NEARBY_DIM_M, currentLocation.latitude ),
-      } );
+        latitudeDelta: metersToLatitudeDelta(NEARBY_DIM_M, currentLocation.latitude),
+        longitudeDelta: metersToLatitudeDelta(NEARBY_DIM_M, currentLocation.latitude),
+      });
     }
   };
 
-  const renderCurrentLocationPermissionsGate = () => renderPermissionsGate( {
+  const renderCurrentLocationPermissionsGate = () => renderPermissionsGate({
     onPermissionGranted,
-  } );
+  });
 
   // In Android, we always return a state, either region or androidLocalRegion.
-  const setRegion = ( ) => {
-    if ( Platform.OS !== "android" && initialRegion ) {
+  const setRegion = () => {
+    if (Platform.OS !== "android" && initialRegion) {
       return null;
     }
     return Platform.OS === "android"
@@ -242,15 +242,15 @@ const Map = ( {
       : defaultInitialRegion;
   };
 
-  const handleCurrentLocationPress = useCallback( ( ) => {
-    if ( !hasPermissions ) {
-      requestPermissions( );
+  const handleCurrentLocationPress = useCallback(() => {
+    if (!hasPermissions) {
+      requestPermissions();
     }
     // If we aren't showing the user's location, we won't have a location to
     // zoom to yet, so first we need to turn that on, and we'll re-call this
     // function in an effect when we have a location
-    if ( !showsUserLocation ) {
-      setShowsUserLocation( true );
+    if (!showsUserLocation) {
+      setShowsUserLocation(true);
       return;
     }
     // If we're supposed to be showing user location but we don't have it, ask
@@ -258,17 +258,17 @@ const Map = ( {
     // we can
     // skipping onCurrentLocationPress here because the handlers
     // are handling the permissions request outside of this component (example: Explore MapView)
-    if ( !userLocation && onCurrentLocationPress === undefined ) {
+    if (!userLocation && onCurrentLocationPress === undefined) {
       return;
     }
-    if ( onCurrentLocationPress ) {
-      onCurrentLocationPress( );
+    if (onCurrentLocationPress) {
+      onCurrentLocationPress();
     }
-    if ( userLocation && mapViewRef?.current ) {
+    if (userLocation && mapViewRef?.current) {
       // Zoom level based on location accuracy.
-      let latitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      let latitudeDelta = metersToLatitudeDelta(userLocation.accuracy, userLocation.latitude);
       // Intentional use of latitudeDelta here because longitudeDelta is harder to calculate
-      let longitudeDelta = metersToLatitudeDelta( userLocation.accuracy, userLocation.latitude );
+      let longitudeDelta = metersToLatitudeDelta(userLocation.accuracy, userLocation.latitude);
       // If this map redefines the level we want to zoom into when the user
       // wants to see their current location, choose which ever is more
       // zoomed out, the configured zoom level or the zoom level based on the
@@ -278,15 +278,15 @@ const Map = ( {
         screenWidth,
         screenHeight,
       );
-      latitudeDelta = Math.max( latitudeDelta, configuredLatitudeDelta );
-      longitudeDelta = Math.max( longitudeDelta, configuredLongitudeDelta );
+      latitudeDelta = Math.max(latitudeDelta, configuredLatitudeDelta);
+      longitudeDelta = Math.max(longitudeDelta, configuredLongitudeDelta);
 
-      animateToRegion( {
+      animateToRegion({
         latitude: userLocation.latitude,
         longitude: userLocation.longitude,
         latitudeDelta,
         longitudeDelta,
-      } );
+      });
     }
   }, [
     onCurrentLocationPress,
@@ -296,7 +296,7 @@ const Map = ( {
     screenWidth,
     showsUserLocation,
     userLocation,
-  ] );
+  ]);
 
   const mapContainerStyle = [
     mapHeight
@@ -315,10 +315,10 @@ const Map = ( {
 
   const handleUserLocationChange = async locationChangeEvent => {
     const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
-    setUserLocation( coordinate );
+    setUserLocation(coordinate);
   };
 
-  const queryString = Object.keys( params ).map( key => `${key}=${params[key]}` ).join( "&" );
+  const queryString = Object.keys(params).map(key => `${key}=${params[key]}`).join("&");
 
   const showPointTiles = currentZoom > 13;
 
@@ -333,33 +333,33 @@ const Map = ( {
   // obs tile url. This is done by detecting changes to tileUrlTemplate and
   // rendering <MapView> once without <UrlTile>.
 
-  const [previousTileUrl, setPreviousTileUrl] = useState( tileUrlTemplate );
+  const [previousTileUrl, setPreviousTileUrl] = useState(tileUrlTemplate);
 
-  const handleRegionChangeComplete = useCallback( async ( newRegion, gesture ) => {
+  const handleRegionChangeComplete = useCallback(async (newRegion, gesture) => {
     // We are only interested in region changes due to user interaction.
     // In Android, onRegionChangeComplete also fires for other map region
     // changes and gesture.isGesture is available to test for user interaction.
     let shouldSkipRegionUpdate = false;
-    if ( Platform.OS === "android" && !gesture.isGesture ) {
-      if ( previousTileUrl !== tileUrlTemplate ) {
-        setPreviousTileUrl( tileUrlTemplate );
+    if (Platform.OS === "android" && !gesture.isGesture) {
+      if (previousTileUrl !== tileUrlTemplate) {
+        setPreviousTileUrl(tileUrlTemplate);
       }
-      if ( !onMapReadyHasFiredAndroid && onMapReady ) {
-        setOnMapReadyHasFiredAndroid( true );
+      if (!onMapReadyHasFiredAndroid && onMapReady) {
+        setOnMapReadyHasFiredAndroid(true);
         onMapReady();
       }
       shouldSkipRegionUpdate = true;
     }
-    if ( !shouldSkipRegionUpdate ) {
-      if ( onRegionChangeComplete ) {
-        const boundaries = await mapViewRef?.current?.getMapBoundaries( );
-        onRegionChangeComplete( newRegion, boundaries );
+    if (!shouldSkipRegionUpdate) {
+      if (onRegionChangeComplete) {
+        const boundaries = await mapViewRef?.current?.getMapBoundaries();
+        onRegionChangeComplete(newRegion, boundaries);
       }
-      if ( androidLocalRegion ) {
-        setAndroidLocalRegion( newRegion );
+      if (androidLocalRegion) {
+        setAndroidLocalRegion(newRegion);
       }
     }
-    setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
+    setCurrentZoom(calculateZoom(screenWidth, newRegion.longitudeDelta));
   }, [
     previousTileUrl,
     tileUrlTemplate,
@@ -368,22 +368,22 @@ const Map = ( {
     onRegionChangeComplete,
     androidLocalRegion,
     screenWidth,
-  ] );
+  ]);
 
   // In Android, animateToRegion animates to the given region but the map then
   // immediately returns to the previous region. We fake a gesture to the
   // desired region to make it stick.
   useEffect(
-    ( ) => {
-      if ( Platform.OS === "android" && androidAnimateRegion ) {
+    () => {
+      if (Platform.OS === "android" && androidAnimateRegion) {
         const newRegion = {
           ...androidLocalRegion, // provides defaults for latitudeDelta and longitudeDelta
           ...androidAnimateRegion,
         };
         setTimeout(
-          ( ) => handleRegionChangeComplete( newRegion, { isGesture: true } ),
+          () => handleRegionChangeComplete(newRegion, { isGesture: true }),
         );
-        setAndroidAnimateRegion( null );
+        setAndroidAnimateRegion(null);
       }
     },
     [
@@ -394,13 +394,13 @@ const Map = ( {
   );
 
   const handleMapPress = e => {
-    if ( withPressableObsTiles ) onMapPressForObsLyr( e.nativeEvent.coordinate );
-    else if ( openMapScreen ) {
-      openMapScreen( );
+    if (withPressableObsTiles) onMapPressForObsLyr(e.nativeEvent.coordinate);
+    else if (openMapScreen) {
+      openMapScreen();
     }
   };
 
-  const shouldOverlayObsTiles = ( withPressableObsTiles || withObsTiles )
+  const shouldOverlayObsTiles = (withPressableObsTiles || withObsTiles)
     && (
       Platform.OS !== "android"
       || previousTileUrl === tileUrlTemplate
@@ -414,19 +414,19 @@ const Map = ( {
       ...curRegion,
       latitudeDelta: 1.00001 * curRegion.latitudeDelta,
       longitudeDelta: 1.00001 * curRegion.longitudeDelta,
-    } );
+    });
   const shouldFuzzRegion = curRegion => (
     Platform.OS === "android"
     && curRegion
     && previousTileUrl !== tileUrlTemplate
   );
-  const unfuzzedMapRegion = setRegion( );
-  const mapRegion = shouldFuzzRegion( unfuzzedMapRegion )
-    ? fuzzRegion( unfuzzedMapRegion )
+  const unfuzzedMapRegion = setRegion();
+  const mapRegion = shouldFuzzRegion(unfuzzedMapRegion)
+    ? fuzzRegion(unfuzzedMapRegion)
     : unfuzzedMapRegion;
 
-  const renderDebugZoomLevel = ( ) => {
-    if ( isDebug ) {
+  const renderDebugZoomLevel = () => {
+    if (isDebug) {
       return (
         <View
           className={classnames(
@@ -460,56 +460,56 @@ const Map = ( {
     mapViewRef.current = instance;
 
     // Forward to the parent ref
-    if ( typeof ref === "function" ) {
-      ref( instance );
-    } else if ( ref ) {
+    if (typeof ref === "function") {
+      ref(instance);
+    } else if (ref) {
       ref.current = instance;
     }
   };
 
-  const handleMapReady = ( ) => {
-    mapTracker.markMapReady( );
+  const handleMapReady = () => {
+    mapTracker.markMapReady();
 
-    if ( onMapReady ) {
-      onMapReady( );
+    if (onMapReady) {
+      onMapReady();
     }
   };
 
-  useEffect( ( ) => {
+  useEffect(() => {
     // debug mode only: display performance metrics
     // eslint-disable-next-line no-undef
-    if ( isDebug ) {
-      mapTracker.reset( );
+    if (isDebug) {
+      mapTracker.reset();
 
-      const updateInterval = setInterval( ( ) => {
-        const metrics = mapTracker.getSummary( );
-        setPerformanceMetrics( metrics );
-      }, 500 );
+      const updateInterval = setInterval(() => {
+        const metrics = mapTracker.getSummary();
+        setPerformanceMetrics(metrics);
+      }, 500);
 
-      return ( ) => {
-        clearInterval( updateInterval );
+      return () => {
+        clearInterval(updateInterval);
       };
     }
     return () => undefined;
-  }, [isDebug] );
+  }, [isDebug]);
 
-  useEffect( ( ) => {
+  useEffect(() => {
     // Detect when tiles are likely to be visible based on key conditions,
     // since we can't get this info directly from UrlTile
-    if ( isDebug
+    if (isDebug
         && currentZoom > 0
         && shouldOverlayObsTiles
         && !isLoading
-        && !tilesMarkedVisible.current ) {
+        && !tilesMarkedVisible.current) {
       // Add a small delay to ensure tiles have had time to render --
       // I wouldn't call this super accurate but it was helpful enough for a ballpark
       // and to get an idea of the average time it takes to load tiles
-      setTimeout( ( ) => {
-        mapTracker.markTilesVisible( );
+      setTimeout(() => {
+        mapTracker.markTilesVisible();
         tilesMarkedVisible.current = true;
-      }, 300 );
+      }, 300);
     }
-  }, [currentZoom, shouldOverlayObsTiles, isLoading, isDebug] );
+  }, [currentZoom, shouldOverlayObsTiles, isLoading, isDebug]);
 
   return (
     <View
@@ -518,7 +518,7 @@ const Map = ( {
       className={mapContainerClass}
       onLayout={onMapLayout}
     >
-      {renderDebugZoomLevel( )}
+      {renderDebugZoomLevel()}
       <MapView
         cameraZoomRange={cameraZoomRange}
         className={className}
@@ -558,7 +558,7 @@ const Map = ( {
             }
           />
         )}
-        { observation && hasCoordinates && ( currentUserCanViewCoords
+        { observation && hasCoordinates && (currentUserCanViewCoords
           ? (
             <LocationIndicator
               latitude={latitude}

@@ -5,18 +5,18 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
   elevation: 6,
   shadowRadius: 4,
-} );
+});
 
 interface Props {
   number: number;
   light?: boolean;
 }
 
-const NumberBadge = ( { number, light }: Props ) => {
+const NumberBadge = ({ number, light }: Props) => {
   const { t } = useTranslation();
   const backgroundColor = light
     ? "bg-white"
@@ -36,7 +36,7 @@ const NumberBadge = ( { number, light }: Props ) => {
         className={textColor}
         maxFontSizeMultiplier={1}
       >
-        {t( "Intl-number", { val: number } )}
+        {t("Intl-number", { val: number })}
       </Body3>
     </View>
   );

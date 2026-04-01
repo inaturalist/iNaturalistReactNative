@@ -80,9 +80,9 @@ const ALIASES: Aliases = {
 } as const;
 
 // Use default color if none is specified
-const INatIcon = ( {
+const INatIcon = ({
   testID, name, color, size, dropShadow,
-}: Props ) => {
+}: Props) => {
   const style = dropShadow
     ? {
       shadowOpacity: 2,

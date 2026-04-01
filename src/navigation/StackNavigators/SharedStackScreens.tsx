@@ -24,28 +24,28 @@ import React from "react";
 
 const suggestionsTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "ADD-AN-ID" )}
+    {t("ADD-AN-ID")}
   </Heading4>
 );
 const taxonSearchTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SEARCH" )}
+    {t("SEARCH")}
   </Heading4>
 );
 
-const Stack = createNativeStackNavigator<SharedStackParamList>( );
+const Stack = createNativeStackNavigator<SharedStackParamList>();
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
-const FadeInObsEdit = ( ) => fadeInComponent( <ObsEdit /> );
-const FadeInLocationPickerContainer = ( ) => fadeInComponent( <LocationPickerContainer /> );
-const FadeInPhotoSharing = ( ) => fadeInComponent( <PhotoSharing /> );
-const FadeInTaxonDetails = ( ) => fadeInComponent( <TaxonDetails /> );
-const FadeInSuggestionsContainer = ( ) => fadeInComponent( <SuggestionsContainer /> );
-const FadeInSuggestionsTaxonSearch = ( ) => fadeInComponent( <SuggestionsTaxonSearch /> );
-const FadeInMatchTaxonSearchScreen = ( ) => fadeInComponent( <MatchTaxonSearchScreen /> );
-const FadeInFullPageWebView = ( ) => fadeInComponent( <FullPageWebView /> );
-const FadeInMatchContainer = ( ) => fadeInComponent(
+const FadeInObsEdit = () => fadeInComponent(<ObsEdit />);
+const FadeInLocationPickerContainer = () => fadeInComponent(<LocationPickerContainer />);
+const FadeInPhotoSharing = () => fadeInComponent(<PhotoSharing />);
+const FadeInTaxonDetails = () => fadeInComponent(<TaxonDetails />);
+const FadeInSuggestionsContainer = () => fadeInComponent(<SuggestionsContainer />);
+const FadeInSuggestionsTaxonSearch = () => fadeInComponent(<SuggestionsTaxonSearch />);
+const FadeInMatchTaxonSearchScreen = () => fadeInComponent(<MatchTaxonSearchScreen />);
+const FadeInFullPageWebView = () => fadeInComponent(<FullPageWebView />);
+const FadeInMatchContainer = () => fadeInComponent(
   <MatchContainer />,
 );
 
@@ -59,7 +59,7 @@ const BASE_SCREEN_OPTIONS = {
 // These screens need to be within the NoBottomTabStackNavigator
 // as well as the TabStackNavigator to retain navigation history
 
-const SharedStackScreens = ( ) => (
+const SharedStackScreens = () => (
   <Stack.Group screenOptions={BASE_SCREEN_OPTIONS}>
     {/* Screens with hidden header */}
     <Stack.Group

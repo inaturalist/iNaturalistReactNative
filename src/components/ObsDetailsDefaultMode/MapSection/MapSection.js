@@ -17,31 +17,31 @@ interface Props {
 
 const DETAILS_MAP_MODAL_STYLE = { margin: 0 };
 
-const MapSection = ( { observation, taxon }: Props ) => {
-  const currentUser = useCurrentUser( );
-  const [showMapModal, setShowMapModal] = useState( false );
+const MapSection = ({ observation, taxon }: Props) => {
+  const currentUser = useCurrentUser();
+  const [showMapModal, setShowMapModal] = useState(false);
   const latitude = observation.privateLatitude || observation.latitude;
   const longitude = observation.privateLongitude || observation.longitude;
-  const coordinateString = t( "Lat-Lon", {
+  const coordinateString = t("Lat-Lon", {
     latitude,
     longitude,
-  } );
+  });
 
-  const openMapScreen = useCallback( ( ) => setShowMapModal( true ), [] );
+  const openMapScreen = useCallback(() => setShowMapModal(true), []);
 
   const taxonId = taxon?.id || observation?.taxon?.id;
 
-  const tileMapParams = useMemo( ( ) => ( taxonId
+  const tileMapParams = useMemo(() => (taxonId
     ? {
       taxon_id: taxonId,
       verifiable: true,
     }
-    : null ), [taxonId] );
+    : null), [taxonId]);
 
-  const showModalMap = useMemo( ( ) => (
+  const showModalMap = useMemo(() => (
     <DetailsMap
       coordinateString={coordinateString}
-      closeModal={( ) => setShowMapModal( false )}
+      closeModal={() => setShowMapModal(false)}
       observation={observation}
       tileMapParams={tileMapParams}
       withObsTiles={tileMapParams !== null}
@@ -55,9 +55,9 @@ const MapSection = ( { observation, taxon }: Props ) => {
     currentUser,
     observation,
     tileMapParams,
-  ] );
+  ]);
 
-  if ( !latitude ) {
+  if (!latitude) {
     return null;
   }
 
@@ -78,7 +78,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
         animationIn="fadeIn"
         animationOut="fadeOut"
         showModal={showMapModal}
-        closeModal={( ) => setShowMapModal( false )}
+        closeModal={() => setShowMapModal(false)}
         disableSwipeDirection
         style={DETAILS_MAP_MODAL_STYLE}
         modal={showModalMap}

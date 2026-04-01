@@ -15,7 +15,7 @@ import {
 import { log } from "sharedHelpers/logger";
 import colors from "styles/tailwindColors";
 
-const logger = log.extend( "INatIconButton" );
+const logger = log.extend("INatIconButton");
 
 interface Props extends PropsWithChildren {
   accessibilityHint?: string;
@@ -30,7 +30,7 @@ interface Props extends PropsWithChildren {
   icon?: string;
   // Only show the icon with all the same layout, don't make it a button
   iconOnly?: boolean;
-  onPress: ( _event: GestureResponderEvent ) => void;
+  onPress: (_event: GestureResponderEvent) => void;
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
   preventTransparency?: boolean;
@@ -56,7 +56,7 @@ const CONTAINED_WRAPPER_STYLE: ViewStyle = {
 // Similar to IconButton in react-native-paper, except this allows independent
 // control over touchable area with `width` and `height` *and* the size of
 // the icon with `size`
-const INatIconButton = ( {
+const INatIconButton = ({
   accessibilityHint,
   accessibilityLabel,
   children,
@@ -73,35 +73,35 @@ const INatIconButton = ( {
   width = MIN_ACCESSIBLE_DIM,
   backgroundColor,
   mode,
-}: Props ) => {
+}: Props) => {
   // width || 0 is to placate flow. width should never be undefined because of
   // the defaultProps, but I guess flow can't figure that out.
-  if ( ( width || 0 ) < MIN_ACCESSIBLE_DIM ) {
+  if ((width || 0) < MIN_ACCESSIBLE_DIM) {
     throw new Error(
       `Width cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`,
     );
   }
-  if ( ( height || 0 ) < MIN_ACCESSIBLE_DIM ) {
+  if ((height || 0) < MIN_ACCESSIBLE_DIM) {
     throw new Error(
       `Height cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`,
     );
   }
-  if ( !accessibilityLabel && !iconOnly ) {
+  if (!accessibilityLabel && !iconOnly) {
     throw new Error(
       "Button needs an accessibility label",
     );
   }
-  const getOpacity = React.useCallback( ( pressed: boolean ) => {
-    if ( disabled ) {
+  const getOpacity = React.useCallback((pressed: boolean) => {
+    if (disabled) {
       return 0.5;
     }
-    if ( pressed ) {
+    if (pressed) {
       return 0.95;
     }
     return 1;
-  }, [disabled] );
+  }, [disabled]);
 
-  const wrapperStyle = React.useMemo( ( ) => ( [
+  const wrapperStyle = React.useMemo(() => ([
     { width, height },
     WRAPPER_STYLE,
     mode === "contained" && {
@@ -111,14 +111,14 @@ const INatIconButton = ( {
       ...CONTAINED_WRAPPER_STYLE,
     },
     style,
-  ] ), [
+  ]), [
     backgroundColor,
     height,
     mode,
     preventTransparency,
     style,
     width,
-  ] );
+  ]);
 
   const content = (
     <View
@@ -163,14 +163,14 @@ const INatIconButton = ( {
           <INatIcon
             name={icon}
             size={size}
-            color={String( color || colors?.darkGray )}
+            color={String(color || colors?.darkGray)}
           />
         )
       }
     </View>
   );
 
-  if ( iconOnly ) {
+  if (iconOnly) {
     return (
       <View style={wrapperStyle} testID={testID}>
         { content }
@@ -178,14 +178,14 @@ const INatIconButton = ( {
     );
   }
 
-  const handlePressWithTracking = ( event: GestureResponderEvent ) => {
-    if ( testID ) {
-      const currentRoute = getCurrentRoute( );
-      logger.info( `Button tap: ${testID}-${currentRoute?.name || "undefined"}` );
+  const handlePressWithTracking = (event: GestureResponderEvent) => {
+    if (testID) {
+      const currentRoute = getCurrentRoute();
+      logger.info(`Button tap: ${testID}-${currentRoute?.name || "undefined"}`);
     }
 
-    if ( onPress ) {
-      onPress( event );
+    if (onPress) {
+      onPress(event);
     }
   };
 
@@ -197,9 +197,9 @@ const INatIconButton = ( {
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={handlePressWithTracking}
-      style={( { pressed } ) => [
+      style={({ pressed }) => [
         ...wrapperStyle,
-        { opacity: getOpacity( pressed ) },
+        { opacity: getOpacity(pressed) },
       ]}
       testID={testID}
     >

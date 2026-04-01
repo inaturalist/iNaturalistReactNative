@@ -5,13 +5,13 @@ import React from "react";
 
 import type { MenuOption } from "./Menu";
 
-const MenuItem = ( {
+const MenuItem = ({
   item,
   onPress,
 }: {
   item: MenuOption;
-  onPress: ( ) => void;
-} ) => (
+  onPress: () => void;
+}) => (
   <Pressable
     testID={item.testID}
     className={classNames(

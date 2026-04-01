@@ -43,23 +43,23 @@ const STOPPED = "stopped";
 export const MAX_SOUNDS_ALLOWED = 20;
 
 const SoundRecorder = (): Node => {
-  const audioRecorderPlayerRef = useRef( new AudioRecorderPlayer( ) );
+  const audioRecorderPlayerRef = useRef(new AudioRecorderPlayer());
   const audioRecorderPlayer = audioRecorderPlayerRef.current;
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const setObservations = useStore( state => state.setObservations );
-  const navigation = useNavigation( );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState(false);
+  const setObservations = useStore(state => state.setObservations);
+  const navigation = useNavigation();
   const { params } = useRoute();
   const { t } = useTranslation();
-  const [sound, setSound] = useState( INITIAL_SOUND );
-  const [uri, setUri] = useState( null );
-  const [helpShown, setHelpShown] = useState( false );
-  const [exitWarningShown, setExitWarningShown] = useState( false );
-  const [resetWarningShown, setResetWarningShown] = useState( false );
-  const meteringHistory = useRef( [] );
-  const currentObservation = useStore( state => state.currentObservation );
-  const observations = useStore( state => state.observations );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const updateObservations = useStore( state => state.updateObservations );
+  const [sound, setSound] = useState(INITIAL_SOUND);
+  const [uri, setUri] = useState(null);
+  const [helpShown, setHelpShown] = useState(false);
+  const [exitWarningShown, setExitWarningShown] = useState(false);
+  const [resetWarningShown, setResetWarningShown] = useState(false);
+  const meteringHistory = useRef([]);
+  const currentObservation = useStore(state => state.currentObservation);
+  const observations = useStore(state => state.observations);
+  const currentObservationIndex = useStore(state => state.currentObservationIndex);
+  const updateObservations = useStore(state => state.updateObservations);
 
   const [
     status,
@@ -67,98 +67,98 @@ const SoundRecorder = (): Node => {
   ]: [
     "notStarted" | "recording" | "stopped",
     Function
-  ] = useState( NOT_STARTED );
+  ] = useState(NOT_STARTED);
 
-  audioRecorderPlayer.setSubscriptionDuration( 0.09 ); // optional. Default is 0.1
+  audioRecorderPlayer.setSubscriptionDuration(0.09); // optional. Default is 0.1
 
-  const addSound = async ( ) => {
-    if ( !params.addEvidence ) {
+  const addSound = async () => {
+    if (!params.addEvidence) {
       // New observation with sound
-      const newObservation = await Observation.createObsWithSoundPath( uri );
-      setObservations( [newObservation] );
+      const newObservation = await Observation.createObsWithSoundPath(uri);
+      setObservations([newObservation]);
     } else {
       // Add new sounds to existing observation
       let updatedCurrentObservation = currentObservation;
 
-      const obsSound = await ObservationSound.new( {
-        sound: await Sound.new( { file_url: uri } ),
-      } );
+      const obsSound = await ObservationSound.new({
+        sound: await Sound.new({ file_url: uri }),
+      });
       updatedCurrentObservation = Observation
-        .appendObsSounds( [obsSound], updatedCurrentObservation );
+        .appendObsSounds([obsSound], updatedCurrentObservation);
 
       const updatedObservations = [...observations];
       updatedObservations[currentObservationIndex] = updatedCurrentObservation;
-      updateObservations( updatedObservations );
+      updateObservations(updatedObservations);
     }
   };
 
-  const resetRecording = useCallback( ( ) => {
-    setSound( INITIAL_SOUND );
-    setUri( null );
-    setStatus( NOT_STARTED );
+  const resetRecording = useCallback(() => {
+    setSound(INITIAL_SOUND);
+    setUri(null);
+    setStatus(NOT_STARTED);
     meteringHistory.current = [];
   }, [
-  ] );
+  ]);
 
-  const startRecording = useCallback( async () => {
+  const startRecording = useCallback(async () => {
     const cachedFile = await audioRecorderPlayer.startRecorder(
       null,
       null,
       true,
     );
-    setStatus( RECORDING );
-    audioRecorderPlayer.addRecordBackListener( e => {
-      setSound( {
+    setStatus(RECORDING);
+    audioRecorderPlayer.addRecordBackListener(e => {
+      setSound({
         ...sound,
         recordSecs: e.currentPosition,
-        recordTime: audioRecorderPlayer.mmss( Math.floor( e.currentPosition / 1000 ) ),
-      } );
-      meteringHistory.current.push( [e.currentPosition, e.currentMetering] );
-      if ( meteringHistory.current.length > 200 ) {
+        recordTime: audioRecorderPlayer.mmss(Math.floor(e.currentPosition / 1000)),
+      });
+      meteringHistory.current.push([e.currentPosition, e.currentMetering]);
+      if (meteringHistory.current.length > 200) {
         meteringHistory.current = meteringHistory.current.slice(
           meteringHistory.current.length - 200,
           meteringHistory.current.length,
         );
       }
-    } );
-    setUri( cachedFile );
-  }, [audioRecorderPlayer, meteringHistory, sound] );
+    });
+    setUri(cachedFile);
+  }, [audioRecorderPlayer, meteringHistory, sound]);
 
-  const stopRecording = useCallback( async () => {
+  const stopRecording = useCallback(async () => {
     try {
       await audioRecorderPlayer.stopRecorder();
-      setStatus( STOPPED );
+      setStatus(STOPPED);
       audioRecorderPlayer.removeRecordBackListener();
-      setSound( {
+      setSound({
         ...sound,
         recordSecs: 0,
-      } );
-    } catch ( e ) {
-      console.warn( "couldn't stop sound recorder:", e );
+      });
+    } catch (e) {
+      console.warn("couldn't stop sound recorder:", e);
     }
-  }, [audioRecorderPlayer, sound] );
+  }, [audioRecorderPlayer, sound]);
 
-  const navToObsEdit = async ( ) => {
-    await stopRecording( );
-    await addSound( );
-    navigation.navigate( "ObsEdit" );
+  const navToObsEdit = async () => {
+    await stopRecording();
+    await addSound();
+    navigation.navigate("ObsEdit");
   };
 
-  const captureButton = useMemo( ( ) => {
+  const captureButton = useMemo(() => {
     let onPress = startRecording;
     let icon = "microphone";
-    let accessibilityLabel = t( "Record-verb" );
-    let accessibilityHint = t( "Starts-recording-sound" );
+    let accessibilityLabel = t("Record-verb");
+    let accessibilityHint = t("Starts-recording-sound");
     let backgroundColor = colors.warningRed;
     let size = 33;
     const style = {};
-    if ( status === "recording" ) {
+    if (status === "recording") {
       onPress = stopRecording;
       icon = "stop";
-      accessibilityLabel = t( "Stop-verb" );
-      accessibilityHint = t( "Stops-recording-sound" );
-    } else if ( status === STOPPED ) {
-      onPress = ( ) => setMediaViewerVisible( true );
+      accessibilityLabel = t("Stop-verb");
+      accessibilityHint = t("Stops-recording-sound");
+    } else if (status === STOPPED) {
+      onPress = () => setMediaViewerVisible(true);
       icon = "play";
       size = 24;
       backgroundColor = colors.darkGray;
@@ -185,28 +185,28 @@ const SoundRecorder = (): Node => {
     stopRecording,
     status,
     t,
-  ] );
+  ]);
 
   const sounds = uri
     ? [{ file_url: uri }]
     : [];
 
-  const helpText = useMemo( ( ) => {
-    if ( status === RECORDING ) return t( "Recording-sound" );
-    if ( status === STOPPED ) return t( "Recording-stopped-Tap-to-play-the-current-recording" );
+  const helpText = useMemo(() => {
+    if (status === RECORDING) return t("Recording-sound");
+    if (status === STOPPED) return t("Recording-stopped-Tap-to-play-the-current-recording");
     return null;
-  }, [status, t] );
+  }, [status, t]);
 
   const onBack = () => {
-    if ( params.addEvidence ) {
-      navigation.navigate( "ObsEdit" );
+    if (params.addEvidence) {
+      navigation.navigate("ObsEdit");
     } else {
-      navigation.navigate( "TabNavigator", {
+      navigation.navigate("TabNavigator", {
         screen: "ObservationsTab",
         params: {
           screen: "ObsList",
         },
-      } );
+      });
     }
   };
 
@@ -217,7 +217,7 @@ const SoundRecorder = (): Node => {
         <View className="justify-center items-center w-full h-full">
           { status !== NOT_STARTED && (
             <View className="w-full h-full flex-row items-center overflow-hidden justify-end">
-              { meteringHistory.current?.map( item => {
+              { meteringHistory.current?.map(item => {
                 const [position, metering] = item;
                 return (
                   <View
@@ -228,7 +228,7 @@ const SoundRecorder = (): Node => {
                     }}
                   />
                 );
-              } )}
+              })}
             </View>
           ) }
         </View>
@@ -243,8 +243,8 @@ const SoundRecorder = (): Node => {
           <View className="absolute left-5 bottom-5">
             <INatIconButton
               icon="help"
-              onPress={( ) => setHelpShown( !helpShown )}
-              accessibilityLabel={t( "Reset-verb" )}
+              onPress={() => setHelpShown(!helpShown)}
+              accessibilityLabel={t("Reset-verb")}
               color="white"
             />
           </View>
@@ -253,8 +253,8 @@ const SoundRecorder = (): Node => {
           <View className="absolute right-5 bottom-5">
             <INatIconButton
               icon="rotate-right"
-              onPress={( ) => setResetWarningShown( true )}
-              accessibilityLabel={t( "Reset-verb" )}
+              onPress={() => setResetWarningShown(true)}
+              accessibilityLabel={t("Reset-verb")}
               color="white"
             />
           </View>
@@ -268,9 +268,9 @@ const SoundRecorder = (): Node => {
       <MediaNavButtons
         captureButton={captureButton}
         onConfirm={navToObsEdit}
-        onClose={( ) => {
-          if ( uri ) {
-            setExitWarningShown( true );
+        onClose={() => {
+          if (uri) {
+            setExitWarningShown(true);
           } else {
             onBack();
           }
@@ -281,52 +281,52 @@ const SoundRecorder = (): Node => {
       />
       <MediaViewerModal
         showModal={mediaViewerVisible}
-        onClose={( ) => setMediaViewerVisible( false )}
+        onClose={() => setMediaViewerVisible(false)}
         sounds={sounds}
         autoPlaySound
       />
       <BottomSheet
         headerText="RECORDING SOUNDS"
         hidden={!helpShown}
-        onPressClose={( ) => setHelpShown( false )}
+        onPressClose={() => setHelpShown(false)}
       >
         <View className="m-[43px] mt-[20px]">
           <P>
-            <Body1>{t( "sound-recorder-help-One-organism" )}</Body1>
-            <List2>{t( "sound-recorder-help-Try-to-isolate" )}</List2>
+            <Body1>{t("sound-recorder-help-One-organism")}</Body1>
+            <List2>{t("sound-recorder-help-Try-to-isolate")}</List2>
           </P>
           <P>
-            <Body1>{t( "sound-recorder-help-Stop-moving" )}</Body1>
-            <List2>{t( "sound-recorder-help-Make-sure" )}</List2>
+            <Body1>{t("sound-recorder-help-Stop-moving")}</Body1>
+            <List2>{t("sound-recorder-help-Make-sure")}</List2>
           </P>
           <P>
-            <Body1>{t( "sound-recorder-help-Get-closer" )}</Body1>
-            <List2>{t( "sound-recorder-help-Get-as-close-as-you-can" )}</List2>
+            <Body1>{t("sound-recorder-help-Get-closer")}</Body1>
+            <List2>{t("sound-recorder-help-Get-as-close-as-you-can")}</List2>
           </P>
           <P>
-            <Body1>{t( "sound-recorder-help-Keep-it-short" )}</Body1>
-            <List2>{t( "sound-recorder-help-A-recording-of" )}</List2>
+            <Body1>{t("sound-recorder-help-Keep-it-short")}</Body1>
+            <List2>{t("sound-recorder-help-A-recording-of")}</List2>
           </P>
         </View>
       </BottomSheet>
       <WarningSheet
         hidden={!exitWarningShown}
-        headerText={t( "DISCARD-SOUND--question" )}
-        text={t( "By-exiting-your-recorded-sound-will-not-be-saved" )}
+        headerText={t("DISCARD-SOUND--question")}
+        text={t("By-exiting-your-recorded-sound-will-not-be-saved")}
         confirm={onBack}
-        onPressClose={( ) => setExitWarningShown( false )}
-        buttonText={t( "DISCARD-RECORDING" )}
+        onPressClose={() => setExitWarningShown(false)}
+        buttonText={t("DISCARD-RECORDING")}
       />
       <WarningSheet
         hidden={!resetWarningShown}
-        headerText={t( "RESET-SOUND-header" )}
-        text={t( "Would-you-like-to-discard-your-current-recording-and-start-over" )}
-        confirm={( ) => {
-          resetRecording( );
-          setResetWarningShown( false );
+        headerText={t("RESET-SOUND-header")}
+        text={t("Would-you-like-to-discard-your-current-recording-and-start-over")}
+        confirm={() => {
+          resetRecording();
+          setResetWarningShown(false);
         }}
-        onPressClose={( ) => setResetWarningShown( false )}
-        buttonText={t( "RESET-RECORDING" )}
+        onPressClose={() => setResetWarningShown(false)}
+        buttonText={t("RESET-RECORDING")}
       />
     </ViewWrapper>
   );

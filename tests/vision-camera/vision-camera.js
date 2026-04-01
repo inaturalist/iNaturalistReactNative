@@ -14,13 +14,13 @@ const mockFrame = {
   orientation: "portrait",
   pixelFormat: "yuv",
   // Returns a fake ArrayBuffer
-  toArrayBuffer: () => new ArrayBuffer( 1920 * 1080 ),
+  toArrayBuffer: () => new ArrayBuffer(1920 * 1080),
   toString: () => "Frame",
-  getNativeBuffer: () => ( {
+  getNativeBuffer: () => ({
     // Returns a fake pointer
     pointer: 0,
     delete: () => null,
-  } ),
+  }),
   incrementRefCount: () => null,
   decrementRefCount: () => null,
 };
@@ -47,30 +47,30 @@ export class mockCamera extends React.PureComponent {
   */
   componentDidUpdate() {
     const { frameProcessor } = this.props;
-    frameProcessor?.frameProcessor( mockFrame );
+    frameProcessor?.frameProcessor(mockFrame);
   }
 
   // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
   async takePhoto() {
     // TODO: this only works on iOS
-    return CameraRoll.getPhotos( {
+    return CameraRoll.getPhotos({
       first: 20,
       assetType: "Photos",
-    } )
-      .then( async r => {
+    })
+      .then(async r => {
         /*
           Basically, here, we are reading the newest twenty photos from the simulators gallery
           and return the oldest one of those. Copy it to a new path and treat it as a new photo.
         */
         const testPhoto = r.edges[r.edges.length - 1].node.image;
         let oldUri = testPhoto.uri;
-        if ( testPhoto.uri.includes( "ph://" ) ) {
-          let id = testPhoto.uri.replace( "ph://", "" );
-          id = id.substring( 0, id.indexOf( "/" ) );
+        if (testPhoto.uri.includes("ph://")) {
+          let id = testPhoto.uri.replace("ph://", "");
+          id = id.substring(0, id.indexOf("/"));
           oldUri = `assets-library://asset/asset.jpg?id=${id}&ext=jpg`;
-          console.log( `Converted file uri to ${oldUri}` );
+          console.log(`Converted file uri to ${oldUri}`);
         }
-        const encodedUri = encodeURI( oldUri );
+        const encodedUri = encodeURI(oldUri);
         const destPath = `${RNFS.TemporaryDirectoryPath}temp.jpg`;
         const newPath = await RNFS.copyAssetsFileIOS(
           encodedUri,
@@ -79,8 +79,8 @@ export class mockCamera extends React.PureComponent {
           0,
         );
         const photo = { uri: newPath, predictions: [] };
-        if ( typeof photo !== "object" ) {
-          console.log( "photo is not an object", typeof photo );
+        if (typeof photo !== "object") {
+          console.log("photo is not an object", typeof photo);
           return null;
         }
         return {
@@ -90,11 +90,11 @@ export class mockCamera extends React.PureComponent {
             Orientation: testPhoto.orientation,
           },
         };
-      } )
-      .catch( err => {
-        console.log( "Error getting photos", err );
+      })
+      .catch(err => {
+        console.log("Error getting photos", err);
         return null;
-      } );
+      });
   }
 
   render() {
@@ -102,7 +102,7 @@ export class mockCamera extends React.PureComponent {
   }
 }
 
-export const mockSortDevices = ( _left, _right ) => 1;
+export const mockSortDevices = (_left, _right) => 1;
 
 const device = {
   physicalDevices: ["wide-angle-camera"],

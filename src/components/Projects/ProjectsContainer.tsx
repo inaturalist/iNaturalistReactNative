@@ -19,26 +19,26 @@ export enum TAB_ID {
   NEARBY = "NEARBY"
 }
 
-const ProjectsContainer = ( ) => {
-  const [searchInput, setSearchInput] = useState( "" );
-  const currentUser = useCurrentUser( );
+const ProjectsContainer = () => {
+  const [searchInput, setSearchInput] = useState("");
+  const currentUser = useCurrentUser();
   const memberId = currentUser?.id;
-  const { t } = useTranslation( );
-  const [currentTabId, setCurrentTabId] = useState( currentUser
+  const { t } = useTranslation();
+  const [currentTabId, setCurrentTabId] = useState(currentUser
     ? TAB_ID.JOINED
-    : TAB_ID.FEATURED );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
-  const [userLocation, setUserLocation] = useState( null );
+    : TAB_ID.FEATURED);
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission();
+  const [userLocation, setUserLocation] = useState(null);
 
   const apiParams = { };
 
-  if ( searchInput.length > 0 ) {
+  if (searchInput.length > 0) {
     apiParams.q = searchInput;
-  } else if ( currentTabId === TAB_ID.JOINED ) {
+  } else if (currentTabId === TAB_ID.JOINED) {
     apiParams.member_id = memberId;
-  } else if ( currentTabId === TAB_ID.FEATURED ) {
+  } else if (currentTabId === TAB_ID.FEATURED) {
     apiParams.featured = true;
-  } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
+  } else if (currentTabId === TAB_ID.NEARBY && userLocation) {
     // lifted params for nearby from iOS Projects for app parity
     // https://github.com/inaturalist/INaturalistIOS/blob/20aa47385471f3eb10622b022c51cabc602422ae/INaturalistIOS/API%20Endpoints/Node%20API/ProjectsAPI.m#L48
     apiParams.lat = userLocation.latitude;
@@ -47,9 +47,9 @@ const ProjectsContainer = ( ) => {
     apiParams.spam = false;
   }
 
-  const getCurrentUserLocation = async ( ) => {
-    const currentUserLocation = await fetchCoarseUserLocation( );
-    setUserLocation( currentUserLocation );
+  const getCurrentUserLocation = async () => {
+    const currentUserLocation = await fetchCoarseUserLocation();
+    setUserLocation(currentUserLocation);
   };
 
   const {
@@ -57,47 +57,47 @@ const ProjectsContainer = ( ) => {
     isFetchingNextPage,
     fetchNextPage,
     projects,
-  } = useInfiniteProjectsScroll( {
+  } = useInfiniteProjectsScroll({
     params: apiParams,
-    enabled: !isEmpty( apiParams ),
-  } );
+    enabled: !isEmpty(apiParams),
+  });
 
   const tabs = [
     {
       id: TAB_ID.JOINED,
-      text: t( "JOINED" ),
+      text: t("JOINED"),
       onPress: () => {
-        setCurrentTabId( TAB_ID.JOINED );
+        setCurrentTabId(TAB_ID.JOINED);
       },
     },
     {
       id: TAB_ID.FEATURED,
-      text: t( "FEATURED" ),
+      text: t("FEATURED"),
       onPress: () => {
-        setCurrentTabId( TAB_ID.FEATURED );
+        setCurrentTabId(TAB_ID.FEATURED);
       },
     },
     {
       id: TAB_ID.NEARBY,
-      text: t( "NEARBY" ),
-      onPress: ( ) => {
-        if ( hasPermissions ) {
-          getCurrentUserLocation( );
+      text: t("NEARBY"),
+      onPress: () => {
+        if (hasPermissions) {
+          getCurrentUserLocation();
         }
-        setCurrentTabId( TAB_ID.NEARBY );
+        setCurrentTabId(TAB_ID.NEARBY);
       },
     },
   ];
 
-  if ( !currentUser ) {
-    tabs.shift( );
+  if (!currentUser) {
+    tabs.shift();
   }
 
-  const handleFetchNextPage = useCallback( () => {
-    if ( currentTabId !== TAB_ID.FEATURED ) {
+  const handleFetchNextPage = useCallback(() => {
+    if (currentTabId !== TAB_ID.FEATURED) {
       fetchNextPage();
     }
-  }, [currentTabId, fetchNextPage] );
+  }, [currentTabId, fetchNextPage]);
 
   return (
     <>
@@ -114,7 +114,7 @@ const ProjectsContainer = ( ) => {
         setSearchInput={setSearchInput}
         tabs={tabs}
       />
-      {renderPermissionsGate( { onPermissionGranted: getCurrentUserLocation } )}
+      {renderPermissionsGate({ onPermissionGranted: getCurrentUserLocation })}
     </>
   );
 };

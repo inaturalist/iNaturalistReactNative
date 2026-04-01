@@ -8,7 +8,7 @@ export default function navigateToObsDetails(
   uuid: string,
 ): void {
   navigation.dispatch(
-    CommonActions.reset( {
+    CommonActions.reset({
       index: 1,
       routes: [
         {
@@ -32,6 +32,6 @@ export default function navigateToObsDetails(
           },
         },
       ],
-    } ),
+    }),
   );
 }

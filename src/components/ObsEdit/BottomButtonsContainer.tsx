@@ -25,27 +25,27 @@ interface Props {
   observations: object[];
   currentObservation: RealmObservation;
   currentObservationIndex: number;
-  setCurrentObservationIndex: ( index: number, observations: object[] ) => void;
-  transitionAnimation: ( ) => void;
+  setCurrentObservationIndex: (index: number, observations: object[]) => void;
+  transitionAnimation: () => void;
 }
 
-const BottomButtonsContainer = ( {
+const BottomButtonsContainer = ({
   passesEvidenceTest,
   currentObservation,
   currentObservationIndex,
   observations,
   setCurrentObservationIndex,
   transitionAnimation,
-}: Props ) => {
-  const { isConnected } = useNetInfo( );
-  const currentUser = useCurrentUser( );
-  const cameraRollUris = useStore( state => state.cameraRollUris );
-  const unsavedChanges = useStore( state => state.unsavedChanges );
-  const addToUploadQueue = useStore( state => state.addToUploadQueue );
-  const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
-  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
-  const setMyObsOffset = useStore( state => state.setMyObsOffset );
-  const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
+}: Props) => {
+  const { isConnected } = useNetInfo();
+  const currentUser = useCurrentUser();
+  const cameraRollUris = useStore(state => state.cameraRollUris);
+  const unsavedChanges = useStore(state => state.unsavedChanges);
+  const addToUploadQueue = useStore(state => state.addToUploadQueue);
+  const addTotalToolbarIncrements = useStore(state => state.addTotalToolbarIncrements);
+  const resetMyObsOffsetToRestore = useStore(state => state.resetMyObsOffsetToRestore);
+  const setMyObsOffset = useStore(state => state.setMyObsOffset);
+  const setSavedOrUploadedMultiObsFlow = useStore(state => state.setSavedOrUploadedMultiObsFlow);
   const incrementTotalSavedObservations = useStore(
     state => state.incrementTotalSavedObservations,
   );
@@ -53,60 +53,60 @@ const BottomButtonsContainer = ( {
   const hasPhotos = currentObservation.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
 
-  const realm = useRealm( );
-  const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
-  const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
-  const [allowUserToUpload, setAllowUserToUpload] = useState( false );
-  const [buttonPressed, setButtonPressed] = useState<ButtonType>( null );
-  const [loading, setLoading] = useState( false );
-  const exitObservationFlow = useExitObservationFlow( );
+  const realm = useRealm();
+  const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState(false);
+  const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState(false);
+  const [allowUserToUpload, setAllowUserToUpload] = useState(false);
+  const [buttonPressed, setButtonPressed] = useState<ButtonType>(null);
+  const [loading, setLoading] = useState(false);
+  const exitObservationFlow = useExitObservationFlow();
 
   const hasIdentification = currentObservation.taxon
     && currentObservation.taxon.rank_level !== 100;
 
   const passesTests = passesEvidenceTest && hasIdentification;
 
-  const canUpload = !!( currentUser && isConnected );
-  const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
+  const canUpload = !!(currentUser && isConnected);
+  const { startUploadsFromMultiObsEdit } = useUploadObservations(canUpload);
 
-  const setNextScreen = useCallback( async ( type: ButtonTypeNonNull ) => {
-    const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
-    if ( savedObservation && observations?.length > 1 ) {
+  const setNextScreen = useCallback(async (type: ButtonTypeNonNull) => {
+    const savedObservation = await saveObservation(currentObservation, cameraRollUris, realm);
+    if (savedObservation && observations?.length > 1) {
       transitionAnimation();
-      setSavedOrUploadedMultiObsFlow( );
+      setSavedOrUploadedMultiObsFlow();
     }
     // If we are saving a new observations, reset the stored my obs offset to
     // restore b/c we want MyObs rendered in its default state with this new
     // observation visible at the top
-    if ( isNewObs ) {
-      resetMyObsOffsetToRestore( );
-      setMyObsOffset( 0 );
+    if (isNewObs) {
+      resetMyObsOffsetToRestore();
+      setMyObsOffset(0);
     }
-    if ( type === UPLOAD ) {
+    if (type === UPLOAD) {
       const { uuid } = savedObservation;
-      addTotalToolbarIncrements( savedObservation );
-      addToUploadQueue( uuid );
+      addTotalToolbarIncrements(savedObservation);
+      addToUploadQueue(uuid);
       transitionAnimation();
-      startUploadsFromMultiObsEdit( );
+      startUploadsFromMultiObsEdit();
     } else {
-      incrementTotalSavedObservations( );
+      incrementTotalSavedObservations();
     }
 
-    if ( observations.length === 1 ) {
-      setButtonPressed( null );
+    if (observations.length === 1) {
+      setButtonPressed(null);
       // If this is the last observation, we're done
-      exitObservationFlow( );
-    } else if ( currentObservationIndex === observations.length - 1 ) {
-      observations.pop( );
-      setCurrentObservationIndex( currentObservationIndex - 1, observations );
-      setLoading( false );
-      setButtonPressed( null );
+      exitObservationFlow();
+    } else if (currentObservationIndex === observations.length - 1) {
+      observations.pop();
+      setCurrentObservationIndex(currentObservationIndex - 1, observations);
+      setLoading(false);
+      setButtonPressed(null);
     } else {
-      observations.splice( currentObservationIndex, 1 );
+      observations.splice(currentObservationIndex, 1);
       // this seems necessary for rerendering the ObsEdit screen
-      setCurrentObservationIndex( currentObservationIndex, observations );
-      setLoading( false );
-      setButtonPressed( null );
+      setCurrentObservationIndex(currentObservationIndex, observations);
+      setLoading(false);
+      setButtonPressed(null);
     }
   }, [
     addToUploadQueue,
@@ -125,24 +125,24 @@ const BottomButtonsContainer = ( {
     setSavedOrUploadedMultiObsFlow,
     startUploadsFromMultiObsEdit,
     transitionAnimation,
-  ] );
+  ]);
 
-  const showMissingEvidence = useCallback( ( ) => {
-    if ( allowUserToUpload ) { return false; }
+  const showMissingEvidence = useCallback(() => {
+    if (allowUserToUpload) { return false; }
     // missing evidence sheet takes precedence over the location imprecise sheet
 
     if (
       currentObservation?.positional_accuracy
       && currentObservation?.positional_accuracy > REQUIRED_LOCATION_ACCURACY
       // Don't check for valid positional accuracy in case of a new observation with imported photos
-      && ( !isNewObs || !hasImportedPhotos )
+      && (!isNewObs || !hasImportedPhotos)
     ) {
-      setShowImpreciseLocationSheet( true );
+      setShowImpreciseLocationSheet(true);
       return true;
     }
-    if ( !passesEvidenceTest ) {
-      setShowMissingEvidenceSheet( true );
-      setAllowUserToUpload( true );
+    if (!passesEvidenceTest) {
+      setShowMissingEvidenceSheet(true);
+      setAllowUserToUpload(true);
       return true;
     }
 
@@ -153,14 +153,14 @@ const BottomButtonsContainer = ( {
     hasImportedPhotos,
     isNewObs,
     passesEvidenceTest,
-  ] );
+  ]);
 
-  const handlePress = useCallback( ( type: ButtonTypeNonNull ) => {
-    if ( showMissingEvidence( ) ) { return; }
-    setLoading( true );
-    setButtonPressed( type );
-    setNextScreen( type );
-  }, [setNextScreen, showMissingEvidence] );
+  const handlePress = useCallback((type: ButtonTypeNonNull) => {
+    if (showMissingEvidence()) { return; }
+    setLoading(true);
+    setButtonPressed(type);
+    setNextScreen(type);
+  }, [setNextScreen, showMissingEvidence]);
 
   return (
     <>
@@ -182,7 +182,7 @@ const BottomButtonsContainer = ( {
         showFocusedChangesButton={unsavedChanges}
         showFocusedUploadButton={!!passesTests}
         showHalfOpacity={!passesEvidenceTest}
-        wasSynced={!!( currentObservation?._synced_at )}
+        wasSynced={!!(currentObservation?._synced_at)}
       />
     </>
   );

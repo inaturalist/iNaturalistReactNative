@@ -12,7 +12,7 @@ import type { Prediction } from "vision-camera-plugin-inatvision";
 
 import type { UseSuggestionsOfflineSuggestion } from "./types";
 
-const logger = log.extend( "useOfflineSuggestions" );
+const logger = log.extend("useOfflineSuggestions");
 
 const { useRealm } = RealmContext;
 
@@ -28,34 +28,34 @@ export interface OfflineSuggestionsResponse {
   commonAncestor?: UseSuggestionsOfflineSuggestion;
 }
 
-export const predictOffline = async ( {
+export const predictOffline = async ({
   latitude, longitude, photoUri, realm,
-}: OfflineRequestOptions ): Promise<OfflineSuggestionsResponse> => {
+}: OfflineRequestOptions): Promise<OfflineSuggestionsResponse> => {
   let rawPredictions = [];
   let commonAncestor;
   try {
-    const location = ( typeof latitude === "number" && typeof longitude === "number" )
+    const location = (typeof latitude === "number" && typeof longitude === "number")
       ? { latitude, longitude }
       : undefined;
-    const result = await predictImage( photoUri, location );
+    const result = await predictImage(photoUri, location);
     rawPredictions = result.predictions;
     // Destructuring here leads to different errors from the linter.
     // eslint-disable-next-line prefer-destructuring
     commonAncestor = result.commonAncestor;
-  } catch ( predictImageError ) {
-    logger.error( "Error predicting image offline", predictImageError );
+  } catch (predictImageError) {
+    logger.error("Error predicting image offline", predictImageError);
     throw predictImageError;
   }
   // similar to what we're doing in the AICamera to get iconic taxon name,
   // but we're offline so we only need the local list from realm
   // and don't need to fetch taxon from the API
-  const iconicTaxa = realm.objects<RealmTaxon>( "Taxon" ).filtered( "isIconic = true" );
+  const iconicTaxa = realm.objects<RealmTaxon>("Taxon").filtered("isIconic = true");
   const iconicTaxaLookup = Object.fromEntries(
-    iconicTaxa.map( t => [t.id, t.name] ),
+    iconicTaxa.map(t => [t.id, t.name]),
   );
 
   // This function handles either regular or common ancestor predictions as input objects.
-  const formatPrediction = ( prediction: Prediction ): UseSuggestionsOfflineSuggestion => {
+  const formatPrediction = (prediction: Prediction): UseSuggestionsOfflineSuggestion => {
     // The "lowest" ancestor_id that matches an iconic taxon
     // is the iconic taxon of this prediction.
     const iconicTaxonId = prediction.ancestor_ids
@@ -63,7 +63,7 @@ export const predictOffline = async ( {
     // a list of ancestor ids from tip to root of taxonomy
     // e.g. Aves is included in Animalia
       .reverse()
-      .find( id => id in iconicTaxaLookup );
+      .find(id => id in iconicTaxaLookup);
     const id = prediction.taxon_id;
 
     return {
@@ -80,10 +80,10 @@ export const predictOffline = async ( {
   };
 
   const formattedPredictions = rawPredictions
-    .map( prediction => formatPrediction( prediction ) );
+    .map(prediction => formatPrediction(prediction));
 
   const commonAncestorSuggestion = commonAncestor
-    ? formatPrediction( commonAncestor )
+    ? formatPrediction(commonAncestor)
     : undefined;
 
   const returnValue = {
@@ -97,8 +97,8 @@ export const predictOffline = async ( {
 const useOfflineSuggestions = (
   photoUri: string,
   options: {
-    onFetchError: ( _p: { isOnline: boolean } ) => void;
-    onFetched: ( _p: { isOnline: boolean } ) => void;
+    onFetchError: (_p: { isOnline: boolean }) => void;
+    onFetched: (_p: { isOnline: boolean }) => void;
     latitude?: number;
     longitude?: number;
     tryOfflineSuggestions: boolean;
@@ -110,41 +110,41 @@ const useOfflineSuggestions = (
   };
   refetchOfflineSuggestions: () => void;
 } => {
-  const realm = useRealm( );
+  const realm = useRealm();
   const [offlineSuggestions, setOfflineSuggestions] = useState<{
     results: UseSuggestionsOfflineSuggestion[];
     commonAncestor?: UseSuggestionsOfflineSuggestion;
-  }>( { results: [], commonAncestor: undefined } );
-  const [error, setError] = useState( null );
+  }>({ results: [], commonAncestor: undefined });
+  const [error, setError] = useState(null);
 
   const {
     onFetchError, onFetched, latitude, longitude, tryOfflineSuggestions,
   } = options;
 
-  const fetchOfflineSuggestions = useCallback( async () => {
+  const fetchOfflineSuggestions = useCallback(async () => {
     try {
-      const suggestions = await predictOffline( {
+      const suggestions = await predictOffline({
         latitude,
         longitude,
         photoUri,
         realm,
-      } );
-      setOfflineSuggestions( suggestions );
-      onFetched( { isOnline: false } );
+      });
+      setOfflineSuggestions(suggestions);
+      onFetched({ isOnline: false });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch ( predictOfflineError: any ) {
-      onFetchError( { isOnline: false } );
-      setError( predictOfflineError );
+    } catch (predictOfflineError: any) {
+      onFetchError({ isOnline: false });
+      setError(predictOfflineError);
     }
-  }, [latitude, longitude, onFetchError, onFetched, photoUri, realm] );
+  }, [latitude, longitude, onFetchError, onFetched, photoUri, realm]);
 
-  useEffect( ( ) => {
-    if ( tryOfflineSuggestions ) {
+  useEffect(() => {
+    if (tryOfflineSuggestions) {
       fetchOfflineSuggestions();
     }
-  }, [fetchOfflineSuggestions, tryOfflineSuggestions] );
+  }, [fetchOfflineSuggestions, tryOfflineSuggestions]);
 
-  if ( error ) throw error;
+  if (error) throw error;
 
   return {
     offlineSuggestions,

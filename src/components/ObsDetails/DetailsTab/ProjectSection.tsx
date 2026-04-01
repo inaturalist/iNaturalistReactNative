@@ -18,15 +18,15 @@ interface Props {
   observation: ApiObservation;
 }
 
-const ProjectSection = ( { observation }: Props ) => {
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
+const ProjectSection = ({ observation }: Props) => {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const traditionalProjectCount = observation?.project_observations?.length || 0;
   const nonTraditionalProjectCount = observation?.non_traditional_projects?.length || 0;
 
   const totalProjectCount = traditionalProjectCount + nonTraditionalProjectCount;
 
-  if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
+  if (totalProjectCount === 0 || typeof totalProjectCount !== "number") {
     return null;
   }
 
@@ -34,15 +34,15 @@ const ProjectSection = ( { observation }: Props ) => {
     <>
       <View className={sectionClass}>
         <Heading4 className={headingClass}>
-          {t( "PROJECTS-X", {
+          {t("PROJECTS-X", {
             projectCount: totalProjectCount,
-          } )}
+          })}
         </Heading4>
         <Button
-          text={t( "VIEW-PROJECTS" )}
-          onPress={( ) => navigation.navigate( "ProjectList", {
+          text={t("VIEW-PROJECTS")}
+          onPress={() => navigation.navigate("ProjectList", {
             observationUuid: observation.uuid,
-          } )}
+          })}
         />
       </View>
       <Divider />

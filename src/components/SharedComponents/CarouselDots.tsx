@@ -8,18 +8,18 @@ interface CarouselDotsProps {
   index: number;
 }
 
-const CarouselDots: React.FC<CarouselDotsProps> = ( { length, index } ) => {
-  const dots = React.useMemo( () => Array.from(
+const CarouselDots: React.FC<CarouselDotsProps> = ({ length, index }) => {
+  const dots = React.useMemo(() => Array.from(
     { length },
-    () => uuid.v4( ) as string,
-  ), [length] );
+    () => uuid.v4() as string,
+  ), [length]);
 
   return (
     <View
       className="flex flex-row w-full justify-center items-center mb-3"
       pointerEvents="none"
     >
-      {dots.map( ( dotKey, idx ) => (
+      {dots.map((dotKey, idx) => (
         <View
           key={dotKey}
           className={classnames(
@@ -29,7 +29,7 @@ const CarouselDots: React.FC<CarouselDotsProps> = ( { length, index } ) => {
               : "w-[2px] h-[2px]",
           )}
         />
-      ) )}
+      ))}
     </View>
   );
 };

@@ -41,7 +41,7 @@ interface Props {
   withdrawn?: boolean;
 }
 
-const DisplayTaxonName = ( {
+const DisplayTaxonName = ({
   bottomTextComponent: BottomTextComponentProp,
   color,
   ellipsizeCommonName,
@@ -59,33 +59,33 @@ const DisplayTaxonName = ( {
   topTextComponent: TopTextComponentProp,
   underlineTopText = false,
   withdrawn,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
-  const textClassName = useMemo( ( ) => {
+  const textClassName = useMemo(() => {
     const classes = [];
-    if ( textCentered ) classes.push( "text-center" );
-    if ( withdrawn ) {
-      return `text-darkGray opacity-50 line-through ${classes.join( " " )}`;
+    if (textCentered) classes.push("text-center");
+    if (withdrawn) {
+      return `text-darkGray opacity-50 line-through ${classes.join(" ")}`;
     }
-    classes.push( color || "text-darkGray" );
-    return classes.join( " " );
+    classes.push(color || "text-darkGray");
+    return classes.join(" ");
   }, [
     color,
     textCentered,
     withdrawn,
-  ] );
+  ]);
 
-  if ( !taxon || !taxon.id ) {
+  if (!taxon || !taxon.id) {
     return (
       <Body1 className={textClassName} numberOfLines={1}>
-        {t( "Unknown--taxon" )}
+        {t("Unknown--taxon")}
       </Body1>
     );
   }
 
-  const taxonPojo = typeof ( taxon.toJSON ) === "function"
-    ? taxon.toJSON( )
+  const taxonPojo = typeof (taxon.toJSON) === "function"
+    ? taxon.toJSON()
     : taxon;
 
   // this is mostly for the AICamera, but might be helpful to display elsewhere
@@ -99,27 +99,27 @@ const DisplayTaxonName = ( {
     rankPiece,
     rankLevel,
     rank,
-  } = generateTaxonPieces( processedTaxon );
+  } = generateTaxonPieces(processedTaxon);
   const isHorizontal = layout === "horizontal";
-  const getSpaceChar = ( showSpace: boolean ) => ( showSpace && isHorizontal
+  const getSpaceChar = (showSpace: boolean) => (showSpace && isHorizontal
     ? " "
-    : "" );
+    : "");
 
   let TopTextComponent = TopTextComponentProp;
-  if ( !TopTextComponent ) {
+  if (!TopTextComponent) {
     TopTextComponent = small
       ? Body3
       : Body1;
   }
   let BottomTextComponent = BottomTextComponentProp;
-  if ( !BottomTextComponent ) {
+  if (!BottomTextComponent) {
     BottomTextComponent = small
       ? Body4
       : Body3;
   }
 
-  const setNumberOfLines = ( ) => {
-    if ( scientificNameFirst || ellipsizeCommonName || showOneNameOnly ) {
+  const setNumberOfLines = () => {
+    if (scientificNameFirst || ellipsizeCommonName || showOneNameOnly) {
       return 2;
     }
     return 3;
@@ -133,13 +133,13 @@ const DisplayTaxonName = ( {
           underline: underlineTopText,
         },
       )}
-      numberOfLines={setNumberOfLines( )}
+      numberOfLines={setNumberOfLines()}
       ellipsizeMode="tail"
       selectable={selectable}
       maxFontSizeMultiplier={1.5}
     >
       {
-        ( scientificNameFirst || !commonName || !prefersCommonNames )
+        (scientificNameFirst || !commonName || !prefersCommonNames)
           ? (
             <ScientificName
               scientificNamePieces={scientificNamePieces}
@@ -158,7 +158,7 @@ const DisplayTaxonName = ( {
           )
           : `${commonName}${
             !removeStyling
-              ? getSpaceChar( !scientificNameFirst )
+              ? getSpaceChar(!scientificNameFirst)
               : ""
           }`
       }
@@ -169,7 +169,7 @@ const DisplayTaxonName = ( {
 
   const bottomTextComponent = showBottomTextComponent && (
     <BottomTextComponent
-      className={classnames( textClassName, "mt-[3px]" )}
+      className={classnames(textClassName, "mt-[3px]")}
       selectable={selectable}
       numberOfLines={numberOfLinesBottomText}
     >
@@ -195,13 +195,13 @@ const DisplayTaxonName = ( {
   // styling using a View component results in two components being out of
   // alignment when passing components into <Trans />, like in DisagreementText,
   // so in these cases we want to return text only
-  if ( removeStyling ) {
+  if (removeStyling) {
     return (
       <Text testID={`display-taxon-name-no-styling.${taxon.id}`}>
         {topTextComponent}
         {bottomTextComponent && (
           <>
-            {getSpaceChar( !scientificNameFirst )}
+            {getSpaceChar(!scientificNameFirst)}
             (
             {bottomTextComponent}
             )
@@ -214,9 +214,9 @@ const DisplayTaxonName = ( {
   return (
     <View
       testID={`display-taxon-name.${taxon.id}`}
-      className={classnames( "flex", {
+      className={classnames("flex", {
         "flex-row items-end flex-wrap w-11/12": isHorizontal,
-      } )}
+      })}
     >
       {topTextComponent}
       {bottomTextComponent}

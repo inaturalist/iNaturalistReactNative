@@ -41,7 +41,7 @@ import LocationStatus from "./LocationStatus";
 
 const isTablet = DeviceInfo.isTablet();
 
-const logger = log.extend( "AICamera" );
+const logger = log.extend("AICamera");
 
 // const exampleTaxonResult = {
 //   id: 12704,
@@ -65,7 +65,7 @@ type Props = {
   requestLocationPermissions: () => void,
 };
 
-const AICamera = ( {
+const AICamera = ({
   camera,
   device,
   flipCamera,
@@ -77,14 +77,14 @@ const AICamera = ( {
   userLocation,
   hasLocationPermissions,
   requestLocationPermissions,
-}: Props ): Node => {
-  const navigation = useNavigation( );
-  const sentinelFileName = useStore( state => state.sentinelFileName );
-  const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
+}: Props): Node => {
+  const navigation = useNavigation();
+  const sentinelFileName = useStore(state => state.sentinelFileName);
+  const setAICameraSuggestion = useStore(state => state.setAICameraSuggestion);
 
   const hasFlash = device?.hasFlash;
-  const { isDebug } = useDebugMode( );
-  const { isDefaultMode } = useLayoutPrefs( );
+  const { isDebug } = useDebugMode();
+  const { isDefaultMode } = useLayoutPrefs();
   const {
     animatedProps,
     handleZoomButtonPress,
@@ -93,10 +93,10 @@ const AICamera = ( {
     showZoomButton,
     zoomTextValue,
     resetZoom,
-  } = useZoom( device );
+  } = useZoom(device);
   const {
     rotatableAnimatedStyle,
-  } = useRotation( );
+  } = useRotation();
   const {
     confidenceThreshold,
     fps,
@@ -110,65 +110,65 @@ const AICamera = ( {
     setFPS,
     setNumStoredResults,
     setCropRatio,
-  } = usePredictions( );
-  const [inactive, setInactive] = React.useState( false );
-  const [initialVolume, setInitialVolume] = useState( null );
-  const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
+  } = usePredictions();
+  const [inactive, setInactive] = React.useState(false);
+  const [initialVolume, setInitialVolume] = useState(null);
+  const [hasTakenPhoto, setHasTakenPhoto] = useState(false);
 
-  const [userDisabledLocation, setUserDisabledLocation] = useState( false );
+  const [userDisabledLocation, setUserDisabledLocation] = useState(false);
   const useLocation = hasLocationPermissions && !userDisabledLocation;
-  const [locationStatusVisible, setLocationStatusVisible] = useState( false );
+  const [locationStatusVisible, setLocationStatusVisible] = useState(false);
 
-  const [debugFormatIndex, setDebugFormatIndex] = useState( 0 );
-  const changeDebugFormat = ( ) => {
-    setDebugFormatIndex( prev => ( prev + 1 ) % device.formats.length );
+  const [debugFormatIndex, setDebugFormatIndex] = useState(0);
+  const changeDebugFormat = () => {
+    setDebugFormatIndex(prev => (prev + 1) % device.formats.length);
   };
   const debugFormat = isDebugMode()
     ? device.formats[debugFormatIndex]
     : undefined;
 
   const toggleLocation = () => {
-    if ( !useLocation && !hasLocationPermissions ) {
-      requestLocationPermissions( );
+    if (!useLocation && !hasLocationPermissions) {
+      requestLocationPermissions();
       return;
     }
-    setUserDisabledLocation( prev => !prev );
+    setUserDisabledLocation(prev => !prev);
     // Always show status when button is pressed
-    setLocationStatusVisible( true );
+    setLocationStatusVisible(true);
   };
 
-  const handleLocationStatusEnd = ( ) => {
-    setLocationStatusVisible( false );
+  const handleLocationStatusEnd = () => {
+    setLocationStatusVisible(false);
   };
 
   const { t } = useTranslation();
 
-  const { loadTime } = usePerformance( {
+  const { loadTime } = usePerformance({
     isLoading: camera?.current !== null,
-  } );
-  if ( isDebugMode( ) && loadTime ) {
-    logger.info( loadTime );
+  });
+  if (isDebugMode() && loadTime) {
+    logger.info(loadTime);
   }
 
-  const resetCameraOnFocus = useCallback( ( ) => {
-    setResult( null );
-    resetZoom( );
-  }, [resetZoom, setResult] );
+  const resetCameraOnFocus = useCallback(() => {
+    setResult(null);
+    resetZoom();
+  }, [resetZoom, setResult]);
 
   // only show predictions when rank is order or lower, like we do on Seek
-  const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
+  const showPrediction = (result && result?.taxon?.rank_level <= 40) || false;
 
-  const insets = useSafeAreaInsets( );
+  const insets = useSafeAreaInsets();
 
   const onFlipCamera = () => {
-    resetZoom( );
-    flipCamera( );
+    resetZoom();
+    flipCamera();
   };
 
-  const handleTakePhoto = useCallback( async ( ) => {
-    await logStage( sentinelFileName, "take_photo_start" );
-    setHasTakenPhoto( true );
-    logFirebaseEvent( "ai_camera_shutter_tap", { hasLocationPermissions } );
+  const handleTakePhoto = useCallback(async () => {
+    await logStage(sentinelFileName, "take_photo_start");
+    setHasTakenPhoto(true);
+    logFirebaseEvent("ai_camera_shutter_tap", { hasLocationPermissions });
     // this feels a little duplicative, but we're currently using aICameraSuggestion
     // to show the loading screen in Suggestions *without* setting an observation.taxon,
     // and we're using visionResult to populate ObsEdit *with* the taxon
@@ -178,15 +178,15 @@ const AICamera = ( {
     const visionResult = showPrediction
       ? result
       : null;
-    setAICameraSuggestion( visionResult );
+    setAICameraSuggestion(visionResult);
 
-    await takePhotoAndStoreUri( {
+    await takePhotoAndStoreUri({
       replaceExisting: true,
-      inactivateCallback: () => setInactive( true ),
+      inactivateCallback: () => setInactive(true),
       navigateImmediately: true,
       visionResult,
-    } );
-    setHasTakenPhoto( false );
+    });
+    setHasTakenPhoto(false);
   }, [
     showPrediction,
     setAICameraSuggestion,
@@ -194,44 +194,44 @@ const AICamera = ( {
     takePhotoAndStoreUri,
     result,
     hasLocationPermissions,
-  ] );
+  ]);
 
-  useEffect( () => {
-    if ( initialVolume === null ) {
+  useEffect(() => {
+    if (initialVolume === null) {
       // Fetch the current volume to set the initial state
       VolumeManager.getVolume()
-        .then( volume => {
-          setInitialVolume( volume.volume );
-        } );
+        .then(volume => {
+          setInitialVolume(volume.volume);
+        });
     }
 
-    const volumeListener = VolumeManager.addVolumeListener( async ( ) => {
-      if ( initialVolume !== null && !hasTakenPhoto ) {
+    const volumeListener = VolumeManager.addVolumeListener(async () => {
+      if (initialVolume !== null && !hasTakenPhoto) {
         // Hardware volume button pressed - take a photo
         await handleTakePhoto();
 
         // Revert the volume to its previous state
-        VolumeManager.setVolume( initialVolume );
+        VolumeManager.setVolume(initialVolume);
       }
-    } );
+    });
 
     // Suppress the native volume UI
-    VolumeManager.showNativeVolumeUI( { enabled: false } );
+    VolumeManager.showNativeVolumeUI({ enabled: false });
 
     return () => {
       volumeListener.remove();
-      VolumeManager.showNativeVolumeUI( { enabled: true } );
+      VolumeManager.showNativeVolumeUI({ enabled: true });
     };
-  }, [handleTakePhoto, hasTakenPhoto, initialVolume] );
+  }, [handleTakePhoto, hasTakenPhoto, initialVolume]);
 
-  const handleClose = async ( ) => {
-    await deleteSentinelFile( sentinelFileName );
-    navigation.navigate( "TabNavigator", {
+  const handleClose = async () => {
+    await deleteSentinelFile(sentinelFileName);
+    navigation.navigate("TabNavigator", {
       screen: "ObservationsTab",
       params: {
         screen: "ObsList",
       },
-    } );
+    });
   };
 
   return (
@@ -274,11 +274,11 @@ const AICamera = ( {
         className="w-full h-[219px]"
       >
         <View
-          className={classnames( "self-center", {
+          className={classnames("self-center", {
             "w-[493px]": isTablet,
             "w-[346px] top-8": !isTablet,
             "top-14": insets.top > 0,
-          } )}
+          })}
         >
           {showPrediction && result
             ? (
@@ -288,7 +288,7 @@ const AICamera = ( {
                 confidence={
                   isDefaultMode
                     ? null
-                    : convertScoreToConfidence( result?.combined_score )
+                    : convertScoreToConfidence(result?.combined_score)
                 }
                 unpressable
                 taxon={result?.taxon}
@@ -303,8 +303,8 @@ const AICamera = ( {
             : (
               <Body1 className="text-white self-center text-center mt-[22px]">
                 {modelLoaded
-                  ? t( "Point-the-camera-at-an-animal-plant-or-fungus" )
-                  : t( "Loading-iNaturalists-AI-Camera" )}
+                  ? t("Point-the-camera-at-an-animal-plant-or-fungus")
+                  : t("Loading-iNaturalists-AI-Camera")}
               </Body1>
             )}
           <LocationStatus
@@ -353,7 +353,7 @@ const AICamera = ( {
         zoomTextValue={zoomTextValue}
         useLocation={useLocation}
         toggleLocation={toggleLocation}
-        deleteSentinelFile={() => deleteSentinelFile( sentinelFileName )}
+        deleteSentinelFile={() => deleteSentinelFile(sentinelFileName)}
       />
     </>
   );

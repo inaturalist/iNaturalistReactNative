@@ -9,12 +9,12 @@ export const CIRCLE_OPTIONS_CLASSES = [
   "items-center",
   "justify-center",
   "rounded-full",
-].join( " " );
+].join(" ");
 
 export const CIRCLE_SIZE = "h-[40px] w-[40px]";
 
 interface Props {
-  onPress: ( _event: GestureResponderEvent ) => void;
+  onPress: (_event: GestureResponderEvent) => void;
   optionalClasses?: string;
   accessibilityHint?: string;
   accessibilityLabel: string;
@@ -22,16 +22,16 @@ interface Props {
   testID?: string;
 }
 
-const TransparentCircleButton = ( {
+const TransparentCircleButton = ({
   onPress,
   optionalClasses,
   accessibilityLabel,
   accessibilityHint,
   icon,
   testID,
-}: Props ) => (
+}: Props) => (
   <INatIconButton
-    className={classnames( CIRCLE_OPTIONS_CLASSES, optionalClasses, CIRCLE_SIZE )}
+    className={classnames(CIRCLE_OPTIONS_CLASSES, optionalClasses, CIRCLE_SIZE)}
     onPress={onPress}
     accessibilityLabel={accessibilityLabel}
     accessibilityHint={accessibilityHint}

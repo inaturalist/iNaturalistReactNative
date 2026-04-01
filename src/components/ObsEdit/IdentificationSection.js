@@ -26,63 +26,63 @@ type Props = {
   updateObservationKeys: Function
 }
 
-const IdentificationSection = ( {
+const IdentificationSection = ({
   currentObservation,
   resetScreen,
   setResetScreen,
   updateObservationKeys,
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  const navigation = useNavigation( );
-  const realm = useRealm( );
+}: Props): Node => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const realm = useRealm();
 
   const identTaxon = currentObservation?.taxon;
   const hasPhotos = currentObservation?.observationPhotos?.length > 0;
 
   const hasIdentification = identTaxon && identTaxon.rank_level !== 100;
 
-  const removeTaxon = useCallback( ( ) => {
-    updateObservationKeys( { taxon: undefined } );
-  }, [updateObservationKeys] );
+  const removeTaxon = useCallback(() => {
+    updateObservationKeys({ taxon: undefined });
+  }, [updateObservationKeys]);
 
-  const navToSuggestions = useCallback( ( ) => {
-    if ( hasPhotos ) {
-      navigation.push( "Suggestions", {
+  const navToSuggestions = useCallback(() => {
+    if (hasPhotos) {
+      navigation.push("Suggestions", {
         entryScreen: "ObsEdit",
         lastScreen: "ObsEdit",
         hideSkip: hasIdentification,
-      } );
+      });
     } else {
       // Go directly to taxon search in case there are no photos
-      navigation.navigate( "SuggestionsTaxonSearch", {
+      navigation.navigate("SuggestionsTaxonSearch", {
         entryScreen: "ObsEdit",
         lastScreen: "ObsEdit",
-      } );
+      });
     }
   }, [
     hasIdentification,
     hasPhotos,
     navigation,
-  ] );
+  ]);
 
-  const navToSuggestionsSearch = useCallback( ( ) => {
-    navigation.navigate( "SuggestionsTaxonSearch", {
+  const navToSuggestionsSearch = useCallback(() => {
+    navigation.navigate("SuggestionsTaxonSearch", {
       entryScreen: "ObsEdit",
       lastScreen: "ObsEdit",
-    } );
-  }, [navigation] );
+    });
+  }, [navigation]);
 
-  useEffect( ( ) => {
+  useEffect(() => {
     // by adding resetScreen as a key in renderIconicTaxonChooser,
     // we force React to rerender and reset the horizontal scroll position
     // when a user navigates between multiple observations
-    if ( resetScreen ) {
-      setResetScreen( false );
+    if (resetScreen) {
+      setResetScreen(false);
     }
-  }, [resetScreen, setResetScreen] );
+  }, [resetScreen, setResetScreen]);
 
-  const renderIconicTaxonChooser = ( ) => (
-    <View key={resetScreen?.toString( )}>
+  const renderIconicTaxonChooser = () => (
+    <View key={resetScreen?.toString()}>
       <IconicTaxonChooser
         before={(
           <View className="flex-row ml-6">
@@ -93,10 +93,10 @@ const IdentificationSection = ( {
                     ? "neutral"
                     : "focus"}
                   onPress={navToSuggestions}
-                  text={t( "IDENTIFY" )}
-                  className={classnames( "rounded-full py-1 mr-4 h-[36px]", {
+                  text={t("IDENTIFY")}
+                  className={classnames("rounded-full py-1 mr-4 h-[36px]", {
                     "border border-darkGray border-[2px]": identTaxon,
-                  } )}
+                  })}
                   testID="ObsEdit.IDWithAI"
                   icon={(
                     <INatIcon
@@ -107,14 +107,14 @@ const IdentificationSection = ( {
                         : colors.white}
                     />
                   )}
-                  accessibilityLabel={t( "View-suggestions" )}
+                  accessibilityLabel={t("View-suggestions")}
                 />
               )
               : null}
             <Button
               level="neutral"
               onPress={navToSuggestionsSearch}
-              text={t( "SEARCH" )}
+              text={t("SEARCH")}
               className="rounded-full py-1 h-[36px] border border-darkGray border-[2px]"
               testID="ObsEdit.Suggestions"
               icon={(
@@ -124,7 +124,7 @@ const IdentificationSection = ( {
                   color={colors.darkGray}
                 />
               )}
-              accessibilityLabel={t( "View-suggestions" )}
+              accessibilityLabel={t("View-suggestions")}
             />
           </View>
         )}
@@ -134,18 +134,18 @@ const IdentificationSection = ( {
             : []
         }
         onTaxonChosen={taxonName => {
-          const capitalizedTaxonName = capitalize( taxonName );
+          const capitalizedTaxonName = capitalize(taxonName);
           if (
             // user chose unknown
             taxonName === "unknown"
             // user tapped the selected iconic taxon to unselect
             || identTaxon?.name === capitalizedTaxonName
           ) {
-            updateObservationKeys( { taxon: undefined } );
+            updateObservationKeys({ taxon: undefined });
           } else {
-            const newTaxon = realm?.objects( "Taxon" )
-              .filtered( "name = $0", capitalizedTaxonName )[0];
-            updateObservationKeys( { taxon: newTaxon } );
+            const newTaxon = realm?.objects("Taxon")
+              .filtered("name = $0", capitalizedTaxonName)[0];
+            updateObservationKeys({ taxon: newTaxon });
           }
         }}
         withoutUnknown
@@ -156,7 +156,7 @@ const IdentificationSection = ( {
   return (
     <View className="mt-2">
       <View className="ml-6 flex-row">
-        <Heading4>{t( "IDENTIFICATION" )}</Heading4>
+        <Heading4>{t("IDENTIFICATION")}</Heading4>
         {hasIdentification && (
           <View className="ml-3">
             <INatIcon name="checkmark-circle" size={19} color={colors.inatGreen} />
@@ -166,7 +166,7 @@ const IdentificationSection = ( {
       {identTaxon && (
         <View className="mt-5 mx-6">
           <TaxonResult
-            accessibilityLabel={t( "Edits-this-observations-taxon" )}
+            accessibilityLabel={t("Edits-this-observations-taxon")}
             asListItem={false}
             fetchRemote={false}
             handleTaxonOrEditPress={navToSuggestions}
@@ -181,7 +181,7 @@ const IdentificationSection = ( {
         </View>
       )}
       <View className="mt-5">
-        {renderIconicTaxonChooser( )}
+        {renderIconicTaxonChooser()}
       </View>
     </View>
   );

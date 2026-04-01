@@ -12,16 +12,16 @@ type Props = {
   discardChanges: Function
 }
 
-const DiscardChangesSheet = ( {
+const DiscardChangesSheet = ({
   onPressClose,
   discardChanges,
-}: Props ): Node => (
+}: Props): Node => (
   <WarningSheet
     onPressClose={onPressClose}
     confirm={discardChanges}
-    headerText={t( "DISCARD-CHANGES" )}
-    text={t( "By-exiting-changes-not-saved" )}
-    buttonText={t( "DISCARD-CHANGES" )}
+    headerText={t("DISCARD-CHANGES")}
+    text={t("By-exiting-changes-not-saved")}
+    buttonText={t("DISCARD-CHANGES")}
   />
 );
 

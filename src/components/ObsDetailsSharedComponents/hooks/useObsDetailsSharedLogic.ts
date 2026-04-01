@@ -31,8 +31,8 @@ interface ActivityItem {
 const sortItems = (
   ids: ActivityItem[],
   comments: ActivityItem[],
-): ActivityItem[] => ids.concat( [...comments] ).sort(
-  ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ),
+): ActivityItem[] => ids.concat([...comments]).sort(
+  (a, b) => (new Date(a.created_at) - new Date(b.created_at)),
 );
 
 const SHOW_AGREE_SHEET = "SHOW_AGREE_SHEET";
@@ -72,10 +72,10 @@ const initialState: State = {
   showAgreeWithIdSheet: false,
 };
 
-const logger = log.extend( "useObsDetailsSharedLogic" );
+const logger = log.extend("useObsDetailsSharedLogic");
 
-const reducer = ( state: State, action: Action ): State => {
-  switch ( action.type ) {
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
     case SET_INITIAL_OBSERVATION:
       return {
         ...state,
@@ -118,7 +118,7 @@ const reducer = ( state: State, action: Action ): State => {
         showAddCommentSheet: action.showAddCommentSheet,
       };
     default:
-      logger.error( "Unknown action in useObsDetailsSharedLogic reducer: ", action );
+      logger.error("Unknown action in useObsDetailsSharedLogic reducer: ", action);
       return state;
   }
 };
@@ -128,14 +128,14 @@ interface UseObsDetailsSharedLogicParams {
   uuid: string;
   localObservation: RealmObservation | null;
   remoteObservation: RealmObservation | null;
-  markViewedLocally: ( ) => void;
-  markDeletedLocally: ( ) => void;
-  setRemoteObsWasDeleted: ( deleted: boolean ) => void;
+  markViewedLocally: () => void;
+  markDeletedLocally: () => void;
+  setRemoteObsWasDeleted: (deleted: boolean) => void;
   fetchRemoteObservationError: { status?: number } | null;
   currentUser: RealmUser | null;
   belongsToCurrentUser: boolean;
   isRefetching: boolean;
-  refetchRemoteObservation: ( ) => void;
+  refetchRemoteObservation: () => void;
 }
 
 interface UseObsDetailsSharedLogicReturn {
@@ -154,18 +154,18 @@ interface UseObsDetailsSharedLogicReturn {
   // Callbacks
   openAddCommentSheet: () => void;
   hideAddCommentSheet: () => void;
-  openAgreeWithIdSheet: ( taxon: RealmTaxon ) => void;
+  openAgreeWithIdSheet: (taxon: RealmTaxon) => void;
   closeAgreeWithIdSheet: () => void;
   navToSuggestions: () => void;
   invalidateQueryAndRefetch: () => void;
-  handleIdentificationMutationSuccess: ( data: ApiIdentification[] ) => void;
-  handleCommentMutationSuccess: ( data: ApiComment[] ) => void;
+  handleIdentificationMutationSuccess: (data: ApiIdentification[]) => void;
+  handleCommentMutationSuccess: (data: ApiComment[]) => void;
   confirmRemoteObsWasDeleted: () => void;
   loadActivityItem: () => void;
   refetchSubscriptions: () => void;
 }
 
-const useObsDetailsSharedLogic = ( {
+const useObsDetailsSharedLogic = ({
   observation,
   uuid,
   localObservation,
@@ -177,12 +177,12 @@ const useObsDetailsSharedLogic = ( {
   belongsToCurrentUser,
   isRefetching,
   refetchRemoteObservation,
-}: UseObsDetailsSharedLogicParams ): UseObsDetailsSharedLogicReturn => {
-  const setObservations = useStore( state => state.setObservations );
-  const navigation = useNavigation<NavigationProp<ParamListBase>>( );
-  const realm = useRealm( );
-  const [state, dispatch] = useReducer( reducer, initialState );
-  const queryClient = useQueryClient( );
+}: UseObsDetailsSharedLogicParams): UseObsDetailsSharedLogicReturn => {
+  const setObservations = useStore(state => state.setObservations);
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+  const realm = useRealm();
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const queryClient = useQueryClient();
 
   const {
     activityItems,
@@ -196,22 +196,22 @@ const useObsDetailsSharedLogic = ( {
   // If we tried to get a remote observation but it no longer exists, the user
   // can't do anything so we need to send them back and remove the local
   // copy of this observation
-  useEffect( ( ) => {
-    setRemoteObsWasDeleted( fetchRemoteObservationError?.status === 404 );
-  }, [fetchRemoteObservationError?.status, setRemoteObsWasDeleted] );
+  useEffect(() => {
+    setRemoteObsWasDeleted(fetchRemoteObservationError?.status === 404);
+  }, [fetchRemoteObservationError?.status, setRemoteObsWasDeleted]);
 
-  const confirmRemoteObsWasDeleted = useCallback( ( ) => {
-    if ( localObservation ) {
-      markDeletedLocally( );
+  const confirmRemoteObsWasDeleted = useCallback(() => {
+    if (localObservation) {
+      markDeletedLocally();
     }
-    if ( navigation.canGoBack( ) ) navigation.goBack( );
+    if (navigation.canGoBack()) navigation.goBack();
   }, [
     localObservation,
     markDeletedLocally,
     navigation,
-  ] );
+  ]);
 
-  const wasSynced = !!( localObservation && localObservation?.wasSynced() );
+  const wasSynced = !!(localObservation && localObservation?.wasSynced());
 
   const hasPhotos = observation?.observationPhotos?.length > 0;
 
@@ -219,114 +219,114 @@ const useObsDetailsSharedLogic = ( {
     [
       "fetchSubscriptions",
     ],
-    optsWithAuth => fetchSubscriptions( { uuid, fields: "user_id" }, optsWithAuth ),
+    optsWithAuth => fetchSubscriptions({ uuid, fields: "user_id" }, optsWithAuth),
     {
-      enabled: !!( currentUser ) && !belongsToCurrentUser,
+      enabled: !!(currentUser) && !belongsToCurrentUser,
     },
   );
 
-  const invalidateRemoteObservationFetch = useCallback( ( ) => {
-    if ( observation?.uuid ) {
-      queryClient.invalidateQueries( {
+  const invalidateRemoteObservationFetch = useCallback(() => {
+    if (observation?.uuid) {
+      queryClient.invalidateQueries({
         queryKey: [fetchRemoteObservationKey, observation.uuid],
-      } );
+      });
     }
-  }, [queryClient, observation?.uuid] );
+  }, [queryClient, observation?.uuid]);
 
   useFocusEffect(
     // this ensures activity items load after a user taps suggest id
     // and adds a remote id on the Suggestions screen
-    useCallback( ( ) => {
-      invalidateRemoteObservationFetch( );
-    }, [invalidateRemoteObservationFetch] ),
+    useCallback(() => {
+      invalidateRemoteObservationFetch();
+    }, [invalidateRemoteObservationFetch]),
   );
 
-  useEffect( ( ) => {
-    if ( !observationShown ) {
-      dispatch( {
+  useEffect(() => {
+    if (!observationShown) {
+      dispatch({
         type: SET_INITIAL_OBSERVATION,
         observationShown: observation,
-      } );
+      });
     }
-  }, [observation, observationShown] );
+  }, [observation, observationShown]);
 
-  useEffect( ( ) => {
+  useEffect(() => {
     // if observation does not belong to current user, show
     // new activity items after a refetch
-    if ( remoteObservation && !isRefetching ) {
-      dispatch( {
+    if (remoteObservation && !isRefetching) {
+      dispatch({
         type: ADD_ACTIVITY_ITEM,
-        observationShown: Observation.mapApiToRealm( remoteObservation ),
-      } );
+        observationShown: Observation.mapApiToRealm(remoteObservation),
+      });
     }
-  }, [remoteObservation, isRefetching] );
+  }, [remoteObservation, isRefetching]);
 
   const { refetch: refetchObservationUpdates } = useObservationsUpdates(
     !!currentUser && !!observation,
   );
 
-  const openAddCommentSheet = useCallback( ( ) => {
-    dispatch( {
+  const openAddCommentSheet = useCallback(() => {
+    dispatch({
       type: SET_ADD_COMMENT_SHEET,
       showAddCommentSheet: true,
-    } );
-  }, [] );
+    });
+  }, []);
 
-  const hideAddCommentSheet = useCallback( ( ) => dispatch( {
+  const hideAddCommentSheet = useCallback(() => dispatch({
     type: SET_ADD_COMMENT_SHEET,
     showAddCommentSheet: false,
-  } ), [] );
+  }), []);
 
-  const openAgreeWithIdSheet = useCallback( ( taxon: RealmTaxon ) => {
-    dispatch( {
+  const openAgreeWithIdSheet = useCallback((taxon: RealmTaxon) => {
+    dispatch({
       type: SHOW_AGREE_SHEET,
       agreeIdentification: { taxon },
-    } );
-  }, [] );
+    });
+  }, []);
 
-  const navToSuggestions = useCallback( ( ) => {
-    setObservations( [observation] );
-    if ( hasPhotos ) {
-      navigation.push( "Suggestions", {
+  const navToSuggestions = useCallback(() => {
+    setObservations([observation]);
+    if (hasPhotos) {
+      navigation.push("Suggestions", {
         entryScreen: "ObsDetails",
         lastScreen: "ObsDetails",
         hideSkip: true,
-      } );
+      });
     } else {
       // Go directly to taxon search in case there are no photos
-      navigation.navigate( "SuggestionsTaxonSearch", { lastScreen: "ObsDetails" } );
+      navigation.navigate("SuggestionsTaxonSearch", { lastScreen: "ObsDetails" });
     }
-  }, [hasPhotos, navigation, observation, setObservations] );
+  }, [hasPhotos, navigation, observation, setObservations]);
 
-  const invalidateQueryAndRefetch = useCallback( ( ) => {
-    invalidateRemoteObservationFetch( );
-    refetchRemoteObservation( );
-    refetchObservationUpdates( );
-  }, [invalidateRemoteObservationFetch, refetchObservationUpdates, refetchRemoteObservation] );
+  const invalidateQueryAndRefetch = useCallback(() => {
+    invalidateRemoteObservationFetch();
+    refetchRemoteObservation();
+    refetchObservationUpdates();
+  }, [invalidateRemoteObservationFetch, refetchObservationUpdates, refetchRemoteObservation]);
 
   const subscriptionResults = !belongsToCurrentUser
     ? subscriptions?.results
     : [];
 
-  const handleIdentificationMutationSuccess = useCallback( ( data: ApiIdentification[] ) => {
-    refetchRemoteObservation( );
-    if ( belongsToCurrentUser ) {
+  const handleIdentificationMutationSuccess = useCallback((data: ApiIdentification[]) => {
+    refetchRemoteObservation();
+    if (belongsToCurrentUser) {
       const createdIdent = data[0];
       // Try to find an existing taxon b/c otherwise realm will try to
       // create the taxon when updating the observation and error out
       let taxon;
-      if ( createdIdent.taxon?.id ) {
-        taxon = realm?.objectForPrimaryKey( "Taxon", createdIdent.taxon.id );
+      if (createdIdent.taxon?.id) {
+        taxon = realm?.objectForPrimaryKey("Taxon", createdIdent.taxon.id);
       }
       taxon = taxon || createdIdent.taxon;
-      safeRealmWrite( realm, ( ) => {
+      safeRealmWrite(realm, () => {
         createdIdent.user = currentUser;
-        if ( taxon ) createdIdent.taxon = taxon;
-        localObservation?.identifications?.push( createdIdent );
-      }, "setting local identification in ObsDetailsContainer" );
-      if ( uuid ) {
-        const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-        dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
+        if (taxon) createdIdent.taxon = taxon;
+        localObservation?.identifications?.push(createdIdent);
+      }, "setting local identification in ObsDetailsContainer");
+      if (uuid) {
+        const updatedLocalObservation = realm.objectForPrimaryKey("Observation", uuid);
+        dispatch({ type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation });
       }
     }
   }, [
@@ -336,19 +336,19 @@ const useObsDetailsSharedLogic = ( {
     realm,
     refetchRemoteObservation,
     uuid,
-  ] );
+  ]);
 
-  const handleCommentMutationSuccess = useCallback( ( data: ApiComment[] ) => {
-    refetchRemoteObservation( );
-    if ( belongsToCurrentUser ) {
-      safeRealmWrite( realm, ( ) => {
+  const handleCommentMutationSuccess = useCallback((data: ApiComment[]) => {
+    refetchRemoteObservation();
+    if (belongsToCurrentUser) {
+      safeRealmWrite(realm, () => {
         const localComments = localObservation?.comments;
         const newComment = data[0];
         newComment.user = currentUser;
-        localComments?.push( newComment );
-      }, "setting local comment in ObsDetailsContainer" );
-      const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-      dispatch( { type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation } );
+        localComments?.push(newComment);
+      }, "setting local comment in ObsDetailsContainer");
+      const updatedLocalObservation = realm.objectForPrimaryKey("Observation", uuid);
+      dispatch({ type: ADD_ACTIVITY_ITEM, observationShown: updatedLocalObservation });
     }
   }, [
     belongsToCurrentUser,
@@ -357,15 +357,15 @@ const useObsDetailsSharedLogic = ( {
     realm,
     refetchRemoteObservation,
     uuid,
-  ] );
+  ]);
 
-  const closeAgreeWithIdSheet = useCallback( ( ) => {
-    dispatch( { type: HIDE_AGREE_SHEET } );
-  }, [] );
+  const closeAgreeWithIdSheet = useCallback(() => {
+    dispatch({ type: HIDE_AGREE_SHEET });
+  }, []);
 
-  const loadActivityItem = useCallback( ( ) => {
-    dispatch( { type: LOADING_ACTIVITY_ITEM } );
-  }, [] );
+  const loadActivityItem = useCallback(() => {
+    dispatch({ type: LOADING_ACTIVITY_ITEM });
+  }, []);
 
   return {
     // State

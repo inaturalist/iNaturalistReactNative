@@ -4,11 +4,11 @@ import { ExploreProvider } from "providers/ExploreContext";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
-const mockCloseModal = jest.fn( );
-const mockUpdateTaxon = jest.fn( );
+const mockCloseModal = jest.fn();
+const mockUpdateTaxon = jest.fn();
 
-describe( "FilterModal", () => {
-  test( "should not have accessibility errors", async () => {
+describe("FilterModal", () => {
+  test("should not have accessibility errors", async () => {
     renderComponent(
       <ExploreProvider>
         <FilterModal
@@ -18,9 +18,9 @@ describe( "FilterModal", () => {
       </ExploreProvider>,
     );
 
-    const filterModal = await screen.findByTestId( "filter-modal" );
+    const filterModal = await screen.findByTestId("filter-modal");
     // TODO: this errors because RadioButton from react-native-paper is not accessible
-    console.log( "typeof filterModal :>> ", typeof filterModal );
+    console.log("typeof filterModal :>> ", typeof filterModal);
     // expect( filterModal ).toBeAccessible();
-  } );
-} );
+  });
+});

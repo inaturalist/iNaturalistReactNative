@@ -9,10 +9,10 @@ import { getShadow } from "styles/global";
 
 import NavButton from "./NavButton";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: -2,
   elevation: 20,
-} );
+});
 
 type Props = {
   tabs: Object[],
@@ -20,8 +20,8 @@ type Props = {
 
 /* eslint-disable react/jsx-props-no-spreading */
 
-const CustomTabBar = ( { tabs }: Props ): Node => {
-  const tabList = tabs.map( tab => <NavButton {...tab} key={tab.testID} /> );
+const CustomTabBar = ({ tabs }: Props): Node => {
+  const tabList = tabs.map(tab => <NavButton {...tab} key={tab.testID} />);
   tabList.splice(
     -2,
     0,
@@ -36,7 +36,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
     ),
   );
 
-  const insets = useSafeAreaInsets( );
+  const insets = useSafeAreaInsets();
 
   return (
     <View

@@ -3,16 +3,16 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 
 import { log } from "../../react-native-logs.config";
 
-const defaultLogger = log.extend( "logging.js" );
+const defaultLogger = log.extend("logging.js");
 
 // returns string representation of an object, intended for debugging
-function inspect( target ) {
-  return JSON.stringify( target );
+function inspect(target) {
+  return JSON.stringify(target);
 }
 
-function handleRetryDelay( failureCount, error ) {
+function handleRetryDelay(failureCount, error) {
   // Special handling for 429 errors - use exponential backoff
-  if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
+  if (error.status === 429 || (error.response && error.response.status === 429)) {
     const baseDelay = 1000;
     const exponentialDelay = baseDelay * 2 ** failureCount;
     const jitter = Math.random() * 100; // Add randomness
@@ -20,24 +20,24 @@ function handleRetryDelay( failureCount, error ) {
   }
 
   // Default React Query retry delay for other errors
-  return Math.min( 1000 * 2 ** failureCount, 30000 );
+  return Math.min(1000 * 2 ** failureCount, 30000);
 }
 
-function handleTooManyRequestsErrors( failureCount, error, options = {} ) {
-  if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
+function handleTooManyRequestsErrors(failureCount, error, options = {}) {
+  if (error.status === 429 || (error.response && error.response.status === 429)) {
     // Use progressive backoff for rate limit errors using handleRetryDelay;
     // wait longer between retries
     const shouldRetry = failureCount < 3;
 
     // Let the error handler know this was a rate limit error but don't throw to allow retry
-    handleError( error, {
+    handleError(error, {
       throw: false,
       onApiError: apiError => {
-        console.log( apiError, "API error in reactQueryRetry handleTooManyRequestsErrors" );
+        console.log(apiError, "API error in reactQueryRetry handleTooManyRequestsErrors");
       },
       failureCount,
       ...options,
-    } );
+    });
 
     return shouldRetry;
   }
@@ -47,22 +47,22 @@ function handleTooManyRequestsErrors( failureCount, error, options = {} ) {
 // Note that this should not be async. When you're using it with reactQuery,
 // returning a promise is like returning true, which means it retries
 // forever
-function reactQueryRetry( failureCount, error, options = {} ) {
-  const isOffline = error instanceof TypeError && error.message.match( "Network request failed" );
+function reactQueryRetry(failureCount, error, options = {}) {
+  const isOffline = error instanceof TypeError && error.message.match("Network request failed");
   const logger = options.logger || defaultLogger;
 
   // trying to get more context in Grafana for TooManyRequests errors
-  const rateLimitRetryDecision = handleTooManyRequestsErrors( failureCount, error, options );
-  if ( rateLimitRetryDecision !== null ) {
+  const rateLimitRetryDecision = handleTooManyRequestsErrors(failureCount, error, options);
+  if (rateLimitRetryDecision !== null) {
     return rateLimitRetryDecision;
   }
 
-  if ( typeof ( options.beforeRetry ) === "function" ) {
-    options.beforeRetry( failureCount, error );
+  if (typeof (options.beforeRetry) === "function") {
+    options.beforeRetry(failureCount, error);
   }
   logger.warn(
     `reactQueryRetry, error: ${error.message}, failureCount: ${failureCount}, options:`,
-    inspect( options?.queryKey ),
+    inspect(options?.queryKey),
   );
   let shouldRetry = failureCount < 2;
   if (
@@ -84,35 +84,35 @@ function reactQueryRetry( failureCount, error, options = {} ) {
     return shouldRetry;
   }
   // 404 means the record does not exist, so no need to retry
-  if ( error.status === 404 ) {
+  if (error.status === 404) {
     shouldRetry = false;
-    console.log( "reactQueryRetry, handling 404, not retrying" );
+    console.log("reactQueryRetry, handling 404, not retrying");
   }
-  handleError( error, {
+  handleError(error, {
     throw: false,
     onApiError: async apiError => {
-      if ( apiError.status === 401 || apiError.status === 403 ) {
+      if (apiError.status === 401 || apiError.status === 403) {
         // If we get a 401 or 403, call getJWT
         // which has a timestamp check if we need to refresh the token
-        logger.error( "JWT error detected in React Query retry:", JSON.stringify( {
+        logger.error("JWT error detected in React Query retry:", JSON.stringify({
           queryKey: options?.queryKey
-            ? inspect( options.queryKey )
+            ? inspect(options.queryKey)
             : "unknown",
           url: error?.response?.url,
           routeName: options?.routeName || error?.routeName,
           timestamp: new Date().toISOString(),
-        } ) );
+        }));
 
         try {
-          await getJWT( true ); // Force refresh token
-        } catch ( refreshError ) {
-          logger.error( "Error refreshing JWT during retry:", refreshError );
+          await getJWT(true); // Force refresh token
+        } catch (refreshError) {
+          logger.error("Error refreshing JWT during retry:", refreshError);
         }
       }
       // Consider handling 500+ errors differently. if you can detect them
       // before processing, you want to disable retry
     },
-  } );
+  });
   return shouldRetry;
 }
 

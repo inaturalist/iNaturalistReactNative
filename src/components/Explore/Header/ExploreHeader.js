@@ -37,7 +37,7 @@ type Props = {
   updateTaxon: Function
 }
 
-const Header = ( {
+const Header = ({
   count,
   exploreView,
   exploreViewIcon,
@@ -50,15 +50,15 @@ const Header = ( {
   requestLocationPermissions,
   updateLocation,
   updateTaxon,
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  const { state, numberOfFilters } = useExplore( );
+}: Props): Node => {
+  const { t } = useTranslation();
+  const { state, numberOfFilters } = useExplore();
   const { taxon } = state;
   const iconicTaxonNames = state.iconic_taxa || [];
-  const [showTaxonSearch, setShowTaxonSearch] = useState( false );
-  const [showLocationSearch, setShowLocationSearch] = useState( false );
+  const [showTaxonSearch, setShowTaxonSearch] = useState(false);
+  const [showLocationSearch, setShowLocationSearch] = useState(false);
 
-  const placeGuess = placeGuessText( state.placeMode, t, state.place_guess );
+  const placeGuess = placeGuessText(state.placeMode, t, state.place_guess);
 
   const surfaceStyle = {
     backgroundColor: colors.darkGray,
@@ -79,34 +79,34 @@ const Header = ( {
               />
             ) }
             <View className="flex-1">
-              {( taxon || iconicTaxonNames.indexOf( "unknown" ) >= 0 )
+              {(taxon || iconicTaxonNames.indexOf("unknown") >= 0)
                 ? (
                   <DisplayTaxon
-                    accessibilityLabel={t( "Change-taxon-filter" )}
+                    accessibilityLabel={t("Change-taxon-filter")}
                     taxon={taxon || "unknown"}
                     showInfoButton={false}
                     showCheckmark={false}
-                    handlePress={() => setShowTaxonSearch( true )}
+                    handlePress={() => setShowTaxonSearch(true)}
                   />
                 )
                 : (
                   <Pressable
                     accessibilityRole="button"
                     className="flex-row items-center"
-                    onPress={() => setShowTaxonSearch( true )}
+                    onPress={() => setShowTaxonSearch(true)}
                   >
                     <INatIcon name="label-outline" size={15} />
                     <Body3
                       maxFontSizeMultiplier={1.5}
                       className="ml-3"
                     >
-                      {t( "All-organisms" )}
+                      {t("All-organisms")}
                     </Body3>
                   </Pressable>
                 )}
               <Pressable
                 accessibilityRole="button"
-                onPress={( ) => setShowLocationSearch( true )}
+                onPress={() => setShowLocationSearch(true)}
                 className="flex-row items-center pt-3"
               >
                 <INatIcon name="location" size={15} />
@@ -125,8 +125,8 @@ const Header = ( {
                 "rounded-md",
               )}
               onPress={() => openFiltersModal()}
-              accessibilityLabel={t( "Filters" )}
-              accessibilityHint={t( "Navigates-to-explore" )}
+              accessibilityLabel={t("Filters")}
+              accessibilityHint={t("Navigates-to-explore")}
             />
             {numberOfFilters !== 0 && (
               <View className="absolute top-[-10] right-[-10]">
@@ -145,11 +145,11 @@ const Header = ( {
       </Surface>
       <ExploreTaxonSearchModal
         showModal={showTaxonSearch}
-        closeModal={() => { setShowTaxonSearch( false ); }}
+        closeModal={() => { setShowTaxonSearch(false); }}
         updateTaxon={updateTaxon}
       />
       <ExploreLocationSearchModal
-        closeModal={() => { setShowLocationSearch( false ); }}
+        closeModal={() => { setShowLocationSearch(false); }}
         hasPermissions={hasLocationPermissions}
         renderPermissionsGate={renderLocationPermissionsGate}
         requestPermissions={requestLocationPermissions}

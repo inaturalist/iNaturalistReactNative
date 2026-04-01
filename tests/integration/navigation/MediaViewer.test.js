@@ -15,95 +15,95 @@ import { signIn, signOut } from "tests/helpers/user";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
-jest.unmock( "@react-navigation/native" );
+jest.unmock("@react-navigation/native");
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
   mockRealmIdentifier,
 );
-jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
-jest.mock( "providers/contexts", ( ) => {
-  const originalModule = jest.requireActual( "providers/contexts" );
+jest.mock("realmModels/index", () => mockRealmModelsIndex);
+jest.mock("providers/contexts", () => {
+  const originalModule = jest.requireActual("providers/contexts");
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      useRealm: () => global.mockRealms[mockRealmIdentifier],
+      useQuery: () => [],
     },
   };
-} );
-beforeAll( uniqueRealmBeforeAll );
-afterAll( uniqueRealmAfterAll );
+});
+beforeAll(uniqueRealmBeforeAll);
+afterAll(uniqueRealmAfterAll);
 // /UNIQUE REALM SETUP
 
-const mockUser = factory( "LocalUser" );
+const mockUser = factory("LocalUser");
 
-jest.mock( "sharedHooks/useSuggestions/useOnlineSuggestions", ( ) => jest.fn( () => ( {
+jest.mock("sharedHooks/useSuggestions/useOnlineSuggestions", () => jest.fn(() => ({
   dataUpdatedAt: 1764627659, // arbitrary epoch timestamp, 1/1/2000
   error: null,
   onlineSuggestions: {
     results: [],
   },
-} ) ) );
+})));
 
-beforeEach( async () => {
-  setStoreStateLayout( {
+beforeEach(async () => {
+  setStoreStateLayout({
     isDefaultMode: false,
-  } );
-} );
+  });
+});
 
-describe( "MediaViewer navigation", ( ) => {
-  const actor = userEvent.setup( );
+describe("MediaViewer navigation", () => {
+  const actor = userEvent.setup();
 
-  beforeAll( async () => {
-    jest.useFakeTimers( );
-  } );
+  beforeAll(async () => {
+    jest.useFakeTimers();
+  });
 
-  beforeEach( async ( ) => {
-    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-  } );
+  beforeEach(async () => {
+    await signIn(mockUser, { realm: global.mockRealms[__filename] });
+  });
 
-  afterEach( ( ) => {
-    signOut( );
-  } );
+  afterEach(() => {
+    signOut();
+  });
 
-  describe( "from ObsDetail", ( ) => {
-    const observation = factory( "RemoteObservation", {
+  describe("from ObsDetail", () => {
+    const observation = factory("RemoteObservation", {
       observation_photos: [
-        factory( "RemoteObservationPhoto" ),
-        factory( "RemoteObservationPhoto" ),
+        factory("RemoteObservationPhoto"),
+        factory("RemoteObservationPhoto"),
       ],
-    } );
+    });
     const observations = [observation];
-    useStore.setState( { observations } );
+    useStore.setState({ observations });
 
-    async function navigateToObsDetail( ) {
-      await renderAppWithObservations( observations, __filename );
+    async function navigateToObsDetail() {
+      await renderAppWithObservations(observations, __filename);
       const observationGridItem = await screen.findByTestId(
         `MyObservations.obsGridItem.${observation.uuid}`,
       );
-      await actor.press( observationGridItem );
-      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
+      await actor.press(observationGridItem);
+      expect(await screen.findByTestId(`ObsDetails.${observation.uuid}`)).toBeVisible();
     }
 
-    it( "should show the first photo when tapped", async ( ) => {
-      await navigateToObsDetail( );
-      const photos = await screen.findAllByTestId( "ObsMedia.photo" );
-      expect( photos[0] ).toBeVisible( );
-      await act( async ( ) => actor.press( photos[0] ) );
+    it("should show the first photo when tapped", async () => {
+      await navigateToObsDetail();
+      const photos = await screen.findAllByTestId("ObsMedia.photo");
+      expect(photos[0]).toBeVisible();
+      await act(async () => actor.press(photos[0]));
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${observation.observation_photos[0].photo.url}`,
         ),
-      ).toBeVisible( );
-    } );
+      ).toBeVisible();
+    });
 
     // Not sure why this was working. Both photos might technically
     // be "visible" even if one isn't on screen
-    it.todo( "should not show the first photo when second tapped" );
+    it.todo("should not show the first photo when second tapped");
     // it( "should not show the first photo when second tapped", async ( ) => {
     //   await navigateToObsDetail( );
     //   const photos = await screen.findAllByTestId( "ObsMedia.photo" );
@@ -118,154 +118,154 @@ describe( "MediaViewer navigation", ( ) => {
     //   ).not.toBeVisible( );
     // } );
 
-    it( "should not show delete button", async ( ) => {
-      await navigateToObsDetail( );
-      const photos = await screen.findAllByTestId( "ObsMedia.photo" );
-      expect( photos[0] ).toBeVisible( );
-      await act( async ( ) => actor.press( photos[0] ) );
+    it("should not show delete button", async () => {
+      await navigateToObsDetail();
+      const photos = await screen.findAllByTestId("ObsMedia.photo");
+      expect(photos[0]).toBeVisible();
+      await act(async () => actor.press(photos[0]));
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${observation.observation_photos[0].photo.url}`,
         ),
-      ).toBeVisible( );
-      expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
-    } );
-  } );
+      ).toBeVisible();
+      expect(screen.queryByLabelText("Delete photo")).toBeFalsy();
+    });
+  });
 
-  describe( "from TaxonDetail", ( ) => {
+  describe("from TaxonDetail", () => {
     const taxonPhotos = [
-      factory( "RemoteTaxonPhoto" ),
-      factory( "RemoteTaxonPhoto" ),
+      factory("RemoteTaxonPhoto"),
+      factory("RemoteTaxonPhoto"),
     ];
-    const taxon = factory( "RemoteTaxon", {
+    const taxon = factory("RemoteTaxon", {
       // inatjs attribute
       taxonPhotos,
-    } );
-    const observation = factory( "RemoteObservation", { taxon } );
+    });
+    const observation = factory("RemoteObservation", { taxon });
     const observations = [observation];
-    useStore.setState( { observations } );
+    useStore.setState({ observations });
 
-    beforeEach( ( ) => {
-      inatjs.taxa.fetch.mockResolvedValue( makeResponse( [taxon] ) );
-    } );
+    beforeEach(() => {
+      inatjs.taxa.fetch.mockResolvedValue(makeResponse([taxon]));
+    });
 
-    afterEach( ( ) => {
-      inatjs.taxa.fetch.mockReset( );
-    } );
+    afterEach(() => {
+      inatjs.taxa.fetch.mockReset();
+    });
 
-    async function navigateToTaxonDetail( ) {
-      await renderAppWithObservations( observations, __filename );
+    async function navigateToTaxonDetail() {
+      await renderAppWithObservations(observations, __filename);
       const observationGridItem = await screen.findByTestId(
         `MyObservations.obsGridItem.${observation.uuid}`,
       );
-      await actor.press( observationGridItem );
-      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
-      const displayedTaxon = await screen.findByText( taxon.name );
-      await act( async ( ) => actor.press( displayedTaxon ) );
-      expect( await screen.findByTestId( `TaxonDetails.${taxon.id}` ) ).toBeVisible( );
+      await actor.press(observationGridItem);
+      expect(await screen.findByTestId(`ObsDetails.${observation.uuid}`)).toBeVisible();
+      const displayedTaxon = await screen.findByText(taxon.name);
+      await act(async () => actor.press(displayedTaxon));
+      expect(await screen.findByTestId(`TaxonDetails.${taxon.id}`)).toBeVisible();
     }
 
-    it( "should show the first photo when tapped", async ( ) => {
-      await navigateToTaxonDetail( );
+    it("should show the first photo when tapped", async () => {
+      await navigateToTaxonDetail();
       const photoId = taxon.taxonPhotos[0].photo.id;
-      const photo = await screen.findByTestId( `TaxonDetails.photo.${photoId}` );
-      expect( photo ).toBeVisible( );
-      await act( async ( ) => actor.press( photo ) );
+      const photo = await screen.findByTestId(`TaxonDetails.photo.${photoId}`);
+      expect(photo).toBeVisible();
+      await act(async () => actor.press(photo));
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`,
         ),
-      ).toBeVisible( );
-    } );
+      ).toBeVisible();
+    });
 
-    it( "should not show delete button", async ( ) => {
-      await navigateToTaxonDetail( );
+    it("should not show delete button", async () => {
+      await navigateToTaxonDetail();
       const photoId = taxon.taxonPhotos[0].photo.id;
-      const photo = await screen.findByTestId( `TaxonDetails.photo.${photoId}` );
-      expect( photo ).toBeVisible( );
-      await act( async ( ) => actor.press( photo ) );
+      const photo = await screen.findByTestId(`TaxonDetails.photo.${photoId}`);
+      expect(photo).toBeVisible();
+      await act(async () => actor.press(photo));
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${taxon.taxonPhotos[0].photo.url}`,
         ),
-      ).toBeVisible( );
-      expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy( );
-    } );
-  } );
+      ).toBeVisible();
+      expect(screen.queryByLabelText("Delete photo")).toBeFalsy();
+    });
+  });
 
-  describe( "from Suggestions", ( ) => {
-    const observation = factory( "RemoteObservation", {
+  describe("from Suggestions", () => {
+    const observation = factory("RemoteObservation", {
       observation_photos: [
-        factory( "RemoteObservationPhoto" ),
-        factory( "RemoteObservationPhoto" ),
+        factory("RemoteObservationPhoto"),
+        factory("RemoteObservationPhoto"),
       ],
-    } );
+    });
     const observations = [observation];
     const defaultSelectedPhoto = observation.observation_photos[0].photo.url;
     const defaultUnselectedPhoto = observation.observation_photos[1].photo.url;
-    useStore.setState( { observations } );
+    useStore.setState({ observations });
 
-    async function navigateToSuggestions( ) {
-      await renderAppWithObservations( observations, __filename );
+    async function navigateToSuggestions() {
+      await renderAppWithObservations(observations, __filename);
       const observationGridItem = await screen.findByTestId(
         `MyObservations.obsGridItem.${observation.uuid}`,
       );
-      await actor.press( observationGridItem );
-      expect( await screen.findByTestId( `ObsDetails.${observation.uuid}` ) ).toBeVisible( );
+      await actor.press(observationGridItem);
+      expect(await screen.findByTestId(`ObsDetails.${observation.uuid}`)).toBeVisible();
       const suggestButton = await screen.findByTestId(
         "ObsDetail.cvSuggestionsButton",
       );
-      await act( async () => actor.press( suggestButton ) );
+      await act(async () => actor.press(suggestButton));
       const firstPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${defaultSelectedPhoto}`,
       );
-      expect( firstPhoto ).toBeVisible();
+      expect(firstPhoto).toBeVisible();
       const secondPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${defaultUnselectedPhoto}`,
       );
-      expect( secondPhoto ).toBeVisible();
+      expect(secondPhoto).toBeVisible();
     }
 
-    it( "should show the selected photo when tapped", async () => {
-      await navigateToSuggestions( );
+    it("should show the selected photo when tapped", async () => {
+      await navigateToSuggestions();
       const firstPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${defaultSelectedPhoto}`,
       );
-      expect( firstPhoto ).toBeVisible();
-      await act( async () => actor.press( firstPhoto ) );
+      expect(firstPhoto).toBeVisible();
+      await act(async () => actor.press(firstPhoto));
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${defaultSelectedPhoto}`,
         ),
       ).toBeVisible();
-    } );
+    });
 
-    it( "should not show the currently not selected photo when tapped", async () => {
-      await navigateToSuggestions( );
+    it("should not show the currently not selected photo when tapped", async () => {
+      await navigateToSuggestions();
       const secondPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${defaultUnselectedPhoto}`,
       );
-      expect( secondPhoto ).toBeVisible();
-      await act( async () => actor.press( secondPhoto ) );
+      expect(secondPhoto).toBeVisible();
+      await act(async () => actor.press(secondPhoto));
       expect(
         screen.queryByTestId(
           `CustomImageZoom.${defaultUnselectedPhoto}`,
         ),
       ).toBeFalsy();
-    } );
+    });
 
-    it( "should not show delete button", async () => {
+    it("should not show delete button", async () => {
       await navigateToSuggestions();
       const firstPhoto = await screen.findByTestId(
         `ObsPhotoSelectionList.${defaultSelectedPhoto}`,
       );
-      await act( async () => actor.press( firstPhoto ) );
+      await act(async () => actor.press(firstPhoto));
       expect(
         await screen.findByTestId(
           `CustomImageZoom.${defaultSelectedPhoto}`,
         ),
       ).toBeVisible();
-      expect( screen.queryByLabelText( "Delete photo" ) ).toBeFalsy();
-    } );
-  } );
-} );
+      expect(screen.queryByLabelText("Delete photo")).toBeFalsy();
+    });
+  });
+});

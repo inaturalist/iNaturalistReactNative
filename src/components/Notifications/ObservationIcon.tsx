@@ -11,12 +11,12 @@ interface Props {
   observation?: ApiObservation;
 }
 
-const ObservationIcon = ( {
+const ObservationIcon = ({
   observation,
-}: Props ) => {
+}: Props) => {
   const photoUri = observation?.observation_photos?.[0]?.photo?.url;
-  const hasSound = ( observation?.observation_sounds?.length || 0 ) > 0;
-  if ( !photoUri && !hasSound ) {
+  const hasSound = (observation?.observation_sounds?.length || 0) > 0;
+  if (!photoUri && !hasSound) {
     return (
       <View
         className={classnames(
@@ -32,13 +32,13 @@ const ObservationIcon = ( {
         <INatIcon
           name="noevidence"
           size={24}
-          color={String( colors?.darkGray )}
+          color={String(colors?.darkGray)}
         />
       </View>
     );
   }
 
-  if ( !photoUri && hasSound ) {
+  if (!photoUri && hasSound) {
     return (
       <View
         className={classnames(
@@ -54,7 +54,7 @@ const ObservationIcon = ( {
         <INatIcon
           name="sound"
           size={24}
-          color={String( colors?.darkGray )}
+          color={String(colors?.darkGray)}
         />
       </View>
     );

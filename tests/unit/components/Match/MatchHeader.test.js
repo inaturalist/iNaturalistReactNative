@@ -4,70 +4,70 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-describe( "MatchHeader", () => {
-  it( "does not render content when topSuggestion is not provided", () => {
-    renderComponent( <MatchHeader /> );
+describe("MatchHeader", () => {
+  it("does not render content when topSuggestion is not provided", () => {
+    renderComponent(<MatchHeader />);
 
-    expect( screen.queryByText( /observed/i ) ).toBeFalsy();
-    expect( screen.queryByText( /Confidence/i ) ).toBeFalsy();
-  } );
+    expect(screen.queryByText(/observed/i)).toBeFalsy();
+    expect(screen.queryByText(/Confidence/i)).toBeFalsy();
+  });
 
-  it( "displays high confidence message for species", () => {
+  it("displays high confidence message for species", () => {
     const topSuggestion = {
       combined_score: 95,
-      taxon: factory( "LocalTaxon", { rank_level: 10 } ),
+      taxon: factory("LocalTaxon", { rank_level: 10 }),
     };
 
-    renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
+    renderComponent(<MatchHeader topSuggestion={topSuggestion} />);
 
-    expect( screen.getByText( "You observed this species" ) ).toBeVisible();
-  } );
+    expect(screen.getByText("You observed this species")).toBeVisible();
+  });
 
-  it( "displays high confidence message for taxa above species", () => {
+  it("displays high confidence message for taxa above species", () => {
     const topSuggestion = {
       combined_score: 95,
-      taxon: factory( "LocalTaxon", { rank_level: 20 } ),
+      taxon: factory("LocalTaxon", { rank_level: 20 }),
     };
 
-    renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
+    renderComponent(<MatchHeader topSuggestion={topSuggestion} />);
 
-    expect( screen.getByText( "You observed a species in this group" ) ).toBeVisible();
-    expect( screen.getByText( "95%" ) ).toBeVisible();
-    expect( screen.getByText( "Confidence" ) ).toBeVisible();
-  } );
+    expect(screen.getByText("You observed a species in this group")).toBeVisible();
+    expect(screen.getByText("95%")).toBeVisible();
+    expect(screen.getByText("Confidence")).toBeVisible();
+  });
 
-  it( "displays likely confidence message for species", () => {
+  it("displays likely confidence message for species", () => {
     const topSuggestion = {
       combined_score: 75,
-      taxon: factory( "LocalTaxon", { rank_level: 10 } ),
+      taxon: factory("LocalTaxon", { rank_level: 10 }),
     };
 
-    renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
+    renderComponent(<MatchHeader topSuggestion={topSuggestion} />);
 
-    expect( screen.getByText( "You likely observed this species" ) ).toBeVisible();
-  } );
+    expect(screen.getByText("You likely observed this species")).toBeVisible();
+  });
 
-  it( "displays may have observed message", () => {
+  it("displays may have observed message", () => {
     const topSuggestion = {
       combined_score: 30,
-      taxon: factory( "LocalTaxon", { rank_level: 10 } ),
+      taxon: factory("LocalTaxon", { rank_level: 10 }),
     };
 
-    renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
+    renderComponent(<MatchHeader topSuggestion={topSuggestion} />);
 
-    expect( screen.getByText( "You may have observed this species" ) ).toBeVisible();
-  } );
+    expect(screen.getByText("You may have observed this species")).toBeVisible();
+  });
 
-  it( "hides observation status when hideObservationStatus is true", () => {
+  it("hides observation status when hideObservationStatus is true", () => {
     const topSuggestion = {
       combined_score: 87.5,
-      taxon: factory( "LocalTaxon", { rank_level: 10 } ),
+      taxon: factory("LocalTaxon", { rank_level: 10 }),
     };
 
-    renderComponent( <MatchHeader topSuggestion={topSuggestion} hideObservationStatus /> );
+    renderComponent(<MatchHeader topSuggestion={topSuggestion} hideObservationStatus />);
 
-    expect( screen.queryByText( "You observed this species" ) ).toBeFalsy();
-    expect( screen.queryByText( "87.5%" ) ).toBeFalsy();
-    expect( screen.queryByText( "Confidence" ) ).toBeFalsy();
-  } );
-} );
+    expect(screen.queryByText("You observed this species")).toBeFalsy();
+    expect(screen.queryByText("87.5%")).toBeFalsy();
+    expect(screen.queryByText("Confidence")).toBeFalsy();
+  });
+});

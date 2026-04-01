@@ -8,24 +8,24 @@ import { isDebugMode } from "sharedHooks/useDebugMode";
 import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
 import useWorkQueue from "./hooks/useWorkQueue";
 
-const logger = log.extend( "NetworkService" );
+const logger = log.extend("NetworkService");
 
-const NetworkService = ( ) => {
-  const { loadTime } = usePerformance( {
+const NetworkService = () => {
+  const { loadTime } = usePerformance({
     screenName: "NetworkService",
     isLoading: false,
-  } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
+  });
+  if (isDebugMode()) {
+    logger.info(loadTime);
   }
 
-  useObservationUpdatesWhenFocused( );
+  useObservationUpdatesWhenFocused();
 
-  useIconicTaxa( { reload: true } );
+  useIconicTaxa({ reload: true });
   // This only runs when App updates... which is rarely. It works for Settings
   // b/c it generally updates currentUser
-  useWorkQueue( );
-  useTaxonCommonNames( );
+  useWorkQueue();
+  useTaxonCommonNames();
 
   return null;
 };

@@ -26,51 +26,51 @@ const MOCK_READ_EXIF_RESPONSE_OTHER_TIME_ZONE = {
   OffsetTimeOriginal: "+01:00",
 };
 
-describe( "readExifFromMultiplePhotos", ( ) => {
-  beforeEach( ( ) => Exify.read.mockReset( ) );
+describe("readExifFromMultiplePhotos", () => {
+  beforeEach(() => Exify.read.mockReset());
 
-  it( "should return an object if EXIF fails to parse for one photo", async ( ) => {
-    Exify.read.mockRejectedValueOnce( new Error( "failed to catch test error" ) );
-    const unified = await readExifFromMultiplePhotos( [faker.image.url()] );
-    expect( unified ).toEqual( {} );
-  } );
+  it("should return an object if EXIF fails to parse for one photo", async () => {
+    Exify.read.mockRejectedValueOnce(new Error("failed to catch test error"));
+    const unified = await readExifFromMultiplePhotos([faker.image.url()]);
+    expect(unified).toEqual({});
+  });
 
-  it( "should merge coords/accuracy/date from one successful EXIF read", async ( ) => {
-    Exify.read.mockResolvedValueOnce( MOCK_READ_EXIF_RESPONSE );
-    const unified = await readExifFromMultiplePhotos( [faker.image.url()] );
+  it("should merge coords/accuracy/date from one successful EXIF read", async () => {
+    Exify.read.mockResolvedValueOnce(MOCK_READ_EXIF_RESPONSE);
+    const unified = await readExifFromMultiplePhotos([faker.image.url()]);
 
-    expect( unified.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
-    expect( unified.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
-    expect( unified.positional_accuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );
-    expect( unified.observed_on_string ).toEqual( EXPECTED_OBSERVED_ON_STRING );
-  } );
+    expect(unified.latitude).toEqual(EXPECTED_EXIF_LATITUDE);
+    expect(unified.longitude).toEqual(EXPECTED_EXIF_LONGITUDE);
+    expect(unified.positional_accuracy).toEqual(EXPECTED_EXIF_POSITIONAL_ACCURACY);
+    expect(unified.observed_on_string).toEqual(EXPECTED_OBSERVED_ON_STRING);
+  });
 
-  it( "should normalize bare filesystem paths for Exify (Android)", async ( ) => {
+  it("should normalize bare filesystem paths for Exify (Android)", async () => {
     const barePath = "/data/user/0/org.inaturalist.iNaturalistMobile/files/galleryPhotos/test.jpg";
     const expectedExifyUri = `file://${barePath}`;
 
-    Exify.read.mockImplementation( async uri => {
-      expect( uri ).toEqual( expectedExifyUri );
+    Exify.read.mockImplementation(async uri => {
+      expect(uri).toEqual(expectedExifyUri);
       return MOCK_READ_EXIF_RESPONSE;
-    } );
+    });
 
-    const unified = await readExifFromMultiplePhotos( [barePath] );
-    expect( unified.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
-    expect( unified.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
-  } );
+    const unified = await readExifFromMultiplePhotos([barePath]);
+    expect(unified.latitude).toEqual(EXPECTED_EXIF_LATITUDE);
+    expect(unified.longitude).toEqual(EXPECTED_EXIF_LONGITUDE);
+  });
 
-  it( "should handle EXIF datetime with a different timezone offset", async ( ) => {
+  it("should handle EXIF datetime with a different timezone offset", async () => {
     Exify.read
-      .mockRejectedValueOnce( new Error( "failed to catch test error" ) )
-      .mockResolvedValueOnce( MOCK_READ_EXIF_RESPONSE_OTHER_TIME_ZONE );
-    const unified = await readExifFromMultiplePhotos( [
+      .mockRejectedValueOnce(new Error("failed to catch test error"))
+      .mockResolvedValueOnce(MOCK_READ_EXIF_RESPONSE_OTHER_TIME_ZONE);
+    const unified = await readExifFromMultiplePhotos([
       faker.image.url(),
       faker.image.url(),
-    ] );
+    ]);
 
-    expect( unified.observed_on_string ).toEqual( EXPECTED_OBSERVED_ON_STRING );
-    expect( unified.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
-    expect( unified.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
-    expect( unified.positional_accuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );
-  } );
-} );
+    expect(unified.observed_on_string).toEqual(EXPECTED_OBSERVED_ON_STRING);
+    expect(unified.latitude).toEqual(EXPECTED_EXIF_LATITUDE);
+    expect(unified.longitude).toEqual(EXPECTED_EXIF_LONGITUDE);
+    expect(unified.positional_accuracy).toEqual(EXPECTED_EXIF_POSITIONAL_ACCURACY);
+  });
+});

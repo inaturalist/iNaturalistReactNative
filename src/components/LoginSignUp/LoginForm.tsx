@@ -31,66 +31,66 @@ interface Props {
   scrollViewRef?: React.Ref;
 }
 
-const LoginForm = ( {
+const LoginForm = ({
   scrollViewRef,
-}: Props ) => {
-  const navigation = useNavigation( );
+}: Props) => {
+  const navigation = useNavigation();
   const { params } = useRoute<LoginStackScreenProps<"Login">["route"]>();
   const emailConfirmed = params?.emailConfirmed;
   // For debug reasons, we can send the user here to log in again, but we must ensure
   // that only the currently logged in user can log in again. And no other user account
   // can log in with the debug flow.
-  const currentUser = useCurrentUser( );
+  const currentUser = useCurrentUser();
   const loginAgain = !!currentUser && !!currentUser?.login;
-  const realm = useRealm( );
-  const { isDefaultMode, setLoggedInWhileInDefaultMode } = useLayoutPrefs( );
-  const firstInputFieldRef = useRef( null );
-  const emailRef = useRef<TextInput>( null );
-  const passwordRef = useRef<TextInput>( null );
-  const [email, setEmail] = useState( "" );
-  const [password, setPassword] = useState( "" );
-  const [error, setError] = useState<string | null>( null );
-  const [loading, setLoading] = useState( false );
-  const [isPasswordVisible, setIsPasswordVisible] = useState( false );
-  const { keyboardShown } = useKeyboardInfo( );
+  const realm = useRealm();
+  const { isDefaultMode, setLoggedInWhileInDefaultMode } = useLayoutPrefs();
+  const firstInputFieldRef = useRef(null);
+  const emailRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const { keyboardShown } = useKeyboardInfo();
 
   const blurFields = () => {
-    if ( emailRef.current ) {
+    if (emailRef.current) {
       emailRef.current.blur();
     }
-    if ( passwordRef.current ) {
+    if (passwordRef.current) {
       passwordRef.current.blur();
     }
   };
 
-  useEffect( () => {
-    const unsubscribeBlur = navigation.addListener( "blur", blurFields );
+  useEffect(() => {
+    const unsubscribeBlur = navigation.addListener("blur", blurFields);
 
     return unsubscribeBlur;
-  }, [navigation] );
+  }, [navigation]);
 
-  useEffect( () => {
-    const unsubscrubeTransition = navigation.addListener( "transitionEnd", blurFields );
+  useEffect(() => {
+    const unsubscrubeTransition = navigation.addListener("transitionEnd", blurFields);
 
     return unsubscrubeTransition;
-  }, [navigation] );
+  }, [navigation]);
 
-  const logIn = React.useCallback( async ( logInCallback: () => Promise<boolean> ) => {
-    setLoading( true );
-    const success = await logInCallback( );
+  const logIn = React.useCallback(async (logInCallback: () => Promise<boolean>) => {
+    setLoading(true);
+    const success = await logInCallback();
 
-    if ( !success ) {
-      setError( t( "Failed-to-log-in" ) );
-      setLoading( false );
+    if (!success) {
+      setError(t("Failed-to-log-in"));
+      setLoading(false);
       return;
     }
 
-    setLoading( false );
+    setLoading(false);
 
     // Set a state to zustand that we just logged in while in default mode
-    setLoggedInWhileInDefaultMode( isDefaultMode );
-    if ( params?.prevScreen && params?.projectId ) {
-      navigation.navigate( "TabNavigator", {
+    setLoggedInWhileInDefaultMode(isDefaultMode);
+    if (params?.prevScreen && params?.projectId) {
+      navigation.navigate("TabNavigator", {
         screen: "ObservationsTab",
         params: {
           screen: "ProjectDetails",
@@ -98,39 +98,39 @@ const LoginForm = ( {
             id: params?.projectId,
           },
         },
-      } );
+      });
     } else {
-      navigation.getParent( )?.goBack( );
+      navigation.getParent()?.goBack();
     }
   }, [
     navigation,
     params,
     isDefaultMode,
     setLoggedInWhileInDefaultMode,
-  ] );
+  ]);
 
-  const scrollToItem = useCallback( ( ) => {
+  const scrollToItem = useCallback(() => {
     firstInputFieldRef.current.measureLayout(
       scrollViewRef.current,
-      ( _, y ) => {
-        scrollViewRef.current.scrollTo( { y, animated: true } );
+      (_, y) => {
+        scrollViewRef.current.scrollTo({ y, animated: true });
       },
-      () => console.log( "Failed to measure" ),
+      () => console.log("Failed to measure"),
     );
-  }, [scrollViewRef] );
+  }, [scrollViewRef]);
 
-  useEffect( ( ) => {
-    if ( keyboardShown ) {
-      scrollToItem( );
+  useEffect(() => {
+    if (keyboardShown) {
+      scrollToItem();
     }
-  }, [keyboardShown, scrollToItem] );
+  }, [keyboardShown, scrollToItem]);
 
-  const renderFooter = ( ) => (
+  const renderFooter = () => (
     <>
       <Heading4
         className="color-white self-center mt-10"
       >
-        {t( "OR-SIGN-IN-WITH" )}
+        {t("OR-SIGN-IN-WITH")}
       </Heading4>
       <View className="flex-row justify-center mt-5">
         {/*
@@ -139,7 +139,7 @@ const LoginForm = ( {
         */}
         { Platform.OS === "ios" && (
           <INatIconButton
-            onPress={() => logIn( async ( ) => signInWithApple( realm ) )}
+            onPress={() => logIn(async () => signInWithApple(realm))}
             disabled={loading}
             className="mr-8"
             icon="apple"
@@ -149,24 +149,24 @@ const LoginForm = ( {
             size={50}
             color={colors.black}
             backgroundColor={colors.white}
-            accessibilityLabel={t( "Sign-in-with-Apple" )}
+            accessibilityLabel={t("Sign-in-with-Apple")}
             mode="contained"
             width={50}
             height={50}
           />
         ) }
         <INatIconButton
-          onPress={() => logIn( async ( ) => signInWithGoogle( realm ) )}
+          onPress={() => logIn(async () => signInWithGoogle(realm))}
           disabled={loading}
           backgroundColor={colors.white}
-          accessibilityLabel={t( "Sign-in-with-Google" )}
+          accessibilityLabel={t("Sign-in-with-Google")}
           mode="contained"
           width={50}
           height={50}
         >
           <Image
             className="w-[20px] h-[20px]"
-            source={require( "images/google.png" )}
+            source={require("images/google.png")}
             accessibilityIgnoresInvertColors
           />
         </INatIconButton>
@@ -179,7 +179,7 @@ const LoginForm = ( {
           !keyboardShown && "mb-[35px]",
         )}
         i18nKey="Dont-have-an-account"
-        onPress={( ) => navigation.navigate( "SignUp" )}
+        onPress={() => navigation.navigate("SignUp")}
         components={[
           <Body1
             key="0"
@@ -202,12 +202,12 @@ const LoginForm = ( {
             <View className="bg-white rounded-full">
               <INatIcon
                 name="checkmark-circle"
-                color={String( colors?.inatGreen )}
+                color={String(colors?.inatGreen)}
                 size={19}
               />
             </View>
             <List2 className="ml-3 text-white font-medium">
-              {t( "Your-email-is-confirmed" )}
+              {t("Your-email-is-confirmed")}
             </List2>
           </View>
         ) }
@@ -217,12 +217,12 @@ const LoginForm = ( {
               ? (
                 <LoginSignUpInputField
                   ref={emailRef}
-                  accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
+                  accessibilityLabel={t("USERNAME-OR-EMAIL")}
                   autoComplete="email"
-                  headerText={t( "USERNAME-OR-EMAIL" )}
+                  headerText={t("USERNAME-OR-EMAIL")}
                   inputMode="email"
                   keyboardType="email-address"
-                  onChangeText={( text: string ) => setEmail( text )}
+                  onChangeText={(text: string) => setEmail(text)}
                   testID="Login.email"
                   // https://github.com/facebook/react-native/issues/39411#issuecomment-1817575790
                   // textContentType prevents visual flickering, which is a temporary issue
@@ -233,7 +233,7 @@ const LoginForm = ( {
               : (
                 <View className="flex-row my-5 items-center justify-center mx-2">
                   <List2 className="ml-3 text-white font-medium">
-                    {t( "There-was-an-error-that-might-be-fixed-by-logging-in-again" )}
+                    {t("There-was-an-error-that-might-be-fixed-by-logging-in-again")}
                   </List2>
                 </View>
               )
@@ -241,11 +241,11 @@ const LoginForm = ( {
         </View>
         <LoginSignUpInputField
           ref={passwordRef}
-          accessibilityLabel={t( "PASSWORD" )}
+          accessibilityLabel={t("PASSWORD")}
           autoComplete="current-password"
-          headerText={t( "PASSWORD" )}
+          headerText={t("PASSWORD")}
           inputMode="text"
-          onChangeText={( text: string ) => setPassword( text )}
+          onChangeText={(text: string) => setPassword(text)}
           secureTextEntry={!isPasswordVisible}
           testID="Login.password"
           textContentType="password"
@@ -254,40 +254,40 @@ const LoginForm = ( {
           <Body2
             accessibilityRole="button"
             className="underline p-[15px] color-white"
-            onPress={() => setIsPasswordVisible( prevState => !prevState )}
+            onPress={() => setIsPasswordVisible(prevState => !prevState)}
           >
             {isPasswordVisible
-              ? t( "Hide" )
-              : t( "Reveal" )}
+              ? t("Hide")
+              : t("Reveal")}
           </Body2>
           <Body2
             accessibilityRole="button"
             className="underline p-[15px] color-white"
-            onPress={( ) => navigation.navigate( "ForgotPassword" )}
+            onPress={() => navigation.navigate("ForgotPassword")}
           >
-            {t( "Forgot-Password" )}
+            {t("Forgot-Password")}
           </Body2>
         </View>
         {error && <Error error={error} />}
         <Button
-          className={classnames( "mt-[30px]", {
+          className={classnames("mt-[30px]", {
             "mt-5": error,
-          } )}
-          disabled={( !loginAgain && !email ) || !password}
+          })}
+          disabled={(!loginAgain && !email) || !password}
           forceDark
           level="focus"
           loading={loading}
-          onPress={() => logIn( async () => authenticateUser(
+          onPress={() => logIn(async () => authenticateUser(
             loginAgain
               ? currentUser.login
-              : email.trim( ),
+              : email.trim(),
             password,
             realm,
-          ) )}
+          ))}
           testID="Login.loginButton"
-          text={t( "LOG-IN" )}
+          text={t("LOG-IN")}
         />
-        {renderFooter( )}
+        {renderFooter()}
       </View>
     </TouchableWithoutFeedback>
   );

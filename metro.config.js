@@ -7,11 +7,11 @@
  * @format
  */
 // eslint-disable-next-line import/no-unresolved
-const { getDefaultConfig, mergeConfig } = require( "@react-native/metro-config" );
-const { withRozenite } = require( "@rozenite/metro" );
+const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
+const { withRozenite } = require("@rozenite/metro");
 const {
   withRozeniteRequireProfiler,
-} = require( "@rozenite/require-profiler-plugin/metro" );
+} = require("@rozenite/require-profiler-plugin/metro");
 
 const {
   resolver: { sourceExts, assetExts },
@@ -29,10 +29,10 @@ const localPackagePaths = [
  */
 const config = {
   transformer: {
-    babelTransformerPath: require.resolve( "react-native-svg-transformer/react-native" ),
+    babelTransformerPath: require.resolve("react-native-svg-transformer/react-native"),
   },
   resolver: {
-    assetExts: assetExts.filter( ext => ext !== "svg" ),
+    assetExts: assetExts.filter(ext => ext !== "svg"),
     sourceExts:
       process.env.MOCK_MODE === "e2e"
         ? ["e2e-mock", ...sourceExts, "svg"]
@@ -43,9 +43,9 @@ const config = {
 };
 
 module.exports = withRozenite(
-  mergeConfig( getDefaultConfig( __dirname ), config ),
+  mergeConfig(getDefaultConfig(__dirname), config),
   {
     enabled: process.env.WITH_ROZENITE === "true",
-    enhanceMetroConfig: config => withRozeniteRequireProfiler( config ),
+    enhanceMetroConfig: config => withRozeniteRequireProfiler(config),
   },
 );

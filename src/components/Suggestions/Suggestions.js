@@ -37,7 +37,7 @@ type Props = {
   usingOfflineSuggestions: boolean
 };
 
-const Suggestions = ( {
+const Suggestions = ({
   debugData,
   handleSkip,
   hideLocationToggleButton,
@@ -55,27 +55,27 @@ const Suggestions = ( {
   toggleLocation,
   urlWillCrashOffline,
   usingOfflineSuggestions,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
   const {
     otherSuggestions,
     topSuggestion,
   } = suggestions;
 
-  const taxonIds = otherSuggestions?.map( s => s.taxon.id );
-  const observers = useObservers( taxonIds );
+  const taxonIds = otherSuggestions?.map(s => s.taxon.id);
+  const observers = useObservers(taxonIds);
   const isEmptyList = !topSuggestion && otherSuggestions?.length === 0;
   const showOfflineText = !isLoading && usingOfflineSuggestions && !isEmptyList;
 
-  const renderSuggestion = useCallback( ( { item: suggestion } ) => (
+  const renderSuggestion = useCallback(({ item: suggestion }) => (
     <Suggestion
-      accessibilityLabel={t( "Choose-taxon" )}
+      accessibilityLabel={t("Choose-taxon")}
       suggestion={suggestion}
       onTaxonChosen={onTaxonChosen}
     />
-  ), [onTaxonChosen, t] );
+  ), [onTaxonChosen, t]);
 
-  const renderEmptyList = useMemo( ( ) => (
+  const renderEmptyList = useMemo(() => (
     <SuggestionsEmpty
       hasTopSuggestion={!!topSuggestion}
       isLoading={isLoading}
@@ -83,9 +83,9 @@ const Suggestions = ( {
       reloadSuggestions={reloadSuggestions}
       urlWillCrashOffline={urlWillCrashOffline}
     />
-  ), [isLoading, topSuggestion, onTaxonChosen, urlWillCrashOffline, reloadSuggestions] );
+  ), [isLoading, topSuggestion, onTaxonChosen, urlWillCrashOffline, reloadSuggestions]);
 
-  const renderFooter = useMemo( ( ) => (
+  const renderFooter = useMemo(() => (
     <SuggestionsFooter
       debugData={debugData}
       handleSkip={handleSkip}
@@ -103,9 +103,9 @@ const Suggestions = ( {
     shouldUseEvidenceLocation,
     observers,
     toggleLocation,
-  ] );
+  ]);
 
-  const renderHeader = useMemo( ( ) => (
+  const renderHeader = useMemo(() => (
     <SuggestionsHeader
       onPressPhoto={onPressPhoto}
       photoUris={photoUris}
@@ -123,10 +123,10 @@ const Suggestions = ( {
     improveWithLocationButtonOnPress,
     showImproveWithLocationButton,
     showOfflineText,
-  ] );
+  ]);
 
-  const renderSectionHeader = ( { section } ) => {
-    if ( section?.data.length === 0 || isLoading ) {
+  const renderSectionHeader = ({ section }) => {
+    if (section?.data.length === 0 || isLoading) {
       return null;
     }
     return (
@@ -134,19 +134,19 @@ const Suggestions = ( {
     );
   };
 
-  const renderTopSuggestion = ( { item } ) => {
-    if ( isLoading ) { return null; }
-    if ( !item ) {
+  const renderTopSuggestion = ({ item }) => {
+    if (isLoading) { return null; }
+    if (!item) {
       return (
         <Body1 className="mx-2 p-4 text-center text-xl">
-          {t( "We-are-not-confident-enough-to-make-a-top-ID-suggestion" )}
+          {t("We-are-not-confident-enough-to-make-a-top-ID-suggestion")}
         </Body1>
       );
     }
     return (
       <View className="bg-inatGreen/[.13]">
         <Suggestion
-          accessibilityLabel={t( "Choose-top-taxon" )}
+          accessibilityLabel={t("Choose-top-taxon")}
           suggestion={item}
           onTaxonChosen={onTaxonChosen}
         />
@@ -154,27 +154,27 @@ const Suggestions = ( {
     );
   };
 
-  const createSections = ( ) => {
-    if ( isLoading ) {
+  const createSections = () => {
+    if (isLoading) {
       return [];
     }
-    if ( isEmptyList ) {
+    if (isEmptyList) {
       return [];
     }
     return [{
-      title: t( "TOP-ID-SUGGESTION" ),
+      title: t("TOP-ID-SUGGESTION"),
       // If there is a top suggestion we want to show it, but if there isn't
       // we will still show the section with a notice saying there's nothing
       // to show, so data can't be empty
       data: [topSuggestion || null],
       renderItem: renderTopSuggestion,
     }, {
-      title: t( "OTHER-SUGGESTIONS" ),
+      title: t("OTHER-SUGGESTIONS"),
       data: otherSuggestions,
     }];
   };
 
-  const sections = createSections( );
+  const sections = createSections();
 
   return (
     <ViewWrapper testID="suggestions" useTopInset={false}>

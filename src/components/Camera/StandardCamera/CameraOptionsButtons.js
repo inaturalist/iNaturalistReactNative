@@ -26,7 +26,7 @@ type Props = {
   showZoomButton: boolean
 }
 
-const CameraOptionsButtons = ( {
+const CameraOptionsButtons = ({
   takePhoto,
   handleClose,
   disabled,
@@ -40,7 +40,7 @@ const CameraOptionsButtons = ( {
   handleZoomButtonPress,
   zoomTextValue,
   showZoomButton,
-}: Props ): Node => {
+}: Props): Node => {
   const renderPhoneCameraOptions = () => (
     <>
       <Flash
@@ -84,8 +84,8 @@ const CameraOptionsButtons = ( {
   );
 
   return isTablet
-    ? renderTabletCameraOptions( )
-    : renderPhoneCameraOptions( );
+    ? renderTabletCameraOptions()
+    : renderPhoneCameraOptions();
 };
 
 export default CameraOptionsButtons;

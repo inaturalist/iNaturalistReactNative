@@ -19,32 +19,32 @@ type Props = {
   onPress: Function,
 }
 
-const ExploreHeaderCount = ( {
+const ExploreHeaderCount = ({
   count,
   exploreView,
   exploreViewIcon,
   isFetching,
   onPress,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
-  const renderText = ( ) => {
-    if ( exploreView === "observations" ) {
-      return t( "X-Observations", { count } );
+  const renderText = () => {
+    if (exploreView === "observations") {
+      return t("X-Observations", { count });
     }
-    if ( exploreView === "species" ) {
-      return t( "X-Species", { count } );
+    if (exploreView === "species") {
+      return t("X-Species", { count });
     }
-    if ( exploreView === "identifiers" ) {
-      return t( "X-Identifiers", { count } );
+    if (exploreView === "identifiers") {
+      return t("X-Identifiers", { count });
     }
-    return t( "X-Observers", { count } );
+    return t("X-Observers", { count });
   };
 
-  const renderHeader = ( ) => {
-    if ( isFetching ) {
+  const renderHeader = () => {
+    if (isFetching) {
       return <ActivityIndicator size={25} />;
-    } if ( count !== null ) {
+    } if (count !== null) {
       return (
         <>
           <INatIcon
@@ -56,7 +56,7 @@ const ExploreHeaderCount = ( {
             maxFontSizeMultiplier={1.5}
             className="text-white ml-3"
           >
-            {renderText( )}
+            {renderText()}
           </Body2>
         </>
       );
@@ -70,7 +70,7 @@ const ExploreHeaderCount = ( {
       onPress={onPress}
       accessibilityRole="summary"
     >
-      {renderHeader( )}
+      {renderHeader()}
     </Pressable>
   );
 };

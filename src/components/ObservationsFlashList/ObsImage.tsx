@@ -20,7 +20,7 @@ const CLASS_NAMES = [
   "aspect-square",
 ] as const;
 
-const ObsImage = ( {
+const ObsImage = ({
   iconicTaxonName,
   imageClassName,
   isBackground = false,
@@ -28,8 +28,8 @@ const ObsImage = ( {
   uri,
   white = false,
   iconicTaxonIconSize,
-}: Props ) => (
-  <View className={classNames( CLASS_NAMES, "relative" )}>
+}: Props) => (
+  <View className={classNames(CLASS_NAMES, "relative")}>
     <View className="absolute w-full h-full">
       <IconicTaxonIcon
         imageClassName={[
@@ -49,7 +49,7 @@ const ObsImage = ( {
     </View>
     { uri?.uri && (
       <FasterImageView
-        className={classNames( CLASS_NAMES )}
+        className={classNames(CLASS_NAMES)}
         testID="ObsList.photo"
         accessibilityIgnoresInvertColors
         fadeDuration={0}

@@ -25,29 +25,29 @@ type Props = {
   handleUpdateCount: Function
 }
 
-const SpeciesView = ( {
+const SpeciesView = ({
   canFetch,
   isConnected,
   queryParams,
   handleUpdateCount,
-}: Props ): Node => {
+}: Props): Node => {
   // 20240814 - amanda: not sure if we actually need observedTaxonIds in state in the long
   // run, but for now, it prevents flickering when a user scrolls and new species are loaded
   // on screen
-  const [observedTaxonIds, setObservedTaxonIds] = useState( new Set( ) );
-  const currentUser = useCurrentUser( );
+  const [observedTaxonIds, setObservedTaxonIds] = useState(new Set());
+  const currentUser = useCurrentUser();
   const { state } = useExplore();
   const { excludeUser } = state;
   const {
     flashListStyle,
     gridItemStyle,
     numColumns,
-  } = useGridLayout( );
+  } = useGridLayout();
 
   // query all of current users seen species if "not by me" explore filter
   const { data: seenByCurrentUserAll } = useQuery(
     ["fetchSpeciesCountsAll"],
-    ( ) => fetchSpeciesCounts( {
+    () => fetchSpeciesCounts({
       user_id: currentUser?.id,
       ttl: -1,
       fields: {
@@ -55,15 +55,15 @@ const SpeciesView = ( {
           id: true,
         },
       },
-    } ),
+    }),
     {
-      enabled: ( !!currentUser && !!excludeUser ),
+      enabled: (!!currentUser && !!excludeUser),
     },
   );
 
-  const pageObservedTaxonIdsAll = useMemo( ( ) => seenByCurrentUserAll?.results?.map(
+  const pageObservedTaxonIdsAll = useMemo(() => seenByCurrentUserAll?.results?.map(
     r => r.taxon.id,
-  ) || [], [seenByCurrentUserAll?.results] );
+  ) || [], [seenByCurrentUserAll?.results]);
 
   const params = excludeUser
     ? { ...queryParams, without_taxon_id: pageObservedTaxonIdsAll }
@@ -81,7 +81,7 @@ const SpeciesView = ( {
     fetchSpeciesCounts,
     {
       ...params,
-      ...( !currentUser && { locale } ),
+      ...(!currentUser && { locale }),
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS,
       },
@@ -91,11 +91,11 @@ const SpeciesView = ( {
     },
   );
 
-  const taxonIds = data.map( r => r.taxon.id );
+  const taxonIds = data.map(r => r.taxon.id);
 
   const { data: seenByCurrentUser } = useQuery(
     ["fetchSpeciesCounts", taxonIds],
-    ( ) => fetchSpeciesCounts( {
+    () => fetchSpeciesCounts({
       user_id: currentUser?.id,
       taxon_id: taxonIds,
       fields: {
@@ -103,26 +103,26 @@ const SpeciesView = ( {
           id: true,
         },
       },
-    } ),
+    }),
     {
-      enabled: !!( taxonIds.length > 0 && currentUser ),
+      enabled: !!(taxonIds.length > 0 && currentUser),
     },
   );
 
-  const pageObservedTaxonIds = useMemo( ( ) => seenByCurrentUser?.results?.map(
+  const pageObservedTaxonIds = useMemo(() => seenByCurrentUser?.results?.map(
     r => r.taxon.id,
-  ) || [], [seenByCurrentUser?.results] );
+  ) || [], [seenByCurrentUser?.results]);
 
-  useEffect( ( ) => {
-    if ( pageObservedTaxonIds.length > 0 ) {
-      pageObservedTaxonIds.forEach( id => {
-        observedTaxonIds.add( id );
-      } );
-      setObservedTaxonIds( observedTaxonIds );
+  useEffect(() => {
+    if (pageObservedTaxonIds.length > 0) {
+      pageObservedTaxonIds.forEach(id => {
+        observedTaxonIds.add(id);
+      });
+      setObservedTaxonIds(observedTaxonIds);
     }
-  }, [pageObservedTaxonIds, observedTaxonIds] );
+  }, [pageObservedTaxonIds, observedTaxonIds]);
 
-  const renderItem = ( { item } ) => {
+  const renderItem = ({ item }) => {
     const taxon = item?.taxon;
     const taxonId = taxon.id;
     // Add a unique key to ensure component recreation
@@ -135,19 +135,19 @@ const SpeciesView = ( {
         count={item?.count}
         style={gridItemStyle}
         taxon={taxon}
-        showSpeciesSeenCheckmark={observedTaxonIds.has( taxonId )}
+        showSpeciesSeenCheckmark={observedTaxonIds.has(taxonId)}
       />
     );
   };
 
-  useEffect( ( ) => {
-    handleUpdateCount( "species", totalResults );
-  }, [handleUpdateCount, totalResults] );
+  useEffect(() => {
+    handleUpdateCount("species", totalResults);
+  }, [handleUpdateCount, totalResults]);
 
-  const contentContainerStyle = useMemo( ( ) => ( {
+  const contentContainerStyle = useMemo(() => ({
     ...flashListStyle,
     paddingTop: 50,
-  } ), [flashListStyle] );
+  }), [flashListStyle]);
 
   return (
     <ExploreFlashList

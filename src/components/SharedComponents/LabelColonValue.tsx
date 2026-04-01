@@ -13,13 +13,13 @@ interface Props {
   ValueComponent?: React.ComponentType<TextProps>;
 }
 
-const LabelColonValue = ( {
+const LabelColonValue = ({
   label,
   LabelComponent = Body4,
   valueSelectable,
   value,
   ValueComponent = Body4,
-}: Props ) => (
+}: Props) => (
   <View className="flex-row justify-start">
     <View className="flex-row">
       <LabelComponent>{ label }</LabelComponent>

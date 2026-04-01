@@ -12,11 +12,11 @@ interface Props {
   positionalAccuracy?: number;
 }
 
-const LocationIndicator = ( {
+const LocationIndicator = ({
   latitude,
   longitude,
   positionalAccuracy,
-}: Props ) => (
+}: Props) => (
   <>
     {!!positionalAccuracy && (
       <Circle

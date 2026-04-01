@@ -30,28 +30,28 @@ type Props = {
   tablet: boolean
 }
 
-const TaxonMedia = ( {
+const TaxonMedia = ({
   loading,
   onChangeIndex,
   photos = [],
   sounds = [],
   tablet,
-}: Props ): Node => {
-  const { width } = Dimensions.get( "window" );
-  const [index, setIndex] = useState( 0 );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+}: Props): Node => {
+  const { width } = Dimensions.get("window");
+  const [index, setIndex] = useState(0);
+  const [mediaViewerVisible, setMediaViewerVisible] = useState(false);
 
-  const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
-  const slideStyle = useMemo( ( ) => ( {
+  const items = useMemo(() => ([...photos, ...sounds]), [photos, sounds]);
+  const slideStyle = useMemo(() => ({
     width,
     height: 420,
-  } ), [width] );
+  }), [width]);
 
   const CarouselSlide = useCallback(
-    ( { item } ) => (
+    ({ item }) => (
       <Pressable
         accessibilityRole="button"
-        onPress={() => { setMediaViewerVisible( true ); }}
+        onPress={() => { setMediaViewerVisible(true); }}
         accessibilityState={{ disabled: false }}
         style={slideStyle}
       >
@@ -66,7 +66,7 @@ const TaxonMedia = ( {
             // TODO replace this entire image component to one that supports
             // progressive sizes and fallbacks if the large photo isn't
             // available
-            uri: Photo.displayLargePhoto( item.url ),
+            uri: Photo.displayLargePhoto(item.url),
           }}
           accessibilityIgnoresInvertColors
         />
@@ -75,11 +75,11 @@ const TaxonMedia = ( {
     [setMediaViewerVisible, slideStyle],
   );
 
-  useEffect( ( ) => {
-    if ( onChangeIndex ) {
-      onChangeIndex( index );
+  useEffect(() => {
+    if (onChangeIndex) {
+      onChangeIndex(index);
     }
-  }, [index, onChangeIndex] );
+  }, [index, onChangeIndex]);
 
   const currentPhotoUrl = index >= photos.length
     ? undefined
@@ -93,7 +93,7 @@ const TaxonMedia = ( {
     </View>
   );
 
-  const renderPhone = ( ) => (
+  const renderPhone = () => (
     loading
       ? loadingIndicator
       : (
@@ -111,8 +111,8 @@ const TaxonMedia = ( {
       <MasonryLayout
         items={items}
         onImagePress={newIndex => {
-          setIndex( newIndex );
-          setMediaViewerVisible( true );
+          setIndex(newIndex);
+          setMediaViewerVisible(true);
         }}
       />
     </View>
@@ -121,11 +121,11 @@ const TaxonMedia = ( {
   return (
     <View className="relative">
       {!tablet
-        ? renderPhone( )
-        : renderTablet( )}
+        ? renderPhone()
+        : renderTablet()}
       <MediaViewerModal
         showModal={mediaViewerVisible}
-        onClose={( ) => setMediaViewerVisible( false )}
+        onClose={() => setMediaViewerVisible(false)}
         uri={currentPhotoUrl}
         photos={photos}
       />

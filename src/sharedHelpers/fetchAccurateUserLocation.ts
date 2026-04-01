@@ -16,19 +16,19 @@ interface UserLocation {
 }
 
 const fetchAccurateUserLocation = async (): Promise<UserLocation | null> => {
-  const permissionResult = await checkLocationPermissions( );
-  if ( permissionResult === null ) {
+  const permissionResult = await checkLocationPermissions();
+  if (permissionResult === null) {
     return null;
   }
 
   try {
-    const highAccuracyResult = await getCurrentPositionWithOptions( highAccuracyOptions )
-      .catch( error => {
-        console.warn( "High accuracy location failed, falling back to low accuracy", error );
+    const highAccuracyResult = await getCurrentPositionWithOptions(highAccuracyOptions)
+      .catch(error => {
+        console.warn("High accuracy location failed, falling back to low accuracy", error);
         return null;
-      } );
+      });
 
-    if ( highAccuracyResult ) {
+    if (highAccuracyResult) {
       return {
         latitude: highAccuracyResult.coords.latitude,
         longitude: highAccuracyResult.coords.longitude,
@@ -38,7 +38,7 @@ const fetchAccurateUserLocation = async (): Promise<UserLocation | null> => {
       };
     }
 
-    const lowAccuracyResult = await getCurrentPositionWithOptions( lowAccuracyOptions, 2 );
+    const lowAccuracyResult = await getCurrentPositionWithOptions(lowAccuracyOptions, 2);
 
     return {
       latitude: lowAccuracyResult.coords.latitude,
@@ -47,8 +47,8 @@ const fetchAccurateUserLocation = async (): Promise<UserLocation | null> => {
       altitude: lowAccuracyResult.coords.altitude,
       altitudinal_accuracy: lowAccuracyResult.coords.altitudeAccuracy,
     };
-  } catch ( e ) {
-    console.warn( "All location attempts failed:", e );
+  } catch (e) {
+    console.warn("All location attempts failed:", e);
   }
 
   return null;

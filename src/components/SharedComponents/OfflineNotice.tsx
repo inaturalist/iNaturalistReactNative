@@ -12,18 +12,18 @@ interface Props {
   onPress: () => void;
 }
 
-const OfflineNotice = ( {
+const OfflineNotice = ({
   color,
   onPress,
-}: Props ) => {
-  const { t } = useTranslation( );
-  if ( typeof ( onPress ) !== "function" ) {
-    throw new Error( "OfflineNotice needs an onPress function" );
+}: Props) => {
+  const { t } = useTranslation();
+  if (typeof (onPress) !== "function") {
+    throw new Error("OfflineNotice needs an onPress function");
   }
   return (
     <Pressable
-      accessibilityLabel={t( "Internet-Connection-Required" )}
-      accessibilityHint={t( "Loads-content-that-requires-an-Internet-connection" )}
+      accessibilityLabel={t("Internet-Connection-Required")}
+      accessibilityHint={t("Loads-content-that-requires-an-Internet-connection")}
       onPress={onPress}
       className="justify-center items-center w-full h-full"
     >
@@ -43,7 +43,7 @@ const OfflineNotice = ( {
             : "text-darkGray",
         )}
       >
-        { t( "You-are-offline-Tap-to-try-again" ) }
+        { t("You-are-offline-Tap-to-try-again") }
       </Body2>
     </Pressable>
   );

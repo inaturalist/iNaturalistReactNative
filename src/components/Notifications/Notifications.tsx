@@ -17,14 +17,14 @@ import NotificationsTab, {
 const OWNER_TAB_PARAMS = { observations_by: "owner" } as const;
 const FOLLOWING_TAB_PARAMS = { observations_by: "following" } as const;
 
-const Notifications = ( ) => {
-  const [activeTab, setActiveTab] = useState<typeof OWNER_TAB | typeof OTHER_TAB>( OWNER_TAB );
+const Notifications = () => {
+  const [activeTab, setActiveTab] = useState<typeof OWNER_TAB | typeof OTHER_TAB>(OWNER_TAB);
   const { t } = useTranslation();
-  const { isDefaultMode } = useLayoutPrefs( );
-  const currentUser = useCurrentUser( );
+  const { isDefaultMode } = useLayoutPrefs();
+  const currentUser = useCurrentUser();
   const {
     totalResults: totalResultsLocal,
-  } = useLocalObservations( );
+  } = useLocalObservations();
 
   return (
     <View className="flex-1 bg-white">
@@ -32,13 +32,13 @@ const Notifications = ( ) => {
         tabs={[
           {
             id: OWNER_TAB,
-            text: t( "MY-CONTENT--notifications" ),
-            onPress: () => setActiveTab( OWNER_TAB ),
+            text: t("MY-CONTENT--notifications"),
+            onPress: () => setActiveTab(OWNER_TAB),
           },
           {
             id: OTHER_TAB,
-            text: t( "OTHERS--notifications" ),
-            onPress: () => setActiveTab( OTHER_TAB ),
+            text: t("OTHERS--notifications"),
+            onPress: () => setActiveTab(OTHER_TAB),
           },
         ]}
         activeId={activeTab}
@@ -48,14 +48,14 @@ const Notifications = ( ) => {
         <NotificationsContainer
           currentUser={currentUser}
           notificationParams={OWNER_TAB_PARAMS}
-          onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OWNER_TAB )}
+          onRefresh={() => EventRegister.emit(NOTIFICATIONS_REFRESHED, OWNER_TAB)}
         />
       )}
       {activeTab === OTHER_TAB && (
         <NotificationsContainer
           currentUser={currentUser}
           notificationParams={FOLLOWING_TAB_PARAMS}
-          onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OTHER_TAB )}
+          onRefresh={() => EventRegister.emit(NOTIFICATIONS_REFRESHED, OTHER_TAB)}
         />
       )}
       <NotificationOnboarding

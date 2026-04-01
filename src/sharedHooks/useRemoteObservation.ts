@@ -18,28 +18,28 @@ interface UseRemoteObservationReturn {
 }
 
 const filterHiddenContent
-= ( observation?: ApiObservation | null ): ApiObservation | null | undefined => {
-  if ( observation === undefined || observation === null ) {
+= (observation?: ApiObservation | null): ApiObservation | null | undefined => {
+  if (observation === undefined || observation === null) {
     return observation;
   }
   const filteredObservation = observation;
 
   filteredObservation.comments = filteredObservation?.comments
-    ?.filter( comment => !comment.hidden ) || [];
+    ?.filter(comment => !comment.hidden) || [];
   filteredObservation.identifications = filteredObservation?.identifications
-    ?.filter( identification => !identification.hidden ) || [];
+    ?.filter(identification => !identification.hidden) || [];
 
   return filteredObservation;
 };
 
-const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObservationReturn => {
+const useRemoteObservation = (uuid: string, enabled: boolean): UseRemoteObservationReturn => {
   const fetchRemoteObservationQueryKey = useMemo(
-    ( ) => ( [fetchRemoteObservationKey, uuid] ),
+    () => ([fetchRemoteObservationKey, uuid]),
     [uuid],
   );
 
-  const currentUser = useCurrentUser( );
-  const realm = useRealm( );
+  const currentUser = useCurrentUser();
+  const realm = useRealm();
 
   const locale = i18n?.language ?? "en";
 
@@ -54,13 +54,13 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObserv
       uuid,
       {
         include_new_projects: true,
-        ...( !currentUser && { locale } ),
+        ...(!currentUser && { locale }),
         fields: Observation.FIELDS,
       },
       optsWithAuth,
     ),
     {
-      enabled: !!( enabled && !!uuid && uuid.length > 0 ),
+      enabled: !!(enabled && !!uuid && uuid.length > 0),
     },
   );
 
@@ -68,25 +68,25 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObserv
     && currentUser
     && remoteObservation?.user?.id === currentUser.id;
 
-  const updateLocalObservation = useCallback( ( ) => {
+  const updateLocalObservation = useCallback(() => {
     Observation.upsertRemoteObservations(
       [remoteObservation],
       realm,
     );
-  }, [remoteObservation, realm] );
+  }, [remoteObservation, realm]);
 
   // Update local copy of a user's own observation
-  useEffect( ( ) => {
-    if ( needsLocalUpdate ) {
-      updateLocalObservation( );
+  useEffect(() => {
+    if (needsLocalUpdate) {
+      updateLocalObservation();
     }
   }, [
     needsLocalUpdate,
     updateLocalObservation,
-  ] );
+  ]);
 
   return {
-    remoteObservation: filterHiddenContent( remoteObservation ),
+    remoteObservation: filterHiddenContent(remoteObservation),
     refetchRemoteObservation,
     isRefetching,
     fetchRemoteObservationError,

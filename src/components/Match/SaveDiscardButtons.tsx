@@ -8,23 +8,23 @@ import { getShadow } from "styles/global";
 
 import type { MatchButtonAction } from "./MatchContainer";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: -3,
   shadowOpacity: 0.2,
-} );
+});
 
 interface Props {
-  handlePress: ( action: MatchButtonAction ) => void;
+  handlePress: (action: MatchButtonAction) => void;
 }
 
-const SaveDiscardButtons = ( {
+const SaveDiscardButtons = ({
   handlePress,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   const saveButton = {
-    title: t( "SAVE" ),
-    onPress: ( ) => handlePress( "save" ),
+    title: t("SAVE"),
+    onPress: () => handlePress("save"),
     isPrimary: true,
     testID: "MatchScreen.saveButton",
     level: "focus",
@@ -32,8 +32,8 @@ const SaveDiscardButtons = ( {
   };
 
   const discardButton = {
-    title: t( "DISCARD" ),
-    onPress: ( ) => handlePress( "discard" ),
+    title: t("DISCARD"),
+    onPress: () => handlePress("discard"),
     isPrimary: false,
     testID: "MatchScreen.discardButton",
     level: "neutral",

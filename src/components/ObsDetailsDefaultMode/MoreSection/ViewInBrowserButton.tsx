@@ -11,13 +11,13 @@ interface Props {
 
 const OBSERVATION_URL = "https://www.inaturalist.org/observations";
 
-const ViewInBrowserButton = ( { id }: Props ) => (
+const ViewInBrowserButton = ({ id }: Props) => (
   <Body3
     className="underline mt-[11px]"
     accessibilityRole="link"
-    onPress={async () => openExternalWebBrowser( `${OBSERVATION_URL}/${id}` )}
+    onPress={async () => openExternalWebBrowser(`${OBSERVATION_URL}/${id}`)}
   >
-    {t( "View-in-browser" )}
+    {t("View-in-browser")}
   </Body3>
 );
 

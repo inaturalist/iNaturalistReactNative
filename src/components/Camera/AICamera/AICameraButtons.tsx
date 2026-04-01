@@ -18,35 +18,35 @@ import AIDebugButton from "./AIDebugButton";
 const isTablet = DeviceInfo.isTablet();
 
 interface Props {
-  handleZoomButtonPress: ( ) => void;
+  handleZoomButtonPress: () => void;
   confidenceThreshold?: number;
   cropRatio?: string;
-  flipCamera: ( ) => void;
+  flipCamera: () => void;
   fps?: number;
-  handleClose: ( ) => void;
+  handleClose: () => void;
   hasFlash: boolean;
   modelLoaded: boolean;
   numStoredResults?: number;
   rotatableAnimatedStyle: ViewStyle;
   debugFormat?: CameraDeviceFormat;
-  setConfidenceThreshold: ( value: number ) => void;
-  setCropRatio: ( value: number ) => void;
-  setFPS: ( value: number ) => void;
-  setNumStoredResults: ( value: number ) => void;
-  changeDebugFormat?: ( ) => void;
+  setConfidenceThreshold: (value: number) => void;
+  setCropRatio: (value: number) => void;
+  setFPS: (value: number) => void;
+  setNumStoredResults: (value: number) => void;
+  changeDebugFormat?: () => void;
   showPrediction: boolean;
   showZoomButton: boolean;
   takePhoto: () => Promise<void>;
   takePhotoOptions: TakePhotoOptions;
   takingPhoto: boolean;
-  toggleFlash: ( ) => void;
+  toggleFlash: () => void;
   zoomTextValue: string;
   useLocation: boolean;
-  toggleLocation: ( ) => void;
-  deleteSentinelFile: ( ) => Promise<void>;
+  toggleLocation: () => void;
+  deleteSentinelFile: () => Promise<void>;
 }
 
-const AICameraButtons = ( {
+const AICameraButtons = ({
   handleZoomButtonPress,
   changeDebugFormat,
   confidenceThreshold,
@@ -73,9 +73,9 @@ const AICameraButtons = ( {
   useLocation,
   toggleLocation,
   deleteSentinelFile,
-}: Props ) => {
+}: Props) => {
   const { isDefaultMode } = useLayoutPrefs();
-  if ( isTablet ) {
+  if (isTablet) {
     return (
       <TabletButtons
         handleZoomButtonPress={handleZoomButtonPress}

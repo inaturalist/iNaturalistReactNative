@@ -14,14 +14,14 @@ const SLIDER_STYLE = { display: "flex", flexGrow: 1, height: 44 } as const;
 interface SliderControlProps {
   name: string;
   value: number;
-  setValue: ( value: number ) => void;
+  setValue: (value: number) => void;
   min: number;
   max: number;
   precision?: number;
   step?: number;
 }
 
-const SliderControl = ( {
+const SliderControl = ({
   name,
   value,
   setValue,
@@ -29,12 +29,12 @@ const SliderControl = ( {
   max,
   precision = 0,
   step = 1,
-}: SliderControlProps ) => (
+}: SliderControlProps) => (
   <P>
     {/* eslint-disable-next-line i18next/no-literal-string */}
     <Heading4 className="text-white">{ `${name} (${min}-${max})` }</Heading4>
     <View className="flex-row items-center h-fit">
-      <Body1 className="w-10 m-3 text-white">{round( value, precision )}</Body1>
+      <Body1 className="w-10 m-3 text-white">{round(value, precision)}</Body1>
       <Slider
         style={SLIDER_STYLE}
         minimumValue={min}
@@ -45,7 +45,7 @@ const SliderControl = ( {
         tapToSeek
         step={step}
         value={value}
-        onValueChange={changedValue => setValue( changedValue )}
+        onValueChange={changedValue => setValue(changedValue)}
       />
     </View>
   </P>

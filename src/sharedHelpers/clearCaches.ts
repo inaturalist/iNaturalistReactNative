@@ -9,7 +9,7 @@ import { log } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory";
 
-const logger = log.extend( "clearCaches.ts" );
+const logger = log.extend("clearCaches.ts");
 
 // TODO replace when Realm classes are properly typed
 interface RealmObservation {
@@ -25,17 +25,17 @@ interface RealmObservation {
   }[];
 }
 
-const clearRotatedOriginalPhotosDirectory = async ( ) => {
-  await removeAllFilesFromDirectory( rotatedOriginalPhotosPath );
+const clearRotatedOriginalPhotosDirectory = async () => {
+  await removeAllFilesFromDirectory(rotatedOriginalPhotosPath);
 };
 
-const clearGalleryPhotos = async ( ) => {
-  await removeAllFilesFromDirectory( photoLibraryPhotosPath );
+const clearGalleryPhotos = async () => {
+  await removeAllFilesFromDirectory(photoLibraryPhotosPath);
 };
 
-const clearComputerVisionPhotos = async ( ) => {
+const clearComputerVisionPhotos = async () => {
   // Clears resized images used for inatjs.computervision.score_image
-  await removeAllFilesFromDirectory( computerVisionPath );
+  await removeAllFilesFromDirectory(computerVisionPath);
 };
 
 // this hook checks to see which localFilePaths are still needed in photoUploads/
@@ -45,14 +45,14 @@ const clearComputerVisionPhotos = async ( ) => {
 const clearSyncedMediaForUpload = async realm => {
 // Clean out photos
   const unsyncedObservationsWithPhotos: RealmObservation[] = realm
-    .objects( "Observation" )
-    .filtered( "observationPhotos._synced_at == nil" );
+    .objects("Observation")
+    .filtered("observationPhotos._synced_at == nil");
   const unsyncedPhotoFileNames = unsyncedObservationsWithPhotos
-    .map( observation => observation.observationPhotos.map(
-      op => op.photo.localFilePath?.split( "photoUploads/" )?.at( 1 ),
-    ) )
-    .flat( )
-    .filter( Boolean );
+    .map(observation => observation.observationPhotos.map(
+      op => op.photo.localFilePath?.split("photoUploads/")?.at(1),
+    ))
+    .flat()
+    .filter(Boolean);
   await removeSyncedFilesFromDirectory(
     photoUploadPath,
     // .filter( Boolean ) ensures this array has no undefined members. IDK
@@ -64,14 +64,14 @@ const clearSyncedMediaForUpload = async realm => {
 
   // Clean out sounds
   const unsyncedObservationsWithSounds: RealmObservation[] = realm
-    .objects( "Observation" )
-    .filtered( "observationSounds._synced_at == nil" );
+    .objects("Observation")
+    .filtered("observationSounds._synced_at == nil");
   const unsyncedSoundFileNames = unsyncedObservationsWithSounds
-    .map( observation => observation.observationSounds.map(
-      os => os.sound.file_url?.split( "soundUploads/" )?.at( 1 ),
-    ) )
-    .flat( )
-    .filter( Boolean );
+    .map(observation => observation.observationSounds.map(
+      os => os.sound.file_url?.split("soundUploads/")?.at(1),
+    ))
+    .flat()
+    .filter(Boolean);
   await removeSyncedFilesFromDirectory(
     soundUploadPath,
     // .filter( Boolean ) ensures this array has no undefined members. IDK
@@ -83,13 +83,13 @@ const clearSyncedMediaForUpload = async realm => {
 };
 
 const clearCaches = async realm => {
-  const startTime = Date.now( );
+  const startTime = Date.now();
   // clear original, large-sized photos
-  await clearRotatedOriginalPhotosDirectory( );
-  await clearGalleryPhotos( );
-  await clearComputerVisionPhotos( );
-  await clearSyncedMediaForUpload( realm );
-  const endTime = Date.now( );
+  await clearRotatedOriginalPhotosDirectory();
+  await clearGalleryPhotos();
+  await clearComputerVisionPhotos();
+  await clearSyncedMediaForUpload(realm);
+  const endTime = Date.now();
   const duration = endTime - startTime;
   logger.info(
     "cleared rotated original photos, gallery, computer vision, and synced media caches "

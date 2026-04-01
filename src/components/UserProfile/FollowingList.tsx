@@ -21,13 +21,13 @@ import {
   useTranslation,
 } from "sharedHooks";
 
-const FollowingList = ( ) => {
-  const { isConnected } = useNetInfo( );
-  const currentUser = useCurrentUser( );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+const FollowingList = () => {
+  const { isConnected } = useNetInfo();
+  const currentUser = useCurrentUser();
+  const navigation = useNavigation();
+  const { params } = useRoute();
   const { user } = params;
-  const { t } = useTranslation( );
+  const { t } = useTranslation();
 
   const userId = user?.id;
 
@@ -51,20 +51,20 @@ const FollowingList = ( ) => {
     },
   );
 
-  const followingHeaderOptions = useMemo( ( ) => ( {
+  const followingHeaderOptions = useMemo(() => ({
     headerTitle: user?.login,
-    headerSubtitle: t( "FOLLOWING-X-PEOPLE", {
+    headerSubtitle: t("FOLLOWING-X-PEOPLE", {
       count: totalResults,
-    } ),
-  } ), [totalResults, t, user] );
+    }),
+  }), [totalResults, t, user]);
 
-  useEffect( ( ) => {
-    if ( totalResults !== undefined && totalResults !== null ) {
-      navigation.setOptions( followingHeaderOptions );
+  useEffect(() => {
+    if (totalResults !== undefined && totalResults !== null) {
+      navigation.setOptions(followingHeaderOptions);
     }
-  }, [followingHeaderOptions, navigation, totalResults] );
+  }, [followingHeaderOptions, navigation, totalResults]);
 
-  if ( !following ) {
+  if (!following) {
     return null;
   }
 
@@ -85,7 +85,7 @@ const FollowingList = ( ) => {
           : (
             <View className="self-center mt-5 p-4">
               <Body1 className="align-center text-center">
-                {t( "This-user-is-not-following-anyone" )}
+                {t("This-user-is-not-following-anyone")}
               </Body1>
             </View>
           )}

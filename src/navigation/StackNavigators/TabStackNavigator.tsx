@@ -51,37 +51,37 @@ import SharedStackScreens from "./SharedStackScreens";
 
 const aboutTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "ABOUT-INATURALIST" )}
+    {t("ABOUT-INATURALIST")}
   </Heading4>
 );
 const donateTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "DONATE" )}
+    {t("DONATE")}
   </Heading4>
 );
 const helpTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "HELP" )}
+    {t("HELP")}
   </Heading4>
 );
 const dqaTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "DATA-QUALITY-ASSESSMENT" )}
+    {t("DATA-QUALITY-ASSESSMENT")}
   </Heading4>
 );
 const projectRequirementsTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "PROJECT-REQUIREMENTS" )}
+    {t("PROJECT-REQUIREMENTS")}
   </Heading4>
 );
 const settingsTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "SETTINGS" )}
+    {t("SETTINGS")}
   </Heading4>
 );
 const notificationsTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "NOTIFICATIONS" )}
+    {t("NOTIFICATIONS")}
   </Heading4>
 );
 
@@ -98,25 +98,25 @@ const legacyLogTitle = () => <Heading4 className="text-white">LOG (LEGACY)</Head
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
-const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
-const FadeInObsDetailsDefaultModeScreensWrapper = ( ) => fadeInComponent(
+const FadeInUserProfile = () => fadeInComponent(<UserProfile />);
+const FadeInObsDetailsDefaultModeScreensWrapper = () => fadeInComponent(
   <ObsDetailsDefaultModeScreensWrapper />,
 );
-const FadeInObsDetailsContainer = ( ) => fadeInComponent(
+const FadeInObsDetailsContainer = () => fadeInComponent(
   <ObsDetailsContainer />,
 );
-const FadeInDQAContainer = ( ) => fadeInComponent( <DQAContainer /> );
-const FadeInProjectsContainer = ( ) => fadeInComponent( <ProjectsContainer /> );
-const FadeInProjectDetailsContainer = ( ) => fadeInComponent( <ProjectDetailsContainer /> );
-const FadeInProjectRequirements = ( ) => fadeInComponent( <ProjectRequirements /> );
-const FadeInProjectMembers = ( ) => fadeInComponent( <ProjectMembers /> );
-const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
-const FadeInHelp = ( ) => fadeInComponent( <Help /> );
-const FadeInAbout = ( ) => fadeInComponent( <About /> );
-const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
-const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
-const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
-const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
+const FadeInDQAContainer = () => fadeInComponent(<DQAContainer />);
+const FadeInProjectsContainer = () => fadeInComponent(<ProjectsContainer />);
+const FadeInProjectDetailsContainer = () => fadeInComponent(<ProjectDetailsContainer />);
+const FadeInProjectRequirements = () => fadeInComponent(<ProjectRequirements />);
+const FadeInProjectMembers = () => fadeInComponent(<ProjectMembers />);
+const FadeInSettings = () => fadeInComponent(<Settings />);
+const FadeInHelp = () => fadeInComponent(<Help />);
+const FadeInAbout = () => fadeInComponent(<About />);
+const FadeInDonate = () => fadeInComponent(<Donate />);
+const FadeInProjectList = () => fadeInComponent(<ProjectListContainer />);
+const FadeInFollowersList = () => fadeInComponent(<FollowersList />);
+const FadeInFollowingList = () => fadeInComponent(<FollowingList />);
 
 const BASE_SCREEN_OPTIONS = {
   headerBackButtonDisplayMode: "minimal",
@@ -158,20 +158,20 @@ const DEBUG_GROUP_SCREEN_OPTIONS = {
   headerTitleStyle: { color: "white" },
 } as const;
 
-const Stack = createNativeStackNavigator<TabStackParamList>( );
+const Stack = createNativeStackNavigator<TabStackParamList>();
 
 export const SCREEN_NAME_MENU = "Menu";
 export const SCREEN_NAME_ROOT_EXPLORE = "RootExplore";
 export const SCREEN_NAME_OBS_LIST = "ObsList";
 export const SCREEN_NAME_NOTIFICATIONS = "Notifications";
 
-const TabStackNavigator = ( { route }: BottomTabProps ) => {
+const TabStackNavigator = ({ route }: BottomTabProps) => {
   const initialRouteName
     = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
   const {
     isDefaultMode,
-  } = useLayoutPrefs( );
+  } = useLayoutPrefs();
   return (
     <Stack.Navigator
       initialRouteName={initialRouteName}
@@ -248,7 +248,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         component={FadeInDQAContainer}
         options={DQA_OPTIONS}
       />
-      {SharedStackScreens( )}
+      {SharedStackScreens()}
       {/* Project Stack Group */}
       <Stack.Group
         screenOptions={{
@@ -322,11 +322,11 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         <Stack.Screen
           component={Log}
           name="Log"
-          options={( { route } ) => ( {
+          options={({ route }) => ({
             headerTitle: route?.params?.isLegacyLogs
               ? legacyLogTitle
               : logTitle,
-          } )}
+          })}
         />
       </Stack.Group>
       {/* Header with no bottom border */}

@@ -8,18 +8,18 @@ import useTranslation from "sharedHooks/useTranslation";
 interface Props {
   headerText: string;
   texts: string[];
-  setShowSheet: ( show: boolean ) => void;
+  setShowSheet: (show: boolean) => void;
 }
 
-const TextSheet = ( {
+const TextSheet = ({
   headerText,
   texts,
   setShowSheet,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   const onPressClose = useCallback(
-    ( ) => setShowSheet( false ),
+    () => setShowSheet(false),
     [setShowSheet],
   );
 
@@ -29,13 +29,13 @@ const TextSheet = ( {
       headerText={headerText}
     >
       <View className="p-5">
-        {texts.map( text => (
+        {texts.map(text => (
           <Body3 className="pb-5" key={text}>
             {text}
           </Body3>
-        ) )}
+        ))}
         <Button
-          text={t( "OK" )}
+          text={t("OK")}
           onPress={onPressClose}
         />
       </View>

@@ -6,18 +6,18 @@ import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
-const mockObservation = factory( "LocalObservation", {
-  _synced_at: faker.date.past( ),
-} );
+const mockObservation = factory("LocalObservation", {
+  _synced_at: faker.date.past(),
+});
 
-const mockUser = factory( "LocalUser" );
+const mockUser = factory("LocalUser");
 
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
+jest.mock("sharedHooks/useCurrentUser", () => ({
   __esModule: true,
-  default: ( ) => null,
-} ) );
+  default: () => null,
+}));
 
-function renderBottomButtonsContainer( props = {} ) {
+function renderBottomButtonsContainer(props = {}) {
   return renderComponent(
     <BottomButtonsContainer
       passesEvidenceTest
@@ -33,8 +33,8 @@ function renderBottomButtonsContainer( props = {} ) {
   );
 }
 
-describe( "BottomButtonsContainer", () => {
-  it( "has no accessibility errors", () => {
+describe("BottomButtonsContainer", () => {
+  it("has no accessibility errors", () => {
     // Disabled during the update to RN 0.78
     // expect(
     //   <BottomButtonsContainer
@@ -48,34 +48,34 @@ describe( "BottomButtonsContainer", () => {
     //     // eslint-disable-next-line react/jsx-props-no-spreading
     //   />
     // ).toBeAccessible();
-  } );
+  });
 
-  it( "shows save button when user is logged out", () => {
+  it("shows save button when user is logged out", () => {
     renderBottomButtonsContainer();
 
-    const save = screen.getByText( /SAVE/ );
+    const save = screen.getByText(/SAVE/);
 
-    expect( save ).toBeVisible( );
-  } );
+    expect(save).toBeVisible();
+  });
 
-  it( "shows save changes button when user logged in and observation was previously synced", () => {
-    jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => mockUser );
-    renderBottomButtonsContainer( );
+  it("shows save changes button when user logged in and observation was previously synced", () => {
+    jest.spyOn(useCurrentUser, "default").mockImplementation(() => mockUser);
+    renderBottomButtonsContainer();
 
-    const saveChanges = screen.getByText( /SAVE CHANGES/ );
+    const saveChanges = screen.getByText(/SAVE CHANGES/);
 
-    expect( saveChanges ).toBeVisible( );
-  } );
+    expect(saveChanges).toBeVisible();
+  });
 
-  it( "shows save and upload button when user logged in with new observation", () => {
-    jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => mockUser );
-    renderBottomButtonsContainer( {
-      currentObservation: factory( "LocalObservation" ),
-    } );
+  it("shows save and upload button when user logged in with new observation", () => {
+    jest.spyOn(useCurrentUser, "default").mockImplementation(() => mockUser);
+    renderBottomButtonsContainer({
+      currentObservation: factory("LocalObservation"),
+    });
 
-    const save = screen.getByText( /SAVE/ );
-    expect( save ).toBeVisible( );
-    const upload = screen.getByText( /UPLOAD/ );
-    expect( upload ).toBeVisible( );
-  } );
-} );
+    const save = screen.getByText(/SAVE/);
+    expect(save).toBeVisible();
+    const upload = screen.getByText(/UPLOAD/);
+    expect(upload).toBeVisible();
+  });
+});

@@ -3,27 +3,27 @@ import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-describe( "FaveButton", () => {
-  it( "should survive no currentUser", ( ) => {
+describe("FaveButton", () => {
+  it("should survive no currentUser", () => {
     expect(
-      ( ) => renderComponent(
+      () => renderComponent(
         <FaveButton
-          observation={factory( "LocalObservation" )}
+          observation={factory("LocalObservation")}
         />,
       ),
-    ).not.toThrow( );
-  } );
+    ).not.toThrow();
+  });
 
-  it( "should survive no currentUser for an observation w/ existing votes", ( ) => {
-    const observation = factory( "RemoteObservation", {
-      votes: [factory( "RemoteVote" )],
-    } );
+  it("should survive no currentUser for an observation w/ existing votes", () => {
+    const observation = factory("RemoteObservation", {
+      votes: [factory("RemoteVote")],
+    });
     expect(
-      ( ) => renderComponent(
+      () => renderComponent(
         <FaveButton
           observation={observation}
         />,
       ),
-    ).not.toThrow( );
-  } );
-} );
+    ).not.toThrow();
+  });
+});

@@ -7,18 +7,18 @@ import { wrapInNavigationContainer } from "tests/helpers/render";
 const mockHeaderBackButton = <View testID="ObsEdit.BackButton">Mocked Back</View>;
 
 // Note: HeaderBackButton has accessibility issues
-jest.mock( "@react-navigation/elements", () => ( {
-  ...jest.requireActual( "@react-navigation/elements" ),
+jest.mock("@react-navigation/elements", () => ({
+  ...jest.requireActual("@react-navigation/elements"),
   HeaderBackButton: jest.fn()
-    .mockImplementation( ( ) => mockHeaderBackButton ),
-} ) );
+    .mockImplementation(() => mockHeaderBackButton),
+}));
 
-describe( "BackButton", () => {
-  it( "has no accessibility errors", () => {
-    const button = wrapInNavigationContainer( <BackButton /> );
+describe("BackButton", () => {
+  it("has no accessibility errors", () => {
+    const button = wrapInNavigationContainer(<BackButton />);
 
     // Disabled during the update to RN 0.78
-    expect( button ).toBeTruthy();
+    expect(button).toBeTruthy();
     // expect( button ).toBeAccessible();
-  } );
-} );
+  });
+});

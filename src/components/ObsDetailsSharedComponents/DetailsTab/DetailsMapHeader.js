@@ -14,10 +14,10 @@ type Props = {
   observation: Object
 }
 
-const DetailsMapHeader = ( {
+const DetailsMapHeader = ({
   currentUser,
   observation,
-}: Props ): Node => (
+}: Props): Node => (
   <View className="flex-1 flex-col">
     <ObservationLocation
       observation={observation}

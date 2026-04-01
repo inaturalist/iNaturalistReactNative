@@ -4,36 +4,36 @@ import { prepareMediaForUpload } from "uploaders";
 import { attachMediaToObservation, uploadObservationMedia } from "uploaders/mediaUploader";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 
-jest.mock( "api/observations" );
-jest.mock( "inaturalistjs" );
-jest.mock( "uploaders" );
-jest.mock( "uploaders/utils/progressTracker" );
+jest.mock("api/observations");
+jest.mock("inaturalistjs");
+jest.mock("uploaders");
+jest.mock("uploaders/utils/progressTracker");
 
-const mockedCreateOrUpdateEvidence = jest.mocked( createOrUpdateEvidence );
-const mockedPrepareMediaForUpload = jest.mocked( prepareMediaForUpload );
-const mockedTrackEvidenceUpload = jest.mocked( trackEvidenceUpload );
+const mockedCreateOrUpdateEvidence = jest.mocked(createOrUpdateEvidence);
+const mockedPrepareMediaForUpload = jest.mocked(prepareMediaForUpload);
+const mockedTrackEvidenceUpload = jest.mocked(trackEvidenceUpload);
 
-describe( "mediaUploader", () => {
-  beforeEach( () => {
+describe("mediaUploader", () => {
+  beforeEach(() => {
     jest.resetAllMocks();
 
     const mockProgress = {
       attached: jest.fn(),
       uploaded: jest.fn(),
     };
-    mockedTrackEvidenceUpload.mockReturnValue( mockProgress );
-    mockedCreateOrUpdateEvidence.mockResolvedValue( { id: 123 } );
-    mockedPrepareMediaForUpload.mockImplementation( ( evidence, type, action, observationId ) => ( {
+    mockedTrackEvidenceUpload.mockReturnValue(mockProgress);
+    mockedCreateOrUpdateEvidence.mockResolvedValue({ id: 123 });
+    mockedPrepareMediaForUpload.mockImplementation((evidence, type, action, observationId) => ({
       id: evidence.uuid,
       type,
       action,
       observation_id: observationId,
       file_url: evidence.url,
-    } ) );
-  } );
+    }));
+  });
 
-  describe( "uploadObservationMedia", () => {
-    it( "should upload photos and sounds in parallel", async () => {
+  describe("uploadObservationMedia", () => {
+    it("should upload photos and sounds in parallel", async () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [
@@ -49,17 +49,17 @@ describe( "mediaUploader", () => {
       const options = { api_token: "test-token" };
       const realm = {};
 
-      const result = await uploadObservationMedia( observation, options, realm );
+      const result = await uploadObservationMedia(observation, options, realm);
 
-      expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 2 );
-      expect( result ).toEqual( {
+      expect(createOrUpdateEvidence).toHaveBeenCalledTimes(2);
+      expect(result).toEqual({
         unsyncedObservationPhotos: observation.observationPhotos,
         modifiedObservationPhotos: [],
         unsyncedObservationSounds: observation.observationSounds,
-      } );
-    } );
+      });
+    });
 
-    it( "should handle empty media arrays", async () => {
+    it("should handle empty media arrays", async () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [],
@@ -68,17 +68,17 @@ describe( "mediaUploader", () => {
       const options = { api_token: "test-token" };
       const realm = {};
 
-      const result = await uploadObservationMedia( observation, options, realm );
+      const result = await uploadObservationMedia(observation, options, realm);
 
-      expect( createOrUpdateEvidence ).not.toHaveBeenCalled();
-      expect( result ).toEqual( {
+      expect(createOrUpdateEvidence).not.toHaveBeenCalled();
+      expect(result).toEqual({
         unsyncedObservationPhotos: [],
         modifiedObservationPhotos: [],
         unsyncedObservationSounds: [],
-      } );
-    } );
+      });
+    });
 
-    it( "should handle photos that need updates", async () => {
+    it("should handle photos that need updates", async () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [
@@ -93,20 +93,20 @@ describe( "mediaUploader", () => {
       const options = { api_token: "test-token" };
       const realm = {};
 
-      const result = await uploadObservationMedia( observation, options, realm );
+      const result = await uploadObservationMedia(observation, options, realm);
 
-      expect( createOrUpdateEvidence ).not.toHaveBeenCalled();
-      expect( result.modifiedObservationPhotos.length ).toBe( 1 );
-    } );
+      expect(createOrUpdateEvidence).not.toHaveBeenCalled();
+      expect(result.modifiedObservationPhotos.length).toBe(1);
+    });
 
-    it( "should handle missing photo objects gracefully", async () => {
+    it("should handle missing photo objects gracefully", async () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [
           {
             wasSynced: () => false,
             get photo() {
-              throw new Error( "No object with key photo-uuid-missing" );
+              throw new Error("No object with key photo-uuid-missing");
             },
           },
           {
@@ -119,15 +119,15 @@ describe( "mediaUploader", () => {
       const options = { api_token: "test-token" };
       const realm = {};
 
-      const result = await uploadObservationMedia( observation, options, realm );
+      const result = await uploadObservationMedia(observation, options, realm);
 
-      expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 1 );
-      expect( result.unsyncedObservationPhotos.length ).toBe( 2 );
-    } );
-  } );
+      expect(createOrUpdateEvidence).toHaveBeenCalledTimes(1);
+      expect(result.unsyncedObservationPhotos.length).toBe(2);
+    });
+  });
 
-  describe( "attachMediaToObservation", () => {
-    it( "should attach photos and sounds to an observation", async () => {
+  describe("attachMediaToObservation", () => {
+    it("should attach photos and sounds to an observation", async () => {
       const observationUUID = "obs-uuid-123";
       const mediaItems = {
         unsyncedObservationPhotos: [
@@ -143,49 +143,49 @@ describe( "mediaUploader", () => {
       const options = { api_token: "test-token" };
       const realm = {};
 
-      await attachMediaToObservation( observationUUID, mediaItems, options, realm );
+      await attachMediaToObservation(observationUUID, mediaItems, options, realm);
 
-      expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 3 );
+      expect(createOrUpdateEvidence).toHaveBeenCalledTimes(3);
 
-      expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
+      expect(mockedPrepareMediaForUpload).toHaveBeenCalledWith(
         mediaItems.unsyncedObservationPhotos[0],
         "ObservationPhoto",
         "attach",
         observationUUID,
       );
 
-      expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
+      expect(mockedPrepareMediaForUpload).toHaveBeenCalledWith(
         mediaItems.unsyncedObservationSounds[0],
         "ObservationSound",
         "attach",
         observationUUID,
       );
 
-      expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
+      expect(mockedPrepareMediaForUpload).toHaveBeenCalledWith(
         mediaItems.modifiedObservationPhotos[0],
         "ObservationPhoto",
         "update",
         observationUUID,
       );
 
-      expect( mockedCreateOrUpdateEvidence ).toHaveBeenCalledWith(
+      expect(mockedCreateOrUpdateEvidence).toHaveBeenCalledWith(
         inatjs.observation_photos.create,
-        expect.any( Object ),
+        expect.any(Object),
         options,
       );
-      expect( mockedCreateOrUpdateEvidence ).toHaveBeenCalledWith(
+      expect(mockedCreateOrUpdateEvidence).toHaveBeenCalledWith(
         inatjs.observation_sounds.create,
-        expect.any( Object ),
+        expect.any(Object),
         options,
       );
-      expect( mockedCreateOrUpdateEvidence ).toHaveBeenCalledWith(
+      expect(mockedCreateOrUpdateEvidence).toHaveBeenCalledWith(
         inatjs.observation_photos.update,
-        expect.any( Object ),
+        expect.any(Object),
         options,
       );
-    } );
+    });
 
-    it( "should handle empty media arrays", async () => {
+    it("should handle empty media arrays", async () => {
       const observationUUID = "obs-uuid-123";
       const mediaItems = {
         unsyncedObservationPhotos: [],
@@ -195,14 +195,14 @@ describe( "mediaUploader", () => {
       const options = { api_token: "test-token" };
       const realm = {};
 
-      await attachMediaToObservation( observationUUID, mediaItems, options, realm );
+      await attachMediaToObservation(observationUUID, mediaItems, options, realm);
 
-      expect( createOrUpdateEvidence ).not.toHaveBeenCalled();
-    } );
-  } );
+      expect(createOrUpdateEvidence).not.toHaveBeenCalled();
+    });
+  });
 
-  describe( "filterMediaForUpload", () => {
-    it( "should correctly filter media for upload", async () => {
+  describe("filterMediaForUpload", () => {
+    it("should correctly filter media for upload", async () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [
@@ -226,16 +226,16 @@ describe( "mediaUploader", () => {
       const options = { api_token: "test-token" };
       const realm = {};
 
-      const result = await uploadObservationMedia( observation, options, realm );
+      const result = await uploadObservationMedia(observation, options, realm);
 
-      expect( result.unsyncedObservationPhotos.length ).toBe( 1 );
-      expect( result.modifiedObservationPhotos.length ).toBe( 1 );
-      expect( result.unsyncedObservationSounds.length ).toBe( 1 );
-    } );
-  } );
+      expect(result.unsyncedObservationPhotos.length).toBe(1);
+      expect(result.modifiedObservationPhotos.length).toBe(1);
+      expect(result.unsyncedObservationSounds.length).toBe(1);
+    });
+  });
 
-  describe( "progress tracking", () => {
-    it( "should track progress for upload evidence operations", async () => {
+  describe("progress tracking", () => {
+    it("should track progress for upload evidence operations", async () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [
@@ -249,16 +249,16 @@ describe( "mediaUploader", () => {
         attached: jest.fn(),
         uploaded: jest.fn(),
       };
-      mockedTrackEvidenceUpload.mockReturnValue( mockProgress );
+      mockedTrackEvidenceUpload.mockReturnValue(mockProgress);
 
-      await uploadObservationMedia( observation, options, realm );
+      await uploadObservationMedia(observation, options, realm);
 
-      expect( trackEvidenceUpload ).toHaveBeenCalledWith( "obs-uuid-123" );
-      expect( mockProgress.uploaded ).toHaveBeenCalled();
-      expect( mockProgress.attached ).not.toHaveBeenCalled();
-    } );
+      expect(trackEvidenceUpload).toHaveBeenCalledWith("obs-uuid-123");
+      expect(mockProgress.uploaded).toHaveBeenCalled();
+      expect(mockProgress.attached).not.toHaveBeenCalled();
+    });
 
-    it( "should track progress for attach operations", async () => {
+    it("should track progress for attach operations", async () => {
       const observationUUID = "obs-uuid-123";
       const mediaItems = {
         unsyncedObservationPhotos: [
@@ -273,17 +273,17 @@ describe( "mediaUploader", () => {
         attached: jest.fn(),
         uploaded: jest.fn(),
       };
-      mockedTrackEvidenceUpload.mockReturnValue( mockProgress );
+      mockedTrackEvidenceUpload.mockReturnValue(mockProgress);
 
-      await attachMediaToObservation( observationUUID, mediaItems, options, realm );
+      await attachMediaToObservation(observationUUID, mediaItems, options, realm);
 
-      expect( trackEvidenceUpload ).toHaveBeenCalledWith( "obs-uuid-123" );
-      expect( mockProgress.attached ).toHaveBeenCalled();
-    } );
-  } );
+      expect(trackEvidenceUpload).toHaveBeenCalledWith("obs-uuid-123");
+      expect(mockProgress.attached).toHaveBeenCalled();
+    });
+  });
 
-  describe( "error handling", () => {
-    it( "should handle API errors gracefully", async () => {
+  describe("error handling", () => {
+    it("should handle API errors gracefully", async () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [
@@ -293,13 +293,13 @@ describe( "mediaUploader", () => {
       };
       const options = { api_token: "test-token" };
       const realm = {};
-      mockedCreateOrUpdateEvidence.mockRejectedValue( new Error( "API Error" ) );
+      mockedCreateOrUpdateEvidence.mockRejectedValue(new Error("API Error"));
 
-      await expect( uploadObservationMedia( observation, options, realm ) )
-        .rejects.toThrow( "API Error" );
-    } );
+      await expect(uploadObservationMedia(observation, options, realm))
+        .rejects.toThrow("API Error");
+    });
 
-    it( "should filter out null photos", async () => {
+    it("should filter out null photos", async () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [
@@ -313,10 +313,10 @@ describe( "mediaUploader", () => {
       const options = { api_token: "test-token" };
       const realm = {};
 
-      const result = await uploadObservationMedia( observation, options, realm );
+      const result = await uploadObservationMedia(observation, options, realm);
 
-      expect( createOrUpdateEvidence ).not.toHaveBeenCalled();
-      expect( result.unsyncedObservationPhotos.length ).toBe( 1 );
-    } );
-  } );
-} );
+      expect(createOrUpdateEvidence).not.toHaveBeenCalled();
+      expect(result.unsyncedObservationPhotos.length).toBe(1);
+    });
+  });
+});

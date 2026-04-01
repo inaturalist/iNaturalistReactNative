@@ -11,29 +11,29 @@ interface Props {
   explore?: boolean;
 }
 
-const InfiniteScrollLoadingWheel = ( {
+const InfiniteScrollLoadingWheel = ({
   hideLoadingWheel,
   isConnected = true,
   layout,
   explore = false,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   const loadingWheelClass = explore
     ? "h-[128px] py-16"
     : "h-64 py-16";
-  if ( hideLoadingWheel ) {
+  if (hideLoadingWheel) {
     return <View className={loadingWheelClass} testID="InfiniteScrollLoadingWheel.footerView" />;
   }
   return (
-    <View className={classnames( loadingWheelClass, {
+    <View className={classnames(loadingWheelClass, {
       "border-t border-lightGray": layout === "list",
-    } )}
+    })}
     >
       {isConnected === false
         ? (
           <Body3 className="text-center">
-            {t( "An-Internet-connection-is-required" )}
+            {t("An-Internet-connection-is-required")}
           </Body3>
         )
         : (

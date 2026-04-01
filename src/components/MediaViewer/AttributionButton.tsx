@@ -12,19 +12,19 @@ interface Props {
   optionalClasses?: string;
 }
 
-const AttributionButton = ( {
+const AttributionButton = ({
   attribution,
   licenseCode,
   optionalClasses,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const usableAttribution = attribution || t( "all-rights-reserved" );
+}: Props) => {
+  const { t } = useTranslation();
+  const usableAttribution = attribution || t("all-rights-reserved");
   return (
     <TransparentCircleButton
       testID="AttributionButton"
-      onPress={( ) => Alert.alert( t( "Copyright" ), usableAttribution )}
+      onPress={() => Alert.alert(t("Copyright"), usableAttribution)}
       icon={
-        licenseCode?.match( /^cc/ )
+        licenseCode?.match(/^cc/)
           ? "creative-commons"
           : "copyright"
       }

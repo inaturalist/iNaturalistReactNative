@@ -17,19 +17,19 @@ export interface Props {
   upperRight?: React.ReactNode;
 }
 
-const TaxonGridItem = ( {
+const TaxonGridItem = ({
   headerText,
   showSpeciesSeenCheckmark = false,
   style,
   taxon,
   upperRight,
-}: Props ) => {
-  const navigation = useNavigation( );
-  const { t } = useTranslation( );
-  const currentUser = useCurrentUser( );
-  const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+}: Props) => {
+  const navigation = useNavigation();
+  const { t } = useTranslation();
+  const currentUser = useCurrentUser();
+  const accessibleName = accessibleTaxonName(taxon, currentUser, t);
   const { isLargeFontScale } = useFontScale();
-  const route = useRoute( );
+  const route = useRoute();
 
   const source = {
     uri: Photo.displayLocalOrRemoteMediumPhoto(
@@ -45,14 +45,14 @@ const TaxonGridItem = ( {
     <Pressable
       accessibilityRole="button"
       testID={`TaxonGridItem.Pressable.${taxon.id}`}
-      onPress={( ) => (
+      onPress={() => (
         // Again, not sure how to placate TypeScript w/ React Navigation
-        navigation.navigate( {
+        navigation.navigate({
           // Ensure button mashing doesn't open multiple TaxonDetails instances
           key: `${route.key}-TaxonGridItem-TaxonDetails-${taxon.id}`,
           name: "TaxonDetails",
           params: { id: taxon.id },
-        } )
+        })
       )}
       accessibilityLabel={accessibleName}
     >

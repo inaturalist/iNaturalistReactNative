@@ -23,16 +23,16 @@ interface Props {
   justFinishedSignup: boolean;
 }
 
-const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSignup }:
-  Props ): Node => {
+const MyObservationsEmptySimple = ({ currentUser, isConnected, justFinishedSignup }:
+  Props): Node => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const navToARCamera = ( ) => {
-    navigation.navigate( "NoBottomTabStackNavigator", {
+  const navToARCamera = () => {
+    navigation.navigate("NoBottomTabStackNavigator", {
       screen: "Camera",
       params: { camera: "AI" },
-    } );
+    });
   };
 
   return (
@@ -52,7 +52,7 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
               testID="use-iNaturalist-intro-text"
               className="mb-8 text-center"
             >
-              {t( "Use-iNaturalist-to-identify-any-living-thing" )}
+              {t("Use-iNaturalist-to-identify-any-living-thing")}
             </Heading2>
           </Pressable>
           <View className="relative w-[141px] self-center">
@@ -60,7 +60,7 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
             <Arrow className="absolute right-[-20px] top-[-23px]" />
             <GradientButton
               clas
-              accessibilityLabel={t( "Add-observations" )}
+              accessibilityLabel={t("Add-observations")}
               sizeClassName="w-[141px] h-[141px] self-center"
               onPress={navToARCamera}
               iconSize={96}

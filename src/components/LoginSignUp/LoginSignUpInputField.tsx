@@ -19,7 +19,7 @@ const OUTLINE_STYLE = {
   borderRadius: 8,
 };
 
-const LoginSignUpInputField = ( {
+const LoginSignUpInputField = ({
   accessibilityLabel,
   autoComplete,
   headerText,
@@ -30,7 +30,7 @@ const LoginSignUpInputField = ( {
   secureTextEntry = false,
   testID,
   textContentType,
-}: Props ) => (
+}: Props) => (
   <View className="mx-2 mt-[20px]">
     <Heading4 className="color-white mb-[12px]">
       {headerText}
@@ -43,13 +43,13 @@ const LoginSignUpInputField = ( {
       className="h-[45px]"
       contentStyle={CONTENT_STYLE}
       outlineStyle={OUTLINE_STYLE}
-      activeOutlineColor={String( colors?.inatGreen )}
+      activeOutlineColor={String(colors?.inatGreen)}
       inputMode={inputMode}
       keyboardType={keyboardType}
       mode="outlined"
       onChangeText={onChangeText}
       secureTextEntry={secureTextEntry}
-      selectionColor={String( colors?.darkGray )}
+      selectionColor={String(colors?.darkGray)}
       spellCheck={false}
       testID={testID}
       textContentType={textContentType}

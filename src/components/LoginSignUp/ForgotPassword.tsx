@@ -14,19 +14,19 @@ import ForgotPasswordForm from "./ForgotPasswordForm";
 import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
-const ForgotPassword = ( ) => {
-  const navigation = useNavigation( );
-  const [showSheet, setShowSheet] = useState( false );
-  const { keyboardShown } = useKeyboardInfo( );
+const ForgotPassword = () => {
+  const navigation = useNavigation();
+  const [showSheet, setShowSheet] = useState(false);
+  const { keyboardShown } = useKeyboardInfo();
 
-  const reset = useCallback( async ( email: string ) => {
-    await resetPassword( email );
-    setShowSheet( true );
-    Keyboard.dismiss( );
-  }, [setShowSheet] );
+  const reset = useCallback(async (email: string) => {
+    await resetPassword(email);
+    setShowSheet(true);
+    Keyboard.dismiss();
+  }, [setShowSheet]);
 
   const blurFields = () => {
-    Keyboard.dismiss( );
+    Keyboard.dismiss();
   };
 
   return (
@@ -34,21 +34,21 @@ const ForgotPassword = ( ) => {
       <View>
         {showSheet && (
           <WarningSheet
-            onPressClose={( ) => setShowSheet( false )}
+            onPressClose={() => setShowSheet(false)}
             confirm={openInbox}
-            headerText={t( "CHECK-YOUR-EMAIL" )}
-            text={t( "If-an-account-with-that-email-exists" )}
-            buttonText={t( "OPEN-EMAIL" )}
-            secondButtonText={t( "BACK-TO-LOGIN" )}
-            handleSecondButtonPress={( ) => {
-              setShowSheet( false );
-              navigation.navigate( "LoginStackNavigator", { screen: "Login" } );
+            headerText={t("CHECK-YOUR-EMAIL")}
+            text={t("If-an-account-with-that-email-exists")}
+            buttonText={t("OPEN-EMAIL")}
+            secondButtonText={t("BACK-TO-LOGIN")}
+            handleSecondButtonPress={() => {
+              setShowSheet(false);
+              navigation.navigate("LoginStackNavigator", { screen: "Login" });
             }}
             buttonType="focus"
             loading={false}
           />
         )}
-        <LoginSignUpWrapper backgroundSource={require( "images/background/butterfly.jpg" )}>
+        <LoginSignUpWrapper backgroundSource={require("images/background/butterfly.jpg")}>
           <Header hideHeader={keyboardShown} />
           <ForgotPasswordForm reset={reset} />
         </LoginSignUpWrapper>

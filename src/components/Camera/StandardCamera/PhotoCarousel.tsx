@@ -25,7 +25,7 @@ interface Props {
   isTablet?: boolean;
   rotation?: SharedValue<number>;
   photoUris: string[];
-  onDelete: ( _uri: string ) => void;
+  onDelete: (_uri: string) => void;
 }
 
 export const SMALL_PHOTO_DIM = 42;
@@ -46,7 +46,7 @@ const LARGE_PHOTO_CLASSES = [
   "m-[8.5px]",
 ] as const;
 
-const PhotoCarousel = ( {
+const PhotoCarousel = ({
   takingPhoto,
   isLandscapeMode,
   isLargeScreen,
@@ -54,11 +54,11 @@ const PhotoCarousel = ( {
   rotation,
   photoUris,
   onDelete,
-}: Props ) => {
-  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
-  const { t } = useTranslation( );
-  const [deletePhotoMode, setDeletePhotoMode] = useState( false );
-  const [tappedPhotoIndex, setTappedPhotoIndex] = useState( -1 );
+}: Props) => {
+  const deletePhotoFromObservation = useStore(state => state.deletePhotoFromObservation);
+  const { t } = useTranslation();
+  const [deletePhotoMode, setDeletePhotoMode] = useState(false);
+  const [tappedPhotoIndex, setTappedPhotoIndex] = useState(-1);
   const photoClasses = isLargeScreen
     ? LARGE_PHOTO_CLASSES
     : SMALL_PHOTO_CLASSES;
@@ -71,18 +71,18 @@ const PhotoCarousel = ( {
 
   // I tried passing this in as a prop but the animation wasn't as smooth
   const animatedStyle = useAnimatedStyle(
-    () => ( {
+    () => ({
       transform: [
         {
           rotateZ: rotation
-            ? withTiming( `${-1 * rotation.get( )}deg` )
+            ? withTiming(`${-1 * rotation.get()}deg`)
             : "0",
         },
       ],
-    } ),
+    }),
   );
 
-  const renderSkeleton = useCallback( ( ) => ( takingPhoto
+  const renderSkeleton = useCallback(() => (takingPhoto
     ? (
       <View
         className={classnames(
@@ -103,34 +103,34 @@ const PhotoCarousel = ( {
         </View>
       </View>
     )
-    : null ), [
+    : null), [
     isTablet,
     isLandscapeMode,
     photoClasses,
     takingPhoto,
-  ] );
+  ]);
 
-  const showDeletePhotoMode = useCallback( ( ) => {
-    if ( deletePhotoFromObservation ) {
-      setDeletePhotoMode( mode => !mode );
+  const showDeletePhotoMode = useCallback(() => {
+    if (deletePhotoFromObservation) {
+      setDeletePhotoMode(mode => !mode);
     }
-  }, [deletePhotoFromObservation] );
+  }, [deletePhotoFromObservation]);
 
-  const viewPhotoAtIndex = useCallback( ( index: number ) => {
-    setTappedPhotoIndex( index );
+  const viewPhotoAtIndex = useCallback((index: number) => {
+    setTappedPhotoIndex(index);
   }, [
     setTappedPhotoIndex,
-  ] );
+  ]);
 
-  const renderPhotoOrEvidenceButton = useCallback( ( {
+  const renderPhotoOrEvidenceButton = useCallback(({
     item: photoUri,
     index,
-  } ) => (
+  }) => (
     <>
-      {index === 0 && renderSkeleton( )}
+      {index === 0 && renderSkeleton()}
       <Animated.View style={!isTablet && animatedStyle}>
         <View
-          className={classnames( IMAGE_CONTAINER_CLASSES )}
+          className={classnames(IMAGE_CONTAINER_CLASSES)}
         >
           <View
             testID="PhotoCarousel.photo"
@@ -160,11 +160,11 @@ const PhotoCarousel = ( {
                         color={colors.white}
                         backgroundColor="rgba(0, 0, 0, 0.5)"
                         testID={`PhotoCarousel.deletePhoto.${photoUri}`}
-                        accessibilityLabel={t( "Delete-photo" )}
-                        onPress={( ) => {
-                          onDelete( photoUri );
-                          if ( photoUris.length === 1 && deletePhotoMode ) {
-                            setDeletePhotoMode( false );
+                        accessibilityLabel={t("Delete-photo")}
+                        onPress={() => {
+                          onDelete(photoUri);
+                          if (photoUris.length === 1 && deletePhotoMode) {
+                            setDeletePhotoMode(false);
                           }
                         }}
                       />
@@ -173,10 +173,10 @@ const PhotoCarousel = ( {
                   : (
                     <Pressable
                       accessibilityRole="button"
-                      accessibilityLabel={t( "View-photo" )}
+                      accessibilityLabel={t("View-photo")}
                       testID={`PhotoCarousel.displayPhoto.${photoUri}`}
                       onLongPress={showDeletePhotoMode}
-                      onPress={( ) => viewPhotoAtIndex( index )}
+                      onPress={() => viewPhotoAtIndex(index)}
                       className="w-full h-full"
                     />
                   )
@@ -197,7 +197,7 @@ const PhotoCarousel = ( {
     showDeletePhotoMode,
     t,
     viewPhotoAtIndex,
-  ] );
+  ]);
 
   const photoPreviewsList = (
     <FlatList
@@ -205,7 +205,7 @@ const PhotoCarousel = ( {
       renderItem={renderPhotoOrEvidenceButton}
       horizontal={!isTablet || !isLandscapeMode}
       ListEmptyComponent={takingPhoto
-        ? renderSkeleton( )
+        ? renderSkeleton()
         : null}
     />
   );
@@ -220,17 +220,17 @@ const PhotoCarousel = ( {
   // state, and use that to position another container inside the modal in
   // exactly the same place
 
-  const containerRef = useRef<View>( undefined );
+  const containerRef = useRef<View>(undefined);
   const [containerPos, setContainerPos] = useState<{
     x: number | null;
     y: number | null;
     w?: number;
     h?: number;
-  }>( { x: null, y: null } );
+  }>({ x: null, y: null });
   const containerStyle = {
     height: isTablet && isLandscapeMode
-      ? photoUris.length * ( photoDim + photoGutter ) + photoGutter
-      : photoDim + ( photoGutter * 2 ),
+      ? photoUris.length * (photoDim + photoGutter) + photoGutter
+      : photoDim + (photoGutter * 2),
     padding: photoGutter / 2,
   };
 
@@ -241,13 +241,13 @@ const PhotoCarousel = ( {
         // When the container gets rendered, we store its position on screen
         // in state so we can lay out content inside the modal in exactly the
         // same position
-        ( ) => containerRef?.current?.measure(
-          ( _x, _y, w, h, pageX, pageY ) => setContainerPos( {
+        () => containerRef?.current?.measure(
+          (_x, _y, w, h, pageX, pageY) => setContainerPos({
             x: pageX,
             y: pageY,
             w,
             h,
-          } ),
+          }),
         )
       }
       // Dynamic calculation of these values kind of just doesn't work with tailwind.
@@ -262,7 +262,7 @@ const PhotoCarousel = ( {
           ? (
             <Modal
               visible
-              onBackdropPress={() => setDeletePhotoMode( false )}
+              onBackdropPress={() => setDeletePhotoMode(false)}
               backdropOpacity={0}
               // We want this to take over the whole screen
               // eslint-disable-next-line react-native/no-inline-styles
@@ -288,13 +288,13 @@ const PhotoCarousel = ( {
       <MediaViewerModal
         editable
         showModal={tappedPhotoIndex >= 0}
-        onClose={( ) => setTappedPhotoIndex( -1 )}
-        onDeletePhoto={async ( photoUri: string ) => {
-          await onDelete( photoUri );
-          setTappedPhotoIndex( tappedPhotoIndex - 1 );
+        onClose={() => setTappedPhotoIndex(-1)}
+        onDeletePhoto={async (photoUri: string) => {
+          await onDelete(photoUri);
+          setTappedPhotoIndex(tappedPhotoIndex - 1);
         }}
         uri={photoUris[tappedPhotoIndex]}
-        photos={photoUris.map( uri => ( { url: uri } ) )}
+        photos={photoUris.map(uri => ({ url: uri }))}
       />
     </View>
   );

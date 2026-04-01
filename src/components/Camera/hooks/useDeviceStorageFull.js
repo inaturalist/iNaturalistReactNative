@@ -15,21 +15,21 @@ import { useTranslation } from "sharedHooks";
 
 const MIN_DEVICE_STORAGE = 200_000_000;
 
-const useDeviceStorageFull = ( ) => {
+const useDeviceStorageFull = () => {
   const { t } = useTranslation();
-  const [deviceStorageFull, setDeviceStorageFull] = useState( false );
+  const [deviceStorageFull, setDeviceStorageFull] = useState(false);
 
-  const showStorageFullAlert = useCallback( () => Alert.alert(
-    t( "Device-storage-full" ),
-    t( "Device-storage-full-description" ),
-    [{ text: t( "OK" ) }],
-  ), [t] );
+  const showStorageFullAlert = useCallback(() => Alert.alert(
+    t("Device-storage-full"),
+    t("Device-storage-full-description"),
+    [{ text: t("OK") }],
+  ), [t]);
 
-  DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
-    if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
-      setDeviceStorageFull( true );
+  DeviceInfo.getFreeDiskStorage().then(freeDiskStorage => {
+    if (freeDiskStorage <= MIN_DEVICE_STORAGE) {
+      setDeviceStorageFull(true);
     }
-  } );
+  });
 
   return {
     deviceStorageFull,

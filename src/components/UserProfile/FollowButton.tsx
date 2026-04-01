@@ -11,15 +11,15 @@ interface Props {
   loading: boolean;
 }
 
-const FollowButton = ( {
+const FollowButton = ({
   following, follow, unfollow, loading,
-}: Props ) => {
-  if ( following ) {
+}: Props) => {
+  if (following) {
     return (
       <Button
         level="neutral"
         className="grow"
-        text={t( "UNFOLLOW" )}
+        text={t("UNFOLLOW")}
         onPress={unfollow}
         testID="UserProfile.unfollowButton"
       />
@@ -30,7 +30,7 @@ const FollowButton = ( {
       level="primary"
       className="grow"
       loading={loading}
-      text={t( "FOLLOW" )}
+      text={t("FOLLOW")}
       onPress={follow}
       testID="UserProfile.followButton"
     />

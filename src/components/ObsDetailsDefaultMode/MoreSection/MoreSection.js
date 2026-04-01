@@ -17,14 +17,14 @@ type Props = {
   observation: Object
 }
 
-const MoreSection = ( { observation }: Props ): Node => {
+const MoreSection = ({ observation }: Props): Node => {
   const observationUUID = observation?.uuid;
 
-  if ( !observation ) return null;
+  if (!observation) return null;
 
   return (
     <View className="m-4 mb-8">
-      <Heading3 className="mt-5 mb-1">{t( "More" )}</Heading3>
+      <Heading3 className="mt-5 mb-1">{t("More")}</Heading3>
       <ProjectButton observation={observation} />
       <DQAButton observationUUID={observationUUID} />
       <ViewInBrowserButton id={observation.id} />

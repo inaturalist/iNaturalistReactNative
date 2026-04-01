@@ -7,10 +7,10 @@ const fetchAvailableLocales = async (
   opts: Record<string, unknown> = {},
 ): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
   try {
-    const response = await inatjs.translations.locales( params, opts );
-    if ( !response ) { return null; }
+    const response = await inatjs.translations.locales(params, opts);
+    if (!response) { return null; }
     return response?.results;
-  } catch ( e ) {
+  } catch (e) {
     return handleError(
       e as ErrorWithResponse,
       { context: { functionName: "fetchAvailableLocales", opts } },

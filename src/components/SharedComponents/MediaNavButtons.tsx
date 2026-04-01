@@ -43,7 +43,7 @@ interface Props {
   rotatableAnimatedStyle?: AnimatedStyle;
 }
 
-const MediaNavButtons = ( {
+const MediaNavButtons = ({
   captureButton,
   closeHidden,
   confirmHidden,
@@ -52,7 +52,7 @@ const MediaNavButtons = ( {
   onClose,
   onConfirm,
   rotatableAnimatedStyle,
-}: Props ) => (
+}: Props) => (
   <View
     className="h-32 flex-row justify-between items-center bg-black"
     testID="MediaNavButtons"
@@ -62,11 +62,11 @@ const MediaNavButtons = ( {
       : (
         <RotatableIconWrapper
           rotatableAnimatedStyle={rotatableAnimatedStyle}
-          containerClass={classnames( CLOSE_CLASSES, SIDE_BUTTON_CLASSES )}
+          containerClass={classnames(CLOSE_CLASSES, SIDE_BUTTON_CLASSES)}
         >
           <CloseButton
             handleClose={onClose}
-            buttonClassName={classnames( CLOSE_CLASSES, "bg-[#232323]" )}
+            buttonClassName={classnames(CLOSE_CLASSES, "bg-[#232323]")}
           />
         </RotatableIconWrapper>
       )}
@@ -75,7 +75,7 @@ const MediaNavButtons = ( {
       ? (
         <RotatableIconWrapper
           rotatableAnimatedStyle={rotatableAnimatedStyle}
-          containerClass={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )}
+          containerClass={classnames(CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES)}
         >
           <GreenCheckmark
             disabled={disabled}
@@ -84,7 +84,7 @@ const MediaNavButtons = ( {
         </RotatableIconWrapper>
       )
       : (
-        <View className={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )} />
+        <View className={classnames(CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES)} />
       )}
   </View>
 );

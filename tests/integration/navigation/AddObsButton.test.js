@@ -8,17 +8,17 @@ import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 const actor = userEvent.setup();
 
 const mockDispatch = jest.fn();
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
-    useNavigation: () => ( {
+    useNavigation: () => ({
       dispatch: mockDispatch,
-    } ),
+    }),
   };
-} );
+});
 
-const resetNavigation = ( name, params ) => ( {
+const resetNavigation = (name, params) => ({
   payload: {
     index: 0,
     routes: [{
@@ -33,100 +33,100 @@ const resetNavigation = ( name, params ) => ( {
     }],
   },
   type: "RESET",
-} );
+});
 
-beforeAll( ( ) => {
-  jest.useFakeTimers( );
-} );
+beforeAll(() => {
+  jest.useFakeTimers();
+});
 
-const longPress = async ( ) => {
+const longPress = async () => {
   const addObsButton = screen.getByLabelText(
-    i18next.t( "Add-observations" ),
+    i18next.t("Add-observations"),
   );
-  expect( addObsButton ).toBeTruthy( );
-  await actor.longPress( addObsButton );
+  expect(addObsButton).toBeTruthy();
+  await actor.longPress(addObsButton);
 };
 
-const showNoEvidenceOption = ( ) => {
+const showNoEvidenceOption = () => {
   const noEvidenceButton = screen.getByTestId(
-    i18next.t( "observe-without-evidence-button" ),
+    i18next.t("observe-without-evidence-button"),
   );
-  expect( noEvidenceButton ).toBeTruthy( );
+  expect(noEvidenceButton).toBeTruthy();
   return noEvidenceButton;
 };
 
-const regularPress = async ( ) => {
+const regularPress = async () => {
   const addObsButton = screen.getByLabelText(
-    i18next.t( "Add-observations" ),
+    i18next.t("Add-observations"),
   );
-  expect( addObsButton ).toBeTruthy( );
-  await actor.press( addObsButton );
+  expect(addObsButton).toBeTruthy();
+  await actor.press(addObsButton);
 };
 
-describe( "AddObsButton", ( ) => {
-  it( "navigates user to AI camera", async ( ) => {
-    renderComponent( <AddObsButton /> );
-    await regularPress( );
+describe("AddObsButton", () => {
+  it("navigates user to AI camera", async () => {
+    renderComponent(<AddObsButton />);
+    await regularPress();
 
-    expect( mockDispatch ).toHaveBeenCalledWith(
-      resetNavigation( "Camera", { camera: "AI", previousScreen: null } ),
+    expect(mockDispatch).toHaveBeenCalledWith(
+      resetNavigation("Camera", { camera: "AI", previousScreen: null }),
     );
-  } );
+  });
 
-  it( "opens model on long press", async ( ) => {
-    renderComponent( <AddObsButton /> );
-    await longPress( );
-    showNoEvidenceOption( );
-  } );
-} );
+  it("opens model on long press", async () => {
+    renderComponent(<AddObsButton />);
+    await longPress();
+    showNoEvidenceOption();
+  });
+});
 
-describe( "with advanced user layout", ( ) => {
-  beforeEach( ( ) => {
-    setStoreStateLayout( {
+describe("with advanced user layout", () => {
+  beforeEach(() => {
+    setStoreStateLayout({
       isAllAddObsOptionsMode: true,
-    } );
-  } );
+    });
+  });
 
-  it( "opens AddObsBottomSheet", async ( ) => {
-    renderComponent( <AddObsButton /> );
-    await regularPress( );
-    showNoEvidenceOption( );
-  } );
+  it("opens AddObsBottomSheet", async () => {
+    renderComponent(<AddObsButton />);
+    await regularPress();
+    showNoEvidenceOption();
+  });
 
-  it( "navigates user to obs edit with no evidence", async ( ) => {
-    renderComponent( <AddObsButton /> );
-    await regularPress( );
+  it("navigates user to obs edit with no evidence", async () => {
+    renderComponent(<AddObsButton />);
+    await regularPress();
 
-    const noEvidenceButton = showNoEvidenceOption( );
-    await actor.press( noEvidenceButton );
+    const noEvidenceButton = showNoEvidenceOption();
+    await actor.press(noEvidenceButton);
 
-    expect( mockDispatch ).toHaveBeenCalledWith(
-      resetNavigation( "ObsEdit", { previousScreen: null } ),
+    expect(mockDispatch).toHaveBeenCalledWith(
+      resetNavigation("ObsEdit", { previousScreen: null }),
     );
-  } );
+  });
 
-  it( "does not open model on long press", async ( ) => {
-    renderComponent( <AddObsButton /> );
-    await longPress( );
+  it("does not open model on long press", async () => {
+    renderComponent(<AddObsButton />);
+    await longPress();
 
     const noEvidenceButton = screen.queryByLabelText(
-      i18next.t( "Observation-with-no-evidence" ),
+      i18next.t("Observation-with-no-evidence"),
     );
-    expect( noEvidenceButton ).toBeFalsy( );
-  } );
+    expect(noEvidenceButton).toBeFalsy();
+  });
 
-  describe( "with advanced AICamera-only setting", ( ) => {
-    beforeEach( ( ) => {
-      setStoreStateLayout( {
+  describe("with advanced AICamera-only setting", () => {
+    beforeEach(() => {
+      setStoreStateLayout({
         isDefaultMode: false,
         isAllAddObsOptionsMode: false,
-      } );
-    } );
+      });
+    });
 
-    it( "opens model on long press", async ( ) => {
-      renderComponent( <AddObsButton /> );
-      await longPress( );
-      showNoEvidenceOption( );
-    } );
-  } );
-} );
+    it("opens model on long press", async () => {
+      renderComponent(<AddObsButton />);
+      await longPress();
+      showNoEvidenceOption();
+    });
+  });
+});

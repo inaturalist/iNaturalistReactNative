@@ -19,17 +19,17 @@ import { getShadow } from "styles/global";
 import EmptySearchResults from "./EmptySearchResults";
 import ExploreSearchHeader from "./ExploreSearchHeader";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
-} );
+});
 
 type Props = {
   closeModal: Function,
   updateUser: Function
 };
 
-const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
-  const [userQuery, setUserQuery] = useState( "" );
+const ExploreUserSearch = ({ closeModal, updateUser }: Props): Node => {
+  const [userQuery, setUserQuery] = useState("");
   const { t } = useTranslation();
   const currentUser = useCurrentUser();
 
@@ -46,19 +46,19 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     ),
   );
 
-  const onUserSelected = useCallback( async ( user, exclude ) => {
-    if ( !user.id && !user.login ) {
+  const onUserSelected = useCallback(async (user, exclude) => {
+    if (!user.id && !user.login) {
       // If both of those are missing, we can not query by user
       // TODO: user facing error message
       return;
     }
-    updateUser( user, exclude );
+    updateUser(user, exclude);
     closeModal();
-  }, [updateUser, closeModal] );
+  }, [updateUser, closeModal]);
 
   const resetUser = useCallback(
-    ( ) => {
-      updateUser( null );
+    () => {
+      updateUser(null);
       closeModal();
     },
     [updateUser, closeModal],
@@ -66,7 +66,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
 
   // TODO: pagination like in ExploreFlashList ?
 
-  const renderEmptyList = ( ) => (
+  const renderEmptyList = () => (
     <EmptySearchResults
       isLoading={isLoading}
       searchQuery={userQuery}
@@ -76,20 +76,20 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
 
   const buttons = [
     {
-      title: t( "BY-ME" ),
+      title: t("BY-ME"),
       onPress: () => {
-        if ( currentUser ) {
-          onUserSelected( currentUser );
+        if (currentUser) {
+          onUserSelected(currentUser);
         }
       },
       isPrimary: false,
       className: "w-1/2 mx-2",
     },
     {
-      title: t( "NOT-BY-ME" ),
+      title: t("NOT-BY-ME"),
       onPress: () => {
-        if ( currentUser ) {
-          onUserSelected( currentUser, true );
+        if (currentUser) {
+          onUserSelected(currentUser, true);
         }
       },
       isPrimary: false,
@@ -101,7 +101,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     <ViewWrapper>
       <ExploreSearchHeader
         closeModal={closeModal}
-        headerText={t( "SEARCH-USERS" )}
+        headerText={t("SEARCH-USERS")}
         resetFilters={resetUser}
         testID="ExploreUserSearch.close"
       />
@@ -125,7 +125,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
         ListEmptyComponent={renderEmptyList}
         users={userList}
         keyboardShouldPersistTaps="handled"
-        accessibilityLabel={t( "Select-user" )}
+        accessibilityLabel={t("Select-user")}
         onPress={onUserSelected}
       />
     </ViewWrapper>

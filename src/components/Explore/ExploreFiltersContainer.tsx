@@ -15,7 +15,7 @@ const ExploreFiltersContainerWithContext = () => {
   };
 
   const filterByIconicTaxonUnknown = () => {
-    console.log( " Not implemented in ExploreV2 yet" );
+    console.log(" Not implemented in ExploreV2 yet");
   };
 
   const updateTaxon = (
@@ -23,7 +23,7 @@ const ExploreFiltersContainerWithContext = () => {
       name: string;
     } | null,
   ) => {
-    console.log( " Not implemented in ExploreV2 yet", taxon );
+    console.log(" Not implemented in ExploreV2 yet", taxon);
   };
 
   const updateUser = (
@@ -31,11 +31,11 @@ const ExploreFiltersContainerWithContext = () => {
       login: string;
     } | null,
   ) => {
-    console.log( " Not implemented in ExploreV2 yet", user );
+    console.log(" Not implemented in ExploreV2 yet", user);
   };
 
-  const updateProject = ( project: ApiProject ) => {
-    console.log( " Not implemented in ExploreV2 yet", project );
+  const updateProject = (project: ApiProject) => {
+    console.log(" Not implemented in ExploreV2 yet", project);
   };
 
   return (

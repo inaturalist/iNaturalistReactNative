@@ -31,16 +31,16 @@ const DEFAULT_STATE = {
   newPhotoUris: [],
 };
 
-const removeObsSoundFromObservation = ( currentObservation, uri ) => {
-  if ( isEmpty( currentObservation ) ) { return []; }
+const removeObsSoundFromObservation = (currentObservation, uri) => {
+  if (isEmpty(currentObservation)) { return []; }
   const updatedObservation = currentObservation;
-  const obsSounds = Array.from( currentObservation?.observationSounds );
-  if ( obsSounds.length > 0 ) {
+  const obsSounds = Array.from(currentObservation?.observationSounds);
+  if (obsSounds.length > 0) {
     remove(
       obsSounds,
       obsSound => (
         obsSound.sound.file_url === uri
-        || Sound.getLocalSoundUri( obsSound.sound.file_url ) === uri
+        || Sound.getLocalSoundUri(obsSound.sound.file_url) === uri
       ),
     );
     updatedObservation.observationSounds = obsSounds;
@@ -49,11 +49,11 @@ const removeObsSoundFromObservation = ( currentObservation, uri ) => {
   return [currentObservation];
 };
 
-const observationToJSON = observation => ( observation instanceof Realm.Object
-  ? observation.toJSON( )
-  : observation );
+const observationToJSON = observation => (observation instanceof Realm.Object
+  ? observation.toJSON()
+  : observation);
 
-const updateObservationKeysWithState = ( keysAndValues, state ) => {
+const updateObservationKeysWithState = (keysAndValues, state) => {
   const {
     observations,
     currentObservation,
@@ -61,29 +61,29 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
   } = state;
   const updatedObservations = observations;
   const updatedObservation = {
-    ...observationToJSON( currentObservation ),
+    ...observationToJSON(currentObservation),
     ...keysAndValues,
   };
   updatedObservations[currentObservationIndex] = updatedObservation;
   return updatedObservations;
 };
 
-const createObservationFlowSlice = ( set, get ) => ( {
+const createObservationFlowSlice = (set, get) => ({
   ...DEFAULT_STATE,
-  deletePhotoFromObservation: uri => set( state => {
+  deletePhotoFromObservation: uri => set(state => {
     const newObservations = [...state.observations];
     let newObservation = null;
-    if ( newObservations.length > 0 ) {
+    if (newObservations.length > 0) {
       newObservation = newObservations[state.currentObservationIndex];
       const index = newObservation.observationPhotos.findIndex(
-        op => ( Photo.getLocalPhotoUri( op.photo?.localFilePath ) || op.photo?.url ) === uri,
+        op => (Photo.getLocalPhotoUri(op.photo?.localFilePath) || op.photo?.url) === uri,
       );
-      if ( index > -1 ) {
+      if (index > -1) {
         newObservation = {
           ...newObservation,
           observationPhotos: [
-            ...newObservation.observationPhotos.slice( 0, index ),
-            ...newObservation.observationPhotos.slice( index + 1 ),
+            ...newObservation.observationPhotos.slice(0, index),
+            ...newObservation.observationPhotos.slice(index + 1),
           ],
         };
         newObservations[state.currentObservationIndex] = newObservation;
@@ -91,15 +91,15 @@ const createObservationFlowSlice = ( set, get ) => ( {
     }
 
     return {
-      cameraUris: [...pull( state.cameraUris, uri )],
-      evidenceToAdd: [...pull( state.evidenceToAdd, uri )],
+      cameraUris: [...pull(state.cameraUris, uri)],
+      evidenceToAdd: [...pull(state.evidenceToAdd, uri)],
       observations: newObservations,
       currentObservation: newObservation
-        ? observationToJSON( newObservation )
+        ? observationToJSON(newObservation)
         : null,
     };
-  } ),
-  deleteSoundFromObservation: uri => set( state => {
+  }),
+  deleteSoundFromObservation: uri => set(state => {
     const newObservations = removeObsSoundFromObservation(
       state.observations[state.currentObservationIndex],
       uri,
@@ -109,45 +109,45 @@ const createObservationFlowSlice = ( set, get ) => ( {
       observations: newObservations,
       currentObservation: newObservation,
     };
-  } ),
-  resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
-  addCameraRollUris: uris => set( state => {
+  }),
+  resetObservationFlowSlice: () => set(DEFAULT_STATE),
+  addCameraRollUris: uris => set(state => {
     const savedUris = state.cameraRollUris;
     // A placeholder uri means we don't know the real URI, probably b/c we
     // only had write permission so we were able to write the photo to the
     // camera roll but not read anything about it. Keep in mind this is just
     // a hack around a bug in CameraRoll. See
     // patches/@react-native-camera-roll+camera-roll+7.5.2.patch
-    uris.forEach( uri => {
-      if ( uri && !uri.match( /placeholder/ ) ) savedUris.push( uri );
-    } );
+    uris.forEach(uri => {
+      if (uri && !uri.match(/placeholder/)) savedUris.push(uri);
+    });
 
-    return ( {
+    return ({
       cameraRollUris: savedUris,
       savingPhoto: false,
-    } );
-  } ),
-  setSavingPhoto: saving => set( { savingPhoto: saving } ),
-  setCameraState: options => set( state => ( {
+    });
+  }),
+  setSavingPhoto: saving => set({ savingPhoto: saving }),
+  setCameraState: options => set(state => ({
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     cameraUris:
       options?.cameraUris || state.cameraUris,
-  } ) ),
-  setCurrentObservationIndex: index => set( state => ( {
+  })),
+  setCurrentObservationIndex: index => set(state => ({
     currentObservationIndex: index,
-    currentObservation: observationToJSON( state.observations[index] ),
-  } ) ),
-  setGroupedPhotos: photos => set( {
+    currentObservation: observationToJSON(state.observations[index]),
+  })),
+  setGroupedPhotos: photos => set({
     groupedPhotos: photos,
-  } ),
-  setObservationMarkedAsViewedAt: date => set( {
+  }),
+  setObservationMarkedAsViewedAt: date => set({
     observationMarkedAsViewedAt: date,
-  } ),
-  setObservations: updatedObservations => set( state => ( {
-    observations: updatedObservations.map( observationToJSON ),
-    currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
-  } ) ),
-  setPhotoImporterState: options => set( state => ( {
+  }),
+  setObservations: updatedObservations => set(state => ({
+    observations: updatedObservations.map(observationToJSON),
+    currentObservation: observationToJSON(updatedObservations[state.currentObservationIndex]),
+  })),
+  setPhotoImporterState: options => set(state => ({
     photoLibraryUris: options?.photoLibraryUris || state.photoLibraryUris,
     savingPhoto: options?.savingPhoto || state.savingPhoto,
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
@@ -158,53 +158,53 @@ const createObservationFlowSlice = ( set, get ) => ( {
       || state.observations?.[state.currentObservationIndex],
     ),
     firstObservationDefaults: options?.firstObservationDefaults,
-  } ) ),
-  setSavedOrUploadedMultiObsFlow: ( ) => set( {
+  })),
+  setSavedOrUploadedMultiObsFlow: () => set({
     savedOrUploadedMultiObsFlow: true,
-  } ),
-  updateObservations: updatedObservations => set( state => ( {
-    observations: updatedObservations.map( observationToJSON ),
-    currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
-  } ) ),
-  updateObservationKeys: keysAndValues => set( state => ( {
-    observations: updateObservationKeysWithState( keysAndValues, state ),
+  }),
+  updateObservations: updatedObservations => set(state => ({
+    observations: updatedObservations.map(observationToJSON),
+    currentObservation: observationToJSON(updatedObservations[state.currentObservationIndex]),
+  })),
+  updateObservationKeys: keysAndValues => set(state => ({
+    observations: updateObservationKeysWithState(keysAndValues, state),
     currentObservation:
-      updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
+      updateObservationKeysWithState(keysAndValues, state)[state.currentObservationIndex],
     unsavedChanges: true,
-  } ) ),
+  })),
   // For situations where a consumer needs access to this part of state
   // immediately, not after a couple render cycles
-  getCurrentObservation: ( ) => get( ).currentObservation,
+  getCurrentObservation: () => get().currentObservation,
   // Prepare state for showing ObsEdit for a single observation
   prepareObsEdit: observation => {
-    get( ).resetObservationFlowSlice( );
-    get( ).updateObservations( [observation] );
+    get().resetObservationFlowSlice();
+    get().updateObservations([observation]);
   },
   prepareCamera: () => {
-    const existingPhotoUris = get( )
+    const existingPhotoUris = get()
       .currentObservation
       ?.observationPhotos
-      ?.map( op => ( op.photo.url || Photo.getLocalPhotoUri( op.photo.localFilePath ) ) ) || [];
-    return set( { evidenceToAdd: [], cameraUris: existingPhotoUris } );
+      ?.map(op => (op.photo.url || Photo.getLocalPhotoUri(op.photo.localFilePath))) || [];
+    return set({ evidenceToAdd: [], cameraUris: existingPhotoUris });
   },
-  incrementTotalSavedObservations: ( ) => set( state => {
+  incrementTotalSavedObservations: () => set(state => {
     const {
       totalSavedObservations: existingTotalSavedObservations,
     } = state;
 
-    return ( {
+    return ({
       totalSavedObservations: existingTotalSavedObservations + 1,
-    } );
-  } ),
-  setSentinelFileName: sentinelFileName => set( {
+    });
+  }),
+  setSentinelFileName: sentinelFileName => set({
     sentinelFileName,
-  } ),
-  setNewPhotoUris: newPhotoUris => set( {
+  }),
+  setNewPhotoUris: newPhotoUris => set({
     newPhotoUris,
-  } ),
-  setAICameraSuggestion: suggestion => set( {
+  }),
+  setAICameraSuggestion: suggestion => set({
     aICameraSuggestion: suggestion,
-  } ),
-} );
+  }),
+});
 
 export default createObservationFlowSlice;

@@ -1,8 +1,8 @@
 import { RadioButtonSheet } from "components/SharedComponents";
 import React from "react";
 
-const mockHandleClose = jest.fn( );
-const mockConfirm = jest.fn( );
+const mockHandleClose = jest.fn();
+const mockConfirm = jest.fn();
 const mockValues = [
   {
     value: "value 1",
@@ -16,8 +16,8 @@ const mockValues = [
   },
 ];
 
-describe( "RadioButtonSheet", () => {
-  it( "should not have accessibility errors", () => {
+describe("RadioButtonSheet", () => {
+  it("should not have accessibility errors", () => {
     const sheet = (
       <RadioButtonSheet
         onPressClose={mockHandleClose}
@@ -28,7 +28,7 @@ describe( "RadioButtonSheet", () => {
     );
 
     // TODO: this errors because RadioButton from react-native-paper is not accessible
-    console.log( "typeof sheet :>> ", typeof sheet );
+    console.log("typeof sheet :>> ", typeof sheet);
     // expect( sheet ).toBeAccessible();
-  } );
-} );
+  });
+});

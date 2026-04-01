@@ -17,22 +17,22 @@ const BACK_BUTTON_STYLE = {
   start: 11,
 } as const;
 
-const FullPageWebViewHeader = ( {
+const FullPageWebViewHeader = ({
   route,
   options,
-}: NativeStackHeaderProps ) => {
+}: NativeStackHeaderProps) => {
   const insets = useSafeAreaInsets();
 
   const getTitle = (): string | React.ReactNode => {
-    if ( options.headerTitle && typeof options.headerTitle !== "function" ) {
+    if (options.headerTitle && typeof options.headerTitle !== "function") {
       return options.headerTitle;
     }
 
-    if ( options.title ) {
+    if (options.title) {
       return options.title;
     }
 
-    return getHeaderTitle( options, route.name );
+    return getHeaderTitle(options, route.name);
   };
 
   return (
@@ -40,7 +40,7 @@ const FullPageWebViewHeader = ( {
       style={{
         ...HEADER_STYLE,
         ...options.headerStyle,
-        ...( options.headerShadowVisible && dropShadow ),
+        ...(options.headerShadowVisible && dropShadow),
         paddingTop: insets.top,
         paddingLeft: insets.left,
         paddingRight: insets.right,

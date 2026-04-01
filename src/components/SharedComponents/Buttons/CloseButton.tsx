@@ -7,14 +7,14 @@ import colors from "styles/tailwindColors";
 interface Props {
   buttonClassName?: string;
   darkGray?: boolean;
-  handleClose?: ( ) => void;
+  handleClose?: () => void;
   height?: number;
   icon?: string;
   size?: number;
   width?: number;
 }
 
-const CloseButton = ( {
+const CloseButton = ({
   buttonClassName,
   darkGray,
   handleClose,
@@ -22,8 +22,8 @@ const CloseButton = ( {
   icon,
   size,
   width,
-}: Props ) => {
-  const navigation = useNavigation( );
+}: Props) => {
+  const navigation = useNavigation();
 
   return (
     <INatIconButton
@@ -33,15 +33,15 @@ const CloseButton = ( {
       color={darkGray
         ? colors.darkGray
         : colors.white}
-      onPress={( ) => {
-        if ( handleClose ) {
-          handleClose( navigation );
+      onPress={() => {
+        if (handleClose) {
+          handleClose(navigation);
         } else {
-          navigation.goBack( );
+          navigation.goBack();
         }
       }}
-      accessibilityLabel={t( "Close" )}
-      accessibilityHint={t( "Navigates-to-previous-screen" )}
+      accessibilityLabel={t("Close")}
+      accessibilityHint={t("Navigates-to-previous-screen")}
       disabled={false}
       width={width}
       height={height}

@@ -3,24 +3,24 @@ import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
 import React from "react";
 import factory from "tests/factory";
 
-describe( "ObsGridItem", () => {
-  describe( "for an observation with a photo", ( ) => {
-    const observationWithPhoto = factory( "LocalObservation", {
-      observationPhotos: [factory( "LocalObservationPhoto" )],
-    } );
+describe("ObsGridItem", () => {
+  describe("for an observation with a photo", () => {
+    const observationWithPhoto = factory("LocalObservation", {
+      observationPhotos: [factory("LocalObservationPhoto")],
+    });
 
-    it( "should render", () => {
-      const photo = factory( "LocalPhoto", {
+    it("should render", () => {
+      const photo = factory("LocalPhoto", {
         url: "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
-      } );
-      const observationWithStablePhotoUrl = factory( "LocalObservation", {
+      });
+      const observationWithStablePhotoUrl = factory("LocalObservation", {
         uuid: "00000000-0000-0000-0000-000000000000",
         observationPhotos: [
-          factory( "LocalObservationPhoto", {
+          factory("LocalObservationPhoto", {
             photo,
-          } ),
+          }),
         ],
-      } );
+      });
       render(
         <ObsGridItem
           observation={observationWithStablePhotoUrl}
@@ -28,10 +28,10 @@ describe( "ObsGridItem", () => {
           photo={photo}
         />,
       );
-      expect( screen ).toMatchSnapshot();
-    } );
+      expect(screen).toMatchSnapshot();
+    });
 
-    it( "should have photo", async ( ) => {
+    it("should have photo", async () => {
       const photo = observationWithPhoto?.observationPhotos?.[0]?.photo
         || observationWithPhoto?.observation_photos?.[0]?.photo
         || null;
@@ -42,33 +42,33 @@ describe( "ObsGridItem", () => {
           photo={photo}
         />,
       );
-      expect( await screen.findByTestId( "ObsList.photo" ) ).toBeTruthy( );
-    } );
-  } );
+      expect(await screen.findByTestId("ObsList.photo")).toBeTruthy();
+    });
+  });
 
-  describe( "for an observation without a photo", ( ) => {
-    const observationWithoutPhoto = factory( "LocalObservation", {
+  describe("for an observation without a photo", () => {
+    const observationWithoutPhoto = factory("LocalObservation", {
       uuid: "00000000-0000-0000-0000-000000000000",
-    } );
+    });
 
-    it( "should render", ( ) => {
+    it("should render", () => {
       render(
         <ObsGridItem
           observation={observationWithoutPhoto}
           uploadState={{ uploadProgress: false }}
         />,
       );
-      expect( screen ).toMatchSnapshot();
-    } );
+      expect(screen).toMatchSnapshot();
+    });
 
-    it( "should have an iconic taxon icon", async ( ) => {
+    it("should have an iconic taxon icon", async () => {
       render(
         <ObsGridItem
           observation={observationWithoutPhoto}
           uploadState={{ uploadProgress: false }}
         />,
       );
-      expect( await screen.findByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeTruthy( );
-    } );
-  } );
-} );
+      expect(await screen.findByTestId("IconicTaxonName.iconicTaxonIcon")).toBeTruthy();
+    });
+  });
+});

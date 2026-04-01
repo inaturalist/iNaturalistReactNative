@@ -13,16 +13,16 @@ type Props = {
   updateObservationsView: Function
 };
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
   elevation: 6,
-} );
+});
 
-const ObservationsViewBar = ( {
+const ObservationsViewBar = ({
   hideMap,
   layout,
   updateObservationsView,
-}: Props ): Node => {
+}: Props): Node => {
   const buttons = [
     {
       value: "grid",
@@ -37,22 +37,22 @@ const ObservationsViewBar = ( {
       testID: "SegmentedButton.list",
     },
   ];
-  if ( !hideMap ) {
-    buttons.unshift( {
+  if (!hideMap) {
+    buttons.unshift({
       value: "map",
       icon: "map",
       accessibilityLabel: "Map",
       testID: "SegmentedButton.map",
-    } );
+    });
   }
 
   return (
     <View
       className="absolute bottom-5 left-5 z-10 h-11 flex-row"
     >
-      {buttons.map( ( {
+      {buttons.map(({
         value, icon, accessibilityLabel, testID,
-      }, i ) => {
+      }, i) => {
         const checked = value === layout;
         const isFirst = i === 0;
         const isLast = i === buttons.length - 1;
@@ -90,7 +90,7 @@ const ObservationsViewBar = ( {
               ? colors.white
               : colors.darkGray}
             icon={icon}
-            onPress={() => updateObservationsView( value )}
+            onPress={() => updateObservationsView(value)}
             size={20}
             width={isFirst || isLast
               ? 48
@@ -107,7 +107,7 @@ const ObservationsViewBar = ( {
               : colors.white}
           />
         );
-      } )}
+      })}
     </View>
   );
 };

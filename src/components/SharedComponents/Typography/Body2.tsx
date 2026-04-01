@@ -4,7 +4,7 @@ import type { TextProps } from "react-native";
 
 import InatText from "./InatText";
 
-const Body2 = ( props: TextProps ) => (
+const Body2 = (props: TextProps) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <InatText className={`text-md ${tailwindFontRegular}`} {...props} />
 );

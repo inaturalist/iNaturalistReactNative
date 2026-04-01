@@ -9,46 +9,46 @@ import SuggestionsOffline from "./SuggestionsOffline";
 interface Props {
   hasTopSuggestion?: boolean;
   isLoading: boolean;
-  onTaxonChosen: ( ) => void;
-  reloadSuggestions: ( ) => void;
+  onTaxonChosen: () => void;
+  reloadSuggestions: () => void;
   urlWillCrashOffline: boolean;
 }
 
-const SuggestionsEmpty = ( {
+const SuggestionsEmpty = ({
   hasTopSuggestion = false,
   isLoading,
   onTaxonChosen,
   reloadSuggestions,
   urlWillCrashOffline,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const { params } = useRoute( );
+}: Props) => {
+  const { t } = useTranslation();
+  const { params } = useRoute();
   const { lastScreen } = params;
 
   const textClass = "mt-10 px-10 text-center";
 
-  if ( urlWillCrashOffline ) {
+  if (urlWillCrashOffline) {
     return (
       <SuggestionsOffline reloadSuggestions={reloadSuggestions} />
     );
   }
 
-  if ( isLoading ) {
+  if (isLoading) {
     return (
       <SuggestionsLoading
         onTaxonChosen={onTaxonChosen}
       />
     );
   }
-  if ( !hasTopSuggestion ) {
+  if (!hasTopSuggestion) {
     return (
       <>
         <Body1 className={textClass}>
-          {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
+          {t("iNaturalist-has-no-ID-suggestions-for-this-photo")}
         </Body1>
         {lastScreen === "CameraWithDevice" && (
           <Body1 className={textClass}>
-            {t( "You-can-upload-this-observation-to-our-community" )}
+            {t("You-can-upload-this-observation-to-our-community")}
           </Body1>
         )}
       </>

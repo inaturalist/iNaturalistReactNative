@@ -12,10 +12,10 @@ import {
   getNextPageParamForExplore,
 } from "../helpers/exploreParams";
 
-const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object ): Object => {
-  const queryClient = useQueryClient( );
+const useInfiniteExploreScroll = ({ params: newInputParams, enabled }: Object): Object => {
+  const queryClient = useQueryClient();
 
-  const baseParams = useMemo( () => ( {
+  const baseParams = useMemo(() => ({
     ...newInputParams,
     fields: {
       // the most data we display in the UI on any Observations view in Explore
@@ -28,14 +28,14 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
       },
     },
     ttl: -1,
-  } ), [newInputParams] );
+  }), [newInputParams]);
 
   const excludedUser = newInputParams.excludeUser;
 
   const queryKey = ["useInfiniteExploreScroll", newInputParams];
 
   const getNextPageParam = useCallback(
-    lastPage => getNextPageParamForExplore( lastPage, baseParams ),
+    lastPage => getNextPageParamForExplore(lastPage, baseParams),
     [baseParams],
   );
 
@@ -49,8 +49,8 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     status,
   } = useAuthenticatedInfiniteQuery(
     queryKey,
-    async ( params, optsWithAuth ) => searchObservations(
-      addPageParamsForExplore( { ...baseParams, ...params } ),
+    async (params, optsWithAuth) => searchObservations(
+      addPageParamsForExplore({ ...baseParams, ...params }),
       optsWithAuth,
     ),
     {
@@ -59,22 +59,22 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     },
   );
 
-  const handlePullToRefresh = async ( ) => {
-    queryClient.removeQueries( { queryKey } );
-    await refetch( );
+  const handlePullToRefresh = async () => {
+    queryClient.removeQueries({ queryKey });
+    await refetch();
   };
 
-  let observations = flatten( data?.pages?.map( r => r.results ) ) || [];
+  let observations = flatten(data?.pages?.map(r => r.results)) || [];
   let totalResults = data?.pages?.[0].total_results;
   let filtered = [];
 
   // filter out obs from excluded user and adjust count
-  if ( excludedUser && observations ) {
-    filtered = observations.filter( observation => observation?.user.id !== excludedUser.id );
+  if (excludedUser && observations) {
+    filtered = observations.filter(observation => observation?.user.id !== excludedUser.id);
     observations = filtered;
   }
 
-  if ( totalResults !== 0 && !totalResults ) {
+  if (totalResults !== 0 && !totalResults) {
     totalResults = null;
   }
 

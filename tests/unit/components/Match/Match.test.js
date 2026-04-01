@@ -8,15 +8,15 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 // Initialize i18next for translations
-beforeAll( async () => {
+beforeAll(async () => {
   await initI18next();
-} );
+});
 
-describe( "Match", ( ) => {
+describe("Match", () => {
   // Mock props that would normally come from MatchContainer
   const defaultProps = {
-    observation: factory( "LocalObservation" ),
-    obsPhotos: [factory( "LocalObservationPhoto" )],
+    observation: factory("LocalObservation"),
+    obsPhotos: [factory("LocalObservationPhoto")],
     onSuggestionChosen: jest.fn(),
     handleSaveOrDiscardPress: jest.fn(),
     navToTaxonDetails: jest.fn(),
@@ -24,23 +24,23 @@ describe( "Match", ( ) => {
     scrollRef: { current: null },
     topSuggestion: {
       combined_score: 92,
-      taxon: factory( "LocalTaxon" ),
+      taxon: factory("LocalTaxon"),
     },
     otherSuggestions: [{
       combined_score: 90,
-      taxon: factory( "LocalTaxon" ),
+      taxon: factory("LocalTaxon"),
     }],
   };
 
-  beforeEach( () => {
+  beforeEach(() => {
     jest.clearAllMocks();
-  } );
+  });
 
-  it( "should show location permissions button if permissions not granted", () => {
-    jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+  it("should show location permissions button if permissions not granted", () => {
+    jest.spyOn(useLocationPermission, "default").mockImplementation(() => ({
       hasPermissions: false,
-      renderPermissionsGate: jest.fn( ),
-    } ) );
+      renderPermissionsGate: jest.fn(),
+    }));
     renderComponent(
       <Match
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -49,24 +49,24 @@ describe( "Match", ( ) => {
       />,
     );
 
-    const addLocationButtons = screen.queryAllByText( /ADD LOCATION FOR BETTER IDS/i );
-    expect( addLocationButtons.length ).toBeGreaterThan( 1 );
-    expect( addLocationButtons[1] ).toBeVisible();
-  } );
+    const addLocationButtons = screen.queryAllByText(/ADD LOCATION FOR BETTER IDS/i);
+    expect(addLocationButtons.length).toBeGreaterThan(1);
+    expect(addLocationButtons[1]).toBeVisible();
+  });
 
-  it( "should not show location permissions button if permissions granted", () => {
-    const mockWatchPosition = jest.fn( ( success, _error, _options ) => success( {
+  it("should not show location permissions button if permissions granted", () => {
+    const mockWatchPosition = jest.fn((success, _error, _options) => success({
       coords: {
         latitude: 56,
         longitude: 9,
         accuracy: 8,
       },
-    } ) );
-    Geolocation.watchPosition.mockImplementation( mockWatchPosition );
-    jest.spyOn( useLocationPermission, "default" ).mockImplementation( ( ) => ( {
+    }));
+    Geolocation.watchPosition.mockImplementation(mockWatchPosition);
+    jest.spyOn(useLocationPermission, "default").mockImplementation(() => ({
       hasPermissions: true,
-      renderPermissionsGate: jest.fn( ),
-    } ) );
+      renderPermissionsGate: jest.fn(),
+    }));
 
     renderComponent(
       <Match
@@ -80,7 +80,7 @@ describe( "Match", ( ) => {
       />,
     );
 
-    const addLocationButton = screen.queryByText( /ADD LOCATION FOR BETTER IDS/i );
-    expect( addLocationButton ).toBeFalsy( );
-  } );
-} );
+    const addLocationButton = screen.queryByText(/ADD LOCATION FOR BETTER IDS/i);
+    expect(addLocationButton).toBeFalsy();
+  });
+});

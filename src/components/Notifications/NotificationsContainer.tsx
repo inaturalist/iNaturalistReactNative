@@ -10,22 +10,22 @@ import { log } from "sharedHelpers/logger";
 import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
-const logger = log.extend( "NotificationsContainer" );
+const logger = log.extend("NotificationsContainer");
 
 interface Props {
   currentUser: RealmUser | null;
   notificationParams: ApiObservationsUpdatesParams;
-  onRefresh?: ( ) => void;
+  onRefresh?: () => void;
 }
 
-const NotificationsContainer = ( {
+const NotificationsContainer = ({
   currentUser,
   notificationParams,
   onRefresh: onRefreshProp,
-}: Props ) => {
-  const navigation = useNavigation( );
-  const { isConnected } = useNetInfo( );
-  const [refreshing, setRefreshing] = useState( false );
+}: Props) => {
+  const navigation = useNavigation();
+  const { isConnected } = useNetInfo();
+  const [refreshing, setRefreshing] = useState(false);
 
   const {
     fetchNextPage,
@@ -35,30 +35,30 @@ const NotificationsContainer = ( {
     showStillLoadingMessage,
     notifications,
     refetch,
-  } = useInfiniteNotificationsScroll( notificationParams );
+  } = useInfiniteNotificationsScroll(notificationParams);
 
-  const { loadTime } = usePerformance( {
+  const { loadTime } = usePerformance({
     isLoading: isInitialLoading,
-  } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
+  });
+  if (isDebugMode()) {
+    logger.info(loadTime);
   }
 
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "focus", ( ) => {
-      if ( isConnected && currentUser ) {
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (isConnected && currentUser) {
         refetch();
       }
-    } );
+    });
     return unsubscribe;
-  }, [isConnected, currentUser, navigation, refetch] );
+  }, [isConnected, currentUser, navigation, refetch]);
 
   const onRefresh = async () => {
-    if ( currentUser ) {
-      setRefreshing( true );
+    if (currentUser) {
+      setRefreshing(true);
       await refetch();
-      if ( typeof ( onRefreshProp ) === "function" ) onRefreshProp( );
-      setRefreshing( false );
+      if (typeof (onRefreshProp) === "function") onRefreshProp();
+      setRefreshing(false);
     }
   };
 

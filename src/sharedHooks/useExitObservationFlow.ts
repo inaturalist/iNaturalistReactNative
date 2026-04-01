@@ -22,45 +22,45 @@ interface ExitOptions {
   skipStoreReset?: boolean;
 }
 interface Options {
-  navigate?: ( ) => void;
+  navigate?: () => void;
 }
 
-export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
-  const navigation = useNavigation( );
-  const { params } = useRoute<RouteProp<ObsFlowParams, string>>( );
-  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
+export default function useExitObservationFlow(exitOptions?: ExitOptions) {
+  const navigation = useNavigation();
+  const { params } = useRoute<RouteProp<ObsFlowParams, string>>();
+  const resetObservationFlowSlice = useStore(state => state.resetObservationFlowSlice);
 
-  return useCallback( ( options: Options = {} ) => {
+  return useCallback((options: Options = {}) => {
     // In theory everything that needs to be saved has been saved at this
     // point, so clean up the state before we ditch this posicle stand. Note
     // that for mysterious reasons, tests seem to like it better if we do
     // this before navigating
-    if ( !exitOptions?.skipStoreReset ) {
+    if (!exitOptions?.skipStoreReset) {
       // want a skip option because on MatchContainer this is causing the whole component
       // to rerender with no currentObservation, which means useSuggestions crashes from
       // having no photo passed in, and many parts of the UI also result in crashes
-      resetObservationFlowSlice( );
+      resetObservationFlowSlice();
     }
 
     const previousScreen = params && params.previousScreen
       ? params.previousScreen
       : null;
-    if ( previousScreen && previousScreen.name === "ObsDetails" ) {
-      navigateToObsDetails( navigation, previousScreen.params.uuid );
-    } else if ( typeof ( options.navigate ) === "function" ) {
+    if (previousScreen && previousScreen.name === "ObsDetails") {
+      navigateToObsDetails(navigation, previousScreen.params.uuid);
+    } else if (typeof (options.navigate) === "function") {
       options.navigate();
     } else {
-      navigation.navigate( "TabNavigator", {
+      navigation.navigate("TabNavigator", {
         screen: "ObservationsTab",
         params: {
           screen: "ObsList",
         },
-      } );
+      });
     }
   }, [
     navigation,
     params,
     resetObservationFlowSlice,
     exitOptions,
-  ] );
+  ]);
 }

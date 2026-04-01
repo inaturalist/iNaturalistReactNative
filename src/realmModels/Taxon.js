@@ -111,38 +111,38 @@ class Taxon extends Realm.Object {
 
   static INFRAHYBRID_LEVEL = 5;
 
-  static mimicRealmMappedPropertiesSchema( taxon ) {
+  static mimicRealmMappedPropertiesSchema(taxon) {
     return {
       ...taxon,
-      default_photo: Photo.mapApiToRealm( taxon?.default_photo ),
+      default_photo: Photo.mapApiToRealm(taxon?.default_photo),
       preferredCommonName: taxon.preferred_common_name,
     };
   }
 
-  static compileSearchableName( taxon ) {
+  static compileSearchableName(taxon) {
     const names = [
       taxon.name,
       taxon.preferred_common_name,
       taxon.preferredCommonName,
     ];
-    return [...new Set( names )].filter( Boolean ).join( "; " );
+    return [...new Set(names)].filter(Boolean).join("; ");
   }
 
-  static forUpdate( taxon, extra = {} ) {
+  static forUpdate(taxon, extra = {}) {
     const taxonForUpdate = {
       ...taxon,
       ...extra,
-      _searchableName: Taxon.compileSearchableName( taxon ),
-      _synced_at: new Date( ),
+      _searchableName: Taxon.compileSearchableName(taxon),
+      _synced_at: new Date(),
     };
     // This doesn't seem like the best place to do validation, but IDK where
     // else. If we assign `undefined` to ancestor_ids, Realm seems to insert
     // an empty array for no reason.
     if (
       taxonForUpdate.rank_level < Taxon.STATEOFMATTER_LEVEL
-      && ( !taxonForUpdate.ancestor_ids || taxonForUpdate.ancestor_ids.length === 0 )
+      && (!taxonForUpdate.ancestor_ids || taxonForUpdate.ancestor_ids.length === 0)
     ) {
-      throw new Error( "Tried to save taxon w/o ancestor_ids" );
+      throw new Error("Tried to save taxon w/o ancestor_ids");
     }
     return taxonForUpdate;
   }
@@ -152,15 +152,15 @@ class Taxon extends Realm.Object {
    * @param {Realm} _realm
    * @returns {object}
    */
-  static mapApiToRealm( taxon, _realm = null ) {
+  static mapApiToRealm(taxon, _realm = null) {
     return {
       ...taxon,
-      id: Number( taxon?.id ),
-      default_photo: Photo.mapApiToRealm( taxon?.default_photo ),
+      id: Number(taxon?.id),
+      default_photo: Photo.mapApiToRealm(taxon?.default_photo),
     };
   }
 
-  static uri = item => ( item && item.default_photo ) && { uri: item.default_photo.url };
+  static uri = item => (item && item.default_photo) && { uri: item.default_photo.url };
 
   static schema = {
     name: "Taxon",

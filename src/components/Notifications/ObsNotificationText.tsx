@@ -11,20 +11,20 @@ interface Props {
   notification: Notification;
 }
 
-const ObsNotificationText = ( { notification }: Props ) => {
-  const { t } = useTranslation( );
+const ObsNotificationText = ({ notification }: Props) => {
+  const { t } = useTranslation();
   const { identification, comment, notifier_type: type } = notification;
   const { user: notifierUser } = identification || comment || {};
-  if ( !notifierUser ) {
-    throw new Error( "Notification must have a user" );
+  if (!notifierUser) {
+    throw new Error("Notification must have a user");
   }
   let content: string | React.ReactElement<typeof Trans> = `unknown notification type: ${type}`;
   const resourceOwner = notification.resource?.user;
 
   const transComponents = [<List2 key="0" className="font-bold pr-[2px]" />];
-  if ( notification.viewerOwnsResource ) {
+  if (notification.viewerOwnsResource) {
     const transValues = { userName: notifierUser.login };
-    if ( type === "Comment" ) {
+    if (type === "Comment") {
       content = (
         <Trans
           i18nKey="notifications-user-added-comment-to-observation-by-you"
@@ -32,7 +32,7 @@ const ObsNotificationText = ( { notification }: Props ) => {
           components={transComponents}
         />
       );
-    } else if ( type === "Identification" ) {
+    } else if (type === "Identification") {
       content = (
         <Trans
           i18nKey="notifications-user-added-identification-to-observation-by-you"
@@ -44,9 +44,9 @@ const ObsNotificationText = ( { notification }: Props ) => {
   } else {
     const transValues = {
       user1: notifierUser.login,
-      user2: resourceOwner?.login || t( "Unknown--user" ),
+      user2: resourceOwner?.login || t("Unknown--user"),
     };
-    if ( type === "Comment" ) {
+    if (type === "Comment") {
       content = (
         <Trans
           i18nKey="notifications-user1-added-comment-to-observation-by-user2"
@@ -54,7 +54,7 @@ const ObsNotificationText = ( { notification }: Props ) => {
           components={transComponents}
         />
       );
-    } else if ( type === "Identification" ) {
+    } else if (type === "Identification") {
       content = (
         <Trans
           i18nKey="notifications-user1-added-identification-to-observation-by-user2"

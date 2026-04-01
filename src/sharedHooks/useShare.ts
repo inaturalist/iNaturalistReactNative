@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import ShareMenu from "react-native-share-menu";
 
-const useShare = ( onShare: ( ) => void ): void => {
-  useEffect( ( ) => {
-    ShareMenu.getInitialShare( onShare );
-  }, [onShare] );
+const useShare = (onShare: () => void): void => {
+  useEffect(() => {
+    ShareMenu.getInitialShare(onShare);
+  }, [onShare]);
 
-  useEffect( ( ) => {
-    const listener = ShareMenu.addNewShareListener( onShare );
+  useEffect(() => {
+    const listener = ShareMenu.addNewShareListener(onShare);
 
-    return ( ) => {
-      listener?.remove( );
+    return () => {
+      listener?.remove();
     };
-  }, [onShare] );
+  }, [onShare]);
 };
 
 export default useShare;

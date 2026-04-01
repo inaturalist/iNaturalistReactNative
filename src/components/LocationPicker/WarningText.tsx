@@ -7,25 +7,25 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( );
+const DROP_SHADOW = getShadow();
 
 interface Props {
   accuracyTest: "pass" | "acceptable" | "fail";
 }
 
-const WarningText = ( { accuracyTest }: Props ) => {
-  const { t } = useTranslation( );
+const WarningText = ({ accuracyTest }: Props) => {
+  const { t } = useTranslation();
 
-  if ( accuracyTest === "pass" ) {
+  if (accuracyTest === "pass") {
     return null;
   }
 
-  const displayWarningText = ( ) => {
-    if ( accuracyTest === "acceptable" ) {
-      return t( "Zoom-in-as-much-as-possible-to-improve" );
+  const displayWarningText = () => {
+    if (accuracyTest === "acceptable") {
+      return t("Zoom-in-as-much-as-possible-to-improve");
     }
-    if ( accuracyTest === "fail" ) {
-      return t( "Location-accuracy-is-too-imprecise" );
+    if (accuracyTest === "fail") {
+      return t("Location-accuracy-is-too-imprecise");
     }
     return null;
   };
@@ -33,10 +33,10 @@ const WarningText = ( { accuracyTest }: Props ) => {
   return (
     <View
       pointerEvents="none"
-      className={classnames( "p-4 rounded-xl", {
+      className={classnames("p-4 rounded-xl", {
         "bg-white": accuracyTest === "acceptable",
         "bg-warningRed": accuracyTest === "fail",
-      } )}
+      })}
       style={DROP_SHADOW}
     >
       <Body3
@@ -48,7 +48,7 @@ const WarningText = ( { accuracyTest }: Props ) => {
           },
         )}
       >
-        {displayWarningText( )}
+        {displayWarningText()}
       </Body3>
     </View>
   );

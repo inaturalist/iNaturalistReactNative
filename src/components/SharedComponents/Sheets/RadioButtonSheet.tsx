@@ -10,11 +10,11 @@ import useTranslation from "sharedHooks/useTranslation";
 interface Props {
   bottomComponent?: React.JSX.Element;
   buttonRowClassName?: string;
-  confirm: ( _checkedValue: string ) => void;
+  confirm: (_checkedValue: string) => void;
   confirmText?: string;
   headerText: string;
   insideModal?: boolean;
-  onPressClose?: ( ) => void;
+  onPressClose?: () => void;
   radioValues: Record<string, {
     value: string;
     icon?: string;
@@ -27,7 +27,7 @@ interface Props {
   topDescriptionText?: React.JSX.Element;
 }
 
-const RadioButtonSheet = ( {
+const RadioButtonSheet = ({
   bottomComponent,
   buttonRowClassName,
   confirm,
@@ -39,20 +39,20 @@ const RadioButtonSheet = ( {
   selectedValue = "none",
   testID,
   topDescriptionText,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const [checkedValue, setCheckedValue] = useState( selectedValue );
+}: Props) => {
+  const { t } = useTranslation();
+  const [checkedValue, setCheckedValue] = useState(selectedValue);
 
   const isDirty = checkedValue !== selectedValue;
 
-  const radioButtonRow = ( radioRow: string ) => (
+  const radioButtonRow = (radioRow: string) => (
     <View key={radioRow} className="pb-4">
       <RadioButtonRow
         classNames={buttonRowClassName}
         value={radioValues[radioRow].value}
         icon={radioValues[radioRow].icon}
         checked={checkedValue === radioValues[radioRow].value}
-        onPress={() => setCheckedValue( radioValues[radioRow].value )}
+        onPress={() => setCheckedValue(radioValues[radioRow].value)}
         label={radioValues[radioRow].label}
         description={radioValues[radioRow].text}
         labelComponent={radioValues[radioRow].labelComponent}
@@ -60,7 +60,7 @@ const RadioButtonSheet = ( {
     </View>
   );
 
-  const confirmLabel = confirmText || t( "CONFIRM" );
+  const confirmLabel = confirmText || t("CONFIRM");
 
   return (
     <BottomSheet
@@ -73,13 +73,13 @@ const RadioButtonSheet = ( {
       <View className="p-4 pt-2">
         {topDescriptionText}
         <View className="p-3">
-          {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
+          {Object.keys(radioValues).map(radioRow => radioButtonRow(radioRow))}
         </View>
         {bottomComponent}
         <Button
           level="primary"
-          onPress={( ) => {
-            confirm( checkedValue );
+          onPress={() => {
+            confirm(checkedValue);
           }}
           disabled={!isDirty}
           text={radioValues[checkedValue]?.buttonText ?? confirmLabel}

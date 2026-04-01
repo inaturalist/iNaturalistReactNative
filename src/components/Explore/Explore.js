@@ -31,10 +31,10 @@ import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
   elevation: 6,
-} );
+});
 
 const exploreViewIcon = {
   observations: "binoculars",
@@ -68,7 +68,7 @@ type Props = {
   updateUser: Function
 }
 
-const Explore = ( {
+const Explore = ({
   canFetch,
   closeFiltersModal,
   count,
@@ -91,24 +91,24 @@ const Explore = ( {
   updateProject,
   updateTaxon,
   updateUser,
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
-  const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
-  const { isDebug } = useDebugMode( );
+}: Props): Node => {
+  const { t } = useTranslation();
+  const [showExploreBottomSheet, setShowExploreBottomSheet] = useState(false);
+  const { layout, writeLayoutToStorage } = useStoredLayout("exploreObservationsLayout");
+  const { isDebug } = useDebugMode();
 
   const exploreViewA11yLabel = {
-    observations: t( "Observations-View" ),
-    species: t( "Species-View" ),
-    observers: t( "Observers-View" ),
-    identifiers: t( "Identifiers-View" ),
+    observations: t("Observations-View"),
+    species: t("Species-View"),
+    observers: t("Observers-View"),
+    identifiers: t("Identifiers-View"),
   };
 
   const icon = exploreViewIcon[currentExploreView];
   const a11yLabel = exploreViewA11yLabel[currentExploreView];
   const headerCount = count[currentExploreView];
 
-  const renderHeader = ( ) => (
+  const renderHeader = () => (
     <ExploreHeader
       count={headerCount}
       exploreView={currentExploreView}
@@ -116,7 +116,7 @@ const Explore = ( {
       hasLocationPermissions={hasLocationPermissions}
       hideBackButton={hideBackButton}
       isFetchingHeaderCount={isFetchingHeaderCount}
-      onPressCount={( ) => setShowExploreBottomSheet( true )}
+      onPressCount={() => setShowExploreBottomSheet(true)}
       openFiltersModal={openFiltersModal}
       renderLocationPermissionsGate={renderLocationPermissionsGate}
       requestLocationPermissions={requestLocationPermissions}
@@ -125,8 +125,8 @@ const Explore = ( {
     />
   );
 
-  const renderMainContent = ( ) => {
-    if ( isConnected === false ) {
+  const renderMainContent = () => {
+    if (isConnected === false) {
       return (
         <OfflineNotice
           onPress={() => refresh()}
@@ -134,18 +134,18 @@ const Explore = ( {
       );
     }
     // hasLocationPermissions === undefined means we haven't checked for location permissions yet
-    if ( placeMode === PLACE_MODE.NEARBY && hasLocationPermissions === false ) {
+    if (placeMode === PLACE_MODE.NEARBY && hasLocationPermissions === false) {
       return (
         <View className="flex-1 justify-center p-4">
           <View className="items-center">
-            <Body2>{t( "To-view-nearby-organisms-please-enable-location" )}</Body2>
+            <Body2>{t("To-view-nearby-organisms-please-enable-location")}</Body2>
           </View>
           <Button
             className="mt-5"
-            text={t( "ALLOW-LOCATION-ACCESS" )}
-            accessibilityHint={t( "Opens-location-permission-prompt" )}
+            text={t("ALLOW-LOCATION-ACCESS")}
+            accessibilityHint={t("Opens-location-permission-prompt")}
             level="focus"
-            onPress={( ) => requestLocationPermissions()}
+            onPress={() => requestLocationPermissions()}
           />
         </View>
       );
@@ -192,35 +192,35 @@ const Explore = ( {
   };
 
   const renderSheet = () => {
-    if ( !showExploreBottomSheet ) {
+    if (!showExploreBottomSheet) {
       return null;
     }
     const values = {
       species: {
-        label: t( "Species" ),
-        text: t( "Organisms-that-are-identified-to-species" ),
-        buttonText: t( "EXPLORE-SPECIES" ),
+        label: t("Species"),
+        text: t("Organisms-that-are-identified-to-species"),
+        buttonText: t("EXPLORE-SPECIES"),
         icon: "species",
         value: "species",
       },
       observations: {
-        label: t( "Observations" ),
-        text: t( "Individual-encounters-with-organisms" ),
-        buttonText: t( "EXPLORE-OBSERVATIONS" ),
+        label: t("Observations"),
+        text: t("Individual-encounters-with-organisms"),
+        buttonText: t("EXPLORE-OBSERVATIONS"),
         icon: "observations",
         value: "observations",
       },
       observers: {
-        label: t( "Observers" ),
-        text: t( "iNaturalist-users-who-have-observed" ),
-        buttonText: t( "EXPLORE-OBSERVERS" ),
+        label: t("Observers"),
+        text: t("iNaturalist-users-who-have-observed"),
+        buttonText: t("EXPLORE-OBSERVERS"),
         icon: "observers",
         value: "observers",
       },
       identifiers: {
-        label: t( "Identifiers" ),
-        text: t( "iNaturalist-users-who-have-left-an-identification" ),
-        buttonText: t( "EXPLORE-IDENTIFIERS" ),
+        label: t("Identifiers"),
+        text: t("iNaturalist-users-who-have-left-an-identification"),
+        buttonText: t("EXPLORE-IDENTIFIERS"),
         icon: "identifiers",
         value: "identifiers",
       },
@@ -228,13 +228,13 @@ const Explore = ( {
 
     return (
       <RadioButtonSheet
-        onPressClose={() => setShowExploreBottomSheet( false )}
-        headerText={t( "EXPLORE" )}
+        onPressClose={() => setShowExploreBottomSheet(false)}
+        headerText={t("EXPLORE")}
         hidden={!showExploreBottomSheet}
         confirm={newView => {
-          startFetching( );
-          setCurrentExploreView( newView );
-          setShowExploreBottomSheet( false );
+          startFetching();
+          setCurrentExploreView(newView);
+          setShowExploreBottomSheet(false);
         }}
         radioValues={values}
         selectedValue={currentExploreView}
@@ -281,7 +281,7 @@ const Explore = ( {
               onPress={() => {
                 Alert.alert(
                   "Explore Info",
-                  `queryParams: ${JSON.stringify( queryParams )}`,
+                  `queryParams: ${JSON.stringify(queryParams)}`,
                 );
               }}
             />
@@ -295,7 +295,7 @@ const Explore = ( {
               "absolute bottom-5 z-10 right-5",
             )}
             accessibilityLabel={a11yLabel}
-            onPress={() => setShowExploreBottomSheet( true )}
+            onPress={() => setShowExploreBottomSheet(true)}
             style={DROP_SHADOW}
           />
         </View>

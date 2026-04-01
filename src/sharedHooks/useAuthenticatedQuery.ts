@@ -11,7 +11,7 @@ interface QueryOptions {
   retry?: boolean;
 }
 
-type QueryFunction<Response> = ( options: { api_token: string | null } ) => Promise<Response>;
+type QueryFunction<Response> = (options: { api_token: string | null }) => Promise<Response>;
 
 // Should work like React Query's useQuery except it calls the queryFunction
 // with an object that includes the JWT
@@ -20,50 +20,50 @@ const useAuthenticatedQuery = <Response>(
   queryFunction: QueryFunction<Response>,
   queryOptions: QueryOptions = {},
 ) => {
-  const [userLoggedIn, setUserLoggedIn] = useState<boolean | null>( LOGGED_IN_UNKNOWN );
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean | null>(LOGGED_IN_UNKNOWN);
 
-  useEffect( ( ) => {
-    const checkAuth = async ( ) => {
+  useEffect(() => {
+    const checkAuth = async () => {
       try {
-        const result = await isLoggedIn( );
-        setUserLoggedIn( result );
-      } catch ( error ) {
-        console.warn( "Auth check failed:", error );
-        setUserLoggedIn( false );
+        const result = await isLoggedIn();
+        setUserLoggedIn(result);
+      } catch (error) {
+        console.warn("Auth check failed:", error);
+        setUserLoggedIn(false);
       }
     };
 
-    checkAuth( );
-  }, [] );
+    checkAuth();
+  }, []);
 
   // The results will probably be different depending on whether the user is
   // signed in or we wouldn't be using useAuthenticatedQuery in the first
   // place, so we need to redo this request if the auth state changed
   const authQueryKey = [...queryKey, queryOptions.allowAnonymousJWT, userLoggedIn];
 
-  return useQuery( {
+  return useQuery({
     queryKey: authQueryKey,
-    queryFn: async ( ) => {
+    queryFn: async () => {
       // Note, getJWT() takes care of fetching a new token if the existing
       // one is expired. We *could* store the token in state with useState if
       // fetching from RNSInfo becomes a performance issue
-      const apiToken = await getJWT( queryOptions.allowAnonymousJWT );
+      const apiToken = await getJWT(queryOptions.allowAnonymousJWT);
       const options = {
         api_token: apiToken,
       };
-      return queryFunction( options );
+      return queryFunction(options);
     },
     ...queryOptions,
     retry: queryOptions.retry !== false
-      ? ( failureCount, error ) => reactQueryRetry( failureCount, error, {
+      ? (failureCount, error) => reactQueryRetry(failureCount, error, {
         queryKey,
-      } )
+      })
       : false,
-    retryDelay: ( failureCount, error ) => handleRetryDelay( failureCount, error ),
+    retryDelay: (failureCount, error) => handleRetryDelay(failureCount, error),
     // Authenticated queries should not run until we know whether or not the
     // user is signed in
     enabled: userLoggedIn !== LOGGED_IN_UNKNOWN && queryOptions.enabled,
-  } );
+  });
 };
 
 export default useAuthenticatedQuery;

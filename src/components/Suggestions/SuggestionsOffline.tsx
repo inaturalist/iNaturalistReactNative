@@ -9,13 +9,13 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  reloadSuggestions: ( ) => void;
+  reloadSuggestions: () => void;
 }
 
-const SuggestionsOffline = ( {
+const SuggestionsOffline = ({
   reloadSuggestions,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
   return (
     <Pressable
       accessibilityRole="button"
@@ -29,9 +29,9 @@ const SuggestionsOffline = ( {
             size={22}
             color={colors.mediumGray}
           />
-          <Body2 className="mx-2">{t( "You-are-offline-Tap-to-reload" )}</Body2>
+          <Body2 className="mx-2">{t("You-are-offline-Tap-to-reload")}</Body2>
         </View>
-        <Body3>{ t( "Offline-suggestions-may-differ-from-online" ) }</Body3>
+        <Body3>{ t("Offline-suggestions-may-differ-from-online") }</Body3>
       </View>
     </Pressable>
   );

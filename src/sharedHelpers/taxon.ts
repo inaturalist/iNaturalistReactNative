@@ -2,7 +2,7 @@ import map from "lodash/map";
 import trim from "lodash/trim";
 
 // This collection mirrors web's: https://github.com/inaturalist/inaturalist/blob/main/app/assets/javascripts/ang/models/taxon.js.erb#L187
-const uncapitalized = new Set( [
+const uncapitalized = new Set([
   "a", // Spanish
   "and", // English
   "atau", // Indonesian
@@ -26,10 +26,10 @@ const uncapitalized = new Set( [
   "u",
   "y", // Spanish
   "à", // French
-] );
+]);
 
-const capitalize = ( s: string ) => {
-  if ( !s ) {
+const capitalize = (s: string) => {
+  if (!s) {
     return s;
   }
   // eslint-disable-next-line max-len
@@ -46,7 +46,7 @@ const capitalize = ( s: string ) => {
   const allCasePattern = new RegExp(
     `[A-z${lowerCaseChars}${upperCaseChars}]`,
   );
-  const firstLetterMatch = s.match( allCasePattern );
+  const firstLetterMatch = s.match(allCasePattern);
   let firstLetterIndex = firstLetterMatch
     ? firstLetterMatch.index
     : 0;
@@ -58,47 +58,47 @@ const capitalize = ( s: string ) => {
       lowerCaseChars
     }${upperCaseChars}]+)`,
   );
-  const leadingContractionMatch = s.match( leadingContractionPattern );
-  if ( leadingContractionMatch ) {
-    firstLetterIndex = s.indexOf( leadingContractionMatch[1] );
+  const leadingContractionMatch = s.match(leadingContractionPattern);
+  if (leadingContractionMatch) {
+    firstLetterIndex = s.indexOf(leadingContractionMatch[1]);
   }
   return (
-    s.slice( 0, firstLetterIndex )
+    s.slice(0, firstLetterIndex)
     + s[firstLetterIndex].toUpperCase()
-    + s.slice( firstLetterIndex + 1 )
+    + s.slice(firstLetterIndex + 1)
   );
 };
 
-export const capitalizeCommonName = ( name: string ) => {
-  if ( !name ) {
+export const capitalizeCommonName = (name: string) => {
+  if (!name) {
     return name;
   }
-  const commonNamePieces = trim( name ).split( /\s+/ );
+  const commonNamePieces = trim(name).split(/\s+/);
 
-  return map( commonNamePieces, ( piece, i ) => {
+  return map(commonNamePieces, (piece, i) => {
     const lowercasePiece = piece.toLowerCase();
 
-    if ( i > 0 && uncapitalized.has( lowercasePiece ) ) {
+    if (i > 0 && uncapitalized.has(lowercasePiece)) {
       return lowercasePiece;
     }
-    if ( i === commonNamePieces.length - 1 ) {
-      if ( piece[0] === "-" ) {
+    if (i === commonNamePieces.length - 1) {
+      if (piece[0] === "-") {
         return lowercasePiece;
       }
 
       return piece
-        .split( "-" )
-        .map( s => {
+        .split("-")
+        .map(s => {
           const splitPiece = s.toLowerCase();
-          if ( uncapitalized.has( splitPiece ) ) {
+          if (uncapitalized.has(splitPiece)) {
             return splitPiece;
           }
-          return capitalize( splitPiece );
-        } )
-        .join( "-" );
+          return capitalize(splitPiece);
+        })
+        .join("-");
     }
-    return capitalize( lowercasePiece );
-  } ).join( " " );
+    return capitalize(lowercasePiece);
+  }).join(" ");
 };
 
 interface Taxon {
@@ -117,43 +117,43 @@ interface TaxonDisplayData {
   scientificName?: string;
 }
 
-export const generateTaxonPieces = ( taxon: Taxon ): TaxonDisplayData => {
+export const generateTaxonPieces = (taxon: Taxon): TaxonDisplayData => {
   const taxonDisplayData: Partial<TaxonDisplayData> = {};
 
-  if ( taxon.rank ) taxonDisplayData.rank = capitalize( taxon.rank );
+  if (taxon.rank) taxonDisplayData.rank = capitalize(taxon.rank);
   taxonDisplayData.rankLevel = taxon.rank_level;
 
   // Logic follows the SplitTaxon component from web
   // https://github.com/inaturalist/inaturalist/blob/main/app/webpack/shared/components/split_taxon.jsx
-  if ( taxon.preferred_common_name ) {
+  if (taxon.preferred_common_name) {
     // 20241111 amanda - this multiple lexicon code isn't part of the original web code for this,
     // found here, but is needed in iNat Next:
     // https://github.com/inaturalist/inaturalist/blob/c578c11d00ed97940f0b6d8aa0793b6afd765824/app/assets/javascripts/ang/models/taxon.js.erb#L155
-    const multipleLexicons = taxon.preferred_common_name.split( "·" );
+    const multipleLexicons = taxon.preferred_common_name.split("·");
     taxonDisplayData.commonName = map(
       multipleLexicons,
-      ( lexicon => capitalizeCommonName( lexicon )
+      (lexicon => capitalizeCommonName(lexicon)
       ),
-    ).join( " · " );
+    ).join(" · ");
   }
 
-  const scientificNamePieces = taxon?.name?.split( " " );
-  if ( taxon.rank_level < 10 ) {
-    if ( taxon.rank === "variety" ) {
+  const scientificNamePieces = taxon?.name?.split(" ");
+  if (taxon.rank_level < 10) {
+    if (taxon.rank === "variety") {
       taxonDisplayData.rankPiece = "var.";
-    } else if ( taxon.rank === "subspecies" ) {
+    } else if (taxon.rank === "subspecies") {
       taxonDisplayData.rankPiece = "ssp.";
-    } else if ( taxon.rank === "form" ) {
+    } else if (taxon.rank === "form") {
       taxonDisplayData.rankPiece = "f.";
     }
 
-    if ( taxonDisplayData.rankPiece && scientificNamePieces ) {
-      scientificNamePieces.splice( -1, 0, taxonDisplayData.rankPiece );
+    if (taxonDisplayData.rankPiece && scientificNamePieces) {
+      scientificNamePieces.splice(-1, 0, taxonDisplayData.rankPiece);
     }
   }
 
   taxonDisplayData.scientificNamePieces = scientificNamePieces;
-  taxonDisplayData.scientificName = scientificNamePieces?.join( " " );
+  taxonDisplayData.scientificName = scientificNamePieces?.join(" ");
 
   return taxonDisplayData;
 };
@@ -165,96 +165,96 @@ interface User {
 export function accessibleTaxonName(
   taxon: Taxon,
   user: User | null,
-  t: ( key: string, options: object ) => string,
+  t: (key: string, options: object) => string,
 ) {
-  const { commonName, scientificName } = generateTaxonPieces( taxon );
-  if ( typeof ( user?.prefers_scientific_name_first ) === "boolean" ) {
-    if ( user.prefers_scientific_name_first ) {
-      return t( "accessible-sciname-comname", { scientificName, commonName } );
+  const { commonName, scientificName } = generateTaxonPieces(taxon);
+  if (typeof (user?.prefers_scientific_name_first) === "boolean") {
+    if (user.prefers_scientific_name_first) {
+      return t("accessible-sciname-comname", { scientificName, commonName });
     }
-    if ( !user.prefers_common_names ) {
+    if (!user.prefers_common_names) {
       return scientificName;
     }
   }
-  return t( "accessible-comname-sciname", { scientificName, commonName } );
+  return t("accessible-comname-sciname", { scientificName, commonName });
 }
 
 // Translates rank in a way that can be statically checked
-export function translatedRank( rank: string, t: ( key: string ) => string ) {
-  switch ( rank ) {
+export function translatedRank(rank: string, t: (key: string) => string) {
+  switch (rank) {
     case "Class":
-      return t( "Ranks-Class" );
+      return t("Ranks-Class");
     case "Complex":
-      return t( "Ranks-Complex" );
+      return t("Ranks-Complex");
     case "Epifamily":
-      return t( "Ranks-Epifamily" );
+      return t("Ranks-Epifamily");
     case "Family":
-      return t( "Ranks-Family" );
+      return t("Ranks-Family");
     case "Form":
-      return t( "Ranks-Form" );
+      return t("Ranks-Form");
     case "Genus":
-      return t( "Ranks-Genus" );
+      return t("Ranks-Genus");
     case "Genushybrid":
-      return t( "Ranks-Genushybrid" );
+      return t("Ranks-Genushybrid");
     case "Hybrid":
-      return t( "Ranks-Hybrid" );
+      return t("Ranks-Hybrid");
     case "Infraclass":
-      return t( "Ranks-Infraclass" );
+      return t("Ranks-Infraclass");
     case "Infrahybrid":
-      return t( "Ranks-Infrahybrid" );
+      return t("Ranks-Infrahybrid");
     case "Infraorder":
-      return t( "Ranks-Infraorder" );
+      return t("Ranks-Infraorder");
     case "Kingdom":
-      return t( "Ranks-Kingdom" );
+      return t("Ranks-Kingdom");
     case "Order":
-      return t( "Ranks-Order" );
+      return t("Ranks-Order");
     case "Parvorder":
-      return t( "Ranks-Parvorder" );
+      return t("Ranks-Parvorder");
     case "Phylum":
-      return t( "Ranks-Phylum" );
+      return t("Ranks-Phylum");
     case "Section":
-      return t( "Ranks-Section" );
+      return t("Ranks-Section");
     case "Species":
-      return t( "Ranks-Species" );
+      return t("Ranks-Species");
     case "Statefmatter":
-      return t( "Ranks-Statefmatter" );
+      return t("Ranks-Statefmatter");
     case "Subclass":
-      return t( "Ranks-Subclass" );
+      return t("Ranks-Subclass");
     case "Subfamily":
-      return t( "Ranks-Subfamily" );
+      return t("Ranks-Subfamily");
     case "Subgenus":
-      return t( "Ranks-Subgenus" );
+      return t("Ranks-Subgenus");
     case "Subkingdom":
-      return t( "Ranks-Subkingdom" );
+      return t("Ranks-Subkingdom");
     case "Suborder":
-      return t( "Ranks-Suborder" );
+      return t("Ranks-Suborder");
     case "Subphylum":
-      return t( "Ranks-Subphylum" );
+      return t("Ranks-Subphylum");
     case "Subsection":
-      return t( "Ranks-Subsection" );
+      return t("Ranks-Subsection");
     case "Subspecies":
-      return t( "Ranks-Subspecies" );
+      return t("Ranks-Subspecies");
     case "Subterclass":
-      return t( "Ranks-Subterclass" );
+      return t("Ranks-Subterclass");
     case "Subtribe":
-      return t( "Ranks-Subtribe" );
+      return t("Ranks-Subtribe");
     case "Superclass":
-      return t( "Ranks-Superclass" );
+      return t("Ranks-Superclass");
     case "Superfamily":
-      return t( "Ranks-Superfamily" );
+      return t("Ranks-Superfamily");
     case "Superorder":
-      return t( "Ranks-Superorder" );
+      return t("Ranks-Superorder");
     case "Supertribe":
-      return t( "Ranks-Supertribe" );
+      return t("Ranks-Supertribe");
     case "Tribe":
-      return t( "Ranks-Tribe" );
+      return t("Ranks-Tribe");
     case "Variety":
-      return t( "Ranks-Variety" );
+      return t("Ranks-Variety");
     case "Zoosection":
-      return t( "Ranks-Zoosection" );
+      return t("Ranks-Zoosection");
     case "Zoosubsection":
-      return t( "Ranks-Zoosubsection" );
+      return t("Ranks-Zoosubsection");
     default:
-      return t( "Unknown--rank" );
+      return t("Unknown--rank");
   }
 }

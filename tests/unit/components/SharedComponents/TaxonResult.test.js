@@ -10,18 +10,18 @@ const mockTaxon = {
   rank_level: 60,
 };
 
-jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+jest.mock("sharedHooks/useCurrentUser", () => ({
   __esModule: true,
   default: () => undefined,
-} ) );
+}));
 
-jest.mock( "sharedHooks/useTaxon", () => ( {
+jest.mock("sharedHooks/useTaxon", () => ({
   __esModule: true,
-  default: () => ( { taxon: mockTaxon } ),
-} ) );
+  default: () => ({ taxon: mockTaxon }),
+}));
 
-describe( "TaxonResult", () => {
-  it( "should render correctly", () => {
+describe("TaxonResult", () => {
+  it("should render correctly", () => {
     render(
       <TaxonResult
         accessibilityLabel="this is the taxon"
@@ -29,6 +29,6 @@ describe( "TaxonResult", () => {
       />,
     );
 
-    expect( screen ).toMatchSnapshot();
-  } );
-} );
+    expect(screen).toMatchSnapshot();
+  });
+});

@@ -20,35 +20,35 @@ type Props = {
   updateObservations: Function
 }
 
-const DeleteObservationSheet = ( {
+const DeleteObservationSheet = ({
   currentObservation,
   onPressClose,
   observations,
   onDelete,
   updateObservations,
-}: Props ): Node => {
-  const { t } = useTranslation( );
-  const realm = useRealm( );
+}: Props): Node => {
+  const { t } = useTranslation();
+  const realm = useRealm();
   const { uuid } = currentObservation;
-  const addToDeleteQueue = useStore( state => state.addToDeleteQueue );
+  const addToDeleteQueue = useStore(state => state.addToDeleteQueue);
 
   const multipleObservations = observations.length > 1;
 
-  const addObservationToDeletionQueue = useCallback( ( ) => {
-    const localObsToDelete = realm.objectForPrimaryKey( "Observation", uuid );
-    if ( localObsToDelete ) {
-      safeRealmWrite( realm, ( ) => {
-        localObsToDelete._deleted_at = new Date( );
-      }, "adding _deleted_at date in DeleteObservationSheet" );
-      addToDeleteQueue( uuid );
+  const addObservationToDeletionQueue = useCallback(() => {
+    const localObsToDelete = realm.objectForPrimaryKey("Observation", uuid);
+    if (localObsToDelete) {
+      safeRealmWrite(realm, () => {
+        localObsToDelete._deleted_at = new Date();
+      }, "adding _deleted_at date in DeleteObservationSheet");
+      addToDeleteQueue(uuid);
     }
-    if ( multipleObservations ) {
-      updateObservations( observations.filter( o => o.uuid !== uuid ) );
-      onPressClose( );
+    if (multipleObservations) {
+      updateObservations(observations.filter(o => o.uuid !== uuid));
+      onPressClose();
       return;
     }
-    if ( typeof ( onDelete ) === "function" ) {
-      onDelete( );
+    if (typeof (onDelete) === "function") {
+      onDelete();
     }
   }, [
     onPressClose,
@@ -59,16 +59,16 @@ const DeleteObservationSheet = ( {
     addToDeleteQueue,
     updateObservations,
     uuid,
-  ] );
+  ]);
 
   return (
     <WarningSheet
       onPressClose={onPressClose}
-      headerText={t( "DELETE-OBSERVATION--question" )}
+      headerText={t("DELETE-OBSERVATION--question")}
       handleSecondButtonPress={onPressClose}
-      secondButtonText={t( "CANCEL" )}
+      secondButtonText={t("CANCEL")}
       confirm={addObservationToDeletionQueue}
-      buttonText={t( "DELETE" )}
+      buttonText={t("DELETE")}
     />
   );
 };

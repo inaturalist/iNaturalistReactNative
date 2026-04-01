@@ -6,7 +6,7 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
-const DROP_SHADOW = getShadow( );
+const DROP_SHADOW = getShadow();
 
 interface Props {
   region: {
@@ -16,21 +16,21 @@ interface Props {
   accuracy: number;
 }
 
-const DisplayLatLng = ( { region, accuracy }: Props ) => {
-  const { t } = useTranslation( );
+const DisplayLatLng = ({ region, accuracy }: Props) => {
+  const { t } = useTranslation();
   let displayLocation = "";
-  if ( region.latitude && region.longitude ) {
-    if ( accuracy ) {
-      displayLocation = t( "Lat-Lon-Acc", {
+  if (region.latitude && region.longitude) {
+    if (accuracy) {
+      displayLocation = t("Lat-Lon-Acc", {
         latitude: region.latitude,
         longitude: region.longitude,
         accuracy,
-      } );
+      });
     } else {
-      displayLocation = t( "Lat-Lon", {
+      displayLocation = t("Lat-Lon", {
         latitude: region.latitude,
         longitude: region.longitude,
-      } );
+      });
     }
   }
 

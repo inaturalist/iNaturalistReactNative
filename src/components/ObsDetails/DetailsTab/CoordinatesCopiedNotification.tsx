@@ -9,7 +9,7 @@ import * as React from "react";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
-const CoordinatesCopiedNotification = ( ) => (
+const CoordinatesCopiedNotification = () => (
   <View
     className={classnames(
       "flex",
@@ -21,10 +21,10 @@ const CoordinatesCopiedNotification = ( ) => (
       "p-3",
       "rounded-xl",
     )}
-    style={getShadow( )}
+    style={getShadow()}
   >
     <Body2 className="mr-3">
-      {t( "Coordinates-copied-to-clipboard" )}
+      {t("Coordinates-copied-to-clipboard")}
     </Body2>
     <INatIcon
       name="checkmark-circle"

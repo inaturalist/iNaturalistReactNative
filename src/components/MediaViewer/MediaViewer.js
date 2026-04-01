@@ -43,74 +43,74 @@ type Props = {
   uri?: string | null
 }
 
-const MediaViewer = ( {
+const MediaViewer = ({
   autoPlaySound,
   editable,
   deleting,
   header,
-  onClose = ( ) => undefined,
+  onClose = () => undefined,
   onDeletePhoto,
   onDeleteSound,
   photos = [],
   sounds = [],
   uri,
-}: Props ): Node => {
+}: Props): Node => {
   const insets = useSafeAreaInsets();
-  const uris = useMemo( ( ) => ( [
-    ...photos.map( photo => photo.url || Photo.getLocalPhotoUri( photo.localFilePath ) ),
-    ...sounds.map( sound => sound.file_url ),
-  ] ), [photos, sounds] );
+  const uris = useMemo(() => ([
+    ...photos.map(photo => photo.url || Photo.getLocalPhotoUri(photo.localFilePath)),
+    ...sounds.map(sound => sound.file_url),
+  ]), [photos, sounds]);
 
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(
-    uris.indexOf( uri ) <= 0
+    uris.indexOf(uri) <= 0
       ? 0
-      : uris.indexOf( uri ),
+      : uris.indexOf(uri),
   );
-  const { t } = useTranslation( );
+  const { t } = useTranslation();
   const [
     mediaToDelete,
     setMediaToDelete,
-  ]: [null | { type: string, uri: string }, Function] = useState( null );
+  ]: [null | { type: string, uri: string }, Function] = useState(null);
 
-  const horizontalScroll = useRef( null );
+  const horizontalScroll = useRef(null);
 
-  const { screenWidth } = useDeviceOrientation( );
+  const { screenWidth } = useDeviceOrientation();
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
-  const scrollToIndex = useCallback( index => {
+  const scrollToIndex = useCallback(index => {
     // when a user taps an item in the carousel, the UI needs to automatically
     // scroll to the index of the item they selected
-    setSelectedMediaIndex( index );
-    horizontalScroll?.current?.scrollToIndex( { index, animated: true } );
-  }, [setSelectedMediaIndex] );
+    setSelectedMediaIndex(index);
+    horizontalScroll?.current?.scrollToIndex({ index, animated: true });
+  }, [setSelectedMediaIndex]);
 
   // If we've removed an item the selectedPhoto index might refer to a item
   // that no longer exists, so change it to the previous one
-  useEffect( ( ) => {
-    if ( uris.length > 0 && selectedMediaIndex >= uris.length ) {
-      const newIndex = Math.max( 0, selectedMediaIndex - 1 );
-      setSelectedMediaIndex( newIndex );
-      horizontalScroll?.current?.scrollToIndex( {
+  useEffect(() => {
+    if (uris.length > 0 && selectedMediaIndex >= uris.length) {
+      const newIndex = Math.max(0, selectedMediaIndex - 1);
+      setSelectedMediaIndex(newIndex);
+      horizontalScroll?.current?.scrollToIndex({
         index: newIndex,
         animated: false,
-      } );
+      });
     }
-  }, [selectedMediaIndex, setSelectedMediaIndex, uris.length] );
+  }, [selectedMediaIndex, setSelectedMediaIndex, uris.length]);
 
-  const confirmDelete = useCallback( ( ) => {
-    if ( mediaToDelete?.type === "photo" && onDeletePhoto ) {
-      onDeletePhoto( mediaToDelete.uri );
-    } else if ( mediaToDelete?.type === "sound" && onDeleteSound ) {
-      onDeleteSound( mediaToDelete.uri );
+  const confirmDelete = useCallback(() => {
+    if (mediaToDelete?.type === "photo" && onDeletePhoto) {
+      onDeletePhoto(mediaToDelete.uri);
+    } else if (mediaToDelete?.type === "sound" && onDeleteSound) {
+      onDeleteSound(mediaToDelete.uri);
     }
-    setMediaToDelete( null );
+    setMediaToDelete(null);
   }, [
     onDeletePhoto,
     onDeleteSound,
     mediaToDelete?.type,
     mediaToDelete?.uri,
     setMediaToDelete,
-  ] );
+  ]);
 
   return (
     <View
@@ -121,7 +121,7 @@ const MediaViewer = ( {
       <StatusBar barStyle="light-content" backgroundColor="black" />
       {
         header
-          ? header( { onClose, photoCount: uris.length } )
+          ? header({ onClose, photoCount: uris.length })
           : (
             <MediaViewerHeader
               onClose={onClose}
@@ -139,8 +139,8 @@ const MediaViewer = ( {
         selectedMediaIndex={selectedMediaIndex}
         horizontalScroll={horizontalScroll}
         setSelectedMediaIndex={setSelectedMediaIndex}
-        onDeletePhoto={photoUri => setMediaToDelete( { type: "photo", uri: photoUri } )}
-        onDeleteSound={soundUri => setMediaToDelete( { type: "sound", uri: soundUri } )}
+        onDeletePhoto={photoUri => setMediaToDelete({ type: "photo", uri: photoUri })}
+        onDeleteSound={soundUri => setMediaToDelete({ type: "sound", uri: soundUri })}
       />
       <MediaSelector
         photos={photos}
@@ -149,15 +149,15 @@ const MediaViewer = ( {
         isLargeScreen={isLargeScreen}
         selectedMediaIndex={selectedMediaIndex}
       />
-      {( mediaToDelete || deleting ) && (
+      {(mediaToDelete || deleting) && (
         <WarningSheet
-          onPressClose={( ) => setMediaToDelete( null )}
+          onPressClose={() => setMediaToDelete(null)}
           loading={deleting}
           confirm={confirmDelete}
-          headerText={t( "DISCARD-MEDIA--question" )}
-          buttonText={t( "DISCARD" )}
-          secondButtonText={t( "CANCEL" )}
-          handleSecondButtonPress={( ) => setMediaToDelete( null )}
+          headerText={t("DISCARD-MEDIA--question")}
+          buttonText={t("DISCARD")}
+          secondButtonText={t("CANCEL")}
+          handleSecondButtonPress={() => setMediaToDelete(null)}
           insideModal
           testID="MediaViewer.DiscardMediaWarningSheet"
         />

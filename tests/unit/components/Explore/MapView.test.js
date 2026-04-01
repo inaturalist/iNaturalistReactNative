@@ -7,19 +7,19 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 // Mock the useExplore hook with a mock dispatch function
-const mockDispatch = jest.fn( );
-const mockDefaultExploreLocation = jest.fn( ).mockResolvedValue( {
+const mockDispatch = jest.fn();
+const mockDefaultExploreLocation = jest.fn().mockResolvedValue({
   lat: 10,
   lng: 20,
-} );
+});
 
 // Create a mock implementation of the ExploreContext
-jest.mock( "providers/ExploreContext", ( ) => {
-  const originalModule = jest.requireActual( "providers/ExploreContext" );
+jest.mock("providers/ExploreContext", () => {
+  const originalModule = jest.requireActual("providers/ExploreContext");
   return {
     __esModule: true,
     ...originalModule,
-    useExplore: ( ) => ( {
+    useExplore: () => ({
       state: {
         lat: 10,
         lng: 20,
@@ -28,9 +28,9 @@ jest.mock( "providers/ExploreContext", ( ) => {
       },
       dispatch: mockDispatch,
       defaultExploreLocation: mockDefaultExploreLocation,
-    } ),
+    }),
   };
-} );
+});
 
 const mockObservationBounds = {
   swlat: 10,
@@ -39,7 +39,7 @@ const mockObservationBounds = {
   nelng: 40,
 };
 
-const mockRequestLocationPermissions = jest.fn( );
+const mockRequestLocationPermissions = jest.fn();
 
 const defaultProps = {
   observationBounds: mockObservationBounds,
@@ -49,68 +49,68 @@ const defaultProps = {
   },
   isLoading: false,
   hasLocationPermissions: true,
-  renderLocationPermissionsGate: jest.fn( ),
+  renderLocationPermissionsGate: jest.fn(),
   requestLocationPermissions: mockRequestLocationPermissions,
 };
 
 const mockObservations = [
-  factory( "RemoteObservation" ),
-  factory( "RemoteObservation" ),
+  factory("RemoteObservation"),
+  factory("RemoteObservation"),
 ];
 
-function renderMapView( ) {
-  renderComponent( <ExploreProvider><MapView {...defaultProps} /></ExploreProvider> );
+function renderMapView() {
+  renderComponent(<ExploreProvider><MapView {...defaultProps} /></ExploreProvider>);
 }
 
-const actor = userEvent.setup( );
+const actor = userEvent.setup();
 
-describe( "MapView", ( ) => {
-  beforeEach( () => {
+describe("MapView", () => {
+  beforeEach(() => {
     jest.useFakeTimers();
-  } );
+  });
 
-  afterEach( () => {
+  afterEach(() => {
     jest.clearAllMocks();
     jest.clearAllTimers();
-  } );
+  });
 
-  it( "should be accessible", ( ) => {
+  it("should be accessible", () => {
     const exploreMap = (
       <ExploreProvider>
         <MapView observations={mockObservations} {...defaultProps} />
       </ExploreProvider>
     );
     // Disabled during the update to RN 0.78
-    expect( exploreMap ).toBeTruthy( );
+    expect(exploreMap).toBeTruthy();
     // expect( exploreMap ).toBeAccessible( );
-  } );
+  });
 
-  it( "should hide redo search button by default", ( ) => {
-    renderMapView( );
+  it("should hide redo search button by default", () => {
+    renderMapView();
 
-    const redoSearchButton = screen.queryByText( /REDO SEARCH IN MAP AREA/ );
-    expect( redoSearchButton ).toBeFalsy( );
-  } );
+    const redoSearchButton = screen.queryByText(/REDO SEARCH IN MAP AREA/);
+    expect(redoSearchButton).toBeFalsy();
+  });
 
-  it( "should dispatch SET_EXPLORE_LOCATION when current location button is pressed", async ( ) => {
-    renderMapView( );
+  it("should dispatch SET_EXPLORE_LOCATION when current location button is pressed", async () => {
+    renderMapView();
 
-    const currentLocationButton = screen.getByTestId( "Map.CurrentLocationButton" );
-    await actor.press( currentLocationButton );
+    const currentLocationButton = screen.getByTestId("Map.CurrentLocationButton");
+    await actor.press(currentLocationButton);
 
-    await Promise.resolve( );
-    jest.runAllTimers( );
+    await Promise.resolve();
+    jest.runAllTimers();
 
-    expect( mockDefaultExploreLocation ).toHaveBeenCalled( );
+    expect(mockDefaultExploreLocation).toHaveBeenCalled();
 
-    expect( mockDispatch ).toHaveBeenCalledWith( {
+    expect(mockDispatch).toHaveBeenCalledWith({
       type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
       exploreLocation: { lat: 10, lng: 20 },
-    } );
-  } );
+    });
+  });
 
-  it( "should dispatch requestLocationPermissions when current location button "
-    + " is pressed and user has not given permissions", async ( ) => {
+  it("should dispatch requestLocationPermissions when current location button "
+    + " is pressed and user has not given permissions", async () => {
     renderComponent(
       <ExploreProvider>
         <MapView
@@ -120,23 +120,23 @@ describe( "MapView", ( ) => {
       </ExploreProvider>,
     );
 
-    const currentLocationButton = screen.getByTestId( "Map.CurrentLocationButton" );
-    await actor.press( currentLocationButton );
+    const currentLocationButton = screen.getByTestId("Map.CurrentLocationButton");
+    await actor.press(currentLocationButton);
 
-    await Promise.resolve( );
-    jest.runAllTimers( );
+    await Promise.resolve();
+    jest.runAllTimers();
 
-    expect( mockRequestLocationPermissions ).toHaveBeenCalled( );
-  } );
+    expect(mockRequestLocationPermissions).toHaveBeenCalled();
+  });
 
-  it( "should show loading indicator when isLoading is true", ( ) => {
+  it("should show loading indicator when isLoading is true", () => {
     renderComponent(
       <ExploreProvider>
         <MapView {...defaultProps} isLoading />
       </ExploreProvider>,
     );
 
-    const loadingIndicator = screen.getByTestId( "activity-indicator" );
-    expect( loadingIndicator ).toBeTruthy( );
-  } );
-} );
+    const loadingIndicator = screen.getByTestId("activity-indicator");
+    expect(loadingIndicator).toBeTruthy();
+  });
+});

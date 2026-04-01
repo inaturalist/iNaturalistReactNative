@@ -19,21 +19,21 @@ class Identification extends Realm.Object {
     taxon: Taxon.TAXON_FIELDS,
     updated_at: true,
     // $FlowFixMe
-    user: User && ( { ...User.FIELDS, id: true } ),
+    user: User && ({ ...User.FIELDS, id: true }),
     uuid: true,
     vision: true,
   };
 
-  static mimicRealmMappedPropertiesSchema( id ) {
+  static mimicRealmMappedPropertiesSchema(id) {
     return {
       ...id,
       createdAt: id.created_at,
       flags: id.flags || [],
-      taxon: Taxon.mapApiToRealm( id.taxon ),
+      taxon: Taxon.mapApiToRealm(id.taxon),
     };
   }
 
-  static mapIdentificationForMyObsAdvancedMode( id ) {
+  static mapIdentificationForMyObsAdvancedMode(id) {
     return {
       uuid: id.uuid,
       current: id.current,
@@ -43,7 +43,7 @@ class Identification extends Realm.Object {
   static new = attrs => {
     const newIdent = {
       ...attrs,
-      uuid: uuid.v4( ),
+      uuid: uuid.v4(),
     };
 
     return newIdent;

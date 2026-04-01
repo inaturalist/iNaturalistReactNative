@@ -14,36 +14,36 @@ type Props = {
 // questions remains, why are these objects getting invalidated in
 // the first place? We are not deleting them, so what's happening
 // to them and why?
-function jsonifyPotentialRealmObjects( objects ) {
+function jsonifyPotentialRealmObjects(objects) {
   return compact(
-    Array.from( objects || [] ).map(
+    Array.from(objects || []).map(
       object => (
         object.toJSON
-          ? object.toJSON( )
+          ? object.toJSON()
           : object
       ),
     ),
   );
 }
 
-const ObsMediaDisplayContainer = ( {
+const ObsMediaDisplayContainer = ({
   observation,
   tablet = false,
-}: Props ): Node => {
-  const photos = useMemo( ( ) => jsonifyPotentialRealmObjects(
+}: Props): Node => {
+  const photos = useMemo(() => jsonifyPotentialRealmObjects(
     (
       observation?.observationPhotos
       || observation?.observation_photos
       || []
-    ).map( op => op.photo ),
-  ), [observation] );
+    ).map(op => op.photo),
+  ), [observation]);
   const sounds = useMemo(
-    ( ) => jsonifyPotentialRealmObjects(
+    () => jsonifyPotentialRealmObjects(
       (
         observation?.observationSounds
         || observation?.observation_sounds
         || []
-      ).map( os => os.sound ),
+      ).map(os => os.sound),
     ),
     [observation],
   );

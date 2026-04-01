@@ -13,25 +13,25 @@ type Props = {
   onDiscard: Function
 }
 
-const DiscardChangesSheet = ( {
+const DiscardChangesSheet = ({
   setShowDiscardSheet,
   onDiscard,
   hidden,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
   return (
     <WarningSheet
-      onPressClose={( ) => setShowDiscardSheet( false )}
-      headerText={t( "DISCARD-PHOTOS--question" )}
-      text={t( "By-exiting-your-photos-will-not-be-saved" )}
-      secondButtonText={t( "CANCEL" )}
-      handleSecondButtonPress={( ) => setShowDiscardSheet( false )}
-      buttonText={t( "DISCARD" )}
+      onPressClose={() => setShowDiscardSheet(false)}
+      headerText={t("DISCARD-PHOTOS--question")}
+      text={t("By-exiting-your-photos-will-not-be-saved")}
+      secondButtonText={t("CANCEL")}
+      handleSecondButtonPress={() => setShowDiscardSheet(false)}
+      buttonText={t("DISCARD")}
       hidden={hidden}
-      confirm={( ) => {
-        setShowDiscardSheet( false );
-        if ( onDiscard ) {
+      confirm={() => {
+        setShowDiscardSheet(false);
+        if (onDiscard) {
           onDiscard();
         }
       }}

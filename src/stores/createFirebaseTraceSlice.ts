@@ -4,7 +4,7 @@ import type { StateCreator } from "zustand";
 
 import { log } from "../../react-native-logs.config";
 
-const logger = log.extend( "createFirebaseTraceSlice.ts" );
+const logger = log.extend("createFirebaseTraceSlice.ts");
 
 export enum FIREBASE_TRACES {
   AI_CAMERA_TO_MATCH = "ai_camera_to_match",
@@ -30,70 +30,70 @@ const applyTraceAttributes = (
   attributes: FirebaseTraceAttributes,
 ): void => {
   try {
-    Object.entries( attributes ).forEach( ( [key, value] ) => {
-      if ( typeof value === "string" ) {
+    Object.entries(attributes).forEach(([key, value]) => {
+      if (typeof value === "string") {
       // Firebase will silently fail if we exceed these limits
-        if ( key.length <= 40 && value.length <= 100 ) {
-          trace.putAttribute( key, value );
+        if (key.length <= 40 && value.length <= 100) {
+          trace.putAttribute(key, value);
         } else {
-          logger.error( `Failed to set firebase attribute (too long): ${key}=${value}` );
+          logger.error(`Failed to set firebase attribute (too long): ${key}=${value}`);
         }
-      } else if ( key.length <= 32 && /^(?!_)[^\s](?:.*[^\s])?$/.test( key ) ) {
+      } else if (key.length <= 32 && /^(?!_)[^\s](?:.*[^\s])?$/.test(key)) {
         /* metric key constraint: "Must not have a leading or trailing whitespace,
         no leading underscore '_' character and have a max length of 32 characters." */
-        trace.putMetric( key, value );
+        trace.putMetric(key, value);
       }
-    } );
-  } catch ( error ) {
-    logger.error( "Error setting firebase trace attributes", JSON.stringify( error ) );
+    });
+  } catch (error) {
+    logger.error("Error setting firebase trace attributes", JSON.stringify(error));
   }
 };
 
 interface FirebaseTraceSlice {
   activeFirebaseTraces: Record<string, TraceData>;
-  startFirebaseTrace: ( traceId: string, attributes: FirebaseTraceAttributes ) => Promise<void>;
-  stopFirebaseTrace: ( traceId: string, attributes: FirebaseTraceAttributes ) => Promise<void>;
+  startFirebaseTrace: (traceId: string, attributes: FirebaseTraceAttributes) => Promise<void>;
+  stopFirebaseTrace: (traceId: string, attributes: FirebaseTraceAttributes) => Promise<void>;
 }
 
 const createFirebaseTraceSlice: StateCreator<FirebaseTraceSlice>
-= ( set, get ) => ( {
+= (set, get) => ({
   activeFirebaseTraces: {},
 
-  startFirebaseTrace: async ( traceId: string, attributes: FirebaseTraceAttributes = {} ) => {
+  startFirebaseTrace: async (traceId: string, attributes: FirebaseTraceAttributes = {}) => {
     const perf = getPerformance();
-    const trace = await perf.startTrace( traceId );
+    const trace = await perf.startTrace(traceId);
 
-    const timeoutId = setTimeout( () => {
-      get().stopFirebaseTrace( traceId, { [FIREBASE_TRACE_ATTRIBUTES.DID_TIMEOUT]: "true" } );
-    }, TRACE_TIMEOUT );
+    const timeoutId = setTimeout(() => {
+      get().stopFirebaseTrace(traceId, { [FIREBASE_TRACE_ATTRIBUTES.DID_TIMEOUT]: "true" });
+    }, TRACE_TIMEOUT);
 
-    applyTraceAttributes( trace, attributes );
+    applyTraceAttributes(trace, attributes);
 
-    set( state => ( {
+    set(state => ({
       activeFirebaseTraces: {
         ...state.activeFirebaseTraces,
         [traceId]: { trace, timeoutId },
       },
-    } ) );
+    }));
   },
 
-  stopFirebaseTrace: async ( traceId: string, attributes: FirebaseTraceAttributes = {} ) => {
+  stopFirebaseTrace: async (traceId: string, attributes: FirebaseTraceAttributes = {}) => {
     const { activeFirebaseTraces } = get();
     const traceData = activeFirebaseTraces[traceId];
-    if ( traceData ) {
-      clearTimeout( traceData.timeoutId );
+    if (traceData) {
+      clearTimeout(traceData.timeoutId);
 
       const { trace } = traceData;
-      applyTraceAttributes( trace, attributes );
+      applyTraceAttributes(trace, attributes);
 
       await trace.stop();
 
-      set( state => {
+      set(state => {
         const { [traceId]: _, ...remainingTraces } = state.activeFirebaseTraces;
         return { activeFirebaseTraces: remainingTraces };
-      } );
+      });
     }
   },
-} );
+});
 
 export default createFirebaseTraceSlice;

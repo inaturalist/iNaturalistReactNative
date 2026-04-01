@@ -10,7 +10,7 @@ interface Props {
   error: string;
 }
 
-const Error = ( { error }: Props ) => (
+const Error = ({ error }: Props) => (
   <View className="flex-row items-center justify-center mt-5">
     <View className="relative items-center justify-center">
       {/*

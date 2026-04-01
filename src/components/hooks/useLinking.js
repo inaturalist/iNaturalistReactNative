@@ -12,78 +12,78 @@ import { Linking } from "react-native";
 const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
 const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
 
-const useLinking = ( currentUser: ?Object ) => {
-  const navigation = useNavigation( );
-  const [observationId, setObservationId] = useState( null );
+const useLinking = (currentUser: ?Object) => {
+  const navigation = useNavigation();
+  const [observationId, setObservationId] = useState(null);
 
-  const navigateConfirmedUser = useCallback( ( ) => {
-    if ( currentUser ) { return; }
-    navigation.navigate( "LoginStackNavigator", {
+  const navigateConfirmedUser = useCallback(() => {
+    if (currentUser) { return; }
+    navigation.navigate("LoginStackNavigator", {
       screen: "Login",
       params: { emailConfirmed: true },
-    } );
-  }, [navigation, currentUser] );
+    });
+  }, [navigation, currentUser]);
 
-  const navigateToObservations = useCallback( async ( ) => {
+  const navigateToObservations = useCallback(async () => {
     const searchParams = { id: observationId };
-    const apiToken = await getJWT( );
+    const apiToken = await getJWT();
     const options = {
       api_token: apiToken,
     };
-    const { results } = await searchObservations( searchParams, options );
+    const { results } = await searchObservations(searchParams, options);
     const uuid = results?.[0]?.uuid;
 
-    if ( uuid ) {
-      navigateToObsDetails( navigation, uuid );
+    if (uuid) {
+      navigateToObsDetails(navigation, uuid);
       // ObsId reset for the case the same link is pressed twice and the obsId is the same
-      setObservationId( null );
+      setObservationId(null);
     }
-  }, [navigation, observationId] );
+  }, [navigation, observationId]);
 
-  const checkAllowedHosts = useCallback( url => {
-    if ( typeof url !== "string" ) { return; }
-    const { host, pathname } = new URL( url );
+  const checkAllowedHosts = useCallback(url => {
+    if (typeof url !== "string") { return; }
+    const { host, pathname } = new URL(url);
 
     const allowedHosts = [
       "www.inaturalist.org",
     ];
-    if ( allowedHosts?.includes( host )
-      && pathname.includes( "/observations" ) ) {
-      const id = pathname.split( "/" )[2];
-      setObservationId( id );
+    if (allowedHosts?.includes(host)
+      && pathname.includes("/observations")) {
+      const id = pathname.split("/")[2];
+      setObservationId(id);
     }
-  }, [] );
+  }, []);
 
-  const handleUrl = useCallback( url => {
-    if ( url === newAccountConfirmedUrl
+  const handleUrl = useCallback(url => {
+    if (url === newAccountConfirmedUrl
       || url === existingAccountConfirmedUrl
     ) {
-      navigateConfirmedUser( );
+      navigateConfirmedUser();
     } else {
-      checkAllowedHosts( url );
+      checkAllowedHosts(url);
     }
-  }, [navigateConfirmedUser, checkAllowedHosts] );
+  }, [navigateConfirmedUser, checkAllowedHosts]);
 
-  useEffect( ( ) => {
-    Linking.addEventListener( "url", async ( { url } ) => {
-      if ( !url ) { return; }
-      handleUrl( url );
-    } );
-  }, [handleUrl] );
+  useEffect(() => {
+    Linking.addEventListener("url", async ({ url }) => {
+      if (!url) { return; }
+      handleUrl(url);
+    });
+  }, [handleUrl]);
 
-  useEffect( ( ) => {
-    const fetchInitialUrl = async ( ) => {
-      const url = await Linking.getInitialURL( );
-      handleUrl( url );
+  useEffect(() => {
+    const fetchInitialUrl = async () => {
+      const url = await Linking.getInitialURL();
+      handleUrl(url);
     };
-    fetchInitialUrl( );
-  }, [handleUrl] );
+    fetchInitialUrl();
+  }, [handleUrl]);
 
-  useEffect( ( ) => {
-    if ( observationId ) {
-      navigateToObservations( );
+  useEffect(() => {
+    if (observationId) {
+      navigateToObservations();
     }
-  }, [observationId, navigateToObservations] );
+  }, [observationId, navigateToObservations]);
 };
 
 export default useLinking;

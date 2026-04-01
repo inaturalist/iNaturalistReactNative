@@ -36,96 +36,96 @@ const handleShare = async url => {
     url: "",
     message: "",
   };
-  if ( Platform.OS === "ios" ) {
+  if (Platform.OS === "ios") {
     sharingOptions.url = url;
   } else {
     sharingOptions.message = url;
   }
   try {
-    return await Share.share( sharingOptions );
-  } catch ( err ) {
-    Alert.alert( err.message );
+    return await Share.share(sharingOptions);
+  } catch (err) {
+    Alert.alert(err.message);
     return null;
   }
 };
 
-const ViewInBrowserButton = ( { id } ) => (
+const ViewInBrowserButton = ({ id }) => (
   <Body4
     className="underline mt-[11px]"
     accessibilityRole="link"
-    onPress={async () => openExternalWebBrowser( `${OBSERVATION_URL}/${id}` )}
+    onPress={async () => openExternalWebBrowser(`${OBSERVATION_URL}/${id}`)}
   >
-    {t( "View-in-browser" )}
+    {t("View-in-browser")}
   </Body4>
 );
 
-const ShareButton = ( { id } ) => (
+const ShareButton = ({ id }) => (
   <Body4
     className="underline mt-[11px]"
-    onPress={() => handleShare( `${OBSERVATION_URL}/${id}` )}
+    onPress={() => handleShare(`${OBSERVATION_URL}/${id}`)}
   >
-    {t( "Share" )}
+    {t("Share")}
   </Body4>
 );
 
 const qualityGradeOption = option => {
-  switch ( option ) {
+  switch (option) {
     case "research":
-      return t( "Research-Grade--quality-grade" );
+      return t("Research-Grade--quality-grade");
     case "needs_id":
-      return t( "Needs-ID--quality-grade" );
+      return t("Needs-ID--quality-grade");
     default:
-      return t( "Casual--quality-grade" );
+      return t("Casual--quality-grade");
   }
 };
 
 const qualityGradeDescription = option => {
-  switch ( option ) {
+  switch (option) {
     case "research":
-      return t( "It-can-now-be-shared-for-use-in-research" );
+      return t("It-can-now-be-shared-for-use-in-research");
     case "needs_id":
-      return t( "This-observation-needs-more-identifications" );
+      return t("This-observation-needs-more-identifications");
     default:
-      return t( "This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade" );
+      return t("This-observation-has-not-met-the-conditions-required-to-meet-Research-Grade");
   }
 };
 
 const headingClass = "mt-[20px] mb-[11px] text-darkGray";
 const sectionClass = "mx-[15px] mb-[20px]";
 
-const DetailsTab = ( { currentUser, observation }: Props ): Node => {
-  const navigation = useNavigation( );
+const DetailsTab = ({ currentUser, observation }: Props): Node => {
+  const navigation = useNavigation();
   const application = observation?.application?.name;
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation?.uuid;
 
   const displayQualityGradeOption = option => {
-    const isResearchGrade = ( qualityGrade === "research" && option === "research" );
-    const labelClassName = ( qualityGrade === option )
+    const isResearchGrade = (qualityGrade === "research" && option === "research");
+    const labelClassName = (qualityGrade === option)
       ? "font-bold"
       : "";
-    const opacity = ( qualityGrade === option )
+    const opacity = (qualityGrade === option)
       ? "1"
       : "0.5";
-    const color = ( isResearchGrade )
+    const color = (isResearchGrade)
       ? colors.inatGreen
       : colors.darkGray;
     return (
       <View className="flex-1 flex-col space-y-[8px] items-center">
         <QualityGradeStatus qualityGrade={option} opacity={opacity} color={color} />
-        <Body4 className={labelClassName}>{ qualityGradeOption( option ) }</Body4>
+        <Body4 className={labelClassName}>{ qualityGradeOption(option) }</Body4>
       </View>
     );
   };
 
-  if ( !observation ) return null;
+  if (!observation) return null;
 
   return (
     <>
       {observation.description && (
         <>
           <View className={sectionClass}>
-            <Heading4 className={headingClass}>{t( "NOTES" )}</Heading4>
+            <Heading4 className={headingClass}>{t("NOTES")}</Heading4>
             <UserText>{observation.description}</UserText>
           </View>
           <Divider />
@@ -134,39 +134,39 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
       <LocationSection observation={observation} />
       <Divider />
       <View className={sectionClass}>
-        <Heading4 className={headingClass}>{t( "DATE" )}</Heading4>
+        <Heading4 className={headingClass}>{t("DATE")}</Heading4>
         <DateDisplay
           classNameMargin="mb-[12px]"
-          label={t( "Date-observed-header-short" )}
+          label={t("Date-observed-header-short")}
           dateString={
-            checkCamelAndSnakeCase( observation, "timeObservedAt" )
+            checkCamelAndSnakeCase(observation, "timeObservedAt")
             || observation.observed_on_string
             || observation.observed_on
           }
           timeZone={observation.observed_time_zone}
         />
         <DateDisplay
-          label={t( "Date-uploaded-header-short" )}
-          dateString={checkCamelAndSnakeCase( observation, "createdAt" )}
+          label={t("Date-uploaded-header-short")}
+          dateString={checkCamelAndSnakeCase(observation, "createdAt")}
         />
       </View>
       <Divider />
       <View className={`${sectionClass} flex-col`}>
-        <Heading4 className={headingClass}>{t( "DATA-QUALITY" )}</Heading4>
+        <Heading4 className={headingClass}>{t("DATA-QUALITY")}</Heading4>
         <View className="space-y-[15px]">
           <View className="flex-row justify-around">
-            {displayQualityGradeOption( "casual" )}
-            {displayQualityGradeOption( "needs_id" )}
-            {displayQualityGradeOption( "research" )}
+            {displayQualityGradeOption("casual")}
+            {displayQualityGradeOption("needs_id")}
+            {displayQualityGradeOption("research")}
           </View>
           <Body4>
-            {qualityGradeDescription( qualityGrade )}
+            {qualityGradeDescription(qualityGrade)}
           </Body4>
           {currentUser && (
             <Button
               testID="DetailsTab.DQA"
-              text={t( "VIEW-DATA-QUALITY-ASSESSMENT" )}
-              onPress={() => navigation.navigate( "DataQualityAssessment", { observationUUID } )}
+              text={t("VIEW-DATA-QUALITY-ASSESSMENT")}
+              onPress={() => navigation.navigate("DataQualityAssessment", { observationUUID })}
             />
           )}
         </View>
@@ -174,12 +174,12 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
       <Divider />
       <ProjectSection observation={observation} />
       <View className={`${sectionClass} space-y-[11px]`}>
-        <Heading4 className={headingClass}>{t( "OTHER-DATA" )}</Heading4>
+        <Heading4 className={headingClass}>{t("OTHER-DATA")}</Heading4>
         <Attribution observation={observation} />
         {application && (
-          <Body4>{t( "Uploaded-via-application", { application } )}</Body4>
+          <Body4>{t("Uploaded-via-application", { application })}</Body4>
         )}
-        <View><LabelColonValue label="ID" value={String( observation.id )} valueSelectable /></View>
+        <View><LabelColonValue label="ID" value={String(observation.id)} valueSelectable /></View>
         <View><LabelColonValue label="UUID" value={observation.uuid} valueSelectable /></View>
         <ViewInBrowserButton id={observation.id} />
         <ShareButton id={observation.id} />

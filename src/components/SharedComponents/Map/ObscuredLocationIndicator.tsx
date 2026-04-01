@@ -13,11 +13,11 @@ interface Props {
   longitude: number;
 }
 
-const ObscuredLocationIndicator = ( {
+const ObscuredLocationIndicator = ({
   latitude,
   longitude,
-}: Props ) => {
-  const obscurationCell = obscurationCellForLatLng( latitude, longitude );
+}: Props) => {
+  const obscurationCell = obscurationCellForLatLng(latitude, longitude);
   return (
     <>
       <Polygon

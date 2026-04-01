@@ -13,13 +13,13 @@ export const LANDSCAPE_RIGHT = "landscape-right" as const;
 export const PORTRAIT = "portrait" as const;
 export const PORTRAIT_UPSIDE_DOWN = "portrait-upside-down" as const;
 
-const { width, height } = Dimensions.get( "screen" );
+const { width, height } = Dimensions.get("screen");
 
-export function orientationLockerToIosOrientation( orientation: OrientationType ): string {
+export function orientationLockerToIosOrientation(orientation: OrientationType): string {
   // react-native-orientation-locker and react-native-vision-camera  different
   // string values for these constants, so we map everything to the
   // react-native-vision-camera versions
-  switch ( orientation ) {
+  switch (orientation) {
     case "LANDSCAPE-RIGHT":
       return LANDSCAPE_RIGHT;
     case "LANDSCAPE-LEFT":
@@ -31,42 +31,42 @@ export function orientationLockerToIosOrientation( orientation: OrientationType 
   }
 }
 
-const useDeviceOrientation = ( ) => {
-  const [deviceOrientation, setDeviceOrientation] = useState<string>( );
+const useDeviceOrientation = () => {
+  const [deviceOrientation, setDeviceOrientation] = useState<string>();
 
-  useDeviceOrientationChange( ( orientation: OrientationType ) => {
+  useDeviceOrientationChange((orientation: OrientationType) => {
     // FACE-UP and FACE-DOWN could be portrait or landscape, I guess the
     // device can't tell, so I'm just not changing the layout at all for
     // those. ~~~ kueda 20230420
-    if ( orientation === "FACE-UP" || orientation === "FACE-DOWN" ) {
+    if (orientation === "FACE-UP" || orientation === "FACE-DOWN") {
       return;
     }
-    const newOrientation = orientationLockerToIosOrientation( orientation );
-    if ( deviceOrientation === newOrientation ) {
+    const newOrientation = orientationLockerToIosOrientation(orientation);
+    if (deviceOrientation === newOrientation) {
       return;
     }
-    setDeviceOrientation( newOrientation );
-  } );
+    setDeviceOrientation(newOrientation);
+  });
 
-  const orientation = useMemo( ( ) => {
-    const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
+  const orientation = useMemo(() => {
+    const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes(deviceOrientation);
 
     const screenWidth = isLandscapeMode
-      ? Math.max( width, height )
-      : Math.min( width, height );
+      ? Math.max(width, height)
+      : Math.min(width, height);
 
     const screenHeight = isLandscapeMode
-      ? Math.min( width, height )
-      : Math.max( width, height );
+      ? Math.min(width, height)
+      : Math.max(width, height);
 
     return {
       deviceOrientation,
-      isTablet: DeviceInfo.isTablet( ),
+      isTablet: DeviceInfo.isTablet(),
       isLandscapeMode,
       screenWidth,
       screenHeight,
     };
-  }, [deviceOrientation] );
+  }, [deviceOrientation]);
 
   return orientation;
 };

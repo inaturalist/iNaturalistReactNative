@@ -19,49 +19,49 @@ interface Props extends PropsWithChildren {
   color?: string;
 }
 
-const AnimatedView = Reanimated.createAnimatedComponent( View );
+const AnimatedView = Reanimated.createAnimatedComponent(View);
 
-const CircleDots = ( {
+const CircleDots = ({
   animated,
   children,
   className,
-  color = String( colors?.darkGray || "black" ),
-}: Props ) => {
-  const animation = useSharedValue( 0 );
-  const rotation = useDerivedValue( ( ) => interpolate(
-    animation.get( ),
+  color = String(colors?.darkGray || "black"),
+}: Props) => {
+  const animation = useSharedValue(0);
+  const rotation = useDerivedValue(() => interpolate(
+    animation.get(),
     [0, 1],
     [0, 360],
-  ) );
-  const rotate = useAnimatedStyle( ( ) => ( {
+  ));
+  const rotate = useAnimatedStyle(() => ({
     transform: [
       {
-        rotateZ: `${rotation.get( )}deg`,
+        rotateZ: `${rotation.get()}deg`,
       },
     ],
-  } ) );
+  }));
 
-  const startAnimation = useCallback( ( ) => {
-    animation.set( withRepeat(
-      withTiming( 1, {
+  const startAnimation = useCallback(() => {
+    animation.set(withRepeat(
+      withTiming(1, {
         duration: 10000,
         easing: Easing.linear,
-      } ),
+      }),
       -1,
-    ) );
-  }, [animation] );
+    ));
+  }, [animation]);
 
-  const stopAnimation = useCallback( ( ) => {
-    animation.set( 0 );
-  }, [animation] );
+  const stopAnimation = useCallback(() => {
+    animation.set(0);
+  }, [animation]);
 
-  useEffect( ( ) => {
-    if ( animated ) {
-      startAnimation( );
+  useEffect(() => {
+    if (animated) {
+      startAnimation();
     } else {
-      stopAnimation( );
+      stopAnimation();
     }
-  }, [animated, startAnimation, stopAnimation] );
+  }, [animated, startAnimation, stopAnimation]);
 
   return (
     <View className={`${className} justify-center items-center`}>

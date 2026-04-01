@@ -11,39 +11,39 @@ type Props = {
   fadeInIcon: ReactComponent;
   fadeOutIcon: ReactComponent;
 }
-const AnimatedView = Reanimated.createAnimatedComponent( View );
+const AnimatedView = Reanimated.createAnimatedComponent(View);
 
-const keyframe = new Keyframe( {
+const keyframe = new Keyframe({
   0: { opacity: 0 },
   40: { opacity: 1 },
   100: { opacity: 0 },
-} );
+});
 
-const FadeOutFadeInIcon = ( {
+const FadeOutFadeInIcon = ({
   iconWrapperClasses,
   layout,
   fadeInIcon,
   fadeOutIcon,
-}: Props ) => {
+}: Props) => {
   const fadeOutUploadCompleteIcon = (
     <AnimatedView
-      entering={keyframe.duration( 2000 )}
+      entering={keyframe.duration(2000)}
     >
       {fadeOutIcon}
     </AnimatedView>
   );
 
   const fadeInObsStatusComponent = (
-    <AnimatedView entering={FadeIn.duration( 1000 ).delay( 2000 )}>
+    <AnimatedView entering={FadeIn.duration(1000).delay(2000)}>
       {fadeInIcon}
     </AnimatedView>
   );
   return (
     <>
       <View
-        className={classnames( "absolute h-full justify-center", {
+        className={classnames("absolute h-full justify-center", {
           "bottom-0": layout === "horizontal",
-        } )}
+        })}
       >
         <View className={iconWrapperClasses}>
           {fadeOutUploadCompleteIcon}

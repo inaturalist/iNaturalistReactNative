@@ -9,22 +9,22 @@ function findRecordInRealm(
     record: object;
   },
 ): object | null {
-  if ( !realm || realm.isClosed ) return null;
+  if (!realm || realm.isClosed) return null;
 
   // Photos do not have UUIDs, so we pass the Photo itself as an option
-  if ( type === "Photo" && options?.record ) {
+  if (type === "Photo" && options?.record) {
     return options.record;
   }
 
-  const observation = realm.objectForPrimaryKey( "Observation", observationUUID );
-  if ( !observation ) return null;
+  const observation = realm.objectForPrimaryKey("Observation", observationUUID);
+  if (!observation) return null;
 
-  if ( type === "Observation" ) {
+  if (type === "Observation") {
     return observation;
-  } if ( type === "ObservationPhoto" ) {
-    return observation.observationPhotos?.find( op => op.uuid === recordUUID ) || null;
-  } if ( type === "ObservationSound" ) {
-    return observation.observationSounds?.find( os => os.uuid === recordUUID ) || null;
+  } if (type === "ObservationPhoto") {
+    return observation.observationPhotos?.find(op => op.uuid === recordUUID) || null;
+  } if (type === "ObservationSound") {
+    return observation.observationSounds?.find(os => os.uuid === recordUUID) || null;
   }
 
   return null;
@@ -36,13 +36,13 @@ function updateRecordWithServerId(
   serverId: number,
   type: string,
 ): void {
-  safeRealmWrite( realm, ( ) => {
+  safeRealmWrite(realm, () => {
     record.id = serverId;
-    record._synced_at = new Date( );
-    if ( type === "Observation" ) {
+    record._synced_at = new Date();
+    if (type === "Observation") {
       record.needs_sync = false;
     }
-  }, `marking record uploaded in realmSync.js, type: ${type}` );
+  }, `marking record uploaded in realmSync.js, type: ${type}`);
 }
 
 function handleRecordUpdateError(
@@ -58,18 +58,18 @@ function handleRecordUpdateError(
 ): void {
   // Try it one more time in case it was invalidated but it's still in the
   // database
-  if ( error.message.match( /invalidated or deleted/ ) ) {
+  if (error.message.match(/invalidated or deleted/)) {
     const refreshedRecord
-        = findRecordInRealm( realm, observationUUID, recordUUID, type, options );
-    if ( !refreshedRecord ) {
+        = findRecordInRealm(realm, observationUUID, recordUUID, type, options);
+    if (!refreshedRecord) {
       throw new Error(
         `Cannot find local Realm object on retry (${type}), recordUUID: ${recordUUID || ""}`,
       );
     }
-    updateRecordWithServerId( realm, refreshedRecord, serverId, type );
+    updateRecordWithServerId(realm, refreshedRecord, serverId, type);
   } else {
     // For other errors, just log and re-throw
-    console.error( `Error updating record in Realm: ${error.message}` );
+    console.error(`Error updating record in Realm: ${error.message}`);
     throw error;
   }
 }
@@ -91,13 +91,13 @@ const markRecordUploaded = (
     record: object;
   },
 ) => {
-  if ( !realm || realm.isClosed ) return;
+  if (!realm || realm.isClosed) return;
 
   const { id } = response.results[0];
 
-  const record = findRecordInRealm( realm, observationUUID, recordUUID, type, options );
+  const record = findRecordInRealm(realm, observationUUID, recordUUID, type, options);
 
-  if ( !record ) {
+  if (!record) {
     throw new Error(
       // eslint-disable-next-line max-len
       `Cannot find local Realm object to mark as updated (${type}), recordUUID: ${recordUUID || ""}`,
@@ -105,8 +105,8 @@ const markRecordUploaded = (
   }
 
   try {
-    updateRecordWithServerId( realm, record, id, type );
-  } catch ( realmWriteError ) {
+    updateRecordWithServerId(realm, record, id, type);
+  } catch (realmWriteError) {
     handleRecordUpdateError(
       realmWriteError,
       realm,

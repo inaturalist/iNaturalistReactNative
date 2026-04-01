@@ -6,14 +6,14 @@ import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderComponent } from "tests/helpers/render";
 
-const mockedNavigate = jest.fn( );
-const mockProject = factory( "RemoteProject", {
-  icon: faker.image.url( ),
-  title: faker.lorem.sentence( ),
+const mockedNavigate = jest.fn();
+const mockProject = factory("RemoteProject", {
+  icon: faker.image.url(),
+  title: faker.lorem.sentence(),
   project_type: "collection",
-} );
+});
 
-const mockProjectWithDateRange = factory( "RemoteProject", {
+const mockProjectWithDateRange = factory("RemoteProject", {
   ...mockProject,
   rule_preferences: [
     {
@@ -25,105 +25,105 @@ const mockProjectWithDateRange = factory( "RemoteProject", {
       value: "2024-03-14 08:41 -07:00",
     },
   ],
-} );
+});
 
-const infiniteScrollResults = results => ( {
+const infiniteScrollResults = results => ({
   data: {
     pages: [{
       results,
     }],
   },
-} );
+});
 
-jest.mock( "sharedHooks/useAuthenticatedInfiniteQuery", ( ) => ( {
+jest.mock("sharedHooks/useAuthenticatedInfiniteQuery", () => ({
   __esModule: true,
-  default: jest.fn( ( ) => infiniteScrollResults( [mockProject] ) ),
-} ) );
+  default: jest.fn(() => infiniteScrollResults([mockProject])),
+}));
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
-    useNavigation: () => ( {
+    useNavigation: () => ({
       navigate: mockedNavigate,
-      setOptions: jest.fn( ),
-      addListener: jest.fn( ),
-    } ),
-    useRoute: () => ( {} ),
+      setOptions: jest.fn(),
+      addListener: jest.fn(),
+    }),
+    useRoute: () => ({}),
   };
-} );
+});
 
-describe( "Projects", ( ) => {
-  beforeAll( async ( ) => {
-    jest.useFakeTimers( );
-  } );
+describe("Projects", () => {
+  beforeAll(async () => {
+    jest.useFakeTimers();
+  });
 
   // it( "should not have accessibility errors", async ( ) => {
   //   const projects = <ProjectsContainer />;
   //   expect( projects ).toBeAccessible( );
   // } );
 
-  test( "should display project search results", ( ) => {
-    useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
+  test("should display project search results", () => {
+    useAuthenticatedInfiniteQuery.mockImplementation(() => infiniteScrollResults(
       [mockProject],
-    ) );
-    renderComponent( <ProjectsContainer /> );
+    ));
+    renderComponent(<ProjectsContainer />);
 
-    const input = screen.getByTestId( "ProjectSearch.input" );
-    fireEvent.changeText( input, "butterflies" );
+    const input = screen.getByTestId("ProjectSearch.input");
+    fireEvent.changeText(input, "butterflies");
 
-    expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
-    expect( screen.getByTestId( `Project.${mockProject.id}.photo` ).props.source )
-      .toMatchObject( { url: mockProject.icon } );
-    fireEvent.press( screen.getByTestId( `Project.${mockProject.id}` ) );
-    expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
+    expect(screen.getByText(mockProject.title)).toBeTruthy();
+    expect(screen.getByTestId(`Project.${mockProject.id}.photo`).props.source)
+      .toMatchObject({ url: mockProject.icon });
+    fireEvent.press(screen.getByTestId(`Project.${mockProject.id}`));
+    expect(mockedNavigate).toHaveBeenCalledWith("ProjectDetails", {
       id: mockProject.id,
-    } );
-  } );
+    });
+  });
 
-  test( "should display date range if collection project has date range", async ( ) => {
-    useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
+  test("should display date range if collection project has date range", async () => {
+    useAuthenticatedInfiniteQuery.mockImplementation(() => infiniteScrollResults(
       [mockProjectWithDateRange],
-    ) );
-    renderComponent( <ProjectsContainer /> );
-    const input = screen.getByTestId( "ProjectSearch.input" );
-    fireEvent.changeText( input, "" );
-    const dateRange = await screen.findByText( "Mar 7, 2024 - Mar 14, 2024" );
-    expect( dateRange ).toBeTruthy( );
-  } );
+    ));
+    renderComponent(<ProjectsContainer />);
+    const input = screen.getByTestId("ProjectSearch.input");
+    fireEvent.changeText(input, "");
+    const dateRange = await screen.findByText("Mar 7, 2024 - Mar 14, 2024");
+    expect(dateRange).toBeTruthy();
+  });
 
-  test( "should display project type if collection project has no date range", async ( ) => {
-    useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
+  test("should display project type if collection project has no date range", async () => {
+    useAuthenticatedInfiniteQuery.mockImplementation(() => infiniteScrollResults(
       [mockProject],
-    ) );
-    renderComponent( <ProjectsContainer /> );
-    const projectTypeText = await screen.findByText( /Collection Project/ );
-    expect( projectTypeText ).toBeTruthy( );
-  } );
+    ));
+    renderComponent(<ProjectsContainer />);
+    const projectTypeText = await screen.findByText(/Collection Project/);
+    expect(projectTypeText).toBeTruthy();
+  });
 
-  test( "should display project type if project is traditional project", async ( ) => {
-    useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
+  test("should display project type if project is traditional project", async () => {
+    useAuthenticatedInfiniteQuery.mockImplementation(() => infiniteScrollResults(
       [{
         ...mockProjectWithDateRange,
         project_type: "traditional",
       }],
-    ) );
-    renderComponent( <ProjectsContainer /> );
-    const projectTypeText = await screen.findByText( /Traditional Project/ );
-    expect( projectTypeText ).toBeTruthy( );
-  } );
+    ));
+    renderComponent(<ProjectsContainer />);
+    const projectTypeText = await screen.findByText(/Traditional Project/);
+    expect(projectTypeText).toBeTruthy();
+  });
 
-  test( "should display date range if umbrella project has date range", async ( ) => {
-    useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
+  test("should display date range if umbrella project has date range", async () => {
+    useAuthenticatedInfiniteQuery.mockImplementation(() => infiniteScrollResults(
       [{
         ...mockProjectWithDateRange,
         project_type: "umbrella",
       }],
-    ) );
-    renderComponent( <ProjectsContainer /> );
-    const input = screen.getByTestId( "ProjectSearch.input" );
-    fireEvent.changeText( input, "" );
-    const dateRange = await screen.findByText( "Mar 7, 2024 - Mar 14, 2024" );
-    expect( dateRange ).toBeTruthy( );
-  } );
-} );
+    ));
+    renderComponent(<ProjectsContainer />);
+    const input = screen.getByTestId("ProjectSearch.input");
+    fireEvent.changeText(input, "");
+    const dateRange = await screen.findByText("Mar 7, 2024 - Mar 14, 2024");
+    expect(dateRange).toBeTruthy();
+  });
+});

@@ -47,10 +47,10 @@ import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
   elevation: 6,
-} );
+});
 
 const { useRealm } = RealmContext;
 
@@ -58,19 +58,19 @@ interface Props {
   closeModal: () => void;
   filterByIconicTaxonUnknown: () => void;
   // TODO: type this properly when taxon has a type
-  updateTaxon: ( taxon: null | { name: string } ) => void;
+  updateTaxon: (taxon: null | { name: string }) => void;
   // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
-  updateUser: ( user: null | { login: string } ) => void;
-  updateProject: ( project: ApiProject ) => void;
+  updateUser: (user: null | { login: string }) => void;
+  updateProject: (project: ApiProject) => void;
 }
 
-const FilterModalV2 = ( {
+const FilterModalV2 = ({
   closeModal,
   filterByIconicTaxonUnknown,
   updateTaxon,
   updateUser,
   updateProject,
-}: Props ) => {
+}: Props) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
   const realm = useRealm();
@@ -128,491 +128,491 @@ const FilterModalV2 = ( {
   const UPLOADED_END = "UPLOADED_END";
   const PHOTO_LICENSING = "PHOTO_LICENSING";
   const CONFIRMATION = "CONFIRMATION";
-  const [openSheet, setOpenSheet] = useState( NONE );
+  const [openSheet, setOpenSheet] = useState(NONE);
 
   const sortByButtonText = () => {
-    switch ( sortBy ) {
+    switch (sortBy) {
       case SORT_BY.DATE_UPLOADED_OLDEST:
-        return t( "DATE-UPLOADED-OLDEST" );
+        return t("DATE-UPLOADED-OLDEST");
       case SORT_BY.DATE_OBSERVED_NEWEST:
-        return t( "DATE-OBSERVED-NEWEST" );
+        return t("DATE-OBSERVED-NEWEST");
       case SORT_BY.DATE_OBSERVED_OLDEST:
-        return t( "DATE-OBSERVED-OLDEST" );
+        return t("DATE-OBSERVED-OLDEST");
       case SORT_BY.MOST_FAVED:
-        return t( "MOST-FAVED" );
+        return t("MOST-FAVED");
       case SORT_BY.DATE_UPLOADED_NEWEST:
       default:
-        return t( "DATE-UPLOADED-NEWEST" );
+        return t("DATE-UPLOADED-NEWEST");
     }
   };
 
   const sortByValues = {
     [SORT_BY.DATE_UPLOADED_NEWEST]: {
-      label: t( "Date-uploaded" ),
-      text: t( "Newest-to-oldest" ),
+      label: t("Date-uploaded"),
+      text: t("Newest-to-oldest"),
       value: SORT_BY.DATE_UPLOADED_NEWEST,
     },
     [SORT_BY.DATE_UPLOADED_OLDEST]: {
-      label: t( "Date-uploaded" ),
-      text: t( "Oldest-to-newest" ),
+      label: t("Date-uploaded"),
+      text: t("Oldest-to-newest"),
       value: SORT_BY.DATE_UPLOADED_OLDEST,
     },
     [SORT_BY.DATE_OBSERVED_NEWEST]: {
-      label: t( "Date-observed" ),
-      text: t( "Newest-to-oldest" ),
+      label: t("Date-observed"),
+      text: t("Newest-to-oldest"),
       value: SORT_BY.DATE_OBSERVED_NEWEST,
     },
     [SORT_BY.DATE_OBSERVED_OLDEST]: {
-      label: t( "Date-observed" ),
-      text: t( "Oldest-to-newest" ),
+      label: t("Date-observed"),
+      text: t("Oldest-to-newest"),
       value: SORT_BY.DATE_OBSERVED_OLDEST,
     },
     [SORT_BY.MOST_FAVED]: {
-      label: t( "Most-faved" ),
+      label: t("Most-faved"),
       value: SORT_BY.MOST_FAVED,
     },
   };
 
   const taxonomicRankValues = {
     [TAXONOMIC_RANK.none]: {
-      label: t( "NONE--ranks" ),
+      label: t("NONE--ranks"),
       value: TAXONOMIC_RANK.none,
     },
     [TAXONOMIC_RANK.kingdom]: {
-      label: t( "Ranks-KINGDOM" ),
+      label: t("Ranks-KINGDOM"),
       value: TAXONOMIC_RANK.kingdom,
     },
     [TAXONOMIC_RANK.phylum]: {
-      label: t( "Ranks-PHYLUM" ),
+      label: t("Ranks-PHYLUM"),
       value: TAXONOMIC_RANK.phylum,
     },
     [TAXONOMIC_RANK.subphylum]: {
-      label: t( "Ranks-SUBPHYLUM" ),
+      label: t("Ranks-SUBPHYLUM"),
       value: TAXONOMIC_RANK.subphylum,
     },
     [TAXONOMIC_RANK.superclass]: {
-      label: t( "Ranks-SUPERCLASS" ),
+      label: t("Ranks-SUPERCLASS"),
       value: TAXONOMIC_RANK.superclass,
     },
     [TAXONOMIC_RANK.class]: {
-      label: t( "Ranks-CLASS" ),
+      label: t("Ranks-CLASS"),
       value: TAXONOMIC_RANK.class,
     },
     [TAXONOMIC_RANK.subclass]: {
-      label: t( "Ranks-SUBCLASS" ),
+      label: t("Ranks-SUBCLASS"),
       value: TAXONOMIC_RANK.subclass,
     },
     [TAXONOMIC_RANK.infraclass]: {
-      label: t( "Ranks-INFRACLASS" ),
+      label: t("Ranks-INFRACLASS"),
       value: TAXONOMIC_RANK.infraclass,
     },
     [TAXONOMIC_RANK.subterclass]: {
-      label: t( "Ranks-SUBTERCLASS" ),
+      label: t("Ranks-SUBTERCLASS"),
       value: TAXONOMIC_RANK.subterclass,
     },
     [TAXONOMIC_RANK.superorder]: {
-      label: t( "Ranks-SUPERORDER" ),
+      label: t("Ranks-SUPERORDER"),
       value: TAXONOMIC_RANK.superorder,
     },
     [TAXONOMIC_RANK.order]: {
-      label: t( "Ranks-ORDER" ),
+      label: t("Ranks-ORDER"),
       value: TAXONOMIC_RANK.order,
     },
     [TAXONOMIC_RANK.suborder]: {
-      label: t( "Ranks-SUBORDER" ),
+      label: t("Ranks-SUBORDER"),
       value: TAXONOMIC_RANK.suborder,
     },
     [TAXONOMIC_RANK.infraorder]: {
-      label: t( "Ranks-INFRAORDER" ),
+      label: t("Ranks-INFRAORDER"),
       value: TAXONOMIC_RANK.infraorder,
     },
     [TAXONOMIC_RANK.parvorder]: {
-      label: t( "Ranks-PARVORDER" ),
+      label: t("Ranks-PARVORDER"),
       value: TAXONOMIC_RANK.parvorder,
     },
     [TAXONOMIC_RANK.zoosection]: {
-      label: t( "Ranks-ZOOSECTION" ),
+      label: t("Ranks-ZOOSECTION"),
       value: TAXONOMIC_RANK.zoosection,
     },
     [TAXONOMIC_RANK.zoosubsection]: {
-      label: t( "Ranks-ZOOSUBSECTION" ),
+      label: t("Ranks-ZOOSUBSECTION"),
       value: TAXONOMIC_RANK.zoosubsection,
     },
     [TAXONOMIC_RANK.superfamily]: {
-      label: t( "Ranks-SUPERFAMILY" ),
+      label: t("Ranks-SUPERFAMILY"),
       value: TAXONOMIC_RANK.superfamily,
     },
     [TAXONOMIC_RANK.epifamily]: {
-      label: t( "Ranks-EPIFAMILY" ),
+      label: t("Ranks-EPIFAMILY"),
       value: TAXONOMIC_RANK.epifamily,
     },
     [TAXONOMIC_RANK.family]: {
-      label: t( "Ranks-FAMILY" ),
+      label: t("Ranks-FAMILY"),
       value: TAXONOMIC_RANK.family,
     },
     [TAXONOMIC_RANK.subfamily]: {
-      label: t( "Ranks-SUBFAMILY" ),
+      label: t("Ranks-SUBFAMILY"),
       value: TAXONOMIC_RANK.subfamily,
     },
     [TAXONOMIC_RANK.supertribe]: {
-      label: t( "Ranks-SUPERTRIBE" ),
+      label: t("Ranks-SUPERTRIBE"),
       value: TAXONOMIC_RANK.supertribe,
     },
     [TAXONOMIC_RANK.tribe]: {
-      label: t( "Ranks-TRIBE" ),
+      label: t("Ranks-TRIBE"),
       value: TAXONOMIC_RANK.tribe,
     },
     [TAXONOMIC_RANK.subtribe]: {
-      label: t( "Ranks-SUBTRIBE" ),
+      label: t("Ranks-SUBTRIBE"),
       value: TAXONOMIC_RANK.subtribe,
     },
     [TAXONOMIC_RANK.genus]: {
-      label: t( "Ranks-GENUS" ),
+      label: t("Ranks-GENUS"),
       value: TAXONOMIC_RANK.genus,
     },
     [TAXONOMIC_RANK.genushybrid]: {
-      label: t( "Ranks-GENUSHYBRID" ),
+      label: t("Ranks-GENUSHYBRID"),
       value: TAXONOMIC_RANK.genushybrid,
     },
     [TAXONOMIC_RANK.subgenus]: {
-      label: t( "Ranks-SUBGENUS" ),
+      label: t("Ranks-SUBGENUS"),
       value: TAXONOMIC_RANK.subgenus,
     },
     [TAXONOMIC_RANK.section]: {
-      label: t( "Ranks-SECTION" ),
+      label: t("Ranks-SECTION"),
       value: TAXONOMIC_RANK.section,
     },
     [TAXONOMIC_RANK.subsection]: {
-      label: t( "Ranks-SUBSECTION" ),
+      label: t("Ranks-SUBSECTION"),
       value: TAXONOMIC_RANK.subsection,
     },
     [TAXONOMIC_RANK.complex]: {
-      label: t( "Ranks-COMPLEX" ),
+      label: t("Ranks-COMPLEX"),
       value: TAXONOMIC_RANK.complex,
     },
     [TAXONOMIC_RANK.species]: {
-      label: t( "Ranks-SPECIES" ),
+      label: t("Ranks-SPECIES"),
       value: TAXONOMIC_RANK.species,
     },
     [TAXONOMIC_RANK.hybrid]: {
-      label: t( "Ranks-HYBRID" ),
+      label: t("Ranks-HYBRID"),
       value: TAXONOMIC_RANK.hybrid,
     },
     [TAXONOMIC_RANK.subspecies]: {
-      label: t( "Ranks-SUBSPECIES" ),
+      label: t("Ranks-SUBSPECIES"),
       value: TAXONOMIC_RANK.subspecies,
     },
     [TAXONOMIC_RANK.variety]: {
-      label: t( "Ranks-VARIETY" ),
+      label: t("Ranks-VARIETY"),
       value: TAXONOMIC_RANK.variety,
     },
     [TAXONOMIC_RANK.form]: {
-      label: t( "Ranks-FORM" ),
+      label: t("Ranks-FORM"),
       value: TAXONOMIC_RANK.form,
     },
     [TAXONOMIC_RANK.infrahybrid]: {
-      label: t( "Ranks-INFRAHYBRID" ),
+      label: t("Ranks-INFRAHYBRID"),
       value: TAXONOMIC_RANK.infrahybrid,
     },
   };
 
   const dateObservedValues = {
     [DATE_OBSERVED.ALL]: {
-      label: t( "All" ),
-      labelCaps: t( "ALL" ),
+      label: t("All"),
+      labelCaps: t("ALL"),
       value: DATE_OBSERVED.ALL,
     },
     [DATE_OBSERVED.EXACT_DATE]: {
-      label: t( "Exact-Date" ),
-      labelCaps: t( "EXACT-DATE" ),
-      text: t( "Filter-by-observed-on-date" ),
+      label: t("Exact-Date"),
+      labelCaps: t("EXACT-DATE"),
+      text: t("Filter-by-observed-on-date"),
       value: DATE_OBSERVED.EXACT_DATE,
     },
     [DATE_OBSERVED.DATE_RANGE]: {
-      label: t( "Date-Range" ),
-      labelCaps: t( "DATE-RANGE" ),
-      text: t( "Filter-by-observed-between-dates" ),
+      label: t("Date-Range"),
+      labelCaps: t("DATE-RANGE"),
+      text: t("Filter-by-observed-between-dates"),
       value: DATE_OBSERVED.DATE_RANGE,
     },
     [DATE_OBSERVED.MONTHS]: {
-      label: t( "Months" ),
-      labelCaps: t( "MONTHS" ),
-      text: t( "Filter-by-observed-during-months" ),
+      label: t("Months"),
+      labelCaps: t("MONTHS"),
+      text: t("Filter-by-observed-during-months"),
       value: DATE_OBSERVED.MONTHS,
     },
   };
 
   const dateUploadedValues = {
     [DATE_UPLOADED.ALL]: {
-      label: t( "All" ),
-      labelCaps: t( "ALL" ),
+      label: t("All"),
+      labelCaps: t("ALL"),
       value: DATE_UPLOADED.ALL,
     },
     [DATE_UPLOADED.EXACT_DATE]: {
-      label: t( "Exact-Date" ),
-      labelCaps: t( "EXACT-DATE" ),
-      text: t( "Filter-by-uploaded-on-date" ),
+      label: t("Exact-Date"),
+      labelCaps: t("EXACT-DATE"),
+      text: t("Filter-by-uploaded-on-date"),
       value: DATE_UPLOADED.EXACT_DATE,
     },
     [DATE_UPLOADED.DATE_RANGE]: {
-      label: t( "Date-Range" ),
-      labelCaps: t( "DATE-RANGE" ),
-      text: t( "Filter-by-uploaded-between-dates" ),
+      label: t("Date-Range"),
+      labelCaps: t("DATE-RANGE"),
+      text: t("Filter-by-uploaded-between-dates"),
       value: DATE_UPLOADED.DATE_RANGE,
     },
   };
 
   const monthValues = {
     1: {
-      label: t( "January" ),
+      label: t("January"),
       value: 1,
     },
     2: {
-      label: t( "February" ),
+      label: t("February"),
       value: 2,
     },
     3: {
-      label: t( "March" ),
+      label: t("March"),
       value: 3,
     },
     4: {
-      label: t( "April" ),
+      label: t("April"),
       value: 4,
     },
     5: {
-      label: t( "May" ),
+      label: t("May"),
       value: 5,
     },
     6: {
-      label: t( "June" ),
+      label: t("June"),
       value: 6,
     },
     7: {
-      label: t( "July" ),
+      label: t("July"),
       value: 7,
     },
     8: {
-      label: t( "August" ),
+      label: t("August"),
       value: 8,
     },
     9: {
-      label: t( "September" ),
+      label: t("September"),
       value: 9,
     },
     10: {
-      label: t( "October" ),
+      label: t("October"),
       value: 10,
     },
     11: {
-      label: t( "November" ),
+      label: t("November"),
       value: 11,
     },
     12: {
-      label: t( "December" ),
+      label: t("December"),
       value: 12,
     },
   };
 
   const mediaValues = {
     [MEDIA.ALL]: {
-      label: t( "All" ),
+      label: t("All"),
       value: MEDIA.ALL,
     },
     [MEDIA.PHOTOS]: {
-      label: t( "Photos" ),
+      label: t("Photos"),
       value: MEDIA.PHOTOS,
     },
     [MEDIA.SOUNDS]: {
-      label: t( "Sounds" ),
+      label: t("Sounds"),
       value: MEDIA.SOUNDS,
     },
     [MEDIA.NONE]: {
-      label: t( "No-Media" ),
+      label: t("No-Media"),
       value: MEDIA.NONE,
     },
   };
 
   const establishmentValues = {
     [ESTABLISHMENT_MEAN.ANY]: {
-      label: t( "Any--establishment-means" ),
+      label: t("Any--establishment-means"),
       value: ESTABLISHMENT_MEAN.ANY,
     },
     [ESTABLISHMENT_MEAN.INTRODUCED]: {
-      label: t( "Introduced" ),
+      label: t("Introduced"),
       value: ESTABLISHMENT_MEAN.INTRODUCED,
     },
     [ESTABLISHMENT_MEAN.NATIVE]: {
-      label: t( "Native" ),
+      label: t("Native"),
       value: ESTABLISHMENT_MEAN.NATIVE,
     },
     [ESTABLISHMENT_MEAN.ENDEMIC]: {
-      label: t( "Endemic" ),
+      label: t("Endemic"),
       value: ESTABLISHMENT_MEAN.ENDEMIC,
     },
   };
 
   const wildValues = {
     [WILD_STATUS.ALL]: {
-      label: t( "All" ),
+      label: t("All"),
       value: WILD_STATUS.ALL,
     },
     [WILD_STATUS.WILD]: {
-      label: t( "Wild" ),
+      label: t("Wild"),
       value: WILD_STATUS.WILD,
     },
     [WILD_STATUS.CAPTIVE]: {
-      label: t( "Captive-Cultivated" ),
+      label: t("Captive-Cultivated"),
       value: WILD_STATUS.CAPTIVE,
     },
   };
 
   const reviewedValues = {
     [REVIEWED.ALL]: {
-      label: t( "All-observations" ),
+      label: t("All-observations"),
       value: REVIEWED.ALL,
     },
     [REVIEWED.REVIEWED]: {
-      label: t( "Reviewed-observations-only" ),
+      label: t("Reviewed-observations-only"),
       value: REVIEWED.REVIEWED,
     },
     [REVIEWED.UNREVIEWED]: {
-      label: t( "Unreviewed-observations-only" ),
+      label: t("Unreviewed-observations-only"),
       value: REVIEWED.UNREVIEWED,
     },
   };
 
   const photoLicenseValues = {
     [PHOTO_LICENSE.ALL]: {
-      label: t( "ALL" ),
+      label: t("ALL"),
       value: PHOTO_LICENSE.ALL,
     },
     [PHOTO_LICENSE.CC0]: {
-      label: t( "CC0" ),
+      label: t("CC0"),
       value: PHOTO_LICENSE.CC0,
     },
     [PHOTO_LICENSE.CCBY]: {
-      label: t( "CC-BY" ),
+      label: t("CC-BY"),
       value: PHOTO_LICENSE.CCBY,
     },
     [PHOTO_LICENSE.CCBYNC]: {
-      label: t( "CC-BY-NC" ),
+      label: t("CC-BY-NC"),
       value: PHOTO_LICENSE.CCBYNC,
     },
     [PHOTO_LICENSE.CCBYSA]: {
-      label: t( "CC-BY-SA" ),
+      label: t("CC-BY-SA"),
       value: PHOTO_LICENSE.CCBYSA,
     },
     [PHOTO_LICENSE.CCBYND]: {
-      label: t( "CC-BY-ND" ),
+      label: t("CC-BY-ND"),
       value: PHOTO_LICENSE.CCBYND,
     },
     [PHOTO_LICENSE.CCBYNCSA]: {
-      label: t( "CC-BY-NC-SA" ),
+      label: t("CC-BY-NC-SA"),
       value: PHOTO_LICENSE.CCBYNCSA,
     },
     [PHOTO_LICENSE.CCBYNCND]: {
-      label: t( "CC-BY-NC-ND" ),
+      label: t("CC-BY-NC-ND"),
       value: PHOTO_LICENSE.CCBYNCND,
     },
   };
 
-  const updateDateObserved = ( {
+  const updateDateObserved = ({
     newDateObserved, newObservedOn, newD1, newD2, newMonths,
-  } ) => {
-    const today = new Date( ).toISOString( ).split( "T" )[0];
+  }) => {
+    const today = new Date().toISOString().split("T")[0];
     // Array with the numbers from 1 to 12
-    const allMonths = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
+    const allMonths = new Array(12).fill(0).map((_, i) => i + 1);
 
-    if ( newDateObserved === DATE_OBSERVED.ALL ) {
-      dispatch( {
+    if (newDateObserved === DATE_OBSERVED.ALL) {
+      dispatch({
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_ALL,
-      } );
-    } else if ( newDateObserved === DATE_OBSERVED.EXACT_DATE ) {
-      dispatch( {
+      });
+    } else if (newDateObserved === DATE_OBSERVED.EXACT_DATE) {
+      dispatch({
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_EXACT,
         observedOn: newObservedOn || today,
-      } );
-    } else if ( newDateObserved === DATE_OBSERVED.DATE_RANGE ) {
-      dispatch( {
+      });
+    } else if (newDateObserved === DATE_OBSERVED.DATE_RANGE) {
+      dispatch({
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_RANGE,
         d1: newD1 || today,
         d2: newD2 || today,
-      } );
-    } else if ( newDateObserved === DATE_OBSERVED.MONTHS ) {
-      dispatch( {
+      });
+    } else if (newDateObserved === DATE_OBSERVED.MONTHS) {
+      dispatch({
         type: EXPLORE_ACTION.SET_DATE_OBSERVED_MONTHS,
         months: newMonths || allMonths,
-      } );
+      });
     }
   };
 
   const updateObservedExact = date => {
-    updateDateObserved( {
+    updateDateObserved({
       newDateObserved: DATE_OBSERVED.EXACT_DATE,
-      newObservedOn: date.toISOString().split( "T" )[0],
-    } );
+      newObservedOn: date.toISOString().split("T")[0],
+    });
   };
 
   const updateObservedStart = date => {
-    updateDateObserved( {
+    updateDateObserved({
       newDateObserved: DATE_OBSERVED.DATE_RANGE,
-      newD1: date.toISOString().split( "T" )[0],
+      newD1: date.toISOString().split("T")[0],
       newD2: d2,
-    } );
+    });
   };
 
   const updateObservedEnd = date => {
-    updateDateObserved( {
+    updateDateObserved({
       newDateObserved: DATE_OBSERVED.DATE_RANGE,
       newD1: d1,
-      newD2: date.toISOString().split( "T" )[0],
-    } );
+      newD2: date.toISOString().split("T")[0],
+    });
   };
 
   const updateObservedMonths = monthInteger => {
-    const newMonths = months.includes( monthInteger )
-      ? months.filter( m => m !== monthInteger )
+    const newMonths = months.includes(monthInteger)
+      ? months.filter(m => m !== monthInteger)
       : [...months, monthInteger];
-    updateDateObserved( {
+    updateDateObserved({
       newDateObserved: DATE_OBSERVED.MONTHS,
       newMonths,
-    } );
+    });
   };
 
-  const updateDateUploaded = ( { newDateUploaded, newD1, newD2 } ) => {
-    const today = new Date().toISOString().split( "T" )[0];
-    if ( newDateUploaded === DATE_UPLOADED.ALL ) {
-      dispatch( {
+  const updateDateUploaded = ({ newDateUploaded, newD1, newD2 }) => {
+    const today = new Date().toISOString().split("T")[0];
+    if (newDateUploaded === DATE_UPLOADED.ALL) {
+      dispatch({
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL,
-      } );
-    } else if ( newDateUploaded === DATE_UPLOADED.EXACT_DATE ) {
-      dispatch( {
+      });
+    } else if (newDateUploaded === DATE_UPLOADED.EXACT_DATE) {
+      dispatch({
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_EXACT,
         createdOn: newD1 || today,
-      } );
-    } else if ( newDateUploaded === DATE_UPLOADED.DATE_RANGE ) {
-      dispatch( {
+      });
+    } else if (newDateUploaded === DATE_UPLOADED.DATE_RANGE) {
+      dispatch({
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_RANGE,
         createdD1: newD1 || today,
         createdD2: newD2 || today,
-      } );
+      });
     }
   };
 
   const updateUploadedStart = date => {
-    updateDateUploaded( {
+    updateDateUploaded({
       newDateUploaded: DATE_UPLOADED.DATE_RANGE,
-      newD1: date.toISOString().split( "T" )[0],
+      newD1: date.toISOString().split("T")[0],
       newD2: createdD2,
-    } );
+    });
   };
 
   const updateUploadedEnd = date => {
-    updateDateUploaded( {
+    updateDateUploaded({
       newDateUploaded: DATE_UPLOADED.DATE_RANGE,
       newD1: createdD1,
-      newD2: date.toISOString().split( "T" )[0],
-    } );
+      newD2: date.toISOString().split("T")[0],
+    });
   };
 
   const observedEndBeforeStart = d1 > d2;
@@ -636,18 +636,18 @@ const FilterModalV2 = ( {
                 closeModal();
               }
               : () => {
-                setOpenSheet( CONFIRMATION );
+                setOpenSheet(CONFIRMATION);
               }
           }
           size={22}
-          accessibilityLabel={t( "Go-back" )}
+          accessibilityLabel={t("Go-back")}
         />
         <View className="flex-1 items-center flex-row">
           <Heading1
             className="ml-3 wrap"
             maxFontSizeMultiplier={1}
           >
-            {t( "Explore-Filters" )}
+            {t("Explore-Filters")}
           </Heading1>
           {numberOfFilters !== 0 && (
             <View className="w-[50px] ml-3">
@@ -660,12 +660,12 @@ const FilterModalV2 = ( {
             ? (
               <Body3
                 accessibilityRole="button"
-                onPress={async ( ) => {
-                  dispatch( { type: EXPLORE_ACTION.RESET } );
+                onPress={async () => {
+                  dispatch({ type: EXPLORE_ACTION.RESET });
                 }}
                 maxFontSizeMultiplier={1.5}
               >
-                {t( "Reset-verb" )}
+                {t("Reset-verb")}
               </Body3>
             )
             : (
@@ -673,7 +673,7 @@ const FilterModalV2 = ( {
                 className="opacity-50"
                 maxFontSizeMultiplier={1.5}
               >
-                {t( "Reset-verb" )}
+                {t("Reset-verb")}
               </Body3>
             )}
         </View>
@@ -682,21 +682,21 @@ const FilterModalV2 = ( {
       <ScrollView className="py-4">
         {/* Taxon Section */}
         <View className="mb-7">
-          <Heading4 className="px-4 mb-5">{t( "TAXON" )}</Heading4>
+          <Heading4 className="px-4 mb-5">{t("TAXON")}</Heading4>
           <View className="px-4 mb-5">
-            {( taxon || ( iconicTaxonNames || [] ).indexOf( "unknown" ) >= 0 )
+            {(taxon || (iconicTaxonNames || []).indexOf("unknown") >= 0)
               ? (
                 <Pressable
                   className="flex-row justify-between items-center"
                   accessibilityRole="button"
-                  accessibilityLabel={t( "Change-taxon" )}
+                  accessibilityLabel={t("Change-taxon")}
                   onPress={() => {
-                    navigation.navigate( "ExploreSearch", { initialSearchMode: "taxon" } );
+                    navigation.navigate("ExploreSearch", { initialSearchMode: "taxon" });
                   }}
                 >
                   <DisplayTaxon
                     handlePress={() => {
-                      navigation.navigate( "ExploreSearch", { initialSearchMode: "taxon" } );
+                      navigation.navigate("ExploreSearch", { initialSearchMode: "taxon" });
                     }}
                     taxon={taxon || "unknown"}
                   />
@@ -706,42 +706,42 @@ const FilterModalV2 = ( {
                       className="ml-3"
                       icon="close"
                       size={20}
-                      onPress={() => updateTaxon( null )}
-                      accessibilityLabel={t( "Remove-taxon-filter" )}
+                      onPress={() => updateTaxon(null)}
+                      accessibilityLabel={t("Remove-taxon-filter")}
                     />
                   </View>
                 </Pressable>
               )
               : (
                 <Button
-                  text={t( "SEARCH-FOR-A-TAXON" )}
+                  text={t("SEARCH-FOR-A-TAXON")}
                   onPress={() => {
-                    navigation.navigate( "ExploreSearch", { initialSearchMode: "taxon" } );
+                    navigation.navigate("ExploreSearch", { initialSearchMode: "taxon" });
                   }}
-                  accessibilityLabel={t( "Search" )}
+                  accessibilityLabel={t("Search")}
                 />
               )}
           </View>
           <IconicTaxonChooser
             before
             chosen={iconicTaxonNames || [taxon?.name?.toLowerCase()]}
-            onTaxonChosen={( taxonName: string ) => {
-              if ( taxonName === "unknown" ) {
-                if ( ( iconicTaxonNames || [] ).indexOf( taxonName ) >= 0 ) {
-                  updateTaxon( null );
+            onTaxonChosen={(taxonName: string) => {
+              if (taxonName === "unknown") {
+                if ((iconicTaxonNames || []).indexOf(taxonName) >= 0) {
+                  updateTaxon(null);
                 } else {
                   filterByIconicTaxonUnknown();
                 }
-              } else if ( taxon?.name?.toLowerCase() === taxonName ) {
-                updateTaxon( null );
+              } else if (taxon?.name?.toLowerCase() === taxonName) {
+                updateTaxon(null);
               } else {
                 const selectedTaxon = realm
-                  ?.objects( "Taxon" )
-                  .filtered( "name ==[c] $0", taxonName );
+                  ?.objects("Taxon")
+                  .filtered("name ==[c] $0", taxonName);
                 const iconicTaxon = selectedTaxon.length > 0
                   ? selectedTaxon[0]
                   : null;
-                updateTaxon( iconicTaxon );
+                updateTaxon(iconicTaxon);
               }
             }}
           />
@@ -753,19 +753,19 @@ const FilterModalV2 = ( {
         <View className="px-4 pb-4">
           {/* Location Section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">{t( "LOCATION" )}</Heading4>
+            <Heading4 className="mb-5">{t("LOCATION")}</Heading4>
             <View className="mb-5">
               <View>
                 <View className="flex-row items-center mb-5">
                   <INatIcon name="location" size={15} />
-                  <Body3 className="ml-4">{placeGuessText( placeMode, t, placeGuess )}</Body3>
+                  <Body3 className="ml-4">{placeGuessText(placeMode, t, placeGuess)}</Body3>
                 </View>
                 <Button
-                  text={t( "EDIT-LOCATION" )}
+                  text={t("EDIT-LOCATION")}
                   onPress={() => {
-                    navigation.navigate( "ExploreSearch", { initialSearchMode: "location" } );
+                    navigation.navigate("ExploreSearch", { initialSearchMode: "location" });
                   }}
-                  accessibilityLabel={t( "Edit" )}
+                  accessibilityLabel={t("Edit")}
                 />
               </View>
             </View>
@@ -773,40 +773,40 @@ const FilterModalV2 = ( {
 
           {/* Sort-By Section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">{t( "SORT-BY" )}</Heading4>
+            <Heading4 className="mb-5">{t("SORT-BY")}</Heading4>
             <View className="mb-5">
               <Button
                 text={sortByButtonText()}
                 className="shrink"
                 dropdown
                 onPress={() => {
-                  setOpenSheet( SORT_BY_M );
+                  setOpenSheet(SORT_BY_M);
                 }}
-                accessibilityLabel={t( "Sort-by" )}
+                accessibilityLabel={t("Sort-by")}
               />
             </View>
           </View>
 
           {/* Quality Grade Section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">{t( "QUALITY-GRADE" )}</Heading4>
+            <Heading4 className="mb-5">{t("QUALITY-GRADE")}</Heading4>
             <View className="mb-5">
               <Checkbox
-                text={t( "Research-Grade--quality-grade" )}
+                text={t("Research-Grade--quality-grade")}
                 isChecked={researchGrade}
-                onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE } )}
+                onPress={() => dispatch({ type: EXPLORE_ACTION.TOGGLE_RESEARCH_GRADE })}
               />
               <View className="mb-4" />
               <Checkbox
-                text={t( "Needs-ID--quality-grade" )}
+                text={t("Needs-ID--quality-grade")}
                 isChecked={needsID}
-                onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_NEEDS_ID } )}
+                onPress={() => dispatch({ type: EXPLORE_ACTION.TOGGLE_NEEDS_ID })}
               />
               <View className="mb-4" />
               <Checkbox
-                text={t( "Casual--quality-grade" )}
+                text={t("Casual--quality-grade")}
                 isChecked={casual}
-                onPress={() => dispatch( { type: EXPLORE_ACTION.TOGGLE_CASUAL } )}
+                onPress={() => dispatch({ type: EXPLORE_ACTION.TOGGLE_CASUAL })}
               />
             </View>
           </View>
@@ -814,22 +814,22 @@ const FilterModalV2 = ( {
           {/* User Section */}
           <View className="mb-7">
             {excludeUser
-              ? <Heading4 className="mb-5">{t( "ALL-USERS-EXCEPT" )}</Heading4>
-              : <Heading4 className="mb-5">{t( "USER" )}</Heading4>}
+              ? <Heading4 className="mb-5">{t("ALL-USERS-EXCEPT")}</Heading4>
+              : <Heading4 className="mb-5">{t("USER")}</Heading4>}
             <View className="mb-5">
               {displayUser
                 ? (
                   <Pressable
                     className="flex-row justify-around items-center"
                     accessibilityRole="button"
-                    accessibilityLabel={t( "Change-user" )}
+                    accessibilityLabel={t("Change-user")}
                     onPress={() => {
-                      navigation.navigate( "ExploreSearch", { initialSearchMode: "users" } );
+                      navigation.navigate("ExploreSearch", { initialSearchMode: "users" });
                     }}
                   >
                     <UserListItem
                       item={{ user: displayUser }}
-                      countText={t( "X-Observations", { count: displayUser.observations_count } )}
+                      countText={t("X-Observations", { count: displayUser.observations_count })}
                       pressable={false}
                     />
                     <View className="flex-row items-center">
@@ -838,19 +838,19 @@ const FilterModalV2 = ( {
                         className="ml-3"
                         icon="close"
                         size={20}
-                        onPress={() => updateUser( null )}
-                        accessibilityLabel={t( "Remove-user-filter" )}
+                        onPress={() => updateUser(null)}
+                        accessibilityLabel={t("Remove-user-filter")}
                       />
                     </View>
                   </Pressable>
                 )
                 : (
                   <Button
-                    text={t( "FILTER-BY-A-USER" )}
+                    text={t("FILTER-BY-A-USER")}
                     onPress={() => {
-                      navigation.navigate( "ExploreSearch", { initialSearchMode: "users" } );
+                      navigation.navigate("ExploreSearch", { initialSearchMode: "users" });
                     }}
-                    accessibilityLabel={t( "Filter" )}
+                    accessibilityLabel={t("Filter")}
                   />
                 )}
             </View>
@@ -858,16 +858,16 @@ const FilterModalV2 = ( {
 
           {/* Project Section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">{t( "PROJECT" )}</Heading4>
+            <Heading4 className="mb-5">{t("PROJECT")}</Heading4>
             <View className="mb-5">
               {project
                 ? (
                   <Pressable
                     className="flex-row justify-between items-center"
                     accessibilityRole="button"
-                    accessibilityLabel={t( "Change-project" )}
+                    accessibilityLabel={t("Change-project")}
                     onPress={() => {
-                      navigation.navigate( "ExploreSearch", { initialSearchMode: "projects" } );
+                      navigation.navigate("ExploreSearch", { initialSearchMode: "projects" });
                     }}
                   >
                     <ProjectListItem item={project} />
@@ -877,19 +877,19 @@ const FilterModalV2 = ( {
                         className="ml-3"
                         icon="close"
                         size={20}
-                        onPress={() => updateProject( null )}
-                        accessibilityLabel={t( "Remove-project-filter" )}
+                        onPress={() => updateProject(null)}
+                        accessibilityLabel={t("Remove-project-filter")}
                       />
                     </View>
                   </Pressable>
                 )
                 : (
                   <Button
-                    text={t( "FILTER-BY-A-PROJECT" )}
+                    text={t("FILTER-BY-A-PROJECT")}
                     onPress={() => {
-                      navigation.navigate( "ExploreSearch", { initialSearchMode: "projects" } );
+                      navigation.navigate("ExploreSearch", { initialSearchMode: "projects" });
                     }}
-                    accessibilityLabel={t( "Filter" )}
+                    accessibilityLabel={t("Filter")}
                   />
                 )}
             </View>
@@ -897,61 +897,61 @@ const FilterModalV2 = ( {
 
           {/* Taxonomic Ranks section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">{t( "TAXONOMIC-RANKS" )}</Heading4>
-            <Body2 className="ml-1 mb-3">{t( "Highest" )}</Body2>
+            <Heading4 className="mb-5">{t("TAXONOMIC-RANKS")}</Heading4>
+            <Body2 className="ml-1 mb-3">{t("Highest")}</Body2>
             <Button
               text={hrank
                 ? taxonomicRankValues[hrank]?.label
-                : t( "ALL" )}
+                : t("ALL")}
               className="shrink mb-7"
               dropdown
               onPress={() => {
-                setOpenSheet( HRANK );
+                setOpenSheet(HRANK);
               }}
-              accessibilityLabel={t( "Highest" )}
+              accessibilityLabel={t("Highest")}
             />
-            <Body2 className="ml-1 mb-3">{t( "Lowest" )}</Body2>
+            <Body2 className="ml-1 mb-3">{t("Lowest")}</Body2>
             <Button
               text={lrank
                 ? taxonomicRankValues[lrank]?.label
-                : t( "ALL" )}
+                : t("ALL")}
               className="shrink mb-7"
               dropdown
               onPress={() => {
-                setOpenSheet( LRANK );
+                setOpenSheet(LRANK);
               }}
-              accessibilityLabel={t( "Lowest" )}
+              accessibilityLabel={t("Lowest")}
             />
           </View>
 
           {/* Date observed section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">{t( "DATE-OBSERVED" )}</Heading4>
+            <Heading4 className="mb-5">{t("DATE-OBSERVED")}</Heading4>
             <Button
               text={dateObservedValues[dateObserved]?.labelCaps}
               className="shrink mb-7"
               dropdown
               onPress={() => {
-                setOpenSheet( DATE_OBSERVED_M );
+                setOpenSheet(DATE_OBSERVED_M);
               }}
-              accessibilityLabel={t( "Date-observed" )}
+              accessibilityLabel={t("Date-observed")}
             />
             {dateObserved === DATE_OBSERVED.EXACT_DATE && (
               <View className="items-center">
                 <Body1 className="mb-5">{observedOn}</Body1>
                 <Button
                   level="primary"
-                  text={t( "CHANGE-DATE" )}
+                  text={t("CHANGE-DATE")}
                   className="w-full mb-7"
                   onPress={() => {
-                    setOpenSheet( OBSERVED_EXACT );
+                    setOpenSheet(OBSERVED_EXACT);
                   }}
-                  accessibilityLabel={t( "Change-date" )}
+                  accessibilityLabel={t("Change-date")}
                 />
                 <DateTimePicker
                   isDateTimePickerVisible={openSheet === OBSERVED_EXACT}
-                  toggleDateTimePicker={() => setOpenSheet( NONE )}
-                  onDatePicked={date => updateObservedExact( date )}
+                  toggleDateTimePicker={() => setOpenSheet(NONE)}
+                  onDatePicked={date => updateObservedExact(date)}
                 />
               </View>
             )}
@@ -967,22 +967,22 @@ const FilterModalV2 = ( {
                 </Body1>
                 <Button
                   level="primary"
-                  text={t( "CHANGE-START-DATE" )}
+                  text={t("CHANGE-START-DATE")}
                   className="w-full mb-7"
                   onPress={() => {
-                    setOpenSheet( OBSERVED_START );
+                    setOpenSheet(OBSERVED_START);
                   }}
-                  accessibilityLabel={t( "Change-start-date" )}
+                  accessibilityLabel={t("Change-start-date")}
                 />
                 <Body1 className="mb-5">{d2}</Body1>
                 <Button
                   level="primary"
-                  text={t( "CHANGE-END-DATE" )}
+                  text={t("CHANGE-END-DATE")}
                   className="w-full mb-7"
                   onPress={() => {
-                    setOpenSheet( OBSERVED_END );
+                    setOpenSheet(OBSERVED_END);
                   }}
-                  accessibilityLabel={t( "Change-end-date" )}
+                  accessibilityLabel={t("Change-end-date")}
                 />
                 {observedEndBeforeStart && (
                   <View className="flex-row mb-5">
@@ -992,65 +992,65 @@ const FilterModalV2 = ( {
                       color={colors.warningRed}
                     />
                     <List2 className="ml-3">
-                      {t( "Start-must-be-before-end" )}
+                      {t("Start-must-be-before-end")}
                     </List2>
                   </View>
                 )}
                 <DateTimePicker
                   isDateTimePickerVisible={openSheet === OBSERVED_START}
-                  toggleDateTimePicker={() => setOpenSheet( NONE )}
-                  onDatePicked={date => updateObservedStart( date )}
+                  toggleDateTimePicker={() => setOpenSheet(NONE)}
+                  onDatePicked={date => updateObservedStart(date)}
                 />
                 <DateTimePicker
                   isDateTimePickerVisible={openSheet === OBSERVED_END}
-                  toggleDateTimePicker={() => setOpenSheet( NONE )}
-                  onDatePicked={date => updateObservedEnd( date )}
+                  toggleDateTimePicker={() => setOpenSheet(NONE)}
+                  onDatePicked={date => updateObservedEnd(date)}
                 />
               </View>
             )}
             {dateObserved === DATE_OBSERVED.MONTHS
-            && Object.keys( monthValues ).map( monthKey => (
+            && Object.keys(monthValues).map(monthKey => (
               <View key={monthKey} className="flex-row items-center mb-5">
                 <Checkbox
                   text={monthValues[monthKey].label}
-                  isChecked={months.includes( monthValues[monthKey].value )}
-                  onPress={() => updateObservedMonths( monthValues[monthKey].value )}
+                  isChecked={months.includes(monthValues[monthKey].value)}
+                  onPress={() => updateObservedMonths(monthValues[monthKey].value)}
                 />
               </View>
-            ) )}
+            ))}
           </View>
 
           {/* Date uploaded section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">{t( "DATE-UPLOADED" )}</Heading4>
+            <Heading4 className="mb-5">{t("DATE-UPLOADED")}</Heading4>
             <Button
               text={dateUploadedValues[dateUploaded]?.labelCaps}
               className="shrink mb-7"
               dropdown
               onPress={() => {
-                setOpenSheet( DATE_UPLOADED_M );
+                setOpenSheet(DATE_UPLOADED_M);
               }}
-              accessibilityLabel={t( "Date-uploaded" )}
+              accessibilityLabel={t("Date-uploaded")}
             />
             {dateUploaded === DATE_UPLOADED.EXACT_DATE && (
               <View className="items-center">
                 <Body1 className="mb-5">{createdOn}</Body1>
                 <Button
                   level="primary"
-                  text={t( "CHANGE-DATE" )}
+                  text={t("CHANGE-DATE")}
                   className="w-full mb-7"
                   onPress={() => {
-                    setOpenSheet( UPLOADED_EXACT );
+                    setOpenSheet(UPLOADED_EXACT);
                   }}
-                  accessibilityLabel={t( "Change-date" )}
+                  accessibilityLabel={t("Change-date")}
                 />
                 <DateTimePicker
                   isDateTimePickerVisible={openSheet === UPLOADED_EXACT}
-                  toggleDateTimePicker={() => setOpenSheet( NONE )}
-                  onDatePicked={date => updateDateUploaded( {
+                  toggleDateTimePicker={() => setOpenSheet(NONE)}
+                  onDatePicked={date => updateDateUploaded({
                     newDateUploaded: DATE_UPLOADED.EXACT_DATE,
-                    newD1: date.toISOString().split( "T" )[0],
-                  } )}
+                    newD1: date.toISOString().split("T")[0],
+                  })}
                 />
               </View>
             )}
@@ -1066,22 +1066,22 @@ const FilterModalV2 = ( {
                 </Body1>
                 <Button
                   level="primary"
-                  text={t( "CHANGE-START-DATE" )}
+                  text={t("CHANGE-START-DATE")}
                   className="w-full mb-7"
                   onPress={() => {
-                    setOpenSheet( UPLOADED_START );
+                    setOpenSheet(UPLOADED_START);
                   }}
-                  accessibilityLabel={t( "Change-start-date" )}
+                  accessibilityLabel={t("Change-start-date")}
                 />
                 <Body1 className="mb-5">{createdD2}</Body1>
                 <Button
                   level="primary"
-                  text={t( "CHANGE-END-DATE" )}
+                  text={t("CHANGE-END-DATE")}
                   className="w-full mb-7"
                   onPress={() => {
-                    setOpenSheet( UPLOADED_END );
+                    setOpenSheet(UPLOADED_END);
                   }}
-                  accessibilityLabel={t( "Change-end-date" )}
+                  accessibilityLabel={t("Change-end-date")}
                 />
                 {uploadedEndBeforeStart && (
                   <View className="flex-row mb-5">
@@ -1091,19 +1091,19 @@ const FilterModalV2 = ( {
                       color={colors.warningRed}
                     />
                     <List2 className="ml-3">
-                      {t( "Start-must-be-before-end" )}
+                      {t("Start-must-be-before-end")}
                     </List2>
                   </View>
                 )}
                 <DateTimePicker
                   isDateTimePickerVisible={openSheet === UPLOADED_START}
-                  toggleDateTimePicker={() => setOpenSheet( NONE )}
-                  onDatePicked={date => updateUploadedStart( date )}
+                  toggleDateTimePicker={() => setOpenSheet(NONE)}
+                  onDatePicked={date => updateUploadedStart(date)}
                 />
                 <DateTimePicker
                   isDateTimePickerVisible={openSheet === UPLOADED_END}
-                  toggleDateTimePicker={() => setOpenSheet( NONE )}
-                  onDatePicked={date => updateUploadedEnd( date )}
+                  toggleDateTimePicker={() => setOpenSheet(NONE)}
+                  onDatePicked={date => updateUploadedEnd(date)}
                 />
               </View>
             )}
@@ -1111,27 +1111,27 @@ const FilterModalV2 = ( {
 
           {/* Media section */}
           <View className="mb-3">
-            <Heading4 className="mb-5">{t( "MEDIA" )}</Heading4>
-            {Object.keys( mediaValues ).map( mediaKey => (
+            <Heading4 className="mb-5">{t("MEDIA")}</Heading4>
+            {Object.keys(mediaValues).map(mediaKey => (
               <View key={mediaKey} className="mb-4">
                 <RadioButtonRow
                   smallLabel
                   value={mediaValues[mediaKey]}
                   checked={mediaValues[mediaKey].value === media}
-                  onPress={() => dispatch( {
+                  onPress={() => dispatch({
                     type: EXPLORE_ACTION.SET_MEDIA,
                     media: mediaValues[mediaKey].value,
-                  } )}
+                  })}
                   label={mediaValues[mediaKey].label}
                 />
               </View>
-            ) )}
+            ))}
           </View>
 
           {/* Establishment Means section */}
           <View className="mb-3">
-            <Heading4 className="mb-5">{t( "ESTABLISHMENT-MEANS" )}</Heading4>
-            {Object.keys( establishmentValues ).map( establishmentKey => (
+            <Heading4 className="mb-5">{t("ESTABLISHMENT-MEANS")}</Heading4>
+            {Object.keys(establishmentValues).map(establishmentKey => (
               <View key={establishmentKey} className="mb-4">
                 <RadioButtonRow
                   smallLabel
@@ -1140,69 +1140,69 @@ const FilterModalV2 = ( {
                     establishmentValues[establishmentKey].value
                     === establishmentMean
                   }
-                  onPress={() => dispatch( {
+                  onPress={() => dispatch({
                     type: EXPLORE_ACTION.SET_ESTABLISHMENT_MEAN,
                     establishmentMean:
                     establishmentValues[establishmentKey].value,
-                  } )}
+                  })}
                   label={establishmentValues[establishmentKey].label}
                 />
               </View>
-            ) )}
+            ))}
           </View>
 
           {/* Wild Status section */}
           <View className="mb-3">
-            <Heading4 className="mb-5">{t( "WILD-STATUS" )}</Heading4>
-            {Object.keys( wildValues ).map( wildKey => (
+            <Heading4 className="mb-5">{t("WILD-STATUS")}</Heading4>
+            {Object.keys(wildValues).map(wildKey => (
               <View key={wildKey} className="mb-4">
                 <RadioButtonRow
                   smallLabel
                   value={wildValues[wildKey]}
                   checked={wildValues[wildKey].value === wildStatus}
-                  onPress={() => dispatch( {
+                  onPress={() => dispatch({
                     type: EXPLORE_ACTION.SET_WILD_STATUS,
                     wildStatus: wildValues[wildKey].value,
-                  } )}
+                  })}
                   label={wildValues[wildKey].label}
                 />
               </View>
-            ) )}
+            ))}
           </View>
 
           {/* Reviewed section */}
           {currentUser && (
             <View className="mb-3">
-              <Heading4 className="mb-5">{t( "REVIEWED" )}</Heading4>
-              {Object.keys( reviewedValues ).map( reviewedKey => (
+              <Heading4 className="mb-5">{t("REVIEWED")}</Heading4>
+              {Object.keys(reviewedValues).map(reviewedKey => (
                 <View key={reviewedKey} className="mb-4">
                   <RadioButtonRow
                     key={reviewedKey}
                     smallLabel
                     value={reviewedValues[reviewedKey]}
                     checked={reviewedValues[reviewedKey].value === reviewedFilter}
-                    onPress={() => dispatch( {
+                    onPress={() => dispatch({
                       type: EXPLORE_ACTION.SET_REVIEWED,
                       reviewedFilter: reviewedValues[reviewedKey].value,
-                    } )}
+                    })}
                     label={reviewedValues[reviewedKey].label}
                   />
                 </View>
-              ) )}
+              ))}
             </View>
           )}
 
           {/* Photo licensing section */}
           <View>
-            <Heading4 className="mb-5">{t( "PHOTO-LICENSING" )}</Heading4>
+            <Heading4 className="mb-5">{t("PHOTO-LICENSING")}</Heading4>
             <Button
               text={photoLicenseValues[photoLicense]?.label}
               className="shrink mb-7"
               dropdown
               onPress={() => {
-                setOpenSheet( PHOTO_LICENSING );
+                setOpenSheet(PHOTO_LICENSING);
               }}
-              accessibilityLabel={t( "View-photo-licensing-info" )}
+              accessibilityLabel={t("View-photo-licensing-info")}
             />
           </View>
         </View>
@@ -1211,9 +1211,9 @@ const FilterModalV2 = ( {
         <Button
           disabled={!differsFromSnapshot || hasError}
           level="focus"
-          text={t( "APPLY-FILTERS" )}
+          text={t("APPLY-FILTERS")}
           onPress={closeModal}
-          accessibilityLabel={t( "Apply-filters" )}
+          accessibilityLabel={t("Apply-filters")}
           accessibilityState={{ disabled: !differsFromSnapshot || hasError }}
         />
       </ButtonBar>
@@ -1221,15 +1221,15 @@ const FilterModalV2 = ( {
       {/* BottomSheets */}
       {openSheet === SORT_BY_M && (
         <RadioButtonSheet
-          headerText={t( "SORT-BY" )}
+          headerText={t("SORT-BY")}
           confirm={newSortBy => {
-            dispatch( {
+            dispatch({
               type: EXPLORE_ACTION.CHANGE_SORT_BY,
               sortBy: newSortBy,
-            } );
-            setOpenSheet( NONE );
+            });
+            setOpenSheet(NONE);
           }}
-          onPressClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet(NONE)}
           radioValues={sortByValues}
           selectedValue={sortBy}
           insideModal
@@ -1237,15 +1237,15 @@ const FilterModalV2 = ( {
       )}
       {openSheet === HRANK && (
         <PickerSheet
-          headerText={t( "HIGHEST-RANK" )}
+          headerText={t("HIGHEST-RANK")}
           confirm={newRank => {
-            dispatch( {
+            dispatch({
               type: EXPLORE_ACTION.SET_HIGHEST_TAXONOMIC_RANK,
               hrank: newRank,
-            } );
-            setOpenSheet( NONE );
+            });
+            setOpenSheet(NONE);
           }}
-          onPressClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet(NONE)}
           pickerValues={taxonomicRankValues}
           selectedValue={hrank}
           insideModal
@@ -1253,15 +1253,15 @@ const FilterModalV2 = ( {
       )}
       {openSheet === LRANK && (
         <PickerSheet
-          headerText={t( "LOWEST-RANK" )}
+          headerText={t("LOWEST-RANK")}
           confirm={newRank => {
-            dispatch( {
+            dispatch({
               type: EXPLORE_ACTION.SET_LOWEST_TAXONOMIC_RANK,
               lrank: newRank,
-            } );
-            setOpenSheet( NONE );
+            });
+            setOpenSheet(NONE);
           }}
-          onPressClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet(NONE)}
           pickerValues={taxonomicRankValues}
           selectedValue={lrank}
           insideModal
@@ -1269,12 +1269,12 @@ const FilterModalV2 = ( {
       )}
       {openSheet === DATE_UPLOADED_M && (
         <RadioButtonSheet
-          headerText={t( "DATE-UPLOADED" )}
+          headerText={t("DATE-UPLOADED")}
           confirm={newDateUploaded => {
-            updateDateUploaded( { newDateUploaded } );
-            setOpenSheet( NONE );
+            updateDateUploaded({ newDateUploaded });
+            setOpenSheet(NONE);
           }}
-          onPressClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet(NONE)}
           radioValues={dateUploadedValues}
           selectedValue={dateUploaded}
           insideModal
@@ -1282,12 +1282,12 @@ const FilterModalV2 = ( {
       )}
       {openSheet === DATE_OBSERVED_M && (
         <RadioButtonSheet
-          headerText={t( "DATE-OBSERVED" )}
+          headerText={t("DATE-OBSERVED")}
           confirm={newDateObserved => {
-            updateDateObserved( { newDateObserved } );
-            setOpenSheet( NONE );
+            updateDateObserved({ newDateObserved });
+            setOpenSheet(NONE);
           }}
-          onPressClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet(NONE)}
           radioValues={dateObservedValues}
           selectedValue={dateObserved}
           insideModal
@@ -1295,15 +1295,15 @@ const FilterModalV2 = ( {
       )}
       {openSheet === PHOTO_LICENSING && (
         <RadioButtonSheet
-          headerText={t( "PHOTO-LICENSING" )}
+          headerText={t("PHOTO-LICENSING")}
           confirm={newLicense => {
-            dispatch( {
+            dispatch({
               type: EXPLORE_ACTION.SET_PHOTO_LICENSE,
               photoLicense: newLicense,
-            } );
-            setOpenSheet( NONE );
+            });
+            setOpenSheet(NONE);
           }}
-          onPressClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet(NONE)}
           radioValues={photoLicenseValues}
           selectedValue={photoLicense}
           insideModal
@@ -1311,16 +1311,16 @@ const FilterModalV2 = ( {
       )}
       {openSheet === CONFIRMATION && (
         <WarningSheet
-          onPressClose={() => setOpenSheet( NONE )}
+          onPressClose={() => setOpenSheet(NONE)}
           confirm={() => {
             discardChanges();
             closeModal();
           }}
-          headerText={t( "DISCARD-FILTER-CHANGES" )}
-          text={t( "You-changed-filters-will-be-discarded" )}
-          buttonText={t( "DISCARD-CHANGES" )}
-          handleSecondButtonPress={() => setOpenSheet( NONE )}
-          secondButtonText={t( "CANCEL" )}
+          headerText={t("DISCARD-FILTER-CHANGES")}
+          text={t("You-changed-filters-will-be-discarded")}
+          buttonText={t("DISCARD-CHANGES")}
+          handleSecondButtonPress={() => setOpenSheet(NONE)}
+          secondButtonText={t("CANCEL")}
           insideModal
         />
       )}

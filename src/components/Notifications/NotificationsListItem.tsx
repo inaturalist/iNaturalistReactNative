@@ -11,9 +11,9 @@ interface Props {
   notification: Notification;
 }
 
-const NotificationsListItem = ( { notification }: Props ) => {
-  const { setObsDetailsTab } = useLayoutPrefs( );
-  const navigation = useNavigation( );
+const NotificationsListItem = ({ notification }: Props) => {
+  const { setObsDetailsTab } = useLayoutPrefs();
+  const navigation = useNavigation();
   const viewedStatus = notification.viewed;
 
   return (
@@ -27,12 +27,12 @@ const NotificationsListItem = ( { notification }: Props ) => {
 
         },
       )}
-      onPress={( ) => {
-        setObsDetailsTab( OBS_DETAILS_TAB.ACTIVITY );
-        navigation.push( "ObsDetails", {
+      onPress={() => {
+        setObsDetailsTab(OBS_DETAILS_TAB.ACTIVITY);
+        navigation.push("ObsDetails", {
           uuid: notification.resource_uuid,
           targetActivityItemID: notification.identification_id || notification.comment_id,
-        } );
+        });
       }}
     >
       <ObsNotification notification={notification} />

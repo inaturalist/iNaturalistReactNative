@@ -8,20 +8,20 @@ import Reanimated, {
 interface Props extends PropsWithChildren {
   uniqueKey: string;
 }
-const AnimatedView = Reanimated.createAnimatedComponent( View );
+const AnimatedView = Reanimated.createAnimatedComponent(View);
 
-const keyframe = new Keyframe( {
+const keyframe = new Keyframe({
   0: { opacity: 0 },
   40: { opacity: 1 },
   100: { opacity: 0 },
-} );
+});
 
-const FadeOutIcon = ( {
+const FadeOutIcon = ({
   children,
   uniqueKey,
-}: Props ) => (
+}: Props) => (
   <AnimatedView
-    entering={keyframe.duration( 2000 )}
+    entering={keyframe.duration(2000)}
     testID={`UploadIcon.complete.${uniqueKey}`}
   >
     {children}

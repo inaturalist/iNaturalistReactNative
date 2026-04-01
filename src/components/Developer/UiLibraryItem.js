@@ -28,11 +28,11 @@ const LIBRARY = {
   Typography,
 };
 
-const UiLibraryItem = ( ) => {
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+const UiLibraryItem = () => {
+  const navigation = useNavigation();
+  const { params } = useRoute();
   useEffect(
-    ( ) => navigation.setOptions( { title: params.title } ),
+    () => navigation.setOptions({ title: params.title }),
     [navigation, params.title],
   );
 
@@ -40,7 +40,7 @@ const UiLibraryItem = ( ) => {
   // approach, so if you want that you might just need to render the
   // component explicitly here. ~~~~kueda20240613
   // return <ObsGridItemDemo />;
-  return typeof ( LIBRARY[params.component] ) === "function"
+  return typeof (LIBRARY[params.component]) === "function"
     ? LIBRARY[params.component]()
     : <ActivityIndicator />;
 };

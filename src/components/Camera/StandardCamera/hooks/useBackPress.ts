@@ -9,21 +9,21 @@ import {
 } from "react-native";
 import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
 
-const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
-  const navigation = useNavigation( );
-  const exitObservationFlow = useExitObservationFlow( );
+const useBackPress = (shouldShowDiscardSheet: boolean) => {
+  const navigation = useNavigation();
+  const exitObservationFlow = useExitObservationFlow();
 
-  const [showDiscardSheet, setShowDiscardSheet] = useState( false );
+  const [showDiscardSheet, setShowDiscardSheet] = useState(false);
 
-  const handleBackButtonPress = useCallback( ( ) => {
-    if ( shouldShowDiscardSheet ) {
-      setShowDiscardSheet( true );
+  const handleBackButtonPress = useCallback(() => {
+    if (shouldShowDiscardSheet) {
+      setShowDiscardSheet(true);
     } else {
       const currentRoute = getCurrentRoute();
-      if ( currentRoute?.params?.addEvidence ) {
-        navigation.navigate( "ObsEdit" );
+      if (currentRoute?.params?.addEvidence) {
+        navigation.navigate("ObsEdit");
       } else {
-        exitObservationFlow( );
+        exitObservationFlow();
       }
     }
   }, [
@@ -31,22 +31,22 @@ const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
     navigation,
     setShowDiscardSheet,
     shouldShowDiscardSheet,
-  ] );
+  ]);
 
   useFocusEffect(
     // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator
     // since the screen is unfocused, not removed from navigation
-    useCallback( ( ) => {
+    useCallback(() => {
       // make sure an Android user cannot back out and accidentally discard photos
-      const onBackPress = ( ) => {
-        handleBackButtonPress( );
+      const onBackPress = () => {
+        handleBackButtonPress();
         return true;
       };
 
-      const backHandler = BackHandler.addEventListener( "hardwareBackPress", onBackPress );
+      const backHandler = BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
-      return ( ) => backHandler.remove( );
-    }, [handleBackButtonPress] ),
+      return () => backHandler.remove();
+    }, [handleBackButtonPress]),
   );
 
   return {

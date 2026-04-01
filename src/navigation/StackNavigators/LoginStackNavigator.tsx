@@ -14,11 +14,11 @@ import {
 import type { LoginStackParamList } from "navigation/types";
 import React from "react";
 
-const Stack = createNativeStackNavigator<LoginStackParamList>( );
+const Stack = createNativeStackNavigator<LoginStackParamList>();
 
-const LoginCloseButton = ( ) => (
+const LoginCloseButton = () => (
   <CloseButton
-    handleClose={navigation => navigation.getParent( )?.goBack( )}
+    handleClose={navigation => navigation.getParent()?.goBack()}
     buttonClassName="mr-[-5px]"
   />
 );
@@ -32,7 +32,7 @@ const LOGIN_SCREEN_OPTIONS = {
   },
 } as const;
 
-const LoginStackNavigator = ( ) => (
+const LoginStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen
       name="Login"

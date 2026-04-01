@@ -9,7 +9,7 @@ interface Props {
   progress: number;
 }
 
-const UploadProgressBar = ( { progress }: Props ): Node => (
+const UploadProgressBar = ({ progress }: Props): Node => (
   <ProgressBar
     progress={progress}
     color={colors.inatGreen}

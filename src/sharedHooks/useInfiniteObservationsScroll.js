@@ -13,12 +13,12 @@ import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
-const useInfiniteObservationsScroll = ( {
+const useInfiniteObservationsScroll = ({
   params: newInputParams,
-}: Object ): Object => {
-  const realm = useRealm( );
-  const currentUser = useCurrentUser( );
-  const lastObservationIdRef = useRef( null );
+}: Object): Object => {
+  const realm = useRealm();
+  const currentUser = useCurrentUser();
+  const lastObservationIdRef = useRef(null);
 
   const baseParams = {
     ...newInputParams,
@@ -38,62 +38,62 @@ const useInfiniteObservationsScroll = ( {
     status,
   } = useAuthenticatedInfiniteQuery(
     queryKey,
-    async ( { pageParam }, optsWithAuth ) => {
+    async ({ pageParam }, optsWithAuth) => {
       const params = {
         ...baseParams,
       };
 
       let idToUse = pageParam;
-      if ( lastObservationIdRef.current !== null ) {
+      if (lastObservationIdRef.current !== null) {
         idToUse = lastObservationIdRef.current;
         // reset last observation ID
         lastObservationIdRef.current = null;
       }
 
-      if ( idToUse ) {
+      if (idToUse) {
         params.id_below = idToUse;
       } else {
         params.page = 1;
       }
 
-      const response = await searchObservations( params, optsWithAuth );
+      const response = await searchObservations(params, optsWithAuth);
       return response;
     },
     {
-      getNextPageParam: lastPage => last( lastPage.results )?.id,
-      enabled: !!( currentUser ),
+      getNextPageParam: lastPage => last(lastPage.results)?.id,
+      enabled: !!(currentUser),
       // wait for user to scroll, since we're already using syncRemoteObservations
       // to fetch 50 observations on mount
       refetchOnMount: false,
     },
   );
 
-  const newlyFetchedObservations = useMemo( ( ) => {
-    if ( data?.pages ) {
-      return flatten( last( data.pages )?.results );
+  const newlyFetchedObservations = useMemo(() => {
+    if (data?.pages) {
+      return flatten(last(data.pages)?.results);
     }
     return null;
-  }, [data?.pages] );
+  }, [data?.pages]);
 
-  useEffect( ( ) => {
-    if ( newlyFetchedObservations ) {
+  useEffect(() => {
+    if (newlyFetchedObservations) {
       Observation.upsertRemoteObservations(
         newlyFetchedObservations,
         realm,
       );
     }
-  }, [realm, newlyFetchedObservations] );
+  }, [realm, newlyFetchedObservations]);
 
-  const hasLocalObservations = realm?.objects( "Observation" )?.length > 0;
+  const hasLocalObservations = realm?.objects("Observation")?.length > 0;
 
-  const fetchFromLastObservation = useCallback( async lastObservationId => {
+  const fetchFromLastObservation = useCallback(async lastObservationId => {
     lastObservationIdRef.current = lastObservationId;
 
-    await fetchNextPage( );
-  }, [fetchNextPage] );
+    await fetchNextPage();
+  }, [fetchNextPage]);
 
   const infiniteScrollObject = {
-    observations: flatten( data?.pages?.map( page => page.results ) ),
+    observations: flatten(data?.pages?.map(page => page.results)),
     status,
     firstObservationsInRealm: hasLocalObservations,
     totalResults: data?.pages?.[0]?.total_results,

@@ -5,19 +5,19 @@ import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  handleClose: ( ) => void;
+  handleClose: () => void;
   rotatableAnimatedStyle?: ViewStyle;
 }
 
-const Close = ( { handleClose, rotatableAnimatedStyle }: Props ) => {
-  const { t } = useTranslation( );
+const Close = ({ handleClose, rotatableAnimatedStyle }: Props) => {
+  const { t } = useTranslation();
 
   return (
     <RotatableIconWrapper rotatableAnimatedStyle={rotatableAnimatedStyle}>
       <TransparentCircleButton
         onPress={handleClose}
-        accessibilityLabel={t( "Close" )}
-        accessibilityHint={t( "Navigates-to-previous-screen" )}
+        accessibilityLabel={t("Close")}
+        accessibilityHint={t("Navigates-to-previous-screen")}
         icon="close"
       />
     </RotatableIconWrapper>

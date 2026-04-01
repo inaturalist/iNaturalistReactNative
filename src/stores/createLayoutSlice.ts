@@ -9,22 +9,22 @@ export enum SCREEN_AFTER_PHOTO_EVIDENCE {
   MATCH = "Match"
 }
 
-const createLayoutSlice = set => ( {
+const createLayoutSlice = set => ({
   // Vestigial un-namespaced values
   isAdvancedUser: false,
   // Values that do not need to be persisted
   obsDetailsTab: OBS_DETAILS_TAB.ACTIVITY,
-  setObsDetailsTab: ( newValue: OBS_DETAILS_TAB ) => set( { obsDetailsTab: newValue } ),
+  setObsDetailsTab: (newValue: OBS_DETAILS_TAB) => set({ obsDetailsTab: newValue }),
   // undefined | true | false
   loggedInWhileInDefaultMode: undefined,
-  setLoggedInWhileInDefaultMode: ( newValue: boolean ) => set(
+  setLoggedInWhileInDefaultMode: (newValue: boolean) => set(
     { loggedInWhileInDefaultMode: newValue },
   ),
   // Please put new stuff in this namespace so they will be saved to disk
   layout: {
     // Controls all all layouts related to default mode
     isDefaultMode: true,
-    setIsDefaultMode: ( newValue: boolean ) => set( state => ( {
+    setIsDefaultMode: (newValue: boolean) => set(state => ({
       layout: {
         ...state.layout,
         isDefaultMode: newValue,
@@ -37,13 +37,13 @@ const createLayoutSlice = set => ( {
           ? SCREEN_AFTER_PHOTO_EVIDENCE.MATCH
           : SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
       },
-    } ) ),
+    })),
     // leaving isAdvancedSuggestionsMode here for backwards compatibility
     // for anyone who already set ObsEdit, but setting the default value
     // to null so we can remove it in the future
     isAdvancedSuggestionsMode: null,
     screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.MATCH,
-    setScreenAfterPhotoEvidence: ( newScreen: string ) => set( state => ( {
+    setScreenAfterPhotoEvidence: (newScreen: string) => set(state => ({
       layout: {
         ...state.layout,
         screenAfterPhotoEvidence: newScreen,
@@ -51,17 +51,17 @@ const createLayoutSlice = set => ( {
         // so we can remove it in the future
         isAdvancedSuggestionsMode: null,
       },
-    } ) ),
+    })),
     isAllAddObsOptionsMode: false,
-    setIsAllAddObsOptionsMode: ( newValue: boolean ) => set( state => ( {
+    setIsAllAddObsOptionsMode: (newValue: boolean) => set(state => ({
       layout: {
         ...state.layout,
         isAllAddObsOptionsMode: newValue,
       },
-    } ) ),
+    })),
     // State to control pivot cards and other onboarding material being shown only once
     shownOnce: {},
-    setShownOnce: ( key: string ) => set( state => ( {
+    setShownOnce: (key: string) => set(state => ({
       layout: {
         ...state.layout,
         shownOnce: {
@@ -69,31 +69,31 @@ const createLayoutSlice = set => ( {
           [key]: true,
         },
       },
-    } ) ),
-    resetShownOnce: () => set( state => ( {
+    })),
+    resetShownOnce: () => set(state => ({
       layout: {
         ...state.layout,
         shownOnce: {},
       },
-    } ) ),
+    })),
     // State to control login/signup banner being only shown once until dismissed by user
     loginBannerDismissed: false,
-    setLoginBannerDismissed: () => set( state => ( {
+    setLoginBannerDismissed: () => set(state => ({
       layout: {
         ...state.layout,
         loginBannerDismissed: true,
       },
-    } ) ),
+    })),
     // State to control some components that are only supposed to be shown immediately after
     // a user signs up
     justFinishedSignup: false,
-    setJustFinishedSignup: ( newValue: boolean ) => set( state => ( {
+    setJustFinishedSignup: (newValue: boolean) => set(state => ({
       layout: {
         ...state.layout,
         justFinishedSignup: newValue,
       },
-    } ) ),
+    })),
   },
-} );
+});
 
 export default createLayoutSlice;

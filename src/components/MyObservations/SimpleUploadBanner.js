@@ -27,7 +27,7 @@ type Props = {
   stopAllUploads: Function
 }
 
-const SimpleUploadBanner = ( {
+const SimpleUploadBanner = ({
   error,
   handleSyncButtonPress,
   progress = 0,
@@ -36,28 +36,28 @@ const SimpleUploadBanner = ( {
   showsCheckmark = false,
   status,
   stopAllUploads,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
 
   const isWhiteOnGreenStyling = status.styling === "white-on-green";
   const separator = " • ";
 
-  const renderCancelButton = ( ) => (
+  const renderCancelButton = () => (
     <INatIconButton
       icon="close"
       size={11}
-      accessibilityLabel={t( "Stop-upload" )}
+      accessibilityLabel={t("Stop-upload")}
       onPress={stopAllUploads}
     />
   );
 
-  const renderCheckmark = ( ) => (
+  const renderCheckmark = () => (
     <View className="ml-2 mr-6">
       <INatIcon name="checkmark" size={11} color={colors.inatGreen} />
     </View>
   );
 
-  const renderErrorText = ( ) => (
+  const renderErrorText = () => (
     <Body2 className="color-white flex-2 text-center ml-1">
       {isWhiteOnGreenStyling
         ? separator
@@ -68,9 +68,9 @@ const SimpleUploadBanner = ( {
 
   const renderUploadStatusText = () => (
     <View
-      className={classnames( "bg-white items-center", {
+      className={classnames("bg-white items-center", {
         "bg-inatGreen": isWhiteOnGreenStyling,
-      } )}
+      })}
     >
       <View className="flex-row items-center">
         {status.text && (
@@ -81,25 +81,25 @@ const SimpleUploadBanner = ( {
             className="shrink-[2] ml-2"
           >
             <Body2
-              className={classnames( "text-darkGray py-3 text-center", {
+              className={classnames("text-darkGray py-3 text-center", {
                 "text-white": isWhiteOnGreenStyling,
-              } )}
+              })}
               numberOfLines={2}
             >
               {status.text}
             </Body2>
           </Pressable>
         )}
-        {error && renderErrorText( )}
-        {showsCancelUploadButton && renderCancelButton( )}
-        {showsCheckmark && renderCheckmark( )}
+        {error && renderErrorText()}
+        {showsCancelUploadButton && renderCancelButton()}
+        {showsCheckmark && renderCheckmark()}
       </View>
     </View>
   );
 
   return (
     <View className="py-2 w-full">
-      {( status.text !== "" || !!error ) && renderUploadStatusText( )}
+      {(status.text !== "" || !!error) && renderUploadStatusText()}
       <UploadProgressBar progress={progress} />
     </View>
   );

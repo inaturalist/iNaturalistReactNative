@@ -10,14 +10,14 @@ interface Props {
   accessibilityHint?: string;
 }
 
-const EvidenceButton = ( {
+const EvidenceButton = ({
   icon,
   disabled,
   handlePress,
   accessibilityLabel,
   accessibilityHint,
-}: Props ) => {
-  if ( !accessibilityLabel ) {
+}: Props) => {
+  if (!accessibilityLabel) {
     throw new Error(
       "EvidenceButton needs an accessibility label",
     );

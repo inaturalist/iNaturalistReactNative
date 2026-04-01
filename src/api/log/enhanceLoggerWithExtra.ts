@@ -65,7 +65,7 @@ import { isObjectWithPrimitiveValues } from "sharedHelpers/runtimeTypeUtil";
 
 export const extraSentinelKey = "extraSentinelKey";
 
-type LoggingFunction = ( ...args: unknown[] ) => void;
+type LoggingFunction = (...args: unknown[]) => void;
 
 interface Logger {
   debug: LoggingFunction;
@@ -80,17 +80,17 @@ type LoggerWithExtra = Logger & {
   errorWithExtra: LoggingFunction;
 }
 
-type LoggerRoot = Logger & { extend: ( extension: string ) => Logger }
-type LoggerWithExtraRoot = LoggerWithExtra & { extend: ( extension: string ) => LoggerWithExtra }
+type LoggerRoot = Logger & { extend: (extension: string) => Logger }
+type LoggerWithExtraRoot = LoggerWithExtra & { extend: (extension: string) => LoggerWithExtra }
 
-const extractExtraForLogWrapper = ( rawMsg: unknown ) => {
+const extractExtraForLogWrapper = (rawMsg: unknown) => {
   // make sure we least look like [...someItems, maybeExtra]
-  if ( !Array.isArray( rawMsg ) || rawMsg.length < 2 ) {
+  if (!Array.isArray(rawMsg) || rawMsg.length < 2) {
     return null;
   }
   // make sure maybeExtra is an object w/ primitive values
-  const extraCandidate = rawMsg.at( -1 );
-  if ( !isObjectWithPrimitiveValues( extraCandidate )
+  const extraCandidate = rawMsg.at(-1);
+  if (!isObjectWithPrimitiveValues(extraCandidate)
   ) {
     return null;
   }
@@ -98,46 +98,46 @@ const extractExtraForLogWrapper = ( rawMsg: unknown ) => {
 };
 
 const wrapLogFunctionWithExtra = (
-  baseLogFunc: ( ( ...args: unknown[] ) => void ),
+  baseLogFunc: ((...args: unknown[]) => void),
   key: string,
 ) => {
-  const logWithExtraFunc = ( ...argsWithExtra: unknown[] ) => {
-    const extra = extractExtraForLogWrapper( argsWithExtra );
-    if ( extra === null ) {
+  const logWithExtraFunc = (...argsWithExtra: unknown[]) => {
+    const extra = extractExtraForLogWrapper(argsWithExtra);
+    if (extra === null) {
       const errorMessage = [
         `Invalid Argument: ${key}WithExtra()'s last argument must be an object `,
         "with only primitive values in order to be used as an `extra` for iNat's log API. ",
         `Did you mean to call ${key}()? Falling back to default log function.`,
-      ].join( "" );
-      console.error( errorMessage );
+      ].join("");
+      console.error(errorMessage);
 
       // log w/ default behavior regardless
-      baseLogFunc( ...argsWithExtra );
+      baseLogFunc(...argsWithExtra);
     } else {
       const wrappedParams = [
-        ...argsWithExtra.slice( 0, -1 ),
+        ...argsWithExtra.slice(0, -1),
         extra,
       ];
-      baseLogFunc( ...wrappedParams );
+      baseLogFunc(...wrappedParams);
     }
   };
 
   return logWithExtraFunc;
 };
 
-const enhanceLogRootWithExtras = ( logger: Logger ) => ( {
+const enhanceLogRootWithExtras = (logger: Logger) => ({
   ...logger,
-  debugWithExtra: wrapLogFunctionWithExtra( logger.debug, "debug" ),
-  infoWithExtra: wrapLogFunctionWithExtra( logger.info, "info" ),
-  warnWithExtra: wrapLogFunctionWithExtra( logger.warn, "warn" ),
-  errorWithExtra: wrapLogFunctionWithExtra( logger.error, "error" ),
-} );
+  debugWithExtra: wrapLogFunctionWithExtra(logger.debug, "debug"),
+  infoWithExtra: wrapLogFunctionWithExtra(logger.info, "info"),
+  warnWithExtra: wrapLogFunctionWithExtra(logger.warn, "warn"),
+  errorWithExtra: wrapLogFunctionWithExtra(logger.error, "error"),
+});
 
 // eslint-disable-next-line arrow-body-style
-const wrapLogExtendWithExtra = ( extendFunc: ( extension: string ) => Logger ) => {
-  return ( extension: string ) => {
-    const logWithExtras = extendFunc( extension );
-    return enhanceLogRootWithExtras( logWithExtras );
+const wrapLogExtendWithExtra = (extendFunc: (extension: string) => Logger) => {
+  return (extension: string) => {
+    const logWithExtras = extendFunc(extension);
+    return enhanceLogRootWithExtras(logWithExtras);
   };
 };
 
@@ -148,8 +148,8 @@ function enhanceLoggerWithExtra<T extends LoggerRoot>(
 ): Omit<T, "extend"> & LoggerWithExtraRoot {
   const log = {
     ...baseLog,
-    ...enhanceLogRootWithExtras( baseLog ),
-    extend: wrapLogExtendWithExtra( baseLog.extend ),
+    ...enhanceLogRootWithExtras(baseLog),
+    extend: wrapLogExtendWithExtra(baseLog.extend),
   };
   return log;
 }

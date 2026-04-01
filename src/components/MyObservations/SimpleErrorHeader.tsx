@@ -14,10 +14,10 @@ interface Props {
   isConnected: boolean;
 }
 
-const SimpleErrorHeader = ( {
+const SimpleErrorHeader = ({
   isConnected,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
   return (
     <>
@@ -33,7 +33,7 @@ const SimpleErrorHeader = ( {
           />
         </CircleDots>
         <Body3 className="shrink ml-[20px]">
-          { t( "Observations-need-location-date--warning" ) }
+          { t("Observations-need-location-date--warning") }
         </Body3>
       </View>
     </>

@@ -18,7 +18,7 @@ const imageClassNames = [
 
 interface Props {
   accessibleName: string;
-  navToTaxonDetails: ( ) => void;
+  navToTaxonDetails: () => void;
   source: {
     uri: string;
   };
@@ -26,13 +26,13 @@ interface Props {
   speciesCount: SpeciesCount;
 }
 
-const SimpleTaxonGridItem = ( {
+const SimpleTaxonGridItem = ({
   accessibleName,
   navToTaxonDetails,
   source,
   style,
   speciesCount,
-}: Props ) => {
+}: Props) => {
   const { t } = useTranslation();
   const { count } = speciesCount;
 
@@ -42,7 +42,7 @@ const SimpleTaxonGridItem = ( {
       onPress={navToTaxonDetails}
       accessibilityLabel={accessibleName}
       testID="SimpleTaxonGridItem"
-      className={classNames( imageClassNames )}
+      className={classNames(imageClassNames)}
       style={style}
     >
       <Image
@@ -63,7 +63,7 @@ const SimpleTaxonGridItem = ( {
           maxFontSizeMultiplier={1.5}
           className="text-white py-1"
         >
-          {t( "X-Observations", { count } )}
+          {t("X-Observations", { count })}
         </Body4>
         <DisplayTaxonName
           keyBase={`TaxonGridItem-DisplayTaxonName-${speciesCount?.taxon?.id}`}

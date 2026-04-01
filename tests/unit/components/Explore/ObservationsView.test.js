@@ -3,19 +3,19 @@ import ObservationsFlashList from "components/ObservationsFlashList/Observations
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
-const mockOnEndReached = jest.fn( );
+const mockOnEndReached = jest.fn();
 
-jest.mock( "sharedHooks/useInfiniteObservationsScroll", () => ( {
+jest.mock("sharedHooks/useInfiniteObservationsScroll", () => ({
   __esModule: true,
-  default: () => ( {
+  default: () => ({
     data: [],
     isFetchingNextPage: true,
     fetchNextPage: mockOnEndReached,
-  } ),
-} ) );
+  }),
+}));
 
-describe( "ObservationsView", () => {
-  it( "should show a footer loading wheel when new observations are fetched", ( ) => {
+describe("ObservationsView", () => {
+  it("should show a footer loading wheel when new observations are fetched", () => {
     renderComponent(
       <ObservationsFlashList
         hideLoadingWheel={false}
@@ -23,11 +23,11 @@ describe( "ObservationsView", () => {
       />,
     );
 
-    const loadingWheel = screen.getByTestId( "InfiniteScrollLoadingWheel.loading" );
-    expect( loadingWheel ).toBeVisible( );
-  } );
+    const loadingWheel = screen.getByTestId("InfiniteScrollLoadingWheel.loading");
+    expect(loadingWheel).toBeVisible();
+  });
 
-  it( "should show no internet text when user is offline", ( ) => {
+  it("should show no internet text when user is offline", () => {
     renderComponent(
       <ObservationsFlashList
         hideLoadingWheel={false}
@@ -35,11 +35,11 @@ describe( "ObservationsView", () => {
       />,
     );
 
-    const noInternet = screen.getByText( /An Internet connection is required/ );
-    expect( noInternet ).toBeVisible( );
-  } );
+    const noInternet = screen.getByText(/An Internet connection is required/);
+    expect(noInternet).toBeVisible();
+  });
 
-  it( "should show a footer view when loading wheel is hidden", ( ) => {
+  it("should show a footer view when loading wheel is hidden", () => {
     renderComponent(
       <ObservationsFlashList
         hideLoadingWheel
@@ -47,11 +47,11 @@ describe( "ObservationsView", () => {
       />,
     );
 
-    const footerView = screen.getByTestId( "InfiniteScrollLoadingWheel.footerView" );
-    expect( footerView ).toBeVisible( );
-  } );
+    const footerView = screen.getByTestId("InfiniteScrollLoadingWheel.footerView");
+    expect(footerView).toBeVisible();
+  });
 
-  it( "should show loading wheel before initial data loads", ( ) => {
+  it("should show loading wheel before initial data loads", () => {
     renderComponent(
       <ObservationsFlashList
         dataCanBeFetched
@@ -62,11 +62,11 @@ describe( "ObservationsView", () => {
       />,
     );
 
-    const initialLoading = screen.getByTestId( "ObservationsFlashList.loading" );
-    expect( initialLoading ).toBeVisible( );
-  } );
+    const initialLoading = screen.getByTestId("ObservationsFlashList.loading");
+    expect(initialLoading).toBeVisible();
+  });
 
-  it( "should show no results text when no data is found", ( ) => {
+  it("should show no results text when no data is found", () => {
     renderComponent(
       <ObservationsFlashList
         hideLoadingWheel
@@ -76,7 +76,7 @@ describe( "ObservationsView", () => {
       />,
     );
 
-    const noResultsText = screen.getByText( /No results found/ );
-    expect( noResultsText ).toBeVisible( );
-  } );
-} );
+    const noResultsText = screen.getByText(/No results found/);
+    expect(noResultsText).toBeVisible();
+  });
+});

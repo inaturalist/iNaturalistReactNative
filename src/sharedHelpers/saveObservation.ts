@@ -13,7 +13,7 @@ const writeExifToCameraRollPhotos = async (
     positional_accuracy?: number | null;
   },
 ) => {
-  if ( !cameraRollUris || cameraRollUris.length === 0 || !observation ) {
+  if (!cameraRollUris || cameraRollUris.length === 0 || !observation) {
     return;
   }
 
@@ -28,9 +28,9 @@ const writeExifToCameraRollPhotos = async (
   };
 
   // Update all photos taken via the app with the new fetched location.
-  cameraRollUris.forEach( uri => {
-    Exify.write( uri, exifToWrite );
-  } );
+  cameraRollUris.forEach(uri => {
+    Exify.write(uri, exifToWrite);
+  });
 };
 
 const saveObservation = async (
@@ -38,12 +38,12 @@ const saveObservation = async (
   cameraRollUris: string[],
   realm: Realm,
 ) => {
-  await writeExifToCameraRollPhotos( observation, cameraRollUris, {
+  await writeExifToCameraRollPhotos(observation, cameraRollUris, {
     latitude: observation.latitude,
     longitude: observation.longitude,
     positional_accuracy: observation.positional_accuracy,
-  } );
-  return Observation.saveLocalObservationForUpload( observation, realm );
+  });
+  return Observation.saveLocalObservationForUpload(observation, realm);
 };
 
 export default saveObservation;

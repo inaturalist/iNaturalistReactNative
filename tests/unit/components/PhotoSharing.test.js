@@ -8,57 +8,57 @@ import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 
-jest.mock( "realmModels/Observation" );
-jest.mock( "stores/useStore" );
-jest.mock( "sharedHooks" );
+jest.mock("realmModels/Observation");
+jest.mock("stores/useStore");
+jest.mock("sharedHooks");
 
 const JPEG = "image/jpeg";
 
-const mockNavigate = jest.fn( );
-const mockDispatch = jest.fn( );
-const mockGoBack = jest.fn( );
-const mockAddListener = jest.fn( ( ) => ( ) => {} );
-const mockUseRoute = jest.fn( );
+const mockNavigate = jest.fn();
+const mockDispatch = jest.fn();
+const mockGoBack = jest.fn();
+const mockAddListener = jest.fn(() => () => {});
+const mockUseRoute = jest.fn();
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
-    useNavigation: ( ) => ( {
+    useNavigation: () => ({
       navigate: mockNavigate,
       dispatch: mockDispatch,
       goBack: mockGoBack,
       addListener: mockAddListener,
-    } ),
-    useRoute: ( ) => mockUseRoute( ),
+    }),
+    useRoute: () => mockUseRoute(),
   };
-} );
+});
 
-const createMockRoute = item => ( { params: { item } } );
+const createMockRoute = item => ({ params: { item } });
 
-const setupMocks = ( overrides = {} ) => {
+const setupMocks = (overrides = {}) => {
   const defaults = {
-    resetObservationFlowSlice: jest.fn( ),
-    prepareObsEdit: jest.fn( ),
-    setPhotoImporterState: jest.fn( ),
+    resetObservationFlowSlice: jest.fn(),
+    prepareObsEdit: jest.fn(),
+    setPhotoImporterState: jest.fn(),
     isDefaultMode: true,
     screenAfterPhotoEvidence: "ObsEdit",
   };
 
   const mocks = { ...defaults, ...overrides };
 
-  useStore.mockImplementation( selector => selector( {
+  useStore.mockImplementation(selector => selector({
     resetObservationFlowSlice: mocks.resetObservationFlowSlice,
     prepareObsEdit: mocks.prepareObsEdit,
     setPhotoImporterState: mocks.setPhotoImporterState,
-  } ) );
+  }));
 
-  useLayoutPrefs.mockReturnValue( {
+  useLayoutPrefs.mockReturnValue({
     screenAfterPhotoEvidence: mocks.screenAfterPhotoEvidence,
     isDefaultMode: mocks.isDefaultMode,
-  } );
+  });
 
-  Observation.createObservationWithPhotos.mockResolvedValue( { description: "" } );
+  Observation.createObservationWithPhotos.mockResolvedValue({ description: "" });
 
   return {
     ...mocks,
@@ -73,9 +73,9 @@ const mockShare = {
   data: [{ data: "file://photo.jpg", mimeType: "image/jpeg" }],
 };
 
-const expectNavigationReset = ( mockDispatch, screenName, lastScreen = "PhotoSharing" ) => {
-  expect( mockDispatch ).toHaveBeenCalledWith(
-    CommonActions.reset( {
+const expectNavigationReset = (mockDispatch, screenName, lastScreen = "PhotoSharing") => {
+  expect(mockDispatch).toHaveBeenCalledWith(
+    CommonActions.reset({
       index: 0,
       routes: [{
         name: "NoBottomTabStackNavigator",
@@ -84,87 +84,87 @@ const expectNavigationReset = ( mockDispatch, screenName, lastScreen = "PhotoSha
           routes: [{ name: screenName, params: { lastScreen } }],
         },
       }],
-    } ),
+    }),
   );
 };
 
-describe( "PhotoSharing", ( ) => {
-  beforeEach( ( ) => {
-    jest.clearAllMocks( );
-  } );
+describe("PhotoSharing", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-  describe( "Share Single Photo", ( ) => {
+  describe("Share Single Photo", () => {
     const singlePhotoData = {
       ...mockShare,
       extraData: { userInput: "Share photo with description" },
     };
 
-    it( "should handle single photo in default mode", async ( ) => {
-      const mocks = setupMocks( );
-      mockUseRoute.mockReturnValue( createMockRoute( singlePhotoData ) );
+    it("should handle single photo in default mode", async () => {
+      const mocks = setupMocks();
+      mockUseRoute.mockReturnValue(createMockRoute(singlePhotoData));
 
-      renderComponent( <PhotoSharing /> );
+      renderComponent(<PhotoSharing />);
 
-      await waitFor( ( ) => {
-        expect( mocks.dispatch ).toHaveBeenCalled( );
-      } );
+      await waitFor(() => {
+        expect(mocks.dispatch).toHaveBeenCalled();
+      });
 
-      expect( mocks.resetObservationFlowSlice ).toHaveBeenCalled( );
-      expect( Observation.createObservationWithPhotos ).toHaveBeenCalledWith( [
+      expect(mocks.resetObservationFlowSlice).toHaveBeenCalled();
+      expect(Observation.createObservationWithPhotos).toHaveBeenCalledWith([
         { image: { uri: "file://photo.jpg" } },
-      ] );
-      expect( mocks.prepareObsEdit ).toHaveBeenCalledWith(
-        expect.objectContaining( { description: "Share photo with description" } ),
+      ]);
+      expect(mocks.prepareObsEdit).toHaveBeenCalledWith(
+        expect.objectContaining({ description: "Share photo with description" }),
       );
-      expectNavigationReset( mocks.dispatch, "Match" );
-    } );
+      expectNavigationReset(mocks.dispatch, "Match");
+    });
 
-    it( "should handle single photo in advanced mode", async ( ) => {
-      const mocks = setupMocks( { isDefaultMode: false, screenAfterPhotoEvidence: "ObsEdit" } );
-      mockUseRoute.mockReturnValue( createMockRoute( singlePhotoData ) );
+    it("should handle single photo in advanced mode", async () => {
+      const mocks = setupMocks({ isDefaultMode: false, screenAfterPhotoEvidence: "ObsEdit" });
+      mockUseRoute.mockReturnValue(createMockRoute(singlePhotoData));
 
-      renderComponent( <PhotoSharing /> );
+      renderComponent(<PhotoSharing />);
 
-      await waitFor( ( ) => {
-        expectNavigationReset( mocks.dispatch, "ObsEdit" );
-      } );
-    } );
+      await waitFor(() => {
+        expectNavigationReset(mocks.dispatch, "ObsEdit");
+      });
+    });
 
-    it( "should handle observation creation error", async ( ) => {
-      const alertSpy = jest.spyOn( Alert, "alert" ).mockImplementation( ( ) => {} );
+    it("should handle observation creation error", async () => {
+      const alertSpy = jest.spyOn(Alert, "alert").mockImplementation(() => {});
 
-      const mocks = setupMocks( );
-      const error = new Error( "Creation failed" );
-      Observation.createObservationWithPhotos.mockRejectedValue( error );
-      mockUseRoute.mockReturnValue( createMockRoute( singlePhotoData ) );
+      const mocks = setupMocks();
+      const error = new Error("Creation failed");
+      Observation.createObservationWithPhotos.mockRejectedValue(error);
+      mockUseRoute.mockReturnValue(createMockRoute(singlePhotoData));
 
-      renderComponent( <PhotoSharing /> );
+      renderComponent(<PhotoSharing />);
 
-      await waitFor( ( ) => {
-        expect( alertSpy ).toHaveBeenCalledWith(
+      await waitFor(() => {
+        expect(alertSpy).toHaveBeenCalledWith(
           "Photo sharing failed: couldn't create new observation:",
           error,
         );
-      } );
-      expect( mocks.dispatch ).not.toHaveBeenCalled( );
-    } );
+      });
+      expect(mocks.dispatch).not.toHaveBeenCalled();
+    });
 
-    it( "should handle photo with no description", async ( ) => {
-      const mocks = setupMocks( );
+    it("should handle photo with no description", async () => {
+      const mocks = setupMocks();
 
-      mockUseRoute.mockReturnValue( createMockRoute( mockShare ) );
+      mockUseRoute.mockReturnValue(createMockRoute(mockShare));
 
-      renderComponent( <PhotoSharing /> );
+      renderComponent(<PhotoSharing />);
 
-      await waitFor( ( ) => {
-        expect( mocks.prepareObsEdit ).toHaveBeenCalledWith(
-          expect.objectContaining( { description: undefined } ),
+      await waitFor(() => {
+        expect(mocks.prepareObsEdit).toHaveBeenCalledWith(
+          expect.objectContaining({ description: undefined }),
         );
-      } );
-    } );
-  } );
+      });
+    });
+  });
 
-  describe( "Share Multiple Photos", ( ) => {
+  describe("Share Multiple Photos", () => {
     const multiplePhotosData = {
       mimeType: JPEG,
       data: [
@@ -174,28 +174,28 @@ describe( "PhotoSharing", ( ) => {
       extraData: { userInput: "Multiple photos" },
     };
 
-    it( "should navigate to GroupPhotos for multiple photos", async ( ) => {
-      const mocks = setupMocks( );
-      mockUseRoute.mockReturnValue( createMockRoute( multiplePhotosData ) );
+    it("should navigate to GroupPhotos for multiple photos", async () => {
+      const mocks = setupMocks();
+      mockUseRoute.mockReturnValue(createMockRoute(multiplePhotosData));
 
-      renderComponent( <PhotoSharing /> );
+      renderComponent(<PhotoSharing />);
 
-      await waitFor( ( ) => {
-        expect( mocks.setPhotoImporterState ).toHaveBeenCalledWith( {
+      await waitFor(() => {
+        expect(mocks.setPhotoImporterState).toHaveBeenCalledWith({
           photoLibraryUris: ["file://photo1.jpg", "file://photo2.jpg"],
           groupedPhotos: [
             { photos: [{ image: { uri: "file://photo1.jpg" } }] },
             { photos: [{ image: { uri: "file://photo2.jpg" } }] },
           ],
           firstObservationDefaults: { description: "Multiple photos" },
-        } );
-      } );
-      expectNavigationReset( mocks.dispatch, "GroupPhotos" );
-      expect( Observation.createObservationWithPhotos ).not.toHaveBeenCalled( );
-    } );
+        });
+      });
+      expectNavigationReset(mocks.dispatch, "GroupPhotos");
+      expect(Observation.createObservationWithPhotos).not.toHaveBeenCalled();
+    });
 
-    it( "should filter out non-image files", async ( ) => {
-      const mocks = setupMocks( );
+    it("should filter out non-image files", async () => {
+      const mocks = setupMocks();
       const mixedData = {
         ...multiplePhotosData,
         data: [
@@ -204,57 +204,57 @@ describe( "PhotoSharing", ( ) => {
           { data: "file://photo2.png", mimeType: "image/png" },
         ],
       };
-      mockUseRoute.mockReturnValue( createMockRoute( mixedData ) );
+      mockUseRoute.mockReturnValue(createMockRoute(mixedData));
 
-      renderComponent( <PhotoSharing /> );
+      renderComponent(<PhotoSharing />);
 
-      await waitFor( ( ) => {
-        expect( mocks.setPhotoImporterState ).toHaveBeenCalledWith(
-          expect.objectContaining( {
+      await waitFor(() => {
+        expect(mocks.setPhotoImporterState).toHaveBeenCalledWith(
+          expect.objectContaining({
             photoLibraryUris: ["file://photo1.jpg", "file://photo2.png"],
-          } ),
+          }),
         );
-      } );
-    } );
-  } );
+      });
+    });
+  });
 
-  describe( "Back navigation", ( ) => {
-    it( "should handle expected behavior for blur/focus navigation", async ( ) => {
-      const mocks = setupMocks( );
+  describe("Back navigation", () => {
+    it("should handle expected behavior for blur/focus navigation", async () => {
+      const mocks = setupMocks();
       const testItem = mockShare;
-      const testRoute = createMockRoute( testItem );
+      const testRoute = createMockRoute(testItem);
       let blurCallback;
       let focusCallback;
 
-      mocks.addListener.mockImplementation( ( event, callback ) => {
-        if ( event === "blur" ) blurCallback = callback;
-        if ( event === "focus" ) focusCallback = callback;
-        return ( ) => {};
-      } );
+      mocks.addListener.mockImplementation((event, callback) => {
+        if (event === "blur") blurCallback = callback;
+        if (event === "focus") focusCallback = callback;
+        return () => {};
+      });
 
-      mockUseRoute.mockReturnValue( testRoute );
+      mockUseRoute.mockReturnValue(testRoute);
 
-      renderComponent( <PhotoSharing /> );
+      renderComponent(<PhotoSharing />);
 
       // first time on screen
-      act( ( ) => {
-        focusCallback( );
-      } );
+      act(() => {
+        focusCallback();
+      });
 
       // navigate forward in the direction of ObsEdit
-      act( ( ) => {
-        blurCallback( );
-      } );
+      act(() => {
+        blurCallback();
+      });
 
       // same item -- simulate user coming back to this screen by backing out
-      mockUseRoute.mockReturnValue( testRoute );
+      mockUseRoute.mockReturnValue(testRoute);
 
       // return to PhotoSharing screen
-      act( ( ) => {
-        focusCallback( );
-      } );
+      act(() => {
+        focusCallback();
+      });
 
-      expect( mocks.goBack ).toHaveBeenCalled( );
-    } );
-  } );
-} );
+      expect(mocks.goBack).toHaveBeenCalled();
+    });
+  });
+});

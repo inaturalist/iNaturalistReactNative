@@ -47,23 +47,23 @@ type Props = {
   renderScrollable: Function
 };
 
-const ScrollableWithStickyHeader = ( {
+const ScrollableWithStickyHeader = ({
   onScroll,
   renderHeader,
   renderScrollable,
-}: Props ): Node => {
+}: Props): Node => {
   const {
     isTablet,
     screenHeight,
     screenWidth,
-  } = useDeviceOrientation( );
-  const [_scrollPosition, setScrollPosition] = useState( 0 );
+  } = useDeviceOrientation();
+  const [_scrollPosition, setScrollPosition] = useState(0);
 
-  const [stickyAt, setStickyAt] = useState( 0 );
+  const [stickyAt, setStickyAt] = useState(0);
 
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
-  const scrollY = useRef( new Animated.Value( 0 ) );
+  const scrollY = useRef(new Animated.Value(0));
 
   const animatedScrollEvent = Animated.event(
     [
@@ -79,7 +79,7 @@ const ScrollableWithStickyHeader = ( {
     },
   );
 
-  useEffect( () => {
+  useEffect(() => {
     const currentScrollY = scrollY.current;
     // #560 - We use a state variable to force rendering of the component - since on iOS,
     // you can over scroll a list when scrolling it to the top (creating a bounce effect),
@@ -89,29 +89,29 @@ const ScrollableWithStickyHeader = ( {
     // top header if semi cut off, even though the user scrolled the list all the way to the top).
     // So by changing a state variable of the component, every time the user scroll the list -> we
     // make sure the component always gets re-rendered.
-    currentScrollY.addListener( ( { value } ) => {
-      if ( value <= 0 ) {
+    currentScrollY.addListener(({ value }) => {
+      if (value <= 0) {
         // Only force refresh of the state in case of an over-scroll (bounce effect)
         // don't let this value go negative, or else bottom tabs will be unresponsive to taps
-        setScrollPosition( Math.max( value, 0 ) );
+        setScrollPosition(Math.max(value, 0));
       }
-    } );
+    });
 
     return () => {
       currentScrollY.removeAllListeners();
     };
-  }, [scrollY] );
+  }, [scrollY]);
 
   const contentHeight = useMemo(
-    ( ) => (
+    () => (
       isTablet
         ? screenHeight
-        : Math.max( screenWidth, screenHeight )
+        : Math.max(screenWidth, screenHeight)
     ),
     [isTablet, screenHeight, screenWidth],
   );
 
-  const animatedStyle = useMemo( ( ) => ( {
+  const animatedStyle = useMemo(() => ({
     transform: [{
       // Translate the view up (negative value) relative to scroll
       // position *until* the user scrolls to stickyAt, at which point
@@ -131,15 +131,15 @@ const ScrollableWithStickyHeader = ( {
       // scrolled to the top of the screen
       //
       // And finally, that +1 seems to solve an error in iOS
-      translateY: scrollY.current.interpolate( {
+      translateY: scrollY.current.interpolate({
         inputRange: [0, stickyAt * 2, stickyAt * 2 + 1],
         outputRange: [0, -stickyAt, -stickyAt],
-      } ),
+      }),
     }],
     // Set the height to flow off screen so that when we translate the
     // view up, there's no gap at the bottom
     height: contentHeight + stickyAt,
-  } ), [contentHeight, stickyAt] );
+  }), [contentHeight, stickyAt]);
 
   return (
     // Note that we want to occupy full height but hide the overflow because
@@ -148,8 +148,8 @@ const ScrollableWithStickyHeader = ( {
     // nicely with its peers, not flow off the screen.
     <View className="overflow-hidden h-full">
       <Animated.View style={animatedStyle}>
-        {renderHeader( setStickyAt )}
-        {renderScrollable( animatedScrollEvent )}
+        {renderHeader(setStickyAt)}
+        {renderScrollable(animatedScrollEvent)}
       </Animated.View>
     </View>
   );

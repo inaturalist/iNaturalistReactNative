@@ -7,15 +7,15 @@ const DEFAULT_STATE = {
 
 interface RootExploreSlice {
   rootStoredParams: object;
-  setRootStoredParams: ( _params: object ) => void;
+  setRootStoredParams: (_params: object) => void;
   rootExploreView: string;
-  setRootExploreView: ( _view: string ) => void;
+  setRootExploreView: (_view: string) => void;
 }
 
-const createRootExploreSlice: StateCreator<RootExploreSlice> = set => ( {
+const createRootExploreSlice: StateCreator<RootExploreSlice> = set => ({
   ...DEFAULT_STATE,
-  setRootStoredParams: rootStoredParams => set( ( ) => ( { rootStoredParams } ) ),
-  setRootExploreView: rootExploreView => set( ( ) => ( { rootExploreView } ) ),
-} );
+  setRootStoredParams: rootStoredParams => set(() => ({ rootStoredParams })),
+  setRootExploreView: rootExploreView => set(() => ({ rootExploreView })),
+});
 
 export default createRootExploreSlice;

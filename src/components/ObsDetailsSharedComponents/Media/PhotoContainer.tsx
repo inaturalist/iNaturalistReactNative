@@ -17,35 +17,35 @@ interface Props {
   style?: StyleProp<ImageStyle>;
 }
 
-const PhotoContainer = ( { photo, onPress, style }: Props ) => {
-  const { t } = useTranslation( );
-  const [loadSuccess, setLoadSuccess] = useState<boolean | null>( null );
+const PhotoContainer = ({ photo, onPress, style }: Props) => {
+  const { t } = useTranslation();
+  const [loadSuccess, setLoadSuccess] = useState<boolean | null>(null);
 
   const imageSources = [];
-  if ( photo.localFilePath ) {
-    imageSources.push( { uri: Photo.getLocalPhotoUri( photo.localFilePath ) } );
+  if (photo.localFilePath) {
+    imageSources.push({ uri: Photo.getLocalPhotoUri(photo.localFilePath) });
   }
-  if ( photo.url ) {
-    imageSources.push( {
+  if (photo.url) {
+    imageSources.push({
       uri: photo.url,
       width: 75,
       height: 75,
-    } );
-    imageSources.push( {
-      uri: photo.url.replace( "square", "small" ),
+    });
+    imageSources.push({
+      uri: photo.url.replace("square", "small"),
       width: 240,
       height: 240,
-    } );
-    imageSources.push( {
-      uri: photo.url.replace( "square", "medium" ),
+    });
+    imageSources.push({
+      uri: photo.url.replace("square", "medium"),
       width: 500,
       height: 500,
-    } );
-    imageSources.push( {
-      uri: photo.url.replace( "square", "large" ),
+    });
+    imageSources.push({
+      uri: photo.url.replace("square", "large"),
       width: 1024,
       height: 1024,
-    } );
+    });
   }
 
   const image = (
@@ -61,17 +61,17 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
       style={style}
       resizeMode="contain"
       accessibilityIgnoresInvertColors
-      onLoad={( ) => {
-        setLoadSuccess( true );
+      onLoad={() => {
+        setLoadSuccess(true);
       }}
-      onError={( ) => {
-        setLoadSuccess( false );
+      onError={() => {
+        setLoadSuccess(false);
       }}
     />
   );
 
-  const renderLoadingIndicator = ( ) => {
-    if ( loadSuccess === null ) {
+  const renderLoadingIndicator = () => {
+    if (loadSuccess === null) {
       return (
         <ActivityIndicator className="absolute" />
       );
@@ -83,11 +83,11 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
     <Pressable
       onPress={onPress}
       accessibilityRole="link"
-      accessibilityHint={t( "View-photo" )}
+      accessibilityHint={t("View-photo")}
       className="justify-center items-center"
       accessibilityLabel={photo.attribution}
     >
-      {renderLoadingIndicator( )}
+      {renderLoadingIndicator()}
       {image}
       {loadSuccess === false && (
         <View className={classnames(
@@ -96,7 +96,7 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
         )}
         >
           <OfflineNotice
-            onPress={( ) => setLoadSuccess( null )}
+            onPress={() => setLoadSuccess(null)}
             color="white"
           />
         </View>

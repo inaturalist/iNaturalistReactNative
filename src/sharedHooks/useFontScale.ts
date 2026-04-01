@@ -4,17 +4,17 @@ import {
 } from "react";
 import DeviceInfo from "react-native-device-info";
 
-const useFontScale = ( ): {
+const useFontScale = (): {
   isLargeFontScale: boolean;
 } => {
-  const [isLargeFontScale, setIsLargeFontScale] = useState<boolean>( false );
+  const [isLargeFontScale, setIsLargeFontScale] = useState<boolean>(false);
 
-  useEffect( ( ) => {
-    DeviceInfo.getFontScale().then( fontScale => {
-      if ( fontScale > 1.3 ) setIsLargeFontScale( true );
-      else setIsLargeFontScale( false );
-    } );
-  }, [] );
+  useEffect(() => {
+    DeviceInfo.getFontScale().then(fontScale => {
+      if (fontScale > 1.3) setIsLargeFontScale(true);
+      else setIsLargeFontScale(false);
+    });
+  }, []);
 
   return {
     isLargeFontScale,

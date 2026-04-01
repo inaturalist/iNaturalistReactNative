@@ -13,9 +13,9 @@ import ObsDetailsDefaultMode from "./ObsDetailsDefaultMode";
 // this is getting triggered by passing dates, like _created_at, through
 // react navigation via the observation object. it doesn't seem to
 // actually be breaking anything, for the moment (May 2, 2022)
-LogBox.ignoreLogs( [
+LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
-] );
+]);
 
 type Props = {
   belongsToCurrentUser: boolean,
@@ -35,7 +35,7 @@ type Props = {
   uuid: string
 }
 
-const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
+const ObsDetailsDefaultModeContainer = (props: Props): Node => {
   const {
     observation,
     targetActivityItemID,
@@ -54,7 +54,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     remoteObsWasDeleted,
   } = props;
 
-  useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
+  useMarkViewedMutation(localObservation, markViewedLocally, remoteObservation);
 
   const {
     activityItems,
@@ -76,7 +76,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     confirmRemoteObsWasDeleted,
     loadActivityItem,
     refetchSubscriptions,
-  } = useObsDetailsSharedLogic( {
+  } = useObsDetailsSharedLogic({
     observation,
     uuid,
     localObservation,
@@ -89,7 +89,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
     belongsToCurrentUser,
     isRefetching,
     refetchRemoteObservation,
-  } );
+  });
 
   return observationShown && (
     <>

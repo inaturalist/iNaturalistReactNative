@@ -1,5 +1,5 @@
 interface RealmObject {
-  isValid: ( ) => boolean;
+  isValid: () => boolean;
 }
 
 export interface RealmPhoto extends RealmObject {
@@ -32,8 +32,8 @@ export interface RealmObservationPhotoPojo extends RealmObject {
 }
 
 export interface RealmObservationPhoto extends RealmObservationPhotoPojo {
-  needsSync: ( ) => boolean;
-  wasSynced: ( ) => boolean;
+  needsSync: () => boolean;
+  wasSynced: () => boolean;
 }
 
 export interface RealmObservationSoundPojo extends RealmObject {
@@ -43,8 +43,8 @@ export interface RealmObservationSoundPojo extends RealmObject {
 }
 
 export interface RealmObservationSound extends RealmObservationSoundPojo {
-  needsSync: ( ) => boolean;
-  wasSynced: ( ) => boolean;
+  needsSync: () => boolean;
+  wasSynced: () => boolean;
 }
 
 export interface RealmTaxonPhoto extends RealmObject {
@@ -137,12 +137,12 @@ export interface RealmObservationPojo {
 }
 
 export interface RealmObservation extends RealmObservationPojo {
-  missingBasics: ( ) => boolean;
-  needsSync: ( ) => boolean;
+  missingBasics: () => boolean;
+  needsSync: () => boolean;
   observationPhotos: RealmObservationPhoto[];
   observationSounds: RealmObservationSound[];
-  unviewed: ( ) => boolean;
-  updateNeedsSync: ( ) => boolean;
-  viewed: ( ) => boolean;
-  wasSynced: ( ) => boolean;
+  unviewed: () => boolean;
+  updateNeedsSync: () => boolean;
+  viewed: () => boolean;
+  wasSynced: () => boolean;
 }

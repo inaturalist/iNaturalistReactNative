@@ -8,7 +8,7 @@ import IndeterminateProgressBar from "./IndeterminateProgressBar";
 const count = 30;
 const duration = 7000;
 
-const ActivityAnimation = ( ) => (
+const ActivityAnimation = () => (
   <View className="flex-1">
     {/* A view that animates in a loop */}
     <IndeterminateProgressBar

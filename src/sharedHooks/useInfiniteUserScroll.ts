@@ -24,18 +24,18 @@ const useInfiniteUserScroll = (
     status,
   } = useAuthenticatedInfiniteQuery(
     [queryKey, baseParams],
-    async ( { pageParam }, optsWithAuth ) => {
+    async ({ pageParam }, optsWithAuth) => {
       const params = {
         ...baseParams,
       };
 
-      if ( pageParam ) {
+      if (pageParam) {
         params.page = pageParam;
       } else {
         params.page = 1;
       }
 
-      return apiCall( ids, params, optsWithAuth );
+      return apiCall(ids, params, optsWithAuth);
     },
     {
       getNextPageParam: lastPage => lastPage.page + 1,
@@ -44,9 +44,9 @@ const useInfiniteUserScroll = (
   );
 
   const pages = data?.pages;
-  const allResults = pages?.map( page => page?.results );
+  const allResults = pages?.map(page => page?.results);
 
-  const flattenedData = flatten( allResults );
+  const flattenedData = flatten(allResults);
 
   return {
     data: flattenedData,

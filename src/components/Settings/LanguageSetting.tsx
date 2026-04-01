@@ -17,62 +17,62 @@ type LocalesResponse = {
 }[];
 
 interface Props {
-  onChange: ( newLocale: string ) => void;
+  onChange: (newLocale: string) => void;
 }
 
-const LanguageSetting = ( { onChange }: Props ) => {
+const LanguageSetting = ({ onChange }: Props) => {
   const { t, i18n } = useTranslation();
-  const [webLocales, setWebLocales] = useState<LocalesResponse>( [] );
+  const [webLocales, setWebLocales] = useState<LocalesResponse>([]);
   const webLocalesOptions = Object.fromEntries(
-    webLocales?.map( locale => [locale.locale, {
+    webLocales?.map(locale => [locale.locale, {
       label: locale.language_in_locale,
       value: locale.locale,
-    }] ),
+    }]),
   );
-  const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
+  const [localeSheetOpen, setLocaleSheetOpen] = useState(false);
 
-  useEffect( () => {
+  useEffect(() => {
     async function fetchLocales() {
       // Whenever possible, save latest available locales from server
-      const currentLocales = zustandStorage.getItem( "availableLocales" );
+      const currentLocales = zustandStorage.getItem("availableLocales");
 
-      setWebLocales( currentLocales
-        ? JSON.parse( currentLocales )
-        : [] );
+      setWebLocales(currentLocales
+        ? JSON.parse(currentLocales)
+        : []);
 
-      const apiToken = await getJWT( );
-      const locales = await fetchAvailableLocales( {}, { api_token: apiToken } );
-      zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
-      setWebLocales( locales as LocalesResponse );
+      const apiToken = await getJWT();
+      const locales = await fetchAvailableLocales({}, { api_token: apiToken });
+      zustandStorage.setItem("availableLocales", JSON.stringify(locales));
+      setWebLocales(locales as LocalesResponse);
     }
     fetchLocales();
-  }, [] );
+  }, []);
 
-  if ( webLocales.length === 0 ) {
+  if (webLocales.length === 0) {
     return null;
   }
 
   return (
     <View className="mb-9">
-      <Heading4>{t( "APP-LANGUAGE" )}</Heading4>
+      <Heading4>{t("APP-LANGUAGE")}</Heading4>
       <Button
         className="mt-4"
-        text={t( "CHANGE-APP-LANGUAGE" )}
+        text={t("CHANGE-APP-LANGUAGE")}
         onPress={() => {
-          setLocaleSheetOpen( true );
+          setLocaleSheetOpen(true);
         }}
-        accessibilityLabel={t( "CHANGE-APP-LANGUAGE" )}
+        accessibilityLabel={t("CHANGE-APP-LANGUAGE")}
       />
       {localeSheetOpen && (
         <PickerSheet
-          headerText={t( "APP-LANGUAGE" )}
-          confirm={( newLocale: string ) => {
-            setLocaleSheetOpen( false );
+          headerText={t("APP-LANGUAGE")}
+          confirm={(newLocale: string) => {
+            setLocaleSheetOpen(false);
             // Remember the new locale locally
-            changeLanguage( newLocale );
-            onChange( newLocale );
+            changeLanguage(newLocale);
+            onChange(newLocale);
           }}
-          onPressClose={() => setLocaleSheetOpen( false )}
+          onPressClose={() => setLocaleSheetOpen(false)}
           selectedValue={i18n.language}
           pickerValues={webLocalesOptions}
         />

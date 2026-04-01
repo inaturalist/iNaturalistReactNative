@@ -5,7 +5,7 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 
 import { log } from "../../react-native-logs.config";
 
-const logger = log.extend( "useAuthenticatedMutation" );
+const logger = log.extend("useAuthenticatedMutation");
 
 type MutationFunction<Response> = (
   params: unknown, options: { api_token: string | null }
@@ -21,59 +21,59 @@ type MutationError = any;
 const useAuthenticatedMutation = <Response>(
   mutationFunction: MutationFunction<Response>,
   mutationOptions: UseMutationOptions = {},
-) => useMutation<Response, MutationError>( {
+) => useMutation<Response, MutationError>({
   mutationFn: async params => {
     // Note, getJWTToken() takes care of fetching a new token if the existing
     // one is expired. We *could* store the token in state with useState if
     // fetching from RNSInfo becomes a performance issue
-    const apiToken = await getJWT( );
+    const apiToken = await getJWT();
     const options = {
       api_token: apiToken,
     };
-    return mutationFunction( params, options );
+    return mutationFunction(params, options);
   },
   onError: error => {
-    if ( error.status === 401
-        || ( error.errors && error.errors[0]?.errorCode === "401" )
-        || JSON.stringify( error ).includes( "JWT is missing or invalid" ) ) {
+    if (error.status === 401
+        || (error.errors && error.errors[0]?.errorCode === "401")
+        || JSON.stringify(error).includes("JWT is missing or invalid")) {
       const errorContext = {
         mutationName: mutationOptions.mutationKey || "unknown",
         timestamp: new Date().toISOString(),
         errorMessage: error.message || "JWT is missing or invalid",
       };
 
-      logger.error( "401 JWT error in mutation:", JSON.stringify( errorContext ) );
+      logger.error("401 JWT error in mutation:", JSON.stringify(errorContext));
 
       // Try to refresh the token explicitly
       // Important: We don't await this to avoid blocking the error handling
-      getJWT( true ).catch( refreshError => {
-        logger.error( "Failed to refresh token in mutation after 401:", refreshError );
-      } );
+      getJWT(true).catch(refreshError => {
+        logger.error("Failed to refresh token in mutation after 401:", refreshError);
+      });
 
-      return handleError( error, {
+      return handleError(error, {
         context: errorContext,
         throw: mutationOptions.throwOnError !== false,
-      } );
+      });
     }
 
-    if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
+    if (error.status === 429 || (error.response && error.response.status === 429)) {
       const errorContext = {
         mutationName: mutationOptions.mutationKey || "unknown",
         timestamp: new Date().toISOString(),
       };
 
-      logger.error( "429 in mutation:", JSON.stringify( errorContext ) );
+      logger.error("429 in mutation:", JSON.stringify(errorContext));
 
-      return handleError( error, {
+      return handleError(error, {
         context: errorContext,
         throw: mutationOptions.throwOnError !== false,
-      } );
+      });
     }
 
     // Call original handleError for non-429 and non-401 errors
-    return handleError( error );
+    return handleError(error);
   },
   ...mutationOptions,
-} );
+});
 
 export default useAuthenticatedMutation;

@@ -3,56 +3,56 @@ import { Button } from "components/SharedComponents";
 import React from "react";
 
 // Mock Appearance.getColorScheme()
-jest.mock( "react-native/Libraries/Utilities/Appearance", () => {
-  const actualAppearance = jest.requireActual( "react-native/Libraries/Utilities/Appearance" );
+jest.mock("react-native/Libraries/Utilities/Appearance", () => {
+  const actualAppearance = jest.requireActual("react-native/Libraries/Utilities/Appearance");
   return {
     ...actualAppearance,
-    getColorScheme: jest.fn( () => "dark" ),
+    getColorScheme: jest.fn(() => "dark"),
   };
-} );
+});
 
 // Mock nativewind useColorScheme()
-jest.mock( "nativewind", () => {
-  const actualNativewind = jest.requireActual( "nativewind" );
+jest.mock("nativewind", () => {
+  const actualNativewind = jest.requireActual("nativewind");
   return {
     ...actualNativewind,
-    useColorScheme: jest.fn( () => ( { colorScheme: "dark" } ) ),
+    useColorScheme: jest.fn(() => ({ colorScheme: "dark" })),
   };
-} );
+});
 
-describe.each( [["primary"], ["warning"], ["focus"], ["neutral"]] )(
+describe.each([["primary"], ["warning"], ["focus"], ["neutral"]])(
   "Button %s in dark mode",
   level => {
-    it( "should render correctly", () => {
-      render( <Button level={level} text={`${level.toUpperCase()} BUTTON`} /> );
+    it("should render correctly", () => {
+      render(<Button level={level} text={`${level.toUpperCase()} BUTTON`} />);
 
       // Snapshot test
-      expect( screen ).toMatchSnapshot();
-    } );
+      expect(screen).toMatchSnapshot();
+    });
 
-    it( "has no accessibility errors", () => {
+    it("has no accessibility errors", () => {
       // const button = <Button level={level} text={`${level.toUpperCase()} BUTTON`} />;
 
       // Disabled during the update to RN 0.78
       // expect( button ).toBeAccessible();
-    } );
+    });
 
-    describe( "when disabled", () => {
-      it( "should render correctly", () => {
-        render( <Button level={level} text={`${level.toUpperCase()} DISABLED`} disabled /> );
+    describe("when disabled", () => {
+      it("should render correctly", () => {
+        render(<Button level={level} text={`${level.toUpperCase()} DISABLED`} disabled />);
 
         // Snapshot test
-        expect( screen ).toMatchSnapshot();
-      } );
+        expect(screen).toMatchSnapshot();
+      });
 
-      it( "has no accessibility errors", () => {
+      it("has no accessibility errors", () => {
         // const button = (
         //   <Button level={level} text={`${level.toUpperCase()} DISABLED`} disabled />
         // );
 
         // Disabled during the update to RN 0.78
         // expect( button ).toBeAccessible();
-      } );
-    } );
+      });
+    });
   },
 );

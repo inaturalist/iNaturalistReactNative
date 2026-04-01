@@ -9,14 +9,14 @@ import { useOnboardingShown } from "sharedHelpers/installData";
 import BottomTabNavigator from "./BottomTabNavigator";
 import { hideHeader, preventSwipeToGoBack } from "./navigationOptions";
 
-const Stack = createNativeStackNavigator<RootStackParamList>( );
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // DEVELOPERS: do you need to add any screens here? This is the RootStack.
 // All the rest of our screens live in:
 // NoBottomTabStackNavigator, TabStackNavigator, OnboardingStackNavigator, or LoginStackNavigator
 
-const RootStackNavigator = ( ) => {
-  const [onboardingShown] = useOnboardingShown( );
+const RootStackNavigator = () => {
+  const [onboardingShown] = useOnboardingShown();
 
   return (
     <Stack.Navigator screenOptions={{ ...hideHeader, ...preventSwipeToGoBack, animation: "none" }}>

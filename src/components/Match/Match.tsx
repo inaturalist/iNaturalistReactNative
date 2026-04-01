@@ -33,21 +33,21 @@ export const matchCardClassBottom
 interface Props {
   observation: RealmObservation;
   obsPhotos: RealmObservationPhoto[];
-  handleSaveOrDiscardPress: ( action: MatchButtonAction ) => void;
-  navToTaxonDetails: ( photo?: ApiPhoto | RealmPhoto ) => void;
+  handleSaveOrDiscardPress: (action: MatchButtonAction) => void;
+  navToTaxonDetails: (photo?: ApiPhoto | RealmPhoto) => void;
   isFetchingLocation: boolean;
-  handleAddLocationPressed: ( ) => void;
+  handleAddLocationPressed: () => void;
   topSuggestion?: ApiSuggestion;
   otherSuggestions: ApiSuggestion[];
   suggestionsLoading: boolean;
-  onSuggestionChosen: ( suggestion: ApiSuggestion ) => void;
+  onSuggestionChosen: (suggestion: ApiSuggestion) => void;
   scrollRef: React.RefObject<ScrollView | null>;
   iconicTaxon?: RealmTaxon;
-  setIconicTaxon: ( taxon: RealmTaxon ) => void;
+  setIconicTaxon: (taxon: RealmTaxon) => void;
   taxonToSave?: ApiTaxon;
 }
 
-const Match = ( {
+const Match = ({
   observation,
   obsPhotos,
   handleSaveOrDiscardPress,
@@ -62,15 +62,15 @@ const Match = ( {
   iconicTaxon,
   setIconicTaxon,
   taxonToSave,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
+}: Props) => {
+  const { t } = useTranslation();
+  const { isConnected } = useNetInfo();
 
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;
 
   // In case there are no suggestions, at all
-  if ( !topSuggestion && otherSuggestions.length === 0 ) {
+  if (!topSuggestion && otherSuggestions.length === 0) {
     return (
       <>
         <ScrollViewWrapper scrollRef={scrollRef}>
@@ -82,7 +82,7 @@ const Match = ( {
                 )
                 : (
                   <Body2>
-                    {t( "The-AI-is-not-confident-Upload-to-ask-the-community" )}
+                    {t("The-AI-is-not-confident-Upload-to-ask-the-community")}
                   </Body2>
                 )
             }
@@ -97,28 +97,28 @@ const Match = ( {
           && (
             <View className="mt-5">
               <Heading3 className="mx-5">
-                {t( "Do-you-know-what-group-this-is-in" )}
+                {t("Do-you-know-what-group-this-is-in")}
               </Heading3>
               <IconicSuggestionsScroll
                 iconicTaxonChosen={iconicTaxon}
                 onIconicTaxonChosen={setIconicTaxon}
               />
               <Body2 className="mx-5 my-[30px]">
-                {t( "If-you-save-this-observation-and-upload-it-to-iNaturalist" )}
+                {t("If-you-save-this-observation-and-upload-it-to-iNaturalist")}
               </Body2>
               <Body2 className="mx-3 my-[30px]">
-                {t( "Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer" )}
+                {t("Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer")}
               </Body2>
               {!latitude && (
                 <Button
                   className="mx-4 mb-[30px]"
                   level="neutral"
-                  text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+                  text={t("ADD-LOCATION-FOR-BETTER-IDS")}
                   loading={isFetchingLocation}
                   disabled={isFetchingLocation}
                   onPress={handleAddLocationPressed}
-                  accessibilityLabel={t( "Edit-location" )}
-                  accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+                  accessibilityLabel={t("Edit-location")}
+                  accessibilityHint={t("Add-location-to-refresh-suggestions")}
                 />
               )}
             </View>
@@ -131,7 +131,7 @@ const Match = ( {
     );
   }
   // In case there are suggestions but no top suggestion
-  if ( !topSuggestion ) {
+  if (!topSuggestion) {
     return (
       <>
         <ScrollViewWrapper scrollRef={scrollRef}>
@@ -143,7 +143,7 @@ const Match = ( {
                 )
                 : (
                   <Body2>
-                    {t( "The-AI-is-not-confident-It-may-be-one-of-the-IDs-below" )}
+                    {t("The-AI-is-not-confident-It-may-be-one-of-the-IDs-below")}
                   </Body2>
                 )
             }
@@ -166,12 +166,12 @@ const Match = ( {
             <Button
               className="mx-4 mb-[30px]"
               level="neutral"
-              text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+              text={t("ADD-LOCATION-FOR-BETTER-IDS")}
               onPress={handleAddLocationPressed}
               loading={isFetchingLocation}
               disabled={isFetchingLocation}
-              accessibilityLabel={t( "Edit-location" )}
-              accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+              accessibilityLabel={t("Edit-location")}
+              accessibilityHint={t("Add-location-to-refresh-suggestions")}
             />
           )}
         </ScrollViewWrapper>
@@ -223,10 +223,10 @@ const Match = ( {
               className="mx-4 mb-[30px]"
               level="primary"
               text={taxon?.rank_level === 10
-                ? t( "LEARN-MORE-ABOUT-THIS-SPECIES" )
-                : t( "LEARN-MORE-ABOUT-THIS-GROUP" )}
+                ? t("LEARN-MORE-ABOUT-THIS-SPECIES")
+                : t("LEARN-MORE-ABOUT-THIS-GROUP")}
               onPress={navToTaxonDetails}
-              accessibilityHint={t( "Navigates-to-taxon-details" )}
+              accessibilityHint={t("Navigates-to-taxon-details")}
             />
           )
         }
@@ -241,12 +241,12 @@ const Match = ( {
           <Button
             className="mx-4 mb-[30px]"
             level="neutral"
-            text={t( "ADD-LOCATION-FOR-BETTER-IDS" )}
+            text={t("ADD-LOCATION-FOR-BETTER-IDS")}
             onPress={handleAddLocationPressed}
             loading={isFetchingLocation}
             disabled={isFetchingLocation}
-            accessibilityLabel={t( "Edit-location" )}
-            accessibilityHint={t( "Add-location-to-refresh-suggestions" )}
+            accessibilityLabel={t("Edit-location")}
+            accessibilityHint={t("Add-location-to-refresh-suggestions")}
           />
         )}
       </ScrollViewWrapper>

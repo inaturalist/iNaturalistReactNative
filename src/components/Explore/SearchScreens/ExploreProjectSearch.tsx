@@ -16,17 +16,17 @@ import { getShadow } from "styles/global";
 import EmptySearchResults from "./EmptySearchResults";
 import ExploreSearchHeader from "./ExploreSearchHeader";
 
-const DROP_SHADOW = getShadow( {
+const DROP_SHADOW = getShadow({
   offsetHeight: 4,
-} );
+});
 
 interface Props {
-  closeModal: ( ) => void;
-  updateProject: ( project: ApiProject ) => void;
+  closeModal: () => void;
+  updateProject: (project: ApiProject) => void;
 }
 
-const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
-  const [projectQuery, setProjectQuery] = useState( "" );
+const ExploreProjectSearch = ({ closeModal, updateProject }: Props) => {
+  const [projectQuery, setProjectQuery] = useState("");
   const { t } = useTranslation();
 
   // TODO fix these types if/when we ever figure out how to type react query
@@ -53,21 +53,21 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
     },
   );
 
-  const projects = data.map( ( r: { project: ApiProject } ) => r.project );
+  const projects = data.map((r: { project: ApiProject }) => r.project);
 
-  const onProjectSelected = useCallback( async ( project: ApiProject ) => {
-    if ( !project.id ) {
+  const onProjectSelected = useCallback(async (project: ApiProject) => {
+    if (!project.id) {
       // If this is missing, we can not query by project
       // TODO: user facing error message
       return;
     }
-    updateProject( project );
+    updateProject(project);
     closeModal();
-  }, [updateProject, closeModal] );
+  }, [updateProject, closeModal]);
 
   const resetProject = useCallback(
-    ( ) => {
-      updateProject( null );
+    () => {
+      updateProject(null);
       closeModal();
     },
     [updateProject, closeModal],
@@ -77,7 +77,7 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
     <ViewWrapper>
       <ExploreSearchHeader
         closeModal={closeModal}
-        headerText={t( "SEARCH-PROJECTS" )}
+        headerText={t("SEARCH-PROJECTS")}
         resetFilters={resetProject}
         testID="ExploreProjectSearch.close"
       />
@@ -103,7 +103,7 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
         )}
         onEndReached={fetchNextPage}
         onPress={onProjectSelected}
-        accessibilityLabel={t( "Change-project" )}
+        accessibilityLabel={t("Change-project")}
       />
     </ViewWrapper>
   );

@@ -20,14 +20,14 @@ const UTF_GRID_JSON = {
   },
 };
 
-describe( "getDataForPixel", ( ) => {
-  it( "should return null if grid is undefined", ( ) => {
-    expect( getDataForPixel( 0, 0, { ...UTF_GRID_JSON, grid: undefined } ) ).toBeNull( );
-  } );
-  it( "should return null if data is undefined", ( ) => {
-    expect( getDataForPixel( 0, 0, { ...UTF_GRID_JSON, data: undefined } ) ).toBeNull( );
-  } );
-  it( "should return null if json is undefined", ( ) => {
-    expect( getDataForPixel( 0, 0, undefined ) ).toBeNull( );
-  } );
-} );
+describe("getDataForPixel", () => {
+  it("should return null if grid is undefined", () => {
+    expect(getDataForPixel(0, 0, { ...UTF_GRID_JSON, grid: undefined })).toBeNull();
+  });
+  it("should return null if data is undefined", () => {
+    expect(getDataForPixel(0, 0, { ...UTF_GRID_JSON, data: undefined })).toBeNull();
+  });
+  it("should return null if json is undefined", () => {
+    expect(getDataForPixel(0, 0, undefined)).toBeNull();
+  });
+});

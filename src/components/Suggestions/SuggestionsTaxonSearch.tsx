@@ -10,24 +10,24 @@ import { useTaxonSearch, useTranslation } from "sharedHooks";
 
 import useNavigateWithTaxonSelected from "./hooks/useNavigateWithTaxonSelected";
 
-const SuggestionsTaxonSearch = ( ) => {
-  const [taxonQuery, setTaxonQuery] = useState( "" );
-  const { taxa, isLoading, isLocal } = useTaxonSearch( taxonQuery );
-  const { t } = useTranslation( );
+const SuggestionsTaxonSearch = () => {
+  const [taxonQuery, setTaxonQuery] = useState("");
+  const { taxa, isLoading, isLocal } = useTaxonSearch(taxonQuery);
+  const { t } = useTranslation();
 
-  const navigateWithTaxonSelected = useNavigateWithTaxonSelected( { vision: false } );
+  const navigateWithTaxonSelected = useNavigateWithTaxonSelected({ vision: false });
 
-  const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
+  const renderTaxonResult = useCallback(({ item: taxon, index }) => (
     <TaxonResult
-      accessibilityLabel={t( "Choose-taxon" )}
+      accessibilityLabel={t("Choose-taxon")}
       fetchRemote={false}
       first={index === 0}
-      handleCheckmarkPress={() => navigateWithTaxonSelected( taxon )}
+      handleCheckmarkPress={() => navigateWithTaxonSelected(taxon)}
       hideNavButtons
       taxon={taxon}
       testID={`Search.taxa.${taxon.id}`}
     />
-  ), [navigateWithTaxonSelected, t] );
+  ), [navigateWithTaxonSelected, t]);
 
   return (
     <TaxonSearch

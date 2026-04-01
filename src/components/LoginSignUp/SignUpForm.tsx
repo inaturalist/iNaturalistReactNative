@@ -10,43 +10,43 @@ import { emailAvailable } from "./AuthenticationService";
 import Error from "./Error";
 import LoginSignUpInputField from "./LoginSignUpInputField";
 
-const SignUpForm = ( ) => {
-  const navigation = useNavigation( );
-  const emailRef = useRef<TextInput>( null );
-  const [email, setEmail] = useState( "" );
-  const [isLoading, setIsLoading] = useState( false );
-  const [error, setError] = useState<string>( );
+const SignUpForm = () => {
+  const navigation = useNavigation();
+  const emailRef = useRef<TextInput>(null);
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>();
 
   const blurFields = () => {
-    if ( emailRef.current ) {
+    if (emailRef.current) {
       emailRef.current.blur();
     }
   };
 
-  useEffect( () => {
-    const unsubscribeBlur = navigation.addListener( "blur", blurFields );
+  useEffect(() => {
+    const unsubscribeBlur = navigation.addListener("blur", blurFields);
 
     return unsubscribeBlur;
-  }, [navigation] );
+  }, [navigation]);
 
-  useEffect( () => {
-    const unsubscrubeTransition = navigation.addListener( "transitionEnd", blurFields );
+  useEffect(() => {
+    const unsubscrubeTransition = navigation.addListener("transitionEnd", blurFields);
 
     return unsubscrubeTransition;
-  }, [navigation] );
+  }, [navigation]);
 
-  const onContinue = async ( ) => {
-    setIsLoading( true );
-    const isAvailable = await emailAvailable( email );
-    setIsLoading( false );
-    if ( isAvailable ) {
-      navigation.navigate( "SignUpConfirmation", {
+  const onContinue = async () => {
+    setIsLoading(true);
+    const isAvailable = await emailAvailable(email);
+    setIsLoading(false);
+    if (isAvailable) {
+      navigation.navigate("SignUpConfirmation", {
         user: {
           email,
         },
-      } );
+      });
     } else {
-      setError( t( "That-email-is-already-associated-with-an-account" ) );
+      setError(t("That-email-is-already-associated-with-an-account"));
     }
   };
 
@@ -55,12 +55,12 @@ const SignUpForm = ( ) => {
       <View className="px-4 mt-[9px] justify-end">
         <LoginSignUpInputField
           ref={emailRef}
-          accessibilityLabel={t( "EMAIL" )}
+          accessibilityLabel={t("EMAIL")}
           autoComplete="email"
-          headerText={t( "EMAIL" )}
+          headerText={t("EMAIL")}
           inputMode="email"
           keyboardType="email-address"
-          onChangeText={( text: string ) => setEmail( text )}
+          onChangeText={(text: string) => setEmail(text)}
           testID="Signup.email"
           textContentType="emailAddress"
         />
@@ -70,9 +70,9 @@ const SignUpForm = ( ) => {
           disabled={!email || isLoading}
           level="focus"
           forceDark
-          onPress={( ) => onContinue( )}
+          onPress={() => onContinue()}
           testID="Signup.signupButton"
-          text={t( "CONTINUE" )}
+          text={t("CONTINUE")}
           loading={isLoading}
         />
       </View>

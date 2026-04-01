@@ -13,22 +13,22 @@ import {
 // Uses this workaround: https://gist.github.com/nonam4/7a6409cd1273e8ed7466ba3a48dd1ecc but adapted it to
 // version 4 of vision-camera.
 // Originally, posted on this currently open issue: https://github.com/mrousavy/react-native-vision-camera/issues/2589
-const usePatchedRunAsync = ( ) => {
+const usePatchedRunAsync = () => {
   /**
    * Print worklets logs/errors on js thread
    */
-  const logOnJs = Worklets.createRunOnJS( ( log, error ) => {
-    console.log( "logOnJs - ", log, " - error?:", error?.message ?? "no error" );
-  } );
-  const isAsyncContextBusy = useWorkletSharedValue( false );
+  const logOnJs = Worklets.createRunOnJS((log, error) => {
+    console.log("logOnJs - ", log, " - error?:", error?.message ?? "no error");
+  });
+  const isAsyncContextBusy = useWorkletSharedValue(false);
   const customRunOnAsyncContext = Worklets.defaultContext.createRunAsync(
-    ( frame, func ) => {
+    (frame, func) => {
       "worklet";
 
       try {
-        func( frame );
-      } catch ( e ) {
-        logOnJs( "customRunOnAsyncContext error", e );
+        func(frame);
+      } catch (e) {
+        logOnJs("customRunOnAsyncContext error", e);
       } finally {
         frame.decrementRefCount();
         isAsyncContextBusy.value = false;
@@ -36,16 +36,16 @@ const usePatchedRunAsync = ( ) => {
     },
   );
 
-  function customRunAsync( frame, func ) {
+  function customRunAsync(frame, func) {
     "worklet";
 
-    if ( isAsyncContextBusy.value ) {
+    if (isAsyncContextBusy.value) {
       return;
     }
     isAsyncContextBusy.value = true;
     const internal = frame;
     internal.incrementRefCount();
-    customRunOnAsyncContext( internal, func );
+    customRunOnAsyncContext(internal, func);
   }
 
   return customRunAsync;

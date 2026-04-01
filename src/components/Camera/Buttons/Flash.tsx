@@ -9,46 +9,46 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
-  toggleFlash: ( ) => void;
+  toggleFlash: () => void;
   hasFlash?: boolean;
   takePhotoOptions: TakePhotoOptions;
   flashClassName?: string;
 }
 
-const Flash = ( {
+const Flash = ({
   rotatableAnimatedStyle,
   toggleFlash,
   hasFlash,
   takePhotoOptions,
   flashClassName,
-}: Props ) => {
-  const { t } = useTranslation( );
+}: Props) => {
+  const { t } = useTranslation();
 
-  if ( !hasFlash ) return null;
+  if (!hasFlash) return null;
   let testID = "";
   let accessibilityHint = "";
   let name = "";
-  switch ( takePhotoOptions.flash ) {
+  switch (takePhotoOptions.flash) {
     case "on":
       name = "flash-on";
       testID = "flash-button-label-flash";
-      accessibilityHint = t( "Disable-flash" );
+      accessibilityHint = t("Disable-flash");
       break;
     default: // default to off if no flash
       name = "flash-off";
       testID = "flash-button-label-flash-off";
-      accessibilityHint = t( "Enable-flash" );
+      accessibilityHint = t("Enable-flash");
   }
 
   return (
     <RotatableIconWrapper
       rotatableAnimatedStyle={rotatableAnimatedStyle}
-      containerClass={classnames( "m-0", "border-0", flashClassName )}
+      containerClass={classnames("m-0", "border-0", flashClassName)}
     >
       <TransparentCircleButton
         onPress={toggleFlash}
         testID={testID}
-        accessibilityLabel={t( "Flash" )}
+        accessibilityLabel={t("Flash")}
         accessibilityHint={accessibilityHint}
         icon={name}
       />

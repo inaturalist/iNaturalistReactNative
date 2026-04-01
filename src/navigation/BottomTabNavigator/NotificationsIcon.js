@@ -15,7 +15,7 @@ type Props = {
     height?: number
 };
 
-const NotificationsIcon = ( {
+const NotificationsIcon = ({
   unread,
   testID,
   size,
@@ -23,7 +23,7 @@ const NotificationsIcon = ( {
   active,
   width,
   height,
-}: Props ): React.Node => {
+}: Props): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
     testID,
@@ -31,7 +31,7 @@ const NotificationsIcon = ( {
     height,
   };
 
-  if ( unread ) {
+  if (unread) {
     return (
       <View
         className="flex items-center justify-center"

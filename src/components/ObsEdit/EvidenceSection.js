@@ -32,11 +32,11 @@ type Props = {
     },
     uuid: string
   }[],
-  onLocationPress: ( ) => void,
+  onLocationPress: () => void,
   updateObservationKeys: Function
 }
 
-const EvidenceSection = ( {
+const EvidenceSection = ({
   currentObservation,
   isFetchingLocation,
   locationTextClassNames,
@@ -46,8 +46,8 @@ const EvidenceSection = ( {
   observationSounds,
   onLocationPress,
   updateObservationKeys,
-}: Props ): Node => {
-  const { t } = useTranslation( );
+}: Props): Node => {
+  const { t } = useTranslation();
   // TODO fix this hack, and not with a workaround like
   // checkCamelAndSnakeCase. This component should only ever receive a local
   // Realm Observation or something that quacks like it, *not* a POJO from
@@ -58,30 +58,30 @@ const EvidenceSection = ( {
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
 
-  const displayPlaceName = ( ) => {
+  const displayPlaceName = () => {
     let placeName = "";
-    if ( currentObservation?.place_guess ) {
+    if (currentObservation?.place_guess) {
       placeName = currentObservation?.place_guess;
-    } else if ( isFetchingLocation ) {
-      placeName = t( "Fetching-location" );
-    } else if ( !latitude || !longitude ) {
-      return t( "Add-Location" );
+    } else if (isFetchingLocation) {
+      placeName = t("Fetching-location");
+    } else if (!latitude || !longitude) {
+      return t("Add-Location");
     }
     return placeName;
   };
 
-  const displayLocation = ( ) => {
-    if ( isFetchingLocation && ( !latitude || !longitude ) ) {
-      return t( "Stay-on-this-screen" );
+  const displayLocation = () => {
+    if (isFetchingLocation && (!latitude || !longitude)) {
+      return t("Stay-on-this-screen");
     }
-    if ( !latitude || !longitude ) {
-      return t( "No-Location" );
+    if (!latitude || !longitude) {
+      return t("No-Location");
     }
-    return t( "Lat-Lon-Acc", {
+    return t("Lat-Lon-Acc", {
       latitude,
       longitude,
-      accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none--accuracy" ),
-    } );
+      accuracy: currentObservation?.positional_accuracy?.toFixed(0) || t("none--accuracy"),
+    });
   };
 
   return (
@@ -92,29 +92,29 @@ const EvidenceSection = ( {
             obsPhotos?.length >= MAX_PHOTOS_ALLOWED
             || obsSounds?.length >= MAX_SOUNDS_ALLOWED
           }
-          onClose={( ) => setShowAddEvidenceSheet( false )}
+          onClose={() => setShowAddEvidenceSheet(false)}
         />
       )}
       <View className="ml-6 flex-row">
-        <Heading4>{t( "EVIDENCE" )}</Heading4>
+        <Heading4>{t("EVIDENCE")}</Heading4>
         <View className="ml-3">
-          {passesEvidenceTest( ) && (
+          {passesEvidenceTest() && (
             <INatIcon name="checkmark-circle" size={19} color={colors.inatGreen} />
           )}
-          {passesEvidenceTest( ) === false && (
+          {passesEvidenceTest() === false && (
             <INatIcon name="triangle-exclamation" size={19} color={colors.warningRed} />
           )}
         </View>
       </View>
       <EvidenceList
-        handleAddEvidence={( ) => setShowAddEvidenceSheet( true )}
+        handleAddEvidence={() => setShowAddEvidenceSheet(true)}
         observationSounds={observationSounds}
       />
       <Pressable
         accessibilityRole="link"
         className="ml-6 flex-row flex-nowrap pt-1"
         onPress={onLocationPress}
-        accessibilityLabel={t( "Edit-location" )}
+        accessibilityLabel={t("Edit-location")}
       >
         <View className="w-[30px] items-center mr-1">
           {isFetchingLocation && (
@@ -136,20 +136,20 @@ const EvidenceSection = ( {
         </View>
         <View>
           {
-            displayPlaceName( )
+            displayPlaceName()
               ? (
                 <>
-                  <Body2 className={classnames( locationTextClassNames )}>
-                    {displayPlaceName( )}
+                  <Body2 className={classnames(locationTextClassNames)}>
+                    {displayPlaceName()}
                   </Body2>
-                  <Body4 className={classnames( locationTextClassNames )}>
-                    {displayLocation( )}
+                  <Body4 className={classnames(locationTextClassNames)}>
+                    {displayLocation()}
                   </Body4>
                 </>
               )
               : (
-                <Body3 className={classnames( locationTextClassNames )}>
-                  {displayLocation( )}
+                <Body3 className={classnames(locationTextClassNames)}>
+                  {displayLocation()}
                 </Body3>
               )
           }

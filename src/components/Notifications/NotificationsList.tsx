@@ -14,7 +14,7 @@ import type { RealmUser } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
-const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
+const ItemSeparator = () => <View className="border-b border-lightGray" />;
 
 interface Props {
   currentUser: RealmUser | null;
@@ -24,10 +24,10 @@ interface Props {
   isInitialLoading?: boolean;
   isConnected: boolean | null;
   showStillLoadingMessage: boolean;
-  onEndReached: ( ) => void;
-  onRefresh: ( ) => void;
+  onEndReached: () => void;
+  onRefresh: () => void;
   refreshing: boolean;
-  reload: ( ) => void;
+  reload: () => void;
 }
 
 interface RenderItemProps {
@@ -36,7 +36,7 @@ interface RenderItemProps {
   item: Notification;
 }
 
-const NotificationsList = ( {
+const NotificationsList = ({
   currentUser,
   data,
   isError,
@@ -48,32 +48,32 @@ const NotificationsList = ( {
   onRefresh,
   reload,
   refreshing,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const renderItem = useCallback( ( { item }: RenderItemProps ) => (
+}: Props) => {
+  const { t } = useTranslation();
+  const renderItem = useCallback(({ item }: RenderItemProps) => (
     <NotificationsListItem notification={item} />
-  ), [] );
+  ), []);
 
-  const footerComponent = useMemo( ( ) => (
+  const footerComponent = useMemo(() => (
     <InfiniteScrollLoadingWheel
       hideLoadingWheel={!isFetching || data?.length === 0}
       isConnected={isConnected}
     />
-  ), [isFetching, isConnected, data.length] );
+  ), [isFetching, isConnected, data.length]);
 
-  const emptyComponent = useMemo( ( ) => {
+  const emptyComponent = useMemo(() => {
     // Offline/retry when disconnected or request fails
-    if ( isConnected === false || isError ) {
+    if (isConnected === false || isError) {
       return <OfflineNotice onPress={reload} />;
     }
 
-    if ( isInitialLoading ) {
+    if (isInitialLoading) {
       return (
         <View className="h-full justify-center">
           <ActivityIndicator size={50} />
           {showStillLoadingMessage && (
             <Body1 className="mt-4 text-center mx-12">
-              {t( "Still-loading" )}
+              {t("Still-loading")}
             </Body1>
           )}
         </View>
@@ -81,11 +81,11 @@ const NotificationsList = ( {
     }
 
     // Empty/error state
-    let msg = t( "No-Notifications-Found" );
+    let msg = t("No-Notifications-Found");
     let msg2 = null;
-    if ( !currentUser ) {
-      msg = t( "Once-you-create-and-upload-observations" );
-      msg2 = t( "You-will-see-notifications" );
+    if (!currentUser) {
+      msg = t("Once-you-create-and-upload-observations");
+      msg2 = t("You-will-see-notifications");
     }
 
     return (
@@ -102,11 +102,11 @@ const NotificationsList = ( {
     showStillLoadingMessage,
     reload,
     t,
-  ] );
+  ]);
 
   const refreshControl = (
     <CustomRefreshControl
-      accessibilityLabel={t( "Pull-to-refresh-notifications" )}
+      accessibilityLabel={t("Pull-to-refresh-notifications")}
       refreshing={refreshing}
       onRefresh={onRefresh}
     />
@@ -118,7 +118,7 @@ const NotificationsList = ( {
       ListEmptyComponent={emptyComponent}
       ListFooterComponent={footerComponent}
       data={data}
-      keyExtractor={( item: Notification ) => item.id}
+      keyExtractor={(item: Notification) => item.id}
       onEndReached={onEndReached}
       refreshing={isFetching}
       refreshControl={refreshControl}

@@ -19,9 +19,9 @@ const ONE_WEEK_MS = (
   * 7 // day / wk
 );
 
-const useTaxonCommonNames = ( ) => {
-  const { hasPermissions } = useLocationPermission( );
-  const [userLocation, setUserLocation] = useState( null );
+const useTaxonCommonNames = () => {
+  const { hasPermissions } = useLocationPermission();
+  const [userLocation, setUserLocation] = useState(null);
 
   const params = {
     per_page: 500,
@@ -35,12 +35,12 @@ const useTaxonCommonNames = ( ) => {
     },
   };
 
-  if ( userLocation?.latitude ) {
+  if (userLocation?.latitude) {
     params.lat = userLocation.latitude;
     params.lng = userLocation.longitude;
   }
 
-  const realm = useRealm( );
+  const realm = useRealm();
   const { data } = useAuthenticatedQuery(
     ["fetchSpeciesCounts", userLocation],
     optsWithAuth => fetchSpeciesCounts(
@@ -52,26 +52,26 @@ const useTaxonCommonNames = ( ) => {
     },
   );
 
-  useEffect( ( ) => {
-    const fetchLocation = async ( ) => {
-      const location = await fetchCoarseUserLocation( );
-      setUserLocation( location );
+  useEffect(() => {
+    const fetchLocation = async () => {
+      const location = await fetchCoarseUserLocation();
+      setUserLocation(location);
     };
-    if ( hasPermissions ) {
-      fetchLocation( );
+    if (hasPermissions) {
+      fetchLocation();
     }
-  }, [hasPermissions] );
+  }, [hasPermissions]);
 
-  useEffect( ( ) => {
-    if ( data?.results ) {
-      data.results.forEach( ( { taxon } ) => {
+  useEffect(() => {
+    if (data?.results) {
+      data.results.forEach(({ taxon }) => {
         const taxonId = taxon?.id;
-        const localTaxon = taxonId && realm.objectForPrimaryKey( "Taxon", taxonId );
+        const localTaxon = taxonId && realm.objectForPrimaryKey("Taxon", taxonId);
         const missingName = localTaxon
-          ? ( !localTaxon.preferred_common_name || !localTaxon.name )
+          ? (!localTaxon.preferred_common_name || !localTaxon.name)
           : false;
         const outOfDate = localTaxon
-          ? ( localTaxon._synced_at && ( Date.now( ) - localTaxon._synced_at > ONE_WEEK_MS ) )
+          ? (localTaxon._synced_at && (Date.now() - localTaxon._synced_at > ONE_WEEK_MS))
           : false;
         const localTaxonNeedsSync = (
           // Definitely sync if there's no local copy
@@ -83,21 +83,21 @@ const useTaxonCommonNames = ( ) => {
         );
 
         const mappedTaxon = taxon
-          ? Taxon.mapApiToRealm( taxon, realm )
+          ? Taxon.mapApiToRealm(taxon, realm)
           : null;
 
-        if ( localTaxonNeedsSync ) {
-          safeRealmWrite( realm, ( ) => {
+        if (localTaxonNeedsSync) {
+          safeRealmWrite(realm, () => {
             realm.create(
               "Taxon",
-              Taxon.forUpdate( mappedTaxon ),
+              Taxon.forUpdate(mappedTaxon),
               "modified",
             );
-          }, "saving taxon in useTaxonCommonNames" );
+          }, "saving taxon in useTaxonCommonNames");
         }
-      } );
+      });
     }
-  }, [data, realm] );
+  }, [data, realm]);
 
   return null;
 };

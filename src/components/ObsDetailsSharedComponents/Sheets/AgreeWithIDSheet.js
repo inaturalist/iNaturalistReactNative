@@ -25,8 +25,8 @@ type Props = {
 }
 
 const showTaxon = taxon => {
-  if ( !taxon ) {
-    return <Text>{t( "Unknown-organism" )}</Text>;
+  if (!taxon) {
+    return <Text>{t("Unknown-organism")}</Text>;
   }
   return (
     <View className="flex-row mx-[15px]">
@@ -35,15 +35,15 @@ const showTaxon = taxon => {
   );
 };
 
-const AgreeWithIDSheet = ( {
+const AgreeWithIDSheet = ({
   editIdentBody,
   hidden,
   identification,
   onAgree,
   onPressClose,
-}: Props ): Node => (
+}: Props): Node => (
   <BottomSheet
-    headerText={t( "AGREE-WITH-ID" )}
+    headerText={t("AGREE-WITH-ID")}
     hidden={hidden}
     onPressClose={onPressClose}
   >
@@ -51,7 +51,7 @@ const AgreeWithIDSheet = ( {
       className="mx-[26px] space-y-[11px] my-[15px]"
     >
       <List2 className="text-darkGray">
-        {t( "Agree-with-ID-description" )}
+        {t("Agree-with-ID-description")}
       </List2>
       { identification.body && (
         <View
@@ -63,40 +63,40 @@ const AgreeWithIDSheet = ( {
           </List2>
         </View>
       )}
-      {showTaxon( identification.taxon )}
+      {showTaxon(identification.taxon)}
     </View>
     <View className="flex-row mx-3 mb-3">
       {identification.body
         ? (
           <Button
-            text={t( "EDIT-COMMENT" )}
-            onPress={( ) => {
-              editIdentBody( );
+            text={t("EDIT-COMMENT")}
+            onPress={() => {
+              editIdentBody();
             }}
             className="mx-2 flex-1"
             testID="ObsDetail.AgreeId.EditCommentButton"
-            accessibilityHint={t( "Opens-edit-comment-form" )}
+            accessibilityHint={t("Opens-edit-comment-form")}
           />
         )
         : (
           <Button
-            text={t( "ADD-COMMENT" )}
-            onPress={( ) => {
-              editIdentBody( );
+            text={t("ADD-COMMENT")}
+            onPress={() => {
+              editIdentBody();
             }}
             className="mx-2 flex-1"
             testID="ObsDetail.AgreeId.commentButton"
-            accessibilityHint={t( "Opens-add-comment-form" )}
+            accessibilityHint={t("Opens-add-comment-form")}
           />
         )}
 
       <Button
-        text={t( "AGREE" )}
-        onPress={( ) => onAgree( identification )}
+        text={t("AGREE")}
+        onPress={() => onAgree(identification)}
         className="mx-2 flex-1"
         testID="ObsDetail.AgreeId.cvSuggestionsButton"
         accessibilityRole="link"
-        accessibilityHint={t( "Navigates-to-suggest-identification" )}
+        accessibilityHint={t("Navigates-to-suggest-identification")}
         level="primary"
       />
     </View>

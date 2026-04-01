@@ -14,11 +14,11 @@ type Props = {
   observation: Object,
 }
 
-const ObserverDetails = ( {
+const ObserverDetails = ({
   belongsToCurrentUser,
   isConnected,
   observation,
-}: Props ): Node => {
+}: Props): Node => {
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
 
@@ -26,7 +26,7 @@ const ObserverDetails = ( {
 
   return (
     <View className="bg-white">
-      <View className={classnames( cardClass )}>
+      <View className={classnames(cardClass)}>
         <View className="flex-row justify-between mx-[15px] my-[13px]">
           <InlineUser user={observation?.user} isConnected={isConnected} />
           {observation && (

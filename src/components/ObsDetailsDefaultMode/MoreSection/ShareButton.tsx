@@ -17,25 +17,25 @@ const handleShare = async url => {
     url: "",
     message: "",
   };
-  if ( Platform.OS === "ios" ) {
+  if (Platform.OS === "ios") {
     sharingOptions.url = url;
   } else {
     sharingOptions.message = url;
   }
   try {
-    return await Share.share( sharingOptions );
-  } catch ( err ) {
-    Alert.alert( err.message );
+    return await Share.share(sharingOptions);
+  } catch (err) {
+    Alert.alert(err.message);
     return null;
   }
 };
 
-const ShareButton = ( { id }: Props ): Node => (
+const ShareButton = ({ id }: Props): Node => (
   <Body3
     className="underline mt-[11px]"
-    onPress={() => handleShare( `${OBSERVATION_URL}/${id}` )}
+    onPress={() => handleShare(`${OBSERVATION_URL}/${id}`)}
   >
-    {t( "Share" )}
+    {t("Share")}
   </Body3>
 );
 

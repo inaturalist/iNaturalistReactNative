@@ -24,60 +24,60 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 
 const { useRealm } = RealmContext;
 
-const SignUpConfirmationForm = ( ) => {
-  const realm = useRealm( );
-  const navigation = useNavigation( );
+const SignUpConfirmationForm = () => {
+  const realm = useRealm();
+  const navigation = useNavigation();
   const { params } = useRoute<LoginStackScreenProps<"SignUpConfirmation">["route"]>();
   const { user } = params;
 
-  const setJustFinishedSignup = useStore( state => state.layout.setJustFinishedSignup );
+  const setJustFinishedSignup = useStore(state => state.layout.setJustFinishedSignup);
 
-  const usernameRef = useRef<TextInput>( null );
-  const passwordRef = useRef<TextInput>( null );
+  const usernameRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
 
-  const [username, setUsername] = useState( "" );
-  const [password, setPassword] = useState( "" );
-  const [error, setError] = useState<string>( );
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string>();
 
-  const [checked, setChecked] = useState( false );
-  const [loading, setLoading] = useState( false );
+  const [checked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const blurFields = () => {
-    if ( usernameRef.current ) {
+    if (usernameRef.current) {
       usernameRef.current.blur();
     }
-    if ( passwordRef.current ) {
+    if (passwordRef.current) {
       passwordRef.current.blur();
     }
   };
 
-  useEffect( () => {
-    const unsubscribeBlur = navigation.addListener( "blur", blurFields );
+  useEffect(() => {
+    const unsubscribeBlur = navigation.addListener("blur", blurFields);
 
     return unsubscribeBlur;
-  }, [navigation] );
+  }, [navigation]);
 
-  useEffect( () => {
-    const unsubscrubeTransition = navigation.addListener( "transitionEnd", blurFields );
+  useEffect(() => {
+    const unsubscrubeTransition = navigation.addListener("transitionEnd", blurFields);
 
     return unsubscrubeTransition;
-  }, [navigation] );
+  }, [navigation]);
 
-  const register = async ( ) => {
-    if ( loading ) { return; }
-    setLoading( true );
+  const register = async () => {
+    if (loading) { return; }
+    setLoading(true);
     const processedUser = { ...user };
     processedUser.login = username;
     // If password is less than 6 characters set error and return
-    if ( password.length < 6 ) {
-      setError( t( "Please-make-sure-your-password-is-at-least-6-characters" ) );
-      setLoading( false );
+    if (password.length < 6) {
+      setError(t("Please-make-sure-your-password-is-at-least-6-characters"));
+      setLoading(false);
       return;
     }
     // If password is "password" set error and return
-    if ( password.toLowerCase() === "password" ) {
-      setError( t( "Please-choose-a-different-password" ) );
-      setLoading( false );
+    if (password.toLowerCase() === "password") {
+      setError(t("Please-choose-a-different-password"));
+      setLoading(false);
       return;
     }
     processedUser.password = password;
@@ -87,30 +87,30 @@ const SignUpConfirmationForm = ( ) => {
     processedUser.preferred_observation_license = "CC-BY-NC";
     processedUser.preferred_photo_license = "CC-BY-NC";
     processedUser.preferred_sound_license = "CC-BY-NC";
-    const registrationError = await registerUser( processedUser );
-    if ( registrationError ) {
+    const registrationError = await registerUser(processedUser);
+    if (registrationError) {
       // Currently the error is a string coming directly from the server
-      if ( registrationError === "Username has already been taken" ) {
-        setError( t( "That-username-is-unavailable" ) );
+      if (registrationError === "Username has already been taken") {
+        setError(t("That-username-is-unavailable"));
       } else {
-        setError( registrationError );
+        setError(registrationError);
       }
-      setLoading( false );
+      setLoading(false);
       return;
     }
-    const success = await authenticateUser( processedUser.login, processedUser.password, realm );
-    setLoading( false );
-    if ( !success ) {
-      navigation.navigate( "Login" );
+    const success = await authenticateUser(processedUser.login, processedUser.password, realm);
+    setLoading(false);
+    if (!success) {
+      navigation.navigate("Login");
       return;
     }
-    setJustFinishedSignup( true );
-    navigation.navigate( "TabNavigator", {
+    setJustFinishedSignup(true);
+    navigation.navigate("TabNavigator", {
       screen: "ObservationsTab",
       params: {
         screen: "ObsList",
       },
-    } );
+    });
   };
 
   return (
@@ -118,36 +118,36 @@ const SignUpConfirmationForm = ( ) => {
       <View className="px-3 mt-[9px] justify-end">
         <LoginSignUpInputField
           ref={usernameRef}
-          accessibilityLabel={t( "CHOOSE-A-USERNAME" )}
-          headerText={t( "CHOOSE-A-USERNAME" )}
-          onChangeText={( text: string ) => setUsername( text )}
+          accessibilityLabel={t("CHOOSE-A-USERNAME")}
+          headerText={t("CHOOSE-A-USERNAME")}
+          onChangeText={(text: string) => setUsername(text)}
           testID="Signup.username"
           textContentType="username"
         />
         <LoginSignUpInputField
           ref={passwordRef}
-          accessibilityLabel={t( "PASSWORD" )}
+          accessibilityLabel={t("PASSWORD")}
           autoComplete="new-password"
-          headerText={t( "PASSWORD" )}
-          onChangeText={( text: string ) => setPassword( text )}
+          headerText={t("PASSWORD")}
+          onChangeText={(text: string) => setPassword(text)}
           secureTextEntry
           testID="Signup.password"
           textContentType="newPassword"
         />
         <View className="flex-row mt-5 mx-2 items-start">
           <Checkbox
-            accessibilityLabel={t( "I-agree-to-the-Terms-of-Use" )}
+            accessibilityLabel={t("I-agree-to-the-Terms-of-Use")}
             transparent
             isChecked={checked}
             onPress={() => {
-              setChecked( !checked );
+              setChecked(!checked);
             }}
           />
           <View className="flex-1">
             <Trans
               className="flex-wrap"
               i18nKey="I-agree-to-the-Terms-of-Use"
-              onPress={() => setChecked( !checked )}
+              onPress={() => setChecked(!checked)}
               components={[
                 <Body2 key="0" className="text-white" />,
                 <Body2 key="1" className="text-white font-Lato-Italic" />,
@@ -155,9 +155,9 @@ const SignUpConfirmationForm = ( ) => {
             />
             <UnderlinedLink
               className="color-white mt-[9px]"
-              onPress={() => navigation.navigate( "LearnMore" )}
+              onPress={() => navigation.navigate("LearnMore")}
             >
-              {t( "Learn-More" )}
+              {t("Learn-More")}
             </UnderlinedLink>
           </View>
         </View>
@@ -165,7 +165,7 @@ const SignUpConfirmationForm = ( ) => {
         <Button
           level="focus"
           forceDark
-          text={t( "CREATE-AN-ACCOUNT" )}
+          text={t("CREATE-AN-ACCOUNT")}
           onPress={register}
           className="my-5"
           loading={loading}

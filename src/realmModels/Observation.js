@@ -20,7 +20,7 @@ export const GEOPRIVACY_OPEN = "open";
 export const GEOPRIVACY_OBSCURED = "obscured";
 export const GEOPRIVACY_PRIVATE = "private";
 
-const logger = log.extend( "index.js" );
+const logger = log.extend("index.js");
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
@@ -130,7 +130,7 @@ class Observation extends Realm.Object {
     taxon_geoprivacy: true,
   };
 
-  static async new( obs ) {
+  static async new(obs) {
     return {
       ...obs,
       captive_flag: false,
@@ -139,82 +139,82 @@ class Observation extends Realm.Object {
       observed_on: obs?.observed_on,
       observed_on_string: obs
         ? obs?.observed_on_string
-        : getNowISO( ),
+        : getNowISO(),
       quality_grade: "needs_id",
       needs_sync: true,
-      uuid: uuid.v4( ),
+      uuid: uuid.v4(),
     };
   }
 
-  static async createObsWithSoundPath( soundPath ) {
-    const observation = await Observation.new( );
-    const sound = await ObservationSound.new( {
-      sound: await Sound.new( { file_url: soundPath } ),
-    } );
+  static async createObsWithSoundPath(soundPath) {
+    const observation = await Observation.new();
+    const sound = await ObservationSound.new({
+      sound: await Sound.new({ file_url: soundPath }),
+    });
     observation.observationSounds = [sound];
     return observation;
   }
 
-  static upsertRemoteObservations( remoteObservations, realm, options = {} ) {
-    if ( !remoteObservations ) return;
-    if ( remoteObservations.length === 0 ) return;
+  static upsertRemoteObservations(remoteObservations, realm, options = {}) {
+    if (!remoteObservations) return;
+    if (remoteObservations.length === 0) return;
     const obsToUpsert = options.force
       ? remoteObservations
-      : remoteObservations.filter( obs => !Observation.isUnsyncedObservation( realm, obs ) );
+      : remoteObservations.filter(obs => !Observation.isUnsyncedObservation(realm, obs));
     // const msg = obsToUpsert.map( remoteObservation => {
     //   const obsPhotoUUIDs = remoteObservation.observation_photos?.map( op => op.uuid );
     //   return `obs ${remoteObservation.uuid}, ops: ${obsPhotoUUIDs}`;
     // } );
     // Trying to debug disappearing photos
-    safeRealmWrite( realm, ( ) => {
-      obsToUpsert.forEach( remoteObservation => {
-        const obsMappedForRealm = Observation.mapApiToRealm( remoteObservation, realm );
+    safeRealmWrite(realm, () => {
+      obsToUpsert.forEach(remoteObservation => {
+        const obsMappedForRealm = Observation.mapApiToRealm(remoteObservation, realm);
         realm.create(
           "Observation",
           obsMappedForRealm,
           "modified",
         );
-      } );
-    }, "upserting remote observations in Observation" );
+      });
+    }, "upserting remote observations in Observation");
   }
 
-  static mapApiToRealm( obs, realm = null ) {
-    if ( !obs ) return obs;
-    const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
+  static mapApiToRealm(obs, realm = null) {
+    if (!obs) return obs;
+    const existingObs = realm?.objectForPrimaryKey("Observation", obs.uuid);
     const taxon = obs.taxon
-      ? Taxon.mapApiToRealm( obs.taxon, realm )
+      ? Taxon.mapApiToRealm(obs.taxon, realm)
       : null;
     const observationPhotos = (
       obs.observation_photos || obs.observationPhotos || []
-    ).map( obsPhoto => {
-      const mappedObsPhoto = ObservationPhoto.mapApiToRealm( obsPhoto, realm );
+    ).map(obsPhoto => {
+      const mappedObsPhoto = ObservationPhoto.mapApiToRealm(obsPhoto, realm);
       const existingObsPhoto = existingObs?.observationPhotos?.find(
         op => op.uuid === obsPhoto.uuid,
       );
-      if ( !existingObsPhoto ) {
-        mappedObsPhoto._created_at = new Date( );
-        mappedObsPhoto.photo._created_at = new Date( );
+      if (!existingObsPhoto) {
+        mappedObsPhoto._created_at = new Date();
+        mappedObsPhoto.photo._created_at = new Date();
       }
       return mappedObsPhoto;
-    } );
+    });
 
     const observationSounds = (
       obs.observation_sounds || obs.observationSounds || []
-    ).map( obsSound => {
-      const mappedObsSound = ObservationSound.mapApiToRealm( obsSound, realm );
+    ).map(obsSound => {
+      const mappedObsSound = ObservationSound.mapApiToRealm(obsSound, realm);
       const existingObsSound = existingObs?.observationSounds?.find(
         os => os.uuid === obsSound.uuid,
       );
-      if ( !existingObsSound ) {
-        mappedObsSound._created_at = new Date( );
-        mappedObsSound.sound._created_at = new Date( );
+      if (!existingObsSound) {
+        mappedObsSound._created_at = new Date();
+        mappedObsSound.sound._created_at = new Date();
       }
       return mappedObsSound;
-    } );
+    });
 
     const localObs = {
       ...obs,
-      _synced_at: new Date( ),
+      _synced_at: new Date(),
       // obs detail on web says geojson coords are preferred over lat/long
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
       latitude: obs.geojson && obs.geojson.coordinates && obs.geojson.coordinates[1],
@@ -229,50 +229,50 @@ class Observation extends Realm.Object {
       taxon,
     };
 
-    if ( localObs.user ) {
+    if (localObs.user) {
       localObs.user.prefers_community_taxa = (
         localObs.user.prefers_community_taxa
         || localObs.user.preferences?.prefers_community_taxa
       );
     }
 
-    if ( !existingObs ) {
-      localObs._created_at = new Date( localObs.created_at );
-      if ( isNaN( localObs._created_at ) ) {
-        localObs._created_at = new Date( );
+    if (!existingObs) {
+      localObs._created_at = new Date(localObs.created_at);
+      if (isNaN(localObs._created_at)) {
+        localObs._created_at = new Date();
       }
     }
     return localObs;
   }
 
-  static async saveLocalObservationForUpload( obs, realm ) {
+  static async saveLocalObservationForUpload(obs, realm) {
     // make sure local observations have user details for ObsDetail
-    const currentUser = User.currentUser( realm );
-    if ( currentUser ) {
+    const currentUser = User.currentUser(realm);
+    if (currentUser) {
       obs.user = currentUser;
     }
 
     const timestamps = {
-      _updated_at: new Date( ),
+      _updated_at: new Date(),
     };
 
-    const existingObservation = realm.objectForPrimaryKey( "Observation", obs.uuid );
+    const existingObservation = realm.objectForPrimaryKey("Observation", obs.uuid);
 
-    if ( !existingObservation ) {
-      timestamps._created_at = new Date( );
+    if (!existingObservation) {
+      timestamps._created_at = new Date();
       timestamps._synced_at = null;
     }
 
-    const addTimestampsToEvidence = evidence => ( evidence
-      ? evidence.map( record => ( {
+    const addTimestampsToEvidence = evidence => (evidence
+      ? evidence.map(record => ({
         ...record,
         ...timestamps,
-      } ) )
-      : evidence );
+      }))
+      : evidence);
 
     const taxon = obs.taxon || null;
-    const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
-    const observationSounds = addTimestampsToEvidence( obs.observationSounds );
+    const observationPhotos = addTimestampsToEvidence(obs.observationPhotos);
+    const observationSounds = addTimestampsToEvidence(obs.observationSounds);
 
     const obsToSave = {
       // just ...obs causes problems when obs is a realm object
@@ -285,16 +285,16 @@ class Observation extends Realm.Object {
       observationSounds,
     };
 
-    safeRealmWrite( realm, ( ) => {
+    safeRealmWrite(realm, () => {
       // using 'modified' here for the case where a new observation has the same Taxon
       // as a previous observation; otherwise, realm will error out
       // also using modified for updating observations which were already saved locally
-      realm.create( "Observation", obsToSave, "modified" );
-    }, "saving local observation for upload in Observation" );
-    return realm.objectForPrimaryKey( "Observation", obs.uuid );
+      realm.create("Observation", obsToSave, "modified");
+    }, "saving local observation for upload in Observation");
+    return realm.objectForPrimaryKey("Observation", obs.uuid);
   }
 
-  static mapObservationForUpload( obs ) {
+  static mapObservationForUpload(obs) {
     return {
       captive_flag: obs.captive_flag,
       description: obs.description,
@@ -311,17 +311,17 @@ class Observation extends Realm.Object {
     };
   }
 
-  static mapObservationForMyObsDefaultMode( obs ) {
+  static mapObservationForMyObsDefaultMode(obs) {
     return {
       uuid: obs.uuid,
       id: obs.id,
       observationPhotos: obs.observationPhotos.length > 0
         ? obs.observationPhotos
-          .map( op => ObservationPhoto.mapObservationPhotoForMyObsDefaultMode( op ) )
+          .map(op => ObservationPhoto.mapObservationPhotoForMyObsDefaultMode(op))
         : [],
       observationSounds: obs.observationSounds.length > 0
         ? obs.observationSounds
-          .map( os => ObservationSound.mapObservationSoundForMyObsDefaultMode( os ) )
+          .map(os => ObservationSound.mapObservationSoundForMyObsDefaultMode(os))
         : [],
       quality_grade: obs.quality_grade,
       taxon: obs.taxon
@@ -344,17 +344,17 @@ class Observation extends Realm.Object {
     };
   }
 
-  static mapObservationForMyObsAdvancedMode( obs ) {
+  static mapObservationForMyObsAdvancedMode(obs) {
     return {
-      ...Observation.mapObservationForMyObsDefaultMode( obs ),
+      ...Observation.mapObservationForMyObsDefaultMode(obs),
       comments: obs.comments.length > 0
         ? obs.comments
-          .map( c => Comment.mapCommentForMyObsAdvancedMode( c ) )
+          .map(c => Comment.mapCommentForMyObsAdvancedMode(c))
         : [],
       geoprivacy: obs.geoprivacy,
       identifications: obs.identifications.length > 0
         ? obs.identifications
-          .map( id => Identification.mapIdentificationForMyObsAdvancedMode( id ) )
+          .map(id => Identification.mapIdentificationForMyObsAdvancedMode(id))
         : [],
       latitude: obs.latitude,
       longitude: obs.longitude,
@@ -373,9 +373,9 @@ class Observation extends Realm.Object {
 
   static projectUri = obs => {
     const photo = obs?.observation_photos?.[0];
-    if ( !photo ) { return null; }
-    if ( !photo.photo ) { return null; }
-    if ( !photo.photo.url ) { return null; }
+    if (!photo) { return null; }
+    if (!photo.photo) { return null; }
+    if (!photo.photo.url) { return null; }
 
     return { uri: obs.observation_photos[0].photo.url };
   };
@@ -385,27 +385,27 @@ class Observation extends Realm.Object {
     const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
     const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
 
-    const obs = realm.objects( "Observation" );
+    const obs = realm.objects("Observation");
     // we sort unsynced observations here to make sure observations
     // with an older _created_at date get uploaded first
     const unsyncedObs = obs.filtered(
       `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`,
-    ).sorted( "_created_at", true );
+    ).sorted("_created_at", true);
     return unsyncedObs;
   };
 
-  static isUnsyncedObservation = ( realm, obs ) => {
-    const obsList = Observation.filterUnsyncedObservations( realm );
-    const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
+  static isUnsyncedObservation = (realm, obs) => {
+    const obsList = Observation.filterUnsyncedObservations(realm);
+    const unsyncedObs = obsList.filtered(`uuid == "${obs.uuid}"`);
     return unsyncedObs.length > 0;
   };
 
   static createObservationFromGalleryPhotos = async photos => {
-    const photoUris = photos.map( photo => photo?.image?.uri );
+    const photoUris = photos.map(photo => photo?.image?.uri);
     try {
-      const newObservation = await readExifFromMultiplePhotos( photoUris );
-      return Observation.new( newObservation );
-    } catch ( createObservationFromGalleryError ) {
+      const newObservation = await readExifFromMultiplePhotos(photoUris);
+      return Observation.new(newObservation);
+    } catch (createObservationFromGalleryError) {
       logger.error(
         "Error reading EXIF from multiple gallery photos",
         createObservationFromGalleryError,
@@ -419,34 +419,34 @@ class Observation extends Realm.Object {
   };
 
   static createObservationWithPhotos = async photos => {
-    const newLocalObs = await Observation.createObservationFromGalleryPhotos( photos );
+    const newLocalObs = await Observation.createObservationFromGalleryPhotos(photos);
     newLocalObs.observationPhotos = await ObservationPhoto
-      .createObsPhotosWithPosition( photos, { position: 0 } );
+      .createObsPhotosWithPosition(photos, { position: 0 });
     return newLocalObs;
   };
 
-  static updateObsExifFromPhotos = async ( photoUris, currentObservation ) => {
+  static updateObsExifFromPhotos = async (photoUris, currentObservation) => {
     const updatedObs = currentObservation;
 
-    const unifiedExif = await readExifFromMultiplePhotos( photoUris );
+    const unifiedExif = await readExifFromMultiplePhotos(photoUris);
 
-    if ( unifiedExif.latitude && !currentObservation.latitude ) {
+    if (unifiedExif.latitude && !currentObservation.latitude) {
       updatedObs.latitude = unifiedExif.latitude;
     }
-    if ( unifiedExif.longitude && !currentObservation.longitude ) {
+    if (unifiedExif.longitude && !currentObservation.longitude) {
       updatedObs.longitude = unifiedExif.longitude;
     }
-    if ( unifiedExif.observed_on_string && !currentObservation.observed_on_string ) {
+    if (unifiedExif.observed_on_string && !currentObservation.observed_on_string) {
       updatedObs.observed_on_string = unifiedExif.observed_on_string;
     }
-    if ( unifiedExif.positional_accuracy && !currentObservation.positional_accuracy ) {
+    if (unifiedExif.positional_accuracy && !currentObservation.positional_accuracy) {
       updatedObs.positional_accuracy = unifiedExif.positional_accuracy;
     }
 
     return updatedObs;
   };
 
-  static appendObsPhotos = ( obsPhotos, currentObservation ) => {
+  static appendObsPhotos = (obsPhotos, currentObservation) => {
     const updatedObs = currentObservation;
 
     // need empty case for when a user creates an observation with no photos,
@@ -457,7 +457,7 @@ class Observation extends Realm.Object {
     return updatedObs;
   };
 
-  static appendObsSounds = ( obsSounds, currentObservation ) => {
+  static appendObsSounds = (obsSounds, currentObservation) => {
     const updatedObs = currentObservation;
 
     // need empty case for when a user creates an observation with no sounds,
@@ -468,30 +468,30 @@ class Observation extends Realm.Object {
     return updatedObs;
   };
 
-  static deleteLocalObservation = ( realm, uuidToDelete ) => {
-    const observation = realm?.objectForPrimaryKey( "Observation", uuidToDelete );
-    if ( observation ) {
-      safeRealmWrite( realm, ( ) => {
-        realm?.delete( observation );
-      }, `deleting local observation ${uuidToDelete} in deleteLocalObservation` );
+  static deleteLocalObservation = (realm, uuidToDelete) => {
+    const observation = realm?.objectForPrimaryKey("Observation", uuidToDelete);
+    if (observation) {
+      safeRealmWrite(realm, () => {
+        realm?.delete(observation);
+      }, `deleting local observation ${uuidToDelete} in deleteLocalObservation`);
     }
   };
 
-  static markPendingDeletion( realm, uuidToDelete ) {
-    const observation = realm.objectForPrimaryKey( "Observation", uuidToDelete );
-    if ( observation ) {
-      safeRealmWrite( realm, ( ) => {
+  static markPendingDeletion(realm, uuidToDelete) {
+    const observation = realm.objectForPrimaryKey("Observation", uuidToDelete);
+    if (observation) {
+      safeRealmWrite(realm, () => {
         observation._pending_deletion = true;
-      } );
+      });
     }
   }
 
-  static clearPendingDeletion( realm, uuidToDelete ) {
-    const observation = realm.objectForPrimaryKey( "Observation", uuidToDelete );
-    if ( observation ) {
-      safeRealmWrite( realm, ( ) => {
+  static clearPendingDeletion(realm, uuidToDelete) {
+    const observation = realm.objectForPrimaryKey("Observation", uuidToDelete);
+    if (observation) {
+      safeRealmWrite(realm, () => {
         observation._pending_deletion = false;
-      } );
+      });
     }
   }
 
@@ -557,11 +557,11 @@ class Observation extends Realm.Object {
     },
   };
 
-  needsSync( ) {
+  needsSync() {
     const obsPhotosNeedSync = this.observationPhotos
-      .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
+      .filter(obsPhoto => obsPhoto.needsSync()).length > 0;
     const obsSoundsNeedSync = this.observationSounds
-      .filter( obsSound => obsSound.needsSync( ) ).length > 0;
+      .filter(obsSound => obsSound.needsSync()).length > 0;
     return !this._synced_at
       || this._synced_at <= this._updated_at
       || obsPhotosNeedSync
@@ -572,12 +572,12 @@ class Observation extends Realm.Object {
     this.needsSync = this.needsSync();
   }
 
-  wasSynced( ) {
+  wasSynced() {
     return this._synced_at !== null;
   }
 
   viewed() {
-    return !!( this.comments_viewed && this.identifications_viewed );
+    return !!(this.comments_viewed && this.identifications_viewed);
   }
 
   unviewed() {
@@ -586,13 +586,13 @@ class Observation extends Realm.Object {
 
   // Faves are the subset of votes for which vote_scope is null
   faves() {
-    return this.votes.filter( vote => vote?.vote_scope === null );
+    return this.votes.filter(vote => vote?.vote_scope === null);
   }
 
   missingBasics() {
-    const missingDate = !Date.parse( this.observed_on_string ) && !this.time_observed_at;
-    const missingCoords = typeof ( this.latitude ) !== "number"
-      && typeof ( this.privateLatitude ) !== "number";
+    const missingDate = !Date.parse(this.observed_on_string) && !this.time_observed_at;
+    const missingCoords = typeof (this.latitude) !== "number"
+      && typeof (this.privateLatitude) !== "number";
     return missingDate || missingCoords;
   }
 }

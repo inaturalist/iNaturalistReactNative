@@ -10,69 +10,69 @@ import { renderComponent, wrapInNavigationContainer } from "tests/helpers/render
 const mockHeaderBackButton = <View testID="ObsEdit.BackButton">Mocked Back</View>;
 
 // Note: HeaderBackButton has accessibility issues
-jest.mock( "@react-navigation/elements", () => ( {
-  ...jest.requireActual( "@react-navigation/elements" ),
+jest.mock("@react-navigation/elements", () => ({
+  ...jest.requireActual("@react-navigation/elements"),
   HeaderBackButton: jest.fn()
-    .mockImplementation( ( ) => mockHeaderBackButton ),
-} ) );
+    .mockImplementation(() => mockHeaderBackButton),
+}));
 
-jest.mock( "sharedHooks/useWatchPosition", () => ( {
+jest.mock("sharedHooks/useWatchPosition", () => ({
   __esModule: true,
-  default: ( ) => ( {
+  default: () => ({
     hasLocation: true,
     isFetchingLocation: false,
-  } ),
-} ) );
+  }),
+}));
 
-const mockUser = factory( "LocalUser" );
+const mockUser = factory("LocalUser");
 
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
+jest.mock("sharedHooks/useCurrentUser", () => ({
   __esModule: true,
   default: () => mockUser,
-} ) );
+}));
 
 const mockMutate = jest.fn();
-jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
+jest.mock("sharedHooks/useAuthenticatedMutation", () => ({
   __esModule: true,
-  default: () => ( {
+  default: () => ({
     mutate: mockMutate,
-  } ),
-} ) );
+  }),
+}));
 
 const observationPhotos = [
-  factory( "RemoteObservationPhoto", {
+  factory("RemoteObservationPhoto", {
     position: 0,
-  } ),
+  }),
 ];
 
-const mockObservation = factory( "LocalObservation", {
+const mockObservation = factory("LocalObservation", {
   observationPhotos,
   time_observed_at: null,
   user: mockUser,
-} );
+});
 
-describe( "ObsEdit", () => {
-  beforeEach( ( ) => {
-    useStore.setState( {
+describe("ObsEdit", () => {
+  beforeEach(() => {
+    useStore.setState({
       currentObservation: mockObservation,
       observations: [mockObservation],
-    } );
-  } );
+    });
+  });
 
-  it( "should not have accessibility errors", async ( ) => {
-    const view = wrapInNavigationContainer( <ObsEdit /> );
+  it("should not have accessibility errors", async () => {
+    const view = wrapInNavigationContainer(<ObsEdit />);
     // Disabled during the update to RN 0.78
-    expect( view ).toBeTruthy();
+    expect(view).toBeTruthy();
     // expect( view ).toBeAccessible();
-  } );
+  });
 
-  it( "displays the number of photos in global state obsPhotos", async ( ) => {
-    renderComponent( <ObsEdit /> );
+  it("displays the number of photos in global state obsPhotos", async () => {
+    renderComponent(<ObsEdit />);
 
-    const evidenceList = screen.getByTestId( "EvidenceList.DraggableFlatList" );
+    const evidenceList = screen.getByTestId("EvidenceList.DraggableFlatList");
 
-    await waitFor( ( ) => {
-      expect( evidenceList ).toHaveProp( "data", observationPhotos[0].uri );
-    } );
-  } );
-} );
+    await waitFor(() => {
+      expect(evidenceList).toHaveProp("data", observationPhotos[0].uri);
+    });
+  });
+});

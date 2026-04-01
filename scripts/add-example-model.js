@@ -36,16 +36,16 @@ const downloadAndroid = async argv => {
     `${cvModelFilename}.${androidExt}`,
   );
 
-  console.log( "Checking android model files..." );
+  console.log("Checking android model files...");
   let exist = true;
   try {
-    await fs.access( androidModel );
-  } catch ( _ ) {
+    await fs.access(androidModel);
+  } catch (_) {
     exist = false;
   }
 
-  if ( exist ) {
-    console.log( "Android model exist!" );
+  if (exist) {
+    console.log("Android model exist!");
     return;
   }
 
@@ -53,42 +53,42 @@ const downloadAndroid = async argv => {
     `Android model files missing, downloading from '${binariesBaseDir}'...`,
   );
 
-  await fs.mkdir( androidDestination, { recursive: true } );
+  await fs.mkdir(androidDestination, { recursive: true });
 
-  const dl = new DownloaderHelper( androidCV, androidDestination );
-  dl.on( "end", () => console.log( "Download Completed" ) );
-  dl.on( "error", err => console.log( "Download Failed", err ) );
-  await dl.start().catch( err => console.error( err ) );
-  console.log( "Downloaded!" );
-  const dl2 = new DownloaderHelper( androidGeo, androidDestination );
-  dl2.on( "end", () => console.log( "Download Completed" ) );
-  dl2.on( "error", err => console.log( "Download Failed", err ) );
-  await dl2.start().catch( err => console.error( err ) );
-  console.log( "Downloaded!" );
-  const dl3 = new DownloaderHelper( taxonomyCSV, androidDestination );
-  dl3.on( "end", () => console.log( "Download Completed" ) );
-  dl3.on( "error", err => console.log( "Download Failed", err ) );
-  await dl3.start().catch( err => console.error( err ) );
-  console.log( "Downloaded!" );
+  const dl = new DownloaderHelper(androidCV, androidDestination);
+  dl.on("end", () => console.log("Download Completed"));
+  dl.on("error", err => console.log("Download Failed", err));
+  await dl.start().catch(err => console.error(err));
+  console.log("Downloaded!");
+  const dl2 = new DownloaderHelper(androidGeo, androidDestination);
+  dl2.on("end", () => console.log("Download Completed"));
+  dl2.on("error", err => console.log("Download Failed", err));
+  await dl2.start().catch(err => console.error(err));
+  console.log("Downloaded!");
+  const dl3 = new DownloaderHelper(taxonomyCSV, androidDestination);
+  dl3.on("end", () => console.log("Download Completed"));
+  dl3.on("error", err => console.log("Download Failed", err));
+  await dl3.start().catch(err => console.error(err));
+  console.log("Downloaded!");
 
-  console.log( "Android done!" );
+  console.log("Android done!");
 };
 
 const downloadIOS = async () => {
-  const iosDestination = path.join( __dirname, "..", "ios" );
+  const iosDestination = path.join(__dirname, "..", "ios");
 
-  const iosModel = path.join( iosDestination, `${cvModelFilename}.${iosExt}` );
+  const iosModel = path.join(iosDestination, `${cvModelFilename}.${iosExt}`);
 
-  console.log( "Checking ios model files..." );
+  console.log("Checking ios model files...");
   let exist = true;
   try {
-    await fs.access( iosModel );
-  } catch ( _ ) {
+    await fs.access(iosModel);
+  } catch (_) {
     exist = false;
   }
 
-  if ( exist ) {
-    console.log( "ios model exist!" );
+  if (exist) {
+    console.log("ios model exist!");
     return;
   }
 
@@ -96,42 +96,42 @@ const downloadIOS = async () => {
     `iOS Model files missing, downloading from '${binariesBaseDir}'...`,
   );
 
-  await fs.mkdir( iosDestination, { recursive: true } );
+  await fs.mkdir(iosDestination, { recursive: true });
 
-  const dl = new DownloaderHelper( iosCV, iosDestination );
-  dl.on( "end", () => console.log( "Download Completed" ) );
-  dl.on( "error", err => console.log( "Download Failed", err ) );
-  await dl.start().catch( err => console.error( err ) );
-  console.log( "Downloaded!" );
-  const dl2 = new DownloaderHelper( iosGeo, iosDestination );
-  dl2.on( "end", () => console.log( "Download Completed" ) );
-  dl2.on( "error", err => console.log( "Download Failed", err ) );
-  await dl2.start().catch( err => console.error( err ) );
-  console.log( "Downloaded!" );
-  const dl3 = new DownloaderHelper( taxonomyJSON, iosDestination );
-  dl3.on( "end", () => console.log( "Download Completed" ) );
-  dl3.on( "error", err => console.log( "Download Failed", err ) );
-  await dl3.start().catch( err => console.error( err ) );
-  console.log( "Downloaded!" );
+  const dl = new DownloaderHelper(iosCV, iosDestination);
+  dl.on("end", () => console.log("Download Completed"));
+  dl.on("error", err => console.log("Download Failed", err));
+  await dl.start().catch(err => console.error(err));
+  console.log("Downloaded!");
+  const dl2 = new DownloaderHelper(iosGeo, iosDestination);
+  dl2.on("end", () => console.log("Download Completed"));
+  dl2.on("error", err => console.log("Download Failed", err));
+  await dl2.start().catch(err => console.error(err));
+  console.log("Downloaded!");
+  const dl3 = new DownloaderHelper(taxonomyJSON, iosDestination);
+  dl3.on("end", () => console.log("Download Completed"));
+  dl3.on("error", err => console.log("Download Failed", err));
+  await dl3.start().catch(err => console.error(err));
+  console.log("Downloaded!");
 
-  console.log( "iOS done!" );
+  console.log("iOS done!");
 };
 
 // eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
 yargs
-  .usage( "Usage: $0 [args]" )
-  .option( "androidFlavor", {
+  .usage("Usage: $0 [args]")
+  .option("androidFlavor", {
     alias: "f",
     type: "string",
     description: "Android flavor to download model files into",
-  } )
+  })
   .command(
     "$0",
     "Download example model files if not present",
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     () => {},
     async argv => {
-      await downloadAndroid( argv );
+      await downloadAndroid(argv);
       await downloadIOS();
     },
   )

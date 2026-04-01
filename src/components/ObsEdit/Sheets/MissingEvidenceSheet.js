@@ -11,13 +11,13 @@ type Props = {
   setShowMissingEvidenceSheet: Function
 }
 
-const MissingEvidenceSheet = ( { setShowMissingEvidenceSheet }: Props ): Node => {
-  const { t } = useTranslation( );
+const MissingEvidenceSheet = ({ setShowMissingEvidenceSheet }: Props): Node => {
+  const { t } = useTranslation();
 
   return (
     <TextSheet
-      headerText={t( "MISSING-EVIDENCE" )}
-      texts={[t( "Every-observation-needs" )]}
+      headerText={t("MISSING-EVIDENCE")}
+      texts={[t("Every-observation-needs")]}
       setShowSheet={setShowMissingEvidenceSheet}
     />
   );

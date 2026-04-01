@@ -16,40 +16,40 @@ import {
 
 interface Props {
   confidence: number | null;
-  handlePress?: ( ) => void;
+  handlePress?: () => void;
   taxon: RealmTaxon | ApiTaxon;
   testID?: string;
-  updateMaxHeight?: ( height: number ) => void;
+  updateMaxHeight?: (height: number) => void;
   forcedHeight: number;
 }
 
-const SuggestionsResult = ( {
+const SuggestionsResult = ({
   confidence,
   handlePress,
   taxon,
   testID,
   updateMaxHeight,
   forcedHeight,
-}: Props ) => {
-  const { t } = useTranslation( );
-  const currentUser = useCurrentUser( );
+}: Props) => {
+  const { t } = useTranslation();
+  const currentUser = useCurrentUser();
 
   // make sure we only measure heights of items once
-  const measuredRef = useRef( false );
+  const measuredRef = useRef(false);
 
-  useEffect( ( ) => {
-    if ( forcedHeight > 0 ) {
+  useEffect(() => {
+    if (forcedHeight > 0) {
       measuredRef.current = true;
     } else {
       measuredRef.current = false;
     }
-  }, [forcedHeight] );
+  }, [forcedHeight]);
 
-  if ( !taxon ) {
-    console.warn( "Taxon is null" );
+  if (!taxon) {
+    console.warn("Taxon is null");
     return null;
-  } if ( ( "isValid" in taxon ) && ( typeof taxon?.isValid === "function" ) && !taxon.isValid() ) {
-    console.warn( "Taxon Realm object is invalidated" );
+  } if (("isValid" in taxon) && (typeof taxon?.isValid === "function") && !taxon.isValid()) {
+    console.warn("Taxon Realm object is invalidated");
     return null;
   }
 
@@ -57,29 +57,29 @@ const SuggestionsResult = ( {
     ? taxon.id
     : "unknown"}`;
 
-  const accessibleName = accessibleTaxonName( taxon, currentUser, t );
+  const accessibleName = accessibleTaxonName(taxon, currentUser, t);
 
   // A representative photo is dependant on the actual image that was scored by computer vision
   // and is currently not added to the taxon realm. So, if it is available directly from the
   // suggestion, i.e. taxonProp, use it. Otherwise, use the default photo from the taxon.
-  const uri = ( taxon as ApiTaxon )?.representative_photo?.url
+  const uri = (taxon as ApiTaxon)?.representative_photo?.url
       // TODO: this access here was crashing the app with "Error: Accessing object that
       // has been invalidated or deleted." The app seems to work without this line for me
       // at the moment, but maybe at a later stage we want to re-enable this and understand
       // why it crashed.
       // || ( taxon as ApiTaxon )?.default_photo?.url
-      || ( taxon as RealmTaxon )?.defaultPhoto?.url;
+      || (taxon as RealmTaxon)?.defaultPhoto?.url;
   const taxonImage = uri
     ? { uri }
     : undefined;
 
   // Handle the onLayout event to measure item height
-  const handleLayout = ( event: LayoutChangeEvent ) => {
+  const handleLayout = (event: LayoutChangeEvent) => {
     const { height } = event.nativeEvent.layout;
     // Only report height once to avoid infinite loops
-    if ( updateMaxHeight && height > 0 && !measuredRef.current ) {
+    if (updateMaxHeight && height > 0 && !measuredRef.current) {
       measuredRef.current = true;
-      updateMaxHeight( height );
+      updateMaxHeight(height);
     }
   };
 
@@ -106,9 +106,9 @@ const SuggestionsResult = ( {
         accessibilityRole="button"
         accessibilityLabel={accessibleName}
         className={cardContent}
-        onPress={( ) => {
-          if ( handlePress !== undefined ) {
-            handlePress( );
+        onPress={() => {
+          if (handlePress !== undefined) {
+            handlePress();
           }
         }}
         testID={safeTestID}
@@ -136,9 +136,9 @@ const SuggestionsResult = ( {
             numberOfLinesBottomText={1}
           />
           <Body4 className="text-inatGreen mt-1.5">
-            {t( "X-percent-confidence", {
+            {t("X-percent-confidence", {
               count: confidence,
-            } )}
+            })}
           </Body4>
         </View>
       </Pressable>

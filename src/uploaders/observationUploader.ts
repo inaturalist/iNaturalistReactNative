@@ -18,7 +18,7 @@ import {
 import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
 import { trackObservationUpload } from "uploaders/utils/progressTracker";
 
-const logger = log.extend( "observationUploader" );
+const logger = log.extend("observationUploader");
 
 interface UploadOptions {
   api_token?: string;
@@ -44,10 +44,10 @@ interface ObservationApiResponse {
   }[];
 }
 
-async function validateAndGetToken( ): Promise<string> {
-  const apiToken = await getJWT( false, "upload" );
-  if ( !apiToken ) {
-    const error = new RecoverableError( "Gack, tried to upload an observation without API token!" );
+async function validateAndGetToken(): Promise<string> {
+  const apiToken = await getJWT(false, "upload");
+  if (!apiToken) {
+    const error = new RecoverableError("Gack, tried to upload an observation without API token!");
     error.recoveryBy = RECOVERY_BY.LOGIN_AGAIN;
     throw error;
   }
@@ -59,28 +59,28 @@ async function createOrUpdateObservation(
   newObs: Partial<RealmObservationPojo>,
   options: UploadOptions,
 ): Promise<ObservationApiResponse | null> {
-  const wasPreviouslySynced = observation.wasSynced( );
+  const wasPreviouslySynced = observation.wasSynced();
   const uploadParams: UploadParams = {
     observation: { ...newObs },
     fields: { id: true },
   };
 
-  if ( wasPreviouslySynced ) {
-    return updateObservation( {
+  if (wasPreviouslySynced) {
+    return updateObservation({
       ...uploadParams,
       id: newObs.uuid,
       ignore_photos: true,
-    }, options );
+    }, options);
   }
-  return createObservation( uploadParams, options );
+  return createObservation(uploadParams, options);
 }
 
-function createErrorContext( stage: string, startTime: number ) {
+function createErrorContext(stage: string, startTime: number) {
   const totalDuration = Date.now() - startTime;
   const appState = AppState.currentState;
 
   let errorContext = `stage: ${stage}`;
-  if ( appState === "background" || appState === "inactive" ) {
+  if (appState === "background" || appState === "inactive") {
     errorContext += `, app backgrounded (${appState})`;
   }
 
@@ -92,28 +92,28 @@ async function uploadObservation(
   realm: Realm,
   opts: UploadOptions,
 ): Promise<ObservationApiResponse | null> {
-  const uploadStartTime = Date.now( );
-  const obsProgress = trackObservationUpload( observation.uuid );
-  obsProgress.start( );
+  const uploadStartTime = Date.now();
+  const obsProgress = trackObservationUpload(observation.uuid);
+  obsProgress.start();
 
-  const newObs = prepareObservationForUpload( observation );
+  const newObs = prepareObservationForUpload(observation);
 
   // Step 1: upload the photos/sounds (before uploading the observation itself)
   let mediaItems;
   let mediaDuration = 0;
   try {
-    const apiToken = await validateAndGetToken( );
-    const mediaStartTime = Date.now( );
+    const apiToken = await validateAndGetToken();
+    const mediaStartTime = Date.now();
     mediaItems = await uploadObservationMedia(
       observation,
       { ...opts, api_token: apiToken },
       realm,
     );
-    mediaDuration = Date.now( ) - mediaStartTime;
-  } catch ( error ) {
+    mediaDuration = Date.now() - mediaStartTime;
+  } catch (error) {
     const {
       errorContext, totalDuration,
-    } = createErrorContext( "media_upload", uploadStartTime );
+    } = createErrorContext("media_upload", uploadStartTime);
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Media upload failed",
@@ -127,23 +127,23 @@ async function uploadObservation(
   let response;
   let obsDuration = 0;
   try {
-    const apiToken = await validateAndGetToken( );
-    const obsStartTime = Date.now( );
+    const apiToken = await validateAndGetToken();
+    const obsStartTime = Date.now();
     response = await createOrUpdateObservation(
       observation,
       newObs,
       { ...opts, api_token: apiToken },
     );
-    obsDuration = Date.now( ) - obsStartTime;
+    obsDuration = Date.now() - obsStartTime;
 
-    obsProgress.complete( );
-    if ( !response ) {
-      throw new Error( "No response from observation upload" );
+    obsProgress.complete();
+    if (!response) {
+      throw new Error("No response from observation upload");
     }
-  } catch ( error ) {
+  } catch (error) {
     const {
       errorContext, totalDuration,
-    } = createErrorContext( "observation_upload", uploadStartTime );
+    } = createErrorContext("observation_upload", uploadStartTime);
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Observation upload failed",
@@ -158,19 +158,19 @@ async function uploadObservation(
   // Step 3: attach media to observation with revalidated token
   let attachDuration = 0;
   try {
-    const apiToken = await validateAndGetToken( );
-    const attachStartTime = Date.now( );
+    const apiToken = await validateAndGetToken();
+    const attachStartTime = Date.now();
     await attachMediaToObservation(
       obsUUID,
       mediaItems,
       { ...opts, api_token: apiToken },
       realm,
     );
-    attachDuration = Date.now( ) - attachStartTime;
-  } catch ( error ) {
+    attachDuration = Date.now() - attachStartTime;
+  } catch (error) {
     const {
       errorContext, totalDuration,
-    } = createErrorContext( "media_attachment", uploadStartTime );
+    } = createErrorContext("media_attachment", uploadStartTime);
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Media attachment failed",
@@ -182,20 +182,20 @@ async function uploadObservation(
 
   // Step 4: mark observation as uploaded in realm
   try {
-    markRecordUploaded( observation.uuid, null, "Observation", response, realm );
-  } catch ( error ) {
+    markRecordUploaded(observation.uuid, null, "Observation", response, realm);
+  } catch (error) {
     const {
       errorContext, totalDuration,
-    } = createErrorContext( "realm_update", uploadStartTime );
+    } = createErrorContext("realm_update", uploadStartTime);
     logger.error(
       `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
       + ": Realm update failed",
       error,
     );
-    throw new Error( `Realm update failed: ${error.message}` );
+    throw new Error(`Realm update failed: ${error.message}`);
   }
 
-  const totalDuration = Date.now( ) - uploadStartTime;
+  const totalDuration = Date.now() - uploadStartTime;
   const { unsyncedObservationPhotos, unsyncedObservationSounds } = mediaItems;
   const uploadedMediaCount = unsyncedObservationPhotos.length + unsyncedObservationSounds.length;
   logger.info(

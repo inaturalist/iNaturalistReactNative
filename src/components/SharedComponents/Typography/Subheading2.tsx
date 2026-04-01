@@ -4,7 +4,7 @@ import type { TextProps } from "react-native";
 
 import InatText from "./InatText";
 
-const Subheading2 = ( props: TextProps ) => (
+const Subheading2 = (props: TextProps) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <InatText className={`text-xl ${tailwindFontBold}`} {...props} />
 );
