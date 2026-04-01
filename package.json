@@ -165,6 +165,7 @@
     "@react-native/eslint-config": "0.82.1",
     "@react-native/metro-config": "0.82.1",
     "@react-native/typescript-config": "0.82.1",
+    "@rozenite/controls-plugin": "^1.6.0",
     "@stylistic/eslint-plugin": "^3.1.0",
     "@tanstack/eslint-plugin-query": "^5.91.4",
     "@testing-library/jest-native": "^5.4.3",

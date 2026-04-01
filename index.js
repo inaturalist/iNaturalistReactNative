@@ -9,6 +9,7 @@ import "react-native-url-polyfill/auto";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
   Alert, AppRegistry,
+  LogBox,
 } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
@@ -25,7 +26,7 @@ import inatjs from "inaturalistjs";
 import OfflineNavigationGuard from "navigation/OfflineNavigationGuard";
 import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
-import React from "react";
+import React, { useMemo } from "react";
 import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -37,10 +38,15 @@ import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
 import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
 import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
+import { useFeatureFlagForDebug } from "components/Developer/FeatureFlags";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { createSection, useRozeniteControlsPlugin } from "@rozenite/controls-plugin";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
+
+LogBox.ignoreAllLogs();
 
 const logger = log.extend( "index.js" );
 
@@ -153,6 +159,33 @@ const AppWithProviders = ( ) => {
     },
   } );
   useRequireProfilerDevTools();
+  const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
+    = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
+
+  const sections = useMemo(
+    () => [
+      createSection( {
+        id: "toggles",
+        title: "Toggles",
+        items: [
+          {
+            id: "explore-v2",
+            type: "button",
+            title: "Toggle ExploreV2 Feature Flag",
+            actionLabel: exploreV2Enabled
+              ? "Disable"
+              : "Enable",
+            onPress: () => {
+              setExploreV2Enabled( !exploreV2Enabled );
+            },
+          },
+        ],
+      } ),
+    ],
+    [exploreV2Enabled, setExploreV2Enabled],
+  );
+
+  useRozeniteControlsPlugin( { sections } );
 
   return (
     <QueryClientProvider client={queryClient}>
