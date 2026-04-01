@@ -32,10 +32,10 @@ const writeLoadTranslations = async () => {
   out.write("export default locale => {\n");
   locales.forEach(
     locale => out.write(
-      `  if ( locale === "${locale}" ) { return require( "./l10n/${locale}.ftl.json" ); }\n`,
+      `  if (locale === "${locale}") { return require("./l10n/${locale}.ftl.json"); }\n`,
     ),
   );
-  out.write("  return require( \"./l10n/en.ftl.json\" );\n");
+  out.write("  return require(\"./l10n/en.ftl.json\");\n");
   out.write("};\n");
   out.write("\n");
   out.write("export const SUPPORTED_LOCALES = [\n");
