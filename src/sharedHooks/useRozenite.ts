@@ -16,6 +16,10 @@ interface RozeniteOptions {
     mmkvStorages: Record<string, MMKV>;
 }
 
+// TODO: the react-navigation rozenite plugin is called elsewhere and should be moved here
+// src/navigation/OfflineNavigationGuard.tsx. We need to lift the navRef state
+// up to where useRozenite is called so it can be used as an option here.
+
 // note: Rozenite plugins are automatically disabled / noops in Production builds
 const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
   useTanStackQueryDevTools( queryClient );
