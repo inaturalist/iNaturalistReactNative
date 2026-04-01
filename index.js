@@ -26,7 +26,7 @@ import inatjs from "inaturalistjs";
 import OfflineNavigationGuard from "navigation/OfflineNavigationGuard";
 import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
-import React, { useMemo } from "react";
+import React from "react";
 import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -34,14 +34,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { getInstallID, store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
-import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
-import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
-import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
-import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
-import { useFeatureFlagForDebug } from "components/Developer/FeatureFlags";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import { createSection, useRozeniteControlsPlugin } from "@rozenite/controls-plugin";
-
+import useRozenite from "sharedHooks/useRozenite";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
@@ -149,43 +142,14 @@ const queryClient = new QueryClient( {
 } );
 
 const AppWithProviders = ( ) => {
-  // note: automatically disabled in Production builds
-  useTanStackQueryDevTools( queryClient );
-  useNetworkActivityDevTools();
-  useMMKVDevTools( {
-    storages: {
+  // note: Rozenite plugins are automatically disabled / noops in Production builds
+  useRozenite( {
+    queryClient,
+    mmkvStorages: {
       "persisted-zustand": zustandMMKVBackingStorage,
       "install-data": installDataMMKVStorage,
     },
   } );
-  useRequireProfilerDevTools();
-  const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
-    = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
-
-  const sections = useMemo(
-    () => [
-      createSection( {
-        id: "toggles",
-        title: "Toggles",
-        items: [
-          {
-            id: "explore-v2",
-            type: "button",
-            title: "Toggle ExploreV2 Feature Flag",
-            actionLabel: exploreV2Enabled
-              ? "Disable"
-              : "Enable",
-            onPress: () => {
-              setExploreV2Enabled( !exploreV2Enabled );
-            },
-          },
-        ],
-      } ),
-    ],
-    [exploreV2Enabled, setExploreV2Enabled],
-  );
-
-  useRozeniteControlsPlugin( { sections } );
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -1,0 +1,56 @@
+import { createSection, useRozeniteControlsPlugin } from "@rozenite/controls-plugin";
+import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
+import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
+import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
+import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
+import type {
+  QueryClient,
+} from "@tanstack/react-query";
+import { useFeatureFlagForDebug } from "components/Developer/FeatureFlags";
+import { useMemo } from "react";
+import type { MMKV } from "react-native-mmkv";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
+
+interface RozeniteOptions {
+    queryClient: QueryClient;
+    mmkvStorages: Record<string, MMKV>;
+}
+
+// note: Rozenite plugins are automatically disabled / noops in Production builds
+const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
+  useTanStackQueryDevTools( queryClient );
+  useNetworkActivityDevTools();
+  useMMKVDevTools( {
+    storages: mmkvStorages,
+  } );
+  useRequireProfilerDevTools();
+  const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
+    = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
+
+  const sections = useMemo(
+    () => [
+      createSection( {
+        id: "toggles",
+        title: "Toggles",
+        items: [
+          {
+            id: "explore-v2",
+            type: "button",
+            title: "Toggle ExploreV2 Feature Flag",
+            actionLabel: exploreV2Enabled
+              ? "Disable"
+              : "Enable",
+            onPress: () => {
+              setExploreV2Enabled( !exploreV2Enabled );
+            },
+          },
+        ],
+      } ),
+    ],
+    [exploreV2Enabled, setExploreV2Enabled],
+  );
+
+  useRozeniteControlsPlugin( { sections } );
+};
+
+export default useRozenite;
