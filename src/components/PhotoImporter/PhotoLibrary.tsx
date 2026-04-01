@@ -260,16 +260,11 @@ const PhotoLibrary = ( ) => {
         const newObservation = await Observation.createObservationWithPhotos( [selectedImages[0]] );
         // fetch place name to display on Match screen
         if ( newObservation.latitude ) {
-          try {
-            const placeName = await fetchPlaceName(
-              newObservation.latitude,
-              newObservation.longitude,
-            );
-            newObservation.place_guess = placeName;
-          } catch ( placeError ) {
-            logger.error( "Error fetching place name for imported photo", placeError );
-            // Continue without setting place_guess
-          }
+          const placeName = await fetchPlaceName(
+            newObservation.latitude,
+            newObservation.longitude,
+          );
+          newObservation.place_guess = placeName;
         }
         setPhotoImporterState( {
           observations: [newObservation],
