@@ -65,10 +65,12 @@ const DeferredStartupService = ( ) => {
   const realm = useRealm( );
 
   useEffect( ( ) => {
+    // Diagnostic tasks that we need to finish even on a busy thread
+    // should have a timeout to ensure they run eventually.
     const id1 = deferTask( "logStorageMetrics", async () => {
       const metrics = await getStorageMetrics( realm?.path );
       logger.infoWithExtra( "storage_metrics", metrics );
-    } );
+    }, 30000 );
 
     // Each cache directory gets its own idle callback so that we can still have
     // user interactions between potentially slow filesystem operations.
