@@ -1,7 +1,5 @@
-// @flow
 import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import NotificationsIcon from "navigation/BottomTabNavigator/NotificationsIcon";
-import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
   useAuthenticatedQuery,
@@ -10,17 +8,17 @@ import {
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
-type Props = {
-  icon: string,
-  active:boolean,
-  size: number,
-};
+interface Props {
+  icon: string;
+  active: boolean;
+  size: number;
+}
 
 const NotificationsIconContainer = ( {
   size,
   icon,
   active,
-}: Props ): Node => {
+}: Props ) => {
   const [hasUnread, setHasUnread] = useState( false );
   const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
   const currentUser = useCurrentUser( );
