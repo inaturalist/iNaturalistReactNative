@@ -1,6 +1,5 @@
 // @flow
 
-import { fetchSearchResults } from "api/search";
 import {
   ButtonBar,
   SearchBar,
@@ -13,7 +12,9 @@ import React, {
   useCallback,
   useState,
 } from "react";
-import { useAuthenticatedQuery, useCurrentUser, useTranslation } from "sharedHooks";
+import {
+  useCurrentUser, useTranslation, useUserSearch,
+} from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
@@ -32,19 +33,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const { t } = useTranslation();
   const currentUser = useCurrentUser();
-
-  // TODO: replace this with infinite scroll like ExploreFlashList
-  const { data: userList = [], isLoading, refetch } = useAuthenticatedQuery(
-    ["fetchSearchResults", userQuery],
-    optsWithAuth => fetchSearchResults(
-      {
-        q: userQuery,
-        sources: "users",
-        fields: "user.id,user.login,user.icon_url,user.observations_count",
-      },
-      optsWithAuth,
-    ),
-  );
+  const { users: userList = [], isLoading, refetch } = useUserSearch( userQuery );
 
   const onUserSelected = useCallback( async ( user, exclude ) => {
     if ( !user.id && !user.login ) {
