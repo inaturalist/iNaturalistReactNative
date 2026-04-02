@@ -65,17 +65,17 @@ const DeferredStartupService = ( ) => {
   const realm = useRealm( );
 
   useEffect( ( ) => {
-    // Each cache directory gets its own idle callback so that we can still have
-    // user interactions between potentially slow filesystem operations.
-    const id1 = deferTask( "clearRotatedOriginalPhotos", clearRotatedOriginalPhotosDirectory );
-    const id2 = deferTask( "clearGalleryPhotos", clearGalleryPhotos );
-    const id3 = deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
-    const id4 = deferTask( "clearSyncedMediaForUpload", () => clearSyncedMediaForUpload( realm ) );
-
-    const id5 = deferTask( "logStorageMetrics", async ( ) => {
+    const id1 = deferTask( "logStorageMetrics", async () => {
       const metrics = await getStorageMetrics( realm?.path );
       logger.infoWithExtra( "storage_metrics", metrics );
     } );
+
+    // Each cache directory gets its own idle callback so that we can still have
+    // user interactions between potentially slow filesystem operations.
+    const id2 = deferTask( "clearRotatedOriginalPhotos", clearRotatedOriginalPhotosDirectory );
+    const id3 = deferTask( "clearGalleryPhotos", clearGalleryPhotos );
+    const id4 = deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
+    const id5 = deferTask( "clearSyncedMediaForUpload", () => clearSyncedMediaForUpload( realm ) );
 
     return ( ) => {
       cancelIdleCallback( id1 );
