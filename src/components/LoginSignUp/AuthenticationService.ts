@@ -14,6 +14,7 @@ import {
 import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import rs from "jsrsasign";
+import { navigationRef } from "navigation/navigationUtils";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
@@ -377,9 +378,15 @@ const getJWT = async (
       // and reinstalled the app without logging out
       if ( response.status === 401 ) {
         if ( logContext ) {
-          logger.info( `JWT [${logContext}]: User unauthorized, signing out ` );
+          logger.info( `JWT [${logContext}]: User unauthorized, navigating to login` );
         }
-        signOut( { clearRealm: true } );
+        await deleteSensitiveItem( "jwtToken" );
+        await deleteSensitiveItem( "jwtGeneratedAt" );
+        await deleteSensitiveItem( "accessToken" );
+        clearAuthCache( );
+        if ( navigationRef.isReady( ) ) {
+          navigationRef.navigate( "LoginStackNavigator", { screen: "Login" } );
+        }
       }
       return null;
     }
@@ -571,6 +578,7 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
+  clearAuthCache( );
   return true;
 }
 
