@@ -34,17 +34,15 @@ const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
   const sections = useMemo(
     () => [
       createSection( {
-        id: "toggles",
-        title: "Toggles",
+        id: "feature-flags",
+        title: "Feature Flags",
         items: [
           {
             id: "explore-v2",
-            type: "button",
-            title: "Toggle ExploreV2 Feature Flag",
-            actionLabel: exploreV2Enabled
-              ? "Disable"
-              : "Enable",
-            onPress: () => {
+            type: "toggle",
+            title: "ExploreV2",
+            value: exploreV2Enabled,
+            onUpdate: () => {
               setExploreV2Enabled( !exploreV2Enabled );
             },
           },
