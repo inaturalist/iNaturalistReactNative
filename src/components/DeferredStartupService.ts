@@ -3,7 +3,7 @@
  *
  * A renderless component that schedules non-critical startup work to run
  * during idle periods of the JS event loop, after the initial render and
- * navigation transitions have completed. This improves Time-To-Interactive
+ * navigation transitions have completed. Hopefully, this improves Time-To-Interactive
  * (TTI) by keeping the JS thread free for layout, painting, and user input
  * during app launch.
  *
@@ -46,17 +46,27 @@ const deferTask = (
 
 const DeferredStartupService = ( ) => {
   const realm = useRealm( );
+
   useEffect( () => {
-    const initializeApp = async ( ) => {
-    // Run startup tasks when app launches
-      if ( realm?.path ) {
-        deferTask( "clearRotatedOriginalPhotos", clearRotatedOriginalPhotosDirectory );
-        deferTask( "clearGalleryPhotos", clearGalleryPhotos );
-        deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
-        deferTask( "clearSyncedMediaForUpload", ( ) => clearSyncedMediaForUpload( realm ) );
-      }
+    // Each cache directory gets its own idle callback so that we can still have
+    // user interactions between potentially slow filesystem operations.
+    const id1 = deferTask(
+      "clearRotatedOriginalPhotos",
+      clearRotatedOriginalPhotosDirectory,
+    );
+    const id2 = deferTask( "clearGalleryPhotos", clearGalleryPhotos );
+    const id3 = deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
+    const id4 = deferTask(
+      "clearSyncedMediaForUpload",
+      ( ) => clearSyncedMediaForUpload( realm ),
+    );
+
+    return ( ) => {
+      cancelIdleCallback( id1 );
+      cancelIdleCallback( id2 );
+      cancelIdleCallback( id3 );
+      cancelIdleCallback( id4 );
     };
-    initializeApp();
   }, [realm] );
 
   return null;
