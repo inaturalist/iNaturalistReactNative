@@ -25,9 +25,23 @@ import getStorageMetrics from "sharedHelpers/storageMetrics";
 
 const { useRealm } = RealmContext;
 const logger = log.extend( "DeferredStartupService" );
+
+/**
+ * Schedule a single async task to run during the next idle period.
+ *
+ * @param name    - Human-readable task name for logging.
+ * @param run     - Async function to execute. Errors are caught and logged,
+ *                  never propagated, so one task cannot break another.
+ * @param timeout - Optional. If provided, guarantees the callback fires
+ *                  within this many ms even if the thread stays busy.
+ *                  Use for tasks that *must* eventually complete. Omit for
+ *                  tasks where skipping is acceptable.
+ * @returns         The idle callback ID (pass to cancelIdleCallback to cancel).
+ */
 const deferTask = (
   name: string,
   run: () => Promise<void>,
+  timeout?: number,
 ): number => requestIdleCallback( async ( ) => {
   const start = Date.now( );
   try {
@@ -43,7 +57,9 @@ const deferTask = (
   } catch ( error ) {
     logger.error( `${name} failed after ${Date.now( ) - start}ms`, error );
   }
-} );
+}, timeout
+  ? { timeout }
+  : undefined );
 
 const DeferredStartupService = ( ) => {
   const realm = useRealm( );
