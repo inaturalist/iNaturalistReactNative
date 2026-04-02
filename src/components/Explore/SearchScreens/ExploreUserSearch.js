@@ -10,10 +10,11 @@ import UserList from "components/UserList/UserList";
 import type { Node } from "react";
 import React, {
   useCallback,
+  useMemo,
   useState,
 } from "react";
 import {
-  useCurrentUser, useTranslation, useUserSearch,
+  useCurrentUser, useKeyboardInfo, useTranslation, useUserSearch,
 } from "sharedHooks";
 import { getShadow } from "styles/global";
 
@@ -33,6 +34,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const { t } = useTranslation();
   const currentUser = useCurrentUser();
+  const { keyboardHeight, keyboardShown } = useKeyboardInfo();
   const { users: userList = [], isLoading, refetch } = useUserSearch( userQuery );
 
   const onUserSelected = useCallback( async ( user, exclude ) => {
@@ -61,6 +63,13 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
       searchQuery={userQuery}
       refetch={refetch}
     />
+  );
+
+  const footerComponent = useMemo(
+    ( ) => ( keyboardShown && keyboardHeight > 0
+      ? <View style={{ height: keyboardHeight }} />
+      : null ),
+    [keyboardHeight, keyboardShown],
   );
 
   const buttons = [
@@ -112,6 +121,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
       </View>
       <UserList
         ListEmptyComponent={renderEmptyList}
+        ListFooterComponent={footerComponent}
         users={userList}
         keyboardShouldPersistTaps="handled"
         accessibilityLabel={t( "Select-user" )}
