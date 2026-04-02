@@ -1,25 +1,24 @@
-// @flow
 import { Body4, INatIcon, UserIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import NotificationsIconContainer from "navigation/BottomTabNavigator/NotificationsIconContainer";
+import type { PropsWithChildren } from "react";
 import * as React from "react";
 import colors from "styles/tailwindColors";
 
-type IconFrameProps = {
-  children: React.Node,
-  testID: string,
-};
+interface IconFrameProps extends PropsWithChildren{
+  testID: string;
+}
 
-type Props = {
-  testID: string,
-  icon: string,
-  onPress: Function,
-  userIconUri?: string,
-  accessibilityLabel: string,
-  accessibilityHint?: string,
-  active: boolean,
-  size: number
-};
+interface Props {
+  testID: string;
+  icon: string;
+  onPress: () => void;
+  userIconUri?: string;
+  accessibilityLabel: string;
+  accessibilityHint?: string;
+  active: boolean;
+  size: number;
+}
 
 const IconFrame = ( { children, testID }: IconFrameProps ) => (
   <View
@@ -39,7 +38,7 @@ const NavButton = ( {
   active,
   accessibilityLabel,
   accessibilityHint,
-}: Props ): React.Node => {
+}: Props ) => {
   let iconComponent;
   if ( userIconUri ) {
     iconComponent = (
