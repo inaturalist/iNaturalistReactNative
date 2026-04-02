@@ -13,7 +13,6 @@ import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
 import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
-import getStorageMetrics from "sharedHelpers/storageMetrics";
 import {
   usePerformance,
 } from "sharedHooks";
@@ -98,16 +97,6 @@ const StartupService = ( ) => {
       logger.info(
         `App version: ${DeviceInfo.getVersion()}, build: ${DeviceInfo.getBuildNumber()}`,
       );
-
-      const logStorageMetrics = async ( ) => {
-        try {
-          const metrics = await getStorageMetrics( realm?.path );
-          logger.infoWithExtra( "storage_metrics", metrics );
-        } catch ( e ) {
-          logger.error( "storage_metrics collection failed", e );
-        }
-      };
-      await logStorageMetrics( );
 
       try {
         await checkForSignedInUser( );
