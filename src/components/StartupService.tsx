@@ -5,23 +5,14 @@ import { getUserAgent } from "api/userAgent";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
-import { LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import Realm from "realm";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
-import {
-  usePerformance,
-} from "sharedHooks";
+import { usePerformance } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
-
-// Ignore warnings about 3rd parties that haven't implemented the new
-// NativeEventEmitter interface methods yet. As of 20230517, this is coming
-// from react-native-share-menu.
-// https://stackoverflow.com/questions/69538962
-LogBox.ignoreLogs( ["new NativeEventEmitter"] );
 
 Realm.setLogLevel( "warn" );
 
