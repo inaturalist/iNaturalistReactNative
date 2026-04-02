@@ -9,7 +9,6 @@ import { LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import Realm from "realm";
-import clearCaches from "sharedHelpers/clearCaches";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
@@ -129,10 +128,6 @@ const StartupService = ( ) => {
 
         if ( !isTablet ) {
           Orientation.lockToPortrait( );
-        }
-        // Run startup tasks when app launches
-        if ( realm?.path ) {
-          await clearCaches( realm );
         }
       } catch ( error ) {
         logger.error( "Startup service error:", error );

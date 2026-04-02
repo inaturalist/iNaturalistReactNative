@@ -13,6 +13,7 @@ import {
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
 import AppStateListener from "./AppStateListener";
+import DeferredStartupService from "./DeferredStartupService";
 import useLinking from "./hooks/useLinking";
 import NetworkService from "./NetworkService";
 import StartupService from "./StartupService";
@@ -78,6 +79,7 @@ const App = ( { children }: Props ): Node => {
   return (
     <>
       <StartupService />
+      <DeferredStartupService />
       <NetworkService />
       <AppStateListener />
       {children || <RootStackNavigator />}
