@@ -1,6 +1,4 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { screen } from "@testing-library/react-native";
 import CustomTabBarContainer from "navigation/BottomTabNavigator/CustomTabBarContainer";
 import React from "react";

@@ -1,6 +1,4 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { ApiObservationsUpdatesParams } from "api/types";
 import NotificationsList from "components/Notifications/NotificationsList";

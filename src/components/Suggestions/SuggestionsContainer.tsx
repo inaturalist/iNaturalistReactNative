@@ -1,6 +1,4 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import isEqual from "lodash/isEqual";

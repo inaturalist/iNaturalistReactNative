@@ -1,6 +1,4 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { NavigationContainer } from "@react-navigation/native";
 import { useReactNavigationDevTools } from "@rozenite/react-navigation-plugin";
 import type { PropsWithChildren } from "react";

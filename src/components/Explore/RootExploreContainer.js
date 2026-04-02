@@ -1,8 +1,6 @@
 // @flow
 
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import {
   EXPLORE_ACTION,

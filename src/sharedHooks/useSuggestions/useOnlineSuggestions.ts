@@ -1,6 +1,4 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import i18n from "i18next";

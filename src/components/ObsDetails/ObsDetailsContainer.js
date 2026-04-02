@@ -1,7 +1,5 @@
 // @flow
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
 import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
 import useMarkViewedMutation

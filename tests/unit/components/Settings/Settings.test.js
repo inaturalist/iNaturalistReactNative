@@ -1,6 +1,4 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { fireEvent, screen } from "@testing-library/react-native";
 import Settings from "components/Settings/Settings";
 import i18n from "i18next";
