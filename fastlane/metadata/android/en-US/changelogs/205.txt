@@ -1,0 +1,8 @@
+FIXED
+* Use thumbnail for small user icons
+* Sharing photos with different time zone offsets
+* Some smaller UI issues
+* Deleting evidence in ObsEdit
+
+UPDATED
+* Performance-related logging

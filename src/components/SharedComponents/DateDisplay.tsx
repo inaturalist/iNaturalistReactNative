@@ -7,7 +7,7 @@ import {
   formatDifferenceForHumans,
   formatMonthYearDate,
 } from "sharedHelpers/dateAndTime";
-import { useTranslation } from "sharedHooks";
+import { useDebugMode, useTranslation } from "sharedHooks";
 
 interface Props {
   // Display the date as a difference, or relative date, e.g. "1d" or "3w"
@@ -44,6 +44,7 @@ const DateDisplay = ( {
   timeZone,
 }: Props ) => {
   const { i18n } = useTranslation( );
+  const { isDebug } = useDebugMode();
 
   let TextComponent = TextComponentProp;
   if ( !TextComponent ) {
@@ -56,6 +57,9 @@ const DateDisplay = ( {
     || taxonGeoprivacy === "private";
 
   const formattedDate = useMemo( () => {
+    if ( isDebug ) {
+      return dateString;
+    }
     if ( !belongsToCurrentUser && dateObscured ) {
       return formatMonthYearDate( dateString, i18n );
     }
@@ -68,6 +72,7 @@ const DateDisplay = ( {
     belongsToCurrentUser,
     dateObscured,
     dateString,
+    isDebug,
     i18n,
     literalTime,
     timeZone,
