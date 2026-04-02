@@ -1,6 +1,25 @@
+/**
+ * DeferredStartupService
+ *
+ * A renderless component that schedules non-critical startup work to run
+ * during idle periods of the JS event loop, after the initial render and
+ * navigation transitions have completed. This improves Time-To-Interactive
+ * (TTI) by keeping the JS thread free for layout, painting, and user input
+ * during app launch.
+ *
+ * Uses requestIdleCallback to schedule each task in its own callback so the
+ * runtime can interleave user interactions between them.
+ *
+ */
+
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
-import clearCaches from "sharedHelpers/clearCaches";
+import {
+  clearComputerVisionPhotos,
+  clearGalleryPhotos,
+  clearRotatedOriginalPhotosDirectory,
+  clearSyncedMediaForUpload,
+} from "sharedHelpers/clearCaches";
 import { log } from "sharedHelpers/logger";
 
 const { useRealm } = RealmContext;
@@ -31,7 +50,10 @@ const DeferredStartupService = ( ) => {
     const initializeApp = async ( ) => {
     // Run startup tasks when app launches
       if ( realm?.path ) {
-        deferTask( "clearCaches", async ( ) => clearCaches( realm ) );
+        deferTask( "clearRotatedOriginalPhotos", clearRotatedOriginalPhotosDirectory );
+        deferTask( "clearGalleryPhotos", clearGalleryPhotos );
+        deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
+        deferTask( "clearSyncedMediaForUpload", ( ) => clearSyncedMediaForUpload( realm ) );
       }
     };
     initializeApp();
