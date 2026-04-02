@@ -57,12 +57,15 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
 
   // TODO: pagination like in ExploreFlashList ?
 
-  const renderEmptyList = ( ) => (
-    <EmptySearchResults
-      isLoading={isLoading}
-      searchQuery={userQuery}
-      refetch={refetch}
-    />
+  const emptyListComponent = useMemo(
+    ( ) => (
+      <EmptySearchResults
+        isLoading={isLoading}
+        searchQuery={userQuery}
+        refetch={refetch}
+      />
+    ),
+    [isLoading, refetch, userQuery],
   );
 
   const footerComponent = useMemo(
@@ -120,7 +123,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
         )}
       </View>
       <UserList
-        ListEmptyComponent={renderEmptyList}
+        ListEmptyComponent={emptyListComponent}
         ListFooterComponent={footerComponent}
         users={userList}
         keyboardShouldPersistTaps="handled"
