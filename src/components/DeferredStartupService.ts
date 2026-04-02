@@ -23,6 +23,7 @@ import {
 import { log } from "sharedHelpers/logger";
 import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
+import { zustandStorage } from "stores/useStore";
 
 const { useRealm } = RealmContext;
 const logger = log.extend( "DeferredStartupService" );
@@ -62,24 +63,38 @@ const deferTask = (
   ? { timeout }
   : undefined );
 
+const checkForPreviousCrash = async () => {
+  try {
+    const crashData = zustandStorage.getItem( "LAST_CRASH_DATA" );
+    if ( crashData ) {
+      const parsedData = JSON.parse( crashData.toString() );
+      logger.error( "Last Crash Data:", JSON.stringify( parsedData ) );
+      zustandStorage.removeItem( "LAST_CRASH_DATA" );
+    }
+  } catch ( e ) {
+    logger.error( "Failed to process previous crash data", e );
+  }
+};
+
 const DeferredStartupService = ( ) => {
   const realm = useRealm( );
 
   useEffect( ( ) => {
     // Diagnostic tasks that we need to finish even on a busy thread
     // should have a timeout to ensure they run eventually.
-    const id1 = deferTask( "findAndLogSentinelFiles", findAndLogSentinelFiles, 30000 );
-    const id2 = deferTask( "logStorageMetrics", async () => {
+    const id1 = deferTask( "checkForPreviousCrash", checkForPreviousCrash, 30000 );
+    const id2 = deferTask( "findAndLogSentinelFiles", findAndLogSentinelFiles, 30000 );
+    const id3 = deferTask( "logStorageMetrics", async () => {
       const metrics = await getStorageMetrics( realm?.path );
       logger.infoWithExtra( "storage_metrics", metrics );
     }, 30000 );
 
     // Each cache directory gets its own idle callback so that we can still have
     // user interactions between potentially slow filesystem operations.
-    const id3 = deferTask( "clearRotatedOriginalPhotos", clearRotatedOriginalPhotosDirectory );
-    const id4 = deferTask( "clearGalleryPhotos", clearGalleryPhotos );
-    const id5 = deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
-    const id6 = deferTask( "clearSyncedMediaForUpload", () => clearSyncedMediaForUpload( realm ) );
+    const id4 = deferTask( "clearRotatedOriginalPhotos", clearRotatedOriginalPhotosDirectory );
+    const id5 = deferTask( "clearGalleryPhotos", clearGalleryPhotos );
+    const id6 = deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
+    const id7 = deferTask( "clearSyncedMediaForUpload", () => clearSyncedMediaForUpload( realm ) );
 
     return ( ) => {
       cancelIdleCallback( id1 );
@@ -88,6 +103,7 @@ const DeferredStartupService = ( ) => {
       cancelIdleCallback( id4 );
       cancelIdleCallback( id5 );
       cancelIdleCallback( id6 );
+      cancelIdleCallback( id7 );
     };
   }, [realm] );
 

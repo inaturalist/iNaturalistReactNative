@@ -16,7 +16,6 @@ import {
   usePerformance,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
-import { zustandStorage } from "stores/useStore";
 
 // Ignore warnings about 3rd parties that haven't implemented the new
 // NativeEventEmitter interface methods yet. As of 20230517, this is coming
@@ -45,19 +44,6 @@ const geolocationConfig = {
   skipPermissionRequests: true,
 };
 
-const checkForPreviousCrash = async ( ) => {
-  try {
-    const crashData = zustandStorage.getItem( "LAST_CRASH_DATA" );
-    if ( crashData ) {
-      const parsedData = JSON.parse( crashData.toString( ) );
-      logger.error( "Last Crash Data:", JSON.stringify( parsedData ) );
-      zustandStorage.removeItem( "LAST_CRASH_DATA" );
-    }
-  } catch ( e ) {
-    logger.error( "Failed to process previous crash data", e );
-  }
-};
-
 const StartupService = ( ) => {
   const realm = useRealm( );
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0]?.isValid( );
@@ -82,11 +68,6 @@ const StartupService = ( ) => {
           if ( !currentUser ) {
             await signOut( { realm, clearRealm: true } );
           }
-        } else {
-          // make sure the MMKV store has been created on a previous installation
-          // before trying to query it
-          // though we really should only have one store
-          await checkForPreviousCrash( );
         }
       };
       // don't remove this logger.info statement: it's used for internal metrics
