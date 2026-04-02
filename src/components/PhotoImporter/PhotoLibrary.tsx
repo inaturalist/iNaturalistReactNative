@@ -155,10 +155,11 @@ const PhotoLibrary = ( ) => {
     // According to the native code of the image picker library, it never rejects the promise,
     // just returns a response object with errorCode
     // https://github.com/react-native-image-picker/react-native-image-picker?tab=readme-ov-file#Asset-Object
+    // THAT SAID, we had an android isse where this threw an error, causing a stuck loading screen
+    // see https://linear.app/inaturalist/issue/MOB-90/importing-photo-while-offline-in-android-gets-stuck-on-photogallery
+    // so I am adding a try/catch just in case
     let response;
     try {
-      // Adding a try/catch anyway. The error state described in https://linear.app/inaturalist/issue/MOB-90/importing-photo-while-offline-in-android-gets-stuck-on-photogallery
-      // is now fixed but matches the screen state shown if I manually throw an error here
       response = await launchImageLibrary( {
         selectionLimit: fromAICamera
           ? FROM_AICAMERA_MAX_PHOTOS_ALLOWED
