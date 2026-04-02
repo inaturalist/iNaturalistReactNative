@@ -83,7 +83,7 @@ const StartupService = ( ) => {
         if ( isFreshInstall ) {
           store.set( IS_FRESH_INSTALL, false );
           if ( !currentUser ) {
-            await signOut( { clearRealm: true } );
+            await signOut( { realm, clearRealm: true } );
           }
         } else {
           // make sure the MMKV store has been created on a previous installation
