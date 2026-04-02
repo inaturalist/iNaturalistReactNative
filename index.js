@@ -7,10 +7,7 @@ import "react-native-get-random-values";
 import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import {
-  Alert, AppRegistry,
-  LogBox,
-} from "react-native";
+import { Alert, AppRegistry } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
@@ -38,8 +35,6 @@ import useRozenite from "sharedHooks/useRozenite";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
-
-LogBox.ignoreAllLogs();
 
 const logger = log.extend( "index.js" );
 
