@@ -1,23 +1,22 @@
-// @flow
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import colors from "styles/tailwindColors";
 
-type Props = {
-    unread: boolean,
-    icon: string,
-    active:boolean,
-    size: number,
-};
+interface Props {
+    unread: boolean;
+    icon: string;
+    active: boolean;
+    size: number;
+}
 
 const NotificationsIcon = ( {
   unread,
   size,
   icon,
   active,
-}: Props ): React.Node => (
+}: Props ) => (
   <View className="relative">
     <INatIcon
       name={icon}
