@@ -12,7 +12,6 @@ import Realm from "realm";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
-import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
 import {
   usePerformance,
 } from "sharedHooks";
@@ -88,8 +87,6 @@ const StartupService = ( ) => {
           // before trying to query it
           // though we really should only have one store
           await checkForPreviousCrash( );
-          // also don't bother looking for sentinel files if user has a fresh installation
-          await findAndLogSentinelFiles( );
         }
       };
       // don't remove this logger.info statement: it's used for internal metrics
