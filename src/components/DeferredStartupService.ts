@@ -21,7 +21,7 @@ import {
   clearSyncedMediaForUpload,
 } from "sharedHelpers/clearCaches";
 import { log } from "sharedHelpers/logger";
-import { findAndLogSentinelFiles } from "sharedHelpers/sentinelFiles";
+import { logSentinelFiles } from "sharedHelpers/sentinelFiles";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
 import { zustandStorage } from "stores/useStore";
 
@@ -83,7 +83,7 @@ const DeferredStartupService = ( ) => {
     // Diagnostic tasks that we need to finish even on a busy thread
     // should have a timeout to ensure they run eventually.
     const id1 = deferTask( "checkForPreviousCrash", checkForPreviousCrash, 30000 );
-    const id2 = deferTask( "findAndLogSentinelFiles", findAndLogSentinelFiles, 30000 );
+    const id2 = deferTask( "logSentinelFiles", logSentinelFiles, 30000 );
     const id3 = deferTask( "logStorageMetrics", async () => {
       const metrics = await getStorageMetrics( realm?.path );
       logger.infoWithExtra( "storage_metrics", metrics );
