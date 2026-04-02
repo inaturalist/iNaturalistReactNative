@@ -69,6 +69,10 @@ const StartupService = ( ) => {
 
       try {
         await checkForSignedInUser( );
+        // TODO: this sounds like something we should move to DeferredStartupService,
+        // but we do need these files for the CV camera to work. So, for the subset of user that
+        // open the app straight to camera we need to test that doing this deferred does not impact
+        // the TTId (Time-To-Identification)
         await addARCameraFiles( );
 
         // this ensures that React Query has the most accurate depiction of whether the
