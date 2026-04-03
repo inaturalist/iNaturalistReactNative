@@ -1,23 +1,23 @@
 import { useState } from "react";
 import * as uuid from "uuid";
 
-const INSTALL_ID = "installID";  
+const INSTALL_ID = "installID";
 export const IS_FRESH_INSTALL = "isFreshInstall";
 
-const data = new Map<string, any>();
+const data = new Map();
 
 export const store = {
-  getString: ( key: string ) => data.get( key ),
-  set: ( key: string, value: any ) => { data.set( key, value ); },
-  getBoolean: ( key: string ) => data.get( key ),
-  delete: ( key: string ) => { data.delete( key ); },
-  contains: ( key: string ) => data.has( key )
+  getString: ( key ) => data.get( key ),
+  set: ( key, value ) => { data.set( key, value ); },
+  getBoolean: ( key ) => data.get( key ),
+  delete: ( key ) => { data.delete( key ); },
+  contains: ( key ) => data.has( key )
 };
 
 export function getInstallID( ) {
   const id = store.getString( INSTALL_ID );
   if ( id ) return id;
-  const newID: string = uuid.v4( ).toString( );
+  const newID = uuid.v4( ).toString( );
   store.set( INSTALL_ID, newID );
   // Skip setting IS_FRESH_INSTALL in e2e to avoid triggering
   // RNRestart.restart() which kills the Detox instrumentation process
