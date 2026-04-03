@@ -98,13 +98,14 @@ const ObsEditHeader = ( {
     || ( unsynced && savedLocally )
     || ( unsynced && !unsavedChanges ) );
 
-  const handleBackButtonPress = useCallback( ( ) => {
+  const handleBackButtonPress = useCallback( async ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
     } else if ( canRollbackToMatch ) {
       if ( unsavedChanges ) {
         setDiscardChangesSheetVisible( true );
       } else {
+        await rollback( );
         navigation.dispatch( StackActions.popTo( "Match" ) );
       }
     } else if ( shouldNavigateBack ) {
@@ -128,6 +129,7 @@ const ObsEditHeader = ( {
     savedOrUploadedMultiObsFlow,
     shouldNavigateBack,
     unsavedChanges,
+    rollback,
   ] );
 
   const renderBackButton = useCallback( ( ) => {
