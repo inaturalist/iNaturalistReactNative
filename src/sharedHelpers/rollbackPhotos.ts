@@ -31,11 +31,9 @@ export const clearRollbackPhotos = async ( ): Promise<void> => {
 };
 
 export const backupObservationPhotos = async (
-  observations: RealmObservationPojo[],
-  currentObservationIndex: number,
+  observation: RealmObservationPojo,
 ): Promise<BackupMapping[]> => {
   try {
-    const observation = observations[currentObservationIndex];
     if ( !observation ) return [];
 
     const obsPhotos = observation.observationPhotos || [];

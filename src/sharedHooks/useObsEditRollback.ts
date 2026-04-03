@@ -35,7 +35,7 @@ function useObsEditRollback( ): ObsEditRollbackReturn {
 
     hasBackedUp.current = true;
     setRollbackSnapshot( );
-    backupObservationPhotos( observations, currentObservationIndex )
+    backupObservationPhotos( observations[currentObservationIndex] )
       .then( setBackupMappings );
   }, [
     canRollbackToMatch,
