@@ -100,6 +100,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
       currentObservation: newObservation
         ? observationToJSON( newObservation )
         : null,
+      unsavedChanges: true,
     };
   } ),
   deleteSoundFromObservation: uri => set( state => {
@@ -111,6 +112,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     return {
       observations: newObservations,
       currentObservation: newObservation,
+      unsavedChanges: true,
     };
   } ),
   resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
