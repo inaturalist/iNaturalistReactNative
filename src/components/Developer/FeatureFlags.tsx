@@ -5,8 +5,8 @@ import {
 import React, { useCallback } from "react";
 import { useFeatureFlag } from "sharedHooks";
 import type { FeatureFlagSlice } from "stores/createFeatureFlagSlice";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
+import { FeatureFlag } from "types/dynamicConfig";
 
 import { H1, H2 } from "./DeveloperSharedComponents";
 

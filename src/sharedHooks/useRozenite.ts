@@ -9,7 +9,7 @@ import type {
 import { useFeatureFlagForDebug } from "components/Developer/FeatureFlags";
 import { useMemo } from "react";
 import type { MMKV } from "react-native-mmkv";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { FeatureFlag } from "types/dynamicConfig";
 
 interface RozeniteOptions {
     queryClient: QueryClient;

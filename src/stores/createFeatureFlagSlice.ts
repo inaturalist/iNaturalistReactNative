@@ -1,3 +1,4 @@
+import { FeatureFlag } from "types/dynamicConfig";
 import type { StateCreator } from "zustand";
 
 // This state slice supports application code's consumption of feature flags, namely:
@@ -15,13 +16,6 @@ import type { StateCreator } from "zustand";
 // This slice _also_ supports dynamically enabling and disabling a flag for testing,
 // overriding its default "live" status. This is done through the "Debug" / "Developer" screen.
 // These are not persisted so will be reset to their defaults on app start.
-
-// TODO: move this to more a more global type definition scope
-export enum FeatureFlag {
-  // flags should use positive language ending with `Enabled`
-  // MyFeatureFlagEnabled = "myFeatureFlagEnabled",
-  ExploreV2Enabled = "exploreV2Enabled",
-}
 
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
