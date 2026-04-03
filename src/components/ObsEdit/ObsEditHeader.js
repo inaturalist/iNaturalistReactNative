@@ -13,7 +13,8 @@ import React, {
 } from "react";
 import { BackHandler } from "react-native";
 import Observation from "realmModels/Observation";
-import { useExitObservationFlow, useObsEditRollback, useTranslation } from "sharedHooks";
+import { useExitObservationFlow, useTranslation } from "sharedHooks";
+import useObsEditRollback from "sharedHooks/useObsEditRollback";
 import useStore from "stores/useStore";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
