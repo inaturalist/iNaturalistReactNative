@@ -1,6 +1,6 @@
 // @flow
 
-import { refresh, useNetInfo } from "@react-native-community/netinfo";
+import { refresh } from "@react-native-community/netinfo";
 import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
 import MatchSaveDiscardButtons from "components/Match/SaveDiscardButtons";
@@ -44,6 +44,7 @@ import {
   useTranslation,
   useUserMe,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -93,7 +94,7 @@ const TaxonDetails = ( ): Node => {
   } = params;
   const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const { remoteUser } = useUserMe( );
   const exitObservationFlow = useExitObservationFlow( {
     skipStoreReset: true,

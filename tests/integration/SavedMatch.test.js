@@ -1,8 +1,8 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import { screen } from "@testing-library/react-native";
 import SavedMatchContainer from "components/ObsDetailsDefaultMode/SavedMatch/SavedMatchContainer";
 import { t } from "i18next";
 import React from "react";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithComponent } from "tests/helpers/render";
@@ -82,7 +82,7 @@ describe( "SavedMatch", ( ) => {
   } );
 
   it( "should not show learn more button when offline", async ( ) => {
-    useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+    useConnectionStatus.mockImplementation( ( ) => ( { isConnected: false } ) );
     renderAppWithComponent( <SavedMatchContainer observation={mockObservation} /> );
     const learnMoreButton = screen.queryByText( t( "LEARN-MORE-ABOUT-THIS-SPECIES" ) );
     expect( learnMoreButton ).toBeFalsy( );

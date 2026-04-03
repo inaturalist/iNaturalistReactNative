@@ -1,6 +1,5 @@
 import {
   refresh as refreshNetInfo,
-  useNetInfo,
 } from "@react-native-community/netinfo";
 import Slider from "@react-native-community/slider";
 import { useFocusEffect } from "@react-navigation/native";
@@ -14,6 +13,7 @@ import React, {
 } from "react";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import { useTranslation } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import colors from "styles/tailwindColors";
 
 interface SoundSliderProps {
@@ -61,7 +61,7 @@ const SoundContainer = ( {
   sound,
 }: SoundContainerProps ) => {
   const needsInternet = sound.file_url.includes( "https://" );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const playerRef = useRef( new AudioRecorderPlayer( ) );
   const player = playerRef.current;
   const { t } = useTranslation( );

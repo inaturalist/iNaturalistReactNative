@@ -1,4 +1,3 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchProjectMembers } from "api/projects";
 import {
@@ -9,9 +8,10 @@ import UserList from "components/UserList/UserList";
 import React, { useCallback, useEffect, useMemo } from "react";
 import User from "realmModels/User";
 import { useInfiniteScroll, useTranslation } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 const ProjectMembers = ( ) => {
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const { params } = useRoute( );

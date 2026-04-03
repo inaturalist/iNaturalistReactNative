@@ -1,4 +1,3 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import { matchCardClassBottom, matchCardClassTop } from "components/Match/Match";
 import MatchHeader from "components/Match/MatchHeader";
 import PhotosSection from "components/Match/PhotosSection";
@@ -10,6 +9,7 @@ import { View } from "components/styledComponents";
 import React from "react";
 import type { RealmObservation } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 interface Props {
   observation: RealmObservation;
@@ -21,7 +21,7 @@ const SavedMatch = ( {
   navToTaxonDetails,
 }: Props ) => {
   const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
   const { taxon } = observation;

@@ -1,5 +1,4 @@
 // @flow
-import { useNetInfo } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
 import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
 import useMarkViewedMutation
@@ -18,6 +17,7 @@ import {
   useLocalObservation,
   useTranslation,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import useRemoteObservation from "sharedHooks/useRemoteObservation";
 import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 
@@ -42,7 +42,7 @@ const ObsDetailsContainer = ( ): Node => {
     uuid,
   } = params;
   const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
 
   const {

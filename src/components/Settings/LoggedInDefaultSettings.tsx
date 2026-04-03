@@ -1,4 +1,3 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -24,6 +23,7 @@ import {
   useTranslation,
   useUserMe,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 import LanguageSetting from "./LanguageSetting";
 import TaxonNamesSetting from "./TaxonNamesSetting";
@@ -35,7 +35,7 @@ const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
 const LoggedInDefaultSettings = ( ) => {
   const realm = useRealm( );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const {

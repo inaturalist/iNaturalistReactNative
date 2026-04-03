@@ -1,4 +1,3 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
 import ObsDetailsDefaultModeContainer
   from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
@@ -9,6 +8,7 @@ import {
   useLocalObservation,
   useRemoteObservation,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 import SavedMatchContainer from "./SavedMatch/SavedMatchContainer";
 
@@ -24,7 +24,7 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
     uuid,
   } = params as RouteParams;
   const currentUser = useCurrentUser( );
-  const isConnected = !!useNetInfo( ).isConnected;
+  const isConnected = !!useConnectionStatus( ).isConnected;
 
   const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
 

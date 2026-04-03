@@ -1,6 +1,5 @@
 // @flow
 
-import { useNetInfo } from "@react-native-community/netinfo";
 import {
   searchObservations,
 } from "api/observations";
@@ -18,6 +17,7 @@ import {
   useDeviceOrientation,
   useQuery,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 import MapView from "./MapView";
 
@@ -88,7 +88,7 @@ const ObservationsView = ( {
     handleUpdateCount( "observations", totalCount );
   }, [handleUpdateCount, totalCount] );
 
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
 
   if ( !layout ) { return null; }
 

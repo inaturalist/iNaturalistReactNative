@@ -1,4 +1,3 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import type { ApiPhoto, ApiSuggestion, ApiTaxon } from "api/types";
 import LocationSection
   from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
@@ -15,6 +14,7 @@ import type {
   RealmObservation, RealmObservationPhoto, RealmPhoto, RealmTaxon,
 } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 import AdditionalSuggestionsScroll
   from "./AdditionalSuggestions/AdditionalSuggestionsScroll";
@@ -64,7 +64,7 @@ const Match = ( {
   taxonToSave,
 }: Props ) => {
   const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
 
   const latitude = observation?.privateLatitude || observation?.latitude;
   const taxon = topSuggestion?.taxon;

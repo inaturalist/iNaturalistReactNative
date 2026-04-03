@@ -1,4 +1,3 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ApiPhoto, ApiSuggestion } from "api/types";
@@ -23,6 +22,7 @@ import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservation
 import {
   useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   internalUseSuggestionsInitialSuggestions,
@@ -142,7 +142,7 @@ const MatchContainer = ( ) => {
     skipStoreReset: true,
   } );
 
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
 
   const evidenceHasLocation = !!currentObservation?.latitude;
 

@@ -1,4 +1,3 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import {
   ActivityIndicator,
   Body2,
@@ -9,6 +8,7 @@ import React from "react";
 import {
   useTranslation,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 interface Props {
   isLoading: boolean;
@@ -24,7 +24,7 @@ const EmptySearchResults = ( {
   skipOfflineNotice,
 }: Props ) => {
   const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
 
   if ( searchQuery === "" ) {
     return null;
