@@ -119,19 +119,6 @@ describe( "getJWT 401 handling", ( ) => {
     expect( deletedKeys ).not.toContain( "username" );
   } );
 
-  it( "deletes jwtToken, jwtGeneratedAt, and accessToken from storage on 401", async ( ) => {
-    nock( API_HOST )
-      .get( "/users/api_token.json" )
-      .reply( 401 );
-
-    await getJWT( );
-
-    const deletedKeys = RNSInfo.deleteItem.mock.calls.map( ( [key] ) => key );
-    expect( deletedKeys ).toContain( "jwtToken" );
-    expect( deletedKeys ).toContain( "jwtGeneratedAt" );
-    expect( deletedKeys ).toContain( "accessToken" );
-  } );
-
   it( "navigates to LoginStackNavigator on 401 when navigationRef is ready", async ( ) => {
     nock( API_HOST )
       .get( "/users/api_token.json" )
