@@ -1,12 +1,18 @@
-import { MMKV, useMMKVBoolean } from "react-native-mmkv";
+import { useState } from "react";
 import * as uuid from "uuid";
 
-const MMKV_ID = "install-data";
-const INSTALL_ID = "installID";
-const ONBOARDING_SHOWN = "onboardingShown";
+const INSTALL_ID = "installID";  
 export const IS_FRESH_INSTALL = "isFreshInstall";
 
-export const store = new MMKV( { id: MMKV_ID } );
+const data = new Map<string, any>();
+
+export const store = {
+  getString: ( key: string ) => data.get( key ),
+  set: ( key: string, value: any ) => { data.set( key, value ); },
+  getBoolean: ( key: string ) => data.get( key ),
+  delete: ( key: string ) => { data.delete( key ); },
+  contains: ( key: string ) => data.has( key )
+};
 
 export function getInstallID( ) {
   const id = store.getString( INSTALL_ID );
@@ -19,5 +25,5 @@ export function getInstallID( ) {
 }
 
 export function useOnboardingShown() {
-  return useMMKVBoolean( ONBOARDING_SHOWN, store );
+  return useState( true );
 }
