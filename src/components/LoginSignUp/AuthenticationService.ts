@@ -382,10 +382,6 @@ const getJWT = async (
         if ( logContext ) {
           logger.info( `JWT [${logContext}]: User unauthorized, navigating to login` );
         }
-        await deleteSensitiveItem( "jwtToken" );
-        await deleteSensitiveItem( "jwtGeneratedAt" );
-        await deleteSensitiveItem( "accessToken" );
-        clearAuthCache( );
         if ( navigationRef.isReady( ) ) {
           navigationRef.navigate( "LoginStackNavigator", { screen: "Login" } );
         }
