@@ -1,15 +1,16 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import { authenticateUser } from "components/LoginSignUp/AuthenticationService";
+import { authenticateUser, signOut } from "components/LoginSignUp/AuthenticationService";
 import {
-  Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2,
+  Body1, Body2, Button, CloseButton, Heading4, INatIcon, INatIconButton, List2,
+  WarningSheet,
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { LoginStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, {
-  useCallback, useEffect, useMemo, useRef, useState,
+  useCallback, useEffect, useRef, useState,
 } from "react";
 import { Trans } from "react-i18next";
 import type { TextInput } from "react-native";
@@ -53,14 +54,29 @@ const LoginForm = ( {
   const [loading, setLoading] = useState( false );
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const { keyboardShown } = useKeyboardInfo( );
+  const [showModal, setShowModal] = useState( false );
 
-  useMemo( () => {
+  const onSignOut = async () => {
+    await signOut( { realm, clearRealm: true } );
+  };
+
+  const renderSignOutButton = useCallback(
+    () => (
+      <CloseButton
+        handleClose={() => setShowModal( true )}
+        buttonClassName="mr-[-5px]"
+      />
+    ),
+    [],
+  );
+
+  useEffect( () => {
     if ( loginAgain ) {
       navigation.setOptions( {
-        headerRight: null,
+        headerRight: renderSignOutButton,
       } );
     }
-  }, [loginAgain, navigation] );
+  }, [loginAgain, navigation, renderSignOutButton] );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -296,6 +312,18 @@ const LoginForm = ( {
           text={t( "LOG-IN" )}
         />
         {renderFooter( )}
+        {showModal && (
+          <WarningSheet
+            onPressClose={() => setShowModal( false )}
+            headerText={t( "LOG-OUT--question" )}
+            text={t( "Are-you-sure-you-want-to-log-out" )}
+            handleSecondButtonPress={() => setShowModal( false )}
+            secondButtonText={t( "CANCEL" )}
+            confirm={onSignOut}
+            buttonText={t( "LOG-OUT" )}
+            loading={false}
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
