@@ -9,7 +9,7 @@ import { t } from "i18next";
 import type { LoginStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, {
-  useCallback, useEffect, useRef, useState,
+  useCallback, useEffect, useMemo, useRef, useState,
 } from "react";
 import { Trans } from "react-i18next";
 import type { TextInput } from "react-native";
@@ -53,6 +53,14 @@ const LoginForm = ( {
   const [loading, setLoading] = useState( false );
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const { keyboardShown } = useKeyboardInfo( );
+
+  useMemo( () => {
+    if ( loginAgain ) {
+      navigation.setOptions( {
+        headerRight: null,
+      } );
+    }
+  }, [loginAgain, navigation] );
 
   const blurFields = () => {
     if ( emailRef.current ) {
