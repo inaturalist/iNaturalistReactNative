@@ -226,24 +226,6 @@ const signOut = async (
   // Don't await on this endpoint, to not delay the signout process
   apiClient.get( "/logout" );
 
-  if ( options.clearRealm ) {
-    if ( options.realm ) {
-      // Delete all the records in the realm db, including the ones accessible
-      // through the copy of realm provided by RealmProvider
-      options.realm.beginTransaction();
-      try {
-        options.realm.deleteAll( );
-        options.realm.commitTransaction( );
-      } catch ( _realmError ) {
-        options.realm.cancelTransaction( );
-        // If we failed to wipe all the data in realm, delete the realm file.
-        // Note that deleting the realm file *all* the time seems to cause
-        // problems in Android when the app is force quit, as in sometimes it
-        // seems to just delete the file even if you didn't sign out
-        Realm.deleteFile( realmConfig );
-      }
-    }
-  }
   // Delete the React Query cache. FWIW, this should *not* be optional, but
   // the checkForSignedInUser needs to call this and that doesn't have access
   // to the React Query context (maybe it could...)
@@ -270,6 +252,26 @@ const signOut = async (
 
   // delete all keys from mmkv
   zustandMMKVBackingStorage.clearAll( );
+
+  if ( options.clearRealm ) {
+    if ( options.realm ) {
+      // Delete all the records in the realm db, including the ones accessible
+      // through the copy of realm provided by RealmProvider
+      options.realm.beginTransaction();
+      try {
+        options.realm.deleteAll();
+        options.realm.commitTransaction();
+      } catch ( _realmError ) {
+        options.realm.cancelTransaction();
+        // If we failed to wipe all the data in realm, delete the realm file.
+        // Note that deleting the realm file *all* the time seems to cause
+        // problems in Android when the app is force quit, as in sometimes it
+        // seems to just delete the file even if you didn't sign out
+        Realm.deleteFile( realmConfig );
+      }
+    }
+  }
+
   RNRestart.restart( );
 };
 
