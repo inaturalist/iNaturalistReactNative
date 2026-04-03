@@ -2,8 +2,8 @@ import merge from "lodash/merge";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import createDynamicConfigSlice from "./createDynamicConfigSlice";
 import createExploreSlice from "./createExploreSlice";
-import createFeatureFlagSlice from "./createFeatureFlagSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
 import createMyObsSlice from "./createMyObsSlice";
@@ -31,8 +31,8 @@ const useStore = create( persist(
   ( ...args ) => {
     // Let's make our slices
     const slices = [
+      createDynamicConfigSlice( ...args ),
       createExploreSlice( ...args ),
-      createFeatureFlagSlice( ...args ),
       createFirebaseTraceSlice( ...args ),
       createLayoutSlice( ...args ),
       createMyObsSlice( ...args ),

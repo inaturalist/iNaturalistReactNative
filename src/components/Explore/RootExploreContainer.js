@@ -17,8 +17,8 @@ import React, {
 import { useCurrentUser, useFeatureFlag } from "sharedHooks";
 import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import useLocationPermission from "sharedHooks/useLocationPermission";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
+import { FeatureFlag } from "types/dynamicConfig";
 
 import Explore from "./Explore";
 import ExploreV2 from "./ExploreV2";

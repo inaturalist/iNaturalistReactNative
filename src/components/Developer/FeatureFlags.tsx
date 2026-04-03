@@ -4,7 +4,7 @@ import {
 } from "components/SharedComponents";
 import React, { useCallback } from "react";
 import { useFeatureFlag } from "sharedHooks";
-import type { FeatureFlagSlice } from "stores/createFeatureFlagSlice";
+import type { FeatureFlagSlice } from "stores/createDynamicConfigSlice";
 import useStore from "stores/useStore";
 import { FeatureFlag } from "types/dynamicConfig";
 
