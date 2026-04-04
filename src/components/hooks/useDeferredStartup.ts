@@ -1,17 +1,14 @@
 /**
- * DeferredStartupService
+ * useDeferredStartup
  *
- * A renderless component that schedules non-critical startup work to run
- * during idle periods of the JS event loop, after the initial render and
- * navigation transitions have completed. Hopefully, this improves Time-To-Interactive
- * (TTI) by keeping the JS thread free for layout, painting, and user input
- * during app launch.
+ * Schedules non-critical startup work to run during idle periods of the JS
+ * event loop, after the initial render and navigation transitions have
+ * completed. Hopefully, this improves Time-To-Interactive (TTI) by keeping
+ * the JS thread free for layout, painting, and user input during app launch.
  *
  * Uses requestIdleCallback to schedule each task in its own callback so the
  * runtime can interleave user interactions between them.
- *
  */
-
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import {
@@ -76,7 +73,7 @@ const checkForPreviousCrash = async () => {
   }
 };
 
-const DeferredStartupService = ( ) => {
+const useDeferredStartup = ( ) => {
   const realm = useRealm( );
 
   useEffect( ( ) => {
@@ -106,8 +103,6 @@ const DeferredStartupService = ( ) => {
       cancelIdleCallback( id7 );
     };
   }, [realm] );
-
-  return null;
 };
 
-export default DeferredStartupService;
+export default useDeferredStartup;
