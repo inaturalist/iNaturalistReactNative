@@ -60,16 +60,26 @@ const LoginForm = ( {
     await signOut( { realm, clearRealm: true } );
   };
 
+  const renderSignOutButton = useCallback(
+    () => (
+      <CloseButton
+        handleClose={() => setShowModal( true )}
+        buttonClassName="mr-[-5px]"
+      />
+    ),
+    [],
+  );
+
   useEffect( () => {
     if ( loginAgain ) {
       navigation.setOptions( {
-        headerRight: <CloseButton
+        headerRight:  <CloseButton
           handleClose={() => setShowModal( true )}
           buttonClassName="mr-[-5px]"
         />,
       } );
     }
-  }, [loginAgain, navigation] );
+  }, [loginAgain, navigation, renderSignOutButton] );
 
   const blurFields = () => {
     if ( emailRef.current ) {
