@@ -73,7 +73,10 @@ const LoginForm = ( {
   useEffect( () => {
     if ( loginAgain ) {
       navigation.setOptions( {
-        headerRight: renderSignOutButton,
+        headerRight:  <CloseButton
+          handleClose={() => setShowModal( true )}
+          buttonClassName="mr-[-5px]"
+        />,
       } );
     }
   }, [loginAgain, navigation, renderSignOutButton] );
