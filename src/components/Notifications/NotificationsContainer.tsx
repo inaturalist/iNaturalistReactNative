@@ -7,7 +7,11 @@ import NotificationsList from "components/Notifications/NotificationsList";
 import React, { useEffect, useState } from "react";
 import type { RealmUser } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
-import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
+import {
+  useInfiniteNotificationsScroll,
+  usePerformance,
+  useTranslation,
+} from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
 const logger = log.extend( "NotificationsContainer" );
@@ -25,6 +29,7 @@ const NotificationsContainer = ( {
 }: Props ) => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
+  const { t } = useTranslation( );
   const [refreshing, setRefreshing] = useState( false );
 
   const {
@@ -62,10 +67,15 @@ const NotificationsContainer = ( {
     }
   };
 
+  const emptyMessage = notificationParams.observations_by === "following"
+    ? t( "You-have-no-notifications-others-tab" )
+    : t( "You-have-no-notifications-my-content-tab" );
+
   return (
     <NotificationsList
       currentUser={currentUser}
       data={notifications}
+      emptyMessage={emptyMessage}
       isError={isError}
       isFetching={isFetching}
       isInitialLoading={isInitialLoading}

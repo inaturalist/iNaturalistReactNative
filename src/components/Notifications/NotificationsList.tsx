@@ -19,6 +19,7 @@ const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 interface Props {
   currentUser: RealmUser | null;
   data: Notification[];
+  emptyMessage: string;
   isError?: boolean;
   isFetching?: boolean;
   isInitialLoading?: boolean;
@@ -39,6 +40,7 @@ interface RenderItemProps {
 const NotificationsList = ( {
   currentUser,
   data,
+  emptyMessage,
   isError,
   isFetching,
   isInitialLoading,
@@ -81,7 +83,7 @@ const NotificationsList = ( {
     }
 
     // Empty/error state
-    let msg = t( "No-Notifications-Found" );
+    let msg = emptyMessage;
     let msg2 = null;
     if ( !currentUser ) {
       msg = t( "Once-you-create-and-upload-observations" );
@@ -96,6 +98,7 @@ const NotificationsList = ( {
     );
   }, [
     currentUser,
+    emptyMessage,
     isError,
     isInitialLoading,
     isConnected,
