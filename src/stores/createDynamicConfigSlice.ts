@@ -1,6 +1,7 @@
 import type { DynamicConfigItem } from "types/dynamicConfig";
-import { DevOnlyFlag, FeatureFlag } from "types/dynamicConfig";
 import type { StateCreator } from "zustand";
+
+import { DevOnlyFlag, FeatureFlag } from "../types/dynamicConfig";
 
 // This state manages configuration for internal behavior that can be changed on the fly
 // separate from user settings. This includes Feature Flags or other development config.

@@ -19,6 +19,7 @@
       "stores": ["src/stores"],
       "styles": ["src/styles"],
       "tests": ["tests"],
+      "types": ["src/types"],
     },
     "strict": true,
     "types": ["nativewind/types"],
