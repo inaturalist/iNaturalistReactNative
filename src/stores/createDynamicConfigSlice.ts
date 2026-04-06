@@ -19,10 +19,6 @@ export type DynamicConfigSectionDebugOverrides<T extends DynamicConfigItem>
   = Record<T, boolean | null>
 
 export type DynamicConfig = Record<DynamicConfigItem, boolean>
-// export interface DynamicConfig {
-//   featureFlags: DynamicConfigSection<FeatureFlag>;
-//   devOnlyFlags: DynamicConfigSection<DevOnlyFlag>;
-// }
 
 type DynamicConfigDebugOverrides = Record<DynamicConfigItem, boolean | null>
 
@@ -39,11 +35,6 @@ const initialDynamicConfig: DynamicConfig = {
   ...initialFeatureFlagConfig,
   ...initialDevOnlyFlagConfig,
 };
-
-// const initialDynamicConfig: DynamicConfig = {
-//   featureFlags: initialFeatureFlagConfig,
-//   devOnlyFlags: initialDevOnlyFlagConfig,
-// };
 
 const initialFeatureFlagDebugOverrides: DynamicConfigSectionDebugOverrides<FeatureFlag> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: null,
