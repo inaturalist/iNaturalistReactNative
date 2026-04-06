@@ -1,16 +1,20 @@
 import type { DynamicConfigSlice } from "stores/createDynamicConfigSlice";
 import useStore from "stores/useStore";
-import type { FeatureFlag } from "types/dynamicConfig";
+import type { DevOnlyFlag, DynamicConfigItem, FeatureFlag } from "types/dynamicConfig";
 
-const useFeatureFlag = ( featureFlagKey: FeatureFlag ) => {
-  const featureFlagConfig = useStore( ( state: DynamicConfigSlice ) => state.dynamicConfig );
-  const featureFlagOverrides
+const useDynamicConfig
+  = ( configKey: DynamicConfigItem ) => {
+    const dynamicConfig = useStore( ( state: DynamicConfigSlice ) => state.dynamicConfig );
+    const dynamicConfigOverrides
     = useStore( ( state: DynamicConfigSlice ) => state.dynamicConfigDebugOverrides );
-  const override = featureFlagOverrides[featureFlagKey];
-  if ( override !== null ) {
-    return override;
-  }
-  return featureFlagConfig[featureFlagKey];
-};
+    const override = dynamicConfigOverrides[configKey];
+    if ( override !== null ) {
+      return override;
+    }
+    return dynamicConfig[configKey];
+  };
 
-export default useFeatureFlag;
+export const useFeatureFlag = ( featureFlag: FeatureFlag ) => useDynamicConfig( featureFlag );
+export const useDevOnlyFlag = ( devOnlyFlag: DevOnlyFlag ) => useDynamicConfig( devOnlyFlag );
+
+export default useDynamicConfig;

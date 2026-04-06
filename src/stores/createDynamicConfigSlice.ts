@@ -1,51 +1,63 @@
-import { FeatureFlag } from "types/dynamicConfig";
+import type { DynamicConfigItem } from "types/dynamicConfig";
+import { DevOnlyFlag, FeatureFlag } from "types/dynamicConfig";
 import type { StateCreator } from "zustand";
 
-// This state slice supports application code's consumption of feature flags, namely:
-// const isMyFeatureEnabled = useFeatureFlag ( FeatureFlag.MyFeatureFlagEnabled );
+// This state manages configuration for internal behavior that can be changed on the fly
+// separate from user settings. This includes Feature Flags or other development config.
 
-// The "status" / "enabledness" of whether a feature flag'd feature is "on" or "off" in the live app
-// is driven by the hard-coded entry here in `initialFeatureFlagConfig`. That is,
-// when we want to "turn on" `MyFeature`, we will set its `initialFeatureFlagConfig` to true.
-
-// Once a feature has been enabled, deployed, and verified, the feature flag should be removed
-// along with the newly-deprecated / "old" code.
-
-// To add a new feature flag, add entries below, following the example of `MyFeatureFlagEnabled`
+// The "status" / "enabledness" of whether a config flag is "on" or "off" in the live app
+// is driven by the hard-coded entry here in `initialDynamicConfig`. That is,
+// when we want to "turn on" `MyFeature` for the public, we will set its
+// `initialFeatureFlagConfig` to true.
 
 // This slice _also_ supports dynamically enabling and disabling a flag for testing,
-// overriding its default "live" status. This is done through the "Debug" / "Developer" screen.
-// These are not persisted so will be reset to their defaults on app start.
-
-// TODO: union w/ new non-FF DyanmicConfig type (for forced offline)
-type DynamicConfigItem = FeatureFlag;
+// overriding its default "live" status for. These are not persisted so will be reset to
+// their defaults on app start.
 
 type DynamicConfigSection<T extends DynamicConfigItem> = Record<T, boolean>
-type DynamicConfigSectionDebugOverrides<T extends DynamicConfigItem> = Record<T, boolean | null>
+export type DynamicConfigSectionDebugOverrides<T extends DynamicConfigItem>
+  = Record<T, boolean | null>
 
-// TODO: union w/ new non-FF DyanmicConfig type (for forced offline)
-type DynamicConfig = DynamicConfigSection<FeatureFlag>
-// TODO: union w/ new non-FF DyanmicConfig type (for forced offline)
-type DynamicConfigDebugOverrides = DynamicConfigSectionDebugOverrides<FeatureFlag>
+export type DynamicConfig = Record<DynamicConfigItem, boolean>
+// export interface DynamicConfig {
+//   featureFlags: DynamicConfigSection<FeatureFlag>;
+//   devOnlyFlags: DynamicConfigSection<DevOnlyFlag>;
+// }
+
+type DynamicConfigDebugOverrides = Record<DynamicConfigItem, boolean | null>
 
 const initialFeatureFlagConfig: DynamicConfigSection<FeatureFlag> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
   [FeatureFlag.ExploreV2Enabled]: false,
 };
 
-const initialDynamicConfig: DynamicConfig = {
-  // TODO: spread new non-FF DyanmicConfig obj (for forced offline)
-  ...initialFeatureFlagConfig,
+const initialDevOnlyFlagConfig: DynamicConfigSection<DevOnlyFlag> = {
+  // [DevOnlyFlag.MyDevOnlyFlagEnabled]: false,
+  [DevOnlyFlag.SimulateAirplaneModeEnabled]: false,
 };
+const initialDynamicConfig: DynamicConfig = {
+  ...initialFeatureFlagConfig,
+  ...initialDevOnlyFlagConfig,
+};
+
+// const initialDynamicConfig: DynamicConfig = {
+//   featureFlags: initialFeatureFlagConfig,
+//   devOnlyFlags: initialDevOnlyFlagConfig,
+// };
 
 const initialFeatureFlagDebugOverrides: DynamicConfigSectionDebugOverrides<FeatureFlag> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: null,
   [FeatureFlag.ExploreV2Enabled]: null,
 };
 
+const initialDevOnlyFlagDebugOverrides: DynamicConfigSectionDebugOverrides<DevOnlyFlag> = {
+  // [DevOnlyFlag.MyDevOnlyFlagEnabled]: null,
+  [DevOnlyFlag.SimulateAirplaneModeEnabled]: null,
+};
+
 const initialDynamicConfigDebugOverrides: DynamicConfigDebugOverrides = {
-  // TODO: spread new non-FF DyanmicConfig obj (for forced offline)
   ...initialFeatureFlagDebugOverrides,
+  ...initialDevOnlyFlagDebugOverrides,
 };
 
 const DEFAULT_STATE = {
@@ -56,11 +68,6 @@ const DEFAULT_STATE = {
 export interface DynamicConfigSlice {
   dynamicConfig: DynamicConfig;
   dynamicConfigDebugOverrides: DynamicConfigDebugOverrides;
-  /**
-   * WARNING
-   *
-   * DO NOT call this anywhere except from the Feature Flag management in the "Debug" screen
-   */
   setDynamicConfigDebugOverride: (
     dynamicConfigKey: DynamicConfigItem,
     override: boolean | null
