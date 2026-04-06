@@ -1,11 +1,11 @@
-import type { FeatureFlagSlice } from "stores/createDynamicConfigSlice";
+import type { DynamicConfigSlice } from "stores/createDynamicConfigSlice";
 import useStore from "stores/useStore";
 import type { FeatureFlag } from "types/dynamicConfig";
 
 const useFeatureFlag = ( featureFlagKey: FeatureFlag ) => {
-  const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
+  const featureFlagConfig = useStore( ( state: DynamicConfigSlice ) => state.dynamicConfig );
   const featureFlagOverrides
-    = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
+    = useStore( ( state: DynamicConfigSlice ) => state.dynamicConfigDebugOverrides );
   const override = featureFlagOverrides[featureFlagKey];
   if ( override !== null ) {
     return override;

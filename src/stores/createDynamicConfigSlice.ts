@@ -17,41 +17,65 @@ import type { StateCreator } from "zustand";
 // overriding its default "live" status. This is done through the "Debug" / "Developer" screen.
 // These are not persisted so will be reset to their defaults on app start.
 
-const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
+// TODO: union w/ new non-FF DyanmicConfig type (for forced offline)
+type DynamicConfigItem = FeatureFlag;
+
+type DynamicConfigSection<T extends DynamicConfigItem> = Record<T, boolean>
+type DynamicConfigSectionDebugOverrides<T extends DynamicConfigItem> = Record<T, boolean | null>
+
+// TODO: union w/ new non-FF DyanmicConfig type (for forced offline)
+type DynamicConfig = DynamicConfigSection<FeatureFlag>
+// TODO: union w/ new non-FF DyanmicConfig type (for forced offline)
+type DynamicConfigDebugOverrides = DynamicConfigSectionDebugOverrides<FeatureFlag>
+
+const initialFeatureFlagConfig: DynamicConfigSection<FeatureFlag> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
   [FeatureFlag.ExploreV2Enabled]: false,
 };
 
-const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
+const initialDynamicConfig: DynamicConfig = {
+  // TODO: spread new non-FF DyanmicConfig obj (for forced offline)
+  ...initialFeatureFlagConfig,
+};
+
+const initialFeatureFlagDebugOverrides: DynamicConfigSectionDebugOverrides<FeatureFlag> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: null,
   [FeatureFlag.ExploreV2Enabled]: null,
 };
 
-const DEFAULT_STATE = {
-  featureFlagConfig: initialFeatureFlagConfig,
-  featureFlagDebugOverrides: initialFeatureFlagDebugOverrides,
+const initialDynamicConfigDebugOverrides: DynamicConfigDebugOverrides = {
+  // TODO: spread new non-FF DyanmicConfig obj (for forced offline)
+  ...initialFeatureFlagDebugOverrides,
 };
 
-export interface FeatureFlagSlice {
-  featureFlagConfig: Record<FeatureFlag, boolean>;
-  featureFlagDebugOverrides: Record<FeatureFlag, boolean | null>;
+const DEFAULT_STATE = {
+  dynamicConfig: initialDynamicConfig,
+  dynamicConfigDebugOverrides: initialDynamicConfigDebugOverrides,
+};
+
+export interface DynamicConfigSlice {
+  dynamicConfig: DynamicConfig;
+  dynamicConfigDebugOverrides: DynamicConfigDebugOverrides;
   /**
    * WARNING
    *
    * DO NOT call this anywhere except from the Feature Flag management in the "Debug" screen
    */
-  setFeatureFlagDebugOverride: ( featureFlagKey: FeatureFlag, override: boolean | null ) => void;
+  setDynamicConfigDebugOverride: (
+    dynamicConfigKey: DynamicConfigItem,
+    override: boolean | null
+  ) => void;
 }
 
-const createFeatureFlagSlice: StateCreator<FeatureFlagSlice> = set => ( {
+const initializeDynamicConfigSlice: StateCreator<DynamicConfigSlice> = set => ( {
   ...DEFAULT_STATE,
-  setFeatureFlagDebugOverride: ( featureFlagKey, override ) => set( state => ( {
+  setDynamicConfigDebugOverride: ( dynamicConfigKey, override ) => set( state => ( {
     ...state,
-    featureFlagDebugOverrides: {
-      ...state.featureFlagDebugOverrides,
-      [featureFlagKey]: override,
+    dynamicConfigDebugOverrides: {
+      ...state.dynamicConfigDebugOverrides,
+      [dynamicConfigKey]: override,
     },
   } ) ),
 } );
 
-export default createFeatureFlagSlice;
+export default initializeDynamicConfigSlice;

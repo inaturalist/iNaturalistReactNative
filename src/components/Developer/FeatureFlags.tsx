@@ -4,7 +4,7 @@ import {
 } from "components/SharedComponents";
 import React, { useCallback } from "react";
 import { useFeatureFlag } from "sharedHooks";
-import type { FeatureFlagSlice } from "stores/createDynamicConfigSlice";
+import type { DynamicConfigSlice } from "stores/createDynamicConfigSlice";
 import useStore from "stores/useStore";
 import { FeatureFlag } from "types/dynamicConfig";
 
@@ -13,11 +13,11 @@ import { H1, H2 } from "./DeveloperSharedComponents";
 export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
   const resolvedValue = useFeatureFlag( featureFlagKey );
 
-  const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
+  const featureFlagConfig = useStore( ( state: DynamicConfigSlice ) => state.dynamicConfig );
   const featureFlagOverrides
-    = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
+    = useStore( ( state: DynamicConfigSlice ) => state.dynamicConfigDebugOverrides );
   const storeSetOverride
-    = useStore( ( state: FeatureFlagSlice ) => state.setFeatureFlagDebugOverride );
+    = useStore( ( state: DynamicConfigSlice ) => state.setDynamicConfigDebugOverride );
 
   const rawValue = featureFlagConfig[featureFlagKey];
   const overrideValue = featureFlagOverrides[featureFlagKey];
