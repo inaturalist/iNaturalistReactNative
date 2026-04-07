@@ -161,6 +161,10 @@ global.timeTravel = ( time = frameTime ) => {
     tickTravel();
   }
 };
+jest.mock( "sharedHooks/useConnectionStatus", () => ( {
+  __esModule: true,
+  default: jest.fn( () => ( { isConnected: true } ) ),
+} ) );
 
 jest.mock( "sharedHelpers/installData", ( ) => ( {
   // For most tests it's just going to be burden to dismiss this thing that
