@@ -144,48 +144,54 @@ const SoundRecorder = (): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const captureButton = useMemo( ( ) => {
-    let onPress = startRecording;
-    let icon = "microphone";
-    let accessibilityLabel = t( "Record-verb" );
-    let accessibilityHint = t( "Starts-recording-sound" );
-    let backgroundColor = colors.warningRed;
-    let size = 33;
-    const style = {};
+  const renderCaptureButton = ( ) => {
     if ( status === "recording" ) {
-      onPress = stopRecording;
-      icon = "stop";
-      accessibilityLabel = t( "Stop-verb" );
-      accessibilityHint = t( "Stops-recording-sound" );
-    } else if ( status === STOPPED ) {
-      onPress = ( ) => setMediaViewerVisible( true );
-      icon = "play";
-      size = 24;
-      backgroundColor = colors.darkGray;
-      style.paddingLeft = 5;
+      return (
+        <INatIconButton
+          onPress={stopRecording}
+          backgroundColor={colors.warningRed}
+          color={colors.white}
+          size={33}
+          icon="stop"
+          accessibilityLabel={t( "Stop-verb" )}
+          accessibilityHint={t( "Stops-recording-sound" )}
+          width={74}
+          height={74}
+          mode="contained"
+        />
+      );
+    } if ( status === STOPPED ) {
+      return (
+        <INatIconButton
+          className="pl-[5px]"
+          onPress={() => setMediaViewerVisible( true )}
+          backgroundColor={colors.darkGray}
+          color={colors.white}
+          size={24}
+          icon="play"
+          accessibilityLabel={t( "Record-verb" )}
+          accessibilityHint={t( "Starts-recording-sound" )}
+          width={74}
+          height={74}
+          mode="contained"
+        />
+      );
     }
-
     return (
       <INatIconButton
-        onPress={onPress}
-        backgroundColor={backgroundColor}
+        onPress={startRecording}
+        backgroundColor={colors.warningRed}
         color={colors.white}
-        size={size}
-        icon={icon}
-        accessibilityLabel={accessibilityLabel}
-        accessibilityHint={accessibilityHint}
-        width={60}
-        height={60}
+        size={42}
+        icon="microphone"
+        accessibilityLabel={t( "Record-verb" )}
+        accessibilityHint={t( "Starts-recording-sound" )}
+        width={74}
+        height={74}
         mode="contained"
-        style={style}
       />
     );
-  }, [
-    startRecording,
-    stopRecording,
-    status,
-    t,
-  ] );
+  };
 
   const sounds = uri
     ? [{ file_url: uri }]
@@ -266,7 +272,6 @@ const SoundRecorder = (): Node => {
         </View>
       ) }
       <MediaNavButtons
-        captureButton={captureButton}
         onConfirm={navToObsEdit}
         onClose={( ) => {
           if ( uri ) {
@@ -278,7 +283,9 @@ const SoundRecorder = (): Node => {
         mediaCaptured={uri}
         confirmHidden={status === RECORDING}
         closeHidden={status === RECORDING}
-      />
+      >
+        {renderCaptureButton( )}
+      </MediaNavButtons>
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}
