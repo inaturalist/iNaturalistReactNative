@@ -4,7 +4,7 @@ module.exports = {
   appendFile: jest.fn( ),
   CachesDirectoryPath: "caches/directory/path",
   DocumentDirectoryPath: "document/directory/path",
-  exists: jest.fn( async ( ) => true ),
+  exists: jest.fn( async name => !name.includes( "sentinelFiles" ) ),
   moveFile: async ( ) => "testdata",
   copyFile: async ( ) => "testdata",
   copyAssetsFileIOS: async ( ) => "testdata",
