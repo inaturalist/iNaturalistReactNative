@@ -19,7 +19,7 @@ const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 interface Props {
   currentUser: RealmUser | null;
   data: Notification[];
-  emptyMessage: string;
+  followingTabIsActive: boolean;
   isError?: boolean;
   isFetching?: boolean;
   isInitialLoading?: boolean;
@@ -40,7 +40,7 @@ interface RenderItemProps {
 const NotificationsList = ( {
   currentUser,
   data,
-  emptyMessage,
+  followingTabIsActive,
   isError,
   isFetching,
   isInitialLoading,
@@ -83,7 +83,9 @@ const NotificationsList = ( {
     }
 
     // Empty/error state
-    let msg = emptyMessage;
+    let msg = followingTabIsActive
+      ? t( "You-have-no-notifications-others-tab" )
+      : t( "You-have-no-notifications-my-content-tab" );
     let msg2 = null;
     if ( !currentUser ) {
       msg = t( "Once-you-create-and-upload-observations" );
@@ -98,7 +100,7 @@ const NotificationsList = ( {
     );
   }, [
     currentUser,
-    emptyMessage,
+    followingTabIsActive,
     isError,
     isInitialLoading,
     isConnected,
