@@ -10,7 +10,6 @@ import { log } from "sharedHelpers/logger";
 import {
   useInfiniteNotificationsScroll,
   usePerformance,
-  useTranslation,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
@@ -29,7 +28,6 @@ const NotificationsContainer = ( {
 }: Props ) => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
-  const { t } = useTranslation( );
   const [refreshing, setRefreshing] = useState( false );
 
   const {
@@ -67,15 +65,13 @@ const NotificationsContainer = ( {
     }
   };
 
-  const emptyMessage = notificationParams.observations_by === "following"
-    ? t( "You-have-no-notifications-others-tab" )
-    : t( "You-have-no-notifications-my-content-tab" );
+  const followingTabIsActive = notificationParams.observations_by === "following";
 
   return (
     <NotificationsList
       currentUser={currentUser}
       data={notifications}
-      emptyMessage={emptyMessage}
+      followingTabIsActive={followingTabIsActive}
       isError={isError}
       isFetching={isFetching}
       isInitialLoading={isInitialLoading}
