@@ -1,0 +1,2 @@
+FIXED
+* Autocorrect in text input
