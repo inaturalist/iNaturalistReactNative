@@ -84,8 +84,10 @@ const NotificationsList = ( {
 
     // Empty/error state
     let msg = followingTabIsActive
-      ? t( "You-have-no-notifications-others-tab" )
-      : t( "You-have-no-notifications-my-content-tab" );
+      ? t(
+        "You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on",
+      )
+      : t( "You-have-no-notifications-get-started-by-creating-your-own-observations" );
     let msg2 = null;
     if ( !currentUser ) {
       msg = t( "Once-you-create-and-upload-observations" );
