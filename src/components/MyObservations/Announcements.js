@@ -18,6 +18,7 @@ import { openExternalWebBrowser } from "sharedHelpers/util";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
+  useQuery,
   useTranslation,
 } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
@@ -47,6 +48,23 @@ type Props = {
   isConnected: boolean,
 }
 
+const useAnnouncementsQuery = ( queryKey, queryFn, isAuthenticated ) => {
+  const unauthenticatedQuery = useQuery(
+    queryKey,
+    queryFn,
+    { enabled: !isAuthenticated },
+  );
+  const authenticatedQuery = useAuthenticatedQuery(
+    queryKey,
+    queryFn,
+    { enabled: isAuthenticated },
+  );
+
+  return isAuthenticated
+    ? authenticatedQuery
+    : unauthenticatedQuery;
+};
+
 const Announcements = ( {
   isConnected,
 }: Props ): Node => {
@@ -60,17 +78,17 @@ const Announcements = ( {
     locale: currentUser?.locale || "en",
     per_page: 20,
   };
+
   // TODO: if there are more than 20 announcements, should we paginate and get more?
+  const isAuthenticated = !!currentUser;
   const {
     data: announcements,
     refetch: refetchAnnouncements,
     isRefetching,
-  } = useAuthenticatedQuery(
+  } = useAnnouncementsQuery(
     ["searchAnnouncements", apiParams],
     optsWithAuth => searchAnnouncements( apiParams, optsWithAuth ),
-    {
-      enabled: !!( currentUser ),
-    },
+    isAuthenticated,
   );
 
   const { mutate: dismissAnnouncementMutate } = useAuthenticatedMutation(
@@ -89,9 +107,6 @@ const Announcements = ( {
   );
 
   if ( !isConnected ) {
-    return null;
-  }
-  if ( !currentUser ) {
     return null;
   }
   if ( !announcements || announcements.length === 0 ) {
