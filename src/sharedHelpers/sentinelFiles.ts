@@ -66,9 +66,9 @@ const deleteSentinelFile = async ( sentinelFileName: string ): Promise<void> => 
   }
 };
 
-const findAndLogSentinelFiles = async ( ) => {
+const logSentinelFiles = async ( ) => {
   const directoryExists = await RNFS.exists( sentinelFilePath );
-  if ( !directoryExists ) { return null; }
+  if ( !directoryExists ) { return; }
   const files = await RNFS.readDir( sentinelFilePath );
 
   files.forEach( async file => {
@@ -80,12 +80,11 @@ const findAndLogSentinelFiles = async ( ) => {
     }
     await unlink( file.path );
   } );
-  return files;
 };
 
 export {
   createSentinelFile,
   deleteSentinelFile,
-  findAndLogSentinelFiles,
+  logSentinelFiles,
   logStage,
 };
