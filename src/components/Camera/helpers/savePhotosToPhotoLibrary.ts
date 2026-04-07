@@ -2,12 +2,13 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {
   permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS,
+  SAVE_PHOTO_PERMISSION,
 } from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import {
   Alert,
 } from "react-native";
-import { checkMultiple, RESULTS } from "react-native-permissions";
+import { checkMultiple, request, RESULTS } from "react-native-permissions";
 import { log } from "sharedHelpers/logger";
 
 import { displayName as appName } from "../../../../app.json";
@@ -25,6 +26,15 @@ async function savePhotosToPhotoLibrary(
   uris: [string],
   location: object,
 ) {
+  // Request write permission via native OS dialog if not yet determined.
+  // On Android 11+ SAVE_PHOTO_PERMISSION is null (scoped storage, no permission needed).
+  if ( SAVE_PHOTO_PERMISSION ) {
+    const writeResult = await request( SAVE_PHOTO_PERMISSION );
+    if ( writeResult !== RESULTS.GRANTED ) {
+      return [];
+    }
+  }
+
   const readWritePermissionResult = permissionResultFromMultiple(
     await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS ),
   );
@@ -52,6 +62,7 @@ async function savePhotosToPhotoLibrary(
         const savedPhotoUri = await CameraRoll.save( uri, saveOptions );
         savedUris.push( savedPhotoUri );
         return savedUris;
+        // TODO : type cameraRollSaveError
       } catch ( cameraRollSaveError ) {
         // should never get here since in usePrepareStoreAndNavigate we check for device full
         // and skip saving to photo library
@@ -68,15 +79,13 @@ async function savePhotosToPhotoLibrary(
         }
         // This means an iOS user denied access
         // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
-        // In theory we should not even have called this function when that
-        // happens, but we're still seeing this in the logs. They should be
-        // prompted to grant permission the next time they try so this is
-        // probably safe to ignore.
-        if ( !cameraRollSaveError.message.match( /error 3311/ ) ) {
-          logger.error( cameraRollSaveError );
+        // This can happen if the user revokes permission after we checked,
+        // so we silently skip saving.
+        if ( cameraRollSaveError.message.match( /error 3311/ ) ) {
           return savedUris;
         }
-        throw cameraRollSaveError;
+        logger.error( cameraRollSaveError );
+        return savedUris;
       }
     },
     // We need the initial value even if we're not using it, otherwise reduce

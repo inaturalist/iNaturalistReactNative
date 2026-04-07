@@ -6,6 +6,7 @@ import {
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import { log } from "sharedHelpers/logger";
 import {
   useLayoutPrefs,
 } from "sharedHooks";
@@ -13,6 +14,8 @@ import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
+
+const logger = log.extend( "usePrepareStoreAndNavigate" );
 
 const usePrepareStoreAndNavigate = ( ) => {
   const navigation = useNavigation( );
@@ -37,15 +40,10 @@ const usePrepareStoreAndNavigate = ( ) => {
 
   const handleSavingToPhotoLibrary = useCallback( async (
     uris,
-    addPhotoPermissionResult,
     userLocation,
     logStageIfAICamera,
   ) => {
     await logStageIfAICamera( "save_photos_to_photo_library_start" );
-    if ( addPhotoPermissionResult !== "granted" ) {
-      await logStageIfAICamera( "save_photos_to_photo_library_error" );
-      return Promise.resolve( );
-    }
     if ( deviceStorageFull ) {
       await logStageIfAICamera( "save_photos_to_photo_library_error" );
       showStorageFullAlert( );
@@ -73,16 +71,12 @@ const usePrepareStoreAndNavigate = ( ) => {
 
   const createObsWithCameraPhotos = useCallback( async (
     uris,
-    addPhotoPermissionResult,
     userLocation,
     logStageIfAICamera,
     visionResult,
   ) => {
     const newObservation = await Observation.new( );
 
-    // 20240709 amanda - this is temporary since we'll want to move this code to
-    // Suggestions after the changes to permissions github issue is complete, and
-    // we'll be able to updateObservationKeys on the observation there
     if ( userLocation?.latitude ) {
       const placeName = await fetchPlaceName( userLocation.latitude, userLocation.longitude );
       newObservation.latitude = userLocation?.latitude;
@@ -101,12 +95,11 @@ const usePrepareStoreAndNavigate = ( ) => {
       newObservation.taxon = visionResult.taxon;
     }
     setObservations( [newObservation] );
-    await handleSavingToPhotoLibrary(
+    handleSavingToPhotoLibrary(
       uris,
-      addPhotoPermissionResult,
       userLocation,
       logStageIfAICamera,
-    );
+    ).catch( e => logger.error( e ) );
   }, [
     isDefaultMode,
     screenAfterPhotoEvidence,
@@ -115,7 +108,6 @@ const usePrepareStoreAndNavigate = ( ) => {
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async (
-    addPhotoPermissionResult,
     userLocation,
     logStageIfAICamera,
   ) => {
@@ -132,13 +124,11 @@ const usePrepareStoreAndNavigate = ( ) => {
     const updatedObservations = [...observations];
     updatedObservations[currentObservationIndex] = updatedCurrentObservation;
     updateObservations( updatedObservations );
-
-    await handleSavingToPhotoLibrary(
+    handleSavingToPhotoLibrary(
       evidenceToAdd,
-      addPhotoPermissionResult,
       userLocation,
       logStageIfAICamera,
-    );
+    ).catch( e => logger.error( e ) );
   }, [
     evidenceToAdd,
     numOfObsPhotos,
@@ -150,7 +140,6 @@ const usePrepareStoreAndNavigate = ( ) => {
   ] );
 
   const prepareStoreAndNavigate = useCallback( async ( {
-    addPhotoPermissionResult,
     userLocation,
     newPhotoState,
     logStageIfAICamera,
@@ -164,7 +153,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     // new observation
     const uris = newPhotoState?.cameraUris || cameraUris;
     if ( addEvidence ) {
-      await updateObsWithCameraPhotos( addPhotoPermissionResult, userLocation, logStageIfAICamera );
+      await updateObsWithCameraPhotos( userLocation, logStageIfAICamera );
       await deleteStageIfAICamera( );
       setSentinelFileName( null );
       return navigation.navigate( "ObsEdit", { lastScreen: "Camera" } );
@@ -172,7 +161,6 @@ const usePrepareStoreAndNavigate = ( ) => {
 
     await createObsWithCameraPhotos(
       uris,
-      addPhotoPermissionResult,
       userLocation,
       logStageIfAICamera,
       visionResult,
