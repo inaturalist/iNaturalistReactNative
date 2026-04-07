@@ -6,7 +6,7 @@ import {
 } from "components/Camera/helpers/visionCameraWrapper";
 import { ActivityIndicator } from "components/SharedComponents";
 import {
-  SAVE_PHOTO_PERMISSION,
+  WRITE_MEDIA_PERMISSIONS,
 } from "components/SharedComponents/PermissionGateContainer";
 import { View } from "components/styledComponents";
 import React, {
@@ -16,7 +16,7 @@ import React, {
   useState,
 } from "react";
 import { Alert, StatusBar } from "react-native";
-import { request } from "react-native-permissions";
+import { requestMultiple } from "react-native-permissions";
 import type {
   TakePhotoOptions,
 } from "react-native-vision-camera";
@@ -235,8 +235,8 @@ const CameraContainer = ( ) => {
     // permission dialog on first photo so it appears over the camera view.
     // For AI camera, the dialog is triggered later by savePhotosToPhotoLibrary
     // after navigation, so it appears on the destination screen.
-    if ( cameraType !== "AI" && cameraUris.length === 0 && SAVE_PHOTO_PERMISSION ) {
-      request( SAVE_PHOTO_PERMISSION ).catch( ( ) => {} );
+    if ( cameraType !== "AI" && cameraUris.length === 0 && WRITE_MEDIA_PERMISSIONS.length > 0 ) {
+      requestMultiple( WRITE_MEDIA_PERMISSIONS ).catch( ( ) => {} );
     }
     // Set the camera to inactive immediately after taking the photo,
     // this does leave a short period of time where the camera preview is still active

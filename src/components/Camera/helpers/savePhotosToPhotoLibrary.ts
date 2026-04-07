@@ -2,13 +2,13 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {
   permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS,
-  SAVE_PHOTO_PERMISSION,
+  WRITE_MEDIA_PERMISSIONS,
 } from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import {
   Alert,
 } from "react-native";
-import { checkMultiple, request, RESULTS } from "react-native-permissions";
+import { checkMultiple, requestMultiple, RESULTS } from "react-native-permissions";
 import { log } from "sharedHelpers/logger";
 
 import { displayName as appName } from "../../../../app.json";
@@ -26,10 +26,10 @@ async function savePhotosToPhotoLibrary(
   uris: [string],
   location: object,
 ) {
-  // Request write permission via native OS dialog if not yet determined.
-  // On Android 11+ SAVE_PHOTO_PERMISSION is null (scoped storage, no permission needed).
-  if ( SAVE_PHOTO_PERMISSION ) {
-    const writeResult = await request( SAVE_PHOTO_PERMISSION );
+  if ( WRITE_MEDIA_PERMISSIONS.length > 0 ) {
+    const writeResult = permissionResultFromMultiple(
+      await requestMultiple( WRITE_MEDIA_PERMISSIONS ),
+    );
     if ( writeResult !== RESULTS.GRANTED ) {
       return [];
     }
