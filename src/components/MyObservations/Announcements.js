@@ -147,7 +147,8 @@ const Announcements = ( {
         scrollEnabled={false}
         testID="announcements-webview"
       />
-      {dismissible && (
+      {/* disable dismissing announcements until local-storage-based dismissal is supported */}
+      {dismissible && isAuthenticated && (
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t( "Dismiss-announcement" )}
