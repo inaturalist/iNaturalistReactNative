@@ -309,6 +309,15 @@ function formatDateString(
       ? i18n.t( "Missing-Date" )
       : options.missing;
   }
+
+  // If i18n is not initialized, because we rely on translations to format the date,
+  // we would get the key of the format string here for fmt instead of the actual format string.
+  // So, we would get, e.g. "date-format-long" instead of "PP" here. Which throws an error.
+  // in the format function below.
+  if ( !i18n.isInitialized ) {
+    return dateString;
+  }
+
   let timeZone = (
     // If we received a time zone, display the time in the requested zone
     options.timeZone
