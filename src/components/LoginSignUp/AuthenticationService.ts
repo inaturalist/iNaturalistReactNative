@@ -14,6 +14,7 @@ import {
 import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import rs from "jsrsasign";
+import { navigationRef } from "navigation/navigationUtils";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
@@ -225,24 +226,6 @@ const signOut = async (
   // Don't await on this endpoint, to not delay the signout process
   apiClient.get( "/logout" );
 
-  if ( options.clearRealm ) {
-    if ( options.realm ) {
-      // Delete all the records in the realm db, including the ones accessible
-      // through the copy of realm provided by RealmProvider
-      options.realm.beginTransaction();
-      try {
-        options.realm.deleteAll( );
-        options.realm.commitTransaction( );
-      } catch ( _realmError ) {
-        options.realm.cancelTransaction( );
-        // If we failed to wipe all the data in realm, delete the realm file.
-        // Note that deleting the realm file *all* the time seems to cause
-        // problems in Android when the app is force quit, as in sometimes it
-        // seems to just delete the file even if you didn't sign out
-        Realm.deleteFile( realmConfig );
-      }
-    }
-  }
   // Delete the React Query cache. FWIW, this should *not* be optional, but
   // the checkForSignedInUser needs to call this and that doesn't have access
   // to the React Query context (maybe it could...)
@@ -269,6 +252,26 @@ const signOut = async (
 
   // delete all keys from mmkv
   zustandMMKVBackingStorage.clearAll( );
+
+  if ( options.clearRealm ) {
+    if ( options.realm ) {
+      // Delete all the records in the realm db, including the ones accessible
+      // through the copy of realm provided by RealmProvider
+      options.realm.beginTransaction();
+      try {
+        options.realm.deleteAll();
+        options.realm.commitTransaction();
+      } catch ( _realmError ) {
+        options.realm.cancelTransaction();
+        // If we failed to wipe all the data in realm, delete the realm file.
+        // Note that deleting the realm file *all* the time seems to cause
+        // problems in Android when the app is force quit, as in sometimes it
+        // seems to just delete the file even if you didn't sign out
+        Realm.deleteFile( realmConfig );
+      }
+    }
+  }
+
   RNRestart.restart( );
 };
 
@@ -368,15 +371,6 @@ const getJWT = async (
             throw getUsersApiTokenError;
           }
 
-          // TODO: this means that if the server doesn't respond with a successful
-          // token *for any reason* it just deletes the entire local database. That
-          // means if you tried to retrieve a new token during downtime, it would
-          // delete all of your unsynced observations
-          // TODO: Also, I (kueda) am not really sure we want to delete all of realm
-          // just because auth failed. If you change your password on the website,
-          // you should be signed out in the app, BUT if you have unsynced
-          // observations shouldn't you have the opportunity to sign in again and
-          // upload them?
           if ( !response.ok ) {
             logger.error(
               `JWT [${logContext}]: Token refresh failed - status: ${response.status}`,
@@ -387,9 +381,11 @@ const getJWT = async (
             // and reinstalled the app without logging out
             if ( response.status === 401 ) {
               if ( logContext ) {
-                logger.info( `JWT [${logContext}]: User unauthorized, signing out ` );
+                logger.info( `JWT [${logContext}]: User unauthorized, navigating to login` );
               }
-              signOut( { clearRealm: true } );
+              if ( navigationRef.isReady( ) ) {
+                navigationRef.navigate( "LoginStackNavigator", { screen: "Login" } );
+              }
             }
             return null;
           }
@@ -587,6 +583,7 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
+  clearAuthCache( );
   return true;
 }
 
