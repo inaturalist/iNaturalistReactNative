@@ -43,7 +43,8 @@ function useObsEditRollback( ): ObsEditRollbackReturn {
     observations,
     params?.lastScreen,
     setBackupMappings,
-    setRollbackSnapshot] );
+    setRollbackSnapshot,
+  ] );
 
   const rollback = useCallback( async ( ) => {
     if ( backupMappings.length > 0 ) {
