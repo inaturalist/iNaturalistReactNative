@@ -1,40 +1,47 @@
 import { t } from "i18next";
-import { Alert, Linking, Platform } from "react-native";
-import Mailer from "react-native-mail";
-
-function openInboxError() {
-  Alert.alert( t( "No-email-app-installed" ), t( "No-email-app-installed-body-check-other" ) );
-}
+import { Alert } from "react-native";
+import {
+  openComposer,
+  openInbox as RNOpenInbox,
+} from "react-native-email-link";
 
 export async function openInbox() {
-  let isSupported;
   try {
-    isSupported = await Linking.canOpenURL( "message:0" );
-  } catch ( _canOpenURLError ) {
-    openInboxError();
-    return;
-  }
-  if ( !isSupported ) openInboxError();
-  try {
-    await Linking.openURL( "message:0" );
-  } catch ( openURLError ) {
-    Alert.alert( t( "Something-went-wrong" ), openURLError.message );
+    await RNOpenInbox( {
+      removeText: true,
+    } );
+  } catch ( error ) {
+    if ( ( error as Error ).message === "!isSupported" ) {
+      Alert.alert(
+        t( "No-email-app-installed" ),
+        t( "No-email-app-installed-body-check-other" ),
+      );
+    } else {
+      Alert.alert(
+        t( "Something-went-wrong" ),
+        ( error as Error ).message,
+      );
+    }
   }
 }
 
-export function composeEmail( emailAddress: string ) {
-  Mailer.mail( {
-    recipients: [emailAddress],
-  }, ( error: string ) => {
-    if ( Platform.OS === "ios" && error === "not_available" ) {
+export async function composeEmail( emailAddress: string ) {
+  try {
+    await openComposer( {
+      removeText: true,
+      to: emailAddress,
+    } );
+  } catch ( error ) {
+    if ( ( error as Error ).message === "not_available" ) {
       Alert.alert(
         t( "No-email-app-installed" ),
         t( "No-email-app-installed-body", { address: emailAddress } ),
       );
-      return;
+    } else {
+      Alert.alert(
+        t( "Something-went-wrong" ),
+        ( error as Error ).message,
+      );
     }
-    if ( error ) {
-      Alert.alert( t( "Something-went-wrong" ), error );
-    }
-  } );
+  }
 }
