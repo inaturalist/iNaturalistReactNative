@@ -1,4 +1,3 @@
-// @flow
 import makeWebshell, {
   ForceElementSizeFeature,
   ForceResponsiveViewportFeature,
@@ -10,7 +9,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
 import { ActivityIndicator, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { WebView } from "react-native-webview";
 import { openExternalWebBrowser } from "sharedHelpers/util";
@@ -36,7 +34,7 @@ const Webshell = makeWebshell(
   } ),
 );
 
-const AutoheightWebView = ( webshellProps ): Node => {
+const AutoheightWebView = webshellProps => {
   const { autoheightWebshellProps } = useAutoheight( {
     webshellProps,
   } );
@@ -44,8 +42,8 @@ const AutoheightWebView = ( webshellProps ): Node => {
   return <Webshell {...autoheightWebshellProps} />;
 };
 
-type Props = {
-  isConnected: boolean,
+interface Props {
+  isConnected: boolean;
 }
 
 const useAnnouncementsQuery = ( queryKey, queryFn, isAuthenticated ) => {
@@ -77,7 +75,7 @@ const useAnnouncementsQuery = ( queryKey, queryFn, isAuthenticated ) => {
 
 const Announcements = ( {
   isConnected,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
