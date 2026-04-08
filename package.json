@@ -93,7 +93,7 @@
     "linkify-html": "^4.3.2",
     "linkify-plugin-mention": "^4.3.2",
     "linkifyjs": "^4.3.2",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "markdown-it": "^14.1.1",
     "nativewind": "^2.0.11",
     "react": "19.1.1",
