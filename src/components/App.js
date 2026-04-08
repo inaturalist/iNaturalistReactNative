@@ -13,6 +13,7 @@ import {
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
 import AppStateListener from "./AppStateListener";
+import useDeferredStartup from "./hooks/useDeferredStartup";
 import useLinking from "./hooks/useLinking";
 import NetworkService from "./NetworkService";
 import StartupService from "./StartupService";
@@ -72,6 +73,7 @@ const App = ( { children }: Props ): Node => {
 
   useLinking( currentUser );
   useShare( onShare );
+  useDeferredStartup( );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

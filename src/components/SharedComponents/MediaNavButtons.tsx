@@ -3,6 +3,7 @@ import GreenCheckmark from "components/Camera/Buttons/GreenCheckmark";
 import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { PropsWithChildren } from "react";
 import React from "react";
 import type { AnimatedStyle } from "react-native-reanimated";
 
@@ -32,8 +33,7 @@ const CLOSE_CLASSES = [
   "items-center",
 ];
 
-interface Props {
-  captureButton: React.JSX.Element;
+interface Props extends PropsWithChildren {
   closeHidden?: boolean;
   confirmHidden?: boolean;
   disabled?: boolean;
@@ -44,7 +44,7 @@ interface Props {
 }
 
 const MediaNavButtons = ( {
-  captureButton,
+  children,
   closeHidden,
   confirmHidden,
   disabled,
@@ -70,7 +70,7 @@ const MediaNavButtons = ( {
           />
         </RotatableIconWrapper>
       )}
-    {captureButton}
+    {children}
     {mediaCaptured && !confirmHidden
       ? (
         <RotatableIconWrapper

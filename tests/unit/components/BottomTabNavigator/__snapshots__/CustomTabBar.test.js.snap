@@ -96,6 +96,12 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           [
             [
               {
+                "minHeight": 44,
+              },
+              {
+                "minWidth": 44,
+              },
+              {
                 "alignItems": "center",
               },
               {
@@ -110,59 +116,43 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             [
               [
                 {
-                  "height": 44,
-                  "width": 44,
+                  "height": 36,
+                },
+                {
+                  "width": 36,
                 },
                 {
                   "alignItems": "center",
+                },
+                {
                   "justifyContent": "center",
                 },
-                false,
-                undefined,
               ],
             ]
           }
           testID="Menu"
         >
-          <View
+          <Text
+            allowFontScaling={false}
+            selectable={false}
             style={
               [
-                [
-                  {
-                    "position": "relative",
-                  },
-                  {
-                    "left": 0.2,
-                  },
-                  {
-                    "top": 0.1,
-                  },
-                ],
+                {
+                  "color": "#454545",
+                  "fontSize": 26,
+                },
+                null,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
               ]
             }
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#454545",
-                    "fontSize": 32,
-                  },
-                  null,
-                  {
-                    "fontFamily": "INatIcon",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
+            
+          </Text>
         </View>
         <Text
           maxFontSizeMultiplier={1.2}
@@ -188,6 +178,9 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                     "fontFamily": "Lato-Regular",
                   },
                   [
+                    {
+                      "marginTop": 2,
+                    },
                     {
                       "color": "#454545",
                     },
@@ -237,6 +230,12 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           [
             [
               {
+                "minHeight": 44,
+              },
+              {
+                "minWidth": 44,
+              },
+              {
                 "alignItems": "center",
               },
               {
@@ -251,59 +250,43 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             [
               [
                 {
-                  "height": 44,
-                  "width": 44,
+                  "height": 36,
+                },
+                {
+                  "width": 36,
                 },
                 {
                   "alignItems": "center",
+                },
+                {
                   "justifyContent": "center",
                 },
-                false,
-                undefined,
               ],
             ]
           }
           testID="RootExplore"
         >
-          <View
+          <Text
+            allowFontScaling={false}
+            selectable={false}
             style={
               [
-                [
-                  {
-                    "position": "relative",
-                  },
-                  {
-                    "left": 0.2,
-                  },
-                  {
-                    "top": 0.1,
-                  },
-                ],
+                {
+                  "color": "#454545",
+                  "fontSize": 26,
+                },
+                null,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
               ]
             }
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#454545",
-                    "fontSize": 31,
-                  },
-                  null,
-                  {
-                    "fontFamily": "INatIcon",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
+            
+          </Text>
         </View>
         <Text
           maxFontSizeMultiplier={1.2}
@@ -329,6 +312,9 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                     "fontFamily": "Lato-Regular",
                   },
                   [
+                    {
+                      "marginTop": 2,
+                    },
                     {
                       "color": "#454545",
                     },
@@ -547,6 +533,12 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           [
             [
               {
+                "minHeight": 44,
+              },
+              {
+                "minWidth": 44,
+              },
+              {
                 "alignItems": "center",
               },
               {
@@ -561,59 +553,43 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             [
               [
                 {
-                  "height": 44,
-                  "width": 44,
+                  "height": 36,
+                },
+                {
+                  "width": 36,
                 },
                 {
                   "alignItems": "center",
+                },
+                {
                   "justifyContent": "center",
                 },
-                false,
-                undefined,
               ],
             ]
           }
           testID="NavButton.personIcon"
         >
-          <View
+          <Text
+            allowFontScaling={false}
+            selectable={false}
             style={
               [
-                [
-                  {
-                    "position": "relative",
-                  },
-                  {
-                    "left": 0.2,
-                  },
-                  {
-                    "top": 0.1,
-                  },
-                ],
+                {
+                  "color": "#74AC00",
+                  "fontSize": 32,
+                },
+                null,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
               ]
             }
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#74AC00",
-                    "fontSize": 40,
-                  },
-                  null,
-                  {
-                    "fontFamily": "INatIcon",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
+            
+          </Text>
         </View>
         <Text
           maxFontSizeMultiplier={1.2}
@@ -639,6 +615,9 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                     "fontFamily": "Lato-Regular",
                   },
                   [
+                    {
+                      "marginTop": 2,
+                    },
                     {
                       "color": "#74AC00",
                     },
@@ -688,6 +667,12 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           [
             [
               {
+                "minHeight": 44,
+              },
+              {
+                "minWidth": 44,
+              },
+              {
                 "alignItems": "center",
               },
               {
@@ -702,15 +687,17 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             [
               [
                 {
-                  "height": 44,
-                  "width": 44,
+                  "height": 36,
+                },
+                {
+                  "width": 36,
                 },
                 {
                   "alignItems": "center",
+                },
+                {
                   "justifyContent": "center",
                 },
-                false,
-                undefined,
               ],
             ]
           }
@@ -723,12 +710,6 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                   {
                     "position": "relative",
                   },
-                  {
-                    "left": 0.2,
-                  },
-                  {
-                    "top": 0.1,
-                  },
                 ],
               ]
             }
@@ -740,7 +721,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                 [
                   {
                     "color": "#454545",
-                    "fontSize": 32,
+                    "fontSize": 26,
                   },
                   null,
                   {
@@ -780,6 +761,9 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                     "fontFamily": "Lato-Regular",
                   },
                   [
+                    {
+                      "marginTop": 2,
+                    },
                     {
                       "color": "#454545",
                     },
