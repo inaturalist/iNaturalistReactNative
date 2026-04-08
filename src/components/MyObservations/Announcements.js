@@ -1,5 +1,4 @@
 // @flow
-
 import makeWebshell, {
   ForceElementSizeFeature,
   ForceResponsiveViewportFeature,
@@ -22,6 +21,7 @@ import {
   useTranslation,
 } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 const Webshell = makeWebshell(
@@ -49,11 +49,21 @@ type Props = {
 }
 
 const useAnnouncementsQuery = ( queryKey, queryFn, isAuthenticated ) => {
+  const dismissedAnnouncementIds
+    = useStore( state => state.dismissedAnnouncementIds );
+
+  const queryFnWithoutDismissedIds = async () => {
+    // $FlowFixMe[incompatible-call]
+    const announcements = await queryFn();
+    return announcements
+      .filter( ( { id } ) => !dismissedAnnouncementIds.includes( id ) );
+  };
   const unauthenticatedQuery = useQuery(
     queryKey,
-    queryFn,
+    queryFnWithoutDismissedIds,
     { enabled: !isAuthenticated },
   );
+
   const authenticatedQuery = useAuthenticatedQuery(
     queryKey,
     queryFn,
@@ -83,7 +93,6 @@ const Announcements = ( {
   const isAuthenticated = !!currentUser;
   const {
     data: announcements,
-    refetch: refetchAnnouncements,
     isRefetching,
   } = useAnnouncementsQuery(
     ["searchAnnouncements", apiParams],
@@ -91,14 +100,17 @@ const Announcements = ( {
     isAuthenticated,
   );
 
+  const invalidateAnnouncementsQueries
+    = () => queryClient.invalidateQueries( { queryKey: ["searchAnnouncements"] } );
+
+  const dismissLoggedOutAnnouncement
+    = useStore( state => state.dismissLoggedOutAnnouncement );
+
   const { mutate: dismissAnnouncementMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => dismissAnnouncement( params, optsWithAuth ),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries( { queryKey: ["searchAnnouncements"] } );
-        if ( refetchAnnouncements ) {
-          refetchAnnouncements();
-        }
+        invalidateAnnouncementsQueries();
       },
       onError: err => {
         throw err;
@@ -128,7 +140,12 @@ const Announcements = ( {
 `;
 
   const dismiss = async () => {
-    dismissAnnouncementMutate( { id } );
+    if ( isAuthenticated ) {
+      dismissAnnouncementMutate( { id } );
+    } else {
+      dismissLoggedOutAnnouncement( id );
+      invalidateAnnouncementsQueries();
+    }
   };
 
   if ( isRefetching ) {
@@ -147,8 +164,7 @@ const Announcements = ( {
         scrollEnabled={false}
         testID="announcements-webview"
       />
-      {/* disable dismissing announcements until local-storage-based dismissal is supported */}
-      {dismissible && isAuthenticated && (
+      {dismissible && (
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t( "Dismiss-announcement" )}
