@@ -2137,6 +2137,8 @@ PODS:
     - React-Core
     - React-RCTFabric
     - ReactCommon/turbomodule/core
+  - react-native-mail (6.1.1):
+    - React-Core
   - react-native-maps (1.27.1):
     - react-native-maps/Maps (= 1.27.1)
   - react-native-maps/Generated (1.27.1):
@@ -3779,6 +3781,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-image-resizer (from `../node_modules/@bam.tech/react-native-image-resizer`)"
   - "react-native-keep-awake (from `../node_modules/@sayem314/react-native-keep-awake`)"
+  - react-native-mail (from `../node_modules/react-native-mail`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -3983,6 +3986,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@bam.tech/react-native-image-resizer"
   react-native-keep-awake:
     :path: "../node_modules/@sayem314/react-native-keep-awake"
+  react-native-mail:
+    :path: "../node_modules/react-native-mail"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-mmkv:
@@ -4200,6 +4205,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: 6051cfd030121b880a58f1cc0e5e33e9887804e4
   react-native-image-resizer: a889f67073804003f19da3721ef5593df569b45b
   react-native-keep-awake: a351e6f67006b47f316ae2b17ee8ee69386167f4
+  react-native-mail: 6e83813066984b26403d3fdfe79ac7bb31857e3c
   react-native-maps: d9f48d8d482153c618b982f9c54878ee7062714e
   react-native-mmkv: 7b9c7469fa0a7e463f9411ad3e4fe273bd5ff030
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
