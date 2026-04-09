@@ -30,7 +30,7 @@ type SaveToCameraRollOptionsWithLocation = SaveToCameraRollOptions & {
 // be too complicated, so this at least makes it easy to test this one part
 // ~~~kueda20240614
 async function savePhotosToPhotoLibrary(
-  uris: [string],
+  uris: string[],
   location: { latitude: number; longitude: number; positional_accuracy?: number } | null,
 ) {
   if ( !await requestWriteMediaPermission( ) ) {
@@ -64,7 +64,6 @@ async function savePhotosToPhotoLibrary(
         const savedPhotoUri = await CameraRoll.save( uri, saveOptions );
         savedUris.push( savedPhotoUri );
         return savedUris;
-        // TODO : type cameraRollSaveError
       } catch ( cameraRollSaveError: unknown ) {
         // should never get here since in usePrepareStoreAndNavigate we check for device full
         // and skip saving to photo library
