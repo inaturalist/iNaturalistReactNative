@@ -56,13 +56,9 @@ if ( usesAndroid10Permissions ) {
   ];
 }
 
-const androidCameraPermissions = usesAndroid10Permissions
-  ? [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
-  : [PERMISSIONS.ANDROID.CAMERA];
-
 export const CAMERA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.CAMERA]
-  : androidCameraPermissions;
+  : [PERMISSIONS.ANDROID.CAMERA];
 
 export const AUDIO_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.MICROPHONE]
@@ -126,6 +122,7 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
 }
 
 export async function hasWriteMediaPermission( ) {
+  // WRITE_MEDIA_PERMISSIONS is empty on android 11+ because we don't need to request permissions
   if ( WRITE_MEDIA_PERMISSIONS.length === 0 ) return true;
   const result = permissionResultFromMultiple(
     await checkMultiple( WRITE_MEDIA_PERMISSIONS ),
