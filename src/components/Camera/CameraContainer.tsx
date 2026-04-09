@@ -6,7 +6,7 @@ import {
 } from "components/Camera/helpers/visionCameraWrapper";
 import { ActivityIndicator } from "components/SharedComponents";
 import {
-  WRITE_MEDIA_PERMISSIONS,
+  hasWriteMediaPermission,
 } from "components/SharedComponents/PermissionGateContainer";
 import { View } from "components/styledComponents";
 import React, {
@@ -16,7 +16,6 @@ import React, {
   useState,
 } from "react";
 import { Alert, StatusBar } from "react-native";
-import { requestMultiple } from "react-native-permissions";
 import type {
   TakePhotoOptions,
 } from "react-native-vision-camera";
@@ -25,7 +24,7 @@ import { log } from "sharedHelpers/logger";
 import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
 import { useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
-import { FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
+import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
 import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
@@ -158,8 +157,11 @@ const CameraContainer = ( ) => {
     newPhotoState: PhotoState,
     visionResult?: StoredResult | null,
   ) => {
-    // TODO: readd photo permissions param
-    startFirebaseTrace( FIREBASE_TRACES.AI_CAMERA_TO_MATCH );
+    const hasSavePhotoPermission = await hasWriteMediaPermission( );
+    startFirebaseTrace(
+      FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
+      { [FIREBASE_TRACE_ATTRIBUTES.HAS_SAVE_PHOTO_PERMISSION]: `${hasSavePhotoPermission}` },
+    );
     // fetch accurate user location, with a fallback to a course location
     // at the time the user taps AI shutter or multicapture checkmark
     // to create an observation
@@ -231,13 +233,6 @@ const CameraContainer = ( ) => {
 
   const takePhotoAndStoreUri = async ( options: SavePhotoOptions ) => {
     setTakingPhoto( true );
-    // For Standard (multicapture) camera, trigger native save-to-library
-    // permission dialog on first photo so it appears over the camera view.
-    // For AI camera, the dialog is triggered later by savePhotosToPhotoLibrary
-    // after navigation, so it appears on the destination screen.
-    if ( cameraType !== "AI" && cameraUris.length === 0 && WRITE_MEDIA_PERMISSIONS.length > 0 ) {
-      requestMultiple( WRITE_MEDIA_PERMISSIONS ).catch( ( ) => {} );
-    }
     // Set the camera to inactive immediately after taking the photo,
     // this does leave a short period of time where the camera preview is still active
     // after taking the photo which we might to revisit if it doesn't look good.

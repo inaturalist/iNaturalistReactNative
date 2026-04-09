@@ -3,13 +3,13 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {
   permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS,
-  WRITE_MEDIA_PERMISSIONS,
+  requestWriteMediaPermission,
 } from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import {
   Alert,
 } from "react-native";
-import { checkMultiple, requestMultiple, RESULTS } from "react-native-permissions";
+import { checkMultiple, RESULTS } from "react-native-permissions";
 import { log } from "sharedHelpers/logger";
 
 import { displayName as appName } from "../../../../app.json";
@@ -33,13 +33,8 @@ async function savePhotosToPhotoLibrary(
   uris: [string],
   location: { latitude: number; longitude: number; positional_accuracy?: number } | null,
 ) {
-  if ( WRITE_MEDIA_PERMISSIONS.length > 0 ) {
-    const writeResult = permissionResultFromMultiple(
-      await requestMultiple( WRITE_MEDIA_PERMISSIONS ),
-    );
-    if ( writeResult !== RESULTS.GRANTED ) {
-      return [];
-    }
+  if ( !await requestWriteMediaPermission( ) ) {
+    return [];
   }
 
   const readWritePermissionResult = permissionResultFromMultiple(

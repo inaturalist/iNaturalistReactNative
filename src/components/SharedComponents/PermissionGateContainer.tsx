@@ -125,6 +125,22 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
   return RESULTS.GRANTED;
 }
 
+export async function hasWriteMediaPermission( ) {
+  if ( WRITE_MEDIA_PERMISSIONS.length === 0 ) return true;
+  const result = permissionResultFromMultiple(
+    await checkMultiple( WRITE_MEDIA_PERMISSIONS ),
+  );
+  return result === RESULTS.GRANTED;
+}
+
+export async function requestWriteMediaPermission( ) {
+  if ( WRITE_MEDIA_PERMISSIONS.length === 0 ) return true;
+  const result = permissionResultFromMultiple(
+    await requestMultiple( WRITE_MEDIA_PERMISSIONS ),
+  );
+  return result === RESULTS.GRANTED;
+}
+
 // Prompts the user for an Android permission and renders children if granted.
 // Otherwise renders a view saying that permission is required, with a button
 // to grant it if the user hasn't asked not to be bothered again. In the
