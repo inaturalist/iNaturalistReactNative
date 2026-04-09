@@ -64,7 +64,7 @@ async function savePhotosToPhotoLibrary(
         const savedPhotoUri = await CameraRoll.save( uri, saveOptions );
         savedUris.push( savedPhotoUri );
         return savedUris;
-      } catch ( cameraRollSaveError: unknown ) {
+      } catch ( cameraRollSaveError ) {
         // should never get here since in usePrepareStoreAndNavigate we check for device full
         // and skip saving to photo library
         const error = cameraRollSaveError instanceof Error
