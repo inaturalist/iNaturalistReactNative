@@ -102,7 +102,7 @@ const usePrepareStoreAndNavigate = ( ) => {
       uris,
       userLocation,
       logStageIfAICamera,
-    ).catch( e => logger.error( e ) );
+    ).catch( e => logger.error( "createObsWithCameraPhotos: error saving to photo library", e ) );
   }, [
     isDefaultMode,
     screenAfterPhotoEvidence,
@@ -131,7 +131,7 @@ const usePrepareStoreAndNavigate = ( ) => {
       evidenceToAdd,
       userLocation,
       logStageIfAICamera,
-    ).catch( e => logger.error( e ) );
+    ).catch( e => logger.error( "updateObsWithCameraPhotos: error saving to photo library", e ) );
   }, [
     evidenceToAdd,
     numOfObsPhotos,
