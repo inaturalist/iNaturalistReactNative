@@ -83,8 +83,7 @@ async function savePhotosToPhotoLibrary(
         }
         // This means an iOS user denied access
         // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
-        // This can happen if the user revokes permission after we checked,
-        // so we silently skip saving.
+        // We no longer ask multipe times, so we just continue
         if ( error.message.match( /error 3311/ ) ) {
           return savedUris;
         }
