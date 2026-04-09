@@ -243,7 +243,7 @@ DISCARD-X-OBSERVATIONS =
        *[other] ODRZUĆ { $count } OBSERWACJI
     }
 DISCOVER-NATURE-AROUND-YOU = ODKRYJ PRZYRODĘ WOKÓŁ SIEBIE
-DISMISS = ZIGNORUJ
+Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Czy wiesz, w jakiej grupie to jest?
 DONATE = WSPOMÓŻ
 DONATE-TO-INATURALIST = PRZEKAŻ DAROWIZNĘ NA RZECZ INATURALIST
@@ -517,7 +517,6 @@ No-email-app-installed-body-check-other = Spróbuj sprawdzić pocztę e-mail w p
 No-Location = Brak lokalizacji
 No-Media = Bez mediów
 No-model-found = Nie znaleziono modelu
-No-Notifications-Found = Nie masz żadnych powiadomień! Zacznij od utworzenia własnych obserwacji.
 No-projects-match-that-search = Żadne projekty nie pasują do tego wyszukiwania
 No-results-found-for-that-search = Nie znaleziono wyników dla tego wyszukiwania.
 No-results-found-try-different-search = Nie znaleziono żadnych wyników. Wypróbuj inne wyszukiwanie lub dostosuj filtry.
@@ -1089,6 +1088,8 @@ You-can-only-add-20-photos-per-observation = Do jednej obserwacji można dodać 
 You-can-still-share-the-file = Nadal możesz udostępnić plik innej aplikacji. Jeśli możesz wysłać go e-mailem, wyślij go na adres { $email }
 You-can-upload-this-observation-to-our-community = Możesz przesłać tę obserwację do naszej społeczności, aby uzyskać identyfikację od prawdziwej osoby i pomóc naszej sztucznej inteligencji poprawić identyfikację w przyszłości
 You-changed-filters-will-be-discarded = Filtry zostały zmienione, ale nie zostały one zastosowane do wyników wyszukiwania Eksploruj.
+You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
+You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = Zrezygnowałeś z taksonu wspólnotowego
 You-havent-joined-any-projects-yet = Nie dołączyłeś jeszcze do żadnego projektu!
 You-havent-observed-any-species-yet = Nie zaobserwowałeś jeszcze żadnego gatunku.

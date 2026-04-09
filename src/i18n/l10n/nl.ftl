@@ -249,7 +249,7 @@ DISCARD-X-OBSERVATIONS =
        *[other] GOOI { $count } WAARNEMINGEN WEG
     }
 DISCOVER-NATURE-AROUND-YOU = ONTDEK DE NATUUR OM JE HEEN
-DISMISS = AFWIJZEN
+Dismiss-announcement = Annuleer aankondiging
 Do-you-know-what-group-this-is-in = Weet je welke groep dit is?
 DONATE = DONEREN
 DONATE-TO-INATURALIST = DONEER AAN INATURALIST
@@ -519,7 +519,6 @@ No-email-app-installed-body-check-other = Controleer je e-mailadres in een webbr
 No-Location = Geen locatie
 No-Media = Geen media
 No-model-found = Geen modellen gevonden
-No-Notifications-Found = Je hebt geen meldingen! Begin met het maken van je eigen waarnemingen.
 No-projects-match-that-search = Er komen geen projecten overeen met die zoekopdracht
 No-results-found-for-that-search = Geen resultaten gevonden voor die zoekopdracht.
 No-results-found-try-different-search = Geen resultaten gevonden. Probeer een andere zoekopdracht of pas uw filters aan.
@@ -1083,6 +1082,8 @@ You-can-only-add-20-photos-per-observation = Je kunt slechts 20 foto's per waarn
 You-can-still-share-the-file = Je kan het bestand nog steeds delen met een andere app. Als je het kan e-mailen, stuur het dan naar { $email }
 You-can-upload-this-observation-to-our-community = U kunt deze waarneming uploaden naar onze gemeenschap voor een determinatie door een echt persoon en daardoor de determinaties door onze AI-software in de toekomst verbeteren
 You-changed-filters-will-be-discarded = Je hebt filters veranderd, maar ze werden niet toegepast op uw zoekresultaten.
+You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
+You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = Je hebt geen meldingen! Je zult hier updates zien van waarnemingen waarop je ID's of opmerkingen hebt achtergelaten.
 You-have-opted-out-of-the-Community-Taxon = Je hebt je afgemeld voor het gemeenschapstaxon
 You-havent-joined-any-projects-yet = Je neemt nog niet deel aan projecten.
 You-havent-observed-any-species-yet = Je hebt nog geen soorten waargenomen.
