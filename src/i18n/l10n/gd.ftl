@@ -243,7 +243,7 @@ DISCARD-X-OBSERVATIONS =
        *[other] DISCARD { $count } OBSERVATIONS
     }
 DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
-DISMISS = DISMISS
+Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
@@ -513,7 +513,6 @@ No-email-app-installed-body-check-other = Try checking your email in a web brows
 No-Location = No Location
 No-Media = No Media
 No-model-found = No model found
-No-Notifications-Found = You have no notifications! Get started by creating your own observations.
 No-projects-match-that-search = No projects match that search
 No-results-found-for-that-search = No results found for that search.
 No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
@@ -1077,6 +1076,8 @@ You-can-only-add-20-photos-per-observation = You can only add 20 photos per obse
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
+You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
+You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
 You-havent-observed-any-species-yet = You haven't observed any species yet.

@@ -243,7 +243,7 @@ DISCARD-X-OBSERVATIONS =
        *[other] ZAHODIŤ { $count } POZOROVANIA
     }
 DISCOVER-NATURE-AROUND-YOU = OBJAVUJTE PRÍRODU OKOLO SEBA
-DISMISS = ODVOLAŤ
+Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Viete, do akej skupiny to patrí?
 DONATE = DAROVAŤ
 DONATE-TO-INATURALIST = DAROVAŤ INATURALIST
@@ -513,7 +513,6 @@ No-email-app-installed-body-check-other = Skúste skontrolovať svoj e-mail vo w
 No-Location = Žiadne poloha
 No-Media = Žiadne médiá
 No-model-found = Nebol nájdený žiadny model
-No-Notifications-Found = Nemáte žiadne oznámenia! Začnite vytváraním vlastných pozorovaní.
 No-projects-match-that-search = Žiadne projekty nezodpovedajú tomuto hľadaniu
 No-results-found-for-that-search = Pre toto vyhľadávanie neboli nájdené žiadne výsledky.
 No-results-found-try-different-search = Neboli nájdené žiadne výsledky. Skúste iné vyhľadávanie alebo upravte filtre.
@@ -1077,6 +1076,8 @@ You-can-only-add-20-photos-per-observation = Môžete pridať iba 20 fotografií
 You-can-still-share-the-file = Stále môžete zdieľať súbor s inou aplikáciou. Ak ho môžete poslať e-mailom, pošlite ho prosím na { $email }
 You-can-upload-this-observation-to-our-community = Toto pozorovanie môžete nahrať do našej komunity, aby ste získali identifikáciu od skutočnej osoby a pomohli našej AI zlepšiť jej identifikáciu v budúcnosti
 You-changed-filters-will-be-discarded = Zmenili ste filtre, ale neboli použité na výsledky vyhľadávania.
+You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
+You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = Odobrali ste sa z komunitného taxónu
 You-havent-joined-any-projects-yet = Zatiaľ ste sa nepripojili k žiadnym projektom!
 You-havent-observed-any-species-yet = Zatiaľ ste nepozorovali žiadne druhy.
