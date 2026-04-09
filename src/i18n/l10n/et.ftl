@@ -243,7 +243,7 @@ DISCARD-X-OBSERVATIONS =
        *[other] EEMALDA { $count } VAATLUST
     }
 DISCOVER-NATURE-AROUND-YOU = AVASTA LOODUST ENDA ÜMBER
-DISMISS = KATKESTA
+Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Kas sa tead, mis gruppi see kuulub?
 DONATE = ANNETA
 DONATE-TO-INATURALIST = ANNETA INATURALISTILE
@@ -513,7 +513,6 @@ No-email-app-installed-body-check-other = Kontrolli e-posti kas veebilehitsejas 
 No-Location = Asukoht puudub
 No-Media = Meedia puudub
 No-model-found = Mudelit ei leitud
-No-Notifications-Found = Sul ei ole teavitusi! Alustamiseks tee ise mõned vaatlused.
 No-projects-match-that-search = Ükski projekt ei vasta sinu otsingukriteeriumitele
 No-results-found-for-that-search = See otsing ei toonud tulemusi.
 No-results-found-try-different-search = Tulemusi ei leitud. Proovi teist otsingut või muuda filtreid.
@@ -1077,6 +1076,8 @@ You-can-only-add-20-photos-per-observation = You can only add 20 photos per obse
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
+You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
+You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
 You-havent-joined-any-projects-yet = Sa pole veel ühegi projektiga liitunud!
 You-havent-observed-any-species-yet = You haven't observed any species yet.

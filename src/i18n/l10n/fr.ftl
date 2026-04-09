@@ -243,7 +243,7 @@ DISCARD-X-OBSERVATIONS =
        *[autres] ANULER { $count } OBSERVATIONS
     }
 DISCOVER-NATURE-AROUND-YOU = DÉCOUVREZ LA NATURE QUI VOUS ENTOURE
-DISMISS = IGNORER
+Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Savez-vous dans quel groupe il s’agit ?
 DONATE = FAIRE UN DON
 DONATE-TO-INATURALIST = DONNER À INATURALIST
@@ -513,7 +513,6 @@ No-email-app-installed-body-check-other = Essayez de vérifier votre e-mail dans
 No-Location = Aucun emplacement
 No-Media = Aucun média
 No-model-found = Pas de modèle trouvé
-No-Notifications-Found = Vous n'avez pas de notifications ! Commencez par créer vos propres observations.
 No-projects-match-that-search = Aucun projet ne correspond à cette recherche
 No-results-found-for-that-search = Aucun résultat trouvé pour cette recherche.
 No-results-found-try-different-search = Aucun résultat trouvé. Essayez une recherche différente ou ajustez vos filtres.
@@ -1077,6 +1076,8 @@ You-can-only-add-20-photos-per-observation = Vous ne pouvez ajouter que 20 photo
 You-can-still-share-the-file = Vous pouvez toujours partager le fichier avec une autre app. Si vous pouvez le joindre par e-mail, veuillez l'envoyer à { $email }
 You-can-upload-this-observation-to-our-community = Vous pouvez publier cette observation auprès de notre communauté pour qu’une vraie personne l'identifie, et aussi aider notre IA à améliorer ses identifications à l’avenir
 You-changed-filters-will-be-discarded = Vous avez changé des filtres, mais ils n'ont pas été appliqués à vos résultats de recherche dans l'exploration.
+You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
+You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = Vous avez choisi de vous retirer du Taxon Communautaire
 You-havent-joined-any-projects-yet = Vous n'avez pas encore rejoint de projet !
 You-havent-observed-any-species-yet = Vous n'avez pas encore observé d'espèce.
