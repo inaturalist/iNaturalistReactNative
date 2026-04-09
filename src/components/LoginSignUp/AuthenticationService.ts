@@ -311,6 +311,61 @@ const getAnonymousJWT = (): string => {
 // during downtime.
 let jwtRefreshPromise: Promise<string | null> | null = null;
 
+async function fetchFreshJWT( logContext: string | null ): Promise<string | null> {
+  try {
+    const accessToken = await getSensitiveItem( "accessToken" );
+    // accessToken should always be a string here, since we're logged in,
+    // i.e. in the function call to loggedIn() above we must have found accessToken
+    // to not be null at least in the last 5000 ms
+    const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
+    let response;
+    try {
+      response = await api.get<{api_token: string}>( "/users/api_token.json" );
+    } catch ( getUsersApiTokenError ) {
+      logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
+      if ( !getUsersApiTokenError ) { return null; }
+      throw getUsersApiTokenError;
+    }
+
+    if ( !response.ok ) {
+      logger.error(
+        `JWT [${logContext}]: Token refresh failed - status: ${response.status}`,
+        `- originalError: ${response.originalError} - problem: ${response.problem}`,
+      );
+      // this deletes the user JWT and saved login details when a user is not
+      // actually signed in anymore for example, if they installed, deleted,
+      // and reinstalled the app without logging out
+      if ( response.status === 401 ) {
+        if ( logContext ) {
+          logger.info( `JWT [${logContext}]: User unauthorized, navigating to login` );
+        }
+        if ( navigationRef.isReady( ) ) {
+          navigationRef.navigate( "LoginStackNavigator", { screen: "Login" } );
+        }
+      }
+      return null;
+    }
+
+    // Get newest JWT Token
+    const newJwtToken = response.data?.api_token;
+    if ( !newJwtToken ) {
+      throw new Error( "Fetched empty JWT" );
+    }
+    const newJwtGeneratedAt = Date.now();
+
+    await setSensitiveItem( "jwtToken", newJwtToken );
+    await setSensitiveItem( "jwtGeneratedAt", newJwtGeneratedAt.toString() );
+
+    if ( logContext ) {
+      logger.info( `JWT [${logContext}]: Token refreshed successfully` );
+    }
+
+    return newJwtToken;
+  } finally {
+    jwtRefreshPromise = null;
+  }
+}
+
 /**
  * Returns most recent JWT (JSON Web Token) for API authentication - renews the token if necessary
  *
@@ -355,60 +410,7 @@ const getJWT = async (
     // If a refresh is already in-flight, return that shared promise instead
     // of starting a second concurrent request.
     if ( !jwtRefreshPromise ) {
-      jwtRefreshPromise = ( async () => {
-        try {
-          const accessToken = await getSensitiveItem( "accessToken" );
-          // accessToken should always be a string here, since we're logged in,
-          // i.e. in the function call to loggedIn() above we must have found accessToken
-          // to not be null at least in the last 5000 ms
-          const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
-          let response;
-          try {
-            response = await api.get<{api_token: string}>( "/users/api_token.json" );
-          } catch ( getUsersApiTokenError ) {
-            logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
-            if ( !getUsersApiTokenError ) { return null; }
-            throw getUsersApiTokenError;
-          }
-
-          if ( !response.ok ) {
-            logger.error(
-              `JWT [${logContext}]: Token refresh failed - status: ${response.status}`,
-              `- originalError: ${response.originalError} - problem: ${response.problem}`,
-            );
-            // this deletes the user JWT and saved login details when a user is not
-            // actually signed in anymore for example, if they installed, deleted,
-            // and reinstalled the app without logging out
-            if ( response.status === 401 ) {
-              if ( logContext ) {
-                logger.info( `JWT [${logContext}]: User unauthorized, navigating to login` );
-              }
-              if ( navigationRef.isReady( ) ) {
-                navigationRef.navigate( "LoginStackNavigator", { screen: "Login" } );
-              }
-            }
-            return null;
-          }
-
-          // Get newest JWT Token
-          const newJwtToken = response.data?.api_token;
-          if ( !newJwtToken ) {
-            throw new Error( "Fetched empty JWT" );
-          }
-          const newJwtGeneratedAt = Date.now();
-
-          await setSensitiveItem( "jwtToken", newJwtToken );
-          await setSensitiveItem( "jwtGeneratedAt", newJwtGeneratedAt.toString() );
-
-          if ( logContext ) {
-            logger.info( `JWT [${logContext}]: Token refreshed successfully` );
-          }
-
-          return newJwtToken;
-        } finally {
-          jwtRefreshPromise = null;
-        }
-      } )();
+      jwtRefreshPromise = fetchFreshJWT( logContext );
     }
     return jwtRefreshPromise;
   }
