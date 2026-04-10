@@ -9,6 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
 import { ActivityIndicator, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
+import type { ComponentProps } from "react";
 import React from "react";
 import { WebView } from "react-native-webview";
 import { openExternalWebBrowser } from "sharedHelpers/util";
@@ -19,6 +20,7 @@ import {
   useTranslation,
 } from "sharedHooks";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import type { QueryFunction } from "sharedHooks/useAuthenticatedQuery";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -34,7 +36,11 @@ const Webshell = makeWebshell(
   } ),
 );
 
-const AutoheightWebView = webshellProps => {
+// using typing guidance here: https://formidable-webview.github.io/webshell/docs/autoheight/#robust-example
+type WebshellProps = ComponentProps<typeof Webshell>;
+
+const AutoheightWebView
+= ( webshellProps: WebshellProps ) => {
   const { autoheightWebshellProps } = useAutoheight( {
     webshellProps,
   } );
@@ -42,17 +48,32 @@ const AutoheightWebView = webshellProps => {
   return <Webshell {...autoheightWebshellProps} />;
 };
 
+interface Announcement {
+  id: string;
+  start: number;
+  dismissible: boolean;
+  body: string;
+}
+
 interface Props {
   isConnected: boolean;
 }
 
-const useAnnouncementsQuery = ( queryKey, queryFn, isAuthenticated ) => {
+interface AnnouncementQueryResponse {
+  data?: Announcement[];
+  isRefetching: boolean;
+}
+
+const useAnnouncementsQuery = (
+  queryKey: string[],
+  queryFn: QueryFunction<Announcement[]>,
+  isAuthenticated: boolean,
+): AnnouncementQueryResponse => {
   const dismissedAnnouncementIds
     = useStore( state => state.dismissedAnnouncementIds );
 
   const queryFnWithoutDismissedIds = async () => {
-    // $FlowFixMe[incompatible-call]
-    const announcements = await queryFn();
+    const announcements = await queryFn( { api_token: null } );
     return announcements
       .filter( ( { id } ) => !dismissedAnnouncementIds.includes( id ) );
   };
@@ -60,7 +81,8 @@ const useAnnouncementsQuery = ( queryKey, queryFn, isAuthenticated ) => {
     queryKey,
     queryFnWithoutDismissedIds,
     { enabled: !isAuthenticated },
-  );
+  // TS TODO: our custom uQ doesn't yet handle generic response type
+  ) as AnnouncementQueryResponse;
 
   const authenticatedQuery = useAuthenticatedQuery(
     queryKey,
@@ -80,9 +102,9 @@ const Announcements = ( {
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
 
-  const onLinkPress = async target => openExternalWebBrowser( target.uri );
-
   const apiParams = {
+    // TS TODO: this realm type is treated inconsistently as a query result & model type
+    // local _is_ on the model but we need to figure this out
     locale: currentUser?.locale || "en",
     per_page: 20,
   };
@@ -93,6 +115,7 @@ const Announcements = ( {
     data: announcements,
     isRefetching,
   } = useAnnouncementsQuery(
+    // TS TODO: RQ handles this and our wrappers should reflect that
     ["searchAnnouncements", apiParams],
     optsWithAuth => searchAnnouncements( apiParams, optsWithAuth ),
     isAuthenticated,
@@ -104,7 +127,9 @@ const Announcements = ( {
   const dismissLoggedOutAnnouncement
     = useStore( state => state.dismissLoggedOutAnnouncement );
 
-  const { mutate: dismissAnnouncementMutate } = useAuthenticatedMutation(
+  const { mutate: dismissAnnouncementMutate }
+  = useAuthenticatedMutation(
+    // TS TODO: uAM doesn't yet know how to type mutations
     ( params, optsWithAuth ) => dismissAnnouncement( params, optsWithAuth ),
     {
       onSuccess: () => {
@@ -123,10 +148,9 @@ const Announcements = ( {
     return null;
   }
 
-  // Array of { id, body, dismissible }
   const homeAnnouncements = announcements
     // Sort by start date, oldest first
-    .sort( ( a, b ) => new Date( a.start ) - new Date( b.start ) );
+    .sort( ( a, b ) => new Date( a.start ).getTime() - new Date( b.start ).getTime() );
   const topAnnouncement = homeAnnouncements[0];
   const { id, dismissible, body } = topAnnouncement;
   const announcementHtml = `
@@ -139,6 +163,7 @@ const Announcements = ( {
 
   const dismiss = async () => {
     if ( isAuthenticated ) {
+      // TS TODO: uAM doesn't yet know how to type mutations
       dismissAnnouncementMutate( { id } );
     } else {
       dismissLoggedOutAnnouncement( id );
@@ -156,7 +181,7 @@ const Announcements = ( {
       testID="announcements-container"
     >
       <AutoheightWebView
-        onDOMLinkPress={onLinkPress}
+        onDOMLinkPress={target => openExternalWebBrowser( target.uri )}
         originWhitelist={["*"]}
         source={{ html: announcementHtml }}
         scrollEnabled={false}
