@@ -7,7 +7,10 @@ import NotificationsList from "components/Notifications/NotificationsList";
 import React, { useEffect, useState } from "react";
 import type { RealmUser } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
-import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
+import {
+  useInfiniteNotificationsScroll,
+  usePerformance,
+} from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
 const logger = log.extend( "NotificationsContainer" );
@@ -62,10 +65,13 @@ const NotificationsContainer = ( {
     }
   };
 
+  const followingTabIsActive = notificationParams.observations_by === "following";
+
   return (
     <NotificationsList
       currentUser={currentUser}
       data={notifications}
+      followingTabIsActive={followingTabIsActive}
       isError={isError}
       isFetching={isFetching}
       isInitialLoading={isInitialLoading}
