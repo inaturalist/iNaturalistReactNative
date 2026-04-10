@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import {
   clearComputerVisionPhotos,
   clearGalleryPhotos,
+  clearRollbackPhotos,
   clearRotatedOriginalPhotosDirectory,
   clearSyncedMediaForUpload,
 } from "sharedHelpers/clearCaches";
@@ -92,6 +93,7 @@ const useDeferredStartup = ( ) => {
     const id5 = deferTask( "clearGalleryPhotos", clearGalleryPhotos );
     const id6 = deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
     const id7 = deferTask( "clearSyncedMediaForUpload", () => clearSyncedMediaForUpload( realm ) );
+    const id8 = deferTask( "clearRollbackPhotos", clearRollbackPhotos );
 
     return ( ) => {
       cancelIdleCallback( id1 );
@@ -101,6 +103,7 @@ const useDeferredStartup = ( ) => {
       cancelIdleCallback( id5 );
       cancelIdleCallback( id6 );
       cancelIdleCallback( id7 );
+      cancelIdleCallback( id8 );
     };
   }, [realm] );
 };

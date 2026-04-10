@@ -1,8 +1,8 @@
 import { photoUploadPath, rollbackPhotosPath } from "appConstants/paths";
 import RNFS from "react-native-fs";
 import type { RealmObservationPojo } from "realmModels/types";
+import { clearRollbackPhotos } from "sharedHelpers/clearCaches";
 import { log } from "sharedHelpers/logger";
-import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import { unlink } from "sharedHelpers/util";
 
 const logger = log.extend( "rollbackPhotos" );
@@ -16,18 +16,6 @@ const getLocalPhotoPath = ( localFilePath: string ): string | null => {
   const pieces = localFilePath?.split( "photoUploads/" );
   if ( !pieces || pieces.length <= 1 ) return null;
   return `${photoUploadPath}/${pieces[1]}`;
-};
-
-export const clearRollbackPhotos = async ( ): Promise<void> => {
-  try {
-    await removeAllFilesFromDirectory( rollbackPhotosPath );
-    const dirExists = await RNFS.exists( rollbackPhotosPath );
-    if ( dirExists ) {
-      await unlink( rollbackPhotosPath );
-    }
-  } catch ( e ) {
-    logger.error( `clearRollbackPhotos error: ${e}` );
-  }
 };
 
 export const backupObservationPhotos = async (

@@ -5,7 +5,7 @@ import type { RouteProp } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { useCallback } from "react";
-import { clearRollbackPhotos } from "sharedHelpers/rollbackPhotos";
+import { clearRollbackPhotos } from "sharedHelpers/clearCaches";
 import useStore from "stores/useStore";
 
 interface ObsFlowParams {
