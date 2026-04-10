@@ -512,7 +512,6 @@ Next-slide = Seuraava kortti
 No-Camera-Available = Kamera ei käytettävissä
 No-email-app-installed = Sähköpostisovellusta ei ole asennettu
 No-email-app-installed-body = Jos sinulla on jokin muu tapa lähettää sähköpostia, osoite on { $address }
-No-email-app-installed-body-check-other = Kokeile tarkistaa sähköpostisi verkkoselaimella tai toisella laitteella.
 No-Location = Ei sijaintia
 No-Media = Ei mediaa
 No-model-found = Mallia ei löytynyt

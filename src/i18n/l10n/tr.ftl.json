@@ -463,7 +463,6 @@
   "No-Camera-Available": "Kullanılabilir Kamera Yok",
   "No-email-app-installed": "Yüklü e-posta uygulaması yok",
   "No-email-app-installed-body": "E-posta göndermenin başka bir yolu varsa, adres: { $address }",
-  "No-email-app-installed-body-check-other": "E-postanızı bir web tarayıcısında veya başka bir cihazda kontrol etmeyi deneyin.",
   "No-Location": "Konum Yok",
   "No-Media": "Ortam Yok",
   "No-model-found": "Model bulunamadı",

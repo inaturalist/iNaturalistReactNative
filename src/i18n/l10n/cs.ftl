@@ -509,7 +509,6 @@ Next-slide = Další snímek
 No-Camera-Available = Kamera není k dispozici
 No-email-app-installed = Není nainstalována žádná e-mailová aplikace
 No-email-app-installed-body = Pokud máte jiný způsob odesílání e-mailu, adresa je { $address }
-No-email-app-installed-body-check-other = Zkuste zkontrolovat svůj e-mail ve webovém prohlížeči nebo na jiném zařízení.
 No-Location = Neznámá poloha
 No-Media = Žádná média
 No-model-found = Nebyl nalezen žádný model

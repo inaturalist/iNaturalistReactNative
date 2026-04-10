@@ -463,7 +463,6 @@
   "No-Camera-Available": "Ingen kamera tillgänglig",
   "No-email-app-installed": "Ingen e-post-app installerad",
   "No-email-app-installed-body": "Om du kan skicka e-post på något annat sätt, är adressen { $address }",
-  "No-email-app-installed-body-check-other": "Kolla din e-post i en webbläsare eller på en annan enhet.",
   "No-Location": "Ingen plats",
   "No-Media": "Ingen media",
   "No-model-found": "Ingen modell hittades",

@@ -463,7 +463,6 @@
   "No-Camera-Available": "Δεν υπάρχει διαθέσιμη κάμερα",
   "No-email-app-installed": "Δεν έχει εγκατασταθεί εφαρμογή email",
   "No-email-app-installed-body": "Εάν έχετε άλλο τρόπο αποστολής email, η διεύθυνση είναι { $address }",
-  "No-email-app-installed-body-check-other": "Δοκιμάστε να ελέγξετε το ηλεκτρονικό ταχυδρομείο σας σε ένα πρόγραμμα περιήγησης ιστού ή σε άλλη συσκευή.",
   "No-Location": "Χωρίς τοποθεσία",
   "No-Media": "Κανένα πολυμέσο",
   "No-model-found": "Δεν βρέθηκε μοντέλο",
