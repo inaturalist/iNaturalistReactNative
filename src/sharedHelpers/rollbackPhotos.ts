@@ -56,7 +56,7 @@ export const backupObservationPhotos = async (
     );
 
     const mappings = results.filter(
-      ( m ): m is BackupMapping => m !== null,
+      m => m !== null,
     );
     logger.info(
       `backupObservationPhotos: backed up ${mappings.length} photos`,
