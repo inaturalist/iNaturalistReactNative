@@ -509,7 +509,6 @@ Next-slide = Next slide
 No-Camera-Available = Kaamera pole saadaval
 No-email-app-installed = E-postirakendus pole installeeritud
 No-email-app-installed-body = Kui kasutad mõnda muud moodust e-post saatumisega, kirjuta aadressile { $address }
-No-email-app-installed-body-check-other = Kontrolli e-posti kas veebilehitsejas või mõnes muus seadmes.
 No-Location = Asukoht puudub
 No-Media = Meedia puudub
 No-model-found = Mudelit ei leitud

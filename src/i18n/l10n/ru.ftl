@@ -512,7 +512,6 @@ Next-slide = Следующий слайд
 No-Camera-Available = Нет камеры
 No-email-app-installed = Не установлено приложение для работы с электронной почтой
 No-email-app-installed-body = Если у вас есть другой способ отправки электронной почты, адрес будет следующим: { $address }
-No-email-app-installed-body-check-other = Попробуйте проверить электронную почту в веб-браузере или на другом устройстве.
 No-Location = Местоположение не указано
 No-Media = Нет медиа
 No-model-found = Модель не найдена

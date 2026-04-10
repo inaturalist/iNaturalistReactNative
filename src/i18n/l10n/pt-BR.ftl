@@ -509,7 +509,6 @@ Next-slide = Próximo
 No-Camera-Available = Câmera indisponível
 No-email-app-installed = Nenhum aplicativo de endereço eletrônico instalado
 No-email-app-installed-body = Se você tiver outra forma de enviar endereço eletrônico, o endereço é { $address }
-No-email-app-installed-body-check-other = Tente verificar seu endereço eletrônico em um navegador da rede ou em outro dispositivo.
 No-Location = Sem localização
 No-Media = Nenhuma mídia
 No-model-found = Nenhum modelo encontrado

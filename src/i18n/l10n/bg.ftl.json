@@ -463,7 +463,6 @@
   "No-Camera-Available": "No Camera Available",
   "No-email-app-installed": "No email app installed",
   "No-email-app-installed-body": "If you have another way of sending email, the address is { $address }",
-  "No-email-app-installed-body-check-other": "Try checking your email in a web browser or on another device.",
   "No-Location": "Няма местоположение",
   "No-Media": "Без медия",
   "No-model-found": "No model found",

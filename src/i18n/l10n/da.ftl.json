@@ -463,7 +463,6 @@
   "No-Camera-Available": "Intet kamera tilgængeligt",
   "No-email-app-installed": "Ingen e-mail app installeret",
   "No-email-app-installed-body": "Har man en anden måde at sende e-mail på, er adressen { $address }",
-  "No-email-app-installed-body-check-other": "Prøv at tjekke e-mail i en webbrowser eller på en anden enhed.",
   "No-Location": "Ingen placering",
   "No-Media": "Intet medie",
   "No-model-found": "Ingen model fundet",
