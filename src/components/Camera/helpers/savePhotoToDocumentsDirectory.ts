@@ -1,7 +1,7 @@
+import { mkdir } from "@dr.pogodin/react-native-fs";
 import {
   rotatedOriginalPhotosPath,
 } from "appConstants/paths";
-import RNFS from "react-native-fs";
 import type {
   PhotoFile,
 } from "react-native-vision-camera";
@@ -12,7 +12,7 @@ const savePhotoToDocumentsDirectory = async (
   cameraPhoto: PhotoFile,
 ) => {
   const path = rotatedOriginalPhotosPath;
-  await RNFS.mkdir( path );
+  await mkdir( path );
   // Move the image with ImageResizer (for legacy reasons, because we
   // used to use it to rotate the photo)
   const image = await resizeImage(
