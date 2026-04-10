@@ -1,4 +1,4 @@
-import RNFS from "react-native-fs";
+import { DocumentDirectoryPath } from "@dr.pogodin/react-native-fs";
 import type Realm from "realm";
 
 import Application from "./Application";
@@ -34,7 +34,7 @@ export default {
     Vote,
   ],
   schemaVersion: 67,
-  path: `${RNFS.DocumentDirectoryPath}/db.realm`,
+  path: `${DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {
     resolveEmbeddedConstraints: true,
