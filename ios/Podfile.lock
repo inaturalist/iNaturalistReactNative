@@ -9,7 +9,7 @@ PODS:
   - BVLinearGradient (2.8.3):
     - React-Core
   - DoubleConversion (1.1.6)
-  - dr-pogodin-react-native-fs (2.27.1):
+  - dr-pogodin-react-native-fs (2.29.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -4160,7 +4160,7 @@ SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
-  dr-pogodin-react-native-fs: ef2615563112ce44c739939660ce5d1ae861cd19
+  dr-pogodin-react-native-fs: 0f97d4553051248041256d9fcb330fabc35b67f4
   Exify: 2f39027dc3fa5809c3fbbf32e11ba9d3d755a85b
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
   FasterImage: 0543472141d8f64716efdeb3bb886a6fe814f3b9
