@@ -13,6 +13,7 @@ import {
   fromUnixTime,
   getUnixTime,
   getYear,
+  isValid,
   parse,
   parseISO,
 } from "date-fns";
@@ -332,9 +333,16 @@ function formatDateString(
     timeZone = Intl.DateTimeFormat( ).resolvedOptions( ).timeZone;
   }
 
+  const parsedDate = parseISO( isoDateString );
+  if ( !isValid( parsedDate ) ) {
+    return options.missing === undefined
+      ? i18n.t( "Missing-Date" )
+      : options.missing;
+  }
+
   try {
     return formatInTimeZone(
-      parseISO( isoDateString ),
+      parsedDate,
       timeZone,
       fmt,
       { locale: dateFnsLocale( i18n.language ) },
@@ -346,7 +354,7 @@ function formatDateString(
       // Remove timezone (zzz) from format string
       fmt = fmt.replace( / zzz/g, "" );
       return format(
-        parseISO( isoDateString ),
+        parsedDate,
         fmt,
         { locale: dateFnsLocale( i18n.language ) },
       );
@@ -440,6 +448,11 @@ function formatProjectsApiDatetimeLong(
   const hasComma = String( dateString ).includes( "," );
   if ( hasComma ) {
     const parsedDate = parse( dateString, "MMMM d, yyyy", new Date( ) );
+    if ( !isValid( parsedDate ) ) {
+      return options.missing === undefined
+        ? i18n.t( "Missing-Date" )
+        : options.missing;
+    }
 
     return formatDateString(
       formatISO( parsedDate ),
