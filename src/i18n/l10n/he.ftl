@@ -509,7 +509,6 @@ Next-slide = השקופית הבאה
 No-Camera-Available = אין מצלמה זמינה
 No-email-app-installed = לא מותקנת אפליקציית דוא"ל
 No-email-app-installed-body = אם יש לך דרך אחרת לשלוח דואר אלקטרוני, הכתובת היא { $address }
-No-email-app-installed-body-check-other = כדאי לנסות לבדוק את הדואר האלקטרוני שלך בדפדפן אינטרנט או במכשיר אחר.
 No-Location = ללא מיקום
 No-Media = ללא מדיה
 No-model-found = לא נמצא מודל

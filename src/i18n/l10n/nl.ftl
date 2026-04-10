@@ -515,7 +515,6 @@ Next-slide = Volgende slide
 No-Camera-Available = Geen camera beschikbaar
 No-email-app-installed = Geen e-mailapp geïnstalleerd
 No-email-app-installed-body = Als je een andere manier hebt om e-mail te verzenden, is het adres { $address }
-No-email-app-installed-body-check-other = Controleer je e-mailadres in een webbrowser of op een ander apparaat.
 No-Location = Geen locatie
 No-Media = Geen media
 No-model-found = Geen modellen gevonden

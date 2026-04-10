@@ -509,7 +509,6 @@ Next-slide = 下一张
 No-Camera-Available = 无可用相机
 No-email-app-installed = 未安装邮箱应用
 No-email-app-installed-body = 如果您有其他方式发送电子邮件，地址是 { $address }
-No-email-app-installed-body-check-other = 尝试在 web 浏览器或其他设备上检查您的电子邮件。
 No-Location = 无位置资讯
 No-Media = 没有媒体
 No-model-found = 未找到模型

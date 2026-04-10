@@ -463,7 +463,6 @@
   "No-Camera-Available": "無可用相機",
   "No-email-app-installed": "未安裝電子郵件程式",
   "No-email-app-installed-body": "如果您有其他方式傳送 email，電子郵件信箱為{ $address }",
-  "No-email-app-installed-body-check-other": "嘗試在網頁瀏覽器或其他設備上檢查您的電子郵件。",
   "No-Location": "無位置資訊",
   "No-Media": "沒有媒體",
   "No-model-found": "找不到模型",
