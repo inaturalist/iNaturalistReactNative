@@ -1,9 +1,9 @@
 import {
   DocumentDirectoryPath,
   readDir,
-  unlink,
 } from "@dr.pogodin/react-native-fs";
 import { MMKV, useMMKVBoolean } from "react-native-mmkv";
+import { unlink } from "sharedHelpers/util";
 import * as uuid from "uuid";
 
 const MMKV_ID = "install-data";
