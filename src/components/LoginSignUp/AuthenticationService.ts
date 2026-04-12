@@ -25,7 +25,7 @@ import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
 import { getInstallID } from "sharedHelpers/installData";
-import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
+import { legacyLogfilePath, log, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
@@ -242,7 +242,7 @@ const signOut = async (
   await deleteSensitiveItem( "jwtGeneratedAt" );
   await deleteSensitiveItem( "username" );
   await deleteSensitiveItem( "accessToken" );
-  await unlink( logFilePath );
+  await unlink( legacyLogfilePath );
   // clear all directories containing user generated data within Documents Directory
   await removeAllFilesFromDirectory( computerVisionPath );
   await removeAllFilesFromDirectory( photoLibraryPhotosPath );
