@@ -10,7 +10,7 @@ import { InteractionManager } from "react-native";
 const TIMEOUT = 300;
 
 // this hook scrolls the scrollview to this y position after animations are completed
-const useScrollToOffset = ( scrollViewRef: RefObject<ScrollView> ) => {
+const useScrollToOffset = ( scrollViewRef: RefObject<ScrollView | null> ) => {
   const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
   const [heightOfTopContent, setHeightOfTopContent] = useState( 0 );
 
