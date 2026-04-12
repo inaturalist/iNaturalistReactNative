@@ -5,11 +5,10 @@ import {
   useState,
 } from "react";
 import type { LayoutRectangle, ScrollView } from "react-native";
-import { InteractionManager } from "react-native";
 
 const TIMEOUT = 300;
 
-// this hook scrolls the scrollview to this y position after animations are completed
+// this hook scrolls the scrollview to this y position when the main thread is idle
 const useScrollToOffset = ( scrollViewRef: RefObject<ScrollView | null> ) => {
   const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
   const [heightOfTopContent, setHeightOfTopContent] = useState( 0 );
@@ -31,17 +30,25 @@ const useScrollToOffset = ( scrollViewRef: RefObject<ScrollView | null> ) => {
 
   useEffect( ( ) => {
     if ( oneTimeScrollOffsetY === 0 || !scrollViewRef?.current ) {
-      return;
+      return () => {};
     }
 
-    InteractionManager.runAfterInteractions( ( ) => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const idleCallbackId = requestIdleCallback( ( ) => {
       scrollViewRef?.current?.scrollTo( { y: oneTimeScrollOffsetY, animated: true } );
 
-      setTimeout( ( ) => {
+      timeoutId = setTimeout( ( ) => {
         setOneTimeScrollOffsetY( 0 );
         setHeightOfTopContent( 0 );
       }, TIMEOUT );
     } );
+
+    return ( ) => {
+      cancelIdleCallback( idleCallbackId );
+      if ( timeoutId !== undefined ) {
+        clearTimeout( timeoutId );
+      }
+    };
   }, [oneTimeScrollOffsetY, scrollViewRef] );
 
   return {
