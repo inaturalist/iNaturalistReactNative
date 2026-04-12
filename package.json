@@ -84,7 +84,7 @@
     "classnames": "^2.5.1",
     "date-fns": "^3.6.0",
     "date-fns-tz": "^3.2.0",
-    "i18next": "^23.10.1",
+    "i18next": "^23.16.8",
     "i18next-fluent": "^2.0.0",
     "i18next-resources-to-backend": "^1.2.1",
     "inaturalistjs": "github:inaturalist/inaturalistjs",
