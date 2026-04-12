@@ -1,18 +1,20 @@
+import type { RefObject } from "react";
 import {
   useCallback,
   useEffect,
   useState,
 } from "react";
+import type { LayoutRectangle, ScrollView } from "react-native";
 import { InteractionManager } from "react-native";
 
 const TIMEOUT = 300;
 
 // this hook scrolls the scrollview to this y position after animations are completed
-const useScrollToOffset = scrollViewRef => {
+const useScrollToOffset = ( scrollViewRef: RefObject<ScrollView> ) => {
   const [oneTimeScrollOffsetY, setOneTimeScrollOffsetY] = useState( 0 );
   const [heightOfTopContent, setHeightOfTopContent] = useState( 0 );
 
-  const setOffsetToActivityItem = useCallback( layout => {
+  const setOffsetToActivityItem = useCallback( ( layout: LayoutRectangle ) => {
     const newOffset = layout.y + heightOfTopContent;
 
     if ( Math.abs( newOffset - oneTimeScrollOffsetY ) > 1 ) {
@@ -20,7 +22,7 @@ const useScrollToOffset = scrollViewRef => {
     }
   }, [heightOfTopContent, oneTimeScrollOffsetY] );
 
-  const setHeightOfContentAboveSection = useCallback( layout => {
+  const setHeightOfContentAboveSection = useCallback( ( layout: LayoutRectangle ) => {
     const newOffset = layout.height;
     if ( Math.abs( newOffset - heightOfTopContent ) > 1 ) {
       setHeightOfTopContent( newOffset );
