@@ -30,16 +30,18 @@ const useScrollToOffset = ( scrollViewRef: RefObject<ScrollView | null> ) => {
   }, [heightOfTopContent] );
 
   useEffect( ( ) => {
-    if ( oneTimeScrollOffsetY > 0 && scrollViewRef?.current ) {
-      InteractionManager.runAfterInteractions( ( ) => {
-        scrollViewRef?.current?.scrollTo( { y: oneTimeScrollOffsetY, animated: true } );
-
-        setTimeout( ( ) => {
-          setOneTimeScrollOffsetY( 0 );
-          setHeightOfTopContent( 0 );
-        }, TIMEOUT );
-      } );
+    if ( oneTimeScrollOffsetY === 0 || !scrollViewRef?.current ) {
+      return;
     }
+
+    InteractionManager.runAfterInteractions( ( ) => {
+      scrollViewRef?.current?.scrollTo( { y: oneTimeScrollOffsetY, animated: true } );
+
+      setTimeout( ( ) => {
+        setOneTimeScrollOffsetY( 0 );
+        setHeightOfTopContent( 0 );
+      }, TIMEOUT );
+    } );
   }, [oneTimeScrollOffsetY, scrollViewRef] );
 
   return {
