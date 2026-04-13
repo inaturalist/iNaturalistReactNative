@@ -5,7 +5,7 @@ import { t } from "i18next";
 import React from "react";
 
 interface Props {
-  following: boolean;
+  following?: boolean;
   follow: ( ) => void;
   unfollow: ( ) => void;
   loading: boolean;
