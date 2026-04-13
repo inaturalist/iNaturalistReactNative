@@ -33,7 +33,7 @@ import UnfollowSheet from "./UnfollowSheet";
 
 const UserProfile = ( ) => {
   const setExploreView = useStore( state => state.setExploreView );
-  const navigation = useNavigation( );
+  const navigation = useNavigation <TabStackScreenProps<"UserProfile">["navigation"]>( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute<TabStackScreenProps<"UserProfile">["route"]>();
   const { userId, login } = params;
