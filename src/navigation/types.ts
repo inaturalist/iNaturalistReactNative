@@ -6,6 +6,7 @@
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import type { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { ApiUser } from "api/types";
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
@@ -38,7 +39,11 @@ export type BaseTabStackParamList = {
   Menu: undefined;
   ObsList: undefined;
   RootExplore: undefined;
-  Explore: undefined;
+  // TODO: type for other routes to Explore
+  Explore: {
+    user: ApiUser;
+    worldwide: boolean;
+  };
   ExploreFilters: undefined;
   ExploreSearch: undefined;
   ObsDetails: undefined;
@@ -58,8 +63,14 @@ export type BaseTabStackParamList = {
     userLogin: string;
     observationUuid?: never;
   };
-  FollowersList: undefined;
-  FollowingList: undefined;
+  FollowersList: {
+    // TODO: don't send the entire user object over here, only an ID or ID+login
+    user: ApiUser;
+  };
+  FollowingList: {
+    // TODO: don't send the entire user object over here, only an ID or ID+login
+    user: ApiUser;
+  };
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;
