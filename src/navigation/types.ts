@@ -48,7 +48,7 @@ export type BaseTabStackParamList = {
   ExploreSearch: undefined;
   ObsDetails: undefined;
   Notifications: undefined;
-  UserProfile: { userId?: number } & { login?: string };
+  UserProfile: { userId: number } & { login: string };
   DataQualityAssessment: undefined;
   Projects: undefined;
   ProjectDetails: undefined;
