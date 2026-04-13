@@ -7,11 +7,11 @@ import * as React from "react";
 import colors from "styles/tailwindColors";
 
 interface Counts {
-  observations_count: number;
-  species_count: number;
-  identifications_count: number;
-  members_count: number;
-  journal_posts_count: number;
+  observations_count?: number;
+  species_count?: number;
+  identifications_count?: number;
+  members_count?: number;
+  journal_posts_count?: number;
 }
 
 interface Props {
@@ -29,7 +29,7 @@ interface CountProps {
 
 interface CountPressableProps {
   accessibilityLabel: string;
-  count: number;
+  count?: number;
   icon: string;
   label: string;
   onPress?: () => void;
