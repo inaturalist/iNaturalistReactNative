@@ -99,7 +99,7 @@
     "nativewind": "^2.0.11",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "react-i18next": "^14.1.0",
+    "react-i18next": "^15.7.4",
     "react-native": "0.82.1",
     "react-native-animated-dots-carousel": "^2.0.0",
     "react-native-audio-recorder-player": "^3.6.14",
