@@ -22,7 +22,7 @@ interface Props {
 }
 
 interface CountProps {
-  count: number;
+  count?: number;
   icon: string;
   label: string;
 }
