@@ -18,7 +18,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import User from "realmModels/User";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
 import {
@@ -92,28 +92,6 @@ const UserProfile = ( ) => {
   //   navigation.setOptions( { headerRight } );
   // }, [navigation, user, currentUser] );
 
-  const onObservationPressed = useCallback(
-    ( ) => {
-      setExploreView( "observations" );
-      navigation.navigate( "Explore", {
-        user,
-        worldwide: true,
-      } );
-    },
-    [navigation, user, setExploreView],
-  );
-
-  const onSpeciesPressed = useCallback(
-    ( ) => {
-      setExploreView( "species" );
-      navigation.navigate( "Explore", {
-        user,
-        worldwide: true,
-      } );
-    },
-    [navigation, user, setExploreView],
-  );
-
   if ( isError && error?.status === 404 ) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -126,6 +104,22 @@ const UserProfile = ( ) => {
   if ( !user ) {
     return null;
   }
+
+  const onObservationPressed = ( ) => {
+    setExploreView( "observations" );
+    navigation.navigate( "Explore", {
+      user,
+      worldwide: true,
+    } );
+  };
+
+  const onSpeciesPressed = ( ) => {
+    setExploreView( "species" );
+    navigation.navigate( "Explore", {
+      user,
+      worldwide: true,
+    } );
+  };
 
   return (
     <ScrollViewWrapper testID="UserProfile">
