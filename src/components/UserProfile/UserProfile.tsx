@@ -9,6 +9,7 @@ import {
   Button,
   Heading1,
   Heading4,
+  INatIconButton,
   List2,
   OverviewCounts,
   ScrollViewWrapper,
@@ -18,7 +19,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import User from "realmModels/User";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
 import {
@@ -27,6 +28,7 @@ import {
   useTranslation,
 } from "sharedHooks";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
@@ -74,18 +76,26 @@ const UserProfile = ( ) => {
     },
   );
 
-  // useEffect( ( ) => {
-  //   const headerRight = ( ) => currentUser?.login === user?.login && (
-  //     <INatIconButton
-  //       icon="pencil"
-  //       color={colors.darkGray}
-  //       size={22}
-  //       accessibilityLabel={t( "Edit" )}
-  //     />
-  //   );
+  useEffect( ( ) => {
+    const headerRight = ( ) => {
+      if ( !currentUser || !user ) {
+        return null;
+      }
+      if ( currentUser?.login !== user?.login ) {
+        return null;
+      }
+      return (
+        <INatIconButton
+          icon="pencil"
+          color={colors.darkGray}
+          size={22}
+          accessibilityLabel={t( "Edit" )}
+        />
+      );
+    };
 
-  //   navigation.setOptions( { headerRight } );
-  // }, [navigation, user, currentUser] );
+    navigation.setOptions( { headerRight } );
+  }, [currentUser, user, t, navigation] );
 
   if ( isError && error?.status === 404 ) {
     return (
