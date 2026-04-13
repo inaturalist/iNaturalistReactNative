@@ -1,6 +1,7 @@
 import { createRelationships, updateRelationships } from "api/relationships";
 import React, { useState } from "react";
 import { Alert } from "react-native";
+import type User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
@@ -9,7 +10,7 @@ import FollowButton from "./FollowButton";
 const logger = log.extend( "FollowButtonContainer" );
 
 interface Props {
-  currentUser: object;
+  currentUser: User | null;
   refetchRelationship: ( ) => void;
   relationship: object;
   setShowLoginSheet: ( _show: boolean ) => void;
