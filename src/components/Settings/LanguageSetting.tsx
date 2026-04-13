@@ -21,8 +21,6 @@ interface Props {
   onChange: ( newLocale: string ) => void;
 }
 
-const CROWDIN_TRANSLATION_URL = "https://crowdin.com/project/inaturalistios";
-
 const LanguageSetting = ( { onChange }: Props ) => {
   const { t, i18n } = useTranslation();
   const [webLocales, setWebLocales] = useState<LocalesResponse>( [] );
@@ -70,7 +68,7 @@ const LanguageSetting = ( { onChange }: Props ) => {
         className="mt-4"
         text={t( "HELP-US-TRANSLATE-THE-APP" )}
         onPress={() => {
-          openExternalWebBrowser( CROWDIN_TRANSLATION_URL );
+          openExternalWebBrowser( "https://crowdin.com/project/inaturalistios" );
         }}
         accessibilityLabel={t( "HELP-US-TRANSLATE-THE-APP" )}
       />
