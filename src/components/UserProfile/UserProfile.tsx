@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
@@ -17,7 +15,6 @@ import {
   UserText,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import User from "realmModels/User";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
@@ -31,7 +28,7 @@ import useStore from "stores/useStore";
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
 
-const UserProfile = ( ): Node => {
+const UserProfile = ( ) => {
   const setExploreView = useStore( state => state.setExploreView );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
