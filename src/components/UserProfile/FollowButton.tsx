@@ -6,8 +6,8 @@ import React from "react";
 
 interface Props {
   following: boolean;
-  follow: () => void;
-  unfollow: () => void;
+  follow: ( ) => void;
+  unfollow: ( ) => void;
   loading: boolean;
 }
 
