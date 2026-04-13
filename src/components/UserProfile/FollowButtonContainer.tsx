@@ -1,4 +1,5 @@
 import { createRelationships, updateRelationships } from "api/relationships";
+import type { ApiRelationship } from "api/types";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import type User from "realmModels/User";
@@ -12,10 +13,7 @@ const logger = log.extend( "FollowButtonContainer" );
 interface Props {
   currentUser: User | null;
   refetchRelationship: ( ) => void;
-  relationship: {
-    following: boolean;
-    id: number;
-  } | null;
+  relationship?: ApiRelationship;
   setShowLoginSheet: ( _show: boolean ) => void;
   setShowUnfollowSheet: ( _show: boolean ) => void;
   userId: number;

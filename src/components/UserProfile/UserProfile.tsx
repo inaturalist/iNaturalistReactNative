@@ -73,11 +73,6 @@ const UserProfile = ( ) => {
       enabled: !!currentUser,
     },
   );
-  let hasRelationshipWithCurrentUser;
-  if ( relationships?.length > 0 ) {
-    hasRelationshipWithCurrentUser = relationships
-      .find( relationship => relationship.friendUser.id === userId );
-  }
 
   // useEffect( ( ) => {
   //   const headerRight = ( ) => currentUser?.login === user?.login && (
@@ -103,6 +98,13 @@ const UserProfile = ( ) => {
 
   if ( !user ) {
     return null;
+  }
+
+  let hasRelationshipWithCurrentUser;
+  if ( relationships?.length > 0 ) {
+    hasRelationshipWithCurrentUser = relationships.find(
+      relationship => relationship.friendUser.id === userId,
+    );
   }
 
   const onObservationPressed = ( ) => {
