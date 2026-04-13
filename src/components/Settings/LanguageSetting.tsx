@@ -70,7 +70,7 @@ const LanguageSetting = ( { onChange }: Props ) => {
         accessibilityRole="link"
         onPress={async () => openExternalWebBrowser( "https://crowdin.com/project/inaturalistios" )}
       >
-        {t( "HELP-US-TRANSLATE-THE-APP" )}
+        {t( "Help-us-translate-the-app" )}
       </Body2>
       {localeSheetOpen && (
         <PickerSheet
