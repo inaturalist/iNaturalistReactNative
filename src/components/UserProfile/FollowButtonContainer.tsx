@@ -12,7 +12,10 @@ const logger = log.extend( "FollowButtonContainer" );
 interface Props {
   currentUser: User | null;
   refetchRelationship: ( ) => void;
-  relationship: object;
+  relationship: {
+    following: boolean;
+    id: number;
+  } | null;
   setShowLoginSheet: ( _show: boolean ) => void;
   setShowUnfollowSheet: ( _show: boolean ) => void;
   userId: number;
