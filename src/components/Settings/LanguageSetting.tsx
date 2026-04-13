@@ -1,6 +1,7 @@
 import fetchAvailableLocales from "api/translations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import {
+  Body2,
   Button,
   Heading4,
   PickerSheet,
@@ -64,14 +65,13 @@ const LanguageSetting = ( { onChange }: Props ) => {
         }}
         accessibilityLabel={t( "CHANGE-APP-LANGUAGE" )}
       />
-      <Button
-        className="mt-4"
-        text={t( "HELP-US-TRANSLATE-THE-APP" )}
-        onPress={() => {
-          openExternalWebBrowser( "https://crowdin.com/project/inaturalistios" );
-        }}
-        accessibilityLabel={t( "HELP-US-TRANSLATE-THE-APP" )}
-      />
+      <Body2
+        className="underline mt-[19px] self-center text-center"
+        accessibilityRole="link"
+        onPress={async () => openExternalWebBrowser( "https://crowdin.com/project/inaturalistios" )}
+      >
+        {t( "HELP-US-TRANSLATE-THE-APP" )}
+      </Body2>
       {localeSheetOpen && (
         <PickerSheet
           headerText={t( "APP-LANGUAGE" )}
