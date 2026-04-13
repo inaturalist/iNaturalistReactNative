@@ -15,6 +15,7 @@ import {
   UserText,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
 import User from "realmModels/User";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
@@ -32,7 +33,7 @@ const UserProfile = ( ) => {
   const setExploreView = useStore( state => state.setExploreView );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
-  const { params } = useRoute( );
+  const { params } = useRoute<TabStackScreenProps<"UserProfile">["route"]>();
   const { userId, login } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
