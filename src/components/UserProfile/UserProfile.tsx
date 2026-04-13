@@ -73,7 +73,7 @@ const UserProfile = ( ) => {
       enabled: !!currentUser,
     },
   );
-  let hasRelationshipWithCurrentUser = null;
+  let hasRelationshipWithCurrentUser;
   if ( relationships?.length > 0 ) {
     hasRelationshipWithCurrentUser = relationships
       .find( relationship => relationship.friendUser.id === userId );
