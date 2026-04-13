@@ -8,7 +8,7 @@ interface Props {
   relationship: {
     id: number;
   };
-  refetchRelationship: () => void;
+  refetchRelationship: ( ) => void;
   setShowUnfollowSheet: ( show: boolean ) => void;
 }
 
