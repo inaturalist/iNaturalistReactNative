@@ -557,6 +557,7 @@ HELP = HELP
 Help-create-Research-Grade-data-used-in-science-and-conservation = Help create Research Grade data used in science and conservation.
 # Onboarding message describing one of the reasons to use iNat
 Help-protect-species = Help protect species
+HELP-US-TRANSLATE-THE-APP = Help us translate the app!
 Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK

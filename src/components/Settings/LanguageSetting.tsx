@@ -8,6 +8,7 @@ import {
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import changeLanguage from "sharedHelpers/changeLanguage";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 
@@ -19,6 +20,8 @@ type LocalesResponse = {
 interface Props {
   onChange: ( newLocale: string ) => void;
 }
+
+const CROWDIN_TRANSLATION_URL = "https://crowdin.com/project/inaturalistios";
 
 const LanguageSetting = ( { onChange }: Props ) => {
   const { t, i18n } = useTranslation();
@@ -62,6 +65,14 @@ const LanguageSetting = ( { onChange }: Props ) => {
           setLocaleSheetOpen( true );
         }}
         accessibilityLabel={t( "CHANGE-APP-LANGUAGE" )}
+      />
+      <Button
+        className="mt-4"
+        text={t( "HELP-US-TRANSLATE-THE-APP" )}
+        onPress={() => {
+          openExternalWebBrowser( CROWDIN_TRANSLATION_URL );
+        }}
+        accessibilityLabel={t( "HELP-US-TRANSLATE-THE-APP" )}
       />
       {localeSheetOpen && (
         <PickerSheet
