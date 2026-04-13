@@ -49,7 +49,15 @@ export type BaseTabStackParamList = {
   ProjectDetails: undefined;
   ProjectRequirements: undefined;
   ProjectMembers: undefined;
-  ProjectList: undefined;
+  ProjectList: {
+    observationUuid: string;
+    userId?: never;
+    userLogin?: never;
+  } | {
+    userId: number;
+    userLogin: string;
+    observationUuid?: never;
+  };
   FollowersList: undefined;
   FollowingList: undefined;
   Debug: undefined;
