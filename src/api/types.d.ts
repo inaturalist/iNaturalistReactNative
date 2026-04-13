@@ -154,6 +154,14 @@ export interface ApiObservation extends ApiRecord {
   uuid: string;
 }
 
+export interface ApiRelationship extends ApiRecord {
+  user?: ApiUser;
+  friend_user?: ApiUser;
+  following?: boolean;
+  trust?: boolean;
+  reciprocal_trust?: boolean;
+}
+
 export interface ApiSuggestion {
   taxon: ApiTaxon;
   combined_score: number;
