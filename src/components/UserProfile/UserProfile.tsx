@@ -1,5 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import type { ErrorWithResponse, INatApiError } from "api/error";
 import { fetchRelationships } from "api/relationships";
+import type { ApiRelationship, ApiUser } from "api/types";
 import { fetchRemoteUser } from "api/users";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
@@ -40,7 +42,11 @@ const UserProfile = ( ) => {
   const { t, i18n } = useTranslation( );
 
   const fetchId = userId || login;
-  const { data: remoteUser, isError, error } = useAuthenticatedQuery(
+  const { data: remoteUser, isError, error }: {
+    data: ApiUser | null;
+    isError: boolean;
+    error: INatApiError | ErrorWithResponse;
+  } = useAuthenticatedQuery(
     ["fetchRemoteUser", fetchId],
     optsWithAuth => fetchRemoteUser( fetchId, {}, optsWithAuth ),
     {
@@ -52,9 +58,9 @@ const UserProfile = ( ) => {
 
   const relationshipsQueryKey = ["fetchRelationships", user?.login];
 
-  const {
-    data: relationships,
-    refetch,
+  const { data: relationships, refetch }: {
+    data: ApiRelationship[] | null;
+    refetch: ( ) => void;
   } = useAuthenticatedQuery(
     relationshipsQueryKey,
     optsWithAuth => fetchRelationships( {
