@@ -155,11 +155,8 @@ export interface ApiObservation extends ApiRecord {
 }
 
 export interface ApiRelationship extends ApiRecord {
-  user?: ApiUser;
-  friend_user?: ApiUser;
   following?: boolean;
-  trust?: boolean;
-  reciprocal_trust?: boolean;
+  friend_user?: ApiUser;
 }
 
 export interface ApiSuggestion {
