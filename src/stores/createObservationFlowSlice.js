@@ -171,11 +171,11 @@ const createObservationFlowSlice = ( set, get ) => ( {
     observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
   } ) ),
-  updateObservationKeys: keysAndValues => set( state => ( {
+  updateObservationKeys: ( keysAndValues, setUnsavedChanges = true ) => set( state => ( {
     observations: updateObservationKeysWithState( keysAndValues, state ),
     currentObservation:
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
-    unsavedChanges: true,
+    unsavedChanges: !!setUnsavedChanges,
   } ) ),
   // For situations where a consumer needs access to this part of state
   // immediately, not after a couple render cycles

@@ -24,7 +24,7 @@ function useNavigateToObsEdit() {
       updateObservationKeys( {
         owners_identification_from_vision: true,
         taxon,
-      } );
+      }, false );
     }
     if ( lastScreen === "Match" ) {
       // Rollback happens in ObsEditHeader in discardChanges
