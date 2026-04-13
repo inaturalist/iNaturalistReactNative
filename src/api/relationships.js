@@ -35,18 +35,8 @@ const updateRelationships = async ( params: Object = {}, opts: Object = {} ): Pr
   }
 };
 
-const deleteRelationships = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
-  try {
-    const response = await inatjs.relationships.delete( params, opts );
-    return response;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "deleteRelationships", opts } } );
-  }
-};
-
 export {
   createRelationships,
-  deleteRelationships,
   fetchRelationships,
   updateRelationships,
 };
