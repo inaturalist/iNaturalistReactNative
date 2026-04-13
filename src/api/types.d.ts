@@ -95,12 +95,29 @@ export interface ApiTaxon {
   defaultPhoto?: ApiPhoto;
 }
 
-export interface ApiUser {
+export interface ApiRecord {
+  created_at?: string;
+  id?: number;
+  updated_at?: string;
+}
+
+export interface ApiUser extends ApiRecord {
+  description?: string;
   icon_url?: string;
   id?: number;
+  identifications_count?: number;
+  journal_posts_count?: number;
   locale?: string;
   login?: string;
+  name?: string;
+  observations_count?: number;
   prefers_no_tracking?: boolean;
+  roles?: string[];
+  site?: {
+    id?: number;
+    name?: string;
+  };
+  species_count?: number;
 }
 
 export interface ApiComment {
@@ -129,12 +146,6 @@ export interface ApiNotification {
   notifier_type: string;
   resource_uuid: string;
   viewed?: boolean;
-}
-
-export interface ApiRecord {
-  created_at?: string;
-  id?: number;
-  updated_at?: string;
 }
 
 export interface ApiProjectObservation {
