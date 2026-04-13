@@ -1,4 +1,4 @@
-import RNFS from "react-native-fs";
+import { stat } from "@dr.pogodin/react-native-fs";
 import { legacyLogfilePath } from "sharedHelpers/logger";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 
@@ -10,10 +10,10 @@ export interface StorageMetrics {
 
 const getStorageMetrics = async ( realmPath?: string | null ): Promise<StorageMetrics> => {
   const realmBytes = realmPath
-    ? ( await RNFS.stat( realmPath ).catch( () => ( { size: 0 } ) ) ).size
+    ? ( await stat( realmPath ).catch( () => ( { size: 0 } ) ) ).size
     : "NA";
   const logFileBytes = legacyLogfilePath
-    ? ( await RNFS.stat( legacyLogfilePath ).catch( () => ( { size: 0 } ) ) ).size
+    ? ( await stat( legacyLogfilePath ).catch( () => ( { size: 0 } ) ) ).size
     : "NA";
   return {
     realmDbBytes: realmBytes,
