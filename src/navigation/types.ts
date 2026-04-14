@@ -11,12 +11,23 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type SharedStackParamList = {
-  ObsEdit: undefined;
+  ObsEdit: {
+    lastScreen: "Camera";
+  } | {
+    entryScreen: "CameraWithDevice";
+    lastScreen: "CameraWithDevice";
+  };
   LocationPicker: undefined;
   TaxonDetails: undefined;
   PhotoSharing: undefined;
-  Match: undefined;
-  Suggestions: undefined;
+  Match: {
+    entryScreen: "CameraWithDevice";
+    lastScreen: "CameraWithDevice";
+  };
+  Suggestions: {
+    entryScreen: "CameraWithDevice";
+    lastScreen: "CameraWithDevice";
+  };
   SuggestionsTaxonSearch: undefined;
   MatchTaxonSearchScreen: undefined;
   FullPageWebView: undefined;
