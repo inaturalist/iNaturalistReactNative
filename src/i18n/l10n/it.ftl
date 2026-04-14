@@ -243,7 +243,7 @@ DISCARD-X-OBSERVATIONS =
        *[other] ELIMINA { $count } OSSERVAZIONI
     }
 DISCOVER-NATURE-AROUND-YOU = SCOPRI LA NATURA CHE TI CIRCONDA
-Dismiss-announcement = Dismiss announcement
+Dismiss-announcement = Ignora annuncio
 Do-you-know-what-group-this-is-in = Sai in quale gruppo si trova?
 DONATE = DONA
 DONATE-TO-INATURALIST = DONA AD INATURALIST
@@ -1075,8 +1075,8 @@ You-can-only-add-20-photos-per-observation = Puoi aggiungere solo 20 foto per os
 You-can-still-share-the-file = Puoi comunque condividere il file con un'altra app. Se puoi inviarlo via e-mail, invialo a { $email }
 You-can-upload-this-observation-to-our-community = Puoi caricare questa osservazione nella nostra community per ottenere un'identificazione da una persona reale e aiutare la nostra IA a migliorare le sue identificazioni in futuro
 You-changed-filters-will-be-discarded = Hai modificato i filtri, ma non sono stati applicati ai risultati di ricerca di Explore.
-You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
-You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
+You-have-no-notifications-get-started-by-creating-your-own-observations = Non hai notifiche! Inizia creando le tue osservazioni.
+You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = Non hai notifiche! Vedrai gli aggiornamenti alle osservazioni per cui hai lasciato ID o commenti qui.
 You-have-opted-out-of-the-Community-Taxon = Hai disattivato il taxon comunitario
 You-havent-joined-any-projects-yet = Non hai ancora aderito a nessun progetto!
 You-havent-observed-any-species-yet = Non hai ancora osservato nessuna specie.
