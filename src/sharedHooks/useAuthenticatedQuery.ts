@@ -9,6 +9,7 @@ interface QueryOptions {
   allowAnonymousJWT?: boolean;
   enabled?: boolean;
   retry?: boolean;
+  refetchInterval?: number;
 }
 
 type QueryFunction<Response> = ( options: { api_token: string | null } ) => Promise<Response>;
