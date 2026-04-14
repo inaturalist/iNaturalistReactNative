@@ -1,10 +1,10 @@
 import fetchAvailableLocales from "api/translations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import {
-  Body2,
   Button,
   Heading4,
   PickerSheet,
+  UnderlinedLink,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
@@ -65,13 +65,13 @@ const LanguageSetting = ( { onChange }: Props ) => {
         }}
         accessibilityLabel={t( "CHANGE-APP-LANGUAGE" )}
       />
-      <Body2
+      <UnderlinedLink
         className="underline mt-[19px] self-center text-center"
         accessibilityRole="link"
         onPress={async () => openExternalWebBrowser( "https://crowdin.com/project/inaturalistios" )}
       >
         {t( "Help-us-translate-the-app" )}
-      </Body2>
+      </UnderlinedLink>
       {localeSheetOpen && (
         <PickerSheet
           headerText={t( "APP-LANGUAGE" )}
