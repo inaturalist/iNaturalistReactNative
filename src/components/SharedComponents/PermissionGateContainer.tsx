@@ -47,14 +47,9 @@ if ( usesAndroid10Permissions ) {
   ];
 }
 
-// TODO does this really work for Android above 10?
-let androidWritePermissions: AndroidPermission[] = [];
-if ( usesAndroid10Permissions ) {
-  androidWritePermissions = [
-    ...androidWritePermissions,
-    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-  ];
-}
+const androidWritePermissions: AndroidPermission[] = usesAndroid10Permissions
+  ? [PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
+  : [];
 
 export const CAMERA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.CAMERA]
