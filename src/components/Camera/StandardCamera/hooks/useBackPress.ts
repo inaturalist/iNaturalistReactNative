@@ -1,5 +1,4 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { getCurrentRoute } from "navigation/navigationUtils";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
 import {
   useCallback,
@@ -12,6 +11,7 @@ import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
 
 const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
   const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
+  const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const exitObservationFlow = useExitObservationFlow( );
 
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
@@ -19,17 +19,15 @@ const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
   const handleBackButtonPress = useCallback( ( ) => {
     if ( shouldShowDiscardSheet ) {
       setShowDiscardSheet( true );
+    } else if ( params?.addEvidence ) {
+      navigation.navigate( "ObsEdit" );
     } else {
-      const currentRoute = getCurrentRoute();
-      if ( currentRoute?.params?.addEvidence ) {
-        navigation.navigate( "ObsEdit" );
-      } else {
-        exitObservationFlow( );
-      }
+      exitObservationFlow( );
     }
   }, [
     exitObservationFlow,
     navigation,
+    params?.addEvidence,
     setShowDiscardSheet,
     shouldShowDiscardSheet,
   ] );
