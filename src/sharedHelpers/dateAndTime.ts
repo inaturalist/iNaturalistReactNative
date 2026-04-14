@@ -427,6 +427,12 @@ function formatProjectsApiDatetimeLong(
   i18n: i18next,
   options: FormatDateStringOptions = {},
 ) {
+  if ( !dateString || dateString === "" ) {
+    return options.missing === undefined
+      ? i18n.t( "Missing-Date" )
+      : options.missing;
+  }
+
   const hasTime = String( dateString ).includes( "T" );
   if ( hasTime ) {
     return formatDateString( dateString, i18n.t( "datetime-format-long" ), i18n, options );
