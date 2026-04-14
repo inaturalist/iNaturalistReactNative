@@ -169,7 +169,9 @@ export interface ApiRelationship extends ApiRecord {
   following?: boolean;
   // For some reason inaturalistjs is changing friend_user to friendUser on the fly.
   // https://github.com/inaturalist/inaturalistjs/blob/35534d90f67c4e724a5679a53e99a39cc167a8f5/lib/models/relationship.js#L7-L8
-  friendUser?: ApiUser;
+  friendUser?: {
+    id?: number;
+  };
 }
 
 export interface ApiSuggestion {
