@@ -65,28 +65,44 @@ const formatProjectDate = ( project, t, i18n ) => {
     ?.filter( pref => pref.field === "observed_on" ) );
   const months = getFieldValue( project?.rule_preferences
     ?.filter( pref => pref.field === "month" ) );
+  const formattedStartDate = projectStartDate
+    ? formatProjectsApiDatetimeLong( projectStartDate, i18n, { missing: null } )
+    : null;
+  const formattedEndDate = projectEndDate
+    ? formatProjectsApiDatetimeLong( projectEndDate, i18n, { missing: null } )
+    : null;
+  const formattedObservedOnDate = observedOnDate
+    ? formatProjectsApiDatetimeLong( observedOnDate, i18n, { missing: null } )
+    : null;
 
   if ( projectStartDate && !projectEndDate ) {
-    projectDate = t( "project-start-time-datetime", {
-      datetime: formatProjectsApiDatetimeLong( projectStartDate, i18n ),
-    } );
+    projectDate = formattedStartDate
+      ? t( "project-start-time-datetime", {
+        datetime: formattedStartDate,
+      } )
+      : null;
   }
-  if ( projectStartDate && projectEndDate ) {
+  if ( formattedStartDate && formattedEndDate ) {
     projectDate = t( "date-to-date", {
-      d1: formatProjectsApiDatetimeLong( projectStartDate, i18n ),
-      d2: formatProjectsApiDatetimeLong( projectEndDate, i18n ),
+      d1: formattedStartDate,
+      d2: formattedEndDate,
     } );
   }
-  if ( observedOnDate ) {
-    projectDate = formatProjectsApiDatetimeLong( observedOnDate, i18n );
+  if ( formattedObservedOnDate ) {
+    projectDate = formattedObservedOnDate;
   }
   if ( months ) {
     const monthList = months.split( "," );
-    projectDate = monthList.map( numberOfMonth => monthValues[numberOfMonth].label ).join( ", " );
+    const monthLabels = monthList
+      .map( numberOfMonth => monthValues[numberOfMonth]?.label )
+      .filter( Boolean );
+    projectDate = monthLabels.length > 0
+      ? monthLabels.join( ", " )
+      : null;
   }
   return {
     projectDate,
-    shouldDisplayDateRange: projectStartDate && projectEndDate
+    shouldDisplayDateRange: !!( formattedStartDate && formattedEndDate )
       && project?.project_type !== "traditional",
   };
 };
