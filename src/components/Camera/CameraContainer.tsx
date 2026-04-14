@@ -6,6 +6,7 @@ import {
 } from "components/Camera/helpers/visionCameraWrapper";
 import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, {
   useCallback,
   useEffect,
@@ -70,7 +71,8 @@ const CameraContainer = ( ) => {
   const addCameraRollUris = useStore( state => state.addCameraRollUris );
   const startFirebaseTrace = useStore( state => state.startFirebaseTrace );
 
-  const { params } = useRoute( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>();
+  const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const cameraType = params?.camera;
 
   const logStageIfAICamera = useCallback( async (
@@ -96,7 +98,6 @@ const CameraContainer = ( ) => {
   // will not reflect when they actually took the photo
   const [userLocationForGeomodel, setUserLocationForGeomodel] = useState( null );
 
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
 
   const [cameraPosition, setCameraPosition] = useState<"front" | "back">( "back" );
