@@ -1,4 +1,9 @@
+import * as RNFS from "@dr.pogodin/react-native-fs";
 import { createSection, useRozeniteControlsPlugin } from "@rozenite/controls-plugin";
+import {
+  createRNFSAdapter,
+  useFileSystemDevTools,
+} from "@rozenite/file-system-plugin";
 import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
 import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
 import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
@@ -28,6 +33,9 @@ const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
     storages: mmkvStorages,
   } );
   useRequireProfilerDevTools( );
+  useFileSystemDevTools( {
+    adapter: createRNFSAdapter( RNFS ),
+  } );
   const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
     = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
 
