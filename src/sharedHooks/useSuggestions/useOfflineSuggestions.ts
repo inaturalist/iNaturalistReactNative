@@ -122,6 +122,7 @@ const useOfflineSuggestions = (
   } = options;
 
   const fetchOfflineSuggestions = useCallback( async () => {
+    if ( !photoUri ) return;
     try {
       const suggestions = await predictOffline( {
         latitude,
