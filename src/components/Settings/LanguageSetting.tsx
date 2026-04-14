@@ -66,7 +66,7 @@ const LanguageSetting = ( { onChange }: Props ) => {
         accessibilityLabel={t( "CHANGE-APP-LANGUAGE" )}
       />
       <UnderlinedLink
-        className="underline mt-[19px] self-center text-center"
+        className="mt-[19px] text-center"
         accessibilityRole="link"
         onPress={async () => openExternalWebBrowser( "https://crowdin.com/project/inaturalistios" )}
       >
