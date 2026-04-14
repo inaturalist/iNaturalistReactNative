@@ -1,5 +1,6 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { getCurrentRoute } from "navigation/navigationUtils";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import {
   useCallback,
   useState,
@@ -10,7 +11,7 @@ import {
 import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
 
 const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
   const exitObservationFlow = useExitObservationFlow( );
 
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );

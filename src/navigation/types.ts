@@ -16,7 +16,7 @@ export type SharedStackParamList = {
   } | {
     entryScreen: "CameraWithDevice";
     lastScreen: "CameraWithDevice";
-  };
+  } | undefined;
   LocationPicker: undefined;
   TaxonDetails: undefined;
   PhotoSharing: undefined;
