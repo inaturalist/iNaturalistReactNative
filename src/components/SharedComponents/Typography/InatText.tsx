@@ -10,14 +10,14 @@ import { Text } from "react-native";
 export const TYPOGRAPHY_CLASSES = [
   "text-darkGray",
   "trailing-tight",
-];
+] as const;
 
 export const TYPOGRAPHY_STYLE = {
   // Explicitly declaring this as a default allows RN's RTL support to flip it
   // for RTL languages. For some reason it doesn't work with text-left or
   // text-start as a tailwind class
   textAlign: "left",
-};
+} as const;
 
 const InatText = ( props: ComponentPropsWithoutRef<typeof Text> ) => (
   <Text
