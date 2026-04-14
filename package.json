@@ -72,6 +72,7 @@
     "@react-navigation/native-stack": "^7.3.25",
     "@realm/react": "^0.20.0",
     "@rozenite/controls-plugin": "^1.6.0",
+    "@rozenite/file-system-plugin": "^1.6.0",
     "@rozenite/metro": "^1.6.0",
     "@rozenite/mmkv-plugin": "^1.6.0",
     "@rozenite/network-activity-plugin": "^1.6.0",
