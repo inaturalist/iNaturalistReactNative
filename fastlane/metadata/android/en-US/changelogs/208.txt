@@ -1,0 +1,7 @@
+FIXED
+* Bug in the "Open Email" button in the "Reset Password"
+* A crash after leaving the suggestions screen
+* "Others" tab in notifications being blank
+
+UPDATED
+* Sending a user to login again on errors with automatic authentication
