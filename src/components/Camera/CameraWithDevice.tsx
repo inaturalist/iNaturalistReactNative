@@ -11,7 +11,7 @@ import StandardCamera from "./StandardCamera/StandardCamera";
 const isTablet = DeviceInfo.isTablet( );
 
 interface Props {
-  cameraType: string;
+  cameraType: "AI" | "Standard";
   device: CameraDevice;
   camera: object;
   flipCamera: ( ) => void;

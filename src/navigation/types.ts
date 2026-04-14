@@ -85,8 +85,11 @@ export type BottomTabParamList = {
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type BaseNoBottomTabStackParamList = {
-  Camera: undefined;
   PhotoLibrary: undefined;
+  Camera: {
+    addEvidence?: boolean;
+    camera?: "AI" | "Standard";
+  };
   GroupPhotos: undefined;
   SoundRecorder: undefined;
 };
