@@ -3,7 +3,7 @@ import {
   tailwindFontRegular,
 } from "appConstants/fontFamilies";
 import classnames from "classnames";
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentProps } from "react";
 import React from "react";
 import { Text } from "react-native";
 
@@ -19,7 +19,7 @@ export const TYPOGRAPHY_STYLE = {
   textAlign: "left",
 } as const;
 
-const InatText = ( props: ComponentPropsWithoutRef<typeof Text> ) => (
+const InatText = ( props: ComponentProps<typeof Text> ) => (
   <Text
     maxFontSizeMultiplier={2}
     className={classnames(
