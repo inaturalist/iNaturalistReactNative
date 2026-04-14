@@ -62,6 +62,7 @@ const ProjectDetailsContainer = ( ): Node => {
     }, optsWithAuth ),
   );
 
+  // TODO: enable fields
   const { data: projectPosts } = useAuthenticatedQuery(
     ["fetchProjectPosts", id],
     optsWithAuth => fetchProjectPosts( {
@@ -69,6 +70,7 @@ const ProjectDetailsContainer = ( ): Node => {
     }, optsWithAuth ),
   );
 
+  // TODO: enable fields
   const { data: projectStats } = useAuthenticatedQuery(
     ["searchObservations", id],
     ( ) => searchObservations( {
@@ -76,6 +78,7 @@ const ProjectDetailsContainer = ( ): Node => {
     } ),
   );
 
+  // TODO: enable fields
   const { data: usersObservations } = useAuthenticatedQuery(
     ["searchObservationsByUserInProject", id],
     optsWithAuth => searchObservations(
@@ -91,6 +94,7 @@ const ProjectDetailsContainer = ( ): Node => {
     },
   );
 
+  // TODO: enable fields
   const { data: speciesCounts } = useAuthenticatedQuery(
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
@@ -99,6 +103,7 @@ const ProjectDetailsContainer = ( ): Node => {
   );
 
   const membershipQueryKey = ["fetchMembership", id];
+  // TODO: enable fields
   const { data: currentMembership } = useAuthenticatedQuery(
     membershipQueryKey,
     optsWithAuth => fetchMembership( {

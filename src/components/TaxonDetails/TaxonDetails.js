@@ -159,6 +159,7 @@ const TaxonDetails = ( ): Node => {
   };
 
   // Note that we want to authenticate this to localize names, desc language, etc.
+  // TODO: enable fields
   const {
     data: remoteTaxon,
     isLoading,

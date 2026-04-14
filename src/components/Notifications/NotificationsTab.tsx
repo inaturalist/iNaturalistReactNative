@@ -19,6 +19,7 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
   const currentUser = useCurrentUser( );
 
+  // TODO: enable fields
   const { data: numUnviewed, refetch } = useAuthenticatedQuery(
     [
       "NotificationsTab",
