@@ -56,6 +56,17 @@ const observationToJSON = observation => ( observation instanceof Realm.Object
   ? observation.toJSON( )
   : observation );
 
+const keysAndValuesToJSON = keysAndValues => {
+  const result = {};
+  Object.keys( keysAndValues ).forEach( key => {
+    const value = keysAndValues[key];
+    result[key] = value instanceof Realm.Object
+      ? value.toJSON( )
+      : value;
+  } );
+  return result;
+};
+
 const updateObservationKeysWithState = ( keysAndValues, state ) => {
   const {
     observations,
@@ -65,7 +76,7 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
   const updatedObservations = observations;
   const updatedObservation = {
     ...observationToJSON( currentObservation ),
-    ...keysAndValues,
+    ...keysAndValuesToJSON( keysAndValues ),
   };
   updatedObservations[currentObservationIndex] = updatedObservation;
   return updatedObservations;
