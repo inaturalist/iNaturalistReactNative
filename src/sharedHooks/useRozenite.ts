@@ -23,11 +23,11 @@ interface RozeniteOptions {
 // note: Rozenite plugins are automatically disabled / noops in Production builds
 const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
   useTanStackQueryDevTools( queryClient );
-  useNetworkActivityDevTools();
+  useNetworkActivityDevTools( );
   useMMKVDevTools( {
     storages: mmkvStorages,
   } );
-  useRequireProfilerDevTools();
+  useRequireProfilerDevTools( );
   const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
     = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
 
