@@ -29,11 +29,18 @@ export type SharedStackParamList = {
   LocationPicker: undefined;
   TaxonDetails: undefined;
   PhotoSharing: undefined;
+  // From usePrepareStoreAndNavigate.ts
+  // {
+  //   entryScreen: "CameraWithDevice";
+  //   lastScreen: "CameraWithDevice";
+  // }
+  // From PhotoLibrary
+  // {
+  //   lastScreen: "PhotoLibrary";
+  // }
   Match: {
-    entryScreen: "CameraWithDevice";
-    lastScreen: "CameraWithDevice";
-  } | {
-    lastScreen: "PhotoLibrary";
+    entryScreen?: "CameraWithDevice";
+    lastScreen: "CameraWithDevice" | "PhotoLibrary";
   };
   // From usePrepareStoreAndNavigate.ts
   // {
