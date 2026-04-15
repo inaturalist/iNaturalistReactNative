@@ -21,6 +21,7 @@ const PhotoSharing = ( ) => {
     TabStackScreenProps<"PhotoSharing">["route"]
   >( );
   const { item } = params;
+  // TODO: seems expected here but not actually defined in App.js the only start point
   const sharedText = item.extraData?.userInput;
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
@@ -28,7 +29,9 @@ const PhotoSharing = ( ) => {
   const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs();
   const [navigationHandled, setNavigationHandled] = useState( null );
 
-  const resetNavigator = useCallback( screen => navigation.dispatch(
+  const resetNavigator = useCallback( (
+    screen: "Match" | "ObsEdit" | "Suggestions",
+  ) => navigation.dispatch(
     CommonActions.reset( {
       index: 0,
       routes: [
