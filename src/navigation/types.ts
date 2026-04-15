@@ -36,10 +36,17 @@ export type SharedStackParamList = {
   // { lastScreen: "Suggestions" }
   // From useNavigateToObsEdit.ts
   // { lastScreen: "Match" }
+    // From PhotoSharing
+  // { lastScreen: "PhotoSharing" }
   // From useBackPress.ts; SoundRecorder.js; useNavigateWithTaxonSelected.ts; TaxonDetails.js
   // undefined
   ObsEdit: {
-    lastScreen?: "Camera" | "CameraWithDevice" | "PhotoLibrary" | "Suggestions" | "Match";
+    lastScreen?: "Camera" |
+      "CameraWithDevice" |
+      "PhotoLibrary" |
+      "Suggestions" |
+      "Match" |
+      "PhotoSharing";
     entryScreen?: "CameraWithDevice";
     // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
@@ -96,9 +103,11 @@ export type SharedStackParamList = {
   // {
   //   lastScreen: "PhotoLibrary";
   // }
+  // From PhotoSharing
+  // { lastScreen: "PhotoSharing" }
   Match: {
     entryScreen?: "CameraWithDevice";
-    lastScreen: "CameraWithDevice" | "PhotoLibrary";
+    lastScreen: "CameraWithDevice" | "PhotoLibrary" | "PhotoSharing";
   };
   // From usePrepareStoreAndNavigate.ts
   // {
@@ -125,9 +134,11 @@ export type SharedStackParamList = {
   //   lastScreen: "ObsDetails",
   //   hideSkip: true,
   // }
+  // From PhotoSharing
+  // { lastScreen: "PhotoSharing" }
   Suggestions: {
     entryScreen?: "CameraWithDevice" | "ObsEdit" | "ObsDetails";
-    lastScreen?: "CameraWithDevice" | "ObsEdit" | "PhotoLibrary" | "ObsDetails";
+    lastScreen?: "CameraWithDevice" | "ObsEdit" | "PhotoLibrary" | "ObsDetails" | "PhotoSharing";
     hideSkip?: boolean;
   };
   SuggestionsTaxonSearch: {
@@ -250,8 +261,10 @@ export type BaseNoBottomTabStackParamList = {
     // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   };
-  GroupPhotos: undefined;
   SoundRecorder: undefined;
+  // From PhotoSharing
+  // { lastScreen: "PhotoSharing" }
+  GroupPhotos: { lastScreen: "PhotoSharing" };
 };
 
 export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
