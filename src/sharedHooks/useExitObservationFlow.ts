@@ -48,6 +48,8 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
       resetObservationFlowSlice( );
     }
 
+    // Only in those screens can we have a previousScreen param:
+    // "ObsEdit" | "Camera" | "PhotoLibrary" | "SoundRecorder"
     const previousScreen = params && params.previousScreen
       ? params.previousScreen
       : null;
