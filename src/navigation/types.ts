@@ -36,8 +36,14 @@ export type SharedStackParamList = {
   // { lastScreen: "Suggestions" }
   // From useNavigateToObsEdit.ts
   // { lastScreen: "Match" }
-    // From PhotoSharing
+  // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
+  // From GroupPhotos
+  // { lastScreen: "GroupPhotos" }
+  // {
+  //   entryScreen: "GroupPhotos",
+  //   lastScreen: "GroupPhotos",
+  // }
   // From useBackPress.ts; SoundRecorder.js; useNavigateWithTaxonSelected.ts; TaxonDetails.js
   // undefined
   ObsEdit: {
@@ -46,8 +52,9 @@ export type SharedStackParamList = {
       "PhotoLibrary" |
       "Suggestions" |
       "Match" |
-      "PhotoSharing";
-    entryScreen?: "CameraWithDevice";
+      "PhotoSharing" |
+      "GroupPhotos";
+    entryScreen?: "CameraWithDevice" | "GroupPhotos";
     // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   } | undefined;
@@ -112,9 +119,14 @@ export type SharedStackParamList = {
   // }
   // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
+  // From GroupPhotos
+  // {
+  //   entryScreen: "GroupPhotos",
+  //   lastScreen: "GroupPhotos",
+  // }
   Match: {
-    entryScreen?: "CameraWithDevice";
-    lastScreen: "CameraWithDevice" | "PhotoLibrary" | "PhotoSharing";
+    entryScreen?: "CameraWithDevice" | "GroupPhotos";
+    lastScreen: "CameraWithDevice" | "PhotoLibrary" | "PhotoSharing" | "GroupPhotos";
   };
   // From usePrepareStoreAndNavigate.ts
   // {
@@ -143,9 +155,19 @@ export type SharedStackParamList = {
   // }
   // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
+  // From GroupPhotos
+  // {
+  //   entryScreen: "GroupPhotos",
+  //   lastScreen: "GroupPhotos",
+  // }
   Suggestions: {
-    entryScreen?: "CameraWithDevice" | "ObsEdit" | "ObsDetails";
-    lastScreen?: "CameraWithDevice" | "ObsEdit" | "PhotoLibrary" | "ObsDetails" | "PhotoSharing";
+    entryScreen?: "CameraWithDevice" | "ObsEdit" | "ObsDetails" | "GroupPhotos";
+    lastScreen?: "CameraWithDevice" |
+      "ObsEdit" |
+      "PhotoLibrary" |
+      "ObsDetails" |
+      "PhotoSharing" |
+      "GroupPhotos";
     hideSkip?: boolean;
   };
   SuggestionsTaxonSearch: {
