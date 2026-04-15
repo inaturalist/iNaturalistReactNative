@@ -34,8 +34,17 @@ export type SharedStackParamList = {
   Suggestions: {
     entryScreen: "CameraWithDevice";
     lastScreen: "CameraWithDevice";
+  } | {
+    entryScreen: "ObsEdit";
+    lastScreen: "ObsEdit";
+    hideSkip: boolean;
+  } | {
+    lastScreen: "ObsEdit";
   };
-  SuggestionsTaxonSearch: undefined;
+  SuggestionsTaxonSearch: {
+    entryScreen: "ObsEdit";
+    lastScreen: "ObsEdit";
+  };
   MatchTaxonSearchScreen: undefined;
   FullPageWebView: undefined;
 };
