@@ -1,6 +1,7 @@
 import { CommonActions, useNavigation, useRoute } from "@react-navigation/native";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import React, {
   useCallback, useEffect, useRef, useState,
 } from "react";
@@ -11,7 +12,10 @@ import useStore from "stores/useStore";
 
 const PhotoSharing = ( ) => {
   const previousItem = useRef( null );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"PhotoSharing">["navigation"] &
+    TabStackScreenProps<"PhotoSharing">["navigation"]
+  >( );
   const { params } = useRoute( );
   const { item } = params;
   const sharedText = item.extraData?.userInput;
