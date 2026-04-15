@@ -5,11 +5,13 @@ import {
   useCameraDevices,
 } from "components/Camera/helpers/visionCameraWrapper";
 import { ActivityIndicator } from "components/SharedComponents";
+import {
+  hasWriteMediaPermission,
+} from "components/SharedComponents/PermissionGateContainer";
 import { View } from "components/styledComponents";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -26,10 +28,8 @@ import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebas
 import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
-import savePhotosToPhotoLibrary from "./helpers/savePhotosToPhotoLibrary";
 import savePhotoToDocumentsDirectory from "./helpers/savePhotoToDocumentsDirectory";
 import usePrepareStoreAndNavigate from "./hooks/usePrepareStoreAndNavigate";
-import useSavePhotoPermission from "./hooks/useSavePhotoPermission";
 
 interface PhotoState {
   cameraUris: string[];
@@ -67,7 +67,6 @@ const CameraContainer = ( ) => {
   const setNewPhotoUris = useStore( state => state.setNewPhotoUris );
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
-  const addCameraRollUris = useStore( state => state.addCameraRollUris );
   const startFirebaseTrace = useStore( state => state.startFirebaseTrace );
 
   const { params } = useRoute( );
@@ -142,29 +141,12 @@ const CameraContainer = ( ) => {
     generateSentinelFile( );
   }, [setSentinelFileName, cameraType] );
 
-  const {
-    hasPermissions: hasSavePhotoPermission,
-    hasBlockedPermissions: hasBlockedSavePhotoPermission,
-    renderPermissionsGate: renderSavePhotoPermissionGate,
-    requestPermissions: requestSavePhotoPermission,
-  } = useSavePhotoPermission( );
-
-  const showPhotoPermissionsGate = !( hasSavePhotoPermission || hasBlockedSavePhotoPermission );
-
-  const addPhotoPermissionResult = hasSavePhotoPermission
-    ? "granted"
-    : "denied";
-
   const flipCamera = ( ) => {
     const newPosition = cameraPosition === "back"
       ? "front"
       : "back";
     setCameraPosition( newPosition );
   };
-
-  const navigationOptions = useMemo( ( ) => ( {
-    addPhotoPermissionResult,
-  } ), [addPhotoPermissionResult] );
 
   const prepareStoreAndNavigate = usePrepareStoreAndNavigate( );
 
@@ -173,9 +155,9 @@ const CameraContainer = ( ) => {
   // and we want to make sure Suggestions has the correct observationPhotos
   const handleNavigation = useCallback( async (
     newPhotoState: PhotoState,
-    hasSavePhotoPermission: boolean,
     visionResult?: StoredResult | null,
   ) => {
+    const hasSavePhotoPermission = await hasWriteMediaPermission( );
     startFirebaseTrace(
       FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
       { [FIREBASE_TRACE_ATTRIBUTES.HAS_SAVE_PHOTO_PERMISSION]: `${hasSavePhotoPermission}` },
@@ -187,7 +169,6 @@ const CameraContainer = ( ) => {
     // location permissions in the camera, so we no longer need to check for that
     const accurateUserLocation = await fetchAccurateUserLocation( );
     await prepareStoreAndNavigate( {
-      ...navigationOptions,
       userLocation: accurateUserLocation,
       newPhotoState,
       logStageIfAICamera,
@@ -196,27 +177,9 @@ const CameraContainer = ( ) => {
     } );
   }, [
     prepareStoreAndNavigate,
-    navigationOptions,
     logStageIfAICamera,
     deleteStageIfAICamera,
     startFirebaseTrace,
-  ] );
-
-  const handleCheckmarkPress = useCallback( async (
-    newPhotoState: PhotoState,
-    visionResult: StoredResult | null,
-  ) => {
-    if ( !showPhotoPermissionsGate ) {
-      await handleNavigation( newPhotoState, true, visionResult );
-    } else {
-      await logStageIfAICamera( "request_save_photo_permission_start" );
-      requestSavePhotoPermission( );
-    }
-  }, [
-    handleNavigation,
-    requestSavePhotoPermission,
-    showPhotoPermissionsGate,
-    logStageIfAICamera,
   ] );
 
   const toggleFlash = ( ) => {
@@ -275,7 +238,7 @@ const CameraContainer = ( ) => {
     const newPhotoState = await updateTakePhotoStore( uri, options );
     if ( cameraType !== "AI" ) { setTakingPhoto( false ); }
     if ( options?.navigateImmediately ) {
-      await handleCheckmarkPress( newPhotoState, options?.visionResult );
+      await handleNavigation( newPhotoState, options?.visionResult );
     }
     setNewPhotoUris( [...newPhotoUris, uri] );
     return uri;
@@ -334,7 +297,7 @@ const CameraContainer = ( ) => {
         cameraType={cameraType}
         device={device}
         flipCamera={flipCamera}
-        handleCheckmarkPress={handleCheckmarkPress}
+        handleCheckmarkPress={handleNavigation}
         toggleFlash={toggleFlash}
         takingPhoto={takingPhoto}
         takePhotoAndStoreUri={takePhotoAndStoreUri}
@@ -345,34 +308,6 @@ const CameraContainer = ( ) => {
         hasLocationPermissions={hasLocationPermissions}
         requestLocationPermissions={requestLocationPermissions}
       />
-      {showPhotoPermissionsGate && renderSavePhotoPermissionGate( {
-        onPermissionGranted: async ( ) => {
-          // we need this to make sure the very first photo after permission granted
-          // is saved to device. very unlikely that we'll have a location here
-          // since we're not prompting for permission, but there are a few scenarios where it
-          // could happen, like a user enabling location on Explore before visiting the camera
-          const accurateUserLocation = await fetchAccurateUserLocation( );
-          const savedPhotoUris = await savePhotosToPhotoLibrary( cameraUris, accurateUserLocation );
-          await logStageIfAICamera( "save_photos_to_photo_library_first_permission" );
-          if ( savedPhotoUris.length > 0 ) {
-            // Save these camera roll URIs, so later on observation editor can update
-            // the EXIF metadata of these photos, once we retrieve a location.
-            addCameraRollUris( savedPhotoUris );
-          }
-          await logStageIfAICamera( "request_save_photo_permission_complete" );
-          await handleNavigation( {
-            cameraUris,
-            evidenceToAdd,
-          }, true );
-        },
-        onModalHide: async ( ) => {
-          await logStageIfAICamera( "request_save_photo_permission_complete" );
-          await handleNavigation( {
-            cameraUris,
-            evidenceToAdd,
-          }, false );
-        },
-      } )}
       {renderLocationPermissionsGate( {
         onRequestGranted: ( ) => console.log( "granted in location permission gate" ),
         onRequestBlocked: ( ) => console.log( "blocked in location permission gate" ),
