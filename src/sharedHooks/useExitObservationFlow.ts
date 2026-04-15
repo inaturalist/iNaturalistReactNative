@@ -3,7 +3,7 @@
 // state
 import { useNavigation, useRoute } from "@react-navigation/native";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
-import type { NoBottomTabStackScreenProps } from "navigation/types";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
 import useStore from "stores/useStore";
 
@@ -17,7 +17,11 @@ interface Options {
 export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
   // This hook is used in:
   // - useBackPress.ts
-  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
+  // - MatchContainer.js
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"Camera">["navigation"] &
+    TabStackScreenProps<"Match">["navigation"]
+  >( );
   const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
 
