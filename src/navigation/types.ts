@@ -77,9 +77,15 @@ export type SharedStackParamList = {
   // {
   //   lastScreen: "PhotoLibrary";
   // }
+  // From useObsDetailsSharedLogic.ts
+  // {
+  //   entryScreen: "ObsDetails",
+  //   lastScreen: "ObsDetails",
+  //   hideSkip: true,
+  // }
   Suggestions: {
-    entryScreen?: "CameraWithDevice" | "ObsEdit";
-    lastScreen?: "CameraWithDevice" | "ObsEdit" | "PhotoLibrary";
+    entryScreen?: "CameraWithDevice" | "ObsEdit" | "ObsDetails";
+    lastScreen?: "CameraWithDevice" | "ObsEdit" | "PhotoLibrary" | "ObsDetails";
     hideSkip?: boolean;
   };
   SuggestionsTaxonSearch: {
