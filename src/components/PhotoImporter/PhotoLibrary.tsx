@@ -72,6 +72,7 @@ const PhotoLibrary = ( ) => {
 
   const navBasedOnUserSettings = useCallback( async ( ) => {
     if ( isDefaultMode ) {
+      // TODO: why do we need to define higher navigator here
       return navigation.navigate( "NoBottomTabStackNavigator", {
         screen: "Match",
         params: {

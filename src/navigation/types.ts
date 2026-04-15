@@ -32,6 +32,8 @@ export type SharedStackParamList = {
   Match: {
     entryScreen: "CameraWithDevice";
     lastScreen: "CameraWithDevice";
+  } | {
+    lastScreen: "PhotoLibrary";
   };
   Suggestions: {
     entryScreen: "CameraWithDevice";
@@ -42,6 +44,8 @@ export type SharedStackParamList = {
     hideSkip: boolean;
   } | {
     lastScreen: "ObsEdit";
+  } | {
+    lastScreen: "PhotoLibrary";
   };
   SuggestionsTaxonSearch: {
     entryScreen: "ObsEdit";
