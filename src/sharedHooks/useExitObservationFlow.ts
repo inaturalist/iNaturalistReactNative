@@ -1,8 +1,7 @@
 // Trying to consolidate cleanup and nav logic when exiting the obs create /
 // edit flow, so basically nav to MyObs by default and clean up the zustand
 // state
-import { useNavigation, useRoute } from "@react-navigation/native";
-import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
+import { useNavigation } from "@react-navigation/native";
 import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
 import useStore from "stores/useStore";
@@ -28,12 +27,6 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
     >["navigation"] &
     TabStackScreenProps<"Match" | "ObsEdit" | "TaxonDetails">["navigation"]
   >( );
-  const { params } = useRoute<
-    NoBottomTabStackScreenProps<
-      "Match" | "Camera" | "ObsEdit" | "PhotoLibrary" | "TaxonDetails"
-    >["route"] &
-    TabStackScreenProps<"Match" | "ObsEdit" | "TaxonDetails">["route"]
-  >( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
 
   return useCallback( ( options: Options = {} ) => {
@@ -48,14 +41,7 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
       resetObservationFlowSlice( );
     }
 
-    // Only in those screens can we have a previousScreen param:
-    // "ObsEdit" | "Camera" | "PhotoLibrary" | "SoundRecorder"
-    const previousScreen = params && params.previousScreen
-      ? params.previousScreen
-      : null;
-    if ( previousScreen && previousScreen.name === "ObsDetails" ) {
-      navigateToObsDetails( navigation, previousScreen.params.uuid );
-    } else if ( typeof ( options.navigate ) === "function" ) {
+    if ( typeof ( options.navigate ) === "function" ) {
       // This seems only to be used in ObsEditHeader in a few cases of backing out
       options.navigate();
     } else {
@@ -68,7 +54,6 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
     }
   }, [
     navigation,
-    params,
     resetObservationFlowSlice,
     exitOptions,
   ] );
