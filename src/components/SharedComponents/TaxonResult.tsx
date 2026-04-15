@@ -38,7 +38,7 @@ interface TaxonResultProps {
   handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
   hideInfoButton?: boolean;
   hideNavButtons?: boolean;
-  lastScreen?: string | null;
+  lastScreen?: "Suggestions";
   onPressInfo?: ( taxon: object ) => void;
   showCheckmark?: boolean;
   showEditButton?: boolean;
@@ -70,7 +70,7 @@ const TaxonResult = ( {
   handleTaxonOrEditPress,
   hideInfoButton = false,
   hideNavButtons = false,
-  lastScreen = null,
+  lastScreen,
   onPressInfo,
   retryQuery = true,
   showCheckmark = true,
