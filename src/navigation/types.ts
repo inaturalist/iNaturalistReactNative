@@ -32,10 +32,12 @@ export type SharedStackParamList = {
   // {
   //   previousScreen: ParamListRoute<RootStackParamList>;
   // };
-  // From useBackPress.ts
+  // From useNavigateWithTaxonSelected.ts
+  // { lastScreen: "Suggestions" }
+  // From useBackPress.ts; SoundRecorder.js; useNavigateWithTaxonSelected.ts
   // undefined
   ObsEdit: {
-    lastScreen?: "Camera" | "CameraWithDevice" | "PhotoLibrary";
+    lastScreen?: "Camera" | "CameraWithDevice" | "PhotoLibrary" | "Suggestions";
     entryScreen?: "CameraWithDevice";
     // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
