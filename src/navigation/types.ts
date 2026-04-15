@@ -34,10 +34,12 @@ export type SharedStackParamList = {
   // };
   // From useNavigateWithTaxonSelected.ts
   // { lastScreen: "Suggestions" }
-  // From useBackPress.ts; SoundRecorder.js; useNavigateWithTaxonSelected.ts
+  // From useNavigateToObsEdit.ts
+  // { lastScreen: "Match" }
+  // From useBackPress.ts; SoundRecorder.js; useNavigateWithTaxonSelected.ts; TaxonDetails.js
   // undefined
   ObsEdit: {
-    lastScreen?: "Camera" | "CameraWithDevice" | "PhotoLibrary" | "Suggestions";
+    lastScreen?: "Camera" | "CameraWithDevice" | "PhotoLibrary" | "Suggestions" | "Match";
     entryScreen?: "CameraWithDevice";
     // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;

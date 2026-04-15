@@ -19,7 +19,7 @@ function useNavigateToObsEdit() {
 
   function navigateToObsEdit(
     localObservation: RealmObservation,
-    lastScreen?: string,
+    lastScreen?: "Match",
     taxon?: ApiTaxon | RealmTaxon,
   ) {
     prepareObsEdit( localObservation );
