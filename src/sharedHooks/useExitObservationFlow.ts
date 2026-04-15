@@ -54,6 +54,7 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
     if ( previousScreen && previousScreen.name === "ObsDetails" ) {
       navigateToObsDetails( navigation, previousScreen.params.uuid );
     } else if ( typeof ( options.navigate ) === "function" ) {
+      // This seems only to be used in ObsEditHeader in a few cases of backing out
       options.navigate();
     } else {
       navigation.navigate( "TabNavigator", {
