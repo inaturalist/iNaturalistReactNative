@@ -34,6 +34,7 @@ async function savePhotosToPhotoLibrary(
   location: { latitude: number; longitude: number; positional_accuracy?: number } | null,
 ) {
   if ( !await requestWriteMediaPermission( ) ) {
+    logger.info( "Write media permission not granted, skipping save to photo library" );
     return [];
   }
 
