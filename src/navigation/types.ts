@@ -65,6 +65,12 @@ export type SharedStackParamList = {
   //   vision,
   //   firstPhotoID
   // }
+  // From Taxonomy
+  // {
+  //   id: taxonId,
+  //   hideNavButtons,
+  //   usesVision: false,
+  // }
   TaxonDetails: {
     // TODO: how can this be string?
     id?: number | string;
@@ -76,7 +82,9 @@ export type SharedStackParamList = {
     };
     hideNavButtons?: boolean;
     lastScreen?: "Suggestions";
+    // TODO: do we really use both?
     vision?: boolean;
+    usesVision?: boolean;
   };
   PhotoSharing: undefined;
   // From usePrepareStoreAndNavigate.ts
