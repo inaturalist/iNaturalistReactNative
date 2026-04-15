@@ -182,15 +182,6 @@ const CameraContainer = ( ) => {
     startFirebaseTrace,
   ] );
 
-  const handleCheckmarkPress = useCallback( async (
-    newPhotoState: PhotoState,
-    visionResult: StoredResult | null,
-  ) => {
-    await handleNavigation( newPhotoState, visionResult );
-  }, [
-    handleNavigation,
-  ] );
-
   const toggleFlash = ( ) => {
     setTakePhotoOptions( {
       ...takePhotoOptions,
@@ -247,7 +238,7 @@ const CameraContainer = ( ) => {
     const newPhotoState = await updateTakePhotoStore( uri, options );
     if ( cameraType !== "AI" ) { setTakingPhoto( false ); }
     if ( options?.navigateImmediately ) {
-      await handleCheckmarkPress( newPhotoState, options?.visionResult );
+      await handleNavigation( newPhotoState, options?.visionResult );
     }
     setNewPhotoUris( [...newPhotoUris, uri] );
     return uri;
@@ -306,7 +297,7 @@ const CameraContainer = ( ) => {
         cameraType={cameraType}
         device={device}
         flipCamera={flipCamera}
-        handleCheckmarkPress={handleCheckmarkPress}
+        handleCheckmarkPress={handleNavigation}
         toggleFlash={toggleFlash}
         takingPhoto={takingPhoto}
         takePhotoAndStoreUri={takePhotoAndStoreUri}
