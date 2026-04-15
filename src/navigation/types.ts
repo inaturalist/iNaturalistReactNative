@@ -44,11 +44,26 @@ export type SharedStackParamList = {
     // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   } | undefined;
+  // From MatchContainer
+  // undefined
   LocationPicker: undefined;
   // From ExploreSearchContainer, ExploreTaxonSearchModal
   // { id: taxon.id }
+  // From MatchContainer
+  // {
+  //   id?: number | string;
+  //   firstPhotoID?: number | string;
+  //   representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
+  // };
   TaxonDetails: {
-    id?: number;
+    // TODO: how can this be string?
+    id?: number | string;
+    // TODO: how can this be string?
+    firstPhotoID?: number | string;
+    representativePhoto?: {
+      isRepresentativeButOtherTaxon?: boolean;
+      id?: number | string;
+    };
   };
   PhotoSharing: undefined;
   // From usePrepareStoreAndNavigate.ts
