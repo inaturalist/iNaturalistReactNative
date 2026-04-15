@@ -118,7 +118,38 @@ export type BottomTabParamList = {
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type BaseNoBottomTabStackParamList = {
-  PhotoLibrary: undefined;
+  // PhotoLibrary param options:
+  // Being set on PhotoLibrary:
+  // {
+  //   fromGroupPhotos: false;
+  // }
+  // From GroupPhotos
+  // {
+  //   fromGroupPhotos: true;
+  // }
+  // From PhotoLibraryIcon
+  // {
+  //   cmonBack: true;
+  //   lastScreen: "Camera";
+  //   fromAICamera: true;
+  // }
+  // From AddEvidenceSheet
+  // {
+  //   skipGroupPhotos: true;
+  // }
+  // From AddObsButton
+  // {
+  //   previousScreen: ParamListRoute<RootStackParamList>;
+  // };
+  PhotoLibrary: {
+    fromGroupPhotos?: boolean;
+    cmonBack?: boolean;
+    lastScreen?: "Camera";
+    fromAICamera?: boolean;
+    skipGroupPhotos?: boolean;
+    // eslint-disable-next-line no-use-before-define
+    previousScreen?: ParamListRoute<RootStackParamList>;
+  };
   Camera: {
     addEvidence?: boolean;
     camera?: "AI" | "Standard";
