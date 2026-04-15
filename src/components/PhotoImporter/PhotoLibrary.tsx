@@ -1,5 +1,4 @@
 import { mkdir, moveFile, TemporaryDirectoryPath } from "@dr.pogodin/react-native-fs";
-import type { Route, RouteProp } from "@react-navigation/native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import {
   photoLibraryPhotosPath,
@@ -7,6 +6,7 @@ import {
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { t } from "i18next";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, {
   useCallback,
   useState,
@@ -36,23 +36,13 @@ const MAX_PHOTOS_ALLOWED = Platform.select( {
 
 const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
-interface PreviousScreenParams {
-  uuid?: string;
-}
-
-interface RouteParams {
-  skipGroupPhotos?: boolean;
-  fromGroupPhotos?: boolean;
-  fromAICamera?: boolean;
-  cmonBack?: boolean;
-  previousScreen?: Route<string, PreviousScreenParams> | null;
-}
-
 const PhotoLibrary = ( ) => {
   const {
     screenAfterPhotoEvidence, isDefaultMode,
   } = useLayoutPrefs( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"PhotoLibrary">["navigation"]>();
+  const { params } = useRoute<NoBottomTabStackScreenProps<"PhotoLibrary">["route"]>();
+
   const [photoLibraryShown, setPhotoLibraryShown] = useState( false );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
   const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
@@ -65,8 +55,6 @@ const PhotoLibrary = ( ) => {
   const observations = useStore( state => state.observations );
   const numOfObsPhotos: number = currentObservation?.observationPhotos?.length || 0;
   const exitObservationsFlow = useExitObservationsFlow( );
-
-  const { params } = useRoute<RouteProp<Record<string, RouteParams>, string>>( );
 
   const skipGroupPhotos = params
     ? params.skipGroupPhotos
