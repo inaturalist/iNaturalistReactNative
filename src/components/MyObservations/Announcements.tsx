@@ -56,6 +56,7 @@ interface Props {
 interface AnnouncementQueryResponse {
   data?: ApiAnnouncement[];
   isRefetching: boolean;
+  refetch: () => void;
 }
 
 const useAnnouncementsQuery = (
@@ -72,7 +73,8 @@ const useAnnouncementsQuery = (
       .filter( ( { id } ) => !dismissedAnnouncementIds.includes( id ) );
   };
   const unauthenticatedQuery = useQuery(
-    queryKey,
+    // include dismissedIds because they inform the query response
+    [...queryKey, dismissedAnnouncementIds],
     queryFnWithoutDismissedIds,
     { enabled: !isAuthenticated },
   // TS TODO: our custom uQ doesn't yet handle generic response type
@@ -108,6 +110,7 @@ const Announcements = ( {
   const {
     data: announcements,
     isRefetching,
+    refetch: refetchAnnouncements,
   } = useAnnouncementsQuery(
     // TS TODO: RQ handles this and our wrappers should reflect that
     ["searchAnnouncements", apiParams],
@@ -128,6 +131,7 @@ const Announcements = ( {
     {
       onSuccess: () => {
         invalidateAnnouncementsQueries();
+        refetchAnnouncements();
       },
       onError: err => {
         throw err;
@@ -161,7 +165,6 @@ const Announcements = ( {
       dismissAnnouncementMutate( { id } );
     } else {
       dismissLoggedOutAnnouncement( id );
-      invalidateAnnouncementsQueries();
     }
   };
 
