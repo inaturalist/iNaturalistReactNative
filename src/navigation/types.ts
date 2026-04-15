@@ -93,7 +93,14 @@ export type SharedStackParamList = {
     vision?: boolean;
     usesVision?: boolean;
   };
-  PhotoSharing: undefined;
+  // From App.js
+  // item is SharedItem
+  PhotoSharing: {
+    item: {
+      mimeType: string;
+      data: string | string[];
+    };
+  };
   // From usePrepareStoreAndNavigate.ts
   // {
   //   entryScreen: "CameraWithDevice";
