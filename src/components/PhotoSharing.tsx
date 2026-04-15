@@ -16,7 +16,10 @@ const PhotoSharing = ( ) => {
     NoBottomTabStackScreenProps<"PhotoSharing">["navigation"] &
     TabStackScreenProps<"PhotoSharing">["navigation"]
   >( );
-  const { params } = useRoute( );
+  const { params } = useRoute<
+    NoBottomTabStackScreenProps<"PhotoSharing">["route"] &
+    TabStackScreenProps<"PhotoSharing">["route"]
+  >( );
   const { item } = params;
   const sharedText = item.extraData?.userInput;
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
