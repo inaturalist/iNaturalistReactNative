@@ -28,7 +28,12 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
     >["navigation"] &
     TabStackScreenProps<"Match" | "ObsEdit" | "TaxonDetails">["navigation"]
   >( );
-  const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
+  const { params } = useRoute<
+    NoBottomTabStackScreenProps<
+      "Camera" | "ObsEdit" | "PhotoLibrary" | "TaxonDetails"
+    >["route"] &
+    TabStackScreenProps<"Match" | "ObsEdit" | "TaxonDetails">["route"]
+  >( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
 
   return useCallback( ( options: Options = {} ) => {
