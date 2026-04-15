@@ -18,9 +18,15 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
   // This hook is used in:
   // - useBackPress.ts
   // - MatchContainer.js
+  // - BottomButtonsContainer.tsx
+  // - ObsEditHeader.js
+  // - PhotoLibrary.tsx
+  // - TaxonDetails.tsx
   const navigation = useNavigation<
-    NoBottomTabStackScreenProps<"Camera">["navigation"] &
-    TabStackScreenProps<"Match">["navigation"]
+    NoBottomTabStackScreenProps<
+      "Camera" | "ObsEdit" | "PhotoLibrary" | "TaxonDetails"
+    >["navigation"] &
+    TabStackScreenProps<"Match" | "ObsEdit" | "TaxonDetails">["navigation"]
   >( );
   const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
