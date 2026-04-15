@@ -45,7 +45,11 @@ export type SharedStackParamList = {
     previousScreen?: ParamListRoute<RootStackParamList>;
   } | undefined;
   LocationPicker: undefined;
-  TaxonDetails: undefined;
+  // From ExploreSearchContainer, ExploreTaxonSearchModal
+  // { id: taxon.id }
+  TaxonDetails: {
+    id?: number;
+  };
   PhotoSharing: undefined;
   // From usePrepareStoreAndNavigate.ts
   // {
