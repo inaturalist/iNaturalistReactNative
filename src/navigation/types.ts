@@ -15,16 +15,30 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type SharedStackParamList = {
+  // From usePrepareStoreAndNavigate.ts
+  // {
+  //   entryScreen: "Camera";
+  // }
+  // From usePrepareStoreAndNavigate.ts
+  // {
+  //   entryScreen: "CameraWithDevice";
+  //   lastScreen: "CameraWithDevice";
+  // }
+  // From PhotoLibrary
+  // {
+  //   lastScreen: "PhotoLibrary";
+  // }
+  // From AddObsButton
+  // {
+  //   previousScreen: ParamListRoute<RootStackParamList>;
+  // };
+  // From useBackPress.ts
+  // undefined
   ObsEdit: {
-    lastScreen: "Camera";
-  } | {
-    entryScreen: "CameraWithDevice";
-    lastScreen: "CameraWithDevice";
-  } | {
+    lastScreen?: "Camera" | "CameraWithDevice" | "PhotoLibrary";
+    entryScreen?: "CameraWithDevice";
     // eslint-disable-next-line no-use-before-define
-    previousScreen: ParamListRoute<RootStackParamList>;
-  } | {
-    lastScreen: "PhotoLibrary";
+    previousScreen?: ParamListRoute<RootStackParamList>;
   } | undefined;
   LocationPicker: undefined;
   TaxonDetails: undefined;
@@ -174,7 +188,9 @@ export type BaseNoBottomTabStackParamList = {
     camera?: "AI" | "Standard";
   };
   GroupPhotos: undefined;
-  SoundRecorder: undefined;
+  SoundRecorder: {
+    addEvidence?: boolean;
+  } | undefined;
 };
 
 export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
