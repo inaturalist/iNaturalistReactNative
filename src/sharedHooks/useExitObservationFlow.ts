@@ -1,22 +1,11 @@
 // Trying to consolidate cleanup and nav logic when exiting the obs create /
 // edit flow, so basically nav to MyObs by default and clean up the zustand
 // state
-import type { RouteProp } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
 import useStore from "stores/useStore";
-
-interface ObsFlowParams {
-  [name: string]: {
-    previousScreen?: {
-      name: string;
-      params: {
-        uuid?: string;
-      };
-    };
-  };
-}
 
 interface ExitOptions {
   skipStoreReset?: boolean;
@@ -26,8 +15,10 @@ interface Options {
 }
 
 export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
-  const navigation = useNavigation( );
-  const { params } = useRoute<RouteProp<ObsFlowParams, string>>( );
+  // This hook is used in:
+  // - useBackPress.ts
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
+  const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
 
   return useCallback( ( options: Options = {} ) => {
