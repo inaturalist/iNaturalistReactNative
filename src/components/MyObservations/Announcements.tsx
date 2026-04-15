@@ -65,7 +65,7 @@ const useAnnouncementsQuery = (
   isAuthenticated: boolean,
 ): AnnouncementQueryResponse => {
   const dismissedAnnouncementIds
-    = useStore( state => state.dismissedAnnouncementIds );
+    = useStore( state => state.layout.dismissedAnnouncementIds );
 
   const queryFnWithoutDismissedIds = async () => {
     const announcements = await queryFn( { api_token: null } );
@@ -122,7 +122,7 @@ const Announcements = ( {
     = () => queryClient.invalidateQueries( { queryKey: ["searchAnnouncements"] } );
 
   const dismissLoggedOutAnnouncement
-    = useStore( state => state.dismissLoggedOutAnnouncement );
+    = useStore( state => state.layout.dismissLoggedOutAnnouncement );
 
   const { mutate: dismissAnnouncementMutate }
   = useAuthenticatedMutation(

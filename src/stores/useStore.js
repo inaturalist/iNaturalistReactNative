@@ -6,7 +6,6 @@ import createExploreSlice from "./createExploreSlice";
 import createFeatureFlagSlice from "./createFeatureFlagSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
-import createLoggedOutAnnouncementsSlice from "./createLoggedOutAnnouncementsSlice";
 import createMyObsSlice from "./createMyObsSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
 import createRootExploreSlice from "./createRootExploreSlice";
@@ -41,7 +40,6 @@ const useStore = create( persist(
       createRootExploreSlice( ...args ),
       createSyncObservationsSlice( ...args ),
       createUploadObservationsSlice( ...args ),
-      createLoggedOutAnnouncementsSlice( ...args ),
     ];
 
     // Now let's make sure they're not clobbering each other because
@@ -78,7 +76,6 @@ const useStore = create( persist(
   {
     name: "persisted-zustand",
     partialize: state => ( {
-      dismissedAnnouncementIds: state.dismissedAnnouncementIds,
       // Vestigial un-namespaced values in the layout slice
       isAdvancedUser: state.isAdvancedUser,
       obsDetailsTab: state.obsDetailsTab,
