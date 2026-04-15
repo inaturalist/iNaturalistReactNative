@@ -23,6 +23,8 @@ export type SharedStackParamList = {
   } | {
     // eslint-disable-next-line no-use-before-define
     previousScreen: ParamListRoute<RootStackParamList>;
+  } | {
+    lastScreen: "PhotoLibrary";
   } | undefined;
   LocationPicker: undefined;
   TaxonDetails: undefined;
