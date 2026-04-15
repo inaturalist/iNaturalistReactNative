@@ -8,6 +8,10 @@ import {
   INatIconButton,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
+import type {
+  NoBottomTabStackScreenProps,
+  TabStackScreenProps,
+} from "navigation/types";
 import type { PropsWithChildren } from "react";
 import React from "react";
 import type { GestureResponderEvent } from "react-native";
@@ -79,7 +83,25 @@ const TaxonResult = ( {
   white = false,
 }: TaxonResultProps ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  // TaxonResult is imported in
+  // AICamera
+  // ExploreTaxonSearch
+  // MatchTaxonSearch
+  // IdentificationSection
+  // Suggestion
+  // SuggestionsTaxonSearch
+  // However, navigation is only used if
+  // unpressable is false and hideInfoButton is false and onPressInfo is not provided
+  // or
+  // unpressable is false and handleTaxonOrEditPress is not provided
+  const navigation = useNavigation<
+    TabStackScreenProps<
+      "MatchTaxonSearchScreen" | "Suggestions" | "SuggestionsTaxonSearch"
+    >["navigation"] &
+    NoBottomTabStackScreenProps<
+      "MatchTaxonSearchScreen" | "Suggestions" | "SuggestionsTaxonSearch"
+    >["navigation"]
+  >( );
 
   const currentUser = useCurrentUser( );
 
