@@ -24,7 +24,7 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { log } from "sharedHelpers/logger";
 import { sleep } from "sharedHelpers/util";
 import { useLayoutPrefs } from "sharedHooks";
-import useExitObservationsFlow from "sharedHooks/useExitObservationFlow";
+import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "PhotoLibrary" );
@@ -54,7 +54,7 @@ const PhotoLibrary = ( ) => {
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const numOfObsPhotos: number = currentObservation?.observationPhotos?.length || 0;
-  const exitObservationsFlow = useExitObservationsFlow( );
+  const exitObservationFlow = useExitObservationFlow( );
 
   const skipGroupPhotos = params
     ? params.skipGroupPhotos
@@ -163,7 +163,7 @@ const PhotoLibrary = ( ) => {
     } catch ( launchError ) {
       logger.error( "launchImageLibrary threw unexpectedly", launchError );
       setPhotoLibraryShown( false );
-      exitObservationsFlow();
+      exitObservationFlow();
       return;
     }
 
@@ -194,7 +194,7 @@ const PhotoLibrary = ( ) => {
       } else if ( params?.cmonBack && navigation.canGoBack() ) {
         navigation.goBack();
       } else {
-        exitObservationsFlow();
+        exitObservationFlow();
       }
       setPhotoLibraryShown( false );
       return;
@@ -277,13 +277,13 @@ const PhotoLibrary = ( ) => {
     } catch ( error ) {
       logger.error( "Error importing photos from library", error );
       setPhotoLibraryShown( false );
-      exitObservationsFlow();
+      exitObservationFlow();
     }
   }, [
     currentObservation,
     currentObservationIndex,
     evidenceToAdd,
-    exitObservationsFlow,
+    exitObservationFlow,
     fromGroupPhotos,
     photoLibraryUris,
     groupedPhotos,
