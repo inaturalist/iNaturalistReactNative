@@ -10,6 +10,7 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import type {
   NoBottomTabStackScreenProps,
+  SharedStackParamList,
   TabStackScreenProps,
 } from "navigation/types";
 import type { PropsWithChildren } from "react";
@@ -138,7 +139,7 @@ const TaxonResult = ( {
     );
 
   const navToTaxonDetails = React.useCallback( ( ) => {
-    const params = {
+    const params: SharedStackParamList["TaxonDetails"] = {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,

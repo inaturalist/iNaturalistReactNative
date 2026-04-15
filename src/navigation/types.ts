@@ -47,7 +47,9 @@ export type SharedStackParamList = {
   // From MatchContainer
   // undefined
   LocationPicker: undefined;
-  // From ExploreSearchContainer, ExploreTaxonSearchModal
+  // From ExploreSearchContainer, ExploreTaxonSearchModal, MyObservationsSimple,
+  // ObsDetailsOverview, CommunityTaxon, SavedMatchContainer, ActivityItem, ProjectRequirements
+  // TaxonGridItem
   // { id: taxon.id }
   // From MatchContainer
   // {
@@ -55,6 +57,14 @@ export type SharedStackParamList = {
   //   firstPhotoID?: number | string;
   //   representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
   // };
+  // From TaxonResult
+  // {
+  //   id: usableTaxon?.id,
+  //   hideNavButtons,
+  //   lastScreen,
+  //   vision,
+  //   firstPhotoID
+  // }
   TaxonDetails: {
     // TODO: how can this be string?
     id?: number | string;
@@ -64,6 +74,9 @@ export type SharedStackParamList = {
       isRepresentativeButOtherTaxon?: boolean;
       id?: number | string;
     };
+    hideNavButtons?: boolean;
+    lastScreen?: "Suggestions";
+    vision?: boolean;
   };
   PhotoSharing: undefined;
   // From usePrepareStoreAndNavigate.ts
