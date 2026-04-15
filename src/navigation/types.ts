@@ -4,7 +4,11 @@
  */
 
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import type { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
+import type {
+  CompositeScreenProps,
+  NavigatorScreenParams,
+  ParamListRoute,
+} from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 // Note from the documentation:
@@ -16,6 +20,9 @@ export type SharedStackParamList = {
   } | {
     entryScreen: "CameraWithDevice";
     lastScreen: "CameraWithDevice";
+  } | {
+    // eslint-disable-next-line no-use-before-define
+    previousScreen: ParamListRoute<RootStackParamList>;
   } | undefined;
   LocationPicker: undefined;
   TaxonDetails: undefined;
