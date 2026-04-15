@@ -193,9 +193,22 @@ export type BaseNoBottomTabStackParamList = {
     // eslint-disable-next-line no-use-before-define
     previousScreen?: ParamListRoute<RootStackParamList>;
   };
+  // From AddObsButton
+  // {
+  //   previousScreen: ParamListRoute<RootStackParamList>;
+  // };
+  // From MyObservationsEmptySimple.js
+  // { camera: "AI" }
+  // From AddEvidenceSheet.js
+  // {
+  //   addEvidence: true,
+  //   camera: "Standard",
+  // }
   Camera: {
     addEvidence?: boolean;
     camera?: "AI" | "Standard";
+    // eslint-disable-next-line no-use-before-define
+    previousScreen?: ParamListRoute<RootStackParamList>;
   };
   GroupPhotos: undefined;
   SoundRecorder: undefined;
