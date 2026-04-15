@@ -37,6 +37,13 @@ export interface ApiObservationsUpdatesParams extends ApiParams {
 
 // Model types, need to be ordered by reference
 
+interface ApiAnnouncement {
+  id: string;
+  start: number;
+  dismissible: boolean;
+  body: string;
+}
+
 interface ApiFlag {
   id?: number;
 }

@@ -7,6 +7,7 @@ import makeWebshell, {
 } from "@formidable-webview/webshell";
 import { useQueryClient } from "@tanstack/react-query";
 import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
+import type { ApiAnnouncement } from "api/types";
 import { ActivityIndicator, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { ComponentProps } from "react";
@@ -48,25 +49,18 @@ const AutoheightWebView
   return <Webshell {...autoheightWebshellProps} />;
 };
 
-interface Announcement {
-  id: string;
-  start: number;
-  dismissible: boolean;
-  body: string;
-}
-
 interface Props {
   isConnected: boolean;
 }
 
 interface AnnouncementQueryResponse {
-  data?: Announcement[];
+  data?: ApiAnnouncement[];
   isRefetching: boolean;
 }
 
 const useAnnouncementsQuery = (
   queryKey: string[],
-  queryFn: QueryFunction<Announcement[]>,
+  queryFn: QueryFunction<ApiAnnouncement[]>,
   isAuthenticated: boolean,
 ): AnnouncementQueryResponse => {
   const dismissedAnnouncementIds
