@@ -1,4 +1,16 @@
 import {
+  CachesDirectoryPath,
+  DocumentDirectoryPath,
+  DownloadDirectoryPath,
+  exists,
+  ExternalDirectoryPath,
+  ExternalStorageDirectoryPath,
+  LibraryDirectoryPath,
+  MainBundlePath,
+  readDir,
+  TemporaryDirectoryPath,
+} from "@dr.pogodin/react-native-fs";
+import {
   computerVisionPath,
   photoLibraryPhotosPath,
   photoUploadPath,
@@ -8,7 +20,6 @@ import {
 import orderBy from "lodash/orderBy";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
-import RNFS from "react-native-fs";
 
 export interface DirectoryEntrySize {
   name: string;
@@ -36,15 +47,15 @@ export function formatSizeUnits( bytes: number ) {
 
 const sharedDirectories = [
   {
-    path: RNFS.DocumentDirectoryPath,
+    path: DocumentDirectoryPath,
     directoryName: "DocumentDirectory",
   },
   {
-    path: RNFS.CachesDirectoryPath,
+    path: CachesDirectoryPath,
     directoryName: "CachesDirectory",
   },
   {
-    path: RNFS.TemporaryDirectoryPath,
+    path: TemporaryDirectoryPath,
     directoryName: "TemporaryDirectory",
   },
   {
@@ -71,26 +82,26 @@ const sharedDirectories = [
 
 const iOSDirectories = [
   {
-    path: RNFS.MainBundlePath,
+    path: MainBundlePath,
     directoryName: "MainBundle",
   },
   {
-    path: RNFS.LibraryDirectoryPath,
+    path: LibraryDirectoryPath,
     directoryName: "LibraryDirectory",
   },
 ];
 
 const androidDirectories = [
   {
-    path: RNFS.DownloadDirectoryPath,
+    path: DownloadDirectoryPath,
     directoryName: "DownloadDirectory",
   },
   {
-    path: RNFS.ExternalDirectoryPath,
+    path: ExternalDirectoryPath,
     directoryName: "ExternalDirectory",
   },
   {
-    path: RNFS.ExternalStorageDirectoryPath,
+    path: ExternalStorageDirectoryPath,
     directoryName: "ExternalStorageDirectory",
   },
 ];
@@ -104,7 +115,7 @@ export function formatAppSizeString( name: string, size: number ): string {
 }
 
 export async function getDirectoryEntrySizes( directory: string ): Promise<DirectoryEntrySize[]> {
-  const entries = await RNFS.readDir( directory );
+  const entries = await readDir( directory );
   const sortedEntries = orderBy( entries, "size", "desc" );
   return sortedEntries.map( ( { name, size } ) => ( {
     name,
@@ -128,7 +139,7 @@ async function fetchAppSize(): Promise<AppSize> {
   const maybeExistingDirectories = await Promise.all(
     directories.map( async directory => ( {
       directory,
-      exists: await RNFS.exists( directory.path ),
+      exists: await exists( directory.path ),
     } ) ),
   );
   const existingDirectories = maybeExistingDirectories
