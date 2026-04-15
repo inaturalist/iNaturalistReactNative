@@ -188,9 +188,7 @@ export type BaseNoBottomTabStackParamList = {
     camera?: "AI" | "Standard";
   };
   GroupPhotos: undefined;
-  SoundRecorder: {
-    addEvidence?: boolean;
-  } | undefined;
+  SoundRecorder: undefined;
 };
 
 export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
