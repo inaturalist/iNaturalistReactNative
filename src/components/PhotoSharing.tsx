@@ -30,7 +30,7 @@ const PhotoSharing = ( ) => {
   const [navigationHandled, setNavigationHandled] = useState( null );
 
   const resetNavigator = useCallback( (
-    screen: "Match" | "ObsEdit" | "Suggestions",
+    screen: "Match" | "ObsEdit" | "Suggestions" | "GroupPhotos",
   ) => navigation.dispatch(
     CommonActions.reset( {
       index: 0,
@@ -76,6 +76,7 @@ const PhotoSharing = ( ) => {
     // navigating through the AddObsBottomSheet
     resetObservationFlowSlice( );
 
+    // TODO: fix TS of the share item
     const photoUris = data
       .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
       .map( x => ( { image: { uri: x.data } } ) );
