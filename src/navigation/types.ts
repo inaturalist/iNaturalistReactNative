@@ -38,7 +38,7 @@ export type SharedStackParamList = {
   // { lastScreen: "Match" }
   // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
-  // From GroupPhotos
+  // From GroupPhotosContainer
   // { lastScreen: "GroupPhotos" }
   // {
   //   entryScreen: "GroupPhotos",
@@ -119,7 +119,7 @@ export type SharedStackParamList = {
   // }
   // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
-  // From GroupPhotos
+  // From GroupPhotosContainer
   // {
   //   entryScreen: "GroupPhotos",
   //   lastScreen: "GroupPhotos",
@@ -155,7 +155,7 @@ export type SharedStackParamList = {
   // }
   // From PhotoSharing
   // { lastScreen: "PhotoSharing" }
-  // From GroupPhotos
+  // From GroupPhotosContainer
   // {
   //   entryScreen: "GroupPhotos",
   //   lastScreen: "GroupPhotos",
