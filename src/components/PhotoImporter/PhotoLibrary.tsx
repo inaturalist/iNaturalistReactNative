@@ -163,7 +163,7 @@ const PhotoLibrary = ( ) => {
     } catch ( launchError ) {
       logger.error( "launchImageLibrary threw unexpectedly", launchError );
       setPhotoLibraryShown( false );
-      exitObservationFlow();
+      exitObservationFlow( );
       return;
     }
 
@@ -194,7 +194,7 @@ const PhotoLibrary = ( ) => {
       } else if ( params?.cmonBack && navigation.canGoBack() ) {
         navigation.goBack();
       } else {
-        exitObservationFlow();
+        exitObservationFlow( );
       }
       setPhotoLibraryShown( false );
       return;
@@ -277,7 +277,7 @@ const PhotoLibrary = ( ) => {
     } catch ( error ) {
       logger.error( "Error importing photos from library", error );
       setPhotoLibraryShown( false );
-      exitObservationFlow();
+      exitObservationFlow( );
     }
   }, [
     currentObservation,
