@@ -24,13 +24,13 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
   // - TaxonDetails.tsx
   const navigation = useNavigation<
     NoBottomTabStackScreenProps<
-      "Camera" | "ObsEdit" | "PhotoLibrary" | "TaxonDetails"
+      "Match" | "Camera" | "ObsEdit" | "PhotoLibrary" | "TaxonDetails"
     >["navigation"] &
     TabStackScreenProps<"Match" | "ObsEdit" | "TaxonDetails">["navigation"]
   >( );
   const { params } = useRoute<
     NoBottomTabStackScreenProps<
-      "Camera" | "ObsEdit" | "PhotoLibrary" | "TaxonDetails"
+      "Match" | "Camera" | "ObsEdit" | "PhotoLibrary" | "TaxonDetails"
     >["route"] &
     TabStackScreenProps<"Match" | "ObsEdit" | "TaxonDetails">["route"]
   >( );
