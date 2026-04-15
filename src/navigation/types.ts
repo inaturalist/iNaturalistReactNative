@@ -35,17 +35,29 @@ export type SharedStackParamList = {
   } | {
     lastScreen: "PhotoLibrary";
   };
+  // From usePrepareStoreAndNavigate.ts
+  // {
+  //   entryScreen: "CameraWithDevice";
+  //   lastScreen: "CameraWithDevice";
+  // }
+  // From IdentificationSection.js
+  // {
+  //   entryScreen: "ObsEdit";
+  //   lastScreen: "ObsEdit";
+  //   hideSkip: boolean;
+  // }
+  // From ObsEditHeader
+  // {
+  //   lastScreen: "ObsEdit";
+  // }
+  // From PhotoLibrary
+  // {
+  //   lastScreen: "PhotoLibrary";
+  // }
   Suggestions: {
-    entryScreen: "CameraWithDevice";
-    lastScreen: "CameraWithDevice";
-  } | {
-    entryScreen: "ObsEdit";
-    lastScreen: "ObsEdit";
-    hideSkip: boolean;
-  } | {
-    lastScreen: "ObsEdit";
-  } | {
-    lastScreen: "PhotoLibrary";
+    entryScreen?: "CameraWithDevice" | "ObsEdit";
+    lastScreen?: "CameraWithDevice" | "ObsEdit" | "PhotoLibrary";
+    hideSkip?: boolean;
   };
   SuggestionsTaxonSearch: {
     entryScreen: "ObsEdit";
