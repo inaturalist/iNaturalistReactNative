@@ -1,7 +1,7 @@
 // Trying to consolidate cleanup and nav logic when exiting the obs create /
 // edit flow, so basically nav to MyObs by default and clean up the zustand
 // state
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
 import useStore from "stores/useStore";
@@ -45,12 +45,30 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
       // This seems only to be used in ObsEditHeader in a few cases of backing out
       options.navigate( );
     } else {
-      navigation.navigate( "TabNavigator", {
-        screen: "ObservationsTab",
-        params: {
-          screen: "ObsList",
-        },
-      } );
+      // Use a reset (not navigate) to avoid piling up screen instances
+      navigation.dispatch(
+        CommonActions.reset( {
+          index: 0,
+          routes: [
+            {
+              name: "TabNavigator",
+              state: {
+                routes: [
+                  {
+                    name: "ObservationsTab",
+                    state: {
+                      index: 0,
+                      routes: [
+                        { name: "ObsList" },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        } ),
+      );
     }
   }, [
     navigation,
