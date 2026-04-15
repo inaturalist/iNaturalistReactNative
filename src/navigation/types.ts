@@ -48,20 +48,30 @@ export type BaseTabStackParamList = {
   ExploreSearch: undefined;
   ObsDetails: undefined;
   Notifications: undefined;
-  UserProfile: { userId: number } & { login: string };
+  // From ProjectRequirements, InlineUserBase, UserList
+  // { userId: number }
+  // From UserText
+  // { login: string }
+  UserProfile: {
+    userId?: number;
+    login?: string;
+  };
   DataQualityAssessment: undefined;
   Projects: undefined;
   ProjectDetails: undefined;
   ProjectRequirements: undefined;
   ProjectMembers: undefined;
+  // From ProjectButton, ProjectSection
+  // { observationUuid: observation.uuid }
+  // From UserProfile
+  // {
+  //   userId,
+  //   userLogin: user.login,
+  // }
   ProjectList: {
-    observationUuid: string;
-    userId?: never;
-    userLogin?: never;
-  } | {
-    userId: number;
-    userLogin: string;
-    observationUuid?: never;
+    observationUuid?: string;
+    userId?: number;
+    userLogin?: string;
   };
   FollowersList: {
     // TODO: don't send the entire user object over here, only an ID or ID+login
