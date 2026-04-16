@@ -81,6 +81,7 @@ const AICameraButtons = ( {
         handleZoomButtonPress={handleZoomButtonPress}
         disabled={!modelLoaded || takingPhoto}
         disabledPhotoLibrary={takingPhoto}
+        confirmDisabled={false}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         hasPhotoLibraryButton

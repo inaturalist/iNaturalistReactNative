@@ -128,6 +128,8 @@ const CameraContainer = ( ) => {
   } as const;
   const [takePhotoOptions, setTakePhotoOptions] = useState<TakePhotoOptions>( initialPhotoOptions );
   const [takingPhoto, setTakingPhoto] = useState( false );
+  const [confirmPhotosInProgress, setconfirmPhotosInProgress] = useState( false );
+  const confirmPhotosInProgressRef = useRef( false );
   const addEvidence = params?.addEvidence;
 
   const camera = useRef<Camera>( null );
@@ -157,24 +159,32 @@ const CameraContainer = ( ) => {
     newPhotoState: PhotoState,
     visionResult?: StoredResult | null,
   ) => {
-    const hasSavePhotoPermission = await hasWriteMediaPermission( );
-    startFirebaseTrace(
-      FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
-      { [FIREBASE_TRACE_ATTRIBUTES.HAS_SAVE_PHOTO_PERMISSION]: `${hasSavePhotoPermission}` },
-    );
-    // fetch accurate user location, with a fallback to a course location
-    // at the time the user taps AI shutter or multicapture checkmark
-    // to create an observation
-    // this handles checking for location, and we do *not* want to show
-    // location permissions in the camera, so we no longer need to check for that
-    const accurateUserLocation = await fetchAccurateUserLocation( );
-    await prepareStoreAndNavigate( {
-      userLocation: accurateUserLocation,
-      newPhotoState,
-      logStageIfAICamera,
-      deleteStageIfAICamera,
-      visionResult,
-    } );
+    if ( confirmPhotosInProgressRef.current ) return;
+    confirmPhotosInProgressRef.current = true;
+    setconfirmPhotosInProgress( true );
+    try {
+      const hasSavePhotoPermission = await hasWriteMediaPermission( );
+      startFirebaseTrace(
+        FIREBASE_TRACES.AI_CAMERA_TO_MATCH,
+        { [FIREBASE_TRACE_ATTRIBUTES.HAS_SAVE_PHOTO_PERMISSION]: `${hasSavePhotoPermission}` },
+      );
+      // fetch accurate user location, with a fallback to a course location
+      // at the time the user taps AI shutter or multicapture checkmark
+      // to create an observation
+      // this handles checking for location, and we do *not* want to show
+      // location permissions in the camera, so we no longer need to check for that
+      const accurateUserLocation = await fetchAccurateUserLocation( );
+      await prepareStoreAndNavigate( {
+        userLocation: accurateUserLocation,
+        newPhotoState,
+        logStageIfAICamera,
+        deleteStageIfAICamera,
+        visionResult,
+      } );
+    } finally {
+      confirmPhotosInProgressRef.current = false;
+      setconfirmPhotosInProgress( false );
+    }
   }, [
     prepareStoreAndNavigate,
     logStageIfAICamera,
@@ -298,6 +308,7 @@ const CameraContainer = ( ) => {
         device={device}
         flipCamera={flipCamera}
         handleCheckmarkPress={handleNavigation}
+        confirmPhotosInProgress={confirmPhotosInProgress}
         toggleFlash={toggleFlash}
         takingPhoto={takingPhoto}
         takePhotoAndStoreUri={takePhotoAndStoreUri}

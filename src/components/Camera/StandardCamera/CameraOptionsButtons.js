@@ -14,6 +14,7 @@ type Props = {
   takePhoto: () => Promise<void>,
   handleClose: Function,
   disabled: boolean,
+  confirmDisabled: boolean,
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
   handleCheckmarkPress: Function,
@@ -30,6 +31,7 @@ const CameraOptionsButtons = ( {
   takePhoto,
   handleClose,
   disabled,
+  confirmDisabled,
   photosTaken,
   rotatableAnimatedStyle,
   handleCheckmarkPress,
@@ -70,6 +72,7 @@ const CameraOptionsButtons = ( {
       takePhoto={takePhoto}
       handleClose={handleClose}
       disabled={disabled}
+      confirmDisabled={confirmDisabled}
       photosTaken={photosTaken}
       rotatableAnimatedStyle={rotatableAnimatedStyle}
       handleCheckmarkPress={handleCheckmarkPress}
