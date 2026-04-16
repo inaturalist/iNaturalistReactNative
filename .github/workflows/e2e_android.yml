@@ -50,7 +50,7 @@ jobs:
         $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       id: cache
       with:
         path: node_modules
