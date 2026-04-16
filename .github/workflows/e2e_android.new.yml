@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Check out Git repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     # Generate the secret files needed for a release build
     - name: Create .env file

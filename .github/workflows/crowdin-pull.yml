@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # Without this, the default GITHUB_TOKEN gets saved in the local git
           # settings, and it might be overriding the GITHUB_TOKEN we set
@@ -25,7 +25,7 @@ jobs:
           persist-credentials: false
 
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
 
