@@ -1,4 +1,3 @@
-import type { RouteProp } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { ApiProject } from "api/types";
 import { fetchUserProjects } from "api/users";
@@ -8,6 +7,7 @@ import {
   ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import {
@@ -18,17 +18,9 @@ import {
 
 import ProjectList from "./ProjectList";
 
-type ProjectListParams =
-  | { observationUuid: string; userId?: never; userLogin?: never }
-  | { userId: number; userLogin: string; observationUuid?: never };
-
-interface ProjectListRouteParams {
-  [name: string]: ProjectListParams;
-}
-
 const ProjectListContainer = ( ) => {
-  const navigation = useNavigation( );
-  const { params } = useRoute<RouteProp<ProjectListRouteParams, "ProjectList">>( );
+  const navigation = useNavigation<TabStackScreenProps<"ProjectList">["navigation"]>( );
+  const { params } = useRoute<TabStackScreenProps<"ProjectList">["route"]>( );
   const { observationUuid, userId, userLogin } = params;
   const { t } = useTranslation( );
 
