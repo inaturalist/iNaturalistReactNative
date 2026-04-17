@@ -1,3 +1,4 @@
+import { mkdir, moveFile, TemporaryDirectoryPath } from "@dr.pogodin/react-native-fs";
 import type { Route, RouteProp } from "@react-navigation/native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import {
@@ -15,7 +16,6 @@ import {
   Platform,
   View,
 } from "react-native";
-import RNFS from "react-native-fs";
 import type { Asset } from "react-native-image-picker";
 import { launchImageLibrary } from "react-native-image-picker";
 import Observation from "realmModels/Observation";
@@ -104,7 +104,7 @@ const PhotoLibrary = ( ) => {
   const moveImagesToDocumentsDirectory = async ( selectedImages:
     { image: Asset }[] ) => {
     const path = photoLibraryPhotosPath;
-    await RNFS.mkdir( path );
+    await mkdir( path );
 
     const movedImages = await Promise.all( selectedImages.map( async ( { image } ) => {
       const { fileName, uri } = image;
@@ -113,7 +113,7 @@ const PhotoLibrary = ( ) => {
       }
       const destPath = `${path}/${fileName}`;
       const getSourcePath = Platform.select( {
-        ios: ( ) => `${RNFS.TemporaryDirectoryPath}/${fileName}`,
+        ios: ( ) => `${TemporaryDirectoryPath}/${fileName}`,
         // Get image from uri on android. TemporaryDirectoryPath results in an ANR.
         android: ( ) => {
           if ( !uri ) {
@@ -126,7 +126,7 @@ const PhotoLibrary = ( ) => {
         },
       } );
 
-      await RNFS.moveFile( getSourcePath(), destPath );
+      await moveFile( getSourcePath(), destPath );
       return {
         image: {
           ...image,

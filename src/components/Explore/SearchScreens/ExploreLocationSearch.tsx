@@ -63,7 +63,7 @@ const ExploreLocationSearch = ( {
   const { data: placeResults, isLoading, refetch }: {
     data: ApiPlace[] | null;
     isLoading: boolean;
-    refetch: () => void;
+    refetch: ( ) => void;
   } = useAuthenticatedQuery(
     ["fetchSearchResults", locationName],
     optsWithAuth => fetchSearchResults(

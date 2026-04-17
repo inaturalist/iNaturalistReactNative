@@ -1,6 +1,6 @@
+import { mkdir, moveFile } from "@dr.pogodin/react-native-fs";
 import { Realm } from "@realm/react";
 import { soundUploadPath } from "appConstants/paths";
-import RNFS from "react-native-fs";
 import { unlink } from "sharedHelpers/util";
 import * as uuid from "uuid";
 
@@ -45,10 +45,10 @@ class Sound extends Realm.Object {
     if ( options.basename ) {
       fileName = `${options.basename}.${srcFileExt}`;
     }
-    await RNFS.mkdir( soundUploadPath );
+    await mkdir( soundUploadPath );
     const dstPath = `${soundUploadPath}/${fileName}`;
 
-    await RNFS.moveFile( srcPath, dstPath );
+    await moveFile( srcPath, dstPath );
     return dstPath;
   }
 

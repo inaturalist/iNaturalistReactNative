@@ -60,10 +60,13 @@ const NotificationsContainer = ( {
     }
   };
 
+  const followingTabIsActive = notificationParams.observations_by === "following";
+
   return (
     <NotificationsList
       currentUser={currentUser}
       data={notifications}
+      followingTabIsActive={followingTabIsActive}
       isError={isError}
       isFetching={isFetching}
       isInitialLoading={isInitialLoading}
