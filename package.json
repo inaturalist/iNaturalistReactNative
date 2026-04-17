@@ -175,7 +175,7 @@
     "@types/jsrsasign": "^10.5.15",
     "@types/lodash": "^4.17.23",
     "@types/markdown-it": "^14.1.2",
-    "@types/react": "19.2.14",
+    "@types/react": "^19.2.0",
     "@types/react-dom": "^19.1.0",
     "@types/react-test-renderer": "^19.1.0",
     "@types/sanitize-html": "^2.16.1",
