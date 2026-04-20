@@ -1,14 +1,13 @@
 import { updateRelationships } from "api/relationships";
+import type { ApiRelationship } from "api/types";
 import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import React from "react";
 import { Alert } from "react-native";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
 interface Props {
-  relationship: {
-    id: number;
-  };
-  refetchRelationship: () => void;
+  relationship?: ApiRelationship;
+  refetchRelationship: ( ) => void;
   setShowUnfollowSheet: ( show: boolean ) => void;
 }
 

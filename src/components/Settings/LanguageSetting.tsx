@@ -4,10 +4,12 @@ import {
   Button,
   Heading4,
   PickerSheet,
+  UnderlinedLink,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import changeLanguage from "sharedHelpers/changeLanguage";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 
@@ -63,6 +65,13 @@ const LanguageSetting = ( { onChange }: Props ) => {
         }}
         accessibilityLabel={t( "CHANGE-APP-LANGUAGE" )}
       />
+      <UnderlinedLink
+        className="mt-[19px] text-center"
+        accessibilityRole="link"
+        onPress={async () => openExternalWebBrowser( "https://crowdin.com/project/inaturalistios" )}
+      >
+        {t( "Help-us-translate-the-app" )}
+      </UnderlinedLink>
       {localeSheetOpen && (
         <PickerSheet
           headerText={t( "APP-LANGUAGE" )}

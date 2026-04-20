@@ -24,7 +24,7 @@ import getStorageMetrics from "sharedHelpers/storageMetrics";
 import { zustandStorage } from "stores/useStore";
 
 const { useRealm } = RealmContext;
-const logger = log.extend( "DeferredStartupService" );
+const logger = log.extend( "useDeferredStartup" );
 
 /**
  * Schedule a single async task to run during the next idle period.

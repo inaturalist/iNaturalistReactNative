@@ -1,7 +1,10 @@
+import {
+  copyAssetsFileIOS,
+  TemporaryDirectoryPath,
+} from "@dr.pogodin/react-native-fs";
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import React from "react";
 import { View } from "react-native";
-import RNFS from "react-native-fs";
 
 const mockFrame = {
   isValid: true,
@@ -71,8 +74,8 @@ export class mockCamera extends React.PureComponent {
           console.log( `Converted file uri to ${oldUri}` );
         }
         const encodedUri = encodeURI( oldUri );
-        const destPath = `${RNFS.TemporaryDirectoryPath}temp.jpg`;
-        const newPath = await RNFS.copyAssetsFileIOS(
+        const destPath = `${TemporaryDirectoryPath}temp.jpg`;
+        const newPath = await copyAssetsFileIOS(
           encodedUri,
           destPath,
           0,
