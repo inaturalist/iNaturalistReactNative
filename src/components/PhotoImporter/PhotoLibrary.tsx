@@ -184,7 +184,6 @@ const PhotoLibrary = ( ) => {
         navToObsEdit();
 
         // Determine if we need to go back to ObsList or ObsDetails screen
-      // TODO: the typing of params seems correct to me, so we might never hit this case here?
       } else if ( params && params.previousScreen && params.previousScreen.name === "ObsDetails" ) {
         // If the uuid is undefined we need to error out here or ObsDetails doesn't work
         if ( !params.previousScreen.params?.uuid ) {
