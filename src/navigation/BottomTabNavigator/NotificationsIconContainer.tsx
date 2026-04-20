@@ -1,6 +1,6 @@
 import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import NotificationsIcon from "navigation/BottomTabNavigator/NotificationsIcon";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -19,7 +19,6 @@ const NotificationsIconContainer = ( {
   icon,
   active,
 }: Props ) => {
-  const [hasUnread, setHasUnread] = useState( false );
   const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
   const currentUser = useCurrentUser( );
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
@@ -40,10 +39,7 @@ const NotificationsIconContainer = ( {
     },
   );
 
-  // Show icon when there are unread updates
-  useEffect( () => {
-    setHasUnread( unviewedUpdatesCount > 0 );
-  }, [unviewedUpdatesCount] );
+  const hasUnread = ( unviewedUpdatesCount ?? 0 ) > 0;
 
   // Fetch new updates count every minute by changing the request key
   useInterval( () => {
