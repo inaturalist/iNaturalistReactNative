@@ -11,12 +11,10 @@ import fluent from "fluent_conv";
 import fs from "fs";
 import fsp from "fs/promises";
 import { glob } from "glob";
-import {
-  difference,
-  flatten,
-  sortBy,
-  uniq,
-} from "lodash";
+import difference from "lodash/difference";
+import flatten from "lodash/flatten";
+import sortBy from "lodash/sortBy";
+import uniq from "lodash/uniq";
 import path from "path";
 import util from "util";
 
