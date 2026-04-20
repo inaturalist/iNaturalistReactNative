@@ -1,6 +1,6 @@
 import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import NotificationsIcon from "navigation/BottomTabNavigator/NotificationsIcon";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -18,7 +18,6 @@ const NotificationsIconContainer = ( {
   icon,
   active,
 }: Props ) => {
-  const [hasUnread, setHasUnread] = useState( false );
   const currentUser = useCurrentUser( );
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
 
@@ -38,10 +37,7 @@ const NotificationsIconContainer = ( {
     },
   );
 
-  // Show icon when there are unread updates
-  useEffect( () => {
-    setHasUnread( unviewedUpdatesCount > 0 );
-  }, [unviewedUpdatesCount] );
+  const hasUnread = ( unviewedUpdatesCount ?? 0 ) > 0;
 
   return (
     <NotificationsIcon

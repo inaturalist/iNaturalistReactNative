@@ -10,7 +10,7 @@ import flattenUploadParams from "components/Suggestions/helpers/flattenUploadPar
 import {
   FETCH_STATUSES,
 } from "components/Suggestions/SuggestionsContainer";
-import { isEqual } from "lodash";
+import isEqual from "lodash/isEqual";
 import orderBy from "lodash/orderBy";
 import { RealmContext } from "providers/contexts";
 import React, {

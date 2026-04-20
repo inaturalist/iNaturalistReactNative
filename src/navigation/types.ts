@@ -6,6 +6,7 @@
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import type { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { ApiUser } from "api/types";
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
@@ -38,20 +39,48 @@ export type BaseTabStackParamList = {
   Menu: undefined;
   ObsList: undefined;
   RootExplore: undefined;
-  Explore: undefined;
+  // TODO: type for other routes to Explore
+  Explore: {
+    user: ApiUser;
+    worldwide: boolean;
+  };
   ExploreFilters: undefined;
   ExploreSearch: undefined;
   ObsDetails: undefined;
   Notifications: undefined;
-  UserProfile: undefined;
+  // From ProjectRequirements, InlineUserBase, UserList
+  // { userId: number }
+  // From UserText
+  // { login: string }
+  UserProfile: {
+    userId?: number;
+    login?: string;
+  };
   DataQualityAssessment: undefined;
   Projects: undefined;
   ProjectDetails: undefined;
   ProjectRequirements: undefined;
   ProjectMembers: undefined;
-  ProjectList: undefined;
-  FollowersList: undefined;
-  FollowingList: undefined;
+  // From ProjectButton, ProjectSection
+  // { observationUuid: observation.uuid }
+  // From UserProfile
+  // {
+  //   userId,
+  //   userLogin: user.login,
+  // }
+  ProjectList: {
+    observationUuid?: string;
+    userId?: number;
+    userLogin?: string;
+  };
+  FollowersList: {
+    // TODO: don't send the entire user object over here, only an ID or ID+login
+    user: ApiUser;
+  };
+  FollowingList: {
+    // TODO: don't send the entire user object over here, only an ID or ID+login
+    user: ApiUser;
+  };
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;
