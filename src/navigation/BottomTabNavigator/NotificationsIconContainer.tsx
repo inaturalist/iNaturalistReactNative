@@ -1,6 +1,6 @@
 import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import NotificationsIcon from "navigation/BottomTabNavigator/NotificationsIcon";
-import React, { useState } from "react";
+import React from "react";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
