@@ -1,6 +1,3 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { NavigationContainer } from "@react-navigation/native";
 import { useReactNavigationDevTools } from "@rozenite/react-navigation-plugin";
 import type { PropsWithChildren } from "react";
@@ -8,12 +5,13 @@ import React, { useRef } from "react";
 import { Alert } from "react-native";
 import { logFirebaseScreenView } from "sharedHelpers/tracking";
 import { useTranslation } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 import { navigationRef } from "./navigationUtils";
 
 const OfflineNavigationGuard = ( { children }: PropsWithChildren ) => {
   const routeNameRef = useRef( navigationRef.current?.getCurrentRoute()?.name );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const { t } = useTranslation( );
 
   useReactNavigationDevTools( { ref: navigationRef } );

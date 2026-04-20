@@ -1,6 +1,3 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import i18n from "i18next";
@@ -15,6 +12,7 @@ import {
   useAuthenticatedQuery,
   useCurrentUser,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import useStore from "stores/useStore";
 
 import { startOfflineExperimentInBackground } from "./suggestionComparisonExperiment";
@@ -89,7 +87,7 @@ const useOnlineSuggestions = (
 
   const queryClient = useQueryClient( );
   const [timedOut, setTimedOut] = useState( false );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const currentUser = useCurrentUser();
   // Use locale in case there is no user session
   const locale = i18n?.language ?? "en";

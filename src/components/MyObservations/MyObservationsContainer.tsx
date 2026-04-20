@@ -1,6 +1,3 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import { fetchSpeciesCounts } from "api/observations";
@@ -32,6 +29,7 @@ import {
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import {
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
@@ -99,7 +97,7 @@ const MyObservationsContainer = ( ) => {
   const prevObservationsLength = useRef( observations.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const currentUser = useCurrentUser( );
   const currentUserId = currentUser?.id;
   const canUpload = !!currentUser && !!isConnected;

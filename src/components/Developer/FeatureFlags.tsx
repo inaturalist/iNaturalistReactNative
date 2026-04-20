@@ -2,43 +2,11 @@
 import {
   SwitchRow,
 } from "components/SharedComponents";
-import React, { useCallback } from "react";
-import { useFeatureFlag } from "sharedHooks";
-import type { FeatureFlagSlice } from "stores/createFeatureFlagSlice";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import useStore from "stores/useStore";
+import React from "react";
+import { useDynamicConfigInternals } from "sharedHooks/useDynamicConfig";
+import { FeatureFlag } from "types/dynamicConfig";
 
 import { H1, H2 } from "./DeveloperSharedComponents";
-
-export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
-  const resolvedValue = useFeatureFlag( featureFlagKey );
-
-  const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
-  const featureFlagOverrides
-    = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
-  const storeSetOverride
-    = useStore( ( state: FeatureFlagSlice ) => state.setFeatureFlagDebugOverride );
-
-  const rawValue = featureFlagConfig[featureFlagKey];
-  const overrideValue = featureFlagOverrides[featureFlagKey];
-
-  const setOverride = useCallback(
-    ( enabled: boolean ) => storeSetOverride( featureFlagKey, enabled ),
-    [featureFlagKey, storeSetOverride],
-  );
-  const clearOverride = useCallback(
-    () => storeSetOverride( featureFlagKey, null ),
-    [featureFlagKey, storeSetOverride],
-  );
-
-  return {
-    resolvedValue,
-    rawValue,
-    overrideValue,
-    setOverride,
-    clearOverride,
-  };
-};
 
 const trimFlagName = ( featureFlagKey: FeatureFlag ) => featureFlagKey.replace( "Enabled", "" );
 
@@ -53,7 +21,7 @@ const FeatureFlagToggle = ( { featureFlagKey }: { featureFlagKey: FeatureFlag } 
     overrideValue,
     setOverride,
     clearOverride,
-  } = useFeatureFlagForDebug( featureFlagKey );
+  } = useDynamicConfigInternals( featureFlagKey );
   const hasOverride = overrideValue !== null;
   return (
     <>

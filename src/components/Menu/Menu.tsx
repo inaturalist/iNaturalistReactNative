@@ -1,4 +1,3 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -23,6 +22,7 @@ import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
 import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import { zustandStorage } from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -104,7 +104,7 @@ const Menu = ( ) => {
   const { t } = useTranslation( );
   const insets = useSafeAreaInsets();
 
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
 
   const layoutPrefs = useLayoutPrefs();
   const [modalState, setModalState] = useState<MenuModalState | null>( null );

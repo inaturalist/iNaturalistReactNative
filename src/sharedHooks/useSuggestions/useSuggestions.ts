@@ -1,5 +1,5 @@
-import { useNetInfo } from "@react-native-community/netinfo";
 import { useMemo } from "react";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 import filterSuggestions from "./filterSuggestions";
 import type { UseSuggestionsOptions, UseSuggestionsResult } from "./types";
@@ -10,7 +10,7 @@ const useSuggestions = (
   photoUri: string,
   options: UseSuggestionsOptions,
 ): UseSuggestionsResult => {
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const {
     shouldFetchOnlineSuggestions,
     onFetchError,

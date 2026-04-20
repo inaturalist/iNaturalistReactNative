@@ -1,7 +1,4 @@
 import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
-import {
   screen,
   userEvent,
   waitFor,
@@ -10,6 +7,7 @@ import {
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import inatjs from "inaturalistjs";
 import { Animated } from "react-native";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import * as useLocationPermission from "sharedHooks/useLocationPermission";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
@@ -376,7 +374,7 @@ describe( "from AICamera directly", ( ) => {
 
   describe( "suggestions while offline", ( ) => {
     it( "should not call score_image and should not show any location buttons", async ( ) => {
-      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+      useConnectionStatus.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( );
       expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );
@@ -393,7 +391,7 @@ describe( "from AICamera directly", ( ) => {
       getPredictionsForImage.mockImplementation(
         async ( ) => ( mockModelResult ),
       );
-      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+      useConnectionStatus.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( );
       const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
@@ -408,7 +406,7 @@ describe( "from AICamera directly", ( ) => {
       getPredictionsForImage.mockImplementation(
         async ( ) => ( mockModelResultNoConfidence ),
       );
-      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+      useConnectionStatus.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( );
 
@@ -428,7 +426,7 @@ describe( "from AICamera directly", ( ) => {
       getPredictionsForImage.mockImplementation(
         async ( ) => ( mockModelResultWithHuman ),
       );
-      useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+      useConnectionStatus.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICamera( );
 

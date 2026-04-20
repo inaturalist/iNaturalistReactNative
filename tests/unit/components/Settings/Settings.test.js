@@ -1,11 +1,9 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { fireEvent, screen } from "@testing-library/react-native";
 import Settings from "components/Settings/Settings";
 import i18n from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -91,7 +89,7 @@ describe( "Settings", ( ) => {
 
     describe( "no internet", ( ) => {
       beforeEach( ( ) => {
-        useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
+        useConnectionStatus.mockImplementation( ( ) => ( { isConnected: false } ) );
       } );
 
       it( "should not navigate to iNaturalist settings if no internet", async ( ) => {

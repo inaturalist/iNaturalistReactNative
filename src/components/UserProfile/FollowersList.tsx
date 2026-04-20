@@ -1,6 +1,3 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchUsers } from "api/users";
 import {
@@ -20,9 +17,10 @@ import {
   useInfiniteUserScroll,
   useTranslation,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 const FollowersList = ( ) => {
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const { params } = useRoute( );

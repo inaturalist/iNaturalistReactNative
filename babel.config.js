@@ -23,6 +23,7 @@ module.exports = {
         stores: "./src/stores",
         styles: "./src/styles",
         tests: "./tests",
+        types: "./src/types",
         uploaders: "./src/uploaders",
       },
     }],

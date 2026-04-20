@@ -1,6 +1,3 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import useUploadObservations from "components/MyObservations/hooks/useUploadObservations";
 import { RealmContext } from "providers/contexts";
@@ -11,6 +8,7 @@ import {
   useCurrentUser,
   useExitObservationFlow,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import useStore from "stores/useStore";
 
 import type { ButtonType, ButtonTypeNonNull } from "./BottomButtons";
@@ -37,7 +35,7 @@ const BottomButtonsContainer = ( {
   setCurrentObservationIndex,
   transitionAnimation,
 }: Props ) => {
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );

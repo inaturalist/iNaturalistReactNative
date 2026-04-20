@@ -1,6 +1,3 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import ProjectList from "components/ProjectList/ProjectList";
 import {
@@ -20,6 +17,7 @@ import React, { useCallback, useEffect } from "react";
 import {
   useTranslation,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 
 import FlashListEmptyWrapper from "../SharedComponents/FlashList/FlashListEmptyWrapper";
 import { TAB_ID } from "./ProjectsContainer";
@@ -56,7 +54,7 @@ const Projects = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
 
   const hideLoadingWheel = !isFetchingNextPage || projects?.length === 0;
 

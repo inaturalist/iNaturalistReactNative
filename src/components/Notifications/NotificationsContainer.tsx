@@ -1,16 +1,11 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { ApiObservationsUpdatesParams } from "api/types";
 import NotificationsList from "components/Notifications/NotificationsList";
 import React, { useEffect, useState } from "react";
 import type { RealmUser } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
-import {
-  useInfiniteNotificationsScroll,
-  usePerformance,
-} from "sharedHooks";
+import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
 const logger = log.extend( "NotificationsContainer" );
@@ -27,7 +22,7 @@ const NotificationsContainer = ( {
   onRefresh: onRefreshProp,
 }: Props ) => {
   const navigation = useNavigation( );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const [refreshing, setRefreshing] = useState( false );
 
   const {

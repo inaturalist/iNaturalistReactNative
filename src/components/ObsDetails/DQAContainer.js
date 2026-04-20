@@ -1,7 +1,6 @@
 // @flow
 import {
   refresh as refreshNetInfo,
-  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
 import { faveObservation, unfaveObservation } from "api/observations";
@@ -25,12 +24,13 @@ import {
   useAuthenticatedQuery,
   useLocalObservation,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import useRemoteObservation from "sharedHooks/useRemoteObservation";
 
 const logger = log.extend( "DQAContainer" );
 
 const DQAContainer = ( ): React.Node => {
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const { params } = useRoute( );
   const { observationUUID } = params;
   const [loadingAgree, setLoadingAgree] = useState( false );

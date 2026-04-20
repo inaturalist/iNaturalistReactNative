@@ -1,6 +1,3 @@
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import isEqual from "lodash/isEqual";
@@ -18,6 +15,7 @@ import {
   usePerformance,
   useSuggestions,
 } from "sharedHooks";
+import useConnectionStatus from "sharedHooks/useConnectionStatus";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import {
   internalUseSuggestionsInitialSuggestions,
@@ -122,7 +120,7 @@ const reducer = ( state, action ) => {
 const SuggestionsContainer = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { isConnected } = useNetInfo( );
+  const { isConnected } = useConnectionStatus( );
   const currentObservation = useStore( state => state.currentObservation );
   const innerPhotos = ObservationPhoto.mapInnerPhotos( currentObservation );
   // ObservationPhoto.mapObsPhotoUris returns *new* strings with every call,

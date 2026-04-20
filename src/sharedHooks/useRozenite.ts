@@ -6,10 +6,11 @@ import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 import type {
   QueryClient,
 } from "@tanstack/react-query";
-import { useFeatureFlagForDebug } from "components/Developer/FeatureFlags";
 import { useMemo } from "react";
 import type { MMKV } from "react-native-mmkv";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+
+import { DevOnlyFlag, FeatureFlag } from "../types/dynamicConfig";
+import { useDynamicConfigInternals } from "./useDynamicConfig";
 
 interface RozeniteOptions {
     queryClient: QueryClient;
@@ -29,7 +30,10 @@ const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
   } );
   useRequireProfilerDevTools();
   const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
-    = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
+    = useDynamicConfigInternals( FeatureFlag.ExploreV2Enabled );
+
+  const { resolvedValue: simulateAirplaneModeEnabled, setOverride: setSimulateAirplaneModeEnabled }
+    = useDynamicConfigInternals( DevOnlyFlag.SimulateAirplaneModeEnabled );
 
   const sections = useMemo(
     () => [
@@ -48,8 +52,27 @@ const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
           },
         ],
       } ),
+      createSection( {
+        id: "development-only-flags",
+        title: "Development-only Flags",
+        items: [
+          {
+            id: "simulated-airplane-mode",
+            type: "toggle",
+            title: "Simulated Airplane Mode",
+            value: simulateAirplaneModeEnabled,
+            onUpdate: () => {
+              setSimulateAirplaneModeEnabled( !simulateAirplaneModeEnabled );
+            },
+          },
+        ],
+      } ),
     ],
-    [exploreV2Enabled, setExploreV2Enabled],
+    [
+      exploreV2Enabled,
+      setExploreV2Enabled,
+      setSimulateAirplaneModeEnabled,
+      simulateAirplaneModeEnabled],
   );
 
   useRozeniteControlsPlugin( { sections } );
