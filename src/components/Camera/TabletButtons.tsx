@@ -37,7 +37,6 @@ const cameraOptionsClasses = [
 interface Props {
   handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
   disabled: boolean;
-  confirmDisabled: boolean;
   disabledPhotoLibrary: boolean;
   flipCamera: ( _event: GestureResponderEvent ) => void;
   handleCheckmarkPress?: ( _event: GestureResponderEvent ) => void;
@@ -76,7 +75,6 @@ const CameraButtonPlaceholder = ( { extraClassName }: { extraClassName?: string 
 const TabletButtons = ( {
   handleZoomButtonPress,
   disabled,
-  confirmDisabled,
   disabledPhotoLibrary,
   flipCamera,
   handleCheckmarkPress,
@@ -147,7 +145,6 @@ const TabletButtons = ( {
           containerClass={classnames( checkmarkClasses )}
         >
           <GreenCheckmark
-            disabled={confirmDisabled}
             handleCheckmarkPress={handleCheckmarkPress || ( () => null )}
           />
         </RotatableIconWrapper>
