@@ -123,7 +123,7 @@ const AICamera = ( {
   const changeDebugFormat = ( ) => {
     setDebugFormatIndex( prev => ( prev + 1 ) % device.formats.length );
   };
-  const debugFormat = isDebugMode()
+  const debugFormat = isDebug
     ? device.formats[debugFormatIndex]
     : undefined;
 
