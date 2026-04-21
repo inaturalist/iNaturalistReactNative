@@ -21,7 +21,7 @@
       "tests": ["tests"],
     },
     "strict": true,
-    "types": ["nativewind/types"],
+    "types": ["nativewind/types", "jest"],
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["flow-typed", "**/node_modules", "**/Pods"]
