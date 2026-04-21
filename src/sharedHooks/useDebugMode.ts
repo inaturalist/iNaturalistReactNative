@@ -1,6 +1,4 @@
-import useStore, { zustandStorage } from "stores/useStore";
-
-const DEBUG_MODE = "debugMode";
+import useStore from "stores/useStore";
 
 const useDebugMode = ( ): { isDebug: boolean } => {
   const isDebug = useStore( state => state.layout.debugModeEnabled );
@@ -8,9 +6,5 @@ const useDebugMode = ( ): { isDebug: boolean } => {
     isDebug,
   };
 };
-
-export function isDebugMode( ): boolean {
-  return zustandStorage.getItem( DEBUG_MODE ) === "true";
-}
 
 export default useDebugMode;
