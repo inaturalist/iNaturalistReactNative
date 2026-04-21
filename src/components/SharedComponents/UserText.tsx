@@ -63,7 +63,6 @@ const ALLOWED_TAGS = ( `
   th
   thead
   tr
-  tt
   ul
 ` ).split( /\s+/m ).filter( e => e !== "" );
 
