@@ -1,3 +1,13 @@
+// https://github.com/inaturalist/iNaturalistAPI/blob/08e3aade068c50e02d0caf7a59c69ea87b70bc6e/lib/views/swagger_v1.yml.ejs#L2319-L2333
+export type License =
+  | "cc-by"
+  | "cc-by-nc"
+  | "cc-by-nd"
+  | "cc-by-sa"
+  | "cc-by-nc-nd"
+  | "cc-by-nc-sa"
+  | "cc0"
+
 interface RealmObject {
   isValid: ( ) => boolean;
 }
@@ -8,7 +18,7 @@ export interface RealmPhoto extends RealmObject {
   _updated_at?: Date;
   id: number;
   attribution?: string;
-  licenseCode?: string; // TODO type this with actual codes
+  licenseCode?: License;
   url?: string;
   localFilePath?: string;
 }
@@ -19,7 +29,7 @@ export interface RealmSound extends RealmObject {
   _updated_at?: Date;
   id: number;
   attribution?: string;
-  licenseCode?: string; // TODO type this with actual codes
+  licenseCode?: License;
   file_url: string;
 }
 
@@ -91,16 +101,6 @@ interface RealmIdentification extends RealmObject {
   current: boolean;
   user: RealmUser;
 }
-
-// https://github.com/inaturalist/iNaturalistAPI/blob/08e3aade068c50e02d0caf7a59c69ea87b70bc6e/lib/views/swagger_v1.yml.ejs#L2319-L2333
-export type License =
-  | "cc-by"
-  | "cc-by-nc"
-  | "cc-by-nd"
-  | "cc-by-sa"
-  | "cc-by-nc-nd"
-  | "cc-by-nc-sa"
-  | "cc0"
 
 export interface RealmObservationPojo {
   _created_at?: Date;
