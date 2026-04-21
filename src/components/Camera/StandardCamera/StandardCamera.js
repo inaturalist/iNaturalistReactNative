@@ -22,7 +22,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import { useDeviceOrientation, usePerformance } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import {
@@ -94,9 +94,12 @@ const StandardCamera = ( {
   const { loadTime } = usePerformance( {
     isLoading: camera?.current !== null,
   } );
-  if ( isDebugMode( ) && loadTime ) {
-    logger.info( loadTime );
-  }
+  const { isDebug } = useDebugMode();
+  useEffect( () => {
+    if ( isDebug && loadTime ) {
+      logger.info( loadTime );
+    }
+  }, [isDebug, loadTime] );
 
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );

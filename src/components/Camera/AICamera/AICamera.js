@@ -23,7 +23,6 @@ import {
   usePerformance,
   useTranslation,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -146,9 +145,11 @@ const AICamera = ( {
   const { loadTime } = usePerformance( {
     isLoading: camera?.current !== null,
   } );
-  if ( isDebugMode( ) && loadTime ) {
-    logger.info( loadTime );
-  }
+  useEffect( () => {
+    if ( isDebug && loadTime ) {
+      logger.info( loadTime );
+    }
+  }, [isDebug, loadTime] );
 
   const resetCameraOnFocus = useCallback( ( ) => {
     setResult( null );
