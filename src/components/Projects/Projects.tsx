@@ -16,7 +16,7 @@ import {
 } from "components/SharedComponents";
 import type { Tab } from "components/SharedComponents/Tabs/Tabs";
 import { View } from "components/styledComponents";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   useTranslation,
 } from "sharedHooks";
@@ -76,14 +76,14 @@ const Projects = ( {
     } );
   }, [navigation, t] );
 
-  const renderFooter = useCallback( ( ) => (
+  const footerComponent = useMemo( ( ) => (
     <InfiniteScrollLoadingWheel
       hideLoadingWheel={hideLoadingWheel}
       isConnected={isConnected}
     />
   ), [hideLoadingWheel, isConnected] );
 
-  const renderEmptyList = ( ) => {
+  const emptyListComponent = useMemo( ( ) => {
     if ( isLoading ) {
       <ActivityIndicator size={50} />;
     } else {
@@ -119,7 +119,14 @@ const Projects = ( {
     }
 
     return null;
-  };
+  }, [
+    isLoading,
+    searchInput,
+    currentTabId,
+    memberId,
+    t,
+    setSearchInput,
+  ] );
 
   const renderList = ( ) => {
     // hasPermission undefined means we haven't checked for location permissions yet
@@ -148,8 +155,8 @@ const Projects = ( {
     return (
       <ProjectList
         projects={projects}
-        ListEmptyComponent={renderEmptyList}
-        ListFooterComponent={renderFooter}
+        ListEmptyComponent={emptyListComponent}
+        ListFooterComponent={footerComponent}
         onEndReached={fetchNextPage}
       />
     );
