@@ -1,11 +1,13 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import {
   useCallback,
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import { log } from "sharedHelpers/logger";
 import {
   useLayoutPrefs,
 } from "sharedHooks";
@@ -14,9 +16,11 @@ import useStore from "stores/useStore";
 
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
 
+const logger = log.extend( "usePrepareStoreAndNavigate" );
+
 const usePrepareStoreAndNavigate = ( ) => {
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
+  const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const addEvidence = params?.addEvidence;
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
@@ -37,15 +41,10 @@ const usePrepareStoreAndNavigate = ( ) => {
 
   const handleSavingToPhotoLibrary = useCallback( async (
     uris,
-    addPhotoPermissionResult,
     userLocation,
     logStageIfAICamera,
   ) => {
     await logStageIfAICamera( "save_photos_to_photo_library_start" );
-    if ( addPhotoPermissionResult !== "granted" ) {
-      await logStageIfAICamera( "save_photos_to_photo_library_error" );
-      return Promise.resolve( );
-    }
     if ( deviceStorageFull ) {
       await logStageIfAICamera( "save_photos_to_photo_library_error" );
       showStorageFullAlert( );
@@ -73,7 +72,6 @@ const usePrepareStoreAndNavigate = ( ) => {
 
   const createObsWithCameraPhotos = useCallback( async (
     uris,
-    addPhotoPermissionResult,
     userLocation,
     logStageIfAICamera,
     visionResult,
@@ -101,12 +99,11 @@ const usePrepareStoreAndNavigate = ( ) => {
       newObservation.taxon = visionResult.taxon;
     }
     setObservations( [newObservation] );
-    await handleSavingToPhotoLibrary(
+    handleSavingToPhotoLibrary(
       uris,
-      addPhotoPermissionResult,
       userLocation,
       logStageIfAICamera,
-    );
+    ).catch( e => logger.error( "createObsWithCameraPhotos: error saving to photo library", e ) );
   }, [
     isDefaultMode,
     screenAfterPhotoEvidence,
@@ -115,7 +112,6 @@ const usePrepareStoreAndNavigate = ( ) => {
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async (
-    addPhotoPermissionResult,
     userLocation,
     logStageIfAICamera,
   ) => {
@@ -132,13 +128,11 @@ const usePrepareStoreAndNavigate = ( ) => {
     const updatedObservations = [...observations];
     updatedObservations[currentObservationIndex] = updatedCurrentObservation;
     updateObservations( updatedObservations );
-
-    await handleSavingToPhotoLibrary(
+    handleSavingToPhotoLibrary(
       evidenceToAdd,
-      addPhotoPermissionResult,
       userLocation,
       logStageIfAICamera,
-    );
+    ).catch( e => logger.error( "updateObsWithCameraPhotos: error saving to photo library", e ) );
   }, [
     evidenceToAdd,
     numOfObsPhotos,
@@ -150,7 +144,6 @@ const usePrepareStoreAndNavigate = ( ) => {
   ] );
 
   const prepareStoreAndNavigate = useCallback( async ( {
-    addPhotoPermissionResult,
     userLocation,
     newPhotoState,
     logStageIfAICamera,
@@ -164,7 +157,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     // new observation
     const uris = newPhotoState?.cameraUris || cameraUris;
     if ( addEvidence ) {
-      await updateObsWithCameraPhotos( addPhotoPermissionResult, userLocation, logStageIfAICamera );
+      await updateObsWithCameraPhotos( userLocation, logStageIfAICamera );
       await deleteStageIfAICamera( );
       setSentinelFileName( null );
       return navigation.navigate( "ObsEdit", { lastScreen: "Camera" } );
@@ -172,7 +165,6 @@ const usePrepareStoreAndNavigate = ( ) => {
 
     await createObsWithCameraPhotos(
       uris,
-      addPhotoPermissionResult,
       userLocation,
       logStageIfAICamera,
       visionResult,

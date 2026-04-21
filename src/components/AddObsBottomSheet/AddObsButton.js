@@ -115,7 +115,8 @@ const AddObsButton = ( ): React.Node => {
     logger.info( `isAdvancedUser: ${isAllAddObsOptionsMode}` );
   }, [isAllAddObsOptionsMode] );
 
-  const navAndCloseBottomSheet = ( screen, params ) => {
+  type Screen = "ObsEdit" | "Camera" | "PhotoLibrary" | "SoundRecorder";
+  const navAndCloseBottomSheet = ( screen: Screen, params ) => {
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
     }

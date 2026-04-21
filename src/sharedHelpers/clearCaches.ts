@@ -2,6 +2,7 @@ import {
   computerVisionPath,
   photoLibraryPhotosPath,
   photoUploadPath,
+  rollbackPhotosPath,
   rotatedOriginalPhotosPath,
   soundUploadPath,
 } from "appConstants/paths";
@@ -79,9 +80,14 @@ const clearSyncedMediaForUpload = async realm => {
   );
 };
 
+const clearRollbackPhotos = async ( ) => {
+  await removeAllFilesFromDirectory( rollbackPhotosPath );
+};
+
 export {
   clearComputerVisionPhotos,
   clearGalleryPhotos,
+  clearRollbackPhotos,
   clearRotatedOriginalPhotosDirectory,
   clearSyncedMediaForUpload,
 };

@@ -13,7 +13,7 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from "react";
 import { Trans } from "react-i18next";
-import type { TextInput } from "react-native";
+import type { ScrollView, TextInput } from "react-native";
 import {
   Platform,
   TouchableWithoutFeedback,
@@ -29,7 +29,7 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 const { useRealm } = RealmContext;
 
 interface Props {
-  scrollViewRef?: React.Ref;
+  scrollViewRef?: React.Ref<ScrollView>;
 }
 
 const LoginForm = ( {

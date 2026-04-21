@@ -11,6 +11,7 @@ const isTablet = DeviceInfo.isTablet();
 
 type Props = {
   disabled: boolean,
+  confirmDisabled: boolean,
   handleCheckmarkPress: Function,
   handleClose: Function,
   photosTaken: boolean,
@@ -20,6 +21,7 @@ type Props = {
 
 const CameraNavButtons = ( {
   disabled,
+  confirmDisabled,
   handleCheckmarkPress,
   handleClose,
   photosTaken,
@@ -31,7 +33,7 @@ const CameraNavButtons = ( {
   return (
     <View testID="CameraNavButtons">
       <MediaNavButtons
-        disabled={disabled}
+        disabled={confirmDisabled}
         mediaCaptured={photosTaken}
         onClose={handleClose}
         onConfirm={handleCheckmarkPress}

@@ -1,7 +1,7 @@
-import type { RouteProp } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { ApiPlace, ApiProject, ApiTaxon } from "api/types";
 import { View } from "components/styledComponents";
+import type { TabStackScreenProps } from "navigation/types";
 import {
   ExploreProvider,
 } from "providers/ExploreContext";
@@ -15,8 +15,8 @@ import ExploreTaxonSearch from "./SearchScreens/ExploreTaxonSearch";
 import ExploreUserSearch from "./SearchScreens/ExploreUserSearch";
 
 const ExploreSearchContainerWithContext = () => {
-  const navigation = useNavigation();
-  const { params } = useRoute<RouteProp<Record<string, { initialSearchMode?: string }>, string>>( );
+  const navigation = useNavigation<TabStackScreenProps<"ExploreSearch">["navigation"]>();
+  const { params } = useRoute<TabStackScreenProps<"ExploreSearch">["route"]>();
 
   const {
     hasPermissions,

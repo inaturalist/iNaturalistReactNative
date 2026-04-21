@@ -1,4 +1,9 @@
+import * as RNFS from "@dr.pogodin/react-native-fs";
 import { createSection, useRozeniteControlsPlugin } from "@rozenite/controls-plugin";
+import {
+  createRNFSAdapter,
+  useFileSystemDevTools,
+} from "@rozenite/file-system-plugin";
 import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
 import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
 import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
@@ -23,11 +28,14 @@ interface RozeniteOptions {
 // note: Rozenite plugins are automatically disabled / noops in Production builds
 const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
   useTanStackQueryDevTools( queryClient );
-  useNetworkActivityDevTools();
+  useNetworkActivityDevTools( );
   useMMKVDevTools( {
     storages: mmkvStorages,
   } );
-  useRequireProfilerDevTools();
+  useRequireProfilerDevTools( );
+  useFileSystemDevTools( {
+    adapter: createRNFSAdapter( RNFS ),
+  } );
   const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
     = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
 

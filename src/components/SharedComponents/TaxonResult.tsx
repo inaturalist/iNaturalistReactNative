@@ -8,6 +8,11 @@ import {
   INatIconButton,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
+import type {
+  NoBottomTabStackScreenProps,
+  SharedStackParamList,
+  TabStackScreenProps,
+} from "navigation/types";
 import type { PropsWithChildren } from "react";
 import React from "react";
 import type { GestureResponderEvent } from "react-native";
@@ -34,7 +39,7 @@ interface TaxonResultProps {
   handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
   hideInfoButton?: boolean;
   hideNavButtons?: boolean;
-  lastScreen?: string | null;
+  lastScreen?: "Suggestions";
   onPressInfo?: ( taxon: object ) => void;
   showCheckmark?: boolean;
   showEditButton?: boolean;
@@ -66,7 +71,7 @@ const TaxonResult = ( {
   handleTaxonOrEditPress,
   hideInfoButton = false,
   hideNavButtons = false,
-  lastScreen = null,
+  lastScreen,
   onPressInfo,
   retryQuery = true,
   showCheckmark = true,
@@ -79,7 +84,25 @@ const TaxonResult = ( {
   white = false,
 }: TaxonResultProps ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  // TaxonResult is imported in
+  // AICamera
+  // ExploreTaxonSearch
+  // MatchTaxonSearch
+  // IdentificationSection
+  // Suggestion
+  // SuggestionsTaxonSearch
+  // However, navigation is only used if
+  // unpressable is false and hideInfoButton is false and onPressInfo is not provided
+  // or
+  // unpressable is false and handleTaxonOrEditPress is not provided
+  const navigation = useNavigation<
+    TabStackScreenProps<
+      "MatchTaxonSearchScreen" | "Suggestions" | "SuggestionsTaxonSearch"
+    >["navigation"] &
+    NoBottomTabStackScreenProps<
+      "MatchTaxonSearchScreen" | "Suggestions" | "SuggestionsTaxonSearch"
+    >["navigation"]
+  >( );
 
   const currentUser = useCurrentUser( );
 
@@ -116,7 +139,7 @@ const TaxonResult = ( {
     );
 
   const navToTaxonDetails = React.useCallback( ( ) => {
-    const params = {
+    const params: SharedStackParamList["TaxonDetails"] = {
       id: usableTaxon?.id,
       hideNavButtons,
       lastScreen,

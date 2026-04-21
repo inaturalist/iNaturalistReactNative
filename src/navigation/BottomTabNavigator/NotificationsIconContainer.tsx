@@ -1,10 +1,9 @@
 import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import NotificationsIcon from "navigation/BottomTabNavigator/NotificationsIcon";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
-  useInterval,
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -19,36 +18,26 @@ const NotificationsIconContainer = ( {
   icon,
   active,
 }: Props ) => {
-  const [hasUnread, setHasUnread] = useState( false );
-  const [numFetchIntervals, setNumFetchIntervals] = useState( 0 );
   const currentUser = useCurrentUser( );
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
 
   const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
     [
       "notificationsCount",
-      // We want to check for notifications at a set interval, so this gets
-      // bumped at that interval
-      numFetchIntervals,
       // We want to check for notifications when the user views an
       // observation, because that might make the indicator go away
       observationMarkedAsViewedAt,
     ],
     optsWithAuth => fetchUnviewedObservationUpdatesCount( {}, optsWithAuth ),
     {
-      enabled: !!( currentUser ),
+      enabled: !!currentUser,
+      // We want to check for notifications at a set interval, but
+      // keep a stable query key so we don't create unbounded cached queries.
+      refetchInterval: 60_000,
     },
   );
 
-  // Show icon when there are unread updates
-  useEffect( () => {
-    setHasUnread( unviewedUpdatesCount > 0 );
-  }, [unviewedUpdatesCount] );
-
-  // Fetch new updates count every minute by changing the request key
-  useInterval( () => {
-    setNumFetchIntervals( numFetchIntervals + 1 );
-  }, 60_000 );
+  const hasUnread = ( unviewedUpdatesCount ?? 0 ) > 0;
 
   return (
     <NotificationsIcon

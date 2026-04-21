@@ -7,13 +7,13 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback, useMemo, useRef, useState,
+  useCallback, useMemo, useState,
 } from "react";
 import { FlatList } from "react-native";
 import {
+  Gesture,
+  GestureDetector,
   GestureHandlerRootView,
-  NativeViewGestureHandler,
-  PanGestureHandler,
 } from "react-native-gesture-handler";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -58,8 +58,6 @@ const MainMediaDisplay = ( {
   setSelectedMediaIndex,
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const panRef = useRef();
-  const listRef = useRef();
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
@@ -207,14 +205,17 @@ const MainMediaDisplay = ( {
     selectedMediaIndex,
   ] );
 
-  const onGestureEvent = useCallback( event => {
-    const { translationY, velocityY } = event.nativeEvent;
-
-    if ( translationY > 50 && velocityY > 500 ) {
-      // Close media viewer on swipe up
-      onClose();
-    }
-  }, [onClose] );
+  const swipeToCloseGesture = Gesture.Simultaneous(
+    Gesture.Pan( )
+      .runOnJS( true )
+      .onUpdate( ( { translationY, velocityY } ) => {
+        if ( translationY > 50 && velocityY > 500 ) {
+          // Close media viewer on swipe up
+          onClose( );
+        }
+      } ),
+    Gesture.Native( ),
+  );
 
   return (
     <View
@@ -225,27 +226,21 @@ const MainMediaDisplay = ( {
       }}
     >
       <GestureHandlerRootView>
-        <PanGestureHandler
-          ref={panRef}
-          simultaneousHandlers={listRef}
-          onGestureEvent={onGestureEvent}
-        >
-          <NativeViewGestureHandler ref={listRef} simultaneousHandlers={panRef}>
-            <FlatList
-              data={items}
-              renderItem={renderItem}
-              initialScrollIndex={selectedMediaIndex}
-              getItemLayout={getItemLayout}
-              horizontal
-              pagingEnabled
-              // Disable scrolling when image is zooming
-              scrollEnabled={!zooming}
-              showsHorizontalScrollIndicator={false}
-              ref={horizontalScroll}
-              onMomentumScrollEnd={handleScrollEndDrag}
-            />
-          </NativeViewGestureHandler>
-        </PanGestureHandler>
+        <GestureDetector gesture={swipeToCloseGesture}>
+          <FlatList
+            data={items}
+            renderItem={renderItem}
+            initialScrollIndex={selectedMediaIndex}
+            getItemLayout={getItemLayout}
+            horizontal
+            pagingEnabled
+            // Disable scrolling when image is zooming
+            scrollEnabled={!zooming}
+            showsHorizontalScrollIndicator={false}
+            ref={horizontalScroll}
+            onMomentumScrollEnd={handleScrollEndDrag}
+          />
+        </GestureDetector>
       </GestureHandlerRootView>
     </View>
   );
