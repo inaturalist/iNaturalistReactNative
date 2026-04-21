@@ -14,7 +14,6 @@ type Props = {
   takePhoto: () => Promise<void>,
   handleClose: Function,
   disabled: boolean,
-  confirmDisabled: boolean,
   photosTaken: boolean,
   rotatableAnimatedStyle: Object,
   handleCheckmarkPress: Function,
@@ -31,7 +30,6 @@ const CameraOptionsButtons = ( {
   takePhoto,
   handleClose,
   disabled,
-  confirmDisabled,
   photosTaken,
   rotatableAnimatedStyle,
   handleCheckmarkPress,
@@ -72,7 +70,10 @@ const CameraOptionsButtons = ( {
       takePhoto={takePhoto}
       handleClose={handleClose}
       disabled={disabled}
-      confirmDisabled={confirmDisabled}
+      // TODO: once we re-visit tablet views, we'll want to ensure users cannot spam the submit
+      // button while taking photos. see:
+      // https://linear.app/inaturalist/issue/MOB-1084/multicapture-camera-multiple-copies-of-photos-can-be-saved
+      // confirmDisabled={confirmDisabled}
       photosTaken={photosTaken}
       rotatableAnimatedStyle={rotatableAnimatedStyle}
       handleCheckmarkPress={handleCheckmarkPress}

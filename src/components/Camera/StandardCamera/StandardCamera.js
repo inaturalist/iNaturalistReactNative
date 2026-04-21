@@ -234,7 +234,6 @@ const StandardCamera = ( {
           flipCamera={onFlipCamera}
           handleCheckmarkPress={handleCheckmarkPress}
           handleClose={handleBackButtonPress}
-          confirmDisabled={takingPhoto || confirmPhotosInProgress}
           hasFlash={hasFlash}
           photosTaken={photosTaken}
           rotatableAnimatedStyle={rotatableAnimatedStyle}
