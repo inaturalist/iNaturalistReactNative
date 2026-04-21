@@ -1,23 +1,11 @@
 // Trying to consolidate cleanup and nav logic when exiting the obs create /
 // edit flow, so basically nav to MyObs by default and clean up the zustand
 // state
-import type { RouteProp } from "@react-navigation/native";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
 import { clearRollbackPhotos } from "sharedHelpers/clearCaches";
 import useStore from "stores/useStore";
-
-interface ObsFlowParams {
-  [name: string]: {
-    previousScreen?: {
-      name: string;
-      params: {
-        uuid?: string;
-      };
-    };
-  };
-}
 
 interface ExitOptions {
   skipStoreReset?: boolean;
@@ -27,8 +15,19 @@ interface Options {
 }
 
 export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
-  const navigation = useNavigation( );
-  const { params } = useRoute<RouteProp<ObsFlowParams, string>>( );
+  // This hook is used in:
+  // - useBackPress.ts
+  // - MatchContainer.js
+  // - BottomButtonsContainer.tsx
+  // - ObsEditHeader.js
+  // - PhotoLibrary.tsx
+  // - TaxonDetails.tsx
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<
+      "Match" | "Camera" | "ObsEdit" | "PhotoLibrary" | "TaxonDetails"
+    >["navigation"] &
+    TabStackScreenProps<"Match" | "ObsEdit" | "TaxonDetails">["navigation"]
+  >( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const clearRollbackSnapshot = useStore( state => state.clearRollbackSnapshot );
 
@@ -49,25 +48,38 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
     }
     void clearRollbackPhotos( );
 
-    const previousScreen = params && params.previousScreen
-      ? params.previousScreen
-      : null;
-    if ( previousScreen && previousScreen.name === "ObsDetails" ) {
-      navigateToObsDetails( navigation, previousScreen.params.uuid );
-    } else if ( typeof ( options.navigate ) === "function" ) {
-      options.navigate();
+    if ( typeof ( options.navigate ) === "function" ) {
+      // This seems only to be used in ObsEditHeader in a few cases of backing out
+      options.navigate( );
     } else {
-      navigation.navigate( "TabNavigator", {
-        screen: "ObservationsTab",
-        params: {
-          screen: "ObsList",
-        },
-      } );
+      // Use a reset (not navigate) to avoid piling up screen instances
+      navigation.dispatch(
+        CommonActions.reset( {
+          index: 0,
+          routes: [
+            {
+              name: "TabNavigator",
+              state: {
+                routes: [
+                  {
+                    name: "ObservationsTab",
+                    state: {
+                      index: 0,
+                      routes: [
+                        { name: "ObsList" },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        } ),
+      );
     }
   }, [
     clearRollbackSnapshot,
     navigation,
-    params,
     resetObservationFlowSlice,
     exitOptions,
   ] );
