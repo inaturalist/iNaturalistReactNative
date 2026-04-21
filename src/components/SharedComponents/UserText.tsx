@@ -104,16 +104,7 @@ interface Props extends React.PropsWithChildren {
   htmlStyle?: object;
 }
 
-const UserText = ( {
-  children,
-  htmlStyle,
-  text: textProp,
-} : Props ) => {
-  const navigation = useNavigation( );
-
-  // Allow stringified children to serve as text if no prop provided
-  const text = textProp || children?.toString( ) || "";
-  const { width } = useWindowDimensions( );
+export function buildUserTextHtml( text: string ): string {
   let html = trim( text );
 
   // replace ampersands in URL params with entities so they don't get
@@ -136,6 +127,22 @@ const UserText = ( {
   // <code>
 
   html = linkifyHtml( html, LINKIFY_OPTIONS );
+  return html;
+}
+
+const UserText = ( {
+  children,
+  htmlStyle,
+  text: textProp,
+} : Props ) => {
+  const navigation = useNavigation( );
+
+  // Allow stringified children to serve as text if no prop provided
+  const text = textProp || children?.toString( ) || "";
+  const { width } = useWindowDimensions( );
+
+  const html = buildUserTextHtml( text );
+
   const baseStyle: MixedStyleDeclaration = {
     fontFamily: fontRegular,
     fontSize: 16,
