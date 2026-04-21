@@ -14,3 +14,5 @@ export const rotatedOriginalPhotosPath = `${DocumentDirectoryPath}/rotatedOrigin
 export const sentinelFilePath = `${DocumentDirectoryPath}/sentinelFiles`;
 
 export const soundUploadPath = `${DocumentDirectoryPath}/soundUploads`;
+
+export const rollbackPhotosPath = `${DocumentDirectoryPath}/rollbackPhotos`;

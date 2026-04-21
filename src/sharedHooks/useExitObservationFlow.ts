@@ -4,6 +4,7 @@
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
+import { clearRollbackPhotos } from "sharedHelpers/clearCaches";
 import useStore from "stores/useStore";
 
 interface ExitOptions {
@@ -28,6 +29,7 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
     TabStackScreenProps<"Match" | "ObsEdit" | "TaxonDetails">["navigation"]
   >( );
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
+  const clearRollbackSnapshot = useStore( state => state.clearRollbackSnapshot );
 
   return useCallback( ( options: Options = {} ) => {
     // In theory everything that needs to be saved has been saved at this
@@ -39,7 +41,12 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
       // to rerender with no currentObservation, which means useSuggestions crashes from
       // having no photo passed in, and many parts of the UI also result in crashes
       resetObservationFlowSlice( );
+    } else {
+      // Even when skipping the full reset (e.g. MatchContainer), clear the
+      // rollback snapshot since leaving the flow means rollback is no longer relevant
+      clearRollbackSnapshot( );
     }
+    void clearRollbackPhotos( );
 
     if ( typeof ( options.navigate ) === "function" ) {
       // This seems only to be used in ObsEditHeader in a few cases of backing out
@@ -71,6 +78,7 @@ export default function useExitObservationFlow( exitOptions?: ExitOptions ) {
       );
     }
   }, [
+    clearRollbackSnapshot,
     navigation,
     resetObservationFlowSlice,
     exitOptions,
