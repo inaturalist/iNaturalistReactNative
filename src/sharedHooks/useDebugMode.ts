@@ -2,12 +2,10 @@ import useStore, { zustandStorage } from "stores/useStore";
 
 const DEBUG_MODE = "debugMode";
 
-const useDebugMode = ( ): { isDebug: boolean; toggleDebug: () => void } => {
+const useDebugMode = ( ): { isDebug: boolean } => {
   const isDebug = useStore( state => state.layout.debugModeEnabled );
-  const toggleDebug = useStore( state => state.layout.toggleDebugMode );
   return {
     isDebug,
-    toggleDebug,
   };
 };
 

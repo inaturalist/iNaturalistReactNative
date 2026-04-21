@@ -13,6 +13,7 @@ import { t } from "i18next";
 import React, { useState } from "react";
 import { getBuildNumber, getVersion } from "react-native-device-info";
 import { useDebugMode } from "sharedHooks";
+import useStore from "stores/useStore";
 
 const aboutID = "about";
 const teamID = "team";
@@ -23,7 +24,8 @@ const About = ( ) => {
   const [count, setCount] = useState( 0 );
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
-  const { isDebug, toggleDebug } = useDebugMode( );
+  const { isDebug } = useDebugMode( );
+  const toggleDebug = useStore( state => state.layout.toggleDebugMode );
 
   const onTermsPressed = async () => {
     const url = "https://www.inaturalist.org/pages/terms";
