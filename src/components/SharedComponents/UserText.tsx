@@ -20,6 +20,8 @@ import type { IOptions } from "sanitize-html";
 import sanitizeHtml from "sanitize-html";
 import colors from "styles/tailwindColors";
 
+// Keep aligned with Post::ALLOWED_TAGS in inaturalist/inaturalist (Rails);
+// omit iframe/embed/audio so mobile sanitization is a tad stricter than web
 const ALLOWED_TAGS = ( `
   a
   abbr
@@ -57,7 +59,7 @@ const ALLOWED_TAGS = ( `
   table
   tbody
   td
-  t
+  tfoot
   th
   thead
   tr
