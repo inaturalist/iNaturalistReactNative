@@ -145,8 +145,8 @@ const UserText = ( {
   };
   const tagsStyles: TRenderEngineConfig["tagsStyles"] = {
     a: {
-      textDecorationLine: "underline",
       color: colors.inatGreen,
+      textDecorationColor: colors.inatGreen,
     },
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
