@@ -9,6 +9,7 @@ interface QueryOptions {
   allowAnonymousJWT?: boolean;
   enabled?: boolean;
   retry?: boolean;
+  refetchInterval?: number;
 }
 
 export type QueryFunction<Response>
