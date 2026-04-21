@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import {
   useCallback,
 } from "react";
@@ -18,8 +19,8 @@ import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
 const logger = log.extend( "usePrepareStoreAndNavigate" );
 
 const usePrepareStoreAndNavigate = ( ) => {
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
+  const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const addEvidence = params?.addEvidence;
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );

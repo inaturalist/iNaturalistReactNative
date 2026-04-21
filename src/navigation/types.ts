@@ -4,7 +4,11 @@
  */
 
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import type { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
+import type {
+  CompositeScreenProps,
+  NavigatorScreenParams,
+  ParamListRoute,
+} from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { ApiUser } from "api/types";
 
@@ -12,13 +16,165 @@ import type { ApiUser } from "api/types";
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type SharedStackParamList = {
-  ObsEdit: undefined;
+  // From usePrepareStoreAndNavigate.ts
+  // {
+  //   entryScreen: "Camera";
+  // }
+  // From usePrepareStoreAndNavigate.ts
+  // {
+  //   entryScreen: "CameraWithDevice";
+  //   lastScreen: "CameraWithDevice";
+  // }
+  // From PhotoLibrary
+  // {
+  //   lastScreen: "PhotoLibrary";
+  // }
+  // From AddObsButton
+  // {
+  //   previousScreen: ParamListRoute<RootStackParamList>;
+  // };
+  // From useNavigateWithTaxonSelected.ts
+  // { lastScreen: "Suggestions" }
+  // From useNavigateToObsEdit.ts
+  // { lastScreen: "Match" }
+  // From PhotoSharing
+  // { lastScreen: "PhotoSharing" }
+  // From GroupPhotosContainer
+  // { lastScreen: "GroupPhotos" }
+  // {
+  //   entryScreen: "GroupPhotos",
+  //   lastScreen: "GroupPhotos",
+  // }
+  // From useBackPress.ts; SoundRecorder.js; useNavigateWithTaxonSelected.ts; TaxonDetails.js
+  // undefined
+  ObsEdit: {
+    lastScreen?: "Camera" |
+      "CameraWithDevice" |
+      "PhotoLibrary" |
+      "Suggestions" |
+      "Match" |
+      "PhotoSharing" |
+      "GroupPhotos";
+    entryScreen?: "CameraWithDevice" | "GroupPhotos";
+    // eslint-disable-next-line no-use-before-define
+    previousScreen?: ParamListRoute<RootStackParamList>;
+  } | undefined;
+  // From MatchContainer
+  // undefined
   LocationPicker: undefined;
-  TaxonDetails: undefined;
-  PhotoSharing: undefined;
-  Match: undefined;
-  Suggestions: undefined;
-  SuggestionsTaxonSearch: undefined;
+  // From ExploreSearchContainer, ExploreTaxonSearchModal, MyObservationsSimple,
+  // ObsDetailsOverview, CommunityTaxon, SavedMatchContainer, ActivityItem, ProjectRequirements
+  // TaxonGridItem
+  // { id: taxon.id }
+  // From MatchContainer
+  // {
+  //   id?: number | string;
+  //   firstPhotoID?: number | string;
+  //   representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
+  // };
+  // From TaxonResult
+  // {
+  //   id: usableTaxon?.id,
+  //   hideNavButtons,
+  //   lastScreen,
+  //   vision,
+  //   firstPhotoID
+  // }
+  // From Taxonomy
+  // {
+  //   id: taxonId,
+  //   hideNavButtons,
+  //   usesVision: false,
+  // }
+  TaxonDetails: {
+    // TODO: how can this be string?
+    id?: number | string;
+    // TODO: how can this be string?
+    firstPhotoID?: number | string;
+    representativePhoto?: {
+      isRepresentativeButOtherTaxon?: boolean;
+      id?: number | string;
+    };
+    hideNavButtons?: boolean;
+    lastScreen?: "Suggestions";
+    // TODO: do we really use both?
+    vision?: boolean;
+    usesVision?: boolean;
+  };
+  // From App.js
+  // item is SharedItem
+  PhotoSharing: {
+    item: {
+      mimeType: string;
+      data: string | string[];
+    };
+  };
+  // From usePrepareStoreAndNavigate.ts
+  // {
+  //   entryScreen: "CameraWithDevice";
+  //   lastScreen: "CameraWithDevice";
+  // }
+  // From PhotoLibrary
+  // {
+  //   lastScreen: "PhotoLibrary";
+  // }
+  // From PhotoSharing
+  // { lastScreen: "PhotoSharing" }
+  // From GroupPhotosContainer
+  // {
+  //   entryScreen: "GroupPhotos",
+  //   lastScreen: "GroupPhotos",
+  // }
+  Match: {
+    entryScreen?: "CameraWithDevice" | "GroupPhotos";
+    lastScreen: "CameraWithDevice" | "PhotoLibrary" | "PhotoSharing" | "GroupPhotos";
+  };
+  // From usePrepareStoreAndNavigate.ts
+  // {
+  //   entryScreen: "CameraWithDevice";
+  //   lastScreen: "CameraWithDevice";
+  // }
+  // From IdentificationSection.js
+  // {
+  //   entryScreen: "ObsEdit";
+  //   lastScreen: "ObsEdit";
+  //   hideSkip: boolean;
+  // }
+  // From ObsEditHeader
+  // {
+  //   lastScreen: "ObsEdit";
+  // }
+  // From PhotoLibrary
+  // {
+  //   lastScreen: "PhotoLibrary";
+  // }
+  // From useObsDetailsSharedLogic.ts
+  // {
+  //   entryScreen: "ObsDetails",
+  //   lastScreen: "ObsDetails",
+  //   hideSkip: true,
+  // }
+  // From PhotoSharing
+  // { lastScreen: "PhotoSharing" }
+  // From GroupPhotosContainer
+  // {
+  //   entryScreen: "GroupPhotos",
+  //   lastScreen: "GroupPhotos",
+  // }
+  Suggestions: {
+    entryScreen?: "CameraWithDevice" | "ObsEdit" | "ObsDetails" | "GroupPhotos";
+    lastScreen?: "CameraWithDevice" |
+      "ObsEdit" |
+      "PhotoLibrary" |
+      "ObsDetails" |
+      "PhotoSharing" |
+      "GroupPhotos";
+    hideSkip?: boolean;
+  };
+  SuggestionsTaxonSearch: {
+    entryScreen: "ObsEdit";
+    lastScreen: "ObsEdit";
+  };
   MatchTaxonSearchScreen: undefined;
   FullPageWebView: undefined;
 };
@@ -114,10 +270,59 @@ export type BottomTabParamList = {
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type BaseNoBottomTabStackParamList = {
-  Camera: undefined;
-  PhotoLibrary: undefined;
-  GroupPhotos: undefined;
+  // PhotoLibrary param options:
+  // Being set on PhotoLibrary:
+  // {
+  //   fromGroupPhotos: false;
+  // }
+  // From GroupPhotos
+  // {
+  //   fromGroupPhotos: true;
+  // }
+  // From PhotoLibraryIcon
+  // {
+  //   cmonBack: true;
+  //   lastScreen: "Camera";
+  //   fromAICamera: true;
+  // }
+  // From AddEvidenceSheet
+  // {
+  //   skipGroupPhotos: true;
+  // }
+  // From AddObsButton
+  // {
+  //   previousScreen: ParamListRoute<RootStackParamList>;
+  // };
+  PhotoLibrary: {
+    fromGroupPhotos?: boolean;
+    cmonBack?: boolean;
+    lastScreen?: "Camera";
+    fromAICamera?: boolean;
+    skipGroupPhotos?: boolean;
+    // eslint-disable-next-line no-use-before-define
+    previousScreen?: ParamListRoute<RootStackParamList>;
+  };
+  // From AddObsButton
+  // {
+  //   previousScreen: ParamListRoute<RootStackParamList>;
+  // };
+  // From MyObservationsEmptySimple.js
+  // { camera: "AI" }
+  // From AddEvidenceSheet.js
+  // {
+  //   addEvidence: true,
+  //   camera: "Standard",
+  // }
+  Camera: {
+    addEvidence?: boolean;
+    camera?: "AI" | "Standard";
+    // eslint-disable-next-line no-use-before-define
+    previousScreen?: ParamListRoute<RootStackParamList>;
+  };
   SoundRecorder: undefined;
+  // From PhotoSharing
+  // { lastScreen: "PhotoSharing" }
+  GroupPhotos: { lastScreen: "PhotoSharing" };
 };
 
 export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &

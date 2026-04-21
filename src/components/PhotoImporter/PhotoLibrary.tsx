@@ -1,5 +1,4 @@
 import { mkdir, moveFile, TemporaryDirectoryPath } from "@dr.pogodin/react-native-fs";
-import type { Route, RouteProp } from "@react-navigation/native";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import {
   photoLibraryPhotosPath,
@@ -7,6 +6,7 @@ import {
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { t } from "i18next";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, {
   useCallback,
   useState,
@@ -24,7 +24,7 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { log } from "sharedHelpers/logger";
 import { sleep } from "sharedHelpers/util";
 import { useLayoutPrefs } from "sharedHooks";
-import useExitObservationsFlow from "sharedHooks/useExitObservationFlow";
+import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "PhotoLibrary" );
@@ -36,23 +36,13 @@ const MAX_PHOTOS_ALLOWED = Platform.select( {
 
 const FROM_AICAMERA_MAX_PHOTOS_ALLOWED = 1;
 
-interface PreviousScreenParams {
-  uuid?: string;
-}
-
-interface RouteParams {
-  skipGroupPhotos?: boolean;
-  fromGroupPhotos?: boolean;
-  fromAICamera?: boolean;
-  cmonBack?: boolean;
-  previousScreen?: Route<string, PreviousScreenParams> | null;
-}
-
 const PhotoLibrary = ( ) => {
   const {
     screenAfterPhotoEvidence, isDefaultMode,
   } = useLayoutPrefs( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"PhotoLibrary">["navigation"]>();
+  const { params } = useRoute<NoBottomTabStackScreenProps<"PhotoLibrary">["route"]>();
+
   const [photoLibraryShown, setPhotoLibraryShown] = useState( false );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
   const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
@@ -64,9 +54,7 @@ const PhotoLibrary = ( ) => {
   const currentObservationIndex = useStore( state => state.currentObservationIndex );
   const observations = useStore( state => state.observations );
   const numOfObsPhotos: number = currentObservation?.observationPhotos?.length || 0;
-  const exitObservationsFlow = useExitObservationsFlow( );
-
-  const { params } = useRoute<RouteProp<Record<string, RouteParams>, string>>( );
+  const exitObservationFlow = useExitObservationFlow( );
 
   const skipGroupPhotos = params
     ? params.skipGroupPhotos
@@ -84,6 +72,7 @@ const PhotoLibrary = ( ) => {
 
   const navBasedOnUserSettings = useCallback( async ( ) => {
     if ( isDefaultMode ) {
+      // TODO: why do we need to define higher navigator here
       return navigation.navigate( "NoBottomTabStackNavigator", {
         screen: "Match",
         params: {
@@ -174,7 +163,7 @@ const PhotoLibrary = ( ) => {
     } catch ( launchError ) {
       logger.error( "launchImageLibrary threw unexpectedly", launchError );
       setPhotoLibraryShown( false );
-      exitObservationsFlow();
+      exitObservationFlow( );
       return;
     }
 
@@ -204,7 +193,7 @@ const PhotoLibrary = ( ) => {
       } else if ( params?.cmonBack && navigation.canGoBack() ) {
         navigation.goBack();
       } else {
-        exitObservationsFlow();
+        exitObservationFlow( );
       }
       setPhotoLibraryShown( false );
       return;
@@ -287,13 +276,13 @@ const PhotoLibrary = ( ) => {
     } catch ( error ) {
       logger.error( "Error importing photos from library", error );
       setPhotoLibraryShown( false );
-      exitObservationsFlow();
+      exitObservationFlow( );
     }
   }, [
     currentObservation,
     currentObservationIndex,
     evidenceToAdd,
-    exitObservationsFlow,
+    exitObservationFlow,
     fromGroupPhotos,
     photoLibraryUris,
     groupedPhotos,
