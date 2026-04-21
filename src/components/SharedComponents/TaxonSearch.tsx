@@ -6,7 +6,7 @@ import {
   ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useCallback } from "react";
+import React, { useMemo } from "react";
 import { FlatList } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
 import { useKeyboardInfo, useTranslation } from "sharedHooks";
@@ -40,7 +40,7 @@ const TaxonSearch = ( {
   const { t } = useTranslation( );
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
 
-  const renderEmptyList = useCallback( ( ) => (
+  const emptyListComponent = useMemo( ( ) => (
     query.length > 0
       ? (
         <EmptySearchResults
@@ -54,7 +54,7 @@ const TaxonSearch = ( {
 
   // Make sure all of the results can be scrolled to even with the keyboard
   // up
-  const renderFooter = useCallback( ( ) => (
+  const footerComponent = useMemo( ( ) => (
     keyboardShown
       ? <View className={`h-[${keyboardHeight}px]`} />
       : null
@@ -88,8 +88,8 @@ const TaxonSearch = ( {
         data={taxa}
         renderItem={renderItem}
         keyExtractor={taxon => String( taxon.id )}
-        ListEmptyComponent={renderEmptyList}
-        ListFooterComponent={renderFooter}
+        ListEmptyComponent={emptyListComponent}
+        ListFooterComponent={footerComponent}
       />
     </ViewWrapper>
   );
