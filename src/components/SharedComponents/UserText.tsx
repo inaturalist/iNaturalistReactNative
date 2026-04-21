@@ -148,6 +148,46 @@ const UserText = ( {
       color: colors.inatGreen,
       textDecorationColor: colors.inatGreen,
     },
+    h1: {
+      fontSize: 25,
+      letterSpacing: -0.25,
+      lineHeight: 30,
+      marginBottom: 8,
+      marginTop: 8,
+    },
+    h2: {
+      fontSize: 21,
+      lineHeight: 25.2,
+      marginBottom: 8,
+      marginTop: 8,
+    },
+    h3: {
+      fontSize: 18,
+      lineHeight: 21.6,
+      marginBottom: 8,
+      marginTop: 8,
+    },
+    h4: {
+      fontSize: 15,
+      letterSpacing: 2,
+      lineHeight: 18,
+      marginBottom: 8,
+      marginTop: 8,
+    },
+    h5: {
+      fontSize: 11,
+      letterSpacing: 2,
+      lineHeight: 13.2,
+      marginBottom: 6,
+      marginTop: 6,
+    },
+    h6: {
+      fontSize: 8,
+      letterSpacing: 0.65,
+      lineHeight: 9.6,
+      marginBottom: 6,
+      marginTop: 6,
+    },
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
 
