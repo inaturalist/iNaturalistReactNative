@@ -16,6 +16,7 @@ interface Props {
   camera: object;
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;
+  confirmPhotosInProgress: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   toggleFlash: Function;
   takingPhoto: boolean;
@@ -36,6 +37,7 @@ const CameraWithDevice = ( {
   camera,
   flipCamera,
   handleCheckmarkPress,
+  confirmPhotosInProgress,
   toggleFlash,
   takingPhoto,
   takePhotoAndStoreUri,
@@ -63,6 +65,7 @@ const CameraWithDevice = ( {
             device={device}
             flipCamera={flipCamera}
             handleCheckmarkPress={handleCheckmarkPress}
+            confirmPhotosInProgress={confirmPhotosInProgress}
             isLandscapeMode={isLandscapeMode}
             toggleFlash={toggleFlash}
             takingPhoto={takingPhoto}

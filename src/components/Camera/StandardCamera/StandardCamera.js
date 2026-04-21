@@ -48,6 +48,7 @@ type Props = {
   device: Object,
   flipCamera: Function,
   handleCheckmarkPress: Function,
+  confirmPhotosInProgress: boolean,
   isLandscapeMode: boolean,
   toggleFlash: Function,
   takingPhoto: boolean,
@@ -62,6 +63,7 @@ const StandardCamera = ( {
   device,
   flipCamera,
   handleCheckmarkPress,
+  confirmPhotosInProgress,
   isLandscapeMode,
   toggleFlash,
   takingPhoto,
@@ -244,6 +246,7 @@ const StandardCamera = ( {
       </View>
       <CameraNavButtons
         disabled={disallowAddingPhotos || takingPhoto}
+        confirmDisabled={takingPhoto || confirmPhotosInProgress}
         handleCheckmarkPress={handleCheckmarkPress}
         handleClose={handleBackButtonPress}
         photosTaken={photosTaken}
