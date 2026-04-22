@@ -5,25 +5,44 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
+import AdvancedModeBanner from "./AdvancedModeBanner";
 import Announcements from "./Announcements";
 
 interface Props {
   isConnected: boolean;
   obsMissingBasicsExist: boolean;
+  numTotalObservations: number;
 }
+
+// Minimum uploaded observations count to show the Advanced Mode onboarding banner
+const ADVANCED_MODE_ONBOARDING_MIN_OBSERVATIONS = 100;
 
 const SimpleHeader = ( {
   isConnected,
   obsMissingBasicsExist,
+  numTotalObservations,
 }: Props ) => {
-  const { t } = useTranslation( );
+  const { t } = useTranslation();
+  const {
+    advancedModeBannerDismissed,
+    isDefaultMode,
+  } = useLayoutPrefs();
+  const currentUser = useCurrentUser();
+
+  const shouldShowAdvancedModeBanner = !!currentUser
+      && isDefaultMode
+      && numTotalObservations >= ADVANCED_MODE_ONBOARDING_MIN_OBSERVATIONS
+      && !advancedModeBannerDismissed;
 
   return (
     <>
       <Announcements isConnected={isConnected} />
+      {shouldShowAdvancedModeBanner && (
+        <AdvancedModeBanner />
+      )}
       { obsMissingBasicsExist && (
         <View className="flex-row items-center px-[32px] py-[20px]">
           <CircleDots

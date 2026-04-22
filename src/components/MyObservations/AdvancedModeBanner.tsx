@@ -22,10 +22,13 @@ const AdvancedModeBanner = ( ) => {
         onPress={() => setAdvancedModeBannerDismissed( )}
         testID="advanced-mode-banner-dismiss"
       />
-      <Body3>{t( "If-youre-an-experienced-user-try-switching-to-Advanced-Mode" )}</Body3>
+      <Body3>
+        {t( "If-youre-an-experienced-user-try-switching-to-Advanced-Mode" )}
+      </Body3>
       <UnderlinedLink
         className="mt-[12px] color-inatGreen"
         accessibilityRole="button"
+        // TODO: a11y label
         onPress={() => setIsDefaultMode( false )}
       >
         {t( "Tap-here-to-switch-to-Advanced-Mode" )}
