@@ -105,7 +105,7 @@ describe( "Projects", ( ) => {
     useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
       [{
         ...mockProjectWithDateRange,
-        project_type: "traditional",
+        project_type: "", // "" means "traditional"
       }],
     ) );
     renderComponent( <ProjectsContainer /> );
