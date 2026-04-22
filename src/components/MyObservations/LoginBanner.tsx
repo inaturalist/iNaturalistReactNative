@@ -31,20 +31,14 @@ const LoginBanner = ( {
   const loginBannerDismissed = useStore( state => state.layout.loginBannerDismissed );
   const setLoginBannerDismissed = useStore( state => state.layout.setLoginBannerDismissed );
 
-  const dismissLoginBanner = () => {
-    setLoginBannerDismissed();
-  };
-
   if ( !currentUser && !loginBannerDismissed ) {
     return (
       <View className="z-20">
-        <View
-          className="absolute self-center top-0"
-        >
+        <View className="absolute self-center top-0">
           <View className="pt-[20px] px-[20px]" pointerEvents="box-none">
             <BannerDismissButton
               accessibilityLabel={t( "Close" )}
-              onPress={( ) => dismissLoginBanner( )}
+              onPress={( ) => setLoginBannerDismissed( )}
               testID="login-banner-dismiss"
             />
             <View pointerEvents="box-none">
@@ -60,7 +54,7 @@ const LoginBanner = ( {
                 space-x-[12px]
                 bg-white
                 rounded-xl"
-                onPress={() => navigation.navigate( "LoginStackNavigator" )}
+                onPress={( ) => navigation.navigate( "LoginStackNavigator" )}
                 disabled={false}
               >
                 <INatIcon
