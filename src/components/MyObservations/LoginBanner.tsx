@@ -11,6 +11,8 @@ import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import BannerDismissButton from "./BannerDismissButton";
+
 const DROP_SHADOW = getShadow( {
   offsetHeight: 2,
   shadowOpacity: 1,
@@ -40,27 +42,11 @@ const LoginBanner = ( {
           className="absolute self-center top-0"
         >
           <View className="pt-[20px] px-[20px]" pointerEvents="box-none">
-            <Pressable
-              className="absolute top-0 right-0 justify-center items-center h-[44px] w-[44px] z-20"
-              accessibilityRole="button"
-              onPress={() => dismissLoginBanner()}
+            <BannerDismissButton
               accessibilityLabel={t( "Close" )}
-            >
-              <View className="
-                justify-center
-                items-center
-                bg-lightGray
-                h-[25px]
-                w-[25px]
-                rounded-xl"
-              >
-                <INatIcon
-                  name="close"
-                  color={colors.mediumGray}
-                  size={11}
-                />
-              </View>
-            </Pressable>
+              onPress={( ) => dismissLoginBanner( )}
+              testID="login-banner-dismiss"
+            />
             <View pointerEvents="box-none">
               <Pressable
                 style={DROP_SHADOW}
@@ -73,8 +59,7 @@ const LoginBanner = ( {
                 p-[20px]
                 space-x-[12px]
                 bg-white
-                rounded-xl
-                z-10"
+                rounded-xl"
                 onPress={() => navigation.navigate( "LoginStackNavigator" )}
                 disabled={false}
               >
