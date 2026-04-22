@@ -44,7 +44,9 @@ test( "authenticates user", async ( ) => {
 
   // Authenticate the user
   await expect( isLoggedIn() ).resolves.toEqual( false );
-  await expect( authenticateUser( USERNAME, PASSWORD, global.realm ) ).resolves.toEqual( true );
+  await expect( authenticateUser( USERNAME, PASSWORD, global.realm ) ).resolves.toEqual( {
+    success: true,
+  } );
 
   // Make sure user is logged in
   await expect( isCurrentUser( USERNAME ) ).resolves.toEqual( true );
@@ -72,7 +74,9 @@ test( "registers user", async ( ) => {
   await expect( registerUser( "some@mail.com", USERNAME, PASSWORD ) ).resolves.toBeNull( );
 
   // Log back in
-  await expect( authenticateUser( USERNAME, PASSWORD, global.realm ) ).resolves.toEqual( true );
+  await expect( authenticateUser( USERNAME, PASSWORD, global.realm ) ).resolves.toEqual( {
+    success: true,
+  } );
 
   // Make sure user is logged in
   await expect( isCurrentUser( USERNAME ) ).resolves.toEqual( true );
