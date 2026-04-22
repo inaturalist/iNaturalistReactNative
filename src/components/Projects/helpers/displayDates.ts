@@ -60,7 +60,7 @@ const formatProjectDate = (
     ? formatProjectsApiDatetimeLong( observedOnDate, i18n, { missing: null } )
     : null;
 
-  if ( projectStartDate && !projectEndDate ) {
+  if ( formattedStartDate && !formattedEndDate ) {
     projectDate = formattedStartDate
       ? t( "project-start-time-datetime", {
         datetime: formattedStartDate,
