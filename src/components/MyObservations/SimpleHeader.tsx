@@ -31,6 +31,11 @@ const SimpleHeader = ( {
     state => state.layout.advancedModeBannerDismissed,
   );
   const isDefaultMode = useStore( state => state.layout.isDefaultMode );
+  const setAdvancedModeBannerDismissed = useStore(
+    state => state.layout.setAdvancedModeBannerDismissed,
+  );
+  const setIsDefaultMode = useStore( state => state.layout.setIsDefaultMode );
+
   const currentUser = useCurrentUser();
 
   const shouldShowAdvancedModeBanner = !!currentUser
@@ -43,7 +48,10 @@ const SimpleHeader = ( {
     <>
       <Announcements isConnected={isConnected} />
       {shouldShowAdvancedModeBanner && (
-        <AdvancedModeBanner />
+        <AdvancedModeBanner
+          onDismiss={( ) => setAdvancedModeBannerDismissed( )}
+          onSwitchToAdvancedMode={( ) => setIsDefaultMode( false )}
+        />
       )}
       { obsMissingBasicsExist && (
         <View className="flex-row items-center px-[32px] py-[20px]">

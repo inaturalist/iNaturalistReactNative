@@ -5,22 +5,25 @@ import {
 import { View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
-import useStore from "stores/useStore";
 
 import BannerDismissButton from "./BannerDismissButton";
 
-const AdvancedModeBanner = ( ) => {
+interface Props {
+  onDismiss: ( ) => void;
+  onSwitchToAdvancedMode: ( ) => void;
+}
+
+const AdvancedModeBanner = ( {
+  onDismiss,
+  onSwitchToAdvancedMode,
+}: Props ) => {
   const { t } = useTranslation( );
-  const setAdvancedModeBannerDismissed = useStore(
-    state => state.layout.setAdvancedModeBannerDismissed,
-  );
-  const setIsDefaultMode = useStore( state => state.layout.setIsDefaultMode );
 
   return (
     <View className="relative px-[27px] py-[20px]">
       <BannerDismissButton
         accessibilityLabel={t( "Close" )}
-        onPress={( ) => setAdvancedModeBannerDismissed( )}
+        onPress={( ) => onDismiss( )}
         testID="advanced-mode-banner-dismiss"
       />
       <Body3>
@@ -30,7 +33,7 @@ const AdvancedModeBanner = ( ) => {
         className="mt-[12px] color-inatGreen"
         accessibilityRole="button"
         // TODO: a11y label
-        onPress={() => setIsDefaultMode( false )}
+        onPress={() => onSwitchToAdvancedMode( )}
       >
         {t( "Tap-here-to-switch-to-Advanced-Mode" )}
       </UnderlinedLink>
