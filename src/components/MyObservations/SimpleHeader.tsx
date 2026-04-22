@@ -5,7 +5,8 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import AdvancedModeBanner from "./AdvancedModeBanner";
@@ -26,10 +27,10 @@ const SimpleHeader = ( {
   numTotalObservations,
 }: Props ) => {
   const { t } = useTranslation();
-  const {
-    advancedModeBannerDismissed,
-    isDefaultMode,
-  } = useLayoutPrefs();
+  const advancedModeBannerDismissed = useStore(
+    state => state.layout.advancedModeBannerDismissed,
+  );
+  const isDefaultMode = useStore( state => state.layout.isDefaultMode );
   const currentUser = useCurrentUser();
 
   const shouldShowAdvancedModeBanner = !!currentUser
