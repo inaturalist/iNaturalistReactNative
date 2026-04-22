@@ -5,6 +5,7 @@
 ##
 name: Sample Echo + Notify
 on:
+  push:
   workflow_dispatch:
     inputs:
       force-fail:
