@@ -8,9 +8,11 @@ import {
   registerUser,
   signOut,
 } from "components/LoginSignUp/AuthenticationService";
+import inatjs from "inaturalistjs";
 import { navigationRef } from "navigation/navigationUtils";
 import nock from "nock";
 import RNSInfo from "react-native-sensitive-info";
+import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 
 jest.mock( "navigation/navigationUtils", ( ) => ( {
@@ -27,7 +29,21 @@ const ACCESS_TOKEN_AUTHORIZATION_HEADER = `Bearer ${ACCESS_TOKEN}`;
 const JWT = "jwt_token";
 const USERID = 113113;
 
+const mockUserWithUploadedObs = factory( "RemoteUser", {
+  id: USERID,
+  login: USERNAME,
+  observations_count: 5,
+} );
+
+const mockUserWithoutUploadedObs = factory( "RemoteUser", {
+  id: USERID,
+  login: USERNAME,
+  observations_count: 0,
+} );
+
 test( "authenticates user", async ( ) => {
+  inatjs.users.me.mockResolvedValue( makeResponse( [mockUserWithUploadedObs] ) );
+
   const scope = nock( API_HOST )
     .post( "/oauth/token" )
     .reply( 200, { access_token: ACCESS_TOKEN } )
@@ -46,6 +62,7 @@ test( "authenticates user", async ( ) => {
   await expect( isLoggedIn() ).resolves.toEqual( false );
   await expect( authenticateUser( USERNAME, PASSWORD, global.realm ) ).resolves.toEqual( {
     success: true,
+    observationsCount: 5,
   } );
 
   // Make sure user is logged in
@@ -61,6 +78,8 @@ test( "authenticates user", async ( ) => {
 } );
 
 test( "registers user", async ( ) => {
+  inatjs.users.me.mockResolvedValue( makeResponse( [mockUserWithoutUploadedObs] ) );
+
   const scope = nock( API_HOST )
     .post( "/oauth/token" )
     .reply( 200, { access_token: ACCESS_TOKEN } )
@@ -76,6 +95,7 @@ test( "registers user", async ( ) => {
   // Log back in
   await expect( authenticateUser( USERNAME, PASSWORD, global.realm ) ).resolves.toEqual( {
     success: true,
+    observationsCount: 0,
   } );
 
   // Make sure user is logged in
