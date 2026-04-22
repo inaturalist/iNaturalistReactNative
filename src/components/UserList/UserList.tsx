@@ -14,8 +14,8 @@ const CONTAINER_STYLE = {
 };
 
 interface Props {
-  ListEmptyComponent?: React.JSX.Element;
-  ListFooterComponent?: React.JSX.Element;
+  ListEmptyComponent?: React.ReactElement;
+  ListFooterComponent?: React.ReactElement;
   onEndReached?: ( ) => void;
   refreshing?: boolean;
   users: object[];
