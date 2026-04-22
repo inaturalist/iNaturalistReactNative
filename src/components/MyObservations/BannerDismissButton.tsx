@@ -17,7 +17,8 @@ const BannerDismissButton = ( {
   <Pressable
     accessibilityRole="button"
     accessibilityLabel={accessibilityLabel}
-    className="absolute top-0 right-0 h-[44px] w-[44px] items-center justify-center z-10"
+    className="absolute top-0 right-0 h-[44px] w-[44px] items-center
+    justify-center z-10 active:opacity-75"
     onPress={onPress}
     testID={testID}
   >
