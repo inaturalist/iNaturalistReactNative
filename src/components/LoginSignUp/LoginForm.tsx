@@ -127,6 +127,7 @@ const LoginForm = ( {
       // we assume they are an advanced user and switch them to advanced mode.
       setIsDefaultMode( false );
     } else {
+      // Set a state to zustand that we just logged in while in default mode
       setLoggedInWhileInDefaultMode( isDefaultMode );
     }
     if ( params?.prevScreen && params?.projectId ) {
