@@ -80,8 +80,7 @@ jobs:
         gradle-version: '8.14.1'
 
     - name: Install JS dependencies
-      run: |
-        npm install
+      run: npm ci
 
     - name: Download the small example cv and geomodel
       run: |
