@@ -11,6 +11,8 @@ import {
 
 import ProjectListItem from "./ProjectListItem";
 
+const ItemSeparator = () => <View className="border-b border-lightGray" />;
+
 interface Props {
   projects: ApiProject[];
   ListEmptyComponent?: React.ReactElement;
@@ -50,13 +52,9 @@ const ProjectList = ( {
     </Pressable>
   );
 
-  const renderItemSeparator = () => (
-    <View className="border-b border-lightGray" />
-  );
-
   return (
     <CustomFlashList
-      ItemSeparatorComponent={renderItemSeparator}
+      ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={ListFooterComponent}
       data={projects}
