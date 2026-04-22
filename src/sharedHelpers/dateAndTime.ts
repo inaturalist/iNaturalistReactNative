@@ -81,6 +81,9 @@ import {
 } from "date-fns/locale";
 import { formatInTimeZone } from "date-fns-tz";
 import type { i18n as i18next } from "i18next";
+import { log } from "sharedHelpers/logger";
+
+const logger = log.extend( "dateAndTime" );
 
 // Convert iNat locale to date-fns locale. Note that coverage is *not*
 // complete, so some locales will see dates formatted in a nearby locale,
@@ -335,6 +338,13 @@ function formatDateString(
 
   const parsedDate = parseISO( isoDateString );
   if ( !isValidDate( parsedDate ) ) {
+    logger.warnWithExtra(
+      "invalid date string in formatDateString",
+      {
+        reason: "invalid_parse_iso",
+        isoDateString,
+      },
+    );
     return options.missing === undefined
       ? i18n.t( "Missing-Date" )
       : options.missing;
