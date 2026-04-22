@@ -542,7 +542,9 @@ async function verifyCredentials(
   return afterVerifyCredentials( tokenResponse, apiClient );
 }
 
-export interface AuthenticateUserResult { success: boolean }
+export type AuthenticateUserResult =
+| { success: true; observationsCount?: number }
+| { success: false };
 
 async function afterAuthenticateUser(
   userDetails: UserDetails | null,
@@ -593,6 +595,7 @@ async function afterAuthenticateUser(
   clearAuthCache( );
   return {
     success: true,
+    observationsCount: remoteUser?.observations_count,
   };
 }
 

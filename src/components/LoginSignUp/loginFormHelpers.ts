@@ -75,14 +75,12 @@ async function signInWithApple( realm: Realm ): Promise<AuthenticateUserResult> 
       } ),
     } );
     try {
-      // return await authenticateUserByAssertion( "apple", assertion, realm );
-      await authenticateUserByAssertion( "apple", assertion, realm );
+      return await authenticateUserByAssertion( "apple", assertion, realm );
     } catch ( authenticateUserByAssertionError ) {
       logger.error( "Assertion with Apple token failed", authenticateUserByAssertionError );
       showSignInWithAppleFailed();
       return { success: false };
     }
-    return { success: true };
   }
   // We only get here if the user does not grant access... I think, so no need
   // to log an error
@@ -146,13 +144,12 @@ async function signInWithGoogle( realm: Realm ): Promise<AuthenticateUserResult>
   }
   if ( !tokens?.accessToken ) return { success: false };
   try {
-    await authenticateUserByAssertion( "google", tokens.accessToken, realm );
+    return await authenticateUserByAssertion( "google", tokens.accessToken, realm );
   } catch ( authenticateUserByAssertionError ) {
     logger.error( "Assertion with Google token failed", authenticateUserByAssertionError );
     showSignInWithGoogleFailed();
     return { success: false };
   }
-  return { success: true };
 }
 
 export {
