@@ -33,7 +33,7 @@ const AdvancedModeBanner = ( {
         className="mt-[12px] color-inatGreen"
         accessibilityRole="button"
         // TODO: a11y label
-        onPress={() => onSwitchToAdvancedMode( )}
+        onPress={( ) => onSwitchToAdvancedMode( )}
       >
         {t( "Tap-here-to-switch-to-Advanced-Mode" )}
       </UnderlinedLink>
