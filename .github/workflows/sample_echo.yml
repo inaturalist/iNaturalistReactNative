@@ -16,6 +16,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+
 jobs:
   echo:
     name: Echo
@@ -40,8 +43,6 @@ jobs:
         if: env.SLACK_WEBHOOK_URL != ''
         # Pinned to the v3.0.1 commit SHA. Bump the SHA + comment together.
         uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
         with:
           webhook: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
           # Posts directly to the channel the incoming webhook is bound to.
