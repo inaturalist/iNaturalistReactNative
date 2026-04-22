@@ -1,7 +1,7 @@
 import { log } from "sharedHelpers/logger";
 import {
   useIconicTaxa,
-  useObservationUpdatesWhenFocused, usePerformance
+  useObservationUpdatesWhenFocused, usePerformance,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
@@ -13,7 +13,7 @@ const logger = log.extend( "NetworkService" );
 const NetworkService = ( ) => {
   const { loadTime } = usePerformance( {
     screenName: "NetworkService",
-    isLoading: false
+    isLoading: false,
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );

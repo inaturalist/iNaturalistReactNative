@@ -9,7 +9,7 @@ import {
   Body3,
   DisplayTaxon,
   INatIcon,
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { useExplore } from "providers/ExploreContext";
@@ -49,7 +49,7 @@ const Header = ( {
   renderLocationPermissionsGate,
   requestLocationPermissions,
   updateLocation,
-  updateTaxon
+  updateTaxon,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { state, numberOfFilters } = useExplore( );
@@ -64,7 +64,7 @@ const Header = ( {
     backgroundColor: colors.darkGray,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    marginBottom: -40
+    marginBottom: -40,
   };
 
   return (
@@ -122,7 +122,7 @@ const Header = ( {
                 numberOfFilters !== 0
                   ? "bg-inatGreen"
                   : "bg-darkGray",
-                "rounded-md"
+                "rounded-md",
               )}
               onPress={() => openFiltersModal()}
               accessibilityLabel={t( "Filters" )}

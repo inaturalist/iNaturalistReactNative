@@ -17,16 +17,19 @@ import factory, { makeResponse } from "./factory";
 
 // tests seem to be slower without this global reanimated mock
 global.ReanimatedDataMock = {
-  now: () => 0
+  now: () => 0,
 };
+
+global.requestIdleCallback = callback => setTimeout( callback, 0 );
+global.cancelIdleCallback = id => clearTimeout( id );
 
 jest.mock( "react-native-volume-manager", () => ( {
   VolumeManager: {
     getVolume: jest.fn( () => Promise.resolve( 0.5 ) ),
     setVolume: jest.fn( ),
     addVolumeListener: jest.fn( () => ( { remove: jest.fn() } ) ),
-    showNativeVolumeUI: jest.fn()
-  }
+    showNativeVolumeUI: jest.fn(),
+  },
 } ) );
 
 // Mock the react-native-logs config because it has a dependency on AuthenticationService
@@ -37,23 +40,34 @@ jest.mock( "../react-native-logs.config", () => {
       debug: msg => console.debug( msg ),
       info: msg => console.info( msg ),
       warn: msg => console.warn( msg ),
-      error: msg => console.error( msg )
-    } ) )
+      error: msg => console.error( msg ),
+      debugWithExtra: ( ...args ) => console.debug( ...args ),
+      infoWithExtra: ( ...args ) => console.info( ...args ),
+      warnWithExtra: ( ...args ) => console.warn( ...args ),
+      errorWithExtra: ( ...args ) => console.error( ...args ),
+    } ) ),
   };
   return {
     log,
-    logFilePath: "inaturalist-rn-log.txt",
-    logWithoutRemote: log
+    legacyLogfilePath: "inaturalist-rn-log.txt",
+    logFileNamePrefix: "inaturalist-rn-log",
+    logFileDirectory: "logs",
+    logWithoutRemote: log,
   };
 } );
 
 jest.mock( "@gorhom/bottom-sheet", () => ( {
   ...mockBottomSheet,
-  __esModule: true
+  __esModule: true,
 } ) );
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
+
+// Reanimated 4.2 + Worklets 0.7: Jest loads native worklets which fails in Node. See:
+// https://github.com/software-mansion/react-native-reanimated/discussions/8806
+// we can remove this once the fix is released
+jest.mock( "react-native-worklets", () => require( "react-native-worklets/src/mock" ) );
 
 require( "react-native-reanimated" ).setUpTests();
 
@@ -75,7 +89,7 @@ fetchMock.dontMock( );
 
 const mockIconicTaxon = factory( "RemoteTaxon", {
   is_iconic: true,
-  name: "Mock iconic taxon"
+  name: "Mock iconic taxon",
 } );
 inatjs.taxa.search.mockResolvedValue( makeResponse( [mockIconicTaxon] ) );
 
@@ -96,22 +110,26 @@ jest.mock( "react-native/Libraries/TurboModule/TurboModuleRegistry", () => {
         return null;
       }
       return turboModuleRegistry.getEnforcing( name );
-    }
+    },
   };
 } );
 
 jest.mock( "react-native-restart", ( ) => ( {
-  restart: jest.fn( )
+  restart: jest.fn( ),
 } ) );
 
 jest.mock( "@react-native-firebase/analytics", () => ( {
   getAnalytics: jest.fn( ),
-  logEvent: jest.fn( )
+  logEvent: jest.fn( ),
+  setAnalyticsCollectionEnabled: jest.fn( ),
 } ) );
 
 jest.mock( "@react-native-firebase/perf", () => ( {
   startFirebaseTrace: jest.fn( ),
-  stopFirebaseTrace: jest.fn( )
+  stopFirebaseTrace: jest.fn( ),
+  getPerformance: jest.fn( ( ) => ( {
+    dataCollectionEnabled: true,
+  } ) ),
 } ) );
 
 // see https://stackoverflow.com/questions/42268673/jest-test-animated-view-for-react-native-app
@@ -149,12 +167,12 @@ jest.mock( "sharedHelpers/installData", ( ) => ( {
   // most users only ever see once. If we do want to test it, we can redefine
   // this mock
   useOnboardingShown: jest.fn( ( ) => [true, jest.fn()] ),
-  getInstallID: jest.fn( ( ) => "fake-installation-id" )
+  getInstallID: jest.fn( ( ) => "fake-installation-id" ),
 } ) );
 
 jest.mock( "components/SharedComponents/Buttons/Button", () => {
   const actualButton = jest.requireActual(
-    "components/SharedComponents/Buttons/Button"
+    "components/SharedComponents/Buttons/Button",
   ).default;
   // Use a very short debounce time (10ms) in tests to simulate the 300ms
   // debounce time in the actual Button component
@@ -175,34 +193,21 @@ jest.mock( "components/Camera/FadeInOutView", () => {
   return jest.fn( ( ) => React.createElement( View, null ) );
 } );
 
-// Mock @react-navigation/bottom-tabs to disable animations in Jest tests
-// This prevents the act() warnings caused by fade animations triggering state updates
-jest.mock( "@react-navigation/bottom-tabs", () => {
-  const React = require( "react" );
-  const actual = jest.requireActual( "@react-navigation/bottom-tabs" );
-  const createBottomTabNavigator = () => {
-    const Tab = actual.createBottomTabNavigator();
-    const OriginalNavigator = Tab.Navigator;
-    Tab.Navigator = function Navigator( props ) {
-      const { screenOptions, ...restProps } = props;
-      // Override animation to "none" for both function and object screenOptions
-      const modifiedScreenOptions = typeof screenOptions === "function"
-        ? route => ( { ...screenOptions( route ), animation: "none" } )
-        : { ...screenOptions, animation: "none" };
-      return React.createElement(
-        OriginalNavigator,
-        { ...restProps, screenOptions: modifiedScreenOptions }
-      );
-    };
-    return Tab;
-  };
-  return { ...actual, createBottomTabNavigator };
-} );
+// Disable bottom tab fade animation in tests to prevent act() warnings
+jest.mock( "navigation/BottomTabNavigator/tabScreenOptions", () => ( {
+  __esModule: true,
+  default: {
+    lazy: true,
+    freezeOnBlur: true,
+    headerShown: false,
+    animation: "none",
+  },
+} ) );
 
 // this silences console methods in jest tests, to make them less noisy
 // and easier to debug. uncomment if you want to silence them
 global.console = {
-  ...console
+  ...console,
   // info: jest.fn(),
   // error: jest.fn(),
   // warn: jest.fn()

@@ -1,7 +1,7 @@
 import {
   BottomSheet,
   Button,
-  RadioButtonRow
+  RadioButtonRow,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
@@ -38,10 +38,12 @@ const RadioButtonSheet = ( {
   radioValues,
   selectedValue = "none",
   testID,
-  topDescriptionText
+  topDescriptionText,
 }: Props ) => {
   const { t } = useTranslation( );
   const [checkedValue, setCheckedValue] = useState( selectedValue );
+
+  const isDirty = checkedValue !== selectedValue;
 
   const radioButtonRow = ( radioRow: string ) => (
     <View key={radioRow} className="pb-4">
@@ -66,6 +68,7 @@ const RadioButtonSheet = ( {
       insideModal={insideModal}
       onPressClose={onPressClose}
       testID={testID}
+      scrollEnabled={false}
     >
       <View className="p-4 pt-2">
         {topDescriptionText}
@@ -78,6 +81,7 @@ const RadioButtonSheet = ( {
           onPress={( ) => {
             confirm( checkedValue );
           }}
+          disabled={!isDirty}
           text={radioValues[checkedValue]?.buttonText ?? confirmLabel}
           accessibilityLabel={radioValues[checkedValue]?.buttonText ?? confirmLabel}
         />

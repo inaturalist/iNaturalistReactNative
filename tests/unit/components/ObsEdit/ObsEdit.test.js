@@ -13,49 +13,49 @@ const mockHeaderBackButton = <View testID="ObsEdit.BackButton">Mocked Back</View
 jest.mock( "@react-navigation/elements", () => ( {
   ...jest.requireActual( "@react-navigation/elements" ),
   HeaderBackButton: jest.fn()
-    .mockImplementation( ( ) => mockHeaderBackButton )
+    .mockImplementation( ( ) => mockHeaderBackButton ),
 } ) );
 
 jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
   default: ( ) => ( {
     hasLocation: true,
-    isFetchingLocation: false
-  } )
+    isFetchingLocation: false,
+  } ),
 } ) );
 
 const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: () => mockUser
+  default: () => mockUser,
 } ) );
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
   default: () => ( {
-    mutate: mockMutate
-  } )
+    mutate: mockMutate,
+  } ),
 } ) );
 
 const observationPhotos = [
   factory( "RemoteObservationPhoto", {
-    position: 0
-  } )
+    position: 0,
+  } ),
 ];
 
 const mockObservation = factory( "LocalObservation", {
   observationPhotos,
   time_observed_at: null,
-  user: mockUser
+  user: mockUser,
 } );
 
 describe( "ObsEdit", () => {
   beforeEach( ( ) => {
     useStore.setState( {
       currentObservation: mockObservation,
-      observations: [mockObservation]
+      observations: [mockObservation],
     } );
   } );
 

@@ -1,5 +1,5 @@
 import {
-  render, screen
+  render, screen,
 } from "@testing-library/react-native";
 import PhotoCarousel from "components/Camera/StandardCamera/PhotoCarousel";
 import React from "react";
@@ -13,7 +13,7 @@ const initialStoreState = useStore.getState( );
 const mockPhotoUris = [
   "https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg",
   "https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg",
-  "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
+  "https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg",
 ];
 
 describe( "PhotoCarousel", ( ) => {

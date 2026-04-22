@@ -1,7 +1,7 @@
 import type { ApiObservation } from "api/types";
 import classnames from "classnames";
 import {
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import * as React from "react";
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const ObservationIcon = ( {
-  observation
+  observation,
 }: Props ) => {
   const photoUri = observation?.observation_photos?.[0]?.photo?.url;
   const hasSound = ( observation?.observation_sounds?.length || 0 ) > 0;
@@ -26,7 +26,7 @@ const ObservationIcon = ( {
           "rounded-lg",
           "border-[2px]",
           "justify-center",
-          "items-center"
+          "items-center",
         )}
       >
         <INatIcon
@@ -48,7 +48,7 @@ const ObservationIcon = ( {
           "rounded-lg",
           "border-[2px]",
           "justify-center",
-          "items-center"
+          "items-center",
         )}
       >
         <INatIcon

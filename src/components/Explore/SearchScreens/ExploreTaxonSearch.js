@@ -3,12 +3,12 @@
 import {
   TaxonResult,
   TaxonSearch,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useState
+  useState,
 } from "react";
 import { useTranslation } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
@@ -17,16 +17,14 @@ import ExploreSearchHeader from "./ExploreSearchHeader";
 
 type Props = {
   closeModal: Function,
-  hideInfoButton?: boolean,
   onPressInfo?: Function,
   updateTaxon: Function
 };
 
 const ExploreTaxonSearch = ( {
   closeModal,
-  hideInfoButton,
   onPressInfo,
-  updateTaxon
+  updateTaxon,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [taxonQuery, setTaxonQuery] = useState( "" );
@@ -34,7 +32,7 @@ const ExploreTaxonSearch = ( {
   const {
     taxa,
     isLoading,
-    isLocal
+    isLocal,
   } = useTaxonSearch( taxonQuery );
 
   const onTaxonSelected = useCallback( async newTaxon => {
@@ -47,7 +45,7 @@ const ExploreTaxonSearch = ( {
       updateTaxon( null );
       closeModal();
     },
-    [updateTaxon, closeModal]
+    [updateTaxon, closeModal],
   );
 
   const renderItem = useCallback( ( { item: taxon, index } ) => (
@@ -55,16 +53,14 @@ const ExploreTaxonSearch = ( {
       first={index === 0}
       fetchRemote={false}
       handleTaxonOrEditPress={() => onTaxonSelected( taxon )}
-      hideInfoButton={hideInfoButton}
       onPressInfo={onPressInfo}
       showCheckmark={false}
       taxon={taxon}
       testID={`Search.taxa.${taxon.id}`}
     />
   ), [
-    hideInfoButton,
     onPressInfo,
-    onTaxonSelected
+    onTaxonSelected,
   ] );
 
   return (

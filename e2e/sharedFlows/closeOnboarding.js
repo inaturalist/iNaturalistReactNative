@@ -1,7 +1,7 @@
 import {
   by,
   element,
-  waitFor
+  waitFor,
 } from "detox";
 
 const VISIBILITY_TIMEOUT = 10_000;

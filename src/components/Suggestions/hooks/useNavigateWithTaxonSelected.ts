@@ -1,36 +1,39 @@
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect } from "react";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
+import { useCallback } from "react";
 import useStore from "stores/useStore";
 
 const useNavigateWithTaxonSelected = (
-  // Navigation happens when a taxon was selected
-  selectedTaxon: object | null | undefined,
-  // After navigation we need to unselect the taxon so we don't have
-  // mysterious background nonsense happening after this screen loses focus
-  unselectTaxon: () => void,
   options: {
     vision: boolean;
-  }
+  },
 ) => {
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+  // This hook is used in SuggestionsTaxonSearch and SuggestionsContainer.
+  // Both screens are in the SharedStackNavigator.
+  // So the navigation types here are possible from TabStack or NoBottomTabStack
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"Suggestions" | "SuggestionsTaxonSearch">["navigation"] &
+    TabStackScreenProps<"Suggestions" | "SuggestionsTaxonSearch">["navigation"]
+  >( );
+  const { params } = useRoute<
+    NoBottomTabStackScreenProps<"Suggestions" | "SuggestionsTaxonSearch">["route"] &
+    TabStackScreenProps<"Suggestions" | "SuggestionsTaxonSearch">["route"]
+  >( );
   const { entryScreen, lastScreen } = params || {};
   const currentObservation = useStore( state => state.currentObservation );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const vision = options?.vision;
 
-  useEffect( ( ) => {
-    if ( selectedTaxon === null ) { return; }
-
+  const navigateWithTaxonSelected = useCallback( ( selectedTaxon: object | undefined ) => {
     if ( selectedTaxon === undefined ) {
       updateObservationKeys( {
         owners_identification_from_vision: false,
-        taxon: selectedTaxon
+        taxon: selectedTaxon,
       } );
     } else {
       updateObservationKeys( {
         owners_identification_from_vision: vision,
-        taxon: selectedTaxon
+        taxon: selectedTaxon,
       } );
     }
 
@@ -44,9 +47,9 @@ const useNavigateWithTaxonSelected = (
         ...StackActions.popTo( "ObsDetails", {
           uuid: currentObservation?.uuid,
           identTaxonId: selectedTaxon?.id,
-          identTaxonFromVision: options?.vision,
-          identAt: Date.now()
-        } )
+          identTaxonFromVision: vision,
+          identAt: Date.now(),
+        } ),
       } );
     } else if ( entryScreen === "ObsEdit" ) {
       // Cant' go back b/c we might be on Suggestions OR TaxonSearch. Don't
@@ -55,20 +58,16 @@ const useNavigateWithTaxonSelected = (
     } else {
       navigation.navigate( "ObsEdit", { lastScreen: "Suggestions" } );
     }
-
-    // If we've navigated, there's no need to run this effect again
-    unselectTaxon( );
   }, [
     currentObservation?.uuid,
     entryScreen,
     lastScreen,
     navigation,
-    options?.vision,
-    selectedTaxon,
-    unselectTaxon,
     updateObservationKeys,
-    vision
+    vision,
   ] );
+
+  return navigateWithTaxonSelected;
 };
 
 export default useNavigateWithTaxonSelected;

@@ -1,4 +1,6 @@
-import RNFS from "react-native-fs";
+import {
+  exists, readDir, stat,
+} from "@dr.pogodin/react-native-fs";
 import { unlink } from "sharedHelpers/util";
 
 const TRASHABLE_VINTAGE_MS
@@ -11,23 +13,23 @@ const TRASHABLE_VINTAGE_MS
 const MAX_FOLDER_SIZE = 5 * 1024 * 1024 * 1024; // 5GB in bytes
 const TOO_NEW_THRESHOLD = 24 * 60 * 60 * 1000; // Files modified in the last 1 day (in milliseconds)
 
-type FileDetails = {
+interface FileDetails {
   name: string;
   path: string;
   size: number;
   modifiedTime: number;
-};
+}
 
 const removeSyncedFilesFromDirectory = async (
   directoryPath: string,
-  filesToKeep: string[] = []
+  filesToKeep: string[] = [],
 ) => {
-  const directoryExists = await RNFS.exists( directoryPath );
+  const directoryExists = await exists( directoryPath );
   if ( !directoryExists ) {
     return null;
   }
 
-  const files = await RNFS.readDir( directoryPath );
+  const files = await readDir( directoryPath );
   let totalSize = 0;
   const fileDetails: FileDetails[] = [];
   const deletionPromises = Promise.all(
@@ -50,13 +52,13 @@ const removeSyncedFilesFromDirectory = async (
       }
 
       if ( skipFile ) {
-        const fileStat = await RNFS.stat( file.path );
+        const fileStat = await stat( file.path );
         totalSize += fileStat.size;
         fileDetails.push( {
           name,
           path: file.path,
           size: fileStat.size,
-          modifiedTime: fileStat.mtime
+          modifiedTime: fileStat.mtime,
         } );
 
         return;
@@ -64,7 +66,7 @@ const removeSyncedFilesFromDirectory = async (
 
       console.log( `Deleting old file: ${path}` );
       await unlink( path );
-    } )
+    } ),
   );
 
   if ( totalSize <= MAX_FOLDER_SIZE ) {
@@ -81,7 +83,7 @@ const removeSyncedFilesFromDirectory = async (
   // Filter out files that are too new
   const now = Date.now();
   deletableFiles = deletableFiles.filter(
-    file => now - new Date( file.modifiedTime ).getTime() >= TOO_NEW_THRESHOLD
+    file => now - new Date( file.modifiedTime ).getTime() >= TOO_NEW_THRESHOLD,
   );
 
   // Sort files by size (descending) and modified time (ascending)
@@ -107,7 +109,7 @@ const removeSyncedFilesFromDirectory = async (
   }
 
   return Promise.all(
-    [deletionPromises, ...filesToDelete.map( async path => RNFS.unlink( path ) )]
+    [deletionPromises, ...filesToDelete.map( async path => unlink( path ) )],
   );
 };
 

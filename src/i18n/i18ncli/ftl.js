@@ -3,7 +3,7 @@
 import {
   parse as parseFtl,
   Resource,
-  serialize as serializeFtl
+  serialize as serializeFtl,
 } from "@fluent/syntax";
 import { format, parseISO } from "date-fns";
 import { enUS } from "date-fns/locale";
@@ -15,7 +15,7 @@ import {
   difference,
   flatten,
   sortBy,
-  uniq
+  uniq,
 } from "lodash";
 import path from "path";
 import util from "util";
@@ -35,7 +35,7 @@ const SUPPORTED_REGIONAL_LOCALES = [
   "pt-BR",
   "zh-CN",
   "zh-HK",
-  "zh-TW"
+  "zh-TW",
 ];
 
 // Prepends an FTL translation with a checkmark for testing
@@ -55,7 +55,7 @@ function checkifyLocalizations( localizations ) {
     "Date-short-format",
     "Date-this-year",
     "date-format-short",
-    "datetime-format-short"
+    "datetime-format-short",
   ];
   return Object.keys( localizations ).reduce( ( memo, key ) => {
     memo[key] = localizations[key];
@@ -95,7 +95,7 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
   // true when we know it succeeded
   fluent.ftl2js[util.promisify.custom] = (
     str,
-    params = {}
+    params = {},
   ) => new Promise( ( resolve, reject ) => {
     fluent.ftl2js(
       str,
@@ -106,7 +106,7 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
           resolve( res );
         }
       },
-      params
+      params,
     );
   } );
   const ftl2js = util.promisify( fluent.ftl2js );
@@ -142,7 +142,7 @@ const jsonifyLocalizations = async ( options = {} ) => {
   // localization
   fs.copyFileSync(
     path.join( I18N_BASE_PATH, "strings.ftl" ),
-    path.join( I18N_BASE_PATH, "l10n", "en.ftl" )
+    path.join( I18N_BASE_PATH, "l10n", "en.ftl" ),
   );
   // For each locale, convert the .ftl files to .ftl.json files
   await Promise.all( locales.map( async locale => {
@@ -182,7 +182,7 @@ async function validateFtlFile( ftlPath, options = {} ) {
   ftl.body.forEach( item => {
     if ( item.type === "GroupComment" ) {
       errors.push(
-        `Group comments are not allowed: ${chalk.gray( `## ${item.content.slice( 0, 100 )}` )}`
+        `Group comments are not allowed: ${chalk.gray( `## ${item.content.slice( 0, 100 )}` )}`,
       );
     }
     if ( item.type === "Junk" ) {
@@ -203,7 +203,7 @@ async function validateFtlFile( ftlPath, options = {} ) {
       item.value.elements.forEach( textElement => {
         try {
           format( parseISO( "1970-01-01T00:00:00Z" ), textElement.value, {
-            locale: enUS
+            locale: enUS,
           } );
         } catch ( error ) {
           errors.push( `${item.id.name} = ${textElement.value}: ${error.message}` );
@@ -233,7 +233,7 @@ async function validate() {
   // Validate translations
   const l10nPaths = await l10nFtlPaths( );
   const results = await Promise.allSettled( l10nPaths.map(
-    ftlPath => validateFtlFile( ftlPath, { quiet: true, noExit: true } )
+    ftlPath => validateFtlFile( ftlPath, { quiet: true, noExit: true } ),
   ) );
   if ( results.find( r => r.value === false ) ) {
     process.exit( 1 );
@@ -266,7 +266,7 @@ async function normalizeFtlFile( ftlPath, options = {} ) {
   // the top
   const newResource = new Resource( [
     ...resourceComments,
-    ...sortedMessages
+    ...sortedMessages,
   ] );
   let newFtlTxt = serializeFtl( newResource );
   if ( !isSource ) {
@@ -331,7 +331,7 @@ async function untranslatable( ) {
     console.log( "✅ No keys missing in strings.ftl" );
   } else {
     console.error(
-      `❌ ${untranslatableKeys.length} keys in use missing from strings.ftl: ${untranslatableKeys}`
+      `❌ ${untranslatableKeys.length} keys in use missing from strings.ftl: ${untranslatableKeys}`,
     );
     process.exit( 1 );
   }
@@ -363,5 +363,5 @@ export {
   supportedLocales,
   untranslatable,
   unused,
-  validate
+  validate,
 };

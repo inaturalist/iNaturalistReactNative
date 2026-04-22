@@ -2,14 +2,14 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
-import { flatten } from "lodash";
+import flatten from "lodash/flatten";
 import { useCallback, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery } from "sharedHooks";
 
 import {
   addPageParamsForExplore,
-  getNextPageParamForExplore
+  getNextPageParamForExplore,
 } from "../helpers/exploreParams";
 
 const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object ): Object => {
@@ -24,10 +24,10 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
       user: { // included here for "exclude by current user" in explore filters
         id: true,
         uuid: true,
-        login: true
-      }
+        login: true,
+      },
     },
-    ttl: -1
+    ttl: -1,
   } ), [newInputParams] );
 
   const excludedUser = newInputParams.excludeUser;
@@ -36,7 +36,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
 
   const getNextPageParam = useCallback(
     lastPage => getNextPageParamForExplore( lastPage, baseParams ),
-    [baseParams]
+    [baseParams],
   );
 
   const {
@@ -46,17 +46,17 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     fetchNextPage,
     refetch,
     isRefetching,
-    status
+    status,
   } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( params, optsWithAuth ) => searchObservations(
       addPageParamsForExplore( { ...baseParams, ...params } ),
-      optsWithAuth
+      optsWithAuth,
     ),
     {
       getNextPageParam,
-      enabled
-    }
+      enabled,
+    },
   );
 
   const handlePullToRefresh = async ( ) => {
@@ -86,7 +86,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     observations,
     status,
     totalBounds: data?.pages?.[0].total_bounds,
-    totalResults
+    totalResults,
   };
 };
 

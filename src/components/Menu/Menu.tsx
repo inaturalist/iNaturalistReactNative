@@ -2,33 +2,33 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  signOut
+  signOut,
 } from "components/LoginSignUp/AuthenticationService";
 import {
   Body1,
   INatIcon,
   List2, TextInputSheet,
   UserIcon,
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Observation from "realmModels/Observation";
 import User from "realmModels/User";
+import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
-import { useCurrentUser, useTranslation } from "sharedHooks";
-import useStore, { zustandStorage } from "stores/useStore";
+import getStorageMetrics from "sharedHelpers/storageMetrics";
+import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
+import { zustandStorage } from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import MenuItem from "./MenuItem";
 
 const { useRealm } = RealmContext;
-
-function isDefaultMode( ) {
-  return useStore.getState( ).layout.isDefaultMode === true;
-}
 
 interface BaseMenuOption {
   label: string;
@@ -50,7 +50,7 @@ interface MenuOptionWithOnPress extends BaseMenuOption {
 
 export type MenuOption = MenuOptionWithNavigation | MenuOptionWithOnPress;
 
-export enum MenuModalState {
+enum MenuModalState {
   ConfirmLogout = "confirmLogout",
   ProvideFeedback = "provideFeedback"
 }
@@ -60,6 +60,40 @@ const feedbackLogger = log.extend( "feedback" );
 function showOfflineAlert( t: ( _: string ) => string ) {
   Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
 }
+
+const getDeviceMetricsForFeedback = async () => {
+  const freeDiskBytes = await DeviceInfo.getFreeDiskStorage();
+  const diskCapacityBytes = await DeviceInfo.getTotalDiskCapacity();
+  const usedDiskSpaceBytes = diskCapacityBytes - freeDiskBytes;
+
+  const gBBytes = 1024 * 1024 * 1024;
+  const toGBString = ( bytes: number ) => {
+    const gBs = bytes / gBBytes;
+    return `${gBs.toFixed( 2 )}GB`;
+  };
+
+  const diskUsageSummary
+    = `${toGBString( usedDiskSpaceBytes )} / ${toGBString( diskCapacityBytes )}`;
+
+  const firstInstallInEpochSeconds = await DeviceInfo.getFirstInstallTime();
+  const firstInstallTimestamp = new Date( firstInstallInEpochSeconds ).toISOString();
+
+  const millisecondsSinceThisLaunch = await DeviceInfo.getStartupTime();
+
+  const secondsSinceThisLaunch = ( Date.now() - millisecondsSinceThisLaunch ) / 1000;
+  const minutesPart = Math.floor( secondsSinceThisLaunch / 60 );
+  const secondsPart = Math.floor( secondsSinceThisLaunch % 60 );
+  const timeSinceLaunchedSummary = `${minutesPart}m${secondsPart}s`;
+
+  const isDeviceInLowPowerState = ( await DeviceInfo.getPowerState() ).lowPowerMode;
+
+  return {
+    diskUsageSummary,
+    firstInstallTimestamp,
+    timeSinceLaunchedSummary,
+    isDeviceInLowPowerState,
+  };
+};
 
 const Menu = ( ) => {
   const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
@@ -72,35 +106,36 @@ const Menu = ( ) => {
 
   const { isConnected } = useNetInfo( );
 
+  const layoutPrefs = useLayoutPrefs();
   const [modalState, setModalState] = useState<MenuModalState | null>( null );
 
   const menuItems: Record<string, MenuOption> = {
     projects: {
       label: t( "PROJECTS" ),
       navigation: "Projects",
-      icon: "briefcase"
+      icon: "briefcase",
     },
     about: {
       label: t( "ABOUT" ),
       navigation: "About",
-      icon: "inaturalist"
+      icon: "inaturalist",
     },
     donate: {
       label: t( "DONATE" ),
       navigation: "Donate",
       icon: "heart",
-      color: colors.inatGreen
+      color: colors.inatGreen,
     },
     help: {
       label: t( "HELP" ),
       navigation: "Help",
-      icon: "help-circle"
+      icon: "help-circle",
     },
     settings: {
       testID: "settings",
       label: t( "SETTINGS" ),
       navigation: "Settings",
-      icon: "gear"
+      icon: "gear",
     },
 
     feedback: {
@@ -112,7 +147,7 @@ const Menu = ( ) => {
         } else {
           showOfflineAlert( t );
         }
-      }
+      },
     },
 
     ...( currentUser
@@ -121,16 +156,16 @@ const Menu = ( ) => {
           label: t( "LOG-OUT" ),
           icon: "door-exit",
           onPress: () => setModalState( MenuModalState.ConfirmLogout ),
-          isLogout: true
-        }
+          isLogout: true,
+        },
       }
       : {
         login: {
           label: t( "LOG-IN" ),
           icon: "door-enter",
           color: colors.inatGreen,
-          onPress: () => navigation.navigate( "LoginStackNavigator" )
-        }
+          onPress: () => navigation.navigate( "LoginStackNavigator" ),
+        },
       } ),
 
     ...( isDebug
@@ -139,10 +174,10 @@ const Menu = ( ) => {
           label: "DEBUG",
           navigation: "Debug",
           icon: "triangle-exclamation",
-          color: "deeppink"
-        }
+          color: "deeppink",
+        },
       }
-      : {} )
+      : {} ),
   };
 
   const onSignOut = async ( ) => {
@@ -155,19 +190,70 @@ const Menu = ( ) => {
     navigation.goBack( );
   };
 
-  const onSubmitFeedback = useCallback( ( text: string ) => {
+  const onSubmitFeedback = useCallback( async ( feedbackText: string ) => {
     if ( !isConnected ) {
       showOfflineAlert( t );
       return false;
     }
-    const mode = isDefaultMode( )
-      ? "DEFAULT:"
-      : "ADVANCED:";
-    feedbackLogger.info( mode, text );
+    const locallySavedOnlyObservations = Observation.filterUnsyncedObservations( realm ).length;
+    const getCountBreakpoint = ( count: number ) => valueToBreakpoint( count, [
+      [0, "0"],
+      [1, "1-9"],
+      [10, "10-99"],
+      [100, "100-999"],
+      [1000, "1000+"],
+    ] );
+    const {
+      isDefaultMode,
+      isAllAddObsOptionsMode,
+      screenAfterPhotoEvidence,
+    } = layoutPrefs;
+    const modeContext = ( isDefaultMode
+      ? {
+        mode: "default",
+        observationButtonMode: "default",
+        screenAfterPhotoEvidence: "default",
+      }
+      : {
+        mode: "advanced",
+        observationButtonMode: isAllAddObsOptionsMode
+          ? "Obs Sheet"
+          : "AI Camera",
+        screenAfterPhotoEvidence,
+      } );
+    const loggedInContext = currentUser
+      ? {
+        loggedIn: "Yes",
+        username: currentUser.login,
+        userId: currentUser.id,
+        identifications: typeof currentUser.identifications_count === "number"
+          ? getCountBreakpoint( currentUser.identifications_count )
+          : "NA",
+        remoteObservations: typeof currentUser.observations_count === "number"
+          ? getCountBreakpoint( currentUser.observations_count )
+          : "NA",
+      }
+      : {
+        loggedIn: "No",
+        username: "loggedout",
+        identifications: "loggedout",
+        remoteObservations: "loggedout",
+      };
+    const storageMetrics = await getStorageMetrics( realm?.path ).catch( () => ( {} ) );
+    const deviceMetrics = await getDeviceMetricsForFeedback().catch( () => ( {} ) );
+    const feedbackContext = {
+      ...modeContext,
+      ...loggedInContext,
+      // can have unsynced obs when logged out
+      locallySavedOnlyObservations,
+      ...storageMetrics,
+      ...deviceMetrics,
+    };
+    feedbackLogger.infoWithExtra( feedbackText, feedbackContext );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );
     setModalState( null );
     return true;
-  }, [isConnected, t] );
+  }, [currentUser, isConnected, layoutPrefs, realm, t] );
 
   return (
     <ScrollView
@@ -195,8 +281,8 @@ const Menu = ( ) => {
                 screen: "ObservationsTab",
                 params: {
                   screen: "UserProfile",
-                  params: { userId: currentUser.id }
-                }
+                  params: { userId: currentUser.id },
+                },
               } );
             }
           }}
@@ -242,8 +328,8 @@ const Menu = ( ) => {
                   navigation.navigate( "TabNavigator", {
                     screen: "MenuTab",
                     params: {
-                      screen: menuItems[key].navigation
-                    }
+                      screen: menuItems[key].navigation,
+                    },
                   } );
                 }
                 item.onPress?.();

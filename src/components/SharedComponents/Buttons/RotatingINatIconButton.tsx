@@ -1,5 +1,5 @@
 import {
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import type { PropsWithChildren } from "react";
 import React, { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ import Animated, {
   withDelay,
   withRepeat,
   withSequence,
-  withTiming
+  withTiming,
 } from "react-native-reanimated";
 
 interface Props extends PropsWithChildren {
@@ -47,7 +47,7 @@ const RotatingINatIconButton = ( {
   size,
   style,
   testID,
-  width
+  width,
 }: Props ) => {
   const rotation = useSharedValue( 0 );
   // eslint-disable-next-line no-unused-vars
@@ -57,18 +57,18 @@ const RotatingINatIconButton = ( {
     () => ( {
       transform: [
         {
-          rotateZ: `${rotation.get( )}deg`
-        }
-      ]
-    } )
+          rotateZ: `${rotation.get( )}deg`,
+        },
+      ],
+    } ),
   );
 
   const getRotationAnimation = ( toValue: number ) => withDelay(
     500,
     withTiming( toValue, {
       duration: 1000,
-      easing: Easing.linear
-    } )
+      easing: Easing.linear,
+    } ),
   );
 
   useEffect( () => {
@@ -84,9 +84,9 @@ const RotatingINatIconButton = ( {
         withSequence(
           getRotationAnimation( 180 ),
           getRotationAnimation( 360 ),
-          withTiming( 0, { duration: 0 } )
+          withTiming( 0, { duration: 0 } ),
         ),
-        -1
+        -1,
       ) );
     } else {
       cleanup();

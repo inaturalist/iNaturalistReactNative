@@ -23,7 +23,7 @@ const GradientButton = ( {
   accessibilityLabel,
   accessibilityHint,
   iconName,
-  iconSize
+  iconSize,
 }: Props ) => {
   const handleLongPress = ( event: GestureResponderEvent ) => {
     if ( onLongPress ) {
@@ -43,7 +43,7 @@ const GradientButton = ( {
       accessibilityHint={accessibilityHint || t( "Opens-AI-camera" )}
       accessibilityRole="button"
       accessibilityState={{
-        disabled: false
+        disabled: false,
       }}
     >
       <LinearGradient

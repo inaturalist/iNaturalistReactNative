@@ -13,8 +13,8 @@ jest.mock( "@react-navigation/native", () => {
   return {
     ...actualNav,
     useNavigation: () => ( {
-      dispatch: mockDispatch
-    } )
+      dispatch: mockDispatch,
+    } ),
   };
 } );
 
@@ -27,12 +27,12 @@ const resetNavigation = ( name, params ) => ( {
         index: 0,
         routes: [{
           name,
-          params
-        }]
-      }
-    }]
+          params,
+        }],
+      },
+    }],
   },
-  type: "RESET"
+  type: "RESET",
 } );
 
 beforeAll( ( ) => {
@@ -41,7 +41,7 @@ beforeAll( ( ) => {
 
 const longPress = async ( ) => {
   const addObsButton = screen.getByLabelText(
-    i18next.t( "Add-observations" )
+    i18next.t( "Add-observations" ),
   );
   expect( addObsButton ).toBeTruthy( );
   await actor.longPress( addObsButton );
@@ -49,7 +49,7 @@ const longPress = async ( ) => {
 
 const showNoEvidenceOption = ( ) => {
   const noEvidenceButton = screen.getByTestId(
-    i18next.t( "observe-without-evidence-button" )
+    i18next.t( "observe-without-evidence-button" ),
   );
   expect( noEvidenceButton ).toBeTruthy( );
   return noEvidenceButton;
@@ -57,7 +57,7 @@ const showNoEvidenceOption = ( ) => {
 
 const regularPress = async ( ) => {
   const addObsButton = screen.getByLabelText(
-    i18next.t( "Add-observations" )
+    i18next.t( "Add-observations" ),
   );
   expect( addObsButton ).toBeTruthy( );
   await actor.press( addObsButton );
@@ -69,7 +69,7 @@ describe( "AddObsButton", ( ) => {
     await regularPress( );
 
     expect( mockDispatch ).toHaveBeenCalledWith(
-      resetNavigation( "Camera", { camera: "AI", previousScreen: null } )
+      resetNavigation( "Camera", { camera: "AI", previousScreen: null } ),
     );
   } );
 
@@ -83,7 +83,7 @@ describe( "AddObsButton", ( ) => {
 describe( "with advanced user layout", ( ) => {
   beforeEach( ( ) => {
     setStoreStateLayout( {
-      isAllAddObsOptionsMode: true
+      isAllAddObsOptionsMode: true,
     } );
   } );
 
@@ -101,7 +101,7 @@ describe( "with advanced user layout", ( ) => {
     await actor.press( noEvidenceButton );
 
     expect( mockDispatch ).toHaveBeenCalledWith(
-      resetNavigation( "ObsEdit", { previousScreen: null } )
+      resetNavigation( "ObsEdit", { previousScreen: null } ),
     );
   } );
 
@@ -110,7 +110,7 @@ describe( "with advanced user layout", ( ) => {
     await longPress( );
 
     const noEvidenceButton = screen.queryByLabelText(
-      i18next.t( "Observation-with-no-evidence" )
+      i18next.t( "Observation-with-no-evidence" ),
     );
     expect( noEvidenceButton ).toBeFalsy( );
   } );
@@ -119,7 +119,7 @@ describe( "with advanced user layout", ( ) => {
     beforeEach( ( ) => {
       setStoreStateLayout( {
         isDefaultMode: false,
-        isAllAddObsOptionsMode: false
+        isAllAddObsOptionsMode: false,
       } );
     } );
 

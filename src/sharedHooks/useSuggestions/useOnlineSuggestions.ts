@@ -1,44 +1,90 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useQueryClient } from "@tanstack/react-query";
 import scoreImage from "api/computerVision";
 import i18n from "i18next";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect, useState
+  useCallback, useEffect, useState,
 } from "react";
+import { UpdateMode } from "realm";
 import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   useAuthenticatedQuery,
-  useCurrentUser
+  useCurrentUser,
 } from "sharedHooks";
+import useStore from "stores/useStore";
+
+import { startOfflineExperimentInBackground } from "./suggestionComparisonExperiment";
+import type { ScoreImageParams, UseSuggestionsOnlineSuggestion } from "./types";
+import { predictOffline } from "./useOfflineSuggestions";
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
 
 const { useRealm } = RealmContext;
 
-interface OnlineSuggestionsResponse {
-  dataUpdatedAt: Date;
-  onlineSuggestions: object;
-  loadingOnlineSuggestions: boolean;
-  timedOut: boolean;
-  error: object;
-  resetTimeout: () => void;
-  isRefetching: boolean;
+interface OnlineSuggestionOptions {
+  onFetchError: ( options: { isOnline: boolean } ) => void;
+  onFetched: ( options: { isOnline: boolean } ) => void;
+  scoreImageParams?: ScoreImageParams;
+  queryKey: string[];
+  shouldFetchOnlineSuggestions: boolean;
 }
 
+interface UseOnlineSuggestionsResponse {
+  dataUpdatedAt: number;
+  onlineSuggestions?: {
+    results: UseSuggestionsOnlineSuggestion[];
+    common_ancestor?: UseSuggestionsOnlineSuggestion;
+  };
+  timedOut: boolean;
+  error: Error | null;
+  resetTimeout: () => void;
+  refetch: () => void;
+}
+
+interface OnlineSuggestionsApiResponse {
+  results: UseSuggestionsOnlineSuggestion[];
+  common_ancestor?: Omit<UseSuggestionsOnlineSuggestion, "combined_score">;
+}
+
+export interface OnlineSuggestionsQueryResponse {
+  results: UseSuggestionsOnlineSuggestion[];
+  common_ancestor?: UseSuggestionsOnlineSuggestion;
+}
+
+const shimApiResponseForCommonAncestor
+  = ( apiSuggestions: OnlineSuggestionsApiResponse ): OnlineSuggestionsQueryResponse => {
+    // TODO MOB-1081: maybe we can catch this shim earlier?
+    // general context: https://github.com/inaturalist/iNaturalistReactNative/blob/505980d3359876a0af383f2ffcc481921f0eb778/src/components/Match/calculateConfidence.ts#L10-L12
+    // online suggs have `score` but _redact_ `combined_score` for commonAncestor https://github.com/inaturalist/iNaturalistAPI/blob/main/lib/controllers/v1/computervision_controller.js#L389
+    // the offline suggs have `combined_score` but don't have `score`
+    // the codebase tends assumes `combined_score` for whenever that matters
+    // the following catches when we're in a "fake" onlineSugg and shims "score" in
+    const shimmedCommonAncestor = apiSuggestions.common_ancestor
+      ? {
+        ...apiSuggestions.common_ancestor,
+        combined_score: apiSuggestions.common_ancestor.score,
+      }
+      : undefined;
+    return {
+      results: apiSuggestions.results,
+      common_ancestor: shimmedCommonAncestor,
+    };
+  };
+
 const useOnlineSuggestions = (
-  options: object
-): OnlineSuggestionsResponse => {
+  options: OnlineSuggestionOptions,
+): UseOnlineSuggestionsResponse => {
   const realm = useRealm( );
   const {
     onFetchError,
     onFetched,
     scoreImageParams,
     queryKey,
-    shouldFetchOnlineSuggestions
+    shouldFetchOnlineSuggestions,
   } = options;
 
   const queryClient = useQueryClient( );
@@ -48,13 +94,7 @@ const useOnlineSuggestions = (
   // Use locale in case there is no user session
   const locale = i18n?.language ?? "en";
 
-  async function queryFn( optsWithAuth ) {
-    const params = {
-      ...scoreImageParams,
-      ...( !currentUser && { locale } )
-    };
-    return scoreImage( params, optsWithAuth );
-  }
+  const getCurrentObservation = useStore( state => state.getCurrentObservation );
 
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
@@ -64,15 +104,43 @@ const useOnlineSuggestions = (
     dataUpdatedAt,
     refetch,
     fetchStatus,
-    error
-  } = useAuthenticatedQuery(
+    error,
+  } = useAuthenticatedQuery<OnlineSuggestionsQueryResponse>(
     queryKey,
-    queryFn,
+    async optsWithAuth => {
+      const obsUuid = getCurrentObservation().uuid;
+      const params = {
+        ...scoreImageParams,
+        ...( !currentUser && { locale } ),
+      };
+
+      const suggestionsResponse
+        = await scoreImage( params, optsWithAuth ) as OnlineSuggestionsApiResponse;
+
+      // there's a slight discrepancy between online/offline responses which this smooths over for
+      // the eventual UI
+      const shimmedOnlineResponse = shimApiResponseForCommonAncestor( suggestionsResponse );
+
+      if ( !!scoreImageParams && typeof obsUuid === "string" ) {
+        startOfflineExperimentInBackground(
+          obsUuid,
+          shimmedOnlineResponse,
+          () => predictOffline( {
+            latitude: scoreImageParams.lat,
+            longitude: scoreImageParams.lng,
+            photoUri: scoreImageParams.image.uri,
+            realm,
+          } ),
+        );
+      }
+
+      return shimmedOnlineResponse;
+    },
     {
       enabled: !!shouldFetchOnlineSuggestions
-        && !!( scoreImageParams?.image ),
-      allowAnonymousJWT: true
-    }
+        && !!scoreImageParams,
+      allowAnonymousJWT: true,
+    },
   );
 
   // Give up on suggestions request after a timeout
@@ -100,37 +168,33 @@ const useOnlineSuggestions = (
     }
   }, [isConnected] );
 
-  const saveTaxaToRealm = useCallback( ( ) => {
-    // we're already getting all this taxon information anytime we make this API
-    // call, so we might as well store it in realm immediately instead of waiting
-    // for useTaxon to fetch individual taxon results
-    const mappedTaxa = onlineSuggestions?.results?.map(
-      suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm )
-    );
-    if ( onlineSuggestions?.common_ancestor ) {
-      const mappedCommonAncestor = Taxon
-        .mapApiToRealm( onlineSuggestions?.common_ancestor.taxon, realm );
-      mappedTaxa.push( mappedCommonAncestor );
-    }
-    safeRealmWrite( realm, ( ) => {
-      mappedTaxa.forEach( remoteTaxon => {
-        realm.create(
-          "Taxon",
-          Taxon.forUpdate( remoteTaxon ),
-          "modified"
-        );
-      } );
-    }, "saving remote taxon from onlineSuggestions" );
-  }, [realm, onlineSuggestions] );
-
   useEffect( ( ) => {
     if ( onlineSuggestions !== undefined ) {
-      saveTaxaToRealm( );
+      // we're already getting all this taxon information anytime we make this API
+      // call, so we might as well store it in realm immediately instead of waiting
+      // for useTaxon to fetch individual taxon results
+      const mappedTaxa = onlineSuggestions.results.map(
+        suggestion => Taxon.mapApiToRealm( suggestion.taxon, realm ),
+      );
+      if ( onlineSuggestions?.common_ancestor ) {
+        const mappedCommonAncestor = Taxon
+          .mapApiToRealm( onlineSuggestions?.common_ancestor.taxon, realm );
+        mappedTaxa.push( mappedCommonAncestor );
+      }
+      safeRealmWrite( realm, ( ) => {
+        mappedTaxa.forEach( remoteTaxon => {
+          realm.create(
+            "Taxon",
+            Taxon.forUpdate( remoteTaxon ),
+            UpdateMode.Modified,
+          );
+        } );
+      }, "saving remote taxon from onlineSuggestions" );
       onFetched( { isOnline: true } );
     } else if ( error ) {
       onFetchError( { isOnline: true } );
     }
-  }, [onFetchError, onlineSuggestions, error, saveTaxaToRealm, onFetched] );
+  }, [onFetchError, onlineSuggestions, error, onFetched, realm] );
 
   const queryObject = {
     dataUpdatedAt,
@@ -138,17 +202,17 @@ const useOnlineSuggestions = (
     refetch,
     timedOut,
     resetTimeout,
-    fetchStatus
+    fetchStatus,
   };
 
   return timedOut
     ? {
       ...queryObject,
-      onlineSuggestions: undefined
+      onlineSuggestions: undefined,
     }
     : {
       ...queryObject,
-      onlineSuggestions
+      onlineSuggestions,
     };
 };
 

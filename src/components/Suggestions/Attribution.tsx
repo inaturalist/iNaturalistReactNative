@@ -1,10 +1,10 @@
 import {
-  Body3
+  Body3,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Attribution = ( {
-  observers
+  observers,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -25,7 +25,7 @@ const Attribution = ( {
       {t( "iNaturalist-identification-suggestions-are-based-on", {
         user1: observers[0],
         user2: observers[1],
-        user3: observers[2]
+        user3: observers[2],
       } )}
     </Body3>
   );

@@ -1,16 +1,13 @@
 import classnames from "classnames";
+import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { Body3 } from "components/SharedComponents";
 import {
-  CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE
+  CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE,
 } from "components/SharedComponents/Buttons/TransparentCircleButton";
 import { Pressable } from "components/styledComponents";
 import React from "react";
 import type { GestureResponderEvent, ViewStyle } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
-
-const isTablet = DeviceInfo.isTablet();
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
@@ -23,14 +20,14 @@ const Zoom = ( {
   rotatableAnimatedStyle,
   handleZoomButtonPress,
   zoomClassName,
-  zoomTextValue
+  zoomTextValue,
 }: Props ) => {
   const { t } = useTranslation();
 
   return (
-    <Animated.View
-      style={!isTablet && rotatableAnimatedStyle}
-      className={classnames( zoomClassName )}
+    <RotatableIconWrapper
+      rotatableAnimatedStyle={rotatableAnimatedStyle}
+      containerClass={classnames( zoomClassName )}
     >
       <Pressable
         className={classnames( CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE )}
@@ -43,7 +40,7 @@ const Zoom = ( {
           {t( "zoom-x", { zoom: Number( zoomTextValue ) } )}
         </Body3>
       </Pressable>
-    </Animated.View>
+    </RotatableIconWrapper>
   );
 };
 

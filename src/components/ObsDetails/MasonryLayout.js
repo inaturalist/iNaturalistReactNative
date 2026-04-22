@@ -1,10 +1,9 @@
+import PhotoContainer from "components/ObsDetailsSharedComponents/Media/PhotoContainer";
+import SoundContainer from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import { ScrollView, View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import Photo from "realmModels/Photo";
-
-import PhotoContainer from "./PhotoContainer";
-import SoundContainer from "./SoundContainer";
 
 const numColumns = 2;
 const spacing = 6;
@@ -13,7 +12,7 @@ const photoUrl = photo => Photo.displayLocalOrRemoteLargePhoto( photo );
 
 const MasonryLayout = ( { items, onImagePress } ) => {
   const [columns, setColumns] = useState(
-    Array.from( { length: numColumns }, () => [] )
+    Array.from( { length: numColumns }, () => [] ),
   );
 
   useEffect( () => {
@@ -47,7 +46,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     width: "100%",
     height: undefined,
     aspectRatio: item.width / item.height,
-    marginBottom: spacing
+    marginBottom: spacing,
   } );
 
   const renderImage = ( item, index, column ) => (

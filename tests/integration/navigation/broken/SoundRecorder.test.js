@@ -2,7 +2,7 @@ import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import { renderApp } from "tests/helpers/render";
@@ -16,7 +16,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -27,8 +27,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -38,7 +38,7 @@ afterAll( uniqueRealmAfterAll );
 beforeAll( async () => {
   await initI18next();
   setStoreStateLayout( {
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
 } );
 

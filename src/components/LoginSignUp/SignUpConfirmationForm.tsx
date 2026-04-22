@@ -3,10 +3,11 @@ import {
   Body2,
   Button,
   Checkbox,
-  UnderlinedLink
+  UnderlinedLink,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import type { LoginStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, { useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
@@ -16,7 +17,7 @@ import useStore from "stores/useStore";
 
 import {
   authenticateUser,
-  registerUser
+  registerUser,
 } from "./AuthenticationService";
 import Error from "./Error";
 import LoginSignUpInputField from "./LoginSignUpInputField";
@@ -26,10 +27,8 @@ const { useRealm } = RealmContext;
 const SignUpConfirmationForm = ( ) => {
   const realm = useRealm( );
   const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const { user }: {
-    email: string;
-  } = params;
+  const { params } = useRoute<LoginStackScreenProps<"SignUpConfirmation">["route"]>();
+  const { user } = params;
 
   const setJustFinishedSignup = useStore( state => state.layout.setJustFinishedSignup );
 
@@ -109,8 +108,8 @@ const SignUpConfirmationForm = ( ) => {
     navigation.navigate( "TabNavigator", {
       screen: "ObservationsTab",
       params: {
-        screen: "ObsList"
-      }
+        screen: "ObsList",
+      },
     } );
   };
 
@@ -151,7 +150,7 @@ const SignUpConfirmationForm = ( ) => {
               onPress={() => setChecked( !checked )}
               components={[
                 <Body2 key="0" className="text-white" />,
-                <Body2 key="1" className="text-white font-Lato-Italic" />
+                <Body2 key="1" className="text-white font-Lato-Italic" />,
               ]}
             />
             <UnderlinedLink

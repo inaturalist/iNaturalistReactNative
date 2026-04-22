@@ -8,5 +8,5 @@ export default define( "RemoteIdentification", faker => ( {
   category: "improving",
   current: true,
   user: userFactory( "RemoteUser" ),
-  taxon: taxonFactory( "RemoteTaxon" )
+  taxon: taxonFactory( "RemoteTaxon" ),
 } ) );

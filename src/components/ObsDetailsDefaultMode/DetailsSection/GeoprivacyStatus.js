@@ -9,7 +9,7 @@ type Props = {
 };
 
 const GeoprivacyStatus = ( {
-  geoprivacy
+  geoprivacy,
 }: Props ): Node => {
   const { t } = useTranslation( );
 

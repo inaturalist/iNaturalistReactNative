@@ -1,14 +1,14 @@
 import {
   Body2,
-  RadioButtonRow
+  RadioButtonRow,
 } from "components/SharedComponents";
 import React from "react";
 import {
-  View
+  View,
 } from "react-native";
 import {
   useLayoutPrefs,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 
@@ -18,17 +18,13 @@ const AdvancedSettings = ( ) => {
     isAllAddObsOptionsMode,
     setIsAllAddObsOptionsMode,
     screenAfterPhotoEvidence,
-    setScreenAfterPhotoEvidence
+    setScreenAfterPhotoEvidence,
   } = useLayoutPrefs();
-
-  const renderSettingDescription = description => (
-    <Body2>{description}</Body2>
-  );
 
   return (
     <>
       <View className="mt-[20px]">
-        {renderSettingDescription( t( "When-tapping-the-green-observation-button" ) )}
+        <Body2>{ t( "When-tapping-the-green-observation-button" ) }</Body2>
         <RadioButtonRow
           classNames="ml-[6px] mt-[15px]"
           testID="all-observation-options"
@@ -46,7 +42,7 @@ const AdvancedSettings = ( ) => {
         />
       </View>
       <View className="mt-[20px]">
-        {renderSettingDescription( t( "After-capturing-or-importing-photos-show" ) )}
+        <Body2>{ t( "After-capturing-or-importing-photos-show" ) }</Body2>
         <RadioButtonRow
           classNames="ml-[6px] mt-[15px]"
           testID="suggestions-flow-mode"

@@ -1,15 +1,14 @@
+import DetailsMapHeader from "components/ObsDetailsSharedComponents/DetailsTab/DetailsMapHeader";
 import {
   DetailsMap,
   Map,
-  Modal
+  Modal,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import { useCurrentUser } from "sharedHooks";
-
-import DetailsMapHeader from "./DetailsMapHeader";
 
 interface Props {
   observation: Observation,
@@ -25,7 +24,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
   const longitude = observation.privateLongitude || observation.longitude;
   const coordinateString = t( "Lat-Lon", {
     latitude,
-    longitude
+    longitude,
   } );
 
   const openMapScreen = useCallback( ( ) => setShowMapModal( true ), [] );
@@ -35,7 +34,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
   const tileMapParams = useMemo( ( ) => ( taxonId
     ? {
       taxon_id: taxonId,
-      verifiable: true
+      verifiable: true,
     }
     : null ), [taxonId] );
 
@@ -55,7 +54,7 @@ const MapSection = ( { observation, taxon }: Props ) => {
     coordinateString,
     currentUser,
     observation,
-    tileMapParams
+    tileMapParams,
   ] );
 
   if ( !latitude ) {

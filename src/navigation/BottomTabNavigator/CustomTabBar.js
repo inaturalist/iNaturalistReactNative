@@ -5,24 +5,22 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { isDebugMode } from "sharedHooks/useDebugMode";
 import { getShadow } from "styles/global";
 
 import NavButton from "./NavButton";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: -2,
-  elevation: 20
+  elevation: 20,
 } );
 
 type Props = {
-  tabs: Array<Object>,
+  tabs: Object[],
 };
 
 /* eslint-disable react/jsx-props-no-spreading */
 
 const CustomTabBar = ( { tabs }: Props ): Node => {
-  const isDebug = isDebugMode( );
   const tabList = tabs.map( tab => <NavButton {...tab} key={tab.testID} /> );
   tabList.splice(
     -2,
@@ -35,7 +33,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
           <AddObsButton key="AddObsButton" />
         </View>
       </View>
-    )
+    ),
   );
 
   const insets = useSafeAreaInsets( );
@@ -44,10 +42,7 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
     <View
       className={classNames(
         "flex-row bg-white justify-around p-1 m-0",
-        {
-          "pb-5": insets.bottom > 0,
-          "dark:bg-darkModeGray": isDebug
-        }
+        { "pb-5": insets.bottom > 0 },
       )}
       style={DROP_SHADOW}
       accessibilityRole="tablist"

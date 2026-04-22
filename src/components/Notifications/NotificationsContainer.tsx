@@ -1,13 +1,16 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import type { ApiObservationsUpdatesParams } from "api/types";
 import NotificationsList from "components/Notifications/NotificationsList";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import type { RealmUser } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
-import { useInfiniteNotificationsScroll, usePerformance } from "sharedHooks";
+import {
+  useInfiniteNotificationsScroll,
+  usePerformance,
+} from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
 const logger = log.extend( "NotificationsContainer" );
@@ -21,9 +24,8 @@ interface Props {
 const NotificationsContainer = ( {
   currentUser,
   notificationParams,
-  onRefresh: onRefreshProp
+  onRefresh: onRefreshProp,
 }: Props ) => {
-  const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
   const [refreshing, setRefreshing] = useState( false );
 
@@ -32,25 +34,25 @@ const NotificationsContainer = ( {
     isError,
     isFetching,
     isInitialLoading,
+    showStillLoadingMessage,
     notifications,
-    refetch
+    refetch,
   } = useInfiniteNotificationsScroll( notificationParams );
 
   const { loadTime } = usePerformance( {
-    isLoading: isInitialLoading
+    isLoading: isInitialLoading,
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
   }
 
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "focus", ( ) => {
+  useFocusEffect(
+    useCallback( ( ) => {
       if ( isConnected && currentUser ) {
-        refetch();
+        refetch( );
       }
-    } );
-    return unsubscribe;
-  }, [isConnected, currentUser, navigation, refetch] );
+    }, [isConnected, currentUser, refetch] ),
+  );
 
   const onRefresh = async () => {
     if ( currentUser ) {
@@ -61,14 +63,18 @@ const NotificationsContainer = ( {
     }
   };
 
+  const followingTabIsActive = notificationParams.observations_by === "following";
+
   return (
     <NotificationsList
       currentUser={currentUser}
       data={notifications}
+      followingTabIsActive={followingTabIsActive}
       isError={isError}
       isFetching={isFetching}
       isInitialLoading={isInitialLoading}
       isConnected={isConnected}
+      showStillLoadingMessage={showStillLoadingMessage}
       onEndReached={fetchNextPage}
       reload={refetch}
       refreshing={refreshing}

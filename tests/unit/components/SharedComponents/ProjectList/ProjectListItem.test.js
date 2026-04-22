@@ -5,7 +5,7 @@ const mockProject = {
   id: 1,
   title: "Project Title",
   icon: "https://static.inaturalist.org/projects/1/iconic_taxa_photos/medium.jpg?1521796076",
-  project_type: "collection"
+  project_type: "collection",
 };
 
 describe( "ProjectListItem", () => {

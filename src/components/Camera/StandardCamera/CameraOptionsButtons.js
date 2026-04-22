@@ -1,6 +1,5 @@
 // @flow
 
-import classnames from "classnames";
 import CameraFlip from "components/Camera/Buttons/CameraFlip";
 import Flash from "components/Camera/Buttons/Flash";
 import Zoom from "components/Camera/Buttons/Zoom";
@@ -8,7 +7,6 @@ import TabletButtons from "components/Camera/TabletButtons";
 import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
-import Animated from "react-native-reanimated";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -41,7 +39,7 @@ const CameraOptionsButtons = ( {
   takePhotoOptions,
   handleZoomButtonPress,
   zoomTextValue,
-  showZoomButton
+  showZoomButton,
 }: Props ): Node => {
   const renderPhoneCameraOptions = () => (
     <>
@@ -59,12 +57,11 @@ const CameraOptionsButtons = ( {
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         zoomClassName="absolute bottom-[18px] self-center"
       />
-      <Animated.View
-        style={!isTablet && rotatableAnimatedStyle}
-        className={classnames( "absolute", "bottom-[18px]", "right-[18px]" )}
-      >
-        <CameraFlip flipCamera={flipCamera} />
-      </Animated.View>
+      <CameraFlip
+        flipCamera={flipCamera}
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
+        cameraFlipClassName="absolute bottom-[18px] right-[18px]"
+      />
     </>
   );
 
@@ -73,6 +70,10 @@ const CameraOptionsButtons = ( {
       takePhoto={takePhoto}
       handleClose={handleClose}
       disabled={disabled}
+      // TODO: once we re-visit tablet views, we'll want to ensure users cannot spam the submit
+      // button while taking photos. see:
+      // https://linear.app/inaturalist/issue/MOB-1084/multicapture-camera-multiple-copies-of-photos-can-be-saved
+      // confirmDisabled={confirmDisabled}
       photosTaken={photosTaken}
       rotatableAnimatedStyle={rotatableAnimatedStyle}
       handleCheckmarkPress={handleCheckmarkPress}

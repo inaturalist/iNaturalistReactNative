@@ -10,16 +10,16 @@ const mockUser = factory( "RemoteUser" );
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
-    data: mockUser
-  } )
+    data: mockUser,
+  } ),
 } ) );
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
   default: ( ) => ( {
-    mutate: mockMutate
-  } )
+    mutate: mockMutate,
+  } ),
 } ) );
 
 jest.mock( "@react-navigation/native", () => {
@@ -28,12 +28,12 @@ jest.mock( "@react-navigation/native", () => {
     ...actualNav,
     useRoute: () => ( {
       params: {
-        userId: mockUser.id
-      }
+        userId: mockUser.id,
+      },
     } ),
     useNavigation: () => ( {
-      setOptions: () => ( { } )
-    } )
+      setOptions: () => ( { } ),
+    } ),
   };
 } );
 
@@ -44,7 +44,7 @@ jest.mock(
     // No testID here because the component needs the correct one to work
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props}>{props.children}</MockName>;
-  }
+  },
 );
 
 describe( "UserProfile", () => {
@@ -65,8 +65,8 @@ describe( "UserProfile", () => {
     expect( screen.getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy( );
     expect(
       screen.getByText(
-        new RegExp( t( "OBSERVATIONS-WITHOUT-NUMBER", { count: mockUser.observations_count } ) )
-      )
+        new RegExp( t( "OBSERVATIONS-WITHOUT-NUMBER", { count: mockUser.observations_count } ) ),
+      ),
     ).toBeTruthy( );
     const userIcon = screen.getByTestId( "UserIcon.photo" );
     expect( userIcon ).toBeTruthy( );

@@ -1,9 +1,9 @@
 import {
   Body2,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import _ from "lodash";
+import find from "lodash/find";
 import * as React from "react";
 import { Trans } from "react-i18next";
 import { openExternalWebBrowser } from "sharedHelpers/util";
@@ -43,7 +43,7 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
   const displaySourceListText = ( ) => {
     let url = baseUrl;
 
-    const listedTaxon = _.find( taxon.listed_taxa, lt => (
+    const listedTaxon = find( taxon.listed_taxa, lt => (
       lt.place.id === taxon.establishment_means.place.id
       && lt.establishment_means === establishmentMeans
     ) );
@@ -63,11 +63,12 @@ const EstablishmentMeans = ( { taxon }: Props ) => {
         i18nKey="Source-List"
         values={{ source: listedTaxon.list.title }}
         components={[
-          <Body2 />,
+          <Body2 key="0" />,
           <Body2
+            key="1"
             className="text-inatGreen underline"
             onPress={( ) => openExternalWebBrowser( url )}
-          />
+          />,
         ]}
       />
     );

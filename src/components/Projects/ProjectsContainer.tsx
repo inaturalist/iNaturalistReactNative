@@ -1,9 +1,9 @@
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { useCallback, useState } from "react";
 import {
   useCurrentUser,
   useLocationPermission,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
@@ -56,10 +56,10 @@ const ProjectsContainer = ( ) => {
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
-    projects
+    projects,
   } = useInfiniteProjectsScroll( {
     params: apiParams,
-    enabled: !_.isEmpty( apiParams )
+    enabled: !isEmpty( apiParams ),
   } );
 
   const tabs = [
@@ -68,14 +68,14 @@ const ProjectsContainer = ( ) => {
       text: t( "JOINED" ),
       onPress: () => {
         setCurrentTabId( TAB_ID.JOINED );
-      }
+      },
     },
     {
       id: TAB_ID.FEATURED,
       text: t( "FEATURED" ),
       onPress: () => {
         setCurrentTabId( TAB_ID.FEATURED );
-      }
+      },
     },
     {
       id: TAB_ID.NEARBY,
@@ -85,8 +85,8 @@ const ProjectsContainer = ( ) => {
           getCurrentUserLocation( );
         }
         setCurrentTabId( TAB_ID.NEARBY );
-      }
-    }
+      },
+    },
   ];
 
   if ( !currentUser ) {

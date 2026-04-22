@@ -15,7 +15,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -26,8 +26,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -41,27 +41,27 @@ const topSuggestion = {
     name: "Primum",
     ancestors: [
       factory( "RemoteTaxon", {
-        name: "Primum ancestor"
-      } )
-    ]
+        name: "Primum ancestor",
+      } ),
+    ],
   } ),
-  combined_score: 90
+  combined_score: 90,
 };
 
 const makeMockObservations = ( ) => ( [
   factory( "RemoteObservation", {
     // Suggestions won't load without a photo
     observationPhotos: [
-      factory( "LocalObservationPhoto" )
+      factory( "LocalObservationPhoto" ),
     ],
     taxon: factory( "LocalTaxon" ),
-    user: mockUser
-  } )
+    user: mockUser,
+  } ),
 ] );
 
 const mockTaxaList = [
   factory( "RemoteTaxon" ),
-  factory( "RemoteTaxon" )
+  factory( "RemoteTaxon" ),
 ];
 
 describe( "TaxonDetails", ( ) => {
@@ -84,7 +84,7 @@ describe( "TaxonDetails", ( ) => {
     } );
     inatjs.taxa.search.mockResolvedValue( makeResponse( mockTaxaList ) );
     inatjs.search.mockResolvedValue(
-      makeResponse( mockTaxaList.map( x => ( { taxon: x } ) ) )
+      makeResponse( mockTaxaList.map( x => ( { taxon: x } ) ) ),
     );
   } );
 
@@ -104,13 +104,13 @@ describe( "TaxonDetails", ( ) => {
   async function navigateToTaxonDetailsFromSuggestions() {
     await expectToBeOnSuggestions();
     const suggestedTaxonName = await screen.findByText(
-      topSuggestion.taxon.name
+      topSuggestion.taxon.name,
     );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( suggestedTaxonName ).toBeOnTheScreen();
     await actor.press( suggestedTaxonName );
     const taxonDetailsScreen = await screen.findByTestId(
-      `TaxonDetails.${topSuggestion.taxon.id}`
+      `TaxonDetails.${topSuggestion.taxon.id}`,
     );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( taxonDetailsScreen ).toBeOnTheScreen();
@@ -119,7 +119,7 @@ describe( "TaxonDetails", ( ) => {
   // navigate to ObsDetails -> Suggest ID -> Suggestions -> TaxonDetails
   async function navigateToTaxonDetailsViaSuggestId( observation ) {
     const observationGridItem = await screen.findByTestId(
-      `MyObservations.obsGridItem.${observation.uuid}`
+      `MyObservations.obsGridItem.${observation.uuid}`,
     );
     await actor.press( observationGridItem );
     const suggestIdButton = await screen.findByText( /SUGGEST ID/ );
@@ -132,7 +132,7 @@ describe( "TaxonDetails", ( ) => {
   // navigate to ObsEdit -> Suggestions -> TaxonDetails
   async function navigateToTaxonDetailsViaObsEdit( observation ) {
     const observationGridItem = await screen.findByTestId(
-      `MyObservations.obsGridItem.${observation.uuid}`
+      `MyObservations.obsGridItem.${observation.uuid}`,
     );
     await actor.press( observationGridItem );
     const editButton = await screen.findByLabelText( /Edit/ );
@@ -140,7 +140,7 @@ describe( "TaxonDetails", ( ) => {
     expect( editButton ).toBeOnTheScreen();
     await actor.press( editButton );
     const observationTaxonName = await screen.findByText(
-      observation.taxon.name
+      observation.taxon.name,
     );
     await actor.press( observationTaxonName );
     return navigateToTaxonDetailsFromSuggestions();
@@ -151,12 +151,12 @@ describe( "TaxonDetails", ( ) => {
     await navigateToTaxonDetailsViaObsEdit( observation );
     // navigate to an ancestor taxon details page
     const ancestorTaxonName = await screen.findByText(
-      topSuggestion.taxon.ancestors[0].name
+      topSuggestion.taxon.ancestors[0].name,
     );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( ancestorTaxonName ).toBeOnTheScreen();
     inatjs.taxa.fetch.mockResolvedValue(
-      makeResponse( [topSuggestion.taxon.ancestors[0]] )
+      makeResponse( [topSuggestion.taxon.ancestors[0]] ),
     );
     await actor.press( ancestorTaxonName );
   }
@@ -164,7 +164,7 @@ describe( "TaxonDetails", ( ) => {
   // navigate to ObsEdit -> Suggestions -> TaxonSearch -> TaxonDetails
   async function navigateToTaxonDetailsViaTaxonSearch( observation ) {
     const observationGridItem = await screen.findByTestId(
-      `MyObservations.obsGridItem.${observation.uuid}`
+      `MyObservations.obsGridItem.${observation.uuid}`,
     );
     await actor.press( observationGridItem );
     const editButton = await screen.findByLabelText( /Edit/ );
@@ -172,7 +172,7 @@ describe( "TaxonDetails", ( ) => {
     expect( editButton ).toBeOnTheScreen();
     await actor.press( editButton );
     const observationTaxonName = await screen.findByText(
-      observation.taxon.name
+      observation.taxon.name,
     );
     await actor.press( observationTaxonName );
     // navigate to search screen and search for something and tap first result
@@ -191,7 +191,7 @@ describe( "TaxonDetails", ( ) => {
     await actor.press( searchedTaxonName );
 
     const taxonDetailsScreen = await screen.findByTestId(
-      `TaxonDetails.${searchedTaxon.id}`
+      `TaxonDetails.${searchedTaxon.id}`,
     );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( taxonDetailsScreen ).toBeOnTheScreen();
@@ -203,7 +203,7 @@ describe( "TaxonDetails", ( ) => {
     const observations = makeMockObservations();
     useStore.setState( {
       observations,
-      currentObservation: observations[0]
+      currentObservation: observations[0],
     } );
     await renderAppWithObservations( observations, __filename );
     await navigateToTaxonDetailsViaSuggestId( observations[0] );
@@ -214,11 +214,11 @@ describe( "TaxonDetails", ( ) => {
     await actor.press( selectTaxonButton );
     // return to ObsDetails screen
     expect(
-      await screen.findByTestId( `ObsDetails.${observations[0].uuid}` )
+      await screen.findByTestId( `ObsDetails.${observations[0].uuid}` ),
     ).toBeTruthy();
     // suggest ID should be popped open with the suggested taxon
     const bottomSheetText = await screen.findByText(
-      /Would you like to suggest the following identification/
+      /Would you like to suggest the following identification/,
     );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( bottomSheetText ).toBeOnTheScreen();
@@ -234,7 +234,7 @@ describe( "TaxonDetails", ( ) => {
     const observations = makeMockObservations();
     useStore.setState( {
       observations,
-      currentObservation: observations[0]
+      currentObservation: observations[0],
     } );
     await renderAppWithObservations( observations, __filename );
     await navigateToTaxonDetailsViaObsEdit( observations[0] );
@@ -262,7 +262,7 @@ describe( "TaxonDetails", ( ) => {
       const observations = makeMockObservations();
       useStore.setState( {
         observations,
-        currentObservation: observations[0]
+        currentObservation: observations[0],
       } );
       await renderAppWithObservations( observations, __filename );
       await navigateToTaxonDetailsViaTaxonDetails( observations[0] );
@@ -278,13 +278,13 @@ describe( "TaxonDetails", ( ) => {
 
       // selected taxon
       const ancestorTaxonName = await screen.findByText(
-        taxon.ancestors[0].name
+        taxon.ancestors[0].name,
       );
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       expect( ancestorTaxonName ).toBeOnTheScreen();
       const { currentObservation } = useStore.getState();
       expect( currentObservation.owners_identification_from_vision ).toBeFalsy();
-    }
+    },
   );
 
   it( "should create an observation with false vision attribute"
@@ -292,11 +292,11 @@ describe( "TaxonDetails", ( ) => {
     const observations = makeMockObservations();
     useStore.setState( {
       observations,
-      currentObservation: observations[0]
+      currentObservation: observations[0],
     } );
     await renderAppWithObservations( observations, __filename );
     const searchedTaxon = await navigateToTaxonDetailsViaTaxonSearch(
-      observations[0]
+      observations[0],
     );
     // make sure we're on TaxonDetails
     const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );

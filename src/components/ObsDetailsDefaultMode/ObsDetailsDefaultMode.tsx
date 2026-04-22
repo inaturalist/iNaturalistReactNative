@@ -1,18 +1,20 @@
+import FloatingButtons from "components/ObsDetailsSharedComponents/ActivityTab/FloatingButtons";
+import ObsMediaDisplayContainer
+  from "components/ObsDetailsSharedComponents/Media/ObsMediaDisplayContainer";
 import {
-  ActivityIndicator
+  ActivityIndicator,
 } from "components/SharedComponents";
 import { ScrollView, View } from "components/styledComponents";
 import React, {
-  useRef
+  useRef,
 } from "react";
 import type Observation from "realmModels/Observation";
 import type { RealmObservation, RealmUser } from "realmModels/types";
 import {
-  useScrollToOffset
+  useScrollToOffset,
 } from "sharedHooks";
 
 import CommunitySection from "./CommunitySection/CommunitySection";
-import FloatingButtons from "./CommunitySection/FloatingButtons";
 import CommunityTaxon from "./CommunityTaxon";
 import DetailsSection from "./DetailsSection/DetailsSection";
 import LocationSection from "./LocationSection/LocationSection";
@@ -21,13 +23,14 @@ import MoreSection from "./MoreSection/MoreSection";
 import NotesSection from "./NotesSection/NotesSection";
 import ObsDetailsDefaultModeHeaderRight from "./ObsDetailsDefaultModeHeaderRight";
 import ObserverDetails from "./ObserverDetails";
-import ObsMediaDisplayContainer from "./ObsMediaDisplayContainer";
 import StatusSection from "./StatusSection/StatusSection";
 
 const cardClassBottom = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-4";
 
-type Props = {
-  activityItems: Array<object>;
+const EMPTY_ACTIVITY_ITEMS: object[] = [];
+
+interface Props {
+  activityItems: object[];
   addingActivityItem: boolean;
   belongsToCurrentUser: boolean;
   currentUser: RealmUser;
@@ -46,7 +49,7 @@ type Props = {
 }
 
 const ObsDetailsDefaultMode = ( {
-  activityItems = [],
+  activityItems = EMPTY_ACTIVITY_ITEMS,
   addingActivityItem,
   belongsToCurrentUser,
   currentUser,
@@ -61,13 +64,13 @@ const ObsDetailsDefaultMode = ( {
   subscriptions,
   targetActivityItemID,
   wasSynced,
-  uuid
+  uuid,
 }: Props ) => {
   const scrollViewRef = useRef<typeof ScrollView | null>( null );
 
   const {
     setHeightOfContentAboveSection: setHeightOfContentAboveCommunitySection,
-    setOffsetToActivityItem
+    setOffsetToActivityItem,
   } = useScrollToOffset( scrollViewRef );
 
   const isSavedObservationByCurrentUser = belongsToCurrentUser && !wasSynced;

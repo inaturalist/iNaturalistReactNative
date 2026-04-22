@@ -1,5 +1,5 @@
 import {
-  Body3
+  Body3,
 } from "components/SharedComponents";
 import { t } from "i18next";
 import React from "react";

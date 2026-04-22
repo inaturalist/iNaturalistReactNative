@@ -1,16 +1,18 @@
-import RNFS from "react-native-fs";
+import { DocumentDirectoryPath } from "@dr.pogodin/react-native-fs";
 
-export const computerVisionPath = `${RNFS.DocumentDirectoryPath}/computerVisionSuggestions`;
+export const computerVisionPath = `${DocumentDirectoryPath}/computerVisionSuggestions`;
 
 // note: when changing naming from gallery to photoLibrary in issue MOB-431,
 // this galleryPhotos path was intentionally left as-is, to avoid any issues
 // with cleaning caches
-export const photoLibraryPhotosPath = `${RNFS.DocumentDirectoryPath}/galleryPhotos`;
+export const photoLibraryPhotosPath = `${DocumentDirectoryPath}/galleryPhotos`;
 
-export const photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
+export const photoUploadPath = `${DocumentDirectoryPath}/photoUploads`;
 
-export const rotatedOriginalPhotosPath = `${RNFS.DocumentDirectoryPath}/rotatedOriginalPhotos`;
+export const rotatedOriginalPhotosPath = `${DocumentDirectoryPath}/rotatedOriginalPhotos`;
 
-export const sentinelFilePath = `${RNFS.DocumentDirectoryPath}/sentinelFiles`;
+export const sentinelFilePath = `${DocumentDirectoryPath}/sentinelFiles`;
 
-export const soundUploadPath = `${RNFS.DocumentDirectoryPath}/soundUploads`;
+export const soundUploadPath = `${DocumentDirectoryPath}/soundUploads`;
+
+export const rollbackPhotosPath = `${DocumentDirectoryPath}/rollbackPhotos`;

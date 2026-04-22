@@ -17,7 +17,7 @@ interface Props {
 
 const CLASS_NAMES = [
   "grow",
-  "aspect-square"
+  "aspect-square",
 ] as const;
 
 const ObsImage = ( {
@@ -27,7 +27,7 @@ const ObsImage = ( {
   opaque = false,
   uri,
   white = false,
-  iconicTaxonIconSize
+  iconicTaxonIconSize,
 }: Props ) => (
   <View className={classNames( CLASS_NAMES, "relative" )}>
     <View className="absolute w-full h-full">
@@ -37,9 +37,9 @@ const ObsImage = ( {
           imageClassName,
           {
             "bg-darkGray": white && isBackground,
-            "bg-transparent": white && !isBackground
+            "bg-transparent": white && !isBackground,
           },
-          "border-0"
+          "border-0",
         ]}
         iconicTaxonName={iconicTaxonName}
         white={white}
@@ -56,7 +56,7 @@ const ObsImage = ( {
         source={{
           url: uri.uri,
           cachePolicy: "discWithCacheControl",
-          resizeMode: "cover"
+          resizeMode: "cover",
         }}
       />
     ) }

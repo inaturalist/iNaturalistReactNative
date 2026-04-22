@@ -16,8 +16,8 @@ const NotificationOnboarding = ( { triggerCondition }: Props ) => {
       slides={[
         {
           title: t( "Watch-your-notifications-for-identifications" ),
-          description: t( "The-iNaturalist-community-will-help-verify-and-refine-identifications" )
-        }
+          description: t( "The-iNaturalist-community-will-help-verify-and-refine-identifications" ),
+        },
       ]}
     />
   );
@@ -36,8 +36,8 @@ const AccountCreationCard = ( { triggerCondition }: Props ) => {
           description2: t( "All-observations-need-a-date-and-location-to-be-used-for-science" ),
           checkbox1: t( "Get-feedback-from-naturalists-and-experts-who-will-help-verify" ),
           checkbox2: t( "Help-create-Research-Grade-data-used-in-science-and-conservation" ),
-          imageSource: require( "images/background/camera-finder.png" )
-        }
+          imageSource: require( "images/background/camera-finder.png" ),
+        },
       ]}
     />
   );
@@ -52,8 +52,8 @@ const OneObservationCard = ( { triggerCondition, imageComponentOptions }: Props 
       slides={[
         {
           title: t( "Congratulations-You-made-your-first-observation" ),
-          imageComponentOptions
-        }
+          imageComponentOptions,
+        },
       ]}
     />
   );
@@ -70,8 +70,8 @@ const FiveObservationCard = ( { triggerCondition }: Props ) => {
           title: t( "Your-observations-can-help-science" ),
           description: t( "Upload-your-observations-to-contribute-data-to-help-save-species" ),
           description2: t( "Learn-from-people-who-verify-and-refine-your-identifications" ),
-          imageSource: require( "images/background/using-inaturalist-in-the-field.png" )
-        }
+          imageSource: require( "images/background/using-inaturalist-in-the-field.png" ),
+        },
       ]}
     />
   );
@@ -88,17 +88,17 @@ const FiftyObservationCard = ( { triggerCondition }: Props ) => {
         {
           title: t( "Welcome-back" ),
           description: t( "You-may-notice-changes-to-how-things-look-and-flow" ),
-          imageSource: require( "images/background/using-inaturalist-in-the-field.png" )
-        }
+          imageSource: require( "images/background/using-inaturalist-in-the-field.png" ),
+        },
       ]}
       altActionButton={{
         text: t( "OPEN-SETTINGS" ),
         onPress: ( ) => {
           navigation.navigate( "Settings" );
-        }
+        },
       }}
       altCloseButton={{
-        text: t( "Skip-for-now" )
+        text: t( "Skip-for-now" ),
       }}
     />
   );
@@ -109,5 +109,5 @@ export {
   FiftyObservationCard,
   FiveObservationCard,
   NotificationOnboarding,
-  OneObservationCard
+  OneObservationCard,
 };

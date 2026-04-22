@@ -5,7 +5,7 @@ import {
   useCameraDevice,
   useCameraDevices,
   useCameraFormat,
-  useFrameProcessor
+  useFrameProcessor,
 } from "react-native-vision-camera";
 
 export {
@@ -13,5 +13,5 @@ export {
   useCameraDevice,
   useCameraDevices,
   useCameraFormat,
-  useFrameProcessor
+  useFrameProcessor,
 };

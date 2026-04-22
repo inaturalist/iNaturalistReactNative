@@ -14,16 +14,16 @@ type Props = {
   onClose?: Function,
   onDeletePhoto?: Function,
   onDeleteSound?: Function,
-  photos?: Array<{
+  photos?: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
-  sounds?: Array<{
+  }[],
+  sounds?: {
     file_url: string
-  }>,
+  }[],
   showModal: boolean,
   uri?: string | null
 }
@@ -39,7 +39,7 @@ const MediaViewerModal = ( {
   photos = [],
   showModal,
   sounds,
-  uri
+  uri,
 }: Props ): Node => (
   <Modal
     showModal={showModal}

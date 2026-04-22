@@ -1,20 +1,18 @@
 import classnames from "classnames";
 import GreenCheckmark from "components/Camera/Buttons/GreenCheckmark";
+import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { PropsWithChildren } from "react";
 import React from "react";
-import DeviceInfo from "react-native-device-info";
 import type { AnimatedStyle } from "react-native-reanimated";
-import Animated from "react-native-reanimated";
-
-const isTablet = DeviceInfo.isTablet();
 
 const BUTTON_DIM = 40;
 
 const SIDE_BUTTON_CLASSES = [
   "w-1/3",
   "h-full",
-  "bg-black"
+  "bg-black",
 ];
 
 const CHECKMARK_CLASSES = [
@@ -23,7 +21,7 @@ const CHECKMARK_CLASSES = [
   `h-[${BUTTON_DIM}px]`,
   `w-[${BUTTON_DIM}px]`,
   "justify-center",
-  "items-center"
+  "items-center",
 ];
 
 const CLOSE_CLASSES = [
@@ -32,11 +30,10 @@ const CLOSE_CLASSES = [
   `h-[${BUTTON_DIM}px]`,
   `w-[${BUTTON_DIM}px]`,
   "justify-center",
-  "items-center"
+  "items-center",
 ];
 
-interface Props {
-  captureButton: React.JSX.Element;
+interface Props extends PropsWithChildren {
   closeHidden?: boolean;
   confirmHidden?: boolean;
   disabled?: boolean;
@@ -47,14 +44,14 @@ interface Props {
 }
 
 const MediaNavButtons = ( {
-  captureButton,
+  children,
   closeHidden,
   confirmHidden,
   disabled,
   mediaCaptured,
   onClose,
   onConfirm,
-  rotatableAnimatedStyle
+  rotatableAnimatedStyle,
 }: Props ) => (
   <View
     className="h-32 flex-row justify-between items-center bg-black"
@@ -63,28 +60,28 @@ const MediaNavButtons = ( {
     {closeHidden
       ? <View className="w-1/3" />
       : (
-        <Animated.View
-          style={!isTablet && rotatableAnimatedStyle}
-          className={classnames( CLOSE_CLASSES, SIDE_BUTTON_CLASSES )}
+        <RotatableIconWrapper
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
+          containerClass={classnames( CLOSE_CLASSES, SIDE_BUTTON_CLASSES )}
         >
           <CloseButton
             handleClose={onClose}
             buttonClassName={classnames( CLOSE_CLASSES, "bg-[#232323]" )}
           />
-        </Animated.View>
+        </RotatableIconWrapper>
       )}
-    {captureButton}
+    {children}
     {mediaCaptured && !confirmHidden
       ? (
-        <Animated.View
-          style={!isTablet && rotatableAnimatedStyle}
-          className={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )}
+        <RotatableIconWrapper
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
+          containerClass={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )}
         >
           <GreenCheckmark
             disabled={disabled}
             handleCheckmarkPress={onConfirm}
           />
-        </Animated.View>
+        </RotatableIconWrapper>
       )
       : (
         <View className={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )} />

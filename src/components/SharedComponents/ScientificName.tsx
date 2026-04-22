@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { Body3 } from "components/SharedComponents";
-import { random } from "lodash";
+import random from "lodash/random";
 import React from "react";
 import type { TextProps } from "react-native";
 import Taxon from "realmModels/Taxon";
@@ -34,7 +34,7 @@ const ScientificName = ( {
   scientificNamePieces,
   taxonId,
   textClassName,
-  maxFontSizeMultiplier
+  maxFontSizeMultiplier,
 }: Props ) => {
   const { t } = useTranslation( );
   const scientificNameArray = scientificNamePieces?.map( ( piece, index ) => {
@@ -58,8 +58,8 @@ const ScientificName = ( {
           textClassName,
           {
             "font-light": !isTitle,
-            italic: isItalics
-          }
+            italic: isItalics,
+          },
         )}
       >
         {text}

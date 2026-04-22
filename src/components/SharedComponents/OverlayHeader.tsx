@@ -1,9 +1,9 @@
 import classnames from "classnames";
 import {
-  BackButton
+  BackButton,
 } from "components/SharedComponents";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React from "react";
@@ -19,14 +19,14 @@ const OverlayHeader = ( {
   children,
   invertToWhiteBackground,
   headerRight,
-  testID
+  testID,
 }: Props ) => (
   <View className={
     classnames(
       "w-full justify-between items-center flex-row px-[13px] h-[44px]",
       {
-        "bg-white": invertToWhiteBackground
-      }
+        "bg-white": invertToWhiteBackground,
+      },
     )
   }
   >
@@ -35,7 +35,7 @@ const OverlayHeader = ( {
         color={String(
           invertToWhiteBackground
             ? colors?.darkGray
-            : colors?.white
+            : colors?.white,
         )}
         inCustomHeader
         testID={testID}

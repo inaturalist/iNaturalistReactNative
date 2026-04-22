@@ -4,7 +4,7 @@ import INatIcon from "components/SharedComponents/INatIcon";
 // Directly imported, not from index.js to avoid circular dependency
 import UserIcon from "components/SharedComponents/UserIcon";
 import {
-  Pressable, View
+  Pressable, View,
 } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React from "react";
@@ -30,10 +30,10 @@ const InlineUserBase = ( {
   isConnected,
   TextComponent,
   testID,
-  useBigIcon = false
+  useBigIcon = false,
 }: Props ) => {
   const navigation = useNavigation();
-  const userImgUri = User.uri( user );
+  const userImgUri = User.thumbUri( user );
   const userHandle = user?.login;
   const currentUser = useCurrentUser();
   const isCurrentUser = user?.id === currentUser?.id;

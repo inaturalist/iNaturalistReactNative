@@ -28,19 +28,21 @@ interface Props {
   TextComponent?: typeof Heading4 | typeof Heading5;
 }
 
+const EMPTY_TABS: Tab[] = [];
+
 const Tabs = ( {
   activeId,
   activeColor = String( colors?.darkGray ),
-  tabs = [],
+  tabs = EMPTY_TABS,
   TabComponent,
-  TextComponent = Heading4
+  TextComponent = Heading4,
 }: Props ) => {
   const { t } = useTranslation();
   return (
     <>
       <View className="flex flex-row" accessibilityRole="tablist">
         {tabs.map( ( {
-          id, text, onPress, testID
+          id, text, onPress, testID,
         } ) => {
           const active = activeId === id;
           return (
@@ -57,7 +59,7 @@ const Tabs = ( {
                 accessibilityHint={t( "Switches-to-tab", { tab: text } )}
                 accessibilityState={{
                   selected: active,
-                  expanded: active
+                  expanded: active,
                 }}
               >
                 {

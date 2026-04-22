@@ -2,14 +2,14 @@
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView";
 import {
-  useFrameProcessor
+  useFrameProcessor,
 } from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { Node } from "react";
 import React, {
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import { Platform } from "react-native";
 import { Worklets } from "react-native-worklets-core";
@@ -17,7 +17,7 @@ import {
   geomodelPath,
   modelPath,
   modelVersion,
-  taxonomyPath
+  taxonomyPath,
 } from "sharedHelpers/mlModel";
 import { logStage } from "sharedHelpers/sentinelFiles";
 import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
@@ -75,7 +75,7 @@ const FrameProcessorCamera = ( {
   inactive,
   resetCameraOnFocus,
   userLocation,
-  useLocation
+  useLocation,
 }: Props ): Node => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const { isDefaultMode } = useLayoutPrefs( );
@@ -106,22 +106,18 @@ const FrameProcessorCamera = ( {
   }, [onLog] );
 
   useEffect( () => {
-    const unsubscribeFocus = navigation.addListener( "focus", () => {
-      InatVision.resetStoredResults( );
-      resetCameraOnFocus( );
-    } );
-
-    return unsubscribeFocus;
-  }, [navigation, resetCameraOnFocus] );
-
-  useEffect( () => {
-    const unsubscribeBlur = navigation.addListener( "blur", () => {
+    const resetAll = () => {
       InatVision.resetStoredResults();
-      resetCameraOnFocus( );
-    } );
+      resetCameraOnFocus();
+    };
+    const unsubscribeFocus = navigation.addListener( "focus", resetAll );
+    const unsubscribeBlur = navigation.addListener( "blur", resetAll );
 
-    return unsubscribeBlur;
-  }, [navigation, resetCameraOnFocus, sentinelFileName] );
+    return () => {
+      unsubscribeFocus();
+      unsubscribeBlur();
+    };
+  }, [navigation, resetCameraOnFocus] );
 
   const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
     setLastTimestamp( result.timestamp );
@@ -185,8 +181,8 @@ const FrameProcessorCamera = ( {
             location: {
               latitude: geoModelCellLocation?.latitude,
               longitude: geoModelCellLocation?.longitude,
-              elevation: geoModelCellLocation?.elevation
-            }
+              elevation: geoModelCellLocation?.elevation,
+            },
           } );
           const timeAfter = Date.now();
           const timeTaken = timeAfter - timeBefore;
@@ -207,8 +203,8 @@ const FrameProcessorCamera = ( {
       lastTimestamp,
       fps,
       useGeomodel,
-      geoModelCellLocation
-    ]
+      geoModelCellLocation,
+    ],
   );
 
   return (

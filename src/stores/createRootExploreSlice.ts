@@ -2,7 +2,7 @@ import type { StateCreator } from "zustand";
 
 const DEFAULT_STATE = {
   rootStoredParams: {},
-  rootExploreView: "observations"
+  rootExploreView: "observations",
 };
 
 interface RootExploreSlice {
@@ -15,7 +15,7 @@ interface RootExploreSlice {
 const createRootExploreSlice: StateCreator<RootExploreSlice> = set => ( {
   ...DEFAULT_STATE,
   setRootStoredParams: rootStoredParams => set( ( ) => ( { rootStoredParams } ) ),
-  setRootExploreView: rootExploreView => set( ( ) => ( { rootExploreView } ) )
+  setRootExploreView: rootExploreView => set( ( ) => ( { rootExploreView } ) ),
 } );
 
 export default createRootExploreSlice;

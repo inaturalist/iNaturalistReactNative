@@ -3,7 +3,7 @@
 import {
   Body1,
   Heading4,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -27,7 +27,7 @@ type Props = {
   shouldUseEvidenceLocation: boolean,
   onPressPhoto: Function,
   onTaxonChosen: Function,
-  photoUris: Array<string>,
+  photoUris: string[],
   reloadSuggestions: Function,
   selectedPhotoUri: string,
   showImproveWithLocationButton: boolean,
@@ -54,12 +54,12 @@ const Suggestions = ( {
   suggestions,
   toggleLocation,
   urlWillCrashOffline,
-  usingOfflineSuggestions
+  usingOfflineSuggestions,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
     otherSuggestions,
-    topSuggestion
+    topSuggestion,
   } = suggestions;
 
   const taxonIds = otherSuggestions?.map( s => s.taxon.id );
@@ -102,7 +102,7 @@ const Suggestions = ( {
     hideSkip,
     shouldUseEvidenceLocation,
     observers,
-    toggleLocation
+    toggleLocation,
   ] );
 
   const renderHeader = useMemo( ( ) => (
@@ -122,7 +122,7 @@ const Suggestions = ( {
     selectedPhotoUri,
     improveWithLocationButtonOnPress,
     showImproveWithLocationButton,
-    showOfflineText
+    showOfflineText,
   ] );
 
   const renderSectionHeader = ( { section } ) => {
@@ -167,10 +167,10 @@ const Suggestions = ( {
       // we will still show the section with a notice saying there's nothing
       // to show, so data can't be empty
       data: [topSuggestion || null],
-      renderItem: renderTopSuggestion
+      renderItem: renderTopSuggestion,
     }, {
       title: t( "OTHER-SUGGESTIONS" ),
-      data: otherSuggestions
+      data: otherSuggestions,
     }];
   };
 

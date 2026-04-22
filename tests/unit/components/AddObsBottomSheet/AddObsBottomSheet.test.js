@@ -8,15 +8,15 @@ jest.mock( "react-native/Libraries/Utilities/Platform", ( ) => ( {
   default: {
     OS: "ios",
     select: jest.fn( ),
-    Version: 11
-  }
+    Version: 11,
+  },
 } ) );
 
 describe( "AddObsBottomSheet", ( ) => {
   it( "shows the AI camera button", async ( ) => {
     render( <AddObsBottomSheet closeModal={jest.fn( )} /> );
     const aiCameraButton = screen.getByTestId(
-      "aicamera-button"
+      "aicamera-button",
     );
     expect( aiCameraButton ).toBeOnTheScreen();
   } );

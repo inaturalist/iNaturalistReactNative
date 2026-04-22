@@ -1,5 +1,5 @@
 import {
-  by, element, expect, waitFor
+  by, element, expect, waitFor,
 } from "detox";
 import Config from "react-native-config-node";
 

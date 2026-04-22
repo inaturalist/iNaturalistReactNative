@@ -7,7 +7,7 @@ import React from "react";
 
 type Props = {
   item: Object,
-  selectedObservations: Array<Object>,
+  selectedObservations: Object[],
   selectObservationPhotos: Function,
   style?: Object
 }
@@ -16,7 +16,7 @@ const GroupPhotoImage = ( {
   item,
   selectedObservations,
   selectObservationPhotos,
-  style
+  style,
 }: Props ): Node => {
   const firstPhoto = item.photos[0];
   const isSelected = selectedObservations.includes( item );

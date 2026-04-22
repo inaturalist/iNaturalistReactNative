@@ -43,7 +43,7 @@ const SUPPORTED_APP_STORE_LOCALES = [
   "vi",
   "zh-Hans",
   "zh-Hant",
-  "default"
+  "default",
 ];
 
 const CROWDIN_TO_APP_STORE_MAPPINGS = {
@@ -59,7 +59,7 @@ const CROWDIN_TO_APP_STORE_MAPPINGS = {
   fr_CA: "fr-CA",
   nl: "nl-NL",
   pt: "pt-PT",
-  pt_BR: "pt-BR"
+  pt_BR: "pt-BR",
 };
 
 const SUPPORTED_GOOGLE_PLAY_LOCALES = [
@@ -149,7 +149,7 @@ const SUPPORTED_GOOGLE_PLAY_LOCALES = [
   "uk",
   "ur",
   "vi",
-  "zu"
+  "zu",
 ];
 
 const CROWDIN_TO_GOOGLE_PLAY_MAPPINGS = {
@@ -181,7 +181,7 @@ const CROWDIN_TO_GOOGLE_PLAY_MAPPINGS = {
   "uk-UA": "uk",
   "ur-PK": "ur",
   "vi-VN": "vi",
-  "zu-ZA": "zu"
+  "zu-ZA": "zu",
 };
 
 const FASTLANE_METADATA_PATH = path.join(
@@ -189,14 +189,14 @@ const FASTLANE_METADATA_PATH = path.join(
   "..",
   "..",
   "..",
-  "fastlane/metadata"
+  "fastlane/metadata",
 );
 
 async function renameDirectories( options = {} ) {
   // Get all directories in fastlane/metadata/ios
   const iosDirectories = await fsp
     .readdir( path.join( FASTLANE_METADATA_PATH, "ios" ), {
-      withFileTypes: true
+      withFileTypes: true,
     } )
     .then( files => files.filter( file => file.isDirectory() ).map( file => file.name ) );
   await Promise.all(
@@ -219,15 +219,15 @@ async function renameDirectories( options = {} ) {
           "Renaming directory",
           directoryPath,
           "to",
-          newDirectoryPath
+          newDirectoryPath,
         );
       }
       await fsp.rename( directoryPath, newDirectoryPath );
-    } )
+    } ),
   );
   const androidDirectories = await fsp
     .readdir( path.join( FASTLANE_METADATA_PATH, "android" ), {
-      withFileTypes: true
+      withFileTypes: true,
     } )
     .then( files => files.filter( file => file.isDirectory() ).map( file => file.name ) );
   return Promise.all(
@@ -250,11 +250,11 @@ async function renameDirectories( options = {} ) {
           "Renaming directory",
           directoryPath,
           "to",
-          newDirectoryPath
+          newDirectoryPath,
         );
       }
       await fsp.rename( directoryPath, newDirectoryPath );
-    } )
+    } ),
   );
 }
 
@@ -262,7 +262,7 @@ async function removeUnsupportedDirectories( options = {} ) {
   // Get all directories in fastlane/metadata/ios
   const iosDirectories = await fsp
     .readdir( path.join( FASTLANE_METADATA_PATH, "ios" ), {
-      withFileTypes: true
+      withFileTypes: true,
     } )
     .then( files => files.filter( file => file.isDirectory() ).map( file => file.name ) );
   await Promise.all(
@@ -273,11 +273,11 @@ async function removeUnsupportedDirectories( options = {} ) {
         console.log( "Removing unsupported directory", directoryPath );
       }
       await fsp.rmdir( directoryPath, { recursive: true } );
-    } )
+    } ),
   );
   const androidDirectories = await fsp
     .readdir( path.join( FASTLANE_METADATA_PATH, "android" ), {
-      withFileTypes: true
+      withFileTypes: true,
     } )
     .then( files => files.filter( file => file.isDirectory() ).map( file => file.name ) );
   return Promise.all(
@@ -293,7 +293,7 @@ async function removeUnsupportedDirectories( options = {} ) {
         console.log( "Removing unsupported directory", directoryPath );
       }
       await fsp.rmdir( directoryPath, { recursive: true } );
-    } )
+    } ),
   );
 }
 
@@ -304,7 +304,7 @@ async function copyAndroidTitle( options = {} ) {
   // Get all directories in fastlane/metadata/android
   const androidDirectories = await fsp
     .readdir( path.join( FASTLANE_METADATA_PATH, "android" ), {
-      withFileTypes: true
+      withFileTypes: true,
     } )
     .then( files => files.filter( file => file.isDirectory() ).map( file => file.name ) );
   // Copy title.txt from en-US directory into all the other directories
@@ -316,12 +316,12 @@ async function copyAndroidTitle( options = {} ) {
         console.log( "Copying title.tx into: ", directoryPath );
       }
       await fsp.copyFile( titlePath, path.join( directoryPath, "title.txt" ) );
-    } )
+    } ),
   );
 }
 
 export {
   copyAndroidTitle,
   removeUnsupportedDirectories,
-  renameDirectories
+  renameDirectories,
 };

@@ -8,12 +8,12 @@ const useInfiniteScroll = (
   newInputParams: Object,
   options?: {
     enabled: boolean
-  }
+  },
 ): Object => {
   const baseParams = {
-    ...newInputParams,
     per_page: 10,
-    ttl: -1
+    ttl: -1,
+    ...newInputParams,
   };
 
   const {
@@ -22,24 +22,35 @@ const useInfiniteScroll = (
     isFetchingNextPage,
     fetchNextPage,
     refetch,
-    status
+    status,
   } = useAuthenticatedInfiniteQuery(
     [queryKey, baseParams],
     async ( { pageParam = 1 }, optsWithAuth ) => {
       const params = {
-        ...baseParams
+        ...baseParams,
       };
 
       params.page = pageParam;
 
       return apiCall( params, optsWithAuth );
     },
+    // TO DO: we need to properly type queryOptions in useAuthenticatedInfiniteQuery
+    /* eslint-disable consistent-return */
     {
-      getNextPageParam: lastPage => ( lastPage
-        ? lastPage.page + 1
-        : 1 ),
-      enabled: options?.enabled
-    }
+      getNextPageParam: lastPage => {
+        if ( !lastPage ) return undefined;
+
+        const totalResultsCount = lastPage.total_results;
+        const totalFetchedCount = lastPage.page * baseParams.per_page;
+
+        return totalFetchedCount < totalResultsCount
+          ? lastPage.page + 1
+          : undefined;
+      },
+
+      enabled: options?.enabled,
+    },
+    /* eslint-enable consistent-return */
   );
 
   const pages = data?.pages || [];
@@ -54,7 +65,7 @@ const useInfiniteScroll = (
     status,
     totalResults: pages?.[0]
       ? pages?.[0].total_results
-      : null
+      : null,
   };
 };
 

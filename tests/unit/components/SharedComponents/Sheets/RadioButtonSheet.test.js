@@ -7,13 +7,13 @@ const mockValues = [
   {
     value: "value 1",
     label: "label 1",
-    description: "description 1"
+    description: "description 1",
   },
   {
     value: "value 2",
     label: "label 2",
-    description: "description 2"
-  }
+    description: "description 2",
+  },
 ];
 
 describe( "RadioButtonSheet", () => {

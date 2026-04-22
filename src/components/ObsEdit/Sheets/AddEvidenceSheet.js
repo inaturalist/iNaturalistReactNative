@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  BottomSheet, EvidenceButton, List2
+  BottomSheet, EvidenceButton, List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -18,7 +18,7 @@ type Props = {
 const AddEvidenceSheet = ( {
   disableAddingMoreEvidence,
   hidden,
-  onClose
+  onClose,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -39,14 +39,12 @@ const AddEvidenceSheet = ( {
           <EvidenceButton
             icon="camera"
             handlePress={( ) => {
-              // Since we're on ObsEdit, the "Camera" screen might already be in
-              // the stack, e.g. the AICamera, so if we use navigate() we risk
-              // going *back* to it and popping ObsEdit off the stack. Instead,
-              // we *push* another instance of that screen on to the stack so we
-              // can return to ObsEdit
-              navigation.push( "Camera", {
-                addEvidence: true,
-                camera: "Standard"
+              navigation.navigate( "NoBottomTabStackNavigator", {
+                screen: "Camera",
+                params: {
+                  addEvidence: true,
+                  camera: "Standard",
+                },
               } );
             }}
             disabled={disableAddingMoreEvidence}
@@ -59,7 +57,7 @@ const AddEvidenceSheet = ( {
               // Show photo library, but skip group photos phase
               navigation.navigate( "NoBottomTabStackNavigator", {
                 screen: "PhotoLibrary",
-                params: { skipGroupPhotos: true }
+                params: { skipGroupPhotos: true },
               } );
             }}
             disabled={disableAddingMoreEvidence}
@@ -71,7 +69,7 @@ const AddEvidenceSheet = ( {
             handlePress={( ) => {
               navigation.navigate(
                 "NoBottomTabStackNavigator",
-                { screen: "SoundRecorder", params: { addEvidence: true } }
+                { screen: "SoundRecorder", params: { addEvidence: true } },
               );
             }}
             disabled={disableAddingMoreEvidence}

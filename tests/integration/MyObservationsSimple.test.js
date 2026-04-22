@@ -18,10 +18,10 @@ const mockUnsyncedObservations = [
       factory( "LocalObservationPhoto", {
         photo: {
           url: faker.image.url( ),
-          position: 0
-        }
-      } )
-    ]
+          position: 0,
+        },
+      } ),
+    ],
   } ),
   factory( "LocalObservation", {
     _synced_at: null,
@@ -29,28 +29,28 @@ const mockUnsyncedObservations = [
       factory( "LocalObservationPhoto", {
         photo: {
           url: `${faker.image.url( )}/100`,
-          position: 0
-        }
+          position: 0,
+        },
       } ),
       factory( "LocalObservationPhoto", {
         photo: {
           url: `${faker.image.url( )}/200`,
-          position: 1
-        }
-      } )
-    ]
-  } )
+          position: 1,
+        },
+      } ),
+    ],
+  } ),
 ];
 
 jest.mock( "sharedHooks/useFontScale", () => ( {
   __esModule: true,
-  default: ( ) => ( { isLargeFontScale: false } )
+  default: ( ) => ( { isLargeFontScale: false } ),
 } ) );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -61,8 +61,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -86,7 +86,7 @@ const displayItemByText = text => {
 beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: true,
-    isAllAddObsOptionsMode: false
+    isAllAddObsOptionsMode: false,
   } );
 } );
 
@@ -95,7 +95,7 @@ describe( "MyObservationsSimple", ( ) => {
     beforeEach( ( ) => {
       writeObservationsToRealm(
         mockUnsyncedObservations,
-        "writing unsynced observations for MyObservations integration test"
+        "writing unsynced observations for MyObservations integration test",
       );
     } );
 

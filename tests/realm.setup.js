@@ -20,8 +20,8 @@ jest.mock( "realmModels/index", ( ) => {
       schema: originalModule.default.schema,
       schemaVersion: originalModule.default.schemaVersion,
       inMemory: true,
-      path: mockPath.join( mockOs.tmpdir( ), "testArtifacts.realm" )
-    }
+      path: mockPath.join( mockOs.tmpdir( ), "testArtifacts.realm" ),
+    },
   };
 } );
 
@@ -34,8 +34,8 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.realm
-    }
+      useRealm: ( ) => global.realm,
+    },
   };
 } );
 

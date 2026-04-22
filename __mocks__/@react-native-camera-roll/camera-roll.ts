@@ -6,7 +6,7 @@ export const CameraRoll = {
     resolve( {
       page_info: {
         end_cursor: jest.fn( ),
-        has_next_page: false
+        has_next_page: false,
       },
       edges: [
         {
@@ -20,16 +20,16 @@ export const CameraRoll = {
               width: 1080,
               fileSize: 123456,
               playableDuration: NaN,
-              orientation: 1
-            }
-          }
-        }
-      ]
+              orientation: 1,
+            },
+          },
+        },
+      ],
     } );
   } ) ),
   getAlbums: jest.fn( ( ) => ( {
     // Expecting album titles as keys and photo counts as values
     // "My Amazing album": 12
   } ) ),
-  save: jest.fn( ( _uri, _options = {} ) => mockFaker.system.filePath( ) )
+  save: jest.fn( ( _uri, _options = {} ) => mockFaker.system.filePath( ) ),
 };

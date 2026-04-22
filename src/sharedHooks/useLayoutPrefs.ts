@@ -8,7 +8,7 @@ const selector = state => ( {
   loggedInWhileInDefaultMode: state.loggedInWhileInDefaultMode,
   setLoggedInWhileInDefaultMode: state.setLoggedInWhileInDefaultMode,
   // newer stuff
-  ...state.layout
+  ...state.layout,
 } );
 
 const useLayoutPrefs = ( ) => useStore( selector );

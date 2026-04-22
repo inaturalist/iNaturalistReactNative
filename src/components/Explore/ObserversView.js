@@ -20,13 +20,13 @@ const ObserversView = ( {
   canFetch,
   isConnected,
   queryParams,
-  handleUpdateCount
+  handleUpdateCount,
 }: Props ): Node => {
   const {
     data,
     isFetchingNextPage,
     fetchNextPage,
-    totalResults
+    totalResults,
   } = useInfiniteScroll(
     "fetchObservers",
     fetchObservers,
@@ -34,12 +34,12 @@ const ObserversView = ( {
       ...queryParams,
       order_by: "observation_count",
       fields: {
-        user: User.LIMITED_FIELDS
-      }
+        user: User.LIMITED_FIELDS,
+      },
     },
     {
-      enabled: canFetch
-    }
+      enabled: canFetch,
+    },
   );
 
   useEffect( ( ) => {

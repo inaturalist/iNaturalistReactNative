@@ -2,7 +2,7 @@ import { INatIcon } from "components/SharedComponents";
 import React from "react";
 import {
   MD3LightTheme as DefaultTheme,
-  Provider as PaperProvider
+  Provider as PaperProvider,
 } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
@@ -16,8 +16,8 @@ const theme = {
     ...DefaultTheme.colors,
     ...colors,
     // keeping background here for react-native-paper TextInput
-    background: colors.white
-  }
+    background: colors.white,
+  },
 } as const;
 
 const renderCustomIcon = (
@@ -28,7 +28,7 @@ const renderCustomIcon = (
 const INatPaperProvider = ( { children }: React.PropsWithChildren ) => (
   <PaperProvider
     settings={{
-      icon: renderCustomIcon
+      icon: renderCustomIcon,
     }}
     theme={theme}
   >

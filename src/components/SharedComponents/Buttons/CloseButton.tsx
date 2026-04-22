@@ -21,7 +21,7 @@ const CloseButton = ( {
   height,
   icon,
   size,
-  width
+  width,
 }: Props ) => {
   const navigation = useNavigation( );
 

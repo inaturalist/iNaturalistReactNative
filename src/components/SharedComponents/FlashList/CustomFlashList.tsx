@@ -2,7 +2,7 @@ import { FlashList } from "@shopify/flash-list";
 import React, {
   useCallback,
   useEffect,
-  useRef
+  useRef,
 } from "react";
 import type { ViewabilityConfig } from "react-native";
 import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
@@ -10,7 +10,7 @@ import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
 const defaultViewabilityConfig: ViewabilityConfig = {
   minimumViewTime: 0,
   viewAreaCoveragePercentThreshold: 10,
-  waitForInteraction: false
+  waitForInteraction: false,
 };
 
 const CustomFlashList = props => {
@@ -22,6 +22,8 @@ const CustomFlashList = props => {
   const isUserScrolling = useRef( false );
   const ignoreInitialEvents = useRef( true );
   const fetchInProgress = useRef( false );
+
+  const internalRef = useRef( null );
 
   const {
     ref,
@@ -120,38 +122,31 @@ const CustomFlashList = props => {
 
   // To be called when new data is received
   // This needs to be exposed so it can be called from parent component
-  React.useImperativeHandle( ref, ( ) => {
-    const originalRef = typeof ref === "function"
-      ? {} // Function refs can't be read, only written
-      : ( ref?.current || {} );
+  React.useImperativeHandle( ref, () => {
+    const flashListMethods = internalRef.current || {};
 
     return {
-      ...originalRef,
+      ...flashListMethods,
       notifyDataFetched: itemsCount => {
         if ( fetchInProgress.current ) {
           flashListTracker.endDataFetch( itemsCount );
           fetchInProgress.current = false;
         } else {
-          flashListTracker.beginDataFetch( );
+          flashListTracker.beginDataFetch();
           flashListTracker.endDataFetch( itemsCount );
         }
       },
-      scrollToOffset: params => {
-        if ( ref && typeof ref !== "function" && ref.current ) {
-          ref.current.scrollToOffset( params );
-        }
-      }
     };
   } );
 
   const viewabilityConfig = {
     ...defaultViewabilityConfig,
-    ...props.viewabilityConfig
+    ...props.viewabilityConfig,
   };
 
   return (
     <FlashList
-      ref={ref}
+      ref={internalRef}
       initialNumToRender={5}
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.2}

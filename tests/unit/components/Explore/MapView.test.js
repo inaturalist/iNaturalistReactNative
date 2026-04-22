@@ -10,7 +10,7 @@ import { renderComponent } from "tests/helpers/render";
 const mockDispatch = jest.fn( );
 const mockDefaultExploreLocation = jest.fn( ).mockResolvedValue( {
   lat: 10,
-  lng: 20
+  lng: 20,
 } );
 
 // Create a mock implementation of the ExploreContext
@@ -24,11 +24,11 @@ jest.mock( "providers/ExploreContext", ( ) => {
         lat: 10,
         lng: 20,
         placeMode: originalModule.PLACE_MODE.NEARBY,
-        place: null
+        place: null,
       },
       dispatch: mockDispatch,
-      defaultExploreLocation: mockDefaultExploreLocation
-    } )
+      defaultExploreLocation: mockDefaultExploreLocation,
+    } ),
   };
 } );
 
@@ -36,7 +36,7 @@ const mockObservationBounds = {
   swlat: 10,
   swlng: 20,
   nelat: 30,
-  nelng: 40
+  nelng: 40,
 };
 
 const mockRequestLocationPermissions = jest.fn( );
@@ -45,17 +45,17 @@ const defaultProps = {
   observationBounds: mockObservationBounds,
   queryParams: {
     taxon_id: 1,
-    return_bounds: true
+    return_bounds: true,
   },
   isLoading: false,
   hasLocationPermissions: true,
   renderLocationPermissionsGate: jest.fn( ),
-  requestLocationPermissions: mockRequestLocationPermissions
+  requestLocationPermissions: mockRequestLocationPermissions,
 };
 
 const mockObservations = [
   factory( "RemoteObservation" ),
-  factory( "RemoteObservation" )
+  factory( "RemoteObservation" ),
 ];
 
 function renderMapView( ) {
@@ -105,7 +105,7 @@ describe( "MapView", ( ) => {
 
     expect( mockDispatch ).toHaveBeenCalledWith( {
       type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
-      exploreLocation: { lat: 10, lng: 20 }
+      exploreLocation: { lat: 10, lng: 20 },
     } );
   } );
 
@@ -117,7 +117,7 @@ describe( "MapView", ( ) => {
           {...defaultProps}
           hasLocationPermissions={false}
         />
-      </ExploreProvider>
+      </ExploreProvider>,
     );
 
     const currentLocationButton = screen.getByTestId( "Map.CurrentLocationButton" );
@@ -133,7 +133,7 @@ describe( "MapView", ( ) => {
     renderComponent(
       <ExploreProvider>
         <MapView {...defaultProps} isLoading />
-      </ExploreProvider>
+      </ExploreProvider>,
     );
 
     const loadingIndicator = screen.getByTestId( "activity-indicator" );

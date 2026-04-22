@@ -1,10 +1,13 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import { log } from "sharedHelpers/logger";
 
 import handleError from "./error";
 
-// I tried doing this in Observaiton.js but got mysterious Realm errors. More
+const logger = log.extend( "observations" );
+
+// I tried doing this in Observation.js but got mysterious Realm errors. More
 // could be here, but this solves an immediate problem with schema mismatch
 function mapObsPhotoToLocalSchema( obsPhoto ) {
   obsPhoto.photo.licenseCode = obsPhoto.photo.licenseCode
@@ -19,7 +22,24 @@ function mapToLocalSchema( observation ) {
 
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<Object> => {
   try {
+    const startedAt = Date.now( );
     const response = await inatjs.observations.search( params, opts );
+    const elapsedMs = Date.now( ) - startedAt;
+    // Wrapping this in try/catch just in case something goes wrong with logging,
+    // we don't want to fail the whole request just because of that
+    try {
+      logger.infoWithExtra(
+        "EXPERIMENTAL COMPARISON: querying API v2 with fields",
+        {
+          hasFields: !!params?.fields,
+          durationMs: elapsedMs,
+          // Not sure if asking for smaller page has performance benefits, but log it just in case
+          per_page: params?.per_page,
+        },
+      );
+    } catch ( e ) {
+      logger.error( "Error logging experimental comparison", e );
+    }
     response.results = response.results.map( mapToLocalSchema );
     return response;
   } catch ( e ) {
@@ -46,13 +66,13 @@ const unfaveObservation = async ( params: Object = {}, opts: Object = {} ): Prom
 const fetchRemoteObservation = async (
   uuid: string,
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?number> => {
   try {
     const response = await inatjs.observations.fetch(
       uuid,
       params,
-      opts
+      opts,
     );
     if ( !response ) { return null; }
     const { results } = response;
@@ -66,15 +86,15 @@ const fetchRemoteObservation = async (
 };
 
 const fetchRemoteObservations = async (
-  uuids: Array<string>,
+  uuids: string[],
   params: Object = {},
-  opts: Object = {}
-): Promise<?Array<Object>> => {
+  opts: Object = {},
+): Promise<?Object[]> => {
   try {
     const response = await inatjs.observations.fetch(
       uuids,
       params,
-      opts
+      opts,
     );
     if ( !response ) { return null; }
     const { results } = response;
@@ -97,7 +117,7 @@ const markAsReviewed = async ( params: Object = {}, opts: Object = {} ): Promise
 
 const markObservationUpdatesViewed = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     return await inatjs.observations.viewedUpdates( params, opts );
@@ -108,7 +128,7 @@ const markObservationUpdatesViewed = async (
 
 const createObservation = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     return await inatjs.observations.create( params, opts );
@@ -119,7 +139,7 @@ const createObservation = async (
 
 const updateObservation = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     return await inatjs.observations.update( params, opts );
@@ -135,7 +155,7 @@ const updateObservation = async (
 const createOrUpdateEvidence = async (
   apiEndpoint: Function,
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     return await apiEndpoint( params, opts );
@@ -146,7 +166,7 @@ const createOrUpdateEvidence = async (
 
 const fetchObservationUpdates = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     const { results } = await inatjs.observations.updates( params, opts );
@@ -158,28 +178,28 @@ const fetchObservationUpdates = async (
 
 const fetchUnviewedObservationUpdatesCount = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<number> => {
   try {
     const { total_results: updatesCount } = await inatjs.observations.updates( {
       ...params,
       viewed: false,
-      per_page: 0
+      per_page: 0,
     }, opts );
     return updatesCount;
   } catch ( e ) {
     return handleError( e, {
       context: {
         functionName: "fetchUnviewedObservationUpdatesCount",
-        opts
-      }
+        opts,
+      },
     } );
   }
 };
 
 const deleteRemoteObservation = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ) : Promise<?Object> => {
   try {
     return await inatjs.observations.delete( params, opts );
@@ -206,7 +226,7 @@ const fetchIdentifiers = async ( params: Object = {} ) : Promise<?Object> => {
 
 const fetchSpeciesCounts = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ) : Promise<?Object> => {
   try {
     return inatjs.observations.speciesCounts( params, opts );
@@ -217,7 +237,7 @@ const fetchSpeciesCounts = async (
 
 const checkForDeletedObservations = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ) : Promise<?Object> => {
   try {
     return await inatjs.observations.deleted( params, opts );
@@ -228,7 +248,7 @@ const checkForDeletedObservations = async (
 
 const fetchSubscriptions = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ) : Promise<?Object> => {
   try {
     return inatjs.observations.subscriptions( params, opts );
@@ -239,7 +259,7 @@ const fetchSubscriptions = async (
 
 const createSubscription = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ) : Promise<?Object> => {
   try {
     return inatjs.observations.subscribe( params, opts );
@@ -267,5 +287,5 @@ export {
   markObservationUpdatesViewed,
   searchObservations,
   unfaveObservation,
-  updateObservation
+  updateObservation,
 };

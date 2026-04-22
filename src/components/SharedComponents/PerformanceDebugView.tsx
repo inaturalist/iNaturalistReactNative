@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
 import {
-  useDebugMode
+  useDebugMode,
 } from "sharedHooks";
 
 interface PerformanceDebugViewProps {
@@ -22,7 +22,7 @@ const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ( {
   showScrollMetrics = true,
   position = "bottom-left",
   className = "",
-  refreshInterval = 1000
+  refreshInterval = 1000,
 } ) => {
   const { isDebug } = useDebugMode( );
   const [, setRefreshCounter] = useState( 0 );
@@ -37,14 +37,14 @@ const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ( {
     avgFetchTime: listMetrics?.avgFetchTime ?? 0,
     lastFetchTime: listMetrics?.lastFetchTime ?? 0,
     lastFetchItemCount: listMetrics?.lastFetchItemCount ?? 0,
-    totalItemsDisplayed: listMetrics?.totalItemsDisplayed ?? 0
+    totalItemsDisplayed: listMetrics?.totalItemsDisplayed ?? 0,
   };
 
   const positionClasses = {
     "top-left": "top-5 left-5",
     "top-right": "top-5 right-5",
     "bottom-left": "bottom-[280px] left-5",
-    "bottom-right": "bottom-[280px] right-5"
+    "bottom-right": "bottom-[280px] right-5",
   };
 
   useEffect( () => {
@@ -71,7 +71,7 @@ const PerformanceDebugView: React.FC<PerformanceDebugViewProps> = ( {
         "rounded-md",
         "z-10",
         positionClasses[position],
-        className
+        className,
       )}
     >
       {showListMetrics && (

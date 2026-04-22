@@ -15,7 +15,7 @@ describe( "MatchHeader", () => {
   it( "displays high confidence message for species", () => {
     const topSuggestion = {
       combined_score: 95,
-      taxon: factory( "LocalTaxon", { rank_level: 10 } )
+      taxon: factory( "LocalTaxon", { rank_level: 10 } ),
     };
 
     renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
@@ -26,7 +26,7 @@ describe( "MatchHeader", () => {
   it( "displays high confidence message for taxa above species", () => {
     const topSuggestion = {
       combined_score: 95,
-      taxon: factory( "LocalTaxon", { rank_level: 20 } )
+      taxon: factory( "LocalTaxon", { rank_level: 20 } ),
     };
 
     renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
@@ -39,7 +39,7 @@ describe( "MatchHeader", () => {
   it( "displays likely confidence message for species", () => {
     const topSuggestion = {
       combined_score: 75,
-      taxon: factory( "LocalTaxon", { rank_level: 10 } )
+      taxon: factory( "LocalTaxon", { rank_level: 10 } ),
     };
 
     renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
@@ -50,7 +50,7 @@ describe( "MatchHeader", () => {
   it( "displays may have observed message", () => {
     const topSuggestion = {
       combined_score: 30,
-      taxon: factory( "LocalTaxon", { rank_level: 10 } )
+      taxon: factory( "LocalTaxon", { rank_level: 10 } ),
     };
 
     renderComponent( <MatchHeader topSuggestion={topSuggestion} /> );
@@ -61,7 +61,7 @@ describe( "MatchHeader", () => {
   it( "hides observation status when hideObservationStatus is true", () => {
     const topSuggestion = {
       combined_score: 87.5,
-      taxon: factory( "LocalTaxon", { rank_level: 10 } )
+      taxon: factory( "LocalTaxon", { rank_level: 10 } ),
     };
 
     renderComponent( <MatchHeader topSuggestion={topSuggestion} hideObservationStatus /> );

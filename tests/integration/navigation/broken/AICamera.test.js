@@ -1,7 +1,7 @@
 import {
   screen,
   userEvent,
-  within
+  within,
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
@@ -44,8 +44,8 @@ jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   default: {
     OS: "ios",
     select: jest.fn(),
-    Version: 11
-  }
+    Version: 11,
+  },
 } ) );
 
 const mockLocalTaxon = {
@@ -53,25 +53,25 @@ const mockLocalTaxon = {
   name: "Poecile",
   rank_level: 20,
   default_photo: {
-    url: "fake_image_url"
-  }
+    url: "fake_image_url",
+  },
 };
 
 const mockModelResult = {
   predictions: [factory( "ModelPrediction", {
   // useOfflineSuggestions will filter out taxa w/ rank_level > 40
-    rank_level: 20
-  } )]
+    rank_level: 20,
+  } )],
 };
 inatjs.computervision.score_image.mockResolvedValue( makeResponse( [] ) );
 getPredictionsForImage.mockImplementation(
-  async ( ) => ( mockModelResult )
+  async ( ) => ( mockModelResult ),
 );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -82,8 +82,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -98,7 +98,7 @@ beforeAll( async () => {
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
   taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
-  combined_score: 90
+  combined_score: 90,
 };
 
 const mockUser = factory( "LocalUser" );
@@ -108,7 +108,7 @@ beforeEach( async ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
     screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
@@ -120,7 +120,7 @@ afterEach( ( ) => {
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
 jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   __esModule: true,
-  default: () => mockFetchUserLocation()
+  default: () => mockFetchUserLocation(),
 } ) );
 
 const actor = userEvent.setup( );
@@ -143,7 +143,7 @@ const takePhotoAndNavToSuggestions = async ( ) => {
 
 const navToObsEditWithTopSuggestion = async ( ) => {
   const topTaxonResultButton = await screen.findByTestId(
-    `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+    `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
   );
   await actor.press( topTaxonResultButton );
   const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
@@ -160,9 +160,9 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
         handleTaxaDetected: jest.fn( ),
         modelLoaded: true,
         result: {
-          taxon: mockLocalTaxon
+          taxon: mockLocalTaxon,
         },
-        setResult: jest.fn( )
+        setResult: jest.fn( ),
       } ) );
     } );
 
@@ -212,12 +212,12 @@ describe( "AICamera navigation with advanced user layout", () => {
       await navToAICamera();
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       expect(
-        await screen.findByText( /Loading iNaturalist's AI Camera/ )
+        await screen.findByText( /Loading iNaturalist's AI Camera/ ),
       ).toBeOnTheScreen();
       const closeButton = await screen.findByLabelText( /Close/ );
       await actor.press( closeButton );
       expect(
-        await screen.findByText( /Use iNaturalist to identify any living thing/ )
+        await screen.findByText( /Use iNaturalist to identify any living thing/ ),
       ).toBeTruthy();
     } );
   } );

@@ -9,7 +9,7 @@ import Reanimated, {
   useDerivedValue,
   useSharedValue,
   withRepeat,
-  withTiming
+  withTiming,
 } from "react-native-reanimated";
 import colors from "styles/tailwindColors";
 
@@ -25,29 +25,29 @@ const CircleDots = ( {
   animated,
   children,
   className,
-  color = String( colors?.darkGray || "black" )
+  color = String( colors?.darkGray || "black" ),
 }: Props ) => {
   const animation = useSharedValue( 0 );
   const rotation = useDerivedValue( ( ) => interpolate(
     animation.get( ),
     [0, 1],
-    [0, 360]
+    [0, 360],
   ) );
   const rotate = useAnimatedStyle( ( ) => ( {
     transform: [
       {
-        rotateZ: `${rotation.get( )}deg`
-      }
-    ]
+        rotateZ: `${rotation.get( )}deg`,
+      },
+    ],
   } ) );
 
   const startAnimation = useCallback( ( ) => {
     animation.set( withRepeat(
       withTiming( 1, {
         duration: 10000,
-        easing: Easing.linear
+        easing: Easing.linear,
       } ),
-      -1
+      -1,
     ) );
   }, [animation] );
 

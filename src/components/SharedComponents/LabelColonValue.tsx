@@ -1,17 +1,16 @@
 import {
-  Body4
+  Body4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
+import type { TextProps } from "react-native";
 
-type Props = {
+interface Props {
   label: string;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  LabelComponent?: Function;
+  LabelComponent?: React.ComponentType<TextProps>;
   valueSelectable?: boolean;
   value: string | number;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  ValueComponent?: Function;
+  ValueComponent?: React.ComponentType<TextProps>;
 }
 
 const LabelColonValue = ( {
@@ -19,7 +18,7 @@ const LabelColonValue = ( {
   LabelComponent = Body4,
   valueSelectable,
   value,
-  ValueComponent = Body4
+  ValueComponent = Body4,
 }: Props ) => (
   <View className="flex-row justify-start">
     <View className="flex-row">

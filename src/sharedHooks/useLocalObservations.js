@@ -3,7 +3,7 @@
 import { RealmContext } from "providers/contexts";
 import {
   useEffect, useRef,
-  useState
+  useState,
 } from "react";
 import Observation from "realmModels/Observation";
 import useStore from "stores/useStore";
@@ -36,7 +36,7 @@ const useLocalObservations = ( ): Object => {
     list: [],
     count: 0,
     unsyncedCount: 0,
-    isDefaultMode: null
+    isDefaultMode: null,
   } );
 
   const realm = useRealm( );
@@ -97,7 +97,7 @@ const useLocalObservations = ( ): Object => {
           list: mappedObservations,
           count: filteredObservations.length,
           unsyncedCount,
-          isDefaultMode: currentIsDefaultMode
+          isDefaultMode: currentIsDefaultMode,
         };
       }
     };
@@ -113,7 +113,7 @@ const useLocalObservations = ( ): Object => {
 
   return {
     observationList,
-    totalResults: observationList.length
+    totalResults: observationList.length,
   };
 };
 

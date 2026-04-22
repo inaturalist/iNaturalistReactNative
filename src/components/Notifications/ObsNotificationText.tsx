@@ -1,5 +1,5 @@
 import {
-  List2
+  List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -21,7 +21,7 @@ const ObsNotificationText = ( { notification }: Props ) => {
   let content: string | React.ReactElement<typeof Trans> = `unknown notification type: ${type}`;
   const resourceOwner = notification.resource?.user;
 
-  const transComponents = [<List2 className="font-bold pr-[2px]" />];
+  const transComponents = [<List2 key="0" className="font-bold pr-[2px]" />];
   if ( notification.viewerOwnsResource ) {
     const transValues = { userName: notifierUser.login };
     if ( type === "Comment" ) {
@@ -44,7 +44,7 @@ const ObsNotificationText = ( { notification }: Props ) => {
   } else {
     const transValues = {
       user1: notifierUser.login,
-      user2: resourceOwner?.login || t( "Unknown--user" )
+      user2: resourceOwner?.login || t( "Unknown--user" ),
     };
     if ( type === "Comment" ) {
       content = (

@@ -161,6 +161,12 @@
             "value" : "iNaturalist"
           }
         },
+        "fo" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "iNaturalist"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "new",
@@ -619,6 +625,12 @@
           }
         },
         "fil" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "iNaturalist"
+          }
+        },
+        "fo" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "iNaturalist"
@@ -1087,6 +1099,12 @@
             "value" : "Add existing sounds to your observations."
           }
         },
+        "fo" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add existing sounds to your observations."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1544,6 +1562,12 @@
           }
         },
         "fil" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Camera access lets you use the AI Camera and take photos."
+          }
+        },
+        "fo" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Camera access lets you use the AI Camera and take photos."
@@ -2011,6 +2035,12 @@
             "value" : ""
           }
         },
+        "fo" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : ""
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "new",
@@ -2277,7 +2307,7 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : ""
           }
         },
@@ -2469,6 +2499,12 @@
           }
         },
         "fil" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
+          }
+        },
+        "fo" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Add GPS coordinates to observations, show your location on maps, and more."
@@ -2936,6 +2972,12 @@
             "value" : "Record sound observations of nature."
           }
         },
+        "fo" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Record sound observations of nature."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3398,6 +3440,12 @@
             "value" : "Export iNaturalist photos to your library."
           }
         },
+        "fo" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Export iNaturalist photos to your library."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3855,6 +3903,12 @@
           }
         },
         "fil" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Export and import iNaturalist photos to and from your library."
+          }
+        },
+        "fo" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Export and import iNaturalist photos to and from your library."

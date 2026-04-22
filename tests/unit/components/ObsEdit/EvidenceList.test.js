@@ -9,15 +9,15 @@ const initialStoreState = useStore.getState( );
 
 const observationPhotos = [
   factory( "RemoteObservationPhoto" ),
-  factory( "RemoteObservationPhoto" )
+  factory( "RemoteObservationPhoto" ),
 ];
 
 const mockObservation = factory( "LocalObservation", {
-  observationPhotos
+  observationPhotos,
 } );
 
 const renderEvidenceList = ( ) => renderComponent(
-  <EvidenceList />
+  <EvidenceList />,
 );
 
 describe( "EvidenceList", ( ) => {
@@ -28,7 +28,7 @@ describe( "EvidenceList", ( ) => {
   it( "should display add evidence button", ( ) => {
     useStore.setState( {
       observations: [mockObservation],
-      currentObservation: mockObservation
+      currentObservation: mockObservation,
     } );
     renderEvidenceList( );
 
@@ -39,7 +39,7 @@ describe( "EvidenceList", ( ) => {
     useStore.setState( {
       observations: [mockObservation],
       currentObservation: mockObservation,
-      savingPhoto: true
+      savingPhoto: true,
     } );
     renderEvidenceList( );
 
@@ -49,7 +49,7 @@ describe( "EvidenceList", ( ) => {
   it( "should render all observation photos", ( ) => {
     useStore.setState( {
       observations: [mockObservation],
-      currentObservation: mockObservation
+      currentObservation: mockObservation,
     } );
     renderEvidenceList( );
 

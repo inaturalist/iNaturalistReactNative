@@ -4,7 +4,7 @@ import fs from "fs";
 import {
   copyAndroidTitle,
   removeUnsupportedDirectories,
-  renameDirectories
+  renameDirectories,
 } from "i18n/i18ncli/fastlane";
 import {
   jsonifyLocalizations,
@@ -13,7 +13,7 @@ import {
   supportedLocales,
   untranslatable,
   unused,
-  validate
+  validate,
 } from "i18n/i18ncli/ftl";
 import path from "path";
 import yargs from "yargs";
@@ -26,20 +26,20 @@ const writeLoadTranslations = async ( ) => {
   const out = fs.createWriteStream( outPath );
   const commentPathPieces = __filename.split( path.sep );
   const commentPath = path.join(
-    ...commentPathPieces.slice( commentPathPieces.indexOf( "src" ), commentPathPieces.length )
+    ...commentPathPieces.slice( commentPathPieces.indexOf( "src" ), commentPathPieces.length ),
   );
   out.write( `// AUTO-GENERATED. See ${commentPath}\n` );
   out.write( "export default locale => {\n" );
   locales.forEach(
     locale => out.write(
-      `  if ( locale === "${locale}" ) { return require( "./l10n/${locale}.ftl.json" ); }\n`
-    )
+      `  if ( locale === "${locale}" ) { return require( "./l10n/${locale}.ftl.json" ); }\n`,
+    ),
   );
   out.write( "  return require( \"./l10n/en.ftl.json\" );\n" );
   out.write( "};\n" );
   out.write( "\n" );
   out.write( "export const SUPPORTED_LOCALES = [\n" );
-  out.write( locales.sort( ).map( l => `  "${l}"` ).join( ",\n" ) );
+  out.write( locales.sort( ).map( l => `  "${l}",` ).join( "\n" ) );
   out.write( "\n];\n" );
 };
 
@@ -49,7 +49,7 @@ yargs
   .option( "verbose", {
     alias: "v",
     type: "boolean",
-    description: "Run with verbose logging"
+    description: "Run with verbose logging",
   } )
   .command(
     "build",
@@ -66,7 +66,7 @@ yargs
       await unused( );
       jsonifyLocalizations( argv );
       writeLoadTranslations( );
-    }
+    },
   )
   .command(
     "checkify",
@@ -75,7 +75,7 @@ yargs
     async argv => {
       jsonifyLocalizations( { ...argv, checkify: true } );
       writeLoadTranslations( );
-    }
+    },
   )
   .command(
     "validate",
@@ -83,7 +83,7 @@ yargs
     ( ) => undefined,
     _argv => {
       validate( );
-    }
+    },
   )
   .command(
     "unused",
@@ -91,7 +91,7 @@ yargs
     ( ) => undefined,
     _argv => {
       unused( );
-    }
+    },
   )
   .command(
     "untranslatable",
@@ -99,7 +99,7 @@ yargs
     ( ) => undefined,
     _argv => {
       untranslatable( );
-    }
+    },
   )
   .command(
     "prepare-fastlane-metadata",
@@ -113,7 +113,7 @@ yargs
       await removeUnsupportedDirectories( argv );
       console.log( "Copying Android title..." );
       await copyAndroidTitle( argv );
-    }
+    },
   )
   .help( )
   .argv;

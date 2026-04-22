@@ -11,7 +11,7 @@ import {
   MediaNavButtons,
   P,
   ViewWrapper,
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -19,7 +19,7 @@ import React, {
   useCallback,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
 import { StatusBar } from "react-native";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
@@ -33,7 +33,7 @@ import colors from "styles/tailwindColors";
 const INITIAL_SOUND = {
   // recording
   recordSecs: 0,
-  recordTime: "00:00"
+  recordTime: "00:00",
 };
 
 const NOT_STARTED = "notStarted";
@@ -63,7 +63,7 @@ const SoundRecorder = (): Node => {
 
   const [
     status,
-    setStatus
+    setStatus,
   ]: [
     "notStarted" | "recording" | "stopped",
     Function
@@ -81,7 +81,7 @@ const SoundRecorder = (): Node => {
       let updatedCurrentObservation = currentObservation;
 
       const obsSound = await ObservationSound.new( {
-        sound: await Sound.new( { file_url: uri } )
+        sound: await Sound.new( { file_url: uri } ),
       } );
       updatedCurrentObservation = Observation
         .appendObsSounds( [obsSound], updatedCurrentObservation );
@@ -104,20 +104,20 @@ const SoundRecorder = (): Node => {
     const cachedFile = await audioRecorderPlayer.startRecorder(
       null,
       null,
-      true
+      true,
     );
     setStatus( RECORDING );
     audioRecorderPlayer.addRecordBackListener( e => {
       setSound( {
         ...sound,
         recordSecs: e.currentPosition,
-        recordTime: audioRecorderPlayer.mmss( Math.floor( e.currentPosition / 1000 ) )
+        recordTime: audioRecorderPlayer.mmss( Math.floor( e.currentPosition / 1000 ) ),
       } );
       meteringHistory.current.push( [e.currentPosition, e.currentMetering] );
       if ( meteringHistory.current.length > 200 ) {
         meteringHistory.current = meteringHistory.current.slice(
           meteringHistory.current.length - 200,
-          meteringHistory.current.length
+          meteringHistory.current.length,
         );
       }
     } );
@@ -131,7 +131,7 @@ const SoundRecorder = (): Node => {
       audioRecorderPlayer.removeRecordBackListener();
       setSound( {
         ...sound,
-        recordSecs: 0
+        recordSecs: 0,
       } );
     } catch ( e ) {
       console.warn( "couldn't stop sound recorder:", e );
@@ -144,48 +144,54 @@ const SoundRecorder = (): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const captureButton = useMemo( ( ) => {
-    let onPress = startRecording;
-    let icon = "microphone";
-    let accessibilityLabel = t( "Record-verb" );
-    let accessibilityHint = t( "Starts-recording-sound" );
-    let backgroundColor = colors.warningRed;
-    let size = 33;
-    const style = {};
+  const renderCaptureButton = ( ) => {
     if ( status === "recording" ) {
-      onPress = stopRecording;
-      icon = "stop";
-      accessibilityLabel = t( "Stop-verb" );
-      accessibilityHint = t( "Stops-recording-sound" );
-    } else if ( status === STOPPED ) {
-      onPress = ( ) => setMediaViewerVisible( true );
-      icon = "play";
-      size = 24;
-      backgroundColor = colors.darkGray;
-      style.paddingLeft = 5;
+      return (
+        <INatIconButton
+          onPress={stopRecording}
+          backgroundColor={colors.warningRed}
+          color={colors.white}
+          size={33}
+          icon="stop"
+          accessibilityLabel={t( "Stop-verb" )}
+          accessibilityHint={t( "Stops-recording-sound" )}
+          width={74}
+          height={74}
+          mode="contained"
+        />
+      );
+    } if ( status === STOPPED ) {
+      return (
+        <INatIconButton
+          className="pl-[5px]"
+          onPress={() => setMediaViewerVisible( true )}
+          backgroundColor={colors.darkGray}
+          color={colors.white}
+          size={24}
+          icon="play"
+          accessibilityLabel={t( "Record-verb" )}
+          accessibilityHint={t( "Starts-recording-sound" )}
+          width={74}
+          height={74}
+          mode="contained"
+        />
+      );
     }
-
     return (
       <INatIconButton
-        onPress={onPress}
-        backgroundColor={backgroundColor}
+        onPress={startRecording}
+        backgroundColor={colors.warningRed}
         color={colors.white}
-        size={size}
-        icon={icon}
-        accessibilityLabel={accessibilityLabel}
-        accessibilityHint={accessibilityHint}
-        width={60}
-        height={60}
+        size={42}
+        icon="microphone"
+        accessibilityLabel={t( "Record-verb" )}
+        accessibilityHint={t( "Starts-recording-sound" )}
+        width={74}
+        height={74}
         mode="contained"
-        style={style}
       />
     );
-  }, [
-    startRecording,
-    stopRecording,
-    status,
-    t
-  ] );
+  };
 
   const sounds = uri
     ? [{ file_url: uri }]
@@ -204,8 +210,8 @@ const SoundRecorder = (): Node => {
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsTab",
         params: {
-          screen: "ObsList"
-        }
+          screen: "ObsList",
+        },
       } );
     }
   };
@@ -224,7 +230,7 @@ const SoundRecorder = (): Node => {
                     key={`metering-${position}`}
                     className="m-0.5 bg-warningRed b-1 w-1 h-full rounded-full"
                     style={{
-                      height: `${-100 / metering}%`
+                      height: `${-100 / metering}%`,
                     }}
                   />
                 );
@@ -266,7 +272,6 @@ const SoundRecorder = (): Node => {
         </View>
       ) }
       <MediaNavButtons
-        captureButton={captureButton}
         onConfirm={navToObsEdit}
         onClose={( ) => {
           if ( uri ) {
@@ -278,7 +283,9 @@ const SoundRecorder = (): Node => {
         mediaCaptured={uri}
         confirmHidden={status === RECORDING}
         closeHidden={status === RECORDING}
-      />
+      >
+        {renderCaptureButton( )}
+      </MediaNavButtons>
       <MediaViewerModal
         showModal={mediaViewerVisible}
         onClose={( ) => setMediaViewerVisible( false )}

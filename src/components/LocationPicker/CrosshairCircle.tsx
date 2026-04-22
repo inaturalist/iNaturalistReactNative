@@ -35,8 +35,8 @@ const CrosshairCircle = ( { accuracy }: Props ) => {
             {
               "border-inatGreen": accuracyTest === "pass",
               "border-warningYellow border-dashed": accuracyTest === "acceptable",
-              "border-warningRed": accuracyTest === "fail"
-            }
+              "border-warningRed": accuracyTest === "fail",
+            },
           )
         }
       >

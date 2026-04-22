@@ -2,12 +2,12 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import {
   ActivityIndicator,
   Body2,
-  OfflineNotice
+  OfflineNotice,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 interface Props {
@@ -21,7 +21,7 @@ const EmptySearchResults = ( {
   isLoading,
   searchQuery,
   refetch,
-  skipOfflineNotice
+  skipOfflineNotice,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );

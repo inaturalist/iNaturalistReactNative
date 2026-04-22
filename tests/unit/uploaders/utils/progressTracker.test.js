@@ -31,7 +31,7 @@ describe( "progressTracker", ( ) => {
     cleanup = mockForTesting( {
       emit: emitMock,
       addEventListener: addEventListenerMock,
-      removeEventListener: removeEventListenerMock
+      removeEventListener: removeEventListenerMock,
     } );
   } );
 
@@ -48,7 +48,7 @@ describe( "progressTracker", ( ) => {
 
     expect( emitMock ).toHaveBeenCalledWith(
       progressTracker.INCREMENT_SINGLE_UPLOAD_PROGRESS,
-      [observationUUID, increment]
+      [observationUUID, increment],
     );
   } );
 
@@ -59,7 +59,7 @@ describe( "progressTracker", ( ) => {
 
     expect( emitMock ).toHaveBeenCalledWith(
       progressTracker.INCREMENT_SINGLE_UPLOAD_PROGRESS,
-      [observationUUID, undefined]
+      [observationUUID, undefined],
     );
   } );
 
@@ -81,14 +81,14 @@ describe( "progressTracker", ( ) => {
     start( );
     expect( emitMock ).toHaveBeenCalledWith(
       progressTracker.INCREMENT_SINGLE_UPLOAD_PROGRESS,
-      [observationUUID, progressTracker.HALF_INCREMENT]
+      [observationUUID, progressTracker.HALF_INCREMENT],
     );
 
     complete( );
     expect( emitMock ).toHaveBeenCalledTimes( 2 );
     expect( emitMock ).toHaveBeenLastCalledWith(
       progressTracker.INCREMENT_SINGLE_UPLOAD_PROGRESS,
-      [observationUUID, progressTracker.HALF_INCREMENT]
+      [observationUUID, progressTracker.HALF_INCREMENT],
     );
   } );
 
@@ -99,14 +99,14 @@ describe( "progressTracker", ( ) => {
     uploaded( );
     expect( emitMock ).toHaveBeenCalledWith(
       progressTracker.INCREMENT_SINGLE_UPLOAD_PROGRESS,
-      [observationUUID, progressTracker.HALF_INCREMENT]
+      [observationUUID, progressTracker.HALF_INCREMENT],
     );
 
     attached( );
     expect( emitMock ).toHaveBeenCalledTimes( 2 );
     expect( emitMock ).toHaveBeenLastCalledWith(
       progressTracker.INCREMENT_SINGLE_UPLOAD_PROGRESS,
-      [observationUUID, progressTracker.HALF_INCREMENT]
+      [observationUUID, progressTracker.HALF_INCREMENT],
     );
   } );
 } );

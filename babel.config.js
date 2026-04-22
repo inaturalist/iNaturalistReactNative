@@ -2,6 +2,7 @@ module.exports = {
   presets: ["module:@react-native/babel-preset"],
   plugins: [
     "babel-plugin-react-compiler", // must run first!
+    "@babel/plugin-transform-export-namespace-from",
     "react-native-worklets-core/plugin",
     "transform-inline-environment-variables",
     "nativewind/babel",
@@ -23,20 +24,15 @@ module.exports = {
         stores: "./src/stores",
         styles: "./src/styles",
         tests: "./tests",
-        uploaders: "./src/uploaders"
-      }
+        uploaders: "./src/uploaders",
+      },
     }],
-    // Reanimated plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
-    [
-      "react-native-reanimated/plugin",
-      {
-        processNestedWorklets: true
-      }
-    ]
+    // Reanimated 4: use worklets plugin (must be listed last). See migration 3.x -> 4.x.
+    "react-native-worklets/plugin",
   ],
   env: {
     production: {
-      plugins: ["react-native-paper/babel", "transform-remove-console"]
-    }
-  }
+      plugins: ["react-native-paper/babel", "transform-remove-console"],
+    },
+  },
 };

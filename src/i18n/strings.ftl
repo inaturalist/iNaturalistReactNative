@@ -193,7 +193,11 @@ Change-date = Change date
 CHANGE-END-DATE = CHANGE END DATE
 # Label for a button that changes a selected end date
 Change-end-date = Change end date
+# Accessibility label for a button that allows users to sort observations
+Change-observations-sort-order = Change observations sort order
 Change-project = Change project
+# Accessibility label for a button that allows users to sort taxa
+Change-species-sort-order = Change species sort order
 # Label for a button that changes a selected start date
 CHANGE-START-DATE = CHANGE START DATE
 # Label for a button that changes a selected start date
@@ -313,16 +317,16 @@ DATE = DATE
 Date = Date
 # Date formatting using date-fns
 # Used for things like User Profile join date
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-long = PP
 # Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-month-day = MMM d
 # Use when only showing an observations month and year
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-month-year = MMM yyyy
 # Short date, e.g. on notifications from over a year ago
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 date-format-short = M/d/yy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
@@ -350,20 +354,20 @@ datetime-difference-minutes = { $count }m
 # Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
 datetime-difference-weeks = { $count }w
 # Longer datetime, e.g. when editing an observation
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 datetime-format-long = Pp
 # Longer datetime with time zone, e.g. when editing an observation and we know
 # the time zone See complete list of formatting styles at
-# https://date-fns.org/v2.29.3/docs/format and time zone formatting
+# https://date-fns.org/v3.6.0/docs/format and time zone formatting
 # characters at
 # https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-long-with-zone = Pp (zzz)
 # Shorter datetime, e.g. on observation detail view
-# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+# See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
 datetime-format-short = M/d/yy h:mm a
 # Shorter datetime with time zone, e.g. on observation detail view
 # See complete list of formatting styles at
-# https://date-fns.org/v2.29.3/docs/format and time zone formatting
+# https://date-fns.org/v3.6.0/docs/format and time zone formatting
 # characters at
 # https://github.com/marnusw/date-fns-tz?tab=readme-ov-file#formatintimezone
 datetime-format-short-with-zone = M/d/yy h:mm a zzz
@@ -433,7 +437,8 @@ DISCARD-X-OBSERVATIONS =
     }
 # Onboarding header (underneath the logo)
 DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
-DISMISS = DISMISS
+# Label for a button that dismisses announcments
+Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
@@ -552,6 +557,7 @@ HELP = HELP
 Help-create-Research-Grade-data-used-in-science-and-conservation = Help create Research Grade data used in science and conservation.
 # Onboarding message describing one of the reasons to use iNat
 Help-protect-species = Help protect species
+Help-us-translate-the-app = Help us translate the app!
 Hide = Hide
 Highest = Highest
 HIGHEST-RANK = HIGHEST RANK
@@ -607,7 +613,6 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY 
 improving--identification = Improving
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
-iNaturalist-can-save-photos-you-take-in-the-app-to-your-devices-library = iNaturalist can save photos you take in the app to your device’s library.
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist can use your location to give you better identification suggestions. We also use it to help you find species seen nearby. Sharing your location makes it easier to create useful data for science.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
@@ -686,6 +691,8 @@ Learn-from-people-who-verify-and-refine-your-identifications = Learn from people
 Learn-More = Learn More
 LEARN-MORE-ABOUT-THIS-GROUP = LEARN MORE ABOUT THIS GROUP
 LEARN-MORE-ABOUT-THIS-SPECIES = LEARN MORE ABOUT THIS SPECIES
+# Label for species sort order
+Least-Observed = Least Observed
 LEAVE = LEAVE
 LEAVE-PROJECT = LEAVE PROJECT
 # Asking for confirmation if the user wants to leave this project
@@ -735,6 +742,8 @@ More = More
 More-info = More info
 MOST-FAVED = MOST FAVED
 Most-faved = Most faved
+# Label for species sort order, this option is selected by default
+Most-Observed-Default = Most Observed (Default)
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
@@ -754,7 +763,6 @@ Navigates-to-explore = Navigates to explore
 Navigates-to-log-in-screen = Navigates to log in screen
 # Accessibility hint for the main menu bottom tab
 Navigates-to-main-menu = Navigates to main menu.
-Navigates-to-match-screen = Navigates to match screen
 Navigates-to-notifications = Navigates to notifications
 Navigates-to-observation-details = Navigates to observation details screen
 Navigates-to-observation-edit-screen = Navigate to observation edit screen
@@ -785,12 +793,10 @@ No-Camera-Available = No Camera Available
 # Alert dialog title when attempting to send email but no email is installed
 No-email-app-installed = No email app installed
 No-email-app-installed-body = If you have another way of sending email, the address is { $address }
-No-email-app-installed-body-check-other = Try checking your email in a web browser or on another device.
 No-Location = No Location
 No-Media = No Media
 # As in a machine learning model that powers automated suggestions
 No-model-found = No model found
-No-Notifications-Found = You have no notifications! Get started by creating your own observations.
 No-projects-match-that-search = No projects match that search
 # Used for explore screen when search params lead to a search with no data
 No-results-found-for-that-search = No results found for that search.
@@ -1092,8 +1098,6 @@ Save-all-observations = Save all observations
 SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
-SAVE-PHOTOS = SAVE PHOTOS
-Save-photos-to-your-library = Save photos to your library
 Saved-Observation = Saved observation, in queue to upload
 Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
@@ -1152,8 +1156,6 @@ Sign-in-with-Apple-Failed = Sign in with Apple Failed
 # Accessibility label for button that allows user to sign in with their Google account
 Sign-in-with-Google = Sign in with Google
 Sign-in-with-Google-Failed = Sign in with Google Failed
-# Accessibility label on loading screen from AICamera -> Match which skips loading online suggestions
-Skip-additional-suggestions = Skip additional suggestions
 Skip-for-now = Skip for now
 # Generic error message
 Something-went-wrong = Something went wrong.
@@ -1163,6 +1165,9 @@ Sorry-this-observation-was-deleted = Sorry, this observation was deleted
 Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that URL: { $url }
 SORT-BY = SORT BY
 Sort-by = Sort by
+# Accessibility label for a button that allows users to sort observations
+# Label for species sort menu
+SORT-SPECIES = SORT SPECIES
 # Character separating current position and total duration when playing a
 # sound, e.g. 00:12 / 03:00 uses "/" as the separator. This can be anything,
 # but it should be very short.
@@ -1180,6 +1185,8 @@ Sounds = Sounds
 Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 Species = Species
 Species-View = Species View
+Species-with-the-least-observations-appear-first = Species with the least observations appear first
+Species-with-the-most-observations-appear-first = Species with the most observations appear first
 SPECIES-WITHOUT-NUMBER =
     { $count ->
         [one] SPECIES
@@ -1192,6 +1199,7 @@ Start-upload = Start upload
 # Accessibility hint for button that starts recording a sound
 Starts-recording-sound = Starts recording sound
 Stay-on-this-screen = Stay on this screen while your location loads.
+Still-loading = Still loading...
 Still-need-help = Still need help? You can file a support request here.
 # Button or accessibility label for an interactive element that stops an upload
 Stop-upload = Stop upload
@@ -1513,6 +1521,8 @@ You-can-only-add-20-photos-per-observation = You can only add 20 photos per obse
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
+You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
+You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
 You-havent-observed-any-species-yet = You haven't observed any species yet.

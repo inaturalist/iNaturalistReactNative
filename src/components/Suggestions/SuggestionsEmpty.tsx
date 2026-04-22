@@ -19,7 +19,7 @@ const SuggestionsEmpty = ( {
   isLoading,
   onTaxonChosen,
   reloadSuggestions,
-  urlWillCrashOffline
+  urlWillCrashOffline,
 }: Props ) => {
   const { t } = useTranslation( );
   const { params } = useRoute( );

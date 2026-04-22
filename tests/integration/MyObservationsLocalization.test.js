@@ -13,7 +13,7 @@ import { signIn, signOut } from "tests/helpers/user";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -24,8 +24,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -35,7 +35,7 @@ afterAll( uniqueRealmAfterAll );
 const mockUser = factory( "LocalUser", {
   login: faker.internet.userName( ),
   iconUrl: faker.image.url( ),
-  locale: "en"
+  locale: "en",
 } );
 
 // const mockSpanishUser = factory( "LocalUser", {
@@ -47,7 +47,7 @@ const mockUser = factory( "LocalUser", {
 beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
 } );
 

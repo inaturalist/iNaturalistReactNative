@@ -1,18 +1,18 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import type { ApiPhoto, ApiSuggestion } from "api/types";
+import type { ApiPhoto, ApiSuggestion, ApiTaxon } from "api/types";
 import LocationSection
   from "components/ObsDetailsDefaultMode/LocationSection/LocationSection";
 import MapSection
   from "components/ObsDetailsDefaultMode/MapSection/MapSection";
 import {
-  ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper
+  ActivityIndicator, Body2, Button, Heading3, ScrollViewWrapper,
 } from "components/SharedComponents";
+import HeaderEditIcon from "components/SharedComponents/ObsDetails/HeaderEditIcon";
 import { View } from "components/styledComponents";
-import _ from "lodash";
 import React from "react";
 import type { ScrollView } from "react-native";
 import type {
-  RealmObservation, RealmObservationPhoto, RealmPhoto, RealmTaxon
+  RealmObservation, RealmObservationPhoto, RealmPhoto, RealmTaxon,
 } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
@@ -30,7 +30,7 @@ export const matchCardClassTop
 export const matchCardClassBottom
   = "rounded-b-2xl border-lightGray border-[2px] pb-3 border-t-0 -mt-0.5 mb-[30px]";
 
-type Props = {
+interface Props {
   observation: RealmObservation;
   obsPhotos: RealmObservationPhoto[];
   handleSaveOrDiscardPress: ( action: MatchButtonAction ) => void;
@@ -44,6 +44,7 @@ type Props = {
   scrollRef: React.RefObject<ScrollView | null>;
   iconicTaxon?: RealmTaxon;
   setIconicTaxon: ( taxon: RealmTaxon ) => void;
+  taxonToSave?: ApiTaxon;
 }
 
 const Match = ( {
@@ -59,7 +60,8 @@ const Match = ( {
   onSuggestionChosen,
   scrollRef,
   iconicTaxon,
-  setIconicTaxon
+  setIconicTaxon,
+  taxonToSave,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
@@ -84,6 +86,7 @@ const Match = ( {
                   </Body2>
                 )
             }
+            <HeaderEditIcon observation={observation} lastScreen="Match" taxon={iconicTaxon} />
           </View>
           <PhotosSection
             taxon={taxon}
@@ -144,6 +147,7 @@ const Match = ( {
                   </Body2>
                 )
             }
+            <HeaderEditIcon observation={observation} lastScreen="Match" />
           </View>
           <PhotosSection
             taxon={taxon}
@@ -189,6 +193,7 @@ const Match = ( {
               )
               : <MatchHeader topSuggestion={topSuggestion} />
           }
+          <HeaderEditIcon observation={observation} lastScreen="Match" taxon={taxonToSave} />
         </View>
         <PhotosSection
           representativePhoto={topSuggestion?.taxon?.representative_photo}

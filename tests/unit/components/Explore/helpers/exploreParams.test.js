@@ -1,6 +1,6 @@
 import {
   addPageParamsForExplore,
-  getNextPageParamForExplore
+  getNextPageParamForExplore,
 } from "components/Explore/helpers/exploreParams";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";

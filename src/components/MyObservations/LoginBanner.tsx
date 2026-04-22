@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import {
   Body2,
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
@@ -14,15 +14,15 @@ import colors from "styles/tailwindColors";
 const DROP_SHADOW = getShadow( {
   offsetHeight: 2,
   shadowOpacity: 1,
-  shadowRadius: 2
+  shadowRadius: 2,
 } );
 
-type Props = {
+interface Props {
   currentUser: RealmUser | null;
 }
 
 const LoginBanner = ( {
-  currentUser
+  currentUser,
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation();

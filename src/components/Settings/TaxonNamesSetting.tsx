@@ -1,18 +1,18 @@
 import {
   Body2,
   Heading4,
-  RadioButtonRow
+  RadioButtonRow,
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback } from "react";
 import {
-  View
+  View,
 } from "react-native";
 import type { TaxonNamesSettings } from "realmModels/User";
 import User from "realmModels/User";
 import {
   useCurrentUser,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -24,7 +24,7 @@ const NAME_DISPLAY_SCI = "sci";
 type NameDisplayPref =
   typeof NAME_DISPLAY_COM_SCI | typeof NAME_DISPLAY_SCI_COM | typeof NAME_DISPLAY_SCI;
 
-type Props = {
+interface Props {
   onChange: ( options: TaxonNamesSettings ) => void;
 }
 

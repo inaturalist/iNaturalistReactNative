@@ -1,42 +1,35 @@
 import { updateRelationships } from "api/relationships";
+import type { ApiRelationship } from "api/types";
 import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import React from "react";
 import { Alert } from "react-native";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
 interface Props {
-  relationship: {
-    id: number;
-  };
-  refetchRelationship: () => void;
+  relationship?: ApiRelationship;
+  refetchRelationship: ( ) => void;
   setShowUnfollowSheet: ( show: boolean ) => void;
 }
 
 const UnfollowSheet = ( {
   relationship,
   setShowUnfollowSheet,
-  refetchRelationship
+  refetchRelationship,
 }: Props ) => {
   const { t } = useTranslation( );
 
-  const updateRelationshipsMutation = useAuthenticatedMutation(
-    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth )
-  );
-
-  const unfollowUser = ( ) => updateRelationshipsMutation.mutate( {
-    id: relationship.id,
-    relationship: {
-      following: false
-    }
-  }, {
-    onSuccess: () => {
-      setShowUnfollowSheet( false );
-      refetchRelationship();
+  const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
+    {
+      onSuccess: () => {
+        setShowUnfollowSheet( false );
+        refetchRelationship();
+      },
+      onError: error => {
+        Alert.alert( "Error Following/Unfollowing", error );
+      },
     },
-    onError: error => {
-      Alert.alert( "Error Following/Unfollowing", error );
-    }
-  } );
+  );
 
   return (
     <WarningSheet
@@ -47,7 +40,14 @@ const UnfollowSheet = ( {
       buttonText={t( "UNFOLLOW" )}
       handleSecondButtonPress={( ) => setShowUnfollowSheet( false )}
       confirm={( ) => {
-        if ( relationship ) unfollowUser();
+        if ( relationship ) {
+          updateRelationshipsMutate( {
+            id: relationship.id,
+            relationship: {
+              following: false,
+            },
+          } );
+        }
       }}
     />
   );

@@ -1,11 +1,11 @@
 import {
-  useMemo, useState
+  useMemo, useState,
 } from "react";
 import { Dimensions } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { OrientationType } from "react-native-orientation-locker";
 import {
-  useDeviceOrientationChange
+  useDeviceOrientationChange,
 } from "react-native-orientation-locker";
 
 export const LANDSCAPE_LEFT = "landscape-left" as const;
@@ -64,7 +64,7 @@ const useDeviceOrientation = ( ) => {
       isTablet: DeviceInfo.isTablet( ),
       isLandscapeMode,
       screenWidth,
-      screenHeight
+      screenHeight,
     };
   }, [deviceOrientation] );
 

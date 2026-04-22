@@ -1,27 +1,31 @@
-import _ from "lodash";
+import map from "lodash/map";
+import trim from "lodash/trim";
 
+// This collection mirrors web's: https://github.com/inaturalist/inaturalist/blob/main/app/assets/javascripts/ang/models/taxon.js.erb#L187
 const uncapitalized = new Set( [
-  "à",
-  "a",
-  "and",
+  "a", // Spanish
+  "and", // English
   "atau", // Indonesian
-  "con",
+  "con", // Spanish
   "da",
   "dal",
   "dan", // Indonesian
-  "de",
+  "de", // Spanish
   "dei",
-  "del",
-  "des",
+  "del", // Spanish
+  "des", // French
   "di",
   "du",
-  "e",
+  "e", // Spanish
   "in",
   "la",
-  "o",
-  "of",
-  "on",
-  "the"
+  "o", // Spanish
+  "of", // English
+  "on", // English
+  "the", // English
+  "u",
+  "y", // Spanish
+  "à", // French
 ] );
 
 const capitalize = ( s: string ) => {
@@ -40,7 +44,7 @@ const capitalize = ( s: string ) => {
   // there may be capitalization issues down the road ~~~kueda 20230110
   // eslint-disable-next-line no-misleading-character-class
   const allCasePattern = new RegExp(
-    `[A-z${lowerCaseChars}${upperCaseChars}]`
+    `[A-z${lowerCaseChars}${upperCaseChars}]`,
   );
   const firstLetterMatch = s.match( allCasePattern );
   let firstLetterIndex = firstLetterMatch
@@ -52,7 +56,7 @@ const capitalize = ( s: string ) => {
       lowerCaseChars
     }][’']([A-z${
       lowerCaseChars
-    }${upperCaseChars}]+)`
+    }${upperCaseChars}]+)`,
   );
   const leadingContractionMatch = s.match( leadingContractionPattern );
   if ( leadingContractionMatch ) {
@@ -69,9 +73,9 @@ export const capitalizeCommonName = ( name: string ) => {
   if ( !name ) {
     return name;
   }
-  const commonNamePieces = _.trim( name ).split( /\s+/ );
+  const commonNamePieces = trim( name ).split( /\s+/ );
 
-  return _.map( commonNamePieces, ( piece, i ) => {
+  return map( commonNamePieces, ( piece, i ) => {
     const lowercasePiece = piece.toLowerCase();
 
     if ( i > 0 && uncapitalized.has( lowercasePiece ) ) {
@@ -126,10 +130,10 @@ export const generateTaxonPieces = ( taxon: Taxon ): TaxonDisplayData => {
     // found here, but is needed in iNat Next:
     // https://github.com/inaturalist/inaturalist/blob/c578c11d00ed97940f0b6d8aa0793b6afd765824/app/assets/javascripts/ang/models/taxon.js.erb#L155
     const multipleLexicons = taxon.preferred_common_name.split( "·" );
-    taxonDisplayData.commonName = _.map(
+    taxonDisplayData.commonName = map(
       multipleLexicons,
       ( lexicon => capitalizeCommonName( lexicon )
-      )
+      ),
     ).join( " · " );
   }
 
@@ -161,7 +165,7 @@ interface User {
 export function accessibleTaxonName(
   taxon: Taxon,
   user: User | null,
-  t: ( key: string, options: object ) => string
+  t: ( key: string, options: object ) => string,
 ) {
   const { commonName, scientificName } = generateTaxonPieces( taxon );
   if ( typeof ( user?.prefers_scientific_name_first ) === "boolean" ) {

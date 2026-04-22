@@ -10,17 +10,17 @@ const mockObservation = factory( "LocalObservation", {
   comments: [
     factory( "LocalComment" ),
     factory( "LocalComment" ),
-    factory( "LocalComment" )
+    factory( "LocalComment" ),
   ],
   identifications: [
-    factory( "LocalIdentification" )
-  ]
+    factory( "LocalIdentification" ),
+  ],
 } );
 
 const mockUser = factory( "LocalUser" );
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: () => mockUser
+  default: () => mockUser,
 } ) );
 
 jest.mock( "@react-navigation/native", () => {
@@ -29,22 +29,22 @@ jest.mock( "@react-navigation/native", () => {
     ...actualNav,
     useRoute: () => ( {
       params: {
-        uuid: mockObservation.uuid
-      }
+        uuid: mockObservation.uuid,
+      },
     } ),
     useNavigation: () => ( {
       navigate: jest.fn(),
       addListener: jest.fn(),
-      setOptions: jest.fn()
-    } )
+      setOptions: jest.fn(),
+    } ),
   };
 } );
 
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
   default: () => ( {
-    mutate: () => null
-  } )
+    mutate: () => null,
+  } ),
 } ) );
 
 describe( "CommunitySection", () => {
@@ -55,7 +55,7 @@ describe( "CommunitySection", () => {
         activityItems={[]}
         refetchRemoteObservation={jest.fn()}
         openAgreeWithIdSheet={jest.fn()}
-      />
+      />,
     );
     expect( await screen.findByTestId( "CommunitySection" ) ).toBeTruthy( );
   } );

@@ -1,7 +1,7 @@
 import {
   Body3,
   CircleDots,
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -10,12 +10,12 @@ import colors from "styles/tailwindColors";
 
 import Announcements from "./Announcements";
 
-export interface Props {
+interface Props {
   isConnected: boolean;
 }
 
 const SimpleErrorHeader = ( {
-  isConnected
+  isConnected,
 }: Props ) => {
   const { t } = useTranslation( );
 

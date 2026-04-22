@@ -27,7 +27,7 @@ const ExploreFiltersModal = ( {
   updateTaxon,
   updateLocation,
   updateUser,
-  updateProject
+  updateProject,
 }: Props ): Node => (
   <Modal
     showModal={showModal}

@@ -3,13 +3,13 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ApiTaxon } from "api/types";
 import {
   TaxonResult,
-  TaxonSearch
+  TaxonSearch,
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
   useEffect,
-  useState
+  useState,
 } from "react";
 import saveObservation from "sharedHelpers/saveObservation";
 import { useTaxonSearch, useTranslation } from "sharedHooks";
@@ -37,15 +37,15 @@ const MatchTaxonSearchScreen = ( ) => {
     if ( selectedTaxon === null ) { return; }
     updateObservationKeys( {
       owners_identification_from_vision: false,
-      taxon: selectedTaxon
+      taxon: selectedTaxon,
     } );
 
     saveObservation( getCurrentObservation(), cameraRollUris, realm )
       .then( ( ) => navigation.navigate( "TabNavigator", {
         screen: "ObservationsTab",
         params: {
-          screen: "ObsList"
-        }
+          screen: "ObsList",
+        },
       } ) );
 
     setSelectedTaxon( null );
@@ -55,7 +55,7 @@ const MatchTaxonSearchScreen = ( ) => {
     navigation,
     realm,
     selectedTaxon,
-    updateObservationKeys
+    updateObservationKeys,
   ] );
 
   const renderTaxonResult = useCallback(
@@ -73,7 +73,7 @@ const MatchTaxonSearchScreen = ( ) => {
         testID={`Search.taxa.${taxon.id}`}
       />
     ),
-    [setSelectedTaxon, t]
+    [setSelectedTaxon, t],
   );
 
   return (

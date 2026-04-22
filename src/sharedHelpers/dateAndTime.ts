@@ -14,7 +14,7 @@ import {
   getUnixTime,
   getYear,
   parse,
-  parseISO
+  parseISO,
 } from "date-fns";
 import {
   ar,
@@ -76,7 +76,7 @@ import {
   tr,
   uk,
   zhCN,
-  zhTW
+  zhTW,
 } from "date-fns/locale";
 import { formatInTimeZone } from "date-fns-tz";
 import type { i18n as i18next } from "i18next";
@@ -215,7 +215,7 @@ function dateFnsLocale( i18nextLanguage: string ) {
   }
 }
 
-function formatISONoTimezone( date: Date ) {
+function formatISONoTimezone( date: Date | null ): string {
   if ( !date ) {
     return "";
   }
@@ -242,7 +242,7 @@ function formatDateStringFromTimestamp( timestamp: number ) {
 
 function getNowISO( ) {
   return formatDateStringFromTimestamp(
-    getUnixTime( new Date( ) )
+    getUnixTime( new Date( ) ),
   );
 }
 
@@ -302,13 +302,22 @@ function formatDateString(
   dateString: DateString,
   fmt: string,
   i18n: i18next,
-  options: FormatDateStringOptions = { }
+  options: FormatDateStringOptions = { },
 ) {
   if ( !dateString || dateString === "" ) {
     return options.missing === undefined
       ? i18n.t( "Missing-Date" )
       : options.missing;
   }
+
+  // If i18n is not initialized, because we rely on translations to format the date,
+  // we would get the key of the format string here for fmt instead of the actual format string.
+  // So, we would get, e.g. "date-format-long" instead of "PP" here. Which throws an error.
+  // in the format function below.
+  if ( !i18n.isInitialized ) {
+    return dateString;
+  }
+
   let timeZone = (
     // If we received a time zone, display the time in the requested zone
     options.timeZone
@@ -328,7 +337,7 @@ function formatDateString(
       parseISO( isoDateString ),
       timeZone,
       fmt,
-      { locale: dateFnsLocale( i18n.language ) }
+      { locale: dateFnsLocale( i18n.language ) },
     );
   } catch ( error ) {
     console.warn( "Error formatting date", error );
@@ -339,7 +348,7 @@ function formatDateString(
       return format(
         parseISO( isoDateString ),
         fmt,
-        { locale: dateFnsLocale( i18n.language ) }
+        { locale: dateFnsLocale( i18n.language ) },
       );
     }
     return i18n.t( "Missing-Date" );
@@ -349,7 +358,7 @@ function formatDateString(
 function formatMonthYearDate(
   dateString: DateString,
   i18n: i18next,
-  options: FormatDateStringOptions = {}
+  options: FormatDateStringOptions = {},
 ) {
   return formatDateString( dateString, i18n.t( "date-format-month-year" ), i18n, options );
 }
@@ -357,7 +366,7 @@ function formatMonthYearDate(
 function formatLongDate(
   dateString: DateString,
   i18n: i18next,
-  options: FormatDateStringOptions = {}
+  options: FormatDateStringOptions = {},
 ) {
   return formatDateString( dateString, i18n.t( "date-format-long" ), i18n, options );
 }
@@ -365,7 +374,7 @@ function formatLongDate(
 function formatLongDatetime(
   dateString: DateString,
   i18n: i18next,
-  options: FormatDateStringOptions = {}
+  options: FormatDateStringOptions = {},
 ) {
   const fmt = options.literalTime && !options.timeZone
     ? i18n.t( "datetime-format-long" )
@@ -376,7 +385,7 @@ function formatLongDatetime(
 function formatApiDatetime(
   dateString: DateString,
   i18n: i18next,
-  options: FormatDateStringOptions = {}
+  options: FormatDateStringOptions = {},
 ) {
   const hasTime = String( dateString ).includes( "T" );
   if ( hasTime ) {
@@ -386,14 +395,14 @@ function formatApiDatetime(
         ? i18n.t( "datetime-format-short" )
         : i18n.t( "datetime-format-short-with-zone" ),
       i18n,
-      options
+      options,
     );
   }
   return formatDateString(
     dateString,
     i18n.t( "date-format-short" ),
     i18n,
-    options
+    options,
   );
 }
 
@@ -408,7 +417,7 @@ function formatApiDatetime(
 function formatProjectsApiDatetimeLong(
   dateString: DateString,
   i18n: i18next,
-  options: FormatDateStringOptions = {}
+  options: FormatDateStringOptions = {},
 ) {
   const hasTime = String( dateString ).includes( "T" );
   if ( hasTime ) {
@@ -425,7 +434,7 @@ function formatProjectsApiDatetimeLong(
       dateWithoutOffset,
       i18n.t( "date-format-long" ),
       i18n,
-      options
+      options,
     );
   }
   const hasComma = String( dateString ).includes( "," );
@@ -436,7 +445,7 @@ function formatProjectsApiDatetimeLong(
       formatISO( parsedDate ),
       i18n.t( "date-format-long" ),
       i18n,
-      options
+      options,
     );
   }
 
@@ -453,5 +462,5 @@ export {
   formatLongDatetime,
   formatMonthYearDate,
   formatProjectsApiDatetimeLong,
-  getNowISO
+  getNowISO,
 };

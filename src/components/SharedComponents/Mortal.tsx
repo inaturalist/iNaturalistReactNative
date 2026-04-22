@@ -21,7 +21,7 @@ const Mortal = ( { children }: PropsWithChildren ) => {
       return ( ) => {
         setIsVisible( false );
       };
-    }, [] )
+    }, [] ),
   );
 
   if ( !isVisible ) return null;

@@ -8,7 +8,7 @@ import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
 import { View } from "components/styledComponents";
 import React from "react";
-import type { GestureResponderEvent, ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { CameraDeviceFormat, TakePhotoOptions } from "react-native-vision-camera";
 import { useLayoutPrefs } from "sharedHooks";
@@ -18,10 +18,10 @@ import AIDebugButton from "./AIDebugButton";
 const isTablet = DeviceInfo.isTablet();
 
 interface Props {
-  handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
+  handleZoomButtonPress: ( ) => void;
   confidenceThreshold?: number;
   cropRatio?: string;
-  flipCamera: ( _event: GestureResponderEvent ) => void;
+  flipCamera: ( ) => void;
   fps?: number;
   handleClose: ( ) => void;
   hasFlash: boolean;
@@ -29,26 +29,20 @@ interface Props {
   numStoredResults?: number;
   rotatableAnimatedStyle: ViewStyle;
   debugFormat?: CameraDeviceFormat;
-  // Those five are debug only so I don't bother with types
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setConfidenceThreshold?: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setCropRatio?: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setFPS?: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setNumStoredResults?: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  changeDebugFormat?: Function;
+  setConfidenceThreshold: ( value: number ) => void;
+  setCropRatio: ( value: number ) => void;
+  setFPS: ( value: number ) => void;
+  setNumStoredResults: ( value: number ) => void;
+  changeDebugFormat?: ( ) => void;
   showPrediction: boolean;
   showZoomButton: boolean;
   takePhoto: () => Promise<void>;
   takePhotoOptions: TakePhotoOptions;
   takingPhoto: boolean;
-  toggleFlash: ( _event: GestureResponderEvent ) => void;
+  toggleFlash: ( ) => void;
   zoomTextValue: string;
   useLocation: boolean;
-  toggleLocation: ( _event: GestureResponderEvent ) => void;
+  toggleLocation: ( ) => void;
   deleteSentinelFile: ( ) => Promise<void>;
 }
 
@@ -78,7 +72,7 @@ const AICameraButtons = ( {
   zoomTextValue,
   useLocation,
   toggleLocation,
-  deleteSentinelFile
+  deleteSentinelFile,
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs();
   if ( isTablet ) {
@@ -87,6 +81,10 @@ const AICameraButtons = ( {
         handleZoomButtonPress={handleZoomButtonPress}
         disabled={!modelLoaded || takingPhoto}
         disabledPhotoLibrary={takingPhoto}
+        // TODO: once we re-visit tablet views, we'll want to ensure users cannot spam the submit
+        // button while taking photos. see:
+        // https://linear.app/inaturalist/issue/MOB-1084/multicapture-camera-multiple-copies-of-photos-can-be-saved
+        // confirmDisabled={false}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         hasPhotoLibraryButton
@@ -110,7 +108,12 @@ const AICameraButtons = ( {
         className="absolute left-0 bottom-[17px] h-full justify-end flex gap-y-9"
         pointerEvents="box-none"
       >
-        <View><Close handleClose={handleClose} /></View>
+        <View>
+          <Close
+            handleClose={handleClose}
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+          />
+        </View>
       </View>
       <View
         className="absolute right-0 bottom-[6px] h-full justify-end items-end flex gap-y-9"
@@ -161,7 +164,12 @@ const AICameraButtons = ( {
             rotatableAnimatedStyle={rotatableAnimatedStyle}
           />
         </View>
-        <View><CameraFlip flipCamera={flipCamera} /></View>
+        <View>
+          <CameraFlip
+            flipCamera={flipCamera}
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+          />
+        </View>
         <View>
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
@@ -175,6 +183,7 @@ const AICameraButtons = ( {
           disabled={!modelLoaded || takingPhoto}
           takePhoto={takePhoto}
           showPrediction={showPrediction}
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
         />
       </View>
     </View>

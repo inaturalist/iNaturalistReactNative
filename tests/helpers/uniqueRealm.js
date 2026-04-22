@@ -13,14 +13,14 @@ export default function setupUniqueRealm( realmIdentifier ) {
     // may still write some metadata to disk, so this needs to be a real, but
     // temporary, path. In theory this should prevent this test from
     // interacting with other tests
-    path: path.join( os.tmpdir( ), `${realmIdentifier}.realm` )
+    path: path.join( os.tmpdir( ), `${realmIdentifier}.realm` ),
   };
 
   // Mock config so that all code that runs during this test talks to the same
   // database
   const mockRealmModelsIndex = {
     __esModule: true,
-    default: mockRealmConfig
+    default: mockRealmConfig,
   };
 
   const uniqueRealmBeforeAll = async ( ) => {
@@ -38,6 +38,6 @@ export default function setupUniqueRealm( realmIdentifier ) {
     mockRealmConfig,
     mockRealmModelsIndex,
     uniqueRealmBeforeAll,
-    uniqueRealmAfterAll
+    uniqueRealmAfterAll,
   };
 }

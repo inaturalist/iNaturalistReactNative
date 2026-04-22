@@ -2,7 +2,7 @@
 
 import {
   BackButton,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -18,7 +18,7 @@ type Props = {
 const MediaViewerHeader = ( {
   photoCount = 0,
   onClose,
-  soundCount = 0
+  soundCount = 0,
 }: Props ): Node => {
   const { t } = useTranslation( );
 

@@ -1,5 +1,5 @@
 import {
-  by, element, waitFor
+  by, element, waitFor,
 } from "detox";
 
 const TIMEOUT = 10_000;

@@ -4,9 +4,9 @@ import realmConfig from "realmModels/index";
 
 // This is just some debug code that might be useful for investigating
 // problems with messing realm files
-// import RNFS from "react-native-fs";
+// import { exists } from "@dr.pogodin/react-native-fs";
 // async function checkOnRealmPath( context ) {
-//   const existResult = await RNFS.exists( realmConfig.path );
+//   const existResult = await exists( realmConfig.path );
 // }
 // checkOnRealmPath( "before creating realm context" );
 
@@ -15,5 +15,5 @@ const RealmContext = createRealmContext( realmConfig );
 
 export {
   // eslint-disable-next-line import/prefer-default-export
-  RealmContext
+  RealmContext,
 };

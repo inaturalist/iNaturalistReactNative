@@ -1,18 +1,18 @@
 import {
-  Button
+  Button,
 } from "components/SharedComponents";
 import { t } from "i18next";
 import React from "react";
 
 interface Props {
-    following: boolean;
-    follow: () => void;
-    unfollow: () => void;
-    loading: boolean;
+  following?: boolean;
+  follow: ( ) => void;
+  unfollow: ( ) => void;
+  loading: boolean;
 }
 
 const FollowButton = ( {
-  following, follow, unfollow, loading
+  following, follow, unfollow, loading,
 }: Props ) => {
   if ( following ) {
     return (

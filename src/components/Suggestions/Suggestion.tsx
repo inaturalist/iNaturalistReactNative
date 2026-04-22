@@ -1,6 +1,6 @@
 import calculateConfidence from "components/Match/calculateConfidence";
 import {
-  TaxonResult
+  TaxonResult,
 } from "components/SharedComponents";
 import React from "react";
 
@@ -22,7 +22,7 @@ interface Props {
 const Suggestion = ( {
   accessibilityLabel,
   suggestion,
-  onTaxonChosen
+  onTaxonChosen,
 }: Props ) => (
   <TaxonResult
     accessibilityLabel={accessibilityLabel}

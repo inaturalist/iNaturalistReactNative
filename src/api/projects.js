@@ -7,17 +7,17 @@ import handleError from "./error";
 const FIELDS = {
   title: true,
   icon: true,
-  project_type: true
+  project_type: true,
 };
 
 const PARAMS = {
-  fields: FIELDS
+  fields: FIELDS,
 };
 
 const fetchProjects = async (
   id: number,
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     const { results } = await inatjs.projects.fetch( id, params, opts );
@@ -29,7 +29,7 @@ const fetchProjects = async (
 
 const fetchProjectMembers = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     return await inatjs.projects.members( params, opts );
@@ -40,7 +40,7 @@ const fetchProjectMembers = async (
 
 const fetchProjectPosts = async (
   params: Object = {},
-  opts: Object = {}
+  opts: Object = {},
 ): Promise<?Object> => {
   try {
     const response = await inatjs.projects.posts( params, opts );
@@ -92,5 +92,5 @@ export {
   fetchProjects,
   joinProject,
   leaveProject,
-  searchProjects
+  searchProjects,
 };

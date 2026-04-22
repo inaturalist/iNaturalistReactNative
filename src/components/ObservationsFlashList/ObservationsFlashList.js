@@ -5,16 +5,15 @@ import {
   Body3,
   CustomFlashList,
   CustomRefreshControl,
-  InfiniteScrollLoadingWheel
+  InfiniteScrollLoadingWheel,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  forwardRef,
   useCallback,
   useMemo,
-  useState
+  useState,
 } from "react";
 import { Animated } from "react-native";
 import RealmObservation from "realmModels/Observation";
@@ -23,7 +22,7 @@ import {
   useGridLayout,
   useLayoutPrefs,
   useNavigateToObsEdit,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -35,7 +34,7 @@ const AnimatedFlashList = Animated.createAnimatedComponent( CustomFlashList );
 
 type Props = {
   contentContainerStyle?: Object,
-  data: Array<Object>,
+  data: Object[],
   dataCanBeFetched?: boolean,
   fetchFromLastObservation?: Function,
   explore: boolean,
@@ -53,13 +52,17 @@ type Props = {
   onEndReached: Function,
   onLayout?: Function,
   onScroll?: Function,
+  // this ref is being forwarded to the underlying CustomFlashList and used as an imperative handle
+  // so the parent can control behavior like scrolling; it's typed as Function because there's not
+  // a good way to capture this otherwise with Flow.
+  ref?: Function,
   renderHeader?: Function,
   showNoResults?: boolean,
   showObservationsEmptyScreen?: boolean,
   testID: string
 };
 
-const ObservationsFlashList: Function = forwardRef( ( {
+const ObservationsFlashList: Function = ( {
   contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
@@ -79,13 +82,14 @@ const ObservationsFlashList: Function = forwardRef( ( {
   onEndReached,
   onLayout,
   onScroll,
+  ref,
   renderHeader,
   showNoResults,
   showObservationsEmptyScreen,
-  testID
-}: Props, ref ): Node => {
+  testID,
+}: Props ): Node => {
   const {
-    isDefaultMode
+    isDefaultMode,
   } = useLayoutPrefs( );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
@@ -105,7 +109,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     flashListStyle,
     gridItemStyle,
     gridItemWidth,
-    numColumns
+    numColumns,
   } = useGridLayout( layout );
   const { t } = useTranslation( );
 
@@ -140,7 +144,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
         navigation.navigate( {
           key: `Obs-${obsListKey}-${uuid}`,
           name: "ObsDetails",
-          params: { uuid }
+          params: { uuid },
         } );
       }
     };
@@ -186,7 +190,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     obsListKey,
     realm,
     totalUploadProgress,
-    uploadQueue
+    uploadQueue,
   ] );
 
   const renderItemSeparator = useCallback( ( ) => {
@@ -207,19 +211,19 @@ const ObservationsFlashList: Function = forwardRef( ( {
     explore,
     hideLoadingWheel,
     isConnected,
-    layout
+    layout,
   ] );
 
   const contentContainerStyle = useMemo( ( ) => {
     if ( layout === "list" ) { return contentContainerStyleProp; }
     return {
       ...flashListStyle,
-      ...contentContainerStyleProp
+      ...contentContainerStyleProp,
     };
   }, [
     contentContainerStyleProp,
     flashListStyle,
-    layout
+    layout,
   ] );
 
   const renderEmptyComponent = useCallback( ( ) => {
@@ -241,12 +245,12 @@ const ObservationsFlashList: Function = forwardRef( ( {
   }, [
     showObservationsEmptyScreen,
     showNoResults,
-    t
+    t,
   ] );
 
   const extraData = {
     gridItemWidth,
-    numColumns
+    numColumns,
   };
 
   // only used id as a fallback key because after upload
@@ -265,7 +269,7 @@ const ObservationsFlashList: Function = forwardRef( ( {
     if ( fetchFromLastObservation && data.length > 0 ) {
       const lastObservation = data[data.length - 1];
       const lastId = lastObservation?.id;
-      if ( lastId ) {
+      if ( lastId && !lastObservation?.empty ) {
         fetchFromLastObservation( lastId );
         return;
       }
@@ -304,6 +308,6 @@ const ObservationsFlashList: Function = forwardRef( ( {
       testID={testID}
     />
   );
-} );
+};
 
 export default ObservationsFlashList;

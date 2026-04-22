@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  Heading3
+  Heading3,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";

@@ -8,7 +8,7 @@ import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: ( ) => null
+  default: ( ) => null,
 } ) );
 
 const mockUser = factory( "LocalUser" );
@@ -19,23 +19,23 @@ const mockObservation = factory( "LocalObservation", {
   latitude: Number( faker.location.latitude( ) ),
   longitude: Number( faker.location.longitude( ) ),
   description: faker.lorem.paragraph( ),
-  quality_grade: "casual"
+  quality_grade: "casual",
 } );
 
 const mockObservationWithProjects = {
   ...mockObservation,
   non_traditional_projects: [
     {
-      project: factory( "RemoteProject" )
+      project: factory( "RemoteProject" ),
     }, {
-      project: factory( "RemoteProject" )
-    }
+      project: factory( "RemoteProject" ),
+    },
   ],
   project_observations: [
     {
-      project: factory( "RemoteProject" )
-    }
-  ]
+      project: factory( "RemoteProject" ),
+    },
+  ],
 };
 
 describe( "MoreSection", ( ) => {

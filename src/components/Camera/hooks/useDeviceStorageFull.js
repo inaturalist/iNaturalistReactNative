@@ -1,9 +1,9 @@
 import {
   useCallback,
-  useState
+  useState,
 } from "react";
 import {
-  Alert
+  Alert,
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useTranslation } from "sharedHooks";
@@ -22,7 +22,7 @@ const useDeviceStorageFull = ( ) => {
   const showStorageFullAlert = useCallback( () => Alert.alert(
     t( "Device-storage-full" ),
     t( "Device-storage-full-description" ),
-    [{ text: t( "OK" ) }]
+    [{ text: t( "OK" ) }],
   ), [t] );
 
   DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
@@ -33,7 +33,7 @@ const useDeviceStorageFull = ( ) => {
 
   return {
     deviceStorageFull,
-    showStorageFullAlert
+    showStorageFullAlert,
   };
 };
 

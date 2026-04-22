@@ -1,6 +1,6 @@
 // import { useNavigation } from "@react-navigation/native";
 import {
-  Body2, Button, Heading4, ScrollViewWrapper
+  Body2, Button, Heading4, ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";

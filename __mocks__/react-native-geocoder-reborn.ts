@@ -3,6 +3,6 @@ export default ( {
     `Somewhere near ${coord.lat}, ${coord.lng}`,
     "Somewhere",
     "Somewheria",
-    "SW"
-  ] )
+    "SW",
+  ] ),
 } );

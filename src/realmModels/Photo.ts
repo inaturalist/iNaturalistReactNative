@@ -1,8 +1,8 @@
+import { copyAssetsFileIOS, mkdir } from "@dr.pogodin/react-native-fs";
 import { Realm } from "@realm/react";
 import type { ApiPhoto } from "api/types";
 import { photoUploadPath } from "appConstants/paths";
 import { Platform } from "react-native";
-import RNFS from "react-native-fs";
 import type { RealmPhoto } from "realmModels/types";
 import resizeImage from "sharedHelpers/resizeImage";
 import { unlink } from "sharedHelpers/util";
@@ -12,13 +12,13 @@ class Photo extends Realm.Object {
     id: true,
     attribution: true,
     license_code: true,
-    url: true
+    url: true,
   } as const;
 
   static mapApiToRealm( photo: ApiPhoto, _realm = null ) {
     const localPhoto = {
       ...photo,
-      _synced_at: new Date( )
+      _synced_at: new Date( ),
     };
     localPhoto.licenseCode = localPhoto.licenseCode || photo?.license_code;
     return localPhoto;
@@ -26,7 +26,7 @@ class Photo extends Realm.Object {
 
   static async resizeImageForUpload( pathOrUri: string ): Promise<string> {
     const width = 2048;
-    await RNFS.mkdir( photoUploadPath );
+    await mkdir( photoUploadPath );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
 
     // If pathOrUri is an ios localIdentifier, make up a filename based on that
@@ -37,12 +37,12 @@ class Photo extends Realm.Object {
 
     // If pathOrUri is an ios localIdentifier, we don't have an actual local
     // file path that react-native-image-resizer can use, so instead we're
-    // using react-native-fs resizing. If consistency becomes a problem, we
+    // using @dr.pogodin/react-native-fs resizing. If consistency becomes a problem, we
     // could instead use RNFS to copy the file locally and then resize it
     // with the resizer.
     if ( Platform.OS === "ios" && pathOrUri.match( /^ph:/ ) ) {
       const outPath = `${photoUploadPath}/${outFilename}`;
-      const outUri = await RNFS.copyAssetsFileIOS( pathOrUri, outPath, width, width );
+      const outUri = await copyAssetsFileIOS( pathOrUri, outPath, width, width );
       return outUri;
     }
 
@@ -57,8 +57,8 @@ class Photo extends Realm.Object {
       outputPath: photoUploadPath,
       imageOptions: {
         mode: "contain",
-        onlyScaleDown: true
-      }
+        onlyScaleDown: true,
+      },
     } );
 
     return uri;
@@ -69,7 +69,7 @@ class Photo extends Realm.Object {
     return {
       _created_at: new Date( ),
       _updated_at: new Date( ),
-      localFilePath
+      localFilePath,
     };
   }
 
@@ -126,8 +126,8 @@ class Photo extends Realm.Object {
       attribution: "string?",
       license_code: { type: "string", mapTo: "licenseCode", optional: true },
       url: "string?",
-      localFilePath: "string?"
-    }
+      localFilePath: "string?",
+    },
   };
 
   // An unpleasant hack around another unpleasant hack, i.e. when we "need" to
@@ -137,7 +137,7 @@ class Photo extends Realm.Object {
     const json = super.toJSON( );
     return {
       ...json,
-      licenseCode: json.license_code
+      licenseCode: json.license_code,
     };
   }
 }

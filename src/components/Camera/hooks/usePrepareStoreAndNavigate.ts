@@ -1,22 +1,26 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import {
-  useCallback
+  useCallback,
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import { log } from "sharedHelpers/logger";
 import {
-  useLayoutPrefs
+  useLayoutPrefs,
 } from "sharedHooks";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
 
+const logger = log.extend( "usePrepareStoreAndNavigate" );
+
 const usePrepareStoreAndNavigate = ( ) => {
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
+  const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const addEvidence = params?.addEvidence;
   const setObservations = useStore( state => state.setObservations );
   const updateObservations = useStore( state => state.updateObservations );
@@ -37,15 +41,10 @@ const usePrepareStoreAndNavigate = ( ) => {
 
   const handleSavingToPhotoLibrary = useCallback( async (
     uris,
-    addPhotoPermissionResult,
     userLocation,
-    logStageIfAICamera
+    logStageIfAICamera,
   ) => {
     await logStageIfAICamera( "save_photos_to_photo_library_start" );
-    if ( addPhotoPermissionResult !== "granted" ) {
-      await logStageIfAICamera( "save_photos_to_photo_library_error" );
-      return Promise.resolve( );
-    }
     if ( deviceStorageFull ) {
       await logStageIfAICamera( "save_photos_to_photo_library_error" );
       showStorageFullAlert( );
@@ -68,15 +67,14 @@ const usePrepareStoreAndNavigate = ( ) => {
     deviceStorageFull,
     setCameraState,
     setSavingPhoto,
-    showStorageFullAlert
+    showStorageFullAlert,
   ] );
 
   const createObsWithCameraPhotos = useCallback( async (
     uris,
-    addPhotoPermissionResult,
     userLocation,
     logStageIfAICamera,
-    visionResult
+    visionResult,
   ) => {
     const newObservation = await Observation.new( );
 
@@ -93,7 +91,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     newObservation.observationPhotos = await ObservationPhoto
       .createObsPhotosWithPosition( uris, {
         position: 0,
-        local: true
+        local: true,
       } );
     if ( !isDefaultMode
         && screenAfterPhotoEvidence === SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
@@ -101,30 +99,28 @@ const usePrepareStoreAndNavigate = ( ) => {
       newObservation.taxon = visionResult.taxon;
     }
     setObservations( [newObservation] );
-    await handleSavingToPhotoLibrary(
+    handleSavingToPhotoLibrary(
       uris,
-      addPhotoPermissionResult,
       userLocation,
-      logStageIfAICamera
-    );
+      logStageIfAICamera,
+    ).catch( e => logger.error( "createObsWithCameraPhotos: error saving to photo library", e ) );
   }, [
     isDefaultMode,
     screenAfterPhotoEvidence,
     setObservations,
-    handleSavingToPhotoLibrary
+    handleSavingToPhotoLibrary,
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async (
-    addPhotoPermissionResult,
     userLocation,
-    logStageIfAICamera
+    logStageIfAICamera,
   ) => {
     const obsPhotos = await ObservationPhoto.createObsPhotosWithPosition(
       evidenceToAdd,
       {
         position: numOfObsPhotos,
-        local: true
-      }
+        local: true,
+      },
     );
     const updatedCurrentObservation = Observation
       .appendObsPhotos( obsPhotos, currentObservation );
@@ -132,13 +128,11 @@ const usePrepareStoreAndNavigate = ( ) => {
     const updatedObservations = [...observations];
     updatedObservations[currentObservationIndex] = updatedCurrentObservation;
     updateObservations( updatedObservations );
-
-    await handleSavingToPhotoLibrary(
+    handleSavingToPhotoLibrary(
       evidenceToAdd,
-      addPhotoPermissionResult,
       userLocation,
-      logStageIfAICamera
-    );
+      logStageIfAICamera,
+    ).catch( e => logger.error( "updateObsWithCameraPhotos: error saving to photo library", e ) );
   }, [
     evidenceToAdd,
     numOfObsPhotos,
@@ -146,16 +140,15 @@ const usePrepareStoreAndNavigate = ( ) => {
     observations,
     currentObservationIndex,
     updateObservations,
-    handleSavingToPhotoLibrary
+    handleSavingToPhotoLibrary,
   ] );
 
   const prepareStoreAndNavigate = useCallback( async ( {
-    addPhotoPermissionResult,
     userLocation,
     newPhotoState,
     logStageIfAICamera,
     deleteStageIfAICamera,
-    visionResult
+    visionResult,
   } ) => {
     if ( userLocation !== null ) {
       logStageIfAICamera( "fetch_user_location_complete" );
@@ -164,18 +157,17 @@ const usePrepareStoreAndNavigate = ( ) => {
     // new observation
     const uris = newPhotoState?.cameraUris || cameraUris;
     if ( addEvidence ) {
-      await updateObsWithCameraPhotos( addPhotoPermissionResult, userLocation, logStageIfAICamera );
+      await updateObsWithCameraPhotos( userLocation, logStageIfAICamera );
       await deleteStageIfAICamera( );
       setSentinelFileName( null );
-      return navigation.goBack( );
+      return navigation.navigate( "ObsEdit", { lastScreen: "Camera" } );
     }
 
     await createObsWithCameraPhotos(
       uris,
-      addPhotoPermissionResult,
       userLocation,
       logStageIfAICamera,
-      visionResult
+      visionResult,
     );
     await deleteStageIfAICamera( );
     setSentinelFileName( null );
@@ -184,13 +176,13 @@ const usePrepareStoreAndNavigate = ( ) => {
     if ( isDefaultMode ) {
       return navigation.push( "Match", {
         entryScreen: "CameraWithDevice",
-        lastScreen: "CameraWithDevice"
+        lastScreen: "CameraWithDevice",
       } );
     }
     // Camera navigates based on user settings to Match, Suggestions, or ObsEdit
     return navigation.push( screenAfterPhotoEvidence, {
       entryScreen: "CameraWithDevice",
-      lastScreen: "CameraWithDevice"
+      lastScreen: "CameraWithDevice",
     } );
   }, [
     cameraUris,
@@ -200,7 +192,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     navigation,
     updateObsWithCameraPhotos,
     screenAfterPhotoEvidence,
-    isDefaultMode
+    isDefaultMode,
   ] );
 
   return prepareStoreAndNavigate;

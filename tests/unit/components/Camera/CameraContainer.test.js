@@ -1,6 +1,6 @@
 import {
   fireEvent,
-  screen
+  screen,
 } from "@testing-library/react-native";
 import CameraContainer from "components/Camera/CameraContainer";
 import React from "react";
@@ -15,8 +15,8 @@ const mockTaxon = factory( "RemoteTaxon" );
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
-    data: mockTaxon
-  } )
+    data: mockTaxon,
+  } ),
 } ) );
 
 jest.mock( "@react-navigation/native", () => {
@@ -25,32 +25,32 @@ jest.mock( "@react-navigation/native", () => {
     ...actualNav,
     useNavigation: () => ( {
       navigate: mockedNavigate,
-      addListener: () => jest.fn()
+      addListener: () => jest.fn(),
     } ),
     useRoute: () => ( {} ),
-    useFocusEffect: () => ( {} )
+    useFocusEffect: () => ( {} ),
   };
 } );
 
 const mockView = <View />;
 jest.mock( "components/Camera/CameraView", () => ( {
   __esModule: true,
-  default: ( ) => mockView
+  default: ( ) => mockView,
 } ) );
 
 jest.mock( "components/Camera/FadeInOutView", () => ( {
   __esModule: true,
-  default: () => mockView
+  default: () => mockView,
 } ) );
 
 jest.mock( "components/Camera/StandardCamera/PhotoPreview", () => ( {
   __esModule: true,
-  default: () => mockView
+  default: () => mockView,
 } ) );
 
 jest.mock( "components/Camera/AICamera/FrameProcessorCamera", () => ( {
   __esModule: true,
-  default: () => mockView
+  default: () => mockView,
 } ) );
 
 function renderCameraContainer( ) {
@@ -77,7 +77,7 @@ describe( "CameraContainer", ( ) => {
   it( "should change to flash enabled on button press", async () => {
     renderCameraContainer( );
     const flashButton = await screen.findByTestId(
-      "flash-button-label-flash-off"
+      "flash-button-label-flash-off",
     );
     fireEvent.press( flashButton );
     await screen.findByTestId( "flash-button-label-flash" );

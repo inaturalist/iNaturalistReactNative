@@ -5,11 +5,12 @@ import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIcon, INatIconButton } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
-import _ from "lodash";
+import findIndex from "lodash/findIndex";
+import sortBy from "lodash/sortBy";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useMemo, useState
+  useCallback, useMemo, useState,
 } from "react";
 import { Alert } from "react-native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
@@ -27,18 +28,18 @@ const logger = log.extend( "EvidenceList" );
 
 type Props = {
   handleAddEvidence?: Function,
-  observationSounds?: Array<{
+  observationSounds?: {
     id?: number,
     sound: {
       file_url: string,
     },
     uuid: string
-  }>
+  }[]
 }
 
 const EvidenceList = ( {
   handleAddEvidence,
-  observationSounds = []
+  observationSounds = [],
 }: Props ): Node => {
   const currentObservation = useStore( state => state.currentObservation );
 
@@ -54,33 +55,32 @@ const EvidenceList = ( {
 
   const observationPhotos = useMemo(
     ( ) => currentObservation?.observationPhotos || [],
-    [currentObservation?.observationPhotos]
+    [currentObservation?.observationPhotos],
   );
 
   const photoUris = observationPhotos?.map(
-    obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
+    obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo ),
   );
   const mediaUris = useMemo( ( ) => ( [
     ...photoUris,
-    ...observationSounds.map( obsSound => obsSound.sound.file_url )
+    ...observationSounds.map( obsSound => obsSound.sound.file_url ),
   ] ), [photoUris, observationSounds] );
 
   const handleDragAndDrop = useCallback( ( { data: newPhotoPositions } ) => {
     const newObsPhotos = observationPhotos.map( ( obsPhoto => {
       const { photo } = obsPhoto;
       const photoUri = Photo.displayLocalOrRemoteSquarePhoto( photo );
-      const newPosition = _.findIndex( newPhotoPositions, p => p === photoUri );
+      const newPosition = findIndex( newPhotoPositions, p => p === photoUri );
       obsPhoto.position = newPosition;
       return obsPhoto;
     } ) );
-    const sortedObsPhotos = _.sortBy( newObsPhotos, obsPhoto => obsPhoto.position );
-
+    const sortedObsPhotos = sortBy( newObsPhotos, obsPhoto => obsPhoto.position );
     updateObservationKeys( {
-      observationPhotos: sortedObsPhotos
+      observationPhotos: sortedObsPhotos,
     } );
   }, [
     observationPhotos,
-    updateObservationKeys
+    updateObservationKeys,
   ] );
 
   const renderPhoto = useCallback(
@@ -107,7 +107,7 @@ const EvidenceList = ( {
         </Pressable>
       </ScaleDecorator>
     ),
-    [setSelectedMediaUri, t]
+    [setSelectedMediaUri, t],
   );
 
   const renderFooter = useMemo( ( ) => (
@@ -140,7 +140,7 @@ const EvidenceList = ( {
   ), [
     observationSounds,
     savingPhoto,
-    setSelectedMediaUri
+    setSelectedMediaUri,
   ] );
 
   const renderHeader = useMemo( ( ) => (
@@ -169,8 +169,8 @@ const EvidenceList = ( {
     setDeleting( false );
   }, [mediaUris, setSelectedMediaUri] );
 
-  const deleteObservationSoundMutation = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => deleteRemoteObservationSound( params, optsWithAuth )
+  const { mutate: deleteObservationSoundMutate } = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => deleteRemoteObservationSound( params, optsWithAuth ),
   );
 
   const onDeletePhoto = useCallback( async uriToDelete => {
@@ -186,7 +186,7 @@ const EvidenceList = ( {
       await ObservationSound.deleteLocalObservationSound(
         realm,
         uriToDelete,
-        currentObservation.uuid
+        currentObservation.uuid,
       );
       afterMediaDeleted( );
     }
@@ -194,19 +194,19 @@ const EvidenceList = ( {
     // If sound was synced, delete the remote copy immediately and then remove
     // the local
     if ( obsSound?.id ) {
-      deleteObservationSoundMutation.mutate( { uuid: obsSound.uuid }, {
+      deleteObservationSoundMutate( { uuid: obsSound.uuid }, {
         onSuccess: removeLocalSound,
         onError: deleteRemoteObservationSoundError => {
           setDeleting( false );
           logger.error(
             "[EvidenceList.js] failed to delete remote observation sound: ",
-            deleteRemoteObservationSoundError
+            deleteRemoteObservationSoundError,
           );
           Alert.alert(
             t( "Failed-to-delete-sound" ),
-            t( "Please-try-again-when-you-are-connected-to-the-internet" )
+            t( "Please-try-again-when-you-are-connected-to-the-internet" ),
           );
-        }
+        },
       } );
     } else {
       // If sound was not synced, just remove it locally
@@ -215,11 +215,11 @@ const EvidenceList = ( {
   }, [
     afterMediaDeleted,
     currentObservation?.uuid,
-    deleteObservationSoundMutation,
+    deleteObservationSoundMutate,
     deleteSoundFromObservation,
     realm,
     observationSounds,
-    t
+    t,
   ] );
 
   const evidenceList = useMemo( ( ) => (
@@ -239,7 +239,7 @@ const EvidenceList = ( {
     photoUris,
     renderFooter,
     renderHeader,
-    renderPhoto
+    renderPhoto,
   ] );
 
   return (

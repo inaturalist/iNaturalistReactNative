@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import {
   DisplayTaxonName,
-  IconicTaxonIcon
+  IconicTaxonIcon,
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import React from "react";
@@ -27,7 +27,7 @@ const DisplayTaxon = ( {
   taxon,
   testID,
   topTextComponent,
-  withdrawn
+  withdrawn,
 }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -59,8 +59,8 @@ const DisplayTaxon = ( {
                 className={classnames(
                   imageClassName,
                   {
-                    "opacity-50": withdrawn
-                  }
+                    "opacity-50": withdrawn,
+                  },
                 )}
                 accessibilityIgnoresInvertColors
                 testID="DisplayTaxon.image"

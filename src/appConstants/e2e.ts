@@ -16,5 +16,5 @@ export const CHUCKS_PAD = {
   altitude: 120.0234,
   altitudeAccuracy: 2.123,
   heading: null,
-  speed: null
+  speed: null,
 };

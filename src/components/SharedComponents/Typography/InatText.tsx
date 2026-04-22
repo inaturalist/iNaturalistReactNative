@@ -1,37 +1,37 @@
 // Wrapper around Text w/ app-specific defaults
 import {
-  tailwindFontRegular
+  tailwindFontRegular,
 } from "appConstants/fontFamilies";
 import classnames from "classnames";
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentProps } from "react";
 import React from "react";
 import { Text } from "react-native";
 
 export const TYPOGRAPHY_CLASSES = [
   "text-darkGray",
-  "trailing-tight"
-];
+  "trailing-tight",
+] as const;
 
 export const TYPOGRAPHY_STYLE = {
   // Explicitly declaring this as a default allows RN's RTL support to flip it
   // for RTL languages. For some reason it doesn't work with text-left or
   // text-start as a tailwind class
-  textAlign: "left"
-};
+  textAlign: "left",
+} as const;
 
-const InatText = ( props: ComponentPropsWithoutRef<typeof Text> ) => (
+const InatText = ( props: ComponentProps<typeof Text> ) => (
   <Text
     maxFontSizeMultiplier={2}
     className={classnames(
       TYPOGRAPHY_CLASSES,
       tailwindFontRegular,
-      props.className
+      props.className,
     )}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
     style={[
       TYPOGRAPHY_STYLE,
-      props.style
+      props.style,
     ]}
   />
 );

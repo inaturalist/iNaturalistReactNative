@@ -12,37 +12,37 @@ const testData = [
     {
       latitude,
       longitude,
-      place_guess: "Panama City Beach, Florida"
+      place_guess: "Panama City Beach, Florida",
     },
-    "Panama City Beach, Florida"
+    "Panama City Beach, Florida",
   ],
   [
     "should format location correctly from latitude/longitude",
     {
       latitude,
       longitude,
-      place_guess: null
+      place_guess: null,
     },
-    `Lat: ${latitude}, Lon: ${longitude}`
+    `Lat: ${latitude}, Lon: ${longitude}`,
   ],
   [
     "should handle latitude/longitude w/ zero",
     {
       latitude: 0,
       longitude: 0,
-      place_guess: null
+      place_guess: null,
     },
-    "Lat: 0, Lon: 0"
+    "Lat: 0, Lon: 0",
   ],
   [
     "should show no location if unknown",
     {
       latitude: null,
       longitude: null,
-      place_guess: null
+      place_guess: null,
     },
-    "No Location"
-  ]
+    "No Location",
+  ],
 ];
 
 describe( "ObservationLocation", () => {
@@ -58,42 +58,42 @@ describe( "ObservationLocation", () => {
     const mockObservation = factory( "RemoteObservation", obsData );
 
     render(
-      <ObservationLocation observation={mockObservation} details />
+      <ObservationLocation observation={mockObservation} details />,
     );
     expect( await screen.findByText( new RegExp( expectedResult ) ) ).toBeTruthy();
   } );
 
   it( "renders obscured icon if obscured", async () => {
     const mockObservation = {
-      taxon_geoprivacy: "obscured"
+      taxon_geoprivacy: "obscured",
     };
     render(
-      <ObservationLocation observation={mockObservation} />
+      <ObservationLocation observation={mockObservation} />,
     );
     expect( await screen.findByTestId(
-      `ContentWithIcon.${mockObservation.taxon_geoprivacy}`
+      `ContentWithIcon.${mockObservation.taxon_geoprivacy}`,
     ) ).toBeTruthy( );
   } );
 
   it( "renders private icon if private", async () => {
     const mockObservation = {
-      taxon_geoprivacy: "private"
+      taxon_geoprivacy: "private",
     };
     render(
-      <ObservationLocation observation={mockObservation} />
+      <ObservationLocation observation={mockObservation} />,
     );
     expect( await screen.findByTestId(
-      `ContentWithIcon.${mockObservation.taxon_geoprivacy}`
+      `ContentWithIcon.${mockObservation.taxon_geoprivacy}`,
     ) ).toBeTruthy( );
   } );
 
   it( "renders loaction icon if not obscured", async () => {
     const mockObservation = factory( "RemoteObservation" );
     render(
-      <ObservationLocation observation={mockObservation} />
+      <ObservationLocation observation={mockObservation} />,
     );
     expect( await screen.findByTestId(
-      "ContentWithIcon.location"
+      "ContentWithIcon.location",
     ) ).toBeTruthy( );
   } );
 } );

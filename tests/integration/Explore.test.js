@@ -2,7 +2,7 @@ import {
   fireEvent,
   screen,
   userEvent,
-  waitFor
+  waitFor,
 } from "@testing-library/react-native";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import inatjs from "inaturalistjs";
@@ -14,12 +14,12 @@ jest.mock( "sharedHooks/useStoredLayout", () => ( {
   __esModule: true,
   default: ( ) => ( {
     layout: "list",
-    writeLayoutToStorage: jest.fn( )
-  } )
+    writeLayoutToStorage: jest.fn( ),
+  } ),
 } ) );
 
 const mockRemoteObservation = factory( "RemoteObservation", {
-  taxon: factory.states( "genus" )( "RemoteTaxon" )
+  taxon: factory.states( "genus" )( "RemoteTaxon" ),
 } );
 
 const mockTaxon = factory( "LocalTaxon" );
@@ -29,7 +29,7 @@ const actor = userEvent.setup( );
 beforeAll( ( ) => {
   inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( [{
     count: 1,
-    taxon: mockTaxon
+    taxon: mockTaxon,
   }] ) );
   inatjs.observations.search.mockResolvedValue( makeResponse( [mockRemoteObservation] ) );
   jest.useFakeTimers( );
@@ -55,7 +55,7 @@ describe( "Explore", ( ) => {
     const obsTaxonNameElt = await screen.findByText( mockRemoteObservation.taxon.name );
     expect( obsTaxonNameElt ).toBeTruthy( );
     expect(
-      screen.queryByTestId( `UploadIcon.progress.${mockRemoteObservation.uuid}` )
+      screen.queryByTestId( `UploadIcon.progress.${mockRemoteObservation.uuid}` ),
     ).toBeFalsy( );
   } );
 
@@ -67,18 +67,18 @@ describe( "Explore", ( ) => {
   it( "should display observations view grid correctly", async ( ) => {
     renderAppWithComponent( <ExploreContainer /> );
     expect(
-      await screen.findByTestId( "SegmentedButton.grid" )
+      await screen.findByTestId( "SegmentedButton.grid" ),
     ).toBeTruthy( );
     fireEvent.press( await screen.findByTestId( "SegmentedButton.grid" ) );
     expect(
-      screen.queryByTestId( `UploadIcon.progress.${mockRemoteObservation.uuid}` )
+      screen.queryByTestId( `UploadIcon.progress.${mockRemoteObservation.uuid}` ),
     ).toBeFalsy( );
   } );
 
   it( "should trigger new observation fetch on pull-to-refresh in list view", async ( ) => {
     renderAppWithComponent( <ExploreContainer /> );
     expect(
-      await screen.findByTestId( "SegmentedButton.list" )
+      await screen.findByTestId( "SegmentedButton.list" ),
     ).toBeTruthy( );
     fireEvent.press( await screen.findByTestId( "SegmentedButton.list" ) );
 

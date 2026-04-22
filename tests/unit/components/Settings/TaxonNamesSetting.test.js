@@ -9,20 +9,20 @@ const mockUser = factory( "LocalUser", {
   iconUrl: faker.image.url( ),
   locale: "en",
   prefers_common_names: true,
-  prefers_scientific_name_first: false
+  prefers_scientific_name_first: false,
 } );
 
 // Simplified mocks
 jest.mock( "providers/contexts", () => ( {
   RealmContext: {
-    useRealm: () => ( {} )
-  }
+    useRealm: () => ( {} ),
+  },
 } ) );
 
 jest.mock( "sharedHooks", () => ( {
   useTranslation: () => ( { t: key => key } ),
   useLayoutPrefs: () => ( { isDefaultMode: false } ),
-  useCurrentUser: () => mockUser
+  useCurrentUser: () => mockUser,
 } ) );
 
 jest.mock( "realmModels/User", () => ( {
@@ -31,8 +31,8 @@ jest.mock( "realmModels/User", () => ( {
     updatePreferences: jest.fn( ( _, options ) => {
       mockUser.prefers_common_names = options.prefers_common_names;
       mockUser.prefers_scientific_name_first = options.prefers_scientific_name_first;
-    } )
-  }
+    } ),
+  },
 } ) );
 
 describe( "TaxonNamesSetting", () => {
@@ -54,7 +54,7 @@ describe( "TaxonNamesSetting", () => {
     expect( mockUser.prefers_scientific_name_first ).toBe( true );
     expect( mockOnChange ).toHaveBeenCalledWith( {
       prefers_common_names: true,
-      prefers_scientific_name_first: true
+      prefers_scientific_name_first: true,
     } );
 
     // Select Scientific Name Only
@@ -65,7 +65,7 @@ describe( "TaxonNamesSetting", () => {
     expect( mockUser.prefers_scientific_name_first ).toBe( false );
     expect( mockOnChange ).toHaveBeenCalledWith( {
       prefers_common_names: false,
-      prefers_scientific_name_first: false
+      prefers_scientific_name_first: false,
     } );
 
     // Back to Common Name First
@@ -76,7 +76,7 @@ describe( "TaxonNamesSetting", () => {
     expect( mockUser.prefers_scientific_name_first ).toBe( false );
     expect( mockOnChange ).toHaveBeenCalledWith( {
       prefers_common_names: true,
-      prefers_scientific_name_first: false
+      prefers_scientific_name_first: false,
     } );
   } );
 } );

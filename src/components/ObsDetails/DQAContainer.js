@@ -1,7 +1,7 @@
 // @flow
 import {
   refresh as refreshNetInfo,
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
 import { faveObservation, unfaveObservation } from "api/observations";
@@ -10,11 +10,12 @@ import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import {
   BottomSheet,
   Button,
-  List2
+  List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { compact, groupBy } from "lodash";
+import compact from "lodash/compact";
+import groupBy from "lodash/groupBy";
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 import Observation from "realmModels/Observation";
@@ -22,7 +23,7 @@ import { log } from "sharedHelpers/logger";
 import {
   useAuthenticatedMutation,
   useAuthenticatedQuery,
-  useLocalObservation
+  useLocalObservation,
 } from "sharedHooks";
 import useRemoteObservation from "sharedHooks/useRemoteObservation";
 
@@ -43,7 +44,7 @@ const DQAContainer = ( ): React.Node => {
   const {
     remoteObservation,
     refetchRemoteObservation,
-    isRefetching
+    isRefetching,
   } = useRemoteObservation( observationUUID, fetchRemoteObservationEnabled );
   const observation = remoteObservation
     ? Observation.mapApiToRealm( remoteObservation )
@@ -52,7 +53,7 @@ const DQAContainer = ( ): React.Node => {
   const fetchMetricsParams = {
     id: observationUUID,
     fields: "metric,agree,user_id",
-    ttl: -1
+    ttl: -1,
   };
 
   const setNotLoading = useCallback( () => {
@@ -72,15 +73,15 @@ const DQAContainer = ( ): React.Node => {
 
   const {
     data: qualityMetrics,
-    refetch: refetchQualityMetrics
+    refetch: refetchQualityMetrics,
   } = useAuthenticatedQuery(
     ["fetchQualityMetrics", observationUUID],
-    optsWithAuth => fetchQualityMetrics( fetchMetricsParams, optsWithAuth )
+    optsWithAuth => fetchQualityMetrics( fetchMetricsParams, optsWithAuth ),
   );
 
   const combinedQualityMetrics = {
     ...groupBy( qualityMetrics, "metric" ),
-    ...groupBy( observation?.votes, "vote_scope" )
+    ...groupBy( observation?.votes, "vote_scope" ),
   };
 
   /**
@@ -94,7 +95,7 @@ const DQAContainer = ( ): React.Node => {
     }
   }, [isRefetching, setNotLoading] );
 
-  const faveMutation = useAuthenticatedMutation(
+  const { mutate: faveMutate } = useAuthenticatedMutation(
     ( faveParams, optsWithAuth ) => faveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
@@ -102,11 +103,11 @@ const DQAContainer = ( ): React.Node => {
       },
       onError: () => {
         setHideErrorSheet( false );
-      }
-    }
+      },
+    },
   );
 
-  const unfaveMutation = useAuthenticatedMutation(
+  const { mutate: unfaveMutate } = useAuthenticatedMutation(
     ( faveParams, optsWithAuth ) => unfaveObservation( faveParams, optsWithAuth ),
     {
       onSuccess: () => {
@@ -114,11 +115,11 @@ const DQAContainer = ( ): React.Node => {
       },
       onError: () => {
         setHideErrorSheet( false );
-      }
-    }
+      },
+    },
   );
 
-  const createQualityMetricMutation = useAuthenticatedMutation(
+  const { mutate: createQualityMetricMutate } = useAuthenticatedMutation(
     ( qualityMetricParams, optsWithAuth ) => setQualityMetric( qualityMetricParams, optsWithAuth ),
     {
       onSuccess: async ( ) => {
@@ -127,10 +128,10 @@ const DQAContainer = ( ): React.Node => {
         setNotLoading( );
       },
       onError: error => {
-        logger.error( "createQualityMetricMutation failure", error );
+        logger.error( "createQualityMetricMutate failure", error );
         setHideErrorSheet( false );
-      }
-    }
+      },
+    },
   );
 
   const setMetricVote = ( { metric, vote } ) => {
@@ -140,9 +141,9 @@ const DQAContainer = ( ): React.Node => {
       id: observationUUID,
       metric,
       agree: vote,
-      ttyl: -1
+      ttyl: -1,
     };
-    createQualityMetricMutation.mutate( qualityMetricParams );
+    createQualityMetricMutate( qualityMetricParams );
   };
 
   // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
@@ -155,12 +156,12 @@ const DQAContainer = ( ): React.Node => {
       scope: "needs_id",
       vote: vote === false
         ? "no"
-        : "yes"
+        : "yes",
     };
-    faveMutation.mutate( faveParams );
+    faveMutate( faveParams );
   };
 
-  const removeQualityMetricMutation = useAuthenticatedMutation(
+  const { mutate: removeQualityMetricMutate } = useAuthenticatedMutation(
     ( deleteParams, options ) => deleteQualityMetric( deleteParams, options ),
     {
       onSuccess: async ( ) => {
@@ -169,10 +170,10 @@ const DQAContainer = ( ): React.Node => {
         setNotLoading( );
       },
       onError: error => {
-        logger.error( "removeQualityMetricMutation failed", error );
+        logger.error( "removeQualityMetricMutate failed", error );
         setHideErrorSheet( false );
-      }
-    }
+      },
+    },
   );
 
   const removeMetricVote = ( { metric, vote } ) => {
@@ -181,9 +182,9 @@ const DQAContainer = ( ): React.Node => {
     const qualityMetricParams = {
       id: observationUUID,
       metric,
-      ttyl: -1
+      ttyl: -1,
     };
-    removeQualityMetricMutation.mutate( qualityMetricParams );
+    removeQualityMetricMutate( qualityMetricParams );
   };
 
   // The quality metric "needs_id" uses a fave/unfave vote with vote_scope: "needs_id"
@@ -193,19 +194,19 @@ const DQAContainer = ( ): React.Node => {
 
     const unfaveParams = {
       id: observationUUID,
-      scope: "needs_id"
+      scope: "needs_id",
     };
-    unfaveMutation.mutate( unfaveParams );
+    unfaveMutate( unfaveParams );
   };
 
   const ifMajorityAgree = metric => {
     const votesOfMetric = combinedQualityMetrics[metric];
     if ( votesOfMetric && votesOfMetric.length > 0 ) {
       const agreeCount = votesOfMetric.filter(
-        element => element.agree
+        element => element.agree,
       ).length;
       const disagreeCount = votesOfMetric.filter(
-        element => !element.agree
+        element => !element.agree,
       ).length;
 
       return agreeCount >= disagreeCount;
@@ -220,11 +221,11 @@ const DQAContainer = ( ): React.Node => {
         location: [observation.latitude, observation.longitude],
         evidence: compact( [
           observation.observationPhotos || observation.observation_photos,
-          observation.observationSounds || observation.sounds
+          observation.observationSounds || observation.sounds,
         ] ),
         taxonId: observation.taxon?.id,
         rankLevel: observation.taxon?.rank_level,
-        identifications: observation.identifications
+        identifications: observation.identifications,
       };
       if ( metric === "date" ) {
         return obsDataToCheck[metric] !== null;
@@ -242,7 +243,7 @@ const DQAContainer = ( ): React.Node => {
       if ( metric === "id_supported" ) {
         const { taxonId } = obsDataToCheck;
         const supportedIDs = obsDataToCheck.identifications.filter(
-          identification => identification.taxon.id === taxonId
+          identification => identification.taxon.id === taxonId,
         ).length;
         return supportedIDs >= 2;
       }

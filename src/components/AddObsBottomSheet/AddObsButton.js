@@ -93,7 +93,7 @@ const AddObsButton = ( ): React.Node => {
     justFinishedSignup,
     currentUser,
     isAllAddObsOptionsMode,
-    shownOnce
+    shownOnce,
   ] );
 
   const dismissTooltip = () => {
@@ -115,7 +115,8 @@ const AddObsButton = ( ): React.Node => {
     logger.info( `isAdvancedUser: ${isAllAddObsOptionsMode}` );
   }, [isAllAddObsOptionsMode] );
 
-  const navAndCloseBottomSheet = ( screen, params ) => {
+  type Screen = "ObsEdit" | "Camera" | "PhotoLibrary" | "SoundRecorder";
+  const navAndCloseBottomSheet = ( screen: Screen, params ) => {
     if ( screen !== "ObsEdit" ) {
       resetObservationFlowSlice( );
     }
@@ -133,13 +134,13 @@ const AddObsButton = ( ): React.Node => {
               routes: [
                 {
                   name: screen,
-                  params: { ...params, previousScreen: currentRoute }
-                }
-              ]
-            }
-          }
-        ]
-      } )
+                  params: { ...params, previousScreen: currentRoute },
+                },
+              ],
+            },
+          },
+        ],
+      } ),
     );
 
     closeBottomSheet( );

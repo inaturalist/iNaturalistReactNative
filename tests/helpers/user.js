@@ -17,6 +17,9 @@ import { makeResponse } from "tests/factory";
 
 const TEST_JWT = "test-json-web-token";
 const TEST_ACCESS_TOKEN = "test-access-token";
+const rnsiOptions = {
+  keychainService: "app",
+};
 
 async function signOut( options = {} ) {
   const realm = options.realm || global.realm;
@@ -32,20 +35,20 @@ async function signOut( options = {} ) {
   }, "deleting entire realm in signOut function, user.js" );
   const systemLocale = getInatLocaleFromSystemLocale( );
   changeLanguage( systemLocale );
-  await RNSInfo.deleteItem( "username" );
-  await RNSInfo.deleteItem( "jwtToken" );
-  await RNSInfo.deleteItem( "jwtGeneratedAt" );
-  await RNSInfo.deleteItem( "accessToken" );
+  await RNSInfo.deleteItem( "username", rnsiOptions );
+  await RNSInfo.deleteItem( "jwtToken", rnsiOptions );
+  await RNSInfo.deleteItem( "jwtGeneratedAt", rnsiOptions );
+  await RNSInfo.deleteItem( "accessToken", rnsiOptions );
   clearAuthCache( );
   inatjs.users.me.mockClear( );
 }
 
 async function signIn( user, options = {} ) {
   const realm = options.realm || global.realm;
-  await RNSInfo.setItem( "username", user.login );
-  await RNSInfo.setItem( "jwtToken", TEST_JWT );
-  await RNSInfo.setItem( "jwtGeneratedAt", Date.now( ).toString( ), {} );
-  await RNSInfo.setItem( "accessToken", TEST_ACCESS_TOKEN );
+  await RNSInfo.setItem( "username", user.login, rnsiOptions );
+  await RNSInfo.setItem( "jwtToken", TEST_JWT, rnsiOptions );
+  await RNSInfo.setItem( "jwtGeneratedAt", Date.now( ).toString( ), rnsiOptions );
+  await RNSInfo.setItem( "accessToken", TEST_ACCESS_TOKEN, rnsiOptions );
   clearAuthCache( );
   inatjs.users.me.mockResolvedValue( makeResponse( [user] ) );
   user.signedIn = true;
@@ -62,8 +65,8 @@ async function signIn( user, options = {} ) {
     .reply( 200, { login: user.login, id: user.id } );
   nock( API_HOST, {
     reqheaders: {
-      authorization: `Bearer ${TEST_ACCESS_TOKEN}`
-    }
+      authorization: `Bearer ${TEST_ACCESS_TOKEN}`,
+    },
   } )
     .get( "/users/api_token.json" )
     .reply( 200, { api_token: "some-jwt" } );
@@ -73,5 +76,5 @@ export {
   signIn,
   signOut,
   TEST_ACCESS_TOKEN,
-  TEST_JWT
+  TEST_JWT,
 };

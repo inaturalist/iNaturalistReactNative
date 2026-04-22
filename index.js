@@ -1,23 +1,19 @@
-// @flow
-
 // Recommendation from the uuid library is to import get-random-values before
 // uuid, so we're importing it first thing in the entry point.
 // https://www.npmjs.com/package/uuid#react-native--expo
 // eslint-disable-next-line simple-import-sort/imports
 import "react-native-get-random-values";
-
 // React Native doesn't have a functional URL as of Feb 2024
 import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import {
-  useColorScheme, Alert, AppRegistry, View
-} from "react-native";
+import { Alert, AppRegistry } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import { zustandStorage } from "stores/useStore";
+import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 import {
   QueryClient,
-  QueryClientProvider
+  QueryClientProvider,
 } from "@tanstack/react-query";
 import App from "components/App";
 import ErrorBoundary from "components/ErrorBoundary";
@@ -32,10 +28,10 @@ import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { getInstallID } from "sharedHelpers/installData";
+import { getInstallID, store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
-
+import useRozenite from "sharedHooks/useRozenite";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
@@ -58,7 +54,7 @@ if (
     allRejections: true,
     onUnhandled: ( id, error ) => {
       logger.error( "Unhandled promise rejection: ", error );
-    }
+    },
   } );
 }
 /* eslint-enable no-undef */
@@ -68,7 +64,7 @@ const jsErrorHandler = ( e, isFatal ) => {
     Alert.alert(
       "Device-storage-full",
       "iNaturalist may not be able to save your photos or may crash.",
-      [{ text: t( "OK" ) }]
+      [{ text: t( "OK" ) }],
     );
   }
 
@@ -104,7 +100,7 @@ setNativeExceptionHandler(
         screen: getCurrentRoute()?.name || "",
         memoryUsage: await DeviceInfo.getUsedMemory(),
         timestamp: new Date().toISOString(),
-        appVersion: await DeviceInfo.getVersion()
+        appVersion: await DeviceInfo.getVersion(),
       };
 
       // Store crash data for retrieval on next app launch
@@ -117,7 +113,7 @@ setNativeExceptionHandler(
     }
   },
   true, // Force quit the app to prevent zombie states
-  true // Enable on iOS
+  true, // Enable on iOS
 );
 
 initI18next();
@@ -128,21 +124,27 @@ inatjs.setConfig( {
   writeApiURL: Config.API_URL,
   userAgent: getUserAgent(),
   headers: {
-    "X-Installation-ID": getInstallID( )
-  }
+    "X-Installation-ID": getInstallID( ),
+  },
 } );
 
 const queryClient = new QueryClient( {
   defaultOptions: {
     queries: {
-      retry: reactQueryRetry
-    }
-  }
+      retry: reactQueryRetry,
+    },
+  },
 } );
 
 const AppWithProviders = ( ) => {
-  const colorScheme = useColorScheme( );
-  const darkModeStyleWrapper = { flex: 1, colorScheme };
+  // note: Rozenite plugins are automatically disabled / noops in Production builds
+  useRozenite( {
+    queryClient,
+    mmkvStorages: {
+      "persisted-zustand": zustandMMKVBackingStorage,
+      "install-data": installDataMMKVStorage,
+    },
+  } );
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -151,13 +153,11 @@ const AppWithProviders = ( ) => {
           <INatPaperProvider>
             <GestureHandlerRootView className="flex-1">
               <BottomSheetModalProvider>
-                <View style={darkModeStyleWrapper}>
-                  <OfflineNavigationGuard>
-                    <ErrorBoundary>
-                      <App />
-                    </ErrorBoundary>
-                  </OfflineNavigationGuard>
-                </View>
+                <OfflineNavigationGuard>
+                  <ErrorBoundary>
+                    <App />
+                  </ErrorBoundary>
+                </OfflineNavigationGuard>
               </BottomSheetModalProvider>
             </GestureHandlerRootView>
           </INatPaperProvider>

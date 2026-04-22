@@ -1,20 +1,21 @@
 import { refresh } from "@react-native-community/netinfo";
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body2,
   Button,
   INatIconButton,
   OfflineNotice,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { PLACE_MODE } from "providers/ExploreContext";
 import React from "react";
 import { Alert } from "react-native";
 import {
   useDebugMode,
   useStoredLayout,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import type { RenderLocationPermissionsGateFunction } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
@@ -27,7 +28,7 @@ import SpeciesView from "./SpeciesView";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
-  elevation: 6
+  elevation: 6,
 } );
 
 enum EXPLORE_VIEW {
@@ -52,7 +53,7 @@ interface Props {
   placeMode: string;
   queryParams: object;
   renderLocationPermissionsGate: RenderLocationPermissionsGateFunction;
-  requestLocationPermissions: () => void;
+  requestLocationPermissions: ( ) => void;
 }
 
 const ExploreV2 = ( {
@@ -64,8 +65,9 @@ const ExploreV2 = ( {
   placeMode,
   queryParams,
   renderLocationPermissionsGate,
-  requestLocationPermissions
+  requestLocationPermissions,
 }: Props ) => {
+  const navigation = useNavigation();
   const { t } = useTranslation( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" ) as {
     layout: EXPLORE_OBSERVATIONS_LAYOUT | null;
@@ -143,6 +145,13 @@ const ExploreV2 = ( {
     <>
       <ViewWrapper testID="ExploreV2" wrapperClassName="overflow-hidden">
         <View className="flex-1 overflow-hidden">
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => navigation.navigate( "ExploreFilters" )}
+          >
+            {/* eslint-disable-next-line i18next/no-literal-string */}
+            <Body2>TODO: Header Link to Filters</Body2>
+          </Pressable>
           {currentExploreView === "observations" && (
             <ObservationsViewBar
               layout={layout}
@@ -161,20 +170,20 @@ const ExploreV2 = ( {
                 "right-5",
                 "rounded-full",
                 "w-[55px]",
-                "z-10"
+                "z-10",
               )}
               color="white"
               size={27}
               style={[
                 DROP_SHADOW,
                 // eslint-disable-next-line react-native/no-inline-styles
-                { backgroundColor: "deeppink" }
+                { backgroundColor: "deeppink" },
               ]}
               accessibilityLabel="Diagnostics"
               onPress={() => {
                 Alert.alert(
                   "ExploreV2 Info",
-                  `queryParams: ${JSON.stringify( queryParams )}`
+                  `queryParams: ${JSON.stringify( queryParams )}`,
                 );
               }}
             />
@@ -183,7 +192,7 @@ const ExploreV2 = ( {
       </ViewWrapper>
       {/*
         Leaving this here so that it is easier to reason about differences between Explore
-        and ExploreRedesign.
+        and ExploreV2.
       */}
       {null}
     </>

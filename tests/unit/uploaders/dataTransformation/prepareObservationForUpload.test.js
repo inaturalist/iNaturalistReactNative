@@ -2,11 +2,11 @@ import Observation from "realmModels/Observation";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import {
-  prepareObservationForUpload
+  prepareObservationForUpload,
 } from "uploaders";
 
 jest.mock( "realmModels/Observation", () => ( {
-  mapObservationForUpload: jest.fn()
+  mapObservationForUpload: jest.fn(),
 } ) );
 
 const mockObservation = factory( "LocalObservation", {
@@ -15,22 +15,22 @@ const mockObservation = factory( "LocalObservation", {
   latitude: 1.2345,
   longitude: 1.2345,
   taxon: {
-    id: 123
+    id: 123,
   },
   observationPhotos: [
     factory( "LocalObservationPhoto", {
       photo: {
         url: `${faker.image.url( )}/100`,
-        position: 0
-      }
+        position: 0,
+      },
     } ),
     factory( "LocalObservationPhoto", {
       photo: {
         url: `${faker.image.url( )}/200`,
-        position: 1
-      }
-    } )
-  ]
+        position: 1,
+      },
+    } ),
+  ],
 } );
 
 const mappedObservation = {
@@ -45,7 +45,7 @@ const mappedObservation = {
   positional_accuracy: null,
   species_guess: null,
   taxon_id: mockObservation.taxon && mockObservation.taxon.id,
-  uuid: mockObservation.uuid
+  uuid: mockObservation.uuid,
 };
 
 describe( "prepareObservationForUpload", () => {
@@ -66,7 +66,7 @@ describe( "prepareObservationForUpload", () => {
       positional_accuracy: null,
       species_guess: null,
       taxon_id: mockObservation.taxon && mockObservation.taxon.id,
-      uuid: mockObservation.uuid
+      uuid: mockObservation.uuid,
     } );
 
     prepareObservationForUpload( mockObservation );
@@ -84,14 +84,14 @@ describe( "prepareObservationForUpload", () => {
       longitude: mockObservation.longitude,
       observed_on_string: mockObservation.observed_on_string,
       taxon_id: mockObservation.taxon && mockObservation.taxon.id,
-      uuid: mockObservation.uuid
+      uuid: mockObservation.uuid,
     } );
   } );
 
   test( "should handle empty field values correctly", () => {
     Observation.mapObservationForUpload.mockReturnValue( {
       ...mappedObservation,
-      description: ""
+      description: "",
     } );
 
     const result = prepareObservationForUpload( mockObservation );
@@ -102,7 +102,7 @@ describe( "prepareObservationForUpload", () => {
       observed_on_string: mockObservation.observed_on_string,
       taxon_id: mockObservation.taxon && mockObservation.taxon.id,
       uuid: mockObservation.uuid,
-      description: ""
+      description: "",
     } );
   } );
 } );

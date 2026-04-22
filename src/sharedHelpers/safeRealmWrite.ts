@@ -5,7 +5,7 @@ import type Realm from "realm";
 const safeRealmWrite = (
   realm: Realm,
   action: () => void,
-  description: string
+  description: string,
 ) => {
   if ( realm.isInTransaction ) {
     return action( );

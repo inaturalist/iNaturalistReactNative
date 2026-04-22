@@ -599,38 +599,6 @@ lane :prod do
 
   # Get all build numbers between the last released version and the current build number
   build_number = get_build_number( xcodeproj: XCODEPROJ )
-  published_build_number = app_store_build_number
-  new_build_numbers = ( ( published_build_number.to_i + 1 )..build_number.to_i ).to_a
-
-  # Get all previous changelogs to show them as an instruction for new release notes
-  previous_changelogs = ""
-  new_build_numbers.each do | new_build_number |
-    changelog = get_changelog( build_number: new_build_number, allow_blank: true )
-    next unless changelog
-
-    previous_changelogs += "#\n#\n"
-    previous_changelogs += "# Version #{VERSION}+#{new_build_number}\n"
-    # Add a # to the start of each line
-    changelog.each_line do | line |
-      previous_changelogs += "# #{line}"
-    end
-  end
-  instructions = <<~INSTRUCTIONS
-
-
-    # Write custom release notes that summarize changes since the last production
-    # release (not since the last build).
-    #
-    # Lines beginning with # will be ignored.
-    # Keep notes within the 500 character limit required by Google Play.
-    #
-    # Here are all the changelogs since the last release:
-    \n
-    #{previous_changelogs}
-  INSTRUCTIONS
-  release_notes = {}
-  # At the moment we are not bothered about translating those into other languages
-  release_notes["default"] = prompt_for_release_notes( instructions: instructions )
 
   upload_to_app_store(
     build_number: build_number,
@@ -646,15 +614,12 @@ lane :prod do
     skip_screenshots: true,
     metadata_path: "./fastlane/metadata/ios",
     copyright: "#{Date.today.year} iNaturalist",
-    release_notes: release_notes,
     precheck_include_in_app_purchases: false
   )
 
   slack_message = <<~MESSAGE
     🚀 NEW PROD RELEASE
     Staged on app stores with localized metadata, ready to submit for review.
-
-    #{release_notes['default']}
   MESSAGE
   slack(
     message: slack_message,

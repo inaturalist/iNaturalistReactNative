@@ -42,8 +42,8 @@ const SignUpForm = ( ) => {
     if ( isAvailable ) {
       navigation.navigate( "SignUpConfirmation", {
         user: {
-          email
-        }
+          email,
+        },
       } );
     } else {
       setError( t( "That-email-is-already-associated-with-an-account" ) );

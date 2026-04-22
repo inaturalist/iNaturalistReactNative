@@ -1,7 +1,7 @@
 import type { StateCreator } from "zustand";
 
 const DEFAULT_STATE = {
-  exploreView: "observations"
+  exploreView: "observations",
 };
 
 interface ExploreSlice {
@@ -11,7 +11,7 @@ interface ExploreSlice {
 
 const createExploreSlice: StateCreator<ExploreSlice> = set => ( {
   ...DEFAULT_STATE,
-  setExploreView: exploreView => set( ( ) => ( { exploreView } ) )
+  setExploreView: exploreView => set( ( ) => ( { exploreView } ) ),
 } );
 
 export default createExploreSlice;

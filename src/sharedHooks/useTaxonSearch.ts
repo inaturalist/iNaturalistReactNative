@@ -2,7 +2,7 @@ import { fetchSearchResults } from "api/search";
 import type { ApiOpts } from "api/types";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect, useMemo, useState
+  useCallback, useEffect, useMemo, useState,
 } from "react";
 import type Realm from "realm";
 import { UpdateMode } from "realm";
@@ -23,7 +23,7 @@ function saveTaxaToRealm( taxa: Taxon[], realm: Realm ) {
       realm.create(
         "Taxon",
         Taxon.forUpdate( remoteTaxon ),
-        UpdateMode.Modified
+        UpdateMode.Modified,
       );
     } );
   }, "saving remote taxon from useTaxonSearch" );
@@ -47,16 +47,16 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
           q: taxonQuery,
           sources: "taxa",
           fields: {
-            taxon: Taxon.LIMITED_TAXON_FIELDS
-          }
+            taxon: Taxon.LIMITED_TAXON_FIELDS,
+          },
         },
-        optsWithAuth
+        optsWithAuth,
       );
       return apiTaxa?.map( taxon => Taxon.mapApiToRealm( taxon ) ) || [];
     },
     {
-      enabled: shouldFetchRemote
-    }
+      enabled: shouldFetchRemote,
+    },
   );
 
   const safeRealmSearch = useCallback( async ( searchString: string ) => {
@@ -73,7 +73,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
         "_searchableName TEXT $0 || _searchableName CONTAINS[c] $0"
 
         + " LIMIT(50)",
-        cleanedQuery
+        cleanedQuery,
       );
     } catch ( error ) {
       throw new Error( `Search failed: ${error.message}` );
@@ -120,7 +120,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
     realm,
     remoteTaxa,
     safeRealmSearch,
-    taxonQuery
+    taxonQuery,
   ] );
 
   return useMemo( () => {
@@ -130,7 +130,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
         taxa: iconicTaxa,
         refetch: () => undefined,
         isLoading: false,
-        isLocal: false
+        isLocal: false,
       };
     }
 
@@ -140,7 +140,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
         taxa: remoteTaxa,
         refetch,
         isLoading,
-        isLocal: false
+        isLocal: false,
       };
     }
 
@@ -150,7 +150,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
         taxa: localTaxa,
         refetch: () => undefined,
         isLoading: false,
-        isLocal: true
+        isLocal: true,
       };
     }
 
@@ -161,7 +161,7 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
         : localTaxa || [],
       refetch,
       isLoading,
-      isLocal: false
+      isLocal: false,
     };
   }, [taxonQuery, remoteTaxa, localTaxa, iconicTaxa, refetch, isLoading] );
 };

@@ -13,10 +13,10 @@ import {
   ScrollViewWrapper,
   Subheading1,
   UserText,
-  WarningSheet
+  WarningSheet,
 } from "components/SharedComponents";
 import {
-  Image, ImageBackground, View
+  Image, ImageBackground, View,
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
@@ -45,7 +45,7 @@ type Props = {
 }
 
 const ProjectDetails = ( {
-  project, joinProject, leaveProject, loadingProjectMembership
+  project, joinProject, leaveProject, loadingProjectMembership,
 }: Props ): Node => {
   const setExploreView = useStore( state => state.setExploreView );
 
@@ -66,10 +66,10 @@ const ProjectDetails = ( {
         project,
         // If selected project has no place_id, show map in worldwide mode
         worldwide: !project?.place,
-        place: project?.place
+        place: project?.place,
       } );
     },
-    [navigation, project, setExploreView, writeLayoutToStorage]
+    [navigation, project, setExploreView, writeLayoutToStorage],
   );
 
   const onSpeciesPressed = useCallback(
@@ -77,20 +77,20 @@ const ProjectDetails = ( {
       setExploreView( "species" );
       navigation.navigate( "Explore", {
         project,
-        worldwide: true
+        worldwide: true,
       } );
     },
-    [navigation, project, setExploreView]
+    [navigation, project, setExploreView],
   );
 
   const onMembersPressed = useCallback(
     ( ) => {
       navigation.navigate( "ProjectMembers", {
         id: project?.id,
-        title: project?.title
+        title: project?.title,
       } );
     },
-    [navigation, project]
+    [navigation, project],
   );
 
   if ( !project ) {
@@ -109,7 +109,7 @@ const ProjectDetails = ( {
     />
   );
 
-  const iconClassName = "h-[134px] w-[134px] rounded-full bg-white -top-6";
+  const iconClassName = "h-[90px] w-[90px] rounded-full bg-white -top-6";
 
   const displayProjectIcon = icon => {
     const productionIcon = icon?.replace( "staticdev", "static" );
@@ -119,7 +119,7 @@ const ProjectDetails = ( {
         <View className={
           classnames(
             iconClassName,
-            "justify-center items-center"
+            "justify-center items-center",
           )
         }
         >
@@ -153,14 +153,6 @@ const ProjectDetails = ( {
           {displayProjectIcon( project?.icon )}
         </ImageBackground>
       </View>
-
-      {/* <Image
-          source={{ uri: project.icon }}
-          className="h-[70px] w-[70px] rounded-full bottom-6 z-100 bg-white"
-          testID="ProjectDetails.projectIcon"
-          accessibilityIgnoresInvertColors
-        /> */}
-      {/* </ImageBackground> */}
       <View className="mx-4 pb-8">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
         <Subheading1>
@@ -173,7 +165,7 @@ const ProjectDetails = ( {
             observations_count: project.observations_count,
             species_count: project.species_count,
             members_count: project.members_count,
-            journal_posts_count: project.journal_posts_count
+            journal_posts_count: project.journal_posts_count,
           }}
           onObservationPressed={() => onObservationPressed( false )}
           onSpeciesPressed={onSpeciesPressed}
@@ -262,7 +254,7 @@ const ProjectDetails = ( {
             project.project_type === ""
             && project?.current_user_observations_count > 0
             && t( "If-you-leave-x-of-your-observations-removed", {
-              count: project?.current_user_observations_count
+              count: project?.current_user_observations_count,
             } )
           }
           buttonText={t( "LEAVE" )}

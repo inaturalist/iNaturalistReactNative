@@ -15,9 +15,9 @@ const UTF_GRID_JSON = {
       private_location: true,
       quality_grade: "research",
       "taxon.iconic_taxon_id": 1,
-      uuid: "this-is-a-uuid"
-    }
-  }
+      uuid: "this-is-a-uuid",
+    },
+  },
 };
 
 describe( "getDataForPixel", ( ) => {

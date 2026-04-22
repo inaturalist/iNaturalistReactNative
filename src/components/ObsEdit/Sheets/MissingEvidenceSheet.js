@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  TextSheet
+  TextSheet,
 } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";

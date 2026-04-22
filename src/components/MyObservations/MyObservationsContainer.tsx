@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
@@ -7,13 +7,20 @@ import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
-  useEffect, useRef,
-  useState
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
-import type { RealmObservation, RealmTaxon } from "realmModels/types";
+import type { RealmObservation } from "realmModels/types";
+import {
+  mapSpeciesSortToAPIParams,
+  sortSpeciesCounts,
+} from "sharedHelpers/sortingHelpers";
+import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import {
   useCurrentUser,
   useInfiniteObservationsScroll,
@@ -23,27 +30,30 @@ import {
   useNavigateToObsEdit,
   useObservationsUpdates,
   useStoredLayout,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import {
-  UPLOAD_PENDING
+  UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
+import type { SpeciesCount } from "types/sorting";
 
+import { SPECIES_SORT_BY } from "../../types/sorting";
 import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservationsEmptySimple from "./MyObservationsEmptySimple";
 import MyObservationsSimple, {
   OBSERVATIONS_TAB,
-  TAXA_TAB
+  TAXA_TAB,
 } from "./MyObservationsSimple";
 
 const { useRealm } = RealmContext;
 
-interface SpeciesCount {
-  count: number;
-  taxon: RealmTaxon;
+export enum ACTIVE_SHEET {
+  NONE = "NONE",
+  LOGIN = "LOGIN",
+  SORT = "SORT",
 }
 
 interface SyncOptions {
@@ -52,12 +62,13 @@ interface SyncOptions {
   skipSomeUploads?: string[];
 }
 
-const MyObservationsContainer = ( ): React.FC => {
+const MyObservationsContainer = ( ) => {
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );
   const navigation = useNavigation( );
   const listRef = useRef<FlashListRef<RealmObservation>>( null );
+  const taxaListRef = useRef<FlashListRef<SpeciesCount>>( null );
   const navigateToObsEdit = useNavigateToObsEdit( );
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
@@ -83,7 +94,7 @@ const MyObservationsContainer = ( ): React.FC => {
 
   const {
     observationList: observations,
-    totalResults: totalResultsLocal
+    totalResults: totalResultsLocal,
   } = useLocalObservations( );
   const prevObservationsLength = useRef( observations.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
@@ -96,7 +107,7 @@ const MyObservationsContainer = ( ): React.FC => {
   const { startUploadObservations } = useUploadObservations( canUpload );
   const { syncManually } = useSyncObservations(
     currentUserId,
-    startUploadObservations
+    startUploadObservations,
   );
 
   useObservationsUpdates( !!currentUser );
@@ -106,14 +117,17 @@ const MyObservationsContainer = ( ): React.FC => {
     fetchNextPage,
     isFetchingNextPage,
     status,
-    totalResults: totalResultsRemote
+    totalResults: totalResultsRemote,
   } = useInfiniteObservationsScroll( {
     params: {
-      user_id: currentUserId
-    }
+      user_id: currentUserId,
+    },
   } );
 
-  const [showLoginSheet, setShowLoginSheet] = useState( false );
+  const [openSheet, setOpenSheet] = useState<ACTIVE_SHEET>( ACTIVE_SHEET.NONE );
+
+  const [speciesSortOptionId, setSpeciesSortOptionId]
+    = useState<SPECIES_SORT_BY>( SPECIES_SORT_BY.COUNT_DESC );
 
   const toggleLayout = ( ) => {
     writeLayoutToStorage( layout === "grid"
@@ -125,7 +139,7 @@ const MyObservationsContainer = ( ): React.FC => {
     if ( !isConnected ) {
       Alert.alert(
         t( "Internet-Connection-Required" ),
-        t( "Please-try-again-when-you-are-connected-to-the-internet" )
+        t( "Please-try-again-when-you-are-connected-to-the-internet" ),
       );
     }
     return isConnected;
@@ -133,7 +147,7 @@ const MyObservationsContainer = ( ): React.FC => {
 
   const confirmLoggedIn = useCallback( ( ) => {
     if ( !currentUser ) {
-      setShowLoginSheet( true );
+      setOpenSheet( ACTIVE_SHEET.LOGIN );
     }
     return currentUser;
   }, [currentUser] );
@@ -153,7 +167,7 @@ const MyObservationsContainer = ( ): React.FC => {
     syncManually,
     confirmInternetConnection,
     confirmLoggedIn,
-    isDefaultMode
+    isDefaultMode,
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
@@ -181,7 +195,7 @@ const MyObservationsContainer = ( ): React.FC => {
     realm,
     setStartUploadObservations,
     uploadQueue,
-    uploadStatus
+    uploadStatus,
   ] );
 
   // 20241107 amanda - this seems to be a culprit for the tab bar being less
@@ -194,17 +208,26 @@ const MyObservationsContainer = ( ): React.FC => {
       let isActive = true;
       const unsynced = Observation.filterUnsyncedObservations( realm );
       setNumUnuploadedObservations( unsynced.length );
+      let idleCallbackId = 0;
       if ( isActive ) {
+        idleCallbackId = requestIdleCallback( ( ) => {
+          startupPerformanceTracker.emitStartupTTI( {
+            targetScreen: "MyObservations",
+            loggedIn: !!currentUser,
+          } );
+        } );
         startAutomaticSync( );
       }
       return () => {
         isActive = false;
+        if ( idleCallbackId ) { cancelIdleCallback( idleCallbackId ); }
       };
     }, [
+      currentUser,
       startAutomaticSync,
       setNumUnuploadedObservations,
-      realm
-    ] )
+      realm,
+    ] ),
   );
 
   const handlePullToRefresh = useCallback( async ( ) => {
@@ -220,7 +243,7 @@ const MyObservationsContainer = ( ): React.FC => {
       listRef.current.scrollToOffset( { offset: myObsOffsetToRestore } );
     }
   }, [
-    myObsOffsetToRestore
+    myObsOffsetToRestore,
   ] );
 
   // API call fetching obs has completed but results are not yet stored in realm
@@ -252,9 +275,14 @@ const MyObservationsContainer = ( ): React.FC => {
   const numOfUserSpecies = zustandStorage.getItem( "numOfUserSpecies" );
   const [activeTab, setActiveTab] = useState( OBSERVATIONS_TAB );
 
-  let numTotalTaxaLocal: number | undefined;
-  const localObservedSpeciesCount: Array<SpeciesCount> = [];
-  if ( !currentUser ) {
+  const { leafTaxonIds, numTotalTaxaLocal } = useMemo<{
+    leafTaxonIds: number[];
+    numTotalTaxaLocal: number | undefined;
+  }>( () => {
+    if ( currentUser ) {
+      return { leafTaxonIds: [], numTotalTaxaLocal: undefined };
+    }
+
     // Calculate obs and leaf taxa counts from local observations
     const distinctTaxonObs = realm.objects<RealmObservation>( "Observation" )
       .filtered( "taxon != null DISTINCT(taxon.id)" );
@@ -271,37 +299,52 @@ const MyObservationsContainer = ( ): React.FC => {
       return taxonAncestorIds;
     } ).flat( );
     const leafTaxonIds = taxonIds.filter( taxonId => !ancestorIds.includes( taxonId ) );
-    numTotalTaxaLocal = leafTaxonIds.length;
 
-    // Get leaf taxa if we're viewing the species tab
-    if ( activeTab === TAXA_TAB ) {
-      const localObs = realm.objects<RealmObservation>( "Observation" )
-        .filtered( "taxon.id IN $0", leafTaxonIds );
-      leafTaxonIds.forEach( id => {
-        const obs = localObs.filter( o => o.taxon.id === id );
-        localObservedSpeciesCount.push( { count: obs.length, taxon: obs[0].taxon } );
-      } );
+    return {
+      leafTaxonIds,
+      numTotalTaxaLocal: leafTaxonIds.length,
+    };
+  }, [currentUser, realm] );
+
+  const localObservedSpeciesCount = useMemo( () => {
+    if ( currentUser || activeTab !== TAXA_TAB || !leafTaxonIds.length ) {
+      return [];
     }
-  }
+
+    const localObs = realm.objects<RealmObservation>( "Observation" )
+      .filtered( "taxon.id IN $0", leafTaxonIds );
+
+    return leafTaxonIds.map( id => {
+      const obs = localObs.filter( o => o.taxon.id === id );
+      return { count: obs.length, taxon: obs[0].taxon };
+    } );
+  }, [currentUser, activeTab, realm, leafTaxonIds] );
+
+  // Map the selected sort option to API params
+  const sortAPIParams = useMemo(
+    () => mapSpeciesSortToAPIParams( speciesSortOptionId ),
+    [speciesSortOptionId],
+  );
 
   const {
     data: remoteObservedTaxaCounts,
     isFetchingNextPage: isFetchingTaxa,
     fetchNextPage: fetchMoreTaxa,
     totalResults: numTotalTaxaRemote,
-    refetch: refetchTaxa
+    refetch: refetchTaxa,
   } = useInfiniteScroll(
-    "MyObsSimple-fetchSpeciesCounts",
+    `MyObsSimple-fetchSpeciesCounts-${currentUser?.id}-${speciesSortOptionId}`,
     fetchSpeciesCounts,
     {
       user_id: currentUser?.id,
+      ...( sortAPIParams || {} ),
       fields: {
-        taxon: Taxon.LIMITED_TAXON_FIELDS
-      }
+        taxon: Taxon.LIMITED_TAXON_FIELDS,
+      },
     },
     {
-      enabled: !!currentUser
-    }
+      enabled: !!currentUser,
+    },
   );
 
   const numTotalTaxa = typeof ( numTotalTaxaRemote ) === "number"
@@ -340,6 +383,26 @@ const MyObservationsContainer = ( ): React.FC => {
     prevObservationsLength.current = observations.length;
   }, [observations.length, listRef] );
 
+  const taxa = useMemo( () => {
+    const unsortedTaxa = currentUser
+      ? remoteObservedTaxaCounts
+      : localObservedSpeciesCount;
+
+    // For logged-in users: we get data sorted from the API
+    if ( currentUser && isConnected ) {
+      return unsortedTaxa || [];
+    }
+
+    // For logged-out users: apply client-side sorting to local data
+    return sortSpeciesCounts( unsortedTaxa || [], speciesSortOptionId );
+  }, [
+    currentUser,
+    isConnected,
+    remoteObservedTaxaCounts,
+    localObservedSpeciesCount,
+    speciesSortOptionId,
+  ] );
+
   if ( !layout ) { return null; }
 
   if ( observations.length === 0 ) {
@@ -355,10 +418,6 @@ const MyObservationsContainer = ( ): React.FC => {
         <FullScreenActivityIndicator />
       );
   }
-
-  const taxa = currentUser
-    ? remoteObservedTaxaCounts
-    : localObservedSpeciesCount;
 
   return (
     <MyObservationsSimple
@@ -376,6 +435,7 @@ const MyObservationsContainer = ( ): React.FC => {
       layout={layout}
       listRef={listRef}
       loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
+      taxaListRef={taxaListRef}
       numTotalObservations={numOfUserObservations}
       numTotalTaxa={numOfUserSpecies}
       numUnuploadedObservations={numUnuploadedObservations}
@@ -383,11 +443,13 @@ const MyObservationsContainer = ( ): React.FC => {
       onEndReached={fetchNextPage}
       onListLayout={restoreScrollOffset}
       onScroll={onScroll}
+      openSheet={openSheet}
       refetchTaxa={refetchTaxa}
       setActiveTab={setActiveTab}
-      setShowLoginSheet={setShowLoginSheet}
-      showLoginSheet={showLoginSheet}
+      setOpenSheet={setOpenSheet}
+      setSpeciesSortOptionId={setSpeciesSortOptionId}
       showNoResults={showNoResults}
+      speciesSortOptionId={speciesSortOptionId}
       taxa={taxa}
       toggleLayout={toggleLayout}
     />

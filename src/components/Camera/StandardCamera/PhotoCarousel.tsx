@@ -3,16 +3,16 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import React, {
-  useCallback, useRef, useState
+  useCallback, useRef, useState,
 } from "react";
 import {
-  FlatList
+  FlatList,
 } from "react-native";
 import Modal from "react-native-modal";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   useAnimatedStyle,
-  withTiming
+  withTiming,
 } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -37,13 +37,13 @@ const SMALL_PHOTO_CLASSES = [
   "rounded-sm",
   "w-[42px]",
   "h-[42x]",
-  "mx-[3px]"
+  "mx-[3px]",
 ] as const;
 const LARGE_PHOTO_CLASSES = [
   "rounded-md",
   "w-[83px]",
   "h-[83px]",
-  "m-[8.5px]"
+  "m-[8.5px]",
 ] as const;
 
 const PhotoCarousel = ( {
@@ -53,7 +53,7 @@ const PhotoCarousel = ( {
   isTablet,
   rotation,
   photoUris,
-  onDelete
+  onDelete,
 }: Props ) => {
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const { t } = useTranslation( );
@@ -76,10 +76,10 @@ const PhotoCarousel = ( {
         {
           rotateZ: rotation
             ? withTiming( `${-1 * rotation.get( )}deg` )
-            : "0"
-        }
-      ]
-    } )
+            : "0",
+        },
+      ],
+    } ),
   );
 
   const renderSkeleton = useCallback( ( ) => ( takingPhoto
@@ -88,15 +88,15 @@ const PhotoCarousel = ( {
         className={classnames(
           "flex",
           {
-            "w-fit h-full": isTablet && isLandscapeMode
+            "w-fit h-full": isTablet && isLandscapeMode,
           },
-          ...IMAGE_CONTAINER_CLASSES
+          ...IMAGE_CONTAINER_CLASSES,
         )}
       >
         <View
           className={classnames(
             "bg-lightGray justify-center",
-            ...photoClasses
+            ...photoClasses,
           )}
         >
           <ActivityIndicator size={25} />
@@ -107,7 +107,7 @@ const PhotoCarousel = ( {
     isTablet,
     isLandscapeMode,
     photoClasses,
-    takingPhoto
+    takingPhoto,
   ] );
 
   const showDeletePhotoMode = useCallback( ( ) => {
@@ -119,12 +119,12 @@ const PhotoCarousel = ( {
   const viewPhotoAtIndex = useCallback( ( index: number ) => {
     setTappedPhotoIndex( index );
   }, [
-    setTappedPhotoIndex
+    setTappedPhotoIndex,
   ] );
 
   const renderPhotoOrEvidenceButton = useCallback( ( {
     item: photoUri,
-    index
+    index,
   } ) => (
     <>
       {index === 0 && renderSkeleton( )}
@@ -136,7 +136,7 @@ const PhotoCarousel = ( {
             testID="PhotoCarousel.photo"
             className={classnames(
               "overflow-hidden",
-              ...photoClasses
+              ...photoClasses,
             )}
           >
             <ImageBackground
@@ -145,7 +145,7 @@ const PhotoCarousel = ( {
                 "w-fit",
                 "h-full",
                 "flex",
-                ...IMAGE_CONTAINER_CLASSES
+                ...IMAGE_CONTAINER_CLASSES,
               )}
             >
               {
@@ -196,7 +196,7 @@ const PhotoCarousel = ( {
     renderSkeleton,
     showDeletePhotoMode,
     t,
-    viewPhotoAtIndex
+    viewPhotoAtIndex,
   ] );
 
   const photoPreviewsList = (
@@ -231,7 +231,7 @@ const PhotoCarousel = ( {
     height: isTablet && isLandscapeMode
       ? photoUris.length * ( photoDim + photoGutter ) + photoGutter
       : photoDim + ( photoGutter * 2 ),
-    padding: photoGutter / 2
+    padding: photoGutter / 2,
   };
 
   return (
@@ -246,8 +246,8 @@ const PhotoCarousel = ( {
             x: pageX,
             y: pageY,
             w,
-            h
-          } )
+            h,
+          } ),
         )
       }
       // Dynamic calculation of these values kind of just doesn't work with tailwind.
@@ -276,7 +276,7 @@ const PhotoCarousel = ( {
                   position: "absolute",
                   left: containerPos.x,
                   top: containerPos.y,
-                  ...containerStyle
+                  ...containerStyle,
                 }}
               >
                 { photoPreviewsList }

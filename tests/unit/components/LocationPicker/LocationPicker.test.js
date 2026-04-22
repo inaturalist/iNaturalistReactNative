@@ -9,8 +9,8 @@ const observations = [
   factory( "RemoteObservation", {
   // Oakland, CA latlng
     latitude: 37.804855,
-    longitude: -122.272504
-  } )
+    longitude: -122.272504,
+  } ),
 ];
 
 const mockPlaceResult = factory( "RemotePlace", {
@@ -18,16 +18,16 @@ const mockPlaceResult = factory( "RemotePlace", {
   point_geojson: {
     coordinates: [
       Number( faker.location.longitude( ) ),
-      Number( faker.location.latitude( ) )
-    ]
-  }
+      Number( faker.location.latitude( ) ),
+    ],
+  },
 } );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    data: [mockPlaceResult]
-  } )
+    data: [mockPlaceResult],
+  } ),
 } ) );
 
 const mockSelectPlaceResult = jest.fn( );
@@ -35,7 +35,7 @@ const mockRegion = {
   latitude: observations[0].latitude,
   longitude: observations[0].longitude,
   latitudeDelta: 0.2,
-  longitudeDelta: 0.2
+  longitudeDelta: 0.2,
 };
 
 const renderLocationPicker = region => renderComponent(
@@ -47,7 +47,7 @@ const renderLocationPicker = region => renderComponent(
     selectPlaceResult={mockSelectPlaceResult}
     mapType="standard"
     loading={false}
-  />
+  />,
 );
 
 describe( "LocationPicker", () => {
@@ -56,7 +56,7 @@ describe( "LocationPicker", () => {
     async ( ) => {
       renderLocationPicker( mockRegion );
       await screen.findByText( new RegExp( observations[0].latitude ) );
-    }
+    },
   );
 
   it(
@@ -68,7 +68,7 @@ describe( "LocationPicker", () => {
       await screen.findByText( new RegExp( observations[0].latitude ) );
       fireEvent.changeText( input, "New" );
       await screen.findByText( mockPlaceResult.display_name );
-    }
+    },
   );
 
   it(
@@ -85,12 +85,12 @@ describe( "LocationPicker", () => {
       renderLocationPicker( {
         ...mockRegion,
         latitude: mockPlaceResult.point_geojson.coordinates[1],
-        longitude: mockPlaceResult.point_geojson.coordinates[0]
+        longitude: mockPlaceResult.point_geojson.coordinates[0],
       } );
       await screen.findByText(
-        new RegExp( mockPlaceResult.point_geojson.coordinates[0] )
+        new RegExp( mockPlaceResult.point_geojson.coordinates[0] ),
       );
-    }
+    },
   );
 
   it( "should not have a minimum zoom level", async ( ) => {

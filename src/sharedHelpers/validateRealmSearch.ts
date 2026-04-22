@@ -21,12 +21,12 @@ const validateRealmSearch = ( searchString: string ) => {
     // );
 
     return {
-      cleanedQuery: cleanedString
+      cleanedQuery: cleanedString,
     };
   }
 
   return {
-    cleanedQuery: searchString
+    cleanedQuery: searchString,
   };
 };
 

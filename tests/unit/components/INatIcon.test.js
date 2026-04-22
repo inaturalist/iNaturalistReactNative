@@ -12,7 +12,7 @@ describe( "INatIcon", () => {
         name={iconName}
         size={20}
         color="#4F8EF7"
-      />
+      />,
     );
     // Snapshot test
     expect( screen ).toMatchSnapshot();

@@ -7,14 +7,14 @@ import {
   getDeviceType,
   getSystemName,
   getSystemVersion,
-  getVersion
+  getVersion,
 } from "react-native-device-info";
 
 const DETAILS = [
   `Build ${getBuildNumber()}`,
   `${getSystemName()} ${getSystemVersion()}`,
   getDeviceId( ),
-  getDeviceType( )
+  getDeviceType( ),
 ];
 
 async function getOtherDetails( ) {
@@ -32,5 +32,5 @@ function getUserAgent( ) {
 
 export {
   DETAILS,
-  getUserAgent
+  getUserAgent,
 };

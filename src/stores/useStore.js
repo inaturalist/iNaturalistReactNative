@@ -1,9 +1,9 @@
-import _ from "lodash";
-import { MMKV } from "react-native-mmkv";
+import merge from "lodash/merge";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import createExploreSlice from "./createExploreSlice";
+import createFeatureFlagSlice from "./createFeatureFlagSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
 import createMyObsSlice from "./createMyObsSlice";
@@ -11,8 +11,7 @@ import createObservationFlowSlice from "./createObservationFlowSlice";
 import createRootExploreSlice from "./createRootExploreSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
 import createUploadObservationsSlice from "./createUploadObservationsSlice";
-
-export const storage = new MMKV( );
+import storage from "./zustandMMKVBackingStorage";
 
 // TODO do *not* export this. This allows any consumer to overwrite *any* part
 // of state, circumventing any getter/setter logic we have in the stores. If
@@ -23,7 +22,7 @@ export const zustandStorage = {
     const value = storage.getString( name ) || storage.getNumber( name );
     return value ?? null;
   },
-  removeItem: name => storage.delete( name )
+  removeItem: name => storage.delete( name ),
 };
 
 // Using slices to separate store for Explore and Observation creation flow
@@ -33,13 +32,14 @@ const useStore = create( persist(
     // Let's make our slices
     const slices = [
       createExploreSlice( ...args ),
+      createFeatureFlagSlice( ...args ),
       createFirebaseTraceSlice( ...args ),
       createLayoutSlice( ...args ),
       createMyObsSlice( ...args ),
       createObservationFlowSlice( ...args ),
       createRootExploreSlice( ...args ),
       createSyncObservationsSlice( ...args ),
-      createUploadObservationsSlice( ...args )
+      createUploadObservationsSlice( ...args ),
     ];
 
     // Now let's make sure they're not clobbering each other because
@@ -52,25 +52,25 @@ const useStore = create( persist(
         memo[curr] += 1;
         return memo;
       },
-      {}
+      {},
     );
     const nonUniqueKeys = Object.keys( keyCounts ).reduce(
       ( memo, curr ) => {
         if ( keyCounts[curr] > 1 ) memo.push( curr );
         return memo;
       },
-      []
+      [],
     );
     if ( nonUniqueKeys.length > 0 ) {
       throw new Error(
-        `You have multiple Zustand slices with the following keys: ${nonUniqueKeys}`
+        `You have multiple Zustand slices with the following keys: ${nonUniqueKeys}`,
       );
     }
 
     // All good? Now let's combine them into one enormous hideous object
     return slices.reduce(
       ( memo, curr ) => ( { ...memo, ...curr } ),
-      {}
+      {},
     );
   },
   {
@@ -86,13 +86,13 @@ const useStore = create( persist(
           memo[key] = state.layout[key];
         }
         return memo;
-      }, {} ) )
+      }, {} ) ),
     } ),
     storage: createJSONStorage( () => zustandStorage ),
     // We need to deep merge to persist nested objects, like layout
     // https://zustand.docs.pmnd.rs/middlewares/persist#persisting-a-state-with-nested-objects
-    merge: ( persisted, current ) => _.merge( current, persisted )
-  }
+    merge: ( persisted, current ) => merge( current, persisted ),
+  },
 ) );
 
 export default useStore;

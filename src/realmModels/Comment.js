@@ -11,12 +11,12 @@ class Comment extends Realm.Object {
     hidden: true,
     flags: Flag.FLAG_FIELDS,
     id: true,
-    user: User && User.FIELDS
+    user: User && User.FIELDS,
   };
 
   static mapCommentForMyObsAdvancedMode( comment ) {
     return {
-      uuid: comment.uuid
+      uuid: comment.uuid,
     };
   }
 
@@ -36,9 +36,9 @@ class Comment extends Realm.Object {
       assignee: {
         type: "linkingObjects",
         objectType: "Observation",
-        property: "comments"
-      }
-    }
+        property: "comments",
+      },
+    },
   };
 }
 

@@ -10,7 +10,7 @@ describe( "EmptyMapSection", () => {
       <EmptyMapSection
         isFetchingLocation={false}
         handleAddLocationPressed={mockHandleAddLocationPressed}
-      />
+      />,
     );
 
     const locationIndicator = screen.getByTestId( "Map.LocationIndicator" );
@@ -22,7 +22,7 @@ describe( "EmptyMapSection", () => {
       <EmptyMapSection
         isFetchingLocation={false}
         handleAddLocationPressed={mockHandleAddLocationPressed}
-      />
+      />,
     );
 
     const button = screen.getByText( "ADD LOCATION FOR BETTER IDS" );
@@ -36,7 +36,7 @@ describe( "EmptyMapSection", () => {
       <EmptyMapSection
         isFetchingLocation
         handleAddLocationPressed={mockHandleAddLocationPressed}
-      />
+      />,
     );
 
     const button = screen.getByLabelText( "Edit location" );

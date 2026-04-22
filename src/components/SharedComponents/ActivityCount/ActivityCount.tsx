@@ -21,7 +21,7 @@ const ActivityCount = ( {
   count,
   icon,
   testID,
-  classNameMargin
+  classNameMargin,
 }: Props ) => {
   const { t } = useTranslation( );
 

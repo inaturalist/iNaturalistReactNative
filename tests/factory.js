@@ -16,7 +16,7 @@ export const makeResponse = ( results = [] ) => ( {
   total_results: results.length,
   page: 1,
   per_page: 30,
-  results
+  results,
 } );
 
 export default factory;

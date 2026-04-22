@@ -10,7 +10,7 @@ import setupUniqueRealm from "tests/helpers/uniqueRealm";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -20,8 +20,8 @@ jest.mock( "providers/contexts", ( ) => {
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier]
-    }
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -30,21 +30,21 @@ afterAll( uniqueRealmAfterAll );
 
 const mockRemoteTaxon = factory( "RemoteTaxon", {
   default_photo: {
-    url: faker.image.url( )
-  }
+    url: faker.image.url( ),
+  },
 } );
 
 const mockTaxon = factory( "LocalTaxon", {
   _syncedAt: faker.date.recent( { days: 1 } ),
   default_photo: {
-    url: faker.image.url( )
-  }
+    url: faker.image.url( ),
+  },
 } );
 const mockOutdatedTaxon = factory( "LocalTaxon", {
   _syncedAt: faker.date.recent( { days: 1, refDate: "2024-01-01" } ),
   default_photo: {
-    url: faker.image.url( )
-  }
+    url: faker.image.url( ),
+  },
 } );
 
 describe( "with local taxon", ( ) => {
@@ -90,7 +90,7 @@ describe( "when there is no local taxon with taxon id", ( ) => {
   describe( "with fetchRemote: true", ( ) => {
     it( "should request the taxon from the API", async ( ) => {
       expect(
-        global.mockRealms[mockRealmIdentifier].objectForPrimaryKey( "Taxon", mockTaxon.id )
+        global.mockRealms[mockRealmIdentifier].objectForPrimaryKey( "Taxon", mockTaxon.id ),
       ).toBeNull( );
       renderHookInApp( ( ) => useTaxon( mockTaxon ) );
       await waitFor( ( ) => expect( inatjs.taxa.fetch ).toHaveBeenCalled( ) );
@@ -104,8 +104,8 @@ describe( "when there is no local taxon with taxon id", ( ) => {
       // those errors. ~~~kueda20240305
       jest.mock( "@tanstack/react-query", () => ( {
         useQuery: jest.fn( ( ) => ( {
-          error: { }
-        } ) )
+          error: { },
+        } ) ),
       } ) );
       const partialTaxon = { id: faker.number.int( ), foo: "bar" };
       const { result } = renderHookInApp( ( ) => useTaxon( partialTaxon ) );
@@ -123,7 +123,7 @@ describe( "when there is no local taxon with taxon id", ( ) => {
     it( "should not call the API and return passed in taxon", ( ) => {
       const taxonId = faker.number.int( );
       expect(
-        global.mockRealms[mockRealmIdentifier].objectForPrimaryKey( "Taxon", taxonId )
+        global.mockRealms[mockRealmIdentifier].objectForPrimaryKey( "Taxon", taxonId ),
       ).toBeNull( );
       const { result } = renderHookInApp( ( ) => useTaxon( { id: taxonId, foo: "bar" }, false ) );
       expect( result.current.taxon ).not.toHaveProperty( "default_photo" );

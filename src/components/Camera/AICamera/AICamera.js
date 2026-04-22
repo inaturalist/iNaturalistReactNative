@@ -21,7 +21,7 @@ import {
   useDebugMode,
   useLayoutPrefs,
   usePerformance,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
@@ -32,7 +32,7 @@ import {
   handleCaptureError,
   handleClassifierError,
   handleDeviceNotSupported,
-  handleLog
+  handleLog,
 } from "../helpers";
 import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
@@ -76,7 +76,7 @@ const AICamera = ( {
   takePhotoOptions,
   userLocation,
   hasLocationPermissions,
-  requestLocationPermissions
+  requestLocationPermissions,
 }: Props ): Node => {
   const navigation = useNavigation( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
@@ -92,10 +92,10 @@ const AICamera = ( {
     pinchToZoom,
     showZoomButton,
     zoomTextValue,
-    resetZoom
+    resetZoom,
   } = useZoom( device );
   const {
-    rotatableAnimatedStyle
+    rotatableAnimatedStyle,
   } = useRotation( );
   const {
     confidenceThreshold,
@@ -109,13 +109,14 @@ const AICamera = ( {
     setConfidenceThreshold,
     setFPS,
     setNumStoredResults,
-    setCropRatio
+    setCropRatio,
   } = usePredictions( );
   const [inactive, setInactive] = React.useState( false );
   const [initialVolume, setInitialVolume] = useState( null );
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
-  const [useLocation, setUseLocation] = useState( !!hasLocationPermissions );
+  const [userDisabledLocation, setUserDisabledLocation] = useState( false );
+  const useLocation = hasLocationPermissions && !userDisabledLocation;
   const [locationStatusVisible, setLocationStatusVisible] = useState( false );
 
   const [debugFormatIndex, setDebugFormatIndex] = useState( 0 );
@@ -131,7 +132,7 @@ const AICamera = ( {
       requestLocationPermissions( );
       return;
     }
-    setUseLocation( prev => !prev );
+    setUserDisabledLocation( prev => !prev );
     // Always show status when button is pressed
     setLocationStatusVisible( true );
   };
@@ -140,16 +141,10 @@ const AICamera = ( {
     setLocationStatusVisible( false );
   };
 
-  useEffect( ( ) => {
-    if ( hasLocationPermissions ) {
-      setUseLocation( true );
-    }
-  }, [hasLocationPermissions] );
-
   const { t } = useTranslation();
 
   const { loadTime } = usePerformance( {
-    isLoading: camera?.current !== null
+    isLoading: camera?.current !== null,
   } );
   if ( isDebugMode( ) && loadTime ) {
     logger.info( loadTime );
@@ -189,7 +184,7 @@ const AICamera = ( {
       replaceExisting: true,
       inactivateCallback: () => setInactive( true ),
       navigateImmediately: true,
-      visionResult
+      visionResult,
     } );
     setHasTakenPhoto( false );
   }, [
@@ -198,7 +193,7 @@ const AICamera = ( {
     sentinelFileName,
     takePhotoAndStoreUri,
     result,
-    hasLocationPermissions
+    hasLocationPermissions,
   ] );
 
   useEffect( () => {
@@ -234,8 +229,8 @@ const AICamera = ( {
     navigation.navigate( "TabNavigator", {
       screen: "ObservationsTab",
       params: {
-        screen: "ObsList"
-      }
+        screen: "ObsList",
+      },
     } );
   };
 
@@ -274,7 +269,7 @@ const AICamera = ( {
           0.001,
           isTablet && isLandscapeMode
             ? 0.3
-            : 1
+            : 1,
         ]}
         className="w-full h-[219px]"
       >
@@ -282,7 +277,7 @@ const AICamera = ( {
           className={classnames( "self-center", {
             "w-[493px]": isTablet,
             "w-[346px] top-8": !isTablet,
-            "top-14": insets.top > 0
+            "top-14": insets.top > 0,
           } )}
         >
           {showPrediction && result

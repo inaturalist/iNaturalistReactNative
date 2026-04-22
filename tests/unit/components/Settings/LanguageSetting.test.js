@@ -24,10 +24,10 @@ describe( "LanguageSetting", ( ) => {
   it( "should display and allow user to change locales from web list", async ( ) => {
     inatjs.translations.locales.mockResolvedValue( makeResponse( [{
       language_in_locale: "Slovenský",
-      locale: "sk"
+      locale: "sk",
     }, {
       language_in_locale: "Español (Colombia)",
-      locale: "es-CO"
+      locale: "es-CO",
     }] ) );
 
     renderComponent( <LanguageSetting onChange={jest.fn( )} /> );

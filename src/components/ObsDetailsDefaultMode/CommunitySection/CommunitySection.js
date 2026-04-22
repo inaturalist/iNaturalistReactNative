@@ -1,17 +1,16 @@
 // @flow
+import ActivityItem from "components/ObsDetailsSharedComponents/ActivityTab/ActivityItem";
 import { Body2, Divider, Heading3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { compact } from "lodash";
+import compact from "lodash/compact";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
-import ActivityItem from "./ActivityItem";
-
 type Props = {
   observation:Object,
   refetchRemoteObservation: Function,
-  activityItems: Array<Object>,
+  activityItems: Object[],
   openAgreeWithIdSheet: Function,
   isConnected: boolean,
   targetItemID: ?number,
@@ -26,7 +25,7 @@ const CommunitySection = ( {
   openAgreeWithIdSheet,
   isConnected,
   targetItemID,
-  onLayoutTargetItem
+  onLayoutTargetItem,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -52,9 +51,9 @@ const CommunitySection = ( {
         item.toJSON
           ? item.toJSON( )
           : item
-      )
+      ),
     ),
-    [activityItems]
+    [activityItems],
   );
 
   const indexOfFirstTaxonDisplayed = taxonId => stableItems
@@ -92,6 +91,7 @@ const CommunitySection = ( {
               taxonGeoprivacy={taxonGeoprivacy}
               belongsToCurrentUser={belongsToCurrentUser}
               showExplainerText={currentUser?.observations_count < 10}
+              showStatus={false}
             />
           </View>
         ) )}

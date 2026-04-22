@@ -2,7 +2,7 @@ import { Realm } from "@realm/react";
 
 class Application extends Realm.Object {
   static APPLICATION_FIELDS = {
-    name: true
+    name: true,
   };
 
   static schema = {
@@ -15,9 +15,9 @@ class Application extends Realm.Object {
       assignee: {
         type: "linkingObjects",
         objectType: "Observation",
-        property: "application"
-      }
-    }
+        property: "application",
+      },
+    },
   };
 }
 

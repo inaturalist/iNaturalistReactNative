@@ -10,7 +10,7 @@ const mockedNavigate = jest.fn( );
 const mockProject = factory( "RemoteProject", {
   icon: faker.image.url( ),
   title: faker.lorem.sentence( ),
-  project_type: "collection"
+  project_type: "collection",
 } );
 
 const mockProjectWithDateRange = factory( "RemoteProject", {
@@ -18,26 +18,26 @@ const mockProjectWithDateRange = factory( "RemoteProject", {
   rule_preferences: [
     {
       field: "d1",
-      value: "2024-03-07 07:42 -06:00"
+      value: "2024-03-07 07:42 -06:00",
     },
     {
       field: "d2",
-      value: "2024-03-14 08:41 -07:00"
-    }
-  ]
+      value: "2024-03-14 08:41 -07:00",
+    },
+  ],
 } );
 
 const infiniteScrollResults = results => ( {
   data: {
     pages: [{
-      results
-    }]
-  }
+      results,
+    }],
+  },
 } );
 
 jest.mock( "sharedHooks/useAuthenticatedInfiniteQuery", ( ) => ( {
   __esModule: true,
-  default: jest.fn( ( ) => infiniteScrollResults( [mockProject] ) )
+  default: jest.fn( ( ) => infiniteScrollResults( [mockProject] ) ),
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -47,9 +47,9 @@ jest.mock( "@react-navigation/native", ( ) => {
     useNavigation: () => ( {
       navigate: mockedNavigate,
       setOptions: jest.fn( ),
-      addListener: jest.fn( )
+      addListener: jest.fn( ),
     } ),
-    useRoute: () => ( {} )
+    useRoute: () => ( {} ),
   };
 } );
 
@@ -65,7 +65,7 @@ describe( "Projects", ( ) => {
 
   test( "should display project search results", ( ) => {
     useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
-      [mockProject]
+      [mockProject],
     ) );
     renderComponent( <ProjectsContainer /> );
 
@@ -77,13 +77,13 @@ describe( "Projects", ( ) => {
       .toMatchObject( { url: mockProject.icon } );
     fireEvent.press( screen.getByTestId( `Project.${mockProject.id}` ) );
     expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
-      id: mockProject.id
+      id: mockProject.id,
     } );
   } );
 
   test( "should display date range if collection project has date range", async ( ) => {
     useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
-      [mockProjectWithDateRange]
+      [mockProjectWithDateRange],
     ) );
     renderComponent( <ProjectsContainer /> );
     const input = screen.getByTestId( "ProjectSearch.input" );
@@ -94,7 +94,7 @@ describe( "Projects", ( ) => {
 
   test( "should display project type if collection project has no date range", async ( ) => {
     useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
-      [mockProject]
+      [mockProject],
     ) );
     renderComponent( <ProjectsContainer /> );
     const projectTypeText = await screen.findByText( /Collection Project/ );
@@ -105,8 +105,8 @@ describe( "Projects", ( ) => {
     useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
       [{
         ...mockProjectWithDateRange,
-        project_type: "traditional"
-      }]
+        project_type: "traditional",
+      }],
     ) );
     renderComponent( <ProjectsContainer /> );
     const projectTypeText = await screen.findByText( /Traditional Project/ );
@@ -117,8 +117,8 @@ describe( "Projects", ( ) => {
     useAuthenticatedInfiniteQuery.mockImplementation( ( ) => infiniteScrollResults(
       [{
         ...mockProjectWithDateRange,
-        project_type: "umbrella"
-      }]
+        project_type: "umbrella",
+      }],
     ) );
     renderComponent( <ProjectsContainer /> );
     const input = screen.getByTestId( "ProjectSearch.input" );

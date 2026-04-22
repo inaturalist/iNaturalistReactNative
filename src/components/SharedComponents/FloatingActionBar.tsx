@@ -8,7 +8,7 @@ import { getShadow } from "styles/global";
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   shadowOpacity: 0.4,
-  shadowRadius: 8
+  shadowRadius: 8,
 } );
 
 const BOTTOM_ANIMATION_START = 100;
@@ -32,7 +32,7 @@ const FloatingActionBar = ( {
   containerClass,
   children,
   show,
-  footerHeight: FOOTER_HEIGHT
+  footerHeight: FOOTER_HEIGHT,
 }: Props ) => {
   const bottomPosition = FOOTER_HEIGHT + FOOTER_PADDING;
   const [keyboardHeight, setKeyboardHeight] = useState( 0 );
@@ -45,7 +45,7 @@ const FloatingActionBar = ( {
     () => new Animated.Value( show
       ? start
       : 0 ),
-    [start, show]
+    [start, show],
   );
 
   useEffect( () => {
@@ -54,7 +54,7 @@ const FloatingActionBar = ( {
       event => {
         setKeyboardHeight( event.endCoordinates.height );
         setKeyboardOpen( true );
-      }
+      },
     );
     const hideSubscription = Keyboard.addListener( "keyboardDidHide", () => {
       setKeyboardOpen( false );
@@ -71,7 +71,7 @@ const FloatingActionBar = ( {
       velocity: 1,
       tension: 2,
       friction: 8,
-      useNativeDriver: true
+      useNativeDriver: true,
     };
 
     const toValue = show
@@ -80,7 +80,7 @@ const FloatingActionBar = ( {
 
     Animated.spring( animate, {
       ...sharedParams,
-      toValue
+      toValue,
     } ).start();
   }, [keyboardOpen, keyboardHeight, position, show, animate, start] );
 
@@ -109,7 +109,7 @@ const FloatingActionBar = ( {
         position: "absolute",
         zIndex: 40,
         transform: [{ translateY: animate }],
-        ...positionStyle
+        ...positionStyle,
       }}
     >
       <View

@@ -9,8 +9,8 @@ jest.mock( "@react-navigation/native", ( ) => {
   return {
     ...actualNav,
     useNavigation: ( ) => ( {
-      navigate: mockNavigate
-    } )
+      navigate: mockNavigate,
+    } ),
   };
 } );
 
@@ -25,7 +25,7 @@ jest.mock(
   () => function MockUserIcon( ) {
     const MockName = "mockUserIcon";
     return <MockName testID={MockName} />;
-  }
+  },
 );
 
 describe( "InlineUser", ( ) => {
@@ -71,7 +71,7 @@ describe( "InlineUser", ( ) => {
       // This icon appears after useNetInfo returns true
       // so we have to use await and findByTestId
       expect(
-        await screen.findByTestId( "InlineUser.FallbackPicture" )
+        await screen.findByTestId( "InlineUser.FallbackPicture" ),
       ).toBeTruthy();
       expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
     } );

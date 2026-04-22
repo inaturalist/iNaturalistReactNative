@@ -7,7 +7,7 @@ import setupUniqueRealm from "tests/helpers/uniqueRealm";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -18,8 +18,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -31,15 +31,15 @@ jest.mock( "react-native/Libraries/AppState/AppState", () => ( {
   default: {
     addEventListener: jest.fn( ( event, callback ) => {
       callback( "active" );
-    } )
-  }
+    } ),
+  },
 } ) );
 
 const mockObservations = [
   factory( "LocalObservation", { comments_viewed: false, identifications_viewed: false } ),
   factory( "LocalObservation", { comments_viewed: true, identifications_viewed: false } ),
   factory( "LocalObservation", { comments_viewed: false, identifications_viewed: true } ),
-  factory( "LocalObservation", { comments_viewed: true, identifications_viewed: true } )
+  factory( "LocalObservation", { comments_viewed: true, identifications_viewed: true } ),
 ];
 
 describe( "useObservationUpdatesWhenFocused", () => {

@@ -5,7 +5,7 @@ import colors from "styles/tailwindColors";
 
 const PROGRESS_BAR_STYLE = { backgroundColor: "transparent" };
 
-type Props = {
+interface Props {
   progress: number;
 }
 

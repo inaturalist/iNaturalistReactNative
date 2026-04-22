@@ -2,7 +2,7 @@ import LocationIndicatorIcon from "images/svg/location_indicator.svg";
 import React from "react";
 import {
   Circle,
-  Marker
+  Marker,
 } from "react-native-maps";
 import colors from "styles/tailwindColors";
 
@@ -15,7 +15,7 @@ interface Props {
 const LocationIndicator = ( {
   latitude,
   longitude,
-  positionalAccuracy
+  positionalAccuracy,
 }: Props ) => (
   <>
     {!!positionalAccuracy && (

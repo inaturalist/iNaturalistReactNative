@@ -1,27 +1,37 @@
 import {
-  Body1, INatIcon,
-  List2, UserIcon
+  Body1,
+  INatIcon,
+  List2,
+  UserIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import User from "realmModels/User";
 import { useTranslation } from "sharedHooks";
 
+type IconVariant = "mention" | "medium";
+
 interface Props {
   item: object;
   countText: string;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  onPress?: Function;
+  onPress?: ( ) => void;
   accessibilityLabel?: string;
   pressable?: boolean;
+  iconVariant?: IconVariant;
 }
+
+const ICON_VARIANT_SIZE: Record<IconVariant, number> = {
+  mention: 40,
+  medium: 62,
+};
 
 const UserListItem = ( {
   item,
   countText,
   onPress,
   accessibilityLabel: accessibilityLabelProp,
-  pressable = true
+  pressable = true,
+  iconVariant = "medium",
 }: Props ) => {
   const { t } = useTranslation( );
   const user = item?.user;
@@ -53,11 +63,16 @@ const UserListItem = ( {
     <UserListItemContainer>
       <View className="flex-row items-center w-5/6">
         {user?.icon_url
-          ? <UserIcon uri={User.uri( user )} medium />
+          ? (
+            <UserIcon
+              uri={User.uri( user )}
+              medium={iconVariant === "medium"}
+            />
+          )
           : (
             <INatIcon
               name="person"
-              size={62}
+              size={ICON_VARIANT_SIZE[iconVariant]}
             />
           )}
         <View className="ml-3 shrink">
@@ -69,9 +84,11 @@ const UserListItem = ( {
               {user?.login}
             </Body1>
           )}
-          <List2 className="mt-1" maxFontSizeMultiplier={1.5}>
-            {countText}
-          </List2>
+          {!!countText && (
+            <List2 className="mt-1" maxFontSizeMultiplier={1.5}>
+              {countText}
+            </List2>
+          )}
         </View>
       </View>
     </UserListItemContainer>

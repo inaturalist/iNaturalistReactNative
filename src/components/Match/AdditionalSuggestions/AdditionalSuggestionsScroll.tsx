@@ -3,13 +3,13 @@ import calculateConfidence from "components/Match/calculateConfidence";
 import { ActivityIndicator, CustomFlashList, Heading3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useRef, useState,
 } from "react";
 import { useTranslation } from "sharedHooks";
 
 import SuggestionsResult from "./SuggestionsResult";
 
-type Props = {
+interface Props {
   noTopSuggestion?: boolean;
   otherSuggestions: ApiSuggestion[];
   suggestionsLoading: boolean;
@@ -20,7 +20,7 @@ const AdditionalSuggestionsScroll = ( {
   noTopSuggestion,
   otherSuggestions,
   suggestionsLoading,
-  onSuggestionChosen
+  onSuggestionChosen,
 }: Props ) => {
   const { t } = useTranslation( );
   const [maxHeight, setMaxHeight] = useState( 0 );
@@ -32,14 +32,11 @@ const AdditionalSuggestionsScroll = ( {
   const suggestionsRef = useRef<ApiSuggestion[]>( [] );
 
   useEffect( () => {
-    suggestionsRef.current = otherSuggestions || [];
-  }, [otherSuggestions] );
-
-  useEffect( () => {
     // reset when suggestions changes (like, when suggestion is pressed or location added)
     setMaxHeight( 0 );
     setIsVisible( false );
     measuredItemsRef.current = new Set();
+    suggestionsRef.current = otherSuggestions || [];
   }, [otherSuggestions] );
 
   const updateMaxHeight = useCallback( ( height: number, itemId?: number ) => {
@@ -70,7 +67,7 @@ const AdditionalSuggestionsScroll = ( {
     if ( isVisible ) return null;
 
     const measuringContainerStyle = {
-      position: "absolute" as const, opacity: 0, left: -9999, flexDirection: "row" as const
+      position: "absolute" as const, opacity: 0, left: -9999, flexDirection: "row" as const,
     };
 
     const resultStyle = { marginRight: 14 };
@@ -121,7 +118,7 @@ const AdditionalSuggestionsScroll = ( {
   const keepHiddenUntilCardHeightsMeasured = {
     opacity: isVisible
       ? 1
-      : 0.05
+      : 0.05,
   };
 
   return (

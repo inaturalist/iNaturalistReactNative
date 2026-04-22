@@ -83,7 +83,7 @@ describe( "MediaViewer", ( ) => {
       it( "should show that a photographer reserves all rights", async ( ) => {
         const photo = factory( "RemotePhoto", {
           license_code: null,
-          attribution: "(c) username, all rights reserved"
+          attribution: "(c) username, all rights reserved",
         } );
         expect( photo.license_code ).toBeNull( );
         renderComponent( <MediaViewer photos={[photo]} /> );
@@ -100,11 +100,11 @@ describe( "MediaViewer", ( ) => {
         "should not render the AttributionButton if attribution is not present",
         async () => {
           const photosWithoutAttribution = [
-            factory( "LocalPhoto", { attribution: undefined } )
+            factory( "LocalPhoto", { attribution: undefined } ),
           ];
           renderComponent( <MediaViewer photos={photosWithoutAttribution} /> );
           expect( screen.queryByLabelText( photos[0].attribution ) ).not.toBeTruthy();
-        }
+        },
       );
 
       it( "should render the AttributionButton if attribution is present", async () => {

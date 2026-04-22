@@ -1,0 +1,2 @@
+UPDATED
+* AI camera computer vision model (v.2.20)

@@ -2,6 +2,7 @@
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "baseUrl": ".",
+    "moduleResolution": "bundler",
     "paths": {
       "*": ["src/*"],
       "appConstants": ["src/appConstants"],
@@ -19,9 +20,9 @@
       "styles": ["src/styles"],
       "tests": ["tests"],
     },
-    "types": ["nativewind/types"],
+    "strict": true,
+    "types": ["nativewind/types", "jest"],
   },
-  "exclude": [
-    "flow-typed"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["flow-typed", "**/node_modules", "**/Pods"]
 }

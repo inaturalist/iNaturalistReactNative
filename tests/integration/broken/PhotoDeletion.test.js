@@ -2,7 +2,7 @@ import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
@@ -20,30 +20,30 @@ jest.unmock( "@react-navigation/native" );
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 1, longitude: 1, accuracy: 9 } ) );
 jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   __esModule: true,
-  default: () => mockFetchUserLocation()
+  default: () => mockFetchUserLocation(),
 } ) );
 
 const mockModelResult = {
   predictions: [factory( "ModelPrediction", {
   // useOfflineSuggestions will filter out taxa w/ rank_level > 40
-    rank_level: 20
-  } )]
+    rank_level: 20,
+  } )],
 };
 getPredictionsForImage.mockImplementation(
-  async ( ) => ( mockModelResult )
+  async ( ) => ( mockModelResult ),
 );
 
 const mockUser = factory( "LocalUser" );
 // Mock useCurrentUser hook
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: jest.fn( () => mockUser )
+  default: jest.fn( () => mockUser ),
 } ) );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -54,8 +54,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -70,14 +70,14 @@ beforeAll( async () => {
 // Mock the response from inatjs.computervision.score_image
 const topSuggestion = {
   taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
-  combined_score: 90
+  combined_score: 90,
 };
 
 beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
     isAllAddObsOptionsMode: true,
-    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
+    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );

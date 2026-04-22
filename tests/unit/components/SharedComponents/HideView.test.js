@@ -24,7 +24,7 @@ describe( "HideView", () => {
     render(
       <HideView show>
         <TestComponent />
-      </HideView>
+      </HideView>,
     );
 
     expect( testFunc ).toHaveBeenCalledTimes( 1 );
@@ -36,12 +36,12 @@ describe( "HideView", () => {
     render(
       <HideView show={false}>
         <TestComponent />
-      </HideView>
+      </HideView>,
     );
 
     expect( testFunc ).toHaveBeenCalledTimes( 1 );
     expect(
-      screen.queryByText( TEST_TEXT, { includeHiddenElements: true } )
+      screen.queryByText( TEST_TEXT, { includeHiddenElements: true } ),
     ).not.toBeVisible();
   } );
 
@@ -49,7 +49,7 @@ describe( "HideView", () => {
     render(
       <HideView show={false} noInitialRender>
         <TestComponent />
-      </HideView>
+      </HideView>,
     );
 
     expect( testFunc ).not.toHaveBeenCalled();

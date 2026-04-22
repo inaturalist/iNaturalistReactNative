@@ -22,7 +22,7 @@ const AddObsTooltip = ( { isVisible, dismissTooltip }: Props ) => {
         <View
           className={classNames(
             "border-l-[10px] border-r-[10px] border-x-[#00000000]",
-            "border-t-[16px] border-t-white mb-2"
+            "border-t-[16px] border-t-white mb-2",
           )}
         />
         <GradientButton

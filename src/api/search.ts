@@ -8,7 +8,7 @@ import type {
   ApiProject,
   ApiResponse,
   ApiTaxon,
-  ApiUser
+  ApiUser,
 } from "./types";
 
 interface SearchResponse extends ApiResponse {
@@ -30,13 +30,13 @@ interface SearchParams extends ApiParams {
 
 const PARAMS: ApiParams = {
   per_page: 10,
-  fields: "all"
+  fields: "all",
 };
 
 // Vanilla search wrapper with error handling
 const search = async (
   params: SearchParams = {},
-  opts: ApiOpts = {}
+  opts: ApiOpts = {},
 ): Promise<null | SearchResponse> => {
   let response: SearchResponse;
   try {
@@ -53,7 +53,7 @@ const search = async (
 // Hits /search AND maps results so it just returns and array of results
 const fetchSearchResults = async (
   params: SearchParams = {},
-  opts: ApiOpts = {}
+  opts: ApiOpts = {},
 ): Promise<null | ( ApiPlace | ApiProject | ApiTaxon | ApiUser )[]> => {
   const response = await search( params, opts );
   if ( !response ) { return null; }

@@ -1,7 +1,7 @@
 import {
   Body2,
   Body3,
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const SuggestionsOffline = ( {
-  reloadSuggestions
+  reloadSuggestions,
 }: Props ) => {
   const { t } = useTranslation( );
   return (

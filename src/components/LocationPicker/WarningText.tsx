@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import {
-  Body3
+  Body3,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -35,7 +35,7 @@ const WarningText = ( { accuracyTest }: Props ) => {
       pointerEvents="none"
       className={classnames( "p-4 rounded-xl", {
         "bg-white": accuracyTest === "acceptable",
-        "bg-warningRed": accuracyTest === "fail"
+        "bg-warningRed": accuracyTest === "fail",
       } )}
       style={DROP_SHADOW}
     >
@@ -44,8 +44,8 @@ const WarningText = ( { accuracyTest }: Props ) => {
           "text-darkGray",
           "text-center",
           {
-            "text-white": accuracyTest === "fail"
-          }
+            "text-white": accuracyTest === "fail",
+          },
         )}
       >
         {displayWarningText( )}

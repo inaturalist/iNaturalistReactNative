@@ -6,7 +6,7 @@ export const HALF_INCREMENT = UPLOAD_PROGRESS_INCREMENT / 2;
 
 function emitProgress(
   observationUUID: string,
-  increment: number
+  increment: number,
 ) {
   if ( !observationUUID ) {
     console.warn( "Attempted to emit progress for undefined observationUUID" );
@@ -14,26 +14,26 @@ function emitProgress(
   }
   EventRegister.emit(
     INCREMENT_SINGLE_UPLOAD_PROGRESS,
-    [observationUUID, increment]
+    [observationUUID, increment],
   );
 }
 
 function trackObservationUpload( observationUUID: string ) {
   return {
     start: () => emitProgress( observationUUID, HALF_INCREMENT ),
-    complete: () => emitProgress( observationUUID, HALF_INCREMENT )
+    complete: () => emitProgress( observationUUID, HALF_INCREMENT ),
   };
 }
 
 function trackEvidenceUpload( observationUUID: string ) {
   return {
     uploaded: () => emitProgress( observationUUID, HALF_INCREMENT ),
-    attached: () => emitProgress( observationUUID, HALF_INCREMENT )
+    attached: () => emitProgress( observationUUID, HALF_INCREMENT ),
   };
 }
 
 export {
   emitProgress,
   trackEvidenceUpload,
-  trackObservationUpload
+  trackObservationUpload,
 };

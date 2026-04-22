@@ -1,4 +1,4 @@
-import type { MutationKey } from "@tanstack/react-query";
+import type { UseMutationOptions } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import handleError from "api/error";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
@@ -6,11 +6,6 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { log } from "../../react-native-logs.config";
 
 const logger = log.extend( "useAuthenticatedMutation" );
-
-interface MutationOptions {
-  mutationKey?: MutationKey;
-  throwOnError?: boolean;
-}
 
 type MutationFunction<Response> = (
   params: unknown, options: { api_token: string | null }
@@ -25,7 +20,7 @@ type MutationError = any;
 // with an object that includes the JWT
 const useAuthenticatedMutation = <Response>(
   mutationFunction: MutationFunction<Response>,
-  mutationOptions: MutationOptions = {}
+  mutationOptions: UseMutationOptions = {},
 ) => useMutation<Response, MutationError>( {
   mutationFn: async params => {
     // Note, getJWTToken() takes care of fetching a new token if the existing
@@ -33,7 +28,7 @@ const useAuthenticatedMutation = <Response>(
     // fetching from RNSInfo becomes a performance issue
     const apiToken = await getJWT( );
     const options = {
-      api_token: apiToken
+      api_token: apiToken,
     };
     return mutationFunction( params, options );
   },
@@ -44,7 +39,7 @@ const useAuthenticatedMutation = <Response>(
       const errorContext = {
         mutationName: mutationOptions.mutationKey || "unknown",
         timestamp: new Date().toISOString(),
-        errorMessage: error.message || "JWT is missing or invalid"
+        errorMessage: error.message || "JWT is missing or invalid",
       };
 
       logger.error( "401 JWT error in mutation:", JSON.stringify( errorContext ) );
@@ -57,28 +52,28 @@ const useAuthenticatedMutation = <Response>(
 
       return handleError( error, {
         context: errorContext,
-        throw: mutationOptions.throwOnError !== false
+        throw: mutationOptions.throwOnError !== false,
       } );
     }
 
     if ( error.status === 429 || ( error.response && error.response.status === 429 ) ) {
       const errorContext = {
         mutationName: mutationOptions.mutationKey || "unknown",
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       logger.error( "429 in mutation:", JSON.stringify( errorContext ) );
 
       return handleError( error, {
         context: errorContext,
-        throw: mutationOptions.throwOnError !== false
+        throw: mutationOptions.throwOnError !== false,
       } );
     }
 
     // Call original handleError for non-429 and non-401 errors
     return handleError( error );
   },
-  ...mutationOptions
+  ...mutationOptions,
 } );
 
 export default useAuthenticatedMutation;

@@ -1,7 +1,8 @@
 import {
-  INatIcon
+  INatIcon,
+  PressableWithDebounce,
 } from "components/SharedComponents";
-import { Pressable, Text, View } from "components/styledComponents";
+import { Text, View } from "components/styledComponents";
 import React from "react";
 import { accessibleTaxonName, generateTaxonPieces } from "sharedHelpers/taxon";
 
@@ -14,8 +15,7 @@ interface Props {
   isCurrentTaxon?: boolean;
   navigateToTaxonDetails: ( _taxonId: number ) => void;
   scientificNameFirst?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  t: Function;
+  t: ( key: string, options: object ) => string;
   taxon: {
     id: number;
     name: string;
@@ -32,14 +32,14 @@ const TaxonomyTaxon = ( {
   navigateToTaxonDetails,
   scientificNameFirst,
   t,
-  taxon
+  taxon,
 }: Props ) => {
   const {
     commonName,
     scientificNamePieces,
     rankPiece,
     rankLevel,
-    rank
+    rank,
   } = generateTaxonPieces( taxon );
   const accessibleName = accessibleTaxonName( taxon, currentUser, t );
   const sciNameComponent = (
@@ -58,7 +58,7 @@ const TaxonomyTaxon = ( {
   );
 
   return (
-    <Pressable
+    <PressableWithDebounce
       accessibilityRole="link"
       className="flex-row py-2"
       key={taxon.id}
@@ -66,7 +66,7 @@ const TaxonomyTaxon = ( {
       onPress={() => navigateToTaxonDetails( taxon.id )}
       accessibilityLabel={accessibleName}
       accessibilityState={{
-        disabled: isCurrentTaxon
+        disabled: isCurrentTaxon,
       }}
       testID={`TaxonomyTaxon.${taxon.id}`}
     >
@@ -96,7 +96,7 @@ const TaxonomyTaxon = ( {
           }
         </Text>
       </View>
-    </Pressable>
+    </PressableWithDebounce>
   );
 };
 

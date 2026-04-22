@@ -1,22 +1,22 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  signOut
+  signOut,
 } from "components/LoginSignUp/AuthenticationService";
 import {
   ActivityIndicator,
   Body2,
   Button,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
-  View
+  View,
 } from "react-native";
 import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
@@ -24,7 +24,7 @@ import QueueItem from "realmModels/QueueItem";
 import {
   useLayoutPrefs,
   useTranslation,
-  useUserMe
+  useUserMe,
 } from "sharedHooks";
 
 import LanguageSetting from "./LanguageSetting";
@@ -41,10 +41,10 @@ const LoggedInDefaultSettings = ( ) => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const {
-    remoteUser, isLoading, refetchUserMe
+    remoteUser, isLoading, refetchUserMe,
   } = useUserMe( { updateRealm: false } );
   const {
-    setIsDefaultMode
+    setIsDefaultMode,
   } = useLayoutPrefs();
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
@@ -58,14 +58,14 @@ const LoggedInDefaultSettings = ( ) => {
         refetchUserMe();
         setShowingWebViewSettings( false );
       }
-    }, [showingWebViewSettings, refetchUserMe] )
+    }, [showingWebViewSettings, refetchUserMe] ),
   );
 
   const confirmInternetConnection = useCallback( ( ) => {
     if ( !isConnected ) {
       Alert.alert(
         t( "Internet-Connection-Required" ),
-        t( "Please-try-again-when-you-are-connected-to-the-internet" )
+        t( "Please-try-again-when-you-are-connected-to-the-internet" ),
       );
     }
     return isConnected;
@@ -86,7 +86,7 @@ const LoggedInDefaultSettings = ( ) => {
   useEffect( ( ) => {
     const listener = EventRegister.addEventListener(
       FINISHED_WEB_SETTINGS,
-      refetchUserMe
+      refetchUserMe,
     );
     return ( ) => {
       EventRegister?.removeEventListener( listener );
@@ -111,15 +111,15 @@ const LoggedInDefaultSettings = ( ) => {
             id: settings.id,
             user: {
               prefers_common_names: options.prefers_common_names,
-              prefers_scientific_name_first: options.prefers_scientific_name_first
-            }
+              prefers_scientific_name_first: options.prefers_scientific_name_first,
+            },
           } );
 
           // log.info( `Payload to be enqueued: ${payload}` );
           QueueItem.enqueue(
             realm,
             payload,
-            "taxon-names-change"
+            "taxon-names-change",
           );
         }}
       />
@@ -130,10 +130,10 @@ const LoggedInDefaultSettings = ( ) => {
             JSON.stringify( {
               id: settings.id,
               user: {
-                locale: newLocale
-              }
+                locale: newLocale,
+              },
             } ),
-            "locale-change"
+            "locale-change",
           );
         }}
       />
@@ -159,7 +159,7 @@ const LoggedInDefaultSettings = ( ) => {
                 async function signOutGoHome() {
                   Alert.alert(
                     t( "Account-Deleted" ),
-                    t( "It-may-take-up-to-an-hour-to-remove-content" )
+                    t( "It-may-take-up-to-an-hour-to-remove-content" ),
                   );
                   // sign out
                   await signOut( { realm, clearRealm: true, queryClient } );
@@ -175,7 +175,7 @@ const LoggedInDefaultSettings = ( ) => {
                   return false;
                 }
                 return true;
-              }
+              },
             } );
           }}
           accessibilityLabel={t( "INATURALIST-SETTINGS" )}

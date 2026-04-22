@@ -12,7 +12,7 @@ interface Props extends PropsWithChildren {
 
 const OnboardingModalBase = ( {
   closeModal,
-  children
+  children,
 }: Props ) => {
   const { t } = useTranslation( );
   return (

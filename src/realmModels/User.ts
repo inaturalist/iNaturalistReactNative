@@ -11,6 +11,7 @@ export interface TaxonNamesSettings {
 }
 class User extends Realm.Object {
   static FIELDS = {
+    identifications_count: true,
     icon_url: true,
     id: true,
     locale: true,
@@ -18,20 +19,24 @@ class User extends Realm.Object {
     name: true,
     observations_count: true,
     prefers_common_names: true,
-    prefers_scientific_name_first: true
+    prefers_scientific_name_first: true,
   };
 
   static LIMITED_FIELDS = {
     icon_url: true,
     id: true,
     login: true,
-    observations_count: true
+    observations_count: true,
   };
 
   // getting user icon data from production instead of staging
   static uri( user?: RealmUser | ApiUser ) {
     const iconUrl = ( user as ApiUser )?.icon_url || ( user as RealmUser )?.iconUrl;
     return iconUrl?.replace( "staticdev", "static" );
+  }
+
+  static thumbUri( user?: RealmUser | ApiUser ) {
+    return User.uri( user )?.replace( "medium", "thumb" );
   }
 
   static currentUser( realm: Realm ) {
@@ -51,10 +56,11 @@ class User extends Realm.Object {
     primaryKey: "id",
     properties: {
       id: "int",
+      identifications_count: "int?",
       icon_url: {
         type: "string",
         mapTo: "iconUrl",
-        optional: true
+        optional: true,
       },
       locale: "string?",
       login: "string?",
@@ -63,8 +69,8 @@ class User extends Realm.Object {
       prefers_common_names: "bool?",
       prefers_community_taxa: "bool?",
       prefers_scientific_name_first: "bool?",
-      signedIn: "bool?"
-    }
+      signedIn: "bool?",
+    },
   };
 }
 

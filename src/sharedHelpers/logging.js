@@ -36,7 +36,7 @@ function handleTooManyRequestsErrors( failureCount, error, options = {} ) {
         console.log( apiError, "API error in reactQueryRetry handleTooManyRequestsErrors" );
       },
       failureCount,
-      ...options
+      ...options,
     } );
 
     return shouldRetry;
@@ -62,8 +62,15 @@ function reactQueryRetry( failureCount, error, options = {} ) {
   }
   logger.warn(
     `reactQueryRetry, error: ${error.message}, failureCount: ${failureCount}, options:`,
-    inspect( options?.queryKey )
+    inspect( options?.queryKey ),
   );
+  // We don't want to retry server-side errors — retrying a downed server amplifies
+  // load. The logger.warn above still fires so these errors remain visible in
+  // Grafana, but we skip handleError (which would fire the log transport again)
+  // since /v2/log itself returns 503 during downtime.
+  if ( error.status === 503 || error.response?.status === 503 ) {
+    return false;
+  }
   let shouldRetry = failureCount < 2;
   if (
     // If this is an actual 408 Request Timeout error, we probably want to
@@ -75,7 +82,7 @@ function reactQueryRetry( failureCount, error, options = {} ) {
     console.log(
       "reactQueryRetry, handling 408 Request Timeout / Network request failed, "
       + `failureCount: ${failureCount}, shouldRetry: ${shouldRetry}, options: `,
-      options
+      options,
     );
     // 20240905 amanda - not handling error here since we want these queries to retry
     // immediately if there is an internet connection
@@ -100,7 +107,7 @@ function reactQueryRetry( failureCount, error, options = {} ) {
             : "unknown",
           url: error?.response?.url,
           routeName: options?.routeName || error?.routeName,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         } ) );
 
         try {
@@ -111,7 +118,7 @@ function reactQueryRetry( failureCount, error, options = {} ) {
       }
       // Consider handling 500+ errors differently. if you can detect them
       // before processing, you want to disable retry
-    }
+    },
   } );
   return shouldRetry;
 }
@@ -120,5 +127,5 @@ function reactQueryRetry( failureCount, error, options = {} ) {
 export {
   handleRetryDelay,
   inspect,
-  reactQueryRetry
+  reactQueryRetry,
 };

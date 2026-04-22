@@ -1,5 +1,5 @@
 import {
-  screen
+  screen,
 } from "@testing-library/react-native";
 import ObsStatus from "components/SharedComponents/ObsStatus";
 import React from "react";
@@ -9,13 +9,13 @@ import { renderComponent } from "tests/helpers/render";
 const mockObservation = factory( "LocalObservation", {
   identifications: [
     factory( "LocalIdentification", {
-      current: true
+      current: true,
     } ),
     factory( "LocalIdentification", {
-      current: false
-    } )
+      current: false,
+    } ),
   ],
-  comments: []
+  comments: [],
 } );
 
 describe( "ObsStatus", () => {
@@ -23,7 +23,7 @@ describe( "ObsStatus", () => {
     renderComponent(
       <ObsStatus
         observation={mockObservation}
-      />
+      />,
     );
 
     const idCount = screen.getByText( /1/ );
@@ -35,7 +35,7 @@ describe( "ObsStatus", () => {
     renderComponent(
       <ObsStatus
         observation={mockObservation}
-      />
+      />,
     );
 
     const commentCount = screen.getByText( /0/ );

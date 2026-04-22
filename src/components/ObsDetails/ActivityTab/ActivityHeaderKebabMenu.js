@@ -1,7 +1,7 @@
 // @flow
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
-  View
+  View,
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -24,7 +24,7 @@ const ActivityItemKebabMenu = ( {
   setShowDeleteCommentSheet,
   setShowEditCommentSheet,
   setShowWithdrawIDSheet,
-  updateIdentification
+  updateIdentification,
 }:Props ): Node => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 

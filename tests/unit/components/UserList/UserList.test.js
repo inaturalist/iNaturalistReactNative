@@ -5,8 +5,8 @@ import factory from "tests/factory";
 
 const mockFollowers = [
   factory( "RemoteUser", {
-    observation_count: 35
-  } )
+    observation_count: 35,
+  } ),
 ];
 
 describe( "UserList", () => {

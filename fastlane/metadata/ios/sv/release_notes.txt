@@ -1,0 +1,11 @@
+Prova iNaturalist-appen!
+
+Snabb artbestämning: Rikta kameran mot en växt, ett djur eller en annan organism för att få en omedelbar bestämning.
+
+Fler sätt att observera: Tryck och håll in kameraknappen för fler observationsalternativ, som att spela in ljud och lägga till flera bilder.
+
+Håll kontakten med andra naturforskare: Kolla dina aviseringar för att se när andra i iNaturalist-communityn lägger till bestämningar eller frågar om dina fynd.
+
+Ställ in som du vill: Om du är en van användare och vill att din upplevelse ska vara mer som tidigare versioner av iNaturalist, gör det så! Gå in i Inställningar, aktivera Avancerat läge och välj sedan "Redigera fynd" i mittsektionen.
+
+Tack för att du använder iNaturalist! Meddela oss gärna vad du tycker om appen genom att använda synpunktsformuläret i huvudmenyn.

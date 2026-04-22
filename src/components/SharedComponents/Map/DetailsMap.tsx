@@ -7,7 +7,7 @@ import {
   Heading2,
   INatIconButton,
   Map,
-  Modal
+  Modal,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -27,7 +27,7 @@ interface Props {
   headerTitle?: React.ReactNode;
   // TODO MOB-1038: reconcile the type issues here requiring the intersection
   observation?: Observation & RealmObservation;
-  region?: Region;
+  initialRegion?: Region;
   tileMapParams: Record<string, string> | null;
 }
 
@@ -42,14 +42,14 @@ const FloatingActionButton = ( {
   accessibilityLabel,
   buttonClassName,
   icon,
-  onPress
+  onPress,
 }: FloatingActionButtonProps ) => {
   const fabClassNames = classnames(
     "absolute",
     "bg-white",
     "rounded-full",
     "m-5",
-    buttonClassName
+    buttonClassName,
   );
 
   return (
@@ -68,8 +68,8 @@ const DetailsMap = ( {
   coordinateString,
   headerTitle,
   observation,
-  region,
-  tileMapParams
+  initialRegion,
+  tileMapParams,
 }: Props ) => {
   const insets = useSafeAreaInsets();
 
@@ -114,7 +114,7 @@ const DetailsMap = ( {
         <Map
           mapHeight="100%"
           observation={observation}
-          region={region}
+          initialRegion={initialRegion}
           showCurrentLocationButton
           showSwitchMapTypeButton
           tileMapParams={tileMapParams}
@@ -141,7 +141,7 @@ const DetailsMap = ( {
       <Modal
         // eslint-disable-next-line react-native/no-inline-styles
         style={{
-          alignItems: "center"
+          alignItems: "center",
         }}
         animationIn="fadeIn"
         animationOut="fadeOut"

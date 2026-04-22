@@ -1,17 +1,20 @@
 // @flow
 
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  StackActions, useFocusEffect, useNavigation, useRoute,
+} from "@react-navigation/native";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useState
+  useCallback, useState,
 } from "react";
 import { BackHandler } from "react-native";
 import Observation from "realmModels/Observation";
 import { useExitObservationFlow, useTranslation } from "sharedHooks";
+import useObsEditRollback from "sharedHooks/useObsEditRollback";
 import useStore from "stores/useStore";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
@@ -21,14 +24,15 @@ import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 const { useRealm } = RealmContext;
 
 type Props = {
-  observations: Array<Object>,
-  currentObservation: Object
+  observations: Object[],
+  currentObservation: Object,
 }
 
 const ObsEditHeader = ( {
   observations,
-  currentObservation
+  currentObservation,
 }: Props ): Node => {
+  const { rollback, canRollbackToMatch } = useObsEditRollback( );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const updateObservations = useStore( state => state.updateObservations );
   const savedOrUploadedMultiObsFlow = useStore( state => state.savedOrUploadedMultiObsFlow );
@@ -44,12 +48,23 @@ const ObsEditHeader = ( {
   const exitObservationFlow = useExitObservationFlow( );
   const realm = useRealm( );
 
-  const discardChanges = useCallback( ( ) => {
+  const discardChanges = useCallback( async ( ) => {
     setDiscardChangesSheetVisible( false );
-    exitObservationFlow( {
-      navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid )
-    } );
-  }, [currentObservation?.uuid, exitObservationFlow, navigation] );
+    if ( canRollbackToMatch ) {
+      await rollback( );
+      navigation.dispatch( StackActions.popTo( "Match" ) );
+    } else {
+      exitObservationFlow( {
+        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
+      } );
+    }
+  }, [
+    currentObservation?.uuid,
+    exitObservationFlow,
+    canRollbackToMatch,
+    navigation,
+    rollback,
+  ] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
@@ -83,9 +98,16 @@ const ObsEditHeader = ( {
     || ( unsynced && savedLocally )
     || ( unsynced && !unsavedChanges ) );
 
-  const handleBackButtonPress = useCallback( ( ) => {
+  const handleBackButtonPress = useCallback( async ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
+    } else if ( canRollbackToMatch ) {
+      if ( unsavedChanges ) {
+        setDiscardChangesSheetVisible( true );
+      } else {
+        await rollback( );
+        navigation.dispatch( StackActions.popTo( "Match" ) );
+      }
     } else if ( shouldNavigateBack ) {
       navigation.goBack( );
     } else if ( !savedLocally || savedOrUploadedMultiObsFlow === true ) {
@@ -94,23 +116,25 @@ const ObsEditHeader = ( {
       setDiscardChangesSheetVisible( true );
     } else {
       exitObservationFlow( {
-        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid )
+        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
       } );
     }
   }, [
     currentObservation?.uuid,
     exitObservationFlow,
+    canRollbackToMatch,
     navigation,
     params?.lastScreen,
     savedLocally,
     savedOrUploadedMultiObsFlow,
     shouldNavigateBack,
-    unsavedChanges
+    unsavedChanges,
+    rollback,
   ] );
 
   const renderBackButton = useCallback( ( ) => {
     const extraStart = {
-      marginStart: 15
+      marginStart: 15,
     };
     return (
       <BackButton
@@ -133,7 +157,7 @@ const ObsEditHeader = ( {
       const backHandler = BackHandler.addEventListener( "hardwareBackPress", onBackPress );
 
       return ( ) => backHandler.remove( );
-    }, [handleBackButtonPress] )
+    }, [handleBackButtonPress] ),
   );
 
   const renderKebabMenu = useCallback( ( ) => (
@@ -161,7 +185,7 @@ const ObsEditHeader = ( {
             testID="Header.save-all-observation"
             onPress={async ( ) => {
               await Promise.all(
-                observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) )
+                observations.map( o => Observation.saveLocalObservationForUpload( o, realm ) ),
               );
               exitObservationFlow( );
               setKebabMenuVisible( false );
@@ -185,7 +209,7 @@ const ObsEditHeader = ( {
     observations,
     realm,
     setDeleteSheetVisible,
-    t
+    t,
   ] );
 
   return (

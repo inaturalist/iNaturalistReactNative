@@ -11,7 +11,7 @@ const IMAGE_STYLE = { opacity: 0.5 };
 
 const SignUp = ( ) => {
   const {
-    keyboardShown
+    keyboardShown,
   } = useKeyboardInfo( TARGET_NON_KEYBOARD_HEIGHT );
 
   const hideHeader = keyboardShown;

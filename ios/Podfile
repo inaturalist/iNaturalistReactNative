@@ -47,6 +47,9 @@ use_frameworks! linkage: :static
 # rubocop:disable Style/GlobalVars
 # Required for react-native-firebase: https://rnfirebase.io/#configure-firebase-with-ios-credentials-react-native--077
 $RNFirebaseAsStaticFramework = true
+# Disable ad ID support: https://rnfirebase.io/analytics/usage#disable-ad-id-usage-on-ios
+# Conext: https://linear.app/inaturalist/issue/MOB-1182/disable-firebase-for-unauthenticated-users-and-users-with-prefers-no#comment-8c9d3cc2
+$RNFirebaseAnalyticsWithoutAdIdSupport = true
 # rubocop:enable Style/GlobalVars
 
 target "iNaturalistReactNative" do
@@ -76,20 +79,16 @@ target "iNaturalistReactNative" do
       end
     end
 
-    # code below appears to be necessary for building pods with XCode 14: https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
       config[:reactNativePath],
       mac_catalyst_enabled: false
       # :ccache_enabled => true
     )
-    # https://github.com/Agontuk/react-native-geolocation-service/issues/287#issuecomment-980772489
+
     installer.pods_project.targets.each do | target |
       target.build_configurations.each do | build_config |
-        build_config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
         build_config.build_settings["APPLICATION_EXTENSION_API_ONLY"] = "NO"
-        build_config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "$(inherited)"
       end
     end
 

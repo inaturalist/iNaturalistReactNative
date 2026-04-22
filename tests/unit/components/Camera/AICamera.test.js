@@ -8,13 +8,13 @@ import * as useTaxon from "sharedHooks/useTaxon";
 const mockTaxonPrediction = {
   id: 144351,
   name: "Poecile",
-  rank_level: 20
+  rank_level: 20,
 };
 
 const mockTaxonNoPrediction = {
   id: 3,
   name: "Aves",
-  rank_level: 50
+  rank_level: 50,
 };
 
 const mockLocalTaxon = {
@@ -22,39 +22,39 @@ const mockLocalTaxon = {
   name: "Poecile",
   rank_level: 20,
   default_photo: {
-    url: "fake_image_url"
-  }
+    url: "fake_image_url",
+  },
 };
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
-    data: mockTaxonPrediction
-  } )
+    data: mockTaxonPrediction,
+  } ),
 } ) );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => ( { taxon: mockLocalTaxon } )
+  default: () => ( { taxon: mockLocalTaxon } ),
 } ) );
 
 const mockModelLoaded = {
   handleTaxaDetected: jest.fn( ),
   modelLoaded: false,
-  result: null
+  result: null,
 };
 
 jest.mock( "components/Camera/AICamera/hooks/usePredictions", () => ( {
   __esModule: true,
-  default: () => mockModelLoaded
+  default: () => mockModelLoaded,
 } ) );
 
 jest.mock( "components/Camera/hooks/useZoom", () => ( {
   __esModule: true,
   default: () => ( {
-    animatedProps: {}
+    animatedProps: {},
   }
-  )
+  ),
 } ) );
 
 describe( "AI Camera", ( ) => {
@@ -62,8 +62,8 @@ describe( "AI Camera", ( ) => {
     jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,
       result: {
-        taxon: mockTaxonPrediction
-      }
+        taxon: mockTaxonPrediction,
+      },
     } ) );
     render( <AICamera /> );
 
@@ -77,13 +77,13 @@ describe( "AI Camera", ( ) => {
       ...mockModelLoaded,
       modelLoaded: true,
       result: {
-        taxon: mockTaxonNoPrediction
-      }
+        taxon: mockTaxonNoPrediction,
+      },
     } ) );
     render( <AICamera /> );
 
     const scanText = screen.getByText(
-      i18next.t( "Point-the-camera-at-an-animal-plant-or-fungus" )
+      i18next.t( "Point-the-camera-at-an-animal-plant-or-fungus" ),
     );
 
     expect( scanText ).toBeVisible( );
@@ -92,7 +92,7 @@ describe( "AI Camera", ( ) => {
   it( "shows loading text when model not yet loaded", async () => {
     jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,
-      modelLoaded: false
+      modelLoaded: false,
     } ) );
     render( <AICamera /> );
 
@@ -106,8 +106,8 @@ describe( "AI Camera", ( ) => {
       ...mockModelLoaded,
       modelLoaded: true,
       result: {
-        taxon: mockLocalTaxon
-      }
+        taxon: mockLocalTaxon,
+      },
     } ) );
     render( <AICamera /> );
 
@@ -115,8 +115,8 @@ describe( "AI Camera", ( ) => {
 
     expect( taxonPhoto.props.source ).toMatchObject(
       {
-        url: mockLocalTaxon.default_photo.url
-      }
+        url: mockLocalTaxon.default_photo.url,
+      },
     );
   } );
 
@@ -125,16 +125,16 @@ describe( "AI Camera", ( ) => {
       taxon: {
         ...mockLocalTaxon,
         default_photo: {
-          url: null
-        }
-      }
+          url: null,
+        },
+      },
     } ) );
     jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
       ...mockModelLoaded,
       modelLoaded: true,
       result: {
-        taxon: mockLocalTaxon
-      }
+        taxon: mockLocalTaxon,
+      },
     } ) );
     render( <AICamera /> );
 

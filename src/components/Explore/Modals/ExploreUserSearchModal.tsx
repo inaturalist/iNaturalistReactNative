@@ -12,7 +12,7 @@ interface Props {
 const ExploreUserSearchModal = ( {
   showModal,
   closeModal,
-  updateUser
+  updateUser,
 }: Props ) => (
   <Modal
     showModal={showModal}

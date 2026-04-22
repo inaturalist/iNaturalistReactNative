@@ -2,7 +2,7 @@ import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import * as rnImagePicker from "react-native-image-picker";
@@ -14,7 +14,7 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import {
-  renderAppWithObservations
+  renderAppWithObservations,
 } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -27,7 +27,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -38,8 +38,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -47,13 +47,13 @@ afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
 const mockMultipleAssets = [{
-  uri: faker.image.url( )
+  uri: faker.image.url( ),
 }, {
-  uri: faker.image.url( )
+  uri: faker.image.url( ),
 }];
 
 jest.mock( "react-native-image-picker", ( ) => ( {
-  launchImageLibrary: jest.fn( )
+  launchImageLibrary: jest.fn( ),
 } ) );
 
 const actor = userEvent.setup( );
@@ -61,8 +61,8 @@ const actor = userEvent.setup( );
 const navigateToObsEditViaGroupPhotos = async ( ) => {
   jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation(
     ( ) => ( {
-      assets: mockMultipleAssets
-    } )
+      assets: mockMultipleAssets,
+    } ),
   );
   await waitFor( ( ) => {
     global.timeTravel( );
@@ -112,7 +112,7 @@ const uploadObsEditObservation = async options => {
 beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
 } );
 
@@ -126,14 +126,14 @@ describe( "ObsEdit", ( ) => {
   const mockUser = factory( "LocalUser", {
     login: faker.internet.userName( ),
     iconUrl: faker.image.url( ),
-    locale: "en"
+    locale: "en",
   } );
 
   const observation = factory( "LocalObservation", {
     _created_at: faker.date.past( ),
     taxon: factory( "LocalTaxon", {
-      name: faker.person.firstName( )
-    } )
+      name: faker.person.firstName( ),
+    } ),
   } );
 
   const mockObservations = [observation];
@@ -142,7 +142,7 @@ describe( "ObsEdit", ( ) => {
     jest.useFakeTimers( );
     useStore.setState( {
       initialNumObservationsInQueue: 3,
-      numUploadsAttempted: 2
+      numUploadsAttempted: 2,
     } );
   } );
 
@@ -150,7 +150,7 @@ describe( "ObsEdit", ( ) => {
     async function navigateToObsEditOrObsDetails( observations ) {
       await renderAppWithObservations( observations, __filename );
       const observationGridItem = await screen.findByTestId(
-        `MyObservations.obsGridItem.${observations[0].uuid}`
+        `MyObservations.obsGridItem.${observations[0].uuid}`,
       );
       await actor.press( observationGridItem );
     }
@@ -177,8 +177,8 @@ describe( "ObsEdit", ( ) => {
           wasSynced: jest.fn( ( ) => true ),
           needsSync: jest.fn( ( ) => false ),
           taxon: factory( "LocalTaxon", {
-            name: faker.person.firstName( )
-          } )
+            name: faker.person.firstName( ),
+          } ),
         } );
         await navigateToObsEditOrObsDetails( [syncedObservation] );
         await findAndPressById( "ObsDetail.editButton" );
@@ -223,19 +223,19 @@ describe( "ObsEdit", ( ) => {
         + " in the multi-observation flow", async ( ) => {
         inatjs.photos.create.mockImplementation(
           ( ) => Promise.resolve( makeResponse( [{
-            id: faker.number.int()
-          }] ) )
+            id: faker.number.int(),
+          }] ) ),
         );
         inatjs.observations.create.mockImplementation(
           ( params, _opts ) => Promise.resolve( makeResponse( [{
             id: faker.number.int(),
-            uuid: params.observation.uuid
-          }] ) )
+            uuid: params.observation.uuid,
+          }] ) ),
         );
         inatjs.observation_photos.create.mockImplementation(
           ( ) => Promise.resolve( makeResponse( [{
-            id: faker.number.int()
-          }] ) )
+            id: faker.number.int(),
+          }] ) ),
         );
         await renderAppWithObservations( mockObservations, __filename );
         await navigateToObsEditViaGroupPhotos( );

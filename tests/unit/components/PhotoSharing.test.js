@@ -28,9 +28,9 @@ jest.mock( "@react-navigation/native", ( ) => {
       navigate: mockNavigate,
       dispatch: mockDispatch,
       goBack: mockGoBack,
-      addListener: mockAddListener
+      addListener: mockAddListener,
     } ),
-    useRoute: ( ) => mockUseRoute( )
+    useRoute: ( ) => mockUseRoute( ),
   };
 } );
 
@@ -42,7 +42,7 @@ const setupMocks = ( overrides = {} ) => {
     prepareObsEdit: jest.fn( ),
     setPhotoImporterState: jest.fn( ),
     isDefaultMode: true,
-    screenAfterPhotoEvidence: "ObsEdit"
+    screenAfterPhotoEvidence: "ObsEdit",
   };
 
   const mocks = { ...defaults, ...overrides };
@@ -50,12 +50,12 @@ const setupMocks = ( overrides = {} ) => {
   useStore.mockImplementation( selector => selector( {
     resetObservationFlowSlice: mocks.resetObservationFlowSlice,
     prepareObsEdit: mocks.prepareObsEdit,
-    setPhotoImporterState: mocks.setPhotoImporterState
+    setPhotoImporterState: mocks.setPhotoImporterState,
   } ) );
 
   useLayoutPrefs.mockReturnValue( {
     screenAfterPhotoEvidence: mocks.screenAfterPhotoEvidence,
-    isDefaultMode: mocks.isDefaultMode
+    isDefaultMode: mocks.isDefaultMode,
   } );
 
   Observation.createObservationWithPhotos.mockResolvedValue( { description: "" } );
@@ -65,12 +65,12 @@ const setupMocks = ( overrides = {} ) => {
     navigate: mockNavigate,
     dispatch: mockDispatch,
     goBack: mockGoBack,
-    addListener: mockAddListener
+    addListener: mockAddListener,
   };
 };
 
 const mockShare = {
-  data: [{ data: "file://photo.jpg", mimeType: "image/jpeg" }]
+  data: [{ data: "file://photo.jpg", mimeType: "image/jpeg" }],
 };
 
 const expectNavigationReset = ( mockDispatch, screenName, lastScreen = "PhotoSharing" ) => {
@@ -81,10 +81,10 @@ const expectNavigationReset = ( mockDispatch, screenName, lastScreen = "PhotoSha
         name: "NoBottomTabStackNavigator",
         state: {
           index: 0,
-          routes: [{ name: screenName, params: { lastScreen } }]
-        }
-      }]
-    } )
+          routes: [{ name: screenName, params: { lastScreen } }],
+        },
+      }],
+    } ),
   );
 };
 
@@ -96,7 +96,7 @@ describe( "PhotoSharing", ( ) => {
   describe( "Share Single Photo", ( ) => {
     const singlePhotoData = {
       ...mockShare,
-      extraData: { userInput: "Share photo with description" }
+      extraData: { userInput: "Share photo with description" },
     };
 
     it( "should handle single photo in default mode", async ( ) => {
@@ -111,10 +111,10 @@ describe( "PhotoSharing", ( ) => {
 
       expect( mocks.resetObservationFlowSlice ).toHaveBeenCalled( );
       expect( Observation.createObservationWithPhotos ).toHaveBeenCalledWith( [
-        { image: { uri: "file://photo.jpg" } }
+        { image: { uri: "file://photo.jpg" } },
       ] );
       expect( mocks.prepareObsEdit ).toHaveBeenCalledWith(
-        expect.objectContaining( { description: "Share photo with description" } )
+        expect.objectContaining( { description: "Share photo with description" } ),
       );
       expectNavigationReset( mocks.dispatch, "Match" );
     } );
@@ -143,7 +143,7 @@ describe( "PhotoSharing", ( ) => {
       await waitFor( ( ) => {
         expect( alertSpy ).toHaveBeenCalledWith(
           "Photo sharing failed: couldn't create new observation:",
-          error
+          error,
         );
       } );
       expect( mocks.dispatch ).not.toHaveBeenCalled( );
@@ -158,7 +158,7 @@ describe( "PhotoSharing", ( ) => {
 
       await waitFor( ( ) => {
         expect( mocks.prepareObsEdit ).toHaveBeenCalledWith(
-          expect.objectContaining( { description: undefined } )
+          expect.objectContaining( { description: undefined } ),
         );
       } );
     } );
@@ -169,9 +169,9 @@ describe( "PhotoSharing", ( ) => {
       mimeType: JPEG,
       data: [
         { data: "file://photo1.jpg", mimeType: JPEG },
-        { data: "file://photo2.jpg", mimeType: JPEG }
+        { data: "file://photo2.jpg", mimeType: JPEG },
       ],
-      extraData: { userInput: "Multiple photos" }
+      extraData: { userInput: "Multiple photos" },
     };
 
     it( "should navigate to GroupPhotos for multiple photos", async ( ) => {
@@ -185,9 +185,9 @@ describe( "PhotoSharing", ( ) => {
           photoLibraryUris: ["file://photo1.jpg", "file://photo2.jpg"],
           groupedPhotos: [
             { photos: [{ image: { uri: "file://photo1.jpg" } }] },
-            { photos: [{ image: { uri: "file://photo2.jpg" } }] }
+            { photos: [{ image: { uri: "file://photo2.jpg" } }] },
           ],
-          firstObservationDefaults: { description: "Multiple photos" }
+          firstObservationDefaults: { description: "Multiple photos" },
         } );
       } );
       expectNavigationReset( mocks.dispatch, "GroupPhotos" );
@@ -201,8 +201,8 @@ describe( "PhotoSharing", ( ) => {
         data: [
           { data: "file://photo1.jpg", mimeType: JPEG },
           { data: "file://doc.pdf", mimeType: "application/pdf" },
-          { data: "file://photo2.png", mimeType: "image/png" }
-        ]
+          { data: "file://photo2.png", mimeType: "image/png" },
+        ],
       };
       mockUseRoute.mockReturnValue( createMockRoute( mixedData ) );
 
@@ -211,8 +211,8 @@ describe( "PhotoSharing", ( ) => {
       await waitFor( ( ) => {
         expect( mocks.setPhotoImporterState ).toHaveBeenCalledWith(
           expect.objectContaining( {
-            photoLibraryUris: ["file://photo1.jpg", "file://photo2.png"]
-          } )
+            photoLibraryUris: ["file://photo1.jpg", "file://photo2.png"],
+          } ),
         );
       } );
     } );

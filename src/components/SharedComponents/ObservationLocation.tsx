@@ -19,7 +19,7 @@ const ObservationLocation = ( {
   details,
   observation,
   withCoordinates,
-  withGeoprivacy
+  withGeoprivacy,
 }: Props ) => {
   const { t } = useTranslation( );
   const geoprivacy = observation?.geoprivacy;
@@ -30,9 +30,9 @@ const ObservationLocation = ( {
       observation,
       observation.private_place_guess
         ? "privatePlaceGuess"
-        : "placeGuess"
+        : "placeGuess",
     ),
-    [observation]
+    [observation],
   );
 
   const displayGeoprivacy = useMemo( ( ) => {
@@ -54,13 +54,13 @@ const ObservationLocation = ( {
       return t( "Lat-Lon-Acc", {
         latitude: observation.privateLatitude,
         longitude: observation.privateLongitude,
-        accuracy
+        accuracy,
       } );
     }
     return t( "Lat-Lon-Acc", {
       latitude: observation.latitude,
       longitude: observation.longitude,
-      accuracy
+      accuracy,
     } );
   }, [observation, t] );
 
@@ -100,7 +100,7 @@ const ObservationLocation = ( {
     );
   }, [
     displayGeoprivacy,
-    t
+    t,
   ] );
 
   const inner = useMemo( ( ) => (
@@ -126,7 +126,7 @@ const ObservationLocation = ( {
     details,
     displayCoords,
     displayLocation,
-    withCoordinates
+    withCoordinates,
   ] );
 
   const locationIcon = () => {
@@ -149,7 +149,7 @@ const ObservationLocation = ( {
       accessible
       accessibilityLabel={t( "Location" )}
       accessibilityValue={{
-        text: displayLocation
+        text: displayLocation,
       }}
     >
       <ContentWithIcon icon={locationIcon()} size={13}>{ inner }</ContentWithIcon>

@@ -6,18 +6,18 @@ import { renderComponent } from "tests/helpers/render";
 
 const mockIdentifiers = [{
   ...factory( "RemoteUser" ),
-  count: 3
+  count: 3,
 }, {
   ...factory( "RemoteUser" ),
-  count: 1
+  count: 1,
 }];
 
 jest.mock( "sharedHooks/useInfiniteScroll", () => ( {
   __esModule: true,
   default: () => ( {
     data: mockIdentifiers,
-    isFetchingNextPage: true
-  } )
+    isFetchingNextPage: true,
+  } ),
 } ) );
 
 describe( "IdentifiersView", () => {
@@ -26,7 +26,7 @@ describe( "IdentifiersView", () => {
       <ExploreFlashList
         hideLoadingWheel={false}
         isConnected
-      />
+      />,
     );
 
     const loadingWheel = screen.getByTestId( "InfiniteScrollLoadingWheel.loading" );
@@ -38,7 +38,7 @@ describe( "IdentifiersView", () => {
       <ExploreFlashList
         hideLoadingWheel={false}
         isConnected={false}
-      />
+      />,
     );
 
     const noInternet = screen.getByText( /An Internet connection is required/ );
@@ -50,7 +50,7 @@ describe( "IdentifiersView", () => {
       <ExploreFlashList
         hideLoadingWheel
         isConnected
-      />
+      />,
     );
 
     const footerView = screen.getByTestId( "InfiniteScrollLoadingWheel.footerView" );
@@ -64,7 +64,7 @@ describe( "IdentifiersView", () => {
         isConnected
         data={[]}
         canFetch
-      />
+      />,
     );
 
     const initialLoading = screen.getByTestId( "ExploreFlashList.loading" );
@@ -77,7 +77,7 @@ describe( "IdentifiersView", () => {
         hideLoadingWheel
         isConnected
         data={[]}
-      />
+      />,
     );
 
     const noResultsText = screen.getByText( /No results found/ );
@@ -91,7 +91,7 @@ describe( "IdentifiersView", () => {
         isConnected
         data={mockIdentifiers}
         layout="user"
-      />
+      />,
     );
 
     const identificationCount = await screen.findByText( "3 Identifications" );

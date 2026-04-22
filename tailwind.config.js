@@ -9,7 +9,7 @@ module.exports = {
       letterSpacing: {
         tight: "-.25px",
         wide: ".65px",
-        widest: "2px"
+        widest: "2px",
       },
       fontSize: {
         // Typography: Heading1
@@ -31,10 +31,10 @@ module.exports = {
         // Typography: Body4
         "2xs": ["11px", setLineHeight( "13.2px" )],
         // Typography: Heading5
-        "3xs": ["8px", setLineHeight( "9.6px" )]
+        "3xs": ["8px", setLineHeight( "9.6px" )],
       },
       height: {
-        22: "5.5rem"
+        22: "5.5rem",
       },
       fontFamily: {
         "Lato-Bold": ["Lato-Bold"],
@@ -46,7 +46,7 @@ module.exports = {
         // selected from list of fonts already available in RN
         // https://infinitbility.com/react-native-font-family-list/
         monospace: ["monospace"],
-        Menlo: ["Menlo"]
+        Menlo: ["Menlo"],
       },
       borderRadius: {
         // tried using rem value here, but it wouldn't load on iOS or Android
@@ -55,15 +55,14 @@ module.exports = {
         sm: "4px",
         md: "9px",
         lg: "8px",
-        "2xl": "15px"
-      }
+        "2xl": "15px",
+      },
     },
     colors: {
       accessibleGreen: "#5D8017",
       black: "#000000",
       darkGray: "#454545",
       darkGrayDisabled: "#828181",
-      darkModeGray: "#232323",
       inatGreen: "#74AC00",
       inatGreenDisabled: "#B9D580",
       inatGreenDisabledDark: "#3A5600",
@@ -83,14 +82,14 @@ module.exports = {
       deepPink: "#FF1493",
       deeppink: "#FF1493",
       DeepPink: "#FF1493",
-      orange: "#FFA500"
+      orange: "#FFA500",
     },
     screens: {
       sm: "240px",
       md: "320px",
       lg: "390px",
       xl: "744px",
-      "2xl": "1366px"
-    }
-  }
+      "2xl": "1366px",
+    },
+  },
 };

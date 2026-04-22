@@ -54,7 +54,7 @@ module.exports = {
       ? renderNodes( children )
       : renderNodes( [children] ) ),
   Translation: ( { children } ) => children( k => k, { i18n: {} } ),
-  useTranslation: () => useMock
+  useTranslation: () => useMock,
 
   // // mock if needed
   // I18nextProvider: reactI18next.I18nextProvider,

@@ -5,18 +5,18 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 const mockLocalObservation = factory( "LocalObservation", {
-  observed_on_string: "2024-08-09T12:21"
+  observed_on_string: "2024-08-09T12:21",
 } );
 
 const mockRemoteObservation = factory( "RemoteObservation", {
   // jest timezone is set to UTC time
   time_observed_at: "2024-06-15T17:26:00-00:00",
   observed_on_string: null,
-  observed_time_zone: "UTC"
+  observed_time_zone: "UTC",
 } );
 
 const mockLocalObservationNoDate = factory( "LocalObservation", {
-  observed_on_string: null
+  observed_on_string: null,
 } );
 
 describe( "DatePicker", ( ) => {

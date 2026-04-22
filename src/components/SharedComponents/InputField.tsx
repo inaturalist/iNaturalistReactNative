@@ -19,7 +19,7 @@ const InputField = ( {
   placeholder,
   text,
   type,
-  testID
+  testID,
 }: Props ) => {
   let keyboardType: KeyboardTypeOptions = "default";
 

@@ -1,6 +1,6 @@
 import {
   ALLOWED_DOMAINS,
-  onShouldStartLoadWithRequest
+  onShouldStartLoadWithRequest,
 } from "components/FullPageWebView/FullPageWebView";
 import { Linking } from "react-native";
 
@@ -76,14 +76,14 @@ describe( "FullPageWebView", ( ) => {
         const request = {
           url: destination,
           mainDocumentURL: destination,
-          isTopFrame: true
+          isTopFrame: true,
         };
         const source = { uri: url };
         const routeParams = { initialUrl: url };
         const setSource = jest.fn();
 
         expect(
-          onShouldStartLoadWithRequest( request, source, routeParams, setSource )
+          onShouldStartLoadWithRequest( request, source, routeParams, setSource ),
         ).toBeTruthy();
         expect( setSource ).toHaveBeenCalledWith( { ...source, uri: destination } );
       } );
@@ -94,14 +94,14 @@ describe( "FullPageWebView", ( ) => {
         const request = {
           url: iframeUrl,
           mainDocumentURL: url,
-          isTopFrame: false
+          isTopFrame: false,
         };
         const source = { uri: url };
         const routeParams = { initialUrl: url };
         const setSource = jest.fn();
 
         expect(
-          onShouldStartLoadWithRequest( request, source, routeParams, setSource )
+          onShouldStartLoadWithRequest( request, source, routeParams, setSource ),
         ).toBeTruthy();
         expect( setSource ).not.toHaveBeenCalled();
       } );

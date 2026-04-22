@@ -8,7 +8,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Animated } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
-import { useCurrentUser, useLocationPermission, useWatchPosition } from "sharedHooks";
+import {
+  useCurrentUser,
+  useLocationPermission,
+  useWatchPosition,
+} from "sharedHooks";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 
@@ -21,7 +25,7 @@ import ObsEditHeader from "./ObsEditHeader";
 import OtherDataSection from "./OtherDataSection";
 
 const DROP_SHADOW = getShadow( {
-  offsetHeight: -2
+  offsetHeight: -2,
 } );
 
 const ObsEdit = ( ): Node => {
@@ -36,14 +40,14 @@ const ObsEdit = ( ): Node => {
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [resetScreen, setResetScreen] = useState( false );
   const [needLocation, setNeedLocation] = useState(
-    shouldFetchObservationLocation( currentObservation )
+    shouldFetchObservationLocation( currentObservation ),
   );
   const isFocused = useIsFocused( );
   const currentUser = useCurrentUser( );
   const {
     hasPermissions: hasLocationPermission,
     renderPermissionsGate: renderLocationPermissionGate,
-    requestPermissions: requestLocationPermission
+    requestPermissions: requestLocationPermission,
   } = useLocationPermission( );
 
   const fadeAnim = React.useRef( new Animated.Value( 1 ) ).current;
@@ -52,14 +56,14 @@ const ObsEdit = ( ): Node => {
     Animated.timing( fadeAnim, {
       toValue: 1,
       duration: 250,
-      useNativeDriver: true
+      useNativeDriver: true,
     } ).start( fadeAnim.setValue( 0 ) );
   };
 
   const animatedStyle = {
     flex: 1,
     opacity: fadeAnim, // Bind opacity to animated value
-    ...DROP_SHADOW
+    ...DROP_SHADOW,
   };
 
   const shouldFetchLocation = hasLocationPermission && needLocation;
@@ -68,7 +72,7 @@ const ObsEdit = ( ): Node => {
     isFetchingLocation,
     stopWatch,
     subscriptionId,
-    userLocation
+    userLocation,
   } = useWatchPosition( { shouldFetchLocation } );
 
   useEffect( ( ) => {
@@ -175,7 +179,7 @@ const ObsEdit = ( ): Node => {
         // navigate to the location picker (if granted we just continue fetching the location)
         onModalHide: ( ) => {
           if ( !hasLocationPermission ) navToLocationPicker();
-        }
+        },
       } )}
     </>
   );

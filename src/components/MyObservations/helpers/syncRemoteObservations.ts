@@ -8,7 +8,7 @@ async function syncRemoteObservations( realm, currentUserId: number, deletionsCo
     user_id: currentUserId,
     per_page: 50,
     fields: Observation.ADVANCED_MODE_LIST_FIELDS,
-    ttl: -1
+    ttl: -1,
   };
   // Between elasticsearch update time and API caches, there's no absolute
   // guarantee fetching observations won't include something we just

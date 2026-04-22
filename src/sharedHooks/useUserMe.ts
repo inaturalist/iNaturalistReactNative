@@ -4,9 +4,10 @@ import { useCallback, useEffect } from "react";
 import { UpdateMode } from "realm";
 import User from "realmModels/User";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
 import {
   useAuthenticatedQuery,
-  useCurrentUser
+  useCurrentUser,
 } from "sharedHooks";
 
 const { useRealm } = RealmContext;
@@ -25,13 +26,13 @@ const useUserMe = ( options: UseUserMeOptions ) => {
     data: remoteUser,
     isLoading,
     refetch: refetchUserMe,
-    dataUpdatedAt
+    dataUpdatedAt,
   } = useAuthenticatedQuery(
     ["fetchUserMe"],
     optsWithAuth => fetchUserMe( { }, optsWithAuth ),
     {
-      enabled
-    }
+      enabled,
+    },
   );
 
   const updateUser = useCallback( ( ) => {
@@ -40,10 +41,13 @@ const useUserMe = ( options: UseUserMeOptions ) => {
         realm.create( User, remoteUser, UpdateMode.Modified );
       }, "modifying current user via remote fetch in useUserMe" );
     }
+    if ( remoteUser ) {
+      setFirebaseDataCollectionEnabled( !remoteUser.prefers_no_tracking );
+    }
   }, [
     realm,
     remoteUser,
-    updateRealm
+    updateRealm,
   ] );
 
   useEffect( ( ) => {
@@ -55,7 +59,7 @@ const useUserMe = ( options: UseUserMeOptions ) => {
   return {
     remoteUser,
     isLoading,
-    refetchUserMe
+    refetchUserMe,
   };
 };
 

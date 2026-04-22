@@ -8,11 +8,12 @@ import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   usePerformance,
-  useShare
+  useShare,
 } from "sharedHooks";
 import { isDebugMode } from "sharedHooks/useDebugMode";
 
 import AppStateListener from "./AppStateListener";
+import useDeferredStartup from "./hooks/useDeferredStartup";
 import useLinking from "./hooks/useLinking";
 import NetworkService from "./NetworkService";
 import StartupService from "./StartupService";
@@ -21,7 +22,7 @@ const logger = log.extend( "App" );
 
 type SharedItem = {
   mimeType: string,
-  data: string | Array<string>
+  data: string | string[]
 };
 
 const handleShare = ( navigation, item: ?SharedItem ) => {
@@ -41,7 +42,7 @@ const handleShare = ( navigation, item: ?SharedItem ) => {
   // while observations are created
   navigation?.navigate( "NoBottomTabStackNavigator", {
     screen: "PhotoSharing",
-    params: { item }
+    params: { item },
   } );
 };
 
@@ -55,7 +56,7 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const { loadTime } = usePerformance( {
-    screenName: "App"
+    screenName: "App",
   } );
   if ( isDebugMode( ) ) {
     logger.info( loadTime );
@@ -65,13 +66,14 @@ const App = ( { children }: Props ): Node => {
   // for performance reasons
   const onShare = useCallback(
     item => handleShare( navigation, item ),
-    [navigation]
+    [navigation],
   );
 
   const currentUser = useCurrentUser( );
 
   useLinking( currentUser );
   useShare( onShare );
+  useDeferredStartup( );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

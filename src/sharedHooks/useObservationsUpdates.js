@@ -18,16 +18,16 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     observations_by: "owner",
     viewed: false,
     fields: "viewed,resource_uuid,comment_id,identification_id",
-    per_page: 50
+    per_page: 50,
   };
 
   const {
     data,
-    refetch
+    refetch,
   } = useAuthenticatedQuery(
     [fetchObservationUpdatesKey],
     optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
-    { enabled: !!( enabled ) }
+    { enabled: !!( enabled ) },
   );
 
   /*
@@ -68,7 +68,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
         // Get the observation from local realm that matches the update's resource_uuid
         const existingObs = realm?.objectForPrimaryKey(
           "Observation",
-          update.resource_uuid
+          update.resource_uuid,
         );
         if ( !existingObs ) {
           return;

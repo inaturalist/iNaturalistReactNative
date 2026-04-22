@@ -7,16 +7,16 @@ import { FlatList } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
+interface Props {
   before?: React.ReactNode;
   chosen: string[];
   onTaxonChosen: ( taxon: string ) => void;
   testID?: string;
   withoutUnknown?: boolean;
-};
+}
 
 const STYLESHEET = {
-  alignItems: "center"
+  alignItems: "center",
 } as const;
 
 const ICONIC_TAXA = [
@@ -33,15 +33,17 @@ const ICONIC_TAXA = [
   "actinopterygii",
   "chromista",
   "protozoa",
-  "unknown"
+  "unknown",
 ];
+
+const EMPTY_CHOSEN: string[] = [];
 
 const IconicTaxonChooser = ( {
   before,
-  chosen = [],
+  chosen = EMPTY_CHOSEN,
   onTaxonChosen,
   testID,
-  withoutUnknown
+  withoutUnknown,
 }: Props ) => {
   const { t } = useTranslation( );
   const iconicTaxonIcons = withoutUnknown
@@ -56,12 +58,12 @@ const IconicTaxonChooser = ( {
             "border-darkGray border border-[2px] mr-4 justify-center items-center",
             "h-[36px] w-[36px] rounded-full",
             {
-              "bg-darkGray": isSelected
-            }
+              "bg-darkGray": isSelected,
+            },
           )
         }
         accessibilityState={{
-          selected: isSelected
+          selected: isSelected,
         }}
         testID={`IconicTaxonButton.${iconicTaxonName}`}
       >
@@ -87,7 +89,7 @@ const IconicTaxonChooser = ( {
   }, [
     chosen,
     onTaxonChosen,
-    t
+    t,
   ] );
 
   const renderHeader = useCallback( ( ) => {

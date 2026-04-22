@@ -3,7 +3,7 @@
 import {
   checkLocationPermissions,
   getCurrentPositionWithOptions,
-  lowAccuracyOptions
+  lowAccuracyOptions,
 } from "./geolocationWrapper";
 
 interface UserLocation {
@@ -27,7 +27,7 @@ const fetchCoarseUserLocation = async ( ): Promise<UserLocation | null> => {
       longitude: coords.longitude,
       positional_accuracy: coords.accuracy,
       altitude: coords.altitude,
-      altitudinal_accuracy: coords.altitudeAccuracy
+      altitudinal_accuracy: coords.altitudeAccuracy,
     };
     return userLocation;
   } catch ( e ) {

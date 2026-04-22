@@ -1,16 +1,27 @@
 import {
+  CachesDirectoryPath,
+  DocumentDirectoryPath,
+  DownloadDirectoryPath,
+  exists,
+  ExternalDirectoryPath,
+  ExternalStorageDirectoryPath,
+  LibraryDirectoryPath,
+  MainBundlePath,
+  readDir,
+  TemporaryDirectoryPath,
+} from "@dr.pogodin/react-native-fs";
+import {
   computerVisionPath,
   photoLibraryPhotosPath,
   photoUploadPath,
   rotatedOriginalPhotosPath,
-  soundUploadPath
+  soundUploadPath,
 } from "appConstants/paths";
-import _ from "lodash";
+import orderBy from "lodash/orderBy";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
-import RNFS from "react-native-fs";
 
-export type DirectoryEntrySize = {
+export interface DirectoryEntrySize {
   name: string;
   size: number;
 }
@@ -36,63 +47,63 @@ export function formatSizeUnits( bytes: number ) {
 
 const sharedDirectories = [
   {
-    path: RNFS.DocumentDirectoryPath,
-    directoryName: "DocumentDirectory"
+    path: DocumentDirectoryPath,
+    directoryName: "DocumentDirectory",
   },
   {
-    path: RNFS.CachesDirectoryPath,
-    directoryName: "CachesDirectory"
+    path: CachesDirectoryPath,
+    directoryName: "CachesDirectory",
   },
   {
-    path: RNFS.TemporaryDirectoryPath,
-    directoryName: "TemporaryDirectory"
+    path: TemporaryDirectoryPath,
+    directoryName: "TemporaryDirectory",
   },
   {
     path: computerVisionPath,
-    directoryName: "ComputerVisionSuggestions"
+    directoryName: "ComputerVisionSuggestions",
   },
   {
     path: photoLibraryPhotosPath,
-    directoryName: "PhotoLibraryPhotos"
+    directoryName: "PhotoLibraryPhotos",
   },
   {
     path: photoUploadPath,
-    directoryName: "PhotoUploads"
+    directoryName: "PhotoUploads",
   },
   {
     path: rotatedOriginalPhotosPath,
-    directoryName: "RotatedOriginalPhotos"
+    directoryName: "RotatedOriginalPhotos",
   },
   {
     path: soundUploadPath,
-    directoryName: "SoundUploads"
-  }
+    directoryName: "SoundUploads",
+  },
 ];
 
 const iOSDirectories = [
   {
-    path: RNFS.MainBundlePath,
-    directoryName: "MainBundle"
+    path: MainBundlePath,
+    directoryName: "MainBundle",
   },
   {
-    path: RNFS.LibraryDirectoryPath,
-    directoryName: "LibraryDirectory"
-  }
+    path: LibraryDirectoryPath,
+    directoryName: "LibraryDirectory",
+  },
 ];
 
 const androidDirectories = [
   {
-    path: RNFS.DownloadDirectoryPath,
-    directoryName: "DownloadDirectory"
+    path: DownloadDirectoryPath,
+    directoryName: "DownloadDirectory",
   },
   {
-    path: RNFS.ExternalDirectoryPath,
-    directoryName: "ExternalDirectory"
+    path: ExternalDirectoryPath,
+    directoryName: "ExternalDirectory",
   },
   {
-    path: RNFS.ExternalStorageDirectoryPath,
-    directoryName: "ExternalStorageDirectory"
-  }
+    path: ExternalStorageDirectoryPath,
+    directoryName: "ExternalStorageDirectory",
+  },
 ];
 
 export const directories = sharedDirectories.concat( Platform.OS === "android"
@@ -104,11 +115,11 @@ export function formatAppSizeString( name: string, size: number ): string {
 }
 
 export async function getDirectoryEntrySizes( directory: string ): Promise<DirectoryEntrySize[]> {
-  const entries = await RNFS.readDir( directory );
-  const sortedEntries = _.orderBy( entries, "size", "desc" );
+  const entries = await readDir( directory );
+  const sortedEntries = orderBy( entries, "size", "desc" );
   return sortedEntries.map( ( { name, size } ) => ( {
     name,
-    size
+    size,
   } ) );
 }
 
@@ -120,7 +131,7 @@ export function getTotalDirectorySize( directoryItems: DirectoryEntrySize[] ): n
   return totalSize;
 }
 
-type AppSize = {
+interface AppSize {
   [directoryName: string]: DirectoryEntrySize[];
 }
 
@@ -128,8 +139,8 @@ async function fetchAppSize(): Promise<AppSize> {
   const maybeExistingDirectories = await Promise.all(
     directories.map( async directory => ( {
       directory,
-      exists: await RNFS.exists( directory.path )
-    } ) )
+      exists: await exists( directory.path ),
+    } ) ),
   );
   const existingDirectories = maybeExistingDirectories
     .filter( dir => dir.exists )
@@ -139,7 +150,7 @@ async function fetchAppSize(): Promise<AppSize> {
     existingDirectories.map( async dir => {
       const directoryEntrySizes = await getDirectoryEntrySizes( dir.path );
       return [dir.directoryName, directoryEntrySizes] as [string, DirectoryEntrySize[]];
-    } )
+    } ),
   );
   const directorySizesByDirectory = Object.fromEntries( directoryToDirectorySizesKvps );
   return directorySizesByDirectory;

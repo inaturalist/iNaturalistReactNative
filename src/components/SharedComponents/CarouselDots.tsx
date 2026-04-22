@@ -11,7 +11,7 @@ interface CarouselDotsProps {
 const CarouselDots: React.FC<CarouselDotsProps> = ( { length, index } ) => {
   const dots = React.useMemo( () => Array.from(
     { length },
-    () => uuid.v4( ) as string
+    () => uuid.v4( ) as string,
   ), [length] );
 
   return (
@@ -26,7 +26,7 @@ const CarouselDots: React.FC<CarouselDotsProps> = ( { length, index } ) => {
             "rounded-full bg-white m-[2.5]",
             idx === index
               ? "w-[4px] h-[4px]"
-              : "w-[2px] h-[2px]"
+              : "w-[2px] h-[2px]",
           )}
         />
       ) )}

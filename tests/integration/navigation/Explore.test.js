@@ -2,7 +2,7 @@ import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
@@ -25,7 +25,7 @@ const mockUser = factory( "LocalUser", {
   locale: "en",
   species_count: faker.number.int(),
   created_at: "2000-05-09T01:17:05-01:00",
-  updated_at: "2000-05-09T01:17:05-01:00"
+  updated_at: "2000-05-09T01:17:05-01:00",
 } );
 
 const mockTaxon = factory( "LocalTaxon" );
@@ -36,20 +36,20 @@ const mockObservations = [
     needsSync: jest.fn( ( ) => false ),
     wasSynced: jest.fn( ( ) => true ),
     user: mockUser,
-    taxon: mockTaxon
-  } )
+    taxon: mockTaxon,
+  } ),
 ];
 
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 37, longitude: 34 } ) );
 jest.mock( "sharedHelpers/fetchCoarseUserLocation", () => ( {
   __esModule: true,
-  default: () => mockFetchUserLocation()
+  default: () => mockFetchUserLocation(),
 } ) );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -60,8 +60,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -73,7 +73,7 @@ beforeAll( async () => {
   jest.useFakeTimers( );
   inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( [{
     count: 1,
-    taxon: mockTaxon
+    taxon: mockTaxon,
   }] ) );
   inatjs.observations.search.mockImplementation( ( params, _opts ) => {
     // If this is from MyObs trying to get the signed in user's obs, return nothing
@@ -89,7 +89,7 @@ beforeAll( async () => {
 beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
 } );
 
@@ -101,7 +101,7 @@ async function navigateToObsDetails( ) {
     expect( screen.getByText( /OBSERVATION/ ) ).toBeVisible( );
   } );
   const firstObservation = await screen.findByTestId(
-    `ObsPressable.${mockObservations[0].uuid}`
+    `ObsPressable.${mockObservations[0].uuid}`,
   );
   await actor.press( firstObservation );
 }
@@ -153,16 +153,16 @@ describe( "logged in", ( ) => {
         renderApp( );
         await navigateToObsDetails( );
         const taxonPressable = await screen.findByTestId(
-          `ObsDetails.taxon.${mockObservations[0].taxon.id}`
+          `ObsDetails.taxon.${mockObservations[0].taxon.id}`,
         );
         await actor.press( taxonPressable );
         const exploreButton = await screen.findByLabelText( /See observations of this taxon in explore/ );
         await actor.press( exploreButton );
         expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
           taxon_id: mockTaxon.id,
-          verifiable: true
+          verifiable: true,
         } ), {
-          api_token: TEST_JWT
+          api_token: TEST_JWT,
         } );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
         expect( defaultGlobalLocation ).toBeVisible( );
@@ -180,7 +180,7 @@ describe( "logged in", ( ) => {
         Observation.upsertRemoteObservations( mockObservations, global.mockRealms[__filename] );
         inatjs.users.fetch.mockResolvedValue( makeResponse( [mockUser] ) );
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
-          results: []
+          results: [],
         } ) );
       } );
 
@@ -188,7 +188,7 @@ describe( "logged in", ( ) => {
         renderApp( );
         await navigateToObsDetails( );
         const userProfileButton = await screen.findByLabelText(
-          `User ${mockObservations[0].user.login}`
+          `User ${mockObservations[0].user.login}`,
         );
         await actor.press( userProfileButton );
         expect( inatjs.users.fetch ).toHaveBeenCalled( );
@@ -196,9 +196,9 @@ describe( "logged in", ( ) => {
         await actor.press( observationsButton );
         expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
           user_id: mockUser.id,
-          verifiable: true
+          verifiable: true,
         } ), {
-          api_token: TEST_JWT
+          api_token: TEST_JWT,
         } );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
         expect( defaultGlobalLocation ).toBeVisible( );
@@ -218,7 +218,7 @@ describe( "logged in", ( ) => {
 
         inatjs.users.fetch.mockResolvedValue( makeResponse( [mockUser] ) );
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
-          results: []
+          results: [],
         } ) );
       } );
 
@@ -226,7 +226,7 @@ describe( "logged in", ( ) => {
         renderApp( );
         await navigateToObsDetails( );
         const userProfileButton = await screen.findByLabelText(
-          `User ${mockObservations[0].user.login}`
+          `User ${mockObservations[0].user.login}`,
         );
         await actor.press( userProfileButton );
         expect( inatjs.users.fetch ).toHaveBeenCalled( );
@@ -234,9 +234,9 @@ describe( "logged in", ( ) => {
         await actor.press( speciesButton );
         expect( inatjs.observations.speciesCounts ).toHaveBeenCalledWith( expect.objectContaining( {
           user_id: mockUser.id,
-          verifiable: true
+          verifiable: true,
         } ), {
-          api_token: TEST_JWT
+          api_token: TEST_JWT,
         } );
         const defaultGlobalLocation = await screen.findByText( /Worldwide/ );
         expect( defaultGlobalLocation ).toBeVisible( );
@@ -273,7 +273,7 @@ describe( "logged in", ( ) => {
       it( "should navigate from UserProfile to Explore and back to UserProfile", async ( ) => {
         inatjs.users.fetch.mockResolvedValue( makeResponse( [mockUser] ) );
         inatjs.relationships.search.mockResolvedValue( makeResponse( {
-          results: []
+          results: [],
         } ) );
         inatjs.observations.fetch.mockResolvedValue( makeResponse( mockObservations ) );
         renderApp( );
@@ -284,7 +284,7 @@ describe( "logged in", ( ) => {
         const gridView = await screen.findByTestId( "SegmentedButton.grid" );
         await actor.press( gridView );
         const firstObservation = screen.queryByTestId(
-          `ObsPressable.${mockObservations[0].uuid}`
+          `ObsPressable.${mockObservations[0].uuid}`,
         );
         await waitFor( ( ) => {
           expect( firstObservation ).toBeVisible( );
@@ -292,7 +292,7 @@ describe( "logged in", ( ) => {
         await actor.press( firstObservation );
         await waitFor( ( ) => {
           expect(
-            screen.getByTestId( `ObsDetails.${mockObservations[0].uuid}` )
+            screen.getByTestId( `ObsDetails.${mockObservations[0].uuid}` ),
           ).toBeVisible( );
         }, { timeout: 10_000 } );
         const userProfileButton = await screen.findByLabelText( `User ${mockUser.login}` );
@@ -301,9 +301,9 @@ describe( "logged in", ( ) => {
         await actor.press( observationsButton );
         expect( inatjs.observations.search ).toHaveBeenCalledWith( expect.objectContaining( {
           user_id: mockUser.id,
-          verifiable: true
+          verifiable: true,
         } ), {
-          api_token: TEST_JWT
+          api_token: TEST_JWT,
         } );
         const observationsViewIcon = await screen.findByLabelText( /Observations View/ );
         expect( observationsViewIcon ).toBeVisible( );
@@ -316,7 +316,7 @@ describe( "logged in", ( ) => {
     describe( "without location permissions", ( ) => {
       it( "should default to global species view and not have a back button", async ( ) => {
         const mockedPermissions = {
-          "ios.permission.LOCATION": "denied"
+          "ios.permission.LOCATION": "denied",
         };
 
         jest.spyOn( ReactNativePermissions, "checkMultiple" )

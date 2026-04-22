@@ -4,15 +4,18 @@ import { View } from "components/styledComponents";
 import React, { useState } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import {
-  useCurrentUser, useLayoutPrefs, useLocalObservations, useTranslation
+  useCurrentUser, useLayoutPrefs, useLocalObservations, useTranslation,
 } from "sharedHooks";
 
 import NotificationsContainer from "./NotificationsContainer";
 import NotificationsTab, {
   NOTIFICATIONS_REFRESHED,
   OTHER_TAB,
-  OWNER_TAB
+  OWNER_TAB,
 } from "./NotificationsTab";
+
+const OWNER_TAB_PARAMS = { observations_by: "owner" } as const;
+const FOLLOWING_TAB_PARAMS = { observations_by: "following" } as const;
 
 const Notifications = ( ) => {
   const [activeTab, setActiveTab] = useState<typeof OWNER_TAB | typeof OTHER_TAB>( OWNER_TAB );
@@ -20,7 +23,7 @@ const Notifications = ( ) => {
   const { isDefaultMode } = useLayoutPrefs( );
   const currentUser = useCurrentUser( );
   const {
-    totalResults: totalResultsLocal
+    totalResults: totalResultsLocal,
   } = useLocalObservations( );
 
   return (
@@ -30,13 +33,13 @@ const Notifications = ( ) => {
           {
             id: OWNER_TAB,
             text: t( "MY-CONTENT--notifications" ),
-            onPress: () => setActiveTab( OWNER_TAB )
+            onPress: () => setActiveTab( OWNER_TAB ),
           },
           {
             id: OTHER_TAB,
             text: t( "OTHERS--notifications" ),
-            onPress: () => setActiveTab( OTHER_TAB )
-          }
+            onPress: () => setActiveTab( OTHER_TAB ),
+          },
         ]}
         activeId={activeTab}
         TabComponent={NotificationsTab}
@@ -44,14 +47,14 @@ const Notifications = ( ) => {
       {activeTab === OWNER_TAB && (
         <NotificationsContainer
           currentUser={currentUser}
-          notificationParams={{ observations_by: "owner" }}
+          notificationParams={OWNER_TAB_PARAMS}
           onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OWNER_TAB )}
         />
       )}
       {activeTab === OTHER_TAB && (
         <NotificationsContainer
           currentUser={currentUser}
-          notificationParams={{ observations_by: "following" }}
+          notificationParams={FOLLOWING_TAB_PARAMS}
           onRefresh={( ) => EventRegister.emit( NOTIFICATIONS_REFRESHED, OTHER_TAB )}
         />
       )}

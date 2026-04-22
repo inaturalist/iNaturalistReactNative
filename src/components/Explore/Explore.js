@@ -9,7 +9,7 @@ import {
   INatIconButton,
   OfflineNotice,
   RadioButtonSheet,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { PLACE_MODE } from "providers/ExploreContext";
@@ -19,7 +19,7 @@ import { Alert } from "react-native";
 import {
   useDebugMode,
   useStoredLayout,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -33,14 +33,14 @@ import SpeciesView from "./SpeciesView";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
-  elevation: 6
+  elevation: 6,
 } );
 
 const exploreViewIcon = {
   observations: "binoculars",
   species: "leaf",
   observers: "observers",
-  identifiers: "identifiers"
+  identifiers: "identifiers",
 };
 
 type Props = {
@@ -90,7 +90,7 @@ const Explore = ( {
   updateLocation,
   updateProject,
   updateTaxon,
-  updateUser
+  updateUser,
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
@@ -101,7 +101,7 @@ const Explore = ( {
     observations: t( "Observations-View" ),
     species: t( "Species-View" ),
     observers: t( "Observers-View" ),
-    identifiers: t( "Identifiers-View" )
+    identifiers: t( "Identifiers-View" ),
   };
 
   const icon = exploreViewIcon[currentExploreView];
@@ -201,29 +201,29 @@ const Explore = ( {
         text: t( "Organisms-that-are-identified-to-species" ),
         buttonText: t( "EXPLORE-SPECIES" ),
         icon: "species",
-        value: "species"
+        value: "species",
       },
       observations: {
         label: t( "Observations" ),
         text: t( "Individual-encounters-with-organisms" ),
         buttonText: t( "EXPLORE-OBSERVATIONS" ),
         icon: "observations",
-        value: "observations"
+        value: "observations",
       },
       observers: {
         label: t( "Observers" ),
         text: t( "iNaturalist-users-who-have-observed" ),
         buttonText: t( "EXPLORE-OBSERVERS" ),
         icon: "observers",
-        value: "observers"
+        value: "observers",
       },
       identifiers: {
         label: t( "Identifiers" ),
         text: t( "iNaturalist-users-who-have-left-an-identification" ),
         buttonText: t( "EXPLORE-IDENTIFIERS" ),
         icon: "identifiers",
-        value: "identifiers"
-      }
+        value: "identifiers",
+      },
     };
 
     return (
@@ -268,20 +268,20 @@ const Explore = ( {
                 "right-5",
                 "rounded-full",
                 "w-[55px]",
-                "z-10"
+                "z-10",
               )}
               color="white"
               size={27}
               style={[
                 DROP_SHADOW,
                 // eslint-disable-next-line react-native/no-inline-styles
-                { backgroundColor: "deeppink" }
+                { backgroundColor: "deeppink" },
               ]}
               accessibilityLabel="Diagnostics"
               onPress={() => {
                 Alert.alert(
                   "Explore Info",
-                  `queryParams: ${JSON.stringify( queryParams )}`
+                  `queryParams: ${JSON.stringify( queryParams )}`,
                 );
               }}
             />
@@ -292,7 +292,7 @@ const Explore = ( {
             size={27}
             className={classnames(
               whiteCircleClass,
-              "absolute bottom-5 z-10 right-5"
+              "absolute bottom-5 z-10 right-5",
             )}
             accessibilityLabel={a11yLabel}
             onPress={() => setShowExploreBottomSheet( true )}

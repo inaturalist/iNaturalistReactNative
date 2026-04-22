@@ -1,11 +1,13 @@
 import {
-  photoLibraryPhotosPath, photoUploadPath, rotatedOriginalPhotosPath, soundUploadPath
+  computerVisionPath,
+  photoLibraryPhotosPath,
+  photoUploadPath,
+  rollbackPhotosPath,
+  rotatedOriginalPhotosPath,
+  soundUploadPath,
 } from "appConstants/paths";
-import { log } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory";
-
-const logger = log.extend( "clearCaches.ts" );
 
 // TODO replace when Realm classes are properly typed
 interface RealmObservation {
@@ -29,6 +31,11 @@ const clearGalleryPhotos = async ( ) => {
   await removeAllFilesFromDirectory( photoLibraryPhotosPath );
 };
 
+const clearComputerVisionPhotos = async ( ) => {
+  // Clears resized images used for inatjs.computervision.score_image
+  await removeAllFilesFromDirectory( computerVisionPath );
+};
+
 // this hook checks to see which localFilePaths are still needed in photoUploads/
 // and only keeps the references to photos which have not yet been uploaded
 // clearing this directory helps to keep the app size small
@@ -40,7 +47,7 @@ const clearSyncedMediaForUpload = async realm => {
     .filtered( "observationPhotos._synced_at == nil" );
   const unsyncedPhotoFileNames = unsyncedObservationsWithPhotos
     .map( observation => observation.observationPhotos.map(
-      op => op.photo.localFilePath?.split( "photoUploads/" )?.at( 1 )
+      op => op.photo.localFilePath?.split( "photoUploads/" )?.at( 1 ),
     ) )
     .flat( )
     .filter( Boolean );
@@ -50,7 +57,7 @@ const clearSyncedMediaForUpload = async realm => {
     //  why the TS compiler can't figure that out
     //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    unsyncedPhotoFileNames
+    unsyncedPhotoFileNames,
   );
 
   // Clean out sounds
@@ -59,7 +66,7 @@ const clearSyncedMediaForUpload = async realm => {
     .filtered( "observationSounds._synced_at == nil" );
   const unsyncedSoundFileNames = unsyncedObservationsWithSounds
     .map( observation => observation.observationSounds.map(
-      os => os.sound.file_url?.split( "soundUploads/" )?.at( 1 )
+      os => os.sound.file_url?.split( "soundUploads/" )?.at( 1 ),
     ) )
     .flat( )
     .filter( Boolean );
@@ -69,18 +76,18 @@ const clearSyncedMediaForUpload = async realm => {
     //  why the TS compiler can't figure that out
     //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    unsyncedSoundFileNames
+    unsyncedSoundFileNames,
   );
 };
 
-const clearCaches = async ( isDebugMode, realm ) => {
-  // clear original, large-sized photos
-  await clearRotatedOriginalPhotosDirectory( );
-  await clearGalleryPhotos( );
-  await clearSyncedMediaForUpload( realm );
-  if ( isDebugMode ) {
-    logger.info( "cleared rotated original photos, gallery, and synced media caches" );
-  }
+const clearRollbackPhotos = async ( ) => {
+  await removeAllFilesFromDirectory( rollbackPhotosPath );
 };
 
-export default clearCaches;
+export {
+  clearComputerVisionPhotos,
+  clearGalleryPhotos,
+  clearRollbackPhotos,
+  clearRotatedOriginalPhotosDirectory,
+  clearSyncedMediaForUpload,
+};

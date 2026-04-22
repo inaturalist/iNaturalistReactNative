@@ -9,21 +9,21 @@ describe( "FaveButton", () => {
       ( ) => renderComponent(
         <FaveButton
           observation={factory( "LocalObservation" )}
-        />
-      )
+        />,
+      ),
     ).not.toThrow( );
   } );
 
   it( "should survive no currentUser for an observation w/ existing votes", ( ) => {
     const observation = factory( "RemoteObservation", {
-      votes: [factory( "RemoteVote" )]
+      votes: [factory( "RemoteVote" )],
     } );
     expect(
       ( ) => renderComponent(
         <FaveButton
           observation={observation}
-        />
-      )
+        />,
+      ),
     ).not.toThrow( );
   } );
 } );

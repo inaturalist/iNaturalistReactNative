@@ -3,21 +3,22 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import {
   Button,
   Heading4,
-  PickerSheet
+  PickerSheet,
+  UnderlinedLink,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import changeLanguage from "sharedHelpers/changeLanguage";
+import { openExternalWebBrowser } from "sharedHelpers/util";
 import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 
-type LocalesResponse = Array<{
+type LocalesResponse = {
   locale: string;
   language_in_locale: string;
-}>;
+}[];
 
-type Props = {
+interface Props {
   onChange: ( newLocale: string ) => void;
 }
 
@@ -27,8 +28,8 @@ const LanguageSetting = ( { onChange }: Props ) => {
   const webLocalesOptions = Object.fromEntries(
     webLocales?.map( locale => [locale.locale, {
       label: locale.language_in_locale,
-      value: locale.locale
-    }] )
+      value: locale.locale,
+    }] ),
   );
   const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
 
@@ -64,6 +65,13 @@ const LanguageSetting = ( { onChange }: Props ) => {
         }}
         accessibilityLabel={t( "CHANGE-APP-LANGUAGE" )}
       />
+      <UnderlinedLink
+        className="mt-[19px] text-center"
+        accessibilityRole="link"
+        onPress={async () => openExternalWebBrowser( "https://crowdin.com/project/inaturalistios" )}
+      >
+        {t( "Help-us-translate-the-app" )}
+      </UnderlinedLink>
       {localeSheetOpen && (
         <PickerSheet
           headerText={t( "APP-LANGUAGE" )}

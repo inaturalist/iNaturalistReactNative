@@ -2,16 +2,16 @@ import classnames from "classnames";
 import {
   Button,
   Heading4,
-  INatIconButton
+  INatIconButton,
 } from "components/SharedComponents";
 import {
-  CIRCLE_SIZE
+  CIRCLE_SIZE,
 } from "components/SharedComponents/Buttons/TransparentCircleButton";
 import { Text, View } from "components/styledComponents";
 import React, { useState } from "react";
 import {
   Modal,
-  Portal
+  Portal,
 } from "react-native-paper";
 import type { CameraDeviceFormat } from "react-native-vision-camera";
 import { useDebugMode } from "sharedHooks";
@@ -42,7 +42,7 @@ const AIDebugButton = ( {
   numStoredResults,
   setNumStoredResults,
   cropRatio,
-  setCropRatio
+  setCropRatio,
 }: Props ) => {
   const [modalVisible, setModalVisible] = useState( false );
   const [slideIndex, setSlideIndex] = useState( 0 );
@@ -57,7 +57,7 @@ const AIDebugButton = ( {
           "items-center",
           "justify-center",
           "rounded-full",
-          CIRCLE_SIZE
+          CIRCLE_SIZE,
         )}
         backgroundColor={colors.deeppink}
         onPress={() => setModalVisible( true )}

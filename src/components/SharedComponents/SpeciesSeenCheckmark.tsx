@@ -23,7 +23,7 @@ const SpeciesSeenCheckmark = ( ) => (
         "absolute",
         "rounded-full",
         "top-1/2",
-        "mt-[-8px]"
+        "mt-[-8px]",
       )}
     />
     <View className="-mt-[0.5px]">

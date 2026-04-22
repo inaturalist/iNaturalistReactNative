@@ -8,7 +8,7 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 const observations = [factory( "LocalObservation", {
-  _deleted_at: null
+  _deleted_at: null,
 } )];
 
 const currentObservation = observations[0];
@@ -28,7 +28,7 @@ const renderDeleteSheet = ( ) => renderComponent(
     currentObservation={currentObservation}
     observations={observations}
     updateObservations={mockUpdateObservations}
-  />
+  />,
 );
 
 const getLocalObservation = uuid => global.realm
@@ -81,7 +81,7 @@ describe( "delete observation", ( ) => {
   describe( "with multiple observations", ( ) => {
     const unsavedObservations = [
       factory( "LocalObservation" ),
-      factory( "LocalObservation" )
+      factory( "LocalObservation" ),
     ];
 
     function renderDeleteSheetWithMultiple( ) {
@@ -92,7 +92,7 @@ describe( "delete observation", ( ) => {
           currentObservation={unsavedObservations[0]}
           observations={unsavedObservations}
           updateObservations={mockUpdateObservations}
-        />
+        />,
       );
     }
 

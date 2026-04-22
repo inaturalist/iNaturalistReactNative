@@ -30,9 +30,9 @@ const useTaxonCommonNames = ( ) => {
         iconic_taxon_name: true,
         id: true,
         preferred_common_name: true,
-        name: true
-      }
-    }
+        name: true,
+      },
+    },
   };
 
   if ( userLocation?.latitude ) {
@@ -45,11 +45,11 @@ const useTaxonCommonNames = ( ) => {
     ["fetchSpeciesCounts", userLocation],
     optsWithAuth => fetchSpeciesCounts(
       params,
-      optsWithAuth
+      optsWithAuth,
     ),
     {
-      enabled: hasPermissions !== null
-    }
+      enabled: hasPermissions !== null,
+    },
   );
 
   useEffect( ( ) => {
@@ -91,7 +91,7 @@ const useTaxonCommonNames = ( ) => {
             realm.create(
               "Taxon",
               Taxon.forUpdate( mappedTaxon ),
-              "modified"
+              "modified",
             );
           }, "saving taxon in useTaxonCommonNames" );
         }

@@ -1,19 +1,19 @@
 // @flow
 
-import SoundContainer from "components/ObsDetails/SoundContainer";
+import SoundContainer from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import {
-  TransparentCircleButton
+  TransparentCircleButton,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useCallback, useMemo, useRef, useState
+  useCallback, useMemo, useState,
 } from "react";
 import { FlatList } from "react-native";
 import {
+  Gesture,
+  GestureDetector,
   GestureHandlerRootView,
-  NativeViewGestureHandler,
-  PanGestureHandler
 } from "react-native-gesture-handler";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -31,16 +31,16 @@ type Props = {
   onDeletePhoto?: Function,
   onClose?: Function,
   onDeleteSound?: Function,
-  photos: Array<{
+  photos: {
     id?: number,
     url: string,
     localFilePath?: string,
     attribution?: string,
     licenseCode?: string
-  }>,
-  sounds?: Array<{
+  }[],
+  sounds?: {
     file_url: string
-  }>,
+  }[],
   selectedMediaIndex: number,
   setSelectedMediaIndex: Function
 }
@@ -55,18 +55,16 @@ const MainMediaDisplay = ( {
   photos,
   sounds = [],
   selectedMediaIndex,
-  setSelectedMediaIndex
+  setSelectedMediaIndex,
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const panRef = useRef();
-  const listRef = useRef();
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
   const atFirstItem = selectedMediaIndex === 0;
   const items = useMemo( ( ) => ( [
     ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
-    ...sounds.map( sound => ( { ...sound, type: "sound" } ) )
+    ...sounds.map( sound => ( { ...sound, type: "sound" } ) ),
   ] ), [photos, sounds] );
   const atLastItem = selectedMediaIndex === items.length - 1;
 
@@ -92,7 +90,7 @@ const MainMediaDisplay = ( {
                 <TransparentCircleButton
                   onPress={( ) => onDeletePhoto(
                     Photo.getLocalPhotoUri( photo.localFilePath )
-                    || photo.url
+                    || photo.url,
                   )}
                   icon="trash-outline"
                   color={colors.white}
@@ -117,7 +115,7 @@ const MainMediaDisplay = ( {
     deletePhotoLabel,
     editable,
     onDeletePhoto,
-    selectedMediaIndex
+    selectedMediaIndex,
   ] );
 
   const renderSound = useCallback( sound => (
@@ -125,7 +123,7 @@ const MainMediaDisplay = ( {
       className="justify-center items-center"
       style={{
         width: screenWidth,
-        height: displayHeight
+        height: displayHeight,
       }}
     >
       <SoundContainer
@@ -155,7 +153,7 @@ const MainMediaDisplay = ( {
     items,
     onDeleteSound,
     screenWidth,
-    selectedMediaIndex
+    selectedMediaIndex,
   ] );
 
   const renderItem = useCallback( ( { item } ) => (
@@ -164,14 +162,14 @@ const MainMediaDisplay = ( {
       : renderSound( item )
   ), [
     renderPhoto,
-    renderSound
+    renderSound,
   ] );
 
   // need getItemLayout for setting initial scroll index
   const getItemLayout = useCallback( ( data, idx ) => ( {
     length: screenWidth,
     offset: screenWidth * idx,
-    index: idx
+    index: idx,
   } ), [screenWidth] );
 
   const handleScrollLeft = useCallback( index => {
@@ -192,7 +190,7 @@ const MainMediaDisplay = ( {
 
     // https://gist.github.com/dozsolti/6d01d0f96d9abced3450a2e6149a2bc3?permalink_comment_id=4107663#gistcomment-4107663
     const index = Math.floor(
-      Math.floor( x ) / Math.floor( layoutMeasurement.width )
+      Math.floor( x ) / Math.floor( layoutMeasurement.width ),
     );
 
     if ( x > currentOffset ) {
@@ -204,17 +202,20 @@ const MainMediaDisplay = ( {
     handleScrollLeft,
     handleScrollRight,
     screenWidth,
-    selectedMediaIndex
+    selectedMediaIndex,
   ] );
 
-  const onGestureEvent = useCallback( event => {
-    const { translationY, velocityY } = event.nativeEvent;
-
-    if ( translationY > 50 && velocityY > 500 ) {
-      // Close media viewer on swipe up
-      onClose();
-    }
-  }, [onClose] );
+  const swipeToCloseGesture = Gesture.Simultaneous(
+    Gesture.Pan( )
+      .runOnJS( true )
+      .onUpdate( ( { translationY, velocityY } ) => {
+        if ( translationY > 50 && velocityY > 500 ) {
+          // Close media viewer on swipe up
+          onClose( );
+        }
+      } ),
+    Gesture.Native( ),
+  );
 
   return (
     <View
@@ -225,27 +226,21 @@ const MainMediaDisplay = ( {
       }}
     >
       <GestureHandlerRootView>
-        <PanGestureHandler
-          ref={panRef}
-          simultaneousHandlers={listRef}
-          onGestureEvent={onGestureEvent}
-        >
-          <NativeViewGestureHandler ref={listRef} simultaneousHandlers={panRef}>
-            <FlatList
-              data={items}
-              renderItem={renderItem}
-              initialScrollIndex={selectedMediaIndex}
-              getItemLayout={getItemLayout}
-              horizontal
-              pagingEnabled
-              // Disable scrolling when image is zooming
-              scrollEnabled={!zooming}
-              showsHorizontalScrollIndicator={false}
-              ref={horizontalScroll}
-              onMomentumScrollEnd={handleScrollEndDrag}
-            />
-          </NativeViewGestureHandler>
-        </PanGestureHandler>
+        <GestureDetector gesture={swipeToCloseGesture}>
+          <FlatList
+            data={items}
+            renderItem={renderItem}
+            initialScrollIndex={selectedMediaIndex}
+            getItemLayout={getItemLayout}
+            horizontal
+            pagingEnabled
+            // Disable scrolling when image is zooming
+            scrollEnabled={!zooming}
+            showsHorizontalScrollIndicator={false}
+            ref={horizontalScroll}
+            onMomentumScrollEnd={handleScrollEndDrag}
+          />
+        </GestureDetector>
       </GestureHandlerRootView>
     </View>
   );

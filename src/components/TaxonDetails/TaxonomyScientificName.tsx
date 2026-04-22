@@ -22,7 +22,7 @@ const TaxonomyScientificName = ( {
   rankPiece,
   isCurrentTaxon,
   hasCommonName,
-  scientificNameFirst
+  scientificNameFirst,
 }: Props ) => {
   const { t } = useTranslation( );
   const underline = ( !hasCommonName || scientificNameFirst ) && !isCurrentTaxon;
@@ -43,7 +43,7 @@ const TaxonomyScientificName = ( {
           classnames( {
             italic: isItalics,
             "font-bold": !hasCommonName || scientificNameFirst,
-            "text-inatGreen": isCurrentTaxon
+            "text-inatGreen": isCurrentTaxon,
           } )
         }
       >
@@ -58,14 +58,14 @@ const TaxonomyScientificName = ( {
         underline,
         "text-inatGreen": isCurrentTaxon,
         "-ml-1 ": !hasCommonName,
-        "font-bold": scientificNameFirst
+        "font-bold": scientificNameFirst,
       } )
     }
     >
       {hasCommonName && !scientificNameFirst && (
         <Body2 className={
           classnames( {
-            "text-inatGreen": isCurrentTaxon
+            "text-inatGreen": isCurrentTaxon,
           } )
         }
         >
@@ -78,7 +78,7 @@ const TaxonomyScientificName = ( {
             classnames( {
               "font-bold": !hasCommonName || scientificNameFirst,
               underline,
-              "text-inatGreen": isCurrentTaxon
+              "text-inatGreen": isCurrentTaxon,
             } )
           }
         >
@@ -90,7 +90,7 @@ const TaxonomyScientificName = ( {
       {hasCommonName && !scientificNameFirst && (
         <Body2 className={
           classnames( {
-            "text-inatGreen": isCurrentTaxon
+            "text-inatGreen": isCurrentTaxon,
           } )
         }
         >

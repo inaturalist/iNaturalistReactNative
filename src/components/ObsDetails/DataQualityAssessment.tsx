@@ -8,7 +8,7 @@ import {
   List2,
   OfflineNotice,
   ScrollViewWrapper,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 // eslint-disable-next-line max-len
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus";
@@ -69,7 +69,7 @@ const DataQualityAssessment = ( {
   removeMetricVote,
   removeNeedsIDVote,
   setMetricVote,
-  setNeedsIDVote
+  setNeedsIDVote,
 }: Props ) => {
   const isResearchGrade = qualityGrade === "research";
   const sectionClass = "flex-row my-[14px] space-x-[11px]";
@@ -177,7 +177,7 @@ const DataQualityAssessment = ( {
           {renderIndicator( "rank" )}
           <Body3>
             {t(
-              "Data-quality-assessment-community-taxon-species-level-or-lower"
+              "Data-quality-assessment-community-taxon-species-level-or-lower",
             )}
           </Body3>
         </View>
@@ -292,7 +292,7 @@ const DataQualityAssessment = ( {
       <View className="flex-row items-center mt-5 py-2 pl-4 pr-[30px] bg-lightGray">
         <Body3 className="flex-1 mr-1">
           {t(
-            "Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence"
+            "Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence",
           )}
         </Body3>
         <DQAVoteButtons

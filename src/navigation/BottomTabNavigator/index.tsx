@@ -5,13 +5,15 @@ import TabStackNavigator, {
   SCREEN_NAME_MENU,
   SCREEN_NAME_NOTIFICATIONS,
   SCREEN_NAME_OBS_LIST,
-  SCREEN_NAME_ROOT_EXPLORE
+  SCREEN_NAME_ROOT_EXPLORE,
 } from "navigation/StackNavigators/TabStackNavigator";
+import type { BottomTabParamList } from "navigation/types";
 import React from "react";
 
 import CustomTabBarContainer from "./CustomTabBarContainer";
+import tabScreenOptions from "./tabScreenOptions";
 
-const Tab = createBottomTabNavigator( );
+const Tab = createBottomTabNavigator<BottomTabParamList>( );
 
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -27,12 +29,7 @@ const BottomTabs = ( ) => {
         initialRouteName="ObservationsTab"
         tabBar={renderTabBar}
         backBehavior="history"
-        screenOptions={{
-          lazy: true,
-          freezeOnBlur: true,
-          headerShown: false,
-          animation: "fade"
-        }}
+        screenOptions={tabScreenOptions}
       >
         <Tab.Screen
           name="MenuTab"

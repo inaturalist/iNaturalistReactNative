@@ -8,7 +8,7 @@ import PhotoCarousel, {
   LARGE_PHOTO_DIM,
   LARGE_PHOTO_GUTTER,
   SMALL_PHOTO_DIM,
-  SMALL_PHOTO_GUTTER
+  SMALL_PHOTO_GUTTER,
 } from "./PhotoCarousel";
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
 const STYLE = {
   justifyContent: "center",
   flex: 0,
-  flexShrink: 1
+  flexShrink: 1,
 } as const;
 
 const PhotoPreview = ( {
@@ -34,7 +34,7 @@ const PhotoPreview = ( {
   onDelete,
   photoUris,
   rotation,
-  takingPhoto
+  takingPhoto,
 }: Props ) => {
   const { t } = useTranslation( );
   const wrapperDim = isLargeScreen
@@ -47,7 +47,7 @@ const PhotoPreview = ( {
         "text-white",
         "text-center",
         "text-xl",
-        "w-full"
+        "w-full",
       )}
     >
       {t( "Photos-you-take-will-appear-here" )}
@@ -64,7 +64,7 @@ const PhotoPreview = ( {
           "w-[500px]",
           "-rotate-90",
           "left-[-190px]",
-          "top-[50%]"
+          "top-[50%]",
         )}
       >
         {t( "Photos-you-take-will-appear-here" )}

@@ -5,7 +5,7 @@ import Animated, {
   useSharedValue,
   withDelay,
   withRepeat,
-  withTiming
+  withTiming,
 } from "react-native-reanimated";
 
 const { width } = Dimensions.get( "screen" );
@@ -14,17 +14,17 @@ const HEIGHT = 4;
 const PROGRESS_WIDTH = width / 2;
 const DURATION = 1200;
 
-type IndeterminateProgressBarProps = {
+interface IndeterminateProgressBarProps {
   color?: string;
-};
+}
 
 const IndeterminateProgressBar = ( {
-  color
+  color,
 }: IndeterminateProgressBarProps ) => {
   const translateX = useSharedValue( -PROGRESS_WIDTH );
 
   const { foregroundColor } = useMemo( () => ( {
-    foregroundColor: color
+    foregroundColor: color,
   } ), [color] );
 
   useEffect( () => {
@@ -34,18 +34,18 @@ const IndeterminateProgressBar = ( {
       withDelay(
         DURATION / 2,
         withTiming( width, {
-          duration: DURATION
-        } )
+          duration: DURATION,
+        } ),
       ),
       // Set number of repetitions to -1 to loop indefinitely
-      -1
+      -1,
     ) );
   }, [translateX] );
 
   const progress = useAnimatedStyle( () => ( {
     width: PROGRESS_WIDTH,
     height: HEIGHT,
-    transform: [{ translateX: translateX.get( ) }]
+    transform: [{ translateX: translateX.get( ) }],
   } ) );
 
   return (

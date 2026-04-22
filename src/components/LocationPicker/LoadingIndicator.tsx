@@ -16,7 +16,7 @@ const LoadingIndicator = ( ) => (
       "right-[40px]",
       "bottom-[40px]",
       "justify-center",
-      "rounded-full"
+      "rounded-full",
     )}
   >
     <ActivityIndicator size={50} />

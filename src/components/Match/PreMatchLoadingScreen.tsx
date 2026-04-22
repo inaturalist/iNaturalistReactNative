@@ -1,5 +1,5 @@
 import {
-  ActivityIndicator, Body1, INatIconButton
+  ActivityIndicator, Body1,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useEffect, useRef } from "react";
@@ -11,16 +11,14 @@ import colors from "styles/tailwindColors";
 const fade = ( value: number ) => ( {
   toValue: value,
   duration: 100,
-  useNativeDriver: true
+  useNativeDriver: true,
 } );
 
 interface Props {
   isLoading: boolean;
-  // TODO rm unused onSkip prop https://linear.app/inaturalist/issue/MOB-1068/remove-unused-onskip-prop
-  onSkip?: ( ) => void;
 }
 
-const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
+const PreMatchLoadingScreen = ( { isLoading }: Props ) => {
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
   const { t } = useTranslation( );
 
@@ -28,7 +26,7 @@ const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
     if ( isLoading ) {
       Animated.sequence( [
         // fade screen out to partial opacity and don't fade back in for pre-match loading screen
-        Animated.timing( fadeAnimation, fade( 0.8 ) )
+        Animated.timing( fadeAnimation, fade( 0.8 ) ),
       ] ).start( );
     }
   }, [isLoading, fadeAnimation] );
@@ -39,14 +37,14 @@ const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
     width: "100%",
     backgroundColor: colors.black,
     opacity: fadeAnimation,
-    zIndex: 999
+    zIndex: 999,
   };
 
   const viewStyle: ViewStyle = {
     position: "absolute",
     height: "100%",
     width: "100%",
-    zIndex: 1000
+    zIndex: 1000,
   };
 
   if ( !isLoading ) {
@@ -68,20 +66,6 @@ const PreMatchLoadingScreen = ( { isLoading, onSkip }: Props ) => {
             size={50}
             color={colors.white}
           />
-        </View>
-        <View
-          className="absolute right-5 top-10 text-white"
-        >
-          {!!onSkip && (
-            <INatIconButton
-              onPress={onSkip}
-              accessibilityLabel={t( "Skip-additional-suggestions" )}
-              accessibilityHint={t( "Navigates-to-match-screen" )}
-              icon="skip"
-              color={colors.white}
-              size={20}
-            />
-          )}
         </View>
       </View>
     </>

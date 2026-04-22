@@ -1,5 +1,5 @@
 import {
-  checkForDeletedObservations
+  checkForDeletedObservations,
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { format } from "date-fns";

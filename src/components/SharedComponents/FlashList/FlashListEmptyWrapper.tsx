@@ -17,7 +17,7 @@ const FlashListEmptyWrapper = ( {
   children,
   containerClassName,
   headerHeight: HEADER_HEIGHT,
-  emptyItemHeight: EMPTY_ITEM_HEIGHT
+  emptyItemHeight: EMPTY_ITEM_HEIGHT,
 }: Props ) => {
   const insets = useSafeAreaInsets( );
   const { height } = useWindowDimensions( );
@@ -35,8 +35,8 @@ const FlashListEmptyWrapper = ( {
       className={classnames(
         containerClassName,
         {
-          "px-[67px] items-center": !containerClassName
-        }
+          "px-[67px] items-center": !containerClassName,
+        },
       )}
       style={{ height: outerViewHeight }}
     >

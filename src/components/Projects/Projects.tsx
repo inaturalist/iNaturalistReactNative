@@ -1,5 +1,5 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import ProjectList from "components/ProjectList/ProjectList";
@@ -12,13 +12,13 @@ import {
   INatIcon,
   InfiniteScrollLoadingWheel,
   SearchBar,
-  Tabs
+  Tabs,
 } from "components/SharedComponents";
 import type { Tab } from "components/SharedComponents/Tabs/Tabs";
 import { View } from "components/styledComponents";
 import React, { useCallback, useEffect } from "react";
 import {
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 import FlashListEmptyWrapper from "../SharedComponents/FlashList/FlashListEmptyWrapper";
@@ -52,7 +52,7 @@ const Projects = ( {
   requestPermissions,
   searchInput,
   setSearchInput,
-  tabs
+  tabs,
 }: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -72,7 +72,7 @@ const Projects = ( {
     );
 
     navigation.setOptions( {
-      headerLeft
+      headerLeft,
     } );
   }, [navigation, t] );
 

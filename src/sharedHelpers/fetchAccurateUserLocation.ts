@@ -4,7 +4,7 @@ import {
   checkLocationPermissions,
   getCurrentPositionWithOptions,
   highAccuracyOptions,
-  lowAccuracyOptions
+  lowAccuracyOptions,
 } from "./geolocationWrapper";
 
 interface UserLocation {
@@ -34,7 +34,7 @@ const fetchAccurateUserLocation = async (): Promise<UserLocation | null> => {
         longitude: highAccuracyResult.coords.longitude,
         positional_accuracy: highAccuracyResult.coords.accuracy,
         altitude: highAccuracyResult.coords.altitude,
-        altitudinal_accuracy: highAccuracyResult.coords.altitudeAccuracy
+        altitudinal_accuracy: highAccuracyResult.coords.altitudeAccuracy,
       };
     }
 
@@ -45,7 +45,7 @@ const fetchAccurateUserLocation = async (): Promise<UserLocation | null> => {
       longitude: lowAccuracyResult.coords.longitude,
       positional_accuracy: lowAccuracyResult.coords.accuracy,
       altitude: lowAccuracyResult.coords.altitude,
-      altitudinal_accuracy: lowAccuracyResult.coords.altitudeAccuracy
+      altitudinal_accuracy: lowAccuracyResult.coords.altitudeAccuracy,
     };
   } catch ( e ) {
     console.warn( "All location attempts failed:", e );

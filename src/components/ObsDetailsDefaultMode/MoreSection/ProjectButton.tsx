@@ -1,38 +1,22 @@
+import type { ParamListBase } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { ApiObservation } from "api/types";
 import { Body3 } from "components/SharedComponents";
 import { t } from "i18next";
-import React, { useMemo } from "react";
+import React from "react";
 
-// TODO: can we get a centralized type/interface for our realm objects, here observation and project
 interface Props {
-  observation: {
-    project_observations: Array<{
-      project: object;
-    }>;
-    non_traditional_projects: Array<{
-      project: object;
-    }>;
-  };
+  observation: ApiObservation;
 }
 
 const ProjectButton = ( { observation }: Props ) => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
 
-  const traditionalProjects = observation?.project_observations?.map( p => p.project ) || [];
-  const nonTraditionalProjects = observation?.non_traditional_projects?.map( p => p.project ) || [];
-
-  const traditionalProjectCount = traditionalProjects.length;
-  const nonTraditionalProjectCount = nonTraditionalProjects.length;
+  const traditionalProjectCount = observation?.project_observations?.length || 0;
+  const nonTraditionalProjectCount = observation?.non_traditional_projects?.length || 0;
 
   const totalProjectCount = traditionalProjectCount + nonTraditionalProjectCount;
-  const allProjects = traditionalProjects.concat( nonTraditionalProjects );
-
-  const headerOptions = useMemo( ( ) => ( {
-    headerTitle: t( "Observation" ),
-    headerSubtitle: t( "X-PROJECTS", {
-      projectCount: totalProjectCount
-    } )
-  } ), [totalProjectCount] );
 
   if ( totalProjectCount === 0 || typeof totalProjectCount !== "number" ) {
     return null;
@@ -42,8 +26,7 @@ const ProjectButton = ( { observation }: Props ) => {
     <Body3
       className="underline mt-[11px]"
       onPress={( ) => navigation.navigate( "ProjectList", {
-        projects: allProjects,
-        headerOptions
+        observationUuid: observation.uuid,
       } )}
     >
       {t( "Projects" )}

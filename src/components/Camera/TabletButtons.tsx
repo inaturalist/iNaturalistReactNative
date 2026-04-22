@@ -1,11 +1,10 @@
 import classnames from "classnames";
 import PhotoLibraryIcon from "components/Camera/Buttons/PhotoLibraryIcon";
+import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import type { GestureResponderEvent, ViewStyle } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import Animated from "react-native-reanimated";
 import type { TakePhotoOptions } from "react-native-vision-camera";
 
 import CameraFlip from "./Buttons/CameraFlip";
@@ -15,8 +14,6 @@ import Location from "./Buttons/Location";
 import TakePhoto from "./Buttons/TakePhoto";
 import Zoom from "./Buttons/Zoom";
 
-const isTablet = DeviceInfo.isTablet();
-
 const CAMERA_BUTTON_DIM = 40;
 
 const checkmarkClasses = [
@@ -25,7 +22,7 @@ const checkmarkClasses = [
   `h-[${CAMERA_BUTTON_DIM}px]`,
   `w-[${CAMERA_BUTTON_DIM}px]`,
   "justify-center",
-  "items-center"
+  "items-center",
 ].join( " " );
 
 const cameraOptionsClasses = [
@@ -34,7 +31,7 @@ const cameraOptionsClasses = [
   "items-center",
   "justify-center",
   "rounded-full",
-  `w-[${CAMERA_BUTTON_DIM}px]`
+  `w-[${CAMERA_BUTTON_DIM}px]`,
 ].join( " " );
 
 interface Props {
@@ -70,7 +67,7 @@ const CameraButtonPlaceholder = ( { extraClassName }: { extraClassName?: string 
       // "bg-deeppink",
       `w-[${CAMERA_BUTTON_DIM}px]`,
       `h-[${CAMERA_BUTTON_DIM}px]`,
-      extraClassName
+      extraClassName,
     )}
   />
 );
@@ -95,7 +92,7 @@ const TabletButtons = ( {
   useLocation,
   toggleLocation,
   isDefaultMode,
-  deleteSentinelFile
+  deleteSentinelFile,
 }: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -104,7 +101,7 @@ const TabletButtons = ( {
     "mr-5",
     "p-0",
     "right-0",
-    "h-full"
+    "h-full",
   ];
 
   return (
@@ -133,7 +130,7 @@ const TabletButtons = ( {
       />
       <CameraFlip
         flipCamera={flipCamera}
-        cameraFlipClasses="m-0"
+        cameraFlipClassName="m-0"
       />
       <View className="mt-[40px] mb-[40px]">
         <TakePhoto
@@ -142,20 +139,20 @@ const TabletButtons = ( {
           showPrediction={showPrediction}
         />
       </View>
-      { photosTaken && (
-        <Animated.View
-          style={!isTablet && rotatableAnimatedStyle}
-          className={classnames( checkmarkClasses )}
+      {photosTaken && (
+        <RotatableIconWrapper
+          rotatableAnimatedStyle={rotatableAnimatedStyle}
+          containerClass={classnames( checkmarkClasses )}
         >
           <GreenCheckmark
             handleCheckmarkPress={handleCheckmarkPress || ( () => null )}
           />
-        </Animated.View>
-      ) }
+        </RotatableIconWrapper>
+      )}
       <View
         className={classnames(
           cameraOptionsClasses,
-          { "mt-[25px]": photosTaken }
+          { "mt-[25px]": photosTaken },
         )}
       >
         <CloseButton

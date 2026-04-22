@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   Heading1,
   ScrollViewWrapper,
-  TaxonResult
+  TaxonResult,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -16,7 +16,7 @@ const AVES = {
   rank: "class",
   rank_level: 80,
   iconic_taxon_name: "Aves",
-  isIconic: true
+  isIconic: true,
 };
 
 function makeTaxonWithPhoto( options = {} ) {
@@ -29,7 +29,7 @@ function makeTaxonWithPhoto( options = {} ) {
     rank: "species",
     rank_level: 10,
     default_photo: makePhoto( ),
-    ...options
+    ...options,
   };
 }
 

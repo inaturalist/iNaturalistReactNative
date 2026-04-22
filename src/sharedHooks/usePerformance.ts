@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-type PerformanceType = {
+interface PerformanceType {
   screenName?: string; // name of the screen to profile; helpful if not using logger
   isLoading: boolean | undefined; // indicate whether data finished loading
-};
+}
 
 const usePerformance = ( {
   screenName,
-  isLoading
+  isLoading,
 }: PerformanceType ) => {
   const [startTime, setStartTime] = useState( 0 );
   const [loadTime, setLoadTime] = useState( "" );
@@ -32,7 +32,7 @@ const usePerformance = ( {
   }, [isLoading, startTime, screenName] );
 
   return {
-    loadTime
+    loadTime,
   };
 };
 

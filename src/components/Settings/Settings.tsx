@@ -1,17 +1,17 @@
 import {
   Heading4,
   ScrollViewWrapper,
-  SwitchRow
+  SwitchRow,
 } from "components/SharedComponents";
 import React, { useCallback } from "react";
 import {
   StatusBar,
-  View
+  View,
 } from "react-native";
 import {
   useCurrentUser,
   useLayoutPrefs,
-  useTranslation
+  useTranslation,
 } from "sharedHooks";
 
 import AdvancedSettings from "./AdvancedSettings";
@@ -22,7 +22,7 @@ const Settings = ( ) => {
   const currentUser = useCurrentUser( );
   const {
     isDefaultMode,
-    setIsDefaultMode
+    setIsDefaultMode,
   } = useLayoutPrefs( );
 
   const handleValueChange = useCallback( ( newValue: boolean ) => {

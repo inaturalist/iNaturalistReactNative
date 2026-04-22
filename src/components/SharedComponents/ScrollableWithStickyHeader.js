@@ -36,7 +36,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
 import { Animated } from "react-native";
 import { useDeviceOrientation } from "sharedHooks";
@@ -50,12 +50,12 @@ type Props = {
 const ScrollableWithStickyHeader = ( {
   onScroll,
   renderHeader,
-  renderScrollable
+  renderScrollable,
 }: Props ): Node => {
   const {
     isTablet,
     screenHeight,
-    screenWidth
+    screenWidth,
   } = useDeviceOrientation( );
   const [_scrollPosition, setScrollPosition] = useState( 0 );
 
@@ -69,14 +69,14 @@ const ScrollableWithStickyHeader = ( {
     [
       {
         nativeEvent: {
-          contentOffset: { y: scrollY.current }
-        }
-      }
+          contentOffset: { y: scrollY.current },
+        },
+      },
     ],
     {
       useNativeDriver: true,
-      listener: onScroll
-    }
+      listener: onScroll,
+    },
   );
 
   useEffect( () => {
@@ -108,7 +108,7 @@ const ScrollableWithStickyHeader = ( {
         ? screenHeight
         : Math.max( screenWidth, screenHeight )
     ),
-    [isTablet, screenHeight, screenWidth]
+    [isTablet, screenHeight, screenWidth],
   );
 
   const animatedStyle = useMemo( ( ) => ( {
@@ -133,12 +133,12 @@ const ScrollableWithStickyHeader = ( {
       // And finally, that +1 seems to solve an error in iOS
       translateY: scrollY.current.interpolate( {
         inputRange: [0, stickyAt * 2, stickyAt * 2 + 1],
-        outputRange: [0, -stickyAt, -stickyAt]
-      } )
+        outputRange: [0, -stickyAt, -stickyAt],
+      } ),
     }],
     // Set the height to flow off screen so that when we translate the
     // view up, there's no gap at the bottom
-    height: contentHeight + stickyAt
+    height: contentHeight + stickyAt,
   } ), [contentHeight, stickyAt] );
 
   return (

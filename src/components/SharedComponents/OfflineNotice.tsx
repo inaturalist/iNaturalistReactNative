@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import {
   Body2,
-  INatIcon
+  INatIcon,
 } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
 import React from "react";
@@ -14,7 +14,7 @@ interface Props {
 
 const OfflineNotice = ( {
   color,
-  onPress
+  onPress,
 }: Props ) => {
   const { t } = useTranslation( );
   if ( typeof ( onPress ) !== "function" ) {
@@ -40,7 +40,7 @@ const OfflineNotice = ( {
           "mt-[30px]",
           color
             ? `text-${color}`
-            : "text-darkGray"
+            : "text-darkGray",
         )}
       >
         { t( "You-are-offline-Tap-to-try-again" ) }

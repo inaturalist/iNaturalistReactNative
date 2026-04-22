@@ -1,5 +1,5 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
-import { savePhotosToPhotoLibrary } from "components/Camera/helpers/savePhotosToPhotoLibrary";
+import savePhotosToPhotoLibrary from "components/Camera/helpers/savePhotosToPhotoLibrary";
 import faker from "tests/helpers/faker";
 
 describe( "userPrepareStoreAndNavigate", ( ) => {
@@ -8,7 +8,7 @@ describe( "userPrepareStoreAndNavigate", ( ) => {
       const uris = [
         faker.system.filePath( ),
         faker.system.filePath( ),
-        faker.system.filePath( )
+        faker.system.filePath( ),
       ];
       const mockOnEachSuccess = jest.fn( );
       await savePhotosToPhotoLibrary( uris, mockOnEachSuccess );

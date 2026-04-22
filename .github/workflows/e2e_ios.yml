@@ -35,16 +35,16 @@ jobs:
   #   # Kill the task if not finished after 120 minutes
   #   timeout-minutes: 120
 
-  #   steps:
-  #   - name: Check out Git repository
-  #     uses: actions/checkout@v4
-  #     with:
-  #       fetch-depth: 1
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 1
 
-  #   - name: Install Node.js, NPM and Yarn
-  #     uses: actions/setup-node@v4
-  #     with:
-  #       node-version: 22
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v6
+      with:
+        node-version: 22
 
   #   - name: Setup Ruby version according to .ruby-version with cached gems
   #     uses: ruby/setup-ruby@v1
@@ -52,7 +52,7 @@ jobs:
   #       bundler-cache: true        
 
   #   - name: Cache node modules
-  #     uses: actions/cache@v4
+  #     uses: actions/cache@v5
   #     id: cache
   #     with:
   #       path: node_modules
@@ -75,7 +75,7 @@ jobs:
   #     run: npm install
 
   #   - name: Cache Pods
-  #     uses: actions/cache@v4
+  #     uses: actions/cache@v5
   #     id: podcache
   #     with:
   #       path: ios/Pods
@@ -129,7 +129,7 @@ jobs:
   #     run: npm run e2e:build:ios
 
   #   - name: Upload iOS Detox app build
-  #     uses: actions/upload-artifact@v4
+  #     uses: actions/upload-artifact@v6
   #     with:
   #       name: detox_app
   #       path: ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
@@ -143,12 +143,12 @@ jobs:
 
     steps:
     - name: Check out Git repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         fetch-depth: 1
 
     - name: Download iOS Detox app build
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v7
       with:
         name: detox_app
         path: ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
@@ -156,12 +156,12 @@ jobs:
         run-id: 20178493231
 
     - name: Install Node.js, NPM and Yarn
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         node-version: 22
 
     - name: Cache node modules
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       id: cache
       with:
         path: node_modules
@@ -223,21 +223,24 @@ jobs:
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
     - name: Run e2e test
+      # don't mark job as error so that retries so that we can rely on the retry to succeed and mark job & workflow green
+      continue-on-error: true
+      id: first_test_run
       run: |
         npm run e2e:test:ios
 
     - name: Run e2e test (retry, with logs)
-      # do not retry if status check fails
-      if: ${{ failure() && steps.status_check.outcome != 'failure' }}
+      # if first_test_run fails, but we `continue-on-error`, failure() is false. so we need to check it's specific _outcome_
+      if: ${{ steps.first_test_run.outcome == 'failure' }}
       run: |
         # provide more debugging context on retry failure
-        # we're explicitly not using `detox test --retries` for this reason
+        # we're explicitly not using `detox test --retries` because we want to run them w/ different options
         npm run e2e:test:ios -- --take-screenshots failing --record-videos failing --record-logs all -l trace
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
-      uses: actions/upload-artifact@v4
-      # no artifacts if status check fails
+      uses: actions/upload-artifact@v6
+      # don't run this if it's status check that failed or if our first test run passes (no first_test_run check needed)
       if: ${{ failure() && steps.status_check.outcome != 'failure' }}
       with:
         name: detox-artifacts

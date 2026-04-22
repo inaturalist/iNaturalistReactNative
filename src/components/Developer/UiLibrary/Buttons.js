@@ -9,7 +9,7 @@ import {
   Heading2,
   Heading3,
   INatIconButton,
-  ScrollViewWrapper
+  ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
@@ -220,7 +220,7 @@ const Buttons = ( ) => {
           className="bg-yellow"
           onPress={() => Alert.alert(
             "Default INatIconButton",
-            "Should be the minimum accessible size by default"
+            "Should be the minimum accessible size by default",
           )}
           accessibilityLabel="Close button"
         />
@@ -230,7 +230,7 @@ const Buttons = ( ) => {
           className="bg-yellow"
           onPress={() => Alert.alert(
             "Custom INatIconButton",
-            "The point is to adjust the interactive area and the icon size independently"
+            "The point is to adjust the interactive area and the icon size independently",
           )}
           size={10}
           width={50}

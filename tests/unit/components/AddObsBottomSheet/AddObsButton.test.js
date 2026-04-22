@@ -17,7 +17,7 @@ const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: () => undefined
+  default: () => undefined,
 } ) );
 
 describe( "AddObsButton", () => {
@@ -37,7 +37,7 @@ describe( "AddObsButton", () => {
     renderComponent( <AddObsButton /> );
 
     const tooltipText = screen.queryByText(
-      "Press and hold to view more options"
+      "Press and hold to view more options",
     );
     expect( tooltipText ).toBeFalsy();
   } );
@@ -50,7 +50,7 @@ describe( "shows tooltip", () => {
     renderComponent( <AddObsButton /> );
 
     const tooltipText = await screen.findByText(
-      "Press and hold to view more options"
+      "Press and hold to view more options",
     );
     expect( tooltipText ).toBeTruthy();
   } );
@@ -62,7 +62,7 @@ describe( "shows tooltip", () => {
     renderComponent( <AddObsButton /> );
 
     const tooltipText = await screen.findByText(
-      "Press and hold to view more options"
+      "Press and hold to view more options",
     );
     expect( tooltipText ).toBeTruthy();
   } );
@@ -70,24 +70,24 @@ describe( "shows tooltip", () => {
   it( "to new users only after they dismissed the account creation card", async () => {
     zustandStorage.setItem( "numOfUserObservations", 1 );
     setStoreStateLayout( {
-      justFinishedSignup: true
+      justFinishedSignup: true,
     } );
 
     renderComponent( <AddObsButton /> );
 
     const tooltipText = screen.queryByText(
-      "Press and hold to view more options"
+      "Press and hold to view more options",
     );
     expect( tooltipText ).toBeFalsy();
 
     setStoreStateLayout( {
       shownOnce: {
-        "account-creation": true
-      }
+        "account-creation": true,
+      },
     } );
 
     const tooltipTextAfter = await screen.findByText(
-      "Press and hold to view more options"
+      "Press and hold to view more options",
     );
     expect( tooltipTextAfter ).toBeTruthy();
   } );
@@ -98,18 +98,18 @@ describe( "shows tooltip", () => {
     renderComponent( <AddObsButton /> );
 
     const tooltipText = screen.queryByText(
-      "Press and hold to view more options"
+      "Press and hold to view more options",
     );
     expect( tooltipText ).toBeFalsy();
 
     setStoreStateLayout( {
       shownOnce: {
-        "fifty-observation": true
-      }
+        "fifty-observation": true,
+      },
     } );
 
     const tooltipTextAfter = await screen.findByText(
-      "Press and hold to view more options"
+      "Press and hold to view more options",
     );
     expect( tooltipTextAfter ).toBeTruthy();
   } );

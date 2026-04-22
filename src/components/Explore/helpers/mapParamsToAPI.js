@@ -6,7 +6,7 @@ import {
   PHOTO_LICENSE,
   REVIEWED,
   SORT_BY,
-  WILD_STATUS
+  WILD_STATUS,
 } from "providers/ExploreContext";
 
 const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
@@ -29,7 +29,7 @@ const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
       }
       return newParams;
     },
-    {}
+    {},
   );
 
   // DATE_UPLOADED_NEWEST is the default sort order
@@ -111,7 +111,7 @@ const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
       [PHOTO_LICENSE.CCBYSA]: "cc-by-sa",
       [PHOTO_LICENSE.CCBYND]: "cc-by-nd",
       [PHOTO_LICENSE.CCBYNCSA]: "cc-by-nc-sa",
-      [PHOTO_LICENSE.CCBYNCND]: "cc-by-nc-nd"
+      [PHOTO_LICENSE.CCBYNCND]: "cc-by-nc-nd",
     };
     filteredParams.photo_license = licenseParams[params.photoLicense];
   }

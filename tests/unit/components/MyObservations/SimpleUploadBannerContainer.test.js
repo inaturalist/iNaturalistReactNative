@@ -3,12 +3,12 @@ import SimpleUploadBannerContainer from "components/MyObservations/SimpleUploadB
 import React from "react";
 import {
   MANUAL_SYNC_IN_PROGRESS,
-  SYNC_PENDING
+  SYNC_PENDING,
 } from "stores/createSyncObservationsSlice";
 import {
   UPLOAD_COMPLETE,
   UPLOAD_IN_PROGRESS,
-  UPLOAD_PENDING
+  UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
 import useStore, { zustandStorage } from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
@@ -20,7 +20,7 @@ const deletionStore = {
   currentDeleteCount: 1,
   deleteQueue: [{}],
   deleteError: null,
-  syncingStatus: SYNC_PENDING
+  syncingStatus: SYNC_PENDING,
 };
 
 beforeAll( ( ) => {
@@ -32,10 +32,10 @@ describe( "SimpleUploadBannerContainer", () => {
     useStore.setState( {
       numUnuploadedObservations: 1,
       uploadStatus: UPLOAD_PENDING,
-      syncingStatus: MANUAL_SYNC_IN_PROGRESS
+      syncingStatus: MANUAL_SYNC_IN_PROGRESS,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -46,16 +46,16 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays a pending upload", ( ) => {
     useStore.setState( {
       uploadStatus: UPLOAD_PENDING,
-      syncingStatus: SYNC_PENDING
+      syncingStatus: SYNC_PENDING,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent(
       <SimpleUploadBannerContainer
         numUploadableObservations={1}
         currentUser={mockUser}
-      />
+      />,
     );
 
     const statusText = screen.getByText( /Upload 1 observation/ );
@@ -67,10 +67,10 @@ describe( "SimpleUploadBannerContainer", () => {
       initialNumObservationsInQueue: 1,
       numUploadsAttempted: 1,
       uploadStatus: UPLOAD_IN_PROGRESS,
-      syncingStatus: SYNC_PENDING
+      syncingStatus: SYNC_PENDING,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -84,10 +84,10 @@ describe( "SimpleUploadBannerContainer", () => {
       numUploadsAttempted,
       uploadStatus: UPLOAD_COMPLETE,
       syncingStatus: SYNC_PENDING,
-      initialNumObservationsInQueue: numUploadsAttempted
+      initialNumObservationsInQueue: numUploadsAttempted,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -98,16 +98,16 @@ describe( "SimpleUploadBannerContainer", () => {
   it( "displays multiple pending uploads", () => {
     useStore.setState( {
       uploadStatus: UPLOAD_PENDING,
-      syncingStatus: SYNC_PENDING
+      syncingStatus: SYNC_PENDING,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent(
       <SimpleUploadBannerContainer
         numUploadableObservations={4}
         currentUser={mockUser}
-      />
+      />,
     );
 
     const statusText = screen.getByText( /Upload 4 observations/ );
@@ -119,10 +119,10 @@ describe( "SimpleUploadBannerContainer", () => {
       uploadStatus: UPLOAD_IN_PROGRESS,
       numUploadsAttempted: 2,
       syncingStatus: SYNC_PENDING,
-      initialNumObservationsInQueue: 5
+      initialNumObservationsInQueue: 5,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -136,10 +136,10 @@ describe( "SimpleUploadBannerContainer", () => {
       numUploadsAttempted,
       uploadStatus: UPLOAD_COMPLETE,
       syncingStatus: SYNC_PENDING,
-      initialNumObservationsInQueue: numUploadsAttempted
+      initialNumObservationsInQueue: numUploadsAttempted,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -157,11 +157,11 @@ describe( "SimpleUploadBannerContainer", () => {
         1: true,
         2: true,
         3: true,
-        4: true
-      }
+        4: true,
+      },
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -182,11 +182,11 @@ describe( "SimpleUploadBannerContainer", () => {
         2: true,
         3: true,
         4: true,
-        5: true
-      }
+        5: true,
+      },
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -202,10 +202,10 @@ describe( "SimpleUploadBannerContainer", () => {
       syncingStatus: SYNC_PENDING,
       initialNumObservationsInQueue: 5,
       numUploadsAttempted: 5,
-      errorsByUuid: { 1: true }
+      errorsByUuid: { 1: true },
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -236,10 +236,10 @@ describe( "SimpleUploadBannerContainer", () => {
       ...deletionStore,
       currentDeleteCount: 1,
       deleteQueue: [{}],
-      initialNumDeletionsInQueue: 1
+      initialNumDeletionsInQueue: 1,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -252,10 +252,10 @@ describe( "SimpleUploadBannerContainer", () => {
     useStore.setState( {
       ...deletionStore,
       deleteError,
-      initialNumDeletionsInQueue: 2
+      initialNumDeletionsInQueue: 2,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent( <SimpleUploadBannerContainer currentUser={mockUser} /> );
 
@@ -271,16 +271,16 @@ describe( "SimpleUploadBannerContainer", () => {
     useStore.setState( {
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING,
-      numOfUserObservations: 1
+      numOfUserObservations: 1,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent(
       <SimpleUploadBannerContainer
         numUploadableObservations={1}
         currentUser={null}
-      />
+      />,
     );
 
     const statusText = screen.queryByText( /Upload 1 observation/ );
@@ -291,16 +291,16 @@ describe( "SimpleUploadBannerContainer", () => {
     zustandStorage.setItem( "numOfUserObservations", 2 );
     useStore.setState( {
       uploadStatus: UPLOAD_PENDING,
-      syncingStatus: SYNC_PENDING
+      syncingStatus: SYNC_PENDING,
     } );
     setStoreStateLayout( {
-      isDefaultMode: false
+      isDefaultMode: false,
     } );
     renderComponent(
       <SimpleUploadBannerContainer
         numUploadableObservations={1}
         currentUser={null}
-      />
+      />,
     );
 
     const statusText = screen.getByText( /Upload 1 observation/ );

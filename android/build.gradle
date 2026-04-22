@@ -4,10 +4,10 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 buildscript {
     ext {
-        buildToolsVersion = "35.0.0"
+        buildToolsVersion = "36.0.0"
         minSdkVersion = 24
-        compileSdkVersion = 35
-        targetSdkVersion = 35
+        compileSdkVersion = 36
+        targetSdkVersion = 36
         ndkVersion = "27.1.12297006"
         kotlinVersion = "2.1.20"
         // This specifies which LiteRT version to use for our vision-plugin.
@@ -33,6 +33,27 @@ allprojects {
         // Detox Android setup
         maven {
           url("$rootDir/../node_modules/detox/Detox-android")
+        }
+    }
+}
+
+// Force minSdkVersion for libraries that hardcode a lower value than the project's
+// (e.g. react-native-mail). This is needed for assembleAndroidTest (used by Detox)
+// which builds per-module test APKs that would otherwise fail manifest merging.
+subprojects { sub ->
+    if (sub.state.executed) {
+        if (sub.hasProperty('android') && sub.android.defaultConfig.minSdkVersion != null
+            && sub.android.defaultConfig.minSdkVersion.apiLevel < rootProject.ext.minSdkVersion) {
+            sub.android.defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
+        }
+    } else {
+        sub.afterEvaluate {
+            if (it.hasProperty('android')) {
+                if (it.android.defaultConfig.minSdkVersion != null
+                    && it.android.defaultConfig.minSdkVersion.apiLevel < rootProject.ext.minSdkVersion) {
+                    it.android.defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
+                }
+            }
         }
     }
 }

@@ -2,7 +2,7 @@ import {
   screen,
   userEvent,
   waitFor,
-  within
+  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
@@ -17,7 +17,7 @@ jest.unmock( "@react-navigation/native" );
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -28,8 +28,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -40,7 +40,7 @@ beforeAll( async () => {
   await initI18next();
   setStoreStateLayout( {
     isDefaultMode: false,
-    isAllAddObsOptionsMode: true
+    isAllAddObsOptionsMode: true,
   } );
 } );
 
@@ -49,7 +49,7 @@ const actor = userEvent.setup( );
 const mockFetchUserLocation = jest.fn( () => ( { latitude: 56, longitude: 9, accuracy: 8 } ) );
 jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   __esModule: true,
-  default: () => mockFetchUserLocation()
+  default: () => mockFetchUserLocation(),
 } ) );
 
 const navigateToCamera = async ( ) => {
@@ -69,7 +69,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     setStoreStateLayout( {
       isDefaultMode: false,
       isAllAddObsOptionsMode: true,
-      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
     } );
   } );
 
@@ -105,7 +105,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       setStoreStateLayout( {
         isDefaultMode: false,
         screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-        isAllAddObsOptionsMode: true
+        isAllAddObsOptionsMode: true,
       } );
     } );
 

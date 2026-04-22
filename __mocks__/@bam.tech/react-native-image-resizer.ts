@@ -9,10 +9,10 @@ export default ( {
       _compressFormat,
       _quality,
       _rotation,
-      outputPath
+      outputPath,
     ) => {
       const filename = mockNodePath.basename( path );
       return { uri: mockNodePath.join( outputPath, filename ) };
-    }
-  )
+    },
+  ),
 } );

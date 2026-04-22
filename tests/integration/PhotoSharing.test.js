@@ -13,19 +13,19 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useNavigation: ( ) => ( {
       navigate: mockNavigate,
-      addListener: mockNavigate
-    } )
+      addListener: mockNavigate,
+    } ),
   };
 } );
 
 const mockIOSPhoto = {
   mimeType: JPEG,
-  data: [{ data: "file://photo.jpg", mimeType: "image/jpeg" }]
+  data: [{ data: "file://photo.jpg", mimeType: "image/jpeg" }],
 };
 
 const mockAndroidPhoto = {
   mimeType: "image/jpeg",
-  data: "file://photo.jpg"
+  data: "file://photo.jpg",
 };
 
 const setupShareMocks = ( ) => {
@@ -51,7 +51,7 @@ const setupShareMocks = ( ) => {
     reset: ( ) => {
       mockListeners.length = 0;
       ShareMenu.__initialShareCallback = null;
-    }
+    },
   };
 };
 
@@ -77,7 +77,7 @@ describe( "Sharing photos into the app", ( ) => {
 
     expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
       screen: "PhotoSharing",
-      params: { item: expect.objectContaining( { mimeType: "image/jpeg" } ) }
+      params: { item: expect.objectContaining( { mimeType: "image/jpeg" } ) },
     } );
   } );
 
@@ -91,7 +91,7 @@ describe( "Sharing photos into the app", ( ) => {
 
     expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
       screen: "PhotoSharing",
-      params: { item: expect.objectContaining( { mimeType: "image/jpeg" } ) }
+      params: { item: expect.objectContaining( { mimeType: "image/jpeg" } ) },
     } );
   } );
 } );

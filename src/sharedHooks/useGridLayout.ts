@@ -10,12 +10,12 @@ const flashListStyle = {
   paddingTop: HALF_GUTTER,
   paddingLeft: HALF_GUTTER,
   paddingRight: HALF_GUTTER,
-  paddingBottom: TAB_BAR_HEIGHT + HALF_GUTTER
+  paddingBottom: TAB_BAR_HEIGHT + HALF_GUTTER,
 };
 
 const useGridLayout = ( layout?: "list" ) => {
   const {
-    isLandscapeMode, isTablet, screenWidth, screenHeight
+    isLandscapeMode, isTablet, screenWidth, screenHeight,
   } = useDeviceOrientation();
 
   const calculateNumColumns = () => {
@@ -41,13 +41,13 @@ const useGridLayout = ( layout?: "list" ) => {
   const gridItemStyle = useMemo( ( ) => ( {
     height: gridItemWidth,
     width: gridItemWidth,
-    margin: HALF_GUTTER
+    margin: HALF_GUTTER,
   } ), [gridItemWidth] );
 
   return {
     flashListStyle,
     gridItemStyle,
-    numColumns
+    numColumns,
   };
 };
 

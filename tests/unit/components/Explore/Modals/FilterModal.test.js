@@ -15,7 +15,7 @@ describe( "FilterModal", () => {
           closeModal={mockCloseModal}
           updateTaxon={mockUpdateTaxon}
         />
-      </ExploreProvider>
+      </ExploreProvider>,
     );
 
     const filterModal = await screen.findByTestId( "filter-modal" );

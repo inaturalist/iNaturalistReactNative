@@ -8,7 +8,7 @@ import setupUniqueRealm from "tests/helpers/uniqueRealm";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -19,8 +19,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -34,25 +34,25 @@ const mockUser = factory( "LocalUser" );
 const mockCommentUpdate = factory( "RemoteUpdate", {
   comment_id: 1,
   viewed: false,
-  resource_uuid: faker.string.uuid( )
+  resource_uuid: faker.string.uuid( ),
 } );
 const mockIdentificationUpdate = factory( "RemoteUpdate", {
   identification_id: 2,
   viewed: false,
-  resource_uuid: faker.string.uuid( )
+  resource_uuid: faker.string.uuid( ),
 } );
 const mockData = [mockCommentUpdate, mockIdentificationUpdate];
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: ( ) => ( {
-    data: mockData
-  } )
+    data: mockData,
+  } ),
 } ) );
 
 const mockObservation = factory( "LocalObservation", {
   comments_viewed: false,
-  identifications_view: false
+  identifications_view: false,
 } );
 
 describe( "useObservationsUpdates", ( ) => {
@@ -82,14 +82,14 @@ describe( "useObservationsUpdates", ( ) => {
   describe.each( [
     ["comment", [mockCommentUpdate]],
     ["identification", [mockIdentificationUpdate]],
-    ["both", mockData]
+    ["both", mockData],
   ] )( "when the update is a %s", ( ) => {
     describe.each( [
       ["viewed fields not initialized", null, null],
       ["viewed comments and viewed identifications", true, true],
       ["viewed comments and not viewed identifications", true, false],
       ["not viewed comments and viewed identifications", false, true],
-      ["not viewed comments and not viewed identifications", false, false]
+      ["not viewed comments and not viewed identifications", false, false],
     ] )( "when the local observation has %s", ( a1, viewedComments, viewedIdentifications ) => {
       beforeEach( ( ) => {
       // Write mock observation to realm
@@ -98,7 +98,7 @@ describe( "useObservationsUpdates", ( ) => {
           global.mockRealms[mockRealmIdentifier].create( "Observation", {
             ...mockObservation,
             comments_viewed: viewedComments,
-            identifications_viewed: viewedIdentifications
+            identifications_viewed: viewedIdentifications,
           } );
         }, "delete all and create observation, useObservationsUpdates test" );
       } );

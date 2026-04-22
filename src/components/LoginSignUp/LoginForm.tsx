@@ -1,21 +1,22 @@
-import type { RouteProp } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import { authenticateUser } from "components/LoginSignUp/AuthenticationService";
+import { authenticateUser, signOut } from "components/LoginSignUp/AuthenticationService";
 import {
-  Body1, Body2, Button, Heading4, INatIcon, INatIconButton, List2
+  Body1, Body2, Button, CloseButton, Heading4, INatIcon, INatIconButton, List2,
+  WarningSheet,
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
 import { t } from "i18next";
+import type { LoginStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useRef, useState,
 } from "react";
 import { Trans } from "react-i18next";
-import type { TextInput } from "react-native";
+import type { ScrollView, TextInput } from "react-native";
 import {
   Platform,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
@@ -28,24 +29,14 @@ import LoginSignUpInputField from "./LoginSignUpInputField";
 const { useRealm } = RealmContext;
 
 interface Props {
-  scrollViewRef?: React.Ref;
-}
-
-interface LoginFormParams {
-  emailConfirmed?: boolean;
-  prevScreen?: string;
-  projectId?: number;
-}
-
-type ParamList = {
-  LoginFormParams: LoginFormParams;
+  scrollViewRef?: React.Ref<ScrollView>;
 }
 
 const LoginForm = ( {
-  scrollViewRef
+  scrollViewRef,
 }: Props ) => {
   const navigation = useNavigation( );
-  const { params } = useRoute<RouteProp<ParamList, "LoginFormParams">>( );
+  const { params } = useRoute<LoginStackScreenProps<"Login">["route"]>();
   const emailConfirmed = params?.emailConfirmed;
   // For debug reasons, we can send the user here to log in again, but we must ensure
   // that only the currently logged in user can log in again. And no other user account
@@ -63,6 +54,29 @@ const LoginForm = ( {
   const [loading, setLoading] = useState( false );
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const { keyboardShown } = useKeyboardInfo( );
+  const [showModal, setShowModal] = useState( false );
+
+  const onSignOut = async () => {
+    await signOut( { realm, clearRealm: true } );
+  };
+
+  const renderSignOutButton = useCallback(
+    () => (
+      <CloseButton
+        handleClose={() => setShowModal( true )}
+        buttonClassName="mr-[-5px]"
+      />
+    ),
+    [],
+  );
+
+  useEffect( () => {
+    if ( loginAgain ) {
+      navigation.setOptions( {
+        headerRight: renderSignOutButton,
+      } );
+    }
+  }, [loginAgain, navigation, renderSignOutButton] );
 
   const blurFields = () => {
     if ( emailRef.current ) {
@@ -105,9 +119,9 @@ const LoginForm = ( {
         params: {
           screen: "ProjectDetails",
           params: {
-            id: params?.projectId
-          }
-        }
+            id: params?.projectId,
+          },
+        },
       } );
     } else {
       navigation.getParent( )?.goBack( );
@@ -116,7 +130,7 @@ const LoginForm = ( {
     navigation,
     params,
     isDefaultMode,
-    setLoggedInWhileInDefaultMode
+    setLoggedInWhileInDefaultMode,
   ] );
 
   const scrollToItem = useCallback( ( ) => {
@@ -125,7 +139,7 @@ const LoginForm = ( {
       ( _, y ) => {
         scrollViewRef.current.scrollTo( { y, animated: true } );
       },
-      () => console.log( "Failed to measure" )
+      () => console.log( "Failed to measure" ),
     );
   }, [scrollViewRef] );
 
@@ -186,7 +200,7 @@ const LoginForm = ( {
           "self-center mt-[31px] underline",
           // When the keyboard is up this pushes the form up enough to cut
           // off the username label on some devices
-          !keyboardShown && "mb-[35px]"
+          !keyboardShown && "mb-[35px]",
         )}
         i18nKey="Dont-have-an-account"
         onPress={( ) => navigation.navigate( "SignUp" )}
@@ -198,7 +212,7 @@ const LoginForm = ( {
           <Body1
             key="1"
             className="text-white font-Lato-Bold"
-          />
+          />,
         ]}
       />
     </>
@@ -281,7 +295,7 @@ const LoginForm = ( {
         {error && <Error error={error} />}
         <Button
           className={classnames( "mt-[30px]", {
-            "mt-5": error
+            "mt-5": error,
           } )}
           disabled={( !loginAgain && !email ) || !password}
           forceDark
@@ -292,12 +306,24 @@ const LoginForm = ( {
               ? currentUser.login
               : email.trim( ),
             password,
-            realm
+            realm,
           ) )}
           testID="Login.loginButton"
           text={t( "LOG-IN" )}
         />
         {renderFooter( )}
+        {showModal && (
+          <WarningSheet
+            onPressClose={() => setShowModal( false )}
+            headerText={t( "LOG-OUT--question" )}
+            text={t( "Are-you-sure-you-want-to-log-out" )}
+            handleSecondButtonPress={() => setShowModal( false )}
+            secondButtonText={t( "CANCEL" )}
+            confirm={onSignOut}
+            buttonText={t( "LOG-OUT" )}
+            loading={false}
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

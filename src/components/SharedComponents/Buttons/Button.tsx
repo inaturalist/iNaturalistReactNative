@@ -33,7 +33,7 @@ const setStyles = ( {
   forceDark,
   isFocus,
   isPrimary,
-  isWarning
+  isWarning,
 }: {
   className?: string;
   disabled?: boolean;
@@ -51,13 +51,13 @@ const setStyles = ( {
     "px-[10px]",
     "py-[13px]",
     "rounded-lg",
-    tailwindFontBold
+    tailwindFontBold,
   ];
   const textClasses = [
     "text-center",
     disabled
       ? "text-white/50"
-      : "text-white"
+      : "text-white",
   ];
 
   if ( className ) {
@@ -107,39 +107,8 @@ const setStyles = ( {
   return { buttonClasses, textClasses };
 };
 
-// Dark mode styles can be set with this function, but si scheduled to be worked on post-MVP
-// const setDarkStyles = ( {
-//   buttonClasses,
-//   textClasses,
-//   isPrimary,
-//   isFocus,
-//   disabled,
-//   forceDark
-// } ) => {
-//   if ( isPrimary ) {
-//     buttonClasses.push(
-//       disabled
-//         ? ""
-//         : "dark:bg-white"
-//     );
-//     textClasses.push(
-//       disabled
-//         ? "dark:text-darkGray/50"
-//         : "dark:text-darkGray"
-//     );
-//   } else if ( isFocus ) {
-//     if ( !forceDark ) {
-//       buttonClasses.push(
-//         disabled
-//           ? "dark:bg-inatGreenDisabledDark"
-//           : ""
-//       );
-//     }
-//   }
-// };
-
 const activityIndicatorColor = ( {
-  isPrimary, isWarning, isFocus
+  isPrimary, isWarning, isFocus,
 }: {
   isPrimary: boolean;
   isWarning: boolean;
@@ -176,7 +145,7 @@ const Button = ( {
   dropdown,
   maxFontSizeMultiplier = 1.5,
   debounceTime = 300,
-  preventMultipleTaps = true
+  preventMultipleTaps = true,
 }: ButtonProps ) => {
   const [isProcessing, setIsProcessing] = useState( false );
   const onPressRef = useRef( onPress );
@@ -193,18 +162,8 @@ const Button = ( {
     forceDark,
     isFocus,
     isPrimary,
-    isWarning
+    isWarning,
   } );
-  // Dark mode styles can be set with this function, but is scheduled to be worked on post-MVP
-  // setDarkStyles( {
-  //   buttonClasses,
-  //   textClasses,
-  //   isWarning,
-  //   isPrimary,
-  //   isFocus,
-  //   disabled,
-  //   forceDark
-  // } );
 
   const handlePress = ( event?: GestureResponderEvent ) => {
     if ( !preventMultipleTaps ) {
@@ -241,7 +200,7 @@ const Button = ( {
           className="mr-3 absolute right-0"
           color={!isNeutral
             ? activityIndicatorColor( {
-              isPrimary, isWarning, isFocus
+              isPrimary, isWarning, isFocus,
             } )
             : undefined}
         />

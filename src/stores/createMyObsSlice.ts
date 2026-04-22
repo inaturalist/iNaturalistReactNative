@@ -10,7 +10,7 @@ const createMyObsSlice = ( set, get ) => ( {
   numOfUserObservations: 0,
   setNumOfUserObservations: newNum => set( { numOfUserObservations: newNum } ),
   numOfUserSpecies: 0,
-  setNumOfUserSpecies: newNum => set( { numOfUserSpecies: newNum } )
+  setNumOfUserSpecies: newNum => set( { numOfUserSpecies: newNum } ),
 } );
 
 export default createMyObsSlice;

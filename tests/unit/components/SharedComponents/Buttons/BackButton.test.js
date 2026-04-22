@@ -10,7 +10,7 @@ const mockHeaderBackButton = <View testID="ObsEdit.BackButton">Mocked Back</View
 jest.mock( "@react-navigation/elements", () => ( {
   ...jest.requireActual( "@react-navigation/elements" ),
   HeaderBackButton: jest.fn()
-    .mockImplementation( ( ) => mockHeaderBackButton )
+    .mockImplementation( ( ) => mockHeaderBackButton ),
 } ) );
 
 describe( "BackButton", () => {

@@ -28,12 +28,12 @@ const downloadAndroid = async argv => {
     "src",
     androidFlavor,
     "assets",
-    "camera"
+    "camera",
   );
 
   const androidModel = path.join(
     androidDestination,
-    `${cvModelFilename}.${androidExt}`
+    `${cvModelFilename}.${androidExt}`,
   );
 
   console.log( "Checking android model files..." );
@@ -50,7 +50,7 @@ const downloadAndroid = async argv => {
   }
 
   console.log(
-    `Android model files missing, downloading from '${binariesBaseDir}'...`
+    `Android model files missing, downloading from '${binariesBaseDir}'...`,
   );
 
   await fs.mkdir( androidDestination, { recursive: true } );
@@ -93,7 +93,7 @@ const downloadIOS = async () => {
   }
 
   console.log(
-    `iOS Model files missing, downloading from '${binariesBaseDir}'...`
+    `iOS Model files missing, downloading from '${binariesBaseDir}'...`,
   );
 
   await fs.mkdir( iosDestination, { recursive: true } );
@@ -123,7 +123,7 @@ yargs
   .option( "androidFlavor", {
     alias: "f",
     type: "string",
-    description: "Android flavor to download model files into"
+    description: "Android flavor to download model files into",
   } )
   .command(
     "$0",
@@ -133,6 +133,6 @@ yargs
     async argv => {
       await downloadAndroid( argv );
       await downloadIOS();
-    }
+    },
   )
   .help().argv;

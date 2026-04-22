@@ -1,7 +1,4 @@
 import React from "react";
-import {
-  useColorScheme
-} from "react-native";
 import colors from "styles/tailwindColors";
 
 import Icon from "./INatIcon";
@@ -12,7 +9,6 @@ interface Props {
   color?: string;
   size?: number;
   dropShadow?: boolean;
-  isDarkModeEnabled?: boolean;
 }
 
 type Aliases = Record<string, string>;
@@ -80,38 +76,25 @@ const ALIASES: Aliases = {
   "upload-complete": "check",
   "upload-saved": "arrow-up-circle-dots",
   "upvote-active": "arrow-up-bold-circle",
-  "upvote-inactive": "arrow-up-bold-circle-outline"
+  "upvote-inactive": "arrow-up-bold-circle-outline",
 } as const;
 
 // Use default color if none is specified
 const INatIcon = ( {
-  testID, name, color, size, dropShadow, isDarkModeEnabled = false
+  testID, name, color, size, dropShadow,
 }: Props ) => {
-  const colorScheme = useColorScheme( );
-
-  const getColorFromColorScheme = ( ) => {
-    if ( colorScheme === "dark"
-        && color === colors.darkGray
-        && isDarkModeEnabled
-    ) return colors.white;
-
-    return color || colors.darkGray;
-  };
-
-  const colorFromColorScheme = getColorFromColorScheme( );
-
   const style = dropShadow
     ? {
       shadowOpacity: 2,
       textShadowRadius: 4,
-      textShadowOffset: { width: 2, height: 2 }
+      textShadowOffset: { width: 2, height: 2 },
     }
     : null;
   return (
     <Icon
       testID={testID}
       name={ALIASES[name] || name}
-      color={colorFromColorScheme}
+      color={color || colors.darkGray}
       size={size}
       style={style}
     />

@@ -1,0 +1,3 @@
+FIXED
+* Navigating the taxonomy tree on taxon detail retains all pages
+* Cannot 'go back' from editing a saved observation

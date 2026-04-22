@@ -5,7 +5,7 @@ import faker from "tests/helpers/faker";
 
 const mockUser = factory( "RemoteUser", {
   login: "test123",
-  id: faker.number.int( )
+  id: faker.number.int( ),
 } );
 
 describe( "UserListItem", ( ) => {
@@ -13,7 +13,7 @@ describe( "UserListItem", ( ) => {
     const userListItem = (
       <UserListItem
         item={{
-          user: mockUser
+          user: mockUser,
         }}
         count={3}
         countText="X-Observations"

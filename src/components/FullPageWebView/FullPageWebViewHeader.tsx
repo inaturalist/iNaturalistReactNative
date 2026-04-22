@@ -1,5 +1,5 @@
-import type { HeaderTitleProps } from "@react-navigation/elements";
 import { getHeaderTitle } from "@react-navigation/elements";
+import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import classNames from "classnames";
 import { Heading4 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
@@ -8,33 +8,19 @@ import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { dropShadow } from "styles/global";
 
-type HeaderTitle = string | ( ( props: HeaderTitleProps ) => React.ReactNode ) | undefined;
-
-interface Props {
-  route: {
-    name: string;
-  };
-  options: {
-    title?: string | undefined;
-    headerTitle?: HeaderTitle;
-    headerStyle?: object;
-    headerShadowVisible?: boolean;
-  };
-}
-
 const HEADER_STYLE = {
-  backgroundColor: "white"
+  backgroundColor: "white",
 } as const;
 
 const BACK_BUTTON_STYLE = {
   position: "relative",
-  start: 11
+  start: 11,
 } as const;
 
 const FullPageWebViewHeader = ( {
   route,
-  options
-}: Props ) => {
+  options,
+}: NativeStackHeaderProps ) => {
   const insets = useSafeAreaInsets();
 
   const getTitle = (): string | React.ReactNode => {
@@ -57,7 +43,7 @@ const FullPageWebViewHeader = ( {
         ...( options.headerShadowVisible && dropShadow ),
         paddingTop: insets.top,
         paddingLeft: insets.left,
-        paddingRight: insets.right
+        paddingRight: insets.right,
       }}
     >
       <View
@@ -67,7 +53,7 @@ const FullPageWebViewHeader = ( {
           "flex-row",
           "h-[78px]",
           "items-center",
-          "justify-between"
+          "justify-between",
         )}
       >
         <BackButton

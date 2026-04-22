@@ -2,7 +2,7 @@ import ObscuredLocationIndicatorIcon from "images/svg/obscured_location_indicato
 import React from "react";
 import {
   Marker,
-  Polygon
+  Polygon,
 } from "react-native-maps";
 import colors from "styles/tailwindColors";
 
@@ -15,7 +15,7 @@ interface Props {
 
 const ObscuredLocationIndicator = ( {
   latitude,
-  longitude
+  longitude,
 }: Props ) => {
   const obscurationCell = obscurationCellForLatLng( latitude, longitude );
   return (
@@ -24,20 +24,20 @@ const ObscuredLocationIndicator = ( {
         coordinates={[
           {
             latitude: obscurationCell.minLat,
-            longitude: obscurationCell.minLng
+            longitude: obscurationCell.minLng,
           },
           {
             latitude: obscurationCell.minLat,
-            longitude: obscurationCell.maxLng
+            longitude: obscurationCell.maxLng,
           },
           {
             latitude: obscurationCell.maxLat,
-            longitude: obscurationCell.maxLng
+            longitude: obscurationCell.maxLng,
           },
           {
             latitude: obscurationCell.maxLat,
-            longitude: obscurationCell.minLng
-          }
+            longitude: obscurationCell.minLng,
+          },
         ]}
         strokeWidth={2}
         strokeColor={colors.inatGreen}

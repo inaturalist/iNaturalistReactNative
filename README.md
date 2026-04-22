@@ -39,6 +39,16 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 1. Run `npm start -- --reset-cache` (`npm start` works too, but resetting the cache each time makes for a lot less build issues)
 2. Run `npm run ios` or `npm run android`
 
+### Rozenite (React Native DevTools plugins)
+
+You may optionally, as an environment variable, set the Rozenite env var to enable the Rozenite React Native DevTools plugins: `WITH_ROZENITE=true npm start`. This makes the installed Rozenite plugins available in React Native DevTools in their respective tabs.
+
+### Debug Mode and Feature Flags
+
+"Debug Mode" can be enabled in the app by opening the "About" screen and tapping the version number three times. This enables the "Debug" screen in the Menu which includes a some additional app info and utilities. Additionally, when enabled, some parts of the app additionally render useful debugging info and debugging buttons.
+
+The "Debug" screen also allows for toggling ([Feature Flags](https://en.wikipedia.org/wiki/Feature_toggle)) on and off. Feature Flags are sometimes used in our development to test new features or hide incremental development progress. The default values for whether a feature flag is enabled or not is defined in source ([`createFeatureFlagSlice.ts](https://github.com/inaturalist/iNaturalistReactNative/blob/477604016aaeb0b0553c0569854e49cda40069d0/src/stores/createFeatureFlagSlice.ts#L9)) which determines what typical users will see. In testing, it is often helpful to dynamically toggle features on and off. The debug screen lists each active feature flag and allows for overriding their default values. These overrides are not persisted so will reset to defaults on app launch.
+
 ### Running with staging environment
 
 If you're on staff you can configure the app to read from and write to our staging server. Override `API_URL` to a staging API domain, either using local `.env.staging` file, or overriding the environment variable when calling `npm start`, e.g. `API_URL=http://example.com npm start -- --reset-cache`.
@@ -272,7 +282,7 @@ A sentinel file is a file that is created at the beginning of an interaction flo
 1. Log any subsequent steps in the user flow using `await logStage()` and passing in the sentinel file name, stage name, and any related data. Examples of stages in the Camera include fetching user location, saving photos, and taking a photo.
     * It's a good practice to keep stage names consistent. Taking the example of saving photos, there are three distinct stages that may be helpful to log: `save_photos_to_photo_library_start`, `save_photos_to_photo_library_complete`, `save_photos_to_photo_library_error`
 1. When the user completes a user flow successfully, you can delete the sentinel file using `await deleteSentinelFile( )` and passing in the name of the user flow (i.e. when they navigate away from the Camera)
-1. On app load, we're checking for any sentinel files which have not been deleted using the `findAndLogSentinelFiles` function. If there are any lingering files, the file contents will be logged as errors to Grafana using `logger.error`, so developers on staff can peruse and see which stage a user completed successfully before the flow was abandoned.
+1. On app load, we're checking for any sentinel files which have not been deleted using the `logSentinelFiles` function. If there are any lingering files, the file contents will be logged as errors to Grafana using `logger.error`, so developers on staff can peruse and see which stage a user completed successfully before the flow was abandoned.
 
 ## Troubleshooting
 
@@ -353,7 +363,7 @@ fastlane prod
             1. Upload from the toolbar on MyObs
         1. Update
             1. Remove the app from the device
-            1. Go to AppStore and install the latest public build
+            1. Go to either AppStore or TestFlight to install the latest designated public release build (TestFlight in case of latest release being in review, AppStore otherwise)
             1. Sign in and make sure you have at least one uploaded observation with photo
             1. Make one observation but keep it saved only, and not uploaded
             1. Install a "Release" build on top of the TestFlight build

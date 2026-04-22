@@ -15,7 +15,7 @@ interface Props {
 const qualityGradeSVG = (
   qualityGrade: string | null,
   color: string,
-  opacity: number
+  opacity: number,
 ) => {
   if ( qualityGrade === "research" ) {
     return (

@@ -1,30 +1,35 @@
 import NotificationsListItem from "components/Notifications/NotificationsListItem";
 import {
   ActivityIndicator,
+  Body1,
   Body2,
   CustomFlashList,
   CustomRefreshControl,
   InfiniteScrollLoadingWheel,
-  OfflineNotice
+  OfflineNotice,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import type { RealmUser } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import type { Notification } from "sharedHooks/useInfiniteNotificationsScroll";
 
-type Props = {
+const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
+
+interface Props {
   currentUser: RealmUser | null;
   data: Notification[];
+  followingTabIsActive: boolean;
   isError?: boolean;
   isFetching?: boolean;
   isInitialLoading?: boolean;
   isConnected: boolean | null;
+  showStillLoadingMessage: boolean;
   onEndReached: ( ) => void;
   onRefresh: ( ) => void;
   refreshing: boolean;
   reload: ( ) => void;
-};
+}
 
 interface RenderItemProps {
   // It is used, not sure what the problem is
@@ -35,50 +40,58 @@ interface RenderItemProps {
 const NotificationsList = ( {
   currentUser,
   data,
+  followingTabIsActive,
   isError,
   isFetching,
   isInitialLoading,
   isConnected,
+  showStillLoadingMessage,
   onEndReached,
   onRefresh,
   reload,
-  refreshing
+  refreshing,
 }: Props ) => {
   const { t } = useTranslation( );
   const renderItem = useCallback( ( { item }: RenderItemProps ) => (
     <NotificationsListItem notification={item} />
   ), [] );
 
-  const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
-
-  const renderFooter = useCallback( ( ) => (
+  const footerComponent = useMemo( ( ) => (
     <InfiniteScrollLoadingWheel
       hideLoadingWheel={!isFetching || data?.length === 0}
       isConnected={isConnected}
     />
   ), [isFetching, isConnected, data.length] );
 
-  const renderEmptyComponent = useCallback( ( ) => {
+  const emptyComponent = useMemo( ( ) => {
+    // Offline/retry when disconnected or request fails
+    if ( isConnected === false || isError ) {
+      return <OfflineNotice onPress={reload} />;
+    }
+
     if ( isInitialLoading ) {
       return (
         <View className="h-full justify-center">
           <ActivityIndicator size={50} />
+          {showStillLoadingMessage && (
+            <Body1 className="mt-4 text-center mx-12">
+              {t( "Still-loading" )}
+            </Body1>
+          )}
         </View>
       );
     }
 
-    if ( isConnected === false ) {
-      return <OfflineNotice onPress={reload} />;
-    }
-
-    let msg = t( "No-Notifications-Found" );
+    // Empty/error state
+    let msg = followingTabIsActive
+      ? t(
+        "You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on",
+      )
+      : t( "You-have-no-notifications-get-started-by-creating-your-own-observations" );
     let msg2 = null;
     if ( !currentUser ) {
       msg = t( "Once-you-create-and-upload-observations" );
       msg2 = t( "You-will-see-notifications" );
-    }
-    if ( isError ) {
-      msg = t( "Something-went-wrong" );
     }
 
     return (
@@ -89,11 +102,13 @@ const NotificationsList = ( {
     );
   }, [
     currentUser,
+    followingTabIsActive,
     isError,
     isInitialLoading,
     isConnected,
+    showStillLoadingMessage,
     reload,
-    t
+    t,
   ] );
 
   const refreshControl = (
@@ -106,9 +121,9 @@ const NotificationsList = ( {
 
   return (
     <CustomFlashList
-      ItemSeparatorComponent={renderItemSeparator}
-      ListEmptyComponent={renderEmptyComponent}
-      ListFooterComponent={renderFooter}
+      ItemSeparatorComponent={ItemSeparator}
+      ListEmptyComponent={emptyComponent}
+      ListFooterComponent={footerComponent}
       data={data}
       keyExtractor={( item: Notification ) => item.id}
       onEndReached={onEndReached}

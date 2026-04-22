@@ -11,7 +11,7 @@ const mockProject = factory( "RemoteProject", {
   icon: faker.image.url( ),
   header_image_url: faker.image.url( ),
   description: faker.lorem.paragraph( ),
-  project_type: "collection"
+  project_type: "collection",
 } );
 
 const mockProjectWithDateRange = factory( "RemoteProject", {
@@ -20,28 +20,28 @@ const mockProjectWithDateRange = factory( "RemoteProject", {
   rule_preferences: [
     {
       field: "d1",
-      value: "2024-03-07 07:42 -06:00"
+      value: "2024-03-07 07:42 -06:00",
     },
     {
       field: "d2",
-      value: "2024-03-14 08:41 -07:00"
-    }
-  ]
+      value: "2024-03-14 08:41 -07:00",
+    },
+  ],
 } );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    data: mockProject
-  } )
+    data: mockProject,
+  } ),
 } ) );
 
 const mockMutate = jest.fn();
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   __esModule: true,
   default: ( ) => ( {
-    mutate: mockMutate
-  } )
+    mutate: mockMutate,
+  } ),
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -50,10 +50,10 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useRoute: ( ) => ( {
       params: {
-        id: mockProject.id
-      }
+        id: mockProject.id,
+      },
     } ),
-    useNavigation: jest.fn( )
+    useNavigation: jest.fn( ),
   };
 } );
 
@@ -64,7 +64,7 @@ beforeAll( async () => {
 describe( "ProjectDetails", ( ) => {
   test( "should not have accessibility errors", async ( ) => {
     const view = wrapInQueryClientContainer(
-      <ProjectDetailsContainer />
+      <ProjectDetailsContainer />,
     );
     // Disabled during the update to RN 0.78
     expect( view ).toBeTruthy();
@@ -77,10 +77,10 @@ describe( "ProjectDetails", ( ) => {
     expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
     expect( screen.getByText( mockProject.description ) ).toBeTruthy( );
     expect(
-      screen.getByTestId( "ProjectDetails.headerImage" ).props.source
+      screen.getByTestId( "ProjectDetails.headerImage" ).props.source,
     ).toStrictEqual( { uri: mockProject.header_image_url } );
     expect(
-      screen.getByTestId( "ProjectDetails.projectIcon" ).props.source
+      screen.getByTestId( "ProjectDetails.projectIcon" ).props.source,
     ).toStrictEqual( { uri: mockProject.icon } );
   } );
 
@@ -89,9 +89,9 @@ describe( "ProjectDetails", ( ) => {
       <ProjectDetails
         project={{
           ...mockProject,
-          description: null
+          description: null,
         }}
-      />
+      />,
     );
     expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
   } );
@@ -116,7 +116,7 @@ describe( "ProjectDetails", ( ) => {
     renderComponent( <ProjectDetails
       project={{
         ...mockProjectWithDateRange,
-        project_type: "traditional"
+        project_type: "traditional",
       }}
     /> );
     const projectTypeText = await screen.findByText( /Traditional Project/ );
@@ -127,7 +127,7 @@ describe( "ProjectDetails", ( ) => {
     renderComponent( <ProjectDetails
       project={{
         ...mockProjectWithDateRange,
-        project_type: "umbrella"
+        project_type: "umbrella",
       }}
     /> );
     const dateRange = await screen.findByText( "Mar 7, 2024 - Mar 14, 2024" );

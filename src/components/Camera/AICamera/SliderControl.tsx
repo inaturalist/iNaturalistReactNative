@@ -2,10 +2,10 @@ import Slider from "@react-native-community/slider";
 import {
   Body1,
   Heading4,
-  P
+  P,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { round } from "lodash";
+import round from "lodash/round";
 import React from "react";
 import colors from "styles/tailwindColors";
 
@@ -28,7 +28,7 @@ const SliderControl = ( {
   min,
   max,
   precision = 0,
-  step = 1
+  step = 1,
 }: SliderControlProps ) => (
   <P>
     {/* eslint-disable-next-line i18next/no-literal-string */}

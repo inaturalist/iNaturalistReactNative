@@ -1,21 +1,23 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-  ImageBackground, ScrollView, View
+  ImageBackground, ScrollView, View,
 } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import type {
   ImageSourcePropType,
   ImageStyle,
-  StyleProp
+  StyleProp,
 } from "react-native";
 import {
   Dimensions,
   Platform,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "styles/tailwindColors";
+
+type ScrollViewRef = { scrollTo: ( options: { y: number; animated: boolean } ) => void } | null;
 
 interface Props extends PropsWithChildren {
   backgroundSource: ImageSourcePropType;
@@ -26,29 +28,31 @@ const windowHeight = Dimensions.get( "window" ).height;
 
 const SCROLL_VIEW_STYLE = {
   minHeight: windowHeight * 1.1,
-  paddingTop: 54
+  paddingTop: 54,
 } as const;
 
 const LoginSignupWrapper = ( {
   backgroundSource,
   children,
-  imageStyle
+  imageStyle,
 }: Props ) => {
-  const scrollViewRef = useRef( null );
+  const scrollViewRef = useRef<ScrollViewRef>( null );
   const navigation = useNavigation( );
   const insets = useSafeAreaInsets();
 
+  const resetScroll = useCallback( ( ) => {
+    const scrollNode = scrollViewRef.current;
+    if ( scrollNode && typeof scrollNode.scrollTo === "function" ) {
+      scrollNode.scrollTo( { y: 0, animated: false } );
+    }
+  }, [] );
+
   useEffect( ( ) => {
-    const resetScroll = ( ) => {
-      if ( scrollViewRef.current ) {
-        scrollViewRef.current?.scrollTo( { y: 0, animated: false } );
-      }
-    };
     const unsubscribe = navigation.addListener( "focus", ( ) => {
       resetScroll( );
     } );
     return unsubscribe;
-  }, [navigation] );
+  }, [navigation, resetScroll] );
 
   // Make the StatusBar translucent in Android but reset it when we leave
   // because this alters the layout.
@@ -56,20 +60,13 @@ const LoginSignupWrapper = ( {
     if ( Platform.OS !== "android" ) return ( ) => undefined;
     // Hide on first render
     StatusBar.setTranslucent( true );
-
-    const resetScroll = () => {
-      if ( scrollViewRef.current ) {
-        scrollViewRef.current?.scrollTo( { y: 0, animated: false } );
-      }
-    };
     const unsubscribe = navigation.addListener( "focus", ( ) => {
-      console.log( "resetting scroll" );
       resetScroll( );
       // Hide when focused
       StatusBar.setTranslucent( true );
     } );
     return unsubscribe;
-  }, [navigation] );
+  }, [navigation, resetScroll] );
 
   useEffect( ( ) => {
     if ( Platform.OS !== "android" ) return ( ) => undefined;

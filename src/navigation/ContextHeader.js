@@ -17,7 +17,7 @@ type Props = {
 };
 
 const ContextHeader = ( {
-  navigation, route, options
+  navigation, route, options,
 }: Props ): Node => {
   const insets = useSafeAreaInsets();
 
@@ -43,15 +43,15 @@ const ContextHeader = ( {
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsTab",
         params: {
-          screen: "ObsList"
-        }
+          screen: "ObsList",
+        },
       } );
     }
   };
 
   const renderBackButton = () => {
     const extraPadding = {
-      marginStart: 15
+      marginStart: 15,
     };
 
     return (
@@ -72,7 +72,7 @@ const ContextHeader = ( {
       style={{
         ...options.headerStyle,
         ...( options.headerShadowVisible && dropShadow ),
-        paddingTop: insets.top
+        paddingTop: insets.top,
       }}
     >
       <View
@@ -80,7 +80,7 @@ const ContextHeader = ( {
           "w-full",
           "bg-white",
           "pr-[24px]",
-          "pt-[6px]"
+          "pt-[6px]",
         )}
       >
         <View
@@ -93,8 +93,8 @@ const ContextHeader = ( {
             "pb-[10px]",
             {
               "justify-center": !options?.alignStart,
-              "justify-start": options?.alignStart
-            }
+              "justify-start": options?.alignStart,
+            },
           )}
         >
           <View className="pr-1 pt-1.5">

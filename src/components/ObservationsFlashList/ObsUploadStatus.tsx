@@ -25,7 +25,7 @@ const ObsUploadStatus = ( {
   queued,
   showObsStatus = false,
   white = false,
-  isSimpleObsStatus = false
+  isSimpleObsStatus = false,
 }: Props ) => {
   const showUploadStatus = typeof ( progress ) === "number";
   const hideStatus = !showUploadStatus && !showObsStatus && !explore;

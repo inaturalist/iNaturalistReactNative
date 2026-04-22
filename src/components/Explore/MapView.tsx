@@ -1,19 +1,22 @@
 import {
   ActivityIndicator,
   Button,
-  Map
+  Map,
 } from "components/SharedComponents";
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers";
 import { View } from "components/styledComponents";
 import type { MapBoundaries } from "providers/ExploreContext";
 import {
-  EXPLORE_ACTION, PLACE_MODE, useExplore
+  EXPLORE_ACTION, PLACE_MODE, useExplore,
 } from "providers/ExploreContext";
 import React, {
-  useEffect, useMemo, useRef, useState
+  useEffect, useMemo, useRef, useState,
 } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 import type { Region } from "react-native-maps";
+import type RNMapView from "react-native-maps";
 import { useTranslation } from "sharedHooks";
+import type { RenderLocationPermissionsGateFunction } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
 
 const NEARBY_DELTA = 0.02;
@@ -25,27 +28,27 @@ const worldwideRegion = {
   latitude: WORLDWIDE_LAT_LNG,
   longitude: WORLDWIDE_LAT_LNG,
   latitudeDelta: WORLDWIDE_DELTA,
-  longitudeDelta: WORLDWIDE_DELTA
+  longitudeDelta: WORLDWIDE_DELTA,
 };
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
-  elevation: 6
+  elevation: 6,
 } );
 
 const activityIndicatorSize = 50;
-const centeredLoadingWheel = {
+const centeredLoadingWheel: StyleProp<ViewStyle> = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: [
     { translateX: -( activityIndicatorSize / 2 ) },
-    { translateY: -( activityIndicatorSize / 2 ) }
+    { translateY: -( activityIndicatorSize / 2 ) },
   ],
   backgroundColor: "rgba(0,0,0,0)",
   alignItems: "center",
   justifyContent: "center",
-  zIndex: 20
+  zIndex: 20,
 };
 
 interface Props {
@@ -59,10 +62,8 @@ interface Props {
   };
   isLoading: boolean;
   hasLocationPermissions?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  renderLocationPermissionsGate: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  requestLocationPermissions: Function;
+  renderLocationPermissionsGate: RenderLocationPermissionsGateFunction;
+  requestLocationPermissions: ( ) => void;
 }
 
 const MapView = ( {
@@ -71,20 +72,21 @@ const MapView = ( {
   isLoading,
   hasLocationPermissions,
   renderLocationPermissionsGate,
-  requestLocationPermissions
+  requestLocationPermissions,
 }: Props ) => {
   const { t } = useTranslation( );
   const { state: exploreState, dispatch, defaultExploreLocation } = useExplore( );
   const [showRedoSearchButton, setShowRedoSearchButton] = useState( false );
+  const [regionToAnimate, setRegionToAnimate] = useState<Region | null>( null );
   const isFirstRender = useRef( true );
 
-  const mapRef = useRef( null );
+  const mapRef = useRef<RNMapView | null>( null );
 
   const nearbyRegion = useMemo( () => ( {
     latitude: exploreState.lat,
     longitude: exploreState.lng,
     latitudeDelta: NEARBY_DELTA,
-    longitudeDelta: NEARBY_DELTA
+    longitudeDelta: NEARBY_DELTA,
   } ), [exploreState.lat, exploreState.lng] );
 
   const regionFromCoordinates = useMemo( ( ) => {
@@ -94,7 +96,7 @@ const MapView = ( {
         latitude,
         longitude,
         latitudeDelta: NEARBY_DELTA,
-        longitudeDelta: NEARBY_DELTA
+        longitudeDelta: NEARBY_DELTA,
       };
     }
     return null;
@@ -114,25 +116,28 @@ const MapView = ( {
 
     // since we're using initialRegion, we need to animate to the correct zoom level
     // when a user switches back to NEARBY or WORLDWIDE
-    if ( mapRef.current
-        && exploreState.placeMode === PLACE_MODE.NEARBY ) {
+    if ( exploreState.placeMode === PLACE_MODE.NEARBY ) {
       // Note: we do get observationBounds back from the API for nearby
       // but per user feedback, we want to show users a more zoomed in view
       // when they're looking at NEARBY view
       if ( nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined ) {
-        mapRef.current.animateToRegion( nearbyRegion );
+        setRegionToAnimate( {
+          ...nearbyRegion,
+          latitude: nearbyRegion.latitude,
+          longitude: nearbyRegion.longitude,
+        } );
       }
       return;
     }
     if ( mapRef.current
       && exploreState.placeMode === PLACE_MODE.WORLDWIDE ) {
-      mapRef.current.animateToRegion( worldwideRegion );
+      setRegionToAnimate( worldwideRegion );
     }
     if ( mapRef.current
       && exploreState.placeMode === PLACE_MODE.PLACE ) {
       if ( observationBounds ) {
         const newRegion = getMapRegion( observationBounds );
-        mapRef.current.animateToRegion( newRegion );
+        setRegionToAnimate( newRegion );
       }
     }
   }, [
@@ -140,12 +145,13 @@ const MapView = ( {
     nearbyRegion,
     regionFromCoordinates,
     observationBounds,
-    exploreState.place?.id
+    exploreState.place?.id,
   ] );
 
   const handleRedoSearch = async ( ) => {
     setShowRedoSearchButton( false );
     const currentBounds = await mapRef?.current?.getMapBoundaries( );
+    if ( !currentBounds ) { return; }
     dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_MAP_AREA } );
     dispatch( {
       type: EXPLORE_ACTION.SET_MAP_BOUNDARIES,
@@ -153,13 +159,13 @@ const MapView = ( {
         swlat: currentBounds.southWest.latitude,
         swlng: currentBounds.southWest.longitude,
         nelat: currentBounds.northEast.latitude,
-        nelng: currentBounds.northEast.longitude
-      }
+        nelng: currentBounds.northEast.longitude,
+      },
     } );
   };
 
   const tileMapParams = {
-    ...queryParams
+    ...queryParams,
   };
   // Tile queries never need these params
   delete tileMapParams.return_bounds;
@@ -169,7 +175,11 @@ const MapView = ( {
   const initialRegion: Region = useMemo( () => {
     if ( exploreState.placeMode === PLACE_MODE.NEARBY ) {
       if ( nearbyRegion.latitude !== undefined && nearbyRegion.longitude !== undefined ) {
-        return nearbyRegion;
+        return {
+          ...nearbyRegion,
+          latitude: nearbyRegion.latitude,
+          longitude: nearbyRegion.longitude,
+        };
       }
     }
 
@@ -189,7 +199,7 @@ const MapView = ( {
       const exploreLocation = await defaultExploreLocation( );
       dispatch( {
         type: EXPLORE_ACTION.SET_EXPLORE_LOCATION,
-        exploreLocation
+        exploreLocation,
       } );
     } else {
       requestLocationPermissions( );
@@ -218,6 +228,7 @@ const MapView = ( {
         currentLocationButtonClassName="left-5 bottom-20"
         onPanDrag={handlePanDrag}
         initialRegion={initialRegion}
+        regionToAnimate={regionToAnimate}
         showCurrentLocationButton
         showSwitchMapTypeButton
         showsCompass={false}

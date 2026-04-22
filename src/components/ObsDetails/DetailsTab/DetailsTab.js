@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
+import Attribution from "components/ObsDetailsSharedComponents/DetailsTab/Attribution";
 import {
   Body4,
   Button,
@@ -9,7 +10,7 @@ import {
   Divider,
   Heading4,
   LabelColonValue,
-  QualityGradeStatus
+  QualityGradeStatus,
 } from "components/SharedComponents";
 import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
@@ -20,7 +21,6 @@ import { Alert, Platform, Share } from "react-native";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import colors from "styles/tailwindColors";
 
-import Attribution from "./Attribution";
 import LocationSection from "./LocationSection";
 import ProjectSection from "./ProjectSection";
 
@@ -34,7 +34,7 @@ const OBSERVATION_URL = "https://www.inaturalist.org/observations";
 const handleShare = async url => {
   const sharingOptions = {
     url: "",
-    message: ""
+    message: "",
   };
   if ( Platform.OS === "ios" ) {
     sharingOptions.url = url;

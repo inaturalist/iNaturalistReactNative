@@ -12,7 +12,7 @@ describe( "AdditionalSuggestionsScroll", () => {
         otherSuggestions={[]}
         suggestionsLoading={false}
         onSuggestionChosen={jest.fn()}
-      />
+      />,
     );
 
     expect( screen.queryByText( "It might also be" ) ).toBeFalsy();
@@ -25,7 +25,7 @@ describe( "AdditionalSuggestionsScroll", () => {
         otherSuggestions={[]}
         suggestionsLoading
         onSuggestionChosen={jest.fn()}
-      />
+      />,
     );
     expect( screen.getByRole( "progressbar" ) ).toBeVisible();
   } );
@@ -34,8 +34,8 @@ describe( "AdditionalSuggestionsScroll", () => {
     const suggestions = [
       {
         taxon: factory( "RemoteTaxon" ),
-        combined_score: 85
-      }
+        combined_score: 85,
+      },
     ];
 
     renderComponent(
@@ -44,7 +44,7 @@ describe( "AdditionalSuggestionsScroll", () => {
         otherSuggestions={suggestions}
         suggestionsLoading={false}
         onSuggestionChosen={jest.fn()}
-      />
+      />,
     );
 
     expect( screen.getByText( "It might be one of these" ) ).toBeVisible();

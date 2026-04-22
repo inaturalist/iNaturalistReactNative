@@ -1,7 +1,8 @@
 import {
-  useNetInfo
+  useNetInfo,
 } from "@react-native-community/netinfo";
 import { NavigationContainer } from "@react-navigation/native";
+import { useReactNavigationDevTools } from "@rozenite/react-navigation-plugin";
 import type { PropsWithChildren } from "react";
 import React, { useRef } from "react";
 import { Alert } from "react-native";
@@ -14,6 +15,8 @@ const OfflineNavigationGuard = ( { children }: PropsWithChildren ) => {
   const routeNameRef = useRef( navigationRef.current?.getCurrentRoute()?.name );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
+
+  useReactNavigationDevTools( { ref: navigationRef } );
 
   // if a user tries to navigate to the Login screen while they're
   // offline, they'll see this no internet alert and automatically land
@@ -31,7 +34,7 @@ const OfflineNavigationGuard = ( { children }: PropsWithChildren ) => {
       if ( !isConnected ) {
         Alert.alert(
           t( "Internet-Connection-Required" ),
-          t( "Please-try-again-when-you-are-connected-to-the-internet" )
+          t( "Please-try-again-when-you-are-connected-to-the-internet" ),
         );
       }
     }

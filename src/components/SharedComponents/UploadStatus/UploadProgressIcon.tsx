@@ -5,10 +5,10 @@ import React from "react";
 import CircularProgressBase from "react-native-circular-progress-indicator";
 import { useTranslation } from "sharedHooks";
 
-type Props = {
+interface Props {
   color: string;
   progress: number;
-  iconClasses: Array<string>;
+  iconClasses: string[];
   uniqueKey?: string;
 }
 
@@ -16,7 +16,7 @@ const UploadProgressIcon = ( {
   color,
   progress,
   iconClasses,
-  uniqueKey
+  uniqueKey,
 }: Props ) => {
   const { t } = useTranslation( );
   return (

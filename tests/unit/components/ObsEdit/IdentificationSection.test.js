@@ -5,10 +5,10 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 const observationWithPhotos = factory( "RemoteObservation", {
-  observationPhotos: [{ id: 1 }]
+  observationPhotos: [{ id: 1 }],
 } );
 const observationWithoutPhotos = factory( "RemoteObservation", {
-  observationPhotos: []
+  observationPhotos: [],
 } );
 
 const firstObservation = factory( "RemoteObservation", {
@@ -16,8 +16,8 @@ const firstObservation = factory( "RemoteObservation", {
     name: "Fungi",
     isIconic: true,
     iconic_taxon_name: "Fungi",
-    id: 47170
-  }
+    id: 47170,
+  },
 } );
 
 const secondObservation = factory( "RemoteObservation", {
@@ -25,8 +25,8 @@ const secondObservation = factory( "RemoteObservation", {
     name: "Aves",
     isIconic: true,
     iconic_taxon_name: "Aves",
-    id: 3
-  }
+    id: 3,
+  },
 } );
 
 const mockObservations = [firstObservation, secondObservation];
@@ -36,7 +36,7 @@ const renderIdentificationSection = ( obs, index = 0, resetState = false ) => re
     currentObservation={obs[index]}
     observations={obs}
     resetState={resetState}
-  />
+  />,
 );
 
 describe( "IdentificationSection", () => {

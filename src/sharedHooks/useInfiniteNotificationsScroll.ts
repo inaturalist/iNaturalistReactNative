@@ -3,15 +3,18 @@ import type {
   ApiNotification,
   ApiObservation,
   ApiObservationsUpdatesParams,
-  ApiOpts
+  ApiOpts,
 } from "api/types";
-import { flatten } from "lodash";
+import flatten from "lodash/flatten";
 import { RealmContext } from "providers/contexts";
+import { useEffect, useMemo, useState } from "react";
 import type Realm from "realm";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
+
+const LOADING_TIMEOUT = 5000;
 
 // Extends API response with data we need in this app
 export interface Notification extends ApiNotification {
@@ -24,6 +27,7 @@ interface InfiniteNotificationsScrollResponse {
   isError?: boolean;
   isFetching?: boolean;
   isInitialLoading?: boolean;
+  showStillLoadingMessage: boolean;
   notifications: Notification[];
   refetch: ( ) => void;
 }
@@ -32,20 +36,20 @@ const UPDATE_FIELDS = {
   comment_id: true,
   comment: {
     user: {
-      login: true
-    }
+      login: true,
+    },
   },
   created_at: true,
   id: true,
   identification_id: true,
   identification: {
     user: {
-      login: true
-    }
+      login: true,
+    },
   },
   notifier_type: true,
   resource_uuid: true,
-  viewed: true
+  viewed: true,
 };
 
 const BASE_PARAMS: ApiObservationsUpdatesParams = {
@@ -53,7 +57,7 @@ const BASE_PARAMS: ApiObservationsUpdatesParams = {
   fields: UPDATE_FIELDS,
   per_page: 30,
   ttl: -1,
-  page: 1
+  page: 1,
 };
 
 async function fetchObsByUUIDs(
@@ -62,7 +66,7 @@ async function fetchObsByUUIDs(
   realm: Realm,
   options: {
     save?: boolean;
-  } = {}
+  } = {},
 ) {
   // TODO convert api/observations to TS
   const observations: ApiObservation[] | null = await fetchRemoteObservations(
@@ -71,12 +75,12 @@ async function fetchObsByUUIDs(
       fields: {
         user: {
           id: true,
-          login: true
+          login: true,
         },
-        ...Observation.ADVANCED_MODE_LIST_FIELDS
-      }
+        ...Observation.ADVANCED_MODE_LIST_FIELDS,
+      },
     },
-    authOptions
+    authOptions,
   );
   if ( options.save ) {
     Observation.upsertRemoteObservations( observations, realm );
@@ -85,14 +89,25 @@ async function fetchObsByUUIDs(
 }
 
 const useInfiniteNotificationsScroll = (
-  notificationParams: ApiObservationsUpdatesParams = {}
+  notificationParams: ApiObservationsUpdatesParams = {},
 ): InfiniteNotificationsScrollResponse => {
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
+  const [showStillLoadingMessage, setShowStillLoadingMessage] = useState( false );
 
-  const queryKey = ["useInfiniteNotificationsScroll", JSON.stringify( notificationParams )];
+  const queryKey = useMemo(
+    () => ["useInfiniteNotificationsScroll", JSON.stringify( notificationParams )],
+    [notificationParams],
+  );
 
-  const infQueryResult = useAuthenticatedInfiniteQuery(
+  const {
+    data,
+    isFetching,
+    isInitialLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+  } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }: { pageParam: number }, optsWithAuth: ApiOpts ) => {
       const params = { ...BASE_PARAMS, ...notificationParams };
@@ -105,12 +120,12 @@ const useInfiniteNotificationsScroll = (
 
       const response: null | ApiNotification[] = await fetchObservationUpdates(
         params,
-        optsWithAuth
+        optsWithAuth,
       );
 
       // Sometimes updates linger after notifiers that generated them have been deleted
       const updatesWithContent = response?.filter(
-        update => update.comment || update.identification
+        update => update.comment || update.identification,
       ) || [];
       const obsUUIDs = updatesWithContent.map( obsUpdate => obsUpdate.resource_uuid );
       if ( obsUUIDs.length > 0 ) {
@@ -118,12 +133,12 @@ const useInfiniteNotificationsScroll = (
           obsUUIDs,
           optsWithAuth,
           realm,
-          { save: params.observations_by === "owner" }
+          { save: params.observations_by === "owner" },
         );
         if ( observations ) {
           return updatesWithContent.map( ( update: Notification ) => {
             const resource = observations.find(
-              ( o: ApiObservation ) => o.uuid === update.resource_uuid
+              ( o: ApiObservation ) => o.uuid === update.resource_uuid,
             );
             update.resource = resource;
             update.viewerOwnsResource = resource?.user?.id === currentUser?.id;
@@ -138,20 +153,51 @@ const useInfiniteNotificationsScroll = (
       getNextPageParam: ( lastPage, allPages ) => ( lastPage.length > 0
         ? allPages.length + 1
         : undefined ),
-      enabled: !!( currentUser )
-    }
+      enabled: !!( currentUser ),
+    },
   );
 
+  // After 5 seconds of loading, we add a "Still loading..." message to the UI
+  useEffect( () => {
+    // Reset if we get data
+    if ( data !== undefined && !isFetching ) {
+      setShowStillLoadingMessage( false );
+      return undefined;
+    }
+
+    // Don't set timer if not loading
+    if ( !isFetching ) {
+      return undefined;
+    }
+
+    const timer = setTimeout( () => {
+      if ( data === undefined && isFetching ) {
+        setShowStillLoadingMessage( true );
+      }
+    }, LOADING_TIMEOUT );
+
+    // eslint-disable-next-line consistent-return
+    return () => clearTimeout( timer );
+  }, [data, isFetching] );
+
+  // Reset when user manually retries
+  useEffect( () => {
+    if ( isFetching ) {
+      setShowStillLoadingMessage( false );
+    }
+  }, [isFetching] );
+
   return {
-    refetch: infQueryResult.refetch,
-    isError: infQueryResult.isError,
-    isFetching: infQueryResult.isFetching,
-    isInitialLoading: infQueryResult.isInitialLoading,
+    refetch,
+    isError,
+    isFetching,
+    isInitialLoading,
+    showStillLoadingMessage,
     // Disable fetchNextPage if signed out
     fetchNextPage: currentUser
-      ? infQueryResult.fetchNextPage
+      ? fetchNextPage
       : ( ) => undefined,
-    notifications: flatten( infQueryResult?.data?.pages )
+    notifications: flatten( data?.pages ),
   };
 };
 

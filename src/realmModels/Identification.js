@@ -21,7 +21,7 @@ class Identification extends Realm.Object {
     // $FlowFixMe
     user: User && ( { ...User.FIELDS, id: true } ),
     uuid: true,
-    vision: true
+    vision: true,
   };
 
   static mimicRealmMappedPropertiesSchema( id ) {
@@ -29,21 +29,21 @@ class Identification extends Realm.Object {
       ...id,
       createdAt: id.created_at,
       flags: id.flags || [],
-      taxon: Taxon.mapApiToRealm( id.taxon )
+      taxon: Taxon.mapApiToRealm( id.taxon ),
     };
   }
 
   static mapIdentificationForMyObsAdvancedMode( id ) {
     return {
       uuid: id.uuid,
-      current: id.current
+      current: id.current,
     };
   }
 
   static new = attrs => {
     const newIdent = {
       ...attrs,
-      uuid: uuid.v4( )
+      uuid: uuid.v4( ),
     };
 
     return newIdent;
@@ -71,9 +71,9 @@ class Identification extends Realm.Object {
       assignee: {
         type: "linkingObjects",
         objectType: "Observation",
-        property: "identifications"
-      }
-    }
+        property: "identifications",
+      },
+    },
   };
 }
 

@@ -7,7 +7,7 @@ const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
-  default: ( ) => mockUser
+  default: ( ) => mockUser,
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -15,7 +15,7 @@ jest.mock( "@react-navigation/native", ( ) => {
   return {
     ...actualNav,
     useNavigation: jest.fn( ),
-    useRoute: jest.fn( ( ) => ( { } ) )
+    useRoute: jest.fn( ( ) => ( { } ) ),
   };
 } );
 
@@ -26,22 +26,22 @@ const ancestors = [
     name: "Fungi",
     preferred_common_name: "Fungi Including Lichens",
     rank: "kingdom",
-    rank_level: 80
+    rank_level: 80,
   } ),
   factory( "RemoteTaxon", {
     name: "Agaricomycetes",
     preferred_common_name: "Mushrooms, Bracket Fungi, Puffballs, and Allies",
     rank: "class",
-    rank_level: 60
-  } )
+    rank_level: 60,
+  } ),
 ];
 
 const children = [factory( "RemoteTaxon", {
   name: "Amanitina",
   preferred_common_name: "Amanita Subg. Amanitina",
   rank_level: 15,
-  rank: "subgenus"
-} )
+  rank: "subgenus",
+} ),
 ];
 
 const currentTaxon = factory( "RemoteTaxon", {
@@ -50,7 +50,7 @@ const currentTaxon = factory( "RemoteTaxon", {
   rank: "genus",
   rank_level: 20,
   ancestors,
-  children
+  children,
 } );
 
 describe( "Taxonomy", ( ) => {

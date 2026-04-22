@@ -31,14 +31,14 @@ const useObservationUpdatesWhenFocused = () => {
         setObservationUpdatesViewedRealm();
       }
     },
-    [setObservationUpdatesViewedRealm]
+    [setObservationUpdatesViewedRealm],
   );
 
   useEffect( () => {
     // subscribe to app state changes
     const subscription = AppState.addEventListener(
       "change",
-      onAppStateChange
+      onAppStateChange,
     );
     setObservationUpdatesViewedRealm();
 

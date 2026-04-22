@@ -1,8 +1,9 @@
 import { CommonActions, useNavigation, useRoute } from "@react-navigation/native";
 import { ActivityAnimation, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useRef, useState,
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
@@ -11,9 +12,16 @@ import useStore from "stores/useStore";
 
 const PhotoSharing = ( ) => {
   const previousItem = useRef( null );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"PhotoSharing">["navigation"] &
+    TabStackScreenProps<"PhotoSharing">["navigation"]
+  >( );
+  const { params } = useRoute<
+    NoBottomTabStackScreenProps<"PhotoSharing">["route"] &
+    TabStackScreenProps<"PhotoSharing">["route"]
+  >( );
   const { item } = params;
+  // TODO: seems expected here but not actually defined in App.js the only start point
   const sharedText = item.extraData?.userInput;
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
@@ -21,7 +29,9 @@ const PhotoSharing = ( ) => {
   const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs();
   const [navigationHandled, setNavigationHandled] = useState( null );
 
-  const resetNavigator = useCallback( screen => navigation.dispatch(
+  const resetNavigator = useCallback( (
+    screen: "Match" | "ObsEdit" | "Suggestions" | "GroupPhotos",
+  ) => navigation.dispatch(
     CommonActions.reset( {
       index: 0,
       routes: [
@@ -32,13 +42,13 @@ const PhotoSharing = ( ) => {
             routes: [
               {
                 name: screen,
-                params: { lastScreen: "PhotoSharing" }
-              }
-            ]
-          }
-        }
-      ]
-    } )
+                params: { lastScreen: "PhotoSharing" },
+              },
+            ],
+          },
+        },
+      ],
+    } ),
   ), [navigation] );
 
   const createObservationAndNavigate = useCallback( async photoUris => {
@@ -53,7 +63,7 @@ const PhotoSharing = ( ) => {
     } catch ( e ) {
       Alert.alert(
         "Photo sharing failed: couldn't create new observation:",
-        e
+        e,
       );
       return null;
     }
@@ -66,6 +76,7 @@ const PhotoSharing = ( ) => {
     // navigating through the AddObsBottomSheet
     resetObservationFlowSlice( );
 
+    // TODO: fix TS of the share item
     const photoUris = data
       .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
       .map( x => ( { image: { uri: x.data } } ) );
@@ -78,9 +89,9 @@ const PhotoSharing = ( ) => {
       setPhotoImporterState( {
         photoLibraryUris: photoUris.map( x => x.image.uri ),
         groupedPhotos: photoUris.map( photo => ( {
-          photos: [photo]
+          photos: [photo],
         } ) ),
-        firstObservationDefaults
+        firstObservationDefaults,
       } );
       resetNavigator( "GroupPhotos" );
     }
@@ -91,7 +102,7 @@ const PhotoSharing = ( ) => {
     resetObservationFlowSlice,
     setPhotoImporterState,
     sharedText,
-    resetNavigator
+    resetNavigator,
   ] );
 
   // When the user leaves this screen, we record the fact that navigation was handled...

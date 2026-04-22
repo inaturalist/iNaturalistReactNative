@@ -3,16 +3,15 @@ import {
   Body3,
   Body4,
   Button,
-  Heading4
+  Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import Attribution from "components/Suggestions/Attribution";
 import React from "react";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 import { useDebugMode, useTranslation } from "sharedHooks";
 
-import Attribution from "./Attribution";
-
-type Props = {
+interface Props {
   debugData: {
     onlineFetchStatus: string;
     offlineFetchStatus: string;
@@ -35,16 +34,13 @@ type Props = {
       };
     };
   };
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  handleSkip: Function;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  hideLocationToggleButton: Function;
+  handleSkip: ( ) => void;
+  hideLocationToggleButton: boolean;
   hideSkip?: boolean;
-  observers: Array<string>;
+  observers: string[];
   shouldUseEvidenceLocation: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  toggleLocation: Function;
-};
+  toggleLocation: ( options: { showLocation: boolean } ) => void;
+}
 
 const SuggestionsFooter = ( {
   debugData,
@@ -53,7 +49,7 @@ const SuggestionsFooter = ( {
   hideSkip,
   observers,
   shouldUseEvidenceLocation,
-  toggleLocation
+  toggleLocation,
 }: Props ) => {
   const { t } = useTranslation( );
   const { isDebug } = useDebugMode( );

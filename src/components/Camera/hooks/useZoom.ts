@@ -1,22 +1,23 @@
-import _ from "lodash";
+import indexOf from "lodash/indexOf";
+import last from "lodash/last";
 import {
   useCallback,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from "react";
 import {
-  Gesture
+  Gesture,
 } from "react-native-gesture-handler";
 import {
   Extrapolation,
   interpolate,
-  runOnJS,
   useAnimatedProps,
   useSharedValue,
-  withSpring
+  withSpring,
 } from "react-native-reanimated";
 import type { CameraDevice, CameraProps } from "react-native-vision-camera";
+import { scheduleOnRN } from "react-native-worklets";
 
 // This is taken from react-native-vision library itself: https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/Constants.ts#L19 https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/CameraPage.tsx#L34
 
@@ -68,11 +69,11 @@ const useZoom = ( device: CameraDevice ): object => {
   }, [device?.isMultiCam, minZoom, neutralZoom, zoom, startZoom] );
 
   const handleZoomButtonPress = ( ) => {
-    if ( zoomTextValue === _.last( zoomButtonOptions ) ) {
+    if ( zoomTextValue === last( zoomButtonOptions ) ) {
       zoom.set( withSpring( zoomButtonValues[0] ) );
       setZoomTextValue( zoomButtonOptions[0] );
     } else {
-      const zoomIndex = _.indexOf( zoomButtonOptions, zoomTextValue );
+      const zoomIndex = indexOf( zoomButtonOptions, zoomTextValue );
       zoom.set( withSpring( zoomButtonValues[zoomIndex + 1] ) );
       setZoomTextValue( zoomButtonOptions[zoomIndex + 1] );
     }
@@ -83,10 +84,10 @@ const useZoom = ( device: CameraDevice ): object => {
     startZoom.set( zoom.get() );
   }, [startZoom, zoom] );
 
-  const resetZoom = ( ) => {
+  const resetZoom = useCallback( ( ) => {
     zoom.set( initialZoom );
     setZoomTextValue( initialZoomTextValue );
-  };
+  }, [initialZoom, initialZoomTextValue, zoom] );
 
   const updateZoomTextValue = useCallback( ( newZoom: number ) => {
     const closestZoomTextValue = zoomButtonOptions.reduce(
@@ -98,7 +99,7 @@ const useZoom = ( device: CameraDevice ): object => {
           Math.abs( curr - newZoom ) < Math.abs( prev - newZoom )
             ? curr
             : prev );
-      }
+      },
     );
     setZoomTextValue( closestZoomTextValue );
   }, [zoomButtonOptions, minZoom] );
@@ -110,15 +111,15 @@ const useZoom = ( device: CameraDevice ): object => {
       newValue,
       [-1, 0, 1],
       [minZoom, startZoom.get( ), maxZoomWithPinch],
-      Extrapolation.CLAMP
+      Extrapolation.CLAMP,
     );
     zoom.set( newZoom );
 
-    runOnJS( updateZoomTextValue )( newZoom );
+    scheduleOnRN( updateZoomTextValue, newZoom );
   }, [maxZoomWithPinch, minZoom, updateZoomTextValue, startZoom, zoom] );
 
   const animatedProps = useAnimatedProps < CameraProps >(
-    () => ( { zoom: zoom.get( ) } )
+    () => ( { zoom: zoom.get( ) } ),
   );
 
   const pinchToZoom = useMemo( ( ) => Gesture.Pinch( )
@@ -133,12 +134,12 @@ const useZoom = ( device: CameraDevice ): object => {
         e.scale,
         [1 - 1 / SCALE_FULL_ZOOM, 1, SCALE_FULL_ZOOM],
         [-1, 0, 1],
-        Extrapolation.CLAMP
+        Extrapolation.CLAMP,
       );
       onZoomChange( newValue );
     } ), [
     onZoomChange,
-    onZoomStart
+    onZoomStart,
   ] );
 
   const yDiff = useSharedValue( 0 );
@@ -159,7 +160,7 @@ const useZoom = ( device: CameraDevice ): object => {
         yDiff.get( ),
         [PAN_ZOOM_MIN_DISTANCE, 0, PAN_ZOOM_MAX_DISTANCE],
         [-1, 0, 1],
-        Extrapolation.CLAMP
+        Extrapolation.CLAMP,
       ) * -1;
       onZoomChange( newValue );
     } )
@@ -174,7 +175,7 @@ const useZoom = ( device: CameraDevice ): object => {
     pinchToZoom,
     resetZoom,
     showZoomButton: device?.isMultiCam,
-    zoomTextValue
+    zoomTextValue,
   };
 };
 

@@ -1,6 +1,6 @@
 import type {
   GeolocationError,
-  GeolocationResponse
+  GeolocationResponse,
 } from "@react-native-community/geolocation";
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
@@ -23,7 +23,7 @@ export interface UserLocation {
 const geolocationOptions = {
   distanceFilter: 0,
   enableHighAccuracy: true,
-  maximumAge: 0
+  maximumAge: 0,
 };
 
 const useWatchPosition = ( options: {
@@ -68,7 +68,7 @@ const useWatchPosition = ( options: {
       const watchID = watchPosition(
         success,
         failure,
-        geolocationOptions
+        geolocationOptions,
       );
       if ( typeof ( watchID ) !== "number" ) {
         throw new Error( "watchPosition failed to return a watchID" );
@@ -86,7 +86,7 @@ const useWatchPosition = ( options: {
       longitude: currentPosition?.coords?.longitude,
       positional_accuracy: currentPosition?.coords?.accuracy,
       altitude: currentPosition?.coords?.altitude,
-      altitudinal_accuracy: currentPosition?.coords?.altitudeAccuracy
+      altitudinal_accuracy: currentPosition?.coords?.altitudeAccuracy,
     };
     setUserLocation( newLocation );
     if ( shouldStopWatch ) {
@@ -126,7 +126,7 @@ const useWatchPosition = ( options: {
     isFetchingLocation: subscriptionId !== null,
     stopWatch,
     subscriptionId,
-    userLocation
+    userLocation,
   };
 };
 

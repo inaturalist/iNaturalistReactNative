@@ -8,7 +8,7 @@ import { renderComponent } from "tests/helpers/render";
 const mockTaxon = factory( "RemoteTaxon", {
   name: faker.person.firstName( ),
   rank: "genus",
-  preferred_common_name: faker.person.fullName( )
+  preferred_common_name: faker.person.fullName( ),
 } );
 
 describe( "ObsDetailsOverview", () => {
@@ -16,9 +16,9 @@ describe( "ObsDetailsOverview", () => {
     renderComponent(
       <ObsDetailsOverview
         observation={{
-          taxon: null
+          taxon: null,
         }}
-      />
+      />,
     );
 
     const unknownText = screen.getByText( /Unknown/ );
@@ -29,9 +29,9 @@ describe( "ObsDetailsOverview", () => {
     renderComponent(
       <ObsDetailsOverview
         observation={{
-          taxon: mockTaxon
+          taxon: mockTaxon,
         }}
-      />
+      />,
     );
 
     const taxonName = screen.getByText( mockTaxon.name );

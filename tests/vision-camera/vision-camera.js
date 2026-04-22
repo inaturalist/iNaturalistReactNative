@@ -1,7 +1,10 @@
+import {
+  copyAssetsFileIOS,
+  TemporaryDirectoryPath,
+} from "@dr.pogodin/react-native-fs";
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import React from "react";
 import { View } from "react-native";
-import RNFS from "react-native-fs";
 
 const mockFrame = {
   isValid: true,
@@ -19,10 +22,10 @@ const mockFrame = {
   getNativeBuffer: () => ( {
     // Returns a fake pointer
     pointer: 0,
-    delete: () => null
+    delete: () => null,
   } ),
   incrementRefCount: () => null,
-  decrementRefCount: () => null
+  decrementRefCount: () => null,
 };
 
 const style = { flex: 1, backgroundColor: "red" };
@@ -30,8 +33,8 @@ export class mockCamera extends React.PureComponent {
   static async getAvailableCameraDevices() {
     return [
       {
-        position: "back"
-      }
+        position: "back",
+      },
     ];
   }
 
@@ -55,7 +58,7 @@ export class mockCamera extends React.PureComponent {
     // TODO: this only works on iOS
     return CameraRoll.getPhotos( {
       first: 20,
-      assetType: "Photos"
+      assetType: "Photos",
     } )
       .then( async r => {
         /*
@@ -71,12 +74,12 @@ export class mockCamera extends React.PureComponent {
           console.log( `Converted file uri to ${oldUri}` );
         }
         const encodedUri = encodeURI( oldUri );
-        const destPath = `${RNFS.TemporaryDirectoryPath}temp.jpg`;
-        const newPath = await RNFS.copyAssetsFileIOS(
+        const destPath = `${TemporaryDirectoryPath}temp.jpg`;
+        const newPath = await copyAssetsFileIOS(
           encodedUri,
           destPath,
           0,
-          0
+          0,
         );
         const photo = { uri: newPath, predictions: [] };
         if ( typeof photo !== "object" ) {
@@ -87,8 +90,8 @@ export class mockCamera extends React.PureComponent {
           ...testPhoto,
           path: newPath,
           metadata: {
-            Orientation: testPhoto.orientation
-          }
+            Orientation: testPhoto.orientation,
+          },
         };
       } )
       .catch( err => {
@@ -119,7 +122,7 @@ const device = {
   supportsFocus: true,
   supportsLowLightBoost: false,
   supportsParallelVideoProcessing: true,
-  supportsRawCapture: true
+  supportsRawCapture: true,
 };
 
 export const mockUseCameraDevice = _deviceType => device;
@@ -141,7 +144,7 @@ export const mockUseCameraFormat = _device => {
     supportsVideoHdr: false,
     videoHeight: 2160,
     videoStabilizationModes: ["off", "cinematic", "cinematic-extended"],
-    videoWidth: 3840
+    videoWidth: 3840,
   };
   return format;
 };

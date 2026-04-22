@@ -3,7 +3,7 @@ import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndS
 import {
   CommentsCount,
   IdentificationsCount,
-  QualityGradeStatus
+  QualityGradeStatus,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
@@ -25,7 +25,7 @@ const ObsStatus = ( {
   layout = "vertical",
   classNameMargin,
   testID,
-  isSimpleObsStatus
+  isSimpleObsStatus,
 }: Props ) => {
   const margin = layout === "vertical"
     ? "mb-1 ml-1"
@@ -34,7 +34,7 @@ const ObsStatus = ( {
   const identificationsFilled = observation?.identifications_viewed === false;
   const showCurrentIdCount = useCallback( ( ) => {
     let numCurrentIdents = observation?.identifications?.filter(
-      id => id.current === true
+      id => id.current === true,
     )?.length || 0;
     if ( numCurrentIdents === 0 && observation?.taxon ) {
       numCurrentIdents = 1;
@@ -95,7 +95,7 @@ const ObsStatus = ( {
   return (
     <View
       className={classNames( {
-        "flex-row": layout === "horizontal"
+        "flex-row": layout === "horizontal",
       }, classNameMargin )}
       testID={testID}
     >

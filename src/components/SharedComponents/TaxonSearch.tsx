@@ -3,7 +3,7 @@ import {
   Body2,
   INatIcon,
   SearchBar,
-  ViewWrapper
+  ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
@@ -13,8 +13,10 @@ import { useKeyboardInfo, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
-  offsetHeight: 4
+  offsetHeight: 4,
 } );
+
+const EMPTY_TAXA: RealmTaxon[] = [];
 
 interface Props {
   query?: string;
@@ -33,7 +35,7 @@ const TaxonSearch = ( {
   query = "",
   renderItem,
   setQuery,
-  taxa = []
+  taxa = EMPTY_TAXA,
 }: Props ) => {
   const { t } = useTranslation( );
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );

@@ -1,25 +1,25 @@
 import { useNavigation } from "@react-navigation/native";
 import Modal from "components/SharedComponents/Modal";
-import _ from "lodash";
+import find from "lodash/find";
 import type { PropsWithChildren } from "react";
 import React, {
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import type { AppStateStatus } from "react-native";
 import { AppState, Platform } from "react-native";
 import type {
   AndroidPermission,
   Permission,
-  PermissionStatus
+  PermissionStatus,
 } from "react-native-permissions";
 import {
   checkMultiple,
   PERMISSIONS,
   requestMultiple,
-  RESULTS
+  RESULTS,
 } from "react-native-permissions";
 
 import PermissionGate from "./PermissionGate";
@@ -28,41 +28,32 @@ const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <
 const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
 
 let androidReadWritePermissions: AndroidPermission[] = [
-  PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION
+  PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION,
 ];
 if ( usesAndroid10Permissions ) {
   androidReadWritePermissions = [
     ...androidReadWritePermissions,
-    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
   ];
 } else if ( usesAndroid13Permissions ) {
   androidReadWritePermissions = [
     ...androidReadWritePermissions,
-    PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+    PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
   ];
 } else {
   androidReadWritePermissions = [
     ...androidReadWritePermissions,
-    PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+    PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
   ];
 }
 
-// TODO does this really work for Android above 10?
-let androidWritePermissions: AndroidPermission[] = [];
-if ( usesAndroid10Permissions ) {
-  androidWritePermissions = [
-    ...androidWritePermissions,
-    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
-  ];
-}
-
-const androidCameraPermissions = usesAndroid10Permissions
-  ? [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
-  : [PERMISSIONS.ANDROID.CAMERA];
+const androidWritePermissions: AndroidPermission[] = usesAndroid10Permissions
+  ? [PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
+  : [];
 
 export const CAMERA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.CAMERA]
-  : androidCameraPermissions;
+  : [PERMISSIONS.ANDROID.CAMERA];
 
 export const AUDIO_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.MICROPHONE]
@@ -107,22 +98,39 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
   if ( typeof ( multiResults ) !== "object" ) {
     throw new Error(
       "permissionResultFromMultiple received something other than an object. "
-      + "Make sure you're using it with checkMultiple and not check"
+      + "Make sure you're using it with checkMultiple and not check",
     );
   }
-  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
+  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
     return RESULTS.BLOCKED;
   }
-  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.DENIED ) ) {
+  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.DENIED ) ) {
     return RESULTS.DENIED;
   }
-  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
+  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
     return RESULTS.UNAVAILABLE;
   }
-  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.LIMITED ) ) {
+  if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.LIMITED ) ) {
     return RESULTS.LIMITED;
   }
   return RESULTS.GRANTED;
+}
+
+export async function hasWriteMediaPermission( ) {
+  // WRITE_MEDIA_PERMISSIONS is empty on android 11+ because we don't need to request permissions
+  if ( WRITE_MEDIA_PERMISSIONS.length === 0 ) return true;
+  const result = permissionResultFromMultiple(
+    await checkMultiple( WRITE_MEDIA_PERMISSIONS ),
+  );
+  return result === RESULTS.GRANTED;
+}
+
+export async function requestWriteMediaPermission( ) {
+  if ( WRITE_MEDIA_PERMISSIONS.length === 0 ) return true;
+  const result = permissionResultFromMultiple(
+    await requestMultiple( WRITE_MEDIA_PERMISSIONS ),
+  );
+  return result === RESULTS.GRANTED;
 }
 
 // Prompts the user for an Android permission and renders children if granted.
@@ -149,7 +157,7 @@ const PermissionGateContainer = ( {
   testID,
   title,
   titleDenied,
-  withoutNavigation
+  withoutNavigation,
 }: Props ) => {
   const [result, setResult] = useState<PermissionStatus | null>( null );
   const [modalShown, setModalShown] = useState( false );
@@ -211,7 +219,7 @@ const PermissionGateContainer = ( {
     navigation,
     permissionNeeded,
     result,
-    withoutNavigation
+    withoutNavigation,
   ] );
 
   // If permission was granted and there are no children to render, we can
@@ -247,7 +255,7 @@ const PermissionGateContainer = ( {
           await checkPermission();
         }
         prevAppState.current = nextAppState;
-      }
+      },
     );
 
     return () => {
@@ -263,11 +271,20 @@ const PermissionGateContainer = ( {
     if ( onModalHideProp ) {
       onModalHideProp( );
     }
-    if ( !withoutNavigation ) navigation.goBack( );
+    if ( !withoutNavigation ) {
+      if ( navigation.canGoBack() ) {
+        navigation.goBack();
+      } else {
+        navigation.navigate( "TabNavigator", {
+          screen: "ObservationsTab",
+          params: { screen: "ObsList" },
+        } );
+      }
+    }
   }, [
     navigation,
     onModalHideProp,
-    withoutNavigation
+    withoutNavigation,
   ] );
 
   // If the result changes, notify the parent component
@@ -286,7 +303,7 @@ const PermissionGateContainer = ( {
     onPermissionDenied,
     onPermissionGranted,
     onPermissionLimited,
-    result
+    result,
   ] );
 
   // If permission granted and children are gated, let the children out

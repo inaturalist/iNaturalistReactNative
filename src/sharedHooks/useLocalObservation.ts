@@ -27,7 +27,7 @@ const useLocalObservation = ( uuid: string ): UseLocalObservation => {
       },
       markViewedLocally: ( ) => {
         throw new Error( "UUID is required to mark local observation as viewed" );
-      }
+      },
     };
   }
 
@@ -41,17 +41,21 @@ const useLocalObservation = ( uuid: string ): UseLocalObservation => {
       },
       markViewedLocally: ( ) => {
         throw new Error( "Trying to mark non-existing local observation as viewed" );
-      }
+      },
     };
   }
 
   const markDeletedLocally = ( ) => {
+    if ( realm.isClosed ) return;
+    if ( !observation || !observation.isValid() ) return;
     safeRealmWrite( realm, ( ) => {
       observation._deleted_at = new Date( );
     }, "adding _deleted_at date in ObsDetailsContainer" );
   };
 
   const markViewedLocally = ( ) => {
+    if ( realm.isClosed ) return;
+    if ( !observation || !observation.isValid() ) return;
     safeRealmWrite( realm, ( ) => {
       // Flags if all comments and identifications have been viewed
       observation.comments_viewed = true;
@@ -65,21 +69,21 @@ const useLocalObservation = ( uuid: string ): UseLocalObservation => {
         return this.comments
           ? this.comments.filtered( "hidden == false" )
           : [];
-      }
+      },
     },
     visibleIdentifications: {
       get() {
         return this.identifications
           ? this.identifications.filtered( "hidden == false" )
           : [];
-      }
-    }
+      },
+    },
   } );
 
   return {
     localObservation: observation,
     markDeletedLocally,
-    markViewedLocally
+    markViewedLocally,
   };
 };
 

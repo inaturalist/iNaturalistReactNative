@@ -10,7 +10,7 @@ import { signIn, signOut } from "tests/helpers/user";
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -21,8 +21,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -33,7 +33,7 @@ const mockUser = factory( "LocalUser" );
 
 function makeMockObsUpdatesResponse( mockObs ) {
   const mockObservation = mockObs || factory( "RemoteObservation", {
-    user: mockUser
+    user: mockUser,
   } );
   const mockComment = factory( "RemoteComment", { parent_id: mockObservation.id } );
   const mockUpdate = {
@@ -48,7 +48,7 @@ function makeMockObsUpdatesResponse( mockObs ) {
     resource_type: "Observation",
     resource_id: mockObservation.id,
     resource_uuid: mockObservation.uuid,
-    viewed: false
+    viewed: false,
   };
   const obsUpdatesResponse = makeResponse( [mockUpdate] );
   inatjs.observations.updates.mockResolvedValue( obsUpdatesResponse );
@@ -75,19 +75,19 @@ describe( "Notifications", () => {
       expect( inatjs.observations.updates ).toHaveBeenCalled( );
     } );
     expect(
-      await screen.findByText( /added a comment to an observation by you/ )
+      await screen.findByText( /added a comment to an observation by you/ ),
     ).toBeVisible( );
   } );
 
   it( "should show a photo for an observation not in the local database", async ( ) => {
     const mockObservation = factory( "RemoteObservation", {
       observation_photos: [
-        factory( "RemoteObservationPhoto" )
-      ]
+        factory( "RemoteObservationPhoto" ),
+      ],
     } );
     const localObservation = global.mockRealms[__filename].objectForPrimaryKey(
       "Observation",
-      mockObservation.uuid
+      mockObservation.uuid,
     );
     expect( localObservation ).toBeFalsy( );
     const photoUrl = mockObservation.observation_photos[0].photo.url;
@@ -99,7 +99,7 @@ describe( "Notifications", () => {
     expect( await screen.findByText( comment.user.login ) ).toBeVisible( );
     const localObservationAfter = global.mockRealms[__filename].objectForPrimaryKey(
       "Observation",
-      mockObservation.uuid
+      mockObservation.uuid,
     );
     expect( localObservationAfter ).toBeTruthy( );
     const image = await screen.findByTestId( "ObservationIcon.photo" );

@@ -19,7 +19,7 @@ describe( "mediaUploader", () => {
 
     const mockProgress = {
       attached: jest.fn(),
-      uploaded: jest.fn()
+      uploaded: jest.fn(),
     };
     mockedTrackEvidenceUpload.mockReturnValue( mockProgress );
     mockedCreateOrUpdateEvidence.mockResolvedValue( { id: 123 } );
@@ -28,7 +28,7 @@ describe( "mediaUploader", () => {
       type,
       action,
       observation_id: observationId,
-      file_url: evidence.url
+      file_url: evidence.url,
     } ) );
   } );
 
@@ -39,12 +39,12 @@ describe( "mediaUploader", () => {
         observationPhotos: [
           {
             wasSynced: () => false,
-            photo: { uuid: "photo-uuid-1", url: "photo1.jpg" }
-          }
+            photo: { uuid: "photo-uuid-1", url: "photo1.jpg" },
+          },
         ],
         observationSounds: [
-          { wasSynced: () => false, uuid: "sound-uuid-1", url: "sound1.mp3" }
-        ]
+          { wasSynced: () => false, uuid: "sound-uuid-1", url: "sound1.mp3" },
+        ],
       };
       const options = { api_token: "test-token" };
       const realm = {};
@@ -55,7 +55,7 @@ describe( "mediaUploader", () => {
       expect( result ).toEqual( {
         unsyncedObservationPhotos: observation.observationPhotos,
         modifiedObservationPhotos: [],
-        unsyncedObservationSounds: observation.observationSounds
+        unsyncedObservationSounds: observation.observationSounds,
       } );
     } );
 
@@ -63,7 +63,7 @@ describe( "mediaUploader", () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [],
-        observationSounds: []
+        observationSounds: [],
       };
       const options = { api_token: "test-token" };
       const realm = {};
@@ -74,7 +74,7 @@ describe( "mediaUploader", () => {
       expect( result ).toEqual( {
         unsyncedObservationPhotos: [],
         modifiedObservationPhotos: [],
-        unsyncedObservationSounds: []
+        unsyncedObservationSounds: [],
       } );
     } );
 
@@ -85,10 +85,10 @@ describe( "mediaUploader", () => {
           {
             wasSynced: () => true,
             needsSync: () => true,
-            photo: { uuid: "photo-uuid-1", url: "photo1.jpg" }
-          }
+            photo: { uuid: "photo-uuid-1", url: "photo1.jpg" },
+          },
         ],
-        observationSounds: []
+        observationSounds: [],
       };
       const options = { api_token: "test-token" };
       const realm = {};
@@ -107,14 +107,14 @@ describe( "mediaUploader", () => {
             wasSynced: () => false,
             get photo() {
               throw new Error( "No object with key photo-uuid-missing" );
-            }
+            },
           },
           {
             wasSynced: () => false,
-            photo: { uuid: "photo-uuid-1", url: "photo1.jpg" }
-          }
+            photo: { uuid: "photo-uuid-1", url: "photo1.jpg" },
+          },
         ],
-        observationSounds: []
+        observationSounds: [],
       };
       const options = { api_token: "test-token" };
       const realm = {};
@@ -131,14 +131,14 @@ describe( "mediaUploader", () => {
       const observationUUID = "obs-uuid-123";
       const mediaItems = {
         unsyncedObservationPhotos: [
-          { uuid: "photo-uuid-1", url: "photo1.jpg" }
+          { uuid: "photo-uuid-1", url: "photo1.jpg" },
         ],
         modifiedObservationPhotos: [
-          { uuid: "photo-uuid-2", url: "photo2.jpg" }
+          { uuid: "photo-uuid-2", url: "photo2.jpg" },
         ],
         unsyncedObservationSounds: [
-          { uuid: "sound-uuid-1", url: "sound1.mp3" }
-        ]
+          { uuid: "sound-uuid-1", url: "sound1.mp3" },
+        ],
       };
       const options = { api_token: "test-token" };
       const realm = {};
@@ -151,37 +151,37 @@ describe( "mediaUploader", () => {
         mediaItems.unsyncedObservationPhotos[0],
         "ObservationPhoto",
         "attach",
-        observationUUID
+        observationUUID,
       );
 
       expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
         mediaItems.unsyncedObservationSounds[0],
         "ObservationSound",
         "attach",
-        observationUUID
+        observationUUID,
       );
 
       expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
         mediaItems.modifiedObservationPhotos[0],
         "ObservationPhoto",
         "update",
-        observationUUID
+        observationUUID,
       );
 
       expect( mockedCreateOrUpdateEvidence ).toHaveBeenCalledWith(
         inatjs.observation_photos.create,
         expect.any( Object ),
-        options
+        options,
       );
       expect( mockedCreateOrUpdateEvidence ).toHaveBeenCalledWith(
         inatjs.observation_sounds.create,
         expect.any( Object ),
-        options
+        options,
       );
       expect( mockedCreateOrUpdateEvidence ).toHaveBeenCalledWith(
         inatjs.observation_photos.update,
         expect.any( Object ),
-        options
+        options,
       );
     } );
 
@@ -190,7 +190,7 @@ describe( "mediaUploader", () => {
       const mediaItems = {
         unsyncedObservationPhotos: [],
         modifiedObservationPhotos: [],
-        unsyncedObservationSounds: []
+        unsyncedObservationSounds: [],
       };
       const options = { api_token: "test-token" };
       const realm = {};
@@ -210,18 +210,18 @@ describe( "mediaUploader", () => {
           {
             wasSynced: () => true,
             needsSync: () => true,
-            photo: { uuid: "photo-uuid-2", url: "photo2.jpg" }
+            photo: { uuid: "photo-uuid-2", url: "photo2.jpg" },
           },
           {
             wasSynced: () => true,
             needsSync: () => false,
-            photo: { uuid: "photo-uuid-3", url: "photo3.jpg" }
-          }
+            photo: { uuid: "photo-uuid-3", url: "photo3.jpg" },
+          },
         ],
         observationSounds: [
           { wasSynced: () => false, uuid: "sound-uuid-1", url: "sound1.mp3" },
-          { wasSynced: () => true, uuid: "sound-uuid-2", url: "sound2.mp3" }
-        ]
+          { wasSynced: () => true, uuid: "sound-uuid-2", url: "sound2.mp3" },
+        ],
       };
       const options = { api_token: "test-token" };
       const realm = {};
@@ -239,15 +239,15 @@ describe( "mediaUploader", () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [
-          { wasSynced: () => false, photo: { uuid: "photo-uuid-1", url: "photo1.jpg" } }
+          { wasSynced: () => false, photo: { uuid: "photo-uuid-1", url: "photo1.jpg" } },
         ],
-        observationSounds: []
+        observationSounds: [],
       };
       const options = { api_token: "test-token" };
       const realm = {};
       const mockProgress = {
         attached: jest.fn(),
-        uploaded: jest.fn()
+        uploaded: jest.fn(),
       };
       mockedTrackEvidenceUpload.mockReturnValue( mockProgress );
 
@@ -262,16 +262,16 @@ describe( "mediaUploader", () => {
       const observationUUID = "obs-uuid-123";
       const mediaItems = {
         unsyncedObservationPhotos: [
-          { uuid: "photo-uuid-1", url: "photo1.jpg" }
+          { uuid: "photo-uuid-1", url: "photo1.jpg" },
         ],
         modifiedObservationPhotos: [],
-        unsyncedObservationSounds: []
+        unsyncedObservationSounds: [],
       };
       const options = { api_token: "test-token" };
       const realm = {};
       const mockProgress = {
         attached: jest.fn(),
-        uploaded: jest.fn()
+        uploaded: jest.fn(),
       };
       mockedTrackEvidenceUpload.mockReturnValue( mockProgress );
 
@@ -287,9 +287,9 @@ describe( "mediaUploader", () => {
       const observation = {
         uuid: "obs-uuid-123",
         observationPhotos: [
-          { wasSynced: () => false, photo: { uuid: "photo-uuid-1", url: "photo1.jpg" } }
+          { wasSynced: () => false, photo: { uuid: "photo-uuid-1", url: "photo1.jpg" } },
         ],
-        observationSounds: []
+        observationSounds: [],
       };
       const options = { api_token: "test-token" };
       const realm = {};
@@ -305,10 +305,10 @@ describe( "mediaUploader", () => {
         observationPhotos: [
           {
             wasSynced: () => false,
-            photo: null
-          }
+            photo: null,
+          },
         ],
-        observationSounds: []
+        observationSounds: [],
       };
       const options = { api_token: "test-token" };
       const realm = {};

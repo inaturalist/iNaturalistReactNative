@@ -1,4 +1,7 @@
 import Clipboard from "@react-native-clipboard/clipboard";
+import DetailsMapHeader from "components/ObsDetailsSharedComponents/DetailsTab/DetailsMapHeader";
+import ObscurationExplanation
+  from "components/ObsDetailsSharedComponents/DetailsTab/ObscurationExplanation";
 import {
   Button,
   DetailsMap,
@@ -6,7 +9,7 @@ import {
   KebabMenu,
   Map,
   Modal,
-  ObservationLocation
+  ObservationLocation,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -14,9 +17,6 @@ import React, { useCallback, useMemo, useState } from "react";
 import createOpenLink from "react-native-open-maps";
 import type Observation from "realmModels/Observation";
 import { useCurrentUser } from "sharedHooks";
-
-import DetailsMapHeader from "./DetailsMapHeader";
-import ObscurationExplanation from "./ObscurationExplanation";
 
 interface Props {
   observation: Observation;
@@ -38,7 +38,7 @@ const LocationSection = ( { observation }: Props ) => {
   const longitude = observation.privateLongitude || observation.longitude;
   const coordinateString = t( "Lat-Lon", {
     latitude,
-    longitude
+    longitude,
   } );
 
   const openMapScreen = useCallback( ( ) => setShowMapModal( true ), [] );
@@ -48,7 +48,7 @@ const LocationSection = ( { observation }: Props ) => {
   const tileMapParams = useMemo( ( ) => ( taxonId
     ? {
       taxon_id: taxonId,
-      verifiable: true
+      verifiable: true,
     }
     : null ), [taxonId] );
 
@@ -69,8 +69,8 @@ const LocationSection = ( { observation }: Props ) => {
     [
       observation,
       tileMapParams,
-      openMapScreen
-    ]
+      openMapScreen,
+    ],
   );
 
   const showModalMap = useMemo( ( ) => (
@@ -88,7 +88,7 @@ const LocationSection = ( { observation }: Props ) => {
     coordinateString,
     currentUser,
     observation,
-    tileMapParams
+    tileMapParams,
   ] );
 
   return (
@@ -104,7 +104,7 @@ const LocationSection = ( { observation }: Props ) => {
               isFirst
               title={t( "Share-location" )}
               onPress={() => createOpenLink(
-                { query: `${latitude},${longitude}` }
+                { query: `${latitude},${longitude}` },
               )}
             />
             <KebabMenu.Item

@@ -1,5 +1,5 @@
 import {
-  Button
+  Button,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -25,7 +25,7 @@ const SuggestionsHeader = ( {
   selectedPhotoUri,
   showOfflineText,
   improveWithLocationButtonOnPress,
-  showImproveWithLocationButton
+  showImproveWithLocationButton,
 }: Props ) => {
   const { t } = useTranslation( );
 

@@ -10,13 +10,13 @@ import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
 const mockUserWithRussianWebLocale = factory( "RemoteUser", {
-  locale: "ru"
+  locale: "ru",
 } );
 
 // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
-  mockRealmIdentifier
+  mockRealmIdentifier,
 );
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
@@ -27,8 +27,8 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => []
-    }
+      useQuery: ( ) => [],
+    },
   };
 } );
 beforeAll( uniqueRealmBeforeAll );
@@ -50,10 +50,10 @@ describe( "LanguageSettings", ( ) => {
       inatjs.users.me.mockResolvedValue( makeResponse( [mockUserWithRussianWebLocale] ) );
       inatjs.translations.locales.mockResolvedValue( makeResponse( [{
         language_in_locale: "Русский",
-        locale: "ru"
+        locale: "ru",
       }, {
         language_in_locale: "Svenska",
-        locale: "sv"
+        locale: "sv",
       }] ) );
     } );
 
@@ -64,7 +64,7 @@ describe( "LanguageSettings", ( ) => {
     it( "uses locale preference from server", async ( ) => {
       renderAppWithComponent( <Settings /> );
       const sciNameText = await screen.findByText(
-        i18next.t( "Scientific-Name", { lang: "ru" } )
+        i18next.t( "Scientific-Name", { lang: "ru" } ),
       );
       expect( sciNameText ).toBeVisible( );
     } );
@@ -72,27 +72,27 @@ describe( "LanguageSettings", ( ) => {
     it( "allows change to Swedish and requests remote locale change", async ( ) => {
       renderAppWithComponent( <Settings /> );
       const changeLocaleButton = await screen.findByText(
-        i18next.t( "CHANGE-APP-LANGUAGE", { lang: "ru" } )
+        i18next.t( "CHANGE-APP-LANGUAGE", { lang: "ru" } ),
       );
       fireEvent.press( changeLocaleButton );
       const picker = await screen.findByTestId( "ReactNativePicker" );
       fireEvent( picker, "onValueChange", "sv" );
       expect( picker.props.selectedIndex ).toStrictEqual( 1 );
       const confirmText = await screen.findByText(
-        i18next.t( "CONFIRM", { lang: "ru" } )
+        i18next.t( "CONFIRM", { lang: "ru" } ),
       );
       fireEvent.press( confirmText );
       const sciNameText = await screen.findByText(
-        i18next.t( "Scientific-Name", { lang: "sv" } )
+        i18next.t( "Scientific-Name", { lang: "sv" } ),
       );
       expect( sciNameText ).toBeVisible( );
       expect( inatjs.users.update ).toHaveBeenCalledWith( {
         id: mockUserWithRussianWebLocale.id,
         user: {
-          locale: "sv"
-        }
+          locale: "sv",
+        },
       }, {
-        api_token: "test-json-web-token"
+        api_token: "test-json-web-token",
       } );
     } );
 

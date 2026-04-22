@@ -19,12 +19,12 @@ const mockObservation = factory( "LocalObservation", {
   latitude: Number( faker.location.latitude( ) ),
   longitude: Number( faker.location.longitude( ) ),
   description: faker.lorem.paragraph( ),
-  quality_grade: "casual"
+  quality_grade: "casual",
 } );
 
 const mockObservationWithTaxon = {
   ...mockObservation,
-  taxon: factory( "LocalTaxon" )
+  taxon: factory( "LocalTaxon" ),
 };
 
 const baseUrl = `${TILE_URL}/grid/{z}/{x}/{y}.png`;

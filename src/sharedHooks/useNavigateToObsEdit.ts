@@ -1,35 +1,47 @@
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import type { RealmObservation } from "realmModels/types";
+import { useNavigation } from "@react-navigation/native";
+import type { ApiTaxon } from "api/types";
+import type { TabStackScreenProps } from "navigation/types";
+import type { RealmObservation, RealmTaxon } from "realmModels/types";
+import { backupObservationPhotos } from "sharedHelpers/rollbackPhotos";
 import useStore from "stores/useStore";
 
 function useNavigateToObsEdit() {
-  const navigation = useNavigation( );
+  // This hook is used in
+  // MyObservationsContainer
+  // ObsDetailsDefaultModeHeaderRight
+  // ObservationsFlashList
+  // HeaderEditIcon
+  const navigation = useNavigation<TabStackScreenProps<
+  "ObsList" | "ObsDetails" | "RootExplore" | "Explore" | "Match"
+  >["navigation"]>( );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setMyObsOffsetToRestore = useStore( state => state.setMyObsOffsetToRestore );
+  const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const setRollbackSnapshot = useStore( state => state.setRollbackSnapshot );
+  const setBackupMappings = useStore( state => state.setBackupMappings );
 
-  function navigateToObsEdit( localObservation: RealmObservation ) {
+  function navigateToObsEdit(
+    localObservation: RealmObservation,
+    lastScreen?: "Match",
+    taxon?: ApiTaxon | RealmTaxon,
+  ) {
     prepareObsEdit( localObservation );
-    // since we can access ObsEdit from two separate stacks, the TabStackNavigator
-    // and the NoBottomTabStackNavigator, we don't want ObsEdit to land on the previous
-    // history of the NoBottomTabStackNavigator (i.e. anything from the ObsCreate flow)
-    // when we're navigating via the TabStack (i.e. MyObservations, ObsDetails)
-    navigation.dispatch(
-      CommonActions.reset( {
-        index: 0,
-        routes: [
-          {
-            name: "NoBottomTabStackNavigator",
-            state: {
-              index: 0,
-              routes: [
-                {
-                  name: "ObsEdit"
-                }
-              ]
-            }
-          }
-        ]
-      } )
+    if ( taxon ) {
+      updateObservationKeys( {
+        owners_identification_from_vision: true,
+        taxon,
+      }, false );
+    }
+    if ( lastScreen === "Match" ) {
+      // Rollback happens in ObsEditHeader in discardChanges
+      setRollbackSnapshot( );
+      backupObservationPhotos( localObservation ).then( setBackupMappings );
+    }
+    navigation.navigate(
+      "ObsEdit",
+      lastScreen
+        ? { lastScreen }
+        : undefined,
     );
     setMyObsOffsetToRestore();
   }

@@ -9,19 +9,19 @@ const ANNOUNCEMENTS_FIELDS = {
   body: true,
   dismissible: true,
   start: true,
-  placement: true
+  placement: true,
 };
 
 const PARAMS = {
   fields: ANNOUNCEMENTS_FIELDS,
-  placement: "mobile"
+  placement: "mobile",
 };
 
 const searchAnnouncements = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
   try {
     const { results } = await inatjs.announcements.search(
       { ...PARAMS, ...params },
-      opts
+      opts,
     );
     return results;
   } catch ( e ) {

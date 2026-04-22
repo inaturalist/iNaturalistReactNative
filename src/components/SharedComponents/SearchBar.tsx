@@ -37,7 +37,7 @@ const SearchBar = ( {
   placeholder,
   testID,
   value,
-  debounceTime = 300
+  debounceTime = 300,
 }: Props ) => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -60,7 +60,7 @@ const SearchBar = ( {
   const outlineStyle = {
     borderColor: "lightgray",
     borderRadius: 8,
-    borderWidth: 1
+    borderWidth: 1,
   } as const;
 
   const style = {
@@ -69,7 +69,7 @@ const SearchBar = ( {
       : {} ),
     fontSize: 16,
     lineHeight: 18,
-    paddingRight: 28
+    paddingRight: 28,
   } as const;
 
   // kind of tricky to change the font here:
@@ -79,9 +79,9 @@ const SearchBar = ( {
       bodyLarge:
         {
           ...theme.fonts.bodyLarge,
-          fontFamily: fontRegular
-        }
-    }
+          fontFamily: fontRegular,
+        },
+    },
   } as const;
 
   return (

@@ -9,25 +9,25 @@ class Taxon extends Realm.Object {
       id: true,
       url: true,
       attribution: true,
-      license_code: true
+      license_code: true,
     },
     iconic_taxon_name: true,
     is_active: true,
     name: true,
     preferred_common_name: true,
     rank: true,
-    rank_level: true
+    rank_level: true,
   };
 
   static LIMITED_TAXON_FIELDS = {
     ancestor_ids: true,
     default_photo: {
       id: true,
-      url: true
+      url: true,
     },
     representative_photo: {
       id: true,
-      url: true
+      url: true,
     },
     iconic_taxon_name: true,
     name: true,
@@ -36,9 +36,9 @@ class Taxon extends Realm.Object {
     rank_level: true,
     taxon_photos: {
       photo: {
-        url: true
-      }
-    }
+        url: true,
+      },
+    },
   };
 
   static STATEOFMATTER_LEVEL = 100;
@@ -115,7 +115,7 @@ class Taxon extends Realm.Object {
     return {
       ...taxon,
       default_photo: Photo.mapApiToRealm( taxon?.default_photo ),
-      preferredCommonName: taxon.preferred_common_name
+      preferredCommonName: taxon.preferred_common_name,
     };
   }
 
@@ -123,7 +123,7 @@ class Taxon extends Realm.Object {
     const names = [
       taxon.name,
       taxon.preferred_common_name,
-      taxon.preferredCommonName
+      taxon.preferredCommonName,
     ];
     return [...new Set( names )].filter( Boolean ).join( "; " );
   }
@@ -133,7 +133,7 @@ class Taxon extends Realm.Object {
       ...taxon,
       ...extra,
       _searchableName: Taxon.compileSearchableName( taxon ),
-      _synced_at: new Date( )
+      _synced_at: new Date( ),
     };
     // This doesn't seem like the best place to do validation, but IDK where
     // else. If we assign `undefined` to ancestor_ids, Realm seems to insert
@@ -156,7 +156,7 @@ class Taxon extends Realm.Object {
     return {
       ...taxon,
       id: Number( taxon?.id ),
-      default_photo: Photo.mapApiToRealm( taxon?.default_photo )
+      default_photo: Photo.mapApiToRealm( taxon?.default_photo ),
     };
   }
 
@@ -171,23 +171,23 @@ class Taxon extends Realm.Object {
         type: "object",
         objectType: "Photo",
         mapTo: "defaultPhoto",
-        optional: true
+        optional: true,
       },
       name: {
         type: "string",
         // indexed: "full-text",
-        optional: true
+        optional: true,
       },
       preferred_common_name: {
         type: "string",
         // indexed: "full-text",
         mapTo: "preferredCommonName",
-        optional: true
+        optional: true,
       },
       _searchableName: {
         type: "string",
         indexed: "full-text",
-        optional: true
+        optional: true,
       },
       rank: "string?",
       rank_level: "float?",
@@ -195,8 +195,8 @@ class Taxon extends Realm.Object {
       iconic_taxon_name: "string?",
       ancestor_ids: "int[]",
       _synced_at: "date?",
-      taxonPhotos: "TaxonPhoto[]"
-    }
+      taxonPhotos: "TaxonPhoto[]",
+    },
   };
 }
 

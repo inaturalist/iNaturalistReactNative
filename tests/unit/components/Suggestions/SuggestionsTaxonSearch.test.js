@@ -19,32 +19,32 @@ jest.mock(
         {props.children}
       </MockName>
     );
-  }
+  },
 );
 
 const mockTaxaList = [
   factory( "RemoteTaxon" ),
-  factory( "RemoteTaxon" )
+  factory( "RemoteTaxon" ),
 ];
 
 const mockIconicTaxaList = [
   factory( "RemoteTaxon" ),
-  factory( "RemoteTaxon" )
+  factory( "RemoteTaxon" ),
 ];
 
 jest.mock( "sharedHooks/useIconicTaxa", () => ( {
   __esModule: true,
-  default: ( ) => ( mockIconicTaxaList )
+  default: ( ) => ( mockIconicTaxaList ),
 } ) );
 
 jest.mock( "sharedHooks/useTaxonSearch", () => ( {
   __esModule: true,
-  default: ( ) => ( { taxa: mockTaxaList, isLoading: false } )
+  default: ( ) => ( { taxa: mockTaxaList, isLoading: false } ),
 } ) );
 
 jest.mock( "sharedHooks/useTaxon", () => ( {
   __esModule: true,
-  default: () => ( { taxon: mockTaxaList[0] } )
+  default: () => ( { taxon: mockTaxaList[0] } ),
 } ) );
 
 describe( "TaxonSearch", ( ) => {
@@ -74,7 +74,7 @@ describe( "TaxonSearch", ( ) => {
   it( "should render with no initial comment state", ( ) => {
     renderComponent( <SuggestionsTaxonSearch /> );
     const commentSection = screen.queryByText(
-      i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
+      i18next.t( "Your-identification-will-be-posted-with-the-following-comment" ),
     );
     expect( commentSection ).toBeFalsy( );
   } );

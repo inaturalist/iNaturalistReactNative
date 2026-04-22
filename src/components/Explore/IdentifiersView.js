@@ -20,13 +20,13 @@ const IdentifiersView = ( {
   canFetch,
   isConnected,
   queryParams,
-  handleUpdateCount
+  handleUpdateCount,
 }: Props ): Node => {
   const {
     data,
     fetchNextPage,
     isFetchingNextPage,
-    totalResults
+    totalResults,
   } = useInfiniteScroll(
     "fetchIdentifiers",
     fetchIdentifiers,
@@ -34,12 +34,12 @@ const IdentifiersView = ( {
       ...queryParams,
       fields: {
         identifications_count: true,
-        user: User.LIMITED_FIELDS
-      }
+        user: User.LIMITED_FIELDS,
+      },
     },
     {
-      enabled: canFetch
-    }
+      enabled: canFetch,
+    },
   );
 
   useEffect( ( ) => {
