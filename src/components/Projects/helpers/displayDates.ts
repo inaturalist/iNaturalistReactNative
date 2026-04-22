@@ -8,7 +8,7 @@ interface ProjectRulePreference {
 }
 
 type ProjectWithDateRules = Omit<ApiProject, "project_type"> & {
-  project_type?: ApiProject["project_type"] | "traditional";
+  project_type?: ApiProject["project_type"];
   rule_preferences?: ProjectRulePreference[] | null;
 };
 
@@ -88,7 +88,7 @@ const formatProjectDate = (
   return {
     projectDate,
     shouldDisplayDateRange: !!( formattedStartDate && formattedEndDate )
-      && project?.project_type !== "traditional",
+      && project?.project_type !== "", // "" means "traditional"
   };
 };
 
