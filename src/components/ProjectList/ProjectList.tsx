@@ -13,8 +13,8 @@ import ProjectListItem from "./ProjectListItem";
 
 interface Props {
   projects: ApiProject[];
-  ListEmptyComponent?: React.JSX.Element;
-  ListFooterComponent?: React.JSX.Element;
+  ListEmptyComponent?: React.ReactElement;
+  ListFooterComponent?: React.ReactElement;
   onEndReached?: ( ) => void;
   onPress?: ( project: ApiProject ) => void;
   accessibilityLabel?: string;
