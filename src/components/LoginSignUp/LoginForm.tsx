@@ -35,7 +35,7 @@ interface Props {
 const LoginForm = ( {
   scrollViewRef,
 }: Props ) => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation<LoginStackScreenProps<"Login">["navigation"]>( );
   const { params } = useRoute<LoginStackScreenProps<"Login">["route"]>();
   const emailConfirmed = params?.emailConfirmed;
   // For debug reasons, we can send the user here to log in again, but we must ensure
