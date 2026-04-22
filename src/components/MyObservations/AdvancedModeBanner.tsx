@@ -11,6 +11,7 @@ import BannerDismissButton from "./BannerDismissButton";
 const AdvancedModeBanner = ( ) => {
   const { t } = useTranslation( );
   const {
+    setAdvancedModeBannerDismissed,
     setIsDefaultMode,
   } = useLayoutPrefs();
 
@@ -18,7 +19,7 @@ const AdvancedModeBanner = ( ) => {
     <View className="px-[27px] py-[20px]">
       <BannerDismissButton
         accessibilityLabel={t( "Close" )}
-        onPress={() => console.log( "Dismiss Advanced Mode banner" )}
+        onPress={() => setAdvancedModeBannerDismissed( )}
         testID="advanced-mode-banner-dismiss"
       />
       <Body3>{t( "If-youre-an-experienced-user-try-switching-to-Advanced-Mode" )}</Body3>
