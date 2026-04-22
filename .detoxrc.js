@@ -79,8 +79,9 @@ module.exports = {
     simulator: {
       type: "ios.simulator",
       device: {
-        type: "iPhone 16 Pro",
-        os: "iOS 18.6",
+        // see: https://github.com/actions/runner-images/blob/main/images/macos/macos-26-arm64-Readme.md#installed-simulators
+        type: "iPhone 17 Pro",
+        os: "iOS 26.2",
       },
     },
     emulator: {
