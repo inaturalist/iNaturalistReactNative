@@ -26,7 +26,7 @@ const { useRealm } = RealmContext;
 
 const SignUpConfirmationForm = ( ) => {
   const realm = useRealm( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<LoginStackScreenProps<"SignUpConfirmation">["navigation"]>( );
   const { params } = useRoute<LoginStackScreenProps<"SignUpConfirmation">["route"]>();
   const { user } = params;
 
