@@ -1,0 +1,20 @@
+name: Slack playground ( iNat x GitHub )
+on:
+  push:
+
+jobs:
+  notify:
+    name: Notify Slack
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: iRoachie/slack-github-actions@v2.3.0
+      #   if: env.SLACK_WEBHOOK_URL != null
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: slackapi/slack-github-action@v3.0.1
+        with:
+          webhook: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL_FLGMWT }}
+          webhook-type: webhook-trigger
+          payload: |
+            Test PSA from @ryan that we may be fiddling in here in the next couple hours. 
