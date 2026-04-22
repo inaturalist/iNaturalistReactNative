@@ -84,6 +84,14 @@ const createLayoutSlice = set => ( {
         loginBannerDismissed: true,
       },
     } ) ),
+    // State to control advanced mode banner being only shown once until dismissed by user
+    advancedModeBannerDismissed: false,
+    setAdvancedModeBannerDismissed: () => set( state => ( {
+      layout: {
+        ...state.layout,
+        advancedModeBannerDismissed: true,
+      },
+    } ) ),
     // State to control some components that are only supposed to be shown immediately after
     // a user signs up
     justFinishedSignup: false,
