@@ -98,9 +98,9 @@ const SignUpConfirmationForm = ( ) => {
       setLoading( false );
       return;
     }
-    const success = await authenticateUser( processedUser.login, processedUser.password, realm );
+    const result = await authenticateUser( processedUser.login, processedUser.password, realm );
     setLoading( false );
-    if ( !success ) {
+    if ( !result.success ) {
       navigation.navigate( "Login" );
       return;
     }

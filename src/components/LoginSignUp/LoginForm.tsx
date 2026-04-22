@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
+import type { AuthenticateUserResult } from "components/LoginSignUp/AuthenticationService";
 import { authenticateUser, signOut } from "components/LoginSignUp/AuthenticationService";
 import {
   Body1, Body2, Button, CloseButton, Heading4, INatIcon, INatIconButton, List2,
@@ -99,11 +100,11 @@ const LoginForm = ( {
     return unsubscrubeTransition;
   }, [navigation] );
 
-  const logIn = React.useCallback( async ( logInCallback: () => Promise<boolean> ) => {
+  const logIn = useCallback( async ( logInCallback: () => Promise<AuthenticateUserResult> ) => {
     setLoading( true );
-    const success = await logInCallback( );
+    const result = await logInCallback( );
 
-    if ( !success ) {
+    if ( !result.success ) {
       setError( t( "Failed-to-log-in" ) );
       setLoading( false );
       return;

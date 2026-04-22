@@ -542,14 +542,19 @@ async function verifyCredentials(
   return afterVerifyCredentials( tokenResponse, apiClient );
 }
 
-async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Realm ) {
+export interface AuthenticateUserResult { success: boolean }
+
+async function afterAuthenticateUser(
+  userDetails: UserDetails | null,
+  realm: Realm,
+): Promise<AuthenticateUserResult> {
   if ( !userDetails ) {
-    return false;
+    return { success: false };
   }
 
   const { userId, username: remoteUsername, accessToken } = userDetails;
   if ( !userId ) {
-    return false;
+    return { success: false };
   }
 
   // Save authentication details to secure storage
@@ -586,7 +591,9 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
   clearAuthCache( );
-  return true;
+  return {
+    success: true,
+  };
 }
 
 /**
@@ -601,7 +608,7 @@ const authenticateUser = async (
   username: string,
   password: string,
   realm: Realm,
-): Promise<boolean> => {
+): Promise<AuthenticateUserResult> => {
   const userDetails = await verifyCredentials( username, password );
 
   return afterAuthenticateUser( userDetails, realm );
@@ -611,7 +618,7 @@ async function authenticateUserByAssertion(
   assertionType: "apple" | "google",
   assertion: string,
   realm: Realm,
-) {
+): Promise<AuthenticateUserResult> {
   const apiClient = createAPI( { Accept: "application/json" } );
   const formData = {
     client_id: Config.OAUTH_CLIENT_ID,
