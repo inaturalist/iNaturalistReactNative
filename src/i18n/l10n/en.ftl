@@ -73,6 +73,8 @@ Adds-your-vote-of-agreement = Adds your vote of agreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
 # Label for toggling app mode between default and advanced settings
 Advanced-Mode = Advanced Mode
+# Body text for banner prompting heavy default-mode users to try Advanced Mode (MOB-1335)
+Advanced-mode-onboarding-banner-description = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 ADVANCED-SETTINGS = ADVANCED SETTINGS
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = After capturing or importing photos, show:
@@ -1213,11 +1215,15 @@ SUGGEST-ID = SUGGEST ID
 # Identification category
 supporting--identification = Supporting
 Switches-to-tab = Switches to { $tab } tab.
+# Accessibility: loading state while switching to Advanced Mode from onboarding banner
+Switching-to-advanced-mode = Switching to Advanced Mode
 Sync-observations = Sync observations
 Syncing = Syncing...
 # Help text for the button that opens the multi-capture camera
 Take-photo = Take photo
 Take-photos = Take photos
+# Call to action on Advanced Mode onboarding banner (MOB-1335)
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 # label in project requirements
 Taxa = Taxa
 TAXON = TAXON
