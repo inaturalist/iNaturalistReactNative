@@ -46,23 +46,11 @@ jobs:
         sed -i "s/your_package_name/${FIREBASE_STAGING_PACKAGE_NAME//\//\\/}/g" "android/app/google-services.json"
         sed -i "s/your_current_key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "android/app/google-services.json"
 
-    - name: Create keystore.properties file
-      env:
-        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-      run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
-
-    - name: Generate release keystore
-      env:
-        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      run: |
-        keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
-
-    - name: Move keystore
-      run: mv release.keystore android/app/release.keystore
+    # build.gradle reads keystore.properties at configuration time even for
+    # debug builds, so write a placeholder. The values are only consumed by
+    # the release signingConfig, which assembleDebug never invokes.
+    - name: Create placeholder keystore.properties
+      run: printf 'storePassword=placeholder\nkeyPassword=placeholder\nkeyAlias=placeholder\nstoreFile=placeholder.keystore' > android/keystore.properties
 
     - uses: actions/setup-node@v6
       with:
@@ -89,9 +77,10 @@ jobs:
     - name: Android Build
       run: |
         cd android
-        # for the CI build, we can just target the x86 build for the emulator
-        # also, we can exclude linting tasks
-        ./gradlew build -PreactNativeArchitectures=x86 -x lint -x lintVitalRelease 
+        # Debug build only: signed with the in-tree debug.keystore that ships
+        # with React Native, so no release keystore / signing secrets needed.
+        # x86-only keeps it small and matches the emulator we test against.
+        ./gradlew assembleDebug -PreactNativeArchitectures=x86 -x lint
 
     - name: Upload APK
       uses: actions/upload-artifact@v6
@@ -100,7 +89,7 @@ jobs:
         # note: clarifying because this is different from iOS:
         # {myBuild}.apk is a single file so `release-apk` points to a single file
         # in contrast, iOS's .ipa is actually a _directory_
-        path: android/app/build/outputs/apk/release/*-release.apk
+        path: android/app/build/outputs/apk/debug/*-debug.apk
     
   test:
     # 4-core Ubunutu GitHub Larger Runner
