@@ -13,7 +13,7 @@ import {
   fromUnixTime,
   getUnixTime,
   getYear,
-  isValid,
+  isValid as isValidDate,
   parse,
   parseISO,
 } from "date-fns";
@@ -334,7 +334,7 @@ function formatDateString(
   }
 
   const parsedDate = parseISO( isoDateString );
-  if ( !isValid( parsedDate ) ) {
+  if ( !isValidDate( parsedDate ) ) {
     return options.missing === undefined
       ? i18n.t( "Missing-Date" )
       : options.missing;
@@ -454,7 +454,7 @@ function formatProjectsApiDatetimeLong(
   const hasComma = String( dateString ).includes( "," );
   if ( hasComma ) {
     const parsedDate = parse( dateString, "MMMM d, yyyy", new Date( ) );
-    if ( !isValid( parsedDate ) ) {
+    if ( !isValidDate( parsedDate ) ) {
       return options.missing === undefined
         ? i18n.t( "Missing-Date" )
         : options.missing;
