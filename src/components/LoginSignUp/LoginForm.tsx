@@ -33,6 +33,12 @@ interface Props {
   scrollViewRef?: React.Ref<ScrollView>;
 }
 
+/**
+ * If a user loggs in and their account has at least this many
+ * uploaded observations, auto-switch to advanced mode
+ */
+export const AUTO_ADVANCED_MODE_OBSERVATION_THRESHOLD = 100;
+
 const LoginForm = ( {
   scrollViewRef,
 }: Props ) => {
@@ -45,7 +51,8 @@ const LoginForm = ( {
   const currentUser = useCurrentUser( );
   const loginAgain = !!currentUser && !!currentUser?.login;
   const realm = useRealm( );
-  const { isDefaultMode, setLoggedInWhileInDefaultMode } = useLayoutPrefs( );
+  const { isDefaultMode, setIsDefaultMode, setLoggedInWhileInDefaultMode }
+    = useLayoutPrefs();
   const firstInputFieldRef = useRef( null );
   const emailRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
@@ -112,8 +119,16 @@ const LoginForm = ( {
 
     setLoading( false );
 
-    // Set a state to zustand that we just logged in while in default mode
-    setLoggedInWhileInDefaultMode( isDefaultMode );
+    if (
+      result.observationsCount
+      && result.observationsCount >= AUTO_ADVANCED_MODE_OBSERVATION_THRESHOLD
+    ) {
+      // If a user that just logged in already has more than the threshold number of observations,
+      // we assume they are an advanced user and switch them to advanced mode.
+      setIsDefaultMode( false );
+    } else {
+      setLoggedInWhileInDefaultMode( isDefaultMode );
+    }
     if ( params?.prevScreen && params?.projectId ) {
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsTab",
@@ -131,6 +146,7 @@ const LoginForm = ( {
     navigation,
     params,
     isDefaultMode,
+    setIsDefaultMode,
     setLoggedInWhileInDefaultMode,
   ] );
 
