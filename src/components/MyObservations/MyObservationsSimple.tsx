@@ -242,6 +242,7 @@ const MyObservationsSimple = ( {
         <SimpleHeader
           isConnected={isConnected}
           obsMissingBasicsExist={obsMissingBasicsExist}
+          numTotalObservations={numTotalObservations}
         />
       );
     }
@@ -262,6 +263,7 @@ const MyObservationsSimple = ( {
         <SimpleHeader
           isConnected={isConnected}
           obsMissingBasicsExist={obsMissingBasicsExist}
+          numTotalObservations={numTotalObservations}
         />
       </View>
     );

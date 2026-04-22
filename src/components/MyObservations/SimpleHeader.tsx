@@ -14,7 +14,7 @@ import Announcements from "./Announcements";
 interface Props {
   isConnected: boolean;
   obsMissingBasicsExist: boolean;
-  numTotalObservations: number;
+  numTotalObservations?: number;
 }
 
 // Minimum uploaded observations count to show the Advanced Mode onboarding banner
@@ -34,6 +34,7 @@ const SimpleHeader = ( {
 
   const shouldShowAdvancedModeBanner = !!currentUser
       && isDefaultMode
+      && numTotalObservations
       && numTotalObservations >= ADVANCED_MODE_ONBOARDING_MIN_OBSERVATIONS
       && !advancedModeBannerDismissed;
 
