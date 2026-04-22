@@ -214,7 +214,9 @@ export type BaseTabStackParamList = {
   };
   DataQualityAssessment: undefined;
   Projects: undefined;
-  ProjectDetails: undefined;
+  // From LoginForm
+  // { id: params.projectId }
+  ProjectDetails: { id: number };
   ProjectRequirements: undefined;
   ProjectMembers: undefined;
   // From ProjectButton, ProjectSection
