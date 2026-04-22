@@ -45,34 +45,19 @@ jobs:
       uses: actions/setup-node@v6
       with:
         node-version: 22
+        cache: 'npm'
 
     - name: Setup Ruby version according to .ruby-version with cached gems
       uses: ruby/setup-ruby@v1
       with:
-        bundler-cache: true        
-
-    - name: Cache node modules
-      uses: actions/cache@v5
-      id: cache
-      with:
-        path: node_modules
-        key: node-modules-${{ hashFiles('**/package-lock.json') }}
-
-    - name: Rebuild detox from cache
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npx detox clean-framework-cache && npx detox build-framework-cache
-
-    # supposedly our current cache includes native modules like Realm
-    # that have compiled binaries specific to the environment where they were installed
-    # which might not be the same as the github actions environment
-    # so we need to rebuild them
-    - name: Rebuild native modules
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npm rebuild
+        bundler-cache: true
 
     - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install
+      run: npm ci
+
+    # Detox framework cache lives outside node_modules; rebuild after a fresh install.
+    - name: Rebuild detox framework cache
+      run: npx detox clean-framework-cache && npx detox build-framework-cache
 
     - name: Cache Pods
       uses: actions/cache@v5
@@ -157,29 +142,14 @@ jobs:
       uses: actions/setup-node@v6
       with:
         node-version: 22
-
-    - name: Cache node modules
-      uses: actions/cache@v5
-      id: cache
-      with:
-        path: node_modules
-        key: node-modules-${{ hashFiles('**/package-lock.json') }}
-
-    - name: Rebuild detox from cache
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npx detox clean-framework-cache && npx detox build-framework-cache
-
-    # supposedly our current cache includes native modules like Realm
-    # that have compiled binaries specific to the environment where they were installed
-    # which might not be the same as the github actions environment
-    # so we need to rebuild them
-    - name: Rebuild native modules
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: npm rebuild
+        cache: 'npm'
 
     - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install
+      run: npm ci
+
+    # Detox framework cache lives outside node_modules; rebuild after a fresh install.
+    - name: Rebuild detox framework cache
+      run: npx detox clean-framework-cache && npx detox build-framework-cache
 
     # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
     # This will be available for all subsequent steps
