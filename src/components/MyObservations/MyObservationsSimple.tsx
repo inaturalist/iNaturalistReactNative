@@ -34,7 +34,6 @@ import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
 import { SPECIES_SORT_BY } from "../../types/sorting";
-import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
@@ -238,12 +237,13 @@ const MyObservationsSimple = ( {
   );
 
   const observationsHeader = ( ) => {
-    const headerContent = obsMissingBasicsExist
-      ? <SimpleHeader isConnected={isConnected} />
-      : <Announcements isConnected={isConnected} />;
-
     if ( layout !== "grid" ) {
-      return headerContent;
+      return (
+        <SimpleHeader
+          isConnected={isConnected}
+          obsMissingBasicsExist={obsMissingBasicsExist}
+        />
+      );
     }
 
     const TARGET_SPACING = 10;
@@ -259,7 +259,10 @@ const MyObservationsSimple = ( {
           marginBottom: TARGET_SPACING - flashListStyle.paddingTop,
         }}
       >
-        {headerContent}
+        <SimpleHeader
+          isConnected={isConnected}
+          obsMissingBasicsExist={obsMissingBasicsExist}
+        />
       </View>
     );
   };

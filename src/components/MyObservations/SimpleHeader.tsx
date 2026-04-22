@@ -12,30 +12,34 @@ import Announcements from "./Announcements";
 
 interface Props {
   isConnected: boolean;
+  obsMissingBasicsExist: boolean;
 }
 
 const SimpleHeader = ( {
   isConnected,
+  obsMissingBasicsExist,
 }: Props ) => {
   const { t } = useTranslation( );
 
   return (
     <>
       <Announcements isConnected={isConnected} />
-      <View className="flex-row items-center px-[32px] py-[20px]">
-        <CircleDots
-          color={colors.darkGray}
-        >
-          <INatIcon
-            name="pencil"
+      { obsMissingBasicsExist && (
+        <View className="flex-row items-center px-[32px] py-[20px]">
+          <CircleDots
             color={colors.darkGray}
-            size={15}
-          />
-        </CircleDots>
-        <Body3 className="shrink ml-[20px]">
-          { t( "Observations-need-location-date--warning" ) }
-        </Body3>
-      </View>
+          >
+            <INatIcon
+              name="pencil"
+              color={colors.darkGray}
+              size={15}
+            />
+          </CircleDots>
+          <Body3 className="shrink ml-[20px]">
+            { t( "Observations-need-location-date--warning" ) }
+          </Body3>
+        </View>
+      ) }
     </>
   );
 };
