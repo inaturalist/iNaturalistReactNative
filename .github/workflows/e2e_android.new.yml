@@ -53,6 +53,12 @@ jobs:
     - name: Use example google-services.json
       run: cp android/app/google-services.example.json android/app/google-services.json
 
+    # build.gradle reads keystore.properties at configuration time even for
+    # debug builds, so write a placeholder. The values are only consumed by
+    # the release signingConfig, which assembleDebug never invokes.
+    - name: Create placeholder keystore.properties
+      run: printf 'storePassword=placeholder\nkeyPassword=placeholder\nkeyAlias=placeholder\nstoreFile=placeholder.keystore' > android/keystore.properties
+
     - uses: actions/setup-node@v6
       with:
         node-version-file: '.nvmrc'
@@ -69,16 +75,17 @@ jobs:
         gradle-version: '8.14.1'
 
     - name: Install JS dependencies
-      run: npm install
+      run: npm ci
 
     - name: Download the small example cv and geomodel
       run: npm run add-example-model -- -f=main
 
-    # Debug build only: avoids needing a release keystore (which is a secret).
-    # Debug-signed APKs install fine on the emulator used by the test workflow.
-    - name: Android Build (debug, x86 only)
+    - name: Android Build
       run: |
         cd android
+        # Debug build only: signed with the in-tree debug.keystore that ships
+        # with React Native, so no release keystore / signing secrets needed.
+        # x86-only keeps it small and matches the emulator we test against.
         ./gradlew assembleDebug -PreactNativeArchitectures=x86 -x lint
 
     - name: Upload APK
@@ -87,7 +94,7 @@ jobs:
         name: release-apk
         path: android/app/build/outputs/apk/debug/*-debug.apk
 
-    # Persist PR context so the trusted workflow knows what to report on.
+    # Persist PR context so the trusted test workflow knows what to report on.
     - name: Save PR metadata
       run: |
         mkdir -p pr-metadata

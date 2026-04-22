@@ -1,0 +1,146 @@
+name: e2e-Android-test
+# Trusted half of the two-workflow e2e pattern.
+# Runs after `e2e-Android-build` completes. Has access to repo secrets.
+# Never checks out untrusted PR code into a privileged step;
+# it only consumes the prebuilt APK artifact from the build run.
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+  checks: write
+
+on:
+  workflow_run:
+    workflows: ["e2e-Android-build"]
+    types: [completed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04-m
+    # Attach required-reviewer protection to this environment in repo
+    # settings to require human approval before secrets are exposed.
+    environment: e2e
+    steps:
+      # Download the APK and PR metadata from the upstream (untrusted) run.
+      - name: Download APK artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: release-apk
+          path: e2e-build
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download PR metadata artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: pr-metadata
+          path: pr-metadata
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read PR metadata
+        id: pr
+        run: |
+          echo "pr_number=$(cat pr-metadata/pr_number)" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$(cat pr-metadata/head_sha)" >> "$GITHUB_OUTPUT"
+          echo "head_repo=$(cat pr-metadata/head_repo)" >> "$GITHUB_OUTPUT"
+
+      # Check out the BASE repo at the workflow_run head_sha (trusted).
+      # We only need the test flow files from the base, not fork JS.
+      - name: Check out base repo at run SHA
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Install Maestro
+        run: |
+          export MAESTRO_VERSION="2.0.8"
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Attempt to restore AVD cache
+        uses: actions/cache/restore@v5
+        id: avd-cache-restore
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-29
+
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache-restore.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          cores: 4
+          api-level: 29
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: Save AVD cache
+        if: steps.avd-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-29
+
+      # Secrets are passed to Maestro via env vars, NOT baked into the APK.
+      # Maestro flows should reference these via ${E2E_TEST_USERNAME} etc.
+      # NOTE: anything the app needs at *build* time (e.g. OAUTH_CLIENT_*
+      # via react-native-config) cannot be injected here; flows that
+      # depend on those values will need to be adapted to read from
+      # runtime sources (intent extras, deep links, or a debug menu).
+      - name: Run e2e tests
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 60000
+          MAESTRO_CLI_NO_ANALYTICS: 1
+          MAESTRO_RECORD: true
+          E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+          E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+          OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+          OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+        with:
+          cores: 4
+          api-level: 29
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            adb install -r e2e-build/*.apk
+            maestro test --no-ansi e2e/maestro/android/signedOut.yaml
+
+      - name: Upload test video
+        uses: actions/upload-artifact@v6
+        if: ${{ success() || failure() }}
+        with:
+          path: signedOut.mp4
+          name: Android
+
+  notify:
+    name: Notify Slack
+    needs: test
+    if: ${{ success() || failure() }}
+    runs-on: macos-latest
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
