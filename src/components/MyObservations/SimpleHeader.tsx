@@ -14,7 +14,7 @@ interface Props {
   isConnected: boolean;
 }
 
-const SimpleErrorHeader = ( {
+const SimpleHeader = ( {
   isConnected,
 }: Props ) => {
   const { t } = useTranslation( );
@@ -40,4 +40,4 @@ const SimpleErrorHeader = ( {
   );
 };
 
-export default SimpleErrorHeader;
+export default SimpleHeader;

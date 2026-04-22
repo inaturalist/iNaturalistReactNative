@@ -38,7 +38,7 @@ import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
-import SimpleErrorHeader from "./SimpleErrorHeader";
+import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
 
@@ -239,7 +239,7 @@ const MyObservationsSimple = ( {
 
   const observationsHeader = ( ) => {
     const headerContent = obsMissingBasicsExist
-      ? <SimpleErrorHeader isConnected={isConnected} />
+      ? <SimpleHeader isConnected={isConnected} />
       : <Announcements isConnected={isConnected} />;
 
     if ( layout !== "grid" ) {
