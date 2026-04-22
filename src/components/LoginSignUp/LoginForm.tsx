@@ -120,7 +120,7 @@ const LoginForm = ( {
         params: {
           screen: "ProjectDetails",
           params: {
-            id: params?.projectId,
+            id: params.projectId,
           },
         },
       } );
