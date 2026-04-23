@@ -116,7 +116,7 @@ describe( "ProjectDetails", ( ) => {
     renderComponent( <ProjectDetails
       project={{
         ...mockProjectWithDateRange,
-        project_type: "traditional",
+        project_type: "", // "" means "traditional"
       }}
     /> );
     const projectTypeText = await screen.findByText( /Traditional Project/ );
