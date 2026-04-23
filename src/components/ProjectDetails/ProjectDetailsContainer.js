@@ -103,7 +103,6 @@ const ProjectDetailsContainer = ( ): Node => {
   );
 
   const membershipQueryKey = ["fetchMembership", id];
-  // TODO: enable fields
   const { data: currentMembership } = useAuthenticatedQuery(
     membershipQueryKey,
     optsWithAuth => fetchMembership( {
