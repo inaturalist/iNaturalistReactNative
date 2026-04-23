@@ -114,9 +114,9 @@ const PhotoCarousel = ( {
 
   const showDeletePhotoMode = useCallback( ( ) => {
     if ( deletePhotoFromObservation ) {
-      setDeletePhotoMode( !deletePhotoMode );
+      setDeletePhotoMode( true );
     }
-  }, [deletePhotoFromObservation, deletePhotoMode, setDeletePhotoMode] );
+  }, [deletePhotoFromObservation, setDeletePhotoMode] );
 
   const viewPhotoAtIndex = useCallback( ( index: number ) => {
     setTappedPhotoIndex( index );
