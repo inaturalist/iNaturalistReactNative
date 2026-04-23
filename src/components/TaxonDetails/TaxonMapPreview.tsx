@@ -35,7 +35,7 @@ const TaxonMapPreview = ( {
   };
 
   // TODO: add a loading indicator for map preview
-  // TODO: enable fields
+  // TODO: enable fields if it makes sense
   const {
     data: obsSearchResponse,
   } = useAuthenticatedQuery(

@@ -51,7 +51,7 @@ const ObservationsView = ( {
   const { excludeUser } = state;
 
   // get total count of current users obs
-  // TODO: enable fields? I dont know if {} equals all fields or no fields
+  // TODO: enable fields if it makes sense? I dont know if {} equals all fields or no fields
   const { data: currentUserObs } = useQuery(
     ["fetchCurrentUserObservations"],
     ( ) => searchObservations( {

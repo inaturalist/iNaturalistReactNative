@@ -19,7 +19,7 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
   const currentUser = useCurrentUser( );
 
-  // TODO: enable fields? I don't know if it speeds upd a query that has per_page: 0
+  // TODO: enable fields if it makes sense? I don't know if it is needed for per_page: 0
   const { data: numUnviewed, refetch } = useAuthenticatedQuery(
     [
       "NotificationsTab",

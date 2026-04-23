@@ -21,7 +21,7 @@ const NotificationsIconContainer = ( {
   const currentUser = useCurrentUser( );
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
 
-  // TODO: enable fields
+  // TODO: enable fields if it makes sense
   const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
     [
       "notificationsCount",
