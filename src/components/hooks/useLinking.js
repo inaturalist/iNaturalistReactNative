@@ -30,6 +30,7 @@ const useLinking = ( currentUser: ?Object ) => {
     const options = {
       api_token: apiToken,
     };
+    // TODO: enable fields
     const { results } = await searchObservations( searchParams, options );
     const uuid = results?.[0]?.uuid;
 

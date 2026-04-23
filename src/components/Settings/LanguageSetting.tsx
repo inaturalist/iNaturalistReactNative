@@ -43,6 +43,7 @@ const LanguageSetting = ( { onChange }: Props ) => {
         : [] );
 
       const apiToken = await getJWT( );
+      // TODO: enable fields
       const locales = await fetchAvailableLocales( {}, { api_token: apiToken } );
       zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
       setWebLocales( locales as LocalesResponse );
