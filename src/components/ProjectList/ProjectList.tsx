@@ -15,7 +15,7 @@ const ItemSeparator = () => <View className="border-b border-lightGray" />;
 
 interface Props {
   projects: ApiProject[];
-  ListEmptyComponent?: React.ReactElement;
+  ListEmptyComponent?: React.ReactElement | null;
   ListFooterComponent?: React.ReactElement;
   onEndReached?: ( ) => void;
   onPress?: ( project: ApiProject ) => void;
