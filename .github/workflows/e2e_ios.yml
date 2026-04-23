@@ -74,13 +74,6 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
-    - name: Cache Pods
-      uses: actions/cache@v5
-      id: podcache
-      with:
-        path: ios/Pods
-        key: pods-${{ hashFiles('**/Podfile.lock') }}
-
     - name: Update Pods
       run: |
         gem update cocoapods xcodeproj
