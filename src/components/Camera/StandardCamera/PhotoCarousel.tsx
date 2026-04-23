@@ -3,12 +3,11 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { ActivityIndicator, INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import React, {
-  useCallback, useRef, useState,
+  useCallback, useState,
 } from "react";
 import {
   FlatList,
 } from "react-native";
-import Modal from "react-native-modal";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   useAnimatedStyle,
@@ -26,6 +25,8 @@ interface Props {
   rotation?: SharedValue<number>;
   photoUris: string[];
   onDelete: ( _uri: string ) => void;
+  deletePhotoMode: boolean;
+  setDeletePhotoMode: ( mode: boolean ) => void;
 }
 
 export const SMALL_PHOTO_DIM = 42;
@@ -54,10 +55,11 @@ const PhotoCarousel = ( {
   rotation,
   photoUris,
   onDelete,
+  deletePhotoMode,
+  setDeletePhotoMode,
 }: Props ) => {
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
   const { t } = useTranslation( );
-  const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const [tappedPhotoIndex, setTappedPhotoIndex] = useState( -1 );
   const photoClasses = isLargeScreen
     ? LARGE_PHOTO_CLASSES
@@ -112,9 +114,9 @@ const PhotoCarousel = ( {
 
   const showDeletePhotoMode = useCallback( ( ) => {
     if ( deletePhotoFromObservation ) {
-      setDeletePhotoMode( mode => !mode );
+      setDeletePhotoMode( true );
     }
-  }, [deletePhotoFromObservation] );
+  }, [deletePhotoFromObservation, setDeletePhotoMode] );
 
   const viewPhotoAtIndex = useCallback( ( index: number ) => {
     setTappedPhotoIndex( index );
@@ -194,6 +196,7 @@ const PhotoCarousel = ( {
     photoClasses,
     photoUris.length,
     renderSkeleton,
+    setDeletePhotoMode,
     showDeletePhotoMode,
     t,
     viewPhotoAtIndex,
@@ -210,23 +213,6 @@ const PhotoCarousel = ( {
     />
   );
 
-  // Mild acrobatics to position the photos in delete mode inside a modal
-  // exactly the same place they appear normally. The modal is useful to,
-  // well, behave like a modal, because in delete mode you can only delete or
-  // exit delete moda, and taps outside the photos exit delete mode. But the
-  // modal exists outside the normal view hierarchy so you can't position
-  // things relative to containing components. Instead, we're using a ref and
-  // the measure() method to store the position of the container element in
-  // state, and use that to position another container inside the modal in
-  // exactly the same place
-
-  const containerRef = useRef<View>( undefined );
-  const [containerPos, setContainerPos] = useState<{
-    x: number | null;
-    y: number | null;
-    w?: number;
-    h?: number;
-  }>( { x: null, y: null } );
   const containerStyle = {
     height: isTablet && isLandscapeMode
       ? photoUris.length * ( photoDim + photoGutter ) + photoGutter
@@ -236,55 +222,11 @@ const PhotoCarousel = ( {
 
   return (
     <View
-      ref={containerRef}
-      onLayout={
-        // When the container gets rendered, we store its position on screen
-        // in state so we can lay out content inside the modal in exactly the
-        // same position
-        ( ) => containerRef?.current?.measure(
-          ( _x, _y, w, h, pageX, pageY ) => setContainerPos( {
-            x: pageX,
-            y: pageY,
-            w,
-            h,
-          } ),
-        )
-      }
       // Dynamic calculation of these values kind of just doesn't work with tailwind.
       // eslint-disable-next-line react-native/no-inline-styles
       style={containerStyle}
     >
-      {
-        // Render a model version of the previews over the actual previews.
-        // Awkward, but it helps handle some weird styling in a landscape
-        // tablet
-        deletePhotoMode
-          ? (
-            <Modal
-              visible
-              onBackdropPress={() => setDeletePhotoMode( false )}
-              backdropOpacity={0}
-              // We want this to take over the whole screen
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{ margin: 0, position: "relative" }}
-            >
-              <View
-                // These layout values need to be dynamic relative to the
-                // position of the container outside of the modal
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  position: "absolute",
-                  left: containerPos.x,
-                  top: containerPos.y,
-                  ...containerStyle,
-                }}
-              >
-                { photoPreviewsList }
-              </View>
-            </Modal>
-          )
-          : photoPreviewsList
-      }
+      {photoPreviewsList}
       <MediaViewerModal
         editable
         showModal={tappedPhotoIndex >= 0}
