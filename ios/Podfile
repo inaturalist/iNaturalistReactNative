@@ -92,6 +92,17 @@ target "iNaturalistReactNative" do
       end
     end
 
+    installer.aggregate_targets.each do | aggregate_target |
+      aggregate_target.user_project.native_targets.each do | native_target |
+        next unless native_target.name == "iNaturalistReactNative"
+        native_target.build_configurations.each do | config |
+          config.build_settings['ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES'] = 'YES'
+          config.build_settings['EMBEDDED_CONTENT_CONTAINS_SWIFT'] = 'YES'
+        end
+      end
+    end
+    
+
     # react_native_post_install(installer)
     # time_h = File.join(__dir__, "Pods", "RCT-Folly", "folly", "portability", "Time.h")
     # if File.exist?(time_h)
