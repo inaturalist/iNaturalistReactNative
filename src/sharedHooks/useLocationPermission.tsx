@@ -1,7 +1,7 @@
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import {
   LOCATION_PERMISSIONS,
-  locationPermissionResultFromMultiple,
+  permissionResultFromMultiple,
 } from "components/SharedComponents/PermissionGateContainer";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -89,7 +89,7 @@ const useLocationPermission = ( ) => {
   );
 
   const checkPermissions = useCallback( async () => {
-    const permissionsResult = locationPermissionResultFromMultiple(
+    const permissionsResult = permissionResultFromMultiple(
       await checkMultiple( LOCATION_PERMISSIONS ),
     );
     if ( permissionsResult === RESULTS.GRANTED ) {

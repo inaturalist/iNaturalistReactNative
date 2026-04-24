@@ -90,7 +90,6 @@ interface Props extends PropsWithChildren {
   onPermissionDenied?: () => void;
   onPermissionGranted?: () => void;
   onPermissionLimited?: () => void;
-  permissionEvaluator?: ( multiResults: MultiResult ) => PermissionStatus;
   permissionNeeded?: boolean;
   permissions: Permission[];
   testID?: string;
@@ -106,6 +105,25 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
       + "Make sure you're using it with checkMultiple and not check",
     );
   }
+  // On Android 12+, the user may grant only approximate (coarse) location,
+  // leaving fine location denied. Use OR logic: if ANY location permission is
+  // granted, the overall result is GRANTED.
+  const coarseKey = PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION;
+  if ( coarseKey in multiResults ) {
+    if ( find( multiResults, permResult => permResult === RESULTS.GRANTED ) ) {
+      return RESULTS.GRANTED;
+    }
+    if ( find( multiResults, permResult => permResult === RESULTS.LIMITED ) ) {
+      return RESULTS.LIMITED;
+    }
+    if ( find( multiResults, permResult => permResult === RESULTS.BLOCKED ) ) {
+      return RESULTS.BLOCKED;
+    }
+    if ( find( multiResults, permResult => permResult === RESULTS.DENIED ) ) {
+      return RESULTS.DENIED;
+    }
+    return RESULTS.UNAVAILABLE;
+  }
   if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
     return RESULTS.BLOCKED;
   }
@@ -119,32 +137,6 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
     return RESULTS.LIMITED;
   }
   return RESULTS.GRANTED;
-}
-
-// Like permissionResultFromMultiple, but uses OR logic: if ANY permission is
-// granted, the result is GRANTED. Used for location permissions on Android 12+
-// where the user may grant only approximate (coarse) location, leaving fine
-// location denied.
-export function locationPermissionResultFromMultiple( multiResults: MultiResult ) {
-  if ( typeof ( multiResults ) !== "object" ) {
-    throw new Error(
-      "locationPermissionResultFromMultiple received something other than an object. "
-      + "Make sure you're using it with checkMultiple and not check",
-    );
-  }
-  if ( find( multiResults, permResult => permResult === RESULTS.GRANTED ) ) {
-    return RESULTS.GRANTED;
-  }
-  if ( find( multiResults, permResult => permResult === RESULTS.LIMITED ) ) {
-    return RESULTS.LIMITED;
-  }
-  if ( find( multiResults, permResult => permResult === RESULTS.BLOCKED ) ) {
-    return RESULTS.BLOCKED;
-  }
-  if ( find( multiResults, permResult => permResult === RESULTS.DENIED ) ) {
-    return RESULTS.DENIED;
-  }
-  return RESULTS.UNAVAILABLE;
 }
 
 export async function hasOnlyCoarseLocation(): Promise<boolean> {
@@ -192,7 +184,6 @@ const PermissionGateContainer = ( {
   onPermissionDenied,
   onPermissionGranted,
   onPermissionLimited,
-  permissionEvaluator,
   permissionNeeded = true,
   permissions,
   testID,
@@ -206,17 +197,15 @@ const PermissionGateContainer = ( {
 
   const navigation = useNavigation();
 
-  const evaluator = permissionEvaluator ?? permissionResultFromMultiple;
-
   const requestPermission = useCallback( async ( ) => {
     const requestResult = await requestMultiple( permissions );
-    setResult( evaluator( requestResult ) );
-  }, [evaluator, permissions] );
+    setResult( permissionResultFromMultiple( requestResult ) );
+  }, [permissions] );
 
   const checkPermission = useCallback( async ( ) => {
     const checkResult = await checkMultiple( permissions );
-    setResult( evaluator( checkResult ) );
-  }, [evaluator, permissions] );
+    setResult( permissionResultFromMultiple( checkResult ) );
+  }, [permissions] );
 
   useEffect( () => {
     if ( result === null && permissionNeeded ) {
