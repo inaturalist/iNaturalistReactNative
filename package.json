@@ -196,6 +196,7 @@
     "eslint-plugin-i18next": "^6.1.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-lodash": "^7.4.0",
     "eslint-plugin-module-resolver": "^1.5.0",
     "eslint-plugin-react-hooks": "^6.0.0-rc.1",
     "eslint-plugin-react-native": "^5.0.0",

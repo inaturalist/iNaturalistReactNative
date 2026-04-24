@@ -26,6 +26,7 @@ module.exports = {
     "@tanstack/query",
     "@typescript-eslint",
     "@stylistic",
+    "lodash",
   ],
   rules: {
     "arrow-parens": [2, "as-needed"],
@@ -159,7 +160,10 @@ module.exports = {
       fixStyle: "separate-type-imports",
     }],
     "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+
     "@stylistic/member-delimiter-style": "error",
+
+    "lodash/import-scope": 2,
   },
   ignorePatterns: ["!.detoxrc.js", "/coverage/*", "/vendor/*", "**/flow-typed"],
   settings: {
