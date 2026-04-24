@@ -1,5 +1,6 @@
 import PermissionGateContainer, {
   LOCATION_PERMISSIONS,
+  locationPermissionResultFromMultiple,
 } from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import type { PropsWithChildren } from "react";
@@ -25,6 +26,7 @@ const LocationPermissionGate = ( {
 }: Props ) => (
   <PermissionGateContainer
     permissions={LOCATION_PERMISSIONS}
+    permissionEvaluator={locationPermissionResultFromMultiple}
     title={t( "Improve-suggestions-by-using-your-location" )}
     titleDenied={t( "Please-allow-Location-Access" )}
     body={t( "iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions" )}

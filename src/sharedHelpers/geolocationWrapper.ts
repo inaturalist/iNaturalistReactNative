@@ -9,7 +9,7 @@ import type {
 import Geolocation from "@react-native-community/geolocation";
 import {
   LOCATION_PERMISSIONS,
-  permissionResultFromMultiple,
+  locationPermissionResultFromMultiple,
 } from "components/SharedComponents/PermissionGateContainer";
 import { Platform } from "react-native";
 import {
@@ -72,7 +72,7 @@ export const getCurrentPositionWithOptions = (
 );
 
 export const checkLocationPermissions = async ( ) => {
-  const permissionResult = permissionResultFromMultiple(
+  const permissionResult = locationPermissionResultFromMultiple(
     await checkMultiple( LOCATION_PERMISSIONS ),
   );
 

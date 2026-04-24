@@ -69,7 +69,14 @@ export const WRITE_MEDIA_PERMISSIONS = Platform.OS === "ios"
 
 export const LOCATION_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]
-  : [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
+  : [
+    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+  ];
+
+export interface MultiResult {
+  [permission: string]: PermissionStatus;
+}
 
 interface Props extends PropsWithChildren {
   blockedPrompt?: string;
@@ -83,6 +90,7 @@ interface Props extends PropsWithChildren {
   onPermissionDenied?: () => void;
   onPermissionGranted?: () => void;
   onPermissionLimited?: () => void;
+  permissionEvaluator?: ( multiResults: MultiResult ) => PermissionStatus;
   permissionNeeded?: boolean;
   permissions: Permission[];
   testID?: string;
@@ -91,9 +99,6 @@ interface Props extends PropsWithChildren {
   withoutNavigation?: boolean;
 }
 
-interface MultiResult {
-  [permission: string]: PermissionStatus;
-}
 export function permissionResultFromMultiple( multiResults: MultiResult ) {
   if ( typeof ( multiResults ) !== "object" ) {
     throw new Error(
@@ -114,6 +119,41 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
     return RESULTS.LIMITED;
   }
   return RESULTS.GRANTED;
+}
+
+// Like permissionResultFromMultiple, but uses OR logic: if ANY permission is
+// granted, the result is GRANTED. Used for location permissions on Android 12+
+// where the user may grant only approximate (coarse) location, leaving fine
+// location denied.
+export function locationPermissionResultFromMultiple( multiResults: MultiResult ) {
+  if ( typeof ( multiResults ) !== "object" ) {
+    throw new Error(
+      "locationPermissionResultFromMultiple received something other than an object. "
+      + "Make sure you're using it with checkMultiple and not check",
+    );
+  }
+  if ( find( multiResults, permResult => permResult === RESULTS.GRANTED ) ) {
+    return RESULTS.GRANTED;
+  }
+  if ( find( multiResults, permResult => permResult === RESULTS.LIMITED ) ) {
+    return RESULTS.LIMITED;
+  }
+  if ( find( multiResults, permResult => permResult === RESULTS.BLOCKED ) ) {
+    return RESULTS.BLOCKED;
+  }
+  if ( find( multiResults, permResult => permResult === RESULTS.DENIED ) ) {
+    return RESULTS.DENIED;
+  }
+  return RESULTS.UNAVAILABLE;
+}
+
+export async function hasOnlyCoarseLocation(): Promise<boolean> {
+  if ( Platform.OS !== "android" ) return false;
+  const results = await checkMultiple( LOCATION_PERMISSIONS );
+  return (
+    results[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === RESULTS.GRANTED
+    && results[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] !== RESULTS.GRANTED
+  );
 }
 
 export async function hasWriteMediaPermission( ) {
@@ -152,6 +192,7 @@ const PermissionGateContainer = ( {
   onPermissionDenied,
   onPermissionGranted,
   onPermissionLimited,
+  permissionEvaluator,
   permissionNeeded = true,
   permissions,
   testID,
@@ -165,15 +206,17 @@ const PermissionGateContainer = ( {
 
   const navigation = useNavigation();
 
+  const evaluator = permissionEvaluator ?? permissionResultFromMultiple;
+
   const requestPermission = useCallback( async ( ) => {
     const requestResult = await requestMultiple( permissions );
-    setResult( permissionResultFromMultiple( requestResult ) );
-  }, [permissions] );
+    setResult( evaluator( requestResult ) );
+  }, [evaluator, permissions] );
 
   const checkPermission = useCallback( async ( ) => {
     const checkResult = await checkMultiple( permissions );
-    setResult( permissionResultFromMultiple( checkResult ) );
-  }, [permissions] );
+    setResult( evaluator( checkResult ) );
+  }, [evaluator, permissions] );
 
   useEffect( () => {
     if ( result === null && permissionNeeded ) {

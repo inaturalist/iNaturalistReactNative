@@ -4,7 +4,7 @@ import {
 import { CHUCKS_PAD } from "appConstants/e2e";
 import {
   LOCATION_PERMISSIONS,
-  permissionResultFromMultiple
+  locationPermissionResultFromMultiple
 } from "components/SharedComponents/PermissionGateContainer";
 import { Platform } from "react-native";
 import {
@@ -77,7 +77,7 @@ const getCurrentPositionWithOptions = (
 );
 
 const checkLocationPermissions = async ( ) => {
-  const permissionResult = permissionResultFromMultiple(
+  const permissionResult = locationPermissionResultFromMultiple(
     await checkMultiple( LOCATION_PERMISSIONS )
   );
   console.log("[DEBUG geolocationWrapper.e2e-mock] checkLocationPermissions");
