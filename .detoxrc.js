@@ -48,7 +48,7 @@ module.exports = {
         "ios/build/Build/Products/Debug-iphonesimulator/iNaturalistReactNative.app",
       build:
         /* eslint-disable-next-line max-len */
-        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Debug -sdk iphonesimulator -arch arm64 -derivedDataPath ios/build",
     },
     "ios.release": {
       type: "ios.app",
@@ -56,7 +56,7 @@ module.exports = {
         "ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app",
       build:
         /* eslint-disable-next-line max-len */
-        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -arch arm64 -derivedDataPath ios/build",
     },
     "android.debug": {
       type: "android.apk",
@@ -81,7 +81,7 @@ module.exports = {
       device: {
         // see: https://github.com/actions/runner-images/blob/main/images/macos/macos-26-arm64-Readme.md#installed-simulators
         type: "iPhone 17 Pro",
-        os: "iOS 26.2",
+        os: "iOS 26.4",
       },
     },
     emulator: {

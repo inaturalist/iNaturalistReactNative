@@ -93,7 +93,12 @@ target "iNaturalistReactNative" do
     end
 
     # react_native_post_install(installer)
-    `sed -i -e  $'s/__IPHONE_10_0/__IPHONE_12_0/' Pods/RCT-Folly/folly/portability/Time.h`
+    # time_h = File.join(__dir__, "Pods", "RCT-Folly", "folly", "portability", "Time.h")
+    # if File.exist?(time_h)
+    #   contents = File.read(time_h)
+    #   updated = contents.gsub("__IPHONE_10_0", "__IPHONE_12_0")
+    #   File.write(time_h, updated) if updated != contents
+    # end
   end
 end
 
