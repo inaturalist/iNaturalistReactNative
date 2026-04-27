@@ -4,7 +4,6 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import type { ApiPhoto, ApiSuggestion } from "api/types";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
-import { hasOnlyCoarseLocation } from "components/SharedComponents/PermissionGateContainer";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
 import {
@@ -24,7 +23,6 @@ import React, {
 } from "react";
 import type { ScrollView } from "react-native";
 import type { RealmPhoto, RealmTaxon } from "realmModels/types";
-import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
@@ -286,36 +284,16 @@ const MatchContainer = ( ) => {
   );
   const shouldFetchLocation = !!( hasPermissions && needLocation );
 
-  // On Android, if only coarse location was granted, watchPosition doesn't
-  // reliably deliver updates. Detect that case and do a single fetch instead.
-  const [isCoarseOnly, setIsCoarseOnly] = useState<boolean | null>( null );
-  const [coarseLocation, setCoarseLocation] = useState( null );
-
-  useEffect( () => {
-    if ( !shouldFetchLocation ) return;
-    hasOnlyCoarseLocation().then( setIsCoarseOnly );
-  }, [shouldFetchLocation] );
-
-  useEffect( () => {
-    if ( isCoarseOnly && shouldFetchLocation ) {
-      fetchCoarseUserLocation().then( setCoarseLocation );
-    }
-  }, [isCoarseOnly, shouldFetchLocation] );
-
   const {
-    isFetchingLocation: isFetchingFineLocation,
-    stopWatch,
-    subscriptionId,
-    userLocation: fineUserLocation,
-  } = useWatchPosition( { shouldFetchLocation: shouldFetchLocation && isCoarseOnly === false } );
-
-  const userLocation = coarseLocation ?? fineUserLocation;
-  const isFetchingLocation = ( isCoarseOnly && !coarseLocation ) || isFetchingFineLocation;
+    userLocation,
+    isFetchingLocation,
+    cancel: cancelLocationFetch,
+  } = useWatchPosition( { shouldFetchLocation } );
 
   const navToLocationPicker = useCallback( ( ) => {
-    stopWatch( subscriptionId );
+    cancelLocationFetch();
     navigation.navigate( "LocationPicker" );
-  }, [stopWatch, subscriptionId, navigation] );
+  }, [cancelLocationFetch, navigation] );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -483,7 +461,7 @@ const MatchContainer = ( ) => {
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
     }
-    stopWatch( subscriptionId );
+    cancelLocationFetch();
     exitObservationFlow( );
   };
 
