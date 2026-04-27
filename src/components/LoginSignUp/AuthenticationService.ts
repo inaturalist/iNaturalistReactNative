@@ -30,8 +30,12 @@ import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirecto
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
 import { unlink } from "sharedHelpers/util";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useStore from "stores/useStore";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
+
+function isDebugModeSync( ): boolean {
+  return useStore.getState().layout.debugModeEnabled === true;
+}
 
 const logger = log.extend( "AuthenticationService" );
 // The remote transport in the default logger uses many of the methods in this
@@ -98,7 +102,7 @@ async function getSensitiveItem(
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const getItemError = e as SensitiveInfoError;
-      if ( isDebugMode() ) {
+      if ( isDebugModeSync() ) {
         switch ( getItemError.code ) {
           case ErrorCode.NOT_FOUND:
             // Value doesn't exist
@@ -129,7 +133,7 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const setItemError = e as SensitiveInfoError;
-      if ( isDebugMode( ) ) {
+      if ( isDebugModeSync( ) ) {
         localLogger.info(
           `RNSInfo.setItem error for ${key}, ${setItemError.code} ${setItemError.message}`,
         );
@@ -152,7 +156,7 @@ async function deleteSensitiveItem(
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const deleteItemError = e as SensitiveInfoError;
-      if ( isDebugMode() ) {
+      if ( isDebugModeSync() ) {
         localLogger.info(
           `RNSInfo.deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`,
         );

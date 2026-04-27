@@ -3,14 +3,14 @@
 import { useNavigation } from "@react-navigation/native";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   usePerformance,
   useShare,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 
 import AppStateListener from "./AppStateListener";
 import useDeferredStartup from "./hooks/useDeferredStartup";
@@ -58,9 +58,12 @@ const App = ( { children }: Props ): Node => {
   const { loadTime } = usePerformance( {
     screenName: "App",
   } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
+  const { isDebug } = useDebugMode();
+  useEffect( () => {
+    if ( isDebug && loadTime ) {
+      logger.info( loadTime );
+    }
+  }, [isDebug, loadTime] );
 
   // attempting to make sure that navigation is only called once
   // for performance reasons

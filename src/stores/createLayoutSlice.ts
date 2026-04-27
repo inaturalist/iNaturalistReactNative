@@ -110,6 +110,14 @@ const createLayoutSlice = set => ( {
         dismissedAnnouncementIds: [],
       },
     } ) ),
+    // State to control debug mode
+    debugModeEnabled: false,
+    toggleDebugMode: () => set( state => ( {
+      layout: {
+        ...state.layout,
+        debugModeEnabled: !state.layout.debugModeEnabled,
+      },
+    } ) ),
   },
 } );
 
