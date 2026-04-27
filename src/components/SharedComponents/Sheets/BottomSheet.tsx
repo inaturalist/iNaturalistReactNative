@@ -91,7 +91,7 @@ const StandardBottomSheet = ( {
     />
   );
 
-  const handleSnapPress = useCallback( ( ) => {
+  const openSheet = useCallback( ( ) => {
     if ( insideModal ) {
       sheetRef.current?.expand( );
     } else {
@@ -104,8 +104,8 @@ const StandardBottomSheet = ( {
       dismissSheet( );
       return;
     }
-    handleSnapPress( );
-  }, [hidden, handleSnapPress, dismissSheet] );
+    openSheet( );
+  }, [hidden, openSheet, dismissSheet] );
 
   // Capture sheetRef.current now: it's null by the time this cleanup runs on unmount,
   // so the captured handle is what actually dismisses the sheet.
