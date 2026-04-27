@@ -95,18 +95,34 @@ const StandardBottomSheet = ( {
   }, [insideModal] );
 
   useEffect( ( ) => {
-    if ( hidden ) { return; }
+    if ( hidden ) {
+      if ( insideModal ) {
+        sheetRef.current?.close( );
+      } else {
+        sheetRef.current?.dismiss( );
+      }
+      return;
+    }
     handleSnapPress( );
-  }, [hidden, handleSnapPress] );
+  }, [hidden, handleSnapPress, insideModal] );
+
+  // Capture sheetRef.current now: it's null by the time this cleanup runs on unmount,
+  // so the captured handle is what actually dismisses the sheet.
+  useEffect( ( ) => {
+    const sheet = sheetRef.current;
+    return ( ) => {
+      if ( insideModal ) {
+        sheet?.close( );
+      } else {
+        sheet?.dismiss( );
+      }
+    };
+  }, [insideModal] );
 
   // To me, this implies this is a good candidate for splitting into 2 components
   const BottomSheetComponent = insideModal
     ? BottomSheet
     : BottomSheetModal;
-
-  if ( hidden ) {
-    return null;
-  }
 
   return (
     <BottomSheetComponent
