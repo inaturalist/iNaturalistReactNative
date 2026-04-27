@@ -95,7 +95,7 @@ const MyObservationsContainer = ( ) => {
   const {
     observationList: observations,
     totalResults: totalResultsLocal,
-  } = useLocalObservations( );
+  } = useLocalObservations( "MyObservationsContainer" );
   const prevObservationsLength = useRef( observations.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
