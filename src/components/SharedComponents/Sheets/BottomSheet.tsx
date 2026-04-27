@@ -69,15 +69,20 @@ const StandardBottomSheet = ( {
   const sheetRef = useRef<BottomSheet>( null );
   const insets = useSafeAreaInsets( );
 
+  // The optional `sheet` arg lets the unmount cleanup pass a captured handle;
+  // see the cleanup effect below for why that matters.
+  const dismissSheet = useCallback( ( sheet = sheetRef.current ) => {
+    if ( insideModal ) {
+      sheet?.close( );
+    } else {
+      sheet?.dismiss( );
+    }
+  }, [insideModal] );
+
   const handleClose = useCallback( ( ) => {
     if ( onPressClose ) onPressClose( );
-
-    if ( insideModal ) {
-      sheetRef.current?.collapse( );
-    } else {
-      sheetRef.current?.dismiss( );
-    }
-  }, [insideModal, onPressClose] );
+    dismissSheet( );
+  }, [dismissSheet, onPressClose] );
 
   const renderBackdrop = props => (
     <BottomSheetStandardBackdrop
@@ -96,28 +101,18 @@ const StandardBottomSheet = ( {
 
   useEffect( ( ) => {
     if ( hidden ) {
-      if ( insideModal ) {
-        sheetRef.current?.close( );
-      } else {
-        sheetRef.current?.dismiss( );
-      }
+      dismissSheet( );
       return;
     }
     handleSnapPress( );
-  }, [hidden, handleSnapPress, insideModal] );
+  }, [hidden, handleSnapPress, dismissSheet] );
 
   // Capture sheetRef.current now: it's null by the time this cleanup runs on unmount,
   // so the captured handle is what actually dismisses the sheet.
   useEffect( ( ) => {
     const sheet = sheetRef.current;
-    return ( ) => {
-      if ( insideModal ) {
-        sheet?.close( );
-      } else {
-        sheet?.dismiss( );
-      }
-    };
-  }, [insideModal] );
+    return ( ) => dismissSheet( sheet );
+  }, [dismissSheet] );
 
   // To me, this implies this is a good candidate for splitting into 2 components
   const BottomSheetComponent = insideModal
