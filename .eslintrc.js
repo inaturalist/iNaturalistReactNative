@@ -115,12 +115,12 @@ module.exports = {
     // cases that are very likely to cause bugs and _have definitely_ been the cause of a number of
     // bugs fixed in the past few months. Ideally, we'll progressively turn these into warnings
     // and then errors as we fix them : ) noting here in case it ever gets lost in Linear.
-    "react-hooks/static-components": 0, // 33
-    "react-hooks/set-state-in-effect": 0, // 31
-    "react-hooks/refs": 0, // 26
-    "react-hooks/preserve-manual-memoization": 0, // 11
-    "react-hooks/purity": 0, // 3
-    "react-hooks/immutability": 0, // 3
+    "react-hooks/static-components": 0,
+    "react-hooks/set-state-in-effect": 0,
+    "react-hooks/refs": 0,
+    "react-hooks/preserve-manual-memoization": 0,
+    "react-hooks/purity": 0,
+    "react-hooks/immutability": 0,
 
     "react-native/no-inline-styles": "error",
 
