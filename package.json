@@ -198,7 +198,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-lodash": "^7.4.0",
     "eslint-plugin-module-resolver": "^1.5.0",
-    "eslint-plugin-react-hooks": "^6.0.0-rc.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-native": "^5.0.0",
     "eslint-plugin-react-native-a11y": "^3.5.1",
     "eslint-plugin-simple-import-sort": "^12.0.0",
@@ -225,7 +225,7 @@
     "yargs": "^17.7.2"
   },
   "overrides": {
-    "eslint-plugin-react-hooks": "^6.0.0-rc.1"
+    "eslint-plugin-react-hooks": "^7.1.1"
   },
   "engines": {
     "node": ">=20"

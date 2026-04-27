@@ -206,7 +206,6 @@ const FullPageWebView = ( ) => {
       }
       // TODO: I am not sure how to make the react compiler happy here, so I disabled it
       // for this hook
-      // eslint-disable-next-line react-hooks/react-compiler
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigation, params.loggedIn, params.title] ),
   );
