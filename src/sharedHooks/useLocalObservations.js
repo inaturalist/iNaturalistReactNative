@@ -144,9 +144,15 @@ const useLocalObservations = ( caller: string ): Object => {
         ( [label, elapsedMs] ) => `${label}: ${elapsedMs / 1000}s elapsed`,
       ).join( " | " );
 
+      const endTime = performance.now();
+
       logger.infoWithExtra(
         `Obs mapping diagnostic END. trace id: ${traceContext.traceUuid} | ${eventLog}`,
-        traceContext,
+        {
+          ...traceContext,
+          endTime,
+          elapsedMs: endTime - startTime,
+        },
       );
     };
 
