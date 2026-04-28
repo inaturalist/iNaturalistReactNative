@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
+import type { AuthenticateUserResult } from "components/LoginSignUp/AuthenticationService";
 import { authenticateUser, signOut } from "components/LoginSignUp/AuthenticationService";
 import {
   Body1, Body2, Button, CloseButton, Heading4, INatIcon, INatIconButton, List2,
@@ -32,10 +33,16 @@ interface Props {
   scrollViewRef?: React.Ref<ScrollView>;
 }
 
+/**
+ * If a user loggs in and their account has at least this many
+ * uploaded observations, auto-switch to advanced mode
+ */
+export const AUTO_ADVANCED_MODE_OBSERVATION_THRESHOLD = 100;
+
 const LoginForm = ( {
   scrollViewRef,
 }: Props ) => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation<LoginStackScreenProps<"Login">["navigation"]>( );
   const { params } = useRoute<LoginStackScreenProps<"Login">["route"]>();
   const emailConfirmed = params?.emailConfirmed;
   // For debug reasons, we can send the user here to log in again, but we must ensure
@@ -44,7 +51,8 @@ const LoginForm = ( {
   const currentUser = useCurrentUser( );
   const loginAgain = !!currentUser && !!currentUser?.login;
   const realm = useRealm( );
-  const { isDefaultMode, setLoggedInWhileInDefaultMode } = useLayoutPrefs( );
+  const { isDefaultMode, setIsDefaultMode, setLoggedInWhileInDefaultMode }
+    = useLayoutPrefs();
   const firstInputFieldRef = useRef( null );
   const emailRef = useRef<TextInput>( null );
   const passwordRef = useRef<TextInput>( null );
@@ -99,11 +107,11 @@ const LoginForm = ( {
     return unsubscrubeTransition;
   }, [navigation] );
 
-  const logIn = React.useCallback( async ( logInCallback: () => Promise<boolean> ) => {
+  const logIn = useCallback( async ( logInCallback: () => Promise<AuthenticateUserResult> ) => {
     setLoading( true );
-    const success = await logInCallback( );
+    const result = await logInCallback( );
 
-    if ( !success ) {
+    if ( !result.success ) {
       setError( t( "Failed-to-log-in" ) );
       setLoading( false );
       return;
@@ -111,15 +119,24 @@ const LoginForm = ( {
 
     setLoading( false );
 
-    // Set a state to zustand that we just logged in while in default mode
-    setLoggedInWhileInDefaultMode( isDefaultMode );
+    if (
+      result.observationsCount
+      && result.observationsCount >= AUTO_ADVANCED_MODE_OBSERVATION_THRESHOLD
+    ) {
+      // If a user that just logged in already has more than the threshold number of observations,
+      // we assume they are an advanced user and switch them to advanced mode.
+      setIsDefaultMode( false );
+    } else {
+      // Set a state to zustand that we just logged in while in default mode
+      setLoggedInWhileInDefaultMode( isDefaultMode );
+    }
     if ( params?.prevScreen && params?.projectId ) {
       navigation.navigate( "TabNavigator", {
         screen: "ObservationsTab",
         params: {
           screen: "ProjectDetails",
           params: {
-            id: params?.projectId,
+            id: params.projectId,
           },
         },
       } );
@@ -130,6 +147,7 @@ const LoginForm = ( {
     navigation,
     params,
     isDefaultMode,
+    setIsDefaultMode,
     setLoggedInWhileInDefaultMode,
   ] );
 
