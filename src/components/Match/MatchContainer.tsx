@@ -29,7 +29,7 @@ import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservation
 import {
   useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 import {
   internalUseSuggestionsInitialSuggestions,
 } from "sharedHooks/useSuggestions/filterSuggestions";
@@ -119,7 +119,7 @@ const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
-  const isDebug = isDebugMode( );
+  const { isDebug } = useDebugMode( );
   const scrollRef = useRef<ScrollView>( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );

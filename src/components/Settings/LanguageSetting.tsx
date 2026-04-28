@@ -43,6 +43,8 @@ const LanguageSetting = ( { onChange }: Props ) => {
         : [] );
 
       const apiToken = await getJWT( );
+      // TODO: enable fields if it makes sense? Idk if it helps with this endpoint
+      // https://linear.app/inaturalist/issue/MOB-1367/enable-fields-for-available-locales-in-languagesetting
       const locales = await fetchAvailableLocales( {}, { api_token: apiToken } );
       zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
       setWebLocales( locales as LocalesResponse );

@@ -23,9 +23,6 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
     [
       "NotificationsTab",
       "notificationsCount",
-      // We want to check for notifications when the user views an
-      // observation, because that might make the indicator go away
-      observationMarkedAsViewedAt,
       id,
     ],
     ( optsWithAuth: ApiOpts ) => fetchUnviewedObservationUpdatesCount(
@@ -40,6 +37,10 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
       enabled: !!( currentUser ),
     },
   );
+
+  useEffect( () => {
+    refetch();
+  }, [observationMarkedAsViewedAt, refetch] );
 
   useEffect( ( ) => {
     const listener = EventRegister.addEventListener(

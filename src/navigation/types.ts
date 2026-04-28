@@ -214,7 +214,9 @@ export type BaseTabStackParamList = {
   };
   DataQualityAssessment: undefined;
   Projects: undefined;
-  ProjectDetails: undefined;
+  // From LoginForm
+  // { id: params.projectId }
+  ProjectDetails: { id: number };
   ProjectRequirements: undefined;
   ProjectMembers: undefined;
   // From ProjectButton, ProjectSection
@@ -332,11 +334,13 @@ export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type LoginStackParamList = {
+  // From SignUpConfirmationForm
+  // no params
   Login: {
     emailConfirmed?: boolean;
     prevScreen?: string;
     projectId?: number;
-  };
+  } | undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
   LearnMore: undefined;

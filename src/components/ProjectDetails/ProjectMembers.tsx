@@ -8,7 +8,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import User from "realmModels/User";
 import { useInfiniteScroll, useTranslation } from "sharedHooks";
 
@@ -49,7 +49,7 @@ const ProjectMembers = ( ) => {
     } ),
   } ), [title, totalMembers, t] );
 
-  const renderFooter = useCallback( ( ) => (
+  const footerComponent = useMemo( ( ) => (
     <InfiniteScrollLoadingWheel
       hideLoadingWheel={!isFetchingNextPage}
       layout="list"
@@ -61,7 +61,7 @@ const ProjectMembers = ( ) => {
     navigation.setOptions( headerOptions );
   }, [navigation, headerOptions] );
 
-  const renderEmptyComponent = useCallback( ( ) => (
+  const emptyComponent = useMemo( ( ) => (
     <ActivityIndicator size={50} />
   ), [] );
 
@@ -71,8 +71,8 @@ const ProjectMembers = ( ) => {
         users={projectMembers}
         onEndReached={fetchNextPage}
         refreshing={isFetchingNextPage}
-        ListEmptyComponent={renderEmptyComponent}
-        ListFooterComponent={renderFooter}
+        ListEmptyComponent={emptyComponent}
+        ListFooterComponent={footerComponent}
       />
     </View>
   );

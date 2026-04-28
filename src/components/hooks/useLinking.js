@@ -30,6 +30,8 @@ const useLinking = ( currentUser: ?Object ) => {
     const options = {
       api_token: apiToken,
     };
+    // TODO: enable fields if it makes sense
+    // https://linear.app/inaturalist/issue/MOB-1358/enable-fields-for-searchobservations-in-uselinking
     const { results } = await searchObservations( searchParams, options );
     const uuid = results?.[0]?.uuid;
 
