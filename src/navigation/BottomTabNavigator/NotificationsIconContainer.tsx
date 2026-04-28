@@ -21,6 +21,8 @@ const NotificationsIconContainer = ( {
   const currentUser = useCurrentUser( );
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
 
+  // TODO: enable fields if it makes sense
+  // https://linear.app/inaturalist/issue/MOB-1362/enable-fields-for-unviewed-updates-count-in-notificationsicon
   const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
     [
       "notificationsCount",
