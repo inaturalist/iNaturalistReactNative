@@ -1,13 +1,9 @@
-// Please don't change fetchAccurateUserLocation/fetchCoarseUserLocation imports
-// to aliased paths or the e2e mocks will not get used in our e2e tests on
-// Github Actions
 import { hasOnlyCoarseLocation } from "components/SharedComponents/PermissionGateContainer";
 import {
   useCallback, useEffect, useRef, useState,
 } from "react";
-
-import fetchAccurateUserLocation from "../sharedHelpers/fetchAccurateUserLocation";
-import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
+import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
+import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
 
 export const TARGET_POSITIONAL_ACCURACY = 10;
 
