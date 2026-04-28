@@ -209,6 +209,7 @@ const Menu = ( ) => {
       isDefaultMode,
       isAllAddObsOptionsMode,
       screenAfterPhotoEvidence,
+      userWasDefaultedToAdvancedMode,
     } = layoutPrefs;
     const modeContext = ( isDefaultMode
       ? {
@@ -240,6 +241,7 @@ const Menu = ( ) => {
         username: "loggedout",
         identifications: "loggedout",
         remoteObservations: "loggedout",
+        userWasDefaultedToAdvancedMode,
       };
     const storageMetrics = await getStorageMetrics( realm?.path ).catch( () => ( {} ) );
     const deviceMetrics = await getDeviceMetricsForFeedback().catch( () => ( {} ) );

@@ -21,6 +21,7 @@ import {
 } from "react-native";
 import { useCurrentUser, useLayoutPrefs } from "sharedHooks";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import Error from "./Error";
@@ -63,6 +64,9 @@ const LoginForm = ( {
   const [isPasswordVisible, setIsPasswordVisible] = useState( false );
   const { keyboardShown } = useKeyboardInfo( );
   const [showModal, setShowModal] = useState( false );
+  const setUserWasDefaultedToAdvancedMode = useStore(
+    state => state.layout.setUserWasDefaultedToAdvancedMode,
+  );
 
   const onSignOut = async () => {
     await signOut( { realm, clearRealm: true } );
@@ -126,6 +130,7 @@ const LoginForm = ( {
       // If a user that just logged in already has more than the threshold number of observations,
       // we assume they are an advanced user and switch them to advanced mode.
       setIsDefaultMode( false );
+      setUserWasDefaultedToAdvancedMode();
     } else {
       // Set a state to zustand that we just logged in while in default mode
       setLoggedInWhileInDefaultMode( isDefaultMode );
@@ -149,6 +154,7 @@ const LoginForm = ( {
     isDefaultMode,
     setIsDefaultMode,
     setLoggedInWhileInDefaultMode,
+    setUserWasDefaultedToAdvancedMode,
   ] );
 
   const scrollToItem = useCallback( ( ) => {
