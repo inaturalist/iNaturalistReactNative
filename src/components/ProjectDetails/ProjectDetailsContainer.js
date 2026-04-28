@@ -63,6 +63,7 @@ const ProjectDetailsContainer = ( ): Node => {
   );
 
   // TODO: enable fields if it makes sense
+  // https://linear.app/inaturalist/issue/MOB-1366/enable-fields-for-fetchprojectposts-in-projectdetails
   const { data: projectPosts } = useAuthenticatedQuery(
     ["fetchProjectPosts", id],
     optsWithAuth => fetchProjectPosts( {
@@ -95,6 +96,7 @@ const ProjectDetailsContainer = ( ): Node => {
   );
 
   // TODO: enable fields if it makes sense
+  // https://linear.app/inaturalist/issue/MOB-1359/audit-searchobservations-todos-in-projectdetailscontainer
   const { data: speciesCounts } = useAuthenticatedQuery(
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
