@@ -1,9 +1,10 @@
+import { useEffect } from "react";
 import { log } from "sharedHelpers/logger";
 import {
   useIconicTaxa,
   useObservationUpdatesWhenFocused, usePerformance,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 
 import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
 import useWorkQueue from "./hooks/useWorkQueue";
@@ -15,9 +16,12 @@ const NetworkService = ( ) => {
     screenName: "NetworkService",
     isLoading: false,
   } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
+  const { isDebug } = useDebugMode();
+  useEffect( () => {
+    if ( isDebug && loadTime ) {
+      logger.info( loadTime );
+    }
+  }, [isDebug, loadTime] );
 
   useObservationUpdatesWhenFocused( );
 

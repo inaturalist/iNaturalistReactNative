@@ -12,6 +12,7 @@ import Config from "react-native-config";
 import type Realm from "realm";
 import { log } from "sharedHelpers/logger";
 
+import type { AuthenticateUserResult } from "./AuthenticationService";
 import {
   authenticateUserByAssertion,
 } from "./AuthenticationService";
@@ -29,7 +30,7 @@ function showSignInWithAppleFailed() {
   );
 }
 
-async function signInWithApple( realm: Realm ) {
+async function signInWithApple( realm: Realm ): Promise<AuthenticateUserResult> {
   // Request sign in w/ apple. This should pop up some system UI for signing
   // in
   let appleAuthRequestResponse;
@@ -42,11 +43,11 @@ async function signInWithApple( realm: Realm ) {
   } catch ( appleAuthRequestError ) {
     if ( ( appleAuthRequestError as AppleAuthError ).code === appleAuth.Error.CANCELED ) {
       // The user canceled sign in, no need to log
-      return false;
+      return { success: false };
     }
     logger.error( "Apple auth request failed", appleAuthRequestError );
     showSignInWithAppleFailed();
-    return false;
+    return { success: false };
   }
 
   // Check if auth was successful
@@ -74,19 +75,18 @@ async function signInWithApple( realm: Realm ) {
       } ),
     } );
     try {
-      await authenticateUserByAssertion( "apple", assertion, realm );
+      return await authenticateUserByAssertion( "apple", assertion, realm );
     } catch ( authenticateUserByAssertionError ) {
       logger.error( "Assertion with Apple token failed", authenticateUserByAssertionError );
       showSignInWithAppleFailed();
-      return false;
+      return { success: false };
     }
-    return true;
   }
   // We only get here if the user does not grant access... I think, so no need
   // to log an error
   logger.info( "Apple auth failed, credentialState: ", credentialState );
   showSignInWithAppleFailed();
-  return false;
+  return { success: false };
 }
 
 GoogleSignin.configure( {
@@ -124,33 +124,32 @@ function showSignInWithGoogleFailed() {
   );
 }
 
-async function signInWithGoogle( realm: Realm ) {
+async function signInWithGoogle( realm: Realm ): Promise<AuthenticateUserResult> {
   const hasPlayServices = await confirmGooglePlayServices( );
-  if ( !hasPlayServices ) return false;
+  if ( !hasPlayServices ) return { success: false };
   let signInResp;
   try {
     signInResp = await GoogleSignin.signIn();
   } catch ( signInError ) {
     logger.error( "Failed to sign in with Google", signInError );
-    return false;
+    return { success: false };
   }
-  if ( signInResp.type === "cancelled" ) return false;
+  if ( signInResp.type === "cancelled" ) return { success: false };
   let tokens;
   try {
     tokens = await GoogleSignin.getTokens();
   } catch ( getTokensError ) {
     logger.error( "Failed to get tokens from Google", getTokensError );
-    return false;
+    return { success: false };
   }
-  if ( !tokens?.accessToken ) return false;
+  if ( !tokens?.accessToken ) return { success: false };
   try {
-    await authenticateUserByAssertion( "google", tokens.accessToken, realm );
+    return await authenticateUserByAssertion( "google", tokens.accessToken, realm );
   } catch ( authenticateUserByAssertionError ) {
     logger.error( "Assertion with Google token failed", authenticateUserByAssertionError );
     showSignInWithGoogleFailed();
-    return false;
+    return { success: false };
   }
-  return true;
 }
 
 export {

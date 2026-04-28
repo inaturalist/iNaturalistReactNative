@@ -6,7 +6,7 @@ import { log } from "sharedHelpers/logger";
 import {
   usePerformance,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 
 const logger = log.extend( "AppStateListener" );
 
@@ -15,9 +15,12 @@ const AppStateListener = ( ) => {
     screenName: "AppStateListener",
     isLoading: false,
   } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
+  const { isDebug } = useDebugMode();
+  useEffect( () => {
+    if ( isDebug && loadTime ) {
+      logger.info( loadTime );
+    }
+  }, [isDebug, loadTime] );
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
   const [deviceStorageFullShown, setDeviceStorageFullShown] = useState( false );
 
