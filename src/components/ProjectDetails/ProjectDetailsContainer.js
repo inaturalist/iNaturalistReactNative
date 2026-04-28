@@ -72,6 +72,7 @@ const ProjectDetailsContainer = ( ): Node => {
   );
 
   // TODO: enable fields if it makes sense
+  // https://linear.app/inaturalist/issue/MOB-1359/enable-fields-for-searchobservations-in-projectdetailscontainer
   const { data: projectStats } = useAuthenticatedQuery(
     ["searchObservations", id],
     ( ) => searchObservations( {
@@ -80,6 +81,7 @@ const ProjectDetailsContainer = ( ): Node => {
   );
 
   // TODO: enable fields if it makes sense
+  // https://linear.app/inaturalist/issue/MOB-1359/enable-fields-for-searchobservations-in-projectdetailscontainer
   const { data: usersObservations } = useAuthenticatedQuery(
     ["searchObservationsByUserInProject", id],
     optsWithAuth => searchObservations(
