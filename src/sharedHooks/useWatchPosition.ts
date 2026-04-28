@@ -26,12 +26,10 @@ const fetchObservationLocation = async (
   }
 
   // Retry until we reach target accuracy or exhaust attempts.
-  // Each call to fetchAccurateUserLocation tries high-accuracy first
-  // (10s timeout), then falls back to low-accuracy.
   let bestLocation = null;
   for ( let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1 ) {
     if ( isCancelled?.() ) return bestLocation;
-
+    // We do indeed want to fetch location sequentially here
     // eslint-disable-next-line no-await-in-loop
     const location = await fetchAccurateUserLocation();
     if ( !location ) break;

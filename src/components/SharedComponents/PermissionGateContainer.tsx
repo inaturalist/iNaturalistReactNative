@@ -106,7 +106,7 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
     );
   }
   // On Android 12+, the user may grant only approximate (coarse) location,
-  // leaving fine location denied. Use OR logic: if ANY location permission is
+  // leaving fine location denied. For that case if ANY location permission is
   // granted, the overall result is GRANTED.
   const coarseKey = PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION;
   if ( coarseKey in multiResults ) {
@@ -124,6 +124,7 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
     }
     return RESULTS.UNAVAILABLE;
   }
+  // All non-android locations permissions will use this path
   if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
     return RESULTS.BLOCKED;
   }
