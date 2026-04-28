@@ -4,6 +4,7 @@ import { useWatchPosition } from "sharedHooks";
 const mockFetchAccurateUserLocation = jest.fn();
 const mockFetchCoarseUserLocation = jest.fn();
 const mockHasOnlyCoarseLocation = jest.fn();
+const mockBlurListeners = [];
 
 jest.mock( "../../../src/sharedHelpers/fetchAccurateUserLocation", () => ( {
   __esModule: true,
@@ -18,6 +19,21 @@ jest.mock( "../../../src/sharedHelpers/fetchCoarseUserLocation", () => ( {
 jest.mock( "components/SharedComponents/PermissionGateContainer", () => ( {
   hasOnlyCoarseLocation: () => mockHasOnlyCoarseLocation(),
 } ) );
+
+jest.mock( "@react-navigation/native", () => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useNavigation: () => ( {
+      addListener: ( event, callback ) => {
+        if ( event === "blur" ) {
+          mockBlurListeners.push( callback );
+        }
+        return jest.fn();
+      },
+    } ),
+  };
+} );
 
 const inaccurateLocation = {
   latitude: 1,
@@ -48,6 +64,7 @@ beforeEach( () => {
   mockFetchCoarseUserLocation.mockReset();
   mockHasOnlyCoarseLocation.mockReset();
   mockHasOnlyCoarseLocation.mockResolvedValue( false );
+  mockBlurListeners.length = 0;
 } );
 
 describe( "useWatchPosition with inaccurate location", () => {
@@ -166,6 +183,32 @@ describe( "useWatchPosition cancel", () => {
 
     act( () => {
       result.current.cancel();
+    } );
+
+    expect( result.current.isFetchingLocation ).toBeFalsy();
+
+    await act( async () => {
+      resolveLocation( inaccurateLocation );
+    } );
+    expect( result.current.userLocation ).toBeNull();
+  } );
+} );
+
+describe( "useWatchPosition on screen blur", () => {
+  it( "should cancel an in-flight fetch when the screen blurs", async () => {
+    let resolveLocation;
+    mockFetchAccurateUserLocation.mockImplementation(
+      () => new Promise( resolve => { resolveLocation = resolve; } ),
+    );
+
+    const { result } = renderHook( () => useWatchPosition( { shouldFetchLocation: true } ) );
+    await waitFor( () => {
+      expect( result.current.isFetchingLocation ).toBeTruthy();
+    } );
+    expect( mockBlurListeners.length ).toBeGreaterThan( 0 );
+
+    act( () => {
+      mockBlurListeners.forEach( listener => listener() );
     } );
 
     expect( result.current.isFetchingLocation ).toBeFalsy();

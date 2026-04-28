@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { hasOnlyCoarseLocation } from "components/SharedComponents/PermissionGateContainer";
 import {
   useCallback, useEffect, useRef, useState,
@@ -53,6 +54,7 @@ const useWatchPosition = ( options: {
   shouldFetchLocation: boolean;
 } ) => {
   const { shouldFetchLocation } = options;
+  const navigation = useNavigation( );
   const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
   const [isFetchingLocation, setIsFetchingLocation] = useState( false );
   const cancelRef = useRef<( () => void ) | null>( null );
@@ -62,6 +64,7 @@ const useWatchPosition = ( options: {
       cancelRef.current();
       cancelRef.current = null;
     }
+    console.log( "CANCEL onBlure" );
     setIsFetchingLocation( false );
   }, [] );
 
@@ -83,6 +86,12 @@ const useWatchPosition = ( options: {
 
     return ( ) => { cancelled = true; };
   }, [shouldFetchLocation] );
+
+  // Cancel any in-flight fetch when we lose focus
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "blur", cancel );
+    return unsubscribe;
+  }, [navigation, cancel] );
 
   return {
     userLocation,
