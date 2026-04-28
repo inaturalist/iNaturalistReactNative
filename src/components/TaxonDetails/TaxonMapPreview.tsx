@@ -36,6 +36,7 @@ const TaxonMapPreview = ( {
 
   // TODO: add a loading indicator for map preview
   // TODO: enable fields if it makes sense
+  // https://linear.app/inaturalist/issue/MOB-1360/enable-fields-for-searchobservations-in-taxonmappreview
   const {
     data: obsSearchResponse,
   } = useAuthenticatedQuery(
