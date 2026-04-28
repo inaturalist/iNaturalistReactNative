@@ -69,6 +69,7 @@ const useWatchPosition = ( options: {
 
   useEffect( ( ) => {
     if ( !shouldFetchLocation ) {
+      setIsFetchingLocation( false );
       return ( ) => {};
     }
 
