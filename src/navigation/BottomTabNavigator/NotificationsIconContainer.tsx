@@ -1,6 +1,6 @@
 import { fetchUnviewedObservationUpdatesCount } from "api/observations";
 import NotificationsIcon from "navigation/BottomTabNavigator/NotificationsIcon";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -23,12 +23,9 @@ const NotificationsIconContainer = ( {
 
   // TODO: enable fields if it makes sense
   // https://linear.app/inaturalist/issue/MOB-1362/enable-fields-for-unviewed-updates-count-in-notificationsicon
-  const { data: unviewedUpdatesCount } = useAuthenticatedQuery(
+  const { data: unviewedUpdatesCount, refetch } = useAuthenticatedQuery(
     [
       "notificationsCount",
-      // We want to check for notifications when the user views an
-      // observation, because that might make the indicator go away
-      observationMarkedAsViewedAt,
     ],
     optsWithAuth => fetchUnviewedObservationUpdatesCount( {}, optsWithAuth ),
     {
@@ -38,6 +35,10 @@ const NotificationsIconContainer = ( {
       refetchInterval: 60_000,
     },
   );
+
+  useEffect( () => {
+    refetch();
+  }, [observationMarkedAsViewedAt, refetch] );
 
   const hasUnread = ( unviewedUpdatesCount ?? 0 ) > 0;
 

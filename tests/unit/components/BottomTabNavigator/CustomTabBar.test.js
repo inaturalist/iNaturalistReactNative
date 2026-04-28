@@ -27,6 +27,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
     data: 0,
+    refetch: () => undefined,
   } ),
 } ) );
 
