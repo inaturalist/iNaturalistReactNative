@@ -23,7 +23,7 @@ const NotificationsIconContainer = ( {
 
   // TODO: enable fields if it makes sense
   // https://linear.app/inaturalist/issue/MOB-1362/enable-fields-for-unviewed-updates-count-in-notificationsicon
-  const { data: unviewedUpdatesCount, refetch } = useAuthenticatedQuery(        
+  const { data: unviewedUpdatesCount, refetch } = useAuthenticatedQuery(
     [
       "notificationsCount",
     ],
