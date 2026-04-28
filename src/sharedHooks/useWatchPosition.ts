@@ -64,7 +64,6 @@ const useWatchPosition = ( options: {
       cancelRef.current();
       cancelRef.current = null;
     }
-    console.log( "CANCEL onBlure" );
     setIsFetchingLocation( false );
   }, [] );
 
