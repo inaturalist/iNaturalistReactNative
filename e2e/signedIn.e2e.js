@@ -1,3 +1,4 @@
+import { execSync } from "child_process";
 import {
   by, device, element, expect, waitFor,
 } from "detox";
@@ -8,10 +9,6 @@ import signIn from "./sharedFlows/signIn";
 import uploadObservation from "./sharedFlows/uploadObservation";
 
 const TIMEOUT = 10_000;
-
-function delay( ms ) {
-  return new Promise( resolve => { setTimeout( resolve, ms ); } );
-}
 
 describe( "Signed in user", () => {
   beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
@@ -62,8 +59,10 @@ describe( "Signed in user", () => {
     await expect( headerKebabMenu ).toBeVisible();
     await headerKebabMenu.tap();
     // Press delete observation
-    const deleteObservationMenuItem = element( by.id( "Header.delete-observation" ) );
-    await waitFor( deleteObservationMenuItem ).toBeVisible().withTimeout( TIMEOUT );
+    // The menu renders in a react-native-paper Portal; use toExist() since
+    // toBeVisible()'s 75% rect threshold doesn't apply well to portal overlays
+    const deleteObservationMenuItem = element( by.text( "Delete observation" ) );
+    await waitFor( deleteObservationMenuItem ).toExist().withTimeout( TIMEOUT );
     await deleteObservationMenuItem.tap();
     // Check that the delete button is visible
     const deleteObservationButton = element( by.text( "DELETE" ) );
@@ -107,9 +106,18 @@ describe( "Signed in user", () => {
     // Check that the comment modal is visible
     const commentModalInput = element( by.id( "TextInputSheet.notes" ) );
     await waitFor( commentModalInput ).toBeVisible().withTimeout( TIMEOUT );
-    // Add a comment
+    // Add a comment. Use replaceText instead of typeText because the
+    // BottomSheetTextInput-backed MentionTextInput doesn't reliably receive
+    // key events from typeText on Android API 36+.
     await commentModalInput.tap();
-    await commentModalInput.typeText( "This is a comment" );
+    await commentModalInput.replaceText( "This is a comment" );
+    // On Android, dismiss the keyboard after typing so that it does not cover
+    // UI elements in subsequent steps. When a soft keyboard is visible, the
+    // first BACK key press (keycode 4) dismisses the keyboard without
+    // navigating or closing the modal.
+    if ( device.getPlatform() === "android" ) {
+      execSync( "adb shell input keyevent 4" );
+    }
     // Tap on the title of the modal to dismiss the keyboard
     const bottomSheetHeader = element( by.id( "bottom-sheet-header" ) );
     await bottomSheetHeader.tap();
@@ -135,10 +143,10 @@ describe( "Signed in user", () => {
     // list item for the observation we deleted.
     await waitFor( element( by.text( /Upload 1 observation/ ) ) ).toBeVisible( ).withTimeout( 20_000 );
 
-    // the timing of syncing deletions seems to be different in the actual app versus these
-    // e2e tests, so deleting an observation here still shows the observation
-    // in the list unless this delay( ) is added
-    await delay( 10000 );
-    await expect( obsListItem ).not.toBeVisible( );
+    // Wait for the observation to disappear from the list. Navigation now uses
+    // CommonActions.reset() which remounts MyObservations fresh, so the sync
+    // that processes the deletion queue starts from scratch and can take longer
+    // than the old fixed 10s delay allowed.
+    await waitFor( obsListItem ).not.toBeVisible( ).withTimeout( 30_000 );
   } );
 } );

@@ -20,7 +20,10 @@ export async function iNatE2eBeforeAll( device ) {
   await resetUserForTesting();
 
   if ( device.getPlatform() === "android" ) {
+    // delete: true uninstalls and reinstalls the app, clearing all persisted
+    // data (including MMKV stores like onboardingShown) for a clean start
     await device.launchApp( {
+      delete: true,
       newInstance: true,
       permissions: {
         location: "always",
@@ -33,16 +36,26 @@ export async function iNatE2eBeforeAll( device ) {
     await execPromise( "adb shell settings put global window_animation_scale 0" );
     await execPromise( "adb shell settings put global transition_animation_scale 0" );
     await execPromise( "adb shell settings put global animator_duration_scale 0" );
+    // Disable stylus handwriting recognition to prevent the "Try out your
+    // stylus" onboarding dialog from appearing during text input actions
+    // (replaceText can trigger it on Android API 36+).
+    await execPromise( "adb shell settings put secure stylus_handwriting_enabled 0" );
+
+    // Push a test image into the app's external files directory so the mock
+    // camera can use it as a photo source (copyAssetsFileIOS is iOS-only).
+    // The directory is created by the app on first launch, so we ensure it
+    // exists before pushing.
+    await execPromise(
+      "adb shell mkdir -p /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/",
+    );
+    await execPromise(
+      "adb push e2e/maestro/android/test.jpg"
+        + " /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/e2e_test.jpg",
+    );
   }
 }
 
 export async function iNatE2eBeforeEach( device ) {
-  // device.launchApp would be preferred for an app of our complexity. It does work locally
-  // for both, but on CI for Android it does not work. So we use reloadReactNative for Android.
-  if ( device.getPlatform() === "android" ) {
-    await device.reloadReactNative();
-    return;
-  }
   const launchAppOptions = {
     newInstance: true,
     permissions: {
@@ -61,19 +74,21 @@ export async function iNatE2eBeforeEach( device ) {
     // Try it one more time
     await device.launchApp( launchAppOptions );
   }
-  // disable password autofill
-  execSync(
-    // eslint-disable-next-line max-len
-    `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist`,
-  );
-  execSync(
-    // eslint-disable-next-line max-len
-    `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist`,
-  );
-  execSync(
-    // eslint-disable-next-line max-len
-    `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist`,
-  );
+  if ( device.getPlatform() !== "android" ) {
+    // disable password autofill
+    execSync(
+      // eslint-disable-next-line max-len
+      `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist`,
+    );
+    execSync(
+      // eslint-disable-next-line max-len
+      `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist`,
+    );
+    execSync(
+      // eslint-disable-next-line max-len
+      `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/CoreSimulator/Devices/${device.id}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist`,
+    );
+  }
 }
 
 async function getSimulatorId() {

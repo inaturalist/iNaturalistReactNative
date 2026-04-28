@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as uuid from "uuid";
 
 const INSTALL_ID = "installID";
+const ONBOARDING_SHOWN = "onboardingShown";
 export const IS_FRESH_INSTALL = "isFreshInstall";
 
 const data = new Map();
@@ -24,6 +25,23 @@ export function getInstallID( ) {
   return newID;
 }
 
+// Subscribers that get notified when onboardingShown changes, so all
+// components using this hook re-render (mimics useMMKVBoolean behavior)
+const onboardingListeners = new Set();
+
 export function useOnboardingShown() {
-  return useState( true );
+  const [value, setValue] = useState( () => data.get( ONBOARDING_SHOWN ) ?? false );
+
+  useEffect( () => {
+    const listener = () => setValue( data.get( ONBOARDING_SHOWN ) ?? false );
+    onboardingListeners.add( listener );
+    return () => onboardingListeners.delete( listener );
+  }, [] );
+
+  const setOnboardingShown = useCallback( newValue => {
+    data.set( ONBOARDING_SHOWN, newValue );
+    onboardingListeners.forEach( l => l() );
+  }, [] );
+
+  return [value, setOnboardingShown];
 }

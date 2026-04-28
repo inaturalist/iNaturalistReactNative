@@ -34,6 +34,11 @@ describe( "AICamera", () => {
       await waitFor( aiCameraButton ).toBeVisible().withTimeout( TIMEOUT );
       await aiCameraButton.tap();
 
+      // The camera and suggestions screens have continuously running animations that
+      // prevent Detox's AnimatedModuleIdlingResource from settling. Disable sync for
+      // the entire camera → photo → suggestions → taxon detail flow.
+      await device.disableSynchronization();
+
       // Check that the mocked cv suggestion is visible
       const taxonResult = element( by.id( "AICamera.taxa.51779" ) );
       await waitFor( taxonResult ).toBeVisible().withTimeout( TIMEOUT );
@@ -45,7 +50,10 @@ describe( "AICamera", () => {
       // On suggestions find the first element in the suggestions list
       const otherSuggestionsTitle = element( by.text( "OTHER SUGGESTIONS" ) );
       await waitFor( otherSuggestionsTitle ).toBeVisible( ).withTimeout( 30_000 );
-      const firstSuggestion = element( by.id( /SuggestionsList\.taxa\..*/ ) ).atIndex(
+      // Use anchored regex so we match the suggestion row container
+      // (e.g. "SuggestionsList.taxa.51779") but NOT child elements like
+      // "SuggestionsList.taxa.51779.checkmark".
+      const firstSuggestion = element( by.id( /SuggestionsList\.taxa\.\d+$/ ) ).atIndex(
         0,
       );
       await waitFor( firstSuggestion ).toBeVisible().withTimeout( TIMEOUT );
@@ -53,12 +61,18 @@ describe( "AICamera", () => {
       const taxonID = suggestionAttributes.elements
         ? suggestionAttributes.elements[0].identifier.split( "." ).pop()
         : suggestionAttributes.identifier.split( "." ).pop();
-      await firstSuggestion.tap();
 
-      // On Taxon Detail
-      const selectTaxonButon = element( by.id( "TaxonDetails.SelectButton" ) );
-      await waitFor( selectTaxonButon ).toBeVisible().withTimeout( TIMEOUT );
-      await selectTaxonButon.tap();
+      // Tap the checkmark button directly — it has a known testID and is a
+      // genuine pressable, avoiding issues where tapping the outer container
+      // View by coordinate offset doesn't propagate to child Pressables on
+      // Android API 36 with New Architecture.
+      const firstSuggestionCheckmark = element(
+        by.id( /SuggestionsList\.taxa\.\d+\.checkmark$/ ),
+      ).atIndex( 0 );
+      await waitFor( firstSuggestionCheckmark ).toBeVisible().withTimeout( TIMEOUT );
+      await firstSuggestionCheckmark.tap();
+
+      await device.enableSynchronization();
 
       await uploadObservation( { upload: true } );
 

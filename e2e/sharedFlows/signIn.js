@@ -1,5 +1,6 @@
+import { execSync } from "child_process";
 import {
-  by, element, expect, waitFor,
+  by, device, element, expect, waitFor,
 } from "detox";
 import Config from "react-native-config-node";
 
@@ -34,6 +35,13 @@ export default async function signIn() {
   await expect( passwordInput ).toBeVisible();
   await element( by.id( "Login.password" ) ).tap();
   await element( by.id( "Login.password" ) ).typeText( Config.E2E_TEST_PASSWORD );
+  // On Android, dismiss the Gboard keyboard before tapping login to prevent the
+  // clipboard popup overlay from intercepting the button tap.
+  // Use ADB keyevent instead of device.pressBack() to avoid UiAutomationService
+  // conflicts on Android API 36+.
+  if ( device.getPlatform() === "android" ) {
+    execSync( "adb shell input keyevent 4" );
+  }
   const loginButton = element( by.id( "Login.loginButton" ) );
   await expect( loginButton ).toBeVisible();
   await element( by.id( "Login.loginButton" ) ).tap();
