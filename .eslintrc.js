@@ -113,14 +113,14 @@ module.exports = {
 
     // @FLGMWT 20260427: the following were introduced with `react-hooks/recommended` and represent
     // cases that are very likely to cause bugs and _have definitely_ been the cause of a number of
-    // bugs fixed in the past few months. Ideally, we'll progressively turn these into warnings
-    // and then errors as we fix them : ) noting here in case it ever gets lost in Linear.
-    "react-hooks/static-components": 0,
-    "react-hooks/set-state-in-effect": 0,
-    "react-hooks/refs": 0,
-    "react-hooks/preserve-manual-memoization": 0,
-    "react-hooks/purity": 0,
-    "react-hooks/immutability": 0,
+    // bugs fixed in the past few months. Turning these on as warnings and we can eventually
+    // switch to errors as we fix them : ) noting here in case it ever gets lost in Linear.
+    "react-hooks/static-components": 1,
+    "react-hooks/set-state-in-effect": 1,
+    "react-hooks/refs": 1,
+    "react-hooks/preserve-manual-memoization": 1,
+    "react-hooks/purity": 1,
+    "react-hooks/immutability": 1,
 
     "react-native/no-inline-styles": "error",
 
