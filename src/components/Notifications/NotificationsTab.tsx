@@ -18,6 +18,7 @@ export const NOTIFICATIONS_REFRESHED = "notifications-refreshed";
 const NotificationsTab = ( { id, text }: TabComponentProps ) => {
   const observationMarkedAsViewedAt = useStore( state => state.observationMarkedAsViewedAt );
   const currentUser = useCurrentUser( );
+  console.log( { currentUser } );
 
   const { data: numUnviewed, refetch } = useAuthenticatedQuery(
     [
@@ -39,8 +40,10 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
   );
 
   useEffect( () => {
-    refetch();
-  }, [observationMarkedAsViewedAt, refetch] );
+    if ( currentUser ) {
+      refetch();
+    }
+  }, [observationMarkedAsViewedAt, refetch, currentUser] );
 
   useEffect( ( ) => {
     const listener = EventRegister.addEventListener(
