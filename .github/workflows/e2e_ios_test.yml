@@ -1,0 +1,157 @@
+##
+# Trusted half of the two-workflow e2e pattern for iOS.
+# Runs after `e2e-iOS-build` completes. Has access to repo secrets.
+# Never checks out untrusted PR code into a privileged step;
+# it only consumes the prebuilt .app artifact from the build run.
+##
+name: e2e-iOS-test
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+  checks: write
+
+on:
+  workflow_run:
+    workflows: ["e2e-iOS-build"]
+    types: [completed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: macos-15
+    timeout-minutes: 120
+    # Attach required-reviewer protection to this environment in repo
+    # settings to require human approval before secrets are exposed.
+    environment: e2e
+
+    steps:
+    # Download the .app and PR metadata from the upstream (untrusted) run.
+    - name: Download iOS Detox app build
+      uses: actions/download-artifact@v7
+      with:
+        name: detox_app
+        path: ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app
+        run-id: ${{ github.event.workflow_run.id }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Download PR metadata artifact
+      uses: actions/download-artifact@v7
+      with:
+        name: pr-metadata
+        path: pr-metadata
+        run-id: ${{ github.event.workflow_run.id }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Read PR metadata
+      id: pr
+      run: |
+        echo "pr_number=$(cat pr-metadata/pr_number)" >> "$GITHUB_OUTPUT"
+        echo "head_sha=$(cat pr-metadata/head_sha)" >> "$GITHUB_OUTPUT"
+        echo "head_repo=$(cat pr-metadata/head_repo)" >> "$GITHUB_OUTPUT"
+
+    # Check out the BASE repo at the workflow_run head_sha (trusted code).
+    # We only need test-runner code (Detox config, e2e specs) from base.
+    - name: Check out base repo at run SHA
+      uses: actions/checkout@v6
+      with:
+        ref: ${{ github.event.workflow_run.head_sha }}
+
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v6
+      with:
+        node-version: 22
+
+    - name: Cache node modules
+      uses: actions/cache@v5
+      id: cache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Rebuild detox from cache
+      if: steps.cache.outputs.cache-hit == 'true'
+      run: npx detox clean-framework-cache && npx detox build-framework-cache
+
+    - name: Rebuild native modules
+      if: steps.cache.outputs.cache-hit == 'true'
+      run: npm rebuild
+
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install
+
+    - name: Set MOCK_MODE to e2e
+      run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
+
+    # Real secrets only on this trusted runner. Detox tests should read
+    # creds from process.env at test time rather than depending on values
+    # baked into the prebuilt .app. Anything the app needs at *build*
+    # time (e.g. OAUTH_CLIENT_* via react-native-config) cannot be
+    # injected here; flows that depend on those values will need to be
+    # adapted to read from runtime sources (launch args, deep links,
+    # or a debug menu).
+    - name: Create .env file with secrets
+      env:
+        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+        GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
+      run: |
+        printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' \
+        "$JWT_ANONYMOUS_API_SECRET" \
+        "$OAUTH_CLIENT_ID" \
+        "$OAUTH_CLIENT_SECRET" \
+        "$E2E_TEST_USERNAME" \
+        "$E2E_TEST_PASSWORD" \
+        "$GMAPS_API_KEY" > .env
+
+    - name: Install macOS dependencies
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
+      run: |
+        brew tap wix/brew
+        brew install applesimutils
+
+    - name: Ensure servers are running
+      id: status_check
+      run: |
+        curl -I --fail "https://staging.inaturalist.org/ping"
+        curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
+
+    - name: Run e2e test
+      continue-on-error: true
+      id: first_test_run
+      run: npm run e2e:test:ios
+
+    - name: Run e2e test (retry, with logs)
+      if: ${{ steps.first_test_run.outcome == 'failure' }}
+      run: |
+        npm run e2e:test:ios -- --take-screenshots failing --record-videos failing --record-logs all -l trace
+
+    - name: Store Detox artifacts on test failure
+      uses: actions/upload-artifact@v6
+      if: ${{ failure() && steps.status_check.outcome != 'failure' }}
+      with:
+        name: detox-artifacts
+        path: artifacts
+        retention-days: 5
+
+  notify:
+    name: Notify Slack
+    needs: test
+    if: ${{ success() || failure() }}
+    runs-on: macos-15
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
