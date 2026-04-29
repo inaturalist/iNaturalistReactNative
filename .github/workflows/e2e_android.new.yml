@@ -46,23 +46,11 @@ jobs:
         sed -i "s/your_package_name/${FIREBASE_STAGING_PACKAGE_NAME//\//\\/}/g" "android/app/google-services.json"
         sed -i "s/your_current_key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "android/app/google-services.json"
 
-    - name: Create keystore.properties file
-      env:
-        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-      run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
-
-    - name: Generate release keystore
-      env:
-        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      run: |
-        keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
-
-    - name: Move keystore
-      run: mv release.keystore android/app/release.keystore
+    # build.gradle reads keystore.properties at configuration time even for
+    # debug builds, so write a placeholder. The values are only consumed by
+    # the release signingConfig, which assembleDebug never invokes.
+    - name: Create placeholder keystore.properties
+      run: printf 'storePassword=placeholder\nkeyPassword=placeholder\nkeyAlias=placeholder\nstoreFile=placeholder.keystore' > android/keystore.properties
 
     - uses: actions/setup-node@v6
       with:
@@ -80,8 +68,7 @@ jobs:
         gradle-version: '8.14.1'
 
     - name: Install JS dependencies
-      run: |
-        npm install
+      run: npm ci
 
     - name: Download the small example cv and geomodel
       run: |
@@ -90,9 +77,10 @@ jobs:
     - name: Android Build
       run: |
         cd android
-        # for the CI build, we can just target the x86 build for the emulator
-        # also, we can exclude linting tasks
-        ./gradlew build -PreactNativeArchitectures=x86 -x lint -x lintVitalRelease 
+        # Debug build only: signed with the in-tree debug.keystore that ships
+        # with React Native, so no release keystore / signing secrets needed.
+        # x86-only keeps it small and matches the emulator we test against.
+        ./gradlew assembleDebug -PreactNativeArchitectures=x86 -x lint
 
     - name: Upload APK
       uses: actions/upload-artifact@v6
@@ -101,7 +89,7 @@ jobs:
         # note: clarifying because this is different from iOS:
         # {myBuild}.apk is a single file so `release-apk` points to a single file
         # in contrast, iOS's .ipa is actually a _directory_
-        path: android/app/build/outputs/apk/release/*-release.apk
+        path: android/app/build/outputs/apk/debug/*-debug.apk
     
   test:
     # 4-core Ubunutu GitHub Larger Runner
@@ -167,33 +155,82 @@ jobs:
             ~/.android/adb*
           key: avd-29
 
-      - name: run tests
+      # The android-emulator-runner action tears the emulator down when its
+      # step ends, so all emulator-using work has to live in one `script:`.
+      # We stage it explicitly: wait-for-boot -> install -> start logcat ->
+      # run tests, with a trap that captures a bugreport on failure.
+      # `set -e` makes the script abort on the first failed command so the
+      # trap fires with accurate context.
+      - name: Boot emulator and run tests
         uses: reactivecircus/android-emulator-runner@v2
         env:
           MAESTRO_DRIVER_STARTUP_TIMEOUT: 60000
           MAESTRO_CLI_NO_ANALYTICS: 1
-          # custom ENV var to drive recordings within test flows
-          # see README for details
           MAESTRO_RECORD: true
         with:
           cores: 4
           api-level: 29
           target: google_apis
+          arch: x86_64
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            adb install -r e2e-build/*.apk
-            # single exemplary "smoketest" flow for now
-            maestro test --no-ansi e2e/maestro/android/signedOut.yaml
+            set -e
+            mkdir -p diagnostics
+            LOGCAT_PID=
 
-      - name: Upload test video
+            # On any failure: stop logcat capture and dump emulator state.
+            # Runs whether the failure happened before or after logcat started.
+            cleanup_on_error() {
+              [ -n "$LOGCAT_PID" ] && kill "$LOGCAT_PID" 2>/dev/null || true
+              echo "::group::Diagnostics on failure"
+              adb bugreport diagnostics/bugreport.zip || true
+              adb shell dumpsys activity activities > diagnostics/activities.txt 2>&1 || true
+              adb shell getprop > diagnostics/getprop.txt 2>&1 || true
+              echo "::endgroup::"
+            }
+            trap cleanup_on_error ERR
+
+            # Wait for the emulator to be fully booted before doing anything.
+            # android-emulator-runner usually handles this, but a belt-and-braces
+            # check kills a chunk of "device not ready" flake.
+            echo "::group::Wait for boot"
+            adb wait-for-device
+            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
+            adb shell input keyevent 82
+            echo "::endgroup::"
+
+            # Stream logcat to a file for the duration of the test run; uploaded
+            # below regardless of pass/fail. Cleared first to drop boot noise.
+            echo "::group::Start logcat capture"
+            adb logcat -c
+            adb logcat -v time > diagnostics/logcat.txt &
+            LOGCAT_PID=$!
+            echo "::endgroup::"
+
+            echo "::group::Install APK"
+            adb install -r e2e-build/*.apk
+            echo "::endgroup::"
+
+            echo "::group::Run Maestro"
+            maestro test \
+              --no-ansi \
+              --debug-output diagnostics/maestro \
+              e2e/maestro/android/signedOut.yaml
+            echo "::endgroup::"
+
+            kill "$LOGCAT_PID" 2>/dev/null || true
+
+      - name: Upload diagnostics
         uses: actions/upload-artifact@v6
-        if: ${{ success() || failure() }}
+        if: ${{ always() }}
         with:
-          # single exemplary flow artifact for now, generated by MAESTRO_RECORD configuration
-          path: signedOut.mp4
-          name: Android
+          name: android-diagnostics
+          path: |
+            diagnostics/
+            signedOut.mp4
+          if-no-files-found: ignore
 
   notify:
     name: Notify Slack
