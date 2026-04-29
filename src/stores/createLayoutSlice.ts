@@ -118,6 +118,14 @@ const createLayoutSlice = set => ( {
         debugModeEnabled: !state.layout.debugModeEnabled,
       },
     } ) ),
+    // Diagnostic flags
+    userWasDefaultedToAdvancedMode: null,
+    setUserWasDefaultedToAdvancedMode: () => set( state => ( {
+      layout: {
+        ...state.layout,
+        userWasDefaultedToAdvancedMode: true,
+      },
+    } ) ),
   },
 } );
 
