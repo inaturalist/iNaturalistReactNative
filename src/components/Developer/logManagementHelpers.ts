@@ -23,7 +23,7 @@ import {
   logFileNamePrefix,
 } from "../../../react-native-logs.config";
 
-const getSortedDailyLogFileInfo = async ( n: number ) => {
+const getSortedDailyLogFileInfo = async ( n?: number ) => {
   const dir = await readDir( logFileDirectory );
   const sortedLogFiles = dir
     .filter( ( { name } ) => name.startsWith( logFileNamePrefix ) )
@@ -48,8 +48,20 @@ const getSortedDailyLogFileInfo = async ( n: number ) => {
     // flipped for descending
     .sort( ( a, b ) => b.date - a.date );
 
-  return sortedLogFiles.slice( 0, n );
+  return n === undefined
+    ? sortedLogFiles
+    : sortedLogFiles.slice( 0, n );
 };
+
+export async function cleanupLogFiles() {
+  if ( await exists( legacyLogfilePath ) ) {
+    await unlink( legacyLogfilePath );
+  }
+
+  const logFileInfo = await getSortedDailyLogFileInfo();
+  const olderLogs = logFileInfo.slice( 40 );
+  await Promise.allSettled( olderLogs.map( ( { path } ) => unlink( path ) ) );
+}
 
 export async function getLegacyLogContents() {
   try {
