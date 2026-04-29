@@ -242,7 +242,7 @@ export type BaseTabStackParamList = {
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;
-  Log: { isLegacyLogs: boolean };
+  Log: undefined;
   Settings: undefined;
   About: undefined;
   Donate: undefined;
