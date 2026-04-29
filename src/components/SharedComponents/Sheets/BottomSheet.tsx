@@ -71,6 +71,7 @@ const StandardBottomSheet = ( {
 
   const { t } = useTranslation( );
   const sheetRef = useRef<SheetHandle>( null );
+  const skipNextOnPressCloseRef = useRef( false );
   const insets = useSafeAreaInsets( );
 
   // The optional `sheet` arg lets the unmount cleanup pass a captured handle;
@@ -84,7 +85,11 @@ const StandardBottomSheet = ( {
   }, [insideModal] );
 
   const handleClose = useCallback( ( ) => {
-    if ( onPressClose ) onPressClose( );
+    if ( skipNextOnPressCloseRef.current ) {
+      skipNextOnPressCloseRef.current = false;
+    } else if ( onPressClose ) {
+      onPressClose( );
+    }
     dismissSheet( );
   }, [dismissSheet, onPressClose] );
 
@@ -105,9 +110,11 @@ const StandardBottomSheet = ( {
 
   useEffect( ( ) => {
     if ( hidden ) {
+      skipNextOnPressCloseRef.current = true;
       dismissSheet( );
       return;
     }
+    skipNextOnPressCloseRef.current = false;
     openSheet( );
   }, [hidden, openSheet, dismissSheet] );
 
