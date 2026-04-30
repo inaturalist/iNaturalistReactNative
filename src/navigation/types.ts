@@ -186,6 +186,15 @@ export type OnboardingStackParamList = {
   Onboarding: undefined;
 };
 
+// Screens hosted by ExploreStackNavigator (ExploreV2)
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type ExploreStackParamList = {
+  ExploreObservations: undefined;
+  UniversalSearch: undefined;
+  AdvancedSearch: undefined;
+};
+
 // Tab-only routes (not from SharedStackScreens). Intersected with SharedStackParamList
 // so TabStackParamList matches TabStackNavigator + SharedStackScreens.
 // Note from the documentation:

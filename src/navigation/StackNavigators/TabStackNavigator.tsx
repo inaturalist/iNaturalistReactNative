@@ -9,6 +9,7 @@ import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreFiltersContainer from "components/Explore/ExploreFiltersContainer";
 import ExploreSearchContainer from "components/Explore/ExploreSearchContainer";
+import ExploreV2Container from "components/Explore/ExploreV2/ExploreV2Container";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import Help from "components/Help/Help";
 import Menu from "components/Menu/Menu";
@@ -45,6 +46,8 @@ import React from "react";
 import {
   useLayoutPrefs,
 } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
@@ -172,6 +175,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
   const {
     isDefaultMode,
   } = useLayoutPrefs( );
+  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
   return (
     <Stack.Navigator
       initialRouteName={initialRouteName}
@@ -199,7 +203,9 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         />
         <Stack.Screen
           name={SCREEN_NAME_ROOT_EXPLORE}
-          component={RootExploreContainer}
+          component={exploreV2Enabled
+            ? ExploreV2Container
+            : RootExploreContainer}
           options={{
             ...preventSwipeToGoBack,
             animation: "none",
