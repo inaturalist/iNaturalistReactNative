@@ -19,7 +19,7 @@ const ExploreV2WithProvider = ( ) => {
   const previousHasPermissions = useRef<boolean | undefined>( undefined );
 
   const onPermissionsGained = useEffectEvent( async ( ) => {
-    // State not empty. No op
+    // State not empty. Do nothing
     if (
       state.placeMode !== EXPLORE_V2_PLACE_MODE.NEARBY
       || state.lat !== undefined
@@ -46,8 +46,8 @@ const ExploreV2WithProvider = ( ) => {
     previousHasPermissions.current = hasPermissions;
   }, [hasPermissions] );
 
-  // Per the ticket: default to "Worldwide" when location is denied (or blocked).
-  // Once permission state is known to be false, fall back from NEARBY.
+  // default to "Worldwide" when location is denied
+  // hasPermissions === false always means permission has been denied or blocked
   useEffect( ( ) => {
     if (
       hasPermissions === false
