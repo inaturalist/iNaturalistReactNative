@@ -24,7 +24,7 @@ const Notifications = ( ) => {
   const currentUser = useCurrentUser( );
   const {
     totalResults: totalResultsLocal,
-  } = useLocalObservations( );
+  } = useLocalObservations( "Notifications" );
 
   return (
     <View className="flex-1 bg-white">

@@ -6,7 +6,11 @@ import {
   useState,
 } from "react";
 import Observation from "realmModels/Observation";
+import { log } from "sharedHelpers/logger";
 import useStore from "stores/useStore";
+import { v4 as uuidv4 } from "uuid";
+
+const logger = log.extend( "useLocalObservations" );
 
 function isDefaultMode( ) {
   return useStore.getState( ).layout.isDefaultMode === true;
@@ -25,7 +29,7 @@ const mapObservations = ( observations, isDefault ) => ( isDefault
   : observations
     .map( observation => Observation.mapObservationForMyObsAdvancedMode( observation ) ) );
 
-const useLocalObservations = ( ): Object => {
+const useLocalObservations = ( caller: string ): Object => {
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
   // Use refs to maintain state without triggering re-renders of hook consumers
   // when they have lost focus, which prevents other
@@ -49,13 +53,35 @@ const useLocalObservations = ( ): Object => {
     const localObservations = realm.objects( "Observation" );
 
     const handleChange = ( collection, changes ) => {
+      const currentIsDefaultMode = isDefaultMode( );
+
+      // TODO: remove this tracing code ASAP, we just want to verify whether
+      // this identifies the unresponsive issue
+      const startTime = performance.now();
+      const traceContext = {
+        caller,
+        traceUuid: uuidv4(),
+        startTime,
+        isDefaultMode: currentIsDefaultMode,
+        mapOrSkip: undefined,
+        mergeOrRebuild: undefined,
+      };
+      const traceEvents = [];
+      logger.infoWithExtra(
+        `Obs mapping diagnostic START. trace id: ${traceContext.traceUuid}`,
+        traceContext,
+      );
+      const putDiagnosticEvent = label => {
+        traceEvents.push( [label, performance.now() - startTime] );
+      };
+      putDiagnosticEvent( "start" );
+
       const { insertions, newModifications, deletions } = changes;
       const filteredObservations = localObservations
         .filtered( deletionFilters )
         .sorted( sortedFilters );
 
       const unsyncedCount = Observation.filterUnsyncedObservations( realm ).length;
-      const currentIsDefaultMode = isDefaultMode( );
 
       // limit list updates to when there are actual realm changes
       if ( ( insertions.length > 0
@@ -65,6 +91,8 @@ const useLocalObservations = ( ): Object => {
         || unsyncedCount !== prevListRef.current.unsyncedCount
         || currentIsDefaultMode !== prevListRef.current.isDefaultMode
       ) {
+        putDiagnosticEvent( "mapping: start" );
+        traceContext.mapOrSkip = "map";
         // amanda 20250522: React Native works best when minimal data is passed to components,
         // so there aren't costly rerenders. these data transformations ensure the UI is getting
         // exactly what it needs to display and that we're not passing around larger objects
@@ -77,17 +105,23 @@ const useLocalObservations = ( ): Object => {
             && newModifications.length === 0
             && deletions.length === 0
             && currentIsDefaultMode === prevListRef.current.isDefaultMode ) {
+          putDiagnosticEvent( "Path A (merge): start" );
+          traceContext.mergeOrRebuild = "merge";
           const newObservations = insertions.map( index => filteredObservations[index] )
             .filter( o => o.isValid() );
 
           const newMappedObservations = mapObservations( newObservations, currentIsDefaultMode );
 
           mappedObservations = [...prevListRef.current.list, ...newMappedObservations];
+          putDiagnosticEvent( "Path A (merge): end" );
         } else {
+          putDiagnosticEvent( "Path B (rebuild): start" );
+          traceContext.mergeOrRebuild = "rebuild";
           // Full rebuild needed (modifications, deletions, or mode change)
           const validObservations = Array.from( filteredObservations ).filter( o => o.isValid() );
 
           mappedObservations = mapObservations( validObservations, currentIsDefaultMode );
+          putDiagnosticEvent( "Path B (rebuild): end" );
         }
 
         setObservationList( mappedObservations );
@@ -99,7 +133,27 @@ const useLocalObservations = ( ): Object => {
           unsyncedCount,
           isDefaultMode: currentIsDefaultMode,
         };
+        putDiagnosticEvent( "mapping: end" );
+      } else {
+        putDiagnosticEvent( "mapping skipped" );
+        traceContext.mapOrSkip = "skip";
       }
+      putDiagnosticEvent( "end" );
+
+      const eventLog = traceEvents.map(
+        ( [label, elapsedMs] ) => `${label}: ${elapsedMs / 1000}s elapsed`,
+      ).join( " | " );
+
+      const endTime = performance.now();
+
+      logger.infoWithExtra(
+        `Obs mapping diagnostic END. trace id: ${traceContext.traceUuid} | ${eventLog}`,
+        {
+          ...traceContext,
+          endTime,
+          elapsedMs: endTime - startTime,
+        },
+      );
     };
 
     localObservations.addListener( handleChange );
@@ -109,7 +163,7 @@ const useLocalObservations = ( ): Object => {
         localObservations?.removeAllListeners( );
       }
     };
-  }, [realm, setNumUnuploadedObservations] );
+  }, [caller, realm, setNumUnuploadedObservations] );
 
   return {
     observationList,
