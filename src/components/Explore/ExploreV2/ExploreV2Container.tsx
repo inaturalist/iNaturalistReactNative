@@ -34,24 +34,23 @@ const ExploreV2WithProvider = ( ) => {
     }
   } );
 
-  // handle granting location permissions on Explore
+  // default to "Worldwide" when location is denied
+  // hasPermissions === false always means permission has been denied or blocked
+  const onPermissionsDenied = useEffectEvent( ( ) => {
+    if ( state.placeMode === EXPLORE_V2_PLACE_MODE.UNINITIALIZED ) {
+      dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
+    }
+  } );
+
+  // handle location permission changes on Explore
   useEffect( ( ) => {
-    if ( hasPermissions && !previousHasPermissions.current ) {
+    if ( hasPermissions === true && previousHasPermissions.current !== true ) {
       onPermissionsGained( );
+    } else if ( hasPermissions === false && previousHasPermissions.current !== false ) {
+      onPermissionsDenied( );
     }
     previousHasPermissions.current = hasPermissions;
   }, [hasPermissions] );
-
-  // default to "Worldwide" when location is denied
-  // hasPermissions === false always means permission has been denied or blocked
-  useEffect( ( ) => {
-    if (
-      hasPermissions === false
-      && state.placeMode === EXPLORE_V2_PLACE_MODE.UNINITIALIZED
-    ) {
-      dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
-    }
-  }, [hasPermissions, state.placeMode, dispatch] );
 
   return (
     <>
