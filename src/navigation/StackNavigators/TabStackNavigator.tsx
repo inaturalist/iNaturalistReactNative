@@ -93,8 +93,6 @@ const uiLibTitle = () => <Heading4 className="text-white">UI LIBRARY</Heading4>;
 const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</Heading4>;
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
-// eslint-disable-next-line i18next/no-literal-string
-const legacyLogTitle = () => <Heading4 className="text-white">LOG (LEGACY)</Heading4>;
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
@@ -322,11 +320,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         <Stack.Screen
           component={Log}
           name="Log"
-          options={( { route } ) => ( {
-            headerTitle: route?.params?.isLegacyLogs
-              ? legacyLogTitle
-              : logTitle,
-          } )}
+          options={( { headerTitle: logTitle } )}
         />
       </Stack.Group>
       {/* Header with no bottom border */}

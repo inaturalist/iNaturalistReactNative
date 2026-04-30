@@ -25,11 +25,10 @@ import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
 import { getInstallID } from "sharedHelpers/installData";
-import { legacyLogfilePath, log, logWithoutRemote } from "sharedHelpers/logger";
+import { log, logFileDirectory, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
-import { unlink } from "sharedHelpers/util";
 import useStore from "stores/useStore";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 
@@ -246,13 +245,15 @@ const signOut = async (
   await deleteSensitiveItem( "jwtGeneratedAt" );
   await deleteSensitiveItem( "username" );
   await deleteSensitiveItem( "accessToken" );
-  await unlink( legacyLogfilePath );
+
   // clear all directories containing user generated data within Documents Directory
   await removeAllFilesFromDirectory( computerVisionPath );
   await removeAllFilesFromDirectory( photoLibraryPhotosPath );
   await removeAllFilesFromDirectory( photoUploadPath );
   await removeAllFilesFromDirectory( rotatedOriginalPhotosPath );
   await removeAllFilesFromDirectory( soundUploadPath );
+
+  await removeAllFilesFromDirectory( logFileDirectory );
 
   // delete all keys from mmkv
   zustandMMKVBackingStorage.clearAll( );
