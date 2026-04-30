@@ -28,8 +28,6 @@ export enum EXPLORE_V2_SORT {
   MOST_FAVED = "MOST_FAVED"
 }
 
-export type ExploreV2SubjectType = "taxon" | "user" | "project";
-
 interface Place {
   id: number;
   display_name?: string;
@@ -50,18 +48,18 @@ interface Project {
   title: string;
 }
 
+export type ExploreV2Subject =
+  | { type: "taxon"; taxon: Taxon }
+  | { type: "user"; user: User }
+  | { type: "project"; project: Project };
+
 // To be added to in MOB-1346
 export interface ExploreV2Filters {
   [key: string]: unknown;
 }
 
 export interface ExploreV2State {
-  subjectType: ExploreV2SubjectType | null;
-  // In theory I prefer separate properties for taxon, user, project so it's very clear
-  // which we're dealing with in later logic but I think this could change to a single property
-  taxon: Taxon | null;
-  user: User | null;
-  project: Project | null;
+  subject: ExploreV2Subject | null;
   placeMode: EXPLORE_V2_PLACE_MODE;
   lat?: number;
   lng?: number;
@@ -72,21 +70,7 @@ export interface ExploreV2State {
 }
 
 export type ExploreV2Action =
-  | {
-    type: EXPLORE_V2_ACTION.SET_SUBJECT;
-    subjectType: "taxon";
-    taxon: Taxon;
-  }
-  | {
-    type: EXPLORE_V2_ACTION.SET_SUBJECT;
-    subjectType: "user";
-    user: User;
-  }
-  | {
-    type: EXPLORE_V2_ACTION.SET_SUBJECT;
-    subjectType: "project";
-    project: Project;
-  }
+  | { type: EXPLORE_V2_ACTION.SET_SUBJECT; subject: ExploreV2Subject }
   | { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT }
   | {
     type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY;
@@ -104,10 +88,7 @@ export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.RESET };
 
 export const initialExploreV2State: ExploreV2State = {
-  subjectType: null,
-  taxon: null,
-  user: null,
-  project: null,
+  subject: null,
   placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
   lat: undefined,
   lng: undefined,
@@ -122,31 +103,10 @@ export function exploreV2Reducer(
   action: ExploreV2Action,
 ): ExploreV2State {
   switch ( action.type ) {
-    case EXPLORE_V2_ACTION.SET_SUBJECT: {
-      // Universal search: only one subject type is active at a time.
-      const cleared = {
-        ...state,
-        subjectType: action.subjectType,
-        taxon: null,
-        user: null,
-        project: null,
-      };
-      if ( action.subjectType === "taxon" ) {
-        return { ...cleared, taxon: action.taxon };
-      }
-      if ( action.subjectType === "user" ) {
-        return { ...cleared, user: action.user };
-      }
-      return { ...cleared, project: action.project };
-    }
+    case EXPLORE_V2_ACTION.SET_SUBJECT:
+      return { ...state, subject: action.subject };
     case EXPLORE_V2_ACTION.CLEAR_SUBJECT:
-      return {
-        ...state,
-        subjectType: null,
-        taxon: null,
-        user: null,
-        project: null,
-      };
+      return { ...state, subject: null };
     case EXPLORE_V2_ACTION.SET_LOCATION_NEARBY:
       return {
         ...state,
