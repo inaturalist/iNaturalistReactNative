@@ -187,7 +187,7 @@ const MyObservationsSimple = ( {
     t,
   ] );
 
-  const renderTaxaFooter = useCallback( ( ) => {
+  const taxaFooterComponent = useMemo( ( ) => {
     if ( isFetchingTaxa ) {
       return (
         <InfiniteScrollLoadingWheel
@@ -411,7 +411,7 @@ const MyObservationsSimple = ( {
                   : undefined
               }
               refreshing={isFetchingTaxa}
-              ListFooterComponent={renderTaxaFooter}
+              ListFooterComponent={taxaFooterComponent}
             />
             <SortButton
               onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
