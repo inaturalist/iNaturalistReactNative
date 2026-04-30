@@ -40,11 +40,11 @@ const buildExploreV2QueryParams = (
     ...sortToOrder[state.sortBy],
   };
 
-  if ( state.entityType === "taxon" && state.taxon ) {
+  if ( state.subjectType === "taxon" && state.taxon ) {
     params.taxon_id = state.taxon.id;
-  } else if ( state.entityType === "user" && state.user ) {
+  } else if ( state.subjectType === "user" && state.user ) {
     params.user_id = state.user.id;
-  } else if ( state.entityType === "project" && state.project ) {
+  } else if ( state.subjectType === "project" && state.project ) {
     params.project_id = state.project.id;
   }
 

@@ -3,8 +3,8 @@ import * as React from "react";
 import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 
 export enum EXPLORE_V2_ACTION {
-  SET_ENTITY = "SET_ENTITY",
-  CLEAR_ENTITY = "CLEAR_ENTITY",
+  SET_SUBJECT = "SET_SUBJECT",
+  CLEAR_SUBJECT = "CLEAR_SUBJECT",
   SET_LOCATION_NEARBY = "SET_LOCATION_NEARBY",
   SET_LOCATION_WORLDWIDE = "SET_LOCATION_WORLDWIDE",
   SET_LOCATION_PLACE = "SET_LOCATION_PLACE",
@@ -30,7 +30,7 @@ export enum EXPLORE_V2_SORT {
   MOST_FAVED = "MOST_FAVED"
 }
 
-export type ExploreV2EntityType = "taxon" | "user" | "project";
+export type ExploreV2SubjectType = "taxon" | "user" | "project";
 
 interface Place {
   id: number;
@@ -59,7 +59,7 @@ export interface ExploreV2Filters {
 }
 
 export interface ExploreV2State {
-  entityType: ExploreV2EntityType | null;
+  subjectType: ExploreV2SubjectType | null;
   taxon: Taxon | null;
   user: User | null;
   project: Project | null;
@@ -76,21 +76,21 @@ export interface ExploreV2State {
 
 export type ExploreV2Action =
   | {
-    type: EXPLORE_V2_ACTION.SET_ENTITY;
-    entityType: "taxon";
+    type: EXPLORE_V2_ACTION.SET_SUBJECT;
+    subjectType: "taxon";
     taxon: Taxon;
   }
   | {
-    type: EXPLORE_V2_ACTION.SET_ENTITY;
-    entityType: "user";
+    type: EXPLORE_V2_ACTION.SET_SUBJECT;
+    subjectType: "user";
     user: User;
   }
   | {
-    type: EXPLORE_V2_ACTION.SET_ENTITY;
-    entityType: "project";
+    type: EXPLORE_V2_ACTION.SET_SUBJECT;
+    subjectType: "project";
     project: Project;
   }
-  | { type: EXPLORE_V2_ACTION.CLEAR_ENTITY }
+  | { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT }
   | {
     type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY;
     lat: number;
@@ -110,7 +110,7 @@ export type ExploreV2Action =
 type Dispatch = ( action: ExploreV2Action ) => void;
 
 export const initialExploreV2State: ExploreV2State = {
-  entityType: null,
+  subjectType: null,
   taxon: null,
   user: null,
   project: null,
@@ -132,27 +132,27 @@ export function exploreV2Reducer(
   action: ExploreV2Action,
 ): ExploreV2State {
   switch ( action.type ) {
-    case EXPLORE_V2_ACTION.SET_ENTITY: {
-      // Universal search: only one entity type is active at a time.
+    case EXPLORE_V2_ACTION.SET_SUBJECT: {
+      // Universal search: only one subject type is active at a time.
       const cleared = {
         ...state,
-        entityType: action.entityType,
+        subjectType: action.subjectType,
         taxon: null,
         user: null,
         project: null,
       };
-      if ( action.entityType === "taxon" ) {
+      if ( action.subjectType === "taxon" ) {
         return { ...cleared, taxon: action.taxon };
       }
-      if ( action.entityType === "user" ) {
+      if ( action.subjectType === "user" ) {
         return { ...cleared, user: action.user };
       }
       return { ...cleared, project: action.project };
     }
-    case EXPLORE_V2_ACTION.CLEAR_ENTITY:
+    case EXPLORE_V2_ACTION.CLEAR_SUBJECT:
       return {
         ...state,
-        entityType: null,
+        subjectType: null,
         taxon: null,
         user: null,
         project: null,
