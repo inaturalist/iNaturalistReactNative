@@ -203,12 +203,14 @@ export function exploreV2Reducer(
   }
 }
 
-export interface DefaultExploreV2Location {
-  placeMode: EXPLORE_V2_PLACE_MODE;
-  lat?: number;
-  lng?: number;
-  radius?: number;
-}
+export type DefaultExploreV2Location =
+  | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
+  | {
+    placeMode: EXPLORE_V2_PLACE_MODE.NEARBY;
+    lat: number;
+    lng: number;
+    radius: number;
+  };
 
 export async function defaultExploreV2Location( ): Promise<DefaultExploreV2Location> {
   const location = await fetchCoarseUserLocation( );
