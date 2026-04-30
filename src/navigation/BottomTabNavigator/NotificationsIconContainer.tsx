@@ -37,8 +37,10 @@ const NotificationsIconContainer = ( {
   );
 
   useEffect( () => {
-    refetch();
-  }, [observationMarkedAsViewedAt, refetch] );
+    if ( currentUser ) {
+      refetch();
+    }
+  }, [observationMarkedAsViewedAt, refetch, currentUser] );
 
   const hasUnread = ( unviewedUpdatesCount ?? 0 ) > 0;
 

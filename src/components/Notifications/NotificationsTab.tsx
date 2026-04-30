@@ -39,8 +39,10 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
   );
 
   useEffect( () => {
-    refetch();
-  }, [observationMarkedAsViewedAt, refetch] );
+    if ( currentUser ) {
+      refetch();
+    }
+  }, [observationMarkedAsViewedAt, refetch, currentUser] );
 
   useEffect( ( ) => {
     const listener = EventRegister.addEventListener(
