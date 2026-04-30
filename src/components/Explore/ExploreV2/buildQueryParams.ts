@@ -40,6 +40,7 @@ const buildExploreV2QueryParams = (
     ...sortToOrder[state.sortBy],
   };
 
+  // this might warrant moving into a selector function at some point
   switch ( state.subject?.type ) {
     case "taxon":
       params.taxon_id = state.subject.taxon.id;
