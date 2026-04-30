@@ -19,9 +19,7 @@ export enum EXPLORE_V2_PLACE_MODE {
   PLACE = "PLACE"
 }
 
-// Sort options. The full Observations sort enum (Taxonomy, Alphabetical, etc.)
-// is owned by MOB-1333; for now we cover the four date-sort cases plus most-faved
-// which is what searchObservations supports today.
+// more options to be potentially added in MOB-1333
 export enum EXPLORE_V2_SORT {
   DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST",
   DATE_UPLOADED_OLDEST = "DATE_UPLOADED_OLDEST",
@@ -39,27 +37,28 @@ interface Place {
 
 interface Taxon {
   id: number;
-  name?: string;
+  name: string;
 }
 
 interface User {
   id: number;
-  login?: string;
+  login: string;
 }
 
 interface Project {
   id: number;
-  title?: string;
+  title: string;
 }
 
-// Filter scaffold. MOB-1346 (Advanced Search) populates this. Kept open-ended
-// so sibling tickets can extend without a context migration.
+// To be added to in MOB-1346
 export interface ExploreV2Filters {
   [key: string]: unknown;
 }
 
 export interface ExploreV2State {
   subjectType: ExploreV2SubjectType | null;
+  // In theory I prefer separate properties for taxon, user, project so it's very clear
+  // which we're dealing with in later logic but I think this could change to a single property
   taxon: Taxon | null;
   user: User | null;
   project: Project | null;
@@ -68,8 +67,6 @@ export interface ExploreV2State {
   lng?: number;
   radius?: number;
   place: Place | null;
-  placeId: number | null;
-  placeGuess: string;
   sortBy: EXPLORE_V2_SORT;
   filters: ExploreV2Filters;
 }
@@ -101,28 +98,21 @@ export type ExploreV2Action =
   | {
     type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE;
     place: Place;
-    placeGuess?: string;
   }
   | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: EXPLORE_V2_SORT }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
   | { type: EXPLORE_V2_ACTION.RESET };
-
-type Dispatch = ( action: ExploreV2Action ) => void;
 
 export const initialExploreV2State: ExploreV2State = {
   subjectType: null,
   taxon: null,
   user: null,
   project: null,
-  // Initial placeMode is NEARBY; the container resolves to coords (granted) or
-  // WORLDWIDE (denied/blocked) once permission state is known.
   placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
   lat: undefined,
   lng: undefined,
   radius: undefined,
   place: null,
-  placeId: null,
-  placeGuess: "",
   sortBy: EXPLORE_V2_SORT.DATE_UPLOADED_NEWEST,
   filters: {},
 };
@@ -165,8 +155,6 @@ export function exploreV2Reducer(
         lng: action.lng,
         radius: action.radius,
         place: null,
-        placeId: null,
-        placeGuess: "",
       };
     case EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE:
       return {
@@ -176,8 +164,6 @@ export function exploreV2Reducer(
         lng: undefined,
         radius: undefined,
         place: null,
-        placeId: null,
-        placeGuess: "",
       };
     case EXPLORE_V2_ACTION.SET_LOCATION_PLACE:
       return {
@@ -187,8 +173,6 @@ export function exploreV2Reducer(
         lng: undefined,
         radius: undefined,
         place: action.place,
-        placeId: action.place.id,
-        placeGuess: action.placeGuess ?? action.place.display_name ?? "",
       };
     case EXPLORE_V2_ACTION.SET_SORT:
       return { ...state, sortBy: action.sortBy };
@@ -227,7 +211,7 @@ export async function defaultExploreV2Location( ): Promise<DefaultExploreV2Locat
 
 interface ExploreV2ContextValue {
   state: ExploreV2State;
-  dispatch: Dispatch;
+  dispatch: ( action: ExploreV2Action ) => void;
 }
 
 const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
@@ -255,6 +239,7 @@ export const ExploreV2Provider = ( { children }: ExploreV2ProviderProps ) => {
 
 export function useExploreV2( ): ExploreV2ContextValue {
   const context = React.useContext( ExploreV2Context );
+  // Pattern from https://kentcdodds.com/blog/how-to-use-react-context-effectively
   if ( context === undefined ) {
     throw new Error( "useExploreV2 must be used within an ExploreV2Provider" );
   }

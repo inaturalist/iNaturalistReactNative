@@ -58,9 +58,9 @@ const buildExploreV2QueryParams = (
     params.radius = state.radius;
   } else if (
     state.placeMode === EXPLORE_V2_PLACE_MODE.PLACE
-    && state.placeId !== null
+    && state.place
   ) {
-    params.place_id = state.placeId;
+    params.place_id = state.place.id;
   }
 
   return params;
