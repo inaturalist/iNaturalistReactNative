@@ -19,7 +19,7 @@ const ExploreV2WithProvider = ( ) => {
   const previousHasPermissions = useRef<boolean | undefined>( undefined );
 
   const onPermissionsGained = useEffectEvent( async ( ) => {
-    if ( state.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED ) return;
+    if ( state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED ) return;
 
     const next = await defaultExploreV2Location( );
     if ( next.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY ) {
@@ -37,7 +37,7 @@ const ExploreV2WithProvider = ( ) => {
   // default to "Worldwide" when location is denied
   // hasPermissions === false always means permission has been denied or blocked
   const onPermissionsDenied = useEffectEvent( ( ) => {
-    if ( state.placeMode === EXPLORE_V2_PLACE_MODE.UNINITIALIZED ) {
+    if ( state.location.placeMode === EXPLORE_V2_PLACE_MODE.UNINITIALIZED ) {
       dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
     }
   } );

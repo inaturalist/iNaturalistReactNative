@@ -55,20 +55,22 @@ const buildExploreV2QueryParams = (
       break;
   }
 
-  switch ( state.placeMode ) {
+  const { location } = state;
+  switch ( location.placeMode ) {
     case EXPLORE_V2_PLACE_MODE.NEARBY:
-      params.lat = state.lat;
-      params.lng = state.lng;
-      params.radius = state.radius;
+      params.lat = location.lat;
+      params.lng = location.lng;
+      params.radius = location.radius;
       break;
     case EXPLORE_V2_PLACE_MODE.PLACE:
-      params.place_id = state.place.id;
+      params.place_id = location.place.id;
       break;
     case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
     case EXPLORE_V2_PLACE_MODE.UNINITIALIZED:
       break;
     default: {
-      const _exhaustive: never = state;
+      // Exhaustiveness check: ts fails if a new placeMode is added without a case.
+      const _exhaustive: never = location;
       return _exhaustive;
     }
   }

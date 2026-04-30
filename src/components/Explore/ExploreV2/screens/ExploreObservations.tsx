@@ -25,7 +25,7 @@ const ExploreObservations = ( ) => {
 
   const queryParams = useMemo( () => buildExploreV2QueryParams( state ), [state] );
 
-  const canFetch = state.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED;
+  const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED;
 
   const {
     fetchNextPage,

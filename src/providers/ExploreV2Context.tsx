@@ -59,12 +59,6 @@ export interface ExploreV2Filters {
   [key: string]: unknown;
 }
 
-interface ExploreV2BaseState {
-  subject: ExploreV2Subject | null;
-  sortBy: EXPLORE_V2_SORT;
-  filters: ExploreV2Filters;
-}
-
 export type ExploreV2LocationState =
   | { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED }
   | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
@@ -76,7 +70,12 @@ export type ExploreV2LocationState =
   }
   | { placeMode: EXPLORE_V2_PLACE_MODE.PLACE; place: Place };
 
-export type ExploreV2State = ExploreV2BaseState & ExploreV2LocationState;
+export interface ExploreV2State {
+  subject: ExploreV2Subject | null;
+  location: ExploreV2LocationState;
+  sortBy: EXPLORE_V2_SORT;
+  filters: ExploreV2Filters;
+}
 
 export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SUBJECT; subject: ExploreV2Subject }
@@ -98,18 +97,10 @@ export type ExploreV2Action =
 
 export const initialExploreV2State: ExploreV2State = {
   subject: null,
-  placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED,
+  location: { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED },
   sortBy: EXPLORE_V2_SORT.DATE_UPLOADED_NEWEST,
   filters: {},
 };
-
-function baseFields( state: ExploreV2State ): ExploreV2BaseState {
-  return {
-    subject: state.subject,
-    sortBy: state.sortBy,
-    filters: state.filters,
-  };
-}
 
 export function exploreV2Reducer(
   state: ExploreV2State,
@@ -122,22 +113,26 @@ export function exploreV2Reducer(
       return { ...state, subject: null };
     case EXPLORE_V2_ACTION.SET_LOCATION_NEARBY:
       return {
-        ...baseFields( state ),
-        placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-        lat: action.lat,
-        lng: action.lng,
-        radius: action.radius,
+        ...state,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
+          lat: action.lat,
+          lng: action.lng,
+          radius: action.radius,
+        },
       };
     case EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE:
       return {
-        ...baseFields( state ),
-        placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
+        ...state,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
       };
     case EXPLORE_V2_ACTION.SET_LOCATION_PLACE:
       return {
-        ...baseFields( state ),
-        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
-        place: action.place,
+        ...state,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+          place: action.place,
+        },
       };
     case EXPLORE_V2_ACTION.SET_SORT:
       return { ...state, sortBy: action.sortBy };
