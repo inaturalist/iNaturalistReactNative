@@ -19,11 +19,7 @@ const ExploreV2WithProvider = ( ) => {
   const previousHasPermissions = useRef<boolean | undefined>( undefined );
 
   const onPermissionsGained = useEffectEvent( async ( ) => {
-    // State not empty. Do nothing
-    if (
-      state.placeMode !== EXPLORE_V2_PLACE_MODE.NEARBY
-      || state.lat !== undefined
-    ) return;
+    if ( state.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED ) return;
 
     const next = await defaultExploreV2Location( );
     if ( next.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY ) {
@@ -51,7 +47,7 @@ const ExploreV2WithProvider = ( ) => {
   useEffect( ( ) => {
     if (
       hasPermissions === false
-      && state.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY
+      && state.placeMode === EXPLORE_V2_PLACE_MODE.UNINITIALIZED
     ) {
       dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
     }

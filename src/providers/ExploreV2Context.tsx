@@ -14,6 +14,7 @@ export enum EXPLORE_V2_ACTION {
 }
 
 export enum EXPLORE_V2_PLACE_MODE {
+  UNINITIALIZED = "UNINITIALIZED",
   NEARBY = "NEARBY",
   WORLDWIDE = "WORLDWIDE",
   PLACE = "PLACE"
@@ -58,16 +59,24 @@ export interface ExploreV2Filters {
   [key: string]: unknown;
 }
 
-export interface ExploreV2State {
+interface ExploreV2BaseState {
   subject: ExploreV2Subject | null;
-  placeMode: EXPLORE_V2_PLACE_MODE;
-  lat?: number;
-  lng?: number;
-  radius?: number;
-  place: Place | null;
   sortBy: EXPLORE_V2_SORT;
   filters: ExploreV2Filters;
 }
+
+export type ExploreV2LocationState =
+  | { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED }
+  | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
+  | {
+    placeMode: EXPLORE_V2_PLACE_MODE.NEARBY;
+    lat: number;
+    lng: number;
+    radius: number;
+  }
+  | { placeMode: EXPLORE_V2_PLACE_MODE.PLACE; place: Place };
+
+export type ExploreV2State = ExploreV2BaseState & ExploreV2LocationState;
 
 export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SUBJECT; subject: ExploreV2Subject }
@@ -89,14 +98,18 @@ export type ExploreV2Action =
 
 export const initialExploreV2State: ExploreV2State = {
   subject: null,
-  placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-  lat: undefined,
-  lng: undefined,
-  radius: undefined,
-  place: null,
+  placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED,
   sortBy: EXPLORE_V2_SORT.DATE_UPLOADED_NEWEST,
   filters: {},
 };
+
+function baseFields( state: ExploreV2State ): ExploreV2BaseState {
+  return {
+    subject: state.subject,
+    sortBy: state.sortBy,
+    filters: state.filters,
+  };
+}
 
 export function exploreV2Reducer(
   state: ExploreV2State,
@@ -109,29 +122,21 @@ export function exploreV2Reducer(
       return { ...state, subject: null };
     case EXPLORE_V2_ACTION.SET_LOCATION_NEARBY:
       return {
-        ...state,
+        ...baseFields( state ),
         placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
         lat: action.lat,
         lng: action.lng,
         radius: action.radius,
-        place: null,
       };
     case EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE:
       return {
-        ...state,
+        ...baseFields( state ),
         placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
-        lat: undefined,
-        lng: undefined,
-        radius: undefined,
-        place: null,
       };
     case EXPLORE_V2_ACTION.SET_LOCATION_PLACE:
       return {
-        ...state,
+        ...baseFields( state ),
         placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
-        lat: undefined,
-        lng: undefined,
-        radius: undefined,
         place: action.place,
       };
     case EXPLORE_V2_ACTION.SET_SORT:

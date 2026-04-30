@@ -55,19 +55,22 @@ const buildExploreV2QueryParams = (
       break;
   }
 
-  if (
-    state.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY
-    && state.lat !== undefined
-    && state.lng !== undefined
-  ) {
-    params.lat = state.lat;
-    params.lng = state.lng;
-    params.radius = state.radius;
-  } else if (
-    state.placeMode === EXPLORE_V2_PLACE_MODE.PLACE
-    && state.place
-  ) {
-    params.place_id = state.place.id;
+  switch ( state.placeMode ) {
+    case EXPLORE_V2_PLACE_MODE.NEARBY:
+      params.lat = state.lat;
+      params.lng = state.lng;
+      params.radius = state.radius;
+      break;
+    case EXPLORE_V2_PLACE_MODE.PLACE:
+      params.place_id = state.place.id;
+      break;
+    case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
+    case EXPLORE_V2_PLACE_MODE.UNINITIALIZED:
+      break;
+    default: {
+      const _exhaustive: never = state;
+      return _exhaustive;
+    }
   }
 
   return params;
