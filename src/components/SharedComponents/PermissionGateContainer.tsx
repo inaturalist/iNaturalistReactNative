@@ -69,7 +69,14 @@ export const WRITE_MEDIA_PERMISSIONS = Platform.OS === "ios"
 
 export const LOCATION_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]
-  : [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
+  : [
+    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+  ];
+
+export interface MultiResult {
+  [permission: string]: PermissionStatus;
+}
 
 interface Props extends PropsWithChildren {
   blockedPrompt?: string;
@@ -91,9 +98,6 @@ interface Props extends PropsWithChildren {
   withoutNavigation?: boolean;
 }
 
-interface MultiResult {
-  [permission: string]: PermissionStatus;
-}
 export function permissionResultFromMultiple( multiResults: MultiResult ) {
   if ( typeof ( multiResults ) !== "object" ) {
     throw new Error(
@@ -101,6 +105,26 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
       + "Make sure you're using it with checkMultiple and not check",
     );
   }
+  // On Android 12+, the user may grant only approximate (coarse) location,
+  // leaving fine location denied. For that case if ANY location permission is
+  // granted, the overall result is GRANTED.
+  const coarseKey = PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION;
+  if ( coarseKey in multiResults ) {
+    if ( find( multiResults, permResult => permResult === RESULTS.GRANTED ) ) {
+      return RESULTS.GRANTED;
+    }
+    if ( find( multiResults, permResult => permResult === RESULTS.LIMITED ) ) {
+      return RESULTS.LIMITED;
+    }
+    if ( find( multiResults, permResult => permResult === RESULTS.BLOCKED ) ) {
+      return RESULTS.BLOCKED;
+    }
+    if ( find( multiResults, permResult => permResult === RESULTS.DENIED ) ) {
+      return RESULTS.DENIED;
+    }
+    return RESULTS.UNAVAILABLE;
+  }
+  // All non-android locations permissions will use this path
   if ( find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
     return RESULTS.BLOCKED;
   }
@@ -114,6 +138,15 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
     return RESULTS.LIMITED;
   }
   return RESULTS.GRANTED;
+}
+
+export async function hasOnlyCoarseLocation(): Promise<boolean> {
+  if ( Platform.OS !== "android" ) return false;
+  const results = await checkMultiple( LOCATION_PERMISSIONS );
+  return (
+    results[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === RESULTS.GRANTED
+    && results[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] !== RESULTS.GRANTED
+  );
 }
 
 export async function hasWriteMediaPermission( ) {

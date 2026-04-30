@@ -285,16 +285,15 @@ const MatchContainer = ( ) => {
   const shouldFetchLocation = !!( hasPermissions && needLocation );
 
   const {
-    isFetchingLocation,
-    stopWatch,
-    subscriptionId,
     userLocation,
+    isFetchingLocation,
+    cancel: cancelLocationFetch,
   } = useWatchPosition( { shouldFetchLocation } );
 
   const navToLocationPicker = useCallback( ( ) => {
-    stopWatch( subscriptionId );
+    cancelLocationFetch();
     navigation.navigate( "LocationPicker" );
-  }, [stopWatch, subscriptionId, navigation] );
+  }, [cancelLocationFetch, navigation] );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -318,11 +317,14 @@ const MatchContainer = ( ) => {
     }
   }, [currentUserLocation, updateObservationKeys] );
 
-  const handleRefetchSuggestions = useCallback( () => {
+  const handleRefetchSuggestions = useCallback( ( location: {
+    latitude?: number;
+    longitude?: number;
+  } ) => {
     const newScoreImageParams = {
       ...scoreImageParams,
-      lat: currentUserLocation?.latitude,
-      lng: currentUserLocation?.longitude,
+      lat: location?.latitude,
+      lng: location?.longitude,
     };
     dispatch( {
       type: "SET_LOCATION",
@@ -337,8 +339,6 @@ const MatchContainer = ( ) => {
     refetchSuggestions,
     scoreImageParams,
     scrollToTop,
-    currentUserLocation?.latitude,
-    currentUserLocation?.longitude,
   ] );
 
   useEffect( () => {
@@ -352,7 +352,7 @@ const MatchContainer = ( ) => {
     getCurrentUserPlaceName();
 
     if ( !hasRefetchedSuggestions && suggestions ) {
-      handleRefetchSuggestions();
+      handleRefetchSuggestions( userLocation );
     }
   }, [
     userLocation,
@@ -462,7 +462,7 @@ const MatchContainer = ( ) => {
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
     }
-    stopWatch( subscriptionId );
+    cancelLocationFetch();
     exitObservationFlow( );
   };
 
