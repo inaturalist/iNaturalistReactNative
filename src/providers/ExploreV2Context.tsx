@@ -143,6 +143,7 @@ export function exploreV2Reducer(
     case EXPLORE_V2_ACTION.RESET:
       return initialExploreV2State;
     default: {
+      // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
       const _exhaustive: never = action;
       return _exhaustive;
     }
