@@ -12,8 +12,6 @@ import { View } from "components/styledComponents";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useMemo } from "react";
 
-const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
-
 const ExploreObservations = ( ) => {
   const { state } = useExploreV2( );
   const { isConnected } = useNetInfo( );
@@ -34,9 +32,8 @@ const ExploreObservations = ( ) => {
     <ViewWrapper testID="ExploreObservations" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
         {/* eslint-disable-next-line i18next/no-literal-string */}
-        <Body2>TODO: Header — MOB-1327 (tap to open Universal Search)</Body2>
+        <Body2>TODO: Header — MOB-1327</Body2>
         <ObservationsFlashList
-          contentContainerStyle={OBS_LIST_CONTAINER_STYLE}
           data={observations}
           dataCanBeFetched={canFetch}
           explore
