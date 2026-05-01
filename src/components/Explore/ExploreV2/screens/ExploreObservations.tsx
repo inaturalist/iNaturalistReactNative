@@ -1,6 +1,4 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
-import classnames from "classnames";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
 import useInfiniteExploreScroll
@@ -8,18 +6,15 @@ import useInfiniteExploreScroll
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
   Body2,
-  INatIconButton,
   ViewWrapper,
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useMemo } from "react";
-import { Alert } from "react-native";
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
 
 const ExploreObservations = ( ) => {
-  const navigation = useNavigation( );
   const { state } = useExploreV2( );
   const { isConnected } = useNetInfo( );
 
@@ -38,13 +33,8 @@ const ExploreObservations = ( ) => {
   return (
     <ViewWrapper testID="ExploreObservations" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => navigation.navigate( "UniversalSearch" )}
-        >
-          {/* eslint-disable-next-line i18next/no-literal-string */}
-          <Body2>TODO: Header — MOB-1327 (tap to open Universal Search)</Body2>
-        </Pressable>
+        {/* eslint-disable-next-line i18next/no-literal-string */}
+        <Body2>TODO: Header — MOB-1327 (tap to open Universal Search)</Body2>
         <ObservationsFlashList
           contentContainerStyle={OBS_LIST_CONTAINER_STYLE}
           data={observations}
@@ -60,31 +50,6 @@ const ExploreObservations = ( ) => {
           showNoResults={!canFetch || totalResults === 0}
           testID="ExploreV2ObservationsList"
         />
-        <INatIconButton
-          icon="triangle-exclamation"
-          className={classnames(
-            "absolute",
-            "bg-white",
-            "bottom-[100px]",
-            "h-[55px]",
-            "right-5",
-            "rounded-full",
-            "w-[55px]",
-            "z-10",
-          )}
-          color="white"
-          size={27}
-          accessibilityLabel="Diagnostics"
-          onPress={() => {
-            Alert.alert(
-              "ExploreV2 Info",
-              `state: ${JSON.stringify( state, null, 2 )}\n\nqueryParams: ${
-                JSON.stringify( queryParams, null, 2 )
-              }`,
-            );
-          }}
-        />
-
       </View>
     </ViewWrapper>
   );
