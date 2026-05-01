@@ -14,7 +14,6 @@ const ExploreV2WithProvider = ( ) => {
   const { state, dispatch } = useExploreV2( );
   const {
     hasPermissions,
-    renderPermissionsGate,
   } = useLocationPermission( );
   const previousHasPermissions = useRef<boolean | undefined>( undefined );
 
@@ -53,10 +52,7 @@ const ExploreV2WithProvider = ( ) => {
   }, [hasPermissions] );
 
   return (
-    <>
-      <ExploreStackNavigator />
-      {renderPermissionsGate( undefined )}
-    </>
+    <ExploreStackNavigator />
   );
 };
 

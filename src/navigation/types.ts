@@ -391,6 +391,14 @@ export type TabStackScreenProps<T extends keyof TabStackParamList> =
     BottomTabProps
   >;
 
+// ExploreStackNavigator is nested inside RootExplore. This composite type
+// acknowledges ExploreV2 screens access to outer-stack routes
+export type ExploreStackScreenProps<T extends keyof ExploreStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<ExploreStackParamList, T>,
+    TabStackScreenProps<"RootExplore">
+  >;
+
 export type NoBottomTabStackScreenProps<T extends keyof NoBottomTabStackParamList> =
   CompositeScreenProps<
     NativeStackScreenProps<NoBottomTabStackParamList, T>,

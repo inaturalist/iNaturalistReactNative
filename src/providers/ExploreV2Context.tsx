@@ -1,5 +1,7 @@
 import * as React from "react";
 
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
 import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 
 export enum EXPLORE_V2_ACTION {
@@ -141,6 +143,7 @@ export function exploreV2Reducer(
     case EXPLORE_V2_ACTION.RESET:
       return initialExploreV2State;
     default: {
+      // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
       const _exhaustive: never = action;
       return _exhaustive;
     }

@@ -1,5 +1,4 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
@@ -13,7 +12,7 @@ import {
   INatIconButton,
   ViewWrapper,
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useMemo, useState } from "react";
 import { Text } from "react-native";
@@ -27,7 +26,6 @@ const DROP_SHADOW = getShadow( {
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
 
 const ExploreObservations = ( ) => {
-  const navigation = useNavigation( );
   const { state } = useExploreV2( );
   const { isConnected } = useNetInfo( );
   const [debugVisible, setDebugVisible] = useState( false );
@@ -47,13 +45,8 @@ const ExploreObservations = ( ) => {
   return (
     <ViewWrapper testID="ExploreObservations" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => navigation.navigate( "UniversalSearch" )}
-        >
-          {/* eslint-disable-next-line i18next/no-literal-string */}
-          <Body2>TODO: Header — MOB-1327 (tap to open Universal Search)</Body2>
-        </Pressable>
+        {/* eslint-disable-next-line i18next/no-literal-string */}
+        <Body2>TODO: Header — MOB-1327 (tap to open Universal Search)</Body2>
         {canFetch
           ? (
             <ObservationsFlashList

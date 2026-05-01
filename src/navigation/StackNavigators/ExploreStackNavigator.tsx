@@ -8,34 +8,28 @@ import UniversalSearch
 import { hideHeader } from "navigation/navigationOptions";
 import type { ExploreStackParamList } from "navigation/types";
 import React from "react";
-import colors from "styles/tailwindColors";
 
-const BASE_SCREEN_OPTIONS = {
-  headerBackButtonDisplayMode: "minimal",
-  headerTintColor: colors.darkGray,
-} as const;
-
+// When navigating out of this stack, useNavigation should be typed like:
+// useNavigation<ExploreStackScreenProps<"ExploreObservations">["navigation"]>( );
 const Stack = createNativeStackNavigator<ExploreStackParamList>( );
 
 const ExploreStackNavigator = ( ) => (
-  <Stack.Navigator
-    initialRouteName="ExploreObservations"
-    screenOptions={BASE_SCREEN_OPTIONS}
-  >
-    <Stack.Group screenOptions={hideHeader}>
-      <Stack.Screen
-        name="ExploreObservations"
-        component={ExploreObservations}
-      />
-      <Stack.Screen
-        name="UniversalSearch"
-        component={UniversalSearch}
-      />
-      <Stack.Screen
-        name="AdvancedSearch"
-        component={AdvancedSearch}
-      />
-    </Stack.Group>
+  <Stack.Navigator initialRouteName="ExploreObservations">
+    <Stack.Screen
+      name="ExploreObservations"
+      component={ExploreObservations}
+      options={hideHeader}
+    />
+    <Stack.Screen
+      name="UniversalSearch"
+      component={UniversalSearch}
+      options={hideHeader}
+    />
+    <Stack.Screen
+      name="AdvancedSearch"
+      component={AdvancedSearch}
+      options={hideHeader}
+    />
   </Stack.Navigator>
 );
 
