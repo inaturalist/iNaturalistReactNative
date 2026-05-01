@@ -3,6 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
+import ExploreV2DebugSheet
+  from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import useInfiniteExploreScroll
   from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
@@ -13,8 +15,14 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
-import React, { useMemo } from "react";
-import { Alert } from "react-native";
+import React, { useMemo, useState } from "react";
+import { Text } from "react-native";
+import { getShadow } from "styles/global";
+
+const DROP_SHADOW = getShadow( {
+  offsetHeight: 4,
+  elevation: 6,
+} );
 
 const OBS_LIST_CONTAINER_STYLE = { paddingTop: 50 };
 
@@ -22,6 +30,7 @@ const ExploreObservations = ( ) => {
   const navigation = useNavigation( );
   const { state } = useExploreV2( );
   const { isConnected } = useNetInfo( );
+  const [debugVisible, setDebugVisible] = useState( false );
 
   const queryParams = useMemo( () => buildExploreV2QueryParams( state ), [state] );
 
@@ -45,21 +54,26 @@ const ExploreObservations = ( ) => {
           {/* eslint-disable-next-line i18next/no-literal-string */}
           <Body2>TODO: Header — MOB-1327 (tap to open Universal Search)</Body2>
         </Pressable>
-        <ObservationsFlashList
-          contentContainerStyle={OBS_LIST_CONTAINER_STYLE}
-          data={observations}
-          dataCanBeFetched={canFetch}
-          explore
-          handlePullToRefresh={handlePullToRefresh}
-          hideLoadingWheel={!isFetchingNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          isConnected={isConnected}
-          layout="list"
-          obsListKey="ExploreV2Observations"
-          onEndReached={fetchNextPage}
-          showNoResults={!canFetch || totalResults === 0}
-          testID="ExploreV2ObservationsList"
-        />
+        {canFetch
+          ? (
+            <ObservationsFlashList
+              contentContainerStyle={OBS_LIST_CONTAINER_STYLE}
+              data={observations}
+              dataCanBeFetched={canFetch}
+              explore
+              handlePullToRefresh={handlePullToRefresh}
+              hideLoadingWheel={!isFetchingNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              isConnected={isConnected}
+              layout="list"
+              obsListKey="ExploreV2Observations"
+              onEndReached={fetchNextPage}
+              showNoResults={!canFetch || totalResults === 0}
+              testID="ExploreV2ObservationsList"
+            />
+          )
+          /* eslint-disable-next-line i18next/no-literal-string */
+          : <Text> Explore state uninitialized </Text>}
         <INatIconButton
           icon="triangle-exclamation"
           className={classnames(
@@ -74,17 +88,21 @@ const ExploreObservations = ( ) => {
           )}
           color="white"
           size={27}
+          style={[
+            DROP_SHADOW,
+            // eslint-disable-next-line react-native/no-inline-styles
+            { backgroundColor: "deeppink" },
+          ]}
           accessibilityLabel="Diagnostics"
-          onPress={() => {
-            Alert.alert(
-              "ExploreV2 Info",
-              `state: ${JSON.stringify( state, null, 2 )}\n\nqueryParams: ${
-                JSON.stringify( queryParams, null, 2 )
-              }`,
-            );
-          }}
+          onPress={() => setDebugVisible( true )}
         />
 
+        <ExploreV2DebugSheet
+          visible={debugVisible}
+          onClose={() => setDebugVisible( false )}
+          state={state}
+          queryParams={queryParams}
+        />
       </View>
     </ViewWrapper>
   );
