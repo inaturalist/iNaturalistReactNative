@@ -1,5 +1,7 @@
 import * as React from "react";
 
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
 import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 
 export enum EXPLORE_V2_ACTION {
