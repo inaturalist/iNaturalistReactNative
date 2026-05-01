@@ -1,0 +1,9 @@
+NEW
+* When a user logs in and has 100+ obs uploaded, automatically put them in advanced mode
+
+FIXED
+* Crash in projects search
+* Delete mode in Standard camera
+
+UPDATED
+* Minor package and performance updates
