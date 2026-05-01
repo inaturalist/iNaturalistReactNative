@@ -39,14 +39,16 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
   );
 
   useEffect( () => {
-    refetch();
-  }, [observationMarkedAsViewedAt, refetch] );
+    if ( currentUser ) {
+      refetch();
+    }
+  }, [observationMarkedAsViewedAt, refetch, currentUser] );
 
   useEffect( ( ) => {
     const listener = EventRegister.addEventListener(
       NOTIFICATIONS_REFRESHED,
       ( tabId: string ) => {
-        if ( tabId === id ) {
+        if ( tabId === id && !!currentUser ) {
           refetch( );
         }
       },
@@ -54,7 +56,7 @@ const NotificationsTab = ( { id, text }: TabComponentProps ) => {
     return ( ) => {
       EventRegister?.removeEventListener( listener as string );
     };
-  }, [id, refetch] );
+  }, [currentUser, id, refetch] );
 
   return (
     <View className="flex-row px-3 pt-4 pb-3 justify-center items-center">
