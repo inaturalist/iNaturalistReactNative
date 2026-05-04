@@ -19,14 +19,22 @@ import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 
+interface Item {
+  photos: {
+    image: {
+      uri: string;
+    };
+  }[];
+}
+
 interface Props {
   combinePhotos: ( ) => void;
   groupedPhotos: object[];
   isCreatingObservations?: boolean;
   navBasedOnUserSettings: ( ) => void;
   removePhotos: ( ) => void;
-  selectedObservations: object[];
-  selectObservationPhotos: ( ) => void;
+  selectedObservations: Item[];
+  selectObservationPhotos: ( isSelected: boolean, item: Item ) => void;
   separatePhotos: ( ) => void;
   totalPhotos: number;
 }
@@ -59,7 +67,7 @@ const GroupPhotos = ( {
   const obsWithMultiplePhotosSelected
     = selectedObservations?.[0]?.photos?.length > 1;
 
-  const renderImage = useCallback( item => (
+  const renderImage = useCallback( ( item: Item ) => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
