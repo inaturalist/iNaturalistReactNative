@@ -21,14 +21,14 @@ import colors from "styles/tailwindColors";
 import GroupPhotoImage from "./GroupPhotoImage";
 
 interface Props {
-  combinePhotos: Function;
+  combinePhotos: ( ) => void;
   groupedPhotos: object[];
   isCreatingObservations?: boolean;
-  navBasedOnUserSettings: Function;
-  removePhotos: Function;
+  navBasedOnUserSettings: ( ) => void;
+  removePhotos: ( ) => void;
   selectedObservations: object[];
-  selectObservationPhotos: Function;
-  separatePhotos: Function;
+  selectObservationPhotos: ( ) => void;
+  separatePhotos: ( ) => void;
   totalPhotos: number;
 }
 
