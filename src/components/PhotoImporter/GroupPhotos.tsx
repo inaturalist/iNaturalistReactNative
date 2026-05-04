@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
@@ -77,7 +75,6 @@ const GroupPhotos = ( {
     } );
   }, [navigation] );
 
-  // $FlowIgnore
   const renderItem = useCallback( ( { item } ) => {
     if ( item.empty ) {
       return (
@@ -97,7 +94,6 @@ const GroupPhotos = ( {
         </Pressable>
       );
     }
-    // $FlowIgnore
     return renderImage( item );
   }, [gridItemStyle, renderImage, addPhotos] );
 
