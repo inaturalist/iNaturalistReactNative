@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import type { ListRenderItem } from "@shopify/flash-list";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
   Body2,
@@ -58,7 +59,7 @@ const GroupPhotos = ( {
     numColumns,
   } = useGridLayout( );
   const [buttonBarHeight, setButtonBarHeight] = useState<number | null>( null );
-  const extractKey = ( item, index ) => ( item.empty
+  const extractKey = ( item: GroupPhotosListItem, index: number ) => ( item.empty
     ? "empty"
     : `${item.photos[0].uri}${index}` );
 
@@ -83,7 +84,7 @@ const GroupPhotos = ( {
     } );
   }, [navigation] );
 
-  const renderItem = useCallback( ( { item } ) => {
+  const renderItem: ListRenderItem<GroupPhotosListItem> = useCallback( ( { item } ) => {
     if ( item.empty ) {
       return (
         <Pressable
