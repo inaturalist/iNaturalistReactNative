@@ -15,6 +15,7 @@ import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useCallback, useMemo, useState } from "react";
+import type { LayoutChangeEvent } from "react-native";
 import { useGridLayout } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -50,7 +51,7 @@ const GroupPhotos = ( {
     gridItemWidth,
     numColumns,
   } = useGridLayout( );
-  const [buttonBarHeight, setButtonBarHeight] = useState( null );
+  const [buttonBarHeight, setButtonBarHeight] = useState<number | null>( null );
   const extractKey = ( item, index ) => ( item.empty
     ? "empty"
     : `${item.photos[0].uri}${index}` );
@@ -106,7 +107,7 @@ const GroupPhotos = ( {
     </View>
   );
 
-  const onLayout = event => {
+  const onLayout = ( event: LayoutChangeEvent ) => {
     const {
       height,
     } = event.nativeEvent.layout;
