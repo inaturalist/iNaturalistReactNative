@@ -5,11 +5,11 @@ import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  item: Object,
-  selectedObservations: Object[],
-  selectObservationPhotos: Function,
-  style?: Object
+interface Props {
+  item: object;
+  selectedObservations: object[];
+  selectObservationPhotos: Function;
+  style?: object;
 }
 
 const GroupPhotoImage = ( {
