@@ -29,6 +29,11 @@ interface Item {
 }
 
 type GroupPhotosListItem = Item | { empty: true };
+
+function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
+  return "empty" in item && item.empty === true;
+}
+
 interface Props {
   combinePhotos: ( ) => void;
   groupedPhotos: Item[];
@@ -59,9 +64,11 @@ const GroupPhotos = ( {
     numColumns,
   } = useGridLayout( );
   const [buttonBarHeight, setButtonBarHeight] = useState<number | null>( null );
-  const extractKey = ( item: GroupPhotosListItem, index: number ) => ( item.empty
-    ? "empty"
-    : `${item.photos[0].uri}${index}` );
+  const extractKey = ( item: GroupPhotosListItem, index: number ) => (
+    isEmptyGridItem( item )
+      ? "empty"
+      : `${item.photos[0].image.uri}${index}`
+  );
 
   const noObsSelected = selectedObservations.length === 0;
   const oneObsSelected = selectedObservations.length === 1;
@@ -85,7 +92,7 @@ const GroupPhotos = ( {
   }, [navigation] );
 
   const renderItem: ListRenderItem<GroupPhotosListItem> = useCallback( ( { item } ) => {
-    if ( item.empty ) {
+    if ( isEmptyGridItem( item ) ) {
       return (
         <Pressable
           accessibilityRole="button"
