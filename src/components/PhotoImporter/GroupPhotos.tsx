@@ -12,10 +12,9 @@ import {
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
-import { t } from "i18next";
 import React, { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
-import { useGridLayout } from "sharedHooks";
+import { useGridLayout, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
@@ -63,6 +62,7 @@ const GroupPhotos = ( {
   separatePhotos,
   totalPhotos,
 }: Props ) => {
+  const { t } = useTranslation( );
   const navigation = useNavigation( );
   const {
     flashListStyle,
@@ -114,11 +114,11 @@ const GroupPhotos = ( {
     return renderImage( item );
   }, [gridItemStyle, renderImage, addPhotos] );
 
-  const renderHeader = ( ) => (
+  const headerComponent = useMemo( ( ) => (
     <View className="m-5">
       <Body2>{t( "Group-photos-onboarding" )}</Body2>
     </View>
-  );
+  ), [t] );
 
   const onLayout = ( event: LayoutChangeEvent ) => {
     const {
@@ -142,7 +142,7 @@ const GroupPhotos = ( {
   return (
     <ViewWrapper useTopInset={false}>
       <CustomFlashList
-        ListHeaderComponent={renderHeader}
+        ListHeaderComponent={headerComponent}
         contentContainerStyle={flashListStyle}
         data={data}
         extraData={extraData}
