@@ -30,7 +30,7 @@ interface Item {
 type GroupPhotosListItem = Item | { empty: true };
 interface Props {
   combinePhotos: ( ) => void;
-  groupedPhotos: object[];
+  groupedPhotos: Item[];
   isCreatingObservations?: boolean;
   navBasedOnUserSettings: ( ) => void;
   removePhotos: ( ) => void;
