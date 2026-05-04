@@ -51,6 +51,7 @@ const BottomSheetV2 = ( {
 }: Props ): React.JSX.Element | null => {
   const { t } = useTranslation( );
   const sheetRef = useRef<BottomSheetModal>( null );
+  const skipNextOnDismissRef = useRef( false );
   const insets = useSafeAreaInsets( );
 
   const handlePressClose = useCallback( ( ) => {
@@ -58,6 +59,16 @@ const BottomSheetV2 = ( {
       onPressClose( );
     }
   }, [onPressClose] );
+
+  const handleDismiss = useCallback( ( ) => {
+    if ( skipNextOnDismissRef.current ) {
+      skipNextOnDismissRef.current = false;
+      return;
+    }
+    if ( onDismiss ) {
+      onDismiss( );
+    }
+  }, [onDismiss] );
 
   const renderBackdrop = ( props: BottomSheetBackdropProps ) => (
     <BottomSheetStandardBackdrop
@@ -67,13 +78,21 @@ const BottomSheetV2 = ( {
   );
 
   useEffect( ( ) => {
-    if ( hidden ) { return; }
+    if ( hidden ) {
+      skipNextOnDismissRef.current = true;
+      sheetRef.current?.dismiss( );
+      return;
+    }
+    skipNextOnDismissRef.current = false;
     sheetRef.current?.present( );
   }, [hidden] );
 
-  if ( hidden ) {
-    return null;
-  }
+  useEffect( ( ) => {
+    const sheet = sheetRef.current;
+    return ( ) => {
+      sheet?.dismiss( );
+    };
+  }, [] );
 
   return (
     <BottomSheetModal
@@ -84,7 +103,7 @@ const BottomSheetV2 = ( {
       ref={sheetRef}
       style={styles.marginOnWide}
       accessible={false}
-      onDismiss={onDismiss}
+      onDismiss={handleDismiss}
     >
       <BottomSheetScrollView>
         <View
