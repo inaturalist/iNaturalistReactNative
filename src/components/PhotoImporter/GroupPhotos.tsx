@@ -14,23 +14,22 @@ import {
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import { useGridLayout } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 
-type Props = {
-  combinePhotos: Function,
-  groupedPhotos: Object[],
-  isCreatingObservations?: boolean,
-  navBasedOnUserSettings: Function,
-  removePhotos: Function,
-  selectedObservations: Object[],
-  selectObservationPhotos: Function,
-  separatePhotos: Function,
-  totalPhotos: number
+interface Props {
+  combinePhotos: Function;
+  groupedPhotos: object[];
+  isCreatingObservations?: boolean;
+  navBasedOnUserSettings: Function;
+  removePhotos: Function;
+  selectedObservations: object[];
+  selectObservationPhotos: Function;
+  separatePhotos: Function;
+  totalPhotos: number;
 }
 
 const GroupPhotos = ( {
@@ -43,7 +42,7 @@ const GroupPhotos = ( {
   selectObservationPhotos,
   separatePhotos,
   totalPhotos,
-}: Props ): Node => {
+}: Props ) => {
   const navigation = useNavigation( );
   const {
     flashListStyle,
