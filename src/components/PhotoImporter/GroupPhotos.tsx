@@ -146,7 +146,7 @@ const GroupPhotos = ( {
         show={selectedObservations.length > 0 && typeof buttonBarHeight === "number"}
         position="bottomStart"
         containerClass="ml-[15px] rounded-md"
-        footerHeight={buttonBarHeight}
+        footerHeight={buttonBarHeight ?? 0}
       >
         <View className="rounded-md overflow-hidden flex-row">
           <INatIconButton
