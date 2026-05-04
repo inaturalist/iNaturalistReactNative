@@ -27,6 +27,7 @@ interface Item {
   }[];
 }
 
+type GroupPhotosListItem = Item | { empty: true };
 interface Props {
   combinePhotos: ( ) => void;
   groupedPhotos: object[];
@@ -117,8 +118,8 @@ const GroupPhotos = ( {
     setButtonBarHeight( height );
   };
 
-  const data = useMemo( ( ) => {
-    const newData = [].concat( groupedPhotos );
+  const data = useMemo( (): GroupPhotosListItem[] => {
+    const newData: GroupPhotosListItem[] = [...groupedPhotos];
     if ( totalPhotos < MAX_PHOTOS_ALLOWED ) {
       newData.push( { empty: true } );
     }
