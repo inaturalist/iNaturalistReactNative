@@ -20,6 +20,12 @@ import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 
+const emptyItemStyle = {
+  borderWidth: 4,
+  borderStyle: "dashed",
+  borderColor: colors.mediumGray,
+} as const;
+
 interface Item {
   photos: {
     image: {
@@ -33,12 +39,6 @@ type GroupPhotosListItem = Item | { empty: true };
 function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
   return "empty" in item && item.empty === true;
 }
-
-const emptyItemStyle = {
-  borderWidth: 4,
-  borderStyle: "dashed",
-  borderColor: colors.mediumGray,
-} as const;
 
 interface Props {
   combinePhotos: ( ) => void;
