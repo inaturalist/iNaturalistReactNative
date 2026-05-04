@@ -34,6 +34,12 @@ function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
   return "empty" in item && item.empty === true;
 }
 
+const emptyItemStyle = {
+  borderWidth: 4,
+  borderStyle: "dashed",
+  borderColor: colors.mediumGray,
+} as const;
+
 interface Props {
   combinePhotos: ( ) => void;
   groupedPhotos: Item[];
@@ -99,12 +105,7 @@ const GroupPhotos = ( {
           onPress={addPhotos}
           className="rounded-[15px] justify-center items-center"
           // Sorry, couldn't get this to work with tailwind
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={[gridItemStyle, {
-            borderWidth: 4,
-            borderStyle: "dashed",
-            borderColor: colors.mediumGray,
-          }]}
+          style={[gridItemStyle, emptyItemStyle]}
         >
           <INatIcon name="plus" size={50} color={colors.mediumGray} />
         </Pressable>
