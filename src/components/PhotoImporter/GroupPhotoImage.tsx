@@ -1,8 +1,5 @@
-// @flow
-
 import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import { Pressable } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 
 interface Props {
@@ -17,7 +14,7 @@ const GroupPhotoImage = ( {
   selectedObservations,
   selectObservationPhotos,
   style,
-}: Props ): Node => {
+}: Props ) => {
   const firstPhoto = item.photos[0];
   const isSelected = selectedObservations.includes( item );
   const handlePress = ( ) => selectObservationPhotos( isSelected, item );
