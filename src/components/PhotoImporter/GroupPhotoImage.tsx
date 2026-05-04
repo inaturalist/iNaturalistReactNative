@@ -1,6 +1,7 @@
 import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import { Pressable } from "components/styledComponents";
 import React from "react";
+import type { ViewStyle } from "react-native";
 
 interface Item {
   photos: {
@@ -13,7 +14,7 @@ interface Props {
   item: Item;
   selectedObservations: Item[];
   selectObservationPhotos: ( isSelected: boolean, item: Item ) => void;
-  style?: object;
+  style?: ViewStyle;
 }
 
 const GroupPhotoImage = ( {
