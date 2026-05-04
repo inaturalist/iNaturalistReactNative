@@ -5,7 +5,7 @@ import React from "react";
 interface Props {
   item: object;
   selectedObservations: object[];
-  selectObservationPhotos: Function;
+  selectObservationPhotos: ( isSelected: boolean, item: object ) => void;
   style?: object;
 }
 
