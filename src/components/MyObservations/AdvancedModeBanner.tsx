@@ -23,7 +23,7 @@ const AdvancedModeBanner = ( {
     <View className="relative px-[27px] py-[20px]">
       <BannerDismissButton
         accessibilityLabel={t( "Close" )}
-        onPress={( ) => onDismiss( )}
+        onPress={onDismiss}
         testID="advanced-mode-banner-dismiss"
       />
       <Body3>
@@ -32,7 +32,7 @@ const AdvancedModeBanner = ( {
       <UnderlinedLink
         className="mt-[12px] color-inatGreen"
         accessibilityRole="button"
-        onPress={( ) => onSwitchToAdvancedMode( )}
+        onPress={onSwitchToAdvancedMode}
       >
         {t( "Tap-here-to-switch-to-Advanced-Mode" )}
       </UnderlinedLink>
