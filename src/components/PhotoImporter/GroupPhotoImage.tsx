@@ -2,10 +2,17 @@ import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import { Pressable } from "components/styledComponents";
 import React from "react";
 
+interface Item {
+  photos: {
+    image: {
+      uri: string;
+    };
+  }[];
+}
 interface Props {
-  item: object;
-  selectedObservations: object[];
-  selectObservationPhotos: ( isSelected: boolean, item: object ) => void;
+  item: Item;
+  selectedObservations: Item[];
+  selectObservationPhotos: ( isSelected: boolean, item: Item ) => void;
   style?: object;
 }
 
