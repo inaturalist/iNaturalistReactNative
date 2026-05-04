@@ -54,7 +54,6 @@ const GroupPhotos = ( {
   const {
     flashListStyle,
     gridItemStyle,
-    gridItemWidth,
     numColumns,
   } = useGridLayout( );
   const [buttonBarHeight, setButtonBarHeight] = useState<number | null>( null );
@@ -128,7 +127,6 @@ const GroupPhotos = ( {
 
   const extraData = {
     selectedObservations,
-    gridItemWidth,
   };
 
   return (
