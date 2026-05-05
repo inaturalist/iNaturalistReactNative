@@ -15,8 +15,16 @@ function mapObsPhotoToLocalSchema( obsPhoto ) {
   return obsPhoto;
 }
 function mapToLocalSchema( observation ) {
-  observation.observationPhotos = observation?.observationPhotos?.map( mapObsPhotoToLocalSchema );
-  observation.observation_photos = observation?.observation_photos?.map( mapObsPhotoToLocalSchema );
+  // eslint-disable-next-line camelcase
+  const { observationPhotos, observation_photos } = observation;
+  if ( observationPhotos != null ) {
+    observation.observationPhotos = observationPhotos.map( mapObsPhotoToLocalSchema );
+  }
+  // eslint-disable-next-line camelcase
+  if ( observation_photos != null ) {
+    // eslint-disable-next-line camelcase
+    observation.observation_photos = observation_photos.map( mapObsPhotoToLocalSchema );
+  }
   return observation;
 }
 
