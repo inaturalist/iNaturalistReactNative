@@ -104,6 +104,7 @@ const ProjectDetailsContainer = ( ): Node => {
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
       project_id: id,
+      per_page: 0,
     } ),
   );
 
