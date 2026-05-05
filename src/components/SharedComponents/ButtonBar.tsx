@@ -3,6 +3,7 @@ import { Button } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React from "react";
+import type { LayoutChangeEvent } from "react-native";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
@@ -21,7 +22,7 @@ export interface ButtonConfiguration {
 
 interface Props extends PropsWithChildren {
   containerClass?: string;
-  onLayout?: () => void;
+  onLayout?: ( event: LayoutChangeEvent ) => void;
   sticky?: boolean;
   buttonConfiguration?: ButtonConfiguration[];
 }
