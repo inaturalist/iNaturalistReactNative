@@ -360,6 +360,7 @@ If-you-leave-x-of-your-observations-removed =
     }將會從此專案中移除。
 If-you-save-this-observation-and-upload-it-to-iNaturalist = 如果您儲存此觀察紀錄並上傳到《愛自然》平台上，其他人可能會幫忙鑑定喔。
 If-you-want-to-collate-compare-promote = 如果您想要彙整、比較或推廣一堆現有的專案，那麼應該使用「綜合專案(umbrella project)」。例如，2018 年的城市自然大挑戰(City Nature Challenge)就彙整了超過 60 個專案，並提供了一個很好的目標專頁(landing page)，讓任何人都能比較並對比各城市的觀察紀錄。綜合專案可以包含收藏專案(collection project)和傳統專案，最多可彙整 500 個專案。
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error = 如果您看到此訊息並處於連線狀態，我們已通知了愛自然的工作人員。謝謝您找到一個 bug！如果您是離線狀態，請擷圖並當您回到連線狀態時寄一封電子郵件給我們。
 IGNORE-LOCATION = 忽略位置
 Ignore-notifications = 忽略通知
@@ -818,6 +819,7 @@ Sync-observations = 同步觀察紀錄
 Syncing = 同步中...
 Take-photo = 拍照
 Take-photos = Take photos
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = 分類群
 TAXON = 分類群
 TAXON-NAMES-DISPLAY = 分類群名稱的顯示

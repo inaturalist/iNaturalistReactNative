@@ -251,6 +251,12 @@
             "value" : "iNaturalist"
           }
         },
+        "kl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "iNaturalist"
+          }
+        },
         "kn" : {
           "stringUnit" : {
             "state" : "new",
@@ -715,6 +721,12 @@
           }
         },
         "kk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "iNaturalist"
+          }
+        },
+        "kl" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "iNaturalist"
@@ -1189,6 +1201,12 @@
             "value" : "Add existing sounds to your observations."
           }
         },
+        "kl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add existing sounds to your observations."
+          }
+        },
         "kn" : {
           "stringUnit" : {
             "state" : "new",
@@ -1657,6 +1675,12 @@
             "value" : "Camera access lets you use the AI Camera and take photos."
           }
         },
+        "kl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Camera access lets you use the AI Camera and take photos."
+          }
+        },
         "kn" : {
           "stringUnit" : {
             "state" : "new",
@@ -2120,6 +2144,12 @@
           }
         },
         "kk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : ""
+          }
+        },
+        "kl" : {
           "stringUnit" : {
             "state" : "new",
             "value" : ""
@@ -2594,6 +2624,12 @@
             "value" : "Бақылауларға GPS координаттарын қосу, орналасқан жеріңізді карталарда көрсету және т.б."
           }
         },
+        "kl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
+          }
+        },
         "kn" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3057,6 +3093,12 @@
           }
         },
         "kk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Record sound observations of nature."
+          }
+        },
+        "kl" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Record sound observations of nature."
@@ -3530,6 +3572,12 @@
             "value" : "Export iNaturalist photos to your library."
           }
         },
+        "kl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Export iNaturalist photos to your library."
+          }
+        },
         "kn" : {
           "stringUnit" : {
             "state" : "new",
@@ -3993,6 +4041,12 @@
           }
         },
         "kk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Export and import iNaturalist photos to and from your library."
+          }
+        },
+        "kl" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Export and import iNaturalist photos to and from your library."

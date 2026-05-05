@@ -36,6 +36,7 @@ export default locale => {
   if ( locale === "lb" ) { return require( "./l10n/lb.ftl.json" ); }
   if ( locale === "ko" ) { return require( "./l10n/ko.ftl.json" ); }
   if ( locale === "kn" ) { return require( "./l10n/kn.ftl.json" ); }
+  if ( locale === "kl" ) { return require( "./l10n/kl.ftl.json" ); }
   if ( locale === "kk" ) { return require( "./l10n/kk.ftl.json" ); }
   if ( locale === "ka" ) { return require( "./l10n/ka.ftl.json" ); }
   if ( locale === "ja" ) { return require( "./l10n/ja.ftl.json" ); }
@@ -120,6 +121,7 @@ export const SUPPORTED_LOCALES = [
   "ja",
   "ka",
   "kk",
+  "kl",
   "kn",
   "ko",
   "lb",

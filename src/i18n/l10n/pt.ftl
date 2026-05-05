@@ -360,6 +360,7 @@ If-you-leave-x-of-your-observations-removed =
     } também serão removidos deste projeto.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = Se guardar esta observação e a carregar para o iNaturalist, outras pessoas poderão ajudar a identificá-la.
 If-you-want-to-collate-compare-promote = Se você quiser agrupar, comparar ou promover um conjunto de projetos existentes, então um projeto Umbrella é o que você deve usar. Por exemplo, o City Nature Challenge 2018, que reuniu mais de 60 projetos, criou uma ótima página de destino onde qualquer pessoa pode comparar e contrastar as observações de cada cidade. Os projetos Collection e Traditional podem ser usados em um projeto Umbrella, e até 500 projetos podem ser agrupados por um projeto Umbrella.
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error = Se você está vendo isso e está online, a equipe do iNat já foi notificada. Obrigado por encontrar um bug! Se você estiver offline, faça uma captura de tela e envie-nos um e-mail quando estiver de volta à Internet.
 IGNORE-LOCATION = IGNORAR LOCALIZAÇÃO
 Ignore-notifications = Ignorar notificações
@@ -818,6 +819,7 @@ Sync-observations = Sincronizar observações
 Syncing = A sincronizar...
 Take-photo = Tirar foto
 Take-photos = Take photos
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = Táxons
 TAXON = TÁXON
 TAXON-NAMES-DISPLAY = EXIBIÇÃO DE NOMES DE TÁXONS
