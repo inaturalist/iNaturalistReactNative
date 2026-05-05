@@ -69,10 +69,9 @@ const ObsEdit = ( ): Node => {
   const shouldFetchLocation = hasLocationPermission && needLocation;
 
   const {
-    isFetchingLocation,
-    stopWatch,
-    subscriptionId,
     userLocation,
+    isFetchingLocation,
+    cancel: cancelLocationFetch,
   } = useWatchPosition( { shouldFetchLocation } );
 
   useEffect( ( ) => {
@@ -86,9 +85,9 @@ const ObsEdit = ( ): Node => {
   }, [resetUploadObservationsSlice] );
 
   const navToLocationPicker = useCallback( ( ) => {
-    stopWatch( subscriptionId );
+    cancelLocationFetch();
     navigation.navigate( "LocationPicker" );
-  }, [stopWatch, subscriptionId, navigation] );
+  }, [cancelLocationFetch, navigation] );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;

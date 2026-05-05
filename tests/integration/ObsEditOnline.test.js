@@ -118,7 +118,7 @@ describe( "location fetching", () => {
 
   beforeEach( () => {
     // resets mock back to original state
-    Geolocation.watchPosition.mockClear();
+    Geolocation.getCurrentPosition.mockClear();
   } );
 
   test( "should fetch location when new observation hasn't saved", async ( ) => {
@@ -133,7 +133,7 @@ describe( "location fetching", () => {
     renderObsEdit( );
 
     await waitFor( () => {
-      expect( Geolocation.watchPosition ).toHaveBeenCalled();
+      expect( Geolocation.getCurrentPosition ).toHaveBeenCalled();
     } );
     // Note: it would be nice to look for an update in the UI
   } );
@@ -162,7 +162,7 @@ describe( "location fetching", () => {
     // interval before testing whether the mock was called
     await waitFor( () => undefined );
 
-    expect( Geolocation.watchPosition ).not.toHaveBeenCalled();
+    expect( Geolocation.getCurrentPosition ).not.toHaveBeenCalled();
   } );
 
   test( "shouldn't fetch location for existing observation created elsewhere", async () => {
@@ -188,7 +188,7 @@ describe( "location fetching", () => {
 
     await waitFor( () => undefined );
 
-    expect( Geolocation.watchPosition ).not.toHaveBeenCalled();
+    expect( Geolocation.getCurrentPosition ).not.toHaveBeenCalled();
   } );
 } );
 

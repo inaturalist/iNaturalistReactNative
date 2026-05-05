@@ -19,8 +19,9 @@ jest.mock( "@react-navigation/elements", () => ( {
 jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
   default: ( ) => ( {
-    hasLocation: true,
+    userLocation: null,
     isFetchingLocation: false,
+    cancel: jest.fn(),
   } ),
 } ) );
 

@@ -1,16 +1,14 @@
-import type {
-  GeolocationError,
-  GeolocationResponse,
-} from "@react-native-community/geolocation";
 import { useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
-
-// Please don't change this to an aliased path or the e2e mock will not get
-// used in our e2e tests on Github Actions
-import { clearWatch, watchPosition } from "../sharedHelpers/geolocationWrapper";
+import { hasOnlyCoarseLocation } from "components/SharedComponents/PermissionGateContainer";
+import {
+  useCallback, useEffect, useRef, useState,
+} from "react";
+import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
+import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
 
 export const TARGET_POSITIONAL_ACCURACY = 10;
-const MAX_POSITION_AGE_MS = 60_000;
+
+const MAX_ATTEMPTS = 5;
 
 export interface UserLocation {
   latitude: number;
@@ -20,113 +18,84 @@ export interface UserLocation {
   altitudinal_accuracy: number | null;
 }
 
-const geolocationOptions = {
-  distanceFilter: 0,
-  enableHighAccuracy: true,
-  maximumAge: 0,
+const fetchObservationLocation = async (
+  isCancelled?: ( ) => boolean,
+): Promise<UserLocation | null> => {
+  // On Android, if only coarse location was granted, skip the high-accuracy attempt
+  if ( await hasOnlyCoarseLocation() ) {
+    return fetchCoarseUserLocation();
+  }
+
+  // Retry until we reach target accuracy or exhaust attempts.
+  let bestLocation = null;
+  for ( let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1 ) {
+    if ( isCancelled?.() ) return bestLocation;
+    // We do indeed want to fetch location sequentially here
+    // eslint-disable-next-line no-await-in-loop
+    const location = await fetchAccurateUserLocation();
+    if ( !location ) break;
+
+    if (
+      !bestLocation
+      || location.positional_accuracy < bestLocation.positional_accuracy
+    ) {
+      bestLocation = location;
+    }
+
+    if ( bestLocation.positional_accuracy < TARGET_POSITIONAL_ACCURACY ) {
+      break;
+    }
+  }
+
+  return bestLocation;
 };
 
 const useWatchPosition = ( options: {
   shouldFetchLocation: boolean;
 } ) => {
-  const navigation = useNavigation( );
-  const [currentPosition, setCurrentPosition] = useState<GeolocationResponse | null>( null );
-  const [subscriptionId, setSubscriptionId] = useState<number | null>( null );
-  const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
   const { shouldFetchLocation } = options;
-  const [hasFocus, setHasFocus] = useState( true );
+  const navigation = useNavigation( );
+  const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
+  const [isFetchingLocation, setIsFetchingLocation] = useState( false );
+  const cancelRef = useRef<( () => void ) | null>( null );
 
-  const shouldStartWatch = shouldFetchLocation
-    && subscriptionId === null
-    && hasFocus
-    && ( !userLocation || userLocation.positional_accuracy >= TARGET_POSITIONAL_ACCURACY );
-
-  const shouldStopWatch = subscriptionId !== null
-    && currentPosition?.coords?.accuracy < TARGET_POSITIONAL_ACCURACY;
-
-  const stopWatch = useCallback( ( id: number ) => {
-    clearWatch( id );
-    setSubscriptionId( null );
-    setCurrentPosition( null );
+  const cancel = useCallback( ( ) => {
+    if ( cancelRef.current ) {
+      cancelRef.current();
+      cancelRef.current = null;
+    }
+    setIsFetchingLocation( false );
   }, [] );
 
-  const startWatch = useCallback( ( ) => {
-    const success = ( position: GeolocationResponse ) => {
-      const age = Date.now() - position.timestamp;
-      if ( age > MAX_POSITION_AGE_MS ) return;
-      setCurrentPosition( position );
-    };
-
-    const failure = ( error: GeolocationError ) => {
-      console.warn( "useWatchPosition error: ", error );
-      if ( subscriptionId ) {
-        stopWatch( subscriptionId );
-      }
-    };
-
-    try {
-      const watchID = watchPosition(
-        success,
-        failure,
-        geolocationOptions,
-      );
-      if ( typeof ( watchID ) !== "number" ) {
-        throw new Error( "watchPosition failed to return a watchID" );
-      }
-      setSubscriptionId( watchID );
-    } catch ( error ) {
-      failure( error as GeolocationError );
-    }
-  }, [stopWatch, subscriptionId] );
-
   useEffect( ( ) => {
-    if ( !currentPosition ) { return; }
-    const newLocation = {
-      latitude: currentPosition?.coords?.latitude,
-      longitude: currentPosition?.coords?.longitude,
-      positional_accuracy: currentPosition?.coords?.accuracy,
-      altitude: currentPosition?.coords?.altitude,
-      altitudinal_accuracy: currentPosition?.coords?.altitudeAccuracy,
-    };
-    setUserLocation( newLocation );
-    if ( shouldStopWatch ) {
-      stopWatch( subscriptionId );
+    if ( !shouldFetchLocation ) {
+      setIsFetchingLocation( false );
+      return ( ) => {};
     }
-  }, [currentPosition, stopWatch, subscriptionId, shouldStopWatch] );
 
-  useEffect( ( ) => {
-    if ( shouldStartWatch ) {
-      startWatch( );
-    }
-  }, [shouldStartWatch, startWatch] );
+    let cancelled = false;
+    cancelRef.current = ( ) => { cancelled = true; };
+    setIsFetchingLocation( true );
 
-  useEffect( ( ) => {
-    // When we leave the screen this hook was used on...
-    const unsubscribe = navigation.addListener( "blur", ( ) => {
-      // ...stop watching for location updates if we were...
-      if ( subscriptionId !== null ) {
-        stopWatch( subscriptionId );
-      }
-      // ...and wipe the current location so we don't pick up a stale one later
-      setUserLocation( null );
-      setHasFocus( false );
+    fetchObservationLocation( ( ) => cancelled ).then( location => {
+      if ( cancelled ) return;
+      setUserLocation( location );
+      setIsFetchingLocation( false );
     } );
-    return unsubscribe;
-  }, [navigation, stopWatch, subscriptionId] );
 
-  // Listen for focus. We only want to fetch location when this screen has focus.
+    return ( ) => { cancelled = true; };
+  }, [shouldFetchLocation] );
+
+  // Cancel any in-flight fetch when we lose focus
   useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "focus", ( ) => {
-      setHasFocus( true );
-    } );
+    const unsubscribe = navigation.addListener( "blur", cancel );
     return unsubscribe;
-  }, [navigation] );
+  }, [navigation, cancel] );
 
   return {
-    isFetchingLocation: subscriptionId !== null,
-    stopWatch,
-    subscriptionId,
     userLocation,
+    isFetchingLocation,
+    cancel,
   };
 };
 
