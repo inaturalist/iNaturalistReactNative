@@ -38,7 +38,7 @@ const useLinking = ( currentUser?: object ) => {
     }
   }, [navigation, observationId] );
 
-  const checkAllowedHosts = useCallback( ( url: string ) => {
+  const checkAllowedHosts = useCallback( ( url: string | null ) => {
     if ( typeof url !== "string" ) { return; }
     const { host, pathname } = new URL( url );
 
@@ -52,7 +52,7 @@ const useLinking = ( currentUser?: object ) => {
     }
   }, [] );
 
-  const handleUrl = useCallback( ( url: string ) => {
+  const handleUrl = useCallback( ( url: string | null ) => {
     if ( url === newAccountConfirmedUrl
       || url === existingAccountConfirmedUrl
     ) {
