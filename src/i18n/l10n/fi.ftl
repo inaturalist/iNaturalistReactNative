@@ -363,6 +363,7 @@ If-you-leave-x-of-your-observations-removed =
     } poistetaan tästä projektista.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = Jos tallennat tämän havainnon ja lataat sen iNaturalistille, muut ihmiset voivat auttaa sen tunnistamisessa.
 If-you-want-to-collate-compare-promote = Jos haluat koota, vertailla tai mainostaa olemassa olevia projekteja, sinun tulee käyttää sateenvarjoprojektia. Esimerkiksi vuoden 2018 City Nature Challenge, joka kokosi yhteen yli 60 projektia, teki loistavan aloitussivun, jossa kuka tahansa voi vertailla ja verrata kunkin kaupungin havaintoja. Sateenvarjoprojektissa voidaan käyttää sekä kokoelma- että perinteisiä projekteja, ja sateenvarjoprojektissa voidaan koota jopa 500 projektia.
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error = Jos näet tämän ja olet verkossa, iNatin henkilökunta on jo saanut ilmoituksen. Kiitos, että löysit virheen! Jos olet offline-tilassa, ota kuvakaappaus ja lähetä meille sähköpostia, kun olet taas Internetissä.
 IGNORE-LOCATION = OHITA SIJAINTI
 Ignore-notifications = Ohita ilmoitukset
@@ -821,6 +822,7 @@ Sync-observations = Synkronoi havainnot
 Syncing = Synkronoidaan...
 Take-photo = Ota kuva
 Take-photos = Ota kuvia
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = Taksonit
 TAXON = TAKSONI
 TAXON-NAMES-DISPLAY = TAKSONIEN NIMIEN NÄYTTÖ

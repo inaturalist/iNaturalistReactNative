@@ -360,6 +360,7 @@ If-you-leave-x-of-your-observations-removed =
     } também serão removidas deste projeto.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = Se você salvar esta observação e enviá-la para o iNaturalist, outras pessoas poderão ajudar a identificá-la.
 If-you-want-to-collate-compare-promote = Se você quiser reunir, comparar ou promover um conjunto de projetos existentes, então você deve utilizar um Projeto Global. Um exemplo foi o Desafio da Natureza Urbana 2018, o qual reuniu mais de 60 projetos, e foi produzido para uma excelente página de destino onde qualquer um poderia comparar e contrastar as observações de cada cidade. Tanto os projetos de Coleção quanto os Tradicionais podem ser utilizados em um projeto Global, e até 500 projetos podem ser reunidos por um projeto Global.
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error = Se você está vendo isto e está conectado na Internet, a equipe inaturalista já foi notificada. Obrigado por encontrar um erro! Se você não está conectado, por favor faça uma captura de tela e nos envie através de nosso endereço eletrônico assim que você estiver novamente conectado na Internet.
 IGNORE-LOCATION = IGNORAR LOCALIZAÇÃO
 Ignore-notifications = Ignorar notificações
@@ -818,6 +819,7 @@ Sync-observations = Sincronizar observações
 Syncing = Sincronizando...
 Take-photo = Tirar foto
 Take-photos = Take photos
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = Táxons
 TAXON = TÁXON
 TAXON-NAMES-DISPLAY = EXIBIR NOMES DOS TÁXON

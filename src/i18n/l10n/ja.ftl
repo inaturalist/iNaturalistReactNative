@@ -363,6 +363,7 @@ If-you-want-to-collate-compare-promote =
     既存のプロジェクトをまとめたり、比較したり、広く紹介したりしたい場合は、「アンブレラプロジェクト」を使うのが適しています。
     たとえば、2018年の City Nature Challenge では、 60 以上のプロジェクトをまとめて、各都市の観察結果を比較できる便利なランディングページを作りました。アンブレラプロジェクトには、コレクション型プロジェクトもトラディショナル型プロジェクトも利用できます。
     また、最大 500 件までのプロジェクトをまとめることが可能です。
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error =
     もしこれを見ていてオンラインであれば、iNatスタッフにはすでに通知されています。バグを見つけてくださってありがとうございます。
     オフラインの場合は、スクリーンショットを撮って、インターネットに再接続した際にメールで送ってください。
@@ -823,6 +824,7 @@ Sync-observations = Sync observations
 Syncing = 同期中...
 Take-photo = Take photo
 Take-photos = Take photos
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = 分類群
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY

@@ -9,6 +9,7 @@
  * Uses requestIdleCallback to schedule each task in its own callback so the
  * runtime can interleave user interactions between them.
  */
+import { cleanupLogFiles } from "components/Developer/logManagementHelpers";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import {
@@ -95,6 +96,8 @@ const useDeferredStartup = ( ) => {
     const id7 = deferTask( "clearSyncedMediaForUpload", () => clearSyncedMediaForUpload( realm ) );
     const id8 = deferTask( "clearRollbackPhotos", clearRollbackPhotos );
 
+    const id9 = deferTask( "cleanupLogFiles", cleanupLogFiles );
+
     return ( ) => {
       cancelIdleCallback( id1 );
       cancelIdleCallback( id2 );
@@ -104,6 +107,7 @@ const useDeferredStartup = ( ) => {
       cancelIdleCallback( id6 );
       cancelIdleCallback( id7 );
       cancelIdleCallback( id8 );
+      cancelIdleCallback( id9 );
     };
   }, [realm] );
 };

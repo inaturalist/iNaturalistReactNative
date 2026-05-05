@@ -30,7 +30,9 @@ describe( "AddObsButton", () => {
 
   it( "renders correctly", () => {
     renderComponent( <AddObsButton /> );
-    // Snapshot test
+    // Snapshot includes AddObs BottomSheet subtree due @gorhom/bottom-sheet test mock
+    // rendering children unconditionally. Hidden/open behavior is asserted in
+    // integration tests.
     expect( screen ).toMatchSnapshot();
   } );
   it( "does not render tooltip in default state", () => {

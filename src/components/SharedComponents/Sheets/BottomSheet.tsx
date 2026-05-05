@@ -1,10 +1,12 @@
+import type {
+  BottomSheetBackdropProps,
+} from "@gorhom/bottom-sheet";
 import BottomSheet, {
   BottomSheetModal, BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -45,6 +47,8 @@ interface Props {
   enableContentPanningGesture?: boolean;
 }
 
+type SheetHandle = BottomSheet & Partial<Pick<BottomSheetModal, "dismiss" | "present">>;
+
 const StandardBottomSheet = ( {
   children,
   hidden,
@@ -60,110 +64,147 @@ const StandardBottomSheet = ( {
   scrollEnabled = true,
   enablePanDownToClose = true,
   enableContentPanningGesture = true,
-}: Props ): Node => {
+}: Props ) => {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
   }
 
   const { t } = useTranslation( );
-  const sheetRef = useRef<BottomSheet>( null );
+  const sheetRef = useRef<SheetHandle>( null );
+  const skipNextOnPressCloseRef = useRef( false );
   const insets = useSafeAreaInsets( );
 
-  const handleClose = useCallback( ( ) => {
-    if ( onPressClose ) onPressClose( );
-
+  // The optional `sheet` arg lets the unmount cleanup pass a captured handle;
+  // see the cleanup effect below for why that matters.
+  const dismissSheet = useCallback( ( sheet = sheetRef.current ) => {
     if ( insideModal ) {
-      sheetRef.current?.collapse( );
+      sheet?.close( );
     } else {
-      sheetRef.current?.dismiss( );
+      sheet?.dismiss?.( );
     }
-  }, [insideModal, onPressClose] );
+  }, [insideModal] );
 
-  const renderBackdrop = props => (
+  const handleClose = useCallback( ( ) => {
+    if ( skipNextOnPressCloseRef.current ) {
+      skipNextOnPressCloseRef.current = false;
+    } else if ( onPressClose ) {
+      onPressClose( );
+    }
+    dismissSheet( );
+  }, [dismissSheet, onPressClose] );
+
+  const renderBackdrop = ( props: BottomSheetBackdropProps ) => (
     <BottomSheetStandardBackdrop
       props={props}
-      onPress={onPressClose}
+      onPress={onPressClose ?? ( ( ) => {} )}
     />
   );
 
-  const handleSnapPress = useCallback( ( ) => {
+  const openSheet = useCallback( ( ) => {
     if ( insideModal ) {
       sheetRef.current?.expand( );
     } else {
-      sheetRef.current?.present( );
+      sheetRef.current?.present?.( );
     }
   }, [insideModal] );
 
   useEffect( ( ) => {
-    if ( hidden ) { return; }
-    handleSnapPress( );
-  }, [hidden, handleSnapPress] );
+    if ( hidden ) {
+      skipNextOnPressCloseRef.current = true;
+      dismissSheet( );
+      return;
+    }
+    skipNextOnPressCloseRef.current = false;
+    openSheet( );
+  }, [hidden, openSheet, dismissSheet] );
 
-  // To me, this implies this is a good candidate for splitting into 2 components
-  const BottomSheetComponent = insideModal
-    ? BottomSheet
-    : BottomSheetModal;
+  // Capture sheetRef.current now: it's null by the time this cleanup runs on unmount,
+  // so the captured handle is what actually dismisses the sheet.
+  useEffect( ( ) => {
+    const sheet = sheetRef.current;
+    return ( ) => dismissSheet( sheet );
+  }, [dismissSheet] );
 
-  if ( hidden ) {
-    return null;
+  const content = (
+    <BottomSheetScrollView
+      keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+      scrollEnabled={scrollEnabled}
+    >
+      <View
+        className={classnames(
+          "pt-7",
+          insets.bottom > 0
+            ? "pb-7"
+            : null,
+          containerClass,
+        )}
+        onLayout={onLayout}
+        // Not ideal, but @gorhom/bottom-sheet components don't support
+        // testID
+        testID={testID}
+      >
+        {!headerText
+          ? null
+          : (
+            <View className="mx-12 flex">
+              <Heading4
+                testID="bottom-sheet-header"
+                className="w-full text-center"
+              >
+                {headerText}
+              </Heading4>
+            </View>
+          )}
+        {children}
+        {!hideCloseButton && (
+          <INatIconButton
+            icon="close"
+            onPress={handleClose}
+            disabled={hidden}
+            size={19}
+            className="absolute top-3.5 right-3"
+            accessibilityLabel={t( "Close" )}
+          />
+        )}
+      </View>
+    </BottomSheetScrollView>
+  );
+
+  // Consider splitting into separate files/components or removing `insideModal` usage
+  if ( insideModal ) {
+    return (
+      <BottomSheet
+        backdropComponent={renderBackdrop}
+        enableDynamicSizing
+        handleComponent={noHandle}
+        index={0}
+        ref={sheetRef}
+        style={marginOnWide}
+        accessible={false}
+        onClose={handleClose}
+        enablePanDownToClose={enablePanDownToClose}
+        enableContentPanningGesture={enableContentPanningGesture}
+      >
+        {content}
+      </BottomSheet>
+    );
   }
 
   return (
-    <BottomSheetComponent
+    <BottomSheetModal
       backdropComponent={renderBackdrop}
       enableDynamicSizing
       handleComponent={noHandle}
       index={0}
-      ref={sheetRef}
+      ref={sheetRef as React.RefObject<BottomSheetModal>}
       style={marginOnWide}
       accessible={false}
       onDismiss={handleClose}
       enablePanDownToClose={enablePanDownToClose}
       enableContentPanningGesture={enableContentPanningGesture}
     >
-      <BottomSheetScrollView
-        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-        scrollEnabled={scrollEnabled}
-      >
-        <View
-          className={classnames(
-            "pt-7",
-            insets.bottom > 0
-              ? "pb-7"
-              : null,
-            containerClass,
-          )}
-          onLayout={onLayout}
-          // Not ideal, but @gorhom/bottom-sheet components don't support
-          // testID
-          testID={testID}
-        >
-          {!headerText
-            ? null
-            : (
-              <View className="mx-12 flex">
-                <Heading4
-                  testID="bottom-sheet-header"
-                  className="w-full text-center"
-                >
-                  {headerText}
-                </Heading4>
-              </View>
-            )}
-          {children}
-          {!hideCloseButton && (
-            <INatIconButton
-              icon="close"
-              onPress={handleClose}
-              size={19}
-              className="absolute top-3.5 right-3"
-              accessibilityState={{ disabled: hidden }}
-              accessibilityLabel={t( "Close" )}
-            />
-          )}
-        </View>
-      </BottomSheetScrollView>
-    </BottomSheetComponent>
+      {content}
+    </BottomSheetModal>
   );
 };
 

@@ -8,8 +8,8 @@ import makeWebshell, {
 import { useQueryClient } from "@tanstack/react-query";
 import { dismissAnnouncement, searchAnnouncements } from "api/announcements";
 import type { ApiAnnouncement } from "api/types";
-import { ActivityIndicator, INatIcon } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { ActivityIndicator } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { ComponentProps } from "react";
 import React from "react";
 import { WebView } from "react-native-webview";
@@ -23,7 +23,8 @@ import {
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import type { QueryFunction } from "sharedHooks/useAuthenticatedQuery";
 import useStore from "stores/useStore";
-import colors from "styles/tailwindColors";
+
+import BannerDismissButton from "./BannerDismissButton";
 
 const Webshell = makeWebshell(
   WebView,
@@ -185,24 +186,11 @@ const Announcements = ( {
         testID="announcements-webview"
       />
       {dismissible && (
-        <Pressable
-          accessibilityRole="button"
+        <BannerDismissButton
           accessibilityLabel={t( "Dismiss-announcement" )}
-          className="absolute top-0 right-0 h-[44px] w-[44px] items-center
-          justify-center z-10"
           onPress={dismiss}
           testID="announcements-dismiss"
-        >
-          <View
-            className="h-[24px] w-[24px] items-center justify-center rounded-full bg-darkGray/50"
-          >
-            <INatIcon
-              name="close"
-              color={colors.white}
-              size={11}
-            />
-          </View>
-        </Pressable>
+        />
       )}
     </View>
   );

@@ -360,6 +360,7 @@ If-you-leave-x-of-your-observations-removed =
     }会被从项目中移除
 If-you-save-this-observation-and-upload-it-to-iNaturalist = 如果您保存此观察结果并将其上传到 iNaturalist，其他人可能会帮助鉴定它。
 If-you-want-to-collate-compare-promote = 如果你想要核对、比较或推广一组现有的项目，那么你应该使用一个伞形项目。 例如，2018年城市自然挑战，该挑战共整理了60多个项目， 制作了一个伟大的主页页面，任何人都可以比较和对比每个城市的观察。 收集和传统项目都可用于伞形项目，每个伞形项目下最多可包容500个项目。
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error = 如果你看到这个并且你在线, iNat员工已经被通知。 感谢您找到一个错误！如果您离线，请截图并在您返回互联网时发送一封电子邮件。
 IGNORE-LOCATION = 忽略位置
 Ignore-notifications = 忽略通知
@@ -818,6 +819,7 @@ Sync-observations = 同步观察记录
 Syncing = 上传中
 Take-photo = 拍照
 Take-photos = 拍照
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = 分类群
 TAXON = 分类单元
 TAXON-NAMES-DISPLAY = 分类学名称的展示方式
