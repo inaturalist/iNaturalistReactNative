@@ -1,0 +1,78 @@
+##
+# Sample workflow demonstrating the existing notify pattern from test.yml
+# against a trivial `echo` job. Useful as a low-risk sandbox for iterating
+# on the Slack notification setup.
+##
+name: Sample Echo + Notify
+on:
+  workflow_dispatch:
+    inputs:
+      force-fail:
+        description: 'If true, the echo job exits 1 to simulate a failure.'
+        type: boolean
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+
+jobs:
+  echo:
+    name: Echo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: echo "Hello from the sample workflow"
+
+      - name: Force failure
+        if: ${{ inputs.force-fail }}
+        run: |
+          echo "force-fail input is true; exiting 1 to simulate failure"
+          exit 1
+
+  notify:
+    name: Notify Slack
+    needs: echo
+    if: ${{ success() || failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post result to Slack channel
+        if: env.SLACK_WEBHOOK_URL != ''
+        # Pinned to the v3.0.1 commit SHA. Bump the SHA + comment together.
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
+        with:
+          webhook: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          # Posts directly to the channel the incoming webhook is bound to.
+          # Payload is a standard Slack message (Block Kit / text).
+          webhook-type: incoming-webhook
+          # Dynamic values (workflow name, branch, actor, etc.) are passed
+          # through `toJSON(...)` so any quotes or backslashes are safely
+          # escaped — branch names like `my"weird/ref` won't break the
+          # payload.
+          payload: |
+            {
+              "text": ${{ toJSON(format('{0} on {1}: {2}', github.workflow, github.ref_name, needs.echo.result)) }},
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ${{ toJSON(format('*{0}* on `{1}`: *{2}*', github.workflow, github.ref_name, needs.echo.result)) }}
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": ${{ toJSON(format('<{0}/{1}/actions/runs/{2}|View run> · triggered by {3}', github.server_url, github.repository, github.run_id, github.actor)) }}
+                    }
+                  ]
+                }
+              ]
+            }
+
+
