@@ -77,6 +77,7 @@ const ProjectDetailsContainer = ( ): Node => {
     ["searchObservations", id],
     ( ) => searchObservations( {
       project_id: id,
+      per_page: 0,
     } ),
   );
 
