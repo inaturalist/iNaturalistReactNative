@@ -1,13 +1,13 @@
 import { ScrollView, View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
-import type { ViewStyle } from "react-native";
+import type { ScrollView as RNScrollView, ViewStyle } from "react-native";
 import { Keyboard, StatusBar } from "react-native";
 
 interface Props extends PropsWithChildren {
   testID?: string;
   style?: ViewStyle;
-  scrollRef?: object;
+  scrollRef?: React.Ref<RNScrollView>;
 }
 
 const CONTENT_CONTAINER_STYLE = {

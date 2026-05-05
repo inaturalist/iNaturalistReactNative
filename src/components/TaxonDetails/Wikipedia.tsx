@@ -1,3 +1,4 @@
+import RenderHtml, { defaultSystemFonts } from "@native-html/render";
 import { fontRegular } from "appConstants/fontFamilies";
 import {
   Body2,
@@ -5,7 +6,6 @@ import {
 } from "components/SharedComponents";
 import * as React from "react";
 import { useWindowDimensions } from "react-native";
-import HTML, { defaultSystemFonts } from "react-native-render-html";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
@@ -38,7 +38,7 @@ const Wikipedia = ( { taxon }: Props ) => {
   return (
     <>
       <Heading4 className="mb-3">{t( "WIKIPEDIA" )}</Heading4>
-      <HTML
+      <RenderHtml
         contentWidth={width}
         source={{ html: taxon.wikipedia_summary }}
         systemFonts={FONTS}

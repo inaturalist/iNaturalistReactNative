@@ -37,6 +37,13 @@ export interface ApiObservationsUpdatesParams extends ApiParams {
 
 // Model types, need to be ordered by reference
 
+interface ApiAnnouncement {
+  id: string;
+  start: number;
+  dismissible: boolean;
+  body: string;
+}
+
 interface ApiFlag {
   id?: number;
 }
@@ -95,12 +102,29 @@ export interface ApiTaxon {
   defaultPhoto?: ApiPhoto;
 }
 
-export interface ApiUser {
+export interface ApiRecord {
+  created_at?: string;
+  id?: number;
+  updated_at?: string;
+}
+
+export interface ApiUser extends ApiRecord {
+  description?: string;
   icon_url?: string;
   id?: number;
+  identifications_count?: number;
+  journal_posts_count?: number;
   locale?: string;
   login?: string;
+  name?: string;
+  observations_count?: number;
   prefers_no_tracking?: boolean;
+  roles?: string[];
+  site?: {
+    id?: number;
+    name?: string;
+  };
+  species_count?: number;
 }
 
 export interface ApiComment {
@@ -131,12 +155,6 @@ export interface ApiNotification {
   viewed?: boolean;
 }
 
-export interface ApiRecord {
-  created_at?: string;
-  id?: number;
-  updated_at?: string;
-}
-
 export interface ApiProjectObservation {
   project: ApiProject;
 }
@@ -152,6 +170,15 @@ export interface ApiObservation extends ApiRecord {
   time_observed_at?: string;
   user?: ApiUser;
   uuid: string;
+}
+
+export interface ApiRelationship extends ApiRecord {
+  following?: boolean;
+  // For some reason inaturalistjs is changing friend_user to friendUser on the fly.
+  // https://github.com/inaturalist/inaturalistjs/blob/35534d90f67c4e724a5679a53e99a39cc167a8f5/lib/models/relationship.js#L7-L8
+  friendUser?: {
+    id?: number;
+  };
 }
 
 export interface ApiSuggestion {

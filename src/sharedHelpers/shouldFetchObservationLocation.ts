@@ -1,5 +1,5 @@
+import { DocumentDirectoryPath } from "@dr.pogodin/react-native-fs";
 import { photoLibraryPhotosPath, rotatedOriginalPhotosPath } from "appConstants/paths";
-import { DocumentDirectoryPath } from "react-native-fs";
 import type { RealmObservation } from "realmModels/types";
 import {
   TARGET_POSITIONAL_ACCURACY,

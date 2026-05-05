@@ -1,5 +1,5 @@
+import * as RNFS from "@dr.pogodin/react-native-fs";
 import iNatLogstashTransport, { enhanceLoggerWithExtra } from "api/log";
-import RNFS from "react-native-fs";
 import {
   consoleTransport,
   fileAsyncTransport,

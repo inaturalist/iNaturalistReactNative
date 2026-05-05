@@ -1,5 +1,9 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable i18next/no-literal-string */
+import {
+  CachesDirectoryPath,
+  DocumentDirectoryPath,
+} from "@dr.pogodin/react-native-fs";
 import { useNavigation } from "@react-navigation/native";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
@@ -14,7 +18,6 @@ import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
-import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
 
 import {
@@ -299,11 +302,11 @@ const PathStats = () => {
       <H1>Paths</H1>
       <H2>Documents</H2>
       <P>
-        <CODE>{RNFS.DocumentDirectoryPath}</CODE>
+        <CODE>{DocumentDirectoryPath}</CODE>
       </P>
       <H2>Caches</H2>
       <P>
-        <CODE>{RNFS.CachesDirectoryPath}</CODE>
+        <CODE>{CachesDirectoryPath}</CODE>
       </P>
       <H2>Config.API_URL</H2>
       <P>

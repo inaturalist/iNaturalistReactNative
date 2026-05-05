@@ -57,7 +57,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   const activeTabIndex = state?.index;
   const activeTabName = state?.routes[activeTabIndex]?.name as TabName;
 
-  const userIconUri = useMemo( ( ) => User.uri( currentUser ), [currentUser] );
+  const userIconUri = useMemo( ( ) => User.thumbUri( currentUser ), [currentUser] );
 
   const activeTab = getActiveTab( activeTabName );
 
@@ -118,7 +118,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       testID: SCREEN_NAME_MENU,
       accessibilityLabel: t( "Menu" ),
       accessibilityHint: t( "Navigates-to-main-menu" ),
-      size: 32,
+      size: 26,
       onPress: ( ) => handleTabPress( "MenuTab", SCREEN_NAME_MENU ),
       active: SCREEN_NAME_MENU === activeTab,
     },
@@ -127,7 +127,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       testID: SCREEN_NAME_ROOT_EXPLORE,
       accessibilityLabel: t( "Explore" ),
       accessibilityHint: t( "Navigates-to-explore" ),
-      size: 31,
+      size: 26,
       onPress: ( ) => handleTabPress( "ExploreTab", SCREEN_NAME_ROOT_EXPLORE ),
       active: SCREEN_NAME_ROOT_EXPLORE === activeTab,
     },
@@ -137,7 +137,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       testID: "NavButton.personIcon",
       accessibilityLabel: t( "My-Observations--bottom-tab" ),
       accessibilityHint: t( "Navigates-to-your-observations" ),
-      size: 40,
+      size: 32,
       onPress: ( ) => handleTabPress( "ObservationsTab", SCREEN_NAME_OBS_LIST ),
       active: SCREEN_NAME_OBS_LIST === activeTab,
     },
@@ -146,7 +146,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       testID: SCREEN_NAME_NOTIFICATIONS,
       accessibilityLabel: t( "Notifications--bottom-tab" ),
       accessibilityHint: t( "Navigates-to-notifications" ),
-      size: 32,
+      size: 26,
       onPress: ( ) => handleTabPress( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS ),
       active: SCREEN_NAME_NOTIFICATIONS === activeTab,
     },

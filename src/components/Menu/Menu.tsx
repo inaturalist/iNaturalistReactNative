@@ -22,8 +22,10 @@ import User from "realmModels/User";
 import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
-import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
-import { zustandStorage } from "stores/useStore";
+import {
+  useCurrentUser, useDebugMode,
+  useLayoutPrefs, useTranslation,
+} from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import MenuItem from "./MenuItem";
@@ -96,7 +98,7 @@ const getDeviceMetricsForFeedback = async () => {
 };
 
 const Menu = ( ) => {
-  const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
+  const { isDebug } = useDebugMode();
   const realm = useRealm( );
   const navigation = useNavigation( );
   const queryClient = useQueryClient( );

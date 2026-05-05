@@ -1,4 +1,6 @@
-import RNFS from "react-native-fs";
+import {
+  exists, mkdir, readDir, readFile, writeFile,
+} from "@dr.pogodin/react-native-fs";
 import { log } from "sharedHelpers/logger";
 import { unlink } from "sharedHelpers/util";
 
@@ -15,7 +17,7 @@ const generateSentinelFileName = ( screenName: string ): string => {
 
 const createSentinelFile = async ( screenName: string ): Promise<string> => {
   try {
-    await RNFS.mkdir( sentinelFilePath );
+    await mkdir( sentinelFilePath );
     const sentinelFileName = generateSentinelFileName( screenName );
 
     const logEntry = {
@@ -26,7 +28,7 @@ const createSentinelFile = async ( screenName: string ): Promise<string> => {
 
     const initialContent = JSON.stringify( logEntry );
 
-    await RNFS.writeFile( accessFullFilePath( sentinelFileName ), initialContent, "utf8" );
+    await writeFile( accessFullFilePath( sentinelFileName ), initialContent, "utf8" );
     return sentinelFileName;
   } catch ( error ) {
     console.error( "Failed to create sentinel file:", error );
@@ -40,7 +42,7 @@ const logStage = async (
 ): Promise<void> => {
   const fullFilePath = accessFullFilePath( sentinelFileName );
   try {
-    const existingContent = await RNFS.readFile( fullFilePath, "utf8" );
+    const existingContent = await readFile( fullFilePath, "utf8" );
     const sentinelData = JSON.parse( existingContent );
 
     const stage = {
@@ -50,7 +52,7 @@ const logStage = async (
 
     sentinelData.stages.push( stage );
 
-    await RNFS.writeFile( fullFilePath, JSON.stringify( sentinelData ), "utf8" );
+    await writeFile( fullFilePath, JSON.stringify( sentinelData ), "utf8" );
   } catch ( error ) {
     console.log( error, sentinelFileName, stageName, "Failed to log stage to sentinel file" );
     console.error( "Failed to log stage to sentinel file:", error, sentinelFileName, stageName );
@@ -60,19 +62,19 @@ const logStage = async (
 const deleteSentinelFile = async ( sentinelFileName: string ): Promise<void> => {
   try {
     const fullFilePath = accessFullFilePath( sentinelFileName );
-    await RNFS.unlink( fullFilePath );
+    await unlink( fullFilePath );
   } catch ( error ) {
     console.error( "Failed to delete sentinel file:", error, sentinelFileName );
   }
 };
 
-const findAndLogSentinelFiles = async ( ) => {
-  const directoryExists = await RNFS.exists( sentinelFilePath );
-  if ( !directoryExists ) { return null; }
-  const files = await RNFS.readDir( sentinelFilePath );
+const logSentinelFiles = async ( ) => {
+  const directoryExists = await exists( sentinelFilePath );
+  if ( !directoryExists ) { return; }
+  const files = await readDir( sentinelFilePath );
 
   files.forEach( async file => {
-    const existingContent = await RNFS.readFile( file.path, "utf8" );
+    const existingContent = await readFile( file.path, "utf8" );
 
     const sentinelData = JSON.parse( existingContent );
     if ( sentinelData.stages && sentinelData.stages.length > 0 ) {
@@ -80,12 +82,11 @@ const findAndLogSentinelFiles = async ( ) => {
     }
     await unlink( file.path );
   } );
-  return files;
 };
 
 export {
   createSentinelFile,
   deleteSentinelFile,
-  findAndLogSentinelFiles,
+  logSentinelFiles,
   logStage,
 };

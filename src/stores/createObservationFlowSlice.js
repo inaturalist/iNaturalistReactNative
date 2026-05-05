@@ -1,5 +1,6 @@
 // eslint-disable-next-line
 import { Realm } from "@realm/react";
+import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
 import remove from "lodash/remove";
 import pull from "lodash/pull";
@@ -29,6 +30,8 @@ const DEFAULT_STATE = {
   totalSavedObservations: 0,
   sentinelFileName: null,
   newPhotoUris: [],
+  rollbackSnapshot: null,
+  backupMappings: [],
 };
 
 const removeObsSoundFromObservation = ( currentObservation, uri ) => {
@@ -53,6 +56,17 @@ const observationToJSON = observation => ( observation instanceof Realm.Object
   ? observation.toJSON( )
   : observation );
 
+const keysAndValuesToJSON = keysAndValues => {
+  const result = {};
+  Object.keys( keysAndValues ).forEach( key => {
+    const value = keysAndValues[key];
+    result[key] = value instanceof Realm.Object
+      ? value.toJSON( )
+      : value;
+  } );
+  return result;
+};
+
 const updateObservationKeysWithState = ( keysAndValues, state ) => {
   const {
     observations,
@@ -62,7 +76,7 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
   const updatedObservations = observations;
   const updatedObservation = {
     ...observationToJSON( currentObservation ),
-    ...keysAndValues,
+    ...keysAndValuesToJSON( keysAndValues ),
   };
   updatedObservations[currentObservationIndex] = updatedObservation;
   return updatedObservations;
@@ -97,6 +111,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
       currentObservation: newObservation
         ? observationToJSON( newObservation )
         : null,
+      unsavedChanges: true,
     };
   } ),
   deleteSoundFromObservation: uri => set( state => {
@@ -108,6 +123,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     return {
       observations: newObservations,
       currentObservation: newObservation,
+      unsavedChanges: true,
     };
   } ),
   resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
@@ -166,11 +182,11 @@ const createObservationFlowSlice = ( set, get ) => ( {
     observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
   } ) ),
-  updateObservationKeys: keysAndValues => set( state => ( {
+  updateObservationKeys: ( keysAndValues, setUnsavedChanges = true ) => set( state => ( {
     observations: updateObservationKeysWithState( keysAndValues, state ),
     currentObservation:
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
-    unsavedChanges: true,
+    unsavedChanges: !!setUnsavedChanges,
   } ) ),
   // For situations where a consumer needs access to this part of state
   // immediately, not after a couple render cycles
@@ -205,6 +221,43 @@ const createObservationFlowSlice = ( set, get ) => ( {
   setAICameraSuggestion: suggestion => set( {
     aICameraSuggestion: suggestion,
   } ),
+  restoreRollbackSnapshot: ( ) => set( state => {
+    const snapshot = state.rollbackSnapshot;
+    if ( !snapshot ) return {};
+    return {
+      observations: snapshot.observations,
+      currentObservation: snapshot.observations[snapshot.currentObservationIndex],
+      currentObservationIndex: snapshot.currentObservationIndex,
+      cameraUris: snapshot.cameraUris,
+      cameraRollUris: snapshot.cameraRollUris,
+      photoLibraryUris: snapshot.photoLibraryUris,
+      evidenceToAdd: snapshot.evidenceToAdd,
+      newPhotoUris: snapshot.newPhotoUris,
+      unsavedChanges: snapshot.unsavedChanges,
+      rollbackSnapshot: null,
+      backupMappings: [],
+    };
+  } ),
+  setBackupMappings: mappings => set( { backupMappings: mappings } ),
+  clearRollbackSnapshot: ( ) => set( { rollbackSnapshot: null, backupMappings: [] } ),
+  setRollbackSnapshot: ( ) => set( state => ( {
+    rollbackSnapshot: {
+      observations: cloneDeep( state.observations ),
+      currentObservationIndex: state.currentObservationIndex,
+      cameraUris: [...state.cameraUris],
+      cameraRollUris: [...state.cameraRollUris],
+      photoLibraryUris: [...state.photoLibraryUris],
+      evidenceToAdd: [...state.evidenceToAdd],
+      newPhotoUris: [...state.newPhotoUris],
+      unsavedChanges: state.unsavedChanges,
+    },
+  } ) ),
 } );
+
+export const selectCanRollbackToMatch = state => (
+  state.rollbackSnapshot !== null
+  && state.rollbackSnapshot.observations[state.rollbackSnapshot.currentObservationIndex]?.uuid
+    === state.currentObservation?.uuid
+);
 
 export default createObservationFlowSlice;

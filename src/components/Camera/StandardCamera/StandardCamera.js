@@ -6,7 +6,7 @@ import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, {
@@ -22,7 +22,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import { useDeviceOrientation, usePerformance } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import {
@@ -48,6 +48,7 @@ type Props = {
   device: Object,
   flipCamera: Function,
   handleCheckmarkPress: Function,
+  confirmPhotosInProgress: boolean,
   isLandscapeMode: boolean,
   toggleFlash: Function,
   takingPhoto: boolean,
@@ -62,6 +63,7 @@ const StandardCamera = ( {
   device,
   flipCamera,
   handleCheckmarkPress,
+  confirmPhotosInProgress,
   isLandscapeMode,
   toggleFlash,
   takingPhoto,
@@ -92,9 +94,12 @@ const StandardCamera = ( {
   const { loadTime } = usePerformance( {
     isLoading: camera?.current !== null,
   } );
-  if ( isDebugMode( ) && loadTime ) {
-    logger.info( loadTime );
-  }
+  const { isDebug } = useDebugMode();
+  useEffect( () => {
+    if ( isDebug && loadTime ) {
+      logger.info( loadTime );
+    }
+  }, [isDebug, loadTime] );
 
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
@@ -107,6 +112,7 @@ const StandardCamera = ( {
   );
 
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
+  const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const [showAlert, setShowAlert] = useState( false );
   const [initialVolume, setInitialVolume] = useState( null );
 
@@ -202,7 +208,9 @@ const StandardCamera = ( {
       style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       <PhotoPreview
+        deletePhotoMode={deletePhotoMode}
         rotation={rotation}
+        setDeletePhotoMode={setDeletePhotoMode}
         takingPhoto={takingPhoto}
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}
@@ -210,46 +218,57 @@ const StandardCamera = ( {
         photoUris={cameraUris}
         onDelete={deletePhotoByUri}
       />
-      <View className="relative flex-1">
-        {device && (
-          <CameraView
-            animatedProps={animatedProps}
-            cameraRef={camera}
-            cameraScreen="standard"
-            device={device}
-            onCameraError={handleCameraError}
-            onCaptureError={handleCaptureError}
-            onClassifierError={handleClassifierError}
-            onDeviceNotSupported={handleDeviceNotSupported}
-            panToZoom={panToZoom}
-            pinchToZoom={pinchToZoom}
+      <Pressable
+        accessibilityRole="button"
+        className="relative flex-1"
+        disabled={!deletePhotoMode}
+        onPress={() => setDeletePhotoMode( false )}
+        pointerEvents={deletePhotoMode
+          ? "box-only"
+          : "auto"}
+      >
+        <View className="relative flex-1">
+          {device && (
+            <CameraView
+              animatedProps={animatedProps}
+              cameraRef={camera}
+              cameraScreen="standard"
+              device={device}
+              onCameraError={handleCameraError}
+              onCaptureError={handleCaptureError}
+              onClassifierError={handleClassifierError}
+              onDeviceNotSupported={handleDeviceNotSupported}
+              panToZoom={panToZoom}
+              pinchToZoom={pinchToZoom}
+            />
+          )}
+          <FadeInOutView takingPhoto={takingPhoto} cameraType="Standard" />
+          <CameraOptionsButtons
+            handleZoomButtonPress={handleZoomButtonPress}
+            disabled={disallowAddingPhotos}
+            flipCamera={onFlipCamera}
+            handleCheckmarkPress={handleCheckmarkPress}
+            handleClose={handleBackButtonPress}
+            hasFlash={hasFlash}
+            photosTaken={photosTaken}
+            rotatableAnimatedStyle={rotatableAnimatedStyle}
+            showZoomButton={showZoomButton}
+            takePhoto={takePhotoAndStoreUri}
+            takePhotoOptions={takePhotoOptions}
+            toggleFlash={toggleFlash}
+            zoomTextValue={zoomTextValue}
           />
-        )}
-        <FadeInOutView takingPhoto={takingPhoto} cameraType="Standard" />
-        <CameraOptionsButtons
-          handleZoomButtonPress={handleZoomButtonPress}
-          disabled={disallowAddingPhotos}
-          flipCamera={onFlipCamera}
+        </View>
+        <CameraNavButtons
+          disabled={disallowAddingPhotos || takingPhoto}
+          confirmDisabled={takingPhoto || confirmPhotosInProgress}
           handleCheckmarkPress={handleCheckmarkPress}
           handleClose={handleBackButtonPress}
-          hasFlash={hasFlash}
           photosTaken={photosTaken}
           rotatableAnimatedStyle={rotatableAnimatedStyle}
-          showZoomButton={showZoomButton}
-          takePhoto={takePhotoAndStoreUri}
-          takePhotoOptions={takePhotoOptions}
-          toggleFlash={toggleFlash}
-          zoomTextValue={zoomTextValue}
+          takePhoto={handleTakePhoto}
         />
-      </View>
-      <CameraNavButtons
-        disabled={disallowAddingPhotos || takingPhoto}
-        handleCheckmarkPress={handleCheckmarkPress}
-        handleClose={handleBackButtonPress}
-        photosTaken={photosTaken}
-        rotatableAnimatedStyle={rotatableAnimatedStyle}
-        takePhoto={handleTakePhoto}
-      />
+      </Pressable>
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-add-20-photos-per-observation" )}
       </Snackbar>

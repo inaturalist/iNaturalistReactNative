@@ -1,6 +1,6 @@
+import { exists, unlink as rNFSUnlink } from "@dr.pogodin/react-native-fs";
 import { t } from "i18next";
 import { Alert, Linking } from "react-native";
-import RNFS from "react-native-fs";
 
 export const sleep = ( ms: number ) => new Promise( resolve => {
   setTimeout( resolve, ms );
@@ -10,10 +10,10 @@ export const sleep = ( ms: number ) => new Promise( resolve => {
 // unlink something that was already unlinked
 export const unlink = async ( path: string | null ) => {
   if ( !path ) return;
-  const pathExists = await RNFS.exists( path );
+  const pathExists = await exists( path );
   if ( !pathExists ) return;
   try {
-    await RNFS.unlink( path );
+    await rNFSUnlink( path );
   } catch ( e ) {
     const unlinkError = e as Error;
     if (

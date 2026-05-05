@@ -1,10 +1,11 @@
+import type { FlashListProps, FlashListRef, ViewToken } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import React, {
   useCallback,
   useEffect,
   useRef,
 } from "react";
-import type { ViewabilityConfig } from "react-native";
+import type { NativeScrollEvent, NativeSyntheticEvent, ViewabilityConfig } from "react-native";
 import flashListTracker from "sharedHelpers/flashListPerformanceTracker";
 
 const defaultViewabilityConfig: ViewabilityConfig = {
@@ -13,7 +14,7 @@ const defaultViewabilityConfig: ViewabilityConfig = {
   waitForInteraction: false,
 };
 
-const CustomFlashList = props => {
+const CustomFlashList = <T, >( props: FlashListProps<T> & { ref?: React.Ref<FlashListRef<T>>} ) => {
   const isFirstRender = useRef( true );
   const lastContentOffset = useRef( 0 );
 
@@ -23,7 +24,7 @@ const CustomFlashList = props => {
   const ignoreInitialEvents = useRef( true );
   const fetchInProgress = useRef( false );
 
-  const internalRef = useRef( null );
+  const internalRef = useRef<FlashListRef<T> | null>( null );
 
   const {
     ref,
@@ -39,73 +40,88 @@ const CustomFlashList = props => {
       flashListTracker.reset( );
       isFirstRender.current = false;
 
-      const timer = setTimeout( () => {
+      const timer = setTimeout( ( ) => {
         ignoreInitialEvents.current = false;
       }, 1000 );
 
-      return () => clearTimeout( timer );
+      return ( ) => clearTimeout( timer );
     }
     return ( ) => undefined;
   }, [] );
 
-  const handleViewableItemsChanged = useCallback( info => {
-    if ( info.viewableItems.length > 0 ) {
-      flashListTracker.markItemsVisible( );
-    }
+  const handleViewableItemsChanged = useCallback(
+    ( info: { viewableItems: ViewToken<T>[]; changed: ViewToken<T>[] } ) => {
+      if ( info.viewableItems.length > 0 ) {
+        flashListTracker.markItemsVisible( );
+      }
 
-    if ( onViewableItemsChanged ) {
-      onViewableItemsChanged( info );
-    }
-  }, [onViewableItemsChanged] );
+      if ( onViewableItemsChanged ) {
+        onViewableItemsChanged( info );
+      }
+    },
+    [onViewableItemsChanged],
+  );
 
-  const handleScroll = useCallback( event => {
-    lastContentOffset.current = event.nativeEvent.contentOffset.y;
+  const handleScroll = useCallback(
+    ( event: NativeSyntheticEvent<NativeScrollEvent> ) => {
+      lastContentOffset.current = event.nativeEvent.contentOffset.y;
 
-    if ( onScroll ) {
-      onScroll( event );
-    }
-  }, [onScroll] );
+      if ( onScroll ) {
+        onScroll( event );
+      }
+    },
+    [onScroll],
+  );
 
-  const handleScrollBeginDrag = useCallback( event => {
-    if ( ignoreInitialEvents.current ) return;
+  const handleScrollBeginDrag = useCallback(
+    ( event: NativeSyntheticEvent<NativeScrollEvent> ) => {
+      if ( ignoreInitialEvents.current ) return;
 
-    const { y } = event.nativeEvent.contentOffset;
-
-    scrollStartPosition.current = y;
-    scrollStartTime.current = Date.now();
-    isUserScrolling.current = true;
-
-    flashListTracker.beginScrollEvent( y );
-  }, [] );
-
-  const handleScrollEndDrag = useCallback( event => {
-    if ( ignoreInitialEvents.current || !isUserScrolling.current ) return;
-
-    const { y } = event.nativeEvent.contentOffset;
-
-    isUserScrolling.current = false;
-    flashListTracker.endScrollEvent( y );
-
-    fetchInProgress.current = true;
-    flashListTracker.beginDataFetch( );
-  }, [] );
-
-  const handleMomentumScrollEnd = useCallback( event => {
-    if ( onMomentumScrollEnd ) {
-      onMomentumScrollEnd( event );
-    }
-
-    if ( isUserScrolling.current && !ignoreInitialEvents.current ) {
       const { y } = event.nativeEvent.contentOffset;
+
+      scrollStartPosition.current = y;
+      scrollStartTime.current = Date.now( );
+      isUserScrolling.current = true;
+
+      flashListTracker.beginScrollEvent( y );
+    },
+    [],
+  );
+
+  const handleScrollEndDrag = useCallback(
+    ( event: NativeSyntheticEvent<NativeScrollEvent> ) => {
+      if ( ignoreInitialEvents.current || !isUserScrolling.current ) return;
+
+      const { y } = event.nativeEvent.contentOffset;
+
       isUserScrolling.current = false;
       flashListTracker.endScrollEvent( y );
 
-      if ( !fetchInProgress.current ) {
-        fetchInProgress.current = true;
-        flashListTracker.beginDataFetch();
+      fetchInProgress.current = true;
+      flashListTracker.beginDataFetch( );
+    },
+    [],
+  );
+
+  const handleMomentumScrollEnd = useCallback(
+    ( event: NativeSyntheticEvent<NativeScrollEvent> ) => {
+      if ( onMomentumScrollEnd ) {
+        onMomentumScrollEnd( event );
       }
-    }
-  }, [onMomentumScrollEnd] );
+
+      if ( isUserScrolling.current && !ignoreInitialEvents.current ) {
+        const { y } = event.nativeEvent.contentOffset;
+        isUserScrolling.current = false;
+        flashListTracker.endScrollEvent( y );
+
+        if ( !fetchInProgress.current ) {
+          fetchInProgress.current = true;
+          flashListTracker.beginDataFetch( );
+        }
+      }
+    },
+    [onMomentumScrollEnd],
+  );
 
   const handleEndReached = useCallback( ( ) => {
     if ( ignoreInitialEvents.current ) return;
@@ -122,17 +138,17 @@ const CustomFlashList = props => {
 
   // To be called when new data is received
   // This needs to be exposed so it can be called from parent component
-  React.useImperativeHandle( ref, () => {
+  React.useImperativeHandle( ref, ( ) => {
     const flashListMethods = internalRef.current || {};
 
     return {
       ...flashListMethods,
-      notifyDataFetched: itemsCount => {
+      notifyDataFetched: ( itemsCount: number ) => {
         if ( fetchInProgress.current ) {
           flashListTracker.endDataFetch( itemsCount );
           fetchInProgress.current = false;
         } else {
-          flashListTracker.beginDataFetch();
+          flashListTracker.beginDataFetch( );
           flashListTracker.endDataFetch( itemsCount );
         }
       },

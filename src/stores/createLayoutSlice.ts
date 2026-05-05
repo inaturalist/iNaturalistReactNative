@@ -93,6 +93,31 @@ const createLayoutSlice = set => ( {
         justFinishedSignup: newValue,
       },
     } ) ),
+    // State to control dismissed announcementIds for logged-out announcements
+    dismissedAnnouncementIds: [],
+    dismissLoggedOutAnnouncement: ( announcementId: string ) => set( state => ( {
+      layout: {
+        ...state.layout,
+        dismissedAnnouncementIds:
+        state.layout.dismissedAnnouncementIds.includes( announcementId )
+          ? state.layout.dismissedAnnouncementIds
+          : [...state.layout.dismissedAnnouncementIds, announcementId],
+      },
+    } ) ),
+    clearLoggedOutAnnouncements: () => set( state => ( {
+      layout: {
+        ...state.layout,
+        dismissedAnnouncementIds: [],
+      },
+    } ) ),
+    // State to control debug mode
+    debugModeEnabled: false,
+    toggleDebugMode: () => set( state => ( {
+      layout: {
+        ...state.layout,
+        debugModeEnabled: !state.layout.debugModeEnabled,
+      },
+    } ) ),
   },
 } );
 

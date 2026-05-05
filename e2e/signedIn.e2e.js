@@ -139,6 +139,6 @@ describe( "Signed in user", () => {
     // e2e tests, so deleting an observation here still shows the observation
     // in the list unless this delay( ) is added
     await delay( 10000 );
-    await expect( obsListItem ).toBeNotVisible( );
+    await expect( obsListItem ).not.toBeVisible( );
   } );
 } );

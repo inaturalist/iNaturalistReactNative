@@ -1,4 +1,5 @@
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { useCallback } from "react";
 import useStore from "stores/useStore";
 
@@ -7,8 +8,17 @@ const useNavigateWithTaxonSelected = (
     vision: boolean;
   },
 ) => {
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+  // This hook is used in SuggestionsTaxonSearch and SuggestionsContainer.
+  // Both screens are in the SharedStackNavigator.
+  // So the navigation types here are possible from TabStack or NoBottomTabStack
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"Suggestions" | "SuggestionsTaxonSearch">["navigation"] &
+    TabStackScreenProps<"Suggestions" | "SuggestionsTaxonSearch">["navigation"]
+  >( );
+  const { params } = useRoute<
+    NoBottomTabStackScreenProps<"Suggestions" | "SuggestionsTaxonSearch">["route"] &
+    TabStackScreenProps<"Suggestions" | "SuggestionsTaxonSearch">["route"]
+  >( );
   const { entryScreen, lastScreen } = params || {};
   const currentObservation = useStore( state => state.currentObservation );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );

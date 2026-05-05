@@ -61,7 +61,7 @@ const experimentChanceIntegerPercentage = 1;
 export const startOfflineExperimentInBackground = async (
   obsUuid: string,
   shimmedOnlineResponse: OnlineSuggestionsQueryResponse,
-  offlineSuggestionOperation: () => Promise<OfflineSuggestionsResponse>,
+  offlineSuggestionOperation: () => Promise<OfflineSuggestionsResponse | null>,
 ) => {
   if ( Math.random() * 100 > experimentChanceIntegerPercentage ) {
     return;
@@ -69,6 +69,9 @@ export const startOfflineExperimentInBackground = async (
 
   try {
     const offlineResult = await offlineSuggestionOperation();
+    if ( !offlineResult ) {
+      return;
+    }
 
     logSuggestionAnalytics( obsUuid, offlineResult, shimmedOnlineResponse );
   } catch ( _error ) { /* empty */ }

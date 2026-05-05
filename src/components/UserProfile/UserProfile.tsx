@@ -1,7 +1,7 @@
-// @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
+import type { ErrorWithResponse, INatApiError } from "api/error";
 import { fetchRelationships } from "api/relationships";
+import type { ApiRelationship, ApiUser } from "api/types";
 import { fetchRemoteUser } from "api/users";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
@@ -17,8 +17,8 @@ import {
   UserText,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
-import React, { useCallback, useState } from "react";
+import type { TabStackScreenProps } from "navigation/types";
+import React, { useState } from "react";
 import User from "realmModels/User";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
 import {
@@ -31,18 +31,22 @@ import useStore from "stores/useStore";
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
 
-const UserProfile = ( ): Node => {
+const UserProfile = ( ) => {
   const setExploreView = useStore( state => state.setExploreView );
-  const navigation = useNavigation( );
+  const navigation = useNavigation <TabStackScreenProps<"UserProfile">["navigation"]>( );
   const currentUser = useCurrentUser( );
-  const { params } = useRoute( );
+  const { params } = useRoute<TabStackScreenProps<"UserProfile">["route"]>();
   const { userId, login } = params;
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [showUnfollowSheet, setShowUnfollowSheet] = useState( false );
   const { t, i18n } = useTranslation( );
 
   const fetchId = userId || login;
-  const { data: remoteUser, isError, error } = useAuthenticatedQuery(
+  const { data: remoteUser, isError, error }: {
+    data: ApiUser | null;
+    isError: boolean;
+    error: INatApiError | ErrorWithResponse;
+  } = useAuthenticatedQuery(
     ["fetchRemoteUser", fetchId],
     optsWithAuth => fetchRemoteUser( fetchId, {}, optsWithAuth ),
     {
@@ -54,9 +58,9 @@ const UserProfile = ( ): Node => {
 
   const relationshipsQueryKey = ["fetchRelationships", user?.login];
 
-  const {
-    data: relationships,
-    refetch,
+  const { data: relationships, refetch }: {
+    data: ApiRelationship[] | null;
+    refetch: ( ) => void;
   } = useAuthenticatedQuery(
     relationshipsQueryKey,
     optsWithAuth => fetchRelationships( {
@@ -69,12 +73,6 @@ const UserProfile = ( ): Node => {
       enabled: !!currentUser,
     },
   );
-  const results = relationships?.results;
-  let hasRelationshipWithCurrentUser = null;
-  if ( results?.length > 0 ) {
-    hasRelationshipWithCurrentUser = results
-      .find( relationship => relationship.friendUser.id === userId );
-  }
 
   // useEffect( ( ) => {
   //   const headerRight = ( ) => currentUser?.login === user?.login && (
@@ -89,28 +87,6 @@ const UserProfile = ( ): Node => {
   //   navigation.setOptions( { headerRight } );
   // }, [navigation, user, currentUser] );
 
-  const onObservationPressed = useCallback(
-    ( ) => {
-      setExploreView( "observations" );
-      navigation.navigate( "Explore", {
-        user,
-        worldwide: true,
-      } );
-    },
-    [navigation, user, setExploreView],
-  );
-
-  const onSpeciesPressed = useCallback(
-    ( ) => {
-      setExploreView( "species" );
-      navigation.navigate( "Explore", {
-        user,
-        worldwide: true,
-      } );
-    },
-    [navigation, user, setExploreView],
-  );
-
   if ( isError && error?.status === 404 ) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -123,6 +99,29 @@ const UserProfile = ( ): Node => {
   if ( !user ) {
     return null;
   }
+
+  let hasRelationshipWithCurrentUser;
+  if ( relationships?.length > 0 ) {
+    hasRelationshipWithCurrentUser = relationships.find(
+      relationship => relationship.friendUser.id === userId,
+    );
+  }
+
+  const onObservationPressed = ( ) => {
+    setExploreView( "observations" );
+    navigation.navigate( "Explore", {
+      user,
+      worldwide: true,
+    } );
+  };
+
+  const onSpeciesPressed = ( ) => {
+    setExploreView( "species" );
+    navigation.navigate( "Explore", {
+      user,
+      worldwide: true,
+    } );
+  };
 
   return (
     <ScrollViewWrapper testID="UserProfile">

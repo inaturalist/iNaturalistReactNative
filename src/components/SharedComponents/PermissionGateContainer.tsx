@@ -47,22 +47,13 @@ if ( usesAndroid10Permissions ) {
   ];
 }
 
-// TODO does this really work for Android above 10?
-let androidWritePermissions: AndroidPermission[] = [];
-if ( usesAndroid10Permissions ) {
-  androidWritePermissions = [
-    ...androidWritePermissions,
-    PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-  ];
-}
-
-const androidCameraPermissions = usesAndroid10Permissions
-  ? [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
-  : [PERMISSIONS.ANDROID.CAMERA];
+const androidWritePermissions: AndroidPermission[] = usesAndroid10Permissions
+  ? [PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
+  : [];
 
 export const CAMERA_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.CAMERA]
-  : androidCameraPermissions;
+  : [PERMISSIONS.ANDROID.CAMERA];
 
 export const AUDIO_PERMISSIONS = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.MICROPHONE]
@@ -123,6 +114,23 @@ export function permissionResultFromMultiple( multiResults: MultiResult ) {
     return RESULTS.LIMITED;
   }
   return RESULTS.GRANTED;
+}
+
+export async function hasWriteMediaPermission( ) {
+  // WRITE_MEDIA_PERMISSIONS is empty on android 11+ because we don't need to request permissions
+  if ( WRITE_MEDIA_PERMISSIONS.length === 0 ) return true;
+  const result = permissionResultFromMultiple(
+    await checkMultiple( WRITE_MEDIA_PERMISSIONS ),
+  );
+  return result === RESULTS.GRANTED;
+}
+
+export async function requestWriteMediaPermission( ) {
+  if ( WRITE_MEDIA_PERMISSIONS.length === 0 ) return true;
+  const result = permissionResultFromMultiple(
+    await requestMultiple( WRITE_MEDIA_PERMISSIONS ),
+  );
+  return result === RESULTS.GRANTED;
 }
 
 // Prompts the user for an Android permission and renders children if granted.

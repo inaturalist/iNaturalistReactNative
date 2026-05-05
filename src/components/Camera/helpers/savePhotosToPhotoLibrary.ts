@@ -1,7 +1,9 @@
+import type { SaveToCameraRollOptions } from "@react-native-camera-roll/camera-roll";
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {
   permissionResultFromMultiple,
   READ_WRITE_MEDIA_PERMISSIONS,
+  requestWriteMediaPermission,
 } from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import {
@@ -14,6 +16,12 @@ import { displayName as appName } from "../../../../app.json";
 
 const logger = log.extend( "savePhotosToPhotoLibrary" );
 
+type SaveToCameraRollOptionsWithLocation = SaveToCameraRollOptions & {
+  latitude?: number;
+  longitude?: number;
+  horizontalAccuracy?: number;
+};
+
 // Save URIs to camera photo library (if a photo was taken using the app,
 // we want it accessible in the camera's folder, as if the user has taken those photos
 // via their own camera app).
@@ -22,9 +30,14 @@ const logger = log.extend( "savePhotosToPhotoLibrary" );
 // be too complicated, so this at least makes it easy to test this one part
 // ~~~kueda20240614
 async function savePhotosToPhotoLibrary(
-  uris: [string],
-  location: object,
+  uris: string[],
+  location: { latitude: number; longitude: number; positional_accuracy?: number } | null,
 ) {
+  if ( !await requestWriteMediaPermission( ) ) {
+    logger.info( "Write media permission not granted, skipping save to photo library" );
+    return [];
+  }
+
   const readWritePermissionResult = permissionResultFromMultiple(
     await checkMultiple( READ_WRITE_MEDIA_PERMISSIONS ),
   );
@@ -32,7 +45,7 @@ async function savePhotosToPhotoLibrary(
     async ( memo, uri ) => {
       const savedUris = await memo;
       try {
-        const saveOptions = {};
+        const saveOptions: SaveToCameraRollOptionsWithLocation = {};
         // One quirk of CameraRoll is that if you want to write to an album, you
         // need readwrite permission, but we don't want to ask for that here
         // b/c it might come immediately after asking for *add only*
@@ -55,9 +68,12 @@ async function savePhotosToPhotoLibrary(
       } catch ( cameraRollSaveError ) {
         // should never get here since in usePrepareStoreAndNavigate we check for device full
         // and skip saving to photo library
+        const error = cameraRollSaveError instanceof Error
+          ? cameraRollSaveError
+          : new Error( String( cameraRollSaveError ) );
         if (
-          cameraRollSaveError.message.match( /No space left on device/ )
-          || cameraRollSaveError.message.match( /PHPhotosErrorDomain error 3305/ )
+          error.message.match( /No space left on device/ )
+          || error.message.match( /PHPhotosErrorDomain error 3305/ )
         ) {
           Alert.alert(
             t( "Not-enough-space-left-on-device" ),
@@ -66,23 +82,14 @@ async function savePhotosToPhotoLibrary(
           );
           return savedUris;
         }
-        // This means an iOS user denied access
-        // (https://developer.apple.com/documentation/photokit/phphotoserror/code/accessuserdenied).
-        // In theory we should not even have called this function when that
-        // happens, but we're still seeing this in the logs. They should be
-        // prompted to grant permission the next time they try so this is
-        // probably safe to ignore.
-        if ( !cameraRollSaveError.message.match( /error 3311/ ) ) {
-          logger.error( cameraRollSaveError );
-          return savedUris;
-        }
-        throw cameraRollSaveError;
+        logger.error( `Error saving photo to camera roll: ${cameraRollSaveError}` );
+        return savedUris;
       }
     },
     // We need the initial value even if we're not using it, otherwise reduce
     // will treat the first item in the array as the initial value and not
     // call the reducer function on it
-    Promise.resolve( [] ),
+    Promise.resolve<string[]>( [] ),
   );
   return savedPhotoUris;
 }

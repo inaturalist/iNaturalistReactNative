@@ -1,6 +1,6 @@
+import { mkdir } from "@dr.pogodin/react-native-fs";
 import { computerVisionPath } from "appConstants/paths";
 import { FileUpload } from "inaturalistjs";
-import RNFS from "react-native-fs";
 import resizeImage from "sharedHelpers/resizeImage";
 
 const outputPath = computerVisionPath;
@@ -16,7 +16,7 @@ interface FlattenUploadArgs {
 const flattenUploadParams = async (
   uri: string,
 ): Promise<FlattenUploadArgs> => {
-  await RNFS.mkdir( outputPath );
+  await mkdir( outputPath );
   const uploadUri = await resizeImage( uri, {
     // this max width/height is the same as the legacy Android app
     // we always want the width/height to be bigger than 299x299

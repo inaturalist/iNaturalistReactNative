@@ -46,12 +46,16 @@ const useLocalObservation = ( uuid: string ): UseLocalObservation => {
   }
 
   const markDeletedLocally = ( ) => {
+    if ( realm.isClosed ) return;
+    if ( !observation || !observation.isValid() ) return;
     safeRealmWrite( realm, ( ) => {
       observation._deleted_at = new Date( );
     }, "adding _deleted_at date in ObsDetailsContainer" );
   };
 
   const markViewedLocally = ( ) => {
+    if ( realm.isClosed ) return;
+    if ( !observation || !observation.isValid() ) return;
     safeRealmWrite( realm, ( ) => {
       // Flags if all comments and identifications have been viewed
       observation.comments_viewed = true;

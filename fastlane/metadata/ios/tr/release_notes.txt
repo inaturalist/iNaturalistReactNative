@@ -1,11 +1,11 @@
-Try the iNaturalist app!
+iNaturalist uygulamasını deneyin!
 
-Quick identification: Point your camera at a plant, animal, or other organism to get an instant identification.
+Hızlı tanımlama: Anında tanımlama için kameranızı bir bitkiye, hayvana veya başka bir organizmaya doğrultun.
 
-More ways to observe: Press and hold the camera button for more observation options, like recording sounds  and adding multiple photos.
+Daha fazla gözlem seçeneği: Ses kaydı ve birden fazla fotoğraf ekleme gibi daha fazla gözlem seçeneği için kamera düğmesine basılı tutun.
 
-Keep up with other naturalists: Check your notifications to see when other people in the iNaturalist community add identifications or ask questions about your observations.
+Diğer doğa bilimcilerle iletişimde kalın: iNaturalist topluluğundaki diğer kişilerin tanımlamalar eklediğini veya gözlemlerinizle ilgili sorular sorduğunu görmek için bildirimlerinizi kontrol edin.
 
-Set your preferences: If you're a longtime user and want your app experience to feel more like earlier versions of iNaturalist, you can! Go into Settings, enable Advanced Mode, then select "Edit Observation" in the middle section.
+Tercihlerinizi belirleyin: Uzun süredir uygulamayı kullanıyorsanız ve uygulama deneyiminizin iNaturalist'in önceki sürümlerine daha çok benzemesini istiyorsanız, bunu yapabilirsiniz! Ayarlara girin, Gelişmiş Modu etkinleştirin, ardından orta bölümde "Gözlemi Düzenle"yi seçin.
 
-Thank you for using iNaturalist! Please let us know what you think about the app by using the Feedback form available in the main menu.
+iNaturalist'i kullandığınız için teşekkür ederiz! Lütfen ana menüde bulunan Geri Bildirim formunu kullanarak uygulama hakkındaki düşüncelerinizi bizimle paylaşın.

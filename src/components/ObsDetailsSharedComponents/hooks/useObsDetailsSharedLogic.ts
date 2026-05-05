@@ -179,6 +179,7 @@ const useObsDetailsSharedLogic = ( {
   refetchRemoteObservation,
 }: UseObsDetailsSharedLogicParams ): UseObsDetailsSharedLogicReturn => {
   const setObservations = useStore( state => state.setObservations );
+  // TODO: replace with central types
   const navigation = useNavigation<NavigationProp<ParamListBase>>( );
   const realm = useRealm( );
   const [state, dispatch] = useReducer( reducer, initialState );

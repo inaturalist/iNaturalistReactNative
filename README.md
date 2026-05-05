@@ -282,7 +282,7 @@ A sentinel file is a file that is created at the beginning of an interaction flo
 1. Log any subsequent steps in the user flow using `await logStage()` and passing in the sentinel file name, stage name, and any related data. Examples of stages in the Camera include fetching user location, saving photos, and taking a photo.
     * It's a good practice to keep stage names consistent. Taking the example of saving photos, there are three distinct stages that may be helpful to log: `save_photos_to_photo_library_start`, `save_photos_to_photo_library_complete`, `save_photos_to_photo_library_error`
 1. When the user completes a user flow successfully, you can delete the sentinel file using `await deleteSentinelFile( )` and passing in the name of the user flow (i.e. when they navigate away from the Camera)
-1. On app load, we're checking for any sentinel files which have not been deleted using the `findAndLogSentinelFiles` function. If there are any lingering files, the file contents will be logged as errors to Grafana using `logger.error`, so developers on staff can peruse and see which stage a user completed successfully before the flow was abandoned.
+1. On app load, we're checking for any sentinel files which have not been deleted using the `logSentinelFiles` function. If there are any lingering files, the file contents will be logged as errors to Grafana using `logger.error`, so developers on staff can peruse and see which stage a user completed successfully before the flow was abandoned.
 
 ## Troubleshooting
 

@@ -13,7 +13,7 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   observation: RealmObservation;
-  lastScreen?: string;
+  lastScreen?: "Match";
   taxon?: ApiTaxon | RealmTaxon;
 }
 

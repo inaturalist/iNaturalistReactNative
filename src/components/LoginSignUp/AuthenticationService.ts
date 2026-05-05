@@ -14,6 +14,7 @@ import {
 import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import rs from "jsrsasign";
+import { navigationRef } from "navigation/navigationUtils";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
@@ -24,13 +25,17 @@ import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
 import { getInstallID } from "sharedHelpers/installData";
-import { log, logFilePath, logWithoutRemote } from "sharedHelpers/logger";
+import { legacyLogfilePath, log, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
 import { unlink } from "sharedHelpers/util";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useStore from "stores/useStore";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
+
+function isDebugModeSync( ): boolean {
+  return useStore.getState().layout.debugModeEnabled === true;
+}
 
 const logger = log.extend( "AuthenticationService" );
 // The remote transport in the default logger uses many of the methods in this
@@ -97,7 +102,7 @@ async function getSensitiveItem(
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const getItemError = e as SensitiveInfoError;
-      if ( isDebugMode() ) {
+      if ( isDebugModeSync() ) {
         switch ( getItemError.code ) {
           case ErrorCode.NOT_FOUND:
             // Value doesn't exist
@@ -128,7 +133,7 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const setItemError = e as SensitiveInfoError;
-      if ( isDebugMode( ) ) {
+      if ( isDebugModeSync( ) ) {
         localLogger.info(
           `RNSInfo.setItem error for ${key}, ${setItemError.code} ${setItemError.message}`,
         );
@@ -151,7 +156,7 @@ async function deleteSensitiveItem(
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const deleteItemError = e as SensitiveInfoError;
-      if ( isDebugMode() ) {
+      if ( isDebugModeSync() ) {
         localLogger.info(
           `RNSInfo.deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`,
         );
@@ -225,24 +230,6 @@ const signOut = async (
   // Don't await on this endpoint, to not delay the signout process
   apiClient.get( "/logout" );
 
-  if ( options.clearRealm ) {
-    if ( options.realm ) {
-      // Delete all the records in the realm db, including the ones accessible
-      // through the copy of realm provided by RealmProvider
-      options.realm.beginTransaction();
-      try {
-        options.realm.deleteAll( );
-        options.realm.commitTransaction( );
-      } catch ( _realmError ) {
-        options.realm.cancelTransaction( );
-        // If we failed to wipe all the data in realm, delete the realm file.
-        // Note that deleting the realm file *all* the time seems to cause
-        // problems in Android when the app is force quit, as in sometimes it
-        // seems to just delete the file even if you didn't sign out
-        Realm.deleteFile( realmConfig );
-      }
-    }
-  }
   // Delete the React Query cache. FWIW, this should *not* be optional, but
   // the checkForSignedInUser needs to call this and that doesn't have access
   // to the React Query context (maybe it could...)
@@ -259,7 +246,7 @@ const signOut = async (
   await deleteSensitiveItem( "jwtGeneratedAt" );
   await deleteSensitiveItem( "username" );
   await deleteSensitiveItem( "accessToken" );
-  await unlink( logFilePath );
+  await unlink( legacyLogfilePath );
   // clear all directories containing user generated data within Documents Directory
   await removeAllFilesFromDirectory( computerVisionPath );
   await removeAllFilesFromDirectory( photoLibraryPhotosPath );
@@ -269,6 +256,26 @@ const signOut = async (
 
   // delete all keys from mmkv
   zustandMMKVBackingStorage.clearAll( );
+
+  if ( options.clearRealm ) {
+    if ( options.realm ) {
+      // Delete all the records in the realm db, including the ones accessible
+      // through the copy of realm provided by RealmProvider
+      options.realm.beginTransaction();
+      try {
+        options.realm.deleteAll();
+        options.realm.commitTransaction();
+      } catch ( _realmError ) {
+        options.realm.cancelTransaction();
+        // If we failed to wipe all the data in realm, delete the realm file.
+        // Note that deleting the realm file *all* the time seems to cause
+        // problems in Android when the app is force quit, as in sometimes it
+        // seems to just delete the file even if you didn't sign out
+        Realm.deleteFile( realmConfig );
+      }
+    }
+  }
+
   RNRestart.restart( );
 };
 
@@ -302,6 +309,67 @@ const getAnonymousJWT = (): string => {
   return encodeJWT( claims, Config.JWT_ANONYMOUS_API_SECRET || "not-a-real-secret", "HS512" );
 };
 
+// Shared promise for any in-flight token refresh. Concurrent callers that
+// find the token stale will all await this same request rather than each
+// firing their own, preventing a ton of requests against /users/api_token.json
+// during downtime.
+let jwtRefreshPromise: Promise<string | null> | null = null;
+
+async function fetchFreshJWT( logContext: string | null ): Promise<string | null> {
+  try {
+    const accessToken = await getSensitiveItem( "accessToken" );
+    // accessToken should always be a string here, since we're logged in,
+    // i.e. in the function call to loggedIn() above we must have found accessToken
+    // to not be null at least in the last 5000 ms
+    const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
+    let response;
+    try {
+      response = await api.get<{api_token: string}>( "/users/api_token.json" );
+    } catch ( getUsersApiTokenError ) {
+      logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
+      if ( !getUsersApiTokenError ) { return null; }
+      throw getUsersApiTokenError;
+    }
+
+    if ( !response.ok ) {
+      logger.error(
+        `JWT [${logContext}]: Token refresh failed - status: ${response.status}`,
+        `- originalError: ${response.originalError} - problem: ${response.problem}`,
+      );
+      // this deletes the user JWT and saved login details when a user is not
+      // actually signed in anymore for example, if they installed, deleted,
+      // and reinstalled the app without logging out
+      if ( response.status === 401 ) {
+        if ( logContext ) {
+          logger.info( `JWT [${logContext}]: User unauthorized, navigating to login` );
+        }
+        if ( navigationRef.isReady( ) ) {
+          navigationRef.navigate( "LoginStackNavigator", { screen: "Login" } );
+        }
+      }
+      return null;
+    }
+
+    // Get newest JWT Token
+    const newJwtToken = response.data?.api_token;
+    if ( !newJwtToken ) {
+      throw new Error( "Fetched empty JWT" );
+    }
+    const newJwtGeneratedAt = Date.now();
+
+    await setSensitiveItem( "jwtToken", newJwtToken );
+    await setSensitiveItem( "jwtGeneratedAt", newJwtGeneratedAt.toString() );
+
+    if ( logContext ) {
+      logger.info( `JWT [${logContext}]: Token refreshed successfully` );
+    }
+
+    return newJwtToken;
+  } finally {
+    jwtRefreshPromise = null;
+  }
+}
+
 /**
  * Returns most recent JWT (JSON Web Token) for API authentication - renews the token if necessary
  *
@@ -313,7 +381,7 @@ const getJWT = async (
   allowAnonymousJWT = false,
   logContext: string | null = null,
 ): Promise<string | null> => {
-  let jwtToken: string | null | undefined = await getSensitiveItem( "jwtToken" );
+  const jwtToken: string | null | undefined = await getSensitiveItem( "jwtToken" );
   const storedJwtGeneratedAt = await getSensitiveItem( "jwtGeneratedAt" );
   let jwtGeneratedAt: number | null = null;
   if ( storedJwtGeneratedAt ) {
@@ -342,63 +410,13 @@ const getJWT = async (
     || ( jwtGeneratedAt && ( Date.now() - jwtGeneratedAt ) / 1000 > JWT_EXPIRATION_MINS * 60 )
   ) {
     // JWT Tokens expire after 30 mins - if the token is non-existent or older
-    // than 25 mins (safe margin) - ask for a new one
-
-    const accessToken = await getSensitiveItem( "accessToken" );
-    // accessToken should always be a string here, since we're logged in,
-    // i.e. in the function call to loggedIn() above we must have found accessToken
-    // to not be null at least in the last 5000 ms
-    const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
-    let response;
-    try {
-      response = await api.get<{api_token: string}>( "/users/api_token.json" );
-    } catch ( getUsersApiTokenError ) {
-      logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
-      if ( !getUsersApiTokenError ) { return null; }
-      throw getUsersApiTokenError;
+    // than 25 mins (safe margin) - ask for a new one.
+    // If a refresh is already in-flight, return that shared promise instead
+    // of starting a second concurrent request.
+    if ( !jwtRefreshPromise ) {
+      jwtRefreshPromise = fetchFreshJWT( logContext );
     }
-
-    // TODO: this means that if the server doesn't respond with a successful
-    // token *for any reason* it just deletes the entire local database. That
-    // means if you tried to retrieve a new token during downtime, it would
-    // delete all of your unsynced observations
-    // TODO: Also, I (kueda) am not really sure we want to delete all of realm
-    // just because auth failed. If you change your password on the website,
-    // you should be signed out in the app, BUT if you have unsynced
-    // observations shouldn't you have the opportunity to sign in again and
-    // upload them?
-    if ( !response.ok ) {
-      logger.error(
-        `JWT [${logContext}]: Token refresh failed - status: ${response.status}`,
-        `- originalError: ${response.originalError} - problem: ${response.problem}`,
-      );
-      // this deletes the user JWT and saved login details when a user is not
-      // actually signed in anymore for example, if they installed, deleted,
-      // and reinstalled the app without logging out
-      if ( response.status === 401 ) {
-        if ( logContext ) {
-          logger.info( `JWT [${logContext}]: User unauthorized, signing out ` );
-        }
-        signOut( { clearRealm: true } );
-      }
-      return null;
-    }
-
-    // Get newest JWT Token
-    jwtToken = response.data?.api_token;
-    if ( !jwtToken ) {
-      throw new Error( "Fetched empty JWT" );
-    }
-    jwtGeneratedAt = Date.now();
-
-    await setSensitiveItem( "jwtToken", jwtToken );
-    await setSensitiveItem( "jwtGeneratedAt", jwtGeneratedAt.toString() );
-
-    if ( logContext ) {
-      logger.info( `JWT [${logContext}]: Token refreshed successfully` );
-    }
-
-    return jwtToken;
+    return jwtRefreshPromise;
   }
   // Current JWT token is still fresh/valid - return it as-is
   return jwtToken;
@@ -528,14 +546,21 @@ async function verifyCredentials(
   return afterVerifyCredentials( tokenResponse, apiClient );
 }
 
-async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Realm ) {
+export type AuthenticateUserResult =
+| { success: true; observationsCount?: number }
+| { success: false };
+
+async function afterAuthenticateUser(
+  userDetails: UserDetails | null,
+  realm: Realm,
+): Promise<AuthenticateUserResult> {
   if ( !userDetails ) {
-    return false;
+    return { success: false };
   }
 
   const { userId, username: remoteUsername, accessToken } = userDetails;
   if ( !userId ) {
-    return false;
+    return { success: false };
   }
 
   // Save authentication details to secure storage
@@ -571,7 +596,11 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
   safeRealmWrite( realm, ( ) => {
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
-  return true;
+  clearAuthCache( );
+  return {
+    success: true,
+    observationsCount: remoteUser?.observations_count,
+  };
 }
 
 /**
@@ -586,7 +615,7 @@ const authenticateUser = async (
   username: string,
   password: string,
   realm: Realm,
-): Promise<boolean> => {
+): Promise<AuthenticateUserResult> => {
   const userDetails = await verifyCredentials( username, password );
 
   return afterAuthenticateUser( userDetails, realm );
@@ -596,7 +625,7 @@ async function authenticateUserByAssertion(
   assertionType: "apple" | "google",
   assertion: string,
   realm: Realm,
-) {
+): Promise<AuthenticateUserResult> {
   const apiClient = createAPI( { Accept: "application/json" } );
   const formData = {
     client_id: Config.OAUTH_CLIENT_ID,

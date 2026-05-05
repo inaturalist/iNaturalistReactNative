@@ -1,5 +1,11 @@
 import "linkify-plugin-mention";
 
+import type {
+  MixedStyleDeclaration,
+  RenderersProps,
+  TRenderEngineConfig,
+} from "@native-html/render";
+import RenderHtml, { defaultSystemFonts } from "@native-html/render";
 import { useNavigation } from "@react-navigation/native";
 import { fontRegular } from "appConstants/fontFamilies";
 import linkifyHtml from "linkify-html";
@@ -9,17 +15,13 @@ import trim from "lodash/trim";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import { Linking, useWindowDimensions } from "react-native";
-import type {
-  MixedStyleDeclaration, RenderersProps, TRenderEngineConfig,
-} from "react-native-render-html";
-import HTML, {
-  defaultSystemFonts,
-} from "react-native-render-html";
 import WebView from "react-native-webview";
 import type { IOptions } from "sanitize-html";
 import sanitizeHtml from "sanitize-html";
 import colors from "styles/tailwindColors";
 
+// Keep aligned with Post::ALLOWED_TAGS in inaturalist/inaturalist (Rails);
+// omit iframe/embed/audio so mobile sanitization is a tad stricter than web
 const ALLOWED_TAGS = ( `
   a
   abbr
@@ -57,11 +59,10 @@ const ALLOWED_TAGS = ( `
   table
   tbody
   td
-  t
+  tfoot
   th
   thead
   tr
-  tt
   ul
 ` ).split( /\s+/m ).filter( e => e !== "" );
 
@@ -103,16 +104,7 @@ interface Props extends React.PropsWithChildren {
   htmlStyle?: object;
 }
 
-const UserText = ( {
-  children,
-  htmlStyle,
-  text: textProp,
-} : Props ) => {
-  const navigation = useNavigation( );
-
-  // Allow stringified children to serve as text if no prop provided
-  const text = textProp || children?.toString( ) || "";
-  const { width } = useWindowDimensions( );
+export function buildUserTextHtml( text: string ): string {
   let html = trim( text );
 
   // replace ampersands in URL params with entities so they don't get
@@ -135,6 +127,22 @@ const UserText = ( {
   // <code>
 
   html = linkifyHtml( html, LINKIFY_OPTIONS );
+  return html;
+}
+
+const UserText = ( {
+  children,
+  htmlStyle,
+  text: textProp,
+} : Props ) => {
+  const navigation = useNavigation( );
+
+  // Allow stringified children to serve as text if no prop provided
+  const text = textProp || children?.toString( ) || "";
+  const { width } = useWindowDimensions( );
+
+  const html = buildUserTextHtml( text );
+
   const baseStyle: MixedStyleDeclaration = {
     fontFamily: fontRegular,
     fontSize: 16,
@@ -145,8 +153,48 @@ const UserText = ( {
   };
   const tagsStyles: TRenderEngineConfig["tagsStyles"] = {
     a: {
-      textDecorationLine: "underline",
       color: colors.inatGreen,
+      textDecorationColor: colors.inatGreen,
+    },
+    h1: {
+      fontSize: 25,
+      letterSpacing: -0.25,
+      lineHeight: 30,
+      marginBottom: 8,
+      marginTop: 8,
+    },
+    h2: {
+      fontSize: 21,
+      lineHeight: 25.2,
+      marginBottom: 8,
+      marginTop: 8,
+    },
+    h3: {
+      fontSize: 18,
+      lineHeight: 21.6,
+      marginBottom: 8,
+      marginTop: 8,
+    },
+    h4: {
+      fontSize: 15,
+      letterSpacing: 2,
+      lineHeight: 18,
+      marginBottom: 8,
+      marginTop: 8,
+    },
+    h5: {
+      fontSize: 11,
+      letterSpacing: 2,
+      lineHeight: 13.2,
+      marginBottom: 6,
+      marginTop: 6,
+    },
+    h6: {
+      fontSize: 8,
+      letterSpacing: 0.65,
+      lineHeight: 9.6,
+      marginBottom: 6,
+      marginTop: 6,
     },
   };
   const fonts = [fontRegular, ...defaultSystemFonts];
@@ -171,7 +219,7 @@ const UserText = ( {
   };
 
   return (
-    <HTML
+    <RenderHtml
       baseStyle={baseStyle}
       tagsStyles={tagsStyles}
       contentWidth={width}

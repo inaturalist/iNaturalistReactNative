@@ -1,0 +1,44 @@
+diff --git a/node_modules/react-native/Libraries/Renderer/implementations/ReactFabric-dev.js b/node_modules/react-native/Libraries/Renderer/implementations/ReactFabric-dev.js
+index 98a91dc..0792630 100644
+--- a/node_modules/react-native/Libraries/Renderer/implementations/ReactFabric-dev.js
++++ b/node_modules/react-native/Libraries/Renderer/implementations/ReactFabric-dev.js
+@@ -2017,8 +2017,15 @@ __DEV__ &&
+           (isDeeplyEqual = !1));
+       for (var _key in next)
+         if (_key in prev) {
+-          var key = prev[_key];
+-          var nextValue = next[_key];
++          // https://github.com/realm/realm-js/issues/7086
++          // https://github.com/facebook/react/issues/35126
++          var key, nextValue;
++          try {
++            key = prev[_key];
++            nextValue = next[_key];
++          } catch (e) {
++            continue;
++          }
+           if (key !== nextValue) {
+             if (0 === indent && "children" === _key)
+               (isDeeplyEqual = "\u00a0\u00a0".repeat(indent) + _key),
+diff --git a/node_modules/react-native/Libraries/Renderer/implementations/ReactNativeRenderer-dev.js b/node_modules/react-native/Libraries/Renderer/implementations/ReactNativeRenderer-dev.js
+index 030ef4d..2a67ffe 100644
+--- a/node_modules/react-native/Libraries/Renderer/implementations/ReactNativeRenderer-dev.js
++++ b/node_modules/react-native/Libraries/Renderer/implementations/ReactNativeRenderer-dev.js
+@@ -2433,8 +2433,15 @@ __DEV__ &&
+           (isDeeplyEqual = !1));
+       for (var _key in next)
+         if (_key in prev) {
+-          var key = prev[_key];
+-          var nextValue = next[_key];
++          // https://github.com/realm/realm-js/issues/7086
++          // https://github.com/facebook/react/issues/35126
++          var key, nextValue;
++          try {
++            key = prev[_key];
++            nextValue = next[_key];
++          } catch (e) {
++            continue;
++          }
+           if (key !== nextValue) {
+             if (0 === indent && "children" === _key)
+               (isDeeplyEqual = "\u00a0\u00a0".repeat(indent) + _key),

@@ -1,6 +1,8 @@
 // @flow
 
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  StackActions, useFocusEffect, useNavigation, useRoute,
+} from "@react-navigation/native";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { BackButton, Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -12,6 +14,7 @@ import React, {
 import { BackHandler } from "react-native";
 import Observation from "realmModels/Observation";
 import { useExitObservationFlow, useTranslation } from "sharedHooks";
+import useObsEditRollback from "sharedHooks/useObsEditRollback";
 import useStore from "stores/useStore";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
@@ -29,6 +32,7 @@ const ObsEditHeader = ( {
   observations,
   currentObservation,
 }: Props ): Node => {
+  const { rollback, canRollbackToMatch } = useObsEditRollback( );
   const unsavedChanges = useStore( state => state.unsavedChanges );
   const updateObservations = useStore( state => state.updateObservations );
   const savedOrUploadedMultiObsFlow = useStore( state => state.savedOrUploadedMultiObsFlow );
@@ -44,12 +48,23 @@ const ObsEditHeader = ( {
   const exitObservationFlow = useExitObservationFlow( );
   const realm = useRealm( );
 
-  const discardChanges = useCallback( ( ) => {
+  const discardChanges = useCallback( async ( ) => {
     setDiscardChangesSheetVisible( false );
-    exitObservationFlow( {
-      navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
-    } );
-  }, [currentObservation?.uuid, exitObservationFlow, navigation] );
+    if ( canRollbackToMatch ) {
+      await rollback( );
+      navigation.dispatch( StackActions.popTo( "Match" ) );
+    } else {
+      exitObservationFlow( {
+        navigate: ( ) => navigateToObsDetails( navigation, currentObservation?.uuid ),
+      } );
+    }
+  }, [
+    currentObservation?.uuid,
+    exitObservationFlow,
+    canRollbackToMatch,
+    navigation,
+    rollback,
+  ] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
@@ -83,17 +98,15 @@ const ObsEditHeader = ( {
     || ( unsynced && savedLocally )
     || ( unsynced && !unsavedChanges ) );
 
-  const handleBackButtonPress = useCallback( ( ) => {
+  const handleBackButtonPress = useCallback( async ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
       navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
-    } else if ( params?.lastScreen === "Match" && unsavedChanges ) {
-      // When coming from the match screen, we don't have a version of the match to roll back to
-      // so if there are changes, they need to restart
-      // In the future, we'll support a rollback https://linear.app/inaturalist/issue/MOB-1091/match-screen-edit-flow-should-roll-back-changes-on-back-navigation
+    } else if ( canRollbackToMatch ) {
       if ( unsavedChanges ) {
-        setDiscardObservationSheetVisible( true );
+        setDiscardChangesSheetVisible( true );
       } else {
-        navigation.goBack( );
+        await rollback( );
+        navigation.dispatch( StackActions.popTo( "Match" ) );
       }
     } else if ( shouldNavigateBack ) {
       navigation.goBack( );
@@ -109,12 +122,14 @@ const ObsEditHeader = ( {
   }, [
     currentObservation?.uuid,
     exitObservationFlow,
+    canRollbackToMatch,
     navigation,
     params?.lastScreen,
     savedLocally,
     savedOrUploadedMultiObsFlow,
     shouldNavigateBack,
     unsavedChanges,
+    rollback,
   ] );
 
   const renderBackButton = useCallback( ( ) => {

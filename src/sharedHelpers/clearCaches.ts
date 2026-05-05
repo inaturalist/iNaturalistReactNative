@@ -2,14 +2,12 @@ import {
   computerVisionPath,
   photoLibraryPhotosPath,
   photoUploadPath,
+  rollbackPhotosPath,
   rotatedOriginalPhotosPath,
   soundUploadPath,
 } from "appConstants/paths";
-import { log } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import removeSyncedFilesFromDirectory from "sharedHelpers/removeSyncedFilesFromDirectory";
-
-const logger = log.extend( "clearCaches.ts" );
 
 // TODO replace when Realm classes are properly typed
 interface RealmObservation {
@@ -82,19 +80,14 @@ const clearSyncedMediaForUpload = async realm => {
   );
 };
 
-const clearCaches = async realm => {
-  const startTime = Date.now( );
-  // clear original, large-sized photos
-  await clearRotatedOriginalPhotosDirectory( );
-  await clearGalleryPhotos( );
-  await clearComputerVisionPhotos( );
-  await clearSyncedMediaForUpload( realm );
-  const endTime = Date.now( );
-  const duration = endTime - startTime;
-  logger.info(
-    "cleared rotated original photos, gallery, computer vision, and synced media caches "
-    + `in ${duration}ms`,
-  );
+const clearRollbackPhotos = async ( ) => {
+  await removeAllFilesFromDirectory( rollbackPhotosPath );
 };
 
-export default clearCaches;
+export {
+  clearComputerVisionPhotos,
+  clearGalleryPhotos,
+  clearRollbackPhotos,
+  clearRotatedOriginalPhotosDirectory,
+  clearSyncedMediaForUpload,
+};

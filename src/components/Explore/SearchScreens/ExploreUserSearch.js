@@ -1,6 +1,5 @@
 // @flow
 
-import { fetchSearchResults } from "api/search";
 import {
   ButtonBar,
   SearchBar,
@@ -11,9 +10,12 @@ import UserList from "components/UserList/UserList";
 import type { Node } from "react";
 import React, {
   useCallback,
+  useMemo,
   useState,
 } from "react";
-import { useAuthenticatedQuery, useCurrentUser, useTranslation } from "sharedHooks";
+import {
+  useCurrentUser, useKeyboardInfo, useTranslation, useUserSearch,
+} from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
@@ -32,19 +34,8 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const { t } = useTranslation();
   const currentUser = useCurrentUser();
-
-  // TODO: replace this with infinite scroll like ExploreFlashList
-  const { data: userList = [], isLoading, refetch } = useAuthenticatedQuery(
-    ["fetchSearchResults", userQuery],
-    optsWithAuth => fetchSearchResults(
-      {
-        q: userQuery,
-        sources: "users",
-        fields: "user.id,user.login,user.icon_url,user.observations_count",
-      },
-      optsWithAuth,
-    ),
-  );
+  const { keyboardHeight, keyboardShown } = useKeyboardInfo();
+  const { users: userList = [], isLoading, refetch } = useUserSearch( userQuery );
 
   const onUserSelected = useCallback( async ( user, exclude ) => {
     if ( !user.id && !user.login ) {
@@ -66,12 +57,22 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
 
   // TODO: pagination like in ExploreFlashList ?
 
-  const renderEmptyList = ( ) => (
-    <EmptySearchResults
-      isLoading={isLoading}
-      searchQuery={userQuery}
-      refetch={refetch}
-    />
+  const emptyListComponent = useMemo(
+    ( ) => (
+      <EmptySearchResults
+        isLoading={isLoading}
+        searchQuery={userQuery}
+        refetch={refetch}
+      />
+    ),
+    [isLoading, refetch, userQuery],
+  );
+
+  const footerComponent = useMemo(
+    ( ) => ( keyboardShown && keyboardHeight > 0
+      ? <View style={{ height: keyboardHeight }} />
+      : null ),
+    [keyboardHeight, keyboardShown],
   );
 
   const buttons = [
@@ -122,7 +123,8 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
         )}
       </View>
       <UserList
-        ListEmptyComponent={renderEmptyList}
+        ListEmptyComponent={emptyListComponent}
+        ListFooterComponent={footerComponent}
         users={userList}
         keyboardShouldPersistTaps="handled"
         accessibilityLabel={t( "Select-user" )}
