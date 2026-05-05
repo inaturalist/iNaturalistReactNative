@@ -1,0 +1,8 @@
+NEW
+* Advanced mode banner
+
+FIXED
+* Add-observation-sheet not dismissing
+
+UPDATED
+* Minor package and performance updates
