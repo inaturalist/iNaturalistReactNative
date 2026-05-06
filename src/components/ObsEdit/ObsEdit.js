@@ -11,8 +11,8 @@ import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservation
 import {
   useCurrentUser,
   useLocationPermission,
-  useWatchPosition,
 } from "sharedHooks";
+import useObservationLocation from "sharedHooks/useObservationLocation";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 
@@ -73,7 +73,7 @@ const ObsEdit = ( ): Node => {
     stopWatch,
     subscriptionId,
     userLocation,
-  } = useWatchPosition( { shouldFetchLocation } );
+  } = useObservationLocation( { shouldFetchLocation } );
 
   useEffect( ( ) => {
     if ( userLocation?.latitude ) {

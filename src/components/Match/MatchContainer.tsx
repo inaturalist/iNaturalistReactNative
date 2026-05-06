@@ -27,9 +27,10 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
 import {
-  useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition,
+  useExitObservationFlow, useLocationPermission, useSuggestions,
 } from "sharedHooks";
 import useDebugMode from "sharedHooks/useDebugMode";
+import useObservationLocation from "sharedHooks/useObservationLocation";
 import {
   internalUseSuggestionsInitialSuggestions,
 } from "sharedHooks/useSuggestions/filterSuggestions";
@@ -289,7 +290,7 @@ const MatchContainer = ( ) => {
     stopWatch,
     subscriptionId,
     userLocation,
-  } = useWatchPosition( { shouldFetchLocation } );
+  } = useObservationLocation( { shouldFetchLocation } );
 
   const navToLocationPicker = useCallback( ( ) => {
     stopWatch( subscriptionId );
