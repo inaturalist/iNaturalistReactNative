@@ -336,6 +336,8 @@ export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
 export type LoginStackParamList = {
   // From SignUpConfirmationForm
   // no params
+  // From useLinking
+  // { emailConfirmed: true }
   Login: {
     emailConfirmed?: boolean;
     prevScreen?: string;

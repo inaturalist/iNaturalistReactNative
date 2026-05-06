@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   searchObservations,
@@ -12,9 +10,9 @@ import { Linking } from "react-native";
 const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
 const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
 
-const useLinking = ( currentUser: ?Object ) => {
+const useLinking = ( currentUser?: object ) => {
   const navigation = useNavigation( );
-  const [observationId, setObservationId] = useState( null );
+  const [observationId, setObservationId] = useState<string | null>( null );
 
   const navigateConfirmedUser = useCallback( ( ) => {
     if ( currentUser ) { return; }
@@ -30,8 +28,6 @@ const useLinking = ( currentUser: ?Object ) => {
     const options = {
       api_token: apiToken,
     };
-    // TODO: enable fields if it makes sense
-    // https://linear.app/inaturalist/issue/MOB-1358/enable-fields-for-searchobservations-in-uselinking
     const { results } = await searchObservations( searchParams, options );
     const uuid = results?.[0]?.uuid;
 
@@ -42,7 +38,7 @@ const useLinking = ( currentUser: ?Object ) => {
     }
   }, [navigation, observationId] );
 
-  const checkAllowedHosts = useCallback( url => {
+  const checkAllowedHosts = useCallback( ( url: string | null ) => {
     if ( typeof url !== "string" ) { return; }
     const { host, pathname } = new URL( url );
 
@@ -56,7 +52,7 @@ const useLinking = ( currentUser: ?Object ) => {
     }
   }, [] );
 
-  const handleUrl = useCallback( url => {
+  const handleUrl = useCallback( ( url: string | null ) => {
     if ( url === newAccountConfirmedUrl
       || url === existingAccountConfirmedUrl
     ) {
