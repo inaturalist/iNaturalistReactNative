@@ -97,7 +97,6 @@ const markRecordUploaded = (
   const { id } = response.results[0];
 
   const record = findRecordInRealm( realm, observationUUID, recordUUID, type, options );
-  console.log( "record", record );
 
   if ( !record ) {
     throw new Error(
