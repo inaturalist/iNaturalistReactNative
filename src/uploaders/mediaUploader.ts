@@ -79,7 +79,7 @@ interface ApiEndpoint {
   ): Promise<MediaApiResponse>;
 }
 
-export type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto;
+export type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto | RealmSound;
 
 interface MediaItems {
   unsyncedObservationPhotos: RealmObservationPhoto[];
@@ -103,6 +103,7 @@ const uploadSingleEvidence = async (
     action,
     observationId,
   );
+  console.log( "params", params );
   const evidenceUUID = evidence.uuid;
 
   // Determine if this is an upload or an attachment operation
@@ -326,7 +327,6 @@ async function uploadObservationMedia(
 
   // Create operations for just uploads (upload=true)
   const operations = createMediaOperations( mediaItems, null, true );
-  console.log( "operations", operations );
 
   if ( operations.length > 0 ) {
     await processMediaOperations( operations, options, observation.uuid, realm );
