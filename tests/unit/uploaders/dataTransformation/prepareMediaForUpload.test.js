@@ -153,24 +153,23 @@ describe( "prepareMediaForUpload", () => {
     } );
   } );
 
-  test( "should map ObservationSound upload", () => {
+  test( "should map Sound upload", () => {
     const observationId = null;
     const result = prepareMediaForUpload(
-      mockObservationSound,
-      "ObservationSound",
+      mockSound,
+      "Sound",
       "upload",
       observationId,
     );
 
     expect( ObservationSound.mapSoundForUpload ).toHaveBeenCalledWith(
-      mockObservationSound,
+      mockSound,
     );
 
     expect( result ).toEqual( {
-      uuid: mockObservationSound.uuid,
       file: new FileUpload( {
-        uri: mockObservationSound.sound.file_url,
-        name: `${mockObservationSound.uuid}.m4a}`,
+        uri: mockSound.file_url,
+        name: mockSound.file_url.split( "/" ).pop( ),
         type: "audio/m4a",
       } ),
     } );
