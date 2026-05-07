@@ -39,13 +39,13 @@ class Sound extends Realm.Object {
     return localSound;
   }
 
-  static async moveFromCacheToDocumentDirectory( srcPath, options = {} ) {
+  static async moveFromCacheToDocumentDirectory(
+    srcPath: string,
+    options: { basename: string },
+  ) {
     const srcFileName = srcPath.split( "/" ).at( -1 );
     const srcFileExt = srcFileName.split( "." ).at( -1 );
-    let fileName = srcFileName;
-    if ( options.basename ) {
-      fileName = `${options.basename}.${srcFileExt}`;
-    }
+    const fileName = `${options.basename}.${srcFileExt}`;
     await mkdir( soundUploadPath );
     const dstPath = `${soundUploadPath}/${fileName}`;
 
