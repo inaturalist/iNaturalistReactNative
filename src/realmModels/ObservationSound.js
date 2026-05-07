@@ -54,9 +54,12 @@ class ObservationSound extends Realm.Object {
 
   static mapSoundForAttachingToObs( observationID, observationSound ) {
     return {
-      "observation_sound[sound_id]": observationSound.id,
-      "observation_sound[observation_id]": observationID,
-      "observation_sound[uuid]": observationSound.uuid,
+      observation_sound: {
+        observation_id: observationID,
+        sound_id: observationSound.id,
+        // sound_id: soundId,
+        uuid: observationSound.uuid,
+      },
     };
   }
 
