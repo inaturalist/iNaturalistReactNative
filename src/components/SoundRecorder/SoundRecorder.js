@@ -25,7 +25,6 @@ import { StatusBar } from "react-native";
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import Observation from "realmModels/Observation";
 import ObservationSound from "realmModels/ObservationSound";
-import Sound from "realmModels/Sound";
 import useTranslation from "sharedHooks/useTranslation";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -80,9 +79,7 @@ const SoundRecorder = (): Node => {
       // Add new sounds to existing observation
       let updatedCurrentObservation = currentObservation;
 
-      const obsSound = await ObservationSound.new( {
-        sound: await Sound.new( { file_url: uri } ),
-      } );
+      const obsSound = await ObservationSound.new( uri );
       updatedCurrentObservation = Observation
         .appendObsSounds( [obsSound], updatedCurrentObservation );
 

@@ -28,9 +28,10 @@ class ObservationSound extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static async new( observationSound ) {
+  static async new( uri: string ) {
+    const sound = await Sound.new( { file_url: uri } );
     return {
-      ...observationSound,
+      sound,
       uuid: uuid.v4( ),
     };
   }
