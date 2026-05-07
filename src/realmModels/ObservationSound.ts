@@ -6,6 +6,7 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import * as uuid from "uuid";
 
 import Sound from "./Sound";
+import type { RealmObservationSound } from "./types";
 
 class ObservationSound extends Realm.Object {
   _created_at?: Date;
@@ -45,7 +46,7 @@ class ObservationSound extends Realm.Object {
     return localObsSound;
   }
 
-  static mapSoundForUpload( observationSound ) {
+  static mapSoundForUpload( observationSound: RealmObservationSound ) {
     const fileExt = Platform.OS === "android"
       ? "mp4"
       : "m4a";
@@ -60,7 +61,10 @@ class ObservationSound extends Realm.Object {
     };
   }
 
-  static mapSoundForAttachingToObs( id, observationSound ) {
+  static mapSoundForAttachingToObs(
+    id: number,
+    observationSound: RealmObservationSound,
+  ) {
     return {
       "observation_sound[observation_id]": id,
       "observation_sound[sound_id]": observationSound.id,
@@ -68,13 +72,15 @@ class ObservationSound extends Realm.Object {
     };
   }
 
-  static mapObservationSoundForMyObsDefaultMode( obsSound ) {
+  static mapObservationSoundForMyObsDefaultMode( obsSound: {
+    uuid?: string;
+  } ) {
     return {
       uuid: obsSound?.uuid,
     };
   }
 
-  static async deleteLocalObservationSound( realm, uri, obsUUID ) {
+  static async deleteLocalObservationSound( realm: Realm, uri: string, obsUUID: string ) {
     // delete uri on disk
     Sound.deleteSoundFromDeviceStorage( uri );
     const realmObs = realm.objectForPrimaryKey( "Observation", obsUUID );
