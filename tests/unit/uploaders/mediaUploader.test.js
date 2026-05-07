@@ -43,7 +43,11 @@ describe( "mediaUploader", () => {
           },
         ],
         observationSounds: [
-          { wasSynced: () => false, uuid: "sound-uuid-1", url: "sound1.mp3" },
+          {
+            wasSynced: () => false,
+            uuid: "sound-uuid-1",
+            sound: { file_url: "file://soundUploads/sound1.mp3" },
+          },
         ],
       };
       const options = { api_token: "test-token" };
@@ -219,8 +223,16 @@ describe( "mediaUploader", () => {
           },
         ],
         observationSounds: [
-          { wasSynced: () => false, uuid: "sound-uuid-1", url: "sound1.mp3" },
-          { wasSynced: () => true, uuid: "sound-uuid-2", url: "sound2.mp3" },
+          {
+            wasSynced: () => false,
+            uuid: "sound-uuid-1",
+            sound: { file_url: "file://soundUploads/sound1.mp3" },
+          },
+          {
+            wasSynced: () => true,
+            uuid: "sound-uuid-2",
+            sound: { file_url: "file://soundUploads/sound2.mp3" },
+          },
         ],
       };
       const options = { api_token: "test-token" };
