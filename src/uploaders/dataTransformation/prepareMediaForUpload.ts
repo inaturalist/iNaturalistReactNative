@@ -44,7 +44,7 @@ function prepareMediaForUpload(
     }
   } else if ( type === "ObservationSound" ) {
     if ( action === "upload" ) {
-      return ObservationSound.mapSoundForUpload( observationId, media );
+      return ObservationSound.mapSoundForUpload( media );
     }
     if ( action === "attach" ) {
       return ObservationSound

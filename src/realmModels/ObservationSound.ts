@@ -45,7 +45,7 @@ class ObservationSound extends Realm.Object {
     return localObsSound;
   }
 
-  static mapSoundForUpload( id, observationSound ) {
+  static mapSoundForUpload( observationSound ) {
     const fileExt = Platform.OS === "android"
       ? "mp4"
       : "m4a";

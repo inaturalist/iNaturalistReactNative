@@ -160,7 +160,6 @@ describe( "prepareMediaForUpload", () => {
     );
 
     expect( ObservationSound.mapSoundForUpload ).toHaveBeenCalledWith(
-      observationId,
       mockObservationSound,
     );
 
