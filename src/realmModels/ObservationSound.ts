@@ -18,7 +18,7 @@ class ObservationSound extends Realm.Object {
     id: true,
     uuid: true,
     sound: Sound.SOUND_FIELDS,
-  };
+  } as const;
 
   needsSync( ) {
     return !this._synced_at || this._synced_at <= this._updated_at;
