@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import type { ApiObservationSound } from "api/types";
 import { FileUpload } from "inaturalistjs";
 import { Platform } from "react-native";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
@@ -34,7 +35,7 @@ class ObservationSound extends Realm.Object {
     };
   }
 
-  static mapApiToRealm( observationSound, realm = null ) {
+  static mapApiToRealm( observationSound: ApiObservationSound, realm = null ) {
     const localObsSound = {
       ...observationSound,
       _synced_at: new Date( ),
