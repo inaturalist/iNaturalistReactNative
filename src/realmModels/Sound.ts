@@ -10,7 +10,7 @@ class Sound extends Realm.Object {
     attribution: true,
     license_code: true,
     file_url: true,
-  };
+  } as const;
 
   static schema = {
     name: "Sound",
