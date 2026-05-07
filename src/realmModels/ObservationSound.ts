@@ -6,7 +6,7 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import * as uuid from "uuid";
 
 import Sound from "./Sound";
-import type { RealmObservationSound } from "./types";
+import type { RealmObservationSound, RealmSound } from "./types";
 
 class ObservationSound extends Realm.Object {
   _created_at?: Date;
@@ -46,16 +46,16 @@ class ObservationSound extends Realm.Object {
     return localObsSound;
   }
 
-  static mapSoundForUpload( observationSound: RealmObservationSound ) {
+  static mapSoundForUpload( sound: RealmSound ) {
+    const uri = Sound.getLocalSoundUri( sound.file_url );
     const fileExt = Platform.OS === "android"
       ? "mp4"
       : "m4a";
 
     return {
-      uuid: observationSound.uuid,
       file: new FileUpload( {
-        uri: Sound.getLocalSoundUri( observationSound.sound.file_url ),
-        name: `${observationSound.uuid}.${fileExt}`,
+        uri,
+        name: uri?.split( "/" ).pop( ),
         type: `audio/${fileExt}`,
       } ),
     };

@@ -42,10 +42,11 @@ function prepareMediaForUpload(
       }
       return mappedObservationPhoto;
     }
-  } else if ( type === "ObservationSound" ) {
+  } else if ( type === "Sound" ) {
     if ( action === "upload" ) {
       return ObservationSound.mapSoundForUpload( media );
     }
+  } else if ( type === "ObservationSound" ) {
     if ( action === "attach" ) {
       return ObservationSound
         .mapSoundForAttachingToObs( observationId, media );

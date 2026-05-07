@@ -103,7 +103,6 @@ const uploadSingleEvidence = async (
     action,
     observationId,
   );
-  console.log( "params", params );
   const evidenceUUID = evidence.uuid;
 
   // Determine if this is an upload or an attachment operation
