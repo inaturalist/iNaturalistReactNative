@@ -1,5 +1,6 @@
 import { mkdir, moveFile } from "@dr.pogodin/react-native-fs";
 import { Realm } from "@realm/react";
+import type { ApiSound } from "api/types";
 import { soundUploadPath } from "appConstants/paths";
 import { unlink } from "sharedHelpers/util";
 import * as uuid from "uuid";
@@ -29,7 +30,7 @@ class Sound extends Realm.Object {
     },
   };
 
-  static mapApiToRealm( sound, _realm = null ) {
+  static mapApiToRealm( sound: ApiSound, _realm = null ) {
     const localSound = {
       ...sound,
       _synced_at: new Date( ),
