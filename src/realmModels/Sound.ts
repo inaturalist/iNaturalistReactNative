@@ -17,11 +17,11 @@ class Sound extends Realm.Object {
     name: "Sound",
     embedded: true,
     properties: {
-      // datetime the photo was created on the device
+      // datetime the sound was created on the device
       _created_at: "date?",
-      // datetime the photo was last synced with the server
+      // datetime the sound was last synced with the server
       _synced_at: "date?",
-      // datetime the photo was updated on the device (i.e. edited locally)
+      // datetime the sound was updated on the device (i.e. edited locally)
       _updated_at: "date?",
       id: "int?",
       attribution: "string?",
