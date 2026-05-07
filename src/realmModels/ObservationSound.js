@@ -52,10 +52,10 @@ class ObservationSound extends Realm.Object {
     };
   }
 
-  static mapSoundForAttachingToObs( observationID, observationSound ) {
+  static mapSoundForAttachingToObs( id, observationSound ) {
     return {
+      "observation_sound[observation_id]": id,
       "observation_sound[sound_id]": observationSound.id,
-      "observation_sound[observation_id]": observationID,
       "observation_sound[uuid]": observationSound.uuid,
     };
   }
