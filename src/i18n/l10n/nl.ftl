@@ -366,6 +366,7 @@ If-you-leave-x-of-your-observations-removed =
     } ook van dit project worden verwijderd.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = Als je deze waarneming opslaat en deze uploadt naar iNaturalist, kunnen andere mensen jou helpen om deze te determineren.
 If-you-want-to-collate-compare-promote = Als je een aantal bestaande projecten wilt samenvoegen, vergelijken of promoten, dan moet je een overkoepelend project gebruiken. Bijvoorbeeld de 2018 City Nature Challenge, die meer dan 60 projecten heeft samengevoegd, maakte een geweldige landingspagina waar iedereen de waarnemingen van elke stad kon vergelijken en weerleggen. Zowel Collectie als Traditionele projecten kunnen gebruikt worden in een Overkoepelend project en maximaal 500 projecten kunnen samengevoegd in een collectie door een Overkoepelend project.
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error = Als je dit ziet en online bent, is het iNat personeel al op de hoogte gesteld. Bedankt voor het vinden van een bug! Als je offline bent, maak dan een schermafbeelding en stuur ons een e-mail wanneer je weer op het internet bent.
 IGNORE-LOCATION = NEGEER LOCATIE
 Ignore-notifications = Meldingen uitschakelen
@@ -824,6 +825,7 @@ Sync-observations = Sync waarnemingen
 Syncing = Synchroniseren...
 Take-photo = Neem foto
 Take-photos = Neem fotos
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = TAXONNAAM WEERGAVE

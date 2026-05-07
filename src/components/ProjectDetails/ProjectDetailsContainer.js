@@ -62,8 +62,6 @@ const ProjectDetailsContainer = ( ): Node => {
     }, optsWithAuth ),
   );
 
-  // TODO: enable fields if it makes sense
-  // https://linear.app/inaturalist/issue/MOB-1366/enable-fields-for-fetchprojectposts-in-projectdetails
   const { data: projectPosts } = useAuthenticatedQuery(
     ["fetchProjectPosts", id],
     optsWithAuth => fetchProjectPosts( {

@@ -360,6 +360,7 @@ If-you-leave-x-of-your-observations-removed =
     } budou z tohoto projektu také odstraněny.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = Pokud toto pozorování uložíte a nahrajete do iNaturalist, ostatní lidé vám mohou pomoci s jeho identifikací.
 If-you-want-to-collate-compare-promote = Pokud chcete shromáždit, porovnat nebo propagovat sadu existujících projektů, měli byste použít zastřešující projekt. Například výzva City Nature Challenge 2018, která shromáždila více než 60 projektů, vytvořila skvělou vstupní stránku, kde mohl kdokoli porovnat a porovnávat pozorování jednotlivých měst. V zastřešujícím projektu lze použít jak sbírkové, tak tradiční projekty a zastřešující projekt může srovnat až 500 projektů.
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error = Pokud se vám tato zpráva zobrazuje a jste online, zaměstnanci iNat již byli informováni. Děkujeme za nalezení chyby! Pokud jste offline, udělejte si prosím snímek obrazovky a pošlete nám e-mail, až budete opět na internetu.
 IGNORE-LOCATION = IGNOROVAT LOKALITU
 Ignore-notifications = Ignorovat oznámení
@@ -818,6 +819,7 @@ Sync-observations = Synchronizovat pozorování
 Syncing = Synchronizuji...
 Take-photo = Vyfotit
 Take-photos = Take photos
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = Taxony
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = ZOBRAZENÍ JMEN TAXONŮ

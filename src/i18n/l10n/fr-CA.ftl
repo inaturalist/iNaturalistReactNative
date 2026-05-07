@@ -360,6 +360,7 @@ If-you-leave-x-of-your-observations-removed =
     } seront aussi supprimées du projet.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = Si vous enregistrez cette observation et que vous la téléchargez sur iNaturalist, d’autres personnes pourront peut-être vous aider à l’identifier.
 If-you-want-to-collate-compare-promote = Si vous souhaitez regrouper, comparer ou promouvoir un ensemble de projets existants, un projet de compilation est ce que vous devriez utiliser. Par exemple, pour le Défi Nature en Ville 2018, qui a regroupé plus de 60 projets, en a fait une bonne page d'accueil où n'importe qui pouvait comparer et contraster les observations de chaque ville. Les projets de collection et traditionnels peuvent tout deux être utilisés dans un projet de compilation, et jusqu'à 500 projets peuvent être regroupés dans un projet de compilation.
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error = Si vous voyez ceci et que vous êtes en ligne, l'équipe d'iNat a déjà été notifiée. Merci d'avoir trouvé un bug ! Si vous êtes en hors-ligne, merci de prendre une capture d'écran et de nous l'envoyer par e-mail quand vous serez à nouveau connecté à internet.
 IGNORE-LOCATION = IGNORER L'EMPLACEMENT
 Ignore-notifications = Ignorer les notifications
@@ -818,6 +819,7 @@ Sync-observations = Synchroniser les observations
 Syncing = Synchronisation...
 Take-photo = Prendre une photo
 Take-photos = Take photos
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = Taxons
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = AFFICHAGE DES NOMS DE TAXON
