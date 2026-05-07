@@ -8,10 +8,11 @@ function prepareMediaForUpload(
   action: ActionType,
   observationId?: number | null,
 ): object {
-  if ( type === "Photo" || type === "ObservationPhoto" ) {
+  if ( type === "Photo" ) {
     if ( action === "upload" ) {
       return ObservationPhoto.mapPhotoForUpload( media );
     }
+  } else if ( type === "ObservationPhoto" ) {
     if ( action === "attach" ) {
       // Assert inputs
       if ( !observationId ) {
