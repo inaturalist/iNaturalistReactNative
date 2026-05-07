@@ -79,7 +79,8 @@ class Sound extends Realm.Object {
   }
 
   static deleteSoundFromDeviceStorage( path ) {
-    unlink( path );
+    const localSound = Sound.getLocalSoundUri( path );
+    unlink( localSound );
   }
 
   // An unpleasant hack around another unpleasant hack, i.e. when we "need" to
