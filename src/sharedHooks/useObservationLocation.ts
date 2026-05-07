@@ -15,39 +15,35 @@ const useObservationLocation = ( options: {
   const [isCoarseOnly, setIsCoarseOnly] = useState<boolean | null>( null );
   const [coarseLocation, setCoarseLocation] = useState<UserLocation | null>( null );
   const [isFetchingCoarse, setIsFetchingCoarse] = useState( false );
-  const [hasFetchedCoarse, setHasFetchedCoarse] = useState( false );
-  const coarseCancelledRef = useRef( false );
+  const cancelledRef = useRef( false );
 
   useEffect( ( ) => {
-    if ( !shouldFetchLocation ) {
-      setIsCoarseOnly( null );
-      return ( ) => undefined;
-    }
-    let cancelled = false;
-    hasOnlyCoarseLocation( ).then( result => {
-      if ( !cancelled ) setIsCoarseOnly( result );
-    } );
-    return ( ) => { cancelled = true; };
+    if ( !shouldFetchLocation ) return ( ) => undefined;
+    cancelledRef.current = false;
+
+    ( async ( ) => {
+      setIsFetchingCoarse( true );
+      const coarseOnly = await hasOnlyCoarseLocation( );
+      if ( cancelledRef.current ) return;
+      setIsCoarseOnly( coarseOnly );
+
+      if ( coarseOnly ) {
+        const location = await fetchCoarseUserLocation( );
+        if ( cancelledRef.current ) return;
+        if ( location ) setCoarseLocation( location );
+      }
+      setIsFetchingCoarse( false );
+    } )( );
+
+    return ( ) => { cancelledRef.current = true; };
   }, [shouldFetchLocation] );
 
   useEffect( ( ) => {
-    if ( !shouldFetchLocation || isCoarseOnly !== true || hasFetchedCoarse ) return;
-    coarseCancelledRef.current = false;
-    setIsFetchingCoarse( true );
-    fetchCoarseUserLocation( ).then( location => {
-      if ( coarseCancelledRef.current ) return;
-      if ( location ) setCoarseLocation( location );
-      setIsFetchingCoarse( false );
-      setHasFetchedCoarse( true );
-    } );
-  }, [shouldFetchLocation, isCoarseOnly, hasFetchedCoarse] );
-
-  useEffect( ( ) => {
     const unsubscribe = navigation.addListener( "blur", ( ) => {
-      coarseCancelledRef.current = true;
+      cancelledRef.current = true;
       setIsFetchingCoarse( false );
-      setHasFetchedCoarse( false );
       setCoarseLocation( null );
+      setIsCoarseOnly( null );
     } );
     return unsubscribe;
   }, [navigation] );
