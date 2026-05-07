@@ -11,7 +11,7 @@ import type {
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 
-export type EvidenceType = "Photo" | "ObservationPhoto" | "ObservationSound";
+export type EvidenceType = "Photo" | "ObservationPhoto" | "Sound" | "ObservationSound";
 export type ActionType = "upload" | "attach" | "update";
 
 interface UploadOptions {
@@ -227,6 +227,7 @@ const filterMediaForUpload = ( observation: RealmObservation ): {
 const createMediaOperations = (
   mediaItems: {
     unsyncedPhotos?: RealmPhoto[] | null;
+    unsyncedSounds?: RealmSound[] | null;
     unsyncedObservationPhotos?: RealmObservationPhoto[] | null;
     modifiedObservationPhotos?: RealmObservationPhoto[] | null;
     unsyncedObservationSounds?: RealmObservationSound[] | null;
@@ -237,6 +238,7 @@ const createMediaOperations = (
   const operations: Operation[] = [];
 
   const unsyncedPhotos = mediaItems?.unsyncedPhotos || [];
+  const unsyncedSounds = mediaItems?.unsyncedSounds || [];
   const unsyncedObservationPhotos = mediaItems?.unsyncedObservationPhotos || [];
   const modifiedObservationPhotos = mediaItems?.modifiedObservationPhotos || [];
   const unsyncedObservationSounds = mediaItems?.unsyncedObservationSounds || [];
@@ -253,11 +255,11 @@ const createMediaOperations = (
     } );
   }
 
-  if ( uploadAction && unsyncedObservationSounds?.length > 0 ) {
-    unsyncedObservationSounds.forEach( sound => {
+  if ( uploadAction && unsyncedSounds?.length > 0 ) {
+    unsyncedSounds.forEach( sound => {
       operations.push( {
         evidence: sound,
-        type: "ObservationSound" as EvidenceType,
+        type: "Sound" as EvidenceType,
         action: "upload" as ActionType,
         observationId: null,
         apiEndpoint: inatjs.sounds.create,
@@ -321,10 +323,10 @@ async function uploadObservationMedia(
   }
 
   const mediaItems = filterMediaForUpload( observation );
-  console.log( "mediaItems", mediaItems );
 
   // Create operations for just uploads (upload=true)
   const operations = createMediaOperations( mediaItems, null, true );
+  console.log( "operations", operations );
 
   if ( operations.length > 0 ) {
     await processMediaOperations( operations, options, observation.uuid, realm );
