@@ -6,6 +6,7 @@ import type {
   RealmObservationPhoto,
   RealmObservationSound,
   RealmPhoto,
+  RealmSound,
 } from "realmModels/types";
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
@@ -167,6 +168,7 @@ async function processMediaOperations(
 
 const filterMediaForUpload = ( observation: RealmObservation ): {
   unsyncedPhotos: RealmPhoto[];
+  unsyncedSounds: RealmSound[];
   unsyncedObservationPhotos: RealmObservationPhoto[];
   modifiedObservationPhotos: RealmObservationPhoto[];
   unsyncedObservationSounds: RealmObservationSound[];
@@ -201,8 +203,21 @@ const filterMediaForUpload = ( observation: RealmObservation ): {
     ? observation.observationSounds.filter( item => !item.wasSynced( ) )
     : [];
 
+  // extract the actual sound objects
+  const unsyncedSounds = unsyncedObservationSounds?.map( os => {
+    try {
+      return os.sound;
+    } catch ( accessError ) {
+      if ( !accessError.message.match( /No object with key/ ) ) {
+        throw accessError;
+      }
+      return null;
+    }
+  } ).filter( Boolean ).flat() as RealmSound[];
+
   return {
     unsyncedPhotos,
+    unsyncedSounds,
     unsyncedObservationPhotos,
     modifiedObservationPhotos,
     unsyncedObservationSounds,
@@ -306,6 +321,7 @@ async function uploadObservationMedia(
   }
 
   const mediaItems = filterMediaForUpload( observation );
+  console.log( "mediaItems", mediaItems );
 
   // Create operations for just uploads (upload=true)
   const operations = createMediaOperations( mediaItems, null, true );
