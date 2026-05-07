@@ -86,14 +86,14 @@ describe( "prepareMediaForUpload", () => {
   test( "should map Photo upload", () => {
     const observationId = null;
     const result = prepareMediaForUpload(
-      mockObservationPhoto,
+      mockPhoto,
       "Photo",
       "upload",
       observationId,
     );
 
     expect( ObservationPhoto.mapPhotoForUpload ).toHaveBeenCalledWith(
-      mockObservationPhoto,
+      mockPhoto,
     );
 
     expect( result ).toEqual( {
