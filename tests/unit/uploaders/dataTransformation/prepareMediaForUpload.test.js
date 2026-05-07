@@ -190,7 +190,7 @@ describe( "prepareMediaForUpload", () => {
 
     expect( result ).toEqual( {
       "observation_sound[observation_id]": mockObservation.id,
-      "observation_sound[sound_id]": mockObservationSound.id,
+      "observation_sound[sound_id]": mockSound.id,
       "observation_sound[uuid]": mockObservationSound.uuid,
     } );
   } );
