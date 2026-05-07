@@ -7,6 +7,12 @@ import * as uuid from "uuid";
 import Sound from "./Sound";
 
 class ObservationSound extends Realm.Object {
+  _created_at?: Date;
+
+  _synced_at?: Date;
+
+  _updated_at?: Date;
+
   static OBSERVATION_SOUNDS_FIELDS = {
     id: true,
     uuid: true,
