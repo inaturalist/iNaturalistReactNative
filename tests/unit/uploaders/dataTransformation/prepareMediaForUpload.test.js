@@ -31,8 +31,12 @@ const mockObservation = factory( "LocalObservation", {
   observationPhotos: [mockObservationPhoto],
 } );
 
+const mockSound = factory( "LocalSound", {
+  file_url: "file://sound.mp3",
+} );
+
 const mockObservationSound = factory( "LocalObservationSound", {
-  file_url: "https://example.com/sound.mp3",
+  sound: mockSound,
 } );
 
 describe( "prepareMediaForUpload", () => {
@@ -65,17 +69,16 @@ describe( "prepareMediaForUpload", () => {
     } );
 
     ObservationSound.mapSoundForUpload.mockReturnValue( {
-      uuid: mockObservationSound.uuid,
       file: new FileUpload( {
-        uri: mockObservationSound.sound.file_url,
-        name: `${mockObservationSound.uuid}.m4a`,
+        uri: mockSound.file_url,
+        name: mockSound.file_url,
         type: "audio/m4a",
       } ),
     } );
 
     ObservationSound.mapSoundForAttachingToObs.mockReturnValue( {
       "observation_sound[observation_id]": mockObservation.id,
-      "observation_sound[sound_id]": mockObservationSound.id,
+      "observation_sound[sound_id]": mockObservationSound.sound.id,
       "observation_sound[uuid]": mockObservationSound.uuid,
     } );
   } );
