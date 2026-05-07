@@ -12,7 +12,7 @@ function findRecordInRealm(
 ): object | null {
   if ( !realm || realm.isClosed ) return null;
 
-  // Photos and Sounds do not have UUIDs, so we pass the Photo itself as an option
+  // Photos and Sounds do not have UUIDs, so we pass the Photo/Sound itself as an option
   if ( ( type === "Photo" || type === "Sound" ) && options?.record ) {
     return options.record;
   }
