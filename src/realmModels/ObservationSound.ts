@@ -67,7 +67,7 @@ class ObservationSound extends Realm.Object {
   ) {
     return {
       "observation_sound[observation_id]": id,
-      "observation_sound[sound_id]": observationSound.id,
+      "observation_sound[sound_id]": observationSound.sound.id,
       "observation_sound[uuid]": observationSound.uuid,
     };
   }
