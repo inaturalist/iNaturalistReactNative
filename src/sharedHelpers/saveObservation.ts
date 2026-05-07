@@ -28,9 +28,7 @@ const writeExifToCameraRollPhotos = async (
   };
 
   // Update all photos taken via the app with the new fetched location.
-  cameraRollUris.forEach( uri => {
-    Exify.write( uri, exifToWrite );
-  } );
+  await Promise.all( cameraRollUris.map( uri => Exify.write( uri, exifToWrite ) ) );
 };
 
 const saveObservation = async (
