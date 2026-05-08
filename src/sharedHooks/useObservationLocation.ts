@@ -23,16 +23,19 @@ const useObservationLocation = ( options: {
 
     ( async ( ) => {
       setIsFetchingCoarse( true );
-      const coarseOnly = await hasOnlyCoarseLocation( );
-      if ( cancelledRef.current ) return;
-      setIsCoarseOnly( coarseOnly );
-
-      if ( coarseOnly ) {
-        const location = await fetchCoarseUserLocation( );
+      try {
+        const coarseOnly = await hasOnlyCoarseLocation( );
         if ( cancelledRef.current ) return;
-        if ( location ) setCoarseLocation( location );
+        setIsCoarseOnly( coarseOnly );
+
+        if ( coarseOnly ) {
+          const location = await fetchCoarseUserLocation( );
+          if ( cancelledRef.current ) return;
+          if ( location ) setCoarseLocation( location );
+        }
+      } finally {
+        if ( !cancelledRef.current ) setIsFetchingCoarse( false );
       }
-      setIsFetchingCoarse( false );
     } )( );
 
     return ( ) => { cancelledRef.current = true; };
