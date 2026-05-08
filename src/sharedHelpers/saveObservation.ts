@@ -3,6 +3,9 @@ import * as Exify from "@lodev09/react-native-exify";
 import type Realm from "realm";
 import Observation from "realmModels/Observation";
 import type { RealmObservation } from "realmModels/types";
+import { log } from "sharedHelpers/logger";
+
+const logger = log.extend( "saveObservation.ts" );
 
 const writeExifToCameraRollPhotos = async (
   observation: RealmObservation,
@@ -28,7 +31,12 @@ const writeExifToCameraRollPhotos = async (
   };
 
   // Update all photos taken via the app with the new fetched location.
-  await Promise.all( cameraRollUris.map( uri => Exify.write( uri, exifToWrite ) ) );
+  const results = await Promise.allSettled(
+    cameraRollUris.map( uri => Exify.write( uri, exifToWrite ) ),
+  );
+  results
+    .filter( ( r ): r is PromiseRejectedResult => r.status === "rejected" )
+    .forEach( r => logger.error( "Failed to write EXIF to camera roll photo:", r.reason ) );
 };
 
 const saveObservation = async (
