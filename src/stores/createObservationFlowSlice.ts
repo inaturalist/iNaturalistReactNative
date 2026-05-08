@@ -142,21 +142,26 @@ const removeObsSoundFromObservation = (
 const observationToJSON = (
   observation: RealmObservationPojo | RealmObservation | null,
 ): RealmObservationPojo | null => ( observation instanceof Realm.Object
-  ? observation.toJSON( ) as RealmObservationPojo
+  ? observation.toJSON( ) as unknown as RealmObservationPojo
   : observation );
 
-const keysAndValuesToJSON = keysAndValues => {
-  const result = {};
+const keysAndValuesToJSON = (
+  keysAndValues: Partial<RealmObservationPojo>,
+): Partial<RealmObservationPojo> => {
+  const result: Record<string, unknown> = {};
   Object.keys( keysAndValues ).forEach( key => {
-    const value = keysAndValues[key];
+    const value = keysAndValues[key as keyof RealmObservationPojo];
     result[key] = value instanceof Realm.Object
       ? value.toJSON( )
       : value;
   } );
-  return result;
+  return result as Partial<RealmObservationPojo>;
 };
 
-const updateObservationKeysWithState = ( keysAndValues, state ) => {
+const updateObservationKeysWithState = (
+  keysAndValues: Partial<RealmObservationPojo>,
+  state: ObservationFlowState,
+) => {
   const {
     observations,
     currentObservation,
@@ -166,7 +171,7 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
   const updatedObservation = {
     ...observationToJSON( currentObservation ),
     ...keysAndValuesToJSON( keysAndValues ),
-  };
+  } as RealmObservationPojo;
   updatedObservations[currentObservationIndex] = updatedObservation;
   return updatedObservations;
 };
@@ -251,7 +256,9 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
   setObservations: (
     updatedObservations: RealmObservationPojo[],
   ) => set( state => ( {
-    observations: updatedObservations.map( observationToJSON ),
+    observations: updatedObservations
+      .map( observationToJSON )
+      .filter( Boolean ) as RealmObservationPojo[],
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
   } ) ),
   setPhotoImporterState: ( options: PhotoImporterOptions ) => set( state => ( {
@@ -272,7 +279,9 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
   updateObservations: (
     updatedObservations: RealmObservationPojo[],
   ) => set( state => ( {
-    observations: updatedObservations.map( observationToJSON ),
+    observations: updatedObservations
+      .map( observationToJSON )
+      .filter( Boolean ) as RealmObservationPojo[],
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
   } ) ),
   updateObservationKeys: ( keysAndValues, setUnsavedChanges = true ) => set( state => ( {
@@ -293,7 +302,8 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
     const existingPhotoUris = get( )
       .currentObservation
       ?.observationPhotos
-      ?.map( op => ( op.photo.url || Photo.getLocalPhotoUri( op.photo.localFilePath ) ) ) || [];
+      ?.map( op => op.photo.url || Photo.getLocalPhotoUri( op.photo.localFilePath ) )
+      .filter( ( uri ): uri is string => uri != null ) || [];
     return set( { evidenceToAdd: [], cameraUris: existingPhotoUris } );
   },
   incrementTotalSavedObservations: ( ) => set( state => {
