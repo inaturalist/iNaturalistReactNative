@@ -17,6 +17,23 @@ export interface ApiPlace {
   place_type?: number;
 }
 
+export interface ApiPost {
+  id: number;
+  title: string;
+  body: string;
+  published_at: string;
+  parent?: {
+    id: number;
+    title?: string;
+    icon_url?: string | null;
+    type?: string;
+  };
+  user?: {
+    login?: string;
+    icon_url?: string | null;
+  };
+}
+
 export interface ApiProject {
   icon?: string;
   id?: number;
