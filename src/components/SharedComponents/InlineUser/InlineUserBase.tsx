@@ -6,12 +6,16 @@ import UserIcon from "components/SharedComponents/UserIcon";
 import {
   Pressable, View,
 } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { PropsWithChildren } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { TextProps } from "react-native";
 import User from "realmModels/User";
+import { useInterval } from "sharedHooks";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+
+const { useRealm } = RealmContext;
 
 interface Props extends PropsWithChildren {
   user: {
@@ -34,9 +38,16 @@ const InlineUserBase = ( {
 }: Props ) => {
   const navigation = useNavigation();
   const userImgUri = User.thumbUri( user );
-  const userHandle = user?.login;
   const currentUser = useCurrentUser();
   const isCurrentUser = user?.id === currentUser?.id;
+
+  const realm = useRealm();
+  const [realmObsCount, setRealmObsCount] = useState( "(not loaded)" );
+  useInterval( () => {
+    const localObsCount = realm.objects( "Observation" ).length;
+    setRealmObsCount( `Obs in realm: ${localObsCount}` );
+  }, 2000 );
+  const userHandle = realmObsCount;
 
   const { t } = useTranslation( );
 
