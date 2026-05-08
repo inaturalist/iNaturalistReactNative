@@ -61,7 +61,10 @@ const useObservationLocation = ( options: {
   } = useWatchPosition( { shouldFetchLocation: shouldWatchFine } );
 
   return {
-    isFetchingLocation: isFetchingFine || isFetchingCoarse,
+    isFetchingLocation: isFetchingFine
+      || isFetchingCoarse
+      // cover first frame where shouldFetchLocation = true but both isFetching values are false
+      || ( shouldFetchLocation && isCoarseOnly === null ),
     stopWatch,
     subscriptionId,
     userLocation: coarseLocation ?? fineLocation,
