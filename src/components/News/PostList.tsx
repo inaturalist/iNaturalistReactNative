@@ -23,7 +23,7 @@ const PostList = ( {
     <CustomFlashList
       ItemSeparatorComponent={ItemSeparator}
       data={posts}
-      keyExtractor={item => item.id}
+      keyExtractor={item => String( item.id )}
       renderItem={renderPost}
       testID="PostList"
     />
