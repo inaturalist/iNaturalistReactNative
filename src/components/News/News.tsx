@@ -2,6 +2,8 @@ import type { ApiPost } from "api/types";
 import { View } from "components/styledComponents";
 import React from "react";
 
+import PostList from "./PostList";
+
 const testPosts: ApiPost[] = [
   {
     id: 1,
@@ -20,11 +22,10 @@ const testPosts: ApiPost[] = [
     },
   },
 ];
-console.log( "testPosts", testPosts );
 
 const News = ( ) => (
   <View className="flex-1">
-    {null}
+    <PostList posts={testPosts} />
   </View>
 );
 
