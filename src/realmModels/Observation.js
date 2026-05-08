@@ -2,7 +2,7 @@ import { Realm } from "@realm/react";
 import { Alert } from "react-native";
 import { getNowISO } from "sharedHelpers/dateAndTime";
 import { log } from "sharedHelpers/logger";
-import { readExifFromMultiplePhotos } from "sharedHelpers/parseExif";
+import readExifFromMultiplePhotos from "sharedHelpers/parseExif";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import * as uuid from "uuid";
 
@@ -11,7 +11,6 @@ import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
-import Sound from "./Sound";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
@@ -148,9 +147,7 @@ class Observation extends Realm.Object {
 
   static async createObsWithSoundPath( soundPath ) {
     const observation = await Observation.new( );
-    const sound = await ObservationSound.new( {
-      sound: await Sound.new( { file_url: soundPath } ),
-    } );
+    const sound = await ObservationSound.new( soundPath );
     observation.observationSounds = [sound];
     return observation;
   }

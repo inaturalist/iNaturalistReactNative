@@ -11,6 +11,7 @@ import {
   formatApiDatetime,
   formatDifferenceForHumans,
   formatISONoSeconds,
+  formatProjectsApiDatetimeLong,
   getNowISO,
 } from "sharedHelpers/dateAndTime";
 
@@ -96,6 +97,24 @@ describe( "formatApiDatetime", ( ) => {
       const date = "2022-11-02";
       expect( formatApiDatetime( date, i18next ) ).toEqual( "2/11/22" );
     } );
+  } );
+} );
+
+describe( "formatProjectsApiDatetimeLong", ( ) => {
+  beforeAll( async ( ) => {
+    await initI18next( { lng: "en" } );
+  } );
+
+  it( "returns null for malformed timezone project dates when missing is null", ( ) => {
+    expect(
+      formatProjectsApiDatetimeLong( "2023-06-080 0 +04:00", i18next, { missing: null } ),
+    ).toBeNull( );
+  } );
+
+  it( "returns Missing Date for malformed timezone project dates by default", ( ) => {
+    expect(
+      formatProjectsApiDatetimeLong( "2023-06-080 0 +04:00", i18next ),
+    ).toEqual( "Missing Date" );
   } );
 } );
 

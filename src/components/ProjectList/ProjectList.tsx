@@ -11,10 +11,12 @@ import {
 
 import ProjectListItem from "./ProjectListItem";
 
+const ItemSeparator = () => <View className="border-b border-lightGray" />;
+
 interface Props {
   projects: ApiProject[];
-  ListEmptyComponent?: React.JSX.Element;
-  ListFooterComponent?: React.JSX.Element;
+  ListEmptyComponent?: React.ReactElement | null;
+  ListFooterComponent?: React.ReactElement;
   onEndReached?: ( ) => void;
   onPress?: ( project: ApiProject ) => void;
   accessibilityLabel?: string;
@@ -50,13 +52,9 @@ const ProjectList = ( {
     </Pressable>
   );
 
-  const renderItemSeparator = () => (
-    <View className="border-b border-lightGray" />
-  );
-
   return (
     <CustomFlashList
-      ItemSeparatorComponent={renderItemSeparator}
+      ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={ListFooterComponent}
       data={projects}

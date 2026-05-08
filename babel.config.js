@@ -2,6 +2,7 @@ module.exports = {
   presets: ["module:@react-native/babel-preset"],
   plugins: [
     "babel-plugin-react-compiler", // must run first!
+    "@babel/plugin-transform-export-namespace-from",
     "react-native-worklets-core/plugin",
     "transform-inline-environment-variables",
     "nativewind/babel",

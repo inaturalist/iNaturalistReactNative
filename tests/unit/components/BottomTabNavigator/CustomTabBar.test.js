@@ -27,6 +27,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
     data: 0,
+    refetch: () => undefined,
   } ),
 } ) );
 
@@ -98,7 +99,9 @@ describe( "CustomTabBar with advanced user layout", () => {
 
   it( "should render correctly", async () => {
     renderComponent( <CustomTabBarContainer navigation={jest.fn( )} /> );
-
+    // Snapshot includes AddObs BottomSheet subtree due @gorhom/bottom-sheet test mock
+    // rendering children unconditionally. Hidden/open behavior is asserted in
+    // integration tests.
     await expect( screen ).toMatchSnapshot();
   } );
 

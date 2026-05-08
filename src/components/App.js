@@ -3,16 +3,17 @@
 import { useNavigation } from "@react-navigation/native";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { log } from "sharedHelpers/logger";
 import {
   useCurrentUser,
   usePerformance,
   useShare,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 
 import AppStateListener from "./AppStateListener";
+import useDeferredStartup from "./hooks/useDeferredStartup";
 import useLinking from "./hooks/useLinking";
 import NetworkService from "./NetworkService";
 import StartupService from "./StartupService";
@@ -57,9 +58,12 @@ const App = ( { children }: Props ): Node => {
   const { loadTime } = usePerformance( {
     screenName: "App",
   } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
+  const { isDebug } = useDebugMode();
+  useEffect( () => {
+    if ( isDebug && loadTime ) {
+      logger.info( loadTime );
+    }
+  }, [isDebug, loadTime] );
 
   // attempting to make sure that navigation is only called once
   // for performance reasons
@@ -72,6 +76,7 @@ const App = ( { children }: Props ): Node => {
 
   useLinking( currentUser );
   useShare( onShare );
+  useDeferredStartup( );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

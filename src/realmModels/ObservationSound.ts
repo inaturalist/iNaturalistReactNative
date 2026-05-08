@@ -1,17 +1,25 @@
 import { Realm } from "@realm/react";
+import type { ApiObservationSound } from "api/types";
 import { FileUpload } from "inaturalistjs";
 import { Platform } from "react-native";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import * as uuid from "uuid";
 
 import Sound from "./Sound";
+import type { RealmObservationSound, RealmSound } from "./types";
 
 class ObservationSound extends Realm.Object {
+  _created_at?: Date;
+
+  _synced_at?: Date;
+
+  _updated_at?: Date;
+
   static OBSERVATION_SOUNDS_FIELDS = {
     id: true,
     uuid: true,
     sound: Sound.SOUND_FIELDS,
-  };
+  } as const;
 
   needsSync( ) {
     return !this._synced_at || this._synced_at <= this._updated_at;
@@ -21,14 +29,15 @@ class ObservationSound extends Realm.Object {
     return this._synced_at !== null;
   }
 
-  static async new( observationSound ) {
+  static async new( uri: string ) {
+    const sound = await Sound.new( uri );
     return {
-      ...observationSound,
+      sound,
       uuid: uuid.v4( ),
     };
   }
 
-  static mapApiToRealm( observationSound, realm = null ) {
+  static mapApiToRealm( observationSound: ApiObservationSound, realm = null ) {
     const localObsSound = {
       ...observationSound,
       _synced_at: new Date( ),
@@ -37,36 +46,41 @@ class ObservationSound extends Realm.Object {
     return localObsSound;
   }
 
-  static mapSoundForUpload( id, observationSound ) {
+  static mapSoundForUpload( sound: RealmSound ) {
+    const uri = Sound.getLocalSoundUri( sound.file_url );
     const fileExt = Platform.OS === "android"
       ? "mp4"
       : "m4a";
 
     return {
-      uuid: observationSound.uuid,
       file: new FileUpload( {
-        uri: Sound.getLocalSoundUri( observationSound.sound.file_url ),
-        name: `${observationSound.uuid}.${fileExt}`,
+        uri,
+        name: uri?.split( "/" ).pop( ),
         type: `audio/${fileExt}`,
       } ),
     };
   }
 
-  static mapSoundForAttachingToObs( id, observationSound ) {
+  static mapSoundForAttachingToObs(
+    id: number,
+    observationSound: RealmObservationSound,
+  ) {
     return {
       "observation_sound[observation_id]": id,
-      "observation_sound[sound_id]": observationSound.id,
+      "observation_sound[sound_id]": observationSound.sound.id,
       "observation_sound[uuid]": observationSound.uuid,
     };
   }
 
-  static mapObservationSoundForMyObsDefaultMode( obsSound ) {
+  static mapObservationSoundForMyObsDefaultMode( obsSound: {
+    uuid?: string;
+  } ) {
     return {
       uuid: obsSound?.uuid,
     };
   }
 
-  static async deleteLocalObservationSound( realm, uri, obsUUID ) {
+  static async deleteLocalObservationSound( realm: Realm, uri: string, obsUUID: string ) {
     // delete uri on disk
     Sound.deleteSoundFromDeviceStorage( uri );
     const realmObs = realm.objectForPrimaryKey( "Observation", obsUUID );

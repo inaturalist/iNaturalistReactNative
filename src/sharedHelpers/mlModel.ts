@@ -1,7 +1,12 @@
+import {
+  copyFileAssets,
+  DocumentDirectoryPath,
+  MainBundlePath,
+  readDirAssets,
+} from "@dr.pogodin/react-native-fs";
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
-import RNFS from "react-native-fs";
 import type { Location } from "vision-camera-plugin-inatvision";
 import {
   COMMON_ANCESTOR_RANK_TYPE,
@@ -25,23 +30,26 @@ const modelFiles = {
 };
 
 export const modelPath: string = Platform.select( {
-  ios: `${RNFS.MainBundlePath}/${modelFiles.IOSMODEL}`,
-  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDMODEL}`,
+  ios: `${MainBundlePath}/${modelFiles.IOSMODEL}`,
+  android: `${DocumentDirectoryPath}/${modelFiles.ANDROIDMODEL}`,
 } );
 
 export const taxonomyPath: string = Platform.select( {
-  ios: `${RNFS.MainBundlePath}/${modelFiles.IOSTAXONOMY}`,
-  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`,
+  ios: `${MainBundlePath}/${modelFiles.IOSTAXONOMY}`,
+  android: `${DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`,
 } );
 
 export const geomodelPath: string = Platform.select( {
-  ios: `${RNFS.MainBundlePath}/${modelFiles.IOSGEOMODEL}`,
-  android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDGEOMODEL}`,
+  ios: `${MainBundlePath}/${modelFiles.IOSGEOMODEL}`,
+  android: `${DocumentDirectoryPath}/${modelFiles.ANDROIDGEOMODEL}`,
 } );
 
 export const modelVersion = Config.CV_MODEL_VERSION;
 
 export const predictImage = ( uri: string, location?: Location ) => {
+  if ( !uri ) {
+    return null;
+  }
   // Ensure uri is actually well-formed and try to make it well-formed if it's
   // a path
   let url;
@@ -81,7 +89,7 @@ export const predictLocation = ( location: Location ) => getPredictionsForLocati
 
 const addCameraFilesAndroid = () => {
   const copyFilesAndroid = ( source, destination ) => {
-    RNFS.copyFileAssets( source, destination )
+    copyFileAssets( source, destination )
       .then( () => {
         console.log( `moved file from ${source} to ${destination}` );
       } )
@@ -93,7 +101,7 @@ const addCameraFilesAndroid = () => {
       } );
   };
 
-  RNFS.readDirAssets( "camera" ).then( results => {
+  readDirAssets( "camera" ).then( results => {
     const model = modelFiles.ANDROIDMODEL;
     const taxonomy = modelFiles.ANDROIDTAXONOMY;
     const geomodel = modelFiles.ANDROIDGEOMODEL;

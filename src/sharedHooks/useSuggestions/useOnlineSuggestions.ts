@@ -15,17 +15,11 @@ import {
   useAuthenticatedQuery,
   useCurrentUser,
 } from "sharedHooks";
+import useStore from "stores/useStore";
 
+import { startOfflineExperimentInBackground } from "./suggestionComparisonExperiment";
 import type { ScoreImageParams, UseSuggestionsOnlineSuggestion } from "./types";
 import { predictOffline } from "./useOfflineSuggestions";
-
-const executeOnRandomPercentile = ( operation: () => void, integerPercentChance: number ) => {
-  if ( Math.random() * 100 <= integerPercentChance ) {
-    operation();
-  }
-};
-
-const SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE = 1;
 
 const SCORE_IMAGE_TIMEOUT = 5_000;
 
@@ -56,7 +50,7 @@ interface OnlineSuggestionsApiResponse {
   common_ancestor?: Omit<UseSuggestionsOnlineSuggestion, "combined_score">;
 }
 
-interface OnlineSuggestionsQueryResponse {
+export interface OnlineSuggestionsQueryResponse {
   results: UseSuggestionsOnlineSuggestion[];
   common_ancestor?: UseSuggestionsOnlineSuggestion;
 }
@@ -100,6 +94,8 @@ const useOnlineSuggestions = (
   // Use locale in case there is no user session
   const locale = i18n?.language ?? "en";
 
+  const getCurrentObservation = useStore( state => state.getCurrentObservation );
+
   // TODO if this is a remote observation with an `id` param, use
   // scoreObservation instead so we don't have to spend time resizing and
   // uploading images
@@ -112,32 +108,33 @@ const useOnlineSuggestions = (
   } = useAuthenticatedQuery<OnlineSuggestionsQueryResponse>(
     queryKey,
     async optsWithAuth => {
+      const obsUuid = getCurrentObservation().uuid;
       const params = {
         ...scoreImageParams,
         ...( !currentUser && { locale } ),
       };
 
-      // experiment to compare online & offline suggestion results
-      // imperatively fire-and-forgetted in online query to circumvent existing stateful mutex logic
-      executeOnRandomPercentile( async () => {
-        if ( scoreImageParams ) {
-          // TODO: log "background" experiment responses & errors
-          try {
-            await predictOffline( {
-              latitude: scoreImageParams.lat,
-              longitude: scoreImageParams.lng,
-              photoUri: scoreImageParams.image.uri,
-              realm,
-            } );
-          } catch ( _error ) { /* empty */ }
-        }
-      }, SIMULTANEOUS_ONLINE_OFFLINE_SUGGESTION_EXPERIMENT_INTEGER_PERCENTAGE );
-      // end experiment
-
       const suggestionsResponse
         = await scoreImage( params, optsWithAuth ) as OnlineSuggestionsApiResponse;
 
-      return shimApiResponseForCommonAncestor( suggestionsResponse );
+      // there's a slight discrepancy between online/offline responses which this smooths over for
+      // the eventual UI
+      const shimmedOnlineResponse = shimApiResponseForCommonAncestor( suggestionsResponse );
+
+      if ( !!scoreImageParams && typeof obsUuid === "string" ) {
+        startOfflineExperimentInBackground(
+          obsUuid,
+          shimmedOnlineResponse,
+          () => predictOffline( {
+            latitude: scoreImageParams.lat,
+            longitude: scoreImageParams.lng,
+            photoUri: scoreImageParams.image.uri,
+            realm,
+          } ),
+        );
+      }
+
+      return shimmedOnlineResponse;
     },
     {
       enabled: !!shouldFetchOnlineSuggestions

@@ -1,5 +1,9 @@
-import RNFS from "react-native-fs";
+import {
+  DocumentDirectoryPath,
+  readDir,
+} from "@dr.pogodin/react-native-fs";
 import { MMKV, useMMKVBoolean } from "react-native-mmkv";
+import { unlink } from "sharedHelpers/util";
 import * as uuid from "uuid";
 
 const MMKV_ID = "install-data";
@@ -21,10 +25,10 @@ if ( legacyStore.getAllKeys().length > 0 ) {
     store.set( key, legacyStore.getString( key ) );
   } );
   // Delete the old data on disk so we never have to do this again
-  RNFS.readDir( `${RNFS.DocumentDirectoryPath}/mmkv` ).then( contents => {
+  readDir( `${DocumentDirectoryPath}/mmkv` ).then( contents => {
     contents.forEach( item => {
       if ( item.path.match( new RegExp( `/${LEGACY_MMKV_ID}` ) ) ) {
-        RNFS.unlink( item.path );
+        unlink( item.path );
       }
     } );
   } );

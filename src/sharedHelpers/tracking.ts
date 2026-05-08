@@ -7,7 +7,7 @@ import { log } from "sharedHelpers/logger";
 
 const logger = log.extend( "tracking.ts" );
 
-type FirebaseParameters = Record<string, string | number | string[]>
+type FirebaseParameters = Record<string, unknown>
 
 export const logFirebaseEvent = (
   eventId: string,

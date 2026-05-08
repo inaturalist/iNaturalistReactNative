@@ -2,7 +2,7 @@
 import {
   SwitchRow,
 } from "components/SharedComponents";
-import React from "react";
+import React, { useCallback } from "react";
 import { useFeatureFlag } from "sharedHooks";
 import type { FeatureFlagSlice } from "stores/createFeatureFlagSlice";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
@@ -10,24 +10,33 @@ import useStore from "stores/useStore";
 
 import { H1, H2 } from "./DeveloperSharedComponents";
 
-// setting feature flag overrides is "dangerous" in the sense that we don't want to accidentally
-// set them in application code so this is colocated with the only code that _should_
-const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
+export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
   const resolvedValue = useFeatureFlag( featureFlagKey );
 
   const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
   const featureFlagOverrides
     = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
-  const setOverride = useStore( ( state: FeatureFlagSlice ) => state.setFeatureFlagDebugOverride );
+  const storeSetOverride
+    = useStore( ( state: FeatureFlagSlice ) => state.setFeatureFlagDebugOverride );
 
   const rawValue = featureFlagConfig[featureFlagKey];
   const overrideValue = featureFlagOverrides[featureFlagKey];
+
+  const setOverride = useCallback(
+    ( enabled: boolean ) => storeSetOverride( featureFlagKey, enabled ),
+    [featureFlagKey, storeSetOverride],
+  );
+  const clearOverride = useCallback(
+    () => storeSetOverride( featureFlagKey, null ),
+    [featureFlagKey, storeSetOverride],
+  );
+
   return {
     resolvedValue,
     rawValue,
     overrideValue,
-    setOverride: ( enabled: boolean ) => setOverride( featureFlagKey, enabled ),
-    clearOverride: () => setOverride( featureFlagKey, null ),
+    setOverride,
+    clearOverride,
   };
 };
 

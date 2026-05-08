@@ -145,10 +145,18 @@ const observationToJSON = (
   ? observation.toJSON( ) as RealmObservationPojo
   : observation );
 
-const updateObservationKeysWithState = (
-  keysAndValues: Partial<RealmObservationPojo>,
-  state: ObservationFlowSlice,
-): RealmObservationPojo[] => {
+const keysAndValuesToJSON = keysAndValues => {
+  const result = {};
+  Object.keys( keysAndValues ).forEach( key => {
+    const value = keysAndValues[key];
+    result[key] = value instanceof Realm.Object
+      ? value.toJSON( )
+      : value;
+  } );
+  return result;
+};
+
+const updateObservationKeysWithState = ( keysAndValues, state ) => {
   const {
     observations,
     currentObservation,
@@ -157,7 +165,7 @@ const updateObservationKeysWithState = (
   const updatedObservations = observations;
   const updatedObservation = {
     ...observationToJSON( currentObservation ),
-    ...keysAndValues,
+    ...keysAndValuesToJSON( keysAndValues ),
   };
   updatedObservations[currentObservationIndex] = updatedObservation;
   return updatedObservations;
@@ -192,6 +200,7 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
       currentObservation: newObservation
         ? observationToJSON( newObservation )
         : null,
+      unsavedChanges: true,
     };
   } ),
   deleteSoundFromObservation: ( uri: string ) => set( state => {
@@ -203,6 +212,7 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
     return {
       observations: newObservations,
       currentObservation: newObservation,
+      unsavedChanges: true,
     };
   } ),
   resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
@@ -265,13 +275,11 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
     observations: updatedObservations.map( observationToJSON ),
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
   } ) ),
-  updateObservationKeys: (
-    keysAndValues: Partial<RealmObservationPojo>,
-  ) => set( state => ( {
+  updateObservationKeys: ( keysAndValues, setUnsavedChanges = true ) => set( state => ( {
     observations: updateObservationKeysWithState( keysAndValues, state ),
     currentObservation:
       updateObservationKeysWithState( keysAndValues, state )[state.currentObservationIndex],
-    unsavedChanges: true,
+    unsavedChanges: !!setUnsavedChanges,
   } ) ),
   // For situations where a consumer needs access to this part of state
   // immediately, not after a couple render cycles

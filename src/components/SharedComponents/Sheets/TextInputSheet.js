@@ -9,7 +9,7 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Keyboard } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
@@ -68,6 +68,7 @@ const TextInputSheet = ( {
   placeholder,
   textInputStyle,
 }: Props ): Node => {
+  const textInputRef = useRef( );
   const [input, setInput] = useState( initialInput );
   const { t } = useTranslation( );
   const { nonKeyboardHeight } = useKeyboardInfo( TARGET_INPUT_HEIGHT );
@@ -124,9 +125,11 @@ const TextInputSheet = ( {
           {mentionsEnabled
             ? (
               <MentionTextInput
+                ref={textInputRef}
                 InputComponent={BottomSheetTextInput}
                 accessibilityLabel="Text input field"
                 autoFocus
+                currentValue={input ?? ""}
                 keyboardType="default"
                 maxLength={maxLength}
                 maxFontSizeMultiplier={2}
@@ -135,11 +138,12 @@ const TextInputSheet = ( {
                 placeholder={placeholder}
                 style={[inputStyle, textInputStyle]}
                 testID="TextInputSheet.notes"
-                value={input ?? ""}
+                defaultValue={initialInput ?? ""}
               />
             )
             : (
               <BottomSheetTextInput
+                ref={textInputRef}
                 accessibilityLabel="Text input field"
                 autoFocus
                 keyboardType="default"
@@ -150,7 +154,7 @@ const TextInputSheet = ( {
                 placeholder={placeholder}
                 style={[inputStyle, textInputStyle]}
                 testID="TextInputSheet.notes"
-                value={input ?? ""}
+                defaultValue={initialInput ?? ""}
               />
             )}
           <View
@@ -165,7 +169,10 @@ const TextInputSheet = ( {
               <CharLimit current={input?.length} limit={maxLength} t={t} />
             ) }
             <Pressable
-              onPress={() => setInput( "" )}
+              onPress={() => {
+                textInputRef.current?.clear( );
+                setInput( "" );
+              }}
               accessibilityHint={t( "Deletes-entered-text" )}
               accessibilityRole="button"
             >

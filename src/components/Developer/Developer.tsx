@@ -1,5 +1,9 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable i18next/no-literal-string */
+import {
+  CachesDirectoryPath,
+  DocumentDirectoryPath,
+} from "@dr.pogodin/react-native-fs";
 import { useNavigation } from "@react-navigation/native";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
@@ -7,14 +11,12 @@ import classnames from "classnames";
 import {
   Button,
   ScrollViewWrapper,
-  WarningSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { I18nManager, Platform, Text } from "react-native";
 import Config from "react-native-config";
-import RNFS from "react-native-fs";
 import RNRestart from "react-native-restart";
 
 import {
@@ -26,11 +28,7 @@ import useAppSize, {
   formatAppSizeString, formatSizeUnits, getTotalDirectorySize,
 } from "./hooks/useAppSize";
 import {
-  deleteLegacyLogFile,
-  emailLegacyLogFile,
   emailRecentLogs,
-  getLegacyLogfileExists,
-  shareLegacyLogFile,
   shareRecentLogs,
 } from "./logManagementHelpers";
 
@@ -104,31 +102,12 @@ const AppFileSizes = () => {
   );
 };
 
-const deleteLogFileConfirmDescription = [
-  "Are you sure you want to delete your log file?",
-  "You may lose helpful debugging context.",
-  "Consider saving your current logs through the 'Share' button. before deleting.",
-].join( " " );
-const legacyLogFileDescription = [
-  "It looks like you have a log file from an older version of the app.",
-  "App logs will no longer get added to this file, but you still may view and export this file.",
-  "These files incidentally got a little too big sometimes, so you may want to use the button",
-  "below to delete it and free up storage.",
-].join( " " );
 const LogOptions = ( ) => {
-  const [hasLegacylogFile, setHasLegacylogFile] = useState<null | boolean>( null );
-  useEffect( () => {
-    getLegacyLogfileExists().then( exists => setHasLegacylogFile( exists ) );
-  }, [] );
-
   // sharing our rolling logs involves writing a temp aggregate file, so
   // we need to make sure we enforce one "share" at a time
   const [isSharing, setIsSharing] = useState( false );
 
   const navigation = useNavigation();
-  const [deleteLogFileModalOpen, setDeleteLogFileModalOpen] = useState( false );
-
-  const closeModal = () => setDeleteLogFileModalOpen( false );
   return (
     <>
       <H1>Application Logs</H1>
@@ -157,48 +136,6 @@ const LogOptions = ( ) => {
         text={t( "SHARE-DEBUG-LOGS" )}
         className="mb-5"
       />
-
-      {hasLegacylogFile && (
-        <>
-          <H1>Application Logs (Legacy)</H1>
-          <Text className="mb-5">{legacyLogFileDescription}</Text>
-          <Button
-            onPress={() => navigation.navigate( "Log", { isLegacyLogs: true } )}
-            text="LOG"
-            className="mb-5"
-          />
-          <Button
-            onPress={emailLegacyLogFile}
-            text={t( "EMAIL-DEBUG-LOGS" )}
-            className="mb-5"
-          />
-          <Button
-            onPress={shareLegacyLogFile}
-            text={t( "SHARE-DEBUG-LOGS" )}
-            className="mb-5"
-          />
-          <Button
-            onPress={() => setDeleteLogFileModalOpen( true )}
-            text="DELETE LOG FILE"
-            className="mb-5"
-          />
-        </>
-      )}
-      {deleteLogFileModalOpen && (
-        <WarningSheet
-          onPressClose={() => closeModal()}
-          headerText="Delete Log File?"
-          text={deleteLogFileConfirmDescription}
-          handleSecondButtonPress={() => closeModal()}
-          secondButtonText="Cancel"
-          confirm={() => {
-            deleteLegacyLogFile();
-            closeModal();
-          }}
-          buttonText="Delete Log File"
-          loading={false}
-        />
-      )}
     </>
   );
 };
@@ -299,11 +236,11 @@ const PathStats = () => {
       <H1>Paths</H1>
       <H2>Documents</H2>
       <P>
-        <CODE>{RNFS.DocumentDirectoryPath}</CODE>
+        <CODE>{DocumentDirectoryPath}</CODE>
       </P>
       <H2>Caches</H2>
       <P>
-        <CODE>{RNFS.CachesDirectoryPath}</CODE>
+        <CODE>{CachesDirectoryPath}</CODE>
       </P>
       <H2>Config.API_URL</H2>
       <P>

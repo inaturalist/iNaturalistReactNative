@@ -17,14 +17,12 @@ import ExploreSearchHeader from "./ExploreSearchHeader";
 
 type Props = {
   closeModal: Function,
-  hideInfoButton?: boolean,
   onPressInfo?: Function,
   updateTaxon: Function
 };
 
 const ExploreTaxonSearch = ( {
   closeModal,
-  hideInfoButton,
   onPressInfo,
   updateTaxon,
 }: Props ): Node => {
@@ -55,14 +53,12 @@ const ExploreTaxonSearch = ( {
       first={index === 0}
       fetchRemote={false}
       handleTaxonOrEditPress={() => onTaxonSelected( taxon )}
-      hideInfoButton={hideInfoButton}
       onPressInfo={onPressInfo}
       showCheckmark={false}
       taxon={taxon}
       testID={`Search.taxa.${taxon.id}`}
     />
   ), [
-    hideInfoButton,
     onPressInfo,
     onTaxonSelected,
   ] );

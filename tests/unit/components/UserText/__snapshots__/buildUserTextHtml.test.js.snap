@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`building HTML for userText fixture matches HTML snapshot 1`] = `
+"<p><strong>bold</strong><br />
+<a href="https://staging.inaturalist.org/observations/350544545">An observation with id</a><br />
+<em>italics</em></p>
+<blockquote>
+<p>blockquote<br />
+<a href="https://staging.inaturalist.org/projects/3545">A project with id</a></p>
+</blockquote>
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6>Heading 6</h6>
+<hr />
+<ul>
+<li>unordered list</li>
+<li>second item</li>
+</ul>
+<p>Normal text before</p>
+<p>Paragraph</p>
+Normal text after
+<ol>
+<li>Ordered list</li>
+<li>Second item</li>
+</ol>
+<table class="table">
+<thead>
+<tr>
+<th>table</th>
+<th>up</th>
+<th>top!</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>foo</td>
+<td>bar</td>
+<td>baz</td>
+</tr>
+</tbody>
+</table>
+<p>Choice lines of fine words<br />
+Separated by line breaks<br />
+Should look just fine, k?</p>
+<ol>
+<li>An escaped</li>
+<li>List</li>
+<li>is possible</li>
+</ol>
+<p><abbr title="Abbreviation abbreviation">HTML</abbr> is still <del>possible</del><ins>probable</ins>!</p>
+"
+`;

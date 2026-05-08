@@ -1,0 +1,6 @@
+FIXED
+* Extra rotation when taking photos with camera on Android
+* Importing photo while offline on Android getting stuck on PhotoGallery
+
+UPDATED
+* Minor UI changes

@@ -2,7 +2,6 @@ import {
   useNetInfo,
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ApiPhoto, ApiSuggestion } from "api/types";
 import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -10,8 +9,13 @@ import flattenUploadParams from "components/Suggestions/helpers/flattenUploadPar
 import {
   FETCH_STATUSES,
 } from "components/Suggestions/SuggestionsContainer";
-import { isEqual } from "lodash";
+import isEqual from "lodash/isEqual";
 import orderBy from "lodash/orderBy";
+import type {
+  NoBottomTabStackScreenProps,
+  SharedStackParamList,
+  TabStackScreenProps,
+} from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
@@ -25,7 +29,7 @@ import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservation
 import {
   useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 import {
   internalUseSuggestionsInitialSuggestions,
 } from "sharedHooks/useSuggestions/filterSuggestions";
@@ -45,12 +49,6 @@ interface ImageParamsType {
   };
   lat?: number;
   lng?: number;
-}
-
-interface NavParams {
-  id?: number | string;
-  firstPhotoID?: number | string;
-  representativePhoto?: { isRepresentativeButOtherTaxon?: boolean; id?: number | string };
 }
 
 interface State {
@@ -121,13 +119,17 @@ const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
-  const isDebug = isDebugMode( );
+  const { isDebug } = useDebugMode( );
   const scrollRef = useRef<ScrollView>( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
-  const navigation = useNavigation<NativeStackNavigationProp<Record<string, NavParams>>>( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"Match">["navigation"] &
+    TabStackScreenProps<"Match">["navigation"]
+  >( );
+
   const {
     hasPermissions,
     renderPermissionsGate,
@@ -443,7 +445,7 @@ const MatchContainer = ( ) => {
 
   const navToTaxonDetails
   = ( photo?: ApiPhoto | RealmPhoto ) => {
-    const navParams: NavParams = { id: taxonId };
+    const navParams: SharedStackParamList["TaxonDetails"] = { id: taxonId };
     if ( !photo?.isRepresentativeButOtherTaxon ) {
       navParams.firstPhotoID = photo?.id;
     } else {

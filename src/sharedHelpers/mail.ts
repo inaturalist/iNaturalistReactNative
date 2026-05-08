@@ -1,24 +1,15 @@
 import { t } from "i18next";
-import { Alert, Linking, Platform } from "react-native";
+import { Alert, Platform } from "react-native";
+import { openInbox as RNOpenInbox } from "react-native-email-link";
 import Mailer from "react-native-mail";
 
-function openInboxError() {
-  Alert.alert( t( "No-email-app-installed" ), t( "No-email-app-installed-body-check-other" ) );
-}
-
 export async function openInbox() {
-  let isSupported;
   try {
-    isSupported = await Linking.canOpenURL( "message:0" );
-  } catch ( _canOpenURLError ) {
-    openInboxError();
-    return;
-  }
-  if ( !isSupported ) openInboxError();
-  try {
-    await Linking.openURL( "message:0" );
-  } catch ( openURLError ) {
-    Alert.alert( t( "Something-went-wrong" ), openURLError.message );
+    await RNOpenInbox( {
+      removeText: true,
+    } );
+  } catch ( error ) {
+    Alert.alert( t( "Something-went-wrong" ), ( error as Error ).message );
   }
 }
 

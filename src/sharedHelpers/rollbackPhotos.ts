@@ -1,8 +1,12 @@
+import {
+  copyFile,
+  exists,
+  mkdir,
+} from "@dr.pogodin/react-native-fs";
 import { photoUploadPath, rollbackPhotosPath } from "appConstants/paths";
-import RNFS from "react-native-fs";
 import type { RealmObservationPojo } from "realmModels/types";
+import { clearRollbackPhotos } from "sharedHelpers/clearCaches";
 import { log } from "sharedHelpers/logger";
-import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import { unlink } from "sharedHelpers/util";
 
 const logger = log.extend( "rollbackPhotos" );
@@ -18,24 +22,10 @@ const getLocalPhotoPath = ( localFilePath: string ): string | null => {
   return `${photoUploadPath}/${pieces[1]}`;
 };
 
-export const clearRollbackPhotos = async ( ): Promise<void> => {
-  try {
-    await removeAllFilesFromDirectory( rollbackPhotosPath );
-    const dirExists = await RNFS.exists( rollbackPhotosPath );
-    if ( dirExists ) {
-      await unlink( rollbackPhotosPath );
-    }
-  } catch ( e ) {
-    logger.error( `clearRollbackPhotos error: ${e}` );
-  }
-};
-
 export const backupObservationPhotos = async (
-  observations: RealmObservationPojo[],
-  currentObservationIndex: number,
+  observation: RealmObservationPojo,
 ): Promise<BackupMapping[]> => {
   try {
-    const observation = observations[currentObservationIndex];
     if ( !observation ) return [];
 
     const obsPhotos = observation.observationPhotos || [];
@@ -45,7 +35,7 @@ export const backupObservationPhotos = async (
 
     if ( photosWithLocalPath.length === 0 ) return [];
 
-    await RNFS.mkdir( rollbackPhotosPath );
+    await mkdir( rollbackPhotosPath );
 
     const results = await Promise.all(
       photosWithLocalPath.map( async ( op ): Promise<BackupMapping | null> => {
@@ -56,7 +46,7 @@ export const backupObservationPhotos = async (
         if ( !originalPath || !filename ) return null;
 
         const backupPath = `${rollbackPhotosPath}/${filename}`;
-        const sourceExists = await RNFS.exists( originalPath );
+        const sourceExists = await exists( originalPath );
         if ( !sourceExists ) {
           logger.warn(
             `backupObservationPhotos: source not found: ${originalPath}`,
@@ -64,13 +54,13 @@ export const backupObservationPhotos = async (
           return null;
         }
 
-        await RNFS.copyFile( originalPath, backupPath );
+        await copyFile( originalPath, backupPath );
         return { originalPath, backupPath };
       } ),
     );
 
     const mappings = results.filter(
-      ( m ): m is BackupMapping => m !== null,
+      m => m !== null,
     );
     logger.info(
       `backupObservationPhotos: backed up ${mappings.length} photos`,
@@ -88,18 +78,18 @@ export const restoreObservationPhotos = async (
   try {
     await Promise.all(
       backupMappings.map( async mapping => {
-        const backupExists = await RNFS.exists( mapping.backupPath );
+        const backupExists = await exists( mapping.backupPath );
         if ( !backupExists ) {
           logger.warn(
             `restoreObservationPhotos: backup missing: ${mapping.backupPath}`,
           );
           return;
         }
-        const originalExists = await RNFS.exists( mapping.originalPath );
+        const originalExists = await exists( mapping.originalPath );
         if ( originalExists ) {
           await unlink( mapping.originalPath );
         }
-        await RNFS.copyFile( mapping.backupPath, mapping.originalPath );
+        await copyFile( mapping.backupPath, mapping.originalPath );
       } ),
     );
     await clearRollbackPhotos( );

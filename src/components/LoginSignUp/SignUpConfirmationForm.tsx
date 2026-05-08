@@ -26,7 +26,7 @@ const { useRealm } = RealmContext;
 
 const SignUpConfirmationForm = ( ) => {
   const realm = useRealm( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<LoginStackScreenProps<"SignUpConfirmation">["navigation"]>( );
   const { params } = useRoute<LoginStackScreenProps<"SignUpConfirmation">["route"]>();
   const { user } = params;
 
@@ -98,9 +98,9 @@ const SignUpConfirmationForm = ( ) => {
       setLoading( false );
       return;
     }
-    const success = await authenticateUser( processedUser.login, processedUser.password, realm );
+    const result = await authenticateUser( processedUser.login, processedUser.password, realm );
     setLoading( false );
-    if ( !success ) {
+    if ( !result.success ) {
       navigation.navigate( "Login" );
       return;
     }

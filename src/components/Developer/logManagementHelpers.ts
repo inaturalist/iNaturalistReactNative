@@ -1,3 +1,11 @@
+import {
+  appendFile,
+  exists,
+  readDir,
+  readFile,
+  TemporaryDirectoryPath,
+  writeFile,
+} from "@dr.pogodin/react-native-fs";
 import { t } from "i18next";
 import { useEffect, useState } from "react";
 import { Alert, Platform, Share } from "react-native";
@@ -6,8 +14,8 @@ import {
   getSystemName,
   getVersion,
 } from "react-native-device-info";
-import RNFS from "react-native-fs";
 import Mailer from "react-native-mail";
+import { unlink } from "sharedHelpers/util";
 
 import {
   legacyLogfilePath,
@@ -15,8 +23,8 @@ import {
   logFileNamePrefix,
 } from "../../../react-native-logs.config";
 
-const getSortedDailyLogFileInfo = async ( n: number ) => {
-  const dir = await RNFS.readDir( logFileDirectory );
+const getSortedDailyLogFileInfo = async ( n?: number ) => {
+  const dir = await readDir( logFileDirectory );
   const sortedLogFiles = dir
     .filter( ( { name } ) => name.startsWith( logFileNamePrefix ) )
     .map( ( { name, size, path } ) => {
@@ -40,24 +48,24 @@ const getSortedDailyLogFileInfo = async ( n: number ) => {
     // flipped for descending
     .sort( ( a, b ) => b.date - a.date );
 
-  return sortedLogFiles.slice( 0, n );
+  return n === undefined
+    ? sortedLogFiles
+    : sortedLogFiles.slice( 0, n );
 };
 
-export async function getLegacyLogContents() {
-  try {
-    const contents = await RNFS.readFile( legacyLogfilePath );
-    return `Legacy\n${contents}`;
-  } catch ( readFileError ) {
-    if ( readFileError instanceof Error && readFileError.message.match( /no such file/ ) ) {
-      return "";
-    }
-    throw readFileError;
+export async function cleanupLogFiles() {
+  if ( await exists( legacyLogfilePath ) ) {
+    await unlink( legacyLogfilePath );
   }
+
+  const logFileInfo = await getSortedDailyLogFileInfo();
+  const olderLogs = logFileInfo.slice( 40 );
+  await Promise.allSettled( olderLogs.map( ( { path } ) => unlink( path ) ) );
 }
 
 export async function deleteLegacyLogFile() {
   try {
-    await RNFS.unlink( legacyLogfilePath );
+    await unlink( legacyLogfilePath );
   } catch ( deleteFileError ) {
     if ( deleteFileError instanceof Error && deleteFileError.message.match( /no such file/ ) ) {
       return;
@@ -122,15 +130,15 @@ async function emailLogFile( path: string ) {
 }
 
 export async function getLegacyLogfileExists() {
-  return RNFS.exists( legacyLogfilePath );
+  return exists( legacyLogfilePath );
 }
 
 export const temporaryLogForSharingPath
-= `${RNFS.TemporaryDirectoryPath}/${logFileNamePrefix}-recent.txt`;
+= `${TemporaryDirectoryPath}/${logFileNamePrefix}-recent.txt`;
 
 const concatenateLogsForSharing = async () => {
   // this will overwrite / clear an existing temp one if it exists
-  await RNFS.writeFile( temporaryLogForSharingPath, "" );
+  await writeFile( temporaryLogForSharingPath, "" );
 
   const mostRecentLogs = ( await getSortedDailyLogFileInfo( 20 ) )
     // we want to start with the oldest and _add_ newer ones as we go
@@ -138,9 +146,9 @@ const concatenateLogsForSharing = async () => {
 
   for ( const { path } of mostRecentLogs ) {
     // eslint-disable-next-line no-await-in-loop
-    const chunkContents = await RNFS.readFile( path );
+    const chunkContents = await readFile( path );
     // eslint-disable-next-line no-await-in-loop
-    await RNFS.appendFile( temporaryLogForSharingPath, chunkContents );
+    await appendFile( temporaryLogForSharingPath, chunkContents );
   }
 };
 
@@ -154,14 +162,6 @@ export async function emailRecentLogs( ) {
   return emailLogFile( temporaryLogForSharingPath );
 }
 
-export async function shareLegacyLogFile( ) {
-  return shareLogFile( legacyLogfilePath );
-}
-
-export async function emailLegacyLogFile( ) {
-  return emailLogFile( legacyLogfilePath );
-}
-
 interface LogPreview {
   text: string;
   length: number;
@@ -170,7 +170,7 @@ interface LogPreview {
 async function getRecentLogContentPreview() {
   // we don't need to be precise here, we can jam 10 together and limit it later
   const recentLogsPaths = ( await getSortedDailyLogFileInfo( 10 ) )
-    .map( foo => foo.path )
+    .map( ( { path } ) => path )
     // we want to start with the oldest and _add_ newer ones as we go
     .reverse();
 
@@ -178,20 +178,18 @@ async function getRecentLogContentPreview() {
   for ( const logPath of recentLogsPaths ) {
     // intentionally making file reads serial
     // eslint-disable-next-line no-await-in-loop
-    const contents = await RNFS.readFile( logPath );
+    const contents = await readFile( logPath );
     aggregatedContents += contents;
   }
   return aggregatedContents;
 }
 
-export function useLogPreview( { legacy }: { legacy: boolean } ): LogPreview | null {
+export function useLogPreview( ): LogPreview | null {
   const [logPreview, setLogPreview] = useState<LogPreview | null>( null );
 
   useEffect( ( ) => {
     const getLogPreview = async () => {
-      const logContents = legacy
-        ? await getLegacyLogContents()
-        : await getRecentLogContentPreview();
+      const logContents = await getRecentLogContentPreview();
 
       const lines = logContents.split( "\n" );
       const trimmedContent = lines
@@ -201,7 +199,7 @@ export function useLogPreview( { legacy }: { legacy: boolean } ): LogPreview | n
     };
 
     getLogPreview();
-  }, [legacy] );
+  }, [] );
 
   return logPreview;
 }

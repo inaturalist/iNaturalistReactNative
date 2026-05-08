@@ -34,11 +34,10 @@ import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
 import { SPECIES_SORT_BY } from "../../types/sorting";
-import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
-import SimpleErrorHeader from "./SimpleErrorHeader";
+import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
 
@@ -187,7 +186,7 @@ const MyObservationsSimple = ( {
     t,
   ] );
 
-  const renderTaxaFooter = useCallback( ( ) => {
+  const taxaFooterComponent = useMemo( ( ) => {
     if ( isFetchingTaxa ) {
       return (
         <InfiniteScrollLoadingWheel
@@ -236,6 +235,39 @@ const MyObservationsSimple = ( {
       numTotalTaxa={numTotalTaxa}
     />
   );
+
+  const observationsHeader = ( ) => {
+    if ( layout !== "grid" ) {
+      return (
+        <SimpleHeader
+          isConnected={isConnected}
+          obsMissingBasicsExist={obsMissingBasicsExist}
+          numTotalObservations={numTotalObservations}
+        />
+      );
+    }
+
+    const TARGET_SPACING = 10;
+
+    // our HALF_GUTTER margin value is 7.5, so when we try to cancel it out around announcements we
+    // can get odd rounding behavior that causes 1px margins. Using Math.ceil accounts for this.
+    return (
+      <View
+        style={{
+          marginTop: -Math.ceil( flashListStyle.paddingTop ),
+          marginLeft: -Math.ceil( flashListStyle.paddingLeft ),
+          marginRight: -Math.ceil( flashListStyle.paddingRight ),
+          marginBottom: TARGET_SPACING - flashListStyle.paddingTop,
+        }}
+      >
+        <SimpleHeader
+          isConnected={isConnected}
+          obsMissingBasicsExist={obsMissingBasicsExist}
+          numTotalObservations={numTotalObservations}
+        />
+      </View>
+    );
+  };
 
   const dataFilledWithEmptyBoxes = useMemo( ( ) => {
     const data = observations;
@@ -349,9 +381,7 @@ const MyObservationsSimple = ( {
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
-              renderHeader={currentUser && ( obsMissingBasicsExist
-                ? <SimpleErrorHeader isConnected={isConnected} />
-                : <Announcements isConnected={isConnected} /> )}
+              renderHeader={observationsHeader}
             />
             <ObservationsViewBar
               hideMap
@@ -386,7 +416,7 @@ const MyObservationsSimple = ( {
                   : undefined
               }
               refreshing={isFetchingTaxa}
-              ListFooterComponent={renderTaxaFooter}
+              ListFooterComponent={taxaFooterComponent}
             />
             <SortButton
               onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}

@@ -16,8 +16,6 @@ gem "bigdecimal"
 gem "logger"
 
 gem "fastlane"
-# Temporary workaround for https://github.com/fastlane/fastlane/issues/26682
-gem "fastlane-sirp", git: "https://github.com/appbot/fastlane-sirp.git", ref: "sysrandom_fix"
 
 gem "nokogiri"
 gem "rubocop"

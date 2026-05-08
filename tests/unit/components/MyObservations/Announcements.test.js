@@ -38,6 +38,14 @@ const mockUser = {
   locale: "en",
 };
 
+const wrappedAnnouncementHtml = body => `
+  <html>
+    <body style="margin: 0; padding: 0;">
+      ${body}
+    </body>
+  </html>
+`;
+
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: ( ) => mockUser,
@@ -99,7 +107,7 @@ describe( "Announcements", () => {
       const webview = await screen.findByTestId( "announcements-webview" );
       expect( webview ).toBeTruthy();
       expect( webview.props.source ).toStrictEqual( {
-        html: mockAnnouncement.body,
+        html: wrappedAnnouncementHtml( mockAnnouncement.body ),
       } );
     } );
 
@@ -108,8 +116,8 @@ describe( "Announcements", () => {
 
       await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 
-      const text = screen.queryByText( "DISMISS" );
-      expect( text ).toBeNull();
+      const button = screen.queryByLabelText( "Dismiss announcement" );
+      expect( button ).toBeNull();
     } );
   } );
 
@@ -126,7 +134,7 @@ describe( "Announcements", () => {
 
       await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
 
-      const button = await screen.findByText( "DISMISS" );
+      const button = await screen.findByLabelText( "Dismiss announcement" );
       expect( button ).toBeTruthy();
     } );
   } );
@@ -149,7 +157,7 @@ describe( "Announcements", () => {
       const webview = await screen.findByTestId( "announcements-webview" );
       expect( webview ).toBeTruthy();
       expect( webview.props.source ).toStrictEqual( {
-        html: mockAnnouncement.body,
+        html: wrappedAnnouncementHtml( mockAnnouncement.body ),
       } );
     } );
   } );

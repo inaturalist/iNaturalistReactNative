@@ -9,9 +9,11 @@ interface QueryOptions {
   allowAnonymousJWT?: boolean;
   enabled?: boolean;
   retry?: boolean;
+  refetchInterval?: number;
 }
 
-type QueryFunction<Response> = ( options: { api_token: string | null } ) => Promise<Response>;
+export type QueryFunction<Response>
+  = ( options: { api_token: string | null } ) => Promise<Response>;
 
 // Should work like React Query's useQuery except it calls the queryFunction
 // with an object that includes the JWT

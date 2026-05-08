@@ -2,7 +2,6 @@
 
 exports[`PhotoCarousel renders correctly 1`] = `
 <View
-  onLayout={[Function]}
   style={
     [
       {
@@ -577,7 +576,6 @@ exports[`PhotoCarousel renders correctly 1`] = `
 
 exports[`PhotoCarousel renders correctly for large screen 1`] = `
 <View
-  onLayout={[Function]}
   style={
     [
       {

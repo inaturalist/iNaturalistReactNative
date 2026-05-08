@@ -87,5 +87,5 @@ export { default as UnderlinedLink } from "./Typography/UnderlinedLink";
 export { default as UploadProgressBar } from "./UploadProgressBar";
 export { default as UploadStatus } from "./UploadStatus/UploadStatus";
 export { default as UserIcon } from "./UserIcon";
-export { default as UserText } from "./UserText";
+export { buildUserTextHtml, default as UserText } from "./UserText";
 export { default as ViewWrapper } from "./ViewWrapper";

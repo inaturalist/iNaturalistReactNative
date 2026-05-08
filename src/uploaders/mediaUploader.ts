@@ -6,11 +6,12 @@ import type {
   RealmObservationPhoto,
   RealmObservationSound,
   RealmPhoto,
+  RealmSound,
 } from "realmModels/types";
 import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 
-export type EvidenceType = "Photo" | "ObservationPhoto" | "ObservationSound";
+export type EvidenceType = "Photo" | "ObservationPhoto" | "Sound" | "ObservationSound";
 export type ActionType = "upload" | "attach" | "update";
 
 interface UploadOptions {
@@ -78,7 +79,7 @@ interface ApiEndpoint {
   ): Promise<MediaApiResponse>;
 }
 
-export type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto;
+export type Evidence = RealmObservationPhoto | RealmObservationSound | RealmPhoto | RealmSound;
 
 interface MediaItems {
   unsyncedObservationPhotos: RealmObservationPhoto[];
@@ -167,6 +168,7 @@ async function processMediaOperations(
 
 const filterMediaForUpload = ( observation: RealmObservation ): {
   unsyncedPhotos: RealmPhoto[];
+  unsyncedSounds: RealmSound[];
   unsyncedObservationPhotos: RealmObservationPhoto[];
   modifiedObservationPhotos: RealmObservationPhoto[];
   unsyncedObservationSounds: RealmObservationSound[];
@@ -201,8 +203,21 @@ const filterMediaForUpload = ( observation: RealmObservation ): {
     ? observation.observationSounds.filter( item => !item.wasSynced( ) )
     : [];
 
+  // extract the actual sound objects
+  const unsyncedSounds = unsyncedObservationSounds?.map( os => {
+    try {
+      return os.sound;
+    } catch ( accessError ) {
+      if ( !accessError.message.match( /No object with key/ ) ) {
+        throw accessError;
+      }
+      return null;
+    }
+  } ).filter( Boolean ).flat() as RealmSound[];
+
   return {
     unsyncedPhotos,
+    unsyncedSounds,
     unsyncedObservationPhotos,
     modifiedObservationPhotos,
     unsyncedObservationSounds,
@@ -212,6 +227,7 @@ const filterMediaForUpload = ( observation: RealmObservation ): {
 const createMediaOperations = (
   mediaItems: {
     unsyncedPhotos?: RealmPhoto[] | null;
+    unsyncedSounds?: RealmSound[] | null;
     unsyncedObservationPhotos?: RealmObservationPhoto[] | null;
     modifiedObservationPhotos?: RealmObservationPhoto[] | null;
     unsyncedObservationSounds?: RealmObservationSound[] | null;
@@ -222,6 +238,7 @@ const createMediaOperations = (
   const operations: Operation[] = [];
 
   const unsyncedPhotos = mediaItems?.unsyncedPhotos || [];
+  const unsyncedSounds = mediaItems?.unsyncedSounds || [];
   const unsyncedObservationPhotos = mediaItems?.unsyncedObservationPhotos || [];
   const modifiedObservationPhotos = mediaItems?.modifiedObservationPhotos || [];
   const unsyncedObservationSounds = mediaItems?.unsyncedObservationSounds || [];
@@ -238,11 +255,11 @@ const createMediaOperations = (
     } );
   }
 
-  if ( uploadAction && unsyncedObservationSounds?.length > 0 ) {
-    unsyncedObservationSounds.forEach( sound => {
+  if ( uploadAction && unsyncedSounds?.length > 0 ) {
+    unsyncedSounds.forEach( sound => {
       operations.push( {
         evidence: sound,
-        type: "ObservationSound" as EvidenceType,
+        type: "Sound" as EvidenceType,
         action: "upload" as ActionType,
         observationId: null,
         apiEndpoint: inatjs.sounds.create,

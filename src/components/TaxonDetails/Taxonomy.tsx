@@ -4,6 +4,7 @@ import {
   Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
@@ -16,7 +17,10 @@ interface Props {
 
 const Taxonomy = ( { taxon: currentTaxon, hideNavButtons }: Props ) => {
   const [viewChildren, setViewChildren] = useState( false );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"TaxonDetails">["navigation"] &
+    TabStackScreenProps<"TaxonDetails">["navigation"]
+  >( );
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const scientificNameFirst = currentUser?.prefers_scientific_name_first;

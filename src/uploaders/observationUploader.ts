@@ -196,9 +196,12 @@ async function uploadObservation(
   }
 
   const totalDuration = Date.now( ) - uploadStartTime;
+  const { unsyncedObservationPhotos, unsyncedObservationSounds } = mediaItems;
+  const uploadedMediaCount = unsyncedObservationPhotos.length + unsyncedObservationSounds.length;
   logger.info(
     `Upload: Completed ${observation.uuid} - total: ${totalDuration}ms`
-      + `, media: ${mediaDuration}ms, obs: ${obsDuration}ms, attach: ${attachDuration}ms`,
+      + `, media: ${mediaDuration}ms, obs: ${obsDuration}ms, attach: ${attachDuration}ms`
+      + `, uploaded items: ${uploadedMediaCount}`,
   );
 
   // note: removed observation fetch at the end of the upload, because we don't actually

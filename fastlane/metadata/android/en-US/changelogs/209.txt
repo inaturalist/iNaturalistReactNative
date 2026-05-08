@@ -1,0 +1,13 @@
+NEW
+* Announcements for logged-out users
+
+FIXED
+* Crash looking at a deleted observation
+* Performance issue with adding IDs to saved observations
+* Multiple copies of the same photo saved in Standard camera
+* Markdown in comments and other user-generated text
+
+UPDATED
+* Show save photo permission directly
+* You can go back to the Match screen while editing your observation
+* Minor package and performance updates

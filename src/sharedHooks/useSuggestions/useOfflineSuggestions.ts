@@ -23,9 +23,14 @@ interface OfflineRequestOptions {
   realm: Realm;
 }
 
+export interface OfflineSuggestionsResponse {
+  results: UseSuggestionsOfflineSuggestion[];
+  commonAncestor?: UseSuggestionsOfflineSuggestion;
+}
+
 export const predictOffline = async ( {
   latitude, longitude, photoUri, realm,
-}: OfflineRequestOptions ) => {
+}: OfflineRequestOptions ): Promise<OfflineSuggestionsResponse | null> => {
   let rawPredictions = [];
   let commonAncestor;
   try {
@@ -33,6 +38,9 @@ export const predictOffline = async ( {
       ? { latitude, longitude }
       : undefined;
     const result = await predictImage( photoUri, location );
+    if ( !result ) {
+      return null;
+    }
     rawPredictions = result.predictions;
     // Destructuring here leads to different errors from the linter.
     // eslint-disable-next-line prefer-destructuring
@@ -117,6 +125,7 @@ const useOfflineSuggestions = (
   } = options;
 
   const fetchOfflineSuggestions = useCallback( async () => {
+    if ( !photoUri ) return;
     try {
       const suggestions = await predictOffline( {
         latitude,
@@ -124,6 +133,9 @@ const useOfflineSuggestions = (
         photoUri,
         realm,
       } );
+      if ( !suggestions ) {
+        return;
+      }
       setOfflineSuggestions( suggestions );
       onFetched( { isOnline: false } );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

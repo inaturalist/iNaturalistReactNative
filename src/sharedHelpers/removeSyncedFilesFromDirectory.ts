@@ -1,4 +1,6 @@
-import RNFS from "react-native-fs";
+import {
+  exists, readDir, stat,
+} from "@dr.pogodin/react-native-fs";
 import { unlink } from "sharedHelpers/util";
 
 const TRASHABLE_VINTAGE_MS
@@ -22,12 +24,12 @@ const removeSyncedFilesFromDirectory = async (
   directoryPath: string,
   filesToKeep: string[] = [],
 ) => {
-  const directoryExists = await RNFS.exists( directoryPath );
+  const directoryExists = await exists( directoryPath );
   if ( !directoryExists ) {
     return null;
   }
 
-  const files = await RNFS.readDir( directoryPath );
+  const files = await readDir( directoryPath );
   let totalSize = 0;
   const fileDetails: FileDetails[] = [];
   const deletionPromises = Promise.all(
@@ -50,7 +52,7 @@ const removeSyncedFilesFromDirectory = async (
       }
 
       if ( skipFile ) {
-        const fileStat = await RNFS.stat( file.path );
+        const fileStat = await stat( file.path );
         totalSize += fileStat.size;
         fileDetails.push( {
           name,
@@ -107,7 +109,7 @@ const removeSyncedFilesFromDirectory = async (
   }
 
   return Promise.all(
-    [deletionPromises, ...filesToDelete.map( async path => RNFS.unlink( path ) )],
+    [deletionPromises, ...filesToDelete.map( async path => unlink( path ) )],
   );
 };
 

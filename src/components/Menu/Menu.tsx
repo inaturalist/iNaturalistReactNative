@@ -15,14 +15,17 @@ import { Pressable, ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Observation from "realmModels/Observation";
 import User from "realmModels/User";
 import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
-import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
-import { zustandStorage } from "stores/useStore";
+import {
+  useCurrentUser, useDebugMode,
+  useLayoutPrefs, useTranslation,
+} from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import MenuItem from "./MenuItem";
@@ -60,8 +63,42 @@ function showOfflineAlert( t: ( _: string ) => string ) {
   Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
 }
 
+const getDeviceMetricsForFeedback = async () => {
+  const freeDiskBytes = await DeviceInfo.getFreeDiskStorage();
+  const diskCapacityBytes = await DeviceInfo.getTotalDiskCapacity();
+  const usedDiskSpaceBytes = diskCapacityBytes - freeDiskBytes;
+
+  const gBBytes = 1024 * 1024 * 1024;
+  const toGBString = ( bytes: number ) => {
+    const gBs = bytes / gBBytes;
+    return `${gBs.toFixed( 2 )}GB`;
+  };
+
+  const diskUsageSummary
+    = `${toGBString( usedDiskSpaceBytes )} / ${toGBString( diskCapacityBytes )}`;
+
+  const firstInstallInEpochSeconds = await DeviceInfo.getFirstInstallTime();
+  const firstInstallTimestamp = new Date( firstInstallInEpochSeconds ).toISOString();
+
+  const millisecondsSinceThisLaunch = await DeviceInfo.getStartupTime();
+
+  const secondsSinceThisLaunch = ( Date.now() - millisecondsSinceThisLaunch ) / 1000;
+  const minutesPart = Math.floor( secondsSinceThisLaunch / 60 );
+  const secondsPart = Math.floor( secondsSinceThisLaunch % 60 );
+  const timeSinceLaunchedSummary = `${minutesPart}m${secondsPart}s`;
+
+  const isDeviceInLowPowerState = ( await DeviceInfo.getPowerState() ).lowPowerMode;
+
+  return {
+    diskUsageSummary,
+    firstInstallTimestamp,
+    timeSinceLaunchedSummary,
+    isDeviceInLowPowerState,
+  };
+};
+
 const Menu = ( ) => {
-  const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
+  const { isDebug } = useDebugMode();
   const realm = useRealm( );
   const navigation = useNavigation( );
   const queryClient = useQueryClient( );
@@ -205,12 +242,14 @@ const Menu = ( ) => {
         remoteObservations: "loggedout",
       };
     const storageMetrics = await getStorageMetrics( realm?.path ).catch( () => ( {} ) );
+    const deviceMetrics = await getDeviceMetricsForFeedback().catch( () => ( {} ) );
     const feedbackContext = {
       ...modeContext,
       ...loggedInContext,
       // can have unsynced obs when logged out
       locallySavedOnlyObservations,
       ...storageMetrics,
+      ...deviceMetrics,
     };
     feedbackLogger.infoWithExtra( feedbackText, feedbackContext );
     Alert.alert( t( "Feedback-Submitted" ), t( "Thank-you-for-sharing-your-feedback" ) );

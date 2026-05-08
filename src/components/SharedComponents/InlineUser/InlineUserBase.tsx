@@ -33,7 +33,7 @@ const InlineUserBase = ( {
   useBigIcon = false,
 }: Props ) => {
   const navigation = useNavigation();
-  const userImgUri = User.uri( user );
+  const userImgUri = User.thumbUri( user );
   const userHandle = user?.login;
   const currentUser = useCurrentUser();
   const isCurrentUser = user?.id === currentUser?.id;

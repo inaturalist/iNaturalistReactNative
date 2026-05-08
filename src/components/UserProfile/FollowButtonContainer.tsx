@@ -1,9 +1,8 @@
-// @flow
-
 import { createRelationships, updateRelationships } from "api/relationships";
-import type { Node } from "react";
+import type { ApiRelationship } from "api/types";
 import React, { useState } from "react";
 import { Alert } from "react-native";
+import type User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
 
@@ -11,14 +10,14 @@ import FollowButton from "./FollowButton";
 
 const logger = log.extend( "FollowButtonContainer" );
 
-type Props = {
-  currentUser: Object,
-  refetchRelationship: Function,
-  relationship: Object,
-  setShowLoginSheet: Function,
-  setShowUnfollowSheet: Function,
-  userId: number,
-};
+interface Props {
+  currentUser: User | null;
+  refetchRelationship: ( ) => void;
+  relationship?: ApiRelationship;
+  setShowLoginSheet: ( _show: boolean ) => void;
+  setShowUnfollowSheet: ( _show: boolean ) => void;
+  userId: number;
+}
 
 const FollowButtonContainer = ( {
   currentUser,
@@ -27,7 +26,7 @@ const FollowButtonContainer = ( {
   setShowLoginSheet,
   setShowUnfollowSheet,
   userId,
-}: Props ): Node => {
+}: Props ) => {
   const [loading, setLoading] = useState( false );
   const { t } = useTranslation( );
 

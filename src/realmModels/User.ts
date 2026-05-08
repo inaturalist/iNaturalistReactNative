@@ -35,6 +35,10 @@ class User extends Realm.Object {
     return iconUrl?.replace( "staticdev", "static" );
   }
 
+  static thumbUri( user?: RealmUser | ApiUser ) {
+    return User.uri( user )?.replace( "medium", "thumb" );
+  }
+
   static currentUser( realm: Realm ) {
     return realm.objects( "User" ).filtered( "signedIn == true" )[0];
   }

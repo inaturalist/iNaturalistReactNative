@@ -2,6 +2,7 @@
     This file contains patches for handling the react-native-vision-camera library.
 */
 
+import type { FrameInternal } from "react-native-vision-camera";
 import {
   useSharedValue as useWorkletSharedValue,
   Worklets,
@@ -18,11 +19,11 @@ const usePatchedRunAsync = ( ) => {
    * Print worklets logs/errors on js thread
    */
   const logOnJs = Worklets.createRunOnJS( ( log, error ) => {
-    console.log( "logOnJs - ", log, " - error?:", error?.message ?? "no error" );
+    console.log( "logOnJs - ", log, " - error?:", ( error as Error )?.message ?? "no error" );
   } );
   const isAsyncContextBusy = useWorkletSharedValue( false );
   const customRunOnAsyncContext = Worklets.defaultContext.createRunAsync(
-    ( frame, func ) => {
+    ( frame: FrameInternal, func: ( frame: FrameInternal ) => void ) => {
       "worklet";
 
       try {
@@ -36,7 +37,7 @@ const usePatchedRunAsync = ( ) => {
     },
   );
 
-  function customRunAsync( frame, func ) {
+  function customRunAsync( frame: FrameInternal, func: ( frame: FrameInternal ) => void ) {
     "worklet";
 
     if ( isAsyncContextBusy.value ) {
