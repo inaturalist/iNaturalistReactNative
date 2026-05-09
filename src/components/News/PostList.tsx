@@ -15,8 +15,8 @@ interface Props {
 const PostList = ( {
   posts,
 }: Props ) => {
-  const renderPost: ListRenderItem<ApiPost> = ( { item: post } ) => (
-    <PostListItem item={post} />
+  const renderPost: ListRenderItem<ApiPost> = ( { item } ) => (
+    <PostListItem item={item} />
   );
 
   return (
