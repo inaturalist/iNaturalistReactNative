@@ -12,9 +12,7 @@ const News = ( ) => {
   const { data: posts, isLoading: isLoadingPosts } = useAuthenticatedQuery(
     ["fetchUserPosts"],
     optsWithAuth => fetchUserPosts(
-      {
-        user_id: currentUser?.id,
-      },
+      {},
       optsWithAuth,
     ),
     { enabled: !!currentUser },
