@@ -148,6 +148,8 @@ attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 # Month of August
 August = August
+# Offline maps
+Back = Back
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
 # Accessibility label for bulk import / photo import button
@@ -374,9 +376,15 @@ datetime-format-short-with-zone = M/d/yy h:mm a zzz
 # Month of December
 December = December
 DELETE = DELETE
+Delete = Delete
+Delete-All = Delete All
+Delete-all-count-saved-maps = Delete all { $count } saved maps?
+Delete-All-Maps = Delete All Maps
 Delete-all-observations = Delete all observations
+Delete-All-Saved-Maps = Delete All Saved Maps
 Delete-comment = Delete comment
 DELETE-COMMENT--question = DELETE COMMENT?
+Delete-count-saved-maps = Delete { $count } saved maps?
 # Button that deletes the current observation in a batch of several observations
 Delete-current-observation = Delete current observation
 # Button that deletes an observation
@@ -384,6 +392,10 @@ Delete-observation = Delete observation
 DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Delete photo
+Delete-region-name = Delete "{ $name }"?
+Delete-Saved-Map = Delete Saved Map
+Delete-saved-map = Delete saved map
+Delete-Saved-Maps = Delete Saved Maps
 Delete-sound = Delete sound
 # Hint for a button that clears text you entered
 Deletes-entered-text = Deletes entered text
@@ -401,6 +413,7 @@ Deleting-x-of-y-observations-2 =
         [one] observation
        *[other] of { $total } observations
     }
+Deselect-All = Deselect All
 # Label for section of ObsDetails with information about copyright, upload date, etc.
 Details = Details
 # Tab label or section title for content that describes further details, e.g.
@@ -795,6 +808,7 @@ No-Camera-Available = No Camera Available
 No-email-app-installed = No email app installed
 No-email-app-installed-body = If you have another way of sending email, the address is { $address }
 No-Location = No Location
+No-map-snapshot = No map snapshot available
 No-Media = No Media
 # As in a machine learning model that powers automated suggestions
 No-model-found = No model found
@@ -804,6 +818,7 @@ No-results-found-for-that-search = No results found for that search.
 No-results-found-try-different-search = No results found. Try a different search or adjust your filters.
 # license code
 no-rights-reserved-cc0 = no rights reserved (CC0)
+No-saved-maps-yet = No saved maps yet. Use the download button while browsing Explore to save a map for offline viewing.
 # Displayed in place of positional accuracy when that value is missing
 none--accuracy = none
 # Option when selecting taxonomic ranks that indicates no rank was selected
@@ -1048,6 +1063,7 @@ Record-verb = Record
 Recording-sound = Recording sound
 Recording-stopped-Tap-to-play-the-current-recording = Recording stopped. Tap to play the current recording.
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
+Region-not-found = Region not found
 # Label for a button that removes a vote of agreement
 Remove-agreement = Remove agreement
 # Label for a button that removes a vote of disagreement
@@ -1101,6 +1117,7 @@ SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
 Saved-Observation = Saved observation, in queue to upload
+Saved-Offline-Maps = Saved Offline Maps
 Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 # Title for a search interface
@@ -1124,9 +1141,12 @@ See-observations-of-this-taxon-in-explore = See observations of this taxon in ex
 See-project-members = See project members
 # Accessibility label for Species button on UserProfile screen
 See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
+Select = Select
 Select-a-date-and-time-for-observation = Select a date and time for observation
+Select-All = Select All
 Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
+Select-Maps = Select Maps
 Select-or-drag-media = Select or drag media
 Select-photo = Select photo
 SELECT-THIS-TAXON = SELECT THIS TAXON
@@ -1477,6 +1497,7 @@ x-saved =
         [one] { $count } saved
        *[other] { $count } saved
     }
+X-selected = { $count } selected
 # Displays number of sounds attached to an observation in the Media Viewer
 X-SOUNDS =
     { $count ->

@@ -8,6 +8,8 @@ import Identification from "./Identification";
 import Observation from "./Observation";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
+import OfflineObservation from "./OfflineObservation";
+import OfflineRegion from "./OfflineRegion";
 import Photo from "./Photo";
 import QueueItem from "./QueueItem";
 import Sound from "./Sound";
@@ -25,6 +27,8 @@ export default {
     Observation,
     ObservationPhoto,
     ObservationSound,
+    OfflineObservation,
+    OfflineRegion,
     Photo,
     QueueItem,
     Sound,
@@ -33,7 +37,7 @@ export default {
     User,
     Vote,
   ],
-  schemaVersion: 67,
+  schemaVersion: 75,
   path: `${DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {
@@ -41,6 +45,8 @@ export default {
   },
   // TODO: type?
   migration: ( oldRealm: Realm, newRealm: Realm ) => {
+    // v75: OfflineRegion.satelliteSnapshotPath added (new optional field, no migration needed).
+    // v74: OfflineObservation and OfflineRegion added (new models, no migration needed).
     if ( oldRealm.schemaVersion < 59 ) {
       const oldTaxa = oldRealm.objects( "Taxon" );
       const newTaxa = newRealm.objects( "Taxon" );

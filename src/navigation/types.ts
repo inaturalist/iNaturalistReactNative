@@ -247,6 +247,8 @@ export type BaseTabStackParamList = {
   About: undefined;
   Donate: undefined;
   Help: undefined;
+  OfflineRegionsList: undefined;
+  OfflineMapView: { regionId: string };
 };
 
 export type TabStackParamList = BaseTabStackParamList & SharedStackParamList;

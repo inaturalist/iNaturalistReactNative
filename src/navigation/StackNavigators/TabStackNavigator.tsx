@@ -18,6 +18,8 @@ import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ObsDetailsDefaultModeScreensWrapper
   from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeScreensWrapper";
+import OfflineMapView from "components/Offline/OfflineMapView";
+import OfflineRegionsList from "components/Offline/OfflineRegionsList";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements";
@@ -214,6 +216,14 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         <Stack.Screen
           name="ExploreSearch"
           component={ExploreSearchContainer}
+        />
+        <Stack.Screen
+          name="OfflineRegionsList"
+          component={OfflineRegionsList}
+        />
+        <Stack.Screen
+          name="OfflineMapView"
+          component={OfflineMapView}
         />
         {isDefaultMode
           ? (
