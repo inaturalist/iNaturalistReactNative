@@ -1,11 +1,13 @@
 // @flow
 
 import { refresh } from "@react-native-community/netinfo";
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import ExploreFiltersModal from "components/Explore/Modals/ExploreFiltersModal";
 import {
   Body2,
   Button,
+  INatIcon,
   INatIconButton,
   OfflineNotice,
   RadioButtonSheet,
@@ -15,7 +17,7 @@ import { View } from "components/styledComponents";
 import { PLACE_MODE } from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import {
   useDebugMode,
   useStoredLayout,
@@ -34,6 +36,13 @@ import SpeciesView from "./SpeciesView";
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6,
+} );
+
+const styles = StyleSheet.create( {
+  offlineMapButton: { right: 83 },
+  compositeIcon: { position: "relative", alignItems: "center", justifyContent: "center" },
+  compositeIconBase: { marginTop: -4 },
+  compositeIconBadge: { position: "absolute", bottom: -7, right: -5 },
 } );
 
 const exploreViewIcon = {
@@ -93,6 +102,7 @@ const Explore = ( {
   updateUser,
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const navigation = useNavigation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
   const { isDebug } = useDebugMode( );
@@ -128,9 +138,7 @@ const Explore = ( {
   const renderMainContent = ( ) => {
     if ( isConnected === false ) {
       return (
-        <OfflineNotice
-          onPress={() => refresh()}
-        />
+        <OfflineNotice onPress={() => refresh()} />
       );
     }
     // hasLocationPermissions === undefined means we haven't checked for location permissions yet
@@ -298,6 +306,26 @@ const Explore = ( {
             onPress={() => setShowExploreBottomSheet( true )}
             style={DROP_SHADOW}
           />
+          {isConnected === false && (
+            <INatIconButton
+              width={55}
+              height={55}
+              onPress={() => navigation.navigate( "OfflineRegionsList" )}
+              accessibilityLabel="View saved offline maps"
+              className={classnames( whiteCircleClass, "absolute bottom-5 z-10" )}
+              style={[DROP_SHADOW, styles.offlineMapButton]}
+            >
+              {/* Composite icon: map base + offline badge overlay */}
+              <View style={styles.compositeIcon}>
+                <View style={styles.compositeIconBase}>
+                  <INatIcon name="map" size={26} color={colors.inatGreen} />
+                </View>
+                <View style={styles.compositeIconBadge}>
+                  <INatIcon name="arrow-down-bold-circle" size={14} color={colors.inatGreen} />
+                </View>
+              </View>
+            </INatIconButton>
+          )}
         </View>
       </ViewWrapper>
       <ExploreFiltersModal

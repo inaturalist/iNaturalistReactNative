@@ -13,13 +13,14 @@ import {
   useExplore,
 } from "providers/ExploreContext";
 import type { Node } from "react";
-import React, { useEffect } from "react";
-import { Dimensions } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { Alert, Dimensions } from "react-native";
 import {
   useCurrentUser,
   useDeviceOrientation,
   useQuery,
 } from "sharedHooks";
+import useOfflineRegions from "sharedHooks/useOfflineRegions";
 
 import MapView from "./MapView";
 
@@ -48,7 +49,7 @@ const ObservationsView = ( {
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const { state } = useExplore();
-  const { excludeUser } = state;
+  const { excludeUser, taxon } = state;
 
   // get total count of current users obs
   // TODO: enable fields if it makes sense? I dont know if {} equals all fields or no fields
@@ -92,6 +93,36 @@ const ObservationsView = ( {
   }, [handleUpdateCount, totalCount] );
 
   const { isConnected } = useNetInfo( );
+
+  const {
+    isSaving, saveProgress, saveRegion, navigateToRegionsList,
+  } = useOfflineRegions( );
+
+  // eslint-disable-next-line max-len
+  const handleSaveOffline = useCallback( async ( appleMapRef, appleMapSatelliteRef, currentRegion ) => {
+    try {
+      const rankPrefix = taxon?.rank && taxon.rank !== "species"
+        ? `${taxon.rank.charAt( 0 ).toUpperCase()}${taxon.rank.slice( 1 )} `
+        : "";
+      let label;
+      if ( taxon ) {
+        label = taxon.preferred_common_name
+          ? `${taxon.preferred_common_name} - ${rankPrefix}${taxon.name}`
+          : `${rankPrefix}${taxon.name}`;
+      }
+      await saveRegion( {
+        appleMapRef,
+        appleMapSatelliteRef,
+        currentRegion,
+        queryParams,
+        queryLabel: label,
+        taxonImageUrl: taxon?.default_photo?.url ?? null,
+      } );
+      Alert.alert( "Saved", "Map region saved for offline viewing." );
+    } catch ( _err ) {
+      Alert.alert( "Error", "Could not save offline map. Please try again." );
+    }
+  }, [saveRegion, queryParams, taxon] );
 
   if ( !layout ) { return null; }
 
@@ -146,6 +177,10 @@ const ObservationsView = ( {
         hasLocationPermissions={hasLocationPermissions}
         renderLocationPermissionsGate={renderLocationPermissionsGate}
         requestLocationPermissions={requestLocationPermissions}
+        isSavingOffline={isSaving}
+        saveProgress={saveProgress}
+        onSaveOffline={handleSaveOffline}
+        onViewSavedMaps={navigateToRegionsList}
       />
     </View>
   );

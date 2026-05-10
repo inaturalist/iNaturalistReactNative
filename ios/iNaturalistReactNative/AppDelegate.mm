@@ -34,7 +34,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   // Required for react-native-firebase: https://rnfirebase.io/#configure-firebase-with-ios-credentials-react-native--077
-  [FIRApp configure];
+  // Guard against missing/invalid GoogleService-Info.plist (e.g. local dev without Firebase credentials).
+  if ([FIRApp defaultApp] == nil) {
+    @try {
+      [FIRApp configure];
+    } @catch (NSException *) {
+      // No valid Firebase config — continue without it.
+    }
+  }
   self.reactNativeFactory = [[RCTReactNativeFactory alloc] initWithDelegate:self];
   self.dependencyProvider = [RCTAppDependencyProvider new];
 
