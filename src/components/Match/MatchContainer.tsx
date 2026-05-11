@@ -319,11 +319,14 @@ const MatchContainer = ( ) => {
     }
   }, [currentUserLocation, updateObservationKeys] );
 
-  const handleRefetchSuggestions = useCallback( () => {
+  const handleRefetchSuggestions = useCallback( ( location: {
+    latitude?: number;
+    longitude?: number;
+  } ) => {
     const newScoreImageParams = {
       ...scoreImageParams,
-      lat: currentUserLocation?.latitude,
-      lng: currentUserLocation?.longitude,
+      lat: location?.latitude,
+      lng: location?.longitude,
     };
     dispatch( {
       type: "SET_LOCATION",
@@ -338,8 +341,6 @@ const MatchContainer = ( ) => {
     refetchSuggestions,
     scoreImageParams,
     scrollToTop,
-    currentUserLocation?.latitude,
-    currentUserLocation?.longitude,
   ] );
 
   useEffect( () => {
@@ -353,7 +354,7 @@ const MatchContainer = ( ) => {
     getCurrentUserPlaceName();
 
     if ( !hasRefetchedSuggestions && suggestions ) {
-      handleRefetchSuggestions();
+      handleRefetchSuggestions( userLocation );
     }
   }, [
     userLocation,
