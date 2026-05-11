@@ -7,6 +7,7 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import useStore from "stores/useStore";
+import { v4 as uuidv4 } from "uuid";
 
 function isDefaultMode( ) {
   return useStore.getState( ).layout.isDefaultMode === true;
@@ -18,12 +19,6 @@ const deletionFilters
   = "_deleted_at == nil OR _pending_deletion == false OR _pending_deletion == nil";
 
 const sortedFilters = [["needs_sync", true], ["_created_at", true]];
-
-const mapObservations = ( observations, isDefault ) => ( isDefault
-  ? observations
-    .map( observation => Observation.mapObservationForMyObsDefaultMode( observation ) )
-  : observations
-    .map( observation => Observation.mapObservationForMyObsAdvancedMode( observation ) ) );
 
 const useLocalObservations = ( ): Object => {
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
@@ -65,29 +60,58 @@ const useLocalObservations = ( ): Object => {
         || unsyncedCount !== prevListRef.current.unsyncedCount
         || currentIsDefaultMode !== prevListRef.current.isDefaultMode
       ) {
+        const transactionId = uuidv4();
+        performance.mark( "start", {
+          detail: {
+            transactionId,
+            insertions: insertions.length,
+            modifications: newModifications.length,
+            deletions: deletions.length,
+          },
+        } );
         // amanda 20250522: React Native works best when minimal data is passed to components,
         // so there aren't costly rerenders. these data transformations ensure the UI is getting
         // exactly what it needs to display and that we're not passing around larger objects
         // or actual Realm objects, which is especially helpful since we're doing an absurd amount
         // of prop drilling in MyObservations
 
-        let mappedObservations = [];
+        const mapObservation = currentIsDefaultMode
+          ? Observation.mapObservationForMyObsDefaultMode
+          : Observation.mapObservationForMyObsAdvancedMode;
 
-        if ( insertions.length > 0
-            && newModifications.length === 0
-            && deletions.length === 0
-            && currentIsDefaultMode === prevListRef.current.isDefaultMode ) {
-          const newObservations = insertions.map( index => filteredObservations[index] )
-            .filter( o => o.isValid() );
+        let mappedObservations;
 
-          const newMappedObservations = mapObservations( newObservations, currentIsDefaultMode );
+        if ( currentIsDefaultMode !== prevListRef.current.isDefaultMode ) {
+          performance.mark( "start-rebuild", { detail: { transactionId } } );
 
-          mappedObservations = [...prevListRef.current.list, ...newMappedObservations];
+          // Mode change requires full remap
+          mappedObservations = Array.from( filteredObservations )
+            .filter( obs => obs.isValid() )
+            .map( obs => mapObservation( obs, isDefaultMode ) );
+
+          performance.mark( "end-rebuild", { detail: { transactionId } } );
         } else {
-          // Full rebuild needed (modifications, deletions, or mode change)
-          const validObservations = Array.from( filteredObservations ).filter( o => o.isValid() );
+          performance.mark( "start-inplace", { detail: { transactionId } } );
 
-          mappedObservations = mapObservations( validObservations, currentIsDefaultMode );
+          const modifiedUuids = newModifications
+            .map( index => localObservations[index] )
+            .filter( obs => obs?.isValid() )
+            .map( obs => obs.uuid );
+
+          const previousObsByUuid = Object.fromEntries(
+            prevListRef.current.list.map( obs => [obs.uuid, obs] ),
+          );
+
+          mappedObservations = Array.from( filteredObservations )
+            .filter( obs => obs.isValid() )
+            .map( obs => {
+              if ( modifiedUuids.includes( obs.uuid ) ) {
+                return mapObservation( obs, currentIsDefaultMode );
+              }
+              return previousObsByUuid[obs.uuid] ?? mapObservation( obs, currentIsDefaultMode );
+            } );
+
+          performance.mark( "end-inplace", { detail: { transactionId } } );
         }
 
         setObservationList( mappedObservations );
@@ -99,6 +123,7 @@ const useLocalObservations = ( ): Object => {
           unsyncedCount,
           isDefaultMode: currentIsDefaultMode,
         };
+        performance.mark( "end", { detail: { transactionId } } );
       }
     };
 
