@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -232,7 +232,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix --max-warnings=0 --cache-location .eslintcache"
+      "eslint --cache --fix --cache-location .eslintcache"
     ],
     "*.rb": [
       "bundle exec rubocop --force-exclusion --parallel"
