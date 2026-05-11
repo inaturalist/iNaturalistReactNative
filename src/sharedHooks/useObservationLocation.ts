@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { hasOnlyCoarseLocation } from "components/SharedComponents/PermissionGateContainer";
 import { useEffect, useRef, useState } from "react";
-import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
 
+import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 import type { UserLocation } from "./useWatchPosition";
 import useWatchPosition from "./useWatchPosition";
 
