@@ -75,12 +75,14 @@ const useLocalObservations = ( ): Object => {
           // Mode change requires full remap
           mappedObservations = Array.from( filteredObservations )
             .filter( obs => obs.isValid() )
-            .map( obs => mapObservation( obs, isDefaultMode ) );
+            .map( mapObservation );
         } else {
-          const modifiedUuids = newModifications
-            .map( index => localObservations[index] )
-            .filter( obs => obs?.isValid() )
-            .map( obs => obs.uuid );
+          const modifiedUuids = new Set(
+            newModifications
+              .map( index => localObservations[index] )
+              .filter( obs => obs?.isValid() )
+              .map( obs => obs.uuid ),
+          );
 
           const previousObsByUuid = Object.fromEntries(
             prevListRef.current.list.map( obs => [obs.uuid, obs] ),
@@ -89,7 +91,7 @@ const useLocalObservations = ( ): Object => {
           mappedObservations = Array.from( filteredObservations )
             .filter( obs => obs.isValid() )
             .map( obs => {
-              if ( modifiedUuids.includes( obs.uuid ) ) {
+              if ( modifiedUuids.has( obs.uuid ) ) {
                 return mapObservation( obs, currentIsDefaultMode );
               }
               return previousObsByUuid[obs.uuid] ?? mapObservation( obs, currentIsDefaultMode );
