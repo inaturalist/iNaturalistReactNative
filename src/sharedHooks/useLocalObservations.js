@@ -8,9 +8,7 @@ import {
 import Observation from "realmModels/Observation";
 import useStore from "stores/useStore";
 
-function isDefaultMode( ) {
-  return useStore.getState( ).layout.isDefaultMode === true;
-}
+import useLayoutPrefs from "./useLayoutPrefs";
 
 const { useRealm } = RealmContext;
 
@@ -21,9 +19,6 @@ const sortedFilters = [["needs_sync", true], ["_created_at", true]];
 
 const useLocalObservations = ( ): Object => {
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
-  // Use refs to maintain state without triggering re-renders of hook consumers
-  // when they have lost focus, which prevents other
-  // views from rendering when they have focus.
   const [observationList, setObservationList] = useState( [] );
 
   const prevListRef = useRef( {
@@ -32,6 +27,8 @@ const useLocalObservations = ( ): Object => {
     unsyncedCount: 0,
     isDefaultMode: null,
   } );
+
+  const { isDefaultMode } = useLayoutPrefs();
 
   const realm = useRealm( );
 
@@ -49,7 +46,6 @@ const useLocalObservations = ( ): Object => {
         .sorted( sortedFilters );
 
       const unsyncedCount = Observation.filterUnsyncedObservations( realm ).length;
-      const currentIsDefaultMode = isDefaultMode( );
 
       // limit list updates to when there are actual realm changes
       if ( ( insertions.length > 0
@@ -57,7 +53,7 @@ const useLocalObservations = ( ): Object => {
           || deletions.length > 0 )
         || filteredObservations.length !== prevListRef.current.count
         || unsyncedCount !== prevListRef.current.unsyncedCount
-        || currentIsDefaultMode !== prevListRef.current.isDefaultMode
+        || isDefaultMode !== prevListRef.current.isDefaultMode
       ) {
         // amanda 20250522: React Native works best when minimal data is passed to components,
         // so there aren't costly rerenders. these data transformations ensure the UI is getting
@@ -65,13 +61,13 @@ const useLocalObservations = ( ): Object => {
         // or actual Realm objects, which is especially helpful since we're doing an absurd amount
         // of prop drilling in MyObservations
 
-        const mapObservation = currentIsDefaultMode
+        const mapObservation = isDefaultMode
           ? Observation.mapObservationForMyObsDefaultMode
           : Observation.mapObservationForMyObsAdvancedMode;
 
         let mappedObservations;
 
-        if ( currentIsDefaultMode !== prevListRef.current.isDefaultMode ) {
+        if ( isDefaultMode !== prevListRef.current.isDefaultMode ) {
           // Mode change requires full remap
           mappedObservations = Array.from( filteredObservations )
             .filter( obs => obs.isValid() )
@@ -92,9 +88,9 @@ const useLocalObservations = ( ): Object => {
             .filter( obs => obs.isValid() )
             .map( obs => {
               if ( modifiedUuids.has( obs.uuid ) ) {
-                return mapObservation( obs, currentIsDefaultMode );
+                return mapObservation( obs );
               }
-              return previousObsByUuid[obs.uuid] ?? mapObservation( obs, currentIsDefaultMode );
+              return previousObsByUuid[obs.uuid] ?? mapObservation( obs );
             } );
         }
 
@@ -105,7 +101,7 @@ const useLocalObservations = ( ): Object => {
           list: mappedObservations,
           count: filteredObservations.length,
           unsyncedCount,
-          isDefaultMode: currentIsDefaultMode,
+          isDefaultMode,
         };
       }
     };
@@ -117,7 +113,7 @@ const useLocalObservations = ( ): Object => {
         localObservations?.removeAllListeners( );
       }
     };
-  }, [realm, setNumUnuploadedObservations] );
+  }, [isDefaultMode, realm, setNumUnuploadedObservations] );
 
   return {
     observationList,
