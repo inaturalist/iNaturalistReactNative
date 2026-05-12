@@ -16,7 +16,7 @@ jest.mock( "@react-navigation/elements", () => ( {
     .mockImplementation( ( ) => mockHeaderBackButton ),
 } ) );
 
-jest.mock( "sharedHooks/useObservationLocation", () => ( {
+jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
   default: ( ) => ( {
     hasLocation: true,
