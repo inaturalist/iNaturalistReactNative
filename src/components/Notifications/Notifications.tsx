@@ -1,11 +1,10 @@
 import { NotificationOnboarding } from "components/OnboardingModal/PivotCards";
 import { Tabs } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import React, { useState } from "react";
 import { EventRegister } from "react-native-event-listeners";
-import {
-  useCurrentUser, useLayoutPrefs, useLocalObservations, useTranslation,
-} from "sharedHooks";
+import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
 
 import NotificationsContainer from "./NotificationsContainer";
 import NotificationsTab, {
@@ -13,6 +12,8 @@ import NotificationsTab, {
   OTHER_TAB,
   OWNER_TAB,
 } from "./NotificationsTab";
+
+const { useRealm } = RealmContext;
 
 const OWNER_TAB_PARAMS = { observations_by: "owner" } as const;
 const FOLLOWING_TAB_PARAMS = { observations_by: "following" } as const;
@@ -22,9 +23,9 @@ const Notifications = ( ) => {
   const { t } = useTranslation();
   const { isDefaultMode } = useLayoutPrefs( );
   const currentUser = useCurrentUser( );
-  const {
-    totalResults: totalResultsLocal,
-  } = useLocalObservations( );
+
+  const realm = useRealm();
+  const localObservationCount = realm.objects( "Observation" ).length;
 
   return (
     <View className="flex-1 bg-white">
@@ -60,7 +61,7 @@ const Notifications = ( ) => {
       )}
       <NotificationOnboarding
         triggerCondition={
-          isDefaultMode && !!currentUser && !!totalResultsLocal && totalResultsLocal < 10
+          isDefaultMode && !!currentUser && localObservationCount < 10
         }
       />
     </View>
