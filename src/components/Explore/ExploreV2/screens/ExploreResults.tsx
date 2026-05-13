@@ -12,7 +12,7 @@ import { View } from "components/styledComponents";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useMemo } from "react";
 
-const ExploreObservations = ( ) => {
+const ExploreResults = ( ) => {
   const { state } = useExploreV2( );
   const { isConnected } = useNetInfo( );
 
@@ -29,7 +29,7 @@ const ExploreObservations = ( ) => {
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
   return (
-    <ViewWrapper testID="ExploreObservations" wrapperClassName="overflow-hidden">
+    <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
         {/* eslint-disable-next-line i18next/no-literal-string */}
         <Body2>TODO: Header — MOB-1327</Body2>
@@ -52,4 +52,4 @@ const ExploreObservations = ( ) => {
   );
 };
 
-export default ExploreObservations;
+export default ExploreResults;
