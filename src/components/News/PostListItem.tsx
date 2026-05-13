@@ -13,7 +13,7 @@ import { useTranslation } from "sharedHooks";
 function stripBodyForExcerpt( body: string ): string {
   // Port of stringByStrippingHTML from NSString+Helpers.m from iNaturalistIOS
   // /<[^>]+>/g matches anything between < and >, e.g. "<p>Hello world</p>" => "Hello world".
-  return body.replace( /<[^>]+>/g, "" ).replace( /\n/g, "" ).trim( );
+  return body.replace( /<[^>]+>/g, "" ).replace( /\n/g, " " ).trim( );
 }
 
 interface Props {
