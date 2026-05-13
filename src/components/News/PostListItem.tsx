@@ -17,7 +17,7 @@ function stripBodyForExcerpt( body: string ): string {
 }
 
 interface Props {
-  item?: ApiPost | null;
+  item: ApiPost;
 }
 
 const PostListItem = ( {
