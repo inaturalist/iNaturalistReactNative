@@ -9,8 +9,11 @@ import React from "react";
 import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
-function stripHtmlForPreview( body: string ): string {
-  return body.replace( /<[^>]+>/g, " " ).replace( /\s+/g, " " ).trim( );
+// Similar to computeProperties in ExplorePost.m from iNaturalistIOS
+function stripBodyForExcerpt( body: string ): string {
+  // Port of stringByStrippingHTML from NSString+Helpers.m from iNaturalistIOS
+  // /<[^>]+>/g matches anything between < and >, e.g. "<p>Hello world</p>" => "Hello world".
+  return body.replace( /<[^>]+>/g, "" ).replace( /\n/g, "" ).trim( );
 }
 
 interface Props {
@@ -27,7 +30,7 @@ const PostListItem = ( {
   }
 
   const excerpt = item.body
-    ? stripHtmlForPreview( item.body )
+    ? stripBodyForExcerpt( item.body )
     : "";
 
   let bodyNumberOfLines = 3;
