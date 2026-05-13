@@ -18,10 +18,10 @@ export interface ApiPlace {
 }
 
 export interface ApiPost {
-  id?: number;
-  title?: string;
-  body?: string;
-  published_at?: string;
+  id: number;
+  title: string;
+  body: string;
+  published_at: string;
 }
 
 export interface ApiProject {
