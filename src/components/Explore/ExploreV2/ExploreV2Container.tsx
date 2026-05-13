@@ -7,7 +7,7 @@ import {
   ExploreV2Provider,
   useExploreV2,
 } from "providers/ExploreV2Context";
-import React, { useEffect, useEffectEvent, useRef } from "react";
+import React, { useEffect, useEffectEvent } from "react";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 
 const ExploreV2WithProvider = ( ) => {
@@ -15,8 +15,8 @@ const ExploreV2WithProvider = ( ) => {
   const {
     hasPermissions,
   } = useLocationPermission( );
-  const previousHasPermissions = useRef<boolean | undefined>( undefined );
-
+  // useEffectEvent is a new pattern for us, which we are adding only to new code for the moment
+  // https://github.com/inaturalist/iNaturalistReactNative/pull/3585#discussion_r3220223241
   const onPermissionsGained = useEffectEvent( async ( ) => {
     if ( state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED ) return;
 
@@ -43,12 +43,11 @@ const ExploreV2WithProvider = ( ) => {
 
   // handle location permission changes on Explore
   useEffect( ( ) => {
-    if ( hasPermissions === true && previousHasPermissions.current !== true ) {
+    if ( hasPermissions === true ) {
       onPermissionsGained( );
-    } else if ( hasPermissions === false && previousHasPermissions.current !== false ) {
+    } else if ( hasPermissions === false ) {
       onPermissionsDenied( );
     }
-    previousHasPermissions.current = hasPermissions;
   }, [hasPermissions] );
 
   return (
