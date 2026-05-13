@@ -9,6 +9,7 @@ describe( "markRecordUploaded", () => {
   let mockObsPhoto;
   let mockObsSound;
   let mockPhoto;
+  let mockSound;
   let mockResponse;
 
   beforeEach( () => {
@@ -17,6 +18,7 @@ describe( "markRecordUploaded", () => {
     mockObsPhoto = { uuid: "photo123", id: null, _synced_at: null };
     mockObsSound = { uuid: "sound123", id: null, _synced_at: null };
     mockPhoto = { id: null, _synced_at: null };
+    mockSound = { id: null, _synced_at: null };
 
     mockObservation = {
       uuid: "obs123",
@@ -94,6 +96,17 @@ describe( "markRecordUploaded", () => {
 
     expect( mockPhoto.id ).toBe( 12345 );
     expect( mockPhoto._synced_at ).toBeInstanceOf( Date );
+  } );
+
+  test( "should update a Sound record correctly with options.record", () => {
+    const options = { record: mockSound };
+
+    markRecordUploaded( "obs123", null, "Sound", mockResponse, mockRealm, options );
+
+    expect( safeRealmWrite ).toHaveBeenCalledTimes( 1 );
+
+    expect( mockSound.id ).toBe( 12345 );
+    expect( mockSound._synced_at ).toBeInstanceOf( Date );
   } );
 
   test( "should throw error when record is not found", () => {
