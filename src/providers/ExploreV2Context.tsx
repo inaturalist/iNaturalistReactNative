@@ -194,9 +194,9 @@ export const ExploreV2Provider = ( { children }: ExploreV2ProviderProps ) => {
   );
 
   return (
-    <ExploreV2Context.Provider value={value}>
+    <ExploreV2Context value={value}>
       {children}
-    </ExploreV2Context.Provider>
+    </ExploreV2Context>
   );
 };
 

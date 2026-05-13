@@ -10,13 +10,13 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
-import React, { useMemo } from "react";
+import React from "react";
 
 const ExploreResults = ( ) => {
   const { state } = useExploreV2( );
   const { isConnected } = useNetInfo( );
 
-  const queryParams = useMemo( () => buildExploreV2QueryParams( state ), [state] );
+  const queryParams = buildExploreV2QueryParams( state );
 
   const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED;
 
