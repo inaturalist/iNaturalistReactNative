@@ -15,7 +15,6 @@ import Help from "components/Help/Help";
 import Journal from "components/Journal/Journal";
 import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
-import News from "components/News/News";
 import Notifications from "components/Notifications/Notifications";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
@@ -69,11 +68,6 @@ const helpTitle = () => (
     {t( "HELP" )}
   </Heading4>
 );
-const newsTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "NEWS" )}
-  </Heading4>
-);
 const dqaTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
     {t( "DATA-QUALITY-ASSESSMENT" )}
@@ -122,7 +116,6 @@ const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
 const FadeInHelp = ( ) => fadeInComponent( <Help /> );
 const FadeInAbout = ( ) => fadeInComponent( <About /> );
 const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
-const FadeInNews = ( ) => fadeInComponent( <News /> );
 const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
 const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
 const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
@@ -376,13 +369,6 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           component={FadeInHelp}
           options={{
             headerTitle: helpTitle,
-          }}
-        />
-        <Stack.Screen
-          name="News"
-          component={FadeInNews}
-          options={{
-            headerTitle: newsTitle,
           }}
         />
       </Stack.Group>
