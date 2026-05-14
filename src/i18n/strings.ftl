@@ -1382,12 +1382,6 @@ x-failed =
         [one] { $count } failed
        *[other] { $count } failed
     }
-# Subtitle for a screen showing a list of journal posts
-X-JOURNAL_POSTS =
-    { $count ->
-        [one] { $count } JOURNAL POST
-       *[other] { $count } JOURNAL POSTS
-    }
 # Subtitle for a screen showing the list of followers a user has
 X-FOLLOWERS =
     { $count ->
@@ -1408,6 +1402,12 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+# Subtitle for a screen showing a list of journal posts
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 # Subheader for number of project members screen
 X-MEMBERS =
