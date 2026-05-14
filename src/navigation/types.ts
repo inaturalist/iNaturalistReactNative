@@ -255,6 +255,7 @@ export type BaseTabStackParamList = {
   // }
   Journal: {
     userLogin?: string;
+    projectTitle?: string;
     journalPostsCount?: number;
   };
   Debug: undefined;
