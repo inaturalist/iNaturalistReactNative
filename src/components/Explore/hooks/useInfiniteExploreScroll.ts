@@ -4,6 +4,7 @@ import type {
   ApiObservation,
   ApiObservationsSearchParams,
   ApiObservationsSearchResponse,
+  ApiTotalBounds,
 } from "api/types";
 import flatten from "lodash/flatten";
 import { useCallback, useMemo } from "react";
@@ -31,7 +32,7 @@ interface UseInfiniteExploreScrollReturn {
   handlePullToRefresh: ( ) => Promise<void>;
   observations: ApiObservation[];
   status: string;
-  totalBounds: object | undefined;
+  totalBounds: ApiTotalBounds | undefined;
   totalResults: number | null | undefined;
 }
 
@@ -43,7 +44,9 @@ const useInfiniteExploreScroll = (
   const baseParams = useMemo( () => ( {
     ...newInputParams,
     fields: {
+      // Same fields as MyObservations advanced list mode
       ...Observation.ADVANCED_MODE_LIST_FIELDS,
+      // Included for "exclude by current user" in explore filters
       user: {
         id: true,
         uuid: true,
