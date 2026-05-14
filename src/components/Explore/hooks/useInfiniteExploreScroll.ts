@@ -1,3 +1,4 @@
+import type { QueryStatus } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import type {
@@ -31,7 +32,7 @@ interface UseInfiniteExploreScrollReturn {
   isFetchingNextPage: boolean;
   handlePullToRefresh: ( ) => Promise<void>;
   observations: ApiObservation[];
-  status: "pending" | "error" | "success";
+  status: QueryStatus;
   totalBounds: ApiTotalBounds | undefined;
   totalResults: number | null;
 }
@@ -44,10 +45,10 @@ const useInfiniteExploreScroll = (
   const baseParams = useMemo( () => ( {
     ...newInputParams,
     fields: {
-      // Same fields as MyObservations advanced list mode
+      // the most data we display in the UI on any Observations view in Explore
+      // is the same amount of data we show for the Advanced list mode in MyObservations
       ...Observation.ADVANCED_MODE_LIST_FIELDS,
-      // Included for "exclude by current user" in explore filters
-      user: {
+      user: { // included here for "exclude by current user" in explore filters
         id: true,
         uuid: true,
         login: true,
