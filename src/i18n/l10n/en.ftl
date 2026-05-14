@@ -1117,6 +1117,8 @@ Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
+# Accessibility label for navigating to journal posts screen
+See-journal-posts = See journal posts
 # Accessibility label for Observations button on UserProfile screen
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 # Accessibility label for Explore button on TaxonDetails screen
