@@ -7,20 +7,20 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   classNames: string;
+  disabled?: boolean;
   label: string;
   onValueChange: ( newValue: boolean ) => void;
   testID: string;
   value: boolean;
-  disabled?: boolean;
 }
 
 const SwitchRow = ( {
   classNames,
+  disabled = false,
   label,
   onValueChange,
   testID,
   value,
-  disabled = false,
 }: Props ) => {
   const handlePress = ( _e: GestureResponderEvent ) => {
     if ( !disabled ) {
