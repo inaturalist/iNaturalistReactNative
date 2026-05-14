@@ -15,6 +15,7 @@ interface Props {
     body?: string;
     taxon: { id: number };
   };
+  loading?: boolean;
   onSuggestId: ( ) => void;
   editIdentBody: () => void;
   onPressClose?: () => void;
@@ -23,6 +24,7 @@ interface Props {
 const SuggestIDSheet = ( {
   hidden,
   identification,
+  loading,
   onSuggestId,
   editIdentBody,
   onPressClose,
@@ -66,6 +68,7 @@ const SuggestIDSheet = ( {
                 editIdentBody( );
               }}
               className="mx-2 flex-1"
+              disabled={loading}
               testID="SuggestID.EditCommentButton"
             />
           )
@@ -76,6 +79,7 @@ const SuggestIDSheet = ( {
                 editIdentBody( );
               }}
               className="mx-2 flex-1"
+              disabled={loading}
               testID="SuggestID.commentButton"
               accessibilityHint={t( "Opens-add-comment-form" )}
             />
@@ -86,6 +90,8 @@ const SuggestIDSheet = ( {
             onSuggestId( );
           }}
           className="mx-2 flex-1"
+          disabled={loading}
+          loading={loading}
           testID="SuggestIDSheet.cvSuggestionsButton"
           accessibilityRole="link"
           accessibilityHint={t( "Adds-ID" )}

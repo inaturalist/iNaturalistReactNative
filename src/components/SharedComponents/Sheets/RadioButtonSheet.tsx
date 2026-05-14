@@ -14,6 +14,7 @@ interface Props {
   confirmText?: string;
   headerText: string;
   insideModal?: boolean;
+  loading?: boolean;
   onPressClose?: ( ) => void;
   radioValues: Record<string, {
     value: string;
@@ -34,6 +35,7 @@ const RadioButtonSheet = ( {
   confirmText,
   headerText,
   insideModal,
+  loading,
   onPressClose,
   radioValues,
   selectedValue = "none",
@@ -81,7 +83,8 @@ const RadioButtonSheet = ( {
           onPress={( ) => {
             confirm( checkedValue );
           }}
-          disabled={!isDirty}
+          disabled={!isDirty || loading}
+          loading={loading}
           text={radioValues[checkedValue]?.buttonText ?? confirmLabel}
           accessibilityLabel={radioValues[checkedValue]?.buttonText ?? confirmLabel}
         />
