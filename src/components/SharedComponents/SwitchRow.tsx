@@ -11,15 +11,15 @@ import { Switch } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 interface Props {
+  classNames: string;
+  label: string;
+  onValueChange: ( newValue: boolean ) => void;
+  smallLabel: boolean;
+  testID: string;
   value: boolean;
-  classNames?: string;
   description?: string;
   icon?: string;
-  label?: string;
   labelComponent?: React.JSX.Element;
-  onValueChange: ( newValue: boolean ) => void;
-  smallLabel?: boolean;
-  testID?: string;
   disabled?: boolean;
 }
 
