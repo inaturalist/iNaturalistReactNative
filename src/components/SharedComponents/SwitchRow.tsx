@@ -55,13 +55,6 @@ const SwitchRow = ( {
       disabled={disabled}
     >
       <View className="flex-row items-center">
-        <Switch
-          value={value}
-          onValueChange={onValueChange}
-          disabled={disabled}
-          color={colors.inatGreen}
-          testID={`${testID || "Toggle"}.switch`}
-        />
         <View className="ml-3 flex-row w-5/6">
           {labelComponent || (
             <Label
@@ -73,6 +66,13 @@ const SwitchRow = ( {
           )}
           {icon && <INatIcon name={icon} size={19} color={colors.inatGreen} />}
         </View>
+        <Switch
+          value={value}
+          onValueChange={onValueChange}
+          disabled={disabled}
+          color={colors.inatGreen}
+          testID={`${testID || "Toggle"}.switch`}
+        />
       </View>
       {description && (
         <List2
