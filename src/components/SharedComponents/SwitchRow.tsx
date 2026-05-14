@@ -24,15 +24,15 @@ interface Props {
 }
 
 const SwitchRow = ( {
-  value,
   classNames,
-  description,
-  icon,
   label,
-  labelComponent,
   onValueChange,
   smallLabel = false,
   testID,
+  value,
+  description,
+  icon,
+  labelComponent,
   disabled = false,
 }: Props ) => {
   const handlePress = ( _e: GestureResponderEvent ) => {
