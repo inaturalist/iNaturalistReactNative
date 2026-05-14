@@ -49,7 +49,7 @@ const SwitchRow = ( {
       disabled={disabled}
     >
       <View className="flex-row items-center">
-        <View className="ml-3 flex-row w-5/6">
+        <View className="mr-3 flex-row flex-1">
           {labelComponent || (
             <Label
               maxFontSizeMultiplier={1.5}
