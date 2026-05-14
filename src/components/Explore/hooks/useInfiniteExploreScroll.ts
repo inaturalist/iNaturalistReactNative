@@ -98,12 +98,12 @@ const useInfiniteExploreScroll = (
 
   let observations: ApiObservation[] = flatten( pages?.map( r => r.results ) ) || [];
   let totalResults: number | null | undefined = pages?.[0]?.total_results;
+  let filtered = [];
 
   // filter out obs from excluded user and adjust count
   if ( excludedUser && observations ) {
-    observations = observations.filter(
-      observation => observation?.user?.id !== excludedUser.id,
-    );
+    filtered = observations.filter( observation => observation?.user?.id !== excludedUser.id );
+    observations = filtered;
   }
 
   if ( totalResults !== 0 && !totalResults ) {
