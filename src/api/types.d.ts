@@ -17,6 +17,13 @@ export interface ApiPlace {
   place_type?: number;
 }
 
+export interface ApiPost {
+  id: number;
+  title: string;
+  body: string;
+  published_at: string;
+}
+
 export interface ApiProject {
   icon?: string;
   id?: number;

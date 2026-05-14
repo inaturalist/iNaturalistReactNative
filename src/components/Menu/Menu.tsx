@@ -23,9 +23,10 @@ import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
 import {
-  useCurrentUser, useDebugMode,
+  useCurrentUser, useDebugMode, useFeatureFlag,
   useLayoutPrefs, useTranslation,
 } from "sharedHooks";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import MenuItem from "./MenuItem";
@@ -109,6 +110,7 @@ const Menu = ( ) => {
   const { isConnected } = useNetInfo( );
 
   const layoutPrefs = useLayoutPrefs();
+  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
   const [modalState, setModalState] = useState<MenuModalState | null>( null );
 
   const menuItems: Record<string, MenuOption> = {
@@ -338,6 +340,20 @@ const Menu = ( ) => {
               }}
             />
           ) )}
+          {newsEnabled && (
+            <MenuItem
+              item={{
+                label: t( "NEWS" ),
+                icon: "leaf",
+              }}
+              onPress={() => navigation.navigate( "TabNavigator", {
+                screen: "MenuTab",
+                params: {
+                  screen: "News",
+                },
+              } )}
+            />
+          )}
         </View>
       </View>
 
