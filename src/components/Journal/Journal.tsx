@@ -15,14 +15,14 @@ import {
 const Journal = ( ) => {
   const navigation = useNavigation<TabStackScreenProps<"Journal">["navigation"]>( );
   const { params } = useRoute<TabStackScreenProps<"Journal">["route"]>( );
-  const { journalPostsCount, projectTitle, userLogin } = params;
+  const { journalPostsCount, projectTitle, userLogin } = params || {};
   const { t } = useTranslation( );
 
   const headerOptions = useMemo(
     () => ( {
-      headerTitle: userLogin || projectTitle,
+      headerTitle: userLogin || projectTitle || t( "News" ),
       headerSubtitle: t( "X-JOURNAL_POSTS", {
-        count: journalPostsCount,
+        count: journalPostsCount || 0,
       } ),
     } ),
     [journalPostsCount, t, userLogin, projectTitle],
