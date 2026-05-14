@@ -18,7 +18,7 @@ const Journal = ( ) => {
   const { userLogin, journalPostsCount } = params;
   const { t } = useTranslation( );
 
-  const followersHeaderOptions = useMemo(
+  const headerOptions = useMemo(
     () => ( {
       headerTitle: userLogin,
       headerSubtitle: t( "X-JOURNAL_POSTS", {
@@ -29,8 +29,8 @@ const Journal = ( ) => {
   );
 
   useEffect( ( ) => {
-    navigation.setOptions( followersHeaderOptions );
-  }, [followersHeaderOptions, navigation] );
+    navigation.setOptions( headerOptions );
+  }, [headerOptions, navigation] );
 
   return (
     <ViewWrapper useTopInset={false}>
