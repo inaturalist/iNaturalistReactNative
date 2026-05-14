@@ -31,9 +31,9 @@ interface UseInfiniteExploreScrollReturn {
   isFetchingNextPage: boolean;
   handlePullToRefresh: ( ) => Promise<void>;
   observations: ApiObservation[];
-  status: string;
+  status: "pending" | "error" | "success";
   totalBounds: ApiTotalBounds | undefined;
-  totalResults: number | null | undefined;
+  totalResults: number | null;
 }
 
 const useInfiniteExploreScroll = (
