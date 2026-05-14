@@ -1,7 +1,4 @@
-import {
-  Body1,
-  Body2,
-} from "components/SharedComponents";
+import { Body2 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 import type { GestureResponderEvent } from "react-native";
@@ -12,10 +9,8 @@ interface Props {
   classNames: string;
   label: string;
   onValueChange: ( newValue: boolean ) => void;
-  smallLabel: boolean;
   testID: string;
   value: boolean;
-  labelComponent?: React.JSX.Element;
   disabled?: boolean;
 }
 
@@ -23,10 +18,8 @@ const SwitchRow = ( {
   classNames,
   label,
   onValueChange,
-  smallLabel = false,
   testID,
   value,
-  labelComponent,
   disabled = false,
 }: Props ) => {
   const handlePress = ( _e: GestureResponderEvent ) => {
@@ -34,10 +27,6 @@ const SwitchRow = ( {
       onValueChange( !value );
     }
   };
-
-  const Label = smallLabel
-    ? Body2
-    : Body1;
 
   return (
     <Pressable
@@ -50,13 +39,11 @@ const SwitchRow = ( {
     >
       <View className="flex-row items-center">
         <View className="mr-3 flex-row flex-1">
-          {labelComponent || (
-            <Label
-              maxFontSizeMultiplier={1.5}
-            >
-              {label}
-            </Label>
-          )}
+          <Body2
+            maxFontSizeMultiplier={1.5}
+          >
+            {label}
+          </Body2>
         </View>
         <Switch
           value={value}
