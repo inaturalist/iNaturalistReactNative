@@ -1,7 +1,6 @@
 import {
   Body1,
   Body2,
-  INatIcon,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
@@ -16,7 +15,6 @@ interface Props {
   smallLabel: boolean;
   testID: string;
   value: boolean;
-  icon?: string;
   labelComponent?: React.JSX.Element;
   disabled?: boolean;
 }
@@ -28,7 +26,6 @@ const SwitchRow = ( {
   smallLabel = false,
   testID,
   value,
-  icon,
   labelComponent,
   disabled = false,
 }: Props ) => {
@@ -61,7 +58,6 @@ const SwitchRow = ( {
               {label}
             </Label>
           )}
-          {icon && <INatIcon name={icon} size={19} color={colors.inatGreen} />}
         </View>
         <Switch
           value={value}
