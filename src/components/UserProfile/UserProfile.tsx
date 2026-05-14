@@ -180,12 +180,18 @@ const UserProfile = ( ) => {
           </Heading4>
           <Button
             text={t( "VIEW-FOLLOWERS" )}
-            onPress={( ) => navigation.navigate( "FollowersList", { user } )}
+            onPress={( ) => navigation.navigate( "FollowersList", {
+              userId,
+              userLogin: user.login,
+            } )}
           />
           <Button
             className="mt-6"
             text={t( "VIEW-FOLLOWING" )}
-            onPress={( ) => navigation.navigate( "FollowingList", { user } )}
+            onPress={( ) => navigation.navigate( "FollowingList", {
+              userId,
+              userLogin: user.login,
+            } )}
           />
         </View>
         <Body2 className="mb-5">

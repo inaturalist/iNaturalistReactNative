@@ -241,12 +241,12 @@ export type BaseTabStackParamList = {
     userLogin?: string;
   };
   FollowersList: {
-    // TODO: don't send the entire user object over here, only an ID or ID+login
-    user: ApiUser;
+    userId: number;
+    userLogin: string;
   };
   FollowingList: {
-    // TODO: don't send the entire user object over here, only an ID or ID+login
-    user: ApiUser;
+    userId: number;
+    userLogin: string;
   };
   Debug: undefined;
   UILibrary: undefined;
