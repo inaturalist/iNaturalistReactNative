@@ -2,7 +2,6 @@ import {
   Body1,
   Body2,
   INatIcon,
-  List2,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
@@ -17,7 +16,6 @@ interface Props {
   smallLabel: boolean;
   testID: string;
   value: boolean;
-  description?: string;
   icon?: string;
   labelComponent?: React.JSX.Element;
   disabled?: boolean;
@@ -30,7 +28,6 @@ const SwitchRow = ( {
   smallLabel = false,
   testID,
   value,
-  description,
   icon,
   labelComponent,
   disabled = false,
@@ -74,14 +71,6 @@ const SwitchRow = ( {
           testID={`${testID || "Toggle"}.switch`}
         />
       </View>
-      {description && (
-        <List2
-          maxFontSizeMultiplier={1.5}
-          className="ml-[32px] mt-[3px]"
-        >
-          {description}
-        </List2>
-      )}
     </Pressable>
   );
 };
