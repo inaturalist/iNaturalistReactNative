@@ -21,7 +21,7 @@ const Journal = ( ) => {
   const followersHeaderOptions = useMemo(
     () => ( {
       headerTitle: userLogin,
-      headerSubtitle: t( "X-FOLLOWERS", {
+      headerSubtitle: t( "X-JOURNAL_POSTS", {
         count: journalPostsCount,
       } ),
     } ),

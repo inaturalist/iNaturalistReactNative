@@ -1403,6 +1403,12 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
+# Subtitle for a screen showing a list of journal posts
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
+    }
 # Subheader for number of project members screen
 X-MEMBERS =
     { $count ->
