@@ -148,6 +148,54 @@ describe( "exploreV2Reducer", ( ) => {
       expect( next.location.place ).toEqual( place );
     } );
 
+    it( "SET_LOCATION_NEEDS_PERMISSION transitions from UNINITIALIZED", ( ) => {
+      const next = exploreV2Reducer( initialExploreV2State, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION,
+      } );
+      expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION );
+    } );
+
+    it( "SET_LOCATION_NEEDS_PERMISSION preserves subject, sortBy, and filters", ( ) => {
+      const state = {
+        subject: { type: "taxon", taxon: { id: 42 } },
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED },
+        sortBy: EXPLORE_V2_SORT.MOST_FAVED,
+        filters: { quality_grade: "research" },
+      };
+      const next = exploreV2Reducer( state, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION,
+      } );
+      expect( next.subject ).toEqual( state.subject );
+      expect( next.sortBy ).toBe( state.sortBy );
+      expect( next.filters ).toEqual( state.filters );
+    } );
+
+    it( "SET_LOCATION_NEARBY transitions from NEEDS_PERMISSION with coords", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION },
+      };
+      const next = exploreV2Reducer( state, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY,
+        lat: 37.5,
+        lng: -122.1,
+        radius: 1,
+      } );
+      expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.NEARBY );
+      expect( next.location.lat ).toBe( 37.5 );
+    } );
+
+    it( "SET_LOCATION_WORLDWIDE transitions from NEEDS_PERMISSION", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION },
+      };
+      const next = exploreV2Reducer( state, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE,
+      } );
+      expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.WORLDWIDE );
+    } );
+
     it( "preserves subject, sortBy, and filters when changing location", ( ) => {
       const state = {
         subject: { type: "taxon", taxon: { id: 42 } },
