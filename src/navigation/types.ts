@@ -262,7 +262,7 @@ export type BaseTabStackParamList = {
     userLogin?: string;
     projectTitle?: string;
     journalPostsCount?: number;
-  };
+  } | undefined;
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;
