@@ -253,6 +253,11 @@ export type BaseTabStackParamList = {
   //   userLogin: user?.login,
   //   journalPostsCount: user?.journal_posts_count,
   // }
+  // From ProjectDetails
+  // {
+  //   projectTitle: project?.title,
+  //   journalPostsCount: project?.journal_posts_count,
+  // }
   Journal: {
     userLogin?: string;
     projectTitle?: string;
