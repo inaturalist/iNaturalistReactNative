@@ -8,6 +8,7 @@ import React from "react";
 import PostList from "./PostList";
 
 const News = ( ) => {
+  // https://linear.app/inaturalist/issue/MOB-1424/fetch-live-posts
   // const currentUser = useCurrentUser( );
   // const { data: posts, isLoading: isLoadingPosts } = useAuthenticatedQuery(
   //   ["fetchUserPosts"],
