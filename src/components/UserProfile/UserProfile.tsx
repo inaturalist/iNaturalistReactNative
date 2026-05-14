@@ -123,6 +123,13 @@ const UserProfile = ( ) => {
     } );
   };
 
+  const onJournalPostsPressed = ( ) => {
+    navigation.navigate( "Journal", {
+      userLogin: user?.login,
+      journalPostsCount: user?.journal_posts_count,
+    } );
+  };
+
   return (
     <ScrollViewWrapper testID="UserProfile">
       <View
@@ -142,6 +149,7 @@ const UserProfile = ( ) => {
         counts={user}
         onObservationPressed={onObservationPressed}
         onSpeciesPressed={onSpeciesPressed}
+        onJournalPostsPressed={onJournalPostsPressed}
       />
       <View className="mx-3">
         {currentUser?.login !== user?.login && (
