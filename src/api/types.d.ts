@@ -195,6 +195,7 @@ export interface ApiSuggestion {
 
 export interface ApiObservationsSearchResponse extends ApiResponse {
   results: ApiObservation[];
+  total_bounds?: object;
 }
 
 export const ORDER_BY_CREATED_AT = "created_at";

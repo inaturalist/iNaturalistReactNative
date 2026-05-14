@@ -1,7 +1,10 @@
-// @flow
-
 import { useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
+import type {
+  ApiObservation,
+  ApiObservationsSearchParams,
+  ApiObservationsSearchResponse,
+} from "api/types";
 import flatten from "lodash/flatten";
 import { useCallback, useMemo } from "react";
 import Observation from "realmModels/Observation";
@@ -12,16 +15,36 @@ import {
   getNextPageParamForExplore,
 } from "../helpers/exploreParams";
 
-const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object ): Object => {
+interface ExcludeUser {
+  id: number;
+}
+
+interface UseInfiniteExploreScrollParams {
+  params: ApiObservationsSearchParams & { excludeUser?: ExcludeUser };
+  enabled: boolean;
+}
+
+interface UseInfiniteExploreScrollReturn {
+  fetchNextPage: ( ) => void;
+  isLoading: boolean;
+  isFetchingNextPage: boolean;
+  handlePullToRefresh: ( ) => Promise<void>;
+  observations: ApiObservation[];
+  status: string;
+  totalBounds: object | undefined;
+  totalResults: number | null | undefined;
+}
+
+const useInfiniteExploreScroll = (
+  { params: newInputParams, enabled }: UseInfiniteExploreScrollParams,
+): UseInfiniteExploreScrollReturn => {
   const queryClient = useQueryClient( );
 
   const baseParams = useMemo( () => ( {
     ...newInputParams,
     fields: {
-      // the most data we display in the UI on any Observations view in Explore
-      // is the same amount of data we show for the Advanced list mode in MyObservations
       ...Observation.ADVANCED_MODE_LIST_FIELDS,
-      user: { // included here for "exclude by current user" in explore filters
+      user: {
         id: true,
         uuid: true,
         login: true,
@@ -30,12 +53,15 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     ttl: -1,
   } ), [newInputParams] );
 
-  const excludedUser = newInputParams.excludeUser;
+  const excludedUser: ExcludeUser | undefined = newInputParams.excludeUser;
 
   const queryKey = ["useInfiniteExploreScroll", newInputParams];
 
   const getNextPageParam = useCallback(
-    lastPage => getNextPageParamForExplore( lastPage, baseParams ),
+    ( lastPage: ApiObservationsSearchResponse ) => getNextPageParamForExplore(
+      lastPage,
+      baseParams,
+    ),
     [baseParams],
   );
 
@@ -64,14 +90,15 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     await refetch( );
   };
 
-  let observations = flatten( data?.pages?.map( r => r.results ) ) || [];
-  let totalResults = data?.pages?.[0].total_results;
-  let filtered = [];
+  const pages = data?.pages as ApiObservationsSearchResponse[] | undefined;
 
-  // filter out obs from excluded user and adjust count
+  let observations: ApiObservation[] = flatten( pages?.map( r => r.results ) ) || [];
+  let totalResults: number | null | undefined = pages?.[0]?.total_results;
+
   if ( excludedUser && observations ) {
-    filtered = observations.filter( observation => observation?.user.id !== excludedUser.id );
-    observations = filtered;
+    observations = observations.filter(
+      observation => observation?.user?.id !== excludedUser.id,
+    );
   }
 
   if ( totalResults !== 0 && !totalResults ) {
@@ -85,7 +112,7 @@ const useInfiniteExploreScroll = ( { params: newInputParams, enabled }: Object )
     handlePullToRefresh,
     observations,
     status,
-    totalBounds: data?.pages?.[0].total_bounds,
+    totalBounds: pages?.[0]?.total_bounds,
     totalResults,
   };
 };
