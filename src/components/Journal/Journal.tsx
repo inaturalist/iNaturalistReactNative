@@ -13,8 +13,8 @@ import {
 } from "sharedHooks";
 
 const Journal = ( ) => {
-  const navigation = useNavigation <TabStackScreenProps<"Journal">["navigation"]>( );
-  const { params } = useRoute( );
+  const navigation = useNavigation<TabStackScreenProps<"Journal">["navigation"]>( );
+  const { params } = useRoute<TabStackScreenProps<"Journal">["route"]>( );
   const { userLogin, journalPostsCount } = params;
   const { t } = useTranslation( );
 
