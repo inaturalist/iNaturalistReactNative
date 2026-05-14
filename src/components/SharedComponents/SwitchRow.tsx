@@ -53,7 +53,6 @@ const SwitchRow = ( {
           {labelComponent || (
             <Label
               maxFontSizeMultiplier={1.5}
-              className="mr-2"
             >
               {label}
             </Label>
