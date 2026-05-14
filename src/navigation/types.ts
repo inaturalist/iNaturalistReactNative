@@ -248,6 +248,10 @@ export type BaseTabStackParamList = {
     // TODO: don't send the entire user object over here, only an ID or ID+login
     user: ApiUser;
   };
+  Journal: {
+    // TODO: don't send the entire user object over here, only an ID or ID+login
+    user: ApiUser;
+  };
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;
