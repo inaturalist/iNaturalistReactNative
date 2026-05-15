@@ -14,7 +14,7 @@ import { t } from "i18next";
 import isEmpty from "lodash/isEmpty";
 import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
-import type { RealmTaxon, RealmUser } from "realmModels/types";
+import type { RealmTaxon } from "realmModels/types";
 
 interface Props {
   currentUserId?: number;
@@ -23,10 +23,6 @@ interface Props {
   item: {
     // TODO: check if this is a live realm object or a pojo at this point
     taxon: RealmTaxon;
-    // TODO: check if this is a live realm object or a pojo at this point
-    user: RealmUser;
-    hidden: boolean;
-    body?: string;
   };
   // TODO: check if this is a live realm object or a pojo at this point
   openAgreeWithIdSheet: ( taxon: RealmTaxon ) => void;
