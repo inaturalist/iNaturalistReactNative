@@ -12,6 +12,7 @@ import {
 } from "components/styledComponents";
 import { t } from "i18next";
 import isEmpty from "lodash/isEmpty";
+import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 import type { RealmTaxon, RealmUser } from "realmModels/types";
 
@@ -52,8 +53,8 @@ const ActivityItem = ( {
   showExplainerText = false,
   showStatus,
 }: Props ) => {
-  const navigation = useNavigation( );
-  const route = useRoute( );
+  const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
+  const route = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
   const { taxon, user, disagreement } = item;
   const isCurrent = item.current !== undefined
     ? item.current
