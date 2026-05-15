@@ -4,7 +4,9 @@ import {
 } from "@react-native-community/netinfo";
 import Slider from "@react-native-community/slider";
 import { useFocusEffect } from "@react-navigation/native";
-import { Body1, INatIconButton, OfflineNotice } from "components/SharedComponents";
+import {
+  Body1, Body2, Body4, INatIconButton, OfflineNotice,
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
   useCallback,
@@ -51,6 +53,7 @@ interface SoundContainerProps {
   sizeClass: string;
   sound: {
     file_url: string;
+    hidden: boolean;
   };
 }
 
@@ -199,6 +202,20 @@ const SoundContainer = ( {
       playSound( );
     }
   }, [autoPlay, isVisible, playSound] );
+
+  if ( sound.hidden ) {
+    return (
+      <View className={`${sizeClass} items-center justify-center`}>
+        <View className="flex-row justify-center mb-2">
+          {/* Placeholder for eye icon */}
+          <Body2 className="text-white">{t( "Content-Hidden" )}</Body2>
+        </View>
+        <Body4 className="text-white">
+          {t( "This-sound-was-removed-for-violating-community-guidelines" )}
+        </Body4>
+      </View>
+    );
+  }
 
   if ( isConnected === false && needsInternet ) {
     return (

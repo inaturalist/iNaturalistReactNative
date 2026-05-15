@@ -1267,6 +1267,7 @@ This-observation-needs-more-identifications-to-become-research-grade = This obse
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 This-photo-was-removed-for-violating-community-guidelines = This photo was removed for violating community guidelines.
+This-sound-was-removed-for-violating-community-guidelines = This sound was removed for violating community guidelines.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
