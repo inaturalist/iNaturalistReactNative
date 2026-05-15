@@ -20,10 +20,7 @@ interface Props {
   currentUserId?: number;
   isFirstDisplay: boolean;
   isConnected: boolean;
-  item: {
-    // TODO: check if this is a live realm object or a pojo at this point
-    taxon: RealmTaxon;
-  };
+  item: object;
   // TODO: check if this is a live realm object or a pojo at this point
   openAgreeWithIdSheet: ( taxon: RealmTaxon ) => void;
   refetchRemoteObservation: ( ) => void;
