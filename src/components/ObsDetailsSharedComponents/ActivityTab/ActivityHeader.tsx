@@ -23,7 +23,7 @@ interface Props {
   item: object;
   loading: boolean;
   showStatus?: boolean;
-  updateCommentBody: ( textInput: string ) => void;
+  updateCommentBody: ( textInput: string | undefined ) => void;
   updateIdentification: ( { current }: { current: boolean } ) => void;
   geoprivacy: string;
   taxonGeoprivacy: string;
@@ -178,7 +178,7 @@ const ActivityHeader = ( {
             onPressClose={() => setShowEditCommentSheet( false )}
             headerText={t( "EDIT-COMMENT" )}
             initialInput={item.body}
-            confirm={( textInput: string ) => updateCommentBody( textInput )}
+            confirm={( textInput: string | undefined ) => updateCommentBody( textInput )}
           />
         )}
         {( currentUser && showDeleteCommentSheet ) && (
