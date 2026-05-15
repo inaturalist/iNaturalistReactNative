@@ -13,14 +13,16 @@ import {
 import { t } from "i18next";
 import isEmpty from "lodash/isEmpty";
 import React from "react";
+import type { RealmTaxon } from "realmModels/types";
 
 interface Props {
   currentUserId?: number;
   isFirstDisplay: boolean;
   isConnected: boolean;
   item: object;
-  openAgreeWithIdSheet: Function;
-  refetchRemoteObservation: Function;
+  // TODO: check if this is a live realm object or a pojo at this point
+  openAgreeWithIdSheet: ( taxon: RealmTaxon ) => void;
+  refetchRemoteObservation: ( ) => void;
   userAgreedId?: string;
   geoprivacy: string;
   taxonGeoprivacy: string;
