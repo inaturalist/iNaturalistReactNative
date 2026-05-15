@@ -11,6 +11,7 @@ class Sound extends Realm.Object {
     attribution: true,
     license_code: true,
     file_url: true,
+    hidden: true,
   } as const;
 
   static schema = {
@@ -27,6 +28,7 @@ class Sound extends Realm.Object {
       attribution: "string?",
       license_code: { type: "string", mapTo: "licenseCode", optional: true },
       file_url: "string?",
+      hidden: "bool?",
     },
   };
 
