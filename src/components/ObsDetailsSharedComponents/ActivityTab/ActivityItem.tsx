@@ -14,16 +14,14 @@ import { t } from "i18next";
 import isEmpty from "lodash/isEmpty";
 import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
-import type { RealmTaxon } from "realmModels/types";
 
 interface Props {
   currentUserId?: number;
   isFirstDisplay: boolean;
   isConnected: boolean;
   item: object;
-  // TODO: check if this is a live realm object or a pojo at this point
-  openAgreeWithIdSheet: ( taxon: RealmTaxon ) => void;
-  refetchRemoteObservation: ( ) => void;
+  openAgreeWithIdSheet: Function;
+  refetchRemoteObservation: Function;
   userAgreedId?: string;
   geoprivacy: string;
   taxonGeoprivacy: string;
