@@ -17,6 +17,7 @@ import {
   useExploreV2,
 } from "providers/ExploreV2Context";
 import React, { useState } from "react";
+import useDebugMode from "sharedHooks/useDebugMode";
 import { getShadow } from "styles/global";
 
 const TAXA = [
@@ -86,8 +87,11 @@ const Section = ( { title, children }: SectionProps ) => (
 );
 
 const ExploreV2DebugSheet = ( ) => {
+  const { isDebug } = useDebugMode( );
   const { state, dispatch } = useExploreV2();
   const [visible, setVisible] = useState( false );
+
+  if ( !isDebug ) return null;
 
   const queryParams = buildExploreV2QueryParams( state );
 
