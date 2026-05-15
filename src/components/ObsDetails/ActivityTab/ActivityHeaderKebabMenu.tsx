@@ -15,7 +15,7 @@ interface Props {
   updateIdentification: ( { current }: { current: boolean } ) => void;
 }
 
-const ActivityItemKebabMenu = ( {
+const ActivityHeaderKebabMenu = ( {
   current,
   currentUser,
   itemType,
@@ -91,4 +91,4 @@ const ActivityItemKebabMenu = ( {
   );
 };
 
-export default ActivityItemKebabMenu;
+export default ActivityHeaderKebabMenu;
