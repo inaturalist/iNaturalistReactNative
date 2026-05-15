@@ -150,6 +150,8 @@ attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = August
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
+Blog = Blog
+BLOG = BLOG
 # Accessibility label for bulk import / photo import button
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 # iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
@@ -786,8 +788,6 @@ Needs-ID--quality-grade = Needs ID
 New-Observation = New Observation
 # Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
-Blog = Blog
-BLOG = BLOG
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
