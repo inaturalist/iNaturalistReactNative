@@ -77,6 +77,7 @@ export interface RealmTaxon extends RealmObject {
   ancestor_ids?: number[];
   _synced_at?: Date;
   taxonPhotos?: RealmTaxonPhoto[];
+  is_active?: boolean;
 }
 
 export interface RealmUser extends RealmObject {
