@@ -9,10 +9,12 @@ import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreFiltersContainer from "components/Explore/ExploreFiltersContainer";
 import ExploreSearchContainer from "components/Explore/ExploreSearchContainer";
+import ExploreV2Container from "components/Explore/ExploreV2/ExploreV2Container";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import Help from "components/Help/Help";
 import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
+import News from "components/News/News";
 import Notifications from "components/Notifications/Notifications";
 import DQAContainer from "components/ObsDetails/DQAContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
@@ -45,6 +47,8 @@ import React from "react";
 import {
   useLayoutPrefs,
 } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
@@ -62,6 +66,11 @@ const donateTitle = () => (
 const helpTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
     {t( "HELP" )}
+  </Heading4>
+);
+const newsTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "NEWS" )}
   </Heading4>
 );
 const dqaTitle = () => (
@@ -93,8 +102,6 @@ const uiLibTitle = () => <Heading4 className="text-white">UI LIBRARY</Heading4>;
 const uiLibItemTitle = () => <Heading4 className="text-white">UI LIBRARY ITEM</Heading4>;
 // eslint-disable-next-line i18next/no-literal-string
 const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
-// eslint-disable-next-line i18next/no-literal-string
-const legacyLogTitle = () => <Heading4 className="text-white">LOG (LEGACY)</Heading4>;
 
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
@@ -114,6 +121,7 @@ const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
 const FadeInHelp = ( ) => fadeInComponent( <Help /> );
 const FadeInAbout = ( ) => fadeInComponent( <About /> );
 const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
+const FadeInNews = ( ) => fadeInComponent( <News /> );
 const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
 const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
 const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
@@ -172,6 +180,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
   const {
     isDefaultMode,
   } = useLayoutPrefs( );
+  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
   return (
     <Stack.Navigator
       initialRouteName={initialRouteName}
@@ -199,7 +208,9 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         />
         <Stack.Screen
           name={SCREEN_NAME_ROOT_EXPLORE}
-          component={RootExploreContainer}
+          component={exploreV2Enabled
+            ? ExploreV2Container
+            : RootExploreContainer}
           options={{
             ...preventSwipeToGoBack,
             animation: "none",
@@ -322,11 +333,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         <Stack.Screen
           component={Log}
           name="Log"
-          options={( { route } ) => ( {
-            headerTitle: route?.params?.isLegacyLogs
-              ? legacyLogTitle
-              : logTitle,
-          } )}
+          options={( { headerTitle: logTitle } )}
         />
       </Stack.Group>
       {/* Header with no bottom border */}
@@ -362,6 +369,13 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           component={FadeInHelp}
           options={{
             headerTitle: helpTitle,
+          }}
+        />
+        <Stack.Screen
+          name="News"
+          component={FadeInNews}
+          options={{
+            headerTitle: newsTitle,
           }}
         />
       </Stack.Group>

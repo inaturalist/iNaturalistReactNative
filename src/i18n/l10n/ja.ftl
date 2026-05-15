@@ -363,6 +363,7 @@ If-you-want-to-collate-compare-promote =
     既存のプロジェクトをまとめたり、比較したり、広く紹介したりしたい場合は、「アンブレラプロジェクト」を使うのが適しています。
     たとえば、2018年の City Nature Challenge では、 60 以上のプロジェクトをまとめて、各都市の観察結果を比較できる便利なランディングページを作りました。アンブレラプロジェクトには、コレクション型プロジェクトもトラディショナル型プロジェクトも利用できます。
     また、最大 500 件までのプロジェクトをまとめることが可能です。
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error =
     もしこれを見ていてオンラインであれば、iNatスタッフにはすでに通知されています。バグを見つけてくださってありがとうございます。
     オフラインの場合は、スクリーンショットを撮って、インターネットに再接続した際にメールで送ってください。
@@ -593,6 +594,7 @@ Please-allow-Microphone-Access = Please allow Microphone Access
 Please-choose-a-different-password = Please choose a different password.
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
+Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Please make sure your password is at least 6 characters.
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
 Please-try-again-when-you-are-online = Please try again when you are online!
@@ -823,6 +825,7 @@ Sync-observations = Sync observations
 Syncing = 同期中...
 Take-photo = Take photo
 Take-photos = Take photos
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 Taxa = 分類群
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
@@ -843,7 +846,6 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNat
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = 視覚的な類似性と位置に基づいて種を推定するモデルは、サラ・ビーリー、トム・ブルックス、イライジャ・コール、クリスチャン・ランゲ、オイシン・マック・アオダ、ピエトロ・ペローナ、グラント・ヴァン・ホーンとの共同研究のおかげです。
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!

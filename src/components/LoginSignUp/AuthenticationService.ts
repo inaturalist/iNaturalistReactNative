@@ -25,13 +25,16 @@ import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
 import { getInstallID } from "sharedHelpers/installData";
-import { legacyLogfilePath, log, logWithoutRemote } from "sharedHelpers/logger";
+import { log, logFileDirectory, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
-import { unlink } from "sharedHelpers/util";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useStore from "stores/useStore";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
+
+function isDebugModeSync( ): boolean {
+  return useStore.getState().layout.debugModeEnabled === true;
+}
 
 const logger = log.extend( "AuthenticationService" );
 // The remote transport in the default logger uses many of the methods in this
@@ -98,7 +101,7 @@ async function getSensitiveItem(
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const getItemError = e as SensitiveInfoError;
-      if ( isDebugMode() ) {
+      if ( isDebugModeSync() ) {
         switch ( getItemError.code ) {
           case ErrorCode.NOT_FOUND:
             // Value doesn't exist
@@ -129,7 +132,7 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const setItemError = e as SensitiveInfoError;
-      if ( isDebugMode( ) ) {
+      if ( isDebugModeSync( ) ) {
         localLogger.info(
           `RNSInfo.setItem error for ${key}, ${setItemError.code} ${setItemError.message}`,
         );
@@ -152,7 +155,7 @@ async function deleteSensitiveItem(
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const deleteItemError = e as SensitiveInfoError;
-      if ( isDebugMode() ) {
+      if ( isDebugModeSync() ) {
         localLogger.info(
           `RNSInfo.deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`,
         );
@@ -242,13 +245,15 @@ const signOut = async (
   await deleteSensitiveItem( "jwtGeneratedAt" );
   await deleteSensitiveItem( "username" );
   await deleteSensitiveItem( "accessToken" );
-  await unlink( legacyLogfilePath );
+
   // clear all directories containing user generated data within Documents Directory
   await removeAllFilesFromDirectory( computerVisionPath );
   await removeAllFilesFromDirectory( photoLibraryPhotosPath );
   await removeAllFilesFromDirectory( photoUploadPath );
   await removeAllFilesFromDirectory( rotatedOriginalPhotosPath );
   await removeAllFilesFromDirectory( soundUploadPath );
+
+  await removeAllFilesFromDirectory( logFileDirectory );
 
   // delete all keys from mmkv
   zustandMMKVBackingStorage.clearAll( );
@@ -542,14 +547,21 @@ async function verifyCredentials(
   return afterVerifyCredentials( tokenResponse, apiClient );
 }
 
-async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Realm ) {
+export type AuthenticateUserResult =
+| { success: true; observationsCount?: number }
+| { success: false };
+
+async function afterAuthenticateUser(
+  userDetails: UserDetails | null,
+  realm: Realm,
+): Promise<AuthenticateUserResult> {
   if ( !userDetails ) {
-    return false;
+    return { success: false };
   }
 
   const { userId, username: remoteUsername, accessToken } = userDetails;
   if ( !userId ) {
-    return false;
+    return { success: false };
   }
 
   // Save authentication details to secure storage
@@ -586,7 +598,10 @@ async function afterAuthenticateUser( userDetails: UserDetails | null, realm: Re
     realm.create( "User", localUser, UpdateMode.Modified );
   }, "saving current user in AuthenticationService" );
   clearAuthCache( );
-  return true;
+  return {
+    success: true,
+    observationsCount: remoteUser?.observations_count,
+  };
 }
 
 /**
@@ -601,7 +616,7 @@ const authenticateUser = async (
   username: string,
   password: string,
   realm: Realm,
-): Promise<boolean> => {
+): Promise<AuthenticateUserResult> => {
   const userDetails = await verifyCredentials( username, password );
 
   return afterAuthenticateUser( userDetails, realm );
@@ -611,7 +626,7 @@ async function authenticateUserByAssertion(
   assertionType: "apple" | "google",
   assertion: string,
   realm: Realm,
-) {
+): Promise<AuthenticateUserResult> {
   const apiClient = createAPI( { Accept: "application/json" } );
   const formData = {
     client_id: Config.OAUTH_CLIENT_ID,

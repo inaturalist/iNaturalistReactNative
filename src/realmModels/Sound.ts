@@ -1,5 +1,6 @@
 import { mkdir, moveFile } from "@dr.pogodin/react-native-fs";
 import { Realm } from "@realm/react";
+import type { ApiSound } from "api/types";
 import { soundUploadPath } from "appConstants/paths";
 import { unlink } from "sharedHelpers/util";
 import * as uuid from "uuid";
@@ -10,17 +11,17 @@ class Sound extends Realm.Object {
     attribution: true,
     license_code: true,
     file_url: true,
-  };
+  } as const;
 
   static schema = {
     name: "Sound",
     embedded: true,
     properties: {
-      // datetime the photo was created on the device
+      // datetime the sound was created on the device
       _created_at: "date?",
-      // datetime the photo was last synced with the server
+      // datetime the sound was last synced with the server
       _synced_at: "date?",
-      // datetime the photo was updated on the device (i.e. edited locally)
+      // datetime the sound was updated on the device (i.e. edited locally)
       _updated_at: "date?",
       id: "int?",
       attribution: "string?",
@@ -29,7 +30,7 @@ class Sound extends Realm.Object {
     },
   };
 
-  static mapApiToRealm( sound, _realm = null ) {
+  static mapApiToRealm( sound: ApiSound, _realm = null ) {
     const localSound = {
       ...sound,
       _synced_at: new Date( ),
@@ -38,13 +39,13 @@ class Sound extends Realm.Object {
     return localSound;
   }
 
-  static async moveFromCacheToDocumentDirectory( srcPath, options = {} ) {
+  static async moveFromCacheToDocumentDirectory(
+    srcPath: string,
+    options: { basename: string },
+  ) {
     const srcFileName = srcPath.split( "/" ).at( -1 );
     const srcFileExt = srcFileName.split( "." ).at( -1 );
-    let fileName = srcFileName;
-    if ( options.basename ) {
-      fileName = `${options.basename}.${srcFileExt}`;
-    }
+    const fileName = `${options.basename}.${srcFileExt}`;
     await mkdir( soundUploadPath );
     const dstPath = `${soundUploadPath}/${fileName}`;
 
@@ -52,18 +53,17 @@ class Sound extends Realm.Object {
     return dstPath;
   }
 
-  static async new( sound ) {
+  static async new( uri: string ) {
     /* eslint-disable camelcase */
-    let { file_url } = sound;
-    if ( sound?.file_url.match( /file:\/\// ) ) {
-      file_url = await Sound.moveFromCacheToDocumentDirectory( sound.file_url, {
-        basename: uuid.v4(),
+    let file_url = uri;
+    if ( uri.match( /file:\/\// ) ) {
+      file_url = await Sound.moveFromCacheToDocumentDirectory( uri, {
+        basename: uuid.v4( ),
       } );
       // this needs a protocol for the sound player to play it when it's local
       file_url = `file://${file_url}`;
     }
     return {
-      ...sound,
       file_url,
     };
     /* eslint-enable camelcase */
@@ -71,14 +71,15 @@ class Sound extends Realm.Object {
 
   // this is necessary because sounds, like photos, cannot be found reliably
   // without this, local sounds will not be available for upload when the app updates
-  static getLocalSoundUri( localPathOrUri ) {
+  static getLocalSoundUri( localPathOrUri?: string ) {
     const pieces = localPathOrUri?.split( "soundUploads/" );
     if ( !pieces || pieces.length <= 1 ) return null;
     return `file://${soundUploadPath}/${pieces[1]}`;
   }
 
-  static deleteSoundFromDeviceStorage( path ) {
-    unlink( path );
+  static deleteSoundFromDeviceStorage( path: string ) {
+    const localSound = Sound.getLocalSoundUri( path );
+    unlink( localSound );
   }
 
   // An unpleasant hack around another unpleasant hack, i.e. when we "need" to

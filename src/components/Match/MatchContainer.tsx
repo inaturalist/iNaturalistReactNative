@@ -27,9 +27,10 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
 import {
-  useExitObservationFlow, useLocationPermission, useSuggestions, useWatchPosition,
+  useExitObservationFlow, useLocationPermission, useSuggestions,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
+import useObservationLocation from "sharedHooks/useObservationLocation";
 import {
   internalUseSuggestionsInitialSuggestions,
 } from "sharedHooks/useSuggestions/filterSuggestions";
@@ -119,7 +120,7 @@ const { useRealm } = RealmContext;
 
 const MatchContainer = ( ) => {
   const hasLoadedRef = useRef( false );
-  const isDebug = isDebugMode( );
+  const { isDebug } = useDebugMode( );
   const scrollRef = useRef<ScrollView>( null );
   const currentObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
@@ -289,7 +290,7 @@ const MatchContainer = ( ) => {
     stopWatch,
     subscriptionId,
     userLocation,
-  } = useWatchPosition( { shouldFetchLocation } );
+  } = useObservationLocation( { shouldFetchLocation } );
 
   const navToLocationPicker = useCallback( ( ) => {
     stopWatch( subscriptionId );
@@ -318,11 +319,14 @@ const MatchContainer = ( ) => {
     }
   }, [currentUserLocation, updateObservationKeys] );
 
-  const handleRefetchSuggestions = useCallback( () => {
+  const handleRefetchSuggestions = useCallback( ( location: {
+    latitude?: number;
+    longitude?: number;
+  } ) => {
     const newScoreImageParams = {
       ...scoreImageParams,
-      lat: currentUserLocation?.latitude,
-      lng: currentUserLocation?.longitude,
+      lat: location?.latitude,
+      lng: location?.longitude,
     };
     dispatch( {
       type: "SET_LOCATION",
@@ -337,8 +341,6 @@ const MatchContainer = ( ) => {
     refetchSuggestions,
     scoreImageParams,
     scrollToTop,
-    currentUserLocation?.latitude,
-    currentUserLocation?.longitude,
   ] );
 
   useEffect( () => {
@@ -352,7 +354,7 @@ const MatchContainer = ( ) => {
     getCurrentUserPlaceName();
 
     if ( !hasRefetchedSuggestions && suggestions ) {
-      handleRefetchSuggestions();
+      handleRefetchSuggestions( userLocation );
     }
   }, [
     userLocation,

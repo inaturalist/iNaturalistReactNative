@@ -12,6 +12,7 @@ import type { RealmTaxon } from "realmModels/types";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
+  loading?: boolean;
   onPressClose: () => void;
   onPotentialDisagreePressed: ( _checkedValue: string ) => void;
   newTaxon: RealmTaxon | ApiTaxon;
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const PotentialDisagreementSheet = ( {
+  loading,
   onPressClose,
   onPotentialDisagreePressed,
   newTaxon,
@@ -90,8 +92,8 @@ const PotentialDisagreementSheet = ( {
       headerText={t( "POTENTIAL-DISAGREEMENT" )}
       confirm={checkBoxValue => {
         onPotentialDisagreePressed( checkBoxValue );
-        onPressClose( );
       }}
+      loading={loading}
       confirmText={t( "SUBMIT-ID-SUGGESTION" )}
       onPressClose={onPressClose}
       radioValues={radioValues}

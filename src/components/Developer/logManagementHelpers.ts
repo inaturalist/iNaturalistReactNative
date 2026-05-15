@@ -23,7 +23,7 @@ import {
   logFileNamePrefix,
 } from "../../../react-native-logs.config";
 
-const getSortedDailyLogFileInfo = async ( n: number ) => {
+const getSortedDailyLogFileInfo = async ( n?: number ) => {
   const dir = await readDir( logFileDirectory );
   const sortedLogFiles = dir
     .filter( ( { name } ) => name.startsWith( logFileNamePrefix ) )
@@ -48,19 +48,19 @@ const getSortedDailyLogFileInfo = async ( n: number ) => {
     // flipped for descending
     .sort( ( a, b ) => b.date - a.date );
 
-  return sortedLogFiles.slice( 0, n );
+  return n === undefined
+    ? sortedLogFiles
+    : sortedLogFiles.slice( 0, n );
 };
 
-export async function getLegacyLogContents() {
-  try {
-    const contents = await readFile( legacyLogfilePath );
-    return `Legacy\n${contents}`;
-  } catch ( readFileError ) {
-    if ( readFileError instanceof Error && readFileError.message.match( /no such file/ ) ) {
-      return "";
-    }
-    throw readFileError;
+export async function cleanupLogFiles() {
+  if ( await exists( legacyLogfilePath ) ) {
+    await unlink( legacyLogfilePath );
   }
+
+  const logFileInfo = await getSortedDailyLogFileInfo();
+  const olderLogs = logFileInfo.slice( 40 );
+  await Promise.allSettled( olderLogs.map( ( { path } ) => unlink( path ) ) );
 }
 
 export async function deleteLegacyLogFile() {
@@ -162,14 +162,6 @@ export async function emailRecentLogs( ) {
   return emailLogFile( temporaryLogForSharingPath );
 }
 
-export async function shareLegacyLogFile( ) {
-  return shareLogFile( legacyLogfilePath );
-}
-
-export async function emailLegacyLogFile( ) {
-  return emailLogFile( legacyLogfilePath );
-}
-
 interface LogPreview {
   text: string;
   length: number;
@@ -178,7 +170,7 @@ interface LogPreview {
 async function getRecentLogContentPreview() {
   // we don't need to be precise here, we can jam 10 together and limit it later
   const recentLogsPaths = ( await getSortedDailyLogFileInfo( 10 ) )
-    .map( foo => foo.path )
+    .map( ( { path } ) => path )
     // we want to start with the oldest and _add_ newer ones as we go
     .reverse();
 
@@ -192,14 +184,12 @@ async function getRecentLogContentPreview() {
   return aggregatedContents;
 }
 
-export function useLogPreview( { legacy }: { legacy: boolean } ): LogPreview | null {
+export function useLogPreview( ): LogPreview | null {
   const [logPreview, setLogPreview] = useState<LogPreview | null>( null );
 
   useEffect( ( ) => {
     const getLogPreview = async () => {
-      const logContents = legacy
-        ? await getLegacyLogContents()
-        : await getRecentLogContentPreview();
+      const logContents = await getRecentLogContentPreview();
 
       const lines = logContents.split( "\n" );
       const trimmedContent = lines
@@ -209,7 +199,7 @@ export function useLogPreview( { legacy }: { legacy: boolean } ): LogPreview | n
     };
 
     getLogPreview();
-  }, [legacy] );
+  }, [] );
 
   return logPreview;
 }

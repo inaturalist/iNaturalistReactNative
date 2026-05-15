@@ -34,11 +34,10 @@ import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
 import { SPECIES_SORT_BY } from "../../types/sorting";
-import Announcements from "./Announcements";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
-import SimpleErrorHeader from "./SimpleErrorHeader";
+import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
 
@@ -187,7 +186,7 @@ const MyObservationsSimple = ( {
     t,
   ] );
 
-  const renderTaxaFooter = useCallback( ( ) => {
+  const taxaFooterComponent = useMemo( ( ) => {
     if ( isFetchingTaxa ) {
       return (
         <InfiniteScrollLoadingWheel
@@ -238,12 +237,14 @@ const MyObservationsSimple = ( {
   );
 
   const observationsHeader = ( ) => {
-    const headerContent = obsMissingBasicsExist
-      ? <SimpleErrorHeader isConnected={isConnected} />
-      : <Announcements isConnected={isConnected} />;
-
     if ( layout !== "grid" ) {
-      return headerContent;
+      return (
+        <SimpleHeader
+          isConnected={isConnected}
+          obsMissingBasicsExist={obsMissingBasicsExist}
+          numTotalObservations={numTotalObservations}
+        />
+      );
     }
 
     const TARGET_SPACING = 10;
@@ -259,7 +260,11 @@ const MyObservationsSimple = ( {
           marginBottom: TARGET_SPACING - flashListStyle.paddingTop,
         }}
       >
-        {headerContent}
+        <SimpleHeader
+          isConnected={isConnected}
+          obsMissingBasicsExist={obsMissingBasicsExist}
+          numTotalObservations={numTotalObservations}
+        />
       </View>
     );
   };
@@ -411,7 +416,7 @@ const MyObservationsSimple = ( {
                   : undefined
               }
               refreshing={isFetchingTaxa}
-              ListFooterComponent={renderTaxaFooter}
+              ListFooterComponent={taxaFooterComponent}
             />
             <SortButton
               onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}

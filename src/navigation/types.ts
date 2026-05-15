@@ -186,6 +186,15 @@ export type OnboardingStackParamList = {
   Onboarding: undefined;
 };
 
+// Screens hosted by ExploreStackNavigator (ExploreV2)
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type ExploreStackParamList = {
+  ExploreResults: undefined;
+  UniversalSearch: undefined;
+  AdvancedSearch: undefined;
+};
+
 // Tab-only routes (not from SharedStackScreens). Intersected with SharedStackParamList
 // so TabStackParamList matches TabStackNavigator + SharedStackScreens.
 // Note from the documentation:
@@ -214,7 +223,9 @@ export type BaseTabStackParamList = {
   };
   DataQualityAssessment: undefined;
   Projects: undefined;
-  ProjectDetails: undefined;
+  // From LoginForm
+  // { id: params.projectId }
+  ProjectDetails: { id: number };
   ProjectRequirements: undefined;
   ProjectMembers: undefined;
   // From ProjectButton, ProjectSection
@@ -240,7 +251,7 @@ export type BaseTabStackParamList = {
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;
-  Log: { isLegacyLogs: boolean };
+  Log: undefined;
   Settings: undefined;
   About: undefined;
   Donate: undefined;
@@ -332,11 +343,15 @@ export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type LoginStackParamList = {
+  // From SignUpConfirmationForm
+  // no params
+  // From useLinking
+  // { emailConfirmed: true }
   Login: {
     emailConfirmed?: boolean;
     prevScreen?: string;
     projectId?: number;
-  };
+  } | undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
   LearnMore: undefined;
@@ -376,6 +391,14 @@ export type TabStackScreenProps<T extends keyof TabStackParamList> =
   CompositeScreenProps<
     NativeStackScreenProps<TabStackParamList, T>,
     BottomTabProps
+  >;
+
+// ExploreStackNavigator is nested inside RootExplore. This composite type
+// acknowledges ExploreV2 screens access to outer-stack routes
+export type ExploreStackScreenProps<T extends keyof ExploreStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<ExploreStackParamList, T>,
+    TabStackScreenProps<"RootExplore">
   >;
 
 export type NoBottomTabStackScreenProps<T extends keyof NoBottomTabStackParamList> =

@@ -1,7 +1,8 @@
+import type { Realm } from "@realm/react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 function findRecordInRealm(
-  realm: object,
+  realm: Realm,
   observationUUID: string,
   recordUUID: string | null,
   type: string,
@@ -11,8 +12,8 @@ function findRecordInRealm(
 ): object | null {
   if ( !realm || realm.isClosed ) return null;
 
-  // Photos do not have UUIDs, so we pass the Photo itself as an option
-  if ( type === "Photo" && options?.record ) {
+  // Photos and Sounds do not have UUIDs, so we pass the Photo/Sound itself as an option
+  if ( ( type === "Photo" || type === "Sound" ) && options?.record ) {
     return options.record;
   }
 
@@ -31,7 +32,7 @@ function findRecordInRealm(
 }
 
 function updateRecordWithServerId(
-  realm: object,
+  realm: Realm,
   record: object,
   serverId: number,
   type: string,
@@ -47,7 +48,7 @@ function updateRecordWithServerId(
 
 function handleRecordUpdateError(
   error: Error,
-  realm: object,
+  realm: Realm,
   observationUUID: string,
   recordUUID: string | null,
   type: string,
@@ -86,7 +87,7 @@ const markRecordUploaded = (
   response: {
     results: {id: number}[];
   },
-  realm: object,
+  realm: Realm,
   options?: {
     record: object;
   },

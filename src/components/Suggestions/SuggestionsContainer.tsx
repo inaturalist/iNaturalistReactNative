@@ -18,7 +18,7 @@ import {
   usePerformance,
   useSuggestions,
 } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 import {
   internalUseSuggestionsInitialSuggestions,
 } from "sharedHooks/useSuggestions/filterSuggestions";
@@ -289,9 +289,12 @@ const SuggestionsContainer = ( ) => {
   const { loadTime } = usePerformance( {
     isLoading,
   } );
-  if ( isDebugMode( ) && loadTime ) {
-    logger.info( loadTime );
-  }
+  const { isDebug } = useDebugMode();
+  useEffect( () => {
+    if ( isDebug && loadTime ) {
+      logger.info( loadTime );
+    }
+  }, [isDebug, loadTime] );
 
   const toggleLocation = useCallback( async ( { showLocation }: { showLocation: boolean } ) => {
     const newImageParams = await createUploadParams( selectedPhotoUri, showLocation );

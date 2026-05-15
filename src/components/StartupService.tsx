@@ -12,7 +12,7 @@ import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
 import { usePerformance } from "sharedHooks";
-import { isDebugMode } from "sharedHooks/useDebugMode";
+import useDebugMode from "sharedHooks/useDebugMode";
 
 Realm.setLogLevel( "warn" );
 
@@ -42,9 +42,12 @@ const StartupService = ( ) => {
     screenName: "StartupService",
     isLoading: false,
   } );
-  if ( isDebugMode( ) ) {
-    logger.info( loadTime );
-  }
+  const { isDebug } = useDebugMode();
+  useEffect( () => {
+    if ( isDebug && loadTime ) {
+      logger.info( loadTime );
+    }
+  }, [isDebug, loadTime] );
 
   useEffect( ( ) => {
     const initializeApp = async ( ) => {

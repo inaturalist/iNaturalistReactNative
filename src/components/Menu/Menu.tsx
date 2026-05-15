@@ -22,8 +22,11 @@ import User from "realmModels/User";
 import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
-import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
-import { zustandStorage } from "stores/useStore";
+import {
+  useCurrentUser, useDebugMode, useFeatureFlag,
+  useLayoutPrefs, useTranslation,
+} from "sharedHooks";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import MenuItem from "./MenuItem";
@@ -96,7 +99,7 @@ const getDeviceMetricsForFeedback = async () => {
 };
 
 const Menu = ( ) => {
-  const isDebug = zustandStorage.getItem( "debugMode" ) === "true";
+  const { isDebug } = useDebugMode();
   const realm = useRealm( );
   const navigation = useNavigation( );
   const queryClient = useQueryClient( );
@@ -107,6 +110,7 @@ const Menu = ( ) => {
   const { isConnected } = useNetInfo( );
 
   const layoutPrefs = useLayoutPrefs();
+  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
   const [modalState, setModalState] = useState<MenuModalState | null>( null );
 
   const menuItems: Record<string, MenuOption> = {
@@ -336,6 +340,20 @@ const Menu = ( ) => {
               }}
             />
           ) )}
+          {newsEnabled && (
+            <MenuItem
+              item={{
+                label: t( "NEWS" ),
+                icon: "leaf",
+              }}
+              onPress={() => navigation.navigate( "TabNavigator", {
+                screen: "MenuTab",
+                params: {
+                  screen: "News",
+                },
+              } )}
+            />
+          )}
         </View>
       </View>
 

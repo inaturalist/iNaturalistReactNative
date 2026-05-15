@@ -31,8 +31,12 @@ const mockObservation = factory( "LocalObservation", {
   observationPhotos: [mockObservationPhoto],
 } );
 
+const mockSound = factory( "LocalSound", {
+  file_url: "file://sound.mp3",
+} );
+
 const mockObservationSound = factory( "LocalObservationSound", {
-  file_url: "https://example.com/sound.mp3",
+  sound: mockSound,
 } );
 
 describe( "prepareMediaForUpload", () => {
@@ -65,17 +69,16 @@ describe( "prepareMediaForUpload", () => {
     } );
 
     ObservationSound.mapSoundForUpload.mockReturnValue( {
-      uuid: mockObservationSound.uuid,
       file: new FileUpload( {
-        uri: mockObservationSound.sound.file_url,
-        name: `${mockObservationSound.uuid}.m4a`,
+        uri: mockSound.file_url,
+        name: mockSound.file_url,
         type: "audio/m4a",
       } ),
     } );
 
     ObservationSound.mapSoundForAttachingToObs.mockReturnValue( {
       "observation_sound[observation_id]": mockObservation.id,
-      "observation_sound[sound_id]": mockObservationSound.id,
+      "observation_sound[sound_id]": mockObservationSound.sound.id,
       "observation_sound[uuid]": mockObservationSound.uuid,
     } );
   } );
@@ -83,14 +86,14 @@ describe( "prepareMediaForUpload", () => {
   test( "should map Photo upload", () => {
     const observationId = null;
     const result = prepareMediaForUpload(
-      mockObservationPhoto,
+      mockPhoto,
       "Photo",
       "upload",
       observationId,
     );
 
     expect( ObservationPhoto.mapPhotoForUpload ).toHaveBeenCalledWith(
-      mockObservationPhoto,
+      mockPhoto,
     );
 
     expect( result ).toEqual( {
@@ -150,25 +153,23 @@ describe( "prepareMediaForUpload", () => {
     } );
   } );
 
-  test( "should map ObservationSound upload", () => {
+  test( "should map Sound upload", () => {
     const observationId = null;
     const result = prepareMediaForUpload(
-      mockObservationSound,
-      "ObservationSound",
+      mockSound,
+      "Sound",
       "upload",
       observationId,
     );
 
     expect( ObservationSound.mapSoundForUpload ).toHaveBeenCalledWith(
-      observationId,
-      mockObservationSound,
+      mockSound,
     );
 
     expect( result ).toEqual( {
-      uuid: mockObservationSound.uuid,
       file: new FileUpload( {
-        uri: mockObservationSound.sound.file_url,
-        name: `${mockObservationSound.uuid}.m4a}`,
+        uri: mockSound.file_url,
+        name: mockSound.file_url.split( "/" ).pop( ),
         type: "audio/m4a",
       } ),
     } );
@@ -189,7 +190,7 @@ describe( "prepareMediaForUpload", () => {
 
     expect( result ).toEqual( {
       "observation_sound[observation_id]": mockObservation.id,
-      "observation_sound[sound_id]": mockObservationSound.id,
+      "observation_sound[sound_id]": mockSound.id,
       "observation_sound[uuid]": mockObservationSound.uuid,
     } );
   } );
