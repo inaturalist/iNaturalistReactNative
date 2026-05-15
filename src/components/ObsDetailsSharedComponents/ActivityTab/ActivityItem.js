@@ -17,19 +17,19 @@ import isEmpty from "lodash/isEmpty";
 import type { Node } from "react";
 import React from "react";
 
-interface Props {
-  currentUserId?: number;
-  isFirstDisplay: boolean;
-  isConnected: boolean;
-  item: object;
-  openAgreeWithIdSheet: Function;
-  refetchRemoteObservation: Function;
-  userAgreedId?: string;
-  geoprivacy: string;
-  taxonGeoprivacy: string;
-  belongsToCurrentUser: boolean;
-  showExplainerText?: boolean;
-  showStatus?: boolean;
+type Props = {
+  currentUserId?: number,
+  isFirstDisplay: boolean,
+  isConnected: boolean,
+  item: Object,
+  openAgreeWithIdSheet: Function,
+  refetchRemoteObservation: Function,
+  userAgreedId?: string,
+  geoprivacy: string,
+  taxonGeoprivacy: string,
+  belongsToCurrentUser: boolean,
+  showExplainerText?: boolean,
+  showStatus?: boolean,
 }
 
 const ActivityItem = ( {
