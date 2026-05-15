@@ -1,4 +1,3 @@
-// @flow
 import classnames from "classnames";
 import ActivityHeaderKebabMenu from "components/ObsDetails/ActivityTab/ActivityHeaderKebabMenu";
 import WithdrawIDSheet from "components/ObsDetails/Sheets/WithdrawIDSheet";
@@ -11,25 +10,24 @@ import {
   View,
 } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  classNameMargin?: string,
-  currentUser: boolean,
-  deleteComment: Function,
-  flagged: boolean,
-  idWithdrawn?: boolean,
-  isConnected?: boolean,
-  item: Object,
-  loading: boolean,
-  showStatus?: boolean,
-  updateCommentBody: Function,
-  updateIdentification: Function,
-  geoprivacy: string,
-  taxonGeoprivacy: string,
-  belongsToCurrentUser: boolean
+interface Props {
+  classNameMargin?: string;
+  currentUser: boolean;
+  deleteComment: Function;
+  flagged: boolean;
+  idWithdrawn?: boolean;
+  isConnected?: boolean;
+  item: object;
+  loading: boolean;
+  showStatus?: boolean;
+  updateCommentBody: Function;
+  updateIdentification: Function;
+  geoprivacy: string;
+  taxonGeoprivacy: string;
+  belongsToCurrentUser: boolean;
 }
 
 const ActivityHeader = ( {
@@ -47,7 +45,7 @@ const ActivityHeader = ( {
   geoprivacy,
   taxonGeoprivacy,
   belongsToCurrentUser,
-}:Props ): Node => {
+}:Props ) => {
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const [showDeleteCommentSheet, setShowDeleteCommentSheet] = useState( false );
   const [showWithdrawIDSheet, setShowWithdrawIDSheet] = useState( false );
