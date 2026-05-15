@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ActivityHeaderContainer
   from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeaderContainer";
@@ -14,7 +12,6 @@ import {
 } from "components/styledComponents";
 import { t } from "i18next";
 import isEmpty from "lodash/isEmpty";
-import type { Node } from "react";
 import React from "react";
 
 interface Props {
@@ -45,7 +42,7 @@ const ActivityItem = ( {
   belongsToCurrentUser,
   showExplainerText = false,
   showStatus,
-}: Props ): Node => {
+}: Props ) => {
   const navigation = useNavigation( );
   const route = useRoute( );
   const { taxon, user, disagreement } = item;
