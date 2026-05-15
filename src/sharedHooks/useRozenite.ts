@@ -59,7 +59,7 @@ const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
           {
             id: "news",
             type: "toggle",
-            title: "News",
+            title: "Blog",
             value: newsEnabled,
             onUpdate: () => {
               setNewsEnabled( !newsEnabled );
