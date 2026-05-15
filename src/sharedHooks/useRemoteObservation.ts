@@ -17,21 +17,6 @@ interface UseRemoteObservationReturn {
   fetchRemoteObservationError: Error | null;
 }
 
-const filterHiddenContent
-= ( observation?: ApiObservation | null ): ApiObservation | null | undefined => {
-  if ( observation === undefined || observation === null ) {
-    return observation;
-  }
-  const filteredObservation = observation;
-
-  filteredObservation.comments = filteredObservation?.comments
-    ?.filter( comment => !comment.hidden ) || [];
-  filteredObservation.identifications = filteredObservation?.identifications
-    ?.filter( identification => !identification.hidden ) || [];
-
-  return filteredObservation;
-};
-
 const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObservationReturn => {
   const fetchRemoteObservationQueryKey = useMemo(
     ( ) => ( [fetchRemoteObservationKey, uuid] ),
@@ -86,7 +71,7 @@ const useRemoteObservation = ( uuid: string, enabled: boolean ): UseRemoteObserv
   ] );
 
   return {
-    remoteObservation: filterHiddenContent( remoteObservation ),
+    remoteObservation,
     refetchRemoteObservation,
     isRefetching,
     fetchRemoteObservationError,
