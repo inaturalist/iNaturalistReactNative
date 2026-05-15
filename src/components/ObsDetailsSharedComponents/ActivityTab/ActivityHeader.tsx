@@ -16,15 +16,15 @@ import colors from "styles/tailwindColors";
 interface Props {
   classNameMargin?: string;
   currentUser: boolean;
-  deleteComment: Function;
+  deleteComment: ( ) => void;
   flagged: boolean;
   idWithdrawn?: boolean;
   isConnected?: boolean;
   item: object;
   loading: boolean;
   showStatus?: boolean;
-  updateCommentBody: Function;
-  updateIdentification: Function;
+  updateCommentBody: ( textInput: string ) => void;
+  updateIdentification: ( { current }: { current: boolean } ) => void;
   geoprivacy: string;
   taxonGeoprivacy: string;
   belongsToCurrentUser: boolean;
@@ -178,7 +178,7 @@ const ActivityHeader = ( {
             onPressClose={() => setShowEditCommentSheet( false )}
             headerText={t( "EDIT-COMMENT" )}
             initialInput={item.body}
-            confirm={textInput => updateCommentBody( textInput )}
+            confirm={( textInput: string ) => updateCommentBody( textInput )}
           />
         )}
         {( currentUser && showDeleteCommentSheet ) && (
