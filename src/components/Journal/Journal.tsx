@@ -26,7 +26,7 @@ const Journal = ( ) => {
 
   const headerOptions = useMemo(
     () => ( {
-      headerTitle: userLogin || projectTitle || t( "News" ),
+      headerTitle: userLogin || projectTitle || t( "Blog" ),
       headerSubtitle: t( "X-JOURNAL_POSTS", {
         count: journalPostsCount || 0,
       } ),

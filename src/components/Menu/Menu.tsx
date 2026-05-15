@@ -157,7 +157,7 @@ const Menu = ( ) => {
     ...( newsEnabled
       ? {
         news: {
-          label: t( "NEWS" ),
+          label: t( "BLOG" ),
           navigation: "Journal",
           icon: "leaf",
         },
