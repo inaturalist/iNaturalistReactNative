@@ -63,7 +63,7 @@ interface Props {
   // a good way to capture this otherwise with Flow.
   // TODO: type data / observations
   ref?: React.Ref<FlashListRef<unknown>>;
-  renderHeader?: () => React.ReactElement | null;
+  listHeaderContent?: React.ReactElement | null;
   showNoResults?: boolean;
   showObservationsEmptyScreen?: boolean;
   testID: string;
@@ -90,7 +90,7 @@ const ObservationsFlashList = ( {
   onLayout,
   onScroll,
   ref,
-  renderHeader,
+  listHeaderContent,
   showNoResults,
   showObservationsEmptyScreen,
   testID,
@@ -299,7 +299,7 @@ const ObservationsFlashList = ( {
       ItemSeparatorComponent={itemSeparatorComponent}
       ListEmptyComponent={emptyContent}
       ListFooterComponent={footerContent}
-      ListHeaderComponent={renderHeader}
+      ListHeaderComponent={listHeaderContent}
       contentContainerStyle={contentContainerStyle}
       data={data}
       extraData={extraData}
