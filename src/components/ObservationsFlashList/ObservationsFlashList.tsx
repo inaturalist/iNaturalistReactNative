@@ -34,6 +34,9 @@ const { useRealm } = RealmContext;
 
 const AnimatedFlashList = Animated.createAnimatedComponent( CustomFlashList );
 
+// unlike the other FlashList Component props, Separator does _not_ accept an Element
+const ItemSeparator = () => <View className="border-b border-lightGray" />;
+
 interface Props {
   contentContainerStyle?: StyleProp<ViewStyle>;
   // TODO: type data / observations
@@ -198,11 +201,11 @@ const ObservationsFlashList = ( {
     uploadQueue,
   ] );
 
-  const renderItemSeparator = useCallback( ( ) => {
+  const itemSeparatorComponent = useMemo( ( ) => {
     if ( layout === "grid" ) {
       return null;
     }
-    return <View className="border-b border-lightGray" />;
+    return ItemSeparator;
   }, [layout] );
 
   const renderFooter = useCallback( ( ) => (
@@ -293,7 +296,7 @@ const ObservationsFlashList = ( {
 
   return (
     <AnimatedFlashList
-      ItemSeparatorComponent={renderItemSeparator}
+      ItemSeparatorComponent={itemSeparatorComponent}
       ListEmptyComponent={renderEmptyComponent}
       ListFooterComponent={renderFooter}
       ListHeaderComponent={renderHeader}
