@@ -39,10 +39,10 @@ interface Props {
   // TODO: type data / observations
   data: unknown[];
   dataCanBeFetched?: boolean;
-  fetchFromLastObservation?: ( observationId?: number ) => Promise<void>;
+  fetchFromLastObservation?: ( observationId?: number ) => void;
   explore: boolean;
-  handlePullToRefresh: () => Promise<void>;
-  handleIndividualUploadPress: ( observationUuid: string ) => Promise<void>;
+  handlePullToRefresh: () => void;
+  handleIndividualUploadPress: ( observationUuid: string ) => void;
   hideLoadingWheel?: boolean;
   hideMetadata?: boolean;
   hideObsUploadStatus?: boolean;
@@ -52,7 +52,7 @@ interface Props {
   isConnected: boolean;
   layout: "list" | "grid";
   obsListKey: string;
-  onEndReached: () => Promise<void>;
+  onEndReached: () => void;
   onLayout?: ( event: LayoutChangeEvent ) => void;
   onScroll?: ( event: NativeSyntheticEvent<NativeScrollEvent> ) => void;
   // this ref is being forwarded to the underlying CustomFlashList and used as an imperative handle
