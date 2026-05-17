@@ -208,7 +208,7 @@ const ObservationsFlashList = ( {
     return ItemSeparator;
   }, [layout] );
 
-  const renderFooter = useCallback( ( ) => (
+  const footerContent = useMemo( ( ) => (
     <InfiniteScrollLoadingWheel
       explore={explore}
       hideLoadingWheel={hideLoadingWheel}
@@ -234,7 +234,7 @@ const ObservationsFlashList = ( {
     layout,
   ] );
 
-  const renderEmptyComponent = useCallback( ( ) => {
+  const emptyContent = useMemo( ( ) => {
     const showEmptyScreen = showObservationsEmptyScreen
       ? null
       : (
@@ -297,8 +297,8 @@ const ObservationsFlashList = ( {
   return (
     <AnimatedFlashList
       ItemSeparatorComponent={itemSeparatorComponent}
-      ListEmptyComponent={renderEmptyComponent}
-      ListFooterComponent={renderFooter}
+      ListEmptyComponent={emptyContent}
+      ListFooterComponent={footerContent}
       ListHeaderComponent={renderHeader}
       contentContainerStyle={contentContainerStyle}
       data={data}
