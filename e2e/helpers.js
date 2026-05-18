@@ -28,7 +28,7 @@ export async function iNatE2eBeforeAll( device ) {
       "adb shell mkdir -p /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/",
     );
     await execPromise(
-      "adb push e2e/maestro/android/test.jpg"
+      "adb push e2e/animal.jpg"
         + " /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/e2e_test.jpg",
     );
   }
