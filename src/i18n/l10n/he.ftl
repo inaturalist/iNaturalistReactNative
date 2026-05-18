@@ -80,6 +80,8 @@ attribution-cc-by-nd = חלק מהזכויות שמורות (CC BY-ND)
 attribution-cc-by-sa = חלק מהזכויות שמורות (CC BY-SA)
 August = אוגוסט
 BACK-TO-LOGIN = חזרה להתחברות
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = מייבא במרוכז
 By-exiting-changes-not-saved = אם תצא.י עכשיו, שינויים בתצפית שלך לא יישמרו.
 By-exiting-observation-not-saved = אם תצא.י עכשיו, התצפית שלך לא תישמר.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = הצעות חיפוש עם מיקום
 Search-suggestions-without-location = הצעות חיפוש ללא מיקום
 SEARCH-TAXA = חיפוש טקסונים
 SEARCH-USERS = חיפוש משתמשים
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = ניתן לצפות בתצפיות של משתמש זה ב'לגלות'
 See-observations-of-this-taxon-in-explore = ניתן לצפות בתצפיות של טקסון זה ב'לגלות'
 See-project-members = צפייה בחברי הפרויקט
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } מזהה
        *[other] { $count } מזהים.ות
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

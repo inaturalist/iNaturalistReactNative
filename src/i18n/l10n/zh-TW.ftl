@@ -80,6 +80,8 @@ attribution-cc-by-nd = 保留部分權利 (CC BY-ND)
 attribution-cc-by-sa = 保留部分權利 (CC BY-SA)
 August = 8月
 BACK-TO-LOGIN = 回到登入螢幕
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = 批次匯入
 By-exiting-changes-not-saved = 現在離開的話，將不會儲存您觀察紀錄的修改。
 By-exiting-observation-not-saved = 現在離開的話，不會儲存您的觀察紀錄。
@@ -744,6 +746,7 @@ Search-suggestions-with-location = 包含位置的搜尋建議
 Search-suggestions-without-location = 不包含位置的搜尋建議
 SEARCH-TAXA = 搜尋分類群
 SEARCH-USERS = 搜尋使用者
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = 在探索中查看此使用者的觀察紀錄
 See-observations-of-this-taxon-in-explore = 在探索中查看此分類群的觀察紀錄
 See-project-members = 查看專案成員
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } 位鑑定者
        *[other] { $count } 位鑑定者
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

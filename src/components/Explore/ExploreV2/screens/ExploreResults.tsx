@@ -1,6 +1,8 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
+import ExploreV2DebugSheet
+  from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import useInfiniteExploreScroll
   from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
@@ -55,20 +57,23 @@ const ExploreResults = ( ) => {
         {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
           ? renderPermissionPrompt( )
           : (
-            <ObservationsFlashList
-              data={observations}
-              dataCanBeFetched={canFetch}
-              explore
-              handlePullToRefresh={handlePullToRefresh}
-              hideLoadingWheel={!isFetchingNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-              isConnected={isConnected}
-              layout="list"
-              obsListKey="ExploreV2Observations"
-              onEndReached={fetchNextPage}
-              showNoResults={!canFetch || totalResults === 0}
-              testID="ExploreV2ObservationsList"
-            />
+            <>
+              <ObservationsFlashList
+                data={observations}
+                dataCanBeFetched={canFetch}
+                explore
+                handlePullToRefresh={handlePullToRefresh}
+                hideLoadingWheel={!isFetchingNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                isConnected={isConnected}
+                layout="list"
+                obsListKey="ExploreV2Observations"
+                onEndReached={fetchNextPage}
+                showNoResults={!canFetch || totalResults === 0}
+                testID="ExploreV2ObservationsList"
+              />
+              <ExploreV2DebugSheet />
+            </>
           )}
       </View>
     </ViewWrapper>

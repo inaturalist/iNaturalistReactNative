@@ -83,6 +83,8 @@ attribution-cc-by-nd = некоторые права защищены (CC BY-ND)
 attribution-cc-by-sa = некоторые права защищены (CC BY-SA)
 August = Август
 BACK-TO-LOGIN = ВЕРНУТЬСЯ КО ВХОДУ
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Оптовый импорт
 By-exiting-changes-not-saved = При выходе изменения в вашем наблюдении не сохраняются.
 By-exiting-observation-not-saved = При выходе из игры ваше наблюдение не будет сохранено.
@@ -747,6 +749,7 @@ Search-suggestions-with-location = Варианты поиска с указан
 Search-suggestions-without-location = Варианты поиска без местоположения
 SEARCH-TAXA = ПОИСК ТАКСОНОВ
 SEARCH-USERS = ПОИСК ПОЛЬЗОВАТЕЛЕЙ
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Смотрите наблюдения этого пользователя в разделе «Обзор»
 See-observations-of-this-taxon-in-explore = Смотрите наблюдения за этим таксоном в исследовании
 See-project-members = Посмотреть список участников проекта
@@ -968,6 +971,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

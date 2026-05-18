@@ -80,6 +80,8 @@ attribution-cc-by-nd = bazı hakları saklıdır (CC BY-ND)
 attribution-cc-by-sa = bazı hakları saklıdır (CC BY-SA)
 August = Ağustos
 BACK-TO-LOGIN = GİRİŞE GERİ DÖN
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Toplu içe aktarma
 By-exiting-changes-not-saved = Çıktığınızda, gözleminizdeki değişiklikler kaydedilmeyecektir.
 By-exiting-observation-not-saved = Çıktığınızda, gözleminiz kaydedilmeyecektir.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = Konum ile arama önerileri
 Search-suggestions-without-location = Konumsuz arama önerileri
 SEARCH-TAXA = TAKSON ARA
 SEARCH-USERS = KULLANICI ARA
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Keşfet'te bu kullanıcı tarafından yapılan gözlemlere bak
 See-observations-of-this-taxon-in-explore = Keşfet'te bu taksonun gözlemlerine bak
 See-project-members = Proje üyelerine bak
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Tanımlayıcı
        *[other] { $count } Tanımlayıcı
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

@@ -1,5 +1,47 @@
 # Contribution Guidelines for iNaturalistReactNative
-Welcome! We're excited that you're interested in contributing to the iNaturalist React Native mobile application. Below you'll find some guidelines that will help you contribute to our project, whether you're on staff or a volunteer.
+
+## About this codebase
+
+iNaturalist's code is open source primarily for **transparency** — we want our community to be able to see how the platform works. Unlike many open source projects, we don't maintain this codebase as a general-purpose tool for forking or customization. We build it with one deployment in mind: iNaturalist.org and the iNaturalist mobile apps.
+
+We will probably close pull requests that don't address open issues. Again, if you want to change functionality, the discussion should start in the [Forum](https://forum.inaturalist.org/), and if staff agree something should change, we'll make an issue, label it, and then you can work on it.
+
+We're a small team. Our capacity to review and integrate external contributions is limited, and we can't commit to responding to every inquiry or pull request.
+
+## Bugs and feature requests
+
+**Please don't open GitHub issues for user-facing bug reports or feature requests.**
+
+We track our work internally and triage inbound requests through the [iNaturalist Forum](https://forum.inaturalist.org). Filing a GitHub issue is unlikely to result in action, and you're much more likely to get a response — and to hear from other community members with similar experiences — on the Forum.
+
+- **Bug reports:** [forum.inaturalist.org](https://forum.inaturalist.org) → Bug Reports category
+- **Feature requests:** [forum.inaturalist.org](https://forum.inaturalist.org) → Feature Requests category
+
+If you've found a problem in the code, please supply detailed reproduction conditions, cite line numbers, include exceptions / stack traces, etc. If you can't supply this kind of information, we will probably close your issue and suggest you post to the forum links above.
+
+# Reporting Security Issues
+
+You should report security issues that require confidential communication to [help+security@inaturalist.org](mailto:help+security@inaturalist.org). We do not offer any rewards or bounties for reporting security issues, though we may offer to list your name and URL here if we act on your report.
+
+---
+
+## Translations
+
+Translations are handled separately through [Crowdin](https://crowdin.com/project/inaturalistios), not through pull requests. If you'd like to help translate iNaturalist into another language, that's the place to start — and it's one of the most impactful ways to contribute to the project.
+
+---
+
+## Code of conduct
+
+All contributors are expected to follow the [iNaturalist Community Guidelines](https://www.inaturalist.org/pages/community+guidelines), or at least the parts that aren't specific to using iNaturalist as a naturalist.
+
+---
+
+## Questions about the code
+
+If you have a technical question about how something works — you're building an integration, you're curious about an architectural decision, or you've encountered something confusing — you can open a [GitHub Discussion](https://github.com/inaturalist/iNaturalistReactNative/discussions/3477). We can't promise a quick response, but discussions are more likely to get attention than issues, and they benefit others who have the same question.
+
+## Code contributions
 
 Please keep the following in mind:
 
@@ -50,12 +92,4 @@ Please follow this guidance when committing to the main branch, including merge 
 
 ## Pull Request Guidelines
 - Give your pull request a **clear and descriptive title** (e.g. "Remove predictions state on blur and focus in ARCamera") and a comment that includes a reference to the issue number (e.g. "Closes #123" or "Partially addresses #123" in case of an open issue) and maybe a detailed description of the changes you've made
-- Please do not refer to the issue number in the PR title. Do that in the comment / body.
-- If you're adding new features or functionality differing from the description in the issue, please provide a clear explanation of how this work differs from what the issue describes
-- Feel free to ask any questions or raise any concerns you have
-
-
-## Issues and Bugs
-If you find an issue or bug in our application, please report it by opening a new issue in the repository. Please include a clear and detailed description of the issue, steps to reproduce the issue, and any relevant screenshots or error messages.
-
-Thank you for contributing to our React Native mobile application!
+- Don't include new features or functionality differing from the description in the issue.

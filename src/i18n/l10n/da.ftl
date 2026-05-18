@@ -80,6 +80,8 @@ attribution-cc-by-nd = visse rettigheder forbeholdes (CC BY-ND)
 attribution-cc-by-sa = visse rettigheder forbeholdes (CC BY-SA)
 August = August
 BACK-TO-LOGIN = TILBAGE TIL LOGIN
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Masseimport
 By-exiting-changes-not-saved = Ved at afslutte, vil ændringer til observationen ikke blive gemt.
 By-exiting-observation-not-saved = Ved at afslutte, vil observationen ikke blive gemt.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = Søg i forslag med placering
 Search-suggestions-without-location = Søg i forslag uden placering
 SEARCH-TAXA = SØG I TAKSA
 SEARCH-USERS = SØG BRUGERE
+See-journal-posts = Vis journalindlæg
 See-observations-by-this-user-in-Explore = Se observationer fra denne bruger i Udforsk
 See-observations-of-this-taxon-in-explore = Se observationer af denne takson i Udforsk
 See-project-members = Se projektmedlemmer
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } identifikator
        *[other] { $count } identifikatorer
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNALINDLÆG
+       *[other] { $count } JOURNALINDLÆG
     }
 X-MEMBERS =
     { $count ->
