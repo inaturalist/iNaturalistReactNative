@@ -12,7 +12,7 @@ import React, {
 import type { DimensionValue, ViewStyle } from "react-native";
 import { Platform } from "react-native";
 import type {
-  BoundingBox, LatLng, MapType, Region,
+  BoundingBox, LatLng, Region,
 } from "react-native-maps";
 import MapView, { UrlTile } from "react-native-maps";
 import type Observation from "realmModels/Observation";
@@ -20,6 +20,8 @@ import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
 import mapTracker from "sharedHelpers/mapPerformanceTracker";
 import { useDebugMode, useDeviceOrientation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
+import type { MAP_TYPES } from "stores/createLayoutSlice";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import CurrentLocationButton from "./CurrentLocationButton";
@@ -59,7 +61,6 @@ interface Props {
   initialRegion?: Region;
   isLoading?: boolean;
   mapHeight?: DimensionValue; // allows for height to be defined as px or percentage
-  mapType?: MapType;
   mapViewClassName?: string;
   observation?: Observation;
   onCurrentLocationPress?: () => void;
@@ -94,7 +95,6 @@ const Map = ( {
   initialRegion,
   isLoading = true,
   mapHeight,
-  mapType,
   mapViewClassName,
   observation,
   onCurrentLocationPress,
@@ -135,7 +135,7 @@ const Map = ( {
     longitude: number;
   } | undefined | null>( null );
   const mapViewRef = useRef<MapView>( undefined );
-  const [currentMapType, setCurrentMapType] = useState( mapType || "standard" );
+  const mapType: MAP_TYPES = useStore( state => state.layout.mapType );
   const [showsUserLocation, setShowsUserLocation] = useState( showsUserLocationProp );
 
   let defaultInitialRegion = null;
@@ -525,7 +525,7 @@ const Map = ( {
         initialRegion={initialRegion}
         loadingEnabled
         loadingIndicatorColor={colors.inatGreen}
-        mapType={currentMapType}
+        mapType={mapType}
         minZoomLevel={MIN_ZOOM_LEVEL}
         onMapReady={handleMapReady}
         onPanDrag={onPanDrag}
@@ -584,9 +584,7 @@ const Map = ( {
         onPress={handleCurrentLocationPress}
       />
       <SwitchMapTypeButton
-        currentMapType={currentMapType}
         mapType={mapType}
-        setCurrentMapType={setCurrentMapType}
         showSwitchMapTypeButton={showSwitchMapTypeButton}
         switchMapTypeButtonClassName={switchMapTypeButtonClassName}
       />
