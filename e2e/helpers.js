@@ -19,11 +19,18 @@ function execPromise( command ) {
 export async function iNatE2eBeforeAll( device ) {
   await resetUserForTesting();
 
-  if ( device.getPlatform() === "android" ) {
-    // Disable animations for test stability
-    await execPromise( "adb shell settings put global window_animation_scale 0" );
-    await execPromise( "adb shell settings put global transition_animation_scale 0" );
-    await execPromise( "adb shell settings put global animator_duration_scale 0" );
+  if ( device.getPlatform( ) === "android" ) {
+    // Push a test image into the app's external files directory so the mock
+    // camera can use it as a photo source (copyAssetsFileIOS is iOS-only).
+    // The directory is created by the app on first launch, so we ensure it
+    // exists before pushing.
+    await execPromise(
+      "adb shell mkdir -p /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/",
+    );
+    await execPromise(
+      "adb push e2e/maestro/android/test.jpg"
+        + " /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/e2e_test.jpg",
+    );
   }
 }
 
