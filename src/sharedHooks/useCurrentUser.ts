@@ -6,7 +6,11 @@ const { useRealm } = RealmContext;
 
 const useCurrentUser = ( ): User | null => {
   const realm = useRealm( );
-  const [currentUser, setCurrentUser] = useState<User | null>( null );
+
+  // use a state initializer for the initial value from Realm
+  const [currentUser, setCurrentUser] = useState<User | null>(
+    () => User.currentUser( realm ) || null,
+  );
 
   useEffect( ( ) => {
     const realmResults = realm.objects( User ).filtered( "signedIn == true" );
