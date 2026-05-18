@@ -26,7 +26,6 @@ type Props = {
   loading: boolean,
   locationName: string,
   initialRegion: Object,
-  mapType: string,
   onCurrentLocationPress: Function,
   onMapReady: Function,
   onRegionChangeComplete: Function,
@@ -45,7 +44,6 @@ const LocationPicker = ( {
   locationName,
   regionToAnimate,
   initialRegion,
-  mapType,
   onCurrentLocationPress,
   onMapReady,
   onRegionChangeComplete,
@@ -113,7 +111,6 @@ const LocationPicker = ( {
           <Map
             className="h-full"
             initialRegion={initialRegion}
-            mapType={mapType}
             onCurrentLocationPress={onCurrentLocationPress}
             onMapReady={onMapReady}
             onRegionChangeComplete={onRegionChangeComplete}
