@@ -4,6 +4,7 @@ import React, {
   useEffect,
 } from "react";
 import { useTranslation } from "sharedHooks";
+import { MAP_TYPES } from "stores/createLayoutSlice";
 import { zustandStorage } from "stores/useStore";
 import { getShadow } from "styles/global";
 
@@ -48,15 +49,15 @@ const SwitchMapTypeButton = ( {
       )}
       style={DROP_SHADOW}
       accessibilityLabel={
-        currentMapType === "standard"
+        currentMapType === MAP_TYPES.STANDARD
           ? t( "Standard--map-type" )
           : t( "Satellite--map-type" )
       }
       accessibilityHint={t( "Toggle-map-type" )}
       onPress={( ) => {
-        changeMapType( currentMapType === "standard"
-          ? "hybrid"
-          : "standard" );
+        changeMapType( currentMapType === MAP_TYPES.STANDARD
+          ? MAP_TYPES.HYBRID
+          : MAP_TYPES.STANDARD );
       }}
     />
   );
