@@ -80,6 +80,8 @@ attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = August
 BACK-TO-LOGIN = BACK TO LOGIN
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Bulk importer
 By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
 By-exiting-observation-not-saved = By exiting, your observation will not be saved.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = შეთავაზებების ძ�
 Search-suggestions-without-location = შეთავაზებების ძიება ადგილმდებარეობის გარეშე
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
 See-project-members = See project members
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

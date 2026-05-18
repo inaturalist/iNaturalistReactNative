@@ -86,6 +86,8 @@ attribution-cc-by-nd = sommige rechten voorbehouden (CC BY-ND)
 attribution-cc-by-sa = sommige rechten voorbehouden (CC BY-SA)
 August = Augustus
 BACK-TO-LOGIN = TERUG NAAR INLOGGEN
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Bulk import
 By-exiting-changes-not-saved = Door af te sluiten, worden wijzigingen in je waarneming niet opgeslagen.
 By-exiting-observation-not-saved = Als je afsluit word je waarneming niet opgeslagen.
@@ -595,7 +597,7 @@ Please-allow-Microphone-Access = Geef toegang tot de microfoon
 Please-choose-a-different-password = Kies een ander wachtwoord.
 Please-Grant-Permission = Geef toestemming
 PLEASE-LOG-IN = LOG IN
-Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
+Please-log-in-again = Log opnieuw in. We moeten af en toe je sessie vernieuwen om de gegevens in de cache te wissen en te controleren of de app op zijn best werkt.
 Please-make-sure-your-password-is-at-least-6-characters = Zorg ervoor dat je wachtwoord minimaal 6 tekens lang is.
 Please-try-again-when-you-are-connected-to-the-internet = Probeer het opnieuw wanneer je verbonden bent met het internet.
 Please-try-again-when-you-are-online = Probeer het opnieuw als je online bent!
@@ -750,6 +752,7 @@ Search-suggestions-with-location = Zoek suggesties met locatie
 Search-suggestions-without-location = Zoek suggesties zonder locatie te gebruiken
 SEARCH-TAXA = ZOEK TAXA
 SEARCH-USERS = ZOEK GEBRUIKERS
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Toon waarnemingen van deze gebruiker in Verkennen
 See-observations-of-this-taxon-in-explore = Toon waarnemingen van dit taxon in verkennen
 See-project-members = Toon projectdeelnemers
@@ -971,6 +974,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

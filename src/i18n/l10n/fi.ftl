@@ -83,6 +83,8 @@ attribution-cc-by-nd = osa oikeuksista pidätetään (CC BY-ND)
 attribution-cc-by-sa = osa oikeuksista pidätetään (CC BY-SA)
 August = elokuu
 BACK-TO-LOGIN = TAKAISIN KIRJAUTUMISEEN
+Blog = Blogi
+BLOG = BLOGI
 Bulk-importer = Massatuonti
 By-exiting-changes-not-saved = Jos poistut, havaintoosi tehtyjä muutoksia ei tallenneta.
 By-exiting-observation-not-saved = Jos poistut, havaintoasi ei tallenneta.
@@ -747,6 +749,7 @@ Search-suggestions-with-location = Hakuehdotuksia sijainnin perusteella
 Search-suggestions-without-location = Hakuehdotukset ilman sijaintia
 SEARCH-TAXA = HAE TAKSONIA
 SEARCH-USERS = HAE KÄYTTÄJIÄ
+See-journal-posts = Näytä päiväkirjamerkinnät
 See-observations-by-this-user-in-Explore = Katso tämän käyttäjän havainnot Tutki-osiossa
 See-observations-of-this-taxon-in-explore = Katso tämän taksonin havainnot Tutki-osiossa
 See-project-members = Katso projektin jäsenet
@@ -968,6 +971,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } tunnistaja
        *[other] { $count } tunnistajaa
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->
