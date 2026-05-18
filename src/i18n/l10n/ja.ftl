@@ -80,6 +80,8 @@ attribution-cc-by-nd = いくつかの権利を保有（CC BY-ND）
 attribution-cc-by-sa = いくつかの権利を保有（CC BY-SA）
 August = 8月
 BACK-TO-LOGIN = ログインに戻る
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = 一括インポーター
 By-exiting-changes-not-saved = 終了すると、観察記録への変更は保存されません。
 By-exiting-observation-not-saved = 終了すると、観察記録は保存されません。
@@ -749,6 +751,7 @@ Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
 See-project-members = プロジェクトメンバーを表示
@@ -970,6 +973,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

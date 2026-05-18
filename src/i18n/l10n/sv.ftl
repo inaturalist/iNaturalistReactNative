@@ -86,6 +86,8 @@ attribution-cc-by-nd = vissa rättigheter förbehållna (CC BY-ND)
 attribution-cc-by-sa = vissa rättigheter förbehållna (CC BY-SA)
 August = augusti
 BACK-TO-LOGIN = TILLBAKA TILL INLOGGNING
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Bulkimportering
 By-exiting-changes-not-saved = Genom att avsluta kommer ändringar av ditt fynd inte att sparas.
 By-exiting-observation-not-saved = Genom att avsluta kommer ditt fynd inte att sparas.
@@ -750,6 +752,7 @@ Search-suggestions-with-location = Sök förslag med plats
 Search-suggestions-without-location = Sök förslag utan plats
 SEARCH-TAXA = SÖK TAXA
 SEARCH-USERS = SÖK ANVÄNDARE
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Se fynd av den här användaren i Utforska
 See-observations-of-this-taxon-in-explore = Se fynd  av detta taxon i utforska
 See-project-members = Se projektmedlemmar
@@ -971,6 +974,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } bestämmare
        *[other] { $count } bestämmare
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

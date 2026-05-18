@@ -80,6 +80,8 @@ attribution-cc-by-nd = mõned õigused kaitstud (CC BY-ND)
 attribution-cc-by-sa = mõned õigused kaitstud (CC BY-SA)
 August = august
 BACK-TO-LOGIN = TAGASI SISSELOGIMA
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Mass-importija
 By-exiting-changes-not-saved = Väljudes ei salvestata muutuseid sinu vaatlusele.
 By-exiting-observation-not-saved = Väljudes su vaatlust ei salvestata.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = Asukohaga otsingusoovitused
 Search-suggestions-without-location = Asukohata otsingusoovitused
 SEARCH-TAXA = OTSI TAKSONIT
 SEARCH-USERS = OTSI KASUTAJAT
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
 See-project-members = See project members
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } määratleja
        *[other] { $count } määratlejat
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

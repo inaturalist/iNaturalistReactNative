@@ -80,6 +80,8 @@ attribution-cc-by-nd = některá vyhrazená práva (CC BY-ND)
 attribution-cc-by-sa = některá vyhrazená práva (CC BY-SA)
 August = Srpen
 BACK-TO-LOGIN = ZPĚT NA PŘIHLÁŠENÍ
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Dávkové nahrávání
 By-exiting-changes-not-saved = Po ukončení se změny vašeho pozorování neuloží.
 By-exiting-observation-not-saved = Ukončením nebude vaše pozorování uloženo.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = Hledat návrhy s polohou
 Search-suggestions-without-location = Hledat návrhy bez polohy
 SEARCH-TAXA = HLEDAT TAXON
 SEARCH-USERS = HLEDAT UŽIVATELE
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Zobrazit pozorování tohoto uživatele v průzkumu
 See-observations-of-this-taxon-in-explore = Zobrazit pozorování tohoto taxonu při průzkumu
 See-project-members = Zobrazit členy projektu
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->
