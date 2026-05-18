@@ -20,15 +20,6 @@ export async function iNatE2eBeforeAll( device ) {
   await resetUserForTesting();
 
   if ( device.getPlatform() === "android" ) {
-    await device.launchApp( {
-      newInstance: true,
-      permissions: {
-        location: "always",
-        camera: "YES",
-        medialibrary: "YES",
-        photos: "YES",
-      },
-    } );
     // Disable animations for test stability
     await execPromise( "adb shell settings put global window_animation_scale 0" );
     await execPromise( "adb shell settings put global transition_animation_scale 0" );
