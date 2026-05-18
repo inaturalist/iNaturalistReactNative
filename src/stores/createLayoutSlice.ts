@@ -9,6 +9,11 @@ export enum SCREEN_AFTER_PHOTO_EVIDENCE {
   MATCH = "Match"
 }
 
+export enum MAP_TYPES {
+  STANDARD = "standard",
+  HYBRID = "hybrid",
+}
+
 const createLayoutSlice = set => ( {
   // Vestigial un-namespaced values
   isAdvancedUser: false,
@@ -124,6 +129,14 @@ const createLayoutSlice = set => ( {
       layout: {
         ...state.layout,
         debugModeEnabled: !state.layout.debugModeEnabled,
+      },
+    } ) ),
+    // Last selected map layers type for react-native-maps MapView ("standard" or "hybrid")
+    mapType: MAP_TYPES.STANDARD,
+    setMapType: ( newMapType: MAP_TYPES ) => set( state => ( {
+      layout: {
+        ...state.layout,
+        mapType: newMapType,
       },
     } ) ),
   },
