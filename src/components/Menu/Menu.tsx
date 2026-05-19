@@ -252,9 +252,8 @@ const Menu = ( ) => {
         identifications: "loggedout",
         remoteObservations: "loggedout",
       };
-    const locallySavedOnlyObservations = Observation.filterUnsyncedObservations( realm ).length;
     const appContext = {
-      locallySavedOnlyObservations,
+      locallySavedOnlyObservations: Observation.filterUnsyncedObservations( realm ).length,
       observationsInRealm: realm.objects( "Observation" ).length,
     };
     const storageMetrics = await getStorageMetrics( realm?.path ).catch( () => ( {} ) );
