@@ -22,7 +22,8 @@ import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import Config from "react-native-config";
 import { openExternalWebBrowser } from "sharedHelpers/util";
-import { useStoredLayout, useTranslation } from "sharedHooks";
+import { useFeatureFlag, useStoredLayout, useTranslation } from "sharedHooks";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -47,6 +48,7 @@ type Props = {
 const ProjectDetails = ( {
   project, joinProject, leaveProject, loadingProjectMembership,
 }: Props ): Node => {
+  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
   const setExploreView = useStore( state => state.setExploreView );
 
   const { t, i18n } = useTranslation( );
@@ -92,6 +94,13 @@ const ProjectDetails = ( {
     },
     [navigation, project],
   );
+
+  const onJournalPostsPressed = ( ) => {
+    navigation.navigate( "Journal", {
+      projectTitle: project?.title,
+      journalPostsCount: project?.journal_posts_count,
+    } );
+  };
 
   if ( !project ) {
     return null;
@@ -170,6 +179,8 @@ const ProjectDetails = ( {
           onObservationPressed={() => onObservationPressed( false )}
           onSpeciesPressed={onSpeciesPressed}
           onMembersPressed={onMembersPressed}
+          onJournalPostsPressed={onJournalPostsPressed}
+          newsEnabled={newsEnabled}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
         {project?.description && (

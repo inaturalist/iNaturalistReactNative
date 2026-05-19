@@ -80,6 +80,8 @@ attribution-cc-by-nd = beberapa hak dilindungi (CC BY-ND)
 attribution-cc-by-sa = beberapa hak dilindungi (CC BY-SA)
 August = Agustus
 BACK-TO-LOGIN = KEMBALI KE HALAMAN MASUK
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Pengimpor massal
 By-exiting-changes-not-saved = Dengan keluar, perubahan pada pengamatan Anda tidak akan disimpan.
 By-exiting-observation-not-saved = Dengan keluar, pengamatan Anda tidak akan disimpan.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = Cari rekomendasi dengan lokasi
 Search-suggestions-without-location = Rekomendasi pencarian tanpa lokasi
 SEARCH-TAXA = CARI TAKSON
 SEARCH-USERS = CARI PENGGUNA
+See-journal-posts = Lihat postingan jurnal
 See-observations-by-this-user-in-Explore = Lihat pengamatan-pengamatan oleh pengguna ini di Jelajah
 See-observations-of-this-taxon-in-explore = Lihat pengamatan-pengamatan takson ini di jelajah
 See-project-members = Lihat anggota proyek
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Pengidentifikasi
        *[other] { $count } Pengidentifikasi
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } POSTINGAN JURNAL
+       *[other] { $count } POSTINGAN JURNAL
     }
 X-MEMBERS =
     { $count ->

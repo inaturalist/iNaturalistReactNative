@@ -154,6 +154,16 @@ const Menu = ( ) => {
       },
     },
 
+    ...( newsEnabled
+      ? {
+        news: {
+          label: t( "BLOG" ),
+          navigation: "Journal",
+          icon: "leaf",
+        },
+      }
+      : {} ),
+
     ...( currentUser
       ? {
         logout: {
@@ -340,20 +350,6 @@ const Menu = ( ) => {
               }}
             />
           ) )}
-          {newsEnabled && (
-            <MenuItem
-              item={{
-                label: t( "NEWS" ),
-                icon: "leaf",
-              }}
-              onPress={() => navigation.navigate( "TabNavigator", {
-                screen: "MenuTab",
-                params: {
-                  screen: "News",
-                },
-              } )}
-            />
-          )}
         </View>
       </View>
 

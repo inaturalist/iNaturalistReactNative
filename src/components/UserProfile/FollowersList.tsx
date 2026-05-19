@@ -10,6 +10,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
+import type { TabStackScreenProps } from "navigation/types";
 import React, {
   useEffect,
   useMemo,
@@ -24,14 +25,12 @@ import {
 const FollowersList = ( ) => {
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const { user } = params;
+  const navigation = useNavigation<TabStackScreenProps<"FollowersList">["navigation"]>( );
+  const { params } = useRoute<TabStackScreenProps<"FollowersList">["route"]>( );
+  const { userId, userLogin } = params;
   const { t } = useTranslation( );
 
-  const userId = user?.id;
-
-  const usersFollowingQueryKey = ["fetchUsers", "followers", user?.login];
+  const usersFollowingQueryKey = ["fetchUsers", "followers", userLogin];
 
   const {
     data: followers,
@@ -52,11 +51,11 @@ const FollowersList = ( ) => {
   );
 
   const followersHeaderOptions = useMemo( ( ) => ( {
-    headerTitle: user?.login,
+    headerTitle: userLogin,
     headerSubtitle: t( "X-FOLLOWERS", {
       count: totalResults,
     } ),
-  } ), [totalResults, t, user] );
+  } ), [totalResults, t, userLogin] );
 
   useEffect( ( ) => {
     if ( totalResults !== undefined && totalResults !== null ) {

@@ -241,13 +241,28 @@ export type BaseTabStackParamList = {
     userLogin?: string;
   };
   FollowersList: {
-    // TODO: don't send the entire user object over here, only an ID or ID+login
-    user: ApiUser;
+    userId: number;
+    userLogin: string;
   };
   FollowingList: {
-    // TODO: don't send the entire user object over here, only an ID or ID+login
-    user: ApiUser;
+    userId: number;
+    userLogin: string;
   };
+  // From UserProfile
+  // {
+  //   userLogin: user?.login,
+  //   journalPostsCount: user?.journal_posts_count,
+  // }
+  // From ProjectDetails
+  // {
+  //   projectTitle: project?.title,
+  //   journalPostsCount: project?.journal_posts_count,
+  // }
+  Journal: {
+    userLogin?: string;
+    projectTitle?: string;
+    journalPostsCount?: number;
+  } | undefined;
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;

@@ -1,13 +1,43 @@
+import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  ViewWrapper,
+} from "components/SharedComponents";
+import { View } from "components/styledComponents";
+import type { TabStackScreenProps } from "navigation/types";
+import React, {
+  useEffect,
+  useMemo,
+} from "react";
+import {
+  useTranslation,
+} from "sharedHooks";
+
 // import fetchUserPosts from "api/posts";
 // import ActivityIndicator from "components/SharedComponents/ActivityIndicator";
-import { View } from "components/styledComponents";
-import React from "react";
-
 // import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 // import useCurrentUser from "sharedHooks/useCurrentUser";
 import PostList from "./PostList";
 
-const News = ( ) => {
+const Journal = ( ) => {
+  const navigation = useNavigation<TabStackScreenProps<"Journal">["navigation"]>( );
+  const { params } = useRoute<TabStackScreenProps<"Journal">["route"]>( );
+  const { journalPostsCount, projectTitle, userLogin } = params || {};
+  const { t } = useTranslation( );
+
+  const headerOptions = useMemo(
+    () => ( {
+      headerTitle: userLogin || projectTitle || t( "Blog" ),
+      headerSubtitle: t( "X-JOURNAL_POSTS", {
+        count: journalPostsCount || 0,
+      } ),
+    } ),
+    [journalPostsCount, t, userLogin, projectTitle],
+  );
+
+  useEffect( ( ) => {
+    navigation.setOptions( headerOptions );
+  }, [headerOptions, navigation] );
+
   // https://linear.app/inaturalist/issue/MOB-1424/fetch-live-posts
   // const currentUser = useCurrentUser( );
   // const { data: posts, isLoading: isLoadingPosts } = useAuthenticatedQuery(
@@ -53,10 +83,11 @@ const News = ( ) => {
   // }
 
   return (
-    <View className="flex-1 bg-white">
+    <ViewWrapper useTopInset={false}>
+      <View className="border-b border-lightGray mt-5" />
       <PostList posts={posts} />
-    </View>
+    </ViewWrapper>
   );
 };
 
-export default News;
+export default Journal;

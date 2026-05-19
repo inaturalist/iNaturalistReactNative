@@ -1,6 +1,8 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
+import ExploreV2DebugSheet
+  from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import useInfiniteExploreScroll
   from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
@@ -47,6 +49,7 @@ const ExploreResults = ( ) => {
           showNoResults={!canFetch || totalResults === 0}
           testID="ExploreV2ObservationsList"
         />
+        <ExploreV2DebugSheet />
       </View>
     </ViewWrapper>
   );

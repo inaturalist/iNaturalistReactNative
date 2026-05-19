@@ -80,6 +80,8 @@ attribution-cc-by-nd = 保留部分权利（CC BY-ND）
 attribution-cc-by-sa = 保留部分权利（CC BY-SA）
 August = 八月
 BACK-TO-LOGIN = 返回登录
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = 批量导入器
 By-exiting-changes-not-saved = 退出后，您观察记录的更改将不会被保存。
 By-exiting-observation-not-saved = 退出将不会保存您的观察。
@@ -744,6 +746,7 @@ Search-suggestions-with-location = 搜索基于位置的建议
 Search-suggestions-without-location = 搜索不基于位置的建议
 SEARCH-TAXA = 搜索分类群
 SEARCH-USERS = 搜索用户
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = 在探索中查看此用户的观察
 See-observations-of-this-taxon-in-explore = 在探索中查看此分类单元的观察
 See-project-members = 查看项目成员
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count }个鉴定者
        *[other] { $count }个鉴定者
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

@@ -80,6 +80,8 @@ attribution-cc-by-nd = alguns direitos reservados (CC BY-ND)
 attribution-cc-by-sa = alguns direitos reservados (CC BY-SA)
 August = Agosto
 BACK-TO-LOGIN = VOLTAR PARA LOGIN
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Importar em massa
 By-exiting-changes-not-saved = Ao sair, as alterações de sua observação não serão salvas
 By-exiting-observation-not-saved = Ao sair, sua observação não será salva.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = Pesquisar sugestões com localização
 Search-suggestions-without-location = Pesquisar sugestões sem localização
 SEARCH-TAXA = BUSCAR TAXA
 SEARCH-USERS = PROCURAR USUÁRIOS
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Ver observações deste usuário em Explorar
 See-observations-of-this-taxon-in-explore = Ver observações deste táxon em explorar
 See-project-members = Ver membros do projeto
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identificador
        *[other] { $count } Identificadores
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

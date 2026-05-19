@@ -75,7 +75,6 @@ const initialState = {
   isFirstMapRender: true,
   loading: true,
   locationName: "",
-  mapType: "standard",
   region: undefined,
   regionToAnimate: undefined,
 };
@@ -120,11 +119,6 @@ const reducer = ( state, action ) => {
         regionToAnimate: action.region,
         loading: true,
       };
-    case "SET_MAP_TYPE":
-      return {
-        ...state,
-        mapType: action.mapType,
-      };
     case "UPDATE_LOCATION_NAME":
       return {
         ...state,
@@ -151,7 +145,6 @@ const LocationPickerContainer = ( ): Node => {
     isFirstMapRender,
     loading,
     locationName,
-    mapType,
     region,
     regionToAnimate,
   } = state;
@@ -254,7 +247,6 @@ const LocationPickerContainer = ( ): Node => {
       loading={loading}
       locationName={locationName}
       initialRegion={initialRegion}
-      mapType={mapType}
       onCurrentLocationPress={onCurrentLocationPress}
       onMapReady={onMapReady}
       onRegionChangeComplete={onRegionChangeComplete}
