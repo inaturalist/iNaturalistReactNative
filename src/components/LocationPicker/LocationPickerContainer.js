@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  latitudeDeltaToMeters,
+  getMapRegion, latitudeDeltaToMeters,
   metersToLatitudeDelta,
 } from "components/SharedComponents/Map/helpers/mapHelpers";
 import type { Node } from "react";
@@ -200,19 +200,28 @@ const LocationPickerContainer = ( ): Node => {
   );
 
   const selectPlaceResult = place => {
-    const { coordinates } = place.point_geojson;
+    // Not trying to get cutsey, this does just seem like the most readable way.
+    // The 5 point bbox poly is a clockwise rectangle starting from SW (5th === 1st)
+    const [
+      [swlng, swlat],
+      _nwPoint,
+      [nelng, nelat],
+    ] = place.bounding_box_geojson.coordinates[0];
+
+    const placeRegion = getMapRegion( {
+      swlng, swlat, nelng, nelat,
+    } );
+
     dispatch( {
       type: "SELECT_PLACE_RESULT",
       locationName: place.display_name,
       region: {
         ...region,
-        latitude: coordinates[1],
-        longitude: coordinates[0],
+        ...placeRegion,
       },
       regionToAnimate: {
         ...region,
-        latitude: coordinates[1],
-        longitude: coordinates[0],
+        ...placeRegion,
       },
     } );
   };

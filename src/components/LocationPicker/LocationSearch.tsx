@@ -44,7 +44,8 @@ const LocationSearch = ( {
     ( optsWithAuth: ApiOpts ) => fetchSearchResults( {
       q: locationName,
       sources: "places",
-      fields: "place,place.display_name,place.point_geojson",
+      // eslint-disable-next-line max-len
+      fields: "place,place.display_name,place.point_geojson,place.bounding_box_geojson,place.bbox_area",
     }, optsWithAuth ),
   );
 
