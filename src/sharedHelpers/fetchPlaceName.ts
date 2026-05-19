@@ -1,7 +1,6 @@
 import NetInfo from "@react-native-community/netinfo";
 import type { GeocodingObject } from "react-native-geocoder-reborn";
-
-import Geocoder from "./geocoderWrapper";
+import Geocoder from "react-native-geocoder-reborn";
 
 // 2.5 seconds, half the time as online Suggestions
 // feel free to tweak this but it's here to make the camera feel speedier
