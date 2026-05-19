@@ -16,7 +16,7 @@ const useCurrentUser = ( ): User | null => {
     const realmResults = realm.objects( User ).filtered( "signedIn == true" );
 
     // when the signedIn User collection changes, update state to latest currentUser or null.
-    // We don't need to handles changes in the listener because we only ever care about the
+    // We don't need to handle changes in the listener because we only ever care about the
     // single result (or lack of)
     const listener = () => {
       setCurrentUser( User.currentUser( realm ) || null );
