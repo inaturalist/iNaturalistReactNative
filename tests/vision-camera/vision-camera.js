@@ -69,7 +69,7 @@ export class mockCamera extends React.PureComponent {
         which is accessible by the app without extra permissions.
       */
       const sourcePath = `${ExternalDirectoryPath}/e2e_test.jpg`;
-      const destPath = `${TemporaryDirectoryPath}temp.jpg`;
+      const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
       try {
         await copyFile( sourcePath, destPath );
         return {
@@ -100,7 +100,7 @@ export class mockCamera extends React.PureComponent {
           console.log( `Converted file uri to ${oldUri}` );
         }
         const encodedUri = encodeURI( oldUri );
-        const destPath = `${TemporaryDirectoryPath}temp.jpg`;
+        const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
         const newPath = await copyAssetsFileIOS(
           encodedUri,
           destPath,
