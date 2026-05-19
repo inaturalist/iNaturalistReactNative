@@ -51,8 +51,11 @@ export class mockCamera extends React.PureComponent {
     the test never finishes.
   */
   componentDidUpdate() {
-    const { frameProcessor } = this.props;
-    frameProcessor?.frameProcessor( mockFrame );
+    const { frameProcessor, isActive } = this.props;
+    if ( isActive === false || !frameProcessor ) {
+      return;
+    }
+    frameProcessor.frameProcessor( mockFrame );
   }
 
   // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
