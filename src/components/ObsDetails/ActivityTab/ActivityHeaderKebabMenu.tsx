@@ -1,23 +1,21 @@
-// @flow
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
   View,
 } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useState } from "react";
 
-type Props = {
-  current: boolean,
-  currentUser: boolean,
-  itemType: "Identification" | "Comment",
-  setShowDeleteCommentSheet: Function,
-  setShowEditCommentSheet: Function,
-  setShowWithdrawIDSheet: Function,
-  updateIdentification: Function,
+interface Props {
+  current: boolean;
+  currentUser: boolean;
+  itemType: "Identification" | "Comment";
+  setShowDeleteCommentSheet: ( show: boolean ) => void;
+  setShowEditCommentSheet: ( show: boolean ) => void;
+  setShowWithdrawIDSheet: ( show: boolean ) => void;
+  updateIdentification: ( { current }: { current: boolean } ) => void;
 }
 
-const ActivityItemKebabMenu = ( {
+const ActivityHeaderKebabMenu = ( {
   current,
   currentUser,
   itemType,
@@ -25,7 +23,7 @@ const ActivityItemKebabMenu = ( {
   setShowEditCommentSheet,
   setShowWithdrawIDSheet,
   updateIdentification,
-}:Props ): Node => {
+}:Props ) => {
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
   if ( !currentUser ) {
@@ -93,4 +91,4 @@ const ActivityItemKebabMenu = ( {
   );
 };
 
-export default ActivityItemKebabMenu;
+export default ActivityHeaderKebabMenu;
