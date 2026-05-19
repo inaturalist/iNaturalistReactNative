@@ -1,3 +1,4 @@
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { screen, userEvent } from "@testing-library/react-native";
 import AddObsButton from "components/AddObsBottomSheet/AddObsButton";
 import i18next from "i18next";
@@ -106,13 +107,12 @@ describe( "with advanced user layout", ( ) => {
   } );
 
   it( "does not open model on long press", async ( ) => {
+    const presentSpy = jest.spyOn( BottomSheetModal.prototype, "present" );
     renderComponent( <AddObsButton /> );
     await longPress( );
 
-    const noEvidenceButton = screen.queryByLabelText(
-      i18next.t( "Observation-with-no-evidence" ),
-    );
-    expect( noEvidenceButton ).toBeFalsy( );
+    expect( presentSpy ).not.toHaveBeenCalled( );
+    presentSpy.mockRestore( );
   } );
 
   describe( "with advanced AICamera-only setting", ( ) => {

@@ -1,8 +1,5 @@
 /* eslint-disable i18next/no-literal-string */
 import {
-  useRoute,
-} from "@react-navigation/native";
-import {
   Heading4,
   ScrollViewWrapper,
 } from "components/SharedComponents";
@@ -17,8 +14,7 @@ import { Platform, Text } from "react-native";
 import { useLogPreview } from "./logManagementHelpers";
 
 const Log = () => {
-  const { params } = useRoute();
-  const logPreview = useLogPreview( { legacy: !!params?.isLegacyLogs } );
+  const logPreview = useLogPreview( );
   if ( !logPreview ) {
     return null;
   }

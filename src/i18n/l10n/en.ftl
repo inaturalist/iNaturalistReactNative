@@ -437,7 +437,7 @@ DISCARD-X-OBSERVATIONS =
     }
 # Onboarding header (underneath the logo)
 DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
-# Label for a button that dismisses announcments
+# Label for a button that dismisses announcements
 Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
 DONATE = DONATE
@@ -594,6 +594,7 @@ If-you-leave-x-of-your-observations-removed =
     } will also be removed from this project.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = If you save this observation and upload it to iNaturalist, other people may be able to help identify it.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
 If-youre-seeing-this-error = If you're seeing this and you're online, iNat staff have already been notified. Thanks for finding a bug! If you're offline, please take a screenshot and send us an email when you're back on the Internet.
 IGNORE-LOCATION = IGNORE LOCATION
 # Button to stop recieving notifications about observation
@@ -922,6 +923,7 @@ Please-choose-a-different-password = Please choose a different password.
 # Title of a screen asking for permission when permission has been denied
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
+Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Please make sure your password is at least 6 characters.
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
 Please-try-again-when-you-are-online = Please try again when you are online!
@@ -1218,6 +1220,7 @@ Syncing = Syncing...
 # Help text for the button that opens the multi-capture camera
 Take-photo = Take photo
 Take-photos = Take photos
+Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
 # label in project requirements
 Taxa = Taxa
 TAXON = TAXON
@@ -1245,7 +1248,6 @@ The-iNaturalist-Network = The iNaturalist network is a collection of localized w
 # Describes what happens when geoprivacy is set to private
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
-There-was-an-error-that-might-be-fixed-by-logging-in-again = There was an error that might be fixed by logging in again.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:

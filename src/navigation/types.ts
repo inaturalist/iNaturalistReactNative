@@ -242,7 +242,7 @@ export type BaseTabStackParamList = {
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;
-  Log: { isLegacyLogs: boolean };
+  Log: undefined;
   Settings: undefined;
   About: undefined;
   Donate: undefined;
@@ -336,6 +336,8 @@ export type NoBottomTabStackParamList = BaseNoBottomTabStackParamList &
 export type LoginStackParamList = {
   // From SignUpConfirmationForm
   // no params
+  // From useLinking
+  // { emailConfirmed: true }
   Login: {
     emailConfirmed?: boolean;
     prevScreen?: string;

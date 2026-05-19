@@ -1,6 +1,5 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
+import type { ListRenderItem } from "@shopify/flash-list";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
   Body2,
@@ -13,24 +12,43 @@ import {
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
-import { t } from "i18next";
-import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
-import { useGridLayout } from "sharedHooks";
+import type { LayoutChangeEvent } from "react-native";
+import { useGridLayout, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 
-type Props = {
-  combinePhotos: Function,
-  groupedPhotos: Object[],
-  isCreatingObservations?: boolean,
-  navBasedOnUserSettings: Function,
-  removePhotos: Function,
-  selectedObservations: Object[],
-  selectObservationPhotos: Function,
-  separatePhotos: Function,
-  totalPhotos: number
+const emptyItemStyle = {
+  borderWidth: 4,
+  borderStyle: "dashed",
+  borderColor: colors.mediumGray,
+} as const;
+
+interface Item {
+  photos: {
+    image: {
+      uri: string;
+    };
+  }[];
+}
+
+type GroupPhotosListItem = Item | { empty: true };
+
+function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
+  return "empty" in item && item.empty === true;
+}
+
+interface Props {
+  combinePhotos: ( ) => void;
+  groupedPhotos: Item[];
+  isCreatingObservations?: boolean;
+  navBasedOnUserSettings: ( ) => void;
+  removePhotos: ( ) => void;
+  selectedObservations: Item[];
+  selectObservationPhotos: ( isSelected: boolean, item: Item ) => void;
+  separatePhotos: ( ) => void;
+  totalPhotos: number;
 }
 
 const GroupPhotos = ( {
@@ -43,25 +61,27 @@ const GroupPhotos = ( {
   selectObservationPhotos,
   separatePhotos,
   totalPhotos,
-}: Props ): Node => {
+}: Props ) => {
+  const { t } = useTranslation( );
   const navigation = useNavigation( );
   const {
     flashListStyle,
     gridItemStyle,
-    gridItemWidth,
     numColumns,
   } = useGridLayout( );
-  const [buttonBarHeight, setButtonBarHeight] = useState( null );
-  const extractKey = ( item, index ) => ( item.empty
-    ? "empty"
-    : `${item.photos[0].uri}${index}` );
+  const [buttonBarHeight, setButtonBarHeight] = useState<number | null>( null );
+  const extractKey = ( item: GroupPhotosListItem, index: number ) => (
+    isEmptyGridItem( item )
+      ? "empty"
+      : `${item.photos[0].image.uri}${index}`
+  );
 
   const noObsSelected = selectedObservations.length === 0;
   const oneObsSelected = selectedObservations.length === 1;
   const obsWithMultiplePhotosSelected
     = selectedObservations?.[0]?.photos?.length > 1;
 
-  const renderImage = useCallback( item => (
+  const renderImage = useCallback( ( item: Item ) => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
@@ -77,45 +97,38 @@ const GroupPhotos = ( {
     } );
   }, [navigation] );
 
-  // $FlowIgnore
-  const renderItem = useCallback( ( { item } ) => {
-    if ( item.empty ) {
+  const renderItem: ListRenderItem<GroupPhotosListItem> = useCallback( ( { item } ) => {
+    if ( isEmptyGridItem( item ) ) {
       return (
         <Pressable
           accessibilityRole="button"
           onPress={addPhotos}
           className="rounded-[15px] justify-center items-center"
           // Sorry, couldn't get this to work with tailwind
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={[gridItemStyle, {
-            borderWidth: 4,
-            borderStyle: "dashed",
-            borderColor: colors.mediumGray,
-          }]}
+          style={[gridItemStyle, emptyItemStyle]}
         >
           <INatIcon name="plus" size={50} color={colors.mediumGray} />
         </Pressable>
       );
     }
-    // $FlowIgnore
     return renderImage( item );
   }, [gridItemStyle, renderImage, addPhotos] );
 
-  const renderHeader = ( ) => (
+  const headerComponent = useMemo( ( ) => (
     <View className="m-5">
       <Body2>{t( "Group-photos-onboarding" )}</Body2>
     </View>
-  );
+  ), [t] );
 
-  const onLayout = event => {
+  const onLayout = ( event: LayoutChangeEvent ) => {
     const {
       height,
     } = event.nativeEvent.layout;
     setButtonBarHeight( height );
   };
 
-  const data = useMemo( ( ) => {
-    const newData = [].concat( groupedPhotos );
+  const data = useMemo( (): GroupPhotosListItem[] => {
+    const newData: GroupPhotosListItem[] = [...groupedPhotos];
     if ( totalPhotos < MAX_PHOTOS_ALLOWED ) {
       newData.push( { empty: true } );
     }
@@ -124,13 +137,12 @@ const GroupPhotos = ( {
 
   const extraData = {
     selectedObservations,
-    gridItemWidth,
   };
 
   return (
     <ViewWrapper useTopInset={false}>
       <CustomFlashList
-        ListHeaderComponent={renderHeader}
+        ListHeaderComponent={headerComponent}
         contentContainerStyle={flashListStyle}
         data={data}
         extraData={extraData}
@@ -144,7 +156,7 @@ const GroupPhotos = ( {
         show={selectedObservations.length > 0 && typeof buttonBarHeight === "number"}
         position="bottomStart"
         containerClass="ml-[15px] rounded-md"
-        footerHeight={buttonBarHeight}
+        footerHeight={buttonBarHeight ?? 0}
       >
         <View className="rounded-md overflow-hidden flex-row">
           <INatIconButton

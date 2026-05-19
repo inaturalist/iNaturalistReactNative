@@ -62,8 +62,6 @@ const ProjectDetailsContainer = ( ): Node => {
     }, optsWithAuth ),
   );
 
-  // TODO: enable fields if it makes sense
-  // https://linear.app/inaturalist/issue/MOB-1366/enable-fields-for-fetchprojectposts-in-projectdetails
   const { data: projectPosts } = useAuthenticatedQuery(
     ["fetchProjectPosts", id],
     optsWithAuth => fetchProjectPosts( {
@@ -71,17 +69,14 @@ const ProjectDetailsContainer = ( ): Node => {
     }, optsWithAuth ),
   );
 
-  // TODO: enable fields if it makes sense
-  // https://linear.app/inaturalist/issue/MOB-1359/enable-fields-for-searchobservations-in-projectdetailscontainer
   const { data: projectStats } = useAuthenticatedQuery(
-    ["searchObservations", id],
+    ["searchObservations", "projectStats", id],
     ( ) => searchObservations( {
       project_id: id,
+      per_page: 0,
     } ),
   );
 
-  // TODO: enable fields if it makes sense
-  // https://linear.app/inaturalist/issue/MOB-1359/enable-fields-for-searchobservations-in-projectdetailscontainer
   const { data: usersObservations } = useAuthenticatedQuery(
     ["searchObservationsByUserInProject", id],
     optsWithAuth => searchObservations(
@@ -97,12 +92,11 @@ const ProjectDetailsContainer = ( ): Node => {
     },
   );
 
-  // TODO: enable fields if it makes sense
-  // https://linear.app/inaturalist/issue/MOB-1359/audit-searchobservations-todos-in-projectdetailscontainer
   const { data: speciesCounts } = useAuthenticatedQuery(
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
       project_id: id,
+      per_page: 0,
     } ),
   );
 

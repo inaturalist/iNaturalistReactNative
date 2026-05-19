@@ -15,6 +15,7 @@ module.exports = {
     "airbnb",
     "plugin:i18next/recommended",
     "plugin:@tanstack/query/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:react-native-a11y/ios",
     "plugin:@typescript-eslint/recommended",
   ],
@@ -105,9 +106,21 @@ module.exports = {
 
     // React-Hooks Plugin
     // The following rules are made available via `eslint-plugin-react-hooks`
-    "react-hooks/rules-of-hooks": 2,
     "react-hooks/exhaustive-deps": 2,
-    "react-hooks/react-compiler": "error",
+
+    // React Compiler
+    // These rules are specific to React Compiler.
+
+    // @FLGMWT 20260427: the following were introduced with `react-hooks/recommended` and represent
+    // cases that are very likely to cause bugs and _have definitely_ been the cause of a number of
+    // bugs fixed in the past few months. Turning these on as warnings and we can eventually
+    // switch to errors as we fix them : ) noting here in case it ever gets lost in Linear.
+    "react-hooks/static-components": 1,
+    "react-hooks/set-state-in-effect": 1,
+    "react-hooks/refs": 1,
+    "react-hooks/preserve-manual-memoization": 1,
+    "react-hooks/purity": 1,
+    "react-hooks/immutability": 1,
 
     "react-native/no-inline-styles": "error",
 

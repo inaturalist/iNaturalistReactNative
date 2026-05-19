@@ -1,0 +1,6 @@
+FIXED
+* Sound observations getting deleted when retrying upload after it failed
+* Crash on the Match screen
+
+UPDATED
+* Package and performance updates (especially on Notifications)
