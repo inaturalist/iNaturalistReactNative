@@ -38,6 +38,8 @@ const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
   } );
   const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
     = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
+  const { resolvedValue: newsEnabled, setOverride: setNewsEnabled }
+    = useFeatureFlagForDebug( FeatureFlag.NewsEnabled );
 
   const sections = useMemo(
     () => [
@@ -54,10 +56,19 @@ const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
               setExploreV2Enabled( !exploreV2Enabled );
             },
           },
+          {
+            id: "news",
+            type: "toggle",
+            title: "Blog",
+            value: newsEnabled,
+            onUpdate: () => {
+              setNewsEnabled( !newsEnabled );
+            },
+          },
         ],
       } ),
     ],
-    [exploreV2Enabled, setExploreV2Enabled],
+    [exploreV2Enabled, setExploreV2Enabled, newsEnabled, setNewsEnabled],
   );
 
   useRozeniteControlsPlugin( { sections } );

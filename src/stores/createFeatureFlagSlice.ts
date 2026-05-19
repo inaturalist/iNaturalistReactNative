@@ -21,16 +21,19 @@ export enum FeatureFlag {
   // flags should use positive language ending with `Enabled`
   // MyFeatureFlagEnabled = "myFeatureFlagEnabled",
   ExploreV2Enabled = "exploreV2Enabled",
+  NewsEnabled = "newsEnabled",
 }
 
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
   [FeatureFlag.ExploreV2Enabled]: false,
+  [FeatureFlag.NewsEnabled]: false,
 };
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: null,
   [FeatureFlag.ExploreV2Enabled]: null,
+  [FeatureFlag.NewsEnabled]: null,
 };
 
 const DEFAULT_STATE = {

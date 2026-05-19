@@ -233,7 +233,10 @@ const IdentificationSheets: React.FC<Props> = ( {
     cancelable: true,
   } ), [t] );
 
-  const { mutate: createIdentificationMutate } = useAuthenticatedMutation(
+  const {
+    mutate: createIdentificationMutate,
+    isPending: isCreateIdPending,
+  } = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
@@ -252,7 +255,8 @@ const IdentificationSheets: React.FC<Props> = ( {
         showErrorAlert( error );
       },
       onSettled: () => {
-        // Clear params gotten via useRoute to prevent re-showing sheets
+        dispatch( { type: SUBMIT_IDENTIFICATION } );
+        closeAgreeWithIdSheet( );
         navigation.setParams(
           { identAt: undefined, identTaxonId: undefined, identTaxonFromVision: undefined },
         );
@@ -334,16 +338,13 @@ const IdentificationSheets: React.FC<Props> = ( {
 
     loadActivityItem( );
     createIdentificationMutate( { identification: agreeParams } );
-    closeAgreeWithIdSheet( );
-  }, [closeAgreeWithIdSheet, createIdentificationMutate, observation?.uuid, loadActivityItem] );
+  }, [createIdentificationMutate, observation?.uuid, loadActivityItem] );
 
   const potentialDisagreeSheetDiscardChanges = useCallback( ( ) => {
     dispatch( { type: HIDE_POTENTIAL_DISAGREEMENT_SHEET } );
   }, [] );
 
   const doSuggestId = useCallback( ( potentialDisagree?: boolean ) => {
-    dispatch( { type: SUBMIT_IDENTIFICATION } );
-
     if ( !newIdentification?.taxon ) {
       throw new Error( "Cannot create an identification without a taxon" );
     }
@@ -422,6 +423,7 @@ const IdentificationSheets: React.FC<Props> = ( {
           onAgree={onAgree}
           editIdentBody={editIdentBody}
           hidden={showIdentBodySheet}
+          loading={isCreateIdPending}
           onPressClose={closeAgreeWithIdSheet}
           identification={agreeIdentification}
         />
@@ -454,6 +456,7 @@ const IdentificationSheets: React.FC<Props> = ( {
         <SuggestIDSheet
           editIdentBody={editIdentBody}
           hidden={showIdentBodySheet}
+          loading={isCreateIdPending}
           onSuggestId={onSuggestId}
           identification={newIdentification}
           onPressClose={hideSuggestedIdSheet}
@@ -461,6 +464,7 @@ const IdentificationSheets: React.FC<Props> = ( {
       )}
       {showPotentialDisagreementSheet && newIdentification && (
         <PotentialDisagreementSheet
+          loading={isCreateIdPending}
           onPotentialDisagreePressed={onPotentialDisagreePressed}
           onPressClose={potentialDisagreeSheetDiscardChanges}
           newTaxon={newIdentification.taxon}

@@ -237,7 +237,7 @@ const LoginForm = ( {
   );
 
   return (
-    <TouchableWithoutFeedback accessible={false} onPress={blurFields}>
+    <TouchableWithoutFeedback testID="Login.container" accessible={false} onPress={blurFields}>
       <View className="px-4 mt-[9px] justify-end">
         { emailConfirmed && (
           <View className="flex-row mb-5 items-center justify-center mx-2">

@@ -1,13 +1,97 @@
-// eslint-disable-next-line
 import { Realm } from "@realm/react";
+import type { ApiSuggestion } from "api/types";
 import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
-import remove from "lodash/remove";
 import pull from "lodash/pull";
+import remove from "lodash/remove";
 import Photo from "realmModels/Photo";
 import Sound from "realmModels/Sound";
+import type { RealmObservation, RealmObservationPojo } from "realmModels/types";
+import type { BackupMapping } from "sharedHelpers/rollbackPhotos";
+import type { StateCreator } from "zustand";
 
-const DEFAULT_STATE = {
+interface RollbackSnapshot {
+  observations: RealmObservationPojo[];
+  currentObservationIndex: number;
+  cameraUris: string[];
+  cameraRollUris: string[];
+  photoLibraryUris: string[];
+  evidenceToAdd: string[];
+  newPhotoUris: string[];
+  unsavedChanges: boolean;
+}
+
+interface GroupedPhoto {
+  photos: string[];
+}
+
+interface CameraStateOptions {
+  evidenceToAdd?: string[];
+  cameraUris?: string[];
+}
+
+interface PhotoImporterOptions {
+  photoLibraryUris?: string[];
+  savingPhoto?: boolean;
+  evidenceToAdd?: string[];
+  groupedPhotos?: GroupedPhoto[];
+  observations?: RealmObservationPojo[];
+  firstObservationDefaults?: Partial<RealmObservationPojo>;
+}
+
+interface ObservationFlowState {
+  aICameraSuggestion: ApiSuggestion | null;
+  cameraRollUris: string[];
+  currentObservation: RealmObservationPojo | null;
+  currentObservationIndex: number;
+  evidenceToAdd: string[];
+  photoLibraryUris: string[];
+  groupedPhotos: GroupedPhoto[];
+  observations: RealmObservationPojo[];
+  observationMarkedAsViewedAt: Date | null;
+  cameraUris: string[];
+  savingPhoto: boolean;
+  savedOrUploadedMultiObsFlow: boolean;
+  unsavedChanges: boolean;
+  totalSavedObservations: number;
+  sentinelFileName: string | null;
+  newPhotoUris: string[];
+  rollbackSnapshot: RollbackSnapshot | null;
+  backupMappings: BackupMapping[];
+  firstObservationDefaults?: Partial<RealmObservationPojo>;
+}
+
+interface ObservationFlowActions {
+  deletePhotoFromObservation: ( uri: string ) => void;
+  deleteSoundFromObservation: ( uri: string ) => void;
+  resetObservationFlowSlice: ( ) => void;
+  addCameraRollUris: ( uris: string[] ) => void;
+  setSavingPhoto: ( saving: boolean ) => void;
+  setCameraState: ( options: CameraStateOptions ) => void;
+  setCurrentObservationIndex: ( index: number ) => void;
+  setGroupedPhotos: ( photos: GroupedPhoto[] ) => void;
+  setObservationMarkedAsViewedAt: ( date: Date | null ) => void;
+  setObservations: ( updatedObservations: RealmObservationPojo[] ) => void;
+  setPhotoImporterState: ( options: PhotoImporterOptions ) => void;
+  setSavedOrUploadedMultiObsFlow: ( ) => void;
+  updateObservations: ( updatedObservations: RealmObservationPojo[] ) => void;
+  updateObservationKeys: ( keysAndValues: Partial<RealmObservationPojo> ) => void;
+  getCurrentObservation: ( ) => RealmObservationPojo | null;
+  prepareObsEdit: ( observation: RealmObservationPojo ) => void;
+  prepareCamera: ( ) => void;
+  incrementTotalSavedObservations: ( ) => void;
+  setSentinelFileName: ( sentinelFileName: string | null ) => void;
+  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
+  setAICameraSuggestion: ( suggestion: ApiSuggestion | null ) => void;
+  restoreRollbackSnapshot: ( ) => void;
+  setBackupMappings: ( mappings: BackupMapping[] ) => void;
+  clearRollbackSnapshot: ( ) => void;
+  setRollbackSnapshot: ( ) => void;
+}
+
+type ObservationFlowSlice = ObservationFlowState & ObservationFlowActions;
+
+const DEFAULT_STATE: ObservationFlowState = {
   aICameraSuggestion: null,
   cameraRollUris: [],
   currentObservation: null,
@@ -34,10 +118,13 @@ const DEFAULT_STATE = {
   backupMappings: [],
 };
 
-const removeObsSoundFromObservation = ( currentObservation, uri ) => {
+const removeObsSoundFromObservation = (
+  currentObservation: RealmObservationPojo | null,
+  uri: string,
+): RealmObservationPojo[] => {
   if ( isEmpty( currentObservation ) ) { return []; }
   const updatedObservation = currentObservation;
-  const obsSounds = Array.from( currentObservation?.observationSounds );
+  const obsSounds = Array.from( currentObservation?.observationSounds || [] );
   if ( obsSounds.length > 0 ) {
     remove(
       obsSounds,
@@ -52,22 +139,29 @@ const removeObsSoundFromObservation = ( currentObservation, uri ) => {
   return [currentObservation];
 };
 
-const observationToJSON = observation => ( observation instanceof Realm.Object
-  ? observation.toJSON( )
+const observationToJSON = (
+  observation: RealmObservationPojo | RealmObservation | null,
+): RealmObservationPojo | null => ( observation instanceof Realm.Object
+  ? observation.toJSON( ) as unknown as RealmObservationPojo
   : observation );
 
-const keysAndValuesToJSON = keysAndValues => {
-  const result = {};
+const keysAndValuesToJSON = (
+  keysAndValues: Partial<RealmObservationPojo>,
+): Partial<RealmObservationPojo> => {
+  const result: Record<string, unknown> = {};
   Object.keys( keysAndValues ).forEach( key => {
-    const value = keysAndValues[key];
+    const value = keysAndValues[key as keyof RealmObservationPojo];
     result[key] = value instanceof Realm.Object
       ? value.toJSON( )
       : value;
   } );
-  return result;
+  return result as Partial<RealmObservationPojo>;
 };
 
-const updateObservationKeysWithState = ( keysAndValues, state ) => {
+const updateObservationKeysWithState = (
+  keysAndValues: Partial<RealmObservationPojo>,
+  state: ObservationFlowState,
+) => {
   const {
     observations,
     currentObservation,
@@ -77,16 +171,16 @@ const updateObservationKeysWithState = ( keysAndValues, state ) => {
   const updatedObservation = {
     ...observationToJSON( currentObservation ),
     ...keysAndValuesToJSON( keysAndValues ),
-  };
+  } as RealmObservationPojo;
   updatedObservations[currentObservationIndex] = updatedObservation;
   return updatedObservations;
 };
 
-const createObservationFlowSlice = ( set, get ) => ( {
+const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, get ) => ( {
   ...DEFAULT_STATE,
-  deletePhotoFromObservation: uri => set( state => {
+  deletePhotoFromObservation: ( uri: string ) => set( state => {
     const newObservations = [...state.observations];
-    let newObservation = null;
+    let newObservation: RealmObservationPojo | null = null;
     if ( newObservations.length > 0 ) {
       newObservation = newObservations[state.currentObservationIndex];
       const index = newObservation.observationPhotos.findIndex(
@@ -114,7 +208,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
       unsavedChanges: true,
     };
   } ),
-  deleteSoundFromObservation: uri => set( state => {
+  deleteSoundFromObservation: ( uri: string ) => set( state => {
     const newObservations = removeObsSoundFromObservation(
       state.observations[state.currentObservationIndex],
       uri,
@@ -127,7 +221,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
     };
   } ),
   resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),
-  addCameraRollUris: uris => set( state => {
+  addCameraRollUris: ( uris: string[] ) => set( state => {
     const savedUris = state.cameraRollUris;
     // A placeholder uri means we don't know the real URI, probably b/c we
     // only had write permission so we were able to write the photo to the
@@ -143,27 +237,31 @@ const createObservationFlowSlice = ( set, get ) => ( {
       savingPhoto: false,
     } );
   } ),
-  setSavingPhoto: saving => set( { savingPhoto: saving } ),
-  setCameraState: options => set( state => ( {
+  setSavingPhoto: ( saving: boolean ) => set( { savingPhoto: saving } ),
+  setCameraState: ( options: CameraStateOptions ) => set( state => ( {
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
     cameraUris:
       options?.cameraUris || state.cameraUris,
   } ) ),
-  setCurrentObservationIndex: index => set( state => ( {
+  setCurrentObservationIndex: ( index: number ) => set( state => ( {
     currentObservationIndex: index,
     currentObservation: observationToJSON( state.observations[index] ),
   } ) ),
-  setGroupedPhotos: photos => set( {
+  setGroupedPhotos: ( photos: GroupedPhoto[] ) => set( {
     groupedPhotos: photos,
   } ),
-  setObservationMarkedAsViewedAt: date => set( {
+  setObservationMarkedAsViewedAt: ( date: Date | null ) => set( {
     observationMarkedAsViewedAt: date,
   } ),
-  setObservations: updatedObservations => set( state => ( {
-    observations: updatedObservations.map( observationToJSON ),
+  setObservations: (
+    updatedObservations: RealmObservationPojo[],
+  ) => set( state => ( {
+    observations: updatedObservations
+      .map( observationToJSON )
+      .filter( Boolean ) as RealmObservationPojo[],
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
   } ) ),
-  setPhotoImporterState: options => set( state => ( {
+  setPhotoImporterState: ( options: PhotoImporterOptions ) => set( state => ( {
     photoLibraryUris: options?.photoLibraryUris || state.photoLibraryUris,
     savingPhoto: options?.savingPhoto || state.savingPhoto,
     evidenceToAdd: options?.evidenceToAdd || state.evidenceToAdd,
@@ -178,8 +276,12 @@ const createObservationFlowSlice = ( set, get ) => ( {
   setSavedOrUploadedMultiObsFlow: ( ) => set( {
     savedOrUploadedMultiObsFlow: true,
   } ),
-  updateObservations: updatedObservations => set( state => ( {
-    observations: updatedObservations.map( observationToJSON ),
+  updateObservations: (
+    updatedObservations: RealmObservationPojo[],
+  ) => set( state => ( {
+    observations: updatedObservations
+      .map( observationToJSON )
+      .filter( Boolean ) as RealmObservationPojo[],
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
   } ) ),
   updateObservationKeys: ( keysAndValues, setUnsavedChanges = true ) => set( state => ( {
@@ -192,7 +294,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
   // immediately, not after a couple render cycles
   getCurrentObservation: ( ) => get( ).currentObservation,
   // Prepare state for showing ObsEdit for a single observation
-  prepareObsEdit: observation => {
+  prepareObsEdit: ( observation: RealmObservationPojo ) => {
     get( ).resetObservationFlowSlice( );
     get( ).updateObservations( [observation] );
   },
@@ -200,7 +302,8 @@ const createObservationFlowSlice = ( set, get ) => ( {
     const existingPhotoUris = get( )
       .currentObservation
       ?.observationPhotos
-      ?.map( op => ( op.photo.url || Photo.getLocalPhotoUri( op.photo.localFilePath ) ) ) || [];
+      ?.map( op => op.photo.url || Photo.getLocalPhotoUri( op.photo.localFilePath ) )
+      .filter( ( uri ): uri is string => uri != null ) || [];
     return set( { evidenceToAdd: [], cameraUris: existingPhotoUris } );
   },
   incrementTotalSavedObservations: ( ) => set( state => {
@@ -212,13 +315,13 @@ const createObservationFlowSlice = ( set, get ) => ( {
       totalSavedObservations: existingTotalSavedObservations + 1,
     } );
   } ),
-  setSentinelFileName: sentinelFileName => set( {
+  setSentinelFileName: ( sentinelFileName: string | null ) => set( {
     sentinelFileName,
   } ),
-  setNewPhotoUris: newPhotoUris => set( {
+  setNewPhotoUris: ( newPhotoUris: string[] ) => set( {
     newPhotoUris,
   } ),
-  setAICameraSuggestion: suggestion => set( {
+  setAICameraSuggestion: ( suggestion: ApiSuggestion | null ) => set( {
     aICameraSuggestion: suggestion,
   } ),
   restoreRollbackSnapshot: ( ) => set( state => {
@@ -238,7 +341,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
       backupMappings: [],
     };
   } ),
-  setBackupMappings: mappings => set( { backupMappings: mappings } ),
+  setBackupMappings: ( mappings: BackupMapping[] ) => set( { backupMappings: mappings } ),
   clearRollbackSnapshot: ( ) => set( { rollbackSnapshot: null, backupMappings: [] } ),
   setRollbackSnapshot: ( ) => set( state => ( {
     rollbackSnapshot: {
@@ -254,7 +357,7 @@ const createObservationFlowSlice = ( set, get ) => ( {
   } ) ),
 } );
 
-export const selectCanRollbackToMatch = state => (
+export const selectCanRollbackToMatch = ( state: ObservationFlowSlice ): boolean => (
   state.rollbackSnapshot !== null
   && state.rollbackSnapshot.observations[state.rollbackSnapshot.currentObservationIndex]?.uuid
     === state.currentObservation?.uuid

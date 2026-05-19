@@ -80,6 +80,8 @@ attribution-cc-by-nd = niektoré vyhradené práva (CC BY-ND)
 attribution-cc-by-sa = niektoré vyhradené práva (CC BY-SA)
 August = August
 BACK-TO-LOGIN = SPÄŤ NA PRIHLÁSENIE
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Dávkové nahrávanie
 By-exiting-changes-not-saved = Po ukončení sa zmeny vášho pozorovania neuložia.
 By-exiting-observation-not-saved = Ukončením nebude vaše pozorovanie uložené.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = Hľadať návrhy s polohou
 Search-suggestions-without-location = Hľadať návrhy bez polohy
 SEARCH-TAXA = HĽADAŤ TAXON
 SEARCH-USERS = HĽADAŤ POUŽÍVATEĽA
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Zobraziť pozorovanie tohto používateľa v prieskume
 See-observations-of-this-taxon-in-explore = Zobraziť pozorovanie tohto taxónu pri prieskume
 See-project-members = Zobraziť členov projektu
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } identifikátor
        *[other] { $count } identifikátorov
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

@@ -150,6 +150,8 @@ attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = August
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
+Blog = Blog
+BLOG = BLOG
 # Accessibility label for bulk import / photo import button
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 # iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
@@ -1116,6 +1118,8 @@ Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
+# Accessibility label for navigating to journal posts screen
+See-journal-posts = See journal posts
 # Accessibility label for Observations button on UserProfile screen
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 # Accessibility label for Explore button on TaxonDetails screen
@@ -1399,6 +1403,12 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+# Subtitle for a screen showing a list of journal posts
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 # Subheader for number of project members screen
 X-MEMBERS =

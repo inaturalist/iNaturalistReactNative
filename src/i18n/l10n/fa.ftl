@@ -80,6 +80,8 @@ attribution-cc-by-nd = برخی از حقوق محفوظ است (CC BY-ND)
 attribution-cc-by-sa = برخی از حقوق محفوظ است (CC BY-SA)
 August = آگوست
 BACK-TO-LOGIN = بازگشت به ورود
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = واردات انبوه
 By-exiting-changes-not-saved = با خروج، تغییرات مشاهده شما ذخیره نخواهد شد.
 By-exiting-observation-not-saved = با خروج، مشاهده شما ذخیره نمی شود.
@@ -744,6 +746,7 @@ Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
 See-project-members = See project members
@@ -965,6 +968,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

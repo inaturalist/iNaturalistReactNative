@@ -9,8 +9,10 @@ import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import ExploreFiltersContainer from "components/Explore/ExploreFiltersContainer";
 import ExploreSearchContainer from "components/Explore/ExploreSearchContainer";
+import ExploreV2Container from "components/Explore/ExploreV2/ExploreV2Container";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import Help from "components/Help/Help";
+import Journal from "components/Journal/Journal";
 import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import Notifications from "components/Notifications/Notifications";
@@ -45,6 +47,8 @@ import React from "react";
 import {
   useLayoutPrefs,
 } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import SharedStackScreens from "./SharedStackScreens";
@@ -115,6 +119,7 @@ const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
 const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
 const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
 const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
+const FadeInJournal = ( ) => fadeInComponent( <Journal /> );
 
 const BASE_SCREEN_OPTIONS = {
   headerBackButtonDisplayMode: "minimal",
@@ -170,6 +175,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
   const {
     isDefaultMode,
   } = useLayoutPrefs( );
+  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
   return (
     <Stack.Navigator
       initialRouteName={initialRouteName}
@@ -197,7 +203,9 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         />
         <Stack.Screen
           name={SCREEN_NAME_ROOT_EXPLORE}
-          component={RootExploreContainer}
+          component={exploreV2Enabled
+            ? ExploreV2Container
+            : RootExploreContainer}
           options={{
             ...preventSwipeToGoBack,
             animation: "none",
@@ -294,6 +302,11 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
         <Stack.Screen
           name="FollowingList"
           component={FadeInFollowingList}
+          options={LIST_OPTIONS}
+        />
+        <Stack.Screen
+          name="Journal"
+          component={FadeInJournal}
           options={LIST_OPTIONS}
         />
       </Stack.Group>
