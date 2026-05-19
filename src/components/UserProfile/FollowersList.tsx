@@ -16,14 +16,14 @@ import React, {
 } from "react";
 import User from "realmModels/User";
 import {
-  useCurrentUser,
   useInfiniteUserScroll,
+  useIsAuthenticated,
   useTranslation,
 } from "sharedHooks";
 
 const FollowersList = ( ) => {
   const { isConnected } = useNetInfo( );
-  const currentUser = useCurrentUser( );
+  const isAuthenticated = useIsAuthenticated( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { user } = params;
@@ -47,7 +47,7 @@ const FollowersList = ( ) => {
       fields: User.LIMITED_FIELDS,
     },
     {
-      enabled: !!currentUser,
+      enabled: isAuthenticated,
     },
   );
 
