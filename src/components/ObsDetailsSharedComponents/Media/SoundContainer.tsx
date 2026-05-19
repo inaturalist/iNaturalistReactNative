@@ -5,7 +5,12 @@ import {
 import Slider from "@react-native-community/slider";
 import { useFocusEffect } from "@react-navigation/native";
 import {
-  Body1, Body2, Body4, INatIconButton, OfflineNotice,
+  Body1,
+  Body2,
+  Body4,
+  INatIcon,
+  INatIconButton,
+  OfflineNotice,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
@@ -206,8 +211,8 @@ const SoundContainer = ( {
   if ( sound.hidden ) {
     return (
       <View className={`${sizeClass} items-center justify-center`}>
-        <View className="flex-row justify-center mb-2">
-          {/* Placeholder for eye icon */}
+        <View className="flex-row justify-center mb-2 gap-x-2">
+          <INatIcon name="private" size={18} color={colors.white} />
           <Body2 className="text-white">{t( "Content-Hidden" )}</Body2>
         </View>
         <Body4 className="text-white">
