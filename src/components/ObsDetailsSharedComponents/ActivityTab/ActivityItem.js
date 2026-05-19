@@ -8,6 +8,7 @@ import {
   Body2,
   Body4,
   Divider,
+  INatIcon,
   INatIconButton,
   UserText,
 } from "components/SharedComponents";
@@ -79,8 +80,8 @@ const ActivityItem = ( {
       <View className="flex-column" testID="ObsDetails.ActivityItem.Hidden">
         <View className="p-4">
           <View className="flex-row">
-            {/* Placeholder for eye icon */}
-            <Body2>{t( "Content-Hidden" )}</Body2>
+            <INatIcon name="private" size={18} />
+            <Body2 className="ml-2">{t( "Content-Hidden" )}</Body2>
           </View>
           <Body4 className="py-2 font-Lato-Italic">
             { item.category
