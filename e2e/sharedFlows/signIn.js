@@ -34,6 +34,8 @@ export default async function signIn() {
   await expect( passwordInput ).toBeVisible();
   await element( by.id( "Login.password" ) ).tap();
   await element( by.id( "Login.password" ) ).typeText( Config.E2E_TEST_PASSWORD );
+  // Tap container to dismiss keyboard
+  await element( by.id( "Login.container" ) ).tap();
   const loginButton = element( by.id( "Login.loginButton" ) );
   await expect( loginButton ).toBeVisible();
   await element( by.id( "Login.loginButton" ) ).tap();
