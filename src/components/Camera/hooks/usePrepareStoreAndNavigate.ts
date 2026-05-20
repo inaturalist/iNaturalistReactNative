@@ -6,7 +6,6 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { log } from "sharedHelpers/logger";
 import {
   useLayoutPrefs,
@@ -14,6 +13,8 @@ import {
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
+// Relative import so MOCK_MODE=e2e resolves fetchPlaceName.e2e-mock (Metro sourceExts).
+import fetchPlaceName from "../../../sharedHelpers/fetchPlaceName";
 import savePhotosToPhotoLibrary from "../helpers/savePhotosToPhotoLibrary";
 
 const logger = log.extend( "usePrepareStoreAndNavigate" );
