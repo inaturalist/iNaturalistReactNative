@@ -211,7 +211,33 @@ export type BaseTabStackParamList = {
   };
   ExploreFilters: undefined;
   ExploreSearch: undefined;
-  ObsDetails: undefined;
+  // From NotificationsListItem
+  // {
+  //   uuid: notification.resource_uuid,
+  //   targetActivityItemID: notification.identification_id || notification.comment_id,
+  // }
+  // From Map, ObservationsFlashList, navigateToObsDetails, MyObservationsSimple
+  // { uuid }
+  // From useNavigateWithTaxonSelected
+  // {
+  //   uuid: currentObservation?.uuid,
+  //   identTaxonId: selectedTaxon?.id,
+  //   identTaxonFromVision: vision,
+  //   identAt: Date.now(),
+  // }
+  // From TaxonDetails
+  // {
+  //   uuid: obsUuid,
+  //   identTaxonId: taxon?.id,
+  //   identAt: Date.now(),
+  // }
+  ObsDetails: {
+    uuid: string;
+    targetActivityItemID?: number;
+    identAt?: number;
+    identTaxonId?: number;
+    identTaxonFromVision?: boolean;
+  };
   Notifications: undefined;
   // From ProjectRequirements, InlineUserBase, UserList
   // { userId: number }
