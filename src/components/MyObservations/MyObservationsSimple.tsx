@@ -236,7 +236,7 @@ const MyObservationsSimple = ( {
     />
   );
 
-  const observationsHeader = ( ) => {
+  const observationsHeader = useMemo( ( ) => {
     if ( layout !== "grid" ) {
       return (
         <SimpleHeader
@@ -267,7 +267,7 @@ const MyObservationsSimple = ( {
         />
       </View>
     );
-  };
+  }, [flashListStyle, isConnected, layout, numTotalObservations, obsMissingBasicsExist] );
 
   const dataFilledWithEmptyBoxes = useMemo( ( ) => {
     const data = observations;
@@ -381,7 +381,7 @@ const MyObservationsSimple = ( {
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
-              renderHeader={observationsHeader}
+              listHeaderContent={observationsHeader}
             />
             <ObservationsViewBar
               hideMap
