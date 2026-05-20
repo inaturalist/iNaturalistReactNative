@@ -37,13 +37,12 @@ const useLocalObservations = ( ): Object => {
       // Satisfy the useEffect return type by returning a destructor function.
       return () => {};
     }
-    const localObservations = realm.objects( "Observation" );
+    const filteredObservations = realm.objects( "Observation" )
+      .filtered( deletionFilters )
+      .sorted( sortedFilters );
 
-    const handleChange = ( collection, changes ) => {
+    const handleChange = ( _collection, changes ) => {
       const { insertions, newModifications, deletions } = changes;
-      const filteredObservations = localObservations
-        .filtered( deletionFilters )
-        .sorted( sortedFilters );
 
       const unsyncedCount = Observation.filterUnsyncedObservations( realm ).length;
 
@@ -75,7 +74,7 @@ const useLocalObservations = ( ): Object => {
         } else {
           const modifiedUuids = new Set(
             newModifications
-              .map( index => localObservations[index] )
+              .map( index => filteredObservations[index] )
               .filter( obs => obs?.isValid() )
               .map( obs => obs.uuid ),
           );
@@ -106,11 +105,11 @@ const useLocalObservations = ( ): Object => {
       }
     };
 
-    localObservations.addListener( handleChange );
+    filteredObservations.addListener( handleChange );
     return ( ) => {
       // remember to remove listeners to avoid async updates
-      if ( localObservations && !realm.isClosed ) {
-        localObservations?.removeAllListeners( );
+      if ( filteredObservations && !realm.isClosed ) {
+        filteredObservations?.removeAllListeners( );
       }
     };
   }, [isDefaultMode, realm, setNumUnuploadedObservations] );
