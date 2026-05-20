@@ -59,8 +59,7 @@ interface Props {
   onLayout?: ( event: LayoutChangeEvent ) => void;
   onScroll?: ( event: NativeSyntheticEvent<NativeScrollEvent> ) => void;
   // this ref is being forwarded to the underlying CustomFlashList and used as an imperative handle
-  // so the parent can control behavior like scrolling; it's typed as Function because there's not
-  // a good way to capture this otherwise with Flow.
+  // so the parent can control behavior like scrolling
   // TODO: type data / observations
   ref?: React.Ref<FlashListRef<unknown>>;
   listHeaderContent?: React.ReactElement | null;
