@@ -1,4 +1,3 @@
-import type { Node } from "react";
 import React from "react";
 import { ProgressBar } from "react-native-paper";
 import colors from "styles/tailwindColors";
@@ -9,7 +8,7 @@ interface Props {
   progress: number;
 }
 
-const UploadProgressBar = ( { progress }: Props ): Node => (
+const UploadProgressBar = ( { progress }: Props ) => (
   <ProgressBar
     progress={progress}
     color={colors.inatGreen}
