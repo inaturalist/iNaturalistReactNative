@@ -30,7 +30,8 @@ const ObsDetailsContainer = ( ): Node => {
     setObsDetailsTab,
   } = useLayoutPrefs( );
   const currentUser = useCurrentUser( );
-  const { params } = useRoute();
+  // const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
+  const { params } = useRoute( );
   const {
     targetActivityItemID,
     uuid,
