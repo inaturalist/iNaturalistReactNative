@@ -42,6 +42,7 @@ import {
   showHeader,
   showLongHeader,
 } from "navigation/navigationOptions";
+import ObsDetailsHeader from "navigation/ObsDetailsHeader";
 import type { BottomTabProps, TabStackParamList } from "navigation/types";
 import React from "react";
 import {
@@ -151,8 +152,7 @@ const LIST_OPTIONS = {
 } as const;
 
 const OBS_DETAILS_OPTIONS = {
-  ...showHeader,
-  ...blankHeaderTitle,
+  header: ObsDetailsHeader,
 } as const;
 
 const DEBUG_GROUP_SCREEN_OPTIONS = {
@@ -223,19 +223,19 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           name="ExploreSearch"
           component={ExploreSearchContainer}
         />
+      </Stack.Group>
+      <Stack.Group screenOptions={OBS_DETAILS_OPTIONS}>
         {isDefaultMode
           ? (
             <Stack.Screen
               name="ObsDetails"
               component={FadeInObsDetailsDefaultModeScreensWrapper}
-              options={OBS_DETAILS_OPTIONS}
             />
           )
           : (
             <Stack.Screen
               name="ObsDetails"
               component={FadeInObsDetailsContainer}
-              options={OBS_DETAILS_OPTIONS}
             />
           )}
       </Stack.Group>
