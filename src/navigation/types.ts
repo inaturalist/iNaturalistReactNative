@@ -171,9 +171,11 @@ export type SharedStackParamList = {
       "GroupPhotos";
     hideSkip?: boolean;
   };
+  // From useObsDetailsSharedLogic.ts
+  // { lastScreen: "ObsDetails" }
   SuggestionsTaxonSearch: {
-    entryScreen: "ObsEdit";
-    lastScreen: "ObsEdit";
+    entryScreen?: "ObsEdit";
+    lastScreen: "ObsEdit" | "ObsDetails";
   };
   MatchTaxonSearchScreen: undefined;
   FullPageWebView: undefined;
