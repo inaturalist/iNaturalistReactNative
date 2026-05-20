@@ -1,6 +1,4 @@
-import type { ParamListBase } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ApiObservation } from "api/types";
 import {
   Button,
@@ -9,6 +7,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 
 const headingClass = "mt-[20px] mb-[11px] text-darkGray";
@@ -19,7 +18,7 @@ interface Props {
 }
 
 const ProjectSection = ( { observation }: Props ) => {
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
+  const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
 
   const traditionalProjectCount = observation?.project_observations?.length || 0;
   const nonTraditionalProjectCount = observation?.non_traditional_projects?.length || 0;
