@@ -127,7 +127,7 @@ export class mockCamera extends React.PureComponent {
   }
 
   render() {
-    return <View style={style} />;
+    return <View style={style} collapsable={false} />;
   }
 }
 
