@@ -25,7 +25,7 @@ interface Props {
     label?: string;
     text?: string;
     buttonText?: string;
-    labelComponent?: React.ReactNode;
+    labelComponent?: React.JSX.Element;
   }>;
   selectedValue?: RadioSheetPrimitive;
   testID?: string;
