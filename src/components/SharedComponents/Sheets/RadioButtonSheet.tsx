@@ -23,7 +23,6 @@ interface Props {
     buttonText?: string;
     icon?: string;
     label?: string;
-    labelCaps?: string;
     labelComponent?: React.JSX.Element;
     text?: string;
     value: RadioSheetPrimitive;
