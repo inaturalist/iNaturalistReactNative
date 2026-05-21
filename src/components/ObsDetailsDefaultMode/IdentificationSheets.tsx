@@ -1,6 +1,4 @@
-import type { ParamListBase } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import AgreeWithIDSheet from "components/ObsDetailsSharedComponents/Sheets/AgreeWithIDSheet";
@@ -11,6 +9,7 @@ import {
   TextInputSheet,
   WarningSheet,
 } from "components/SharedComponents";
+import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
@@ -148,13 +147,6 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
   }
 };
 
-interface RouteParams extends Record<string, unknown> {
-  identAt?: string;
-  identTaxonId?: number;
-  identTaxonFromVision?: boolean;
-  uuid?: string;
-}
-
 interface Props {
   agreeIdentification: boolean;
   closeAgreeWithIdSheet: () => void;
@@ -182,15 +174,14 @@ const IdentificationSheets: React.FC<Props> = ( {
   showAddCommentSheet,
   showAgreeWithIdSheet,
 }: Props ) => {
-  const { params } = useRoute();
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-  const routeParams = params as RouteParams;
+  const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
+  const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
   const {
     identAt,
     identTaxonId,
     identTaxonFromVision,
     uuid,
-  } = routeParams;
+  } = params;
   const [state, dispatch] = useReducer( identReducer, initialIdentState );
 
   const {
