@@ -21,9 +21,10 @@ interface Props {
   radioValues: Record<string, {
     value: RadioSheetPrimitive;
     icon?: string;
-    label: string;
+    label?: string;
     text?: string;
     buttonText?: string;
+    labelComponent?: React.ReactNode;
   }>;
   selectedValue?: RadioSheetPrimitive;
   testID?: string;
