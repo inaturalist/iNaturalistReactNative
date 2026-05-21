@@ -18,6 +18,7 @@ interface Props {
   insideModal?: boolean;
   loading?: boolean;
   onPressClose?: ( ) => void;
+  requireSelectionChange?: boolean;
   radioValues: Record<string, {
     value: RadioSheetPrimitive;
     icon?: string;
@@ -41,6 +42,7 @@ const RadioButtonSheet = ( {
   loading,
   onPressClose,
   radioValues,
+  requireSelectionChange = true,
   selectedValue = "none",
   testID,
   topDescriptionText,
@@ -49,6 +51,7 @@ const RadioButtonSheet = ( {
   const [checkedValue, setCheckedValue] = useState( selectedValue );
 
   const isDirty = checkedValue !== selectedValue;
+  const confirmBlockedByDirtyCheck = requireSelectionChange && !isDirty;
 
   const radioButtonRow = ( radioRow: string ) => (
     <View key={radioRow} className="pb-4">
@@ -86,7 +89,7 @@ const RadioButtonSheet = ( {
           onPress={( ) => {
             confirm( checkedValue );
           }}
-          disabled={!isDirty || loading}
+          disabled={confirmBlockedByDirtyCheck || loading}
           loading={loading}
           text={radioValues[checkedValue]?.buttonText ?? confirmLabel}
           accessibilityLabel={radioValues[checkedValue]?.buttonText ?? confirmLabel}

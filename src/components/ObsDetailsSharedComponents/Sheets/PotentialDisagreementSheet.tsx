@@ -98,6 +98,7 @@ const PotentialDisagreementSheet = ( {
       confirmText={t( "SUBMIT-ID-SUGGESTION" )}
       onPressClose={onPressClose}
       radioValues={radioValues}
+      requireSelectionChange={false}
       selectedValue={radioValues.unsure.value}
       topDescriptionText={topDescriptionText}
       bottomComponent={bottomComponent}
