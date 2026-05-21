@@ -133,14 +133,14 @@ const MyObservationsSimple = ( {
 
   const taxaSortOptions = {
     [SPECIES_SORT_BY.COUNT_DESC]: {
-      value: SPECIES_SORT_BY.COUNT_DESC,
       label: t( "Most-Observed-Default" ),
       text: t( "Species-with-the-most-observations-appear-first" ),
+      value: SPECIES_SORT_BY.COUNT_DESC,
     },
     [SPECIES_SORT_BY.COUNT_ASC]: {
-      value: SPECIES_SORT_BY.COUNT_ASC,
       label: t( "Least-Observed" ),
       text: t( "Species-with-the-least-observations-appear-first" ),
+      value: SPECIES_SORT_BY.COUNT_ASC,
     },
   };
 
