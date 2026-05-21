@@ -20,12 +20,13 @@ interface Props {
   onPressClose?: ( ) => void;
   requireSelectionChange?: boolean;
   radioValues: Record<string, {
-    value: RadioSheetPrimitive;
+    buttonText?: string;
     icon?: string;
     label?: string;
-    text?: string;
-    buttonText?: string;
+    labelCaps?: string;
     labelComponent?: React.JSX.Element;
+    text?: string;
+    value: RadioSheetPrimitive;
   }>;
   selectedValue?: RadioSheetPrimitive;
   testID?: string;
