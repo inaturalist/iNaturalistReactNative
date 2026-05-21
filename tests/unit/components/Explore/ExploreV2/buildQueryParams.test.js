@@ -67,6 +67,17 @@ describe( "buildExploreV2QueryParams", ( ) => {
       expect( params.place_id ).toBeUndefined( );
     } );
 
+    it( "omits coords and place in NEEDS_PERMISSION mode", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION },
+      };
+      const params = buildExploreV2QueryParams( state );
+      expect( params.lat ).toBeUndefined( );
+      expect( params.lng ).toBeUndefined( );
+      expect( params.place_id ).toBeUndefined( );
+    } );
+
     it( "uses place_id in PLACE mode", ( ) => {
       const state = {
         ...initialExploreV2State,
