@@ -210,12 +210,12 @@ const SoundContainer = ( {
 
   if ( sound.hidden ) {
     return (
-      <View className={`${sizeClass} items-center justify-center`}>
+      <View className={`${sizeClass} p-4 items-center justify-center`}>
         <View className="flex-row justify-center mb-2 gap-x-2">
           <INatIcon name="private" size={18} color={colors.white} />
           <Body2 className="text-white">{t( "Content-Hidden" )}</Body2>
         </View>
-        <Body4 className="text-white">
+        <Body4 className="text-white text-center italic">
           {t( "This-sound-was-hidden-for-violating-community-guidelines-or-terms" )}
         </Body4>
       </View>
