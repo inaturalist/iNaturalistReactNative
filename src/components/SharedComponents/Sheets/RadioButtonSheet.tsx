@@ -7,23 +7,25 @@ import { View } from "components/styledComponents";
 import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
+type RadioSheetPrimitive = boolean | number | string;
+
 interface Props {
   bottomComponent?: React.JSX.Element;
   buttonRowClassName?: string;
-  confirm: ( _checkedValue: string ) => void;
+  confirm: ( _checkedValue: RadioSheetPrimitive ) => void;
   confirmText?: string;
   headerText: string;
   insideModal?: boolean;
   loading?: boolean;
   onPressClose?: ( ) => void;
   radioValues: Record<string, {
-    value: string;
+    value: RadioSheetPrimitive;
     icon?: string;
     label: string;
     text?: string;
     buttonText?: string;
   }>;
-  selectedValue?: string;
+  selectedValue?: RadioSheetPrimitive;
   testID?: string;
   topDescriptionText?: React.JSX.Element;
 }
