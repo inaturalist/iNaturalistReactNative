@@ -216,7 +216,7 @@ const SoundContainer = ( {
           <Body2 className="text-white">{t( "Content-Hidden" )}</Body2>
         </View>
         <Body4 className="text-white">
-          {t( "This-sound-was-removed-for-violating-community-guidelines" )}
+          {t( "This-sound-was-hidden-for-violating-community-guidelines-or-terms" )}
         </Body4>
       </View>
     );

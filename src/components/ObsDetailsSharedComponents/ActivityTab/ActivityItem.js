@@ -85,8 +85,8 @@ const ActivityItem = ( {
           </View>
           <Body4 className="py-2 font-Lato-Italic">
             { item.category
-              ? t( "This-identification-was-removed-for-violating-community-guidelines" )
-              : t( "This-comment-was-removed-for-violating-community-guidelines" )}
+              ? t( "This-identification-was-hidden-for-violating-community-guidelines-or-terms" )
+              : t( "This-comment-was-hidden-for-violating-community-guidelines-or-terms" )}
           </Body4>
         </View>
         <Divider />

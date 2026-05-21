@@ -33,7 +33,7 @@ const PhotoContainer = ( { photo, onPress, style }: Props ) => {
           <Body2 className="text-white">{t( "Content-Hidden" )}</Body2>
         </View>
         <Body4 className="text-white">
-          {t( "This-photo-was-removed-for-violating-community-guidelines" )}
+          {t( "This-image-was-hidden-for-violating-community-guidelines-or-terms" )}
         </Body4>
       </View>
     );
