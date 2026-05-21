@@ -83,10 +83,10 @@ const ActivityItem = ( {
             <INatIcon name="private" size={18} />
             <Body2 className="ml-2">{t( "Content-Hidden" )}</Body2>
           </View>
-          <Body4 className="py-2 font-Lato-Italic">
+          <Body4 className="py-2 italic">
             { item.category
-              ? t( "This-identification-was-removed-for-violating-community-guidelines" )
-              : t( "This-comment-was-removed-for-violating-community-guidelines" )}
+              ? t( "This-identification-was-hidden-for-violating-community-guidelines-or-terms" )
+              : t( "This-comment-was-hidden-for-violating-community-guidelines-or-terms" )}
           </Body4>
         </View>
         <Divider />

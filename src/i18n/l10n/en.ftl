@@ -1253,8 +1253,9 @@ The-iNaturalist-Network = The iNaturalist network is a collection of localized w
 # Describes what happens when geoprivacy is set to private
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
-This-comment-was-removed-for-violating-community-guidelines = This comment was removed for violating community guidelines.
-This-identification-was-removed-for-violating-community-guidelines = This identification was removed for violating community guidelines.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
@@ -1269,8 +1270,7 @@ This-observation-needs-more-identifications = This observation needs more identi
 This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
-This-photo-was-removed-for-violating-community-guidelines = This photo was removed for violating community guidelines.
-This-sound-was-removed-for-violating-community-guidelines = This sound was removed for violating community guidelines.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
