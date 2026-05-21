@@ -3,18 +3,19 @@ import React from "react";
 
 const mockHandleClose = jest.fn( );
 const mockConfirm = jest.fn( );
-const mockValues = [
-  {
-    value: "value 1",
+
+const mockRadioValues = {
+  first: {
+    value: "value-1",
     label: "label 1",
-    description: "description 1",
+    text: "description 1",
   },
-  {
-    value: "value 2",
+  second: {
+    value: "value-2",
     label: "label 2",
-    description: "description 2",
+    text: "description 2",
   },
-];
+};
 
 describe( "RadioButtonSheet", () => {
   it( "should not have accessibility errors", () => {
@@ -23,7 +24,7 @@ describe( "RadioButtonSheet", () => {
         onPressClose={mockHandleClose}
         confirm={mockConfirm}
         headerText="header text"
-        radioValues={mockValues}
+        radioValues={mockRadioValues}
       />
     );
 
