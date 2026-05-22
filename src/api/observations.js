@@ -24,19 +24,22 @@ const searchObservations = async ( params: Object = {}, opts: Object = {} ): Pro
   try {
     const startedAt = Date.now( );
     const response = await inatjs.observations.search( params, opts );
+    // api experiment is getting in the way of dev logs, disable for now
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const elapsedMs = Date.now( ) - startedAt;
     // Wrapping this in try/catch just in case something goes wrong with logging,
     // we don't want to fail the whole request just because of that
     try {
-      logger.infoWithExtra(
-        "EXPERIMENTAL COMPARISON: querying API v2 with fields",
-        {
-          hasFields: !!params?.fields,
-          durationMs: elapsedMs,
-          // Not sure if asking for smaller page has performance benefits, but log it just in case
-          per_page: params?.per_page,
-        },
-      );
+      // logger.infoWithExtra(
+      //   "EXPERIMENTAL COMPARISON: querying API v2 with fields",
+      //   {
+      //     hasFields: !!params?.fields,
+      //     durationMs: elapsedMs,
+      // eslint-disable-next-line max-len
+      //     // Not sure if asking for smaller page has performance benefits, but log it just in case
+      //     per_page: params?.per_page,
+      //   },
+      // );
     } catch ( e ) {
       logger.error( "Error logging experimental comparison", e );
     }

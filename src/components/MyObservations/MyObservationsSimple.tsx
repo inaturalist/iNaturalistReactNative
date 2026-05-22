@@ -56,7 +56,7 @@ interface Props {
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
-  observations: RealmObservation[];
+  observationUuids: string[];
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
@@ -99,7 +99,7 @@ const MyObservationsSimple = ( {
   taxaListRef,
   numTotalTaxa,
   numUnuploadedObservations,
-  observations,
+  observationUuids,
   onEndReached,
   onListLayout,
   onScroll,
@@ -212,11 +212,14 @@ const MyObservationsSimple = ( {
     taxa?.length,
   ] );
 
-  const unuploadedObsMissingBasicsIDs = useMemo( () => (
-    observations
-      .filter( o => o.needs_sync && o.missing_basics )
-      .map( o => o.uuid )
-  ), [observations] );
+  // const unuploadedObsMissingBasicsIDs = useMemo( () => (
+  //   observations
+  //     .filter( o => o.needs_sync && o.missing_basics )
+  //     .map( o => o.uuid )
+  // ), [observations] );
+
+  // TODO: use separate listener / collection query
+  const unuploadedObsMissingBasicsIDs: string[] = [];
 
   const numUnuploadedObsMissingBasics = unuploadedObsMissingBasicsIDs.length;
   const obsMissingBasicsExist = useMemo( ( ) => (
@@ -269,22 +272,18 @@ const MyObservationsSimple = ( {
     );
   }, [flashListStyle, isConnected, layout, numTotalObservations, obsMissingBasicsExist] );
 
-  const dataFilledWithEmptyBoxes = useMemo( ( ) => {
-    const data = observations;
+  const dataWithEndFiller = useMemo( ( ) => {
     // In grid layout fill up to 8 items to make sure the grid is filled
     // but don't add the empty boxes at the end of a long existing list
-    if ( layout === "grid" && data.length < 8 ) {
+    if ( layout === "grid" && observationUuids.length < 8 ) {
     // Fill up to 8 items to make sure the grid is filled
-      const emptyBoxes = new Array( 8 - ( data.length % 8 ) ).fill( { empty: true } );
-      // Add random id to empty boxes to ensure they are unique
-      const emptyBoxesWithId = emptyBoxes.map( ( box, index ) => ( {
-        ...box,
-        id: `empty-${index}`,
-      } ) );
-      return [...data, ...emptyBoxesWithId];
+      const emptyBoxes = new Array( 8 - ( observationUuids.length % 8 ) )
+        .fill( null )
+        .map( ( _, index ) => `empty-${index}` );
+      return [...observationUuids, ...emptyBoxes];
     }
-    return data;
-  }, [observations, layout] );
+    return observationUuids;
+  }, [observationUuids, layout] );
 
   const renderOfflineNotice = ( ) => {
     if ( isConnected === false ) {
@@ -320,7 +319,7 @@ const MyObservationsSimple = ( {
   };
 
   const handlePivotCardGridItemPress = ( ) => {
-    const { uuid } = observations[0];
+    const uuid = observationUuids[0];
     navigation.navigate( {
       key: `Obs-0-${uuid}`,
       name: "ObsDetails",
@@ -359,7 +358,7 @@ const MyObservationsSimple = ( {
         { activeTab === OBSERVATIONS_TAB && (
           <>
             <ObservationsFlashList
-              data={dataFilledWithEmptyBoxes}
+              data={dataWithEndFiller}
               dataCanBeFetched={!!currentUser}
               fetchFromLastObservation={fetchFromLastObservation}
               handlePullToRefresh={handlePullToRefresh}
@@ -446,7 +445,7 @@ const MyObservationsSimple = ( {
               accessibilityHint: t( "Navigates-to-observation-details" ),
               imageComponent: (
                 <ObsGridItem
-                  observation={observations[0]}
+                  observation={observationUuids[0]}
                   currentUser={currentUser}
                   explore={false}
                   queued={false}

@@ -9,6 +9,7 @@ import {
   ObservationLocation,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
@@ -25,13 +26,15 @@ import {
   photoFromObservation,
 } from "./util";
 
+const { useObject } = RealmContext;
+
 type Props = {
   currentUser: Object,
   explore: boolean,
   hideMetadata?: boolean,
   hideRGLabel?: boolean,
   onUploadButtonPress: Function,
-  observation: Object,
+  observationUuid: string,
   queued: boolean,
   uploadProgress?: number,
   unsynced: boolean,
@@ -45,7 +48,7 @@ const ObsListItem = ( {
   explore = false,
   hideMetadata,
   hideRGLabel = true,
-  observation,
+  observationUuid,
   onUploadButtonPress,
   queued,
   uploadProgress,
@@ -57,6 +60,7 @@ const ObsListItem = ( {
   const { t } = useTranslation();
   const uploadStatus = useStore( state => state.uploadStatus );
   const { isDebug } = useDebugMode( );
+  const observation = useObject( "Observation", observationUuid );
 
   // made an API change so we're no longer storing user for every observation in realm,
   // because we already know all observations belong to the logged in user. so we need

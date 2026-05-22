@@ -6,7 +6,7 @@ import last from "lodash/last";
 import noop from "lodash/noop";
 import { RealmContext } from "providers/contexts";
 import {
-  useCallback, useEffect, useMemo, useRef,
+  useCallback, useEffect, useRef,
 } from "react";
 import Observation from "realmModels/Observation";
 import { useAuthenticatedInfiniteQuery, useCurrentUser } from "sharedHooks";
@@ -55,7 +55,6 @@ const useInfiniteObservationsScroll = ( {
       } else {
         params.page = 1;
       }
-
       const response = await searchObservations( params, optsWithAuth );
       return response;
     },
@@ -68,21 +67,18 @@ const useInfiniteObservationsScroll = ( {
     },
   );
 
-  const newlyFetchedObservations = useMemo( ( ) => {
-    if ( data?.pages ) {
-      return flatten( last( data.pages )?.results );
-    }
-    return null;
-  }, [data?.pages] );
-
   useEffect( ( ) => {
+    if ( !data ) {
+      return;
+    }
+    const newlyFetchedObservations = flatten( last( data.pages )?.results );
     if ( newlyFetchedObservations ) {
       Observation.upsertRemoteObservations(
         newlyFetchedObservations,
         realm,
       );
     }
-  }, [realm, newlyFetchedObservations] );
+  }, [realm, data] );
 
   const hasLocalObservations = realm?.objects( "Observation" )?.length > 0;
 

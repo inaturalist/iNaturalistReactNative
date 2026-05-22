@@ -55,7 +55,7 @@ const ObsImage = ( {
         fadeDuration={0}
         source={{
           url: uri.uri,
-          cachePolicy: "discWithCacheControl",
+          cachePolicy: "memoryAndDisc",
           resizeMode: "cover",
         }}
       />

@@ -1,6 +1,5 @@
 import { Pressable } from "components/styledComponents";
 import React from "react";
-import type { RealmObservation } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
 import ObsGridItem from "./ObsGridItem";
@@ -19,10 +18,16 @@ interface Props {
   onItemPress: ( ) => void;
   gridItemStyle: object;
   layout: "list" | "grid";
-  observation: RealmObservation;
+  observationUuid: string;
   uploadProgress: number;
   unsynced: boolean;
 }
+
+// const useObservation = ( uuid: string ) => {
+//   const realm = useRealm();
+//   const observation = realm.objectForPrimaryKey( "Observation", uuid );
+//   observation?.addListener();
+// };
 
 const ObsPressable = ( {
   currentUser,
@@ -37,7 +42,7 @@ const ObsPressable = ( {
   onItemPress,
   gridItemStyle,
   layout,
-  observation,
+  observationUuid,
   uploadProgress,
   unsynced,
 }: Props ) => {
@@ -45,7 +50,7 @@ const ObsPressable = ( {
 
   return (
     <Pressable
-      testID={`ObsPressable.${observation.uuid}`}
+      testID={`ObsPressable.${observationUuid}`}
       onPress={onItemPress}
       accessibilityRole="link"
       accessibilityHint={unsynced
@@ -61,7 +66,7 @@ const ObsPressable = ( {
               explore={explore}
               hideObsUploadStatus={hideObsUploadStatus}
               onUploadButtonPress={onUploadButtonPress}
-              observation={observation}
+              observationUuid={observationUuid}
               queued={queued}
               // 03022023 it seems like Flatlist is designed to work
               // better with RN styles than with Tailwind classes
@@ -79,7 +84,7 @@ const ObsPressable = ( {
               isSimpleObsStatus={isSimpleObsStatus}
               hideRGLabel={hideRGLabel}
               onUploadButtonPress={onUploadButtonPress}
-              observation={observation}
+              observationUuid={observationUuid}
               queued={queued}
               uploadProgress={uploadProgress}
               unsynced={unsynced}

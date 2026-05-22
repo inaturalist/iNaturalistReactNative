@@ -377,7 +377,7 @@ class Observation extends Realm.Object {
     return { uri: obs.observation_photos[0].photo.url };
   };
 
-  static filterUnsyncedObservations = realm => {
+  static filterUnsyncedObservations = ( realm, skipSort ) => {
     const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
     const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
     const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
@@ -387,13 +387,23 @@ class Observation extends Realm.Object {
     // with an older _created_at date get uploaded first
     const unsyncedObs = obs.filtered(
       `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`,
-    ).sorted( "_created_at", true );
-    return unsyncedObs;
+    );
+    return skipSort
+      ? unsyncedObs
+      : unsyncedObs.sorted( "_created_at", true );
   };
 
   static isUnsyncedObservation = ( realm, obs ) => {
+    realm.objects( "Observation" );
     const obsList = Observation.filterUnsyncedObservations( realm );
     const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
+    return unsyncedObs.length > 0;
+  };
+
+  static isUnsyncedObservationUuid = ( realm, uuid ) => {
+    realm.objects( "Observation" );
+    const obsList = Observation.filterUnsyncedObservations( realm );
+    const unsyncedObs = obsList.filtered( `uuid == "${uuid}"` );
     return unsyncedObs.length > 0;
   };
 

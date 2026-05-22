@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
+import { useBenchmark } from "@shopify/flash-list";
 import {
   ActivityIndicator,
   Body3,
@@ -40,7 +41,7 @@ const ItemSeparator = () => <View className="border-b border-lightGray" />;
 interface Props {
   contentContainerStyle?: StyleProp<ViewStyle>;
   // TODO: type data / observations
-  data: unknown[];
+  data: string[];
   dataCanBeFetched?: boolean;
   fetchFromLastObservation?: ( observationId?: number ) => void;
   explore: boolean;
@@ -50,6 +51,7 @@ interface Props {
   hideMetadata?: boolean;
   hideObsUploadStatus?: boolean;
   hideObsStatus?: boolean;
+  // isFetchingNextPage?: boolean;
   isSimpleObsStatus?: boolean;
   hideRGLabel?: boolean;
   isConnected: boolean;
@@ -80,6 +82,7 @@ const ObservationsFlashList = ( {
   hideMetadata,
   hideObsUploadStatus,
   hideObsStatus,
+  // isFetchingNextPage,
   isSimpleObsStatus,
   hideRGLabel,
   isConnected,
@@ -104,6 +107,9 @@ const ObservationsFlashList = ( {
   const uploadQueue = useStore( state => state.uploadQueue );
   const totalUploadProgress = useStore( state => state.totalUploadProgress );
   const [refreshing, setRefreshing] = useState( false );
+  useBenchmark( ref, result => {
+    console.log( "Benchmark complete:", result.formattedString );
+  }, {} );
 
   const onRefresh = async ( ) => {
     setRefreshing( true );
@@ -119,10 +125,11 @@ const ObservationsFlashList = ( {
   } = useGridLayout( layout );
   const { t } = useTranslation( );
 
+  interface Data { item: string }
   // TODO: type data / observation
-  const renderItem = useCallback( ( { item: observation } ) => {
+  const renderItem = useCallback( ( { item: uuid }: Data ) => {
     // Empty box
-    if ( observation.empty ) {
+    if ( uuid.startsWith( "empty-" ) ) {
       return (
         <View
           className="rounded-[15px] border-dotted border-4 border-lightGray"
@@ -130,10 +137,10 @@ const ObservationsFlashList = ( {
         />
       );
     }
-    const { uuid } = observation;
+    // const { uuid } = observation;
     const onUploadButtonPress = ( ) => handleIndividualUploadPress( uuid );
     // 20240529 amanda - filtering in realm is a fast way to look up sync status
-    const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, observation );
+    const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, uuid );
     const obsUploadState = totalUploadProgress.find( o => o.uuid === uuid );
     const uploadProgress = obsNeedsSync
       ? obsUploadState?.totalProgress || 0
@@ -143,7 +150,7 @@ const ObservationsFlashList = ( {
 
     const onItemPress = ( ) => {
       if ( obsNeedsSync && !isDefaultMode ) {
-        const realmObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
+        const realmObservation = realm.objectForPrimaryKey( "Observation", uuid );
         navigateToObsEdit( realmObservation );
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
@@ -172,7 +179,7 @@ const ObservationsFlashList = ( {
         hideRGLabel={hideRGLabel}
         layout={layout}
         key={itemKey}
-        observation={observation}
+        observationUuid={uuid}
         onItemPress={onItemPress}
         onUploadButtonPress={onUploadButtonPress}
         queued={queued}
@@ -255,10 +262,10 @@ const ObservationsFlashList = ( {
     t,
   ] );
 
-  const extraData = {
+  const extraData = useMemo( () => ( {
     gridItemWidth,
     numColumns,
-  };
+  } ), [gridItemWidth, numColumns] );
 
   // only used id as a fallback key because after upload
   // react thinks we've rendered a second item w/ a duplicate key
@@ -269,6 +276,11 @@ const ObservationsFlashList = ( {
       onEndReached( );
     }
   }, [dataCanBeFetched, onEndReached] );
+  // const onMomentumScrollEnd = useCallback( ( ) => {
+  //   if ( dataCanBeFetched && !isFetchingNextPage ) {
+  //     onEndReached( );
+  //   }
+  // }, [dataCanBeFetched, isFetchingNextPage, onEndReached] );
 
   const handleEndReached = useCallback( ( ) => {
     if ( !dataCanBeFetched || explore ) return;

@@ -2,24 +2,25 @@
 
 import { Body2, DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useMemo } from "react";
+import React from "react";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsUploadStatus from "./ObsUploadStatus";
 import {
-  observationHasSound,
-  photoCountFromObservation,
   photoFromObservation,
 } from "./util";
 
+const { useObject } = RealmContext;
+
 type Props = {
-  currentUser: Object,
+  // currentUser: Object,
   explore: boolean,
   height?: string,
   hideObsUploadStatus?: boolean,
-  observation: Object,
+  observationUuid: string,
   onUploadButtonPress: Function,
   style?: Object,
   queued: boolean,
@@ -28,12 +29,21 @@ type Props = {
   testID?: string
 };
 
+const useObservation = uuid => {
+  const observation = useObject( "Observation", uuid );
+  return observation;
+  // return useMemo(
+  //   () => Observation.mapObservationForMyObsDefaultMode( observation ),
+  //   [observation],
+  // );
+};
+
 const ObsGridItem = ( {
-  currentUser,
+  // currentUser,
   explore,
   height = "w-[200px]",
   hideObsUploadStatus,
-  observation,
+  observationUuid,
   onUploadButtonPress,
   queued,
   style,
@@ -41,24 +51,7 @@ const ObsGridItem = ( {
   testID,
   width = "w-[200px]",
 }: Props ): Node => {
-  const displayTaxonName = useMemo( ( ) => (
-    <DisplayTaxonName
-      bottomTextComponent={Body2}
-      color="text-white"
-      ellipsizeCommonName
-      keyBase={observation?.uuid}
-      layout="vertical"
-      prefersCommonNames={currentUser?.prefers_common_names}
-      scientificNameFirst={currentUser?.prefers_scientific_name_first}
-      showOneNameOnly
-      taxon={observation?.taxon}
-    />
-  ), [
-    currentUser?.prefers_common_names,
-    currentUser?.prefers_scientific_name_first,
-    observation?.taxon,
-    observation?.uuid,
-  ] );
+  const observation = useObservation( observationUuid );
 
   const photo = photoFromObservation( observation );
 
@@ -70,8 +63,9 @@ const ObsGridItem = ( {
       width={width}
       height={height}
       style={style}
-      obsPhotosCount={photoCountFromObservation( observation )}
-      hasSound={observationHasSound( observation )}
+      // obsPhotosCount={10}
+      // obsPhotosCount={photoCountFromObservation( observation )}
+      // hasSound={observationHasSound( observation )}
       isMultiplePhotosTop
       testID={testID || `MyObservations.obsGridItem.${observation.uuid}`}
       useShortGradient={!explore}
@@ -91,7 +85,17 @@ const ObsGridItem = ( {
             white
           />
         )}
-        {displayTaxonName}
+        <DisplayTaxonName
+          bottomTextComponent={Body2}
+          color="text-white"
+          ellipsizeCommonName
+          keyBase={observation?.uuid}
+          layout="vertical"
+          // prefersCommonNames={currentUser?.prefers_common_names}
+          // scientificNameFirst={currentUser?.prefers_scientific_name_first}
+          showOneNameOnly
+          // taxon={observation?.taxon}
+        />
       </View>
     </ObsImagePreview>
   );
