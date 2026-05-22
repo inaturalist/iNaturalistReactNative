@@ -22,8 +22,11 @@ const useCurrentUser = ( ): User | null => {
       setCurrentUser( User.currentUser( realm ) || null );
     };
 
-    realmResults.addListener( listener );
+    // User could* have been mutated between state initialization and listener setup, resync state
+    // * FLGMwt: if you're reading this and have better knowledge of Realm's lifecycle, speak up!
+    listener();
 
+    realmResults.addListener( listener );
     return ( ) => {
       realmResults.removeListener( listener );
     };
