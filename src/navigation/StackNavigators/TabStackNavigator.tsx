@@ -17,9 +17,7 @@ import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import Notifications from "components/Notifications/Notifications";
 import DQAContainer from "components/ObsDetails/DQAContainer";
-import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsDetailsDefaultModeScreensWrapper
-  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeScreensWrapper";
+import ObsDetailsScreen from "components/ObsDetailsSharedComponents/ObsDetailsScreen";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements";
@@ -44,9 +42,6 @@ import {
 } from "navigation/navigationOptions";
 import type { BottomTabProps, TabStackParamList } from "navigation/types";
 import React from "react";
-import {
-  useLayoutPrefs,
-} from "sharedHooks";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
@@ -101,12 +96,13 @@ const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
 const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
-const FadeInObsDetailsDefaultModeScreensWrapper = ( ) => fadeInComponent(
-  <ObsDetailsDefaultModeScreensWrapper />,
-);
-const FadeInObsDetailsContainer = ( ) => fadeInComponent(
-  <ObsDetailsContainer />,
-);
+// const FadeInObsDetailsDefaultModeScreensWrapper = ( ) => fadeInComponent(
+//   <ObsDetailsDefaultModeScreensWrapper />,
+// );
+// const FadeInObsDetailsContainer = ( ) => fadeInComponent(
+//   <ObsDetailsContainer />,
+// );
+const FadeInObsDetailsScreen = ( ) => fadeInComponent( <ObsDetailsScreen /> );
 const FadeInDQAContainer = ( ) => fadeInComponent( <DQAContainer /> );
 const FadeInProjectsContainer = ( ) => fadeInComponent( <ProjectsContainer /> );
 const FadeInProjectDetailsContainer = ( ) => fadeInComponent( <ProjectDetailsContainer /> );
@@ -172,9 +168,6 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
   const initialRouteName
     = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
-  const {
-    isDefaultMode,
-  } = useLayoutPrefs( );
   const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
   return (
     <Stack.Navigator
@@ -223,21 +216,11 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           name="ExploreSearch"
           component={ExploreSearchContainer}
         />
-        {isDefaultMode
-          ? (
-            <Stack.Screen
-              name="ObsDetails"
-              component={FadeInObsDetailsDefaultModeScreensWrapper}
-              options={OBS_DETAILS_OPTIONS}
-            />
-          )
-          : (
-            <Stack.Screen
-              name="ObsDetails"
-              component={FadeInObsDetailsContainer}
-              options={OBS_DETAILS_OPTIONS}
-            />
-          )}
+        <Stack.Screen
+          name="ObsDetails"
+          component={FadeInObsDetailsScreen}
+          options={OBS_DETAILS_OPTIONS}
+        />
       </Stack.Group>
       <Stack.Screen
         name={SCREEN_NAME_NOTIFICATIONS}
