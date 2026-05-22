@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
-import { useBenchmark } from "@shopify/flash-list";
 import {
   ActivityIndicator,
   Body3,
@@ -97,6 +96,10 @@ const ObservationsFlashList = ( {
   showObservationsEmptyScreen,
   testID,
 }: Props ) => {
+  // uncomment this for flashlist benchmarking (I trust you to import)
+  // useBenchmark( ref, result => {
+  //   console.log( "Benchmark complete:", result.formattedString );
+  // }, {} );
   const {
     isDefaultMode,
   } = useLayoutPrefs( );
@@ -107,9 +110,6 @@ const ObservationsFlashList = ( {
   const uploadQueue = useStore( state => state.uploadQueue );
   const totalUploadProgress = useStore( state => state.totalUploadProgress );
   const [refreshing, setRefreshing] = useState( false );
-  useBenchmark( ref, result => {
-    console.log( "Benchmark complete:", result.formattedString );
-  }, {} );
 
   const onRefresh = async ( ) => {
     setRefreshing( true );
