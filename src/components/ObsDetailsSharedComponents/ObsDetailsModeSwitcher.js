@@ -8,7 +8,24 @@ import {
 } from "sharedHooks";
 import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 
-const ObsDetailsModeSwitcher = ( props ): Node => {
+type Props = {
+  activityItems: Object[],
+  addingActivityItem: Function,
+  belongsToCurrentUser: boolean,
+  currentUser: Object,
+  isConnected: boolean,
+  navToSuggestions: Function,
+  observation: Object,
+  openAddCommentSheet: Function,
+  openAgreeWithIdSheet: Function,
+  refetchRemoteObservation: Function,
+  refetchSubscriptions: Function,
+  showAddCommentSheet: Function,
+  subscriptions?: Object,
+  uuid: string,
+};
+
+const ObsDetailsModeSwitcher = ( props: Props ): Node => {
   const {
     activityItems,
     addingActivityItem,
