@@ -15,7 +15,6 @@ import {
 const ObsDetailsScreen = () => {
   const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
   const {
-    targetActivityItemID,
     uuid,
   } = params;
   const currentUser = useCurrentUser( );
@@ -73,7 +72,6 @@ const ObsDetailsScreen = () => {
   return (
     <ObsDetailsDefaultModeContainer
       observation={observation}
-      targetActivityItemID={targetActivityItemID}
       uuid={uuid}
       localObservation={localObservation}
       markViewedLocally={markViewedLocally}
