@@ -1,48 +1,40 @@
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
-import type Realm from "realm";
 import User from "realmModels/User";
 
 const { useRealm } = RealmContext;
 
 const useCurrentUser = ( ): User | null => {
   const realm = useRealm( );
-  const [currentUser, setCurrentUser] = useState<User | null>( null );
+
+  // use a state initializer for the initial value from Realm
+  const [currentUser, setCurrentUser] = useState<User | null>(
+    () => User.currentUser( realm ) || null,
+  );
+
   useEffect( ( ) => {
     const realmResults = realm.objects( User ).filtered( "signedIn == true" );
 
-    // Sets the current user if one is detected, unsets it if not
-    const listener = (
-      collection: Realm.OrderedCollection<User>,
-      changes: Realm.CollectionChangeSet,
-    ) => {
-      if (
-        ( changes.deletions && changes.deletions.length > 0 )
-        || !collection[0]?.isValid( )
-      ) {
-        setCurrentUser( null );
-      } else {
-        setCurrentUser( collection[0] );
-      }
+    // when the signedIn User collection changes, update state to latest currentUser or null.
+    // We don't need to handle changes in the listener because we only ever care about the
+    // single result (or lack of)
+    const listener = () => {
+      setCurrentUser( User.currentUser( realm ) || null );
     };
 
-    // Run the listener on the results for the first time
-    listener( realmResults, {
-      insertions: [],
-      deletions: [],
-      newModifications: [],
-      oldModifications: [],
-    } );
+    // User could* have been mutated between state initialization and listener setup, resync state
+    // * FLGMwt: if you're reading this and have better knowledge of Realm's lifecycle, speak up!
+    listener();
 
-    // Add the listener
-    realmResults?.addListener( listener );
-
-    // Remove the listener when this dismounts
+    realmResults.addListener( listener );
     return ( ) => {
-      realmResults?.removeListener( listener );
+      realmResults.removeListener( listener );
     };
   }, [realm] );
 
+  // isValid() here _only_ protects an invalid Realm being used in the one render pass between
+  // the listener firing on logout and currentUser being setStat'd to null.
+  // async callbacks referencing this `currentUser` return still need to `isValid()`.
   return currentUser?.isValid( )
     ? currentUser
     : null;
