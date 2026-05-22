@@ -99,9 +99,6 @@ const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
 // const FadeInObsDetailsDefaultModeScreensWrapper = ( ) => fadeInComponent(
 //   <ObsDetailsDefaultModeScreensWrapper />,
 // );
-// const FadeInObsDetailsContainer = ( ) => fadeInComponent(
-//   <ObsDetailsContainer />,
-// );
 const FadeInObsDetailsScreen = ( ) => fadeInComponent( <ObsDetailsScreen /> );
 const FadeInDQAContainer = ( ) => fadeInComponent( <DQAContainer /> );
 const FadeInProjectsContainer = ( ) => fadeInComponent( <ProjectsContainer /> );
