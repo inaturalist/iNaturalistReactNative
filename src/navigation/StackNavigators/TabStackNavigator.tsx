@@ -96,9 +96,6 @@ const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
 const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
-// const FadeInObsDetailsDefaultModeScreensWrapper = ( ) => fadeInComponent(
-//   <ObsDetailsDefaultModeScreensWrapper />,
-// );
 const FadeInObsDetailsScreen = ( ) => fadeInComponent( <ObsDetailsScreen /> );
 const FadeInDQAContainer = ( ) => fadeInComponent( <DQAContainer /> );
 const FadeInProjectsContainer = ( ) => fadeInComponent( <ProjectsContainer /> );

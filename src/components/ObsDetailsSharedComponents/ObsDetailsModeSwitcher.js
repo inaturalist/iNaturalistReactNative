@@ -1,5 +1,6 @@
 // @flow
 import ObsDetails from "components/ObsDetails/ObsDetails";
+import ObsDetailsDefaultMode from "components/ObsDetailsDefaultMode/ObsDetailsDefaultMode";
 import type { Node } from "react";
 import React from "react";
 import {
@@ -22,6 +23,7 @@ type Props = {
   refetchSubscriptions: Function,
   showAddCommentSheet: Function,
   subscriptions?: Object,
+  wasSynced: boolean,
   uuid: string,
 };
 
@@ -40,10 +42,12 @@ const ObsDetailsModeSwitcher = ( props: Props ): Node => {
     refetchSubscriptions,
     showAddCommentSheet,
     subscriptions,
+    wasSynced,
     uuid,
   } = props;
 
   const {
+    isDefaultMode,
     obsDetailsTab,
     setObsDetailsTab,
   } = useLayoutPrefs( );
@@ -69,6 +73,28 @@ const ObsDetailsModeSwitcher = ( props: Props ): Node => {
 
   if ( !observation ) {
     return null;
+  }
+
+  if ( isDefaultMode ) {
+    return (
+      <ObsDetailsDefaultMode
+        activityItems={activityItems}
+        addingActivityItem={addingActivityItem}
+        belongsToCurrentUser={belongsToCurrentUser}
+        currentUser={currentUser}
+        isConnected={isConnected}
+        navToSuggestions={navToSuggestions}
+        observation={observation}
+        openAddCommentSheet={openAddCommentSheet}
+        openAgreeWithIdSheet={openAgreeWithIdSheet}
+        refetchRemoteObservation={refetchRemoteObservation}
+        refetchSubscriptions={refetchSubscriptions}
+        showAddCommentSheet={showAddCommentSheet}
+        subscriptions={subscriptions}
+        wasSynced={wasSynced}
+        uuid={uuid}
+      />
+    );
   }
 
   return (

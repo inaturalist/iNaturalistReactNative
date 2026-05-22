@@ -53,6 +53,7 @@ const ObsDetailsContainer = ( props: Props ): Node => {
     showAddCommentSheet,
     showAgreeWithIdSheet,
     subscriptionResults,
+    wasSynced,
     openAddCommentSheet,
     hideAddCommentSheet,
     openAgreeWithIdSheet,
@@ -95,6 +96,7 @@ const ObsDetailsContainer = ( props: Props ): Node => {
         refetchSubscriptions={refetchSubscriptions}
         showAddCommentSheet={showAddCommentSheet}
         subscriptions={subscriptionResults}
+        wasSynced={wasSynced}
         uuid={uuid}
       />
       <IdentificationSheets
