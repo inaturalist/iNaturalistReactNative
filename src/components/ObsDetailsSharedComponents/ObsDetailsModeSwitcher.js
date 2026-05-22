@@ -67,28 +67,30 @@ const ObsDetailsModeSwitcher = ( props: Props ): Node => {
 
   const showActivityTab = obsDetailsTab === OBS_DETAILS_TAB.ACTIVITY;
 
+  if ( !observation ) {
+    return null;
+  }
+
   return (
-    observation && (
-      <ObsDetails
-        activityItems={activityItems}
-        addingActivityItem={addingActivityItem}
-        belongsToCurrentUser={belongsToCurrentUser}
-        currentUser={currentUser}
-        isConnected={isConnected}
-        navToSuggestions={navToSuggestions}
-        observation={observation}
-        openAddCommentSheet={openAddCommentSheet}
-        openAgreeWithIdSheet={openAgreeWithIdSheet}
-        refetchRemoteObservation={refetchRemoteObservation}
-        refetchSubscriptions={refetchSubscriptions}
-        showAddCommentSheet={showAddCommentSheet}
-        subscriptions={subscriptions}
-        uuid={uuid}
-        obsDetailsTab={obsDetailsTab}
-        showActivityTab={showActivityTab}
-        tabs={tabs}
-      />
-    )
+    <ObsDetails
+      activityItems={activityItems}
+      addingActivityItem={addingActivityItem}
+      belongsToCurrentUser={belongsToCurrentUser}
+      currentUser={currentUser}
+      isConnected={isConnected}
+      navToSuggestions={navToSuggestions}
+      observation={observation}
+      openAddCommentSheet={openAddCommentSheet}
+      openAgreeWithIdSheet={openAgreeWithIdSheet}
+      refetchRemoteObservation={refetchRemoteObservation}
+      refetchSubscriptions={refetchSubscriptions}
+      showAddCommentSheet={showAddCommentSheet}
+      subscriptions={subscriptions}
+      uuid={uuid}
+      obsDetailsTab={obsDetailsTab}
+      showActivityTab={showActivityTab}
+      tabs={tabs}
+    />
   );
 };
 
