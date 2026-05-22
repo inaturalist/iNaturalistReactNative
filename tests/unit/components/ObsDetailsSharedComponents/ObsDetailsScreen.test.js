@@ -1,6 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import { screen } from "@testing-library/react-native";
 import ObsDetailsScreen from "components/ObsDetailsSharedComponents/ObsDetailsScreen";
+import inatjs from "inaturalistjs";
 import React from "react";
 import * as useLocalObservation from "sharedHooks/useLocalObservation";
 import factory from "tests/factory";
@@ -136,6 +137,24 @@ describe( "ObsDetailsScreen", ( ) => {
 
       expect( screen.getByTestId( "SavedMatch.container" ) ).toBeTruthy( );
       expect( screen.queryByTestId( "ObsDetails.container" ) ).toBeFalsy( );
+    } );
+
+    it( "does not mark observation updates as viewed", ( ) => {
+      const unsyncedLocalObservation = {
+        ...mockLocalObservation,
+        wasSynced: jest.fn( () => false ),
+      };
+
+      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
+        localObservation: unsyncedLocalObservation,
+        markDeletedLocally: jest.fn( ),
+        markViewedLocally: jest.fn( ),
+      } ) );
+
+      renderComponent( <ObsDetailsScreen /> );
+
+      expect( screen.getByTestId( "SavedMatch.container" ) ).toBeTruthy( );
+      expect( inatjs.observations.viewedUpdates ).not.toHaveBeenCalled( );
     } );
   } );
 
