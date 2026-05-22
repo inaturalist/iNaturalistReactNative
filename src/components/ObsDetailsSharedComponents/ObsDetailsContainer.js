@@ -1,17 +1,12 @@
 // @flow
-import ObsDetails from "components/ObsDetails/ObsDetails";
 import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
 import useMarkViewedMutation
   from "components/ObsDetailsSharedComponents/hooks/useMarkViewedMutation";
 import useObsDetailsSharedLogic
   from "components/ObsDetailsSharedComponents/hooks/useObsDetailsSharedLogic";
+import ObsDetailsModeSwitcher from "components/ObsDetailsSharedComponents/ObsDetailsModeSwitcher";
 import type { Node } from "react";
 import React from "react";
-import {
-  useLayoutPrefs,
-  useTranslation,
-} from "sharedHooks";
-import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 
 const ObsDetailsContainer = ( props ): Node => {
   const {
@@ -30,13 +25,6 @@ const ObsDetailsContainer = ( props ): Node => {
     isConnected,
     remoteObsWasDeleted,
   } = props;
-
-  const {
-    obsDetailsTab,
-    setObsDetailsTab,
-  } = useLayoutPrefs( );
-
-  const { t } = useTranslation( );
 
   useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
 
@@ -74,26 +62,9 @@ const ObsDetailsContainer = ( props ): Node => {
     refetchRemoteObservation,
   } );
 
-  const tabs = [
-    {
-      id: OBS_DETAILS_TAB.ACTIVITY,
-      testID: "ObsDetails.ActivityTab",
-      onPress: ( ) => setObsDetailsTab( OBS_DETAILS_TAB.ACTIVITY ),
-      text: t( "ACTIVITY" ),
-    },
-    {
-      id: OBS_DETAILS_TAB.DETAILS,
-      testID: "ObsDetails.DetailsTab",
-      onPress: () => setObsDetailsTab( OBS_DETAILS_TAB.DETAILS ),
-      text: t( "DETAILS" ),
-    },
-  ];
-
-  const showActivityTab = obsDetailsTab === OBS_DETAILS_TAB.ACTIVITY;
-
   return observationShown && (
     <>
-      <ObsDetails
+      <ObsDetailsModeSwitcher
         activityItems={activityItems}
         addingActivityItem={addingActivityItem}
         belongsToCurrentUser={belongsToCurrentUser}
@@ -108,9 +79,6 @@ const ObsDetailsContainer = ( props ): Node => {
         showAddCommentSheet={showAddCommentSheet}
         subscriptions={subscriptionResults}
         uuid={uuid}
-        obsDetailsTab={obsDetailsTab}
-        showActivityTab={showActivityTab}
-        tabs={tabs}
       />
       <IdentificationSheets
         agreeIdentification={agreeIdentification}
