@@ -8,7 +8,24 @@ import ObsDetailsModeSwitcher from "components/ObsDetailsSharedComponents/ObsDet
 import type { Node } from "react";
 import React from "react";
 
-const ObsDetailsContainer = ( props ): Node => {
+type Props = {
+  belongsToCurrentUser: boolean,
+  currentUser: ?Object,
+  fetchRemoteObservationError: ?Object,
+  isConnected: boolean,
+  isRefetching: boolean,
+  localObservation: ?Object,
+  markDeletedLocally: Function,
+  markViewedLocally: Function,
+  observation: Object,
+  refetchRemoteObservation: Function,
+  remoteObservation: ?Object,
+  remoteObsWasDeleted: boolean,
+  setRemoteObsWasDeleted: Function,
+  uuid: string,
+};
+
+const ObsDetailsContainer = ( props: Props ): Node => {
   const {
     observation,
     uuid,
