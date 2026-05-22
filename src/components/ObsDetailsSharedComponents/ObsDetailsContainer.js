@@ -1,8 +1,4 @@
 // @flow
-import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
-import { useRoute } from "@react-navigation/native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import IdentificationSheets from "components/ObsDetailsDefaultMode/IdentificationSheets";
 import useMarkViewedMutation
@@ -10,66 +6,39 @@ import useMarkViewedMutation
 import useObsDetailsSharedLogic
   from "components/ObsDetailsSharedComponents/hooks/useObsDetailsSharedLogic";
 import type { Node } from "react";
-import React, {
-  useState,
-} from "react";
-import Observation from "realmModels/Observation";
+import React from "react";
 import {
-  useCurrentUser,
   useLayoutPrefs,
-  useLocalObservation,
   useTranslation,
 } from "sharedHooks";
-import useRemoteObservation from "sharedHooks/useRemoteObservation";
 import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 
-const ObsDetailsContainer = ( ): Node => {
+const ObsDetailsContainer = ( props ): Node => {
+  const {
+    observation,
+    uuid,
+    localObservation,
+    markViewedLocally,
+    markDeletedLocally,
+    remoteObservation,
+    setRemoteObsWasDeleted,
+    fetchRemoteObservationError,
+    currentUser,
+    belongsToCurrentUser,
+    isRefetching,
+    refetchRemoteObservation,
+    isConnected,
+    remoteObsWasDeleted,
+  } = props;
+
   const {
     obsDetailsTab,
     setObsDetailsTab,
   } = useLayoutPrefs( );
-  const currentUser = useCurrentUser( );
-  // const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
-  const { params } = useRoute( );
-  const {
-    targetActivityItemID,
-    uuid,
-  } = params;
+
   const { t } = useTranslation( );
-  const { isConnected } = useNetInfo( );
-  const [remoteObsWasDeleted, setRemoteObsWasDeleted] = useState( false );
-
-  const {
-    localObservation,
-    markDeletedLocally,
-    markViewedLocally,
-  } = useLocalObservation( uuid );
-
-  const fetchRemoteObservationEnabled = !!(
-    !remoteObsWasDeleted
-    && ( !localObservation || localObservation?.wasSynced( ) )
-    && isConnected
-  );
-
-  const {
-    remoteObservation,
-    refetchRemoteObservation,
-    isRefetching,
-    fetchRemoteObservationError,
-  } = useRemoteObservation( uuid, fetchRemoteObservationEnabled );
 
   useMarkViewedMutation( localObservation, markViewedLocally, remoteObservation );
-
-  const observation = localObservation || Observation.mapApiToRealm( remoteObservation );
-
-  // In theory the only situation in which an observation would not have a
-  // user is when a user is not signed but has made a new observation in the
-  // app. Also in theory that user should not be able to get to ObsDetail for
-  // those observations, just ObsEdit. But.... let's be safe.
-  const belongsToCurrentUser = (
-    observation?.user?.id === currentUser?.id
-    || ( !observation?.user && !observation?.id )
-  );
 
   const {
     activityItems,
@@ -138,7 +107,6 @@ const ObsDetailsContainer = ( ): Node => {
         refetchSubscriptions={refetchSubscriptions}
         showAddCommentSheet={showAddCommentSheet}
         subscriptions={subscriptionResults}
-        targetActivityItemID={targetActivityItemID}
         uuid={uuid}
         obsDetailsTab={obsDetailsTab}
         showActivityTab={showActivityTab}
