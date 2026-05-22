@@ -90,6 +90,10 @@ class Photo extends Realm.Object {
     return url?.replace( "square", "medium" );
   }
 
+  static displaySmallPhoto( url?: string ) {
+    return url?.replace( "square", "small" );
+  }
+
   static displayLocalOrRemoteLargePhoto( photo: RealmPhoto ) {
     return (
       Photo.displayLargePhoto( photo?.url )
@@ -100,6 +104,13 @@ class Photo extends Realm.Object {
   static displayLocalOrRemoteMediumPhoto( photo: RealmPhoto ) {
     return (
       Photo.displayMediumPhoto( photo?.url )
+      || Photo.getLocalPhotoUri( photo?.localFilePath )
+    );
+  }
+
+  static displayLocalOrRemoteSmallPhoto( photo: RealmPhoto ) {
+    return (
+      Photo.displaySmallPhoto( photo?.url )
       || Photo.getLocalPhotoUri( photo?.localFilePath )
     );
   }
