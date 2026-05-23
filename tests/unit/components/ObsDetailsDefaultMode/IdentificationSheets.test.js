@@ -56,7 +56,7 @@ describe( "IdentificationSheets", () => {
   } );
 
   const defaultProps = {
-    agreeIdentification: null,
+    agreeIdentification: false,
     closeAgreeWithIdSheet: jest.fn(),
     handleCommentMutationSuccess: jest.fn(),
     handleIdentificationMutationSuccess: jest.fn(),
@@ -144,7 +144,7 @@ describe( "IdentificationSheets", () => {
     const initialState = {
       comment: null,
       commentIsOptional: false,
-      identBodySheetShown: false,
+      showIdentBodySheet: false,
       newIdentification: null,
       showPotentialDisagreementSheet: false,
       showSuggestIdSheet: false,
@@ -183,6 +183,33 @@ describe( "IdentificationSheets", () => {
       expect( newState.showSuggestIdSheet ).toBe( false );
       expect( newState.newIdentification ).toBeNull();
       expect( newState.identTaxon ).toBeNull();
+    } );
+  } );
+
+  describe( "deleted remote observation", () => {
+    it( "shows WarningSheet when remoteObsWasDeleted is true", async () => {
+      const confirmRemoteObsWasDeleted = jest.fn( );
+
+      useRoute.mockReturnValue( {
+        params: {
+          uuid: mockObservation.uuid,
+        },
+      } );
+
+      renderComponent(
+        <IdentificationSheets
+          {...defaultProps}
+          confirmRemoteObsWasDeleted={confirmRemoteObsWasDeleted}
+          remoteObsWasDeleted
+        />,
+      );
+
+      expect(
+        await screen.findByText( t( "OBSERVATION-WAS-DELETED" ) ),
+      ).toBeVisible();
+      expect(
+        screen.getByText( t( "Sorry-this-observation-was-deleted" ) ),
+      ).toBeVisible();
     } );
   } );
 } );
