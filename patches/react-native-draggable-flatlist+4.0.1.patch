@@ -343,3 +343,88 @@ index 6ff1ed5..5f7d9bc 100644
        ? touchPositionDiff.value
        : touchPositionDiffConstrained.value;
    }, []);
+diff --git a/node_modules/react-native-draggable-flatlist/src/components/CellRendererComponent.tsx b/node_modules/react-native-draggable-flatlist/src/components/CellRendererComponent.tsx
+index d7b833b7..e4e861a6 100644
+--- a/node_modules/react-native-draggable-flatlist/src/components/CellRendererComponent.tsx
++++ b/node_modules/react-native-draggable-flatlist/src/components/CellRendererComponent.tsx
+@@ -4,7 +4,6 @@ import {
+   LayoutChangeEvent,
+   MeasureLayoutOnSuccessCallback,
+   StyleProp,
+-  StyleSheet,
+   ViewStyle,
+ } from "react-native";
+ import Animated, {
+@@ -163,11 +162,7 @@ function CellRendererComponent<T>(props: Props<T>) {
+           ? itemLayoutAnimation
+           : undefined
+       }
+-      style={[
+-        props.style,
+-        baseStyle,
+-        activeKey ? animStyle : styles.zeroTranslate,
+-      ]}
++      style={[props.style, baseStyle, animStyle]}
+       pointerEvents={activeKey ? "none" : "auto"}
+     >
+       <CellProvider isActive={isActive}>{children}</CellProvider>
+@@ -177,12 +172,6 @@ function CellRendererComponent<T>(props: Props<T>) {
+ 
+ export default typedMemo(CellRendererComponent);
+ 
+-const styles = StyleSheet.create({
+-  zeroTranslate: {
+-    transform: [{ translateX: 0 }, { translateY: 0 }],
+-  },
+-});
+-
+ declare global {
+   namespace NodeJS {
+     interface Global {
+diff --git a/node_modules/react-native-draggable-flatlist/src/components/DraggableFlatList.tsx b/node_modules/react-native-draggable-flatlist/src/components/DraggableFlatList.tsx
+index 2f59c7a2..7c88afc5 100644
+--- a/node_modules/react-native-draggable-flatlist/src/components/DraggableFlatList.tsx
++++ b/node_modules/react-native-draggable-flatlist/src/components/DraggableFlatList.tsx
+@@ -6,7 +6,12 @@ import React, {
+   useRef,
+   useState,
+ } from "react";
+-import { ListRenderItem, FlatListProps, LayoutChangeEvent } from "react-native";
++import {
++  ListRenderItem,
++  FlatListProps,
++  LayoutChangeEvent,
++  InteractionManager,
++} from "react-native";
+ import {
+   FlatList,
+   Gesture,
+@@ -20,7 +25,7 @@ import Animated, {
+   withSpring,
+ } from "react-native-reanimated";
+ import CellRendererComponent from "./CellRendererComponent";
+-import { DEFAULT_PROPS, isWeb } from "../constants";
++import { DEFAULT_PROPS } from "../constants";
+ import PlaceholderItem from "./PlaceholderItem";
+ import RowItem from "./RowItem";
+ import { DraggableFlatListProps } from "../types";
+@@ -114,6 +119,9 @@ function DraggableFlatListInner<T>(props: DraggableFlatListProps<T>) {
+   if (dataHasChanged) {
+     // When data changes make sure `activeKey` is nulled out in the same render pass
+     activeKey = null;
++    InteractionManager.runAfterInteractions(() => {
++      reset();
++    });
+   }
+ 
+   useEffect(() => {
+@@ -221,7 +229,8 @@ function DraggableFlatListInner<T>(props: DraggableFlatListProps<T>) {
+       }
+ 
+       onDragEnd?.({ from, to, data: newData });
+-      reset();
++
++      setActiveKey(null);
+     }
+   );
+ 
