@@ -9,7 +9,7 @@ import React, {
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
 const MIN_SCALE = 0.5;
-const MAX_SCALE = 5;
+const MAX_SCALE = 50;
 
 interface Props {
   uri: string;
