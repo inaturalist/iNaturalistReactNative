@@ -1,14 +1,12 @@
-Ret kameraet mod planter, dyr, og svampe for at se artsforslag, mens man er udenfor, eller importér fotos fra galleriet. iNaturalist hjælper millioner af folk med at lære mere om naturen via AI-forslag understøttet af et globalt fællesskab af kyndige naturelskere.
+Dine fotos af planter, dyr, svampe og meget mere kan hjælpe med at beskytte naturen verden over. iNaturalist er gratis, nonprofit og fællesskabsdrevet.
 
-iNaturalist går langt ud over AI-identifikationer — observationer, man foretager, gennemgås af virkelige personer og deles i videnskabsregi for at hjælpe med at beskytte arter.
+iNaturalist bistår millioner af personer med at lære om og dokumentere naturen omkring sig. Ret kameraet mod planter, dyr og svampe for øjeblikkelige identifikationsforslag, del dernæst fotos eller lydoptagelser som en "observation. Se derefter observationen blive gennemgået af et globalt fællesskab af kyndige naturelskere for at gøre den til et nyttigt datapunkt for videnskab og bevaringsindsats. Daglige øjeblikke af nysgerrighed kan direkte bidrage til at beskytte naturen, og ingen tidligere erfaring eller viden kræves for at komme i gang.
+
+iNaturalist er en missionsdrevet nonprofitorganisation dedikeret til at forbinde personer med naturen og fremme biodiversitetsvidenskab samt -bevaring og er frit tilgængelig takket være den generøse støtte fra vores fællesskab.
 
 NØGLEFUNKTIONER
-Identificér arter fra hvor som helst i verden
-Før fortegnelse over arter, man ser
-Bidrag til videnskaben ved at dele observationerne
-Udforsk og beskyt biodiversiteten 
-Kom i kontakt med og lær af andre naturentusiaster
-
-iNaturalists non-profit mission er at forbinde folk med naturen og fremme videnskab og bevaring. iNaturalist er frit tilgængeligt takket være generøs støtte fra vores donorfællesskab.
-
-Udforsk og lær endnu mere på https://www.inaturalist.org.
+• Identificér arter fra hvor som helst i verden
+• Bidrag til videnskaben ved at dele observationer
+• Før en fortegnelse over arter, som ses
+• Udforsk og beskyt biodiversiteten 
+• Kom i kontakt med og lær af andre naturentusiaster
