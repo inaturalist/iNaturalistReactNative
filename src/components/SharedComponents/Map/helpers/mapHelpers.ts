@@ -1,3 +1,4 @@
+import haversineDistance from "haversine-distance";
 import type { MapBoundaries } from "providers/ExploreContext";
 import Config from "react-native-config";
 import type { LatLng, Region } from "react-native-maps";
@@ -72,6 +73,21 @@ export function latitudeDeltaToMeters(
   latitude: number,
 ): number {
   return latitudeDelta * metersPerDegreeLatitude( latitude );
+}
+
+// Compute the distance in meters from center to the furthest point in the geojson.
+export function getGeojsonRadiusMeters(
+  center: [number, number],
+  geojson: number[][][],
+): Number {
+  let radius = 0;
+  for ( const ring of geojson) {
+    for ( const point of ring) {
+      const distance = haversineDistance(center, point);
+      radius = Math.max( radius, distance );
+    }
+  }
+  return radius;
 }
 
 export function getMapRegion( totalBounds: MapBoundaries ): Region {

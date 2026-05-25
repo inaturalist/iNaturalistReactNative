@@ -87,6 +87,7 @@
     "classnames": "^2.5.1",
     "date-fns": "^3.6.0",
     "date-fns-tz": "^3.2.0",
+    "haversine-distance": "^1.2.4",
     "i18next": "^26.0.4",
     "i18next-fluent": "^2.0.0",
     "i18next-resources-to-backend": "^1.2.1",
