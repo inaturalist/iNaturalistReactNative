@@ -1,11 +1,11 @@
-Try the iNaturalist app!
+Experimente o aplicativo iNaturalist!
 
-Quick identification: Point your camera at a plant, animal, or other organism to get an instant identification.
+Identificação rápida: Aponte sua câmera para uma planta, animal ou outro organismo para obter uma identificação instantânea.
 
-More ways to observe: Press and hold the camera button for more observation options, like recording sounds  and adding multiple photos.
+Mais formas de observar: Pressione e segure o botão da câmera para mais opções de observação, como gravar sons e adicionar várias fotos.
 
-Keep up with other naturalists: Check your notifications to see when other people in the iNaturalist community add identifications or ask questions about your observations.
+Fique conectado com outros naturalistas: Confira suas notificações para ver quando outras pessoas da comunidade iNaturalist adicionam identificações ou fazem perguntas sobre suas observações.
 
-Set your preferences: If you're a longtime user and want your app experience to feel more like earlier versions of iNaturalist, you can! Go into Settings, enable Advanced Mode, then select "Edit Observation" in the middle section.
+Defina suas preferências: Se você é usuário antigo e quer que a experiência do seu app pareça mais com versões anteriores do iNaturalist, você pode! Vá em Configurações, ative o Modo Avançado e selecione "Editar Observação" na seção do meio.
 
-Thank you for using iNaturalist! Please let us know what you think about the app by using the Feedback form available in the main menu.
+Obrigado por usar o iNaturalist! Por favor, nos conte o que acha do aplicativo usando o formulário de Feedback disponível no menu principal.

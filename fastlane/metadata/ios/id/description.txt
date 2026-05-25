@@ -1,14 +1,12 @@
-Arahkan kamera ke tumbuhan, hewan, & jamur untuk melihat rekomendasi spesies saat Anda berada di luar, atau impor foto dari galeri Anda. iNaturalist membantu jutaan orang seperti Anda untuk mempelajari alam lebih lanjut menggunakan rekomendasi AI yang didukung oleh komunitas pecinta alam global yang memiliki pengetahuan.
+Foto tumbuhan, hewan, dan jamur kamu dapat membantu melindungi alam di seluruh dunia. iNaturalist gratis, nirlaba, dan didukung komunitas.
 
-iNaturalist tidak hanya menggunakan identifikasi AI—pengamatan Anda akan ditinjau oleh orang-orang sungguhan dan dibagikan untuk ilmu pengetahuan untuk membantu melindungi spesies.
+iNaturalist membantu jutaan orang mempelajari dan mendokumentasikan alam di sekitar mereka. Point your camera at plants, animals, and fungi to get instant identification suggestions, then share your photos or sound recordings as an "observation." Then, see your observation get reviewed by a global community of knowledgeable nature-lovers to turn it into a useful data point for science and conservation efforts. Your everyday moments of curiosity can directly contribute to protecting nature, and you don't need any previous experience or knowledge to get started.
+
+iNaturalist is a mission-driven nonprofit dedicated to connecting people to nature and advancing biodiversity science and conservation, and is freely available thanks to the generous support of our community.
 
 FITUR UTAMA
-Identifikasi spesies dari mana saja di dunia
-Catat spesies yang Anda lihat
-Berkontribusi untuk ilmu pengetahuan dengan membagikan pengamatan Anda
-Jelajahi dan lindungi keanekaragaman hayati 
-Terhubung dan belajar dari penggemar alam lainnya
-
-Misi nirlaba iNaturalist adalah untuk menghubungkan orang-orang dengan alam dan memajukan ilmu pengetahuan serta konservasi. iNaturalist tersedia secara gratis berkat dukungan dari komunitas donatur kami yang murah hati.
-
-Jelajahi dan pelajari lebih banyak lagi di https://www.inaturalist.org.
+• Identify species from anywhere in the world
+• Contribute to science by sharing your observations
+• Keep a record of species you see
+• Explore and protect biodiversity 
+• Connect with and learn from other nature enthusiasts

@@ -1,14 +1,12 @@
-Aponte câmera por plantas, animais e fungos por lhes perceber enquanto estiver ao ar livre ou importe fotos do seu álbum. O iNaturalist ajuda milhões de pessoas a aprender  natureza, utilizando a IA apoiada por uma comunidade global dos amantes de natureza.
+Suas fotos de plantas, animais, fungos e muito mais podem ajudar a proteger a natureza em todo o mundo. O iNaturalist é gratuito, sem fins lucrativos e movido pela comunidade.
 
-O iNaturalist vai mais fora das identificações de IA: as suas observações são revisados por pessoas atuais e partilhadas pelas cientistas para proteger espécies.
+O iNaturalist ajuda milhões de pessoas a aprender e documentar a natureza ao seu redor. Aponte sua câmera para as plantas, animais e fungos para obter sugestões instantâneas de identificação, e então compartilhe suas fotos ou gravações de som como uma "observação". Então, veja sua observação ser revisada por uma comunidade global de conhecedores e amantes da natureza para transformá-la em dados úteis para os esforços de ciência e conservação. Seus momentos diários de curiosidade podem contribuir diretamente para a proteção da natureza, e você não precisa de nenhuma experiência ou conhecimento anteriores para começar.
+
+iNaturalist é uma organização sem fins lucrativos dedicada a conectar pessoas à natureza e a promover a ciência e a conservação da biodiversidade, e está disponível sem custo, graças ao apoio generoso da nossa comunidade.
 
  CARACTERÍSTICAS PRINCIPAIS
-Identificar espécies todo o mundo
-Manter os registros das espécies que você vê
-Contribuir à ciência compartilhando suas observações
-Explorar e proteger a biodiversidade 
-Ligar com os entusiastas à natureza
-
-A missão do iNaturalist é conectar os entusiastas à natureza e promover a ciência e a conservação de biodiversidade. iNaturalist está disponível gratuitamente, graças ao apoio de doadores.
-
-Explore and learn even more at https://www.inaturalist.org.
+• Identificar espécies de qualquer lugar do mundo
+• Contribua com a ciência compartilhando suas observações
+• Mantenha um registro de espécies que você vê
+• Explore e proteja a biodiversidade 
+• Conecte-se e aprenda com outros entusiastas da natureza

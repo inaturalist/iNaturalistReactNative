@@ -1,1 +1,1 @@
-naturaleza,vida salvaje,ID de planta,animal,identificar,biodiversidad,ciencia ciudadana,conservación
+naturaleza,fauna,identificación,biodiversidad,ciencia ciudadana,conservación,guía de campo
