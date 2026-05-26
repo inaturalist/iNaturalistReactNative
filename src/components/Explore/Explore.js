@@ -197,31 +197,31 @@ const Explore = ( {
     }
     const values = {
       species: {
-        label: t( "Species" ),
-        text: t( "Organisms-that-are-identified-to-species" ),
         buttonText: t( "EXPLORE-SPECIES" ),
         icon: "species",
+        label: t( "Species" ),
+        text: t( "Organisms-that-are-identified-to-species" ),
         value: "species",
       },
       observations: {
-        label: t( "Observations" ),
-        text: t( "Individual-encounters-with-organisms" ),
         buttonText: t( "EXPLORE-OBSERVATIONS" ),
         icon: "observations",
+        label: t( "Observations" ),
+        text: t( "Individual-encounters-with-organisms" ),
         value: "observations",
       },
       observers: {
-        label: t( "Observers" ),
-        text: t( "iNaturalist-users-who-have-observed" ),
         buttonText: t( "EXPLORE-OBSERVERS" ),
         icon: "observers",
+        label: t( "Observers" ),
+        text: t( "iNaturalist-users-who-have-observed" ),
         value: "observers",
       },
       identifiers: {
-        label: t( "Identifiers" ),
-        text: t( "iNaturalist-users-who-have-left-an-identification" ),
         buttonText: t( "EXPLORE-IDENTIFIERS" ),
         icon: "identifiers",
+        label: t( "Identifiers" ),
+        text: t( "iNaturalist-users-who-have-left-an-identification" ),
         value: "identifiers",
       },
     };

@@ -1,23 +1,20 @@
-// @flow
-
 import {
   RadioButtonSheet,
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  onPressClose: Function,
-  selectedValue: boolean,
-  updateCaptiveStatus: Function
+interface Props {
+  onPressClose: ( ) => void;
+  selectedValue: boolean;
+  updateCaptiveStatus: ( _status: boolean ) => void;
 }
 
 const WildStatusSheet = ( {
   onPressClose,
   selectedValue,
   updateCaptiveStatus,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const radioValues = {
@@ -37,7 +34,7 @@ const WildStatusSheet = ( {
     <RadioButtonSheet
       headerText={t( "WILD-STATUS" )}
       confirm={checkBoxValue => {
-        updateCaptiveStatus( checkBoxValue );
+        updateCaptiveStatus( checkBoxValue as boolean );
         onPressClose( );
       }}
       onPressClose={onPressClose}
