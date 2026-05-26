@@ -25,6 +25,7 @@ import colors from "styles/tailwindColors";
 const ALLOWED_TAGS = ( `
   a
   abbr
+  asd
   acronym
   b
   blockquote
