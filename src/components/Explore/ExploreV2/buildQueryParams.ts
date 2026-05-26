@@ -67,6 +67,7 @@ const buildExploreV2QueryParams = (
       break;
     case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
     case EXPLORE_V2_PLACE_MODE.UNINITIALIZED:
+    case EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION:
       break;
     default: {
       // Exhaustiveness check: ts fails if a new placeMode is added without a case.
