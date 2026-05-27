@@ -42,7 +42,8 @@
     "e2e": "npm run e2e:build && npm run e2e:test",
     "icons": "./scripts/update-icon-font.sh",
     "add-example-model": "babel-node scripts/add-example-model.js",
-    "reassure": "reassure"
+    "reassure": "reassure",
+    "legal-generate": "react-native legal-generate"
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.11",
