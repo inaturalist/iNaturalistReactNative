@@ -3133,7 +3133,7 @@ PODS:
     - SocketRocket
   - ReactNativeExceptionHandler (2.10.10):
     - React-Core
-  - ReactNativeFs (2.36.1):
+  - ReactNativeFs (2.38.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -4416,7 +4416,7 @@ SPEC CHECKSUMS:
   ReactCodegen: cc3d2fde2f7d3674ff992ad73700aa6854c69000
   ReactCommon: fe0c37881180b5366786f21671908395be7e34ea
   ReactNativeExceptionHandler: a23922ca00122b050ae9412f960061791c232c47
-  ReactNativeFs: 5a434035a6290b212fe23bdeb2eed70709df129d
+  ReactNativeFs: 89af775f1e97e80f486bc94693b11fceaba5d0dc
   RealmJS: 1c37c6bdfe060f4caa0f9175aa0eedb962622ee1
   RNAppleAuthentication: 8d313d93fe2238d6b7ff0a39c67ebcf298d96653
   RNAudioRecorderPlayer: b5ed41ccfe72a211a870bfe09ab36c046eb27d2a
