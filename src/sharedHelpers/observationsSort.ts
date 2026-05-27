@@ -1,0 +1,29 @@
+import type { ObservationSortAPIParams } from "types/sorting";
+import { OBSERVATIONS_SORT } from "types/sorting";
+
+const SORT_TO_API_PARAMS: Record<OBSERVATIONS_SORT, ObservationSortAPIParams> = {
+  [OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST]: { order_by: "created_at", order: "desc" },
+  [OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST]: { order_by: "created_at", order: "asc" },
+  [OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST]: { order_by: "observed_on", order: "desc" },
+  [OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST]: { order_by: "observed_on", order: "asc" },
+  [OBSERVATIONS_SORT.MOST_FAVED]: { order_by: "votes", order: "desc" },
+};
+
+export const EXPLORE_OBSERVATIONS_SORT_OPTIONS: OBSERVATIONS_SORT[] = [
+  OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+  OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST,
+  OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST,
+  OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
+  OBSERVATIONS_SORT.MOST_FAVED,
+];
+
+export const MY_OBSERVATIONS_SORT_OPTIONS: OBSERVATIONS_SORT[] = [
+  OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+  OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST,
+  OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST,
+  OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
+];
+
+export function sortToApiParams( sort: OBSERVATIONS_SORT ): ObservationSortAPIParams {
+  return SORT_TO_API_PARAMS[sort];
+}
