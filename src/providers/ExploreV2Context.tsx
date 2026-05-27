@@ -7,6 +7,7 @@ import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 export enum EXPLORE_V2_ACTION {
   SET_SUBJECT = "SET_SUBJECT",
   CLEAR_SUBJECT = "CLEAR_SUBJECT",
+  SET_LOCATION_NEEDS_PERMISSION = "SET_LOCATION_NEEDS_PERMISSION",
   SET_LOCATION_NEARBY = "SET_LOCATION_NEARBY",
   SET_LOCATION_WORLDWIDE = "SET_LOCATION_WORLDWIDE",
   SET_LOCATION_PLACE = "SET_LOCATION_PLACE",
@@ -17,6 +18,7 @@ export enum EXPLORE_V2_ACTION {
 
 export enum EXPLORE_V2_PLACE_MODE {
   UNINITIALIZED = "UNINITIALIZED",
+  NEEDS_PERMISSION = "NEEDS_PERMISSION",
   NEARBY = "NEARBY",
   WORLDWIDE = "WORLDWIDE",
   PLACE = "PLACE"
@@ -63,6 +65,7 @@ export interface ExploreV2Filters {
 
 export type ExploreV2LocationState =
   | { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED }
+  | { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION }
   | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
   | {
     placeMode: EXPLORE_V2_PLACE_MODE.NEARBY;
@@ -82,6 +85,7 @@ export interface ExploreV2State {
 export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SUBJECT; subject: ExploreV2Subject }
   | { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT }
+  | { type: EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION }
   | {
     type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY;
     lat: number;
@@ -113,6 +117,11 @@ export function exploreV2Reducer(
       return { ...state, subject: action.subject };
     case EXPLORE_V2_ACTION.CLEAR_SUBJECT:
       return { ...state, subject: null };
+    case EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION:
+      return {
+        ...state,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION },
+      };
     case EXPLORE_V2_ACTION.SET_LOCATION_NEARBY:
       return {
         ...state,
@@ -175,6 +184,7 @@ export async function defaultExploreV2Location( ): Promise<DefaultExploreV2Locat
 interface ExploreV2ContextValue {
   state: ExploreV2State;
   dispatch: ( action: ExploreV2Action ) => void;
+  requestLocationPermissions: ( ) => void;
 }
 
 const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
@@ -183,14 +193,18 @@ const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
 
 interface ExploreV2ProviderProps {
   children: React.ReactNode;
+  requestLocationPermissions: ( ) => void;
 }
 
-export const ExploreV2Provider = ( { children }: ExploreV2ProviderProps ) => {
+export const ExploreV2Provider = ( {
+  children,
+  requestLocationPermissions,
+}: ExploreV2ProviderProps ) => {
   const [state, dispatch] = React.useReducer( exploreV2Reducer, initialExploreV2State );
 
   const value = React.useMemo(
-    () => ( { state, dispatch } ),
-    [state],
+    () => ( { state, dispatch, requestLocationPermissions } ),
+    [state, requestLocationPermissions],
   );
 
   return (

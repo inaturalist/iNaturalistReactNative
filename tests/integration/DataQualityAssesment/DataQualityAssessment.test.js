@@ -47,10 +47,10 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   } ),
 } ) );
 
-jest.mock( "sharedHooks/useLocalObservation", () => ( {
+jest.mock( "sharedHooks/useRemoteObservation", () => ( {
   __esModule: true,
   default: jest.fn( ( ) => ( {
-    localObservation: mockObservation,
+    remoteObservation: mockObservation,
   } ) ),
 } ) );
 

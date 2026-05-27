@@ -1,14 +1,12 @@
-カメラを外出中、植物、動物や菌類に向け、提案された種を確認したり、ライブラリから写真をインポートできます。 iNaturalistは、知識豊富な自然愛好家のグローバルコミュニティによって支えられたAIの提案を使用して、何百万人もの人が、自然についてより多くのことを学ぶのに役立ちます。
+Your photos of plants, animals, fungi, and more can help protect nature all around the world. iNaturalist is free, nonprofit, and community-powered.
 
-iNaturalistはAIの識別をはるかに超えており、観察結果は実際の人々によってレビューされ、種の保護に役立つ科学のために共有されます。
+iNaturalist helps millions of people learn about and document the nature around them. Point your camera at plants, animals, and fungi to get instant identification suggestions, then share your photos or sound recordings as an "observation." Then, see your observation get reviewed by a global community of knowledgeable nature-lovers to turn it into a useful data point for science and conservation efforts. Your everyday moments of curiosity can directly contribute to protecting nature, and you don't need any previous experience or knowledge to get started.
+
+iNaturalist is a mission-driven nonprofit dedicated to connecting people to nature and advancing biodiversity science and conservation, and is freely available thanks to the generous support of our community.
 
 主な特徴
-世界中のどこからでも種を識別
-目にした種の記録を残す
-観察結果を共有することで科学に貢献する
-生物多様性の探索と保護 
-他の自然愛好家とつながり、そこから学ぶ
-
-iNaturalistの非営利団体の使命は、人々を自然と結びつけ、科学と保護を推進することです。 iNaturalistは、寄付者のコミュニティからの寛大な支援のおかげで無料で利用できます。
-
-https://www.inaturalist.org でさらに詳しく調べて学びましょう。
+• Identify species from anywhere in the world
+• Contribute to science by sharing your observations
+• Keep a record of species you see
+• Explore and protect biodiversity 
+• Connect with and learn from other nature enthusiasts

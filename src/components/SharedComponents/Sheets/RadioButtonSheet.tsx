@@ -7,23 +7,27 @@ import { View } from "components/styledComponents";
 import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
+type RadioSheetPrimitive = boolean | number | string;
+
 interface Props {
   bottomComponent?: React.JSX.Element;
   buttonRowClassName?: string;
-  confirm: ( _checkedValue: string ) => void;
+  confirm: ( _checkedValue: RadioSheetPrimitive ) => void;
   confirmText?: string;
   headerText: string;
   insideModal?: boolean;
   loading?: boolean;
   onPressClose?: ( ) => void;
+  requireSelectionChange?: boolean;
   radioValues: Record<string, {
-    value: string;
-    icon?: string;
-    label: string;
-    text?: string;
     buttonText?: string;
+    icon?: string;
+    label?: string;
+    labelComponent?: React.JSX.Element;
+    text?: string;
+    value: RadioSheetPrimitive;
   }>;
-  selectedValue?: string;
+  selectedValue?: RadioSheetPrimitive;
   testID?: string;
   topDescriptionText?: React.JSX.Element;
 }
@@ -38,6 +42,7 @@ const RadioButtonSheet = ( {
   loading,
   onPressClose,
   radioValues,
+  requireSelectionChange = true,
   selectedValue = "none",
   testID,
   topDescriptionText,
@@ -46,12 +51,13 @@ const RadioButtonSheet = ( {
   const [checkedValue, setCheckedValue] = useState( selectedValue );
 
   const isDirty = checkedValue !== selectedValue;
+  const confirmBlockedByDirtyCheck = requireSelectionChange && !isDirty;
 
   const radioButtonRow = ( radioRow: string ) => (
     <View key={radioRow} className="pb-4">
       <RadioButtonRow
         classNames={buttonRowClassName}
-        value={radioValues[radioRow].value}
+        value={radioValues[radioRow].value.toString( )}
         icon={radioValues[radioRow].icon}
         checked={checkedValue === radioValues[radioRow].value}
         onPress={() => setCheckedValue( radioValues[radioRow].value )}
@@ -83,7 +89,7 @@ const RadioButtonSheet = ( {
           onPress={( ) => {
             confirm( checkedValue );
           }}
-          disabled={!isDirty || loading}
+          disabled={confirmBlockedByDirtyCheck || loading}
           loading={loading}
           text={radioValues[checkedValue]?.buttonText ?? confirmLabel}
           accessibilityLabel={radioValues[checkedValue]?.buttonText ?? confirmLabel}

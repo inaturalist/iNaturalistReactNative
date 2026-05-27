@@ -1,5 +1,5 @@
-// @flow
 import { useNavigation } from "@react-navigation/native";
+import type { FlashListRef } from "@shopify/flash-list";
 import {
   ActivityIndicator,
   Body3,
@@ -9,12 +9,14 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React, {
   useCallback,
   useMemo,
   useState,
 } from "react";
+import type {
+  LayoutChangeEvent, NativeScrollEvent, NativeSyntheticEvent, StyleProp, ViewStyle,
+} from "react-native";
 import { Animated } from "react-native";
 import RealmObservation from "realmModels/Observation";
 import {
@@ -32,37 +34,41 @@ const { useRealm } = RealmContext;
 
 const AnimatedFlashList = Animated.createAnimatedComponent( CustomFlashList );
 
-type Props = {
-  contentContainerStyle?: Object,
-  data: Object[],
-  dataCanBeFetched?: boolean,
-  fetchFromLastObservation?: Function,
-  explore: boolean,
-  handlePullToRefresh: Function,
-  handleIndividualUploadPress: Function,
-  hideLoadingWheel?: boolean,
-  hideMetadata?: boolean,
-  hideObsUploadStatus?: boolean,
-  hideObsStatus?: boolean,
-  isSimpleObsStatus?: boolean,
-  hideRGLabel?: boolean,
-  isConnected: boolean,
-  layout: "list" | "grid",
-  obsListKey: string,
-  onEndReached: Function,
-  onLayout?: Function,
-  onScroll?: Function,
-  // this ref is being forwarded to the underlying CustomFlashList and used as an imperative handle
-  // so the parent can control behavior like scrolling; it's typed as Function because there's not
-  // a good way to capture this otherwise with Flow.
-  ref?: Function,
-  renderHeader?: Function,
-  showNoResults?: boolean,
-  showObservationsEmptyScreen?: boolean,
-  testID: string
-};
+// unlike the other FlashList Component props, Separator does _not_ accept an Element
+const ItemSeparator = () => <View className="border-b border-lightGray" />;
 
-const ObservationsFlashList: Function = ( {
+interface Props {
+  contentContainerStyle?: StyleProp<ViewStyle>;
+  // TODO: type data / observations
+  data: unknown[];
+  dataCanBeFetched?: boolean;
+  fetchFromLastObservation?: ( observationId?: number ) => void;
+  explore: boolean;
+  handlePullToRefresh: () => void;
+  handleIndividualUploadPress: ( observationUuid: string ) => void;
+  hideLoadingWheel?: boolean;
+  hideMetadata?: boolean;
+  hideObsUploadStatus?: boolean;
+  hideObsStatus?: boolean;
+  isSimpleObsStatus?: boolean;
+  hideRGLabel?: boolean;
+  isConnected: boolean;
+  layout: "list" | "grid";
+  obsListKey: string;
+  onEndReached: () => void;
+  onLayout?: ( event: LayoutChangeEvent ) => void;
+  onScroll?: ( event: NativeSyntheticEvent<NativeScrollEvent> ) => void;
+  // this ref is being forwarded to the underlying CustomFlashList and used as an imperative handle
+  // so the parent can control behavior like scrolling
+  // TODO: type data / observations
+  ref?: React.Ref<FlashListRef<unknown>>;
+  listHeaderContent?: React.ReactElement | null;
+  showNoResults?: boolean;
+  showObservationsEmptyScreen?: boolean;
+  testID: string;
+}
+
+const ObservationsFlashList = ( {
   contentContainerStyle: contentContainerStyleProp = {},
   data,
   dataCanBeFetched,
@@ -83,11 +89,11 @@ const ObservationsFlashList: Function = ( {
   onLayout,
   onScroll,
   ref,
-  renderHeader,
+  listHeaderContent,
   showNoResults,
   showObservationsEmptyScreen,
   testID,
-}: Props ): Node => {
+}: Props ) => {
   const {
     isDefaultMode,
   } = useLayoutPrefs( );
@@ -113,6 +119,7 @@ const ObservationsFlashList: Function = ( {
   } = useGridLayout( layout );
   const { t } = useTranslation( );
 
+  // TODO: type data / observation
   const renderItem = useCallback( ( { item: observation } ) => {
     // Empty box
     if ( observation.empty ) {
@@ -193,14 +200,14 @@ const ObservationsFlashList: Function = ( {
     uploadQueue,
   ] );
 
-  const renderItemSeparator = useCallback( ( ) => {
+  const itemSeparatorComponent = useMemo( ( ) => {
     if ( layout === "grid" ) {
       return null;
     }
-    return <View className="border-b border-lightGray" />;
+    return ItemSeparator;
   }, [layout] );
 
-  const renderFooter = useCallback( ( ) => (
+  const footerContent = useMemo( ( ) => (
     <InfiniteScrollLoadingWheel
       explore={explore}
       hideLoadingWheel={hideLoadingWheel}
@@ -226,7 +233,7 @@ const ObservationsFlashList: Function = ( {
     layout,
   ] );
 
-  const renderEmptyComponent = useCallback( ( ) => {
+  const emptyContent = useMemo( ( ) => {
     const showEmptyScreen = showObservationsEmptyScreen
       ? null
       : (
@@ -288,10 +295,10 @@ const ObservationsFlashList: Function = ( {
 
   return (
     <AnimatedFlashList
-      ItemSeparatorComponent={renderItemSeparator}
-      ListEmptyComponent={renderEmptyComponent}
-      ListFooterComponent={renderFooter}
-      ListHeaderComponent={renderHeader}
+      ItemSeparatorComponent={itemSeparatorComponent}
+      ListEmptyComponent={emptyContent}
+      ListFooterComponent={footerContent}
+      ListHeaderComponent={listHeaderContent}
       contentContainerStyle={contentContainerStyle}
       data={data}
       extraData={extraData}

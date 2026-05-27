@@ -64,7 +64,7 @@ export class mockCamera extends React.PureComponent {
       /*
         On Android, copyAssetsFileIOS is not available. Instead, copy the test
         image that was pushed to the app's external files directory by
-        iNatE2eBeforeAll (via `adb push e2e/maestro/android/test.jpg`).
+        iNatE2eBeforeAll (via `adb push e2e/animal.jpg`).
         ExternalDirectoryPath = /sdcard/Android/data/<package>/files/
         which is accessible by the app without extra permissions.
       */
@@ -127,7 +127,7 @@ export class mockCamera extends React.PureComponent {
   }
 
   render() {
-    return <View style={style} />;
+    return <View style={style} collapsable={false} />;
   }
 }
 

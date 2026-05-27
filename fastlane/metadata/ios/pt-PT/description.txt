@@ -1,14 +1,12 @@
-Aponte a câmara para as plantas, animais e fungos para ver sugestões de espécies enquanto estiver fora ou importe fotos do seu álbum. iNaturalist ajuda milhões de pessoas como você a aprender mais sobre a natureza usando sugestões de IA apoiadas por uma comunidade global de amantes da natureza bem informados.
+Your photos of plants, animals, fungi, and more can help protect nature all around the world. iNaturalist is free, nonprofit, and community-powered.
 
-O iNaturalist vai mais fora da identificação de IA — as suas observações são revistas por pessoas atuais e compartilhadas por cientistas para ajudar a proteger as espécies.
+iNaturalist helps millions of people learn about and document the nature around them. Point your camera at plants, animals, and fungi to get instant identification suggestions, then share your photos or sound recordings as an "observation." Then, see your observation get reviewed by a global community of knowledgeable nature-lovers to turn it into a useful data point for science and conservation efforts. Your everyday moments of curiosity can directly contribute to protecting nature, and you don't need any previous experience or knowledge to get started.
+
+iNaturalist is a mission-driven nonprofit dedicated to connecting people to nature and advancing biodiversity science and conservation, and is freely available thanks to the generous support of our community.
 
 CARACTERÍSTICAS PRINCIPAIS
-Identificar espécies de qualquer lugar do mundo
-Manter um registo de espécies que vê
-Contribuir à ciência compartilhando as suas observações
-Explorar e proteger a biodiversidade 
-Se conectar com e aprender de outros entusiastas da natureza
-
-A missão do iNaturalist é conectar as pessoas à natureza e promover a ciência e a conservação da biodiversidade. O iNaturalist está disponível gratuitamente graças ao generoso apoio da nossa comunidade de doadores.
-
-Explore e saiba ainda mais no https://www.inaturalist.org.
+• Identify species from anywhere in the world
+• Contribute to science by sharing your observations
+• Keep a record of species you see
+• Explore and protect biodiversity 
+• Connect with and learn from other nature enthusiasts
