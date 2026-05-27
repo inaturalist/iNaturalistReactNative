@@ -118,6 +118,7 @@
     "react-native-get-random-values": "^2.0.0",
     "react-native-image-picker": "^8.2.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-legal": "^1.6.3",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-localize": "^3.5.2",
     "react-native-logs": "^5.3.0",
