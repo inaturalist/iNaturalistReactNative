@@ -1,7 +1,5 @@
 import { screen, waitFor } from "@testing-library/react-native";
-import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsDetailsDefaultModeScreensWrapper
-  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeScreensWrapper";
+import ObsDetailsScreen from "components/ObsDetailsSharedComponents/ObsDetailsScreen";
 import inatjs from "inaturalistjs";
 import React from "react";
 import Observation from "realmModels/Observation";
@@ -68,11 +66,7 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
-// Run the same suite of tests for multiple ObsDetails container
-describe.each( [
-  { Container: ObsDetailsContainer, name: "ObsDetailsContainer" },
-  { Container: ObsDetailsDefaultModeScreensWrapper, name: "ObsDetailsDefaultModeScreensWrapper" },
-] )( "ObsDetails", ( { Container, name } ) => {
+describe( "ObsDetails", ( ) => {
   beforeAll( async () => {
     jest.useFakeTimers( );
     signIn( mockUser, { realm: global.mockRealms[__filename] } );
@@ -84,7 +78,7 @@ describe.each( [
     signOut( { realm: global.mockRealms[__filename] } );
   } );
 
-  describe( name, ( ) => {
+  describe( "ObsDetailsScreen", ( ) => {
     describe( "with an observation where we don't know if the user has viewed comments", ( ) => {
       it( "should make a request to observation/viewedUpdates", async ( ) => {
         // Let's make sure the mock hasn't already been used
@@ -95,7 +89,7 @@ describe.each( [
         );
         // Expect the observation in realm to have comments_viewed param not initialized
         expect( observation.comments_viewed ).not.toBeTruthy();
-        renderAppWithComponent( <Container /> );
+        renderAppWithComponent( <ObsDetailsScreen /> );
         expect(
           await screen.findByText( observation.user.login ),
         ).toBeTruthy();

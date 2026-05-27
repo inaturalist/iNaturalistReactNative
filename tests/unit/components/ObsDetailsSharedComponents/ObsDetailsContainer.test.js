@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import ObsDetailsContainer from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
+import ObsDetailsContainer from "components/ObsDetailsSharedComponents/ObsDetailsContainer";
 import { t } from "i18next";
 import React from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -139,7 +139,6 @@ const defaultProps = {
   fetchRemoteObservationError: null,
   isConnected: true,
   isRefetching: false,
-  isSimpleMode: false,
   localObservation: null,
   markDeletedLocally: mockMarkDeletedLocally,
   markViewedLocally: mockMarkViewedLocally,
@@ -148,21 +147,20 @@ const defaultProps = {
   remoteObservation: mockObservation,
   remoteObsWasDeleted: false,
   setRemoteObsWasDeleted: mockSetRemoteObsWasDeleted,
-  targetActivityItemID: null,
   uuid: mockObservation.uuid,
 };
 
-const renderObsDetails = ( props = {} ) => renderComponent(
+const renderObsDetailsContainer = ( props = {} ) => renderComponent(
   <ObsDetailsContainer {...defaultProps} {...props} />,
 );
 
-describe( "ObsDetails", () => {
+describe( "ObsDetailsContainer", () => {
   beforeAll( async () => {
     jest.useFakeTimers( );
   } );
 
   it( "renders obs details from remote call", async () => {
-    renderObsDetails( );
+    renderObsDetailsContainer( );
 
     const obs = await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` );
 
@@ -180,7 +178,7 @@ describe( "ObsDetails", () => {
     } );
 
     it( "should render fallback image icon instead of photos", async () => {
-      renderObsDetails( {
+      renderObsDetailsContainer( {
         observation: mockNoEvidenceObservation,
         remoteObservation: mockNoEvidenceObservation,
         uuid: mockNoEvidenceObservation.uuid,
@@ -222,7 +220,7 @@ describe( "ObsDetails", () => {
       } );
 
       jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => mockUser );
-      renderObsDetails( {
+      renderObsDetailsContainer( {
         observation: otherUserObservation,
         remoteObservation: otherUserObservation,
         uuid: otherUserObservation.uuid,

@@ -4,18 +4,9 @@ import useMarkViewedMutation
   from "components/ObsDetailsSharedComponents/hooks/useMarkViewedMutation";
 import useObsDetailsSharedLogic
   from "components/ObsDetailsSharedComponents/hooks/useObsDetailsSharedLogic";
+import ObsDetailsModeSwitcher from "components/ObsDetailsSharedComponents/ObsDetailsModeSwitcher";
 import type { Node } from "react";
 import React from "react";
-import { LogBox } from "react-native";
-
-import ObsDetailsDefaultMode from "./ObsDetailsDefaultMode";
-
-// this is getting triggered by passing dates, like _created_at, through
-// react navigation via the observation object. it doesn't seem to
-// actually be breaking anything, for the moment (May 2, 2022)
-LogBox.ignoreLogs( [
-  "Non-serializable values were found in the navigation state",
-] );
 
 type Props = {
   belongsToCurrentUser: boolean,
@@ -31,14 +22,12 @@ type Props = {
   remoteObservation: ?Object,
   remoteObsWasDeleted: boolean,
   setRemoteObsWasDeleted: Function,
-  targetActivityItemID?: ?number,
-  uuid: string
-}
+  uuid: string,
+};
 
-const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
+const ObsDetailsContainer = ( props: Props ): Node => {
   const {
     observation,
-    targetActivityItemID,
     uuid,
     localObservation,
     markViewedLocally,
@@ -93,7 +82,7 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
 
   return observationShown && (
     <>
-      <ObsDetailsDefaultMode
+      <ObsDetailsModeSwitcher
         activityItems={activityItems}
         addingActivityItem={addingActivityItem}
         belongsToCurrentUser={belongsToCurrentUser}
@@ -107,7 +96,6 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
         refetchSubscriptions={refetchSubscriptions}
         showAddCommentSheet={showAddCommentSheet}
         subscriptions={subscriptionResults}
-        targetActivityItemID={targetActivityItemID}
         wasSynced={wasSynced}
         uuid={uuid}
       />
@@ -128,4 +116,4 @@ const ObsDetailsDefaultModeContainer = ( props: Props ): Node => {
   );
 };
 
-export default ObsDetailsDefaultModeContainer;
+export default ObsDetailsContainer;
