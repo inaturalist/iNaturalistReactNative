@@ -1,7 +1,12 @@
 // @flow
 
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
-import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
+import {
+  StackActions,
+  useNavigation,
+  useNavigationState,
+  useRoute,
+} from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
 import MatchSaveDiscardButtons from "components/Match/SaveDiscardButtons";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
@@ -476,14 +481,15 @@ const TaxonDetails = ( ): Node => {
               } else {
                 updateTaxon( );
                 if ( fromObsDetails ) {
-                  const obsDetailsParam = {
-                    uuid: obsUuid,
-                    identTaxonId: taxon?.id,
-                    identAt: Date.now(),
-                  };
-                  navigation.navigate( "ObsDetails", obsDetailsParam );
+                  navigation.dispatch(
+                    StackActions.popTo( "ObsDetails", {
+                      uuid: obsUuid,
+                      identTaxonId: taxon?.id,
+                      identAt: Date.now(),
+                    } ),
+                  );
                 } else {
-                  navigation.navigate( "ObsEdit" );
+                  navigation.dispatch( StackActions.popTo( "ObsEdit" ) );
                 }
               }
             }}
