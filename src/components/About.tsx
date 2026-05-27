@@ -10,6 +10,7 @@ import {
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useState } from "react";
 import { getBuildNumber, getVersion } from "react-native-device-info";
 import { useDebugMode } from "sharedHooks";
@@ -19,7 +20,7 @@ const aboutID = "about";
 const teamID = "team";
 
 const About = ( ) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<TabStackScreenProps<"About">["navigation"]>();
   const [activeTab, setActiveTab] = useState( aboutID );
   const [count, setCount] = useState( 0 );
   const appVersion = getVersion();
