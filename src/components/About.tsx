@@ -13,6 +13,7 @@ import { t } from "i18next";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useState } from "react";
 import { getBuildNumber, getVersion } from "react-native-device-info";
+import { ReactNativeLegal } from "react-native-legal";
 import { useDebugMode } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -60,6 +61,10 @@ const About = ( ) => {
       toggleDebug();
     }
     setCount( count + 1 );
+  };
+
+  const onMorePressed = () => {
+    ReactNativeLegal.launchLicenseListScreen( t( "Licenses" ) );
   };
 
   return (
@@ -125,11 +130,17 @@ const About = ( ) => {
             </UnderlinedLink>
             <Pressable
               accessibilityRole="button"
-              className="items-center justify-center"
+              className="mb-4 items-center justify-center"
               onPress={() => onVersionPressed()}
             >
               <Body1>{ t( "Version-app-build", { appVersion, buildVersion } )}</Body1>
             </Pressable>
+            <UnderlinedLink
+              className="mb-4 text-center"
+              onPress={() => onMorePressed()}
+            >
+              {t( "Licenses" )}
+            </UnderlinedLink>
             {isDebug && (
               <Button
                 text="TURN OFF DEBUG MODE"
