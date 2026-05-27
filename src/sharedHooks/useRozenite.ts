@@ -4,21 +4,21 @@ import {
   createRNFSAdapter,
   useFileSystemDevTools,
 } from "@rozenite/file-system-plugin";
-import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
 import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
 import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
+import type { StorageAdapter } from "@rozenite/storage-plugin";
+import { useRozeniteStoragePlugin } from "@rozenite/storage-plugin";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 import type {
   QueryClient,
 } from "@tanstack/react-query";
 import { useFeatureFlagForDebug } from "components/Developer/FeatureFlags";
 import { useMemo } from "react";
-import type { MMKV } from "react-native-mmkv";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 interface RozeniteOptions {
     queryClient: QueryClient;
-    mmkvStorages: Record<string, MMKV>;
+    storageAdapters: StorageAdapter[];
 }
 
 // TODO: the react-navigation rozenite plugin is called elsewhere and should be moved here
@@ -26,11 +26,11 @@ interface RozeniteOptions {
 // up to where useRozenite is called so it can be used as an option here.
 
 // note: Rozenite plugins are automatically disabled / noops in Production builds
-const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
+const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
   useTanStackQueryDevTools( queryClient );
   useNetworkActivityDevTools( );
-  useMMKVDevTools( {
-    storages: mmkvStorages,
+  useRozeniteStoragePlugin( {
+    storages: storageAdapters,
   } );
   useRequireProfilerDevTools( );
   useFileSystemDevTools( {

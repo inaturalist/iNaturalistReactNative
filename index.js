@@ -32,6 +32,7 @@ import { getInstallID, store as installDataMMKVStorage } from "sharedHelpers/ins
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
 import useRozenite from "sharedHooks/useRozenite";
+import { createMMKVStorageAdapter } from "@rozenite/storage-plugin";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 import { getUserAgent } from "./src/api/userAgent";
@@ -136,14 +137,20 @@ const queryClient = new QueryClient( {
   },
 } );
 
+const storageAdapters = [
+  createMMKVStorageAdapter( {
+    storages: {
+      "persisted-zustand": zustandMMKVBackingStorage,
+      "install-data": installDataMMKVStorage,
+    },
+  } ),
+];
+
 const AppWithProviders = ( ) => {
   // note: Rozenite plugins are automatically disabled / noops in Production builds
   useRozenite( {
     queryClient,
-    mmkvStorages: {
-      "persisted-zustand": zustandMMKVBackingStorage,
-      "install-data": installDataMMKVStorage,
-    },
+    storageAdapters,
   } );
 
   return (
