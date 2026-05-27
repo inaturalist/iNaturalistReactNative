@@ -1,0 +1,7 @@
+FIXED
+* Do not show media and comments hidden by moderators
+* Potential Disagreement not allowing you to choose first option
+* Deleting second standard camera photo blocks upload
+
+UPDATED
+* Minor package and performance updates
