@@ -372,6 +372,7 @@ fastlane prod
 1. Write release notes based on commits since the last release. Try to keep them brief but emphasize what's new and what's fixed. Just keep them in a text editor; you'll save them at a later step.
 1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version if the only changes were bug fixes, bump minor version if there were new features, and bump the major version if the app was completely re-written or can't import data from previous versions.
 1. `npm install` to set the version in `package-lock.json`
+1. `npx react-native legal-generate` to re-generate the licenses to show in the app (based on current dependencies)
 1. Commit changes
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote. (:wq to save and exit)
 1. `bundle exec fastlane release` to build and push a release to Github
