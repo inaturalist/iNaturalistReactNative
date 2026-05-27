@@ -3,13 +3,14 @@ import {
   EXPLORE_V2_PLACE_MODE,
   EXPLORE_V2_SORT,
 } from "providers/ExploreV2Context";
+import type { ObservationOrderBy, SortDirection } from "types/sorting";
 
 const PER_PAGE = 20;
 
 export interface ExploreV2QueryParams {
   per_page: number;
-  order_by: "created_at" | "observed_on" | "votes";
-  order: "asc" | "desc";
+  order_by: ObservationOrderBy;
+  order: SortDirection;
   taxon_id?: number;
   user_id?: number;
   project_id?: number;
@@ -22,7 +23,7 @@ export interface ExploreV2QueryParams {
 
 const sortToOrder: Record<
   EXPLORE_V2_SORT,
-  { order_by: "created_at" | "observed_on" | "votes"; order: "asc" | "desc" }
+  { order_by: ObservationOrderBy; order: SortDirection }
 > = {
   [EXPLORE_V2_SORT.DATE_UPLOADED_NEWEST]: { order_by: "created_at", order: "desc" },
   [EXPLORE_V2_SORT.DATE_UPLOADED_OLDEST]: { order_by: "created_at", order: "asc" },
