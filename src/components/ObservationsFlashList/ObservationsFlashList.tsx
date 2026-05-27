@@ -255,10 +255,10 @@ const ObservationsFlashList = ( {
     t,
   ] );
 
-  const extraData = {
+  const extraData = useMemo( () => ( {
     gridItemWidth,
     numColumns,
-  };
+  } ), [gridItemWidth, numColumns] );
 
   // only used id as a fallback key because after upload
   // react thinks we've rendered a second item w/ a duplicate key
