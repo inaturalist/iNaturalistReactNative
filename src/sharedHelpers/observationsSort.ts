@@ -1,5 +1,12 @@
 import type { ObservationSortAPIParams } from "types/sorting";
-import { OBSERVATIONS_SORT } from "types/sorting";
+
+export enum OBSERVATIONS_SORT {
+  DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST",
+  DATE_UPLOADED_OLDEST = "DATE_UPLOADED_OLDEST",
+  DATE_OBSERVED_NEWEST = "DATE_OBSERVED_NEWEST",
+  DATE_OBSERVED_OLDEST = "DATE_OBSERVED_OLDEST",
+  MOST_FAVED = "MOST_FAVED",
+}
 
 const SORT_TO_API_PARAMS: Record<OBSERVATIONS_SORT, ObservationSortAPIParams> = {
   [OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST]: { order_by: "created_at", order: "desc" },
