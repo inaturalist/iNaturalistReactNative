@@ -499,7 +499,6 @@ const MatchContainer = ( ) => {
           // we want to start watching the location no matter how the observation
           // was created (camera, sound recorder, etc.)
           onPermissionGranted: () => {
-            setNeedLocation( true );
             getCurrentUserPlaceName( );
           },
           // If the user does not give location permissions in any form,
