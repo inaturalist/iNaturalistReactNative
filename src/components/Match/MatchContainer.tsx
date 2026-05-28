@@ -294,7 +294,6 @@ const MatchContainer = ( ) => {
 
   const navToLocationPicker = useCallback( ( ) => {
     stopWatch( subscriptionId );
-    setNeedLocation( false );
     navigation.navigate( "LocationPicker" );
   }, [stopWatch, subscriptionId, navigation] );
 
