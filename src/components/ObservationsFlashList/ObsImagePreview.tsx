@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { INatIcon, PhotoCount } from "components/SharedComponents";
 import { LinearGradient, View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
-import React, { useCallback } from "react";
+import React from "react";
 import type { ViewStyle } from "react-native";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -15,6 +15,49 @@ const ICON_DROP_SHADOW = getShadow( {
   shadowOpacity: 1,
   shadowRadius: 1,
 } );
+
+ interface PhotoCountProps {
+  obsPhotosCount: number;
+  isSmall: boolean;
+  isMultiplePhotosTop: boolean;
+}
+const ObsImagePreviewPhotoCount = (
+  { obsPhotosCount, isMultiplePhotosTop, isSmall }: PhotoCountProps,
+) => {
+  if ( isSmall ) {
+    return (
+      <View
+        className={classNames(
+          "absolute",
+          "right-1",
+          isMultiplePhotosTop
+            ? "top-1"
+            : "bottom-1",
+        )}
+        style={ICON_DROP_SHADOW}
+      >
+        <INatIcon name="photos-outline" color={colors.white} size={16} />
+      </View>
+    );
+  }
+
+  return (
+    <View
+      className={classNames(
+        "absolute",
+        "right-0",
+        "p-2",
+        isMultiplePhotosTop
+          ? "top-0"
+          : "bottom-0",
+      )}
+      style={ICON_DROP_SHADOW}
+    >
+      { obsPhotosCount !== 0
+          && <PhotoCount count={obsPhotosCount} /> }
+    </View>
+  );
+};
 
 const GradientOverlay = ( { useShortGradient }: { useShortGradient?: boolean } ) => {
   if ( useShortGradient ) {
@@ -121,48 +164,7 @@ const ObsImagePreview = ( {
     width,
   ];
 
-  const renderPhotoCount = useCallback( ( ) => {
-    if ( obsPhotosCount <= 1 || hidePhotoCount ) return null;
-
-    if ( isSmall ) {
-      return (
-        <View
-          className={classNames(
-            "absolute",
-            "right-1",
-            isMultiplePhotosTop
-              ? "top-1"
-              : "bottom-1",
-          )}
-          style={ICON_DROP_SHADOW}
-        >
-          <INatIcon name="photos-outline" color={colors.white} size={16} />
-        </View>
-      );
-    }
-
-    return (
-      <View
-        className={classNames(
-          "absolute",
-          "right-0",
-          "p-2",
-          isMultiplePhotosTop
-            ? "top-0"
-            : "bottom-0",
-        )}
-        style={ICON_DROP_SHADOW}
-      >
-        { obsPhotosCount !== 0
-          && <PhotoCount count={obsPhotosCount} /> }
-      </View>
-    );
-  }, [
-    hidePhotoCount,
-    isMultiplePhotosTop,
-    isSmall,
-    obsPhotosCount,
-  ] );
+  const shouldRenderPhotoCount = !hidePhotoCount && obsPhotosCount > 1;
 
   const shouldRenderGradient = !hideGradientOverlay && !isSmall;
 
@@ -210,7 +212,13 @@ const ObsImagePreview = ( {
             )}
           </View>
         )}
-        {renderPhotoCount( )}
+        {shouldRenderPhotoCount && (
+          <ObsImagePreviewPhotoCount
+            isMultiplePhotosTop={isMultiplePhotosTop}
+            isSmall={isSmall}
+            obsPhotosCount={obsPhotosCount}
+          />
+        )}
         {hasSound && <SoundIcon isSmall={isSmall} />}
         {children}
       </>
