@@ -119,31 +119,6 @@ const ObsImagePreview = ( {
     obsPhotosCount,
   ] );
 
-  const renderSelectable = useCallback( ( ) => {
-    if ( selectable ) {
-      return (
-        <View
-          className={classNames(
-            "flex items-center justify-center",
-            "rounded-full",
-            "absolute m-2.5 right-0",
-            {
-              "bg-white": selected,
-              "w-[24px] h-[24px]": selected,
-              "w-[24px] h-[24px] border-2 border-white": !selected,
-            },
-          )}
-          style={ICON_DROP_SHADOW}
-        >
-          {selected && (
-            <INatIcon name="checkmark" color={colors.darkGray} size={12} />
-          )}
-        </View>
-      );
-    }
-    return null;
-  }, [selectable, selected] );
-
   const renderGradient = useCallback( ( ) => {
     if ( hideGradientOverlay ) return null;
     if ( isSmall ) return null;
@@ -218,7 +193,25 @@ const ObsImagePreview = ( {
           }
         />
         {renderGradient( )}
-        {renderSelectable( )}
+        {selectable && (
+          <View
+            className={classNames(
+              "flex items-center justify-center",
+              "rounded-full",
+              "absolute m-2.5 right-0",
+              {
+                "bg-white": selected,
+                "w-[24px] h-[24px]": selected,
+                "w-[24px] h-[24px] border-2 border-white": !selected,
+              },
+            )}
+            style={ICON_DROP_SHADOW}
+          >
+            {selected && (
+              <INatIcon name="checkmark" color={colors.darkGray} size={12} />
+            )}
+          </View>
+        )}
         {renderPhotoCount( )}
         {renderSoundIcon( )}
         {children}
