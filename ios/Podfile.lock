@@ -172,6 +172,7 @@ PODS:
   - hermes-engine (0.14.1):
     - hermes-engine/Pre-built (= 0.14.1)
   - hermes-engine/Pre-built (0.14.1)
+  - LicensePlist (3.27.9)
   - Mute (0.6.1)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
@@ -3161,6 +3162,35 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - ReactNativeLegal (1.6.3):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - LicensePlist
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - RealmJS (20.2.0):
     - React
   - RNAppleAuthentication (2.4.0):
@@ -3984,6 +4014,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeExceptionHandler (from `../node_modules/react-native-exception-handler`)
   - "ReactNativeFs (from `../node_modules/@dr.pogodin/react-native-fs`)"
+  - ReactNativeLegal (from `../node_modules/react-native-legal`)
   - RealmJS (from `../node_modules/realm`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
@@ -4031,6 +4062,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - LicensePlist
     - Mute
     - nanopb
     - PromisesObjC
@@ -4242,6 +4274,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-exception-handler"
   ReactNativeFs:
     :path: "../node_modules/@dr.pogodin/react-native-fs"
+  ReactNativeLegal:
+    :path: "../node_modules/react-native-legal"
   RealmJS:
     :path: "../node_modules/realm"
   RNAppleAuthentication:
@@ -4321,6 +4355,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: 519ba93bfb8ec86f1e75f691899c3efcd409c449
+  LicensePlist: 91465ee0724beab897ed5482775c5d3932a3f379
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
@@ -4417,6 +4452,7 @@ SPEC CHECKSUMS:
   ReactCommon: fe0c37881180b5366786f21671908395be7e34ea
   ReactNativeExceptionHandler: a23922ca00122b050ae9412f960061791c232c47
   ReactNativeFs: 89af775f1e97e80f486bc94693b11fceaba5d0dc
+  ReactNativeLegal: 7993c5eb52ac2874216ad0e21e351396f8d8ab0e
   RealmJS: 1c37c6bdfe060f4caa0f9175aa0eedb962622ee1
   RNAppleAuthentication: 8d313d93fe2238d6b7ff0a39c67ebcf298d96653
   RNAudioRecorderPlayer: b5ed41ccfe72a211a870bfe09ab36c046eb27d2a

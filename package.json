@@ -42,7 +42,8 @@
     "e2e": "npm run e2e:build && npm run e2e:test",
     "icons": "./scripts/update-icon-font.sh",
     "add-example-model": "babel-node scripts/add-example-model.js",
-    "reassure": "reassure"
+    "reassure": "reassure",
+    "legal-generate": "react-native legal-generate"
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.11",
@@ -118,6 +119,7 @@
     "react-native-get-random-values": "^2.0.0",
     "react-native-image-picker": "^8.2.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-legal": "^1.6.3",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-localize": "^3.5.2",
     "react-native-logs": "^5.3.0",

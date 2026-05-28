@@ -178,7 +178,17 @@ export type SharedStackParamList = {
     lastScreen: "ObsEdit" | "ObsDetails";
   };
   MatchTaxonSearchScreen: undefined;
-  FullPageWebView: undefined;
+  // From About
+  //  {
+  //   title: t( "COMMUNITY-GUIDELINES" ),
+  //   initialUrl: url,
+  //   loggedIn: false,
+  // }
+  FullPageWebView: {
+    title: string;
+    initialUrl: string;
+    loggedIn: boolean;
+  };
 };
 
 // Note from the documentation:
