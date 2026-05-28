@@ -16,6 +16,27 @@ const ICON_DROP_SHADOW = getShadow( {
   shadowRadius: 1,
 } );
 
+const GradientOverlay = ( { useShortGradient }: { useShortGradient?: boolean} ) => {
+  if ( useShortGradient ) {
+    return (
+      <LinearGradient
+        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
+        className="absolute w-full h-full"
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 0, y: 1 }}
+      />
+    );
+  }
+  return (
+    <LinearGradient
+      colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+      className="absolute w-full h-full"
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 0.75 }}
+    />
+  );
+};
+
 interface Props extends PropsWithChildren {
   className?: string;
   hasSound?: boolean;
@@ -119,28 +140,7 @@ const ObsImagePreview = ( {
     obsPhotosCount,
   ] );
 
-  const renderGradient = useCallback( ( ) => {
-    if ( hideGradientOverlay ) return null;
-    if ( isSmall ) return null;
-    if ( useShortGradient ) {
-      return (
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
-          className="absolute w-full h-full"
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 0, y: 1 }}
-        />
-      );
-    }
-    return (
-      <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-        className="absolute w-full h-full"
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 0.75 }}
-      />
-    );
-  }, [isSmall, useShortGradient, hideGradientOverlay] );
+  const shouldRenderGradient = !hideGradientOverlay && !isSmall;
 
   const renderSoundIcon = useCallback( ( ) => {
     if ( !hasSound ) return null;
@@ -192,7 +192,7 @@ const ObsImagePreview = ( {
               : 100
           }
         />
-        {renderGradient( )}
+        {shouldRenderGradient && <GradientOverlay useShortGradient={useShortGradient} />}
         {selectable && (
           <View
             className={classNames(
