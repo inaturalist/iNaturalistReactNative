@@ -16,7 +16,7 @@ const ICON_DROP_SHADOW = getShadow( {
   shadowRadius: 1,
 } );
 
-const GradientOverlay = ( { useShortGradient }: { useShortGradient?: boolean} ) => {
+const GradientOverlay = ( { useShortGradient }: { useShortGradient?: boolean } ) => {
   if ( useShortGradient ) {
     return (
       <LinearGradient
@@ -34,6 +34,30 @@ const GradientOverlay = ( { useShortGradient }: { useShortGradient?: boolean} ) 
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 0.75 }}
     />
+  );
+};
+
+const SoundIcon = ( { isSmall }: { isSmall?: boolean } ) => {
+  if ( isSmall ) {
+    return (
+      <View
+        className="absolute left-1 bottom-1"
+        style={ICON_DROP_SHADOW}
+      >
+        <INatIcon name="sound" color={colors.white} size={16} />
+      </View>
+    );
+  }
+
+  return (
+    <View
+      className={classNames( "absolute left-0 top-0 p-1", {
+        "p-2": !isSmall,
+      } )}
+      style={ICON_DROP_SHADOW}
+    >
+      <INatIcon name="sound" color={colors.white} size={18} />
+    </View>
   );
 };
 
@@ -142,32 +166,6 @@ const ObsImagePreview = ( {
 
   const shouldRenderGradient = !hideGradientOverlay && !isSmall;
 
-  const renderSoundIcon = useCallback( ( ) => {
-    if ( !hasSound ) return null;
-
-    if ( isSmall ) {
-      return (
-        <View
-          className="absolute left-1 bottom-1"
-          style={ICON_DROP_SHADOW}
-        >
-          <INatIcon name="sound" color={colors.white} size={16} />
-        </View>
-      );
-    }
-
-    return (
-      <View
-        className={classNames( "absolute left-0 top-0 p-1", {
-          "p-2": !isSmall,
-        } )}
-        style={ICON_DROP_SHADOW}
-      >
-        <INatIcon name="sound" color={colors.white} size={18} />
-      </View>
-    );
-  }, [hasSound, isSmall] );
-
   let content;
 
   if ( isSmall && ( obsPhotosCount === 0 && !source?.uri ) ) {
@@ -213,7 +211,7 @@ const ObsImagePreview = ( {
           </View>
         )}
         {renderPhotoCount( )}
-        {renderSoundIcon( )}
+        {hasSound && <SoundIcon isSmall={isSmall} />}
         {children}
       </>
     );
