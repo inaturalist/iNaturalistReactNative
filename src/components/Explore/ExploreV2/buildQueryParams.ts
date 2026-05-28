@@ -2,7 +2,7 @@ import type { ExploreV2State } from "providers/ExploreV2Context";
 import {
   EXPLORE_V2_PLACE_MODE,
 } from "providers/ExploreV2Context";
-import { sortToApiParams } from "sharedHelpers/observationsSort";
+import { observationSortToApiParams } from "sharedHelpers/observationsSort";
 import type { ObservationOrderBy, SortDirection } from "types/sorting";
 
 const PER_PAGE = 20;
@@ -27,7 +27,7 @@ const buildExploreV2QueryParams = (
   const params: ExploreV2QueryParams = {
     per_page: PER_PAGE,
     verifiable: true,
-    ...sortToApiParams( state.sortBy ),
+    ...observationSortToApiParams( state.sortBy ),
   };
 
   // this might warrant moving into a selector function at some point
