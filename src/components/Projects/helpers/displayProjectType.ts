@@ -1,4 +1,7 @@
-const displayProjectType = ( projectType: string, t: ( _: string ) => string ) => {
+const displayProjectType = (
+  projectType: "collection" | "umbrella" | "",
+  t: ( _: string ) => string,
+) => {
   if ( projectType === "collection" ) {
     return t( "Collection-Project" );
   }
