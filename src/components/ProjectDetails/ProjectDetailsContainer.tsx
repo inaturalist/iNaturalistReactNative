@@ -151,7 +151,9 @@ const ProjectDetailsContainer = ( ) => {
         screen: "Login",
         params: {
           prevScreen: "ProjectDetails",
-          projectId: project.id,
+          // project is not undefined here because we call the mutation in the child
+          // which has a !project check before rendering the buttons that call here
+          projectId: ( project as ApiProject ).id,
         },
       } );
     }
