@@ -30,12 +30,12 @@ const ProjectDetailsContainer = ( ) => {
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
       fields: {
-        id: true,
-        title: true,
-        icon: true,
-        header_image_url: true,
-        project_type: true,
         description: true,
+        header_image_url: true,
+        icon: true,
+        id: true,
+        project_type: true,
+        title: true,
       },
     }, optsWithAuth ),
   );
