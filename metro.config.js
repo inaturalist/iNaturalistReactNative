@@ -12,6 +12,7 @@ const { withRozenite } = require( "@rozenite/metro" );
 const {
   withRozeniteRequireProfiler,
 } = require( "@rozenite/require-profiler-plugin/metro" );
+const { withNativeWind } = require( "nativewind/metro" );
 
 const {
   resolver: { sourceExts, assetExts },
@@ -42,10 +43,17 @@ const config = {
   watchFolders: [...localPackagePaths],
 };
 
-module.exports = withRozenite(
+const configWithRozenite = withRozenite(
   mergeConfig( getDefaultConfig( __dirname ), config ),
   {
     enabled: process.env.WITH_ROZENITE === "true",
     enhanceMetroConfig: config => withRozeniteRequireProfiler( config ),
   },
 );
+
+const configWithRozeniteAndNativeWind = withNativeWind(
+  configWithRozenite,
+  { input: "./global.css" },
+);
+
+module.exports = configWithRozeniteAndNativeWind;
