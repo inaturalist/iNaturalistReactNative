@@ -38,11 +38,11 @@ const LEAVE = "LEAVE";
 
 const PROJECT_URL = `${Config.OAUTH_API_URL}/projects`;
 
-type Props = {
-  project: Object,
-  joinProject: Function,
-  leaveProject: Function,
-  loadingProjectMembership: boolean
+interface Props {
+  project: object;
+  joinProject: Function;
+  leaveProject: Function;
+  loadingProjectMembership: boolean;
 }
 
 const ProjectDetails = ( {
