@@ -38,22 +38,25 @@ const LEAVE = "LEAVE";
 
 const PROJECT_URL = `${Config.OAUTH_API_URL}/projects`;
 
+interface Project {
+  current_user_is_member: boolean;
+  current_user_observations_count: number;
+  description: string;
+  header_image_url: string;
+  icon: string;
+  id: number;
+  journal_posts_count: number;
+  members_count: number;
+  observations_count: number;
+  place: ApiPlace | null;
+  project_type: "collection" | "" | "umbrella";
+  species_count: number;
+  title: string;
+  user_ids: number[];
+}
+
 interface Props {
-  project: {
-    current_user_is_member: boolean;
-    current_user_observations_count: number;
-    description: string;
-    header_image_url: string;
-    icon: string;
-    id: number;
-    journal_posts_count: number;
-    members_count: number;
-    observations_count: number;
-    place: ApiPlace | null;
-    project_type: "collection" | "" | "umbrella";
-    species_count: number;
-    title: string;
-  };
+  project: Project | null;
   joinProject: ( ) => void;
   leaveProject: ( ) => void;
   loadingProjectMembership: boolean;
@@ -79,7 +82,8 @@ const ProjectDetails = ( {
         writeLayoutToStorage( "map" );
       }
       navigation.navigate( "Explore", {
-        project,
+        // Function is only rendered with a button after null check below
+        project: project as Project,
         // If selected project has no place_id, show map in worldwide mode
         worldwide: !project?.place,
         // TODO: refactor this to only send an ID to ExploreV2 and not an entire place object
@@ -93,7 +97,8 @@ const ProjectDetails = ( {
     ( ) => {
       setExploreView( "species" );
       navigation.navigate( "Explore", {
-        project,
+        // Function is only rendered with a button after null check below
+        project: project as Project,
         worldwide: true,
       } );
     },
