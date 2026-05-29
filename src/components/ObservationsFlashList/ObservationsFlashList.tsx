@@ -114,7 +114,6 @@ const ObservationsFlashList = ( {
   const {
     flashListStyle,
     gridItemStyle,
-    gridItemWidth,
     numColumns,
   } = useGridLayout( layout );
   const { t } = useTranslation( );
@@ -255,11 +254,6 @@ const ObservationsFlashList = ( {
     t,
   ] );
 
-  const extraData = useMemo( () => ( {
-    gridItemWidth,
-    numColumns,
-  } ), [gridItemWidth, numColumns] );
-
   // only used id as a fallback key because after upload
   // react thinks we've rendered a second item w/ a duplicate key
   const keyExtractor = item => item.uuid || item.id;
@@ -301,7 +295,6 @@ const ObservationsFlashList = ( {
       ListHeaderComponent={listHeaderContent}
       contentContainerStyle={contentContainerStyle}
       data={data}
-      extraData={extraData}
       ref={ref}
       key={numColumns}
       keyExtractor={keyExtractor}
