@@ -6,6 +6,7 @@ import {
   fetchMembership,
   fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject,
 } from "api/projects";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useMemo, useState } from "react";
 import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
@@ -16,8 +17,8 @@ import ProjectDetails from "./ProjectDetails";
 const logger = log.extend( "ProjectDetailsContainer" );
 
 const ProjectDetailsContainer = ( ) => {
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const navigation = useNavigation<TabStackScreenProps<"ProjectDetails">["navigation"]>( );
+  const { params } = useRoute<TabStackScreenProps<"ProjectDetails">["route"]>( );
   const { id } = params;
   const currentUser = useCurrentUser( );
   const [loading, setLoading] = useState( false );
