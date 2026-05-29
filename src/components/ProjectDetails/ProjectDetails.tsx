@@ -52,8 +52,8 @@ interface Props {
     species_count: number;
     title: string;
   };
-  joinProject: Function;
-  leaveProject: Function;
+  joinProject: ( ) => void;
+  leaveProject: ( ) => void;
   loadingProjectMembership: boolean;
 }
 
@@ -255,7 +255,7 @@ const ProjectDetails = ( {
         <WarningSheet
           onPressClose={() => setOpenSheet( NONE )}
           confirm={() => {
-            joinProject();
+            joinProject( );
             setOpenSheet( NONE );
           }}
           headerText={t( "JOIN-PROJECT--question" )}
@@ -270,7 +270,7 @@ const ProjectDetails = ( {
         <WarningSheet
           onPressClose={() => setOpenSheet( NONE )}
           confirm={() => {
-            leaveProject();
+            leaveProject( );
             setOpenSheet( NONE );
           }}
           headerText={t( "LEAVE-PROJECT--question" )}
