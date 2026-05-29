@@ -444,6 +444,7 @@ LEAVE-PROJECT = KELUAR DARI PROYEK
 LEAVE-PROJECT--question = TINGGALKAN PROYEK?
 LEAVE-US-A-REVIEW = TINGGALKAN ULASAN!
 Lets-reset-your-password = Mari atur ulang kata sandi Anda.
+Licenses = Lisensi
 Loading-iNaturalists-AI-Camera = Memuat Kamera AI iNaturalist
 Loads-content-that-requires-an-Internet-connection = Memuat konten yang memerlukan koneksi Internet
 LOCATION = LOKASI

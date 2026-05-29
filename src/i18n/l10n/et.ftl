@@ -444,6 +444,7 @@ LEAVE-PROJECT = LAHKU PROJEKTIST
 LEAVE-PROJECT--question = LAHKU PROJEKTIST?
 LEAVE-US-A-REVIEW = KIRJUTA MEIST ARVUSTUS!
 Lets-reset-your-password = Let’s reset your password.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Laen iNaturalisti AI-kaamerat
 Loads-content-that-requires-an-Internet-connection = Laeb sisu, mis nõuab internetiühendust
 LOCATION = ASUKOHT
