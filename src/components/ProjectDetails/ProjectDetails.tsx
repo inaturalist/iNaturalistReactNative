@@ -38,15 +38,16 @@ const PROJECT_URL = `${Config.OAUTH_API_URL}/projects`;
 
 interface Props {
   project: {
-    header_image_url: string;
     current_user_is_member: boolean;
     current_user_observations_count: number;
     description: string;
+    header_image_url: string;
     icon: string;
     id: number;
     journal_posts_count: number;
     members_count: number;
     observations_count: number;
+    place: object | null;
     project_type: "collection" | "" | "umbrella";
     species_count: number;
     title: string;
