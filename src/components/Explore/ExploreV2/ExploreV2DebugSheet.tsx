@@ -127,7 +127,7 @@ const ExploreV2DebugSheet = ( ) => {
       <INatIconButton
         icon="triangle-exclamation"
         className={classnames(
-          "absolute bottom-5 right-5",
+          "absolute top-5 right-5",
           "rounded-full",
         )}
         color="white"
