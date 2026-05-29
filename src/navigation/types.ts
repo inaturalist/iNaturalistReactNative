@@ -269,7 +269,15 @@ export type BaseTabStackParamList = {
   // From ProjectDetails
   // { id: project.id }
   ProjectRequirements: { id: number };
-  ProjectMembers: undefined;
+  // From ProjectDetails
+  // {
+  //   id: project?.id,
+  //   title: project?.title,
+  // }
+  ProjectMembers: {
+    id?: number;
+    title?: string;
+  };
   // From ProjectButton, ProjectSection
   // { observationUuid: observation.uuid }
   // From UserProfile
