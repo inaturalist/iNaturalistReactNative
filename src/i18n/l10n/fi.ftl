@@ -447,6 +447,7 @@ LEAVE-PROJECT = POISTU PROJEKTISTA
 LEAVE-PROJECT--question = POISTU PROJEKTISTA?
 LEAVE-US-A-REVIEW = ARVOSTELE MEIDÄT!
 Lets-reset-your-password = Nollataan salasanasi.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Ladataan iNaturalistin AI-kameraa
 Loads-content-that-requires-an-Internet-connection = Lataa sisältöä, joka vaatii Internet-yhteyden
 LOCATION = SIJAINTI

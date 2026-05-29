@@ -444,6 +444,7 @@ LEAVE-PROJECT = ΕΡΓΟ ΑΠΟΧΩΡΗΣΗΣ
 LEAVE-PROJECT--question = ΦΕΎΓΕΤΕ ΑΠΌ ΤΟ ΈΡΓΟ;
 LEAVE-US-A-REVIEW = ΑΦΉΣΤΕ ΜΑΣ ΜΙΑ ΚΡΙΤΙΚΉ!
 Lets-reset-your-password = Ας επαναφέρουμε τον κωδικό πρόσβασής σας.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Φόρτωση της κάμερας AI του iNaturalist
 Loads-content-that-requires-an-Internet-connection = Φορτώνει περιεχόμενο που απαιτεί σύνδεση στο Internet
 LOCATION = ΤΟΠΟΘΕΣΊΑ

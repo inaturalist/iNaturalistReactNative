@@ -444,6 +444,7 @@ LEAVE-PROJECT = 离开项目
 LEAVE-PROJECT--question = 离开项目？
 LEAVE-US-A-REVIEW = 为我们留下一则评论！
 Lets-reset-your-password = 请重置您的密码。
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = 正在加载 iNaturalist AI相机
 Loads-content-that-requires-an-Internet-connection = 载入的内容需要互联网连接
 LOCATION = 位置

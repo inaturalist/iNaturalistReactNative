@@ -450,6 +450,7 @@ LEAVE-PROJECT = LÄMNA PROJEKT
 LEAVE-PROJECT--question = LÄMNA PROJEKT?
 LEAVE-US-A-REVIEW = GE OSS EN RECENSION!
 Lets-reset-your-password = Låt oss återställa ditt lösenord.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Laddar iNaturalists AI-kamera
 Loads-content-that-requires-an-Internet-connection = Laddar innehåll som kräver en internetanslutning
 LOCATION = POSITION
