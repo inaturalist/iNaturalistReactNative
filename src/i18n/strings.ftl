@@ -735,7 +735,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] MEMBER
        *[other] MEMBERS
     }
-Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators below and request an invitation.
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 # Accessibility label for a button that opens a menu of options
 Menu = Menu
 Missing-Date = Missing Date
