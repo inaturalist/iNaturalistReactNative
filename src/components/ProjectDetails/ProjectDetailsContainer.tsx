@@ -6,7 +6,7 @@ import {
   fetchMembership,
   fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject,
 } from "api/projects";
-import type { ApiProject } from "api/types";
+import type { ApiPlace, ApiProject } from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useMemo, useState } from "react";
 import User from "realmModels/User";
@@ -43,7 +43,7 @@ const ProjectDetailsContainer = ( ) => {
 
   const fetchProjectPlaceQueryKey = ["projectPlace", "fetchPlace", project?.place_id];
 
-  const { data: projectPlace } = useAuthenticatedQuery(
+  const { data: projectPlace } = useAuthenticatedQuery<ApiPlace>(
     fetchProjectPlaceQueryKey,
     optsWithAuth => fetchPlace( project?.place_id, {
       fields: "all",

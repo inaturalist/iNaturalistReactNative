@@ -10,7 +10,7 @@ import type {
   ParamListRoute,
 } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { ApiUser } from "api/types";
+import type { ApiPlace, ApiUser } from "api/types";
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
@@ -236,7 +236,7 @@ export type BaseTabStackParamList = {
   Explore: {
     user?: ApiUser;
     project?: object;
-    place?: object | null;
+    place?: ApiPlace | null;
     worldwide: boolean;
   };
   ExploreFilters: undefined;

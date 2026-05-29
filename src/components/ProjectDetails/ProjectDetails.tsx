@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import type { ApiPlace } from "api/types";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
@@ -48,7 +49,7 @@ interface Props {
     journal_posts_count: number;
     members_count: number;
     observations_count: number;
-    place: object | null;
+    place: ApiPlace | null;
     project_type: "collection" | "" | "umbrella";
     species_count: number;
     title: string;
@@ -81,6 +82,7 @@ const ProjectDetails = ( {
         project,
         // If selected project has no place_id, show map in worldwide mode
         worldwide: !project?.place,
+        // TODO: refactor this to only send an ID to ExploreV2 and not an entire place object
         place: project?.place,
       } );
     },
