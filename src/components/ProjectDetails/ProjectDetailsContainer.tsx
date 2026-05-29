@@ -9,7 +9,9 @@ import {
   joinProject,
   leaveProject,
 } from "api/projects";
-import type { ApiPlace, ApiProject } from "api/types";
+import type {
+  ApiObservationsSearchResponse, ApiPlace, ApiProject, ApiResponse,
+} from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useMemo, useState } from "react";
 import { log } from "sharedHelpers/logger";
@@ -53,14 +55,14 @@ const ProjectDetailsContainer = ( ) => {
     }, optsWithAuth ),
   );
 
-  const { data: projectPosts } = useAuthenticatedQuery(
+  const { data: projectPosts } = useAuthenticatedQuery<number>(
     ["fetchProjectPosts", id],
     optsWithAuth => fetchProjectPosts( {
       id,
     }, optsWithAuth ),
   );
 
-  const { data: projectStats } = useAuthenticatedQuery(
+  const { data: projectStats } = useAuthenticatedQuery<ApiObservationsSearchResponse>(
     ["searchObservations", "projectStats", id],
     ( ) => searchObservations( {
       project_id: id,
@@ -68,7 +70,7 @@ const ProjectDetailsContainer = ( ) => {
     } ),
   );
 
-  const { data: usersObservations } = useAuthenticatedQuery(
+  const { data: usersObservations } = useAuthenticatedQuery<ApiObservationsSearchResponse>(
     ["searchObservationsByUserInProject", id],
     optsWithAuth => searchObservations(
       {
@@ -83,7 +85,7 @@ const ProjectDetailsContainer = ( ) => {
     },
   );
 
-  const { data: speciesCounts } = useAuthenticatedQuery(
+  const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse>(
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
       project_id: id,
@@ -92,7 +94,7 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const membershipQueryKey = ["fetchMembership", id];
-  const { data: currentMembership } = useAuthenticatedQuery(
+  const { data: currentMembership } = useAuthenticatedQuery<number>(
     membershipQueryKey,
     optsWithAuth => fetchMembership( {
       id,

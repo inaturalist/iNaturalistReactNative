@@ -40,18 +40,18 @@ const PROJECT_URL = `${Config.OAUTH_API_URL}/projects`;
 
 interface Project {
   current_user_is_member: boolean;
-  current_user_observations_count: number;
+  current_user_observations_count?: number;
   description: string;
   header_image_url: string | null;
   icon: string;
   id: number;
-  journal_posts_count: number;
-  members_count: number;
-  observations_count: number;
-  place: ApiPlace | null;
+  journal_posts_count?: number;
+  members_count?: number;
+  observations_count?: number;
+  place?: ApiPlace | null;
   place_id: number | null;
   project_type: "collection" | "umbrella" | "";
-  species_count: number;
+  species_count?: number;
   title: string;
   user_ids: number[];
 }
