@@ -217,8 +217,26 @@ export type BaseTabStackParamList = {
   ObsList: undefined;
   RootExplore: undefined;
   // TODO: type for other routes to Explore
+  // From UserProfile
+  // {
+  //   user,
+  //   worldwide: true,
+  // }
+  // From ProjectDetails
+  // {
+  //   project,
+  //   worldwide: true,
+  // }
+  // {
+  //   project,
+  //   // If selected project has no place_id, show map in worldwide mode
+  //   worldwide: !project?.place,
+  //   place: project?.place,
+  // }
   Explore: {
-    user: ApiUser;
+    user?: ApiUser;
+    project?: object;
+    place?: object | null;
     worldwide: boolean;
   };
   ExploreFilters: undefined;
