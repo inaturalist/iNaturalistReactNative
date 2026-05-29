@@ -1,15 +1,16 @@
 import type { ExploreV2State } from "providers/ExploreV2Context";
 import {
   EXPLORE_V2_PLACE_MODE,
-  EXPLORE_V2_SORT,
 } from "providers/ExploreV2Context";
+import { observationSortToApiParams } from "sharedHelpers/observationsSort";
+import type { ObservationOrderBy, SortDirection } from "types/sorting";
 
 const PER_PAGE = 20;
 
 export interface ExploreV2QueryParams {
   per_page: number;
-  order_by: "created_at" | "observed_on" | "votes";
-  order: "asc" | "desc";
+  order_by: ObservationOrderBy;
+  order: SortDirection;
   taxon_id?: number;
   user_id?: number;
   project_id?: number;
@@ -20,24 +21,13 @@ export interface ExploreV2QueryParams {
   verifiable?: boolean;
 }
 
-const sortToOrder: Record<
-  EXPLORE_V2_SORT,
-  { order_by: "created_at" | "observed_on" | "votes"; order: "asc" | "desc" }
-> = {
-  [EXPLORE_V2_SORT.DATE_UPLOADED_NEWEST]: { order_by: "created_at", order: "desc" },
-  [EXPLORE_V2_SORT.DATE_UPLOADED_OLDEST]: { order_by: "created_at", order: "asc" },
-  [EXPLORE_V2_SORT.DATE_OBSERVED_NEWEST]: { order_by: "observed_on", order: "desc" },
-  [EXPLORE_V2_SORT.DATE_OBSERVED_OLDEST]: { order_by: "observed_on", order: "asc" },
-  [EXPLORE_V2_SORT.MOST_FAVED]: { order_by: "votes", order: "desc" },
-};
-
 const buildExploreV2QueryParams = (
   state: ExploreV2State,
 ): ExploreV2QueryParams => {
   const params: ExploreV2QueryParams = {
     per_page: PER_PAGE,
     verifiable: true,
-    ...sortToOrder[state.sortBy],
+    ...observationSortToApiParams( state.sortBy ),
   };
 
   // this might warrant moving into a selector function at some point

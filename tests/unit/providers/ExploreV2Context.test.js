@@ -2,11 +2,11 @@ import {
   defaultExploreV2Location,
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
-  EXPLORE_V2_SORT,
   exploreV2Reducer,
   initialExploreV2State,
 } from "providers/ExploreV2Context";
 import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
+import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 
 jest.mock( "sharedHelpers/fetchCoarseUserLocation", ( ) => ( {
   __esModule: true,
@@ -17,7 +17,7 @@ describe( "initialExploreV2State", ( ) => {
   it( "starts with no subject, UNINITIALIZED placeMode, newest-upload sort, empty filters", ( ) => {
     expect( initialExploreV2State.subject ).toBeNull( );
     expect( initialExploreV2State.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.UNINITIALIZED );
-    expect( initialExploreV2State.sortBy ).toBe( EXPLORE_V2_SORT.DATE_UPLOADED_NEWEST );
+    expect( initialExploreV2State.sortBy ).toBe( OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST );
     expect( initialExploreV2State.filters ).toEqual( {} );
   } );
 } );
@@ -46,7 +46,7 @@ describe( "exploreV2Reducer", ( ) => {
           lng: 2,
           radius: 3,
         },
-        sortBy: EXPLORE_V2_SORT.MOST_FAVED,
+        sortBy: OBSERVATIONS_SORT.MOST_FAVED,
         filters: { quality_grade: "research" },
       };
       const next = exploreV2Reducer( state, {
@@ -159,7 +159,7 @@ describe( "exploreV2Reducer", ( ) => {
       const state = {
         subject: { type: "taxon", taxon: { id: 42 } },
         location: { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED },
-        sortBy: EXPLORE_V2_SORT.MOST_FAVED,
+        sortBy: OBSERVATIONS_SORT.MOST_FAVED,
         filters: { quality_grade: "research" },
       };
       const next = exploreV2Reducer( state, {
@@ -174,7 +174,7 @@ describe( "exploreV2Reducer", ( ) => {
       const state = {
         subject: { type: "taxon", taxon: { id: 42 } },
         location: { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED },
-        sortBy: EXPLORE_V2_SORT.MOST_FAVED,
+        sortBy: OBSERVATIONS_SORT.MOST_FAVED,
         filters: { quality_grade: "research" },
       };
       const next = exploreV2Reducer( state, {
@@ -190,9 +190,9 @@ describe( "exploreV2Reducer", ( ) => {
     it( "updates sortBy", ( ) => {
       const next = exploreV2Reducer( initialExploreV2State, {
         type: EXPLORE_V2_ACTION.SET_SORT,
-        sortBy: EXPLORE_V2_SORT.DATE_OBSERVED_NEWEST,
+        sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST,
       } );
-      expect( next.sortBy ).toBe( EXPLORE_V2_SORT.DATE_OBSERVED_NEWEST );
+      expect( next.sortBy ).toBe( OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST );
     } );
   } );
 
@@ -216,7 +216,7 @@ describe( "exploreV2Reducer", ( ) => {
       const state = {
         ...initialExploreV2State,
         subject: { type: "taxon", taxon: { id: 1 } },
-        sortBy: EXPLORE_V2_SORT.MOST_FAVED,
+        sortBy: OBSERVATIONS_SORT.MOST_FAVED,
       };
       const next = exploreV2Reducer( state, { type: EXPLORE_V2_ACTION.RESET } );
       expect( next ).toEqual( initialExploreV2State );
