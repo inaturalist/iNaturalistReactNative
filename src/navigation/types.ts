@@ -266,7 +266,9 @@ export type BaseTabStackParamList = {
   // From LoginForm
   // { id: params.projectId }
   ProjectDetails: { id: number };
-  ProjectRequirements: undefined;
+  // From ProjectDetails
+  // { id: project.id }
+  ProjectRequirements: { id: number };
   ProjectMembers: undefined;
   // From ProjectButton, ProjectSection
   // { observationUuid: observation.uuid }
