@@ -16,6 +16,7 @@ import {
 import {
   Image, ImageBackground, View,
 } from "components/styledComponents";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
 import Config from "react-native-config";
 import { openExternalWebBrowser } from "sharedHelpers/util";
@@ -54,7 +55,7 @@ const ProjectDetails = ( {
   const setExploreView = useStore( state => state.setExploreView );
 
   const { t, i18n } = useTranslation( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<TabStackScreenProps<"ProjectDetails">["navigation"]>( );
 
   const { writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
 
