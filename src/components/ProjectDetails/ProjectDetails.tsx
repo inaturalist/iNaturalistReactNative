@@ -38,10 +38,18 @@ const PROJECT_URL = `${Config.OAUTH_API_URL}/projects`;
 
 interface Props {
   project: {
+    header_image_url: string;
     current_user_is_member: boolean;
     current_user_observations_count: number;
+    description: string;
+    icon: string;
     id: number;
+    journal_posts_count: number;
+    members_count: number;
+    observations_count: number;
     project_type: "collection" | "" | "umbrella";
+    species_count: number;
+    title: string;
   };
   joinProject: Function;
   leaveProject: Function;
@@ -111,6 +119,7 @@ const ProjectDetails = ( {
 
   const userTextStyle = { lineHeight: 26 };
 
+  // TODO: Bubble up types from this function
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
 
   const displayBriefcase = ( ) => (
@@ -123,7 +132,7 @@ const ProjectDetails = ( {
 
   const iconClassName = "h-[90px] w-[90px] rounded-full bg-white -top-6";
 
-  const displayProjectIcon = icon => {
+  const displayProjectIcon = ( icon: string ) => {
     const productionIcon = icon?.replace( "staticdev", "static" );
 
     if ( productionIcon === defaultProjectIcon ) {
@@ -149,7 +158,7 @@ const ProjectDetails = ( {
     );
   };
 
-  const backgroundImageSource = project?.header_image_url
+  const backgroundImageSource = project.header_image_url
     ? { uri: project.header_image_url }
     : require( "images/background/project_banner.jpg" );
 
@@ -162,7 +171,7 @@ const ProjectDetails = ( {
           testID="ProjectDetails.headerImage"
           accessibilityIgnoresInvertColors
         >
-          {displayProjectIcon( project?.icon )}
+          {displayProjectIcon( project.icon )}
         </ImageBackground>
       </View>
       <View className="mx-4 pb-8">
@@ -186,7 +195,7 @@ const ProjectDetails = ( {
           newsEnabled={newsEnabled}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
-        {project?.description && (
+        {project.description && (
           <UserText text={project.description} htmlStyle={userTextStyle} />
         )}
         {project.project_type === "collection" && (
