@@ -4,12 +4,14 @@ import { fetchSpeciesCounts, searchObservations } from "api/observations";
 import fetchPlace from "api/places";
 import {
   fetchMembership,
-  fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject,
+  fetchProjectPosts,
+  fetchProjects,
+  joinProject,
+  leaveProject,
 } from "api/projects";
 import type { ApiPlace, ApiProject } from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useMemo, useState } from "react";
-import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
@@ -37,6 +39,7 @@ const ProjectDetailsContainer = ( ) => {
         place_id: true,
         project_type: true,
         title: true,
+        user_ids: true,
       },
     }, optsWithAuth ),
   );
@@ -47,17 +50,6 @@ const ProjectDetailsContainer = ( ) => {
     fetchProjectPlaceQueryKey,
     optsWithAuth => fetchPlace( project?.place_id, {
       fields: "all",
-    }, optsWithAuth ),
-  );
-
-  const { data: projectMembers } = useAuthenticatedQuery(
-    ["fetchProjectMembers", id],
-    optsWithAuth => fetchProjectMembers( {
-      id,
-      order_by: "login",
-      fields: {
-        user: User.LIMITED_FIELDS,
-      },
     }, optsWithAuth ),
   );
 
@@ -164,7 +156,7 @@ const ProjectDetailsContainer = ( ) => {
 
     return {
       ...project,
-      members_count: projectMembers?.total_results,
+      members_count: project.user_ids.length,
       journal_posts_count: projectPosts,
       observations_count: projectStats?.total_results,
       species_count: speciesCounts?.total_results,
@@ -174,7 +166,6 @@ const ProjectDetailsContainer = ( ) => {
     };
   }, [
     project,
-    projectMembers?.total_results,
     projectPosts,
     projectStats?.total_results,
     speciesCounts?.total_results,

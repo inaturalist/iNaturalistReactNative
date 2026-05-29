@@ -32,6 +32,7 @@ export interface ApiProject {
   place_id?: number;
   project_type?: "collection" | "umbrella" | ""; // FYI "" means "traditional"
   title: string;
+  user_ids: number[];
 }
 
 export interface ApiResponse {
