@@ -29,6 +29,7 @@ export interface ApiProject {
   header_image_url?: string;
   icon?: string;
   id: number;
+  place_id?: number;
   project_type?: "collection" | "umbrella" | ""; // FYI "" means "traditional"
   title: string;
 }

@@ -34,6 +34,7 @@ const ProjectDetailsContainer = ( ) => {
         header_image_url: true,
         icon: true,
         id: true,
+        place_id: true,
         project_type: true,
         title: true,
       },
