@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
@@ -8,7 +6,6 @@ import {
   fetchMembership,
   fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject,
 } from "api/projects";
-import type { Node } from "react";
 import React, { useMemo, useState } from "react";
 import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
@@ -18,7 +15,7 @@ import ProjectDetails from "./ProjectDetails";
 
 const logger = log.extend( "ProjectDetailsContainer" );
 
-const ProjectDetailsContainer = ( ): Node => {
+const ProjectDetailsContainer = ( ) => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id } = params;
