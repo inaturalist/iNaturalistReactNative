@@ -328,6 +328,7 @@ class Observation extends Realm.Object {
           preferred_common_name: obs?.taxon?.preferred_common_name,
           rank: obs?.taxon?.rank,
           rank_level: obs?.taxon?.rank_level,
+          iconic_taxon_name: obs?.taxon?.iconic_taxon_name,
         }
         : null,
       comments_viewed: obs.comments_viewed,
