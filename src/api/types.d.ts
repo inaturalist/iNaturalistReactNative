@@ -25,10 +25,12 @@ export interface ApiPost {
 }
 
 export interface ApiProject {
+  description?: string;
+  header_image_url?: string;
   icon?: string;
-  id?: number;
+  id: number;
   project_type?: "collection" | "umbrella" | ""; // FYI "" means "traditional"
-  title?: string;
+  title: string;
 }
 
 export interface ApiResponse {

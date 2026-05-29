@@ -6,6 +6,7 @@ import {
   fetchMembership,
   fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject,
 } from "api/projects";
+import type { ApiProject } from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useMemo, useState } from "react";
 import User from "realmModels/User";
@@ -25,7 +26,7 @@ const ProjectDetailsContainer = ( ) => {
 
   const fetchProjectsQueryKey = ["projectDetails", "fetchProjects", id];
 
-  const { data: project } = useAuthenticatedQuery(
+  const { data: project } = useAuthenticatedQuery<ApiProject>(
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
       fields: {
@@ -35,7 +36,6 @@ const ProjectDetailsContainer = ( ) => {
         header_image_url: true,
         project_type: true,
         description: true,
-        current_user_is_member: true,
       },
     }, optsWithAuth ),
   );
