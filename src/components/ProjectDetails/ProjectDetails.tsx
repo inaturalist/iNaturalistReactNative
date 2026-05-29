@@ -229,7 +229,13 @@ const ProjectDetails = ( {
             <Button
               level="neutral"
               text={t( "JOIN" )}
-              onPress={() => setOpenSheet( JOIN )}
+              onPress={() => {
+                if ( project.membership_model === "invite_only" ) {
+                  Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
+                } else {
+                  setOpenSheet( JOIN );
+                }
+              }}
               loading={loadingProjectMembership}
               disabled={loadingProjectMembership}
             />
@@ -256,11 +262,7 @@ const ProjectDetails = ( {
         <WarningSheet
           onPressClose={() => setOpenSheet( NONE )}
           confirm={() => {
-            if ( project.membership_model === "invite_only" ) {
-              Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
-            } else {
-              joinProject();
-            }
+            joinProject();
             setOpenSheet( NONE );
           }}
           headerText={t( "JOIN-PROJECT--question" )}
