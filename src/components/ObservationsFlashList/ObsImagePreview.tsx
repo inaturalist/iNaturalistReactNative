@@ -16,10 +16,31 @@ const ICON_DROP_SHADOW = getShadow( {
   shadowRadius: 1,
 } );
 
- interface PhotoCountProps {
-  obsPhotosCount: number;
-  isSmall: boolean;
-  isMultiplePhotosTop: boolean;
+const GradientOverlay = ( { useShortGradient }: { useShortGradient?: boolean } ) => {
+  if ( useShortGradient ) {
+    return (
+      <LinearGradient
+        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
+        className="absolute w-full h-full"
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 0, y: 1 }}
+      />
+    );
+  }
+  return (
+    <LinearGradient
+      colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+      className="absolute w-full h-full"
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 0.75 }}
+    />
+  );
+};
+
+interface PhotoCountProps {
+  obsPhotosCount: number; // file-local use enforces non-null
+  isSmall?: boolean;
+  isMultiplePhotosTop?: boolean;
 }
 const ObsImagePreviewPhotoCount = (
   { obsPhotosCount, isMultiplePhotosTop, isSmall }: PhotoCountProps,
@@ -56,27 +77,6 @@ const ObsImagePreviewPhotoCount = (
       { obsPhotosCount !== 0
           && <PhotoCount count={obsPhotosCount} /> }
     </View>
-  );
-};
-
-const GradientOverlay = ( { useShortGradient }: { useShortGradient?: boolean } ) => {
-  if ( useShortGradient ) {
-    return (
-      <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
-        className="absolute w-full h-full"
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 0, y: 1 }}
-      />
-    );
-  }
-  return (
-    <LinearGradient
-      colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-      className="absolute w-full h-full"
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 0.75 }}
-    />
   );
 };
 
