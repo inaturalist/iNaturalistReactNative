@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
@@ -18,7 +16,6 @@ import {
 import {
   Image, ImageBackground, View,
 } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import Config from "react-native-config";
 import { openExternalWebBrowser } from "sharedHelpers/util";
@@ -47,7 +44,7 @@ interface Props {
 
 const ProjectDetails = ( {
   project, joinProject, leaveProject, loadingProjectMembership,
-}: Props ): Node => {
+}: Props ) => {
   const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
   const setExploreView = useStore( state => state.setExploreView );
 
