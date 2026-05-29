@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
+  getMapRegion,
   latitudeDeltaToMeters,
   metersToLatitudeDelta,
 } from "components/SharedComponents/Map/helpers/mapHelpers";
@@ -201,19 +202,33 @@ const LocationPickerContainer = ( ): Node => {
 
   const selectPlaceResult = place => {
     const { coordinates } = place.point_geojson;
+    let newRegion = {
+      ...region,
+      latitude: coordinates[1],
+      longitude: coordinates[0],
+    };
+
+    if ( place.bounding_box_geojson?.coordinates?.[0] ) {
+      // bbox is a 5-point clockwise rectangle starting from SW (5th === 1st),
+      // so the 1st and 3rd points give us the SW and NE corners.
+      const [
+        [swlng, swlat],
+        _nwPoint,
+        [nelng, nelat],
+      ] = place.bounding_box_geojson.coordinates[0];
+      newRegion = {
+        ...newRegion,
+        ...getMapRegion( {
+          swlng, swlat, nelng, nelat,
+        } ),
+      };
+    }
+
     dispatch( {
       type: "SELECT_PLACE_RESULT",
       locationName: place.display_name,
-      region: {
-        ...region,
-        latitude: coordinates[1],
-        longitude: coordinates[0],
-      },
-      regionToAnimate: {
-        ...region,
-        latitude: coordinates[1],
-        longitude: coordinates[0],
-      },
+      region: newRegion,
+      regionToAnimate: newRegion,
     } );
   };
 
