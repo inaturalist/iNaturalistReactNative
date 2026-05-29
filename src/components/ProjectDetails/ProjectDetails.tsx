@@ -18,6 +18,7 @@ import {
 } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
+import { Alert } from "react-native";
 import Config from "react-native-config";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import { useFeatureFlag, useStoredLayout, useTranslation } from "sharedHooks";
@@ -255,7 +256,11 @@ const ProjectDetails = ( {
         <WarningSheet
           onPressClose={() => setOpenSheet( NONE )}
           confirm={() => {
-            joinProject( );
+            if ( project.membership_model === "invite_only" ) {
+              Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
+            } else {
+              joinProject();
+            }
             setOpenSheet( NONE );
           }}
           headerText={t( "JOIN-PROJECT--question" )}
