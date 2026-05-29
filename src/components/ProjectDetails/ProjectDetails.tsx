@@ -230,6 +230,7 @@ const ProjectDetails = ( {
               level="neutral"
               text={t( "JOIN" )}
               onPress={() => {
+                // TODO: how is the actual API response
                 if ( project.membership_model === "invite_only" ) {
                   Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
                 } else {
