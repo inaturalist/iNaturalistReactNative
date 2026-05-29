@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-console.log( "wrapped" );
 // Wrap react-i18next's useTranslation to catch a mysterious exception that
 // often gets thrown on initialization on Android only. https://github.com/inaturalist/iNaturalistReactNative/pull/515
 const useCustomTranslation = ( ) => {
