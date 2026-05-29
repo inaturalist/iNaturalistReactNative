@@ -119,7 +119,9 @@ const ProjectDetailsContainer = ( ) => {
         queryClient.invalidateQueries( membershipQueryKey );
       },
       onError: error => {
-        logger.error( "could not join project: ", project.id, error );
+        // project is not undefined here because we call the mutation in the child
+        // which has a !project check before rendering the buttons that call here
+        logger.error( "could not join project: ", ( project as ApiProject ).id, error );
       },
       onSettled: ( ) => setLoading( false ),
     },
@@ -132,7 +134,9 @@ const ProjectDetailsContainer = ( ) => {
         queryClient.invalidateQueries( membershipQueryKey );
       },
       onError: error => {
-        logger.error( "could not leave project: ", project.id, error );
+        // project is not undefined here because we call the mutation in the child
+        // which has a !project check before rendering the buttons that call here
+        logger.error( "could not leave project: ", ( project as ApiProject ).id, error );
       },
       onSettled: ( ) => setLoading( false ),
     },
