@@ -107,7 +107,7 @@ const ProjectDetailsContainer = ( ) => {
   const queryClient = useQueryClient( );
 
   const { mutate: joinProjectMutate } = useAuthenticatedMutation(
-    ( joinParams, optsWithAuth ) => joinProject( joinParams, optsWithAuth ),
+    ( _, optsWithAuth ) => joinProject( { id }, optsWithAuth ),
     {
       onSuccess: ( ) => {
         queryClient.invalidateQueries( membershipQueryKey );
@@ -122,7 +122,7 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const { mutate: leaveProjectMutate } = useAuthenticatedMutation(
-    ( leaveParams, optsWithAuth ) => leaveProject( leaveParams, optsWithAuth ),
+    ( _, optsWithAuth ) => leaveProject( { id }, optsWithAuth ),
     {
       onSuccess: ( ) => {
         queryClient.invalidateQueries( membershipQueryKey );
@@ -139,7 +139,7 @@ const ProjectDetailsContainer = ( ) => {
   const handleJoinProjectPress = ( ) => {
     if ( currentUser ) {
       setLoading( true );
-      joinProjectMutate( { id } );
+      joinProjectMutate( );
     } else {
       navigation.navigate( "LoginStackNavigator", {
         screen: "Login",
@@ -182,7 +182,7 @@ const ProjectDetailsContainer = ( ) => {
       joinProject={handleJoinProjectPress}
       leaveProject={( ) => {
         setLoading( true );
-        leaveProjectMutate( { id } );
+        leaveProjectMutate( );
       }}
       loadingProjectMembership={loading}
     />
