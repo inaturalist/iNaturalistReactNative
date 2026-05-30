@@ -12,6 +12,7 @@
 import { cleanupLogFiles } from "components/Developer/logManagementHelpers";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   clearComputerVisionPhotos,
   clearGalleryPhotos,
@@ -19,6 +20,7 @@ import {
   clearRotatedOriginalPhotosDirectory,
   clearSyncedMediaForUpload,
 } from "sharedHelpers/clearCaches";
+import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import { log } from "sharedHelpers/logger";
 import { logSentinelFiles } from "sharedHelpers/sentinelFiles";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
@@ -77,6 +79,7 @@ const checkForPreviousCrash = async () => {
 
 const useDeferredStartup = ( ) => {
   const realm = useRealm( );
+  const { i18n } = useTranslation( );
 
   useEffect( ( ) => {
     // Diagnostic tasks that we need to finish even on a busy thread
@@ -97,6 +100,13 @@ const useDeferredStartup = ( ) => {
     const id8 = deferTask( "clearRollbackPhotos", clearRollbackPhotos );
 
     const id9 = deferTask( "cleanupLogFiles", cleanupLogFiles );
+    const id10 = deferTask( "warmIntlCache", () => {
+      // the first call per instance to formatApiDatetime takes >100ms which would typically
+      // be navigating from MyObs to ObsDetail and locking render during the animation.
+      // Until the Hermes / Intl situation improves, idleCallback is at least a bit better
+      formatApiDatetime( "1970", i18n, { timeZone: "Etc/UTC" } );
+      return Promise.resolve();
+    } );
 
     return ( ) => {
       cancelIdleCallback( id1 );
@@ -108,8 +118,9 @@ const useDeferredStartup = ( ) => {
       cancelIdleCallback( id7 );
       cancelIdleCallback( id8 );
       cancelIdleCallback( id9 );
+      cancelIdleCallback( id10 );
     };
-  }, [realm] );
+  }, [i18n, realm] );
 };
 
 export default useDeferredStartup;
