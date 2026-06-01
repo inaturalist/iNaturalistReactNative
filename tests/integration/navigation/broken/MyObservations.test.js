@@ -106,13 +106,13 @@ const writeObservationsToRealm = ( observations, message ) => {
   }, message );
 };
 
-const pressIndividualUpload = observation => {
+const pressIndividualUpload = async observation => {
   const uploadIcon = screen.getByTestId(
     `UploadIcon.start.${observation.uuid}`,
   );
   // We used toBeVisible here but the update to RN0.77 broke this expectation
   expect( uploadIcon ).toBeOnTheScreen( );
-  actor.press( uploadIcon );
+  await actor.press( uploadIcon );
 };
 
 const waitForDisplayedText = async ( text, timeout = 1000 ) => {
@@ -170,7 +170,7 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     + " navigating away and returning to MyObs", async ( ) => {
     renderApp( );
     await checkToolbarResetWithUnsyncedObs( );
-    pressIndividualUpload( mockUnsyncedObservations[0] );
+    await pressIndividualUpload( mockUnsyncedObservations[0] );
     await waitForDisplayedText( /1 observation uploaded/ );
     await pressButtonByLabel( /Add observations/ );
     await pressButtonByLabel( /Observation with no evidence/ );
