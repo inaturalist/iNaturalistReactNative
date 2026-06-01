@@ -29,6 +29,7 @@ export interface ApiProject {
   header_image_url: string | null;
   icon: string;
   id: number;
+  membership_model: "inviteonly" | "open" | null;
   place_id: number | null;
   project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
   title: string;

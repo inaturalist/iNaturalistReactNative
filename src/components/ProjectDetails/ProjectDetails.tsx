@@ -46,6 +46,7 @@ interface Project {
   icon: string;
   id: number;
   journal_posts_count?: number;
+  membership_model: "inviteonly" | "open" | null;
   members_count?: number;
   observations_count?: number;
   place?: ApiPlace | null;
@@ -238,8 +239,7 @@ const ProjectDetails = ( {
               level="neutral"
               text={t( "JOIN" )}
               onPress={() => {
-                // TODO: how is the actual API response
-                if ( project.membership_model === "invite_only" ) {
+                if ( project.membership_model === "inviteonly" ) {
                   Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
                 } else {
                   setOpenSheet( JOIN );
