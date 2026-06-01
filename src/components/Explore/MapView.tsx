@@ -13,8 +13,8 @@ import React, {
   useEffect, useMemo, useRef, useState,
 } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
-import type { Region } from "react-native-maps";
 import type RNMapView from "react-native-maps";
+import type { Region } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 import type { RenderLocationPermissionsGateFunction } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
