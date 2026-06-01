@@ -170,7 +170,7 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     + " navigating away and returning to MyObs", async ( ) => {
     renderApp( );
     await checkToolbarResetWithUnsyncedObs( );
-    pressIndividualUpload( mockUnsyncedObservations[0] );
+    await pressIndividualUpload( mockUnsyncedObservations[0] );
     await waitForDisplayedText( /1 observation uploaded/ );
     await pressButtonByLabel( /Add observations/ );
     await pressButtonByLabel( /Observation with no evidence/ );
