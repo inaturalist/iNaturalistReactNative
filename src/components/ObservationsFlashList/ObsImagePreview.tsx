@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { INatIcon, PhotoCount } from "components/SharedComponents";
 import { LinearGradient, View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
-import React, { useCallback } from "react";
+import React from "react";
 import type { ViewStyle } from "react-native";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -15,6 +15,94 @@ const ICON_DROP_SHADOW = getShadow( {
   shadowOpacity: 1,
   shadowRadius: 1,
 } );
+
+const GradientOverlay = ( { useShortGradient }: { useShortGradient?: boolean } ) => {
+  if ( useShortGradient ) {
+    return (
+      <LinearGradient
+        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
+        className="absolute w-full h-full"
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 0, y: 1 }}
+      />
+    );
+  }
+  return (
+    <LinearGradient
+      colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+      className="absolute w-full h-full"
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 0.75 }}
+    />
+  );
+};
+
+interface PhotoCountProps {
+  obsPhotosCount: number; // file-local use enforces non-null
+  isSmall?: boolean;
+  isMultiplePhotosTop?: boolean;
+}
+const ObsImagePreviewPhotoCount = (
+  { obsPhotosCount, isMultiplePhotosTop, isSmall }: PhotoCountProps,
+) => {
+  if ( isSmall ) {
+    return (
+      <View
+        className={classNames(
+          "absolute",
+          "right-1",
+          isMultiplePhotosTop
+            ? "top-1"
+            : "bottom-1",
+        )}
+        style={ICON_DROP_SHADOW}
+      >
+        <INatIcon name="photos-outline" color={colors.white} size={16} />
+      </View>
+    );
+  }
+
+  return (
+    <View
+      className={classNames(
+        "absolute",
+        "right-0",
+        "p-2",
+        isMultiplePhotosTop
+          ? "top-0"
+          : "bottom-0",
+      )}
+      style={ICON_DROP_SHADOW}
+    >
+      { obsPhotosCount !== 0
+          && <PhotoCount count={obsPhotosCount} /> }
+    </View>
+  );
+};
+
+const SoundIcon = ( { isSmall }: { isSmall?: boolean } ) => {
+  if ( isSmall ) {
+    return (
+      <View
+        className="absolute left-1 bottom-1"
+        style={ICON_DROP_SHADOW}
+      >
+        <INatIcon name="sound" color={colors.white} size={16} />
+      </View>
+    );
+  }
+
+  return (
+    <View
+      className={classNames( "absolute left-0 top-0 p-1", {
+        "p-2": !isSmall,
+      } )}
+      style={ICON_DROP_SHADOW}
+    >
+      <INatIcon name="sound" color={colors.white} size={18} />
+    </View>
+  );
+};
 
 interface Props extends PropsWithChildren {
   className?: string;
@@ -76,122 +164,9 @@ const ObsImagePreview = ( {
     width,
   ];
 
-  const renderPhotoCount = useCallback( ( ) => {
-    if ( obsPhotosCount <= 1 || hidePhotoCount ) return null;
+  const shouldRenderPhotoCount = !hidePhotoCount && obsPhotosCount > 1;
 
-    if ( isSmall ) {
-      return (
-        <View
-          className={classNames(
-            "absolute",
-            "right-1",
-            isMultiplePhotosTop
-              ? "top-1"
-              : "bottom-1",
-          )}
-          style={ICON_DROP_SHADOW}
-        >
-          <INatIcon name="photos-outline" color={colors.white} size={16} />
-        </View>
-      );
-    }
-
-    return (
-      <View
-        className={classNames(
-          "absolute",
-          "right-0",
-          "p-2",
-          isMultiplePhotosTop
-            ? "top-0"
-            : "bottom-0",
-        )}
-        style={ICON_DROP_SHADOW}
-      >
-        { obsPhotosCount !== 0
-          && <PhotoCount count={obsPhotosCount} /> }
-      </View>
-    );
-  }, [
-    hidePhotoCount,
-    isMultiplePhotosTop,
-    isSmall,
-    obsPhotosCount,
-  ] );
-
-  const renderSelectable = useCallback( ( ) => {
-    if ( selectable ) {
-      return (
-        <View
-          className={classNames(
-            "flex items-center justify-center",
-            "rounded-full",
-            "absolute m-2.5 right-0",
-            {
-              "bg-white": selected,
-              "w-[24px] h-[24px]": selected,
-              "w-[24px] h-[24px] border-2 border-white": !selected,
-            },
-          )}
-          style={ICON_DROP_SHADOW}
-        >
-          {selected && (
-            <INatIcon name="checkmark" color={colors.darkGray} size={12} />
-          )}
-        </View>
-      );
-    }
-    return null;
-  }, [selectable, selected] );
-
-  const renderGradient = useCallback( ( ) => {
-    if ( hideGradientOverlay ) return null;
-    if ( isSmall ) return null;
-    if ( useShortGradient ) {
-      return (
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
-          className="absolute w-full h-full"
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 0, y: 1 }}
-        />
-      );
-    }
-    return (
-      <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-        className="absolute w-full h-full"
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 0.75 }}
-      />
-    );
-  }, [isSmall, useShortGradient, hideGradientOverlay] );
-
-  const renderSoundIcon = useCallback( ( ) => {
-    if ( !hasSound ) return null;
-
-    if ( isSmall ) {
-      return (
-        <View
-          className="absolute left-1 bottom-1"
-          style={ICON_DROP_SHADOW}
-        >
-          <INatIcon name="sound" color={colors.white} size={16} />
-        </View>
-      );
-    }
-
-    return (
-      <View
-        className={classNames( "absolute left-0 top-0 p-1", {
-          "p-2": !isSmall,
-        } )}
-        style={ICON_DROP_SHADOW}
-      >
-        <INatIcon name="sound" color={colors.white} size={18} />
-      </View>
-    );
-  }, [hasSound, isSmall] );
+  const shouldRenderGradient = !hideGradientOverlay && !isSmall;
 
   let content;
 
@@ -217,10 +192,34 @@ const ObsImagePreview = ( {
               : 100
           }
         />
-        {renderGradient( )}
-        {renderSelectable( )}
-        {renderPhotoCount( )}
-        {renderSoundIcon( )}
+        {shouldRenderGradient && <GradientOverlay useShortGradient={useShortGradient} />}
+        {selectable && (
+          <View
+            className={classNames(
+              "flex items-center justify-center",
+              "rounded-full",
+              "absolute m-2.5 right-0",
+              {
+                "bg-white": selected,
+                "w-[24px] h-[24px]": selected,
+                "w-[24px] h-[24px] border-2 border-white": !selected,
+              },
+            )}
+            style={ICON_DROP_SHADOW}
+          >
+            {selected && (
+              <INatIcon name="checkmark" color={colors.darkGray} size={12} />
+            )}
+          </View>
+        )}
+        {shouldRenderPhotoCount && (
+          <ObsImagePreviewPhotoCount
+            isMultiplePhotosTop={isMultiplePhotosTop}
+            isSmall={isSmall}
+            obsPhotosCount={obsPhotosCount}
+          />
+        )}
+        {hasSound && <SoundIcon isSmall={isSmall} />}
         {children}
       </>
     );
