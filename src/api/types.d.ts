@@ -18,10 +18,14 @@ export interface ApiPlace {
 }
 
 export interface ApiPost {
-  id: number;
-  title: string;
   body: string;
+  id: number;
   published_at: string;
+  title: string;
+  parent: {
+    id: number;
+    icon_url: string | null;
+  };
 }
 
 export interface ApiProject {

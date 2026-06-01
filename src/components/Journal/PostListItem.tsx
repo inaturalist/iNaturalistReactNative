@@ -1,20 +1,15 @@
 import type { ApiPost } from "api/types";
 import {
-  Body2, Body3, Heading3,
+  Body1,
+  List2,
 } from "components/SharedComponents";
 import {
+  Image,
   View,
 } from "components/styledComponents";
 import React from "react";
-import sanitizeHtml from "sanitize-html";
-import { formatDifferenceForHumans } from "sharedHelpers/dateAndTime";
+import { formatLongDate } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
-
-// Similar to computeProperties in ExplorePost.m from iNaturalistIOS
-function stripBodyForExcerpt( body: string ): string {
-  const sanitizedHtml = sanitizeHtml( body, { allowedTags: [], allowedAttributes: {} } );
-  return sanitizedHtml.replace( /\n/g, " " ).trim( );
-}
 
 interface Props {
   item: ApiPost;
@@ -29,22 +24,22 @@ const PostListItem = ( {
     return null;
   }
 
-  const excerpt = item.body
-    ? stripBodyForExcerpt( item.body )
-    : "";
-
-  let bodyNumberOfLines = 3;
-  if ( item.title.length > 70 ) {
-    bodyNumberOfLines = 2;
-  }
-
   return (
-    <View className="bg-white pt-4 pb-4 px-4">
-      <Body3 className="text-right text-darkGray">
-        { formatDifferenceForHumans( item.published_at, i18n ) }
-      </Body3>
-      <Heading3 numberOfLines={2}>{item.title}</Heading3>
-      <Body2 numberOfLines={bodyNumberOfLines}>{excerpt}</Body2>
+    <View className="bg-white py-3 px-4 flex-row gap-2">
+      {item.parent.icon_url && (
+        <Image
+          source={{ uri: item.parent.icon_url }}
+          className="w-[62px] h-[62px] rounded-lg"
+          accessibilityRole="image"
+          accessibilityIgnoresInvertColors
+        />
+      )}
+      <View className="flex-1">
+        <Body1 numberOfLines={3}>{item.title}</Body1>
+        <List2 className="mt-1">
+          {formatLongDate( item.published_at, i18n )}
+        </List2>
+      </View>
     </View>
   );
 };
