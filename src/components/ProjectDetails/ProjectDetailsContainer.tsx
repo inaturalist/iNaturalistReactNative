@@ -162,7 +162,14 @@ const ProjectDetailsContainer = ( ) => {
     if ( !project ) return null;
 
     return {
-      ...project,
+      description: project.description,
+      header_image_url: project.header_image_url,
+      icon: project.icon,
+      id: project.id,
+      membership_model: project.membership_model,
+      project_type: project.project_type,
+      rule_preferences: project.rule_preferences,
+      title: project.title,
       members_count: project.user_ids.length,
       journal_posts_count: projectPosts,
       observations_count: projectStats?.total_results,

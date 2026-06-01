@@ -50,12 +50,10 @@ interface Project {
   members_count?: number;
   observations_count?: number;
   place?: ApiPlace | null;
-  place_id: number | null;
   project_type: "collection" | "umbrella" | "";
   rule_preferences: ProjectRulePreference[];
   species_count?: number;
   title: string;
-  user_ids: number[];
 }
 
 interface Props {
@@ -87,7 +85,7 @@ const ProjectDetails = ( {
       navigation.navigate( "Explore", {
         // Function is only rendered with a button after null check below
         project: project as Project,
-        // If selected project has no place_id, show map in worldwide mode
+        // If selected project has no place, show map in worldwide mode
         worldwide: !project?.place,
         // TODO: refactor this to only send an ID to ExploreV2 and not an entire place object
         place: project?.place,
