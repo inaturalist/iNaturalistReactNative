@@ -106,13 +106,13 @@ const writeObservationsToRealm = ( observations, message ) => {
   }, message );
 };
 
-const pressIndividualUpload = observation => {
+const pressIndividualUpload = async observation => {
   const uploadIcon = screen.getByTestId(
     `UploadIcon.start.${observation.uuid}`,
   );
   // We used toBeVisible here but the update to RN0.77 broke this expectation
   expect( uploadIcon ).toBeOnTheScreen( );
-  actor.press( uploadIcon );
+  await actor.press( uploadIcon );
 };
 
 const waitForDisplayedText = async ( text, timeout = 1000 ) => {
