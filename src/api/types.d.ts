@@ -24,6 +24,11 @@ export interface ApiPost {
   published_at: string;
 }
 
+interface ProjectRulePreference {
+  field: string;
+  value: string | null;
+}
+
 export interface ApiProject {
   description: string;
   header_image_url: string | null;
@@ -32,6 +37,7 @@ export interface ApiProject {
   membership_model: "inviteonly" | "open" | null;
   place_id: number | null;
   project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
+  rule_preferences: ProjectRulePreference[];
   title: string;
   user_ids: number[];
 }
