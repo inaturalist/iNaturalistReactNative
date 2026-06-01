@@ -41,6 +41,10 @@ const ProjectDetailsContainer = ( ) => {
         membership_model: true,
         place_id: true,
         project_type: true,
+        rule_preferences: {
+          field: true,
+          value: true,
+        },
         title: true,
         user_ids: true,
       },
