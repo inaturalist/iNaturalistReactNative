@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiPlace } from "api/types";
+import type { ApiPlace, ProjectRulePreference } from "api/types";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
@@ -52,6 +52,7 @@ interface Project {
   place?: ApiPlace | null;
   place_id: number | null;
   project_type: "collection" | "umbrella" | "";
+  rule_preferences: ProjectRulePreference[];
   species_count?: number;
   title: string;
   user_ids: number[];
@@ -130,7 +131,6 @@ const ProjectDetails = ( {
 
   const userTextStyle = { lineHeight: 26 };
 
-  // TODO: Bubble up types from this function
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
 
   const displayBriefcase = ( ) => (
