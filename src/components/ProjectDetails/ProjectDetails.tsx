@@ -109,8 +109,9 @@ const ProjectDetails = ( {
   const onMembersPressed = useCallback(
     ( ) => {
       navigation.navigate( "ProjectMembers", {
-        id: project?.id,
-        title: project?.title,
+        // Function is only rendered with a button after null check below
+        id: ( project as Project ).id,
+        title: ( project as Project ).title,
       } );
     },
     [navigation, project],
@@ -118,8 +119,9 @@ const ProjectDetails = ( {
 
   const onJournalPostsPressed = ( ) => {
     navigation.navigate( "Journal", {
-      projectTitle: project?.title,
-      journalPostsCount: project?.journal_posts_count,
+      // Function is only rendered with a button after null check below
+      projectTitle: ( project as Project ).title,
+      journalPostsCount: ( project as Project ).journal_posts_count,
     } );
   };
 
