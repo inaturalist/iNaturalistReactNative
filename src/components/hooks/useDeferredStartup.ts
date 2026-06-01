@@ -12,7 +12,6 @@
 import { cleanupLogFiles } from "components/Developer/logManagementHelpers";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import {
   clearComputerVisionPhotos,
   clearGalleryPhotos,
@@ -24,6 +23,7 @@ import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import { log } from "sharedHelpers/logger";
 import { logSentinelFiles } from "sharedHelpers/sentinelFiles";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
+import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 
 const { useRealm } = RealmContext;
