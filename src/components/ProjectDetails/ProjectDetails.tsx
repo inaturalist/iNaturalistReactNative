@@ -83,6 +83,7 @@ const ProjectDetails = ( {
         writeLayoutToStorage( "map" );
       }
       navigation.navigate( "Explore", {
+        // TODO: refactor this to only send an ID to ExploreV2 and not an entire project object
         // Function is only rendered with a button after null check below
         project: project as Project,
         // If selected project has no place, show map in worldwide mode
