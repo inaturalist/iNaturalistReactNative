@@ -24,7 +24,7 @@ export interface ApiPost {
   published_at: string;
 }
 
-interface ProjectRulePreference {
+export interface ProjectRulePreference {
   field: string;
   value: string | null;
 }
