@@ -199,7 +199,7 @@ const ProjectDetails = ( {
             members_count: project.members_count,
             journal_posts_count: project.journal_posts_count,
           }}
-          onObservationPressed={() => onObservationPressed( false )}
+          onObservationPressed={( ) => onObservationPressed( false )}
           onSpeciesPressed={onSpeciesPressed}
           onMembersPressed={onMembersPressed}
           onJournalPostsPressed={onJournalPostsPressed}
@@ -226,7 +226,7 @@ const ProjectDetails = ( {
         <Button
           level="neutral"
           text={t( "VIEW-IN-EXPLORE" )}
-          onPress={() => onObservationPressed( true )}
+          onPress={( ) => onObservationPressed( true )}
         />
         <Heading4 className="mb-3 mt-5">
           {!project.current_user_is_member
@@ -238,7 +238,7 @@ const ProjectDetails = ( {
             <Button
               level="neutral"
               text={t( "JOIN" )}
-              onPress={() => {
+              onPress={( ) => {
                 if ( project.membership_model === "inviteonly" ) {
                   Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
                 } else {
@@ -253,7 +253,7 @@ const ProjectDetails = ( {
             <Button
               level="neutral"
               text={t( "LEAVE" )}
-              onPress={() => setOpenSheet( LEAVE )}
+              onPress={( ) => setOpenSheet( LEAVE )}
               loading={loadingProjectMembership}
               disabled={loadingProjectMembership}
             />
@@ -262,21 +262,21 @@ const ProjectDetails = ( {
         <Body4
           className="underline mt-[11px]"
           accessibilityRole="link"
-          onPress={async () => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
+          onPress={async ( ) => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
         >
           {t( "View-in-browser" )}
         </Body4>
       </View>
       {openSheet === JOIN && (
         <WarningSheet
-          onPressClose={() => setOpenSheet( NONE )}
-          confirm={() => {
-            joinProject();
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( ) => {
+            joinProject( );
             setOpenSheet( NONE );
           }}
           headerText={t( "JOIN-PROJECT--question" )}
           buttonText={t( "JOIN" )}
-          handleSecondButtonPress={() => setOpenSheet( NONE )}
+          handleSecondButtonPress={( ) => setOpenSheet( NONE )}
           secondButtonText={t( "CANCEL" )}
           loading={loadingProjectMembership}
           buttonType="primary"
@@ -284,8 +284,8 @@ const ProjectDetails = ( {
       )}
       {openSheet === LEAVE && (
         <WarningSheet
-          onPressClose={() => setOpenSheet( NONE )}
-          confirm={() => {
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( ) => {
             leaveProject( );
             setOpenSheet( NONE );
           }}
@@ -298,7 +298,7 @@ const ProjectDetails = ( {
             } )
           }
           buttonText={t( "LEAVE" )}
-          handleSecondButtonPress={() => setOpenSheet( NONE )}
+          handleSecondButtonPress={( ) => setOpenSheet( NONE )}
           secondButtonText={t( "CANCEL" )}
           loading={loadingProjectMembership}
         />

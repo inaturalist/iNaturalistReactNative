@@ -154,7 +154,7 @@ const ProjectDetailsContainer = ( ) => {
     }
   };
 
-  const enrichedProject = useMemo( () => {
+  const enrichedProject = useMemo( ( ) => {
     if ( !project ) return null;
 
     return {
