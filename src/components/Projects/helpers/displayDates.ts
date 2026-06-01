@@ -1,22 +1,22 @@
-import type { ProjectRulePreference } from "api/types";
+import type { ApiProject, ProjectRulePreference } from "api/types";
 import type { i18n as i18next, TFunction } from "i18next";
 import { formatProjectsApiDatetimeLong } from "sharedHelpers/dateAndTime";
+
+interface ProjectWithDateRules {
+  project_type?: ApiProject["project_type"];
+  rule_preferences?: ProjectRulePreference[] | null;
+}
 
 interface FormattedProjectDate {
   projectDate: string | null;
   shouldDisplayDateRange: boolean;
 }
 
-interface Project {
-  project_type: string;
-  rule_preferences: ProjectRulePreference[];
-}
-
 const getFieldValue = ( item?: ProjectRulePreference[] | null ) => item?.[0]?.value ?? null;
 
 // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx#L100C3-L114C4
 const formatProjectDate = (
-  project: Project | null | undefined,
+  project: ProjectWithDateRules | null | undefined,
   t: TFunction,
   i18n: i18next,
 ): FormattedProjectDate => {
