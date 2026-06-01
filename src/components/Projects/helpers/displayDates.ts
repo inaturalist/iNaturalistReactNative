@@ -7,8 +7,7 @@ interface ProjectRulePreference {
   value?: string | null;
 }
 
-type ProjectWithDateRules = Omit<ApiProject, "project_type"> & {
-  project_type?: ApiProject["project_type"];
+type ProjectWithDateRules = ApiProject & {
   rule_preferences?: ProjectRulePreference[] | null;
 };
 
