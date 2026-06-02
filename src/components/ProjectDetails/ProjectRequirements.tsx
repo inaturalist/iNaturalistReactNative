@@ -19,7 +19,7 @@ const getFieldValue = item => item?.[0]?.value;
 interface Project {
   icon: string;
   id: number;
-  project_type: "collection" | "umbrella" | "";
+  project_type: "collection";
   rule_preferences: ProjectRulePreference[];
   title: string;
 }
