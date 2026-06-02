@@ -28,11 +28,22 @@ export interface ApiPost {
   };
 }
 
+export interface ProjectRulePreference {
+  field: string;
+  value: string | null;
+}
+
 export interface ApiProject {
-  icon?: string;
-  id?: number;
-  project_type?: "collection" | "umbrella" | ""; // FYI "" means "traditional"
-  title?: string;
+  description: string;
+  header_image_url: string | null;
+  icon: string;
+  id: number;
+  membership_model: "inviteonly" | "open" | null;
+  place_id: number | null;
+  project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
+  rule_preferences: ProjectRulePreference[];
+  title: string;
+  user_ids: number[];
 }
 
 export interface ApiResponse {
