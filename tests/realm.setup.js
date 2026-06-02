@@ -35,6 +35,7 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.realm,
+      useObject: ( type, uuid ) => global.realm?.objectForPrimaryKey( type, uuid ) ?? null,
     },
   };
 } );

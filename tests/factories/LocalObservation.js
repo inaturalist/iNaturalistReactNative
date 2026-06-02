@@ -7,6 +7,8 @@ export default define( "LocalObservation", faker => ( {
   wasSynced: jest.fn( ( ) => false ),
   missingBasics: jest.fn( ( ) => false ),
   needsSync: jest.fn( ( ) => true ),
+  comments: [],
+  identifications: [],
   observationPhotos: [],
   observationSounds: [],
   viewed: jest.fn( ( ) => true ),

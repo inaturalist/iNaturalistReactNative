@@ -30,6 +30,7 @@ type Props = {
   explore: boolean,
   hideMetadata?: boolean,
   hideRGLabel?: boolean,
+  missingBasics?: boolean,
   onUploadButtonPress: Function,
   observation: Object,
   queued: boolean,
@@ -45,6 +46,8 @@ const ObsListItem = ( {
   explore = false,
   hideMetadata,
   hideRGLabel = true,
+  // TODO: figure out if we need this if it's "just a test"
+  missingBasics: missingBasicsFromProp,
   observation,
   onUploadButtonPress,
   queued,
@@ -70,7 +73,7 @@ const ObsListItem = ( {
     // Currently just a test
     isDebug
     && observation.needs_sync
-    && observation.missing_basics
+    && missingBasicsFromProp
   );
 
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
@@ -161,6 +164,7 @@ const ObsListItem = ( {
         {!hideObsUploadStatus && (
           <ObsUploadStatus
             explore={explore}
+            missingBasics={missingBasicsFromProp}
             onPress={onUploadButtonPress}
             layout="vertical"
             observation={observation}

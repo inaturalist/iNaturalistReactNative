@@ -6,6 +6,7 @@ interface Props {
   classNameMargin?: string;
   explore?: boolean;
   layout: "horizontal" | "vertical";
+  missingBasics?: boolean;
   observation: RealmObservation;
   onPress: ( ) => void;
   progress?: number;
@@ -18,6 +19,7 @@ interface Props {
 const ObsUploadStatus = ( {
   classNameMargin,
   explore = false,
+  missingBasics,
   onPress,
   layout,
   observation,
@@ -54,7 +56,7 @@ const ObsUploadStatus = ( {
     <UploadStatus
       white={white}
       layout={layout}
-      needsEdit={observation?.missing_basics}
+      needsEdit={missingBasics ?? observation?.missing_basics}
       onPress={onPress}
       progress={progress}
       uniqueKey={observation.uuid}

@@ -19,6 +19,7 @@ type Props = {
   explore: boolean,
   height?: string,
   hideObsUploadStatus?: boolean,
+  missingBasics?: boolean,
   observation: Object,
   onUploadButtonPress: Function,
   style?: Object,
@@ -33,6 +34,7 @@ const ObsGridItem = ( {
   explore,
   height = "w-[200px]",
   hideObsUploadStatus,
+  missingBasics,
   observation,
   onUploadButtonPress,
   queued,
@@ -84,6 +86,7 @@ const ObsGridItem = ( {
             classNameMargin="mb-1"
             explore={explore}
             layout="horizontal"
+            missingBasics={missingBasics}
             observation={observation}
             onPress={onUploadButtonPress}
             queued={queued}

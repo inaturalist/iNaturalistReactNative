@@ -2,12 +2,10 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
-import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
 import {
   AccountCreationCard,
   FiftyObservationCard,
   FiveObservationCard,
-  OneObservationCard,
 } from "components/OnboardingModal/PivotCards";
 import {
   Body1,
@@ -24,10 +22,7 @@ import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
 import { Alert } from "react-native";
 import Photo from "realmModels/Photo";
-import type {
-  RealmObservation,
-  RealmUser,
-} from "realmModels/types";
+import type { RealmUser } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -51,12 +46,13 @@ interface Props {
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
-  listRef?: React.RefObject<FlashListRef<RealmObservation> | null>;
+  listRef?: React.RefObject<FlashListRef<unknown> | null>;
   taxaListRef?: React.RefObject<FlashListRef<SpeciesCount> | null>;
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
-  observations: RealmObservation[];
+  observationIds: string[];
+  obsMissingBasicsUuids: string[];
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
@@ -99,7 +95,8 @@ const MyObservationsSimple = ( {
   taxaListRef,
   numTotalTaxa,
   numUnuploadedObservations,
-  observations,
+  observationIds,
+  obsMissingBasicsUuids,
   onEndReached,
   onListLayout,
   onScroll,
@@ -212,11 +209,7 @@ const MyObservationsSimple = ( {
     taxa?.length,
   ] );
 
-  const unuploadedObsMissingBasicsIDs = useMemo( () => (
-    observations
-      .filter( o => o.needs_sync && o.missing_basics )
-      .map( o => o.uuid )
-  ), [observations] );
+  const unuploadedObsMissingBasicsIDs = obsMissingBasicsUuids;
 
   const numUnuploadedObsMissingBasics = unuploadedObsMissingBasicsIDs.length;
   const obsMissingBasicsExist = useMemo( ( ) => (
@@ -270,21 +263,17 @@ const MyObservationsSimple = ( {
   }, [flashListStyle, isConnected, layout, numTotalObservations, obsMissingBasicsExist] );
 
   const dataFilledWithEmptyBoxes = useMemo( ( ) => {
-    const data = observations;
+    const items = observationIds.map( uuid => ( { uuid } ) );
     // In grid layout fill up to 8 items to make sure the grid is filled
     // but don't add the empty boxes at the end of a long existing list
-    if ( layout === "grid" && data.length < 8 ) {
-    // Fill up to 8 items to make sure the grid is filled
-      const emptyBoxes = new Array( 8 - ( data.length % 8 ) ).fill( { empty: true } );
-      // Add random id to empty boxes to ensure they are unique
-      const emptyBoxesWithId = emptyBoxes.map( ( box, index ) => ( {
-        ...box,
-        id: `empty-${index}`,
-      } ) );
-      return [...data, ...emptyBoxesWithId];
+    if ( layout === "grid" && items.length < 8 ) {
+      const emptyBoxes = new Array( 8 - ( items.length % 8 ) )
+        .fill( null )
+        .map( ( _, index ) => ( { empty: true, id: `empty-${index}` } ) );
+      return [...items, ...emptyBoxes];
     }
-    return data;
-  }, [observations, layout] );
+    return items;
+  }, [observationIds, layout] );
 
   const renderOfflineNotice = ( ) => {
     if ( isConnected === false ) {
@@ -318,15 +307,15 @@ const MyObservationsSimple = ( {
 
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
-
-  const handlePivotCardGridItemPress = ( ) => {
-    const { uuid } = observations[0];
-    navigation.navigate( {
-      key: `Obs-0-${uuid}`,
-      name: "ObsDetails",
-      params: { uuid },
-    } );
-  };
+  // TODO: fix the one-off ObsGridItem case here
+  // const handlePivotCardGridItemPress = ( ) => {
+  //   const uuid = observationIds[0];
+  //   navigation.navigate( {
+  //     key: `Obs-0-${uuid}`,
+  //     name: "ObsDetails",
+  //     params: { uuid },
+  //   } );
+  // };
 
   return (
     <>
@@ -439,22 +428,21 @@ const MyObservationsSimple = ( {
       {isDefaultMode && (
         <>
           {/* These four cards should show only in default mode */}
-          <OneObservationCard
+          {/* TODO: fix the one-off ObsGridItem case here */}
+          {/* <OneObservationCard
             triggerCondition={numTotalObservations === 1}
             imageComponentOptions={{
               onImageComponentPress: handlePivotCardGridItemPress,
               accessibilityHint: t( "Navigates-to-observation-details" ),
               imageComponent: (
                 <ObsGridItem
-                  observation={observations[0]}
+                  uuid={observationIds[0]}
                   currentUser={currentUser}
-                  explore={false}
-                  queued={false}
                   testID="PivotCardGridItem"
                 />
               ),
             }}
-          />
+          /> */}
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />
           <FiftyObservationCard
             triggerCondition={

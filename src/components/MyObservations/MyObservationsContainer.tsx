@@ -26,7 +26,7 @@ import {
   useInfiniteObservationsScroll,
   useInfiniteScroll,
   useLayoutPrefs,
-  useLocalObservations,
+  useLocalObservationIds,
   useNavigateToObsEdit,
   useObservationsUpdates,
   useStoredLayout,
@@ -93,10 +93,12 @@ const MyObservationsContainer = ( ) => {
   }, [navigation, setJustFinishedSignup] );
 
   const {
-    observationList: observations,
-    totalResults: totalResultsLocal,
-  } = useLocalObservations( );
-  const prevObservationsLength = useRef( observations.length );
+    observationIds,
+    obsMissingBasicsUuids,
+  } = useLocalObservationIds( );
+  const totalResultsLocal = observationIds.length;
+
+  const prevObservationsLength = useRef( totalResultsLocal );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const { isConnected } = useNetInfo( );
@@ -248,14 +250,14 @@ const MyObservationsContainer = ( ) => {
 
   // API call fetching obs has completed but results are not yet stored in realm
   // for display here
-  const showLoading = ( totalResultsRemote || 0 ) > 0 && observations.length === 0;
+  const showLoading = ( totalResultsRemote || 0 ) > 0 && totalResultsLocal === 0;
 
   // show empty screen instead of loading wheel...
   const showNoResults = !showLoading && (
     // ...if the user is not signed in, or...
     !currentUser
     // ...if the signed in user is offline and has no observations, or...
-    || ( !isConnected && observations?.length === 0 )
+    || ( !isConnected && totalResultsLocal === 0 )
     // ...if signed in, online user requested their own obs for the first time
     //    and has 0 obs
     || status !== "pending"
@@ -370,7 +372,7 @@ const MyObservationsContainer = ( ) => {
   }, [numTotalTaxa, numOfUserSpecies] );
 
   useEffect( () => {
-    const newObservationCount = observations.length - prevObservationsLength.current;
+    const newObservationCount = totalResultsLocal - prevObservationsLength.current;
 
     if ( newObservationCount > 0 && listRef?.current ) {
       if ( listRef.current.notifyDataFetched ) {
@@ -380,8 +382,8 @@ const MyObservationsContainer = ( ) => {
       }
     }
 
-    prevObservationsLength.current = observations.length;
-  }, [observations.length, listRef] );
+    prevObservationsLength.current = totalResultsLocal;
+  }, [totalResultsLocal, listRef] );
 
   const taxa = useMemo( () => {
     const unsortedTaxa = currentUser
@@ -405,7 +407,7 @@ const MyObservationsContainer = ( ) => {
 
   if ( !layout ) { return null; }
 
-  if ( observations.length === 0 ) {
+  if ( totalResultsLocal === 0 ) {
     return showNoResults
       ? (
         <MyObservationsEmptySimple
@@ -439,7 +441,8 @@ const MyObservationsContainer = ( ) => {
       numTotalObservations={numOfUserObservations}
       numTotalTaxa={numOfUserSpecies}
       numUnuploadedObservations={numUnuploadedObservations}
-      observations={observations}
+      observationIds={observationIds}
+      obsMissingBasicsUuids={obsMissingBasicsUuids}
       onEndReached={fetchNextPage}
       onListLayout={restoreScrollOffset}
       onScroll={onScroll}

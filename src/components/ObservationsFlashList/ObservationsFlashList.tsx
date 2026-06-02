@@ -114,15 +114,14 @@ const ObservationsFlashList = ( {
   const {
     flashListStyle,
     gridItemStyle,
-    gridItemWidth,
     numColumns,
   } = useGridLayout( layout );
   const { t } = useTranslation( );
 
   // TODO: type data / observation
-  const renderItem = useCallback( ( { item: observation } ) => {
+  const renderItem = useCallback( ( { item } ) => {
     // Empty box
-    if ( observation.empty ) {
+    if ( item.empty ) {
       return (
         <View
           className="rounded-[15px] border-dotted border-4 border-lightGray"
@@ -130,10 +129,10 @@ const ObservationsFlashList = ( {
         />
       );
     }
-    const { uuid } = observation;
+    const { uuid } = item;
     const onUploadButtonPress = ( ) => handleIndividualUploadPress( uuid );
     // 20240529 amanda - filtering in realm is a fast way to look up sync status
-    const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, observation );
+    const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, item );
     const obsUploadState = totalUploadProgress.find( o => o.uuid === uuid );
     const uploadProgress = obsNeedsSync
       ? obsUploadState?.totalProgress || 0
@@ -143,7 +142,7 @@ const ObservationsFlashList = ( {
 
     const onItemPress = ( ) => {
       if ( obsNeedsSync && !isDefaultMode ) {
-        const realmObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
+        const realmObservation = realm.objectForPrimaryKey( "Observation", uuid );
         navigateToObsEdit( realmObservation );
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
@@ -172,7 +171,10 @@ const ObservationsFlashList = ( {
         hideRGLabel={hideRGLabel}
         layout={layout}
         key={itemKey}
-        observation={observation}
+        apiObservation={explore
+          ? item
+          : undefined}
+        uuid={uuid}
         onItemPress={onItemPress}
         onUploadButtonPress={onUploadButtonPress}
         queued={queued}
@@ -255,11 +257,6 @@ const ObservationsFlashList = ( {
     t,
   ] );
 
-  const extraData = {
-    gridItemWidth,
-    numColumns,
-  };
-
   // only used id as a fallback key because after upload
   // react thinks we've rendered a second item w/ a duplicate key
   const keyExtractor = item => item.uuid || item.id;
@@ -274,16 +271,19 @@ const ObservationsFlashList = ( {
     if ( !dataCanBeFetched || explore ) return;
 
     if ( fetchFromLastObservation && data.length > 0 ) {
-      const lastObservation = data[data.length - 1];
-      const lastId = lastObservation?.id;
-      if ( lastId && !lastObservation?.empty ) {
-        fetchFromLastObservation( lastId );
-        return;
+      const lastItem = data[data.length - 1];
+      if ( lastItem?.uuid && !lastItem?.empty ) {
+        const lastObs = realm.objectForPrimaryKey( "Observation", lastItem.uuid );
+        const lastId = lastObs?.id;
+        if ( lastId ) {
+          fetchFromLastObservation( lastId );
+          return;
+        }
       }
     }
 
     onEndReached( );
-  }, [dataCanBeFetched, fetchFromLastObservation, data, onEndReached, explore] );
+  }, [dataCanBeFetched, explore, fetchFromLastObservation, data, onEndReached, realm] );
 
   const refreshControl = (
     <CustomRefreshControl
@@ -301,7 +301,6 @@ const ObservationsFlashList = ( {
       ListHeaderComponent={listHeaderContent}
       contentContainerStyle={contentContainerStyle}
       data={data}
-      extraData={extraData}
       ref={ref}
       key={numColumns}
       keyExtractor={keyExtractor}

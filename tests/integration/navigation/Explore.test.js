@@ -61,6 +61,8 @@ jest.mock( "providers/contexts", ( ) => {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
       useQuery: ( ) => [],
+      useObject: ( type, uuid ) => global.mockRealms[mockRealmIdentifier]
+        ?.objectForPrimaryKey( type, uuid ) ?? null,
     },
   };
 } );
@@ -283,12 +285,10 @@ describe( "logged in", ( ) => {
         expect( headerCount ).toBeVisible( );
         const gridView = await screen.findByTestId( "SegmentedButton.grid" );
         await actor.press( gridView );
-        const firstObservation = screen.queryByTestId(
+        const firstObservation = await screen.findByTestId(
           `ObsPressable.${mockObservations[0].uuid}`,
         );
-        await waitFor( ( ) => {
-          expect( firstObservation ).toBeVisible( );
-        }, { timeout: 10_000 } );
+        expect( firstObservation ).toBeVisible( );
         await actor.press( firstObservation );
         await waitFor( ( ) => {
           expect(
