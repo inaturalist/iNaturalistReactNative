@@ -123,12 +123,9 @@ const ProjectRequirements = ( ) => {
   const filterRules = operator => project?.project_observation_rules
     .filter( r => r.operator === operator );
 
-  const createTaxonObject = taxon => ( {
+  const createTaxonObject = ( taxon: { id: number} ) => ( {
     taxon,
     text: null,
-    // onPress: ( ) => navigation.navigate( "TaxonDetails", {
-    //   id: taxon.id
-    // } )
     onPress: ( ) => (
       navigation.navigate( {
         // Ensure button mashing doesn't open multiple TaxonDetails instances
@@ -285,7 +282,7 @@ const ProjectRequirements = ( ) => {
     establishmentRule.inclusions = establishmentList;
   }
 
-  const renderItemSeparator = () => (
+  const renderItemSeparator = ( ) => (
     <View className="border-b border-lightGray" />
   );
 
