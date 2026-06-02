@@ -173,8 +173,8 @@ const AppWithProviders = ( ) => {
   );
 };
 
-if ( __DEV__ && shouldHaltLaunchForDebug() ) {
-  const HaltedWrappedApp = () => <HaltedLaunch><AppWithProviders /></HaltedLaunch>;
+if ( __DEV__ && shouldHaltLaunchForDebug( ) ) {
+  const HaltedWrappedApp = ( ) => <HaltedLaunch><AppWithProviders /></HaltedLaunch>;
   AppRegistry.registerComponent( appName, ( ) => HaltedWrappedApp );
 } else {
   AppRegistry.registerComponent( appName, ( ) => AppWithProviders );

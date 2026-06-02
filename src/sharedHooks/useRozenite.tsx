@@ -27,7 +27,7 @@ interface RozeniteOptions {
 
 const launchHaltStorageKey = "haltLaunch";
 // eslint-disable-next-line arrow-body-style
-export const shouldHaltLaunchForDebug = () => {
+export const shouldHaltLaunchForDebug = ( ) => {
   const result = installDataMMKVStorage.getBoolean( launchHaltStorageKey ) || false;
   // just unset this on read: make each halted launch intentional
   installDataMMKVStorage.delete( launchHaltStorageKey );
@@ -55,11 +55,11 @@ HaltedLaunch.displayName = "HaltedLaunch";
 // note: Rozenite plugins are automatically disabled / noops in Production builds
 const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
   useTanStackQueryDevTools( queryClient );
-  useNetworkActivityDevTools();
+  useNetworkActivityDevTools( );
   useRozeniteStoragePlugin( {
     storages: storageAdapters,
   } );
-  useRequireProfilerDevTools();
+  useRequireProfilerDevTools( );
   useFileSystemDevTools( {
     adapter: createRNFSAdapter( RNFS ),
   } );
@@ -78,7 +78,7 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
           type: "button",
           title: "Restart & Halt",
           description:
-            "Restarts the app and renders a placeholder root component."
+            "Restarts the app and renders a placeholder root component. "
             + "Useful for attaching a debugger or starting a profiling session.",
           onPress: () => {
             installDataMMKVStorage.set( launchHaltStorageKey, true );
