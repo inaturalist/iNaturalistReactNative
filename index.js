@@ -31,7 +31,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { getInstallID, store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
-import useRozenite from "sharedHooks/useRozenite";
+import useRozenite, { HaltedLaunch, shouldHaltLaunchForDebug } from "sharedHooks/useRozenite";
 import { createMMKVStorageAdapter } from "@rozenite/storage-plugin";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -42,7 +42,6 @@ const logger = log.extend( "index.js" );
 // Log all unhandled promise rejections in release builds. Otherwise they will
 // die in silence. Debug builds have a more useful UI w/ desymbolicated stack
 // traces
-/* eslint-disable no-undef */
 if (
   !__DEV__
   && typeof (
@@ -174,4 +173,9 @@ const AppWithProviders = ( ) => {
   );
 };
 
-AppRegistry.registerComponent( appName, ( ) => AppWithProviders );
+if ( __DEV__ && shouldHaltLaunchForDebug() ) {
+  const HaltedWrappedApp = () => <HaltedLaunch><AppWithProviders /></HaltedLaunch>;
+  AppRegistry.registerComponent( appName, ( ) => HaltedWrappedApp );
+} else {
+  AppRegistry.registerComponent( appName, ( ) => AppWithProviders );
+}
