@@ -3,6 +3,8 @@ module.exports = {
   globals: {
     requestIdleCallback: "readonly",
     cancelIdleCallback: "readonly",
+    __DEV__: "readonly",
+    HermesInternal: "readonly",
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {

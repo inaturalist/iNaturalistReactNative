@@ -75,7 +75,6 @@ type iNatLogstashTransportOptions = object;
 // Custom transport for posting to iNat API logging
 const iNatLogstashTransport: transportFunctionType<iNatLogstashTransportOptions> = async props => {
   // Don't bother to log from dev builds
-  // eslint-disable-next-line no-undef
   if ( __DEV__ ) return;
 
   // Note on `console.errors`: we use logging to report errors, so validating input
