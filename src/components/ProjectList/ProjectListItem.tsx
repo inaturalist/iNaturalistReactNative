@@ -31,9 +31,6 @@ interface Props {
 const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   const { t, i18n } = useTranslation( );
 
-  const { projectDate, shouldDisplayDateRange } = formatProjectDate( item, t, i18n );
-  const displayDateRange = shouldDisplayDateRange && !isHeader;
-
   const iconClassName = "w-[62px] h-[62px] rounded-lg bg-white mr-3";
 
   const displayBriefcase = ( ) => (
@@ -79,6 +76,10 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   };
 
   if ( !item ) { return null; }
+
+  const { projectDate, shouldDisplayDateRange } = formatProjectDate( item, t, i18n );
+  const displayDateRange = shouldDisplayDateRange && !isHeader;
+
   return (
     <View
       className="flex-row items-center shrink py-1"
