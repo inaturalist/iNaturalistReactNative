@@ -1,4 +1,5 @@
 import * as React from "react";
+import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
@@ -22,15 +23,6 @@ export enum EXPLORE_V2_PLACE_MODE {
   NEARBY = "NEARBY",
   WORLDWIDE = "WORLDWIDE",
   PLACE = "PLACE"
-}
-
-// more options to be potentially added in MOB-1333
-export enum EXPLORE_V2_SORT {
-  DATE_UPLOADED_NEWEST = "DATE_UPLOADED_NEWEST",
-  DATE_UPLOADED_OLDEST = "DATE_UPLOADED_OLDEST",
-  DATE_OBSERVED_NEWEST = "DATE_OBSERVED_NEWEST",
-  DATE_OBSERVED_OLDEST = "DATE_OBSERVED_OLDEST",
-  MOST_FAVED = "MOST_FAVED"
 }
 
 interface Place {
@@ -78,7 +70,7 @@ export type ExploreV2LocationState =
 export interface ExploreV2State {
   subject: ExploreV2Subject | null;
   location: ExploreV2LocationState;
-  sortBy: EXPLORE_V2_SORT;
+  sortBy: OBSERVATIONS_SORT;
   filters: ExploreV2Filters;
 }
 
@@ -97,14 +89,14 @@ export type ExploreV2Action =
     type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE;
     place: Place;
   }
-  | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: EXPLORE_V2_SORT }
+  | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: OBSERVATIONS_SORT }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
   | { type: EXPLORE_V2_ACTION.RESET };
 
 export const initialExploreV2State: ExploreV2State = {
   subject: null,
   location: { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED },
-  sortBy: EXPLORE_V2_SORT.DATE_UPLOADED_NEWEST,
+  sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
   filters: {},
 };
 

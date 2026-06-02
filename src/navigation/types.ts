@@ -10,7 +10,7 @@ import type {
   ParamListRoute,
 } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { ApiUser } from "api/types";
+import type { ApiPlace, ApiUser } from "api/types";
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
@@ -217,8 +217,26 @@ export type BaseTabStackParamList = {
   ObsList: undefined;
   RootExplore: undefined;
   // TODO: type for other routes to Explore
+  // From UserProfile
+  // {
+  //   user,
+  //   worldwide: true,
+  // }
+  // From ProjectDetails
+  // {
+  //   project,
+  //   worldwide: true,
+  // }
+  // {
+  //   project,
+  //   // If selected project has no place_id, show map in worldwide mode
+  //   worldwide: !project?.place,
+  //   place: project?.place,
+  // }
   Explore: {
-    user: ApiUser;
+    user?: ApiUser;
+    project?: object;
+    place?: ApiPlace | null;
     worldwide: boolean;
   };
   ExploreFilters: undefined;
@@ -266,8 +284,18 @@ export type BaseTabStackParamList = {
   // From LoginForm
   // { id: params.projectId }
   ProjectDetails: { id: number };
-  ProjectRequirements: undefined;
-  ProjectMembers: undefined;
+  // From ProjectDetails
+  // { id: project.id }
+  ProjectRequirements: { id: number };
+  // From ProjectDetails
+  // {
+  //   id: project.id,
+  //   title: project.title,
+  // }
+  ProjectMembers: {
+    id: number;
+    title: string;
+  };
   // From ProjectButton, ProjectSection
   // { observationUuid: observation.uuid }
   // From UserProfile
