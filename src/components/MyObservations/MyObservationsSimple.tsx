@@ -6,6 +6,7 @@ import {
   AccountCreationCard,
   FiftyObservationCard,
   FiveObservationCard,
+  OneObservationCard,
 } from "components/OnboardingModal/PivotCards";
 import {
   Body1,
@@ -32,6 +33,7 @@ import { SPECIES_SORT_BY } from "../../types/sorting";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
+import PivotCardObsGridItem from "./PivotCardObsGridItem";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
@@ -307,15 +309,14 @@ const MyObservationsSimple = ( {
 
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
-  // TODO: fix the one-off ObsGridItem case here
-  // const handlePivotCardGridItemPress = ( ) => {
-  //   const uuid = observationIds[0];
-  //   navigation.navigate( {
-  //     key: `Obs-0-${uuid}`,
-  //     name: "ObsDetails",
-  //     params: { uuid },
-  //   } );
-  // };
+  const handlePivotCardGridItemPress = ( ) => {
+    const uuid = observationIds[0];
+    navigation.navigate( {
+      key: `Obs-0-${uuid}`,
+      name: "ObsDetails",
+      params: { uuid },
+    } );
+  };
 
   return (
     <>
@@ -428,21 +429,18 @@ const MyObservationsSimple = ( {
       {isDefaultMode && (
         <>
           {/* These four cards should show only in default mode */}
-          {/* TODO: fix the one-off ObsGridItem case here */}
-          {/* <OneObservationCard
+          <OneObservationCard
             triggerCondition={numTotalObservations === 1}
             imageComponentOptions={{
               onImageComponentPress: handlePivotCardGridItemPress,
               accessibilityHint: t( "Navigates-to-observation-details" ),
               imageComponent: (
-                <ObsGridItem
+                <PivotCardObsGridItem
                   uuid={observationIds[0]}
-                  currentUser={currentUser}
-                  testID="PivotCardGridItem"
                 />
               ),
             }}
-          /> */}
+          />
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />
           <FiftyObservationCard
             triggerCondition={

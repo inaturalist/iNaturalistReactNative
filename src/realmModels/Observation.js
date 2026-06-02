@@ -308,6 +308,17 @@ class Observation extends Realm.Object {
     };
   }
 
+  static mapTaxonForMyObs( taxon ) {
+    return {
+      id: taxon.id,
+      name: taxon.name,
+      preferred_common_name: taxon.preferred_common_name,
+      rank: taxon.rank,
+      rank_level: taxon.rank_level,
+      iconic_taxon_name: taxon.iconic_taxon_name,
+    };
+  }
+
   static mapObservationForMyObsDefaultMode( obs ) {
     return {
       uuid: obs.uuid,
@@ -322,13 +333,7 @@ class Observation extends Realm.Object {
         : [],
       quality_grade: obs.quality_grade,
       taxon: obs.taxon
-        ? {
-          id: obs?.taxon?.id,
-          name: obs?.taxon?.name,
-          preferred_common_name: obs?.taxon?.preferred_common_name,
-          rank: obs?.taxon?.rank,
-          rank_level: obs?.taxon?.rank_level,
-        }
+        ? this.mapTaxonForMyObs( obs.taxon )
         : null,
       comments_viewed: obs.comments_viewed,
       identifications_viewed: obs.identifications_viewed,
