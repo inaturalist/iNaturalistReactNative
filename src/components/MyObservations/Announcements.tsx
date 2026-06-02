@@ -164,6 +164,7 @@ const Announcements = ( {
     </body>
   </html>
 `;
+  const loggingExtra = { annonucementId: id, dismissible };
 
   const dismiss = async () => {
     if ( isAuthenticated ) {
@@ -171,9 +172,7 @@ const Announcements = ( {
       dismissAnnouncementMutate( { id } );
       logger.infoWithExtra(
         `User ${currentUser.id} dismissed Announcement ${id}`,
-        {
-          announcementId: id,
-        },
+        loggingExtra,
       );
     } else {
       dismissLoggedOutAnnouncement( id );
@@ -181,9 +180,7 @@ const Announcements = ( {
         `Logged out user dismissed Announcement ${id}. `
         + "NOTE: this is only saved to the users device and will "
         + "not be reflected in Announcements admin.",
-        {
-          announcementId: id,
-        },
+        loggingExtra,
       );
     }
   };
@@ -207,13 +204,9 @@ const Announcements = ( {
           const userType = isAuthenticated
             ? `user ${currentUser.id}`
             : "logged out user";
-          const extra = {
-            announcementId: id,
-            dismissible,
-          };
           logger.infoWithExtra(
             `Announcement ${id} displayed to ${userType}`,
-            extra,
+            loggingExtra,
           );
         }}
       />
