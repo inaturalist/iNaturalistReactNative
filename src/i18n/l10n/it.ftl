@@ -80,6 +80,8 @@ attribution-cc-by-nd = alcuni diritti riservati (CC BY-ND)
 attribution-cc-by-sa = alcuni diritti riservati (CC BY-SA)
 August = Agosto
 BACK-TO-LOGIN = TORNA AL LOGIN
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Importo in gruppo
 By-exiting-changes-not-saved = Uscendo, le modifiche alla tua osservazione non verranno salvate.
 By-exiting-observation-not-saved = Uscendo, la tua osservazione non verrà salvata.
@@ -141,6 +143,7 @@ Connect-with-expert-naturalists = Entra in contatto con naturalisti esperti
 Connect-with-other-naturalists = Connettiti con altri naturalisti e partecipa a conversazioni.
 Connection-problem-Please-try-again-later = Problema di connessione. Riprova più tardi.
 CONTACT-SUPPORT = CONTATTA L'ASSISTENZA
+Content-Hidden = Content Hidden
 CONTINUE = CONTINUA
 Coordinates-copied-to-clipboard = Coordinate copiate negli appunti
 Copy-coordinates = Copia le coordinate
@@ -330,7 +333,7 @@ Group-photos-onboarding = Raggruppa le foto nelle osservazioni– assicurati che
 HELP = AIUTO
 Help-create-Research-Grade-data-used-in-science-and-conservation = Aiuta a creare dati di livello di ricerca utilizzati nella scienza e nella conservazione.
 Help-protect-species = Aiuta a proteggere le specie
-Help-us-translate-the-app = Help us translate the app!
+Help-us-translate-the-app = Aiutaci a tradurre l'app!
 Hide = Nascondi
 Highest = Maggiore
 HIGHEST-RANK = RANGO MAGGIORE
@@ -360,7 +363,7 @@ If-you-leave-x-of-your-observations-removed =
     } verrà rimosso anche da questo progetto.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = Se salvi questa osservazione e la carichi su iNaturalist, altre persone potrebbero essere in grado di aiutarti a identificarla.
 If-you-want-to-collate-compare-promote = Se si desidera raccogliere, confrontare o promuovere un insieme di progetti esistenti, è consigliabile utilizzare un progetto Umbrella. Ad esempio, la City Nature Challenge 2018, che ha raccolto oltre 60 progetti, è stata un'ottima landing page in cui chiunque può confrontare le osservazioni di ogni città. Sia i progetti di raccolta che quelli tradizionali possono essere utilizzati in un progetto Umbrella e fino a 500 progetti possono essere raggruppati da un progetto Umbrella.
-If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
+If-youre-an-experienced-user-try-switching-to-Advanced-Mode = Hai caricato più di 100 osservazioni. Prova la Modalità Avanzata per altri modi per aggiungere e gestire le osservazioni.
 If-youre-seeing-this-error = Se vedi questo e sei online, lo staff di iNat ha già ricevuto una notifica. Grazie per aver trovato un bug! Se sei offline, fai uno screenshot e inviaci un'e-mail quando torni su Internet.
 IGNORE-LOCATION = IGNORA POSIZIONE
 Ignore-notifications = Ignora le notifiche
@@ -589,7 +592,7 @@ Please-allow-Microphone-Access = Si prega di consentire l'accesso al microfono
 Please-choose-a-different-password = Scegli una password diversa.
 Please-Grant-Permission = Si prega di concedere l'autorizzazione
 PLEASE-LOG-IN = EFFETTUA IL LOGIN
-Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
+Please-log-in-again = Per favore, accedi di nuovo. Ogni tanto dobbiamo aggiornare la sessione per cancellare i dati nella cache e assicurarci che l'app funzioni al meglio.
 Please-make-sure-your-password-is-at-least-6-characters = Assicurati che la tua password sia di almeno 6 caratteri.
 Please-try-again-when-you-are-connected-to-the-internet = Riprova quando sei connesso a Internet.
 Please-try-again-when-you-are-online = Riprova quando sei online!
@@ -744,6 +747,7 @@ Search-suggestions-with-location = Suggerimenti di ricerca con posizione
 Search-suggestions-without-location = Suggerimenti di ricerca senza posizione
 SEARCH-TAXA = CERCA I TAXA
 SEARCH-USERS = CERCA UTENTI
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Vedi le osservazioni di questo utente in Esplora
 See-observations-of-this-taxon-in-explore = Vedi le osservazioni di questo taxon in explore
 See-project-members = Vedi i membri del progetto
@@ -820,7 +824,7 @@ Sync-observations = Sincronizzare le osservazioni
 Syncing = Sincronizzando...
 Take-photo = Scattare foto
 Take-photos = Scatta foto
-Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-here-to-switch-to-Advanced-Mode = Tocca qui per passare alla Modalità Avanzata
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = VISUALIZZAZIONE DEI NOMI DEI TAXON
@@ -841,6 +845,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = La comun
 The-iNaturalist-Network = La rete iNaturalist è una raccolta di siti web localizzati che sono completamente connessi alla comunità globale di iNaturalist. I siti della rete sono supportati da istituzioni locali che promuovono l'uso locale e facilitano l'uso dei dati di iNaturalist a beneficio della biodiversità locale.
 The-location-will-not-be-visible-to-others = La posizione non sarà visibile agli altri, il che potrebbe rendere impossibile l'identificazione dell'osservazione
 The-models-that-suggest-species = I modelli che suggeriscono le specie in base alla somiglianza visiva e alla posizione sono dovuti in parte alla collaborazione con Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona e Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = Questo è un organismo selvatico e non è stato collocato in questa posizione dall'uomo.
 This-is-how-taxon-names-will-be-displayed = Ecco come ti verranno mostrati tutti i nomi dei taxon su iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Questa è la tua identificazione. Altre persone potrebbero aiutare a confermarlo!
@@ -853,6 +860,7 @@ This-observation-needs-more-identifications = Questa osservazione ha bisogno di 
 This-observation-needs-more-identifications-to-become-research-grade = Questa osservazione ha bisogno di più identificazioni per diventare di livello di ricerca.
 This-observer-has-opted-out-of-the-Community-Taxon = L'osservatore ha deciso di non partecipare al taxon comunitario
 This-organism-was-placed-by-humans = Questo organismo è stato collocato in questa posizione dall'uomo. Questo vale per cose come piante da giardino, animali domestici e animali da zoo.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = Questo utente non ha follower.
 This-user-has-not-joined-any-projects = Questo utente non ha aderito ad alcun progetto.
 This-user-is-not-following-anyone = Questo utente non sta seguendo nessuno.
@@ -965,6 +973,11 @@ X-Identifiers =
     { $count ->
         [uno] { $count } Identificatore
        *[altro] { $count } Identificatori
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

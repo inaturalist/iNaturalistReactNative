@@ -1,6 +1,4 @@
-import type { ParamListBase } from "@react-navigation/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import AgreeWithIDSheet from "components/ObsDetailsSharedComponents/Sheets/AgreeWithIDSheet";
@@ -11,6 +9,7 @@ import {
   TextInputSheet,
   WarningSheet,
 } from "components/SharedComponents";
+import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
@@ -148,13 +147,6 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
   }
 };
 
-interface RouteParams extends Record<string, unknown> {
-  identAt?: string;
-  identTaxonId?: number;
-  identTaxonFromVision?: boolean;
-  uuid?: string;
-}
-
 interface Props {
   agreeIdentification: boolean;
   closeAgreeWithIdSheet: () => void;
@@ -182,15 +174,14 @@ const IdentificationSheets: React.FC<Props> = ( {
   showAddCommentSheet,
   showAgreeWithIdSheet,
 }: Props ) => {
-  const { params } = useRoute();
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-  const routeParams = params as RouteParams;
+  const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
+  const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
   const {
     identAt,
     identTaxonId,
     identTaxonFromVision,
     uuid,
-  } = routeParams;
+  } = params;
   const [state, dispatch] = useReducer( identReducer, initialIdentState );
 
   const {
@@ -233,7 +224,10 @@ const IdentificationSheets: React.FC<Props> = ( {
     cancelable: true,
   } ), [t] );
 
-  const { mutate: createIdentificationMutate } = useAuthenticatedMutation(
+  const {
+    mutate: createIdentificationMutate,
+    isPending: isCreateIdPending,
+  } = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
@@ -252,7 +246,8 @@ const IdentificationSheets: React.FC<Props> = ( {
         showErrorAlert( error );
       },
       onSettled: () => {
-        // Clear params gotten via useRoute to prevent re-showing sheets
+        dispatch( { type: SUBMIT_IDENTIFICATION } );
+        closeAgreeWithIdSheet( );
         navigation.setParams(
           { identAt: undefined, identTaxonId: undefined, identTaxonFromVision: undefined },
         );
@@ -334,16 +329,13 @@ const IdentificationSheets: React.FC<Props> = ( {
 
     loadActivityItem( );
     createIdentificationMutate( { identification: agreeParams } );
-    closeAgreeWithIdSheet( );
-  }, [closeAgreeWithIdSheet, createIdentificationMutate, observation?.uuid, loadActivityItem] );
+  }, [createIdentificationMutate, observation?.uuid, loadActivityItem] );
 
   const potentialDisagreeSheetDiscardChanges = useCallback( ( ) => {
     dispatch( { type: HIDE_POTENTIAL_DISAGREEMENT_SHEET } );
   }, [] );
 
   const doSuggestId = useCallback( ( potentialDisagree?: boolean ) => {
-    dispatch( { type: SUBMIT_IDENTIFICATION } );
-
     if ( !newIdentification?.taxon ) {
       throw new Error( "Cannot create an identification without a taxon" );
     }
@@ -422,6 +414,7 @@ const IdentificationSheets: React.FC<Props> = ( {
           onAgree={onAgree}
           editIdentBody={editIdentBody}
           hidden={showIdentBodySheet}
+          loading={isCreateIdPending}
           onPressClose={closeAgreeWithIdSheet}
           identification={agreeIdentification}
         />
@@ -454,6 +447,7 @@ const IdentificationSheets: React.FC<Props> = ( {
         <SuggestIDSheet
           editIdentBody={editIdentBody}
           hidden={showIdentBodySheet}
+          loading={isCreateIdPending}
           onSuggestId={onSuggestId}
           identification={newIdentification}
           onPressClose={hideSuggestedIdSheet}
@@ -461,6 +455,7 @@ const IdentificationSheets: React.FC<Props> = ( {
       )}
       {showPotentialDisagreementSheet && newIdentification && (
         <PotentialDisagreementSheet
+          loading={isCreateIdPending}
           onPotentialDisagreePressed={onPotentialDisagreePressed}
           onPressClose={potentialDisagreeSheetDiscardChanges}
           newTaxon={newIdentification.taxon}

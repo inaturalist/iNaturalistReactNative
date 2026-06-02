@@ -2,7 +2,8 @@ import type { ApiTaxon } from "api/types";
 import {
   Body1,
   DisplayTaxon,
-  DisplayTaxonName, List2,
+  DisplayTaxonName,
+  List2,
   RadioButtonSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -12,13 +13,15 @@ import type { RealmTaxon } from "realmModels/types";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
+  loading?: boolean;
   onPressClose: () => void;
-  onPotentialDisagreePressed: ( _checkedValue: string ) => void;
+  onPotentialDisagreePressed: ( _checkedValue: boolean ) => void;
   newTaxon: RealmTaxon | ApiTaxon;
   oldTaxon: RealmTaxon | ApiTaxon;
 }
 
 const PotentialDisagreementSheet = ( {
+  loading,
   onPressClose,
   onPotentialDisagreePressed,
   newTaxon,
@@ -90,11 +93,12 @@ const PotentialDisagreementSheet = ( {
       headerText={t( "POTENTIAL-DISAGREEMENT" )}
       confirm={checkBoxValue => {
         onPotentialDisagreePressed( checkBoxValue );
-        onPressClose( );
       }}
+      loading={loading}
       confirmText={t( "SUBMIT-ID-SUGGESTION" )}
       onPressClose={onPressClose}
       radioValues={radioValues}
+      requireSelectionChange={false}
       selectedValue={radioValues.unsure.value}
       topDescriptionText={topDescriptionText}
       bottomComponent={bottomComponent}

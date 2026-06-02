@@ -23,9 +23,10 @@ import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
 import {
-  useCurrentUser, useDebugMode,
+  useCurrentUser, useDebugMode, useFeatureFlag,
   useLayoutPrefs, useTranslation,
 } from "sharedHooks";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import MenuItem from "./MenuItem";
@@ -109,6 +110,7 @@ const Menu = ( ) => {
   const { isConnected } = useNetInfo( );
 
   const layoutPrefs = useLayoutPrefs();
+  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
   const [modalState, setModalState] = useState<MenuModalState | null>( null );
 
   const menuItems: Record<string, MenuOption> = {
@@ -151,6 +153,16 @@ const Menu = ( ) => {
         }
       },
     },
+
+    ...( newsEnabled
+      ? {
+        news: {
+          label: t( "BLOG" ),
+          navigation: "Journal",
+          icon: "leaf",
+        },
+      }
+      : {} ),
 
     ...( currentUser
       ? {
@@ -197,7 +209,6 @@ const Menu = ( ) => {
       showOfflineAlert( t );
       return false;
     }
-    const locallySavedOnlyObservations = Observation.filterUnsyncedObservations( realm ).length;
     const getCountBreakpoint = ( count: number ) => valueToBreakpoint( count, [
       [0, "0"],
       [1, "1-9"],
@@ -241,13 +252,16 @@ const Menu = ( ) => {
         identifications: "loggedout",
         remoteObservations: "loggedout",
       };
+    const appContext = {
+      locallySavedOnlyObservations: Observation.filterUnsyncedObservations( realm ).length,
+      observationsInRealm: realm.objects( "Observation" ).length,
+    };
     const storageMetrics = await getStorageMetrics( realm?.path ).catch( () => ( {} ) );
     const deviceMetrics = await getDeviceMetricsForFeedback().catch( () => ( {} ) );
     const feedbackContext = {
       ...modeContext,
       ...loggedInContext,
-      // can have unsynced obs when logged out
-      locallySavedOnlyObservations,
+      ...appContext,
       ...storageMetrics,
       ...deviceMetrics,
     };

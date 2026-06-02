@@ -80,6 +80,8 @@ attribution-cc-by-nd = niektóre prawa zastrzeżone (CC BY-ND)
 attribution-cc-by-sa = niektóre prawa zastrzeżone (CC BY-SA)
 August = Sierpień
 BACK-TO-LOGIN = POWRÓT DO LOGOWANIA
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Masowy importer
 By-exiting-changes-not-saved = Po wyjściu zmiany w obserwacji nie zostaną zapisane.
 By-exiting-observation-not-saved = Po wyjściu Twoja obserwacja nie zostanie zapisana.
@@ -141,6 +143,7 @@ Connect-with-expert-naturalists = Nawiąż kontakt z ekspertami w dziedzinie prz
 Connect-with-other-naturalists = Nawiąż kontakt z innymi przyrodnikami i zaangażuj się w rozmowy.
 Connection-problem-Please-try-again-later = Problem z połączeniem. Spróbuj ponownie później.
 CONTACT-SUPPORT = KONTAKT Z DZIAŁEM TECHNICZNYM
+Content-Hidden = Content Hidden
 CONTINUE = KONTYNUUJ
 Coordinates-copied-to-clipboard = Współrzędne skopiowane do schowka
 Copy-coordinates = Kopiuj współrzędne
@@ -749,6 +752,7 @@ Search-suggestions-with-location = Sugestie wyszukiwania z lokalizacją
 Search-suggestions-without-location = Sugestie wyszukiwania bez lokalizacji
 SEARCH-TAXA = WYSZUKIWANIE TAKSONÓW
 SEARCH-USERS = WYSZUKIWANIE UŻYTKOWNIKÓW
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Zobacz obserwacje tego użytkownika w sekcji Eksploruj
 See-observations-of-this-taxon-in-explore = Zobacz obserwacje tego taksonu w explore
 See-project-members = Zobacz członków projektu
@@ -847,6 +851,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = Społecz
 The-iNaturalist-Network = Sieć iNaturalist to zbiór zlokalizowanych stron internetowych, które są w pełni połączone z globalną społecznością iNaturalist. Strony sieci są wspierane przez lokalne instytucje, które promują lokalne wykorzystanie i ułatwiają korzystanie z danych z iNaturalist z korzyścią dla lokalnej różnorodności biologicznej.
 The-location-will-not-be-visible-to-others = Lokalizacja nie będzie widoczna dla innych osób, co może uniemożliwić identyfikację obserwacji.
 The-models-that-suggest-species = Modele, które sugerują gatunki na podstawie wizualnego podobieństwa i lokalizacji, są częściowo zasługą współpracy z Sarą Beery, Tomem Brooksem, Elijahem Cole'em, Christianem Lange, Oisinem Mac Aodha, Pietro Peroną i Grantem Van Hornem.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = Jest to dziki organizm i nie został umieszczony w tym miejscu przez ludzi.
 This-is-how-taxon-names-will-be-displayed = W ten sposób wszystkie nazwy taksonów będą wyświetlane w iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = To jest Twoja identyfikacja. Inne osoby mogą pomóc to potwierdzić!
@@ -859,6 +866,7 @@ This-observation-needs-more-identifications = Ta obserwacja wymaga więcej ident
 This-observation-needs-more-identifications-to-become-research-grade = Ta obserwacja wymaga więcej identyfikacji, aby stała się klasą badawczą.
 This-observer-has-opted-out-of-the-Community-Taxon = Obserwator ten zrezygnował z udziału w taksonach wspólnotowych
 This-organism-was-placed-by-humans = Organizm ten został umieszczony w tym miejscu przez ludzi. Dotyczy to takich rzeczy, jak rośliny ogrodowe, zwierzęta domowe i zwierzęta w zoo.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -977,6 +985,11 @@ X-Identifiers =
         [one] { $count } Identyfikujący
         [few] { $count } Identyfikujących
        *[many] { $count } Identyfikujących
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

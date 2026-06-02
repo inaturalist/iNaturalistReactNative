@@ -86,6 +86,8 @@ attribution-cc-by-nd = sommige rechten voorbehouden (CC BY-ND)
 attribution-cc-by-sa = sommige rechten voorbehouden (CC BY-SA)
 August = Augustus
 BACK-TO-LOGIN = TERUG NAAR INLOGGEN
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Bulk import
 By-exiting-changes-not-saved = Door af te sluiten, worden wijzigingen in je waarneming niet opgeslagen.
 By-exiting-observation-not-saved = Als je afsluit word je waarneming niet opgeslagen.
@@ -147,6 +149,7 @@ Connect-with-expert-naturalists = Maak contact met deskundige naturalisten
 Connect-with-other-naturalists = Neem contact op met andere naturalisten en neem deel aan gesprekken.
 Connection-problem-Please-try-again-later = Verbindingsprobleem. Probeer het later opnieuw.
 CONTACT-SUPPORT = CONTACT ONDERSTEUNING
+Content-Hidden = Inhoud is verborgen
 CONTINUE = DOORGAAN
 Coordinates-copied-to-clipboard = Coördinaten naar klembord gekopieerd
 Copy-coordinates = Kopieer Coördinaten
@@ -595,7 +598,7 @@ Please-allow-Microphone-Access = Geef toegang tot de microfoon
 Please-choose-a-different-password = Kies een ander wachtwoord.
 Please-Grant-Permission = Geef toestemming
 PLEASE-LOG-IN = LOG IN
-Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
+Please-log-in-again = Log opnieuw in. We moeten af en toe je sessie vernieuwen om de gegevens in de cache te wissen en te controleren of de app op zijn best werkt.
 Please-make-sure-your-password-is-at-least-6-characters = Zorg ervoor dat je wachtwoord minimaal 6 tekens lang is.
 Please-try-again-when-you-are-connected-to-the-internet = Probeer het opnieuw wanneer je verbonden bent met het internet.
 Please-try-again-when-you-are-online = Probeer het opnieuw als je online bent!
@@ -750,6 +753,7 @@ Search-suggestions-with-location = Zoek suggesties met locatie
 Search-suggestions-without-location = Zoek suggesties zonder locatie te gebruiken
 SEARCH-TAXA = ZOEK TAXA
 SEARCH-USERS = ZOEK GEBRUIKERS
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Toon waarnemingen van deze gebruiker in Verkennen
 See-observations-of-this-taxon-in-explore = Toon waarnemingen van dit taxon in verkennen
 See-project-members = Toon projectdeelnemers
@@ -847,6 +851,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = De iNatu
 The-iNaturalist-Network = Het iNaturalist netwerk is een verzameling van gelokaliseerde websites die volledig zijn verbonden met de wereldwijde iNaturalist community. Netwerksites worden ondersteund door lokale instellingen die lokaal gebruik bevorderen en het gebruik van gegevens van iNaturalist vergemakkelijken ten behoeve van de lokale biodiversiteit.
 The-location-will-not-be-visible-to-others = De locatie zal niet zichtbaar zijn voor anderen, waardoor de waarneming mogelijk niet te determineren is
 The-models-that-suggest-species = De modellen die soorten suggereren op basis van visuele gelijkenis en locatie zijn deels te danken aan samenwerking met Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona en Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = Dit is een wild organisme dat niet op deze locatie is geplaatst door mensen.
 This-is-how-taxon-names-will-be-displayed = Dit is hoe alle taxonnamen voor jou worden weergegeven op iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Dit is je determinatie. Andere mensen kunnen het bevestigen!
@@ -859,6 +866,7 @@ This-observation-needs-more-identifications = Deze waarneming heeft meer determi
 This-observation-needs-more-identifications-to-become-research-grade = Deze waarneming heeft meer determinaties nodig om Onderzoekskwaliteit te worden.
 This-observer-has-opted-out-of-the-Community-Taxon = Deze waarnemer heeft zich afgemeld voor het gemeenschapstaxon
 This-organism-was-placed-by-humans = Dit organisme is op deze locatie gebracht door mensen. Dit geldt voor tuinplanten, huisdieren en dierentuindieren.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = Deze gebruiker heeft geen volgers.
 This-user-has-not-joined-any-projects = Deze gebruiker neemt geen deel aan projecten.
 This-user-is-not-following-anyone = Deze gebruiker volgt niemand.
@@ -971,6 +979,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

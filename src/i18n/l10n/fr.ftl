@@ -80,6 +80,8 @@ attribution-cc-by-nd = certains droits réservés (CC BY-ND)
 attribution-cc-by-sa = certains droits réservés (CC BY-SA)
 August = août
 BACK-TO-LOGIN = RETOUR À LA CONNEXION
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Importateur groupé
 By-exiting-changes-not-saved = En quittant, les changements à votre observation ne seront pas sauvegardés.
 By-exiting-observation-not-saved = En quittant, votre observation ne sera pas sauvegardée.
@@ -141,6 +143,7 @@ Connect-with-expert-naturalists = Connectez-vous avec des naturalistes experts
 Connect-with-other-naturalists = Communiquez avec d'autres naturalistes et prenez part à des discussions
 Connection-problem-Please-try-again-later = Problème de connexion. Veuillez réessayer plus tard.
 CONTACT-SUPPORT = CONTACTER LE SUPPORT
+Content-Hidden = Content Hidden
 CONTINUE = CONTINUER
 Coordinates-copied-to-clipboard = Géolocalisation copiée dans le bloc-notes
 Copy-coordinates = Copier les coordonnées
@@ -744,6 +747,7 @@ Search-suggestions-with-location = Rechercher les suggestions avec localisation
 Search-suggestions-without-location = Rechercher les suggestions sans localisation
 SEARCH-TAXA = RECHERCHER LES TAXONS
 SEARCH-USERS = RECHERCHER LES UTILISATEURS
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Voir les observations de cet utilisateur dans l'exploration
 See-observations-of-this-taxon-in-explore = Voir les observations de ce taxon dans l'exploration
 See-project-members = Voir les membres du projet
@@ -841,6 +845,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = La commu
 The-iNaturalist-Network = Le réseau iNaturalist est une collection de sites web localisés qui sont entièrement connectés à la communauté mondiale iNaturalist. Les sites du réseau sont soutenus par des institutions locales qui promeuvent l'utilisation locale et facilitent l'utilisation des données d'iNaturalist au profit de la biodiversité locale.
 The-location-will-not-be-visible-to-others = L’emplacement ne sera pas visible par les autres, ce qui pourrait rendre l’observation impossible à identifier.
 The-models-that-suggest-species = Les modèles qui suggèrent des espèces basées sur la similitude visuelle et le lieu sont en partie rendus possibles grâce à des collaborations avec Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona et Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = C'est un organisme sauvage et il n'a pas été placé ici par des humains.
 This-is-how-taxon-names-will-be-displayed = Voici comment tous les noms de taxons vous seront affichés sur iNaturalist :
 This-is-your-identification-other-people-may-help-confirm-it = Ceci est votre identification. D'autres personnes peuvent aider à la confirmer !
@@ -853,6 +860,7 @@ This-observation-needs-more-identifications = Cette observation a besoin de plus
 This-observation-needs-more-identifications-to-become-research-grade = Cette observation nécessite plus d'identifications pour atteindre la qualité recherche.
 This-observer-has-opted-out-of-the-Community-Taxon = Cet observateur a choisi de se retirer du Taxon Communautaire
 This-organism-was-placed-by-humans = Cet organisme a été placé ici par des humains. Cela s'applique à des choses comme des plantes de jardin, des animaux de compagnies et des animaux de zoo.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -965,6 +973,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identificateur
        *[other] { $count } Identificateurs
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

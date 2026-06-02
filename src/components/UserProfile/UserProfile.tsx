@@ -24,14 +24,18 @@ import { formatLongDate } from "sharedHelpers/dateAndTime";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
+  useFeatureFlag,
   useTranslation,
 } from "sharedHooks";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
 
 const UserProfile = ( ) => {
+  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
+
   const setExploreView = useStore( state => state.setExploreView );
   const navigation = useNavigation <TabStackScreenProps<"UserProfile">["navigation"]>( );
   const currentUser = useCurrentUser( );
@@ -123,6 +127,13 @@ const UserProfile = ( ) => {
     } );
   };
 
+  const onJournalPostsPressed = ( ) => {
+    navigation.navigate( "Journal", {
+      userLogin: user?.login,
+      journalPostsCount: user?.journal_posts_count,
+    } );
+  };
+
   return (
     <ScrollViewWrapper testID="UserProfile">
       <View
@@ -139,9 +150,11 @@ const UserProfile = ( ) => {
         )}
       </View>
       <OverviewCounts
+        newsEnabled={newsEnabled}
         counts={user}
         onObservationPressed={onObservationPressed}
         onSpeciesPressed={onSpeciesPressed}
+        onJournalPostsPressed={onJournalPostsPressed}
       />
       <View className="mx-3">
         {currentUser?.login !== user?.login && (
@@ -180,12 +193,18 @@ const UserProfile = ( ) => {
           </Heading4>
           <Button
             text={t( "VIEW-FOLLOWERS" )}
-            onPress={( ) => navigation.navigate( "FollowersList", { user } )}
+            onPress={( ) => navigation.navigate( "FollowersList", {
+              userId,
+              userLogin: user.login,
+            } )}
           />
           <Button
             className="mt-6"
             text={t( "VIEW-FOLLOWING" )}
-            onPress={( ) => navigation.navigate( "FollowingList", { user } )}
+            onPress={( ) => navigation.navigate( "FollowingList", {
+              userId,
+              userLogin: user.login,
+            } )}
           />
         </View>
         <Body2 className="mb-5">

@@ -13,6 +13,7 @@ class Photo extends Realm.Object {
     attribution: true,
     license_code: true,
     url: true,
+    hidden: true,
   } as const;
 
   static mapApiToRealm( photo: ApiPhoto, _realm = null ) {
@@ -127,6 +128,7 @@ class Photo extends Realm.Object {
       license_code: { type: "string", mapTo: "licenseCode", optional: true },
       url: "string?",
       localFilePath: "string?",
+      hidden: "bool?",
     },
   };
 

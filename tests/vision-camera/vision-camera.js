@@ -1,10 +1,12 @@
 import {
   copyAssetsFileIOS,
+  copyFile,
+  ExternalDirectoryPath,
   TemporaryDirectoryPath,
 } from "@dr.pogodin/react-native-fs";
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import React from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 
 const mockFrame = {
   isValid: true,
@@ -49,13 +51,37 @@ export class mockCamera extends React.PureComponent {
     the test never finishes.
   */
   componentDidUpdate() {
-    const { frameProcessor } = this.props;
-    frameProcessor?.frameProcessor( mockFrame );
+    const { frameProcessor, isActive } = this.props;
+    if ( isActive === false || !frameProcessor ) {
+      return;
+    }
+    frameProcessor.frameProcessor( mockFrame );
   }
 
   // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
   async takePhoto() {
-    // TODO: this only works on iOS
+    if ( Platform.OS === "android" ) {
+      /*
+        On Android, copyAssetsFileIOS is not available. Instead, copy the test
+        image that was pushed to the app's external files directory by
+        iNatE2eBeforeAll (via `adb push e2e/animal.jpg`).
+        ExternalDirectoryPath = /sdcard/Android/data/<package>/files/
+        which is accessible by the app without extra permissions.
+      */
+      const sourcePath = `${ExternalDirectoryPath}/e2e_test.jpg`;
+      const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
+      try {
+        await copyFile( sourcePath, destPath );
+        return {
+          path: destPath,
+          metadata: { Orientation: 1 },
+        };
+      } catch ( err ) {
+        console.log( "Error copying test photo on Android:", err );
+        return null;
+      }
+    }
+
     return CameraRoll.getPhotos( {
       first: 20,
       assetType: "Photos",
@@ -74,7 +100,7 @@ export class mockCamera extends React.PureComponent {
           console.log( `Converted file uri to ${oldUri}` );
         }
         const encodedUri = encodeURI( oldUri );
-        const destPath = `${TemporaryDirectoryPath}temp.jpg`;
+        const destPath = `${TemporaryDirectoryPath}/temp.jpg`;
         const newPath = await copyAssetsFileIOS(
           encodedUri,
           destPath,
@@ -101,7 +127,7 @@ export class mockCamera extends React.PureComponent {
   }
 
   render() {
-    return <View style={style} />;
+    return <View style={style} collapsable={false} />;
   }
 }
 

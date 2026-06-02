@@ -1,9 +1,7 @@
-// @flow
 import {
   Button,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import {
   useTranslation,
@@ -15,17 +13,17 @@ const DROP_SHADOW = getShadow( {
   shadowOpacity: 0.2,
 } );
 
-type Props = {
-  navToSuggestions: Function,
-  showAddCommentSheet: Function,
-  openAddCommentSheet: Function
+interface Props {
+  navToSuggestions: ( ) => void;
+  showAddCommentSheet: boolean;
+  openAddCommentSheet: ( ) => void;
 }
 
 const FloatingButtons = ( {
   navToSuggestions,
   openAddCommentSheet,
   showAddCommentSheet,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   return (

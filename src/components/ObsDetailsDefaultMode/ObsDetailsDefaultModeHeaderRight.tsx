@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   INatIconButton,
 } from "components/SharedComponents";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useCallback, useEffect } from "react";
 import type { RealmObservation } from "realmModels/types";
 import {
@@ -28,7 +29,7 @@ const ObsDetailsDefaultModeHeaderRight = ( {
   refetchSubscriptions,
   subscriptions,
 }: Props ) => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
   const { localObservation } = useLocalObservation( uuid );
   const { t } = useTranslation( );
   const navigateToObsEdit = useNavigateToObsEdit( );

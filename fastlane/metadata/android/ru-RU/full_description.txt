@@ -1,3 +1,12 @@
-iNaturalist - это социальная сеть для обмена информацией о биоразнообразии, которая помогает людям познавать природу. Основная цель состоит в том, чтобы объединить людей и природу, а второстепенная цель - получить ценные с научной точки зрения данные о биоразнообразии на основе этого общения.
+Your photos of plants, animals, fungi, and more can help protect nature all around the world. iNaturalist is free, nonprofit, and community-powered.
 
-iNaturalist поможет вам идентифицировать растения и животных при помощи визуально схожих предложений и проверки специальными авторами. Познакомьтесь с сообществом из более чем миллиона ученых и натуралистов, которые помогут вам узнать больше о природе! Регистрируя свои наблюдения и делясь ими, вы создаёте данные исследовательского уровня для ученых, работающих над тем, чтобы лучше понимать и защищать природу.
+iNaturalist helps millions of people learn about and document the nature around them. Point your camera at plants, animals, and fungi to get instant identification suggestions, then share your photos or sound recordings as an "observation." Then, see your observation get reviewed by a global community of knowledgeable nature-lovers to turn it into a useful data point for science and conservation efforts. Your everyday moments of curiosity can directly contribute to protecting nature, and you don't need any previous experience or knowledge to get started.
+
+iNaturalist is a mission-driven nonprofit dedicated to connecting people to nature and advancing biodiversity science and conservation, and is freely available thanks to the generous support of our community.
+
+KEY FEATURES
+• Identify species from anywhere in the world
+• Contribute to science by sharing your observations
+• Keep a record of species you see
+• Explore and protect biodiversity 
+• Connect with and learn from other nature enthusiasts

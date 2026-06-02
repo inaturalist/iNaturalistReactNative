@@ -80,6 +80,8 @@ attribution-cc-by-nd = visse rettigheder forbeholdes (CC BY-ND)
 attribution-cc-by-sa = visse rettigheder forbeholdes (CC BY-SA)
 August = August
 BACK-TO-LOGIN = TILBAGE TIL LOGIN
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Masseimport
 By-exiting-changes-not-saved = Ved at afslutte, vil ændringer til observationen ikke blive gemt.
 By-exiting-observation-not-saved = Ved at afslutte, vil observationen ikke blive gemt.
@@ -141,6 +143,7 @@ Connect-with-expert-naturalists = Forbind med ekspert-naturforskere
 Connect-with-other-naturalists = Kom i kontakt med andre naturkyndige og deltag i samtaler.
 Connection-problem-Please-try-again-later = Forbindelsesproblem. Forsøg igen senere.
 CONTACT-SUPPORT = KONTAKT SUPPORTEN
+Content-Hidden = Indhold skjult
 CONTINUE = FORTSÆT
 Coordinates-copied-to-clipboard = Koordinater kopieret til udklipsholder
 Copy-coordinates = Kopiér koordinater
@@ -744,6 +747,7 @@ Search-suggestions-with-location = Søg i forslag med placering
 Search-suggestions-without-location = Søg i forslag uden placering
 SEARCH-TAXA = SØG I TAKSA
 SEARCH-USERS = SØG BRUGERE
+See-journal-posts = Vis journalindlæg
 See-observations-by-this-user-in-Explore = Se observationer fra denne bruger i Udforsk
 See-observations-of-this-taxon-in-explore = Se observationer af denne takson i Udforsk
 See-project-members = Se projektmedlemmer
@@ -841,6 +845,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = INatural
 The-iNaturalist-Network = iNaturalist-netværket er en samling af lokaliserede websteder, som er fuldt forbundet med det globale iNaturalist-fællesskab. Netværkswebsteder understøttes af lokale institutioner, som fremmer lokal brug og faciliterer brugen af ​​data fra iNaturalist til gavn for lokal biodiversitet.
 The-location-will-not-be-visible-to-others = Placeringen vil ikke være synlig for andre, hvilket kan gøre observationen umulig at identificerer.
 The-models-that-suggest-species = De modeller, som foreslår arter baseret på visuel lighed og placering, kan til dels tilskrives et samarbejder med Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona og Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = Denne kommentar blev skjult for overtrædelse af Fællesskabsretningslinjer eller Vilkår for brug.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = Denne identifikation blev skjult for overtrædelse af Fællesskabsretningslinjer eller Vilkår for brug.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = Dette foto blev skjult for overtrædelse af Fællesskabsretningslinjer eller Vilkår for brug.
 This-is-a-wild-organism = Dette er en vild organisme, der ikke er ikke placeret på dette sted af mennesker.
 This-is-how-taxon-names-will-be-displayed = Det er sådan alle taksonnavne vises for brugeren på hele iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Dette er din identifikation. Andre personer kan hjælpe med at bekræfte den!
@@ -853,6 +860,7 @@ This-observation-needs-more-identifications = Denne observation behøver flere i
 This-observation-needs-more-identifications-to-become-research-grade = Denne observation behøver flere identifikationer for at nå forskningskvalitet
 This-observer-has-opted-out-of-the-Community-Taxon = Observatøren har fravalgt Fællesskabstakson
 This-organism-was-placed-by-humans = Organismen er placeret på dette sted af mennesker. Dette gælder for f.eks. haveplanter, kæledyr og zoo-dyr.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = Denne lyd blev skjult for overtrædelse af Fællesskabsretningslinjer eller Vilkår for brug.
 This-user-has-no-followers = Denne bruger har ingen følgere.
 This-user-has-not-joined-any-projects = Denne bruger er ikke tilmeldt nogen projekter.
 This-user-is-not-following-anyone = Denne bruger følger ingen.
@@ -965,6 +973,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } identifikator
        *[other] { $count } identifikatorer
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNALINDLÆG
+       *[other] { $count } JOURNALINDLÆG
     }
 X-MEMBERS =
     { $count ->

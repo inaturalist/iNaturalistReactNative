@@ -2,6 +2,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
 import ObsDetailsDefaultModeContainer
   from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import {
@@ -12,17 +13,12 @@ import {
 
 import SavedMatchContainer from "./SavedMatch/SavedMatchContainer";
 
-interface RouteParams {
-    targetActivityItemID?: number;
-    uuid: string;
-}
-
 const ObsDetailsDefaultModeScreensWrapper = () => {
-  const { params } = useRoute();
+  const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
   const {
     targetActivityItemID,
     uuid,
-  } = params as RouteParams;
+  } = params;
   const currentUser = useCurrentUser( );
   const isConnected = !!useNetInfo( ).isConnected;
 

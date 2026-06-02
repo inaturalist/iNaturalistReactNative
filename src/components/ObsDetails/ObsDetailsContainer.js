@@ -12,7 +12,6 @@ import type { Node } from "react";
 import React, {
   useState,
 } from "react";
-import { LogBox } from "react-native";
 import Observation from "realmModels/Observation";
 import {
   useCurrentUser,
@@ -25,20 +24,14 @@ import { OBS_DETAILS_TAB } from "stores/createLayoutSlice";
 
 import ObsDetails from "./ObsDetails";
 
-// this is getting triggered by passing dates, like _created_at, through
-// react navigation via the observation object. it doesn't seem to
-// actually be breaking anything, for the moment (May 2, 2022)
-LogBox.ignoreLogs( [
-  "Non-serializable values were found in the navigation state",
-] );
-
 const ObsDetailsContainer = ( ): Node => {
   const {
     obsDetailsTab,
     setObsDetailsTab,
   } = useLayoutPrefs( );
   const currentUser = useCurrentUser( );
-  const { params } = useRoute();
+  // const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
+  const { params } = useRoute( );
   const {
     targetActivityItemID,
     uuid,

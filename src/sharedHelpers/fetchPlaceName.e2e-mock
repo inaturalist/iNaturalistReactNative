@@ -1,0 +1,11 @@
+// Skip geocoding during e2e tests. This is a legit failure of the Android e2e tests. Because we are
+// testing on an AOSP emulator, we do not have Play Services to geocode with. Mocking this out here is
+// one way to get the tests to pass.
+// This is also a real production bug though for users on phones that do not have Play Services.
+// Consider this a temporary workaround until this is done: https://linear.app/inaturalist/issue/MOB-1433/unhandled-promise-rejection-geocoder-not-available-for-this-platform
+const fetchPlaceName = async (
+  _lat?: number,
+  _lng?: number,
+): Promise<string | null> => null;
+
+export default fetchPlaceName;

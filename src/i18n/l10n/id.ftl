@@ -80,6 +80,8 @@ attribution-cc-by-nd = beberapa hak dilindungi (CC BY-ND)
 attribution-cc-by-sa = beberapa hak dilindungi (CC BY-SA)
 August = Agustus
 BACK-TO-LOGIN = KEMBALI KE HALAMAN MASUK
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Pengimpor massal
 By-exiting-changes-not-saved = Dengan keluar, perubahan pada pengamatan Anda tidak akan disimpan.
 By-exiting-observation-not-saved = Dengan keluar, pengamatan Anda tidak akan disimpan.
@@ -141,6 +143,7 @@ Connect-with-expert-naturalists = Terhubung dengan naturalis ahli
 Connect-with-other-naturalists = Kontak naturalis lain dan ikut serta dalam pembicaraan.
 Connection-problem-Please-try-again-later = Ada masalah koneksi. Silakan coba lagi nanti.
 CONTACT-SUPPORT = HUBUNGI BANTUAN
+Content-Hidden = Konten Disembunyikan
 CONTINUE = LANJUT
 Coordinates-copied-to-clipboard = Koordinat tersalin ke papan klip
 Copy-coordinates = Salin Koordinat
@@ -744,6 +747,7 @@ Search-suggestions-with-location = Cari rekomendasi dengan lokasi
 Search-suggestions-without-location = Rekomendasi pencarian tanpa lokasi
 SEARCH-TAXA = CARI TAKSON
 SEARCH-USERS = CARI PENGGUNA
+See-journal-posts = Lihat postingan jurnal
 See-observations-by-this-user-in-Explore = Lihat pengamatan-pengamatan oleh pengguna ini di Jelajah
 See-observations-of-this-taxon-in-explore = Lihat pengamatan-pengamatan takson ini di jelajah
 See-project-members = Lihat anggota proyek
@@ -841,6 +845,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = Komunita
 The-iNaturalist-Network = Jaringan iNaturalist merupakan kumpulan situs web terlokalisasi yang seluruhnya terhubung dengan komunitas iNaturalist di seluruh dunia. Situs-situs jaringan didukung oleh institusi-institusi lokal yang mempromosikan penggunaan lokal dan memfasilitasi penggunaan data dari iNaturalist untuk memberikan manfaat bagi keanekaragaman hayati lokal.
 The-location-will-not-be-visible-to-others = Lokasinya tidak akan bisa dilihat oleh orang lain, sehingga orang tidak mungkin bisa mengidentifikasinya.
 The-models-that-suggest-species = Model yang menyarankan spesies berdasarkan kemiripan visual dan lokasinya dapat dibuat berkat kerja sama dengan Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, dan Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = Komentar ini disembunyikan karena melanggar Pedoman Komunitas atau Ketentuan Penggunaan.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = Identifikasi ini disembunyikan karena melanggar Pedoman Komunitas atau Ketentuan Penggunaan.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = Gambar ini disembunyikan karena melanggar Pedoman Komunitas atau Ketentuan Penggunaan.
 This-is-a-wild-organism = Ini adalah organisme liar dan tidak ditaruh di lokasi ini oleh manusia.
 This-is-how-taxon-names-will-be-displayed = Ini adalah pengaturan bagaimana semua nama takson akan ditampilkan kepada Anda di iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Ini adalah identifikasi Anda. Orang lain dapat membantu Anda mengonfirmasinya.
@@ -853,6 +860,7 @@ This-observation-needs-more-identifications = Pengamatan ini memerlukan lebih ba
 This-observation-needs-more-identifications-to-become-research-grade = Pengamatan ini memerlukan lebih banyak identifikasi untuk mendapatkan kelas riset.
 This-observer-has-opted-out-of-the-Community-Taxon = Pengamat ini telah memilih untuk keluar dari Takson Komunitas
 This-organism-was-placed-by-humans = Organisme ini diperkenalkan ke tempat ini oleh manusia. Ini berlaku untuk makhluk-makhluk seperti tumbuhan di taman, hewan peliharaan, dan hewan-hewan di kebun binatang.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = Suara ini disembunyikan karena melanggar Pedoman Komunitas atau Ketentuan Penggunaan.
 This-user-has-no-followers = Pengguna ini tidak memiliki pengikut.
 This-user-has-not-joined-any-projects = Pengguna ini belum bergabung dengan proyek apa pun.
 This-user-is-not-following-anyone = Pengguna ini tidak mengikuti siapa pun.
@@ -965,6 +973,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Pengidentifikasi
        *[other] { $count } Pengidentifikasi
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } POSTINGAN JURNAL
+       *[other] { $count } POSTINGAN JURNAL
     }
 X-MEMBERS =
     { $count ->

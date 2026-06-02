@@ -20,6 +20,7 @@ type Props = {
     taxon: { id: number },
     vision?: boolean
   },
+  loading?: boolean,
   onAgree:Function,
   onPressClose: Function,
 }
@@ -39,6 +40,7 @@ const AgreeWithIDSheet = ( {
   editIdentBody,
   hidden,
   identification,
+  loading,
   onAgree,
   onPressClose,
 }: Props ): Node => (
@@ -74,6 +76,7 @@ const AgreeWithIDSheet = ( {
               editIdentBody( );
             }}
             className="mx-2 flex-1"
+            disabled={loading}
             testID="ObsDetail.AgreeId.EditCommentButton"
             accessibilityHint={t( "Opens-edit-comment-form" )}
           />
@@ -85,6 +88,7 @@ const AgreeWithIDSheet = ( {
               editIdentBody( );
             }}
             className="mx-2 flex-1"
+            disabled={loading}
             testID="ObsDetail.AgreeId.commentButton"
             accessibilityHint={t( "Opens-add-comment-form" )}
           />
@@ -94,6 +98,8 @@ const AgreeWithIDSheet = ( {
         text={t( "AGREE" )}
         onPress={( ) => onAgree( identification )}
         className="mx-2 flex-1"
+        disabled={loading}
+        loading={loading}
         testID="ObsDetail.AgreeId.cvSuggestionsButton"
         accessibilityRole="link"
         accessibilityHint={t( "Navigates-to-suggest-identification" )}

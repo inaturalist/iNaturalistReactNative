@@ -1,42 +1,29 @@
 import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
-import React, {
-  useEffect,
-} from "react";
+import React from "react";
 import { useTranslation } from "sharedHooks";
-import { zustandStorage } from "stores/useStore";
+import { MAP_TYPES } from "stores/createLayoutSlice";
+import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( );
 
 interface Props {
-  currentMapType?: string;
-  mapType?: string;
-  setCurrentMapType: ( mapType: string|number ) => void;
+  mapType?: MAP_TYPES;
   showSwitchMapTypeButton?: boolean;
   switchMapTypeButtonClassName?: string;
 }
 
 const SwitchMapTypeButton = ( {
-  currentMapType,
   mapType,
-  setCurrentMapType,
   showSwitchMapTypeButton,
   switchMapTypeButtonClassName,
 }: Props ) => {
   const { t } = useTranslation( );
-  useEffect( () => {
-    const value = zustandStorage.getItem( "mapType" );
-    if ( value && !mapType ) {
-      // Load last saved map type (unless explicitly overridden by the parent
-      // of the Map component)
-      setCurrentMapType( value );
-    }
-  }, [mapType, setCurrentMapType] );
+  const setMapType = useStore( state => state.layout.setMapType );
 
-  const changeMapType = ( newMapType: string ) => {
-    setCurrentMapType( newMapType );
-    zustandStorage.setItem( "mapType", newMapType );
+  const changeMapType = ( newMapType: MAP_TYPES ) => {
+    setMapType( newMapType );
   };
 
   return showSwitchMapTypeButton && (
@@ -48,15 +35,15 @@ const SwitchMapTypeButton = ( {
       )}
       style={DROP_SHADOW}
       accessibilityLabel={
-        currentMapType === "standard"
+        mapType === MAP_TYPES.STANDARD
           ? t( "Standard--map-type" )
           : t( "Satellite--map-type" )
       }
       accessibilityHint={t( "Toggle-map-type" )}
       onPress={( ) => {
-        changeMapType( currentMapType === "standard"
-          ? "hybrid"
-          : "standard" );
+        changeMapType( mapType === MAP_TYPES.STANDARD
+          ? MAP_TYPES.HYBRID
+          : MAP_TYPES.STANDARD );
       }}
     />
   );

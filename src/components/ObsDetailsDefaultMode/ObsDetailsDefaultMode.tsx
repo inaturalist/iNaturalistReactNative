@@ -41,7 +41,7 @@ interface Props {
   openAgreeWithIdSheet: () => void;
   refetchRemoteObservation: () => void;
   refetchSubscriptions: () => void;
-  showAddCommentSheet: () => void;
+  showAddCommentSheet: boolean;
   subscriptions: object;
   targetActivityItemID: number;
   wasSynced: boolean;

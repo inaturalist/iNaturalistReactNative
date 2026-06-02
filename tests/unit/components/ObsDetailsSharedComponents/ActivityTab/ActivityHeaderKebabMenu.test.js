@@ -17,7 +17,7 @@ describe( "ActivityHeaderKebabMenu", () => {
     const mockId = factory( "LocalIdentification", {
       uuid: "123456789",
       user: mockUser,
-      category: "Identification",
+      category: "improving",
       taxon: factory( "LocalTaxon", {
         name: "Miner's Lettuce",
       } ),
@@ -43,7 +43,7 @@ describe( "ActivityHeaderKebabMenu", () => {
     const mockId = factory( "LocalIdentification", {
       uuid: "123456789",
       user: mockUser,
-      category: "Identification",
+      category: "improving",
       taxon: factory( "LocalTaxon", {
         name: "Miner's Lettuce",
       } ),
@@ -71,7 +71,7 @@ describe( "ActivityHeaderKebabMenu", () => {
     const mockId = factory( "LocalIdentification", {
       uuid: "123456789",
       user: mockUser,
-      category: "Identification",
+      category: "improving",
       taxon: factory( "LocalTaxon", {
         name: "Miner's Lettuce",
       } ),
@@ -124,7 +124,7 @@ describe( "ActivityHeaderKebabMenu", () => {
     const mockId = factory( "LocalIdentification", {
       uuid: "123456789",
       user: mockUser,
-      category: "Identification",
+      category: "improving",
       taxon: factory( "LocalTaxon", {
         name: "Miner's Lettuce",
       } ),

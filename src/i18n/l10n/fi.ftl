@@ -83,6 +83,8 @@ attribution-cc-by-nd = osa oikeuksista pidätetään (CC BY-ND)
 attribution-cc-by-sa = osa oikeuksista pidätetään (CC BY-SA)
 August = elokuu
 BACK-TO-LOGIN = TAKAISIN KIRJAUTUMISEEN
+Blog = Blogi
+BLOG = BLOGI
 Bulk-importer = Massatuonti
 By-exiting-changes-not-saved = Jos poistut, havaintoosi tehtyjä muutoksia ei tallenneta.
 By-exiting-observation-not-saved = Jos poistut, havaintoasi ei tallenneta.
@@ -144,6 +146,7 @@ Connect-with-expert-naturalists = Ota yhteyttä asiantunteviin luontoharrastajii
 Connect-with-other-naturalists = Ole yhteydessä muihin luontoharrastajiin ja osallistu keskusteluihin.
 Connection-problem-Please-try-again-later = Yhteysongelma. Yritä myöhemmin uudelleen.
 CONTACT-SUPPORT = OTA YHTEYTTÄ TUKEEN
+Content-Hidden = Sisältö piilotettu
 CONTINUE = JATKA
 Coordinates-copied-to-clipboard = Koordinaatit kopioitu leikepöydälle
 Copy-coordinates = Kopioi koordinaatit
@@ -747,6 +750,7 @@ Search-suggestions-with-location = Hakuehdotuksia sijainnin perusteella
 Search-suggestions-without-location = Hakuehdotukset ilman sijaintia
 SEARCH-TAXA = HAE TAKSONIA
 SEARCH-USERS = HAE KÄYTTÄJIÄ
+See-journal-posts = Näytä päiväkirjamerkinnät
 See-observations-by-this-user-in-Explore = Katso tämän käyttäjän havainnot Tutki-osiossa
 See-observations-of-this-taxon-in-explore = Katso tämän taksonin havainnot Tutki-osiossa
 See-project-members = Katso projektin jäsenet
@@ -844,6 +848,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = iNatural
 The-iNaturalist-Network = iNaturalist-verkosto on kokoelma paikallisia verkkosivustoja, jotka ovat täysin yhteydessä maailmanlaajuiseen iNaturalist-yhteisöön. Verkostosivustoja tukevat paikalliset instituutiot, jotka edistävät paikallista käyttöä ja helpottavat iNaturalistin tietojen käyttöä paikallisen luonnon monimuotoisuuden hyväksi.
 The-location-will-not-be-visible-to-others = Sijainti ei näy muille, mikä voi tehdä havainnon tunnistamisen mahdottomaksi.
 The-models-that-suggest-species = Mallit, jotka ehdottavat lajeja visuaalisen samankaltaisuuden ja sijainnin perusteella, ovat Sara Beeryn, Tom Brooksin, Elijah Colen, Christian Langen, Oisin Mac Aodhan, Pietro Peronan ja Grant Van Hornin kanssa tehdyn yhteistyön ansiota.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = Tämä eliö on villi, eivätkä ihmiset ole tuoneet sitä tähän paikkaan.
 This-is-how-taxon-names-will-be-displayed = Näin kaikki taksonien nimet näytetään sinulle iNaturalistissa:
 This-is-your-identification-other-people-may-help-confirm-it = Tämä on tunnistuksesi. Muut ihmiset voivat auttaa vahvistamaan sen!
@@ -856,6 +863,7 @@ This-observation-needs-more-identifications = Tämä havainto tarvitsee lisää 
 This-observation-needs-more-identifications-to-become-research-grade = Tämä havainto tarvitsee lisää tunnistuksia saavuttaakseen tutkimustason.
 This-observer-has-opted-out-of-the-Community-Taxon = Tämä havainnoija on jättäytynyt pois yhteisön taksonista
 This-organism-was-placed-by-humans = Ihmiset ovat tuoneet tämän eliön tähän paikkaan. Tämä koskee esimerkiksi puutarhakasveja, lemmikkejä ja eläintarhan eläimiä.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -968,6 +976,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } tunnistaja
        *[other] { $count } tunnistajaa
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

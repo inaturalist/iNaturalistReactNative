@@ -47,7 +47,11 @@ describe( "IdentificationSheets", () => {
         if ( options && options.onSuccess ) {
           options.onSuccess( { id: 1 } );
         }
+        if ( options && options.onSettled ) {
+          options.onSettled( );
+        }
       },
+      isPending: false,
     } ) );
   } );
 

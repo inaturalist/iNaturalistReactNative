@@ -80,6 +80,8 @@ attribution-cc-by-nd = niektoré vyhradené práva (CC BY-ND)
 attribution-cc-by-sa = niektoré vyhradené práva (CC BY-SA)
 August = August
 BACK-TO-LOGIN = SPÄŤ NA PRIHLÁSENIE
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Dávkové nahrávanie
 By-exiting-changes-not-saved = Po ukončení sa zmeny vášho pozorovania neuložia.
 By-exiting-observation-not-saved = Ukončením nebude vaše pozorovanie uložené.
@@ -141,6 +143,7 @@ Connect-with-expert-naturalists = Spojte sa s odbornými prírodovedcami
 Connect-with-other-naturalists = Spojte sa s ostatnými prírodovedcami a zapojte sa do rozhovorov.
 Connection-problem-Please-try-again-later = Problém s pripojením. Skúste to znova neskôr.
 CONTACT-SUPPORT = KONTAKTUJTE PODPORU
+Content-Hidden = Content Hidden
 CONTINUE = POKRAČOVAŤ
 Coordinates-copied-to-clipboard = Súradnice skopírované do schránky
 Copy-coordinates = Kopírovať súradnice
@@ -744,6 +747,7 @@ Search-suggestions-with-location = Hľadať návrhy s polohou
 Search-suggestions-without-location = Hľadať návrhy bez polohy
 SEARCH-TAXA = HĽADAŤ TAXON
 SEARCH-USERS = HĽADAŤ POUŽÍVATEĽA
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Zobraziť pozorovanie tohto používateľa v prieskume
 See-observations-of-this-taxon-in-explore = Zobraziť pozorovanie tohto taxónu pri prieskume
 See-project-members = Zobraziť členov projektu
@@ -841,6 +845,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = Komunita
 The-iNaturalist-Network = Sieť iNaturalist je zbierka lokalizovaných webov, ktoré sú plne prepojené s globálnou komunitou iNaturalist. Sieťové stránky sú podporované miestnymi inštitúciami, ktoré podporujú miestne využitie a uľahčujú využívanie údajov z iNaturalist v prospech miestnej biodiverzity.
 The-location-will-not-be-visible-to-others = Poloha nebude viditeľná pre ostatných, čo by mohlo znemožniť identifikáciu pozorovania.
 The-models-that-suggest-species = Modely, ktoré navrhujú druhy na základe vizuálnej podobnosti a polohy, sú čiastočne vďaka spolupráci s Sara Beermi, Tomom Brooksom, Elijahom Colom, Christianom Langeom, Oisinom Macom Aodhou, Pietro Peronou a Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = Ide o divoký organizmus a ľudia ho na toto miesto neumiestnili.
 This-is-how-taxon-names-will-be-displayed = Takto budú zobrazené všetky názvy taxónov naprieč iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Toto je Vaša identifikácia. Ostatní ľudia môžu pomôcť potvrdiť ju!
@@ -853,6 +860,7 @@ This-observation-needs-more-identifications = Toto pozorovanie vyžaduje viac id
 This-observation-needs-more-identifications-to-become-research-grade = Toto pozorovanie potrebuje viac identifikácií, aby sa mohlo stať výskumným stupňom.
 This-observer-has-opted-out-of-the-Community-Taxon = Tento pozorovateľ sa rozhodol opustiť komunitný taxón
 This-organism-was-placed-by-humans = Tento organizmus sem umiestnili ľudia. Týka sa to takých organizmov, ako sú záhradné rastliny, spoločenské zvieratá a zvieratá chované v zoologických záhradách.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -965,6 +973,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } identifikátor
        *[other] { $count } identifikátorov
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

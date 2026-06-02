@@ -80,6 +80,8 @@ attribution-cc-by-nd = mõned õigused kaitstud (CC BY-ND)
 attribution-cc-by-sa = mõned õigused kaitstud (CC BY-SA)
 August = august
 BACK-TO-LOGIN = TAGASI SISSELOGIMA
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Mass-importija
 By-exiting-changes-not-saved = Väljudes ei salvestata muutuseid sinu vaatlusele.
 By-exiting-observation-not-saved = Väljudes su vaatlust ei salvestata.
@@ -141,6 +143,7 @@ Connect-with-expert-naturalists = Suhtle kogenud loodushuvilistega
 Connect-with-other-naturalists = Suhtle teise loodusarmastajatega ja osale vestlustes.
 Connection-problem-Please-try-again-later = Ühenduse probleem. Palun proovi hiljem uuesti.
 CONTACT-SUPPORT = KONTAKTEERU KASUTAJATOEGA
+Content-Hidden = Content Hidden
 CONTINUE = JÄTKA
 Coordinates-copied-to-clipboard = Kooridnaadid kopeeritud
 Copy-coordinates = Kopeeri koordinaadid
@@ -744,6 +747,7 @@ Search-suggestions-with-location = Asukohaga otsingusoovitused
 Search-suggestions-without-location = Asukohata otsingusoovitused
 SEARCH-TAXA = OTSI TAKSONIT
 SEARCH-USERS = OTSI KASUTAJAT
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
 See-project-members = See project members
@@ -841,6 +845,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNat
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 The-location-will-not-be-visible-to-others = Asukoht pole teiste jaoks nähtav, mistõttu võib määratlemine olla võimatu.
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
@@ -853,6 +860,7 @@ This-observation-needs-more-identifications = See vaatlus vajab teaduskõlbuliku
 This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -965,6 +973,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } määratleja
        *[other] { $count } määratlejat
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

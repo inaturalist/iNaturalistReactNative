@@ -80,6 +80,8 @@ attribution-cc-by-nd = einige Rechte vorbehalten (CC BY-ND)
 attribution-cc-by-sa = einige Rechte vorbehalten (CC BY-SA)
 August = August
 BACK-TO-LOGIN = ZURÜCK ZUR ANMELDUNG
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Massenimport
 By-exiting-changes-not-saved = Beim Beenden werden die Änderungen an deiner Beobachtung nicht gespeichert.
 By-exiting-observation-not-saved = Beim Beenden wird deine Beobachtung nicht gespeichert.
@@ -141,6 +143,7 @@ Connect-with-expert-naturalists = Verbinde dich mit erfahrenen Naturforschern
 Connect-with-other-naturalists = Teile Erfahrungen und Daten mit anderen Naturforschenden und tausche dich aus.
 Connection-problem-Please-try-again-later = Verbindungsproblem. Bitte versuche es später noch einmal.
 CONTACT-SUPPORT = SUPPORT KONTAKTIEREN
+Content-Hidden = Inhalt ausgeblendet
 CONTINUE = WEITER
 Coordinates-copied-to-clipboard = Koordinaten in Zwischenablage kopiert
 Copy-coordinates = Koordinaten kopieren
@@ -744,6 +747,7 @@ Search-suggestions-with-location = Suchvorschläge mit Ortsangabe
 Search-suggestions-without-location = Suchvorschläge ohne Ortsangabe
 SEARCH-TAXA = TAXA SUCHEN
 SEARCH-USERS = BENUTZER SUCHEN
+See-journal-posts = Journal-Eintrag
 See-observations-by-this-user-in-Explore = Sieht dir im 'Entdecken'-Modul die Beobachtungen dieses Users an
 See-observations-of-this-taxon-in-explore = Sieh dir Beobachtungen dieses Taxons im 'Entdecken'-Modul an
 See-project-members = Projektmitglieder ansehen
@@ -841,6 +845,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = Die iNat
 The-iNaturalist-Network = Das iNaturalist-Netzwerk ist eine Sammlung lokalisierter Websites, die vollständig mit der globalen iNaturalist-Gemeinschaft verbunden sind. Die Websites des Netzwerks werden von lokalen Institutionen unterstützt, die die lokale Nutzung fördern und die Verwendung der Daten von iNaturalist zum Nutzen der lokalen Biodiversität erleichtern.
 The-location-will-not-be-visible-to-others = Der Standort wird für andere nicht sichtbar sein, was die genaue Bestimmung der Beobachtung unmöglich machen könnte
 The-models-that-suggest-species = Die Modelle, die anhand der visuellen Ähnlichkeit und des Standorts Arten vorschlagen, sind zum Teil das Ergebnis der Zusammenarbeit mit Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona und Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = Es handelt sich um einen wilden Organismus, der nicht von Menschen an diesen Ort gebracht wurde.
 This-is-how-taxon-names-will-be-displayed = So werden dir alle Taxonnamen in iNaturalist angezeigt:
 This-is-your-identification-other-people-may-help-confirm-it = Dies ist deine ID. Andere User können bei der Bestätigung helfen!
@@ -853,6 +860,7 @@ This-observation-needs-more-identifications = Diese Beobachtung benötigt mehr B
 This-observation-needs-more-identifications-to-become-research-grade = Diese Beobachtung bedarf weiterer Bestimmungen (IDs), um Forschungsqualität zu erreichen
 This-observer-has-opted-out-of-the-Community-Taxon = Dieser Beobachter hat sich aus dem Gemeinschaftstaxon zurückgezogen
 This-organism-was-placed-by-humans = Dieser Organismus wurde von Menschen an diesen Ort gebracht. Das gilt zum Beispiel für Gartenpflanzen, Haustiere und Zootiere.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = Dieser Benutzer hat keine Follower.
 This-user-has-not-joined-any-projects = Dieser Benutzer ist keinem Projekt beigetreten.
 This-user-is-not-following-anyone = Dieser Benutzer folgt niemandem.
@@ -965,6 +973,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } BestimmerIn
        *[other] { $count } Bestimmende
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

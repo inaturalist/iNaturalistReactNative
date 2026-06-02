@@ -86,6 +86,8 @@ attribution-cc-by-nd = vissa rättigheter förbehållna (CC BY-ND)
 attribution-cc-by-sa = vissa rättigheter förbehållna (CC BY-SA)
 August = augusti
 BACK-TO-LOGIN = TILLBAKA TILL INLOGGNING
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Bulkimportering
 By-exiting-changes-not-saved = Genom att avsluta kommer ändringar av ditt fynd inte att sparas.
 By-exiting-observation-not-saved = Genom att avsluta kommer ditt fynd inte att sparas.
@@ -147,6 +149,7 @@ Connect-with-expert-naturalists = Få kontakt med kunniga amatörbiologer
 Connect-with-other-naturalists = Kom i kontakt med andra naturforskare och diskussioner.
 Connection-problem-Please-try-again-later = Anslutningsproblem. Försök igen senare.
 CONTACT-SUPPORT = KONTAKTA SUPPORT
+Content-Hidden = Content Hidden
 CONTINUE = FORTSÄTT
 Coordinates-copied-to-clipboard = Koordinater kopierade till urklipp
 Copy-coordinates = Kopiera koordinater
@@ -750,6 +753,7 @@ Search-suggestions-with-location = Sök förslag med plats
 Search-suggestions-without-location = Sök förslag utan plats
 SEARCH-TAXA = SÖK TAXA
 SEARCH-USERS = SÖK ANVÄNDARE
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Se fynd av den här användaren i Utforska
 See-observations-of-this-taxon-in-explore = Se fynd  av detta taxon i utforska
 See-project-members = Se projektmedlemmar
@@ -847,6 +851,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = iNatural
 The-iNaturalist-Network = iNaturalist-nätverket är en samling lokaliserade webbplatser som är fullt anslutna till den globala iNaturalist-communityn. Nätverksplatser stöds av lokala institutioner som främjar lokal användning och underlättar användningen av data från iNaturalist för att gynna lokal biologisk mångfald.
 The-location-will-not-be-visible-to-others = Platsen kommer inte att vara synlig för andra, vilket kan göra fyndet omöjligt att bestämma.
 The-models-that-suggest-species = Modellerna som föreslår arter baserat på visuell likhet och plats existerar bland annat tack vare samarbeten med Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona och Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = Detta är en vild organism och placerades inte på denna plats av människor.
 This-is-how-taxon-names-will-be-displayed = Så här kommer alla taxonnamn att visas för dig på iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Det här är din bestämning. Andra kan hjälpa till att bekräfta den!
@@ -859,6 +866,7 @@ This-observation-needs-more-identifications = Detta fynd behöver fler bestämni
 This-observation-needs-more-identifications-to-become-research-grade = Detta fynd behöver fler bestämningar för att uppnå forskningsklass.
 This-observer-has-opted-out-of-the-Community-Taxon = Den här observatören har valt bort communityns taxon
 This-organism-was-placed-by-humans = Denna organism placerades på denna plats av människor. Detta gäller för sådant som trädgårdsväxter, husdjur och djurparksdjur.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = Den här användaren har inga följare.
 This-user-has-not-joined-any-projects = Denna användare har inte gått med i några projekt.
 This-user-is-not-following-anyone = Den här användaren följer inte någon.
@@ -971,6 +979,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } bestämmare
        *[other] { $count } bestämmare
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

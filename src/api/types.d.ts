@@ -17,6 +17,13 @@ export interface ApiPlace {
   place_type?: number;
 }
 
+export interface ApiPost {
+  id: number;
+  title: string;
+  body: string;
+  published_at: string;
+}
+
 export interface ApiProject {
   icon?: string;
   id?: number;
@@ -186,8 +193,16 @@ export interface ApiSuggestion {
   combined_score: number;
 }
 
+export interface ApiTotalBounds {
+  swlat: number;
+  swlng: number;
+  nelat: number;
+  nelng: number;
+}
+
 export interface ApiObservationsSearchResponse extends ApiResponse {
   results: ApiObservation[];
+  total_bounds?: ApiTotalBounds;
 }
 
 export const ORDER_BY_CREATED_AT = "created_at";

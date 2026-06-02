@@ -1,0 +1,7 @@
+FIXED
+* Multiple taps of submitting ID creates only one ID on observation
+* Approximate location permission
+* Map tile preference should be sticky
+
+UPDATED
+* Performance improvements

@@ -1,14 +1,12 @@
-Osoita kameralla kasveja, eläimiä ja sieniä nähdäksesi lajiehdotuksia ulkona ollessasi tai tuo kuvia kirjastostasi. iNaturalist auttaa miljoonia kaltaisiasi ihmisiä oppimaan lisää luonnosta käyttämällä tekoälyehdotuksia, joita tukee asiantuntevien luonnonystävien maailmanlaajuinen yhteisö.
+Your photos of plants, animals, fungi, and more can help protect nature all around the world. iNaturalist is free, nonprofit, and community-powered.
 
-iNaturalist menee paljon tekoälyn tunnistamista pidemmälle – oikeat ihmiset tarkistavat havaintosi ja ne jaetaan tieteelle lajien suojelemiseksi.
+iNaturalist helps millions of people learn about and document the nature around them. Point your camera at plants, animals, and fungi to get instant identification suggestions, then share your photos or sound recordings as an "observation." Then, see your observation get reviewed by a global community of knowledgeable nature-lovers to turn it into a useful data point for science and conservation efforts. Your everyday moments of curiosity can directly contribute to protecting nature, and you don't need any previous experience or knowledge to get started.
+
+iNaturalist is a mission-driven nonprofit dedicated to connecting people to nature and advancing biodiversity science and conservation, and is freely available thanks to the generous support of our community.
 
 AVAINOMINAISUUDET
-Tunnista lajeja missä tahansa päin maailmaa
-Pidä kirjaa näkemistäsi lajeista
-Edistä tiedettä jakamalla havaintojasi
-Tutki ja suojele luonnon monimuotoisuutta 
-Ole yhteydessä muihin luontoharrastajiin ja opi heiltä
-
-iNaturalistin voittoa tavoittelematon tehtävä on yhdistää ihmiset luontoon ja edistää tiedettä ja luonnonsuojelua. iNaturalist on vapaasti käytettävissä lahjoittajayhteisömme runsaan tuen ansiosta.
-
-Tutustu ja opi vielä enemmän https://www.inaturalist.org
+• Identify species from anywhere in the world
+• Contribute to science by sharing your observations
+• Keep a record of species you see
+• Explore and protect biodiversity 
+• Connect with and learn from other nature enthusiasts

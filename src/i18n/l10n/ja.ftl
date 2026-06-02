@@ -80,6 +80,8 @@ attribution-cc-by-nd = いくつかの権利を保有（CC BY-ND）
 attribution-cc-by-sa = いくつかの権利を保有（CC BY-SA）
 August = 8月
 BACK-TO-LOGIN = ログインに戻る
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = 一括インポーター
 By-exiting-changes-not-saved = 終了すると、観察記録への変更は保存されません。
 By-exiting-observation-not-saved = 終了すると、観察記録は保存されません。
@@ -141,6 +143,7 @@ Connect-with-expert-naturalists = 専門のナチュラリストとつながる
 Connect-with-other-naturalists = 他のナチュラリストとつながり、会話に参加してください。
 Connection-problem-Please-try-again-later = 接続に問題があります。後でもう一度お試しください。
 CONTACT-SUPPORT = サポートに問い合わせる
+Content-Hidden = Content Hidden
 CONTINUE = 続ける
 Coordinates-copied-to-clipboard = 座標をクリップボードにコピーしました
 Copy-coordinates = 座標のコピー
@@ -749,6 +752,7 @@ Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 See-observations-of-this-taxon-in-explore = See observations of this taxon in explore
 See-project-members = プロジェクトメンバーを表示
@@ -846,6 +850,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = The iNat
 The-iNaturalist-Network = The iNaturalist network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that promote local use and facilitate the use of data from iNaturalist to benefit local biodiversity.
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = 視覚的な類似性と位置に基づいて種を推定するモデルは、サラ・ビーリー、トム・ブルックス、イライジャ・コール、クリスチャン・ランゲ、オイシン・マック・アオダ、ピエトロ・ペローナ、グラント・ヴァン・ホーンとの共同研究のおかげです。
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = This is your identification. Other people may help confirm it!
@@ -858,6 +865,7 @@ This-observation-needs-more-identifications = This observation needs more identi
 This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -970,6 +978,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

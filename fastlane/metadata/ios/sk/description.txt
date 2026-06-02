@@ -1,14 +1,12 @@
-Namierte fotoaparát na rastliny, zvieratá a huby, aby ste videli návrhy druhov, keď ste vonku, alebo importujte fotografie zo svojej knižnice. iNaturalist pomáha miliónom ľudí, ako je Vy, dozvedieť sa viac o prírode pomocou návrhov AI podporovaných globálnou komunitou znalých milovníkov prírody.
+Your photos of plants, animals, fungi, and more can help protect nature all around the world. iNaturalist is free, nonprofit, and community-powered.
 
-iNaturalist ďaleko presahuje identifikáciu AI - vaše pozorovania sú preskúmavané skutočnými ľuďmi a zdieľané pre vedu za účelom ochrany druhov.
+iNaturalist helps millions of people learn about and document the nature around them. Point your camera at plants, animals, and fungi to get instant identification suggestions, then share your photos or sound recordings as an "observation." Then, see your observation get reviewed by a global community of knowledgeable nature-lovers to turn it into a useful data point for science and conservation efforts. Your everyday moments of curiosity can directly contribute to protecting nature, and you don't need any previous experience or knowledge to get started.
+
+iNaturalist is a mission-driven nonprofit dedicated to connecting people to nature and advancing biodiversity science and conservation, and is freely available thanks to the generous support of our community.
 
 KĽÚČOVÉ FUNKCIE
-Identifikujte druhy odkiaľkoľvek na svete
-Uchovajte si záznam o druhoch, ktoré vidíte
-Prispejte k vede zdieľaním svojich pozorovaní
-Preskúmajte a chráňte biodiverzitu 
-Spojte sa s ostatnými nadšencami prírody a učte sa od nich
-
-Neziskovým poslaním iNaturalist je spájať ľudí s prírodou a podporovať vedu a ochranu prírody. iNaturalist je voľne dostupný vďaka veľkorysej podpore našej komunity darcov.
-
-Preskúmajte a zistite ešte viac na https://www.inaturalist.org.
+• Identify species from anywhere in the world
+• Contribute to science by sharing your observations
+• Keep a record of species you see
+• Explore and protect biodiversity 
+• Connect with and learn from other nature enthusiasts

@@ -150,6 +150,8 @@ attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = August
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
+Blog = Blog
+BLOG = BLOG
 # Accessibility label for bulk import / photo import button
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 # iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
@@ -259,6 +261,7 @@ Connect-with-expert-naturalists = Connect with expert naturalists
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
+Content-Hidden = Content Hidden
 # Continue button in onboarding screen
 CONTINUE = CONTINUE
 # Notification when coordinates have been copied
@@ -1116,6 +1119,8 @@ Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
+# Accessibility label for navigating to journal posts screen
+See-journal-posts = See journal posts
 # Accessibility label for Observations button on UserProfile screen
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 # Accessibility label for Explore button on TaxonDetails screen
@@ -1248,6 +1253,9 @@ The-iNaturalist-Network = The iNaturalist network is a collection of localized w
 # Describes what happens when geoprivacy is set to private
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
@@ -1262,6 +1270,7 @@ This-observation-needs-more-identifications = This observation needs more identi
 This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -1399,6 +1408,12 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+# Subtitle for a screen showing a list of journal posts
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 # Subheader for number of project members screen
 X-MEMBERS =

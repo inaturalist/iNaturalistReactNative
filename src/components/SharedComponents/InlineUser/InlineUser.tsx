@@ -1,22 +1,19 @@
-// @flow
-
 // Directly imported, not from index.js to avoid circular dependency
 import Body3 from "components/SharedComponents/Typography/Body3";
-import type { Node } from "react";
 import React from "react";
 
 import InlineUserBase from "./InlineUserBase";
 
-type Props = {
+interface Props {
   user: {
-    id: number,
-    icon_url?: string,
-    login: string
-  },
-  isConnected: boolean
-};
+    id: number;
+    icon_url?: string;
+    login: string;
+  };
+  isConnected: boolean;
+}
 
-const InlineUser = ( { user, isConnected }: Props ): Node => (
+const InlineUser = ( { user, isConnected }: Props ) => (
   <InlineUserBase
     user={user}
     isConnected={isConnected}

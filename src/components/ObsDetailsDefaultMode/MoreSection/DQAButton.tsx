@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Body3 } from "components/SharedComponents";
 import { t } from "i18next";
+import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 import { useCurrentUser } from "sharedHooks";
 
@@ -9,7 +10,7 @@ interface Props {
 }
 
 const DQAButton = ( { observationUUID }: Props ) => {
-  const navigation = useNavigation( );
+  const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
   const currentUser = useCurrentUser( );
 
   if ( !currentUser ) {
