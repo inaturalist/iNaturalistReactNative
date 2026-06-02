@@ -2,6 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   fetchProjects,
 } from "api/projects";
+import type { ProjectRulePreference } from "api/types";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import { ActivityIndicator, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -15,6 +16,13 @@ import AboutProjectType from "./AboutProjectType";
 import ProjectRuleItem from "./ProjectRuleItem";
 
 const getFieldValue = item => item?.[0]?.value;
+interface Project {
+  icon: string;
+  id: number;
+  project_type: "collection" | "umbrella" | "";
+  rule_preferences: ProjectRulePreference[];
+  title: string;
+}
 
 // web reference at:
 // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx
@@ -103,7 +111,7 @@ const ProjectRequirements = ( ) => {
   const projectQueryKey = ["projectRequirements", "fetchProjects", id];
 
   // Overall Project Requirements
-  const { data: project, isLoading } = useAuthenticatedQuery(
+  const { data: project, isLoading } = useAuthenticatedQuery<Project>(
     projectQueryKey,
     optsWithAuth => fetchProjects( id, {
       rule_details: true,
