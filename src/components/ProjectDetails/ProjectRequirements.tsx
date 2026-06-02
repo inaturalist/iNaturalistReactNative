@@ -247,8 +247,8 @@ const ProjectRequirements = ( ) => {
   }
 
   const dateRule = RULES.find( r => r.name === t( "Date" ) );
-  const { projectDate } = formatProjectDate( project, t, i18n );
-  if ( projectDate !== null ) {
+  if ( project?.rule_preferences ) {
+    const { projectDate } = formatProjectDate( project, t, i18n );
     dateRule.inclusions = [
     // TODO: dates need internationalized formatting
     // from 2023-03-22 07:42 -06:00 to something readable
