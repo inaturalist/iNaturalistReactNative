@@ -46,6 +46,7 @@ module.exports = {
         },
       },
     ],
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
     // The AirBNB approach at
     // https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/imports.js#L71
     // is quite particular and forbids imports of devDependencies anywhere
@@ -172,7 +173,6 @@ module.exports = {
     "@typescript-eslint/consistent-type-imports": ["error", {
       fixStyle: "separate-type-imports",
     }],
-    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
 
     "@stylistic/member-delimiter-style": "error",
 
@@ -192,13 +192,13 @@ module.exports = {
     {
       files: ["*.js", "*.jsx"],
       rules: {
-        "@typescript-eslint/consistent-type-definitions": "off",
-        "@typescript-eslint/no-unsafe-function-type": "off",
-        "@typescript-eslint/no-wrapper-object-types": "off",
-        "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/consistent-type-imports": "off",
         "import/consistent-type-specifier-style": "off",
         "@stylistic/member-delimiter-style": "off",
+        "@typescript-eslint/consistent-type-definitions": "off",
+        "@typescript-eslint/consistent-type-imports": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-wrapper-object-types": "off",
       },
     },
     {
