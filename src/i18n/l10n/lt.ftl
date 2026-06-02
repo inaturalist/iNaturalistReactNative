@@ -444,6 +444,7 @@ LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-PROJECT--question = IŠEITI IŠ PROJEKTO?
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 Lets-reset-your-password = Nustatykime slaptažodį iš naujo.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION

@@ -1,16 +1,11 @@
-import type { ApiProject } from "api/types";
+import type { ApiProject, ProjectRulePreference } from "api/types";
 import type { i18n as i18next, TFunction } from "i18next";
 import { formatProjectsApiDatetimeLong } from "sharedHelpers/dateAndTime";
 
-interface ProjectRulePreference {
-  field?: string;
-  value?: string | null;
-}
-
-type ProjectWithDateRules = Omit<ApiProject, "project_type"> & {
+interface ProjectWithDateRules {
   project_type?: ApiProject["project_type"];
   rule_preferences?: ProjectRulePreference[] | null;
-};
+}
 
 interface FormattedProjectDate {
   projectDate: string | null;

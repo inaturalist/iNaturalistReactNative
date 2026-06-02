@@ -10,8 +10,10 @@ import {
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useState } from "react";
 import { getBuildNumber, getVersion } from "react-native-device-info";
+import { ReactNativeLegal } from "react-native-legal";
 import { useDebugMode } from "sharedHooks";
 import useStore from "stores/useStore";
 
@@ -19,7 +21,7 @@ const aboutID = "about";
 const teamID = "team";
 
 const About = ( ) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<TabStackScreenProps<"About">["navigation"]>();
   const [activeTab, setActiveTab] = useState( aboutID );
   const [count, setCount] = useState( 0 );
   const appVersion = getVersion();
@@ -59,6 +61,10 @@ const About = ( ) => {
       toggleDebug();
     }
     setCount( count + 1 );
+  };
+
+  const onMorePressed = () => {
+    ReactNativeLegal.launchLicenseListScreen( t( "Licenses" ) );
   };
 
   return (
@@ -124,11 +130,17 @@ const About = ( ) => {
             </UnderlinedLink>
             <Pressable
               accessibilityRole="button"
-              className="items-center justify-center"
+              className="mb-4 items-center justify-center"
               onPress={() => onVersionPressed()}
             >
               <Body1>{ t( "Version-app-build", { appVersion, buildVersion } )}</Body1>
             </Pressable>
+            <UnderlinedLink
+              className="mb-4 text-center"
+              onPress={() => onMorePressed()}
+            >
+              {t( "Licenses" )}
+            </UnderlinedLink>
             {isDebug && (
               <Button
                 text="TURN OFF DEBUG MODE"

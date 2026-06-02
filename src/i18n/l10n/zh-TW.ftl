@@ -444,6 +444,7 @@ LEAVE-PROJECT = 離開專案
 LEAVE-PROJECT--question = 離開專案嗎？
 LEAVE-US-A-REVIEW = 給我們留下一則回饋評論吧！
 Lets-reset-your-password = 重設您的密碼。
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = 載入愛自然的 AI 相機
 Loads-content-that-requires-an-Internet-connection = 載入需要網路連線的內容
 LOCATION = 位置

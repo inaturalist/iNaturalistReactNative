@@ -11,6 +11,7 @@ import {
   Button,
   ViewWrapper,
 } from "components/SharedComponents";
+import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
@@ -73,6 +74,12 @@ const ExploreResults = ( ) => {
                 testID="ExploreV2ObservationsList"
               />
               <ExploreV2DebugSheet />
+              <SortButton
+                // TODO: wire up onPress to show sort bottom sheet
+                onPress={() => console.log( "onPress SortButton" )}
+                // TODO: add label based on state wether this is sorting species or observations
+                accessibilityLabel={t( "Change-species-sort-order" )}
+              />
             </>
           )}
       </View>

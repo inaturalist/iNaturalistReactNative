@@ -449,6 +449,7 @@ LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-PROJECT--question = プロジェクトを離れますか？
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 Lets-reset-your-password = Let’s reset your password.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION

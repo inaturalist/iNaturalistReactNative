@@ -444,6 +444,7 @@ LEAVE-PROJECT = OPUSTIŤ PROJEKT
 LEAVE-PROJECT--question = OPUSTIŤ PROJEKT?
 LEAVE-US-A-REVIEW = ZANECHAJTE NÁM RECENZIU!
 Lets-reset-your-password = Obnovte svoje heslo.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Načítanie AI kamery iNaturalist
 Loads-content-that-requires-an-Internet-connection = Načíta obsah, ktorý vyžaduje pripojenie k internetu
 LOCATION = POLOHA

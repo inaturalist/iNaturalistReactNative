@@ -444,6 +444,7 @@ LEAVE-PROJECT = ABBANDONA IL PROGETTO
 LEAVE-PROJECT--question = ABBANDONARE IL PROGETTO?
 LEAVE-US-A-REVIEW = LASCIACI UNA RECENSIONE!
 Lets-reset-your-password = Reimpostiamo la password.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Caricamento della fotocamera AI di iNaturalist
 Loads-content-that-requires-an-Internet-connection = Carica i contenuti che richiedono una connessione Internet
 LOCATION = UBICAZIONE

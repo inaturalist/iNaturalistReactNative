@@ -2,6 +2,7 @@ import type { ApiPhoto, ApiTaxon } from "api/types";
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
+  IconicTaxonIcon,
   PhotoCount,
 } from "components/SharedComponents";
 import {
@@ -187,6 +188,25 @@ const PhotosSection = ( {
       ) )}
     </View>
   );
+
+  if ( observationPhotos.length === 0 ) {
+    return (
+      <View className="h-[390px]">
+        <IconicTaxonIcon
+          iconicTaxonName={taxon?.iconic_taxon_name}
+          imageClassName={[
+            "grow",
+            "aspect-square",
+            "bg-darkGray",
+            "border-0",
+          ]}
+          white
+          isBackground
+          size={120}
+        />
+      </View>
+    );
+  }
 
   if ( displayPortraitLayout === null ) {
     return (

@@ -703,6 +703,7 @@ LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-PROJECT--question = LEAVE PROJECT?
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 Lets-reset-your-password = Let’s reset your password.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION
@@ -734,6 +735,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] MEMBER
        *[other] MEMBERS
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 # Accessibility label for a button that opens a menu of options
 Menu = Menu
 Missing-Date = Missing Date
