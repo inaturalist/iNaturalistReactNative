@@ -3,6 +3,8 @@ import { IconicTaxonIcon } from "components/SharedComponents";
 import { FasterImageView, View } from "components/styledComponents";
 import React from "react";
 
+import blurhashLookup from "./blurhashLookup";
+
 interface Props {
   iconicTaxonIconSize?: number;
   iconicTaxonName?: string;
@@ -28,42 +30,50 @@ const ObsImage = ( {
   uri,
   white = false,
   iconicTaxonIconSize,
-}: Props ) => (
-  <View className={classNames( CLASS_NAMES, "relative" )}>
-    <View className="absolute w-full h-full">
-      <IconicTaxonIcon
-        imageClassName={[
-          ...CLASS_NAMES,
-          imageClassName,
-          {
-            "bg-darkGray": white && isBackground,
-            "bg-transparent": white && !isBackground,
-          },
-          "border-0",
-        ]}
-        iconicTaxonName={iconicTaxonName}
-        white={white}
-        isBackground={isBackground}
-        size={iconicTaxonIconSize}
-      />
+}: Props ) => {
+  console.log( uri?.uri );
+  const blurhash = blurhashLookup[uri?.uri];
+  return (
+    <View className={classNames( CLASS_NAMES, "relative" )}>
+      {!blurhash && (
+        <View className="absolute w-full h-full">
+          <IconicTaxonIcon
+            imageClassName={[
+              ...CLASS_NAMES,
+              imageClassName,
+              {
+                "bg-darkGray": white && isBackground,
+                "bg-transparent": white && !isBackground,
+              },
+              "border-0",
+            ]}
+            iconicTaxonName={iconicTaxonName}
+            white={white}
+            isBackground={isBackground}
+            size={iconicTaxonIconSize}
+          />
+        </View>
+      )}
+      { uri?.uri && (
+        <FasterImageView
+          className={classNames( CLASS_NAMES )}
+          testID="ObsList.photo"
+          accessibilityIgnoresInvertColors
+          fadeDuration={0}
+          blur
+          source={{
+            url: uri.uri,
+            blurhash,
+            cachePolicy: "memory",
+            resizeMode: "cover",
+          }}
+        />
+      ) }
+      { opaque && (
+        <View className="absolute w-full h-full bg-white opacity-50" />
+      ) }
     </View>
-    { uri?.uri && (
-      <FasterImageView
-        className={classNames( CLASS_NAMES )}
-        testID="ObsList.photo"
-        accessibilityIgnoresInvertColors
-        fadeDuration={0}
-        source={{
-          url: uri.uri,
-          cachePolicy: "discWithCacheControl",
-          resizeMode: "cover",
-        }}
-      />
-    ) }
-    { opaque && (
-      <View className="absolute w-full h-full bg-white opacity-50" />
-    ) }
-  </View>
-);
+  );
+};
 
 export default ObsImage;

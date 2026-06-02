@@ -7,6 +7,9 @@ import type { RealmPhoto } from "realmModels/types";
 import resizeImage from "sharedHelpers/resizeImage";
 import { unlink } from "sharedHelpers/util";
 
+let hasLogged = false;
+const imageUrls = new Set();
+
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
     id: true,
@@ -87,6 +90,13 @@ class Photo extends Realm.Object {
   }
 
   static displayMediumPhoto( url?: string ) {
+    if ( !hasLogged && imageUrls.size >= 100 ) {
+      // input for blurhash node app
+      console.log( imageUrls );
+      hasLogged = true;
+    } else if ( url ) {
+      imageUrls.add( url );
+    }
     return url?.replace( "square", "medium" );
   }
 
