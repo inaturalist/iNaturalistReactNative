@@ -202,7 +202,7 @@ const OnboardingCarousel = ( ) => {
 
   return (
     <ViewWrapper wrapperClassName="bg-black">
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+      <StatusBar barStyle="light-content" />
       <View
         className="w-full h-full relative"
         testID="OnboardingCarousel"
