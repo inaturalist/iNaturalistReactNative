@@ -1,39 +1,45 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import performance from "react-native-performance";
+import isDebugMode from "sharedHelpers/isDebugMode";
+import { log } from "sharedHelpers/logger";
 
-interface PerformanceType {
-  screenName?: string; // name of the screen to profile; helpful if not using logger
-  isLoading: boolean | undefined; // indicate whether data finished loading
+const logger = log.extend( "usePerformance" );
+
+interface PerformanceOptions {
+  screenName?: string;
+  stopOnMount?: boolean;
+  isLoading?: boolean;
 }
 
 const usePerformance = ( {
   screenName,
+  stopOnMount = false,
   isLoading,
-}: PerformanceType ) => {
-  const [startTime, setStartTime] = useState( 0 );
-  const [loadTime, setLoadTime] = useState( "" );
+}: PerformanceOptions = {} ) => {
+  const startTime = useRef( 0 );
 
   useEffect( ( ) => {
-    const getPerformanceReport = ( ) => {
-      const endTime = global.performance.now( );
-      const timeToRender = endTime - startTime;
-      const loadTimeMessage = `Load Time: ${timeToRender.toFixed( 0 )} milliseconds`;
-      const logMessage = screenName
-        ? `${screenName} ${loadTimeMessage}`
-        : loadTimeMessage;
+    startTime.current = performance.now( );
+  }, [] );
 
-      setLoadTime( logMessage );
-    };
-    if ( startTime === 0 ) {
-      setStartTime( global.performance.now() );
-    }
-    if ( !isLoading ) {
-      getPerformanceReport();
-    }
-  }, [isLoading, startTime, screenName] );
+  const stop = useCallback( ( ) => {
+    if ( !isDebugMode( ) ) { return; }
+    const endTime = performance.now( );
+    const elapsed = endTime - startTime.current;
+    const loadTimeMessage = `Load Time: ${elapsed.toFixed( 0 )} milliseconds`;
+    const logMessage = screenName
+      ? `${screenName} ${loadTimeMessage}`
+      : loadTimeMessage;
+    logger.info( logMessage );
+  }, [screenName] );
 
-  return {
-    loadTime,
-  };
+  useEffect( ( ) => {
+    if ( stopOnMount || isLoading === false ) {
+      stop( );
+    }
+  }, [stopOnMount, isLoading, stop] );
+
+  return stop;
 };
 
 export default usePerformance;

@@ -35,6 +35,7 @@ type Props = {
   numStoredResults?: number,
   cropRatio?: number,
   onCameraError: Function,
+  onCameraReady?: Function,
   onCaptureError: Function,
   onClassifierError: Function,
   onDeviceNotSupported: Function,
@@ -64,6 +65,7 @@ const FrameProcessorCamera = ( {
   fps = DEFAULT_FPS,
   numStoredResults = DEFAULT_NUM_STORED_RESULTS,
   onCameraError,
+  onCameraReady,
   onCaptureError,
   onClassifierError,
   onDeviceNotSupported,
@@ -219,6 +221,7 @@ const FrameProcessorCamera = ( {
         onCameraError( error );
         await logStage( sentinelFileName, "fallback_camera_error" );
       }}
+      onCameraReady={onCameraReady}
       onCaptureError={async error => {
         onCaptureError( error );
         await logStage( sentinelFileName, "camera_capture_error" );

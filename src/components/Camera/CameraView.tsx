@@ -36,6 +36,7 @@ interface Props {
   device: CameraDevice;
   frameProcessor?: () => void;
   onCameraError: ( error: CameraRuntimeError ) => void;
+  onCameraReady?: ( ) => void;
   onCaptureError: ( error: CameraRuntimeError ) => void;
   onClassifierError: ( error: CameraRuntimeError ) => void;
   onDeviceNotSupported: ( error: CameraRuntimeError ) => void;
@@ -55,6 +56,7 @@ const CameraView = ( {
   device,
   frameProcessor,
   onCameraError,
+  onCameraReady,
   onCaptureError,
   onClassifierError,
   onDeviceNotSupported,
@@ -176,6 +178,7 @@ const CameraView = ( {
           frameProcessor={frameProcessor}
           isActive={isActive}
           onError={onError}
+          onInitialized={onCameraReady}
           outputOrientation="device"
           photo
           photoQualityBalance="quality"

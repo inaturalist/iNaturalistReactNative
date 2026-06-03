@@ -20,9 +20,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import { log } from "sharedHelpers/logger";
 import { useDeviceOrientation, usePerformance } from "sharedHooks";
-import useDebugMode from "sharedHooks/useDebugMode";
 import useStore from "stores/useStore";
 
 import {
@@ -36,8 +34,6 @@ import CameraOptionsButtons from "./CameraOptionsButtons";
 import DiscardChangesSheet from "./DiscardChangesSheet";
 import useBackPress from "./hooks/useBackPress";
 import PhotoPreview from "./PhotoPreview";
-
-const logger = log.extend( "StandardCamera" );
 
 const isTablet = DeviceInfo.isTablet( );
 
@@ -91,15 +87,9 @@ const StandardCamera = ( {
   const navigation = useNavigation( );
   const insets = useSafeAreaInsets();
 
-  const { loadTime } = usePerformance( {
-    isLoading: camera?.current !== null,
+  const stop = usePerformance( {
+    screenName: "StandardCamera",
   } );
-  const { isDebug } = useDebugMode();
-  useEffect( () => {
-    if ( isDebug && loadTime ) {
-      logger.info( loadTime );
-    }
-  }, [isDebug, loadTime] );
 
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
@@ -234,6 +224,7 @@ const StandardCamera = ( {
               cameraScreen="standard"
               device={device}
               onCameraError={handleCameraError}
+              onCameraReady={stop}
               onCaptureError={handleCaptureError}
               onClassifierError={handleClassifierError}
               onDeviceNotSupported={handleDeviceNotSupported}

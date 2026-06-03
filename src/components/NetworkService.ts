@@ -1,27 +1,16 @@
-import { useEffect } from "react";
-import { log } from "sharedHelpers/logger";
 import {
   useIconicTaxa,
   useObservationUpdatesWhenFocused, usePerformance,
 } from "sharedHooks";
-import useDebugMode from "sharedHooks/useDebugMode";
 
 import useTaxonCommonNames from "./hooks/useTaxonCommonNames";
 import useWorkQueue from "./hooks/useWorkQueue";
 
-const logger = log.extend( "NetworkService" );
-
 const NetworkService = ( ) => {
-  const { loadTime } = usePerformance( {
+  usePerformance( {
     screenName: "NetworkService",
-    isLoading: false,
+    stopOnMount: true,
   } );
-  const { isDebug } = useDebugMode();
-  useEffect( () => {
-    if ( isDebug && loadTime ) {
-      logger.info( loadTime );
-    }
-  }, [isDebug, loadTime] );
 
   useObservationUpdatesWhenFocused( );
 
