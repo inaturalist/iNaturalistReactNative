@@ -25,16 +25,12 @@ import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
 import { getInstallID } from "sharedHelpers/installData";
+import isDebugMode from "sharedHelpers/isDebugMode";
 import { log, logFileDirectory, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { setFirebaseDataCollectionEnabled } from "sharedHelpers/tracking";
-import useStore from "stores/useStore";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
-
-function isDebugModeSync( ): boolean {
-  return useStore.getState().layout.debugModeEnabled === true;
-}
 
 const logger = log.extend( "AuthenticationService" );
 // The remote transport in the default logger uses many of the methods in this
@@ -101,7 +97,7 @@ async function getSensitiveItem(
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const getItemError = e as SensitiveInfoError;
-      if ( isDebugModeSync() ) {
+      if ( isDebugMode( ) ) {
         switch ( getItemError.code ) {
           case ErrorCode.NOT_FOUND:
             // Value doesn't exist
@@ -132,7 +128,7 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const setItemError = e as SensitiveInfoError;
-      if ( isDebugModeSync( ) ) {
+      if ( isDebugMode( ) ) {
         localLogger.info(
           `RNSInfo.setItem error for ${key}, ${setItemError.code} ${setItemError.message}`,
         );
@@ -155,7 +151,7 @@ async function deleteSensitiveItem(
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const deleteItemError = e as SensitiveInfoError;
-      if ( isDebugModeSync() ) {
+      if ( isDebugMode( ) ) {
         localLogger.info(
           `RNSInfo.deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`,
         );
