@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { ViewStyle } from "react-native";
+import { Platform } from "react-native";
 import RNModal from "react-native-modal";
 
 // repurposed from Seek: https://github.com/inaturalist/SeekReactNative/blob/main/components/UIComponents/Modals/Modal.js
@@ -47,6 +48,7 @@ const Modal = ( {
   const swipeDirection = disableSwipeDirection
     ? undefined
     : "down";
+  const androidFullScreen = fullScreen && Platform.OS === "android";
   return (
     <RNModal
       isVisible={showModal}
@@ -78,6 +80,8 @@ const Modal = ( {
       // while modal is closing
       backdropTransitionOutTiming={0}
       hideModalContentWhileAnimating
+      statusBarTranslucent={androidFullScreen}
+      navigationBarTranslucent={androidFullScreen}
     >
       {modal}
     </RNModal>
