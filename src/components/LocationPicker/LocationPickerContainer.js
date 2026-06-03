@@ -216,12 +216,12 @@ const LocationPickerContainer = ( ): Node => {
         _nwPoint,
         [nelng, nelat],
       ] = place.bounding_box_geojson.coordinates[0];
-      newRegion = {
-        ...newRegion,
-        ...getMapRegion( {
-          swlng, swlat, nelng, nelat,
-        } ),
-      };
+      // Take only the deltas from getMapRegion and keep the place's point_geojson as the center
+      // this gives us a more helpfully placed crosshair
+      const { latitudeDelta, longitudeDelta } = getMapRegion( {
+        swlng, swlat, nelng, nelat,
+      } );
+      newRegion = { ...newRegion, latitudeDelta, longitudeDelta };
     }
 
     dispatch( {
