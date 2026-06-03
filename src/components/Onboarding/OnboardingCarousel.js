@@ -287,7 +287,7 @@ const OnboardingCarousel = ( ) => {
           <View
             className="absolute bottom-0 w-full"
             pointerEvents="box-none"
-            style={{ paddingBottom: insets.bottom }}
+            style={{ paddingBottom: 8 + insets.bottom }}
           >
             <View
               className="pt-8"
