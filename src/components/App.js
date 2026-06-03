@@ -53,7 +53,7 @@ const App = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   usePerformance( {
     screenName: "App",
-    stopOnMount: true,
+    isLoading: false,
   } );
 
   // attempting to make sure that navigation is only called once

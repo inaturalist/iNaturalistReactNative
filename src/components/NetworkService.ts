@@ -9,7 +9,7 @@ import useWorkQueue from "./hooks/useWorkQueue";
 const NetworkService = ( ) => {
   usePerformance( {
     screenName: "NetworkService",
-    stopOnMount: true,
+    isLoading: false,
   } );
 
   useObservationUpdatesWhenFocused( );

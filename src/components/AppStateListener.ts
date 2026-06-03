@@ -9,7 +9,7 @@ import {
 const AppStateListener = ( ) => {
   usePerformance( {
     screenName: "AppStateListener",
-    stopOnMount: true,
+    isLoading: false,
   } );
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
   const [deviceStorageFullShown, setDeviceStorageFullShown] = useState( false );

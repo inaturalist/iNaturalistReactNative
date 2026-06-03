@@ -39,7 +39,7 @@ const StartupService = ( ) => {
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0]?.isValid( );
   usePerformance( {
     screenName: "StartupService",
-    stopOnMount: true,
+    isLoading: false,
   } );
 
   useEffect( ( ) => {

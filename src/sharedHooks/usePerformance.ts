@@ -7,13 +7,11 @@ const logger = log.extend( "usePerformance" );
 
 interface PerformanceOptions {
   screenName?: string;
-  stopOnMount?: boolean;
   isLoading?: boolean;
 }
 
 const usePerformance = ( {
   screenName,
-  stopOnMount = false,
   isLoading,
 }: PerformanceOptions = {} ) => {
   const startTime = useRef( 0 );
@@ -34,10 +32,10 @@ const usePerformance = ( {
   }, [screenName] );
 
   useEffect( ( ) => {
-    if ( stopOnMount || isLoading === false ) {
+    if ( isLoading === false ) {
       stop( );
     }
-  }, [stopOnMount, isLoading, stop] );
+  }, [isLoading, stop] );
 
   return stop;
 };
