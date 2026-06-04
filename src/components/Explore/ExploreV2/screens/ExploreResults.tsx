@@ -1,6 +1,9 @@
 import { useNetInfo } from "@react-native-community/netinfo";
+import { useNavigation } from "@react-navigation/native";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
+import ExploreV2Header
+  from "components/Explore/ExploreV2/components/ExploreV2Header";
 import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import useInfiniteExploreScroll
@@ -13,6 +16,7 @@ import {
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
+import type { ExploreStackScreenProps } from "navigation/types";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
 import { useTranslation } from "sharedHooks";
@@ -21,6 +25,9 @@ const ExploreResults = ( ) => {
   const { state, requestLocationPermissions } = useExploreV2( );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
+  const navigation = useNavigation<
+    ExploreStackScreenProps<"ExploreResults">["navigation"]
+  >( );
 
   const queryParams = buildExploreV2QueryParams( state );
 
@@ -53,8 +60,9 @@ const ExploreResults = ( ) => {
   return (
     <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
-        {/* eslint-disable-next-line i18next/no-literal-string */}
-        <Body2>TODO: Header — MOB-1327</Body2>
+        <ExploreV2Header
+          onPressSearch={() => navigation.navigate( "UniversalSearch" )}
+        />
         {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
           ? renderPermissionPrompt( )
           : (
