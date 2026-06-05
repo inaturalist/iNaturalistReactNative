@@ -11,11 +11,9 @@ import type {
 } from "react-native";
 import {
   Dimensions,
-  Platform,
   StatusBar,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import colors from "styles/tailwindColors";
 
 type ScrollViewRef = { scrollTo: ( options: { y: number; animated: boolean } ) => void } | null;
 
@@ -54,28 +52,6 @@ const LoginSignupWrapper = ( {
     return unsubscribe;
   }, [navigation, resetScroll] );
 
-  // Make the StatusBar translucent in Android but reset it when we leave
-  // because this alters the layout.
-  useEffect( ( ) => {
-    if ( Platform.OS !== "android" ) return ( ) => undefined;
-    // Hide on first render
-    StatusBar.setTranslucent( true );
-    const unsubscribe = navigation.addListener( "focus", ( ) => {
-      resetScroll( );
-      // Hide when focused
-      StatusBar.setTranslucent( true );
-    } );
-    return unsubscribe;
-  }, [navigation, resetScroll] );
-
-  useEffect( ( ) => {
-    if ( Platform.OS !== "android" ) return ( ) => undefined;
-    const unsubscribe = navigation.addListener( "blur", ( ) => {
-      StatusBar.setTranslucent( false );
-    } );
-    return unsubscribe;
-  }, [navigation] );
-
   const fitContentWithinScreenStyle = { height: windowHeight * 0.85 };
 
   return (
@@ -87,7 +63,6 @@ const LoginSignupWrapper = ( {
       <View style={{ paddingTop: insets.top }}>
         <StatusBar
           barStyle="light-content"
-          backgroundColor={colors.black}
         />
         <ScrollView
           ref={scrollViewRef}

@@ -215,7 +215,7 @@ const SoundRecorder = (): Node => {
 
   return (
     <ViewWrapper wrapperClassName="bg-black justify-between">
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+      <StatusBar barStyle="light-content" />
       <View className="flex-1 items-center justify-center">
         <View className="justify-center items-center w-full h-full">
           { status !== NOT_STARTED && (

@@ -118,7 +118,7 @@ const MediaViewer = ( {
       style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
       testID="MediaViewer"
     >
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+      <StatusBar barStyle="light-content" />
       {
         header
           ? header( { onClose, photoCount: uris.length } )

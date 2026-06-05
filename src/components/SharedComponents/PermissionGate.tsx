@@ -68,7 +68,7 @@ const PermissionGate = ( {
 
   return (
     <ViewWrapper wrapperClassName="bg-black" testID={testID} useTopInset={false}>
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+      <StatusBar barStyle="light-content" />
       <ImageBackground
         source={image}
         imageStyle={BACKGROUND_IMAGE_STYLE}
