@@ -13,6 +13,7 @@ import { View } from "components/styledComponents";
 import type { ComponentProps } from "react";
 import React from "react";
 import { WebView } from "react-native-webview";
+import { log } from "sharedHelpers/logger";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import {
   useAuthenticatedQuery,
@@ -25,6 +26,8 @@ import type { QueryFunction } from "sharedHooks/useAuthenticatedQuery";
 import useStore from "stores/useStore";
 
 import BannerDismissButton from "./BannerDismissButton";
+
+const logger = log.extend( "Announcements" );
 
 const Webshell = makeWebshell(
   WebView,
@@ -64,10 +67,8 @@ const useAnnouncementsQuery = (
   queryKey: string[],
   queryFn: QueryFunction<ApiAnnouncement[]>,
   isAuthenticated: boolean,
+  dismissedAnnouncementIds: string[],
 ): AnnouncementQueryResponse => {
-  const dismissedAnnouncementIds
-    = useStore( state => state.layout.dismissedAnnouncementIds );
-
   const queryFnWithoutDismissedIds = async () => {
     const announcements = await queryFn( { api_token: null } );
     return announcements
@@ -99,6 +100,9 @@ const Announcements = ( {
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
 
+  const dismissedAnnouncementIds
+    = useStore( state => state.layout.dismissedAnnouncementIds );
+
   const apiParams = {
     // TS TODO: this realm type is treated inconsistently as a query result & model type
     // local _is_ on the model but we need to figure this out
@@ -117,6 +121,7 @@ const Announcements = ( {
     ["searchAnnouncements", apiParams],
     optsWithAuth => searchAnnouncements( apiParams, optsWithAuth ),
     isAuthenticated,
+    dismissedAnnouncementIds,
   );
 
   const invalidateAnnouncementsQueries
@@ -159,13 +164,24 @@ const Announcements = ( {
     </body>
   </html>
 `;
+  const loggingExtra = { annonucementId: id, dismissible };
 
   const dismiss = async () => {
     if ( isAuthenticated ) {
       // TS TODO: uAM doesn't yet know how to type mutations
       dismissAnnouncementMutate( { id } );
+      logger.infoWithExtra(
+        `User ${currentUser.id} dismissed Announcement ${id}`,
+        loggingExtra,
+      );
     } else {
       dismissLoggedOutAnnouncement( id );
+      logger.infoWithExtra(
+        `Logged out user dismissed Announcement ${id}. `
+        + "NOTE: this is only saved to the users device and will "
+        + "not be reflected in Announcements admin.",
+        loggingExtra,
+      );
     }
   };
 
@@ -184,6 +200,15 @@ const Announcements = ( {
         source={{ html: announcementHtml }}
         scrollEnabled={false}
         testID="announcements-webview"
+        onLoadEnd={() => {
+          const userType = isAuthenticated
+            ? `user ${currentUser.id}`
+            : "logged out user";
+          logger.infoWithExtra(
+            `Announcement ${id} displayed to ${userType}`,
+            loggingExtra,
+          );
+        }}
       />
       {dismissible && (
         <BannerDismissButton
