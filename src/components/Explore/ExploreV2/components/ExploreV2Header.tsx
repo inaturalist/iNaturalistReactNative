@@ -53,8 +53,8 @@ const ExploreV2Header = ( ) => {
   const place = locationLabel( state.location, t );
 
   return (
-    <View className="bg-white px-6 py-4 flex-row justify-between items-center">
-      <View className="flex-1 mr-3">
+    <View className="bg-white p-4 flex-row justify-between items-center">
+      <View className="flex-1 mr-5">
         <Heading4 numberOfLines={1} ellipsizeMode="tail">
           {subject}
         </Heading4>
@@ -76,6 +76,7 @@ const ExploreV2Header = ( ) => {
       </View>
       <INatIconButton
         icon="magnifying-glass"
+        size={20}
         color={colors.white}
         className="bg-inatGreen rounded-md"
         onPress={() => navigation.navigate( "UniversalSearch" )}
