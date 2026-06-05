@@ -122,19 +122,19 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Download Android Detox app APK
-        uses: actions/download-artifact@v7
-        with:
-          name: release-apk
-          # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
-          path: e2e-build
+      # - name: Download Android Detox app APK
+      #   uses: actions/download-artifact@v7
+      #   with:
+      #     name: release-apk
+      #     # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
+      #     path: e2e-build
 
-      - name: Download Test Binary APK
-        uses: actions/download-artifact@v7
-        with:
-          name: release-androidTest-apk
-          # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
-          path: e2e-build
+      # - name: Download Test Binary APK
+      #   uses: actions/download-artifact@v7
+      #   with:
+      #     name: release-androidTest-apk
+      #     # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
+      #     path: e2e-build
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v6
