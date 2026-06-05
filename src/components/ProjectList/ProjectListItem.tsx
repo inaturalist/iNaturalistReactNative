@@ -42,7 +42,7 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   );
 
   const displayProjectIcon = ( ) => {
-    const productionIcon = item!.icon.replace( "staticdev", "static" );
+    const productionIcon = ( item as Project ).icon.replace( "staticdev", "static" );
 
     if ( productionIcon === defaultProjectIcon ) {
       return (
@@ -69,7 +69,7 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
           cachePolicy: "discWithCacheControl",
           resizeMode: "cover",
         }}
-        testID={`Project.${item!.id}.photo`}
+        testID={`Project.${( item as Project ).id}.photo`}
         accessibilityIgnoresInvertColors
       />
     );
