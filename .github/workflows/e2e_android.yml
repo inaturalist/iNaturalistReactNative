@@ -198,10 +198,6 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: List devices
-        run: |
-          avdmanager list device
-
       # AVD Cache: we can reuse a previously-created AVD to save time and make the test-run start step more dependable
       # both android-emulator-runner steps should have the same image config for cores, api-level, target
       - name: Attempt to restore AVD cache
