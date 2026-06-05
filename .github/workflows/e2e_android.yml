@@ -1,4 +1,4 @@
-name: e2e-Android-Detox
+name: e2e-Android
 permissions:
   contents: read
 on:
