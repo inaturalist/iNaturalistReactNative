@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   Body3,
   Heading4,
@@ -6,6 +7,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { TFunction } from "i18next";
+import type { ExploreStackScreenProps } from "navigation/types";
 import type { ExploreV2LocationState, ExploreV2Subject } from "providers/ExploreV2Context";
 import {
   EXPLORE_V2_PLACE_MODE,
@@ -14,10 +16,6 @@ import {
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
-
-interface Props {
-  onPressSearch: () => void;
-}
 
 function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string {
   if ( !subject ) { return t( "All-organisms" ); }
@@ -46,9 +44,10 @@ function locationLabel( location: ExploreV2LocationState, t: TFunction ): string
   }
 }
 
-const ExploreV2Header = ( { onPressSearch }: Props ) => {
+const ExploreV2Header = ( ) => {
   const { t } = useTranslation( );
   const { state } = useExploreV2( );
+  const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
 
   const subject = subjectLabel( state.subject, t );
   const place = locationLabel( state.location, t );
@@ -79,8 +78,9 @@ const ExploreV2Header = ( { onPressSearch }: Props ) => {
         icon="magnifying-glass"
         color={colors.white}
         className="bg-inatGreen rounded-md"
-        onPress={onPressSearch}
+        onPress={() => navigation.navigate( "UniversalSearch" )}
         accessibilityLabel={t( "Search" )}
+        accessibilityHint={t( "Opens-search-interface" )}
         testID="ExploreV2Header.searchButton"
       />
     </View>

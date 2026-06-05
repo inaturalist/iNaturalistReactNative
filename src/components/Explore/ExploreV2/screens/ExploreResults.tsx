@@ -1,5 +1,4 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
 import ExploreV2Header
@@ -16,7 +15,6 @@ import {
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
-import type { ExploreStackScreenProps } from "navigation/types";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
 import { useTranslation } from "sharedHooks";
@@ -25,10 +23,6 @@ const ExploreResults = ( ) => {
   const { state, requestLocationPermissions } = useExploreV2( );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
-  const navigation = useNavigation<
-    ExploreStackScreenProps<"ExploreResults">["navigation"]
-  >( );
-
   const queryParams = buildExploreV2QueryParams( state );
 
   const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED
@@ -60,9 +54,7 @@ const ExploreResults = ( ) => {
   return (
     <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
-        <ExploreV2Header
-          onPressSearch={() => navigation.navigate( "UniversalSearch" )}
-        />
+        <ExploreV2Header />
         {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
           ? renderPermissionPrompt( )
           : (
