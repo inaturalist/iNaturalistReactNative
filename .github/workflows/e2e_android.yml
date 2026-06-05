@@ -15,110 +15,108 @@ jobs:
     runs-on: ubuntu-24.04-m
 
     steps:
-    - name: Check out Git repository
-      uses: actions/checkout@v6
+  #   - name: Check out Git repository
+  #     uses: actions/checkout@v6
 
-    # Generate the secret files needed for a release build
-    - name: Create .env file
-      env:
-        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
-        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
-        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
-        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
-        GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+  #   # Generate the secret files needed for a release build
+  #   - name: Create .env file
+  #     env:
+  #       OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+  #       OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+  #       E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+  #       E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+  #       JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+  #       GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
+  #     run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
 
-    - name: Add secrets to google-services.json
-      env:
-        FIREBASE_PROJECT_NUMBER: ${{ secrets.FIREBASE_PROJECT_NUMBER }}
-        FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-        FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
-        FIREBASE_STAGING_GOOGLE_APP_ID: ${{ secrets.FIREBASE_STAGING_GOOGLE_APP_ID }}
-        FIREBASE_STAGING_PACKAGE_NAME: ${{ secrets.FIREBASE_STAGING_PACKAGE_NAME }}
-        FIREBASE_STAGING_API_KEY: ${{ secrets.FIREBASE_STAGING_API_KEY }}
-      run: |
-        cp android/app/google-services.example.json android/app/google-services.json
-        sed -i "s/your_project_number/${FIREBASE_PROJECT_NUMBER//\//\\/}/g" "android/app/google-services.json"
-        sed -i "s/your_project_id/${FIREBASE_PROJECT_ID//\//\\/}/g" "android/app/google-services.json"
-        sed -i "s/your_storage_bucket/${FIREBASE_STORAGE_BUCKET//\//\\/}/g" "android/app/google-services.json"
-        sed -i "s/your_mobilesdk_app_id/${FIREBASE_STAGING_GOOGLE_APP_ID//\//\\/}/g" "android/app/google-services.json"
-        sed -i "s/your_package_name/${FIREBASE_STAGING_PACKAGE_NAME//\//\\/}/g" "android/app/google-services.json"
-        sed -i "s/your_current_key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "android/app/google-services.json"
+  #   - name: Add secrets to google-services.json
+  #     env:
+  #       FIREBASE_PROJECT_NUMBER: ${{ secrets.FIREBASE_PROJECT_NUMBER }}
+  #       FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+  #       FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+  #       FIREBASE_STAGING_GOOGLE_APP_ID: ${{ secrets.FIREBASE_STAGING_GOOGLE_APP_ID }}
+  #       FIREBASE_STAGING_PACKAGE_NAME: ${{ secrets.FIREBASE_STAGING_PACKAGE_NAME }}
+  #       FIREBASE_STAGING_API_KEY: ${{ secrets.FIREBASE_STAGING_API_KEY }}
+  #     run: |
+  #       cp android/app/google-services.example.json android/app/google-services.json
+  #       sed -i "s/your_project_number/${FIREBASE_PROJECT_NUMBER//\//\\/}/g" "android/app/google-services.json"
+  #       sed -i "s/your_project_id/${FIREBASE_PROJECT_ID//\//\\/}/g" "android/app/google-services.json"
+  #       sed -i "s/your_storage_bucket/${FIREBASE_STORAGE_BUCKET//\//\\/}/g" "android/app/google-services.json"
+  #       sed -i "s/your_mobilesdk_app_id/${FIREBASE_STAGING_GOOGLE_APP_ID//\//\\/}/g" "android/app/google-services.json"
+  #       sed -i "s/your_package_name/${FIREBASE_STAGING_PACKAGE_NAME//\//\\/}/g" "android/app/google-services.json"
+  #       sed -i "s/your_current_key/${FIREBASE_STAGING_API_KEY//\//\\/}/g" "android/app/google-services.json"
 
-    - name: Create keystore.properties file
-      env:
-        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-      run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
+  #   - name: Create keystore.properties file
+  #     env:
+  #       ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+  #       ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+  #       ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+  #     run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
 
-    - name: Generate release keystore
-      env:
-        ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
-        ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      run: |
-        keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
+  #   - name: Generate release keystore
+  #     env:
+  #       ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
+  #       ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+  #       ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+  #     run: |
+  #       keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
 
-    - name: Move keystore
-      run: mv release.keystore android/app/release.keystore
+  #   - name: Move keystore
+  #     run: mv release.keystore android/app/release.keystore
 
-    - uses: actions/setup-node@v6
-      with:
-        node-version-file: '.nvmrc'
-        cache: 'npm'
+  #   - uses: actions/setup-node@v6
+  #     with:
+  #       node-version-file: '.nvmrc'
+  #       cache: 'npm'
 
-    - uses: actions/setup-java@v5
-      with:
-        distribution: 'zulu'
-        java-version: '17'
+  #   - uses: actions/setup-java@v5
+  #     with:
+  #       distribution: 'zulu'
+  #       java-version: '17'
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v5
-      with:
-        gradle-version: '9.0.0'
+  #   - name: Setup Gradle
+  #     uses: gradle/actions/setup-gradle@v5
+  #     with:
+  #       gradle-version: '9.0.0'
 
-    - name: Install JS dependencies
-      run: |
-        npm install
+  #   - name: Install JS dependencies
+  #     run: |
+  #       npm install
 
-    - name: Download the small example cv and geomodel
-      run: |
-        npm run add-example-model -- -f=main
+  #   - name: Download the small example cv and geomodel
+  #     run: |
+  #       npm run add-example-model -- -f=main
 
-    # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
-    # This will be available for all subsequent steps
-    - name: Set MOCK_MODE to e2e
-      run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
+  #   # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+  #   # This will be available for all subsequent steps
+  #   - name: Set MOCK_MODE to e2e
+  #     run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
 
-    - name: Android Build
-      run: |
-        cd android
-        # for the CI build, we can just target the x86 build for the emulator
-        # also, we can exclude linting tasks
-        ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -PreactNativeArchitectures=x86 
+  #   - name: Android Build
+  #     run: |
+  #       cd android
+  #       ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -PreactNativeArchitectures=x86_64
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v6
-      with:
-        name: release-apk
-        path: android/app/build/outputs/apk/release/*-release.apk
+  #   - name: Upload APK
+  #     uses: actions/upload-artifact@v6
+  #     with:
+  #       name: release-apk
+  #       path: android/app/build/outputs/apk/release/*-release.apk
 
-    - name: Upload Test Binary APK
-      uses: actions/upload-artifact@v6
-      with:
-        name: release-androidTest-apk
-        path: android/app/build/outputs/apk/androidTest/release/*-release-androidTest.apk
+  #   - name: Upload Test Binary APK
+  #     uses: actions/upload-artifact@v6
+  #     with:
+  #       name: release-androidTest-apk
+  #       path: android/app/build/outputs/apk/androidTest/release/*-release-androidTest.apk
     
-  test:
-    # 4-core Ubunutu GitHub Larger Runner
-    # https://docs.github.com/en/enterprise-cloud@latest/billing/reference/actions-runner-pricing#x64-powered-larger-runners
-    # `cores` setting for emulator actions should be updated to reflect changes to this
-    runs-on: ubuntu-24.04-m
-    needs: build
+  # test:
+  #   # 4-core Ubunutu GitHub Larger Runner
+  #   # https://docs.github.com/en/enterprise-cloud@latest/billing/reference/actions-runner-pricing#x64-powered-larger-runners
+  #   # `cores` setting for emulator actions should be updated to reflect changes to this
+  #   runs-on: ubuntu-24.04-m
+  #   needs: build
 
-    steps:
+  #   steps:
       - name: Check out Git repository
         uses: actions/checkout@v6
         with:
@@ -199,6 +197,10 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+
+      - name: List devices
+        run: |
+          avdmanager list device
 
       # AVD Cache: we can reuse a previously-created AVD to save time and make the test-run start step more dependable
       # both android-emulator-runner steps should have the same image config for cores, api-level, target
