@@ -15,19 +15,19 @@ jobs:
     runs-on: ubuntu-24.04-m
 
     steps:
-  #   - name: Check out Git repository
-  #     uses: actions/checkout@v6
+    - name: Check out Git repository
+      uses: actions/checkout@v6
 
-  #   # Generate the secret files needed for a release build
-  #   - name: Create .env file
-  #     env:
-  #       OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-  #       OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
-  #       E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
-  #       E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
-  #       JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
-  #       GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
-  #     run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+    # Generate the secret files needed for a release build
+    - name: Create .env file
+      env:
+        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+        GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
+      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
 
   #   - name: Add secrets to google-services.json
   #     env:
@@ -109,14 +109,14 @@ jobs:
   #       name: release-androidTest-apk
   #       path: android/app/build/outputs/apk/androidTest/release/*-release-androidTest.apk
     
-  # test:
-  #   # 4-core Ubunutu GitHub Larger Runner
-  #   # https://docs.github.com/en/enterprise-cloud@latest/billing/reference/actions-runner-pricing#x64-powered-larger-runners
-  #   # `cores` setting for emulator actions should be updated to reflect changes to this
-  #   runs-on: ubuntu-24.04-m
-  #   needs: build
+  test:
+    # 4-core Ubunutu GitHub Larger Runner
+    # https://docs.github.com/en/enterprise-cloud@latest/billing/reference/actions-runner-pricing#x64-powered-larger-runners
+    # `cores` setting for emulator actions should be updated to reflect changes to this
+    runs-on: ubuntu-24.04-m
+    needs: build
 
-  #   steps:
+    steps:
       - name: Check out Git repository
         uses: actions/checkout@v6
         with:
