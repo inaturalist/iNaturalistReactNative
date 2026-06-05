@@ -103,10 +103,13 @@ jobs:
       uses: actions/upload-artifact@v6
       with:
         name: release-apk
-        # note: clarifying because this is different from iOS:
-        # {myBuild}.apk is a single file so `release-apk` points to a single file
-        # in contrast, iOS's .ipa is actually a _directory_
         path: android/app/build/outputs/apk/release/*-release.apk
+
+    - name: Upload Test Binary APK
+      uses: actions/upload-artifact@v6
+      with:
+        name: release-androidTest-apk
+        path: android/app/build/outputs/apk/androidTest/release/*-release-androidTest.apk
     
   test:
     # 4-core Ubunutu GitHub Larger Runner
