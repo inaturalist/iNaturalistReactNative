@@ -93,7 +93,7 @@ jobs:
       run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
 
     - name: Build test app
-      run: npm run e2e:build:ios
+      run: npm run e2e:build:android
 
     # - name: Android Build
     #   run: |
