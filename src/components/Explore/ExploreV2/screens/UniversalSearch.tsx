@@ -2,11 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import classnames from "classnames";
 import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
+import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import INatIcon from "components/SharedComponents/INatIcon";
 import UnderlinedLink from "components/SharedComponents/Typography/UnderlinedLink";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import {
-  Pressable,
   TextInput,
   View,
 } from "components/styledComponents";
@@ -79,20 +79,24 @@ const UniversalSearch = ( ) => {
                 />
               </View>
             </View>
-            <Pressable
-              accessibilityLabel={t( "Search" )}
-              accessibilityRole="button"
-              className={classnames(
-                "w-[56px] h-[56px] ml-3 rounded-lg items-center justify-center",
-                bothFilled
-                  ? "bg-inatGreen"
-                  : "bg-darkGray",
-              )}
-              onPress={handleSearch}
-              testID="UniversalSearch.searchButton"
-            >
-              <INatIcon name="magnifying-glass" size={20} color={colors.white} />
-            </Pressable>
+            <View className="ml-3">
+              <INatIconButton
+                accessibilityLabel={t( "Search" )}
+                onPress={handleSearch}
+                testID="UniversalSearch.searchButton"
+              >
+                <View
+                  className={classnames(
+                    "w-10 h-10 rounded-md items-center justify-center",
+                    bothFilled
+                      ? "bg-inatGreen"
+                      : "bg-darkGray",
+                  )}
+                >
+                  <INatIcon name="magnifying-glass" size={20} color={colors.white} />
+                </View>
+              </INatIconButton>
+            </View>
           </View>
           <View className="mt-3 items-end">
             <UnderlinedLink onPress={( ) => navigation.navigate( "AdvancedSearch" )}>
