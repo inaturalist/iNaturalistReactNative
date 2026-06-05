@@ -87,12 +87,20 @@ jobs:
       run: |
         npm run add-example-model -- -f=main
 
-    - name: Android Build
-      run: |
-        cd android
-        # for the CI build, we can just target the x86 build for the emulator
-        # also, we can exclude linting tasks
-        ./gradlew build -PreactNativeArchitectures=x86 -x lint -x lintVitalRelease 
+    # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+    # This will be available for all subsequent steps
+    - name: Set MOCK_MODE to e2e
+      run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
+
+    - name: Build test app
+      run: npm run e2e:build:ios
+
+    # - name: Android Build
+    #   run: |
+    #     cd android
+    #     # for the CI build, we can just target the x86 build for the emulator
+    #     # also, we can exclude linting tasks
+    #     ./gradlew build -PreactNativeArchitectures=x86 -x lint -x lintVitalRelease 
 
     - name: Upload APK
       uses: actions/upload-artifact@v6
