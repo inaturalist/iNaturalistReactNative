@@ -129,10 +129,12 @@ jobs:
           # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
           path: e2e-build
 
-      - name: Install Maestro
-        run: |
-          export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+      - name: Download Test Binary APK
+        uses: actions/download-artifact@v7
+        with:
+          name: release-androidTest-apk
+          # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
+          path: e2e-build
 
       # These KVM settings are in support of the android-emulator-runner action that takes advantage of them
       # Further reading:
@@ -198,9 +200,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            adb install -r e2e-build/*.apk
-            # single exemplary "smoketest" flow for now
-            maestro test --no-ansi e2e/maestro/android/signedOut.yaml
+            npm run e2e:android:test
 
       - name: Upload test video
         uses: actions/upload-artifact@v6
