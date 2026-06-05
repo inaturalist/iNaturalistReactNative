@@ -75,15 +75,15 @@ const ExploreV2Header = ( ) => {
           : null}
       </View>
       <INatIconButton
-        icon="magnifying-glass"
-        size={20}
-        color={colors.white}
-        className="bg-inatGreen rounded-md"
         onPress={() => navigation.navigate( "UniversalSearch" )}
         accessibilityLabel={t( "Search" )}
         accessibilityHint={t( "Opens-search-interface" )}
         testID="ExploreV2Header.searchButton"
-      />
+      >
+        <View className="w-10 h-10 bg-inatGreen rounded-md items-center justify-center">
+          <INatIcon name="magnifying-glass" size={20} color={colors.white} />
+        </View>
+      </INatIconButton>
     </View>
   );
 };
