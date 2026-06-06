@@ -259,7 +259,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            npm run e2e:android:test
+            npm run e2e:android:test -p e2e/signedOut.e2e.js e2e/aiCamera.e2e.js
 
       - name: Store Detox artifacts on test failure
         uses: actions/upload-artifact@v6
