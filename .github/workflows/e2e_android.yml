@@ -126,15 +126,13 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: release-apk
-          # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
-          path: e2e-build
+          path: e2e-build/release-apk.apk
 
       - name: Download Test Binary APK
         uses: actions/download-artifact@v7
         with:
           name: release-androidTest-apk
-          # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
-          path: e2e-build
+          path: e2e-build/release-androidTest-apk.apk
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v6
