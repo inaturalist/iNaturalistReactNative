@@ -126,13 +126,13 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: release-apk
-          path: e2e-build/release-apk.apk
+          path: android/app/build/outputs/apk/release
 
       - name: Download Test Binary APK
         uses: actions/download-artifact@v7
         with:
           name: release-androidTest-apk
-          path: e2e-build/release-androidTest-apk.apk
+          path: android/app/build/outputs/apk/androidTest/release
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v6
