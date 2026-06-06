@@ -60,11 +60,6 @@ module.exports = {
       build:
         "(cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release)",
     },
-    "android.ci": {
-      type: "android.apk",
-      binaryPath: "e2e-build/release-apk.apk",
-      testBinaryPath: "e2e-build/release-androidTest-apk.apk",
-    },
   },
   devices: {
     simulator: {
@@ -98,10 +93,6 @@ module.exports = {
     "android.release": {
       device: "emulator",
       app: "android.release",
-    },
-    "android.ci": {
-      device: "emulator",
-      app: "android.ci",
     },
   },
 };
