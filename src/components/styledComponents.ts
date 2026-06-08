@@ -21,7 +21,11 @@ import { SafeAreaView as UnstyledSafeAreaView } from "react-native-safe-area-con
 
 const View = styled( UnstyledView );
 const KeyboardAvoidingView = styled( UnstyledKeyboardAvoidingView );
-const SafeAreaView = styled( UnstyledSafeAreaView );
+// Since upgrading to React Native 0.73 UnstyledSafeAreaView is undefined in the jest tests
+// Why I don't know. This is just to fix the failing tests.
+const SafeAreaView = styled( UnstyledSafeAreaView === undefined
+  ? UnstyledView
+  : UnstyledSafeAreaView );
 const ScrollView = styled( UnstyledScrollView );
 const Text = styled( UnstyledText );
 const TextInput = styled( UntyledTextInput );
