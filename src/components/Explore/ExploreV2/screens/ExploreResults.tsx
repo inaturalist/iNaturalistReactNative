@@ -1,6 +1,8 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
+import ExploreV2Header
+  from "components/Explore/ExploreV2/components/ExploreV2Header";
 import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import useInfiniteExploreScroll
@@ -21,7 +23,6 @@ const ExploreResults = ( ) => {
   const { state, requestLocationPermissions } = useExploreV2( );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
-
   const queryParams = buildExploreV2QueryParams( state );
 
   const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED
@@ -53,8 +54,7 @@ const ExploreResults = ( ) => {
   return (
     <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
-        {/* eslint-disable-next-line i18next/no-literal-string */}
-        <Body2>TODO: Header — MOB-1327</Body2>
+        <ExploreV2Header />
         {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
           ? renderPermissionPrompt( )
           : (

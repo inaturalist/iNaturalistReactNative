@@ -1,0 +1,9 @@
+FIXED
+* Display proper error message if project is invite-only
+* Gaps in the observation list
+* Match-screen header button not working
+* Location from LocationPicker was overwritten sometimes
+* Explore: swiping back after adding ID from taxon page not working properly
+
+UPDATED
+* Minor package and performance updates

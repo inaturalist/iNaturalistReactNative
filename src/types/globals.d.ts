@@ -15,3 +15,5 @@ declare function requestIdleCallback(
 ): number;
 
 declare function cancelIdleCallback( handle: number ): void;
+
+declare const __DEV__: boolean;

@@ -1,8 +1,9 @@
 import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { SafeAreaView, View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 import { StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -14,6 +15,41 @@ interface Props extends PropsWithChildren {
   wrapperClassName?: string;
   useTopInset?: boolean;
 }
+
+interface ScreenShellProps extends PropsWithChildren {
+  isDebug?: boolean;
+  style?: StyleProp<ViewStyle>;
+  testID?: string;
+  wrapperClassName?: string;
+}
+
+const ScreenShell = ( {
+  children,
+  isDebug,
+  style,
+  testID,
+  wrapperClassName,
+}: ScreenShellProps ) => (
+  <View
+    className={classnames(
+      "flex-1",
+      "bg-white",
+      wrapperClassName,
+      isDebug
+        ? "border-2 border-deepPink"
+        : null,
+    )}
+    style={style}
+    testID={testID}
+  >
+    {isDebug && (
+    // eslint-disable-next-line i18next/no-literal-string
+      <Body1 className="bg-deepPink text-white absolute bottom-0 right-0 z-10">DEBUG</Body1>
+    )}
+    <StatusBar barStyle="dark-content" />
+    {children}
+  </View>
+);
 
 const ViewWrapper = ( {
   children,
@@ -28,27 +64,38 @@ const ViewWrapper = ( {
       ? insets.top
       : 0,
   };
+
   return (
-    <View
-      className={classnames(
-        "flex-1",
-        "bg-white",
-        wrapperClassName,
-        isDebug
-          ? "border-2 border-deepPink"
-          : null,
-      )}
+    <ScreenShell
+      isDebug={isDebug}
       style={viewStyle}
       testID={testID}
+      wrapperClassName={wrapperClassName}
     >
-      {isDebug && (
-      // eslint-disable-next-line i18next/no-literal-string
-        <Body1 className="bg-deepPink text-white absolute bottom-0 right-0 z-10">DEBUG</Body1>
-      )}
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
       {children}
-    </View>
+    </ScreenShell>
   );
 };
 
+const NativeHeaderViewWrapper = ( {
+  children,
+  isDebug,
+  style,
+  testID,
+  wrapperClassName,
+}: ScreenShellProps ) => (
+  <ScreenShell
+    isDebug={isDebug}
+    testID={testID}
+    style={style}
+    wrapperClassName={wrapperClassName}
+  >
+    <SafeAreaView className="flex-1" edges={["bottom"]}>
+      {children}
+    </SafeAreaView>
+  </ScreenShell>
+);
+
 export default ViewWrapper;
+
+export { NativeHeaderViewWrapper, ScreenShell };
