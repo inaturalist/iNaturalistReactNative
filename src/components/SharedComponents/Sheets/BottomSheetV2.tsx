@@ -5,10 +5,9 @@ import {
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { SafeAreaView, View } from "components/styledComponents";
 import React, { useCallback, useEffect, useRef } from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
 // This component is an iteration on BottomSheet.
@@ -52,7 +51,6 @@ const BottomSheetV2 = ( {
   const { t } = useTranslation( );
   const sheetRef = useRef<BottomSheetModal>( null );
   const skipNextOnDismissRef = useRef( false );
-  const insets = useSafeAreaInsets( );
 
   const handlePressClose = useCallback( ( ) => {
     if ( onPressClose ) {
@@ -106,13 +104,11 @@ const BottomSheetV2 = ( {
       onDismiss={handleDismiss}
     >
       <BottomSheetScrollView>
-        <View
+        <SafeAreaView
           className={classnames(
             "pt-7",
-            insets.bottom > 0
-              ? "pb-7"
-              : null,
           )}
+          edges={["bottom"]}
         >
           {!headerText
             ? null
@@ -134,7 +130,7 @@ const BottomSheetV2 = ( {
             className="absolute top-3.5 right-3"
             accessibilityLabel={t( "Close" )}
           />
-        </View>
+        </SafeAreaView>
       </BottomSheetScrollView>
     </BottomSheetModal>
   );

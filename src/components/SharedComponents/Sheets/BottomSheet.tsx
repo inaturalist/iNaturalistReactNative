@@ -6,14 +6,13 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { SafeAreaView, View } from "components/styledComponents";
 import React, {
   useCallback,
   useEffect,
   useRef,
 } from "react";
 import { Dimensions } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
 const { width } = Dimensions.get( "window" );
@@ -72,7 +71,6 @@ const StandardBottomSheet = ( {
   const { t } = useTranslation( );
   const sheetRef = useRef<SheetHandle>( null );
   const skipNextOnPressCloseRef = useRef( false );
-  const insets = useSafeAreaInsets( );
 
   // The optional `sheet` arg lets the unmount cleanup pass a captured handle;
   // see the cleanup effect below for why that matters.
@@ -130,18 +128,16 @@ const StandardBottomSheet = ( {
       keyboardShouldPersistTaps={keyboardShouldPersistTaps}
       scrollEnabled={scrollEnabled}
     >
-      <View
+      <SafeAreaView
         className={classnames(
           "pt-7",
-          insets.bottom > 0
-            ? "pb-7"
-            : null,
           containerClass,
         )}
         onLayout={onLayout}
         // Not ideal, but @gorhom/bottom-sheet components don't support
         // testID
         testID={testID}
+        edges={["bottom"]}
       >
         {!headerText
           ? null
@@ -166,7 +162,7 @@ const StandardBottomSheet = ( {
             accessibilityLabel={t( "Close" )}
           />
         )}
-      </View>
+      </SafeAreaView>
     </BottomSheetScrollView>
   );
 
