@@ -1,8 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import classnames from "classnames";
 import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
-import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
+import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
 import UnderlinedLink from "components/SharedComponents/Typography/UnderlinedLink";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
@@ -80,22 +79,15 @@ const UniversalSearch = ( ) => {
               </View>
             </View>
             <View className="ml-3">
-              <INatIconButton
+              <ContainedSquareButton
                 accessibilityLabel={t( "Search" )}
+                backgroundColor={bothFilled
+                  ? colors.inatGreen
+                  : colors.darkGray}
+                icon="magnifying-glass"
                 onPress={handleSearch}
                 testID="UniversalSearch.searchButton"
-              >
-                <View
-                  className={classnames(
-                    "w-10 h-10 rounded-md items-center justify-center",
-                    bothFilled
-                      ? "bg-inatGreen"
-                      : "bg-darkGray",
-                  )}
-                >
-                  <INatIcon name="magnifying-glass" size={20} color={colors.white} />
-                </View>
-              </INatIconButton>
+              />
             </View>
           </View>
           <View className="mt-3 items-end">
