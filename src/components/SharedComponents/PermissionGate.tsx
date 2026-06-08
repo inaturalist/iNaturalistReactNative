@@ -101,7 +101,7 @@ const PermissionGate = ( {
             "pt-5",
             "items-center",
           )}
-          style={{ paddingBottom: 16 + insets.bottom }}
+          style={{ paddingBottom: 8 + insets.bottom }}
         >
           { icon && (
             <INatIcon
