@@ -257,7 +257,7 @@ jobs:
           script: |
             # provide more debugging context on retry failure
             # we're explicitly not using `detox test --retries` because we want to run them w/ different options
-            npm run e2e:android:test -p e2e/signedOut.e2e.js e2e/aiCamera.e2e.js -- --take-screenshots failing --record-videos failing --record-logs all -l trace
+            npx detox test --configuration android.release --take-screenshots failing --record-videos failing --record-logs all -l trace e2e/signedOut.e2e.js e2e/aiCamera.e2e.js
 
 
       - name: Store Detox artifacts on test failure
