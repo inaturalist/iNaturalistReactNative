@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
-import { SafeAreaView, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
 import type { StyleProp, ViewStyle } from "react-native";
@@ -77,25 +77,6 @@ const ViewWrapper = ( {
   );
 };
 
-const NativeHeaderViewWrapper = ( {
-  children,
-  isDebug,
-  style,
-  testID,
-  wrapperClassName,
-}: ScreenShellProps ) => (
-  <ScreenShell
-    isDebug={isDebug}
-    testID={testID}
-    style={style}
-    wrapperClassName={wrapperClassName}
-  >
-    <SafeAreaView className="flex-1" edges={["bottom"]}>
-      {children}
-    </SafeAreaView>
-  </ScreenShell>
-);
-
 export default ViewWrapper;
 
-export { NativeHeaderViewWrapper, ScreenShell };
+export { ScreenShell };
