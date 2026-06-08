@@ -244,12 +244,6 @@ jobs:
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
-        env:
-          MAESTRO_DRIVER_STARTUP_TIMEOUT: 60000
-          MAESTRO_CLI_NO_ANALYTICS: 1
-          # custom ENV var to drive recordings within test flows
-          # see README for details
-          MAESTRO_RECORD: true
         with:
           cores: 4
           api-level: 34
