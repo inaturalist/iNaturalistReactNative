@@ -99,9 +99,7 @@ jobs:
     - name: Android Build
       run: |
         cd android
-        # for the CI build, we can just target the x86_64 build for the emulator
-        # also, we can exclude linting tasks
-        ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -PreactNativeArchitectures=x86 
+        ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -PreactNativeArchitectures=x86_64
 
     - name: Upload APK
       uses: actions/upload-artifact@v6
