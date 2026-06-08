@@ -73,7 +73,7 @@ module.exports = {
       device: {
         // Make sure to follow the guide to setup an AOSP if you plan to test locally
         // https://wix.github.io/Detox/docs/guide/android-dev-env#android-aosp-emulators
-        avdName: "Pixel_5_API_31_AOSP",
+        avdName: "Pixel_5_API_34_AOSP",
       },
     },
   },
