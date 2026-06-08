@@ -203,7 +203,7 @@ const OnboardingCarousel = ( ) => {
   }
 
   return (
-    <ScreenShell>
+    <ScreenShell wrapperClassName="bg-black">
       <StatusBar barStyle="light-content" />
       <View
         className="w-full h-full relative"
