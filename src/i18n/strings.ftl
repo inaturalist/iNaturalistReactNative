@@ -901,6 +901,8 @@ Opens-AI-camera = Opens AI camera.
 # Accessibility hint for a button that opens a form for editing a comment
 Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
+# Accessibility hint for search button in Explore header that navigates to the search interface
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
