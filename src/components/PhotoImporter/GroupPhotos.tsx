@@ -10,7 +10,7 @@ import {
   INatIcon,
   INatIconButton,
 } from "components/SharedComponents";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
+import { NativeHeaderViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import React, { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
@@ -140,7 +140,7 @@ const GroupPhotos = ( {
   };
 
   return (
-    <ViewWrapper useTopInset={false}>
+    <NativeHeaderViewWrapper>
       <CustomFlashList
         ListHeaderComponent={headerComponent}
         contentContainerStyle={flashListStyle}
@@ -208,7 +208,7 @@ const GroupPhotos = ( {
           loading={isCreatingObservations}
         />
       </ButtonBar>
-    </ViewWrapper>
+    </NativeHeaderViewWrapper>
   );
 };
 
