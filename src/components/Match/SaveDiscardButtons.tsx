@@ -49,7 +49,7 @@ const SaveDiscardButtons = ( {
     >
       <ButtonBar
         buttonConfiguration={buttonConfiguration}
-        containerClass="px-[15px] py-[14px]"
+        containerClass="p-[20px]"
       />
     </View>
   );
