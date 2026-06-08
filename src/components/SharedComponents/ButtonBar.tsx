@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { Button } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { SafeAreaView } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React from "react";
 import type { LayoutChangeEvent } from "react-native";
@@ -40,7 +40,7 @@ const ButtonBar = ( {
     : null;
 
   return (
-    <View
+    <SafeAreaView
       className={classNames(
         layoutClassNames,
         containerClass,
@@ -51,6 +51,9 @@ const ButtonBar = ( {
       )}
       onLayout={onLayout}
       style={DROP_SHADOW}
+      edges={sticky
+        ? ["bottom"]
+        : []}
     >
       {buttonConfiguration && buttonConfiguration.map( button => {
         const {
@@ -73,7 +76,7 @@ const ButtonBar = ( {
         );
       } )}
       {children}
-    </View>
+    </SafeAreaView>
   );
 };
 
