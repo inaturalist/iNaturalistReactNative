@@ -209,6 +209,7 @@ const OnboardingCarousel = ( ) => {
         className="w-full h-full relative"
         testID="OnboardingCarousel"
       >
+        {/* This needs to be edge-to-edge */}
         <View
           className="absolute w-full h-full"
           aria-hidden
@@ -229,6 +230,7 @@ const OnboardingCarousel = ( ) => {
             </Animated.View>
           ) )}
         </View>
+        {/* This needs to be inset */}
         <View
           className="flex flex-col w-full h-full items-center"
           style={
@@ -287,7 +289,7 @@ const OnboardingCarousel = ( ) => {
           <View
             className="absolute bottom-0 w-full"
             pointerEvents="box-none"
-            style={{ paddingBottom: 8 + insets.bottom }}
+            style={{ paddingBottom: 16 + insets.bottom }}
           >
             <View
               className="pt-8"
