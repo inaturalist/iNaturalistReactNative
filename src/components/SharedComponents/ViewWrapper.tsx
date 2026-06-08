@@ -78,5 +78,3 @@ const ViewWrapper = ( {
 };
 
 export default ViewWrapper;
-
-export { ScreenShell };
