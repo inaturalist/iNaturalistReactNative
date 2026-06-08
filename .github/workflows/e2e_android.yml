@@ -242,8 +242,28 @@ jobs:
           # is node running & is ES working?
           curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
-      - name: run tests
+      - name: Run e2e tests
         uses: reactivecircus/android-emulator-runner@v2
+        # don't mark job as error so that retries so that we can rely on the retry to succeed and mark job & workflow green
+        continue-on-error: true
+        id: first_test_run
+        with:
+          cores: 4
+          api-level: 34
+          target: default
+          arch: x86_64
+          profile: pixel_5
+          avd-name: Pixel_5_API_34_AOSP
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            npm run e2e:android:test -p e2e/signedOut.e2e.js e2e/aiCamera.e2e.js
+
+      - name: Run e2e test (retry, with logs)
+        uses: reactivecircus/android-emulator-runner@v2
+        # if first_test_run fails, but we `continue-on-error`, failure() is false. so we need to check it's specific _outcome_
+        if: ${{ steps.first_test_run.outcome == 'failure' }}
         with:
           cores: 4
           api-level: 34
