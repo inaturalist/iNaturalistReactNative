@@ -6,6 +6,7 @@ import {
   INatIcon,
   INatIconButton,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import {
   ImageBackground,
   View,
@@ -21,8 +22,6 @@ import type { PermissionStatus } from "react-native-permissions";
 import { RESULTS } from "react-native-permissions";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "styles/tailwindColors";
-
-import { ScreenShell } from "./ViewWrapper";
 
 const BACKGROUND_IMAGE_STYLE = {
   opacity: 0.33,
