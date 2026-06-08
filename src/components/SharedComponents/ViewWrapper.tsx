@@ -64,7 +64,7 @@ const ViewWrapper = ( {
   );
 };
 
-const NativeHeaderViewWrapper = ( {
+const BottomInsetViewWrapper = ( {
   children,
   style,
   testID,
@@ -82,3 +82,5 @@ const NativeHeaderViewWrapper = ( {
 );
 
 export default ViewWrapper;
+
+export { BottomInsetViewWrapper, ScreenShell };

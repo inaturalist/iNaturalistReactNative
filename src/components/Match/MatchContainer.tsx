@@ -3,7 +3,8 @@ import {
 } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { ApiPhoto, ApiSuggestion } from "api/types";
-import { Body3, Heading4, ViewWrapper } from "components/SharedComponents";
+import { Body3, Heading4 } from "components/SharedComponents";
+import { BottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import flattenUploadParams from "components/Suggestions/helpers/flattenUploadParams";
 import {
@@ -477,7 +478,7 @@ const MatchContainer = ( ) => {
 
   return (
     <>
-      <NativeHeaderViewWrapper>
+      <BottomInsetViewWrapper>
         <Match
           observation={currentObservation}
           obsPhotos={obsPhotos}
@@ -545,7 +546,7 @@ const MatchContainer = ( ) => {
             </Body3>
           </View>
         )}
-      </ViewWrapper>
+      </BottomInsetViewWrapper>
       <PreMatchLoadingScreen isLoading={suggestionsLoading} />
     </>
   );
