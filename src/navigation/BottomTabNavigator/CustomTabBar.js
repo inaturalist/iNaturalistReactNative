@@ -1,10 +1,9 @@
 // @flow
 import classNames from "classnames";
 import AddObsButton from "components/AddObsBottomSheet/AddObsButton";
-import { View } from "components/styledComponents";
+import { SafeAreaView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getShadow } from "styles/global";
 
 import NavButton from "./NavButton";
@@ -36,19 +35,18 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
     ),
   );
 
-  const insets = useSafeAreaInsets( );
-
   return (
-    <View
+    <SafeAreaView
       className={classNames(
         "flex-row bg-white justify-around p-1 m-0",
       )}
-      style={[DROP_SHADOW, { paddingBottom: insets.bottom }]}
+      style={[DROP_SHADOW]}
       accessibilityRole="tablist"
       testID="CustomTabBar"
+      edges={["bottom"]}
     >
       {tabList}
-    </View>
+    </SafeAreaView>
   );
 };
 
