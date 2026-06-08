@@ -4,8 +4,8 @@ import { fetchUserProjects } from "api/users";
 import {
   ActivityIndicator,
   Body1,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useEffect, useMemo } from "react";
@@ -83,14 +83,14 @@ const ProjectListContainer = ( ) => {
 
   if ( isLoading ) {
     return (
-      <ViewWrapper>
+      <ScreenShell>
         <ActivityIndicator size={50} />
-      </ViewWrapper>
+      </ScreenShell>
     );
   }
 
   return (
-    <ViewWrapper useTopInset={false}>
+    <ScreenShell>
       <View className="border-b border-lightGray mt-5" />
       <ProjectList
         projects={projects}
@@ -102,7 +102,7 @@ const ProjectListContainer = ( ) => {
           </View>
         )}
       />
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 
