@@ -5,7 +5,6 @@ import {
   Heading2,
   INatIcon,
   INatIconButton,
-  ViewWrapper,
 } from "components/SharedComponents";
 import {
   ImageBackground,
@@ -22,6 +21,8 @@ import type { PermissionStatus } from "react-native-permissions";
 import { RESULTS } from "react-native-permissions";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "styles/tailwindColors";
+
+import { ScreenShell } from "./ViewWrapper";
 
 const BACKGROUND_IMAGE_STYLE = {
   opacity: 0.33,
@@ -67,7 +68,7 @@ const PermissionGate = ( {
   } );
 
   return (
-    <ViewWrapper wrapperClassName="bg-black" testID={testID} useTopInset={false}>
+    <ScreenShell wrapperClassName="bg-black" testID={testID}>
       <StatusBar barStyle="light-content" />
       <ImageBackground
         source={image}
@@ -155,7 +156,7 @@ const PermissionGate = ( {
             )}
         </View>
       </ImageBackground>
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 
