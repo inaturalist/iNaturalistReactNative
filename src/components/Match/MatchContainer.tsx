@@ -477,7 +477,7 @@ const MatchContainer = ( ) => {
 
   return (
     <>
-      <ViewWrapper isDebug={isDebug} useTopInset={false}>
+      <NativeHeaderViewWrapper>
         <Match
           observation={currentObservation}
           obsPhotos={obsPhotos}
