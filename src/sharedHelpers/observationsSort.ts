@@ -1,3 +1,4 @@
+import useTranslation from "sharedHooks/useTranslation";
 import type { ObservationOrderBy, SortDirection } from "types/sorting";
 
 export enum OBSERVATIONS_SORT {
@@ -33,4 +34,26 @@ export const OBSERVATIONS_SORT_OPTIONS: OBSERVATIONS_SORT[] = [
 
 export function observationSortToApiParams( sort: OBSERVATIONS_SORT ): ObservationSortAPIParams {
   return OBSERVATIONS_SORT_TO_API_PARAMS[sort];
+}
+
+export function useObservationsSortLabels( ): Record<OBSERVATIONS_SORT, ObservationSortLabels> {
+  const { t } = useTranslation( );
+  return {
+    [OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST]: {
+      label: t( "Date-Added-Newest-Default" ),
+      text: t( "Observations-added-recently-appear-first" ),
+    },
+    [OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST]: {
+      label: t( "Date-Added-Oldest" ),
+      text: t( "Observations-added-least-recently-appear-first" ),
+    },
+    [OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST]: {
+      label: t( "Date-Observed-Newest" ),
+      text: t( "Observations-with-the-most-recent-date-appear-first" ),
+    },
+    [OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST]: {
+      label: t( "Date-Observed-Oldest" ),
+      text: t( "Observations-with-the-oldest-date-appear-first" ),
+    },
+  };
 }
