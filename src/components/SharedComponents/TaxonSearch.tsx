@@ -3,8 +3,8 @@ import {
   Body2,
   INatIcon,
   SearchBar,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import { FlatList } from "react-native";
@@ -61,7 +61,7 @@ const TaxonSearch = ( {
   ), [keyboardHeight, keyboardShown] );
 
   return (
-    <ViewWrapper useTopInset={false}>
+    <ScreenShell>
       <View
         className="bg-white px-6 pt-2 pb-[21px]"
         style={DROP_SHADOW}
@@ -91,7 +91,7 @@ const TaxonSearch = ( {
         ListEmptyComponent={emptyListComponent}
         ListFooterComponent={footerComponent}
       />
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 
