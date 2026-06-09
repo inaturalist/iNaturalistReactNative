@@ -20,6 +20,7 @@ import {
   hideHeader,
   hideHeaderLeft,
 } from "navigation/navigationOptions";
+import { StackHostProvider } from "navigation/StackHostContext";
 import type { NoBottomTabStackParamList } from "navigation/types";
 import React from "react";
 
@@ -102,39 +103,41 @@ const SoundRecorderWithPermission = ( ) => fadeInComponent(
 );
 
 const NoBottomTabStackNavigator = ( ) => (
-  <Stack.Navigator
-    screenOptions={{
-      headerBackButtonDisplayMode: "minimal",
-      contentStyle: {
-        backgroundColor: "white",
-      },
-    }}
-  >
-    {/* Add Observation Stack Group */}
-    <Stack.Group>
-      <Stack.Screen
-        name="Camera"
-        component={CameraContainerWithPermission}
-        options={CAMERA_SCREEN_OPTIONS}
-      />
-      <Stack.Screen
-        name="PhotoLibrary"
-        component={PhotoLibraryContainerWithPermission}
-        options={hideHeader}
-      />
-      <Stack.Screen
-        name="GroupPhotos"
-        component={GroupPhotosContainer}
-        options={GROUP_PHOTOS_OPTIONS}
-      />
-      <Stack.Screen
-        name="SoundRecorder"
-        component={SoundRecorderWithPermission}
-        options={SOUND_RECORDER_OPTIONS}
-      />
-    </Stack.Group>
-    {SharedStackScreens( )}
-  </Stack.Navigator>
+  <StackHostProvider value={{ hasBottomTabBar: false }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerBackButtonDisplayMode: "minimal",
+        contentStyle: {
+          backgroundColor: "white",
+        },
+      }}
+    >
+      {/* Add Observation Stack Group */}
+      <Stack.Group>
+        <Stack.Screen
+          name="Camera"
+          component={CameraContainerWithPermission}
+          options={CAMERA_SCREEN_OPTIONS}
+        />
+        <Stack.Screen
+          name="PhotoLibrary"
+          component={PhotoLibraryContainerWithPermission}
+          options={hideHeader}
+        />
+        <Stack.Screen
+          name="GroupPhotos"
+          component={GroupPhotosContainer}
+          options={GROUP_PHOTOS_OPTIONS}
+        />
+        <Stack.Screen
+          name="SoundRecorder"
+          component={SoundRecorderWithPermission}
+          options={SOUND_RECORDER_OPTIONS}
+        />
+      </Stack.Group>
+      {SharedStackScreens( )}
+    </Stack.Navigator>
+  </StackHostProvider>
 );
 
 export default NoBottomTabStackNavigator;
