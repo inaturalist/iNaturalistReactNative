@@ -21,6 +21,8 @@ import type { RealmObservation } from "realmModels/types";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import { BottomInsetViewWrapper } from "../ViewWrapper";
+
 interface Props {
   closeModal: () => void;
   coordinateString?: string;
@@ -98,7 +100,7 @@ const DetailsMap = ( {
   };
 
   return (
-    <View className="flex-1">
+    <BottomInsetViewWrapper>
       <View
         className="bg-white w-fit flex-row py-[22px] pl-[21px] pr-[24px] items-start"
         style={{ paddingTop: insets.top }}
@@ -152,7 +154,7 @@ const DetailsMap = ( {
         )}
         backdropOpacity={0}
       />
-    </View>
+    </BottomInsetViewWrapper>
   );
 };
 
