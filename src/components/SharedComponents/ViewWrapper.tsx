@@ -1,5 +1,6 @@
 import classnames from "classnames";
 import { View } from "components/styledComponents";
+import { useStackHost } from "navigation/StackHostContext";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
 import type { StyleProp, ViewStyle } from "react-native";
@@ -58,6 +59,30 @@ const ViewWrapper = ( {
   );
 };
 
+const SharedStackViewWrapper = ( {
+  children,
+  testID,
+  wrapperClassName,
+}: Props ) => {
+  const insets = useSafeAreaInsets( );
+  const { hasBottomTabBar } = useStackHost( );
+  const viewStyle = {
+    paddingBottom: !hasBottomTabBar
+      ? insets.bottom
+      : 0,
+    paddingTop: insets.top,
+  };
+
+  return (
+    <ScreenShell
+      style={viewStyle}
+      testID={testID}
+      wrapperClassName={wrapperClassName}
+    >
+      {children}
+    </ScreenShell>
+  );
+};
 const BottomInsetViewWrapper = ( {
   children,
   testID,
@@ -103,4 +128,9 @@ const TopAndBottomInsetViewWrapper = ( {
 
 export default ViewWrapper;
 
-export { BottomInsetViewWrapper, ScreenShell, TopAndBottomInsetViewWrapper };
+export {
+  BottomInsetViewWrapper,
+  ScreenShell,
+  SharedStackViewWrapper,
+  TopAndBottomInsetViewWrapper,
+};
