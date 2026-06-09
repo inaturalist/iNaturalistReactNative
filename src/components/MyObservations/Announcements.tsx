@@ -12,7 +12,9 @@ import { ActivityIndicator } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { ComponentProps } from "react";
 import React from "react";
+import { Linking } from "react-native";
 import { WebView } from "react-native-webview";
+import type { ShouldStartLoadRequest } from "react-native-webview/lib/WebViewTypes";
 import { log } from "sharedHelpers/logger";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import {
@@ -51,6 +53,21 @@ const AutoheightWebView
   } );
   // eslint-disable-next-line react/jsx-props-no-spreading
   return <Webshell {...autoheightWebshellProps} />;
+};
+
+// HandleLinkPressFeature only catches <a> clicks; this hook covers JS-driven navigations.
+export const handleShouldStartLoadWithRequest = ( request: ShouldStartLoadRequest ) => {
+  if (
+    !request.url
+    || request.url === "about:blank"
+    || request.url.startsWith( "data:" )
+  ) {
+    return true;
+  }
+  Linking.openURL( request.url ).catch( e => {
+    logger.info( "Failed to open ", request.url, ", error: ", e );
+  } );
+  return false;
 };
 
 interface Props {
@@ -196,6 +213,8 @@ const Announcements = ( {
     >
       <AutoheightWebView
         onDOMLinkPress={target => openExternalWebBrowser( target.uri )}
+        onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
+        setSupportMultipleWindows={false}
         originWhitelist={["*"]}
         source={{ html: announcementHtml }}
         scrollEnabled={false}

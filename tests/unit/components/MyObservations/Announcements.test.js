@@ -1,7 +1,10 @@
 import { screen, waitFor } from "@testing-library/react-native";
-import Announcements from "components/MyObservations/Announcements";
+import Announcements, {
+  handleShouldStartLoadWithRequest,
+} from "components/MyObservations/Announcements";
 import inaturalistjs from "inaturalistjs";
 import React from "react";
+import { Linking } from "react-native";
 import { renderComponent } from "tests/helpers/render";
 
 const mockAnnouncement = {
@@ -111,6 +114,18 @@ describe( "Announcements", () => {
       } );
     } );
 
+    test( "should wire navigation interception onto the webview", async () => {
+      renderComponent( <Announcements isConnected /> );
+
+      await waitFor( () => expect( inaturalistjs.announcements.search ).toHaveBeenCalled() );
+
+      const webview = await screen.findByTestId( "announcements-webview" );
+      expect( webview.props.onShouldStartLoadWithRequest ).toBe(
+        handleShouldStartLoadWithRequest,
+      );
+      expect( webview.props.setSupportMultipleWindows ).toBe( false );
+    } );
+
     test( "should not show dismiss button", async () => {
       renderComponent( <Announcements isConnected /> );
 
@@ -159,6 +174,47 @@ describe( "Announcements", () => {
       expect( webview.props.source ).toStrictEqual( {
         html: wrappedAnnouncementHtml( mockAnnouncement.body ),
       } );
+    } );
+  } );
+
+  describe( "handleShouldStartLoadWithRequest", ( ) => {
+    beforeEach( ( ) => {
+      Linking.openURL.mockImplementation( jest.fn( _url => Promise.resolve() ) );
+    } );
+
+    afterEach( ( ) => Linking.openURL.mockReset( ) );
+
+    it( "allows the initial inline-HTML load (empty url)", ( ) => {
+      expect( handleShouldStartLoadWithRequest( { url: "" } ) ).toBe( true );
+      expect( Linking.openURL ).not.toHaveBeenCalled();
+    } );
+
+    it( "allows about:blank", ( ) => {
+      expect( handleShouldStartLoadWithRequest( { url: "about:blank" } ) ).toBe( true );
+      expect( Linking.openURL ).not.toHaveBeenCalled();
+    } );
+
+    it( "allows data: URLs", ( ) => {
+      expect(
+        handleShouldStartLoadWithRequest( { url: "data:text/html;base64,PGgxPmhpPC9oMT4=" } ),
+      ).toBe( true );
+      expect( Linking.openURL ).not.toHaveBeenCalled();
+    } );
+
+    it( "blocks http(s) navigations and opens them externally", ( ) => {
+      const url = "https://www.inaturalist.org/observations";
+      expect( handleShouldStartLoadWithRequest( { url } ) ).toBe( false );
+      expect( Linking.openURL ).toHaveBeenCalledWith( url );
+    } );
+
+    it( "blocks non-click JS-driven navigations the same way", ( ) => {
+      // Simulates a window.location.href / form submit / window.open path
+      // where navigationType is not "click".
+      const url = "https://example.com/page";
+      expect(
+        handleShouldStartLoadWithRequest( { url, navigationType: "other" } ),
+      ).toBe( false );
+      expect( Linking.openURL ).toHaveBeenCalledWith( url );
     } );
   } );
 } );
