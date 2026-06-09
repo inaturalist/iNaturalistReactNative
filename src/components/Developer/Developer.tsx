@@ -176,56 +176,54 @@ const DebugTools = () => {
         text="LOG IN AGAIN"
         className="mb-5"
       />
-      { // eslint-disable-next-line no-undef
-        __DEV__ && (
-          <>
-            <Button
-              onPress={() => navigation.navigate( "UILibrary" )}
-              text="UI LIBRARY"
-              className="mb-5"
-            />
-            <Button
-              onPress={() => { throw new Error( "Test error" ); }}
-              text="TEST ERROR"
-              className="mb-5"
-            />
-            <Button
-              onPress={() => {
-                throw new INatApiError( {
-                  error: "Test error",
-                  status: 422,
-                  context: {
-                    routeName: "MyObservations",
-                    timestamp: new Date().toISOString(),
-                  },
-                } );
-              }}
-              text="TEST INATAPIERROR"
-              className="mb-5"
-            />
-            <Button
-              onPress={() => {
-                throw new INatApiTooManyRequestsError( {
-                  routeName: "TaxonDetails",
+      {__DEV__ && (
+        <>
+          <Button
+            onPress={() => navigation.navigate( "UILibrary" )}
+            text="UI LIBRARY"
+            className="mb-5"
+          />
+          <Button
+            onPress={() => { throw new Error( "Test error" ); }}
+            text="TEST ERROR"
+            className="mb-5"
+          />
+          <Button
+            onPress={() => {
+              throw new INatApiError( {
+                error: "Test error",
+                status: 422,
+                context: {
+                  routeName: "MyObservations",
                   timestamp: new Date().toISOString(),
-                } );
-              }}
-              text="TEST API TOO MANY REQUESTS ERROR"
-              className="mb-5"
-            />
-            <Button
-              onPress={async () => { throw new Error( "Test error in promise" ); }}
-              text="TEST UNHANDLED PROMISE REJECTION"
-              className="mb-5"
-            />
-            <Button
-              onPress={toggleRTLandLTR}
-              text="TOGGLE RTL<>LTR"
-              className="mb-5"
-            />
-          </>
-        )
-      }
+                },
+              } );
+            }}
+            text="TEST INATAPIERROR"
+            className="mb-5"
+          />
+          <Button
+            onPress={() => {
+              throw new INatApiTooManyRequestsError( {
+                routeName: "TaxonDetails",
+                timestamp: new Date().toISOString(),
+              } );
+            }}
+            text="TEST API TOO MANY REQUESTS ERROR"
+            className="mb-5"
+          />
+          <Button
+            onPress={async () => { throw new Error( "Test error in promise" ); }}
+            text="TEST UNHANDLED PROMISE REJECTION"
+            className="mb-5"
+          />
+          <Button
+            onPress={toggleRTLandLTR}
+            text="TOGGLE RTL<>LTR"
+            className="mb-5"
+          />
+        </>
+      )}
     </>
   );
 };
