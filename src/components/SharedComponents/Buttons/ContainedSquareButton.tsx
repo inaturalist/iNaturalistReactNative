@@ -17,10 +17,6 @@ interface Props {
   testID?: string;
 }
 
-// A 40x40 visual icon button on a solid, rounded square background, with the
-// 44x44 minimum touch target provided by INatIconButton. Mirrors the circular
-// EvidenceButton/TransparentCircleButton wrappers, but rounded-md instead of a
-// full circle (which is all `mode="contained"` on INatIconButton can produce).
 const ContainedSquareButton = ( {
   accessibilityHint,
   accessibilityLabel,
@@ -41,9 +37,6 @@ const ContainedSquareButton = ( {
   >
     <View
       className="w-10 h-10 rounded-md items-center justify-center"
-      // Background color is caller-driven (often stateful), so it has to be
-      // an inline style rather than a static Tailwind class.
-      // eslint-disable-next-line react-native/no-inline-styles
       style={{ backgroundColor }}
     >
       <INatIcon name={icon} size={iconSize} color={iconColor} />
