@@ -3,23 +3,14 @@ import { SafeAreaView, View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
 import { StatusBar } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-interface Props extends PropsWithChildren {
-  testID?: string;
-  wrapperClassName?: string;
-  useTopInset?: boolean;
-}
 
 interface ScreenShellProps extends PropsWithChildren {
-  style?: StyleProp<ViewStyle>;
   testID?: string;
   wrapperClassName?: string;
 }
 
 const ScreenShell = ( {
   children,
-  style,
   testID,
   wrapperClassName,
 }: ScreenShellProps ) => (
@@ -29,7 +20,6 @@ const ScreenShell = ( {
       "bg-white",
       wrapperClassName,
     )}
-    style={style}
     testID={testID}
   >
     <StatusBar barStyle="dark-content" />
@@ -41,38 +31,21 @@ const ViewWrapper = ( {
   children,
   wrapperClassName,
   testID,
-  useTopInset = true,
-}: Props ) => {
-  const insets = useSafeAreaInsets();
-  const viewStyle = {
-    paddingTop: useTopInset
-      ? insets.top
-      : 0,
-  };
-  return (
-    <ScreenShell
-      style={viewStyle}
-      testID={testID}
-    >
-      {isDebug && (
-      // eslint-disable-next-line i18next/no-literal-string
-        <Body1 className="bg-deepPink text-white absolute bottom-0 right-0 z-10">DEBUG</Body1>
-      )}
-      <StatusBar barStyle="dark-content" />
+}: ScreenShellProps ) => (
+  <ScreenShell testID={testID} wrapperClassName={wrapperClassName}>
+    <SafeAreaView className="flex-1" edges={["top"]}>
       {children}
-    </View>
-  );
-};
+    </SafeAreaView>
+  </ScreenShell>
+);
 
 const BottomInsetViewWrapper = ( {
   children,
-  style,
   testID,
   wrapperClassName,
 }: ScreenShellProps ) => (
   <ScreenShell
     testID={testID}
-    style={style}
     wrapperClassName={wrapperClassName}
   >
     <SafeAreaView className="flex-1" edges={["bottom"]}>
