@@ -16,7 +16,7 @@ import {
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
-import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
+import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useState } from "react";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import {
@@ -32,7 +32,7 @@ interface SortOption {
 }
 
 const ExploreResults = ( ) => {
-  const { state, requestLocationPermissions } = useExploreV2( );
+  const { dispatch, state, requestLocationPermissions } = useExploreV2( );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
@@ -115,8 +115,13 @@ const ExploreResults = ( ) => {
           headerText={t( "SORT-OBSERVATIONS" )}
           radioValues={sortOptions}
           selectedValue={state.sortBy}
-          // TODO: dispatch SET_SORT to update sort order
-          confirm={() => setShowSortSheet( false )}
+          confirm={sortBy => {
+            dispatch( {
+              type: EXPLORE_V2_ACTION.SET_SORT,
+              sortBy: sortBy as OBSERVATIONS_SORT,
+            } );
+            setShowSortSheet( false );
+          }}
           onPressClose={() => setShowSortSheet( false )}
         />
       )}
