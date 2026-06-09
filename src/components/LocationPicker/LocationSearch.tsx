@@ -20,6 +20,9 @@ interface Place {
   point_geojson: {
     coordinates: [number, number];
   };
+  bounding_box_geojson?: {
+    coordinates: [number, number][][];
+  };
 }
 interface Props {
   locationName: string;
