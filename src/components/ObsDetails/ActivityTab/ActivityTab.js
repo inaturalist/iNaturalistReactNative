@@ -65,7 +65,7 @@ const ActivityTab = ( {
     <View testID="ActivityTab">
       {stableItems.length === 0
         ? (
-          <Body2 className="text-center mt-12 px-[45px]">
+          <Body2 className="text-center my-12 px-[45px]">
             {t( "This-observation-has-no-comments-or-identifications-yet" )}
           </Body2>
         )
