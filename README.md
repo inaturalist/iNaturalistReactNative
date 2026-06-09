@@ -334,7 +334,8 @@ fastlane prod
 
 ### Release Script
 
-1. Ensure all tests are passing on the main branch
+1. Build from the beta branch
+1. Ensure all tests are passing on the beta branch
 1. Review and resolve [security alerts](https://github.com/inaturalist/iNaturalistReactNative/security)
 1. Manual testing
     1. Install a "Release" build on an iOS device
