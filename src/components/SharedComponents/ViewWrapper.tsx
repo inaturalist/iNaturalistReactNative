@@ -79,6 +79,28 @@ const BottomInsetViewWrapper = ( {
   );
 };
 
+const TopAndBottomInsetViewWrapper = ( {
+  children,
+  testID,
+  wrapperClassName,
+}: Props ) => {
+  const insets = useSafeAreaInsets();
+  const viewStyle = {
+    paddingBottom: insets.bottom,
+    paddingTop: insets.top,
+  };
+
+  return (
+    <ScreenShell
+      testID={testID}
+      style={viewStyle}
+      wrapperClassName={wrapperClassName}
+    >
+      {children}
+    </ScreenShell>
+  );
+};
+
 export default ViewWrapper;
 
-export { BottomInsetViewWrapper, ScreenShell };
+export { BottomInsetViewWrapper, ScreenShell, TopAndBottomInsetViewWrapper };
