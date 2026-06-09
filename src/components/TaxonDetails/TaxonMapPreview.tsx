@@ -110,7 +110,6 @@ const TaxonMapPreview = ( {
           )}
         />
       </View>
-
     );
   }
 
