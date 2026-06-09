@@ -9,7 +9,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 interface Props extends PropsWithChildren {
   testID?: string;
   wrapperClassName?: string;
-  useTopInset?: boolean;
 }
 
 interface ScreenShellProps extends PropsWithChildren {
@@ -42,13 +41,10 @@ const ViewWrapper = ( {
   children,
   wrapperClassName,
   testID,
-  useTopInset = true,
 }: Props ) => {
   const insets = useSafeAreaInsets();
   const viewStyle = {
-    paddingTop: useTopInset
-      ? insets.top
-      : 0,
+    paddingTop: insets.top,
   };
 
   return (
