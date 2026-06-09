@@ -8,6 +8,7 @@ import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import { FlatList } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { RealmTaxon } from "realmModels/types";
 import { useKeyboardInfo, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -37,6 +38,7 @@ const TaxonSearch = ( {
   setQuery,
   taxa = EMPTY_TAXA,
 }: Props ) => {
+  const { bottom } = useSafeAreaInsets( );
   const { t } = useTranslation( );
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
 
@@ -54,11 +56,11 @@ const TaxonSearch = ( {
 
   // Make sure all of the results can be scrolled to even with the keyboard
   // up
-  const footerComponent = useMemo( ( ) => (
+  const footerComponent = ( ) => (
     keyboardShown
-      ? <View className={`h-[${keyboardHeight}px]`} />
-      : null
-  ), [keyboardHeight, keyboardShown] );
+      ? <View style={{ paddingBottom: bottom + keyboardHeight }} />
+      : <View style={{ paddingBottom: bottom }} />
+  );
 
   return (
     <ScreenShell>
