@@ -9,6 +9,7 @@ import {
   Map,
   Modal,
 } from "components/SharedComponents";
+import { BottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useState } from "react";
@@ -20,8 +21,6 @@ import type Observation from "realmModels/Observation";
 import type { RealmObservation } from "realmModels/types";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
-
-import { BottomInsetViewWrapper } from "../ViewWrapper";
 
 interface Props {
   closeModal: () => void;
