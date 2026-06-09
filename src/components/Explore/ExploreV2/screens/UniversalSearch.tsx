@@ -10,7 +10,7 @@ import {
   View,
 } from "components/styledComponents";
 import type { ExploreStackParamList } from "navigation/types";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Keyboard } from "react-native";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -27,16 +27,16 @@ const UniversalSearch = ( ) => {
 
   const bothFilled = taxonText.length > 0 && locationText.length > 0;
 
-  const handleReset = ( ) => {
+  const handleReset = useCallback( ( ) => {
     setTaxonText( "" );
     setLocationText( "" );
-  };
+  }, [] );
 
-  const handleSearch = ( ) => {
+  const handleSearch = useCallback( ( ) => {
     // TODO MOB-1338 follow-up: run the search (default to all organisms /
     // worldwide when a field is empty). Just dismiss the keyboard for now.
     Keyboard.dismiss( );
-  };
+  }, [] );
 
   return (
     <ViewWrapper testID="UniversalSearch">
@@ -54,6 +54,7 @@ const UniversalSearch = ( ) => {
                 <INatIcon name="magnifying-glass" size={18} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-species-user-or-project" )}
+                  autoFocus
                   className="flex-1 ml-2 text-base"
                   numberOfLines={1}
                   onChangeText={setTaxonText}
