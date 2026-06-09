@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import { SafeAreaView, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import * as React from "react";
 import type { StyleProp, ViewStyle } from "react-native";
@@ -60,20 +60,24 @@ const ViewWrapper = ( {
 
 const BottomInsetViewWrapper = ( {
   children,
-  style,
   testID,
   wrapperClassName,
-}: ScreenShellProps ) => (
-  <ScreenShell
-    testID={testID}
-    style={style}
-    wrapperClassName={wrapperClassName}
-  >
-    <SafeAreaView className="flex-1" edges={["bottom"]}>
+}: Props ) => {
+  const insets = useSafeAreaInsets();
+  const viewStyle = {
+    paddingBottom: insets.bottom,
+  };
+
+  return (
+    <ScreenShell
+      testID={testID}
+      style={viewStyle}
+      wrapperClassName={wrapperClassName}
+    >
       {children}
-    </SafeAreaView>
-  </ScreenShell>
-);
+    </ScreenShell>
+  );
+};
 
 export default ViewWrapper;
 
