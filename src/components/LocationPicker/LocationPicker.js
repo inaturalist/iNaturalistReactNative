@@ -6,8 +6,8 @@ import {
   Heading4,
   KeyboardDismissableView,
   Map,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { TopAndBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -69,7 +69,7 @@ const LocationPicker = ( {
 
   return (
     <KeyboardDismissableView>
-      <ViewWrapper testID="location-picker">
+      <TopAndBottomInsetViewWrapper testID="location-picker">
         <View className="justify-center">
           <Heading4 className="self-center my-4">{t( "EDIT-LOCATION" )}</Heading4>
           <View className="absolute right-2">
@@ -124,7 +124,7 @@ const LocationPicker = ( {
           />
         </View>
         <Footer handleSave={handleSave} />
-      </ViewWrapper>
+      </TopAndBottomInsetViewWrapper>
     </KeyboardDismissableView>
   );
 };
