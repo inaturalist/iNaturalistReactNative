@@ -6,13 +6,14 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
-import { SafeAreaView, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import React, {
   useCallback,
   useEffect,
   useRef,
 } from "react";
 import { Dimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
 const { width } = Dimensions.get( "window" );
@@ -67,7 +68,7 @@ const StandardBottomSheet = ( {
   if ( snapPoints ) {
     throw new Error( "BottomSheet does not accept snapPoints as a prop." );
   }
-
+  const { bottom } = useSafeAreaInsets( );
   const { t } = useTranslation( );
   const sheetRef = useRef<SheetHandle>( null );
   const skipNextOnPressCloseRef = useRef( false );
@@ -128,16 +129,18 @@ const StandardBottomSheet = ( {
       keyboardShouldPersistTaps={keyboardShouldPersistTaps}
       scrollEnabled={scrollEnabled}
     >
-      <SafeAreaView
+      <View
         className={classnames(
           "pt-7",
           containerClass,
         )}
+        style={{
+          paddingBottom: bottom,
+        }}
         onLayout={onLayout}
         // Not ideal, but @gorhom/bottom-sheet components don't support
         // testID
         testID={testID}
-        edges={["bottom"]}
       >
         {!headerText
           ? null
@@ -162,7 +165,7 @@ const StandardBottomSheet = ( {
             accessibilityLabel={t( "Close" )}
           />
         )}
-      </SafeAreaView>
+      </View>
     </BottomSheetScrollView>
   );
 
