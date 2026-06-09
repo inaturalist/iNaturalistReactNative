@@ -6,6 +6,7 @@ import {
 } from "components/SharedComponents";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
+import { useStackHost } from "navigation/StackHostContext";
 import React, { useMemo } from "react";
 import { FlatList } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -38,7 +39,11 @@ const TaxonSearch = ( {
   setQuery,
   taxa = EMPTY_TAXA,
 }: Props ) => {
+  const { hasBottomTabBar } = useStackHost( );
   const { bottom } = useSafeAreaInsets( );
+  const paddingBottom = !hasBottomTabBar
+    ? bottom
+    : 0;
   const { t } = useTranslation( );
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
 
@@ -58,8 +63,8 @@ const TaxonSearch = ( {
   // up
   const footerComponent = ( ) => (
     keyboardShown
-      ? <View style={{ paddingBottom: bottom + keyboardHeight }} />
-      : <View style={{ paddingBottom: bottom }} />
+      ? <View style={{ paddingBottom: paddingBottom + keyboardHeight }} />
+      : <View style={{ paddingBottom }} />
   );
 
   return (
