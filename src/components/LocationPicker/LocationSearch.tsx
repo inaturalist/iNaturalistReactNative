@@ -20,6 +20,9 @@ interface Place {
   point_geojson: {
     coordinates: [number, number];
   };
+  bounding_box_geojson?: {
+    coordinates: [number, number][][];
+  };
 }
 interface Props {
   locationName: string;
@@ -44,7 +47,7 @@ const LocationSearch = ( {
     ( optsWithAuth: ApiOpts ) => fetchSearchResults( {
       q: locationName,
       sources: "places",
-      fields: "place,place.display_name,place.point_geojson",
+      fields: "place,place.display_name,place.point_geojson,place.bounding_box_geojson",
     }, optsWithAuth ),
   );
 
