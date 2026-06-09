@@ -6,8 +6,8 @@ import { fetchUsers } from "api/users";
 import {
   Body1,
   InfiniteScrollLoadingWheel,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
 import type { TabStackScreenProps } from "navigation/types";
@@ -68,7 +68,7 @@ const FollowersList = ( ) => {
   }
 
   return (
-    <ViewWrapper useTopInset={false}>
+    <ScreenShell>
       <View className="border-b border-lightGray mt-5" />
       <UserList
         users={followers}
@@ -91,7 +91,7 @@ const FollowersList = ( ) => {
             )
         )}
       />
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 
