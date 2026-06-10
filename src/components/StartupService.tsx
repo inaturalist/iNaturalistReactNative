@@ -33,6 +33,11 @@ const logger = log.extend( "StartupService" );
 
 const geolocationConfig = {
   skipPermissionRequests: true,
+  // Without this Android uses the raw LocationManager, where high accuracy
+  // requests are GPS-satellite-only and never resolve indoors (MOB-1295).
+  // Play Services' fused provider blends GPS/Wi-Fi/cell; the library falls
+  // back to LocationManager on devices without Play Services.
+  locationProvider: "playServices" as const,
 };
 
 const StartupService = ( ) => {
