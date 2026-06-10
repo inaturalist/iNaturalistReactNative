@@ -1,9 +1,10 @@
 import classNames from "classnames";
 import { Button } from "components/SharedComponents";
-import { SafeAreaView } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React from "react";
 import type { LayoutChangeEvent } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getShadow } from "styles/global";
 
 const DROP_SHADOW = getShadow( {
@@ -35,12 +36,13 @@ const ButtonBar = ( {
   onLayout,
   sticky,
 }: Props ) => {
+  const { bottom } = useSafeAreaInsets( );
   const layoutClassNames = sticky
     ? "absolute bottom-0"
     : null;
 
   return (
-    <SafeAreaView
+    <View
       className={classNames(
         layoutClassNames,
         containerClass,
@@ -50,10 +52,9 @@ const ButtonBar = ( {
         },
       )}
       onLayout={onLayout}
-      style={DROP_SHADOW}
-      edges={sticky
-        ? ["bottom"]
-        : []}
+      style={[DROP_SHADOW, sticky
+        ? { paddingBottom: bottom }
+        : undefined]}
     >
       {buttonConfiguration && buttonConfiguration.map( button => {
         const {
@@ -76,7 +77,7 @@ const ButtonBar = ( {
         );
       } )}
       {children}
-    </SafeAreaView>
+    </View>
   );
 };
 
