@@ -1,0 +1,8 @@
+FIXED
+* Location picker map should zoom to fill location when tapping a search item
+* Some screens should be from edge-to-edge
+* Android: Add observation tooltip incorrectly positioned
+* Back button from ObsEdit to Suggestions
+
+UPDATED
+* Minor package and performance updates
