@@ -11,6 +11,9 @@ import inatjs from "inaturalistjs";
 import { Animated } from "react-native";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
+import {
+  navigateToAICameraFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -169,7 +172,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
 
     it( "should advance to suggestions screen", async ( ) => {
       renderApp( );
-      await navToAICamera( );
+      await navigateToAICameraFromMyObs( );
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
       await takePhotoAndNavToSuggestions( );
     } );
@@ -208,7 +211,6 @@ describe( "AICamera navigation with advanced user layout", () => {
   describe( "from MyObs", () => {
     it( "should return to MyObs when close button tapped", async () => {
       renderApp();
-      await navToAICamera();
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       expect(
         await screen.findByText( /Loading iNaturalist's AI Camera/ ),
@@ -218,6 +220,7 @@ describe( "AICamera navigation with advanced user layout", () => {
       expect(
         await screen.findByText( /Use iNaturalist to identify any living thing/ ),
       ).toBeTruthy();
+      await navigateToAICameraFromMyObs();
     } );
   } );
 } );

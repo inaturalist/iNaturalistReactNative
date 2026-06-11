@@ -100,3 +100,17 @@ export async function navigateToSoundRecorderFromMyObs() {
   await pressAddObsOption( ADD_OBS_OPTIONS.soundRecorder );
   await waitForSoundRecorderScreen( );
 }
+
+export async function navigateToAICameraFromMyObs() {
+  await waitFor( ( ) => {
+    expect( screen.getByTestId( "CustomTabBar" ) ).toBeVisible( );
+  } );
+  await pressAddObservationsButton( );
+  await pressAddObsOption( ADD_OBS_OPTIONS.aiCamera );
+  await waitFor( ( ) => {
+    if ( typeof global.timeTravel === "function" ) {
+      global.timeTravel( 300 );
+    }
+    expect( screen.getByTestId( "take-photo-button" ) ).toBeVisible( );
+  }, { timeout: 10_000 } );
+}
