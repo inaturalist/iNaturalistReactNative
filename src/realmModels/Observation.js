@@ -30,6 +30,10 @@ class Observation extends Realm.Object {
     icon: true,
     title: true,
     project_type: true,
+    rule_preferences: {
+      field: true,
+      value: true,
+    },
   };
 
   static FIELDS = {
