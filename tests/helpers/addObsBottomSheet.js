@@ -1,5 +1,7 @@
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react-native";
 import { InteractionManager } from "react-native";
+import useStore from "stores/useStore";
+
 export const ADD_OBS_OPTIONS = {
   aiCamera: "aicamera-button",
   standardCamera: "camera-button",
