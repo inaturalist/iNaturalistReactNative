@@ -13,6 +13,7 @@ import {
   navigateToPhotoImporterFromMyObs,
   saveObsEditObservation,
   waitForMyObsGridItems,
+  waitForUploadToolbar,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -119,8 +120,6 @@ describe( "Photo Import", ( ) => {
   async function saveObservationWithPhoto( saveOptions = {} ) {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    // Wait until header shows that there's an obs to upload
-    await screen.findByText( /Upload \d observation/ );
     expect( evidenceTitle ).toBeVisible( );
 
     const [photoEvidence] = await screen.findAllByLabelText( "Select or drag media" );
@@ -129,6 +128,7 @@ describe( "Photo Import", ( ) => {
     if ( !saveOptions.skipMyObsWait ) {
       const obsGridItems = await waitForMyObsGridItems();
       expect( obsGridItems[0] ).toBeVisible();
+      await waitForUploadToolbar( 1 );
     }
   }
 
