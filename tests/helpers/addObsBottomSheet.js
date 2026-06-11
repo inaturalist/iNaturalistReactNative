@@ -1,8 +1,10 @@
 import {
-  act, fireEvent, screen, waitFor, within,
+  act, fireEvent, screen, userEvent, waitFor, within,
 } from "@testing-library/react-native";
 import { InteractionManager } from "react-native";
 import useStore from "stores/useStore";
+
+const actor = userEvent.setup( );
 
 export const ADD_OBS_OPTIONS = {
   aiCamera: "aicamera-button",
@@ -35,13 +37,13 @@ export async function advancePhotoLibraryTimers() {
 export async function pressAddObservationsButton() {
   const tabBar = await screen.findByTestId( "CustomTabBar" );
   const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  fireEvent.press( addObsButton );
+  await actor.press( addObsButton );
 }
 
 /** Presses an option in the open add-observation bottom sheet. */
 export async function pressAddObsOption( testID ) {
   const button = await screen.findByTestId( testID );
-  fireEvent.press( button );
+  await actor.press( button );
   if ( testID === ADD_OBS_OPTIONS.noEvidence ) {
     await waitFor( ( ) => {
       expect( useStore.getState( ).currentObservation ).toBeTruthy( );

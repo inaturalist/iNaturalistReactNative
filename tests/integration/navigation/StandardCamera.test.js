@@ -57,18 +57,6 @@ jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   default: () => mockFetchUserLocation(),
 } ) );
 
-const navigateToCamera = async ( ) => {
-  await waitFor( ( ) => {
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
-  } );
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const cameraButton = await screen.findByLabelText( "Camera" );
-  await actor.press( cameraButton );
-};
-
 describe( "StandardCamera navigation with advanced user layout", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
