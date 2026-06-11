@@ -82,14 +82,6 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
 
 beforeAll( async () => {
   await initI18next();
-} );
-
-beforeEach( ( ) => {
-  setStoreStateLayout( {
-    isDefaultMode: false,
-    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-    isAllAddObsOptionsMode: true,
-  } );
   mockInteractionManagerRunAfterInteractions( );
 } );
 
@@ -98,6 +90,13 @@ describe( "Photo Import", ( ) => {
 
   const actor = userEvent.setup( );
 
+  beforeEach( async () => {
+    setStoreStateLayout( {
+      isDefaultMode: false,
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+      isAllAddObsOptionsMode: true,
+    } );
+  } );
   async function groupPhotosIntoObservation() {
     const groupPhotosText = await screen.findByText( /Group Photos/ );
     expect( groupPhotosText ).toBeVisible();
