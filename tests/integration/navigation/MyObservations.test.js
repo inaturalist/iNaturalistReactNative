@@ -9,6 +9,7 @@ import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
 import {
   mockInteractionManagerRunAfterInteractions,
+  navigateToPhotoImporterFromMyObs,
   saveObsEditObservation,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
@@ -126,16 +127,6 @@ const waitForDisplayedText = async ( text, timeout = 1000 ) => {
   }, { timeout } );
 };
 
-const pressButtonByLabel = async labelText => {
-  const button = screen.getByLabelText( labelText );
-  await actor.press( button );
-};
-
-const pressButtonByText = async text => {
-  const button = screen.getByText( text );
-  await actor.press( button );
-};
-
 // const deleteObservationByTaxonName = async name => {
 //   await pressButtonByText( name );
 //   await waitForDisplayedText( /Edit Observation/ );
@@ -145,7 +136,7 @@ const pressButtonByText = async text => {
 //   await waitForDisplayedText( /1 observation deleted/ );
 // };
 
-describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
+describe( "MyObservations -> Photo Importer -> ObsEdit -> MyObservations", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   // Mock inatjs endpoints so they return the right responses for the right test data
   inatjs.observations.create.mockImplementation( ( params, _opts ) => {
@@ -177,15 +168,14 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     await checkToolbarResetWithUnsyncedObs( );
     await pressIndividualUpload( mockUnsyncedObservations[0] );
     await waitForDisplayedText( /1 observation uploaded/ );
-    await pressButtonByLabel( /Add observations/ );
-    await pressButtonByLabel( /Observation with no evidence/ );
-    // await navigateToPhotoImporterFromMyObs();
     jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation( () => ( {
       assets: [{
         uri: faker.image.url(),
         fileName: `${faker.string.uuid()}.jpg`,
       }],
     } ) );
+    await navigateToPhotoImporterFromMyObs();
+    await screen.findByText( /New Observation/, {}, { timeout: 10_000 } );
     await saveObsEditObservation();
     await waitForDisplayedText( /Upload 3 observations/, 10_000 );
   } );
