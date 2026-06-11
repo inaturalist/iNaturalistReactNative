@@ -141,6 +141,10 @@ export async function navigateToSuggestionsViaAICameraFromMyObs() {
   await navigateToAICameraFromMyObs( );
   await takeAICameraPhotoAndOpenSuggestions( );
 }
+async function pressObsEditSaveButton() {
+  await actor.press( await screen.findByTestId( "ObsEdit.saveButton" ) );
+}
 /** Saves on ObsEdit, confirming warning sheets when they appear, then waits for My Obs. */
 export async function saveObsEditObservation( options = {} ) {
+  await pressObsEditSaveButton();
 }
