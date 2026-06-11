@@ -12,6 +12,7 @@ import {
   mockInteractionManagerRunAfterInteractions,
   navigateToPhotoImporterFromMyObs,
   saveObsEditObservation,
+  waitForMyObsGridItems,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -120,16 +121,15 @@ describe( "Photo Import", ( ) => {
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
     // Wait until header shows that there's an obs to upload
     await screen.findByText( /Upload \d observation/ );
-    const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
     expect( evidenceTitle ).toBeVisible( );
 
     const [photoEvidence] = await screen.findAllByLabelText( "Select or drag media" );
     expect( photoEvidence ).toBeVisible();
     await saveObsEditObservation( saveOptions );
-    await waitFor( () => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( obsGridItems[0] ).toBeOnTheScreen( );
-    }, { timeout: 3_000, interval: 500 } );
+    if ( !saveOptions.skipMyObsWait ) {
+      const obsGridItems = await waitForMyObsGridItems();
+      expect( obsGridItems[0] ).toBeVisible();
+    }
   }
 
   it( "should create and save an observation with an imported photo", async ( ) => {

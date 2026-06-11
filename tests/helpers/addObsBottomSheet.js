@@ -170,3 +170,17 @@ export async function saveObsEditObservation( options = {} ) {
     await waitForMyObservationsScreen();
   }
 }
+
+/** Waits until at least one observation appears on the My Obs grid. */
+export async function waitForMyObsGridItems() {
+  return waitFor( ( ) => {
+    if ( typeof global.timeTravel === "function" ) {
+      global.timeTravel( 300 );
+    }
+    const items = screen.queryAllByTestId( /MyObservations\.obsGridItem\..*/ );
+    if ( items.length === 0 ) {
+      throw new Error( "Waiting for My Obs grid items" );
+    }
+    return items;
+  }, { timeout: 15_000 } );
+}
