@@ -10,6 +10,7 @@ import {
   saveObsEditObservation,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -91,6 +92,7 @@ beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
     isAllAddObsOptionsMode: true,
+    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
