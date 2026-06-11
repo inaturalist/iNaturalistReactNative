@@ -16,6 +16,9 @@ import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
+import {
+  navigateToSuggestionsViaAICameraFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -139,22 +142,6 @@ describe( "Suggestions", ( ) => {
         : await screen.findByText( "IDENTIFY" );
       await actor.press( addIdButton );
     }
-  }
-
-  async function navigateToSuggestionsViaCameraForObservation( ) {
-    const tabBar = await screen.findByTestId( "CustomTabBar" );
-    const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-    await actor.press( addObsButton );
-    const cameraButton = await screen.findByLabelText( /AI Camera/ );
-    await actor.press( cameraButton );
-    const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-    await actor.press( takePhotoButton );
-    const addIDButton = await screen.findByText( /ADD AN ID/ );
-    await waitFor( ( ) => {
-      global.timeTravel( );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( addIDButton ).toBeOnTheScreen( );
-    } );
   }
 
   describe( "when reached from ObsEdit", ( ) => {
@@ -293,7 +280,7 @@ describe( "Suggestions", ( ) => {
       } ) );
       const observations = makeUnsyncedObservations( );
       await renderAppWithObservations( observations, __filename );
-      await navigateToSuggestionsViaCameraForObservation( observations[0] );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       const locationPermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
       expect( locationPermissionsButton ).toBeFalsy( );
     } );
@@ -305,7 +292,7 @@ describe( "Suggestions", ( ) => {
       } ) );
       const observations = makeUnsyncedObservations( );
       await renderAppWithObservations( observations, __filename );
-      await navigateToSuggestionsViaCameraForObservation( observations[0] );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       const locationPermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
       expect( locationPermissionsButton ).toBeVisible( );
     } );
