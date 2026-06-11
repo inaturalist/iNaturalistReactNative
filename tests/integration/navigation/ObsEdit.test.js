@@ -76,18 +76,14 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
   await actor.press( addObsButton );
   const photoImporter = await screen.findByLabelText( "Photo importer" );
   await actor.press( photoImporter );
-  const groupPhotosText = await screen.findByText( /Group Photos/ );
   await waitFor( ( ) => {
-    // user should land on GroupPhotos
-    expect( groupPhotosText ).toBeTruthy( );
   } );
+    expect( screen.getByText( /Group Photos/ ) ).toBeVisible( );
   const importObservationsText = await screen.findByText( /IMPORT 2 OBSERVATIONS/ );
   await actor.press( importObservationsText );
   await waitFor( ( ) => {
-    const obsEditTitleText = screen.getByText( /2 Observations/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( obsEditTitleText ).toBeOnTheScreen( );
   }, { timeout: 3_000, interval: 500 } );
+    expect( screen.getByText( /2 Observations/ ) ).toBeVisible( );
 };
 
 const saveObsEditObservation = async ( ) => {
@@ -243,8 +239,7 @@ describe( "ObsEdit", ( ) => {
         await navigateToObsEditViaGroupPhotos( );
         await uploadObsEditObservation( );
         const uploadStatus = await screen.findByText( /1 uploaded/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( uploadStatus ).toBeOnTheScreen( );
+        expect( uploadStatus ).toBeVisible( );
         const newTitle = await screen.findByText( /New Observation/ );
         expect( newTitle ).toBeTruthy( );
       } );
