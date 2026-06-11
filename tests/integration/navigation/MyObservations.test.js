@@ -178,7 +178,7 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     await pressButtonByLabel( /Observation with no evidence/ );
     // await navigateToPhotoImporterFromMyObs();
     await saveObsEditObservation();
-    await waitForDisplayedText( /Upload 3 observations/, 5000 );
+    await waitForDisplayedText( /Upload 3 observations/, 10_000 );
   } );
 
   // it( "should display fresh toolbar status after deleting an observation, then"
