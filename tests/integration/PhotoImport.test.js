@@ -116,11 +116,6 @@ describe( "Photo Import", ( ) => {
   async function saveObservationWithPhoto( saveOptions = {} ) {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    const saveButton = await screen.findByText( "SAVE" );
-    await actor.press( saveButton );
-    const okButton = await screen.findByText( "OK" );
-    await actor.press( okButton );
-    await actor.press( saveButton );
     // Wait until header shows that there's an obs to upload
     await screen.findByText( /Upload \d observation/ );
     const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
@@ -128,6 +123,7 @@ describe( "Photo Import", ( ) => {
 
     const [photoEvidence] = await screen.findAllByLabelText( "Select or drag media" );
     expect( photoEvidence ).toBeVisible();
+    await saveObsEditObservation( saveOptions );
     await waitFor( () => {
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       expect( obsGridItems[0] ).toBeOnTheScreen( );
