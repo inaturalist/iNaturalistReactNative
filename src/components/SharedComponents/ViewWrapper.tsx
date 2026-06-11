@@ -45,7 +45,7 @@ const ViewWrapper = ( {
       // eslint-disable-next-line i18next/no-literal-string
         <Body1 className="bg-deepPink text-white absolute bottom-0 right-0 z-10">DEBUG</Body1>
       )}
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <StatusBar barStyle="dark-content" />
       {children}
     </View>
   );

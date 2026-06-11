@@ -404,16 +404,10 @@ const TaxonDetails = ( ): Node => {
 
   return (
     <View
-      className="flex-1 bg-black"
+      className="flex-1 bg-white"
       style={{ paddingTop: insets.top }}
     >
-      {/*
-        Making the bar dark here seems like the right thing, but I haven't
-        figured a way to do that *and* not making the bg of the scrollview
-        black, which reveals a dark area at the bottom of the screen on
-        overscroll in iOS ~~~kueda20240228
-      */}
-      <StatusBar barStyle="light-content" backgroundColor={colors.black} />
+      <StatusBar barStyle="dark-content" />
       <ScrollView
         testID={`TaxonDetails.${taxon?.id}`}
         onScroll={handleScroll}

@@ -128,15 +128,6 @@ describe( "buildExploreV2QueryParams", ( ) => {
       expect( params.order_by ).toBe( "observed_on" );
       expect( params.order ).toBe( "asc" );
     } );
-
-    it( "MOST_FAVED → votes desc", ( ) => {
-      const params = buildExploreV2QueryParams( {
-        ...initialExploreV2State,
-        sortBy: OBSERVATIONS_SORT.MOST_FAVED,
-      } );
-      expect( params.order_by ).toBe( "votes" );
-      expect( params.order ).toBe( "desc" );
-    } );
   } );
 
   it( "always sets per_page to 20 and verifiable to true", ( ) => {
@@ -160,14 +151,14 @@ describe( "buildExploreV2QueryParams", ( ) => {
         lng: -122.1,
         radius: 1,
       },
-      sortBy: OBSERVATIONS_SORT.MOST_FAVED,
+      sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
       filters: {},
     };
     const params = buildExploreV2QueryParams( state );
     expect( params ).toEqual( {
       per_page: 20,
       verifiable: true,
-      order_by: "votes",
+      order_by: "created_at",
       order: "desc",
       taxon_id: 42,
       lat: 37.5,

@@ -22,7 +22,6 @@ RNFS.exists( logFileDirectory ).then( exists => ( exists
 
 const sharedConfig = {
   dateFormat: "iso",
-  // eslint-disable-next-line no-undef
   severity: __DEV__
     ? "debug"
     : "info",

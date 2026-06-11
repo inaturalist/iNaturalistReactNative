@@ -318,6 +318,10 @@ Data-quality-assessment-title-research = This observation is Research Grade!
 DATE = DATE
 # label in project requirements
 Date = Date
+# Label for observations sort order, default option
+Date-Added-Newest-Default = Date Added: Newest (Default)
+# Label for observations sort order
+Date-Added-Oldest = Date Added: Oldest
 # Date formatting using date-fns
 # Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
@@ -334,7 +338,11 @@ date-format-short = M/d/yy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed
+# Label for observations sort order
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
+# Label for observations sort order
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 # Label for controls over a range of dates
 Date-Range = Date Range
@@ -861,8 +869,16 @@ Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
+# Description for observations sort order
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+# Description for observations sort order
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-View = Observations View
+# Description for observations sort order
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+# Description for observations sort order
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 # Might be used when the number is represented using an image or other
 # element, not text
 OBSERVATIONS-WITHOUT-NUMBER =
@@ -901,6 +917,8 @@ Opens-AI-camera = Opens AI camera.
 # Accessibility hint for a button that opens a form for editing a comment
 Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
+# Accessibility hint for search button in Explore header that navigates to the search interface
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
@@ -1175,6 +1193,8 @@ Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that 
 SORT-BY = SORT BY
 Sort-by = Sort by
 # Accessibility label for a button that allows users to sort observations
+# Label for observations sort menu
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 # Label for species sort menu
 SORT-SPECIES = SORT SPECIES
 # Character separating current position and total duration when playing a

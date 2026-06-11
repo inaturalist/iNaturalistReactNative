@@ -17,7 +17,7 @@ const OnboardingModalBase = ( {
   const { t } = useTranslation( );
   return (
     <ViewWrapper wrapperClassName="bg-white/0">
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+      <StatusBar barStyle="light-content" />
       <View className="flex-1 relative">
         <View className="flex-1 justify-center items-center">
           <View
