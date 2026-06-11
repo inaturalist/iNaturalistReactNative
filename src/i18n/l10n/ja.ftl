@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = この観察記録には同定が必要
 Data-quality-assessment-title-research = この観察記録は研究用グレードです！
 DATE = 日付
 Date = 日付
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = yyyy年MM月dd日
 date-format-month-day = M月d日
 date-format-month-year = yyyy年M月
@@ -184,7 +186,9 @@ date-format-short = yyyy/M/d
 DATE-OBSERVED = 観察日
 Date-observed = 観測された日付
 Date-observed-header-short = 観察
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = 観察日 - 新しい順
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = 観察日 - 古い順
 Date-Range = 期間
 DATE-RANGE = 日付範囲
@@ -476,6 +480,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] MEMBER
        *[other] MEMBERS
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = メニュー：
 Missing-Date = 日付がありません
 MISSING-EVIDENCE = MISSING EVIDENCE
@@ -553,8 +558,12 @@ Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = 観察記録
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-View = Observations View
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] OBSERVATION
@@ -579,6 +588,7 @@ Opens-add-comment-form = コメント追加フォームを開きます。
 Opens-AI-camera = Opens AI camera.
 Opens-edit-comment-form = コメント編集フォームを開きます。
 Opens-location-permission-prompt = Opens location permission prompt
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 Organism-is-captive = Organism is captive
@@ -789,6 +799,7 @@ Sorry-this-observation-was-deleted = Sorry, this observation was deleted
 Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that URL: { $url }
 SORT-BY = SORT BY
 Sort-by = Sort by
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORT SPECIES
 sound-playback-separator = /
 Sound-recorder = Sound recorder

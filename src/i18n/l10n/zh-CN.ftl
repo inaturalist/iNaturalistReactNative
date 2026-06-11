@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = 此观察需要鉴定
 Data-quality-assessment-title-research = 此观察达到了研究级！
 DATE = 日期
 Date = 日期
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = PP
 date-format-month-day = MMM d
 date-format-month-year = MMM yyyy
@@ -184,7 +186,9 @@ date-format-short = M/d/yy
 DATE-OBSERVED = 观察日期
 Date-observed = 观察日期
 Date-observed-header-short = 观察于
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = 观察日期 - 从新至旧
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = 观察日期 - 从旧至新
 Date-Range = 数据范围
 DATE-RANGE = 日期范围
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] 成员
        *[other] 成员
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = 选单
 Missing-Date = 缺少日期
 MISSING-EVIDENCE = 缺少证据
@@ -548,8 +553,12 @@ Observation-options = 观察选项
 OBSERVATION-WAS-DELETED = 观察被删除
 Observation-with-no-evidence = 创建一个没有证据的观察
 Observations = 观察
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist 观察需要一个位置和日期才能对科学家有用。请在上传前使用此图标检查观察。
 Observations-View = 浏览观察
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] 个观察
@@ -574,6 +583,7 @@ Opens-add-comment-form = 打开添加评论表单。
 Opens-AI-camera = 打开 AI 相机。
 Opens-edit-comment-form = 打开编辑评论表单。
 Opens-location-permission-prompt = 打开位置权限提示
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = 或通过其他方式登录
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = 或者，您可以尝试通过放大、靠近或尝试不同的角度来获得更清晰的照片。
 Organism-is-captive = 生物体是被圈养的
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = 抱歉，此观察记录已被删除
 Sorry-we-dont-know-how-to-open-that-URL = 抱歉，我们不知道如何打开该URL： { $url }
 SORT-BY = 排序方式
 Sort-by = 排序方式
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORT SPECIES
 sound-playback-separator = /
 Sound-recorder = 录音机

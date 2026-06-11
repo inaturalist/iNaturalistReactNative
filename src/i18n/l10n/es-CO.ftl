@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = Esta observación necesita ID
 Data-quality-assessment-title-research = Esta observación es de Grado de Investigación!
 DATE = FECHA
 Date = Fecha
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = PP
 date-format-month-day = d MMM
 date-format-month-year = MMM yyyy
@@ -184,7 +186,9 @@ date-format-short = d/M/yy
 DATE-OBSERVED = FECHA DE OBSERVACIÓN
 Date-observed = Fecha de observación
 Date-observed-header-short = Observado el
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = FECHA DE OBSERVACIÓN - DE LA MÁS RECIENTE A LA MÁS ANTIGUA
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = FECHA DE OBSERVACIÓN - DE LA MÁS ANTIGUA A LA MÁS RECIENTE
 Date-Range = Intervalo de fechas
 DATE-RANGE = RANGO DE FECHAS
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] MIEMBRO
        *[other] MIEMBROS
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = Menu
 Missing-Date = Fecha faltante
 MISSING-EVIDENCE = FALTA EVIDENCIA
@@ -548,8 +553,12 @@ Observation-options = Opciones de observación
 OBSERVATION-WAS-DELETED = LA OBSERVACIÓN HA SIDO ELIMINADA
 Observation-with-no-evidence = Observación sin evidencia
 Observations = Observaciones
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = Las observaciones de iNaturalist necesitan una ubicación y una fecha para ser útiles a los científicos. Por favor, comprueba las observaciones con este icono antes de subir.
 Observations-View = Vista de Observaciones
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [uno] OBSERVACIÓN
@@ -574,6 +583,7 @@ Opens-add-comment-form = Abre el formulario de comentarios.
 Opens-AI-camera = Abre la cámara IA.
 Opens-edit-comment-form = Abre el formulario de edición de comentarios.
 Opens-location-permission-prompt = Abre la solicitud de permisos de ubicación
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = O INICIA SESIÓN CON
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = O bien, puede intentar obtener una foto más clara acercando, acercándose o probando un ángulo diferente.
 Organism-is-captive = El organismo está en cautiverio
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = Lo sentimos, esta observación ha sido elim
 Sorry-we-dont-know-how-to-open-that-URL = Lo sentimos, no sabemos cómo abrir esa URL: { $url }
 SORT-BY = ORDENAR POR
 Sort-by = Ordenar por
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORT SPECIES
 sound-playback-separator = /
 Sound-recorder = Grabadora de sonidos

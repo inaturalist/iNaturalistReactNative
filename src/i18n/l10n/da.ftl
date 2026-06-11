@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = Denne observation Behøver ID
 Data-quality-assessment-title-research = Denne observation har Forskningskvalitet!
 DATE = DATO
 Date = Dato
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = d LLL yyyy
 date-format-month-day = d MMM
 date-format-month-year = MMM yyyy
@@ -184,7 +186,9 @@ date-format-short = d/M/yy
 DATE-OBSERVED = OBSERVERET DATO
 Date-observed = Observeret dato
 Date-observed-header-short = Observeret
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = OBSERVERET DATO - SENESTE TIL ÆLDSTE
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = OBSERVERET DATO - ÆLDSTE TIL SENESTE
 Date-Range = Datoområde
 DATE-RANGE = DATOOMRÅDE
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] MEDLEM
        *[other] MEDLEMMER
     }
+Membership-in-this-project-is-by-invitation-only = Medlemskab af dette projekt er kun pr. invitation. Ved ønske om medlemsskab, kontakt en af kuratorerne nedenfor og bed om en invitation.
 Menu = Menu
 Missing-Date = Dato mangler
 MISSING-EVIDENCE = MANGLER BEVIS
@@ -548,8 +553,12 @@ Observation-options = Observationsmuligheder
 OBSERVATION-WAS-DELETED = OBSERVATION ER SLETTET
 Observation-with-no-evidence = Observation uden bevis
 Observations = Observationer
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist-observationer behøver en placering og dato for at være nyttige for videnskabsfolk. Tjek venligst observationer med dette ikon før upload.
 Observations-View = Observationsvisning
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] OBSERVATION
@@ -574,6 +583,7 @@ Opens-add-comment-form = Åbner formularen Tilføj kommentar.
 Opens-AI-camera = Åbner AI-kamera.
 Opens-edit-comment-form = Åbner formularen Redigér kommentar.
 Opens-location-permission-prompt = Åbner placeringstilladelsesprompt
+Opens-search-interface = Åbner søgegrænseflade.
 OR-SIGN-IN-WITH = ELLER LOG IND MED
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Eller man kan prøve at få et klarere foto ved at zoome ind, komme tættere på eller prøve en anden vinkel.
 Organism-is-captive = Organisme er i fangenskab
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = Beklager, denne observation er slettet
 Sorry-we-dont-know-how-to-open-that-URL = Beklager, vi ved ikke, hvordan man åbner denne URL: { $url }
 SORT-BY = SORTÉR EFTER
 Sort-by = Sortér efter
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORTÉR ARTER
 sound-playback-separator = /
 Sound-recorder = Lyd&optager
