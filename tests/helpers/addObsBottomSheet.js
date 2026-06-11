@@ -163,7 +163,10 @@ async function confirmObsEditWarningSheets() {
 }
 
 /** Saves on ObsEdit, confirming warning sheets when they appear, then waits for My Obs. */
-export async function saveObsEditObservation( _options = {} ) {
+export async function saveObsEditObservation( options = {} ) {
   await pressObsEditSaveButton();
   await confirmObsEditWarningSheets();
+  if ( !options.skipMyObsWait ) {
+    await waitForMyObservationsScreen();
+  }
 }
