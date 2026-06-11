@@ -48,6 +48,13 @@ describe( "SoundRecorder navigation", ( ) => {
   const actor = userEvent.setup( );
 
   describe( "from MyObs with advanced user layout", ( ) => {
+    beforeEach( ( ) => {
+      setStoreStateLayout( {
+        isDefaultMode: false,
+        isAllAddObsOptionsMode: true,
+      } );
+    } );
+
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
       await waitFor( ( ) => {
