@@ -80,7 +80,6 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: jest.fn( () => mockUser ),
 } ) );
 
-
 beforeAll( async () => {
   await initI18next();
   mockInteractionManagerRunAfterInteractions( );
