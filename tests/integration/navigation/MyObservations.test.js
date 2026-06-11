@@ -139,6 +139,7 @@ const pressButtonByText = async text => {
 // };
 
 describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   // Mock inatjs endpoints so they return the right responses for the right test data
   inatjs.observations.create.mockImplementation( ( params, _opts ) => {
     const mockObs = mockUnsyncedObservations.find( o => o.uuid === params.observation.uuid );
