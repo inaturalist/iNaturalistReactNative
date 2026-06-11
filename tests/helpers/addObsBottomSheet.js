@@ -114,3 +114,13 @@ export async function navigateToAICameraFromMyObs() {
     expect( screen.getByTestId( "take-photo-button" ) ).toBeVisible( );
   }, { timeout: 10_000 } );
 }
+
+export async function takeAICameraPhotoAndOpenSuggestions() {
+  await actor.press( await screen.findByTestId( "take-photo-button" ) );
+  await waitFor( ( ) => {
+    if ( typeof global.timeTravel === "function" ) {
+      global.timeTravel( 300 );
+    }
+    expect( screen.getByText( /ADD AN ID/ ) ).toBeVisible( );
+  }, { timeout: 10_000 } );
+}

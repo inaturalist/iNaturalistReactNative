@@ -174,7 +174,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       renderApp( );
       await navigateToAICameraFromMyObs( );
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
-      await takePhotoAndNavToSuggestions( );
+      await takeAICameraPhotoAndOpenSuggestions();
     } );
 
     it( "should advance to suggestions then obs edit", async ( ) => {
