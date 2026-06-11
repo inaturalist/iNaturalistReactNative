@@ -107,8 +107,7 @@ describe( "Photo Import", ( ) => {
 
   async function groupPhotosIntoObservation() {
     const groupPhotosText = await screen.findByText( /Group Photos/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( groupPhotosText ).toBeOnTheScreen( );
+    expect( groupPhotosText ).toBeVisible();
     const path = "file://document/directory/path/galleryPhotos/";
     const firstUri = `${path}${mockImageLibraryResponseMultiplePhotos.assets[0].fileName}`;
     const secondUri = `${path}${mockImageLibraryResponseMultiplePhotos.assets[1].fileName}`;
