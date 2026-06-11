@@ -41,9 +41,7 @@ export async function pressAddObservationsButton() {
 /** Presses an option in the open add-observation bottom sheet. */
 export async function pressAddObsOption( testID ) {
   const button = await screen.findByTestId( testID );
-  await act( async ( ) => {
-    fireEvent.press( button );
-  } );
+  fireEvent.press( button );
   if ( testID === ADD_OBS_OPTIONS.noEvidence ) {
     await waitFor( ( ) => {
       expect( useStore.getState( ).currentObservation ).toBeTruthy( );
