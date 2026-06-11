@@ -124,3 +124,9 @@ export async function takeAICameraPhotoAndOpenSuggestions() {
     expect( screen.getByText( /ADD AN ID/ ) ).toBeVisible( );
   }, { timeout: 10_000 } );
 }
+
+/** Opens AI camera from My Obs and lands on Suggestions. */
+export async function navigateToSuggestionsViaAICameraFromMyObs() {
+  await navigateToAICameraFromMyObs( );
+  await takeAICameraPhotoAndOpenSuggestions( );
+}

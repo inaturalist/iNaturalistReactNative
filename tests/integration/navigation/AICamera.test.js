@@ -13,6 +13,8 @@ import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
 import {
   navigateToAICameraFromMyObs,
+  navigateToSuggestionsViaAICameraFromMyObs,
+  takeAICameraPhotoAndOpenSuggestions,
 } from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -130,22 +132,6 @@ jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
 
 const actor = userEvent.setup( );
 
-const navToAICamera = async ( ) => {
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const cameraButton = await screen.findByLabelText( /AI Camera/ );
-  await actor.press( cameraButton );
-};
-
-const takePhotoAndNavToSuggestions = async ( ) => {
-  const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-  await actor.press( takePhotoButton );
-  const addIDButton = await screen.findByText( /ADD AN ID/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( addIDButton ).toBeOnTheScreen( );
-};
-
 const navToObsEditWithTopSuggestion = async ( ) => {
   const topTaxonResultButton = await screen.findByTestId(
     `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
@@ -179,9 +165,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
 
     it( "should advance to suggestions then obs edit", async ( ) => {
       renderApp( );
-      await navToAICamera( );
-      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
-      await takePhotoAndNavToSuggestions( );
+      await navigateToSuggestionsViaAICameraFromMyObs();
       await navToObsEditWithTopSuggestion( );
       expect( screen.getByTestId( "ObsEdit.BackButton" ) ).toBeVisible();
     } );
