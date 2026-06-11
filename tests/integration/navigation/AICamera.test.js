@@ -3,7 +3,6 @@ import "tests/helpers/mockMortalForIntegration";
 import {
   screen,
   userEvent,
-  within,
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
