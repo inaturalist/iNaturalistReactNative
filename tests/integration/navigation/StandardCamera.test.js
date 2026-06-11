@@ -65,6 +65,8 @@ const navigateToCamera = async ( ) => {
 };
 
 describe( "StandardCamera navigation with advanced user layout", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   beforeEach( () => {
     setStoreStateLayout( {
       isDefaultMode: false,
@@ -95,8 +97,8 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
     await waitFor( ( ) => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( screen.getByText( /New Observation/ ) ).toBeOnTheScreen( );
+      global.timeTravel( 300 );
+      expect( screen.getByText( /New Observation/ ) ).toBeVisible( );
     } );
   } );
 
@@ -117,8 +119,8 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       const checkmarkButton = await screen.findByLabelText( "View suggestions" );
       await actor.press( checkmarkButton );
       await waitFor( ( ) => {
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( screen.getByText( /ADD AN ID/ ) ).toBeOnTheScreen( );
+        global.timeTravel( 300 );
+        expect( screen.getByText( /ADD AN ID/ ) ).toBeVisible( );
       } );
     } );
   } );
