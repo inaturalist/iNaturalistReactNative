@@ -61,8 +61,10 @@ describe( "SoundRecorder navigation", ( ) => {
       const mediaNavButtons = await screen.findByTestId( "MediaNavButtons" );
       const closeButton = await within( mediaNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( await screen.findByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
+      await waitFor( ( ) => {
+        global.timeTravel( 300 );
+        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
+      } );
     } );
   } );
 } );
