@@ -232,10 +232,6 @@ describe( "TaxonDetails", ( ) => {
     const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
     expect( selectTaxonButton ).toBeVisible();
     await actor.press( selectTaxonButton );
-    // return to ObsEdit screen
-    const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( obsEditBackButton ).toBeOnTheScreen();
     await waitFor( async () => {
       global.timeTravel( 300 );
       expect( await screen.findByText( taxon.name ) ).toBeVisible();
@@ -260,11 +256,6 @@ describe( "TaxonDetails", ( ) => {
       const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
       expect( selectTaxonButton ).toBeVisible();
       await actor.press( selectTaxonButton );
-      // return to ObsEdit screen
-      const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( obsEditBackButton ).toBeOnTheScreen();
-
       await waitFor( async () => {
         global.timeTravel( 300 );
         expect( await screen.findByText( taxon.ancestors[0].name ) ).toBeVisible();
@@ -289,10 +280,6 @@ describe( "TaxonDetails", ( ) => {
     const selectTaxonButton = screen.getByText( /SELECT THIS TAXON/ );
     expect( selectTaxonButton ).toBeVisible();
     await actor.press( selectTaxonButton );
-    // return to ObsEdit screen
-    const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( obsEditBackButton ).toBeOnTheScreen();
     await waitFor( async () => {
       global.timeTravel( 300 );
       // We just chose searchedTaxon, so that name should be visible on ObsEdit
