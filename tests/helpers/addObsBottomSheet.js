@@ -1,5 +1,10 @@
 import {
-  act, fireEvent, screen, userEvent, waitFor, within,
+  act,
+  // fireEvent,
+  screen,
+  userEvent,
+  waitFor,
+  within,
 } from "@testing-library/react-native";
 import { InteractionManager } from "react-native";
 import useStore from "stores/useStore";
