@@ -115,6 +115,8 @@ beforeEach( ( ) => {
 } );
 
 describe( "ObsEdit", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   async function findAndPressById( labelText ) {
     const pressable = await screen.findByTestId( labelText );
     await actor.press( pressable );
