@@ -143,7 +143,7 @@ Connect-with-expert-naturalists = Uzman doğa bilimcilerle bağlantı kur
 Connect-with-other-naturalists = Diğer doğa bilimcilerle bağlantı kurun ve sohbetlere katılın.
 Connection-problem-Please-try-again-later = Bağlantı sorunu. Lütfen daha sonra tekrar deneyin.
 CONTACT-SUPPORT = DESTEK İLE İLETİŞİM
-Content-Hidden = Content Hidden
+Content-Hidden = İçerik Gizlendi
 CONTINUE = DEVAM ET
 Coordinates-copied-to-clipboard = Koordinatlar panoya kopyalandı
 Copy-coordinates = Koordinatları Kopyala
@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = Bu gözlemin tanımlamaya ihtiyacı var
 Data-quality-assessment-title-research = Bu gözlem Araştırma Sınıfı!
 DATE = TARİH
 Date = Tarih
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = d LLLL yyyy
 date-format-month-day = d MMM
 date-format-month-year = MMMM yyyy
@@ -184,7 +186,9 @@ date-format-short = d/MM/yyyy
 DATE-OBSERVED = GÖZLEM TARİHİ
 Date-observed = Gözlem Tarihi
 Date-observed-header-short = Gözlem Tarihi
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = GÖZLEM TARİHİ - YENİDEN ESKİYE
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = GÖZLEM TARİHİ - ESKİDEN YENİYE
 Date-Range = Tarih Aralığı
 DATE-RANGE = TARİH ARALIĞI
@@ -444,7 +448,7 @@ LEAVE-PROJECT = PROJEDEN AYRIL
 LEAVE-PROJECT--question = PROJEDEN AYRILMAK MI?
 LEAVE-US-A-REVIEW = BİR YORUM YAP!
 Lets-reset-your-password = Şifrenizi sıfırlayalım.
-Licenses = Licenses
+Licenses = Lisanslar
 Loading-iNaturalists-AI-Camera = iNaturalist'in YZ Kamerası Yükleniyor
 Loads-content-that-requires-an-Internet-connection = İnternet bağlantısı gerektiren içerikleri yükler
 LOCATION = KONUM
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] ÜYE
        *[other] ÜYE
     }
+Membership-in-this-project-is-by-invitation-only = Bu projeye katılım sadece davetle mümkündür. Katılmak isterseniz lütfen küratörlerden biriyle iletişime geçerek davet isteğinde bulunun.
 Menu = Menü
 Missing-Date = Eksik Tarih
 MISSING-EVIDENCE = EKSİK KANIT
@@ -548,8 +553,12 @@ Observation-options = Gözlem seçenekleri
 OBSERVATION-WAS-DELETED = GÖZLEM SİLİNDİ
 Observation-with-no-evidence = Kanıtsız gözlem
 Observations = Gözlemler
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist gözlemlerinin bilim insanlarına faydalı olabilmesi için bir konum ve tarihe ihtiyacı vardır. Lütfen yüklemeden önce gözlemleri bu simge ile kontrol edin.
 Observations-View = Gözlem Görünümü
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] GÖZLEM
@@ -574,6 +583,7 @@ Opens-add-comment-form = Yorum ekleme formunu açar.
 Opens-AI-camera = YZ kamerasını açar.
 Opens-edit-comment-form = Yorum düzenleme formunu açar.
 Opens-location-permission-prompt = Konum izni istemini açar
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = VEYA ŞUNUNLA OTURUM AÇIN
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Ayrıca, yakınlaştırarak, yaklaşarak veya farklı bir açı deneyerek daha net bir fotoğraf elde etmeyi deneyebilirsiniz.
 Organism-is-captive = Organizma kısıtlanmış
@@ -593,7 +603,7 @@ Please-allow-Microphone-Access = Lütfen Mikrofon erişimine izin verin
 Please-choose-a-different-password = Lütfen farklı bir şifre seçin.
 Please-Grant-Permission = Lütfen İzin Verin
 PLEASE-LOG-IN = LÜTFEN GİRİŞ YAPIN
-Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
+Please-log-in-again = Lütfen tekrar giriş yapın. Önbellekteki verileri temizlemek ve uygulamanın en iyi şekilde çalıştığından emin olmak için zaman zaman oturumunuzu yenilememiz gerekebilir.
 Please-make-sure-your-password-is-at-least-6-characters = Lütfen şifrenizin en az 6 karakterden oluştuğundan emin olun.
 Please-try-again-when-you-are-connected-to-the-internet = Lütfen internete bağlı olduğunuzda tekrar deneyin.
 Please-try-again-when-you-are-online = Lütfen çevrim içi olduğunuzda tekrar deneyin!
@@ -748,7 +758,7 @@ Search-suggestions-with-location = Konum ile arama önerileri
 Search-suggestions-without-location = Konumsuz arama önerileri
 SEARCH-TAXA = TAKSON ARA
 SEARCH-USERS = KULLANICI ARA
-See-journal-posts = See journal posts
+See-journal-posts = Günlük gönderilerine git
 See-observations-by-this-user-in-Explore = Keşfet'te bu kullanıcı tarafından yapılan gözlemlere bak
 See-observations-of-this-taxon-in-explore = Keşfet'te bu taksonun gözlemlerine bak
 See-project-members = Proje üyelerine bak
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = Üzgünüz, bu gözlem silindi
 Sorry-we-dont-know-how-to-open-that-URL = Üzgünüz, bu URL'yi nasıl açacağımızı bilmiyoruz: { $url }
 SORT-BY = SIRALAMA ÖLÇÜTÜ
 Sort-by = Sıralama ölçütü
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = TÜRLERİ SIRALA
 sound-playback-separator = /
 Sound-recorder = Ses kaydedici
@@ -846,9 +857,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = iNatural
 The-iNaturalist-Network = iNaturalist ağı, küresel iNaturalist topluluğuna tamamen bağlı olan yerelleştirilmiş web sitelerinden oluşan bir koleksiyondur. Ağ siteleri, yerel kullanımı teşvik eden ve yerel biyolojik çeşitliliğe fayda sağlamak için iNaturalist'ten elde edilen verilerin kullanımını kolaylaştıran yerel kurumlar tarafından desteklenmektedir.
 The-location-will-not-be-visible-to-others = Konum başkaları tarafından görülemeyecektir, bu da gözlemin tespit edilmesini olanaksız hale getirebilir
 The-models-that-suggest-species = Görsel benzerlik ve konuma dayalı olarak tür öneren modeller Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona ve Grant Van Horn ile yapılan iş birliği sayesinde ortaya çıkmıştır.
-This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
-This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
-This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = Bu yorum, Topluluk Kuralları veya Kullanım Şartlarını ihlal ettiği için gizlendi.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = Bu tanımlama, Topluluk Kuralları veya Kullanım Şartlarını ihlal ettiği için gizlendi.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = Bu fotoğraf, Topluluk Kuralları veya Kullanım Şartlarını ihlal ettiği için gizlendi.
 This-is-a-wild-organism = Bu yabani bir organizmadır ve insanlar tarafından bu konuma getirilmemiştir.
 This-is-how-taxon-names-will-be-displayed = Tüm takson adları iNaturalist'te size bu şekilde gösterilecektir:
 This-is-your-identification-other-people-may-help-confirm-it = Bu senin tanımlaman. Diğer insanlar bunu doğrulamaya yardımcı olabilir!
@@ -861,7 +872,7 @@ This-observation-needs-more-identifications = Bu gözlemin Araştırma Sınıfı
 This-observation-needs-more-identifications-to-become-research-grade = Bu gözlemin araştırma sınıfı statüsü kazanması için daha çok tanımlamaya ihtiyacı var.
 This-observer-has-opted-out-of-the-Community-Taxon = Bu gözlemci Topluluk Taksonu'nundan vazgeçti
 This-organism-was-placed-by-humans = Bu organizma bu konuma insanlar tarafından yerleştirilmiştir. Bu durum bahçe bitkileri, evcil hayvanlar ve hayvanat bahçesi hayvanları gibi şeyler için geçerlidir.
-This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = Bu ses, Topluluk Kuralları veya Kullanım Şartlarını ihlal ettiği için gizlendi.
 This-user-has-no-followers = Bu kullanıcının takipçisi bulunmamaktadır.
 This-user-has-not-joined-any-projects = Bu kullanıcı henüz hiçbir projeye katılmadı.
 This-user-is-not-following-anyone = Bu kullanıcı hiç kimseyi takip etmiyor.
@@ -977,8 +988,8 @@ X-Identifiers =
     }
 X-JOURNAL_POSTS =
     { $count ->
-        [one] { $count } JOURNAL POST
-       *[other] { $count } JOURNAL POSTS
+        [one] { $count } GÜNLÜK GÖNDERİSİ
+       *[other] { $count } GÜNLÜK GÖNDERİSİ
     }
 X-MEMBERS =
     { $count ->

@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = See vaatlus vajab määratlust
 Data-quality-assessment-title-research = See vaatlus on teaduskõlbulik!
 DATE = KUUPÄEV
 Date = Kuupäev
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = d. MMM y
 date-format-month-day = d. MMM
 date-format-month-year = MMMM y
@@ -184,7 +186,9 @@ date-format-short = dd.MM.yy
 DATE-OBSERVED = VAATLUSKUUPÄEV
 Date-observed = Vaatluskuupäev
 Date-observed-header-short = Vaadeldud
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = VAATLUSKUUPÄEV - UUEMAST VANEMAKS
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = VAATLUSKUUPÄEV - VANEMAST UUEMAKS
 Date-Range = Kuupäevavahemik
 DATE-RANGE = KUUPÄEVAVAHEMIK
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] LIIGE
        *[other] LIIGET
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = Menüü
 Missing-Date = Kuupäev puudub
 MISSING-EVIDENCE = TÕENDID PUUDUVAD
@@ -548,8 +553,12 @@ Observation-options = Vaatluse sätted
 OBSERVATION-WAS-DELETED = VAATLUS KUSTUTATUD
 Observation-with-no-evidence = Observation with no evidence
 Observations = Vaatlused
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-View = Observations View
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] OBSERVATION
@@ -574,6 +583,7 @@ Opens-add-comment-form = Avab kommentaari lisamise vormi.
 Opens-AI-camera = Avab AI-kaamera.
 Opens-edit-comment-form = Avab kommentaari muutmise vormi.
 Opens-location-permission-prompt = Avab asukoha õigused
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 Organism-is-captive = Organism on vangistatud
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = Vabandust, see vaatlus on kustutatud
 Sorry-we-dont-know-how-to-open-that-URL = Vabandust, me ei oska seda aadressi avada: { $url }
 SORT-BY = SORTEERI
 Sort-by = Sorteeri
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORT SPECIES
 sound-playback-separator = /
 Sound-recorder = Helisalvesti

@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = תצפית זו זקוקה לזיהוי
 Data-quality-assessment-title-research = תצפית זו היא בדרגת מחקר!
 DATE = תאריך
 Date = תאריך
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = PP
 date-format-month-day = MMM d
 date-format-month-year = MMM yyyy
@@ -184,7 +186,9 @@ date-format-short = M/d/yy
 DATE-OBSERVED = תאריך התצפית
 Date-observed = תאריך התצפית
 Date-observed-header-short = נצפה
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = תאריך תצפית - מחדש לישן
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = תאריך תצפית - מישן לחדש
 Date-Range = טווח תאריכים
 DATE-RANGE = טווח תאריכים
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] חבר.ה
        *[other] חברים.ות
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = תפריט
 Missing-Date = חסר תאריך
 MISSING-EVIDENCE = ראיות חסרות
@@ -548,8 +553,12 @@ Observation-options = אפשרויות תצפית
 OBSERVATION-WAS-DELETED = התצפית נמחקה
 Observation-with-no-evidence = תצפית ללא ראיות
 Observations = תצפיות
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = תצפיות iNaturalist זקוקות למיקום ותאריך כדי להיות שימושיות למדענים. נא לבדוק תצפיות עם סמל זה לפני ההעלאה.
 Observations-View = תצוגת תצפיות
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] תצפית
@@ -574,6 +583,7 @@ Opens-add-comment-form = פותח טופס הוספת תגובה.
 Opens-AI-camera = פותח מצלמת AI.
 Opens-edit-comment-form = פתיחת טופס עריכת תגובה.
 Opens-location-permission-prompt = פתיחת בקשת הרשאת מיקום
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = או היכנסו באמצעות
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = לחילופין, אפשר לנסות לקבל תמונה ברורה יותר על ידי הגדלת התמונה, התקרבות או ניסיון זווית אחרת.
 Organism-is-captive = האורגניזם בשבי
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = מצטערים, תצפית זו נמחקה
 Sorry-we-dont-know-how-to-open-that-URL = מצטערים, אנחנו לא יודעים איך לפתוח את כתובת ה-URL הזו: { $url }
 SORT-BY = מיון לפי
 Sort-by = סידור לפי
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORT SPECIES
 sound-playback-separator = /
 Sound-recorder = רשמקול

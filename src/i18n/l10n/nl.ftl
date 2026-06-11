@@ -183,6 +183,8 @@ Data-quality-assessment-title-needs-id = Deze waarneming is 'ID nodig'
 Data-quality-assessment-title-research = Deze waarneming is van onderzoekskwaliteit!
 DATE = DATUM
 Date = Datum
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = d LLL yyyy
 date-format-month-day = d MMM
 date-format-month-year = MMMM yyyy
@@ -190,7 +192,9 @@ date-format-short = dd-MM-yyyy
 DATE-OBSERVED = DATUM WAARNEMING
 Date-observed = Datum waarneming
 Date-observed-header-short = Waargenomen
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = DATUM WAARNEMING - NIEUWSTE EERST
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = DATUM WAARNEMING - OUDSTE EERST
 Date-Range = Tijdspanne
 DATE-RANGE = TIJDSPANNE
@@ -477,6 +481,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] LID
        *[other] LEDEN
     }
+Membership-in-this-project-is-by-invitation-only = Het lidmaatschap in dit project is alleen op uitnodiging. Als je deel wilt nemen, neem dan contact op met een van de curatoren en vraag een uitnodiging aan.
 Menu = Menu
 Missing-Date = Datum ontbreekt
 MISSING-EVIDENCE = ONTBREKEND BEWIJS
@@ -554,8 +559,12 @@ Observation-options = Waarnemingsopties
 OBSERVATION-WAS-DELETED = WAARNEMING WERD VERWIJDERD
 Observation-with-no-evidence = Waarneming zonder bewijs
 Observations = Waarnemingen
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist waarnemingen hebben een locatie en datum nodig om nuttig te zijn voor wetenschappers. Controleer waarnemingen met dit pictogram voordat je deze uploadt.
 Observations-View = Weergave waarnemingen
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] WAARNEMING
@@ -580,6 +589,7 @@ Opens-add-comment-form = Opent een commentaarformulier
 Opens-AI-camera = Opent de AI camera.
 Opens-edit-comment-form = Opent het bewerkingsreactie formulier.
 Opens-location-permission-prompt = Opent locatierechten prompt
+Opens-search-interface = Opent zoekinterface
 OR-SIGN-IN-WITH = OF MELD JE AAN MET
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Of je kunt proberen om een duidelijkere foto te krijgen door in te zoomen, dichterbij te komen of een andere hoek uit te proberen.
 Organism-is-captive = Organisme is in gevangenschap
@@ -790,6 +800,7 @@ Sorry-this-observation-was-deleted = Sorry, deze waarneming is verwijderd
 Sorry-we-dont-know-how-to-open-that-URL = Sorry, we weten niet hoe we die URL { $url }  moeten openen.
 SORT-BY = SORTEREN OP
 Sort-by = Sorteren op
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORTEER SOORTEN
 sound-playback-separator = /
 Sound-recorder = Geluidsrecorder

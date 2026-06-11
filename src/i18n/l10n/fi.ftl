@@ -180,6 +180,8 @@ Data-quality-assessment-title-needs-id = Tämä havainto tarvitsee tunnistuksen
 Data-quality-assessment-title-research = Tämä havainto on tutkimustasoa!
 DATE = PÄIVÄMÄÄRÄ
 Date = Päivämäärä
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = PP
 date-format-month-day = d.M.
 date-format-month-year = MMM yyyy
@@ -187,7 +189,9 @@ date-format-short = M/d/yy
 DATE-OBSERVED = HAVAINTOPÄIVÄMÄÄRÄ
 Date-observed = Havaintopäivämäärä
 Date-observed-header-short = Havaittu
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = HAVAINTOPÄIVÄ - UUSIN ENSIN
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = HAVAINTOPÄIVÄ - VANHIN ENSIN
 Date-Range = Ajanjakso
 DATE-RANGE = AJANJAKSO
@@ -474,6 +478,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] JÄSEN
        *[other] JÄSENTÄ
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = Valikko
 Missing-Date = Puuttuva päivämäärä
 MISSING-EVIDENCE = PUUTTUVAT TODISTE
@@ -551,8 +556,12 @@ Observation-options = Havainnon vaihtoehdot
 OBSERVATION-WAS-DELETED = HAVAINTO ON POISTETTU
 Observation-with-no-evidence = Havainto ilman todisteita
 Observations = Havainnot
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalistiset havainnot tarvitsevat sijainnin ja päivämäärän, jotta niistä olisi hyötyä tutkijoille. Tarkista havainnot tällä kuvakkeella ennen lataamista.
 Observations-View = Havainnot-näkymä
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] HAVAINTO
@@ -577,6 +586,7 @@ Opens-add-comment-form = Avaa kommentointilomakkeen.
 Opens-AI-camera = Avaa AI-kamera.
 Opens-edit-comment-form = Avaa Muokkaa kommenttia -lomakkeen.
 Opens-location-permission-prompt = Avaa sijainnin lupakehotteen
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = TAI KIRJAUDU SISÄÄN
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Tai voit yrittää saada selkeämmän kuvan zoomaamalla sisään, lähestymällä eliötä tai kokeilemalla eri kuvakulmaa.
 Organism-is-captive = Eliö on vangittu
@@ -787,6 +797,7 @@ Sorry-this-observation-was-deleted = Valitettavasti tämä havainto poistettiin
 Sorry-we-dont-know-how-to-open-that-URL = Valitettavasti emme osaa avata tuota osoitetta: { $url }
 SORT-BY = JÄRJESTÄ
 Sort-by = Järjestä
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = JÄRJESTÄ LAJIT
 sound-playback-separator = /
 Sound-recorder = Ääninauhuri

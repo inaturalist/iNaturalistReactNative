@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = Pengamatan ini memerlukan ID
 Data-quality-assessment-title-research = Pengamatan ini Kelas Riset!
 DATE = TANGGAL
 Date = Tanggal
+Date-Added-Newest-Default = Tanggal Ditambahkan: Terbaru (Bawaan)
+Date-Added-Oldest = Tanggal Ditambahkan: Tertua
 date-format-long = PP
 date-format-month-day = d MMM
 date-format-month-year = MMM yyyy
@@ -184,7 +186,9 @@ date-format-short = d/M/yy
 DATE-OBSERVED = TANGGAL DIAMATI
 Date-observed = Tanggal pengamatan
 Date-observed-header-short = Diamati
+Date-Observed-Newest = Tanggal Diamati: Terbaru
 DATE-OBSERVED-NEWEST = TANGGAL PENGAMATAN - TERBARU SAMPAI TERLAMA
+Date-Observed-Oldest = Tanggal Diamati: Tertua
 DATE-OBSERVED-OLDEST = TANGGAL PENGAMATAN - TERLAMA SAMPAI TERBARU
 Date-Range = Rentang Waktu
 DATE-RANGE = RENTANG TANGGAL
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] ANGGOTA
        *[other] ANGGOTA
     }
+Membership-in-this-project-is-by-invitation-only = Keanggotaan dalam proyek ini hanya bisa didapatkan melalui undangan saja. Jika Anda ingin bergabung, silakan hubungi salah satu kurator di bawah ini dan meminta undangan.
 Menu = Menu
 Missing-Date = Tanggal Tidak Ada
 MISSING-EVIDENCE = TIDAK ADA BUKTI
@@ -548,8 +553,12 @@ Observation-options = Pilihan pengamatan
 OBSERVATION-WAS-DELETED = PENGAMATAN DIHAPUS
 Observation-with-no-evidence = Pengamatan tanpa bukti
 Observations = Pengamatan
+Observations-added-least-recently-appear-first = Pengamatan yang ditambahkan paling dulu muncul pertama kali
+Observations-added-recently-appear-first = Pengamatan yang ditambahkan paling baru muncul pertama kali
 Observations-need-location-date--warning = Pengamatan iNaturalist memerlukan lokasi dan tanggal supaya menjadi berguna bagi para ilmuwan. Harap periksa pengamatan dengan ikon ini sebelum mengunggah.
 Observations-View = Tampilan Pengamatan
+Observations-with-the-most-recent-date-appear-first = Pengamatan dengan tanggal terbaru muncul terlebih dahulu
+Observations-with-the-oldest-date-appear-first = Pengamatan dengan tanggal tertua muncul terlebih dahulu
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] PENGAMATAN
@@ -574,6 +583,7 @@ Opens-add-comment-form = Membuka formulir tambah komentar.
 Opens-AI-camera = Buka kamera AI.
 Opens-edit-comment-form = Membuka formulir edit komentar.
 Opens-location-permission-prompt = Membuka pertanyaan izin lokasi
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = ATAU MASUK DENGAN
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Atau, Anda dapat mencoba mendapatkan foto yang lebih jelas dengan memperbesar, mendekat, atau mencoba sudut yang berbeda.
 Organism-is-captive = Organisme ini dipelihara
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = Maaf, pengamatan ini sudah dihapus
 Sorry-we-dont-know-how-to-open-that-URL = Maaf, kami tidak mengetahui cara untuk membuka URL berikut: { $url }
 SORT-BY = URUTKAN BERDASARKAN
 Sort-by = Urutkan berdasarkan
+SORT-OBSERVATIONS = URUTKAN PENGAMATAN
 SORT-SPECIES = URUTKAN SPESIES
 sound-playback-separator = /
 Sound-recorder = Perekam suara
