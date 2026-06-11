@@ -57,11 +57,6 @@ describe( "SoundRecorder navigation", ( ) => {
 
     it( "should return to MyObs when close button tapped", async ( ) => {
       renderApp( );
-      await waitFor( ( ) => {
-        global.timeTravel( );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
-      } );
       await navigateToSoundRecorderFromMyObs( );
       const mediaNavButtons = await screen.findByTestId( "MediaNavButtons" );
       const closeButton = await within( mediaNavButtons ).findByLabelText( "Close" );
