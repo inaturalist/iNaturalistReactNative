@@ -65,6 +65,8 @@ const mockTaxaList = [
 ];
 
 describe( "TaxonDetails", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   beforeAll( async () => {
     // userEvent recommends fake timers
     jest.useFakeTimers();
