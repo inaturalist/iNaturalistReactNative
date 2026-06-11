@@ -5,6 +5,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts";
+import { MyObservationsProvider } from "providers/MyObservationsContext";
 import React, {
   useCallback,
   useEffect,
@@ -62,7 +63,7 @@ interface SyncOptions {
   skipSomeUploads?: string[];
 }
 
-const MyObservationsContainer = ( ) => {
+const MyObservationsWithProvider = ( ) => {
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );
@@ -455,5 +456,11 @@ const MyObservationsContainer = ( ) => {
     />
   );
 };
+
+const MyObservationsContainer = ( ) => (
+  <MyObservationsProvider>
+    <MyObservationsWithProvider />
+  </MyObservationsProvider>
+);
 
 export default MyObservationsContainer;
