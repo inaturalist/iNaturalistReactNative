@@ -3,6 +3,7 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
+import * as rnImagePicker from "react-native-image-picker";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
@@ -179,6 +180,12 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     await pressButtonByLabel( /Add observations/ );
     await pressButtonByLabel( /Observation with no evidence/ );
     // await navigateToPhotoImporterFromMyObs();
+    jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation( () => ( {
+      assets: [{
+        uri: faker.image.url(),
+        fileName: `${faker.string.uuid()}.jpg`,
+      }],
+    } ) );
     await saveObsEditObservation();
     await waitForDisplayedText( /Upload 3 observations/, 10_000 );
   } );
