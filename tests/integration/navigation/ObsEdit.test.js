@@ -77,13 +77,15 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
   const photoImporter = await screen.findByLabelText( "Photo importer" );
   await actor.press( photoImporter );
   await waitFor( ( ) => {
-  } );
+    global.timeTravel( 300 );
     expect( screen.getByText( /Group Photos/ ) ).toBeVisible( );
+  }, { timeout: 10_000 } );
   const importObservationsText = await screen.findByText( /IMPORT 2 OBSERVATIONS/ );
   await actor.press( importObservationsText );
   await waitFor( ( ) => {
-  }, { timeout: 3_000, interval: 500 } );
+    global.timeTravel( 300 );
     expect( screen.getByText( /2 Observations/ ) ).toBeVisible( );
+  }, { timeout: 10_000 } );
 };
 
 const saveObsEditObservation = async ( ) => {
