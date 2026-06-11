@@ -42,6 +42,7 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
+  jest.useFakeTimers( );
   mockInteractionManagerRunAfterInteractions( );
 } );
 
@@ -63,6 +64,8 @@ jest.mock( "react-native-image-picker", ( ) => ( {
 } ) );
 
 describe( "PhotoLibrary navigation", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   beforeEach( ( ) => {
     setStoreStateLayout( {
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
@@ -80,10 +83,9 @@ describe( "PhotoLibrary navigation", ( ) => {
     renderApp( );
     await navigateToPhotoImporterFromMyObs( );
     await waitFor( ( ) => {
-      // user should land on GroupPhotos
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( groupPhotosText ).toBeOnTheScreen( );
-    } );
+      global.timeTravel( 300 );
+      expect( screen.getByText( /Group Photos/ ) ).toBeVisible( );
+    }, { timeout: 10_000 } );
   } );
 
   it( "advances to ObsEdit when one photo is selected", async ( ) => {
@@ -95,13 +97,15 @@ describe( "PhotoLibrary navigation", ( ) => {
     renderApp( );
     await navigateToPhotoImporterFromMyObs( );
     await waitFor( () => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( obsEditText ).toBeOnTheScreen();
-    } );
+      global.timeTravel( 300 );
+      expect( screen.getByText( /New Observation/ ) ).toBeVisible( );
+    }, { timeout: 10_000 } );
   } );
 } );
 
 describe( "PhotoLibrary navigation when suggestions screen is preferred next screen", () => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   beforeEach( () => {
     setStoreStateLayout( {
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
@@ -116,8 +120,8 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
     renderApp();
     await navigateToPhotoImporterFromMyObs( );
     await waitFor( () => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( addAnIDText ).toBeOnTheScreen();
-    } );
+      global.timeTravel( 300 );
+      expect( screen.getByText( /Add an ID Later/ ) ).toBeVisible( );
+    }, { timeout: 10_000 } );
   } );
 } );
