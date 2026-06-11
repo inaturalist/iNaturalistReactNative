@@ -9,6 +9,9 @@ import inatjs from "inaturalistjs";
 import * as ImagePicker from "react-native-image-picker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
+import {
+  navigateToPhotoImporterFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -100,13 +103,6 @@ beforeEach( ( ) => {
 describe( "Photo Import", ( ) => {
   const actor = userEvent.setup( );
 
-  async function importPhotoForNewObs() {
-    const tabBar = await screen.findByTestId( "CustomTabBar" );
-    const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-    await actor.press( addObsButton );
-    const photoImportButton = await within( tabBar ).findByLabelText( "Photo importer" );
-    await actor.press( photoImportButton );
-  }
 
   async function groupPhotosIntoObservation() {
     const groupPhotosText = await screen.findByText( /Group Photos/ );
@@ -158,9 +154,9 @@ describe( "Photo Import", ( ) => {
 
   it( "should create and save an observation with an imported photo", async ( ) => {
     renderApp( );
-    await importPhotoForNewObs( );
     await viewSuggestionsAndAddId( );
     await saveObservationWithPhoto( );
+    await navigateToPhotoImporterFromMyObs();
   } );
 
   it( "should create and save an observation with multiple imported photos", async ( ) => {
