@@ -180,9 +180,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
       await takePhotoAndNavToSuggestions( );
       await navToObsEditWithTopSuggestion( );
-      const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( obsEditBackButton ).toBeOnTheScreen( );
+      expect( screen.getByTestId( "ObsEdit.BackButton" ) ).toBeVisible();
     } );
 
     // TODO: we can't test back behavior as reliably in React Navigation 7;
