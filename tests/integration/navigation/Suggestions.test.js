@@ -214,8 +214,7 @@ describe( "Suggestions", ( ) => {
         expect( topTaxonResultButton ).toBeTruthy( );
         await actor.press( topTaxonResultButton );
         expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( await screen.findByText( /Obscured/ ) ).toBeOnTheScreen( );
+        expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
       },
     );
 
@@ -306,8 +305,7 @@ describe( "Suggestions", ( ) => {
       await renderAppWithObservations( observations, __filename );
       await navigateToSuggestionsViaCameraForObservation( observations[0] );
       const locationPermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( locationPermissionsButton ).toBeOnTheScreen( );
+      expect( locationPermissionsButton ).toBeVisible( );
     } );
   } );
 
@@ -339,8 +337,7 @@ describe( "Suggestions", ( ) => {
         expect( taxonResultButton ).toBeTruthy( );
         await actor.press( taxonResultButton );
         expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( await screen.findByText( /Obscured/ ) ).toBeOnTheScreen( );
+        expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
       },
     );
   } );
