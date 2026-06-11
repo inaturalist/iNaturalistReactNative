@@ -149,8 +149,7 @@ const navToObsEditWithTopSuggestion = async ( ) => {
   );
   await actor.press( topTaxonResultButton );
   const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( evidenceList ).toBeOnTheScreen( );
+  expect( evidenceList ).toBeVisible();
   // one photo from AICamera
   expect( evidenceList.props.data.length ).toEqual( 1 );
 };
