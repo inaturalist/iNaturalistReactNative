@@ -5,6 +5,9 @@ import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory, { makeResponse } from "tests/factory";
+import {
+  mockInteractionManagerRunAfterInteractions,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -176,6 +179,7 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     // missing evidence sheet pops up here, so need to press SAVE twice
     await pressButtonByText( "OK" );
     await pressButtonByText( /SAVE/ );
+    await navigateToPhotoImporterFromMyObs();
     await waitForDisplayedText( /Upload 3 observations/, 5000 );
   } );
 
