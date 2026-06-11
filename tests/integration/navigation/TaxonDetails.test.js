@@ -236,9 +236,10 @@ describe( "TaxonDetails", ( ) => {
     const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( obsEditBackButton ).toBeOnTheScreen();
-    const selectedTaxonName = await screen.findByText( taxon.name );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( selectedTaxonName ).toBeOnTheScreen();
+    await waitFor( async () => {
+      global.timeTravel( 300 );
+      expect( await screen.findByText( taxon.name ) ).toBeVisible();
+    }, { timeout: 10_000 } );
     const { currentObservation } = useStore.getState();
     expect( currentObservation.owners_identification_from_vision ).toBeTruthy();
   } );
@@ -264,12 +265,10 @@ describe( "TaxonDetails", ( ) => {
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       expect( obsEditBackButton ).toBeOnTheScreen();
 
-      // selected taxon
-      const ancestorTaxonName = await screen.findByText(
-        taxon.ancestors[0].name,
-      );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( ancestorTaxonName ).toBeOnTheScreen();
+      await waitFor( async () => {
+        global.timeTravel( 300 );
+        expect( await screen.findByText( taxon.ancestors[0].name ) ).toBeVisible();
+      }, { timeout: 10_000 } );
       const { currentObservation } = useStore.getState();
       expect( currentObservation.owners_identification_from_vision ).toBeFalsy();
     },
@@ -294,10 +293,11 @@ describe( "TaxonDetails", ( ) => {
     const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
     // We used toBeVisible here but the update to RN0.77 broke this expectation
     expect( obsEditBackButton ).toBeOnTheScreen();
-    // We just chose searchedTaxon, so that name should be visible on ObsEdit
-    const selectedTaxonName = await screen.findByText( searchedTaxon.name );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( selectedTaxonName ).toBeOnTheScreen();
+    await waitFor( async () => {
+      global.timeTravel( 300 );
+      // We just chose searchedTaxon, so that name should be visible on ObsEdit
+      expect( await screen.findByText( searchedTaxon.name ) ).toBeVisible();
+    }, { timeout: 10_000 } );
     const { currentObservation } = useStore.getState();
     expect( currentObservation.owners_identification_from_vision ).toBeFalsy();
   } );
