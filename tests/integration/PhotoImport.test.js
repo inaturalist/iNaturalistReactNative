@@ -1,8 +1,6 @@
 import {
   screen,
   userEvent,
-  waitFor,
-  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import * as ImagePicker from "react-native-image-picker";
@@ -13,7 +11,6 @@ import {
   navigateToPhotoImporterFromMyObs,
   saveObsEditObservation,
   waitForMyObsGridItems,
-  waitForUploadToolbar,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -128,7 +125,8 @@ describe( "Photo Import", ( ) => {
     if ( !saveOptions.skipMyObsWait ) {
       const obsGridItems = await waitForMyObsGridItems();
       expect( obsGridItems[0] ).toBeVisible();
-      await waitForUploadToolbar( 1 );
+      // Wait until header shows that there's an obs to upload
+      await screen.findByText( /Upload \d observation/ );
     }
   }
 

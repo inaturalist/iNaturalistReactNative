@@ -184,19 +184,3 @@ export async function waitForMyObsGridItems() {
     return items;
   }, { timeout: 15_000 } );
 }
-
-export async function waitForUploadToolbar( count ) {
-  const pattern = count === 1
-    ? /Upload 1 observation/
-    : new RegExp( `Upload ${count} observations` );
-  const hadFakeTimers = jest.isMockFunction( setTimeout );
-  if ( hadFakeTimers ) {
-    jest.useRealTimers();
-  }
-  await act( async ( ) => {
-    await Promise.resolve( );
-  } );
-  await waitFor( ( ) => {
-    expect( screen.getByText( pattern ) ).toBeVisible( );
-  }, { timeout: 15_000 } );
-}
