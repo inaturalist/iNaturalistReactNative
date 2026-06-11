@@ -196,12 +196,12 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       expect(
         await screen.findByText( /Loading iNaturalist's AI Camera/ ),
       ).toBeOnTheScreen();
+      await navigateToAICameraFromMyObs();
       const closeButton = await screen.findByLabelText( /Close/ );
       await actor.press( closeButton );
       expect(
         await screen.findByText( /Use iNaturalist to identify any living thing/ ),
       ).toBeTruthy();
-      await navigateToAICameraFromMyObs();
     } );
   } );
 } );
