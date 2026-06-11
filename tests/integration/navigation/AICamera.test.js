@@ -144,6 +144,8 @@ const navToObsEditWithTopSuggestion = async ( ) => {
 };
 
 describe( "AICamera navigation with advanced user layout", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   describe( "to Suggestions", ( ) => {
     beforeEach( ( ) => {
       jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
