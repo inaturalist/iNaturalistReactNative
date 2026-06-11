@@ -101,8 +101,9 @@ beforeEach( ( ) => {
 } );
 
 describe( "Photo Import", ( ) => {
-  const actor = userEvent.setup( );
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
+  const actor = userEvent.setup( );
 
   async function groupPhotosIntoObservation() {
     const groupPhotosText = await screen.findByText( /Group Photos/ );
