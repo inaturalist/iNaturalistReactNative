@@ -14,6 +14,7 @@ import factory, { makeResponse } from "tests/factory";
 import {
   mockInteractionManagerRunAfterInteractions,
   navigateToPhotoImporterFromMyObs,
+  saveObsEditObservation,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import {
@@ -80,15 +81,6 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
     global.timeTravel( 300 );
     expect( screen.getByText( /2 Observations/ ) ).toBeVisible( );
   }, { timeout: 10_000 } );
-};
-
-const saveObsEditObservation = async ( ) => {
-  const saveButton = await screen.findByText( /SAVE/ );
-  await actor.press( saveButton );
-  // missing evidence sheet pops up here, so need to press SAVE twice
-  const okButton = await screen.findByText( /OK/ );
-  await actor.press( okButton );
-  await actor.press( saveButton );
 };
 
 const uploadObsEditObservation = async options => {
