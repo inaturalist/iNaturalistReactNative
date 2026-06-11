@@ -150,8 +150,11 @@ async function pressObsEditSaveButton() {
 async function confirmObsEditWarningSheets() {
   for ( let attempt = 0; attempt < 2; attempt += 1 ) {
     try {
+      // eslint-disable-next-line no-await-in-loop
       const okButton = await screen.findByText( "OK", {}, { timeout: 2_000 } );
+      // eslint-disable-next-line no-await-in-loop
       await actor.press( okButton );
+      // eslint-disable-next-line no-await-in-loop
       await pressObsEditSaveButton();
     } catch {
       break;
