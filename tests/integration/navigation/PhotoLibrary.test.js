@@ -1,8 +1,6 @@
 import {
   screen,
-  userEvent,
   waitFor,
-  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import * as rnImagePicker from "react-native-image-picker";
@@ -10,6 +8,7 @@ import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import faker from "tests/helpers/faker";
 import {
   mockInteractionManagerRunAfterInteractions,
+  navigateToPhotoImporterFromMyObs,
 } from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -63,20 +62,6 @@ jest.mock( "react-native-image-picker", ( ) => ( {
   launchImageLibrary: jest.fn( ),
 } ) );
 
-const actor = userEvent.setup( );
-
-const navigateToPhotoImporter = async ( ) => {
-  await waitFor( ( ) => {
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
-  } );
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const photoImporter = await screen.findByLabelText( "Photo importer" );
-  await actor.press( photoImporter );
-};
-
 describe( "PhotoLibrary navigation", ( ) => {
   beforeEach( ( ) => {
     setStoreStateLayout( {
@@ -93,8 +78,7 @@ describe( "PhotoLibrary navigation", ( ) => {
       } ),
     );
     renderApp( );
-    await navigateToPhotoImporter( );
-    const groupPhotosText = await screen.findByText( /Group Photos/ );
+    await navigateToPhotoImporterFromMyObs( );
     await waitFor( ( ) => {
       // user should land on GroupPhotos
       // We used toBeVisible here but the update to RN0.77 broke this expectation
@@ -109,8 +93,7 @@ describe( "PhotoLibrary navigation", ( ) => {
       } ),
     );
     renderApp( );
-    await navigateToPhotoImporter( );
-    const obsEditText = await screen.findByText( /New Observation/ );
+    await navigateToPhotoImporterFromMyObs( );
     await waitFor( () => {
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       expect( obsEditText ).toBeOnTheScreen();
@@ -131,8 +114,7 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
       assets: mockAsset,
     } ) );
     renderApp();
-    await navigateToPhotoImporter();
-    const addAnIDText = await screen.findByText( /Add an ID Later/ );
+    await navigateToPhotoImporterFromMyObs( );
     await waitFor( () => {
       // We used toBeVisible here but the update to RN0.77 broke this expectation
       expect( addAnIDText ).toBeOnTheScreen();
