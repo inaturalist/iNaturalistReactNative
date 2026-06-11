@@ -82,7 +82,6 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
 
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
 } );
 
 beforeEach( ( ) => {
@@ -91,6 +90,7 @@ beforeEach( ( ) => {
     screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
     isAllAddObsOptionsMode: true,
   } );
+  mockInteractionManagerRunAfterInteractions( );
 } );
 
 describe( "Photo Import", ( ) => {
