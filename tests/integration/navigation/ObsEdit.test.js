@@ -12,6 +12,7 @@ import useStore from "stores/useStore";
 // import realmConfig from "realmModels/index";
 import factory, { makeResponse } from "tests/factory";
 import {
+  mockInteractionManagerRunAfterInteractions,
   navigateToPhotoImporterFromMyObs,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
@@ -135,6 +136,7 @@ describe( "ObsEdit", ( ) => {
 
   beforeAll( async () => {
     jest.useFakeTimers( );
+    mockInteractionManagerRunAfterInteractions( );
     useStore.setState( {
       initialNumObservationsInQueue: 3,
       numUploadsAttempted: 2,
