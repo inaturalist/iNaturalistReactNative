@@ -8,6 +8,9 @@ import initI18next from "i18n/initI18next";
 import * as rnImagePicker from "react-native-image-picker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import faker from "tests/helpers/faker";
+import {
+  mockInteractionManagerRunAfterInteractions,
+} from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
