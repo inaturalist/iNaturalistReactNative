@@ -8,6 +8,9 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
+import {
+  navigateToStandardCameraFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -80,7 +83,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
   describe( "from MyObs", ( ) => {
     it( "should leave the camera when close button tapped", async ( ) => {
       renderApp( );
-      await navigateToCamera( );
+      await navigateToStandardCameraFromMyObs( );
       const cameraNavButtons = await screen.findByTestId( "CameraNavButtons" );
       const closeButton = await within( cameraNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
@@ -95,7 +98,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
 
   it( "should advance to ObsEdit when photo taken and checkmark tapped", async () => {
     renderApp( );
-    await navigateToCamera( );
+    await navigateToStandardCameraFromMyObs( );
     const takePhotoButton = await screen.findByLabelText( /Take photo/ );
     await actor.press( takePhotoButton );
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
@@ -117,7 +120,7 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
 
     it( "should advance to Suggestions when photo taken and checkmark tapped", async ( ) => {
       renderApp( );
-      await navigateToCamera( );
+      await navigateToStandardCameraFromMyObs( );
       const takePhotoButton = await screen.findByLabelText( /Take photo/ );
       await actor.press( takePhotoButton );
       const checkmarkButton = await screen.findByLabelText( "View suggestions" );

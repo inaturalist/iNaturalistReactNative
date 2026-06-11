@@ -49,6 +49,24 @@ export async function pressAddObsOption( testID ) {
   }
 }
 
+/** Waits for the standard camera screen after a stack reset from the add-obs flow. */
+export async function waitForStandardCameraScreen() {
+  await waitFor( ( ) => {
+    if ( typeof global.timeTravel === "function" ) {
+      global.timeTravel( 300 );
+    }
+    expect( screen.getByTestId( "CameraNavButtons" ) ).toBeVisible( );
+  }, { timeout: 10_000 } );
+}
+
+export async function navigateToStandardCameraFromMyObs() {
+  await waitFor( ( ) => {
+    expect( screen.getByTestId( "CustomTabBar" ) ).toBeVisible( );
+  } );
+  await pressAddObservationsButton( );
+  await pressAddObsOption( ADD_OBS_OPTIONS.standardCamera );
+  await waitForStandardCameraScreen( );
+}
 export async function navigateToPhotoImporterFromMyObs() {
   await waitFor( ( ) => {
     expect( screen.getByTestId( "CustomTabBar" ) ).toBeVisible( );
