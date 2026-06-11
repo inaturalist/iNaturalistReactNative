@@ -99,7 +99,6 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
 } );
 
 // Mock the response from inatjs.computervision.score_image
@@ -189,9 +188,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
     //   await navToObsEditWithTopSuggestion( );
     // } );
   } );
-} );
 
-describe( "AICamera navigation with advanced user layout", () => {
   describe( "from MyObs", () => {
     it( "should return to MyObs when close button tapped", async () => {
       renderApp();
