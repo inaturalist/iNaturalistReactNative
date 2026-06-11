@@ -74,6 +74,17 @@ export async function navigateToStandardCameraFromMyObs() {
   await pressAddObsOption( ADD_OBS_OPTIONS.standardCamera );
   await waitForStandardCameraScreen( );
 }
+
+export async function waitForMyObservationsScreen() {
+  await waitFor( ( ) => {
+    if ( typeof global.timeTravel === "function" ) {
+      global.timeTravel( 300 );
+    }
+    const tabBar = screen.getByTestId( "CustomTabBar" );
+    expect( within( tabBar ).getByLabelText( "Add observations" ) ).toBeVisible( );
+  }, { timeout: 10_000 } );
+}
+
 export async function navigateToPhotoImporterFromMyObs() {
   await waitFor( ( ) => {
     expect( screen.getByTestId( "CustomTabBar" ) ).toBeVisible( );

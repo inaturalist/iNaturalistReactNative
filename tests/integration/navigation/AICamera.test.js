@@ -15,6 +15,7 @@ import {
   navigateToAICameraFromMyObs,
   navigateToSuggestionsViaAICameraFromMyObs,
   takeAICameraPhotoAndOpenSuggestions,
+  waitForMyObservationsScreen,
 } from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -198,6 +199,7 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
       expect(
         await screen.findByText( /Use iNaturalist to identify any living thing/ ),
       ).toBeTruthy();
+      await waitForMyObservationsScreen();
     } );
   } );
 } );
