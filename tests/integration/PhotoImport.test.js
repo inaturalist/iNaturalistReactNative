@@ -113,7 +113,7 @@ describe( "Photo Import", ( ) => {
     await actor.press( importButton );
   }
 
-  async function saveObservationWithPhoto() {
+  async function saveObservationWithPhoto( saveOptions = {} ) {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
     const saveButton = await screen.findByText( "SAVE" );
@@ -136,8 +136,8 @@ describe( "Photo Import", ( ) => {
 
   it( "should create and save an observation with an imported photo", async ( ) => {
     renderApp( );
-    await saveObservationWithPhoto( );
     await navigateToPhotoImporterFromMyObs();
+    await saveObservationWithPhoto();
   } );
 
   it( "should create and save an observation with multiple imported photos", async ( ) => {
@@ -145,8 +145,8 @@ describe( "Photo Import", ( ) => {
       ( ) => mockImageLibraryResponseMultiplePhotos,
     );
     renderApp( );
-    await saveObservationWithPhoto( );
     await navigateToPhotoImporterFromMyObs();
     await groupPhotosIntoObservation();
+    await saveObservationWithPhoto( { skipMyObsWait: true } );
   } );
 } );
