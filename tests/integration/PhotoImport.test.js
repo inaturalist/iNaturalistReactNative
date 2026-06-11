@@ -165,9 +165,9 @@ describe( "Photo Import", ( ) => {
       ( ) => mockImageLibraryResponseMultiplePhotos,
     );
     renderApp( );
-    await groupPhotosIntoObservation( );
     await viewSuggestionsAndAddId( );
     await saveObservationWithPhoto( );
     await navigateToPhotoImporterFromMyObs();
+    await groupPhotosIntoObservation();
   } );
 } );
