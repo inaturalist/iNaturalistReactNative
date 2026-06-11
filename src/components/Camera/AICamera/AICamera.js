@@ -14,13 +14,11 @@ import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores";
-import { log } from "sharedHelpers/logger";
 import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
 import { logFirebaseEvent } from "sharedHelpers/tracking";
 import {
   useDebugMode,
   useLayoutPrefs,
-  usePerformance,
   useTranslation,
 } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -39,8 +37,6 @@ import usePredictions from "./hooks/usePredictions";
 import LocationStatus from "./LocationStatus";
 
 const isTablet = DeviceInfo.isTablet();
-
-const logger = log.extend( "AICamera" );
 
 // const exampleTaxonResult = {
 //   id: 12704,
@@ -141,15 +137,6 @@ const AICamera = ( {
   };
 
   const { t } = useTranslation();
-
-  const { loadTime } = usePerformance( {
-    isLoading: camera?.current !== null,
-  } );
-  useEffect( () => {
-    if ( isDebug && loadTime ) {
-      logger.info( loadTime );
-    }
-  }, [isDebug, loadTime] );
 
   const resetCameraOnFocus = useCallback( ( ) => {
     setResult( null );

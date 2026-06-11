@@ -23,7 +23,6 @@ export { default as useLocationPermission } from "./useLocationPermission";
 export { default as useNavigateToObsEdit } from "./useNavigateToObsEdit";
 export { default as useObservationsUpdates } from "./useObservationsUpdates";
 export { default as useObservationUpdatesWhenFocused } from "./useObservationUpdatesWhenFocused";
-export { default as usePerformance } from "./usePerformance";
 export { default as useQuery } from "./useQuery";
 export { default as useRemoteObservation } from "./useRemoteObservation";
 export { default as useScrollToOffset } from "./useScrollToOffset";
