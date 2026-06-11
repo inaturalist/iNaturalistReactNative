@@ -44,8 +44,8 @@ beforeAll( async () => {
 } );
 
 describe( "SoundRecorder navigation", ( ) => {
-  global.withAnimatedTimeTravelEnabled( );
   const actor = userEvent.setup( );
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
   describe( "from MyObs with advanced user layout", ( ) => {
     beforeEach( ( ) => {
