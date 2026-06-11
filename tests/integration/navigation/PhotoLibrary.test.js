@@ -43,6 +43,7 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
+  mockInteractionManagerRunAfterInteractions( );
 } );
 
 const mockAsset = [{
