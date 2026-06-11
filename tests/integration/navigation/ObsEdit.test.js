@@ -2,7 +2,6 @@ import {
   screen,
   userEvent,
   waitFor,
-  within,
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import * as rnImagePicker from "react-native-image-picker";
@@ -12,6 +11,9 @@ import useStore from "stores/useStore";
 // import Realm from "realm";
 // import realmConfig from "realmModels/index";
 import factory, { makeResponse } from "tests/factory";
+import {
+  navigateToPhotoImporterFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import {
   renderAppWithObservations,
@@ -66,16 +68,7 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
       assets: mockMultipleAssets,
     } ),
   );
-  await waitFor( ( ) => {
-    global.timeTravel( );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( screen.getByText( /OBSERVATIONS/ ) ).toBeOnTheScreen( );
-  } );
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const photoImporter = await screen.findByLabelText( "Photo importer" );
-  await actor.press( photoImporter );
+  await navigateToPhotoImporterFromMyObs( );
   await waitFor( ( ) => {
     global.timeTravel( 300 );
     expect( screen.getByText( /Group Photos/ ) ).toBeVisible( );
