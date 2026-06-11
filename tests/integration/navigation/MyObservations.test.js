@@ -7,6 +7,7 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory, { makeResponse } from "tests/factory";
 import {
   mockInteractionManagerRunAfterInteractions,
+  saveObsEditObservation,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
@@ -180,6 +181,7 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     await pressButtonByText( "OK" );
     await pressButtonByText( /SAVE/ );
     // await navigateToPhotoImporterFromMyObs();
+    await saveObsEditObservation();
     await waitForDisplayedText( /Upload 3 observations/, 5000 );
   } );
 
