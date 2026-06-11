@@ -48,8 +48,10 @@ afterAll( uniqueRealmAfterAll );
 
 const mockMultipleAssets = [{
   uri: faker.image.url( ),
+  fileName: `${faker.string.uuid()}.jpg`,
 }, {
   uri: faker.image.url( ),
+  fileName: `${faker.string.uuid()}.jpg`,
 }];
 
 jest.mock( "react-native-image-picker", ( ) => ( {
