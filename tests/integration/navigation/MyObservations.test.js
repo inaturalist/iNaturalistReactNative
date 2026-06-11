@@ -9,7 +9,6 @@ import {
   mockInteractionManagerRunAfterInteractions,
   saveObsEditObservation,
 } from "tests/helpers/addObsBottomSheet";
-import faker from "tests/helpers/faker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
