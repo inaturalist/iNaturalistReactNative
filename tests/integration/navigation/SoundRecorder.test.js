@@ -5,6 +5,7 @@ import {
   within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
+import { navigateToSoundRecorderFromMyObs } from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -54,11 +55,7 @@ describe( "SoundRecorder navigation", ( ) => {
         // We used toBeVisible here but the update to RN0.77 broke this expectation
         expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
       } );
-      const tabBar = await screen.findByTestId( "CustomTabBar" );
-      const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-      await actor.press( addObsButton );
-      const recorderButton = await screen.findByLabelText( "Sound recorder" );
-      await actor.press( recorderButton );
+      await navigateToSoundRecorderFromMyObs( );
       const mediaNavButtons = await screen.findByTestId( "MediaNavButtons" );
       const closeButton = await within( mediaNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );

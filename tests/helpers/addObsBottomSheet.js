@@ -59,3 +59,21 @@ export async function navigateToPhotoImporterFromMyObs() {
   await pressAddObsOption( ADD_OBS_OPTIONS.photoImporter );
   await advancePhotoLibraryTimers( );
 }
+
+export async function waitForSoundRecorderScreen() {
+  await waitFor( ( ) => {
+    if ( typeof global.timeTravel === "function" ) {
+      global.timeTravel( 300 );
+    }
+    expect( screen.getByTestId( "MediaNavButtons" ) ).toBeVisible( );
+  }, { timeout: 10_000 } );
+}
+
+export async function navigateToSoundRecorderFromMyObs() {
+  await waitFor( ( ) => {
+    expect( screen.getByTestId( "CustomTabBar" ) ).toBeVisible( );
+  } );
+  await pressAddObservationsButton( );
+  await pressAddObsOption( ADD_OBS_OPTIONS.soundRecorder );
+  await waitForSoundRecorderScreen( );
+}
