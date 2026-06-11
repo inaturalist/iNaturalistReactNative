@@ -251,9 +251,6 @@ const ProjectRequirements = ( ) => {
     const { projectDate } = formatProjectDate( project, t, i18n );
     if ( projectDate !== null ) {
       dateRule.inclusions = [
-      // TODO: dates need internationalized formatting
-      // from 2023-03-22 07:42 -06:00 to something readable
-      // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/shared/util.js#L4
         {
           text: projectDate,
         },
