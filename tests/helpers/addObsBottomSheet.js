@@ -141,10 +141,26 @@ export async function navigateToSuggestionsViaAICameraFromMyObs() {
   await navigateToAICameraFromMyObs( );
   await takeAICameraPhotoAndOpenSuggestions( );
 }
+
 async function pressObsEditSaveButton() {
   await actor.press( await screen.findByTestId( "ObsEdit.saveButton" ) );
 }
+
+/** Dismisses TextSheet confirmations (missing evidence, imprecise location). */
+async function confirmObsEditWarningSheets() {
+  for ( let attempt = 0; attempt < 2; attempt += 1 ) {
+    try {
+      const okButton = await screen.findByText( "OK", {}, { timeout: 2_000 } );
+      await actor.press( okButton );
+      await pressObsEditSaveButton();
+    } catch {
+      break;
+    }
+  }
+}
+
 /** Saves on ObsEdit, confirming warning sheets when they appear, then waits for My Obs. */
 export async function saveObsEditObservation( options = {} ) {
   await pressObsEditSaveButton();
+  await confirmObsEditWarningSheets();
 }

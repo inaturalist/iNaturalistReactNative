@@ -176,9 +176,6 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     await waitForDisplayedText( /1 observation uploaded/ );
     await pressButtonByLabel( /Add observations/ );
     await pressButtonByLabel( /Observation with no evidence/ );
-    // missing evidence sheet pops up here, so need to press SAVE twice
-    await pressButtonByText( "OK" );
-    await pressButtonByText( /SAVE/ );
     // await navigateToPhotoImporterFromMyObs();
     await saveObsEditObservation();
     await waitForDisplayedText( /Upload 3 observations/, 5000 );
