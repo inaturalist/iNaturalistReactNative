@@ -143,6 +143,7 @@ describe( "Photo Import", ( ) => {
     renderApp( );
     await navigateToPhotoImporterFromMyObs();
     await groupPhotosIntoObservation();
+    await screen.findByTestId( "ObsEdit.saveButton", {}, { timeout: 10_000 } );
     await saveObservationWithPhoto( { skipMyObsWait: true } );
   } );
 } );
