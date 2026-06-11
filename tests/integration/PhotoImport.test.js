@@ -5,10 +5,9 @@ import {
   within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
-import inatjs from "inaturalistjs";
 import * as ImagePicker from "react-native-image-picker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
-import factory, { makeResponse } from "tests/factory";
+import factory from "tests/factory";
 import {
   navigateToPhotoImporterFromMyObs,
 } from "tests/helpers/addObsBottomSheet";
@@ -80,11 +79,6 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: jest.fn( () => mockUser ),
 } ) );
 
-// Mock the response from inatjs.computervision.score_image
-const topSuggestion = {
-  taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
-  combined_score: 90,
-};
 
 beforeAll( async () => {
   await initI18next();
@@ -97,7 +91,6 @@ beforeEach( ( ) => {
     screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
     isAllAddObsOptionsMode: true,
   } );
-  inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
 
 describe( "Photo Import", ( ) => {
@@ -119,13 +112,6 @@ describe( "Photo Import", ( ) => {
     await actor.press( combineButton );
     const importButton = await screen.findByText( /IMPORT 1 OBSERVATION/ );
     await actor.press( importButton );
-  }
-
-  async function viewSuggestionsAndAddId() {
-    const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
-    );
-    await actor.press( topTaxonResultButton );
   }
 
   async function saveObservationWithPhoto() {
@@ -151,7 +137,6 @@ describe( "Photo Import", ( ) => {
 
   it( "should create and save an observation with an imported photo", async ( ) => {
     renderApp( );
-    await viewSuggestionsAndAddId( );
     await saveObservationWithPhoto( );
     await navigateToPhotoImporterFromMyObs();
   } );
@@ -161,7 +146,6 @@ describe( "Photo Import", ( ) => {
       ( ) => mockImageLibraryResponseMultiplePhotos,
     );
     renderApp( );
-    await viewSuggestionsAndAddId( );
     await saveObservationWithPhoto( );
     await navigateToPhotoImporterFromMyObs();
     await groupPhotosIntoObservation();
