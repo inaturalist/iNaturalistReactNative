@@ -9,7 +9,9 @@ import * as ImagePicker from "react-native-image-picker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory from "tests/factory";
 import {
+  mockInteractionManagerRunAfterInteractions,
   navigateToPhotoImporterFromMyObs,
+  saveObsEditObservation,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
