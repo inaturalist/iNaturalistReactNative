@@ -166,9 +166,9 @@ async function confirmObsEditWarningSheets() {
 export async function saveObsEditObservation( options = {} ) {
   await pressObsEditSaveButton();
   await confirmObsEditWarningSheets();
-  if ( !options.skipMyObsWait ) {
-    await waitForMyObservationsScreen();
-  }
+  // if ( !options.skipMyObsWait ) {
+  //   await waitForMyObservationsScreen();
+  // }
 }
 
 /** Waits until at least one observation appears on the My Obs grid. */
