@@ -148,10 +148,9 @@ describe( "Photo Deletion with existing saved observation", () => {
       global.timeTravel( 300 );
       expect( screen.getByTestId( "CameraNavButtons" ) ).toBeVisible();
     } );
-    await actor.press( await screen.findByTestId( "take-photo-button" ) );
-    // Tap one photo preview to enter the MediaViewer
-    const carouselPhotos = await screen.findAllByTestId( /PhotoCarousel\.displayPhoto/ );
-    await actor.press( carouselPhotos[0] );
+    // Tap the photo preview to enter the MediaViewer
+    const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
+    await actor.press( carouselPhoto );
     await deletePhotoInMediaViewer();
     await expectNoPhotosInStandardCamera();
   } );
