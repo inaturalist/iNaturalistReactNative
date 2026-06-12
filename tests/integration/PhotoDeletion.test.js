@@ -105,7 +105,6 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-
   async function saveAndEditObs() {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
