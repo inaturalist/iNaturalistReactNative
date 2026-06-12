@@ -11,7 +11,7 @@ export enum MY_OBSERVATIONS_ACTION {
 
 export interface MyObservationsTaxon {
   id: number;
-  name?: string;
+  name: string;
   preferred_common_name?: string;
 }
 
