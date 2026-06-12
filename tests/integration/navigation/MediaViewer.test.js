@@ -319,8 +319,7 @@ describe( "MediaViewer navigation", ( ) => {
         await screen.findByTestId(
           `CustomImageZoom.${observation.observationPhotos[0].photo.url}`,
         ),
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      ).toBeOnTheScreen( );
+      ).toBeVisible( );
     } );
 
     it( "should not show the first photo when second tapped", async ( ) => {
@@ -332,8 +331,7 @@ describe( "MediaViewer navigation", ( ) => {
         await screen.findByTestId(
           `CustomImageZoom.${observation.observationPhotos[1].photo.url}`,
         ),
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      ).toBeOnTheScreen( );
+      ).toBeVisible( );
       expect(
         screen.queryByTestId( `CustomImageZoom.${observation.observationPhotos[0].photo.url}` ),
       ).toBeFalsy( );
@@ -346,8 +344,7 @@ describe( "MediaViewer navigation", ( ) => {
       await act( async ( ) => actor.press( obsEditPhotos[0] ) );
       const deleteButtons = await screen.findAllByLabelText( "Delete photo" );
       expect( deleteButtons.length ).toEqual( observation.observationPhotos.length );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( deleteButtons[0] ).toBeOnTheScreen( );
+      expect( deleteButtons[0] ).toBeVisible( );
     } );
   } );
 
@@ -370,7 +367,7 @@ describe( "MediaViewer navigation", ( ) => {
       const photo = await findAndPressByLabelText( "View photo" );
       await actor.press( photo );
 
-      expect( await screen.findByTestId( /CustomImageZoom/ ) ).toBeOnTheScreen();
+      expect( await screen.findByTestId( /CustomImageZoom/ ) ).toBeVisible( );
     } );
 
     // Haven't figured these out b/c I would need the URL of newly-created
@@ -383,8 +380,7 @@ describe( "MediaViewer navigation", ( ) => {
       navigateToCamera( );
       await findAndPressByLabelText( "Take photo" );
       await findAndPressByLabelText( "View photo" );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( await screen.findByLabelText( "Delete photo" ) ).toBeOnTheScreen( );
+      expect( await screen.findByLabelText( "Delete photo" ) ).toBeVisible( );
     } );
   } );
 } );
