@@ -352,11 +352,6 @@ describe( "MediaViewer navigation", ( ) => {
   describe( "from StandardCamera with advanced user layout", ( ) => {
     global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
-    async function navigateToCamera( ) {
-      await renderApp( );
-      await navigateToStandardCameraFromMyObs( );
-    }
-
     beforeEach( ( ) => {
       useStore.setState( useStore.getInitialState( ), true );
       setStoreStateLayout( {
@@ -366,7 +361,8 @@ describe( "MediaViewer navigation", ( ) => {
     } );
 
     it( "should show a photo when tapped", async ( ) => {
-      navigateToCamera( );
+      await renderApp( );
+      await navigateToStandardCameraFromMyObs( );
       await findAndPressByLabelText( "Take photo" );
       const photo = await screen.findByLabelText( "View photo" );
       await actor.press( photo );
@@ -381,7 +377,8 @@ describe( "MediaViewer navigation", ( ) => {
     it.todo( "should not show the first photo when second tapped" );
 
     it( "should show delete button", async ( ) => {
-      navigateToCamera( );
+      await renderApp( );
+      await navigateToStandardCameraFromMyObs( );
       await findAndPressByLabelText( "Take photo" );
       await findAndPressByLabelText( "View photo" );
       expect( await screen.findByLabelText( "Delete photo" ) ).toBeVisible( );
