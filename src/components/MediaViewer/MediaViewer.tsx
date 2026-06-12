@@ -36,7 +36,7 @@ interface Props {
   deleting?: boolean;
   // Optional component to use as the header
   header?: Function;
-  onClose?: Function;
+  onClose?: ( ) => void;
   onDeletePhoto?: Function;
   onDeleteSound?: Function;
   photos?: _Photo[];
