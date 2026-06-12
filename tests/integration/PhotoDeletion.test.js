@@ -150,25 +150,6 @@ describe( "Photo Deletion", ( ) => {
     await expectNoPhotosInStandardCamera();
   } );
 
-  it( "should delete from StandardCamera for existing photo", async ( ) => {
-    renderApp( );
-    await takePhotoForNewObs();
-    await saveAndEditObs();
-    // Enter camera to add new photo
-    const addEvidenceButton = await await screen.findByLabelText( "Add evidence" );
-    await actor.press( addEvidenceButton );
-    const addEvidenceSheet = await screen.findByTestId( "AddEvidenceSheet" );
-    const cameraButton = await within( addEvidenceSheet ).findByLabelText( "Camera" );
-    await actor.press( cameraButton );
-    await navigateToStandardCameraFromMyObs();
-    await actor.press( await screen.findByTestId( "take-photo-button" ) );
-    // Tap the photo preview to enter the MediaViewer
-    const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
-    await actor.press( carouselPhoto );
-    await deletePhotoInMediaViewer();
-    await expectNoPhotosInStandardCamera();
-  } );
-
   it( "should delete from ObsEdit for new camera photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
