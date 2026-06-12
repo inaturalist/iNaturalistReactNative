@@ -12,6 +12,7 @@ import factory, { makeResponse } from "tests/factory";
 import {
   navigateToPhotoImporterFromMyObs,
   saveObsEditObservation,
+  waitForMyObsGridItems,
 } from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -102,6 +103,9 @@ describe( "Photo Deletion", ( ) => {
     await navigateToPhotoImporterFromMyObs();
     await screen.findByText( /New Observation/ );
     await saveObsEditObservation();
+    const obsGridItems = await waitForMyObsGridItems();
+    await actor.press( obsGridItems[0] );
+    await screen.findByText( "EVIDENCE" );
   }
 
   async function deletePhotoInMediaViewer() {
@@ -112,13 +116,6 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-  async function saveAndEditObs() {
-    // Wait until header shows that there's an obs to upload
-    await screen.findByText( /Upload \d observation/ );
-    // await screen.findByLabelText( "Grid layout" );
-    const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
-    await actor.press( obsGridItems[0] );
-  }
 
   async function expectNoPhotosInStandardCamera() {
     const noPhotoText = await screen.findByText( "Photos you take will appear here" );
@@ -142,7 +139,6 @@ describe( "Photo Deletion", ( ) => {
 
   it( "should delete from StandardCamera for existing photo", async ( ) => {
     renderApp( );
-    await saveAndEditObs();
     // Enter camera to add new photo
     const addEvidenceButton = await await screen.findByLabelText( "Add evidence" );
     await createSavedObservationWithImportedPhoto();
@@ -161,7 +157,6 @@ describe( "Photo Deletion", ( ) => {
 
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
     renderApp( );
-    await saveAndEditObs();
     await createSavedObservationWithImportedPhoto();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
