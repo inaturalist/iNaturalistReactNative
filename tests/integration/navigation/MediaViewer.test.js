@@ -296,9 +296,9 @@ describe( "MediaViewer navigation", ( ) => {
       ],
     } );
     const observations = [observation];
-    useStore.setState( { observations } );
 
     beforeEach( ( ) => {
+      useStore.setState( { observations } );
       expect( observation.wasSynced( ) ).toBeFalsy( );
       expect( observation.observationPhotos.length ).toBeGreaterThan( 0 );
     } );
@@ -351,13 +351,16 @@ describe( "MediaViewer navigation", ( ) => {
 
   describe( "from StandardCamera with advanced user layout", ( ) => {
     global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
     async function navigateToCamera( ) {
       await renderApp( );
       await navigateToStandardCameraFromMyObs( );
     }
 
     beforeEach( ( ) => {
+      useStore.setState( useStore.getInitialState( ), true );
       setStoreStateLayout( {
+        isDefaultMode: false,
         isAllAddObsOptionsMode: true,
       } );
     } );
