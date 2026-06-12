@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import type { FlatList } from "react-native";
 import { StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Photo from "realmModels/Photo";
@@ -74,7 +75,7 @@ const MediaViewer = ( {
   }
   const [mediaToDelete, setMediaToDelete] = useState<MediaToDelete | null>( null );
 
-  const horizontalScroll = useRef( null );
+  const horizontalScroll = useRef<FlatList>( null );
 
   const { screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
