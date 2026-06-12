@@ -23,26 +23,26 @@ import colors from "styles/tailwindColors";
 import AttributionButton from "./AttributionButton";
 import CustomImageZoom from "./CustomImageZoom";
 
-type Props = {
-  autoPlaySound?: boolean, // automatically start playing a sound when it is visible
-  editable?: boolean,
+interface Props {
+  autoPlaySound?: boolean; // automatically start playing a sound when it is visible
+  editable?: boolean;
   // $FlowIgnore
-  horizontalScroll: unknown,
-  onDeletePhoto?: Function,
-  onClose?: Function,
-  onDeleteSound?: Function,
+  horizontalScroll: unknown;
+  onDeletePhoto?: Function;
+  onClose?: Function;
+  onDeleteSound?: Function;
   photos: {
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }[],
+    id?: number;
+    url: string;
+    localFilePath?: string;
+    attribution?: string;
+    licenseCode?: string;
+  }[];
   sounds?: {
-    file_url: string
-  }[],
-  selectedMediaIndex: number,
-  setSelectedMediaIndex: Function
+    file_url: string;
+  }[];
+  selectedMediaIndex: number;
+  setSelectedMediaIndex: Function;
 }
 
 const MainMediaDisplay = ( {
