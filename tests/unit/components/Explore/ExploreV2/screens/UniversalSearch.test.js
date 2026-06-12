@@ -39,10 +39,8 @@ describe( "UniversalSearch screen", ( ) => {
     fireEvent.changeText( screen.getByTestId( "UniversalSearch.taxonInput" ), "cup plant" );
     fireEvent.changeText( screen.getByTestId( "UniversalSearch.locationInput" ), "California" );
 
-    expect( screen.getByTestId( "UniversalSearch.taxonInput" ).props.value )
-      .toEqual( "cup plant" );
-    expect( screen.getByTestId( "UniversalSearch.locationInput" ).props.value )
-      .toEqual( "California" );
+    expect( screen.getByDisplayValue( "cup plant" ) ).toBeTruthy( );
+    expect( screen.getByDisplayValue( "California" ) ).toBeTruthy( );
   } );
 
   it( "clears both fields when reset is pressed", ( ) => {
@@ -53,7 +51,13 @@ describe( "UniversalSearch screen", ( ) => {
 
     fireEvent.press( screen.getByText( i18next.t( "Reset-verb" ) ) );
 
-    expect( screen.getByTestId( "UniversalSearch.taxonInput" ).props.value ).toEqual( "" );
-    expect( screen.getByTestId( "UniversalSearch.locationInput" ).props.value ).toEqual( "" );
+    expect( screen.queryByDisplayValue( "cup plant" ) ).toBeNull( );
+    expect( screen.queryByDisplayValue( "California" ) ).toBeNull( );
+    expect(
+      screen.getByPlaceholderText( i18next.t( "Search-for-species-user-or-project" ) ),
+    ).toBeTruthy( );
+    expect(
+      screen.getByPlaceholderText( i18next.t( "Search-for-a-location" ) ),
+    ).toBeTruthy( );
   } );
 } );
