@@ -1,4 +1,3 @@
-import "tests/helpers/mockMortalForIntegration";
 
 import {
   screen,
