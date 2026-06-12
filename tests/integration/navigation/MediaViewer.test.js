@@ -350,6 +350,7 @@ describe( "MediaViewer navigation", ( ) => {
   } );
 
   describe( "from StandardCamera with advanced user layout", ( ) => {
+    global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
     async function navigateToCamera( ) {
       await renderApp( );
       await navigateToStandardCameraFromMyObs( );
