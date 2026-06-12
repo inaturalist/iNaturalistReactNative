@@ -364,9 +364,7 @@ describe( "MediaViewer navigation", ( ) => {
       await renderApp( );
       await navigateToStandardCameraFromMyObs( );
       await findAndPressByLabelText( "Take photo" );
-      const photo = await screen.findByLabelText( "View photo" );
-      await actor.press( photo );
-
+      await findAndPressByLabelText( "View photo" );
       expect( await screen.findByTestId( /CustomImageZoom/ ) ).toBeVisible( );
     } );
 
