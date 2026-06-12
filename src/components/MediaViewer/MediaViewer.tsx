@@ -28,7 +28,7 @@ interface PhotoItem {
   attribution?: string;
   licenseCode?: string;
   localFilePath?: string;
-  url: string;
+  url?: string;
 }
 
 interface SoundItem {
