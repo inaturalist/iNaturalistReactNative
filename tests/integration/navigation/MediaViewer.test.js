@@ -1,3 +1,5 @@
+import "tests/helpers/mockMortalForIntegration";
+
 import {
   act,
   screen,
