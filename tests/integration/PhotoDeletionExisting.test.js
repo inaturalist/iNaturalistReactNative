@@ -10,6 +10,7 @@ import inatjs from "inaturalistjs";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
 import {
+  mockInteractionManagerRunAfterInteractions,
   navigateToPhotoImporterFromMyObs,
   saveObsEditObservation,
   waitForMyObsGridItems,
