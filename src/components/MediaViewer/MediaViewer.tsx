@@ -80,7 +80,7 @@ const MediaViewer = ( {
   const { screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
-  const scrollToIndex = useCallback( index => {
+  const scrollToIndex = useCallback( ( index: number ) => {
     // when a user taps an item in the carousel, the UI needs to automatically
     // scroll to the index of the item they selected
     setSelectedMediaIndex( index );
