@@ -60,8 +60,8 @@ const MainMediaDisplay = ( {
   const [zooming, setZooming] = useState( false );
   const atFirstItem = selectedMediaIndex === 0;
   const items = useMemo( ( ) => ( [
-    ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
-    ...sounds.map( sound => ( { ...sound, type: "sound" } ) ),
+    ...photos.map( photo => ( { ...photo, type: "photo" as const } ) ),
+    ...sounds.map( sound => ( { ...sound, type: "sound" as const } ) ),
   ] ), [photos, sounds] );
   const atLastItem = selectedMediaIndex === items.length - 1;
 
@@ -153,7 +153,11 @@ const MainMediaDisplay = ( {
     selectedMediaIndex,
   ] );
 
-  const renderItem = useCallback( ( { item } ) => (
+  interface Item {
+    type: "photo" | "sound";
+  }
+
+  const renderItem = useCallback( ( { item }: { item: Item } ) => (
     item.type === "photo"
       ? renderPhoto( item )
       : renderSound( item )
