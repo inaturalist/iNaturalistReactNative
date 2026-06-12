@@ -88,7 +88,7 @@ beforeEach( ( ) => {
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
 
-describe( "Photo Deletion", ( ) => {
+describe( "Photo Deletion with existing saved observation", () => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
   const actor = userEvent.setup( );
