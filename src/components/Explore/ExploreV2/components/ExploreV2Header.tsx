@@ -3,8 +3,8 @@ import {
   Body3,
   Heading4,
   INatIcon,
-  INatIconButton,
 } from "components/SharedComponents";
+import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import { View } from "components/styledComponents";
 import type { TFunction } from "i18next";
 import type { ExploreStackScreenProps } from "navigation/types";
@@ -74,16 +74,14 @@ const ExploreV2Header = ( ) => {
           )
           : null}
       </View>
-      <INatIconButton
-        onPress={() => navigation.navigate( "UniversalSearch" )}
-        accessibilityLabel={t( "Search" )}
+      <ContainedSquareButton
         accessibilityHint={t( "Opens-search-interface" )}
+        accessibilityLabel={t( "Search" )}
+        backgroundColor={colors.inatGreen}
+        icon="magnifying-glass"
+        onPress={() => navigation.navigate( "UniversalSearch" )}
         testID="ExploreV2Header.searchButton"
-      >
-        <View className="w-10 h-10 bg-inatGreen rounded-md items-center justify-center">
-          <INatIcon name="magnifying-glass" size={20} color={colors.white} />
-        </View>
-      </INatIconButton>
+      />
     </View>
   );
 };
