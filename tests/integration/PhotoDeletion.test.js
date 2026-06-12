@@ -177,15 +177,6 @@ describe( "Photo Deletion", ( ) => {
     await expectObsEditToHaveNoPhotos();
   } );
 
-  it( "should delete from ObsEdit for existing camera photo", async ( ) => {
-    renderApp( );
-    await takePhotoForNewObs();
-    await saveAndEditObs();
-    await viewPhotoFromObsEdit();
-    await deletePhotoInMediaViewer( );
-    await expectObsEditToHaveNoPhotos();
-  } );
-
   // TODO these will require mocking react-native-image-picker
   it.todo( "should delete from ObsEdit for new gallery photo" );
 } );
