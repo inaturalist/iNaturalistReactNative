@@ -8,6 +8,7 @@ import {
 import inatjs from "inaturalistjs";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import { navigateToStandardCameraFromMyObs } from "tests/helpers/addObsBottomSheet";
 import {
   renderApp,
   renderAppWithObservations,
@@ -351,8 +352,7 @@ describe( "MediaViewer navigation", ( ) => {
   describe( "from StandardCamera with advanced user layout", ( ) => {
     async function navigateToCamera( ) {
       await renderApp( );
-      await findAndPressByText( "Add observations" );
-      await findAndPressByLabelText( "Camera" );
+      await navigateToStandardCameraFromMyObs( );
     }
 
     beforeEach( ( ) => {
