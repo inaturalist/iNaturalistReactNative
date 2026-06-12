@@ -1,3 +1,5 @@
+import "tests/helpers/mockMortalForIntegration";
+
 import {
   useNetInfo,
 } from "@react-native-community/netinfo";
