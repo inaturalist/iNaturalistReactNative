@@ -368,7 +368,7 @@ describe( "MediaViewer navigation", ( ) => {
     it( "should show a photo when tapped", async ( ) => {
       navigateToCamera( );
       await findAndPressByLabelText( "Take photo" );
-      const photo = await findAndPressByLabelText( "View photo" );
+      const photo = await screen.findByLabelText( "View photo" );
       await actor.press( photo );
 
       expect( await screen.findByTestId( /CustomImageZoom/ ) ).toBeVisible( );
