@@ -62,12 +62,6 @@ beforeEach( async () => {
 describe( "MediaViewer navigation", ( ) => {
   const actor = userEvent.setup( );
 
-  async function findAndPressByText( text ) {
-    const pressable = await screen.findByLabelText( text );
-    await actor.press( pressable );
-    return pressable;
-  }
-
   async function findAndPressByLabelText( labelText ) {
     const pressable = await screen.findByLabelText( labelText );
     await actor.press( pressable );
