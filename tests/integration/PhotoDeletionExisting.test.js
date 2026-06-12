@@ -187,6 +187,5 @@ describe( "Photo Deletion", ( ) => {
   } );
 
   // TODO these will require mocking react-native-image-picker
-  it.todo( "should delete from ObsEdit for new gallery photo" );
   it.todo( "should delete from ObsEdit for existing gallery photo" );
 } );
