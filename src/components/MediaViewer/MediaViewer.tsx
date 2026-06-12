@@ -38,8 +38,8 @@ interface Props {
   // Optional component to use as the header
   header?: Function;
   onClose?: ( ) => void;
-  onDeletePhoto?: Function;
-  onDeleteSound?: Function;
+  onDeletePhoto?: ( uri: string ) => void;
+  onDeleteSound?: ( uri: string ) => void;
   photos?: _Photo[];
   sounds?: _Sound[];
   uri?: string | null;
