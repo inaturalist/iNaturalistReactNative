@@ -72,7 +72,7 @@ const UniversalSearch = ( ) => {
                   value={taxonText}
                 />
               </View>
-              <View className={classnames( INPUT_BOX_CLASSES, "mt-1.5" )}>
+              <View className={classnames( INPUT_BOX_CLASSES, "-mt-px" )}>
                 <INatIcon name="map-marker-outline" size={15} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-a-location" )}
