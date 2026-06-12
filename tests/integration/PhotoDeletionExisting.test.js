@@ -15,6 +15,7 @@ import {
   saveObsEditObservation,
   waitForMyObsGridItems,
 } from "tests/helpers/addObsBottomSheet";
+import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
