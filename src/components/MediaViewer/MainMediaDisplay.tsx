@@ -163,18 +163,18 @@ const MainMediaDisplay = ( {
   ] );
 
   // need getItemLayout for setting initial scroll index
-  const getItemLayout = useCallback( ( data, idx ) => ( {
+  const getItemLayout = useCallback( ( data, idx: number ) => ( {
     length: screenWidth,
     offset: screenWidth * idx,
     index: idx,
   } ), [screenWidth] );
 
-  const handleScrollLeft = useCallback( index => {
+  const handleScrollLeft = useCallback( ( index: number ) => {
     if ( atFirstItem ) { return; }
     setSelectedMediaIndex( index );
   }, [atFirstItem, setSelectedMediaIndex] );
 
-  const handleScrollRight = useCallback( index => {
+  const handleScrollRight = useCallback( ( index: number ) => {
     if ( atLastItem ) { return; }
     setSelectedMediaIndex( index );
   }, [atLastItem, setSelectedMediaIndex] );
