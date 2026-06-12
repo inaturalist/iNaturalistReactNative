@@ -129,10 +129,8 @@ describe( "Photo Deletion with existing saved observation", () => {
   }
 
   async function expectObsEditToHaveNoPhotos() {
-    // Make sure we're on ObsEdit
-    const evidenceTitle = await screen.findByText( "EVIDENCE" );
     // Confirm there is no evidence
-    expect( evidenceTitle ).toBeVisible();
+    expect( await screen.findByText( "EVIDENCE" ) ).toBeVisible();
     const evidenceItems = screen.queryAllByLabelText( "Select or drag media" );
     expect( evidenceItems.length ).toEqual( 0 );
   }
