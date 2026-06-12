@@ -23,8 +23,7 @@ import CustomImageZoom from "./CustomImageZoom";
 interface Props {
   autoPlaySound?: boolean; // automatically start playing a sound when it is visible
   editable?: boolean;
-  // $FlowIgnore
-  horizontalScroll: unknown;
+  horizontalScroll: React.Ref<FlatList>;
   onDeletePhoto?: Function;
   onClose?: Function;
   onDeleteSound?: Function;
@@ -225,6 +224,7 @@ const MainMediaDisplay = ( {
       <GestureHandlerRootView>
         <GestureDetector gesture={swipeToCloseGesture}>
           <FlatList
+            ref={horizontalScroll}
             data={items}
             renderItem={renderItem}
             initialScrollIndex={selectedMediaIndex}
@@ -234,7 +234,6 @@ const MainMediaDisplay = ( {
             // Disable scrolling when image is zooming
             scrollEnabled={!zooming}
             showsHorizontalScrollIndicator={false}
-            ref={horizontalScroll}
             onMomentumScrollEnd={handleScrollEndDrag}
           />
         </GestureDetector>
