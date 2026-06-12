@@ -21,6 +21,11 @@ import colors from "styles/tailwindColors";
 import AttributionButton from "./AttributionButton";
 import CustomImageZoom from "./CustomImageZoom";
 
+interface Sound {
+  file_url: string;
+  hidden: boolean;
+}
+
 interface Props {
   autoPlaySound?: boolean; // automatically start playing a sound when it is visible
   editable?: boolean;
@@ -35,9 +40,7 @@ interface Props {
     attribution?: string;
     licenseCode?: string;
   }[];
-  sounds?: {
-    file_url: string;
-  }[];
+  sounds?: Sound[];
   selectedMediaIndex: number;
   setSelectedMediaIndex: Function;
 }
@@ -115,7 +118,7 @@ const MainMediaDisplay = ( {
     selectedMediaIndex,
   ] );
 
-  const renderSound = useCallback( sound => (
+  const renderSound = useCallback( ( sound: Sound ) => (
     <View
       className="justify-center items-center"
       style={{
