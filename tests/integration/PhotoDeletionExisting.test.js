@@ -101,7 +101,6 @@ describe( "Photo Deletion with existing saved observation", () => {
     await actor.press( discardButton );
   }
 
-
   async function expectNoPhotosInStandardCamera() {
     const noPhotoText = await screen.findByText( "Photos you take will appear here" );
     expect( noPhotoText ).toBeVisible();
