@@ -21,26 +21,26 @@ import MainMediaDisplay from "./MainMediaDisplay";
 import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
 
-type Props = {
-  autoPlaySound?: boolean, // automatically start playing a sound when it is visible
-  editable?: boolean,
-  deleting?: boolean,
+interface Props {
+  autoPlaySound?: boolean; // automatically start playing a sound when it is visible
+  editable?: boolean;
+  deleting?: boolean;
   // Optional component to use as the header
-  header?: Function,
-  onClose?: Function,
-  onDeletePhoto?: Function,
-  onDeleteSound?: Function,
+  header?: Function;
+  onClose?: Function;
+  onDeletePhoto?: Function;
+  onDeleteSound?: Function;
   photos?: {
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }[],
+    id?: number;
+    url: string;
+    localFilePath?: string;
+    attribution?: string;
+    licenseCode?: string;
+  }[];
   sounds?: {
-    file_url: string
-  }[],
-  uri?: string | null
+    file_url: string;
+  }[];
+  uri?: string | null;
 }
 
 const MediaViewer = ( {
@@ -70,7 +70,7 @@ const MediaViewer = ( {
   const [
     mediaToDelete,
     setMediaToDelete,
-  ]: [null | { type: string, uri: string }, Function] = useState( null );
+  ]: [null | { type: string; uri: string }, Function] = useState( null );
 
   const horizontalScroll = useRef( null );
 
