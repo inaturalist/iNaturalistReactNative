@@ -6,6 +6,7 @@ import { View } from "components/styledComponents";
 import React, {
   useCallback, useMemo, useState,
 } from "react";
+import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import { FlatList } from "react-native";
 import {
   Gesture,
@@ -178,7 +179,7 @@ const MainMediaDisplay = ( {
     setSelectedMediaIndex( index );
   }, [atLastItem, setSelectedMediaIndex] );
 
-  const handleScrollEndDrag = useCallback( e => {
+  const handleScrollEndDrag = useCallback( ( e: NativeSyntheticEvent<NativeScrollEvent> ) => {
     const { contentOffset, layoutMeasurement } = e.nativeEvent;
     const { x } = contentOffset;
 
