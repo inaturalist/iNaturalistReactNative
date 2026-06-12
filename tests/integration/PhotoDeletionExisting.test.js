@@ -79,19 +79,19 @@ const topSuggestion = {
   combined_score: 90,
 };
 
-beforeEach( ( ) => {
-  setStoreStateLayout( {
-    isDefaultMode: false,
-    isAllAddObsOptionsMode: true,
-    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
-  } );
-  inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
-} );
-
 describe( "Photo Deletion with existing saved observation", () => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
   const actor = userEvent.setup( );
+
+  beforeEach( async () => {
+    setStoreStateLayout( {
+      isDefaultMode: false,
+      isAllAddObsOptionsMode: true,
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+    } );
+    inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
+  } );
 
   async function createSavedObservationWithImportedPhoto() {
     jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation( () => ( {
