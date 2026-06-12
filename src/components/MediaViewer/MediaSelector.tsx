@@ -1,9 +1,6 @@
-// @flow
-
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback } from "react";
 import type { ListRenderItem } from "react-native";
 import {
@@ -39,7 +36,7 @@ const PhotoSelector = ( {
   scrollToIndex,
   selectedMediaIndex,
   sounds = [],
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const items = [
     ...photos.map( photo => ( { ...photo, type: "photo" as const } ) ),
