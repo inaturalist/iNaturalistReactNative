@@ -139,7 +139,6 @@ describe( "Photo Deletion", ( ) => {
 
   it( "should delete from StandardCamera for new photo", async ( ) => {
     renderApp( );
-    // Tap the photo preview to enter the MediaViewer
     const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
     await actor.press( carouselPhoto );
     await deletePhotoInMediaViewer();
