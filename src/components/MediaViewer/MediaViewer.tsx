@@ -1,8 +1,5 @@
-// @flow
-
 import { WarningSheet } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -54,7 +51,7 @@ const MediaViewer = ( {
   photos = [],
   sounds = [],
   uri,
-}: Props ): Node => {
+}: Props ) => {
   const insets = useSafeAreaInsets();
   const uris = useMemo( ( ) => ( [
     ...photos.map( photo => photo.url || Photo.getLocalPhotoUri( photo.localFilePath ) ),
