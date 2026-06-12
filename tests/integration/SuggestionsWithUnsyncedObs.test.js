@@ -271,11 +271,9 @@ describe( "from ObsEdit with human observation", () => {
     const humanResultButton = await screen.findByTestId(
       `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`,
     );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( humanResultButton ).toBeOnTheScreen();
+    expect( humanResultButton ).toBeVisible();
     const human = screen.getByText( /Homo sapiens/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( human ).toBeOnTheScreen();
+    expect( human ).toBeVisible();
     const nonHumanSuggestion = screen.queryByText( /Primum/ );
     expect( nonHumanSuggestion ).toBeFalsy();
   } );
@@ -300,8 +298,7 @@ describe( "from ObsEdit with human observation", () => {
     const { observations } = await setupAppWithSignedInUser( true );
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( ignoreLocationButton ).toBeOnTheScreen();
+    expect( ignoreLocationButton ).toBeVisible();
   } );
 } );
 
@@ -355,8 +352,7 @@ describe( "from AICamera directly", ( ) => {
       await navigateToSuggestionsViaAICamera( );
       await waitFor( ( ) => {
         global.timeTravel( );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeOnTheScreen( );
+        expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeVisible( );
       } );
       const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
       expect( ignoreLocationButton ).toBeFalsy( );
@@ -414,14 +410,12 @@ describe( "from AICamera directly", ( ) => {
 
       const notConfidentText = await screen.findByText( /not confident enough to make a top ID suggestion/ );
       await waitFor( ( ) => {
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( notConfidentText ).toBeOnTheScreen( );
+        expect( notConfidentText ).toBeVisible( );
       } );
       const otherSuggestion = await screen.findByTestId(
         `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`,
       );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( otherSuggestion ).toBeOnTheScreen( );
+      expect( otherSuggestion ).toBeVisible( );
     } );
 
     it( "should only show top human suggestion if human predicted offline", async ( ) => {
@@ -460,8 +454,7 @@ describe( "from AICamera directly", ( ) => {
     //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
     //   } );
     //   const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    //   expect( ignoreLocationButton ).toBeOnTheScreen( );
+    //   expect( ignoreLocationButton ).toBeVisible( );
     //   await actor.press( ignoreLocationButton );
     //   await waitFor( ( ) => {
     //     expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
@@ -473,8 +466,7 @@ describe( "from AICamera directly", ( ) => {
     //     );
     //   } );
     //   const useLocationButton = await screen.findByText( /USE LOCATION/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    //   expect( useLocationButton ).toBeOnTheScreen( );
+    //   expect( useLocationButton ).toBeVisible( );
     // } );
   } );
 } );
