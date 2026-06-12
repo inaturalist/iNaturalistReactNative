@@ -2,7 +2,6 @@ import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import INatIcon from "components/SharedComponents/INatIcon";
 import { View } from "components/styledComponents";
 import React from "react";
-import type { GestureResponderEvent } from "react-native";
 import colors from "styles/tailwindColors";
 
 interface Props {
@@ -13,7 +12,7 @@ interface Props {
   icon: string;
   iconColor?: string;
   iconSize?: number;
-  onPress: ( _event: GestureResponderEvent ) => void;
+  onPress: ( ) => void;
   testID?: string;
 }
 
