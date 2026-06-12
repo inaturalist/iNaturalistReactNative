@@ -34,6 +34,7 @@ const MediaViewerHeader = ( {
         inCustomHeader
         color="white"
         onPress={onClose}
+        // TODO: does this need a UI fix?
         className="w-[44px]"
       />
       <View className="justify-center min-h-[44]">
