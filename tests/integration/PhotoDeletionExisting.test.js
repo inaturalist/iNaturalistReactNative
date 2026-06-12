@@ -161,14 +161,6 @@ describe( "Photo Deletion", ( ) => {
     await expectNoPhotosInStandardCamera();
   } );
 
-  it( "should delete from ObsEdit for new camera photo", async ( ) => {
-    renderApp( );
-    await takePhotoForNewObs();
-    await viewPhotoFromObsEdit();
-    await deletePhotoInMediaViewer( );
-    await expectObsEditToHaveNoPhotos();
-  } );
-
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
