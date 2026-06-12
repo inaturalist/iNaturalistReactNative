@@ -70,6 +70,7 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
+  mockInteractionManagerRunAfterInteractions();
 } );
 
 // Mock the response from inatjs.computervision.score_image
