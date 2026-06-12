@@ -142,6 +142,15 @@ export async function navigateToSuggestionsViaAICameraFromMyObs() {
   await takeAICameraPhotoAndOpenSuggestions( );
 }
 
+export async function takeStandardCameraPhotoAndConfirm() {
+  await actor.press( await screen.findByTestId( "take-photo-button" ) );
+  await actor.press( await screen.findByLabelText( "View suggestions" ) );
+  await waitFor( ( ) => {
+    if ( typeof global.timeTravel === "function" ) {
+      global.timeTravel( 300 );
+    }
+  }, { timeout: 10_000 } );
+}
 async function pressObsEditSaveButton() {
   await actor.press( await screen.findByTestId( "ObsEdit.saveButton" ) );
 }
