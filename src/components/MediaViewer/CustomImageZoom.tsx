@@ -13,7 +13,7 @@ const MAX_SCALE = 5;
 
 interface Props {
   uri: string;
-  setZooming: ( ) => void;
+  setZooming: ( isZooming: boolean ) => void;
   selectedMediaIndex: number;
 }
 
