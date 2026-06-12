@@ -1,11 +1,8 @@
-// @flow
-
 import SoundContainer from "components/ObsDetailsSharedComponents/Media/SoundContainer";
 import {
   TransparentCircleButton,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback, useMemo, useState,
 } from "react";
@@ -56,7 +53,7 @@ const MainMediaDisplay = ( {
   sounds = [],
   selectedMediaIndex,
   setSelectedMediaIndex,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
