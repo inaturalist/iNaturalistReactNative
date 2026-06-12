@@ -1,7 +1,6 @@
 import {
   screen,
   userEvent,
-  waitFor,
   within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
@@ -90,6 +89,7 @@ describe( "Photo Deletion", ( ) => {
   async function takePhotoForNewObs() {
     await navigateToStandardCameraFromMyObs();
     await takeStandardCameraPhotoAndConfirm();
+    await screen.findByText( /New Observation/ );
   }
 
   async function deletePhotoInMediaViewer() {
