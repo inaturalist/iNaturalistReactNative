@@ -1,4 +1,3 @@
-
 import {
   screen,
   userEvent,
@@ -24,12 +23,6 @@ import setupUniqueRealm from "tests/helpers/uniqueRealm";
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
 jest.unmock( "@react-navigation/native" );
-
-const mockFetchUserLocation = jest.fn( () => ( { latitude: 1, longitude: 1, accuracy: 9 } ) );
-jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
-  __esModule: true,
-  default: () => mockFetchUserLocation(),
-} ) );
 
 const mockUser = factory( "LocalUser" );
 // Mock useCurrentUser hook
