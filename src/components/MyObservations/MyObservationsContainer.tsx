@@ -27,12 +27,13 @@ import {
   useInfiniteObservationsScroll,
   useInfiniteScroll,
   useLayoutPrefs,
-  useLocalObservationIds,
   useNavigateToObsEdit,
   useObservationsUpdates,
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
+import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
+import useObservationSyncCounts from "sharedHooks/useLocalObservationSyncCounts";
 import {
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
@@ -56,12 +57,6 @@ export enum ACTIVE_SHEET {
   SORT = "SORT",
 }
 
-interface SyncOptions {
-  unuploadedObsMissingBasicsIDs?: string[];
-  skipUploads?: boolean;
-  skipSomeUploads?: string[];
-}
-
 const MyObservationsContainer = ( ) => {
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
@@ -77,8 +72,6 @@ const MyObservationsContainer = ( ) => {
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
-  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
-  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
@@ -92,10 +85,8 @@ const MyObservationsContainer = ( ) => {
     return unsubscribe;
   }, [navigation, setJustFinishedSignup] );
 
-  const {
-    observationIds,
-    obsMissingBasicsUuids,
-  } = useLocalObservationIds( );
+  const observationIds = useLocalObservationIds( );
+  const { numUnuploadedObs, numUnuploadedObsMissingBasics } = useObservationSyncCounts( );
   const totalResultsLocal = observationIds.length;
 
   const prevObservationsLength = useRef( totalResultsLocal );
@@ -154,22 +145,26 @@ const MyObservationsContainer = ( ) => {
     return currentUser;
   }, [currentUser] );
 
-  const handleSyncButtonPress = useCallback( ( options?: SyncOptions ) => {
-    const { unuploadedObsMissingBasicsIDs } = options || { };
+  const handleSyncButtonPress = useCallback( ( ) => {
     if ( !confirmLoggedIn( ) ) { return; }
     if ( !confirmInternetConnection( ) ) { return; }
 
     startManualSync( );
     const syncOptions = isDefaultMode
-      ? { skipSomeUploads: unuploadedObsMissingBasicsIDs }
+      ? {
+        skipSomeUploads: Observation
+          .filterUnsyncedObservations( realm )
+          .filter( ( obs: Observation ) => obs.missingBasics() ),
+      }
       : { };
     syncManually( syncOptions );
   }, [
-    startManualSync,
-    syncManually,
-    confirmInternetConnection,
     confirmLoggedIn,
+    confirmInternetConnection,
+    startManualSync,
     isDefaultMode,
+    realm,
+    syncManually,
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
@@ -208,8 +203,6 @@ const MyObservationsContainer = ( ) => {
     // tab bar screens don't seem to blur
     useCallback( ( ) => {
       let isActive = true;
-      const unsynced = Observation.filterUnsyncedObservations( realm );
-      setNumUnuploadedObservations( unsynced.length );
       let idleCallbackId = 0;
       if ( isActive ) {
         idleCallbackId = requestIdleCallback( ( ) => {
@@ -224,12 +217,7 @@ const MyObservationsContainer = ( ) => {
         isActive = false;
         if ( idleCallbackId ) { cancelIdleCallback( idleCallbackId ); }
       };
-    }, [
-      currentUser,
-      startAutomaticSync,
-      setNumUnuploadedObservations,
-      realm,
-    ] ),
+    }, [currentUser, startAutomaticSync] ),
   );
 
   const handlePullToRefresh = useCallback( async ( ) => {
@@ -440,9 +428,9 @@ const MyObservationsContainer = ( ) => {
       taxaListRef={taxaListRef}
       numTotalObservations={numOfUserObservations}
       numTotalTaxa={numOfUserSpecies}
-      numUnuploadedObservations={numUnuploadedObservations}
+      numUnuploadedObservations={numUnuploadedObs}
+      numUnuploadedObsMissingBasics={numUnuploadedObsMissingBasics}
       observationIds={observationIds}
-      obsMissingBasicsUuids={obsMissingBasicsUuids}
       onEndReached={fetchNextPage}
       onListLayout={restoreScrollOffset}
       onScroll={onScroll}

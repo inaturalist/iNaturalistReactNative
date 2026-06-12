@@ -19,6 +19,13 @@ export const GEOPRIVACY_OPEN = "open";
 export const GEOPRIVACY_OBSCURED = "obscured";
 export const GEOPRIVACY_PRIVATE = "private";
 
+const obsUnsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
+const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
+const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
+
+export const UNSYNCED_OBSERVATIONS_FILTER
+  = `${obsUnsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`;
+
 const logger = log.extend( "index.js" );
 
 // noting that methods like .toJSON( ) are only accessible when the model
@@ -333,7 +340,7 @@ class Observation extends Realm.Object {
         : [],
       quality_grade: obs.quality_grade,
       taxon: obs.taxon
-        ? this.mapTaxonForMyObs( obs.taxon )
+        ? Observation.mapTaxonForMyObs( obs.taxon )
         : null,
       comments_viewed: obs.comments_viewed,
       identifications_viewed: obs.identifications_viewed,
@@ -383,16 +390,12 @@ class Observation extends Realm.Object {
   };
 
   static filterUnsyncedObservations = realm => {
-    const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
-    const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
-    const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
-
     const obs = realm.objects( "Observation" );
     // we sort unsynced observations here to make sure observations
     // with an older _created_at date get uploaded first
-    const unsyncedObs = obs.filtered(
-      `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`,
-    ).sorted( "_created_at", true );
+    const unsyncedObs = obs
+      .filtered( UNSYNCED_OBSERVATIONS_FILTER )
+      .sorted( "_created_at", true );
     return unsyncedObs;
   };
 

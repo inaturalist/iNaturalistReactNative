@@ -49,7 +49,6 @@ const ObsPressable = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const { isDefaultMode } = useLayoutPrefs( );
-  // TODO: determine ideal useObject keypaths to optimize listeners
   const rawObs = useObject<{ uuid: string }>( "Observation", uuid );
   const mapObs = isDefaultMode
     ? RealmObservation.mapObservationForMyObsDefaultMode

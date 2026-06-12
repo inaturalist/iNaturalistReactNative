@@ -43,7 +43,6 @@ export default ( canUpload: boolean ) => {
   const updateTotalUploadProgress = useStore( state => state.updateTotalUploadProgress );
   const uploadQueue = useStore( state => state.uploadQueue );
   const uploadStatus = useStore( state => state.uploadStatus );
-  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
   const setTotalToolbarIncrements = useStore( state => state.setTotalToolbarIncrements );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
@@ -59,31 +58,22 @@ export default ( canUpload: boolean ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
-  const resetNumUnsyncedObs = useCallback( ( ) => {
-    if ( !realm || realm.isClosed ) return;
-    const unsynced = Observation.filterUnsyncedObservations( realm );
-    setNumUnuploadedObservations( unsynced.length );
-  }, [realm, setNumUnuploadedObservations] );
-
   useEffect( () => {
     // eslint-disable-next-line no-undef
     let timer: number | NodeJS.Timeout;
     if ( [UPLOAD_COMPLETE, UPLOAD_CANCELLED].indexOf( uploadStatus ) >= 0 ) {
       timer = setTimeout( () => {
         resetUploadObservationsSlice( );
-        resetNumUnsyncedObs( );
       }, MS_BEFORE_TOOLBAR_RESET );
     } else {
       timer = setTimeout( () => {
         resetSyncToolbar( );
-        resetNumUnsyncedObs( );
       }, MS_BEFORE_TOOLBAR_RESET );
     }
     return () => {
       clearTimeout( timer );
     };
   }, [
-    resetNumUnsyncedObs,
     resetSyncToolbar,
     resetUploadObservationsSlice,
     uploadStatus,
