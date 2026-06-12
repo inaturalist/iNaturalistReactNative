@@ -1,6 +1,5 @@
 import {
   act,
-  // fireEvent,
   screen,
   userEvent,
   waitFor,
@@ -151,6 +150,7 @@ export async function takeStandardCameraPhotoAndConfirm() {
     }
   }, { timeout: 10_000 } );
 }
+
 async function pressObsEditSaveButton() {
   await actor.press( await screen.findByTestId( "ObsEdit.saveButton" ) );
 }
@@ -175,9 +175,6 @@ async function confirmObsEditWarningSheets() {
 export async function saveObsEditObservation( _options = {} ) {
   await pressObsEditSaveButton();
   await confirmObsEditWarningSheets();
-  // if ( !options.skipMyObsWait ) {
-  //   await waitForMyObservationsScreen();
-  // }
 }
 
 /** Waits until at least one observation appears on the My Obs grid. */
