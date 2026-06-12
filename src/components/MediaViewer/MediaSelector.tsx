@@ -11,20 +11,20 @@ import {
 import Photo from "realmModels/Photo";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  isLargeScreen?: boolean,
+interface Props {
+  isLargeScreen?: boolean;
   photos: {
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }[],
-  scrollToIndex: Function,
-  selectedMediaIndex?: number,
+    id?: number;
+    url: string;
+    localFilePath?: string;
+    attribution?: string;
+    licenseCode?: string;
+  }[];
+  scrollToIndex: Function;
+  selectedMediaIndex?: number;
   sounds?: {
-    file_url: string
-  }[],
+    file_url: string;
+  }[];
 }
 
 const SMALL_ITEM_CLASS = "rounded-sm w-[42px] h-[42px] mx-[6px] my-[12px]";
