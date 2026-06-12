@@ -8,7 +8,7 @@ import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
   onClose: ( ) => void;
-  photoCount: number;
+  photoCount?: number;
   soundCount?: number;
 }
 
