@@ -9,11 +9,11 @@ import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  onClose: Function,
-  photoCount: number,
-  soundCount?: number
-};
+interface Props {
+  onClose: ( ) => void;
+  photoCount: number;
+  soundCount?: number;
+}
 
 const MediaViewerHeader = ( {
   photoCount = 0,
