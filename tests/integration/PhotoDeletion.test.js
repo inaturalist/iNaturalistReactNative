@@ -7,6 +7,10 @@ import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
+import {
+  navigateToStandardCameraFromMyObs,
+  takeStandardCameraPhotoAndConfirm,
+} from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
