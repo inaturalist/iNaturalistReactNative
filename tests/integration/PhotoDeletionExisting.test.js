@@ -10,8 +10,8 @@ import inatjs from "inaturalistjs";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
 import {
-  navigateToStandardCameraFromMyObs,
-  takeStandardCameraPhotoAndConfirm,
+  navigateToPhotoImporterFromMyObs,
+  saveObsEditObservation,
 } from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -92,10 +92,16 @@ describe( "Photo Deletion", ( ) => {
 
   const actor = userEvent.setup( );
 
-  async function takePhotoForNewObs() {
-    await navigateToStandardCameraFromMyObs();
-    await takeStandardCameraPhotoAndConfirm();
+  async function createSavedObservationWithImportedPhoto() {
+    jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation( () => ( {
+      assets: [{
+        uri: faker.image.url(),
+        fileName: `${faker.string.uuid()}.jpg`,
+      }],
+    } ) );
+    await navigateToPhotoImporterFromMyObs();
     await screen.findByText( /New Observation/ );
+    await saveObsEditObservation();
   }
 
   async function deletePhotoInMediaViewer() {
@@ -107,14 +113,6 @@ describe( "Photo Deletion", ( ) => {
   }
 
   async function saveAndEditObs() {
-    // Make sure we're on ObsEdit
-    const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    await waitFor( ( ) => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( evidenceTitle ).toBeOnTheScreen( );
-    } );
-    const saveButton = await screen.findByText( "SAVE" );
-    await actor.press( saveButton );
     // Wait until header shows that there's an obs to upload
     await screen.findByText( /Upload \d observation/ );
     // await screen.findByLabelText( "Grid layout" );
@@ -144,10 +142,10 @@ describe( "Photo Deletion", ( ) => {
 
   it( "should delete from StandardCamera for existing photo", async ( ) => {
     renderApp( );
-    await takePhotoForNewObs();
     await saveAndEditObs();
     // Enter camera to add new photo
     const addEvidenceButton = await await screen.findByLabelText( "Add evidence" );
+    await createSavedObservationWithImportedPhoto();
     await actor.press( addEvidenceButton );
     const addEvidenceSheet = await screen.findByTestId( "AddEvidenceSheet" );
     const cameraButton = await within( addEvidenceSheet ).findByLabelText( "Camera" );
@@ -163,8 +161,8 @@ describe( "Photo Deletion", ( ) => {
 
   it( "should delete from ObsEdit for existing camera photo", async ( ) => {
     renderApp( );
-    await takePhotoForNewObs();
     await saveAndEditObs();
+    await createSavedObservationWithImportedPhoto();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
     await expectObsEditToHaveNoPhotos();
