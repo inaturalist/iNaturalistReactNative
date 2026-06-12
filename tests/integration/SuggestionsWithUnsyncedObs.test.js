@@ -5,7 +5,6 @@ import {
   screen,
   userEvent,
   waitFor,
-  within,
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import inatjs from "inaturalistjs";
@@ -14,6 +13,9 @@ import * as useLocationPermission from "sharedHooks/useLocationPermission";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import {
+  navigateToSuggestionsViaAICameraFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -193,20 +195,6 @@ const navigateToSuggestionsForObservationViaObsEdit = async observation => {
   await actor.press( addIdButton );
 };
 
-const navigateToSuggestionsViaAICamera = async ( ) => {
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const cameraButton = await screen.findByLabelText( /AI Camera/ );
-  await actor.press( cameraButton );
-
-  const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-  await actor.press( takePhotoButton );
-  const addIDButton = await screen.findByText( /ADD AN ID/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( addIDButton ).toBeOnTheScreen( );
-};
-
 const setupAppWithSignedInUser = async hasLocation => {
   const observations = hasLocation
     ? makeMockObservationsWithLocation( )
@@ -324,7 +312,7 @@ describe( "from AICamera directly", ( ) => {
   describe( "suggestions with location", ( ) => {
     it( "should call score_image with location parameters on first render", async ( ) => {
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       await waitFor( ( ) => {
         expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
           expect.objectContaining( {
@@ -349,7 +337,7 @@ describe( "from AICamera directly", ( ) => {
       } ) );
       mockFetchUserLocation.mockReturnValue( null );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       await waitFor( ( ) => {
         global.timeTravel( );
         expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeVisible( );
@@ -374,7 +362,7 @@ describe( "from AICamera directly", ( ) => {
     it( "should not call score_image and should not show any location buttons", async ( ) => {
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );
       const usePermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
       expect( usePermissionsButton ).toBeFalsy( );
@@ -391,7 +379,7 @@ describe( "from AICamera directly", ( ) => {
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       expect( topTaxonSuggestion ).toHaveProp(
         "testID",
@@ -406,7 +394,7 @@ describe( "from AICamera directly", ( ) => {
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
 
       const notConfidentText = await screen.findByText( /not confident enough to make a top ID suggestion/ );
       await waitFor( ( ) => {
@@ -424,7 +412,7 @@ describe( "from AICamera directly", ( ) => {
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
 
       const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       const humanPrediction = mockModelResultWithHuman.predictions
@@ -449,7 +437,7 @@ describe( "from AICamera directly", ( ) => {
     // it( "should call score_image without location parameters if"
     //   + " ignore location pressed", async ( ) => {
     //   const { observations } = await setupAppWithSignedInUser( );
-    //   await navigateToSuggestionsViaAICamera( );
+    //   await navigateToSuggestionsViaAICameraFromMyObs( );
     //   await waitFor( ( ) => {
     //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
     //   } );
