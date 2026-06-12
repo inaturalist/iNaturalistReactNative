@@ -142,14 +142,6 @@ describe( "Photo Deletion", ( ) => {
     expect( evidenceItems.length ).toEqual( 0 );
   }
 
-  it( "should delete from StandardCamera for new photo", async ( ) => {
-    renderApp( );
-    const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
-    await actor.press( carouselPhoto );
-    await deletePhotoInMediaViewer();
-    await expectNoPhotosInStandardCamera();
-  } );
-
   it( "should delete from StandardCamera for existing photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
