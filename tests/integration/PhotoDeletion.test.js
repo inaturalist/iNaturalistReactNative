@@ -106,22 +106,6 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-  async function saveAndEditObs() {
-    // Make sure we're on ObsEdit
-    const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    await waitFor( ( ) => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( evidenceTitle ).toBeOnTheScreen( );
-    } );
-    const saveButton = await screen.findByText( "SAVE" );
-    await actor.press( saveButton );
-    // Wait until header shows that there's an obs to upload
-    await screen.findByText( /Upload \d observation/ );
-    // await screen.findByLabelText( "Grid layout" );
-    const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
-    await actor.press( obsGridItems[0] );
-  }
-
   async function expectNoPhotosInStandardCamera() {
     const noPhotoText = await screen.findByText( "Photos you take will appear here" );
     expect( noPhotoText ).toBeVisible();
