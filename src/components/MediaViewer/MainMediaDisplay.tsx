@@ -39,9 +39,9 @@ interface Props {
   autoPlaySound?: boolean; // automatically start playing a sound when it is visible
   editable?: boolean;
   horizontalScroll: React.Ref<FlatList>;
-  onDeletePhoto?: Function;
-  onClose?: Function;
-  onDeleteSound?: Function;
+  onDeletePhoto: ( uri: string ) => void;
+  onClose: ( ) => void;
+  onDeleteSound: ( uri: string ) => void;
   photos: Omit<PhotoItem, "type">[];
   sounds?: Omit<SoundItem, "type">[];
   selectedMediaIndex: number;
@@ -52,9 +52,9 @@ const MainMediaDisplay = ( {
   autoPlaySound,
   editable,
   horizontalScroll,
-  onDeletePhoto = ( ) => undefined,
-  onDeleteSound = ( ) => undefined,
-  onClose = ( ) => undefined,
+  onDeletePhoto,
+  onDeleteSound,
+  onClose,
   photos,
   sounds = [],
   selectedMediaIndex,
