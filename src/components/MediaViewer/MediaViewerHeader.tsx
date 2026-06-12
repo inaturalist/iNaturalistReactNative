@@ -1,11 +1,8 @@
-// @flow
-
 import {
   BackButton,
   Heading4,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -19,7 +16,7 @@ const MediaViewerHeader = ( {
   photoCount = 0,
   onClose,
   soundCount = 0,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   let headerText = t( "X-PHOTOS", { photoCount } );
