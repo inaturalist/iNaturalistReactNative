@@ -16,7 +16,6 @@ import {
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
-import colors from "styles/tailwindColors";
 
 import AttributionButton from "./AttributionButton";
 import CustomImageZoom from "./CustomImageZoom";
@@ -96,7 +95,6 @@ const MainMediaDisplay = ( {
                     || photo.url,
                   )}
                   icon="trash-outline"
-                  color={colors.white}
                   accessibilityLabel={deletePhotoLabel}
                 />
               </View>
@@ -141,7 +139,6 @@ const MainMediaDisplay = ( {
             <TransparentCircleButton
               onPress={( ) => onDeleteSound( sound.file_url )}
               icon="trash-outline"
-              color={colors.white}
               accessibilityLabel={deleteSoundLabel}
             />
           </View>
