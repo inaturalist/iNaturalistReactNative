@@ -83,6 +83,8 @@ beforeEach( ( ) => {
 } );
 
 describe( "Photo Deletion", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   const actor = userEvent.setup( );
 
   async function takePhotoForNewObs() {
