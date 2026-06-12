@@ -18,6 +18,18 @@ import MainMediaDisplay from "./MainMediaDisplay";
 import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
 
+interface _Photo {
+  attribution?: string;
+  licenseCode?: string;
+  localFilePath?: string;
+  url: string;
+}
+
+interface _Sound {
+  file_url: string;
+  hidden: boolean;
+}
+
 interface Props {
   autoPlaySound?: boolean; // automatically start playing a sound when it is visible
   editable?: boolean;
@@ -27,16 +39,8 @@ interface Props {
   onClose?: Function;
   onDeletePhoto?: Function;
   onDeleteSound?: Function;
-  photos?: {
-    id?: number;
-    url: string;
-    localFilePath?: string;
-    attribution?: string;
-    licenseCode?: string;
-  }[];
-  sounds?: {
-    file_url: string;
-  }[];
+  photos?: _Photo[];
+  sounds?: _Sound[];
   uri?: string | null;
 }
 
