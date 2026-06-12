@@ -17,7 +17,6 @@ import {
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
-import { getPredictionsForImage } from "vision-camera-plugin-inatvision";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -28,16 +27,6 @@ jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   __esModule: true,
   default: () => mockFetchUserLocation(),
 } ) );
-
-const mockModelResult = {
-  predictions: [factory( "ModelPrediction", {
-  // useOfflineSuggestions will filter out taxa w/ rank_level > 40
-    rank_level: 20,
-  } )],
-};
-getPredictionsForImage.mockImplementation(
-  async ( ) => ( mockModelResult ),
-);
 
 const mockUser = factory( "LocalUser" );
 // Mock useCurrentUser hook
