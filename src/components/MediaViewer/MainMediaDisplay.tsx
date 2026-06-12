@@ -21,9 +21,18 @@ import colors from "styles/tailwindColors";
 import AttributionButton from "./AttributionButton";
 import CustomImageZoom from "./CustomImageZoom";
 
-interface Sound {
+interface PhotoItem {
+  attribution?: string;
+  licenseCode?: string;
+  localFilePath?: string;
+  type: "photo";
+  url: string;
+}
+
+interface SoundItem {
   file_url: string;
   hidden: boolean;
+  type: "sound";
 }
 
 interface Props {
@@ -33,14 +42,8 @@ interface Props {
   onDeletePhoto?: Function;
   onClose?: Function;
   onDeleteSound?: Function;
-  photos: {
-    id?: number;
-    url: string;
-    localFilePath?: string;
-    attribution?: string;
-    licenseCode?: string;
-  }[];
-  sounds?: Sound[];
+  photos: Omit<PhotoItem, "type">[];
+  sounds?: Omit<SoundItem, "type">[];
   selectedMediaIndex: number;
   setSelectedMediaIndex: Function;
 }
@@ -73,7 +76,7 @@ const MainMediaDisplay = ( {
   const deletePhotoLabel = t( "Delete-photo" );
   const deleteSoundLabel = t( "Delete-sound" );
 
-  const renderPhoto = useCallback( photo => {
+  const renderPhoto = useCallback( ( photo: PhotoItem ) => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
     const hasAttribution = photo?.attribution;
     return (
@@ -118,7 +121,7 @@ const MainMediaDisplay = ( {
     selectedMediaIndex,
   ] );
 
-  const renderSound = useCallback( ( sound: Sound ) => (
+  const renderSound = useCallback( ( sound: SoundItem ) => (
     <View
       className="justify-center items-center"
       style={{
@@ -156,11 +159,7 @@ const MainMediaDisplay = ( {
     selectedMediaIndex,
   ] );
 
-  interface Item {
-    type: "photo" | "sound";
-  }
-
-  const renderItem = useCallback( ( { item }: { item: Item } ) => (
+  const renderItem = useCallback( ( { item }: { item: PhotoItem | SoundItem } ) => (
     item.type === "photo"
       ? renderPhoto( item )
       : renderSound( item )
