@@ -45,7 +45,7 @@ interface Props {
   photos: Omit<PhotoItem, "type">[];
   sounds?: Omit<SoundItem, "type">[];
   selectedMediaIndex: number;
-  setSelectedMediaIndex: Function;
+  setSelectedMediaIndex: ( index: number ) => void;
 }
 
 const MainMediaDisplay = ( {
