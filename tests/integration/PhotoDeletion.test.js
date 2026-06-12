@@ -86,9 +86,8 @@ describe( "Photo Deletion", ( ) => {
   const actor = userEvent.setup( );
 
   async function takePhotoForNewObs() {
-    const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-    await actor.press( takePhotoButton );
     await navigateToStandardCameraFromMyObs();
+    await takeStandardCameraPhotoAndConfirm();
   }
 
   async function deletePhotoInMediaViewer() {
