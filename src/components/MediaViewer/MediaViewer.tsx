@@ -68,10 +68,11 @@ const MediaViewer = ( {
       : uris.indexOf( uri ),
   );
   const { t } = useTranslation( );
-  const [
-    mediaToDelete,
-    setMediaToDelete,
-  ]: [null | { type: string; uri: string }, Function] = useState( null );
+  interface MediaToDelete {
+    type: "sound" | "photo";
+    uri: string;
+  }
+  const [mediaToDelete, setMediaToDelete] = useState<MediaToDelete | null>( null );
 
   const horizontalScroll = useRef( null );
 
