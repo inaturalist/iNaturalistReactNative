@@ -19,14 +19,19 @@ import MainMediaDisplay from "./MainMediaDisplay";
 import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
 
-interface _Photo {
+interface MediaToDelete {
+  type: "sound" | "photo";
+  uri: string;
+}
+
+interface PhotoItem {
   attribution?: string;
   licenseCode?: string;
   localFilePath?: string;
   url: string;
 }
 
-interface _Sound {
+interface SoundItem {
   file_url: string;
   hidden: boolean;
 }
@@ -40,8 +45,8 @@ interface Props {
   onClose?: ( ) => void;
   onDeletePhoto?: ( uri: string ) => void;
   onDeleteSound?: ( uri: string ) => void;
-  photos?: _Photo[];
-  sounds?: _Sound[];
+  photos?: PhotoItem[];
+  sounds?: SoundItem[];
   uri?: string | null;
 }
 
@@ -69,10 +74,6 @@ const MediaViewer = ( {
       : uris.indexOf( uri ),
   );
   const { t } = useTranslation( );
-  interface MediaToDelete {
-    type: "sound" | "photo";
-    uri: string;
-  }
   const [mediaToDelete, setMediaToDelete] = useState<MediaToDelete | null>( null );
 
   const horizontalScroll = useRef<FlatList>( null );
