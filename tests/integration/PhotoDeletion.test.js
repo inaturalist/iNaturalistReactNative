@@ -156,9 +156,9 @@ describe( "Photo Deletion", ( ) => {
     const addEvidenceSheet = await screen.findByTestId( "AddEvidenceSheet" );
     const cameraButton = await within( addEvidenceSheet ).findByLabelText( "Camera" );
     await actor.press( cameraButton );
-    // Tap the photo preview to enter the MediaViewer
     await navigateToStandardCameraFromMyObs();
     await actor.press( await screen.findByTestId( "take-photo-button" ) );
+    // Tap the photo preview to enter the MediaViewer
     const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
     await actor.press( carouselPhoto );
     await deletePhotoInMediaViewer();
