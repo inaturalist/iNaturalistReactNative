@@ -41,8 +41,10 @@ interface Props {
   editable?: boolean;
   deleting?: boolean;
   // Optional component to use as the header
-  header?: Function;
-  onClose?: ( ) => void;
+  header?: (
+    { onClose, photoCount }: { onClose: ( ) => void; photoCount: number}
+  ) => React.JSX.Element;
+  onClose?: () => void;
   onDeletePhoto?: ( uri: string ) => void;
   onDeleteSound?: ( uri: string ) => void;
   photos?: PhotoItem[];
