@@ -12,7 +12,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo } from "react";
 import Photo from "realmModels/Photo";
-import { useDebugMode, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import { UPLOAD_IN_PROGRESS } from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
@@ -46,8 +46,7 @@ const ObsListItem = ( {
   explore = false,
   hideMetadata,
   hideRGLabel = true,
-  // TODO: figure out if we need this if it's "just a test"
-  missingBasics: missingBasicsFromProp,
+  missingBasics,
   observation,
   onUploadButtonPress,
   queued,
@@ -59,7 +58,6 @@ const ObsListItem = ( {
 }: Props ): Node => {
   const { t } = useTranslation();
   const uploadStatus = useStore( state => state.uploadStatus );
-  const { isDebug } = useDebugMode( );
 
   // made an API change so we're no longer storing user for every observation in realm,
   // because we already know all observations belong to the logged in user. so we need
@@ -69,12 +67,6 @@ const ObsListItem = ( {
   const isObscured = observation?.obscured && !belongsToCurrentUser;
   const geoprivacy = observation?.geoprivacy;
   const taxonGeoprivacy = observation?.taxon_geoprivacy;
-  const missingBasics = (
-    // Currently just a test
-    isDebug
-    && observation.needs_sync
-    && missingBasicsFromProp
-  );
 
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
 
@@ -164,7 +156,7 @@ const ObsListItem = ( {
         {!hideObsUploadStatus && (
           <ObsUploadStatus
             explore={explore}
-            missingBasics={missingBasicsFromProp}
+            missingBasics={missingBasics}
             onPress={onUploadButtonPress}
             layout="vertical"
             observation={observation}
