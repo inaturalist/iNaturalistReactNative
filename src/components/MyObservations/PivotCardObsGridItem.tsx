@@ -10,16 +10,9 @@ import { useCurrentUser } from "sharedHooks";
 
 const { useObject } = RealmContext;
 
+// one-off simplified version of ObsGridItem for the Onboarding PivotCard
 const PivotCardObsGridItem = ( { uuid }: { uuid: string } ) => {
-  const obs = useObject<{ uuid: string }>( "Observation", uuid, [
-    "observationPhotos.photo.url",
-    "observationPhotos.photo.localFilePath",
-    "taxon.id",
-    "taxon.name",
-    "taxon.preferred_common_name",
-    "taxon.rank",
-    "taxon.iconic_taxon_name",
-  ] );
+  const obs = useObject<{ uuid: string }>( "Observation", uuid );
   const currentUser = useCurrentUser( );
   if ( !obs ) return null;
   const photo = photoFromObservation( obs );
