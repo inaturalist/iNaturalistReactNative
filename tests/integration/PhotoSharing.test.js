@@ -3,6 +3,20 @@ import { Platform } from "react-native";
 import ShareMenu from "react-native-share-menu";
 import { renderApp } from "tests/helpers/render";
 
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.realm,
+      useQuery: ( ) => [],
+      useObject: ( type, uuid ) => global.realm?.objectForPrimaryKey( type, uuid ) ?? null,
+    },
+  };
+} );
+
 const JPEG = "image/jpeg";
 
 const mockNavigate = jest.fn( );

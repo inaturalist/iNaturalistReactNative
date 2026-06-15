@@ -80,7 +80,7 @@ const renderMyObservations = layout => renderComponent(
     activeTab={OBSERVATIONS_TAB}
     layout={layout}
     observationIds={mockObservationIds}
-    obsMissingBasicsUuids={[]}
+    numUnuploadedObsMissingBasics={0}
     onEndReached={jest.fn( )}
     toggleLayout={jest.fn( )}
   />,
