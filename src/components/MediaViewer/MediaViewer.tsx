@@ -7,8 +7,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import type { FlatList } from "react-native";
 import { StatusBar } from "react-native";
+import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Photo from "realmModels/Photo";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -78,7 +78,7 @@ const MediaViewer = ( {
   const { t } = useTranslation( );
   const [mediaToDelete, setMediaToDelete] = useState<MediaToDelete | null>( null );
 
-  const horizontalScroll = useRef<FlatList>( null );
+  const horizontalScroll = useRef<ICarouselInstance>( null );
 
   const { screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
@@ -87,7 +87,7 @@ const MediaViewer = ( {
     // when a user taps an item in the carousel, the UI needs to automatically
     // scroll to the index of the item they selected
     setSelectedMediaIndex( index );
-    horizontalScroll?.current?.scrollToIndex( { index, animated: true } );
+    horizontalScroll?.current?.scrollTo( { index, animated: true } );
   }, [setSelectedMediaIndex] );
 
   // If we've removed an item the selectedPhoto index might refer to a item
@@ -96,7 +96,7 @@ const MediaViewer = ( {
     if ( uris.length > 0 && selectedMediaIndex >= uris.length ) {
       const newIndex = Math.max( 0, selectedMediaIndex - 1 );
       setSelectedMediaIndex( newIndex );
-      horizontalScroll?.current?.scrollToIndex( {
+      horizontalScroll?.current?.scrollTo( {
         index: newIndex,
         animated: false,
       } );
