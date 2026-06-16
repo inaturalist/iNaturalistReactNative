@@ -2,7 +2,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
-import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
 import {
   AccountCreationCard,
   FiftyObservationCard,
@@ -41,6 +40,7 @@ import type { SpeciesCount } from "types/sorting";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
+import PivotCardObsGridItem from "./PivotCardObsGridItem";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
@@ -456,12 +456,8 @@ const MyObservationsSimple = ( {
               onImageComponentPress: handlePivotCardGridItemPress,
               accessibilityHint: t( "Navigates-to-observation-details" ),
               imageComponent: (
-                <ObsGridItem
-                  observation={observations[0]}
-                  currentUser={currentUser}
-                  explore={false}
-                  queued={false}
-                  testID="PivotCardGridItem"
+                <PivotCardObsGridItem
+                  uuid={observations[0].uuid}
                 />
               ),
             }}
