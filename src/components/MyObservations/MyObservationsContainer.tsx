@@ -5,6 +5,11 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import { fetchSpeciesCounts } from "api/observations";
 import { RealmContext } from "providers/contexts";
+import {
+  MY_OBSERVATIONS_ACTION,
+  MyObservationsProvider,
+  useMyObservations,
+} from "providers/MyObservationsContext";
 import React, {
   useCallback,
   useEffect,
@@ -16,9 +21,9 @@ import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation } from "realmModels/types";
+import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
   sortSpeciesCounts,
-  SPECIES_SORT,
   speciesSortToApiParams,
 } from "sharedHelpers/speciesSort";
 import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
@@ -62,7 +67,7 @@ interface SyncOptions {
   skipSomeUploads?: string[];
 }
 
-const MyObservationsContainer = ( ) => {
+const MyObservationsWithProvider = ( ) => {
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
   const realm = useRealm( );
@@ -70,6 +75,8 @@ const MyObservationsContainer = ( ) => {
   const listRef = useRef<FlashListRef<RealmObservation>>( null );
   const taxaListRef = useRef<FlashListRef<SpeciesCount>>( null );
   const navigateToObsEdit = useNavigateToObsEdit( );
+
+  const { state: myObsState, dispatch: myObsDispatch } = useMyObservations( );
 
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
@@ -126,8 +133,12 @@ const MyObservationsContainer = ( ) => {
 
   const [openSheet, setOpenSheet] = useState<ACTIVE_SHEET>( ACTIVE_SHEET.NONE );
 
-  const [speciesSortOptionId, setSpeciesSortOptionId]
-    = useState<SPECIES_SORT>( SPECIES_SORT.COUNT_DESC );
+  const setSpeciesSortOptionId = ( value: SPECIES_SORT ) => {
+    myObsDispatch( {
+      type: MY_OBSERVATIONS_ACTION.SET_SPECIES_SORT,
+      speciesSort: value,
+    } );
+  };
 
   const toggleLayout = ( ) => {
     writeLayoutToStorage( layout === "grid"
@@ -322,8 +333,8 @@ const MyObservationsContainer = ( ) => {
 
   // Map the selected sort option to API params
   const sortAPIParams = useMemo(
-    () => speciesSortToApiParams( speciesSortOptionId ),
-    [speciesSortOptionId],
+    () => speciesSortToApiParams( myObsState.speciesSort ),
+    [myObsState.speciesSort],
   );
 
   const {
@@ -333,7 +344,7 @@ const MyObservationsContainer = ( ) => {
     totalResults: numTotalTaxaRemote,
     refetch: refetchTaxa,
   } = useInfiniteScroll(
-    `MyObsSimple-fetchSpeciesCounts-${currentUser?.id}-${speciesSortOptionId}`,
+    `MyObsSimple-fetchSpeciesCounts-${currentUser?.id}-${myObsState.speciesSort}`,
     fetchSpeciesCounts,
     {
       user_id: currentUser?.id,
@@ -394,13 +405,13 @@ const MyObservationsContainer = ( ) => {
     }
 
     // For logged-out users: apply client-side sorting to local data
-    return sortSpeciesCounts( unsortedTaxa || [], speciesSortOptionId );
+    return sortSpeciesCounts( unsortedTaxa || [], myObsState.speciesSort );
   }, [
     currentUser,
     isConnected,
     remoteObservedTaxaCounts,
     localObservedSpeciesCount,
-    speciesSortOptionId,
+    myObsState.speciesSort,
   ] );
 
   if ( !layout ) { return null; }
@@ -449,11 +460,17 @@ const MyObservationsContainer = ( ) => {
       setOpenSheet={setOpenSheet}
       setSpeciesSortOptionId={setSpeciesSortOptionId}
       showNoResults={showNoResults}
-      speciesSortOptionId={speciesSortOptionId}
+      speciesSortOptionId={myObsState.speciesSort}
       taxa={taxa}
       toggleLayout={toggleLayout}
     />
   );
 };
+
+const MyObservationsContainer = ( ) => (
+  <MyObservationsProvider>
+    <MyObservationsWithProvider />
+  </MyObservationsProvider>
+);
 
 export default MyObservationsContainer;

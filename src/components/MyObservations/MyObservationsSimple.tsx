@@ -67,7 +67,7 @@ interface Props {
   openSheet: ACTIVE_SHEET;
   setActiveTab: ( newTab: string ) => void;
   setOpenSheet: ( value: ACTIVE_SHEET ) => void;
-  setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SPECIES_SORT>>;
+  setSpeciesSortOptionId: ( value: SPECIES_SORT ) => void;
   showNoResults: boolean;
   speciesSortOptionId: SPECIES_SORT;
   taxa?: SpeciesCount[];
