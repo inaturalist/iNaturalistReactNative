@@ -47,7 +47,7 @@ const PhotoSelector = ( {
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={t( "View-photo" )}
-      onPress={() => scrollToIndex( index )}
+      onPress={( ) => scrollToIndex( index )}
       className={classnames(
         "overflow-hidden",
         {
@@ -59,23 +59,25 @@ const PhotoSelector = ( {
         },
       )}
     >
-      {item.type === "photo"
-        ? (
-          <Image
-            source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( item ) }}
-            accessibilityIgnoresInvertColors
-            className="w-full h-full"
-          />
-        )
-        : (
-          <View className="w-full h-full bg-darkGray items-center justify-center">
-            <INatIcon
-              name="sound-outline"
-              color="white"
-              size={26}
+      {
+        item.type === "photo"
+          ? (
+            <Image
+              source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( item ) }}
+              accessibilityIgnoresInvertColors
+              className="w-full h-full"
             />
-          </View>
-        )}
+          )
+          : (
+            <View className="w-full h-full bg-darkGray items-center justify-center">
+              <INatIcon
+                name="sound-outline"
+                color="white"
+                size={26}
+              />
+            </View>
+          )
+      }
     </Pressable>
   ), [
     isLargeScreen,
