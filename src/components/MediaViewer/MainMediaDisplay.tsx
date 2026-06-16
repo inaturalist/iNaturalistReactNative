@@ -3,9 +3,8 @@ import {
   TransparentCircleButton,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, {
-  useMemo, useState,
-} from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import type { PanGesture } from "react-native-gesture-handler";
 import {
   Gesture,
   GestureDetector,
@@ -146,17 +145,30 @@ const MainMediaDisplay = ( {
       : renderSound( item )
   );
 
-  const swipeToCloseGesture = Gesture.Simultaneous(
-    Gesture.Pan( )
-      .runOnJS( true )
-      .onUpdate( ( { translationY, velocityY } ) => {
-        if ( translationY > 50 && velocityY > 500 ) {
-          // Close media viewer on swipe up
-          onClose( );
-        }
-      } ),
-    Gesture.Native( ),
-  );
+  // Must be stable: onConfigurePanGesture is a useMemo dependency inside the Carousel
+  const onConfigurePanGesture = useCallback( ( panGesture: PanGesture ) => {
+    panGesture
+      // Page only on clearly horizontal drags; cede vertical intent as swipe-to-close
+      .activeOffsetX( [-10, 10] )
+      .failOffsetY( [-15, 15] )
+      // A second finger means pinch-to-zoom; never page with two pointers
+      .maxPointers( 1 );
+  }, [] );
+
+  const swipeToCloseGesture = Gesture.Pan()
+    .runOnJS( true )
+    // While zoomed, a downward drag should pan the image, not close the viewer
+    .enabled( !zooming )
+    .maxPointers( 1 )
+    // Activate only on a mostly-vertical downward drag
+    .activeOffsetY( 15 )
+    .failOffsetX( [-15, 15] )
+    .onUpdate( ( { translationY, velocityY } ) => {
+      if ( translationY > 50 && velocityY > 500 ) {
+        // Close media viewer on swipe down
+        onClose();
+      }
+    } );
 
   return (
     <View
@@ -181,8 +193,7 @@ const MainMediaDisplay = ( {
               // Disable scrolling when image is zooming
               enabled={!zooming}
               onSnapToItem={setSelectedMediaIndex}
-              // onConfigurePanGesture={onConfigurePanGesture}
-              // windowSize={3}
+              onConfigurePanGesture={onConfigurePanGesture}
             />
           </View>
         </GestureDetector>
