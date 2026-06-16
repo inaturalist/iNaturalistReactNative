@@ -16,7 +16,7 @@ interface PhotoItem {
 }
 
 interface SoundItem {
-  type: "sounds";
+  type: "sound";
 }
 
 interface Props {
