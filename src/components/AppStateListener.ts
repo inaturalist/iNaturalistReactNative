@@ -2,25 +2,8 @@ import { focusManager } from "@tanstack/react-query";
 import useDeviceStorageFull from "components/Camera/hooks/useDeviceStorageFull";
 import { useEffect, useState } from "react";
 import { AppState } from "react-native";
-import { log } from "sharedHelpers/logger";
-import {
-  usePerformance,
-} from "sharedHooks";
-import useDebugMode from "sharedHooks/useDebugMode";
-
-const logger = log.extend( "AppStateListener" );
 
 const AppStateListener = ( ) => {
-  const { loadTime } = usePerformance( {
-    screenName: "AppStateListener",
-    isLoading: false,
-  } );
-  const { isDebug } = useDebugMode();
-  useEffect( () => {
-    if ( isDebug && loadTime ) {
-      logger.info( loadTime );
-    }
-  }, [isDebug, loadTime] );
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );
   const [deviceStorageFullShown, setDeviceStorageFullShown] = useState( false );
 

@@ -105,7 +105,7 @@ const Menu = ( ) => {
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
-  const insets = useSafeAreaInsets();
+  const { bottom, top } = useSafeAreaInsets( );
 
   const { isConnected } = useNetInfo( );
 
@@ -275,7 +275,7 @@ const Menu = ( ) => {
     <ScrollView
       bounces={false}
       className="bg-white h-full"
-      style={{ paddingTop: insets.top }}
+      style={{ paddingTop: top, paddingBottom: bottom }}
     >
       <View>
         {/* Header */}

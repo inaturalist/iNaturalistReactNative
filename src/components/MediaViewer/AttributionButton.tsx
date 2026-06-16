@@ -4,7 +4,6 @@ import {
 import React from "react";
 import { Alert } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
-import colors from "styles/tailwindColors";
 
 interface Props {
   attribution?: string;
@@ -28,7 +27,6 @@ const AttributionButton = ( {
           ? "creative-commons"
           : "copyright"
       }
-      color={colors.white}
       accessibilityLabel={usableAttribution}
       optionalClasses={optionalClasses}
     />

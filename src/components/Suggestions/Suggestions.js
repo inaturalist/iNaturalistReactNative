@@ -3,8 +3,8 @@
 import {
   Body1,
   Heading4,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
@@ -177,7 +177,7 @@ const Suggestions = ( {
   const sections = createSections( );
 
   return (
-    <ViewWrapper testID="suggestions" useTopInset={false}>
+    <ScreenShell testID="suggestions">
       <SectionList
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={renderFooter}
@@ -188,7 +188,7 @@ const Suggestions = ( {
         stickySectionHeadersEnabled={false}
         testID="Suggestions.SectionList"
       />
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 

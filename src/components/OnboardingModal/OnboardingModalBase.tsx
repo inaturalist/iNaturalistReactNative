@@ -1,4 +1,5 @@
-import { INatIconButton, ViewWrapper } from "components/SharedComponents";
+import { INatIconButton } from "components/SharedComponents";
+import { TopAndBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { PropsWithChildren } from "react";
 import React from "react";
@@ -16,7 +17,7 @@ const OnboardingModalBase = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   return (
-    <ViewWrapper wrapperClassName="bg-white/0">
+    <TopAndBottomInsetViewWrapper wrapperClassName="bg-white/0">
       <StatusBar barStyle="light-content" />
       <View className="flex-1 relative">
         <View className="flex-1 justify-center items-center">
@@ -38,7 +39,7 @@ const OnboardingModalBase = ( {
         </View>
 
       </View>
-    </ViewWrapper>
+    </TopAndBottomInsetViewWrapper>
   );
 };
 

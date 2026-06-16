@@ -221,6 +221,12 @@
             "value" : "iNaturalist"
           }
         },
+        "hy" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "iNaturalist"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "new",
@@ -691,6 +697,12 @@
           }
         },
         "hu" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "iNaturalist"
+          }
+        },
+        "hy" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "iNaturalist"
@@ -1171,6 +1183,12 @@
             "value" : "Meglévő hangok hozzáadása a megfigyelésedhez"
           }
         },
+        "hy" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add existing sounds to your observations."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1645,6 +1663,12 @@
             "value" : "A kamerához való hozzáférés feltétele az MI-kamera használatának és a fényképkészítésnek."
           }
         },
+        "hy" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Camera access lets you use the AI Camera and take photos."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2114,6 +2138,12 @@
           }
         },
         "hu" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : ""
+          }
+        },
+        "hy" : {
           "stringUnit" : {
             "state" : "new",
             "value" : ""
@@ -2594,6 +2624,12 @@
             "value" : "GPS-koordináták a megfigyelésekhez, helyzetmegjelenítés és egyebek."
           }
         },
+        "hy" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add GPS coordinates to observations, show your location on maps, and more."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3066,6 +3102,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hanggal rendelkező megfigyelések rögzítése"
+          }
+        },
+        "hy" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Record sound observations of nature."
           }
         },
         "id" : {
@@ -3542,6 +3584,12 @@
             "value" : "iNaturalist-fényképek exportálása a könyvtáradba"
           }
         },
+        "hy" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Export iNaturalist photos to your library."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4014,6 +4062,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fényképek exportálása és importálása az iNatutalist és a könyvtárad között."
+          }
+        },
+        "hy" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Export and import iNaturalist photos to and from your library."
           }
         },
         "id" : {

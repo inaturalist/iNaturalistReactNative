@@ -1,4 +1,4 @@
-import type { ApiProject } from "api/types";
+import type { ProjectRulePreference } from "api/types";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
@@ -15,16 +15,21 @@ import formatProjectDate from "../Projects/helpers/displayDates";
 
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
+interface Project {
+  icon: string;
+  id: number;
+  project_type: "collection" | "umbrella" | "";
+  rule_preferences: ProjectRulePreference[];
+  title: string;
+}
+
 interface Props {
-  item?: ApiProject | null;
+  item?: Project | null;
   isHeader?: boolean;
 }
 
 const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   const { t, i18n } = useTranslation( );
-
-  const { projectDate, shouldDisplayDateRange } = formatProjectDate( item, t, i18n );
-  const displayDateRange = shouldDisplayDateRange && !isHeader;
 
   const iconClassName = "w-[62px] h-[62px] rounded-lg bg-white mr-3";
 
@@ -36,8 +41,8 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
     />
   );
 
-  const displayProjectIcon = icon => {
-    const productionIcon = icon?.replace( "staticdev", "static" );
+  const displayProjectIcon = ( ) => {
+    const productionIcon = ( item as Project ).icon.replace( "staticdev", "static" );
 
     if ( productionIcon === defaultProjectIcon ) {
       return (
@@ -64,18 +69,22 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
           cachePolicy: "discWithCacheControl",
           resizeMode: "cover",
         }}
-        testID={`Project.${item?.id}.photo`}
+        testID={`Project.${( item as Project ).id}.photo`}
         accessibilityIgnoresInvertColors
       />
     );
   };
 
   if ( !item ) { return null; }
+
+  const { projectDate, shouldDisplayDateRange } = formatProjectDate( item, t, i18n );
+  const displayDateRange = shouldDisplayDateRange && !isHeader;
+
   return (
     <View
       className="flex-row items-center shrink py-1"
     >
-      {displayProjectIcon( item?.icon )}
+      {displayProjectIcon( )}
       <View className="shrink ml-3">
         <Body1>{item.title}</Body1>
         <List2 className="mt-2">

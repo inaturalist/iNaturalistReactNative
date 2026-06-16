@@ -22,6 +22,7 @@ import {
   List2,
   OfflineNotice,
 } from "components/SharedComponents";
+import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import i18n from "i18next";
 import compact from "lodash/compact";
@@ -34,7 +35,6 @@ import {
   StatusBar,
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Observation from "realmModels/Observation";
 import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
 import { log } from "sharedHelpers/logger";
@@ -96,7 +96,6 @@ const TaxonDetails = ( ): Node => {
   const {
     id, hideNavButtons, firstPhotoID, representativePhoto,
   } = params;
-  const insets = useSafeAreaInsets();
   const { t } = useTranslation( );
   const { isConnected } = useNetInfo( );
   const { remoteUser } = useUserMe( );
@@ -403,10 +402,7 @@ const TaxonDetails = ( ): Node => {
   }
 
   return (
-    <View
-      className="flex-1 bg-white"
-      style={{ paddingTop: insets.top }}
-    >
+    <SharedStackViewWrapper>
       <StatusBar barStyle="dark-content" />
       <ScrollView
         testID={`TaxonDetails.${taxon?.id}`}
@@ -533,7 +529,7 @@ const TaxonDetails = ( ): Node => {
           />
         </View>
       </BottomSheet>
-    </View>
+    </SharedStackViewWrapper>
   );
 };
 

@@ -11,18 +11,46 @@ import ObservationsFlashList from "components/ObservationsFlashList/Observations
 import {
   Body2,
   Button,
+  RadioButtonSheet,
   ViewWrapper,
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
-import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
-import React from "react";
+import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
+import React, { useState } from "react";
+import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import {
+  OBSERVATIONS_SORT_OPTIONS,
+  useObservationsSortLabels,
+} from "sharedHelpers/observationsSort";
 import { useTranslation } from "sharedHooks";
 
+interface SortOption {
+  label: string;
+  text: string;
+  value: OBSERVATIONS_SORT;
+}
+
 const ExploreResults = ( ) => {
-  const { state, requestLocationPermissions } = useExploreV2( );
+  const { dispatch, state, requestLocationPermissions } = useExploreV2( );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
+  const [showSortSheet, setShowSortSheet] = useState( false );
+  const observationsSortLabels = useObservationsSortLabels( );
+
+  const sortOptions = OBSERVATIONS_SORT_OPTIONS.reduce(
+    ( acc, sortBy ) => {
+      const { label, text } = observationsSortLabels[sortBy];
+      acc[sortBy] = {
+        label,
+        text,
+        value: sortBy,
+      };
+      return acc;
+    },
+    {} as Record<OBSERVATIONS_SORT, SortOption>,
+  );
+
   const queryParams = buildExploreV2QueryParams( state );
 
   const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED
@@ -75,14 +103,28 @@ const ExploreResults = ( ) => {
               />
               <ExploreV2DebugSheet />
               <SortButton
-                // TODO: wire up onPress to show sort bottom sheet
-                onPress={() => console.log( "onPress SortButton" )}
+                onPress={() => setShowSortSheet( true )}
                 // TODO: add label based on state wether this is sorting species or observations
-                accessibilityLabel={t( "Change-species-sort-order" )}
+                accessibilityLabel={t( "Change-observations-sort-order" )}
               />
             </>
           )}
       </View>
+      {showSortSheet && (
+        <RadioButtonSheet
+          headerText={t( "SORT-OBSERVATIONS" )}
+          radioValues={sortOptions}
+          selectedValue={state.sortBy}
+          confirm={sortBy => {
+            dispatch( {
+              type: EXPLORE_V2_ACTION.SET_SORT,
+              sortBy: sortBy as OBSERVATIONS_SORT,
+            } );
+            setShowSortSheet( false );
+          }}
+          onPressClose={() => setShowSortSheet( false )}
+        />
+      )}
     </ViewWrapper>
   );
 };
