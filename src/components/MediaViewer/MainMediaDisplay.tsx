@@ -67,8 +67,6 @@ const MainMediaDisplay = ( {
     ...sounds.map( sound => ( { ...sound, type: "sound" as const } ) ),
   ] ), [photos, sounds] );
 
-  // t changes a lot, but these strings don't, so using them as useCallback
-  // dependencies keeps that method from getting redefined a lot
   const deletePhotoLabel = t( "Delete-photo" );
   const deleteSoundLabel = t( "Delete-sound" );
 
@@ -148,10 +146,10 @@ const MainMediaDisplay = ( {
   // Must be stable: onConfigurePanGesture is a useMemo dependency inside the Carousel
   const onConfigurePanGesture = useCallback( ( panGesture: PanGesture ) => {
     panGesture
-      // Page only on clearly horizontal drags; cede vertical intent as swipe-to-close
+      // Page only on clearly horizontal drags; leave vertical intent as swipe-to-close
       .activeOffsetX( [-10, 10] )
       .failOffsetY( [-15, 15] )
-      // A second finger means pinch-to-zoom; never page with two pointers
+      // A second finger means pinch-to-zoom do not pan
       .maxPointers( 1 );
   }, [] );
 
