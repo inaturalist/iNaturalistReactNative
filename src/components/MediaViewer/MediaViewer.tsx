@@ -44,7 +44,7 @@ interface Props {
   header?: (
     { onClose, photoCount }: { onClose: ( ) => void; photoCount: number}
   ) => React.JSX.Element;
-  onClose?: () => void;
+  onClose?: ( ) => void;
   onDeletePhoto?: ( uri: string ) => void;
   onDeleteSound?: ( uri: string ) => void;
   photos?: PhotoItem[];
