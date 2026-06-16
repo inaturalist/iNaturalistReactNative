@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = 這筆觀察紀錄需要鑑定
 Data-quality-assessment-title-research = 此觀察為研究等級！
 DATE = 日期
 Date = 日期
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = yyyy/MM/dd
 date-format-month-day = MMM d
 date-format-month-year = MMM yyyy
@@ -184,7 +186,9 @@ date-format-short = yyyy/MM/dd
 DATE-OBSERVED = 觀察日期
 Date-observed = 觀察日期
 Date-observed-header-short = 已觀察
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = 觀察日期 - 最新到最舊
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = 觀察日期 - 最舊到最新
 Date-Range = 日期範圍
 DATE-RANGE = 日期範圍
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] 成員
        *[other] 成員
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = 選單
 Missing-Date = 缺漏日期
 MISSING-EVIDENCE = 缺乏證據
@@ -548,8 +553,12 @@ Observation-options = 觀察紀錄選項
 OBSERVATION-WAS-DELETED = 觀察紀錄已刪除
 Observation-with-no-evidence = 觀察紀錄沒有證據
 Observations = 觀察
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = 愛自然的觀察紀錄需要地點和日期才能對科學家有所助益。請在上傳前檢查帶有此圖示的觀察紀錄。
 Observations-View = 檢視觀察紀錄
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] 筆觀察紀錄
@@ -574,6 +583,7 @@ Opens-add-comment-form = 開啟新增評論表單。
 Opens-AI-camera = 開啟 AI 相機。
 Opens-edit-comment-form = 開啟編輯評論表單。
 Opens-location-permission-prompt = 開啟位置權限提示
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = 或是以其他方式登入
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = 或者，您可以嘗試通過放大螢幕、靠近觀察或嘗試不同的角度來獲得更清晰的照片。
 Organism-is-captive = 生物是圈養的
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = 抱歉，這筆觀察紀錄已刪除了
 Sorry-we-dont-know-how-to-open-that-URL = 抱歉，我們不知道怎麼開啟該 URL: { $url }
 SORT-BY = 排序方式
 Sort-by = 排序方式
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORT SPECIES
 sound-playback-separator = /
 Sound-recorder = 錄音機

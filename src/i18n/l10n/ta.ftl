@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = This observation Needs ID
 Data-quality-assessment-title-research = This observation is Research Grade!
 DATE = DATE
 Date = தேதி
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = PP
 date-format-month-day = MMM d
 date-format-month-year = MMM yyyy
@@ -184,7 +186,9 @@ date-format-short = M/d/yy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 Date-Range = Date Range
 DATE-RANGE = DATE RANGE
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] MEMBER
        *[other] MEMBERS
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = பட்டியல்
 Missing-Date = Missing Date
 MISSING-EVIDENCE = MISSING EVIDENCE
@@ -548,8 +553,12 @@ Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-View = Observations View
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] OBSERVATION
@@ -574,6 +583,7 @@ Opens-add-comment-form = Opens add comment form.
 Opens-AI-camera = Opens AI camera.
 Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 Organism-is-captive = Organism is captive
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = Sorry, this observation was deleted
 Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that URL: { $url }
 SORT-BY = SORT BY
 Sort-by = Sort by
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORT SPECIES
 sound-playback-separator = /
 Sound-recorder = Sound recorder

@@ -177,6 +177,8 @@ Data-quality-assessment-title-needs-id = Esta observação precisa de identifica
 Data-quality-assessment-title-research = Esta observação é Research Grade!
 DATE = DATA
 Date = Data
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = PP
 date-format-month-day = d MMM
 date-format-month-year = MMM aaaa
@@ -184,7 +186,9 @@ date-format-short = M/d/aa
 DATE-OBSERVED = DATA OBSERVADA
 Date-observed = Data de observação
 Date-observed-header-short = Observado
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = DATA OBSERVADA - DO MAIS RECENTE AO MAIS ANTIGO
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = DATA OBSERVADA - DA MAIS ANTIGA PARA A MAIS RECENTE
 Date-Range = Intervalo de datas
 DATE-RANGE = INTERVALO DE DATAS
@@ -471,6 +475,7 @@ MEMBERS-WITHOUT-NUMBER =
         [um] MEMBRO
        *[outros] MEMBROS
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = Menu
 Missing-Date = Falta Data
 MISSING-EVIDENCE = PROVAS EM FALTA
@@ -548,8 +553,12 @@ Observation-options = Opções de observação
 OBSERVATION-WAS-DELETED = A OBSERVAÇÃO FOI SUPRIMIDA
 Observation-with-no-evidence = Observação sem evidência
 Observations = Observações
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = As observações iNaturalist precisam de um local e data para serem úteis aos cientistas. Por favor, verifique as observações com este ícone antes de carregar.
 Observations-View = Observações Ver
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [um] OBSERVAÇÃO
@@ -574,6 +583,7 @@ Opens-add-comment-form = Abre o formulário adicionar comentário.
 Opens-AI-camera = Abre a câmera AI.
 Opens-edit-comment-form = Abre o formulário de comentário de edição.
 Opens-location-permission-prompt = Abre o prompt de permissão de localização
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = OU INICIE SESSÃO COM
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Ou, você pode tentar obter uma foto mais clara ampliando, aproximando-se ou tentando um ângulo diferente.
 Organism-is-captive = Organismo é cativo
@@ -784,6 +794,7 @@ Sorry-this-observation-was-deleted = Desculpe, esta observação foi excluída
 Sorry-we-dont-know-how-to-open-that-URL = Desculpe, não sabemos como abrir esse URL: { $url }
 SORT-BY = ORDENAR POR
 Sort-by = Ordenar por
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORT SPECIES
 sound-playback-separator = /
 Sound-recorder = Gravador de som
