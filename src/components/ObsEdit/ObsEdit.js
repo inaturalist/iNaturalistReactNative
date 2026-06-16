@@ -1,7 +1,7 @@
 // @flow
 
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { ViewWrapper } from "components/SharedComponents";
+import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
@@ -111,7 +111,7 @@ const ObsEdit = ( ): Node => {
 
   return (
     <>
-      <ViewWrapper testID="obs-edit">
+      <SharedStackViewWrapper testID="obs-edit">
         <KeyboardAwareScrollView
           stickyHeaderIndices={[0]}
         >
@@ -159,18 +159,18 @@ const ObsEdit = ( ): Node => {
             </View>
           )}
         </KeyboardAwareScrollView>
-      </ViewWrapper>
-      {savedOrUploadedMultiObsFlow && <MultipleObservationsUploadStatus />}
-      {currentObservation && (
-        <BottomButtonsContainer
-          currentObservation={currentObservation}
-          currentObservationIndex={currentObservationIndex}
-          observations={observations}
-          passesEvidenceTest={passesEvidenceTest}
-          setCurrentObservationIndex={setCurrentObservationIndex}
-          transitionAnimation={fade}
-        />
-      )}
+        {savedOrUploadedMultiObsFlow && <MultipleObservationsUploadStatus />}
+        {currentObservation && (
+          <BottomButtonsContainer
+            currentObservation={currentObservation}
+            currentObservationIndex={currentObservationIndex}
+            observations={observations}
+            passesEvidenceTest={passesEvidenceTest}
+            setCurrentObservationIndex={setCurrentObservationIndex}
+            transitionAnimation={fade}
+          />
+        )}
+      </SharedStackViewWrapper>
       {renderLocationPermissionGate( {
         // If the user grants location permission while on this screen,
         // we want to start watching the location no matter how the observation
