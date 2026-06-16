@@ -60,7 +60,6 @@ const MainMediaDisplay = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const { screenWidth } = useDeviceOrientation( );
-  const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
   const items = useMemo( ( ) => ( [
     ...photos.map( photo => ( { ...photo, type: "photo" as const } ) ),
@@ -111,11 +110,7 @@ const MainMediaDisplay = ( {
 
   const renderSound = ( sound: SoundItem ) => (
     <View
-      className="justify-center items-center"
-      style={{
-        width: screenWidth,
-        height: displayHeight,
-      }}
+      className="flex-1 justify-center items-center"
     >
       <SoundContainer
         autoPlay={autoPlaySound}
@@ -169,13 +164,7 @@ const MainMediaDisplay = ( {
     } );
 
   return (
-    <View
-      className="flex-1"
-      onLayout={event => {
-        const { height } = event.nativeEvent.layout;
-        setDisplayHeight( height );
-      }}
-    >
+    <View className="flex-1">
       <GestureHandlerRootView>
         <GestureDetector gesture={swipeToCloseGesture}>
           <View collapsable={false}>
