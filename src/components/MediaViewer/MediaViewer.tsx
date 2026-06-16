@@ -1,8 +1,5 @@
-// @flow
-
 import { WarningSheet } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -11,6 +8,7 @@ import React, {
   useState,
 } from "react";
 import { StatusBar } from "react-native";
+import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Photo from "realmModels/Photo";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -21,26 +19,37 @@ import MainMediaDisplay from "./MainMediaDisplay";
 import MediaSelector from "./MediaSelector";
 import MediaViewerHeader from "./MediaViewerHeader";
 
-type Props = {
-  autoPlaySound?: boolean, // automatically start playing a sound when it is visible
-  editable?: boolean,
-  deleting?: boolean,
+interface MediaToDelete {
+  type: "sound" | "photo";
+  uri: string;
+}
+
+interface PhotoItem {
+  attribution?: string;
+  licenseCode?: string;
+  localFilePath?: string;
+  url?: string;
+}
+
+interface SoundItem {
+  file_url: string;
+  hidden: boolean;
+}
+
+interface Props {
+  autoPlaySound?: boolean; // automatically start playing a sound when it is visible
+  editable?: boolean;
+  deleting?: boolean;
   // Optional component to use as the header
-  header?: Function,
-  onClose?: Function,
-  onDeletePhoto?: Function,
-  onDeleteSound?: Function,
-  photos?: {
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }[],
-  sounds?: {
-    file_url: string
-  }[],
-  uri?: string | null
+  header?: (
+    { onClose, photoCount }: { onClose: ( ) => void; photoCount: number}
+  ) => React.JSX.Element;
+  onClose?: ( ) => void;
+  onDeletePhoto?: ( uri: string ) => void;
+  onDeleteSound?: ( uri: string ) => void;
+  photos?: PhotoItem[];
+  sounds?: SoundItem[];
+  uri?: string | null;
 }
 
 const MediaViewer = ( {
@@ -54,7 +63,7 @@ const MediaViewer = ( {
   photos = [],
   sounds = [],
   uri,
-}: Props ): Node => {
+}: Props ) => {
   const insets = useSafeAreaInsets();
   const uris = useMemo( ( ) => ( [
     ...photos.map( photo => photo.url || Photo.getLocalPhotoUri( photo.localFilePath ) ),
@@ -67,21 +76,18 @@ const MediaViewer = ( {
       : uris.indexOf( uri ),
   );
   const { t } = useTranslation( );
-  const [
-    mediaToDelete,
-    setMediaToDelete,
-  ]: [null | { type: string, uri: string }, Function] = useState( null );
+  const [mediaToDelete, setMediaToDelete] = useState<MediaToDelete | null>( null );
 
-  const horizontalScroll = useRef( null );
+  const horizontalScroll = useRef<ICarouselInstance>( null );
 
   const { screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
-  const scrollToIndex = useCallback( index => {
+  const scrollToIndex = useCallback( ( index: number ) => {
     // when a user taps an item in the carousel, the UI needs to automatically
     // scroll to the index of the item they selected
     setSelectedMediaIndex( index );
-    horizontalScroll?.current?.scrollToIndex( { index, animated: true } );
+    horizontalScroll?.current?.scrollTo( { index, animated: true } );
   }, [setSelectedMediaIndex] );
 
   // If we've removed an item the selectedPhoto index might refer to a item
@@ -90,7 +96,7 @@ const MediaViewer = ( {
     if ( uris.length > 0 && selectedMediaIndex >= uris.length ) {
       const newIndex = Math.max( 0, selectedMediaIndex - 1 );
       setSelectedMediaIndex( newIndex );
-      horizontalScroll?.current?.scrollToIndex( {
+      horizontalScroll?.current?.scrollTo( {
         index: newIndex,
         animated: false,
       } );

@@ -1,30 +1,30 @@
-// @flow
-
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useCallback } from "react";
+import type { ListRenderItem } from "react-native";
 import {
   FlatList,
 } from "react-native";
 import Photo from "realmModels/Photo";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  isLargeScreen?: boolean,
-  photos: {
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }[],
-  scrollToIndex: Function,
-  selectedMediaIndex?: number,
-  sounds?: {
-    file_url: string
-  }[],
+interface PhotoItem {
+  localFilePath?: string;
+  type: "photo";
+  url: string;
+}
+
+interface SoundItem {
+  type: "sound";
+}
+
+interface Props {
+  isLargeScreen?: boolean;
+  photos: Omit<PhotoItem, "type">[];
+  scrollToIndex: ( index: number ) => void;
+  selectedMediaIndex?: number;
+  sounds?: Omit<SoundItem, "type">[];
 }
 
 const SMALL_ITEM_CLASS = "rounded-sm w-[42px] h-[42px] mx-[6px] my-[12px]";
@@ -36,14 +36,14 @@ const PhotoSelector = ( {
   scrollToIndex,
   selectedMediaIndex,
   sounds = [],
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const items = [
-    ...photos.map( photo => ( { ...photo, type: "photo" } ) ),
-    ...sounds.map( sound => ( { ...sound, type: "sound" } ) ),
+    ...photos.map( photo => ( { ...photo, type: "photo" as const } ) ),
+    ...sounds.map( sound => ( { ...sound, type: "sound" as const } ) ),
   ];
 
-  const renderItem = useCallback( ( { item, index } ) => (
+  const renderItem: ListRenderItem<PhotoItem | SoundItem> = useCallback( ( { item, index } ) => (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={t( "View-photo" )}
