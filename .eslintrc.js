@@ -3,6 +3,8 @@ module.exports = {
   globals: {
     requestIdleCallback: "readonly",
     cancelIdleCallback: "readonly",
+    __DEV__: "readonly",
+    HermesInternal: "readonly",
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -13,21 +15,21 @@ module.exports = {
   },
   extends: [
     "airbnb",
-    "plugin:i18next/recommended",
     "plugin:@tanstack/query/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:i18next/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react-native-a11y/ios",
-    "plugin:@typescript-eslint/recommended",
   ],
   plugins: [
+    "@stylistic",
+    "@tanstack/query",
+    "@typescript-eslint",
+    "lodash",
     "module-resolver",
     "react-hooks",
     "react-native",
     "simple-import-sort",
-    "@tanstack/query",
-    "@typescript-eslint",
-    "@stylistic",
-    "lodash",
   ],
   rules: {
     "arrow-parens": [2, "as-needed"],
@@ -46,6 +48,7 @@ module.exports = {
         },
       },
     ],
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
     // The AirBNB approach at
     // https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/imports.js#L71
     // is quite particular and forbids imports of devDependencies anywhere
@@ -172,7 +175,6 @@ module.exports = {
     "@typescript-eslint/consistent-type-imports": ["error", {
       fixStyle: "separate-type-imports",
     }],
-    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
 
     "@stylistic/member-delimiter-style": "error",
 
@@ -192,13 +194,13 @@ module.exports = {
     {
       files: ["*.js", "*.jsx"],
       rules: {
-        "@typescript-eslint/consistent-type-definitions": "off",
-        "@typescript-eslint/no-unsafe-function-type": "off",
-        "@typescript-eslint/no-wrapper-object-types": "off",
-        "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/consistent-type-imports": "off",
         "import/consistent-type-specifier-style": "off",
         "@stylistic/member-delimiter-style": "off",
+        "@typescript-eslint/consistent-type-definitions": "off",
+        "@typescript-eslint/consistent-type-imports": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-wrapper-object-types": "off",
       },
     },
     {

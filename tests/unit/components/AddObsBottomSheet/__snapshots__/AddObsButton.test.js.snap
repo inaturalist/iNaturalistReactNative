@@ -36,6 +36,9 @@ exports[`AddObsButton renders correctly 1`] = `
                 {
                   "paddingTop": 16,
                 },
+                {
+                  "paddingBottom": 0,
+                },
               ],
             ]
           }

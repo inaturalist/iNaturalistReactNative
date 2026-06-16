@@ -40,6 +40,7 @@ Adds-ID = Lisää tunnistus
 Adds-your-vote-of-agreement = Äänestä puolesta
 Adds-your-vote-of-disagreement = Äänestä vastaan
 Advanced-Mode = Lisäasetukset
+Advanced-Search = Advanced Search
 ADVANCED-SETTINGS = LISÄASETUKSET
 Affiliation = Kumppanuus: { $site }
 After-capturing-or-importing-photos-show = Kuvien oton tai tuonnin jälkeen näytä:
@@ -83,6 +84,8 @@ attribution-cc-by-nd = osa oikeuksista pidätetään (CC BY-ND)
 attribution-cc-by-sa = osa oikeuksista pidätetään (CC BY-SA)
 August = elokuu
 BACK-TO-LOGIN = TAKAISIN KIRJAUTUMISEEN
+Blog = Blogi
+BLOG = BLOGI
 Bulk-importer = Massatuonti
 By-exiting-changes-not-saved = Jos poistut, havaintoosi tehtyjä muutoksia ei tallenneta.
 By-exiting-observation-not-saved = Jos poistut, havaintoasi ei tallenneta.
@@ -144,6 +147,7 @@ Connect-with-expert-naturalists = Ota yhteyttä asiantunteviin luontoharrastajii
 Connect-with-other-naturalists = Ole yhteydessä muihin luontoharrastajiin ja osallistu keskusteluihin.
 Connection-problem-Please-try-again-later = Yhteysongelma. Yritä myöhemmin uudelleen.
 CONTACT-SUPPORT = OTA YHTEYTTÄ TUKEEN
+Content-Hidden = Sisältö piilotettu
 CONTINUE = JATKA
 Coordinates-copied-to-clipboard = Koordinaatit kopioitu leikepöydälle
 Copy-coordinates = Kopioi koordinaatit
@@ -177,6 +181,8 @@ Data-quality-assessment-title-needs-id = Tämä havainto tarvitsee tunnistuksen
 Data-quality-assessment-title-research = Tämä havainto on tutkimustasoa!
 DATE = PÄIVÄMÄÄRÄ
 Date = Päivämäärä
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = PP
 date-format-month-day = d.M.
 date-format-month-year = MMM yyyy
@@ -184,7 +190,9 @@ date-format-short = M/d/yy
 DATE-OBSERVED = HAVAINTOPÄIVÄMÄÄRÄ
 Date-observed = Havaintopäivämäärä
 Date-observed-header-short = Havaittu
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = HAVAINTOPÄIVÄ - UUSIN ENSIN
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = HAVAINTOPÄIVÄ - VANHIN ENSIN
 Date-Range = Ajanjakso
 DATE-RANGE = AJANJAKSO
@@ -444,6 +452,7 @@ LEAVE-PROJECT = POISTU PROJEKTISTA
 LEAVE-PROJECT--question = POISTU PROJEKTISTA?
 LEAVE-US-A-REVIEW = ARVOSTELE MEIDÄT!
 Lets-reset-your-password = Nollataan salasanasi.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Ladataan iNaturalistin AI-kameraa
 Loads-content-that-requires-an-Internet-connection = Lataa sisältöä, joka vaatii Internet-yhteyden
 LOCATION = SIJAINTI
@@ -470,6 +479,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] JÄSEN
        *[other] JÄSENTÄ
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = Valikko
 Missing-Date = Puuttuva päivämäärä
 MISSING-EVIDENCE = PUUTTUVAT TODISTE
@@ -547,8 +557,12 @@ Observation-options = Havainnon vaihtoehdot
 OBSERVATION-WAS-DELETED = HAVAINTO ON POISTETTU
 Observation-with-no-evidence = Havainto ilman todisteita
 Observations = Havainnot
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalistiset havainnot tarvitsevat sijainnin ja päivämäärän, jotta niistä olisi hyötyä tutkijoille. Tarkista havainnot tällä kuvakkeella ennen lataamista.
 Observations-View = Havainnot-näkymä
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] HAVAINTO
@@ -573,6 +587,7 @@ Opens-add-comment-form = Avaa kommentointilomakkeen.
 Opens-AI-camera = Avaa AI-kamera.
 Opens-edit-comment-form = Avaa Muokkaa kommenttia -lomakkeen.
 Opens-location-permission-prompt = Avaa sijainnin lupakehotteen
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = TAI KIRJAUDU SISÄÄN
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Tai voit yrittää saada selkeämmän kuvan zoomaamalla sisään, lähestymällä eliötä tai kokeilemalla eri kuvakulmaa.
 Organism-is-captive = Eliö on vangittu
@@ -738,15 +753,18 @@ Scientific-Name = Tieteellinen nimi
 Scientific-Name-Common-Name = Tieteellinen nimi (yleiskielinen nimi)
 SEARCH = HAE
 Search = Hae
+Search-for-a-location = Search for a location
 Search-for-a-project = Hae projektia
 SEARCH-FOR-A-TAXON = HAE TAKSONIA
 Search-for-a-taxon = Hae sijaintia
+Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = HAE SIJAINTIA
 SEARCH-PROJECTS = HAE PROJEKTEJA
 Search-suggestions-with-location = Hakuehdotuksia sijainnin perusteella
 Search-suggestions-without-location = Hakuehdotukset ilman sijaintia
 SEARCH-TAXA = HAE TAKSONIA
 SEARCH-USERS = HAE KÄYTTÄJIÄ
+See-journal-posts = Näytä päiväkirjamerkinnät
 See-observations-by-this-user-in-Explore = Katso tämän käyttäjän havainnot Tutki-osiossa
 See-observations-of-this-taxon-in-explore = Katso tämän taksonin havainnot Tutki-osiossa
 See-project-members = Katso projektin jäsenet
@@ -782,6 +800,7 @@ Sorry-this-observation-was-deleted = Valitettavasti tämä havainto poistettiin
 Sorry-we-dont-know-how-to-open-that-URL = Valitettavasti emme osaa avata tuota osoitetta: { $url }
 SORT-BY = JÄRJESTÄ
 Sort-by = Järjestä
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = JÄRJESTÄ LAJIT
 sound-playback-separator = /
 Sound-recorder = Ääninauhuri
@@ -844,6 +863,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = iNatural
 The-iNaturalist-Network = iNaturalist-verkosto on kokoelma paikallisia verkkosivustoja, jotka ovat täysin yhteydessä maailmanlaajuiseen iNaturalist-yhteisöön. Verkostosivustoja tukevat paikalliset instituutiot, jotka edistävät paikallista käyttöä ja helpottavat iNaturalistin tietojen käyttöä paikallisen luonnon monimuotoisuuden hyväksi.
 The-location-will-not-be-visible-to-others = Sijainti ei näy muille, mikä voi tehdä havainnon tunnistamisen mahdottomaksi.
 The-models-that-suggest-species = Mallit, jotka ehdottavat lajeja visuaalisen samankaltaisuuden ja sijainnin perusteella, ovat Sara Beeryn, Tom Brooksin, Elijah Colen, Christian Langen, Oisin Mac Aodhan, Pietro Peronan ja Grant Van Hornin kanssa tehdyn yhteistyön ansiota.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = Tämä eliö on villi, eivätkä ihmiset ole tuoneet sitä tähän paikkaan.
 This-is-how-taxon-names-will-be-displayed = Näin kaikki taksonien nimet näytetään sinulle iNaturalistissa:
 This-is-your-identification-other-people-may-help-confirm-it = Tämä on tunnistuksesi. Muut ihmiset voivat auttaa vahvistamaan sen!
@@ -856,6 +878,7 @@ This-observation-needs-more-identifications = Tämä havainto tarvitsee lisää 
 This-observation-needs-more-identifications-to-become-research-grade = Tämä havainto tarvitsee lisää tunnistuksia saavuttaakseen tutkimustason.
 This-observer-has-opted-out-of-the-Community-Taxon = Tämä havainnoija on jättäytynyt pois yhteisön taksonista
 This-organism-was-placed-by-humans = Ihmiset ovat tuoneet tämän eliön tähän paikkaan. Tämä koskee esimerkiksi puutarhakasveja, lemmikkejä ja eläintarhan eläimiä.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -968,6 +991,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } tunnistaja
        *[other] { $count } tunnistajaa
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

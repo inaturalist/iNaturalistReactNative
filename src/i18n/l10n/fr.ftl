@@ -37,6 +37,7 @@ Adds-ID = Ajoute l’ID
 Adds-your-vote-of-agreement = Ajoute votre vote d'accord
 Adds-your-vote-of-disagreement = Ajoute votre vote de désaccord
 Advanced-Mode = Mode avancé
+Advanced-Search = Advanced Search
 ADVANCED-SETTINGS = PARAMÈTRES AVANCÉS
 Affiliation = Affiliation : { $site }
 After-capturing-or-importing-photos-show = Après avoir capturé ou importé des photos, montrer :
@@ -80,6 +81,8 @@ attribution-cc-by-nd = certains droits réservés (CC BY-ND)
 attribution-cc-by-sa = certains droits réservés (CC BY-SA)
 August = août
 BACK-TO-LOGIN = RETOUR À LA CONNEXION
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Importateur groupé
 By-exiting-changes-not-saved = En quittant, les changements à votre observation ne seront pas sauvegardés.
 By-exiting-observation-not-saved = En quittant, votre observation ne sera pas sauvegardée.
@@ -141,6 +144,7 @@ Connect-with-expert-naturalists = Connectez-vous avec des naturalistes experts
 Connect-with-other-naturalists = Communiquez avec d'autres naturalistes et prenez part à des discussions
 Connection-problem-Please-try-again-later = Problème de connexion. Veuillez réessayer plus tard.
 CONTACT-SUPPORT = CONTACTER LE SUPPORT
+Content-Hidden = Content Hidden
 CONTINUE = CONTINUER
 Coordinates-copied-to-clipboard = Géolocalisation copiée dans le bloc-notes
 Copy-coordinates = Copier les coordonnées
@@ -174,6 +178,8 @@ Data-quality-assessment-title-needs-id = Cette observation nécessite une ID
 Data-quality-assessment-title-research = Cette observation est de Qualité Recherche !
 DATE = DATE
 Date = Date
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = PP
 date-format-month-day = d MMM
 date-format-month-year = yyy MMM
@@ -181,7 +187,9 @@ date-format-short = d/M/yy
 DATE-OBSERVED = DATE D'OBSERVATION
 Date-observed = Date d’observation
 Date-observed-header-short = Observé
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = DATE D'OBSERVATION - DU PLUS RÉCENT AU PLUS ANCIEN
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = DATE D'OBSERVATION - DU PLUS ANCIEN AU PLUS RÉCENT
 Date-Range = Intervalle
 DATE-RANGE = PLAGE DE DATES
@@ -441,6 +449,7 @@ LEAVE-PROJECT = QUITTER LE PROJET
 LEAVE-PROJECT--question = QUITTER LE PROJET ?
 LEAVE-US-A-REVIEW = LAISSEZ-NOUS UN AVIS !
 Lets-reset-your-password = Réinitialisons votre mot de passe.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Chargement de la Caméra IA d'iNaturalist
 Loads-content-that-requires-an-Internet-connection = Charge du contenu nécessitant une connexion internet
 LOCATION = EMPLACEMENT
@@ -467,6 +476,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] 1 MEMBRE
        *[other] { $count } MEMBRES
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = Menu
 Missing-Date = Date manquante
 MISSING-EVIDENCE = MANQUE DE PREUVE
@@ -544,8 +554,12 @@ Observation-options = Options d'observation
 OBSERVATION-WAS-DELETED = L'OBSERVATION A ÉTÉ SUPPRIMÉE
 Observation-with-no-evidence = Observation sans preuve
 Observations = Observations
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = Les observations sur iNaturalist ont besoin d'un lieu et d'une date pour être utiles aux scientifiques. Veuillez vérifier les observations avec cette icône avant de publier.
 Observations-View = Vue des observations
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] OBSERVATION
@@ -570,6 +584,7 @@ Opens-add-comment-form = Ouvre le formulaire d'ajout de commentaire.
 Opens-AI-camera = Ouvre la caméra IA.
 Opens-edit-comment-form = Ouvre le formulaire d'édition de commentaire.
 Opens-location-permission-prompt = Ouvre l'invite d'autorisation de localisation
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = OU SE CONNECTER AVEC
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Vous pouvez également essayer d’obtenir une photo plus nette en zoomant, en vous rapprochant ou en essayant un angle différent.
 Organism-is-captive = L'organisme est captif
@@ -735,15 +750,18 @@ Scientific-Name = Nom scientifique
 Scientific-Name-Common-Name = Nom Scientifique (Nom Vernaculaire)
 SEARCH = RECHERCHER
 Search = Rechercher
+Search-for-a-location = Search for a location
 Search-for-a-project = Rechercher un projet
 SEARCH-FOR-A-TAXON = RECHERCHER UN TAXON
 Search-for-a-taxon = Rechercher un taxon
+Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = RECHERCHER UN LIEU
 SEARCH-PROJECTS = RECHERCHER LES PROJETS
 Search-suggestions-with-location = Rechercher les suggestions avec localisation
 Search-suggestions-without-location = Rechercher les suggestions sans localisation
 SEARCH-TAXA = RECHERCHER LES TAXONS
 SEARCH-USERS = RECHERCHER LES UTILISATEURS
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Voir les observations de cet utilisateur dans l'exploration
 See-observations-of-this-taxon-in-explore = Voir les observations de ce taxon dans l'exploration
 See-project-members = Voir les membres du projet
@@ -779,6 +797,7 @@ Sorry-this-observation-was-deleted = Désolé, cette observation a été supprim
 Sorry-we-dont-know-how-to-open-that-URL = Désolé, nous ne savons pas comment ouvrir cette URL : { $url }
 SORT-BY = TRIER PAR
 Sort-by = Trier par
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORT SPECIES
 sound-playback-separator = /
 Sound-recorder = Enregistreur de son
@@ -841,6 +860,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = La commu
 The-iNaturalist-Network = Le réseau iNaturalist est une collection de sites web localisés qui sont entièrement connectés à la communauté mondiale iNaturalist. Les sites du réseau sont soutenus par des institutions locales qui promeuvent l'utilisation locale et facilitent l'utilisation des données d'iNaturalist au profit de la biodiversité locale.
 The-location-will-not-be-visible-to-others = L’emplacement ne sera pas visible par les autres, ce qui pourrait rendre l’observation impossible à identifier.
 The-models-that-suggest-species = Les modèles qui suggèrent des espèces basées sur la similitude visuelle et le lieu sont en partie rendus possibles grâce à des collaborations avec Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona et Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = C'est un organisme sauvage et il n'a pas été placé ici par des humains.
 This-is-how-taxon-names-will-be-displayed = Voici comment tous les noms de taxons vous seront affichés sur iNaturalist :
 This-is-your-identification-other-people-may-help-confirm-it = Ceci est votre identification. D'autres personnes peuvent aider à la confirmer !
@@ -853,6 +875,7 @@ This-observation-needs-more-identifications = Cette observation a besoin de plus
 This-observation-needs-more-identifications-to-become-research-grade = Cette observation nécessite plus d'identifications pour atteindre la qualité recherche.
 This-observer-has-opted-out-of-the-Community-Taxon = Cet observateur a choisi de se retirer du Taxon Communautaire
 This-organism-was-placed-by-humans = Cet organisme a été placé ici par des humains. Cela s'applique à des choses comme des plantes de jardin, des animaux de compagnies et des animaux de zoo.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -965,6 +988,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identificateur
        *[other] { $count } Identificateurs
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

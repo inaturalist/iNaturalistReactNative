@@ -1,19 +1,5 @@
-const { execSync } = require( "child_process" );
 const fs = require( "fs" );
 const { version } = require( "./package.json" );
-
-function getAvailableAVD( ) {
-  try {
-    const avds = execSync( "emulator -list-avds", { encoding: "utf8", timeout: 5000 } )
-      .trim()
-      .split( "\n" )
-      .filter( Boolean );
-    if ( avds.length > 0 ) return avds[0];
-  } catch ( _e ) {
-    // default avd
-  }
-  return "Pixel_5_API_31_AOSP";
-}
 
 const buildGradle = fs.readFileSync( "./android/app/build.gradle", "utf8" );
 const versionCode = buildGradle.match( /versionCode (\d+)/ )[1];
@@ -30,15 +16,6 @@ module.exports = {
     jest: {
       setupTimeout: 900000,
       teardownTimeout: 900000,
-    },
-  },
-  artifacts: {
-    rootDir: "e2e/artifacts",
-    plugins: {
-      screenshot: {
-        shouldTakeAutomaticSnapshots: true,
-        keepOnlyFailedTestsArtifacts: true,
-      },
     },
   },
   apps: {
@@ -79,14 +56,15 @@ module.exports = {
     simulator: {
       type: "ios.simulator",
       device: {
-        type: "iPhone 16 Pro",
-        os: "iOS 18.6",
+        type: "iPhone 17 Pro",
       },
     },
     emulator: {
       type: "android.emulator",
       device: {
-        avdName: getAvailableAVD(),
+        // Make sure to follow the guide to setup an AOSP if you plan to test locally
+        // https://wix.github.io/Detox/docs/guide/android-dev-env#android-aosp-emulators
+        avdName: "Pixel_5_API_34_AOSP",
       },
     },
   },

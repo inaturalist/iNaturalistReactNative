@@ -163,7 +163,6 @@ const CustomFlashList = <T, >( props: FlashListProps<T> & { ref?: React.Ref<Flas
   return (
     <FlashList
       ref={internalRef}
-      initialNumToRender={5}
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.2}
       onViewableItemsChanged={handleViewableItemsChanged}
@@ -172,6 +171,9 @@ const CustomFlashList = <T, >( props: FlashListProps<T> & { ref?: React.Ref<Flas
       onScrollEndDrag={handleScrollEndDrag}
       onMomentumScrollEnd={handleMomentumScrollEnd}
       viewabilityConfig={viewabilityConfig}
+      // Fixes MOB-1464 where successful upload creates reordering issues and sometimes gaps
+      // https://shopify.github.io/flash-list/docs/known-issues#3-data-re-ordering-can-cause-items-to-move
+      maintainVisibleContentPosition={{ disabled: true }}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...otherProps}
     />

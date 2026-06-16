@@ -1,14 +1,12 @@
-Richte die Kamera auf Pflanzen, Tiere und Pilze, um Artenvorschläge zu erhalten, während du draußen bist, oder importiere Fotos aus deiner Bibliothek. iNaturalist hilft Millionen von Menschen wie dir, mehr über die Natur zu erfahren, indem es KI-Vorschläge nutzt, die von einer globalen Gemeinschaft von sachkundigen Naturliebhabern unterstützt werden.
+Deine Fotos von Pflanzen, Tieren, Pilzen und anderen Organismen können dazu beitragen, Natur auf der ganzen Welt zu schützen. iNaturalist ist kostenlos, gemeinnützig und von der Gemeinschaft getragen.
 
-iNaturalist geht weit über KI-Identifizierungen hinaus – Ihre Beobachtungen werden von echten Menschen überprüft und für die Wissenschaft geteilt, um zum Artenschutz beizutragen.
+iNaturalist hilft Millionen von Menschen, die Natur um sie herum kennen zu lernen und zu dokumentieren. Richte deine Kamera auf Pflanzen, Tiere und Pilze, um sofortige Bestimmungsvorschläge zu erhalten, und teile dann deine Fotos oder Tonaufnahmen als "Beobachtung". Dann wird deine Beobachtung von einer globalen Gemeinschaft sachkundiger Naturfreunde überprüft, um sie zu einem nützlichen Datenpunkt für Wissenschaft und Naturschutz zu machen. Deine alltäglichen Momente der Neugier können direkt zum Schutz der Natur beitragen, und du brauchst keine Vorerfahrung oder Wissen, um loszulegen.
+
+iNaturalist ist eine missionsorientierte gemeinnützige Organisation, die sich der Verbindung von Menschen mit der Natur und der Förderung von Biodiversitätswissenschaft und Naturschutz widmet und dank der großzügigen Unterstützung unserer Gemeinschaft frei verfügbar ist.
 
 HAUPTFUNKTIONEN
-Arten von überall auf der Welt identifizieren
-Erfasse jene Arten, die du siehst
-Trage zur Wissenschaft bei, indem du deine Beobachtungen teilst
-Erforsche und schütze die Artenvielfalt 
-Verbinde dich mit anderen Naturliebhabern und lerne von ihnen
-
-Die gemeinnützige Mission von iNaturalist ist es, Menschen mit der Natur zu verbinden und die Wissenschaft und Naturschutz voranzubringen. iNaturalist ist dank der großzügigen Unterstützung unserer Spendergemeinschaft gratis verfügbar.
-
-Entdecke und erfahre noch mehr unter https://www.inaturalist.org.
+• Arten von überall auf der Welt bestimmen
+• Zur Wissenschaft beitragen, indem du deine Beobachtungen teilst.
+• ein Verzeichnis der Arten, die du beobachtet hast
+• Biodiversität erforschen und schützen 
+• Kontakte zu anderen Naturbegeisterten knüpfen und von ihnen lernen

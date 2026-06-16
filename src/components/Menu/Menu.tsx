@@ -105,7 +105,7 @@ const Menu = ( ) => {
   const queryClient = useQueryClient( );
   const currentUser = useCurrentUser( );
   const { t } = useTranslation( );
-  const insets = useSafeAreaInsets();
+  const { bottom, top } = useSafeAreaInsets( );
 
   const { isConnected } = useNetInfo( );
 
@@ -154,6 +154,16 @@ const Menu = ( ) => {
       },
     },
 
+    ...( newsEnabled
+      ? {
+        news: {
+          label: t( "BLOG" ),
+          navigation: "Journal",
+          icon: "leaf",
+        },
+      }
+      : {} ),
+
     ...( currentUser
       ? {
         logout: {
@@ -199,7 +209,6 @@ const Menu = ( ) => {
       showOfflineAlert( t );
       return false;
     }
-    const locallySavedOnlyObservations = Observation.filterUnsyncedObservations( realm ).length;
     const getCountBreakpoint = ( count: number ) => valueToBreakpoint( count, [
       [0, "0"],
       [1, "1-9"],
@@ -243,13 +252,16 @@ const Menu = ( ) => {
         identifications: "loggedout",
         remoteObservations: "loggedout",
       };
+    const appContext = {
+      locallySavedOnlyObservations: Observation.filterUnsyncedObservations( realm ).length,
+      observationsInRealm: realm.objects( "Observation" ).length,
+    };
     const storageMetrics = await getStorageMetrics( realm?.path ).catch( () => ( {} ) );
     const deviceMetrics = await getDeviceMetricsForFeedback().catch( () => ( {} ) );
     const feedbackContext = {
       ...modeContext,
       ...loggedInContext,
-      // can have unsynced obs when logged out
-      locallySavedOnlyObservations,
+      ...appContext,
       ...storageMetrics,
       ...deviceMetrics,
     };
@@ -263,7 +275,7 @@ const Menu = ( ) => {
     <ScrollView
       bounces={false}
       className="bg-white h-full"
-      style={{ paddingTop: insets.top }}
+      style={{ paddingTop: top, paddingBottom: bottom }}
     >
       <View>
         {/* Header */}
@@ -340,20 +352,6 @@ const Menu = ( ) => {
               }}
             />
           ) )}
-          {newsEnabled && (
-            <MenuItem
-              item={{
-                label: t( "NEWS" ),
-                icon: "leaf",
-              }}
-              onPress={() => navigation.navigate( "TabNavigator", {
-                screen: "MenuTab",
-                params: {
-                  screen: "News",
-                },
-              } )}
-            />
-          )}
         </View>
       </View>
 

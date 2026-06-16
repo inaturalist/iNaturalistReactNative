@@ -12,14 +12,12 @@ import ExploreSearchContainer from "components/Explore/ExploreSearchContainer";
 import ExploreV2Container from "components/Explore/ExploreV2/ExploreV2Container";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import Help from "components/Help/Help";
+import Journal from "components/Journal/Journal";
 import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
-import News from "components/News/News";
 import Notifications from "components/Notifications/Notifications";
 import DQAContainer from "components/ObsDetails/DQAContainer";
-import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsDetailsDefaultModeScreensWrapper
-  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeScreensWrapper";
+import ObsDetailsScreen from "components/ObsDetailsSharedComponents/ObsDetailsScreen";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import ProjectMembers from "components/ProjectDetails/ProjectMembers";
 import ProjectRequirements from "components/ProjectDetails/ProjectRequirements";
@@ -42,11 +40,9 @@ import {
   showHeader,
   showLongHeader,
 } from "navigation/navigationOptions";
+import { StackHostProvider } from "navigation/StackHostContext";
 import type { BottomTabProps, TabStackParamList } from "navigation/types";
 import React from "react";
-import {
-  useLayoutPrefs,
-} from "sharedHooks";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
@@ -66,11 +62,6 @@ const donateTitle = () => (
 const helpTitle = () => (
   <Heading4 accessibilityRole="header" numberOfLines={1}>
     {t( "HELP" )}
-  </Heading4>
-);
-const newsTitle = () => (
-  <Heading4 accessibilityRole="header" numberOfLines={1}>
-    {t( "NEWS" )}
   </Heading4>
 );
 const dqaTitle = () => (
@@ -106,12 +97,7 @@ const logTitle = () => <Heading4 className="text-white">LOG</Heading4>;
 // note: react navigation 7 will have a layout prop
 // which should replace all of these individual wrappers
 const FadeInUserProfile = ( ) => fadeInComponent( <UserProfile /> );
-const FadeInObsDetailsDefaultModeScreensWrapper = ( ) => fadeInComponent(
-  <ObsDetailsDefaultModeScreensWrapper />,
-);
-const FadeInObsDetailsContainer = ( ) => fadeInComponent(
-  <ObsDetailsContainer />,
-);
+const FadeInObsDetailsScreen = ( ) => fadeInComponent( <ObsDetailsScreen /> );
 const FadeInDQAContainer = ( ) => fadeInComponent( <DQAContainer /> );
 const FadeInProjectsContainer = ( ) => fadeInComponent( <ProjectsContainer /> );
 const FadeInProjectDetailsContainer = ( ) => fadeInComponent( <ProjectDetailsContainer /> );
@@ -121,10 +107,10 @@ const FadeInSettings = ( ) => fadeInComponent( <Settings /> );
 const FadeInHelp = ( ) => fadeInComponent( <Help /> );
 const FadeInAbout = ( ) => fadeInComponent( <About /> );
 const FadeInDonate = ( ) => fadeInComponent( <Donate /> );
-const FadeInNews = ( ) => fadeInComponent( <News /> );
 const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
 const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
 const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
+const FadeInJournal = ( ) => fadeInComponent( <Journal /> );
 
 const BASE_SCREEN_OPTIONS = {
   headerBackButtonDisplayMode: "minimal",
@@ -177,209 +163,196 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
   const initialRouteName
     = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
-  const {
-    isDefaultMode,
-  } = useLayoutPrefs( );
   const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
   return (
-    <Stack.Navigator
-      initialRouteName={initialRouteName}
-      screenOptions={BASE_SCREEN_OPTIONS}
-    >
-      {/* Screens with no header */}
-      <Stack.Group
-        screenOptions={{ ...hideHeader }}
+    <StackHostProvider value={{ hasBottomTabBar: true }}>
+      <Stack.Navigator
+        initialRouteName={initialRouteName}
+        screenOptions={BASE_SCREEN_OPTIONS}
       >
+        {/* Screens with no header */}
+        <Stack.Group
+          screenOptions={{ ...hideHeader }}
+        >
+          <Stack.Screen
+            name={SCREEN_NAME_MENU}
+            component={Menu}
+            options={{
+              ...preventSwipeToGoBack,
+              animation: "none",
+            }}
+          />
+          <Stack.Screen
+            name={SCREEN_NAME_OBS_LIST}
+            component={MyObservationsContainer}
+            options={{
+              ...preventSwipeToGoBack,
+              animation: "none",
+            }}
+          />
+          <Stack.Screen
+            name={SCREEN_NAME_ROOT_EXPLORE}
+            component={exploreV2Enabled
+              ? ExploreV2Container
+              : RootExploreContainer}
+            options={{
+              ...preventSwipeToGoBack,
+              animation: "none",
+            }}
+          />
+          <Stack.Screen
+            name="Explore"
+            component={ExploreContainer}
+          />
+          <Stack.Screen
+            name="ExploreFilters"
+            component={ExploreFiltersContainer}
+          />
+          <Stack.Screen
+            name="ExploreSearch"
+            component={ExploreSearchContainer}
+          />
+          <Stack.Screen
+            name="ObsDetails"
+            component={FadeInObsDetailsScreen}
+            options={OBS_DETAILS_OPTIONS}
+          />
+        </Stack.Group>
         <Stack.Screen
-          name={SCREEN_NAME_MENU}
-          component={Menu}
-          options={{
-            ...preventSwipeToGoBack,
-            animation: "none",
+          name={SCREEN_NAME_NOTIFICATIONS}
+          component={Notifications}
+          options={NOTIFICATIONS_OPTIONS}
+        />
+        <Stack.Screen
+          name="UserProfile"
+          component={FadeInUserProfile}
+          options={USER_PROFILE_OPTIONS}
+        />
+        <Stack.Screen
+          name="DataQualityAssessment"
+          component={FadeInDQAContainer}
+          options={DQA_OPTIONS}
+        />
+        {SharedStackScreens( )}
+        {/* Project Stack Group */}
+        <Stack.Group
+          screenOptions={{
+            ...blankHeaderTitle,
           }}
-        />
-        <Stack.Screen
-          name={SCREEN_NAME_OBS_LIST}
-          component={MyObservationsContainer}
-          options={{
-            ...preventSwipeToGoBack,
-            animation: "none",
-          }}
-        />
-        <Stack.Screen
-          name={SCREEN_NAME_ROOT_EXPLORE}
-          component={exploreV2Enabled
-            ? ExploreV2Container
-            : RootExploreContainer}
-          options={{
-            ...preventSwipeToGoBack,
-            animation: "none",
-          }}
-        />
-        <Stack.Screen
-          name="Explore"
-          component={ExploreContainer}
-        />
-        <Stack.Screen
-          name="ExploreFilters"
-          component={ExploreFiltersContainer}
-        />
-        <Stack.Screen
-          name="ExploreSearch"
-          component={ExploreSearchContainer}
-        />
-        {isDefaultMode
-          ? (
-            <Stack.Screen
-              name="ObsDetails"
-              component={FadeInObsDetailsDefaultModeScreensWrapper}
-              options={OBS_DETAILS_OPTIONS}
-            />
-          )
-          : (
-            <Stack.Screen
-              name="ObsDetails"
-              component={FadeInObsDetailsContainer}
-              options={OBS_DETAILS_OPTIONS}
-            />
-          )}
-      </Stack.Group>
-      <Stack.Screen
-        name={SCREEN_NAME_NOTIFICATIONS}
-        component={Notifications}
-        options={NOTIFICATIONS_OPTIONS}
-      />
-      <Stack.Screen
-        name="UserProfile"
-        component={FadeInUserProfile}
-        options={USER_PROFILE_OPTIONS}
-      />
-      <Stack.Screen
-        name="DataQualityAssessment"
-        component={FadeInDQAContainer}
-        options={DQA_OPTIONS}
-      />
-      {SharedStackScreens( )}
-      {/* Project Stack Group */}
-      <Stack.Group
-        screenOptions={{
-          ...blankHeaderTitle,
-        }}
-      >
-        <Stack.Screen
-          name="Projects"
-          component={FadeInProjectsContainer}
-          options={{
-            ...removeBottomBorder,
-            ...preventSwipeToGoBack,
-          }}
-        />
-        <Stack.Screen
-          name="ProjectDetails"
-          component={FadeInProjectDetailsContainer}
-          options={{
-            ...showHeader,
-          }}
-        />
-        <Stack.Screen
-          name="ProjectRequirements"
-          component={FadeInProjectRequirements}
-          options={{
-            ...showHeader,
-            headerTitle: projectRequirementsTitle,
-          }}
-        />
-        <Stack.Screen
-          name="ProjectMembers"
-          component={FadeInProjectMembers}
-          options={LIST_OPTIONS}
-        />
-        <Stack.Screen
-          name="ProjectList"
-          component={FadeInProjectList}
-          options={LIST_OPTIONS}
-        />
-        <Stack.Screen
-          name="FollowersList"
-          component={FadeInFollowersList}
-          options={LIST_OPTIONS}
-        />
-        <Stack.Screen
-          name="FollowingList"
-          component={FadeInFollowingList}
-          options={LIST_OPTIONS}
-        />
-      </Stack.Group>
-      {/* Developer Stack Group */}
-      <Stack.Group
-        screenOptions={DEBUG_GROUP_SCREEN_OPTIONS}
-      >
-        <Stack.Screen
-          name="Debug"
-          component={Developer}
-          options={{ headerTitle: debugTitle }}
+        >
+          <Stack.Screen
+            name="Projects"
+            component={FadeInProjectsContainer}
+            options={{
+              ...removeBottomBorder,
+              ...preventSwipeToGoBack,
+            }}
+          />
+          <Stack.Screen
+            name="ProjectDetails"
+            component={FadeInProjectDetailsContainer}
+            options={{
+              ...showHeader,
+            }}
+          />
+          <Stack.Screen
+            name="ProjectRequirements"
+            component={FadeInProjectRequirements}
+            options={{
+              ...showHeader,
+              headerTitle: projectRequirementsTitle,
+            }}
+          />
+          <Stack.Screen
+            name="ProjectMembers"
+            component={FadeInProjectMembers}
+            options={LIST_OPTIONS}
+          />
+          <Stack.Screen
+            name="ProjectList"
+            component={FadeInProjectList}
+            options={LIST_OPTIONS}
+          />
+          <Stack.Screen
+            name="FollowersList"
+            component={FadeInFollowersList}
+            options={LIST_OPTIONS}
+          />
+          <Stack.Screen
+            name="FollowingList"
+            component={FadeInFollowingList}
+            options={LIST_OPTIONS}
+          />
+          <Stack.Screen
+            name="Journal"
+            component={FadeInJournal}
+            options={LIST_OPTIONS}
+          />
+        </Stack.Group>
+        {/* Developer Stack Group */}
+        <Stack.Group
+          screenOptions={DEBUG_GROUP_SCREEN_OPTIONS}
+        >
+          <Stack.Screen
+            name="Debug"
+            component={Developer}
+            options={{ headerTitle: debugTitle }}
 
-        />
-        <Stack.Screen
-          name="UILibrary"
-          component={UiLibrary}
-          options={{ headerTitle: uiLibTitle }}
-        />
-        <Stack.Screen
-          name="UiLibraryItem"
-          component={UiLibraryItem}
-          options={{ headerTitle: uiLibItemTitle }}
-        />
-        <Stack.Screen
-          component={Log}
-          name="Log"
-          options={( { headerTitle: logTitle } )}
-        />
-      </Stack.Group>
-      {/* Header with no bottom border */}
-      <Stack.Group
-        screenOptions={{
-          headerTitleAlign: "center",
-          ...removeBottomBorder,
-        }}
-      >
-        <Stack.Screen
-          name="Settings"
-          component={FadeInSettings}
-          options={{
-            headerTitle: settingsTitle,
+          />
+          <Stack.Screen
+            name="UILibrary"
+            component={UiLibrary}
+            options={{ headerTitle: uiLibTitle }}
+          />
+          <Stack.Screen
+            name="UiLibraryItem"
+            component={UiLibraryItem}
+            options={{ headerTitle: uiLibItemTitle }}
+          />
+          <Stack.Screen
+            component={Log}
+            name="Log"
+            options={( { headerTitle: logTitle } )}
+          />
+        </Stack.Group>
+        {/* Header with no bottom border */}
+        <Stack.Group
+          screenOptions={{
+            headerTitleAlign: "center",
+            ...removeBottomBorder,
           }}
-        />
-        <Stack.Screen
-          name="About"
-          component={FadeInAbout}
-          options={{
-            headerTitle: aboutTitle,
-          }}
-        />
-        <Stack.Screen
-          name="Donate"
-          component={FadeInDonate}
-          options={{
-            headerTitle: donateTitle,
-          }}
-        />
-        <Stack.Screen
-          name="Help"
-          component={FadeInHelp}
-          options={{
-            headerTitle: helpTitle,
-          }}
-        />
-        <Stack.Screen
-          name="News"
-          component={FadeInNews}
-          options={{
-            headerTitle: newsTitle,
-          }}
-        />
-      </Stack.Group>
-    </Stack.Navigator>
+        >
+          <Stack.Screen
+            name="Settings"
+            component={FadeInSettings}
+            options={{
+              headerTitle: settingsTitle,
+            }}
+          />
+          <Stack.Screen
+            name="About"
+            component={FadeInAbout}
+            options={{
+              headerTitle: aboutTitle,
+            }}
+          />
+          <Stack.Screen
+            name="Donate"
+            component={FadeInDonate}
+            options={{
+              headerTitle: donateTitle,
+            }}
+          />
+          <Stack.Screen
+            name="Help"
+            component={FadeInHelp}
+            options={{
+              headerTitle: helpTitle,
+            }}
+          />
+        </Stack.Group>
+      </Stack.Navigator>
+    </StackHostProvider>
   );
 };
 

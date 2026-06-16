@@ -13,6 +13,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useCurrentUser, useKeyboardInfo, useTranslation, useUserSearch,
 } from "sharedHooks";
@@ -33,6 +34,7 @@ type Props = {
 const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const [userQuery, setUserQuery] = useState( "" );
   const { t } = useTranslation();
+  const { bottom } = useSafeAreaInsets( );
   const currentUser = useCurrentUser();
   const { keyboardHeight, keyboardShown } = useKeyboardInfo();
   const { users: userList = [], isLoading, refetch } = useUserSearch( userQuery );
@@ -68,11 +70,10 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
     [isLoading, refetch, userQuery],
   );
 
-  const footerComponent = useMemo(
-    ( ) => ( keyboardShown && keyboardHeight > 0
-      ? <View style={{ height: keyboardHeight }} />
-      : null ),
-    [keyboardHeight, keyboardShown],
+  const footerComponent = ( ) => (
+    keyboardShown
+      ? <View style={{ paddingBottom: bottom + keyboardHeight }} />
+      : <View style={{ paddingBottom: bottom }} />
   );
 
   const buttons = [

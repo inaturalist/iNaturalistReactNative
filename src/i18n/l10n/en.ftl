@@ -73,6 +73,8 @@ Adds-your-vote-of-agreement = Adds your vote of agreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
 # Label for toggling app mode between default and advanced settings
 Advanced-Mode = Advanced Mode
+# Link to the advanced search screen with more search filters
+Advanced-Search = Advanced Search
 ADVANCED-SETTINGS = ADVANCED SETTINGS
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = After capturing or importing photos, show:
@@ -150,6 +152,8 @@ attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = August
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
+Blog = Blog
+BLOG = BLOG
 # Accessibility label for bulk import / photo import button
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 # iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
@@ -259,6 +263,7 @@ Connect-with-expert-naturalists = Connect with expert naturalists
 Connect-with-other-naturalists = Connect with other naturalists and engage in conversations.
 Connection-problem-Please-try-again-later = Connection problem. Please try again later.
 CONTACT-SUPPORT = CONTACT SUPPORT
+Content-Hidden = Content Hidden
 # Continue button in onboarding screen
 CONTINUE = CONTINUE
 # Notification when coordinates have been copied
@@ -315,6 +320,10 @@ Data-quality-assessment-title-research = This observation is Research Grade!
 DATE = DATE
 # label in project requirements
 Date = Date
+# Label for observations sort order, default option
+Date-Added-Newest-Default = Date Added: Newest (Default)
+# Label for observations sort order
+Date-Added-Oldest = Date Added: Oldest
 # Date formatting using date-fns
 # Used for things like User Profile join date
 # See complete list of formatting styles: https://date-fns.org/v3.6.0/docs/format
@@ -331,7 +340,11 @@ date-format-short = M/d/yy
 DATE-OBSERVED = DATE OBSERVED
 Date-observed = Date observed
 Date-observed-header-short = Observed
+# Label for observations sort order
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = DATE OBSERVED - NEWEST TO OLDEST
+# Label for observations sort order
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = DATE OBSERVED - OLDEST TO NEWEST
 # Label for controls over a range of dates
 Date-Range = Date Range
@@ -700,6 +713,7 @@ LEAVE-PROJECT = LEAVE PROJECT
 LEAVE-PROJECT--question = LEAVE PROJECT?
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
 Lets-reset-your-password = Let’s reset your password.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
 Loads-content-that-requires-an-Internet-connection = Loads content that requires an Internet connection
 LOCATION = LOCATION
@@ -731,6 +745,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] MEMBER
        *[other] MEMBERS
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 # Accessibility label for a button that opens a menu of options
 Menu = Menu
 Missing-Date = Missing Date
@@ -786,7 +801,6 @@ Needs-ID--quality-grade = Needs ID
 New-Observation = New Observation
 # Sort order, refers to newest or oldest date
 Newest-to-oldest = Newest to oldest
-NEWS = NEWS
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
@@ -857,8 +871,16 @@ Observation-options = Observation options
 OBSERVATION-WAS-DELETED = OBSERVATION WAS DELETED
 Observation-with-no-evidence = Observation with no evidence
 Observations = Observations
+# Description for observations sort order
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+# Description for observations sort order
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-View = Observations View
+# Description for observations sort order
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+# Description for observations sort order
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 # Might be used when the number is represented using an image or other
 # element, not text
 OBSERVATIONS-WITHOUT-NUMBER =
@@ -897,6 +919,8 @@ Opens-AI-camera = Opens AI camera.
 # Accessibility hint for a button that opens a form for editing a comment
 Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
+# Accessibility hint for search button in Explore header that navigates to the search interface
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
@@ -1108,15 +1132,21 @@ Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = SEARCH
 # Title for a search interface
 Search = Search
+# Placeholder for the location field in universal search
+Search-for-a-location = Search for a location
 Search-for-a-project = Search for a project
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
 Search-for-a-taxon = Search for a taxon
+# Placeholder for the taxon/user/project field in universal search
+Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = SEARCH LOCATION
 SEARCH-PROJECTS = SEARCH PROJECTS
 Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
+# Accessibility label for navigating to journal posts screen
+See-journal-posts = See journal posts
 # Accessibility label for Observations button on UserProfile screen
 See-observations-by-this-user-in-Explore = See observations by this user in Explore
 # Accessibility label for Explore button on TaxonDetails screen
@@ -1169,6 +1199,8 @@ Sorry-we-dont-know-how-to-open-that-URL = Sorry, we don't know how to open that 
 SORT-BY = SORT BY
 Sort-by = Sort by
 # Accessibility label for a button that allows users to sort observations
+# Label for observations sort menu
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 # Label for species sort menu
 SORT-SPECIES = SORT SPECIES
 # Character separating current position and total duration when playing a
@@ -1249,6 +1281,9 @@ The-iNaturalist-Network = The iNaturalist network is a collection of localized w
 # Describes what happens when geoprivacy is set to private
 The-location-will-not-be-visible-to-others = The location will not be visible to others, which might make the observation impossible to identify.
 The-models-that-suggest-species = The models that suggest species based on visual similarity and location are thanks in part to collaborations with Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona, and Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 #  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn't placed in this location by humans.
 This-is-how-taxon-names-will-be-displayed = This is how all taxon names will be displayed to you across iNaturalist:
@@ -1263,6 +1298,7 @@ This-observation-needs-more-identifications = This observation needs more identi
 This-observation-needs-more-identifications-to-become-research-grade = This observation needs more identifications to become research grade.
 This-observer-has-opted-out-of-the-Community-Taxon = This observer has opted out of the Community Taxon
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
@@ -1400,6 +1436,12 @@ X-Identifiers =
     { $count ->
         [one] { $count } Identifier
        *[other] { $count } Identifiers
+    }
+# Subtitle for a screen showing a list of journal posts
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 # Subheader for number of project members screen
 X-MEMBERS =

@@ -2,9 +2,9 @@ import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
 import {
   EXPLORE_V2_PLACE_MODE,
-  EXPLORE_V2_SORT,
   initialExploreV2State,
 } from "providers/ExploreV2Context";
+import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 
 describe( "buildExploreV2QueryParams", ( ) => {
   describe( "subject filter", ( ) => {
@@ -96,7 +96,7 @@ describe( "buildExploreV2QueryParams", ( ) => {
     it( "DATE_UPLOADED_NEWEST → created_at desc", ( ) => {
       const params = buildExploreV2QueryParams( {
         ...initialExploreV2State,
-        sortBy: EXPLORE_V2_SORT.DATE_UPLOADED_NEWEST,
+        sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
       } );
       expect( params.order_by ).toBe( "created_at" );
       expect( params.order ).toBe( "desc" );
@@ -105,7 +105,7 @@ describe( "buildExploreV2QueryParams", ( ) => {
     it( "DATE_UPLOADED_OLDEST → created_at asc", ( ) => {
       const params = buildExploreV2QueryParams( {
         ...initialExploreV2State,
-        sortBy: EXPLORE_V2_SORT.DATE_UPLOADED_OLDEST,
+        sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST,
       } );
       expect( params.order_by ).toBe( "created_at" );
       expect( params.order ).toBe( "asc" );
@@ -114,7 +114,7 @@ describe( "buildExploreV2QueryParams", ( ) => {
     it( "DATE_OBSERVED_NEWEST → observed_on desc", ( ) => {
       const params = buildExploreV2QueryParams( {
         ...initialExploreV2State,
-        sortBy: EXPLORE_V2_SORT.DATE_OBSERVED_NEWEST,
+        sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST,
       } );
       expect( params.order_by ).toBe( "observed_on" );
       expect( params.order ).toBe( "desc" );
@@ -123,19 +123,10 @@ describe( "buildExploreV2QueryParams", ( ) => {
     it( "DATE_OBSERVED_OLDEST → observed_on asc", ( ) => {
       const params = buildExploreV2QueryParams( {
         ...initialExploreV2State,
-        sortBy: EXPLORE_V2_SORT.DATE_OBSERVED_OLDEST,
+        sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
       } );
       expect( params.order_by ).toBe( "observed_on" );
       expect( params.order ).toBe( "asc" );
-    } );
-
-    it( "MOST_FAVED → votes desc", ( ) => {
-      const params = buildExploreV2QueryParams( {
-        ...initialExploreV2State,
-        sortBy: EXPLORE_V2_SORT.MOST_FAVED,
-      } );
-      expect( params.order_by ).toBe( "votes" );
-      expect( params.order ).toBe( "desc" );
     } );
   } );
 
@@ -160,14 +151,14 @@ describe( "buildExploreV2QueryParams", ( ) => {
         lng: -122.1,
         radius: 1,
       },
-      sortBy: EXPLORE_V2_SORT.MOST_FAVED,
+      sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
       filters: {},
     };
     const params = buildExploreV2QueryParams( state );
     expect( params ).toEqual( {
       per_page: 20,
       verifiable: true,
-      order_by: "votes",
+      order_by: "created_at",
       order: "desc",
       taxon_id: 42,
       lat: 37.5,

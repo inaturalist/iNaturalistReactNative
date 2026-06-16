@@ -43,6 +43,7 @@ Adds-ID = Lägg till ID
 Adds-your-vote-of-agreement = Rösta på att hålla med
 Adds-your-vote-of-disagreement = Rösta för att inte hålla med
 Advanced-Mode = Avancerat läge
+Advanced-Search = Advanced Search
 ADVANCED-SETTINGS = AVANCERAD INSTÄLLNINGAR
 Affiliation = Anknytning: { $site }
 After-capturing-or-importing-photos-show = Efter att ha tagit eller importerat bilder, visa:
@@ -86,6 +87,8 @@ attribution-cc-by-nd = vissa rättigheter förbehållna (CC BY-ND)
 attribution-cc-by-sa = vissa rättigheter förbehållna (CC BY-SA)
 August = augusti
 BACK-TO-LOGIN = TILLBAKA TILL INLOGGNING
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Bulkimportering
 By-exiting-changes-not-saved = Genom att avsluta kommer ändringar av ditt fynd inte att sparas.
 By-exiting-observation-not-saved = Genom att avsluta kommer ditt fynd inte att sparas.
@@ -147,6 +150,7 @@ Connect-with-expert-naturalists = Få kontakt med kunniga amatörbiologer
 Connect-with-other-naturalists = Kom i kontakt med andra naturforskare och diskussioner.
 Connection-problem-Please-try-again-later = Anslutningsproblem. Försök igen senare.
 CONTACT-SUPPORT = KONTAKTA SUPPORT
+Content-Hidden = Content Hidden
 CONTINUE = FORTSÄTT
 Coordinates-copied-to-clipboard = Koordinater kopierade till urklipp
 Copy-coordinates = Kopiera koordinater
@@ -180,6 +184,8 @@ Data-quality-assessment-title-needs-id = Detta fynd behöver bestämmas
 Data-quality-assessment-title-research = Detta fynd är av Forskningsklass!
 DATE = DATUM
 Date = Datum
+Date-Added-Newest-Default = Date Added: Newest (Default)
+Date-Added-Oldest = Date Added: Oldest
 date-format-long = d LLL yyyy
 date-format-month-day = d MMM
 date-format-month-year = MMM yyyy
@@ -187,7 +193,9 @@ date-format-short = d/M-yy
 DATE-OBSERVED = OBSERVATIONSDATUM
 Date-observed = Observationsdatum
 Date-observed-header-short = Observerad
+Date-Observed-Newest = Date Observed: Newest
 DATE-OBSERVED-NEWEST = OBSERVATIONSDATUM - NYAST TILL ÄLDST
+Date-Observed-Oldest = Date Observed: Oldest
 DATE-OBSERVED-OLDEST = OBSERVATIONSDATUM - ÄLDST TILL NYAST
 Date-Range = Datumintervall
 DATE-RANGE = DATUMINTERVALL
@@ -447,6 +455,7 @@ LEAVE-PROJECT = LÄMNA PROJEKT
 LEAVE-PROJECT--question = LÄMNA PROJEKT?
 LEAVE-US-A-REVIEW = GE OSS EN RECENSION!
 Lets-reset-your-password = Låt oss återställa ditt lösenord.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Laddar iNaturalists AI-kamera
 Loads-content-that-requires-an-Internet-connection = Laddar innehåll som kräver en internetanslutning
 LOCATION = POSITION
@@ -473,6 +482,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] MEDLEM
        *[other] MEDLEMMAR
     }
+Membership-in-this-project-is-by-invitation-only = Membership in this project is by invitation only. If you'd like to join, please contact one of the curators and request an invitation.
 Menu = Meny
 Missing-Date = Datum saknas
 MISSING-EVIDENCE = BELÄGG SAKNAS
@@ -550,8 +560,12 @@ Observation-options = Fyndalternativ
 OBSERVATION-WAS-DELETED = FYNDET RADERADES
 Observation-with-no-evidence = Fynd utan belägg
 Observations = Fynd
+Observations-added-least-recently-appear-first = Observations added least recently appear first
+Observations-added-recently-appear-first = Observations added recently appear first
 Observations-need-location-date--warning = iNaturalist-fynd behöver en fyndplats och ett datum för att vara användbara för forskare. Kontrollera fynd med denna ikon innan du laddar upp dem.
 Observations-View = Fyndvy
+Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
+Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] FYND
@@ -576,6 +590,7 @@ Opens-add-comment-form = Öppnar dialogfönstret "Lägg till kommentar".
 Opens-AI-camera = Öppnar AI-kamera.
 Opens-edit-comment-form = Öppnar dialogfönstret "Ändra kommentar".
 Opens-location-permission-prompt = Öppnar behörighetsprompten för plats
+Opens-search-interface = Opens search interface.
 OR-SIGN-IN-WITH = ELLER LOGGA IN MED
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Eller så kan du försöka få en tydligare bild genom att zooma in, komma närmare eller prova en annan vinkel.
 Organism-is-captive = Organismen är i fångenskap
@@ -741,15 +756,18 @@ Scientific-Name = Vetenskapligt namn
 Scientific-Name-Common-Name = Vetenskapligt namn (vardagligt namn)
 SEARCH = SÖK
 Search = Sök
+Search-for-a-location = Search for a location
 Search-for-a-project = Sök efter ett projekt
 SEARCH-FOR-A-TAXON = SÖK EFTER ETT TAXON
 Search-for-a-taxon = Sök efter ett taxon
+Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = SÖK PLATS
 SEARCH-PROJECTS = SÖK PROJEKT
 Search-suggestions-with-location = Sök förslag med plats
 Search-suggestions-without-location = Sök förslag utan plats
 SEARCH-TAXA = SÖK TAXA
 SEARCH-USERS = SÖK ANVÄNDARE
+See-journal-posts = See journal posts
 See-observations-by-this-user-in-Explore = Se fynd av den här användaren i Utforska
 See-observations-of-this-taxon-in-explore = Se fynd  av detta taxon i utforska
 See-project-members = Se projektmedlemmar
@@ -785,6 +803,7 @@ Sorry-this-observation-was-deleted = Tyvärr, detta fynd har raderats
 Sorry-we-dont-know-how-to-open-that-URL = Tyvärr, vi vet inte hur man öppnar denna URL: { $url }
 SORT-BY = SORTERA EFTER
 Sort-by = Sortera efter
+SORT-OBSERVATIONS = SORT OBSERVATIONS
 SORT-SPECIES = SORTERA ARTER
 sound-playback-separator = /
 Sound-recorder = Ljudinspelare
@@ -847,6 +866,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = iNatural
 The-iNaturalist-Network = iNaturalist-nätverket är en samling lokaliserade webbplatser som är fullt anslutna till den globala iNaturalist-communityn. Nätverksplatser stöds av lokala institutioner som främjar lokal användning och underlättar användningen av data från iNaturalist för att gynna lokal biologisk mångfald.
 The-location-will-not-be-visible-to-others = Platsen kommer inte att vara synlig för andra, vilket kan göra fyndet omöjligt att bestämma.
 The-models-that-suggest-species = Modellerna som föreslår arter baserat på visuell likhet och plats existerar bland annat tack vare samarbeten med Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona och Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = This comment was hidden for violating Community Guidelines or Terms of Use.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = This identification was hidden for violating Community Guidelines or Terms of Use.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = This photo was hidden for violating Community Guidelines or Terms of Use.
 This-is-a-wild-organism = Detta är en vild organism och placerades inte på denna plats av människor.
 This-is-how-taxon-names-will-be-displayed = Så här kommer alla taxonnamn att visas för dig på iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Det här är din bestämning. Andra kan hjälpa till att bekräfta den!
@@ -859,6 +881,7 @@ This-observation-needs-more-identifications = Detta fynd behöver fler bestämni
 This-observation-needs-more-identifications-to-become-research-grade = Detta fynd behöver fler bestämningar för att uppnå forskningsklass.
 This-observer-has-opted-out-of-the-Community-Taxon = Den här observatören har valt bort communityns taxon
 This-organism-was-placed-by-humans = Denna organism placerades på denna plats av människor. Detta gäller för sådant som trädgårdsväxter, husdjur och djurparksdjur.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound was hidden for violating Community Guidelines or Terms of Use.
 This-user-has-no-followers = Den här användaren har inga följare.
 This-user-has-not-joined-any-projects = Denna användare har inte gått med i några projekt.
 This-user-is-not-following-anyone = Den här användaren följer inte någon.
@@ -971,6 +994,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } bestämmare
        *[other] { $count } bestämmare
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNAL POST
+       *[other] { $count } JOURNAL POSTS
     }
 X-MEMBERS =
     { $count ->

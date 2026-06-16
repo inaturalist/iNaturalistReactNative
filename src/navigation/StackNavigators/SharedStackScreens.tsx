@@ -15,7 +15,6 @@ import {
   blankHeaderTitle,
   fadeInComponent,
   hideHeader,
-  removeBottomBorder,
   showHeader,
   showSimpleCustomHeader,
 } from "navigation/navigationOptions";
@@ -87,7 +86,6 @@ const SharedStackScreens = ( ) => (
     {/* Screens with centered header */}
     <Stack.Group
       screenOptions={{
-        ...removeBottomBorder,
         ...showHeader,
         headerTitleAlign: "center",
         headerBackButtonDisplayMode: "minimal",

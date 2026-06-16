@@ -5,8 +5,12 @@ import ActivityHeaderContainer
   from "components/ObsDetailsSharedComponents/ActivityTab/ActivityHeaderContainer";
 import DisagreementText from "components/ObsDetailsSharedComponents/ActivityTab/DisagreementText";
 import {
+  Body2,
   Body4,
-  Divider, INatIconButton, UserText,
+  Divider,
+  INatIcon,
+  INatIconButton,
+  UserText,
 } from "components/SharedComponents";
 import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
 import {
@@ -71,10 +75,23 @@ const ActivityItem = ( {
     } )
   );
 
-  // we're doing this filtering directly in useRemoteObservation and useLocalObservation
-  // to make sure we're not displaying hidden content, but this is an extra safeguard
   if ( isHidden ) {
-    return null;
+    return (
+      <View className="flex-column" testID="ObsDetails.ActivityItem.Hidden">
+        <View className="p-4">
+          <View className="flex-row">
+            <INatIcon name="private" size={18} />
+            <Body2 className="ml-2">{t( "Content-Hidden" )}</Body2>
+          </View>
+          <Body4 className="py-2 italic">
+            { item.category
+              ? t( "This-identification-was-hidden-for-violating-community-guidelines-or-terms" )
+              : t( "This-comment-was-hidden-for-violating-community-guidelines-or-terms" )}
+          </Body4>
+        </View>
+        <Divider />
+      </View>
+    );
   }
 
   return (

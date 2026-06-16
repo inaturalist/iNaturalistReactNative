@@ -1,8 +1,8 @@
-import type { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchSubscriptions } from "api/observations";
 import type { ApiComment, ApiIdentification, ApiObservation } from "api/types";
+import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import {
   useCallback,
@@ -179,8 +179,7 @@ const useObsDetailsSharedLogic = ( {
   refetchRemoteObservation,
 }: UseObsDetailsSharedLogicParams ): UseObsDetailsSharedLogicReturn => {
   const setObservations = useStore( state => state.setObservations );
-  // TODO: replace with central types
-  const navigation = useNavigation<NavigationProp<ParamListBase>>( );
+  const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
   const realm = useRealm( );
   const [state, dispatch] = useReducer( reducer, initialState );
   const queryClient = useQueryClient( );

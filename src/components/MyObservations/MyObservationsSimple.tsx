@@ -28,12 +28,16 @@ import type {
   RealmObservation,
   RealmUser,
 } from "realmModels/types";
+import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
+import {
+  MY_OBSERVATIONS_SPECIES_SORT_OPTIONS,
+  useSpeciesSortLabels,
+} from "sharedHelpers/speciesSort";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
-import { SPECIES_SORT_BY } from "../../types/sorting";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
@@ -63,9 +67,9 @@ interface Props {
   openSheet: ACTIVE_SHEET;
   setActiveTab: ( newTab: string ) => void;
   setOpenSheet: ( value: ACTIVE_SHEET ) => void;
-  setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SPECIES_SORT_BY>>;
+  setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SPECIES_SORT>>;
   showNoResults: boolean;
-  speciesSortOptionId: SPECIES_SORT_BY;
+  speciesSortOptionId: SPECIES_SORT;
   taxa?: SpeciesCount[];
   toggleLayout: ( ) => void;
   fetchMoreTaxa: ( ) => void;
@@ -79,6 +83,12 @@ interface TaxaFlashListRenderItemProps {
   // I'm pretty sure this is some kind of bug ~~~~kueda 20250108
   // eslint-disable-next-line react/no-unused-prop-types
   item: SpeciesCount;
+}
+
+interface TaxaSortOption {
+  label: string;
+  text?: string;
+  value: SPECIES_SORT;
 }
 
 export const OBSERVATIONS_TAB = "observations";
@@ -119,6 +129,7 @@ const MyObservationsSimple = ( {
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
+  const speciesSortLabels = useSpeciesSortLabels( );
   const navigation = useNavigation( );
   const route = useRoute( );
   const {
@@ -131,18 +142,18 @@ const MyObservationsSimple = ( {
     paddingTop: 10,
   } ), [flashListStyle] );
 
-  const taxaSortOptions = {
-    [SPECIES_SORT_BY.COUNT_DESC]: {
-      value: SPECIES_SORT_BY.COUNT_DESC,
-      label: t( "Most-Observed-Default" ),
-      text: t( "Species-with-the-most-observations-appear-first" ),
+  const taxaSortOptions = MY_OBSERVATIONS_SPECIES_SORT_OPTIONS.reduce(
+    ( acc, sortBy ) => {
+      const { label, text } = speciesSortLabels[sortBy];
+      acc[sortBy] = {
+        label,
+        text,
+        value: sortBy,
+      };
+      return acc;
     },
-    [SPECIES_SORT_BY.COUNT_ASC]: {
-      value: SPECIES_SORT_BY.COUNT_ASC,
-      label: t( "Least-Observed" ),
-      text: t( "Species-with-the-least-observations-appear-first" ),
-    },
-  };
+    {} as Record<SPECIES_SORT, TaxaSortOption>,
+  );
 
   const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
     const taxonId = speciesCount.taxon.id;
@@ -236,7 +247,7 @@ const MyObservationsSimple = ( {
     />
   );
 
-  const observationsHeader = ( ) => {
+  const observationsHeader = useMemo( ( ) => {
     if ( layout !== "grid" ) {
       return (
         <SimpleHeader
@@ -267,7 +278,7 @@ const MyObservationsSimple = ( {
         />
       </View>
     );
-  };
+  }, [flashListStyle, isConnected, layout, numTotalObservations, obsMissingBasicsExist] );
 
   const dataFilledWithEmptyBoxes = useMemo( ( ) => {
     const data = observations;
@@ -301,7 +312,7 @@ const MyObservationsSimple = ( {
     Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
   }
 
-  const handleSortConfirm = ( optionId: SPECIES_SORT_BY ) => {
+  const handleSortConfirm = ( optionId: SPECIES_SORT ) => {
     if ( currentUser && !isConnected ) {
       showOfflineAlert( );
       return;
@@ -381,7 +392,7 @@ const MyObservationsSimple = ( {
               showObservationsEmptyScreen
               showNoResults={showNoResults}
               testID="MyObservationsAnimatedList"
-              renderHeader={observationsHeader}
+              listHeaderContent={observationsHeader}
             />
             <ObservationsViewBar
               hideMap
@@ -431,7 +442,7 @@ const MyObservationsSimple = ( {
           headerText={t( "SORT-SPECIES" )}
           radioValues={taxaSortOptions}
           selectedValue={speciesSortOptionId}
-          confirm={optionId => handleSortConfirm( optionId as SPECIES_SORT_BY )}
+          confirm={optionId => handleSortConfirm( optionId as SPECIES_SORT )}
           onPressClose={() => setOpenSheet( ACTIVE_SHEET.NONE )}
         />
       )}

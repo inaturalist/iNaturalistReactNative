@@ -10,6 +10,7 @@ import { View } from "components/styledComponents";
 import React from "react";
 import type { ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { CameraDeviceFormat, TakePhotoOptions } from "react-native-vision-camera";
 import { useLayoutPrefs } from "sharedHooks";
 
@@ -74,6 +75,7 @@ const AICameraButtons = ( {
   toggleLocation,
   deleteSentinelFile,
 }: Props ) => {
+  const { bottom } = useSafeAreaInsets( );
   const { isDefaultMode } = useLayoutPrefs();
   if ( isTablet ) {
     return (
@@ -103,7 +105,11 @@ const AICameraButtons = ( {
     );
   }
   return (
-    <View className="bottom-10 absolute right-5 left-5" pointerEvents="box-none">
+    <View
+      className="absolute right-5 left-5"
+      pointerEvents="box-none"
+      style={{ bottom: bottom + 32 }}
+    >
       <View
         className="absolute left-0 bottom-[17px] h-full justify-end flex gap-y-9"
         pointerEvents="box-none"

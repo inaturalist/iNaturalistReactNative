@@ -37,6 +37,7 @@ Adds-ID = Tilføjer ID
 Adds-your-vote-of-agreement = Tilføjer egen stemme for enighed
 Adds-your-vote-of-disagreement = Tilføjer egen stemme for uenighed
 Advanced-Mode = Avanceret tilstand
+Advanced-Search = Avanceret søgning
 ADVANCED-SETTINGS = AVANCEREDE INDSTILLINGER
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = Efter at have taget eller importeret fotos, vis:
@@ -80,6 +81,8 @@ attribution-cc-by-nd = visse rettigheder forbeholdes (CC BY-ND)
 attribution-cc-by-sa = visse rettigheder forbeholdes (CC BY-SA)
 August = August
 BACK-TO-LOGIN = TILBAGE TIL LOGIN
+Blog = Blog
+BLOG = BLOG
 Bulk-importer = Masseimport
 By-exiting-changes-not-saved = Ved at afslutte, vil ændringer til observationen ikke blive gemt.
 By-exiting-observation-not-saved = Ved at afslutte, vil observationen ikke blive gemt.
@@ -141,6 +144,7 @@ Connect-with-expert-naturalists = Forbind med ekspert-naturforskere
 Connect-with-other-naturalists = Kom i kontakt med andre naturkyndige og deltag i samtaler.
 Connection-problem-Please-try-again-later = Forbindelsesproblem. Forsøg igen senere.
 CONTACT-SUPPORT = KONTAKT SUPPORTEN
+Content-Hidden = Indhold skjult
 CONTINUE = FORTSÆT
 Coordinates-copied-to-clipboard = Koordinater kopieret til udklipsholder
 Copy-coordinates = Kopiér koordinater
@@ -174,6 +178,8 @@ Data-quality-assessment-title-needs-id = Denne observation Behøver ID
 Data-quality-assessment-title-research = Denne observation har Forskningskvalitet!
 DATE = DATO
 Date = Dato
+Date-Added-Newest-Default = Tilføjelsesdato: Seneste (Standard)
+Date-Added-Oldest = Tilføjelsesdato: Ældste
 date-format-long = d LLL yyyy
 date-format-month-day = d MMM
 date-format-month-year = MMM yyyy
@@ -181,7 +187,9 @@ date-format-short = d/M/yy
 DATE-OBSERVED = OBSERVERET DATO
 Date-observed = Observeret dato
 Date-observed-header-short = Observeret
+Date-Observed-Newest = Observationsdato: Seneste
 DATE-OBSERVED-NEWEST = OBSERVERET DATO - SENESTE TIL ÆLDSTE
+Date-Observed-Oldest = Observationsdato: Ældste
 DATE-OBSERVED-OLDEST = OBSERVERET DATO - ÆLDSTE TIL SENESTE
 Date-Range = Datoområde
 DATE-RANGE = DATOOMRÅDE
@@ -441,6 +449,7 @@ LEAVE-PROJECT = FORLAD PROJEKT
 LEAVE-PROJECT--question = FORLAD PROJEKT?
 LEAVE-US-A-REVIEW = SKRIV EN ANMELDELSE
 Lets-reset-your-password = Lad os nulstille adgangskoden
+Licenses = Licenser
 Loading-iNaturalists-AI-Camera = Indlæser iNaturalists AI-kamera
 Loads-content-that-requires-an-Internet-connection = Indlæser indhold, der kræver internetforbindelse
 LOCATION = PLACERING
@@ -467,6 +476,7 @@ MEMBERS-WITHOUT-NUMBER =
         [one] MEDLEM
        *[other] MEDLEMMER
     }
+Membership-in-this-project-is-by-invitation-only = Medlemskab af dette projekt er kun pr. invitation. Ved ønske om medlemsskab, kontakt en af kuratorerne nedenfor og bed om en invitation.
 Menu = Menu
 Missing-Date = Dato mangler
 MISSING-EVIDENCE = MANGLER BEVIS
@@ -544,8 +554,12 @@ Observation-options = Observationsmuligheder
 OBSERVATION-WAS-DELETED = OBSERVATION ER SLETTET
 Observation-with-no-evidence = Observation uden bevis
 Observations = Observationer
+Observations-added-least-recently-appear-first = Observationer tilføjet for længst tid siden vises først
+Observations-added-recently-appear-first = Observationer tilføjet for kortest tid siden vises først
 Observations-need-location-date--warning = iNaturalist-observationer behøver en placering og dato for at være nyttige for videnskabsfolk. Tjek venligst observationer med dette ikon før upload.
 Observations-View = Observationsvisning
+Observations-with-the-most-recent-date-appear-first = Observationer med den seneste dato vises først
+Observations-with-the-oldest-date-appear-first = Observationer med den ældste dato vises først
 OBSERVATIONS-WITHOUT-NUMBER =
     { $count ->
         [one] OBSERVATION
@@ -570,6 +584,7 @@ Opens-add-comment-form = Åbner formularen Tilføj kommentar.
 Opens-AI-camera = Åbner AI-kamera.
 Opens-edit-comment-form = Åbner formularen Redigér kommentar.
 Opens-location-permission-prompt = Åbner placeringstilladelsesprompt
+Opens-search-interface = Åbner søgegrænseflade.
 OR-SIGN-IN-WITH = ELLER LOG IND MED
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Eller man kan prøve at få et klarere foto ved at zoome ind, komme tættere på eller prøve en anden vinkel.
 Organism-is-captive = Organisme er i fangenskab
@@ -735,15 +750,18 @@ Scientific-Name = Videnskabeligt navn
 Scientific-Name-Common-Name = Videnskabeligt navn (Almindeligt navn)
 SEARCH = SØG
 Search = Søg
+Search-for-a-location = Søg efter et sted
 Search-for-a-project = Søg efter et projekt
 SEARCH-FOR-A-TAXON = SØG EFTER EN TAKSON
 Search-for-a-taxon = Søg efter en takson
+Search-for-species-user-or-project = Søg efter art, bruger eller projekt
 SEARCH-LOCATION = SØGEPLACERING
 SEARCH-PROJECTS = SØG I PROJEKTER
 Search-suggestions-with-location = Søg i forslag med placering
 Search-suggestions-without-location = Søg i forslag uden placering
 SEARCH-TAXA = SØG I TAKSA
 SEARCH-USERS = SØG BRUGERE
+See-journal-posts = Vis journalindlæg
 See-observations-by-this-user-in-Explore = Se observationer fra denne bruger i Udforsk
 See-observations-of-this-taxon-in-explore = Se observationer af denne takson i Udforsk
 See-project-members = Se projektmedlemmer
@@ -779,6 +797,7 @@ Sorry-this-observation-was-deleted = Beklager, denne observation er slettet
 Sorry-we-dont-know-how-to-open-that-URL = Beklager, vi ved ikke, hvordan man åbner denne URL: { $url }
 SORT-BY = SORTÉR EFTER
 Sort-by = Sortér efter
+SORT-OBSERVATIONS = SORTERE OBSERVATIONER
 SORT-SPECIES = SORTÉR ARTER
 sound-playback-separator = /
 Sound-recorder = Lyd&optager
@@ -841,6 +860,9 @@ The-iNaturalist-community-will-help-verify-and-refine-identifications = INatural
 The-iNaturalist-Network = iNaturalist-netværket er en samling af lokaliserede websteder, som er fuldt forbundet med det globale iNaturalist-fællesskab. Netværkswebsteder understøttes af lokale institutioner, som fremmer lokal brug og faciliterer brugen af ​​data fra iNaturalist til gavn for lokal biodiversitet.
 The-location-will-not-be-visible-to-others = Placeringen vil ikke være synlig for andre, hvilket kan gøre observationen umulig at identificerer.
 The-models-that-suggest-species = De modeller, som foreslår arter baseret på visuel lighed og placering, kan til dels tilskrives et samarbejder med Sara Beery, Tom Brooks, Elijah Cole, Christian Lange, Oisin Mac Aodha, Pietro Perona og Grant Van Horn.
+This-comment-was-hidden-for-violating-community-guidelines-or-terms = Denne kommentar blev skjult for overtrædelse af Fællesskabsretningslinjer eller Vilkår for brug.
+This-identification-was-hidden-for-violating-community-guidelines-or-terms = Denne identifikation blev skjult for overtrædelse af Fællesskabsretningslinjer eller Vilkår for brug.
+This-image-was-hidden-for-violating-community-guidelines-or-terms = Dette foto blev skjult for overtrædelse af Fællesskabsretningslinjer eller Vilkår for brug.
 This-is-a-wild-organism = Dette er en vild organisme, der ikke er ikke placeret på dette sted af mennesker.
 This-is-how-taxon-names-will-be-displayed = Det er sådan alle taksonnavne vises for brugeren på hele iNaturalist:
 This-is-your-identification-other-people-may-help-confirm-it = Dette er din identifikation. Andre personer kan hjælpe med at bekræfte den!
@@ -853,6 +875,7 @@ This-observation-needs-more-identifications = Denne observation behøver flere i
 This-observation-needs-more-identifications-to-become-research-grade = Denne observation behøver flere identifikationer for at nå forskningskvalitet
 This-observer-has-opted-out-of-the-Community-Taxon = Observatøren har fravalgt Fællesskabstakson
 This-organism-was-placed-by-humans = Organismen er placeret på dette sted af mennesker. Dette gælder for f.eks. haveplanter, kæledyr og zoo-dyr.
+This-sound-was-hidden-for-violating-community-guidelines-or-terms = Denne lyd blev skjult for overtrædelse af Fællesskabsretningslinjer eller Vilkår for brug.
 This-user-has-no-followers = Denne bruger har ingen følgere.
 This-user-has-not-joined-any-projects = Denne bruger er ikke tilmeldt nogen projekter.
 This-user-is-not-following-anyone = Denne bruger følger ingen.
@@ -965,6 +988,11 @@ X-Identifiers =
     { $count ->
         [one] { $count } identifikator
        *[other] { $count } identifikatorer
+    }
+X-JOURNAL_POSTS =
+    { $count ->
+        [one] { $count } JOURNALINDLÆG
+       *[other] { $count } JOURNALINDLÆG
     }
 X-MEMBERS =
     { $count ->

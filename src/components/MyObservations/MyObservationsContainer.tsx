@@ -17,9 +17,10 @@ import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation } from "realmModels/types";
 import {
-  mapSpeciesSortToAPIParams,
   sortSpeciesCounts,
-} from "sharedHelpers/sortingHelpers";
+  SPECIES_SORT,
+  speciesSortToApiParams,
+} from "sharedHelpers/speciesSort";
 import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import {
   useCurrentUser,
@@ -38,7 +39,6 @@ import {
 import useStore, { zustandStorage } from "stores/useStore";
 import type { SpeciesCount } from "types/sorting";
 
-import { SPECIES_SORT_BY } from "../../types/sorting";
 import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
@@ -127,7 +127,7 @@ const MyObservationsContainer = ( ) => {
   const [openSheet, setOpenSheet] = useState<ACTIVE_SHEET>( ACTIVE_SHEET.NONE );
 
   const [speciesSortOptionId, setSpeciesSortOptionId]
-    = useState<SPECIES_SORT_BY>( SPECIES_SORT_BY.COUNT_DESC );
+    = useState<SPECIES_SORT>( SPECIES_SORT.COUNT_DESC );
 
   const toggleLayout = ( ) => {
     writeLayoutToStorage( layout === "grid"
@@ -322,7 +322,7 @@ const MyObservationsContainer = ( ) => {
 
   // Map the selected sort option to API params
   const sortAPIParams = useMemo(
-    () => mapSpeciesSortToAPIParams( speciesSortOptionId ),
+    () => speciesSortToApiParams( speciesSortOptionId ),
     [speciesSortOptionId],
   );
 
@@ -337,7 +337,7 @@ const MyObservationsContainer = ( ) => {
     fetchSpeciesCounts,
     {
       user_id: currentUser?.id,
-      ...( sortAPIParams || {} ),
+      ...sortAPIParams,
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS,
       },

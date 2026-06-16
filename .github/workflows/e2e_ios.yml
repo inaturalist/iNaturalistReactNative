@@ -16,7 +16,7 @@ concurrency:
 jobs:
   checksecret:
     name: check for oauth client
-    runs-on: macos-15
+    runs-on: macos-26
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
@@ -31,7 +31,7 @@ jobs:
   build:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
-    runs-on: macos-15
+    runs-on: macos-26
     # Kill the task if not finished after 120 minutes
     timeout-minutes: 120
 
@@ -44,12 +44,20 @@ jobs:
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v6
       with:
-        node-version: 22
+        node-version-file: '.nvmrc'
+        cache: 'npm'
 
     - name: Setup Ruby version according to .ruby-version with cached gems
       uses: ruby/setup-ruby@v1
       with:
-        bundler-cache: true        
+        bundler-cache: true
+
+    # Required workaround for Firebase & XCode >26.0.1
+    # https://github.com/actions/runner-images/issues/13135#issuecomment-3397914993
+    - name: Set Xcode Toolchain
+      shell: bash
+      run: |
+        echo "TOOLCHAINS=com.apple.dt.toolchain.XcodeDefault" >> $GITHUB_ENV
 
     - name: Cache node modules
       uses: actions/cache@v5
@@ -137,7 +145,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: macos-15
+    runs-on: macos-26
     # Kill the task if not finished after 120 minutes
     timeout-minutes: 120
 
@@ -156,7 +164,8 @@ jobs:
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v6
       with:
-        node-version: 22
+        node-version-file: '.nvmrc'
+        cache: 'npm'
 
     - name: Cache node modules
       uses: actions/cache@v5
@@ -249,7 +258,7 @@ jobs:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null

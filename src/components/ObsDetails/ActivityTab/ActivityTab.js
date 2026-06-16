@@ -1,4 +1,5 @@
 // @flow
+import { useRoute } from "@react-navigation/native";
 import ActivityItem from "components/ObsDetailsSharedComponents/ActivityTab/ActivityItem";
 import { Body2 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -13,7 +14,6 @@ type Props = {
   activityItems: Object[],
   openAgreeWithIdSheet: Function,
   isConnected: boolean,
-  targetItemID: number,
   // TODO change to LayoutEvent from react-native if/when switching to TS
   onLayoutTargetItem: ( event: Object ) => void
 }
@@ -24,9 +24,11 @@ const ActivityTab = ( {
   activityItems,
   openAgreeWithIdSheet,
   isConnected,
-  targetItemID,
   onLayoutTargetItem,
 }: Props ): Node => {
+  // const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
+  const { params } = useRoute( );
+  const { targetActivityItemID: targetItemID } = params;
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
@@ -63,7 +65,7 @@ const ActivityTab = ( {
     <View testID="ActivityTab">
       {stableItems.length === 0
         ? (
-          <Body2 className="text-center mt-12 px-[45px]">
+          <Body2 className="text-center my-12 px-[45px]">
             {t( "This-observation-has-no-comments-or-identifications-yet" )}
           </Body2>
         )

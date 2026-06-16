@@ -10,9 +10,9 @@ import {
   List2,
   MediaNavButtons,
   P,
-  ViewWrapper,
   WarningSheet,
 } from "components/SharedComponents";
+import { TopAndBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -214,8 +214,8 @@ const SoundRecorder = (): Node => {
   };
 
   return (
-    <ViewWrapper wrapperClassName="bg-black justify-between">
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+    <TopAndBottomInsetViewWrapper wrapperClassName="bg-black justify-between">
+      <StatusBar barStyle="light-content" />
       <View className="flex-1 items-center justify-center">
         <View className="justify-center items-center w-full h-full">
           { status !== NOT_STARTED && (
@@ -332,7 +332,7 @@ const SoundRecorder = (): Node => {
         onPressClose={( ) => setResetWarningShown( false )}
         buttonText={t( "RESET-RECORDING" )}
       />
-    </ViewWrapper>
+    </TopAndBottomInsetViewWrapper>
   );
 };
 

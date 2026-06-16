@@ -41,9 +41,8 @@ interface Props {
   openAgreeWithIdSheet: () => void;
   refetchRemoteObservation: () => void;
   refetchSubscriptions: () => void;
-  showAddCommentSheet: () => void;
+  showAddCommentSheet: boolean;
   subscriptions: object;
-  targetActivityItemID: number;
   wasSynced: boolean;
   uuid: string;
 }
@@ -62,7 +61,6 @@ const ObsDetailsDefaultMode = ( {
   refetchSubscriptions,
   showAddCommentSheet,
   subscriptions,
-  targetActivityItemID,
   wasSynced,
   uuid,
 }: Props ) => {
@@ -125,7 +123,6 @@ const ObsDetailsDefaultMode = ( {
         <CommunitySection
           activityItems={activityItems}
           isConnected={isConnected}
-          targetItemID={targetActivityItemID}
           observation={observation}
           openAgreeWithIdSheet={openAgreeWithIdSheet}
           refetchRemoteObservation={refetchRemoteObservation}

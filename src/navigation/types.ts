@@ -10,7 +10,7 @@ import type {
   ParamListRoute,
 } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { ApiUser } from "api/types";
+import type { ApiPlace, ApiUser } from "api/types";
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
@@ -171,12 +171,24 @@ export type SharedStackParamList = {
       "GroupPhotos";
     hideSkip?: boolean;
   };
+  // From useObsDetailsSharedLogic.ts
+  // { lastScreen: "ObsDetails" }
   SuggestionsTaxonSearch: {
-    entryScreen: "ObsEdit";
-    lastScreen: "ObsEdit";
+    entryScreen?: "ObsEdit";
+    lastScreen: "ObsEdit" | "ObsDetails";
   };
   MatchTaxonSearchScreen: undefined;
-  FullPageWebView: undefined;
+  // From About
+  //  {
+  //   title: t( "COMMUNITY-GUIDELINES" ),
+  //   initialUrl: url,
+  //   loggedIn: false,
+  // }
+  FullPageWebView: {
+    title: string;
+    initialUrl: string;
+    loggedIn: boolean;
+  };
 };
 
 // Note from the documentation:
@@ -205,13 +217,57 @@ export type BaseTabStackParamList = {
   ObsList: undefined;
   RootExplore: undefined;
   // TODO: type for other routes to Explore
+  // From UserProfile
+  // {
+  //   user,
+  //   worldwide: true,
+  // }
+  // From ProjectDetails
+  // {
+  //   project,
+  //   worldwide: true,
+  // }
+  // {
+  //   project,
+  //   // If selected project has no place_id, show map in worldwide mode
+  //   worldwide: !project?.place,
+  //   place: project?.place,
+  // }
   Explore: {
-    user: ApiUser;
+    user?: ApiUser;
+    project?: object;
+    place?: ApiPlace | null;
     worldwide: boolean;
   };
   ExploreFilters: undefined;
   ExploreSearch: undefined;
-  ObsDetails: undefined;
+  // From NotificationsListItem
+  // {
+  //   uuid: notification.resource_uuid,
+  //   targetActivityItemID: notification.identification_id || notification.comment_id,
+  // }
+  // From Map, ObservationsFlashList, navigateToObsDetails, MyObservationsSimple
+  // { uuid }
+  // From useNavigateWithTaxonSelected
+  // {
+  //   uuid: currentObservation?.uuid,
+  //   identTaxonId: selectedTaxon?.id,
+  //   identTaxonFromVision: vision,
+  //   identAt: Date.now(),
+  // }
+  // From TaxonDetails
+  // {
+  //   uuid: obsUuid,
+  //   identTaxonId: taxon?.id,
+  //   identAt: Date.now(),
+  // }
+  ObsDetails: {
+    uuid: string;
+    targetActivityItemID?: number;
+    identAt?: number;
+    identTaxonId?: number;
+    identTaxonFromVision?: boolean;
+  };
   Notifications: undefined;
   // From ProjectRequirements, InlineUserBase, UserList
   // { userId: number }
@@ -221,13 +277,25 @@ export type BaseTabStackParamList = {
     userId?: number;
     login?: string;
   };
-  DataQualityAssessment: undefined;
+  // From DQAButton
+  // { observationUUID }
+  DataQualityAssessment: { observationUUID: string };
   Projects: undefined;
   // From LoginForm
   // { id: params.projectId }
   ProjectDetails: { id: number };
-  ProjectRequirements: undefined;
-  ProjectMembers: undefined;
+  // From ProjectDetails
+  // { id: project.id }
+  ProjectRequirements: { id: number };
+  // From ProjectDetails
+  // {
+  //   id: project.id,
+  //   title: project.title,
+  // }
+  ProjectMembers: {
+    id: number;
+    title: string;
+  };
   // From ProjectButton, ProjectSection
   // { observationUuid: observation.uuid }
   // From UserProfile
@@ -241,13 +309,28 @@ export type BaseTabStackParamList = {
     userLogin?: string;
   };
   FollowersList: {
-    // TODO: don't send the entire user object over here, only an ID or ID+login
-    user: ApiUser;
+    userId: number;
+    userLogin: string;
   };
   FollowingList: {
-    // TODO: don't send the entire user object over here, only an ID or ID+login
-    user: ApiUser;
+    userId: number;
+    userLogin: string;
   };
+  // From UserProfile
+  // {
+  //   userLogin: user?.login,
+  //   journalPostsCount: user?.journal_posts_count,
+  // }
+  // From ProjectDetails
+  // {
+  //   projectTitle: project?.title,
+  //   journalPostsCount: project?.journal_posts_count,
+  // }
+  Journal: {
+    userLogin?: string;
+    projectTitle?: string;
+    journalPostsCount?: number;
+  } | undefined;
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;

@@ -157,14 +157,15 @@ const EvidenceList = ( {
     </Pressable>
   ), [handleAddEvidence, t] );
 
-  const afterMediaDeleted = useCallback( ( ) => {
+  const afterMediaDeleted = useCallback( deletedUri => {
     // If there was was only one item and it was deleted, close the modal by
     // nullifying the selected media URI. Otherwise, choose the last
     // remaining item.
-    if ( mediaUris.length === 1 ) {
+    const remainingMediaUris = mediaUris.filter( uri => uri !== deletedUri );
+    if ( remainingMediaUris.length === 0 ) {
       setSelectedMediaUri( null );
     } else {
-      setSelectedMediaUri( mediaUris[mediaUris.length - 1] );
+      setSelectedMediaUri( remainingMediaUris[remainingMediaUris.length - 1] );
     }
     setDeleting( false );
   }, [mediaUris, setSelectedMediaUri] );
@@ -176,7 +177,7 @@ const EvidenceList = ( {
   const onDeletePhoto = useCallback( async uriToDelete => {
     await ObservationPhoto.deletePhoto( uriToDelete, currentObservation );
     deletePhotoFromObservation( uriToDelete );
-    afterMediaDeleted( );
+    afterMediaDeleted( uriToDelete );
   }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation] );
 
   const onDeleteSound = useCallback( async uriToDelete => {
@@ -188,7 +189,7 @@ const EvidenceList = ( {
         uriToDelete,
         currentObservation.uuid,
       );
-      afterMediaDeleted( );
+      afterMediaDeleted( uriToDelete );
     }
     setDeleting( true );
     // If sound was synced, delete the remote copy immediately and then remove

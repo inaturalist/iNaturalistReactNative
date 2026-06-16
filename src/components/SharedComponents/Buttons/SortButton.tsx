@@ -9,7 +9,7 @@ const DROP_SHADOW = getShadow( {
 } );
 
 interface Props {
-  onPress: () => void;
+  onPress: ( ) => void;
   accessibilityLabel: string;
 }
 

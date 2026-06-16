@@ -27,7 +27,8 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
       - name: Cache node modules
         uses: actions/cache@v5

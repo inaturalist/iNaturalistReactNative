@@ -12,8 +12,6 @@ const OnboardingStackNavigator = ( ) => (
       component={OnboardingCarousel}
       options={{
         headerShown: false,
-        presentation: "modal",
-        contentStyle: { backgroundColor: "transparent" },
       }}
     />
   </Stack.Navigator>

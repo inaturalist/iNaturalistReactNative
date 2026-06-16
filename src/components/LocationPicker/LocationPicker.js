@@ -6,8 +6,8 @@ import {
   Heading4,
   KeyboardDismissableView,
   Map,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -26,7 +26,6 @@ type Props = {
   loading: boolean,
   locationName: string,
   initialRegion: Object,
-  mapType: string,
   onCurrentLocationPress: Function,
   onMapReady: Function,
   onRegionChangeComplete: Function,
@@ -45,7 +44,6 @@ const LocationPicker = ( {
   locationName,
   regionToAnimate,
   initialRegion,
-  mapType,
   onCurrentLocationPress,
   onMapReady,
   onRegionChangeComplete,
@@ -71,7 +69,7 @@ const LocationPicker = ( {
 
   return (
     <KeyboardDismissableView>
-      <ViewWrapper testID="location-picker">
+      <SharedStackViewWrapper testID="location-picker">
         <View className="justify-center">
           <Heading4 className="self-center my-4">{t( "EDIT-LOCATION" )}</Heading4>
           <View className="absolute right-2">
@@ -113,7 +111,6 @@ const LocationPicker = ( {
           <Map
             className="h-full"
             initialRegion={initialRegion}
-            mapType={mapType}
             onCurrentLocationPress={onCurrentLocationPress}
             onMapReady={onMapReady}
             onRegionChangeComplete={onRegionChangeComplete}
@@ -127,7 +124,7 @@ const LocationPicker = ( {
           />
         </View>
         <Footer handleSave={handleSave} />
-      </ViewWrapper>
+      </SharedStackViewWrapper>
     </KeyboardDismissableView>
   );
 };

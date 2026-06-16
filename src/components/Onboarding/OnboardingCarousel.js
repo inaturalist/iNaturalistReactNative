@@ -5,8 +5,8 @@ import {
   Heading4,
   INatIcon,
   INatIconButton,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { ImageBackground } from "components/styledComponents";
 import INatLogo from "images/svg/inat_logo_onboarding.svg";
 import OnBoardingIcon2 from "images/svg/onboarding_icon_2.svg";
@@ -28,6 +28,7 @@ import {
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useOnboardingShown } from "sharedHelpers/installData";
 import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import colors from "styles/tailwindColors";
@@ -69,6 +70,7 @@ const SlideItem = props => {
 const OnboardingCarousel = ( ) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [onboardingShown, setOnboardingShown] = useOnboardingShown();
+  const insets = useSafeAreaInsets( );
   const { width } = useWindowDimensions();
   const { t } = useTranslation( );
   const carouselRef = useRef( null );
@@ -201,8 +203,8 @@ const OnboardingCarousel = ( ) => {
   }
 
   return (
-    <ViewWrapper wrapperClassName="bg-black">
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+    <ScreenShell wrapperClassName="bg-black">
+      <StatusBar barStyle="light-content" />
       <View
         className="w-full h-full relative"
         testID="OnboardingCarousel"
@@ -239,12 +241,17 @@ const OnboardingCarousel = ( ) => {
             icon="close"
             color={colors.white}
             size={19}
-            className="absolute z-10 top-[15px] right-[10px]"
+            className="absolute z-10 right-[10px]"
+            style={{ top: insets.top + 8 }}
             onPress={( ) => closeModal( )}
             accessibilityLabel={t( "Close" )}
             accessibilityHint={t( "Closes-introduction" )}
           />
-          <View pointerEvents="none" className="items-center absolute top-[82px]">
+          <View
+            pointerEvents="none"
+            className="items-center absolute"
+            style={{ top: insets.top + 82 }}
+          >
             <INatLogo
               width={270}
               height={49}
@@ -260,7 +267,8 @@ const OnboardingCarousel = ( ) => {
           <View className="w-full flex-1">
             <Carousel
               ref={carouselRef}
-              className="w-full h-full pb-[120px]"
+              className="w-full h-full"
+              style={{ paddingBottom: 120 + insets.bottom }}
               data={ONBOARDING_SLIDES}
               width={width}
               loop={false}
@@ -276,7 +284,11 @@ const OnboardingCarousel = ( ) => {
             />
           </View>
 
-          <View className="absolute bottom-0 w-full" pointerEvents="box-none">
+          <View
+            className="absolute bottom-0 w-full"
+            pointerEvents="box-none"
+            style={{ paddingBottom: 8 + insets.bottom }}
+          >
             <View
               className="pt-8"
               aria-hidden
@@ -323,7 +335,7 @@ const OnboardingCarousel = ( ) => {
               </View>
             </View>
             <View
-              className="mt-[25px] mb-[23px] pl-[15px] pr-[15px] flex flex-col items-center w-full"
+              className="mt-[25px] pl-[15px] pr-[15px] flex flex-col items-center w-full"
             >
               <Button
                 className="w-full"
@@ -344,7 +356,7 @@ const OnboardingCarousel = ( ) => {
           </View>
         </View>
       </View>
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 
