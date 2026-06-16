@@ -51,7 +51,7 @@ interface Props {
   fetchFromLastObservation: ( id: number ) => void;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handlePullToRefresh: ( ) => void;
-  handleSyncButtonPress: ( _p: { unuploadedObsMissingBasicsIDs: string[] } ) => void;
+  handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
@@ -346,9 +346,7 @@ const MyObservationsSimple = ( {
           currentUser={currentUser}
           isConnected={isConnected}
           numUploadableObservations={numUploadableObservations}
-          handleSyncButtonPress={() => {
-            handleSyncButtonPress( { unuploadedObsMissingBasicsIDs } );
-          }}
+          handleSyncButtonPress={handleSyncButtonPress}
         />
         <Tabs
           activeColor={String( colors?.inatGreen )}
