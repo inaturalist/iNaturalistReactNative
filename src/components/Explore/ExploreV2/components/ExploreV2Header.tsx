@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import {
+  Body1,
   Body3,
   Heading2,
-  Heading4,
   IconicTaxonIcon,
   INatIcon,
   UserIcon,
@@ -110,17 +110,17 @@ const ExploreV2Header = ( ) => {
           ? (
             <View className="flex-1 flex-row items-center mr-5">
               <SubjectThumbnail subject={state.subject} />
-              <View className="flex-1 ml-3">
-                <Heading4 numberOfLines={1} ellipsizeMode="tail">
+              <View className="flex-1 ml-[10px]">
+                <Body1 numberOfLines={1} ellipsizeMode="tail">
                   {subject}
-                </Heading4>
+                </Body1>
                 {place
                   ? (
-                    <View className="flex-row items-center pt-1">
+                    <View className="flex-row items-center pt-[5px]">
                       <INatIcon name="location" size={15} />
                       <Body3
                         maxFontSizeMultiplier={1.5}
-                        className="ml-2"
+                        className="ml-[5px]"
                         numberOfLines={1}
                         ellipsizeMode="tail"
                       >
