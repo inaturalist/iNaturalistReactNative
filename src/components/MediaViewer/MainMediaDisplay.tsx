@@ -146,13 +146,6 @@ const MainMediaDisplay = ( {
       : renderSound( item )
   );
 
-  // // need getItemLayout for setting initial scroll index
-  // const getItemLayout = useCallback( ( data, idx: number ) => ( {
-  //   length: screenWidth,
-  //   offset: screenWidth * idx,
-  //   index: idx,
-  // } ), [screenWidth] );
-
   const swipeToCloseGesture = Gesture.Simultaneous(
     Gesture.Pan( )
       .runOnJS( true )
@@ -185,23 +178,14 @@ const MainMediaDisplay = ( {
               defaultIndex={selectedMediaIndex}
               loop={false}
               width={screenWidth}
+              // Disable scrolling when image is zooming
               enabled={!zooming}
               onSnapToItem={setSelectedMediaIndex}
               // onConfigurePanGesture={onConfigurePanGesture}
               // windowSize={3}
             />
             {/* <FlatList
-            ref={horizontalScroll}
-            data={items}
-            renderItem={renderItem}
-            initialScrollIndex={selectedMediaIndex}
-            getItemLayout={getItemLayout}
-            horizontal
-            pagingEnabled
-            // Disable scrolling when image is zooming
-            scrollEnabled={!zooming}
             showsHorizontalScrollIndicator={false}
-            onMomentumScrollEnd={handleScrollEndDrag}
           /> */}
           </View>
         </GestureDetector>
