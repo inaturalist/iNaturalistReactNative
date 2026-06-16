@@ -77,7 +77,7 @@ const MainMediaDisplay = ( {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
     const hasAttribution = photo?.attribution;
     return (
-      <View>
+      <View className="flex-1">
         <CustomImageZoom
           uri={uri}
           setZooming={setZooming}
@@ -184,9 +184,6 @@ const MainMediaDisplay = ( {
               // onConfigurePanGesture={onConfigurePanGesture}
               // windowSize={3}
             />
-            {/* <FlatList
-            showsHorizontalScrollIndicator={false}
-          /> */}
           </View>
         </GestureDetector>
       </GestureHandlerRootView>
