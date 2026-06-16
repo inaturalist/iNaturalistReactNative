@@ -4,15 +4,15 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
-  useCallback, useMemo, useState,
+  useMemo, useState,
 } from "react";
-import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
-import { FlatList } from "react-native";
 import {
   Gesture,
   GestureDetector,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
+import type { CarouselRenderItem, ICarouselInstance } from "react-native-reanimated-carousel";
+import Carousel from "react-native-reanimated-carousel";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
@@ -37,7 +37,7 @@ interface SoundItem {
 interface Props {
   autoPlaySound?: boolean; // automatically start playing a sound when it is visible
   editable?: boolean;
-  horizontalScroll: React.Ref<FlatList>;
+  horizontalScroll: React.Ref<ICarouselInstance>;
   onDeletePhoto: ( uri: string ) => void;
   onClose: ( ) => void;
   onDeleteSound: ( uri: string ) => void;
@@ -63,19 +63,17 @@ const MainMediaDisplay = ( {
   const { screenWidth } = useDeviceOrientation( );
   const [displayHeight, setDisplayHeight] = useState( 0 );
   const [zooming, setZooming] = useState( false );
-  const atFirstItem = selectedMediaIndex === 0;
   const items = useMemo( ( ) => ( [
     ...photos.map( photo => ( { ...photo, type: "photo" as const } ) ),
     ...sounds.map( sound => ( { ...sound, type: "sound" as const } ) ),
   ] ), [photos, sounds] );
-  const atLastItem = selectedMediaIndex === items.length - 1;
 
   // t changes a lot, but these strings don't, so using them as useCallback
   // dependencies keeps that method from getting redefined a lot
   const deletePhotoLabel = t( "Delete-photo" );
   const deleteSoundLabel = t( "Delete-sound" );
 
-  const renderPhoto = useCallback( ( photo: PhotoItem ) => {
+  const renderPhoto = ( photo: PhotoItem ) => {
     const uri = Photo.displayLocalOrRemoteLargePhoto( photo );
     const hasAttribution = photo?.attribution;
     return (
@@ -112,14 +110,9 @@ const MainMediaDisplay = ( {
         }
       </View>
     );
-  }, [
-    deletePhotoLabel,
-    editable,
-    onDeletePhoto,
-    selectedMediaIndex,
-  ] );
+  };
 
-  const renderSound = useCallback( ( sound: SoundItem ) => (
+  const renderSound = ( sound: SoundItem ) => (
     <View
       className="justify-center items-center"
       style={{
@@ -145,65 +138,20 @@ const MainMediaDisplay = ( {
         )
       }
     </View>
-  ), [
-    autoPlaySound,
-    deleteSoundLabel,
-    displayHeight,
-    editable,
-    items,
-    onDeleteSound,
-    screenWidth,
-    selectedMediaIndex,
-  ] );
+  );
 
-  const renderItem = useCallback( ( { item }: { item: PhotoItem | SoundItem } ) => (
+  const renderItem: CarouselRenderItem<PhotoItem | SoundItem> = ( { item } ) => (
     item.type === "photo"
       ? renderPhoto( item )
       : renderSound( item )
-  ), [
-    renderPhoto,
-    renderSound,
-  ] );
+  );
 
-  // need getItemLayout for setting initial scroll index
-  const getItemLayout = useCallback( ( data, idx: number ) => ( {
-    length: screenWidth,
-    offset: screenWidth * idx,
-    index: idx,
-  } ), [screenWidth] );
-
-  const handleScrollLeft = useCallback( ( index: number ) => {
-    if ( atFirstItem ) { return; }
-    setSelectedMediaIndex( index );
-  }, [atFirstItem, setSelectedMediaIndex] );
-
-  const handleScrollRight = useCallback( ( index: number ) => {
-    if ( atLastItem ) { return; }
-    setSelectedMediaIndex( index );
-  }, [atLastItem, setSelectedMediaIndex] );
-
-  const handleScrollEndDrag = useCallback( ( e: NativeSyntheticEvent<NativeScrollEvent> ) => {
-    const { contentOffset, layoutMeasurement } = e.nativeEvent;
-    const { x } = contentOffset;
-
-    const currentOffset = screenWidth * selectedMediaIndex;
-
-    // https://gist.github.com/dozsolti/6d01d0f96d9abced3450a2e6149a2bc3?permalink_comment_id=4107663#gistcomment-4107663
-    const index = Math.floor(
-      Math.floor( x ) / Math.floor( layoutMeasurement.width ),
-    );
-
-    if ( x > currentOffset ) {
-      handleScrollRight( index );
-    } else if ( x < currentOffset ) {
-      handleScrollLeft( index );
-    }
-  }, [
-    handleScrollLeft,
-    handleScrollRight,
-    screenWidth,
-    selectedMediaIndex,
-  ] );
+  // // need getItemLayout for setting initial scroll index
+  // const getItemLayout = useCallback( ( data, idx: number ) => ( {
+  //   length: screenWidth,
+  //   offset: screenWidth * idx,
+  //   index: idx,
+  // } ), [screenWidth] );
 
   const swipeToCloseGesture = Gesture.Simultaneous(
     Gesture.Pan( )
@@ -227,7 +175,22 @@ const MainMediaDisplay = ( {
     >
       <GestureHandlerRootView>
         <GestureDetector gesture={swipeToCloseGesture}>
-          <FlatList
+          <View collapsable={false}>
+            <Carousel
+              key={`MediaViewerCarousel-${screenWidth}`}
+              testID="MediaViewer.carousel"
+              ref={horizontalScroll}
+              data={items}
+              renderItem={renderItem}
+              defaultIndex={selectedMediaIndex}
+              loop={false}
+              width={screenWidth}
+              enabled={!zooming}
+              onSnapToItem={setSelectedMediaIndex}
+              // onConfigurePanGesture={onConfigurePanGesture}
+              // windowSize={3}
+            />
+            {/* <FlatList
             ref={horizontalScroll}
             data={items}
             renderItem={renderItem}
@@ -239,7 +202,8 @@ const MainMediaDisplay = ( {
             scrollEnabled={!zooming}
             showsHorizontalScrollIndicator={false}
             onMomentumScrollEnd={handleScrollEndDrag}
-          />
+          /> */}
+          </View>
         </GestureDetector>
       </GestureHandlerRootView>
     </View>
