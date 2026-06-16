@@ -72,13 +72,9 @@ const MyObservationsContext = React.createContext<
   MyObservationsContextValue | undefined
 >( undefined );
 
-interface MyObservationsProviderProps {
-  children: React.ReactNode;
-}
-
 export const MyObservationsProvider = ( {
   children,
-}: MyObservationsProviderProps ) => {
+}: React.PropsWithChildren ) => {
   const [state, dispatch] = React.useReducer(
     myObservationsReducer,
     initialMyObservationsState,
