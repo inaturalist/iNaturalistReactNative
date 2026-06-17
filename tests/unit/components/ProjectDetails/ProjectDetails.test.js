@@ -12,6 +12,7 @@ const mockProject = factory( "RemoteProject", {
   header_image_url: faker.image.url( ),
   description: faker.lorem.paragraph( ),
   project_type: "collection",
+  user_ids: [faker.number.int( )],
 } );
 
 const mockProjectWithDateRange = factory( "RemoteProject", {

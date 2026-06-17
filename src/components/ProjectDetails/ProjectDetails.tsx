@@ -1,6 +1,5 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
+import type { ApiPlace, ProjectRulePreference } from "api/types";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
@@ -18,8 +17,9 @@ import {
 import {
   Image, ImageBackground, View,
 } from "components/styledComponents";
-import type { Node } from "react";
+import type { TabStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
+import { Alert } from "react-native";
 import Config from "react-native-config";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import { useFeatureFlag, useStoredLayout, useTranslation } from "sharedHooks";
@@ -38,21 +38,39 @@ const LEAVE = "LEAVE";
 
 const PROJECT_URL = `${Config.OAUTH_API_URL}/projects`;
 
-type Props = {
-  project: Object,
-  joinProject: Function,
-  leaveProject: Function,
-  loadingProjectMembership: boolean
+interface Project {
+  current_user_is_member: boolean;
+  current_user_observations_count?: number;
+  description: string;
+  header_image_url: string | null;
+  icon: string;
+  id: number;
+  journal_posts_count?: number;
+  membership_model: "inviteonly" | "open" | null;
+  members_count?: number;
+  observations_count?: number;
+  place?: ApiPlace | null;
+  project_type: "collection" | "umbrella" | "";
+  rule_preferences: ProjectRulePreference[];
+  species_count?: number;
+  title: string;
+}
+
+interface Props {
+  project: Project | null;
+  joinProject: ( ) => void;
+  leaveProject: ( ) => void;
+  loadingProjectMembership: boolean;
 }
 
 const ProjectDetails = ( {
   project, joinProject, leaveProject, loadingProjectMembership,
-}: Props ): Node => {
+}: Props ) => {
   const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
   const setExploreView = useStore( state => state.setExploreView );
 
   const { t, i18n } = useTranslation( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<TabStackScreenProps<"ProjectDetails">["navigation"]>( );
 
   const { writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
 
@@ -65,9 +83,12 @@ const ProjectDetails = ( {
         writeLayoutToStorage( "map" );
       }
       navigation.navigate( "Explore", {
-        project,
-        // If selected project has no place_id, show map in worldwide mode
+        // TODO: refactor this to only send an ID to ExploreV2 and not an entire project object
+        // Function is only rendered with a button after null check below
+        project: project as Project,
+        // If selected project has no place, show map in worldwide mode
         worldwide: !project?.place,
+        // TODO: refactor this to only send an ID to ExploreV2 and not an entire place object
         place: project?.place,
       } );
     },
@@ -78,7 +99,8 @@ const ProjectDetails = ( {
     ( ) => {
       setExploreView( "species" );
       navigation.navigate( "Explore", {
-        project,
+        // Function is only rendered with a button after null check below
+        project: project as Project,
         worldwide: true,
       } );
     },
@@ -88,8 +110,9 @@ const ProjectDetails = ( {
   const onMembersPressed = useCallback(
     ( ) => {
       navigation.navigate( "ProjectMembers", {
-        id: project?.id,
-        title: project?.title,
+        // Function is only rendered with a button after null check below
+        id: ( project as Project ).id,
+        title: ( project as Project ).title,
       } );
     },
     [navigation, project],
@@ -97,8 +120,9 @@ const ProjectDetails = ( {
 
   const onJournalPostsPressed = ( ) => {
     navigation.navigate( "Journal", {
-      projectTitle: project?.title,
-      journalPostsCount: project?.journal_posts_count,
+      // Function is only rendered with a button after null check below
+      projectTitle: ( project as Project ).title,
+      journalPostsCount: ( project as Project ).journal_posts_count,
     } );
   };
 
@@ -120,7 +144,7 @@ const ProjectDetails = ( {
 
   const iconClassName = "h-[90px] w-[90px] rounded-full bg-white -top-6";
 
-  const displayProjectIcon = icon => {
+  const displayProjectIcon = ( icon: string ) => {
     const productionIcon = icon?.replace( "staticdev", "static" );
 
     if ( productionIcon === defaultProjectIcon ) {
@@ -146,7 +170,7 @@ const ProjectDetails = ( {
     );
   };
 
-  const backgroundImageSource = project?.header_image_url
+  const backgroundImageSource = project.header_image_url
     ? { uri: project.header_image_url }
     : require( "images/background/project_banner.jpg" );
 
@@ -159,7 +183,7 @@ const ProjectDetails = ( {
           testID="ProjectDetails.headerImage"
           accessibilityIgnoresInvertColors
         >
-          {displayProjectIcon( project?.icon )}
+          {displayProjectIcon( project.icon )}
         </ImageBackground>
       </View>
       <View className="mx-4 pb-8">
@@ -176,14 +200,14 @@ const ProjectDetails = ( {
             members_count: project.members_count,
             journal_posts_count: project.journal_posts_count,
           }}
-          onObservationPressed={() => onObservationPressed( false )}
+          onObservationPressed={( ) => onObservationPressed( false )}
           onSpeciesPressed={onSpeciesPressed}
           onMembersPressed={onMembersPressed}
           onJournalPostsPressed={onJournalPostsPressed}
           newsEnabled={newsEnabled}
         />
         <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
-        {project?.description && (
+        {project.description && (
           <UserText text={project.description} htmlStyle={userTextStyle} />
         )}
         {project.project_type === "collection" && (
@@ -203,7 +227,7 @@ const ProjectDetails = ( {
         <Button
           level="neutral"
           text={t( "VIEW-IN-EXPLORE" )}
-          onPress={() => onObservationPressed( true )}
+          onPress={( ) => onObservationPressed( true )}
         />
         <Heading4 className="mb-3 mt-5">
           {!project.current_user_is_member
@@ -215,7 +239,13 @@ const ProjectDetails = ( {
             <Button
               level="neutral"
               text={t( "JOIN" )}
-              onPress={() => setOpenSheet( JOIN )}
+              onPress={( ) => {
+                if ( project.membership_model === "inviteonly" ) {
+                  Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
+                } else {
+                  setOpenSheet( JOIN );
+                }
+              }}
               loading={loadingProjectMembership}
               disabled={loadingProjectMembership}
             />
@@ -224,7 +254,7 @@ const ProjectDetails = ( {
             <Button
               level="neutral"
               text={t( "LEAVE" )}
-              onPress={() => setOpenSheet( LEAVE )}
+              onPress={( ) => setOpenSheet( LEAVE )}
               loading={loadingProjectMembership}
               disabled={loadingProjectMembership}
             />
@@ -233,21 +263,21 @@ const ProjectDetails = ( {
         <Body4
           className="underline mt-[11px]"
           accessibilityRole="link"
-          onPress={async () => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
+          onPress={async ( ) => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
         >
           {t( "View-in-browser" )}
         </Body4>
       </View>
       {openSheet === JOIN && (
         <WarningSheet
-          onPressClose={() => setOpenSheet( NONE )}
-          confirm={() => {
-            joinProject();
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( ) => {
+            joinProject( );
             setOpenSheet( NONE );
           }}
           headerText={t( "JOIN-PROJECT--question" )}
           buttonText={t( "JOIN" )}
-          handleSecondButtonPress={() => setOpenSheet( NONE )}
+          handleSecondButtonPress={( ) => setOpenSheet( NONE )}
           secondButtonText={t( "CANCEL" )}
           loading={loadingProjectMembership}
           buttonType="primary"
@@ -255,21 +285,21 @@ const ProjectDetails = ( {
       )}
       {openSheet === LEAVE && (
         <WarningSheet
-          onPressClose={() => setOpenSheet( NONE )}
-          confirm={() => {
-            leaveProject();
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( ) => {
+            leaveProject( );
             setOpenSheet( NONE );
           }}
           headerText={t( "LEAVE-PROJECT--question" )}
           text={
             project.project_type === ""
-            && project?.current_user_observations_count > 0
+            && project.current_user_observations_count > 0
             && t( "If-you-leave-x-of-your-observations-removed", {
-              count: project?.current_user_observations_count,
+              count: project.current_user_observations_count,
             } )
           }
           buttonText={t( "LEAVE" )}
-          handleSecondButtonPress={() => setOpenSheet( NONE )}
+          handleSecondButtonPress={( ) => setOpenSheet( NONE )}
           secondButtonText={t( "CANCEL" )}
           loading={loadingProjectMembership}
         />

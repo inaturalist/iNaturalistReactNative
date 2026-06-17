@@ -69,6 +69,7 @@
           <!-- note that the leading "/" is required for pathPrefix-->
       </intent-filter>
       </activity>
+      <activity android:name="com.reactnativelegal.ReactNativeLegalActivity" android:exported="false" android:launchMode="singleTask"/>
     </application>
     <queries>
         <intent>

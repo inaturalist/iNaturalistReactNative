@@ -4,33 +4,60 @@ import {
   createRNFSAdapter,
   useFileSystemDevTools,
 } from "@rozenite/file-system-plugin";
-import { useMMKVDevTools } from "@rozenite/mmkv-plugin";
 import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin";
 import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
+import type { StorageAdapter } from "@rozenite/storage-plugin";
+import { useRozeniteStoragePlugin } from "@rozenite/storage-plugin";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 import type {
   QueryClient,
 } from "@tanstack/react-query";
 import { useFeatureFlagForDebug } from "components/Developer/FeatureFlags";
-import { useMemo } from "react";
-import type { MMKV } from "react-native-mmkv";
+import type { PropsWithChildren } from "react";
+import React, { useMemo, useState } from "react";
+import { Button, View } from "react-native";
+import RNRestart from "react-native-restart";
+import { store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 interface RozeniteOptions {
-    queryClient: QueryClient;
-    mmkvStorages: Record<string, MMKV>;
+  queryClient: QueryClient;
+  storageAdapters: StorageAdapter[];
 }
+
+const launchHaltStorageKey = "haltLaunch";
+// eslint-disable-next-line arrow-body-style
+export const shouldHaltLaunchForDebug = ( ) => {
+  const result = installDataMMKVStorage.getBoolean( launchHaltStorageKey ) || false;
+  // just unset this on read: make each halted launch intentional
+  installDataMMKVStorage.delete( launchHaltStorageKey );
+  return result;
+};
+
+export const HaltedLaunch = ( { children }: PropsWithChildren ) => {
+  const [unhalted, setUnhalted] = useState( false );
+  if ( unhalted ) {
+    return children;
+  }
+  return (
+    // eslint-disable-next-line react-native/no-inline-styles
+    <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+      <Button title="Continue App Launch" onPress={() => setUnhalted( true )} />
+    </View>
+  );
+};
+HaltedLaunch.displayName = "HaltedLaunch";
 
 // TODO: the react-navigation rozenite plugin is called elsewhere and should be moved here
 // src/navigation/OfflineNavigationGuard.tsx. We need to lift the navRef state
 // up to where useRozenite is called so it can be used as an option here.
 
 // note: Rozenite plugins are automatically disabled / noops in Production builds
-const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
+const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
   useTanStackQueryDevTools( queryClient );
   useNetworkActivityDevTools( );
-  useMMKVDevTools( {
-    storages: mmkvStorages,
+  useRozeniteStoragePlugin( {
+    storages: storageAdapters,
   } );
   useRequireProfilerDevTools( );
   useFileSystemDevTools( {
@@ -43,6 +70,23 @@ const useRozenite = ( { queryClient, mmkvStorages }: RozeniteOptions ) => {
 
   const sections = useMemo(
     () => [
+      createSection( {
+        id: "operations",
+        title: "Operations",
+        items: [{
+          id: "halt-launch",
+          type: "button",
+          title: "Restart & Halt",
+          description:
+            "Restarts the app and renders a placeholder root component. "
+            + "Useful for attaching a debugger or starting a profiling session.",
+          onPress: () => {
+            installDataMMKVStorage.set( launchHaltStorageKey, true );
+            RNRestart.restart();
+          },
+        },
+        ],
+      } ),
       createSection( {
         id: "feature-flags",
         title: "Feature Flags",

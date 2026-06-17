@@ -13,10 +13,10 @@ import {
   defaultExploreV2Location,
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
-  EXPLORE_V2_SORT,
   useExploreV2,
 } from "providers/ExploreV2Context";
 import React, { useState } from "react";
+import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import useDebugMode from "sharedHooks/useDebugMode";
 import { getShadow } from "styles/global";
 
@@ -46,12 +46,12 @@ const DROP_SHADOW = getShadow( {
   elevation: 6,
 } );
 
-const SORT_LABELS: Record<EXPLORE_V2_SORT, string> = {
-  [EXPLORE_V2_SORT.DATE_UPLOADED_NEWEST]: "Uploaded ↓",
-  [EXPLORE_V2_SORT.DATE_UPLOADED_OLDEST]: "Uploaded ↑",
-  [EXPLORE_V2_SORT.DATE_OBSERVED_NEWEST]: "Observed ↓",
-  [EXPLORE_V2_SORT.DATE_OBSERVED_OLDEST]: "Observed ↑",
-  [EXPLORE_V2_SORT.MOST_FAVED]: "Most faved",
+const SORT_LABELS: Record<OBSERVATIONS_SORT, string> = {
+  [OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST]: "Uploaded ↓",
+  [OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST]: "Uploaded ↑",
+  [OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST]: "Observed ↓",
+  [OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST]: "Observed ↑",
+  [OBSERVATIONS_SORT.MOST_FAVED]: "Most faved",
 };
 
 interface DebugButtonProps {
@@ -127,7 +127,7 @@ const ExploreV2DebugSheet = ( ) => {
       <INatIconButton
         icon="triangle-exclamation"
         className={classnames(
-          "absolute bottom-5 right-5",
+          "absolute top-64 right-5",
           "rounded-full",
         )}
         color="white"
@@ -227,7 +227,7 @@ const ExploreV2DebugSheet = ( ) => {
               </Section>
 
               <Section title="Sort">
-                {Object.values( EXPLORE_V2_SORT ).map( sort => (
+                {Object.values( OBSERVATIONS_SORT ).map( sort => (
                   <DebugButton
                     key={sort}
                     label={SORT_LABELS[sort]}

@@ -48,7 +48,7 @@ const SavedMatch = ( {
       />
       <View className={matchCardClassBottom} />
       {
-        isConnected && (
+        taxon && isConnected && (
           <Button
             className="mx-4 mb-[30px]"
             level="primary"

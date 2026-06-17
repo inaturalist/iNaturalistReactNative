@@ -77,7 +77,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
       with:
-        gradle-version: '8.14.1'
+        gradle-version: '9.0.0'
 
     - name: Install JS dependencies
       run: |
@@ -90,9 +90,9 @@ jobs:
     - name: Android Build
       run: |
         cd android
-        # for the CI build, we can just target the x86 build for the emulator
+        # for the CI build, we can just target the x86_64 build for the emulator
         # also, we can exclude linting tasks
-        ./gradlew build -PreactNativeArchitectures=x86 -x lint -x lintVitalRelease 
+        ./gradlew assemble -PreactNativeArchitectures=x86_64
 
     - name: Upload APK
       uses: actions/upload-artifact@v6
@@ -146,18 +146,22 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-29
+          key: avd-34-aosp
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache-restore.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           cores: 4
-          api-level: 29
-          target: google_apis
+          api-level: 34
+          target: default
+          arch: x86_64
+          profile: pixel_5
+          avd-name: Pixel_5_API_34_AOSP
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
+
       - name: Save AVD cache
         if: steps.avd-cache-restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v5
@@ -165,7 +169,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-29
+          key: avd-34-aosp
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -177,8 +181,11 @@ jobs:
           MAESTRO_RECORD: true
         with:
           cores: 4
-          api-level: 29
-          target: google_apis
+          api-level: 34
+          target: default
+          arch: x86_64
+          profile: pixel_5
+          avd-name: Pixel_5_API_34_AOSP
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true

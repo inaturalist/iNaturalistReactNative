@@ -40,7 +40,6 @@ type Props = {
   showAddCommentSheet: Function,
   subscriptions?: Object,
   tabs: Object[],
-  targetActivityItemID: number,
   uuid: string
 }
 
@@ -61,7 +60,6 @@ const ObsDetails = ( {
   showAddCommentSheet,
   subscriptions,
   tabs,
-  targetActivityItemID,
   uuid,
 }: Props ): Node => {
   const scrollViewRef = useRef( );
@@ -85,7 +83,6 @@ const ObsDetails = ( {
       <ActivityTab
         activityItems={activityItems}
         isConnected={isConnected}
-        targetItemID={targetActivityItemID}
         observation={observation}
         openAgreeWithIdSheet={openAgreeWithIdSheet}
         refetchRemoteObservation={refetchRemoteObservation}

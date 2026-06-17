@@ -35,12 +35,10 @@ const REACT_NAVIGATION_BACK_BUTTON_STYLES = {
       },
     } ),
   },
-  icon: Platform.select( {
-    ios: {
-      height: 21,
-      width: 13,
-    },
-  } ),
+  icon: {
+    height: 21,
+    width: 13,
+  },
 };
 
 const BackButton = ( {

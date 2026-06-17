@@ -444,6 +444,7 @@ LEAVE-PROJECT = PROJEDEN AYRIL
 LEAVE-PROJECT--question = PROJEDEN AYRILMAK MI?
 LEAVE-US-A-REVIEW = BİR YORUM YAP!
 Lets-reset-your-password = Şifrenizi sıfırlayalım.
+Licenses = Licenses
 Loading-iNaturalists-AI-Camera = iNaturalist'in YZ Kamerası Yükleniyor
 Loads-content-that-requires-an-Internet-connection = İnternet bağlantısı gerektiren içerikleri yükler
 LOCATION = KONUM

@@ -1,6 +1,8 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
+import ExploreV2Header
+  from "components/Explore/ExploreV2/components/ExploreV2Header";
 import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import useInfiniteExploreScroll
@@ -11,6 +13,7 @@ import {
   Button,
   ViewWrapper,
 } from "components/SharedComponents";
+import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
@@ -20,7 +23,6 @@ const ExploreResults = ( ) => {
   const { state, requestLocationPermissions } = useExploreV2( );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
-
   const queryParams = buildExploreV2QueryParams( state );
 
   const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED
@@ -52,8 +54,7 @@ const ExploreResults = ( ) => {
   return (
     <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
-        {/* eslint-disable-next-line i18next/no-literal-string */}
-        <Body2>TODO: Header — MOB-1327</Body2>
+        <ExploreV2Header />
         {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
           ? renderPermissionPrompt( )
           : (
@@ -73,6 +74,12 @@ const ExploreResults = ( ) => {
                 testID="ExploreV2ObservationsList"
               />
               <ExploreV2DebugSheet />
+              <SortButton
+                // TODO: wire up onPress to show sort bottom sheet
+                onPress={() => console.log( "onPress SortButton" )}
+                // TODO: add label based on state wether this is sorting species or observations
+                accessibilityLabel={t( "Change-species-sort-order" )}
+              />
             </>
           )}
       </View>

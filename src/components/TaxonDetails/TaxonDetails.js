@@ -1,7 +1,12 @@
 // @flow
 
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
-import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
+import {
+  StackActions,
+  useNavigation,
+  useNavigationState,
+  useRoute,
+} from "@react-navigation/native";
 import { fetchSpeciesCounts } from "api/observations";
 import MatchSaveDiscardButtons from "components/Match/SaveDiscardButtons";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
@@ -399,16 +404,10 @@ const TaxonDetails = ( ): Node => {
 
   return (
     <View
-      className="flex-1 bg-black"
+      className="flex-1 bg-white"
       style={{ paddingTop: insets.top }}
     >
-      {/*
-        Making the bar dark here seems like the right thing, but I haven't
-        figured a way to do that *and* not making the bg of the scrollview
-        black, which reveals a dark area at the bottom of the screen on
-        overscroll in iOS ~~~kueda20240228
-      */}
-      <StatusBar barStyle="light-content" backgroundColor={colors.black} />
+      <StatusBar barStyle="dark-content" />
       <ScrollView
         testID={`TaxonDetails.${taxon?.id}`}
         onScroll={handleScroll}
@@ -476,14 +475,15 @@ const TaxonDetails = ( ): Node => {
               } else {
                 updateTaxon( );
                 if ( fromObsDetails ) {
-                  const obsDetailsParam = {
-                    uuid: obsUuid,
-                    identTaxonId: taxon?.id,
-                    identAt: Date.now(),
-                  };
-                  navigation.navigate( "ObsDetails", obsDetailsParam );
+                  navigation.dispatch(
+                    StackActions.popTo( "ObsDetails", {
+                      uuid: obsUuid,
+                      identTaxonId: taxon?.id,
+                      identAt: Date.now(),
+                    } ),
+                  );
                 } else {
-                  navigation.navigate( "ObsEdit" );
+                  navigation.dispatch( StackActions.popTo( "ObsEdit" ) );
                 }
               }
             }}

@@ -37,7 +37,6 @@ export const ALLOWED_DOMAINS = [
 const ALLOWED_ORIGINS = ["https://*", "mailto:*"];
 const ALLOWED_AUTH_DOMAINS = ["inaturalist.org"];
 
-// eslint-disable-next-line no-undef
 if ( __DEV__ ) {
   ALLOWED_DOMAINS.push( "localhost:3000" );
   ALLOWED_ORIGINS.push( "http://localhost:3000*" );

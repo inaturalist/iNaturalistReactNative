@@ -1,4 +1,9 @@
-const displayProjectType = ( projectType: string, t: ( _: string ) => string ) => {
+import type { TFunction } from "i18next";
+
+const displayProjectType = (
+  projectType: "collection" | "umbrella" | "",
+  t: TFunction,
+) => {
   if ( projectType === "collection" ) {
     return t( "Collection-Project" );
   }

@@ -20,6 +20,8 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+ios/license_plist.yml
+ios/Settings.bundle
 # Might be used to customize further the path to node that xcode uses, see .xcode.env for our version controlled file
 **/.xcode.env.local
 
@@ -36,6 +38,7 @@ local.properties
 *.keystore
 !debug.keystore
 .kotlin/
+android/config
 
 # node.js
 #

@@ -1,7 +1,8 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import { useRoute } from "@react-navigation/native";
-import ObsDetailsDefaultModeContainer
-  from "components/ObsDetailsDefaultMode/ObsDetailsDefaultModeContainer";
+import SavedMatchContainer from "components/ObsDetailsDefaultMode/SavedMatch/SavedMatchContainer";
+import ObsDetailsContainer
+  from "components/ObsDetailsSharedComponents/ObsDetailsContainer";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
@@ -11,12 +12,9 @@ import {
   useRemoteObservation,
 } from "sharedHooks";
 
-import SavedMatchContainer from "./SavedMatch/SavedMatchContainer";
-
-const ObsDetailsDefaultModeScreensWrapper = () => {
+const ObsDetailsScreen = () => {
   const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
   const {
-    targetActivityItemID,
     uuid,
   } = params;
   const currentUser = useCurrentUser( );
@@ -72,9 +70,8 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
   }
 
   return (
-    <ObsDetailsDefaultModeContainer
+    <ObsDetailsContainer
       observation={observation}
-      targetActivityItemID={targetActivityItemID}
       uuid={uuid}
       localObservation={localObservation}
       markViewedLocally={markViewedLocally}
@@ -92,4 +89,4 @@ const ObsDetailsDefaultModeScreensWrapper = () => {
   );
 };
 
-export default ObsDetailsDefaultModeScreensWrapper;
+export default ObsDetailsScreen;
