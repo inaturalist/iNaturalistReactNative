@@ -3,8 +3,12 @@ import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
+import ExploreV2Tabs
+  from "components/Explore/ExploreV2/components/ExploreV2Tabs";
 import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
+import useExploreV2SpeciesCount
+  from "components/Explore/ExploreV2/hooks/useExploreV2SpeciesCount";
 import useInfiniteExploreScroll
   from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
@@ -64,6 +68,8 @@ const ExploreResults = ( ) => {
     totalResults,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
+  const speciesCount = useExploreV2SpeciesCount( queryParams, canFetch );
+
   const renderPermissionPrompt = ( ) => (
     <View className="flex-1 justify-center p-4">
       <View className="items-center">
@@ -83,6 +89,10 @@ const ExploreResults = ( ) => {
     <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
         <ExploreV2Header />
+        <ExploreV2Tabs
+          observationsCount={totalResults}
+          speciesCount={speciesCount}
+        />
         {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
           ? renderPermissionPrompt( )
           : (
