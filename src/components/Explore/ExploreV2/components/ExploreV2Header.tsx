@@ -146,7 +146,7 @@ const ExploreV2Header = ( ) => {
             </View>
           )
           : (
-            <View className="flex-1 mr-5">
+            <View className="flex-1 mr-5 pl-2">
               <Heading2 numberOfLines={1} ellipsizeMode="tail">
                 {place}
               </Heading2>
