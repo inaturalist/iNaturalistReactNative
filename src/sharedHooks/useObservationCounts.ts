@@ -1,14 +1,10 @@
 import { RealmContext } from "providers/contexts";
 import { useMemo } from "react";
-import Observation from "realmModels/Observation";
+import Observation, { UNSYNCED_FILTER } from "realmModels/Observation";
 
 const { useQuery } = RealmContext;
 
-const UNSYNCED_FILTER
-  = "_synced_at == null || _synced_at <= _updated_at"
-  + " || ANY observationPhotos._synced_at == null"
-  + " || ANY observationSounds._synced_at == null";
-
+// only re-evaluate unsync'd obs / missing basics when these change
 const KEY_PATHS = [
   "_synced_at",
   "_updated_at",
@@ -29,7 +25,7 @@ const useObservationCounts = ( ): ObservationCounts => {
   const unsyncedObs = useQuery(
     {
       type: Observation,
-      query: obsservations => obsservations.filtered( UNSYNCED_FILTER ),
+      query: observations => observations.filtered( UNSYNCED_FILTER ),
       keyPaths: KEY_PATHS,
     },
   );
