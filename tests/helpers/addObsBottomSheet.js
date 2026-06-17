@@ -163,11 +163,11 @@ async function confirmObsEditWarningSheets() {
       const okButton = await screen.findByText( "OK", {}, { timeout: 2_000 } );
       // eslint-disable-next-line no-await-in-loop
       await actor.press( okButton );
-      // eslint-disable-next-line no-await-in-loop
-      await pressObsEditSaveButton();
     } catch {
       break;
     }
+    // eslint-disable-next-line no-await-in-loop
+    await pressObsEditSaveButton();
   }
 }
 
