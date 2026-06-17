@@ -21,6 +21,11 @@ export const GEOPRIVACY_PRIVATE = "private";
 
 const logger = log.extend( "index.js" );
 
+export const UNSYNCED_FILTER
+  = "_synced_at == null || _synced_at <= _updated_at"
+  + " || ANY observationPhotos._synced_at == null"
+  + " || ANY observationSounds._synced_at == null";
+
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
 // https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
@@ -387,16 +392,11 @@ class Observation extends Realm.Object {
   };
 
   static filterUnsyncedObservations = realm => {
-    const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
-    const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
-    const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
-
-    const obs = realm.objects( "Observation" );
     // we sort unsynced observations here to make sure observations
     // with an older _created_at date get uploaded first
-    const unsyncedObs = obs.filtered(
-      `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`,
-    ).sorted( "_created_at", true );
+    const unsyncedObs = realm.objects( "Observation" )
+      .filtered( UNSYNCED_FILTER )
+      .sorted( "_created_at", true );
     return unsyncedObs;
   };
 
