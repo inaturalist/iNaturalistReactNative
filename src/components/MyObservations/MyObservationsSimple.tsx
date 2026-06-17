@@ -60,6 +60,7 @@ interface Props {
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
+  numObsMissingBasics: number;
   observations: RealmObservation[];
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
@@ -109,6 +110,7 @@ const MyObservationsSimple = ( {
   taxaListRef,
   numTotalTaxa,
   numUnuploadedObservations,
+  numObsMissingBasics: numUnuploadedObsMissingBasics,
   observations,
   onEndReached,
   onListLayout,
@@ -223,23 +225,14 @@ const MyObservationsSimple = ( {
     taxa?.length,
   ] );
 
-  const numUnuploadedObsMissingBasics = useMemo( () => (
-    observations
-      .filter( o => o.needs_sync && o.missing_basics )
-      .map( o => o.uuid )
-      .length
-  ), [observations] );
-
-  const obsMissingBasicsExist = useMemo( ( ) => (
-    numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
-  ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
+  const obsMissingBasicsExist = numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0;
 
   // if user is not logged in, we'll consider all obs 'uploadable' to shepherd people to login flow
   const numUploadableObservations = isDefaultMode && !!currentUser
     ? numUnuploadedObservations - numUnuploadedObsMissingBasics
     : numUnuploadedObservations;
 
-  const renderTabComponent = ( { id } ) => (
+  const renderTabComponent = ( { id }: { id: string } ) => (
     <StatTab
       id={id}
       numTotalObservations={numTotalObservations}

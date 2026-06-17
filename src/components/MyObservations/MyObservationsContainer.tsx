@@ -38,6 +38,7 @@ import {
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
+import useObservationCounts from "sharedHooks/useObservationCounts";
 import {
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
@@ -78,8 +79,6 @@ const MyObservationsWithProvider = ( ) => {
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
-  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
-  const numUnuploadedObservations = useStore( state => state.numUnuploadedObservations );
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
@@ -94,6 +93,10 @@ const MyObservationsWithProvider = ( ) => {
   }, [navigation, setJustFinishedSignup] );
 
   const observations = useLocalObservations( );
+  const {
+    unsyncedObservationsCount: numUnuploadedObservations,
+    observationsMissingBasicsCount: numObsMissingBasics,
+  } = useObservationCounts( );
   const prevObservationsLength = useRef( observations.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
@@ -213,8 +216,6 @@ const MyObservationsWithProvider = ( ) => {
     // tab bar screens don't seem to blur
     useCallback( ( ) => {
       let isActive = true;
-      const unsynced = Observation.filterUnsyncedObservations( realm );
-      setNumUnuploadedObservations( unsynced.length );
       let idleCallbackId = 0;
       if ( isActive ) {
         idleCallbackId = requestIdleCallback( ( ) => {
@@ -229,12 +230,7 @@ const MyObservationsWithProvider = ( ) => {
         isActive = false;
         if ( idleCallbackId ) { cancelIdleCallback( idleCallbackId ); }
       };
-    }, [
-      currentUser,
-      startAutomaticSync,
-      setNumUnuploadedObservations,
-      realm,
-    ] ),
+    }, [currentUser, startAutomaticSync] ),
   );
 
   const handlePullToRefresh = useCallback( async ( ) => {
@@ -446,6 +442,7 @@ const MyObservationsWithProvider = ( ) => {
       numTotalObservations={numOfUserObservations}
       numTotalTaxa={numOfUserSpecies}
       numUnuploadedObservations={numUnuploadedObservations}
+      numObsMissingBasics={numObsMissingBasics}
       observations={observations}
       onEndReached={fetchNextPage}
       onListLayout={restoreScrollOffset}
