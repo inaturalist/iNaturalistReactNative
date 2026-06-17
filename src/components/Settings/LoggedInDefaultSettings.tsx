@@ -1,77 +1,36 @@
 import {
-  useNetInfo,
-} from "@react-native-community/netinfo";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  signOut,
-} from "components/LoginSignUp/AuthenticationService";
-import {
   ActivityIndicator,
   Body2,
   Button,
   Heading4,
 } from "components/SharedComponents";
 import { RealmContext } from "providers/contexts";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Alert,
   View,
 } from "react-native";
-import Config from "react-native-config";
-import { EventRegister } from "react-native-event-listeners";
 import QueueItem from "realmModels/QueueItem";
 import {
-  useLayoutPrefs,
   useTranslation,
   useUserMe,
 } from "sharedHooks";
+import useNavigateToAccountSettings from "sharedHooks/useNavigateToAccountSettings";
 
 import LanguageSetting from "./LanguageSetting";
 import TaxonNamesSetting from "./TaxonNamesSetting";
 
 const { useRealm } = RealmContext;
 
-const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
-const FINISHED_WEB_SETTINGS = "finished-web-settings";
-
 const LoggedInDefaultSettings = ( ) => {
   const realm = useRealm( );
-  const { isConnected } = useNetInfo( );
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
   const {
     remoteUser, isLoading, refetchUserMe,
   } = useUserMe( { updateRealm: false } );
-  const {
-    setIsDefaultMode,
-  } = useLayoutPrefs();
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
-  const [showingWebViewSettings, setShowingWebViewSettings] = useState( false );
 
-  useFocusEffect(
-    useCallback( () => {
-      if ( showingWebViewSettings ) {
-        // When we get back from the webview of settings - in case the user updated their profile
-        // photo or other details
-        refetchUserMe();
-        setShowingWebViewSettings( false );
-      }
-    }, [showingWebViewSettings, refetchUserMe] ),
-  );
-
-  const confirmInternetConnection = useCallback( ( ) => {
-    if ( !isConnected ) {
-      Alert.alert(
-        t( "Internet-Connection-Required" ),
-        t( "Please-try-again-when-you-are-connected-to-the-internet" ),
-      );
-    }
-    return isConnected;
-  }, [t, isConnected] );
-
-  const queryClient = useQueryClient();
+  const navigateToAccountSettings = useNavigateToAccountSettings( { onFinish: refetchUserMe } );
 
   useEffect( () => {
     if ( remoteUser ) {
@@ -80,18 +39,6 @@ const LoggedInDefaultSettings = ( ) => {
       setIsSaving( false );
     }
   }, [remoteUser, realm] );
-
-  // Listen for the webview to finish so we can fetch the updates users/me
-  // response
-  useEffect( ( ) => {
-    const listener = EventRegister.addEventListener(
-      FINISHED_WEB_SETTINGS,
-      refetchUserMe,
-    );
-    return ( ) => {
-      EventRegister?.removeEventListener( listener );
-    };
-  }, [refetchUserMe] );
 
   return (
     <View className="mt-[30px]">
@@ -143,41 +90,7 @@ const LoggedInDefaultSettings = ( ) => {
         <Button
           className="mt-4"
           text={t( "ACCOUNT-SETTINGS" )}
-          onPress={() => {
-            confirmInternetConnection( );
-            if ( !isConnected ) { return; }
-            setShowingWebViewSettings( true );
-
-            navigation.navigate( "FullPageWebView", {
-              title: t( "ACCOUNT-SETTINGS" ),
-              loggedIn: true,
-              initialUrl: SETTINGS_URL,
-              blurEvent: FINISHED_WEB_SETTINGS,
-              clickablePathnames: ["/users/delete"],
-              skipSetSourceInShouldStartLoadWithRequest: true,
-              shouldLoadUrl: url => {
-                async function signOutGoHome() {
-                  Alert.alert(
-                    t( "Account-Deleted" ),
-                    t( "It-may-take-up-to-an-hour-to-remove-content" ),
-                  );
-                  // sign out
-                  await signOut( { realm, clearRealm: true, queryClient } );
-                  // revert back to default mode
-                  setIsDefaultMode( true );
-                  // navigate to My Obs
-                  navigation.navigate( "ObsList" );
-                }
-                // If the webview navigates to a URL that indicates the account
-                // was deleted, sign the current user out of the app
-                if ( url === `${Config.OAUTH_API_URL}/?account_deleted=true` ) {
-                  signOutGoHome( );
-                  return false;
-                }
-                return true;
-              },
-            } );
-          }}
+          onPress={navigateToAccountSettings}
           accessibilityLabel={t( "INATURALIST-SETTINGS" )}
         />
       </View>
