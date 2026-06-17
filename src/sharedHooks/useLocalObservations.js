@@ -17,7 +17,7 @@ const deletionFilters
 
 const sortedFilters = [["needs_sync", true], ["_created_at", true]];
 
-const useLocalObservations = ( ): Object => {
+const useLocalObservations = ( ): Object[] => {
   const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
   const [observationList, setObservationList] = useState( [] );
 

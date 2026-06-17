@@ -94,7 +94,6 @@ const MyObservationsWithProvider = ( ) => {
   }, [navigation, setJustFinishedSignup] );
 
   const observations = useLocalObservations( );
-  const totalResultsLocal = observations.length;
   const prevObservationsLength = useRef( observations.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
@@ -359,7 +358,7 @@ const MyObservationsWithProvider = ( ) => {
     ? numTotalTaxaRemote
     : numTotalTaxaLocal;
 
-  const numTotalObservations = totalResultsRemote || totalResultsLocal;
+  const numTotalObservations = totalResultsRemote || observations.length;
 
   useEffect( ( ) => {
     // persist this number in zustand so a user can see their latest observations count
