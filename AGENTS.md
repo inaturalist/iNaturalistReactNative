@@ -30,10 +30,10 @@ npm run android:release
 npm test
 
 # Run only unit tests
-npm test:unit
+npm run test:unit
 
 # Run only integration tests
-npm test:integration
+npm run test:integration
 
 # Run individual test by name
 npx jest
@@ -90,7 +90,7 @@ npm run clean-start
 
 ### Navigation Structure
 
-The app uses React Navigation 6 with `@react-navigation/native-stack` and `@react-navigation/bottom-tabs` in a nested hierarchy:
+The app uses React Navigation 7 with `@react-navigation/native-stack` and `@react-navigation/bottom-tabs` in a nested hierarchy:
 
 1. **RootStackNavigator** (NativeStack, top level) - `src/navigation/RootStackNavigator.tsx`
    - **OnboardingStackNavigator** - Shown conditionally when `!onboardingShown` (modal presentation)
@@ -103,10 +103,10 @@ The app uses React Navigation 6 with `@react-navigation/native-stack` and `@reac
    - **LoginStackNavigator** - Login, SignUp, ForgotPassword, etc.
 
 Key design patterns:
-- All four bottom tabs share the **same `TabStackNavigator` component** (`src/navigation/StackNavigators/TabStackNavigator.js`) with different `initialRouteName` values, giving every tab access to the full screen catalog.
-- **`SharedStackScreens`** (`src/navigation/StackNavigators/SharedStackScreens.js`) is a `Stack.Group` rendered in both `TabStackNavigator` and `NoBottomTabStackNavigator`, so screens like ObsEdit, TaxonDetails, Match, and Suggestions work from either context.
+- All four bottom tabs share the **same `TabStackNavigator` component** (`src/navigation/StackNavigators/TabStackNavigator.tsx`) with different `initialRouteName` values, giving every tab access to the full screen catalog.
+- **`SharedStackScreens`** (`src/navigation/StackNavigators/SharedStackScreens.tsx`) is a `Stack.Group` rendered in both `TabStackNavigator` and `NoBottomTabStackNavigator`, so screens like ObsEdit, TaxonDetails, Match, and Suggestions work from either context.
 - The `NavigationContainer` lives in `src/navigation/OfflineNavigationGuard.tsx` with a global `navigationRef` from `src/navigation/navigationUtils.ts`.
-- Deep linking is handled manually via React Native's `Linking` API in `src/components/hooks/useLinking.js` (no React Navigation `linking` config).
+- Deep linking is handled manually via React Native's `Linking` API in `src/components/hooks/useLinking.ts` (no React Navigation `linking` config).
 
 To add a new screen, place it in the appropriate navigator: `TabStackNavigator` if it needs bottom tabs visible, `NoBottomTabStackNavigator` if not, or `SharedStackScreens` if it needs to be reachable from both contexts.
 
@@ -114,13 +114,15 @@ To add a new screen, place it in the appropriate navigator: `TabStackNavigator` 
 
 The app uses a hybrid state management approach:
 
-- **Zustand stores** (`src/stores/`) - Global app state slices:
+- **Zustand stores** (`src/stores/`) - Global app state slices. Key examples include:
   - `createObservationFlowSlice` - Observation creation/editing flow
   - `createUploadObservationsSlice` - Upload queue and status
   - `createSyncObservationsSlice` - Syncing observations from server
   - `createLayoutSlice` - UI layout state (sidebar, etc.)
-  - `createExploreSlice` - Explore screen filters
+  - `createExploreSlice` / `createRootExploreSlice` - Explore screen filters and state
   - `createMyObsSlice` - My Observations filters
+  - `createFeatureFlagSlice` - Feature flag state
+  - See `src/stores/` for the complete list of slices.
 
 - **React Query** - Server state management and API caching (uses `@tanstack/react-query`)
 
@@ -131,8 +133,8 @@ The app uses a hybrid state management approach:
 ### Data Persistence
 
 - **Realm Database** (`src/realmModels/`) - Primary local data store
-  - Key models: `Observation`, `Photo`, `Taxon`, `User`, `Identification`, `Comment`
-  - Current schema version: 66 (update `schemaVersion` in `realmModels/index.ts` when schema changes)
+  - Key models include `Observation`, `Photo`, `ObservationPhoto`, `Sound`, `ObservationSound`, `Taxon`, `TaxonPhoto`, `User`, `Identification`, `Comment`, `Vote`, `Flag`, `Application`, and `QueueItem` (see `src/realmModels/` for the full set)
+  - Bump `schemaVersion` in `realmModels/index.ts` whenever the schema changes, and add a migration — see that file for the current version
   - Migration logic for schema updates is in `realmModels/index.ts`
   - All observations are stored locally first, then uploaded asynchronously
 
@@ -235,7 +237,7 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 - Arrow functions for React components: `const MyComponent = () => { };`
 - i18next string literal checking enforced - use `t()` for all user-facing text
 - Prefer TypeScript for new files (partial adoption, not required)
-- Pre-commit hooks run `eslint --fix` via Husky
+- Husky pre-commit hook (`.husky/pre-commit`) runs `lint-staged` (eslint `--fix` on staged files), regenerates i18n translations, and runs a GitGuardian (`ggshield`) secrets scan
 
 ## Authentication & OAuth
 
@@ -247,7 +249,7 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 
 ## Logging & Error Handling
 
-- Custom logger: `react-native-logs.config.js`
+- Custom logger: `react-native-logs.config.ts`
 - Sentry-style error tracking with Grafana integration
 - **Sentinel files** (`sharedHelpers/sentinelFiles.ts`) - Debug difficult hardware issues:
   - Created at flow start, deleted on success
