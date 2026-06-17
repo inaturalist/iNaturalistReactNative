@@ -61,12 +61,6 @@ export enum ACTIVE_SHEET {
   SORT = "SORT",
 }
 
-interface SyncOptions {
-  unuploadedObsMissingBasicsIDs?: string[];
-  skipUploads?: boolean;
-  skipSomeUploads?: string[];
-}
-
 const MyObservationsWithProvider = ( ) => {
   const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
   const { t } = useTranslation( );
@@ -161,22 +155,27 @@ const MyObservationsWithProvider = ( ) => {
     return currentUser;
   }, [currentUser] );
 
-  const handleSyncButtonPress = useCallback( ( options?: SyncOptions ) => {
-    const { unuploadedObsMissingBasicsIDs } = options || { };
+  const handleSyncButtonPress = useCallback( ( ) => {
     if ( !confirmLoggedIn( ) ) { return; }
     if ( !confirmInternetConnection( ) ) { return; }
 
     startManualSync( );
     const syncOptions = isDefaultMode
-      ? { skipSomeUploads: unuploadedObsMissingBasicsIDs }
+      ? {
+        skipSomeUploads: Observation
+          .filterUnsyncedObservations( realm )
+          .filter( ( obs: Observation ) => obs.missingBasics() )
+          .map( obs => obs.uuid ),
+      }
       : { };
     syncManually( syncOptions );
   }, [
-    startManualSync,
-    syncManually,
-    confirmInternetConnection,
     confirmLoggedIn,
+    confirmInternetConnection,
+    startManualSync,
     isDefaultMode,
+    realm,
+    syncManually,
   ] );
 
   const handleIndividualUploadPress = useCallback( uuid => {
