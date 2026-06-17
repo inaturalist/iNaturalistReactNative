@@ -9,6 +9,7 @@ import {
 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
+import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
 import { Image, View } from "components/styledComponents";
 import type { TFunction } from "i18next";
 import type { ExploreStackScreenProps } from "navigation/types";
@@ -18,7 +19,7 @@ import {
   useExploreV2,
 } from "providers/ExploreV2Context";
 import React from "react";
-import { useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 const THUMBNAIL_CLASS = "w-[62px] h-[62px] rounded-lg";
@@ -97,6 +98,7 @@ const SubjectThumbnail = ( { subject }: { subject: ExploreV2Subject } ) => {
 const ExploreV2Header = ( ) => {
   const { t } = useTranslation( );
   const { state } = useExploreV2( );
+  const currentUser = useCurrentUser( );
   const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
 
   const subject = subjectLabel( state.subject, t );
@@ -111,9 +113,20 @@ const ExploreV2Header = ( ) => {
             <View className="flex-1 flex-row items-center mr-5">
               <SubjectThumbnail subject={state.subject} />
               <View className="flex-1 ml-[10px]">
-                <Body1 numberOfLines={1} ellipsizeMode="tail">
-                  {subject}
-                </Body1>
+                {state.subject.type === "taxon"
+                  ? (
+                    <DisplayTaxonName
+                      taxon={state.subject.taxon}
+                      showOneNameOnly
+                      prefersCommonNames={currentUser?.prefers_common_names}
+                      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+                    />
+                  )
+                  : (
+                    <Body1 numberOfLines={1} ellipsizeMode="tail">
+                      {subject}
+                    </Body1>
+                  )}
                 {place
                   ? (
                     <View className="flex-row items-center pt-[5px]">
