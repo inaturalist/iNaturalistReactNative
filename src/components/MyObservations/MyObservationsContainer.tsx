@@ -99,10 +99,8 @@ const MyObservationsWithProvider = ( ) => {
     return unsubscribe;
   }, [navigation, setJustFinishedSignup] );
 
-  const {
-    observationList: observations,
-    totalResults: totalResultsLocal,
-  } = useLocalObservations( );
+  const observations = useLocalObservations( );
+  const totalResultsLocal = observations.length;
   const prevObservationsLength = useRef( observations.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 

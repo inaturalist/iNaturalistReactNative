@@ -114,10 +114,7 @@ const useLocalObservations = ( ): Object => {
     };
   }, [isDefaultMode, realm, setNumUnuploadedObservations] );
 
-  return {
-    observationList,
-    totalResults: observationList.length,
-  };
+  return observationList;
 };
 
 export default useLocalObservations;
