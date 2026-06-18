@@ -158,16 +158,17 @@ async function pressObsEditSaveButton() {
 /** Dismisses TextSheet confirmations (missing evidence, imprecise location). */
 async function confirmObsEditWarningSheets() {
   for ( let attempt = 0; attempt < 2; attempt += 1 ) {
+    let okButton;
     try {
       // eslint-disable-next-line no-await-in-loop
-      const okButton = await screen.findByText( "OK", {}, { timeout: 2_000 } );
-      // eslint-disable-next-line no-await-in-loop
-      await actor.press( okButton );
-      // eslint-disable-next-line no-await-in-loop
-      await pressObsEditSaveButton();
+      okButton = await screen.findByText( "OK", {}, { timeout: 2_000 } );
     } catch {
       break;
     }
+    // eslint-disable-next-line no-await-in-loop
+    await actor.press( okButton );
+    // eslint-disable-next-line no-await-in-loop
+    await pressObsEditSaveButton();
   }
 }
 
