@@ -1,4 +1,5 @@
 import type { ApiObservation } from "api/types";
+import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import classnames from "classnames";
 import {
   INatIcon,
@@ -63,7 +64,7 @@ const ObservationIcon = ( {
   return (
     <Image
       testID="ObservationIcon.photo"
-      className="w-[62px] h-[62px] rounded-lg"
+      className={THUMBNAIL_CLASS}
       source={{ uri: photoUri }}
       accessibilityRole="image"
       accessibilityIgnoresInvertColors
