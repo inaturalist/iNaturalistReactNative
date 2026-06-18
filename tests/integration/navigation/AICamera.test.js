@@ -1,7 +1,8 @@
+import "tests/helpers/mockMortalForIntegration";
+
 import {
   screen,
   userEvent,
-  within,
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
@@ -9,6 +10,12 @@ import inatjs from "inaturalistjs";
 import { Animated } from "react-native";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
+import {
+  navigateToAICameraFromMyObs,
+  navigateToSuggestionsViaAICameraFromMyObs,
+  takeAICameraPhotoAndOpenSuggestions,
+  waitForMyObservationsScreen,
+} from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -92,7 +99,6 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
 } );
 
 // Mock the response from inatjs.computervision.score_image
@@ -125,35 +131,20 @@ jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
 
 const actor = userEvent.setup( );
 
-const navToAICamera = async ( ) => {
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const cameraButton = await screen.findByLabelText( /AI Camera/ );
-  await actor.press( cameraButton );
-};
-
-const takePhotoAndNavToSuggestions = async ( ) => {
-  const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-  await actor.press( takePhotoButton );
-  const addIDButton = await screen.findByText( /ADD AN ID/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( addIDButton ).toBeOnTheScreen( );
-};
-
 const navToObsEditWithTopSuggestion = async ( ) => {
   const topTaxonResultButton = await screen.findByTestId(
     `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
   );
   await actor.press( topTaxonResultButton );
   const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( evidenceList ).toBeOnTheScreen( );
+  expect( evidenceList ).toBeVisible();
   // one photo from AICamera
   expect( evidenceList.props.data.length ).toEqual( 1 );
 };
 
 describe( "AICamera navigation with advanced user layout", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   describe( "to Suggestions", ( ) => {
     beforeEach( ( ) => {
       jest.spyOn( usePredictions, "default" ).mockImplementation( () => ( {
@@ -168,20 +159,16 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
 
     it( "should advance to suggestions screen", async ( ) => {
       renderApp( );
-      await navToAICamera( );
+      await navigateToAICameraFromMyObs( );
       expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
-      await takePhotoAndNavToSuggestions( );
+      await takeAICameraPhotoAndOpenSuggestions();
     } );
 
     it( "should advance to suggestions then obs edit", async ( ) => {
       renderApp( );
-      await navToAICamera( );
-      expect( await screen.findByText( mockLocalTaxon.name ) ).toBeTruthy( );
-      await takePhotoAndNavToSuggestions( );
+      await navigateToSuggestionsViaAICameraFromMyObs();
       await navToObsEditWithTopSuggestion( );
-      const obsEditBackButton = screen.getByTestId( "ObsEdit.BackButton" );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( obsEditBackButton ).toBeOnTheScreen( );
+      expect( screen.getByTestId( "ObsEdit.BackButton" ) ).toBeVisible();
     } );
 
     // TODO: we can't test back behavior as reliably in React Navigation 7;
@@ -203,22 +190,17 @@ describe( "AICamera navigation with advanced user layout", ( ) => {
     //   await navToObsEditWithTopSuggestion( );
     // } );
   } );
-} );
 
-describe( "AICamera navigation with advanced user layout", () => {
   describe( "from MyObs", () => {
     it( "should return to MyObs when close button tapped", async () => {
       renderApp();
-      await navToAICamera();
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect(
-        await screen.findByText( /Loading iNaturalist's AI Camera/ ),
-      ).toBeOnTheScreen();
+      await navigateToAICameraFromMyObs();
       const closeButton = await screen.findByLabelText( /Close/ );
       await actor.press( closeButton );
       expect(
         await screen.findByText( /Use iNaturalist to identify any living thing/ ),
       ).toBeTruthy();
+      await waitForMyObservationsScreen();
     } );
   } );
 } );
