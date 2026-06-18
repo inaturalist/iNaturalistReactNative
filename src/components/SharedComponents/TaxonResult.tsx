@@ -23,7 +23,7 @@ import colors from "styles/tailwindColors";
 
 import ConfidenceInterval from "./ConfidenceInterval";
 
-interface TaxonResultProps {
+interface TaxonResultProps extends PropsWithChildren {
   accessibilityLabel: string;
   activeColor?: string;
   asListItem?: boolean;
@@ -43,6 +43,7 @@ interface TaxonResultProps {
   onPressInfo?: ( taxon: object ) => void;
   showCheckmark?: boolean;
   showEditButton?: boolean;
+  showOneNameOnly?: boolean;
   showRemoveButton?: boolean;
   taxon: RealmTaxon | ApiTaxon;
   testID: string;
@@ -54,6 +55,108 @@ interface TaxonResultProps {
 interface TaxonResultMainProps extends PropsWithChildren {
   className?: string;
 }
+
+interface TaxonResultContextValue {
+  usableTaxon: RealmTaxon | ApiTaxon;
+  currentUser: ReturnType<typeof useCurrentUser>;
+  taxonImageSource: { uri?: string };
+  testID: string;
+  clearBackground?: boolean;
+  white?: boolean;
+  confidence?: number;
+  confidencePercentage?: number | null;
+  confidencePosition?: string;
+  activeColor?: string;
+  showOneNameOnly?: boolean;
+}
+
+const TaxonResultContext = React.createContext<TaxonResultContextValue | undefined>(
+  undefined,
+);
+
+function useTaxonResult( ): TaxonResultContextValue {
+  const context = React.useContext( TaxonResultContext );
+  if ( context === undefined ) {
+    throw new Error( "TaxonResult subcomponents must be used within a TaxonResult" );
+  }
+  return context;
+}
+
+// Thumbnail: the taxon photo (or iconic fallback) with an optional
+// photo-positioned confidence interval overlay.
+const TaxonResultPhoto = ( ) => {
+  const {
+    taxonImageSource, usableTaxon, white, testID, confidence, confidencePosition, activeColor,
+  } = useTaxonResult( );
+  return (
+    <View className="w-[62px] h-[62px] justify-center relative">
+      <ObsImagePreview
+        source={taxonImageSource}
+        testID={`${testID}.photo`}
+        iconicTaxonName={usableTaxon?.iconic_taxon_name}
+        className="rounded-xl"
+        isSmall
+        white={white}
+        isBackground={false}
+      />
+      {!!( confidence && confidencePosition === "photo" ) && (
+        <View className="absolute -bottom-4 w-full items-center">
+          <ConfidenceInterval
+            confidence={confidence}
+            activeColor={activeColor}
+          />
+        </View>
+      )}
+    </View>
+  );
+};
+
+// First line: the taxon's common/scientific name.
+const TaxonResultName = ( ) => {
+  const {
+    usableTaxon, clearBackground, currentUser, showOneNameOnly,
+  } = useTaxonResult( );
+  return (
+    <DisplayTaxonName
+      taxon={usableTaxon}
+      color={String(
+        clearBackground
+          ? "text-white"
+          : "text-darkGray",
+      )}
+      showOneNameOnly={showOneNameOnly}
+      scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      prefersCommonNames={currentUser?.prefers_common_names}
+    />
+  );
+};
+
+// Second line variant: a text-positioned confidence interval or percentage.
+const TaxonResultConfidence = ( ) => {
+  const {
+    confidence, confidencePercentage, confidencePosition, activeColor,
+  } = useTaxonResult( );
+  const { t } = useTranslation( );
+  if ( !( ( confidence || confidencePercentage ) && confidencePosition === "text" ) ) {
+    return null;
+  }
+  return (
+    <View className="mt-1 w-[62px]">
+      {confidencePercentage
+        ? (
+          <Body3 className="color-inatGreen">
+            {t( "X-percent", { count: confidencePercentage } )}
+          </Body3>
+        )
+        : (
+          <ConfidenceInterval
+            confidence={confidence}
+            activeColor={activeColor}
+          />
+        )}
+    </View>
+  );
+};
 
 const TaxonResult = ( {
   accessibilityLabel,
@@ -76,12 +179,14 @@ const TaxonResult = ( {
   retryQuery = true,
   showCheckmark = true,
   showEditButton = false,
+  showOneNameOnly = false,
   showRemoveButton = false,
   taxon: taxonProp,
   testID,
   unpressable = false,
   vision = false,
   white = false,
+  children,
 }: TaxonResultProps ) => {
   const { t } = useTranslation( );
   // TaxonResult is imported in
@@ -131,7 +236,10 @@ const TaxonResult = ( {
       || ( usableTaxon as RealmTaxon )?.defaultPhoto;
   const taxonImage = React.useMemo( () => ( { ...taxonImagePointer } ), [taxonImagePointer] );
 
-  const taxonImageSource = { uri: taxonImage?.url };
+  const taxonImageSource = React.useMemo(
+    ( ) => ( { uri: taxonImage?.url } ),
+    [taxonImage?.url],
+  );
 
   const isRepresentativeButOtherTaxon = representativePhoto
     && !localTaxon?.taxonPhotos?.some(
@@ -185,117 +293,112 @@ const TaxonResult = ( {
     unpressable,
   ] );
 
+  const contextValue = React.useMemo( ( ) => ( {
+    usableTaxon,
+    currentUser,
+    taxonImageSource,
+    testID,
+    clearBackground,
+    white,
+    confidence,
+    confidencePercentage,
+    confidencePosition,
+    activeColor,
+    showOneNameOnly,
+  } ), [
+    usableTaxon,
+    currentUser,
+    taxonImageSource,
+    testID,
+    clearBackground,
+    white,
+    confidence,
+    confidencePercentage,
+    confidencePosition,
+    activeColor,
+    showOneNameOnly,
+  ] );
+
   // useTaxon could return null, and it's at least remotely possible taxonProp is null
   if ( !usableTaxon ) return null;
 
+  // When children are provided, callers compose the subcomponents themselves
+  // (e.g. ExploreV2Header swaps the second line for a location). The container,
+  // pressable wrapper, and action buttons below are the default composition.
+  if ( children ) {
+    return (
+      <TaxonResultContext.Provider value={contextValue}>
+        { children }
+      </TaxonResultContext.Provider>
+    );
+  }
+
   return (
-    <View
-      className={
-        classnames(
-          "flex-row items-center justify-between",
-          {
-            "px-4": asListItem,
-            "border-b-[1px] border-lightGray": asListItem,
-            "border-t-[1px]": first,
-          },
-        )
-      }
-      testID={testID}
-    >
-      <TaxonResultMain
+    <TaxonResultContext.Provider value={contextValue}>
+      <View
         className={
-          classnames( "flex-row items-center shrink", {
-            "py-3": asListItem,
-          } )
+          classnames(
+            "flex-row items-center justify-between",
+            {
+              "px-4": asListItem,
+              "border-b-[1px] border-lightGray": asListItem,
+              "border-t-[1px]": first,
+            },
+          )
         }
+        testID={testID}
       >
-        <View className="w-[62px] h-[62px] justify-center relative">
-          <ObsImagePreview
-            // TODO fix when ObsImagePreview typed
-            source={taxonImageSource}
-            testID={`${testID}.photo`}
-            iconicTaxonName={usableTaxon?.iconic_taxon_name}
-            className="rounded-xl"
-            isSmall
-            white={white}
-            isBackground={false}
-          />
-          {!!( confidence && confidencePosition === "photo" ) && (
-            <View className="absolute -bottom-4 w-full items-center">
-              <ConfidenceInterval
-                confidence={confidence}
-                activeColor={activeColor}
-              />
-            </View>
-          )}
-        </View>
-        <View className="shrink ml-3 flex-1">
-          <DisplayTaxonName
-            taxon={usableTaxon}
-            color={String(
-              clearBackground
-                ? "text-white"
-                : "text-darkGray",
-            )}
-            scientificNameFirst={currentUser?.prefers_scientific_name_first}
-            prefersCommonNames={currentUser?.prefers_common_names}
-          />
-          {!!( ( confidence || confidencePercentage ) && confidencePosition === "text" ) && (
-            <View className="mt-1 w-[62px]">
-              {confidencePercentage
-                ? (
-                  <Body3 className="color-inatGreen">
-                    {t( "X-percent", { count: confidencePercentage } )}
-                  </Body3>
-                )
-                : (
-                  <ConfidenceInterval
-                    confidence={confidence}
-                    activeColor={activeColor}
-                  />
+        <TaxonResultMain
+          className={
+            classnames( "flex-row items-center shrink", {
+              "py-3": asListItem,
+            } )
+          }
+        >
+          <TaxonResult.Photo />
+          <View className="shrink ml-3 flex-1">
+            <TaxonResult.Name />
+            <TaxonResult.Confidence />
+          </View>
+        </TaxonResultMain>
+        { !unpressable && (
+          <View className="flex-row items-center">
+            { !hideInfoButton && (
+              <INatIconButton
+                icon="info-circle-outline"
+                size={22}
+                onPress={( ) => {
+                  if ( typeof ( onPressInfo ) === "function" ) {
+                    onPressInfo( usableTaxon );
+                    return;
+                  }
+                  navToTaxonDetails( );
+                }}
+                color={String(
+                  clearBackground
+                    ? colors?.white
+                    : colors?.darkGray,
                 )}
-            </View>
-          )}
-        </View>
-      </TaxonResultMain>
-      { !unpressable && (
-        <View className="flex-row items-center">
-          { !hideInfoButton && (
-            <INatIconButton
-              icon="info-circle-outline"
-              size={22}
-              onPress={( ) => {
-                if ( typeof ( onPressInfo ) === "function" ) {
-                  onPressInfo( usableTaxon );
-                  return;
-                }
-                navToTaxonDetails( );
-              }}
-              color={String(
-                clearBackground
-                  ? colors?.white
-                  : colors?.darkGray,
-              )}
-              accessibilityLabel={t( "More-info" )}
-              accessibilityHint={t( "Navigates-to-taxon-details" )}
-            />
-          )}
-          { showCheckmark && (
-            <INatIconButton
-              className="ml-2"
-              icon="checkmark-circle-outline"
-              size={40}
-              color={String(
-                clearBackground
-                  ? colors?.white
-                  : colors?.darkGray,
-              )}
-              onPress={() => handleCheckmarkPress( usableTaxon )}
-              accessibilityLabel={accessibilityLabel}
-              testID={`${testID}.checkmark`}
-            />
-          )}
-          { showEditButton && handleTaxonOrEditPress
+                accessibilityLabel={t( "More-info" )}
+                accessibilityHint={t( "Navigates-to-taxon-details" )}
+              />
+            )}
+            { showCheckmark && (
+              <INatIconButton
+                className="ml-2"
+                icon="checkmark-circle-outline"
+                size={40}
+                color={String(
+                  clearBackground
+                    ? colors?.white
+                    : colors?.darkGray,
+                )}
+                onPress={() => handleCheckmarkPress( usableTaxon )}
+                accessibilityLabel={accessibilityLabel}
+                testID={`${testID}.checkmark`}
+              />
+            )}
+            { showEditButton && handleTaxonOrEditPress
               && (
                 <INatIconButton
                   icon="edit"
@@ -305,20 +408,25 @@ const TaxonResult = ( {
                   accessibilityHint={t( "Edits-this-observations-taxon" )}
                 />
               )}
-          { showRemoveButton && handleRemovePress
-            && (
-              <INatIconButton
-                icon="close"
-                size={20}
-                onPress={handleRemovePress}
-                accessibilityLabel={t( "Remove-identification" )}
-                accessibilityHint={t( "Removes-this-observations-taxon" )}
-              />
-            )}
-        </View>
-      ) }
-    </View>
+            { showRemoveButton && handleRemovePress
+              && (
+                <INatIconButton
+                  icon="close"
+                  size={20}
+                  onPress={handleRemovePress}
+                  accessibilityLabel={t( "Remove-identification" )}
+                  accessibilityHint={t( "Removes-this-observations-taxon" )}
+                />
+              )}
+          </View>
+        ) }
+      </View>
+    </TaxonResultContext.Provider>
   );
 };
+
+TaxonResult.Photo = TaxonResultPhoto;
+TaxonResult.Name = TaxonResultName;
+TaxonResult.Confidence = TaxonResultConfidence;
 
 export default TaxonResult;

@@ -1,16 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  Body1,
-  Body3,
-  Heading2,
-  IconicTaxonIcon,
-  INatIcon,
-  UserIcon,
-} from "components/SharedComponents";
+import ProjectListItem from "components/ProjectList/ProjectListItem";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
-import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
-import { Image, View } from "components/styledComponents";
+import CompositeListItem from "components/SharedComponents/CompositeListItem/CompositeListItem";
+import TaxonResult from "components/SharedComponents/TaxonResult";
+import Heading2 from "components/SharedComponents/Typography/Heading2";
+import { View } from "components/styledComponents";
+import UserListItem from "components/UserList/UserListItem";
 import type { TFunction } from "i18next";
 import type { ExploreStackScreenProps } from "navigation/types";
 import type { ExploreV2LocationState, ExploreV2Subject } from "providers/ExploreV2Context";
@@ -19,24 +15,17 @@ import {
   useExploreV2,
 } from "providers/ExploreV2Context";
 import React from "react";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-const THUMBNAIL_CLASS = "w-[62px] h-[62px] rounded-lg";
+// TaxonResult requires a checkmark handler, but the header renders it
+// unpressable with no checkmark, so this is never called.
+const NOOP = ( ) => {};
 
-function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string {
-  if ( !subject ) { return t( "All-organisms" ); }
-  switch ( subject.type ) {
-    case "taxon":
-      return subject.taxon.name;
-    case "user":
-      return subject.user.login;
-    case "project":
-      return subject.project.title;
-    default:
-      return t( "All-organisms" );
-  }
-}
+// Shared layout for the subject's text column: a name line plus an optional
+// location line as the second line.
+const SUBJECT_TEXT_CLASS = "flex-1 ml-[10px]";
+const SUBJECT_ROW_CLASS = "flex-1 mr-5";
 
 function locationLabel( location: ExploreV2LocationState, t: TFunction ): string {
   switch ( location.placeMode ) {
@@ -51,45 +40,65 @@ function locationLabel( location: ExploreV2LocationState, t: TFunction ): string
   }
 }
 
-const SubjectThumbnail = ( { subject }: { subject: ExploreV2Subject } ) => {
+const LocationLine = ( { place }: { place: string } ) => (
+  place
+    ? <CompositeListItem.LocationLine place={place} />
+    : null
+);
+
+// Renders the active subject (taxon/user/project) by composing the existing
+// list-item components and swapping their second line for the location.
+const SubjectRow = ( { subject, place }: { subject: ExploreV2Subject; place: string } ) => {
   switch ( subject.type ) {
-    case "taxon": {
-      const photo = subject.taxon.default_photo?.url;
-      return photo
-        ? (
-          <Image
-            source={{ uri: photo }}
-            className={THUMBNAIL_CLASS}
-            accessibilityIgnoresInvertColors
-            testID="ExploreV2Header.taxonImage"
-          />
-        )
-        : (
-          <IconicTaxonIcon
-            imageClassName={[THUMBNAIL_CLASS]}
-            iconicTaxonName={subject.taxon.iconic_taxon_name}
-          />
-        );
-    }
     case "user":
-      return <UserIcon size={62} uri={subject.user.icon_url} />;
-    case "project":
-      return subject.project.icon
-        ? (
-          <Image
-            source={{ uri: subject.project.icon }}
-            className={THUMBNAIL_CLASS}
-            accessibilityIgnoresInvertColors
-            testID="ExploreV2Header.projectImage"
-          />
-        )
-        : (
-          <View
-            className={`${THUMBNAIL_CLASS} bg-lightGray items-center justify-center`}
-          >
-            <INatIcon name="briefcase" size={28} color={colors.darkGray} />
+      return (
+        <UserListItem
+          item={{ user: subject.user }}
+          pressable={false}
+          className={SUBJECT_ROW_CLASS}
+        >
+          <UserListItem.UserIcon />
+          <View className={SUBJECT_TEXT_CLASS}>
+            <UserListItem.UserName />
+            <LocationLine place={place} />
           </View>
-        );
+        </UserListItem>
+      );
+    case "project":
+      return (
+        <ProjectListItem
+          item={subject.project}
+          isHeader
+          className={SUBJECT_ROW_CLASS}
+        >
+          <ProjectListItem.Icon />
+          <View className={SUBJECT_TEXT_CLASS}>
+            <ProjectListItem.Title />
+            <LocationLine place={place} />
+          </View>
+        </ProjectListItem>
+      );
+    case "taxon":
+      return (
+        <CompositeListItem pressable={false} className={SUBJECT_ROW_CLASS}>
+          <TaxonResult
+            taxon={subject.taxon}
+            testID="ExploreV2Header.taxon"
+            fetchRemote={false}
+            fromLocal={false}
+            unpressable
+            showOneNameOnly
+            accessibilityLabel=""
+            handleCheckmarkPress={NOOP}
+          >
+            <TaxonResult.Photo />
+            <View className={SUBJECT_TEXT_CLASS}>
+              <TaxonResult.Name />
+              <LocationLine place={place} />
+            </View>
+          </TaxonResult>
+        </CompositeListItem>
+      );
     default:
       return null;
   }
@@ -98,10 +107,8 @@ const SubjectThumbnail = ( { subject }: { subject: ExploreV2Subject } ) => {
 const ExploreV2Header = ( ) => {
   const { t } = useTranslation( );
   const { state } = useExploreV2( );
-  const currentUser = useCurrentUser( );
   const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
 
-  const subject = subjectLabel( state.subject, t );
   const place = locationLabel( state.location, t );
 
   return (
@@ -109,42 +116,7 @@ const ExploreV2Header = ( ) => {
       <View className="p-4 flex-row items-center">
         <BackButton />
         {state.subject
-          ? (
-            <View className="flex-1 flex-row items-center mr-5">
-              <SubjectThumbnail subject={state.subject} />
-              <View className="flex-1 ml-[10px]">
-                {state.subject.type === "taxon"
-                  ? (
-                    <DisplayTaxonName
-                      taxon={state.subject.taxon}
-                      showOneNameOnly
-                      prefersCommonNames={currentUser?.prefers_common_names}
-                      scientificNameFirst={currentUser?.prefers_scientific_name_first}
-                    />
-                  )
-                  : (
-                    <Body1 numberOfLines={1} ellipsizeMode="tail">
-                      {subject}
-                    </Body1>
-                  )}
-                {place
-                  ? (
-                    <View className="flex-row items-center pt-[5px]">
-                      <INatIcon name="location" size={15} />
-                      <Body3
-                        maxFontSizeMultiplier={1.5}
-                        className="ml-[5px]"
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                      >
-                        {place}
-                      </Body3>
-                    </View>
-                  )
-                  : null}
-              </View>
-            </View>
-          )
+          ? <SubjectRow subject={state.subject} place={place} />
           : (
             <View className="flex-1 mr-5 pl-2">
               <Heading2 numberOfLines={1} ellipsizeMode="tail">

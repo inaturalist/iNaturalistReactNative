@@ -77,9 +77,12 @@ interface TextSectionProps extends PropsWithChildren {
   className?: string;
 }
 
-// The text column to the right of the thumbnail.
+// The text column to the right of the thumbnail. A caller-supplied `className`
+// fully replaces the default so flex utilities (e.g. `flex-1`) never collide
+// with the base `shrink` — NativeWind drops one of two conflicting flex
+// utilities when they arrive together in a dynamic className.
 const TextSection = ( { children, className }: TextSectionProps ) => (
-  <View className={classnames( "ml-3 shrink", className )}>
+  <View className={className || "shrink ml-3"}>
     { children }
   </View>
 );

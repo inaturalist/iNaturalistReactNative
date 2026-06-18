@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import CompositeListItem from "components/SharedComponents/CompositeListItem/CompositeListItem";
 import INatIcon from "components/SharedComponents/INatIcon";
 import UserIcon from "components/SharedComponents/UserIcon";
@@ -16,6 +17,7 @@ interface Props extends PropsWithChildren {
   accessibilityLabel?: string;
   pressable?: boolean;
   iconVariant?: IconVariant;
+  className?: string;
 }
 
 const ICON_VARIANT_SIZE: Record<IconVariant, number> = {
@@ -88,6 +90,7 @@ const UserListItem = ( {
   accessibilityLabel: accessibilityLabelProp,
   pressable = true,
   iconVariant = "medium",
+  className,
   children,
 }: Props ) => {
   const { t } = useTranslation( );
@@ -107,9 +110,7 @@ const UserListItem = ( {
         accessibilityRole={onPress
           ? "button"
           : "link"}
-        className={pressable
-          ? "mx-3 my-2"
-          : undefined}
+        className={classnames( pressable && "mx-3 my-2", className )}
         testID={`UserProfile.${user?.id}`}
       >
         { children || (
