@@ -1,12 +1,14 @@
 import {
   screen,
-  userEvent,
   waitFor,
-  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import * as rnImagePicker from "react-native-image-picker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
+import {
+  mockInteractionManagerRunAfterInteractions,
+  navigateToPhotoImporterFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -40,37 +42,30 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
+  jest.useFakeTimers( );
+  mockInteractionManagerRunAfterInteractions( );
 } );
 
 const mockAsset = [{
   uri: faker.image.url( ),
+  fileName: `${faker.string.uuid( )}.jpg`,
 }];
 
 const mockMultipleAssets = [{
   uri: faker.image.url( ),
+  fileName: `${faker.string.uuid( )}.jpg`,
 }, {
   uri: faker.image.url( ),
+  fileName: `${faker.string.uuid( )}.jpg`,
 }];
 
 jest.mock( "react-native-image-picker", ( ) => ( {
   launchImageLibrary: jest.fn( ),
 } ) );
 
-const actor = userEvent.setup( );
-
-const navigateToPhotoImporter = async ( ) => {
-  await waitFor( ( ) => {
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
-  } );
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const photoImporter = await screen.findByLabelText( "Photo importer" );
-  await actor.press( photoImporter );
-};
-
 describe( "PhotoLibrary navigation", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   beforeEach( ( ) => {
     setStoreStateLayout( {
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
@@ -86,13 +81,11 @@ describe( "PhotoLibrary navigation", ( ) => {
       } ),
     );
     renderApp( );
-    await navigateToPhotoImporter( );
-    const groupPhotosText = await screen.findByText( /Group Photos/ );
+    await navigateToPhotoImporterFromMyObs( );
     await waitFor( ( ) => {
-      // user should land on GroupPhotos
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( groupPhotosText ).toBeOnTheScreen( );
-    } );
+      global.timeTravel( 300 );
+      expect( screen.getByText( /Group Photos/ ) ).toBeVisible( );
+    }, { timeout: 10_000 } );
   } );
 
   it( "advances to ObsEdit when one photo is selected", async ( ) => {
@@ -102,16 +95,17 @@ describe( "PhotoLibrary navigation", ( ) => {
       } ),
     );
     renderApp( );
-    await navigateToPhotoImporter( );
-    const obsEditText = await screen.findByText( /New Observation/ );
+    await navigateToPhotoImporterFromMyObs( );
     await waitFor( () => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( obsEditText ).toBeOnTheScreen();
-    } );
+      global.timeTravel( 300 );
+      expect( screen.getByText( /New Observation/ ) ).toBeVisible( );
+    }, { timeout: 10_000 } );
   } );
 } );
 
 describe( "PhotoLibrary navigation when suggestions screen is preferred next screen", () => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   beforeEach( () => {
     setStoreStateLayout( {
       screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
@@ -124,11 +118,10 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
       assets: mockAsset,
     } ) );
     renderApp();
-    await navigateToPhotoImporter();
-    const addAnIDText = await screen.findByText( /Add an ID Later/ );
+    await navigateToPhotoImporterFromMyObs( );
     await waitFor( () => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( addAnIDText ).toBeOnTheScreen();
-    } );
+      global.timeTravel( 300 );
+      expect( screen.getByText( /Add an ID Later/ ) ).toBeVisible( );
+    }, { timeout: 10_000 } );
   } );
 } );

@@ -2,7 +2,6 @@ import {
   screen,
   userEvent,
   waitFor,
-  within,
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import * as rnImagePicker from "react-native-image-picker";
@@ -12,6 +11,11 @@ import useStore from "stores/useStore";
 // import Realm from "realm";
 // import realmConfig from "realmModels/index";
 import factory, { makeResponse } from "tests/factory";
+import {
+  mockInteractionManagerRunAfterInteractions,
+  navigateToPhotoImporterFromMyObs,
+  saveObsEditObservation,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import {
   renderAppWithObservations,
@@ -48,8 +52,10 @@ afterAll( uniqueRealmAfterAll );
 
 const mockMultipleAssets = [{
   uri: faker.image.url( ),
+  fileName: `${faker.string.uuid()}.jpg`,
 }, {
   uri: faker.image.url( ),
+  fileName: `${faker.string.uuid()}.jpg`,
 }];
 
 jest.mock( "react-native-image-picker", ( ) => ( {
@@ -64,37 +70,17 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
       assets: mockMultipleAssets,
     } ),
   );
+  await navigateToPhotoImporterFromMyObs( );
   await waitFor( ( ) => {
-    global.timeTravel( );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( screen.getByText( /OBSERVATIONS/ ) ).toBeOnTheScreen( );
-  } );
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const photoImporter = await screen.findByLabelText( "Photo importer" );
-  await actor.press( photoImporter );
-  const groupPhotosText = await screen.findByText( /Group Photos/ );
-  await waitFor( ( ) => {
-    // user should land on GroupPhotos
-    expect( groupPhotosText ).toBeTruthy( );
-  } );
+    global.timeTravel( 300 );
+    expect( screen.getByText( /Group Photos/ ) ).toBeVisible( );
+  }, { timeout: 10_000 } );
   const importObservationsText = await screen.findByText( /IMPORT 2 OBSERVATIONS/ );
   await actor.press( importObservationsText );
   await waitFor( ( ) => {
-    const obsEditTitleText = screen.getByText( /2 Observations/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( obsEditTitleText ).toBeOnTheScreen( );
-  }, { timeout: 3_000, interval: 500 } );
-};
-
-const saveObsEditObservation = async ( ) => {
-  const saveButton = await screen.findByText( /SAVE/ );
-  await actor.press( saveButton );
-  // missing evidence sheet pops up here, so need to press SAVE twice
-  const okButton = await screen.findByText( /OK/ );
-  await actor.press( okButton );
-  await actor.press( saveButton );
+    global.timeTravel( 300 );
+    expect( screen.getByText( /2 Observations/ ) ).toBeVisible( );
+  }, { timeout: 10_000 } );
 };
 
 const uploadObsEditObservation = async options => {
@@ -117,6 +103,8 @@ beforeEach( ( ) => {
 } );
 
 describe( "ObsEdit", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   async function findAndPressById( labelText ) {
     const pressable = await screen.findByTestId( labelText );
     await actor.press( pressable );
@@ -140,6 +128,7 @@ describe( "ObsEdit", ( ) => {
 
   beforeAll( async () => {
     jest.useFakeTimers( );
+    mockInteractionManagerRunAfterInteractions( );
     useStore.setState( {
       initialNumObservationsInQueue: 3,
       numUploadsAttempted: 2,
@@ -241,8 +230,7 @@ describe( "ObsEdit", ( ) => {
         await navigateToObsEditViaGroupPhotos( );
         await uploadObsEditObservation( );
         const uploadStatus = await screen.findByText( /1 uploaded/ );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( uploadStatus ).toBeOnTheScreen( );
+        expect( uploadStatus ).toBeVisible( );
         const newTitle = await screen.findByText( /New Observation/ );
         expect( newTitle ).toBeTruthy( );
       } );

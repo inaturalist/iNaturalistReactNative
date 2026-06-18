@@ -125,10 +125,12 @@ jest.mock( "@react-native-firebase/analytics", () => ( {
 } ) );
 
 jest.mock( "@react-native-firebase/perf", () => ( {
-  startFirebaseTrace: jest.fn( ),
-  stopFirebaseTrace: jest.fn( ),
   getPerformance: jest.fn( ( ) => ( {
     dataCollectionEnabled: true,
+    startTrace: jest.fn( async ( ) => ( {
+      stop: jest.fn( ),
+      putAttribute: jest.fn( ),
+    } ) ),
   } ) ),
 } ) );
 

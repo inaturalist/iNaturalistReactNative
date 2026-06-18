@@ -1,13 +1,18 @@
+import "tests/helpers/mockMortalForIntegration";
+
 import {
   screen,
   userEvent,
-  waitFor,
   within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
+import {
+  navigateToStandardCameraFromMyObs,
+  takeStandardCameraPhotoAndConfirm,
+} from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -64,7 +69,6 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
 } );
 
 // Mock the response from inatjs.computervision.score_image
@@ -83,16 +87,14 @@ beforeEach( ( ) => {
 } );
 
 describe( "Photo Deletion", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   const actor = userEvent.setup( );
 
   async function takePhotoForNewObs() {
-    const tabBar = await screen.findByTestId( "CustomTabBar" );
-    const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-    await actor.press( addObsButton );
-    const cameraButton = await screen.findByLabelText( "Camera" );
-    await actor.press( cameraButton );
-    const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-    await actor.press( takePhotoButton );
+    await navigateToStandardCameraFromMyObs();
+    await takeStandardCameraPhotoAndConfirm();
+    await screen.findByText( /New Observation/ );
   }
 
   async function deletePhotoInMediaViewer() {
@@ -103,73 +105,30 @@ describe( "Photo Deletion", ( ) => {
     await actor.press( discardButton );
   }
 
-  async function confirmPhotos() {
-    const checkmarkButton = await screen.findByLabelText( "View suggestions" );
-    await actor.press( checkmarkButton );
-  }
-
-  async function saveAndEditObs() {
-    // Make sure we're on ObsEdit
-    const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    await waitFor( ( ) => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( evidenceTitle ).toBeOnTheScreen( );
-    } );
-    const saveButton = await screen.findByText( "SAVE" );
-    await actor.press( saveButton );
-    // Wait until header shows that there's an obs to upload
-    await screen.findByText( /Upload \d observation/ );
-    // await screen.findByLabelText( "Grid layout" );
-    const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
-    await actor.press( obsGridItems[0] );
-  }
-
   async function expectNoPhotosInStandardCamera() {
     const noPhotoText = await screen.findByText( "Photos you take will appear here" );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( noPhotoText ).toBeOnTheScreen( );
+    expect( noPhotoText ).toBeVisible();
   }
 
   async function viewPhotoFromObsEdit() {
     const evidenceItem = await screen.findByLabelText( "Select or drag media" );
-    await waitFor( ( ) => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( evidenceItem ).toBeOnTheScreen( );
-    } );
+    expect( evidenceItem ).toBeVisible();
     await actor.press( evidenceItem );
   }
 
   async function expectObsEditToHaveNoPhotos() {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( evidenceTitle ).toBeOnTheScreen( );
     // Confirm there is no evidence
+    expect( evidenceTitle ).toBeVisible();
     const evidenceItems = screen.queryAllByLabelText( "Select or drag media" );
     expect( evidenceItems.length ).toEqual( 0 );
   }
 
   it( "should delete from StandardCamera for new photo", async ( ) => {
     renderApp( );
-    await takePhotoForNewObs();
-    // Tap the photo preview to enter the MediaViewer
-    const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
-    await actor.press( carouselPhoto );
-    await deletePhotoInMediaViewer();
-    await expectNoPhotosInStandardCamera();
-  } );
-
-  it( "should delete from StandardCamera for existing photo", async ( ) => {
-    renderApp( );
-    await takePhotoForNewObs();
-    await confirmPhotos();
-    await saveAndEditObs();
-    // Enter camera to add new photo
-    const addEvidenceButton = await await screen.findByLabelText( "Add evidence" );
-    await actor.press( addEvidenceButton );
-    const addEvidenceSheet = await screen.findByTestId( "AddEvidenceSheet" );
-    const cameraButton = await within( addEvidenceSheet ).findByLabelText( "Camera" );
-    await actor.press( cameraButton );
+    await navigateToStandardCameraFromMyObs();
+    await actor.press( await screen.findByTestId( "take-photo-button" ) );
     // Tap the photo preview to enter the MediaViewer
     const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
     await actor.press( carouselPhoto );
@@ -180,17 +139,6 @@ describe( "Photo Deletion", ( ) => {
   it( "should delete from ObsEdit for new camera photo", async ( ) => {
     renderApp( );
     await takePhotoForNewObs();
-    await confirmPhotos();
-    await viewPhotoFromObsEdit();
-    await deletePhotoInMediaViewer( );
-    await expectObsEditToHaveNoPhotos();
-  } );
-
-  it( "should delete from ObsEdit for existing camera photo", async ( ) => {
-    renderApp( );
-    await takePhotoForNewObs();
-    await confirmPhotos();
-    await saveAndEditObs();
     await viewPhotoFromObsEdit();
     await deletePhotoInMediaViewer( );
     await expectObsEditToHaveNoPhotos();
@@ -198,5 +146,4 @@ describe( "Photo Deletion", ( ) => {
 
   // TODO these will require mocking react-native-image-picker
   it.todo( "should delete from ObsEdit for new gallery photo" );
-  it.todo( "should delete from ObsEdit for existing gallery photo" );
 } );

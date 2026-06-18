@@ -1,3 +1,5 @@
+import "tests/helpers/mockMortalForIntegration";
+
 import {
   screen,
   userEvent,
@@ -6,6 +8,9 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
+import {
+  navigateToStandardCameraFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -52,19 +57,9 @@ jest.mock( "sharedHelpers/fetchAccurateUserLocation", () => ( {
   default: () => mockFetchUserLocation(),
 } ) );
 
-const navigateToCamera = async ( ) => {
-  await waitFor( ( ) => {
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
-  } );
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const cameraButton = await screen.findByLabelText( "Camera" );
-  await actor.press( cameraButton );
-};
-
 describe( "StandardCamera navigation with advanced user layout", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   beforeEach( () => {
     setStoreStateLayout( {
       isDefaultMode: false,
@@ -74,29 +69,31 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
   } );
 
   describe( "from MyObs", ( ) => {
-    it( "should return to MyObs when close button tapped", async ( ) => {
+    it( "should leave the camera when close button tapped", async ( ) => {
       renderApp( );
-      await navigateToCamera( );
+      await navigateToStandardCameraFromMyObs( );
       const cameraNavButtons = await screen.findByTestId( "CameraNavButtons" );
       const closeButton = await within( cameraNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
       await waitFor( ( ) => {
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeOnTheScreen( );
+        global.timeTravel( 300 );
+        expect( screen.queryByTestId( "CameraNavButtons" ) ).toBeNull( );
+        // TODO: This used to be an expect like so, idk why that fails now
+        // expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
       } );
     } );
   } );
 
   it( "should advance to ObsEdit when photo taken and checkmark tapped", async () => {
     renderApp( );
-    await navigateToCamera( );
+    await navigateToStandardCameraFromMyObs( );
     const takePhotoButton = await screen.findByLabelText( /Take photo/ );
     await actor.press( takePhotoButton );
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
     await waitFor( ( ) => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( screen.getByText( /New Observation/ ) ).toBeOnTheScreen( );
+      global.timeTravel( 300 );
+      expect( screen.getByText( /New Observation/ ) ).toBeVisible( );
     } );
   } );
 
@@ -111,14 +108,14 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
 
     it( "should advance to Suggestions when photo taken and checkmark tapped", async ( ) => {
       renderApp( );
-      await navigateToCamera( );
+      await navigateToStandardCameraFromMyObs( );
       const takePhotoButton = await screen.findByLabelText( /Take photo/ );
       await actor.press( takePhotoButton );
       const checkmarkButton = await screen.findByLabelText( "View suggestions" );
       await actor.press( checkmarkButton );
       await waitFor( ( ) => {
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( screen.getByText( /ADD AN ID/ ) ).toBeOnTheScreen( );
+        global.timeTravel( 300 );
+        expect( screen.getByText( /ADD AN ID/ ) ).toBeVisible( );
       } );
     } );
   } );

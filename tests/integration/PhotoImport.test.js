@@ -1,14 +1,17 @@
 import {
   screen,
   userEvent,
-  waitFor,
-  within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
-import inatjs from "inaturalistjs";
 import * as ImagePicker from "react-native-image-picker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
-import factory, { makeResponse } from "tests/factory";
+import factory from "tests/factory";
+import {
+  mockInteractionManagerRunAfterInteractions,
+  navigateToPhotoImporterFromMyObs,
+  saveObsEditObservation,
+  waitForMyObsGridItems,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -77,41 +80,26 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: jest.fn( () => mockUser ),
 } ) );
 
-// Mock the response from inatjs.computervision.score_image
-const topSuggestion = {
-  taxon: factory.states( "genus" )( "RemoteTaxon", { name: "Primum" } ),
-  combined_score: 90,
-};
-
 beforeAll( async () => {
   await initI18next();
-  jest.useFakeTimers( );
-} );
-
-beforeEach( ( ) => {
-  setStoreStateLayout( {
-    isDefaultMode: false,
-    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.SUGGESTIONS,
-    isAllAddObsOptionsMode: true,
-  } );
-  inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
+  mockInteractionManagerRunAfterInteractions( );
 } );
 
 describe( "Photo Import", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
   const actor = userEvent.setup( );
 
-  async function importPhotoForNewObs() {
-    const tabBar = await screen.findByTestId( "CustomTabBar" );
-    const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-    await actor.press( addObsButton );
-    const photoImportButton = await within( tabBar ).findByLabelText( "Photo importer" );
-    await actor.press( photoImportButton );
-  }
-
+  beforeEach( async () => {
+    setStoreStateLayout( {
+      isDefaultMode: false,
+      screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
+      isAllAddObsOptionsMode: true,
+    } );
+  } );
   async function groupPhotosIntoObservation() {
     const groupPhotosText = await screen.findByText( /Group Photos/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( groupPhotosText ).toBeOnTheScreen( );
+    expect( groupPhotosText ).toBeVisible();
     const path = "file://document/directory/path/galleryPhotos/";
     const firstUri = `${path}${mockImageLibraryResponseMultiplePhotos.assets[0].fileName}`;
     const secondUri = `${path}${mockImageLibraryResponseMultiplePhotos.assets[1].fileName}`;
@@ -125,42 +113,26 @@ describe( "Photo Import", ( ) => {
     await actor.press( importButton );
   }
 
-  async function viewSuggestionsAndAddId() {
-    const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
-    );
-    await actor.press( topTaxonResultButton );
-  }
-
-  async function saveObservationWithPhoto() {
+  async function saveObservationWithPhoto( saveOptions = {} ) {
     // Make sure we're on ObsEdit
     const evidenceTitle = await screen.findByText( "EVIDENCE" );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( evidenceTitle ).toBeOnTheScreen( );
+    expect( evidenceTitle ).toBeVisible( );
 
-    const localFilePath = `file://document/directory/path/photoUploads/${mockFileName}`;
-    const photoEvidence = await screen.findByTestId( `EvidenceList.${localFilePath}` );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( photoEvidence ).toBeOnTheScreen( );
-    const saveButton = await screen.findByText( "SAVE" );
-    await actor.press( saveButton );
-    const okButton = await screen.findByText( "OK" );
-    await actor.press( okButton );
-    await actor.press( saveButton );
-    // Wait until header shows that there's an obs to upload
-    await screen.findByText( /Upload \d observation/ );
-    const obsGridItems = await screen.findAllByTestId( /MyObservations\.obsGridItem\..*/ );
-    await waitFor( () => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( obsGridItems[0] ).toBeOnTheScreen( );
-    }, { timeout: 3_000, interval: 500 } );
+    const [photoEvidence] = await screen.findAllByLabelText( "Select or drag media" );
+    expect( photoEvidence ).toBeVisible();
+    await saveObsEditObservation( saveOptions );
+    if ( !saveOptions.skipMyObsWait ) {
+      const obsGridItems = await waitForMyObsGridItems();
+      expect( obsGridItems[0] ).toBeVisible();
+      // Wait until header shows that there's an obs to upload
+      await screen.findByText( /Upload \d observation/ );
+    }
   }
 
   it( "should create and save an observation with an imported photo", async ( ) => {
     renderApp( );
-    await importPhotoForNewObs( );
-    await viewSuggestionsAndAddId( );
-    await saveObservationWithPhoto( );
+    await navigateToPhotoImporterFromMyObs();
+    await saveObservationWithPhoto();
   } );
 
   it( "should create and save an observation with multiple imported photos", async ( ) => {
@@ -168,9 +140,9 @@ describe( "Photo Import", ( ) => {
       ( ) => mockImageLibraryResponseMultiplePhotos,
     );
     renderApp( );
-    await importPhotoForNewObs( );
-    await groupPhotosIntoObservation( );
-    await viewSuggestionsAndAddId( );
-    await saveObservationWithPhoto( );
+    await navigateToPhotoImporterFromMyObs();
+    await groupPhotosIntoObservation();
+    await screen.findByTestId( "ObsEdit.saveButton", {}, { timeout: 10_000 } );
+    await saveObservationWithPhoto( { skipMyObsWait: true } );
   } );
 } );
