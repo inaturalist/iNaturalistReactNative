@@ -92,7 +92,11 @@ const MyObservationsWithProvider = ( ) => {
     return unsubscribe;
   }, [navigation, setJustFinishedSignup] );
 
-  const observations = useLocalObservations( );
+  const fullObservations = useLocalObservations( );
+  const observations = useMemo(
+    () => fullObservations.map( obs => ( { uuid: obs.uuid } ) ),
+    [fullObservations],
+  );
   const {
     numUnuploadedObservations,
     numObsMissingBasics,
