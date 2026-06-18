@@ -128,6 +128,7 @@
     "react-native-mmkv": "^3.3.3",
     "react-native-modal": "^14.0.0-rc.1",
     "react-native-modal-datetime-picker": "^18.0.0",
+    "react-native-nitro-modules": "^0.35.9",
     "react-native-open-maps": "^0.4.3",
     "react-native-orientation-locker": "github:wonday/react-native-orientation-locker",
     "react-native-paper": "^5.12.3",
