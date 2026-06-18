@@ -3,8 +3,15 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
+import * as rnImagePicker from "react-native-image-picker";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory, { makeResponse } from "tests/factory";
+import {
+  mockInteractionManagerRunAfterInteractions,
+  navigateToPhotoImporterFromMyObs,
+  saveObsEditObservation,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -72,7 +79,7 @@ afterAll( uniqueRealmAfterAll );
 
 beforeAll( async () => {
   await initI18next( );
-  jest.useFakeTimers( );
+  mockInteractionManagerRunAfterInteractions( );
 } );
 
 // Mock the response from inatjs.computervision.score_image
@@ -87,14 +94,14 @@ beforeEach( ( ) => {
   setStoreStateLayout( {
     isDefaultMode: false,
     isAllAddObsOptionsMode: true,
+    screenAfterPhotoEvidence: SCREEN_AFTER_PHOTO_EVIDENCE.OBS_EDIT,
   } );
   inatjs.computervision.score_image.mockResolvedValue( makeResponse( [topSuggestion] ) );
 } );
 
 const checkToolbarResetWithUnsyncedObs = ( ) => waitFor( ( ) => {
   const toolbarText = screen.getByText( /Upload 3 observations/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( toolbarText ).toBeOnTheScreen();
+  expect( toolbarText ).toBeVisible();
 } );
 
 const writeObservationsToRealm = ( observations, message ) => {
@@ -110,26 +117,14 @@ const pressIndividualUpload = async observation => {
   const uploadIcon = screen.getByTestId(
     `UploadIcon.start.${observation.uuid}`,
   );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( uploadIcon ).toBeOnTheScreen( );
+  expect( uploadIcon ).toBeVisible( );
   await actor.press( uploadIcon );
 };
 
 const waitForDisplayedText = async ( text, timeout = 1000 ) => {
   await waitFor( ( ) => {
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( screen.getByText( text ) ).toBeOnTheScreen( );
+    expect( screen.getByText( text ) ).toBeVisible( );
   }, { timeout } );
-};
-
-const pressButtonByLabel = async labelText => {
-  const button = screen.getByLabelText( labelText );
-  await actor.press( button );
-};
-
-const pressButtonByText = async text => {
-  const button = screen.getByText( text );
-  await actor.press( button );
 };
 
 // const deleteObservationByTaxonName = async name => {
@@ -141,7 +136,8 @@ const pressButtonByText = async text => {
 //   await waitForDisplayedText( /1 observation deleted/ );
 // };
 
-describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
+describe( "MyObservations -> Photo Importer -> ObsEdit -> MyObservations", ( ) => {
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
   // Mock inatjs endpoints so they return the right responses for the right test data
   inatjs.observations.create.mockImplementation( ( params, _opts ) => {
     const mockObs = mockUnsyncedObservations.find( o => o.uuid === params.observation.uuid );
@@ -172,13 +168,16 @@ describe( "MyObservations -> ObsEdit no evidence -> MyObservations", ( ) => {
     await checkToolbarResetWithUnsyncedObs( );
     await pressIndividualUpload( mockUnsyncedObservations[0] );
     await waitForDisplayedText( /1 observation uploaded/ );
-    await pressButtonByLabel( /Add observations/ );
-    await pressButtonByLabel( /Observation with no evidence/ );
-    await pressButtonByText( /SAVE/ );
-    // missing evidence sheet pops up here, so need to press SAVE twice
-    await pressButtonByText( "OK" );
-    await pressButtonByText( /SAVE/ );
-    await waitForDisplayedText( /Upload 3 observations/, 5000 );
+    jest.spyOn( rnImagePicker, "launchImageLibrary" ).mockImplementation( () => ( {
+      assets: [{
+        uri: faker.image.url(),
+        fileName: `${faker.string.uuid()}.jpg`,
+      }],
+    } ) );
+    await navigateToPhotoImporterFromMyObs();
+    await screen.findByText( /New Observation/, {}, { timeout: 10_000 } );
+    await saveObsEditObservation();
+    await waitForDisplayedText( /Upload 3 observations/, 10_000 );
   } );
 
   // it( "should display fresh toolbar status after deleting an observation, then"

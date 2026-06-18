@@ -1,3 +1,5 @@
+import "tests/helpers/mockMortalForIntegration";
+
 import {
   useNetInfo,
 } from "@react-native-community/netinfo";
@@ -5,7 +7,6 @@ import {
   screen,
   userEvent,
   waitFor,
-  within,
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import inatjs from "inaturalistjs";
@@ -14,6 +15,9 @@ import * as useLocationPermission from "sharedHooks/useLocationPermission";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import {
+  navigateToSuggestionsViaAICameraFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -193,20 +197,6 @@ const navigateToSuggestionsForObservationViaObsEdit = async observation => {
   await actor.press( addIdButton );
 };
 
-const navigateToSuggestionsViaAICamera = async ( ) => {
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-  await actor.press( addObsButton );
-  const cameraButton = await screen.findByLabelText( /AI Camera/ );
-  await actor.press( cameraButton );
-
-  const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-  await actor.press( takePhotoButton );
-  const addIDButton = await screen.findByText( /ADD AN ID/ );
-  // We used toBeVisible here but the update to RN0.77 broke this expectation
-  expect( addIDButton ).toBeOnTheScreen( );
-};
-
 const setupAppWithSignedInUser = async hasLocation => {
   const observations = hasLocation
     ? makeMockObservationsWithLocation( )
@@ -271,11 +261,9 @@ describe( "from ObsEdit with human observation", () => {
     const humanResultButton = await screen.findByTestId(
       `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`,
     );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( humanResultButton ).toBeOnTheScreen();
+    expect( humanResultButton ).toBeVisible();
     const human = screen.getByText( /Homo sapiens/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( human ).toBeOnTheScreen();
+    expect( human ).toBeVisible();
     const nonHumanSuggestion = screen.queryByText( /Primum/ );
     expect( nonHumanSuggestion ).toBeFalsy();
   } );
@@ -300,8 +288,7 @@ describe( "from ObsEdit with human observation", () => {
     const { observations } = await setupAppWithSignedInUser( true );
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const ignoreLocationButton = await screen.findByText( /IGNORE LOCATION/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( ignoreLocationButton ).toBeOnTheScreen();
+    expect( ignoreLocationButton ).toBeVisible();
   } );
 } );
 
@@ -327,7 +314,7 @@ describe( "from AICamera directly", ( ) => {
   describe( "suggestions with location", ( ) => {
     it( "should call score_image with location parameters on first render", async ( ) => {
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       await waitFor( ( ) => {
         expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
           expect.objectContaining( {
@@ -352,11 +339,10 @@ describe( "from AICamera directly", ( ) => {
       } ) );
       mockFetchUserLocation.mockReturnValue( null );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       await waitFor( ( ) => {
         global.timeTravel( );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeOnTheScreen( );
+        expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeVisible( );
       } );
       const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
       expect( ignoreLocationButton ).toBeFalsy( );
@@ -378,7 +364,7 @@ describe( "from AICamera directly", ( ) => {
     it( "should not call score_image and should not show any location buttons", async ( ) => {
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       expect( inatjs.computervision.score_image ).not.toHaveBeenCalled( );
       const usePermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
       expect( usePermissionsButton ).toBeFalsy( );
@@ -395,7 +381,7 @@ describe( "from AICamera directly", ( ) => {
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       expect( topTaxonSuggestion ).toHaveProp(
         "testID",
@@ -410,18 +396,16 @@ describe( "from AICamera directly", ( ) => {
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
 
       const notConfidentText = await screen.findByText( /not confident enough to make a top ID suggestion/ );
       await waitFor( ( ) => {
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( notConfidentText ).toBeOnTheScreen( );
+        expect( notConfidentText ).toBeVisible( );
       } );
       const otherSuggestion = await screen.findByTestId(
         `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`,
       );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( otherSuggestion ).toBeOnTheScreen( );
+      expect( otherSuggestion ).toBeVisible( );
     } );
 
     it( "should only show top human suggestion if human predicted offline", async ( ) => {
@@ -430,7 +414,7 @@ describe( "from AICamera directly", ( ) => {
       );
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
-      await navigateToSuggestionsViaAICamera( );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
 
       const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       const humanPrediction = mockModelResultWithHuman.predictions
@@ -455,13 +439,12 @@ describe( "from AICamera directly", ( ) => {
     // it( "should call score_image without location parameters if"
     //   + " ignore location pressed", async ( ) => {
     //   const { observations } = await setupAppWithSignedInUser( );
-    //   await navigateToSuggestionsViaAICamera( );
+    //   await navigateToSuggestionsViaAICameraFromMyObs( );
     //   await waitFor( ( ) => {
     //     expect( inatjs.computervision.score_image ).toHaveBeenCalled( );
     //   } );
     //   const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    //   expect( ignoreLocationButton ).toBeOnTheScreen( );
+    //   expect( ignoreLocationButton ).toBeVisible( );
     //   await actor.press( ignoreLocationButton );
     //   await waitFor( ( ) => {
     //     expect( inatjs.computervision.score_image ).toHaveBeenCalledWith(
@@ -473,8 +456,7 @@ describe( "from AICamera directly", ( ) => {
     //     );
     //   } );
     //   const useLocationButton = await screen.findByText( /USE LOCATION/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    //   expect( useLocationButton ).toBeOnTheScreen( );
+    //   expect( useLocationButton ).toBeVisible( );
     // } );
   } );
 } );
