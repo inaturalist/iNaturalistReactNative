@@ -100,7 +100,7 @@ const ObsEditHeader = ( {
 
   const handleBackButtonPress = useCallback( async ( ) => {
     if ( params?.lastScreen === "Suggestions" ) {
-      navigation.navigate( "Suggestions", { lastScreen: "ObsEdit" } );
+      navigation.dispatch( StackActions.popTo( "Suggestions", { lastScreen: "ObsEdit" } ) );
     } else if ( canRollbackToMatch ) {
       if ( unsavedChanges ) {
         setDiscardChangesSheetVisible( true );

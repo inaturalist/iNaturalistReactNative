@@ -3,6 +3,8 @@ module.exports = {
   globals: {
     requestIdleCallback: "readonly",
     cancelIdleCallback: "readonly",
+    __DEV__: "readonly",
+    HermesInternal: "readonly",
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -13,21 +15,21 @@ module.exports = {
   },
   extends: [
     "airbnb",
-    "plugin:i18next/recommended",
     "plugin:@tanstack/query/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:i18next/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react-native-a11y/ios",
-    "plugin:@typescript-eslint/recommended",
   ],
   plugins: [
+    "@stylistic",
+    "@tanstack/query",
+    "@typescript-eslint",
+    "lodash",
     "module-resolver",
     "react-hooks",
     "react-native",
     "simple-import-sort",
-    "@tanstack/query",
-    "@typescript-eslint",
-    "@stylistic",
-    "lodash",
   ],
   rules: {
     "arrow-parens": [2, "as-needed"],

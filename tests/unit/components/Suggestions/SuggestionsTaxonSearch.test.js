@@ -9,19 +9,6 @@ import { renderComponent } from "tests/helpers/render";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 
-jest.mock(
-  "components/SharedComponents/ViewWrapper",
-  () => function MockViewWrapper( props ) {
-    const MockName = "mock-view-no-footer";
-    return (
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      <MockName {...props} testID={MockName}>
-        {props.children}
-      </MockName>
-    );
-  },
-);
-
 const mockTaxaList = [
   factory( "RemoteTaxon" ),
   factory( "RemoteTaxon" ),
@@ -54,11 +41,6 @@ describe( "TaxonSearch", ( ) => {
     // );
     // Disabled during the update to RN 0.78
     // expect( taxonSearch ).toBeAccessible( );
-  } );
-
-  it( "should render inside mocked container", ( ) => {
-    renderComponent( <SuggestionsTaxonSearch /> );
-    expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy();
   } );
 
   it( "show taxon search results", async ( ) => {

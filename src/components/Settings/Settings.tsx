@@ -5,7 +5,6 @@ import {
 } from "components/SharedComponents";
 import React, { useCallback } from "react";
 import {
-  StatusBar,
   View,
 } from "react-native";
 import {
@@ -35,7 +34,6 @@ const Settings = ( ) => {
 
   return (
     <ScrollViewWrapper>
-      <StatusBar barStyle="dark-content" />
       <View className="p-4">
         <Heading4 className="mb-[15px]">{t( "ADVANCED-SETTINGS" )}</Heading4>
         <SwitchRow

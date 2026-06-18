@@ -49,10 +49,10 @@ const BottomSheetV2 = ( {
   onPressClose,
   onDismiss,
 }: Props ): React.JSX.Element | null => {
+  const { bottom } = useSafeAreaInsets( );
   const { t } = useTranslation( );
   const sheetRef = useRef<BottomSheetModal>( null );
   const skipNextOnDismissRef = useRef( false );
-  const insets = useSafeAreaInsets( );
 
   const handlePressClose = useCallback( ( ) => {
     if ( onPressClose ) {
@@ -109,10 +109,10 @@ const BottomSheetV2 = ( {
         <View
           className={classnames(
             "pt-7",
-            insets.bottom > 0
-              ? "pb-7"
-              : null,
           )}
+          style={{
+            paddingBottom: bottom,
+          }}
         >
           {!headerText
             ? null

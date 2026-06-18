@@ -51,7 +51,6 @@ const SORT_LABELS: Record<OBSERVATIONS_SORT, string> = {
   [OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST]: "Uploaded ↑",
   [OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST]: "Observed ↓",
   [OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST]: "Observed ↑",
-  [OBSERVATIONS_SORT.MOST_FAVED]: "Most faved",
 };
 
 interface DebugButtonProps {
@@ -127,7 +126,7 @@ const ExploreV2DebugSheet = ( ) => {
       <INatIconButton
         icon="triangle-exclamation"
         className={classnames(
-          "absolute top-5 right-5",
+          "absolute top-64 right-5",
           "rounded-full",
         )}
         color="white"

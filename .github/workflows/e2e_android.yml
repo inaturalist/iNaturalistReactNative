@@ -3,6 +3,10 @@ permissions:
   contents: read
 on:
   workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - 'main'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -77,7 +81,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
       with:
-        gradle-version: '8.14.1'
+        gradle-version: '9.0.0'
 
     - name: Install JS dependencies
       run: |
@@ -87,21 +91,27 @@ jobs:
       run: |
         npm run add-example-model -- -f=main
 
+    # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+    # This will be available for all subsequent steps
+    - name: Set MOCK_MODE to e2e
+      run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
+
     - name: Android Build
       run: |
         cd android
-        # for the CI build, we can just target the x86 build for the emulator
-        # also, we can exclude linting tasks
-        ./gradlew build -PreactNativeArchitectures=x86 -x lint -x lintVitalRelease 
+        ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -PreactNativeArchitectures=x86_64
 
     - name: Upload APK
       uses: actions/upload-artifact@v6
       with:
         name: release-apk
-        # note: clarifying because this is different from iOS:
-        # {myBuild}.apk is a single file so `release-apk` points to a single file
-        # in contrast, iOS's .ipa is actually a _directory_
         path: android/app/build/outputs/apk/release/*-release.apk
+
+    - name: Upload Test Binary APK
+      uses: actions/upload-artifact@v6
+      with:
+        name: release-androidTest-apk
+        path: android/app/build/outputs/apk/androidTest/release/*-release-androidTest.apk
     
   test:
     # 4-core Ubunutu GitHub Larger Runner
@@ -111,20 +121,69 @@ jobs:
     needs: build
 
     steps:
-      # note: this step requires checkout for the test flows, but does _not_ require npm install w/ Maestro
-      - uses: actions/checkout@v6
+      - name: Check out Git repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
 
-      - name: Download APK
+      - name: Download Android Detox app APK
         uses: actions/download-artifact@v7
         with:
           name: release-apk
-          # resulting file structure: $GITHUB_HOME/e2e-build/{myBuild}.apk
-          path: e2e-build
+          path: android/app/build/outputs/apk/release
 
-      - name: Install Maestro
+      - name: Download Test Binary APK
+        uses: actions/download-artifact@v7
+        with:
+          name: release-androidTest-apk
+          path: android/app/build/outputs/apk/androidTest/release
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Cache node modules
+        uses: actions/cache@v5
+        id: cache
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      # supposedly our current cache includes native modules like Realm
+      # that have compiled binaries specific to the environment where they were installed
+      # which might not be the same as the github actions environment
+      # so we need to rebuild them
+      - name: Rebuild native modules
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: npm rebuild
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
+
+      # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
+      # This will be available for all subsequent steps
+      - name: Set MOCK_MODE to e2e
+        run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
+
+      # Generate the secret files needed for a release build
+      - name: Create .env file
+        env:
+          OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+          OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+          E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+          E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+          JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
         run: |
-          export MAESTRO_VERSION="2.0.8"; curl -Ls "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+          printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' \
+          "$JWT_ANONYMOUS_API_SECRET" \
+          "$OAUTH_CLIENT_ID" \
+          "$OAUTH_CLIENT_SECRET" \
+          "$E2E_TEST_USERNAME" \
+          "$E2E_TEST_PASSWORD" \
+          "$GMAPS_API_KEY" > .env
 
       # These KVM settings are in support of the android-emulator-runner action that takes advantage of them
       # Further reading:
@@ -146,18 +205,22 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-29
+          key: avd-34-aosp
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache-restore.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           cores: 4
-          api-level: 29
-          target: google_apis
+          api-level: 34
+          target: default
+          arch: x86_64
+          profile: pixel_5
+          avd-name: Pixel_5_API_34_AOSP
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
+
       - name: Save AVD cache
         if: steps.avd-cache-restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v5
@@ -165,35 +228,62 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-29
+          key: avd-34-aosp
 
-      - name: run tests
+      - name: Ensure servers are running
+        id: status_check
+        run: |
+          # is rails running?
+          curl -I --fail "https://staging.inaturalist.org/ping"
+          # is node running & is ES working?
+          curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
+
+      - name: Run e2e tests
         uses: reactivecircus/android-emulator-runner@v2
-        env:
-          MAESTRO_DRIVER_STARTUP_TIMEOUT: 60000
-          MAESTRO_CLI_NO_ANALYTICS: 1
-          # custom ENV var to drive recordings within test flows
-          # see README for details
-          MAESTRO_RECORD: true
+        # don't mark job as error so that retries so that we can rely on the retry to succeed and mark job & workflow green
+        continue-on-error: true
+        id: first_test_run
         with:
           cores: 4
-          api-level: 29
-          target: google_apis
+          api-level: 34
+          target: default
+          arch: x86_64
+          profile: pixel_5
+          avd-name: Pixel_5_API_34_AOSP
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            adb install -r e2e-build/*.apk
-            # single exemplary "smoketest" flow for now
-            maestro test --no-ansi e2e/maestro/android/signedOut.yaml
+            npm run e2e:android:test
 
-      - name: Upload test video
-        uses: actions/upload-artifact@v6
-        if: ${{ success() || failure() }}
+      - name: Run e2e test (retry, with logs)
+        uses: reactivecircus/android-emulator-runner@v2
+        # if first_test_run fails, but we `continue-on-error`, failure() is false. so we need to check it's specific _outcome_
+        if: ${{ steps.first_test_run.outcome == 'failure' }}
         with:
-          # single exemplary flow artifact for now, generated by MAESTRO_RECORD configuration
-          path: signedOut.mp4
-          name: Android
+          cores: 4
+          api-level: 34
+          target: default
+          arch: x86_64
+          profile: pixel_5
+          avd-name: Pixel_5_API_34_AOSP
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            # provide more debugging context on retry failure
+            # we're explicitly not using `detox test --retries` because we want to run them w/ different options
+            npm run e2e:test:android -- --take-screenshots failing --record-videos failing --record-logs all -l trace
+
+
+      - name: Store Detox artifacts on test failure
+        uses: actions/upload-artifact@v6
+        # don't run this if it's status check that failed or if our first test run passes (no first_test_run check needed)
+        if: ${{ failure() && steps.status_check.outcome != 'failure' }}
+        with:
+          name: detox-artifacts
+          path: artifacts
+          retention-days: 5
 
   notify:
     name: Notify Slack

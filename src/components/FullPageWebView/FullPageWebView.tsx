@@ -6,7 +6,8 @@ import {
 } from "@react-navigation/native";
 import { getUserAgent } from "api/userAgent";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
+import { ActivityIndicator, Mortal } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Linking } from "react-native";
@@ -37,7 +38,6 @@ export const ALLOWED_DOMAINS = [
 const ALLOWED_ORIGINS = ["https://*", "mailto:*"];
 const ALLOWED_AUTH_DOMAINS = ["inaturalist.org"];
 
-// eslint-disable-next-line no-undef
 if ( __DEV__ ) {
   ALLOWED_DOMAINS.push( "localhost:3000" );
   ALLOWED_ORIGINS.push( "http://localhost:3000*" );
@@ -225,7 +225,7 @@ const FullPageWebView = ( ) => {
 
   return (
     <Mortal>
-      <ViewWrapper useTopInset={false}>
+      <ScreenShell>
         {( !params.loggedIn || source.headers ) && (
           <WebView
             // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -248,7 +248,7 @@ const FullPageWebView = ( ) => {
             onOpenWindow={() => true}
           />
         )}
-      </ViewWrapper>
+      </ScreenShell>
     </Mortal>
   );
 };

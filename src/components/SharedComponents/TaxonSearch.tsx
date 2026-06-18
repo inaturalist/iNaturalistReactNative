@@ -3,11 +3,13 @@ import {
   Body2,
   INatIcon,
   SearchBar,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
+import { useStackHost } from "navigation/StackHostContext";
 import React, { useMemo } from "react";
 import { FlatList } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { RealmTaxon } from "realmModels/types";
 import { useKeyboardInfo, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
@@ -37,6 +39,11 @@ const TaxonSearch = ( {
   setQuery,
   taxa = EMPTY_TAXA,
 }: Props ) => {
+  const { hasBottomTabBar } = useStackHost( );
+  const { bottom } = useSafeAreaInsets( );
+  const paddingBottom = !hasBottomTabBar
+    ? bottom
+    : 0;
   const { t } = useTranslation( );
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
 
@@ -54,14 +61,14 @@ const TaxonSearch = ( {
 
   // Make sure all of the results can be scrolled to even with the keyboard
   // up
-  const footerComponent = useMemo( ( ) => (
+  const footerComponent = ( ) => (
     keyboardShown
-      ? <View className={`h-[${keyboardHeight}px]`} />
-      : null
-  ), [keyboardHeight, keyboardShown] );
+      ? <View style={{ paddingBottom: paddingBottom + keyboardHeight }} />
+      : <View style={{ paddingBottom }} />
+  );
 
   return (
-    <ViewWrapper useTopInset={false}>
+    <ScreenShell>
       <View
         className="bg-white px-6 pt-2 pb-[21px]"
         style={DROP_SHADOW}
@@ -91,7 +98,7 @@ const TaxonSearch = ( {
         ListEmptyComponent={emptyListComponent}
         ListFooterComponent={footerComponent}
       />
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 

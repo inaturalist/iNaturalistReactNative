@@ -5,8 +5,8 @@ import {
   Heading2,
   INatIcon,
   INatIconButton,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import {
   ImageBackground,
   View,
@@ -20,6 +20,7 @@ import {
 import DeviceInfo from "react-native-device-info";
 import type { PermissionStatus } from "react-native-permissions";
 import { RESULTS } from "react-native-permissions";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "styles/tailwindColors";
 
 const BACKGROUND_IMAGE_STYLE = {
@@ -57,6 +58,7 @@ const PermissionGate = ( {
   onClose,
   testID,
 }: Props ) => {
+  const insets = useSafeAreaInsets( );
   const [isLargeFontScale, setIsLargeFontScale] = useState( false );
 
   DeviceInfo.getFontScale().then( fontScale => {
@@ -65,8 +67,8 @@ const PermissionGate = ( {
   } );
 
   return (
-    <ViewWrapper wrapperClassName="bg-black" testID={testID}>
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+    <ScreenShell wrapperClassName="bg-black" testID={testID}>
+      <StatusBar barStyle="light-content" />
       <ImageBackground
         source={image}
         imageStyle={BACKGROUND_IMAGE_STYLE}
@@ -82,7 +84,8 @@ const PermissionGate = ( {
           icon="close"
           color={colors.white}
           onPress={() => onClose( )}
-          className="absolute top-2 right-2 z-10"
+          className="absolute z-10 right-[10px]"
+          style={{ top: insets.top + 8 }}
           accessibilityLabel={t( "Close-permission-request-screen" )}
         />
         <View
@@ -94,9 +97,11 @@ const PermissionGate = ( {
             isTablet
               ? "justify-center"
               : "justify-end",
-            "p-5",
+            "px-5",
+            "pt-5",
             "items-center",
           )}
+          style={{ paddingBottom: 8 + insets.bottom }}
         >
           { icon && (
             <INatIcon
@@ -150,7 +155,7 @@ const PermissionGate = ( {
             )}
         </View>
       </ImageBackground>
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 

@@ -42,9 +42,8 @@ const CustomTabBar = ( { tabs }: Props ): Node => {
     <View
       className={classNames(
         "flex-row bg-white justify-around p-1 m-0",
-        { "pb-5": insets.bottom > 0 },
       )}
-      style={DROP_SHADOW}
+      style={[DROP_SHADOW, { paddingBottom: insets.bottom }]}
       accessibilityRole="tablist"
       testID="CustomTabBar"
     >
