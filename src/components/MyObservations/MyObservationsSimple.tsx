@@ -61,7 +61,7 @@ interface Props {
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
   numObsMissingBasics: number;
-  observations: RealmObservation[];
+  observations: { uuid: string }[];
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
