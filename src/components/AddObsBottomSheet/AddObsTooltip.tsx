@@ -3,6 +3,7 @@ import { Body2, Modal } from "components/SharedComponents";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { View } from "components/styledComponents";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
@@ -11,11 +12,15 @@ interface Props {
 }
 
 const AddObsTooltip = ( { isVisible, dismissTooltip }: Props ) => {
+  const { bottom } = useSafeAreaInsets();
   const { t } = useTranslation();
 
   const modalContent = (
     <View className="flex-1 bg-black/50 items-center justify-end">
-      <View className="relative bottom-[24px] items-center">
+      <View
+        className="relative items-center"
+        style={{ bottom: bottom + 4 }}
+      >
         <View className="bg-white rounded-2xl px-5 py-4">
           <Body2>{t( "Press-and-hold-to-view-more-options" )}</Body2>
         </View>
@@ -34,7 +39,6 @@ const AddObsTooltip = ( { isVisible, dismissTooltip }: Props ) => {
         />
       </View>
     </View>
-
   );
 
   return (
