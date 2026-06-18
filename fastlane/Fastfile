@@ -471,11 +471,13 @@ lane :internal do
   end
   changelog = get_changelog
 
-  upload_to_play_store(
-    aab: aab_path,
-    track: "internal",
-    version_name: last_tag
-  )
+  # TODO: disabled because we have just migrated this app to a new Google Play account and
+  # have not yet created credentials to talk to the upload API
+  # upload_to_play_store(
+  #   aab: aab_path,
+  #   track: "internal",
+  #   version_name: last_tag
+  # )
 
   upload_to_testflight(
     ipa: get_ipa_path,
@@ -511,11 +513,13 @@ lane :beta do
   build_number = get_build_number( xcodeproj: XCODEPROJ )
 
   # UI.message "Play Store: promoting build #{build_number} to beta track"
-  upload_to_play_store(
-    version_code: build_number,
-    track: "internal",
-    track_promote_to: "beta"
-  )
+  # TODO: disabled because we have just migrated this app to a new Google Play account and
+  # have not yet created credentials to talk to the upload API
+  # upload_to_play_store(
+  #   version_code: build_number,
+  #   track: "internal",
+  #   track_promote_to: "beta"
+  # )
 
   UI.message "TestFlight: adding build #{build_number} to Open Beta group"
   add_build_to_testflight_beta_group(
