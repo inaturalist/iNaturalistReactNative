@@ -3931,7 +3931,7 @@ PODS:
   - VisionCamera/React (4.7.3):
     - React-Core
     - VisionCamera/FrameProcessors
-  - VisionCameraPluginInatVision (6.0.0-rc.2):
+  - VisionCameraPluginInatVision (6.0.0-rc.3):
     - boost
     - DoubleConversion
     - fast_float
@@ -4531,7 +4531,7 @@ SPEC CHECKSUMS:
   SensitiveInfo: 09107b865dc23b4e9c0a61ec01385387bf3391a8
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   VisionCamera: 0044a94f7489f19e19d5938e97dfc36f4784af3c
-  VisionCameraPluginInatVision: d29c27577b88822f59906fd8d3550054cffdbe55
+  VisionCameraPluginInatVision: 561ffc82eb61315312414a9f4424c5d6411c83ab
   Yoga: e9fea23bf9b2766818ce9a8df72f584bf5ad36cd
 
 PODFILE CHECKSUM: 73e24a8590e365c9fec451abf69476ae07116d98

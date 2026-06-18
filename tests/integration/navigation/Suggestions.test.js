@@ -1,9 +1,9 @@
+import "tests/helpers/mockMortalForIntegration";
+
 import {
   act,
   screen,
   userEvent,
-  waitFor,
-  within,
 } from "@testing-library/react-native";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import initI18next from "i18n/initI18next";
@@ -13,6 +13,9 @@ import * as useLocationPermission from "sharedHooks/useLocationPermission";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import {
+  navigateToSuggestionsViaAICameraFromMyObs,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -139,22 +142,6 @@ describe( "Suggestions", ( ) => {
     }
   }
 
-  async function navigateToSuggestionsViaCameraForObservation( ) {
-    const tabBar = await screen.findByTestId( "CustomTabBar" );
-    const addObsButton = await within( tabBar ).findByLabelText( "Add observations" );
-    await actor.press( addObsButton );
-    const cameraButton = await screen.findByLabelText( /AI Camera/ );
-    await actor.press( cameraButton );
-    const takePhotoButton = await screen.findByLabelText( /Take photo/ );
-    await actor.press( takePhotoButton );
-    const addIDButton = await screen.findByText( /ADD AN ID/ );
-    await waitFor( ( ) => {
-      global.timeTravel( );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( addIDButton ).toBeOnTheScreen( );
-    } );
-  }
-
   describe( "when reached from ObsEdit", ( ) => {
     // Mock the response from inatjs.computervision.score_image
     beforeEach( async ( ) => {
@@ -214,8 +201,7 @@ describe( "Suggestions", ( ) => {
         expect( topTaxonResultButton ).toBeTruthy( );
         await actor.press( topTaxonResultButton );
         expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( await screen.findByText( /Obscured/ ) ).toBeOnTheScreen( );
+        expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
       },
     );
 
@@ -292,7 +278,7 @@ describe( "Suggestions", ( ) => {
       } ) );
       const observations = makeUnsyncedObservations( );
       await renderAppWithObservations( observations, __filename );
-      await navigateToSuggestionsViaCameraForObservation( observations[0] );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       const locationPermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
       expect( locationPermissionsButton ).toBeFalsy( );
     } );
@@ -304,10 +290,9 @@ describe( "Suggestions", ( ) => {
       } ) );
       const observations = makeUnsyncedObservations( );
       await renderAppWithObservations( observations, __filename );
-      await navigateToSuggestionsViaCameraForObservation( observations[0] );
+      await navigateToSuggestionsViaAICameraFromMyObs( );
       const locationPermissionsButton = screen.queryByText( /IMPROVE THESE SUGGESTIONS/ );
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( locationPermissionsButton ).toBeOnTheScreen( );
+      expect( locationPermissionsButton ).toBeVisible( );
     } );
   } );
 
@@ -339,8 +324,7 @@ describe( "Suggestions", ( ) => {
         expect( taxonResultButton ).toBeTruthy( );
         await actor.press( taxonResultButton );
         expect( await screen.findByText( "EVIDENCE" ) ).toBeTruthy( );
-        // We used toBeVisible here but the update to RN0.77 broke this expectation
-        expect( await screen.findByText( /Obscured/ ) ).toBeOnTheScreen( );
+        expect( await screen.findByText( /Obscured/ ) ).toBeVisible( );
       },
     );
   } );

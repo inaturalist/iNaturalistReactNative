@@ -1,0 +1,7 @@
+FIXED
+* Some search results hidden by keyboard
+* Android: button navigation bar covering UI
+* Android: Zooming on media viewer not working
+
+UPDATED
+* Minor package updates

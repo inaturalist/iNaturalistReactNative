@@ -34,6 +34,9 @@ jest.mock( "providers/contexts", ( ) => {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
       useQuery: ( ) => [],
+      useObject: ( type, primaryKey ) => (
+        global.mockRealms[mockRealmIdentifier]?.objectForPrimaryKey( type, primaryKey )
+      ),
     },
   };
 } );
@@ -169,7 +172,7 @@ afterEach( ( ) => {
 //       await navigateToTaxonSearchForObservation( observations[0] );
 //       const searchInput = await screen.findByLabelText( "Search for a taxon" );
 // We used toBeVisible here but the update to RN0.77 broke this expectation
-//       expect( searchInput ).toBeOnTheScreen( );
+//       expect( searchInput ).toBeVisible( );
 //       await act(
 //         async ( ) => actor.type(
 //           searchInput,
@@ -262,30 +265,24 @@ describe( "Suggestions", ( ) => {
     const topTaxonResultButton = await screen.findByTestId(
       `SuggestionsList.taxa.${taxonId}.checkmark`,
     );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( topTaxonResultButton ).toBeOnTheScreen( );
+    expect( topTaxonResultButton ).toBeVisible( );
     await actor.press( topTaxonResultButton );
     const activityTabBtn = await screen.findByText( /ACTIVITY/ );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( activityTabBtn ).toBeOnTheScreen( );
+    expect( activityTabBtn ).toBeVisible( );
     await actor.press( activityTabBtn );
     const activityTab = await screen.findByTestId( "ActivityTab" );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( activityTab ).toBeOnTheScreen( );
+    expect( activityTab ).toBeVisible( );
     // open bottom sheet
     const bottomSheetText = await screen.findByText(
       /Would you like to suggest the following identification/,
     );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( bottomSheetText ).toBeOnTheScreen( );
+    expect( bottomSheetText ).toBeVisible( );
     const confirmButton = await screen.findByTestId( "SuggestIDSheet.cvSuggestionsButton" );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( confirmButton ).toBeOnTheScreen( );
+    expect( confirmButton ).toBeVisible( );
     await actor.press( confirmButton );
     // Wait for the actual identification we created to appear
     const taxonNameInIdent = await within( activityTab ).findByText( topSuggestion.taxon.name );
-    // We used toBeVisible here but the update to RN0.77 broke this expectation
-    expect( taxonNameInIdent ).toBeOnTheScreen( );
+    expect( taxonNameInIdent ).toBeVisible( );
     expect( inatjs.identifications.create ).toHaveBeenCalledWith( {
       fields: Identification.ID_FIELDS,
       identification: {
@@ -314,8 +311,7 @@ describe( "Suggestions", ( ) => {
       `MyObservations.obsGridItem.${observations[0].uuid}`,
     );
     await waitFor( ( ) => {
-      // We used toBeVisible here but the update to RN0.77 broke this expectation
-      expect( observationGridItem ).toBeOnTheScreen( );
+      expect( observationGridItem ).toBeVisible( );
     }, { timeout: 3000, interval: 500 } );
     const savedObservation = global.mockRealms[__filename]
       .objectForPrimaryKey( "Observation", observations[0].uuid );
