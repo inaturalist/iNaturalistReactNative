@@ -6,7 +6,8 @@ import {
 } from "@react-navigation/native";
 import { getUserAgent } from "api/userAgent";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import { ActivityIndicator, Mortal, ViewWrapper } from "components/SharedComponents";
+import { ActivityIndicator, Mortal } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import React, { useEffect, useState } from "react";
 import { Linking } from "react-native";
@@ -224,7 +225,7 @@ const FullPageWebView = ( ) => {
 
   return (
     <Mortal>
-      <ViewWrapper useTopInset={false}>
+      <ScreenShell>
         {( !params.loggedIn || source.headers ) && (
           <WebView
             // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -247,7 +248,7 @@ const FullPageWebView = ( ) => {
             onOpenWindow={() => true}
           />
         )}
-      </ViewWrapper>
+      </ScreenShell>
     </Mortal>
   );
 };

@@ -11,8 +11,6 @@ import Realm from "realm";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
-import { usePerformance } from "sharedHooks";
-import useDebugMode from "sharedHooks/useDebugMode";
 
 Realm.setLogLevel( "warn" );
 
@@ -38,16 +36,6 @@ const geolocationConfig = {
 const StartupService = ( ) => {
   const realm = useRealm( );
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0]?.isValid( );
-  const { loadTime } = usePerformance( {
-    screenName: "StartupService",
-    isLoading: false,
-  } );
-  const { isDebug } = useDebugMode();
-  useEffect( () => {
-    if ( isDebug && loadTime ) {
-      logger.info( loadTime );
-    }
-  }, [isDebug, loadTime] );
 
   useEffect( ( ) => {
     const initializeApp = async ( ) => {

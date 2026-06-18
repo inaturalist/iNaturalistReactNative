@@ -2,10 +2,12 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   fetchProjects,
 } from "api/projects";
+import type { ProjectRulePreference } from "api/types";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import { ActivityIndicator, ScrollViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import sortBy from "lodash/sortBy";
+import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
@@ -14,13 +16,19 @@ import AboutProjectType from "./AboutProjectType";
 import ProjectRuleItem from "./ProjectRuleItem";
 
 const getFieldValue = item => item?.[0]?.value;
+interface Project {
+  icon: string;
+  id: number;
+  project_type: "collection";
+  rule_preferences: ProjectRulePreference[];
+  title: string;
+}
 
 // web reference at:
 // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx
 const ProjectRequirements = ( ) => {
-  const navigation = useNavigation( );
-  const route = useRoute( );
-  const { params } = route;
+  const navigation = useNavigation<TabStackScreenProps<"ProjectRequirements">["navigation"]>( );
+  const { key, params } = useRoute<TabStackScreenProps<"ProjectRequirements">["route"]>( );
   const { id } = params;
   const { t, i18n } = useTranslation( );
 
@@ -103,7 +111,7 @@ const ProjectRequirements = ( ) => {
   const projectQueryKey = ["projectRequirements", "fetchProjects", id];
 
   // Overall Project Requirements
-  const { data: project, isLoading } = useAuthenticatedQuery(
+  const { data: project, isLoading } = useAuthenticatedQuery<Project>(
     projectQueryKey,
     optsWithAuth => fetchProjects( id, {
       rule_details: true,
@@ -115,16 +123,13 @@ const ProjectRequirements = ( ) => {
   const filterRules = operator => project?.project_observation_rules
     .filter( r => r.operator === operator );
 
-  const createTaxonObject = taxon => ( {
+  const createTaxonObject = ( taxon: { id: number} ) => ( {
     taxon,
     text: null,
-    // onPress: ( ) => navigation.navigate( "TaxonDetails", {
-    //   id: taxon.id
-    // } )
     onPress: ( ) => (
       navigation.navigate( {
         // Ensure button mashing doesn't open multiple TaxonDetails instances
-        key: `${route.key}-ProjectRequirements-TaxonDetails-${taxon.id}`,
+        key: `${key}-ProjectRequirements-TaxonDetails-${taxon.id}`,
         name: "TaxonDetails",
         params: { id: taxon.id },
       } )
@@ -242,16 +247,15 @@ const ProjectRequirements = ( ) => {
   }
 
   const dateRule = RULES.find( r => r.name === t( "Date" ) );
-  const { projectDate } = formatProjectDate( project, t, i18n );
-  if ( projectDate !== null ) {
-    dateRule.inclusions = [
-    // TODO: dates need internationalized formatting
-    // from 2023-03-22 07:42 -06:00 to something readable
-    // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/shared/util.js#L4
-      {
-        text: projectDate,
-      },
-    ];
+  if ( project?.rule_preferences ) {
+    const { projectDate } = formatProjectDate( project, t, i18n );
+    if ( projectDate !== null ) {
+      dateRule.inclusions = [
+        {
+          text: projectDate,
+        },
+      ];
+    }
   }
 
   // Establishment Requirements
@@ -277,7 +281,7 @@ const ProjectRequirements = ( ) => {
     establishmentRule.inclusions = establishmentList;
   }
 
-  const renderItemSeparator = () => (
+  const renderItemSeparator = ( ) => (
     <View className="border-b border-lightGray" />
   );
 

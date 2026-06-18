@@ -4,7 +4,7 @@ import { formatProjectsApiDatetimeLong } from "sharedHelpers/dateAndTime";
 
 interface ProjectWithDateRules {
   project_type?: ApiProject["project_type"];
-  rule_preferences?: ProjectRulePreference[] | null;
+  rule_preferences: ProjectRulePreference[];
 }
 
 interface FormattedProjectDate {
@@ -12,11 +12,11 @@ interface FormattedProjectDate {
   shouldDisplayDateRange: boolean;
 }
 
-const getFieldValue = ( item?: ProjectRulePreference[] | null ) => item?.[0]?.value ?? null;
+const getFieldValue = ( item: ProjectRulePreference[] ) => item?.[0]?.value ?? null;
 
 // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx#L100C3-L114C4
 const formatProjectDate = (
-  project: ProjectWithDateRules | null | undefined,
+  project: ProjectWithDateRules,
   t: TFunction,
   i18n: i18next,
 ): FormattedProjectDate => {
@@ -37,14 +37,14 @@ const formatProjectDate = (
 
   let projectDate: string | null = null;
 
-  const projectStartDate = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "d1" ) );
-  const projectEndDate = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "d2" ) );
-  const observedOnDate = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "observed_on" ) );
-  const months = getFieldValue( project?.rule_preferences
-    ?.filter( pref => pref.field === "month" ) );
+  const projectStartDate = getFieldValue( project.rule_preferences
+    .filter( pref => pref.field === "d1" ) );
+  const projectEndDate = getFieldValue( project.rule_preferences
+    .filter( pref => pref.field === "d2" ) );
+  const observedOnDate = getFieldValue( project.rule_preferences
+    .filter( pref => pref.field === "observed_on" ) );
+  const months = getFieldValue( project.rule_preferences
+    .filter( pref => pref.field === "month" ) );
   const formattedStartDate = projectStartDate
     ? formatProjectsApiDatetimeLong( projectStartDate, i18n, { missing: null } )
     : null;
@@ -83,7 +83,7 @@ const formatProjectDate = (
   return {
     projectDate,
     shouldDisplayDateRange: !!( formattedStartDate && formattedEndDate )
-      && project?.project_type !== "", // "" means "traditional"
+      && project.project_type !== "", // "" means "traditional"
   };
 };
 

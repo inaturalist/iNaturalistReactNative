@@ -5,8 +5,8 @@ import {
   Heading4,
   INatIcon,
   INatIconButton,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { ImageBackground } from "components/styledComponents";
 import INatLogo from "images/svg/inat_logo_onboarding.svg";
 import OnBoardingIcon2 from "images/svg/onboarding_icon_2.svg";
@@ -203,7 +203,7 @@ const OnboardingCarousel = ( ) => {
   }
 
   return (
-    <ViewWrapper wrapperClassName="bg-black" useTopInset={false}>
+    <ScreenShell wrapperClassName="bg-black">
       <StatusBar barStyle="light-content" />
       <View
         className="w-full h-full relative"
@@ -356,7 +356,7 @@ const OnboardingCarousel = ( ) => {
           </View>
         </View>
       </View>
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 

@@ -254,7 +254,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            npm run e2e:android:test -p e2e/signedOut.e2e.js
+            npm run e2e:android:test
 
       - name: Run e2e test (retry, with logs)
         uses: reactivecircus/android-emulator-runner@v2
@@ -273,7 +273,7 @@ jobs:
           script: |
             # provide more debugging context on retry failure
             # we're explicitly not using `detox test --retries` because we want to run them w/ different options
-            npx detox test --configuration android.release --take-screenshots failing --record-videos failing --record-logs all -l trace e2e/signedOut.e2e.js
+            npm run e2e:test:android -- --take-screenshots failing --record-videos failing --record-logs all -l trace
 
 
       - name: Store Detox artifacts on test failure

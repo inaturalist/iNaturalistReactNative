@@ -55,7 +55,7 @@ const SuggestionsFooter = ( {
   const { isDebug } = useDebugMode( );
 
   return (
-    <View className="mb-6">
+    <View className="mb-9">
       {!hideLocationToggleButton && (
         <>
           <View className="px-4 py-6">
