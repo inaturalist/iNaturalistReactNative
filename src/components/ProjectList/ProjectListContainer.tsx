@@ -1,4 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { PROJECT_FIELDS } from "api/fields";
 import type { ApiProject } from "api/types";
 import { fetchUserProjects } from "api/users";
 import {
@@ -9,7 +10,6 @@ import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useEffect, useMemo } from "react";
-import Observation from "realmModels/Observation";
 import {
   useAuthenticatedQuery,
   useRemoteObservation,
@@ -37,13 +37,16 @@ const ProjectListContainer = ( ) => {
   ) || [];
   const observationProjects = traditionalProjects.concat( nonTraditionalProjects );
 
-  const { data: userProjects, isLoading: userProjectsLoading } = useAuthenticatedQuery(
+  const {
+    data: userProjects,
+    isLoading: userProjectsLoading,
+  } = useAuthenticatedQuery<ApiProject[]>(
     ["fetchUserProjects", userId],
     optsWithAuth => fetchUserProjects(
       {
         id: userId,
         per_page: 200,
-        fields: Observation.PROJECT_FIELDS,
+        fields: PROJECT_FIELDS,
       },
       optsWithAuth,
     ),
