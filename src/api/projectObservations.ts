@@ -15,8 +15,11 @@ export interface ProjectObservationWriteParams {
   };
 }
 
-export interface ProjectObservationUpdateParams extends ProjectObservationWriteParams {
+export interface ProjectObservationUpdateParams {
   id: string; // uuid
+  project_observation: {
+    prefers_curator_coordinate_access: boolean;
+  };
 }
 
 const createProjectObservation = async (
