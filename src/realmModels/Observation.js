@@ -64,7 +64,10 @@ class Observation extends Realm.Object {
     private_place_guess: true,
     project_ids: true,
     project_observations: {
+      id: true,
       project: PROJECT_FIELDS,
+      project_id: true,
+      uuid: true,
     },
     non_traditional_projects: {
       project: PROJECT_FIELDS,

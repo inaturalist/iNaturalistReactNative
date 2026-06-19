@@ -195,7 +195,10 @@ export interface ApiNotification {
 }
 
 export interface ApiProjectObservation {
+  id: number;
   project: ApiProject;
+  project_id: number;
+  uuid: string;
 }
 
 export interface ApiObservation extends ApiRecord {
