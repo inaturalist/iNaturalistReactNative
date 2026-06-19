@@ -34,9 +34,9 @@ export interface ProjectRulePreference {
 }
 
 interface ApiObservationField {
-  allowed_values: string;
+  allowed_values: string | null;
   datatype: string;
-  description: string;
+  description: string | null;
   id: number;
   name: string;
 }
@@ -45,7 +45,7 @@ interface ApiProjectObservationField {
   id: number;
   observation_field: ApiObservationField;
   position: number;
-  required: boolean;
+  required: boolean | null;
 }
 
 // Result from using PROJECT_FIELDS
