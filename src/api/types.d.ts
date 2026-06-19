@@ -33,6 +33,7 @@ export interface ProjectRulePreference {
   value: string | null;
 }
 
+// Result from using PROJECT_FIELDS
 export interface ApiProject {
   description: string;
   header_image_url: string | null;
