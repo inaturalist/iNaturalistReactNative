@@ -33,6 +33,21 @@ export interface ProjectRulePreference {
   value: string | null;
 }
 
+interface ApiObservationField {
+  allowed_values: string;
+  datatype: string;
+  description: string;
+  id: number;
+  name: string;
+}
+
+interface ApiProjectObservationField {
+  id: number;
+  observation_field: ApiObservationField;
+  position: number;
+  required: boolean;
+}
+
 // Result from using PROJECT_FIELDS
 export interface ApiProject {
   description: string;
@@ -41,6 +56,7 @@ export interface ApiProject {
   id: number;
   membership_model: "inviteonly" | "open" | null;
   place_id: number | null;
+  project_observation_fields: ApiProjectObservationField[];
   project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
   rule_preferences: ProjectRulePreference[];
   title: string;
