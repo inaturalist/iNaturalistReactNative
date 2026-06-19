@@ -10,7 +10,7 @@ const PARAMS = {
 
 export interface ProjectObservationWriteParams {
   project_observation: {
-    observation_id: number;
+    observation_id: string;
     project_id: number;
   };
 }

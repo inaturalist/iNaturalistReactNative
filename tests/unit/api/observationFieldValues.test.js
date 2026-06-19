@@ -21,7 +21,7 @@ describe( "observationFieldValues", () => {
   const opts = { api_token: "test-token" };
   const params = {
     observation_field_value: {
-      observation_id: 42,
+      observation_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       observation_field_id: 5,
       value: "male",
     },

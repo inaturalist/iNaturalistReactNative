@@ -11,7 +11,7 @@ const PARAMS = {
 export interface ObservationFieldValueAttributes {
   observation_field_value: {
     observation_field_id: number;
-    observation_id: number;
+    observation_id: string;
     value: string | number;
   };
 }

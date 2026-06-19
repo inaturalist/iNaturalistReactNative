@@ -21,7 +21,7 @@ describe( "projectObservations", () => {
   const opts = { api_token: "test-token" };
   const params = {
     project_observation: {
-      observation_id: 42,
+      observation_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       project_id: 7,
     },
   };
