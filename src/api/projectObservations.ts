@@ -16,7 +16,7 @@ export interface ProjectObservationWriteParams {
 }
 
 export interface ProjectObservationUpdateParams extends ProjectObservationWriteParams {
-  id: number;
+  id: string; // uuid
 }
 
 const createProjectObservation = async (
@@ -50,7 +50,7 @@ const updateProjectObservation = async (
 };
 
 const deleteProjectObservation = async (
-  id: number,
+  id: string, // uuid
   opts: ApiOpts = {},
 ): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
   try {

@@ -17,7 +17,7 @@ export interface ObservationFieldValueAttributes {
 }
 
 export interface ObservationFieldValueUpdateParams extends ObservationFieldValueAttributes {
-  id: number;
+  id: string; // uuid
 }
 
 const createObservationFieldValue = async (
@@ -57,7 +57,7 @@ const updateObservationFieldValue = async (
 };
 
 const deleteObservationFieldValue = async (
-  id: number,
+  id: string, // uuid
   opts: ApiOpts = {},
 ): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
   try {
