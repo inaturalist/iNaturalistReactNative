@@ -1,5 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  PROJECT_FIELDS,
+} from "api/fields";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
 import fetchPlace from "api/places";
 import {
@@ -33,21 +36,7 @@ const ProjectDetailsContainer = ( ) => {
   const { data: project } = useAuthenticatedQuery<ApiProject>(
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
-      fields: {
-        description: true,
-        header_image_url: true,
-        icon: true,
-        id: true,
-        membership_model: true,
-        place_id: true,
-        project_type: true,
-        rule_preferences: {
-          field: true,
-          value: true,
-        },
-        title: true,
-        user_ids: true,
-      },
+      fields: PROJECT_FIELDS,
     }, optsWithAuth ),
   );
 

@@ -1,4 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { PROJECT_FIELDS_ALL } from "api/fields";
 import {
   fetchProjects,
 } from "api/projects";
@@ -115,7 +116,7 @@ const ProjectRequirements = ( ) => {
     projectQueryKey,
     optsWithAuth => fetchProjects( id, {
       rule_details: true,
-      fields: "all",
+      fields: PROJECT_FIELDS_ALL,
       ttl: -1,
     }, optsWithAuth ),
   );
