@@ -15,6 +15,10 @@ export interface ObservationFieldValueAttributes {
   };
 }
 
+export interface ObservationFieldValueUpdateParams extends ObservationFieldValueAttributes {
+  id: number;
+}
+
 const createObservationFieldValue = async (
   params: ObservationFieldValueAttributes,
   opts: ApiOpts = {},
@@ -29,6 +33,24 @@ const createObservationFieldValue = async (
     return handleError(
       e as ErrorWithResponse,
       { context: { functionName: "createObservationFieldValue", opts } },
+    );
+  }
+};
+
+const updateObservationFieldValue = async (
+  params: ObservationFieldValueUpdateParams,
+  opts: ApiOpts = {},
+): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+  try {
+    const { results } = await inatjs.observation_field_values.update(
+      { ...PARAMS, ...params },
+      opts,
+    );
+    return results;
+  } catch ( e ) {
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "updateObservationFieldValue", opts } },
     );
   }
 };
@@ -51,4 +73,5 @@ const deleteObservationFieldValue = async (
 export {
   createObservationFieldValue,
   deleteObservationFieldValue,
+  updateObservationFieldValue,
 };
