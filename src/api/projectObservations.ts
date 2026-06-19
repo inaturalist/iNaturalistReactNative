@@ -10,6 +10,10 @@ export interface ProjectObservationWriteParams {
   };
 }
 
+export interface ProjectObservationUpdateParams extends ProjectObservationWriteParams {
+  id: number;
+}
+
 const createProjectObservation = async (
   params: ProjectObservationWriteParams,
   opts: ApiOpts = {},
@@ -21,6 +25,21 @@ const createProjectObservation = async (
     return handleError(
       e as ErrorWithResponse,
       { context: { functionName: "createProjectObservation", opts } },
+    );
+  }
+};
+
+const updateProjectObservation = async (
+  params: ProjectObservationUpdateParams,
+  opts: ApiOpts = {},
+): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+  try {
+    const { results } = await inatjs.project_observations.update( params, opts );
+    return results;
+  } catch ( e ) {
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "updateProjectObservation", opts } },
     );
   }
 };
@@ -43,4 +62,5 @@ const deleteProjectObservation = async (
 export {
   createProjectObservation,
   deleteProjectObservation,
+  updateProjectObservation,
 };
