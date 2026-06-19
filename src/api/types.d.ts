@@ -204,7 +204,7 @@ export interface ApiProjectObservation {
 export interface ApiObservation extends ApiRecord {
   comments?: ApiComment[];
   identifications?: ApiIdentification[];
-  non_traditional_projects?: ApiProjectObservation[];
+  non_traditional_projects?: { project: ApiProject }[];
   observation_photos?: ApiObservationPhoto[];
   observation_sounds?: ApiObservationSound[];
   project_observations?: ApiProjectObservation[];
