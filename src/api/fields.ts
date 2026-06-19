@@ -31,3 +31,10 @@ export const PROJECT_FIELDS = {
 };
 
 export const PROJECT_FIELDS_ALL = "all";
+
+export const OBSERVATION_FIELD_VALUE_FIELDS = {
+  id: true,
+  observation_field: OBSERVATION_FIELD_FIELDS,
+  uuid: true,
+  value: true,
+};

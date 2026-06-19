@@ -1,10 +1,11 @@
 import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
+import { OBSERVATION_FIELD_VALUE_FIELDS } from "api/fields";
 import type { ApiOpts } from "api/types";
 import inatjs from "inaturalistjs";
 
 const PARAMS = {
-  fields: "all",
+  fields: OBSERVATION_FIELD_VALUE_FIELDS,
 };
 
 export interface ObservationFieldValueAttributes {

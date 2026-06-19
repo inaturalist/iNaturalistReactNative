@@ -201,6 +201,14 @@ export interface ApiProjectObservation {
   uuid: string;
 }
 
+// When using OBSERVATION_FIELD_VALUE_FIELDS
+export interface ApiObservationFieldValue {
+  id: number;
+  observation_field: ApiObservationField;
+  uuid: string;
+  value: string;
+}
+
 export interface ApiObservation extends ApiRecord {
   comments?: ApiComment[];
   identifications?: ApiIdentification[];
