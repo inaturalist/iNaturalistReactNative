@@ -3,6 +3,28 @@ import handleError from "api/error";
 import type { ApiOpts } from "api/types";
 import inatjs from "inaturalistjs";
 
+export interface ProjectObservationWriteParams {
+  project_observation: {
+    observation_id: number;
+    project_id: number;
+  };
+}
+
+const createProjectObservation = async (
+  params: ProjectObservationWriteParams,
+  opts: ApiOpts = {},
+): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+  try {
+    const { results } = await inatjs.project_observations.create( params, opts );
+    return results;
+  } catch ( e ) {
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "createProjectObservation", opts } },
+    );
+  }
+};
+
 const deleteProjectObservation = async (
   id: number,
   opts: ApiOpts = {},
@@ -19,5 +41,6 @@ const deleteProjectObservation = async (
 };
 
 export {
+  createProjectObservation,
   deleteProjectObservation,
 };
