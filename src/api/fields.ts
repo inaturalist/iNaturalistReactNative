@@ -6,7 +6,7 @@ const OBSERVATION_FIELD_FIELDS = {
   name: true,
 };
 
-const PROJECT_OBSERVATION_FIELDS = {
+const PROJECT_OBSERVATION_FIELDS_FIELDS = {
   id: true,
   observation_field: OBSERVATION_FIELD_FIELDS,
   position: true,
@@ -20,7 +20,7 @@ export const PROJECT_FIELDS = {
   id: true,
   membership_model: true,
   place_id: true,
-  project_observation_fields: PROJECT_OBSERVATION_FIELDS,
+  project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
   project_type: true,
   rule_preferences: {
     field: true,
