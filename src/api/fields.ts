@@ -1,9 +1,9 @@
 const OBSERVATION_FIELD_FIELDS = {
+  allowed_values: true,
+  datatype: true,
+  description: true,
   id: true,
   name: true,
-  datatype: true,
-  allowed_values: true,
-  description: true,
 };
 
 const PROJECT_OBSERVATION_FIELDS = {
