@@ -1,5 +1,5 @@
 import { Realm } from "@realm/react";
-import { PROJECT_FIELDS } from "api/fields";
+import { PROJECT_FIELDS, PROJECT_OBSERVATION_FIELDS } from "api/fields";
 import { Alert } from "react-native";
 import { getNowISO } from "sharedHelpers/dateAndTime";
 import { log } from "sharedHelpers/logger";
@@ -63,12 +63,7 @@ class Observation extends Realm.Object {
     private_location: true,
     private_place_guess: true,
     project_ids: true,
-    project_observations: {
-      id: true,
-      project: PROJECT_FIELDS,
-      project_id: true,
-      uuid: true,
-    },
+    project_observations: PROJECT_OBSERVATION_FIELDS,
     non_traditional_projects: {
       project: PROJECT_FIELDS,
     },

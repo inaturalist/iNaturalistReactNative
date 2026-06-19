@@ -38,3 +38,10 @@ export const OBSERVATION_FIELD_VALUE_FIELDS = {
   uuid: true,
   value: true,
 };
+
+export const PROJECT_OBSERVATION_FIELDS = {
+  id: true,
+  project: PROJECT_FIELDS,
+  project_id: true,
+  uuid: true,
+};
