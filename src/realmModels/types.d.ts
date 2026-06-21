@@ -57,6 +57,20 @@ export interface RealmObservationSound extends RealmObservationSoundPojo {
   wasSynced: ( ) => boolean;
 }
 
+export interface RealmProjectObservationPojo extends RealmObject {
+  _created_at?: Date;
+  _synced_at?: Date;
+  _updated_at?: Date;
+  uuid: string;
+  id?: number | null;
+  projectId: number;
+}
+
+export interface RealmProjectObservation extends RealmProjectObservationPojo {
+  needsSync: ( ) => boolean;
+  wasSynced: ( ) => boolean;
+}
+
 export interface RealmObservationFieldValuePojo extends RealmObject {
   _synced_at?: Date;
   _updated_at?: Date;
@@ -141,6 +155,7 @@ export interface RealmObservationPojo {
   place_guess: string | null;
   privateLatitude: number | null;
   privateLongitude: number | null;
+  projectObservations: RealmProjectObservationPojo[];
   positional_accuracy: number | null;
   species_guess: string | null;
   taxon_id: number | null;
@@ -158,6 +173,7 @@ export interface RealmObservation extends RealmObservationPojo {
   observationFieldValues: RealmObservationFieldValue[];
   observationPhotos: RealmObservationPhoto[];
   observationSounds: RealmObservationSound[];
+  projectObservations: RealmProjectObservation[];
   unviewed: ( ) => boolean;
   updateNeedsSync: ( ) => boolean;
   viewed: ( ) => boolean;
