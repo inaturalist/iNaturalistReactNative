@@ -6,6 +6,7 @@ import Comment from "./Comment";
 import Flag from "./Flag";
 import Identification from "./Identification";
 import Observation from "./Observation";
+import ObservationField from "./ObservationField";
 import ObservationFieldValue from "./ObservationFieldValue";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
@@ -25,6 +26,7 @@ export default {
     Flag,
     Identification,
     Observation,
+    ObservationField,
     ObservationFieldValue,
     ObservationPhoto,
     ObservationSound,
