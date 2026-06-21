@@ -57,6 +57,14 @@ export interface RealmObservationSound extends RealmObservationSoundPojo {
   wasSynced: ( ) => boolean;
 }
 
+export interface RealmObservationField extends RealmObject {
+  allowedValues: string[];
+  datatype?: string;
+  description?: string;
+  id: number;
+  name?: string;
+}
+
 export interface RealmProjectObservationPojo extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
