@@ -8,12 +8,15 @@ const useExploreV2SpeciesCount = (
   queryParams: ExploreV2QueryParams,
   enabled: boolean,
 ): number | null => {
+  // take out some params that can be used for fetching obs but not species count
+  const {
+    order_by: orderBy, order, per_page: perPage, ...filterParams
+  } = queryParams;
+  const speciesCountParams = { ...filterParams, per_page: 0 };
+
   const { data } = useAuthenticatedQuery<ApiResponse>(
-    ["exploreV2SpeciesCount", JSON.stringify( queryParams )],
-    optsWithAuth => fetchSpeciesCounts(
-      { ...queryParams, per_page: 0 },
-      optsWithAuth,
-    ),
+    ["exploreV2SpeciesCount", speciesCountParams],
+    optsWithAuth => fetchSpeciesCounts( speciesCountParams, optsWithAuth ),
     { enabled },
   );
 
