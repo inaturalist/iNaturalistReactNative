@@ -25,7 +25,9 @@ export const UNSYNCED_FILTER
   = "_synced_at == null || _synced_at <= _updated_at"
   + " || ANY observationPhotos._synced_at == null"
   + " || ANY observationSounds._synced_at == null"
+  + " || ANY projectObservations._synced_at == null"
   + " || ANY observationFieldValues._synced_at == null"
+  + " || ANY projectObservations._synced_at <= projectObservations._updated_at"
   + " || ANY observationFieldValues._synced_at <= observationFieldValues._updated_at";
 
 // noting that methods like .toJSON( ) are only accessible when the model
@@ -540,6 +542,7 @@ class Observation extends Realm.Object {
       place_guess: { type: "string", mapTo: "placeGuess", optional: true },
       positional_accuracy: "double?",
       prefers_community_taxon: "bool?",
+      projectObservations: "ProjectObservation[]",
       quality_grade: { type: "string", mapTo: "qualityGrade", optional: true },
       species_guess: "string?",
       taxon: "Taxon?",
@@ -570,12 +573,15 @@ class Observation extends Realm.Object {
       .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
     const obsSoundsNeedSync = this.observationSounds
       .filter( obsSound => obsSound.needsSync( ) ).length > 0;
+    const projectObsNeedSync = this.projectObservations
+      .filter( po => po.needsSync( ) ).length > 0;
     const obsFieldValuesNeedSync = this.observationFieldValues
       .filter( ofv => ofv.needsSync( ) ).length > 0;
     return !this._synced_at
       || this._synced_at <= this._updated_at
       || obsPhotosNeedSync
       || obsSoundsNeedSync
+      || projectObsNeedSync
       || obsFieldValuesNeedSync;
   }
 
