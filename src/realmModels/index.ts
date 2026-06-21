@@ -12,6 +12,7 @@ import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
 import ProjectObservation from "./ProjectObservation";
+import ProjectObservationField from "./ProjectObservationField";
 import QueueItem from "./QueueItem";
 import Sound from "./Sound";
 import Taxon from "./Taxon";
@@ -32,6 +33,7 @@ export default {
     ObservationSound,
     Photo,
     ProjectObservation,
+    ProjectObservationField,
     QueueItem,
     Sound,
     Taxon,
