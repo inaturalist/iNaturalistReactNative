@@ -35,18 +35,18 @@ class ObservationFieldValue extends Realm.Object {
     name: "ObservationFieldValue",
     embedded: true,
     properties: {
-      // datetime the obsPhoto was created on the device
+      // datetime the OFV was created on the device
       _created_at: "date?",
-      // datetime the obsPhoto was last synced with the server
+      // datetime the OFV was last synced with the server
       _synced_at: "date?",
-      // datetime the obsPhoto was updated on the device (i.e. edited locally)
+      // datetime the OFV was updated on the device (i.e. edited locally)
       _updated_at: "date?",
       uuid: "string",
       id: "int?",
       obsFieldId: "int",
       projectId: "int",
       value: "string?",
-      // this creates an inverse relationship so observation photos
+      // this creates an inverse relationship so OFVs
       // automatically keep track of which Observation they are assigned to
       assignee: {
         type: "linkingObjects",
