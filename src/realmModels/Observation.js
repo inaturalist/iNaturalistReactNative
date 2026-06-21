@@ -537,11 +537,11 @@ class Observation extends Realm.Object {
       observed_time_zone: "string?",
       obscured: "bool?",
       owners_identification_from_vision: "bool?",
-      species_guess: "string?",
       place_guess: { type: "string", mapTo: "placeGuess", optional: true },
       positional_accuracy: "double?",
       prefers_community_taxon: "bool?",
       quality_grade: { type: "string", mapTo: "qualityGrade", optional: true },
+      species_guess: "string?",
       taxon: "Taxon?",
       taxon_geoprivacy: "string?",
       // datetime when the observer observed the organism; user-editable, but
