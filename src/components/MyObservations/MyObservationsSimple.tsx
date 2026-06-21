@@ -19,6 +19,7 @@ import {
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
+import StatTab from "components/SharedComponents/StatTab";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
 import { Alert } from "react-native";
@@ -43,7 +44,6 @@ import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
-import StatTab from "./StatTab";
 
 interface Props {
   activeTab: string;

@@ -1,8 +1,5 @@
-import {
-  Body1,
-  Heading5,
-  Tabs,
-} from "components/SharedComponents";
+import { Tabs } from "components/SharedComponents";
+import StatTab from "components/SharedComponents/StatTab";
 import type { TabComponentProps } from "components/SharedComponents/Tabs/Tabs";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -21,25 +18,14 @@ interface Props {
 const ExploreV2Tabs = ( { observationsCount, speciesCount }: Props ) => {
   const { t } = useTranslation( );
 
-  const renderTabComponent = ( { id }: TabComponentProps ) => {
-    const isObservations = id === OBSERVATIONS_TAB;
-    const stat = isObservations
-      ? observationsCount
-      : speciesCount;
-    const label = isObservations
-      ? t( "X-OBSERVATIONS--below-number", { count: observationsCount ?? 0 } )
-      : t( "X-SPECIES--below-number", { count: speciesCount ?? 0 } );
-    return (
-      <View className="items-center py-1.5">
-        <Body1 className="mb-[4px]">
-          {typeof stat === "number"
-            ? t( "Intl-number", { val: stat } )
-            : "--"}
-        </Body1>
-        <Heading5>{label}</Heading5>
-      </View>
-    );
-  };
+  const renderTabComponent = ( { id }: TabComponentProps ) => (
+    <StatTab
+      id={id}
+      numTotalObservations={observationsCount}
+      numTotalTaxa={speciesCount}
+      className="items-center py-1.5"
+    />
+  );
 
   return (
     <View testID="ExploreV2Tabs">

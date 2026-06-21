@@ -1,14 +1,14 @@
-import {
-  Body1,
-  Heading5,
-} from "components/SharedComponents";
+import Body1 from "components/SharedComponents/Typography/Body1";
+import Heading5 from "components/SharedComponents/Typography/Heading5";
 import { View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
 export const OBSERVATIONS_TAB = "observations";
 
-const StatTab = ( { id, numTotalObservations, numTotalTaxa } ) => {
+const StatTab = ( {
+  id, numTotalObservations, numTotalTaxa, className = "items-center p-3",
+} ) => {
   const { t } = useTranslation( );
   let stat: number | undefined;
   let label: string;
@@ -20,7 +20,7 @@ const StatTab = ( { id, numTotalObservations, numTotalTaxa } ) => {
     label = t( "X-SPECIES--below-number", { count: numTotalTaxa } );
   }
   return (
-    <View className="items-center p-3">
+    <View className={className}>
       <Body1 className="mb-[4px]">
         {
           typeof ( stat ) === "number"
