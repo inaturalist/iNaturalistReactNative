@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import type { RealmObservation, RealmObservationFieldValue } from "realmModels/types";
 import * as uuid from "uuid";
 
 class ObservationFieldValue extends Realm.Object {
@@ -29,6 +30,16 @@ class ObservationFieldValue extends Realm.Object {
       obsFieldId,
       value,
     };
+  }
+
+  static findForProject(
+    observation: RealmObservation,
+    projectId: number,
+    obsFieldId: number,
+  ): RealmObservationFieldValue | undefined {
+    return observation.observationFieldValues.find(
+      ofv => ofv.projectId === projectId && ofv.obsFieldId === obsFieldId,
+    );
   }
 
   static schema = {
