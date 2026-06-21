@@ -65,6 +65,13 @@ export interface RealmObservationField extends RealmObject {
   name?: string;
 }
 
+export interface RealmProjectObservationField extends RealmObject {
+  id: number;
+  obsField?: RealmObservationField;
+  position: number;
+  required: boolean;
+}
+
 export interface RealmProjectObservationPojo extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
