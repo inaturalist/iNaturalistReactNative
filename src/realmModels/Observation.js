@@ -21,6 +21,13 @@ export const GEOPRIVACY_PRIVATE = "private";
 
 const logger = log.extend( "index.js" );
 
+export const UNSYNCED_FILTER
+  = "_synced_at == null || _synced_at <= _updated_at"
+  + " || ANY observationPhotos._synced_at == null"
+  + " || ANY observationSounds._synced_at == null"
+  + " || ANY observationFieldValues._synced_at == null"
+  + " || ANY observationFieldValues._synced_at <= observationFieldValues._updated_at";
+
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
 // https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
@@ -387,16 +394,10 @@ class Observation extends Realm.Object {
   };
 
   static filterUnsyncedObservations = realm => {
-    const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
-    const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
-    const soundsUnsyncedFilter = "ANY observationSounds._synced_at == null";
-
     const obs = realm.objects( "Observation" );
     // we sort unsynced observations here to make sure observations
     // with an older _created_at date get uploaded first
-    const unsyncedObs = obs.filtered(
-      `${unsyncedFilter} || ${photosUnsyncedFilter} || ${soundsUnsyncedFilter}`,
-    ).sorted( "_created_at", true );
+    const unsyncedObs = obs.filtered( UNSYNCED_FILTER ).sorted( "_created_at", true );
     return unsyncedObs;
   };
 
@@ -569,10 +570,13 @@ class Observation extends Realm.Object {
       .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
     const obsSoundsNeedSync = this.observationSounds
       .filter( obsSound => obsSound.needsSync( ) ).length > 0;
+    const obsFieldValuesNeedSync = this.observationFieldValues
+      .filter( ofv => ofv.needsSync( ) ).length > 0;
     return !this._synced_at
       || this._synced_at <= this._updated_at
       || obsPhotosNeedSync
-      || obsSoundsNeedSync;
+      || obsSoundsNeedSync
+      || obsFieldValuesNeedSync;
   }
 
   updateNeedsSync() {
