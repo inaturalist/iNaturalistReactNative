@@ -527,6 +527,7 @@ class Observation extends Realm.Object {
       latitude: "double?",
       license_code: { type: "string", mapTo: "licenseCode", optional: true },
       longitude: "double?",
+      observationFieldValues: "ObservationFieldValue[]",
       observationPhotos: "ObservationPhoto[]",
       observationSounds: "ObservationSound[]",
       // date and/or time submitted to the server when a new obs is uploaded
