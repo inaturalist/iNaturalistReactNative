@@ -72,6 +72,14 @@ export interface RealmProjectObservationField extends RealmObject {
   required: boolean;
 }
 
+export interface RealmProject extends RealmObject {
+  icon?: string;
+  id: number;
+  projectObservationFields: RealmProjectObservationField[];
+  project_type?: string;
+  title?: string;
+}
+
 export interface RealmProjectObservationPojo extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
