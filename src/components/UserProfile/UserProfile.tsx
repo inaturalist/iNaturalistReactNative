@@ -9,6 +9,7 @@ import {
   Button,
   Heading1,
   Heading4,
+  INatIconButton,
   List2,
   OverviewCounts,
   ScrollViewWrapper,
@@ -18,7 +19,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import User from "realmModels/User";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
 import {
@@ -27,8 +28,10 @@ import {
   useFeatureFlag,
   useTranslation,
 } from "sharedHooks";
+import useNavigateToAccountSettings from "sharedHooks/useNavigateToAccountSettings";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
 
 import FollowButtonContainer from "./FollowButtonContainer";
 import UnfollowSheet from "./UnfollowSheet";
@@ -46,10 +49,13 @@ const UserProfile = ( ) => {
   const { t, i18n } = useTranslation( );
 
   const fetchId = userId || login;
-  const { data: remoteUser, isError, error }: {
+  const {
+    data: remoteUser, isError, error, refetch: refetchUser,
+  }: {
     data: ApiUser | null;
     isError: boolean;
     error: INatApiError | ErrorWithResponse;
+    refetch: ( ) => void;
   } = useAuthenticatedQuery(
     ["fetchRemoteUser", fetchId],
     optsWithAuth => fetchRemoteUser( fetchId, {}, optsWithAuth ),
@@ -78,18 +84,29 @@ const UserProfile = ( ) => {
     },
   );
 
-  // useEffect( ( ) => {
-  //   const headerRight = ( ) => currentUser?.login === user?.login && (
-  //     <INatIconButton
-  //       icon="pencil"
-  //       color={colors.darkGray}
-  //       size={22}
-  //       accessibilityLabel={t( "Edit" )}
-  //     />
-  //   );
+  const isCurrentUser = !!currentUser && currentUser?.login === user?.login;
+  const navigateToAccountSettings = useNavigateToAccountSettings( { onFinish: refetchUser } );
 
-  //   navigation.setOptions( { headerRight } );
-  // }, [navigation, user, currentUser] );
+  const headerRight = useCallback(
+    ( ) => ( isCurrentUser
+      ? (
+        <INatIconButton
+          testID="UserProfile.editButton"
+          onPress={navigateToAccountSettings}
+          icon="pencil"
+          color={String( colors?.darkGray )}
+          size={22}
+          accessibilityLabel={t( "Edit" )}
+        />
+      )
+      : null ),
+    [isCurrentUser, navigateToAccountSettings, t],
+  );
+
+  useEffect(
+    ( ) => navigation.setOptions( { headerRight } ),
+    [headerRight, navigation],
+  );
 
   if ( isError && error?.status === 404 ) {
     return (

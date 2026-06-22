@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import {
   Body1,
   Body3,
@@ -21,8 +22,6 @@ import {
 import React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
-
-const THUMBNAIL_CLASS = "w-[62px] h-[62px] rounded-lg";
 
 function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string {
   if ( !subject ) { return t( "All-organisms" ); }
