@@ -8,8 +8,8 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   id: string;
-  numTotalObservations?: number;
-  numTotalTaxa?: number;
+  numTotalObservations?: number | null;
+  numTotalTaxa?: number | null;
   className?: string;
 }
 
@@ -17,7 +17,7 @@ const StatTab = ( {
   id, numTotalObservations, numTotalTaxa, className = "p-3",
 }: Props ) => {
   const { t } = useTranslation( );
-  let stat: number | undefined;
+  let stat: number | null | undefined;
   let label: string;
   if ( id === OBSERVATIONS_TAB ) {
     stat = numTotalObservations;
