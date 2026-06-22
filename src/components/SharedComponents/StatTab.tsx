@@ -1,11 +1,10 @@
+import { OBSERVATIONS_TAB } from "appConstants/tabs";
 import classNames from "classnames";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import Heading5 from "components/SharedComponents/Typography/Heading5";
 import { View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
-
-export const OBSERVATIONS_TAB = "observations";
 
 interface Props {
   id: string;
