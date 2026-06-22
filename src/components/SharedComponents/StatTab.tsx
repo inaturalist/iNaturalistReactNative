@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import Heading5 from "components/SharedComponents/Typography/Heading5";
 import { View } from "components/styledComponents";
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const StatTab = ( {
-  id, numTotalObservations, numTotalTaxa, className = "items-center p-3",
+  id, numTotalObservations, numTotalTaxa, className = "p-3",
 }: Props ) => {
   const { t } = useTranslation( );
   let stat: number | undefined;
@@ -27,7 +28,7 @@ const StatTab = ( {
     label = t( "X-SPECIES--below-number", { count: numTotalTaxa } );
   }
   return (
-    <View className={className}>
+    <View className={classNames( "items-center", className )}>
       <Body1 className="mb-[4px]">
         {
           typeof ( stat ) === "number"

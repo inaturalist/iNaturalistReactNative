@@ -24,7 +24,7 @@ const ExploreV2Tabs = ( { observationsCount, speciesCount }: Props ) => {
         id={id}
         numTotalObservations={observationsCount}
         numTotalTaxa={speciesCount}
-        className="items-center py-1.5"
+        className="py-1.5"
       />
     ),
     [observationsCount, speciesCount],
