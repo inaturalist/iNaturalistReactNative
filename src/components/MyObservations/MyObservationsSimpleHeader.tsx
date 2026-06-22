@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   HeaderUser,
   Heading3,
@@ -5,6 +6,10 @@ import {
   RotatingINatIconButton,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import {
+  SCREEN_NAME_SEARCH_MY_OBSERVATIONS,
+} from "navigation/StackNavigators/MyObservationsStackNavigator";
+import type { MyObservationsStackScreenProps } from "navigation/types";
 import React from "react";
 import { Alert } from "react-native";
 import type {
@@ -40,6 +45,9 @@ const MyObservationsSimpleHeader = ( {
   numUploadableObservations,
 }: Props ) => {
   const { t } = useTranslation( );
+  const navigation = useNavigation<
+    MyObservationsStackScreenProps<"MyObservationsResults">["navigation"]
+  >( );
   const searchMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SearchMyObservationsEnabled,
   );
@@ -50,8 +58,9 @@ const MyObservationsSimpleHeader = ( {
         t( "You-are-offline" ),
         t( "Please-try-again-when-you-are-online" ),
       );
+    } else {
+      navigation.navigate( SCREEN_NAME_SEARCH_MY_OBSERVATIONS );
     }
-    // TODO: navigate to a new myobs taxon search screen
   };
 
   // TODO: all the code related to showing the sync button is pretty convoluted and'

@@ -38,7 +38,7 @@ import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
 import LoginSheet from "./LoginSheet";
-import { ACTIVE_SHEET } from "./MyObservationsContainer";
+import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
 import SimpleHeader from "./SimpleHeader";
