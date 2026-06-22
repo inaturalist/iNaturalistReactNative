@@ -7,8 +7,6 @@ import ExploreV2Tabs
   from "components/Explore/ExploreV2/components/ExploreV2Tabs";
 import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
-import useExploreV2SpeciesCount
-  from "components/Explore/ExploreV2/hooks/useExploreV2SpeciesCount";
 import useInfiniteExploreScroll
   from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
@@ -28,6 +26,7 @@ import {
   useObservationsSortLabels,
 } from "sharedHelpers/observationsSort";
 import { useTranslation } from "sharedHooks";
+import useSpeciesCount from "sharedHooks/useSpeciesCount";
 
 interface SortOption {
   label: string;
@@ -71,7 +70,19 @@ const ExploreResults = ( ) => {
     totalResults,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
-  const speciesCount = useExploreV2SpeciesCount( queryParams, canFetch );
+  const speciesCountParams = useMemo( ( ) => {
+    // take out params that don't apply to species count
+    const {
+      order_by: orderBy, order, per_page: perPage, ...filterParams
+    } = queryParams;
+    return filterParams;
+  }, [queryParams] );
+
+  const speciesCount = useSpeciesCount(
+    speciesCountParams,
+    ["exploreV2SpeciesCount", speciesCountParams],
+    { enabled: canFetch },
+  );
 
   const renderPermissionPrompt = ( ) => (
     <View className="flex-1 justify-center p-4">
