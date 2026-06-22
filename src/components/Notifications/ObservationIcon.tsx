@@ -41,10 +41,8 @@ const ObservationIcon = ( {
     return (
       <View
         className={classnames(
-          "w-[62px]",
-          "h-[62px]",
+          THUMBNAIL_CLASS,
           "bg-white",
-          "rounded-lg",
           "border-[2px]",
           "justify-center",
           "items-center",
