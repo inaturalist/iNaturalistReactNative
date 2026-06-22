@@ -3,6 +3,18 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import * as uuid from "uuid";
 
 describe( "ObservationFieldValue", () => {
+  describe( "new", () => {
+    it( "should construct an OFV", () => {
+      const ofv = ObservationFieldValue.new( 7, 99, "male" );
+      expect( ofv.uuid ).toBe( ofv.uuid.toLowerCase() );
+      expect( ofv.projectId ).toBe( 7 );
+      expect( ofv.obsFieldId ).toBe( 99 );
+      expect( ofv.value ).toBe( "male" );
+      expect( ofv._created_at ).toBeInstanceOf( Date );
+      expect( ofv._updated_at ).toBeInstanceOf( Date );
+    } );
+  } );
+
   describe( "findForProject", () => {
     it( "should find an OFV scoped by projectId and obsFieldId", () => {
       const obsUuid = uuid.v4();

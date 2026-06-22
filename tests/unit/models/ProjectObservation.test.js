@@ -3,6 +3,16 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import * as uuid from "uuid";
 
 describe( "ProjectObservation", ( ) => {
+  describe( "new", ( ) => {
+    it( "should construct a PO", ( ) => {
+      const po = ProjectObservation.new( 42 );
+      expect( po.uuid ).toBe( po.uuid.toLowerCase( ) );
+      expect( po.projectId ).toBe( 42 );
+      expect( po._created_at ).toBeInstanceOf( Date );
+      expect( po._updated_at ).toBeInstanceOf( Date );
+    } );
+  } );
+
   describe( "needsSync and wasSynced", ( ) => {
     it( "should need sync when _synced_at is null", ( ) => {
       const obsUuid = uuid.v4( );
