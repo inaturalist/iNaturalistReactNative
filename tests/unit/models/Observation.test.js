@@ -46,22 +46,8 @@ describe( "Observation", ( ) => {
     } );
   } );
 
-  // It would be nice to test an Observation instance
   describe( "needsSync", ( ) => {
     it.todo( "should need sync when a photo needs sync" );
-    // it( "should need sync when a photo needs sync", ( ) => {
-    //   const syncDate = faker.date.past( );
-    //   const observation = new Observation( {
-    //     _synced_at: syncDate,
-    //     _updated_at: syncDate
-    //   } );
-    //   expect( observation.needsSync( ) ).toEqual( false );
-    //   const mockObservationPhoto = factory.states( "uploaded" )( "LocalObservationPhoto" );
-    //   observation.observationPhotos = [mockObservationPhoto];
-    //   expect( observation.needsSync( ) ).toEqual( false );
-    //   mockObservationPhoto.needsSync.mockImplementation( ( ) => true );
-    //   expect( observation.needsSync( ) ).toEqual( true );
-    // } );
     it.todo( "should need sync when a sound needs sync" );
     it( "should need sync when a project observation needs sync", ( ) => {
       const obsUuid = uuid.v4( );
