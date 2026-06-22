@@ -21,7 +21,7 @@ import {
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import {
   OBSERVATIONS_SORT_OPTIONS,
@@ -55,7 +55,10 @@ const ExploreResults = ( ) => {
     {} as Record<OBSERVATIONS_SORT, SortOption>,
   );
 
-  const queryParams = buildExploreV2QueryParams( state );
+  const queryParams = useMemo(
+    ( ) => buildExploreV2QueryParams( state ),
+    [state],
+  );
 
   const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED
     && state.location.placeMode !== EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION;
