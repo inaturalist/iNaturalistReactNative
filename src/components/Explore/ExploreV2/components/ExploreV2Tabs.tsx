@@ -2,7 +2,7 @@ import { Tabs } from "components/SharedComponents";
 import StatTab from "components/SharedComponents/StatTab";
 import type { TabComponentProps } from "components/SharedComponents/Tabs/Tabs";
 import { View } from "components/styledComponents";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
@@ -18,13 +18,16 @@ interface Props {
 const ExploreV2Tabs = ( { observationsCount, speciesCount }: Props ) => {
   const { t } = useTranslation( );
 
-  const renderTabComponent = ( { id }: TabComponentProps ) => (
-    <StatTab
-      id={id}
-      numTotalObservations={observationsCount}
-      numTotalTaxa={speciesCount}
-      className="items-center py-1.5"
-    />
+  const renderTabComponent = useCallback(
+    ( { id }: TabComponentProps ) => (
+      <StatTab
+        id={id}
+        numTotalObservations={observationsCount}
+        numTotalTaxa={speciesCount}
+        className="items-center py-1.5"
+      />
+    ),
+    [observationsCount, speciesCount],
   );
 
   return (
