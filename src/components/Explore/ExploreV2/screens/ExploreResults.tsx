@@ -80,8 +80,7 @@ const ExploreResults = ( ) => {
 
   const speciesCount = useSpeciesCount(
     speciesCountParams,
-    ["exploreV2SpeciesCount", speciesCountParams],
-    { enabled: canFetch },
+    { enabled: canFetch, keyPrefix: "exploreV2SpeciesCount" },
   );
 
   const renderPermissionPrompt = ( ) => (

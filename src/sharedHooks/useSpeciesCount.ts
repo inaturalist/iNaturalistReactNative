@@ -1,4 +1,3 @@
-import type { QueryKey } from "@tanstack/react-query";
 import { fetchSpeciesCounts } from "api/observations";
 import type { ApiParams, ApiResponse } from "api/types";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -16,17 +15,17 @@ export interface SpeciesCountParams extends ApiParams {
 
 interface Options {
   enabled?: boolean;
+  keyPrefix?: string;
 }
 
 const useSpeciesCount = (
   params: SpeciesCountParams,
-  queryKey: QueryKey,
-  { enabled = true }: Options = {},
+  { enabled = true, keyPrefix = "useSpeciesCount" }: Options = {},
 ): number | null => {
   const countParams = { ...params, per_page: 0 };
 
   const { data } = useAuthenticatedQuery<ApiResponse>(
-    queryKey,
+    [keyPrefix, countParams],
     optsWithAuth => fetchSpeciesCounts( countParams, optsWithAuth ),
     { enabled },
   );
