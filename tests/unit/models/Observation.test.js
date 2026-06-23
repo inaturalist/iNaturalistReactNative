@@ -1,5 +1,9 @@
 import Observation from "realmModels/Observation";
+import ObservationFieldValue from "realmModels/ObservationFieldValue";
+import ProjectObservation from "realmModels/ProjectObservation";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import factory from "tests/factory";
+import * as uuid from "uuid";
 
 describe( "Observation", ( ) => {
   describe( "mapObservationForUpload", ( ) => {
@@ -42,22 +46,77 @@ describe( "Observation", ( ) => {
     } );
   } );
 
-  // It would be nice to test an Observation instance
   describe( "needsSync", ( ) => {
     it.todo( "should need sync when a photo needs sync" );
-    // it( "should need sync when a photo needs sync", ( ) => {
-    //   const syncDate = faker.date.past( );
-    //   const observation = new Observation( {
-    //     _synced_at: syncDate,
-    //     _updated_at: syncDate
-    //   } );
-    //   expect( observation.needsSync( ) ).toEqual( false );
-    //   const mockObservationPhoto = factory.states( "uploaded" )( "LocalObservationPhoto" );
-    //   observation.observationPhotos = [mockObservationPhoto];
-    //   expect( observation.needsSync( ) ).toEqual( false );
-    //   mockObservationPhoto.needsSync.mockImplementation( ( ) => true );
-    //   expect( observation.needsSync( ) ).toEqual( true );
-    // } );
     it.todo( "should need sync when a sound needs sync" );
+    it( "should need sync when a project observation needs sync", ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncDate = new Date( "2020-01-02" );
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", {
+          uuid: obsUuid,
+          _synced_at: syncDate,
+          _updated_at: syncDate,
+          projectObservations: [ProjectObservation.new( 1 )],
+        } );
+      }, "create Observation with unsynced PO for needsSync test" );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.needsSync( ) ).toBe( true );
+    } );
+
+    it( "should need sync when an observation field value needs sync", ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncDate = new Date( "2020-01-02" );
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", {
+          uuid: obsUuid,
+          _synced_at: syncDate,
+          _updated_at: syncDate,
+          observationFieldValues: [
+            ObservationFieldValue.new( 1, 5, "x" ),
+          ],
+        } );
+      }, "create Observation with unsynced OFV for needsSync test" );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.needsSync( ) ).toBe( true );
+    } );
+  } );
+
+  describe( "filterUnsyncedObservations", ( ) => {
+    it( "should include observations with unsynced project observations", ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncDate = new Date( "2020-01-02" );
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", {
+          uuid: obsUuid,
+          _synced_at: syncDate,
+          _updated_at: syncDate,
+          projectObservations: [ProjectObservation.new( 1 )],
+        } );
+      }, "create synced obs with unsynced PO" );
+
+      const unsynced = Observation.filterUnsyncedObservations( global.realm );
+      expect( unsynced.filtered( `uuid == "${obsUuid}"` ).length ).toBe( 1 );
+    } );
+
+    it( "should include observations with unsynced observation field values", ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncDate = new Date( "2020-01-02" );
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", {
+          uuid: obsUuid,
+          _synced_at: syncDate,
+          _updated_at: syncDate,
+          observationFieldValues: [
+            ObservationFieldValue.new( 1, 5, "x" ),
+          ],
+        } );
+      }, "create synced obs with unsynced OFV" );
+
+      const unsynced = Observation.filterUnsyncedObservations( global.realm );
+      expect( unsynced.filtered( `uuid == "${obsUuid}"` ).length ).toBe( 1 );
+    } );
   } );
 } );
