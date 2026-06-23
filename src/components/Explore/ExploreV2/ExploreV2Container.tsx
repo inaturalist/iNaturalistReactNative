@@ -20,7 +20,8 @@ const ExploreV2WithProvider = ( {
   hasBlockedPermissions,
 }: ExploreV2WithProviderProps ) => {
   const { state, dispatch } = useExploreV2( );
-
+  // useEffectEvent is a new pattern for us, which we are adding only to new code for the moment
+  // https://github.com/inaturalist/iNaturalistReactNative/pull/3585#discussion_r3220223241
   const onPermissionsResolved = useEffectEvent( async ( ) => {
     const { placeMode } = state.location;
 
@@ -48,6 +49,7 @@ const ExploreV2WithProvider = ( {
         placeMode === EXPLORE_V2_PLACE_MODE.UNINITIALIZED
         || placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
       ) {
+        // user has explicitly denied location permissions, set place mode to worldwide
         dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
       }
     } else if ( placeMode === EXPLORE_V2_PLACE_MODE.UNINITIALIZED ) {

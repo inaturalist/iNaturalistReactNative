@@ -33,16 +33,21 @@ interface Place {
 interface Taxon {
   id: number;
   name: string;
+  preferred_common_name?: string;
+  default_photo?: { url?: string };
+  iconic_taxon_name?: string;
 }
 
 interface User {
   id: number;
   login: string;
+  icon_url?: string;
 }
 
 interface Project {
   id: number;
   title: string;
+  icon?: string;
 }
 
 export type ExploreV2Subject =

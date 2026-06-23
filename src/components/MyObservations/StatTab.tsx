@@ -8,7 +8,13 @@ import { useTranslation } from "sharedHooks";
 
 export const OBSERVATIONS_TAB = "observations";
 
-const StatTab = ( { id, numTotalObservations, numTotalTaxa } ) => {
+interface Props {
+  id: string;
+  numTotalObservations?: number;
+  numTotalTaxa?: number;
+}
+
+const StatTab = ( { id, numTotalObservations, numTotalTaxa }: Props ) => {
   const { t } = useTranslation( );
   let stat: number | undefined;
   let label: string;

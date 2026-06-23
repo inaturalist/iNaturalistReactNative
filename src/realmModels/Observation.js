@@ -24,7 +24,9 @@ const logger = log.extend( "index.js" );
 export const UNSYNCED_FILTER
   = "_synced_at == null || _synced_at <= _updated_at"
   + " || ANY observationPhotos._synced_at == null"
-  + " || ANY observationSounds._synced_at == null";
+  + " || ANY observationSounds._synced_at == null"
+  + " || ANY projectObservations._synced_at == null"
+  + " || ANY observationFieldValues._synced_at == null";
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
@@ -527,6 +529,7 @@ class Observation extends Realm.Object {
       latitude: "double?",
       license_code: { type: "string", mapTo: "licenseCode", optional: true },
       longitude: "double?",
+      observationFieldValues: "ObservationFieldValue[]",
       observationPhotos: "ObservationPhoto[]",
       observationSounds: "ObservationSound[]",
       // date and/or time submitted to the server when a new obs is uploaded
@@ -535,11 +538,12 @@ class Observation extends Realm.Object {
       observed_time_zone: "string?",
       obscured: "bool?",
       owners_identification_from_vision: "bool?",
-      species_guess: "string?",
       place_guess: { type: "string", mapTo: "placeGuess", optional: true },
       positional_accuracy: "double?",
       prefers_community_taxon: "bool?",
+      projectObservations: "ProjectObservation[]",
       quality_grade: { type: "string", mapTo: "qualityGrade", optional: true },
+      species_guess: "string?",
       taxon: "Taxon?",
       taxon_geoprivacy: "string?",
       // datetime when the observer observed the organism; user-editable, but
@@ -568,10 +572,16 @@ class Observation extends Realm.Object {
       .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
     const obsSoundsNeedSync = this.observationSounds
       .filter( obsSound => obsSound.needsSync( ) ).length > 0;
+    const projectObsNeedSync = this.projectObservations
+      .filter( po => po.needsSync( ) ).length > 0;
+    const obsFieldValuesNeedSync = this.observationFieldValues
+      .filter( ofv => ofv.needsSync( ) ).length > 0;
     return !this._synced_at
       || this._synced_at <= this._updated_at
       || obsPhotosNeedSync
-      || obsSoundsNeedSync;
+      || obsSoundsNeedSync
+      || projectObsNeedSync
+      || obsFieldValuesNeedSync;
   }
 
   updateNeedsSync() {

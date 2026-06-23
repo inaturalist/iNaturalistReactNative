@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -110,7 +110,7 @@
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-config": "^1.6.1",
     "react-native-device-info": "^15.0.1",
-    "react-native-draggable-flatlist": "^4.0.1",
+    "react-native-draggable-flatlist": "^4.0.3",
     "react-native-email-link": "^1.16.1",
     "react-native-event-listeners": "^1.0.7",
     "react-native-exception-handler": "^2.10.10",
@@ -152,7 +152,7 @@
     "realm": "^20.2.0",
     "sanitize-html": "^2.17.4",
     "uuid": "^11.1.1",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#5cb51942939f704acbb5d451a444f7aa36268c66",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#e8c4782cee82e781e8dc7016fffedbbd95070931",
     "zustand": "^4.5.7"
   },
   "devDependencies": {
