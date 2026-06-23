@@ -48,19 +48,27 @@ interface ApiProjectObservationField {
   required: boolean | null;
 }
 
-// Result from using PROJECT_FIELDS
-export interface ApiProject {
-  description: string;
-  header_image_url: string | null;
+// Result from using PROJECT_SUMMARY_FIELDS
+export interface ApiProjectSummary {
   icon: string;
   id: number;
-  membership_model: "inviteonly" | "open" | null;
-  place_id: number | null;
-  project_observation_fields: ApiProjectObservationField[];
   project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
   rule_preferences: ProjectRulePreference[];
   title: string;
+}
+
+// Result from using PROJECT_DETAIL_FIELDS
+export interface ApiProject extends ApiProjectSummary {
+  description: string;
+  header_image_url: string | null;
+  membership_model: "inviteonly" | "open" | null;
+  place_id: number | null;
   user_ids: number[];
+}
+
+// Result from using PROJECT_SUMMARY_POF_FIELDS
+export interface ApiProjectSummaryWithPOF extends ApiProjectSummary {
+  project_observation_fields: ApiProjectObservationField[];
 }
 
 export interface ApiResponse {
@@ -196,7 +204,7 @@ export interface ApiNotification {
 
 export interface ApiProjectObservation {
   id: number;
-  project: ApiProject;
+  project: ApiProjectSummary;
   project_id: number;
   uuid: string;
 }
@@ -212,7 +220,7 @@ export interface ApiObservationFieldValue {
 export interface ApiObservation extends ApiRecord {
   comments?: ApiComment[];
   identifications?: ApiIdentification[];
-  non_traditional_projects?: { project: ApiProject }[];
+  non_traditional_projects?: { project: ApiProjectSummary }[];
   observation_photos?: ApiObservationPhoto[];
   observation_sounds?: ApiObservationSound[];
   project_observations?: ApiProjectObservation[];

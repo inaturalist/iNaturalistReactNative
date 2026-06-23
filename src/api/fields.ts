@@ -13,21 +13,29 @@ const PROJECT_OBSERVATION_FIELDS_FIELDS = {
   required: true,
 };
 
-export const PROJECT_FIELDS = {
-  description: true,
-  header_image_url: true,
+export const PROJECT_SUMMARY_FIELDS = {
   icon: true,
   id: true,
-  membership_model: true,
-  place_id: true,
-  project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
   project_type: true,
   rule_preferences: {
     field: true,
     value: true,
   },
   title: true,
+};
+
+export const PROJECT_DETAIL_FIELDS = {
+  ...PROJECT_SUMMARY_FIELDS,
+  description: true,
+  header_image_url: true,
+  membership_model: true,
+  place_id: true,
   user_ids: true,
+};
+
+export const PROJECT_SUMMARY_POF_FIELDS = {
+  ...PROJECT_SUMMARY_FIELDS,
+  project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
 };
 
 export const PROJECT_FIELDS_ALL = "all";
@@ -41,7 +49,7 @@ export const OBSERVATION_FIELD_VALUE_FIELDS = {
 
 export const PROJECT_OBSERVATION_FIELDS = {
   id: true,
-  project: PROJECT_FIELDS,
+  project: PROJECT_SUMMARY_FIELDS,
   project_id: true,
   uuid: true,
 };
