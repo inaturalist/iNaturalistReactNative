@@ -10,11 +10,11 @@ interface Props {
   id: string;
   numTotalObservations?: number | null;
   numTotalTaxa?: number | null;
-  className?: string;
+  wrapperClassName?: string;
 }
 
 const StatTab = ( {
-  id, numTotalObservations, numTotalTaxa, className = "p-3",
+  id, numTotalObservations, numTotalTaxa, wrapperClassName = "p-3",
 }: Props ) => {
   const { t } = useTranslation( );
   let stat: number | null | undefined;
@@ -27,7 +27,7 @@ const StatTab = ( {
     label = t( "X-SPECIES--below-number", { count: numTotalTaxa } );
   }
   return (
-    <View className={classNames( "items-center", className )}>
+    <View className={classNames( "items-center", wrapperClassName )}>
       <Body1 className="mb-[4px]">
         {
           typeof ( stat ) === "number"
