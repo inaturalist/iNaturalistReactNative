@@ -14,6 +14,8 @@ const KEY_PATHS = [
   "privateLatitude",
   "observationPhotos._synced_at",
   "observationSounds._synced_at",
+  "observationFieldValues._synced_at",
+  "projectObservations._synced_at",
 ];
 
 interface ObservationCounts {
@@ -28,6 +30,7 @@ const useObservationCounts = ( ): ObservationCounts => {
       query: observations => observations.filtered( UNSYNCED_FILTER ),
       keyPaths: KEY_PATHS,
     },
+    [],
   );
 
   return useMemo(
