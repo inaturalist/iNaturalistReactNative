@@ -25,15 +25,15 @@ const OtherDataSection = ( {
 
   const geoprivacyOptions = [{
     label: t( "Open" ),
-    value: "open",
+    value: "open" as const,
   },
   {
     label: t( "Obscured" ),
-    value: "obscured",
+    value: "obscured" as const,
   },
   {
     label: t( "Private" ),
-    value: "private",
+    value: "private" as const,
   }];
 
   // opposite of Seek (asking if wild, not if captive)
