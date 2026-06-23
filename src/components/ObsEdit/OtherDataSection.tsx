@@ -1,9 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   Heading4, TextInputSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import React, { useState } from "react";
-import { useFeatureFlag, useTranslation } from "sharedHooks";
+import { Alert } from "react-native";
+import { useCurrentUser, useFeatureFlag, useTranslation } from "sharedHooks";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 import DropdownItem from "./DropdownItem";
@@ -38,6 +41,11 @@ const OtherDataSection = ( {
   updateObservationKeys,
 }: Props ) => {
   const { t } = useTranslation( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"ObsEdit">["navigation"] &
+    TabStackScreenProps<"ObsEdit">["navigation"]
+  >( );
+  const currentUser = useCurrentUser( );
   const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );
   const [showWildStatusSheet, setShowWildStatusSheet] = useState( false );
   const [showNotesSheet, setShowNotesSheet] = useState( false );
@@ -77,6 +85,18 @@ const OtherDataSection = ( {
     .find( e => e.value === currentObservation?.geoprivacy );
   const currentCaptiveStatus = captiveOptions
     .find( e => e.value === currentObservation?.captive_flag );
+
+  const handleProjectsPress = ( ) => {
+    if ( !currentUser ) {
+      Alert.alert(
+        t( "Please-log-in" ),
+        t( "You-need-to-be-logged-in-to-add-observations-to-projects" ),
+      );
+      return;
+    }
+    navigation.navigate( "AddToProjects" );
+  };
+
   return (
     <View className="mx-5 mt-6">
       {showGeoprivacySheet && (
@@ -134,8 +154,7 @@ const OtherDataSection = ( {
       {traditionalProjectsEnabled && (
         <DropdownItem
           accessibilityLabel={projectsLabel}
-          handlePress={() => console.log( "press" )}
-          // handlePress={handleProjectsPress}
+          handlePress={handleProjectsPress}
           iconName="briefcase"
           text={projectsLabel}
         />
