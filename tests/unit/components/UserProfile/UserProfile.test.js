@@ -1,7 +1,8 @@
-import { screen } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import React from "react";
+import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -11,6 +12,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: () => ( {
     data: mockUser,
+    refetch: jest.fn(),
   } ),
 } ) );
 
@@ -22,6 +24,8 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   } ),
 } ) );
 
+const mockNavigate = jest.fn();
+const mockSetOptions = jest.fn();
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -32,7 +36,8 @@ jest.mock( "@react-navigation/native", () => {
       },
     } ),
     useNavigation: () => ( {
-      setOptions: () => ( { } ),
+      navigate: mockNavigate,
+      setOptions: mockSetOptions,
     } ),
   };
 } );
@@ -47,7 +52,21 @@ jest.mock(
   },
 );
 
+const renderHeaderRight = ( ) => {
+  const lastCall = mockSetOptions.mock.calls.at( -1 );
+  const HeaderRight = lastCall?.[0]?.headerRight;
+  if ( !HeaderRight ) return null;
+  renderComponent( <HeaderRight /> );
+  return HeaderRight;
+};
+
 describe( "UserProfile", () => {
+  beforeEach( () => {
+    jest.clearAllMocks();
+    // Default: viewing someone else's profile (no current user)
+    jest.spyOn( useCurrentUser, "default" ).mockImplementation( () => null );
+  } );
+
   it( "should render inside mocked container for testing", () => {
     renderComponent( <UserProfile /> );
     expect( screen.getByTestId( "UserProfile" ) ).toBeTruthy();
@@ -87,5 +106,42 @@ describe( "UserProfile", () => {
 
     const projectsButton = await screen.findByText( /VIEW PROJECTS/ );
     expect( projectsButton ).toBeVisible( );
+  } );
+
+  describe( "edit button", () => {
+    test( "is shown when viewing your own profile", async () => {
+      jest.spyOn( useCurrentUser, "default" )
+        .mockImplementation( () => ( { login: mockUser.login } ) );
+
+      renderComponent( <UserProfile /> );
+      renderHeaderRight( );
+
+      expect( screen.getByTestId( "UserProfile.editButton" ) ).toBeTruthy( );
+    } );
+
+    test( "is not shown when viewing another user's profile", async () => {
+      jest.spyOn( useCurrentUser, "default" )
+        .mockImplementation( () => ( { login: "someone-else" } ) );
+
+      renderComponent( <UserProfile /> );
+      renderHeaderRight( );
+
+      expect( screen.queryByTestId( "UserProfile.editButton" ) ).toBeNull( );
+    } );
+
+    test( "navigates to account settings when pressed", async () => {
+      jest.spyOn( useCurrentUser, "default" )
+        .mockImplementation( () => ( { login: mockUser.login } ) );
+
+      renderComponent( <UserProfile /> );
+      renderHeaderRight( );
+
+      fireEvent.press( screen.getByTestId( "UserProfile.editButton" ) );
+
+      expect( mockNavigate ).toHaveBeenCalledWith(
+        "FullPageWebView",
+        expect.objectContaining( { loggedIn: true } ),
+      );
+    } );
   } );
 } );

@@ -21,17 +21,45 @@ import useDebugMode from "sharedHooks/useDebugMode";
 import { getShadow } from "styles/global";
 
 const TAXA = [
-  { id: 47126, name: "Plantae" },
-  { id: 3, name: "Aves" },
-  { id: 47158, name: "Insecta" },
+  {
+    id: 8229,
+    name: "Cyanocitta cristata",
+    preferred_common_name: "Blue Jay",
+    iconic_taxon_name: "Aves",
+    default_photo: {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/530721418/square.jpg",
+    },
+  },
+  {
+    id: 57983,
+    name: "Helianthus annuus",
+    preferred_common_name: "Common Sunflower",
+    iconic_taxon_name: "Plantae",
+    default_photo: {
+      url: "https://inaturalist-open-data.s3.amazonaws.com/photos/323768723/square.jpg",
+    },
+  },
+  // No default_photo -> exercises the IconicTaxonIcon fallback
+  {
+    id: 47158, name: "Insecta", preferred_common_name: "Insects", iconic_taxon_name: "Insecta",
+  },
 ];
 
 const USERS = [
-  { id: 6746956, login: "seth_msp" },
+  {
+    id: 6746956,
+    login: "seth_msp",
+    icon_url:
+      "https://static.inaturalist.org/attachments/users/icons/6746956/c5d5d7f274d32aa79502c3711b91ae96-medium.png?1761510417",
+  },
 ];
 
 const PROJECTS = [
-  { id: 42778, title: "Appropriate signs project" },
+  {
+    id: 23389,
+    title: "City Nature Challenge",
+    icon: "https://static.inaturalist.org/projects/23389-icon-span2.jpg?1551205903",
+  },
 ];
 
 const PLACES = [
