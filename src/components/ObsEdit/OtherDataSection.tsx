@@ -9,9 +9,26 @@ import DropdownItem from "./DropdownItem";
 import GeoprivacySheet from "./Sheets/GeoprivacySheet";
 import WildStatusSheet from "./Sheets/WildStatusSheet";
 
+type Geoprivacy = null | "open" | "obscured" | "private";
+
+type UpdateObservationKey =
+  | {
+      description: string | undefined;
+    }
+  | {
+      geoprivacy: Geoprivacy;
+    }
+  | {
+      captive_flag: boolean;
+    };
+
 interface Props {
-  currentObservation: object;
-  updateObservationKeys: Function;
+  currentObservation: {
+    captive_flag: boolean;
+    description: string;
+    geoprivacy: Geoprivacy;
+  };
+  updateObservationKeys: ( _key: UpdateObservationKey ) => void;
 }
 
 const OtherDataSection = ( {
@@ -57,7 +74,7 @@ const OtherDataSection = ( {
         <GeoprivacySheet
           selectedValue={currentObservation?.geoprivacy}
           onPressClose={( ) => setShowGeoprivacySheet( false )}
-          updateGeoprivacyStatus={value => updateObservationKeys( {
+          updateGeoprivacyStatus={( value: Geoprivacy ) => updateObservationKeys( {
             geoprivacy: value,
           } )}
         />
@@ -78,7 +95,7 @@ const OtherDataSection = ( {
           headerText={t( "NOTES" )}
           placeholder={t( "Add-optional-notes" )}
           initialInput={currentObservation?.description}
-          confirm={textInput => updateObservationKeys( {
+          confirm={( textInput: string | undefined ) => updateObservationKeys( {
             description: textInput,
           } )}
         />
