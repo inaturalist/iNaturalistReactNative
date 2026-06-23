@@ -34,4 +34,10 @@ describe( "ExploreV2Tabs", () => {
 
     expect( screen.getAllByText( "--" ) ).toHaveLength( 2 );
   } );
+
+  it( "renders a placeholder when counts are null", () => {
+    renderComponent( <ExploreV2Tabs observationsCount={null} speciesCount={null} /> );
+
+    expect( screen.getAllByText( "--" ) ).toHaveLength( 2 );
+  } );
 } );
