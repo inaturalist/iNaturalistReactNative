@@ -77,6 +77,23 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
+jest.mock( "sharedHooks/useObservationCounts", () => {
+  const { UNSYNCED_FILTER } = jest.requireActual( "realmModels/Observation" );
+  return {
+    __esModule: true,
+    default: () => {
+      const realm = global.mockRealms[__filename];
+      if ( !realm ) return { unsyncedObservationsCount: 0, observationsMissingBasicsCount: 0 };
+      const unsynced = realm.objects( "Observation" ).filtered( UNSYNCED_FILTER );
+      return {
+        unsyncedObservationsCount: unsynced.length,
+        observationsMissingBasicsCount: unsynced
+          .filter( obs => obs.missingBasics( ) ).length,
+      };
+    },
+  };
+} );
+
 beforeAll( async () => {
   await initI18next( );
   mockInteractionManagerRunAfterInteractions( );
