@@ -106,7 +106,7 @@ const ExploreV2Header = ( ) => {
 
   return (
     <View className="bg-white" testID="ExploreV2Header">
-      <View className="px-4 pt-4 pb-2 flex-row items-center">
+      <View className="p-4 flex-row items-center">
         <BackButton />
         {state.subject
           ? (
