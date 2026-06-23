@@ -3,7 +3,8 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useState } from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import { useFeatureFlag, useTranslation } from "sharedHooks";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 import DropdownItem from "./DropdownItem";
 import GeoprivacySheet from "./Sheets/GeoprivacySheet";
@@ -27,6 +28,7 @@ interface Props {
     captive_flag: boolean;
     description: string;
     geoprivacy: Geoprivacy;
+    projectObservations: object[];
   };
   updateObservationKeys: ( _key: UpdateObservationKey ) => void;
 }
@@ -63,6 +65,13 @@ const OtherDataSection = ( {
       label: t( "Organism-is-captive" ),
       value: true,
     }];
+
+  const traditionalProjectsEnabled = useFeatureFlag( FeatureFlag.TraditionalProjectsEnabled );
+
+  const projectCount = currentObservation?.projectObservations?.length ?? 0;
+  const projectsLabel = projectCount > 0
+    ? t( "Added-to-X-Projects", { count: projectCount } )
+    : t( "Add-to-Projects" );
 
   const currentGeoprivacyStatus = geoprivacyOptions
     .find( e => e.value === currentObservation?.geoprivacy );
@@ -122,6 +131,15 @@ const OtherDataSection = ( {
         iconName="pencil-outline"
         text={currentObservation?.description || t( "Add-optional-notes" )}
       />
+      {traditionalProjectsEnabled && (
+        <DropdownItem
+          accessibilityLabel={projectsLabel}
+          handlePress={() => console.log( "press" )}
+          // handlePress={handleProjectsPress}
+          iconName="briefcase"
+          text={projectsLabel}
+        />
+      )}
     </View>
   );
 };
