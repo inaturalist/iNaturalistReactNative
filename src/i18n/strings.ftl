@@ -65,6 +65,7 @@ Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = Add observations
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
+ADD-TO-PROJECTS = ADD TO PROJECTS
 # Hint for a button that adds an identification
 Adds-ID = Adds ID
 # Hint for a button that adds a vote of agreement
