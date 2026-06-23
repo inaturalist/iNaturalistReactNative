@@ -3,6 +3,7 @@ import type { ApiParams, ApiResponse } from "api/types";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 export interface SpeciesCountParams extends ApiParams {
+  // All four of these ids can potentially also be arrays of ids according to the API V2 docs.
   taxon_id?: number;
   user_id?: number;
   project_id?: number;
@@ -22,7 +23,7 @@ const useSpeciesCount = (
   params: SpeciesCountParams,
   { enabled = true, keyPrefix = "useSpeciesCount" }: Options = {},
 ): number | null => {
-  const countParams = { ...params, per_page: 0 };
+  const countParams = { ...params, per_page: 0, ttl: -1 };
 
   const { data } = useAuthenticatedQuery<ApiResponse>(
     [keyPrefix, countParams],
