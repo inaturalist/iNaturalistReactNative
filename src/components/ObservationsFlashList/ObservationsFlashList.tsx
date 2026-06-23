@@ -154,10 +154,6 @@ const ObservationsFlashList = ( {
       }
     };
 
-    // Add a unique key to ensure component recreation
-    // so images don't get recycled and show on the wrong taxon
-    const itemKey = `uuid-${uuid}`;
-
     return (
       <ObsPressable
         currentUser={currentUser}
@@ -169,7 +165,6 @@ const ObservationsFlashList = ( {
         isSimpleObsStatus={isSimpleObsStatus}
         hideRGLabel={hideRGLabel}
         layout={layout}
-        key={itemKey}
         apiObservation={explore
           ? item
           : undefined}

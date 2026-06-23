@@ -32,12 +32,12 @@ import {
   useInfiniteObservationsScroll,
   useInfiniteScroll,
   useLayoutPrefs,
-  useLocalObservations,
   useNavigateToObsEdit,
   useObservationsUpdates,
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
+import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 import useObservationCounts from "sharedHooks/useObservationCounts";
 import {
   UPLOAD_PENDING,
@@ -63,7 +63,8 @@ export enum ACTIVE_SHEET {
 }
 
 const MyObservationsWithProvider = ( ) => {
-  const { isDefaultMode, loggedInWhileInDefaultMode } = useLayoutPrefs();
+  const isDefaultMode = useStore( state => state.isDefaultMode );
+  const loggedInWhileInDefaultMode = useStore( state => state.loggedInWhileInDefaultMode );
   const { t } = useTranslation( );
   const realm = useRealm( );
   const navigation = useNavigation( );
@@ -91,12 +92,7 @@ const MyObservationsWithProvider = ( ) => {
     } );
     return unsubscribe;
   }, [navigation, setJustFinishedSignup] );
-
-  const fullObservations = useLocalObservations( );
-  const observations = useMemo(
-    () => fullObservations.map( obs => ( { uuid: obs.uuid } ) ),
-    [fullObservations],
-  );
+  const observations = useLocalObservationIds();
   const {
     numUnuploadedObservations,
     numObsMissingBasics,
