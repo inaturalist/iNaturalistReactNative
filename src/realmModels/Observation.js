@@ -26,9 +26,7 @@ export const UNSYNCED_FILTER
   + " || ANY observationPhotos._synced_at == null"
   + " || ANY observationSounds._synced_at == null"
   + " || ANY projectObservations._synced_at == null"
-  + " || ANY observationFieldValues._synced_at == null"
-  + " || ANY projectObservations._synced_at <= projectObservations._updated_at"
-  + " || ANY observationFieldValues._synced_at <= observationFieldValues._updated_at";
+  + " || ANY observationFieldValues._synced_at == null";
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
