@@ -4,8 +4,6 @@ import Observation from "realmModels/Observation";
 
 const { useQuery } = RealmContext;
 
-const getId = ( { uuid }: { uuid:string } ) => ( { uuid } );
-
 const useLocalObservationIds = ( ) => {
   const unsyncedObs = useQuery(
     {
@@ -15,10 +13,11 @@ const useLocalObservationIds = ( ) => {
         .sorted( [["needs_sync", true], ["_created_at", true]] ),
       keyPaths: ["uuid"],
     },
+    [],
   );
 
   return useMemo(
-    ( ) => unsyncedObs.map( getId ),
+    ( ) => unsyncedObs.map( ( { uuid }: { uuid: string } ) => uuid ),
     [unsyncedObs],
   );
 };
