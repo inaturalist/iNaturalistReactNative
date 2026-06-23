@@ -1,10 +1,7 @@
-// @flow
-
 import {
   Heading4, TextInputSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -12,15 +9,15 @@ import DropdownItem from "./DropdownItem";
 import GeoprivacySheet from "./Sheets/GeoprivacySheet";
 import WildStatusSheet from "./Sheets/WildStatusSheet";
 
-type Props = {
-  currentObservation: Object,
-  updateObservationKeys: Function
+interface Props {
+  currentObservation: object;
+  updateObservationKeys: Function;
 }
 
 const OtherDataSection = ( {
   currentObservation,
   updateObservationKeys,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );
   const [showWildStatusSheet, setShowWildStatusSheet] = useState( false );
