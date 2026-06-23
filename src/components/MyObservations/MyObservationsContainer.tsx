@@ -94,8 +94,8 @@ const MyObservationsWithProvider = ( ) => {
 
   const observations = useLocalObservations( );
   const {
-    unsyncedObservationsCount: numUnuploadedObservations,
-    observationsMissingBasicsCount: numObsMissingBasics,
+    numUnuploadedObservations,
+    numObsMissingBasics,
   } = useObservationCounts( );
   const prevObservationsLength = useRef( observations.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );

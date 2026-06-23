@@ -83,11 +83,11 @@ jest.mock( "sharedHooks/useObservationCounts", () => {
     __esModule: true,
     default: () => {
       const realm = global.mockRealms[__filename];
-      if ( !realm ) return { unsyncedObservationsCount: 0, observationsMissingBasicsCount: 0 };
+      if ( !realm ) return { numUnuploadedObservations: 0, numObsMissingBasics: 0 };
       const unsynced = realm.objects( "Observation" ).filtered( UNSYNCED_FILTER );
       return {
-        unsyncedObservationsCount: unsynced.length,
-        observationsMissingBasicsCount: unsynced
+        numUnuploadedObservations: unsynced.length,
+        numObsMissingBasics: unsynced
           .filter( obs => obs.missingBasics( ) ).length,
       };
     },

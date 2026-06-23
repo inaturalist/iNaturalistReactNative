@@ -19,8 +19,8 @@ const KEY_PATHS = [
 ];
 
 interface ObservationCounts {
-  unsyncedObservationsCount: number;
-  observationsMissingBasicsCount: number;
+  numUnuploadedObservations: number;
+  numObsMissingBasics: number;
 }
 
 const useObservationCounts = ( ): ObservationCounts => {
@@ -35,8 +35,8 @@ const useObservationCounts = ( ): ObservationCounts => {
 
   return useMemo(
     ( ) => ( {
-      unsyncedObservationsCount: unsyncedObs.length,
-      observationsMissingBasicsCount: unsyncedObs
+      numUnuploadedObservations: unsyncedObs.length,
+      numObsMissingBasics: unsyncedObs
         .filter( obs => obs.missingBasics( ) ).length,
     } ),
     [unsyncedObs],
