@@ -1,7 +1,7 @@
 import type { ApiObservation } from "api/types";
 import { Pressable } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
-import React from "react";
+import React, { useMemo } from "react";
 import RealmObservation from "realmModels/Observation";
 import { useLayoutPrefs, useTranslation } from "sharedHooks";
 
@@ -49,16 +49,19 @@ const ObsPressable = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const { isDefaultMode } = useLayoutPrefs( );
-  const rawObs = useObject<{ uuid: string }>( "Observation", uuid );
-  const mapObs = isDefaultMode
-    ? RealmObservation.mapObservationForMyObsDefaultMode
-    : RealmObservation.mapObservationForMyObsAdvancedMode;
+  const rawRealmObs = useObject<{ uuid: string }>( "Observation", uuid );
+  const mappedRealmObs = useMemo( () => {
+    if ( rawRealmObs === null ) {
+      return null;
+    }
+    return isDefaultMode
+      ? RealmObservation.mapObservationForMyObsDefaultMode( rawRealmObs )
+      : RealmObservation.mapObservationForMyObsAdvancedMode( rawRealmObs );
+  }, [rawRealmObs, isDefaultMode] );
 
   // we heterogenously accept ids from MyObs and ApiObs from Explore
   // downstream heterogenously handles ApiObs and mapped Realms
-  const observation = apiObservation || ( rawObs
-    ? mapObs( rawObs )
-    : null );
+  const observation = apiObservation || mappedRealmObs;
   if ( !observation ) return null;
 
   return (
