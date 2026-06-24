@@ -14,6 +14,7 @@ import * as uuid from "uuid";
 import Application from "./Application";
 import Comment from "./Comment";
 import Identification from "./Identification";
+import ObservationFieldValue from "./ObservationFieldValue";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import ProjectObservation from "./ProjectObservation";
@@ -186,6 +187,20 @@ class Observation extends Realm.Object {
     const taxon = obs.taxon
       ? Taxon.mapApiToRealm( obs.taxon, realm )
       : null;
+
+    const observationFieldValues = (
+      obs.ofvs || []
+    ).map( ofv => {
+      const mappedOfv = ObservationFieldValue.mapApiToRealm( ofv );
+      const existingOfv = existingObs?.observationFieldValues?.find(
+        eOfv => eOfv.uuid === ofv.uuid,
+      );
+      if ( !existingOfv ) {
+        mappedOfv._created_at = new Date( );
+      }
+      return mappedOfv;
+    } );
+
     const observationPhotos = (
       obs.observation_photos || obs.observationPhotos || []
     ).map( obsPhoto => {
@@ -236,6 +251,7 @@ class Observation extends Realm.Object {
                       && obs.private_geojson.coordinates[1],
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
+      observationFieldValues,
       observationPhotos,
       observationSounds,
       prefers_community_taxon: obs.preferences?.prefers_community_taxon,
