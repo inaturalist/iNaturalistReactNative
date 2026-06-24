@@ -133,6 +133,8 @@ class Observation extends Realm.Object {
     place_guess: true,
     private_place_guess: true,
     taxon_geoprivacy: true,
+    project_observations: PROJECT_OBSERVATION_FIELDS,
+    ofvs: OBSERVATION_FIELD_VALUE_FIELDS,
   };
 
   static async new( obs ) {
