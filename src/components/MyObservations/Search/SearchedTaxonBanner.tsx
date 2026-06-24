@@ -8,16 +8,29 @@ import {
   useMyObservations,
 } from "providers/MyObservationsContext";
 import React from "react";
-import { useTranslation } from "sharedHooks";
+import type { RealmUser } from "realmModels/types";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 const SearchedTaxonBanner = ( ) => {
   const { t } = useTranslation( );
   const { state, dispatch } = useMyObservations( );
   const { searchedTaxon } = state;
 
+  // The Realm `User` class doesn't declare its schema fields as typed
+  // instance properties (see realmModels/User.ts), so cast to the typed
+  // RealmUser interface to access the user's name-display prefs.
+  const currentUser = useCurrentUser( ) as RealmUser | null;
+
   if ( !searchedTaxon ) return null;
 
-  const displayName = searchedTaxon.preferredCommonName || searchedTaxon.name;
+  // Mirrors DisplayTaxonName: show scientific name when the user has
+  // opted into scientific-first or opted out of common names;
+  // otherwise show common name (falling back to scientific if missing).
+  const preferScientific = currentUser?.prefers_scientific_name_first === true
+    || currentUser?.prefers_common_names === false;
+  const displayName = preferScientific
+    ? searchedTaxon.name
+    : ( searchedTaxon.preferredCommonName || searchedTaxon.name );
 
   return (
     <View
