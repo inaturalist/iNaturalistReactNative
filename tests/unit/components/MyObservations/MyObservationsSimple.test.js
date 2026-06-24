@@ -20,6 +20,20 @@ const mockObservations = [
     observationPhotos: [factory( "LocalObservationPhoto" )],
   } ),
 ];
+let mockObsByUuid = {};
+
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.realm,
+      useObject: ( _type, uuid ) => mockObsByUuid[uuid] ?? null,
+    },
+  };
+} );
 
 const DEVICE_ORIENTATION_PHONE_PORTRAIT = {
   deviceOrientation: "portrait",
@@ -58,10 +72,12 @@ jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
   default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) ),
 } ) );
 
+const mockObservationIds = mockObservations.map( obs => obs.uuid );
+
 const renderMyObservations = layout => renderComponent(
   <MyObservationsSimple
     layout={layout}
-    observations={mockObservations}
+    observationIds={mockObservationIds}
     onEndReached={jest.fn( )}
     toggleLayout={jest.fn( )}
     setShowLoginSheet={jest.fn( )}
@@ -72,6 +88,13 @@ const renderMyObservations = layout => renderComponent(
 describe( "MyObservationsSimple", () => {
   beforeAll( async () => {
     jest.useFakeTimers( );
+  } );
+
+  beforeEach( () => {
+    mockObsByUuid = {};
+    mockObservations.forEach( obs => {
+      mockObsByUuid[obs.uuid] = obs;
+    } );
   } );
 
   it( "renders an observation", async () => {

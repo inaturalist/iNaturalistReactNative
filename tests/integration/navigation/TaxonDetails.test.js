@@ -20,16 +20,13 @@ const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setu
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
+  const { makeRealmHooks } = jest.requireActual( "tests/helpers/uniqueRealm" );
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
-      useObject: ( type, primaryKey ) => (
-        global.mockRealms[mockRealmIdentifier]?.objectForPrimaryKey( type, primaryKey )
-      ),
+      ...makeRealmHooks( __filename ),
     },
   };
 } );
