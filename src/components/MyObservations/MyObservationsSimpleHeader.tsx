@@ -1,14 +1,23 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   HeaderUser,
   Heading3,
+  INatIconButton,
   RotatingINatIconButton,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import {
+  SCREEN_NAME_SEARCH_MY_OBSERVATIONS,
+} from "navigation/StackNavigators/MyObservationsStackNavigator";
+import type { MyObservationsStackScreenProps } from "navigation/types";
 import React from "react";
+import { Alert } from "react-native";
 import type {
   RealmUser,
 } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import {
   MANUAL_SYNC_IN_PROGRESS,
 } from "stores/createSyncObservationsSlice";
@@ -36,6 +45,23 @@ const MyObservationsSimpleHeader = ( {
   numUploadableObservations,
 }: Props ) => {
   const { t } = useTranslation( );
+  const navigation = useNavigation<
+    MyObservationsStackScreenProps<"MyObservationsResults">["navigation"]
+  >( );
+  const searchMyObservationsEnabled = useFeatureFlag(
+    FeatureFlag.SearchMyObservationsEnabled,
+  );
+
+  const handleSearchButtonPress = ( ) => {
+    if ( !isConnected ) {
+      Alert.alert(
+        t( "You-are-offline" ),
+        t( "Please-try-again-when-you-are-online" ),
+      );
+    } else {
+      navigation.navigate( SCREEN_NAME_SEARCH_MY_OBSERVATIONS );
+    }
+  };
 
   // TODO: all the code related to showing the sync button is pretty convoluted and'
   // should be cleaned up at some point, but right now it's ported from our ToolbarContainer/Toolbar
@@ -80,24 +106,34 @@ const MyObservationsSimpleHeader = ( {
           ? <HeaderUser user={currentUser} isConnected={isConnected} />
           : <Heading3>{ t( "My-Observations" ) }</Heading3>}
         {currentUser && (
-          <RotatingINatIconButton
-            icon={
-              showsExclamation
-                ? "sync-unsynced"
-                : "sync"
-            }
-            onPress={handleSyncButtonPress}
-            color={String(
-              numUploadableObservations > 0
-                ? colors?.inatGreen
-                : colors?.darkGray,
+          <View className="flex-row items-center">
+            {searchMyObservationsEnabled && (
+              <INatIconButton
+                icon="magnifying-glass"
+                onPress={handleSearchButtonPress}
+                accessibilityLabel={t( "Opens-search-interface" )}
+                size={20}
+              />
             )}
-            rotating={rotating}
-            disabled={rotating}
-            accessibilityLabel={t( "Sync-observations" )}
-            size={26}
-            testID="SyncButton"
-          />
+            <RotatingINatIconButton
+              icon={
+                showsExclamation
+                  ? "sync-unsynced"
+                  : "sync"
+              }
+              onPress={handleSyncButtonPress}
+              color={String(
+                numUploadableObservations > 0
+                  ? colors?.inatGreen
+                  : colors?.darkGray,
+              )}
+              rotating={rotating}
+              disabled={rotating}
+              accessibilityLabel={t( "Sync-observations" )}
+              size={26}
+              testID="SyncButton"
+            />
+          </View>
         )}
       </View>
     </>

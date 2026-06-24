@@ -3,7 +3,7 @@ import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-import { ACTIVE_SHEET } from "./MyObservationsContainer";
+import { ACTIVE_SHEET } from "./MyObservationsResults";
 
 interface Props {
   setShowLoginSheet: ( value: ACTIVE_SHEET ) => void;
