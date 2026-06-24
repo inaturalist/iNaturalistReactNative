@@ -17,7 +17,7 @@ const SearchedTaxonBanner = ( ) => {
 
   if ( !searchedTaxon ) return null;
 
-  const displayName = searchedTaxon.preferred_common_name || searchedTaxon.name;
+  const displayName = searchedTaxon.preferredCommonName || searchedTaxon.name;
 
   return (
     <View
