@@ -13,6 +13,7 @@ export interface MyObservationsTaxon {
   id: number;
   name: string;
   preferred_common_name?: string;
+  iconUri?: string;
 }
 
 export interface MyObservationsState {

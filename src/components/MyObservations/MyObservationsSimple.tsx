@@ -35,6 +35,8 @@ import {
 } from "sharedHelpers/speciesSort";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
@@ -42,6 +44,7 @@ import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
+import SearchedTaxonBanner from "./Search/SearchedTaxonBanner";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
@@ -129,6 +132,9 @@ const MyObservationsSimple = ( {
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
+  const searchMyObservationsEnabled = useFeatureFlag(
+    FeatureFlag.SearchMyObservationsEnabled,
+  );
   const speciesSortLabels = useSpeciesSortLabels( );
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -365,6 +371,7 @@ const MyObservationsSimple = ( {
           ]}
           TabComponent={renderTabComponent}
         />
+        {searchMyObservationsEnabled && <SearchedTaxonBanner />}
         { activeTab === OBSERVATIONS_TAB && (
           <>
             <ObservationsFlashList

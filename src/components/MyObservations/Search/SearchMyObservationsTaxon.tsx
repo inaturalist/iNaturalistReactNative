@@ -14,6 +14,7 @@ import {
   useMyObservations,
 } from "providers/MyObservationsContext";
 import React, { useCallback, useState } from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
 
@@ -29,12 +30,18 @@ const SearchMyObservationsTaxon = ( ) => {
 
   const onTaxonSelected = useCallback( ( newTaxon: ApiTaxon | null ) => {
     if ( newTaxon && typeof newTaxon.id === "number" && newTaxon.name ) {
+      // useTaxonSearch can return either ApiTaxon-shaped or RealmTaxon-shaped
+      // taxa depending on the source, so we have to check for both here.
+      // TODO: normalize taxa at ingest.
+      const iconUri = newTaxon.default_photo?.url
+        || ( newTaxon as unknown as RealmTaxon ).defaultPhoto?.url;
       dispatch( {
         type: MY_OBSERVATIONS_ACTION.SET_TAXON_SEARCH,
         searchTaxon: {
           id: newTaxon.id,
           name: newTaxon.name,
           preferred_common_name: newTaxon.preferred_common_name,
+          iconUri,
         },
       } );
     } else {
