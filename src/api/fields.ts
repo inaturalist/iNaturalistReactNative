@@ -49,7 +49,7 @@ export const OBSERVATION_FIELD_VALUE_FIELDS = {
 
 export const PROJECT_OBSERVATION_FIELDS = {
   id: true,
-  project: PROJECT_SUMMARY_FIELDS,
+  project: PROJECT_SUMMARY_POF_FIELDS,
   project_id: true,
   uuid: true,
 };
