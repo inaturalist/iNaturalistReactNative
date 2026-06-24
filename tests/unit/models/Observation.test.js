@@ -44,6 +44,24 @@ describe( "Observation", ( ) => {
       expect( mappedObservation.observationSounds[0].uuid )
         .toEqual( remoteObservationSound.uuid );
     } );
+
+    it( "should map project_observations to projectObservations with sync metadata", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", {
+        project_observations: [factory( "RemoteProjectObservation" )],
+      } );
+      const mappedObservation = Observation.mapApiToRealm( mockRemoteObservation );
+      expect( mappedObservation.projectObservations ).toHaveLength( 1 );
+      expect( mappedObservation.projectObservations[0].id ).toBe(
+        mockRemoteObservation.project_observations[0].id,
+      );
+      expect( mappedObservation.projectObservations[0].projectId ).toBe(
+        mockRemoteObservation.project_observations[0].project_id,
+      );
+      expect( mappedObservation.projectObservations[0].uuid ).toBe(
+        mockRemoteObservation.project_observations[0].uuid,
+      );
+      expect( mappedObservation.projectObservations[0]._synced_at ).toBeInstanceOf( Date );
+    } );
   } );
 
   describe( "needsSync", ( ) => {
