@@ -19,7 +19,6 @@ class ObservationFieldValue extends Realm.Object {
   }
 
   static new(
-    projectId: number,
     obsFieldId: number,
     value?: string,
   ) {
@@ -27,19 +26,17 @@ class ObservationFieldValue extends Realm.Object {
       _created_at: new Date( ),
       _updated_at: new Date( ),
       uuid: uuid.v4( ).toLowerCase( ),
-      projectId,
       obsFieldId,
       value,
     };
   }
 
-  static findForProject(
+  static findForObsField(
     observation: RealmObservation,
-    projectId: number,
     obsFieldId: number,
   ): RealmObservationFieldValue | undefined {
     return observation.observationFieldValues.find(
-      ofv => ofv.projectId === projectId && ofv.obsFieldId === obsFieldId,
+      ofv => ofv.obsFieldId === obsFieldId,
     );
   }
 
@@ -67,7 +64,6 @@ class ObservationFieldValue extends Realm.Object {
       uuid: "string",
       id: "int?",
       obsFieldId: "int",
-      projectId: "int",
       value: "string?",
       // this creates an inverse relationship so OFVs
       // automatically keep track of which Observation they are assigned to
