@@ -78,7 +78,7 @@ describe( "Observation", ( ) => {
         mockRemoteObservation.ofvs[0].value,
       );
       expect( obs.observationFieldValues[0].obsFieldId ).toBe(
-        mockRemoteObservation.ofvs[0].observation_field.id,
+        mockRemoteObservation.ofvs[0].field_id,
       );
     } );
 
