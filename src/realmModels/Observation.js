@@ -16,6 +16,7 @@ import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
+import ProjectObservation from "./ProjectObservation";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
@@ -213,6 +214,17 @@ class Observation extends Realm.Object {
       return mappedObsSound;
     } );
 
+    const projectObservations = ( obs.project_observations || [] ).map( apiPo => {
+      const mappedPo = ProjectObservation.mapApiToRealm( apiPo );
+      const existingPo = existingObs?.projectObservations?.find(
+        ePo => ePo.uuid === apiPo.uuid?.toLowerCase( ),
+      );
+      if ( !existingPo ) {
+        mappedPo._created_at = new Date( );
+      }
+      return mappedPo;
+    } );
+
     const localObs = {
       ...obs,
       _synced_at: new Date( ),
@@ -227,6 +239,7 @@ class Observation extends Realm.Object {
       observationPhotos,
       observationSounds,
       prefers_community_taxon: obs.preferences?.prefers_community_taxon,
+      projectObservations,
       taxon,
     };
 
