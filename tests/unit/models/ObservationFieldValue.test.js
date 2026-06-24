@@ -45,7 +45,7 @@ describe( "ObservationFieldValue", () => {
 
       const mapped = ObservationFieldValue.mapApiToRealm( mockRemoteOfv );
       expect( mapped.id ).toBe( mockRemoteOfv.id );
-      expect( mapped.obsFieldId ).toBe( mockRemoteOfv.observation_field.id );
+      expect( mapped.obsFieldId ).toBe( mockRemoteOfv.field_id );
       expect( mapped.value ).toBe( mockRemoteOfv.value );
       expect( mapped.uuid ).toBe( mockRemoteOfv.uuid );
       expect( mapped._synced_at ).toBeInstanceOf( Date );
