@@ -92,7 +92,7 @@ describe( "Observation", ( ) => {
           _synced_at: syncDate,
           _updated_at: syncDate,
           observationFieldValues: [
-            ObservationFieldValue.new( 1, 5, "x" ),
+            ObservationFieldValue.new( 5, "x" ),
           ],
         } );
       }, "create Observation with unsynced OFV for needsSync test" );
@@ -128,7 +128,7 @@ describe( "Observation", ( ) => {
           _synced_at: syncDate,
           _updated_at: syncDate,
           observationFieldValues: [
-            ObservationFieldValue.new( 1, 5, "x" ),
+            ObservationFieldValue.new( 5, "x" ),
           ],
         } );
       }, "create synced obs with unsynced OFV" );
