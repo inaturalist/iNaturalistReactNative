@@ -33,7 +33,7 @@ const SearchMyObservationsTaxon = ( ) => {
       // useTaxonSearch can return either ApiTaxon-shaped or RealmTaxon-shaped
       // taxa depending on the source, so we have to check for both here.
       // TODO: normalize taxa at ingest.
-      const realmTaxon = newTaxon as unknown as RealmTaxon;
+      const realmTaxon = newTaxon as RealmTaxon;
       const iconUri = newTaxon.default_photo?.url
         || realmTaxon.defaultPhoto?.url;
       const preferredCommonName = newTaxon.preferred_common_name
