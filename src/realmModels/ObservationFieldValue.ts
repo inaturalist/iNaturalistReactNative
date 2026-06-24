@@ -45,7 +45,7 @@ class ObservationFieldValue extends Realm.Object {
   ) {
     const localOfv = {
       ...apiOfv,
-      obsFieldId: apiOfv.observation_field.id,
+      obsFieldId: apiOfv.field_id,
       _synced_at: new Date( ),
     };
     return localOfv;
