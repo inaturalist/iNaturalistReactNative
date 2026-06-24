@@ -53,6 +53,15 @@ describe( "Observation", ( ) => {
       expect( mappedObservation.projectObservations ).toHaveLength( 1 );
       expect( mappedObservation.projectObservations[0]._created_at ).toBeInstanceOf( Date );
     } );
+
+    it( "should map ofvs to observationFieldValues with created_at metadata", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", {
+        ofvs: [factory( "RemoteObservationFieldValue" )],
+      } );
+      const mappedObservation = Observation.mapApiToRealm( mockRemoteObservation );
+      expect( mappedObservation.observationFieldValues ).toHaveLength( 1 );
+      expect( mappedObservation.observationFieldValues[0]._created_at ).toBeInstanceOf( Date );
+    } );
   } );
 
   describe( "needsSync", ( ) => {
