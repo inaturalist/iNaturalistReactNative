@@ -1,5 +1,6 @@
 import ProjectObservation from "realmModels/ProjectObservation";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import factory from "tests/factory";
 import * as uuid from "uuid";
 
 describe( "ProjectObservation", ( ) => {
@@ -73,6 +74,18 @@ describe( "ProjectObservation", ( ) => {
       const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
       expect( obs.projectObservations[0].needsSync( ) ).toBe( false );
       expect( obs.projectObservations[0].wasSynced( ) ).toBe( true );
+    } );
+  } );
+
+  describe( "mapApiToRealm", ( ) => {
+    it( "should map API PO with synced metadata", ( ) => {
+      const mockRemotePo = factory( "RemoteProjectObservation" );
+
+      const mapped = ProjectObservation.mapApiToRealm( mockRemotePo );
+      expect( mapped.id ).toBe( mockRemotePo.id );
+      expect( mapped.projectId ).toBe( mockRemotePo.project_id );
+      expect( mapped.uuid ).toBe( mockRemotePo.uuid );
+      expect( mapped._synced_at ).toBeInstanceOf( Date );
     } );
   } );
 } );
