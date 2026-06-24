@@ -2,10 +2,12 @@ import {
   useCallback, useEffect, useRef, useState,
 } from "react";
 
+const DEFAULT_DELAY_MS = 400;
+
 // Debounces a value imperatively: `debounce` schedules an update after a delay
 // (replacing any pending one), while `setImmediately` applies a value right away
 // and cancels anything pending. Mirrors the inline debounce in MentionTextInput.
-const useDebouncedValue = <T, >( initialValue: T, delayMs: number ) => {
+const useDebouncedValue = <T, >( initialValue: T, delayMs: number = DEFAULT_DELAY_MS ) => {
   const [debouncedValue, setDebouncedValue] = useState<T>( initialValue );
   const timer = useRef<ReturnType<typeof setTimeout>>( undefined );
 
