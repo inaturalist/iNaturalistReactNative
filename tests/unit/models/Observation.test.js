@@ -64,6 +64,42 @@ describe( "Observation", ( ) => {
     } );
   } );
 
+  describe( "upsertRemoteObservations", ( ) => {
+    it( "should persist observationFieldValues in Realm", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", {
+        ofvs: [factory( "RemoteObservationFieldValue" )],
+      } );
+
+      Observation.upsertRemoteObservations( [mockRemoteObservation], global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", mockRemoteObservation.uuid );
+      expect( obs.observationFieldValues ).toHaveLength( 1 );
+      expect( obs.observationFieldValues[0].value ).toBe(
+        mockRemoteObservation.ofvs[0].value,
+      );
+      expect( obs.observationFieldValues[0].obsFieldId ).toBe(
+        mockRemoteObservation.ofvs[0].observation_field.id,
+      );
+    } );
+
+    it( "should persist projectObservations in Realm", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", {
+        project_observations: [factory( "RemoteProjectObservation" )],
+      } );
+
+      Observation.upsertRemoteObservations( [mockRemoteObservation], global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", mockRemoteObservation.uuid );
+      expect( obs.projectObservations ).toHaveLength( 1 );
+      expect( obs.projectObservations[0].id ).toBe(
+        mockRemoteObservation.project_observations[0].id,
+      );
+      expect( obs.projectObservations[0].projectId ).toBe(
+        mockRemoteObservation.project_observations[0].project_id,
+      );
+    } );
+  } );
+
   describe( "needsSync", ( ) => {
     it.todo( "should need sync when a photo needs sync" );
     it.todo( "should need sync when a sound needs sync" );
