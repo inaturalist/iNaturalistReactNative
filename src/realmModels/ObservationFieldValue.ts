@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import type { ApiObservationFieldValue } from "api/types";
 import type { RealmObservation, RealmObservationFieldValue } from "realmModels/types";
 import * as uuid from "uuid";
 
@@ -40,6 +41,17 @@ class ObservationFieldValue extends Realm.Object {
     return observation.observationFieldValues.find(
       ofv => ofv.projectId === projectId && ofv.obsFieldId === obsFieldId,
     );
+  }
+
+  static mapApiToRealm(
+    apiOfv: ApiObservationFieldValue,
+  ) {
+    const localOfv = {
+      ...apiOfv,
+      obsFieldId: apiOfv.observation_field.id,
+      _synced_at: new Date( ),
+    };
+    return localOfv;
   }
 
   static schema = {
