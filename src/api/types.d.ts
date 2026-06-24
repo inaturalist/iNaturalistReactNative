@@ -204,7 +204,7 @@ export interface ApiNotification {
 
 export interface ApiProjectObservation {
   id: number;
-  project: ApiProjectSummaryWithPOF;
+  project: ApiProjectSummary;
   project_id: number;
   uuid: string;
 }
