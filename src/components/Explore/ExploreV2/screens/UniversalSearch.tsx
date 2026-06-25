@@ -60,6 +60,7 @@ const UniversalSearch = ( ) => {
 
   const [taxonText, setTaxonText] = useState( "" );
   const [locationText, setLocationText] = useState( "" );
+  const [filledFromSelection, setFilledFromSelection] = useState( false );
   // The debounced value that actually drives the autocomplete query. Cleared on
   // selection so a chosen suggestion doesn't re-trigger a result list.
   const {
@@ -77,11 +78,20 @@ const UniversalSearch = ( ) => {
 
   const handleTaxonTextChange = useCallback( ( text: string ) => {
     setTaxonText( text );
+    setFilledFromSelection( false );
     debounceQuery( text );
   }, [debounceQuery] );
 
+  const handleTaxonFocus = useCallback( ( ) => {
+    if ( !filledFromSelection ) { return; }
+    setTaxonText( "" );
+    setFilledFromSelection( false );
+    setQueryImmediately( "" );
+  }, [filledFromSelection, setQueryImmediately] );
+
   const handleSelect = useCallback( ( subject: ExploreV2Subject ) => {
     setTaxonText( subjectToText( subject, commonNameIsPrimary ) );
+    setFilledFromSelection( true );
     setQueryImmediately( "" );
     dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject } );
     locationInputRef.current?.focus( );
@@ -90,6 +100,7 @@ const UniversalSearch = ( ) => {
   const handleReset = useCallback( ( ) => {
     setTaxonText( "" );
     setLocationText( "" );
+    setFilledFromSelection( false );
     setQueryImmediately( "" );
   }, [setQueryImmediately] );
 
@@ -145,6 +156,7 @@ const UniversalSearch = ( ) => {
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
                   onChangeText={handleTaxonTextChange}
+                  onFocus={handleTaxonFocus}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
                   testID="UniversalSearch.taxonInput"

@@ -179,6 +179,27 @@ describe( "UniversalSearch screen", ( ) => {
     expect( screen.getByDisplayValue( "carrieseltzer" ) ).toBeTruthy( );
   } );
 
+  it( "clears the field but keeps the subject when tapping back in after a selection", ( ) => {
+    useUniversalSearch.mockReturnValue( {
+      results: MIXED_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    renderComponent( <UniversalSearch /> );
+
+    typeQuery( "ver" );
+    fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
+    expect( screen.getByDisplayValue( "carrieseltzer" ) ).toBeTruthy( );
+
+    mockDispatch.mockClear( );
+    fireEvent( screen.getByTestId( "UniversalSearch.taxonInput" ), "focus" );
+
+    // the field is cleared for a fresh search...
+    expect( screen.queryByDisplayValue( "carrieseltzer" ) ).toBeNull( );
+    // ...but the committed subject persists (only Reset / a new selection clears it)
+    expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+  } );
+
   it( "navigates to Advanced Search", ( ) => {
     renderComponent( <UniversalSearch /> );
 
