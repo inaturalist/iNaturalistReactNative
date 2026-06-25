@@ -30,7 +30,18 @@ const ProjectsContainer = ( ) => {
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const [userLocation, setUserLocation] = useState( null );
 
-  const apiParams = { };
+  const apiParams = {
+    fields: {
+      id: true,
+      project_type: true,
+      title: true,
+      icon: true,
+      rule_preferences: {
+        field: true,
+        value: true,
+      },
+    },
+  };
 
   if ( searchInput.length > 0 ) {
     apiParams.q = searchInput;
