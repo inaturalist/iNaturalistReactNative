@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { PROJECT_SUMMARY_FIELDS } from "api/fields";
+import { PROJECT_SUMMARY_FIELDS, PROJECT_SUMMARY_POF_FIELDS } from "api/fields";
 import type { ApiProjectSummary } from "api/types";
 import { fetchUserProjects } from "api/users";
 import {
@@ -12,6 +12,7 @@ import type { TabStackScreenProps } from "navigation/types";
 import React, { useEffect, useMemo } from "react";
 import {
   useAuthenticatedQuery,
+  useCurrentUser,
   useRemoteObservation,
   useTranslation,
 } from "sharedHooks";
@@ -23,6 +24,7 @@ const ProjectListContainer = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"ProjectList">["route"]>( );
   const { observationUuid, userId, userLogin } = params;
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
 
   const { remoteObservation } = useRemoteObservation(
     observationUuid,
@@ -37,16 +39,20 @@ const ProjectListContainer = ( ) => {
   ) || [];
   const observationProjects = traditionalProjects.concat( nonTraditionalProjects );
 
+  const isCurrentUser = userId === currentUser?.id;
+  const fields = isCurrentUser
+    ? PROJECT_SUMMARY_POF_FIELDS
+    : PROJECT_SUMMARY_FIELDS;
   const {
     data: userProjects,
     isLoading: userProjectsLoading,
   } = useAuthenticatedQuery<ApiProjectSummary[]>(
-    ["fetchUserProjects", userId],
+    ["fetchUserProjects", userId, fields],
     optsWithAuth => fetchUserProjects(
       {
         id: userId,
         per_page: 200,
-        fields: PROJECT_SUMMARY_FIELDS,
+        fields,
       },
       optsWithAuth,
     ),
