@@ -14,15 +14,23 @@ import {
   useMyObservations,
 } from "providers/MyObservationsContext";
 import React, { useCallback, useState } from "react";
-import type { RealmTaxon } from "realmModels/types";
-import { useTranslation } from "sharedHooks";
+import type { RealmTaxon, RealmUser } from "realmModels/types";
+import { taxonDisplayName } from "sharedHelpers/taxon";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
 
 const SearchMyObservationsTaxon = ( ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const { dispatch } = useMyObservations( );
-  const [taxonQuery, setTaxonQuery] = useState( "" );
+  const { state, dispatch } = useMyObservations( );
+  const { searchedTaxon } = state;
+  const currentUser = useCurrentUser( ) as RealmUser | null;
+
+  const [taxonQuery, setTaxonQuery] = useState( ( ) => (
+    searchedTaxon
+      ? taxonDisplayName( searchedTaxon, currentUser )
+      : ""
+  ) );
 
   const { taxa, isLoading, isLocal } = useTaxonSearch( taxonQuery );
 

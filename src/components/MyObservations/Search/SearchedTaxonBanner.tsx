@@ -9,6 +9,7 @@ import {
 } from "providers/MyObservationsContext";
 import React from "react";
 import type { RealmUser } from "realmModels/types";
+import { taxonDisplayName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 const SearchedTaxonBanner = ( ) => {
@@ -23,14 +24,7 @@ const SearchedTaxonBanner = ( ) => {
 
   if ( !searchedTaxon ) return null;
 
-  // Mirrors DisplayTaxonName: show scientific name when the user has
-  // opted into scientific-first or opted out of common names;
-  // otherwise show common name (falling back to scientific if missing).
-  const preferScientific = currentUser?.prefers_scientific_name_first === true
-    || currentUser?.prefers_common_names === false;
-  const displayName = preferScientific
-    ? searchedTaxon.name
-    : ( searchedTaxon.preferredCommonName || searchedTaxon.name );
+  const displayName = taxonDisplayName( searchedTaxon, currentUser );
 
   return (
     <View
