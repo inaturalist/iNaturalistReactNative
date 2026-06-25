@@ -39,6 +39,7 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
             ? { url: result.taxon.default_photo.url }
             : undefined,
           iconic_taxon_name: result.taxon.iconic_taxon_name,
+          rank_level: result.taxon.rank_level,
         },
       };
   }
