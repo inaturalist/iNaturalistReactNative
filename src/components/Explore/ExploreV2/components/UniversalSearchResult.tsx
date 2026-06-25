@@ -6,7 +6,8 @@ import IconicTaxonIcon from "components/SharedComponents/IconicTaxonIcon";
 import { Image, Pressable, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
 import React from "react";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import useTranslation from "sharedHooks/useTranslation";
 import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
 
 interface Props {

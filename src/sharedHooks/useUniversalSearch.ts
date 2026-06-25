@@ -5,7 +5,7 @@ import type {
   ApiTaxon,
   ApiUser,
 } from "api/types";
-import { useAuthenticatedQuery } from "sharedHooks";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 // A single autocomplete suggestion, tagged by source so the consumer can pick
 // the right row renderer. We use the raw `search` wrapper rather than
