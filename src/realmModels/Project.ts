@@ -1,6 +1,8 @@
 import { Realm } from "@realm/react";
 import type { ApiProjectSummaryWithPOF } from "api/types";
+import { UpdateMode } from "realm";
 import ProjectObservationField from "realmModels/ProjectObservationField";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 class Project extends Realm.Object {
   static mapApiToRealm( apiProject: ApiProjectSummaryWithPOF ) {
@@ -19,6 +21,21 @@ class Project extends Realm.Object {
     };
 
     return localProject;
+  }
+
+  static upsertRemoteProjects( apiProjects: ApiProjectSummaryWithPOF[], realm: Realm ) {
+    if ( !apiProjects || apiProjects.length === 0 ) return;
+
+    safeRealmWrite( realm, ( ) => {
+      apiProjects.forEach( apiProject => {
+        const projectMappedForRealm = Project.mapApiToRealm( apiProject );
+        realm.create(
+          "Project",
+          projectMappedForRealm,
+          UpdateMode.Modified,
+        );
+      } );
+    }, "upserting projects in Project" );
   }
 
   static schema = {
