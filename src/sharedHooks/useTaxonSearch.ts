@@ -39,7 +39,9 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
 
   const shouldFetchRemote = taxonQuery.length > 0;
 
-  const { data: remoteTaxa, refetch, isLoading } = useAuthenticatedQuery(
+  const {
+    data: remoteTaxa, refetch, isLoading, isFetched,
+  } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
     async ( optsWithAuth: ApiOpts ) => {
       const apiTaxa = await fetchSearchResults(
@@ -96,6 +98,13 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
 
       if ( isLoading ) return;
 
+      // Don't fall back to local results until the remote query has actually
+      // run at least once. useAuthenticatedQuery starts with enabled=false
+      // while it resolves the auth state, which makes isLoading=false even
+      // though no remote fetch has happened yet — without this check we'd
+      // flash the "Showing offline search results" callout in that window.
+      if ( shouldFetchRemote && !isFetched ) return;
+
       if ( remoteTaxa && remoteTaxa.length > 0 ) {
         if ( isSubscribed ) setLocalTaxa( null );
         return;
@@ -116,10 +125,12 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
       isSubscribed = false;
     };
   }, [
+    isFetched,
     isLoading,
     realm,
     remoteTaxa,
     safeRealmSearch,
+    shouldFetchRemote,
     taxonQuery,
   ] );
 
