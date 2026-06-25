@@ -61,7 +61,11 @@ const SearchMyObservationsTaxon = ( ) => {
     closeScreen( );
   }, [closeScreen, dispatch] );
 
-  const resetSearch = useCallback( ( ) => setTaxonQuery( "" ), [] );
+  const resetSearch = useCallback( ( ) => {
+    setTaxonQuery( "" );
+    dispatch( { type: MY_OBSERVATIONS_ACTION.CLEAR_TAXON_SEARCH } );
+    closeScreen( );
+  }, [closeScreen, dispatch] );
 
   const renderItem = useCallback(
     // no-unused-prop-types failing for components defined at runtime seems to
@@ -86,6 +90,7 @@ const SearchMyObservationsTaxon = ( ) => {
         closeModal={closeScreen}
         headerText={t( "SEARCH" )}
         resetFilters={resetSearch}
+        resetDisabled={!searchedTaxon}
         testID="SearchMyObservationsTaxon.close"
       />
       <TaxonSearch
