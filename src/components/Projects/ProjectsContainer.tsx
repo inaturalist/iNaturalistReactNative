@@ -1,3 +1,4 @@
+import { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import isEmpty from "lodash/isEmpty";
 import React, { useCallback, useState } from "react";
 import {
@@ -31,16 +32,7 @@ const ProjectsContainer = ( ) => {
   const [userLocation, setUserLocation] = useState( null );
 
   const apiParams = {
-    fields: {
-      id: true,
-      project_type: true,
-      title: true,
-      icon: true,
-      rule_preferences: {
-        field: true,
-        value: true,
-      },
-    },
+    fields: PROJECT_SUMMARY_FIELDS,
   };
 
   if ( searchInput.length > 0 ) {
