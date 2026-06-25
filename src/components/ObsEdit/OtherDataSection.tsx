@@ -155,7 +155,7 @@ const OtherDataSection = ( {
         <DropdownItem
           accessibilityLabel={projectsLabel}
           handlePress={handleProjectsPress}
-          iconName="briefcase"
+          iconName="projects"
           text={projectsLabel}
         />
       )}
