@@ -48,7 +48,7 @@ const useUniversalSearch = ( query: string ) => {
     data: results = [],
     isLoading,
     refetch,
-  } = useAuthenticatedQuery<UniversalSearchResultItem[] | null>(
+  } = useAuthenticatedQuery<UniversalSearchResultItem[]>(
     ["useUniversalSearch", trimmedQuery],
     async ( optsWithAuth: ApiOpts ) => {
       const response = await search(
@@ -76,7 +76,7 @@ const useUniversalSearch = ( query: string ) => {
   );
 
   return {
-    results: results ?? [],
+    results,
     isLoading,
     refetch,
   };
