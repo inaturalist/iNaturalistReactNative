@@ -1,6 +1,8 @@
 import { PROJECT_SUMMARY_FIELDS, PROJECT_SUMMARY_POF_FIELDS } from "api/fields";
 import isEmpty from "lodash/isEmpty";
-import React, { useCallback, useState } from "react";
+import { RealmContext } from "providers/contexts";
+import React, { useCallback, useEffect, useState } from "react";
+import Project from "realmModels/Project";
 import {
   useCurrentUser,
   useLocationPermission,
@@ -20,7 +22,10 @@ export enum TAB_ID {
   NEARBY = "NEARBY"
 }
 
+const { useRealm } = RealmContext;
+
 const ProjectsContainer = ( ) => {
+  const realm = useRealm( );
   const [searchInput, setSearchInput] = useState( "" );
   const currentUser = useCurrentUser( );
   const memberId = currentUser?.id;
@@ -65,6 +70,13 @@ const ProjectsContainer = ( ) => {
     params: apiParams,
     enabled: !isEmpty( apiParams ),
   } );
+
+  // Update local copy of a user's joined projects
+  useEffect( () => {
+    if ( currentTabId === TAB_ID.JOINED ) {
+      Project.upsertRemoteProjects( projects, realm );
+    }
+  }, [currentTabId, projects, realm] );
 
   const tabs = [
     {
