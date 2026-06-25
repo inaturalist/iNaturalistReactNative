@@ -51,7 +51,7 @@ const MIXED_RESULTS = [
     type: "user",
     user: {
       id: 7,
-      login: "carrieseltzer",
+      login: "seth_msp",
       icon_url: "https://example.com/u.jpg",
       observations_count: 5,
     },
@@ -147,7 +147,7 @@ describe( "UniversalSearch screen", ( ) => {
 
     typeQuery( "ver" );
 
-    expect( screen.getByText( "carrieseltzer" ) ).toBeTruthy( );
+    expect( screen.getByText( "seth_msp" ) ).toBeTruthy( );
     expect( screen.getByText( "InverteFest" ) ).toBeTruthy( );
     expect( screen.getByTestId( "UniversalSearchResult.taxon.12" ) ).toBeTruthy( );
     // each row has a (no-op) info icon
@@ -171,12 +171,12 @@ describe( "UniversalSearch screen", ( ) => {
         type: "SET_SUBJECT",
         subject: expect.objectContaining( {
           type: "user",
-          user: expect.objectContaining( { id: 7, login: "carrieseltzer" } ),
+          user: expect.objectContaining( { id: 7, login: "seth_msp" } ),
         } ),
       } ),
     );
     // the search field is filled with the selected suggestion
-    expect( screen.getByDisplayValue( "carrieseltzer" ) ).toBeTruthy( );
+    expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
   } );
 
   it( "clears the field but keeps the subject when tapping back in after a selection", ( ) => {
@@ -189,15 +189,53 @@ describe( "UniversalSearch screen", ( ) => {
 
     typeQuery( "ver" );
     fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
-    expect( screen.getByDisplayValue( "carrieseltzer" ) ).toBeTruthy( );
+    expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
 
     mockDispatch.mockClear( );
     fireEvent( screen.getByTestId( "UniversalSearch.subjectInput" ), "focus" );
 
     // the field is cleared for a fresh search...
-    expect( screen.queryByDisplayValue( "carrieseltzer" ) ).toBeNull( );
+    expect( screen.queryByDisplayValue( "seth_msp" ) ).toBeNull( );
     // ...but the committed subject persists (only Reset / a new selection clears it)
     expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+  } );
+
+  it( "shows an empty-state message when a query returns no results", ( ) => {
+    useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
+    renderComponent( <UniversalSearch /> );
+
+    typeQuery( "zzzzz" );
+
+    expect(
+      screen.getByText( i18next.t( "No-results-found-for-that-search" ) ),
+    ).toBeTruthy( );
+  } );
+
+  it( "does not show the empty-state message while results are loading", ( ) => {
+    useUniversalSearch.mockReturnValue( { results: [], isLoading: true, refetch: jest.fn( ) } );
+    renderComponent( <UniversalSearch /> );
+
+    typeQuery( "ver" );
+
+    expect(
+      screen.queryByText( i18next.t( "No-results-found-for-that-search" ) ),
+    ).toBeNull( );
+  } );
+
+  it( "does not show results until the user has typed a query", ( ) => {
+    useUniversalSearch.mockReturnValue( {
+      results: MIXED_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    renderComponent( <UniversalSearch /> );
+
+    // No query typed yet, so the result list is not rendered even though the
+    // hook would return data.
+    expect( screen.queryByText( "seth_msp" ) ).toBeNull( );
+    expect(
+      screen.queryByText( i18next.t( "No-results-found-for-that-search" ) ),
+    ).toBeNull( );
   } );
 
   it( "navigates to Advanced Search", ( ) => {
