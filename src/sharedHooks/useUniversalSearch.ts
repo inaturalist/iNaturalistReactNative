@@ -15,6 +15,31 @@ export type UniversalSearchResultItem =
   | { type: "user"; user: ApiUser }
   | { type: "project"; project: ApiProject };
 
+const UNIVERSAL_SEARCH_FIELDS = {
+  taxon: {
+    id: true,
+    name: true,
+    preferred_common_name: true,
+    rank: true,
+    rank_level: true,
+    iconic_taxon_name: true,
+    default_photo: { url: true },
+  },
+  user: {
+    id: true,
+    login: true,
+    icon_url: true,
+    observations_count: true,
+  },
+  project: {
+    id: true,
+    title: true,
+    icon: true,
+    project_type: true,
+    rule_preferences: true,
+  },
+};
+
 const useUniversalSearch = ( query: string ) => {
   const trimmedQuery = query.trim( );
   const shouldFetch = trimmedQuery.length > 0;
@@ -27,7 +52,11 @@ const useUniversalSearch = ( query: string ) => {
     ["useUniversalSearch", trimmedQuery],
     async ( optsWithAuth: ApiOpts ) => {
       const response = await search(
-        { q: trimmedQuery, sources: ["taxa", "users", "projects"] },
+        {
+          q: trimmedQuery,
+          sources: ["taxa", "users", "projects"],
+          fields: UNIVERSAL_SEARCH_FIELDS,
+        },
         optsWithAuth,
       );
       if ( !response ) { return []; }
