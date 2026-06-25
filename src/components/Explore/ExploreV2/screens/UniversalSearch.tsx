@@ -55,7 +55,8 @@ const UniversalSearch = ( ) => {
   const { t } = useTranslation( );
   const { dispatch } = useExploreV2( );
   const currentUser = useCurrentUser( );
-  const prefersCommonNames = currentUser?.prefers_common_names !== false;
+  const commonNameIsPrimary = currentUser?.prefers_common_names !== false
+    && currentUser?.prefers_scientific_name_first !== true;
 
   const [taxonText, setTaxonText] = useState( "" );
   const [locationText, setLocationText] = useState( "" );
@@ -80,11 +81,11 @@ const UniversalSearch = ( ) => {
   }, [debounceQuery] );
 
   const handleSelect = useCallback( ( subject: ExploreV2Subject ) => {
-    setTaxonText( subjectToText( subject, prefersCommonNames ) );
+    setTaxonText( subjectToText( subject, commonNameIsPrimary ) );
     setQueryImmediately( "" );
     dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject } );
     locationInputRef.current?.focus( );
-  }, [dispatch, prefersCommonNames, setQueryImmediately] );
+  }, [commonNameIsPrimary, dispatch, setQueryImmediately] );
 
   const handleReset = useCallback( ( ) => {
     setTaxonText( "" );

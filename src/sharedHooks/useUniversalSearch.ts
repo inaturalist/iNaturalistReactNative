@@ -17,7 +17,6 @@ export type UniversalSearchResultItem =
 
 const useUniversalSearch = ( query: string ) => {
   const trimmedQuery = query.trim( );
-  // TODO look into some sort of throttle here
   const shouldFetch = trimmedQuery.length > 0;
 
   const {

@@ -46,7 +46,7 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
 
 export const subjectToText = (
   subject: ExploreV2Subject,
-  prefersCommonNames: boolean,
+  commonNameIsPrimary: boolean,
 ): string => {
   switch ( subject.type ) {
     case "user":
@@ -55,7 +55,7 @@ export const subjectToText = (
       return subject.project.title;
     case "taxon":
     default:
-      return ( prefersCommonNames && subject.taxon.preferred_common_name )
+      return ( commonNameIsPrimary && subject.taxon.preferred_common_name )
         ? generateTaxonPieces( subject.taxon ).commonName ?? subject.taxon.name
         : subject.taxon.name;
   }

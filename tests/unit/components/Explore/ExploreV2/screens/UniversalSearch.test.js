@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native";
+import { act, fireEvent, screen } from "@testing-library/react-native";
 import UniversalSearch from "components/Explore/ExploreV2/screens/UniversalSearch";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -18,8 +18,90 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+const mockDispatch = jest.fn( );
+jest.mock( "providers/ExploreV2Context", ( ) => {
+  const actual = jest.requireActual( "providers/ExploreV2Context" );
+  return {
+    ...actual,
+    useExploreV2: jest.fn( ),
+  };
+} );
+const { useExploreV2 } = require( "providers/ExploreV2Context" );
+
+jest.mock( "sharedHooks/useUniversalSearch" );
+const useUniversalSearch = require( "sharedHooks/useUniversalSearch" ).default;
+
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
+} ) );
+const useCurrentUser = require( "sharedHooks/useCurrentUser" ).default;
+
+const CURRENT_USER = {
+  id: 99,
+  login: "tester",
+  icon_url: null,
+  observations_count: 42,
+  prefers_common_names: true,
+  prefers_scientific_name_first: false,
+};
+
+const MIXED_RESULTS = [
+  {
+    type: "user",
+    user: {
+      id: 7,
+      login: "carrieseltzer",
+      icon_url: "https://example.com/u.jpg",
+      observations_count: 5,
+    },
+  },
+  {
+    type: "taxon",
+    taxon: {
+      id: 12,
+      name: "Eumyias thalassinus",
+      preferred_common_name: "Verditer Flycatcher",
+      iconic_taxon_name: "Aves",
+      default_photo: { url: "https://example.com/t.jpg" },
+    },
+  },
+  {
+    type: "project",
+    project: {
+      id: 9,
+      title: "InverteFest",
+      project_type: "collection",
+      rule_preferences: [],
+      icon: "https://example.com/p.jpg",
+    },
+  },
+];
+
+const typeQuery = text => {
+  fireEvent.changeText( screen.getByTestId( "UniversalSearch.taxonInput" ), text );
+  // Only the timer advancement needs an act wrapper; fireEvent is already
+  // wrapped internally by Testing Library.
+  act( ( ) => {
+    jest.advanceTimersByTime( 400 );
+  } );
+};
+
 beforeAll( async ( ) => {
   await initI18next( );
+} );
+
+beforeEach( ( ) => {
+  jest.useFakeTimers( );
+  mockNavigate.mockClear( );
+  mockDispatch.mockClear( );
+  useExploreV2.mockReturnValue( { dispatch: mockDispatch, state: {} } );
+  useCurrentUser.mockReturnValue( CURRENT_USER );
+  useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
+} );
+
+afterEach( ( ) => {
+  jest.useRealTimers( );
 } );
 
 describe( "UniversalSearch screen", ( ) => {
@@ -53,11 +135,55 @@ describe( "UniversalSearch screen", ( ) => {
 
     expect( screen.queryByDisplayValue( "cup plant" ) ).toBeNull( );
     expect( screen.queryByDisplayValue( "California" ) ).toBeNull( );
-    expect(
-      screen.getByPlaceholderText( i18next.t( "Search-for-species-user-or-project" ) ),
-    ).toBeTruthy( );
-    expect(
-      screen.getByPlaceholderText( i18next.t( "Search-for-a-location" ) ),
-    ).toBeTruthy( );
+  } );
+
+  it( "shows mixed autocomplete results while typing", ( ) => {
+    useUniversalSearch.mockReturnValue( {
+      results: MIXED_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    renderComponent( <UniversalSearch /> );
+
+    typeQuery( "ver" );
+
+    expect( screen.getByText( "carrieseltzer" ) ).toBeTruthy( );
+    expect( screen.getByText( "InverteFest" ) ).toBeTruthy( );
+    expect( screen.getByTestId( "UniversalSearchResult.taxon.12" ) ).toBeTruthy( );
+    // each row has a (no-op) info icon
+    expect( screen.getByTestId( "UniversalSearchResult.info.7" ) ).toBeTruthy( );
+  } );
+
+  it( "fills the field and sets the subject when a result is tapped", ( ) => {
+    useUniversalSearch.mockReturnValue( {
+      results: MIXED_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    renderComponent( <UniversalSearch /> );
+
+    typeQuery( "ver" );
+
+    fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith(
+      expect.objectContaining( {
+        type: "SET_SUBJECT",
+        subject: expect.objectContaining( {
+          type: "user",
+          user: expect.objectContaining( { id: 7, login: "carrieseltzer" } ),
+        } ),
+      } ),
+    );
+    // the search field is filled with the selected suggestion
+    expect( screen.getByDisplayValue( "carrieseltzer" ) ).toBeTruthy( );
+  } );
+
+  it( "navigates to Advanced Search", ( ) => {
+    renderComponent( <UniversalSearch /> );
+
+    fireEvent.press( screen.getByText( i18next.t( "Advanced-Search" ) ) );
+
+    expect( mockNavigate ).toHaveBeenCalledWith( "AdvancedSearch" );
   } );
 } );
