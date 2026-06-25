@@ -46,7 +46,7 @@ const AddObsButton = ( ): React.Node => {
       // Base trigger condition in all cases:
       // Only show the tooltip if the user has the AI camera as the default button option.
       // Only show the tooltip on MyObservations screen.
-      const onObsList = currentRoute?.name === "ObsList";
+      const onObsList = currentRoute?.name === "MyObservationsResults";
       const onlyAiCamera = !isAllAddObsOptionsMode;
 
       let triggerCondition = onObsList && onlyAiCamera;

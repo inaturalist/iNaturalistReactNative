@@ -1,0 +1,5 @@
+NEW
+* Link to account settings from user profile  
+
+UPDATED
+* Minor package updates and performance improvements
