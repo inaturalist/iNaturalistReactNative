@@ -58,7 +58,7 @@ const UniversalSearch = ( ) => {
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
 
-  const [taxonText, setTaxonText] = useState( "" );
+  const [subjectText, setSubjectText] = useState( "" );
   const [locationText, setLocationText] = useState( "" );
   const [filledFromSelection, setFilledFromSelection] = useState( false );
   // The debounced value that actually drives the autocomplete query. Cleared on
@@ -73,24 +73,24 @@ const UniversalSearch = ( ) => {
 
   const { results, isLoading } = useUniversalSearch( debouncedQuery );
 
-  const bothFilled = taxonText.length > 0 && locationText.length > 0;
+  const bothFilled = subjectText.length > 0 && locationText.length > 0;
   const showResults = debouncedQuery.trim( ).length > 0;
 
-  const handleTaxonTextChange = useCallback( ( text: string ) => {
-    setTaxonText( text );
+  const handleSubjectTextChange = useCallback( ( text: string ) => {
+    setSubjectText( text );
     setFilledFromSelection( false );
     debounceQuery( text );
   }, [debounceQuery] );
 
-  const handleTaxonFocus = useCallback( ( ) => {
+  const handleSubjectFocus = useCallback( ( ) => {
     if ( !filledFromSelection ) { return; }
-    setTaxonText( "" );
+    setSubjectText( "" );
     setFilledFromSelection( false );
     setQueryImmediately( "" );
   }, [filledFromSelection, setQueryImmediately] );
 
   const handleSelect = useCallback( ( subject: ExploreV2Subject ) => {
-    setTaxonText( subjectToText( subject, commonNameIsPrimary ) );
+    setSubjectText( subjectToText( subject, commonNameIsPrimary ) );
     setFilledFromSelection( true );
     setQueryImmediately( "" );
     dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject } );
@@ -98,7 +98,7 @@ const UniversalSearch = ( ) => {
   }, [commonNameIsPrimary, dispatch, setQueryImmediately] );
 
   const handleReset = useCallback( ( ) => {
-    setTaxonText( "" );
+    setSubjectText( "" );
     setLocationText( "" );
     setFilledFromSelection( false );
     setQueryImmediately( "" );
@@ -155,12 +155,12 @@ const UniversalSearch = ( ) => {
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
-                  onChangeText={handleTaxonTextChange}
-                  onFocus={handleTaxonFocus}
+                  onChangeText={handleSubjectTextChange}
+                  onFocus={handleSubjectFocus}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
-                  testID="UniversalSearch.taxonInput"
-                  value={taxonText}
+                  testID="UniversalSearch.subjectInput"
+                  value={subjectText}
                 />
               </View>
               <View className={classnames( INPUT_BOX_CLASSES, "-mt-px" )}>

@@ -79,7 +79,7 @@ const MIXED_RESULTS = [
 ];
 
 const typeQuery = text => {
-  fireEvent.changeText( screen.getByTestId( "UniversalSearch.taxonInput" ), text );
+  fireEvent.changeText( screen.getByTestId( "UniversalSearch.subjectInput" ), text );
   // Only the timer advancement needs an act wrapper; fireEvent is already
   // wrapped internally by Testing Library.
   act( ( ) => {
@@ -109,7 +109,7 @@ describe( "UniversalSearch screen", ( ) => {
     renderComponent( <UniversalSearch /> );
 
     expect( screen.getByTestId( "UniversalSearch" ) ).toBeTruthy( );
-    expect( screen.getByTestId( "UniversalSearch.taxonInput" ) ).toBeTruthy( );
+    expect( screen.getByTestId( "UniversalSearch.subjectInput" ) ).toBeTruthy( );
     expect( screen.getByTestId( "UniversalSearch.locationInput" ) ).toBeTruthy( );
     expect( screen.getByTestId( "UniversalSearch.searchButton" ) ).toBeTruthy( );
     expect( screen.getByTestId( "UniversalSearch.back" ) ).toBeTruthy( );
@@ -118,7 +118,7 @@ describe( "UniversalSearch screen", ( ) => {
   it( "updates the controlled inputs as the user types", ( ) => {
     renderComponent( <UniversalSearch /> );
 
-    fireEvent.changeText( screen.getByTestId( "UniversalSearch.taxonInput" ), "cup plant" );
+    fireEvent.changeText( screen.getByTestId( "UniversalSearch.subjectInput" ), "cup plant" );
     fireEvent.changeText( screen.getByTestId( "UniversalSearch.locationInput" ), "California" );
 
     expect( screen.getByDisplayValue( "cup plant" ) ).toBeTruthy( );
@@ -128,7 +128,7 @@ describe( "UniversalSearch screen", ( ) => {
   it( "clears both fields when reset is pressed", ( ) => {
     renderComponent( <UniversalSearch /> );
 
-    fireEvent.changeText( screen.getByTestId( "UniversalSearch.taxonInput" ), "cup plant" );
+    fireEvent.changeText( screen.getByTestId( "UniversalSearch.subjectInput" ), "cup plant" );
     fireEvent.changeText( screen.getByTestId( "UniversalSearch.locationInput" ), "California" );
 
     fireEvent.press( screen.getByText( i18next.t( "Reset-verb" ) ) );
@@ -192,7 +192,7 @@ describe( "UniversalSearch screen", ( ) => {
     expect( screen.getByDisplayValue( "carrieseltzer" ) ).toBeTruthy( );
 
     mockDispatch.mockClear( );
-    fireEvent( screen.getByTestId( "UniversalSearch.taxonInput" ), "focus" );
+    fireEvent( screen.getByTestId( "UniversalSearch.subjectInput" ), "focus" );
 
     // the field is cleared for a fresh search...
     expect( screen.queryByDisplayValue( "carrieseltzer" ) ).toBeNull( );
