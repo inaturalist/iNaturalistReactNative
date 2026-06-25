@@ -10,7 +10,7 @@ import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 
 // Mock methods needed to get the current route
 navigationRef.isReady = jest.fn( () => true );
-navigationRef.getCurrentRoute = jest.fn( () => ( { name: "ObsList" } ) );
+navigationRef.getCurrentRoute = jest.fn( () => ( { name: "MyObservationsResults" } ) );
 navigationRef.addListener = jest.fn( () => jest.fn() );
 
 const mockUser = factory( "LocalUser" );

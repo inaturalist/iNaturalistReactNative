@@ -3,6 +3,8 @@ import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/buildQueryParams";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
+import ExploreV2Tabs
+  from "components/Explore/ExploreV2/components/ExploreV2Tabs";
 import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import useInfiniteExploreScroll
@@ -17,13 +19,14 @@ import {
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import {
   OBSERVATIONS_SORT_OPTIONS,
   useObservationsSortLabels,
 } from "sharedHelpers/observationsSort";
 import { useTranslation } from "sharedHooks";
+import useSpeciesCount from "sharedHooks/useSpeciesCount";
 
 interface SortOption {
   label: string;
@@ -51,7 +54,10 @@ const ExploreResults = ( ) => {
     {} as Record<OBSERVATIONS_SORT, SortOption>,
   );
 
-  const queryParams = buildExploreV2QueryParams( state );
+  const queryParams = useMemo(
+    ( ) => buildExploreV2QueryParams( state ),
+    [state],
+  );
 
   const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED
     && state.location.placeMode !== EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION;
@@ -63,6 +69,19 @@ const ExploreResults = ( ) => {
     observations,
     totalResults,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
+
+  const speciesCountParams = useMemo( ( ) => {
+    // take out params that don't apply to species count
+    const {
+      order_by: orderBy, order, per_page: perPage, ...filterParams
+    } = queryParams;
+    return filterParams;
+  }, [queryParams] );
+
+  const speciesCount = useSpeciesCount(
+    speciesCountParams,
+    { enabled: canFetch, keyPrefix: "exploreV2SpeciesCount" },
+  );
 
   const renderPermissionPrompt = ( ) => (
     <View className="flex-1 justify-center p-4">
@@ -83,6 +102,10 @@ const ExploreResults = ( ) => {
     <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
         <ExploreV2Header />
+        <ExploreV2Tabs
+          observationsCount={totalResults}
+          speciesCount={speciesCount}
+        />
         {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
           ? renderPermissionPrompt( )
           : (

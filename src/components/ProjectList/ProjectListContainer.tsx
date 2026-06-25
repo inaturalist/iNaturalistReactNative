@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import type { ApiProject } from "api/types";
+import { PROJECT_SUMMARY_FIELDS } from "api/fields";
+import type { ApiProjectSummary } from "api/types";
 import { fetchUserProjects } from "api/users";
 import {
   ActivityIndicator,
@@ -9,7 +10,6 @@ import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useEffect, useMemo } from "react";
-import Observation from "realmModels/Observation";
 import {
   useAuthenticatedQuery,
   useRemoteObservation,
@@ -37,13 +37,16 @@ const ProjectListContainer = ( ) => {
   ) || [];
   const observationProjects = traditionalProjects.concat( nonTraditionalProjects );
 
-  const { data: userProjects, isLoading: userProjectsLoading } = useAuthenticatedQuery(
+  const {
+    data: userProjects,
+    isLoading: userProjectsLoading,
+  } = useAuthenticatedQuery<ApiProjectSummary[]>(
     ["fetchUserProjects", userId],
     optsWithAuth => fetchUserProjects(
       {
         id: userId,
         per_page: 200,
-        fields: Observation.PROJECT_FIELDS,
+        fields: PROJECT_SUMMARY_FIELDS,
       },
       optsWithAuth,
     ),
@@ -67,7 +70,7 @@ const ProjectListContainer = ( ) => {
     };
   }, [observationUuid, remoteObservation, userLogin, userProjects, t] );
 
-  const projects: ApiProject[] = observationUuid
+  const projects: ApiProjectSummary[] = observationUuid
     ? observationProjects
     : ( userProjects ?? [] );
 
