@@ -1,4 +1,5 @@
 import type { ExploreV2Subject } from "providers/ExploreV2Context";
+import { generateTaxonPieces } from "sharedHelpers/taxon";
 import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
 
 // Translation layer between the universal search API results
@@ -55,7 +56,7 @@ export const subjectToText = (
     case "taxon":
     default:
       return ( prefersCommonNames && subject.taxon.preferred_common_name )
-        ? subject.taxon.preferred_common_name
+        ? generateTaxonPieces( subject.taxon ).commonName ?? subject.taxon.name
         : subject.taxon.name;
   }
 };
