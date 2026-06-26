@@ -14,7 +14,6 @@ const Journal = ( ) => {
   if ( projectId ) {
     return (
       <ProjectPosts
-        journalPostsCount={journalPostsCount}
         projectIcon={projectIcon}
         projectId={projectId}
         projectTitle={projectTitle}
@@ -24,6 +23,7 @@ const Journal = ( ) => {
 
   // TODO: posts for one user
   if ( userLogin ) {
+    console.log( journalPostsCount );
     return null;
   }
 
