@@ -109,7 +109,18 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      useQuery: typeOrConfig => {
+        const realm = global.mockRealms[mockRealmIdentifier];
+        if ( !realm || realm.isClosed ) return [];
+        if ( typeOrConfig && typeof typeOrConfig === "object" && typeOrConfig.type ) {
+          const { type, query: configQuery } = typeOrConfig;
+          const results = realm.objects( type );
+          return configQuery
+            ? configQuery( results )
+            : results;
+        }
+        return [];
+      },
     },
   };
 } );
