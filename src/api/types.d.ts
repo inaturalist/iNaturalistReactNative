@@ -71,11 +71,11 @@ export interface ApiProjectSummaryWithPOF extends ApiProjectSummary {
   project_observation_fields: ApiProjectObservationField[];
 }
 
-export interface ApiResponse {
+export interface ApiResponse<T> {
   total_results: number;
   page: number;
   per_page: number;
-  results: object[];
+  results: T[];
 }
 
 export interface ApiObservationsUpdatesParams extends ApiParams {
@@ -251,8 +251,7 @@ export interface ApiTotalBounds {
   nelng: number;
 }
 
-export interface ApiObservationsSearchResponse extends ApiResponse {
-  results: ApiObservation[];
+export interface ApiObservationsSearchResponse extends ApiResponse<ApiObservation> {
   total_bounds?: ApiTotalBounds;
 }
 
