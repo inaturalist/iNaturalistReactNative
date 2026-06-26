@@ -72,12 +72,10 @@ jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
   default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) ),
 } ) );
 
-const mockObservationIds = mockObservations.map( obs => obs.uuid );
-
 const renderMyObservations = layout => renderComponent(
   <MyObservationsSimple
     layout={layout}
-    observationIds={mockObservationIds}
+    observationIds={mockObservations}
     onEndReached={jest.fn( )}
     toggleLayout={jest.fn( )}
     setShowLoginSheet={jest.fn( )}
