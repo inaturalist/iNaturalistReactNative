@@ -121,6 +121,8 @@ const ProjectDetails = ( {
   const onJournalPostsPressed = ( ) => {
     navigation.navigate( "Journal", {
       // Function is only rendered with a button after null check below
+      projectIcon: ( project as Project ).icon,
+      projectId: ( project as Project ).id,
       projectTitle: ( project as Project ).title,
       journalPostsCount: ( project as Project ).journal_posts_count,
     } );

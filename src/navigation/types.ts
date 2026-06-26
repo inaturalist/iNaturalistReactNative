@@ -331,11 +331,15 @@ export type BaseTabStackParamList = {
   // }
   // From ProjectDetails
   // {
+  //   projectIcon: project?.icon
+  //   projectId: project?.id,
   //   projectTitle: project?.title,
   //   journalPostsCount: project?.journal_posts_count,
   // }
   Journal: {
     userLogin?: string;
+    projectIcon?: string;
+    projectId?: number;
     projectTitle?: string;
     journalPostsCount?: number;
   } | undefined;
