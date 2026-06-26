@@ -21,6 +21,12 @@ const resultId = ( result: UniversalSearchResultItem ): number | undefined => {
   return result.taxon.id;
 };
 
+const resultLabel = ( result: UniversalSearchResultItem ): string => {
+  if ( result.type === "user" ) { return result.user.login || ""; }
+  if ( result.type === "project" ) { return result.project.title || ""; }
+  return result.taxon.preferred_common_name || result.taxon.name || "";
+};
+
 const UniversalSearchResult = ( { result, onPress }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -82,6 +88,7 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityLabel={resultLabel( result )}
       className="flex-row items-center justify-between px-4 py-2 border-b border-lightGray"
       onPress={onPress}
       testID={`UniversalSearchResult.${result.type}.${resultId( result )}`}
