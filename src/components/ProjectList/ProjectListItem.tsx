@@ -17,7 +17,7 @@ import formatProjectDate from "../Projects/helpers/displayDates";
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
 interface Project {
-  icon?: string;
+  icon: string;
   id: number;
   project_type: "collection" | "umbrella" | "";
   rule_preferences: ProjectRulePreference[];
@@ -43,10 +43,9 @@ const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   );
 
   const displayProjectIcon = ( ) => {
-    const { icon } = ( item as Project );
-    const productionIcon = icon?.replace( "staticdev", "static" );
+    const productionIcon = ( item as Project ).icon.replace( "staticdev", "static" );
 
-    if ( !productionIcon || productionIcon === defaultProjectIcon ) {
+    if ( productionIcon === defaultProjectIcon ) {
       return (
         <View className={
           classnames(
