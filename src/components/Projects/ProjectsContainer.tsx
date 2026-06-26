@@ -1,4 +1,4 @@
-import { PROJECT_SUMMARY_FIELDS, PROJECT_SUMMARY_POF_FIELDS } from "api/fields";
+import { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import isEmpty from "lodash/isEmpty";
 import React, { useCallback, useState } from "react";
 import {
@@ -39,7 +39,6 @@ const ProjectsContainer = ( ) => {
     apiParams.q = searchInput;
   } else if ( currentTabId === TAB_ID.JOINED ) {
     apiParams.member_id = memberId;
-    apiParams.fields = PROJECT_SUMMARY_POF_FIELDS;
   } else if ( currentTabId === TAB_ID.FEATURED ) {
     apiParams.featured = true;
   } else if ( currentTabId === TAB_ID.NEARBY && userLocation ) {
