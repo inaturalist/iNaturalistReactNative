@@ -5,7 +5,7 @@ import UniversalSearchResult
 import { resultToSubject }
   from "components/Explore/ExploreV2/helpers/universalSearchSubject";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
-import Body2 from "components/SharedComponents/Typography/Body2";
+import Body1 from "components/SharedComponents/Typography/Body1";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import React, { useCallback, useMemo } from "react";
@@ -49,15 +49,16 @@ const ICONIC_TAXA_ORDER = [
 ];
 
 const ICON_BUTTON_WRAPPER = classnames(
-  "border-darkGray border border-[2px] mr-4 justify-center items-center",
+  "border-darkGray border border-[2px] mr-[15px] justify-center items-center",
   "h-[36px] w-[36px] rounded-full",
 );
 
-const ROW_CLASSES = "px-4 py-2 border-b border-lightGray";
+const ROW_CLASSES = "px-[15px] py-[11px] border-b border-lightGray";
 
 const ICONIC_ROW_STYLE = {
   alignItems: "center",
-  paddingHorizontal: 16,
+  paddingHorizontal: 15,
+  paddingVertical: 15,
 } as const;
 
 const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
@@ -120,15 +121,17 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled" testID="DefaultSearchOptions">
-      <FlatList
-        contentContainerStyle={ICONIC_ROW_STYLE}
-        data={orderedIconicTaxa}
-        horizontal
-        keyExtractor={taxon => `iconic-${taxon.id}`}
-        renderItem={renderIconicTaxon}
-        showsHorizontalScrollIndicator={false}
-        testID="DefaultSearchOptions.iconicTaxa"
-      />
+      <View className="border-t border-b border-lightGray">
+        <FlatList
+          contentContainerStyle={ICONIC_ROW_STYLE}
+          data={orderedIconicTaxa}
+          horizontal
+          keyExtractor={taxon => `iconic-${taxon.id}`}
+          renderItem={renderIconicTaxon}
+          showsHorizontalScrollIndicator={false}
+          testID="DefaultSearchOptions.iconicTaxa"
+        />
+      </View>
       {currentUserResult && (
         <UniversalSearchResult
           result={currentUserResult}
@@ -144,7 +147,7 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
         onPress={( ) => undefined}
         testID="DefaultSearchOptions.unobserved"
       >
-        <Body2>{t( "Species-I-havent-observed" )}</Body2>
+        <Body1>{t( "Species-I-havent-observed" )}</Body1>
       </Pressable>
     </ScrollView>
   );
