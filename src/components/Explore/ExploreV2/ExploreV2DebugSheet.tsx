@@ -1,7 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
 import classnames from "classnames";
 import buildExploreV2QueryParams
-  from "components/Explore/ExploreV2/buildQueryParams";
+  from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import { INatIconButton } from "components/SharedComponents";
 import Modal from "components/SharedComponents/Modal";
 import Body3 from "components/SharedComponents/Typography/Body3";
