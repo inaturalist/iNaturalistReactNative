@@ -3,6 +3,7 @@ import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 
 import Blog from "./Blog";
+import PostsForProjects from "./PostsForProjects";
 
 const Journal = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"Journal">["route"]>( );
@@ -11,12 +12,17 @@ const Journal = ( ) => {
   } = params || {};
 
   if ( projectId ) {
-    console.log( "journalPostsCount", journalPostsCount );
-    console.log( "projectIcon", projectIcon );
-    console.log( "projectId", projectId );
-    console.log( "projectTitle", projectTitle );
+    return (
+      <PostsForProjects
+        journalPostsCount={journalPostsCount}
+        projectIcon={projectIcon}
+        projectId={projectId}
+        projectTitle={projectTitle}
+      />
+    );
   }
 
+  // TODO: posts for one user
   if ( userLogin ) {
     return null;
   }
