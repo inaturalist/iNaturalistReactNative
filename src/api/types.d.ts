@@ -251,8 +251,7 @@ export interface ApiTotalBounds {
   nelng: number;
 }
 
-export interface ApiObservationsSearchResponse extends ApiResponse {
-  results: ApiObservation[];
+export interface ApiObservationsSearchResponse extends ApiResponse<ApiObservation> {
   total_bounds?: ApiTotalBounds;
 }
 
