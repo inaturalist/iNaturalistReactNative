@@ -90,4 +90,15 @@ describe( "useTaxonSearch", ( ) => {
     renderHook( ( ) => useTaxonSearch( "foo" ) );
     expect( mockRealmObjects ).not.toHaveBeenCalledWith( "Taxon" );
   } );
+
+  it( "should not request local taxa while remote query has not run yet", ( ) => {
+    useAuthenticatedQuery.mockImplementation( ( ) => ( {
+      data: undefined,
+      refetch: jest.mock( ),
+      isLoading: false,
+      isFetched: false,
+    } ) );
+    renderHook( ( ) => useTaxonSearch( "foo" ) );
+    expect( mockRealmObjects ).not.toHaveBeenCalledWith( "Taxon" );
+  } );
 } );
