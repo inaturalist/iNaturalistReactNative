@@ -1,4 +1,4 @@
-import type { ApiPost } from "api/types";
+import type { ApiPostForUser } from "api/types";
 import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import {
   Body1,
@@ -13,7 +13,7 @@ import { formatLongDate } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  item: ApiPost;
+  item: ApiPostForUser;
 }
 
 const PostListItem = ( {
