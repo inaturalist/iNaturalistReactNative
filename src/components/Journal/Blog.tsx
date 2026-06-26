@@ -14,7 +14,6 @@ import {
   useTranslation,
 } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import PostList from "./PostList";
 
@@ -36,7 +35,6 @@ const Blog = ( ) => {
     navigation.setOptions( headerOptions );
   }, [headerOptions, navigation] );
 
-  const currentUser = useCurrentUser( );
   const {
     data: postsForUser,
     isLoading: isLoadingPostsForUser,
@@ -45,7 +43,6 @@ const Blog = ( ) => {
     optsWithAuth => fetchUserPosts( {
       fields: POST_FOR_USER_FIELDS,
     }, optsWithAuth ),
-    { enabled: !!currentUser },
   );
 
   if ( isLoadingPostsForUser ) {
