@@ -57,6 +57,9 @@ jobs:
         ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
       run: printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=release.keystore' "$ANDROID_KEY_STORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_ALIAS" > android/keystore.properties
 
+    - name: Override gradle.properties reactNativeArchitectures for single architecture
+      run: sed -i 's/\(^reactNativeArchitectures=\).*/\1x86_64/' android/gradle.properties
+
     - name: Generate release keystore
       env:
         ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
