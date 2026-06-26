@@ -61,7 +61,7 @@ interface Props {
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
   numObsMissingBasics: number;
-  observationIds: string[];
+  observationIds: { uuid: string }[];
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
@@ -274,7 +274,7 @@ const MyObservationsSimple = ( {
   }, [flashListStyle, isConnected, layout, numTotalObservations, obsMissingBasicsExist] );
 
   const dataFilledWithEmptyBoxes = useMemo( ( ) => {
-    const data = observationIds.map( uuid => ( { uuid } ) );
+    const data = observationIds;
     // In grid layout fill up to 8 items to make sure the grid is filled
     // but don't add the empty boxes at the end of a long existing list
     if ( layout === "grid" && data.length < 8 ) {
@@ -324,7 +324,7 @@ const MyObservationsSimple = ( {
   };
 
   const handlePivotCardGridItemPress = ( ) => {
-    const uuid = observationIds[0];
+    const { uuid } = observationIds[0];
     navigation.navigate( {
       key: `Obs-0-${uuid}`,
       name: "ObsDetails",
@@ -448,7 +448,7 @@ const MyObservationsSimple = ( {
               accessibilityHint: t( "Navigates-to-observation-details" ),
               imageComponent: (
                 <PivotCardObsGridItem
-                  uuid={observationIds[0]}
+                  uuid={observationIds[0].uuid}
                 />
               ),
             }}

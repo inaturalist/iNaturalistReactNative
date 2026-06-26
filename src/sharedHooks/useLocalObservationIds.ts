@@ -17,7 +17,7 @@ const useLocalObservationIds = ( ) => {
   );
 
   return useMemo(
-    ( ) => unsyncedObs.map( ( { uuid }: { uuid: string } ) => uuid ),
+    ( ) => unsyncedObs.map( ( { uuid }: { uuid: string } ) => ( { uuid } ) ),
     [unsyncedObs],
   );
 };
