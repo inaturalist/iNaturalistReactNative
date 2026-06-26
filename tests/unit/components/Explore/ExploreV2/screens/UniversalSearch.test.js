@@ -37,6 +37,27 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
 } ) );
 const useCurrentUser = require( "sharedHooks/useCurrentUser" ).default;
 
+jest.mock( "sharedHooks/useIconicTaxa", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
+} ) );
+const useIconicTaxa = require( "sharedHooks/useIconicTaxa" ).default;
+
+const ICONIC_TAXA = [
+  {
+    id: 47126,
+    name: "Plantae",
+    iconic_taxon_name: "Plantae",
+    preferred_common_name: "Plants",
+  },
+  {
+    id: 3,
+    name: "Aves",
+    iconic_taxon_name: "Aves",
+    preferred_common_name: "Birds",
+  },
+];
+
 const CURRENT_USER = {
   id: 99,
   login: "tester",
@@ -97,6 +118,7 @@ beforeEach( ( ) => {
   mockDispatch.mockClear( );
   useExploreV2.mockReturnValue( { dispatch: mockDispatch, state: {} } );
   useCurrentUser.mockReturnValue( CURRENT_USER );
+  useIconicTaxa.mockReturnValue( ICONIC_TAXA );
   useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
 } );
 
@@ -236,6 +258,65 @@ describe( "UniversalSearch screen", ( ) => {
     expect(
       screen.queryByText( i18next.t( "No-results-found-for-that-search" ) ),
     ).toBeNull( );
+  } );
+
+  describe( "default search options (empty query)", ( ) => {
+    it( "shows the iconic taxa row, current user, and unobserved shortcut", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByTestId( "DefaultSearchOptions" ) ).toBeTruthy( );
+      expect( screen.getByTestId( "DefaultSearchOptions.iconicTaxonButton.47126" ) ).toBeTruthy( );
+      // current user's profile row, reusing the user result row
+      expect( screen.getByTestId( "UniversalSearchResult.user.99" ) ).toBeTruthy( );
+      expect( screen.getByText( "tester" ) ).toBeTruthy( );
+      // "Species I haven't observed" shortcut
+      expect( screen.getByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeTruthy( );
+    } );
+
+    it( "fills the field and sets the subject when an iconic taxon is tapped", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      fireEvent.press( screen.getByTestId( "DefaultSearchOptions.iconicTaxonButton.47126" ) );
+
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "taxon",
+            taxon: expect.objectContaining( { id: 47126, name: "Plantae" } ),
+          } ),
+        } ),
+      );
+      // common name is primary for the test user, so the field shows "Plants"
+      expect( screen.getByDisplayValue( "Plants" ) ).toBeTruthy( );
+    } );
+
+    it( "sets the current user as the subject when their profile row is tapped", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.99" ) );
+
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "user",
+            user: expect.objectContaining( { id: 99, login: "tester" } ),
+          } ),
+        } ),
+      );
+      expect( screen.getByDisplayValue( "tester" ) ).toBeTruthy( );
+    } );
+
+    it( "hides the current user row when logged out", ( ) => {
+      useCurrentUser.mockReturnValue( null );
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.queryByTestId( "UniversalSearchResult.user.99" ) ).toBeNull( );
+      // the iconic taxa row and unobserved shortcut still render
+      expect( screen.getByTestId( "DefaultSearchOptions.iconicTaxonButton.47126" ) ).toBeTruthy( );
+      expect( screen.getByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeTruthy( );
+    } );
   } );
 
   it( "navigates to Advanced Search", ( ) => {

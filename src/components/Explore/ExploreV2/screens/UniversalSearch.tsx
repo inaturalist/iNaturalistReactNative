@@ -1,5 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import DefaultSearchOptions
+  from "components/Explore/ExploreV2/components/DefaultSearchOptions";
 import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
 import {
@@ -118,7 +120,7 @@ const UniversalSearch = ( ) => {
     />
   ), [handleSelect] );
 
-  let body = null;
+  let body;
   if ( showResults ) {
     body = (
       <FlatList
@@ -135,6 +137,8 @@ const UniversalSearch = ( ) => {
           )}
       />
     );
+  } else {
+    body = ( <DefaultSearchOptions onSelectSubject={handleSelect} /> );
   }
 
   return (
