@@ -18,6 +18,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
     data: [],
     refetch: jest.mock( ),
     isLoading: false,
+    isFetched: true,
   } ) ),
 } ) );
 
@@ -74,6 +75,7 @@ describe( "useTaxonSearch", ( ) => {
       data: [factory( "LocalTaxon" )],
       refetch: jest.mock( ),
       isLoading: false,
+      isFetched: true,
     } ) );
   }
 
