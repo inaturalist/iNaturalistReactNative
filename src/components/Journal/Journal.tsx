@@ -3,7 +3,7 @@ import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 
 import Blog from "./Blog";
-import PostsForProjects from "./PostsForProjects";
+import ProjectPosts from "./ProjectPosts";
 
 const Journal = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"Journal">["route"]>( );
@@ -13,7 +13,7 @@ const Journal = ( ) => {
 
   if ( projectId ) {
     return (
-      <PostsForProjects
+      <ProjectPosts
         journalPostsCount={journalPostsCount}
         projectIcon={projectIcon}
         projectId={projectId}
