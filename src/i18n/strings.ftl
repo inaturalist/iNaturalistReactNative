@@ -67,7 +67,11 @@ ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
-Added-to-X-Projects = Added to { $count } { $count -> [one] Project *[other] Projects }
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+        *[other] Projects
+    }
 # Hint for a button that adds an identification
 Adds-ID = Adds ID
 # Hint for a button that adds a vote of agreement

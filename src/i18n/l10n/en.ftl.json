@@ -29,7 +29,7 @@
   "Add-optional-notes": "Add optional notes",
   "Add-to-Projects": "Add to Projects",
   "ADD-TO-PROJECTS": "ADD TO PROJECTS",
-  "Added-to-X-Projects": "Added to { $count } Projects",
+  "Added-to-X-Projects": "Added to { $count } { $count ->\n  [one] Project\n *[other] Projects\n}",
   "Adds-ID": "Adds ID",
   "Adds-your-vote-of-agreement": "Adds your vote of agreement",
   "Adds-your-vote-of-disagreement": "Adds your vote of disagreement",
