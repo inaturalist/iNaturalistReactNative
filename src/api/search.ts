@@ -11,17 +11,15 @@ import type {
   ApiUser,
 } from "./types";
 
-interface SearchResponse extends ApiResponse {
-  results: {
-    score?: number;
-    type?: "place" | "project" | "taxon" | "user";
-    matches?: string[];
-    place?: ApiPlace;
-    project?: ApiProject;
-    taxon?: ApiTaxon;
-    user?: ApiUser;
-  }[];
-}
+type SearchResponse = ApiResponse<{
+  score?: number;
+  type?: "place" | "project" | "taxon" | "user";
+  matches?: string[];
+  place?: ApiPlace;
+  project?: ApiProject;
+  taxon?: ApiTaxon;
+  user?: ApiUser;
+}>;
 
 interface SearchParams extends ApiParams {
   q?: string;
