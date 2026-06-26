@@ -70,7 +70,7 @@ ADD-TO-PROJECTS = ADD TO PROJECTS
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
-        *[other] Projects
+       *[other] Projects
     }
 # Hint for a button that adds an identification
 Adds-ID = Adds ID
