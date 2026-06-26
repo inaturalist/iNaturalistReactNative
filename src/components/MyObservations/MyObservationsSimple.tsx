@@ -371,7 +371,9 @@ const MyObservationsSimple = ( {
           ]}
           TabComponent={renderTabComponent}
         />
-        {searchMyObservationsEnabled && <SearchedTaxonBanner />}
+        {searchMyObservationsEnabled && activeTab === OBSERVATIONS_TAB && (
+          <SearchedTaxonBanner />
+        )}
         { activeTab === OBSERVATIONS_TAB && (
           <>
             <ObservationsFlashList
