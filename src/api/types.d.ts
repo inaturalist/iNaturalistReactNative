@@ -213,10 +213,6 @@ export interface ApiProjectObservation {
 export interface ApiObservationFieldValue {
   id: number;
   field_id: number;
-  // This is were it get's trickier, some endpoints return nested objects some don't
-  // e.g. inatjs.observations.search does return OFV
-  // inatjs.observations.search does not
-  observation_field?: ApiObservationField;
   uuid: string;
   value: string;
 }
