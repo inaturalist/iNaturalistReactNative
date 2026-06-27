@@ -1,4 +1,4 @@
-import type { ApiUser } from "api/types";
+import type { ApiTaxon, ApiUser } from "api/types";
 import classnames from "classnames";
 import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
@@ -11,6 +11,8 @@ import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import React, { useCallback, useMemo } from "react";
 import type { ListRenderItemInfo } from "react-native";
 import { FlatList } from "react-native";
+import Taxon from "realmModels/Taxon";
+import type { RealmTaxon } from "realmModels/types";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIconicTaxa from "sharedHooks/useIconicTaxa";
 import useTranslation from "sharedHooks/useTranslation";
@@ -19,15 +21,6 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   onSelectSubject: ( subject: ExploreV2Subject ) => void;
-}
-
-interface IconicTaxon {
-  id: number;
-  name: string;
-  preferred_common_name?: string;
-  iconic_taxon_name?: string;
-  rank_level?: number;
-  default_photo?: { url?: string };
 }
 
 // Display order for the iconic taxa row, matching the Figma "SearchDefaults"
@@ -63,31 +56,31 @@ const ICONIC_ROW_STYLE = {
 
 const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
   const { t } = useTranslation( );
-  // The Realm User model isn't strongly typed; treat the current user as an
-  // ApiUser for the fields we read, matching how universalSearchSubject casts.
+
   const currentUser = useCurrentUser( ) as unknown as ApiUser | null;
   const iconicTaxa = useIconicTaxa( );
 
-  // Order the iconic taxa returned from Realm by the design's display order. Any
-  // that haven't been synced into Realm yet (see NetworkService) are skipped.
-  const orderedIconicTaxa = useMemo( ( ): IconicTaxon[] => {
-    const taxaByName = new Map<string, IconicTaxon>( );
+  // Order the iconic taxa returned from Realm by the design's display order
+  const orderedIconicTaxa = useMemo( ( ): ApiTaxon[] => {
+    const taxaByName = new Map<string, RealmTaxon>( );
     const taxaList = ( iconicTaxa
       ? Array.from( iconicTaxa )
-      : [] ) as unknown as IconicTaxon[];
+      : [] ) as unknown as RealmTaxon[];
     taxaList.forEach( taxon => {
       if ( taxon?.name ) {
         taxaByName.set( taxon.name.toLowerCase( ), taxon );
       }
     } );
+
     return ICONIC_TAXA_ORDER
       .map( name => taxaByName.get( name ) )
-      .filter( ( taxon ): taxon is IconicTaxon => !!taxon );
+      .filter( ( taxon ): taxon is RealmTaxon => !!taxon )
+      .map( taxon => Taxon.mapRealmToApi( taxon ) as ApiTaxon );
   }, [iconicTaxa] );
 
   const renderIconicTaxon = useCallback(
-    ( { item: taxon }: ListRenderItemInfo<IconicTaxon> ) => {
-      const iconicName = ( taxon.iconic_taxon_name || taxon.name ).toLowerCase( );
+    ( { item: taxon }: ListRenderItemInfo<ApiTaxon> ) => {
+      const iconicName = ( taxon.iconic_taxon_name || taxon.name || "" ).toLowerCase( );
       return (
         <View
           className={ICON_BUTTON_WRAPPER}
@@ -142,8 +135,7 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
         accessibilityRole="button"
         accessibilityLabel={t( "Species-I-havent-observed" )}
         className={ROW_CLASSES}
-        // TODO MOB-1339 follow-up: wire to an unobserved_by_user_id filter once
-        // ExploreV2 supports it (the filter does not exist yet).
+        // TODO MOB-1345
         onPress={( ) => undefined}
         testID="DefaultSearchOptions.unobserved"
       >
