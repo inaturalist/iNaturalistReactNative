@@ -6,7 +6,7 @@ import React from "react";
 
 interface Props {
   accessibilityLabel: string;
-  handlePress: () => void;
+  handlePress: ( ) => void;
   iconName: string;
   text: string;
 }

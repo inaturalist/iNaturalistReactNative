@@ -116,7 +116,7 @@ exports[`ContainedSquareButton renders correctly 1`] = `
           ]
         }
       >
-        
+        
       </Text>
     </View>
   </View>
