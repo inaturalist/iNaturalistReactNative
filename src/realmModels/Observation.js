@@ -234,7 +234,7 @@ class Observation extends Realm.Object {
     const projectObservations = ( obs.project_observations || [] ).map( apiPo => {
       const mappedPo = ProjectObservation.mapApiToRealm( apiPo );
       const existingPo = existingObs?.projectObservations?.find(
-        ePo => ePo.uuid === apiPo.uuid?.toLowerCase( ),
+        ePo => ePo.uuid === apiPo.uuid,
       );
       if ( !existingPo ) {
         mappedPo._created_at = new Date( );
