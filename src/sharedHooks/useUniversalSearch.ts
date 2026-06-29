@@ -17,6 +17,7 @@ export type UniversalSearchResultItem =
   | { type: "project"; project: ApiProjectSummary };
 
 const UNIVERSAL_SEARCH_FIELDS = {
+  type: true,
   taxon: {
     id: true,
     name: true,
@@ -55,17 +56,11 @@ const useUniversalSearch = ( query: string ) => {
         optsWithAuth,
       );
       if ( !response ) { return []; }
-      // Preserve the API's score-sorted order, mapping each result to a tagged union
-      return response.results.reduce<UniversalSearchResultItem[]>( ( acc, result ) => {
-        if ( result.taxon ) {
-          acc.push( { type: "taxon", taxon: result.taxon } );
-        } else if ( result.user ) {
-          acc.push( { type: "user", user: result.user } );
-        } else if ( result.project ) {
-          acc.push( { type: "project", project: result.project } );
-        }
-        return acc;
-      }, [] );
+      return response.results.filter(
+        ( result ): result is UniversalSearchResultItem => result.type === "taxon"
+          || result.type === "user"
+          || result.type === "project",
+      );
     },
     { enabled: shouldFetch },
   );
