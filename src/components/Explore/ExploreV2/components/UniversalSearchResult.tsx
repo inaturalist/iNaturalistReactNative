@@ -85,15 +85,20 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
     }
   };
 
+  // Keep the row pressable and the info button as siblings (not nested) so
+  // screen readers expose both as independent controls. Nesting one accessible
+  // button inside another causes the inner one to be swallowed.
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={resultLabel( result )}
-      className="flex-row items-center justify-between px-4 py-2 border-b border-lightGray"
-      onPress={onPress}
-      testID={`UniversalSearchResult.${result.type}.${resultId( result )}`}
-    >
-      {renderContent( )}
+    <View className="flex-row items-center justify-between px-4 py-2 border-b border-lightGray">
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={resultLabel( result )}
+        className="flex-row items-center flex-1"
+        onPress={onPress}
+        testID={`UniversalSearchResult.${result.type}.${resultId( result )}`}
+      >
+        {renderContent( )}
+      </Pressable>
       <INatIconButton
         accessibilityLabel={t( "More-info" )}
         icon="info-circle-outline"
@@ -102,7 +107,7 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
         size={22}
         testID={`UniversalSearchResult.info.${resultId( result )}`}
       />
-    </Pressable>
+    </View>
   );
 };
 
