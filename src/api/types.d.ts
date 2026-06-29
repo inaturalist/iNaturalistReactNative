@@ -71,11 +71,11 @@ export interface ApiProjectSummaryWithPOF extends ApiProjectSummary {
   project_observation_fields: ApiProjectObservationField[];
 }
 
-export interface ApiResponse {
+export interface ApiResponse<T> {
   total_results: number;
   page: number;
   per_page: number;
-  results: object[];
+  results: T[];
 }
 
 export interface ApiObservationsUpdatesParams extends ApiParams {
@@ -212,7 +212,7 @@ export interface ApiProjectObservation {
 // When using OBSERVATION_FIELD_VALUE_FIELDS
 export interface ApiObservationFieldValue {
   id: number;
-  observation_field: ApiObservationField;
+  field_id: number;
   uuid: string;
   value: string;
 }
@@ -224,6 +224,7 @@ export interface ApiObservation extends ApiRecord {
   observation_photos?: ApiObservationPhoto[];
   observation_sounds?: ApiObservationSound[];
   project_observations?: ApiProjectObservation[];
+  ofvs?: ApiObservationFieldValue[];
   taxon?: ApiTaxon;
   time_observed_at?: string;
   user?: ApiUser;
@@ -251,8 +252,7 @@ export interface ApiTotalBounds {
   nelng: number;
 }
 
-export interface ApiObservationsSearchResponse extends ApiResponse {
-  results: ApiObservation[];
+export interface ApiObservationsSearchResponse extends ApiResponse<ApiObservation> {
   total_bounds?: ApiTotalBounds;
 }
 

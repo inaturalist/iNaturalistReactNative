@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react-native";
 import MyObservationsSimple, { OBSERVATIONS_TAB }
   from "components/MyObservations/MyObservationsSimple";
+import { MyObservationsProvider } from "providers/MyObservationsContext";
 import React from "react";
 // import DeviceInfo from "react-native-device-info";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -59,14 +60,16 @@ jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
 } ) );
 
 const renderMyObservations = layout => renderComponent(
-  <MyObservationsSimple
-    layout={layout}
-    observations={mockObservations}
-    onEndReached={jest.fn( )}
-    toggleLayout={jest.fn( )}
-    setShowLoginSheet={jest.fn( )}
-    activeTab={OBSERVATIONS_TAB}
-  />,
+  <MyObservationsProvider>
+    <MyObservationsSimple
+      layout={layout}
+      observations={mockObservations}
+      onEndReached={jest.fn( )}
+      toggleLayout={jest.fn( )}
+      setShowLoginSheet={jest.fn( )}
+      activeTab={OBSERVATIONS_TAB}
+    />
+  </MyObservationsProvider>,
 );
 
 describe( "MyObservationsSimple", () => {

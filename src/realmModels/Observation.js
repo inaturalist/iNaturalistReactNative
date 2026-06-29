@@ -1,5 +1,9 @@
 import { Realm } from "@realm/react";
-import { PROJECT_OBSERVATION_FIELDS, PROJECT_SUMMARY_FIELDS } from "api/fields";
+import {
+  OBSERVATION_FIELD_VALUE_FIELDS,
+  PROJECT_OBSERVATION_FIELDS,
+  PROJECT_SUMMARY_FIELDS,
+} from "api/fields";
 import { Alert } from "react-native";
 import { getNowISO } from "sharedHelpers/dateAndTime";
 import { log } from "sharedHelpers/logger";
@@ -10,8 +14,10 @@ import * as uuid from "uuid";
 import Application from "./Application";
 import Comment from "./Comment";
 import Identification from "./Identification";
+import ObservationFieldValue from "./ObservationFieldValue";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
+import ProjectObservation from "./ProjectObservation";
 import Taxon from "./Taxon";
 import User from "./User";
 import Vote from "./Vote";
@@ -71,6 +77,7 @@ class Observation extends Realm.Object {
     private_place_guess: true,
     project_ids: true,
     project_observations: PROJECT_OBSERVATION_FIELDS,
+    ofvs: OBSERVATION_FIELD_VALUE_FIELDS,
     non_traditional_projects: {
       project: PROJECT_SUMMARY_FIELDS,
     },
@@ -126,6 +133,8 @@ class Observation extends Realm.Object {
     place_guess: true,
     private_place_guess: true,
     taxon_geoprivacy: true,
+    project_observations: PROJECT_OBSERVATION_FIELDS,
+    ofvs: OBSERVATION_FIELD_VALUE_FIELDS,
   };
 
   static async new( obs ) {
@@ -180,6 +189,20 @@ class Observation extends Realm.Object {
     const taxon = obs.taxon
       ? Taxon.mapApiToRealm( obs.taxon, realm )
       : null;
+
+    const observationFieldValues = (
+      obs.ofvs || []
+    ).map( ofv => {
+      const mappedOfv = ObservationFieldValue.mapApiToRealm( ofv );
+      const existingOfv = existingObs?.observationFieldValues?.find(
+        eOfv => eOfv.uuid === ofv.uuid,
+      );
+      if ( !existingOfv ) {
+        mappedOfv._created_at = new Date( );
+      }
+      return mappedOfv;
+    } );
+
     const observationPhotos = (
       obs.observation_photos || obs.observationPhotos || []
     ).map( obsPhoto => {
@@ -208,6 +231,17 @@ class Observation extends Realm.Object {
       return mappedObsSound;
     } );
 
+    const projectObservations = ( obs.project_observations || [] ).map( apiPo => {
+      const mappedPo = ProjectObservation.mapApiToRealm( apiPo );
+      const existingPo = existingObs?.projectObservations?.find(
+        ePo => ePo.uuid === apiPo.uuid,
+      );
+      if ( !existingPo ) {
+        mappedPo._created_at = new Date( );
+      }
+      return mappedPo;
+    } );
+
     const localObs = {
       ...obs,
       _synced_at: new Date( ),
@@ -219,9 +253,11 @@ class Observation extends Realm.Object {
                       && obs.private_geojson.coordinates[1],
       privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
                       && obs.private_geojson.coordinates[0],
+      observationFieldValues,
       observationPhotos,
       observationSounds,
       prefers_community_taxon: obs.preferences?.prefers_community_taxon,
+      projectObservations,
       taxon,
     };
 
@@ -382,10 +418,11 @@ class Observation extends Realm.Object {
   };
 
   static filterUnsyncedObservations = realm => {
-    const obs = realm.objects( "Observation" );
     // we sort unsynced observations here to make sure observations
     // with an older _created_at date get uploaded first
-    const unsyncedObs = obs.filtered( UNSYNCED_FILTER ).sorted( "_created_at", true );
+    const unsyncedObs = realm.objects( "Observation" )
+      .filtered( UNSYNCED_FILTER )
+      .sorted( "_created_at", true );
     return unsyncedObs;
   };
 

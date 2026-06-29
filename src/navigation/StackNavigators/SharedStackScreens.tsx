@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import AddToProjects from "components/AddToProjects/AddToProjects";
 import FullPageWebView from "components/FullPageWebView/FullPageWebView";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import MatchContainer from "components/Match/MatchContainer";
@@ -31,6 +32,11 @@ const taxonSearchTitle = () => (
     {t( "SEARCH" )}
   </Heading4>
 );
+const addToProjectsTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "ADD-TO-PROJECTS" )}
+  </Heading4>
+);
 
 const Stack = createNativeStackNavigator<SharedStackParamList>( );
 
@@ -47,6 +53,7 @@ const FadeInFullPageWebView = ( ) => fadeInComponent( <FullPageWebView /> );
 const FadeInMatchContainer = ( ) => fadeInComponent(
   <MatchContainer />,
 );
+const FadeInAddToProjects = ( ) => fadeInComponent( <AddToProjects /> );
 
 const BASE_SCREEN_OPTIONS = {
   contentStyle: {
@@ -123,6 +130,13 @@ const SharedStackScreens = ( ) => (
         component={FadeInMatchTaxonSearchScreen}
         options={{
           headerTitle: taxonSearchTitle,
+        }}
+      />
+      <Stack.Screen
+        name="AddToProjects"
+        component={FadeInAddToProjects}
+        options={{
+          headerTitle: addToProjectsTitle,
         }}
       />
     </Stack.Group>

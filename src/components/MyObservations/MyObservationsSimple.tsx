@@ -35,6 +35,8 @@ import {
 } from "sharedHelpers/speciesSort";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
@@ -42,6 +44,7 @@ import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
+import SearchedTaxonBanner from "./Search/SearchedTaxonBanner";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
@@ -60,6 +63,7 @@ interface Props {
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
+  numObsMissingBasics: number;
   observations: RealmObservation[];
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
@@ -109,6 +113,7 @@ const MyObservationsSimple = ( {
   taxaListRef,
   numTotalTaxa,
   numUnuploadedObservations,
+  numObsMissingBasics: numUnuploadedObsMissingBasics,
   observations,
   onEndReached,
   onListLayout,
@@ -129,6 +134,9 @@ const MyObservationsSimple = ( {
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
+  const searchMyObservationsEnabled = useFeatureFlag(
+    FeatureFlag.SearchMyObservationsEnabled,
+  );
   const speciesSortLabels = useSpeciesSortLabels( );
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -223,23 +231,14 @@ const MyObservationsSimple = ( {
     taxa?.length,
   ] );
 
-  const numUnuploadedObsMissingBasics = useMemo( () => (
-    observations
-      .filter( o => o.needs_sync && o.missing_basics )
-      .map( o => o.uuid )
-      .length
-  ), [observations] );
-
-  const obsMissingBasicsExist = useMemo( ( ) => (
-    numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
-  ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
+  const obsMissingBasicsExist = numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0;
 
   // if user is not logged in, we'll consider all obs 'uploadable' to shepherd people to login flow
   const numUploadableObservations = isDefaultMode && !!currentUser
     ? numUnuploadedObservations - numUnuploadedObsMissingBasics
     : numUnuploadedObservations;
 
-  const renderTabComponent = ( { id } ) => (
+  const renderTabComponent = ( { id }: { id: string } ) => (
     <StatTab
       id={id}
       numTotalObservations={numTotalObservations}
@@ -365,6 +364,9 @@ const MyObservationsSimple = ( {
           ]}
           TabComponent={renderTabComponent}
         />
+        {searchMyObservationsEnabled && activeTab === OBSERVATIONS_TAB && (
+          <SearchedTaxonBanner />
+        )}
         { activeTab === OBSERVATIONS_TAB && (
           <>
             <ObservationsFlashList

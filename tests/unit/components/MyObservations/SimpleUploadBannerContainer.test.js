@@ -30,7 +30,6 @@ beforeAll( ( ) => {
 describe( "SimpleUploadBannerContainer", () => {
   it( "displays syncing text before beginning uploads when sync button tapped", ( ) => {
     useStore.setState( {
-      numUnuploadedObservations: 1,
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: MANUAL_SYNC_IN_PROGRESS,
     } );

@@ -22,9 +22,7 @@ export type SearchResult =
   | ( SearchResultBase & { type: "taxon"; taxon: ApiTaxon } )
   | ( SearchResultBase & { type: "user"; user: ApiUser } );
 
-interface SearchResponse extends ApiResponse {
-  results: SearchResult[];
-}
+type SearchResponse = ApiResponse<SearchResult>;
 
 interface SearchParams extends ApiParams {
   q?: string;
