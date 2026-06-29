@@ -315,6 +315,7 @@ describe( "UniversalSearch screen", ( ) => {
       expect( screen.queryByTestId( "UniversalSearchResult.user.99" ) ).toBeNull( );
       // the iconic taxa row and unobserved shortcut still render
       expect( screen.getByTestId( "DefaultSearchOptions.iconicTaxonButton.47126" ) ).toBeTruthy( );
+      // depending on how this is implemented, we may not actually show this for logged out
       expect( screen.getByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeTruthy( );
     } );
   } );
