@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { renderHook } from "@testing-library/react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
@@ -91,7 +92,7 @@ describe( "useTaxonSearch", ( ) => {
     expect( mockRealmObjects ).not.toHaveBeenCalledWith( "Taxon" );
   } );
 
-  it( "should not request local taxa while remote query has not run yet", ( ) => {
+  it( "when online should not request local taxa while remote query has not run yet", ( ) => {
     useAuthenticatedQuery.mockImplementation( ( ) => ( {
       data: undefined,
       refetch: jest.mock( ),
@@ -100,5 +101,17 @@ describe( "useTaxonSearch", ( ) => {
     } ) );
     renderHook( ( ) => useTaxonSearch( "foo" ) );
     expect( mockRealmObjects ).not.toHaveBeenCalledWith( "Taxon" );
+  } );
+
+  it( "when offline should request local taxa offline even before the remote query runs", ( ) => {
+    useNetInfo.mockReturnValueOnce( { isConnected: false } );
+    useAuthenticatedQuery.mockImplementation( ( ) => ( {
+      data: undefined,
+      refetch: jest.mock( ),
+      isLoading: false,
+      isFetched: false,
+    } ) );
+    renderHook( ( ) => useTaxonSearch( "foo" ) );
+    expect( mockRealmObjects ).toHaveBeenCalledWith( "Taxon" );
   } );
 } );
