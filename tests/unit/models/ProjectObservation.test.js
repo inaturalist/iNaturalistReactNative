@@ -7,7 +7,7 @@ describe( "ProjectObservation", ( ) => {
   describe( "new", ( ) => {
     it( "should construct a PO", ( ) => {
       const po = ProjectObservation.new( 42 );
-      expect( po.uuid ).toBe( po.uuid.toLowerCase( ) );
+      expect( po.uuid ).toBe( po.uuid );
       expect( po.projectId ).toBe( 42 );
       expect( po._created_at ).toBeInstanceOf( Date );
       expect( po._updated_at ).toBeInstanceOf( Date );

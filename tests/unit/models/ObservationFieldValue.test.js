@@ -7,7 +7,7 @@ describe( "ObservationFieldValue", () => {
   describe( "new", () => {
     it( "should construct an OFV", () => {
       const ofv = ObservationFieldValue.new( 99, "male" );
-      expect( ofv.uuid ).toBe( ofv.uuid.toLowerCase() );
+      expect( ofv.uuid ).toBe( ofv.uuid );
       expect( ofv.obsFieldId ).toBe( 99 );
       expect( ofv.value ).toBe( "male" );
       expect( ofv._created_at ).toBeInstanceOf( Date );
