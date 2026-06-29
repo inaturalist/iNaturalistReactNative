@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = Add observations
 ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Adds ID
 Adds-your-vote-of-agreement = Adds your vote of agreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
@@ -604,6 +611,7 @@ Please-allow-Microphone-Access = Please allow Microphone Access
 Please-choose-a-different-password = Please choose a different password.
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Please make sure your password is at least 6 characters.
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
@@ -1116,6 +1124,7 @@ You-may-notice-changes-to-how-things-look-and-flow = You may notice changes to h
 You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install Google Play Services to sign in with Google.
 You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
 You-need-log-in-to-do-that = Трябва да влезете в акаунта си, за да направите това.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = You observed a species in this group
 You-observed-this-species = You observed this species
 You-will-see-notifications = You’ll see notifications here once you log in & upload observations.

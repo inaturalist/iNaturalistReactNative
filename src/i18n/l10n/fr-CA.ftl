@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Ajouter un emplacement pour rafraichir les
 Add-observations = Ajouter des observations
 ADD-OPTIONAL-COMMENT = AJOUTER UN COMMENTAIRE OPTIONNEL
 Add-optional-notes = Ajouter notes optionnelles
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Ajoute l’ID
 Adds-your-vote-of-agreement = Ajoute votre vote d'accord
 Adds-your-vote-of-disagreement = Ajoute votre vote de désaccord
@@ -604,6 +611,7 @@ Please-allow-Microphone-Access = Veuillez autoriser l'accès au microphone
 Please-choose-a-different-password = Veuillez choisir un autre mot de passe.
 Please-Grant-Permission = Veuillez accorder l'autorisation
 PLEASE-LOG-IN = VEUILLEZ VOUS CONNECTER
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Veuillez vous assurer que votre mot de passe soit d'au moins 6 caractères.
 Please-try-again-when-you-are-connected-to-the-internet = Veuillez réessayer lorsque vous êtes connecté à internet.
@@ -1116,6 +1124,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Vous remarquerez peut-être
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Vous devez installer les services Google Play pour vous connecter avec Google.
 You-need-an-Internet-connection-to-do-that = Vous avez besoin d'une connexion Internet pour faire cela.
 You-need-log-in-to-do-that = Pour pouvoir faire ça vous devez vous connecter.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = Vous avez observé une espèce dans ce groupe
 You-observed-this-species = Vous avez observé cette espèce
 You-will-see-notifications = Vous verrez des notifications lorsque vous serez connecté et aurez publié des observations.

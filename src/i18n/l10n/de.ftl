@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Standort hinzufügen, um die Bestimmungsvo
 Add-observations = Beobachtung(en) hinzufügen
 ADD-OPTIONAL-COMMENT = OPTIONALEN KOMMENTAR HINZUFÜGEN
 Add-optional-notes = Optionale Anmerkungen hinzufügen
+Add-to-Projects = Zu Projekten hinzufügen
+ADD-TO-PROJECTS = ZU PROJEKTEN HINZUFÜGEN
+Added-to-X-Projects =
+    Zu { $count } { $count ->
+        [one] Projekt
+       *[other] Projekten
+    } hinzugefügt
 Adds-ID = Fügt ID hinzu
 Adds-your-vote-of-agreement = Fügt deine Zustimmung hinzu
 Adds-your-vote-of-disagreement = Fügt deinen Widerspruch hinzu
@@ -607,6 +614,7 @@ Please-allow-Microphone-Access = Bitte erlaube den Zugriff auf das Mikrofon
 Please-choose-a-different-password = Bitte wähle ein anderes Passwort.
 Please-Grant-Permission = Bitte erteilen die notwendigen Berechtigungen
 PLEASE-LOG-IN = BITTE ANMELDEN
+Please-log-in = Bitte anmelden
 Please-log-in-again = Bitte melde dich erneut an. Gelegentlich müssen wir die Sitzung aktualisieren, um zwischengespeicherte Daten zu löschen und sicherzustellen, dass die App optimal funktioniert.
 Please-make-sure-your-password-is-at-least-6-characters = Bitte stelle sicher, dass dein Passwort mindestens 6 Zeichen lang ist.
 Please-try-again-when-you-are-connected-to-the-internet = Bitte versuche es erneut, wenn du mit dem Internet verbunden bist.
@@ -1119,6 +1127,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Möglicherweise fallen dir 
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Um sich bei Google anzumelden, muss Google Play Services installiert sein.
 You-need-an-Internet-connection-to-do-that = Du brauchst eine Verbindung zum Internet, um das tun zu können.
 You-need-log-in-to-do-that = Dazu musst du dich zuerst anmelden.
+You-need-to-be-logged-in-to-add-observations-to-projects = Du musst angemeldet sein, um Beobachtungen zu Projekten hinzufügen zu können.
 You-observed-a-species-in-this-group = Du hast eine Art aus dieser Gruppe beobachtet
 You-observed-this-species = Du hast diese Art beobachtet
 You-will-see-notifications = Hier wirst du Benachrichtigungen sehen, sobald du eingeloggt bist und eine Beobachtung hochgeladen hast.

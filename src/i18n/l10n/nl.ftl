@@ -39,6 +39,13 @@ Add-location-to-refresh-suggestions = Voeg locatie toe om voorstellen te ververs
 Add-observations = Waarnemingen toevoegen
 ADD-OPTIONAL-COMMENT = OPTIONEEL COMMENTAAR TOEVOEGEN
 Add-optional-notes = Optionele notities toevoegen
+Add-to-Projects = Voeg toe aan projecten
+ADD-TO-PROJECTS = VOEG TOE AAN PROJECTEN
+Added-to-X-Projects =
+    Toegevoegd aan { $count } { $count ->
+        [one] project
+       *[other] projecten
+    }
 Adds-ID = Voegt ID toe
 Adds-your-vote-of-agreement = Voegt jouw stem van overeenkomst toe
 Adds-your-vote-of-disagreement = Voegt jouw stem van meningsverschil toe
@@ -610,6 +617,7 @@ Please-allow-Microphone-Access = Geef toegang tot de microfoon
 Please-choose-a-different-password = Kies een ander wachtwoord.
 Please-Grant-Permission = Geef toestemming
 PLEASE-LOG-IN = LOG IN
+Please-log-in = Meld je aan
 Please-log-in-again = Log opnieuw in. We moeten af en toe je sessie vernieuwen om de gegevens in de cache te wissen en te controleren of de app op zijn best werkt.
 Please-make-sure-your-password-is-at-least-6-characters = Zorg ervoor dat je wachtwoord minimaal 6 tekens lang is.
 Please-try-again-when-you-are-connected-to-the-internet = Probeer het opnieuw wanneer je verbonden bent met het internet.
@@ -1122,6 +1130,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Je zou veranderingen kunnen
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Je moet Google Play Services installeren om je aan te kunnen melden met Google.
 You-need-an-Internet-connection-to-do-that = Je hebt een internetverbinding nodig om dat te doen.
 You-need-log-in-to-do-that = Je moet inloggen om dat te doen.
+You-need-to-be-logged-in-to-add-observations-to-projects = Je moet aangemeld zijn om waarnemingen toe te voegen aan projecten.
 You-observed-a-species-in-this-group = Je hebt een organisme uit deze groep waargenomen
 You-observed-this-species = Je hebt deze soort waargenomen
 You-will-see-notifications = Je ziet hier meldingen zodra je inlogt en waarnemingen uploadt.
