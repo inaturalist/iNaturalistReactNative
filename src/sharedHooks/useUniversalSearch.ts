@@ -1,7 +1,8 @@
+import { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import { search } from "api/search";
 import type {
   ApiOpts,
-  ApiProject,
+  ApiProjectSummary,
   ApiTaxon,
   ApiUser,
 } from "api/types";
@@ -13,7 +14,7 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 export type UniversalSearchResultItem =
   | { type: "taxon"; taxon: ApiTaxon }
   | { type: "user"; user: ApiUser }
-  | { type: "project"; project: ApiProject };
+  | { type: "project"; project: ApiProjectSummary };
 
 const UNIVERSAL_SEARCH_FIELDS = {
   taxon: {
@@ -31,13 +32,7 @@ const UNIVERSAL_SEARCH_FIELDS = {
     icon_url: true,
     observations_count: true,
   },
-  project: {
-    id: true,
-    title: true,
-    icon: true,
-    project_type: true,
-    rule_preferences: true,
-  },
+  project: PROJECT_SUMMARY_FIELDS,
 };
 
 const useUniversalSearch = ( query: string ) => {
