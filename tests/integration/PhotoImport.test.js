@@ -80,6 +80,23 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: jest.fn( () => mockUser ),
 } ) );
 
+jest.mock( "sharedHooks/useObservationCounts", () => {
+  const { UNSYNCED_FILTER } = jest.requireActual( "realmModels/Observation" );
+  return {
+    __esModule: true,
+    default: () => {
+      const realm = global.mockRealms[__filename];
+      if ( !realm ) return { numUnuploadedObservations: 0, numObsMissingBasics: 0 };
+      const unsynced = realm.objects( "Observation" ).filtered( UNSYNCED_FILTER );
+      return {
+        numUnuploadedObservations: unsynced.length,
+        numObsMissingBasics: unsynced
+          .filter( obs => obs.missingBasics( ) ).length,
+      };
+    },
+  };
+} );
+
 beforeAll( async () => {
   await initI18next();
   mockInteractionManagerRunAfterInteractions( );

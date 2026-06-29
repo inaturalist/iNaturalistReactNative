@@ -382,10 +382,11 @@ class Observation extends Realm.Object {
   };
 
   static filterUnsyncedObservations = realm => {
-    const obs = realm.objects( "Observation" );
     // we sort unsynced observations here to make sure observations
     // with an older _created_at date get uploaded first
-    const unsyncedObs = obs.filtered( UNSYNCED_FILTER ).sorted( "_created_at", true );
+    const unsyncedObs = realm.objects( "Observation" )
+      .filtered( UNSYNCED_FILTER )
+      .sorted( "_created_at", true );
     return unsyncedObs;
   };
 
