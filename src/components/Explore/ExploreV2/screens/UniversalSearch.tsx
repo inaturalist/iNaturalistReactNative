@@ -8,6 +8,7 @@ import {
   resultToSubject,
   subjectToText,
 } from "components/Explore/ExploreV2/helpers/universalSearchSubject";
+import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
 import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
@@ -74,10 +75,11 @@ const UniversalSearch = ( ) => {
 
   const locationInputRef = useRef<RNTextInput>( null );
 
-  const { results, isLoading } = useUniversalSearch( debouncedQuery );
+  const { results, isLoading, refetch } = useUniversalSearch( debouncedQuery );
 
   const bothFilled = subjectText.length > 0 && locationText.length > 0;
-  const showResults = debouncedQuery.trim( ).length > 0;
+
+  const hasQuery = debouncedQuery.trim( ).length > 0;
 
   const handleSubjectTextChange = useCallback( ( text: string ) => {
     setSubjectText( text );
@@ -122,21 +124,23 @@ const UniversalSearch = ( ) => {
 
   // The list is always mounted; ListEmptyComponent decides what "empty" means.
   // With no query we show the default search options (which rely on this list
-  // for scrolling); with a query we show a loading state then a no-results
-  // message. Swapping the whole subtree instead would unmount/remount the list.
+  // for scrolling); with a query we hand off to EmptySearchResults, which
+  // covers the offline, loading, and no-results states. Swapping the whole
+  // subtree instead would unmount/remount the list.
   const renderEmpty = useCallback( ( ) => {
-    if ( !showResults ) {
+    if ( !hasQuery ) {
       return ( <DefaultSearchOptions onSelectSubject={handleSelect} /> );
     }
-    if ( isLoading ) { return null; }
     return (
-      <Body3 className="text-center mt-8">
-        {t( "No-results-found-for-that-search" )}
-      </Body3>
+      <EmptySearchResults
+        isLoading={isLoading}
+        searchQuery={debouncedQuery}
+        refetch={refetch}
+      />
     );
-  }, [showResults, isLoading, handleSelect, t] );
+  }, [hasQuery, isLoading, debouncedQuery, refetch, handleSelect] );
 
-  const listData = showResults
+  const listData = hasQuery
     ? results
     : [];
 
@@ -206,6 +210,7 @@ const UniversalSearch = ( ) => {
       </View>
 
       <View className="flex-1">
+        {/* Empty query shows default options; an active query shows results */}
         <FlatList
           data={listData}
           keyboardShouldPersistTaps="handled"

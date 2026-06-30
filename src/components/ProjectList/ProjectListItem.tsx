@@ -32,7 +32,7 @@ interface Props {
 const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   const { t, i18n } = useTranslation( );
 
-  const iconClassName = classnames( THUMBNAIL_CLASS, "bg-white mr-3" );
+  const iconClassName = classnames( THUMBNAIL_CLASS, "bg-white" );
 
   const displayBriefcase = ( ) => (
     <INatIcon

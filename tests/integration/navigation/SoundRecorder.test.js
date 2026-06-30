@@ -64,7 +64,6 @@ describe( "SoundRecorder navigation", ( ) => {
       const closeButton = await within( mediaNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
       await waitFor( ( ) => {
-        global.timeTravel( 300 );
         expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
       } );
     } );

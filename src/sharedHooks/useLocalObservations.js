@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 import Observation from "realmModels/Observation";
-import useStore from "stores/useStore";
 
 import useLayoutPrefs from "./useLayoutPrefs";
 
@@ -17,14 +16,12 @@ const deletionFilters
 
 const sortedFilters = [["needs_sync", true], ["_created_at", true]];
 
-const useLocalObservations = ( ): Object => {
-  const setNumUnuploadedObservations = useStore( state => state.setNumUnuploadedObservations );
+const useLocalObservations = ( ): Object[] => {
   const [observationList, setObservationList] = useState( [] );
 
   const prevListRef = useRef( {
     list: [],
     count: 0,
-    unsyncedCount: 0,
     isDefaultMode: null,
   } );
 
@@ -44,14 +41,11 @@ const useLocalObservations = ( ): Object => {
     const handleChange = ( _collection, changes ) => {
       const { insertions, newModifications, deletions } = changes;
 
-      const unsyncedCount = Observation.filterUnsyncedObservations( realm ).length;
-
       // limit list updates to when there are actual realm changes
       if ( ( insertions.length > 0
           || newModifications.length > 0
           || deletions.length > 0 )
         || filteredObservations.length !== prevListRef.current.count
-        || unsyncedCount !== prevListRef.current.unsyncedCount
         || isDefaultMode !== prevListRef.current.isDefaultMode
       ) {
         // amanda 20250522: React Native works best when minimal data is passed to components,
@@ -94,12 +88,10 @@ const useLocalObservations = ( ): Object => {
         }
 
         setObservationList( mappedObservations );
-        setNumUnuploadedObservations( unsyncedCount );
 
         prevListRef.current = {
           list: mappedObservations,
           count: filteredObservations.length,
-          unsyncedCount,
           isDefaultMode,
         };
       }
@@ -112,12 +104,9 @@ const useLocalObservations = ( ): Object => {
         filteredObservations?.removeAllListeners( );
       }
     };
-  }, [isDefaultMode, realm, setNumUnuploadedObservations] );
+  }, [isDefaultMode, realm] );
 
-  return {
-    observationList,
-    totalResults: observationList.length,
-  };
+  return observationList;
 };
 
 export default useLocalObservations;

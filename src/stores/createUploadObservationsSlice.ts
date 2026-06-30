@@ -26,7 +26,6 @@ interface UploadObservationsSlice {
   errorsByUuid: object;
   multiError: string | null;
   initialNumObservationsInQueue: number;
-  numUnuploadedObservations: number;
   numUploadsAttempted: number;
   totalToolbarIncrements: number;
   totalToolbarProgress: number;
@@ -42,7 +41,6 @@ const DEFAULT_STATE: UploadObservationsSlice = {
   // Single error caught during multiple obs upload
   multiError: null,
   initialNumObservationsInQueue: 0,
-  numUnuploadedObservations: 0,
   // Increments even if there was an error, so here "attempted" means we tried
   // to upload it, not that it succeeded
   numUploadsAttempted: 0,
@@ -108,7 +106,6 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       errorsByUuid: {},
       multiError: null,
       initialNumObservationsInQueue: 0,
-      numUnuploadedObservations: 0,
       numUploadsAttempted: 0,
       totalToolbarIncrements: 0,
       totalToolbarProgress: 0,
@@ -142,7 +139,6 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       errorsByUuid: {},
       multiError: null,
       initialNumObservationsInQueue: 0,
-      numUnuploadedObservations: 0,
       numUploadsAttempted: 0,
       totalToolbarIncrements: 0,
       totalToolbarProgress: 0,
@@ -245,9 +241,6 @@ const createUploadObservationsSlice: StateCreator<UploadObservationsSlice> = ( s
       totalToolbarIncrements: previousToolbarIncrements + additionalToolbarIncrements,
     } );
   } ),
-  setNumUnuploadedObservations: numUnuploadedObservations => set( ( ) => ( {
-    numUnuploadedObservations,
-  } ) ),
   removeDeletedObsFromUploadQueue: uuid => set( state => {
     const {
       initialNumObservationsInQueue,

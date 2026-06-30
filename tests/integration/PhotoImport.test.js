@@ -59,13 +59,13 @@ const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setu
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
+  const { makeRealmHooks } = jest.requireActual( "tests/helpers/uniqueRealm" );
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      ...makeRealmHooks( __filename ),
     },
   };
 } );
@@ -79,6 +79,23 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
   default: jest.fn( () => mockUser ),
 } ) );
+
+jest.mock( "sharedHooks/useObservationCounts", () => {
+  const { UNSYNCED_FILTER } = jest.requireActual( "realmModels/Observation" );
+  return {
+    __esModule: true,
+    default: () => {
+      const realm = global.mockRealms[__filename];
+      if ( !realm ) return { numUnuploadedObservations: 0, numObsMissingBasics: 0 };
+      const unsynced = realm.objects( "Observation" ).filtered( UNSYNCED_FILTER );
+      return {
+        numUnuploadedObservations: unsynced.length,
+        numObsMissingBasics: unsynced
+          .filter( obs => obs.missingBasics( ) ).length,
+      };
+    },
+  };
+} );
 
 beforeAll( async () => {
   await initI18next();

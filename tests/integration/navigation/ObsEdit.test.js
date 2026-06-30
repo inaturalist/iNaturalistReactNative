@@ -36,13 +36,13 @@ const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setu
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
+  const { makeRealmHooks } = jest.requireActual( "tests/helpers/uniqueRealm" );
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      ...makeRealmHooks( __filename ),
     },
   };
 } );
@@ -72,13 +72,11 @@ const navigateToObsEditViaGroupPhotos = async ( ) => {
   );
   await navigateToPhotoImporterFromMyObs( );
   await waitFor( ( ) => {
-    global.timeTravel( 300 );
     expect( screen.getByText( /Group Photos/ ) ).toBeVisible( );
   }, { timeout: 10_000 } );
   const importObservationsText = await screen.findByText( /IMPORT 2 OBSERVATIONS/ );
   await actor.press( importObservationsText );
   await waitFor( ( ) => {
-    global.timeTravel( 300 );
     expect( screen.getByText( /2 Observations/ ) ).toBeVisible( );
   }, { timeout: 10_000 } );
 };

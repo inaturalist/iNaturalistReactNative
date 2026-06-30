@@ -10,6 +10,7 @@ import {
   SCREEN_NAME_SEARCH_MY_OBSERVATIONS,
 } from "navigation/StackNavigators/MyObservationsStackNavigator";
 import type { MyObservationsStackScreenProps } from "navigation/types";
+import { useMyObservations } from "providers/MyObservationsContext";
 import React from "react";
 import { Alert } from "react-native";
 import type {
@@ -51,6 +52,8 @@ const MyObservationsSimpleHeader = ( {
   const searchMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SearchMyObservationsEnabled,
   );
+  const { state: myObsState } = useMyObservations( );
+  const searchActive = myObsState.searchedTaxon !== null;
 
   const handleSearchButtonPress = ( ) => {
     if ( !isConnected ) {
@@ -111,6 +114,9 @@ const MyObservationsSimpleHeader = ( {
               <INatIconButton
                 icon="magnifying-glass"
                 onPress={handleSearchButtonPress}
+                color={searchActive
+                  ? colors.inatGreen
+                  : colors.darkGray}
                 accessibilityLabel={t( "Opens-search-interface" )}
                 size={20}
               />

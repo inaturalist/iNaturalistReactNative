@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import type { ApiProjectObservation } from "api/types";
 import * as uuid from "uuid";
 
 class ProjectObservation extends Realm.Object {
@@ -23,6 +24,17 @@ class ProjectObservation extends Realm.Object {
       uuid: uuid.v4( ).toLowerCase( ),
       projectId,
     };
+  }
+
+  static mapApiToRealm(
+    apiPo: ApiProjectObservation,
+  ) {
+    const localPo = {
+      ...apiPo,
+      projectId: apiPo.project_id ?? apiPo.project?.id,
+      _synced_at: new Date( ),
+    };
+    return localPo;
   }
 
   static schema = {
