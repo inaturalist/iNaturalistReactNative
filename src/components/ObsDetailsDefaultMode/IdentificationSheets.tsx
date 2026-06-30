@@ -488,6 +488,7 @@ const IdentificationSheets: React.FC<Props> = ( {
           text={t( "Sorry-this-observation-was-deleted" )}
           buttonText={t( "OK" )}
           confirm={confirmRemoteObsWasDeleted}
+          loading={false}
         />
       ) }
     </>
