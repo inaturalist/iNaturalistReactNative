@@ -56,8 +56,6 @@ interface Identification {
 }
 
 interface IdentState {
-  comment: string | null;
-  commentIsOptional: boolean;
   showIdentBodySheet: boolean;
   newIdentification: Identification | null;
   showPotentialDisagreementSheet: boolean;
@@ -77,8 +75,6 @@ type IdentAction =
   | { type: "HIDE_SUGGESTED_ID_SHEET" };
 
 const initialIdentState: IdentState = {
-  comment: null,
-  commentIsOptional: false,
   showIdentBodySheet: false,
   newIdentification: null,
   showPotentialDisagreementSheet: false,
@@ -193,8 +189,6 @@ const IdentificationSheets: React.FC<Props> = ( {
   const [state, dispatch] = useReducer( identReducer, initialIdentState );
 
   const {
-    comment,
-    commentIsOptional,
     showIdentBodySheet,
     identTaxon,
     newIdentification,
@@ -205,16 +199,13 @@ const IdentificationSheets: React.FC<Props> = ( {
   const realm = useRealm( );
   const { t } = useTranslation( );
 
-  const hasComment = ( comment || newIdentification?.body || "" ).length > 0;
+  const hasComment = ( newIdentification?.body || "" ).length > 0;
 
-  const showAddCommentHeader = useCallback( ( ) => {
-    if ( hasComment ) {
-      return t( "EDIT-COMMENT" );
-    } if ( commentIsOptional ) {
-      return t( "ADD-OPTIONAL-COMMENT" );
-    }
-    return t( "ADD-COMMENT" );
-  }, [commentIsOptional, hasComment, t] );
+  const showAddCommentHeader = useCallback( ( ) => (
+    hasComment
+      ? t( "EDIT-COMMENT" )
+      : t( "ADD-COMMENT" )
+  ), [hasComment, t] );
 
   const editIdentBody = useCallback( ( ) => dispatch( { type: SHOW_EDIT_IDENT_BODY_SHEET } ), [] );
 
@@ -404,10 +395,8 @@ const IdentificationSheets: React.FC<Props> = ( {
   }, [createCommentMutate, uuid, loadActivityItem] );
 
   const confirmCommentFromCommentSheet = useCallback( ( newComment: string ) => {
-    if ( !commentIsOptional ) {
-      onCommentAdded( newComment );
-    }
-  }, [commentIsOptional, onCommentAdded] );
+    onCommentAdded( newComment );
+  }, [onCommentAdded] );
 
   const hideSuggestedIdSheet = ( ) => {
     dispatch( { type: HIDE_SUGGESTED_ID_SHEET } );
@@ -438,7 +427,6 @@ const IdentificationSheets: React.FC<Props> = ( {
           onPressClose={hideAddCommentSheet}
           headerText={addCommentHeaderText}
           textInputStyle={textInputStyle}
-          initialInput={comment}
           confirm={confirmCommentFromCommentSheet}
         />
       )}
