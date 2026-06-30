@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Pridať umiestnenie na obnovu návrhov
 Add-observations = Pridať pozorovanie
 ADD-OPTIONAL-COMMENT = PRIDAŤ VOLITEĽNÝ KOMENTÁR
 Add-optional-notes = Pridať voliteľné poznámky
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Pridá ID
 Adds-your-vote-of-agreement = Pridá vaše hlasovanie o dohode
 Adds-your-vote-of-disagreement = Pridá vaše hlasovanie o nesúhlase
@@ -604,6 +611,7 @@ Please-allow-Microphone-Access = Povoľte prístup k mikrofónu
 Please-choose-a-different-password = Zvoľte prosím iné heslo.
 Please-Grant-Permission = Udeľte oprávnenie
 PLEASE-LOG-IN = PRIHLÁSTE SA
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Uistite sa, že vaše heslo má aspoň 6 znakov.
 Please-try-again-when-you-are-connected-to-the-internet = Skúste to prosím znova, až budete pripojení k internetu.
@@ -1116,6 +1124,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Môžete si všimnúť zmen
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Ak sa chcete prihlásiť cez Google, musíte nainštalovať Služby Google Play.
 You-need-an-Internet-connection-to-do-that = Na to potrebujete pripojenie k internetu.
 You-need-log-in-to-do-that = Pre túto akciu je nutné sa prihlásiť.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = Pozorovali ste druh v tejto skupine
 You-observed-this-species = Pozorovali ste tento druh
 You-will-see-notifications = Akonáhle sa prihlásite a nahráte pozorovanie, uvidíte oznámenie.

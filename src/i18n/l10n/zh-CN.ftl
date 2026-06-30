@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = 添加位置以刷新建议
 Add-observations = 添加观察
 ADD-OPTIONAL-COMMENT = 添加可选评论
 Add-optional-notes = 添加可选注释
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = 添加鉴定
 Adds-your-vote-of-agreement = 添加你的同意意见投票
 Adds-your-vote-of-disagreement = 添加你的不同意意见投票
@@ -604,6 +611,7 @@ Please-allow-Microphone-Access = 请允许麦克风
 Please-choose-a-different-password = 请选择另一个密码。
 Please-Grant-Permission = 请授予权限
 PLEASE-LOG-IN = 请登录
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = 请确保您的密码至少为6个字符。
 Please-try-again-when-you-are-connected-to-the-internet = 请在您连接到互联网时再试一次。
@@ -1116,6 +1124,7 @@ You-may-notice-changes-to-how-things-look-and-flow = 您可能会注意到事物
 You-must-install-Google-Play-Services-to-sign-in-with-Google = 您必须安装Google Play服务才能登录 Google。
 You-need-an-Internet-connection-to-do-that = 您需要互联网连接才能做到这一点。
 You-need-log-in-to-do-that = 您必须先登录。
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = 您观察到了该分类群中的物种
 You-observed-this-species = 您观察到了这一物种
 You-will-see-notifications = 一旦您登录并上传观察，您将在这里看到通知。

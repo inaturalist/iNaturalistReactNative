@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Tilføj placering for at opfriske forslag
 Add-observations = Tilføj observationer
 ADD-OPTIONAL-COMMENT = TILFØJ VALGFRI KOMMENTAR
 Add-optional-notes = Tilføj valgfrie notater
+Add-to-Projects = Føj til projekter
+ADD-TO-PROJECTS = FØJ TIL PROJEKTER
+Added-to-X-Projects =
+    Føjet til { $count } { $count ->
+        [one] projekt
+       *[other] projekter
+    }
 Adds-ID = Tilføjer ID
 Adds-your-vote-of-agreement = Tilføjer egen stemme for enighed
 Adds-your-vote-of-disagreement = Tilføjer egen stemme for uenighed
@@ -604,6 +611,7 @@ Please-allow-Microphone-Access = Tillad venligst Mikrofonadgang
 Please-choose-a-different-password = Vælg en anden adgangskode.
 Please-Grant-Permission = Tildel venligst tilladelse
 PLEASE-LOG-IN = LOG VENLIGST IND
+Please-log-in = Log ind
 Please-log-in-again = Log venligst ind igen. Der er behov for lejlighedsvist at opfriske brugersessioner for at rydde cachelagrede data og sikre bedst mulig app-funktion.
 Please-make-sure-your-password-is-at-least-6-characters = Sørg for, at adgangskoden udgør minimum 6 tegn.
 Please-try-again-when-you-are-connected-to-the-internet = Forsøg igen, når der er internetforbindelse.
@@ -1118,6 +1126,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Man bemærke måske ændrin
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Google Play-tjenester skal installeres for at logge ind med Google.
 You-need-an-Internet-connection-to-do-that = At gøre dette kræver internetforbindelse.
 You-need-log-in-to-do-that = Dette kræver, at du først logger ind.
+You-need-to-be-logged-in-to-add-observations-to-projects = Bruger skal være indlogget for at føje observationer til projekter.
 You-observed-a-species-in-this-group = Man har observeret en art i denne gruppe
 You-observed-this-species = Man observerede denne art
 You-will-see-notifications = Notifikationer vises her efter indlogning og upload af observationer.
