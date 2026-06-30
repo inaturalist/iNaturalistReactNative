@@ -28,7 +28,7 @@ const AddToProjects = ( ) => {
 
   const listEmptyComponent = useMemo(
     ( ) => (
-      <View className="px-4 items-center">
+      <View className="px-20 items-center">
         <Body1 className="text-center">
           {t( "You-havent-joined-any-Traditional-Projects-yet" )}
         </Body1>
