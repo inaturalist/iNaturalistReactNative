@@ -59,8 +59,6 @@ const ObsPressable = ( {
       : RealmObservation.mapObservationForMyObsAdvancedMode( rawRealmObs );
   }, [rawRealmObs, isDefaultMode] );
 
-  // we heterogenously accept ids from MyObs and ApiObs from Explore
-  // downstream heterogenously handles ApiObs and mapped Realms
   const observation = apiObservation || mappedRealmObs;
   if ( !observation ) return null;
 

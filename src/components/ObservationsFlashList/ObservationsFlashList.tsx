@@ -40,7 +40,6 @@ const ItemSeparator = () => <View className="border-b border-lightGray" />;
 
 interface Props {
   contentContainerStyle?: StyleProp<ViewStyle>;
-  // TODO: type data / observations
   data: ( { uuid: string } )[];
   dataCanBeFetched?: boolean;
   fetchFromLastObservation?: ( observationId?: number ) => void;
