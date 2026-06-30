@@ -50,9 +50,7 @@ const FadeInSuggestionsContainer = ( ) => fadeInComponent( <SuggestionsContainer
 const FadeInSuggestionsTaxonSearch = ( ) => fadeInComponent( <SuggestionsTaxonSearch /> );
 const FadeInMatchTaxonSearchScreen = ( ) => fadeInComponent( <MatchTaxonSearchScreen /> );
 const FadeInFullPageWebView = ( ) => fadeInComponent( <FullPageWebView /> );
-const FadeInMatchContainer = ( ) => fadeInComponent(
-  <MatchContainer />,
-);
+const FadeInMatchContainer = ( ) => fadeInComponent( <MatchContainer /> );
 const FadeInAddToProjects = ( ) => fadeInComponent( <AddToProjects /> );
 
 const BASE_SCREEN_OPTIONS = {
