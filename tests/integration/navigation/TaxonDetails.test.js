@@ -20,16 +20,13 @@ const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setu
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
+  const { makeRealmHooks } = jest.requireActual( "tests/helpers/uniqueRealm" );
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
-      useObject: ( type, primaryKey ) => (
-        global.mockRealms[mockRealmIdentifier]?.objectForPrimaryKey( type, primaryKey )
-      ),
+      ...makeRealmHooks( __filename ),
     },
   };
 } );
@@ -236,7 +233,6 @@ describe( "TaxonDetails", ( ) => {
     expect( selectTaxonButton ).toBeVisible();
     await actor.press( selectTaxonButton );
     await waitFor( async () => {
-      global.timeTravel( 300 );
       expect( await screen.findByText( taxon.name ) ).toBeVisible();
     }, { timeout: 10_000 } );
     const { currentObservation } = useStore.getState();
@@ -260,7 +256,6 @@ describe( "TaxonDetails", ( ) => {
       expect( selectTaxonButton ).toBeVisible();
       await actor.press( selectTaxonButton );
       await waitFor( async () => {
-        global.timeTravel( 300 );
         expect( await screen.findByText( taxon.ancestors[0].name ) ).toBeVisible();
       }, { timeout: 10_000 } );
       const { currentObservation } = useStore.getState();
@@ -284,7 +279,6 @@ describe( "TaxonDetails", ( ) => {
     expect( selectTaxonButton ).toBeVisible();
     await actor.press( selectTaxonButton );
     await waitFor( async () => {
-      global.timeTravel( 300 );
       // We just chose searchedTaxon, so that name should be visible on ObsEdit
       expect( await screen.findByText( searchedTaxon.name ) ).toBeVisible();
     }, { timeout: 10_000 } );

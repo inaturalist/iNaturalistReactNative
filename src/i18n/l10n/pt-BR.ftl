@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Adicionar localização para atualizar as 
 Add-observations = Adicionar observações
 ADD-OPTIONAL-COMMENT = Adicionar COMENTÁRIO OPCIONAL
 Add-optional-notes = Adicionar notas opcionais
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Adicionar ID
 Adds-your-vote-of-agreement = Adiciona seu voto de concordância
 Adds-your-vote-of-disagreement = Adiciona seu voto de desacordo
@@ -604,6 +611,7 @@ Please-allow-Microphone-Access = Por favor, permita o acesso ao microfone
 Please-choose-a-different-password = Por favor escolha uma outra senha
 Please-Grant-Permission = Por favor conceda permissão
 PLEASE-LOG-IN = POR FAVOR ENTRE
+Please-log-in = Please log in
 Please-log-in-again = Por favor, faça o login novamente. Nós ocasionalmente precisamos atualizar sua sessão para limpar dados em cache e ter certeza que o aplicativo está funcionando corretamente.
 Please-make-sure-your-password-is-at-least-6-characters = Por favor certifique-se de que sua senha tenha pelo menos 6 caracteres
 Please-try-again-when-you-are-connected-to-the-internet = Por favor tente novamente quando estiver conectado à Internet
@@ -1116,6 +1124,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Você pode perceber altera�
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Você deve instalar o Google Play Services para fazer login com o Google.
 You-need-an-Internet-connection-to-do-that = Você precisa de uma conexão com a ‘internet’ para fazer isso.
 You-need-log-in-to-do-that = Você precisa fazer login para fazer isso.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = Você observou uma espécie nesse grupo
 You-observed-this-species = Você observou esta espécie
 You-will-see-notifications = Você verá notificações aqui quando entrar e carregar observações.

@@ -9,7 +9,7 @@ import React, {
   useCallback,
 } from "react";
 import {
-  Dimensions, Platform, StyleSheet,
+  Dimensions, StyleSheet,
 } from "react-native";
 import type {
   PanGesture,
@@ -81,7 +81,7 @@ const CameraView = ( {
   const standardVideoAspectRatio = 4 / 3;
   const standardPhotoAspectRatio = 4 / 3;
   // Select a format that provides the highest resolution for photos and videos
-  const iosFormat = useCameraFormat( device, [
+  const format = useCameraFormat( device, [
     {
       videoAspectRatio: cameraScreen === "standard"
         ? standardVideoAspectRatio
@@ -95,12 +95,6 @@ const CameraView = ( {
     { photoResolution: "max" },
     { videoResolution: "max" },
   ] );
-  if ( Platform.OS === "android" ) {
-    console.log( "Android is not using a specific camera format because we never got around to" );
-  }
-  const format = Platform.OS === "ios"
-    ? iosFormat
-    : undefined;
   // Set the exposure to the middle of the min and max exposure
   const exposure = ( device.maxExposure + device.minExposure ) / 2;
 

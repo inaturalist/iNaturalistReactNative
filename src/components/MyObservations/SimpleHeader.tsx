@@ -4,6 +4,7 @@ import {
   INatIcon,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { useMyObservations } from "providers/MyObservationsContext";
 import React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useStore from "stores/useStore";
@@ -37,6 +38,13 @@ const SimpleHeader = ( {
   const setIsDefaultMode = useStore( state => state.layout.setIsDefaultMode );
 
   const currentUser = useCurrentUser();
+  const { state: myObsState } = useMyObservations( );
+  const searchActive = myObsState.searchedTaxon !== null;
+
+  // While a search is active, the SearchedTaxonBanner is the only banner we
+  // want to show. Suppress the announcement / advanced-mode / location-missing
+  // banners so they don't compete for attention or change the layout.
+  if ( searchActive ) return null;
 
   const shouldShowAdvancedModeBanner = !!currentUser
       && isDefaultMode
