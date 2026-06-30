@@ -7,14 +7,28 @@ import {
 } from "components/SharedComponents";
 import { SharedStackBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
+import Project from "realmModels/Project";
+
+const { useQuery } = RealmContext;
 
 const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
 const AddToProjects = ( ) => {
   const { t } = useTranslation( );
+  const joinedProjects = useQuery(
+    {
+      type: Project,
+      query: projects => projects
+      // \"\" project type for traditional projects is an empty string
+        .filtered( "project_type == \"\" OR project_type == null" ),
+    },
+    [],
+  );
+
   const listHeaderComponent = useMemo(
     ( ) => (
       <View className="px-4 pt-5 pb-6">
@@ -83,9 +97,10 @@ const AddToProjects = ( ) => {
         ListEmptyComponent={listEmptyComponent}
         ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}
-        data={[]}
-        ItemSeparatorComponent={ItemSeparator}
+        data={joinedProjects}
+        keyExtractor={( project: Project ) => String( project.id )}
         renderItem={renderProject}
+        ItemSeparatorComponent={ItemSeparator}
       />
     </SharedStackBottomInsetViewWrapper>
   );
