@@ -42,7 +42,7 @@ export const PROJECT_FIELDS_ALL = "all";
 
 export const OBSERVATION_FIELD_VALUE_FIELDS = {
   id: true,
-  observation_field: OBSERVATION_FIELD_FIELDS,
+  field_id: true,
   uuid: true,
   value: true,
 };

@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Soovituste uuendamiseks lisa asukoht
 Add-observations = Lisa vaatluseid
 ADD-OPTIONAL-COMMENT = LISA SOOVIKORRAL KOMMENTAAR
 Add-optional-notes = Lisa soovi korral märkuseid
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Lisab määratluse
 Adds-your-vote-of-agreement = Lisab sinupoolse nõustumise
 Adds-your-vote-of-disagreement = Lisab sinupoolse mitte nõustumise
@@ -604,6 +611,7 @@ Please-allow-Microphone-Access = Please allow Microphone Access
 Please-choose-a-different-password = Please choose a different password.
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PALUN LOGI SISSE
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Please make sure your password is at least 6 characters.
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
@@ -1116,6 +1124,7 @@ You-may-notice-changes-to-how-things-look-and-flow = You may notice changes to h
 You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install Google Play Services to sign in with Google.
 You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
 You-need-log-in-to-do-that = You need to log in to do that.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = You observed a species in this group
 You-observed-this-species = You observed this species
 You-will-see-notifications = Teavitusi näed peale sisse logimist ja vaatluste üles laadimist.

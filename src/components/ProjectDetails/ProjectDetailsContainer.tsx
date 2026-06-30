@@ -79,7 +79,7 @@ const ProjectDetailsContainer = ( ) => {
     },
   );
 
-  const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse>(
+  const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse<object>>(
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
       project_id: id,

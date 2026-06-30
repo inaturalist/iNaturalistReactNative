@@ -44,6 +44,60 @@ describe( "Observation", ( ) => {
       expect( mappedObservation.observationSounds[0].uuid )
         .toEqual( remoteObservationSound.uuid );
     } );
+
+    it( "should map project_observations to projectObservations with created_at metadata", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", {
+        project_observations: [factory( "RemoteProjectObservation" )],
+      } );
+      const mappedObservation = Observation.mapApiToRealm( mockRemoteObservation );
+      expect( mappedObservation.projectObservations ).toHaveLength( 1 );
+      expect( mappedObservation.projectObservations[0]._created_at ).toBeInstanceOf( Date );
+    } );
+
+    it( "should map ofvs to observationFieldValues with created_at metadata", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", {
+        ofvs: [factory( "RemoteObservationFieldValue" )],
+      } );
+      const mappedObservation = Observation.mapApiToRealm( mockRemoteObservation );
+      expect( mappedObservation.observationFieldValues ).toHaveLength( 1 );
+      expect( mappedObservation.observationFieldValues[0]._created_at ).toBeInstanceOf( Date );
+    } );
+  } );
+
+  describe( "upsertRemoteObservations", ( ) => {
+    it( "should persist observationFieldValues in Realm", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", {
+        ofvs: [factory( "RemoteObservationFieldValue" )],
+      } );
+
+      Observation.upsertRemoteObservations( [mockRemoteObservation], global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", mockRemoteObservation.uuid );
+      expect( obs.observationFieldValues ).toHaveLength( 1 );
+      expect( obs.observationFieldValues[0].value ).toBe(
+        mockRemoteObservation.ofvs[0].value,
+      );
+      expect( obs.observationFieldValues[0].obsFieldId ).toBe(
+        mockRemoteObservation.ofvs[0].field_id,
+      );
+    } );
+
+    it( "should persist projectObservations in Realm", ( ) => {
+      const mockRemoteObservation = factory( "RemoteObservation", {
+        project_observations: [factory( "RemoteProjectObservation" )],
+      } );
+
+      Observation.upsertRemoteObservations( [mockRemoteObservation], global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", mockRemoteObservation.uuid );
+      expect( obs.projectObservations ).toHaveLength( 1 );
+      expect( obs.projectObservations[0].id ).toBe(
+        mockRemoteObservation.project_observations[0].id,
+      );
+      expect( obs.projectObservations[0].projectId ).toBe(
+        mockRemoteObservation.project_observations[0].project_id,
+      );
+    } );
   } );
 
   describe( "needsSync", ( ) => {
@@ -74,7 +128,7 @@ describe( "Observation", ( ) => {
           _synced_at: syncDate,
           _updated_at: syncDate,
           observationFieldValues: [
-            ObservationFieldValue.new( 1, 5, "x" ),
+            ObservationFieldValue.new( 5, "x" ),
           ],
         } );
       }, "create Observation with unsynced OFV for needsSync test" );
@@ -110,7 +164,7 @@ describe( "Observation", ( ) => {
           _synced_at: syncDate,
           _updated_at: syncDate,
           observationFieldValues: [
-            ObservationFieldValue.new( 1, 5, "x" ),
+            ObservationFieldValue.new( 5, "x" ),
           ],
         } );
       }, "create synced obs with unsynced OFV" );

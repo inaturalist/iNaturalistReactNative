@@ -14,7 +14,7 @@ type Geoprivacy = null | GEOPRIVACY_OPEN | GEOPRIVACY_OBSCURED | GEOPRIVACY_PRIV
 interface Props {
   onPressClose: ( ) => void;
   selectedValue?: Geoprivacy;
-  updateGeoprivacyStatus: ( Geoprivacy ) => void;
+  updateGeoprivacyStatus: ( _status: Geoprivacy ) => void;
 }
 
 const GeoprivacySheet = ( {

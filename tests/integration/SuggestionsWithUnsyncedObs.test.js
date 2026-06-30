@@ -113,13 +113,13 @@ const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setu
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
+  const { makeRealmHooks } = jest.requireActual( "tests/helpers/uniqueRealm" );
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      ...makeRealmHooks( __filename ),
     },
   };
 } );
@@ -341,7 +341,6 @@ describe( "from AICamera directly", ( ) => {
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICameraFromMyObs( );
       await waitFor( ( ) => {
-        global.timeTravel( );
         expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeVisible( );
       } );
       const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );

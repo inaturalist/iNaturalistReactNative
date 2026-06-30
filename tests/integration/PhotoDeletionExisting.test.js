@@ -39,13 +39,13 @@ const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setu
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
+  const { makeRealmHooks } = jest.requireActual( "tests/helpers/uniqueRealm" );
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      ...makeRealmHooks( __filename ),
     },
   };
 } );
@@ -129,7 +129,6 @@ describe( "Photo Deletion with existing saved observation", () => {
     const cameraButton = await within( addEvidenceSheet ).findByLabelText( "Camera" );
     await actor.press( cameraButton );
     await waitFor( () => {
-      global.timeTravel( 300 );
       expect( screen.getByTestId( "CameraNavButtons" ) ).toBeVisible();
     } );
     // Tap the photo preview to enter the MediaViewer

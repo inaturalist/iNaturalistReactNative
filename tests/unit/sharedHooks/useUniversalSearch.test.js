@@ -6,6 +6,7 @@ jest.mock( "api/search" );
 const { search } = require( "api/search" );
 
 const TAXON_RESULT = {
+  type: "taxon",
   taxon: {
     id: 12,
     name: "Eumyias thalassinus",
@@ -13,9 +14,11 @@ const TAXON_RESULT = {
   },
 };
 const USER_RESULT = {
+  type: "user",
   user: { id: 7, login: "seth_msp" },
 };
 const PROJECT_RESULT = {
+  type: "project",
   project: { id: 9, title: "InverteFest" },
 };
 
@@ -46,7 +49,7 @@ describe( "useUniversalSearch", ( ) => {
     );
   } );
 
-  it( "maps a mixed response to a tagged union, preserving order", async ( ) => {
+  it( "returns the type-tagged results, preserving order", async ( ) => {
     search.mockResolvedValue( {
       results: [USER_RESULT, TAXON_RESULT, PROJECT_RESULT],
     } );
@@ -56,9 +59,9 @@ describe( "useUniversalSearch", ( ) => {
     await waitFor( ( ) => expect( result.current.results.length ).toEqual( 3 ) );
 
     expect( result.current.results ).toEqual( [
-      { type: "user", user: USER_RESULT.user },
-      { type: "taxon", taxon: TAXON_RESULT.taxon },
-      { type: "project", project: PROJECT_RESULT.project },
+      USER_RESULT,
+      TAXON_RESULT,
+      PROJECT_RESULT,
     ] );
   } );
 

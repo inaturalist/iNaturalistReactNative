@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Tambahkan lokasi untuk menyegarkan rekomen
 Add-observations = Tambah pengamatan
 ADD-OPTIONAL-COMMENT = TAMBAH KOMENTAR OPSIONAL
 Add-optional-notes = Tambahkan catatan opsional
+Add-to-Projects = Tambahkan ke Proyek
+ADD-TO-PROJECTS = TAMBAHKAN KE PROYEK
+Added-to-X-Projects =
+    Ditambahkan ke { $count } { $count ->
+        [satu] Proyek
+       *[lainnya] Proyek
+    }
 Adds-ID = Menambahkan ID
 Adds-your-vote-of-agreement = Menambahkan suara setuju dari Anda
 Adds-your-vote-of-disagreement = Menambahkan suara tidak setuju dari Anda
@@ -604,6 +611,7 @@ Please-allow-Microphone-Access = Harap izinkan Akses Mikrofon
 Please-choose-a-different-password = Harap gunakan kata sandi yang berbeda.
 Please-Grant-Permission = Mohon Berikan Izin
 PLEASE-LOG-IN = HARAP MASUK
+Please-log-in = Silakan masuk
 Please-log-in-again = Silakan masuk lagi. Kami sekali-kali perlu menyegarkan sesi Anda untuk menghapus data yang di-cache dan memastikan aplikasinya berfungsi dengan baik.
 Please-make-sure-your-password-is-at-least-6-characters = Pastikan kata sandi Anda memiliki setidaknya 6 karakter.
 Please-try-again-when-you-are-connected-to-the-internet = Silakan mencoba lagi saat Anda sudah terhubung dengan Internet.
@@ -1116,6 +1124,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Anda mungkin melihat peruba
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Anda harus memasang Layanan Google Play untuk masuk dengan Google.
 You-need-an-Internet-connection-to-do-that = Anda memerlukan koneksi Internet untuk melakukan hal tersebut.
 You-need-log-in-to-do-that = Anda harus masuk untuk melakukannya.
+You-need-to-be-logged-in-to-add-observations-to-projects = Anda harus masuk untuk menambahkan pengamatan ke proyek.
 You-observed-a-species-in-this-group = Kamu telah mengamati sebuah spesies dalam kelompok ini
 You-observed-this-species = Kamu telah mengamati spesies ini
 You-will-see-notifications = Anda akan melihat notifikasi-notifikasi di sini setelah Anda masuk & mengunggah pengamatan.
