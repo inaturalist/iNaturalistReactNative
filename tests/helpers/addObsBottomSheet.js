@@ -58,9 +58,6 @@ export async function pressAddObsOption( testID ) {
 /** Waits for the standard camera screen after a stack reset from the add-obs flow. */
 export async function waitForStandardCameraScreen() {
   await waitFor( ( ) => {
-    if ( typeof global.timeTravel === "function" ) {
-      global.timeTravel( 300 );
-    }
     expect( screen.getByTestId( "CameraNavButtons" ) ).toBeVisible( );
   }, { timeout: 10_000 } );
 }
@@ -76,9 +73,6 @@ export async function navigateToStandardCameraFromMyObs() {
 
 export async function waitForMyObservationsScreen() {
   await waitFor( ( ) => {
-    if ( typeof global.timeTravel === "function" ) {
-      global.timeTravel( 300 );
-    }
     const tabBar = screen.getByTestId( "CustomTabBar" );
     expect( within( tabBar ).getByLabelText( "Add observations" ) ).toBeVisible( );
   }, { timeout: 10_000 } );
@@ -95,9 +89,6 @@ export async function navigateToPhotoImporterFromMyObs() {
 
 export async function waitForSoundRecorderScreen() {
   await waitFor( ( ) => {
-    if ( typeof global.timeTravel === "function" ) {
-      global.timeTravel( 300 );
-    }
     expect( screen.getByTestId( "MediaNavButtons" ) ).toBeVisible( );
   }, { timeout: 10_000 } );
 }
@@ -118,9 +109,6 @@ export async function navigateToAICameraFromMyObs() {
   await pressAddObservationsButton( );
   await pressAddObsOption( ADD_OBS_OPTIONS.aiCamera );
   await waitFor( ( ) => {
-    if ( typeof global.timeTravel === "function" ) {
-      global.timeTravel( 300 );
-    }
     expect( screen.getByTestId( "take-photo-button" ) ).toBeVisible( );
   }, { timeout: 10_000 } );
 }
@@ -128,9 +116,6 @@ export async function navigateToAICameraFromMyObs() {
 export async function takeAICameraPhotoAndOpenSuggestions() {
   await actor.press( await screen.findByTestId( "take-photo-button" ) );
   await waitFor( ( ) => {
-    if ( typeof global.timeTravel === "function" ) {
-      global.timeTravel( 300 );
-    }
     expect( screen.getByText( /ADD AN ID/ ) ).toBeVisible( );
   }, { timeout: 10_000 } );
 }
@@ -144,11 +129,6 @@ export async function navigateToSuggestionsViaAICameraFromMyObs() {
 export async function takeStandardCameraPhotoAndConfirm() {
   await actor.press( await screen.findByTestId( "take-photo-button" ) );
   await actor.press( await screen.findByLabelText( "View suggestions" ) );
-  await waitFor( ( ) => {
-    if ( typeof global.timeTravel === "function" ) {
-      global.timeTravel( 300 );
-    }
-  }, { timeout: 10_000 } );
 }
 
 async function pressObsEditSaveButton() {
@@ -181,9 +161,6 @@ export async function saveObsEditObservation( _options = {} ) {
 /** Waits until at least one observation appears on the My Obs grid. */
 export async function waitForMyObsGridItems() {
   return waitFor( ( ) => {
-    if ( typeof global.timeTravel === "function" ) {
-      global.timeTravel( 300 );
-    }
     const items = screen.queryAllByTestId( /MyObservations\.obsGridItem\..*/ );
     if ( items.length === 0 ) {
       throw new Error( "Waiting for My Obs grid items" );

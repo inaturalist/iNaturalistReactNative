@@ -233,7 +233,6 @@ describe( "TaxonDetails", ( ) => {
     expect( selectTaxonButton ).toBeVisible();
     await actor.press( selectTaxonButton );
     await waitFor( async () => {
-      global.timeTravel( 300 );
       expect( await screen.findByText( taxon.name ) ).toBeVisible();
     }, { timeout: 10_000 } );
     const { currentObservation } = useStore.getState();
@@ -257,7 +256,6 @@ describe( "TaxonDetails", ( ) => {
       expect( selectTaxonButton ).toBeVisible();
       await actor.press( selectTaxonButton );
       await waitFor( async () => {
-        global.timeTravel( 300 );
         expect( await screen.findByText( taxon.ancestors[0].name ) ).toBeVisible();
       }, { timeout: 10_000 } );
       const { currentObservation } = useStore.getState();
@@ -281,7 +279,6 @@ describe( "TaxonDetails", ( ) => {
     expect( selectTaxonButton ).toBeVisible();
     await actor.press( selectTaxonButton );
     await waitFor( async () => {
-      global.timeTravel( 300 );
       // We just chose searchedTaxon, so that name should be visible on ObsEdit
       expect( await screen.findByText( searchedTaxon.name ) ).toBeVisible();
     }, { timeout: 10_000 } );

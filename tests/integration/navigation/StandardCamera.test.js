@@ -76,7 +76,6 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       const closeButton = await within( cameraNavButtons ).findByLabelText( "Close" );
       await actor.press( closeButton );
       await waitFor( ( ) => {
-        global.timeTravel( 300 );
         expect( screen.queryByTestId( "CameraNavButtons" ) ).toBeNull( );
         // TODO: This used to be an expect like so, idk why that fails now
         // expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
@@ -92,7 +91,6 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
     const checkmarkButton = await screen.findByLabelText( "View suggestions" );
     await actor.press( checkmarkButton );
     await waitFor( ( ) => {
-      global.timeTravel( 300 );
       expect( screen.getByText( /New Observation/ ) ).toBeVisible( );
     } );
   } );
@@ -114,7 +112,6 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
       const checkmarkButton = await screen.findByLabelText( "View suggestions" );
       await actor.press( checkmarkButton );
       await waitFor( ( ) => {
-        global.timeTravel( 300 );
         expect( screen.getByText( /ADD AN ID/ ) ).toBeVisible( );
       } );
     } );

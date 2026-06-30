@@ -341,7 +341,6 @@ describe( "from AICamera directly", ( ) => {
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICameraFromMyObs( );
       await waitFor( ( ) => {
-        global.timeTravel( );
         expect( screen.getByText( /IMPROVE THESE SUGGESTIONS/ ) ).toBeVisible( );
       } );
       const ignoreLocationButton = screen.queryByText( /IGNORE LOCATION/ );

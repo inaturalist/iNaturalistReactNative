@@ -97,7 +97,6 @@ const actor = userEvent.setup( );
 
 async function navigateToObsDetails( ) {
   await waitFor( ( ) => {
-    global.timeTravel( );
     expect( screen.getByText( /OBSERVATION/ ) ).toBeVisible( );
   } );
   const firstObservation = await screen.findByTestId(
