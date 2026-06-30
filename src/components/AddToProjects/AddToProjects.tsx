@@ -24,6 +24,17 @@ const AddToProjects = ( ) => {
     [t],
   );
 
+  const listEmptyComponent = useMemo(
+    ( ) => (
+      <View className="px-4 items-center">
+        <Body1 className="text-center">
+          {t( "You-havent-joined-any-Traditional-Projects-yet" )}
+        </Body1>
+      </View>
+    ),
+    [t],
+  );
+
   const listFooterComponent = useMemo(
     () => (
       <View className="px-4 pt-6 pb-6">
@@ -48,8 +59,10 @@ const AddToProjects = ( ) => {
     <SharedStackViewWrapper testID="add-to-projects">
       <CustomFlashList
         testID="AddToProjects.list"
+        ListEmptyComponent={listEmptyComponent}
         ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}
+        data={[]}
       />
     </SharedStackViewWrapper>
   );
