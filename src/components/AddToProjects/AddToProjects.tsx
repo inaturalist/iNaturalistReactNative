@@ -1,11 +1,35 @@
+import {
+  Body1, CustomFlashList, List2,
+} from "components/SharedComponents";
 import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
-import React from "react";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
-const AddToProjects = ( ) => (
-  <SharedStackViewWrapper testID="add-to-projects">
-    <View className="flex-1 bg-white" />
-  </SharedStackViewWrapper>
-);
+const AddToProjects = ( ) => {
+  const { t } = useTranslation( );
+  const listHeaderComponent = useMemo(
+    ( ) => (
+      <View className="px-4 pt-5 pb-6">
+        <Body1>{t( "Traditional-Projects" )}</Body1>
+        <List2 className="mt-2">
+          {t(
+            "You-can-manually-add-observations-to-Traditional-Projects-you-have-joined",
+          )}
+        </List2>
+      </View>
+    ),
+    [t],
+  );
+
+  return (
+    <SharedStackViewWrapper testID="add-to-projects">
+      <CustomFlashList
+        testID="AddToProjects.list"
+        ListHeaderComponent={listHeaderComponent}
+      />
+    </SharedStackViewWrapper>
+  );
+};
 
 export default AddToProjects;
