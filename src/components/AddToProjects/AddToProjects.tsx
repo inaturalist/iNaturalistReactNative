@@ -1,5 +1,7 @@
 import {
-  Body1, CustomFlashList, List2,
+  Body1,
+  Body2,
+  CustomFlashList,
 } from "components/SharedComponents";
 import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
@@ -12,11 +14,11 @@ const AddToProjects = ( ) => {
     ( ) => (
       <View className="px-4 pt-5 pb-6">
         <Body1>{t( "Traditional-Projects" )}</Body1>
-        <List2 className="mt-2">
+        <Body2 className="mt-2">
           {t(
             "You-can-manually-add-observations-to-Traditional-Projects-you-have-joined",
           )}
-        </List2>
+        </Body2>
       </View>
     ),
     [t],
