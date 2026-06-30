@@ -129,7 +129,6 @@ describe( "Photo Deletion with existing saved observation", () => {
     const cameraButton = await within( addEvidenceSheet ).findByLabelText( "Camera" );
     await actor.press( cameraButton );
     await waitFor( () => {
-      global.timeTravel( 300 );
       expect( screen.getByTestId( "CameraNavButtons" ) ).toBeVisible();
     } );
     // Tap the photo preview to enter the MediaViewer

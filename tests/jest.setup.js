@@ -150,8 +150,10 @@ jest.mock( "react-native-legal", () => ( {
 // FadeInView animation for navigation screen transitions
 global.withAnimatedTimeTravelEnabled = ( options = {} ) => {
   beforeEach( () => {
-    if ( !options.skipFakeTimers ) jest.useFakeTimers();
-    jest.setSystemTime( new Date( 0 ) );
+    if ( !options.skipFakeTimers ) {
+      jest.useFakeTimers();
+      jest.setSystemTime( new Date( 0 ) );
+    }
   } );
   if ( !options.skipFakeTimers ) {
     afterEach( () => {
