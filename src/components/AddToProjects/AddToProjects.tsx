@@ -1,3 +1,5 @@
+import type { ProjectRulePreference } from "api/types";
+import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
   Body2,
@@ -5,8 +7,9 @@ import {
 } from "components/SharedComponents";
 import { SharedStackBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import type { ListRenderItem } from "react-native";
 
 const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
@@ -57,6 +60,22 @@ const AddToProjects = ( ) => {
     [t],
   );
 
+  interface Project {
+    icon: string;
+    id: number;
+    project_type: "collection" | "umbrella" | "";
+    rule_preferences: ProjectRulePreference[];
+    title: string;
+  }
+  const renderProject: ListRenderItem<Project> = useCallback(
+    ( { item } ) => (
+      <View className="px-4 py-2">
+        <ProjectListItem item={item} />
+      </View>
+    ),
+    [],
+  );
+
   return (
     <SharedStackBottomInsetViewWrapper testID="add-to-projects">
       <CustomFlashList
@@ -66,6 +85,7 @@ const AddToProjects = ( ) => {
         ListFooterComponent={listFooterComponent}
         data={[]}
         ItemSeparatorComponent={ItemSeparator}
+        renderItem={renderProject}
       />
     </SharedStackBottomInsetViewWrapper>
   );
