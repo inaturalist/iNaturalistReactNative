@@ -21,6 +21,7 @@ const mockObservations = [
     observationPhotos: [factory( "LocalObservationPhoto" )],
   } ),
 ];
+const mockObsIds = mockObservations.map( ( { uuid } ) => ( { uuid } ) );
 
 let mockObsByUuid = {};
 
@@ -78,7 +79,7 @@ const renderMyObservations = layout => renderComponent(
   <MyObservationsProvider>
     <MyObservationsSimple
       layout={layout}
-      observationIds={mockObservations}
+      observationIds={mockObsIds}
       onEndReached={jest.fn( )}
       toggleLayout={jest.fn( )}
       setShowLoginSheet={jest.fn( )}
