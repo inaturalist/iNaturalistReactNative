@@ -1,10 +1,14 @@
+import type { ApiObservation } from "api/types";
 import { Pressable } from "components/styledComponents";
-import React from "react";
-import type { RealmObservation } from "realmModels/types";
-import { useTranslation } from "sharedHooks";
+import { RealmContext } from "providers/contexts";
+import React, { useMemo } from "react";
+import RealmObservation from "realmModels/Observation";
+import { useLayoutPrefs, useTranslation } from "sharedHooks";
 
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
+
+const { useObject } = RealmContext;
 
 interface Props {
   currentUser: object;
@@ -15,11 +19,12 @@ interface Props {
   hideObsStatus?: boolean;
   isSimpleObsStatus?: boolean;
   hideRGLabel?: boolean;
+  apiObservation?: ApiObservation;
   onUploadButtonPress: ( ) => void;
   onItemPress: ( ) => void;
   gridItemStyle: object;
   layout: "list" | "grid";
-  observation: RealmObservation;
+  uuid: string;
   uploadProgress: number;
   unsynced: boolean;
 }
@@ -33,19 +38,33 @@ const ObsPressable = ( {
   hideObsStatus,
   isSimpleObsStatus,
   hideRGLabel,
+  apiObservation,
   onUploadButtonPress,
   onItemPress,
   gridItemStyle,
   layout,
-  observation,
+  uuid,
   uploadProgress,
   unsynced,
 }: Props ) => {
   const { t } = useTranslation( );
+  const { isDefaultMode } = useLayoutPrefs( );
+  const rawRealmObs = useObject<{ uuid: string }>( "Observation", uuid );
+  const mappedRealmObs = useMemo( () => {
+    if ( rawRealmObs === null ) {
+      return null;
+    }
+    return isDefaultMode
+      ? RealmObservation.mapObservationForMyObsDefaultMode( rawRealmObs )
+      : RealmObservation.mapObservationForMyObsAdvancedMode( rawRealmObs );
+  }, [rawRealmObs, isDefaultMode] );
+
+  const observation = apiObservation || mappedRealmObs;
+  if ( !observation ) return null;
 
   return (
     <Pressable
-      testID={`ObsPressable.${observation.uuid}`}
+      testID={`ObsPressable.${uuid}`}
       onPress={onItemPress}
       accessibilityRole="link"
       accessibilityHint={unsynced

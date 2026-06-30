@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { fetchSearchResults } from "api/search";
 import type { ApiOpts } from "api/types";
 import { RealmContext } from "providers/contexts";
@@ -32,6 +33,7 @@ function saveTaxaToRealm( taxa: Taxon[], realm: Realm ) {
 const useTaxonSearch = ( taxonQueryArg = "" ) => {
   const realm = useRealm( );
   const iconicTaxa = useIconicTaxa( { reload: false } );
+  const { isConnected } = useNetInfo( );
   // Remove leading and trailing whitespace, no need to perform new queries or
   // potentially get different results b/c of meaningless whitespace
   const taxonQuery = taxonQueryArg.trim();
@@ -39,7 +41,9 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
 
   const shouldFetchRemote = taxonQuery.length > 0;
 
-  const { data: remoteTaxa, refetch, isLoading } = useAuthenticatedQuery(
+  const {
+    data: remoteTaxa, refetch, isLoading, isFetched,
+  } = useAuthenticatedQuery(
     ["fetchTaxonSuggestions", taxonQuery],
     async ( optsWithAuth: ApiOpts ) => {
       const apiTaxa = await fetchSearchResults(
@@ -96,6 +100,14 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
 
       if ( isLoading ) return;
 
+      // Don't fall back to local results until the remote query has actually
+      // run at least once. useAuthenticatedQuery starts with enabled=false
+      // while it resolves the auth state, which makes isLoading=false even
+      // though no remote fetch has happened yet — without this check we'd
+      // flash the "Showing offline search results" callout in that window.
+      // Skip the gate when we know we're offline and will need remote taxa
+      if ( shouldFetchRemote && !isFetched && isConnected !== false ) return;
+
       if ( remoteTaxa && remoteTaxa.length > 0 ) {
         if ( isSubscribed ) setLocalTaxa( null );
         return;
@@ -116,10 +128,13 @@ const useTaxonSearch = ( taxonQueryArg = "" ) => {
       isSubscribed = false;
     };
   }, [
+    isConnected,
+    isFetched,
     isLoading,
     realm,
     remoteTaxa,
     safeRealmSearch,
+    shouldFetchRemote,
     taxonQuery,
   ] );
 

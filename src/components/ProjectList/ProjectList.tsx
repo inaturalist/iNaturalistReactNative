@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiProject } from "api/types";
+import type { ApiProjectSummary } from "api/types";
 import {
   CustomFlashList,
 } from "components/SharedComponents";
@@ -14,11 +14,11 @@ import ProjectListItem from "./ProjectListItem";
 const ItemSeparator = () => <View className="border-b border-lightGray" />;
 
 interface Props {
-  projects: ApiProject[];
+  projects: ApiProjectSummary[];
   ListEmptyComponent?: React.ReactElement | null;
   ListFooterComponent?: React.ReactElement;
   onEndReached?: ( ) => void;
-  onPress?: ( project: ApiProject ) => void;
+  onPress?: ( project: ApiProjectSummary ) => void;
   accessibilityLabel?: string;
 }
 
@@ -33,7 +33,7 @@ const ProjectList = ( {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
-  const renderProject = ( { item: project }: { item: ApiProject } ) => (
+  const renderProject = ( { item: project }: { item: ApiProjectSummary } ) => (
     <Pressable
       className="px-4 py-1.5"
       onPress={( ) => {
@@ -58,7 +58,7 @@ const ProjectList = ( {
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={ListFooterComponent}
       data={projects}
-      keyExtractor={( item: ApiProject ) => item.id}
+      keyExtractor={( item: ApiProjectSummary ) => item.id}
       onEndReached={onEndReached}
       renderItem={renderProject}
       testID="ProjectList"

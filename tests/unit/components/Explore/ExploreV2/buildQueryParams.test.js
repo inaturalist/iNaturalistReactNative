@@ -1,5 +1,5 @@
 import buildExploreV2QueryParams
-  from "components/Explore/ExploreV2/buildQueryParams";
+  from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import {
   EXPLORE_V2_PLACE_MODE,
   initialExploreV2State,

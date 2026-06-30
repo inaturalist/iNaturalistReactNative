@@ -1,0 +1,75 @@
+import { PROJECT_SUMMARY_FIELDS } from "api/fields";
+import { search } from "api/search";
+import type {
+  ApiOpts,
+  ApiProjectSummary,
+  ApiTaxon,
+  ApiUser,
+} from "api/types";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+
+// A single autocomplete suggestion, tagged by source so the consumer can pick
+// the right row renderer. We use the raw `search` wrapper rather than
+// `fetchSearchResults` because the latter flattens results and discards the type.
+export type UniversalSearchResultItem =
+  | { type: "taxon"; taxon: ApiTaxon }
+  | { type: "user"; user: ApiUser }
+  | { type: "project"; project: ApiProjectSummary };
+
+const UNIVERSAL_SEARCH_FIELDS = {
+  type: true,
+  taxon: {
+    id: true,
+    name: true,
+    preferred_common_name: true,
+    rank: true,
+    rank_level: true,
+    iconic_taxon_name: true,
+    default_photo: { url: true },
+  },
+  user: {
+    id: true,
+    login: true,
+    icon_url: true,
+    observations_count: true,
+  },
+  project: PROJECT_SUMMARY_FIELDS,
+};
+
+const useUniversalSearch = ( query: string ) => {
+  const trimmedQuery = query.trim( );
+  const shouldFetch = trimmedQuery.length > 0;
+
+  const {
+    data: results = [],
+    isLoading,
+    refetch,
+  } = useAuthenticatedQuery<UniversalSearchResultItem[]>(
+    ["useUniversalSearch", trimmedQuery],
+    async ( optsWithAuth: ApiOpts ) => {
+      const response = await search(
+        {
+          q: trimmedQuery,
+          sources: ["taxa", "users", "projects"],
+          fields: UNIVERSAL_SEARCH_FIELDS,
+        },
+        optsWithAuth,
+      );
+      if ( !response ) { return []; }
+      return response.results.filter(
+        ( result ): result is UniversalSearchResultItem => result.type === "taxon"
+          || result.type === "user"
+          || result.type === "project",
+      );
+    },
+    { enabled: shouldFetch },
+  );
+
+  return {
+    results,
+    isLoading,
+    refetch,
+  };
+};
+
+export default useUniversalSearch;

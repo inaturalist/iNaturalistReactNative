@@ -1,22 +1,23 @@
-import {
-  Body1,
-  Heading5,
-} from "components/SharedComponents";
+import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import classNames from "classnames";
+import Body1 from "components/SharedComponents/Typography/Body1";
+import Heading5 from "components/SharedComponents/Typography/Heading5";
 import { View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
-export const OBSERVATIONS_TAB = "observations";
-
 interface Props {
   id: string;
-  numTotalObservations?: number;
-  numTotalTaxa?: number;
+  numTotalObservations?: number | null;
+  numTotalTaxa?: number | null;
+  wrapperClassName?: string;
 }
 
-const StatTab = ( { id, numTotalObservations, numTotalTaxa }: Props ) => {
+const StatTab = ( {
+  id, numTotalObservations, numTotalTaxa, wrapperClassName = "p-3",
+}: Props ) => {
   const { t } = useTranslation( );
-  let stat: number | undefined;
+  let stat: number | null | undefined;
   let label: string;
   if ( id === OBSERVATIONS_TAB ) {
     stat = numTotalObservations;
@@ -26,7 +27,7 @@ const StatTab = ( { id, numTotalObservations, numTotalTaxa }: Props ) => {
     label = t( "X-SPECIES--below-number", { count: numTotalTaxa } );
   }
   return (
-    <View className="items-center p-3">
+    <View className={classNames( "items-center", wrapperClassName )}>
       <Body1 className="mb-[4px]">
         {
           typeof ( stat ) === "number"

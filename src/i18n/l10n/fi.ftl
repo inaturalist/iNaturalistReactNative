@@ -36,6 +36,13 @@ Add-location-to-refresh-suggestions = Lisää sijainti päivittääksesi ehdotuk
 Add-observations = Lisää havaintoja
 ADD-OPTIONAL-COMMENT = LISÄÄ VALINNAINEN KOMMENTTI
 Add-optional-notes = Lisää valinnaisia merkintöjä
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Lisää tunnistus
 Adds-your-vote-of-agreement = Äänestä puolesta
 Adds-your-vote-of-disagreement = Äänestä vastaan
@@ -607,6 +614,7 @@ Please-allow-Microphone-Access = Salli mikrofonin käyttö
 Please-choose-a-different-password = Valitse toinen salasana.
 Please-Grant-Permission = Ole hyvä ja anna lupa
 PLEASE-LOG-IN = KIRJAUDU SISÄÄN
+Please-log-in = Please log in
 Please-log-in-again = Kirjaudu sisään uudelleen. Meidän täytyy joskus päivittää istuntosi tyhjentääksemme välimuistissa olevat tiedot ja varmistaaksemme, että sovellus toimii parhaiten.
 Please-make-sure-your-password-is-at-least-6-characters = Varmista, että salasanasi on vähintään 6 merkkiä pitkä.
 Please-try-again-when-you-are-connected-to-the-internet = Yritä uudelleen, kun olet yhteydessä Internetiin.
@@ -1119,6 +1127,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Saatat huomata muutoksia si
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Sinun on asennettava Google Play -palvelut, jotta voit kirjautua Google-tilillä.
 You-need-an-Internet-connection-to-do-that = Tarvitset Internet-yhteyden, jotta voit tehdä sen.
 You-need-log-in-to-do-that = Sinun täytyy kirjautua ensin.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = Havaitsit lajin tästä ryhmästä
 You-observed-this-species = Havaitsit tämän lajin
 You-will-see-notifications = Näet ilmoitukset täällä, kun kirjaudut sisään ja lataat havaintoja.

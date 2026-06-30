@@ -85,6 +85,7 @@ const SubjectThumbnail = ( { subject }: { subject: ExploreV2Subject } ) => {
         : (
           <View
             className={`${THUMBNAIL_CLASS} bg-lightGray items-center justify-center`}
+            testID="ExploreV2Header.projectFallbackIcon"
           >
             <INatIcon name="briefcase" size={28} color={colors.darkGray} />
           </View>
@@ -109,7 +110,10 @@ const ExploreV2Header = ( ) => {
         <BackButton />
         {state.subject
           ? (
-            <View className="flex-1 flex-row items-center mr-5">
+            <View
+              className="flex-1 flex-row items-center mr-5"
+              testID="ExploreV2Header.subject"
+            >
               <SubjectThumbnail subject={state.subject} />
               <View className="flex-1 ml-[10px]">
                 {state.subject.type === "taxon"
