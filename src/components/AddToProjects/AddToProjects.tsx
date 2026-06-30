@@ -24,11 +24,32 @@ const AddToProjects = ( ) => {
     [t],
   );
 
+  const listFooterComponent = useMemo(
+    () => (
+      <View className="px-4 pt-6 pb-6">
+        <Body1>{t( "Collection-and-Umbrella-Projects" )}</Body1>
+        <Body2 className="mt-2">
+          {t(
+            "For-most-other-projects-observations-will-automatically-be-included",
+          )}
+        </Body2>
+        <Body2 className="mt-4">
+          {t( "You-cant-add-or-remove-observations-from-collection-and-umbrella-projects" )}
+        </Body2>
+        <Body2 className="mt-4">
+          {t( "To-view-this-observations-Collection-and-Umbrella-Projects" )}
+        </Body2>
+      </View>
+    ),
+    [t],
+  );
+
   return (
     <SharedStackViewWrapper testID="add-to-projects">
       <CustomFlashList
         testID="AddToProjects.list"
         ListHeaderComponent={listHeaderComponent}
+        ListFooterComponent={listFooterComponent}
       />
     </SharedStackViewWrapper>
   );

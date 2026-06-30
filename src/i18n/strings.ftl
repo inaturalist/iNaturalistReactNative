@@ -247,6 +247,7 @@ Closes-withdraw-id-sheet = Closes "Withdraw ID" sheet
 # Heading for a section that describes people and organizations that
 # collaborate with iNaturalist
 COLLABORATORS = COLLABORATORS
+Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = Collection Project
 # Button that combines multiple photos into a single observation
 Combine-Photos = Combine Photos
@@ -554,6 +555,7 @@ FOLLOWING-X-PEOPLE =
         [one] FOLLOWING { $count } PERSON
        *[other] FOLLOWING { $count } PEOPLE
     }
+For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 # Forgot password link
 Forgot-Password = Forgot Password
 GEOPRIVACY = GEOPRIVACY
@@ -1317,6 +1319,7 @@ This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
 To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
+To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation's Collection and Umbrella Projects, go to its observation page once it's uploaded.
 Toggle-map-type = Toggle map type
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 Traditional-Project = Traditional Project
@@ -1579,6 +1582,7 @@ You-can-now-upload-your-observations-to-iNaturalist-and-contribute = You can now
 You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can't add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
