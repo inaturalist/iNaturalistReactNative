@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Dodaj lokalizację, aby odświeżyć suges
 Add-observations = Dodaj obserwacje
 ADD-OPTIONAL-COMMENT = DODAJ OPCJONALNY KOMENTARZ
 Add-optional-notes = Dodaj opcjonalne notatki
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Dodaje identyfikator
 Adds-your-vote-of-agreement = Dodaje twój głos zgody
 Adds-your-vote-of-disagreement = Dodaje twój głos sprzeciwu
@@ -609,6 +616,7 @@ Please-allow-Microphone-Access = Zezwól na dostęp do mikrofonu
 Please-choose-a-different-password = Wybierz inne hasło.
 Please-Grant-Permission = Udziel pozwolenia
 PLEASE-LOG-IN = ZALOGUJ SIĘ
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Upewnij się, że Twoje hasło składa się z co najmniej 6 znaków.
 Please-try-again-when-you-are-connected-to-the-internet = Spróbuj ponownie, gdy masz połączenie z Internetem.
@@ -1128,6 +1136,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Możesz zauważyć zmiany w
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Aby zalogować się za pomocą Google, musisz zainstalować Usługi Google Play.
 You-need-an-Internet-connection-to-do-that = Aby to zrobić, potrzebujesz połączenia z Internetem.
 You-need-log-in-to-do-that = Aby to zrobić, musisz się zalogować.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = Zaobserwowałeś gatunek w tej grupie
 You-observed-this-species = Zaobserwowałeś ten gatunek
 You-will-see-notifications = Zobaczysz tutaj powiadomienia po zalogowaniu się i przesłaniu obserwacji.
