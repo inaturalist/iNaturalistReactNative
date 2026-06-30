@@ -67,6 +67,10 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
     = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
   const { resolvedValue: newsEnabled, setOverride: setNewsEnabled }
     = useFeatureFlagForDebug( FeatureFlag.NewsEnabled );
+  const {
+    resolvedValue: traditionalProjectsEnabled,
+    setOverride: setTraditionalProjectsEnabled,
+  } = useFeatureFlagForDebug( FeatureFlag.TraditionalProjectsEnabled );
 
   const sections = useMemo(
     () => [
@@ -109,10 +113,26 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
               setNewsEnabled( !newsEnabled );
             },
           },
+          {
+            id: "traditional-projects",
+            type: "toggle",
+            title: "TraditionalProjects",
+            value: traditionalProjectsEnabled,
+            onUpdate: () => {
+              setTraditionalProjectsEnabled( !traditionalProjectsEnabled );
+            },
+          },
         ],
       } ),
     ],
-    [exploreV2Enabled, setExploreV2Enabled, newsEnabled, setNewsEnabled],
+    [
+      exploreV2Enabled,
+      setExploreV2Enabled,
+      newsEnabled,
+      setNewsEnabled,
+      traditionalProjectsEnabled,
+      setTraditionalProjectsEnabled,
+    ],
   );
 
   useRozeniteControlsPlugin( { sections } );

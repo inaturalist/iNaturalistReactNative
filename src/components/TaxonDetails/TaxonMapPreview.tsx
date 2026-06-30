@@ -1,4 +1,5 @@
 import { searchObservations } from "api/observations";
+import type { ApiTaxon } from "api/types";
 import {
   Button,
   DetailsMap,
@@ -11,15 +12,18 @@ import {
   View,
 } from "components/styledComponents";
 import React, { useState } from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 import TaxonDetailsTitle from "./TaxonDetailsTitle";
 
+const ONE_HOUR_MS = 3600000;
+
 interface Props {
   observation: object;
   showSpeciesSeenCheckmark: boolean;
-  taxon: object;
+  taxon: ApiTaxon | RealmTaxon;
 }
 
 const TaxonMapPreview = ( {
@@ -40,13 +44,20 @@ const TaxonMapPreview = ( {
   const {
     data: obsSearchResponse,
   } = useAuthenticatedQuery(
-    ["fetchTaxonBoundingBox"],
+    ["fetchTaxonBoundingBox", taxon.id],
     optsWithAuth => searchObservations( {
       ...obsParams,
       return_bounds: true,
       per_page: 0,
       ttl: -1,
     }, optsWithAuth ),
+    // The bounding box of a taxon's observations changes very slowly, so
+    // avoid refetching on every mount.
+    {
+      enabled: !!taxon.id,
+      gcTime: ONE_HOUR_MS,
+      staleTime: ONE_HOUR_MS,
+    },
   );
 
   const hasObservationResults = obsSearchResponse?.total_results > 0;
@@ -110,7 +121,6 @@ const TaxonMapPreview = ( {
           )}
         />
       </View>
-
     );
   }
 

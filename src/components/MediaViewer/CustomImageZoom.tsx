@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+import type { ZoomableRef } from "@likashefqet/react-native-image-zoom";
 import { ImageZoom } from "@likashefqet/react-native-image-zoom";
-import type { Node } from "react";
 import React, {
   useEffect,
   useMemo,
@@ -13,7 +13,7 @@ const MAX_SCALE = 5;
 
 interface Props {
   uri: string;
-  setZooming: ( ) => void;
+  setZooming: ( isZooming: boolean ) => void;
   selectedMediaIndex: number;
 }
 
@@ -21,9 +21,9 @@ const CustomImageZoom = ( {
   uri,
   setZooming,
   selectedMediaIndex,
-}: Props ): Node => {
+}: Props ) => {
   const { screenWidth, screenHeight } = useDeviceOrientation( );
-  const imageZoomRef = useRef( null );
+  const imageZoomRef = useRef<ZoomableRef>( null );
 
   const style = useMemo( ( ) => ( {
     height: screenHeight,

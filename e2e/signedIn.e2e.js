@@ -63,7 +63,9 @@ describe( "Signed in user", () => {
     await headerKebabMenu.tap();
     // Press delete observation
     const deleteObservationMenuItem = element( by.id( "Header.delete-observation" ) );
-    await waitFor( deleteObservationMenuItem ).toBeVisible().withTimeout( TIMEOUT );
+    // The menu renders in a react-native-paper Portal; use toExist() since
+    // toBeVisible()'s 75% rect threshold doesn't apply well to portal overlays
+    await waitFor( deleteObservationMenuItem ).toExist().withTimeout( TIMEOUT );
     await deleteObservationMenuItem.tap();
     // Check that the delete button is visible
     const deleteObservationButton = element( by.text( "DELETE" ) );

@@ -1,3 +1,4 @@
+import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import classnames from "classnames";
 import {
   DisplayTaxonName,
@@ -32,7 +33,7 @@ const DisplayTaxon = ( {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
 
-  const imageClassName = "w-[62px] h-[62px] rounded-lg";
+  const imageClassName = THUMBNAIL_CLASS;
 
   const iconicTaxonName = taxon?.isIconic
     ? taxon.name

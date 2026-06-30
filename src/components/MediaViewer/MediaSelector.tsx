@@ -1,0 +1,100 @@
+import classnames from "classnames";
+import { INatIcon } from "components/SharedComponents";
+import { Image, Pressable, View } from "components/styledComponents";
+import React, { useCallback } from "react";
+import type { ListRenderItem } from "react-native";
+import {
+  FlatList,
+} from "react-native";
+import Photo from "realmModels/Photo";
+import useTranslation from "sharedHooks/useTranslation";
+
+interface PhotoItem {
+  localFilePath?: string;
+  type: "photo";
+  url: string;
+}
+
+interface SoundItem {
+  type: "sound";
+}
+
+interface Props {
+  isLargeScreen?: boolean;
+  photos: Omit<PhotoItem, "type">[];
+  scrollToIndex: ( index: number ) => void;
+  selectedMediaIndex?: number;
+  sounds?: Omit<SoundItem, "type">[];
+}
+
+const SMALL_ITEM_CLASS = "rounded-sm w-[42px] h-[42px] mx-[6px] my-[12px]";
+const LARGE_ITEM_CLASS = "rounded-md w-[83px] h-[83px] mx-[10px] my-[20px]";
+
+const PhotoSelector = ( {
+  isLargeScreen,
+  photos,
+  scrollToIndex,
+  selectedMediaIndex,
+  sounds = [],
+}: Props ) => {
+  const { t } = useTranslation( );
+  const items = [
+    ...photos.map( photo => ( { ...photo, type: "photo" as const } ) ),
+    ...sounds.map( sound => ( { ...sound, type: "sound" as const } ) ),
+  ];
+
+  const renderItem: ListRenderItem<PhotoItem | SoundItem> = useCallback( ( { item, index } ) => (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={t( "View-photo" )}
+      onPress={( ) => scrollToIndex( index )}
+      className={classnames(
+        "overflow-hidden",
+        {
+          "border border-white border-[3px]": selectedMediaIndex === index,
+        },
+        {
+          [SMALL_ITEM_CLASS]: !isLargeScreen,
+          [LARGE_ITEM_CLASS]: isLargeScreen,
+        },
+      )}
+    >
+      {
+        item.type === "photo"
+          ? (
+            <Image
+              source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( item ) }}
+              accessibilityIgnoresInvertColors
+              className="w-full h-full"
+            />
+          )
+          : (
+            <View className="w-full h-full bg-darkGray items-center justify-center">
+              <INatIcon
+                name="sound-outline"
+                color="white"
+                size={26}
+              />
+            </View>
+          )
+      }
+    </Pressable>
+  ), [
+    isLargeScreen,
+    scrollToIndex,
+    selectedMediaIndex,
+    t,
+  ] );
+
+  return (
+    <View>
+      <FlatList
+        data={items}
+        renderItem={renderItem}
+        horizontal
+      />
+    </View>
+  );
+};
+
+export default PhotoSelector;

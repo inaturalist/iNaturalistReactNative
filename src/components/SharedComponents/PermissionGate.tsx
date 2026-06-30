@@ -5,8 +5,8 @@ import {
   Heading2,
   INatIcon,
   INatIconButton,
-  ViewWrapper,
 } from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import {
   ImageBackground,
   View,
@@ -67,7 +67,7 @@ const PermissionGate = ( {
   } );
 
   return (
-    <ViewWrapper wrapperClassName="bg-black" testID={testID} useTopInset={false}>
+    <ScreenShell wrapperClassName="bg-black" testID={testID}>
       <StatusBar barStyle="light-content" />
       <ImageBackground
         source={image}
@@ -155,7 +155,7 @@ const PermissionGate = ( {
             )}
         </View>
       </ImageBackground>
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 

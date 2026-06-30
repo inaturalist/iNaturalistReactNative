@@ -6,9 +6,14 @@ import Comment from "./Comment";
 import Flag from "./Flag";
 import Identification from "./Identification";
 import Observation from "./Observation";
+import ObservationField from "./ObservationField";
+import ObservationFieldValue from "./ObservationFieldValue";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
+import Project from "./Project";
+import ProjectObservation from "./ProjectObservation";
+import ProjectObservationField from "./ProjectObservationField";
 import QueueItem from "./QueueItem";
 import Sound from "./Sound";
 import Taxon from "./Taxon";
@@ -23,9 +28,14 @@ export default {
     Flag,
     Identification,
     Observation,
+    ObservationField,
+    ObservationFieldValue,
     ObservationPhoto,
     ObservationSound,
     Photo,
+    Project,
+    ProjectObservation,
+    ProjectObservationField,
     QueueItem,
     Sound,
     Taxon,
@@ -33,7 +43,7 @@ export default {
     User,
     Vote,
   ],
-  schemaVersion: 68,
+  schemaVersion: 69,
   path: `${DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {

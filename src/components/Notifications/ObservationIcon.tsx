@@ -1,4 +1,5 @@
 import type { ApiObservation } from "api/types";
+import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import classnames from "classnames";
 import {
   INatIcon,
@@ -20,10 +21,8 @@ const ObservationIcon = ( {
     return (
       <View
         className={classnames(
-          "w-[62px]",
-          "h-[62px]",
+          THUMBNAIL_CLASS,
           "bg-white",
-          "rounded-lg",
           "border-[2px]",
           "justify-center",
           "items-center",
@@ -42,10 +41,8 @@ const ObservationIcon = ( {
     return (
       <View
         className={classnames(
-          "w-[62px]",
-          "h-[62px]",
+          THUMBNAIL_CLASS,
           "bg-white",
-          "rounded-lg",
           "border-[2px]",
           "justify-center",
           "items-center",
@@ -63,7 +60,7 @@ const ObservationIcon = ( {
   return (
     <Image
       testID="ObservationIcon.photo"
-      className="w-[62px] h-[62px] rounded-lg"
+      className={THUMBNAIL_CLASS}
       source={{ uri: photoUri }}
       accessibilityRole="image"
       accessibilityIgnoresInvertColors

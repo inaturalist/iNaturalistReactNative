@@ -1,7 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import {
-  ViewWrapper,
-} from "components/SharedComponents";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
 import React, {
@@ -83,10 +81,10 @@ const Journal = ( ) => {
   // }
 
   return (
-    <ViewWrapper useTopInset={false}>
+    <ScreenShell>
       <View className="border-b border-lightGray mt-5" />
       <PostList posts={posts} />
-    </ViewWrapper>
+    </ScreenShell>
   );
 };
 

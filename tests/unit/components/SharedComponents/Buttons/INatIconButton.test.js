@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { INatIconButton } from "components/SharedComponents";
 import React from "react";
 
@@ -15,6 +15,33 @@ describe( "INatIconButton", () => {
     );
     // Snapshot test
     expect( screen ).toMatchSnapshot();
+  } );
+
+  it( "calls onPress when pressed", () => {
+    const onPress = jest.fn();
+    render(
+      <INatIconButton
+        icon="camera"
+        onPress={onPress}
+        accessibilityLabel="Camera"
+      />,
+    );
+    fireEvent.press( screen.getByLabelText( "Camera" ) );
+    expect( onPress ).toHaveBeenCalled();
+  } );
+
+  it( "does not call onPress when disabled", () => {
+    const onPress = jest.fn();
+    render(
+      <INatIconButton
+        disabled
+        icon="camera"
+        onPress={onPress}
+        accessibilityLabel="Camera"
+      />,
+    );
+    fireEvent.press( screen.getByLabelText( "Camera" ) );
+    expect( onPress ).not.toHaveBeenCalled();
   } );
 
   it( "throws an error when it receives an inaccessibly small width", ( ) => {

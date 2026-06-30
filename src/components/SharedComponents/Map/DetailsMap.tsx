@@ -9,6 +9,7 @@ import {
   Map,
   Modal,
 } from "components/SharedComponents";
+import { BottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useState } from "react";
@@ -98,7 +99,7 @@ const DetailsMap = ( {
   };
 
   return (
-    <View className="flex-1">
+    <BottomInsetViewWrapper>
       <View
         className="bg-white w-fit flex-row py-[22px] pl-[21px] pr-[24px] items-start"
         style={{ paddingTop: insets.top }}
@@ -152,7 +153,7 @@ const DetailsMap = ( {
         )}
         backdropOpacity={0}
       />
-    </View>
+    </BottomInsetViewWrapper>
   );
 };
 

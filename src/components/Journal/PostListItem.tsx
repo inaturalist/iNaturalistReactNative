@@ -1,4 +1,5 @@
 import type { ApiPost } from "api/types";
+import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import {
   Body1,
   List2,
@@ -29,7 +30,7 @@ const PostListItem = ( {
       {item.parent.icon_url && (
         <Image
           source={{ uri: item.parent.icon_url }}
-          className="w-[62px] h-[62px] rounded-lg"
+          className={THUMBNAIL_CLASS}
           accessibilityRole="image"
           accessibilityIgnoresInvertColors
         />

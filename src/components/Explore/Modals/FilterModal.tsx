@@ -20,9 +20,9 @@ import {
   PickerSheet,
   RadioButtonRow,
   RadioButtonSheet,
-  ViewWrapper,
   WarningSheet,
 } from "components/SharedComponents";
+import { TopAndBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
 import { RealmContext } from "providers/contexts";
@@ -634,7 +634,7 @@ const FilterModal = ( {
   const displayUser = user || excludeUser;
 
   return (
-    <ViewWrapper className="flex-1 bg-white" testID="filter-modal">
+    <TopAndBottomInsetViewWrapper testID="filter-modal">
       {/* Header */}
       <View
         className="flex-row items-center p-5 bg-white"
@@ -1361,7 +1361,7 @@ const FilterModal = ( {
         closeModal={() => { setShowProjectSearchModal( false ); }}
         updateProject={updateProject}
       />
-    </ViewWrapper>
+    </TopAndBottomInsetViewWrapper>
   );
 };
 

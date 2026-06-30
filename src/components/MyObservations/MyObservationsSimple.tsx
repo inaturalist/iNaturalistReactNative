@@ -2,7 +2,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
-import ObsGridItem from "components/ObservationsFlashList/ObsGridItem";
 import {
   AccountCreationCard,
   FiftyObservationCard,
@@ -41,6 +40,7 @@ import type { SpeciesCount } from "types/sorting";
 import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsContainer";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
+import PivotCardObsGridItem from "./PivotCardObsGridItem";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 import StatTab from "./StatTab";
@@ -51,7 +51,7 @@ interface Props {
   fetchFromLastObservation: ( id: number ) => void;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handlePullToRefresh: ( ) => void;
-  handleSyncButtonPress: ( _p: { unuploadedObsMissingBasicsIDs: string[] } ) => void;
+  handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: "list" | "grid";
@@ -67,7 +67,7 @@ interface Props {
   openSheet: ACTIVE_SHEET;
   setActiveTab: ( newTab: string ) => void;
   setOpenSheet: ( value: ACTIVE_SHEET ) => void;
-  setSpeciesSortOptionId: React.Dispatch<React.SetStateAction<SPECIES_SORT>>;
+  setSpeciesSortOptionId: ( value: SPECIES_SORT ) => void;
   showNoResults: boolean;
   speciesSortOptionId: SPECIES_SORT;
   taxa?: SpeciesCount[];
@@ -223,13 +223,13 @@ const MyObservationsSimple = ( {
     taxa?.length,
   ] );
 
-  const unuploadedObsMissingBasicsIDs = useMemo( () => (
+  const numUnuploadedObsMissingBasics = useMemo( () => (
     observations
       .filter( o => o.needs_sync && o.missing_basics )
       .map( o => o.uuid )
+      .length
   ), [observations] );
 
-  const numUnuploadedObsMissingBasics = unuploadedObsMissingBasicsIDs.length;
   const obsMissingBasicsExist = useMemo( ( ) => (
     numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
   ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
@@ -346,9 +346,7 @@ const MyObservationsSimple = ( {
           currentUser={currentUser}
           isConnected={isConnected}
           numUploadableObservations={numUploadableObservations}
-          handleSyncButtonPress={() => {
-            handleSyncButtonPress( { unuploadedObsMissingBasicsIDs } );
-          }}
+          handleSyncButtonPress={handleSyncButtonPress}
         />
         <Tabs
           activeColor={String( colors?.inatGreen )}
@@ -456,12 +454,8 @@ const MyObservationsSimple = ( {
               onImageComponentPress: handlePivotCardGridItemPress,
               accessibilityHint: t( "Navigates-to-observation-details" ),
               imageComponent: (
-                <ObsGridItem
-                  observation={observations[0]}
-                  currentUser={currentUser}
-                  explore={false}
-                  queued={false}
-                  testID="PivotCardGridItem"
+                <PivotCardObsGridItem
+                  uuid={observations[0].uuid}
                 />
               ),
             }}
