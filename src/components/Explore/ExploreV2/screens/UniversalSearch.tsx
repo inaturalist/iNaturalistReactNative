@@ -120,26 +120,25 @@ const UniversalSearch = ( ) => {
     />
   ), [handleSelect] );
 
-  let body;
-  if ( showResults ) {
-    body = (
-      <FlatList
-        data={results}
-        keyboardShouldPersistTaps="handled"
-        keyExtractor={resultKey}
-        renderItem={renderResult}
-        ListEmptyComponent={isLoading
-          ? null
-          : (
-            <Body3 className="text-center mt-8">
-              {t( "No-results-found-for-that-search" )}
-            </Body3>
-          )}
-      />
+  // The list is always mounted; ListEmptyComponent decides what "empty" means.
+  // With no query we show the default search options (which rely on this list
+  // for scrolling); with a query we show a loading state then a no-results
+  // message. Swapping the whole subtree instead would unmount/remount the list.
+  const renderEmpty = useCallback( ( ) => {
+    if ( !showResults ) {
+      return ( <DefaultSearchOptions onSelectSubject={handleSelect} /> );
+    }
+    if ( isLoading ) { return null; }
+    return (
+      <Body3 className="text-center mt-8">
+        {t( "No-results-found-for-that-search" )}
+      </Body3>
     );
-  } else {
-    body = ( <DefaultSearchOptions onSelectSubject={handleSelect} /> );
-  }
+  }, [showResults, isLoading, handleSelect, t] );
+
+  const listData = showResults
+    ? results
+    : [];
 
   return (
     <ViewWrapper testID="UniversalSearch">
@@ -207,7 +206,13 @@ const UniversalSearch = ( ) => {
       </View>
 
       <View className="flex-1">
-        {body}
+        <FlatList
+          data={listData}
+          keyboardShouldPersistTaps="handled"
+          keyExtractor={resultKey}
+          renderItem={renderResult}
+          ListEmptyComponent={renderEmpty}
+        />
       </View>
     </ViewWrapper>
   );

@@ -6,7 +6,7 @@ import { resultToSubject }
   from "components/Explore/ExploreV2/helpers/universalSearchSubject";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import Body2 from "components/SharedComponents/Typography/Body2";
-import { Pressable, ScrollView, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import React, { useCallback, useMemo } from "react";
 import type { ListRenderItemInfo } from "react-native";
@@ -118,8 +118,12 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
     }
     : null;
 
+  // Renders without its own vertical scroll container: it is hosted inside the
+  // UniversalSearch results FlatList (as its ListEmptyComponent), which provides
+  // scrolling. The inner iconic-taxa list is horizontal, so it does not conflict
+  // with the vertical parent list.
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" testID="DefaultSearchOptions">
+    <View testID="DefaultSearchOptions">
       <FlatList
         contentContainerStyle={ICONIC_ROW_STYLE}
         data={orderedIconicTaxa}
@@ -146,7 +150,7 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
       >
         <Body2>{t( "Species-I-havent-observed" )}</Body2>
       </Pressable>
-    </ScrollView>
+    </View>
   );
 };
 
