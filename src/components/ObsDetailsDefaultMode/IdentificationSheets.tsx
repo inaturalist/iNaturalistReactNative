@@ -1,6 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
+import type {
+  AgreeIdentification,
+} from "components/ObsDetailsSharedComponents/hooks/useObsDetailsSharedLogic";
 import AgreeWithIDSheet from "components/ObsDetailsSharedComponents/Sheets/AgreeWithIDSheet";
 import PotentialDisagreementSheet
   from "components/ObsDetailsSharedComponents/Sheets/PotentialDisagreementSheet";
@@ -141,14 +144,19 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
     case CLEAR_SUGGESTED_TAXON:
       return { ...state, identTaxon: null };
     case HIDE_SUGGESTED_ID_SHEET:
-      return { ...state, showSuggestIdSheet: false };
+      return {
+        ...state,
+        showSuggestIdSheet: false,
+        identTaxon: null,
+        newIdentification: null,
+      };
     default:
       return state;
   }
 };
 
 interface Props {
-  agreeIdentification: boolean;
+  agreeIdentification: AgreeIdentification | null;
   closeAgreeWithIdSheet: () => void;
   confirmRemoteObsWasDeleted?: () => void;
   handleCommentMutationSuccess: ( data: unknown ) => void;
@@ -212,9 +220,9 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const onChangeIdentBody = useCallback( ( body: string ) => dispatch( {
     type: SET_NEW_IDENTIFICATION,
-    taxon: newIdentification?.taxon,
+    taxon: newIdentification?.taxon || agreeIdentification?.taxon,
     body,
-  } ), [newIdentification?.taxon] );
+  } ), [newIdentification?.taxon, agreeIdentification?.taxon] );
 
   const onCloseIdentBodySheet = useCallback( ( ) => {
     dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );
@@ -416,7 +424,10 @@ const IdentificationSheets: React.FC<Props> = ( {
           hidden={showIdentBodySheet}
           loading={isCreateIdPending}
           onPressClose={closeAgreeWithIdSheet}
-          identification={agreeIdentification}
+          identification={{
+            taxon: agreeIdentification.taxon,
+            body: newIdentification?.body,
+          }}
         />
       )}
       {/* AddCommentSheet */}
