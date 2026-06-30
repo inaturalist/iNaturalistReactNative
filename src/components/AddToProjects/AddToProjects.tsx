@@ -8,6 +8,8 @@ import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
+
 const AddToProjects = ( ) => {
   const { t } = useTranslation( );
   const listHeaderComponent = useMemo(
@@ -63,6 +65,7 @@ const AddToProjects = ( ) => {
         ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}
         data={[]}
+        ItemSeparatorComponent={ItemSeparator}
       />
     </SharedStackViewWrapper>
   );
