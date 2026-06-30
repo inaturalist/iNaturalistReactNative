@@ -3,7 +3,7 @@ import {
   Body2,
   CustomFlashList,
 } from "components/SharedComponents";
-import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
+import { SharedStackBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -58,7 +58,7 @@ const AddToProjects = ( ) => {
   );
 
   return (
-    <SharedStackViewWrapper testID="add-to-projects">
+    <SharedStackBottomInsetViewWrapper testID="add-to-projects">
       <CustomFlashList
         testID="AddToProjects.list"
         ListEmptyComponent={listEmptyComponent}
@@ -67,7 +67,7 @@ const AddToProjects = ( ) => {
         data={[]}
         ItemSeparatorComponent={ItemSeparator}
       />
-    </SharedStackViewWrapper>
+    </SharedStackBottomInsetViewWrapper>
   );
 };
 
