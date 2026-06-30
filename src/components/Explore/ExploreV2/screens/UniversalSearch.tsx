@@ -6,6 +6,7 @@ import {
   resultToSubject,
   subjectToText,
 } from "components/Explore/ExploreV2/helpers/universalSearchSubject";
+import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
 import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
@@ -72,10 +73,11 @@ const UniversalSearch = ( ) => {
 
   const locationInputRef = useRef<RNTextInput>( null );
 
-  const { results, isLoading } = useUniversalSearch( debouncedQuery );
+  const { results, isLoading, refetch } = useUniversalSearch( debouncedQuery );
 
   const bothFilled = subjectText.length > 0 && locationText.length > 0;
-  const showResults = debouncedQuery.trim( ).length > 0;
+
+  const hasQuery = debouncedQuery.trim( ).length > 0;
 
   const handleSubjectTextChange = useCallback( ( text: string ) => {
     setSubjectText( text );
@@ -117,25 +119,6 @@ const UniversalSearch = ( ) => {
       onPress={( ) => handleSelect( resultToSubject( item ) )}
     />
   ), [handleSelect] );
-
-  let body = null;
-  if ( showResults ) {
-    body = (
-      <FlatList
-        data={results}
-        keyboardShouldPersistTaps="handled"
-        keyExtractor={resultKey}
-        renderItem={renderResult}
-        ListEmptyComponent={isLoading
-          ? null
-          : (
-            <Body3 className="text-center mt-8">
-              {t( "No-results-found-for-that-search" )}
-            </Body3>
-          )}
-      />
-    );
-  }
 
   return (
     <ViewWrapper testID="UniversalSearch">
@@ -203,7 +186,22 @@ const UniversalSearch = ( ) => {
       </View>
 
       <View className="flex-1">
-        {body}
+        {/* Only surface results for an active query */}
+        <FlatList
+          data={hasQuery
+            ? results
+            : []}
+          keyboardShouldPersistTaps="handled"
+          keyExtractor={resultKey}
+          renderItem={renderResult}
+          ListEmptyComponent={(
+            <EmptySearchResults
+              isLoading={isLoading}
+              searchQuery={debouncedQuery}
+              refetch={refetch}
+            />
+          )}
+        />
       </View>
     </ViewWrapper>
   );
