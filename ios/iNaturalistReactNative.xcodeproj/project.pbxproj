@@ -33,7 +33,7 @@
 		8FF73F732F69C8CE007CF4F0 /* AutoContinueShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF73F722F69C8CE007CF4F0 /* AutoContinueShareViewController.swift */; };
 		AE4DC81B3A87484CB3FD6750 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B0AEEF6CA584BCF9880EB35 /* Lato-Regular.ttf */; };
 		E5DFC1C6FBFA45739CE91C69 /* Lato-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69DF855D92EA4ADFB73B47F1 /* Lato-MediumItalic.ttf */; };
-		F794BB3DB44E41A797319AD0 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B853E33B54E34EF289C7BB0A /* INatIcon.ttf */; };
+		B1907259C6FB4F51AFF5EDD4 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A1DE165EE1A4108AEA2083B /* INatIcon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,9 +97,9 @@
 		8F346E492CF6912700CED7B4 /* geomodel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = geomodel.mlmodel; sourceTree = "<group>"; };
 		8FE171A12E97F0780003E759 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8FF73F722F69C8CE007CF4F0 /* AutoContinueShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AutoContinueShareViewController.swift; path = "../node_modules/react-native-share-menu/ios/AutoContinueShareViewController.swift"; sourceTree = SOURCE_ROOT; };
-		B853E33B54E34EF289C7BB0A /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F15C1390617A309CE0A194B2 /* Pods_iNaturalistReactNative_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iNaturalistReactNative_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A1DE165EE1A4108AEA2083B /* INatIcon.ttf */ = {isa = PBXFileReference; name = "INatIcon.ttf"; path = "../assets/fonts/INatIcon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,7 +229,7 @@
 				3A9BAF07FCF24F668E2EF5AB /* Lato-Medium.ttf */,
 				69DF855D92EA4ADFB73B47F1 /* Lato-MediumItalic.ttf */,
 				4B0AEEF6CA584BCF9880EB35 /* Lato-Regular.ttf */,
-				B853E33B54E34EF289C7BB0A /* INatIcon.ttf */,
+				0A1DE165EE1A4108AEA2083B /* INatIcon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -338,7 +338,7 @@
 				E5DFC1C6FBFA45739CE91C69 /* Lato-MediumItalic.ttf in Resources */,
 				AE4DC81B3A87484CB3FD6750 /* Lato-Regular.ttf in Resources */,
 				716F7BDCD8B943479083CFAC /* Settings.bundle in Resources */,
-				F794BB3DB44E41A797319AD0 /* INatIcon.ttf in Resources */,
+				B1907259C6FB4F51AFF5EDD4 /* INatIcon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
