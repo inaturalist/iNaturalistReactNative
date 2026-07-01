@@ -1,5 +1,6 @@
-import { screen } from "@testing-library/react-native";
+import { screen, within } from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
+import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
@@ -9,6 +10,8 @@ const mockProjects = [
   factory( "LocalProject" ),
   factory( "LocalProject" ),
 ];
+
+const iconGlyph = name => String.fromCharCode( glyphmap[name] );
 
 jest.mock( "providers/contexts", () => {
   const originalModule = jest.requireActual( "providers/contexts" );
@@ -64,5 +67,18 @@ describe( "AddToProjects", ( ) => {
     expect( screen.getByText( mockProjects[0].title ) ).toBeVisible( );
     expect( screen.getByText( mockProjects[1].title ) ).toBeVisible( );
     expect( screen.getAllByText( "Traditional Project" ).length ).toBe( 2 );
+  } );
+
+  it( "renders existing project observations as checked", ( ) => {
+    renderAddToProjects( );
+
+    expect(
+      within( screen.getByTestId( `AddToProjects.project.${mockProjects[0].id}` ) )
+        .getByText( iconGlyph( "checkmark-circle" ) ),
+    ).toBeVisible( );
+    expect(
+      within( screen.getByTestId( `AddToProjects.project.${mockProjects[1].id}` ) )
+        .queryByText( iconGlyph( "checkmark-circle" ) ),
+    ).toBeNull( );
   } );
 } );
