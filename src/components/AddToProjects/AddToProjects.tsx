@@ -19,7 +19,7 @@ const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
 const AddToProjects = ( ) => {
   const { t } = useTranslation( );
-  const joinedProjects = useQuery(
+  const joinedProjectsCollection = useQuery(
     {
       type: Project,
       query: projects => projects
@@ -27,6 +27,11 @@ const AddToProjects = ( ) => {
         .filtered( "project_type == \"\" OR project_type == null" ),
     },
     [],
+  );
+
+  const joinedProjects = useMemo(
+    () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
+    [joinedProjectsCollection],
   );
 
   const listHeaderComponent = useMemo(
