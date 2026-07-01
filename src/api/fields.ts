@@ -53,3 +53,19 @@ export const PROJECT_OBSERVATION_FIELDS = {
   project_id: true,
   uuid: true,
 };
+
+// inatjs.project.posts does not return parent because the project is the parent
+export const POST_FOR_PROJECT_FIELDS = {
+  body: true,
+  id: true,
+  published_at: true,
+  title: true,
+};
+
+export const POST_FOR_USER_FIELDS = {
+  ...POST_FOR_PROJECT_FIELDS,
+  parent: {
+    id: true,
+    icon_url: true,
+  },
+};

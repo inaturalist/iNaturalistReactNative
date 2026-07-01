@@ -7,7 +7,7 @@ import { fetchSpeciesCounts, searchObservations } from "api/observations";
 import fetchPlace from "api/places";
 import {
   fetchMembership,
-  fetchProjectPosts,
+  fetchProjectPostsCount,
   fetchProjects,
   joinProject,
   leaveProject,
@@ -50,8 +50,8 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const { data: projectPosts } = useAuthenticatedQuery<number>(
-    ["fetchProjectPosts", id],
-    optsWithAuth => fetchProjectPosts( {
+    ["fetchProjectPostsCount", id],
+    optsWithAuth => fetchProjectPostsCount( {
       id,
     }, optsWithAuth ),
   );
