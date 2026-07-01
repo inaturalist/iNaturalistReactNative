@@ -48,8 +48,6 @@ class Project extends Realm.Object {
           .map( pof => ProjectObservationField.mapRealmToPojo( pof ) )
         : [],
       project_type: realmProject.project_type,
-      // We only persist traditional projects which do not have rule_preferences
-      rule_preferences: [],
       title: realmProject.title,
     };
   }
