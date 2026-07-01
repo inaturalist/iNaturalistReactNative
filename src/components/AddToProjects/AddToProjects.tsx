@@ -176,7 +176,6 @@ const AddToProjects = ( ) => {
         keyExtractor={( project: RealmProject ) => String( project.id )}
         renderItem={renderProject}
         ItemSeparatorComponent={ItemSeparator}
-        // extraData={selectedProjectIds}
       />
       <View
         className="bg-white"
