@@ -2,10 +2,10 @@ import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 describe( "Taxon", ( ) => {
-  describe( "mapRealmToApi", ( ) => {
+  describe( "mapRealmToPojo", ( ) => {
     it( "returns the value unchanged when given null or undefined", ( ) => {
-      expect( Taxon.mapRealmToApi( null ) ).toBeNull( );
-      expect( Taxon.mapRealmToApi( undefined ) ).toBeUndefined( );
+      expect( Taxon.mapRealmToPojo( null ) ).toBeNull( );
+      expect( Taxon.mapRealmToPojo( undefined ) ).toBeUndefined( );
     } );
 
     describe( "with an already-plain snake_case object", ( ) => {
@@ -26,7 +26,7 @@ describe( "Taxon", ( ) => {
       };
 
       it( "passes the snake_case fields through unchanged", ( ) => {
-        const result = Taxon.mapRealmToApi( apiTaxon );
+        const result = Taxon.mapRealmToPojo( apiTaxon );
         expect( result.id ).toBe( 745 );
         expect( result.name ).toBe( "Silphium perfoliatum" );
         expect( result.rank ).toBe( "species" );
@@ -36,7 +36,7 @@ describe( "Taxon", ( ) => {
       } );
 
       it( "maps the default_photo fields", ( ) => {
-        const result = Taxon.mapRealmToApi( apiTaxon );
+        const result = Taxon.mapRealmToPojo( apiTaxon );
         expect( result.default_photo ).toEqual( {
           id: 7,
           url: "https://example.com/photo.jpg",
@@ -46,7 +46,7 @@ describe( "Taxon", ( ) => {
       } );
 
       it( "returns a detached array copy of ancestor_ids", ( ) => {
-        const result = Taxon.mapRealmToApi( apiTaxon );
+        const result = Taxon.mapRealmToPojo( apiTaxon );
         expect( Array.isArray( result.ancestor_ids ) ).toBe( true );
         expect( result.ancestor_ids ).toEqual( [1, 2, 3] );
         // a copy, not the same reference we passed in
@@ -55,7 +55,7 @@ describe( "Taxon", ( ) => {
     } );
 
     it( "leaves default_photo undefined when the photo has no url", ( ) => {
-      const result = Taxon.mapRealmToApi( {
+      const result = Taxon.mapRealmToPojo( {
         id: 1,
         name: "Life",
         default_photo: { id: 9, attribution: "(c) someone" },
@@ -84,17 +84,17 @@ describe( "Taxon", ( ) => {
               license_code: "cc-by-nc",
             },
           } );
-        }, "create Taxon for mapRealmToApi test" );
+        }, "create Taxon for mapRealmToPojo test" );
       } );
 
       afterEach( ( ) => {
         safeRealmWrite( global.realm, ( ) => {
           global.realm.delete( realmTaxon );
-        }, "delete Taxon for mapRealmToApi test" );
+        }, "delete Taxon for mapRealmToPojo test" );
       } );
 
       it( "returns a detached plain object, not a live Realm object", ( ) => {
-        const result = Taxon.mapRealmToApi( realmTaxon );
+        const result = Taxon.mapRealmToPojo( realmTaxon );
         // a plain object literal, not a live Realm.Object the database can invalidate
         expect( Object.getPrototypeOf( result ) ).toBe( Object.prototype );
         expect( result.id ).toBe( 123 );
