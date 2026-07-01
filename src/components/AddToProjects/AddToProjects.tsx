@@ -117,7 +117,7 @@ const AddToProjects = ( ) => {
     ( item: RealmProject, isSelected: boolean ) => {
       // Logic if all required fields have been filled out will live in zustand
       if (
-        projectObservations.some(
+        projectObservations?.some(
           ( po: RealmProjectObservation ) => po.projectId === item.id,
         )
       ) {
