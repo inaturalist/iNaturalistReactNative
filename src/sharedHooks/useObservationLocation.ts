@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import { hasOnlyCoarseLocation } from "components/SharedComponents/PermissionGateContainer";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 import type { UserLocation } from "./useWatchPosition";
@@ -9,7 +9,6 @@ import useWatchPosition from "./useWatchPosition";
 const useObservationLocation = ( options: {
   shouldFetchLocation: boolean;
 } ) => {
-  const navigation = useNavigation( );
   const { shouldFetchLocation } = options;
 
   const [isCoarseOnly, setIsCoarseOnly] = useState<boolean | null>( null );
@@ -17,7 +16,7 @@ const useObservationLocation = ( options: {
   const [isFetchingCoarse, setIsFetchingCoarse] = useState( false );
   const cancelledRef = useRef( false );
 
-  useEffect( ( ) => {
+  useFocusEffect( useCallback( ( ) => {
     if ( !shouldFetchLocation ) return ( ) => undefined;
     cancelledRef.current = false;
 
@@ -38,18 +37,13 @@ const useObservationLocation = ( options: {
       }
     } )( );
 
-    return ( ) => { cancelledRef.current = true; };
-  }, [shouldFetchLocation] );
-
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "blur", ( ) => {
+    return ( ) => {
       cancelledRef.current = true;
       setIsFetchingCoarse( false );
       setCoarseLocation( null );
       setIsCoarseOnly( null );
-    } );
-    return unsubscribe;
-  }, [navigation] );
+    };
+  }, [shouldFetchLocation] ) );
 
   const shouldWatchFine = shouldFetchLocation && isCoarseOnly === false;
 
