@@ -1,7 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
   Body2,
+  Button,
+  ButtonBar,
   CustomFlashList,
   INatIcon,
 } from "components/SharedComponents";
@@ -13,14 +16,21 @@ import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
+import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 const { useQuery } = RealmContext;
+
+const DROP_SHADOW = getShadow( {
+  offsetHeight: -3,
+  shadowOpacity: 0.2,
+} );
 
 const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
 const AddToProjects = ( ) => {
   const { t } = useTranslation( );
+  const navigation = useNavigation( );
   const joinedProjectsCollection = useQuery(
     {
       type: Project,
@@ -94,6 +104,11 @@ const AddToProjects = ( ) => {
     } );
   }, [] );
 
+  const onSave = ( ) => {
+    navigation.goBack( );
+  };
+  const disabled = false;
+
   const renderRightIcon = ( isSelected: boolean ) => {
     if ( isSelected ) {
       return (
@@ -144,6 +159,21 @@ const AddToProjects = ( ) => {
         ItemSeparatorComponent={ItemSeparator}
         // extraData={selectedProjectIds}
       />
+      <View
+        className="bg-white"
+        style={DROP_SHADOW}
+      >
+        <ButtonBar>
+          <Button
+            testID="AddToProjects.saveButton"
+            maxFontSizeMultiplier={1}
+            text={t( "SAVE" )}
+            onPress={onSave}
+            level="neutral"
+            disabled={disabled}
+          />
+        </ButtonBar>
+      </View>
     </SharedStackBottomInsetViewWrapper>
   );
 };
