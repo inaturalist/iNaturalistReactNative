@@ -1,6 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
+import type {
+  AgreeIdentification,
+} from "components/ObsDetailsSharedComponents/hooks/useObsDetailsSharedLogic";
 import AgreeWithIDSheet from "components/ObsDetailsSharedComponents/Sheets/AgreeWithIDSheet";
 import PotentialDisagreementSheet
   from "components/ObsDetailsSharedComponents/Sheets/PotentialDisagreementSheet";
@@ -53,8 +56,6 @@ interface Identification {
 }
 
 interface IdentState {
-  comment: string | null;
-  commentIsOptional: boolean;
   showIdentBodySheet: boolean;
   newIdentification: Identification | null;
   showPotentialDisagreementSheet: boolean;
@@ -74,8 +75,6 @@ type IdentAction =
   | { type: "HIDE_SUGGESTED_ID_SHEET" };
 
 const initialIdentState: IdentState = {
-  comment: null,
-  commentIsOptional: false,
   showIdentBodySheet: false,
   newIdentification: null,
   showPotentialDisagreementSheet: false,
@@ -141,14 +140,19 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
     case CLEAR_SUGGESTED_TAXON:
       return { ...state, identTaxon: null };
     case HIDE_SUGGESTED_ID_SHEET:
-      return { ...state, showSuggestIdSheet: false };
+      return {
+        ...state,
+        showSuggestIdSheet: false,
+        identTaxon: null,
+        newIdentification: null,
+      };
     default:
       return state;
   }
 };
 
 interface Props {
-  agreeIdentification: boolean;
+  agreeIdentification: AgreeIdentification | null;
   closeAgreeWithIdSheet: () => void;
   confirmRemoteObsWasDeleted?: () => void;
   handleCommentMutationSuccess: ( data: unknown ) => void;
@@ -185,8 +189,6 @@ const IdentificationSheets: React.FC<Props> = ( {
   const [state, dispatch] = useReducer( identReducer, initialIdentState );
 
   const {
-    comment,
-    commentIsOptional,
     showIdentBodySheet,
     identTaxon,
     newIdentification,
@@ -197,30 +199,28 @@ const IdentificationSheets: React.FC<Props> = ( {
   const realm = useRealm( );
   const { t } = useTranslation( );
 
-  const hasComment = ( comment || newIdentification?.body || "" ).length > 0;
+  const hasComment = ( newIdentification?.body || "" ).length > 0;
 
-  const showAddCommentHeader = useCallback( ( ) => {
-    if ( hasComment ) {
-      return t( "EDIT-COMMENT" );
-    } if ( commentIsOptional ) {
-      return t( "ADD-OPTIONAL-COMMENT" );
-    }
-    return t( "ADD-COMMENT" );
-  }, [commentIsOptional, hasComment, t] );
+  const showAddCommentHeader = useCallback( ( ) => (
+    hasComment
+      ? t( "EDIT-COMMENT" )
+      : t( "ADD-COMMENT" )
+  ), [hasComment, t] );
 
   const editIdentBody = useCallback( ( ) => dispatch( { type: SHOW_EDIT_IDENT_BODY_SHEET } ), [] );
 
   const onChangeIdentBody = useCallback( ( body: string ) => dispatch( {
     type: SET_NEW_IDENTIFICATION,
-    taxon: newIdentification?.taxon,
+    taxon: newIdentification?.taxon || agreeIdentification?.taxon,
     body,
-  } ), [newIdentification?.taxon] );
+  } ), [newIdentification?.taxon, agreeIdentification?.taxon] );
 
   const onCloseIdentBodySheet = useCallback( ( ) => {
     dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );
   }, [] );
 
-  const showErrorAlert = useCallback( error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
+  const showErrorAlert
+  = useCallback( ( error: string ) => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
     cancelable: true,
   } ), [t] );
 
@@ -258,16 +258,17 @@ const IdentificationSheets: React.FC<Props> = ( {
   const hasPotentialDisagreement = useCallback( ( taxon: Taxon | null | undefined ) => {
     // based on disagreement code in iNat web
     // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
-    let observationTaxon = observation?.taxon;
+    let observationTaxon = observation.taxon;
 
     const doesNotPreferCommunityTaxon = observation.prefers_community_taxon === false
       || ( observation.user?.prefers_community_taxa === false
       && observation.prefers_community_taxon === null );
 
     if ( doesNotPreferCommunityTaxon ) {
-      observationTaxon = observation?.community_taxon || observation.taxon;
+      observationTaxon = observation.community_taxon || observation.taxon;
     }
     return observationTaxon
+        && !!taxon?.id
         && taxon?.id !== observationTaxon.id
         && observationTaxon.ancestor_ids.includes( taxon?.id );
   }, [observation] );
@@ -396,10 +397,8 @@ const IdentificationSheets: React.FC<Props> = ( {
   }, [createCommentMutate, uuid, loadActivityItem] );
 
   const confirmCommentFromCommentSheet = useCallback( ( newComment: string ) => {
-    if ( !commentIsOptional ) {
-      onCommentAdded( newComment );
-    }
-  }, [commentIsOptional, onCommentAdded] );
+    onCommentAdded( newComment );
+  }, [onCommentAdded] );
 
   const hideSuggestedIdSheet = ( ) => {
     dispatch( { type: HIDE_SUGGESTED_ID_SHEET } );
@@ -416,7 +415,10 @@ const IdentificationSheets: React.FC<Props> = ( {
           hidden={showIdentBodySheet}
           loading={isCreateIdPending}
           onPressClose={closeAgreeWithIdSheet}
-          identification={agreeIdentification}
+          identification={{
+            taxon: agreeIdentification.taxon,
+            body: newIdentification?.body,
+          }}
         />
       )}
       {/* AddCommentSheet */}
@@ -427,7 +429,6 @@ const IdentificationSheets: React.FC<Props> = ( {
           onPressClose={hideAddCommentSheet}
           headerText={addCommentHeaderText}
           textInputStyle={textInputStyle}
-          initialInput={comment}
           confirm={confirmCommentFromCommentSheet}
         />
       )}
@@ -477,6 +478,7 @@ const IdentificationSheets: React.FC<Props> = ( {
           text={t( "Sorry-this-observation-was-deleted" )}
           buttonText={t( "OK" )}
           confirm={confirmRemoteObsWasDeleted}
+          loading={false}
         />
       ) }
     </>
