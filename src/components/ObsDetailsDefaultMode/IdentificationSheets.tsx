@@ -323,14 +323,14 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const onAgree = useCallback( ( ident: Identification ) => {
     const agreeParams = {
-      observation_id: observation.uuid,
+      observation_id: observation?.uuid,
       taxon_id: ident.taxon?.id,
       body: ident.body,
     };
 
     loadActivityItem( );
     createIdentificationMutate( { identification: agreeParams } );
-  }, [createIdentificationMutate, observation.uuid, loadActivityItem] );
+  }, [createIdentificationMutate, observation?.uuid, loadActivityItem] );
 
   const potentialDisagreeSheetDiscardChanges = useCallback( ( ) => {
     dispatch( { type: HIDE_POTENTIAL_DISAGREEMENT_SHEET } );
