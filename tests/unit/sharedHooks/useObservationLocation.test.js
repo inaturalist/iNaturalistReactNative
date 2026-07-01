@@ -1,6 +1,12 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
 import useObservationLocation from "sharedHooks/useObservationLocation";
 
+jest.mock( "@react-navigation/native", () => ( {
+  ...jest.requireActual( "@react-navigation/native" ),
+  // Run the focus callback via useEffect so we don't need a NavigationContainer
+  useFocusEffect: cb => jest.requireActual( "react" ).useEffect( cb, [] ),
+} ) );
+
 const mockUseWatchPosition = jest.fn( );
 jest.mock( "sharedHooks/useWatchPosition", () => ( {
   __esModule: true,
@@ -37,7 +43,6 @@ const mockFineLocation = {
 const defaultWatchResult = {
   isFetchingLocation: false,
   stopWatch: jest.fn( ),
-  subscriptionId: null,
   userLocation: null,
 };
 
