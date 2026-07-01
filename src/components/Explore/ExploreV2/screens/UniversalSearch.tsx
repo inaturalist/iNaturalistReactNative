@@ -26,8 +26,8 @@ import React, { useCallback, useRef, useState } from "react";
 import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
 import { FlatList, Keyboard } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import useDebouncedValue from "sharedHooks/useDebouncedValue";
 import useLocationSearch from "sharedHooks/useLocationSearch";
+import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
 import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
 import useUniversalSearch from "sharedHooks/useUniversalSearch";
@@ -70,96 +70,69 @@ const UniversalSearch = ( ) => {
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
 
-  const [subjectText, setSubjectText] = useState( "" );
-  const [locationText, setLocationText] = useState( "" );
-  const [filledFromSelection, setFilledFromSelection] = useState( false );
-  const [locationFilledFromSelection, setLocationFilledFromSelection] = useState( false );
   // Which input is focused — decides whether the list shows subject or location
   // results. Subject autofocuses, so it's the initial active field.
   const [activeField, setActiveField] = useState<"subject" | "location">( "subject" );
-  // The debounced value that actually drives the autocomplete query. Cleared on
-  // selection so a chosen suggestion doesn't re-trigger a result list.
   const {
-    debouncedValue: debouncedQuery,
-    debounce: debounceQuery,
-    setImmediately: setQueryImmediately,
-  } = useDebouncedValue( "" );
+    text: subjectText,
+    debouncedQuery: subjectQuery,
+    hasQuery: subjectHasQuery,
+    onChangeText: onChangeSubjectText,
+    handleFocus: focusSubjectField,
+    commit: commitSubject,
+    clear: clearSubject,
+  } = useSearchField( );
   const {
-    debouncedValue: debouncedLocationQuery,
-    debounce: debounceLocationQuery,
-    setImmediately: setLocationQueryImmediately,
-  } = useDebouncedValue( "" );
+    text: locationText,
+    debouncedQuery: locationQuery,
+    hasQuery: locationHasQuery,
+    onChangeText: onChangeLocationText,
+    handleFocus: focusLocationField,
+    commit: commitLocation,
+    clear: clearLocation,
+  } = useSearchField( );
 
   const locationInputRef = useRef<RNTextInput>( null );
 
-  const { results, isLoading, refetch } = useUniversalSearch( debouncedQuery );
+  const { results, isLoading, refetch } = useUniversalSearch( subjectQuery );
   const {
     results: locationResults,
     isLoading: locationIsLoading,
     refetch: locationRefetch,
-  } = useLocationSearch( debouncedLocationQuery );
+  } = useLocationSearch( locationQuery );
 
   const bothFilled = subjectText.length > 0 && locationText.length > 0;
-
-  const hasQuery = debouncedQuery.trim( ).length > 0;
-  const locationHasQuery = debouncedLocationQuery.trim( ).length > 0;
   const showLocation = activeField === "location";
-
-  const handleSubjectTextChange = useCallback( ( text: string ) => {
-    setSubjectText( text );
-    setFilledFromSelection( false );
-    debounceQuery( text );
-  }, [debounceQuery] );
 
   const handleSubjectFocus = useCallback( ( ) => {
     setActiveField( "subject" );
-    if ( !filledFromSelection ) { return; }
-    setSubjectText( "" );
-    setFilledFromSelection( false );
-    setQueryImmediately( "" );
-  }, [filledFromSelection, setQueryImmediately] );
-
-  const handleLocationTextChange = useCallback( ( text: string ) => {
-    setLocationText( text );
-    setLocationFilledFromSelection( false );
-    debounceLocationQuery( text );
-  }, [debounceLocationQuery] );
+    focusSubjectField( );
+  }, [focusSubjectField] );
 
   const handleLocationFocus = useCallback( ( ) => {
     setActiveField( "location" );
-    if ( !locationFilledFromSelection ) { return; }
-    setLocationText( "" );
-    setLocationFilledFromSelection( false );
-    setLocationQueryImmediately( "" );
-  }, [locationFilledFromSelection, setLocationQueryImmediately] );
+    focusLocationField( );
+  }, [focusLocationField] );
+
+  const handleSelect = useCallback( ( selectedSubject: ExploreV2Subject ) => {
+    commitSubject( subjectToText( selectedSubject, commonNameIsPrimary ) );
+    dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: selectedSubject } );
+    locationInputRef.current?.focus( );
+  }, [commitSubject, commonNameIsPrimary, dispatch] );
 
   const handleLocationSelect = useCallback( ( place: ApiPlace ) => {
-    setLocationText( place.display_name ?? "" );
-    setLocationFilledFromSelection( true );
-    setLocationQueryImmediately( "" );
+    commitLocation( place.display_name ?? "" );
     dispatch( {
       type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
       place: { id: place.id as number, display_name: place.display_name },
     } );
     Keyboard.dismiss( );
-  }, [dispatch, setLocationQueryImmediately] );
-
-  const handleSelect = useCallback( ( subject: ExploreV2Subject ) => {
-    setSubjectText( subjectToText( subject, commonNameIsPrimary ) );
-    setFilledFromSelection( true );
-    setQueryImmediately( "" );
-    dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject } );
-    locationInputRef.current?.focus( );
-  }, [commonNameIsPrimary, dispatch, setQueryImmediately] );
+  }, [commitLocation, dispatch] );
 
   const handleReset = useCallback( ( ) => {
-    setSubjectText( "" );
-    setLocationText( "" );
-    setFilledFromSelection( false );
-    setLocationFilledFromSelection( false );
-    setQueryImmediately( "" );
-    setLocationQueryImmediately( "" );
-  }, [setQueryImmediately, setLocationQueryImmediately] );
+    clearSubject( );
+    clearLocation( );
+  }, [clearSubject, clearLocation] );
 
   const handleSearch = useCallback( ( ) => {
     // TODO MOB-1338 follow-up: run the search (default to all organisms /
@@ -187,7 +160,7 @@ const UniversalSearch = ( ) => {
   // Gate the data to [] until there's a query for the focused field, mirroring
   // the subject-only behavior: the list stays mounted and EmptySearchResults
   // covers the loading / no-results / no-query states.
-  const subjectData: SearchResultItem[] = hasQuery
+  const subjectData: SearchResultItem[] = subjectHasQuery
     ? results
     : [];
   const locationData: SearchResultItem[] = locationHasQuery
@@ -216,7 +189,7 @@ const UniversalSearch = ( ) => {
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
-                  onChangeText={handleSubjectTextChange}
+                  onChangeText={onChangeSubjectText}
                   onFocus={handleSubjectFocus}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
@@ -230,7 +203,7 @@ const UniversalSearch = ( ) => {
                   accessibilityLabel={t( "Search-for-a-location" )}
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
-                  onChangeText={handleLocationTextChange}
+                  onChangeText={onChangeLocationText}
                   onFocus={handleLocationFocus}
                   placeholder={t( "Search-for-a-location" )}
                   placeholderTextColor={colors.mediumGray}
@@ -276,8 +249,8 @@ const UniversalSearch = ( ) => {
                 ? locationIsLoading
                 : isLoading}
               searchQuery={showLocation
-                ? debouncedLocationQuery
-                : debouncedQuery}
+                ? locationQuery
+                : subjectQuery}
               refetch={showLocation
                 ? locationRefetch
                 : refetch}
