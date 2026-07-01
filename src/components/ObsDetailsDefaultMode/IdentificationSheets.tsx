@@ -258,14 +258,14 @@ const IdentificationSheets: React.FC<Props> = ( {
   const hasPotentialDisagreement = useCallback( ( taxon: Taxon | null | undefined ) => {
     // based on disagreement code in iNat web
     // https://github.com/inaturalist/inaturalist/blob/30a27d0eb79dd17af38292785b0137e6024bbdb7/app/webpack/observations/show/ducks/observation.js#L827-L838
-    let observationTaxon = observation?.taxon;
+    let observationTaxon = observation.taxon;
 
     const doesNotPreferCommunityTaxon = observation.prefers_community_taxon === false
       || ( observation.user?.prefers_community_taxa === false
       && observation.prefers_community_taxon === null );
 
     if ( doesNotPreferCommunityTaxon ) {
-      observationTaxon = observation?.community_taxon || observation.taxon;
+      observationTaxon = observation.community_taxon || observation.taxon;
     }
     return observationTaxon
         && !!taxon?.id
@@ -323,14 +323,14 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const onAgree = useCallback( ( ident: Identification ) => {
     const agreeParams = {
-      observation_id: observation?.uuid,
+      observation_id: observation.uuid,
       taxon_id: ident.taxon?.id,
       body: ident.body,
     };
 
     loadActivityItem( );
     createIdentificationMutate( { identification: agreeParams } );
-  }, [createIdentificationMutate, observation?.uuid, loadActivityItem] );
+  }, [createIdentificationMutate, observation.uuid, loadActivityItem] );
 
   const potentialDisagreeSheetDiscardChanges = useCallback( ( ) => {
     dispatch( { type: HIDE_POTENTIAL_DISAGREEMENT_SHEET } );
