@@ -4,7 +4,7 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Animated } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import shouldFetchObservationLocation from "sharedHelpers/shouldFetchObservationLocation";
@@ -83,10 +83,10 @@ const ObsEdit = ( ): Node => {
     resetUploadObservationsSlice( );
   }, [resetUploadObservationsSlice] );
 
-  const navToLocationPicker = useCallback( ( ) => {
+  const navToLocationPicker = ( ) => {
     setNeedLocation( false );
     navigation.navigate( "LocationPicker" );
-  }, [navigation] );
+  };
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
