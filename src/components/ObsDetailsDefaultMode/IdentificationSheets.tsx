@@ -219,7 +219,8 @@ const IdentificationSheets: React.FC<Props> = ( {
     dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );
   }, [] );
 
-  const showErrorAlert = useCallback( error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
+  const showErrorAlert
+  = useCallback( ( error: string ) => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
     cancelable: true,
   } ), [t] );
 
@@ -267,6 +268,7 @@ const IdentificationSheets: React.FC<Props> = ( {
       observationTaxon = observation?.community_taxon || observation.taxon;
     }
     return observationTaxon
+        && !!taxon?.id
         && taxon?.id !== observationTaxon.id
         && observationTaxon.ancestor_ids.includes( taxon?.id );
   }, [observation] );
