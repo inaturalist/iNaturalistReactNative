@@ -22,9 +22,7 @@ class ObservationField extends Realm.Object {
 
   static mapRealmToPojo( realmObservationField: RealmObservationField ) {
     return {
-      allowedValues: realmObservationField.allowedValues.length > 0
-        ? realmObservationField.allowedValues.map( av => av )
-        : [],
+      allowedValues: realmObservationField.allowedValues.map( av => av ),
       datatype: realmObservationField.datatype,
       description: realmObservationField.description,
       id: realmObservationField.id,
