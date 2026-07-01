@@ -70,7 +70,6 @@ const ObsEdit = ( ): Node => {
 
   const {
     isFetchingLocation,
-    stopWatch,
     userLocation,
   } = useObservationLocation( { shouldFetchLocation } );
 
@@ -85,10 +84,9 @@ const ObsEdit = ( ): Node => {
   }, [resetUploadObservationsSlice] );
 
   const navToLocationPicker = useCallback( ( ) => {
-    stopWatch( );
     setNeedLocation( false );
     navigation.navigate( "LocationPicker" );
-  }, [stopWatch, navigation] );
+  }, [navigation] );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;

@@ -17,7 +17,7 @@ const useObservationLocation = ( options: {
   const cancelledRef = useRef( false );
 
   useFocusEffect( useCallback( ( ) => {
-    if ( !shouldFetchLocation ) return ( ) => undefined;
+    if ( !shouldFetchLocation ) return ( ) => {};
     cancelledRef.current = false;
 
     ( async ( ) => {
@@ -49,7 +49,6 @@ const useObservationLocation = ( options: {
 
   const {
     isFetchingLocation: isFetchingFine,
-    stopWatch,
     userLocation: fineLocation,
   } = useWatchPosition( { shouldFetchLocation: shouldWatchFine } );
 
@@ -58,7 +57,6 @@ const useObservationLocation = ( options: {
       || isFetchingCoarse
       // cover first frame where shouldFetchLocation = true but both isFetching values are false
       || ( shouldFetchLocation && isCoarseOnly === null ),
-    stopWatch,
     userLocation: coarseLocation ?? fineLocation,
   };
 };

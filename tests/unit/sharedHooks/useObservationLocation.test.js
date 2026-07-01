@@ -42,7 +42,6 @@ const mockFineLocation = {
 
 const defaultWatchResult = {
   isFetchingLocation: false,
-  stopWatch: jest.fn( ),
   userLocation: null,
 };
 
