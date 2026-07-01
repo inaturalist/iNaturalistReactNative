@@ -110,20 +110,22 @@ const AddToProjects = ( ) => {
       const isSelected = selectedProjectIds.has( item.id );
 
       return (
-        <Pressable
-          className="flex-row items-center px-4 py-2"
-          onPress={() => toggleProject( item.id )}
-          testID={`AddToProjects.project.${item.id}`}
-          accessible
-          accessibilityRole="switch"
-          accessibilityState={{ checked: isSelected }}
-          accessibilityLabel={item.title || undefined}
-        >
-          <View className="flex-1 mr-2.5">
-            <ProjectListItem item={item} />
-          </View>
-          {renderRightIcon( isSelected )}
-        </Pressable>
+        <View>
+          <Pressable
+            className="flex-row items-center px-4 py-2"
+            onPress={() => toggleProject( item.id )}
+            testID={`AddToProjects.project.${item.id}`}
+            accessible
+            accessibilityRole="switch"
+            accessibilityState={{ checked: isSelected }}
+            accessibilityLabel={item.title || undefined}
+          >
+            <View className="flex-1 mr-2.5">
+              <ProjectListItem item={item} />
+            </View>
+            {renderRightIcon( isSelected )}
+          </Pressable>
+        </View>
       );
     },
     [selectedProjectIds, toggleProject],
