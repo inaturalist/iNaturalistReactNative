@@ -1,6 +1,7 @@
 import { Realm } from "@realm/react";
 import type { ApiProjectObservationField } from "api/types";
 import ObservationField from "realmModels/ObservationField";
+import type { RealmProjectObservationField } from "realmModels/types";
 
 class ProjectObservationField extends Realm.Object {
   static mapApiToRealm( apiPof: ApiProjectObservationField ) {
@@ -12,6 +13,17 @@ class ProjectObservationField extends Realm.Object {
     };
 
     return localPof;
+  }
+
+  static mapRealmToPojo( realmProjectObservationField: RealmProjectObservationField ) {
+    return {
+      id: realmProjectObservationField.id,
+      obsField: realmProjectObservationField.obsField
+        ? ObservationField.mapRealmToPojo( realmProjectObservationField.obsField )
+        : null,
+      position: realmProjectObservationField.position,
+      required: realmProjectObservationField.required,
+    };
   }
 
   static schema = {

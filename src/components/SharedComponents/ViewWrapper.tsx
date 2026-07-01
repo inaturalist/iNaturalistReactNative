@@ -83,6 +83,31 @@ const SharedStackViewWrapper = ( {
     </ScreenShell>
   );
 };
+
+const SharedStackBottomInsetViewWrapper = ( {
+  children,
+  testID,
+  wrapperClassName,
+}: Props ) => {
+  const insets = useSafeAreaInsets( );
+  const { hasBottomTabBar } = useStackHost( );
+  const viewStyle = {
+    paddingBottom: !hasBottomTabBar
+      ? insets.bottom
+      : 0,
+  };
+
+  return (
+    <ScreenShell
+      style={viewStyle}
+      testID={testID}
+      wrapperClassName={wrapperClassName}
+    >
+      {children}
+    </ScreenShell>
+  );
+};
+
 const BottomInsetViewWrapper = ( {
   children,
   testID,
@@ -131,6 +156,7 @@ export default ViewWrapper;
 export {
   BottomInsetViewWrapper,
   ScreenShell,
+  SharedStackBottomInsetViewWrapper,
   SharedStackViewWrapper,
   TopAndBottomInsetViewWrapper,
 };
