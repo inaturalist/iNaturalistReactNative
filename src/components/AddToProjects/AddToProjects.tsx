@@ -15,7 +15,8 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
-import type { RealmProject } from "realmModels/types";
+import type { RealmProject, RealmProjectObservation } from "realmModels/types";
+import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -39,6 +40,9 @@ const AddToProjects = ( ) => {
         .filtered( "project_type == \"\" OR project_type == null" ),
     },
     [],
+  );
+  const projectObservations = useStore(
+    state => state.currentObservation?.projectObservations,
   );
   const [selectedProjectIds, setSelectedProjectIds] = useState( () => new Set( ) );
 
@@ -109,16 +113,31 @@ const AddToProjects = ( ) => {
   };
   const disabled = false;
 
-  const renderRightIcon = ( isSelected: boolean ) => {
-    if ( isSelected ) {
-      return (
-        <INatIcon name="circle-dots-pencil" color={colors.darkGray} size={24} />
-      );
-    }
-    return (
-      <INatIcon name="circle" color={colors.darkGray} size={24} />
-    );
-  };
+  const renderRightIcon = useCallback(
+    ( item: RealmProject, isSelected: boolean ) => {
+      // Logic if all required fields have been filled out will live in zustand
+      if (
+        projectObservations.some(
+          ( po: RealmProjectObservation ) => po.projectId === item.id,
+        )
+      ) {
+        return (
+          <INatIcon name="checkmark-circle" color={colors.darkGray} size={24} />
+        );
+      }
+      if ( isSelected ) {
+        return (
+          <INatIcon
+            name="circle-dots-pencil"
+            color={colors.darkGray}
+            size={24}
+          />
+        );
+      }
+      return <INatIcon name="circle" color={colors.darkGray} size={24} />;
+    },
+    [projectObservations],
+  );
 
   const renderProject: ListRenderItem<RealmProject> = useCallback(
     ( { item } ) => {
@@ -138,12 +157,12 @@ const AddToProjects = ( ) => {
             <View className="flex-1 mr-2.5">
               <ProjectListItem item={item} />
             </View>
-            {renderRightIcon( isSelected )}
+            {renderRightIcon( item, isSelected )}
           </Pressable>
         </View>
       );
     },
-    [selectedProjectIds, toggleProject],
+    [renderRightIcon, selectedProjectIds, toggleProject],
   );
 
   return (
