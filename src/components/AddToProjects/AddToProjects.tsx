@@ -1,4 +1,3 @@
-import type { ProjectRulePreference } from "api/types";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
@@ -6,12 +5,13 @@ import {
   CustomFlashList,
 } from "components/SharedComponents";
 import { SharedStackBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
+import type { RealmProject } from "realmModels/types";
 
 const { useQuery } = RealmContext;
 
@@ -28,6 +28,7 @@ const AddToProjects = ( ) => {
     },
     [],
   );
+  const [selectedProjectIds, setSelectedProjectIds] = useState( () => new Set( ) );
 
   const joinedProjects = useMemo(
     () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
@@ -79,20 +80,38 @@ const AddToProjects = ( ) => {
     [t],
   );
 
-  interface Project {
-    icon: string;
-    id: number;
-    project_type: "collection" | "umbrella" | "";
-    rule_preferences: ProjectRulePreference[];
-    title: string;
-  }
-  const renderProject: ListRenderItem<Project> = useCallback(
-    ( { item } ) => (
-      <View className="px-4 py-2">
-        <ProjectListItem item={item} />
-      </View>
-    ),
-    [],
+  const toggleProject = useCallback( ( projectId: number ) => {
+    setSelectedProjectIds( previousSelectedProjectIds => {
+      const nextSelectedProjectIds = new Set( previousSelectedProjectIds );
+      if ( nextSelectedProjectIds.has( projectId ) ) {
+        nextSelectedProjectIds.delete( projectId );
+      } else {
+        nextSelectedProjectIds.add( projectId );
+      }
+      return nextSelectedProjectIds;
+    } );
+  }, [] );
+
+  const renderProject: ListRenderItem<RealmProject> = useCallback(
+    ( { item } ) => {
+      const isSelected = selectedProjectIds.has( item.id );
+      console.log( item );
+
+      return (
+        <Pressable
+          className="flex-row items-center px-4 py-2"
+          onPress={() => toggleProject( item.id )}
+          testID={`AddToProjects.project.${item.id}`}
+          accessible
+          accessibilityRole="switch"
+          accessibilityState={{ checked: isSelected }}
+          accessibilityLabel={item.title || undefined}
+        >
+          <ProjectListItem item={item} />
+        </Pressable>
+      );
+    },
+    [selectedProjectIds, toggleProject],
   );
 
   return (
@@ -103,9 +122,10 @@ const AddToProjects = ( ) => {
         ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}
         data={joinedProjects}
-        keyExtractor={( project: Project ) => String( project.id )}
+        keyExtractor={( project: RealmProject ) => String( project.id )}
         renderItem={renderProject}
         ItemSeparatorComponent={ItemSeparator}
+        // extraData={selectedProjectIds}
       />
     </SharedStackBottomInsetViewWrapper>
   );
