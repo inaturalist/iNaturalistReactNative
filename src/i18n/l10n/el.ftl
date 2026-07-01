@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = ΣΥΝΔΕΘΕΊΤΕ ΣΤΟ INATURALIST
 Log-in-to-iNaturalist = Συνδεθείτε στο iNaturalist
 LOG-OUT = ΑΠΟΣΥΝΔΕΣΗ
 LOG-OUT--question = ΑΠΟΣΥΝΔΕΘΕΊΤΕ;
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Χαμηλότερη
 LOWEST-RANK = ΧΑΜΗΛΌΤΕΡΗ ΚΑΤΆΤΑΞΗ
 MAP = ΧΆΡΤΗΣ

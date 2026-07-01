@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = PRIHLÁSIŤ SA K INATURALISTO
 Log-in-to-iNaturalist = Prihlásiť sa do iNaturalist
 LOG-OUT = ODHLÁSIŤ SA
 LOG-OUT--question = ODHLÁSIŤ SA?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Najnižšia
 LOWEST-RANK = NAJNIŽŠIE HODNOTENIE
 MAP = MAPA

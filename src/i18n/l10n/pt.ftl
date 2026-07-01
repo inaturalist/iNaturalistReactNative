@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = FAÇA LOGIN NO INATURALIST
 Log-in-to-iNaturalist = Inicie sessão no iNaturalist
 LOG-OUT = ENCERRAR SESSÃO
 LOG-OUT--question = SAIR?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Mais baixo
 LOWEST-RANK = CLASSIFICAÇÃO MAIS BAIXA
 MAP = MAPA

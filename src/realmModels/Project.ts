@@ -2,6 +2,7 @@ import { Realm } from "@realm/react";
 import type { ApiProjectSummaryWithPOF } from "api/types";
 import { UpdateMode } from "realm";
 import ProjectObservationField from "realmModels/ProjectObservationField";
+import type { RealmProject } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 class Project extends Realm.Object {
@@ -36,6 +37,19 @@ class Project extends Realm.Object {
         );
       } );
     }, "upserting projects in Project" );
+  }
+
+  static mapRealmToPojo( realmProject: RealmProject ) {
+    return {
+      icon: realmProject.icon,
+      id: realmProject.id,
+      projectObservationFields: realmProject.projectObservationFields.length > 0
+        ? realmProject.projectObservationFields
+          .map( pof => ProjectObservationField.mapRealmToPojo( pof ) )
+        : [],
+      project_type: realmProject.project_type,
+      title: realmProject.title,
+    };
   }
 
   static schema = {

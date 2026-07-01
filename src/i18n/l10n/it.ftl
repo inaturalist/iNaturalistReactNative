@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = ACCEDI A INATURALIST
 Log-in-to-iNaturalist = Accedi a iNaturalist
 LOG-OUT = ESCI
 LOG-OUT--question = DISCONNETTERSI?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Infimo
 LOWEST-RANK = RANGO PIÙ BASSO
 MAP = MAPPA

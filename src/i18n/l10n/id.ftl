@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = MASUK KE INATURALIST
 Log-in-to-iNaturalist = Masuk ke iNaturalist
 LOG-OUT = KELUAR
 LOG-OUT--question = KELUAR?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Sepertinya Anda belum pernah mengamatinya.
+    Saatnya menjelajah lagi!
 Lowest = Terendah
 LOWEST-RANK = TINGKAT TERENDAH
 MAP = PETA

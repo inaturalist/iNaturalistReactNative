@@ -1,4 +1,5 @@
 import {
+  fireEvent,
   screen,
   userEvent,
   waitFor,
@@ -109,14 +110,16 @@ describe( "Photo Deletion with existing saved observation", () => {
   async function viewPhotoFromObsEdit() {
     const evidenceItem = await screen.findByLabelText( "Select or drag media" );
     expect( evidenceItem ).toBeVisible();
-    await actor.press( evidenceItem );
+    fireEvent.press( evidenceItem );
   }
 
   async function expectObsEditToHaveNoPhotos() {
     // Confirm there is no evidence
     expect( await screen.findByText( "EVIDENCE" ) ).toBeVisible();
-    const evidenceItems = screen.queryAllByLabelText( "Select or drag media" );
-    expect( evidenceItems.length ).toEqual( 0 );
+    await waitFor( () => {
+      const evidenceItems = screen.queryAllByLabelText( "Select or drag media" );
+      expect( evidenceItems.length ).toEqual( 0 );
+    } );
   }
 
   it( "should delete from StandardCamera for existing photo", async ( ) => {
@@ -133,7 +136,7 @@ describe( "Photo Deletion with existing saved observation", () => {
     } );
     // Tap the photo preview to enter the MediaViewer
     const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
-    await actor.press( carouselPhoto );
+    fireEvent.press( carouselPhoto );
     await deletePhotoInMediaViewer();
     await expectNoPhotosInStandardCamera();
   } );

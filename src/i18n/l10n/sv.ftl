@@ -474,6 +474,9 @@ LOG-IN-TO-INATURALIST = LOGGA IN PÅ INATURALIST
 Log-in-to-iNaturalist = Logga in på iNaturalist
 LOG-OUT = LOGGA UT
 LOG-OUT--question = LOGGA UT?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Lägsta
 LOWEST-RANK = LÄGSTA RANG
 MAP = KARTA

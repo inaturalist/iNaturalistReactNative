@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = INATURALIST-ᲨᲘ ᲨᲔᲡᲕᲚᲐ
 Log-in-to-iNaturalist = iNaturalist-ში შესვლა
 LOG-OUT = ᲒᲐᲛᲝᲡᲕᲚᲐ
 LOG-OUT--question = ᲒᲐᲛᲝᲡᲕᲚᲐ?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = ყველაზე დაბალი
 LOWEST-RANK = ᲧᲕᲔᲚᲐᲖᲔ ᲓᲐᲑᲐᲚᲘ ᲠᲐᲜᲒᲘ
 MAP = ᲠᲣᲙᲐ
