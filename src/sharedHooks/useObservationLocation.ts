@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import { hasOnlyCoarseLocation } from "components/SharedComponents/PermissionGateContainer";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 import type { UserLocation } from "./useWatchPosition";
@@ -9,7 +9,6 @@ import useWatchPosition from "./useWatchPosition";
 const useObservationLocation = ( options: {
   shouldFetchLocation: boolean;
 } ) => {
-  const navigation = useNavigation( );
   const { shouldFetchLocation } = options;
 
   const [isCoarseOnly, setIsCoarseOnly] = useState<boolean | null>( null );
@@ -17,8 +16,8 @@ const useObservationLocation = ( options: {
   const [isFetchingCoarse, setIsFetchingCoarse] = useState( false );
   const cancelledRef = useRef( false );
 
-  useEffect( ( ) => {
-    if ( !shouldFetchLocation ) return ( ) => undefined;
+  useFocusEffect( useCallback( ( ) => {
+    if ( !shouldFetchLocation ) return ( ) => {};
     cancelledRef.current = false;
 
     ( async ( ) => {
@@ -38,25 +37,18 @@ const useObservationLocation = ( options: {
       }
     } )( );
 
-    return ( ) => { cancelledRef.current = true; };
-  }, [shouldFetchLocation] );
-
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "blur", ( ) => {
+    return ( ) => {
       cancelledRef.current = true;
       setIsFetchingCoarse( false );
       setCoarseLocation( null );
       setIsCoarseOnly( null );
-    } );
-    return unsubscribe;
-  }, [navigation] );
+    };
+  }, [shouldFetchLocation] ) );
 
   const shouldWatchFine = shouldFetchLocation && isCoarseOnly === false;
 
   const {
     isFetchingLocation: isFetchingFine,
-    stopWatch,
-    subscriptionId,
     userLocation: fineLocation,
   } = useWatchPosition( { shouldFetchLocation: shouldWatchFine } );
 
@@ -65,8 +57,6 @@ const useObservationLocation = ( options: {
       || isFetchingCoarse
       // cover first frame where shouldFetchLocation = true but both isFetching values are false
       || ( shouldFetchLocation && isCoarseOnly === null ),
-    stopWatch,
-    subscriptionId,
     userLocation: coarseLocation ?? fineLocation,
   };
 };
