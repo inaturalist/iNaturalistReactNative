@@ -474,6 +474,9 @@ LOG-IN-TO-INATURALIST = AANMELDEN BIJ INATURALIST
 Log-in-to-iNaturalist = Aanmelden bij iNaturalist
 LOG-OUT = AFMELDEN
 LOG-OUT--question = AFMELDEN?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Het lijkt erop dat je dit nog niet hebt gezien.
+    Tijd om verder te ontdekken!
 Lowest = Laagste
 LOWEST-RANK = LAAGSTE RANG
 MAP = KAART

@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = SE CONNECTER À INATURALIST
 Log-in-to-iNaturalist = Se connecter à iNaturalist
 LOG-OUT = DÉCONNEXION
 LOG-OUT--question = SE DÉCONNECTER ?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Le plus bas
 LOWEST-RANK = RANG LE PLUS BAS
 MAP = CARTE

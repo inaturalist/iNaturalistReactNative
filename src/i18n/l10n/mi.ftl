@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = TAKIPUTA
 LOG-OUT--question = LOG OUT?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 MAP = MAP

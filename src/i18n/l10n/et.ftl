@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = LOGI INATURALISTI SISSE
 Log-in-to-iNaturalist = Logi iNaturalisti sisse
 LOG-OUT = LOGI VÄLJA
 LOG-OUT--question = LOGI VÄLJA?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Madalaim
 LOWEST-RANK = MADALAIM TASE
 MAP = KAART
