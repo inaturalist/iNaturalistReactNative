@@ -27,7 +27,7 @@ function renderAddToProjects( ) {
     <AddToProjects />,
   );
 }
-describe( "AddToProjects", () => {
+describe( "AddToProjects", ( ) => {
   it( "renders section headers and collection/umbrella explainer", ( ) => {
     renderAddToProjects( );
     expect( screen.getByText( "Traditional Projects" ) ).toBeVisible( );
@@ -40,6 +40,7 @@ describe( "AddToProjects", () => {
       "For most other projects, observations that meet project requirements will automatically be included in projects.",
     ) ).toBeVisible( );
   } );
+
   it( "renders joined projects", ( ) => {
     renderAddToProjects( );
 
