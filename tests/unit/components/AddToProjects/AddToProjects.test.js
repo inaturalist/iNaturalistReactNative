@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
@@ -10,5 +11,14 @@ function renderAddToProjects( ) {
 describe( "AddToProjects", () => {
   it( "renders section headers and collection/umbrella explainer", ( ) => {
     renderAddToProjects( );
+    expect( screen.getByText( "Traditional Projects" ) ).toBeVisible( );
+    expect( screen.getByText(
+      "You can manually add observations to Traditional Projects you have joined.",
+    ) ).toBeVisible( );
+    expect( screen.getByText( "Collection & Umbrella Projects" ) ).toBeVisible( );
+    expect( screen.getByText(
+      // eslint-disable-next-line max-len
+      "For most other projects, observations that meet project requirements will automatically be included in projects.",
+    ) ).toBeVisible( );
   } );
 } );
