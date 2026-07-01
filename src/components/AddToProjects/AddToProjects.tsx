@@ -3,6 +3,7 @@ import {
   Body1,
   Body2,
   CustomFlashList,
+  INatIcon,
 } from "components/SharedComponents";
 import { SharedStackBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
@@ -12,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
+import colors from "styles/tailwindColors";
 
 const { useQuery } = RealmContext;
 
@@ -92,10 +94,20 @@ const AddToProjects = ( ) => {
     } );
   }, [] );
 
+  const renderRightIcon = ( isSelected: boolean ) => {
+    if ( isSelected ) {
+      return (
+        <INatIcon name="circle-dots-pencil" color={colors.darkGray} size={24} />
+      );
+    }
+    return (
+      <INatIcon name="circle" color={colors.darkGray} size={24} />
+    );
+  };
+
   const renderProject: ListRenderItem<RealmProject> = useCallback(
     ( { item } ) => {
       const isSelected = selectedProjectIds.has( item.id );
-      console.log( item );
 
       return (
         <Pressable
@@ -107,7 +119,10 @@ const AddToProjects = ( ) => {
           accessibilityState={{ checked: isSelected }}
           accessibilityLabel={item.title || undefined}
         >
-          <ProjectListItem item={item} />
+          <View className="flex-1 mr-2.5">
+            <ProjectListItem item={item} />
+          </View>
+          {renderRightIcon( isSelected )}
         </Pressable>
       );
     },
