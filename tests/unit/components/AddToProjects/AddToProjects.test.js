@@ -1,10 +1,12 @@
-import { screen, within } from "@testing-library/react-native";
+import { screen, userEvent, within } from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
 import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
+
+const actor = userEvent.setup( );
 
 const mockProjects = [
   factory( "LocalProject" ),
@@ -67,6 +69,20 @@ describe( "AddToProjects", ( ) => {
     expect( screen.getByText( mockProjects[0].title ) ).toBeVisible( );
     expect( screen.getByText( mockProjects[1].title ) ).toBeVisible( );
     expect( screen.getAllByText( "Traditional Project" ).length ).toBe( 2 );
+  } );
+
+  it( "renders selected projects with expanded chooser", async ( ) => {
+    renderAddToProjects( );
+
+    const projectTitle = screen.getByText( mockProjects[1].title );
+    await actor.press( projectTitle );
+
+    expect(
+      within( screen.getByTestId( `AddToProjects.project.${mockProjects[1].id}` ) )
+        .getByText( iconGlyph( "circle-dots-pencil" ) ),
+    ).toBeVisible( );
+
+    // TODO: MOB-1503 also check for expanded chooser being shown
   } );
 
   it( "renders existing project observations as checked", ( ) => {
