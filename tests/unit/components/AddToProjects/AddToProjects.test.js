@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import React from "react";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -22,11 +23,27 @@ jest.mock( "providers/contexts", () => {
   };
 } );
 
+const initialStoreState = useStore.getState( );
+
 function renderAddToProjects( ) {
   return renderComponent(
     <AddToProjects />,
   );
 }
+
+beforeEach( ( ) => {
+  jest.clearAllMocks( );
+  useStore.setState( initialStoreState, true );
+  useStore.setState( {
+    currentObservation: {
+      ...factory( "LocalObservation" ),
+      projectObservations: [factory( "LocalProjectObservation", {
+        projectId: mockProjects[0].id,
+      } )],
+    },
+  } );
+} );
+
 describe( "AddToProjects", ( ) => {
   it( "renders section headers and collection/umbrella explainer", ( ) => {
     renderAddToProjects( );
