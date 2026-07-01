@@ -471,6 +471,9 @@ LOG-IN-TO-INATURALIST = KIRJAUDU SISÄÄN INATURALISTIIN
 Log-in-to-iNaturalist = Kirjaudu iNaturalistiin
 LOG-OUT = Kirjaudu ulos
 LOG-OUT--question = KIRJAUDU ULOS?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Alin
 LOWEST-RANK = ALIN TAKSONOMINEN TASO
 MAP = KARTTA

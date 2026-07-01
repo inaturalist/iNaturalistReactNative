@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = התחברו ל-INATURALIST
 Log-in-to-iNaturalist = התחברו ל-iNaturalist
 LOG-OUT = התנתקות
 LOG-OUT--question = להתנתק?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = הנמוך ביותר
 LOWEST-RANK = הדרגה הנמוכה ביותר
 MAP = מפה

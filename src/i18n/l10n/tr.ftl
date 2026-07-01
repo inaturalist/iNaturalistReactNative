@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = INATURALIST'E GİRİŞ YAP
 Log-in-to-iNaturalist = iNaturalist'e giriş yap
 LOG-OUT = ÇIKIŞ YAP
 LOG-OUT--question = ÇIKIŞ YAPILSIN MI?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Görünüşe göre bunu henüz gözlemlemedin.
+    Keşfetmeye devam etme zamanı!
 Lowest = En düşük
 LOWEST-RANK = EN DÜŞÜK DÜZEY
 MAP = HARİTA

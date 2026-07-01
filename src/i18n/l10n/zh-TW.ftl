@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = 登入至愛自然
 Log-in-to-iNaturalist = 登入至愛自然
 LOG-OUT = 登出
 LOG-OUT--question = 登出嗎？
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = 最低階層
 LOWEST-RANK = 最低分類階層
 MAP = 地圖

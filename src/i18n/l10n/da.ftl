@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = LOG IND PÅ INATURALIST
 Log-in-to-iNaturalist = Log ind på iNaturalist
 LOG-OUT = LOG UD
 LOG-OUT--question = LOG UD?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Ingen observation af dette endnu.
+    Tid til at fortsætte med at udforske!
 Lowest = Laveste
 LOWEST-RANK = LAVESTE RANGERING
 MAP = KORT

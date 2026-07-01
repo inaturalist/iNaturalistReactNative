@@ -468,6 +468,9 @@ LOG-IN-TO-INATURALIST = 登入到INATURALIST
 Log-in-to-iNaturalist = 登录到iNaturalist
 LOG-OUT = 登出
 LOG-OUT--question = 登出？
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = 最低
 LOWEST-RANK = 排名最低
 MAP = 地图
