@@ -1,5 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import UniversalSearchResult
+  from "components/Explore/ExploreV2/components/UniversalSearchResult";
+import {
+  resultToSubject,
+  subjectToText,
+} from "components/Explore/ExploreV2/helpers/universalSearchSubject";
+import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
 import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
@@ -10,9 +17,16 @@ import {
   View,
 } from "components/styledComponents";
 import type { ExploreStackScreenProps } from "navigation/types";
-import React, { useCallback, useState } from "react";
-import { Keyboard } from "react-native";
-import { useTranslation } from "sharedHooks";
+import type { ExploreV2Subject } from "providers/ExploreV2Context";
+import { EXPLORE_V2_ACTION, useExploreV2 } from "providers/ExploreV2Context";
+import React, { useCallback, useRef, useState } from "react";
+import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
+import { FlatList, Keyboard } from "react-native";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import useDebouncedValue from "sharedHooks/useDebouncedValue";
+import useTranslation from "sharedHooks/useTranslation";
+import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
+import useUniversalSearch from "sharedHooks/useUniversalSearch";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -26,25 +40,85 @@ const INPUT_BOX_CLASSES = classnames(
   "border border-lightGray rounded-lg",
 );
 
+const resultKey = ( result: UniversalSearchResultItem ): string => {
+  switch ( result.type ) {
+    case "user":
+      return `user-${result.user.id}`;
+    case "project":
+      return `project-${result.project.id}`;
+    case "taxon":
+    default:
+      return `taxon-${result.taxon.id}`;
+  }
+};
+
 const UniversalSearch = ( ) => {
   const navigation = useNavigation<ExploreStackScreenProps<"UniversalSearch">["navigation"]>( );
   const { t } = useTranslation( );
+  const { dispatch } = useExploreV2( );
+  const currentUser = useCurrentUser( );
+  const commonNameIsPrimary = currentUser?.prefers_common_names !== false
+    && currentUser?.prefers_scientific_name_first !== true;
 
-  const [taxonText, setTaxonText] = useState( "" );
+  const [subjectText, setSubjectText] = useState( "" );
   const [locationText, setLocationText] = useState( "" );
+  const [filledFromSelection, setFilledFromSelection] = useState( false );
+  // The debounced value that actually drives the autocomplete query. Cleared on
+  // selection so a chosen suggestion doesn't re-trigger a result list.
+  const {
+    debouncedValue: debouncedQuery,
+    debounce: debounceQuery,
+    setImmediately: setQueryImmediately,
+  } = useDebouncedValue( "" );
 
-  const bothFilled = taxonText.length > 0 && locationText.length > 0;
+  const locationInputRef = useRef<RNTextInput>( null );
+
+  const { results, isLoading, refetch } = useUniversalSearch( debouncedQuery );
+
+  const bothFilled = subjectText.length > 0 && locationText.length > 0;
+
+  const hasQuery = debouncedQuery.trim( ).length > 0;
+
+  const handleSubjectTextChange = useCallback( ( text: string ) => {
+    setSubjectText( text );
+    setFilledFromSelection( false );
+    debounceQuery( text );
+  }, [debounceQuery] );
+
+  const handleSubjectFocus = useCallback( ( ) => {
+    if ( !filledFromSelection ) { return; }
+    setSubjectText( "" );
+    setFilledFromSelection( false );
+    setQueryImmediately( "" );
+  }, [filledFromSelection, setQueryImmediately] );
+
+  const handleSelect = useCallback( ( subject: ExploreV2Subject ) => {
+    setSubjectText( subjectToText( subject, commonNameIsPrimary ) );
+    setFilledFromSelection( true );
+    setQueryImmediately( "" );
+    dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject } );
+    locationInputRef.current?.focus( );
+  }, [commonNameIsPrimary, dispatch, setQueryImmediately] );
 
   const handleReset = useCallback( ( ) => {
-    setTaxonText( "" );
+    setSubjectText( "" );
     setLocationText( "" );
-  }, [] );
+    setFilledFromSelection( false );
+    setQueryImmediately( "" );
+  }, [setQueryImmediately] );
 
   const handleSearch = useCallback( ( ) => {
     // TODO MOB-1338 follow-up: run the search (default to all organisms /
     // worldwide when a field is empty). Just dismiss the keyboard for now.
     Keyboard.dismiss( );
   }, [] );
+
+  const renderResult = useCallback<ListRenderItem<UniversalSearchResultItem>>( ( { item } ) => (
+    <UniversalSearchResult
+      result={item}
+      onPress={( ) => handleSelect( resultToSubject( item ) )}
+    />
+  ), [handleSelect] );
 
   return (
     <ViewWrapper testID="UniversalSearch">
@@ -65,11 +139,12 @@ const UniversalSearch = ( ) => {
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
-                  onChangeText={setTaxonText}
+                  onChangeText={handleSubjectTextChange}
+                  onFocus={handleSubjectFocus}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
-                  testID="UniversalSearch.taxonInput"
-                  value={taxonText}
+                  testID="UniversalSearch.subjectInput"
+                  value={subjectText}
                 />
               </View>
               <View className={classnames( INPUT_BOX_CLASSES, "-mt-px" )}>
@@ -81,6 +156,7 @@ const UniversalSearch = ( ) => {
                   onChangeText={setLocationText}
                   placeholder={t( "Search-for-a-location" )}
                   placeholderTextColor={colors.mediumGray}
+                  ref={locationInputRef}
                   testID="UniversalSearch.locationInput"
                   value={locationText}
                 />
@@ -107,6 +183,25 @@ const UniversalSearch = ( ) => {
             </Body3>
           </View>
         </View>
+      </View>
+
+      <View className="flex-1">
+        {/* Only surface results for an active query */}
+        <FlatList
+          data={hasQuery
+            ? results
+            : []}
+          keyboardShouldPersistTaps="handled"
+          keyExtractor={resultKey}
+          renderItem={renderResult}
+          ListEmptyComponent={(
+            <EmptySearchResults
+              isLoading={isLoading}
+              searchQuery={debouncedQuery}
+              refetch={refetch}
+            />
+          )}
+        />
       </View>
     </ViewWrapper>
   );

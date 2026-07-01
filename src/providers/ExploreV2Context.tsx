@@ -36,6 +36,7 @@ interface Taxon {
   preferred_common_name?: string;
   default_photo?: { url?: string };
   iconic_taxon_name?: string;
+  rank_level?: number;
 }
 
 interface User {
