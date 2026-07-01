@@ -31,12 +31,12 @@ import {
   useInfiniteObservationsScroll,
   useInfiniteScroll,
   useLayoutPrefs,
-  useLocalObservations,
   useNavigateToObsEdit,
   useObservationsUpdates,
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
+import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 import useObservationCounts from "sharedHooks/useObservationCounts";
 import {
   UPLOAD_PENDING,
@@ -91,12 +91,12 @@ const MyObservationsResults = ( ) => {
     return unsubscribe;
   }, [navigation, setJustFinishedSignup] );
 
-  const observations = useLocalObservations( );
+  const observationIds = useLocalObservationIds();
   const {
     numUnuploadedObservations,
     numObsMissingBasics,
   } = useObservationCounts( );
-  const prevObservationsLength = useRef( observations.length );
+  const prevObservationsLength = useRef( observationIds.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
   const { isConnected } = useNetInfo( );
@@ -250,14 +250,14 @@ const MyObservationsResults = ( ) => {
 
   // API call fetching obs has completed but results are not yet stored in realm
   // for display here
-  const showLoading = ( totalResultsRemote || 0 ) > 0 && observations.length === 0;
+  const showLoading = ( totalResultsRemote || 0 ) > 0 && observationIds.length === 0;
 
   // show empty screen instead of loading wheel...
   const showNoResults = !showLoading && (
     // ...if the user is not signed in, or...
     !currentUser
     // ...if the signed in user is offline and has no observations, or...
-    || ( !isConnected && observations?.length === 0 )
+    || ( !isConnected && observationIds.length === 0 )
     // ...if signed in, online user requested their own obs for the first time
     //    and has 0 obs
     || status !== "pending"
@@ -353,7 +353,7 @@ const MyObservationsResults = ( ) => {
     ? numTotalTaxaRemote
     : numTotalTaxaLocal;
 
-  const numTotalObservations = totalResultsRemote || observations.length;
+  const numTotalObservations = totalResultsRemote || observationIds.length;
 
   useEffect( ( ) => {
     // persist this number in zustand so a user can see their latest observations count
@@ -372,7 +372,7 @@ const MyObservationsResults = ( ) => {
   }, [numTotalTaxa, numOfUserSpecies] );
 
   useEffect( () => {
-    const newObservationCount = observations.length - prevObservationsLength.current;
+    const newObservationCount = observationIds.length - prevObservationsLength.current;
 
     if ( newObservationCount > 0 && listRef?.current ) {
       if ( listRef.current.notifyDataFetched ) {
@@ -382,8 +382,8 @@ const MyObservationsResults = ( ) => {
       }
     }
 
-    prevObservationsLength.current = observations.length;
-  }, [observations.length, listRef] );
+    prevObservationsLength.current = observationIds.length;
+  }, [observationIds.length, listRef] );
 
   const taxa = useMemo( () => {
     const unsortedTaxa = currentUser
@@ -407,7 +407,7 @@ const MyObservationsResults = ( ) => {
 
   if ( !layout ) { return null; }
 
-  if ( observations.length === 0 ) {
+  if ( observationIds.length === 0 ) {
     return showNoResults
       ? (
         <MyObservationsEmptySimple
@@ -442,7 +442,7 @@ const MyObservationsResults = ( ) => {
       numTotalTaxa={numOfUserSpecies}
       numUnuploadedObservations={numUnuploadedObservations}
       numObsMissingBasics={numObsMissingBasics}
-      observations={observations}
+      observationIds={observationIds}
       onEndReached={fetchNextPage}
       onListLayout={restoreScrollOffset}
       onScroll={onScroll}
