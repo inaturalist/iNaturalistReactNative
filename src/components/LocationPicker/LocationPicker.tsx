@@ -8,7 +8,8 @@ import {
 import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import React from "react";
-import type { LatLng } from "react-native-maps";
+import type { LayoutChangeEvent } from "react-native";
+import type { LatLng, Region } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 
 import CrosshairCircle from "./CrosshairCircle";
@@ -16,22 +17,23 @@ import DisplayLatLng from "./DisplayLatLng";
 import Footer from "./Footer";
 import LoadingIndicator from "./LoadingIndicator";
 import LocationSearch from "./LocationSearch";
+import type { LocationPickerPlace } from "./types";
 
 interface Props {
   accuracy: number;
-  handleSave: () => void;
+  handleSave: ( ) => void;
   hidePlaceResults: boolean;
   loading: boolean;
   locationName: string;
   initialRegion: LatLng;
-  onCurrentLocationPress: () => void;
-  onMapReady: () => void;
-  onRegionChangeComplete: () => void;
+  onCurrentLocationPress: ( ) => void;
+  onMapReady: ( ) => void;
+  onRegionChangeComplete: ( newRegion: Region ) => void;
   region: LatLng;
   regionToAnimate: object;
-  selectPlaceResult: () => void;
-  updateLocationName: () => void;
-  onMapLayout: () => void;
+  selectPlaceResult: ( place: LocationPickerPlace ) => void;
+  updateLocationName: ( name: string ) => void;
+  onMapLayout: ( event: LayoutChangeEvent ) => void;
 }
 
 const LocationPicker = ( {

@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import type { DimensionValue, ViewStyle } from "react-native";
+import type { DimensionValue, LayoutChangeEvent, ViewStyle } from "react-native";
 import { Platform } from "react-native";
 import type {
   BoundingBox, LatLng, Region,
@@ -43,7 +43,7 @@ const CURRENT_LOCATION_ZOOM_LEVEL = 20; // target zoom level when user hits curr
 const MIN_ZOOM_LEVEL = 0; // default in react-native-maps, for Google Maps only
 const MIN_CENTER_COORDINATE_DISTANCE = 5;
 
-const getDefaultRegion = ( initialLatitude, initialLongitude ) => ( {
+const getDefaultRegion = ( initialLatitude?: number, initialLongitude?: number ) => ( {
   latitude: initialLatitude || 25, // Default to something US centric
   longitude: initialLongitude || -85, // Default to something US centric
   latitudeDelta: initialLatitude
@@ -83,7 +83,7 @@ interface Props {
   withPressableObsTiles?: boolean;
   zoomEnabled?: boolean;
   zoomTapEnabled?: boolean;
-  onMapLayout?: ( event: { nativeEvent: { layout: { width: number; height: number } } } ) => void;
+  onMapLayout?: ( event: LayoutChangeEvent ) => void;
 }
 
 // TODO: fallback to another map library

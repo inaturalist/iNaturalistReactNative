@@ -1,26 +1,30 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   getMapRegion,
   latitudeDeltaToMeters,
   metersToLatitudeDelta,
 } from "components/SharedComponents/Map/helpers/mapHelpers";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
   useReducer,
   useState,
 } from "react";
+import type { LayoutChangeEvent } from "react-native";
+import type { Region } from "react-native-maps";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useStore from "stores/useStore";
 
 import LocationPicker from "./LocationPicker";
+import type { LocationPickerObservation, LocationPickerPlace } from "./types";
 
 const CROSSHAIRRADIUS = 254 / 2;
 
-const setInitialRegion = ( currentObservation, radiusToMapHeight, mapDimensionsRatio ) => {
+const getInitialRegion = (
+  currentObservation: LocationPickerObservation,
+  radiusToMapHeight: number | null,
+  mapDimensionsRatio: number | null,
+) => {
   if ( !radiusToMapHeight || !mapDimensionsRatio ) {
     return null;
   }
@@ -59,7 +63,7 @@ const initializeMap = ( state, action ) => {
     accuracy: action.currentObservation?.positional_accuracy,
     locationName: action.currentObservation?.place_guess,
   };
-  const initialRegion = setInitialRegion(
+  const initialRegion = getInitialRegion(
     action.currentObservation,
     action.radiusToMapHeight,
     action.mapDimensionsRatio,
@@ -131,14 +135,14 @@ const reducer = ( state, action ) => {
   }
 };
 
-const LocationPickerContainer = ( ): Node => {
+const LocationPickerContainer = ( ) => {
   const currentObservation = useStore( state => state.currentObservation );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const navigation = useNavigation( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
-  const [radiusToMapHeight, setRadiusToMapHeight] = useState( undefined );
-  const [mapDimensionsRatio, setMapDimensionsRatio] = useState( undefined );
+  const [radiusToMapHeight, setRadiusToMapHeight] = useState<number | null>( null );
+  const [mapDimensionsRatio, setMapDimensionsRatio] = useState<number | null>( null );
 
   const {
     accuracy,
@@ -150,20 +154,20 @@ const LocationPickerContainer = ( ): Node => {
     regionToAnimate,
   } = state;
 
-  const initialRegion = setInitialRegion(
+  const initialRegion = getInitialRegion(
     currentObservation,
     radiusToMapHeight,
     mapDimensionsRatio,
   );
 
-  const onRegionChangeComplete = useCallback( async newRegion => {
+  const onRegionChangeComplete = useCallback( async ( newRegion: Region ) => {
     // prevent initial map render from resetting the coordinates and locationName
     if ( isFirstMapRender ) {
       dispatch( { type: "HANDLE_FIRST_MAP_RENDER" } );
       return;
     }
     // We need this ratio to calculate accuracy
-    if ( radiusToMapHeight === undefined ) {
+    if ( radiusToMapHeight === null ) {
       return;
     }
     // We calculate accuracy in meters as the distance represented by the radius of the crosshair
@@ -182,7 +186,7 @@ const LocationPickerContainer = ( ): Node => {
     } );
   }, [isFirstMapRender, radiusToMapHeight] );
 
-  const updateLocationName = useCallback( name => {
+  const updateLocationName = useCallback( ( name: string ) => {
     dispatch( { type: "UPDATE_LOCATION_NAME", locationName: name } );
   }, [] );
 
@@ -200,7 +204,7 @@ const LocationPickerContainer = ( ): Node => {
     [navigation, currentObservation, radiusToMapHeight, mapDimensionsRatio],
   );
 
-  const selectPlaceResult = place => {
+  const selectPlaceResult = ( place: LocationPickerPlace ) => {
     const { coordinates } = place.point_geojson;
     let newRegion = {
       ...region,
@@ -248,7 +252,7 @@ const LocationPickerContainer = ( ): Node => {
     navigation.goBack( );
   };
 
-  const onMapLayout = event => {
+  const onMapLayout = ( event: LayoutChangeEvent ) => {
     const { height, width } = event.nativeEvent.layout;
     setRadiusToMapHeight( CROSSHAIRRADIUS / height );
     setMapDimensionsRatio( width / height );
