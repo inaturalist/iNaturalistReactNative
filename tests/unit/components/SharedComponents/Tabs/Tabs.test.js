@@ -34,6 +34,18 @@ describe( "Tabs", () => {
     // expect( tabComp ).toBeAccessible();
   } );
 
+  it( "should render per-tab content from renderComponent", async () => {
+    const { Text } = jest.requireActual( "react-native" );
+    const tabsWithComponents = tabs.map( tab => ( {
+      ...tab,
+      renderComponent: () => <Text>{`${tab.id} content`}</Text>,
+    } ) );
+    render( <Tabs tabs={tabsWithComponents} activeId={TAB_1} /> );
+
+    expect( await screen.findByText( `${TAB_1} content` ) ).toBeTruthy();
+    expect( await screen.findByText( `${TAB_2} content` ) ).toBeTruthy();
+  } );
+
   it( "should be clicked and display proper text", async () => {
     render( <Tabs tabs={tabs} activeId={TAB_1} /> );
     const tab1 = await screen.findByLabelText( TAB_1 );

@@ -238,20 +238,6 @@ const MyObservationsSimple = ( {
     ? numUnuploadedObservations - numUnuploadedObsMissingBasics
     : numUnuploadedObservations;
 
-  const renderTabComponent = ( { id }: { id: string } ) => {
-    const isObservations = id === OBSERVATIONS_TAB;
-    return (
-      <StatTab
-        stat={isObservations
-          ? numTotalObservations
-          : numTotalTaxa}
-        label={isObservations
-          ? t( "X-OBSERVATIONS--below-number", { count: numTotalObservations } )
-          : t( "X-SPECIES--below-number", { count: numTotalTaxa } )}
-      />
-    );
-  };
-
   const observationsHeader = useMemo( ( ) => {
     if ( layout !== "grid" ) {
       return (
@@ -361,14 +347,25 @@ const MyObservationsSimple = ( {
               id: OBSERVATIONS_TAB,
               text: t( "Observations" ),
               onPress: () => setActiveTab( OBSERVATIONS_TAB ),
+              renderComponent: ( ) => (
+                <StatTab
+                  stat={numTotalObservations}
+                  label={t( "X-OBSERVATIONS--below-number", { count: numTotalObservations } )}
+                />
+              ),
             },
             {
               id: TAXA_TAB,
               text: t( "Species" ),
               onPress: () => setActiveTab( TAXA_TAB ),
+              renderComponent: ( ) => (
+                <StatTab
+                  stat={numTotalTaxa}
+                  label={t( "X-SPECIES--below-number", { count: numTotalTaxa } )}
+                />
+              ),
             },
           ]}
-          TabComponent={renderTabComponent}
         />
         {searchMyObservationsEnabled && activeTab === OBSERVATIONS_TAB && (
           <SearchedTaxonBanner />
