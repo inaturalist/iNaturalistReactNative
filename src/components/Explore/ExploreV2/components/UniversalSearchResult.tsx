@@ -15,6 +15,9 @@ interface Props {
   onPress: ( ) => void;
 }
 
+const ROW_CLASS = "flex-row items-center justify-between "
+  + "px-[15px] py-[11px] border-b border-lightGray";
+
 const resultId = ( result: UniversalSearchResultItem ): number | undefined => {
   if ( result.type === "user" ) { return result.user.id; }
   if ( result.type === "project" ) { return result.project.id; }
@@ -52,7 +55,7 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
                   iconicTaxonName={result.taxon.iconic_taxon_name}
                 />
               )}
-            <View className="flex-1 ml-3">
+            <View className="flex-1 ml-[10px]">
               <DisplayTaxonName
                 taxon={result.taxon}
                 prefersCommonNames={currentUser?.prefers_common_names}
@@ -89,7 +92,7 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
   // screen readers expose both as independent controls. Nesting one accessible
   // button inside another causes the inner one to be swallowed.
   return (
-    <View className="flex-row items-center justify-between px-4 py-2 border-b border-lightGray">
+    <View className={ROW_CLASS}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={resultLabel( result )}
