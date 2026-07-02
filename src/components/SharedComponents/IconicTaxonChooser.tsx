@@ -2,14 +2,16 @@ import classnames from "classnames";
 import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
-import type { ListRenderItemInfo } from "react-native";
+import type { ListRenderItemInfo, StyleProp, ViewStyle } from "react-native";
 import { FlatList } from "react-native";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 interface Props {
+  accessibilityHint?: string;
   before?: React.ReactNode;
   chosen: string[];
+  contentContainerStyle?: StyleProp<ViewStyle>;
   onTaxonChosen: ( taxon: string ) => void;
   testID?: string;
   withoutUnknown?: boolean;
@@ -39,8 +41,10 @@ const ICONIC_TAXA = [
 const EMPTY_CHOSEN: string[] = [];
 
 const IconicTaxonChooser = ( {
+  accessibilityHint,
   before,
   chosen = EMPTY_CHOSEN,
+  contentContainerStyle = STYLESHEET,
   onTaxonChosen,
   testID,
   withoutUnknown,
@@ -80,13 +84,15 @@ const IconicTaxonChooser = ( {
             t( "Iconic-taxon-name", { iconicTaxon: iconicTaxonName } )
           }
           accessibilityHint={
-            t( "Selects-iconic-taxon-X-for-identification", { iconicTaxon: iconicTaxonName } )
+            accessibilityHint
+            ?? t( "Selects-iconic-taxon-X-for-identification", { iconicTaxon: iconicTaxonName } )
           }
           testID={`INatIconButton.IconicTaxonButton.${iconicTaxonName}`}
         />
       </View>
     );
   }, [
+    accessibilityHint,
     chosen,
     onTaxonChosen,
     t,
@@ -106,9 +112,10 @@ const IconicTaxonChooser = ( {
   return (
     <FlatList
       ListHeaderComponent={renderHeader}
-      contentContainerStyle={STYLESHEET}
+      contentContainerStyle={contentContainerStyle}
       data={iconicTaxonIcons}
       horizontal
+      keyboardShouldPersistTaps="handled"
       renderItem={renderIcon}
       showsHorizontalScrollIndicator={false}
       testID={testID}

@@ -1159,6 +1159,9 @@ Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
 SEARCH-USERS = SEARCH USERS
+# Accessibility hint for an iconic taxon button in Explore search that searches
+# for observations of that taxon.
+Searches-for-iconic-taxon = Searches for iconic taxon.
 # Accessibility label for navigating to journal posts screen
 See-journal-posts = See journal posts
 # Accessibility label for Observations button on UserProfile screen
