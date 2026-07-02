@@ -138,7 +138,7 @@ const ExploreResults = ( ) => {
                   />
                 )}
               <ExploreV2DebugSheet />
-              {state.activeTab === OBSERVATIONS_TAB && (
+              {state.activeTab === OBSERVATIONS_TAB && ( // todo sort btn on species in MOB-1334
                 <SortButton
                   onPress={() => setShowSortSheet( true )}
                   accessibilityLabel={t( "Change-observations-sort-order" )}
