@@ -1,4 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
+import { OBSERVATIONS_TAB } from "appConstants/tabs";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
 import ExploreV2Tabs
@@ -7,6 +8,8 @@ import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
+import ExploreV2SpeciesView
+  from "components/Explore/ExploreV2/screens/ExploreV2SpeciesView";
 import useInfiniteExploreScroll
   from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
@@ -108,28 +111,39 @@ const ExploreResults = ( ) => {
         />
         {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
           ? renderPermissionPrompt( )
-          : (
+          : ( // more tabs to come in MOB-1347
             <>
-              <ObservationsFlashList
-                data={observations}
-                dataCanBeFetched={canFetch}
-                explore
-                handlePullToRefresh={handlePullToRefresh}
-                hideLoadingWheel={!isFetchingNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-                isConnected={isConnected}
-                layout="list"
-                obsListKey="ExploreV2Observations"
-                onEndReached={fetchNextPage}
-                showNoResults={!canFetch || totalResults === 0}
-                testID="ExploreV2ObservationsList"
-              />
+              {state.activeTab === OBSERVATIONS_TAB
+                ? (
+                  <ObservationsFlashList
+                    data={observations}
+                    dataCanBeFetched={canFetch}
+                    explore
+                    handlePullToRefresh={handlePullToRefresh}
+                    hideLoadingWheel={!isFetchingNextPage}
+                    isFetchingNextPage={isFetchingNextPage}
+                    isConnected={isConnected}
+                    layout="list"
+                    obsListKey="ExploreV2Observations"
+                    onEndReached={fetchNextPage}
+                    showNoResults={!canFetch || totalResults === 0}
+                    testID="ExploreV2ObservationsList"
+                  />
+                )
+                : (
+                  <ExploreV2SpeciesView
+                    enabled={canFetch}
+                    isConnected={isConnected}
+                    params={speciesCountParams}
+                  />
+                )}
               <ExploreV2DebugSheet />
-              <SortButton
-                onPress={() => setShowSortSheet( true )}
-                // TODO: add label based on state wether this is sorting species or observations
-                accessibilityLabel={t( "Change-observations-sort-order" )}
-              />
+              {state.activeTab === OBSERVATIONS_TAB && (
+                <SortButton
+                  onPress={() => setShowSortSheet( true )}
+                  accessibilityLabel={t( "Change-observations-sort-order" )}
+                />
+              )}
             </>
           )}
       </View>
