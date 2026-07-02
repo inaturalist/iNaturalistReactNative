@@ -120,6 +120,7 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
           data={orderedIconicTaxa}
           horizontal
           keyExtractor={taxon => `iconic-${taxon.id}`}
+          keyboardShouldPersistTaps="handled"
           renderItem={renderIconicTaxon}
           showsHorizontalScrollIndicator={false}
           testID="DefaultSearchOptions.iconicTaxa"
