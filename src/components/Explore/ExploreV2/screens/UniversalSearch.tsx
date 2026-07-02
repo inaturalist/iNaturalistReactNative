@@ -103,6 +103,28 @@ const UniversalSearch = ( ) => {
     />
   ), [handleSelect] );
 
+  let mainContent = null;
+  /* Results for an active query, default options when empty, else nothing */
+  if ( subjectText.trim( ).length === 0 ) {
+    mainContent = ( <DefaultSearchOptions onSelectSubject={handleSelect} /> );
+  } else if ( subjectHasQuery ) {
+    mainContent = (
+      <FlatList
+        data={results}
+        keyboardShouldPersistTaps="handled"
+        keyExtractor={resultKey}
+        renderItem={renderResult}
+        ListEmptyComponent={(
+          <EmptySearchResults
+            isLoading={isLoading}
+            searchQuery={subjectQuery}
+            refetch={refetch}
+          />
+        )}
+      />
+    );
+  }
+
   return (
     <ViewWrapper testID="UniversalSearch">
       <View className="bg-white" style={DROP_SHADOW}>
@@ -169,24 +191,7 @@ const UniversalSearch = ( ) => {
       </View>
 
       <View className="flex-1">
-        {/* Surface results for an active query, otherwise the default options */}
-        {subjectHasQuery
-          ? (
-            <FlatList
-              data={results}
-              keyboardShouldPersistTaps="handled"
-              keyExtractor={resultKey}
-              renderItem={renderResult}
-              ListEmptyComponent={(
-                <EmptySearchResults
-                  isLoading={isLoading}
-                  searchQuery={subjectQuery}
-                  refetch={refetch}
-                />
-              )}
-            />
-          )
-          : ( <DefaultSearchOptions onSelectSubject={handleSelect} /> )}
+        {mainContent}
       </View>
     </ViewWrapper>
   );
