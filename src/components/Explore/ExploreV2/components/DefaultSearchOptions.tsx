@@ -75,7 +75,7 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
     return ICONIC_TAXA_ORDER
       .map( name => taxaByName.get( name ) )
       .filter( ( taxon ): taxon is RealmTaxon => !!taxon )
-      .map( taxon => Taxon.mapRealmToApi( taxon ) as ApiTaxon );
+      .map( taxon => Taxon.mapRealmToPojo( taxon ) as ApiTaxon );
   }, [iconicTaxa] );
 
   const renderIconicTaxon = useCallback(
