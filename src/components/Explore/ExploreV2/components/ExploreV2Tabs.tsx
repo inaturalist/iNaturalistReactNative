@@ -1,4 +1,4 @@
-import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import { Tabs } from "components/SharedComponents";
 import StatTab from "components/SharedComponents/StatTab";
 import type { TabComponentProps } from "components/SharedComponents/Tabs/Tabs";
@@ -6,8 +6,6 @@ import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
-
-const SPECIES_TAB = "species";
 
 interface Props {
   observationsCount?: number | null;
