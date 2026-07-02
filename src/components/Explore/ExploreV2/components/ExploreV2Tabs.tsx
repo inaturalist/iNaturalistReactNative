@@ -17,15 +17,21 @@ const ExploreV2Tabs = ( { observationsCount, speciesCount }: Props ) => {
   const { t } = useTranslation( );
 
   const renderTabComponent = useCallback(
-    ( { id }: TabComponentProps ) => (
-      <StatTab
-        id={id}
-        numTotalObservations={observationsCount}
-        numTotalTaxa={speciesCount}
-        wrapperClassName="pb-3"
-      />
-    ),
-    [observationsCount, speciesCount],
+    ( { id }: TabComponentProps ) => {
+      const isObservations = id === OBSERVATIONS_TAB;
+      return (
+        <StatTab
+          stat={isObservations
+            ? observationsCount
+            : speciesCount}
+          label={isObservations
+            ? t( "X-OBSERVATIONS--below-number", { count: observationsCount } )
+            : t( "X-SPECIES--below-number", { count: speciesCount } )}
+          wrapperClassName="pb-3"
+        />
+      );
+    },
+    [observationsCount, speciesCount, t],
   );
 
   return (

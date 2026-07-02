@@ -238,13 +238,19 @@ const MyObservationsSimple = ( {
     ? numUnuploadedObservations - numUnuploadedObsMissingBasics
     : numUnuploadedObservations;
 
-  const renderTabComponent = ( { id }: { id: string } ) => (
-    <StatTab
-      id={id}
-      numTotalObservations={numTotalObservations}
-      numTotalTaxa={numTotalTaxa}
-    />
-  );
+  const renderTabComponent = ( { id }: { id: string } ) => {
+    const isObservations = id === OBSERVATIONS_TAB;
+    return (
+      <StatTab
+        stat={isObservations
+          ? numTotalObservations
+          : numTotalTaxa}
+        label={isObservations
+          ? t( "X-OBSERVATIONS--below-number", { count: numTotalObservations } )
+          : t( "X-SPECIES--below-number", { count: numTotalTaxa } )}
+      />
+    );
+  };
 
   const observationsHeader = useMemo( ( ) => {
     if ( layout !== "grid" ) {
