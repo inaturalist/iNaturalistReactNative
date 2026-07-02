@@ -2,6 +2,11 @@ import { fetchSearchResults } from "api/search";
 import type { ApiOpts, ApiPlace } from "api/types";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
+// Getting a little cute with it.  I think a new interface here would also be fine.
+export type LocationSearchResultItem =
+  Required<Pick<ApiPlace, "id" | "display_name" | "place_type">>
+  & { type: "place" };
+
 // Autocomplete suggestions for the Universal Search location field. Mirrors
 // useUniversalSearch, but fetches only places. We use fetchSearchResults (rather
 // than the raw search wrapper) because it already flattens the response down to
@@ -14,7 +19,7 @@ const useLocationSearch = ( query: string ) => {
     data: results = [],
     isLoading,
     refetch,
-  } = useAuthenticatedQuery<ApiPlace[]>(
+  } = useAuthenticatedQuery<LocationSearchResultItem[]>(
     ["useLocationSearch", trimmedQuery],
     async ( optsWithAuth: ApiOpts ) => {
       const places = await fetchSearchResults(
@@ -29,7 +34,15 @@ const useLocationSearch = ( query: string ) => {
         },
         optsWithAuth,
       );
-      return ( places ?? [] ) as ApiPlace[];
+      // Normalize to a guaranteed shape
+      return ( ( places ?? [] ) as ApiPlace[] )
+        .filter( ( place ): place is ApiPlace & { id: number } => place.id != null )
+        .map( place => ( {
+          type: "place" as const,
+          id: place.id,
+          display_name: place.display_name ?? "",
+          place_type: place.place_type ?? null,
+        } ) );
     },
     { enabled: shouldFetch },
   );

@@ -1,12 +1,12 @@
-import type { ApiPlace } from "api/types";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import List2 from "components/SharedComponents/Typography/List2";
 import { Pressable, View } from "components/styledComponents";
 import inatPlaceTypes from "dictionaries/places";
 import React from "react";
+import type { LocationSearchResultItem } from "sharedHooks/useLocationSearch";
 
 interface Props {
-  place: ApiPlace;
+  place: LocationSearchResultItem;
   onPress: ( ) => void;
 }
 

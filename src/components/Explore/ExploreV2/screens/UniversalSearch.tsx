@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiPlace } from "api/types";
 import classnames from "classnames";
 import LocationSearchResult
   from "components/Explore/ExploreV2/components/LocationSearchResult";
@@ -26,6 +25,7 @@ import React, { useCallback, useRef, useState } from "react";
 import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
 import { FlatList, Keyboard } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import type { LocationSearchResultItem } from "sharedHooks/useLocationSearch";
 import useLocationSearch from "sharedHooks/useLocationSearch";
 import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
@@ -44,14 +44,15 @@ const INPUT_BOX_CLASSES = classnames(
   "border border-lightGray rounded-lg",
 );
 
-// A row is either a subject suggestion (tagged with `type`) or a raw place. The
+// A row is either a subject suggestion or a place, discriminated by `type`. The
 // list shows one kind at a time depending on the focused field, but they share a
 // single FlatList so we never conditionally mount/unmount it.
-type SearchResultItem = UniversalSearchResultItem | ApiPlace;
+type SearchResultItem = UniversalSearchResultItem | LocationSearchResultItem;
 
 const resultKey = ( item: SearchResultItem ): string => {
-  if ( !( "type" in item ) ) { return `place-${item.id}`; }
   switch ( item.type ) {
+    case "place":
+      return `place-${item.id}`;
     case "user":
       return `user-${item.user.id}`;
     case "project":
@@ -120,11 +121,11 @@ const UniversalSearch = ( ) => {
     locationInputRef.current?.focus( );
   }, [commitSubject, commonNameIsPrimary, dispatch] );
 
-  const handleLocationSelect = useCallback( ( place: ApiPlace ) => {
-    commitLocation( place.display_name ?? "" );
+  const handleLocationSelect = useCallback( ( place: LocationSearchResultItem ) => {
+    commitLocation( place.display_name );
     dispatch( {
       type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
-      place: { id: place.id as number, display_name: place.display_name },
+      place: { id: place.id, display_name: place.display_name },
     } );
     Keyboard.dismiss( );
   }, [commitLocation, dispatch] );
@@ -141,18 +142,18 @@ const UniversalSearch = ( ) => {
   }, [] );
 
   const renderItem = useCallback<ListRenderItem<SearchResultItem>>( ( { item } ) => {
-    if ( "type" in item ) {
+    if ( item.type === "place" ) {
       return (
-        <UniversalSearchResult
-          result={item}
-          onPress={( ) => handleSelect( resultToSubject( item ) )}
+        <LocationSearchResult
+          place={item}
+          onPress={( ) => handleLocationSelect( item )}
         />
       );
     }
     return (
-      <LocationSearchResult
-        place={item}
-        onPress={( ) => handleLocationSelect( item )}
+      <UniversalSearchResult
+        result={item}
+        onPress={( ) => handleSelect( resultToSubject( item ) )}
       />
     );
   }, [handleSelect, handleLocationSelect] );
