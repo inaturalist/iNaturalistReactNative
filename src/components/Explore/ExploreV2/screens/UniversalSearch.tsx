@@ -71,9 +71,9 @@ const UniversalSearch = ( ) => {
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
 
-  // Which input is focused — decides whether the list shows subject or location
-  // results. Subject autofocuses, so it's the initial active field.
-  const [activeField, setActiveField] = useState<"subject" | "location">( "subject" );
+  // Which field's result list is showing. tracks the last-focused field rather
+  // than live focus. Subject autofocuses, so it's the initial value.
+  const [resultsField, setResultsField] = useState<"subject" | "location">( "subject" );
   const {
     text: subjectText,
     debouncedQuery: subjectQuery,
@@ -103,15 +103,15 @@ const UniversalSearch = ( ) => {
   } = useLocationSearch( locationQuery );
 
   const bothFilled = subjectText.length > 0 && locationText.length > 0;
-  const showLocation = activeField === "location";
+  const showLocation = resultsField === "location";
 
   const handleSubjectFocus = useCallback( ( ) => {
-    setActiveField( "subject" );
+    setResultsField( "subject" );
     focusSubjectField( );
   }, [focusSubjectField] );
 
   const handleLocationFocus = useCallback( ( ) => {
-    setActiveField( "location" );
+    setResultsField( "location" );
     focusLocationField( );
   }, [focusLocationField] );
 
