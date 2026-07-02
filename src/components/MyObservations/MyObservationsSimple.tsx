@@ -19,7 +19,7 @@ import {
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
-import StatTab from "components/SharedComponents/StatTab";
+import { ObservationsStatTab, SpeciesStatTab } from "components/SharedComponents/StatTab";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
 import { Alert } from "react-native";
@@ -348,10 +348,7 @@ const MyObservationsSimple = ( {
               text: t( "Observations" ),
               onPress: () => setActiveTab( OBSERVATIONS_TAB ),
               renderComponent: ( ) => (
-                <StatTab
-                  stat={numTotalObservations}
-                  label={t( "X-OBSERVATIONS--below-number", { count: numTotalObservations } )}
-                />
+                <ObservationsStatTab count={numTotalObservations} />
               ),
             },
             {
@@ -359,10 +356,7 @@ const MyObservationsSimple = ( {
               text: t( "Species" ),
               onPress: () => setActiveTab( TAXA_TAB ),
               renderComponent: ( ) => (
-                <StatTab
-                  stat={numTotalTaxa}
-                  label={t( "X-SPECIES--below-number", { count: numTotalTaxa } )}
-                />
+                <SpeciesStatTab count={numTotalTaxa} />
               ),
             },
           ]}
