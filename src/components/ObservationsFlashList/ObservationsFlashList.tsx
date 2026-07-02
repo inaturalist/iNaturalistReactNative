@@ -52,7 +52,9 @@ interface Props {
   hideObsStatus?: boolean;
   isSimpleObsStatus?: boolean;
   hideRGLabel?: boolean;
-  isConnected: boolean;
+  // null means connectivity is not yet known, e.g. useNetInfo before its
+  // first check resolves
+  isConnected: boolean | null;
   layout: "list" | "grid";
   obsListKey: string;
   onEndReached: () => void;
