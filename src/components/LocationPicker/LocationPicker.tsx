@@ -1,5 +1,3 @@
-// @flow
-
 import classnames from "classnames";
 import {
   CloseButton,
@@ -9,8 +7,8 @@ import {
 } from "components/SharedComponents";
 import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import type { LatLng } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 
 import CrosshairCircle from "./CrosshairCircle";
@@ -19,22 +17,22 @@ import Footer from "./Footer";
 import LoadingIndicator from "./LoadingIndicator";
 import LocationSearch from "./LocationSearch";
 
-type Props = {
-  accuracy: number,
-  handleSave: Function,
-  hidePlaceResults: boolean,
-  loading: boolean,
-  locationName: string,
-  initialRegion: Object,
-  onCurrentLocationPress: Function,
-  onMapReady: Function,
-  onRegionChangeComplete: Function,
-  region: Object,
-  regionToAnimate: Object,
-  selectPlaceResult: Function,
-  updateLocationName: Function,
-  onMapLayout: Function,
-};
+interface Props {
+  accuracy: number;
+  handleSave: () => void;
+  hidePlaceResults: boolean;
+  loading: boolean;
+  locationName: string;
+  initialRegion: LatLng;
+  onCurrentLocationPress: () => void;
+  onMapReady: () => void;
+  onRegionChangeComplete: () => void;
+  region: LatLng;
+  regionToAnimate: object;
+  selectPlaceResult: () => void;
+  updateLocationName: () => void;
+  onMapLayout: () => void;
+}
 
 const LocationPicker = ( {
   accuracy,
@@ -51,7 +49,7 @@ const LocationPicker = ( {
   selectPlaceResult,
   updateLocationName,
   onMapLayout,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   let regionToDisplay;
