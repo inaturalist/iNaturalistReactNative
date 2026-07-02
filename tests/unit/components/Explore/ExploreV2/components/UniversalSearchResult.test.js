@@ -3,13 +3,13 @@ import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
 import initI18next from "i18n/initI18next";
 import React from "react";
+import * as useCurrentUser from "sharedHooks/useCurrentUser";
 import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: jest.fn( ),
 } ) );
-const useCurrentUser = require( "sharedHooks/useCurrentUser" ).default;
 
 const TAXON_WITH_PHOTO = {
   type: "taxon",
@@ -57,7 +57,7 @@ beforeAll( async ( ) => {
 } );
 
 beforeEach( ( ) => {
-  useCurrentUser.mockReturnValue( {
+  useCurrentUser.default.mockReturnValue( {
     prefers_common_names: true,
     prefers_scientific_name_first: false,
   } );

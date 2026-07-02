@@ -36,6 +36,13 @@ Add-location-to-refresh-suggestions = Lisää sijainti päivittääksesi ehdotuk
 Add-observations = Lisää havaintoja
 ADD-OPTIONAL-COMMENT = LISÄÄ VALINNAINEN KOMMENTTI
 Add-optional-notes = Lisää valinnaisia merkintöjä
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Lisää tunnistus
 Adds-your-vote-of-agreement = Äänestä puolesta
 Adds-your-vote-of-disagreement = Äänestä vastaan
@@ -132,6 +139,7 @@ Closes-explanation = Sulkee selityksen
 Closes-introduction = Sulje intro
 Closes-withdraw-id-sheet = Sulkee "Peru tunnistus"-kohdan
 COLLABORATORS = YHTEISTYÖKUMPPANIT
+Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = Koontiprojektit
 Combine-Photos = Yhdistä kuvat
 COMMENT = KOMMENTOI
@@ -326,6 +334,7 @@ FOLLOWING-X-PEOPLE =
         [one] SEURAA { $count } HENKILÖÄ
        *[other] SEURAA { $count } HENKILÖÄ
     }
+For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 Forgot-Password = Unohtunut salasana
 GEOPRIVACY = SIJAINNIN TIETOSUOJA
 Geoprivacy-status = Sijainnin tietosuoja: { $status }
@@ -464,6 +473,9 @@ LOG-IN-TO-INATURALIST = KIRJAUDU SISÄÄN INATURALISTIIN
 Log-in-to-iNaturalist = Kirjaudu iNaturalistiin
 LOG-OUT = Kirjaudu ulos
 LOG-OUT--question = KIRJAUDU ULOS?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Alin
 LOWEST-RANK = ALIN TAKSONOMINEN TASO
 MAP = KARTTA
@@ -607,6 +619,7 @@ Please-allow-Microphone-Access = Salli mikrofonin käyttö
 Please-choose-a-different-password = Valitse toinen salasana.
 Please-Grant-Permission = Ole hyvä ja anna lupa
 PLEASE-LOG-IN = KIRJAUDU SISÄÄN
+Please-log-in = Please log in
 Please-log-in-again = Kirjaudu sisään uudelleen. Meidän täytyy joskus päivittää istuntosi tyhjentääksemme välimuistissa olevat tiedot ja varmistaaksemme, että sovellus toimii parhaiten.
 Please-make-sure-your-password-is-at-least-6-characters = Varmista, että salasanasi on vähintään 6 merkkiä pitkä.
 Please-try-again-when-you-are-connected-to-the-internet = Yritä uudelleen, kun olet yhteydessä Internetiin.
@@ -885,9 +898,11 @@ This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = Jos haluat synkronoida havaintosi iNaturalistiin, kirjaudu sisään.
 To-view-nearby-organisms-please-enable-location = Nähdäksesi lähellä olevat eliöt, ota sijainti käyttöön.
 To-view-nearby-projects-please-enable-location = Nähdäksesi lähellä olevat projektit, ota sijainti käyttöön.
+To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
 Toggle-map-type = Vaihda karttatyyppiä
 TOP-ID-SUGGESTION = PARAS TUNNISTUS
 Traditional-Project = Perinteinen projekti
+Traditional-Projects = Traditional Projects
 Umbrella-Project = Sateenvarjoprojekti
 UNFOLLOW = LOPETA SEURAAMINEN
 UNFOLLOW-USER = LOPETA KÄYTTÄJÄN SEURAAMINEN?
@@ -1101,15 +1116,18 @@ You-can-add-up-to-20-media = Voit liittää enintään 20 kuvaa ja 20 ääntä h
 You-can-also-check-out-merchandise = Voit myös tutustua iNaturalistin ja Seekin tuotteisiin alla olevassa kaupassamme!
 You-can-click-join-on-the-project-page = Voit napsauttaa "liity" projektisivulla.
 You-can-find-answers-on-our-help-page = Löydät vastaukset ohjesivultamme.
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = You can manually add observations to Traditional Projects you have joined.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = Voit nyt ladata havaintosi iNaturalistiin ja osallistua maailmanlaajuiseen biodiversiteettitutkimukseen.
 You-can-only-add-20-photos-per-observation = Voit liittää vain 20 kuvaa havaintoa kohden.
 You-can-still-share-the-file = Voit silti jakaa tiedoston toisen sovelluksen kanssa. Jos voit lähettää sen sähköpostitse, lähetä se osoitteeseen { $email }
 You-can-upload-this-observation-to-our-community = Voit ladata tämän havainnon yhteisöömme saadaksesi tunnistuksen oikealta henkilöltä ja auttaaksesi tekoälyämme parantamaan tunnistamistaan tulevaisuudessa
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = Muutit suodattimia, mutta niitä ei käytetty Tutki-hakutuloksissasi.
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = Olet jättäytynyt pois yhteisön taksonista
 You-havent-joined-any-projects-yet = Et ole liittynyt yhteenkään projektiin vielä!
+You-havent-joined-any-Traditional-Projects-yet = You haven’t joined any Traditional Projects yet!
 You-havent-observed-any-species-yet = Et ole vielä havainnut yhtään lajia.
 You-likely-observed-a-species-in-this-group = Havaitsit todennäköisesti lajin tästä ryhmästä
 You-likely-observed-this-species = Havaitsit todennäköisesti tämän lajin
@@ -1119,6 +1137,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Saatat huomata muutoksia si
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Sinun on asennettava Google Play -palvelut, jotta voit kirjautua Google-tilillä.
 You-need-an-Internet-connection-to-do-that = Tarvitset Internet-yhteyden, jotta voit tehdä sen.
 You-need-log-in-to-do-that = Sinun täytyy kirjautua ensin.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = Havaitsit lajin tästä ryhmästä
 You-observed-this-species = Havaitsit tämän lajin
 You-will-see-notifications = Näet ilmoitukset täällä, kun kirjaudut sisään ja lataat havaintoja.

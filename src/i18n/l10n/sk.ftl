@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Pridať umiestnenie na obnovu návrhov
 Add-observations = Pridať pozorovanie
 ADD-OPTIONAL-COMMENT = PRIDAŤ VOLITEĽNÝ KOMENTÁR
 Add-optional-notes = Pridať voliteľné poznámky
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Pridá ID
 Adds-your-vote-of-agreement = Pridá vaše hlasovanie o dohode
 Adds-your-vote-of-disagreement = Pridá vaše hlasovanie o nesúhlase
@@ -129,6 +136,7 @@ Closes-explanation = Uzatvára vysvetlenie
 Closes-introduction = Ukončiť úvod
 Closes-withdraw-id-sheet = Zavrie list "Odobrať ID"
 COLLABORATORS = SPOLUPRACOVNÍCI
+Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = Zbierkový projekt
 Combine-Photos = Kombinovať fotky
 COMMENT = KOMENTÁR
@@ -323,6 +331,7 @@ FOLLOWING-X-PEOPLE =
         [one] SLEDUJE JEDNU OSOBU
        *[other] SLEDUJE { $count } ĽUDÍ
     }
+For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 Forgot-Password = Zabudnuté heslo
 GEOPRIVACY = GEOSÚKROMIA
 Geoprivacy-status = Geosúkromie: { $status }
@@ -461,6 +470,9 @@ LOG-IN-TO-INATURALIST = PRIHLÁSIŤ SA K INATURALISTO
 Log-in-to-iNaturalist = Prihlásiť sa do iNaturalist
 LOG-OUT = ODHLÁSIŤ SA
 LOG-OUT--question = ODHLÁSIŤ SA?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Najnižšia
 LOWEST-RANK = NAJNIŽŠIE HODNOTENIE
 MAP = MAPA
@@ -604,6 +616,7 @@ Please-allow-Microphone-Access = Povoľte prístup k mikrofónu
 Please-choose-a-different-password = Zvoľte prosím iné heslo.
 Please-Grant-Permission = Udeľte oprávnenie
 PLEASE-LOG-IN = PRIHLÁSTE SA
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Uistite sa, že vaše heslo má aspoň 6 znakov.
 Please-try-again-when-you-are-connected-to-the-internet = Skúste to prosím znova, až budete pripojení k internetu.
@@ -882,9 +895,11 @@ This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = Ak chcete synchronizovať svoje pozorovania s iNaturalist, prihláste sa prosím.
 To-view-nearby-organisms-please-enable-location = Ak chcete zobraziť blízke organizmy, povoľte umiestnenie.
 To-view-nearby-projects-please-enable-location = Pre zobrazenie blízkych projektov povoľte umiestnenie.
+To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
 Toggle-map-type = Prepnúť typ mapy
 TOP-ID-SUGGESTION = NÁVRH TOP ID
 Traditional-Project = Tradičný projekt
+Traditional-Projects = Traditional Projects
 Umbrella-Project = Zastrešujúci projekt
 UNFOLLOW = PRESTAŤ SLEDOVAŤ
 UNFOLLOW-USER = PRESTAŤ SLEDOVAŤ POUŽÍVATEĽA?
@@ -1098,15 +1113,18 @@ You-can-add-up-to-20-media = Môžete pridať až 20 fotografií a 20 zvukov na 
 You-can-also-check-out-merchandise = Môžete sa tiež pozrieť na tovar pre iNaturalist a Seek v našom obchode nižšie!
 You-can-click-join-on-the-project-page = Môžete kliknúť na "pripojiť sa" na stránke projektu.
 You-can-find-answers-on-our-help-page = Odpovede môžete nájsť na našej stránke pomocníka.
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = You can manually add observations to Traditional Projects you have joined.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = Teraz môžete nahrať svoje pozorovania do iNaturalist a prispieť tak k celosvetovému výskumu biodiverzity.
 You-can-only-add-20-photos-per-observation = Môžete pridať iba 20 fotografií na jedno pozorovanie
 You-can-still-share-the-file = Stále môžete zdieľať súbor s inou aplikáciou. Ak ho môžete poslať e-mailom, pošlite ho prosím na { $email }
 You-can-upload-this-observation-to-our-community = Toto pozorovanie môžete nahrať do našej komunity, aby ste získali identifikáciu od skutočnej osoby a pomohli našej AI zlepšiť jej identifikáciu v budúcnosti
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = Zmenili ste filtre, ale neboli použité na výsledky vyhľadávania.
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = Odobrali ste sa z komunitného taxónu
 You-havent-joined-any-projects-yet = Zatiaľ ste sa nepripojili k žiadnym projektom!
+You-havent-joined-any-Traditional-Projects-yet = You haven’t joined any Traditional Projects yet!
 You-havent-observed-any-species-yet = Zatiaľ ste nepozorovali žiadne druhy.
 You-likely-observed-a-species-in-this-group = Pravdepodobne ste pozorovali druh v tejto skupine
 You-likely-observed-this-species = Pravdepodobne ste pozorovali tento druh
@@ -1116,6 +1134,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Môžete si všimnúť zmen
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Ak sa chcete prihlásiť cez Google, musíte nainštalovať Služby Google Play.
 You-need-an-Internet-connection-to-do-that = Na to potrebujete pripojenie k internetu.
 You-need-log-in-to-do-that = Pre túto akciu je nutné sa prihlásiť.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = Pozorovali ste druh v tejto skupine
 You-observed-this-species = Pozorovali ste tento druh
 You-will-see-notifications = Akonáhle sa prihlásite a nahráte pozorovanie, uvidíte oznámenie.

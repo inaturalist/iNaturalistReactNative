@@ -39,6 +39,13 @@ Add-location-to-refresh-suggestions = Lägg till fyndplats för nya förslag
 Add-observations = Lägg till fynd
 ADD-OPTIONAL-COMMENT = LÄGG TILL EV. KOMMENTAR
 Add-optional-notes = Lägg till valfria anteckningar
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Lägg till ID
 Adds-your-vote-of-agreement = Rösta på att hålla med
 Adds-your-vote-of-disagreement = Rösta för att inte hålla med
@@ -135,6 +142,7 @@ Closes-explanation = Stänger förklaring
 Closes-introduction = Stänger introt
 Closes-withdraw-id-sheet = Stänger "Dra tillbaka bestämning"-blad
 COLLABORATORS = MEDARBETARE
+Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = Samlingsprojekt
 Combine-Photos = Kombinera bilder
 COMMENT = KOMMENTAR
@@ -329,6 +337,7 @@ FOLLOWING-X-PEOPLE =
         [one] FÖLJER { $count } PERSON
        *[other] FÖLJER { $count } PERSONER
     }
+For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 Forgot-Password = Glömt lösenord
 GEOPRIVACY = GEOSEKRETESS
 Geoprivacy-status = Geosekretess: { $status }
@@ -467,6 +476,9 @@ LOG-IN-TO-INATURALIST = LOGGA IN PÅ INATURALIST
 Log-in-to-iNaturalist = Logga in på iNaturalist
 LOG-OUT = LOGGA UT
 LOG-OUT--question = LOGGA UT?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Lägsta
 LOWEST-RANK = LÄGSTA RANG
 MAP = KARTA
@@ -610,6 +622,7 @@ Please-allow-Microphone-Access = Vänligen tillåt åtkomst till mikrofon
 Please-choose-a-different-password = Välj ett annat lösenord.
 Please-Grant-Permission = Vänligen tillåt åtkomst
 PLEASE-LOG-IN = VÄNLIGEN LOGGA IN
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Kontrollera att ditt lösenord har minst 6 tecken.
 Please-try-again-when-you-are-connected-to-the-internet = Försök igen när du är ansluten till internet.
@@ -888,9 +901,11 @@ This-user-is-not-following-anyone = Den här användaren följer inte någon.
 To-sync-your-observations-to-iNaturalist = För att synka dina fynd med iNaturalist, vänligen logga in.
 To-view-nearby-organisms-please-enable-location = Aktivera plats för att se organismer i närheten.
 To-view-nearby-projects-please-enable-location = Aktivera plats för att se projekt i närheten.
+To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
 Toggle-map-type = Växla karttyp
 TOP-ID-SUGGESTION = BÄSTA BESTÄMNINGSFÖRSLAG
 Traditional-Project = Traditionellt projekt
+Traditional-Projects = Traditional Projects
 Umbrella-Project = Paraplyprojekt
 UNFOLLOW = SLUTA FÖLJA
 UNFOLLOW-USER = SLUTA FÖLJA ANVÄNDAREN?
@@ -1104,15 +1119,18 @@ You-can-add-up-to-20-media = Du kan lägga till upp till 20 bilder och 20 ljud p
 You-can-also-check-out-merchandise = Du kan också kolla in varor för iNaturalist och Seek i vår butik nedan!
 You-can-click-join-on-the-project-page = Du kan klicka på ”gå med” på projektsidan.
 You-can-find-answers-on-our-help-page = Du kan hitta svar på vår hjälpsida.
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = You can manually add observations to Traditional Projects you have joined.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = Du kan nu ladda upp dina fynd till iNaturalist och bidra till global forskning om biologisk mångfald.
 You-can-only-add-20-photos-per-observation = Du kan bara lägga till 20 bilder per fynd
 You-can-still-share-the-file = Du kan fortfarande dela filen med en annan app. Om du kan mejla den, skicka den till { $email }
 You-can-upload-this-observation-to-our-community = Du kan ladda upp detta fynd till vår community för att få en bestämning av en riktig person, och hjälpa vår AI att förbättra sina bestämningar i framtiden
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = Du ändrade filter, men de tillämpades inte på dina sökresultat i utforska.
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = Du har valt bort Communityns taxon
 You-havent-joined-any-projects-yet = Du har inte gått med i några projekt ännu!
+You-havent-joined-any-Traditional-Projects-yet = You haven’t joined any Traditional Projects yet!
 You-havent-observed-any-species-yet = Du har inte observerat någon art än.
 You-likely-observed-a-species-in-this-group = Du har troligen observerat en art i den här gruppen
 You-likely-observed-this-species = Du har förmodligen observerat den här arten
@@ -1122,6 +1140,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Du kan lägga märke till f
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Du måste installera Google Play-tjänster för att logga in med Google.
 You-need-an-Internet-connection-to-do-that = Du behöver en internetanslutning för att göra det.
 You-need-log-in-to-do-that = Du måste logga in för att göra det.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = Du observerade en art i den här gruppen
 You-observed-this-species = Du observerade den här arten
 You-will-see-notifications = Du kommer se aviseringar här när du väl loggat in och laddat upp fynd.

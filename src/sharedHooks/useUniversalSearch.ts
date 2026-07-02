@@ -1,7 +1,8 @@
+import { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import { search } from "api/search";
 import type {
   ApiOpts,
-  ApiProject,
+  ApiProjectSummary,
   ApiTaxon,
   ApiUser,
 } from "api/types";
@@ -13,9 +14,10 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 export type UniversalSearchResultItem =
   | { type: "taxon"; taxon: ApiTaxon }
   | { type: "user"; user: ApiUser }
-  | { type: "project"; project: ApiProject };
+  | { type: "project"; project: ApiProjectSummary };
 
 const UNIVERSAL_SEARCH_FIELDS = {
+  type: true,
   taxon: {
     id: true,
     name: true,
@@ -31,13 +33,7 @@ const UNIVERSAL_SEARCH_FIELDS = {
     icon_url: true,
     observations_count: true,
   },
-  project: {
-    id: true,
-    title: true,
-    icon: true,
-    project_type: true,
-    rule_preferences: true,
-  },
+  project: PROJECT_SUMMARY_FIELDS,
 };
 
 const useUniversalSearch = ( query: string ) => {
@@ -60,17 +56,11 @@ const useUniversalSearch = ( query: string ) => {
         optsWithAuth,
       );
       if ( !response ) { return []; }
-      // Preserve the API's score-sorted order, mapping each result to a tagged union
-      return response.results.reduce<UniversalSearchResultItem[]>( ( acc, result ) => {
-        if ( result.taxon ) {
-          acc.push( { type: "taxon", taxon: result.taxon } );
-        } else if ( result.user ) {
-          acc.push( { type: "user", user: result.user } );
-        } else if ( result.project ) {
-          acc.push( { type: "project", project: result.project } );
-        }
-        return acc;
-      }, [] );
+      return response.results.filter(
+        ( result ): result is UniversalSearchResultItem => result.type === "taxon"
+          || result.type === "user"
+          || result.type === "project",
+      );
     },
     { enabled: shouldFetch },
   );

@@ -212,7 +212,7 @@ export interface ApiProjectObservation {
 // When using OBSERVATION_FIELD_VALUE_FIELDS
 export interface ApiObservationFieldValue {
   id: number;
-  observation_field: ApiObservationField;
+  field_id: number;
   uuid: string;
   value: string;
 }
@@ -224,6 +224,7 @@ export interface ApiObservation extends ApiRecord {
   observation_photos?: ApiObservationPhoto[];
   observation_sounds?: ApiObservationSound[];
   project_observations?: ApiProjectObservation[];
+  ofvs?: ApiObservationFieldValue[];
   taxon?: ApiTaxon;
   time_observed_at?: string;
   user?: ApiUser;

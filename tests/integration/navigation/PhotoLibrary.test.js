@@ -83,7 +83,6 @@ describe( "PhotoLibrary navigation", ( ) => {
     renderApp( );
     await navigateToPhotoImporterFromMyObs( );
     await waitFor( ( ) => {
-      global.timeTravel( 300 );
       expect( screen.getByText( /Group Photos/ ) ).toBeVisible( );
     }, { timeout: 10_000 } );
   } );
@@ -97,7 +96,6 @@ describe( "PhotoLibrary navigation", ( ) => {
     renderApp( );
     await navigateToPhotoImporterFromMyObs( );
     await waitFor( () => {
-      global.timeTravel( 300 );
       expect( screen.getByText( /New Observation/ ) ).toBeVisible( );
     }, { timeout: 10_000 } );
   } );
@@ -120,7 +118,6 @@ describe( "PhotoLibrary navigation when suggestions screen is preferred next scr
     renderApp();
     await navigateToPhotoImporterFromMyObs( );
     await waitFor( () => {
-      global.timeTravel( 300 );
       expect( screen.getByText( /Add an ID Later/ ) ).toBeVisible( );
     }, { timeout: 10_000 } );
   } );

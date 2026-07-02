@@ -33,6 +33,13 @@ Add-location-to-refresh-suggestions = Tambahkan lokasi untuk menyegarkan rekomen
 Add-observations = Tambah pengamatan
 ADD-OPTIONAL-COMMENT = TAMBAH KOMENTAR OPSIONAL
 Add-optional-notes = Tambahkan catatan opsional
+Add-to-Projects = Tambahkan ke Proyek
+ADD-TO-PROJECTS = TAMBAHKAN KE PROYEK
+Added-to-X-Projects =
+    Ditambahkan ke { $count } { $count ->
+        [satu] Proyek
+       *[lainnya] Proyek
+    }
 Adds-ID = Menambahkan ID
 Adds-your-vote-of-agreement = Menambahkan suara setuju dari Anda
 Adds-your-vote-of-disagreement = Menambahkan suara tidak setuju dari Anda
@@ -129,6 +136,7 @@ Closes-explanation = Menutup penjelasan
 Closes-introduction = Menutup pengenalan
 Closes-withdraw-id-sheet = Tutup lembar "Tarik ID"
 COLLABORATORS = KOLABORATOR
+Collection-and-Umbrella-Projects = Proyek Koleksi & Payung
 Collection-Project = Proyek Koleksi
 Combine-Photos = Gabungkan Gambar
 COMMENT = KOMENTAR
@@ -323,6 +331,7 @@ FOLLOWING-X-PEOPLE =
         [one] MENGIKUTI { $count } ORANG
        *[other] MENGIKUTI { $count } ORANG
     }
+For-most-other-projects-observations-will-automatically-be-included = Untuk sebagian besar proyek lain, pengamatan yang memenuhi persyaratan proyek akan secara otomatis disertakan dalam proyek.
 Forgot-Password = Lupa Kata Sandi
 GEOPRIVACY = GEOPRIVASI
 Geoprivacy-status = Geoprivasi: { $status }
@@ -461,6 +470,9 @@ LOG-IN-TO-INATURALIST = MASUK KE INATURALIST
 Log-in-to-iNaturalist = Masuk ke iNaturalist
 LOG-OUT = KELUAR
 LOG-OUT--question = KELUAR?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Sepertinya Anda belum pernah mengamatinya.
+    Saatnya menjelajah lagi!
 Lowest = Terendah
 LOWEST-RANK = TINGKAT TERENDAH
 MAP = PETA
@@ -604,6 +616,7 @@ Please-allow-Microphone-Access = Harap izinkan Akses Mikrofon
 Please-choose-a-different-password = Harap gunakan kata sandi yang berbeda.
 Please-Grant-Permission = Mohon Berikan Izin
 PLEASE-LOG-IN = HARAP MASUK
+Please-log-in = Silakan masuk
 Please-log-in-again = Silakan masuk lagi. Kami sekali-kali perlu menyegarkan sesi Anda untuk menghapus data yang di-cache dan memastikan aplikasinya berfungsi dengan baik.
 Please-make-sure-your-password-is-at-least-6-characters = Pastikan kata sandi Anda memiliki setidaknya 6 karakter.
 Please-try-again-when-you-are-connected-to-the-internet = Silakan mencoba lagi saat Anda sudah terhubung dengan Internet.
@@ -882,9 +895,11 @@ This-user-is-not-following-anyone = Pengguna ini tidak mengikuti siapa pun.
 To-sync-your-observations-to-iNaturalist = Untuk menyinkronkan pengamatan-pengamatan Anda ke iNaturalist, harap masuk terlebih dahulu.
 To-view-nearby-organisms-please-enable-location = Untuk melihat organisme-organisme di sekitar Anda, harap aktifkan lokasi.
 To-view-nearby-projects-please-enable-location = Untuk melihat proyek di sekitar Anda, harap aktifkan lokasi.
+To-view-this-observations-Collection-and-Umbrella-Projects = Untuk melihat Proyek Koleksi dan Payung dari pengamatan ini, buka halaman pengamatannya setelah pengamatannya diunggah.
 Toggle-map-type = Ubah jenis peta
 TOP-ID-SUGGESTION = REKOMENDASI ID TERBAIK
 Traditional-Project = Proyek Tradisional
+Traditional-Projects = Proyek Tradisional
 Umbrella-Project = Proyek Payung
 UNFOLLOW = BERHENTI MENGIKUTI
 UNFOLLOW-USER = BERHENTI MENGIKUTI PENGGUNA?
@@ -1098,15 +1113,18 @@ You-can-add-up-to-20-media = Anda bisa menambahkan 20 gambar dan 20 suara per pe
 You-can-also-check-out-merchandise = Anda juga bisa belanja souvenir iNaturalist dan Seek di toko kami di bawah ini!
 You-can-click-join-on-the-project-page = Anda bisa mengeklik "gabung" di halaman proyek.
 You-can-find-answers-on-our-help-page = Anda bisa menemukan jawaban di halaman bantuan kami.
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = Anda bisa menambahkan pengamatan secara manual ke Proyek Tradisional yang telah Anda ikuti.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = Anda sekarang dapat mengunggah pengamatan Anda ke iNaturalist dan berkontribusi pada penelitian keanekaragaman hayati global.
 You-can-only-add-20-photos-per-observation = Anda hanya bisa menambahkan 20 gambar per pengamatan
 You-can-still-share-the-file = Anda masih bisa membagikan berkasnya menggunakan aplikasi lain. Jika Anda bisa mengirimkannya melalui email, tolong kirimkan ke { $email }
 You-can-upload-this-observation-to-our-community = Anda bisa mengunggah pengamatan ini ke komunitas kami untuk mendapatkan identifikasi dari orang asli dan membantu AI kami meningkatkan akurasi identifikasinya di masa depan
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = Anda tidak bisa menambahkan atau menghapus pengamatan dari proyek koleksi dan payung.
 You-changed-filters-will-be-discarded = Anda telah mengubah penyaring, tetapi mereka belum diterapkan ke hasil pencarian jelajah Anda.
 You-have-no-notifications-get-started-by-creating-your-own-observations = Anda belum mendapatkan notifikasi apa pun! Mulailah dengan membuat pengamatan Anda sendiri.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = Anda belum mendapatkan pemberitahuan apa pun! Anda akan melihat kabar dari pengamatan yang telah Anda identifikasi atau komentari di sini.
 You-have-opted-out-of-the-Community-Taxon = Anda telah memilih untuk keluar dari Takson Komunitas
 You-havent-joined-any-projects-yet = Anda belum bergabung dengan proyek apa pun!
+You-havent-joined-any-Traditional-Projects-yet = Anda belum bergabung dengan Proyek Tradisional apa pun!
 You-havent-observed-any-species-yet = Anda belum mengamati spesies apa pun.
 You-likely-observed-a-species-in-this-group = Kamu kemungkinan besar telah mengamati sebuah organisme dalam kelompok ini
 You-likely-observed-this-species = Kamu kemungkinan besar telah mengamati spesies ini
@@ -1116,6 +1134,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Anda mungkin melihat peruba
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Anda harus memasang Layanan Google Play untuk masuk dengan Google.
 You-need-an-Internet-connection-to-do-that = Anda memerlukan koneksi Internet untuk melakukan hal tersebut.
 You-need-log-in-to-do-that = Anda harus masuk untuk melakukannya.
+You-need-to-be-logged-in-to-add-observations-to-projects = Anda harus masuk untuk menambahkan pengamatan ke proyek.
 You-observed-a-species-in-this-group = Kamu telah mengamati sebuah spesies dalam kelompok ini
 You-observed-this-species = Kamu telah mengamati spesies ini
 You-will-see-notifications = Anda akan melihat notifikasi-notifikasi di sini setelah Anda masuk & mengunggah pengamatan.

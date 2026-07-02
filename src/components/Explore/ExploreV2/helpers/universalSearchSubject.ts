@@ -1,6 +1,9 @@
 import type { ExploreV2Subject } from "providers/ExploreV2Context";
+import { log } from "sharedHelpers/logger";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
+
+const logger = log.extend( "universalSearchSubject" );
 
 // Translation layer between the universal search API results
 // (UniversalSearchResultItem) and the ExploreV2 context's subject shape
@@ -28,7 +31,6 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
         },
       };
     case "taxon":
-    default:
       return {
         type: "taxon",
         taxon: {
@@ -42,6 +44,9 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
           rank_level: result.taxon.rank_level,
         },
       };
+    default:
+      throw new Error( `resultToSubject: Unknown explore 
+        subject result type: ${( result as { type: string } ).type}` );
   }
 };
 
@@ -55,9 +60,12 @@ export const subjectToText = (
     case "project":
       return subject.project.title;
     case "taxon":
-    default:
       return ( commonNameIsPrimary && subject.taxon.preferred_common_name )
         ? generateTaxonPieces( subject.taxon ).commonName ?? subject.taxon.name
         : subject.taxon.name;
+    default:
+      logger.error( `subjectToText: Unknown explore 
+        subject type: ${( subject as { type: string } ).type}` );
+      return "";
   }
 };

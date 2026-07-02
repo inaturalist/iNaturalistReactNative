@@ -8,6 +8,7 @@ import {
   resultToSubject,
   subjectToText,
 } from "components/Explore/ExploreV2/helpers/universalSearchSubject";
+import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
 import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
@@ -24,7 +25,7 @@ import React, { useCallback, useRef, useState } from "react";
 import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
 import { FlatList, Keyboard } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import useDebouncedValue from "sharedHooks/useDebouncedValue";
+import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
 import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
 import useUniversalSearch from "sharedHooks/useUniversalSearch";
@@ -61,51 +62,33 @@ const UniversalSearch = ( ) => {
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
 
-  const [subjectText, setSubjectText] = useState( "" );
-  const [locationText, setLocationText] = useState( "" );
-  const [filledFromSelection, setFilledFromSelection] = useState( false );
-  // The debounced value that actually drives the autocomplete query. Cleared on
-  // selection so a chosen suggestion doesn't re-trigger a result list.
   const {
-    debouncedValue: debouncedQuery,
-    debounce: debounceQuery,
-    setImmediately: setQueryImmediately,
-  } = useDebouncedValue( "" );
+    text: subjectText,
+    debouncedQuery: subjectQuery,
+    hasQuery: subjectHasQuery,
+    onChangeText: onChangeSubjectText,
+    handleFocus: focusSubjectField,
+    commit: commitSubject,
+    clear: clearSubject,
+  } = useSearchField( );
+  const [locationText, setLocationText] = useState( "" );
 
   const locationInputRef = useRef<RNTextInput>( null );
 
-  const { results, isLoading } = useUniversalSearch( debouncedQuery );
+  const { results, isLoading, refetch } = useUniversalSearch( subjectQuery );
 
   const bothFilled = subjectText.length > 0 && locationText.length > 0;
-  const showResults = debouncedQuery.trim( ).length > 0;
-
-  const handleSubjectTextChange = useCallback( ( text: string ) => {
-    setSubjectText( text );
-    setFilledFromSelection( false );
-    debounceQuery( text );
-  }, [debounceQuery] );
-
-  const handleSubjectFocus = useCallback( ( ) => {
-    if ( !filledFromSelection ) { return; }
-    setSubjectText( "" );
-    setFilledFromSelection( false );
-    setQueryImmediately( "" );
-  }, [filledFromSelection, setQueryImmediately] );
 
   const handleSelect = useCallback( ( subject: ExploreV2Subject ) => {
-    setSubjectText( subjectToText( subject, commonNameIsPrimary ) );
-    setFilledFromSelection( true );
-    setQueryImmediately( "" );
+    commitSubject( subjectToText( subject, commonNameIsPrimary ) );
     dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject } );
     locationInputRef.current?.focus( );
-  }, [commonNameIsPrimary, dispatch, setQueryImmediately] );
+  }, [commitSubject, commonNameIsPrimary, dispatch] );
 
   const handleReset = useCallback( ( ) => {
-    setSubjectText( "" );
+    clearSubject( );
     setLocationText( "" );
-    setFilledFromSelection( false );
-    setQueryImmediately( "" );
-  }, [setQueryImmediately] );
+  }, [clearSubject] );
 
   const handleSearch = useCallback( ( ) => {
     // TODO MOB-1338 follow-up: run the search (default to all organisms /
@@ -119,27 +102,6 @@ const UniversalSearch = ( ) => {
       onPress={( ) => handleSelect( resultToSubject( item ) )}
     />
   ), [handleSelect] );
-
-  let body;
-  if ( showResults ) {
-    body = (
-      <FlatList
-        data={results}
-        keyboardShouldPersistTaps="handled"
-        keyExtractor={resultKey}
-        renderItem={renderResult}
-        ListEmptyComponent={isLoading
-          ? null
-          : (
-            <Body3 className="text-center mt-8">
-              {t( "No-results-found-for-that-search" )}
-            </Body3>
-          )}
-      />
-    );
-  } else {
-    body = ( <DefaultSearchOptions onSelectSubject={handleSelect} /> );
-  }
 
   return (
     <ViewWrapper testID="UniversalSearch">
@@ -160,8 +122,8 @@ const UniversalSearch = ( ) => {
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
-                  onChangeText={handleSubjectTextChange}
-                  onFocus={handleSubjectFocus}
+                  onChangeText={onChangeSubjectText}
+                  onFocus={focusSubjectField}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
                   testID="UniversalSearch.subjectInput"
@@ -207,7 +169,24 @@ const UniversalSearch = ( ) => {
       </View>
 
       <View className="flex-1">
-        {body}
+        {/* Surface results for an active query, otherwise the default options */}
+        {subjectHasQuery
+          ? (
+            <FlatList
+              data={results}
+              keyboardShouldPersistTaps="handled"
+              keyExtractor={resultKey}
+              renderItem={renderResult}
+              ListEmptyComponent={(
+                <EmptySearchResults
+                  isLoading={isLoading}
+                  searchQuery={subjectQuery}
+                  refetch={refetch}
+                />
+              )}
+            />
+          )
+          : ( <DefaultSearchOptions onSelectSubject={handleSelect} /> )}
       </View>
     </ViewWrapper>
   );

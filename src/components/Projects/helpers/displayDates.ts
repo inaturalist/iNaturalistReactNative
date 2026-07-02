@@ -20,6 +20,13 @@ const formatProjectDate = (
   t: TFunction,
   i18n: i18next,
 ): FormattedProjectDate => {
+  // "" means "traditional" which do not have date ranges
+  if ( project.project_type === "" ) {
+    return {
+      projectDate: null,
+      shouldDisplayDateRange: false,
+    };
+  }
   const monthValues: Record<string, string> = {
     1: t( "January" ),
     2: t( "February" ),
@@ -82,8 +89,7 @@ const formatProjectDate = (
   }
   return {
     projectDate,
-    shouldDisplayDateRange: !!( formattedStartDate && formattedEndDate )
-      && project.project_type !== "", // "" means "traditional"
+    shouldDisplayDateRange: !!( formattedStartDate && formattedEndDate ),
   };
 };
 

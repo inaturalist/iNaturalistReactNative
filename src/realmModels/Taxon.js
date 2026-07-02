@@ -167,7 +167,7 @@ class Taxon extends Realm.Object {
    * @param {object} taxon - a live Realm Taxon (or an already-plain object)
    * @returns {object} plain ApiTaxon-shaped object
    */
-  static mapRealmToApi( taxon ) {
+  static mapRealmToPojo( taxon ) {
     if ( !taxon ) return taxon;
     const photo = taxon.defaultPhoto || taxon.default_photo;
     return {
