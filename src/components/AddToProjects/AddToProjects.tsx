@@ -3,6 +3,7 @@ import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
   Body2,
+  Body3,
   Button,
   ButtonBar,
   CustomFlashList,
@@ -118,11 +119,23 @@ const AddToProjects = ( ) => {
       console.log( item );
       return (
         <View className="bg-lightGrayOpaque">
-          {item.projectObservationFields.map( pof => <Body1>{pof.obsField?.name}</Body1> )}
+          <View className="px-4 py-2.5 flex-row justify-center items-center">
+            <INatIcon
+              name="triangle-exclamation"
+              color={colors.warningRed}
+              size={19}
+            />
+            <Body3 className="ml-2.5">
+              {t( "To-add-to-this-project-all-required-fields-must-be-filled" )}
+            </Body3>
+          </View>
+          {item.projectObservationFields.map( pof => (
+            <Body1>{pof.obsField?.name}</Body1>
+          ) )}
         </View>
       );
     },
-    [],
+    [t],
   );
 
   const renderRightIcon = useCallback(

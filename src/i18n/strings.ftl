@@ -23,6 +23,7 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
+To-add-to-this-project-all-required-fields-must-be-filled = To add to this project, all required fields must be filled
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
 # Header for a general description, e.g. of a user, or of iNaturalist itself
