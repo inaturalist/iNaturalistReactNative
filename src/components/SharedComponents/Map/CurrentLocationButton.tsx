@@ -26,7 +26,7 @@ const CurrentLocationButton = ( {
   return (
     <>
       <INatIconButton
-        icon="location-crosshairs"
+        icon="location-arrow"
         className={classnames(
           "absolute bottom-5 right-5 bg-white rounded-full",
           currentLocationButtonClassName,
