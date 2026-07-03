@@ -12,7 +12,7 @@ interface Props {
 const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) => {
   const { t } = useTranslation( );
   return (
-    <View className="flex-1 px-4 py-2.5">
+    <View className="flex-1 px-4 py-2.5" key={projectObservationField.id}>
       <View className="flex-1 flex-row justify-between items-center">
         <Body1 className="flex-1">
           {projectObservationField.obsField?.name}
