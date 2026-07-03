@@ -23,7 +23,7 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
-To-add-to-this-project-all-required-fields-must-be-filled = To add to this project, all required fields must be filled
+All-required-fields-have-been-filled = All required fields have been filled
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
 # Header for a general description, e.g. of a user, or of iNaturalist itself
@@ -1317,6 +1317,7 @@ This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound w
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
+To-add-to-this-project-all-required-fields-must-be-filled = To add to this project, all required fields must be filled
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
 To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.

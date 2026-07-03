@@ -100,6 +100,7 @@ All-observation-options--list = All observation options: iNaturalist AI Camera, 
 All-observations = All observations
 All-observations-need-a-date-and-location-to-be-used-for-science = All observations need a date and location to be used for science. Please edit observations if they need more information.
 All-organisms = All organisms
+All-required-fields-have-been-filled = All required fields have been filled
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
 All-taxa = All taxa
