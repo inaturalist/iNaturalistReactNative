@@ -63,6 +63,7 @@ export interface ApiProject extends ApiProjectSummary {
   header_image_url: string | null;
   membership_model: "inviteonly" | "open" | null;
   place_id: number | null;
+  project_observation_fields: ApiProjectObservationField[];
   user_ids: number[];
 }
 
