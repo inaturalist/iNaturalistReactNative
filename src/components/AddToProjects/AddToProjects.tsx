@@ -21,6 +21,8 @@ import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import ObservationFieldInput from "./ObservationFieldInput";
+
 const { useQuery } = RealmContext;
 
 const DROP_SHADOW = getShadow( {
@@ -119,6 +121,7 @@ const AddToProjects = ( ) => {
       console.log( item );
       return (
         <View className="bg-lightGrayOpaque">
+          {/* TODO: this will be based on the result of a validation function */}
           {Math.random() > 0.5
             ? (
               <View className="px-4 py-2.5 flex-row justify-center items-center">
@@ -145,7 +148,7 @@ const AddToProjects = ( ) => {
               </View>
             )}
           {item.projectObservationFields.map( pof => (
-            <Body1>{pof.obsField?.name}</Body1>
+            <ObservationFieldInput observationField={pof.obsField} />
           ) )}
         </View>
       );
