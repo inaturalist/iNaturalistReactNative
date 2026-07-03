@@ -23,7 +23,6 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
-All-required-fields-have-been-filled = All required fields have been filled
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
 # Header for a general description, e.g. of a user, or of iNaturalist itself
@@ -101,6 +100,7 @@ All-observation-options--list = All observation options: iNaturalist AI Camera, 
 All-observations = All observations
 All-observations-need-a-date-and-location-to-be-used-for-science = All observations need a date and location to be used for science. Please edit observations if they need more information.
 All-organisms = All organisms
+All-required-fields-have-been-filled = All required fields have been filled
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
 All-taxa = All taxa
