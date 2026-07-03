@@ -1,15 +1,41 @@
-import { Body1 } from "components/SharedComponents";
+import { Body1, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import type { RealmObservationField } from "realmModels/types";
+import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 interface Props {
   observationField: RealmObservationField;
+  isValid: boolean;
 }
-const ObservationFieldInput = ( { observationField }: Props ) => (
-  <View className="px-4 py-2.5">
-    <Body1>{observationField?.name}</Body1>
-  </View>
-);
+const ObservationFieldInput = ( { observationField, isValid }: Props ) => {
+  const { t } = useTranslation( );
+  return (
+    <View className="flex-1 px-4 py-2.5">
+      <View className="flex-1 flex-row justify-between items-center">
+        <Body1 className="flex-1">{observationField?.name}</Body1>
+        <View className="flex-row">
+          <Body1 className="mr-2.5">{t( "Required" )}</Body1>
+          {isValid
+            ? (
+              <INatIcon
+                name="checkmark-circle"
+                color={colors.inatGreen}
+                size={19}
+              />
+            )
+            : (
+              <INatIcon
+                name="triangle-exclamation"
+                color={colors.warningRed}
+                size={19}
+              />
+            )}
+        </View>
+      </View>
+    </View>
+  );
+};
 
 export default ObservationFieldInput;
