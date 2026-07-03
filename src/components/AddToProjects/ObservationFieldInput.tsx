@@ -17,24 +17,26 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
         <Body1 className="flex-1">
           {projectObservationField.obsField?.name}
         </Body1>
-        <View className="flex-row">
-          <Body1 className="mr-2.5">{t( "Required" )}</Body1>
-          {isValid
-            ? (
-              <INatIcon
-                name="checkmark-circle"
-                color={colors.inatGreen}
-                size={19}
-              />
-            )
-            : (
-              <INatIcon
-                name="triangle-exclamation"
-                color={colors.warningRed}
-                size={19}
-              />
-            )}
-        </View>
+        {projectObservationField.required && (
+          <View className="flex-row">
+            <Body1 className="mr-2.5">{t( "Required" )}</Body1>
+            {isValid
+              ? (
+                <INatIcon
+                  name="checkmark-circle"
+                  color={colors.inatGreen}
+                  size={19}
+                />
+              )
+              : (
+                <INatIcon
+                  name="triangle-exclamation"
+                  color={colors.warningRed}
+                  size={19}
+                />
+              )}
+          </View>
+        )}
       </View>
     </View>
   );
