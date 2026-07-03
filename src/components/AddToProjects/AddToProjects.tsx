@@ -113,6 +113,18 @@ const AddToProjects = ( ) => {
   };
   const disabled = false;
 
+  const renderExpanded = useCallback(
+    ( item: RealmProject ) => {
+      console.log( item );
+      return (
+        <View className="bg-lightGrayOpaque">
+          {item.projectObservationFields.map( pof => <Body1>{pof.obsField?.name}</Body1> )}
+        </View>
+      );
+    },
+    [],
+  );
+
   const renderRightIcon = useCallback(
     ( item: RealmProject, isSelected: boolean ) => {
       // Logic if all required fields have been filled out will live in zustand
@@ -159,10 +171,11 @@ const AddToProjects = ( ) => {
             </View>
             {renderRightIcon( item, isSelected )}
           </Pressable>
+          {isSelected && renderExpanded( item )}
         </View>
       );
     },
-    [renderRightIcon, selectedProjectIds, toggleProject],
+    [renderExpanded, renderRightIcon, selectedProjectIds, toggleProject],
   );
 
   return (
