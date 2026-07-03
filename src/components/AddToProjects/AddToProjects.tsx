@@ -148,7 +148,7 @@ const AddToProjects = ( ) => {
               </View>
             )}
           {item.projectObservationFields.map( pof => (
-            <ObservationFieldInput observationField={pof.obsField} />
+            <ObservationFieldInput projectObservationField={pof} />
           ) )}
         </View>
       );
