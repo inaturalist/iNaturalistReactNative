@@ -23,7 +23,6 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
-Select-a-species = Select a species
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
 # Header for a general description, e.g. of a user, or of iNaturalist itself
@@ -1178,6 +1177,7 @@ See-project-members = See project members
 # Accessibility label for Species button on UserProfile screen
 See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
 Select-a-date-and-time-for-observation = Select a date and time for observation
+Select-a-species = Select a species
 Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
 Select-or-drag-media = Select or drag media
