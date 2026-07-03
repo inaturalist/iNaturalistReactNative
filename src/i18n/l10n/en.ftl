@@ -222,6 +222,9 @@ Change-user = Change user
 Change-zoom = Change zoom
 # Notification that appears after pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
+Choose-a-date = Choose a date
+Choose-a-date-time = Choose a date & time
+Choose-a-time = Choose a time
 # Label for a text input field during sign up to choose a username
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
 # Label for button that chooses a taxon
@@ -496,6 +499,8 @@ Endemic = Endemic
 # without knowing the vowel/consonant state of the first letter of the
 # placeable
 Endemic-to-place = Endemic to { $place }
+Enter-a-number = Enter a number
+Enter-a-response = Enter a response
 # Title for a section describing an error
 Error = Error
 ERROR = ERROR
@@ -1172,6 +1177,7 @@ See-project-members = See project members
 # Accessibility label for Species button on UserProfile screen
 See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
 Select-a-date-and-time-for-observation = Select a date and time for observation
+Select-a-species = Select a species
 Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
 Select-or-drag-media = Select or drag media

@@ -23,6 +23,7 @@
 ###   result of performing an action on the accessibility element." We write
 ###   them in third person singular ending with a period.
 
+Select-a-species = Select a species
 # Subheader under logo in the login screen
 A-global-community-for-nature = A global community for nature
 # Header for a general description, e.g. of a user, or of iNaturalist itself
@@ -222,6 +223,9 @@ Change-user = Change user
 Change-zoom = Change zoom
 # Notification that appears after pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
+Choose-a-date = Choose a date
+Choose-a-date-time = Choose a date & time
+Choose-a-time = Choose a time
 # Label for a text input field during sign up to choose a username
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
 # Label for button that chooses a taxon
@@ -496,6 +500,8 @@ Endemic = Endemic
 # without knowing the vowel/consonant state of the first letter of the
 # placeable
 Endemic-to-place = Endemic to { $place }
+Enter-a-number = Enter a number
+Enter-a-response = Enter a response
 # Title for a section describing an error
 Error = Error
 ERROR = ERROR
