@@ -1,4 +1,5 @@
 import { Body3 } from "components/SharedComponents";
+import { Pressable } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
@@ -11,9 +12,14 @@ const TaxonFieldInput = ( { obsFieldId }: Props ) => {
   console.log( "obsFieldId", obsFieldId );
 
   return (
-    <Body3 className="pt-1 color-darkGrayDisabled">
-      {t( "Select-a-species" )}
-    </Body3>
+    <Pressable
+      accessibilityRole="button"
+      onPress={( ) => console.log( "press" )}
+    >
+      <Body3 className="pt-1 color-darkGrayDisabled">
+        {t( "Select-a-species" )}
+      </Body3>
+    </Pressable>
   );
 };
 
