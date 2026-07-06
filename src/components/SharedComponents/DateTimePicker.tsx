@@ -1,12 +1,15 @@
 import * as React from "react";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
+type PickerMode = "date" | "time" | "datetime";
+
 interface Props {
   date?: Date;
   toggleDateTimePicker: () => void;
   onDatePicked: ( date: Date ) => void;
   isDateTimePickerVisible: boolean;
   datetime?: boolean;
+  mode?: PickerMode;
 }
 
 // using component from Seek: https://github.com/inaturalist/SeekReactNative/blob/64ae3df185fffe751aff40ab17e3ff2dd8a74e42/components/UIComponents/DateTimePicker.js
@@ -17,11 +20,14 @@ const DatePicker = ( {
   date,
   datetime = false,
   isDateTimePickerVisible,
+  mode,
   onDatePicked,
   toggleDateTimePicker,
 }: Props ) => {
   const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>( undefined );
   const [isTimeVisible, setisTimeVisible] = React.useState( false );
+
+  console.log( "mode", mode );
 
   const _toggleDateTimePicker = ( ) => {
     setisTimeVisible( false );
