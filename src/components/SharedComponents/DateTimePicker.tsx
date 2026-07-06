@@ -24,6 +24,8 @@ const DatePicker = ( {
 }: Props ) => {
   const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>( undefined );
   const [isTimeVisible, setisTimeVisible] = React.useState( false );
+  const maxDateForTimePicker = new Date( );
+  maxDateForTimePicker.setHours( 24, 0, 0, 0 );
 
   const _toggleDateTimePicker = ( ) => {
     setisTimeVisible( false );
@@ -64,6 +66,7 @@ const DatePicker = ( {
           onDatePicked( selectedDate );
           _toggleDateTimePicker( );
         }}
+        maximumDate={maxDateForTimePicker}
       />
     );
   }
