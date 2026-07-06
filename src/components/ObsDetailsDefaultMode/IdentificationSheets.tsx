@@ -143,7 +143,6 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
       return {
         ...state,
         showSuggestIdSheet: false,
-        identTaxon: null,
         newIdentification: null,
       };
     default:
