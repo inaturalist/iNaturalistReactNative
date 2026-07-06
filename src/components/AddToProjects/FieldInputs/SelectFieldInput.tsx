@@ -16,8 +16,6 @@ const SelectFieldInput = ( { obsField }: Props ) => {
   const { value, setValue } = useObservationFieldValue( id );
   const [sheetOpen, setSheetOpen] = useState( false );
 
-  console.log( "setValue", setValue );
-
   const pickerValues = useMemo( () => {
     const values: Record<string, { label: string; value: string }> = {};
     obsField.allowedValues.forEach( allowedValue => {
