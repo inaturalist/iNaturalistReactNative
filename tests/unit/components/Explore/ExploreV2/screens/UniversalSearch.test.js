@@ -3,6 +3,7 @@ import UniversalSearch from "components/Explore/ExploreV2/screens/UniversalSearc
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
+import { Keyboard } from "react-native";
 import { renderComponent } from "tests/helpers/render";
 
 const mockNavigate = jest.fn( );
@@ -28,8 +29,13 @@ jest.mock( "providers/ExploreV2Context", ( ) => {
 } );
 const { useExploreV2 } = require( "providers/ExploreV2Context" );
 
-jest.mock( "sharedHooks/useUniversalSearch" );
-const useUniversalSearch = require( "sharedHooks/useUniversalSearch" ).default;
+jest.mock( "components/Explore/ExploreV2/hooks/useUniversalSearch" );
+const useUniversalSearch = require(
+  "components/Explore/ExploreV2/hooks/useUniversalSearch",
+).default;
+
+jest.mock( "components/Explore/ExploreV2/hooks/useLocationSearch" );
+const useLocationSearch = require( "components/Explore/ExploreV2/hooks/useLocationSearch" ).default;
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
@@ -78,10 +84,28 @@ const MIXED_RESULTS = [
   },
 ];
 
+const PLACE_RESULTS = [
+  {
+    type: "place", id: 1, display_name: "Monterey, CA, US", place_type: 9,
+  },
+  {
+    type: "place", id: 2, display_name: "Montenegro", place_type: 12,
+  },
+];
+
 const typeQuery = text => {
   fireEvent.changeText( screen.getByTestId( "UniversalSearch.subjectInput" ), text );
   // Only the timer advancement needs an act wrapper; fireEvent is already
   // wrapped internally by Testing Library.
+  act( ( ) => {
+    jest.advanceTimersByTime( 400 );
+  } );
+};
+
+const typeLocationQuery = text => {
+  // Focus first so the list switches to location results.
+  fireEvent( screen.getByTestId( "UniversalSearch.locationInput" ), "focus" );
+  fireEvent.changeText( screen.getByTestId( "UniversalSearch.locationInput" ), text );
   act( ( ) => {
     jest.advanceTimersByTime( 400 );
   } );
@@ -98,6 +122,7 @@ beforeEach( ( ) => {
   useExploreV2.mockReturnValue( { dispatch: mockDispatch, state: {} } );
   useCurrentUser.mockReturnValue( CURRENT_USER );
   useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
+  useLocationSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
 } );
 
 afterEach( ( ) => {
@@ -236,6 +261,85 @@ describe( "UniversalSearch screen", ( ) => {
     expect(
       screen.queryByText( i18next.t( "No-results-found-for-that-search" ) ),
     ).toBeNull( );
+  } );
+
+  it( "shows place autocomplete results while typing in the location field", ( ) => {
+    useLocationSearch.mockReturnValue( {
+      results: PLACE_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    renderComponent( <UniversalSearch /> );
+
+    typeLocationQuery( "mon" );
+
+    expect( screen.getByTestId( "LocationSearchResult.1" ) ).toBeTruthy( );
+    expect( screen.getByText( "Monterey, CA, US" ) ).toBeTruthy( );
+    // place_type 9 maps to "County"
+    expect( screen.getByText( "County" ) ).toBeTruthy( );
+  } );
+
+  it( "does not show place results while the subject field is focused", ( ) => {
+    useLocationSearch.mockReturnValue( {
+      results: PLACE_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    renderComponent( <UniversalSearch /> );
+
+    // Subject is the initial active field; location results should be hidden.
+    typeQuery( "ver" );
+
+    expect( screen.queryByTestId( "LocationSearchResult.1" ) ).toBeNull( );
+  } );
+
+  it( "swaps back to subject results when the subject field is refocused", ( ) => {
+    useUniversalSearch.mockReturnValue( {
+      results: MIXED_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    useLocationSearch.mockReturnValue( {
+      results: PLACE_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    renderComponent( <UniversalSearch /> );
+
+    // Type a subject query, then move to the location field and query there.
+    typeQuery( "ver" );
+    typeLocationQuery( "mon" );
+    expect( screen.getByTestId( "LocationSearchResult.1" ) ).toBeTruthy( );
+    expect( screen.queryByText( "seth_msp" ) ).toBeNull( );
+
+    // Refocusing the subject field brings the subject results back.
+    fireEvent( screen.getByTestId( "UniversalSearch.subjectInput" ), "focus" );
+
+    expect( screen.getByText( "seth_msp" ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "LocationSearchResult.1" ) ).toBeNull( );
+  } );
+
+  it( "fills the field, sets the place, and dismisses the keyboard on selection", ( ) => {
+    const dismissSpy = jest.spyOn( Keyboard, "dismiss" ).mockImplementation( ( ) => {} );
+    useLocationSearch.mockReturnValue( {
+      results: PLACE_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    renderComponent( <UniversalSearch /> );
+
+    typeLocationQuery( "mon" );
+    fireEvent.press( screen.getByTestId( "LocationSearchResult.1" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith( {
+      type: "SET_LOCATION_PLACE",
+      place: { id: 1, display_name: "Monterey, CA, US" },
+    } );
+    // the location field is filled with the selected place
+    expect( screen.getByDisplayValue( "Monterey, CA, US" ) ).toBeTruthy( );
+    expect( dismissSpy ).toHaveBeenCalled( );
+
+    dismissSpy.mockRestore( );
   } );
 
   it( "navigates to Advanced Search", ( ) => {

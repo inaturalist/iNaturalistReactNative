@@ -14,7 +14,7 @@ export interface ApiPlace {
   id?: number;
   name?: string;
   display_name?: string;
-  place_type?: number;
+  place_type?: number | null;
 }
 
 export interface ApiPost {
