@@ -179,7 +179,7 @@ describe( "UniversalSearch screen", ( ) => {
     expect( screen.getByTestId( "UniversalSearchResult.info.7" ) ).toBeTruthy( );
   } );
 
-  it( "fills the field and sets the subject when a result is tapped", ( ) => {
+  it( "fills the field but does not commit to context when a result is tapped", ( ) => {
     useUniversalSearch.mockReturnValue( {
       results: MIXED_RESULTS,
       isLoading: false,
@@ -191,6 +191,30 @@ describe( "UniversalSearch screen", ( ) => {
 
     fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
 
+    // the selection is staged locally, not written to context until Search
+    expect( mockDispatch ).not.toHaveBeenCalled( );
+    // the search field is filled with the selected suggestion
+    expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
+  } );
+
+  it( "clears the field but keeps the staged subject when refocusing after a selection", ( ) => {
+    useUniversalSearch.mockReturnValue( {
+      results: MIXED_RESULTS,
+      isLoading: false,
+      refetch: jest.fn( ),
+    } );
+    renderComponent( <UniversalSearch /> );
+
+    typeQuery( "ver" );
+    fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
+    expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
+
+    fireEvent( screen.getByTestId( "UniversalSearch.subjectInput" ), "focus" );
+
+    // the field is cleared for a fresh search...
+    expect( screen.queryByDisplayValue( "seth_msp" ) ).toBeNull( );
+
+    fireEvent.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
     expect( mockDispatch ).toHaveBeenCalledWith(
       expect.objectContaining( {
         type: "SET_SUBJECT",
@@ -200,28 +224,6 @@ describe( "UniversalSearch screen", ( ) => {
         } ),
       } ),
     );
-    // the search field is filled with the selected suggestion
-    expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
-  } );
-
-  it( "clears the field but keeps the subject when tapping back in after a selection", ( ) => {
-    useUniversalSearch.mockReturnValue( {
-      results: MIXED_RESULTS,
-      isLoading: false,
-      refetch: jest.fn( ),
-    } );
-    renderComponent( <UniversalSearch /> );
-
-    typeQuery( "ver" );
-    fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
-    expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
-
-    mockDispatch.mockClear( );
-    fireEvent( screen.getByTestId( "UniversalSearch.subjectInput" ), "focus" );
-
-    // the field is cleared for a fresh search...
-    expect( screen.queryByDisplayValue( "seth_msp" ) ).toBeNull( );
-    // ...but the committed subject persists (only Reset / a new selection clears it)
     expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
   } );
 
@@ -319,7 +321,7 @@ describe( "UniversalSearch screen", ( ) => {
     expect( screen.queryByTestId( "LocationSearchResult.1" ) ).toBeNull( );
   } );
 
-  it( "fills the field, sets the place, and dismisses the keyboard on selection", ( ) => {
+  it( "fills the field and dismisses the keyboard on place selection, without committing", ( ) => {
     const dismissSpy = jest.spyOn( Keyboard, "dismiss" ).mockImplementation( ( ) => {} );
     useLocationSearch.mockReturnValue( {
       results: PLACE_RESULTS,
@@ -331,10 +333,6 @@ describe( "UniversalSearch screen", ( ) => {
     typeLocationQuery( "mon" );
     fireEvent.press( screen.getByTestId( "LocationSearchResult.1" ) );
 
-    expect( mockDispatch ).toHaveBeenCalledWith( {
-      type: "SET_LOCATION_PLACE",
-      place: { id: 1, display_name: "Monterey, CA, US" },
-    } );
     // the location field is filled with the selected place
     expect( screen.getByDisplayValue( "Monterey, CA, US" ) ).toBeTruthy( );
     expect( dismissSpy ).toHaveBeenCalled( );
@@ -348,5 +346,125 @@ describe( "UniversalSearch screen", ( ) => {
     fireEvent.press( screen.getByText( i18next.t( "Advanced-Search" ) ) );
 
     expect( mockNavigate ).toHaveBeenCalledWith( "AdvancedSearch" );
+  } );
+
+  describe( "search submission", ( ) => {
+    const selectSubject = ( ) => {
+      useUniversalSearch.mockReturnValue( {
+        results: MIXED_RESULTS,
+        isLoading: false,
+        refetch: jest.fn( ),
+      } );
+      typeQuery( "ver" );
+      fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
+    };
+
+    // Stage a location pick on this instance of the screen.
+    const selectPlace = ( ) => {
+      useLocationSearch.mockReturnValue( {
+        results: PLACE_RESULTS,
+        isLoading: false,
+        refetch: jest.fn( ),
+      } );
+      typeLocationQuery( "mon" );
+      fireEvent.press( screen.getByTestId( "LocationSearchResult.1" ) );
+    };
+
+    const pressSearch = ( ) => fireEvent.press(
+      screen.getByTestId( "UniversalSearch.searchButton" ),
+    );
+
+    it( "navigates to ExploreResults when the search button is pressed", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      pressSearch( );
+
+      expect( mockNavigate ).toHaveBeenCalledWith( "ExploreResults" );
+    } );
+
+    it( "commits all organisms + worldwide when nothing is selected", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "commits the subject + worldwide when only a subject is selected", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      selectSubject( );
+      pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "user",
+            user: expect.objectContaining( { id: 7 } ),
+          } ),
+        } ),
+      );
+      // location was left untouched → worldwide
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "commits all organisms + the place when only a location is selected", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      selectPlace( );
+      pressSearch( );
+
+      // subject was left untouched → all organisms
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_LOCATION_PLACE",
+        place: { id: 1, display_name: "Monterey, CA, US" },
+      } );
+    } );
+
+    it( "commits both when a subject and a location are selected", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      selectSubject( );
+      selectPlace( );
+      pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( { type: "SET_SUBJECT" } ),
+      );
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_LOCATION_PLACE",
+        place: { id: 1, display_name: "Monterey, CA, US" },
+      } );
+      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "does not commit anything after Reset clears the staged selections", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      selectSubject( );
+      selectPlace( );
+      fireEvent.press( screen.getByText( i18next.t( "Reset-verb" ) ) );
+
+      pressSearch( );
+
+      // Reset cleared the staged picks, so Search falls back to the defaults.
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "dismisses the keyboard when the search button is pressed", ( ) => {
+      const dismissSpy = jest.spyOn( Keyboard, "dismiss" ).mockImplementation( ( ) => {} );
+      renderComponent( <UniversalSearch /> );
+
+      pressSearch( );
+
+      expect( dismissSpy ).toHaveBeenCalled( );
+
+      dismissSpy.mockRestore( );
+    } );
   } );
 } );
