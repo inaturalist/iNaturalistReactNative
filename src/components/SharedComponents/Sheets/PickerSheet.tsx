@@ -9,8 +9,8 @@ import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  onPressClose: Function;
-  confirm: Function;
+  onPressClose: ( ) => void;
+  confirm: ( selection: boolean | string ) => void;
   headerText: string;
   pickerValues: object;
   selectedValue: boolean | string;
@@ -59,7 +59,7 @@ const PickerSheet = ( {
         <Button
           level="primary"
           text={t( "CONFIRM" )}
-          onPress={() => confirm( selection )}
+          onPress={( ) => confirm( selection )}
           className="mt-[15px]"
           accessibilityLabel={t( "CONFIRM" )}
         />
