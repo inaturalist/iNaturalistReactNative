@@ -7,12 +7,14 @@ import { Keyboard } from "react-native";
 import { renderComponent } from "tests/helpers/render";
 
 const mockNavigate = jest.fn( );
+const mockPopTo = jest.fn( );
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
     useNavigation: ( ) => ( {
       navigate: mockNavigate,
+      popTo: mockPopTo,
       goBack: jest.fn( ),
       canGoBack: ( ) => true,
     } ),
@@ -118,6 +120,7 @@ beforeAll( async ( ) => {
 beforeEach( ( ) => {
   jest.useFakeTimers( );
   mockNavigate.mockClear( );
+  mockPopTo.mockClear( );
   mockDispatch.mockClear( );
   useExploreV2.mockReturnValue( { dispatch: mockDispatch, state: {} } );
   useCurrentUser.mockReturnValue( CURRENT_USER );
@@ -379,7 +382,7 @@ describe( "UniversalSearch screen", ( ) => {
 
       pressSearch( );
 
-      expect( mockNavigate ).toHaveBeenCalledWith( "ExploreResults" );
+      expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
     } );
 
     it( "commits all organisms + worldwide when nothing is selected", ( ) => {
