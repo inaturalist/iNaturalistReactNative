@@ -33,6 +33,7 @@ const DateFieldInput = ( { obsField }: Props ) => {
     <>
       <DateTimePicker
         isDateTimePickerVisible={showPicker}
+        mode={datatype}
         onDatePicked={newDate => console.log( newDate )}
         toggleDateTimePicker={( ) => setShowPicker( false )}
       />
