@@ -1,3 +1,4 @@
+import NumericFieldInput from "components/AddToProjects/FieldInputs/NumericFieldInput";
 import { Body1, Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -14,13 +15,11 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
 
   const renderInput = ( obsField?: RealmObservationField ) => {
     if ( !obsField ) return null;
+    const obsFieldId = obsField.id;
+
     switch ( obsField.datatype ) {
       case "numeric":
-        return (
-          <Body3 className="pt-1 color-darkGrayDisabled">
-            {t( "Enter-a-number" )}
-          </Body3>
-        );
+        return <NumericFieldInput obsFieldId={obsFieldId} />;
       case "text":
       case "dna":
         return (
