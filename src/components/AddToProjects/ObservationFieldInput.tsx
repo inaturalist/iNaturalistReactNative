@@ -1,3 +1,4 @@
+import DateFieldInput from "components/AddToProjects/FieldInputs/DateFieldInput";
 import NumericFieldInput from "components/AddToProjects/FieldInputs/NumericFieldInput";
 import TextFieldInput from "components/AddToProjects/FieldInputs/TextFieldInput";
 import { Body1, Body3, INatIcon } from "components/SharedComponents";
@@ -25,23 +26,9 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
       case "dna":
         return <TextFieldInput obsFieldId={obsFieldId} />;
       case "date":
-        return (
-          <Body3 className="pt-1 color-darkGrayDisabled">
-            {t( "Choose-a-date" )}
-          </Body3>
-        );
       case "time":
-        return (
-          <Body3 className="pt-1 color-darkGrayDisabled">
-            {t( "Choose-a-time" )}
-          </Body3>
-        );
       case "datetime":
-        return (
-          <Body3 className="pt-1 color-darkGrayDisabled">
-            {t( "Choose-a-date-time" )}
-          </Body3>
-        );
+        return <DateFieldInput obsField={obsField} />;
       case "taxon":
         return (
           <Body3 className="pt-1 color-darkGrayDisabled">
