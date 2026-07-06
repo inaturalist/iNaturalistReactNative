@@ -50,6 +50,24 @@ const DatePicker = ( {
     );
   }
 
+  if ( mode === "time" ) {
+    return (
+      <DateTimePicker
+        display="spinner"
+        customHeaderIOS={EmptyHeader}
+        isDarkModeEnabled={false}
+        themeVariant="light"
+        isVisible={isDateTimePickerVisible}
+        mode="time"
+        onCancel={_toggleDateTimePicker}
+        onConfirm={selectedDate => {
+          onDatePicked( selectedDate );
+          _toggleDateTimePicker( );
+        }}
+      />
+    );
+  }
+
   // Base case we want to pick a date
   return (
     <DateTimePicker
