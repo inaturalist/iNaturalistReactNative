@@ -1,12 +1,9 @@
-// @flow
-
 import { Picker } from "@react-native-picker/picker";
 import {
   BottomSheet,
   Button,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
@@ -30,7 +27,7 @@ const PickerSheet = ( {
   pickerValues,
   selectedValue,
   insideModal,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation();
   const [selection, setSelection] = useState( selectedValue );
 
