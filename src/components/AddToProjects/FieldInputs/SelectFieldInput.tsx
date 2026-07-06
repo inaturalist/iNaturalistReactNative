@@ -1,6 +1,6 @@
 import { Body3, PickerSheet } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import type { RealmObservationField } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 
@@ -18,18 +18,29 @@ const SelectFieldInput = ( { obsField }: Props ) => {
 
   console.log( "setValue", setValue );
 
+  const pickerValues = useMemo( () => {
+    const values: Record<string, { label: string; value: string }> = {};
+    obsField.allowedValues.forEach( allowedValue => {
+      values[String( allowedValue )] = {
+        label: allowedValue,
+        value: allowedValue,
+      };
+    } );
+    return values;
+  }, [obsField.allowedValues] );
+
   return (
     <>
       {sheetOpen && (
         <PickerSheet
           headerText={obsField.name?.toLocaleUpperCase( ) || t( "Select-a-response" )}
           onPressClose={( ) => setSheetOpen( false )}
-          confirm={( newValue: string ) => {
+          confirm={newValue => {
             setValue( newValue );
             setSheetOpen( false );
           }}
           selectedValue={value}
-          pickerValues={obsField.allowedValues}
+          pickerValues={pickerValues}
         />
       )}
       <Pressable accessibilityRole="button" onPress={() => setSheetOpen( true )}>
