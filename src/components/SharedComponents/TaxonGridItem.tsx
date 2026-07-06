@@ -73,7 +73,7 @@ const TaxonGridItem = ( {
         )}
 
         { upperRight && (
-          <View className="absolute top-3 right-3">
+          <View className="absolute top-0 right-0">
             {upperRight}
           </View>
         ) }
