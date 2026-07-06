@@ -19,7 +19,7 @@ import {
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
-import StatTab from "components/SharedComponents/StatTab";
+import { ObservationsStatTab, SpeciesStatTab } from "components/SharedComponents/StatTab";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
 import { Alert } from "react-native";
@@ -238,14 +238,6 @@ const MyObservationsSimple = ( {
     ? numUnuploadedObservations - numUnuploadedObsMissingBasics
     : numUnuploadedObservations;
 
-  const renderTabComponent = ( { id }: { id: string } ) => (
-    <StatTab
-      id={id}
-      numTotalObservations={numTotalObservations}
-      numTotalTaxa={numTotalTaxa}
-    />
-  );
-
   const observationsHeader = useMemo( ( ) => {
     if ( layout !== "grid" ) {
       return (
@@ -355,14 +347,19 @@ const MyObservationsSimple = ( {
               id: OBSERVATIONS_TAB,
               text: t( "Observations" ),
               onPress: () => setActiveTab( OBSERVATIONS_TAB ),
+              renderComponent: ( ) => (
+                <ObservationsStatTab count={numTotalObservations} />
+              ),
             },
             {
               id: TAXA_TAB,
               text: t( "Species" ),
               onPress: () => setActiveTab( TAXA_TAB ),
+              renderComponent: ( ) => (
+                <SpeciesStatTab count={numTotalTaxa} />
+              ),
             },
           ]}
-          TabComponent={renderTabComponent}
         />
         {searchMyObservationsEnabled && activeTab === OBSERVATIONS_TAB && (
           <SearchedTaxonBanner />

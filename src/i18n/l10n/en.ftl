@@ -63,7 +63,6 @@ Add-location-to-refresh-suggestions = Add location to refresh suggestions
 # Accessibility label for a button that starts the process of adding an
 # observation, e.g. the button in the tab bar
 Add-observations = Add observations
-ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
