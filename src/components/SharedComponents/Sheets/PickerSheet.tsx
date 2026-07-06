@@ -11,14 +11,14 @@ import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  onPressClose: Function,
-  confirm: Function,
-  headerText: string,
-  pickerValues: Object,
-  selectedValue: boolean | string,
-  insideModal?: boolean
-};
+interface Props {
+  onPressClose: Function;
+  confirm: Function;
+  headerText: string;
+  pickerValues: object;
+  selectedValue: boolean | string;
+  insideModal?: boolean;
+}
 
 // Note re: dark mode: react-native-picker automatically handles user preferences when it comes
 // to the color of the text, so when we add dark mode, we can remove the explicit styling.
