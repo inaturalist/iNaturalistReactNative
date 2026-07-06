@@ -12,7 +12,10 @@ interface Props {
   onPressClose: ( ) => void;
   confirm: ( selection: boolean | string ) => void;
   headerText: string;
-  pickerValues: object;
+  pickerValues: Record<string, {
+    label: string;
+    value: boolean | string;
+  }>;
   selectedValue: boolean | string;
   insideModal?: boolean;
 }
