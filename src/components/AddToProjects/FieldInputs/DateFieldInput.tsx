@@ -1,4 +1,4 @@
-import { Body3 } from "components/SharedComponents";
+import { Body3, DateTimePicker } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
 import React, { useMemo, useState } from "react";
 import type { RealmObservationField } from "realmModels/types";
@@ -16,7 +16,6 @@ const DateFieldInput = ( { obsField }: Props ) => {
   const { value, setValue } = useObservationFieldValue( id );
   console.log( setValue );
   const [showPicker, setShowPicker] = useState( false );
-  console.log( "showPicker", showPicker );
   const placeholder = useMemo( () => {
     switch ( datatype ) {
       case "date":
@@ -31,17 +30,24 @@ const DateFieldInput = ( { obsField }: Props ) => {
   }, [datatype, t] );
 
   return (
-    <Pressable
-      accessibilityRole="button"
-      onPress={( ) => setShowPicker( true )}
-    >
-      <Body3 className={value
-        ? "pt-1"
-        : "pt-1 color-darkGrayDisabled"}
+    <>
+      <DateTimePicker
+        isDateTimePickerVisible={showPicker}
+        onDatePicked={newDate => console.log( newDate )}
+        toggleDateTimePicker={( ) => setShowPicker( false )}
+      />
+      <Pressable
+        accessibilityRole="button"
+        onPress={( ) => setShowPicker( true )}
       >
-        {value || placeholder}
-      </Body3>
-    </Pressable>
+        <Body3 className={value
+          ? "pt-1"
+          : "pt-1 color-darkGrayDisabled"}
+        >
+          {value || placeholder}
+        </Body3>
+      </Pressable>
+    </>
   );
 };
 
