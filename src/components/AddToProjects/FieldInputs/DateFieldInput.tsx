@@ -14,8 +14,15 @@ const DateFieldInput = ( { obsField }: Props ) => {
   const { t } = useTranslation( );
   const { datatype, id } = obsField;
   const { value, setValue } = useObservationFieldValue( id );
-  console.log( setValue );
   const [showPicker, setShowPicker] = useState( false );
+
+  const displayValue = useMemo( () => {
+    if ( !value ) return null;
+    // TODO: format the Date value into human readable form
+    // However, first check if we only send strings or date values time-zones etc
+    return value.toISOString( );
+  }, [value] );
+
   const placeholder = useMemo( () => {
     switch ( datatype ) {
       case "date":
@@ -34,18 +41,18 @@ const DateFieldInput = ( { obsField }: Props ) => {
       <DateTimePicker
         isDateTimePickerVisible={showPicker}
         mode={datatype}
-        onDatePicked={newDate => console.log( newDate )}
+        onDatePicked={newDate => setValue( newDate )}
         toggleDateTimePicker={( ) => setShowPicker( false )}
       />
       <Pressable
         accessibilityRole="button"
         onPress={( ) => setShowPicker( true )}
       >
-        <Body3 className={value
+        <Body3 className={displayValue
           ? "pt-1"
           : "pt-1 color-darkGrayDisabled"}
         >
-          {value || placeholder}
+          {displayValue || placeholder}
         </Body3>
       </Pressable>
     </>
