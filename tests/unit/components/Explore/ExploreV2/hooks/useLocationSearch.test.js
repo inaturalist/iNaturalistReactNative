@@ -1,5 +1,5 @@
 import { waitFor } from "@testing-library/react-native";
-import useLocationSearch from "sharedHooks/useLocationSearch";
+import useLocationSearch from "components/Explore/ExploreV2/hooks/useLocationSearch";
 import { renderHookInApp } from "tests/helpers/render";
 
 jest.mock( "api/search" );

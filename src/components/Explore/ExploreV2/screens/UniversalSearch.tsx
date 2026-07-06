@@ -8,6 +8,12 @@ import {
   resultToSubject,
   subjectToText,
 } from "components/Explore/ExploreV2/helpers/universalSearchSubject";
+import type { LocationSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useLocationSearch";
+import useLocationSearch from "components/Explore/ExploreV2/hooks/useLocationSearch";
+import type { UniversalSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useUniversalSearch";
+import useUniversalSearch from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
 import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
@@ -25,12 +31,8 @@ import React, { useCallback, useRef, useState } from "react";
 import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
 import { FlatList, Keyboard } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import type { LocationSearchResultItem } from "sharedHooks/useLocationSearch";
-import useLocationSearch from "sharedHooks/useLocationSearch";
 import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
-import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
-import useUniversalSearch from "sharedHooks/useUniversalSearch";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -115,7 +117,7 @@ const UniversalSearch = ( ) => {
     focusLocationField( );
   }, [focusLocationField] );
 
-  const handleSelect = useCallback( ( selectedSubject: ExploreV2Subject ) => {
+  const handleSubjectSelect = useCallback( ( selectedSubject: ExploreV2Subject ) => {
     commitSubject( subjectToText( selectedSubject, commonNameIsPrimary ) );
     dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: selectedSubject } );
     locationInputRef.current?.focus( );
@@ -153,10 +155,10 @@ const UniversalSearch = ( ) => {
     return (
       <UniversalSearchResult
         result={item}
-        onPress={( ) => handleSelect( resultToSubject( item ) )}
+        onPress={( ) => handleSubjectSelect( resultToSubject( item ) )}
       />
     );
-  }, [handleSelect, handleLocationSelect] );
+  }, [handleSubjectSelect, handleLocationSelect] );
 
   // Gate the data to [] until there's a query for the focused field, mirroring
   // the subject-only behavior: the list stays mounted and EmptySearchResults

@@ -29,11 +29,13 @@ jest.mock( "providers/ExploreV2Context", ( ) => {
 } );
 const { useExploreV2 } = require( "providers/ExploreV2Context" );
 
-jest.mock( "sharedHooks/useUniversalSearch" );
-const useUniversalSearch = require( "sharedHooks/useUniversalSearch" ).default;
+jest.mock( "components/Explore/ExploreV2/hooks/useUniversalSearch" );
+const useUniversalSearch = require(
+  "components/Explore/ExploreV2/hooks/useUniversalSearch",
+).default;
 
-jest.mock( "sharedHooks/useLocationSearch" );
-const useLocationSearch = require( "sharedHooks/useLocationSearch" ).default;
+jest.mock( "components/Explore/ExploreV2/hooks/useLocationSearch" );
+const useLocationSearch = require( "components/Explore/ExploreV2/hooks/useLocationSearch" ).default;
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,

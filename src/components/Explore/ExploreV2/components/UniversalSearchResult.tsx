@@ -1,4 +1,6 @@
 import { THUMBNAIL_CLASS } from "appConstants/classNames";
+import type { UniversalSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
@@ -8,7 +10,6 @@ import UserListItem from "components/UserList/UserListItem";
 import React from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
-import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
 
 interface Props {
   result: UniversalSearchResultItem;

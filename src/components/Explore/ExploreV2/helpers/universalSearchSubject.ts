@@ -1,7 +1,8 @@
+import type { UniversalSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import { log } from "sharedHelpers/logger";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
-import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
 
 const logger = log.extend( "universalSearchSubject" );
 
