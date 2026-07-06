@@ -1,9 +1,11 @@
 import ExploreTaxonSearchModal from "components/Explore/Modals/ExploreTaxonSearchModal";
-import { Body3 } from "components/SharedComponents";
-import { Pressable } from "components/styledComponents";
+import { Body3, DisplayTaxon } from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
 import React, { useState } from "react";
 import type { RealmTaxon } from "realmModels/types";
-import { useTranslation } from "sharedHooks";
+import { useTaxon, useTranslation } from "sharedHooks";
+
+import useObservationFieldValue from "../hooks/useObservationFieldValue";
 
 interface Props {
   obsFieldId: number;
@@ -11,10 +13,16 @@ interface Props {
 
 const TaxonFieldInput = ( { obsFieldId }: Props ) => {
   const { t } = useTranslation( );
-  console.log( "obsFieldId", obsFieldId );
+  const { value, setValue } = useObservationFieldValue( obsFieldId );
   const [showModal, setShowModal] = useState( false );
+  const { taxon } = useTaxon( { id: value } );
+
   const updateTaxon = ( selectedTaxon: RealmTaxon | null ) => {
-    console.log( "selectedTaxon", selectedTaxon );
+    if ( selectedTaxon?.id ) {
+      setValue( String( selectedTaxon.id ) );
+    } else {
+      setValue( null );
+    }
   };
 
   return (
@@ -24,14 +32,25 @@ const TaxonFieldInput = ( { obsFieldId }: Props ) => {
         closeModal={( ) => setShowModal( false )}
         updateTaxon={updateTaxon}
       />
-      <Pressable
-        accessibilityRole="button"
-        onPress={( ) => setShowModal( true )}
-      >
-        <Body3 className="pt-1 color-darkGrayDisabled">
-          {t( "Select-a-species" )}
-        </Body3>
-      </Pressable>
+      {value && taxon
+        ? (
+          <View className="px-2.5 pt-4">
+            <DisplayTaxon
+              handlePress={( ) => setShowModal( true )}
+              taxon={taxon}
+            />
+          </View>
+        )
+        : (
+          <Pressable
+            accessibilityRole="button"
+            onPress={( ) => setShowModal( true )}
+          >
+            <Body3 className="pt-1 color-darkGrayDisabled">
+              {t( "Select-a-species" )}
+            </Body3>
+          </Pressable>
+        )}
     </>
   );
 };
