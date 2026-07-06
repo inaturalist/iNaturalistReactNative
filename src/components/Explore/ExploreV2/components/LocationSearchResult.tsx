@@ -1,9 +1,10 @@
+import type { LocationSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useLocationSearch";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import List2 from "components/SharedComponents/Typography/List2";
 import { Pressable, View } from "components/styledComponents";
 import inatPlaceTypes from "dictionaries/places";
 import React from "react";
-import type { LocationSearchResultItem } from "sharedHooks/useLocationSearch";
 
 interface Props {
   place: LocationSearchResultItem;
@@ -14,7 +15,7 @@ const LocationSearchResult = ( { place, onPress }: Props ) => (
   <Pressable
     accessibilityRole="button"
     accessibilityLabel={place.display_name}
-    className="h-[64px] justify-center px-[15px] border-b border-lightGray"
+    className="min-h-[64px] justify-center py-[11px] px-[15px] border-b border-lightGray"
     onPress={onPress}
     testID={`LocationSearchResult.${place.id}`}
   >
