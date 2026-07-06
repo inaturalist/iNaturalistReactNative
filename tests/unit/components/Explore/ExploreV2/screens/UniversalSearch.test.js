@@ -285,6 +285,75 @@ describe( "UniversalSearch screen", ( ) => {
     ).toBeNull( );
   } );
 
+  describe( "default search options (empty subject field)", ( ) => {
+    it( "shows the iconic taxa chooser, current user, and unobserved shortcut", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByTestId( "DefaultSearchOptions" ) ).toBeTruthy( );
+      expect( screen.getByTestId( "INatIconButton.IconicTaxonButton.plantae" ) ).toBeTruthy( );
+      // current user's profile row, reusing the user result row
+      expect( screen.getByTestId( "UniversalSearchResult.user.99" ) ).toBeTruthy( );
+      expect( screen.getByText( "tester" ) ).toBeTruthy( );
+      // "Species I haven't observed" shortcut
+      expect( screen.getByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeTruthy( );
+    } );
+
+    it( "fills the field and sets the subject when an iconic taxon is tapped", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      fireEvent.press( screen.getByTestId( "INatIconButton.IconicTaxonButton.plantae" ) );
+
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "taxon",
+            taxon: expect.objectContaining( { id: 47126, name: "Plantae" } ),
+          } ),
+        } ),
+      );
+      // common name is primary for the test user, so the field shows "Plants"
+      expect( screen.getByDisplayValue( "Plants" ) ).toBeTruthy( );
+    } );
+
+    it( "sets the current user as the subject when their profile row is tapped", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.99" ) );
+
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "user",
+            user: expect.objectContaining( { id: 99, login: "tester" } ),
+          } ),
+        } ),
+      );
+      expect( screen.getByDisplayValue( "tester" ) ).toBeTruthy( );
+    } );
+
+    it( "hides the current user row when logged out", ( ) => {
+      useCurrentUser.mockReturnValue( null );
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.queryByTestId( "UniversalSearchResult.user.99" ) ).toBeNull( );
+      // the iconic taxa chooser and unobserved shortcut still render
+      expect( screen.getByTestId( "INatIconButton.IconicTaxonButton.plantae" ) ).toBeTruthy( );
+      expect( screen.getByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeTruthy( );
+    } );
+
+    it( "hides the default options once a subject query is entered", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByTestId( "DefaultSearchOptions" ) ).toBeTruthy( );
+
+      typeQuery( "ver" );
+
+      expect( screen.queryByTestId( "DefaultSearchOptions" ) ).toBeNull( );
+    } );
+  } );
+
   it( "shows place autocomplete results while typing in the location field", ( ) => {
     useLocationSearch.mockReturnValue( {
       results: PLACE_RESULTS,

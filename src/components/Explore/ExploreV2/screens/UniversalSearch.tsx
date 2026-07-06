@@ -175,27 +175,22 @@ const UniversalSearch = ( ) => {
     ? locationData
     : subjectData;
 
-  let mainContent = null;
-  /* Results for an active query, default options when empty, else nothing */
-  if ( subjectText.trim( ).length === 0 ) {
-    mainContent = ( <DefaultSearchOptions onSelectSubject={handleSelect} /> );
-  } else if ( subjectHasQuery ) {
-    mainContent = (
-      <FlatList
-        data={results}
-        keyboardShouldPersistTaps="handled"
-        keyExtractor={resultKey}
-        renderItem={renderResult}
-        ListEmptyComponent={(
-          <EmptySearchResults
-            isLoading={isLoading}
-            searchQuery={subjectQuery}
-            refetch={refetch}
-          />
-        )}
+  const showDefaultOptions = !showLocation && !subjectHasQuery;
+  const listEmptyComponent = showDefaultOptions
+    ? ( <DefaultSearchOptions onSelectSubject={handleSubjectSelect} /> )
+    : (
+      <EmptySearchResults
+        isLoading={showLocation
+          ? locationIsLoading
+          : isLoading}
+        searchQuery={showLocation
+          ? locationQuery
+          : subjectQuery}
+        refetch={showLocation
+          ? locationRefetch
+          : refetch}
       />
     );
-  }
 
   return (
     <ViewWrapper testID="UniversalSearch">
@@ -270,19 +265,7 @@ const UniversalSearch = ( ) => {
           keyboardShouldPersistTaps="handled"
           keyExtractor={resultKey}
           renderItem={renderItem}
-          ListEmptyComponent={(
-            <EmptySearchResults
-              isLoading={showLocation
-                ? locationIsLoading
-                : isLoading}
-              searchQuery={showLocation
-                ? locationQuery
-                : subjectQuery}
-              refetch={showLocation
-                ? locationRefetch
-                : refetch}
-            />
-          )}
+          ListEmptyComponent={listEmptyComponent}
         />
       </View>
     </ViewWrapper>
