@@ -101,4 +101,4 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
   );
 };
 
-export default DefaultSearchOptions;
+export default React.memo( DefaultSearchOptions );
