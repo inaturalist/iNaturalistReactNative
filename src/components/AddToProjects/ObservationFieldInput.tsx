@@ -1,5 +1,6 @@
 import DateFieldInput from "components/AddToProjects/FieldInputs/DateFieldInput";
 import NumericFieldInput from "components/AddToProjects/FieldInputs/NumericFieldInput";
+import SelectFieldInput from "components/AddToProjects/FieldInputs/SelectFieldInput";
 import TextFieldInput from "components/AddToProjects/FieldInputs/TextFieldInput";
 import { Body1, Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -12,12 +13,24 @@ interface Props {
   projectObservationField: RealmProjectObservationField;
   isValid: boolean;
 }
+
+// A field of datatype "text" that has a defined set of allowedValues needs a dedicated
+// picker UI
+const isSelectField = ( obsField: RealmObservationField ) => (
+  obsField.datatype === "text"
+  && obsField.allowedValues.length > 1
+);
+
 const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) => {
   const { t } = useTranslation( );
 
   const renderInput = ( obsField?: RealmObservationField ) => {
     if ( !obsField ) return null;
     const obsFieldId = obsField.id;
+
+    if ( isSelectField( obsField ) ) {
+      return <SelectFieldInput obsField={obsField} />;
+    }
 
     switch ( obsField.datatype ) {
       case "numeric":

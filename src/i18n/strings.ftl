@@ -1177,6 +1177,7 @@ See-project-members = See project members
 # Accessibility label for Species button on UserProfile screen
 See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
 Select-a-date-and-time-for-observation = Select a date and time for observation
+Select-a-response = Select a response
 Select-a-species = Select a species
 Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
