@@ -1,6 +1,7 @@
 import DateFieldInput from "components/AddToProjects/FieldInputs/DateFieldInput";
 import NumericFieldInput from "components/AddToProjects/FieldInputs/NumericFieldInput";
 import SelectFieldInput from "components/AddToProjects/FieldInputs/SelectFieldInput";
+import TaxonFieldInput from "components/AddToProjects/FieldInputs/TaxonFieldInput";
 import TextFieldInput from "components/AddToProjects/FieldInputs/TextFieldInput";
 import { Body1, Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -43,11 +44,7 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
       case "datetime":
         return <DateFieldInput obsField={obsField} />;
       case "taxon":
-        return (
-          <Body3 className="pt-1 color-darkGrayDisabled">
-            {t( "Select-a-species" )}
-          </Body3>
-        );
+        return <TaxonFieldInput obsFieldId={obsFieldId} />;
       default:
         return null;
     }
