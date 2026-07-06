@@ -1,4 +1,6 @@
 import { THUMBNAIL_CLASS } from "appConstants/classNames";
+import type { UniversalSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
@@ -8,12 +10,14 @@ import UserListItem from "components/UserList/UserListItem";
 import React from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
-import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
 
 interface Props {
   result: UniversalSearchResultItem;
   onPress: ( ) => void;
 }
+
+const ROW_CLASS = "flex-row items-center justify-between "
+  + "px-[15px] py-[11px] border-b border-lightGray";
 
 const resultId = ( result: UniversalSearchResultItem ): number | undefined => {
   if ( result.type === "user" ) { return result.user.id; }
@@ -52,7 +56,7 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
                   iconicTaxonName={result.taxon.iconic_taxon_name}
                 />
               )}
-            <View className="flex-1 ml-3">
+            <View className="flex-1 ml-[10px]">
               <DisplayTaxonName
                 taxon={result.taxon}
                 prefersCommonNames={currentUser?.prefers_common_names}
@@ -89,7 +93,7 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
   // screen readers expose both as independent controls. Nesting one accessible
   // button inside another causes the inner one to be swallowed.
   return (
-    <View className="flex-row items-center justify-between px-4 py-2 border-b border-lightGray">
+    <View className={ROW_CLASS}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={resultLabel( result )}

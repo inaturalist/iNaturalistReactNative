@@ -27,4 +27,30 @@ const StatTab = ( { stat, label, wrapperClassName = "p-3" }: Props ) => {
   );
 };
 
-export default StatTab;
+interface VariantProps {
+  count?: number | null;
+  wrapperClassName?: string;
+}
+
+// Thin wrappers so the stat count and its translated label stay in one place
+export const ObservationsStatTab = ( { count, wrapperClassName }: VariantProps ) => {
+  const { t } = useTranslation( );
+  return (
+    <StatTab
+      stat={count}
+      label={t( "X-OBSERVATIONS--below-number", { count } )}
+      wrapperClassName={wrapperClassName}
+    />
+  );
+};
+
+export const SpeciesStatTab = ( { count, wrapperClassName }: VariantProps ) => {
+  const { t } = useTranslation( );
+  return (
+    <StatTab
+      stat={count}
+      label={t( "X-SPECIES--below-number", { count } )}
+      wrapperClassName={wrapperClassName}
+    />
+  );
+};

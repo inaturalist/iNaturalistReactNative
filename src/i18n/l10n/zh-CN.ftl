@@ -136,6 +136,7 @@ Closes-explanation = 关闭说明
 Closes-introduction = 关闭介绍
 Closes-withdraw-id-sheet = 关闭“撤销鉴定”表
 COLLABORATORS = 协作者
+Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = 搜集型项目
 Combine-Photos = 合并照片
 COMMENT = 评论
@@ -330,6 +331,7 @@ FOLLOWING-X-PEOPLE =
         [one] 正在关注{ $count }个人
        *[other] 正在关注{ $count } 个人
     }
+For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 Forgot-Password = 忘记密码
 GEOPRIVACY = 地理隐私
 Geoprivacy-status = 地理隐私：{ $status }
@@ -468,6 +470,9 @@ LOG-IN-TO-INATURALIST = 登入到INATURALIST
 Log-in-to-iNaturalist = 登录到iNaturalist
 LOG-OUT = 登出
 LOG-OUT--question = 登出？
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = 最低
 LOWEST-RANK = 排名最低
 MAP = 地图
@@ -890,9 +895,11 @@ This-user-is-not-following-anyone = 此用户没有关注任何人。
 To-sync-your-observations-to-iNaturalist = 要将您的观察记录同步到 iNaturalist，请登录。
 To-view-nearby-organisms-please-enable-location = 要查看附近的生物，请启用位置。
 To-view-nearby-projects-please-enable-location = 要查看附近的项目，请启用位置。
+To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
 Toggle-map-type = 切换地图类型
 TOP-ID-SUGGESTION = 最佳鉴定建议
 Traditional-Project = 传统项目
+Traditional-Projects = Traditional Projects
 Umbrella-Project = 旗舰型项目
 UNFOLLOW = 取消关注
 UNFOLLOW-USER = 取消关注用户？
@@ -1106,15 +1113,18 @@ You-can-add-up-to-20-media = 每个观察记录最多可以添加20张照片和2
 You-can-also-check-out-merchandise = 您也可以在下面的商店中购买iNaturalist 和Seek的周边商品！
 You-can-click-join-on-the-project-page = 您可以在项目页面点击“加入”。
 You-can-find-answers-on-our-help-page = 您可以在我们的帮助页面找到答案。
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = You can manually add observations to Traditional Projects you have joined.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = 您现在可以将您的观察结果上传到 iNaturalist 并为全球生物多样性研究做出贡献。
 You-can-only-add-20-photos-per-observation = 每次观察只能添加20张照片
 You-can-still-share-the-file = 您仍然可以与另一个应用程序共享文件。如果您可以通过电子邮件发送，请发送至 { $email }
 You-can-upload-this-observation-to-our-community = 您可以将此观察记录上传到我们的社区，获取来自真人的鉴定结果，并帮助我们的 AI 改进其鉴定能力。
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = 您更改了筛选器，但它们没有应用到您的探索搜索结果。
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = 您已选择退出社区分类单元
 You-havent-joined-any-projects-yet = 您尚未加入任何项目！
+You-havent-joined-any-Traditional-Projects-yet = You haven’t joined any Traditional Projects yet!
 You-havent-observed-any-species-yet = 你还没有观察到任何物种。
 You-likely-observed-a-species-in-this-group = 您很可能观察到了该分类群中的物种
 You-likely-observed-this-species = 您很可能观察到了这个物种

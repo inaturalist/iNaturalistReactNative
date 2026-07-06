@@ -1,11 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import LocationSearchResult
+  from "components/Explore/ExploreV2/components/LocationSearchResult";
 import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
 import {
   resultToSubject,
   subjectToText,
 } from "components/Explore/ExploreV2/helpers/universalSearchSubject";
+import type { LocationSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useLocationSearch";
+import useLocationSearch from "components/Explore/ExploreV2/hooks/useLocationSearch";
+import type { UniversalSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useUniversalSearch";
+import useUniversalSearch from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
 import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
@@ -23,10 +31,8 @@ import React, { useCallback, useRef, useState } from "react";
 import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
 import { FlatList, Keyboard } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import useDebouncedValue from "sharedHooks/useDebouncedValue";
+import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
-import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
-import useUniversalSearch from "sharedHooks/useUniversalSearch";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -40,15 +46,22 @@ const INPUT_BOX_CLASSES = classnames(
   "border border-lightGray rounded-lg",
 );
 
-const resultKey = ( result: UniversalSearchResultItem ): string => {
-  switch ( result.type ) {
+// A row is either a subject suggestion or a place, discriminated by `type`. The
+// list shows one kind at a time depending on the focused field, but they share a
+// single FlatList so we never conditionally mount/unmount it.
+type SearchResultItem = UniversalSearchResultItem | LocationSearchResultItem;
+
+const resultKey = ( item: SearchResultItem ): string => {
+  switch ( item.type ) {
+    case "place":
+      return `place-${item.id}`;
     case "user":
-      return `user-${result.user.id}`;
+      return `user-${item.user.id}`;
     case "project":
-      return `project-${result.project.id}`;
+      return `project-${item.project.id}`;
     case "taxon":
     default:
-      return `taxon-${result.taxon.id}`;
+      return `taxon-${item.taxon.id}`;
   }
 };
 
@@ -60,52 +73,69 @@ const UniversalSearch = ( ) => {
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
 
-  const [subjectText, setSubjectText] = useState( "" );
-  const [locationText, setLocationText] = useState( "" );
-  const [filledFromSelection, setFilledFromSelection] = useState( false );
-  // The debounced value that actually drives the autocomplete query. Cleared on
-  // selection so a chosen suggestion doesn't re-trigger a result list.
+  // Which field's result list is showing. tracks the last-focused field rather
+  // than live focus. Subject autofocuses, so it's the initial value.
+  const [resultsField, setResultsField] = useState<"subject" | "location">( "subject" );
   const {
-    debouncedValue: debouncedQuery,
-    debounce: debounceQuery,
-    setImmediately: setQueryImmediately,
-  } = useDebouncedValue( "" );
+    text: subjectText,
+    debouncedQuery: subjectQuery,
+    hasQuery: subjectHasQuery,
+    onChangeText: onChangeSubjectText,
+    handleFocus: focusSubjectField,
+    commit: commitSubject,
+    clear: clearSubject,
+  } = useSearchField( );
+  const {
+    text: locationText,
+    debouncedQuery: locationQuery,
+    hasQuery: locationHasQuery,
+    onChangeText: onChangeLocationText,
+    handleFocus: focusLocationField,
+    commit: commitLocation,
+    clear: clearLocation,
+  } = useSearchField( );
 
   const locationInputRef = useRef<RNTextInput>( null );
 
-  const { results, isLoading, refetch } = useUniversalSearch( debouncedQuery );
+  const { results, isLoading, refetch } = useUniversalSearch( subjectQuery );
+  const {
+    results: locationResults,
+    isLoading: locationIsLoading,
+    refetch: locationRefetch,
+  } = useLocationSearch( locationQuery );
 
   const bothFilled = subjectText.length > 0 && locationText.length > 0;
-
-  const hasQuery = debouncedQuery.trim( ).length > 0;
-
-  const handleSubjectTextChange = useCallback( ( text: string ) => {
-    setSubjectText( text );
-    setFilledFromSelection( false );
-    debounceQuery( text );
-  }, [debounceQuery] );
+  const showLocation = resultsField === "location";
 
   const handleSubjectFocus = useCallback( ( ) => {
-    if ( !filledFromSelection ) { return; }
-    setSubjectText( "" );
-    setFilledFromSelection( false );
-    setQueryImmediately( "" );
-  }, [filledFromSelection, setQueryImmediately] );
+    setResultsField( "subject" );
+    focusSubjectField( );
+  }, [focusSubjectField] );
 
-  const handleSelect = useCallback( ( subject: ExploreV2Subject ) => {
-    setSubjectText( subjectToText( subject, commonNameIsPrimary ) );
-    setFilledFromSelection( true );
-    setQueryImmediately( "" );
-    dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject } );
+  const handleLocationFocus = useCallback( ( ) => {
+    setResultsField( "location" );
+    focusLocationField( );
+  }, [focusLocationField] );
+
+  const handleSubjectSelect = useCallback( ( selectedSubject: ExploreV2Subject ) => {
+    commitSubject( subjectToText( selectedSubject, commonNameIsPrimary ) );
+    dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: selectedSubject } );
     locationInputRef.current?.focus( );
-  }, [commonNameIsPrimary, dispatch, setQueryImmediately] );
+  }, [commitSubject, commonNameIsPrimary, dispatch] );
+
+  const handleLocationSelect = useCallback( ( place: LocationSearchResultItem ) => {
+    commitLocation( place.display_name );
+    dispatch( {
+      type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
+      place: { id: place.id, display_name: place.display_name },
+    } );
+    Keyboard.dismiss( );
+  }, [commitLocation, dispatch] );
 
   const handleReset = useCallback( ( ) => {
-    setSubjectText( "" );
-    setLocationText( "" );
-    setFilledFromSelection( false );
-    setQueryImmediately( "" );
-  }, [setQueryImmediately] );
+    clearSubject( );
+    clearLocation( );
+  }, [clearSubject, clearLocation] );
 
   const handleSearch = useCallback( ( ) => {
     // TODO MOB-1338 follow-up: run the search (default to all organisms /
@@ -113,12 +143,35 @@ const UniversalSearch = ( ) => {
     Keyboard.dismiss( );
   }, [] );
 
-  const renderResult = useCallback<ListRenderItem<UniversalSearchResultItem>>( ( { item } ) => (
-    <UniversalSearchResult
-      result={item}
-      onPress={( ) => handleSelect( resultToSubject( item ) )}
-    />
-  ), [handleSelect] );
+  const renderItem = useCallback<ListRenderItem<SearchResultItem>>( ( { item } ) => {
+    if ( item.type === "place" ) {
+      return (
+        <LocationSearchResult
+          place={item}
+          onPress={( ) => handleLocationSelect( item )}
+        />
+      );
+    }
+    return (
+      <UniversalSearchResult
+        result={item}
+        onPress={( ) => handleSubjectSelect( resultToSubject( item ) )}
+      />
+    );
+  }, [handleSubjectSelect, handleLocationSelect] );
+
+  // Gate the data to [] until there's a query for the focused field, mirroring
+  // the subject-only behavior: the list stays mounted and EmptySearchResults
+  // covers the loading / no-results / no-query states.
+  const subjectData: SearchResultItem[] = subjectHasQuery
+    ? results
+    : [];
+  const locationData: SearchResultItem[] = locationHasQuery
+    ? locationResults
+    : [];
+  const listData = showLocation
+    ? locationData
+    : subjectData;
 
   return (
     <ViewWrapper testID="UniversalSearch">
@@ -139,7 +192,7 @@ const UniversalSearch = ( ) => {
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
-                  onChangeText={handleSubjectTextChange}
+                  onChangeText={onChangeSubjectText}
                   onFocus={handleSubjectFocus}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
@@ -153,7 +206,8 @@ const UniversalSearch = ( ) => {
                   accessibilityLabel={t( "Search-for-a-location" )}
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
-                  onChangeText={setLocationText}
+                  onChangeText={onChangeLocationText}
+                  onFocus={handleLocationFocus}
                   placeholder={t( "Search-for-a-location" )}
                   placeholderTextColor={colors.mediumGray}
                   ref={locationInputRef}
@@ -186,19 +240,23 @@ const UniversalSearch = ( ) => {
       </View>
 
       <View className="flex-1">
-        {/* Only surface results for an active query */}
+        {/* One always-mounted list; its contents follow the focused field. */}
         <FlatList
-          data={hasQuery
-            ? results
-            : []}
+          data={listData}
           keyboardShouldPersistTaps="handled"
           keyExtractor={resultKey}
-          renderItem={renderResult}
+          renderItem={renderItem}
           ListEmptyComponent={(
             <EmptySearchResults
-              isLoading={isLoading}
-              searchQuery={debouncedQuery}
-              refetch={refetch}
+              isLoading={showLocation
+                ? locationIsLoading
+                : isLoading}
+              searchQuery={showLocation
+                ? locationQuery
+                : subjectQuery}
+              refetch={showLocation
+                ? locationRefetch
+                : refetch}
             />
           )}
         />

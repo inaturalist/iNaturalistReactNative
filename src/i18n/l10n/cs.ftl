@@ -136,6 +136,7 @@ Closes-explanation = Uzavírá vysvětlení
 Closes-introduction = Ukončit úvod
 Closes-withdraw-id-sheet = Zavře list "Odebrat ID"
 COLLABORATORS = SPOLUPRACOVNÍCI
+Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = Sbírka projektu
 Combine-Photos = Kombinovat fotky
 COMMENT = KOMENTÁŘ
@@ -330,6 +331,7 @@ FOLLOWING-X-PEOPLE =
         [one] SLEDUJÍCÍ { $count } OSOBU
        *[other] SLEDUJÍCÍ { $count } LIDÍ
     }
+For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 Forgot-Password = Zapomenuté heslo
 GEOPRIVACY = GEOSOUKROMÍ
 Geoprivacy-status = Geosoukromí: { $status }
@@ -468,6 +470,9 @@ LOG-IN-TO-INATURALIST = PŘIHLÁSIT SE K INATURALIST
 Log-in-to-iNaturalist = Přihlásit se do iNaturalist
 LOG-OUT = ODHLÁSIT SE
 LOG-OUT--question = ODHLÁSIT SE?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Nejnižší
 LOWEST-RANK = NEJNIŽŠÍ HODNOCENÍ
 MAP = MAPA
@@ -890,9 +895,11 @@ This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = Chcete-li synchronizovat svá pozorování s iNaturalist, přihlaste se prosím.
 To-view-nearby-organisms-please-enable-location = Chcete-li zobrazit blízké organismy, povolte umístění.
 To-view-nearby-projects-please-enable-location = Pro zobrazení blízkých projektů povolte umístění.
+To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
 Toggle-map-type = Přepnout typ mapy
 TOP-ID-SUGGESTION = NÁVRH TOP ID
 Traditional-Project = Tradiční projekt
+Traditional-Projects = Traditional Projects
 Umbrella-Project = Zastřešující projekt
 UNFOLLOW = PŘESTAT SLEDOVAT
 UNFOLLOW-USER = PŘESTAT SLEDOVAT UŽIVATELE?
@@ -1106,15 +1113,18 @@ You-can-add-up-to-20-media = Můžete přidat až 20 fotografií a 20 zvuků na 
 You-can-also-check-out-merchandise = Můžete se také podívat na zboží pro iNaturalist a Seek v našem obchodě níže!
 You-can-click-join-on-the-project-page = Můžete kliknout na "připojit se" na stránce projektu.
 You-can-find-answers-on-our-help-page = Odpovědi můžete najít na naší stránce nápovědy.
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = You can manually add observations to Traditional Projects you have joined.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = Nyní můžete nahrát svá pozorování do iNaturalist a přispět tak k celosvětovému výzkumu biologické rozmanitosti.
 You-can-only-add-20-photos-per-observation = Můžete přidat pouze 20 fotografií na jedno pozorování
 You-can-still-share-the-file = Stále můžete sdílet soubor s jinou aplikací. Pokud jej můžete poslat e-mailem, pošlete jej prosím na { $email }
 You-can-upload-this-observation-to-our-community = Toto pozorování můžete nahrát do naší komunity, abyste získali identifikaci od skutečné osoby a pomohli naší AI zlepšit její identifikaci v budoucnu
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = Změnili jste filtry, ale nebyly použity na výsledky vyhledávání.
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = Odebrali jste se z komunitního taxonu
 You-havent-joined-any-projects-yet = Zatím jste se nepřipojili k žádným projektům!
+You-havent-joined-any-Traditional-Projects-yet = You haven’t joined any Traditional Projects yet!
 You-havent-observed-any-species-yet = Zatím jste nepozorovali žádné druhy.
 You-likely-observed-a-species-in-this-group = Pravděpodobně jste pozorovali druh v této skupině
 You-likely-observed-this-species = Pravděpodobně jste pozorovali tento druh

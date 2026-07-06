@@ -1,5 +1,5 @@
 import { waitFor } from "@testing-library/react-native";
-import useUniversalSearch from "sharedHooks/useUniversalSearch";
+import useUniversalSearch from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import { renderHookInApp } from "tests/helpers/render";
 
 jest.mock( "api/search" );

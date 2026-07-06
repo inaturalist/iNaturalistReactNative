@@ -1,6 +1,6 @@
 import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import { Tabs } from "components/SharedComponents";
-import StatTab from "components/SharedComponents/StatTab";
+import { ObservationsStatTab, SpeciesStatTab } from "components/SharedComponents/StatTab";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_ACTION, useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
@@ -31,11 +31,7 @@ const ExploreV2Tabs = ( { observationsCount, speciesCount }: Props ) => {
               tab: OBSERVATIONS_TAB,
             } ),
             renderComponent: ( ) => (
-              <StatTab
-                stat={observationsCount}
-                label={t( "X-OBSERVATIONS--below-number", { count: observationsCount } )}
-                wrapperClassName="pb-3"
-              />
+              <ObservationsStatTab count={observationsCount} wrapperClassName="pb-3" />
             ),
           },
           {
@@ -47,11 +43,7 @@ const ExploreV2Tabs = ( { observationsCount, speciesCount }: Props ) => {
               tab: SPECIES_TAB,
             } ),
             renderComponent: ( ) => (
-              <StatTab
-                stat={speciesCount}
-                label={t( "X-SPECIES--below-number", { count: speciesCount } )}
-                wrapperClassName="pb-3"
-              />
+              <SpeciesStatTab count={speciesCount} wrapperClassName="pb-3" />
             ),
           },
         ]}

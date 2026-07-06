@@ -136,6 +136,7 @@ Closes-explanation = Lukker forklaringen
 Closes-introduction = Lukker introduktionen
 Closes-withdraw-id-sheet = Lukker "Tilbagetræk ID"-arket
 COLLABORATORS = SAMARBEJDSPARTNERE
+Collection-and-Umbrella-Projects = Samling og Paraplyprojekter
 Collection-Project = Samlingsprojekt
 Combine-Photos = Kombinér fotos
 COMMENT = KOMMENTAR
@@ -330,6 +331,7 @@ FOLLOWING-X-PEOPLE =
         [one] FØLGER { $count } PERSON
        *[other] FØLGER { $count } PERSONER
     }
+For-most-other-projects-observations-will-automatically-be-included = For de fleste øvrige projekter vil observationer, som opfylder projektkrav, automatisk blive medtaget i projekterne.
 Forgot-Password = Glemt adgangskode
 GEOPRIVACY = GEOFORTROLIGHED
 Geoprivacy-status = Geofortrolighed: { $status }
@@ -468,6 +470,9 @@ LOG-IN-TO-INATURALIST = LOG IND PÅ INATURALIST
 Log-in-to-iNaturalist = Log ind på iNaturalist
 LOG-OUT = LOG UD
 LOG-OUT--question = LOG UD?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Ingen observation af dette endnu.
+    Tid til at fortsætte med at udforske!
 Lowest = Laveste
 LOWEST-RANK = LAVESTE RANGERING
 MAP = KORT
@@ -890,9 +895,11 @@ This-user-is-not-following-anyone = Denne bruger følger ingen.
 To-sync-your-observations-to-iNaturalist = Log ind for at synke observationerne med iNaturalist.
 To-view-nearby-organisms-please-enable-location = For at se organismer i nærheden, aktivér placering.
 To-view-nearby-projects-please-enable-location = For at se projekter i nærheden, aktivér placering.
+To-view-this-observations-Collection-and-Umbrella-Projects = For at se denne observations Samling og Paraplyprojekter, gå til dens observationsside efter upload.
 Toggle-map-type = Skift korttype
 TOP-ID-SUGGESTION = TOP IDFORSLAG
 Traditional-Project = Traditionelt projekt
+Traditional-Projects = Traditionelle projekter
 Umbrella-Project = Paraplyprojekt
 UNFOLLOW = STOP MED AT FØLGE
 UNFOLLOW-USER = STOP MED AT FØLGE BRUGER?
@@ -1108,15 +1115,18 @@ You-can-add-up-to-20-media = Hver observation kan tilføjes op til 20 fotos og 2
 You-can-also-check-out-merchandise = Man kan også tjekke iNaturalist-varer og Seek ud i vores butik nedenfor!
 You-can-click-join-on-the-project-page = Man kan klikke på “Deltag” på projektsiden.
 You-can-find-answers-on-our-help-page = Man kan finde svar på vores hjælpeside.
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = Observationer kan manuelt føjes til Traditionelle projekter, efter du har tilsluttet dig.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = Man kan nu uploade sine observationer til iNaturalist og bidrage til den globale biodiversitetsforskning.
 You-can-only-add-20-photos-per-observation = Hver observation kan kun tilføjes 20 fotos
 You-can-still-share-the-file = Man kan stadig dele filen med en anden app. Hvis man kan e-maile den, bedes den sendes til { $email }
 You-can-upload-this-observation-to-our-community = Man kan uploade denne observation til vores fællesskab for at få en identifikation fra en rigtig person og hjælpe vores AI med at forbedre sine identifikationer fremadrettet
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = Du kan ikke tilføje eller fjerne observationer fra samling og paraplyprojekter.
 You-changed-filters-will-be-discarded = Filtrene blev ændret, men de blev ikke anvendt på Udforsk-søgeresultaterne.
 You-have-no-notifications-get-started-by-creating-your-own-observations = Der har ingen notifikationer! Kom i gang ved at oprette egne observationer.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = Der er ingen notifikationer! Der vil ses opdateringer til observationer, man har angivet ID'er eller kommentarer til her.
 You-have-opted-out-of-the-Community-Taxon = Bruger har afmeldt sig Fællesskabstakson
 You-havent-joined-any-projects-yet = Man er endnu ikke tilmeldt nogen projekter!
+You-havent-joined-any-Traditional-Projects-yet = Du er endnu ikke tilmeldt nogle Traditionelle projekter!
 You-havent-observed-any-species-yet = Endnu ingen arter observeret.
 You-likely-observed-a-species-in-this-group = Man har sandsynligvis observeret en organisme i denne gruppe
 You-likely-observed-this-species = Man har sandsynligvis observeret denne art
