@@ -155,7 +155,7 @@ const UniversalSearch = ( ) => {
         ? { type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE, place: selectedPlace }
         : { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE },
     );
-    navigation.navigate( "ExploreResults" );
+    navigation.popTo( "ExploreResults" );
   }, [selectedSubject, selectedPlace, dispatch, navigation] );
 
   const renderItem = useCallback<ListRenderItem<SearchResultItem>>( ( { item } ) => {
