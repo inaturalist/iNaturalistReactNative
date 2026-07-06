@@ -1,4 +1,5 @@
 import NumericFieldInput from "components/AddToProjects/FieldInputs/NumericFieldInput";
+import TextFieldInput from "components/AddToProjects/FieldInputs/TextFieldInput";
 import { Body1, Body3, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
@@ -22,11 +23,7 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
         return <NumericFieldInput obsFieldId={obsFieldId} />;
       case "text":
       case "dna":
-        return (
-          <Body3 className="pt-1 color-darkGrayDisabled">
-            {t( "Enter-a-response" )}
-          </Body3>
-        );
+        return <TextFieldInput obsFieldId={obsFieldId} />;
       case "date":
         return (
           <Body3 className="pt-1 color-darkGrayDisabled">
