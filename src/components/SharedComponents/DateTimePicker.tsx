@@ -8,7 +8,6 @@ interface Props {
   toggleDateTimePicker: () => void;
   onDatePicked: ( date: Date ) => void;
   isDateTimePickerVisible: boolean;
-  datetime?: boolean;
   mode?: PickerMode;
 }
 
@@ -18,23 +17,20 @@ const EmptyHeader = ( ) => null;
 
 const DatePicker = ( {
   date,
-  datetime = false,
   isDateTimePickerVisible,
-  mode,
+  mode = "date",
   onDatePicked,
   toggleDateTimePicker,
 }: Props ) => {
   const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>( undefined );
   const [isTimeVisible, setisTimeVisible] = React.useState( false );
 
-  console.log( "mode", mode );
-
   const _toggleDateTimePicker = ( ) => {
     setisTimeVisible( false );
     toggleDateTimePicker( );
   };
 
-  if ( datetime && isTimeVisible ) {
+  if ( mode === "datetime" && isTimeVisible ) {
     return (
       <DateTimePicker
         display="spinner"
@@ -66,7 +62,7 @@ const DatePicker = ( {
       mode="date"
       onCancel={_toggleDateTimePicker}
       onConfirm={selectedDate => {
-        if ( datetime ) {
+        if ( mode === "datetime" ) {
           setSelectedDateNoTime( selectedDateNoTime );
           setisTimeVisible( true );
         } else {
