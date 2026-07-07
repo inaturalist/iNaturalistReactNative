@@ -31,7 +31,6 @@ Add-Location = Afegir Localització
 ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
 Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = Afegir observacions
-ADD-OPTIONAL-COMMENT = AFEGIR COMENTARI OPCIONAL
 Add-optional-notes = Afegir notes opcionals
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS

@@ -31,7 +31,6 @@ Add-Location = 添加位置
 ADD-LOCATION-FOR-BETTER-IDS = 添加位置以获得更好的鉴定结果
 Add-location-to-refresh-suggestions = 添加位置以刷新建议
 Add-observations = 添加观察
-ADD-OPTIONAL-COMMENT = 添加可选评论
 Add-optional-notes = 添加可选注释
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS

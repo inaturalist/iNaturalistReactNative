@@ -37,7 +37,6 @@ Add-Location = Locatie toevoegen
 ADD-LOCATION-FOR-BETTER-IDS = VOEG LOCATIE TOE VOOR BETERE DETERMINATIES
 Add-location-to-refresh-suggestions = Voeg locatie toe om voorstellen te verversen
 Add-observations = Waarnemingen toevoegen
-ADD-OPTIONAL-COMMENT = OPTIONEEL COMMENTAAR TOEVOEGEN
 Add-optional-notes = Optionele notities toevoegen
 Add-to-Projects = Voeg toe aan projecten
 ADD-TO-PROJECTS = VOEG TOE AAN PROJECTEN
