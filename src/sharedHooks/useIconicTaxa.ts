@@ -7,7 +7,7 @@ import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedQuery } from "sharedHooks";
 
-const { useRealm } = RealmContext;
+const { useRealm, useQuery } = RealmContext;
 
 const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
   const { reload } = options;
@@ -37,7 +37,13 @@ const useIconicTaxa = ( options: { reload: boolean } = { reload: false } ) => {
     }
   }, [iconicTaxa, realm, isUpdatingRealm] );
 
-  return realm?.objects( "Taxon" ).filtered( "isIconic = true" );
+  return useQuery(
+    {
+      type: Taxon,
+      query: taxa => taxa.filtered( "isIconic = true" ),
+    },
+    [],
+  );
 };
 
 export default useIconicTaxa;

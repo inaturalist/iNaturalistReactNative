@@ -21,6 +21,7 @@ jest.mock( "providers/contexts", ( ) => {
     RealmContext: {
       ...originalModule.RealmContext,
       useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => [],
     },
   };
 } );

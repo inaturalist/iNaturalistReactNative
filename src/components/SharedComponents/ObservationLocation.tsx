@@ -104,7 +104,7 @@ const ObservationLocation = ( {
   ] );
 
   const inner = useMemo( ( ) => (
-    <View className="flex-col space-y-[11px]">
+    <View className="flex-1 flex-col space-y-[11px]">
       <Body4
         className="text-darkGray"
         ellipsizeMode="tail"
