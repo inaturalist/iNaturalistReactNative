@@ -20,11 +20,11 @@ import {
   clearSyncedMediaForUpload,
 } from "sharedHelpers/clearCaches";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
+import { store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { logSentinelFiles } from "sharedHelpers/sentinelFiles";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
 import { useTranslation } from "sharedHooks";
-import { zustandStorage } from "stores/useStore";
 
 const { useRealm } = RealmContext;
 const logger = log.extend( "useDeferredStartup" );
@@ -66,11 +66,11 @@ const deferTask = (
 
 const checkForPreviousCrash = async () => {
   try {
-    const crashData = zustandStorage.getItem( "LAST_CRASH_DATA" );
+    const crashData = installDataMMKVStorage.getString( "LAST_CRASH_DATA" );
     if ( crashData ) {
       const parsedData = JSON.parse( crashData.toString() );
       logger.error( "Last Crash Data:", JSON.stringify( parsedData ) );
-      zustandStorage.removeItem( "LAST_CRASH_DATA" );
+      installDataMMKVStorage.delete( "LAST_CRASH_DATA" );
     }
   } catch ( e ) {
     logger.error( "Failed to process previous crash data", e );

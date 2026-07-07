@@ -9,7 +9,6 @@ import "react-native-url-polyfill/auto";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Alert, AppRegistry } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
-import { zustandStorage } from "stores/useStore";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 import {
   QueryClient,
@@ -104,7 +103,7 @@ setNativeExceptionHandler(
       };
 
       // Store crash data for retrieval on next app launch
-      zustandStorage.setItem( "LAST_CRASH_DATA", JSON.stringify( crashData ) );
+      installDataMMKVStorage.setItem( "LAST_CRASH_DATA", JSON.stringify( crashData ) );
 
       logger.error( `Native Error: ${exceptionString}`, JSON.stringify( crashData ) );
     } catch ( e ) {
