@@ -2,6 +2,11 @@ import { Body3, DateTimePicker } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
 import React, { useMemo, useState } from "react";
 import type { RealmObservationField } from "realmModels/types";
+import {
+  formatObsFieldDate,
+  formatObsFieldDatetime,
+  formatObsFieldTime,
+} from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
 import useObservationFieldValue from "../hooks/useObservationFieldValue";
@@ -11,18 +16,28 @@ interface Props {
 }
 
 type DateFieldDatatype = "date" | "time" | "datetime";
+
+const formatPickedDate = (
+  pickedDate: Date,
+  datatype: DateFieldDatatype,
+): string => {
+  switch ( datatype ) {
+    case "datetime":
+      return formatObsFieldDatetime( pickedDate );
+    case "date":
+      return formatObsFieldDate( pickedDate );
+    case "time":
+      return formatObsFieldTime( pickedDate );
+    default:
+      throw new Error( "Unsupported datatype for DateFieldInput" );
+  }
+};
+
 const DateFieldInput = ( { obsField }: Props ) => {
   const { t } = useTranslation( );
   const { datatype, id } = obsField;
   const { value, setValue } = useObservationFieldValue( id );
   const [showPicker, setShowPicker] = useState( false );
-
-  const displayValue = useMemo( () => {
-    if ( !value ) return null;
-    // TODO: format the Date value into human readable form
-    // However, first check if we only send strings or date values time-zones etc
-    return value.toISOString( );
-  }, [value] );
 
   const placeholder = useMemo( () => {
     switch ( datatype ) {
@@ -41,7 +56,9 @@ const DateFieldInput = ( { obsField }: Props ) => {
     <>
       <DateTimePicker
         isDateTimePickerVisible={showPicker}
-        onDatePicked={newDate => setValue( newDate )}
+        onDatePicked={newDate => setValue(
+          formatPickedDate( newDate, datatype as DateFieldDatatype ),
+        )}
         mode={datatype as DateFieldDatatype}
         toggleDateTimePicker={( ) => setShowPicker( false )}
       />
@@ -49,11 +66,11 @@ const DateFieldInput = ( { obsField }: Props ) => {
         accessibilityRole="button"
         onPress={( ) => setShowPicker( true )}
       >
-        <Body3 className={displayValue
+        <Body3 className={value
           ? "pt-1"
           : "pt-1 color-darkGrayDisabled"}
         >
-          {displayValue || placeholder}
+          {value || placeholder}
         </Body3>
       </Pressable>
     </>
