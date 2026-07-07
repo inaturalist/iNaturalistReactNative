@@ -11,7 +11,7 @@ const useObservationFieldValue = ( obsFieldId: number ) => {
     state => ( state.currentObservation as RealmObservationPojo ).observationFieldValues,
   );
 
-  const existingOfv = observationFieldValues?.find(
+  const existingOfv = observationFieldValues.find(
     ofv => ofv.obsFieldId === obsFieldId,
   );
   const value = existingOfv?.value ?? "";
