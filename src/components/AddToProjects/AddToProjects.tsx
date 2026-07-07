@@ -187,6 +187,7 @@ const AddToProjects = ( ) => {
   const renderProject: ListRenderItem<RealmProject> = useCallback(
     ( { item } ) => {
       const isSelected = selectedProjectIds.has( item.id );
+      const canExpand = item.projectObservationFields.length > 0;
 
       return (
         <View>
@@ -204,7 +205,7 @@ const AddToProjects = ( ) => {
             </View>
             {renderRightIcon( item, isSelected )}
           </Pressable>
-          {isSelected && renderExpanded( item )}
+          {canExpand && isSelected && renderExpanded( item )}
         </View>
       );
     },
