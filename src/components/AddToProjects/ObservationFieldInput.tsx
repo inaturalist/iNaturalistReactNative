@@ -3,7 +3,7 @@ import NumericFieldInput from "components/AddToProjects/FieldInputs/NumericField
 import SelectFieldInput from "components/AddToProjects/FieldInputs/SelectFieldInput";
 import TaxonFieldInput from "components/AddToProjects/FieldInputs/TaxonFieldInput";
 import TextFieldInput from "components/AddToProjects/FieldInputs/TextFieldInput";
-import { Body1, Body3, INatIcon } from "components/SharedComponents";
+import { Body1, Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import type { RealmObservationField, RealmProjectObservationField } from "realmModels/types";
@@ -57,8 +57,8 @@ const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) =>
           {projectObservationField.obsField?.name}
         </Body1>
         {projectObservationField.required && (
-          <View className="flex-row">
-            <Body3 className="mr-2.5">{t( "Required" )}</Body3>
+          <View className="flex-row items-center">
+            <Body4 className="mr-2.5">{t( "Required" )}</Body4>
             {isValid
               ? (
                 <INatIcon
