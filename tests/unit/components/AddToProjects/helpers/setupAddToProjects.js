@@ -20,3 +20,7 @@ export const resetStore = ( ) => {
     },
   } );
 };
+
+export const getObservationFieldValues = ( ) => (
+  useStore.getState( ).currentObservation?.observationFieldValues ?? []
+);
