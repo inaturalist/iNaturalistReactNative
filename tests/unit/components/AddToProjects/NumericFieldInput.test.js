@@ -37,4 +37,15 @@ describe( "NumericFieldInput", ( ) => {
 
     expect( mockSetValue ).toHaveBeenCalledWith( "3" );
   } );
+
+  it( "displays an existing OFV value from the hook", ( ) => {
+    useObservationFieldValue.mockImplementation( () => ( {
+      value: "5",
+      setValue: mockSetValue,
+    } ) );
+
+    renderComponent( <NumericFieldInput obsFieldId={100} /> );
+
+    expect( screen.getByDisplayValue( "5" ) ).toBeVisible( );
+  } );
 } );
