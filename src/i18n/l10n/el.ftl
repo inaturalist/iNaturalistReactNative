@@ -31,7 +31,6 @@ Add-Location = Προσθήκη τοποθεσίας
 ADD-LOCATION-FOR-BETTER-IDS = ΠΡΟΣΘΉΚΗ ΤΟΠΟΘΕΣΊΑΣ ΓΙΑ ΚΑΛΎΤΕΡΑ ΑΝΑΓΝΩΡΙΣΤΙΚΆ
 Add-location-to-refresh-suggestions = Προσθήκη τοποθεσίας για ανανέωση προτάσεων
 Add-observations = Προσθήκη παρατηρήσεων
-ADD-OPTIONAL-COMMENT = ΠΡΟΣΘΉΚΗ ΠΡΟΑΙΡΕΤΙΚΟΎ ΣΧΟΛΊΟΥ
 Add-optional-notes = Προσθήκη προαιρετικών σημειώσεων
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS

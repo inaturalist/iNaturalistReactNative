@@ -31,7 +31,6 @@ Add-Location = Přidat umístění
 ADD-LOCATION-FOR-BETTER-IDS = PŘIDAT POLOHU PRO LEPŠÍ ID
 Add-location-to-refresh-suggestions = Přidat umístění k obnově návrhů
 Add-observations = Přidat pozorování
-ADD-OPTIONAL-COMMENT = PŘIDAT VOLITELNÝ KOMENTÁŘ
 Add-optional-notes = Přidat volitelné poznámky
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS

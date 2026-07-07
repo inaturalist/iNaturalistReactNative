@@ -31,7 +31,6 @@ Add-Location = Add Location
 ADD-LOCATION-FOR-BETTER-IDS = A PONTOS AZONOSÍTÁSHOZ HELY IS SZÜKSÉGES
 Add-location-to-refresh-suggestions = Hely hozzáadásával a javaslatok frissülnek
 Add-observations = Add observations
-ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
