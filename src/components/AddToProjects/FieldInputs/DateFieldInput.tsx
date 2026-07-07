@@ -10,6 +10,7 @@ interface Props {
   obsField: RealmObservationField;
 }
 
+type DateFieldDatatype = "date" | "time" | "datetime";
 const DateFieldInput = ( { obsField }: Props ) => {
   const { t } = useTranslation( );
   const { datatype, id } = obsField;
@@ -40,8 +41,8 @@ const DateFieldInput = ( { obsField }: Props ) => {
     <>
       <DateTimePicker
         isDateTimePickerVisible={showPicker}
-        mode={datatype}
         onDatePicked={newDate => setValue( newDate )}
+        mode={datatype as DateFieldDatatype}
         toggleDateTimePicker={( ) => setShowPicker( false )}
       />
       <Pressable
