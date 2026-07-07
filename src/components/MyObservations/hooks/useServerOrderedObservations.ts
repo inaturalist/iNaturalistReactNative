@@ -1,9 +1,12 @@
 import { searchObservations } from "api/observations";
-import { useMemo } from "react";
+import { RealmContext } from "providers/contexts";
+import { useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { observationSortToApiParams } from "sharedHelpers/observationsSort";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
+
+const { useRealm } = RealmContext;
 
 const PER_PAGE = 20;
 
@@ -36,6 +39,7 @@ const useServerOrderedObservations = ( {
   page = 1,
   enabled = true,
 }: UseServerOrderedObservationsParams ): UseServerOrderedObservationsResult => {
+  const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
   const params = {
@@ -60,6 +64,12 @@ const useServerOrderedObservations = ( {
     optsWithAuth => searchObservations( params, optsWithAuth ),
     { enabled: enabled && !!currentUser },
   );
+
+  useEffect( ( ) => {
+    if ( data?.results ) {
+      Observation.upsertRemoteObservations( data.results, realm );
+    }
+  }, [data?.results, realm] );
 
   const observationIds = useMemo(
     ( ) => ( data?.results || [] ).map( ( { uuid } ) => ( { uuid } ) ),
