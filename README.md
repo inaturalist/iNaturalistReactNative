@@ -348,7 +348,7 @@ fastlane prod
             1. Change to observations view and view an observation
             1. Go to the observers profile
             1. Go to one project this user joined (if not available try another user)
-            1. Sign in
+            1. Log in
             1. Make an observation by taking a new photo in the AI Camera; tap "Upload Now" to upload immediately; wait for upload to complete before moving on
             1. Make an observation by taking a new photo in the StandardCamera; save without upload
             1. Make an observation by importing an existing; save without upload
