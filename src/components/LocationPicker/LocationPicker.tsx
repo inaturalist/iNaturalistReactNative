@@ -9,7 +9,7 @@ import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper"
 import { View } from "components/styledComponents";
 import React from "react";
 import type { LayoutChangeEvent } from "react-native";
-import type { LatLng, Region } from "react-native-maps";
+import type { Region } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 
 import CrosshairCircle from "./CrosshairCircle";
@@ -25,12 +25,12 @@ interface Props {
   hidePlaceResults: boolean;
   loading: boolean;
   locationName: string;
-  initialRegion: LatLng;
+  initialRegion: Region | null;
   onCurrentLocationPress: ( ) => void;
   onMapReady: ( ) => void;
   onRegionChangeComplete: ( newRegion: Region ) => void;
-  region: LatLng;
-  regionToAnimate: object;
+  region: Region;
+  regionToAnimate: Region;
   selectPlaceResult: ( place: LocationPickerPlace ) => void;
   updateLocationName: ( name: string ) => void;
   onMapLayout: ( event: LayoutChangeEvent ) => void;
@@ -110,6 +110,9 @@ const LocationPicker = ( {
           </View>
           <Map
             className="h-full"
+            // TODO: reconcile null vs undef: does a changing initialRegion actually have an effect?
+            // it requires the map ref to settle to inform region's delta properties, but
+            // per docs, prop changes to `initialRegion` are ignored.
             initialRegion={initialRegion}
             onCurrentLocationPress={onCurrentLocationPress}
             onMapReady={onMapReady}

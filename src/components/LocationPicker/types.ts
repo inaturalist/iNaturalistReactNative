@@ -6,7 +6,6 @@ export interface LocationPickerObservation {
   privateLongitude?: number;
 
   positional_accuracy?: number;
-  positionalAccuracy?: number;
 }
 
 export interface LocationPickerPlace {

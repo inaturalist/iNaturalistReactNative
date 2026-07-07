@@ -24,7 +24,7 @@ const getInitialRegion = (
   currentObservation: LocationPickerObservation,
   radiusToMapHeight: number | null,
   mapDimensionsRatio: number | null,
-) => {
+): Region | null => {
   if ( !radiusToMapHeight || !mapDimensionsRatio ) {
     return null;
   }
