@@ -121,7 +121,7 @@ const AddToProjects = ( ) => {
       console.log( item );
       return (
         <View className="bg-lightGrayOpaque">
-          {/* TODO: this will be based on the result of a validation function */}
+          {/* TODO: MOB-1499 this will be based on the result of a validation function */}
           {Math.random() > 0.5
             ? (
               <View className="px-4 py-2.5 flex-row justify-center items-center">
@@ -151,6 +151,8 @@ const AddToProjects = ( ) => {
             <ObservationFieldInput
               key={pof.id}
               projectObservationField={pof}
+              // TODO: MOB-1499 this will be based on the result of a validation function
+              isValid={false}
             />
           ) )}
         </View>
