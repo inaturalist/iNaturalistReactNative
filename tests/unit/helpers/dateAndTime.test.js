@@ -11,6 +11,9 @@ import {
   formatApiDatetime,
   formatDifferenceForHumans,
   formatISONoSeconds,
+  formatObsFieldDate,
+  formatObsFieldDatetime,
+  formatObsFieldTime,
   formatProjectsApiDatetimeLong,
   getNowISO,
 } from "sharedHelpers/dateAndTime";
@@ -179,5 +182,56 @@ describe( "formatDifferenceForHumans", ( ) => {
       date.getFullYear() % 1000,
     ].join( "/" ) );
     expect( dateString ).toMatch( pattern );
+  } );
+} );
+
+describe( "formatObsFieldDate/Time/Datetime", ( ) => {
+  // UTC is already Jan 1, 2026 while New York is still Dec 31, 2025
+  const picked = new Date( "2026-01-01T03:30:00Z" );
+
+  describe( "in America/New_York", ( ) => {
+    let resolvedOptionsSpy;
+
+    beforeAll( () => {
+      resolvedOptionsSpy = jest.spyOn(
+        Intl.DateTimeFormat.prototype,
+        "resolvedOptions",
+      ).mockReturnValue( {
+        calendar: "gregory",
+        locale: "en-US",
+        numberingSystem: "latn",
+        timeZone: "America/New_York",
+      } );
+    } );
+
+    afterAll( () => {
+      resolvedOptionsSpy.mockRestore( );
+    } );
+
+    it( "stores date as local calendar date, not UTC date", ( ) => {
+      expect( formatObsFieldDate( picked ) ).toEqual( "2025-12-31" );
+    } );
+
+    it( "stores time as local wall clock, not UTC time", ( ) => {
+      expect( formatObsFieldTime( picked ) ).toEqual( "22:30" );
+    } );
+
+    it( "stores datetime as local date and time", ( ) => {
+      expect( formatObsFieldDatetime( picked ) ).toEqual( "2025-12-31 22:30" );
+    } );
+  } );
+
+  describe( "in UTC", ( ) => {
+    it( "stores date as UTC calendar date", ( ) => {
+      expect( formatObsFieldDate( picked ) ).toEqual( "2026-01-01" );
+    } );
+
+    it( "stores time as UTC wall clock", ( ) => {
+      expect( formatObsFieldTime( picked ) ).toEqual( "03:30" );
+    } );
+
+    it( "stores datetime as UTC date and time", ( ) => {
+      expect( formatObsFieldDatetime( picked ) ).toEqual( "2026-01-01 03:30" );
+    } );
   } );
 } );
