@@ -42,6 +42,7 @@ beforeEach( ( ) => {
   useStore.setState( {
     currentObservation: {
       ...factory( "LocalObservation" ),
+      observationFieldValues: [],
       projectObservations: [factory( "LocalProjectObservation", {
         projectId: mockProjects[0].id,
       } )],
