@@ -1,8 +1,10 @@
-import type { ApiTaxon, ApiUser } from "api/types";
+import type { ApiTaxon } from "api/types";
 import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
 import { resultToSubject }
   from "components/Explore/ExploreV2/helpers/universalSearchSubject";
+import type { UniversalSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import IconicTaxonChooser from "components/SharedComponents/IconicTaxonChooser";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import { Pressable, ScrollView, View } from "components/styledComponents";
@@ -13,7 +15,6 @@ import type { RealmTaxon } from "realmModels/types";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIconicTaxa from "sharedHooks/useIconicTaxa";
 import useTranslation from "sharedHooks/useTranslation";
-import type { UniversalSearchResultItem } from "sharedHooks/useUniversalSearch";
 
 interface Props {
   onSelectSubject: ( subject: ExploreV2Subject ) => void;
@@ -32,7 +33,7 @@ const EMPTY_CHOSEN: string[] = [];
 const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
   const { t } = useTranslation( );
 
-  const currentUser = useCurrentUser( ) as unknown as ApiUser | null;
+  const currentUser = useCurrentUser( );
   const iconicTaxa = useIconicTaxa( );
 
   // Map iconic taxon name -> Realm taxon, so the shared chooser's name-based
