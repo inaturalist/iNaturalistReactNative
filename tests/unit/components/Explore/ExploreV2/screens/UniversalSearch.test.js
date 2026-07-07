@@ -303,11 +303,17 @@ describe( "UniversalSearch screen", ( ) => {
       expect( screen.getByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeTruthy( );
     } );
 
-    it( "fills the field and sets the subject when an iconic taxon is tapped", ( ) => {
+    it( "fills the field and stages the subject when an iconic taxon is tapped", ( ) => {
       renderComponent( <UniversalSearch /> );
 
       fireEvent.press( screen.getByTestId( "INatIconButton.IconicTaxonButton.plantae" ) );
 
+      // the selection is staged locally, not written to context until Search
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      // common name is primary for the test user, so the field shows "Plants"
+      expect( screen.getByDisplayValue( "Plants" ) ).toBeTruthy( );
+
+      fireEvent.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
       expect( mockDispatch ).toHaveBeenCalledWith(
         expect.objectContaining( {
           type: "SET_SUBJECT",
@@ -317,15 +323,18 @@ describe( "UniversalSearch screen", ( ) => {
           } ),
         } ),
       );
-      // common name is primary for the test user, so the field shows "Plants"
-      expect( screen.getByDisplayValue( "Plants" ) ).toBeTruthy( );
     } );
 
-    it( "sets the current user as the subject when their profile row is tapped", ( ) => {
+    it( "stages the current user as the subject when their profile row is tapped", ( ) => {
       renderComponent( <UniversalSearch /> );
 
       fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.99" ) );
 
+      // the selection is staged locally, not written to context until Search
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      expect( screen.getByDisplayValue( "tester" ) ).toBeTruthy( );
+
+      fireEvent.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
       expect( mockDispatch ).toHaveBeenCalledWith(
         expect.objectContaining( {
           type: "SET_SUBJECT",
@@ -335,7 +344,6 @@ describe( "UniversalSearch screen", ( ) => {
           } ),
         } ),
       );
-      expect( screen.getByDisplayValue( "tester" ) ).toBeTruthy( );
     } );
 
     it( "hides the current user row when logged out", ( ) => {
