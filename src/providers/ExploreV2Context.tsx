@@ -25,7 +25,7 @@ export enum EXPLORE_V2_PLACE_MODE {
   PLACE = "PLACE"
 }
 
-interface Place {
+export interface Place {
   id: number;
   display_name?: string;
 }
