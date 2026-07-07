@@ -31,7 +31,6 @@ Add-Location = Tambah Lokasi
 ADD-LOCATION-FOR-BETTER-IDS = TAMBAHKAN LOKASI SUPAYA ID-NYA LEBIH BAIK
 Add-location-to-refresh-suggestions = Tambahkan lokasi untuk menyegarkan rekomendasi
 Add-observations = Tambah pengamatan
-ADD-OPTIONAL-COMMENT = TAMBAH KOMENTAR OPSIONAL
 Add-optional-notes = Tambahkan catatan opsional
 Add-to-Projects = Tambahkan ke Proyek
 ADD-TO-PROJECTS = TAMBAHKAN KE PROYEK

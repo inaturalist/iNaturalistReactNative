@@ -31,7 +31,6 @@ Add-Location = 場所を追加
 ADD-LOCATION-FOR-BETTER-IDS = より良いIDのために場所を追加
 Add-location-to-refresh-suggestions = 候補を更新するために場所を追加
 Add-observations = 観察記録を追加
-ADD-OPTIONAL-COMMENT = オプションコメントを追加
 Add-optional-notes = オプションメモを追加
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS

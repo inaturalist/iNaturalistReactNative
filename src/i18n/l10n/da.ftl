@@ -31,7 +31,6 @@ Add-Location = Tilføj placering
 ADD-LOCATION-FOR-BETTER-IDS = TILFØJ PLACERING FOR BEDRE ID'ER
 Add-location-to-refresh-suggestions = Tilføj placering for at opfriske forslag
 Add-observations = Tilføj observationer
-ADD-OPTIONAL-COMMENT = TILFØJ VALGFRI KOMMENTAR
 Add-optional-notes = Tilføj valgfrie notater
 Add-to-Projects = Føj til projekter
 ADD-TO-PROJECTS = FØJ TIL PROJEKTER

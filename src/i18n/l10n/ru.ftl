@@ -34,7 +34,6 @@ Add-Location = Добавить локацию
 ADD-LOCATION-FOR-BETTER-IDS = ДОБАВЬТЕ МЕСТОПО́ЛОЖЕНИЕ ДЛЯ ЛУЧШЕЙ ИДЕНТИФИКАЦИИ
 Add-location-to-refresh-suggestions = Добавьте местоположение, чтобы облегчить предлагаемые идентификации
 Add-observations = Добавить наблюдения
-ADD-OPTIONAL-COMMENT = ДОБАВИТЬ НЕОБЯЗАТЕЛЬНЫЙ КОММЕНТАРИЙ
 Add-optional-notes = Добавить заметки
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
