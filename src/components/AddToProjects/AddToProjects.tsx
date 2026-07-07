@@ -117,47 +117,44 @@ const AddToProjects = ( ) => {
   const disabled = false;
 
   const renderExpanded = useCallback(
-    ( item: RealmProject ) => {
-      console.log( item );
-      return (
-        <View className="bg-lightGrayOpaque">
-          {/* TODO: MOB-1499 this will be based on the result of a validation function */}
-          {Math.random() > 0.5
-            ? (
-              <View className="px-4 py-2.5 flex-row justify-center items-center">
-                <INatIcon
-                  name="triangle-exclamation"
-                  color={colors.warningRed}
-                  size={19}
-                />
-                <Body3 className="ml-2.5">
-                  {t( "To-add-to-this-project-all-required-fields-must-be-filled" )}
-                </Body3>
-              </View>
-            )
-            : (
-              <View className="px-4 py-2.5 flex-row justify-center items-center">
-                <INatIcon
-                  name="checkmark-circle"
-                  color={colors.inatGreen}
-                  size={19}
-                />
-                <Body3 className="ml-2.5">
-                  {t( "All-required-fields-have-been-filled" )}
-                </Body3>
-              </View>
-            )}
-          {item.projectObservationFields.map( pof => (
-            <ObservationFieldInput
-              key={pof.id}
-              projectObservationField={pof}
-              // TODO: MOB-1499 this will be based on the result of a validation function
-              isValid={false}
-            />
-          ) )}
-        </View>
-      );
-    },
+    ( item: RealmProject ) => (
+      <View className="bg-lightGrayOpaque">
+        {/* TODO: MOB-1499 this will be based on the result of a validation function */}
+        {Math.random() > 0.5
+          ? (
+            <View className="px-4 py-2.5 flex-row justify-center items-center">
+              <INatIcon
+                name="triangle-exclamation"
+                color={colors.warningRed}
+                size={19}
+              />
+              <Body3 className="ml-2.5">
+                {t( "To-add-to-this-project-all-required-fields-must-be-filled" )}
+              </Body3>
+            </View>
+          )
+          : (
+            <View className="px-4 py-2.5 flex-row justify-center items-center">
+              <INatIcon
+                name="checkmark-circle"
+                color={colors.inatGreen}
+                size={19}
+              />
+              <Body3 className="ml-2.5">
+                {t( "All-required-fields-have-been-filled" )}
+              </Body3>
+            </View>
+          )}
+        {item.projectObservationFields.map( pof => (
+          <ObservationFieldInput
+            key={pof.id}
+            projectObservationField={pof}
+            // TODO: MOB-1499 this will be based on the result of a validation function
+            isValid={false}
+          />
+        ) )}
+      </View>
+    ),
     [t],
   );
 
