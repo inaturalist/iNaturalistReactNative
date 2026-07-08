@@ -1,12 +1,19 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import type { ListRenderItem } from "@shopify/flash-list";
 import type { ApiPostForUser } from "api/types";
-import { CustomFlashList, InfiniteScrollLoadingWheel } from "components/SharedComponents";
+import {
+  ActivityIndicator,
+  CustomFlashList,
+  InfiniteScrollLoadingWheel,
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
-import { ActivityIndicator } from "react-native-paper";
 
 import PostListItem from "./PostListItem";
+
+const CONTAINER_STYLE = {
+  backgroundColor: "white",
+};
 
 const ItemSeparator = () => <View className="border-b border-lightGray" />;
 
@@ -40,6 +47,7 @@ const PostList = ( { posts, isFetchingNextPage, fetchNextPage }: Props ) => {
       ItemSeparatorComponent={ItemSeparator}
       ListEmptyComponent={emptyComponent}
       ListFooterComponent={footerComponent}
+      contentContainerStyle={CONTAINER_STYLE}
       data={posts}
       keyExtractor={item => String( item.id )}
       onEndReached={fetchNextPage}

@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { POST_FOR_USER_FIELDS } from "api/fields";
 import { fetchUserPosts } from "api/posts";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
-import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
 import React, {
   useEffect,
@@ -53,7 +52,6 @@ const Blog = ( ) => {
 
   return (
     <ScreenShell>
-      <View className="border-b border-lightGray mt-5" />
       <PostList
         posts={blogPosts}
         fetchNextPage={fetchNextPage}
