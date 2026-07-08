@@ -63,6 +63,19 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: () => mockUseCurrentUser( ),
 } ) );
 
+// Seen-status runs through useQueries + a combine() that folds each chunk's results
+// into the observed-taxon set. Override useQueries to feed mock results straight into
+// the component's real combine, so the derivation logic is still exercised.
+let mockSeenQueryResults = [];
+jest.mock( "@tanstack/react-query", () => {
+  const actual = jest.requireActual( "@tanstack/react-query" );
+  return {
+    __esModule: true,
+    ...actual,
+    useQueries: ( { combine } ) => combine( mockSeenQueryResults ),
+  };
+} );
+
 const renderView = ( props = {} ) => renderComponent(
   <ExploreV2Provider requestLocationPermissions={() => {}}>
     <ExploreV2SpeciesView
@@ -80,6 +93,7 @@ beforeAll( async () => {
 
 beforeEach( () => {
   mockUseCurrentUser.mockReturnValue( null );
+  mockSeenQueryResults = [];
 } );
 
 describe( "ExploreV2SpeciesView", () => {
@@ -99,5 +113,23 @@ describe( "ExploreV2SpeciesView", () => {
 
     expect( await screen.findByText( "12 Observations" ) ).toBeTruthy( );
     expect( await screen.findByText( "7 Observations" ) ).toBeTruthy( );
+  } );
+
+  it( "shows a seen checkmark only for species the current user has observed", async () => {
+    mockUseCurrentUser.mockReturnValue( factory( "LocalUser" ) );
+    mockSeenQueryResults = [
+      { data: { results: [{ taxon: { id: 745 } }] } },
+    ];
+
+    renderView( );
+
+    expect( await screen.findAllByTestId( "SpeciesSeenCheckmark" ) ).toHaveLength( 1 );
+  } );
+
+  it( "shows no seen checkmarks when signed out", async () => {
+    renderView( );
+
+    await screen.findByTestId( "TaxonGridItem.Pressable.745" );
+    expect( screen.queryByTestId( "SpeciesSeenCheckmark" ) ).toBeNull( );
   } );
 } );
