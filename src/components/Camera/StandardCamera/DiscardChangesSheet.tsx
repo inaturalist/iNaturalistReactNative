@@ -5,9 +5,9 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
-  setShowDiscardSheet: Function;
+  setShowDiscardSheet: ( show: boolean ) => void;
   hidden?: boolean;
-  onDiscard: Function;
+  onDiscard: ( ) => void;
 }
 
 const DiscardChangesSheet = ( {
@@ -29,7 +29,7 @@ const DiscardChangesSheet = ( {
       confirm={( ) => {
         setShowDiscardSheet( false );
         if ( onDiscard ) {
-          onDiscard();
+          onDiscard( );
         }
       }}
     />
