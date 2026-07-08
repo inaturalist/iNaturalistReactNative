@@ -101,7 +101,6 @@ export interface RealmObservationFieldValuePojo extends RealmObject {
   uuid: string;
   id?: number;
   obsFieldId: number;
-  projectId: number;
   value?: string;
 }
 

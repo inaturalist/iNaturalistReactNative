@@ -63,8 +63,14 @@ Add-location-to-refresh-suggestions = Add location to refresh suggestions
 # Accessibility label for a button that starts the process of adding an
 # observation, e.g. the button in the tab bar
 Add-observations = Add observations
-ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
 Add-optional-notes = Add optional notes
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 # Hint for a button that adds an identification
 Adds-ID = Adds ID
 # Hint for a button that adds a vote of agreement
@@ -240,6 +246,7 @@ Closes-withdraw-id-sheet = Closes "Withdraw ID" sheet
 # Heading for a section that describes people and organizations that
 # collaborate with iNaturalist
 COLLABORATORS = COLLABORATORS
+Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = Collection Project
 # Button that combines multiple photos into a single observation
 Combine-Photos = Combine Photos
@@ -547,6 +554,7 @@ FOLLOWING-X-PEOPLE =
         [one] FOLLOWING { $count } PERSON
        *[other] FOLLOWING { $count } PEOPLE
     }
+For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 # Forgot password link
 Forgot-Password = Forgot Password
 GEOPRIVACY = GEOPRIVACY
@@ -725,6 +733,10 @@ LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 Log-in-to-iNaturalist = Log in to iNaturalist
 LOG-OUT = LOG OUT
 LOG-OUT--question = LOG OUT?
+# When the user searches their own observations for something they haven't observed
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 MAP = MAP
@@ -948,6 +960,7 @@ Please-choose-a-different-password = Please choose a different password.
 # Title of a screen asking for permission when permission has been denied
 Please-Grant-Permission = Please Grant Permission
 PLEASE-LOG-IN = PLEASE LOG IN
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Please make sure your password is at least 6 characters.
 Please-try-again-when-you-are-connected-to-the-internet = Please try again when you are connected to the Internet.
@@ -1305,9 +1318,11 @@ This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
 To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
+To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
 Toggle-map-type = Toggle map type
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 Traditional-Project = Traditional Project
+Traditional-Projects = Traditional Projects
 Umbrella-Project = Umbrella Project
 UNFOLLOW = UNFOLLOW
 UNFOLLOW-USER = UNFOLLOW USER?
@@ -1561,15 +1576,18 @@ You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per obser
 You-can-also-check-out-merchandise = You can also check out merchandise for iNaturalist and Seek at our store below!
 You-can-click-join-on-the-project-page = You can click “join” on the project page.
 You-can-find-answers-on-our-help-page = You can find answers on our help page.
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = You can manually add observations to Traditional Projects you have joined.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = You can now upload your observations to iNaturalist and contribute to global biodiversity research.
 You-can-only-add-20-photos-per-observation = You can only add 20 photos per observation
 You-can-still-share-the-file = You can still share the file with another app. If you can email it, please send it to { $email }
 You-can-upload-this-observation-to-our-community = You can upload this observation to our community to get an identification from a real person, and help our AI improve its identifications in the future
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = You changed filters, but they were not applied to your explore search results.
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = You have opted out of the Community Taxon
 You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
+You-havent-joined-any-Traditional-Projects-yet = You haven’t joined any Traditional Projects yet!
 You-havent-observed-any-species-yet = You haven't observed any species yet.
 You-likely-observed-a-species-in-this-group = You likely observed a species in this group
 You-likely-observed-this-species = You likely observed this species
@@ -1583,6 +1601,7 @@ You-must-install-Google-Play-Services-to-sign-in-with-Google = You must install 
 You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
 # Error message when you try to do something that requires log in
 You-need-log-in-to-do-that = You need to log in to do that.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = You observed a species in this group
 You-observed-this-species = You observed this species
 You-will-see-notifications = You’ll see notifications here once you log in & upload observations.

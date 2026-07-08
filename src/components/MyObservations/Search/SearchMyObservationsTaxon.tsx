@@ -14,14 +14,23 @@ import {
   useMyObservations,
 } from "providers/MyObservationsContext";
 import React, { useCallback, useState } from "react";
-import { useTranslation } from "sharedHooks";
+import type { RealmTaxon, RealmUser } from "realmModels/types";
+import { taxonDisplayName } from "sharedHelpers/taxon";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
 
 const SearchMyObservationsTaxon = ( ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
-  const { dispatch } = useMyObservations( );
-  const [taxonQuery, setTaxonQuery] = useState( "" );
+  const { state, dispatch } = useMyObservations( );
+  const { searchedTaxon } = state;
+  const currentUser = useCurrentUser( ) as RealmUser | null;
+
+  const [taxonQuery, setTaxonQuery] = useState( ( ) => (
+    searchedTaxon
+      ? taxonDisplayName( searchedTaxon, currentUser )
+      : ""
+  ) );
 
   const { taxa, isLoading, isLocal } = useTaxonSearch( taxonQuery );
 
@@ -29,12 +38,21 @@ const SearchMyObservationsTaxon = ( ) => {
 
   const onTaxonSelected = useCallback( ( newTaxon: ApiTaxon | null ) => {
     if ( newTaxon && typeof newTaxon.id === "number" && newTaxon.name ) {
+      // useTaxonSearch can return either ApiTaxon-shaped or RealmTaxon-shaped
+      // taxa depending on the source, so we have to check for both here.
+      // TODO: normalize taxa at ingest.
+      const realmTaxon = newTaxon as RealmTaxon;
+      const iconUri = newTaxon.default_photo?.url
+        || realmTaxon.defaultPhoto?.url;
+      const preferredCommonName = newTaxon.preferred_common_name
+        || realmTaxon.preferredCommonName;
       dispatch( {
         type: MY_OBSERVATIONS_ACTION.SET_TAXON_SEARCH,
         searchTaxon: {
           id: newTaxon.id,
           name: newTaxon.name,
-          preferred_common_name: newTaxon.preferred_common_name,
+          preferredCommonName,
+          iconUri,
         },
       } );
     } else {
@@ -43,7 +61,11 @@ const SearchMyObservationsTaxon = ( ) => {
     closeScreen( );
   }, [closeScreen, dispatch] );
 
-  const resetSearch = useCallback( ( ) => setTaxonQuery( "" ), [] );
+  const resetSearch = useCallback( ( ) => {
+    setTaxonQuery( "" );
+    dispatch( { type: MY_OBSERVATIONS_ACTION.CLEAR_TAXON_SEARCH } );
+    closeScreen( );
+  }, [closeScreen, dispatch] );
 
   const renderItem = useCallback(
     // no-unused-prop-types failing for components defined at runtime seems to
@@ -68,6 +90,7 @@ const SearchMyObservationsTaxon = ( ) => {
         closeModal={closeScreen}
         headerText={t( "SEARCH" )}
         resetFilters={resetSearch}
+        resetDisabled={!searchedTaxon}
         testID="SearchMyObservationsTaxon.close"
       />
       <TaxonSearch

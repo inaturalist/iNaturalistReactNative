@@ -13,6 +13,9 @@ export interface Tab {
   text: string;
   testID?: string;
   onPress: ( _event: GestureResponderEvent ) => void;
+  // Per-tab content, e.g. a stat particular to this tab. Takes precedence
+  // over TabComponent, which is shared by all tabs.
+  renderComponent?: ( ) => React.ReactNode;
 }
 
 export interface TabComponentProps {
@@ -42,9 +45,25 @@ const Tabs = ( {
     <>
       <View className="flex flex-row" accessibilityRole="tablist">
         {tabs.map( ( {
-          id, text, onPress, testID,
+          id, text, onPress, testID, renderComponent,
         } ) => {
           const active = activeId === id;
+          let tabContent: React.ReactNode;
+          if ( renderComponent ) {
+            tabContent = renderComponent( );
+          } else if ( TabComponent ) {
+            tabContent = <TabComponent id={id} text={text} />;
+          } else {
+            tabContent = (
+              <TextComponent
+                className="self-center pt-4 pb-3"
+                maxFontSizeMultiplier={1.5}
+                numberOfLines={1}
+              >
+                {text}
+              </TextComponent>
+            );
+          }
           return (
             <View key={id} className="flex-1">
               <TouchableOpacity
@@ -62,19 +81,7 @@ const Tabs = ( {
                   expanded: active,
                 }}
               >
-                {
-                  TabComponent
-                    ? <TabComponent id={id} text={text} />
-                    : (
-                      <TextComponent
-                        className="self-center pt-4 pb-3"
-                        maxFontSizeMultiplier={1.5}
-                        numberOfLines={1}
-                      >
-                        {text}
-                      </TextComponent>
-                    )
-                }
+                {tabContent}
                 { active && (
                   <View
                     className="h-[4px] rounded-t"

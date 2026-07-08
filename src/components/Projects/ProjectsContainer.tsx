@@ -1,3 +1,4 @@
+import { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import isEmpty from "lodash/isEmpty";
 import React, { useCallback, useState } from "react";
 import {
@@ -30,7 +31,9 @@ const ProjectsContainer = ( ) => {
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const [userLocation, setUserLocation] = useState( null );
 
-  const apiParams = { };
+  const apiParams = {
+    fields: PROJECT_SUMMARY_FIELDS,
+  };
 
   if ( searchInput.length > 0 ) {
     apiParams.q = searchInput;

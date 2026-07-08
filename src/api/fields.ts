@@ -30,6 +30,7 @@ export const PROJECT_DETAIL_FIELDS = {
   header_image_url: true,
   membership_model: true,
   place_id: true,
+  project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
   user_ids: true,
 };
 
@@ -42,7 +43,7 @@ export const PROJECT_FIELDS_ALL = "all";
 
 export const OBSERVATION_FIELD_VALUE_FIELDS = {
   id: true,
-  observation_field: OBSERVATION_FIELD_FIELDS,
+  field_id: true,
   uuid: true,
   value: true,
 };

@@ -178,6 +178,7 @@ export type SharedStackParamList = {
     lastScreen: "ObsEdit" | "ObsDetails";
   };
   MatchTaxonSearchScreen: undefined;
+  AddToProjects: undefined;
   // From About
   //  {
   //   title: t( "COMMUNITY-GUIDELINES" ),

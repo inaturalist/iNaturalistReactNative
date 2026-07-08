@@ -19,7 +19,7 @@ import {
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
-import StatTab from "components/SharedComponents/StatTab";
+import { ObservationsStatTab, SpeciesStatTab } from "components/SharedComponents/StatTab";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
 import { Alert } from "react-native";
@@ -35,6 +35,8 @@ import {
 } from "sharedHelpers/speciesSort";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useGridLayout, useLayoutPrefs, useTranslation } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
@@ -42,6 +44,7 @@ import LoginSheet from "./LoginSheet";
 import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
+import SearchedTaxonBanner from "./Search/SearchedTaxonBanner";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
@@ -60,7 +63,8 @@ interface Props {
   numTotalObservations?: number;
   numTotalTaxa?: number;
   numUnuploadedObservations: number;
-  observations: RealmObservation[];
+  numObsMissingBasics: number;
+  observationIds: { uuid: string }[];
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
@@ -109,7 +113,8 @@ const MyObservationsSimple = ( {
   taxaListRef,
   numTotalTaxa,
   numUnuploadedObservations,
-  observations,
+  numObsMissingBasics: numUnuploadedObsMissingBasics,
+  observationIds,
   onEndReached,
   onListLayout,
   onScroll,
@@ -129,6 +134,9 @@ const MyObservationsSimple = ( {
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
+  const searchMyObservationsEnabled = useFeatureFlag(
+    FeatureFlag.SearchMyObservationsEnabled,
+  );
   const speciesSortLabels = useSpeciesSortLabels( );
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -223,29 +231,12 @@ const MyObservationsSimple = ( {
     taxa?.length,
   ] );
 
-  const numUnuploadedObsMissingBasics = useMemo( () => (
-    observations
-      .filter( o => o.needs_sync && o.missing_basics )
-      .map( o => o.uuid )
-      .length
-  ), [observations] );
-
-  const obsMissingBasicsExist = useMemo( ( ) => (
-    numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0
-  ), [numUnuploadedObservations, numUnuploadedObsMissingBasics] );
+  const obsMissingBasicsExist = numUnuploadedObservations > 0 && numUnuploadedObsMissingBasics > 0;
 
   // if user is not logged in, we'll consider all obs 'uploadable' to shepherd people to login flow
   const numUploadableObservations = isDefaultMode && !!currentUser
     ? numUnuploadedObservations - numUnuploadedObsMissingBasics
     : numUnuploadedObservations;
-
-  const renderTabComponent = ( { id } ) => (
-    <StatTab
-      id={id}
-      numTotalObservations={numTotalObservations}
-      numTotalTaxa={numTotalTaxa}
-    />
-  );
 
   const observationsHeader = useMemo( ( ) => {
     if ( layout !== "grid" ) {
@@ -281,7 +272,7 @@ const MyObservationsSimple = ( {
   }, [flashListStyle, isConnected, layout, numTotalObservations, obsMissingBasicsExist] );
 
   const dataFilledWithEmptyBoxes = useMemo( ( ) => {
-    const data = observations;
+    const data = observationIds;
     // In grid layout fill up to 8 items to make sure the grid is filled
     // but don't add the empty boxes at the end of a long existing list
     if ( layout === "grid" && data.length < 8 ) {
@@ -295,7 +286,7 @@ const MyObservationsSimple = ( {
       return [...data, ...emptyBoxesWithId];
     }
     return data;
-  }, [observations, layout] );
+  }, [observationIds, layout] );
 
   const renderOfflineNotice = ( ) => {
     if ( isConnected === false ) {
@@ -331,7 +322,7 @@ const MyObservationsSimple = ( {
   };
 
   const handlePivotCardGridItemPress = ( ) => {
-    const { uuid } = observations[0];
+    const { uuid } = observationIds[0];
     navigation.navigate( {
       key: `Obs-0-${uuid}`,
       name: "ObsDetails",
@@ -356,15 +347,23 @@ const MyObservationsSimple = ( {
               id: OBSERVATIONS_TAB,
               text: t( "Observations" ),
               onPress: () => setActiveTab( OBSERVATIONS_TAB ),
+              renderComponent: ( ) => (
+                <ObservationsStatTab count={numTotalObservations} />
+              ),
             },
             {
               id: TAXA_TAB,
               text: t( "Species" ),
               onPress: () => setActiveTab( TAXA_TAB ),
+              renderComponent: ( ) => (
+                <SpeciesStatTab count={numTotalTaxa} />
+              ),
             },
           ]}
-          TabComponent={renderTabComponent}
         />
+        {searchMyObservationsEnabled && activeTab === OBSERVATIONS_TAB && (
+          <SearchedTaxonBanner />
+        )}
         { activeTab === OBSERVATIONS_TAB && (
           <>
             <ObservationsFlashList
@@ -455,7 +454,7 @@ const MyObservationsSimple = ( {
               accessibilityHint: t( "Navigates-to-observation-details" ),
               imageComponent: (
                 <PivotCardObsGridItem
-                  uuid={observations[0].uuid}
+                  uuid={observationIds[0].uuid}
                 />
               ),
             }}

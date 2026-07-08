@@ -31,7 +31,7 @@ const ALIASES: Aliases = {
   "comment-fill": "comments",
   "comment-outline": "comments-outline",
   copyrightcc: "copyright",
-  currentlocation: "location-crosshairs",
+  currentlocation: "location-arrow",
   cv: "sparkly-label",
   date: "clock-outline",
   delete: "trash-outline",

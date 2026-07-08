@@ -25,7 +25,7 @@ export enum EXPLORE_V2_PLACE_MODE {
   PLACE = "PLACE"
 }
 
-interface Place {
+export interface Place {
   id: number;
   display_name?: string;
 }
@@ -36,6 +36,7 @@ interface Taxon {
   preferred_common_name?: string;
   default_photo?: { url?: string };
   iconic_taxon_name?: string;
+  rank_level?: number;
 }
 
 interface User {

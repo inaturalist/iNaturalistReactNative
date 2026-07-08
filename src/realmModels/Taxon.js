@@ -160,6 +160,43 @@ class Taxon extends Realm.Object {
     };
   }
 
+  /**
+   * Inverse of mapApiToRealm: maps a live Realm Taxon into the plain,
+   * snake_case ApiTaxon shape the API and most display/search code expect.
+   * Live Realm objects expose camelCase mapTo accessors (preferredCommonName,
+   * defaultPhoto); we read those (falling back to the snake_case keys so a
+   * plain object passes through unchanged) and return a detached POJO. Use
+   * this whenever a live Taxon needs to leave the data layer (React/Zustand
+   * state, async boundaries, child components) so we aren't passing around an
+   * object Realm can invalidate underneath us.
+   *
+   * @param {object} taxon - a live Realm Taxon (or an already-plain object)
+   * @returns {object} plain ApiTaxon-shaped object
+   */
+  static mapRealmToPojo( taxon ) {
+    if ( !taxon ) return taxon;
+    const photo = taxon.defaultPhoto || taxon.default_photo;
+    return {
+      id: taxon.id,
+      name: taxon.name,
+      rank: taxon.rank,
+      rank_level: taxon.rank_level,
+      iconic_taxon_name: taxon.iconic_taxon_name,
+      ancestor_ids: taxon.ancestor_ids
+        ? Array.from( taxon.ancestor_ids )
+        : undefined,
+      preferred_common_name: taxon.preferredCommonName ?? taxon.preferred_common_name,
+      default_photo: photo?.url
+        ? {
+          id: photo.id,
+          url: photo.url,
+          attribution: photo.attribution,
+          license_code: photo.license_code ?? photo.licenseCode,
+        }
+        : undefined,
+    };
+  }
+
   static uri = item => ( item && item.default_photo ) && { uri: item.default_photo.url };
 
   static schema = {

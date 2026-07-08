@@ -31,8 +31,14 @@ Add-Location = Adicionar localização
 ADD-LOCATION-FOR-BETTER-IDS = ADICIONAR LOCALIZAÇÃO PARA MELHORES IDS
 Add-location-to-refresh-suggestions = Adicionar localização para atualizar sugestões
 Add-observations = Adicionar observações
-ADD-OPTIONAL-COMMENT = ADICIONAR COMENTÁRIO OPCIONAL
 Add-optional-notes = Adicionar notas opcionais
+Add-to-Projects = Add to Projects
+ADD-TO-PROJECTS = ADD TO PROJECTS
+Added-to-X-Projects =
+    Added to { $count } { $count ->
+        [one] Project
+       *[other] Projects
+    }
 Adds-ID = Adiciona ID
 Adds-your-vote-of-agreement = Adiciona o seu voto de acordo
 Adds-your-vote-of-disagreement = Acrescenta o seu voto de discordância
@@ -129,6 +135,7 @@ Closes-explanation = Encerra explicação
 Closes-introduction = Encerra a introdução
 Closes-withdraw-id-sheet = Fecha a folha "Retirar ID"
 COLLABORATORS = COLABORADORES
+Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = Projeto de Coleção
 Combine-Photos = Combinar fotos
 COMMENT = COMENTAR
@@ -323,6 +330,7 @@ FOLLOWING-X-PEOPLE =
         [um] SEGUINTES { $count } PESSOA
        *[outros] SEGUINTES { $count } PESSOAS
     }
+For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 Forgot-Password = Esqueceu-se da palavra-passe
 GEOPRIVACY = GEOPRIVACIDADE
 Geoprivacy-status = Geoprivacidade: { $status }
@@ -461,6 +469,9 @@ LOG-IN-TO-INATURALIST = FAÇA LOGIN NO INATURALIST
 Log-in-to-iNaturalist = Inicie sessão no iNaturalist
 LOG-OUT = ENCERRAR SESSÃO
 LOG-OUT--question = SAIR?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Looks like you haven't observed this yet.
+    Time to keep exploring!
 Lowest = Mais baixo
 LOWEST-RANK = CLASSIFICAÇÃO MAIS BAIXA
 MAP = MAPA
@@ -604,6 +615,7 @@ Please-allow-Microphone-Access = Por favor, permita o acesso ao microfone
 Please-choose-a-different-password = Escolha uma palavra-passe diferente.
 Please-Grant-Permission = Por favor, conceda permissão
 PLEASE-LOG-IN = POR FAVOR, FAÇA LOGIN
+Please-log-in = Please log in
 Please-log-in-again = Please log in again. We occasionally need to refresh your session to clear cached data and make sure the app is working its best.
 Please-make-sure-your-password-is-at-least-6-characters = Certifique-se de que a sua palavra-passe tem pelo menos 6 caracteres.
 Please-try-again-when-you-are-connected-to-the-internet = Tente novamente quando estiver conectado à Internet.
@@ -882,9 +894,11 @@ This-user-is-not-following-anyone = This user is not following anyone.
 To-sync-your-observations-to-iNaturalist = Para sincronizar as suas observações com o iNaturalist, inicie sessão.
 To-view-nearby-organisms-please-enable-location = Para ver organismos próximos, ative a localização.
 To-view-nearby-projects-please-enable-location = Para ver projetos próximos, ative a localização.
+To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
 Toggle-map-type = Alternar tipo de mapa
 TOP-ID-SUGGESTION = SUGESTÃO DE TOP ID
 Traditional-Project = Projeto Tradicional
+Traditional-Projects = Traditional Projects
 Umbrella-Project = Projeto Umbrella
 UNFOLLOW = NÃO SEGUIR
 UNFOLLOW-USER = DEIXAR DE SEGUIR USUÁRIO?
@@ -1098,15 +1112,18 @@ You-can-add-up-to-20-media = Você pode adicionar até 20 fotos e 20 sons por ob
 You-can-also-check-out-merchandise = Você também pode conferir mercadorias para iNaturalist e Seek em nossa loja abaixo!
 You-can-click-join-on-the-project-page = Você pode clicar em "participar" na página do projeto.
 You-can-find-answers-on-our-help-page = Pode encontrar respostas na nossa página de ajuda.
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = You can manually add observations to Traditional Projects you have joined.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = Agora você pode carregar suas observações para iNaturalist e contribuir para a pesquisa global de biodiversidade.
 You-can-only-add-20-photos-per-observation = Só pode adicionar 20 fotografias por observação
 You-can-still-share-the-file = Você ainda pode compartilhar o arquivo com outro aplicativo. Se você puder enviá-lo por e-mail, envie-o para { $email }
 You-can-upload-this-observation-to-our-community = Pode carregar esta observação para a nossa comunidade para obter uma identificação de uma pessoa real e ajudar a nossa IA a melhorar as suas identificações no futuro
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = Você alterou filtros, mas eles não foram aplicados aos resultados da pesquisa de exploração.
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = You have no notifications! You will see updates to observations you have left IDs or comments on here.
 You-have-opted-out-of-the-Community-Taxon = Optou por não participar no Taxon Comunitário
 You-havent-joined-any-projects-yet = Ainda não aderiu a nenhum projeto!
+You-havent-joined-any-Traditional-Projects-yet = You haven’t joined any Traditional Projects yet!
 You-havent-observed-any-species-yet = Ainda não observou nenhuma espécie.
 You-likely-observed-a-species-in-this-group = Você provavelmente observou uma espécie neste grupo
 You-likely-observed-this-species = Você provavelmente observou esta espécie
@@ -1116,6 +1133,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Você pode notar mudanças 
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Tem de instalar o Google Play Services para iniciar sessão com a Google.
 You-need-an-Internet-connection-to-do-that = Você precisa de uma conexão com a Internet para fazer isso.
 You-need-log-in-to-do-that = Tem de iniciar sessão para fazer isto.
+You-need-to-be-logged-in-to-add-observations-to-projects = You need to be logged in to add observations to projects.
 You-observed-a-species-in-this-group = Você observou uma espécie neste grupo
 You-observed-this-species = Você observou esta espécie
 You-will-see-notifications = Você verá notificações aqui assim que fizer login e carregar observações.

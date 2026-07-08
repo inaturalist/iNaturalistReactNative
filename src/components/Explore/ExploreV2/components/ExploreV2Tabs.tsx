@@ -1,13 +1,10 @@
-import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import { Tabs } from "components/SharedComponents";
-import StatTab from "components/SharedComponents/StatTab";
-import type { TabComponentProps } from "components/SharedComponents/Tabs/Tabs";
+import { ObservationsStatTab, SpeciesStatTab } from "components/SharedComponents/StatTab";
 import { View } from "components/styledComponents";
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
-
-const SPECIES_TAB = "species";
 
 interface Props {
   observationsCount?: number | null;
@@ -17,18 +14,6 @@ interface Props {
 // switching between observations and species views is deferred to MOB-1332.
 const ExploreV2Tabs = ( { observationsCount, speciesCount }: Props ) => {
   const { t } = useTranslation( );
-
-  const renderTabComponent = useCallback(
-    ( { id }: TabComponentProps ) => (
-      <StatTab
-        id={id}
-        numTotalObservations={observationsCount}
-        numTotalTaxa={speciesCount}
-        wrapperClassName="pb-3"
-      />
-    ),
-    [observationsCount, speciesCount],
-  );
 
   return (
     <View testID="ExploreV2Tabs">
@@ -41,15 +26,20 @@ const ExploreV2Tabs = ( { observationsCount, speciesCount }: Props ) => {
             text: t( "Observations" ),
             testID: "ExploreV2Tabs.observations",
             onPress: ( ) => undefined, // MOB-1332
+            renderComponent: ( ) => (
+              <ObservationsStatTab count={observationsCount} wrapperClassName="pb-3" />
+            ),
           },
           {
             id: SPECIES_TAB,
             text: t( "Species" ),
             testID: "ExploreV2Tabs.species",
             onPress: ( ) => undefined, // MOB-1332
+            renderComponent: ( ) => (
+              <SpeciesStatTab count={speciesCount} wrapperClassName="pb-3" />
+            ),
           },
         ]}
-        TabComponent={renderTabComponent}
       />
     </View>
   );
