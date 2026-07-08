@@ -31,7 +31,6 @@ Add-Location = Додати локацію
 ADD-LOCATION-FOR-BETTER-IDS = ADD LOCATION FOR BETTER IDS
 Add-location-to-refresh-suggestions = Add location to refresh suggestions
 Add-observations = Додати спостереження
-ADD-OPTIONAL-COMMENT = ДОДАТИ НЕОБОВ'ЯЗКОВИЙ КОМЕНТАР
 Add-optional-notes = Додати необов'язкові записи
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS

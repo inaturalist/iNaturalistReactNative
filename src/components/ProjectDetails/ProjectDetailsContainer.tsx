@@ -16,18 +16,22 @@ import type {
   ApiObservationsSearchResponse, ApiPlace, ApiProject, ApiResponse,
 } from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
+import { RealmContext } from "providers/contexts";
 import React, { useMemo, useState } from "react";
+import Project from "realmModels/Project";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
 
 const logger = log.extend( "ProjectDetailsContainer" );
+const { useRealm } = RealmContext;
 
 const ProjectDetailsContainer = ( ) => {
   const navigation = useNavigation<TabStackScreenProps<"ProjectDetails">["navigation"]>( );
   const { params } = useRoute<TabStackScreenProps<"ProjectDetails">["route"]>( );
   const { id } = params;
+  const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const [loading, setLoading] = useState( false );
 
@@ -104,6 +108,10 @@ const ProjectDetailsContainer = ( ) => {
     ( _, optsWithAuth ) => joinProject( { id }, optsWithAuth ),
     {
       onSuccess: ( ) => {
+        // Persist traditional projects on join
+        if ( project?.project_type === "" ) {
+          Project.upsertRemoteProjects( [project], realm );
+        }
         queryClient.invalidateQueries( membershipQueryKey );
       },
       onError: error => {

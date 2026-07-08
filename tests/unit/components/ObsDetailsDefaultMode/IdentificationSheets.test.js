@@ -142,8 +142,6 @@ describe( "IdentificationSheets", () => {
 
   describe( "identReducer", () => {
     const initialState = {
-      comment: null,
-      commentIsOptional: false,
       showIdentBodySheet: false,
       newIdentification: null,
       showPotentialDisagreementSheet: false,

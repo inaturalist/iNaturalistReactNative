@@ -31,7 +31,6 @@ Add-Location = Añadir Ubicación
 ADD-LOCATION-FOR-BETTER-IDS = AÑADIR UBICACIÓN PARA MEJORES ID
 Add-location-to-refresh-suggestions = Agrega una ubicación para actualizar las sugerencias
 Add-observations = Agrega observaciones
-ADD-OPTIONAL-COMMENT = AÑADIR COMENTARIO OPCIONAL
 Add-optional-notes = Añadir notas opcionales
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS

@@ -42,7 +42,7 @@ const SET_INITIAL_OBSERVATION = "SET_INITIAL_OBSERVATION";
 const ADD_ACTIVITY_ITEM = "ADD_ACTIVITY_ITEM";
 const LOADING_ACTIVITY_ITEM = "LOADING_ACTIVITY_ITEM";
 
-interface AgreeIdentification {
+export interface AgreeIdentification {
   taxon: RealmTaxon;
 }
 

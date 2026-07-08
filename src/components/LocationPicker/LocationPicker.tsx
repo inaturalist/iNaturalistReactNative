@@ -1,5 +1,3 @@
-// @flow
-
 import classnames from "classnames";
 import {
   CloseButton,
@@ -9,8 +7,9 @@ import {
 } from "components/SharedComponents";
 import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
+import type { LayoutChangeEvent } from "react-native";
+import type { Region } from "react-native-maps";
 import { useTranslation } from "sharedHooks";
 
 import CrosshairCircle from "./CrosshairCircle";
@@ -18,23 +17,24 @@ import DisplayLatLng from "./DisplayLatLng";
 import Footer from "./Footer";
 import LoadingIndicator from "./LoadingIndicator";
 import LocationSearch from "./LocationSearch";
+import type { LocationPickerPlace } from "./types";
 
-type Props = {
-  accuracy: number,
-  handleSave: Function,
-  hidePlaceResults: boolean,
-  loading: boolean,
-  locationName: string,
-  initialRegion: Object,
-  onCurrentLocationPress: Function,
-  onMapReady: Function,
-  onRegionChangeComplete: Function,
-  region: Object,
-  regionToAnimate: Object,
-  selectPlaceResult: Function,
-  updateLocationName: Function,
-  onMapLayout: Function,
-};
+interface Props {
+  accuracy: number;
+  handleSave: ( ) => void;
+  hidePlaceResults: boolean;
+  loading: boolean;
+  locationName: string;
+  initialRegion: Region | null;
+  onCurrentLocationPress: ( ) => void;
+  onMapReady: ( ) => void;
+  onRegionChangeComplete: ( newRegion: Region ) => void;
+  region: Region;
+  regionToAnimate: Region;
+  selectPlaceResult: ( place: LocationPickerPlace ) => void;
+  updateLocationName: ( name: string ) => void;
+  onMapLayout: ( event: LayoutChangeEvent ) => void;
+}
 
 const LocationPicker = ( {
   accuracy,
@@ -51,7 +51,7 @@ const LocationPicker = ( {
   selectPlaceResult,
   updateLocationName,
   onMapLayout,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   let regionToDisplay;
@@ -110,6 +110,9 @@ const LocationPicker = ( {
           </View>
           <Map
             className="h-full"
+            // TODO: reconcile null vs undef: does a changing initialRegion actually have an effect?
+            // it requires the map ref to settle to inform region's delta properties, but
+            // per docs, prop changes to `initialRegion` are ignored.
             initialRegion={initialRegion}
             onCurrentLocationPress={onCurrentLocationPress}
             onMapReady={onMapReady}

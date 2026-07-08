@@ -110,7 +110,7 @@ const MyObservationsResults = ( ) => {
     startUploadObservations,
   );
 
-  useObservationsUpdates( !!currentUser );
+  const { refetch: refetchObservationsUpdates } = useObservationsUpdates( !!currentUser );
 
   const {
     fetchFromLastObservation,
@@ -234,7 +234,8 @@ const MyObservationsResults = ( ) => {
 
   const handlePullToRefresh = useCallback( async ( ) => {
     await syncManually( { skipUploads: true } );
-  }, [syncManually] );
+    refetchObservationsUpdates( );
+  }, [syncManually, refetchObservationsUpdates] );
 
   // Scroll the list to the offset we need to restore, e.g. when you are
   // scrolled way down, edit an observation, and return. Entering ObsEdit
