@@ -1,9 +1,6 @@
-// @flow
-
 import TakePhoto from "components/Camera/Buttons/TakePhoto";
 import { MediaNavButtons } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 
@@ -27,7 +24,7 @@ const CameraNavButtons = ( {
   photosTaken,
   rotatableAnimatedStyle,
   takePhoto,
-}: Props ): Node => {
+}: Props ) => {
   if ( isTablet ) return null;
 
   return (
