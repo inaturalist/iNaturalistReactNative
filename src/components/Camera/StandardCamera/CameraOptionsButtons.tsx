@@ -10,20 +10,20 @@ import DeviceInfo from "react-native-device-info";
 
 const isTablet = DeviceInfo.isTablet();
 
-type Props = {
-  takePhoto: () => Promise<void>,
-  handleClose: Function,
-  disabled: boolean,
-  photosTaken: boolean,
-  rotatableAnimatedStyle: Object,
-  handleCheckmarkPress: Function,
-  toggleFlash: Function,
-  flipCamera: Function,
-  handleZoomButtonPress: Function,
-  hasFlash: boolean,
-  takePhotoOptions: Object,
-  zoomTextValue: string,
-  showZoomButton: boolean
+interface Props {
+  takePhoto: () => Promise<void>;
+  handleClose: Function;
+  disabled: boolean;
+  photosTaken: boolean;
+  rotatableAnimatedStyle: object;
+  handleCheckmarkPress: Function;
+  toggleFlash: Function;
+  flipCamera: Function;
+  handleZoomButtonPress: Function;
+  hasFlash: boolean;
+  takePhotoOptions: object;
+  zoomTextValue: string;
+  showZoomButton: boolean;
 }
 
 const CameraOptionsButtons = ( {
