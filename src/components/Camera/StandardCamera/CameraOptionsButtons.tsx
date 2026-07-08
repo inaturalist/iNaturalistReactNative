@@ -5,18 +5,18 @@ import TabletButtons from "components/Camera/TabletButtons";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 
-const isTablet = DeviceInfo.isTablet();
+const isTablet = DeviceInfo.isTablet( );
 
 interface Props {
-  takePhoto: () => Promise<void>;
-  handleClose: Function;
+  takePhoto: ( ) => Promise<void>;
+  handleClose: ( ) => void;
   disabled: boolean;
   photosTaken: boolean;
   rotatableAnimatedStyle: object;
-  handleCheckmarkPress: Function;
-  toggleFlash: Function;
-  flipCamera: Function;
-  handleZoomButtonPress: Function;
+  handleCheckmarkPress: ( ) => void;
+  toggleFlash: ( ) => void;
+  flipCamera: ( ) => void;
+  handleZoomButtonPress: ( ) => void;
   hasFlash: boolean;
   takePhotoOptions: object;
   zoomTextValue: string;
