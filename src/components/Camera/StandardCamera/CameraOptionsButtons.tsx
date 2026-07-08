@@ -50,7 +50,6 @@ const CameraOptionsButtons = ( {
         flashClassName="absolute bottom-[18px] left-[18px]"
       />
       <Zoom
-        showZoomButton={showZoomButton}
         handleZoomButtonPress={handleZoomButtonPress}
         zoomTextValue={zoomTextValue}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
