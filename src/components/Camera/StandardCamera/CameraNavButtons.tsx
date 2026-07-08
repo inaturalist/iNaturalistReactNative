@@ -9,8 +9,8 @@ const isTablet = DeviceInfo.isTablet();
 interface Props {
   disabled: boolean;
   confirmDisabled: boolean;
-  handleCheckmarkPress: Function;
-  handleClose: Function;
+  handleCheckmarkPress: ( ) => void;
+  handleClose: ( ) => void;
   photosTaken: boolean;
   rotatableAnimatedStyle: object;
   takePhoto: ( ) => void;
