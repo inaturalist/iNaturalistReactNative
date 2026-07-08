@@ -63,11 +63,18 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: () => mockUseCurrentUser( ),
 } ) );
 
-const mockUseQuery = jest.fn( () => ( { data: undefined } ) );
-jest.mock( "sharedHooks/useQuery", () => ( {
-  __esModule: true,
-  default: () => mockUseQuery( ),
-} ) );
+// Seen-status runs through useQueries + a combine() that folds each chunk's results
+// into the observed-taxon set. Override useQueries to feed mock results straight into
+// the component's real combine, so the derivation logic is still exercised.
+let mockSeenQueryResults = [];
+jest.mock( "@tanstack/react-query", () => {
+  const actual = jest.requireActual( "@tanstack/react-query" );
+  return {
+    __esModule: true,
+    ...actual,
+    useQueries: ( { combine } ) => combine( mockSeenQueryResults ),
+  };
+} );
 
 const renderView = ( props = {} ) => renderComponent(
   <ExploreV2Provider requestLocationPermissions={() => {}}>
@@ -86,7 +93,7 @@ beforeAll( async () => {
 
 beforeEach( () => {
   mockUseCurrentUser.mockReturnValue( null );
-  mockUseQuery.mockReturnValue( { data: undefined } );
+  mockSeenQueryResults = [];
 } );
 
 describe( "ExploreV2SpeciesView", () => {
@@ -110,9 +117,9 @@ describe( "ExploreV2SpeciesView", () => {
 
   it( "shows a seen checkmark only for species the current user has observed", async () => {
     mockUseCurrentUser.mockReturnValue( factory( "LocalUser" ) );
-    mockUseQuery.mockReturnValue( {
-      data: { results: [{ taxon: { id: 745 } }] },
-    } );
+    mockSeenQueryResults = [
+      { data: { results: [{ taxon: { id: 745 } }] } },
+    ];
 
     renderView( );
 
