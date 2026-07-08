@@ -9,14 +9,14 @@ import DeviceInfo from "react-native-device-info";
 
 const isTablet = DeviceInfo.isTablet();
 
-type Props = {
-  disabled: boolean,
-  confirmDisabled: boolean,
-  handleCheckmarkPress: Function,
-  handleClose: Function,
-  photosTaken: boolean,
-  rotatableAnimatedStyle: Object,
-  takePhoto: ( ) => void,
+interface Props {
+  disabled: boolean;
+  confirmDisabled: boolean;
+  handleCheckmarkPress: Function;
+  handleClose: Function;
+  photosTaken: boolean;
+  rotatableAnimatedStyle: object;
+  takePhoto: ( ) => void;
 }
 
 const CameraNavButtons = ( {
