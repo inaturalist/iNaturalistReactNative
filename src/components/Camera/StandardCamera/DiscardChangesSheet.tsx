@@ -32,6 +32,7 @@ const DiscardChangesSheet = ( {
           onDiscard( );
         }
       }}
+      loading={false}
     />
   );
 };
