@@ -74,7 +74,6 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
     <ScrollView keyboardShouldPersistTaps="handled" testID="DefaultSearchOptions">
       <View className="border-t border-b border-lightGray">
         <IconicTaxonChooser
-          accessibilityHint={t( "Searches-for-iconic-taxon" )}
           chosen={EMPTY_CHOSEN}
           contentContainerStyle={ICONIC_ROW_STYLE}
           onTaxonChosen={handleIconicTaxon}

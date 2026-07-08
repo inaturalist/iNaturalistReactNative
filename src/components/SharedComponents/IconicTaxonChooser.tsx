@@ -8,7 +8,6 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  accessibilityHint?: string;
   before?: React.ReactNode;
   chosen: string[];
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -41,7 +40,6 @@ const ICONIC_TAXA = [
 const EMPTY_CHOSEN: string[] = [];
 
 const IconicTaxonChooser = ( {
-  accessibilityHint,
   before,
   chosen = EMPTY_CHOSEN,
   contentContainerStyle = STYLESHEET,
@@ -84,15 +82,13 @@ const IconicTaxonChooser = ( {
             t( "Iconic-taxon-name", { iconicTaxon: iconicTaxonName } )
           }
           accessibilityHint={
-            accessibilityHint
-            ?? t( "Selects-iconic-taxon-X-for-identification", { iconicTaxon: iconicTaxonName } )
+            t( "Selects-iconic-taxon-X", { iconicTaxon: iconicTaxonName } )
           }
           testID={`INatIconButton.IconicTaxonButton.${iconicTaxonName}`}
         />
       </View>
     );
   }, [
-    accessibilityHint,
     chosen,
     onTaxonChosen,
     t,
