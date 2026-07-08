@@ -1176,7 +1176,7 @@ Select-photo = Select photo
 SELECT-THIS-TAXON = SELECT THIS TAXON
 # Label for an element that let's you select a user
 Select-user = Select user
-Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.
+Selects-iconic-taxon-X = Selects iconic taxon { $iconicTaxon }.
 Separate-Photos = Separate Photos
 # Month of September
 September = September
@@ -1232,6 +1232,7 @@ sound-recorder-help-Try-to-isolate = Try to isolate the sound of a single organi
 Sounds = Sounds
 Source-List = <0>(Source List: </0><1>{ $source }</1><0>)</0>
 Species = Species
+Species-I-havent-observed = Species I haven't observed
 Species-View = Species View
 Species-with-the-least-observations-appear-first = Species with the least observations appear first
 Species-with-the-most-observations-appear-first = Species with the most observations appear first

@@ -163,12 +163,6 @@ class Taxon extends Realm.Object {
   /**
    * Inverse of mapApiToRealm: maps a live Realm Taxon into the plain,
    * snake_case ApiTaxon shape the API and most display/search code expect.
-   * Live Realm objects expose camelCase mapTo accessors (preferredCommonName,
-   * defaultPhoto); we read those (falling back to the snake_case keys so a
-   * plain object passes through unchanged) and return a detached POJO. Use
-   * this whenever a live Taxon needs to leave the data layer (React/Zustand
-   * state, async boundaries, child components) so we aren't passing around an
-   * object Realm can invalidate underneath us.
    *
    * @param {object} taxon - a live Realm Taxon (or an already-plain object)
    * @returns {object} plain ApiTaxon-shaped object

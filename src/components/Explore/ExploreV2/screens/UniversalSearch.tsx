@@ -1,5 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import DefaultSearchOptions
+  from "components/Explore/ExploreV2/components/DefaultSearchOptions";
 import LocationSearchResult
   from "components/Explore/ExploreV2/components/LocationSearchResult";
 import UniversalSearchResult
@@ -188,6 +190,23 @@ const UniversalSearch = ( ) => {
     ? locationData
     : subjectData;
 
+  const showDefaultOptions = !showLocation && !subjectHasQuery;
+  const listEmptyComponent = showDefaultOptions
+    ? ( <DefaultSearchOptions onSelectSubject={handleSubjectSelect} /> )
+    : (
+      <EmptySearchResults
+        isLoading={showLocation
+          ? locationIsLoading
+          : isLoading}
+        searchQuery={showLocation
+          ? locationQuery
+          : subjectQuery}
+        refetch={showLocation
+          ? locationRefetch
+          : refetch}
+      />
+    );
+
   return (
     <ViewWrapper testID="UniversalSearch">
       <View className="bg-white" style={DROP_SHADOW}>
@@ -261,19 +280,7 @@ const UniversalSearch = ( ) => {
           keyboardShouldPersistTaps="handled"
           keyExtractor={resultKey}
           renderItem={renderItem}
-          ListEmptyComponent={(
-            <EmptySearchResults
-              isLoading={showLocation
-                ? locationIsLoading
-                : isLoading}
-              searchQuery={showLocation
-                ? locationQuery
-                : subjectQuery}
-              refetch={showLocation
-                ? locationRefetch
-                : refetch}
-            />
-          )}
+          ListEmptyComponent={listEmptyComponent}
         />
       </View>
     </ViewWrapper>
