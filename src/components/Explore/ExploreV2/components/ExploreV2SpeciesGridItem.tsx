@@ -11,14 +11,12 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   count?: number;
-  showSpeciesSeenCheckmark?: boolean;
   style?: object;
   taxon: ApiTaxon;
 }
 
 const ExploreV2SpeciesGridItem = ( {
   count,
-  showSpeciesSeenCheckmark = false,
   style,
   taxon,
 }: Props ) => {
@@ -54,7 +52,6 @@ const ExploreV2SpeciesGridItem = ( {
     <ExploreTaxonGridItem
       count={count}
       onPress={onPress}
-      showSpeciesSeenCheckmark={showSpeciesSeenCheckmark}
       style={style}
       taxon={taxon}
       upperRight={(

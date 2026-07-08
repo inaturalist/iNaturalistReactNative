@@ -1,13 +1,11 @@
-import { useQueries } from "@tanstack/react-query";
 import { fetchSpeciesCounts } from "api/observations";
 import type { ApiTaxon } from "api/types";
 import ExploreFlashList from "components/Explore/ExploreFlashList";
 import ExploreV2SpeciesGridItem
   from "components/Explore/ExploreV2/components/ExploreV2SpeciesGridItem";
 import i18n from "i18next";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import Taxon from "realmModels/Taxon";
-import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useGridLayout from "sharedHooks/useGridLayout";
 import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
@@ -49,64 +47,6 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
     { enabled },
   );
 
-  const SEEN_CHUNK_SIZE = 10;
-  const taxonIds = ( data as SpeciesCountResult[] ).map( r => r.taxon.id as number );
-
-  // taxonIdChunks holds the cumulative list of all taxa viewed, sliced into groups of 10.
-  const taxonIdChunks: number[][] = [];
-  for ( let i = 0; i < taxonIds.length; i += SEEN_CHUNK_SIZE ) {
-    taxonIdChunks.push( taxonIds.slice( i, i + SEEN_CHUNK_SIZE ) );
-  }
-
-  // useQueries executes taxonIdChunks.length queries,
-  // relying on React Query's caching so each full chunk actually runs only once
-  const observedIds = useQueries( {
-    queries: taxonIdChunks.map( chunk => ( {
-      queryKey: ["exploreV2SpeciesCountsSeen", currentUser?.id, chunk.join( "," )],
-      queryFn: ( ) => fetchSpeciesCounts( {
-        user_id: currentUser?.id,
-        taxon_id: chunk,
-        per_page: chunk.length,
-        fields: {
-          taxon: {
-            id: true,
-          },
-        },
-      } ),
-      enabled: !!( currentUser && chunk.length > 0 ),
-      // we don't really need to worry about a user's life list changing on this screen
-      staleTime: Infinity,
-      retry: ( failureCount: number, error: unknown ) => reactQueryRetry(
-        failureCount,
-        error,
-        { queryKey: ["exploreV2SpeciesCountsSeen"] },
-      ),
-      retryDelay: ( failureCount: number, error: unknown ) => handleRetryDelay(
-        failureCount,
-        error,
-      ),
-    } ) ),
-    combine: results => {
-      const ids = new Set<number>( );
-      // the combine callback unions the taxon ids present in the results
-      // (i.e. observed by this user) across all chunks
-      results.forEach( r => {
-        const seen = ( r.data as { results?: SpeciesCountResult[] } | undefined )?.results;
-        seen?.forEach( x => ids.add( x.taxon.id as number ) );
-      } );
-      // results holds every chunk's query state (redundant fetches prevented by cache).
-      // Return a sorted array so this reference stays stable when the observed set is unchanged,
-      // which keeps renderItem memoized.
-      return Array.from( ids ).sort( ( a, b ) => a - b );
-    },
-  } );
-
-  // observedIds is a stable, sorted reference,
-  // so this Set is only rebuilt when the observed set actually changes.
-  // observedIdSet.has is O(1) where observedIds.includes would be O(n)
-  // sort of overkill but I think it's nice
-  const observedIdSet = useMemo( ( ) => new Set( observedIds ), [observedIds] );
-
   const renderItem = useCallback(
     // eslint-plugin-react mistakes this render callback for a component and
     // flags its param type as unused prop types
@@ -117,12 +57,11 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
         // recycled and show on the wrong taxon
         key={`taxon-${item.taxon.id}-${item.taxon?.default_photo?.url}`}
         count={item?.count}
-        showSpeciesSeenCheckmark={observedIdSet.has( item.taxon.id )}
         style={gridItemStyle}
         taxon={item?.taxon}
       />
     ),
-    [gridItemStyle, observedIdSet],
+    [gridItemStyle],
   );
 
   return (
