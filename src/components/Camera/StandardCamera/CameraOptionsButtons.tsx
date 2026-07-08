@@ -1,10 +1,7 @@
-// @flow
-
 import CameraFlip from "components/Camera/Buttons/CameraFlip";
 import Flash from "components/Camera/Buttons/Flash";
 import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
-import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 
@@ -40,7 +37,7 @@ const CameraOptionsButtons = ( {
   handleZoomButtonPress,
   zoomTextValue,
   showZoomButton,
-}: Props ): Node => {
+}: Props ) => {
   const renderPhoneCameraOptions = () => (
     <>
       <Flash
