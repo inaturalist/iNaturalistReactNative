@@ -6,12 +6,12 @@ import {
 } from "components/SharedComponents/Buttons/TransparentCircleButton";
 import { Pressable } from "components/styledComponents";
 import React from "react";
-import type { GestureResponderEvent, ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
-  handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
+  handleZoomButtonPress: ( ) => void;
   zoomClassName?: string;
   zoomTextValue: string;
 }

@@ -2,14 +2,11 @@ import classNames from "classnames";
 import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { TransparentCircleButton } from "components/SharedComponents";
 import React from "react";
-import type {
-  GestureResponderEvent,
-  ViewStyle,
-} from "react-native";
+import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  flipCamera: ( _event: GestureResponderEvent ) => void;
+  flipCamera: ( ) => void;
   cameraFlipClassName?: string;
   rotatableAnimatedStyle?: ViewStyle;
 }
