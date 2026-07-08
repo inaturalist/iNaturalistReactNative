@@ -46,14 +46,10 @@ const Blog = ( ) => {
     navigation.setOptions( headerOptions );
   }, [headerOptions, navigation] );
 
-  if ( !blogPosts ) {
-    return null;
-  }
-
   return (
     <ScreenShell>
       <PostList
-        posts={blogPosts}
+        posts={blogPosts ?? []}
         fetchNextPage={fetchNextPage}
         isFetchingNextPage={isFetchingNextPage}
       />
