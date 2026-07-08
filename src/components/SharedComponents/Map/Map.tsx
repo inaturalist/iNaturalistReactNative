@@ -9,10 +9,11 @@ import React, {
   useRef,
   useState,
 } from "react";
-import type { DimensionValue, ViewStyle } from "react-native";
+import type { DimensionValue, LayoutChangeEvent, ViewStyle } from "react-native";
 import { Platform } from "react-native";
 import type {
   BoundingBox, LatLng, Region,
+  UserLocationChangeEvent,
 } from "react-native-maps";
 import MapView, { UrlTile } from "react-native-maps";
 import type Observation from "realmModels/Observation";
@@ -43,7 +44,7 @@ const CURRENT_LOCATION_ZOOM_LEVEL = 20; // target zoom level when user hits curr
 const MIN_ZOOM_LEVEL = 0; // default in react-native-maps, for Google Maps only
 const MIN_CENTER_COORDINATE_DISTANCE = 5;
 
-const getDefaultRegion = ( initialLatitude, initialLongitude ) => ( {
+const getDefaultRegion = ( initialLatitude?: number, initialLongitude?: number ) => ( {
   latitude: initialLatitude || 25, // Default to something US centric
   longitude: initialLongitude || -85, // Default to something US centric
   latitudeDelta: initialLatitude
@@ -83,7 +84,7 @@ interface Props {
   withPressableObsTiles?: boolean;
   zoomEnabled?: boolean;
   zoomTapEnabled?: boolean;
-  onMapLayout?: ( event: { nativeEvent: { layout: { width: number; height: number } } } ) => void;
+  onMapLayout?: ( event: LayoutChangeEvent ) => void;
 }
 
 // TODO: fallback to another map library
@@ -313,7 +314,7 @@ const Map = ( {
     minCenterCoordinateDistance: MIN_CENTER_COORDINATE_DISTANCE,
   };
 
-  const handleUserLocationChange = async locationChangeEvent => {
+  const handleUserLocationChange = async ( locationChangeEvent: UserLocationChangeEvent ) => {
     const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
     setUserLocation( coordinate );
   };
@@ -335,12 +336,15 @@ const Map = ( {
 
   const [previousTileUrl, setPreviousTileUrl] = useState( tileUrlTemplate );
 
-  const handleRegionChangeComplete = useCallback( async ( newRegion, gesture ) => {
+  const handleRegionChangeComplete = useCallback( async (
+    newRegion: Region,
+    { isGesture }: { isGesture?: boolean },
+  ) => {
     // We are only interested in region changes due to user interaction.
     // In Android, onRegionChangeComplete also fires for other map region
     // changes and gesture.isGesture is available to test for user interaction.
     let shouldSkipRegionUpdate = false;
-    if ( Platform.OS === "android" && !gesture.isGesture ) {
+    if ( Platform.OS === "android" && !isGesture ) {
       if ( previousTileUrl !== tileUrlTemplate ) {
         setPreviousTileUrl( tileUrlTemplate );
       }
@@ -409,19 +413,19 @@ const Map = ( {
   // In Android, when we render a single frame of <MapView> without <UrlTile>
   // we use a tiny region increase of 0.001% to get onRegionChangeComplete to
   // fire and update the obs tile url. This change is too small to be visible.
-  const fuzzRegion = curRegion => (
+  const fuzzRegion = ( curRegion: Region ) => (
     {
       ...curRegion,
       latitudeDelta: 1.00001 * curRegion.latitudeDelta,
       longitudeDelta: 1.00001 * curRegion.longitudeDelta,
     } );
-  const shouldFuzzRegion = curRegion => (
+  const unfuzzedMapRegion = setRegion( );
+  const shouldFuzzRegion = (
     Platform.OS === "android"
-    && curRegion
+    && unfuzzedMapRegion
     && previousTileUrl !== tileUrlTemplate
   );
-  const unfuzzedMapRegion = setRegion( );
-  const mapRegion = shouldFuzzRegion( unfuzzedMapRegion )
+  const mapRegion = shouldFuzzRegion
     ? fuzzRegion( unfuzzedMapRegion )
     : unfuzzedMapRegion;
 
@@ -534,6 +538,7 @@ const Map = ( {
         onUserLocationChange={handleUserLocationChange}
         pitchEnabled={false}
         ref={setRefs}
+        // TODO: reconcile possible `null` state
         region={mapRegion}
         rotateEnabled={false}
         scrollEnabled={scrollEnabled}
@@ -563,7 +568,7 @@ const Map = ( {
             <LocationIndicator
               latitude={latitude}
               longitude={longitude}
-              positionalAccuracy={observation.positionalAccuracy}
+              positionalAccuracy={observation.positional_accuracy}
             />
           )
           : (
