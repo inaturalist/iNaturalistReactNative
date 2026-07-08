@@ -96,7 +96,7 @@ const INatIconButton = ( {
       return 0.5;
     }
     if ( pressed ) {
-      return 0.95;
+      return 0.8;
     }
     return 1;
   }, [disabled] );
