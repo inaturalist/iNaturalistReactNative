@@ -1,9 +1,6 @@
-// @flow
-
 import {
   WarningSheet,
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -17,7 +14,7 @@ const DiscardChangesSheet = ( {
   setShowDiscardSheet,
   onDiscard,
   hidden,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   return (
