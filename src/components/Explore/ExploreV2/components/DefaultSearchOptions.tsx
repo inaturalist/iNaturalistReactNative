@@ -87,16 +87,18 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
           onPress={( ) => onSelectSubject( resultToSubject( currentUserResult ) )}
         />
       )}
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={t( "Species-I-havent-observed" )}
-        className={ROW_CLASSES}
-        // TODO MOB-1345
-        onPress={( ) => undefined}
-        testID="DefaultSearchOptions.unobserved"
-      >
-        <Body1>{t( "Species-I-havent-observed" )}</Body1>
-      </Pressable>
+      {currentUser?.id && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t( "Species-I-havent-observed" )}
+          className={ROW_CLASSES}
+          // TODO MOB-1345
+          onPress={( ) => undefined}
+          testID="DefaultSearchOptions.unobserved"
+        >
+          <Body1>{t( "Species-I-havent-observed" )}</Body1>
+        </Pressable>
+      )}
     </ScrollView>
   );
 };

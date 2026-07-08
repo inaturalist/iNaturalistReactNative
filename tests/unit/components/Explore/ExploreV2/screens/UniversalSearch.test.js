@@ -351,9 +351,9 @@ describe( "UniversalSearch screen", ( ) => {
       renderComponent( <UniversalSearch /> );
 
       expect( screen.queryByTestId( "UniversalSearchResult.user.99" ) ).toBeNull( );
-      // the iconic taxa chooser and unobserved shortcut still render
+      // the iconic taxa chooser still renders, but the unobserved shortcut does not
       expect( screen.getByTestId( "INatIconButton.IconicTaxonButton.plantae" ) ).toBeTruthy( );
-      expect( screen.getByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeTruthy( );
+      expect( screen.queryByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeNull( );
     } );
 
     it( "hides the default options once a subject query is entered", ( ) => {
