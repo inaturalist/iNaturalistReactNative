@@ -7,10 +7,10 @@ import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  setShowDiscardSheet: Function,
-  hidden?: boolean,
-  onDiscard: Function
+interface Props {
+  setShowDiscardSheet: Function;
+  hidden?: boolean;
+  onDiscard: Function;
 }
 
 const DiscardChangesSheet = ( {
