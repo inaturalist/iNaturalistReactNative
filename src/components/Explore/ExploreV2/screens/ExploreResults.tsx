@@ -124,7 +124,9 @@ const ExploreResults = ( ) => {
                 layout={layout === "list"
                   ? "list"
                   : "grid"}
-                hideObsUploadStatus={layout === "grid"}
+                // bit over a misnomer on this prop; in this case it hides the
+                // ID/comments/quality badges that grid results can technically have
+                hideObsUploadStatus={layout !== "list"}
                 obsListKey="ExploreV2Observations"
                 onEndReached={fetchNextPage}
                 showNoResults={!canFetch || totalResults === 0}
