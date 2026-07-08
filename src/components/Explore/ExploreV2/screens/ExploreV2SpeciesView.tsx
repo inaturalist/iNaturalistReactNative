@@ -5,9 +5,8 @@ import ExploreFlashList from "components/Explore/ExploreFlashList";
 import ExploreV2SpeciesGridItem
   from "components/Explore/ExploreV2/components/ExploreV2SpeciesGridItem";
 import i18n from "i18next";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import Taxon from "realmModels/Taxon";
-import type { RealmUser } from "realmModels/types";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useGridLayout from "sharedHooks/useGridLayout";
@@ -25,7 +24,7 @@ interface Props {
 }
 
 const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
-  const currentUser = useCurrentUser( ) as RealmUser | null;
+  const currentUser = useCurrentUser( );
   const { flashListStyle, gridItemStyle, numColumns } = useGridLayout( );
 
   // Signed-out users have no account locale, so common names need the app
@@ -102,6 +101,12 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
     },
   } );
 
+  // observedIds is a stable, sorted reference,
+  // so this Set is only rebuilt when the observed set actually changes.
+  // observedIdSet.has is O(1) where observedIds.includes would be O(n)
+  // sort of overkill but I think it's nice
+  const observedIdSet = useMemo( ( ) => new Set( observedIds ), [observedIds] );
+
   const renderItem = useCallback(
     // eslint-plugin-react mistakes this render callback for a component and
     // flags its param type as unused prop types
@@ -112,12 +117,12 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
         // recycled and show on the wrong taxon
         key={`taxon-${item.taxon.id}-${item.taxon?.default_photo?.url}`}
         count={item?.count}
-        showSpeciesSeenCheckmark={observedIds.includes( item.taxon.id as number )}
+        showSpeciesSeenCheckmark={observedIdSet.has( item.taxon.id )}
         style={gridItemStyle}
         taxon={item?.taxon}
       />
     ),
-    [gridItemStyle, observedIds],
+    [gridItemStyle, observedIdSet],
   );
 
   return (
