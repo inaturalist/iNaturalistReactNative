@@ -9,7 +9,7 @@ import IconicTaxonChooser from "components/SharedComponents/IconicTaxonChooser";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import { Pressable, ScrollView, View } from "components/styledComponents";
 import type { ExploreV2Subject } from "providers/ExploreV2Context";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import Taxon from "realmModels/Taxon";
 import type { RealmTaxon } from "realmModels/types";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -36,27 +36,18 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
   const currentUser = useCurrentUser( );
   const iconicTaxa = useIconicTaxa( );
 
-  // Map iconic taxon name -> Realm taxon, so the shared chooser's name-based
-  // callback can be resolved into a full taxon subject.
-  const taxaByName = useMemo( ( ): Map<string, RealmTaxon> => {
-    const map = new Map<string, RealmTaxon>( );
+  const handleIconicTaxon = useCallback( ( iconicTaxonName: string ) => {
+    // Resolve the chooser's name-based callback into a full taxon subject
     const taxaList = ( iconicTaxa
       ? Array.from( iconicTaxa )
       : [] ) as unknown as RealmTaxon[];
-    taxaList.forEach( taxon => {
-      if ( taxon?.name ) {
-        map.set( taxon.name.toLowerCase( ), taxon );
-      }
-    } );
-    return map;
-  }, [iconicTaxa] );
-
-  const handleIconicTaxon = useCallback( ( iconicTaxonName: string ) => {
-    const realmTaxon = taxaByName.get( iconicTaxonName );
+    const realmTaxon = taxaList.find(
+      taxon => taxon?.name?.toLowerCase( ) === iconicTaxonName,
+    );
     if ( !realmTaxon ) { return; }
     const taxon = Taxon.mapRealmToPojo( realmTaxon ) as ApiTaxon;
     onSelectSubject( resultToSubject( { type: "taxon", taxon } ) );
-  }, [taxaByName, onSelectSubject] );
+  }, [iconicTaxa, onSelectSubject] );
 
   const currentUserResult: UniversalSearchResultItem | null = currentUser?.id
     ? {
