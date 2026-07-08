@@ -13,7 +13,7 @@ interface Props {
   handleClose: ( ) => void;
   photosTaken: boolean;
   rotatableAnimatedStyle: object;
-  takePhoto: ( ) => void;
+  takePhoto: ( ) => Promise<void>;
 }
 
 const CameraNavButtons = ( {
