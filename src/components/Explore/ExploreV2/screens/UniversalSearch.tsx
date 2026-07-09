@@ -160,13 +160,19 @@ const UniversalSearch = ( ) => {
 
   const handleSelectNearby = useCallback( async ( ) => {
     const next = await defaultExploreV2Location( );
-    setSelectedLocation(
-      next.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY
-        ? {
+    switch ( next.placeMode ) {
+      case EXPLORE_V2_PLACE_MODE.NEARBY:
+        setSelectedLocation( {
           type: "nearby", lat: next.lat, lng: next.lng, radius: next.radius,
-        }
-        : { type: "nearby-needs-permission" },
-    );
+        } );
+        break;
+      case EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION:
+        setSelectedLocation( { type: "nearby-needs-permission" } );
+        break;
+      default:
+        // Permission granted but no fix available: fall back to worldwide.
+        setSelectedLocation( { type: "worldwide" } );
+    }
     commitLocation( t( "Nearby" ) );
     Keyboard.dismiss( );
   }, [commitLocation, t] );

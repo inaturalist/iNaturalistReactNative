@@ -4,6 +4,7 @@ import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
 import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
+import { checkLocationPermissions } from "../sharedHelpers/geolocationWrapper";
 
 export enum EXPLORE_V2_ACTION {
   SET_SUBJECT = "SET_SUBJECT",
@@ -159,6 +160,7 @@ export function exploreV2Reducer(
 
 export type DefaultExploreV2Location =
   | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
+  | { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION }
   | {
     placeMode: EXPLORE_V2_PLACE_MODE.NEARBY;
     lat: number;
@@ -168,15 +170,19 @@ export type DefaultExploreV2Location =
 
 export async function defaultExploreV2Location( ): Promise<DefaultExploreV2Location> {
   const location = await fetchCoarseUserLocation( );
-  if ( !location || !location.latitude ) {
-    return { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE };
+  if ( location && location.latitude ) {
+    return {
+      placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
+      lat: location.latitude,
+      lng: location.longitude,
+      radius: 1,
+    };
   }
-  return {
-    placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-    lat: location.latitude,
-    lng: location.longitude,
-    radius: 1,
-  };
+  // No coordinates, fallback to worldwide if we already have perms
+  const hasPermission = await checkLocationPermissions( );
+  return hasPermission
+    ? { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
+    : { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION };
 }
 
 interface ExploreV2ContextValue {
