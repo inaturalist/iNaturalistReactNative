@@ -36,8 +36,8 @@ const ExploreV2SpeciesGridItem = ( {
       subject: {
         type: "taxon",
         taxon: {
-          id: taxon.id as number,
-          name: taxon.name as string,
+          id: taxon.id,
+          name: taxon.name,
           preferred_common_name: taxon.preferred_common_name,
           default_photo: taxon.default_photo,
           iconic_taxon_name: taxon.iconic_taxon_name,
