@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native";
+import { screen, userEvent } from "@testing-library/react-native";
 import ExploreV2SpeciesGridItem
   from "components/Explore/ExploreV2/components/ExploreV2SpeciesGridItem";
 import { Text } from "components/styledComponents";
@@ -47,6 +47,8 @@ const StateProbe = () => {
   );
 };
 
+const actor = userEvent.setup( );
+
 const renderGridItem = ( props = {} ) => renderComponent(
   <ExploreV2Provider requestLocationPermissions={() => {}}>
     <ExploreV2SpeciesGridItem taxon={mockTaxon} {...props} />
@@ -69,10 +71,10 @@ describe( "ExploreV2SpeciesGridItem", () => {
     expect( screen.getByText( "42 Observations" ) ).toBeTruthy( );
   } );
 
-  it( "sets the tapped taxon as the search subject when the card is pressed", () => {
+  it( "sets the tapped taxon as the search subject when the card is pressed", async () => {
     renderGridItem( { count: 42 } );
 
-    fireEvent.press( screen.getByTestId( `TaxonGridItem.Pressable.${mockTaxon.id}` ) );
+    await actor.press( screen.getByTestId( `TaxonGridItem.Pressable.${mockTaxon.id}` ) );
 
     expect( screen.getByTestId( "probe.subjectTaxonId" ) ).toHaveTextContent(
       String( mockTaxon.id ),
@@ -80,18 +82,18 @@ describe( "ExploreV2SpeciesGridItem", () => {
     expect( screen.getByTestId( "probe.activeTab" ) ).toHaveTextContent( "observations" );
   } );
 
-  it( "navigates to TaxonDetails for the taxon when the info button is pressed", () => {
+  it( "navigates to TaxonDetails for the taxon when the info button is pressed", async () => {
     renderGridItem( { count: 42 } );
 
-    fireEvent.press( screen.getByLabelText( "More info" ) );
+    await actor.press( screen.getByLabelText( "More info" ) );
 
     expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", { id: mockTaxon.id } );
   } );
 
-  it( "does not change the search subject when the info button is pressed", () => {
+  it( "does not change the search subject when the info button is pressed", async () => {
     renderGridItem( { count: 42 } );
 
-    fireEvent.press( screen.getByLabelText( "More info" ) );
+    await actor.press( screen.getByLabelText( "More info" ) );
 
     expect( screen.getByTestId( "probe.subjectTaxonId" ) ).toHaveTextContent( "" );
     expect( screen.getByTestId( "probe.activeTab" ) ).toHaveTextContent( "observations" );

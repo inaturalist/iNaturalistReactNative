@@ -86,12 +86,8 @@ describe( "ExploreV2SpeciesView", () => {
   it( "renders a grid card for each species-count result", async () => {
     renderView( );
 
-    expect(
-      await screen.findByTestId( "TaxonGridItem.Pressable.745" ),
-    ).toBeTruthy( );
-    expect(
-      await screen.findByTestId( "TaxonGridItem.Pressable.746" ),
-    ).toBeTruthy( );
+    expect( await screen.findByText( "Cup Plant" ) ).toBeTruthy( );
+    expect( await screen.findByText( "Compass Plant" ) ).toBeTruthy( );
   } );
 
   it( "renders the observation count for each species", async () => {

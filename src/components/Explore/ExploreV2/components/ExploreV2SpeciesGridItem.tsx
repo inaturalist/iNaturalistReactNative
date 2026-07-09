@@ -35,10 +35,7 @@ const ExploreV2SpeciesGridItem = ( {
   const onPress = useCallback( ( ) => {
     dispatch( {
       type: EXPLORE_V2_ACTION.SET_SUBJECT,
-      subject: {
-        type: "taxon",
-        taxon: resultToSubject( { type: "taxon", taxon } ),
-      },
+      subject: resultToSubject( { type: "taxon", taxon } ),
     } );
     dispatch( { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB, tab: OBSERVATIONS_TAB } );
   }, [dispatch, taxon] );
