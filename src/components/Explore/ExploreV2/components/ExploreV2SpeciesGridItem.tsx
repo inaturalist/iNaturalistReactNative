@@ -6,6 +6,7 @@ import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import type { ExploreStackScreenProps } from "navigation/types";
 import { EXPLORE_V2_ACTION, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useCallback } from "react";
+import type { ViewStyle } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -13,7 +14,7 @@ import { resultToSubject } from "../helpers/universalSearchSubject";
 
 interface Props {
   count?: number;
-  style?: object;
+  style?: ViewStyle;
   taxon: ApiTaxon;
 }
 
