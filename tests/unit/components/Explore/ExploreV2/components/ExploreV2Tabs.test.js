@@ -1,8 +1,10 @@
-import { fireEvent, screen } from "@testing-library/react-native";
+import { screen, userEvent } from "@testing-library/react-native";
 import ExploreV2Tabs from "components/Explore/ExploreV2/components/ExploreV2Tabs";
 import { ExploreV2Provider } from "providers/ExploreV2Context";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
+
+const actor = userEvent.setup( );
 
 const renderTabs = props => renderComponent(
   <ExploreV2Provider requestLocationPermissions={() => {}}>
@@ -29,10 +31,10 @@ describe( "ExploreV2Tabs", () => {
     ).toBe( false );
   } );
 
-  it( "switches the active tab when the species tab is pressed", () => {
+  it( "switches the active tab when the species tab is pressed", async () => {
     renderTabs();
 
-    fireEvent.press( screen.getByTestId( "ExploreV2Tabs.species" ) );
+    await actor.press( screen.getByTestId( "ExploreV2Tabs.species" ) );
 
     expect(
       screen.getByTestId( "ExploreV2Tabs.species" ).props.accessibilityState.selected,

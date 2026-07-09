@@ -30,7 +30,7 @@ const Zoom = ( {
       containerClass={classnames( zoomClassName )}
     >
       <Pressable
-        className={classnames( CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE )}
+        className={classnames( CIRCLE_OPTIONS_CLASSES, CIRCLE_SIZE, "active:opacity-80" )}
         onPress={handleZoomButtonPress}
         accessibilityRole="button"
         accessibilityLabel={t( "Change-zoom" )}

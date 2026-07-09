@@ -6,13 +6,16 @@ import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import type { ExploreStackScreenProps } from "navigation/types";
 import { EXPLORE_V2_ACTION, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useCallback } from "react";
+import type { ViewStyle } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
+
+import { resultToSubject } from "../helpers/universalSearchSubject";
 
 interface Props {
   count?: number;
   showSpeciesSeenCheckmark?: boolean;
-  style?: object;
+  style?: ViewStyle;
   taxon: ApiTaxon;
 }
 
@@ -35,17 +38,7 @@ const ExploreV2SpeciesGridItem = ( {
   const onPress = useCallback( ( ) => {
     dispatch( {
       type: EXPLORE_V2_ACTION.SET_SUBJECT,
-      subject: {
-        type: "taxon",
-        taxon: {
-          id: taxon.id as number,
-          name: taxon.name as string,
-          preferred_common_name: taxon.preferred_common_name,
-          default_photo: taxon.default_photo,
-          iconic_taxon_name: taxon.iconic_taxon_name,
-          rank_level: taxon.rank_level,
-        },
-      },
+      subject: resultToSubject( { type: "taxon", taxon } ),
     } );
     dispatch( { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB, tab: OBSERVATIONS_TAB } );
   }, [dispatch, taxon] );

@@ -63,9 +63,6 @@ jest.mock( "sharedHooks/useCurrentUser", () => ( {
   default: () => mockUseCurrentUser( ),
 } ) );
 
-// Seen-status runs through useQueries + a combine() that folds each chunk's results
-// into the observed-taxon set. Override useQueries to feed mock results straight into
-// the component's real combine, so the derivation logic is still exercised.
 let mockSeenQueryResults = [];
 jest.mock( "@tanstack/react-query", () => {
   const actual = jest.requireActual( "@tanstack/react-query" );

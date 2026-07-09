@@ -12,6 +12,7 @@ import ExploreV2SpeciesView
   from "components/Explore/ExploreV2/screens/ExploreV2SpeciesView";
 import useInfiniteExploreScroll
   from "components/Explore/hooks/useInfiniteExploreScroll";
+import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
   Body2,
@@ -30,6 +31,7 @@ import {
 } from "sharedHelpers/observationsSort";
 import { useTranslation } from "sharedHooks";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
+import useStoredLayout from "sharedHooks/useStoredLayout";
 
 interface SortOption {
   label: string;
@@ -43,6 +45,7 @@ const ExploreResults = ( ) => {
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
   const observationsSortLabels = useObservationsSortLabels( );
+  const { layout, writeLayoutToStorage } = useStoredLayout( "exploreV2ObservationsLayout" );
 
   const sortOptions = OBSERVATIONS_SORT_OPTIONS.reduce(
     ( acc, sortBy ) => {
@@ -115,20 +118,32 @@ const ExploreResults = ( ) => {
             <>
               {state.activeTab === OBSERVATIONS_TAB
                 ? (
-                  <ObservationsFlashList
-                    data={observations}
-                    dataCanBeFetched={canFetch}
-                    explore
-                    handlePullToRefresh={handlePullToRefresh}
-                    hideLoadingWheel={!isFetchingNextPage}
-                    isFetchingNextPage={isFetchingNextPage}
-                    isConnected={isConnected}
-                    layout="list"
-                    obsListKey="ExploreV2Observations"
-                    onEndReached={fetchNextPage}
-                    showNoResults={!canFetch || totalResults === 0}
-                    testID="ExploreV2ObservationsList"
-                  />
+                  <>
+                    <ObservationsFlashList
+                      data={observations}
+                      dataCanBeFetched={canFetch}
+                      explore
+                      handlePullToRefresh={handlePullToRefresh}
+                      hideLoadingWheel={!isFetchingNextPage}
+                      isFetchingNextPage={isFetchingNextPage}
+                      isConnected={isConnected}
+                      layout={layout === "list"
+                        ? "list"
+                        : "grid"}
+                      // bit over a misnomer on this prop; in this case it hides the
+                      // ID/comments/quality badges that grid results can technically have
+                      hideObsUploadStatus={layout !== "list"}
+                      obsListKey="ExploreV2Observations"
+                      onEndReached={fetchNextPage}
+                      showNoResults={!canFetch || totalResults === 0}
+                      testID="ExploreV2ObservationsList"
+                    />
+                    <ObservationsViewBar
+                      hideMap
+                      layout={layout}
+                      updateObservationsView={writeLayoutToStorage}
+                    />
+                  </>
                 )
                 : (
                   <ExploreV2SpeciesView

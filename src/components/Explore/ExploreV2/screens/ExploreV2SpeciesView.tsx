@@ -4,6 +4,7 @@ import type { ApiTaxon } from "api/types";
 import ExploreFlashList from "components/Explore/ExploreFlashList";
 import ExploreV2SpeciesGridItem
   from "components/Explore/ExploreV2/components/ExploreV2SpeciesGridItem";
+import type { ExploreV2QueryParams } from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import i18n from "i18next";
 import React, { useCallback, useMemo } from "react";
 import Taxon from "realmModels/Taxon";
@@ -11,6 +12,11 @@ import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useGridLayout from "sharedHooks/useGridLayout";
 import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
+
+export type SpeciesCountQueryParams = Omit<
+  ExploreV2QueryParams,
+  "order_by" | "order" | "per_page"
+>;
 
 interface SpeciesCountResult {
   count: number;
@@ -20,7 +26,7 @@ interface SpeciesCountResult {
 interface Props {
   enabled: boolean;
   isConnected: boolean | null;
-  params: object;
+  params: SpeciesCountQueryParams;
 }
 
 const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
@@ -115,11 +121,11 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
       <ExploreV2SpeciesGridItem
         // Unique key ensures component recreation so images don't get
         // recycled and show on the wrong taxon
-        key={`taxon-${item.taxon.id}-${item.taxon?.default_photo?.url}`}
-        count={item?.count}
+        key={`taxon-${item.taxon.id}-${item.taxon.default_photo?.url}`}
+        count={item.count}
         showSpeciesSeenCheckmark={observedIdSet.has( item.taxon.id )}
         style={gridItemStyle}
-        taxon={item?.taxon}
+        taxon={item.taxon}
       />
     ),
     [gridItemStyle, observedIdSet],
@@ -135,7 +141,7 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
       isFetchingNextPage={isFetchingNextPage}
       isConnected={isConnected}
       keyExtractor={( item: SpeciesCountResult ) => (
-        `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`
+        `${item.taxon.id}-${item.taxon.default_photo?.url || "no-photo"}`
       )}
       layout="grid"
       numColumns={numColumns}
