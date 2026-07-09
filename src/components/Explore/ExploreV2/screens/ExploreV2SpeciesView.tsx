@@ -61,10 +61,10 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
       <ExploreV2SpeciesGridItem
         // Unique key ensures component recreation so images don't get
         // recycled and show on the wrong taxon
-        key={`taxon-${item.taxon.id}-${item.taxon?.default_photo?.url}`}
-        count={item?.count}
+        key={`taxon-${item.taxon.id}-${item.taxon.default_photo?.url}`}
+        count={item.count}
         style={gridItemStyle}
-        taxon={item?.taxon}
+        taxon={item.taxon}
       />
     ),
     [gridItemStyle],
@@ -80,7 +80,7 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
       isFetchingNextPage={isFetchingNextPage}
       isConnected={isConnected}
       keyExtractor={( item: SpeciesCountResult ) => (
-        `${item.taxon.id}-${item?.taxon?.default_photo?.url || "no-photo"}`
+        `${item.taxon.id}-${item.taxon.default_photo?.url || "no-photo"}`
       )}
       layout="grid"
       numColumns={numColumns}
