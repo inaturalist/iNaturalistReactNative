@@ -248,8 +248,8 @@ const UniversalSearch = ( ) => {
     ? locationData
     : subjectData;
 
-  const showSubjectDefaults = !showLocation && !subjectHasQuery;
-  const showLocationDefaults = showLocation && !locationHasQuery;
+  const showSubjectDefaults = !showLocation && subjectText.trim().length === 0;
+  const showLocationDefaults = showLocation && locationText.trim().length === 0;
   let listEmptyComponent;
   if ( showSubjectDefaults ) {
     listEmptyComponent = <DefaultSearchOptions onSelectSubject={handleSubjectSelect} />;
