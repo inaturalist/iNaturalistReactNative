@@ -42,6 +42,7 @@ function locationLabel( location: ExploreV2LocationState, t: TFunction ): string
     case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
       return t( "Worldwide" );
     case EXPLORE_V2_PLACE_MODE.NEARBY:
+    case EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION:
       return t( "Nearby" );
     case EXPLORE_V2_PLACE_MODE.PLACE:
       return location.place.display_name || "";
