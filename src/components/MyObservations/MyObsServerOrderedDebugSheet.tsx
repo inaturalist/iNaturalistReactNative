@@ -1,7 +1,6 @@
 /* eslint-disable i18next/no-literal-string */
 import classnames from "classnames";
-import useServerOrderedObservations
-  from "components/MyObservations/hooks/useServerOrderedObservations";
+import useMyObservationsQuery from "components/MyObservations/hooks/useMyObservationsQuery";
 import { INatIconButton } from "components/SharedComponents";
 import Modal from "components/SharedComponents/Modal";
 import Body3 from "components/SharedComponents/Typography/Body3";
@@ -10,6 +9,10 @@ import {
   Image, Pressable, ScrollView, Text, View,
 } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
+import {
+  MY_OBSERVATIONS_ACTION,
+  useMyObservations,
+} from "providers/MyObservationsContext";
 import React, { useState } from "react";
 import type { RealmObservation } from "realmModels/types";
 import { OBSERVATIONS_SORT, OBSERVATIONS_SORT_OPTIONS } from "sharedHelpers/observationsSort";
@@ -86,23 +89,72 @@ const ObservationRow = ( { uuid, index }: ObservationRowProps ) => {
   );
 };
 
+interface DebugSheetContentProps {
+  onClose: ( ) => void;
+}
+
+// Split out from the sheet shell so useObservationsQuery (and the network
+// fetch it can trigger) only runs while the sheet is actually open
+const DebugSheetContent = ( { onClose }: DebugSheetContentProps ) => {
+  const { state, dispatch } = useMyObservations( );
+  const {
+    observationIds,
+    isServerAuthoritative,
+    isLoading,
+    error,
+    refetch,
+  } = useMyObservationsQuery( );
+
+  return (
+    <View className="bg-white rounded-t-2xl h-[85%]">
+      <View
+        className={classnames(
+          "px-4 pt-4 pb-2 flex-row items-center justify-between",
+          "border-b border-lightGray",
+        )}
+      >
+        <Heading4>MyObs Query Debug</Heading4>
+        <Pressable accessibilityRole="button" onPress={onClose}>
+          <Text className="text-base text-inatGreen">Close</Text>
+        </Pressable>
+      </View>
+      <ScrollView
+        className="flex-1 px-4 py-3"
+        contentContainerStyle={SCROLL_CONTENT}
+      >
+        <View className="flex-row flex-wrap mb-3">
+          {OBSERVATIONS_SORT_OPTIONS.map( sort => (
+            <DebugButton
+              key={sort}
+              label={SORT_LABELS[sort]}
+              active={state.observationsSort === sort}
+              onPress={( ) => dispatch( {
+                type: MY_OBSERVATIONS_ACTION.SET_OBSERVATIONS_SORT,
+                observationsSort: sort,
+              } )}
+            />
+          ) )}
+          <DebugButton label="Refresh" onPress={( ) => refetch( )} />
+        </View>
+        <Body3 className="mb-3">
+          {`Server authoritative: ${isServerAuthoritative
+            ? "yes"
+            : "no"}`}
+        </Body3>
+        {isLoading && <Body3 className="mb-2">Loading…</Body3>}
+        {!!error && <Body3 className="mb-2">{`Error: ${error.message}`}</Body3>}
+        <Body3 className="mb-3">{`Showing ${observationIds.length} observations`}</Body3>
+        {observationIds.map( ( { uuid }, index ) => (
+          <ObservationRow key={uuid} uuid={uuid} index={index} />
+        ) )}
+      </ScrollView>
+    </View>
+  );
+};
+
 const MyObsServerOrderedDebugSheet = ( ) => {
   const { isDebug } = useDebugMode( );
   const [visible, setVisible] = useState( false );
-  const [selectedSort, setSelectedSort] = useState<OBSERVATIONS_SORT>(
-    OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
-  );
-
-  const {
-    observationIds,
-    isLoading,
-    error,
-    totalResults,
-    refetch,
-  } = useServerOrderedObservations( {
-    sortBy: selectedSort,
-    enabled: visible,
-  } );
 
   if ( !isDebug ) return null;
 
@@ -122,43 +174,9 @@ const MyObsServerOrderedDebugSheet = ( ) => {
         showModal={visible}
         closeModal={onClose}
         disableSwipeDirection
-        modal={(
-          <View className="bg-white rounded-t-2xl h-[85%]">
-            <View
-              className={classnames(
-                "px-4 pt-4 pb-2 flex-row items-center justify-between",
-                "border-b border-lightGray",
-              )}
-            >
-              <Heading4>MyObs Server Order Debug</Heading4>
-              <Pressable accessibilityRole="button" onPress={onClose}>
-                <Text className="text-base text-inatGreen">Close</Text>
-              </Pressable>
-            </View>
-            <ScrollView
-              className="flex-1 px-4 py-3"
-              contentContainerStyle={SCROLL_CONTENT}
-            >
-              <View className="flex-row flex-wrap mb-3">
-                {OBSERVATIONS_SORT_OPTIONS.map( sort => (
-                  <DebugButton
-                    key={sort}
-                    label={SORT_LABELS[sort]}
-                    active={selectedSort === sort}
-                    onPress={( ) => setSelectedSort( sort )}
-                  />
-                ) )}
-                <DebugButton label="Refresh" onPress={( ) => refetch( )} />
-              </View>
-              {isLoading && <Body3 className="mb-2">Loading…</Body3>}
-              {!!error && <Body3 className="mb-2">{`Error: ${error.message}`}</Body3>}
-              <Body3 className="mb-3">{`Total results: ${totalResults ?? "n/a"}`}</Body3>
-              {observationIds.map( ( { uuid }, index ) => (
-                <ObservationRow key={uuid} uuid={uuid} index={index} />
-              ) )}
-            </ScrollView>
-          </View>
-        )}
+        modal={visible
+          ? <DebugSheetContent onClose={onClose} />
+          : null}
       />
     </>
   );
