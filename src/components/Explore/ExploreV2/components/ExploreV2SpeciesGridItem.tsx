@@ -9,6 +9,8 @@ import React, { useCallback } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
+import { resultToSubject } from "../helpers/universalSearchSubject";
+
 interface Props {
   count?: number;
   style?: object;
@@ -35,14 +37,7 @@ const ExploreV2SpeciesGridItem = ( {
       type: EXPLORE_V2_ACTION.SET_SUBJECT,
       subject: {
         type: "taxon",
-        taxon: {
-          id: taxon.id,
-          name: taxon.name,
-          preferred_common_name: taxon.preferred_common_name,
-          default_photo: taxon.default_photo,
-          iconic_taxon_name: taxon.iconic_taxon_name,
-          rank_level: taxon.rank_level,
-        },
+        taxon: resultToSubject( { type: "taxon", taxon } ),
       },
     } );
     dispatch( { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB, tab: OBSERVATIONS_TAB } );
