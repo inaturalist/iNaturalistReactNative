@@ -62,6 +62,18 @@ describe( "syncJoinedProjects", ( ) => {
     ).not.toBeNull();
   } );
 
+  it( "prunes all local joined projects when the server returns an empty list", async () => {
+    // Local
+    const staleProject = factory( "RemoteProject", { id: 9999 } );
+    Project.upsertRemoteProjects( [staleProject], global.realm );
+    // API
+    fetchUserProjects.mockResolvedValue( makeUserProjectsResponse( [] ) );
+
+    await syncJoinedProjects( global.realm, currentUserId );
+
+    expect( global.realm.objects( "Project" ) ).toHaveLength( 0 );
+  } );
+
   it( "does not prune when the fetch returns null", async () => {
     // Local
     const staleProject = factory( "RemoteProject", { id: 9999 } );
