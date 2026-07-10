@@ -11,12 +11,12 @@ const deleteNotRemoteProjects = ( remoteProjects: number[], realm: Realm ) => {
   if ( !remoteProjects ) { return; }
   if ( remoteProjects?.length > 0 ) {
     safeRealmWrite( realm, ( ) => {
-      const localObservationsToDelete = realm.objects( "Observation" )
+      const localProjectsToDelete = realm.objects( "Project" )
         .filtered( `NOT (id IN { ${remoteProjects} })` );
-      localObservationsToDelete.forEach( observation => {
-        realm.delete( observation );
+      localProjectsToDelete.forEach( project => {
+        realm.delete( project );
       } );
-    }, "removing remotely deleted observations from realm" );
+    }, "removing projects from realm that are not remote" );
   }
 };
 
