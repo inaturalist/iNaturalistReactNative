@@ -1,4 +1,5 @@
 import fetchUserProjects from "api/usersTyped";
+import Project from "realmModels/Project";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import syncJoinedProjects from "sharedHelpers/syncJoinedProjects";
 import factory from "tests/factory";
@@ -39,6 +40,26 @@ describe( "syncJoinedProjects", ( ) => {
 
     expect( fetchUserProjects ).toHaveBeenCalled();
     expect( global.realm.objects( "Project" ) ).toHaveLength( 2 );
+  } );
+
+  it( "prunes stale joined projects after a successful sync", async () => {
+    // Local
+    const staleProject = factory( "RemoteProject", { id: 9999 } );
+    Project.upsertRemoteProjects( [staleProject], global.realm );
+    // API
+    const freshProject = factory( "RemoteProject", { id: 1 } );
+    fetchUserProjects.mockResolvedValue(
+      makeUserProjectsResponse( [freshProject] ),
+    );
+
+    await syncJoinedProjects( global.realm, currentUserId );
+
+    expect(
+      global.realm.objectForPrimaryKey( "Project", staleProject.id ),
+    ).toBeNull();
+    expect(
+      global.realm.objectForPrimaryKey( "Project", freshProject.id ),
+    ).not.toBeNull();
   } );
 
   it( "no-ops when currentUserId is missing", async () => {
