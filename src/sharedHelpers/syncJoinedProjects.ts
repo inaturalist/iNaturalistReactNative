@@ -12,7 +12,7 @@ const deleteNotRemoteProjects = ( remoteProjects: { id: number }[], realm: Realm
   if ( remoteProjects?.length > 0 ) {
     safeRealmWrite( realm, ( ) => {
       const localObservationsToDelete = realm.objects( "Observation" )
-        .filtered( `id IN { ${remoteProjects} }` );
+        .filtered( `NOT (id IN { ${remoteProjects} })` );
       localObservationsToDelete.forEach( observation => {
         realm.delete( observation );
       } );
