@@ -2,8 +2,16 @@ import inatjs from "inaturalistjs";
 
 import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
+import type { ApiParams } from "./types";
 
-const fetchUserProjects = async ( params = {}, opts = {} ): Promise<object> => {
+interface UsersProjectsParams extends ApiParams {
+  id: number;
+}
+
+const fetchUserProjects = async (
+  params: UsersProjectsParams = {},
+  opts = {},
+): Promise<object> => {
   try {
     const response = await inatjs.users.projects(
       params,
