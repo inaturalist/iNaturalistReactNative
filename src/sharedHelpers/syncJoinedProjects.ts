@@ -3,6 +3,7 @@ import type { ApiProjectSummaryWithPOF } from "api/types";
 import fetchUserProjects from "api/usersTyped";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import type Realm from "realm";
+import Project from "realmModels/Project";
 
 async function syncJoinedProjects(
   realm: Realm,
@@ -25,13 +26,12 @@ async function syncJoinedProjects(
     { api_token: apiToken },
   );
 
-  console.log( "response", response );
-  console.log( "realm", realm );
+  if ( response === null || !response.results ) {
+    return;
+  }
 
   // Update local copy of the current user's joined projects
-  //   if ( isCurrentUser ) {
-  //     Project.upsertRemoteProjects( userProjects as ApiProjectSummaryWithPOF[], realm );
-  //   }
+  Project.upsertRemoteProjects( response.results, realm );
 }
 
 export default syncJoinedProjects;
