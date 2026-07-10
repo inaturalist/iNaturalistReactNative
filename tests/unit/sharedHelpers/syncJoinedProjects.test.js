@@ -62,6 +62,20 @@ describe( "syncJoinedProjects", ( ) => {
     ).not.toBeNull();
   } );
 
+  it( "does not prune when the fetch returns null", async () => {
+    // Local
+    const staleProject = factory( "RemoteProject", { id: 9999 } );
+    Project.upsertRemoteProjects( [staleProject], global.realm );
+    // API
+    fetchUserProjects.mockResolvedValue( null );
+
+    await syncJoinedProjects( global.realm, currentUserId );
+
+    expect(
+      global.realm.objectForPrimaryKey( "Project", staleProject.id ),
+    ).not.toBeNull();
+  } );
+
   it( "no-ops when currentUserId is missing", async () => {
     await syncJoinedProjects( global.realm, undefined );
 
