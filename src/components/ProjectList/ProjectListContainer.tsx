@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { PROJECT_SUMMARY_FIELDS, PROJECT_SUMMARY_POF_FIELDS } from "api/fields";
-import type { ApiProjectSummary, ApiProjectSummaryWithPOF } from "api/types";
+import type { ApiProjectSummary, ApiProjectSummaryWithPOF, ApiResponse } from "api/types";
 import { fetchUserProjects } from "api/users";
 import {
   ActivityIndicator,
@@ -49,9 +49,9 @@ const ProjectListContainer = ( ) => {
     ? PROJECT_SUMMARY_POF_FIELDS
     : PROJECT_SUMMARY_FIELDS;
   const {
-    data: userProjects,
+    data,
     isLoading: userProjectsLoading,
-  } = useAuthenticatedQuery<ApiProjectSummary[] | ApiProjectSummaryWithPOF[]>(
+  } = useAuthenticatedQuery<ApiResponse<ApiProjectSummary | ApiProjectSummaryWithPOF>>(
     ["fetchUserProjects", userId, fields],
     optsWithAuth => fetchUserProjects(
       {
@@ -63,6 +63,8 @@ const ProjectListContainer = ( ) => {
     ),
     { enabled: !!userId },
   );
+
+  const { results: userProjects } = data || {};
 
   // Update local copy of the current user's joined projects
   useEffect( () => {

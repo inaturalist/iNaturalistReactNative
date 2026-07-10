@@ -47,7 +47,7 @@ const fetchUserProjects = async ( params: Object = {}, opts: Object = {} ): Prom
       params,
       opts,
     );
-    return response?.results;
+    return response;
   } catch ( e ) {
     return handleError( e, { context: { functionName: "fetchUserProjects", opts } } );
   }
