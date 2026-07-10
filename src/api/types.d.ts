@@ -1,4 +1,8 @@
 // Generic types, please keep alphabetized
+export interface ApiDefaultResult {
+  id: number;
+}
+
 export interface ApiOpts {
   api_token?: string;
 }

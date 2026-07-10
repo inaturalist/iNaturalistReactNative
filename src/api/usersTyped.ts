@@ -2,13 +2,15 @@ import inatjs from "inaturalistjs";
 
 import type { ErrorWithResponse, INatApiError } from "./error";
 import handleError from "./error";
-import type { ApiOpts, ApiParams, ApiResponse } from "./types";
+import type {
+  ApiDefaultResult, ApiOpts, ApiParams, ApiResponse,
+} from "./types";
 
 interface UsersProjectsParams extends ApiParams {
   id: number;
 }
 
-const fetchUserProjects = async <T>(
+const fetchUserProjects = async <T = ApiDefaultResult>(
   params: UsersProjectsParams = {},
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
