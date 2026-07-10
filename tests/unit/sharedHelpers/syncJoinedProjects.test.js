@@ -16,6 +16,10 @@ const makeUserProjectsResponse = results => ( {
   total_results: results.length,
 } );
 
+beforeEach( ( ) => {
+  jest.clearAllMocks( );
+} );
+
 describe( "syncJoinedProjects", ( ) => {
   it( "fetches joined projects", async () => {
     const remoteProjects = [
