@@ -27,6 +27,11 @@ async function syncJoinedProjects(
 
   console.log( "response", response );
   console.log( "realm", realm );
+
+  // Update local copy of the current user's joined projects
+  //   if ( isCurrentUser ) {
+  //     Project.upsertRemoteProjects( userProjects as ApiProjectSummaryWithPOF[], realm );
+  //   }
 }
 
 export default syncJoinedProjects;

@@ -9,9 +9,7 @@ import {
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
-import { RealmContext } from "providers/contexts";
 import React, { useEffect, useMemo } from "react";
-import Project from "realmModels/Project";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -21,10 +19,7 @@ import {
 
 import ProjectList from "./ProjectList";
 
-const { useRealm } = RealmContext;
-
 const ProjectListContainer = ( ) => {
-  const realm = useRealm( );
   const navigation = useNavigation<TabStackScreenProps<"ProjectList">["navigation"]>( );
   const { params } = useRoute<TabStackScreenProps<"ProjectList">["route"]>( );
   const { observationUuid, userId, userLogin } = params;
@@ -62,13 +57,6 @@ const ProjectListContainer = ( ) => {
   );
 
   const { results: userProjects } = data || {};
-
-  // Update local copy of the current user's joined projects
-  useEffect( () => {
-    if ( isCurrentUser ) {
-      Project.upsertRemoteProjects( userProjects as ApiProjectSummaryWithPOF[], realm );
-    }
-  }, [isCurrentUser, userProjects, realm] );
 
   const headerOptions = useMemo( ( ) => {
     if ( observationUuid ) {
