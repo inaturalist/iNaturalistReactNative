@@ -12,6 +12,7 @@
 import { cleanupLogFiles } from "components/Developer/logManagementHelpers";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
+import User from "realmModels/User";
 import {
   clearComputerVisionPhotos,
   clearGalleryPhotos,
@@ -23,6 +24,7 @@ import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 import { log } from "sharedHelpers/logger";
 import { logSentinelFiles } from "sharedHelpers/sentinelFiles";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
+import syncJoinedProjects from "sharedHelpers/syncJoinedProjects";
 import { useTranslation } from "sharedHooks";
 import { zustandStorage } from "stores/useStore";
 
@@ -107,6 +109,10 @@ const useDeferredStartup = ( ) => {
       formatApiDatetime( "1970", i18n, { timeZone: "Etc/UTC" } );
       return Promise.resolve();
     } );
+    const id11 = deferTask( "syncJoinedProjects", async () => {
+      const currentUserId = User.currentUser( realm ).id;
+      await syncJoinedProjects( realm, currentUserId );
+    }, 30000 );
 
     return ( ) => {
       cancelIdleCallback( id1 );
@@ -119,6 +125,7 @@ const useDeferredStartup = ( ) => {
       cancelIdleCallback( id8 );
       cancelIdleCallback( id9 );
       cancelIdleCallback( id10 );
+      cancelIdleCallback( id11 );
     };
   }, [i18n, realm] );
 };
