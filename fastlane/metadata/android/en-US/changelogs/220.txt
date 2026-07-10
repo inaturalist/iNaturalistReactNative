@@ -1,0 +1,4 @@
+FIXED
+* Adding comments to Agreeing IDs
+* A crash when deleting photo
+* Location chooser spinning indefinitely

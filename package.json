@@ -154,7 +154,7 @@
     "sanitize-html": "^2.17.4",
     "tailwind-merge": "^3.6.0",
     "uuid": "^11.1.1",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#e8c4782cee82e781e8dc7016fffedbbd95070931",
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#0354705c124e3a9fabcca3e5881e64cd93d2f0df",
     "zustand": "^4.5.7"
   },
   "devDependencies": {

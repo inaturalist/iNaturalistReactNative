@@ -11,6 +11,7 @@ import { useCurrentUser, useFontScale, useTranslation } from "sharedHooks";
 
 export interface Props {
   headerText?: string;
+  onPress?: ( ) => void;
   showSpeciesSeenCheckmark?: boolean;
   style?: object;
   taxon: ApiTaxon;
@@ -19,6 +20,7 @@ export interface Props {
 
 const TaxonGridItem = ( {
   headerText,
+  onPress,
   showSpeciesSeenCheckmark = false,
   style,
   taxon,
@@ -45,7 +47,7 @@ const TaxonGridItem = ( {
     <Pressable
       accessibilityRole="button"
       testID={`TaxonGridItem.Pressable.${taxon.id}`}
-      onPress={( ) => (
+      onPress={onPress ?? ( ( ) => (
         // Again, not sure how to placate TypeScript w/ React Navigation
         navigation.navigate( {
           // Ensure button mashing doesn't open multiple TaxonDetails instances
@@ -53,7 +55,7 @@ const TaxonGridItem = ( {
           name: "TaxonDetails",
           params: { id: taxon.id },
         } )
-      )}
+      ) )}
       accessibilityLabel={accessibleName}
     >
       <ObsImagePreview
@@ -71,7 +73,7 @@ const TaxonGridItem = ( {
         )}
 
         { upperRight && (
-          <View className="absolute top-3 right-3">
+          <View className="absolute top-0 right-0">
             {upperRight}
           </View>
         ) }

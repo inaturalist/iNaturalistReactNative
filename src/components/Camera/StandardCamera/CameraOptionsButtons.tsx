@@ -1,29 +1,28 @@
-// @flow
-
 import CameraFlip from "components/Camera/Buttons/CameraFlip";
 import Flash from "components/Camera/Buttons/Flash";
 import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
-import type { Node } from "react";
 import React from "react";
+import type { ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import type { TakePhotoOptions } from "react-native-vision-camera";
 
-const isTablet = DeviceInfo.isTablet();
+const isTablet = DeviceInfo.isTablet( );
 
-type Props = {
-  takePhoto: () => Promise<void>,
-  handleClose: Function,
-  disabled: boolean,
-  photosTaken: boolean,
-  rotatableAnimatedStyle: Object,
-  handleCheckmarkPress: Function,
-  toggleFlash: Function,
-  flipCamera: Function,
-  handleZoomButtonPress: Function,
-  hasFlash: boolean,
-  takePhotoOptions: Object,
-  zoomTextValue: string,
-  showZoomButton: boolean
+interface Props {
+  takePhoto: ( ) => Promise<void>;
+  handleClose: ( ) => void;
+  disabled: boolean;
+  photosTaken: boolean;
+  rotatableAnimatedStyle: ViewStyle;
+  handleCheckmarkPress: ( ) => void;
+  toggleFlash: ( ) => void;
+  flipCamera: ( ) => void;
+  handleZoomButtonPress: ( ) => void;
+  hasFlash: boolean;
+  takePhotoOptions: TakePhotoOptions;
+  zoomTextValue: string;
+  showZoomButton: boolean;
 }
 
 const CameraOptionsButtons = ( {
@@ -40,7 +39,7 @@ const CameraOptionsButtons = ( {
   handleZoomButtonPress,
   zoomTextValue,
   showZoomButton,
-}: Props ): Node => {
+}: Props ) => {
   const renderPhoneCameraOptions = () => (
     <>
       <Flash
@@ -51,7 +50,6 @@ const CameraOptionsButtons = ( {
         flashClassName="absolute bottom-[18px] left-[18px]"
       />
       <Zoom
-        showZoomButton={showZoomButton}
         handleZoomButtonPress={handleZoomButtonPress}
         zoomTextValue={zoomTextValue}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
