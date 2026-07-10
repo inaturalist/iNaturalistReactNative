@@ -110,7 +110,7 @@ const useDeferredStartup = ( ) => {
       return Promise.resolve();
     } );
     const id11 = deferTask( "syncJoinedProjects", async () => {
-      const currentUserId = User.currentUser( realm ).id;
+      const currentUserId = User.currentUser( realm )?.id;
       await syncJoinedProjects( realm, currentUserId );
     }, 30000 );
 
