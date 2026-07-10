@@ -10,13 +10,13 @@ import React from "react";
 interface Props {
   buttonText: string;
   buttonType?: string;
-  confirm: () => void;
-  handleSecondButtonPress?: () => void;
+  confirm: ( ) => void;
+  handleSecondButtonPress?: ( ) => void;
   headerText: string;
   hidden?: boolean;
   insideModal?: boolean;
   loading: boolean;
-  onPressClose: () => void;
+  onPressClose: ( ) => void;
   secondButtonText?: string;
   testID?: string;
   text?: string;
