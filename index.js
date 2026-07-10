@@ -28,7 +28,11 @@ import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { getInstallID, store as installDataMMKVStorage } from "sharedHelpers/installData";
+import {
+  getInstallID,
+  LAST_CRASH_DATA,
+  store as installDataMMKVStorage,
+} from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
 import useRozenite, { HaltedLaunch, shouldHaltLaunchForDebug } from "sharedHooks/useRozenite";
@@ -104,7 +108,7 @@ setNativeExceptionHandler(
       };
 
       // Store crash data for retrieval on next app launch
-      zustandStorage.setItem( "LAST_CRASH_DATA", JSON.stringify( crashData ) );
+      zustandStorage.setItem( LAST_CRASH_DATA, JSON.stringify( crashData ) );
 
       logger.error( `Native Error: ${exceptionString}`, JSON.stringify( crashData ) );
     } catch ( e ) {
