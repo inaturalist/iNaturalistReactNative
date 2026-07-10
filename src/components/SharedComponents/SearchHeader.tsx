@@ -16,7 +16,7 @@ interface Props {
   testID: string;
 }
 
-const ExploreSearchHeader = ( {
+const SearchHeader = ( {
   closeModal,
   headerText,
   resetFilters,
@@ -54,4 +54,4 @@ const ExploreSearchHeader = ( {
   );
 };
 
-export default ExploreSearchHeader;
+export default SearchHeader;

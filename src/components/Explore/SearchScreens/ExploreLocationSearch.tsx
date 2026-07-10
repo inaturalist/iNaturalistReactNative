@@ -5,6 +5,7 @@ import {
   ButtonBar,
   List2,
   SearchBar,
+  SearchHeader,
   ViewWrapper,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
@@ -24,7 +25,6 @@ import type { RenderLocationPermissionsGateFunction } from "sharedHooks/useLocat
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
-import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
@@ -152,7 +152,7 @@ const ExploreLocationSearch = ( {
 
   return (
     <ViewWrapper testID="explore-location-search">
-      <ExploreSearchHeader
+      <SearchHeader
         closeModal={closeModal}
         headerText={t( "SEARCH-LOCATION" )}
         resetFilters={resetPlace}

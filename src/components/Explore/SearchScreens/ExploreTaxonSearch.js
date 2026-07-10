@@ -1,6 +1,7 @@
 // @flow
 
 import {
+  SearchHeader,
   TaxonResult,
   TaxonSearch,
   ViewWrapper,
@@ -12,8 +13,6 @@ import React, {
 } from "react";
 import { useTranslation } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
-
-import ExploreSearchHeader from "./ExploreSearchHeader";
 
 type Props = {
   closeModal: Function,
@@ -65,7 +64,7 @@ const ExploreTaxonSearch = ( {
 
   return (
     <ViewWrapper>
-      <ExploreSearchHeader
+      <SearchHeader
         closeModal={closeModal}
         headerText={t( "SEARCH-TAXA" )}
         resetFilters={resetTaxon}

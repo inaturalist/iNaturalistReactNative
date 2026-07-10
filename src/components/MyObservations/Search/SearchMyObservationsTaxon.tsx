@@ -1,10 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import type { ApiTaxon } from "api/types";
-// TODO: ExploreSearchHeader is a generic back/title/reset button header that previously
-// was only used in explore. It should be promoted to components/SharedComponents now that it's
-// shared. The cross-feature import below works for now but will be fixed in a follow-up.
-import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import {
+  SearchHeader,
   TaxonResult,
   TaxonSearch,
   ViewWrapper,
@@ -86,7 +83,7 @@ const SearchMyObservationsTaxon = ( ) => {
 
   return (
     <ViewWrapper>
-      <ExploreSearchHeader
+      <SearchHeader
         closeModal={closeScreen}
         headerText={t( "SEARCH" )}
         resetFilters={resetSearch}
