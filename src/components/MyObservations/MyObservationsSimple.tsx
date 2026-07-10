@@ -137,6 +137,9 @@ const MyObservationsSimple = ( {
   const searchMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SearchMyObservationsEnabled,
   );
+  const sortMyObservationsEnabled = useFeatureFlag(
+    FeatureFlag.SortMyObservationsEnabled,
+  );
   const speciesSortLabels = useSpeciesSortLabels( );
   const navigation = useNavigation( );
   const route = useRoute( );
@@ -396,10 +399,12 @@ const MyObservationsSimple = ( {
               layout={layout}
               updateObservationsView={toggleLayout}
             />
-            {/* <SortButton
-              onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
-              accessibilityLabel={t( "Change-observations-sort-order" )}
-            /> */}
+            {sortMyObservationsEnabled && (
+              <SortButton
+                onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
+                accessibilityLabel={t( "Change-observations-sort-order" )}
+              />
+            )}
           </>
         ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
