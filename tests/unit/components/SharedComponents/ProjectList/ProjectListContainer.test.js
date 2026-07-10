@@ -76,7 +76,14 @@ describe( "ProjectListContainer", () => {
           userId: mockUserId,
         },
       } ) );
-      mockUseAuthenticatedQuery.mockReturnValue( { data: mockProjects } );
+      mockUseAuthenticatedQuery.mockReturnValue( {
+        data: {
+          results: mockProjects,
+          total_results: mockProjects.length,
+          page: 1,
+          per_page: 200,
+        },
+      } );
     } );
 
     it( "should display a list with all project titles from user projects", async () => {
