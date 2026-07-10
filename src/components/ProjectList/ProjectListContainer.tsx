@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { PROJECT_SUMMARY_FIELDS, PROJECT_SUMMARY_POF_FIELDS } from "api/fields";
-import type { ApiProjectSummary, ApiProjectSummaryWithPOF, ApiResponse } from "api/types";
-import { fetchUserProjects } from "api/users";
+import type { ApiProjectSummary, ApiProjectSummaryWithPOF } from "api/types";
+import fetchUserProjects from "api/usersTyped";
 import {
   ActivityIndicator,
   Body1,
@@ -48,12 +48,9 @@ const ProjectListContainer = ( ) => {
   const fields = isCurrentUser
     ? PROJECT_SUMMARY_POF_FIELDS
     : PROJECT_SUMMARY_FIELDS;
-  const {
-    data,
-    isLoading: userProjectsLoading,
-  } = useAuthenticatedQuery<ApiResponse<ApiProjectSummary | ApiProjectSummaryWithPOF>>(
+  const { data, isLoading: userProjectsLoading } = useAuthenticatedQuery(
     ["fetchUserProjects", userId, fields],
-    optsWithAuth => fetchUserProjects(
+    optsWithAuth => fetchUserProjects<ApiProjectSummary | ApiProjectSummaryWithPOF>(
       {
         id: userId,
         per_page: 200,
