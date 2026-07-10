@@ -2,7 +2,7 @@ import inatjs from "inaturalistjs";
 
 import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
-import type { ApiParams } from "./types";
+import type { ApiOpts, ApiParams } from "./types";
 
 interface UsersProjectsParams extends ApiParams {
   id: number;
@@ -10,7 +10,7 @@ interface UsersProjectsParams extends ApiParams {
 
 const fetchUserProjects = async (
   params: UsersProjectsParams = {},
-  opts = {},
+  opts: ApiOpts = {},
 ): Promise<object> => {
   try {
     const response = await inatjs.users.projects(
