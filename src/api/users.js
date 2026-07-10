@@ -41,18 +41,6 @@ const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<?O
   }
 };
 
-const fetchUserProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
-  try {
-    const response = await inatjs.users.projects(
-      params,
-      opts,
-    );
-    return response;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchUserProjects", opts } } );
-  }
-};
-
 const fetchRemoteUser = async (
   id: number | string,
   params: Object = {},
@@ -172,7 +160,6 @@ export {
   fetchRemoteUser,
   fetchUserEmailAvailable,
   fetchUserMe,
-  fetchUserProjects,
   fetchUsers,
   muteUser,
   unblockUser,
