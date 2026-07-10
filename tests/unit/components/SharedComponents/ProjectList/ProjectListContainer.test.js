@@ -1,6 +1,5 @@
 import { useRoute } from "@react-navigation/native";
 import { render, screen } from "@testing-library/react-native";
-import { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import ProjectListContainer from "components/ProjectList/ProjectListContainer";
 import React from "react";
 import factory from "tests/factory";
@@ -97,7 +96,7 @@ describe( "ProjectListContainer", () => {
     it( "should call useAuthenticatedQuery with the correct query key", ( ) => {
       render( <ProjectListContainer /> );
       expect( mockUseAuthenticatedQuery ).toHaveBeenCalledWith(
-        ["fetchUserProjects", mockUserId, PROJECT_SUMMARY_FIELDS],
+        ["fetchUserProjects", mockUserId],
         expect.any( Function ),
         expect.objectContaining( { enabled: true } ),
       );
