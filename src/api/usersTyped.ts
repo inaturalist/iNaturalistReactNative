@@ -11,7 +11,7 @@ interface UsersProjectsParams extends ApiParams {
 }
 
 const fetchUserProjects = async <T = ApiDefaultResult>(
-  params: UsersProjectsParams = {},
+  params: UsersProjectsParams,
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
