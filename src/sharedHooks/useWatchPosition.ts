@@ -10,6 +10,7 @@ import { useCallback, useState } from "react";
 import { clearWatch, watchPosition } from "../sharedHelpers/geolocationWrapper";
 
 export const TARGET_POSITIONAL_ACCURACY = 10;
+const MAX_POSITION_AGE_MS = 60_000;
 
 export interface UserLocation {
   latitude: number;
@@ -46,6 +47,13 @@ const useWatchPosition = ( options: {
     };
 
     const success = ( position: GeolocationResponse ) => {
+      const age = Date.now() - position.timestamp;
+      // 20260710 - FLGMwt: I don't know if this is necessary since
+      // we're passing maxAge: 0, but left it during a refactor for safety
+      // I didn't notice an impact testing on Android nor iOS with & w/o it.
+      if ( age > MAX_POSITION_AGE_MS ) {
+        return;
+      }
       setUserLocation( {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
