@@ -20,6 +20,7 @@ import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation } from "realmModels/types";
+import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
   sortSpeciesCounts,
@@ -131,6 +132,13 @@ const MyObservationsResults = ( ) => {
     myObsDispatch( {
       type: MY_OBSERVATIONS_ACTION.SET_SPECIES_SORT,
       speciesSort: value,
+    } );
+  };
+
+  const setObservationsSortOptionId = ( value: OBSERVATIONS_SORT ) => {
+    myObsDispatch( {
+      type: MY_OBSERVATIONS_ACTION.SET_OBSERVATIONS_SORT,
+      observationsSort: value,
     } );
   };
 
@@ -446,12 +454,14 @@ const MyObservationsResults = ( ) => {
         numUnuploadedObservations={numUnuploadedObservations}
         numObsMissingBasics={numObsMissingBasics}
         observationIds={observationIds}
+        observationsSortOptionId={myObsState.observationsSort}
         onEndReached={fetchNextPage}
         onListLayout={restoreScrollOffset}
         onScroll={onScroll}
         openSheet={openSheet}
         refetchTaxa={refetchTaxa}
         setActiveTab={setActiveTab}
+        setObservationsSortOptionId={setObservationsSortOptionId}
         setOpenSheet={setOpenSheet}
         setSpeciesSortOptionId={setSpeciesSortOptionId}
         showNoResults={showNoResults}
