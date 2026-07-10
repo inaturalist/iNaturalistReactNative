@@ -153,9 +153,9 @@ const ExploreLocationSearch = ( {
   return (
     <ViewWrapper testID="explore-location-search">
       <SearchHeader
-        closeModal={closeModal}
+        onClose={closeModal}
         headerText={t( "SEARCH-LOCATION" )}
-        resetFilters={resetPlace}
+        onReset={resetPlace}
         testID="ExploreLocationSearch.close"
       />
       <View

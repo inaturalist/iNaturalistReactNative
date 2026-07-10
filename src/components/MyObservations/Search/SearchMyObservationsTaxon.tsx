@@ -84,9 +84,9 @@ const SearchMyObservationsTaxon = ( ) => {
   return (
     <ViewWrapper>
       <SearchHeader
-        closeModal={closeScreen}
+        onClose={closeScreen}
         headerText={t( "SEARCH" )}
-        resetFilters={resetSearch}
+        onReset={resetSearch}
         resetDisabled={!searchedTaxon}
         testID="SearchMyObservationsTaxon.close"
       />

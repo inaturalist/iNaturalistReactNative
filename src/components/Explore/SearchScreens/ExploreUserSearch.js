@@ -102,9 +102,9 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   return (
     <ViewWrapper>
       <SearchHeader
-        closeModal={closeModal}
+        onClose={closeModal}
         headerText={t( "SEARCH-USERS" )}
-        resetFilters={resetUser}
+        onReset={resetUser}
         testID="ExploreUserSearch.close"
       />
       <View

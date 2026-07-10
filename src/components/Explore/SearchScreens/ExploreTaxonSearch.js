@@ -65,9 +65,9 @@ const ExploreTaxonSearch = ( {
   return (
     <ViewWrapper>
       <SearchHeader
-        closeModal={closeModal}
+        onClose={closeModal}
         headerText={t( "SEARCH-TAXA" )}
-        resetFilters={resetTaxon}
+        onReset={resetTaxon}
         testID="ExploreTaxonSearch.close"
       />
       <TaxonSearch

@@ -212,8 +212,8 @@ const UniversalSearch = ( ) => {
       <View className="bg-white" style={DROP_SHADOW}>
         <SearchHeader
           headerText={t( "SEARCH" )}
-          closeModal={navigation.goBack}
-          resetFilters={handleReset}
+          onClose={navigation.goBack}
+          onReset={handleReset}
           testID="UniversalSearch.back"
         />
         <View className="px-4 pb-4">

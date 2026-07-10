@@ -72,9 +72,9 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
   return (
     <ViewWrapper>
       <SearchHeader
-        closeModal={closeModal}
+        onClose={closeModal}
         headerText={t( "SEARCH-PROJECTS" )}
-        resetFilters={resetProject}
+        onReset={resetProject}
         testID="ExploreProjectSearch.close"
       />
       <View
