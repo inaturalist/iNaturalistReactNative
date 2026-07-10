@@ -52,7 +52,7 @@ const ProjectListContainer = ( ) => {
     ["fetchUserProjects", userId, fields],
     optsWithAuth => fetchUserProjects<ApiProjectSummary | ApiProjectSummaryWithPOF>(
       {
-        id: userId,
+        id: userId as number,
         per_page: 200,
         fields,
       },
