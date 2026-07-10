@@ -9,15 +9,15 @@ import safeRealmWrite from "./safeRealmWrite";
 
 const deleteNotRemoteProjects = ( remoteProjects: number[], realm: Realm ) => {
   if ( !remoteProjects ) { return; }
-  if ( remoteProjects?.length > 0 ) {
-    safeRealmWrite( realm, ( ) => {
-      const localProjectsToDelete = realm.objects( "Project" )
+  safeRealmWrite( realm, ( ) => {
+    const localProjectsToDelete = remoteProjects.length === 0
+      ? realm.objects( "Project" )
+      : realm.objects( "Project" )
         .filtered( `NOT (id IN { ${remoteProjects} })` );
-      localProjectsToDelete.forEach( project => {
-        realm.delete( project );
-      } );
-    }, "removing projects from realm that are not remote" );
-  }
+    localProjectsToDelete.forEach( project => {
+      realm.delete( project );
+    } );
+  }, "removing projects from realm that are not remote" );
 };
 
 async function syncJoinedProjects(
