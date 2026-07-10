@@ -7,12 +7,12 @@ import Project from "realmModels/Project";
 
 import safeRealmWrite from "./safeRealmWrite";
 
-const deleteRemotelyDeletedObservations = ( deletedObservations, realm ) => {
-  if ( !deletedObservations ) { return; }
-  if ( deletedObservations?.length > 0 ) {
+const deleteNotRemoteProjects = ( remoteProjects: { id: number }[], realm: Realm ) => {
+  if ( !remoteProjects ) { return; }
+  if ( remoteProjects?.length > 0 ) {
     safeRealmWrite( realm, ( ) => {
       const localObservationsToDelete = realm.objects( "Observation" )
-        .filtered( `id IN { ${deletedObservations} }` );
+        .filtered( `id IN { ${remoteProjects} }` );
       localObservationsToDelete.forEach( observation => {
         realm.delete( observation );
       } );
@@ -49,7 +49,7 @@ async function syncJoinedProjects(
   Project.upsertRemoteProjects( response.results, realm );
 
   // Remove projects that are present locally but no longer in server response
-  console.log( "deleteRemotelyDeletedObservations", deleteRemotelyDeletedObservations );
+  console.log( "deleteNotRemoteProjects", deleteNotRemoteProjects );
 }
 
 export default syncJoinedProjects;
