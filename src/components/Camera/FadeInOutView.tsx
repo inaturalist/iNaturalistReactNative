@@ -13,6 +13,17 @@ interface Props {
   cameraType: string;
 }
 
+// Inline style instead of className: reanimated's Animated.View isn't
+// registered with nativewind 4, so className has no effect on it
+const OVERLAY_STYLE = {
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: colors.black,
+  position: "absolute",
+  height: "100%",
+  width: "100%",
+} as const;
+
 const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
   const opacity = useSharedValue( 0 );
 
@@ -35,8 +46,7 @@ const FadeInOutView = ( { takingPhoto, cameraType }: Props ) => {
     <>
       <Animated.View
         pointerEvents="none"
-        className="items-center justify-center bg-black absolute h-full w-full"
-        style={animatedStyle}
+        style={[OVERLAY_STYLE, animatedStyle]}
       />
       {( takingPhoto && cameraType === "AI" ) && (
         <ActivityIndicator

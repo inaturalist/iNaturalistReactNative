@@ -53,7 +53,12 @@ const configWithRozenite = withRozenite(
 
 const configWithRozeniteAndNativeWind = withNativeWind(
   configWithRozenite,
-  { input: "./global.css" },
+  {
+    input: "./global.css",
+    // nativewind 4 defaults to 14px per rem; nativewind 2 used 16px, and all
+    // of our rem-based spacing was designed against that
+    inlineRem: 16,
+  },
 );
 
 module.exports = configWithRozeniteAndNativeWind;

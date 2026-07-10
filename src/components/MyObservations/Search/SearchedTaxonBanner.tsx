@@ -28,10 +28,10 @@ const SearchedTaxonBanner = ( ) => {
 
   return (
     <View
-      className="flex-row items-center bg-white space-x-[20px]"
+      className="flex-row items-center bg-white gap-x-[20px]"
       testID="SearchedTaxonBanner"
     >
-      <View className="flex-1 flex-row items-center space-x-[10px]">
+      <View className="flex-1 flex-row items-center gap-x-[10px]">
         <View className="w-[44px] h-[44px] bg-lightGray">
           {searchedTaxon.iconUri && (
             <Image

@@ -105,20 +105,20 @@ const PhotosSection = ( {
           containerClass = "flex-row";
           observationPhotoClass = "w-2/3 h-full pr-[3px]";
           if ( bestTaxonPhotos.length === 2 ) {
-            taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
+            taxonPhotosContainerClass = "flex-col w-1/3 h-full gap-y-[3px]";
             taxonPhotoClass = "w-full h-1/2";
           } else {
-            taxonPhotosContainerClass = "flex-col w-1/3 h-full space-y-[3px]";
+            taxonPhotosContainerClass = "flex-col w-1/3 h-full gap-y-[3px]";
             taxonPhotoClass = "w-full h-1/3";
           }
         } else {
           containerClass = "flex-col";
           observationPhotoClass = "w-full h-2/3 pb-[3px]";
           if ( bestTaxonPhotos.length === 2 ) {
-            taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
+            taxonPhotosContainerClass = "flex-row w-full h-1/3 gap-x-[3px]";
             taxonPhotoClass = "w-1/2 h-full";
           } else {
-            taxonPhotosContainerClass = "flex-row w-full h-1/3 space-x-[3px]";
+            taxonPhotosContainerClass = "flex-row w-full h-1/3 gap-x-[3px]";
             taxonPhotoClass = "w-1/3 h-full";
           }
         }

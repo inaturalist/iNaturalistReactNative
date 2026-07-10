@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { Body1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { cssInterop } from "nativewind";
 import React, {
   useCallback,
   useEffect,
@@ -37,6 +38,10 @@ import {
 import LocationIndicator from "./LocationIndicator";
 import ObscuredLocationIndicator from "./ObscuredLocationIndicator";
 import SwitchMapTypeButton from "./SwitchMapTypeButton";
+
+// className support: third-party components need explicit registration with
+// nativewind 4 for className to have any effect
+cssInterop( MapView, { className: "style" } );
 
 const NEARBY_DIM_M = 50_000;
 const CURRENT_LOCATION_ZOOM_LEVEL = 20; // target zoom level when user hits current location btn

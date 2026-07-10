@@ -3,67 +3,35 @@
 exports[`PhotoCount renders correctly 1`] = `
 <View
   style={
-    [
-      {
-        "elevation": 5,
-        "shadowColor": "rgba( 0, 0, 0, 0.25 )",
-        "shadowOffset": {
-          "height": 2,
-          "width": 0,
-        },
-        "shadowOpacity": 0.25,
-        "shadowRadius": 2,
+    {
+      "elevation": 5,
+      "shadowColor": "rgba( 0, 0, 0, 0.25 )",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
       },
-    ]
+      "shadowOpacity": 0.25,
+      "shadowRadius": 2,
+    }
   }
   testID="photo-count"
 >
   <Text
     maxFontSizeMultiplier={2}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 13,
-              "lineHeight": 18,
-            },
-            {
-              "fontFamily": "Lato-Medium",
-            },
-            [
-              {
-                "position": "absolute",
-              },
-              {
-                "zIndex": 10,
-              },
-              {
-                "bottom": 0,
-              },
-              {
-                "left": 0,
-              },
-              {
-                "textAlign": "center",
-              },
-              {
-                "height": 35.519999999999996,
-                "width": 35.519999999999996,
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "bottom": 0,
+        "color": "rgba(69, 69, 69, 1)",
+        "fontFamily": "Lato-Medium",
+        "fontSize": 13,
+        "height": 35.519999999999996,
+        "left": 0,
+        "lineHeight": 18,
+        "position": "absolute",
+        "textAlign": "center",
+        "width": 35.519999999999996,
+        "zIndex": 10,
+      }
     }
   >
     7

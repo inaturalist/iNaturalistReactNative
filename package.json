@@ -99,7 +99,7 @@
     "linkifyjs": "^4.3.2",
     "lodash": "^4.18.1",
     "markdown-it": "^14.2.0",
-    "nativewind": "^4.2.4",
+    "nativewind": "^4.2.6",
     "react": "19.2.0",
     "react-dom": "19.1.1",
     "react-i18next": "^17.0.2",
@@ -152,6 +152,7 @@
     "react-native-worklets-core": "^1.6.3",
     "realm": "^20.2.0",
     "sanitize-html": "^2.17.4",
+    "tailwind-merge": "^3.6.0",
     "uuid": "^11.1.1",
     "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#e8c4782cee82e781e8dc7016fffedbbd95070931",
     "zustand": "^4.5.7"
@@ -222,7 +223,7 @@
     "react-native-config-node": "^0.0.3",
     "react-test-renderer": "19.2.0",
     "reassure": "^1.4.1",
-    "tailwindcss": "^3.3.2",
+    "tailwindcss": "^3.4.17",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "yargs": "^17.7.2"

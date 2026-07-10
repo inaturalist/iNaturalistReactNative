@@ -4,31 +4,14 @@ exports[`Heading4 renders correctly 1`] = `
 <Text
   maxFontSizeMultiplier={2}
   style={
-    [
-      {
-        "color": "#454545",
-      },
-      {
-        "fontFamily": "Lato-Regular",
-      },
-      [
-        {
-          "textAlign": "left",
-        },
-        [
-          {
-            "fontSize": 15,
-            "lineHeight": 18,
-          },
-          {
-            "letterSpacing": 2,
-          },
-          {
-            "fontFamily": "Lato-Bold",
-          },
-        ],
-      ],
-    ]
+    {
+      "color": "rgba(69, 69, 69, 1)",
+      "fontFamily": "Lato-Bold",
+      "fontSize": 15,
+      "letterSpacing": 2,
+      "lineHeight": 18,
+      "textAlign": "left",
+    }
   }
 >
   Heading4
