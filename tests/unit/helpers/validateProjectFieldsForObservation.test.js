@@ -16,5 +16,19 @@ describe( "validateProjectFieldValue", () => {
       } );
       expect( validateProjectFieldValue( mockPOF, "abc" ) ).toBe( INVALID_NUMERIC );
     } );
+
+    test.each( [
+      [undefined],
+      [""],
+    ] )( "should return null for empty value %p on an optional numeric field", value => {
+      const mockPOF = factory( "LocalProjectObservationField", {
+        required: false,
+        obsField: factory( "LocalObservationField", {
+          allowedValues: [],
+          datatype: "numeric",
+        } ),
+      } );
+      expect( validateProjectFieldValue( mockPOF, value ) ).toBeNull( );
+    } );
   } );
 } );
