@@ -6,6 +6,16 @@ import factory from "tests/factory";
 
 describe( "validateProjectFieldValue", () => {
   describe( "required fields", () => {
+    it( "should return null for a non-empty value", () => {
+      const mockPOF = factory( "LocalProjectObservationField", {
+        required: true,
+        obsField: factory( "LocalObservationField", {
+          allowedValues: [],
+        } ),
+      } );
+      expect( validateProjectFieldValue( mockPOF, "x" ) ).toBeNull( );
+    } );
+
     it( "should return null for a value that is non-empty after trim", () => {
       const mockPOF = factory( "LocalProjectObservationField", {
         required: true,
