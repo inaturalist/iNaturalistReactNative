@@ -31,4 +31,20 @@ describe( "validateProjectFieldValue", () => {
       expect( validateProjectFieldValue( mockPOF, value ) ).toBeNull( );
     } );
   } );
+
+  describe( "optional text fields", () => {
+    test.each( [
+      [undefined],
+      [""],
+      ["anything"],
+    ] )( "should return null for %p", value => {
+      const mockPOF = factory( "LocalProjectObservationField", {
+        required: false,
+        obsField: factory( "LocalObservationField", {
+          allowedValues: [],
+        } ),
+      } );
+      expect( validateProjectFieldValue( mockPOF, value ) ).toBeNull( );
+    } );
+  } );
 } );
