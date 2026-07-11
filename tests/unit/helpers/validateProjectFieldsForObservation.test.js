@@ -5,6 +5,18 @@ import {
 import factory from "tests/factory";
 
 describe( "validateProjectFieldValue", () => {
+  describe( "required fields", () => {
+    it( "should return null for a value that is non-empty after trim", () => {
+      const mockPOF = factory( "LocalProjectObservationField", {
+        required: true,
+        obsField: factory( "LocalObservationField", {
+          allowedValues: [],
+        } ),
+      } );
+      expect( validateProjectFieldValue( mockPOF, " x " ) ).toBeNull( );
+    } );
+  } );
+
   describe( "numeric fields", () => {
     it( "should return INVALID_NUMERIC for a non-numeric value on an optional field", () => {
       const mockPOF = factory( "LocalProjectObservationField", {
