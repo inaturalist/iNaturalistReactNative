@@ -1,11 +1,27 @@
 import {
   INVALID_NUMERIC,
+  MISSING_REQUIRED,
   validateProjectFieldValue,
 } from "sharedHelpers/validateProjectFieldsForObservation";
 import factory from "tests/factory";
 
 describe( "validateProjectFieldValue", () => {
   describe( "required fields", () => {
+    test.each( [
+      [undefined],
+      [null],
+      [""],
+      ["   "],
+    ] )( "should return MISSING_REQUIRED for empty value %p", value => {
+      const mockPOF = factory( "LocalProjectObservationField", {
+        required: true,
+        obsField: factory( "LocalObservationField", {
+          allowedValues: [],
+        } ),
+      } );
+      expect( validateProjectFieldValue( mockPOF, value ) ).toBe( MISSING_REQUIRED );
+    } );
+
     it( "should return null for a non-empty value", () => {
       const mockPOF = factory( "LocalProjectObservationField", {
         required: true,
