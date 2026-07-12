@@ -35,7 +35,7 @@ class ObservationFieldValue extends Realm.Object {
     observation: RealmObservation,
     obsFieldId: number,
   ): RealmObservationFieldValue | undefined {
-    return observation.observationFieldValues.find(
+    return observation.observationFieldValues?.find(
       ofv => ofv.obsFieldId === obsFieldId,
     );
   }
