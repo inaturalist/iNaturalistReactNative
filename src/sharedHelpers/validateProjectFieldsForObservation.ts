@@ -17,6 +17,15 @@ export type ProjectObservationFieldLike = Pick<
   "required" | "obsField"
 >;
 
+interface ObservationFieldToValidate {
+  datatype: string;
+}
+
+interface ProjectObservationFieldToValidate {
+  required: boolean;
+  obsField: ObservationFieldToValidate;
+}
+
 /**
  * Validates a single value param against a POF.
  *
@@ -28,7 +37,7 @@ export type ProjectObservationFieldLike = Pick<
  * Returns null when valid.
  */
 export function validateProjectFieldValue(
-  pof: ProjectObservationFieldLike,
+  pof: ProjectObservationFieldToValidate,
   value?: string | null,
 ): ProjectFieldValidationReason | null {
   const trimmed = ( value ?? "" ).trim( );
