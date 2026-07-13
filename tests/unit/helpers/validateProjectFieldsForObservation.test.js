@@ -109,5 +109,21 @@ describe( "validateProjectFieldsForObservation", () => {
         validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
       ).toBe( true );
     } );
+
+    it( "should be valid when an optional field has no OFV", () => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: false,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+          },
+        }],
+      };
+      const mockObservation = { observationFieldValues: [] };
+      expect(
+        validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
+      ).toBe( true );
+    } );
   } );
 } );
