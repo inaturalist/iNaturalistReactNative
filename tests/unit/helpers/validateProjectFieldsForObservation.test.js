@@ -188,5 +188,36 @@ describe( "validateProjectFieldsForObservation", () => {
         validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
       ).toBe( true );
     } );
+
+    it( "should report only the unfilled field when one of two required fields is filled", () => {
+      const mockProject = {
+        projectObservationFields: [
+          {
+            required: true,
+            obsField: {
+              allowedValues: [],
+              id: 10,
+              name: "Habitat",
+            },
+          },
+          {
+            required: true,
+            obsField: {
+              allowedValues: [],
+              id: 20,
+              name: "Substrate",
+            },
+          },
+        ],
+      };
+      const mockObservation = {
+        observationFieldValues: [{ obsFieldId: 10, value: "shrubland" }],
+      };
+      const result = validateProjectFieldsForObservation( mockObservation, [mockProject] );
+      expect( result.valid ).toBe( false );
+      expect( result.errors ).toHaveLength( 1 );
+      expect( result.errors[0].fieldName ).toBe( "Substrate" );
+      expect( result.errors[0].reason ).toBe( MISSING_REQUIRED );
+    } );
   } );
 } );
