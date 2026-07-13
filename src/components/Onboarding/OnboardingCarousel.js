@@ -33,8 +33,8 @@ import { useOnboardingShown } from "sharedHelpers/installData";
 import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import colors from "styles/tailwindColors";
 
-// Inline styles instead of className: reanimated's Animated.View isn't
-// registered with nativewind 4, so className has no effect on it
+// inline style instead of className: Animated.View doesn't like
+// being registered with nativewind 4, so className has no effect on it
 const FULL_SIZE_STYLE = { width: "100%", height: "100%" };
 const BACKGROUND_STYLE = { ...FULL_SIZE_STYLE, position: "absolute" };
 

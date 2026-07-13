@@ -12,8 +12,8 @@ interface Props {
   children: React.JSX.Element;
 }
 
-// Inline style instead of className: reanimated's Animated.View isn't
-// registered with nativewind 4, so className has no effect on it
+// inline style instead of className: Animated.View doesn't like
+// being registered with nativewind 4, so className has no effect on it
 const CONTAINER_STYLE = { flex: 1 } as const;
 
 const FadeInView = ( { children }: Props ) => {

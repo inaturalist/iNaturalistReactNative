@@ -13,8 +13,8 @@ interface Props {
   cameraType: string;
 }
 
-// Inline style instead of className: reanimated's Animated.View isn't
-// registered with nativewind 4, so className has no effect on it
+// inline style instead of className: Animated.View doesn't like
+// being registered with nativewind 4, so className has no effect on it
 const OVERLAY_STYLE = {
   alignItems: "center",
   justifyContent: "center",

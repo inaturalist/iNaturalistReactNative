@@ -26,8 +26,8 @@ const RotatableIconWrapper = ( {
     );
   }
 
-  // className on the plain View, animation inside: reanimated's Animated.View
-  // isn't registered with nativewind 4, so className has no effect on it
+  // inline style instead of className: Animated.View doesn't like
+  // being registered with nativewind 4, so className has no effect on it
   return (
     <View className={containerClass}>
       <Animated.View style={rotatableAnimatedStyle}>
