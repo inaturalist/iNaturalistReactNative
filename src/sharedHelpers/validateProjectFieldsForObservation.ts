@@ -1,6 +1,4 @@
-import type {
-  RealmProjectObservationField,
-} from "realmModels/types";
+import ObservationFieldValue from "realmModels/ObservationFieldValue";
 
 // Machine-readable reason codes. UI layers map these to localized
 // strings; membership-rule validation uses a separate module with its
@@ -12,18 +10,28 @@ export type ProjectFieldValidationReason =
   | typeof MISSING_REQUIRED
   | typeof INVALID_NUMERIC;
 
-export type ProjectObservationFieldLike = Pick<
-  RealmProjectObservationField,
-  "required" | "obsField"
->;
+export interface ProjectFieldValidationError {
+  projectId: number;
+  projectTitle: string;
+  obsFieldId: number;
+  fieldName: string;
+  reason: ProjectFieldValidationReason;
+}
+
+export interface ProjectFieldValidationResult {
+  valid: boolean;
+  errors: ProjectFieldValidationError[];
+}
 
 interface ObservationFieldToValidate {
   datatype: string;
+  id: number;
+  name: string;
 }
 
 interface ProjectObservationFieldToValidate {
-  required: boolean;
   obsField: ObservationFieldToValidate;
+  required: boolean;
 }
 
 /**
@@ -54,4 +62,52 @@ export function validateProjectFieldValue(
     return INVALID_NUMERIC;
   }
   return null;
+}
+
+interface ObservationFieldValueToValidate {
+  obsFieldId: number;
+  value: string;
+}
+
+interface ObservationToValidate {
+  observationFieldValues?: ObservationFieldValueToValidate[];
+}
+
+interface ProjectToValidate {
+  id: number;
+  projectObservationFields: ProjectObservationFieldToValidate[];
+  title: string;
+}
+
+/**
+ * Validates an observation's OFVs against the observation fields (POFs) of
+ * the given projects.
+ *
+ * OFVs are global per observation and keyed by obsFieldId, so two projects
+ * sharing a field read the same OFV; when a shared required field is empty,
+ * each project reports its own error.
+ */
+export default function validateProjectFieldsForObservation(
+  observation: ObservationToValidate,
+  projects: ProjectToValidate[],
+): ProjectFieldValidationResult {
+  const errors: ProjectFieldValidationError[] = [];
+  projects.forEach( project => {
+    project.projectObservationFields.forEach( pof => {
+      const { obsField } = pof;
+      if ( !obsField ) { return; }
+      const ofv = ObservationFieldValue.findForObsField( observation, obsField.id );
+      const reason = validateProjectFieldValue( pof, ofv?.value );
+      if ( reason ) {
+        errors.push( {
+          projectId: project.id,
+          projectTitle: project.title ?? "",
+          obsFieldId: obsField.id,
+          fieldName: obsField.name ?? "",
+          reason,
+        } );
+      }
+    } );
+  } );
+  return { valid: errors.length === 0, errors };
 }
