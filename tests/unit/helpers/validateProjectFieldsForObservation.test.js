@@ -1,4 +1,4 @@
-import {
+import validateProjectFieldsForObservation, {
   INVALID_NUMERIC,
   MISSING_REQUIRED,
   validateProjectFieldValue,
@@ -83,6 +83,31 @@ describe( "validateProjectFieldValue", () => {
         } ),
       } );
       expect( validateProjectFieldValue( mockPOF, value ) ).toBeNull( );
+    } );
+  } );
+} );
+
+describe( "validateProjectFieldsForObservation", () => {
+  describe( "required fields", () => {
+    it( "should be valid when a required field's OFV is non-empty after trim", () => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+          },
+        }],
+      };
+      const mockObservation = {
+        observationFieldValues: [{
+          obsFieldId: 10,
+          value: "something",
+        }],
+      };
+      expect(
+        validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
+      ).toBe( true );
     } );
   } );
 } );
