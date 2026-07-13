@@ -89,6 +89,27 @@ describe( "validateProjectFieldValue", () => {
 
 describe( "validateProjectFieldsForObservation", () => {
   describe( "required fields", () => {
+    test.each( [
+      [""],
+      ["   "],
+    ] )( "should return MISSING_REQUIRED when a required field's OFV value is %p", value => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+          },
+        }],
+      };
+      const mockObservation = {
+        observationFieldValues: [{ id: 10, value }],
+      };
+      const result = validateProjectFieldsForObservation( mockObservation, [mockProject] );
+      expect( result.valid ).toBe( false );
+      expect( result.errors[0].reason ).toBe( MISSING_REQUIRED );
+    } );
+
     it( "should be valid when a required field's OFV is non-empty after trim", () => {
       const mockProject = {
         projectObservationFields: [{
