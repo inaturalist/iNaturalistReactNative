@@ -219,5 +219,32 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.errors[0].fieldName ).toBe( "Substrate" );
       expect( result.errors[0].reason ).toBe( MISSING_REQUIRED );
     } );
+
+    it( "should report both fields in POF order when two required fields are unfilled", () => {
+      const mockProject = {
+        projectObservationFields: [
+          {
+            required: true,
+            obsField: {
+              allowedValues: [],
+              id: 10,
+              name: "Habitat",
+            },
+          },
+          {
+            required: true,
+            obsField: {
+              allowedValues: [],
+              id: 20,
+              name: "Substrate",
+            },
+          },
+        ],
+      };
+      const mockObservation = { observationFieldValues: [] };
+      const result = validateProjectFieldsForObservation( mockObservation, [mockProject] );
+      expect( result.valid ).toBe( false );
+      expect( result.errors.map( e => e.fieldName ) ).toEqual( ["Habitat", "Substrate"] );
+    } );
   } );
 } );
