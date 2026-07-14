@@ -1,10 +1,11 @@
-import { renderHook, waitFor } from "@testing-library/react-native";
+import { renderHook } from "@testing-library/react-native";
 import useServerOrderedObservations
   from "components/MyObservations/hooks/useServerOrderedObservations";
+import inatjs from "inaturalistjs";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import factory from "tests/factory";
+import factory, { makeResponse } from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 const mockUser = factory( "LocalUser" );
@@ -85,14 +86,10 @@ describe( "useServerOrderedObservations", ( ) => {
     expect( useAuthenticatedQuery.mock.calls[1][2].enabled ).toEqual( false );
   } );
 
-  it( "maps fetched results to a uuid-only list and passes through query metadata", ( ) => {
+  it( "passes through the query's uuid-only data and metadata as-is", ( ) => {
     const mockRefetch = jest.fn( );
-    const remoteObservations = [
-      factory( "RemoteObservation" ),
-      factory( "RemoteObservation" ),
-    ];
     useAuthenticatedQuery.mockReturnValue( {
-      data: { results: remoteObservations, total_results: 2 },
+      data: { observationIds: [{ uuid: "a" }, { uuid: "b" }], totalResults: 2 },
       isLoading: false,
       error: null,
       refetch: mockRefetch,
@@ -102,31 +99,28 @@ describe( "useServerOrderedObservations", ( ) => {
       sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
     } ) );
 
-    expect( result.current.observationIds ).toEqual( [
-      { uuid: remoteObservations[0].uuid },
-      { uuid: remoteObservations[1].uuid },
-    ] );
+    expect( result.current.observationIds ).toEqual( [{ uuid: "a" }, { uuid: "b" }] );
     expect( result.current.totalResults ).toEqual( 2 );
     expect( result.current.refetch ).toEqual( mockRefetch );
   } );
 
-  it( "upserts newly fetched results into Realm", async ( ) => {
+  it( "queryFn upserts fetched results into Realm and returns a uuid-only list", async ( ) => {
     const remoteObservation = factory( "RemoteObservation" );
-    useAuthenticatedQuery.mockReturnValue( {
-      data: { results: [remoteObservation], total_results: 1 },
-      isLoading: false,
-      error: null,
-      refetch: jest.fn( ),
-    } );
+    inatjs.observations.search.mockResolvedValueOnce( makeResponse( [remoteObservation] ) );
 
     renderHook( ( ) => useServerOrderedObservations( {
       sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
     } ) );
 
-    await waitFor( ( ) => {
-      const localObs = getLocalObservation( remoteObservation.uuid );
-      expect( localObs ).toBeTruthy( );
-      expect( localObs.id ).toEqual( remoteObservation.id );
+    const [, queryFunction] = useAuthenticatedQuery.mock.calls[0];
+    const data = await queryFunction( { api_token: "fake-token" } );
+
+    expect( data ).toEqual( {
+      observationIds: [{ uuid: remoteObservation.uuid }],
+      totalResults: 1,
     } );
+    const localObs = getLocalObservation( remoteObservation.uuid );
+    expect( localObs ).toBeTruthy( );
+    expect( localObs.id ).toEqual( remoteObservation.id );
   } );
 } );
