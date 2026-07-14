@@ -500,4 +500,13 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( resultBA.errors.map( e => e.projectTitle ) ).toEqual( ["Project B", "Project A"] );
     } );
   } );
+
+  describe( "edge cases", () => {
+    it( "should be valid when no projects are passed", () => {
+      const mockObservation = { observationFieldValues: [] };
+      const result = validateProjectFieldsForObservation( mockObservation, [] );
+      expect( result.valid ).toBe( true );
+      expect( result.errors ).toEqual( [] );
+    } );
+  } );
 } );
