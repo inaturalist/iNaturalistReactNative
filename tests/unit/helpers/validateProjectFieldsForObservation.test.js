@@ -356,4 +356,42 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.errors[0].reason ).toBe( MISSING_REQUIRED );
     } );
   } );
+
+  describe( "multiple projects", () => {
+    it( "should be valid when one OFV satisfies two projects requiring the same field", () => {
+      const mockProjectA = {
+        id: 1,
+        title: "Project A",
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+            name: "Habitat",
+          },
+        }],
+      };
+      const mockProjectB = {
+        id: 2,
+        title: "Project B",
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+            name: "Habitat",
+          },
+        }],
+      };
+      const mockObservation = {
+        observationFieldValues: [{ obsFieldId: 10, value: "shrubland" }],
+      };
+      const result = validateProjectFieldsForObservation(
+        mockObservation,
+        [mockProjectA, mockProjectB],
+      );
+      expect( result.valid ).toBe( true );
+      expect( result.errors ).toEqual( [] );
+    } );
+  } );
 } );
