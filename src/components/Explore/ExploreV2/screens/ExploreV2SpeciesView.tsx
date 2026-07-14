@@ -70,6 +70,7 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
 
   // useQueries executes taxonIdChunks.length queries,
   // relying on React Query's caching so each full chunk actually runs only once
+  // TODO split out a shared useQueries wrapper if multiple use sites become necessary
   const observedIds = useQueries( {
     queries: taxonIdChunks.map( chunk => ( {
       queryKey: ["exploreV2SpeciesCountsSeen", currentUser?.id, chunk.join( "," )],
