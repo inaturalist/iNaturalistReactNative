@@ -73,7 +73,7 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
   // TODO split out a shared useQueries wrapper if multiple use sites become necessary
   const observedIds = useQueries( {
     queries: taxonIdChunks.map( chunk => ( {
-      queryKey: ["exploreV2SpeciesCountsSeen", currentUser?.id, chunk.join( "," )],
+      queryKey: ["exploreV2SpeciesCountsSeen", currentUser?.id, chunk],
       queryFn: ( ) => fetchSpeciesCounts( {
         user_id: currentUser?.id,
         taxon_id: chunk,
