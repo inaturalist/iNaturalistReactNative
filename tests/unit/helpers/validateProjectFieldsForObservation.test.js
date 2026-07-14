@@ -508,5 +508,21 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.valid ).toBe( true );
       expect( result.errors ).toEqual( [] );
     } );
+    it( "should return MISSING_REQUIRED when observationFieldValues is undefined", () => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+            name: "Habitat",
+          },
+        }],
+      };
+      const mockObservation = {};
+      const result = validateProjectFieldsForObservation( mockObservation, [mockProject] );
+      expect( result.valid ).toBe( false );
+      expect( result.errors[0].reason ).toBe( MISSING_REQUIRED );
+    } );
   } );
 } );
