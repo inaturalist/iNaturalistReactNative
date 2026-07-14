@@ -1,42 +1,66 @@
-// @flow
-
+import { useNavigation } from "@react-navigation/native";
 import {
   Heading4, TextInputSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import React, { useState } from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import { Alert } from "react-native";
+import { useCurrentUser, useFeatureFlag, useTranslation } from "sharedHooks";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 import DropdownItem from "./DropdownItem";
 import GeoprivacySheet from "./Sheets/GeoprivacySheet";
 import WildStatusSheet from "./Sheets/WildStatusSheet";
 
-type Props = {
-  currentObservation: Object,
-  updateObservationKeys: Function
+type Geoprivacy = null | "open" | "obscured" | "private";
+
+type UpdateObservationKey =
+  | {
+      description: string | undefined;
+    }
+  | {
+      geoprivacy: Geoprivacy;
+    }
+  | {
+      captive_flag: boolean;
+    };
+
+interface Props {
+  currentObservation: {
+    captive_flag: boolean;
+    description: string;
+    geoprivacy: Geoprivacy;
+    projectObservations: object[];
+  };
+  updateObservationKeys: ( _key: UpdateObservationKey ) => void;
 }
 
 const OtherDataSection = ( {
   currentObservation,
   updateObservationKeys,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"ObsEdit">["navigation"] &
+    TabStackScreenProps<"ObsEdit">["navigation"]
+  >( );
+  const currentUser = useCurrentUser( );
   const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );
   const [showWildStatusSheet, setShowWildStatusSheet] = useState( false );
   const [showNotesSheet, setShowNotesSheet] = useState( false );
 
   const geoprivacyOptions = [{
     label: t( "Open" ),
-    value: "open",
+    value: "open" as const,
   },
   {
     label: t( "Obscured" ),
-    value: "obscured",
+    value: "obscured" as const,
   },
   {
     label: t( "Private" ),
-    value: "private",
+    value: "private" as const,
   }];
 
   // opposite of Seek (asking if wild, not if captive)
@@ -50,17 +74,36 @@ const OtherDataSection = ( {
       value: true,
     }];
 
+  const traditionalProjectsEnabled = useFeatureFlag( FeatureFlag.TraditionalProjectsEnabled );
+
+  const projectCount = currentObservation?.projectObservations?.length ?? 0;
+  const projectsLabel = projectCount > 0
+    ? t( "Added-to-X-Projects", { count: projectCount } )
+    : t( "Add-to-Projects" );
+
   const currentGeoprivacyStatus = geoprivacyOptions
     .find( e => e.value === currentObservation?.geoprivacy );
   const currentCaptiveStatus = captiveOptions
     .find( e => e.value === currentObservation?.captive_flag );
+
+  const handleProjectsPress = ( ) => {
+    if ( !currentUser ) {
+      Alert.alert(
+        t( "Please-log-in" ),
+        t( "You-need-to-be-logged-in-to-add-observations-to-projects" ),
+      );
+      return;
+    }
+    navigation.navigate( "AddToProjects" );
+  };
+
   return (
     <View className="mx-5 mt-6">
       {showGeoprivacySheet && (
         <GeoprivacySheet
           selectedValue={currentObservation?.geoprivacy}
           onPressClose={( ) => setShowGeoprivacySheet( false )}
-          updateGeoprivacyStatus={value => updateObservationKeys( {
+          updateGeoprivacyStatus={( value: Geoprivacy ) => updateObservationKeys( {
             geoprivacy: value,
           } )}
         />
@@ -81,7 +124,7 @@ const OtherDataSection = ( {
           headerText={t( "NOTES" )}
           placeholder={t( "Add-optional-notes" )}
           initialInput={currentObservation?.description}
-          confirm={textInput => updateObservationKeys( {
+          confirm={( textInput: string | undefined ) => updateObservationKeys( {
             description: textInput,
           } )}
         />
@@ -108,6 +151,14 @@ const OtherDataSection = ( {
         iconName="pencil-outline"
         text={currentObservation?.description || t( "Add-optional-notes" )}
       />
+      {traditionalProjectsEnabled && (
+        <DropdownItem
+          accessibilityLabel={projectsLabel}
+          handlePress={handleProjectsPress}
+          iconName="projects"
+          text={projectsLabel}
+        />
+      )}
     </View>
   );
 };

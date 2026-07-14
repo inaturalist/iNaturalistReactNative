@@ -37,8 +37,14 @@ Add-Location = Locatie toevoegen
 ADD-LOCATION-FOR-BETTER-IDS = VOEG LOCATIE TOE VOOR BETERE DETERMINATIES
 Add-location-to-refresh-suggestions = Voeg locatie toe om voorstellen te verversen
 Add-observations = Waarnemingen toevoegen
-ADD-OPTIONAL-COMMENT = OPTIONEEL COMMENTAAR TOEVOEGEN
 Add-optional-notes = Optionele notities toevoegen
+Add-to-Projects = Voeg toe aan projecten
+ADD-TO-PROJECTS = VOEG TOE AAN PROJECTEN
+Added-to-X-Projects =
+    Toegevoegd aan { $count } { $count ->
+        [one] project
+       *[other] projecten
+    }
 Adds-ID = Voegt ID toe
 Adds-your-vote-of-agreement = Voegt jouw stem van overeenkomst toe
 Adds-your-vote-of-disagreement = Voegt jouw stem van meningsverschil toe
@@ -135,6 +141,7 @@ Closes-explanation = Uitleg sluiten
 Closes-introduction = Sluiten introductie
 Closes-withdraw-id-sheet = Sluit "Terugtrekken ID" pagina
 COLLABORATORS = PARTNERS
+Collection-and-Umbrella-Projects = Collection & Umbrella Projects
 Collection-Project = Verzamelproject
 Combine-Photos = Combineer foto's
 COMMENT = OPMERKING
@@ -329,6 +336,7 @@ FOLLOWING-X-PEOPLE =
         [one] VOLGT { $count } PERSOON
        *[other] VOLGEN { $count } MENSEN
     }
+For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 Forgot-Password = Wachtwoord vergeten
 GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
@@ -467,6 +475,9 @@ LOG-IN-TO-INATURALIST = AANMELDEN BIJ INATURALIST
 Log-in-to-iNaturalist = Aanmelden bij iNaturalist
 LOG-OUT = AFMELDEN
 LOG-OUT--question = AFMELDEN?
+Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
+    Het lijkt erop dat je dit nog niet hebt gezien.
+    Tijd om verder te ontdekken!
 Lowest = Laagste
 LOWEST-RANK = LAAGSTE RANG
 MAP = KAART
@@ -610,6 +621,7 @@ Please-allow-Microphone-Access = Geef toegang tot de microfoon
 Please-choose-a-different-password = Kies een ander wachtwoord.
 Please-Grant-Permission = Geef toestemming
 PLEASE-LOG-IN = LOG IN
+Please-log-in = Meld je aan
 Please-log-in-again = Log opnieuw in. We moeten af en toe je sessie vernieuwen om de gegevens in de cache te wissen en te controleren of de app op zijn best werkt.
 Please-make-sure-your-password-is-at-least-6-characters = Zorg ervoor dat je wachtwoord minimaal 6 tekens lang is.
 Please-try-again-when-you-are-connected-to-the-internet = Probeer het opnieuw wanneer je verbonden bent met het internet.
@@ -888,9 +900,11 @@ This-user-is-not-following-anyone = Deze gebruiker volgt niemand.
 To-sync-your-observations-to-iNaturalist = Log in om je waarnemingen te synchroniseren met iNaturalist.
 To-view-nearby-organisms-please-enable-location = Schakel locatie in om organismen in de buurt te zien.
 To-view-nearby-projects-please-enable-location = Schakel locatie in om projecten in de buurt te zien.
+To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
 Toggle-map-type = Wissel kaarttype
 TOP-ID-SUGGESTION = TOP ID SUGGESTIE
 Traditional-Project = Traditioneel project
+Traditional-Projects = Traditional Projects
 Umbrella-Project = Overkoepelend project
 UNFOLLOW = ONTVOLG
 UNFOLLOW-USER = ONTVOLG GEBRUIKER?
@@ -1104,15 +1118,18 @@ You-can-add-up-to-20-media = Je kunt maximaal 20 foto's en 20 geluiden per waarn
 You-can-also-check-out-merchandise = Je kunt ook merchandise bekijken voor iNaturalist en Seek in onze winkel hieronder!
 You-can-click-join-on-the-project-page = Je kunt op "deelnemen" klikken op de projectpagina.
 You-can-find-answers-on-our-help-page = Antwoorden kun je vinden op onze help-pagina.
+You-can-manually-add-observations-to-Traditional-Projects-you-have-joined = You can manually add observations to Traditional Projects you have joined.
 You-can-now-upload-your-observations-to-iNaturalist-and-contribute = Je kunt nu je waarnemingen uploaden naar iNaturalist en bijdragen aan mondiaal biodiversiteitsonderzoek.
 You-can-only-add-20-photos-per-observation = Je kunt slechts 20 foto's per waarneming toevoegen
 You-can-still-share-the-file = Je kan het bestand nog steeds delen met een andere app. Als je het kan e-mailen, stuur het dan naar { $email }
 You-can-upload-this-observation-to-our-community = U kunt deze waarneming uploaden naar onze gemeenschap voor een determinatie door een echt persoon en daardoor de determinaties door onze AI-software in de toekomst verbeteren
+You-cant-add-or-remove-observations-from-collection-and-umbrella-projects = You can’t add or remove observations from collection and umbrella projects.
 You-changed-filters-will-be-discarded = Je hebt filters veranderd, maar ze werden niet toegepast op uw zoekresultaten.
 You-have-no-notifications-get-started-by-creating-your-own-observations = You have no notifications! Get started by creating your own observations.
 You-have-no-notifications-you-will-see-updates-to-obs-you-have-left-IDs-or-comments-on = Je hebt geen meldingen! Je zult hier updates zien van waarnemingen waarop je ID's of opmerkingen hebt achtergelaten.
 You-have-opted-out-of-the-Community-Taxon = Je hebt je afgemeld voor het gemeenschapstaxon
 You-havent-joined-any-projects-yet = Je neemt nog niet deel aan projecten.
+You-havent-joined-any-Traditional-Projects-yet = You haven’t joined any Traditional Projects yet!
 You-havent-observed-any-species-yet = Je hebt nog geen soorten waargenomen.
 You-likely-observed-a-species-in-this-group = Je hebt waarschijnlijk een soort uit deze groep waargenomen
 You-likely-observed-this-species = Je hebt waarschijnlijk deze soort waargenomen
@@ -1122,6 +1139,7 @@ You-may-notice-changes-to-how-things-look-and-flow = Je zou veranderingen kunnen
 You-must-install-Google-Play-Services-to-sign-in-with-Google = Je moet Google Play Services installeren om je aan te kunnen melden met Google.
 You-need-an-Internet-connection-to-do-that = Je hebt een internetverbinding nodig om dat te doen.
 You-need-log-in-to-do-that = Je moet inloggen om dat te doen.
+You-need-to-be-logged-in-to-add-observations-to-projects = Je moet aangemeld zijn om waarnemingen toe te voegen aan projecten.
 You-observed-a-species-in-this-group = Je hebt een organisme uit deze groep waargenomen
 You-observed-this-species = Je hebt deze soort waargenomen
 You-will-see-notifications = Je ziet hier meldingen zodra je inlogt en waarnemingen uploadt.

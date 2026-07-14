@@ -1,4 +1,5 @@
 import {
+  fireEvent,
   screen,
   userEvent,
   waitFor,
@@ -39,13 +40,13 @@ const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setu
 jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
+  const { makeRealmHooks } = jest.requireActual( "tests/helpers/uniqueRealm" );
   return {
     __esModule: true,
     ...originalModule,
     RealmContext: {
       ...originalModule.RealmContext,
-      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
-      useQuery: ( ) => [],
+      ...makeRealmHooks( __filename ),
     },
   };
 } );
@@ -109,14 +110,16 @@ describe( "Photo Deletion with existing saved observation", () => {
   async function viewPhotoFromObsEdit() {
     const evidenceItem = await screen.findByLabelText( "Select or drag media" );
     expect( evidenceItem ).toBeVisible();
-    await actor.press( evidenceItem );
+    fireEvent.press( evidenceItem );
   }
 
   async function expectObsEditToHaveNoPhotos() {
     // Confirm there is no evidence
     expect( await screen.findByText( "EVIDENCE" ) ).toBeVisible();
-    const evidenceItems = screen.queryAllByLabelText( "Select or drag media" );
-    expect( evidenceItems.length ).toEqual( 0 );
+    await waitFor( () => {
+      const evidenceItems = screen.queryAllByLabelText( "Select or drag media" );
+      expect( evidenceItems.length ).toEqual( 0 );
+    } );
   }
 
   it( "should delete from StandardCamera for existing photo", async ( ) => {
@@ -129,12 +132,11 @@ describe( "Photo Deletion with existing saved observation", () => {
     const cameraButton = await within( addEvidenceSheet ).findByLabelText( "Camera" );
     await actor.press( cameraButton );
     await waitFor( () => {
-      global.timeTravel( 300 );
       expect( screen.getByTestId( "CameraNavButtons" ) ).toBeVisible();
     } );
     // Tap the photo preview to enter the MediaViewer
     const carouselPhoto = await screen.findByTestId( /PhotoCarousel\.displayPhoto/ );
-    await actor.press( carouselPhoto );
+    fireEvent.press( carouselPhoto );
     await deletePhotoInMediaViewer();
     await expectNoPhotosInStandardCamera();
   } );

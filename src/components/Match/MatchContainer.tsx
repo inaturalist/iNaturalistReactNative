@@ -371,7 +371,6 @@ const MatchContainer = ( ) => {
   const onSuggestionChosen = useCallback( ( selection: ApiSuggestion ) => {
     setSelectedSuggestionId( selection.taxon.id );
     scrollToTop( );
-    // TODO: should this set owners_identification_from_vision: false?
   }, [scrollToTop] );
 
   const createUploadParams = useCallback( async ( uri: string, showLocation: boolean ) => {
@@ -461,7 +460,7 @@ const MatchContainer = ( ) => {
     if ( action === "save" ) {
       updateObservationKeys( {
         taxon: taxon || iconicTaxon,
-        owners_identification_from_vision: true,
+        owners_identification_from_vision: !!taxon,
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
     }

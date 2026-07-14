@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 import { useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import {
@@ -39,8 +40,7 @@ const ItemSeparator = () => <View className="border-b border-lightGray" />;
 
 interface Props {
   contentContainerStyle?: StyleProp<ViewStyle>;
-  // TODO: type data / observations
-  data: unknown[];
+  data: ( { uuid: string } )[];
   dataCanBeFetched?: boolean;
   fetchFromLastObservation?: ( observationId?: number ) => void;
   explore: boolean;
@@ -61,7 +61,7 @@ interface Props {
   // this ref is being forwarded to the underlying CustomFlashList and used as an imperative handle
   // so the parent can control behavior like scrolling
   // TODO: type data / observations
-  ref?: React.Ref<FlashListRef<unknown>>;
+  ref?: React.Ref<FlashListRef<( { uuid: string} )>>;
   listHeaderContent?: React.ReactElement | null;
   showNoResults?: boolean;
   showObservationsEmptyScreen?: boolean;
@@ -118,10 +118,9 @@ const ObservationsFlashList = ( {
   } = useGridLayout( layout );
   const { t } = useTranslation( );
 
-  // TODO: type data / observation
-  const renderItem = useCallback( ( { item: observation } ) => {
+  const renderItem = useCallback( ( { item }: { item: { uuid: string; empty: boolean } } ) => {
     // Empty box
-    if ( observation.empty ) {
+    if ( item.empty ) {
       return (
         <View
           className="rounded-[15px] border-dotted border-4 border-lightGray"
@@ -129,10 +128,9 @@ const ObservationsFlashList = ( {
         />
       );
     }
-    const { uuid } = observation;
+    const { uuid } = item;
     const onUploadButtonPress = ( ) => handleIndividualUploadPress( uuid );
-    // 20240529 amanda - filtering in realm is a fast way to look up sync status
-    const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, observation );
+    const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, item );
     const obsUploadState = totalUploadProgress.find( o => o.uuid === uuid );
     const uploadProgress = obsNeedsSync
       ? obsUploadState?.totalProgress || 0
@@ -142,7 +140,7 @@ const ObservationsFlashList = ( {
 
     const onItemPress = ( ) => {
       if ( obsNeedsSync && !isDefaultMode ) {
-        const realmObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
+        const realmObservation = realm.objectForPrimaryKey( "Observation", uuid );
         navigateToObsEdit( realmObservation );
       } else {
         // Uniquely identify the list this observation appears in so we can ensure
@@ -155,10 +153,6 @@ const ObservationsFlashList = ( {
       }
     };
 
-    // Add a unique key to ensure component recreation
-    // so images don't get recycled and show on the wrong taxon
-    const itemKey = `uuid-${uuid}`;
-
     return (
       <ObsPressable
         currentUser={currentUser}
@@ -170,8 +164,10 @@ const ObservationsFlashList = ( {
         isSimpleObsStatus={isSimpleObsStatus}
         hideRGLabel={hideRGLabel}
         layout={layout}
-        key={itemKey}
-        observation={observation}
+        apiObservation={explore
+          ? item
+          : undefined}
+        uuid={uuid}
         onItemPress={onItemPress}
         onUploadButtonPress={onUploadButtonPress}
         queued={queued}
@@ -268,16 +264,19 @@ const ObservationsFlashList = ( {
     if ( !dataCanBeFetched || explore ) return;
 
     if ( fetchFromLastObservation && data.length > 0 ) {
-      const lastObservation = data[data.length - 1];
-      const lastId = lastObservation?.id;
-      if ( lastId && !lastObservation?.empty ) {
-        fetchFromLastObservation( lastId );
-        return;
+      const lastItem = data[data.length - 1];
+      if ( lastItem?.uuid && !lastItem?.empty ) {
+        const lastObs = realm.objectForPrimaryKey( "Observation", lastItem.uuid );
+        const lastId = lastObs?.id;
+        if ( lastId ) {
+          fetchFromLastObservation( lastId );
+          return;
+        }
       }
     }
 
     onEndReached( );
-  }, [dataCanBeFetched, fetchFromLastObservation, data, onEndReached, explore] );
+  }, [dataCanBeFetched, explore, fetchFromLastObservation, data, onEndReached, realm] );
 
   const refreshControl = (
     <CustomRefreshControl
