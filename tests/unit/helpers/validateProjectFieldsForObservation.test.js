@@ -319,6 +319,26 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.errors[0].reason ).toBe( INVALID_NUMERIC );
     } );
 
+    test.each( [
+      [[]],
+      [[{ obsFieldId: 10, value: "" }]],
+    ] )( "should be valid for an optional numeric field with OFVs %p", observationFieldValues => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: false,
+          obsField: {
+            allowedValues: [],
+            datatype: "numeric",
+            id: 10,
+          },
+        }],
+      };
+      const mockObservation = { observationFieldValues };
+      expect(
+        validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
+      ).toBe( true );
+    } );
+
     it( "should report a single MISSING_REQUIRED when a required numeric field is empty", () => {
       const mockProject = {
         projectObservationFields: [{
