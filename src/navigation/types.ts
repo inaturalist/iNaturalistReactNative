@@ -178,6 +178,7 @@ export type SharedStackParamList = {
     lastScreen: "ObsEdit" | "ObsDetails";
   };
   MatchTaxonSearchScreen: undefined;
+  AddToProjects: undefined;
   // From About
   //  {
   //   title: t( "COMMUNITY-GUIDELINES" ),
@@ -205,6 +206,14 @@ export type ExploreStackParamList = {
   ExploreResults: undefined;
   UniversalSearch: undefined;
   AdvancedSearch: undefined;
+};
+
+// Screens hosted by MyObservationsStackNavigator
+// The type containing the mapping must be a type alias. It cannot be an interface.
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type MyObservationsStackParamList = {
+  MyObservationsResults: undefined;
+  SearchMyObservations: undefined;
 };
 
 // Tab-only routes (not from SharedStackScreens). Intersected with SharedStackParamList
@@ -323,11 +332,14 @@ export type BaseTabStackParamList = {
   // }
   // From ProjectDetails
   // {
+  //   projectIcon: project?.icon
+  //   projectId: project?.id,
   //   projectTitle: project?.title,
-  //   journalPostsCount: project?.journal_posts_count,
   // }
   Journal: {
     userLogin?: string;
+    projectIcon?: string;
+    projectId?: number;
     projectTitle?: string;
     journalPostsCount?: number;
   } | undefined;
@@ -482,6 +494,14 @@ export type ExploreStackScreenProps<T extends keyof ExploreStackParamList> =
   CompositeScreenProps<
     NativeStackScreenProps<ExploreStackParamList, T>,
     TabStackScreenProps<"RootExplore">
+  >;
+
+// MyObservationsStackNavigator is nested inside ObsList. This composite type
+// acknowledges MyObservations screens access to outer-stack routes
+export type MyObservationsStackScreenProps<T extends keyof MyObservationsStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<MyObservationsStackParamList, T>,
+    TabStackScreenProps<"ObsList">
   >;
 
 export type NoBottomTabStackScreenProps<T extends keyof NoBottomTabStackParamList> =

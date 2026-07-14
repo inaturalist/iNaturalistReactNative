@@ -57,6 +57,58 @@ export interface RealmObservationSound extends RealmObservationSoundPojo {
   wasSynced: ( ) => boolean;
 }
 
+export interface RealmObservationField extends RealmObject {
+  allowedValues: string[];
+  datatype?: string;
+  description?: string;
+  id: number;
+  name?: string;
+}
+
+export interface RealmProjectObservationField extends RealmObject {
+  id: number;
+  obsField?: RealmObservationField;
+  position: number;
+  required: boolean;
+}
+
+export interface RealmProject extends RealmObject {
+  icon?: string;
+  id: number;
+  projectObservationFields: RealmProjectObservationField[];
+  project_type?: string;
+  title?: string;
+}
+
+export interface RealmProjectObservationPojo extends RealmObject {
+  _created_at?: Date;
+  _synced_at?: Date;
+  _updated_at?: Date;
+  uuid: string;
+  id?: number | null;
+  projectId: number;
+}
+
+export interface RealmProjectObservation extends RealmProjectObservationPojo {
+  needsSync: ( ) => boolean;
+  wasSynced: ( ) => boolean;
+}
+
+export interface RealmObservationFieldValuePojo extends RealmObject {
+  _created_at?: Date;
+  _synced_at?: Date;
+  _updated_at?: Date;
+  uuid: string;
+  id?: number;
+  obsFieldId: number;
+  value?: string;
+}
+
+export interface RealmObservationFieldValue extends RealmObservationFieldValuePojo {
+  needsSync: ( ) => boolean;
+  wasSynced: ( ) => boolean;
+}
+
 export interface RealmTaxonPhoto extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
@@ -116,6 +168,7 @@ export interface RealmObservationPojo {
   license_code: License | null;
   longitude: number | null;
   obscured?: boolean;
+  observationFieldValues: RealmObservationFieldValuePojo[];
   observationPhotos: RealmObservationPhotoPojo[];
   observationSounds: RealmObservationSoundPojo[];
   observed_on?: string;
@@ -125,6 +178,7 @@ export interface RealmObservationPojo {
   place_guess: string | null;
   privateLatitude: number | null;
   privateLongitude: number | null;
+  projectObservations: RealmProjectObservationPojo[];
   positional_accuracy: number | null;
   species_guess: string | null;
   taxon_id: number | null;
@@ -139,8 +193,10 @@ export interface RealmObservationPojo {
 export interface RealmObservation extends RealmObservationPojo {
   missingBasics: ( ) => boolean;
   needsSync: ( ) => boolean;
+  observationFieldValues: RealmObservationFieldValue[];
   observationPhotos: RealmObservationPhoto[];
   observationSounds: RealmObservationSound[];
+  projectObservations: RealmProjectObservation[];
   unviewed: ( ) => boolean;
   updateNeedsSync: ( ) => boolean;
   viewed: ( ) => boolean;

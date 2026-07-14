@@ -160,6 +160,37 @@ class Taxon extends Realm.Object {
     };
   }
 
+  /**
+   * Inverse of mapApiToRealm: maps a live Realm Taxon into the plain,
+   * snake_case ApiTaxon shape the API and most display/search code expect.
+   *
+   * @param {object} taxon - a live Realm Taxon (or an already-plain object)
+   * @returns {object} plain ApiTaxon-shaped object
+   */
+  static mapRealmToPojo( taxon ) {
+    if ( !taxon ) return taxon;
+    const photo = taxon.defaultPhoto || taxon.default_photo;
+    return {
+      id: taxon.id,
+      name: taxon.name,
+      rank: taxon.rank,
+      rank_level: taxon.rank_level,
+      iconic_taxon_name: taxon.iconic_taxon_name,
+      ancestor_ids: taxon.ancestor_ids
+        ? Array.from( taxon.ancestor_ids )
+        : undefined,
+      preferred_common_name: taxon.preferredCommonName ?? taxon.preferred_common_name,
+      default_photo: photo?.url
+        ? {
+          id: photo.id,
+          url: photo.url,
+          attribution: photo.attribution,
+          license_code: photo.license_code ?? photo.licenseCode,
+        }
+        : undefined,
+    };
+  }
+
   static uri = item => ( item && item.default_photo ) && { uri: item.default_photo.url };
 
   static schema = {

@@ -14,14 +14,18 @@ export interface ApiPlace {
   id?: number;
   name?: string;
   display_name?: string;
-  place_type?: number;
+  place_type?: number | null;
 }
 
-export interface ApiPost {
+export interface ApiPostForProject {
   body: string;
   id: number;
   published_at: string;
   title: string;
+}
+
+// When using POST_FOR_USER_FIELDS
+export interface ApiPostForUser extends ApiPostForProject {
   parent: {
     id: number;
     icon_url: string | null;
@@ -33,24 +37,50 @@ export interface ProjectRulePreference {
   value: string | null;
 }
 
-export interface ApiProject {
-  description: string;
-  header_image_url: string | null;
+interface ApiObservationField {
+  allowed_values: string | null;
+  datatype: string;
+  description: string | null;
+  id: number;
+  name: string;
+}
+
+interface ApiProjectObservationField {
+  id: number;
+  observation_field: ApiObservationField;
+  position: number;
+  required: boolean | null;
+}
+
+// Result from using PROJECT_SUMMARY_FIELDS
+export interface ApiProjectSummary {
   icon: string;
   id: number;
-  membership_model: "inviteonly" | "open" | null;
-  place_id: number | null;
   project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
   rule_preferences: ProjectRulePreference[];
   title: string;
+}
+
+// Result from using PROJECT_DETAIL_FIELDS
+export interface ApiProject extends ApiProjectSummary {
+  description: string;
+  header_image_url: string | null;
+  membership_model: "inviteonly" | "open" | null;
+  place_id: number | null;
+  project_observation_fields: ApiProjectObservationField[];
   user_ids: number[];
 }
 
-export interface ApiResponse {
+// Result from using PROJECT_SUMMARY_POF_FIELDS
+export interface ApiProjectSummaryWithPOF extends ApiProjectSummary {
+  project_observation_fields: ApiProjectObservationField[];
+}
+
+export interface ApiResponse<T> {
   total_results: number;
   page: number;
   per_page: number;
-  results: object[];
+  results: T[];
 }
 
 export interface ApiObservationsUpdatesParams extends ApiParams {
@@ -178,16 +208,28 @@ export interface ApiNotification {
 }
 
 export interface ApiProjectObservation {
-  project: ApiProject;
+  id: number;
+  project: ApiProjectSummary;
+  project_id: number;
+  uuid: string;
+}
+
+// When using OBSERVATION_FIELD_VALUE_FIELDS
+export interface ApiObservationFieldValue {
+  id: number;
+  field_id: number;
+  uuid: string;
+  value: string;
 }
 
 export interface ApiObservation extends ApiRecord {
   comments?: ApiComment[];
   identifications?: ApiIdentification[];
-  non_traditional_projects?: ApiProjectObservation[];
+  non_traditional_projects?: { project: ApiProjectSummary }[];
   observation_photos?: ApiObservationPhoto[];
   observation_sounds?: ApiObservationSound[];
   project_observations?: ApiProjectObservation[];
+  ofvs?: ApiObservationFieldValue[];
   taxon?: ApiTaxon;
   time_observed_at?: string;
   user?: ApiUser;
@@ -215,8 +257,7 @@ export interface ApiTotalBounds {
   nelng: number;
 }
 
-export interface ApiObservationsSearchResponse extends ApiResponse {
-  results: ApiObservation[];
+export interface ApiObservationsSearchResponse extends ApiResponse<ApiObservation> {
   total_bounds?: ApiTotalBounds;
 }
 

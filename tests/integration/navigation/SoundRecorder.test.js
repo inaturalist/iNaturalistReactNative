@@ -1,0 +1,71 @@
+import "tests/helpers/mockMortalForIntegration";
+
+import {
+  screen,
+  userEvent,
+  waitFor,
+  within,
+} from "@testing-library/react-native";
+import initI18next from "i18n/initI18next";
+import { navigateToSoundRecorderFromMyObs } from "tests/helpers/addObsBottomSheet";
+import { renderApp } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
+
+// We're explicitly testing navigation here so we want react-navigation
+// working normally
+jest.unmock( "@react-navigation/native" );
+
+// UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
+  mockRealmIdentifier,
+);
+jest.mock( "realmModels/index", ( ) => mockRealmModelsIndex );
+jest.mock( "providers/contexts", ( ) => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      useRealm: ( ) => global.mockRealms[mockRealmIdentifier],
+      useQuery: ( ) => [],
+    },
+  };
+} );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// /UNIQUE REALM SETUP
+
+beforeAll( async () => {
+  await initI18next();
+  setStoreStateLayout( {
+    isAllAddObsOptionsMode: true,
+  } );
+} );
+
+describe( "SoundRecorder navigation", ( ) => {
+  const actor = userEvent.setup( );
+  global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
+  describe( "from MyObs with advanced user layout", ( ) => {
+    beforeEach( ( ) => {
+      setStoreStateLayout( {
+        isDefaultMode: false,
+        isAllAddObsOptionsMode: true,
+      } );
+    } );
+
+    it( "should return to MyObs when close button tapped", async ( ) => {
+      renderApp( );
+      await navigateToSoundRecorderFromMyObs( );
+      const mediaNavButtons = await screen.findByTestId( "MediaNavButtons" );
+      const closeButton = await within( mediaNavButtons ).findByLabelText( "Close" );
+      await actor.press( closeButton );
+      await waitFor( ( ) => {
+        expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
+      } );
+    } );
+  } );
+} );

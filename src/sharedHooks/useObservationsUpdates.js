@@ -10,6 +10,8 @@ const { useRealm } = RealmContext;
 
 export const fetchObservationUpdatesKey = "fetchObservationUpdates";
 
+const PER_PAGE = 100;
+
 const useObservationsUpdates = ( enabled: boolean ): Object => {
   const realm = useRealm();
 
@@ -18,7 +20,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     observations_by: "owner",
     viewed: false,
     fields: "viewed,resource_uuid,comment_id,identification_id",
-    per_page: 50,
+    per_page: PER_PAGE,
   };
 
   const {
@@ -63,6 +65,18 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
   useEffect( ( ) => {
     // Looping through all unviewed updates
     const remoteUnviewed = data?.filter( result => result.viewed === false );
+
+    // Per-observation summary of what kinds of updates the server still considers unviewed,
+    // used below to reconcile obs the user viewed elsewhere (e.g. the website).
+    const unviewedByUuid = new Map();
+    remoteUnviewed?.forEach( update => {
+      const entry = unviewedByUuid.get( update.resource_uuid )
+        || { hasComment: false, hasIdent: false };
+      if ( update.comment_id ) entry.hasComment = true;
+      if ( update.identification_id ) entry.hasIdent = true;
+      unviewedByUuid.set( update.resource_uuid, entry );
+    } );
+
     safeRealmWrite( realm, ( ) => {
       remoteUnviewed?.forEach( update => {
         // Get the observation from local realm that matches the update's resource_uuid
@@ -97,7 +111,34 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
           }
         }
       } );
-    }, "setting comments and/or identifications false in useObservationsUpdates" );
+
+      // If the response was capped at per_page, we can't tell if observations beyond that cap
+      // are truly viewed or not, so we'll skip the sweep to avoid falsely clearing filled state.
+      if ( data && data.length >= PER_PAGE ) {
+        return;
+      }
+
+      // Reconcile obs the user viewed elsewhere (e.g. the website): any observation currently
+      // marked unviewed locally that no longer has a matching unviewed update on the
+      // server should flip back to viewed.
+      const locallyUnviewed = realm.objects( "Observation" ).filtered(
+        "comments_viewed == false OR identifications_viewed == false",
+      );
+      locallyUnviewed.forEach( obs => {
+        const serverUnviewed = unviewedByUuid.get( obs.uuid );
+        if ( !serverUnviewed ) {
+          obs.comments_viewed = true;
+          obs.identifications_viewed = true;
+          return;
+        }
+        if ( obs.comments_viewed === false && !serverUnviewed.hasComment ) {
+          obs.comments_viewed = true;
+        }
+        if ( obs.identifications_viewed === false && !serverUnviewed.hasIdent ) {
+          obs.identifications_viewed = true;
+        }
+      } );
+    }, "reconciling comments and/or identifications viewed state in useObservationsUpdates" );
   }, [data, realm] );
 
   return { refetch };

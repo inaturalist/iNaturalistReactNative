@@ -1,4 +1,5 @@
 import type { ProjectRulePreference } from "api/types";
+import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
@@ -31,7 +32,7 @@ interface Props {
 const ProjectListItem = ( { item, isHeader = false }: Props ) => {
   const { t, i18n } = useTranslation( );
 
-  const iconClassName = "w-[62px] h-[62px] rounded-lg bg-white mr-3";
+  const iconClassName = classnames( THUMBNAIL_CLASS, "bg-white" );
 
   const displayBriefcase = ( ) => (
     <INatIcon

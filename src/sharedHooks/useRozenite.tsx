@@ -67,6 +67,14 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
     = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
   const { resolvedValue: newsEnabled, setOverride: setNewsEnabled }
     = useFeatureFlagForDebug( FeatureFlag.NewsEnabled );
+  const {
+    resolvedValue: traditionalProjectsEnabled,
+    setOverride: setTraditionalProjectsEnabled,
+  } = useFeatureFlagForDebug( FeatureFlag.TraditionalProjectsEnabled );
+  const {
+    resolvedValue: searchMyObservationsEnabled,
+    setOverride: setSearchMyObservationsEnabled,
+  } = useFeatureFlagForDebug( FeatureFlag.SearchMyObservationsEnabled );
 
   const sections = useMemo(
     () => [
@@ -109,10 +117,37 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
               setNewsEnabled( !newsEnabled );
             },
           },
+          {
+            id: "traditional-projects",
+            type: "toggle",
+            title: "TraditionalProjects",
+            value: traditionalProjectsEnabled,
+            onUpdate: () => {
+              setTraditionalProjectsEnabled( !traditionalProjectsEnabled );
+            },
+          },
+          {
+            id: "search-my-observations",
+            type: "toggle",
+            title: "Search My Observations",
+            value: searchMyObservationsEnabled,
+            onUpdate: () => {
+              setSearchMyObservationsEnabled( !searchMyObservationsEnabled );
+            },
+          },
         ],
       } ),
     ],
-    [exploreV2Enabled, setExploreV2Enabled, newsEnabled, setNewsEnabled],
+    [
+      exploreV2Enabled,
+      setExploreV2Enabled,
+      newsEnabled,
+      setNewsEnabled,
+      traditionalProjectsEnabled,
+      setTraditionalProjectsEnabled,
+      searchMyObservationsEnabled,
+      setSearchMyObservationsEnabled,
+    ],
   );
 
   useRozeniteControlsPlugin( { sections } );

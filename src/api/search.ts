@@ -5,23 +5,24 @@ import type {
   ApiOpts,
   ApiParams,
   ApiPlace,
-  ApiProject,
+  ApiProjectSummary,
   ApiResponse,
   ApiTaxon,
   ApiUser,
 } from "./types";
 
-interface SearchResponse extends ApiResponse {
-  results: {
-    score?: number;
-    type?: "place" | "project" | "taxon" | "user";
-    matches?: string[];
-    place?: ApiPlace;
-    project?: ApiProject;
-    taxon?: ApiTaxon;
-    user?: ApiUser;
-  }[];
+interface SearchResultBase {
+  score?: number;
+  matches?: string[];
 }
+
+export type SearchResult =
+  | ( SearchResultBase & { type: "place"; place: ApiPlace } )
+  | ( SearchResultBase & { type: "project"; project: ApiProjectSummary } )
+  | ( SearchResultBase & { type: "taxon"; taxon: ApiTaxon } )
+  | ( SearchResultBase & { type: "user"; user: ApiUser } );
+
+type SearchResponse = ApiResponse<SearchResult>;
 
 interface SearchParams extends ApiParams {
   q?: string;
@@ -54,22 +55,22 @@ const search = async (
 const fetchSearchResults = async (
   params: SearchParams = {},
   opts: ApiOpts = {},
-): Promise<null | ( ApiPlace | ApiProject | ApiTaxon | ApiUser )[]> => {
+): Promise<null | ( ApiPlace | ApiProjectSummary | ApiTaxon | ApiUser )[]> => {
   const response = await search( params, opts );
   if ( !response ) { return null; }
   const sources = [params.sources].flat();
-  const records: ( ApiPlace | ApiProject | ApiTaxon | ApiUser )[] = [];
+  const records: ( ApiPlace | ApiProjectSummary | ApiTaxon | ApiUser )[] = [];
   response.results.forEach( result => {
     if ( sources.length === 0 ) {
-      if ( result.place ) records.push( result.place );
-      if ( result.project ) records.push( result.project );
-      if ( result.taxon ) records.push( result.taxon );
-      if ( result.user ) records.push( result.user );
+      if ( "place" in result ) records.push( result.place );
+      if ( "project" in result ) records.push( result.project );
+      if ( "taxon" in result ) records.push( result.taxon );
+      if ( "user" in result ) records.push( result.user );
     } else {
-      if ( sources.includes( "places" ) && result.place ) records.push( result.place );
-      if ( sources.includes( "projects" ) && result.project ) records.push( result.project );
-      if ( sources.includes( "taxa" ) && result.taxon ) records.push( result.taxon );
-      if ( sources.includes( "users" ) && result.user ) records.push( result.user );
+      if ( sources.includes( "places" ) && "place" in result ) records.push( result.place );
+      if ( sources.includes( "projects" ) && "project" in result ) records.push( result.project );
+      if ( sources.includes( "taxa" ) && "taxon" in result ) records.push( result.taxon );
+      if ( sources.includes( "users" ) && "user" in result ) records.push( result.user );
     }
   } );
   return records;

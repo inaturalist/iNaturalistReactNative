@@ -1,0 +1,118 @@
+import { THUMBNAIL_CLASS } from "appConstants/classNames";
+import type { UniversalSearchResultItem }
+  from "components/Explore/ExploreV2/hooks/useUniversalSearch";
+import ProjectListItem from "components/ProjectList/ProjectListItem";
+import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
+import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
+import IconicTaxonIcon from "components/SharedComponents/IconicTaxonIcon";
+import { Image, Pressable, View } from "components/styledComponents";
+import UserListItem from "components/UserList/UserListItem";
+import React from "react";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import useTranslation from "sharedHooks/useTranslation";
+
+interface Props {
+  result: UniversalSearchResultItem;
+  onPress: ( ) => void;
+}
+
+const ROW_CLASS = "flex-row items-center justify-between "
+  + "px-[15px] py-[11px] border-b border-lightGray";
+
+const resultId = ( result: UniversalSearchResultItem ): number | undefined => {
+  if ( result.type === "user" ) { return result.user.id; }
+  if ( result.type === "project" ) { return result.project.id; }
+  return result.taxon.id;
+};
+
+const resultLabel = ( result: UniversalSearchResultItem ): string => {
+  if ( result.type === "user" ) { return result.user.login || ""; }
+  if ( result.type === "project" ) { return result.project.title || ""; }
+  return result.taxon.preferred_common_name || result.taxon.name || "";
+};
+
+const UniversalSearchResult = ( { result, onPress }: Props ) => {
+  const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
+
+  const renderContent = ( ) => {
+    switch ( result.type ) {
+      case "taxon": {
+        const photo = result.taxon.default_photo?.url;
+        return (
+          <View className="flex-row items-center flex-1">
+            {photo
+              ? (
+                <Image
+                  source={{ uri: photo }}
+                  className={THUMBNAIL_CLASS}
+                  accessibilityIgnoresInvertColors
+                  testID="UniversalSearchResult.taxonImage"
+                />
+              )
+              : (
+                <IconicTaxonIcon
+                  imageClassName={[THUMBNAIL_CLASS]}
+                  iconicTaxonName={result.taxon.iconic_taxon_name}
+                />
+              )}
+            <View className="flex-1 ml-[10px]">
+              <DisplayTaxonName
+                taxon={result.taxon}
+                prefersCommonNames={currentUser?.prefers_common_names}
+                scientificNameFirst={currentUser?.prefers_scientific_name_first}
+              />
+            </View>
+          </View>
+        );
+      }
+      case "user":
+        return (
+          <View className="flex-1">
+            <UserListItem
+              item={{ user: result.user }}
+              countText={t( "X-Observations", {
+                count: result.user.observations_count || 0,
+              } )}
+              pressable={false}
+            />
+          </View>
+        );
+      case "project":
+        return (
+          <View className="flex-1">
+            <ProjectListItem item={result.project} />
+          </View>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // Keep the row pressable and the info button as siblings (not nested) so
+  // screen readers expose both as independent controls. Nesting one accessible
+  // button inside another causes the inner one to be swallowed.
+  return (
+    <View className={ROW_CLASS}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={resultLabel( result )}
+        className="flex-row items-center flex-1"
+        onPress={onPress}
+        testID={`UniversalSearchResult.${result.type}.${resultId( result )}`}
+      >
+        {renderContent( )}
+      </Pressable>
+      <INatIconButton
+        accessibilityLabel={t( "More-info" )}
+        icon="info-circle-outline"
+        // TODO MOB-1339 follow-up: navigate to the taxon/user/project detail.
+        onPress={( ) => undefined}
+        size={22}
+        testID={`UniversalSearchResult.info.${resultId( result )}`}
+      />
+    </View>
+  );
+};
+
+export default UniversalSearchResult;

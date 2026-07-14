@@ -1,8 +1,10 @@
+import { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import { search } from "api/search";
-import type { ApiProject } from "api/types";
+import type { ApiProjectSummary } from "api/types";
 import ProjectList from "components/ProjectList/ProjectList";
 import {
   SearchBar,
+  SearchHeader,
   ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -14,7 +16,6 @@ import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
-import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
@@ -22,7 +23,7 @@ const DROP_SHADOW = getShadow( {
 
 interface Props {
   closeModal: ( ) => void;
-  updateProject: ( project: ApiProject ) => void;
+  updateProject: ( project: ApiProjectSummary ) => void;
 }
 
 const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
@@ -43,19 +44,14 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
       q: projectQuery,
       sources: "projects",
       fields: {
-        project: {
-          id: true,
-          title: true,
-          icon: true,
-          project_type: true,
-        },
+        project: PROJECT_SUMMARY_FIELDS,
       },
     },
   );
 
-  const projects = data.map( ( r: { project: ApiProject } ) => r.project );
+  const projects = data.map( ( r: { project: ApiProjectSummary } ) => r.project );
 
-  const onProjectSelected = useCallback( async ( project: ApiProject ) => {
+  const onProjectSelected = useCallback( async ( project: ApiProjectSummary ) => {
     if ( !project.id ) {
       // If this is missing, we can not query by project
       // TODO: user facing error message
@@ -75,10 +71,10 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
 
   return (
     <ViewWrapper>
-      <ExploreSearchHeader
-        closeModal={closeModal}
+      <SearchHeader
+        onClose={closeModal}
         headerText={t( "SEARCH-PROJECTS" )}
-        resetFilters={resetProject}
+        onReset={resetProject}
         testID="ExploreProjectSearch.close"
       />
       <View

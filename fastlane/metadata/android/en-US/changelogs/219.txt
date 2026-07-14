@@ -1,0 +1,5 @@
+FIXED
+* Crash when searching projects on Explore  
+
+UPDATED
+* Performance improvements

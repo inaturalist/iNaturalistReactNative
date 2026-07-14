@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import type { ApiProject } from "api/types";
+import { PROJECT_SUMMARY_FIELDS, PROJECT_SUMMARY_POF_FIELDS } from "api/fields";
+import type { ApiProjectSummary, ApiProjectSummaryWithPOF } from "api/types";
 import { fetchUserProjects } from "api/users";
 import {
   ActivityIndicator,
@@ -8,21 +9,27 @@ import {
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
+import { RealmContext } from "providers/contexts";
 import React, { useEffect, useMemo } from "react";
-import Observation from "realmModels/Observation";
+import Project from "realmModels/Project";
 import {
   useAuthenticatedQuery,
+  useCurrentUser,
   useRemoteObservation,
   useTranslation,
 } from "sharedHooks";
 
 import ProjectList from "./ProjectList";
 
+const { useRealm } = RealmContext;
+
 const ProjectListContainer = ( ) => {
+  const realm = useRealm( );
   const navigation = useNavigation<TabStackScreenProps<"ProjectList">["navigation"]>( );
   const { params } = useRoute<TabStackScreenProps<"ProjectList">["route"]>( );
   const { observationUuid, userId, userLogin } = params;
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
 
   const { remoteObservation } = useRemoteObservation(
     observationUuid,
@@ -37,18 +44,32 @@ const ProjectListContainer = ( ) => {
   ) || [];
   const observationProjects = traditionalProjects.concat( nonTraditionalProjects );
 
-  const { data: userProjects, isLoading: userProjectsLoading } = useAuthenticatedQuery(
-    ["fetchUserProjects", userId],
+  const isCurrentUser = userId === currentUser?.id;
+  const fields = isCurrentUser
+    ? PROJECT_SUMMARY_POF_FIELDS
+    : PROJECT_SUMMARY_FIELDS;
+  const {
+    data: userProjects,
+    isLoading: userProjectsLoading,
+  } = useAuthenticatedQuery<ApiProjectSummary[] | ApiProjectSummaryWithPOF[]>(
+    ["fetchUserProjects", userId, fields],
     optsWithAuth => fetchUserProjects(
       {
         id: userId,
         per_page: 200,
-        fields: Observation.PROJECT_FIELDS,
+        fields,
       },
       optsWithAuth,
     ),
     { enabled: !!userId },
   );
+
+  // Update local copy of the current user's joined projects
+  useEffect( () => {
+    if ( isCurrentUser ) {
+      Project.upsertRemoteProjects( userProjects as ApiProjectSummaryWithPOF[], realm );
+    }
+  }, [isCurrentUser, userProjects, realm] );
 
   const headerOptions = useMemo( ( ) => {
     if ( observationUuid ) {
@@ -67,7 +88,7 @@ const ProjectListContainer = ( ) => {
     };
   }, [observationUuid, remoteObservation, userLogin, userProjects, t] );
 
-  const projects: ApiProject[] = observationUuid
+  const projects: ApiProjectSummary[] = observationUuid
     ? observationProjects
     : ( userProjects ?? [] );
 

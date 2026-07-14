@@ -22,18 +22,24 @@ export enum FeatureFlag {
   // MyFeatureFlagEnabled = "myFeatureFlagEnabled",
   ExploreV2Enabled = "exploreV2Enabled",
   NewsEnabled = "newsEnabled",
+  TraditionalProjectsEnabled = "traditionalProjectsEnabled",
+  SearchMyObservationsEnabled = "searchMyObservationsEnabled",
 }
 
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
   [FeatureFlag.ExploreV2Enabled]: false,
   [FeatureFlag.NewsEnabled]: false,
+  [FeatureFlag.TraditionalProjectsEnabled]: false,
+  [FeatureFlag.SearchMyObservationsEnabled]: false,
 };
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: null,
   [FeatureFlag.ExploreV2Enabled]: null,
   [FeatureFlag.NewsEnabled]: null,
+  [FeatureFlag.TraditionalProjectsEnabled]: null,
+  [FeatureFlag.SearchMyObservationsEnabled]: null,
 };
 
 const DEFAULT_STATE = {

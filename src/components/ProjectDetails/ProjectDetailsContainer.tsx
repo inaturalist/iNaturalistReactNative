@@ -1,10 +1,13 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  PROJECT_DETAIL_FIELDS,
+} from "api/fields";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
 import fetchPlace from "api/places";
 import {
   fetchMembership,
-  fetchProjectPosts,
+  fetchProjectPostsCount,
   fetchProjects,
   joinProject,
   leaveProject,
@@ -13,18 +16,22 @@ import type {
   ApiObservationsSearchResponse, ApiPlace, ApiProject, ApiResponse,
 } from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
+import { RealmContext } from "providers/contexts";
 import React, { useMemo, useState } from "react";
+import Project from "realmModels/Project";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
 
 const logger = log.extend( "ProjectDetailsContainer" );
+const { useRealm } = RealmContext;
 
 const ProjectDetailsContainer = ( ) => {
   const navigation = useNavigation<TabStackScreenProps<"ProjectDetails">["navigation"]>( );
   const { params } = useRoute<TabStackScreenProps<"ProjectDetails">["route"]>( );
   const { id } = params;
+  const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const [loading, setLoading] = useState( false );
 
@@ -33,21 +40,7 @@ const ProjectDetailsContainer = ( ) => {
   const { data: project } = useAuthenticatedQuery<ApiProject>(
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
-      fields: {
-        description: true,
-        header_image_url: true,
-        icon: true,
-        id: true,
-        membership_model: true,
-        place_id: true,
-        project_type: true,
-        rule_preferences: {
-          field: true,
-          value: true,
-        },
-        title: true,
-        user_ids: true,
-      },
+      fields: PROJECT_DETAIL_FIELDS,
     }, optsWithAuth ),
   );
 
@@ -61,8 +54,8 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const { data: projectPosts } = useAuthenticatedQuery<number>(
-    ["fetchProjectPosts", id],
-    optsWithAuth => fetchProjectPosts( {
+    ["fetchProjectPostsCount", id],
+    optsWithAuth => fetchProjectPostsCount( {
       id,
     }, optsWithAuth ),
   );
@@ -90,7 +83,7 @@ const ProjectDetailsContainer = ( ) => {
     },
   );
 
-  const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse>(
+  const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse<object>>(
     ["fetchSpeciesCounts", id],
     ( ) => fetchSpeciesCounts( {
       project_id: id,
@@ -115,6 +108,10 @@ const ProjectDetailsContainer = ( ) => {
     ( _, optsWithAuth ) => joinProject( { id }, optsWithAuth ),
     {
       onSuccess: ( ) => {
+        // Persist traditional projects on join
+        if ( project?.project_type === "" ) {
+          Project.upsertRemoteProjects( [project], realm );
+        }
         queryClient.invalidateQueries( membershipQueryKey );
       },
       onError: error => {

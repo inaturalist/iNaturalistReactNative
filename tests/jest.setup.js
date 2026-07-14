@@ -81,6 +81,12 @@ inatjs.observations.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 inatjs.users.projects.mockResolvedValue( makeResponse( ) );
+inatjs.project_observations.create.mockResolvedValue( makeResponse( ) );
+inatjs.project_observations.update.mockResolvedValue( makeResponse( ) );
+inatjs.project_observations.delete.mockResolvedValue( undefined );
+inatjs.observation_field_values.create.mockResolvedValue( makeResponse( ) );
+inatjs.observation_field_values.update.mockResolvedValue( makeResponse( ) );
+inatjs.observation_field_values.delete.mockResolvedValue( undefined );
 inatjs.computervision.score_image.mockResolvedValue( makeResponse( ) );
 
 // Set up mocked fetch for testing (or disabling) fetch requests
@@ -125,10 +131,12 @@ jest.mock( "@react-native-firebase/analytics", () => ( {
 } ) );
 
 jest.mock( "@react-native-firebase/perf", () => ( {
-  startFirebaseTrace: jest.fn( ),
-  stopFirebaseTrace: jest.fn( ),
   getPerformance: jest.fn( ( ) => ( {
     dataCollectionEnabled: true,
+    startTrace: jest.fn( async ( ) => ( {
+      stop: jest.fn( ),
+      putAttribute: jest.fn( ),
+    } ) ),
   } ) ),
 } ) );
 
@@ -142,8 +150,10 @@ jest.mock( "react-native-legal", () => ( {
 // FadeInView animation for navigation screen transitions
 global.withAnimatedTimeTravelEnabled = ( options = {} ) => {
   beforeEach( () => {
-    if ( !options.skipFakeTimers ) jest.useFakeTimers();
-    jest.setSystemTime( new Date( 0 ) );
+    if ( !options.skipFakeTimers ) {
+      jest.useFakeTimers();
+      jest.setSystemTime( new Date( 0 ) );
+    }
   } );
   if ( !options.skipFakeTimers ) {
     afterEach( () => {

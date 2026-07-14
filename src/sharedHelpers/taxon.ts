@@ -179,6 +179,25 @@ export function accessibleTaxonName(
   return t( "accessible-comname-sciname", { scientificName, commonName } );
 }
 
+interface TaxonName {
+  name: string;
+  preferredCommonName?: string;
+}
+
+// Returns a single taxon name to show for a taxon in a single-line context
+// like banners & search bars, honoring the user's name-display preferences.
+// For two-line rendering with italics, use <DisplayTaxonName /> instead.
+export function taxonDisplayName(
+  taxon: TaxonName,
+  user: User | null,
+): string {
+  const preferScientific = user?.prefers_scientific_name_first === true
+    || user?.prefers_common_names === false;
+  return preferScientific
+    ? taxon.name
+    : ( taxon.preferredCommonName || taxon.name );
+}
+
 // Translates rank in a way that can be statically checked
 export function translatedRank( rank: string, t: ( key: string ) => string ) {
   switch ( rank ) {

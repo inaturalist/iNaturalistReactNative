@@ -66,6 +66,13 @@ const MainMediaDisplay = ( {
     ...sounds.map( sound => ( { ...sound, type: "sound" as const } ) ),
   ] ), [photos, sounds] );
 
+  // On the render right after a photo is removed, selectedMediaIndex can still
+  // point at the deleted index
+  const safeDefaultIndex = Math.max(
+    0,
+    Math.min( selectedMediaIndex, items.length - 1 ),
+  );
+
   const deletePhotoLabel = t( "Delete-photo" );
   const deleteSoundLabel = t( "Delete-sound" );
 
@@ -169,12 +176,14 @@ const MainMediaDisplay = ( {
         <GestureDetector gesture={swipeToCloseGesture}>
           <View collapsable={false}>
             <Carousel
-              key={`MediaViewerCarousel-${screenWidth}`}
+              // Include the item count in the key so the carousel fully
+              // remounts when media is added or removed.
+              key={`MediaViewerCarousel-${screenWidth}-${items.length}`}
               testID="MediaViewer.carousel"
               ref={horizontalScroll}
               data={items}
               renderItem={renderItem}
-              defaultIndex={selectedMediaIndex}
+              defaultIndex={safeDefaultIndex}
               loop={false}
               width={screenWidth}
               // Disable scrolling when image is zooming

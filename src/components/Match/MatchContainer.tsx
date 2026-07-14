@@ -288,15 +288,12 @@ const MatchContainer = ( ) => {
 
   const {
     isFetchingLocation,
-    stopWatch,
-    subscriptionId,
     userLocation,
   } = useObservationLocation( { shouldFetchLocation } );
 
   const navToLocationPicker = useCallback( ( ) => {
-    stopWatch( subscriptionId );
     navigation.navigate( "LocationPicker" );
-  }, [stopWatch, subscriptionId, navigation] );
+  }, [navigation] );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -371,7 +368,6 @@ const MatchContainer = ( ) => {
   const onSuggestionChosen = useCallback( ( selection: ApiSuggestion ) => {
     setSelectedSuggestionId( selection.taxon.id );
     scrollToTop( );
-    // TODO: should this set owners_identification_from_vision: false?
   }, [scrollToTop] );
 
   const createUploadParams = useCallback( async ( uri: string, showLocation: boolean ) => {
@@ -461,11 +457,10 @@ const MatchContainer = ( ) => {
     if ( action === "save" ) {
       updateObservationKeys( {
         taxon: taxon || iconicTaxon,
-        owners_identification_from_vision: true,
+        owners_identification_from_vision: !!taxon,
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
     }
-    stopWatch( subscriptionId );
     exitObservationFlow( );
   };
 
