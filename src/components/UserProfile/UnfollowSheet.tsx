@@ -4,6 +4,7 @@ import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import React from "react";
 import { Alert } from "react-native";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
+import useInvalidateUserLists from "sharedHooks/useInvalidateUserLists";
 
 interface Props {
   relationship?: ApiRelationship;
@@ -17,6 +18,7 @@ const UnfollowSheet = ( {
   refetchRelationship,
 }: Props ) => {
   const { t } = useTranslation( );
+  const invalidateUserLists = useInvalidateUserLists( );
 
   const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
     ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
@@ -24,6 +26,7 @@ const UnfollowSheet = ( {
       onSuccess: () => {
         setShowUnfollowSheet( false );
         refetchRelationship();
+        invalidateUserLists();
       },
       onError: error => {
         Alert.alert( "Error Following/Unfollowing", error );

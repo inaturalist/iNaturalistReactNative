@@ -1,5 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import DefaultSearchOptions
+  from "components/Explore/ExploreV2/components/DefaultSearchOptions";
 import LocationSearchResult
   from "components/Explore/ExploreV2/components/LocationSearchResult";
 import UniversalSearchResult
@@ -15,9 +17,9 @@ import type { UniversalSearchResultItem }
   from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import useUniversalSearch from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
-import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
+import SearchHeader from "components/SharedComponents/SearchHeader";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import {
@@ -25,7 +27,7 @@ import {
   View,
 } from "components/styledComponents";
 import type { ExploreStackScreenProps } from "navigation/types";
-import type { ExploreV2Subject } from "providers/ExploreV2Context";
+import type { ExploreV2Subject, Place } from "providers/ExploreV2Context";
 import { EXPLORE_V2_ACTION, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useCallback, useRef, useState } from "react";
 import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
@@ -76,6 +78,10 @@ const UniversalSearch = ( ) => {
   // Which field's result list is showing. tracks the last-focused field rather
   // than live focus. Subject autofocuses, so it's the initial value.
   const [resultsField, setResultsField] = useState<"subject" | "location">( "subject" );
+
+  // What the user selected on this instance of the screen
+  const [selectedSubject, setSelectedSubject] = useState<ExploreV2Subject | null>( null );
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>( null );
   const {
     text: subjectText,
     debouncedQuery: subjectQuery,
@@ -117,31 +123,42 @@ const UniversalSearch = ( ) => {
     focusLocationField( );
   }, [focusLocationField] );
 
-  const handleSubjectSelect = useCallback( ( selectedSubject: ExploreV2Subject ) => {
-    commitSubject( subjectToText( selectedSubject, commonNameIsPrimary ) );
-    dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: selectedSubject } );
+  const handleSubjectSelect = useCallback( ( subject: ExploreV2Subject ) => {
+    setSelectedSubject( subject );
+    commitSubject( subjectToText( subject, commonNameIsPrimary ) );
     locationInputRef.current?.focus( );
-  }, [commitSubject, commonNameIsPrimary, dispatch] );
+  }, [commitSubject, commonNameIsPrimary] );
 
   const handleLocationSelect = useCallback( ( place: LocationSearchResultItem ) => {
+    setSelectedPlace( { id: place.id, display_name: place.display_name } );
     commitLocation( place.display_name );
-    dispatch( {
-      type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
-      place: { id: place.id, display_name: place.display_name },
-    } );
     Keyboard.dismiss( );
-  }, [commitLocation, dispatch] );
+  }, [commitLocation] );
 
   const handleReset = useCallback( ( ) => {
     clearSubject( );
     clearLocation( );
+    setSelectedSubject( null );
+    setSelectedPlace( null );
   }, [clearSubject, clearLocation] );
 
   const handleSearch = useCallback( ( ) => {
-    // TODO MOB-1338 follow-up: run the search (default to all organisms /
-    // worldwide when a field is empty). Just dismiss the keyboard for now.
     Keyboard.dismiss( );
-  }, [] );
+    // Commit the composed search to context. Fields left unselected on
+    // this screen fall back to their defaults: no subject → all organisms,
+    // no location → worldwide.
+    dispatch(
+      selectedSubject
+        ? { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: selectedSubject }
+        : { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT },
+    );
+    dispatch(
+      selectedPlace
+        ? { type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE, place: selectedPlace }
+        : { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE },
+    );
+    navigation.popTo( "ExploreResults" );
+  }, [selectedSubject, selectedPlace, dispatch, navigation] );
 
   const renderItem = useCallback<ListRenderItem<SearchResultItem>>( ( { item } ) => {
     if ( item.type === "place" ) {
@@ -173,13 +190,30 @@ const UniversalSearch = ( ) => {
     ? locationData
     : subjectData;
 
+  const showDefaultOptions = !showLocation && !subjectHasQuery;
+  const listEmptyComponent = showDefaultOptions
+    ? ( <DefaultSearchOptions onSelectSubject={handleSubjectSelect} /> )
+    : (
+      <EmptySearchResults
+        isLoading={showLocation
+          ? locationIsLoading
+          : isLoading}
+        searchQuery={showLocation
+          ? locationQuery
+          : subjectQuery}
+        refetch={showLocation
+          ? locationRefetch
+          : refetch}
+      />
+    );
+
   return (
     <ViewWrapper testID="UniversalSearch">
       <View className="bg-white" style={DROP_SHADOW}>
-        <ExploreSearchHeader
+        <SearchHeader
           headerText={t( "SEARCH" )}
-          closeModal={navigation.goBack}
-          resetFilters={handleReset}
+          onClose={navigation.goBack}
+          onReset={handleReset}
           testID="UniversalSearch.back"
         />
         <View className="px-4 pb-4">
@@ -246,19 +280,7 @@ const UniversalSearch = ( ) => {
           keyboardShouldPersistTaps="handled"
           keyExtractor={resultKey}
           renderItem={renderItem}
-          ListEmptyComponent={(
-            <EmptySearchResults
-              isLoading={showLocation
-                ? locationIsLoading
-                : isLoading}
-              searchQuery={showLocation
-                ? locationQuery
-                : subjectQuery}
-              refetch={showLocation
-                ? locationRefetch
-                : refetch}
-            />
-          )}
+          ListEmptyComponent={listEmptyComponent}
         />
       </View>
     </ViewWrapper>

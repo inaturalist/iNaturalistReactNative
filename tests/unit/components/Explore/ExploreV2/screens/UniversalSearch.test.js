@@ -1,4 +1,6 @@
-import { act, fireEvent, screen } from "@testing-library/react-native";
+import {
+  act, fireEvent, screen, userEvent,
+} from "@testing-library/react-native";
 import UniversalSearch from "components/Explore/ExploreV2/screens/UniversalSearch";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -7,12 +9,14 @@ import { Keyboard } from "react-native";
 import { renderComponent } from "tests/helpers/render";
 
 const mockNavigate = jest.fn( );
+const mockPopTo = jest.fn( );
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
     useNavigation: ( ) => ( {
       navigate: mockNavigate,
+      popTo: mockPopTo,
       goBack: jest.fn( ),
       canGoBack: ( ) => true,
     } ),
@@ -42,6 +46,27 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   default: jest.fn( ),
 } ) );
 const useCurrentUser = require( "sharedHooks/useCurrentUser" ).default;
+
+jest.mock( "sharedHooks/useIconicTaxa", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
+} ) );
+const useIconicTaxa = require( "sharedHooks/useIconicTaxa" ).default;
+
+const ICONIC_TAXA = [
+  {
+    id: 47126,
+    name: "Plantae",
+    iconic_taxon_name: "Plantae",
+    preferred_common_name: "Plants",
+  },
+  {
+    id: 3,
+    name: "Aves",
+    iconic_taxon_name: "Aves",
+    preferred_common_name: "Birds",
+  },
+];
 
 const CURRENT_USER = {
   id: 99,
@@ -93,10 +118,12 @@ const PLACE_RESULTS = [
   },
 ];
 
+const actor = userEvent.setup( );
+
 const typeQuery = text => {
   fireEvent.changeText( screen.getByTestId( "UniversalSearch.subjectInput" ), text );
-  // Only the timer advancement needs an act wrapper; fireEvent is already
-  // wrapped internally by Testing Library.
+  // The debounce timing is exercised directly with fake timers, so we keep
+  // fireEvent + manual advancement here rather than userEvent.type.
   act( ( ) => {
     jest.advanceTimersByTime( 400 );
   } );
@@ -118,9 +145,11 @@ beforeAll( async ( ) => {
 beforeEach( ( ) => {
   jest.useFakeTimers( );
   mockNavigate.mockClear( );
+  mockPopTo.mockClear( );
   mockDispatch.mockClear( );
   useExploreV2.mockReturnValue( { dispatch: mockDispatch, state: {} } );
   useCurrentUser.mockReturnValue( CURRENT_USER );
+  useIconicTaxa.mockReturnValue( ICONIC_TAXA );
   useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
   useLocationSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
 } );
@@ -150,13 +179,13 @@ describe( "UniversalSearch screen", ( ) => {
     expect( screen.getByDisplayValue( "California" ) ).toBeTruthy( );
   } );
 
-  it( "clears both fields when reset is pressed", ( ) => {
+  it( "clears both fields when reset is pressed", async ( ) => {
     renderComponent( <UniversalSearch /> );
 
     fireEvent.changeText( screen.getByTestId( "UniversalSearch.subjectInput" ), "cup plant" );
     fireEvent.changeText( screen.getByTestId( "UniversalSearch.locationInput" ), "California" );
 
-    fireEvent.press( screen.getByText( i18next.t( "Reset-verb" ) ) );
+    await actor.press( screen.getByText( i18next.t( "Reset-verb" ) ) );
 
     expect( screen.queryByDisplayValue( "cup plant" ) ).toBeNull( );
     expect( screen.queryByDisplayValue( "California" ) ).toBeNull( );
@@ -179,7 +208,7 @@ describe( "UniversalSearch screen", ( ) => {
     expect( screen.getByTestId( "UniversalSearchResult.info.7" ) ).toBeTruthy( );
   } );
 
-  it( "fills the field and sets the subject when a result is tapped", ( ) => {
+  it( "fills the field but does not commit to context when a result is tapped", async ( ) => {
     useUniversalSearch.mockReturnValue( {
       results: MIXED_RESULTS,
       isLoading: false,
@@ -189,41 +218,46 @@ describe( "UniversalSearch screen", ( ) => {
 
     typeQuery( "ver" );
 
-    fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
+    await actor.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
 
-    expect( mockDispatch ).toHaveBeenCalledWith(
-      expect.objectContaining( {
-        type: "SET_SUBJECT",
-        subject: expect.objectContaining( {
-          type: "user",
-          user: expect.objectContaining( { id: 7, login: "seth_msp" } ),
-        } ),
-      } ),
-    );
+    // the selection is staged locally, not written to context until Search
+    expect( mockDispatch ).not.toHaveBeenCalled( );
     // the search field is filled with the selected suggestion
     expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
   } );
 
-  it( "clears the field but keeps the subject when tapping back in after a selection", ( ) => {
-    useUniversalSearch.mockReturnValue( {
-      results: MIXED_RESULTS,
-      isLoading: false,
-      refetch: jest.fn( ),
-    } );
-    renderComponent( <UniversalSearch /> );
+  it(
+    "clears the field but keeps the staged subject when refocusing after a selection",
+    async ( ) => {
+      useUniversalSearch.mockReturnValue( {
+        results: MIXED_RESULTS,
+        isLoading: false,
+        refetch: jest.fn( ),
+      } );
+      renderComponent( <UniversalSearch /> );
 
-    typeQuery( "ver" );
-    fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
-    expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
+      typeQuery( "ver" );
+      await actor.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
+      expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
 
-    mockDispatch.mockClear( );
-    fireEvent( screen.getByTestId( "UniversalSearch.subjectInput" ), "focus" );
+      fireEvent( screen.getByTestId( "UniversalSearch.subjectInput" ), "focus" );
 
-    // the field is cleared for a fresh search...
-    expect( screen.queryByDisplayValue( "seth_msp" ) ).toBeNull( );
-    // ...but the committed subject persists (only Reset / a new selection clears it)
-    expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
-  } );
+      // the field is cleared for a fresh search...
+      expect( screen.queryByDisplayValue( "seth_msp" ) ).toBeNull( );
+
+      await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "user",
+            user: expect.objectContaining( { id: 7, login: "seth_msp" } ),
+          } ),
+        } ),
+      );
+      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+    },
+  );
 
   it( "shows an empty-state message when a query returns no results", ( ) => {
     useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
@@ -261,6 +295,82 @@ describe( "UniversalSearch screen", ( ) => {
     expect(
       screen.queryByText( i18next.t( "No-results-found-for-that-search" ) ),
     ).toBeNull( );
+  } );
+
+  describe( "default search options (empty subject field)", ( ) => {
+    it( "shows the iconic taxa chooser, current user, and unobserved shortcut", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByTestId( "DefaultSearchOptions" ) ).toBeTruthy( );
+      expect( screen.getByTestId( "INatIconButton.IconicTaxonButton.plantae" ) ).toBeTruthy( );
+      // current user's profile row, identified by their login
+      expect( screen.getByText( "tester" ) ).toBeTruthy( );
+      // "Species I haven't observed" shortcut
+      expect( screen.getByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeTruthy( );
+    } );
+
+    it( "fills the field and stages the subject when an iconic taxon is tapped", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await actor.press( screen.getByTestId( "INatIconButton.IconicTaxonButton.plantae" ) );
+
+      // the selection is staged locally, not written to context until Search
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      // common name is primary for the test user, so the field shows "Plants"
+      expect( screen.getByDisplayValue( "Plants" ) ).toBeTruthy( );
+
+      await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "taxon",
+            taxon: expect.objectContaining( { id: 47126, name: "Plantae" } ),
+          } ),
+        } ),
+      );
+    } );
+
+    it( "stages the current user as the subject when their profile row is tapped", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await actor.press( screen.getByTestId( "UniversalSearchResult.user.99" ) );
+
+      // the selection is staged locally, not written to context until Search
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      expect( screen.getByDisplayValue( "tester" ) ).toBeTruthy( );
+
+      await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "user",
+            user: expect.objectContaining( { id: 99, login: "tester" } ),
+          } ),
+        } ),
+      );
+    } );
+
+    it( "hides the current user row when logged out", ( ) => {
+      useCurrentUser.mockReturnValue( null );
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.queryByTestId( "UniversalSearchResult.user.99" ) ).toBeNull( );
+      // the iconic taxa chooser still renders, but the unobserved shortcut does not
+      expect( screen.getByTestId( "INatIconButton.IconicTaxonButton.plantae" ) ).toBeTruthy( );
+      expect( screen.queryByText( i18next.t( "Species-I-havent-observed" ) ) ).toBeNull( );
+    } );
+
+    it( "hides the default options once a subject query is entered", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByTestId( "DefaultSearchOptions" ) ).toBeTruthy( );
+
+      typeQuery( "ver" );
+
+      expect( screen.queryByTestId( "DefaultSearchOptions" ) ).toBeNull( );
+    } );
   } );
 
   it( "shows place autocomplete results while typing in the location field", ( ) => {
@@ -319,34 +429,153 @@ describe( "UniversalSearch screen", ( ) => {
     expect( screen.queryByTestId( "LocationSearchResult.1" ) ).toBeNull( );
   } );
 
-  it( "fills the field, sets the place, and dismisses the keyboard on selection", ( ) => {
-    const dismissSpy = jest.spyOn( Keyboard, "dismiss" ).mockImplementation( ( ) => {} );
-    useLocationSearch.mockReturnValue( {
-      results: PLACE_RESULTS,
-      isLoading: false,
-      refetch: jest.fn( ),
-    } );
+  it(
+    "fills the field and dismisses the keyboard on place selection, without committing",
+    async ( ) => {
+      const dismissSpy = jest.spyOn( Keyboard, "dismiss" ).mockImplementation( ( ) => {} );
+      useLocationSearch.mockReturnValue( {
+        results: PLACE_RESULTS,
+        isLoading: false,
+        refetch: jest.fn( ),
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      typeLocationQuery( "mon" );
+      await actor.press( screen.getByTestId( "LocationSearchResult.1" ) );
+
+      // the location field is filled with the selected place
+      expect( screen.getByDisplayValue( "Monterey, CA, US" ) ).toBeTruthy( );
+      expect( dismissSpy ).toHaveBeenCalled( );
+
+      dismissSpy.mockRestore( );
+    },
+  );
+
+  it( "navigates to Advanced Search", async ( ) => {
     renderComponent( <UniversalSearch /> );
 
-    typeLocationQuery( "mon" );
-    fireEvent.press( screen.getByTestId( "LocationSearchResult.1" ) );
-
-    expect( mockDispatch ).toHaveBeenCalledWith( {
-      type: "SET_LOCATION_PLACE",
-      place: { id: 1, display_name: "Monterey, CA, US" },
-    } );
-    // the location field is filled with the selected place
-    expect( screen.getByDisplayValue( "Monterey, CA, US" ) ).toBeTruthy( );
-    expect( dismissSpy ).toHaveBeenCalled( );
-
-    dismissSpy.mockRestore( );
-  } );
-
-  it( "navigates to Advanced Search", ( ) => {
-    renderComponent( <UniversalSearch /> );
-
-    fireEvent.press( screen.getByText( i18next.t( "Advanced-Search" ) ) );
+    await actor.press( screen.getByText( i18next.t( "Advanced-Search" ) ) );
 
     expect( mockNavigate ).toHaveBeenCalledWith( "AdvancedSearch" );
+  } );
+
+  describe( "search submission", ( ) => {
+    const selectSubject = async ( ) => {
+      useUniversalSearch.mockReturnValue( {
+        results: MIXED_RESULTS,
+        isLoading: false,
+        refetch: jest.fn( ),
+      } );
+      typeQuery( "ver" );
+      await actor.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
+    };
+
+    // Stage a location pick on this instance of the screen.
+    const selectPlace = async ( ) => {
+      useLocationSearch.mockReturnValue( {
+        results: PLACE_RESULTS,
+        isLoading: false,
+        refetch: jest.fn( ),
+      } );
+      typeLocationQuery( "mon" );
+      await actor.press( screen.getByTestId( "LocationSearchResult.1" ) );
+    };
+
+    const pressSearch = ( ) => actor.press(
+      screen.getByTestId( "UniversalSearch.searchButton" ),
+    );
+
+    it( "navigates to ExploreResults when the search button is pressed", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await pressSearch( );
+
+      expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
+    } );
+
+    it( "commits all organisms + worldwide when nothing is selected", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "commits the subject + worldwide when only a subject is selected", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await selectSubject( );
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "user",
+            user: expect.objectContaining( { id: 7 } ),
+          } ),
+        } ),
+      );
+      // location was left untouched → worldwide
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "commits all organisms + the place when only a location is selected", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await selectPlace( );
+      await pressSearch( );
+
+      // subject was left untouched → all organisms
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_LOCATION_PLACE",
+        place: { id: 1, display_name: "Monterey, CA, US" },
+      } );
+    } );
+
+    it( "commits both when a subject and a location are selected", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await selectSubject( );
+      await selectPlace( );
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( { type: "SET_SUBJECT" } ),
+      );
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_LOCATION_PLACE",
+        place: { id: 1, display_name: "Monterey, CA, US" },
+      } );
+      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "does not commit anything after Reset clears the staged selections", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await selectSubject( );
+      await selectPlace( );
+      await actor.press( screen.getByText( i18next.t( "Reset-verb" ) ) );
+
+      await pressSearch( );
+
+      // Reset cleared the staged picks, so Search falls back to the defaults.
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "dismisses the keyboard when the search button is pressed", async ( ) => {
+      const dismissSpy = jest.spyOn( Keyboard, "dismiss" ).mockImplementation( ( ) => {} );
+      renderComponent( <UniversalSearch /> );
+
+      await pressSearch( );
+
+      expect( dismissSpy ).toHaveBeenCalled( );
+
+      dismissSpy.mockRestore( );
+    } );
   } );
 } );

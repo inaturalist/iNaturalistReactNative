@@ -20,6 +20,7 @@ import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation } from "realmModels/types";
+import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
   sortSpeciesCounts,
@@ -52,6 +53,7 @@ import MyObservationsSimple, {
   OBSERVATIONS_TAB,
   TAXA_TAB,
 } from "./MyObservationsSimple";
+import MyObsServerOrderedDebugSheet from "./MyObsServerOrderedDebugSheet";
 
 const { useRealm } = RealmContext;
 
@@ -110,7 +112,7 @@ const MyObservationsResults = ( ) => {
     startUploadObservations,
   );
 
-  useObservationsUpdates( !!currentUser );
+  const { refetch: refetchObservationsUpdates } = useObservationsUpdates( !!currentUser );
 
   const {
     fetchFromLastObservation,
@@ -130,6 +132,13 @@ const MyObservationsResults = ( ) => {
     myObsDispatch( {
       type: MY_OBSERVATIONS_ACTION.SET_SPECIES_SORT,
       speciesSort: value,
+    } );
+  };
+
+  const setObservationsSortOptionId = ( value: OBSERVATIONS_SORT ) => {
+    myObsDispatch( {
+      type: MY_OBSERVATIONS_ACTION.SET_OBSERVATIONS_SORT,
+      observationsSort: value,
     } );
   };
 
@@ -234,7 +243,8 @@ const MyObservationsResults = ( ) => {
 
   const handlePullToRefresh = useCallback( async ( ) => {
     await syncManually( { skipUploads: true } );
-  }, [syncManually] );
+    refetchObservationsUpdates( );
+  }, [syncManually, refetchObservationsUpdates] );
 
   // Scroll the list to the offset we need to restore, e.g. when you are
   // scrolled way down, edit an observation, and return. Entering ObsEdit
@@ -422,40 +432,45 @@ const MyObservationsResults = ( ) => {
   }
 
   return (
-    <MyObservationsSimple
-      activeTab={activeTab}
-      currentUser={currentUser}
-      fetchMoreTaxa={fetchMoreTaxa}
-      fetchFromLastObservation={fetchFromLastObservation}
-      handleIndividualUploadPress={handleIndividualUploadPress}
-      handlePullToRefresh={handlePullToRefresh}
-      handleSyncButtonPress={handleSyncButtonPress}
-      isConnected={isConnected}
-      isFetchingNextPage={isFetchingNextPage}
-      isFetchingTaxa={isFetchingTaxa}
-      justFinishedSignup={justFinishedSignup}
-      layout={layout}
-      listRef={listRef}
-      loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
-      taxaListRef={taxaListRef}
-      numTotalObservations={numOfUserObservations}
-      numTotalTaxa={numOfUserSpecies}
-      numUnuploadedObservations={numUnuploadedObservations}
-      numObsMissingBasics={numObsMissingBasics}
-      observationIds={observationIds}
-      onEndReached={fetchNextPage}
-      onListLayout={restoreScrollOffset}
-      onScroll={onScroll}
-      openSheet={openSheet}
-      refetchTaxa={refetchTaxa}
-      setActiveTab={setActiveTab}
-      setOpenSheet={setOpenSheet}
-      setSpeciesSortOptionId={setSpeciesSortOptionId}
-      showNoResults={showNoResults}
-      speciesSortOptionId={myObsState.speciesSort}
-      taxa={taxa}
-      toggleLayout={toggleLayout}
-    />
+    <>
+      <MyObservationsSimple
+        activeTab={activeTab}
+        currentUser={currentUser}
+        fetchMoreTaxa={fetchMoreTaxa}
+        fetchFromLastObservation={fetchFromLastObservation}
+        handleIndividualUploadPress={handleIndividualUploadPress}
+        handlePullToRefresh={handlePullToRefresh}
+        handleSyncButtonPress={handleSyncButtonPress}
+        isConnected={isConnected}
+        isFetchingNextPage={isFetchingNextPage}
+        isFetchingTaxa={isFetchingTaxa}
+        justFinishedSignup={justFinishedSignup}
+        layout={layout}
+        listRef={listRef}
+        loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
+        taxaListRef={taxaListRef}
+        numTotalObservations={numOfUserObservations}
+        numTotalTaxa={numOfUserSpecies}
+        numUnuploadedObservations={numUnuploadedObservations}
+        numObsMissingBasics={numObsMissingBasics}
+        observationIds={observationIds}
+        observationsSortOptionId={myObsState.observationsSort}
+        onEndReached={fetchNextPage}
+        onListLayout={restoreScrollOffset}
+        onScroll={onScroll}
+        openSheet={openSheet}
+        refetchTaxa={refetchTaxa}
+        setActiveTab={setActiveTab}
+        setObservationsSortOptionId={setObservationsSortOptionId}
+        setOpenSheet={setOpenSheet}
+        setSpeciesSortOptionId={setSpeciesSortOptionId}
+        showNoResults={showNoResults}
+        speciesSortOptionId={myObsState.speciesSort}
+        taxa={taxa}
+        toggleLayout={toggleLayout}
+      />
+      <MyObsServerOrderedDebugSheet />
+    </>
   );
 };
 
