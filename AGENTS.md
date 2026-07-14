@@ -59,6 +59,8 @@ npm run lint:rubocop    # Ruby linting (fastlane)
 npm run lint:tsc        # TypeScript checking
 ```
 
+**Note on `lint:tsc`:** The repo has a large pre-existing TypeScript error baseline (over 1,000 errors), so a clean run is not expected. The standard is to add no new errors in files you touch — verify by filtering the tsc output for your filenames and comparing against the pre-change state. TS7016 implicit-`any` errors from importing untyped `.js` modules are part of the accepted baseline; do not add `@ts-ignore` comments for them.
+
 ### Translations
 ```bash
 # Build translation JSON from Fluent files
@@ -130,6 +132,8 @@ The app uses a hybrid state management approach:
   - `ExploreContext` - Complex explore screen state
   - `RealmContext` - Realm database access
 
+**Details:** store architecture, MMKV persistence, and the Realm/Zustand division of responsibilities are in `knowledge-base/architecture/realm-and-zustand.md`.
+
 ### Data Persistence
 
 - **Realm Database** (`src/realmModels/`) - Primary local data store
@@ -140,6 +144,8 @@ The app uses a hybrid state management approach:
 
 - **MMKV** - Fast key-value storage via `zustandStorage` for Zustand persistence
 
+**Details:** working with Realm objects in the React layer (live-object gotchas, the missing Realm→API converter, `mapTo` field-name debt) is documented in `knowledge-base/architecture/realm-and-zustand.md`.
+
 ### API Layer
 
 API calls are organized in `src/api/`:
@@ -147,6 +153,8 @@ API calls are organized in `src/api/`:
 - Wrapper functions in `src/api/*.js` handle error logging and data transformation
 - API responses are transformed to match local Realm schema
 - Base API URL configured via `.env` file (`API_URL`)
+
+**Details:** the wrapper-only rule and the `useAuthenticatedQuery`/`useAuthenticatedMutation` base hooks are covered in `knowledge-base/architecture/api-layer.md`.
 
 ### Upload System
 
@@ -156,6 +164,8 @@ The upload system (`src/uploaders/`) handles offline-first observation uploads:
 - Upload queue stored in Realm (`QueueItem` model)
 - Zustand slice `createUploadObservationsSlice` manages upload state and progress
 - Background processing continues even when app is backgrounded
+
+**Details:** the four-step pipeline, error-recovery table, and timeout/keep-awake rules are in `knowledge-base/architecture/upload-system.md`.
 
 ### AI Camera & Computer Vision
 
@@ -223,9 +233,13 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 - Use Jest + React Native Testing Library for unit/integration tests
 - Use `factoria` + `@faker-js/faker` to generate mock data
 - `Local*` factories = locally persisted data; `Remote*` factories = API/external data
+- Pass factory field overrides as the second argument (`factory( "RemoteTaxon", { id: 745 } )`), not by spreading the result (`{ ...factory( "RemoteTaxon" ), id: 745 }`) — the override arg runs through any factory `afterBuild`/derived-field logic that spreading skips
+- Prefer `userEvent` (via `const actor = userEvent.setup()`) over `fireEvent` for presses/taps — more realistic per RNTL guidance; `fireEvent` is still fine for `changeText`/focus and timing-controlled cases (e.g. debounce with fake timers)
 - Initialize i18next in test files: `beforeAll( async () => { await initI18next(); } );`
 - Test files should focus on user behavior, not implementation details
+- Run only the tests affected by your change with `npx jest --findRelatedTests <files>`
 - E2E tests require real iNaturalist credentials in `.env` (`E2E_TEST_USERNAME`, `E2E_TEST_PASSWORD`)
+- **Details:** unit/component/integration guides in `knowledge-base/testing/`; end-to-end (Detox + Maestro) in `knowledge-base/testing/e2e.md`
 
 ## Code Style & Conventions
 
@@ -270,9 +284,10 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 
 ## Git Workflow
 
-- Branch naming: `{issue-number}-{short-description}` (e.g., `123-fix-upload-crash`)
+- Issues are tracked in Linear with `MOB-` identifiers
+- Branch naming: `mob-{number}-{short-description}` (e.g., `mob-123-fix-upload-crash`)
 - Commit messages: Imperative mood, describe user impact
-- Include `Closes #123` in commit body to auto-close issues
+- Include `Closes MOB-123` in the commit body to auto-close issues
 - Husky pre-commit hook runs linters automatically
 - Main branch: `main`
 
