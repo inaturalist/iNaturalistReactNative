@@ -17,9 +17,9 @@ import type { UniversalSearchResultItem }
   from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import useUniversalSearch from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
-import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
+import SearchHeader from "components/SharedComponents/SearchHeader";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import {
@@ -210,10 +210,10 @@ const UniversalSearch = ( ) => {
   return (
     <ViewWrapper testID="UniversalSearch">
       <View className="bg-white" style={DROP_SHADOW}>
-        <ExploreSearchHeader
+        <SearchHeader
           headerText={t( "SEARCH" )}
-          closeModal={navigation.goBack}
-          resetFilters={handleReset}
+          onClose={navigation.goBack}
+          onReset={handleReset}
           testID="UniversalSearch.back"
         />
         <View className="px-4 pb-4">
