@@ -29,6 +29,10 @@ interface Props {
   params: SpeciesCountQueryParams;
 }
 
+// One seen-query per infinite-scroll page: the seen-id chunks are sized to
+// SPECIES_PAGE_SIZE so each chunk aligns to exactly one loaded page
+const SPECIES_PAGE_SIZE = 10;
+
 const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
   const currentUser = useCurrentUser( );
   const { flashListStyle, gridItemStyle, numColumns } = useGridLayout( );
@@ -47,6 +51,7 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
     fetchSpeciesCounts,
     {
       ...params,
+      per_page: SPECIES_PAGE_SIZE,
       ...( !currentUser && { locale } ),
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS,
@@ -55,13 +60,12 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
     { enabled },
   );
 
-  const SEEN_CHUNK_SIZE = 10;
   const taxonIds = ( data as SpeciesCountResult[] ).map( r => r.taxon.id as number );
 
   // taxonIdChunks holds the cumulative list of all taxa viewed, sliced into groups of 10.
   const taxonIdChunks: number[][] = [];
-  for ( let i = 0; i < taxonIds.length; i += SEEN_CHUNK_SIZE ) {
-    taxonIdChunks.push( taxonIds.slice( i, i + SEEN_CHUNK_SIZE ) );
+  for ( let i = 0; i < taxonIds.length; i += SPECIES_PAGE_SIZE ) {
+    taxonIdChunks.push( taxonIds.slice( i, i + SPECIES_PAGE_SIZE ) );
   }
 
   // useQueries executes taxonIdChunks.length queries,
