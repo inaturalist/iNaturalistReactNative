@@ -1076,6 +1076,8 @@ Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
+# Subtitle on a location row in Universal Search marking it as a past search
+Recent-Search = Recent Search
 # Help text for the button that opens the sound recorder
 Record-a-sound = Record a sound
 # Title of screen asking for permission to access the microphone

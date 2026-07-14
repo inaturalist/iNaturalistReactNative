@@ -8,6 +8,7 @@ import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
 import createMyObsSlice from "./createMyObsSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
+import createRecentLocationSearchesSlice from "./createRecentLocationSearchesSlice";
 import createRootExploreSlice from "./createRootExploreSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
 import createUploadObservationsSlice from "./createUploadObservationsSlice";
@@ -37,6 +38,7 @@ const useStore = create( persist(
       createLayoutSlice( ...args ),
       createMyObsSlice( ...args ),
       createObservationFlowSlice( ...args ),
+      createRecentLocationSearchesSlice( ...args ),
       createRootExploreSlice( ...args ),
       createSyncObservationsSlice( ...args ),
       createUploadObservationsSlice( ...args ),
@@ -79,6 +81,7 @@ const useStore = create( persist(
       // Vestigial un-namespaced values in the layout slice
       isAdvancedUser: state.isAdvancedUser,
       obsDetailsTab: state.obsDetailsTab,
+      recentLocationSearches: state.recentLocationSearches,
 
       // Dynamically select all values in the layout slice's namespace
       layout: ( Object.keys( state.layout ).reduce( ( memo, key ) => {

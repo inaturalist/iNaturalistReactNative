@@ -42,6 +42,7 @@ import { FlatList, Keyboard } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
+import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -85,6 +86,8 @@ const UniversalSearch = ( ) => {
   const { t } = useTranslation( );
   const { dispatch } = useExploreV2( );
   const currentUser = useCurrentUser( );
+  const recentLocationSearches = useStore( state => state.recentLocationSearches );
+  const addRecentLocationSearch = useStore( state => state.addRecentLocationSearch );
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
 
@@ -151,6 +154,12 @@ const UniversalSearch = ( ) => {
     Keyboard.dismiss( );
   }, [commitLocation] );
 
+  const handleSelectRecent = useCallback( ( place: Place ) => {
+    setSelectedLocation( { type: "place", place } );
+    commitLocation( place.display_name ?? "" );
+    Keyboard.dismiss( );
+  }, [commitLocation] );
+
   const handleSelectWorldwide = useCallback( ( ) => {
     setSelectedLocation( { type: "worldwide" } );
     // commitLocation is for display only so this should be safe
@@ -200,6 +209,7 @@ const UniversalSearch = ( ) => {
           type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
           place: selectedLocation.place,
         } );
+        addRecentLocationSearch( selectedLocation.place );
         break;
       case "nearby":
         dispatch( {
@@ -216,7 +226,7 @@ const UniversalSearch = ( ) => {
         dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
     }
     navigation.popTo( "ExploreResults" );
-  }, [selectedSubject, selectedLocation, dispatch, navigation] );
+  }, [selectedSubject, selectedLocation, dispatch, addRecentLocationSearch, navigation] );
 
   const renderItem = useCallback<ListRenderItem<SearchResultItem>>( ( { item } ) => {
     if ( item.type === "place" ) {
@@ -258,6 +268,8 @@ const UniversalSearch = ( ) => {
       <LocationDefaultOptions
         onSelectNearby={handleSelectNearby}
         onSelectWorldwide={handleSelectWorldwide}
+        recentSearches={recentLocationSearches}
+        onSelectRecent={handleSelectRecent}
       />
     );
   } else {

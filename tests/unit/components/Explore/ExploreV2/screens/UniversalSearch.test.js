@@ -6,7 +6,10 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import { Keyboard } from "react-native";
+import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
+
+const initialStoreState = useStore.getState( );
 
 const mockNavigate = jest.fn( );
 const mockPopTo = jest.fn( );
@@ -165,6 +168,8 @@ beforeAll( async ( ) => {
 
 beforeEach( ( ) => {
   jest.useFakeTimers( );
+  // Reset the real Zustand store so recent-location-search history doesn't leak.
+  useStore.setState( initialStoreState, true );
   mockNavigate.mockClear( );
   mockPopTo.mockClear( );
   mockDispatch.mockClear( );
@@ -598,6 +603,36 @@ describe( "UniversalSearch screen", ( ) => {
         expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEEDS_PERMISSION" } );
       },
     );
+
+    it( "shows persisted recent searches below Nearby/Worldwide", ( ) => {
+      useStore.setState( {
+        recentLocationSearches: [{ id: 5, display_name: "Big Sur, CA, US" }],
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+
+      expect( screen.getByText( "Big Sur, CA, US" ) ).toBeTruthy( );
+      expect( screen.getByText( i18next.t( "Recent-Search" ) ) ).toBeTruthy( );
+    } );
+
+    it( "stages a recent search as the place when its row is tapped", async ( ) => {
+      const recent = { id: 5, display_name: "Big Sur, CA, US" };
+      useStore.setState( { recentLocationSearches: [recent] } );
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+      await actor.press( screen.getByTestId( "LocationSearchResult.5" ) );
+
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      expect( screen.getByDisplayValue( "Big Sur, CA, US" ) ).toBeTruthy( );
+
+      await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_LOCATION_PLACE",
+        place: recent,
+      } );
+    } );
   } );
 
   it( "navigates to Advanced Search", async ( ) => {
@@ -714,6 +749,25 @@ describe( "UniversalSearch screen", ( ) => {
       // Reset cleared the staged picks, so Search falls back to the defaults.
       expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
       expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "records the selected place in recent searches on search", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await selectPlace( );
+      await pressSearch( );
+
+      expect( useStore.getState( ).recentLocationSearches ).toEqual( [
+        { id: 1, display_name: "Monterey, CA, US" },
+      ] );
+    } );
+
+    it( "does not record recent searches for a worldwide search", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await pressSearch( );
+
+      expect( useStore.getState( ).recentLocationSearches ).toEqual( [] );
     } );
 
     it( "dismisses the keyboard when the search button is pressed", async ( ) => {
