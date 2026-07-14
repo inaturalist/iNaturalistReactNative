@@ -272,5 +272,32 @@ describe( "validateProjectFieldsForObservation", () => {
         validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
       ).toBe( true );
     } );
+
+    test.each( [
+      ["abc"],
+      // parseFloat would accept this, Number does not; must stay invalid
+      // to match Android Legacy's Float.valueOf
+      ["1.5abc"],
+    ] )( "should return INVALID_NUMERIC when a numeric field's OFV value is %p", value => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            datatype: "numeric",
+            id: 10,
+            name: "Count",
+          },
+        }],
+      };
+      const mockObservation = {
+        observationFieldValues: [{ obsFieldId: 10, value }],
+      };
+      const result = validateProjectFieldsForObservation( mockObservation, [mockProject] );
+      expect( result.valid ).toBe( false );
+      expect( result.errors ).toHaveLength( 1 );
+      expect( result.errors[0].fieldName ).toBe( "Count" );
+      expect( result.errors[0].reason ).toBe( INVALID_NUMERIC );
+    } );
   } );
 } );
