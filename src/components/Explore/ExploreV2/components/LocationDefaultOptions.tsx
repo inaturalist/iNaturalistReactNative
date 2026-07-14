@@ -10,7 +10,7 @@ interface Props {
   onSelectWorldwide: ( ) => void;
 }
 
-const ROW_CLASSES = "flex-row items-center px-[15px] h-[42px] border-b border-lightGray";
+const ROW_CLASSES = "flex-row items-center px-[15px] py-[11px] border-b border-lightGray";
 
 const LocationDefaultOptions = ( { onSelectNearby, onSelectWorldwide }: Props ) => {
   const { t } = useTranslation( );
