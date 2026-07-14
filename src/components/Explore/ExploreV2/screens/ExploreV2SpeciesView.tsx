@@ -98,17 +98,14 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
       ),
     } ) ),
     combine: results => {
-      const ids = new Set<number>( );
-      // the combine callback unions the taxon ids present in the results
-      // (i.e. observed by this user) across all chunks
+      const ids: number[] = [];
       results.forEach( r => {
         const seen = ( r.data as { results?: SpeciesCountResult[] } | undefined )?.results;
-        seen?.forEach( x => ids.add( x.taxon.id as number ) );
+        seen?.forEach( x => ids.push( x.taxon.id as number ) );
       } );
-      // results holds every chunk's query state (redundant fetches prevented by cache).
-      // Return a sorted array so this reference stays stable when the observed set is unchanged,
-      // which keeps renderItem memoized.
-      return Array.from( ids ).sort( ( a, b ) => a - b );
+      // Return a sorted array so React Query's replaceEqualDeep reuses the previous
+      // reference when the observed set is unchanged
+      return ids.sort( ( a, b ) => a - b );
     },
   } );
 
