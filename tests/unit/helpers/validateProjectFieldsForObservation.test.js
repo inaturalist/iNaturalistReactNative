@@ -318,5 +318,22 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.valid ).toBe( false );
       expect( result.errors[0].reason ).toBe( INVALID_NUMERIC );
     } );
+
+    it( "should report a single MISSING_REQUIRED when a required numeric field is empty", () => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            datatype: "numeric",
+            id: 10,
+          },
+        }],
+      };
+      const mockObservation = { observationFieldValues: [] };
+      const result = validateProjectFieldsForObservation( mockObservation, [mockProject] );
+      expect( result.errors ).toHaveLength( 1 );
+      expect( result.errors[0].reason ).toBe( MISSING_REQUIRED );
+    } );
   } );
 } );
