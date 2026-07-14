@@ -117,3 +117,7 @@ artifacts/
 
 # Rubocop cache
 **/tmp/rubocop_cache
+
+# Claude Code local config, specialty agents, commands, hooks, and skills.
+# Shared AI-agent guidance lives in AGENTS.md, CLAUDE.md, and knowledge-base/.
+.claude/
