@@ -112,6 +112,8 @@ Key design patterns:
 
 To add a new screen, place it in the appropriate navigator: `TabStackNavigator` if it needs bottom tabs visible, `NoBottomTabStackNavigator` if not, or `SharedStackScreens` if it needs to be reachable from both contexts.
 
+**Details:** the full navigator hierarchy, screen-param typing, and deep-linking are in `knowledge-base/architecture/navigation-patterns.md`.
+
 ### State Management
 
 The app uses a hybrid state management approach:
@@ -195,6 +197,8 @@ Translation system using Fluent and i18next:
 - Avoid variables when possible - create separate strings for each case
 - Pluralize with selectors: `{ $count } { $count -> [one] observation *[other] observations }`
 
+**Details:** `knowledge-base/conventions/i18n-conventions.md`.
+
 ### Styling
 
 - **Nativewind** (Tailwind CSS for React Native) - Primary styling system
@@ -202,6 +206,8 @@ Translation system using Fluent and i18next:
 - Custom Tailwind config: `tailwind.config.js`
 - Some legacy components use StyleSheet.create()
 - **React Native Paper** - Material Design components for some UI elements
+
+**Details:** component structure, styling, and accessibility conventions are in `knowledge-base/conventions/component-conventions.md`.
 
 ### Module Aliases
 
@@ -214,6 +220,8 @@ import { Observation } from "realmModels";
 ```
 
 Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, `images`, `navigation`, `providers`, `realmModels`, `sharedHelpers`, `sharedHooks`, `stores`, `styles`, `tests`, `uploaders`
+
+**Details:** full alias table with example imports in `knowledge-base/conventions/import-aliases.md`.
 
 ### Key Directories
 
@@ -247,6 +255,8 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 - i18next string literal checking enforced - use `t()` for all user-facing text
 - Prefer TypeScript for new files (partial adoption, not required)
 - Husky pre-commit hook (`.husky/pre-commit`) runs `lint-staged` (eslint `--fix` on staged files), regenerates i18n translations, and runs a GitGuardian (`ggshield`) secrets scan
+
+**Details:** TypeScript conventions (interface-vs-type, Flow coexistence) in `knowledge-base/conventions/typescript.md`.
 
 ## Authentication & OAuth
 
