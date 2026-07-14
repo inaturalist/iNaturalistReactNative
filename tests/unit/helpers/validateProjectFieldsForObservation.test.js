@@ -429,5 +429,42 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.errors.map( e => e.projectTitle ) ).toEqual( ["Project A", "Project B"] );
       expect( result.errors.map( e => e.fieldName ) ).toEqual( ["Habitat", "Habitat"] );
     } );
+
+    it( "should report only the failing project when the other is satisfied", () => {
+      const mockProjectA = {
+        id: 1,
+        title: "Project A",
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+            name: "Habitat",
+          },
+        }],
+      };
+      const mockProjectB = {
+        id: 2,
+        title: "Project B",
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 20,
+            name: "Substrate",
+          },
+        }],
+      };
+      const mockObservation = {
+        observationFieldValues: [{ obsFieldId: 10, value: "shrubland" }],
+      };
+      const result = validateProjectFieldsForObservation(
+        mockObservation,
+        [mockProjectA, mockProjectB],
+      );
+      expect( result.errors ).toHaveLength( 1 );
+      expect( result.errors[0].projectTitle ).toBe( "Project B" );
+      expect( result.errors[0].fieldName ).toBe( "Substrate" );
+    } );
   } );
 } );
