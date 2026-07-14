@@ -9,7 +9,6 @@ import { checkLocationPermissions } from "../sharedHelpers/geolocationWrapper";
 export enum EXPLORE_V2_ACTION {
   SET_SUBJECT = "SET_SUBJECT",
   CLEAR_SUBJECT = "CLEAR_SUBJECT",
-  SET_LOCATION_NEEDS_PERMISSION = "SET_LOCATION_NEEDS_PERMISSION",
   SET_LOCATION_NEARBY = "SET_LOCATION_NEARBY",
   SET_LOCATION_WORLDWIDE = "SET_LOCATION_WORLDWIDE",
   SET_LOCATION_PLACE = "SET_LOCATION_PLACE",
@@ -19,7 +18,8 @@ export enum EXPLORE_V2_ACTION {
 }
 
 export enum EXPLORE_V2_PLACE_MODE {
-  UNINITIALIZED = "UNINITIALIZED",
+  // NEEDS_PERMISSION is not a stored location mode; it's only ever a resolved
+  // outcome of defaultExploreV2Location(), consumed at read time.
   NEEDS_PERMISSION = "NEEDS_PERMISSION",
   NEARBY = "NEARBY",
   WORLDWIDE = "WORLDWIDE",
@@ -62,16 +62,12 @@ export interface ExploreV2Filters {
   [key: string]: unknown;
 }
 
+// Stored location is an *intent*, not a resolved position. NEARBY carries no
+// coordinates; the results screen resolves it (fetch coords, check permission)
+// at read time via defaultExploreV2Location( ).
 export type ExploreV2LocationState =
-  | { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED }
-  | { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION }
   | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
-  | {
-    placeMode: EXPLORE_V2_PLACE_MODE.NEARBY;
-    lat: number;
-    lng: number;
-    radius: number;
-  }
+  | { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY }
   | { placeMode: EXPLORE_V2_PLACE_MODE.PLACE; place: Place };
 
 export interface ExploreV2State {
@@ -84,13 +80,7 @@ export interface ExploreV2State {
 export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SUBJECT; subject: ExploreV2Subject }
   | { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT }
-  | { type: EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION }
-  | {
-    type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY;
-    lat: number;
-    lng: number;
-    radius: number;
-  }
+  | { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY }
   | { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE }
   | {
     type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE;
@@ -102,7 +92,9 @@ export type ExploreV2Action =
 
 export const initialExploreV2State: ExploreV2State = {
   subject: null,
-  location: { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED },
+  // Default to the nearby intent; the results screen resolves it to coords or
+  // a permission prompt depending on the user's location permission.
+  location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
   sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
   filters: {},
 };
@@ -116,20 +108,10 @@ export function exploreV2Reducer(
       return { ...state, subject: action.subject };
     case EXPLORE_V2_ACTION.CLEAR_SUBJECT:
       return { ...state, subject: null };
-    case EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION:
-      return {
-        ...state,
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION },
-      };
     case EXPLORE_V2_ACTION.SET_LOCATION_NEARBY:
       return {
         ...state,
-        location: {
-          placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-          lat: action.lat,
-          lng: action.lng,
-          radius: action.radius,
-        },
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
       };
     case EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE:
       return {
