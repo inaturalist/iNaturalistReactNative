@@ -299,5 +299,24 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.errors[0].fieldName ).toBe( "Count" );
       expect( result.errors[0].reason ).toBe( INVALID_NUMERIC );
     } );
+
+    it( "should return INVALID_NUMERIC for an optional numeric field with text value", () => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: false,
+          obsField: {
+            allowedValues: [],
+            datatype: "numeric",
+            id: 10,
+          },
+        }],
+      };
+      const mockObservation = {
+        observationFieldValues: [{ obsFieldId: 10, value: "abc" }],
+      };
+      const result = validateProjectFieldsForObservation( mockObservation, [mockProject] );
+      expect( result.valid ).toBe( false );
+      expect( result.errors[0].reason ).toBe( INVALID_NUMERIC );
+    } );
   } );
 } );
