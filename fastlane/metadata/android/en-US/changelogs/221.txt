@@ -1,0 +1,7 @@
+FIXED
+* User still appears in following list after unfollow
+* Icon buttons provide visual feedback when pressed
+* Activity icons not appearing on Me tab
+
+UPDATED
+* Mobile CV model to 2.30
