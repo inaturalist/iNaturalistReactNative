@@ -247,4 +247,30 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.errors.map( e => e.fieldName ) ).toEqual( ["Habitat", "Substrate"] );
     } );
   } );
+
+  describe( "numeric fields", () => {
+    test.each( [
+      ["12.5"],
+      ["42"],
+      ["-3.2"],
+      [" 7 "],
+    ] )( "should be valid when a required numeric field's OFV value is %p", value => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            datatype: "numeric",
+            id: 10,
+          },
+        }],
+      };
+      const mockObservation = {
+        observationFieldValues: [{ obsFieldId: 10, value }],
+      };
+      expect(
+        validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
+      ).toBe( true );
+    } );
+  } );
 } );
