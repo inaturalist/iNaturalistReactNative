@@ -516,6 +516,20 @@ describe( "validateProjectFieldsForObservation", () => {
         validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
       ).toBe( true );
     } );
+
+    it( "should skip a POF without an obsField definition", () => {
+      const mockProject = {
+        projectObservationFields: [{
+          required: true,
+          obsField: undefined,
+        }],
+      };
+      const mockObservation = { observationFieldValues: [] };
+      expect(
+        validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
+      ).toBe( true );
+    } );
+
     it( "should return MISSING_REQUIRED when observationFieldValues is undefined", () => {
       const mockProject = {
         projectObservationFields: [{
