@@ -9,13 +9,16 @@ import useServerOrderedObservations from "./useServerOrderedObservations";
 const { useQuery } = RealmContext;
 
 const NOOP_REFETCH = ( ) => undefined;
+const NOOP_FETCH_NEXT_PAGE = ( ) => undefined;
 
 interface UseMyObservationsQueryResult {
   observationIds: { uuid: string }[];
   isServerAuthoritative: boolean;
   isLoading: boolean;
+  isFetchingNextPage: boolean;
   error: Error | null;
   refetch: ( ) => void;
+  fetchNextPage: ( ) => void;
 }
 
 // We want to preserve offline behavior for the default sort (created at, desc) so a user can see
@@ -32,7 +35,9 @@ const useMyObservationsQuery = ( ): UseMyObservationsQueryResult => {
   const {
     observationIds: serverObservationIds,
     isLoading,
+    isFetchingNextPage,
     error,
+    fetchNextPage,
     refetch,
   } = useServerOrderedObservations( {
     sortBy: state.observationsSort,
@@ -75,14 +80,20 @@ const useMyObservationsQuery = ( ): UseMyObservationsQueryResult => {
     isLoading: isDefaultSort
       ? false
       : isLoading,
+    isFetchingNextPage: isDefaultSort
+      ? false
+      : isFetchingNextPage,
     error: isDefaultSort
       ? null
       : error,
-    // since we never fetched for default sort, we don't need to refetch.
+    // since we never fetched for default sort, we don't need to refetch or paginate.
     // pagination is still handled by useInfiniteObservationsScroll
     refetch: isDefaultSort
       ? NOOP_REFETCH
       : refetch,
+    fetchNextPage: isDefaultSort
+      ? NOOP_FETCH_NEXT_PAGE
+      : fetchNextPage,
   };
 };
 
