@@ -1,12 +1,14 @@
 import { searchObservations } from "api/observations";
 import { RealmContext } from "providers/contexts";
-import { useEffect, useMemo } from "react";
 import Observation from "realmModels/Observation";
+import { log } from "sharedHelpers/logger";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { observationSortToApiParams } from "sharedHelpers/observationsSort";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 const { useRealm } = RealmContext;
+
+const logger = log.extend( "useServerOrderedObservations" );
 
 const PER_PAGE = 20;
 
@@ -18,6 +20,11 @@ interface SearchObservationsResult {
 interface SearchObservationsResponse {
   results: SearchObservationsResult[];
   total_results: number;
+}
+
+interface ServerOrderedObservationsData {
+  observationIds: { uuid: string }[];
+  totalResults: number;
 }
 
 interface UseServerOrderedObservationsParams {
@@ -59,28 +66,31 @@ const useServerOrderedObservations = ( {
     isLoading,
     error,
     refetch,
-  } = useAuthenticatedQuery<SearchObservationsResponse>(
+  } = useAuthenticatedQuery<ServerOrderedObservationsData>(
     queryKey,
-    optsWithAuth => searchObservations( params, optsWithAuth ),
+    async ( optsWithAuth ): Promise<ServerOrderedObservationsData> => {
+      const rawResponse = await searchObservations( params, optsWithAuth );
+      const response = rawResponse as SearchObservationsResponse;
+      const results = response.results || [];
+      try {
+        Observation.upsertRemoteObservations( results, realm );
+      } catch ( upsertError ) {
+        // A local Realm-write failure shouldn't be reported as a failed search
+        logger.error( "Failed to upsert server-ordered observations", upsertError );
+      }
+      return {
+        observationIds: results.map( ( { uuid } ) => ( { uuid } ) ),
+        totalResults: response.total_results,
+      };
+    },
     { enabled: enabled && !!currentUser },
   );
 
-  useEffect( ( ) => {
-    if ( data?.results ) {
-      Observation.upsertRemoteObservations( data.results, realm );
-    }
-  }, [data?.results, realm] );
-
-  const observationIds = useMemo(
-    ( ) => ( data?.results || [] ).map( ( { uuid } ) => ( { uuid } ) ),
-    [data?.results],
-  );
-
   return {
-    observationIds,
+    observationIds: data?.observationIds || [],
     isLoading,
     error,
-    totalResults: data?.total_results,
+    totalResults: data?.totalResults,
     refetch,
   };
 };
