@@ -7,7 +7,7 @@ The app uses a hybrid persistence strategy: **Realm** for persistent observation
 ## Realm Database
 
 ### Configuration
-- **Schema Version:** 67
+- **Schema Version:** bumped frequently — read the current value from `schemaVersion` in `src/realmModels/index.ts` rather than trusting a number here (it was 70 at the time of writing)
 - **Storage Path:** `${RNFS.DocumentDirectoryPath}/db.realm`
 - **Config File:** `src/realmModels/index.ts`
 
@@ -58,7 +58,7 @@ Key methods:
 Migrations are version-gated and process both old and new Realm objects in parallel:
 
 ```javascript
-if ( oldRealm.schemaVersion < 67 ) { /* current version logic */ }
+if ( oldRealm.schemaVersion < 70 ) { /* current version logic */ }
 if ( oldRealm.schemaVersion < 59 ) { /* v59 logic */ }
 // ... back to earliest migrations
 ```
@@ -152,6 +152,24 @@ MMKV backend: `src/stores/zustandMMKVBackingStorage.ts`
 1. API fetches remote observations
 2. `Observation.upsertRemoteObservations()` updates Realm
 3. Components re-render via Realm query results (no Zustand involvement)
+
+## Working with Realm objects in the React layer
+
+Three related gotchas, all stemming from the same root: the models were designed to flow **one direction (API → Realm)**, and the React layer has to fend for itself on the way back out.
+
+### Don't pass live Realm objects around components
+
+A live Realm object can be invalidated by the database underneath you (sync, write, deletion). Holding one in React/Zustand/reducer state, or across an `await`, is a latent crash. Convert to a plain object the moment data leaves the data layer — *before* storing in state, crossing an async boundary, or passing deep into children. `DefaultSearchOptions.tsx` (`realmTaxonToApiTaxon`) is the model to follow.
+
+If you must keep a live object, guard every use with `.isValid()` (see `useCurrentUser`, `useLocalObservation`). Note that several hooks return **live** collections (e.g. `useIconicTaxa` returns a live `Results`), so the consumer is responsible for the conversion. Known risky spots that hold live objects across async writes: `IdentificationSheets.tsx` and `useObsDetailsSharedLogic.ts`.
+
+### There is no built-in Realm → API/plain converter
+
+Every model has `static mapApiToRealm(...)` but no `mapRealmToApi` counterpart. `.toJSON()` is unreliable here — it drops `mapTo` aliases, so `Photo` had to override it and `Observation` distrusts it outright. Until a model grows a proper outbound method, hand-mapping the fields you need (as `DefaultSearchOptions.tsx` does) is the accepted pattern; prefer adding the converter to the model over duplicating maps in components.
+
+### Realm and API field names sometimes differ — legacy debt, not convention
+
+Pre-schema-v3 fields were renamed snake_case to match the API wire format but kept a camelCase on-disk column via `mapTo` (e.g. accessor `preferred_common_name` / `default_photo`, but a *live* object also exposes `preferredCommonName` / `defaultPhoto`). Fields added after v3 have **no `mapTo`** and are plain snake_case in both Realm and the API (e.g. `rank_level`, `iconic_taxon_name`). There is no rule for which to use; when in doubt, check the model's `properties` definition for a `mapTo`.
 
 ## Common Operations
 

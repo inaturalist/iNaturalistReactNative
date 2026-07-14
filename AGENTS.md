@@ -313,9 +313,9 @@ bundle exec fastlane prod     # Prepare App Store release (manual submission req
 
 In-depth architecture and convention docs for both humans and AI agents. Read the relevant doc before exploring or modifying a subsystem — it captures patterns that aren't obvious from the code alone.
 
-- `architecture/` — Upload system, navigation patterns, API layer, Realm/Zustand patterns, observation creation flow
-- `conventions/` — Component conventions, i18n rules, import aliases
-- `testing/` — Testing guides: `test-core.md`, `test-components.md`, `test-integrations.md`, `integration-test-analysis.md`
+- `architecture/` — `upload-system.md`, `navigation-patterns.md`, `api-layer.md`, `realm-and-zustand.md` (includes working with Realm objects in the React layer)
+- `conventions/` — `component-conventions.md`, `i18n-conventions.md`, `import-aliases.md`, `typescript.md`
+- `testing/` — `test-core.md`, `test-components.md`, `test-integrations.md`, `integration-test-analysis.md`, `e2e.md` (Detox + Maestro + iOS verification)
 
 ## Common Pitfalls
 

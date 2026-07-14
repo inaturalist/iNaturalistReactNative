@@ -14,9 +14,9 @@
 - Add only one or two code comments per file
 
 # Run individual test by name
-You *must* use the following command to a run a specific test file
+You *must* use the following command to run a specific test file (paths are relative to the repo root):
 ```bash
-node 'node_modules/.bin/jest' 'PATH_TO_FILE' -c '/Users/speterson/iNaturalistReactNative/jest.config.ts' -t 'TEST_NAME'   
+node 'node_modules/.bin/jest' 'PATH_TO_FILE' -c './jest.config.ts' -t 'TEST_NAME'
 ```
 
 ### Mocking Strategy

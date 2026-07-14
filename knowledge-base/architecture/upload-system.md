@@ -73,7 +73,7 @@ Results sorted by `_created_at` (oldest first).
 |----------|----------|
 | No API Token | `RECOVERY_BY.LOGIN_AGAIN` → navigate to LoginStackNavigator |
 | Network Failure | User retry (recoveryPossible=true) |
-| Observation Deleted | Remove from queue, delete locally |
+| Observation Deleted (HTTP 410) | Remove from queue, delete locally |
 | Auth Expired | Token revalidated at each step |
 | Realm Access Error | Refresh and retry once |
 
