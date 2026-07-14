@@ -101,8 +101,10 @@ const DebugSheetContent = ( { onClose }: DebugSheetContentProps ) => {
     observationIds,
     isServerAuthoritative,
     isLoading,
+    isFetchingNextPage,
     error,
     refetch,
+    fetchNextPage,
   } = useMyObservationsQuery( );
 
   return (
@@ -147,6 +149,14 @@ const DebugSheetContent = ( { onClose }: DebugSheetContentProps ) => {
         {observationIds.map( ( { uuid }, index ) => (
           <ObservationRow key={uuid} uuid={uuid} index={index} />
         ) )}
+        {isServerAuthoritative && (
+          <DebugButton
+            label={isFetchingNextPage
+              ? "Loading more…"
+              : "Load more"}
+            onPress={( ) => !isFetchingNextPage && fetchNextPage( )}
+          />
+        )}
       </ScrollView>
     </View>
   );
