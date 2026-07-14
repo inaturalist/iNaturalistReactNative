@@ -56,7 +56,9 @@ const createObservation = observation => {
 const defaultServerResult = {
   observationIds: [],
   isLoading: false,
+  isFetchingNextPage: false,
   error: null,
+  fetchNextPage: jest.fn( ),
   refetch: jest.fn( ),
 };
 
@@ -80,11 +82,14 @@ describe( "useMyObservationsQuery", ( ) => {
       state: { observationsSort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST },
     } );
     const serverRefetch = jest.fn( );
+    const serverFetchNextPage = jest.fn( );
     useServerOrderedObservations.mockReturnValue( {
       observationIds: [{ uuid: "should-be-ignored-in-default-sort" }],
       isLoading: true,
+      isFetchingNextPage: true,
       error: new Error( "should be suppressed for default sort" ),
       refetch: serverRefetch,
+      fetchNextPage: serverFetchNextPage,
     } );
     const localObs = factory( "LocalObservation", { needs_sync: false } );
     createObservation( localObs );
@@ -94,8 +99,10 @@ describe( "useMyObservationsQuery", ( ) => {
     expect( result.current.observationIds ).toEqual( [{ uuid: localObs.uuid }] );
     expect( result.current.isServerAuthoritative ).toEqual( false );
     expect( result.current.isLoading ).toEqual( false );
+    expect( result.current.isFetchingNextPage ).toEqual( false );
     expect( result.current.error ).toBeNull( );
     expect( result.current.refetch ).not.toBe( serverRefetch );
+    expect( result.current.fetchNextPage ).not.toBe( serverFetchNextPage );
     expect( useServerOrderedObservations ).toHaveBeenCalledWith(
       expect.objectContaining( { enabled: false } ),
     );
@@ -106,9 +113,12 @@ describe( "useMyObservationsQuery", ( ) => {
       state: { observationsSort: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST },
     } );
     const serverObs = { uuid: factory( "LocalObservation" ).uuid };
+    const serverFetchNextPage = jest.fn( );
     useServerOrderedObservations.mockReturnValue( {
       ...defaultServerResult,
       observationIds: [serverObs],
+      isFetchingNextPage: true,
+      fetchNextPage: serverFetchNextPage,
     } );
     const unsyncedObs = factory( "LocalObservation", { needs_sync: true } );
     createObservation( unsyncedObs );
@@ -120,6 +130,8 @@ describe( "useMyObservationsQuery", ( ) => {
       serverObs,
     ] );
     expect( result.current.isServerAuthoritative ).toEqual( true );
+    expect( result.current.isFetchingNextPage ).toEqual( true );
+    expect( result.current.fetchNextPage ).toBe( serverFetchNextPage );
     expect( useServerOrderedObservations ).toHaveBeenCalledWith(
       expect.objectContaining( { enabled: true } ),
     );
