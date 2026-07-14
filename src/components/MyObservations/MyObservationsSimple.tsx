@@ -28,6 +28,11 @@ import type {
   RealmObservation,
   RealmUser,
 } from "realmModels/types";
+import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import {
+  OBSERVATIONS_SORT_OPTIONS,
+  useObservationsSortLabels,
+} from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
   MY_OBSERVATIONS_SPECIES_SORT_OPTIONS,
@@ -65,11 +70,13 @@ interface Props {
   numUnuploadedObservations: number;
   numObsMissingBasics: number;
   observationIds: { uuid: string }[];
+  observationsSortOptionId: OBSERVATIONS_SORT;
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
   openSheet: ACTIVE_SHEET;
   setActiveTab: ( newTab: string ) => void;
+  setObservationsSortOptionId: ( value: OBSERVATIONS_SORT ) => void;
   setOpenSheet: ( value: ACTIVE_SHEET ) => void;
   setSpeciesSortOptionId: ( value: SPECIES_SORT ) => void;
   showNoResults: boolean;
@@ -95,6 +102,12 @@ interface TaxaSortOption {
   value: SPECIES_SORT;
 }
 
+interface ObservationsSortOption {
+  label: string;
+  text?: string;
+  value: OBSERVATIONS_SORT;
+}
+
 export const OBSERVATIONS_TAB = "observations";
 export const TAXA_TAB = "taxa";
 
@@ -115,11 +128,13 @@ const MyObservationsSimple = ( {
   numUnuploadedObservations,
   numObsMissingBasics: numUnuploadedObsMissingBasics,
   observationIds,
+  observationsSortOptionId,
   onEndReached,
   onListLayout,
   onScroll,
   openSheet,
   setActiveTab,
+  setObservationsSortOptionId,
   setOpenSheet,
   setSpeciesSortOptionId,
   showNoResults,
@@ -137,7 +152,11 @@ const MyObservationsSimple = ( {
   const searchMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SearchMyObservationsEnabled,
   );
+  const sortMyObservationsEnabled = useFeatureFlag(
+    FeatureFlag.SortMyObservationsEnabled,
+  );
   const speciesSortLabels = useSpeciesSortLabels( );
+  const observationsSortLabels = useObservationsSortLabels( );
   const navigation = useNavigation( );
   const route = useRoute( );
   const {
@@ -161,6 +180,19 @@ const MyObservationsSimple = ( {
       return acc;
     },
     {} as Record<SPECIES_SORT, TaxaSortOption>,
+  );
+
+  const observationsSortOptions = OBSERVATIONS_SORT_OPTIONS.reduce(
+    ( acc, sortBy ) => {
+      const { label, text } = observationsSortLabels[sortBy];
+      acc[sortBy] = {
+        label,
+        text,
+        value: sortBy,
+      };
+      return acc;
+    },
+    {} as Record<OBSERVATIONS_SORT, ObservationsSortOption>,
   );
 
   const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
@@ -303,7 +335,7 @@ const MyObservationsSimple = ( {
     Alert.alert( t( "You-are-offline" ), t( "Please-try-again-when-you-are-online" ) );
   }
 
-  const handleSortConfirm = ( optionId: SPECIES_SORT ) => {
+  const handleSpeciesSortConfirm = ( optionId: SPECIES_SORT ) => {
     if ( currentUser && !isConnected ) {
       showOfflineAlert( );
       return;
@@ -317,6 +349,16 @@ const MyObservationsSimple = ( {
         taxaListRef.current.scrollToOffset( { offset: 0, animated: true } );
       }
     }, 0 );
+
+    setOpenSheet( ACTIVE_SHEET.NONE );
+  };
+
+  const handleObservationsSortConfirm = ( optionId: OBSERVATIONS_SORT ) => {
+    if ( currentUser && !isConnected ) {
+      showOfflineAlert( );
+      return;
+    }
+    setObservationsSortOptionId( optionId );
 
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
@@ -396,10 +438,12 @@ const MyObservationsSimple = ( {
               layout={layout}
               updateObservationsView={toggleLayout}
             />
-            {/* <SortButton
-              onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
-              accessibilityLabel={t( "Change-observations-sort-order" )}
-            /> */}
+            {sortMyObservationsEnabled && (
+              <SortButton
+                onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
+                accessibilityLabel={t( "Change-observations-sort-order" )}
+              />
+            )}
           </>
         ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
@@ -434,12 +478,21 @@ const MyObservationsSimple = ( {
         )}
         { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
       </ViewWrapper>
-      {openSheet === ACTIVE_SHEET.SORT && (
+      {openSheet === ACTIVE_SHEET.SORT && activeTab === OBSERVATIONS_TAB && (
+        <RadioButtonSheet
+          headerText={t( "SORT-OBSERVATIONS" )}
+          radioValues={observationsSortOptions}
+          selectedValue={observationsSortOptionId}
+          confirm={optionId => handleObservationsSortConfirm( optionId as OBSERVATIONS_SORT )}
+          onPressClose={() => setOpenSheet( ACTIVE_SHEET.NONE )}
+        />
+      )}
+      {openSheet === ACTIVE_SHEET.SORT && activeTab === TAXA_TAB && (
         <RadioButtonSheet
           headerText={t( "SORT-SPECIES" )}
           radioValues={taxaSortOptions}
           selectedValue={speciesSortOptionId}
-          confirm={optionId => handleSortConfirm( optionId as SPECIES_SORT )}
+          confirm={optionId => handleSpeciesSortConfirm( optionId as SPECIES_SORT )}
           onPressClose={() => setOpenSheet( ACTIVE_SHEET.NONE )}
         />
       )}
