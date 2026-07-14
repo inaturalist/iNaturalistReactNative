@@ -508,6 +508,14 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.valid ).toBe( true );
       expect( result.errors ).toEqual( [] );
     } );
+
+    it( "should be valid when a project has no POFs", () => {
+      const mockProject = { projectObservationFields: [] };
+      const mockObservation = { observationFieldValues: [] };
+      expect(
+        validateProjectFieldsForObservation( mockObservation, [mockProject] ).valid,
+      ).toBe( true );
+    } );
     it( "should return MISSING_REQUIRED when observationFieldValues is undefined", () => {
       const mockProject = {
         projectObservationFields: [{
