@@ -13,6 +13,20 @@
 - Strongly prefer meaningful test cases to maximizing coverage
 - Add only one or two code comments per file
 
+### Factories
+- `factoria` + `@faker-js/faker` generate mock data. `Local*` factories create Realm-persisted data; `Remote*` factories create API-shaped data.
+- Pass field overrides as the **second argument** — `factory( "RemoteTaxon", { id: 745 } )` — **not** by spreading the result (`{ ...factory( "RemoteTaxon" ), id: 745 }`). The override arg runs through any factory `afterBuild`/derived-field logic that spreading silently skips.
+
+### User interactions
+- Prefer `userEvent` (via `const actor = userEvent.setup()`) over `fireEvent` for presses/taps — it's more realistic and reliable per RNTL guidance.
+- `fireEvent` is still appropriate for `changeText`/focus events and timing-controlled cases (e.g. debounce assertions with fake timers).
+
+### i18n
+- Initialize i18next in test files that render translated UI: `beforeAll( async () => { await initI18next(); } );` (import `initI18next` from `i18n/initI18next`).
+
+### Running only affected tests
+- `npx jest --findRelatedTests <files>` runs just the tests that touch the given files.
+
 # Run individual test by name
 You *must* use the following command to run a specific test file (paths are relative to the repo root):
 ```bash

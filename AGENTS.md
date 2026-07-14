@@ -230,16 +230,11 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 
 ## Testing Guidelines
 
-- Use Jest + React Native Testing Library for unit/integration tests
-- Use `factoria` + `@faker-js/faker` to generate mock data
-- `Local*` factories = locally persisted data; `Remote*` factories = API/external data
-- Pass factory field overrides as the second argument (`factory( "RemoteTaxon", { id: 745 } )`), not by spreading the result (`{ ...factory( "RemoteTaxon" ), id: 745 }`) — the override arg runs through any factory `afterBuild`/derived-field logic that spreading skips
-- Prefer `userEvent` (via `const actor = userEvent.setup()`) over `fireEvent` for presses/taps — more realistic per RNTL guidance; `fireEvent` is still fine for `changeText`/focus and timing-controlled cases (e.g. debounce with fake timers)
+- Jest + React Native Testing Library for unit/integration tests; `factoria` + `@faker-js/faker` for mock data (`Local*` = locally persisted, `Remote*` = API/external)
 - Initialize i18next in test files: `beforeAll( async () => { await initI18next(); } );`
-- Test files should focus on user behavior, not implementation details
-- Run only the tests affected by your change with `npx jest --findRelatedTests <files>`
+- Test user behavior, not implementation details
 - E2E tests require real iNaturalist credentials in `.env` (`E2E_TEST_USERNAME`, `E2E_TEST_PASSWORD`)
-- **Details:** unit/component/integration guides in `knowledge-base/testing/`; end-to-end (Detox + Maestro) in `knowledge-base/testing/e2e.md`
+- **Details:** unit/component/integration conventions — factory overrides, `userEvent` vs `fireEvent`, mocking, running a single test — in `knowledge-base/testing/` (start with `test-core.md`); end-to-end (Detox + Maestro) in `knowledge-base/testing/e2e.md`
 
 ## Code Style & Conventions
 
