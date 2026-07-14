@@ -10,23 +10,21 @@ import { renderComponent } from "tests/helpers/render";
 const mockSpeciesCounts = [
   {
     count: 12,
-    taxon: {
-      ...factory( "RemoteTaxon" ),
+    taxon: factory( "RemoteTaxon", {
       id: 745,
       name: "Silphium perfoliatum",
       preferred_common_name: "Cup Plant",
       rank_level: 10,
-    },
+    } ),
   },
   {
     count: 7,
-    taxon: {
-      ...factory( "RemoteTaxon" ),
+    taxon: factory( "RemoteTaxon", {
       id: 746,
       name: "Silphium laciniatum",
       preferred_common_name: "Compass Plant",
       rank_level: 10,
-    },
+    } ),
   },
 ];
 
