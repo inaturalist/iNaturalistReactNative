@@ -466,5 +466,38 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.errors[0].projectTitle ).toBe( "Project B" );
       expect( result.errors[0].fieldName ).toBe( "Substrate" );
     } );
+
+    it( "should report errors in the order the projects were passed in", () => {
+      const mockProjectA = {
+        id: 1,
+        title: "Project A",
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+            name: "Habitat",
+          },
+        }],
+      };
+      const mockProjectB = {
+        id: 2,
+        title: "Project B",
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 20,
+            name: "Substrate",
+          },
+        }],
+      };
+      const mockObservation = { observationFieldValues: [] };
+      const resultBA = validateProjectFieldsForObservation(
+        mockObservation,
+        [mockProjectB, mockProjectA],
+      );
+      expect( resultBA.errors.map( e => e.projectTitle ) ).toEqual( ["Project B", "Project A"] );
+    } );
   } );
 } );
