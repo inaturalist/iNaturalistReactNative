@@ -10,7 +10,6 @@ import {
   Pressable, ScrollView, Text, View,
 } from "components/styledComponents";
 import {
-  defaultExploreV2Location,
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
   useExploreV2,
@@ -133,20 +132,6 @@ const ExploreV2DebugSheet = ( ) => {
     ? state.location.place.id
     : null;
 
-  const handleNearby = async () => {
-    const next = await defaultExploreV2Location();
-    if ( next.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY ) {
-      dispatch( {
-        type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY,
-        lat: next.lat,
-        lng: next.lng,
-        radius: next.radius,
-      } );
-    } else {
-      dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
-    }
-  };
-
   const onClose = () => setVisible( false );
 
   return (
@@ -236,9 +221,9 @@ const ExploreV2DebugSheet = ( ) => {
                   onPress={() => dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } )}
                 />
                 <DebugButton
-                  label="Nearby (re-fetch)"
+                  label="Nearby"
                   active={placeMode === EXPLORE_V2_PLACE_MODE.NEARBY}
-                  onPress={handleNearby}
+                  onPress={() => dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } )}
                 />
                 {PLACES.map( place => (
                   <DebugButton
@@ -269,7 +254,7 @@ const ExploreV2DebugSheet = ( ) => {
 
               <Section title="Reset">
                 <DebugButton
-                  label="RESET (back to UNINITIALIZED)"
+                  label="RESET (back to NEARBY)"
                   onPress={() => dispatch( { type: EXPLORE_V2_ACTION.RESET } )}
                 />
               </Section>

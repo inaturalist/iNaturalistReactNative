@@ -7,6 +7,8 @@ import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
+import useResolvedNearbyLocation
+  from "components/Explore/ExploreV2/hooks/useResolvedNearbyLocation";
 import useInfiniteExploreScroll
   from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
@@ -57,13 +59,26 @@ const ExploreResults = ( ) => {
     {} as Record<OBSERVATIONS_SORT, SortOption>,
   );
 
+  // The stored NEARBY mode is intent-only; resolve it to coordinates (or a
+  // permission requirement) at read time.
+  const isNearby = state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY;
+  const { isResolving, resolved } = useResolvedNearbyLocation( isNearby );
+  const needsPermission = isNearby
+    && resolved?.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION;
+
   const queryParams = useMemo(
-    ( ) => buildExploreV2QueryParams( state ),
-    [state],
+    ( ) => {
+      const nearbyCoords = resolved?.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY
+        ? { lat: resolved.lat, lng: resolved.lng, radius: resolved.radius }
+        : undefined;
+      return buildExploreV2QueryParams( state, nearbyCoords );
+    },
+    [state, resolved],
   );
 
-  const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED
-    && state.location.placeMode !== EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION;
+  // Hold off fetching while a nearby intent is still resolving, or when it
+  // resolved to needing permission (the prompt is shown instead).
+  const canFetch = !isResolving && !needsPermission;
 
   const {
     fetchNextPage,
@@ -109,7 +124,7 @@ const ExploreResults = ( ) => {
           observationsCount={totalResults}
           speciesCount={speciesCount}
         />
-        {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
+        {needsPermission
           ? renderPermissionPrompt( )
           : (
             <>
@@ -129,7 +144,10 @@ const ExploreResults = ( ) => {
                 hideObsUploadStatus={layout !== "list"}
                 obsListKey="ExploreV2Observations"
                 onEndReached={fetchNextPage}
-                showNoResults={!canFetch || totalResults === 0}
+                // Only "no results" once we can actually fetch; while a nearby
+                // intent resolves, canFetch is false but there's nothing to
+                // report as empty yet.
+                showNoResults={canFetch && totalResults === 0}
                 testID="ExploreV2ObservationsList"
               />
               <ObservationsViewBar

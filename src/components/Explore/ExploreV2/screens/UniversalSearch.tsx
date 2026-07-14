@@ -31,9 +31,7 @@ import {
 import type { ExploreStackScreenProps } from "navigation/types";
 import type { ExploreV2Subject, Place } from "providers/ExploreV2Context";
 import {
-  defaultExploreV2Location,
   EXPLORE_V2_ACTION,
-  EXPLORE_V2_PLACE_MODE,
   useExploreV2,
 } from "providers/ExploreV2Context";
 import React, { useCallback, useRef, useState } from "react";
@@ -60,10 +58,11 @@ const INPUT_BOX_CLASSES = classnames(
 // single FlatList so we never conditionally mount/unmount it.
 type SearchResultItem = UniversalSearchResultItem | LocationSearchResultItem;
 
+// Location intent chosen on this screen. "nearby" carries no coordinates; they
+// (and any permission requirement) are resolved on the results screen.
 type SelectedLocation =
   | { type: "place"; place: Place }
-  | { type: "nearby"; lat: number; lng: number; radius: number }
-  | { type: "nearby-needs-permission" }
+  | { type: "nearby" }
   | { type: "worldwide" };
 
 const resultKey = ( item: SearchResultItem ): string => {
@@ -158,21 +157,10 @@ const UniversalSearch = ( ) => {
     Keyboard.dismiss( );
   }, [commitLocation, t] );
 
-  const handleSelectNearby = useCallback( async ( ) => {
-    const next = await defaultExploreV2Location( );
-    switch ( next.placeMode ) {
-      case EXPLORE_V2_PLACE_MODE.NEARBY:
-        setSelectedLocation( {
-          type: "nearby", lat: next.lat, lng: next.lng, radius: next.radius,
-        } );
-        break;
-      case EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION:
-        setSelectedLocation( { type: "nearby-needs-permission" } );
-        break;
-      default:
-        // Permission granted but no fix available: fall back to worldwide.
-        setSelectedLocation( { type: "worldwide" } );
-    }
+  const handleSelectNearby = useCallback( ( ) => {
+    // Record the intent only; the results screen resolves coordinates and
+    // handles the permission prompt.
+    setSelectedLocation( { type: "nearby" } );
     commitLocation( t( "Nearby" ) );
     Keyboard.dismiss( );
   }, [commitLocation, t] );
@@ -202,15 +190,7 @@ const UniversalSearch = ( ) => {
         } );
         break;
       case "nearby":
-        dispatch( {
-          type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY,
-          lat: selectedLocation.lat,
-          lng: selectedLocation.lng,
-          radius: selectedLocation.radius,
-        } );
-        break;
-      case "nearby-needs-permission":
-        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION } );
+        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } );
         break;
       default:
         dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );

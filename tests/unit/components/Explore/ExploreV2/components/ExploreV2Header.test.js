@@ -140,19 +140,7 @@ describe( "ExploreV2Header", () => {
   } );
 
   it( "renders the Nearby label when location is nearby", () => {
-    setState( null, {
-      placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-      lat: 1,
-      lng: 2,
-      radius: 1,
-    } );
-    renderComponent( <ExploreV2Header /> );
-
-    expect( screen.getByText( "Nearby" ) ).toBeTruthy();
-  } );
-
-  it( "renders the Nearby label when nearby is intended but permission is pending", () => {
-    setState( null, { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION } );
+    setState( null, { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY } );
     renderComponent( <ExploreV2Header /> );
 
     expect( screen.getByText( "Nearby" ) ).toBeTruthy();
