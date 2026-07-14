@@ -393,5 +393,41 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.valid ).toBe( true );
       expect( result.errors ).toEqual( [] );
     } );
+
+    it( "should report one error per project when a shared required field is unfilled", () => {
+      const mockProjectA = {
+        id: 1,
+        title: "Project A",
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+            name: "Habitat",
+          },
+        }],
+      };
+      const mockProjectB = {
+        id: 2,
+        title: "Project B",
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+            name: "Habitat",
+          },
+        }],
+      };
+      const mockObservation = { observationFieldValues: [] };
+      const result = validateProjectFieldsForObservation(
+        mockObservation,
+        [mockProjectA, mockProjectB],
+      );
+      expect( result.valid ).toBe( false );
+      expect( result.errors ).toHaveLength( 2 );
+      expect( result.errors.map( e => e.projectTitle ) ).toEqual( ["Project A", "Project B"] );
+      expect( result.errors.map( e => e.fieldName ) ).toEqual( ["Habitat", "Habitat"] );
+    } );
   } );
 } );
