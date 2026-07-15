@@ -120,49 +120,9 @@ inatjs.observations.create.mockImplementation( async ( params ) => {
 
 ---
 
-## Quality Assessment
-
-### Strengths
-
-1. **Realistic integration boundary** — Tests use real Realm (in-memory), real Zustand (auto-reset), and real navigation context. Only the API layer is mocked. This catches real integration bugs.
-
-2. **Well-structured factory system** — `Local*` vs `Remote*` factory naming clearly distinguishes Realm-persisted from API-response data. Factories produce realistic data via Faker.
-
-3. **Good test isolation** — `setupUniqueRealm` prevents cross-test contamination. Zustand auto-resets via `jest.post-setup.js`. Each test file is self-contained.
-
-4. **Upload lifecycle coverage** — `MyObservations.test.js` thoroughly tests batch upload, individual upload, error states, toolbar status transitions, and timer-based state resets.
-
-5. **Auth state boundary testing** — Multiple tests verify different behavior for signed-in vs signed-out users, catching auth-gating regressions.
-
-6. **Useful inline comments** — Tests include comments explaining timing hacks and known issues (e.g., `// For some reason this interferes... ~~~kueda 20230105`).
-
-### Weaknesses
-
-1. **High maintenance cost is the dominant concern** — the recurring weaknesses below (fragile async timing, copy-pasted setup boilerplate, testID-coupled assertions) all raise the cost of keeping the suite green as the app evolves. (An earlier version of this analysis claimed a "~42% broken test rate" with tests quarantined in `broken/` directories — that is not accurate: there are no `broken/` directories and all integration tests are active in CI.)
-
-2. **Fragile async timing** — Tests rely heavily on `waitFor` with custom timeouts (e.g., `timeout: 3000, interval: 500`), `sleep()` calls in mocks, and `MS_BEFORE_TOOLBAR_RESET + 1000` padding. These are symptoms of coupling to implementation timing rather than observable state transitions.
-
-3. **Heavy boilerplate** — The 15-line "UNIQUE REALM SETUP" block is copy-pasted into every integration test. While clearly delimited with comments, it's error-prone and adds noise.
-
-4. **TestID-heavy assertions** — Many assertions rely on `testId` patterns like `UploadIcon.start.${uuid}` and `ObsPressable.${uuid}`. While functional, this couples tests to implementation details (specific testID naming) rather than user-visible behavior. Some tests do use `findByText` and `findByLabelText` appropriately.
-
-5. **Inconsistent test granularity** — `MyObservations.test.js` is comprehensive (15+ test cases covering multiple scenarios) while `MyObservationsSimple.test.js` has a single test that partially overlaps. `SavedMatch.test.js` tests trivial checks (element existence) that could be unit tests.
-
-6. **Coverage is broad but uneven** — the AI Camera, Suggestions, Match, photo import/deletion, sound recording, and TaxonDetails flows all have active integration tests (mostly under `navigation/`). Depth varies, though: some are thin per-screen smoke checks rather than full end-to-end journeys, so verify the depth of an existing test before assuming a flow is thoroughly covered.
-
-7. **Mock implementation complexity** — Some tests have complex mock chains (e.g., `inatjs.observations.create` → `inatjs.observation_photos.create` → `inatjs.photos.create` in MyObservations) that are hard to maintain and may drift from real API behavior.
-
-8. **TODO comments signal incomplete coverage** — Comments like `// TODO there are different presentations for each of these states` and `// TODO: this looks to me more like it should be covered by unit tests` indicate known gaps and boundary confusion.
-
----
-
 ## Strategic Recommendations
 
-### 1. Lower the Maintenance Cost of the Existing Suite
-
-With no broken-test backlog to clear, the biggest ROI is reducing the fragility that makes the green suite expensive to maintain. Focus on recommendations #3 (async-timing determinism), #4 (extract the setup boilerplate), and #5 (accessibility queries over testIDs) below.
-
-### 2. Clarify the Unit vs Integration Boundary
+### 1. Clarify the Unit vs Integration Boundary
 
 The current distinction is fuzzy in places:
 - `SavedMatch.test.js` and `MyObservationsSimple.test.js` test simple element visibility — these could be unit tests
@@ -173,14 +133,14 @@ The current distinction is fuzzy in places:
 - **Unit test** = Tests a single component/hook/function with ALL external dependencies mocked (including Realm, navigation, Zustand). Fast, isolated, tests implementation.
 - **Integration test** = Tests a screen-level component with real Realm, real Zustand, mocked API. Tests user-observable behavior across system boundaries.
 
-### 3. Reduce Async Timing Fragility
+### 2. Reduce Async Timing Fragility
 
 Replace `sleep()` and custom timeout padding with deterministic patterns:
 - Use `findBy*` queries (which internally wait) instead of `waitFor` + `getBy*`
 - Mock timers explicitly with `jest.advanceTimersByTime()` instead of relying on real delays
 - For upload progress tests, consider flushing promises explicitly rather than using `sleep(500)` in mock implementations
 
-### 4. Extract Realm Setup into a Jest Preset or Custom Environment
+### 3. Extract Realm Setup into a Jest Preset or Custom Environment
 
 The 15-line boilerplate block could be:
 - A Jest `setupFilesAfterFramework` for integration tests with a separate Jest config
@@ -190,14 +150,14 @@ The 15-line boilerplate block could be:
 const { realm } = useIntegrationRealm(__filename);
 ```
 
-### 5. Prefer Accessibility Queries Over TestIDs
+### 4. Prefer Accessibility Queries Over TestIDs
 
 Shift from `getByTestId("UploadIcon.start.${uuid}")` toward `getByRole`, `getByLabelText`, `getByText` where possible. This:
 - Validates accessibility as a side effect
 - Couples tests to user-observable behavior rather than implementation
 - Aligns with React Native Testing Library's recommended query priority
 
-### 6. Consider Adding Integration Test Categories
+### 5. Consider Adding Integration Test Categories
 
 The current flat structure makes it hard to prioritize test maintenance. Consider organizing by criticality:
 ```
@@ -208,7 +168,7 @@ tests/integration/
   hooks/             # Cross-system hook behavior
 ```
 
-### 7. Add a Smoke Integration Test
+### 6. Add a Smoke Integration Test
 
 One test that renders the full app, signs in, and verifies all four bottom tabs render — a fast sanity check that the app boots. The existing `navigation/Explore.test.js` partially serves this purpose but is too complex to be a reliable smoke test.
 
