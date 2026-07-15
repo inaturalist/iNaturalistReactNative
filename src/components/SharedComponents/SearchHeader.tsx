@@ -37,12 +37,13 @@ const SearchHeader = ( {
       <Heading4 className="flex-1 wrap text-center">{headerText}</Heading4>
       <Pressable
         className={classnames(
-          "items-end py-5 px-5 -my-5 -mr-5",
+          "items-end",
           { "opacity-50": resetDisabled },
         )}
         onPress={onReset}
         disabled={resetDisabled}
         accessibilityRole="button"
+        hitSlop={20}
         accessibilityLabel={t( "Reset-verb" )}
         testID={`${testID}.reset`}
       >
