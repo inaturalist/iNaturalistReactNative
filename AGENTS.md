@@ -39,7 +39,7 @@ npm run test:integration
 npx jest
 
 # E2E tests (requires Detox setup)
-npm run e2e              # Build and test iOS
+npm run e2e              # Build and test both iOS + Android (use e2e:ios for iOS-only)
 npm run e2e:android      # Build and test Android
 npm run e2e:test         # Run tests without rebuilding
 ```
@@ -152,7 +152,7 @@ The app uses a hybrid state management approach:
 
 API calls are organized in `src/api/`:
 - Uses `inaturalistjs` library as the primary API client
-- Wrapper functions in `src/api/*.js` handle error logging and data transformation
+- Wrapper functions in `src/api/*.{js,ts}` handle error logging and data transformation (the layer is mid-migration to TypeScript)
 - API responses are transformed to match local Realm schema
 - Base API URL configured via `.env` file (`API_URL`)
 
@@ -193,7 +193,7 @@ Translation system using Fluent and i18next:
 - Labels should match content (max 100 chars)
 - Change label when content changes (don't reuse keys for different meanings)
 - Add comments for context unless self-explanatory
-- Use double-dashes for disambiguation (e.g., `Unknown--place`, `Unknown--taxon`)
+- Use double-dashes for disambiguation (e.g., `Unknown--rank`, `Unknown--taxon`)
 - Avoid variables when possible - create separate strings for each case
 - Pluralize with selectors: `{ $count } { $count -> [one] observation *[other] observations }`
 

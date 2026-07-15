@@ -33,13 +33,13 @@ import { useCurrentUser } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 // Helpers
-import { formatDate } from "sharedHelpers/dateHelpers";
+import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 
 // Models
 import Observation from "realmModels/Observation";
 
 // API
-import { fetchObservations } from "api/observations";
+import { searchObservations } from "api/observations";
 
 // Stores
 import useStore from "stores/useStore";

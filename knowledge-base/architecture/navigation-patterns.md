@@ -2,13 +2,13 @@
 
 ## Overview
 
-React Navigation 6 with nested NativeStack and BottomTab navigators. All four bottom tabs share the same `TabStackNavigator` component with different `initialRouteName` values. `SharedStackScreens` provides screens accessible from both tab and full-screen contexts.
+React Navigation 7 with nested NativeStack and BottomTab navigators. All four bottom tabs share the same `TabStackNavigator` component with different `initialRouteName` values. `SharedStackScreens` provides screens accessible from both tab and full-screen contexts.
 
 ## Navigator Hierarchy
 
 ```
 RootStackNavigator (NativeStack)
-├── OnboardingStackNavigator (modal, conditional on !onboardingShown)
+├── OnboardingStackNavigator (rendered at root when !onboardingShown; replaces the tab navigator, not a modal over it)
 ├── BottomTabNavigator (shown when onboarded)
 │   ├── MenuTab → TabStackNavigator (initialRouteName: Menu)
 │   ├── ExploreTab → TabStackNavigator (initialRouteName: RootExplore)
@@ -23,16 +23,16 @@ RootStackNavigator (NativeStack)
 | File | Purpose |
 |------|---------|
 | `src/navigation/RootStackNavigator.tsx` | Top-level navigator |
-| `src/navigation/StackNavigators/TabStackNavigator.js` | Shared by all 4 bottom tabs |
-| `src/navigation/StackNavigators/SharedStackScreens.js` | Screens in both tab and full-screen contexts |
-| `src/navigation/StackNavigators/NoBottomTabStackNavigator.js` | Camera, PhotoLibrary, GroupPhotos, SoundRecorder |
-| `src/navigation/StackNavigators/LoginStackNavigator.js` | Auth screens |
+| `src/navigation/StackNavigators/TabStackNavigator.tsx` | Shared by all 4 bottom tabs |
+| `src/navigation/StackNavigators/SharedStackScreens.tsx` | Screens in both tab and full-screen contexts |
+| `src/navigation/StackNavigators/NoBottomTabStackNavigator.tsx` | Camera, PhotoLibrary, GroupPhotos, SoundRecorder |
+| `src/navigation/StackNavigators/LoginStackNavigator.tsx` | Auth screens |
 | `src/navigation/BottomTabNavigator/index.tsx` | Tab setup with CustomTabBarContainer |
 | `src/navigation/navigationUtils.ts` | Global `navigationRef`, `getCurrentRoute()` |
 | `src/navigation/navigationOptions.tsx` | Header presets: hideHeader, showHeader, fadeInComponent, etc. |
 | `src/navigation/OfflineNavigationGuard.tsx` | NavigationContainer with offline guard + analytics |
 | `src/navigation/ContextHeader.js` | Custom header for list screens |
-| `src/components/hooks/useLinking.js` | Deep linking (manual Linking API) |
+| `src/components/hooks/useLinking.ts` | Deep linking (manual Linking API) |
 
 ## Where to Add a Screen
 
@@ -47,7 +47,7 @@ RootStackNavigator (NativeStack)
 
 Screens available from TabStackNavigator AND NoBottomTabStackNavigator:
 - **Hidden header**: ObsEdit, LocationPicker, TaxonDetails, PhotoSharing
-- **Centered header**: Match, Suggestions, SuggestionsTaxonSearch, MatchTaxonSearchScreen
+- **Centered header**: Match, Suggestions, SuggestionsTaxonSearch, MatchTaxonSearchScreen, AddToProjects
 - **Custom header**: FullPageWebView
 
 All wrapped with `fadeInComponent()` for fade-in animation.
@@ -102,7 +102,7 @@ const { lastScreen, uuid } = params || {};
 
 4. **Tab State Preservation** — `freezeOnBlur: true` suspends inactive tabs. `backBehavior: "history"` preserves per-tab stacks.
 
-5. **Animation Workaround** — `fadeInComponent()` wraps screens for fade-in effect (React Nav 6 limitation; v7 will use layout props).
+5. **Animation Workaround** — `fadeInComponent()` wraps individual screens for a fade-in effect. This is the current workaround; the React Navigation 7 `layout` prop is expected to replace these per-screen wrappers (see the comments in `TabStackNavigator.tsx` / `SharedStackScreens.tsx`).
 
 ## Deep Linking
 

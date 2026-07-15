@@ -8,10 +8,12 @@ The app uses a hybrid persistence strategy: **Realm** for persistent observation
 
 ### Configuration
 - **Schema Version:** bumped frequently — read the current value from `schemaVersion` in `src/realmModels/index.ts` rather than trusting a number here (it was 70 at the time of writing)
-- **Storage Path:** `${RNFS.DocumentDirectoryPath}/db.realm`
+- **Storage Path:** `${DocumentDirectoryPath}/db.realm` (`DocumentDirectoryPath` imported from `@dr.pogodin/react-native-fs`)
 - **Config File:** `src/realmModels/index.ts`
 
-### 14 Registered Models
+### Registered Models
+
+The authoritative list is the `schema` array in `src/realmModels/index.ts` — consult it for the current set. At the time of writing it registers the following:
 
 | Model | Type | Primary Key | Purpose |
 |-------|------|-------------|---------|
@@ -21,6 +23,7 @@ The app uses a hybrid persistence strategy: **Realm** for persistent observation
 | Photo | Primary | `id` | Photo metadata |
 | Sound | Primary | `id` | Sound metadata |
 | QueueItem | Primary | `id` | Upload/sync queue with retry |
+| Project | Primary | `id` | Project metadata |
 | Comment | Embedded | — | Observation comments |
 | Identification | Embedded | — | Species identifications |
 | ObservationPhoto | Embedded | — | Photo ↔ Observation link |
@@ -29,6 +32,10 @@ The app uses a hybrid persistence strategy: **Realm** for persistent observation
 | Vote | Embedded | — | Votes/faves |
 | Flag | Embedded | — | Flags on content |
 | Application | Embedded | — | Application metadata |
+| ObservationField | Embedded | — | Observation field definition |
+| ObservationFieldValue | Embedded | — | Observation field value |
+| ProjectObservation | Embedded | — | Project ↔ Observation link |
+| ProjectObservationField | Embedded | — | Project observation field |
 
 ### Observation Model (Most Complex)
 
@@ -53,14 +60,14 @@ Key methods:
 
 ### Migration Pattern
 
-**File:** `src/realmModels/index.ts` (lines 43-249)
+**File:** the `migration` function in `src/realmModels/index.ts`
 
-Migrations are version-gated and process both old and new Realm objects in parallel:
+Migrations are version-gated and process both old and new Realm objects in parallel. Note that not every `schemaVersion` bump adds a migration branch — the highest gate is lower than the current version (many bumps are additive and need no data migration):
 
 ```javascript
-if ( oldRealm.schemaVersion < 70 ) { /* current version logic */ }
 if ( oldRealm.schemaVersion < 59 ) { /* v59 logic */ }
-// ... back to earliest migrations
+if ( oldRealm.schemaVersion < 55 ) { /* older logic */ }
+// ... back to schemaVersion < 3
 ```
 
 **When changing schema:**
@@ -88,7 +95,7 @@ if ( nonUniqueKeys.length > 0 ) {
 
 | Slice | File | Persisted? | Purpose |
 |-------|------|-----------|---------|
-| `createObservationFlowSlice` | `createObservationFlowSlice.js` | No | Observation creation/editing workflow |
+| `createObservationFlowSlice` | `createObservationFlowSlice.ts` | No | Observation creation/editing workflow |
 | `createUploadObservationsSlice` | `createUploadObservationsSlice.ts` | No | Upload queue, status, progress |
 | `createSyncObservationsSlice` | `createSyncObservationsSlice.ts` | No | Server sync and deletion queue |
 | `createLayoutSlice` | `createLayoutSlice.ts` | **Yes (MMKV)** | UI preferences, onboarding flags |
@@ -159,13 +166,13 @@ Three related gotchas, all stemming from the same root: the models were designed
 
 ### Don't pass live Realm objects around components
 
-A live Realm object can be invalidated by the database underneath you (sync, write, deletion). Holding one in React/Zustand/reducer state, or across an `await`, is a latent crash. Convert to a plain object the moment data leaves the data layer — *before* storing in state, crossing an async boundary, or passing deep into children. `DefaultSearchOptions.tsx` (`realmTaxonToApiTaxon`) is the model to follow.
+A live Realm object can be invalidated by the database underneath you (sync, write, deletion). Holding one in React/Zustand/reducer state, or across an `await`, is a latent crash. Convert to a plain object the moment data leaves the data layer — *before* storing in state, crossing an async boundary, or passing deep into children. `DefaultSearchOptions.tsx` (which calls `Taxon.mapRealmToPojo( realmTaxon )`) is the model to follow.
 
 If you must keep a live object, guard every use with `.isValid()` (see `useCurrentUser`, `useLocalObservation`). Note that several hooks return **live** collections (e.g. `useIconicTaxa` returns a live `Results`), so the consumer is responsible for the conversion. Known risky spots that hold live objects across async writes: `IdentificationSheets.tsx` and `useObsDetailsSharedLogic.ts`.
 
-### There is no built-in Realm → API/plain converter
+### The Realm → plain-object converter is `mapRealmToPojo` (present on some models, not all)
 
-Every model has `static mapApiToRealm(...)` but no `mapRealmToApi` counterpart. `.toJSON()` is unreliable here — it drops `mapTo` aliases, so `Photo` had to override it and `Observation` distrusts it outright. Until a model grows a proper outbound method, hand-mapping the fields you need (as `DefaultSearchOptions.tsx` does) is the accepted pattern; prefer adding the converter to the model over duplicating maps in components.
+Every model has `static mapApiToRealm(...)` for the inbound direction. For the outbound direction, the established convention is a `static mapRealmToPojo(...)` method — it exists on `Taxon`, `Project`, `ProjectObservationField`, and `ObservationField`, but has **not** been added to every model yet. `.toJSON()` is unreliable as a substitute — it drops `mapTo` aliases, so `Photo` had to override it and `Observation` distrusts it outright. When a model you need lacks `mapRealmToPojo`, prefer adding one (following the existing implementations) over hand-mapping fields inline in a component.
 
 ### Realm and API field names sometimes differ — legacy debt, not convention
 

@@ -8,14 +8,14 @@ Wrapper-based API abstraction built on `inaturalistjs`, combined with React Quer
 
 | File | Purpose |
 |------|---------|
-| `src/api/observations.js` | 21 exported functions for observation CRUD, search, faves, subscriptions |
+| `src/api/observations.js` | Observation CRUD, search, faves, subscriptions (see its `export` block for the full list) |
 | `src/api/taxa.js` | Taxon fetch and search with field optimization |
 | `src/api/users.js` | User profiles, blocking/muting |
 | `src/api/projects.js` | Project search, membership |
 | `src/api/search.ts` | Cross-resource search |
 | `src/api/error.ts` | Custom error classes (INatApiError, 401, 429) and handleError |
 | `src/api/types.d.ts` | TypeScript interfaces for API responses |
-| `src/api/log/index.ts` | Grafana logging transport |
+| `src/api/log/index.ts` | `iNatLogstashTransport` — posts logs to the iNaturalist API log endpoint (surfaced downstream in Grafana) |
 | `src/sharedHooks/useAuthenticatedQuery.ts` | React Query wrapper with JWT injection |
 | `src/sharedHooks/useAuthenticatedMutation.ts` | Mutation wrapper with JWT + 401/429 handling |
 | `src/sharedHooks/useAuthenticatedInfiniteQuery.ts` | Infinite query wrapper for pagination |
@@ -72,7 +72,7 @@ mutate( { uuid } );
 ```
 - Auto-injects JWT
 - Smart 401 handling: logs context, attempts token refresh
-- Smart 429 handling: logs for Grafana, uses backoff
+- Smart 429 handling: logs the error (no automatic retry/backoff on mutations — exponential backoff applies to the query path only; see `logging.js`)
 
 ### useAuthenticatedInfiniteQuery
 ```typescript

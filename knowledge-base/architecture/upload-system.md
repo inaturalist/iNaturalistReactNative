@@ -35,7 +35,7 @@ Each observation follows this strict sequence:
 
 The Zustand slice (`createUploadObservationsSlice`) manages:
 
-- `uploadQueue` — FIFO queue of observation UUIDs
+- `uploadQueue` — array of observation UUIDs, consumed from the **tail** (`pop()`); single UUIDs are added at the front (`unshift`), so net upload order is oldest-first rather than strictly FIFO
 - `uploadStatus` — `PENDING` | `IN_PROGRESS` | `COMPLETE` | `CANCELLED`
 - `currentUpload` — Observation being processed
 - `abortController` — Enables cancellation via AbortSignal
@@ -64,8 +64,10 @@ _synced_at == null
   OR _synced_at <= _updated_at
   OR ANY observationPhotos._synced_at == null
   OR ANY observationSounds._synced_at == null
+  OR ANY projectObservations._synced_at == null
+  OR ANY observationFieldValues._synced_at == null
 ```
-Results sorted by `_created_at` (oldest first).
+Results are sorted by `_created_at` **descending** (newest first) via `.sorted("_created_at", true)`. Because the upload queue is popped from the tail (see above), observations still end up uploaded oldest-first.
 
 ## Error Handling
 
@@ -73,7 +75,7 @@ Results sorted by `_created_at` (oldest first).
 |----------|----------|
 | No API Token | `RECOVERY_BY.LOGIN_AGAIN` → navigate to LoginStackNavigator |
 | Network Failure | User retry (recoveryPossible=true) |
-| Observation Deleted (HTTP 410) | Remove from queue, delete locally |
+| Observation Deleted (detected by matching the error message `That observation no longer exists.`; 410 in code comments only) | Remove from queue, delete locally |
 | Auth Expired | Token revalidated at each step |
 | Realm Access Error | Refresh and retry once |
 
@@ -82,7 +84,7 @@ Results sorted by `_created_at` (oldest first).
 Event-driven via `EventRegister`:
 - `trackObservationUpload(uuid)` → emits `INCREMENT_SINGLE_UPLOAD_PROGRESS` with 0.5 increments
 - `trackEvidenceUpload(uuid)` → emits for each photo/sound upload and attachment
-- Per-observation total = 1 (obs) + count(unsyncedPhotos) × 0.5 + count(unsyncedSounds) × 0.5
+- Per-observation total = 1 (obs) + count(unsynced photos/sounds) × 1 + count(previously-synced-but-modified photos/sounds) × 0.5. (Each *unsynced* item emits twice — once on upload, once on attach — at 0.5 each, netting 1; only already-synced-but-changed evidence contributes 0.5.)
 - Toolbar progress = sum(currentIncrements) / sum(totalIncrements)
 
 ## Keep-Awake

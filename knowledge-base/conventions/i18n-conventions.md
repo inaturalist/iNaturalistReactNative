@@ -41,10 +41,10 @@ observation-count = { $count } { $count ->
 
 ## String Key Naming Rules
 
-1. **Labels match content** — max 100 characters for the key
+1. **Labels match content** — max 100 characters for the string content
 2. **Change key when content changes** — don't reuse keys for different meanings
 3. **Add comments** for translator context (unless self-explanatory)
-4. **Double-dashes for disambiguation** — `Unknown--place`, `Unknown--taxon`
+4. **Double-dashes for disambiguation** — `Unknown--rank`, `Unknown--taxon`
 5. **Avoid variables when possible** — create separate strings for each case
 6. **Kebab-case** for key names
 

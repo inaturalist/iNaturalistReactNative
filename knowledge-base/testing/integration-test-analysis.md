@@ -33,7 +33,13 @@ Integration tests in this project validate **cross-system behavior** — verifyi
 
 ## Test Inventory
 
-### Active Tests (18 files)
+All integration tests are active and run in CI — there is no `broken/` directory and `jest.config.ts` excludes no test paths. For the authoritative current list, run:
+
+```bash
+find tests/integration -name '*.test.js'
+```
+
+The suite spans three areas — screen-level tests at the top level, multi-screen flows under `navigation/`, and cross-system hook tests under `sharedHooks/`. Representative examples (not exhaustive):
 
 | File | What it validates |
 |------|------------------|
@@ -42,28 +48,20 @@ Integration tests in this project validate **cross-system behavior** — verifyi
 | `MyObservationsLocalization.test.js` | Language settings persistence across auth state changes |
 | `Explore.test.js` | Observations/species view switching, pull-to-refresh, filter application |
 | `ObsDetails.test.js` | Comment display, automatic update fetching, realm object updates |
-| `ObsEditOnline.test.js` | Location display, upload progress, save/upload button states |
-| `ObsEditOffline.test.js` | Geolocation offline, coordinate display, location fetch indicators |
+| `ObsEditOnline.test.js` / `ObsEditOffline.test.js` | Location display, upload progress, offline geolocation, button states |
 | `Notifications.test.js` | Notification display, remote photo fetching, realm persistence |
 | `SavedMatch.test.js` | Map visibility by latitude, Learn More button by network state |
 | `PhotoSharing.test.js` | File sharing integration (iOS/Android ShareMenu) |
+| `PhotoDeletion.test.js` / `PhotoDeletionExisting.test.js` / `PhotoImport.test.js` | Photo evidence management flows |
+| `SuggestionsWithSyncedObs.test.js` / `SuggestionsWithUnsyncedObs.test.js` | AI suggestion flows |
 | `LanguageSettings.test.js` | System locale vs server preference, language switching API calls |
 | `navigation/Explore.test.js` | Full navigation flow across 4+ screens with real navigators |
 | `navigation/AddObsButton.test.js` | Long-press vs press behavior, navigation dispatch payloads |
+| `navigation/AICamera.test.js`, `navigation/Suggestions.test.js`, `navigation/TaxonDetails.test.js`, `navigation/ObsEdit.test.js`, `navigation/MediaViewer.test.js`, `navigation/StandardCamera.test.js`, `navigation/SoundRecorder.test.js`, `navigation/PhotoLibrary.test.js`, `navigation/MyObservations.test.js` | Per-screen navigation flows |
 | `sharedHooks/useCurrentUser.test.js` | Hook returns signed-in user from Realm |
 | `sharedHooks/useTaxon.test.js` | Local/remote taxon fallback, outdated refresh, error handling |
 | `sharedHooks/useObservationsUpdates.test.js` | Observation update polling behavior |
-| `sharedHooks/useObservationUpdatesWhenFocused.test.js` | Update checks on screen focus |
-| `ObsDetailsSharedComponents/.../ActivityHeaderContainer.test.js` | ID withdrawal/restoration API calls |
-
-### Broken Tests (13 files, excluded from CI)
-
-Located in `tests/integration/broken/` and `tests/integration/navigation/broken/`:
-- `PhotoDeletion.test.js`, `PhotoImport.test.js` — Photo manipulation flows
-- `SuggestionsWithSyncedObs.test.js`, `SuggestionsWithUnsyncedObs.test.js` — AI suggestion flows
-- 9 navigation tests: AICamera, MyObservations, ObsEdit, PhotoLibrary, SoundRecorder, Suggestions, TaxonDetails, MediaViewer, StandardCamera
-
-**This is significant: 13 broken tests vs 18 active tests means ~42% of integration tests are currently non-functional.**
+| `ObsDetailsSharedComponents/ActivityTab/ActivityHeaderContainer.test.js` | ID withdrawal/restoration API calls |
 
 ---
 
@@ -140,7 +138,7 @@ inatjs.observations.create.mockImplementation( async ( params ) => {
 
 ### Weaknesses
 
-1. **42% broken test rate** — 13 of 31 integration test files are in `broken/` directories. This is the most significant quality concern. The broken tests cover critical user flows: AI camera, suggestions, photo import/deletion, and most navigation flows. These represent substantial gaps in regression coverage.
+1. **High maintenance cost is the dominant concern** — the recurring weaknesses below (fragile async timing, copy-pasted setup boilerplate, testID-coupled assertions) all raise the cost of keeping the suite green as the app evolves. (An earlier version of this analysis claimed a "~42% broken test rate" with tests quarantined in `broken/` directories — that is not accurate: there are no `broken/` directories and all integration tests are active in CI.)
 
 2. **Fragile async timing** — Tests rely heavily on `waitFor` with custom timeouts (e.g., `timeout: 3000, interval: 500`), `sleep()` calls in mocks, and `MS_BEFORE_TOOLBAR_RESET + 1000` padding. These are symptoms of coupling to implementation timing rather than observable state transitions.
 
@@ -150,12 +148,7 @@ inatjs.observations.create.mockImplementation( async ( params ) => {
 
 5. **Inconsistent test granularity** — `MyObservations.test.js` is comprehensive (15+ test cases covering multiple scenarios) while `MyObservationsSimple.test.js` has a single test that partially overlaps. `SavedMatch.test.js` tests trivial checks (element existence) that could be unit tests.
 
-6. **Missing coverage for key flows** — No active integration tests for:
-   - AI Camera → Suggestions → Match → Save observation (all in `broken/`)
-   - Photo import from library
-   - Sound recording
-   - Observation editing with multiple photos
-   - TaxonDetails screen interactions
+6. **Coverage is broad but uneven** — the AI Camera, Suggestions, Match, photo import/deletion, sound recording, and TaxonDetails flows all have active integration tests (mostly under `navigation/`). Depth varies, though: some are thin per-screen smoke checks rather than full end-to-end journeys, so verify the depth of an existing test before assuming a flow is thoroughly covered.
 
 7. **Mock implementation complexity** — Some tests have complex mock chains (e.g., `inatjs.observations.create` → `inatjs.observation_photos.create` → `inatjs.photos.create` in MyObservations) that are hard to maintain and may drift from real API behavior.
 
@@ -165,12 +158,9 @@ inatjs.observations.create.mockImplementation( async ( params ) => {
 
 ## Strategic Recommendations
 
-### 1. Prioritize Fixing Broken Tests
+### 1. Lower the Maintenance Cost of the Existing Suite
 
-The 13 broken tests represent the biggest ROI opportunity. They already have test logic written — the failures are likely due to API changes, navigation restructuring, or mock drift. Triage them:
-- **High priority**: Navigation tests (ObsEdit, Suggestions, AICamera) — these cover core user flows
-- **Medium priority**: PhotoDeletion, PhotoImport — photo evidence management
-- **Lower priority**: MediaViewer, SoundRecorder — less frequent user paths
+With no broken-test backlog to clear, the biggest ROI is reducing the fragility that makes the green suite expensive to maintain. Focus on recommendations #3 (async-timing determinism), #4 (extract the setup boilerplate), and #5 (accessibility queries over testIDs) below.
 
 ### 2. Clarify the Unit vs Integration Boundary
 
@@ -226,7 +216,7 @@ One test that renders the full app, signs in, and verifies all four bottom tabs 
 
 ## How Unit and Integration Tests Complement Each Other
 
-| Aspect | Unit Tests (93+ files) | Integration Tests (18 active files) |
+| Aspect | Unit Tests (`tests/unit/`) | Integration Tests (`tests/integration/`) |
 |--------|----------------------|-----------------------------------|
 | **Speed** | Fast (<1s each) | Slow (5-50s each, 50s timeout) |
 | **Scope** | One component/function | Full screen + Realm + Zustand |
@@ -252,6 +242,6 @@ The integration tests are most valuable when they test **boundary behaviors** �
 | `tests/jest.post-setup.js` | Zustand store auto-reset after each test |
 | `tests/realm.setup.js` | Global Realm mock (overridden by uniqueRealm in integration) |
 | `tests/factory.js` | Factory loader + `makeResponse` helper |
-| `tests/factories/` | 25 factories (Local* for Realm, Remote* for API) |
+| `tests/factories/` | Factory definitions (`Local*` for Realm, `Remote*` for API) |
 | `__mocks__/zustand.ts` | Zustand reset mechanism via `storeResetFns` |
-| `jest.config.ts` | Excludes `broken/` directories from test runs |
+| `jest.config.ts` | Root Jest config (`transformIgnorePatterns` for RN modules; no test paths are excluded) |

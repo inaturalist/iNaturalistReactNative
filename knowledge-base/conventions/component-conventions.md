@@ -30,7 +30,7 @@
 - Labels should match content (max 100 chars)
 - Change label when content changes (don't reuse keys for different meanings)
 - Add comments for context unless self-explanatory
-- Use double-dashes for disambiguation: `Unknown--place`, `Unknown--taxon`
+- Use double-dashes for disambiguation: `Unknown--rank`, `Unknown--taxon`
 - Avoid variables when possible — create separate strings for each case
 - Plurals use selectors: `{ $count } { $count -> [one] observation *[other] observations }`
 
