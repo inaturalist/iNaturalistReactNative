@@ -16,7 +16,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
-import type { RealmProject, RealmProjectObservation } from "realmModels/types";
+import type { RealmProject } from "realmModels/types";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
 import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
@@ -49,7 +49,6 @@ const AddToProjects = ( ) => {
   const currentObservation = useStore(
     ( state: ObservationFlowSlice ) => state.currentObservation,
   );
-  const { projectObservations } = currentObservation;
 
   const [selectedProjectIds, setSelectedProjectIds] = useState( () => new Set( ) );
 
@@ -169,18 +168,13 @@ const AddToProjects = ( ) => {
   );
 
   const renderRightIcon = useCallback(
-    ( item: RealmProject, isSelected: boolean ) => {
-      // Logic if all required fields have been filled out will live in zustand
-      if (
-        projectObservations?.some(
-          ( po: RealmProjectObservation ) => po.projectId === item.id,
-        )
-      ) {
-        return (
-          <INatIcon name="checkmark-circle" color={colors.darkGray} size={24} />
-        );
-      }
+    ( isSelected: boolean, projectValid: boolean ) => {
       if ( isSelected ) {
+        if ( projectValid ) {
+          return (
+            <INatIcon name="checkmark-circle" color={colors.darkGray} size={24} />
+          );
+        }
         return (
           <INatIcon
             name="circle-dots-pencil"
@@ -191,7 +185,7 @@ const AddToProjects = ( ) => {
       }
       return <INatIcon name="circle" color={colors.darkGray} size={24} />;
     },
-    [projectObservations],
+    [],
   );
 
   const renderProject: ListRenderItem<RealmProject> = useCallback(
@@ -216,7 +210,7 @@ const AddToProjects = ( ) => {
             <View className="flex-1 mr-2.5">
               <ProjectListItem item={item} />
             </View>
-            {renderRightIcon( item, isSelected )}
+            {renderRightIcon( isSelected, projectValid )}
           </Pressable>
           {canExpand && isSelected && renderExpanded( item, projectValid )}
         </View>
