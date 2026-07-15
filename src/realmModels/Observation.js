@@ -111,6 +111,9 @@ class Observation extends Realm.Object {
       rank_level: true,
     },
     time_observed_at: true,
+    user: {
+      id: true,
+    },
     uuid: true,
   };
 
