@@ -25,13 +25,13 @@ export interface ProjectFieldValidationResult {
 }
 
 interface ObservationFieldToValidate {
-  datatype: string;
+  datatype?: string;
   id: number;
-  name: string;
+  name?: string;
 }
 
 interface ProjectObservationFieldToValidate {
-  obsField: ObservationFieldToValidate;
+  obsField: ObservationFieldToValidate | null;
   required: boolean;
 }
 
@@ -68,7 +68,7 @@ export function validateProjectFieldValue(
 interface ProjectToValidate {
   id: number;
   projectObservationFields: ProjectObservationFieldToValidate[];
-  title: string;
+  title?: string;
 }
 
 /**
