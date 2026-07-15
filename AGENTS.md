@@ -296,17 +296,6 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 - Husky pre-commit hook runs linters automatically
 - Main branch: `main`
 
-## Release Process
-
-Managed via fastlane (requires additional setup):
-```bash
-bundle exec fastlane tag      # Create tag, bump build number, prompt for changelog
-bundle exec fastlane release  # Build and create GitHub release
-bundle exec fastlane internal # Upload to internal testing (TestFlight/Play Store)
-bundle exec fastlane beta     # Promote to public beta testing
-bundle exec fastlane prod     # Prepare App Store release (manual submission required)
-```
-
 ## Accessibility
 
 - eslint-plugin-react-native-a11y enforces accessibility rules
