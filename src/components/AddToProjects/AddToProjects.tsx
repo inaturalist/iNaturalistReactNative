@@ -21,6 +21,7 @@ import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import useSyncJoinedProjects from "./hooks/useSyncJoinedProjects";
 import ObservationFieldInput from "./ObservationFieldInput";
 
 const { useQuery } = RealmContext;
@@ -35,6 +36,7 @@ const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 const AddToProjects = ( ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  useSyncJoinedProjects( );
   const joinedProjectsCollection = useQuery(
     {
       type: Project,

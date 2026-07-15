@@ -108,10 +108,9 @@ const ProjectDetailsContainer = ( ) => {
     ( _, optsWithAuth ) => joinProject( { id }, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        // Persist traditional projects on join
-        if ( project?.project_type === "" ) {
-          Project.upsertRemoteProjects( [project], realm );
-        }
+        // project is not undefined here because we call the mutation in the child
+        // which has a !project check before rendering the buttons that call here
+        Project.upsertRemoteProjects( [project as ApiProject], realm );
         queryClient.invalidateQueries( membershipQueryKey );
       },
       onError: error => {
