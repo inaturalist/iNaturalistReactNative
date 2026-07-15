@@ -127,10 +127,9 @@ const AddToProjects = ( ) => {
   };
 
   const renderExpanded = useCallback(
-    ( item: RealmProject ) => (
+    ( item: RealmProject, projectValid: boolean ) => (
       <View className="bg-lightGrayOpaque">
-        {/* TODO: MOB-1499 this will be based on the result of a validation function */}
-        {Math.random() > 0.5
+        {!projectValid
           ? (
             <View className="px-4 py-2.5 flex-row justify-center items-center">
               <INatIcon
@@ -198,6 +197,9 @@ const AddToProjects = ( ) => {
     ( { item } ) => {
       const isSelected = selectedProjectIds.has( item.id );
       const canExpand = item.projectObservationFields.length > 0;
+      const projectValid = !validationResult.errors.some(
+        error => error.projectId === item?.id,
+      );
 
       return (
         <View>
@@ -215,11 +217,11 @@ const AddToProjects = ( ) => {
             </View>
             {renderRightIcon( item, isSelected )}
           </Pressable>
-          {canExpand && isSelected && renderExpanded( item )}
+          {canExpand && isSelected && renderExpanded( item, projectValid )}
         </View>
       );
     },
-    [renderExpanded, renderRightIcon, selectedProjectIds, toggleProject],
+    [renderExpanded, renderRightIcon, selectedProjectIds, toggleProject, validationResult],
   );
 
   return (
