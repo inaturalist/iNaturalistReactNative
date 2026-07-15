@@ -59,11 +59,11 @@ const AddToProjects = ( ) => {
   );
 
   const validationResult = useMemo(
-    () => validateProjectFieldsForObservation(
-      currentObservation,
-      joinedProjects,
-    ),
-    [currentObservation, joinedProjects],
+    () => {
+      const selectedProjects = joinedProjects.filter( jp => selectedProjectIds.has( jp.id ) );
+      return validateProjectFieldsForObservation( currentObservation, selectedProjects );
+    },
+    [currentObservation, joinedProjects, selectedProjectIds],
   );
   const listHeaderComponent = useMemo(
     ( ) => (
