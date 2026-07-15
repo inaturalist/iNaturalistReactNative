@@ -73,7 +73,8 @@ describe( "AddToProjects", ( ) => {
     // TODO: MOB-1503 also check for expanded chooser being shown
   } );
 
-  // TODO: In MOB-1499 we changed the UI state for checked to be entirely driven by OFV validation
+  // TODO: MOB-1498
+  // In MOB-1499 we changed the UI state for checked to be entirely driven by OFV validation
   // jump-starting the UI with existing POFs has not been implemented yet.
   it.todo( "renders existing project observations as checked" );
 } );
