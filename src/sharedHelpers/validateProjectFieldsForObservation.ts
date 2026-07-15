@@ -1,4 +1,5 @@
 import ObservationFieldValue from "realmModels/ObservationFieldValue";
+import type { RealmObservationPojo } from "realmModels/types";
 
 // Machine-readable reason codes. UI layers map these to localized
 // strings; membership-rule validation uses a separate module with its
@@ -64,15 +65,6 @@ export function validateProjectFieldValue(
   return null;
 }
 
-interface ObservationFieldValueToValidate {
-  obsFieldId: number;
-  value: string;
-}
-
-interface ObservationToValidate {
-  observationFieldValues?: ObservationFieldValueToValidate[];
-}
-
 interface ProjectToValidate {
   id: number;
   projectObservationFields: ProjectObservationFieldToValidate[];
@@ -88,7 +80,8 @@ interface ProjectToValidate {
  * each project reports its own error.
  */
 export default function validateProjectFieldsForObservation(
-  observation: ObservationToValidate,
+  // currentObservation in zustand is typed as RealmObservationPojo
+  observation: RealmObservationPojo,
   projects: ProjectToValidate[],
 ): ProjectFieldValidationResult {
   const errors: ProjectFieldValidationError[] = [];
