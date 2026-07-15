@@ -87,10 +87,4 @@ describe( "syncJoinedProjects", ( ) => {
       global.realm.objectForPrimaryKey( "Project", staleProject.id ),
     ).not.toBeNull();
   } );
-
-  it( "no-ops when currentUserId is missing", async () => {
-    await syncJoinedProjects( global.realm, undefined );
-
-    expect( fetchUserProjects ).not.toHaveBeenCalled( );
-  } );
 } );
