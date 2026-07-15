@@ -36,7 +36,7 @@ const LocationDefaultOptions = ( { onSelectNearby, onSelectWorldwide }: Props ) 
         onPress={onSelectWorldwide}
         testID="LocationDefaultOptions.worldwide"
       >
-        <INatIcon name="globe-outline" size={15} color={colors.darkGray} />
+        <INatIcon name="earth" size={15} color={colors.darkGray} />
         <Body1 className="ml-[10px]">{t( "Worldwide" )}</Body1>
       </Pressable>
     </View>
