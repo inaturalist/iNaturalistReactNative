@@ -17,6 +17,8 @@ import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject, RealmProjectObservation } from "realmModels/types";
+import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -44,9 +46,11 @@ const AddToProjects = ( ) => {
     },
     [],
   );
-  const projectObservations = useStore(
-    state => state.currentObservation?.projectObservations,
+  const currentObservation = useStore(
+    ( state: ObservationFlowSlice ) => state.currentObservation,
   );
+  const { projectObservations } = currentObservation;
+
   const [selectedProjectIds, setSelectedProjectIds] = useState( () => new Set( ) );
 
   const joinedProjects = useMemo(
@@ -54,6 +58,13 @@ const AddToProjects = ( ) => {
     [joinedProjectsCollection],
   );
 
+  const validationResult = useMemo(
+    () => validateProjectFieldsForObservation(
+      currentObservation,
+      joinedProjects,
+    ),
+    [currentObservation, joinedProjects],
+  );
   const listHeaderComponent = useMemo(
     ( ) => (
       <View className="px-4 pt-5 pb-6">
@@ -114,7 +125,6 @@ const AddToProjects = ( ) => {
   const onSave = ( ) => {
     navigation.goBack( );
   };
-  const disabled = false;
 
   const renderExpanded = useCallback(
     ( item: RealmProject ) => (
@@ -235,7 +245,7 @@ const AddToProjects = ( ) => {
             text={t( "SAVE" )}
             onPress={onSave}
             level="neutral"
-            disabled={disabled}
+            disabled={!validationResult.valid}
           />
         </ButtonBar>
       </View>
