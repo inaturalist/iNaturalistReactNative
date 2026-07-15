@@ -111,6 +111,9 @@ const useDeferredStartup = ( ) => {
     } );
     const id11 = deferTask( "syncJoinedProjects", async () => {
       const currentUserId = User.currentUser( realm )?.id;
+      if ( !currentUserId ) {
+        return;
+      }
       await syncJoinedProjects( realm, currentUserId );
     }, 30000 );
 

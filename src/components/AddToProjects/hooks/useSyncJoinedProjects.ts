@@ -11,6 +11,9 @@ const useSyncJoinedProjects = ( ) => {
   const currentUser = useCurrentUser( );
 
   useEffect( ( ) => {
+    if ( !currentUser?.id ) {
+      return;
+    }
     syncJoinedProjects( realm, currentUser?.id );
   }, [currentUser?.id, realm] );
 };

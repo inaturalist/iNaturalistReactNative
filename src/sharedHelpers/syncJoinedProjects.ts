@@ -22,12 +22,8 @@ const deleteNotRemoteProjects = ( remoteProjects: number[], realm: Realm ) => {
 
 async function syncJoinedProjects(
   realm: Realm,
-  currentUserId: number | undefined,
+  currentUserId: number,
 ): Promise<void> {
-  if ( !currentUserId ) {
-    return;
-  }
-
   const params = {
     id: currentUserId,
     per_page: 200,
