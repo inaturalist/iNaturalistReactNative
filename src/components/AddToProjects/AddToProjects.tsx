@@ -158,13 +158,14 @@ const AddToProjects = ( ) => {
           <ObservationFieldInput
             key={pof.id}
             projectObservationField={pof}
-            // TODO: MOB-1499 this will be based on the result of a validation function
-            isValid={false}
+            isValid={!validationResult.errors.some(
+              error => error.obsFieldId === pof.obsField?.id,
+            )}
           />
         ) )}
       </View>
     ),
-    [t],
+    [validationResult, t],
   );
 
   const renderRightIcon = useCallback(
