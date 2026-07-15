@@ -34,4 +34,4 @@ type ScreenAfterPhotoEvidence = "Match" | "Suggestions" | "ObsEdit";
 - Prefer type **inference** over redundant annotations; annotate at boundaries (params, returns, exported values).
 - Avoid `any`; reach for `unknown` when a value is genuinely untyped, then narrow. TS7016 implicit-`any` from importing untyped `.js` modules is part of the accepted baseline — don't paper over it with `@ts-ignore`.
 - **Realm** models use their own class-based `ObjectSchema` type system rather than plain interfaces.
-- **Navigation** params are typed via the param-list types (`RootStackParamList`, etc.) — see `knowledge-base/architecture/navigation-patterns.md`.
+- **Navigation** params are typed via the param-list types (`RootStackParamList`, etc.) — see `agent-docs/architecture/navigation-patterns.md`.

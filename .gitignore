@@ -119,7 +119,7 @@ artifacts/
 **/tmp/rubocop_cache
 
 # Claude Code local config, specialty agents, commands, hooks, and skills.
-# Shared AI-agent guidance lives in AGENTS.md, .claude/CLAUDE.md, and knowledge-base/.
+# Shared AI-agent guidance lives in AGENTS.md, .claude/CLAUDE.md, and agent-docs/.
 # Ignore .claude/ contents but keep the tracked CLAUDE.md wrapper. A parent dir
 # excluded with `.claude/` can't have children re-included, so ignore per-entry.
 .claude/*

@@ -112,7 +112,7 @@ Key design patterns:
 
 To add a new screen, place it in the appropriate navigator: `TabStackNavigator` if it needs bottom tabs visible, `NoBottomTabStackNavigator` if not, or `SharedStackScreens` if it needs to be reachable from both contexts.
 
-**Details:** the full navigator hierarchy, screen-param typing, and deep-linking are in `knowledge-base/architecture/navigation-patterns.md`.
+**Details:** the full navigator hierarchy, screen-param typing, and deep-linking are in `agent-docs/architecture/navigation-patterns.md`.
 
 ### State Management
 
@@ -134,7 +134,7 @@ The app uses a hybrid state management approach:
   - `ExploreContext` - Complex explore screen state
   - `RealmContext` - Realm database access
 
-**Details:** store architecture, MMKV persistence, and the Realm/Zustand division of responsibilities are in `knowledge-base/architecture/realm-and-zustand.md`.
+**Details:** store architecture, MMKV persistence, and the Realm/Zustand division of responsibilities are in `agent-docs/architecture/realm-and-zustand.md`.
 
 ### Data Persistence
 
@@ -146,7 +146,7 @@ The app uses a hybrid state management approach:
 
 - **MMKV** - Fast key-value storage via `zustandStorage` for Zustand persistence
 
-**Details:** working with Realm objects in the React layer (live-object gotchas, the missing Realm→API converter, `mapTo` field-name debt) is documented in `knowledge-base/architecture/realm-and-zustand.md`.
+**Details:** working with Realm objects in the React layer (live-object gotchas, the missing Realm→API converter, `mapTo` field-name debt) is documented in `agent-docs/architecture/realm-and-zustand.md`.
 
 ### API Layer
 
@@ -156,7 +156,7 @@ API calls are organized in `src/api/`:
 - API responses are transformed to match local Realm schema
 - Base API URL configured via `.env` file (`API_URL`)
 
-**Details:** the wrapper-only rule and the `useAuthenticatedQuery`/`useAuthenticatedMutation` base hooks are covered in `knowledge-base/architecture/api-layer.md`.
+**Details:** the wrapper-only rule and the `useAuthenticatedQuery`/`useAuthenticatedMutation` base hooks are covered in `agent-docs/architecture/api-layer.md`.
 
 ### Upload System
 
@@ -167,7 +167,7 @@ The upload system (`src/uploaders/`) handles offline-first observation uploads:
 - Zustand slice `createUploadObservationsSlice` manages upload state and progress
 - Background processing continues even when app is backgrounded
 
-**Details:** the four-step pipeline, error-recovery table, and timeout/keep-awake rules are in `knowledge-base/architecture/upload-system.md`.
+**Details:** the four-step pipeline, error-recovery table, and timeout/keep-awake rules are in `agent-docs/architecture/upload-system.md`.
 
 ### AI Camera & Computer Vision
 
@@ -197,7 +197,7 @@ Translation system using Fluent and i18next:
 - Avoid variables when possible - create separate strings for each case
 - Pluralize with selectors: `{ $count } { $count -> [one] observation *[other] observations }`
 
-**Details:** `knowledge-base/conventions/i18n-conventions.md`.
+**Details:** `agent-docs/conventions/i18n-conventions.md`.
 
 ### Styling
 
@@ -207,7 +207,7 @@ Translation system using Fluent and i18next:
 - Some legacy components use StyleSheet.create()
 - **React Native Paper** - Material Design components for some UI elements
 
-**Details:** component structure, styling, and accessibility conventions are in `knowledge-base/conventions/component-conventions.md`.
+**Details:** component structure, styling, and accessibility conventions are in `agent-docs/conventions/component-conventions.md`.
 
 ### Module Aliases
 
@@ -221,7 +221,7 @@ import { Observation } from "realmModels";
 
 Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, `images`, `navigation`, `providers`, `realmModels`, `sharedHelpers`, `sharedHooks`, `stores`, `styles`, `tests`, `uploaders`
 
-**Details:** full alias table with example imports in `knowledge-base/conventions/import-aliases.md`.
+**Details:** full alias table with example imports in `agent-docs/conventions/import-aliases.md`.
 
 ### Key Directories
 
@@ -242,7 +242,7 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 - Initialize i18next in test files: `beforeAll( async () => { await initI18next(); } );`
 - Test user behavior, not implementation details
 - E2E tests require real iNaturalist credentials in `.env` (`E2E_TEST_USERNAME`, `E2E_TEST_PASSWORD`)
-- **Details:** unit/component/integration conventions — factory overrides, `userEvent` vs `fireEvent`, mocking, running a single test — in `knowledge-base/testing/` (start with `test-core.md`); end-to-end (Detox + Maestro) in `knowledge-base/testing/e2e.md`
+- **Details:** unit/component/integration conventions — factory overrides, `userEvent` vs `fireEvent`, mocking, running a single test — in `agent-docs/testing/` (start with `test-core.md`); end-to-end (Detox + Maestro) in `agent-docs/testing/e2e.md`
 
 ## Code Style & Conventions
 
@@ -256,7 +256,7 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 - Prefer TypeScript for new files (partial adoption, not required)
 - Husky pre-commit hook (`.husky/pre-commit`) runs `lint-staged` (eslint `--fix` on staged files), regenerates i18n translations, and runs a GitGuardian (`ggshield`) secrets scan
 
-**Details:** TypeScript conventions (interface-vs-type, Flow coexistence) in `knowledge-base/conventions/typescript.md`.
+**Details:** TypeScript conventions (interface-vs-type, Flow coexistence) in `agent-docs/conventions/typescript.md`.
 
 ## Authentication & OAuth
 
@@ -303,7 +303,7 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 - Hints written in third person singular ending with period: "Opens the camera."
 - Test with VoiceOver (iOS) and TalkBack (Android)
 
-## Knowledge Base (`knowledge-base/`)
+## Agent Docs (`agent-docs/`)
 
 In-depth architecture and convention docs for both humans and AI agents. Read the relevant doc before exploring or modifying a subsystem — it captures patterns that aren't obvious from the code alone.
 
