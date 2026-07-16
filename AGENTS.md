@@ -309,7 +309,7 @@ In-depth architecture and convention docs for both humans and AI agents. Read th
 
 - `architecture/` — `upload-system.md`, `navigation-patterns.md`, `api-layer.md`, `realm-and-zustand.md` (includes working with Realm objects in the React layer)
 - `conventions/` — `component-conventions.md`, `i18n-conventions.md`, `import-aliases.md`, `typescript.md`
-- `testing/` — `test-core.md`, `test-components.md`, `test-integrations.md`, `integration-test-analysis.md`, `e2e.md` (Detox + Maestro + iOS verification)
+- `testing/` — `test-core.md`, `test-components.md`, `integration-test-analysis.md`, `e2e.md` (Detox + Maestro + iOS verification)
 
 ## Common Pitfalls
 

@@ -75,4 +75,4 @@ Hard-won gotchas when driving the live app (e.g. via the Maestro MCP tools) rath
 
 ## Related
 
-- Unit / component / integration testing: `test-core.md`, `test-components.md`, `test-integrations.md`, `integration-test-analysis.md` in this directory.
+- Unit / component / integration testing: `test-core.md`, `test-components.md`, `integration-test-analysis.md` in this directory.
