@@ -1,4 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
+import { useFocusEffect } from "@react-navigation/native";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
@@ -6,6 +7,8 @@ import ExploreV2Tabs
   from "components/Explore/ExploreV2/components/ExploreV2Tabs";
 import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
+import type { NearbyCoords }
+  from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import ExploreV2SpeciesView
@@ -23,15 +26,20 @@ import {
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import {
   OBSERVATIONS_SORT_OPTIONS,
   useObservationsSortLabels,
 } from "sharedHelpers/observationsSort";
 import { useTranslation } from "sharedHooks";
+import useLocationPermission from "sharedHooks/useLocationPermission";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
 import useStoredLayout from "sharedHooks/useStoredLayout";
+
+// Please don't change this to an aliased path or the e2e mock will not get
+// used in our e2e tests on Github Actions
+import fetchCoarseUserLocation from "../../../../sharedHelpers/fetchCoarseUserLocation";
 
 interface SortOption {
   label: string;
@@ -40,7 +48,8 @@ interface SortOption {
 }
 
 const ExploreResults = ( ) => {
-  const { dispatch, state, requestLocationPermissions } = useExploreV2( );
+  const { dispatch, state } = useExploreV2( );
+  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
@@ -60,13 +69,39 @@ const ExploreResults = ( ) => {
     {} as Record<OBSERVATIONS_SORT, SortOption>,
   );
 
-  const queryParams = useMemo(
-    ( ) => buildExploreV2QueryParams( state ),
-    [state],
-  );
+  // undefined = nearby coords not resolved yet; null = resolved but no fix
+  // (falls back to worldwide); object = resolved coords.
+  const isNearby = state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY;
+  const [nearbyCoords, setNearbyCoords] = useState<NearbyCoords | null | undefined>( undefined );
 
-  const canFetch = state.location.placeMode !== EXPLORE_V2_PLACE_MODE.UNINITIALIZED
-    && state.location.placeMode !== EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION;
+  useFocusEffect( useCallback( ( ) => {
+    let cancelled = false;
+    if ( isNearby && hasPermissions === true ) {
+      setNearbyCoords( undefined );
+      fetchCoarseUserLocation( ).then( location => {
+        if ( !cancelled ) {
+          setNearbyCoords( location?.latitude
+            ? { lat: location.latitude, lng: location.longitude, radius: 1 }
+            : null );
+        }
+      } );
+    }
+    return ( ) => { cancelled = true; };
+  }, [isNearby, hasPermissions] ) );
+
+  const needsPermission = isNearby && hasPermissions === false;
+  const nearbyResolved = !isNearby || needsPermission || nearbyCoords !== undefined;
+  const canFetch = !needsPermission && nearbyResolved;
+
+  const queryParams = useMemo(
+    ( ) => buildExploreV2QueryParams(
+      state,
+      isNearby && nearbyCoords
+        ? nearbyCoords
+        : undefined,
+    ),
+    [state, isNearby, nearbyCoords],
+  );
 
   const {
     fetchNextPage,
@@ -99,7 +134,7 @@ const ExploreResults = ( ) => {
         text={t( "ALLOW-LOCATION-ACCESS" )}
         accessibilityHint={t( "Opens-location-permission-prompt" )}
         level="focus"
-        onPress={requestLocationPermissions}
+        onPress={requestPermissions}
       />
     </View>
   );
@@ -112,7 +147,7 @@ const ExploreResults = ( ) => {
           observationsCount={totalResults}
           speciesCount={speciesCount}
         />
-        {state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION
+        {needsPermission
           ? renderPermissionPrompt( )
           : ( // more tabs to come in MOB-1347
             <>
@@ -135,7 +170,7 @@ const ExploreResults = ( ) => {
                       hideObsUploadStatus={layout !== "list"}
                       obsListKey="ExploreV2Observations"
                       onEndReached={fetchNextPage}
-                      showNoResults={!canFetch || totalResults === 0}
+                      showNoResults={canFetch && totalResults === 0}
                       testID="ExploreV2ObservationsList"
                     />
                     <ObservationsViewBar
@@ -177,6 +212,7 @@ const ExploreResults = ( ) => {
           onPressClose={() => setShowSortSheet( false )}
         />
       )}
+      {renderPermissionsGate( {} )}
     </ViewWrapper>
   );
 };
