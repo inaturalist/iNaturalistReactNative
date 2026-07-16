@@ -146,7 +146,7 @@ const UserProfile = ( ) => {
 
   const onJournalPostsPressed = ( ) => {
     navigation.navigate( "Journal", {
-      userIcon: user?.icon_url,
+      userIcon: User.uri( user ),
       userId: user?.id,
       userLogin: user?.login,
     } );
