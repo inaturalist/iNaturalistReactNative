@@ -20,7 +20,7 @@ interface Props {
   userLogin?: string;
 }
 
-const ProjectPosts = ( {
+const UserPosts = ( {
   userIcon,
   userId,
   userLogin,
@@ -81,4 +81,4 @@ const ProjectPosts = ( {
   );
 };
 
-export default ProjectPosts;
+export default UserPosts;
