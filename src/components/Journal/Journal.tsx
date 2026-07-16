@@ -8,8 +8,11 @@ import ProjectPosts from "./ProjectPosts";
 const Journal = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"Journal">["route"]>( );
   const {
-    journalPostsCount, projectIcon, projectId, projectTitle, userLogin,
+    journalPostsCount, projectIcon, projectId, projectTitle, userId, userIcon, userLogin,
   } = params || {};
+
+  console.log( "userId", userId );
+  console.log( "userIcon", userIcon );
 
   if ( projectId ) {
     return (
