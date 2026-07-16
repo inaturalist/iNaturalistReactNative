@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react";
 import type { ApiObservationFieldValue } from "api/types";
-import type { RealmObservation, RealmObservationFieldValue } from "realmModels/types";
+import type { RealmObservationPojo } from "realmModels/types";
 import * as uuid from "uuid";
 
 class ObservationFieldValue extends Realm.Object {
@@ -32,9 +32,9 @@ class ObservationFieldValue extends Realm.Object {
   }
 
   static findForObsField(
-    observation: RealmObservation,
+    observation: RealmObservationPojo,
     obsFieldId: number,
-  ): RealmObservationFieldValue | undefined {
+  ) {
     return observation.observationFieldValues.find(
       ofv => ofv.obsFieldId === obsFieldId,
     );
