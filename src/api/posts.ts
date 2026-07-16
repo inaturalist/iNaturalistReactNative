@@ -30,8 +30,22 @@ const fetchProjectPosts = async (
   }
 };
 
+const fetchUserPosts = async (
+  params: Record<string, unknown> = {},
+  opts: Record<string, unknown> = {},
+): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+  try {
+    return await inatjs.users.posts( params, opts );
+  } catch ( e ) {
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "fetchUserPosts", opts } },
+    );
+  }
+};
+
 export {
   fetchBlogPosts,
   fetchProjectPosts,
-  // fetchUserPosts,
+  fetchUserPosts,
 };
