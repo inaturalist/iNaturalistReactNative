@@ -49,7 +49,12 @@ interface SortOption {
 
 const ExploreResults = ( ) => {
   const { dispatch, state } = useExploreV2( );
-  const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
+  const {
+    hasPermissions,
+    hasBlockedPermissions,
+    renderPermissionsGate,
+    requestPermissions,
+  } = useLocationPermission( );
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
@@ -69,28 +74,32 @@ const ExploreResults = ( ) => {
     {} as Record<OBSERVATIONS_SORT, SortOption>,
   );
 
-  // undefined = nearby coords not resolved yet; null = resolved but no fix
-  // (falls back to worldwide); object = resolved coords.
+  // undefined until nearby coords resolve; blocked / no-fix flip to worldwide.
   const isNearby = state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY;
-  const [nearbyCoords, setNearbyCoords] = useState<NearbyCoords | null | undefined>( undefined );
+  const [nearbyCoords, setNearbyCoords] = useState<NearbyCoords | undefined>( undefined );
 
   useFocusEffect( useCallback( ( ) => {
     let cancelled = false;
-    if ( isNearby && hasPermissions === true ) {
+    if ( isNearby && hasBlockedPermissions ) {
+      // perms blocked: fall back to worldwide
+      dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
+    } else if ( isNearby && hasPermissions === true ) {
       setNearbyCoords( undefined );
       fetchCoarseUserLocation( ).then( location => {
-        if ( !cancelled ) {
-          setNearbyCoords( location?.latitude
-            ? { lat: location.latitude, lng: location.longitude, radius: 1 }
-            : null );
+        if ( cancelled ) return;
+        if ( location?.latitude ) {
+          setNearbyCoords( { lat: location.latitude, lng: location.longitude, radius: 1 } );
+        } else {
+          // Perms granted but no fix — fall back to worldwide.
+          dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
         }
       } );
     }
     return ( ) => { cancelled = true; };
-  }, [isNearby, hasPermissions] ) );
+  }, [isNearby, hasPermissions, hasBlockedPermissions, dispatch] ) );
 
-  const needsPermission = isNearby && hasPermissions === false;
-  const nearbyResolved = !isNearby || needsPermission || nearbyCoords !== undefined;
+  const needsPermission = isNearby && hasPermissions === false && !hasBlockedPermissions;
+  const nearbyResolved = !isNearby || nearbyCoords !== undefined;
   const canFetch = !needsPermission && nearbyResolved;
 
   const queryParams = useMemo(
