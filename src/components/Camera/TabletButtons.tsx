@@ -4,7 +4,7 @@ import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
-import type { GestureResponderEvent, ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import type { TakePhotoOptions } from "react-native-vision-camera";
 
 import CameraFlip from "./Buttons/CameraFlip";
@@ -35,12 +35,12 @@ const cameraOptionsClasses = [
 ].join( " " );
 
 interface Props {
-  handleZoomButtonPress: ( _event: GestureResponderEvent ) => void;
+  handleZoomButtonPress: ( ) => void;
   disabled: boolean;
   disabledPhotoLibrary: boolean;
-  flipCamera: ( _event: GestureResponderEvent ) => void;
-  handleCheckmarkPress?: ( _event: GestureResponderEvent ) => void;
-  handleClose?: ( _event: GestureResponderEvent ) => void;
+  flipCamera: ( ) => void;
+  handleCheckmarkPress?: ( ) => void;
+  handleClose?: ( ) => void;
   hasFlash?: boolean;
   hasPhotoLibraryButton?: boolean;
   photosTaken?: boolean;
@@ -49,10 +49,10 @@ interface Props {
   showZoomButton: boolean;
   takePhoto: ( ) => Promise<void>;
   takePhotoOptions: TakePhotoOptions;
-  toggleFlash: ( _event: GestureResponderEvent ) => void;
+  toggleFlash: ( ) => void;
   zoomTextValue: string;
   useLocation: boolean;
-  toggleLocation: ( _event: GestureResponderEvent ) => void;
+  toggleLocation: ( ) => void;
   isDefaultMode: boolean;
   deleteSentinelFile: ( ) => Promise<void>;
 }

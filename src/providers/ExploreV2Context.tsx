@@ -1,3 +1,5 @@
+import type { SPECIES_TAB } from "appConstants/tabs";
+import { OBSERVATIONS_TAB } from "appConstants/tabs";
 import * as React from "react";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 
@@ -14,6 +16,7 @@ export enum EXPLORE_V2_ACTION {
   SET_LOCATION_PLACE = "SET_LOCATION_PLACE",
   SET_SORT = "SET_SORT",
   SET_FILTERS = "SET_FILTERS",
+  SET_ACTIVE_TAB = "SET_ACTIVE_TAB",
   RESET = "RESET"
 }
 
@@ -52,6 +55,8 @@ interface Project {
   icon?: string;
 }
 
+export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
+
 export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
@@ -75,6 +80,7 @@ export interface ExploreV2State {
   location: ExploreV2LocationState;
   sortBy: OBSERVATIONS_SORT;
   filters: ExploreV2Filters;
+  activeTab: ExploreV2Tab;
 }
 
 export type ExploreV2Action =
@@ -88,6 +94,7 @@ export type ExploreV2Action =
   }
   | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: OBSERVATIONS_SORT }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
+  | { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB; tab: ExploreV2Tab }
   | { type: EXPLORE_V2_ACTION.RESET };
 
 export const initialExploreV2State: ExploreV2State = {
@@ -97,6 +104,7 @@ export const initialExploreV2State: ExploreV2State = {
   location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
   sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
   filters: {},
+  activeTab: OBSERVATIONS_TAB,
 };
 
 export function exploreV2Reducer(
@@ -130,6 +138,8 @@ export function exploreV2Reducer(
       return { ...state, sortBy: action.sortBy };
     case EXPLORE_V2_ACTION.SET_FILTERS:
       return { ...state, filters: action.filters };
+    case EXPLORE_V2_ACTION.SET_ACTIVE_TAB:
+      return { ...state, activeTab: action.tab };
     case EXPLORE_V2_ACTION.RESET:
       return initialExploreV2State;
     default: {

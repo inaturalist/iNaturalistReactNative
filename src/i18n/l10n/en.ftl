@@ -99,6 +99,7 @@ All-observation-options--list = All observation options: iNaturalist AI Camera, 
 All-observations = All observations
 All-observations-need-a-date-and-location-to-be-used-for-science = All observations need a date and location to be used for science. Please edit observations if they need more information.
 All-organisms = All organisms
+All-required-fields-have-been-filled = All required fields have been filled
 # As in intellectual property rights over a photo or other creative work
 all-rights-reserved = all rights reserved
 All-taxa = All taxa
@@ -220,6 +221,9 @@ Change-user = Change user
 Change-zoom = Change zoom
 # Notification that appears after pressing the reset password button
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
+Choose-a-date = Choose a date
+Choose-a-date-time = Choose a date & time
+Choose-a-time = Choose a time
 # Label for a text input field during sign up to choose a username
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
 # Label for button that chooses a taxon
@@ -494,6 +498,8 @@ Endemic = Endemic
 # without knowing the vowel/consonant state of the first letter of the
 # placeable
 Endemic-to-place = Endemic to { $place }
+Enter-a-number = Enter a number
+Enter-a-response = Enter a response
 # Title for a section describing an error
 Error = Error
 ERROR = ERROR
@@ -1107,6 +1113,7 @@ Removes-this-observations-taxon = Removes this observation's taxon
 Removes-your-vote-of-agreement = Removes your vote of agreement
 # Hint for a button that removes a vote of disagreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
+Required = Required
 # Quality grade indicating observation is accurate and complete enough to
 # share outside of iNat
 Research-Grade--quality-grade = Research Grade
@@ -1173,6 +1180,8 @@ See-project-members = See project members
 # Accessibility label for Species button on UserProfile screen
 See-species-observed-by-this-user-in-Explore = See species observed by this user in Explore
 Select-a-date-and-time-for-observation = Select a date and time for observation
+Select-a-response = Select a response
+Select-a-species = Select a species
 Select-captive-or-cultivated-status = Select captive or cultivated status
 Select-geoprivacy-status = Select geoprivacy status
 Select-or-drag-media = Select or drag media
@@ -1320,6 +1329,7 @@ This-sound-was-hidden-for-violating-community-guidelines-or-terms = This sound w
 This-user-has-no-followers = This user has no followers.
 This-user-has-not-joined-any-projects = This user has not joined any projects.
 This-user-is-not-following-anyone = This user is not following anyone.
+To-add-to-this-project-all-required-fields-must-be-filled = To add to this project, all required fields must be filled
 To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 To-view-nearby-organisms-please-enable-location = To view nearby organisms, please enable location.
 To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.

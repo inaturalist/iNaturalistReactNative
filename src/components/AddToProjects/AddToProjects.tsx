@@ -3,6 +3,7 @@ import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
   Body2,
+  Body3,
   Button,
   ButtonBar,
   CustomFlashList,
@@ -20,6 +21,9 @@ import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
+import useSyncJoinedProjects from "./hooks/useSyncJoinedProjects";
+import ObservationFieldInput from "./ObservationFieldInput";
+
 const { useQuery } = RealmContext;
 
 const DROP_SHADOW = getShadow( {
@@ -32,6 +36,7 @@ const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 const AddToProjects = ( ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  useSyncJoinedProjects( );
   const joinedProjectsCollection = useQuery(
     {
       type: Project,
@@ -113,6 +118,48 @@ const AddToProjects = ( ) => {
   };
   const disabled = false;
 
+  const renderExpanded = useCallback(
+    ( item: RealmProject ) => (
+      <View className="bg-lightGrayOpaque">
+        {/* TODO: MOB-1499 this will be based on the result of a validation function */}
+        {Math.random() > 0.5
+          ? (
+            <View className="px-4 py-2.5 flex-row justify-center items-center">
+              <INatIcon
+                name="triangle-exclamation"
+                color={colors.warningRed}
+                size={19}
+              />
+              <Body3 className="ml-2.5">
+                {t( "To-add-to-this-project-all-required-fields-must-be-filled" )}
+              </Body3>
+            </View>
+          )
+          : (
+            <View className="px-4 py-2.5 flex-row justify-center items-center">
+              <INatIcon
+                name="checkmark-circle"
+                color={colors.inatGreen}
+                size={19}
+              />
+              <Body3 className="ml-2.5">
+                {t( "All-required-fields-have-been-filled" )}
+              </Body3>
+            </View>
+          )}
+        {item.projectObservationFields.map( pof => (
+          <ObservationFieldInput
+            key={pof.id}
+            projectObservationField={pof}
+            // TODO: MOB-1499 this will be based on the result of a validation function
+            isValid={false}
+          />
+        ) )}
+      </View>
+    ),
+    [t],
+  );
+
   const renderRightIcon = useCallback(
     ( item: RealmProject, isSelected: boolean ) => {
       // Logic if all required fields have been filled out will live in zustand
@@ -142,6 +189,7 @@ const AddToProjects = ( ) => {
   const renderProject: ListRenderItem<RealmProject> = useCallback(
     ( { item } ) => {
       const isSelected = selectedProjectIds.has( item.id );
+      const canExpand = item.projectObservationFields.length > 0;
 
       return (
         <View>
@@ -159,10 +207,11 @@ const AddToProjects = ( ) => {
             </View>
             {renderRightIcon( item, isSelected )}
           </Pressable>
+          {canExpand && isSelected && renderExpanded( item )}
         </View>
       );
     },
-    [renderRightIcon, selectedProjectIds, toggleProject],
+    [renderExpanded, renderRightIcon, selectedProjectIds, toggleProject],
   );
 
   return (
