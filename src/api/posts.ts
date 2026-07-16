@@ -4,7 +4,7 @@ import type { ApiOpts, ApiParams } from "api/types";
 import inatjs from "inaturalistjs";
 
 const fetchBlogPosts = async (
-  params: Record<string, unknown> = {},
+  params: ApiParams = {},
   opts: ApiOpts = {},
 ): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
   try {
