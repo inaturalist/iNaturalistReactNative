@@ -85,7 +85,7 @@ const ExploreResults = ( ) => {
     } else if ( isNearby && hasPermissions === true && nearbyCoords === undefined ) {
       fetchCoarseUserLocation( ).then( location => {
         if ( cancelled ) return;
-        if ( location?.latitude ) {
+        if ( typeof location?.latitude === "number" ) {
           setNearbyCoords( { lat: location.latitude, lng: location.longitude, radius: 1 } );
         } else {
           // Perms granted but no fix — fall back to worldwide.
@@ -101,13 +101,8 @@ const ExploreResults = ( ) => {
   const canFetch = !needsPermission && nearbyResolved;
 
   const queryParams = useMemo(
-    ( ) => buildExploreV2QueryParams(
-      state,
-      isNearby && nearbyCoords
-        ? nearbyCoords
-        : undefined,
-    ),
-    [state, isNearby, nearbyCoords],
+    ( ) => buildExploreV2QueryParams( state, nearbyCoords ),
+    [state, nearbyCoords],
   );
 
   const {
