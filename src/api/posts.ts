@@ -1,12 +1,14 @@
 import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
-import type { ApiOpts, ApiParams } from "api/types";
+import type {
+  ApiDefaultResult, ApiOpts, ApiParams, ApiResponse,
+} from "api/types";
 import inatjs from "inaturalistjs";
 
-const fetchBlogPosts = async (
+const fetchBlogPosts = async <T = ApiDefaultResult>(
   params: ApiParams = {},
   opts: ApiOpts = {},
-): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
     return await inatjs.posts.for_user( params, opts );
   } catch ( e ) {
@@ -21,10 +23,10 @@ interface ProjectPostsParams extends ApiParams {
   id: number;
 }
 
-const fetchProjectPosts = async (
+const fetchProjectPosts = async <T = ApiDefaultResult>(
   params: ProjectPostsParams,
   opts: ApiOpts = {},
-): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
     return await inatjs.projects.posts( params, opts );
   } catch ( e ) {
@@ -39,10 +41,10 @@ interface UserPostsParams extends ApiParams {
   id: number;
 }
 
-const fetchUserPosts = async (
+const fetchUserPosts = async <T = ApiDefaultResult>(
   params: UserPostsParams,
   opts: ApiOpts = {},
-): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
     return await inatjs.users.posts( params, opts );
   } catch ( e ) {
