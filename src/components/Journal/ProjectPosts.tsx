@@ -20,7 +20,7 @@ interface Props {
   projectTitle?: string;
 }
 
-const PostsForProjects = ( {
+const ProjectPosts = ( {
   projectIcon,
   projectId,
   projectTitle,
@@ -81,4 +81,4 @@ const PostsForProjects = ( {
   );
 };
 
-export default PostsForProjects;
+export default ProjectPosts;
