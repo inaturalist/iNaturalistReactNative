@@ -43,6 +43,29 @@ class User extends Realm.Object {
     return realm.objects( "User" ).filtered( "signedIn == true" )[0];
   }
 
+  /**
+   * Inverse of the API->Realm mapping
+   *
+   * @param user - a live Realm User (or an already-plain object)
+   * @returns plain CurrentUser-shaped object, or null
+   */
+  static mapRealmToPojo( user?: RealmUser | null ) {
+    if ( !user ) return null;
+    return {
+      id: user.id,
+      identifications_count: user.identifications_count,
+      icon_url: user.iconUrl ?? user.icon_url,
+      locale: user.locale,
+      login: user.login,
+      name: user.name,
+      observations_count: user.observations_count,
+      prefers_common_names: user.prefers_common_names,
+      prefers_community_taxa: user.prefers_community_taxa,
+      prefers_scientific_name_first: user.prefers_scientific_name_first,
+      signedIn: user.signedIn,
+    };
+  }
+
   static updatePreferences( realm: Realm, newPreferences: TaxonNamesSettings ) {
     const currentUser = User.currentUser( realm );
     safeRealmWrite( realm, ( ) => {
