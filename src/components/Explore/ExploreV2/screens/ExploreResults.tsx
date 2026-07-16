@@ -74,7 +74,6 @@ const ExploreResults = ( ) => {
     {} as Record<OBSERVATIONS_SORT, SortOption>,
   );
 
-  // undefined until nearby coords resolve; blocked / no-fix flip to worldwide.
   const isNearby = state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY;
   const [nearbyCoords, setNearbyCoords] = useState<NearbyCoords | undefined>( undefined );
 
@@ -83,8 +82,7 @@ const ExploreResults = ( ) => {
     if ( isNearby && hasBlockedPermissions ) {
       // perms blocked: fall back to worldwide
       dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
-    } else if ( isNearby && hasPermissions === true ) {
-      setNearbyCoords( undefined );
+    } else if ( isNearby && hasPermissions === true && nearbyCoords === undefined ) {
       fetchCoarseUserLocation( ).then( location => {
         if ( cancelled ) return;
         if ( location?.latitude ) {
@@ -96,7 +94,7 @@ const ExploreResults = ( ) => {
       } );
     }
     return ( ) => { cancelled = true; };
-  }, [isNearby, hasPermissions, hasBlockedPermissions, dispatch] ) );
+  }, [isNearby, hasPermissions, hasBlockedPermissions, nearbyCoords, dispatch] ) );
 
   const needsPermission = isNearby && hasPermissions === false && !hasBlockedPermissions;
   const nearbyResolved = !isNearby || nearbyCoords !== undefined;
