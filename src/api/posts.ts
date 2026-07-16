@@ -10,7 +10,9 @@ const fetchBlogPosts = async <T = ApiDefaultResult>(
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    return await inatjs.posts.for_user( params, opts );
+    const response = await inatjs.posts.for_user( params, opts );
+    if ( !response ) { return null; }
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
@@ -28,7 +30,9 @@ const fetchProjectPosts = async <T = ApiDefaultResult>(
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    return await inatjs.projects.posts( params, opts );
+    const response = await inatjs.projects.posts( params, opts );
+    if ( !response ) { return null; }
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
@@ -46,7 +50,9 @@ const fetchUserPosts = async <T = ApiDefaultResult>(
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    return await inatjs.users.posts( params, opts );
+    const response = await inatjs.users.posts( params, opts );
+    if ( !response ) { return null; }
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
