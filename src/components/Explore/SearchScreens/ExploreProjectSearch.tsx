@@ -4,6 +4,7 @@ import type { ApiProjectSummary } from "api/types";
 import ProjectList from "components/ProjectList/ProjectList";
 import {
   SearchBar,
+  SearchHeader,
   ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -15,7 +16,6 @@ import { useInfiniteScroll, useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
-import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
@@ -71,10 +71,10 @@ const ExploreProjectSearch = ( { closeModal, updateProject }: Props ) => {
 
   return (
     <ViewWrapper>
-      <ExploreSearchHeader
-        closeModal={closeModal}
+      <SearchHeader
+        onClose={closeModal}
         headerText={t( "SEARCH-PROJECTS" )}
-        resetFilters={resetProject}
+        onReset={resetProject}
         testID="ExploreProjectSearch.close"
       />
       <View
