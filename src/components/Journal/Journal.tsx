@@ -22,7 +22,7 @@ const Journal = ( ) => {
     );
   }
 
-  if ( userLogin ) {
+  if ( userId ) {
     return (
       <UserPosts
         userIcon={userIcon}
