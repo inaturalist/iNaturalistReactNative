@@ -145,7 +145,7 @@ describe( "validateProjectFieldsForObservation", () => {
         }],
       };
       const mockObservation = {
-        observationFieldValues: [{ id: 10, value }],
+        observationFieldValues: [{ obsFieldId: 10, value }],
       };
       const result = validateProjectFieldsForObservation( mockObservation, [mockProject] );
       expect( result.valid ).toBe( false );
