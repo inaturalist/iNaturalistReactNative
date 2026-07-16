@@ -16,7 +16,7 @@ import PostList from "./PostList";
 
 interface Props {
   projectIcon?: string;
-  projectId?: number;
+  projectId: number;
   projectTitle?: string;
 }
 
