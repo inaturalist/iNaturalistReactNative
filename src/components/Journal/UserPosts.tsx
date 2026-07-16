@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { POST_FOR_PROJECT_FIELDS } from "api/fields";
-import { fetchProjectPosts } from "api/posts";
+import { fetchUserPosts } from "api/posts";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import type { TabStackScreenProps } from "navigation/types";
 import React, {
@@ -29,7 +29,7 @@ const ProjectPosts = ( {
     = useNavigation<TabStackScreenProps<"Journal">["navigation"]>();
   const { t } = useTranslation();
 
-  const queryKey = ["fetchProjectPosts", userId];
+  const queryKey = ["fetchUserPosts", userId];
   const queryParams = {
     id: userId,
     fields: POST_FOR_PROJECT_FIELDS,
@@ -40,7 +40,7 @@ const ProjectPosts = ( {
     fetchNextPage,
     isFetchingNextPage,
     totalResults: totalPosts,
-  } = useInfiniteScroll( queryKey, fetchProjectPosts, queryParams, {
+  } = useInfiniteScroll( queryKey, fetchUserPosts, queryParams, {
     enabled: !!userId,
   } );
 
