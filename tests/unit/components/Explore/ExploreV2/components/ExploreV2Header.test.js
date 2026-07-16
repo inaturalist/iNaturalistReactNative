@@ -150,4 +150,11 @@ describe( "ExploreV2Header", () => {
 
     expect( screen.getByText( "Nearby" ) ).toBeTruthy();
   } );
+
+  it( "renders the Nearby label when nearby is intended but permission is pending", () => {
+    setState( null, { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION } );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.getByText( "Nearby" ) ).toBeTruthy();
+  } );
 } );
