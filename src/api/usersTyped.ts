@@ -1,10 +1,9 @@
-import inatjs from "inaturalistjs";
-
-import type { ErrorWithResponse, INatApiError } from "./error";
-import handleError from "./error";
+import type { ErrorWithResponse, INatApiError } from "api/error";
+import handleError from "api/error";
 import type {
   ApiDefaultResult, ApiOpts, ApiParams, ApiResponse,
-} from "./types";
+} from "api/types";
+import inatjs from "inaturalistjs";
 
 interface UsersProjectsParams extends ApiParams {
   id: number;
