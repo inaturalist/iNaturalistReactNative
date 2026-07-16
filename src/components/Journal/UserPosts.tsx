@@ -36,7 +36,7 @@ const ProjectPosts = ( {
   };
 
   const {
-    data: projectPosts,
+    data: userPosts,
     fetchNextPage,
     isFetchingNextPage,
     totalResults: totalPosts,
@@ -59,16 +59,16 @@ const ProjectPosts = ( {
   }, [headerOptions, navigation] );
 
   const enrichedPosts = useMemo( () => {
-    if ( !projectPosts ) return null;
+    if ( !userPosts ) return null;
 
-    return projectPosts?.map( p => ( {
+    return userPosts?.map( p => ( {
       ...p,
       parent: {
         id: userId,
         icon_url: userIcon,
       },
     } ) );
-  }, [userIcon, userId, projectPosts] );
+  }, [userIcon, userId, userPosts] );
 
   return (
     <ScreenShell>
