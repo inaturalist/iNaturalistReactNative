@@ -15,23 +15,23 @@ import {
 import PostList from "./PostList";
 
 interface Props {
-  projectIcon?: string;
-  projectId?: number;
-  projectTitle?: string;
+  userIcon?: string;
+  userId: number;
+  userLogin?: string;
 }
 
 const ProjectPosts = ( {
-  projectIcon,
-  projectId,
-  projectTitle,
+  userIcon,
+  userId,
+  userLogin,
 }: Props ) => {
   const navigation
     = useNavigation<TabStackScreenProps<"Journal">["navigation"]>();
   const { t } = useTranslation();
 
-  const queryKey = ["fetchProjectPosts", projectId];
+  const queryKey = ["fetchProjectPosts", userId];
   const queryParams = {
-    id: projectId,
+    id: userId,
     fields: POST_FOR_PROJECT_FIELDS,
   };
 
@@ -41,17 +41,17 @@ const ProjectPosts = ( {
     isFetchingNextPage,
     totalResults: totalPosts,
   } = useInfiniteScroll( queryKey, fetchProjectPosts, queryParams, {
-    enabled: !!projectId,
+    enabled: !!userId,
   } );
 
   const headerOptions = useMemo(
     () => ( {
-      headerTitle: projectTitle,
+      headerTitle: userLogin,
       headerSubtitle: t( "X-JOURNAL_POSTS", {
         count: totalPosts || 0,
       } ),
     } ),
-    [totalPosts, t, projectTitle],
+    [totalPosts, t, userLogin],
   );
 
   useEffect( () => {
@@ -64,11 +64,11 @@ const ProjectPosts = ( {
     return projectPosts?.map( p => ( {
       ...p,
       parent: {
-        id: projectId,
-        icon_url: projectIcon,
+        id: userId,
+        icon_url: userIcon,
       },
     } ) );
-  }, [projectIcon, projectId, projectPosts] );
+  }, [userIcon, userId, projectPosts] );
 
   return (
     <ScreenShell>
