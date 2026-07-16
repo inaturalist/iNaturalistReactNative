@@ -327,8 +327,9 @@ export type BaseTabStackParamList = {
   };
   // From UserProfile
   // {
-  //   userLogin: user?.login,
-  //   journalPostsCount: user?.journal_posts_count,
+  //   userId: user?.id,
+  //   userIcon: user?.login,
+  //   userLogin: user?.icon_url,
   // }
   // From ProjectDetails
   // {
@@ -343,7 +344,6 @@ export type BaseTabStackParamList = {
     projectIcon?: string;
     projectId?: number;
     projectTitle?: string;
-    journalPostsCount?: number;
   } | undefined;
   Debug: undefined;
   UILibrary: undefined;

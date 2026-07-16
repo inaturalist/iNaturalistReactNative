@@ -8,7 +8,7 @@ import ProjectPosts from "./ProjectPosts";
 const Journal = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"Journal">["route"]>( );
   const {
-    journalPostsCount, projectIcon, projectId, projectTitle, userId, userIcon, userLogin,
+    projectIcon, projectId, projectTitle, userId, userIcon, userLogin,
   } = params || {};
 
   console.log( "userId", userId );
@@ -26,7 +26,6 @@ const Journal = ( ) => {
 
   // TODO: posts for one user
   if ( userLogin ) {
-    console.log( journalPostsCount );
     return null;
   }
 
