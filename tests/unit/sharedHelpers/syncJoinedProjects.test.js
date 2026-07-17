@@ -11,11 +11,14 @@ jest.mock( "api/usersTyped", () => ( {
 
 const currentUserId = 42;
 
-const makeUserProjectsResponse = results => ( {
+const makeUserProjectsResponse = (
   results,
-  page: 1,
-  per_page: 200,
-  total_results: results.length,
+  { page = 1, totalResults = results.length } = {},
+) => ( {
+  results,
+  page,
+  per_page: 100,
+  total_results: totalResults,
 } );
 
 beforeEach( ( ) => {
