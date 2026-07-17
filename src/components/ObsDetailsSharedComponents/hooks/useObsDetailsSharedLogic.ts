@@ -11,6 +11,7 @@ import {
 } from "react";
 import Observation from "realmModels/Observation";
 import type { RealmObservation, RealmTaxon, RealmUser } from "realmModels/types";
+import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
@@ -319,11 +320,9 @@ const useObsDetailsSharedLogic = ( {
         taxon = realm?.objectForPrimaryKey( "Taxon", createdIdent.taxon.id );
       }
       taxon = taxon || createdIdent.taxon;
-      const realmUser = currentUser?.id
-        ? realm.objectForPrimaryKey( "User", currentUser.id )
-        : null;
+      const realmUser = User.currentUser( realm );
       safeRealmWrite( realm, ( ) => {
-        createdIdent.user = realmUser;
+        if ( realmUser ) createdIdent.user = realmUser;
         if ( taxon ) createdIdent.taxon = taxon;
         localObservation?.identifications?.push( createdIdent );
       }, "setting local identification in ObsDetailsContainer" );
@@ -334,7 +333,6 @@ const useObsDetailsSharedLogic = ( {
     }
   }, [
     belongsToCurrentUser,
-    currentUser,
     localObservation?.identifications,
     realm,
     refetchRemoteObservation,
@@ -344,13 +342,11 @@ const useObsDetailsSharedLogic = ( {
   const handleCommentMutationSuccess = useCallback( ( data: ApiComment[] ) => {
     refetchRemoteObservation( );
     if ( belongsToCurrentUser ) {
-      const realmUser = currentUser?.id
-        ? realm.objectForPrimaryKey( "User", currentUser.id )
-        : null;
+      const realmUser = User.currentUser( realm );
       safeRealmWrite( realm, ( ) => {
         const localComments = localObservation?.comments;
         const newComment = data[0];
-        newComment.user = realmUser;
+        if ( realmUser ) newComment.user = realmUser;
         localComments?.push( newComment );
       }, "setting local comment in ObsDetailsContainer" );
       const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
@@ -358,7 +354,6 @@ const useObsDetailsSharedLogic = ( {
     }
   }, [
     belongsToCurrentUser,
-    currentUser,
     localObservation?.comments,
     realm,
     refetchRemoteObservation,
