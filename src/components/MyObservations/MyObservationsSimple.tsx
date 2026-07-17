@@ -360,6 +360,14 @@ const MyObservationsSimple = ( {
     }
     setObservationsSortOptionId( optionId );
 
+    // scroll to the top of the newly sorted list
+    // TODO: add local sort to handle logged-out users
+    setTimeout( () => {
+      if ( listRef?.current ) {
+        listRef.current.scrollToOffset( { offset: 0, animated: true } );
+      }
+    }, 0 );
+
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
 
