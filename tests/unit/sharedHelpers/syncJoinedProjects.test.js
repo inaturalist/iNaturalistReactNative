@@ -127,4 +127,30 @@ describe( "syncJoinedProjects", ( ) => {
       global.realm.objectForPrimaryKey( "Project", staleProject.id ),
     ).toBeNull();
   } );
+
+  it( "does not prune or throw when a later page fails", async () => {
+    // Local
+    const staleProject = factory( "RemoteProject", { id: 9999 } );
+    Project.upsertRemoteProjects( [staleProject], global.realm );
+    // API: page 1 succeeds, page 2 fails
+    const pageOneProject = factory( "RemoteProject", { id: 1 } );
+    fetchUserProjects
+      .mockResolvedValueOnce(
+        makeUserProjectsResponse( [pageOneProject], { totalResults: 150 } ),
+      )
+      .mockRejectedValueOnce( new Error( "network request failed" ) );
+
+    await expect(
+      syncJoinedProjects( global.realm, currentUserId ),
+    ).resolves.toBeUndefined( );
+
+    expect( fetchUserProjects ).toHaveBeenCalledTimes( 2 );
+    // Page 1 was upserted, but the stale local project was not pruned
+    expect(
+      global.realm.objectForPrimaryKey( "Project", pageOneProject.id ),
+    ).not.toBeNull();
+    expect(
+      global.realm.objectForPrimaryKey( "Project", staleProject.id ),
+    ).not.toBeNull();
+  } );
 } );
