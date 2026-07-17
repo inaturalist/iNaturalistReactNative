@@ -39,7 +39,7 @@ class User extends Realm.Object {
     return User.uri( user )?.replace( "medium", "thumb" );
   }
 
-  static currentUser( realm: Realm ): RealmUser {
+  static currentUser( realm: Realm ): RealmUser | undefined {
     return realm.objects<RealmUser>( "User" ).filtered( "signedIn == true" )[0];
   }
 
@@ -68,6 +68,7 @@ class User extends Realm.Object {
 
   static updatePreferences( realm: Realm, newPreferences: TaxonNamesSettings ) {
     const currentUser = User.currentUser( realm );
+    if ( !currentUser ) return;
     safeRealmWrite( realm, ( ) => {
       currentUser.prefers_common_names = newPreferences.prefers_common_names;
       currentUser.prefers_scientific_name_first = newPreferences.prefers_scientific_name_first;
