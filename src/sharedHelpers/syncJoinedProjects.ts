@@ -24,14 +24,14 @@ async function syncJoinedProjects(
   realm: Realm,
   currentUserId: number,
 ): Promise<void> {
+  const apiToken = await getJWT( );
+
   const params = {
     id: currentUserId,
     per_page: 200,
     fields: PROJECT_SUMMARY_POF_FIELDS,
     ttl: -1,
   };
-
-  const apiToken = await getJWT( );
   const response = await fetchUserProjects<ApiProjectSummaryWithPOF>(
     params,
     { api_token: apiToken },
