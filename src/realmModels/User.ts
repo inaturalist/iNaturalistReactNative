@@ -39,8 +39,8 @@ class User extends Realm.Object {
     return User.uri( user )?.replace( "medium", "thumb" );
   }
 
-  static currentUser( realm: Realm ) {
-    return realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  static currentUser( realm: Realm ): RealmUser {
+    return realm.objects<RealmUser>( "User" ).filtered( "signedIn == true" )[0];
   }
 
   /**
