@@ -37,6 +37,8 @@ async function syncJoinedProjects(
     { api_token: apiToken },
   );
 
+  // Unusable page: abort without pruning so we never delete local
+  // projects based on an incomplete picture of the remote state
   if ( response === null || !response.results ) {
     return;
   }
