@@ -165,4 +165,31 @@ describe( "useMyObservationsQuery", ( ) => {
       otherServerObs,
     ] );
   } );
+
+  it( "applies the selected sort to local observations when there is no current user", ( ) => {
+    useCurrentUser.mockReturnValue( null );
+    useMyObservations.mockReturnValue( {
+      state: { observationsSort: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST },
+    } );
+    useServerOrderedObservations.mockReturnValue( {
+      ...defaultServerResult,
+      observationIds: [{ uuid: "should-be-ignored-when-logged-out" }],
+    } );
+    const olderObs = factory( "LocalObservation", { observed_on_string: "2020-01-01T00:00:00" } );
+    const newerObs = factory( "LocalObservation", { observed_on_string: "2022-06-15T00:00:00" } );
+    // create newer-first so a passing test can't be explained by insertion order
+    createObservation( newerObs );
+    createObservation( olderObs );
+
+    const { result } = renderHook( ( ) => useMyObservationsQuery( ) );
+
+    expect( result.current.observationIds ).toEqual( [
+      { uuid: olderObs.uuid },
+      { uuid: newerObs.uuid },
+    ] );
+    expect( result.current.isServerAuthoritative ).toEqual( false );
+    expect( useServerOrderedObservations ).toHaveBeenCalledWith(
+      expect.objectContaining( { enabled: false } ),
+    );
+  } );
 } );
