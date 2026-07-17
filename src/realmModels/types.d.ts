@@ -134,7 +134,7 @@ export interface RealmTaxon extends RealmObject {
 export interface RealmUser extends RealmObject {
   id: number;
   identifications_count?: number;
-  iconUrl?: string;
+  icon_url?: string;
   locale?: string;
   login?: string;
   name?: string;
