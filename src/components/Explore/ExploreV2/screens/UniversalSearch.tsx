@@ -292,6 +292,7 @@ const UniversalSearch = ( ) => {
                 <INatIcon name="magnifying-glass" size={15} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-species-user-or-project" )}
+                  autoCorrect={false}
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
@@ -299,6 +300,7 @@ const UniversalSearch = ( ) => {
                   onFocus={handleSubjectFocus}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
+                  spellCheck={false}
                   testID="UniversalSearch.subjectInput"
                   value={subjectText}
                 />
@@ -307,6 +309,7 @@ const UniversalSearch = ( ) => {
                 <INatIcon name="map-marker-outline" size={15} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-a-location" )}
+                  autoCorrect={false}
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
                   onChangeText={onChangeLocationText}
@@ -314,6 +317,7 @@ const UniversalSearch = ( ) => {
                   placeholder={t( "Search-for-a-location" )}
                   placeholderTextColor={colors.mediumGray}
                   ref={locationInputRef}
+                  spellCheck={false}
                   testID="UniversalSearch.locationInput"
                   value={locationText}
                 />
