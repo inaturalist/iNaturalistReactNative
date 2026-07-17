@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import syncJoinedProjects from "sharedHelpers/syncJoinedProjects";
@@ -10,12 +11,15 @@ const useSyncJoinedProjects = ( ) => {
 
   const currentUser = useCurrentUser( );
 
+  const { isConnected } = useNetInfo( );
+
   useEffect( ( ) => {
-    if ( !currentUser?.id ) {
+    // only sync once we know we're online (matches iOS Legacy chooser behavior)
+    if ( !currentUser?.id || isConnected !== true ) {
       return;
     }
     syncJoinedProjects( realm, currentUser?.id );
-  }, [currentUser?.id, realm] );
+  }, [currentUser?.id, realm, isConnected] );
 };
 
 export default useSyncJoinedProjects;
