@@ -10,6 +10,8 @@ import safeRealmWrite from "./safeRealmWrite";
 
 const logger = log.extend( "syncJoinedProjects.ts" );
 
+const PER_PAGE = 100;
+
 const deleteNotRemoteProjects = ( remoteProjects: number[], realm: Realm ) => {
   if ( !remoteProjects ) { return; }
   safeRealmWrite( realm, ( ) => {
@@ -30,27 +32,38 @@ async function syncJoinedProjects(
   try {
     const apiToken = await getJWT( );
     const remoteProjectIds: number[] = [];
+    let page = 1;
+    const totalPages = 1;
 
-    const params = {
-      id: currentUserId,
-      per_page: 100,
-      fields: PROJECT_SUMMARY_POF_FIELDS,
-      ttl: -1,
-    };
-    const response = await fetchUserProjects<ApiProjectSummaryWithPOF>(
-      params,
-      { api_token: apiToken },
-    );
+    while ( page <= totalPages ) {
+      const params = {
+        id: currentUserId,
+        per_page: PER_PAGE,
+        page,
+        fields: PROJECT_SUMMARY_POF_FIELDS,
+        ttl: -1,
+      };
+      // eslint-disable-next-line no-await-in-loop
+      const response = await fetchUserProjects<ApiProjectSummaryWithPOF>(
+        params,
+        { api_token: apiToken },
+      );
 
-    // Unusable page: abort without pruning so we never delete local
-    // projects based on an incomplete picture of the remote state
-    if ( response === null || !response.results ) {
-      return;
+      // Unusable page: abort without pruning so we never delete local
+      // projects based on an incomplete picture of the remote state
+      if ( response === null || !response.results ) {
+        return;
+      }
+
+      // Update local copy of the current user's joined projects
+      Project.upsertRemoteProjects( response.results, realm );
+      remoteProjectIds.push( ...response.results.map( p => p.id ) );
+
+      totalPages = Math.ceil( ( response.total_results ?? 0 ) / PER_PAGE );
+      // Guard against a misreported total_results keeping the loop alive
+      if ( response.results.length === 0 ) { break; }
+      page += 1;
     }
-
-    // Update local copy of the current user's joined projects
-    Project.upsertRemoteProjects( response.results, realm );
-    remoteProjectIds.push( ...response.results.map( p => p.id ) );
 
     // Remove projects that are present locally but no longer in server response
     deleteNotRemoteProjects( remoteProjectIds, realm );
