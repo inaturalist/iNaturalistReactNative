@@ -44,17 +44,17 @@ class User extends Realm.Object {
   }
 
   /**
-   * Inverse of the API->Realm mapping
+   * Maps a live Realm User into a plain object
    *
-   * @param user - a live Realm User (or an already-plain object)
-   * @returns plain CurrentUser-shaped object, or null
+   * @param user - a live Realm User
+   * @returns plain user snapshot, or null
    */
   static mapRealmToPojo( user?: RealmUser | null ) {
     if ( !user ) return null;
     return {
       id: user.id,
       identifications_count: user.identifications_count,
-      icon_url: user.iconUrl ?? user.icon_url,
+      icon_url: user.iconUrl,
       locale: user.locale,
       login: user.login,
       name: user.name,
@@ -96,5 +96,7 @@ class User extends Realm.Object {
     },
   };
 }
+
+export type UserPojo = NonNullable<ReturnType<typeof User.mapRealmToPojo>>;
 
 export default User;
