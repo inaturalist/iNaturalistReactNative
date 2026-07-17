@@ -146,8 +146,12 @@ const ExploreResults = ( ) => {
       <View className="flex-1 overflow-hidden">
         <ExploreV2Header />
         <ExploreV2Tabs
-          observationsCount={totalResults}
-          speciesCount={speciesCount}
+          observationsCount={canFetch
+            ? totalResults
+            : undefined}
+          speciesCount={canFetch
+            ? speciesCount
+            : undefined}
         />
         {needsPermission
           ? renderPermissionPrompt( )

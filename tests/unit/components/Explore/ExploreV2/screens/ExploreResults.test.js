@@ -114,6 +114,32 @@ describe( "ExploreResults nearby resolution", ( ) => {
     expect( lastScrollArgs( ).enabled ).toBe( false );
   } );
 
+  it( "does not show stale counts in the tabs when nearby, no permission", async ( ) => {
+    // Simulate the shared query cache still holding the previous (worldwide)
+    // result: the disabled query returns a non-zero totalResults.
+    mockUseInfiniteExploreScroll.mockReturnValue( {
+      fetchNextPage: jest.fn( ),
+      isFetchingNextPage: false,
+      handlePullToRefresh: jest.fn( ),
+      observations: [],
+      totalResults: 42,
+    } );
+    mockHasPermissions = false;
+    useExploreV2.mockReturnValue( {
+      state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY } ),
+      dispatch: mockDispatch,
+    } );
+
+    renderComponent( <ExploreResults /> );
+
+    expect(
+      await screen.findByText( /To view nearby organisms/ ),
+    ).toBeVisible( );
+    // The stale worldwide count must not leak into the tabs.
+    expect( screen.queryByText( "42" ) ).toBeNull( );
+    expect( screen.getAllByText( "--" ).length ).toBeGreaterThanOrEqual( 1 );
+  } );
+
   it( "dispatches worldwide without prompting when permission is blocked", async ( ) => {
     mockHasPermissions = false;
     mockHasBlockedPermissions = true;
