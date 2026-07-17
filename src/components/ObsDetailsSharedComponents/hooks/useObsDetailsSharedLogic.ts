@@ -319,8 +319,11 @@ const useObsDetailsSharedLogic = ( {
         taxon = realm?.objectForPrimaryKey( "Taxon", createdIdent.taxon.id );
       }
       taxon = taxon || createdIdent.taxon;
+      const realmUser = currentUser?.id
+        ? realm.objectForPrimaryKey( "User", currentUser.id )
+        : null;
       safeRealmWrite( realm, ( ) => {
-        createdIdent.user = currentUser;
+        createdIdent.user = realmUser;
         if ( taxon ) createdIdent.taxon = taxon;
         localObservation?.identifications?.push( createdIdent );
       }, "setting local identification in ObsDetailsContainer" );
@@ -341,10 +344,13 @@ const useObsDetailsSharedLogic = ( {
   const handleCommentMutationSuccess = useCallback( ( data: ApiComment[] ) => {
     refetchRemoteObservation( );
     if ( belongsToCurrentUser ) {
+      const realmUser = currentUser?.id
+        ? realm.objectForPrimaryKey( "User", currentUser.id )
+        : null;
       safeRealmWrite( realm, ( ) => {
         const localComments = localObservation?.comments;
         const newComment = data[0];
-        newComment.user = currentUser;
+        newComment.user = realmUser;
         localComments?.push( newComment );
       }, "setting local comment in ObsDetailsContainer" );
       const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
