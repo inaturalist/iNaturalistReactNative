@@ -33,7 +33,7 @@ async function syncJoinedProjects(
     const apiToken = await getJWT( );
     const remoteProjectIds: number[] = [];
     let page = 1;
-    const totalPages = 1;
+    let totalPages = 1;
 
     while ( page <= totalPages ) {
       const params = {
