@@ -16,14 +16,8 @@ interface Props {
   withdrawn?: boolean;
 }
 
-// TODO replace when we've properly typed Realm object
-interface User {
-  prefers_common_names?: boolean;
-  prefers_scientific_name_first?: boolean;
-}
-
 const DisagreementText = ( { taxon, username, withdrawn }: Props ) => {
-  const currentUser = useCurrentUser( ) as User;
+  const currentUser = useCurrentUser( );
 
   const showTaxonName = useCallback( ( fontComponent: FC ) => (
     <DisplayTaxonName
