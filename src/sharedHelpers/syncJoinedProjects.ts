@@ -25,6 +25,7 @@ async function syncJoinedProjects(
   currentUserId: number,
 ): Promise<void> {
   const apiToken = await getJWT( );
+  const remoteProjectIds: number[] = [];
 
   const params = {
     id: currentUserId,
@@ -45,10 +46,10 @@ async function syncJoinedProjects(
 
   // Update local copy of the current user's joined projects
   Project.upsertRemoteProjects( response.results, realm );
+  remoteProjectIds.push( ...response.results.map( p => p.id ) );
 
   // Remove projects that are present locally but no longer in server response
-  const remoteProjectsId = response.results.map( p => p.id );
-  deleteNotRemoteProjects( remoteProjectsId, realm );
+  deleteNotRemoteProjects( remoteProjectIds, realm );
 }
 
 export default syncJoinedProjects;
