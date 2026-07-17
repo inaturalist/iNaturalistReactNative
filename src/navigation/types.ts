@@ -328,8 +328,8 @@ export type BaseTabStackParamList = {
   // From UserProfile
   // {
   //   userId: user?.id,
-  //   userIcon: user?.login,
-  //   userLogin: user?.icon_url,
+  //   userIcon: user?.icon_url,
+  //   userLogin: user?.login,
   // }
   // From ProjectDetails
   // {
