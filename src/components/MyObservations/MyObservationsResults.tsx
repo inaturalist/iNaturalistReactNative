@@ -37,8 +37,10 @@ import {
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 import useObservationCounts from "sharedHooks/useObservationCounts";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import {
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
@@ -46,6 +48,7 @@ import useStore, { zustandStorage } from "stores/useStore";
 import type { SpeciesCount } from "types/sorting";
 
 import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
+import useMyObservationsQuery from "./hooks/useMyObservationsQuery";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservationsEmptySimple from "./MyObservationsEmptySimple";
@@ -93,7 +96,20 @@ const MyObservationsResults = ( ) => {
     return unsubscribe;
   }, [navigation, setJustFinishedSignup] );
 
-  const observationIds = useLocalObservationIds();
+  const localObservationIds = useLocalObservationIds();
+  const sortMyObservationsEnabled = useFeatureFlag( FeatureFlag.SortMyObservationsEnabled );
+  const {
+    observationIds: serverOrderedObservationIds,
+    isServerAuthoritative,
+    isFetchingNextPage: isFetchingNextPageFromQuery,
+    fetchNextPage: fetchNextPageFromQuery,
+    refetch: refetchFromQuery,
+  } = useMyObservationsQuery( );
+  // Only use server-ordered list when the flag is on and the selected sort requires it
+  const useServerOrder = sortMyObservationsEnabled && isServerAuthoritative;
+  const observationIds = useServerOrder
+    ? serverOrderedObservationIds
+    : localObservationIds;
   const {
     numUnuploadedObservations,
     numObsMissingBasics,
@@ -244,7 +260,10 @@ const MyObservationsResults = ( ) => {
   const handlePullToRefresh = useCallback( async ( ) => {
     await syncManually( { skipUploads: true } );
     refetchObservationsUpdates( );
-  }, [syncManually, refetchObservationsUpdates] );
+    if ( useServerOrder ) {
+      refetchFromQuery( );
+    }
+  }, [syncManually, refetchObservationsUpdates, useServerOrder, refetchFromQuery] );
 
   // Scroll the list to the offset we need to restore, e.g. when you are
   // scrolled way down, edit an observation, and return. Entering ObsEdit
@@ -365,6 +384,14 @@ const MyObservationsResults = ( ) => {
 
   const numTotalObservations = totalResultsRemote || observationIds.length;
 
+  // Pagination for the rendered list follows whichever source is authoritative:
+  const isFetchingNextPageForList = useServerOrder
+    ? isFetchingNextPageFromQuery
+    : isFetchingNextPage;
+  const handleEndReached = useServerOrder
+    ? fetchNextPageFromQuery
+    : fetchNextPage;
+
   useEffect( ( ) => {
     // persist this number in zustand so a user can see their latest observations count
     // even if they're offline
@@ -442,7 +469,7 @@ const MyObservationsResults = ( ) => {
         handlePullToRefresh={handlePullToRefresh}
         handleSyncButtonPress={handleSyncButtonPress}
         isConnected={isConnected}
-        isFetchingNextPage={isFetchingNextPage}
+        isFetchingNextPage={isFetchingNextPageForList}
         isFetchingTaxa={isFetchingTaxa}
         justFinishedSignup={justFinishedSignup}
         layout={layout}
@@ -455,7 +482,7 @@ const MyObservationsResults = ( ) => {
         numObsMissingBasics={numObsMissingBasics}
         observationIds={observationIds}
         observationsSortOptionId={myObsState.observationsSort}
-        onEndReached={fetchNextPage}
+        onEndReached={handleEndReached}
         onListLayout={restoreScrollOffset}
         onScroll={onScroll}
         openSheet={openSheet}
