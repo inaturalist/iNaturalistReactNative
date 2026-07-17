@@ -59,4 +59,17 @@ describe( "useSyncJoinedProjects", () => {
 
     expect( syncJoinedProjects ).not.toHaveBeenCalled();
   } );
+
+  it( "syncs once connectivity is restored", () => {
+    useNetInfo.mockReturnValue( { isConnected: false } );
+
+    const { rerender } = renderHook( () => useSyncJoinedProjects() );
+    expect( syncJoinedProjects ).not.toHaveBeenCalled();
+
+    useNetInfo.mockReturnValue( { isConnected: true } );
+    rerender();
+
+    expect( syncJoinedProjects ).toHaveBeenCalledTimes( 1 );
+    expect( syncJoinedProjects ).toHaveBeenCalledWith( mockRealm, currentUserId );
+  } );
 } );
