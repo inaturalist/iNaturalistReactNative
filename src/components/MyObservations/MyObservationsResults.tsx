@@ -443,7 +443,7 @@ const MyObservationsResults = ( ) => {
 
   if ( !layout ) { return null; }
 
-  if ( observationIds.length === 0 ) {
+  if ( observationIds.length === 0 && !totalResultsRemote ) {
     return showNoResults
       ? (
         <MyObservationsEmptySimple
