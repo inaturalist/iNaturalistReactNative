@@ -5,6 +5,7 @@ import useServerOrderedObservations
 import { useMyObservations } from "providers/MyObservationsContext";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import factory from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
@@ -16,6 +17,11 @@ jest.mock( "components/MyObservations/hooks/useServerOrderedObservations", ( ) =
 jest.mock( "providers/MyObservationsContext", ( ) => ( {
   __esModule: true,
   useMyObservations: jest.fn( ),
+} ) );
+
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
 } ) );
 
 // UNIQUE REALM SETUP
@@ -62,6 +68,8 @@ const defaultServerResult = {
   refetch: jest.fn( ),
 };
 
+const mockUser = factory( "LocalUser" );
+
 beforeEach( ( ) => {
   // clear leftover state from previous test
   const realm = global.mockRealms[mockRealmIdentifier];
@@ -69,6 +77,7 @@ beforeEach( ( ) => {
     realm.deleteAll( );
   }, "clear realm before each useMyObservationsQuery test" );
   useServerOrderedObservations.mockReturnValue( defaultServerResult );
+  useCurrentUser.mockReturnValue( mockUser );
 } );
 
 afterEach( ( ) => {
