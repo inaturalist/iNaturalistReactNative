@@ -90,4 +90,41 @@ describe( "syncJoinedProjects", ( ) => {
       global.realm.objectForPrimaryKey( "Project", staleProject.id ),
     ).not.toBeNull();
   } );
+
+  it( "fetches all pages and prunes after the last page", async () => {
+    // Local
+    const staleProject = factory( "RemoteProject", { id: 9999 } );
+    Project.upsertRemoteProjects( [staleProject], global.realm );
+    // API: 150 total results across two pages
+    const pageOneProjects = [
+      factory( "RemoteProject", { id: 1 } ),
+      factory( "RemoteProject", { id: 2 } ),
+    ];
+    const pageTwoProjects = [factory( "RemoteProject", { id: 3 } )];
+    fetchUserProjects
+      .mockResolvedValueOnce(
+        makeUserProjectsResponse( pageOneProjects, { totalResults: 150 } ),
+      )
+      .mockResolvedValueOnce(
+        makeUserProjectsResponse( pageTwoProjects, { page: 2, totalResults: 150 } ),
+      );
+
+    await syncJoinedProjects( global.realm, currentUserId );
+
+    expect( fetchUserProjects ).toHaveBeenCalledTimes( 2 );
+    expect( fetchUserProjects ).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining( { page: 1, per_page: 100 } ),
+      expect.anything( ),
+    );
+    expect( fetchUserProjects ).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining( { page: 2, per_page: 100 } ),
+      expect.anything( ),
+    );
+    expect( global.realm.objects( "Project" ) ).toHaveLength( 3 );
+    expect(
+      global.realm.objectForPrimaryKey( "Project", staleProject.id ),
+    ).toBeNull();
+  } );
 } );
