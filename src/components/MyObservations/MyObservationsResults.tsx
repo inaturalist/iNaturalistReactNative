@@ -98,7 +98,7 @@ const MyObservationsResults = ( ) => {
   const localObservationIds = useLocalObservationIds();
   const sortMyObservationsEnabled = useFeatureFlag( FeatureFlag.SortMyObservationsEnabled );
   const {
-    observationIds: serverOrderedObservationIds,
+    observationIds: queryObservationIds,
     isServerAuthoritative,
     isFetchingNextPage: isFetchingNextPageFromQuery,
     fetchNextPage: fetchNextPageFromQuery,
@@ -106,8 +106,8 @@ const MyObservationsResults = ( ) => {
   } = useMyObservationsQuery( );
   // Only use server-ordered list when the flag is on and the selected sort requires it
   const useServerOrder = sortMyObservationsEnabled && isServerAuthoritative;
-  const observationIds = useServerOrder
-    ? serverOrderedObservationIds
+  const observationIds = sortMyObservationsEnabled
+    ? queryObservationIds
     : localObservationIds;
   const {
     numUnuploadedObservations,
