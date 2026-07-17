@@ -65,7 +65,8 @@ async function syncJoinedProjects(
       page += 1;
     }
 
-    // Remove projects that are present locally but no longer in server response
+    // Remove projects that are present locally but no longer in server
+    // response, only after every page was fetched successfully
     deleteNotRemoteProjects( remoteProjectIds, realm );
   } catch ( error ) {
     // Both triggers (deferred startup and chooser mount) are fire-and-forget
