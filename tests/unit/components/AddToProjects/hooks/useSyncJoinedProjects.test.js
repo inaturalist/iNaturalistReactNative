@@ -44,6 +44,14 @@ describe( "useSyncJoinedProjects", () => {
     expect( syncJoinedProjects ).not.toHaveBeenCalled();
   } );
 
+  it( "does not sync while connectivity is still undetermined", () => {
+    useNetInfo.mockReturnValue( { isConnected: null } );
+
+    renderHook( () => useSyncJoinedProjects() );
+
+    expect( syncJoinedProjects ).not.toHaveBeenCalled();
+  } );
+
   it( "does not sync when there is no current user", () => {
     useCurrentUser.mockReturnValue( null );
 
