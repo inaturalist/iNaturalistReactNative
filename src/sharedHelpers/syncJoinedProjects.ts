@@ -28,7 +28,7 @@ async function syncJoinedProjects(
 
   const params = {
     id: currentUserId,
-    per_page: 200,
+    per_page: 100,
     fields: PROJECT_SUMMARY_POF_FIELDS,
     ttl: -1,
   };
