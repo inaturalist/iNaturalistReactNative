@@ -27,6 +27,8 @@ jobs:
             echo "is_SECRETS_PRESENT_set: ${{ env.SECRETS_PRESENT != '' }}"
             echo "::set-output name=is_SECRETS_PRESENT_set::${{ env.SECRETS_PRESENT != '' }}"
   build:
+    needs: checksecret
+    if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true' 
     # 4-core Ubunutu GitHub Larger Runner
     # https://docs.github.com/en/enterprise-cloud@latest/billing/reference/actions-runner-pricing#x64-powered-larger-runners
     runs-on: ubuntu-24.04-m
