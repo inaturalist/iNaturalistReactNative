@@ -11,6 +11,8 @@ import safeRealmWrite from "./safeRealmWrite";
 const logger = log.extend( "syncJoinedProjects.ts" );
 
 const PER_PAGE = 100;
+// Runaway guard, generously above any realistic number of joined projects
+export const MAX_PAGES = 100;
 
 const deleteNotRemoteProjects = ( remoteProjects: number[], realm: Realm ) => {
   if ( !remoteProjects ) { return; }
@@ -36,6 +38,12 @@ async function syncJoinedProjects(
     let totalPages = 1;
 
     while ( page <= totalPages ) {
+      // Incomplete sync: abort without pruning, same as the unusable-page
+      // case below, so we never delete local projects we did not re-fetch
+      if ( page > MAX_PAGES ) {
+        logger.error( `Aborted joined-projects sync after ${MAX_PAGES} pages` );
+        return;
+      }
       const params = {
         id: currentUserId,
         per_page: PER_PAGE,
