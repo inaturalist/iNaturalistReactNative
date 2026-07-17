@@ -35,6 +35,15 @@ describe( "useSyncJoinedProjects", () => {
 
     expect( syncJoinedProjects ).toHaveBeenCalledWith( mockRealm, currentUserId );
   } );
+
+  it( "does not sync when offline", () => {
+    useNetInfo.mockReturnValue( { isConnected: false } );
+
+    renderHook( () => useSyncJoinedProjects() );
+
+    expect( syncJoinedProjects ).not.toHaveBeenCalled();
+  } );
+
   it( "does not sync when there is no current user", () => {
     useCurrentUser.mockReturnValue( null );
 
