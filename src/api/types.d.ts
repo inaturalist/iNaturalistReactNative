@@ -14,6 +14,10 @@ export interface ApiParams {
   ttl?: number;
 }
 
+export interface ApiGetByIdParams extends ApiParams {
+  id: number;
+}
+
 export interface ApiPlace {
   id?: number;
   name?: string;

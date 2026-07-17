@@ -1,7 +1,7 @@
 import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
 import type {
-  ApiDefaultResult, ApiOpts, ApiParams, ApiResponse,
+  ApiDefaultResult, ApiGetByIdParams, ApiOpts, ApiParams, ApiResponse,
 } from "api/types";
 import inatjs from "inaturalistjs";
 
@@ -21,12 +21,8 @@ const fetchBlogPosts = async <T = ApiDefaultResult>(
   }
 };
 
-interface ProjectPostsParams extends ApiParams {
-  id: number;
-}
-
 const fetchProjectPosts = async <T = ApiDefaultResult>(
-  params: ProjectPostsParams,
+  params: ApiGetByIdParams,
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
@@ -41,12 +37,8 @@ const fetchProjectPosts = async <T = ApiDefaultResult>(
   }
 };
 
-interface UserPostsParams extends ApiParams {
-  id: number;
-}
-
 const fetchUserPosts = async <T = ApiDefaultResult>(
-  params: UserPostsParams,
+  params: ApiGetByIdParams,
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {

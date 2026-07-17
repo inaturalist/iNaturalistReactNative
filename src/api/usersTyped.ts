@@ -1,16 +1,12 @@
 import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
 import type {
-  ApiDefaultResult, ApiOpts, ApiParams, ApiResponse,
+  ApiDefaultResult, ApiGetByIdParams, ApiOpts, ApiResponse,
 } from "api/types";
 import inatjs from "inaturalistjs";
 
-interface UsersProjectsParams extends ApiParams {
-  id: number;
-}
-
 const fetchUserProjects = async <T = ApiDefaultResult>(
-  params: UsersProjectsParams,
+  params: ApiGetByIdParams,
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
