@@ -153,4 +153,19 @@ describe( "syncJoinedProjects", ( ) => {
       global.realm.objectForPrimaryKey( "Project", staleProject.id ),
     ).not.toBeNull();
   } );
+  it( "does not prune or throw when the first fetch fails", async () => {
+    // Local
+    const staleProject = factory( "RemoteProject", { id: 9999 } );
+    Project.upsertRemoteProjects( [staleProject], global.realm );
+    // API
+    fetchUserProjects.mockRejectedValue( new Error( "network request failed" ) );
+
+    await expect(
+      syncJoinedProjects( global.realm, currentUserId ),
+    ).resolves.toBeUndefined( );
+
+    expect(
+      global.realm.objectForPrimaryKey( "Project", staleProject.id ),
+    ).not.toBeNull();
+  } );
 } );
