@@ -18,7 +18,7 @@ const useSyncJoinedProjects = ( ) => {
     if ( !currentUser?.id || isConnected !== true ) {
       return;
     }
-    syncJoinedProjects( realm, currentUser?.id );
+    syncJoinedProjects( realm, currentUser.id );
   }, [currentUser?.id, realm, isConnected] );
 };
 
