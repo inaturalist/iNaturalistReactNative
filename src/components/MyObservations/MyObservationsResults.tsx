@@ -56,7 +56,6 @@ import MyObservationsSimple, {
   OBSERVATIONS_TAB,
   TAXA_TAB,
 } from "./MyObservationsSimple";
-import MyObsServerOrderedDebugSheet from "./MyObsServerOrderedDebugSheet";
 
 const { useRealm } = RealmContext;
 
@@ -459,45 +458,42 @@ const MyObservationsResults = ( ) => {
   }
 
   return (
-    <>
-      <MyObservationsSimple
-        activeTab={activeTab}
-        currentUser={currentUser}
-        fetchMoreTaxa={fetchMoreTaxa}
-        fetchFromLastObservation={fetchFromLastObservation}
-        handleIndividualUploadPress={handleIndividualUploadPress}
-        handlePullToRefresh={handlePullToRefresh}
-        handleSyncButtonPress={handleSyncButtonPress}
-        isConnected={isConnected}
-        isFetchingNextPage={isFetchingNextPageForList}
-        isFetchingTaxa={isFetchingTaxa}
-        justFinishedSignup={justFinishedSignup}
-        layout={layout}
-        listRef={listRef}
-        loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
-        taxaListRef={taxaListRef}
-        numTotalObservations={numOfUserObservations}
-        numTotalTaxa={numOfUserSpecies}
-        numUnuploadedObservations={numUnuploadedObservations}
-        numObsMissingBasics={numObsMissingBasics}
-        observationIds={observationIds}
-        observationsSortOptionId={myObsState.observationsSort}
-        onEndReached={handleEndReached}
-        onListLayout={restoreScrollOffset}
-        onScroll={onScroll}
-        openSheet={openSheet}
-        refetchTaxa={refetchTaxa}
-        setActiveTab={setActiveTab}
-        setObservationsSortOptionId={setObservationsSortOptionId}
-        setOpenSheet={setOpenSheet}
-        setSpeciesSortOptionId={setSpeciesSortOptionId}
-        showNoResults={showNoResults}
-        speciesSortOptionId={myObsState.speciesSort}
-        taxa={taxa}
-        toggleLayout={toggleLayout}
-      />
-      <MyObsServerOrderedDebugSheet />
-    </>
+    <MyObservationsSimple
+      activeTab={activeTab}
+      currentUser={currentUser}
+      fetchMoreTaxa={fetchMoreTaxa}
+      fetchFromLastObservation={fetchFromLastObservation}
+      handleIndividualUploadPress={handleIndividualUploadPress}
+      handlePullToRefresh={handlePullToRefresh}
+      handleSyncButtonPress={handleSyncButtonPress}
+      isConnected={isConnected}
+      isFetchingNextPage={isFetchingNextPageForList}
+      isFetchingTaxa={isFetchingTaxa}
+      justFinishedSignup={justFinishedSignup}
+      layout={layout}
+      listRef={listRef}
+      loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
+      taxaListRef={taxaListRef}
+      numTotalObservations={numOfUserObservations}
+      numTotalTaxa={numOfUserSpecies}
+      numUnuploadedObservations={numUnuploadedObservations}
+      numObsMissingBasics={numObsMissingBasics}
+      observationIds={observationIds}
+      observationsSortOptionId={myObsState.observationsSort}
+      onEndReached={handleEndReached}
+      onListLayout={restoreScrollOffset}
+      onScroll={onScroll}
+      openSheet={openSheet}
+      refetchTaxa={refetchTaxa}
+      setActiveTab={setActiveTab}
+      setObservationsSortOptionId={setObservationsSortOptionId}
+      setOpenSheet={setOpenSheet}
+      setSpeciesSortOptionId={setSpeciesSortOptionId}
+      showNoResults={showNoResults}
+      speciesSortOptionId={myObsState.speciesSort}
+      taxa={taxa}
+      toggleLayout={toggleLayout}
+    />
   );
 };
 
