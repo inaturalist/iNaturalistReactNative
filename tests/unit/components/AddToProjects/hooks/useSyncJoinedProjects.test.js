@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { renderHook } from "@testing-library/react-native";
 import useSyncJoinedProjects from "components/AddToProjects/hooks/useSyncJoinedProjects";
 import syncJoinedProjects from "sharedHelpers/syncJoinedProjects";
@@ -26,6 +27,13 @@ describe( "useSyncJoinedProjects", () => {
   beforeEach( () => {
     jest.clearAllMocks();
     useCurrentUser.mockReturnValue( { id: currentUserId } );
+    useNetInfo.mockReturnValue( { isConnected: true } );
+  } );
+
+  it( "syncs joined projects when connected and signed in", () => {
+    renderHook( () => useSyncJoinedProjects() );
+
+    expect( syncJoinedProjects ).toHaveBeenCalledWith( mockRealm, currentUserId );
   } );
   it( "does not sync when there is no current user", () => {
     useCurrentUser.mockReturnValue( null );
