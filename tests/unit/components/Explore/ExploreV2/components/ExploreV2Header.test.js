@@ -124,6 +124,19 @@ describe( "ExploreV2Header", () => {
     expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeTruthy();
   } );
 
+  it( "renders the Unobserved title and location without a subject thumbnail", () => {
+    setState(
+      { type: "unobserved", user: { id: 7, login: "seth_msp" } },
+      { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+    );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.getByText( "Unobserved" ) ).toBeTruthy();
+    expect( screen.getByText( "Worldwide" ) ).toBeTruthy();
+    expect( screen.getByTestId( "ExploreV2Header.unobserved" ) ).toBeTruthy();
+    expect( screen.queryByTestId( "ExploreV2Header.subject" ) ).toBeNull();
+  } );
+
   it( "renders only the place name when there is no subject", () => {
     setState( null );
     renderComponent( <ExploreV2Header /> );

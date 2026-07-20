@@ -382,6 +382,30 @@ describe( "UniversalSearch screen", ( ) => {
       );
     } );
 
+    it( "stages an unobserved subject when the unobserved row is tapped", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await actor.press( screen.getByTestId( "DefaultSearchOptions.unobserved" ) );
+
+      // the selection is staged locally, not written to context until Search
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      // the subject field shows the "Species I haven't observed" label
+      expect(
+        screen.getByDisplayValue( i18next.t( "Species-I-havent-observed" ) ),
+      ).toBeTruthy( );
+
+      await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "unobserved",
+            user: expect.objectContaining( { id: 99 } ),
+          } ),
+        } ),
+      );
+    } );
+
     it( "hides the current user row when logged out", ( ) => {
       useCurrentUser.mockReturnValue( null );
       renderComponent( <UniversalSearch /> );
