@@ -32,6 +32,8 @@ function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string 
       return subject.user.login;
     case "project":
       return subject.project.title;
+    case "unobserved":
+      return t( "Unobserved" );
     default:
       return t( "All-organisms" );
   }
@@ -96,66 +98,117 @@ const SubjectThumbnail = ( { subject }: { subject: ExploreV2Subject } ) => {
   }
 };
 
+const LocationSubtitle = ( { place }: { place: string } ) => {
+  if ( !place ) { return null; }
+  return (
+    <View className="flex-row items-center pt-[5px]">
+      <INatIcon name="location" size={15} />
+      <Body3
+        maxFontSizeMultiplier={1.5}
+        className="ml-[5px]"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {place}
+      </Body3>
+    </View>
+  );
+};
+
+const TitleHeader = ( {
+  title,
+  place,
+  testID,
+}: {
+  title: string;
+  place?: string;
+  testID?: string;
+} ) => (
+  <View className="flex-1 mr-5 pl-2" testID={testID}>
+    <Heading2 numberOfLines={1} ellipsizeMode="tail">
+      {title}
+    </Heading2>
+    {place
+      ? <LocationSubtitle place={place} />
+      : null}
+  </View>
+);
+
+const SubjectHeader = ( {
+  subject,
+  label,
+  place,
+  prefersCommonNames,
+  scientificNameFirst,
+}: {
+  subject: ExploreV2Subject;
+  label: string;
+  place: string;
+  prefersCommonNames?: boolean;
+  scientificNameFirst?: boolean;
+} ) => (
+  <View
+    className="flex-1 flex-row items-center mr-5"
+    testID="ExploreV2Header.subject"
+  >
+    <SubjectThumbnail subject={subject} />
+    <View className="flex-1 ml-[10px]">
+      {subject.type === "taxon"
+        ? (
+          <DisplayTaxonName
+            taxon={subject.taxon}
+            showOneNameOnly
+            prefersCommonNames={prefersCommonNames}
+            scientificNameFirst={scientificNameFirst}
+          />
+        )
+        : (
+          <Body1 numberOfLines={1} ellipsizeMode="tail">
+            {label}
+          </Body1>
+        )}
+      <LocationSubtitle place={place} />
+    </View>
+  </View>
+);
+
 const ExploreV2Header = ( ) => {
   const { t } = useTranslation( );
   const { state } = useExploreV2( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
 
-  const subject = subjectLabel( state.subject, t );
+  const { subject } = state;
   const place = locationLabel( state.location, t );
+
+  let headerContent;
+  if ( subject && subject.type !== "unobserved" ) {
+    headerContent = (
+      <SubjectHeader
+        subject={subject}
+        label={subjectLabel( subject, t )}
+        place={place}
+        prefersCommonNames={currentUser?.prefers_common_names}
+        scientificNameFirst={currentUser?.prefers_scientific_name_first}
+      />
+    );
+  } else if ( subject?.type === "unobserved" ) {
+    headerContent = (
+      <TitleHeader
+        title={t( "Unobserved" )}
+        place={place}
+        testID="ExploreV2Header.unobserved"
+      />
+    );
+  } else {
+    headerContent = <TitleHeader title={place} />;
+  }
 
   return (
     <View className="bg-white" testID="ExploreV2Header">
       <View className="p-4 flex-row items-center">
         <BackButton />
-        {state.subject
-          ? (
-            <View
-              className="flex-1 flex-row items-center mr-5"
-              testID="ExploreV2Header.subject"
-            >
-              <SubjectThumbnail subject={state.subject} />
-              <View className="flex-1 ml-[10px]">
-                {state.subject.type === "taxon"
-                  ? (
-                    <DisplayTaxonName
-                      taxon={state.subject.taxon}
-                      showOneNameOnly
-                      prefersCommonNames={currentUser?.prefers_common_names}
-                      scientificNameFirst={currentUser?.prefers_scientific_name_first}
-                    />
-                  )
-                  : (
-                    <Body1 numberOfLines={1} ellipsizeMode="tail">
-                      {subject}
-                    </Body1>
-                  )}
-                {place
-                  ? (
-                    <View className="flex-row items-center pt-[5px]">
-                      <INatIcon name="location" size={15} />
-                      <Body3
-                        maxFontSizeMultiplier={1.5}
-                        className="ml-[5px]"
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                      >
-                        {place}
-                      </Body3>
-                    </View>
-                  )
-                  : null}
-              </View>
-            </View>
-          )
-          : (
-            <View className="flex-1 mr-5 pl-2">
-              <Heading2 numberOfLines={1} ellipsizeMode="tail">
-                {place}
-              </Heading2>
-            </View>
-          )}
+        {headerContent}
         <ContainedSquareButton
           accessibilityHint={t( "Opens-search-interface" )}
           accessibilityLabel={t( "Search" )}
