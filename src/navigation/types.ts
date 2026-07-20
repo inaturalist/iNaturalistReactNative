@@ -62,7 +62,7 @@ export type SharedStackParamList = {
   // From MatchContainer
   // undefined
   LocationPicker: undefined;
-  // From ExploreSearchContainer, ExploreTaxonSearchModal, MyObservationsSimple,
+  // From ExploreTaxonSearchModal, MyObservationsSimple,
   // ObsDetailsOverview, CommunityTaxon, SavedMatchContainer, ActivityItem, ProjectRequirements
   // TaxonGridItem
   // { id: taxon.id }
@@ -248,8 +248,6 @@ export type BaseTabStackParamList = {
     place?: ApiPlace | null;
     worldwide: boolean;
   };
-  ExploreFilters: undefined;
-  ExploreSearch: undefined;
   // From NotificationsListItem
   // {
   //   uuid: notification.resource_uuid,
