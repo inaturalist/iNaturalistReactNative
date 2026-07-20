@@ -7,6 +7,7 @@ export interface SpeciesCountParams extends ApiParams {
   taxon_id?: number;
   user_id?: number;
   project_id?: number;
+  unobserved_by_user_id?: number;
   place_id?: number;
   lat?: number;
   lng?: number;
