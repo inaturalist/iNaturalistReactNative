@@ -50,7 +50,7 @@ const StateProbe = () => {
 const actor = userEvent.setup( );
 
 const renderGridItem = ( props = {} ) => renderComponent(
-  <ExploreV2Provider requestLocationPermissions={() => {}}>
+  <ExploreV2Provider>
     <ExploreV2SpeciesGridItem taxon={mockTaxon} {...props} />
     <StateProbe />
   </ExploreV2Provider>,

@@ -7,7 +7,7 @@ import { renderComponent } from "tests/helpers/render";
 const actor = userEvent.setup( );
 
 const renderTabs = props => renderComponent(
-  <ExploreV2Provider requestLocationPermissions={() => {}}>
+  <ExploreV2Provider>
     <ExploreV2Tabs {...props} />
   </ExploreV2Provider>,
 );

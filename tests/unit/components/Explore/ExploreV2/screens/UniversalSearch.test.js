@@ -534,8 +534,7 @@ describe( "UniversalSearch screen", ( ) => {
       expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
     } );
 
-    it( "fills the field and stages nearby when Nearby is tapped", async ( ) => {
-      fetchCoarseUserLocation.mockResolvedValue( { latitude: 10, longitude: 20 } );
+    it( "fills the field and stages the nearby intent when Nearby is tapped", async ( ) => {
       renderComponent( <UniversalSearch /> );
 
       focusLocation( );
@@ -547,19 +546,12 @@ describe( "UniversalSearch screen", ( ) => {
       expect( mockDispatch ).not.toHaveBeenCalled( );
 
       await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: "SET_LOCATION_NEARBY",
-        lat: 10,
-        lng: 20,
-        radius: 1,
-      } );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
     } );
 
     it(
-      "stages worldwide when permission is granted but no location fix is available",
+      "stages the nearby intent (no prompting, no fetch) regardless of permission",
       async ( ) => {
-        fetchCoarseUserLocation.mockResolvedValue( null );
-        checkLocationPermissions.mockResolvedValue( "granted" );
         renderComponent( <UniversalSearch /> );
 
         focusLocation( );
@@ -567,35 +559,12 @@ describe( "UniversalSearch screen", ( ) => {
         await waitFor( ( ) => {
           expect( screen.getByDisplayValue( i18next.t( "Nearby" ) ) ).toBeTruthy( );
         } );
-        expect( mockDispatch ).not.toHaveBeenCalled( );
 
-        await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-        expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
-        expect( mockDispatch ).not.toHaveBeenCalledWith(
-          { type: "SET_LOCATION_NEEDS_PERMISSION" },
-        );
-      },
-    );
-
-    it(
-      "stages nearby-needs-permission (without prompting) when permission is missing",
-      async ( ) => {
-        fetchCoarseUserLocation.mockResolvedValue( null );
-        checkLocationPermissions.mockResolvedValue( null );
-        renderComponent( <UniversalSearch /> );
-
-        focusLocation( );
-        await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
-
-        await waitFor( ( ) => {
-          expect( screen.getByDisplayValue( i18next.t( "Nearby" ) ) ).toBeTruthy( );
-        } );
-
+        expect( fetchCoarseUserLocation ).not.toHaveBeenCalled( );
         expect( mockRequestLocationPermissions ).not.toHaveBeenCalled( );
-        expect( mockDispatch ).not.toHaveBeenCalled( );
 
         await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-        expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEEDS_PERMISSION" } );
+        expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
       },
     );
   } );
