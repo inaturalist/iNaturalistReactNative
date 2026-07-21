@@ -1,0 +1,2 @@
+FIXED
+* An issue with getting to edit your own observation
