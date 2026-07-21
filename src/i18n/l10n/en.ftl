@@ -81,6 +81,8 @@ Adds-your-vote-of-disagreement = Adds your vote of disagreement
 Advanced-Mode = Advanced Mode
 # Link to the advanced search screen with more search filters
 Advanced-Search = Advanced Search
+# Header title of the Advanced Search screen
+ADVANCED-SEARCH = ADVANCED SEARCH
 ADVANCED-SETTINGS = ADVANCED SETTINGS
 Affiliation = Affiliation: { $site }
 After-capturing-or-importing-photos-show = After capturing or importing photos, show:
