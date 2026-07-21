@@ -23,9 +23,9 @@ interface UseMyObservationsQueryResult {
 }
 
 // We want to preserve offline behavior for the default sort (created at, desc) so a user can see
-// and interact with their obs offline. This hook uses selected sort to determine whether Realm or
-// the server should be the authoritative source of a user's observations (unsynced obs
-// are always merged in at the top regardless of source).
+// and interact with their obs offline. This hook uses selected sort and/or an active taxon search
+// to determine whether Realm or the server should be the authoritative source of a user's
+// observations (unsynced obs are always merged in at the top regardless of source).
 //
 // Logged-out users can never have server-ordered observations, since they can't upload until
 // they log in, so a non-default sort is applied to their local observations instead.
@@ -34,8 +34,9 @@ const useMyObservationsQuery = ( ): UseMyObservationsQueryResult => {
   const { state } = useMyObservations( );
   const currentUser = useCurrentUser( );
   const isDefaultSort = state.observationsSort === OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST;
+  const hasActiveSearch = !!state.searchedTaxon;
   const sortLocally = !isDefaultSort && !currentUser;
-  const isServerAuthoritative = !isDefaultSort && !!currentUser;
+  const isServerAuthoritative = ( !isDefaultSort || hasActiveSearch ) && !!currentUser;
 
   const localObservationIds = useLocalObservationIds(
     sortLocally
@@ -52,6 +53,7 @@ const useMyObservationsQuery = ( ): UseMyObservationsQueryResult => {
     refetch,
   } = useServerOrderedObservations( {
     sortBy: state.observationsSort,
+    taxonId: state.searchedTaxon?.id,
     enabled: isServerAuthoritative,
   } );
 
@@ -77,15 +79,14 @@ const useMyObservationsQuery = ( ): UseMyObservationsQueryResult => {
 
   // dedupe in case any locally unsynced obs also exist in the server results
   const observationIds = useMemo( ( ) => {
-    if ( isDefaultSort || sortLocally ) return localObservationIds;
+    if ( !isServerAuthoritative ) return localObservationIds;
     const unsyncedUuids = new Set( unsyncedObservationIds.map( o => o.uuid ) );
     return [
       ...unsyncedObservationIds,
       ...serverObservationIds.filter( o => !unsyncedUuids.has( o.uuid ) ),
     ];
   }, [
-    isDefaultSort,
-    sortLocally,
+    isServerAuthoritative,
     localObservationIds,
     unsyncedObservationIds,
     serverObservationIds,
