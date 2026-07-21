@@ -284,6 +284,13 @@ const MyObservationsResults = ( ) => {
     myObsOffsetToRestore,
   ] );
 
+  // Scroll to the top whenever the active taxon search changes
+  useEffect( ( ) => {
+    if ( listRef.current ) {
+      listRef.current.scrollToOffset( { offset: 0, animated: true } );
+    }
+  }, [myObsState.searchedTaxon?.id] );
+
   // API call fetching obs has completed but results are not yet stored in realm
   // for display here
   const showLoading = ( totalResultsRemote || 0 ) > 0 && observationIds.length === 0;
