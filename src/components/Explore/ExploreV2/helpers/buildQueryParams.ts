@@ -5,15 +5,16 @@ import {
 import { observationSortToApiParams } from "sharedHelpers/observationsSort";
 import type { ObservationOrderBy, SortDirection } from "types/sorting";
 
+import type { FilterApiParams } from "./filtersToApiParams";
+import filtersToApiParams from "./filtersToApiParams";
+
 const PER_PAGE = 20;
 
-export interface ExploreV2QueryParams {
+export interface ExploreV2QueryParams extends FilterApiParams {
   per_page: number;
   order_by: ObservationOrderBy;
   order: SortDirection;
   taxon_id?: number;
-  user_id?: number;
-  project_id?: number;
   lat?: number;
   lng?: number;
   radius?: number;
@@ -30,6 +31,8 @@ export interface NearbyCoords {
 const buildExploreV2QueryParams = (
   state: ExploreV2State,
   nearbyCoords?: NearbyCoords,
+  // The signed-in user's id, needed by the reviewed filter (viewer_id param).
+  viewerId?: number | null,
 ): ExploreV2QueryParams => {
   const params: ExploreV2QueryParams = {
     per_page: PER_PAGE,
@@ -71,6 +74,15 @@ const buildExploreV2QueryParams = (
       const _exhaustive: never = location;
       return _exhaustive;
     }
+  }
+
+  // Advanced Search filters
+  Object.assign( params, filtersToApiParams( state.filters, viewerId ) );
+
+  // `verifiable: true` excludes casual-grade observations, so drop it when the
+  // user explicitly asked for casual (mirrors legacy mapParamsToAPI).
+  if ( params.quality_grade?.includes( "casual" ) ) {
+    delete params.verifiable;
   }
 
   return params;

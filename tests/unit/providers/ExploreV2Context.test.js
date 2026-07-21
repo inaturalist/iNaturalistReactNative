@@ -1,4 +1,5 @@
 import {
+  defaultExploreV2Filters,
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
   exploreV2Reducer,
@@ -7,11 +8,11 @@ import {
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 
 describe( "initialExploreV2State", ( ) => {
-  it( "starts with no subject, NEARBY placeMode, newest-upload sort, empty filters", ( ) => {
+  it( "starts with no subject, NEARBY placeMode, newest-upload sort, default filters", ( ) => {
     expect( initialExploreV2State.subject ).toBeNull( );
     expect( initialExploreV2State.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.NEARBY );
     expect( initialExploreV2State.sortBy ).toBe( OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST );
-    expect( initialExploreV2State.filters ).toEqual( {} );
+    expect( initialExploreV2State.filters ).toEqual( defaultExploreV2Filters );
   } );
 } );
 
