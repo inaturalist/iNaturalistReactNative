@@ -75,7 +75,7 @@ jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
   default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) ),
 } ) );
 
-const renderMyObservations = layout => renderComponent(
+const renderMyObservations = ( layout, showSearchEmptyState = false ) => renderComponent(
   <MyObservationsProvider>
     <MyObservationsSimple
       layout={layout}
@@ -84,6 +84,7 @@ const renderMyObservations = layout => renderComponent(
       toggleLayout={jest.fn( )}
       setShowLoginSheet={jest.fn( )}
       activeTab={OBSERVATIONS_TAB}
+      showSearchEmptyState={showSearchEmptyState}
     />
   </MyObservationsProvider>,
 );
@@ -129,6 +130,14 @@ describe( "MyObservationsSimple", () => {
     mockObservations.forEach( obs => {
       expect( screen.getByTestId( `MyObservations.obsGridItem.${obs.uuid}` ) ).toBeTruthy();
     } );
+  } );
+
+  it( "renders SearchEmptyState instead of the observations list when a search has no "
+    + "results", ( ) => {
+    renderMyObservations( "list", true );
+
+    expect( screen.getByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "MyObservationsAnimatedList" ) ).toBeNull( );
   } );
 
   describe( "grid view", ( ) => {

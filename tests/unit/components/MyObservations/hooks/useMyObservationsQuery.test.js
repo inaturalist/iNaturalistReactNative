@@ -166,6 +166,54 @@ describe( "useMyObservationsQuery", ( ) => {
     ] );
   } );
 
+  it( "is server authoritative for an active taxon search even under the default sort", ( ) => {
+    const searchedTaxon = { id: 121323, name: "Reptilia" };
+    useMyObservations.mockReturnValue( {
+      state: {
+        observationsSort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+        searchedTaxon,
+      },
+    } );
+    const serverObs = { uuid: factory( "LocalObservation" ).uuid };
+    useServerOrderedObservations.mockReturnValue( {
+      ...defaultServerResult,
+      observationIds: [serverObs],
+    } );
+
+    const { result } = renderHook( ( ) => useMyObservationsQuery( ) );
+
+    expect( result.current.isServerAuthoritative ).toEqual( true );
+    expect( result.current.observationIds ).toEqual( [serverObs] );
+    expect( useServerOrderedObservations ).toHaveBeenCalledWith(
+      expect.objectContaining( { enabled: true, taxonId: searchedTaxon.id } ),
+    );
+  } );
+
+  it( "ignores an active taxon search when there is no current user", ( ) => {
+    useCurrentUser.mockReturnValue( null );
+    const searchedTaxon = { id: 121323, name: "Reptilia" };
+    useMyObservations.mockReturnValue( {
+      state: {
+        observationsSort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+        searchedTaxon,
+      },
+    } );
+    useServerOrderedObservations.mockReturnValue( {
+      ...defaultServerResult,
+      observationIds: [{ uuid: "should-be-ignored-when-logged-out" }],
+    } );
+    const localObs = factory( "LocalObservation", { needs_sync: false } );
+    createObservation( localObs );
+
+    const { result } = renderHook( ( ) => useMyObservationsQuery( ) );
+
+    expect( result.current.isServerAuthoritative ).toEqual( false );
+    expect( result.current.observationIds ).toEqual( [{ uuid: localObs.uuid }] );
+    expect( useServerOrderedObservations ).toHaveBeenCalledWith(
+      expect.objectContaining( { enabled: false } ),
+    );
+  } );
+
   it( "applies the selected sort to local observations when there is no current user", ( ) => {
     useCurrentUser.mockReturnValue( null );
     useMyObservations.mockReturnValue( {
