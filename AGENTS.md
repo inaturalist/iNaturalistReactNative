@@ -95,7 +95,7 @@ npm run clean-start
 The app uses React Navigation 7 with `@react-navigation/native-stack` and `@react-navigation/bottom-tabs` in a nested hierarchy:
 
 1. **RootStackNavigator** (NativeStack, top level) - `src/navigation/RootStackNavigator.tsx`
-   - **OnboardingStackNavigator** - Shown conditionally when `!onboardingShown` (modal presentation)
+   - **OnboardingStackNavigator** - Rendered in place of the tab navigator when `!onboardingShown` (not a modal over it)
    - **BottomTabNavigator** - Shown when `onboardingShown`. Contains four tabs:
      - `MenuTab` → TabStackNavigator (initialRouteName: "Menu")
      - `ExploreTab` → TabStackNavigator (initialRouteName: "RootExplore")
@@ -122,7 +122,7 @@ The app uses a hybrid state management approach:
   - `createObservationFlowSlice` - Observation creation/editing flow
   - `createUploadObservationsSlice` - Upload queue and status
   - `createSyncObservationsSlice` - Syncing observations from server
-  - `createLayoutSlice` - UI layout state (sidebar, etc.)
+  - `createLayoutSlice` - UI preferences and flags (default vs advanced mode, obs-detail tab, screen-after-photo, shown-once flags)
   - `createExploreSlice` / `createRootExploreSlice` - Explore screen filters and state
   - `createMyObsSlice` - My Observations filters
   - `createFeatureFlagSlice` - Feature flag state
@@ -162,10 +162,10 @@ API calls are organized in `src/api/`:
 
 The upload system (`src/uploaders/`) handles offline-first observation uploads:
 - `observationUploader.ts` - Uploads observation data to API
-- `mediaUploader.ts` - Uploads photos/sounds to S3, then associates with observations
-- Upload queue stored in Realm (`QueueItem` model)
+- `mediaUploader.ts` - Uploads photos/sounds to the iNaturalist API (`inatjs.photos.create`/`sounds.create`), then associates them with observations
+- Upload queue is held in Zustand (`createUploadObservationsSlice.uploadQueue`), not in Realm. (The Realm `QueueItem` model is a separate settings-sync work queue used by `useWorkQueue` for `locale-change`/`taxon-names-change`.)
 - Zustand slice `createUploadObservationsSlice` manages upload state and progress
-- Background processing continues even when app is backgrounded
+- Uploads use keep-awake and can continue briefly while in-flight if the app is backgrounded, but there is no dedicated background/headless upload task
 
 **Details:** the four-step pipeline, error-recovery table, and timeout/keep-awake rules are in `agent-docs/architecture/upload-system.md`.
 

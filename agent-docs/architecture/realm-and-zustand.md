@@ -22,7 +22,7 @@ The authoritative list is the `schema` array in `src/realmModels/index.ts` — c
 | Taxon | Primary | `id` | Species/taxonomy data |
 | Photo | Primary | `id` | Photo metadata |
 | Sound | Primary | `id` | Sound metadata |
-| QueueItem | Primary | `id` | Upload/sync queue with retry |
+| QueueItem | Primary | `id` | Settings-sync work queue (locale/taxon-name changes) with retry; not the observation upload queue |
 | Project | Primary | `id` | Project metadata |
 | Comment | Embedded | — | Observation comments |
 | Identification | Embedded | — | Species identifications |
