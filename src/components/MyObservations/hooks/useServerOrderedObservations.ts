@@ -25,6 +25,7 @@ interface SearchObservationsResponse {
 
 interface UseServerOrderedObservationsParams {
   sortBy: OBSERVATIONS_SORT;
+  taxonId?: number;
   enabled?: boolean;
 }
 
@@ -40,6 +41,7 @@ interface UseServerOrderedObservationsResult {
 
 const useServerOrderedObservations = ( {
   sortBy,
+  taxonId,
   enabled = true,
 }: UseServerOrderedObservationsParams ): UseServerOrderedObservationsResult => {
   const realm = useRealm( );
@@ -48,6 +50,9 @@ const useServerOrderedObservations = ( {
   const baseParams = {
     user_id: currentUser?.id,
     ...observationSortToApiParams( sortBy ),
+    ...( taxonId
+      ? { taxon_id: taxonId }
+      : {} ),
     per_page: PER_PAGE,
     fields: Observation.ADVANCED_MODE_LIST_FIELDS,
     // Bypass API response caching so newly created/updated observations show up
