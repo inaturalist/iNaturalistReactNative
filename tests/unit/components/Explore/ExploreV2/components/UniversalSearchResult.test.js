@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native";
+import { screen, userEvent } from "@testing-library/react-native";
 import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
 import initI18next from "i18n/initI18next";
@@ -64,6 +64,8 @@ const PROJECT_RESULT = {
   },
 };
 
+const actor = userEvent.setup( );
+
 beforeAll( async ( ) => {
   await initI18next( );
 } );
@@ -115,54 +117,54 @@ describe( "UniversalSearchResult", ( ) => {
     expect( screen.getByText( "InverteFest" ) ).toBeTruthy( );
   } );
 
-  it( "calls onPress when the row is tapped", ( ) => {
+  it( "calls onPress when the row is tapped", async ( ) => {
     const onPress = jest.fn( );
     renderComponent(
       <UniversalSearchResult result={USER_RESULT} onPress={onPress} />,
     );
 
-    fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
+    await actor.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
 
     expect( onPress ).toHaveBeenCalledTimes( 1 );
   } );
 
-  it( "navigates to TaxonDetails when the info button is pressed", ( ) => {
+  it( "navigates to TaxonDetails when the info button is pressed", async ( ) => {
     renderComponent(
       <UniversalSearchResult result={TAXON_WITH_PHOTO} onPress={jest.fn( )} />,
     );
 
-    fireEvent.press( screen.getByTestId( "UniversalSearchResult.info.12" ) );
+    await actor.press( screen.getByTestId( "UniversalSearchResult.info.12" ) );
 
     expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", { id: 12 } );
   } );
 
-  it( "navigates to UserProfile when the info button is pressed", ( ) => {
+  it( "navigates to UserProfile when the info button is pressed", async ( ) => {
     renderComponent(
       <UniversalSearchResult result={USER_RESULT} onPress={jest.fn( )} />,
     );
 
-    fireEvent.press( screen.getByTestId( "UniversalSearchResult.info.7" ) );
+    await actor.press( screen.getByTestId( "UniversalSearchResult.info.7" ) );
 
     expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: 7 } );
   } );
 
-  it( "navigates to ProjectDetails when the info button is pressed", ( ) => {
+  it( "navigates to ProjectDetails when the info button is pressed", async ( ) => {
     renderComponent(
       <UniversalSearchResult result={PROJECT_RESULT} onPress={jest.fn( )} />,
     );
 
-    fireEvent.press( screen.getByTestId( "UniversalSearchResult.info.9" ) );
+    await actor.press( screen.getByTestId( "UniversalSearchResult.info.9" ) );
 
     expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", { id: 9 } );
   } );
 
-  it( "does not fire the row onPress when the info button is pressed", ( ) => {
+  it( "does not fire the row onPress when the info button is pressed", async ( ) => {
     const onPress = jest.fn( );
     renderComponent(
       <UniversalSearchResult result={USER_RESULT} onPress={onPress} />,
     );
 
-    fireEvent.press( screen.getByTestId( "UniversalSearchResult.info.7" ) );
+    await actor.press( screen.getByTestId( "UniversalSearchResult.info.7" ) );
 
     expect( onPress ).not.toHaveBeenCalled( );
     expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: 7 } );

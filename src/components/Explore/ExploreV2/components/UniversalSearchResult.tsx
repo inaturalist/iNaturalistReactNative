@@ -38,24 +38,26 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
   const currentUser = useCurrentUser( );
   const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
 
-  const navToDetail = ( ) => {
+  const infoButtonProps = ( ) => {
     switch ( result.type ) {
       case "user":
-        navigation.navigate( "UserProfile", { userId: result.user.id } );
-        break;
+        return {
+          hint: t( "Navigates-to-user-profile" ),
+          navToDetail: ( ) => navigation.navigate( "UserProfile", { userId: result.user.id } ),
+        };
       case "project":
-        navigation.navigate( "ProjectDetails", { id: result.project.id } );
-        break;
+        return {
+          hint: t( "Navigates-to-project-details" ),
+          navToDetail: ( ) => navigation.navigate( "ProjectDetails", { id: result.project.id } ),
+        };
       default:
-        navigation.navigate( "TaxonDetails", { id: result.taxon.id } );
+        return {
+          hint: t( "Navigates-to-taxon-details" ),
+          navToDetail: ( ) => navigation.navigate( "TaxonDetails", { id: result.taxon.id } ),
+        };
     }
   };
-
-  const infoAccessibilityHint = ( ) => {
-    if ( result.type === "user" ) { return t( "Navigates-to-user-profile" ); }
-    if ( result.type === "project" ) { return t( "Navigates-to-project-details" ); }
-    return t( "Navigates-to-taxon-details" );
-  };
+  const { hint: infoHint, navToDetail } = infoButtonProps( );
 
   const renderContent = ( ) => {
     switch ( result.type ) {
@@ -126,7 +128,7 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
         {renderContent( )}
       </Pressable>
       <INatIconButton
-        accessibilityHint={infoAccessibilityHint( )}
+        accessibilityHint={infoHint}
         accessibilityLabel={t( "More-info" )}
         icon="info-circle-outline"
         onPress={navToDetail}
