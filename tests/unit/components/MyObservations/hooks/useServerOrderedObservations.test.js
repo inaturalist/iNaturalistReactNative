@@ -3,7 +3,7 @@ import useServerOrderedObservations
   from "components/MyObservations/hooks/useServerOrderedObservations";
 import inatjs from "inaturalistjs";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useAuthenticatedInfiniteQuery from "sharedHooks/useAuthenticatedInfiniteQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import factory, { makeResponse } from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
@@ -15,7 +15,7 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   default: jest.fn( ),
 } ) );
 
-jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+jest.mock( "sharedHooks/useAuthenticatedInfiniteQuery", ( ) => ( {
   __esModule: true,
   default: jest.fn( ),
 } ) );
@@ -47,13 +47,15 @@ const getLocalObservation = uuid => getRealm( ).objectForPrimaryKey( "Observatio
 const defaultQueryResult = {
   data: undefined,
   isLoading: false,
+  isFetchingNextPage: false,
   error: null,
+  fetchNextPage: jest.fn( ),
   refetch: jest.fn( ),
 };
 
 beforeEach( ( ) => {
   useCurrentUser.mockReturnValue( mockUser );
-  useAuthenticatedQuery.mockReturnValue( defaultQueryResult );
+  useAuthenticatedInfiniteQuery.mockReturnValue( defaultQueryResult );
 } );
 
 afterEach( ( ) => {
@@ -66,7 +68,7 @@ describe( "useServerOrderedObservations", ( ) => {
       sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
     } ) );
 
-    const [queryKey] = useAuthenticatedQuery.mock.calls[0];
+    const [queryKey] = useAuthenticatedInfiniteQuery.mock.calls[0];
     const [, params] = queryKey;
     expect( params ).toEqual( expect.objectContaining( {
       user_id: mockUser.id,
@@ -79,19 +81,27 @@ describe( "useServerOrderedObservations", ( ) => {
       props => useServerOrderedObservations( props ),
       { initialProps: { sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST, enabled: false } },
     );
-    expect( useAuthenticatedQuery.mock.calls[0][2].enabled ).toEqual( false );
+    expect( useAuthenticatedInfiniteQuery.mock.calls[0][2].enabled ).toEqual( false );
 
     useCurrentUser.mockReturnValue( null );
     rerender( { sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST, enabled: true } );
-    expect( useAuthenticatedQuery.mock.calls[1][2].enabled ).toEqual( false );
+    expect( useAuthenticatedInfiniteQuery.mock.calls[1][2].enabled ).toEqual( false );
   } );
 
-  it( "passes through the query's uuid-only data and metadata as-is", ( ) => {
+  it( "flattens uuid-only data across pages and passes through pagination metadata", ( ) => {
     const mockRefetch = jest.fn( );
-    useAuthenticatedQuery.mockReturnValue( {
-      data: { observationIds: [{ uuid: "a" }, { uuid: "b" }], totalResults: 2 },
+    const mockFetchNextPage = jest.fn( );
+    useAuthenticatedInfiniteQuery.mockReturnValue( {
+      data: {
+        pages: [
+          { results: [{ uuid: "a" }, { uuid: "b" }], total_results: 3, page: 1 },
+          { results: [{ uuid: "c" }], total_results: 3, page: 2 },
+        ],
+      },
       isLoading: false,
+      isFetchingNextPage: true,
       error: null,
+      fetchNextPage: mockFetchNextPage,
       refetch: mockRefetch,
     } );
 
@@ -99,12 +109,16 @@ describe( "useServerOrderedObservations", ( ) => {
       sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
     } ) );
 
-    expect( result.current.observationIds ).toEqual( [{ uuid: "a" }, { uuid: "b" }] );
-    expect( result.current.totalResults ).toEqual( 2 );
+    expect( result.current.observationIds ).toEqual( [
+      { uuid: "a" }, { uuid: "b" }, { uuid: "c" },
+    ] );
+    expect( result.current.totalResults ).toEqual( 3 );
+    expect( result.current.isFetchingNextPage ).toEqual( true );
+    expect( result.current.fetchNextPage ).toEqual( mockFetchNextPage );
     expect( result.current.refetch ).toEqual( mockRefetch );
   } );
 
-  it( "queryFn upserts fetched results into Realm and returns a uuid-only list", async ( ) => {
+  it( "requests the next page via pageParam and upserts fetched results into Realm", async ( ) => {
     const remoteObservation = factory( "RemoteObservation" );
     inatjs.observations.search.mockResolvedValueOnce( makeResponse( [remoteObservation] ) );
 
@@ -112,15 +126,28 @@ describe( "useServerOrderedObservations", ( ) => {
       sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
     } ) );
 
-    const [, queryFunction] = useAuthenticatedQuery.mock.calls[0];
-    const data = await queryFunction( { api_token: "fake-token" } );
+    const [, queryFunction] = useAuthenticatedInfiniteQuery.mock.calls[0];
+    const data = await queryFunction( { pageParam: 2 }, { api_token: "fake-token" } );
 
-    expect( data ).toEqual( {
-      observationIds: [{ uuid: remoteObservation.uuid }],
-      totalResults: 1,
-    } );
+    expect( inatjs.observations.search ).toHaveBeenCalledWith(
+      expect.objectContaining( { page: 2 } ),
+      expect.anything( ),
+    );
+    expect( data.results ).toEqual( [remoteObservation] );
     const localObs = getLocalObservation( remoteObservation.uuid );
     expect( localObs ).toBeTruthy( );
     expect( localObs.id ).toEqual( remoteObservation.id );
+  } );
+
+  describe( "getNextPageParam", ( ) => {
+    it( "requests the next page until all results have been fetched", ( ) => {
+      renderHook( ( ) => useServerOrderedObservations( {
+        sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+      } ) );
+
+      const { getNextPageParam } = useAuthenticatedInfiniteQuery.mock.calls[0][2];
+      expect( getNextPageParam( { page: 1, total_results: 45 } ) ).toEqual( 2 );
+      expect( getNextPageParam( { page: 3, total_results: 45 } ) ).toBeNull( );
+    } );
   } );
 } );

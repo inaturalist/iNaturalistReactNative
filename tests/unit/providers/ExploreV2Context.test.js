@@ -1,22 +1,15 @@
 import {
-  defaultExploreV2Location,
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
   exploreV2Reducer,
   initialExploreV2State,
 } from "providers/ExploreV2Context";
-import fetchCoarseUserLocation from "sharedHelpers/fetchCoarseUserLocation";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 
-jest.mock( "sharedHelpers/fetchCoarseUserLocation", ( ) => ( {
-  __esModule: true,
-  default: jest.fn( ),
-} ) );
-
 describe( "initialExploreV2State", ( ) => {
-  it( "starts with no subject, UNINITIALIZED placeMode, newest-upload sort, empty filters", ( ) => {
+  it( "starts with no subject, NEARBY placeMode, newest-upload sort, empty filters", ( ) => {
     expect( initialExploreV2State.subject ).toBeNull( );
-    expect( initialExploreV2State.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.UNINITIALIZED );
+    expect( initialExploreV2State.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.NEARBY );
     expect( initialExploreV2State.sortBy ).toBe( OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST );
     expect( initialExploreV2State.filters ).toEqual( {} );
   } );
@@ -40,12 +33,7 @@ describe( "exploreV2Reducer", ( ) => {
     it( "preserves location, sortBy, and filters when changing subject", ( ) => {
       const state = {
         subject: null,
-        location: {
-          placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-          lat: 1,
-          lng: 2,
-          radius: 3,
-        },
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
         sortBy: OBSERVATIONS_SORT.MOST_FAVED,
         filters: { quality_grade: "research" },
       };
@@ -71,7 +59,7 @@ describe( "exploreV2Reducer", ( ) => {
   } );
 
   describe( "location actions", ( ) => {
-    it( "SET_LOCATION_NEARBY transitions from PLACE and drops place", ( ) => {
+    it( "SET_LOCATION_NEARBY transitions from PLACE and drops place (no coords stored)", ( ) => {
       const state = {
         ...initialExploreV2State,
         location: {
@@ -81,45 +69,28 @@ describe( "exploreV2Reducer", ( ) => {
       };
       const next = exploreV2Reducer( state, {
         type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY,
-        lat: 37.5,
-        lng: -122.1,
-        radius: 1,
       } );
       expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.NEARBY );
-      expect( next.location.lat ).toBe( 37.5 );
-      expect( next.location.lng ).toBe( -122.1 );
-      expect( next.location.radius ).toBe( 1 );
+      expect( next.location.lat ).toBeUndefined( );
       expect( next.location.place ).toBeUndefined( );
     } );
 
-    it( "SET_LOCATION_WORLDWIDE transitions from NEARBY and drops coords", ( ) => {
+    it( "SET_LOCATION_WORLDWIDE transitions from NEARBY", ( ) => {
       const state = {
         ...initialExploreV2State,
-        location: {
-          placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-          lat: 1,
-          lng: 1,
-          radius: 1,
-        },
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
       };
       const next = exploreV2Reducer( state, {
         type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE,
       } );
       expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.WORLDWIDE );
       expect( next.location.lat ).toBeUndefined( );
-      expect( next.location.lng ).toBeUndefined( );
-      expect( next.location.radius ).toBeUndefined( );
     } );
 
-    it( "SET_LOCATION_PLACE transitions from NEARBY and drops coords", ( ) => {
+    it( "SET_LOCATION_PLACE transitions from NEARBY", ( ) => {
       const state = {
         ...initialExploreV2State,
-        location: {
-          placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-          lat: 1,
-          lng: 1,
-          radius: 1,
-        },
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
       };
       const place = { id: 5, display_name: "Oakland" };
       const next = exploreV2Reducer( state, {
@@ -128,7 +99,6 @@ describe( "exploreV2Reducer", ( ) => {
       } );
       expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.PLACE );
       expect( next.location.place ).toEqual( place );
-      expect( next.location.lat ).toBeUndefined( );
     } );
 
     it( "SET_LOCATION_PLACE replaces an existing place", ( ) => {
@@ -148,32 +118,10 @@ describe( "exploreV2Reducer", ( ) => {
       expect( next.location.place ).toEqual( place );
     } );
 
-    it( "SET_LOCATION_NEEDS_PERMISSION transitions from UNINITIALIZED", ( ) => {
-      const next = exploreV2Reducer( initialExploreV2State, {
-        type: EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION,
-      } );
-      expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION );
-    } );
-
-    it( "SET_LOCATION_NEEDS_PERMISSION preserves subject, sortBy, and filters", ( ) => {
-      const state = {
-        subject: { type: "taxon", taxon: { id: 42 } },
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED },
-        sortBy: OBSERVATIONS_SORT.MOST_FAVED,
-        filters: { quality_grade: "research" },
-      };
-      const next = exploreV2Reducer( state, {
-        type: EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION,
-      } );
-      expect( next.subject ).toEqual( state.subject );
-      expect( next.sortBy ).toBe( state.sortBy );
-      expect( next.filters ).toEqual( state.filters );
-    } );
-
     it( "preserves subject, sortBy, and filters when changing location", ( ) => {
       const state = {
         subject: { type: "taxon", taxon: { id: 42 } },
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED },
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
         sortBy: OBSERVATIONS_SORT.MOST_FAVED,
         filters: { quality_grade: "research" },
       };
@@ -221,28 +169,5 @@ describe( "exploreV2Reducer", ( ) => {
       const next = exploreV2Reducer( state, { type: EXPLORE_V2_ACTION.RESET } );
       expect( next ).toEqual( initialExploreV2State );
     } );
-  } );
-} );
-
-describe( "defaultExploreV2Location", ( ) => {
-  beforeEach( ( ) => {
-    fetchCoarseUserLocation.mockReset( );
-  } );
-
-  it( "returns NEARBY with radius 1 when a location is available", async ( ) => {
-    fetchCoarseUserLocation.mockResolvedValueOnce( { latitude: 37.5, longitude: -122.1 } );
-    const result = await defaultExploreV2Location( );
-    expect( result ).toEqual( {
-      placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-      lat: 37.5,
-      lng: -122.1,
-      radius: 1,
-    } );
-  } );
-
-  it( "returns WORLDWIDE when fetchCoarseUserLocation returns null", async ( ) => {
-    fetchCoarseUserLocation.mockResolvedValueOnce( null );
-    const result = await defaultExploreV2Location( );
-    expect( result ).toEqual( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } );
   } );
 } );

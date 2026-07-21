@@ -1,5 +1,5 @@
 import {
-  act, fireEvent, screen, userEvent,
+  act, fireEvent, screen, userEvent, waitFor,
 } from "@testing-library/react-native";
 import UniversalSearch from "components/Explore/ExploreV2/screens/UniversalSearch";
 import initI18next from "i18n/initI18next";
@@ -40,6 +40,23 @@ const useUniversalSearch = require(
 
 jest.mock( "components/Explore/ExploreV2/hooks/useLocationSearch" );
 const useLocationSearch = require( "components/Explore/ExploreV2/hooks/useLocationSearch" ).default;
+
+jest.mock( "sharedHelpers/fetchCoarseUserLocation", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
+} ) );
+const fetchCoarseUserLocation = require( "sharedHelpers/fetchCoarseUserLocation" ).default;
+
+jest.mock( "sharedHelpers/geolocationWrapper", ( ) => {
+  const actual = jest.requireActual( "sharedHelpers/geolocationWrapper" );
+  return {
+    ...actual,
+    checkLocationPermissions: jest.fn( ),
+  };
+} );
+const { checkLocationPermissions } = require( "sharedHelpers/geolocationWrapper" );
+
+const mockRequestLocationPermissions = jest.fn( );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
@@ -138,6 +155,10 @@ const typeLocationQuery = text => {
   } );
 };
 
+const focusLocation = ( ) => {
+  fireEvent( screen.getByTestId( "UniversalSearch.locationInput" ), "focus" );
+};
+
 beforeAll( async ( ) => {
   await initI18next( );
 } );
@@ -147,7 +168,16 @@ beforeEach( ( ) => {
   mockNavigate.mockClear( );
   mockPopTo.mockClear( );
   mockDispatch.mockClear( );
-  useExploreV2.mockReturnValue( { dispatch: mockDispatch, state: {} } );
+  mockRequestLocationPermissions.mockClear( );
+  fetchCoarseUserLocation.mockReset( );
+  // Default to location permission granted; the no-permission case overrides this.
+  checkLocationPermissions.mockReset( );
+  checkLocationPermissions.mockResolvedValue( "granted" );
+  useExploreV2.mockReturnValue( {
+    dispatch: mockDispatch,
+    state: {},
+    requestLocationPermissions: mockRequestLocationPermissions,
+  } );
   useCurrentUser.mockReturnValue( CURRENT_USER );
   useIconicTaxa.mockReturnValue( ICONIC_TAXA );
   useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
@@ -450,6 +480,94 @@ describe( "UniversalSearch screen", ( ) => {
       dismissSpy.mockRestore( );
     },
   );
+
+  describe( "default location options (empty location field)", ( ) => {
+    it( "shows the Nearby and Worldwide rows when the location field is focused", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      // Subject is the initial field, so its defaults show first.
+      expect( screen.queryByTestId( "LocationDefaultOptions" ) ).toBeNull( );
+
+      focusLocation( );
+
+      expect( screen.getByTestId( "LocationDefaultOptions" ) ).toBeTruthy( );
+      expect( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) ).toBeTruthy( );
+      expect( screen.getByRole( "button", { name: i18next.t( "Worldwide" ) } ) ).toBeTruthy( );
+    } );
+
+    it( "hides the location defaults once a location query is entered", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+      expect( screen.getByTestId( "LocationDefaultOptions" ) ).toBeTruthy( );
+
+      typeLocationQuery( "mon" );
+
+      expect( screen.queryByTestId( "LocationDefaultOptions" ) ).toBeNull( );
+    } );
+
+    it( "hides the defaults after a selection and restores them on re-focus", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+      await actor.press( screen.getByRole( "button", { name: i18next.t( "Worldwide" ) } ) );
+
+      await waitFor( ( ) => {
+        expect( screen.getByDisplayValue( i18next.t( "Worldwide" ) ) ).toBeTruthy( );
+      } );
+      expect( screen.queryByTestId( "LocationDefaultOptions" ) ).toBeNull( );
+
+      focusLocation( );
+      expect( screen.getByTestId( "LocationDefaultOptions" ) ).toBeTruthy( );
+    } );
+
+    it( "fills the field and stages worldwide when Worldwide is tapped", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+      await actor.press( screen.getByRole( "button", { name: i18next.t( "Worldwide" ) } ) );
+
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      expect( screen.getByDisplayValue( i18next.t( "Worldwide" ) ) ).toBeTruthy( );
+
+      await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "fills the field and stages the nearby intent when Nearby is tapped", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+      await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
+
+      await waitFor( ( ) => {
+        expect( screen.getByDisplayValue( i18next.t( "Nearby" ) ) ).toBeTruthy( );
+      } );
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+
+      await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
+    } );
+
+    it(
+      "stages the nearby intent (no prompting, no fetch) regardless of permission",
+      async ( ) => {
+        renderComponent( <UniversalSearch /> );
+
+        focusLocation( );
+        await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
+        await waitFor( ( ) => {
+          expect( screen.getByDisplayValue( i18next.t( "Nearby" ) ) ).toBeTruthy( );
+        } );
+
+        expect( fetchCoarseUserLocation ).not.toHaveBeenCalled( );
+        expect( mockRequestLocationPermissions ).not.toHaveBeenCalled( );
+
+        await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+        expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
+      },
+    );
+  } );
 
   it( "navigates to Advanced Search", async ( ) => {
     renderComponent( <UniversalSearch /> );

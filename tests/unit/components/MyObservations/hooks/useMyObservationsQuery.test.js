@@ -5,6 +5,7 @@ import useServerOrderedObservations
 import { useMyObservations } from "providers/MyObservationsContext";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import factory from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
@@ -16,6 +17,11 @@ jest.mock( "components/MyObservations/hooks/useServerOrderedObservations", ( ) =
 jest.mock( "providers/MyObservationsContext", ( ) => ( {
   __esModule: true,
   useMyObservations: jest.fn( ),
+} ) );
+
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
 } ) );
 
 // UNIQUE REALM SETUP
@@ -56,9 +62,13 @@ const createObservation = observation => {
 const defaultServerResult = {
   observationIds: [],
   isLoading: false,
+  isFetchingNextPage: false,
   error: null,
+  fetchNextPage: jest.fn( ),
   refetch: jest.fn( ),
 };
+
+const mockUser = factory( "LocalUser" );
 
 beforeEach( ( ) => {
   // clear leftover state from previous test
@@ -67,6 +77,7 @@ beforeEach( ( ) => {
     realm.deleteAll( );
   }, "clear realm before each useMyObservationsQuery test" );
   useServerOrderedObservations.mockReturnValue( defaultServerResult );
+  useCurrentUser.mockReturnValue( mockUser );
 } );
 
 afterEach( ( ) => {
@@ -80,11 +91,14 @@ describe( "useMyObservationsQuery", ( ) => {
       state: { observationsSort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST },
     } );
     const serverRefetch = jest.fn( );
+    const serverFetchNextPage = jest.fn( );
     useServerOrderedObservations.mockReturnValue( {
       observationIds: [{ uuid: "should-be-ignored-in-default-sort" }],
       isLoading: true,
+      isFetchingNextPage: true,
       error: new Error( "should be suppressed for default sort" ),
       refetch: serverRefetch,
+      fetchNextPage: serverFetchNextPage,
     } );
     const localObs = factory( "LocalObservation", { needs_sync: false } );
     createObservation( localObs );
@@ -94,8 +108,10 @@ describe( "useMyObservationsQuery", ( ) => {
     expect( result.current.observationIds ).toEqual( [{ uuid: localObs.uuid }] );
     expect( result.current.isServerAuthoritative ).toEqual( false );
     expect( result.current.isLoading ).toEqual( false );
+    expect( result.current.isFetchingNextPage ).toEqual( false );
     expect( result.current.error ).toBeNull( );
     expect( result.current.refetch ).not.toBe( serverRefetch );
+    expect( result.current.fetchNextPage ).not.toBe( serverFetchNextPage );
     expect( useServerOrderedObservations ).toHaveBeenCalledWith(
       expect.objectContaining( { enabled: false } ),
     );
@@ -106,9 +122,12 @@ describe( "useMyObservationsQuery", ( ) => {
       state: { observationsSort: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST },
     } );
     const serverObs = { uuid: factory( "LocalObservation" ).uuid };
+    const serverFetchNextPage = jest.fn( );
     useServerOrderedObservations.mockReturnValue( {
       ...defaultServerResult,
       observationIds: [serverObs],
+      isFetchingNextPage: true,
+      fetchNextPage: serverFetchNextPage,
     } );
     const unsyncedObs = factory( "LocalObservation", { needs_sync: true } );
     createObservation( unsyncedObs );
@@ -120,6 +139,8 @@ describe( "useMyObservationsQuery", ( ) => {
       serverObs,
     ] );
     expect( result.current.isServerAuthoritative ).toEqual( true );
+    expect( result.current.isFetchingNextPage ).toEqual( true );
+    expect( result.current.fetchNextPage ).toBe( serverFetchNextPage );
     expect( useServerOrderedObservations ).toHaveBeenCalledWith(
       expect.objectContaining( { enabled: true } ),
     );
@@ -143,5 +164,32 @@ describe( "useMyObservationsQuery", ( ) => {
       { uuid: unsyncedObs.uuid },
       otherServerObs,
     ] );
+  } );
+
+  it( "applies the selected sort to local observations when there is no current user", ( ) => {
+    useCurrentUser.mockReturnValue( null );
+    useMyObservations.mockReturnValue( {
+      state: { observationsSort: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST },
+    } );
+    useServerOrderedObservations.mockReturnValue( {
+      ...defaultServerResult,
+      observationIds: [{ uuid: "should-be-ignored-when-logged-out" }],
+    } );
+    const olderObs = factory( "LocalObservation", { observed_on_string: "2020-01-01T00:00:00" } );
+    const newerObs = factory( "LocalObservation", { observed_on_string: "2022-06-15T00:00:00" } );
+    // create newer-first so a passing test can't be explained by insertion order
+    createObservation( newerObs );
+    createObservation( olderObs );
+
+    const { result } = renderHook( ( ) => useMyObservationsQuery( ) );
+
+    expect( result.current.observationIds ).toEqual( [
+      { uuid: olderObs.uuid },
+      { uuid: newerObs.uuid },
+    ] );
+    expect( result.current.isServerAuthoritative ).toEqual( false );
+    expect( useServerOrderedObservations ).toHaveBeenCalledWith(
+      expect.objectContaining( { enabled: false } ),
+    );
   } );
 } );

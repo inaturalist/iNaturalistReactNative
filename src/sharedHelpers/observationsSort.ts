@@ -36,6 +36,25 @@ export function observationSortToApiParams( sort: OBSERVATIONS_SORT ): Observati
   return OBSERVATIONS_SORT_TO_API_PARAMS[sort];
 }
 
+// [property, reverse] tuple, matching Realm's .sorted() argument shape
+type ObservationRealmSort = [string, boolean];
+
+const OBSERVATIONS_SORT_TO_REALM_SORT: Record<OBSERVATIONS_SORT, ObservationRealmSort> = {
+  [OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST]: ["_created_at", true],
+  [OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST]: ["_created_at", false],
+  // observed_on (a real date) is only populated once an observation has been uploaded and the
+  // server computes it -- local-only observations only ever have the
+  // observed_on_string set, so local sorting needs to use that field instead
+  [OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST]: ["observed_on_string", true],
+  [OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST]: ["observed_on_string", false],
+};
+
+// For sorting local, unsynced observations directly in a Realm query -- used for logged-out
+// users, who can never have server-ordered observations
+export function observationSortToRealmSort( sort: OBSERVATIONS_SORT ): ObservationRealmSort {
+  return OBSERVATIONS_SORT_TO_REALM_SORT[sort];
+}
+
 export function useObservationsSortLabels( ): Record<OBSERVATIONS_SORT, ObservationSortLabels> {
   const { t } = useTranslation( );
   return {

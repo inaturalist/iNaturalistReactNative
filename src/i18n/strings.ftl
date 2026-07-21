@@ -548,6 +548,10 @@ Filter-by-observed-on-date = Filter by observations observed on a specific date
 Filter-by-uploaded-between-dates = Filter by observations uploaded between two specific dates
 Filter-by-uploaded-on-date = Filter by observations uploaded on a specific date
 Filters = Filters
+# Accessibility hint for the "Worldwide" default option in the location search
+Filters-observations-to-anywhere-in-the-world = Filters observations to anywhere in the world.
+# Accessibility hint for the "Nearby" default option in the location search
+Filters-observations-to-your-current-location = Filters observations to your current location.
 # Status when an item has been flagged
 Flagged = Flagged
 Flash = Flash
