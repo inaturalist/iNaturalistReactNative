@@ -11,6 +11,18 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   default: jest.fn( ),
 } ) );
 
+const mockedNavigate = jest.fn( );
+
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useNavigation: ( ) => ( {
+      navigate: mockedNavigate,
+    } ),
+  };
+} );
+
 const TAXON_WITH_PHOTO = {
   type: "taxon",
   taxon: {
@@ -57,6 +69,7 @@ beforeAll( async ( ) => {
 } );
 
 beforeEach( ( ) => {
+  mockedNavigate.mockClear( );
   useCurrentUser.default.mockReturnValue( {
     prefers_common_names: true,
     prefers_scientific_name_first: false,
@@ -111,5 +124,47 @@ describe( "UniversalSearchResult", ( ) => {
     fireEvent.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
 
     expect( onPress ).toHaveBeenCalledTimes( 1 );
+  } );
+
+  it( "navigates to TaxonDetails when the info button is pressed", ( ) => {
+    renderComponent(
+      <UniversalSearchResult result={TAXON_WITH_PHOTO} onPress={jest.fn( )} />,
+    );
+
+    fireEvent.press( screen.getByTestId( "UniversalSearchResult.info.12" ) );
+
+    expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", { id: 12 } );
+  } );
+
+  it( "navigates to UserProfile when the info button is pressed", ( ) => {
+    renderComponent(
+      <UniversalSearchResult result={USER_RESULT} onPress={jest.fn( )} />,
+    );
+
+    fireEvent.press( screen.getByTestId( "UniversalSearchResult.info.7" ) );
+
+    expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: 7 } );
+  } );
+
+  it( "navigates to ProjectDetails when the info button is pressed", ( ) => {
+    renderComponent(
+      <UniversalSearchResult result={PROJECT_RESULT} onPress={jest.fn( )} />,
+    );
+
+    fireEvent.press( screen.getByTestId( "UniversalSearchResult.info.9" ) );
+
+    expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", { id: 9 } );
+  } );
+
+  it( "does not fire the row onPress when the info button is pressed", ( ) => {
+    const onPress = jest.fn( );
+    renderComponent(
+      <UniversalSearchResult result={USER_RESULT} onPress={onPress} />,
+    );
+
+    fireEvent.press( screen.getByTestId( "UniversalSearchResult.info.7" ) );
+
+    expect( onPress ).not.toHaveBeenCalled( );
+    expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: 7 } );
   } );
 } );

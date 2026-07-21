@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import type { UniversalSearchResultItem }
   from "components/Explore/ExploreV2/hooks/useUniversalSearch";
@@ -7,6 +8,7 @@ import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
 import IconicTaxonIcon from "components/SharedComponents/IconicTaxonIcon";
 import { Image, Pressable, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
+import type { ExploreStackScreenProps } from "navigation/types";
 import React from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
@@ -34,6 +36,26 @@ const resultLabel = ( result: UniversalSearchResultItem ): string => {
 const UniversalSearchResult = ( { result, onPress }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
+  const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
+
+  const navToDetail = ( ) => {
+    switch ( result.type ) {
+      case "user":
+        navigation.navigate( "UserProfile", { userId: result.user.id } );
+        break;
+      case "project":
+        navigation.navigate( "ProjectDetails", { id: result.project.id } );
+        break;
+      default:
+        navigation.navigate( "TaxonDetails", { id: result.taxon.id } );
+    }
+  };
+
+  const infoAccessibilityHint = ( ) => {
+    if ( result.type === "user" ) { return t( "Navigates-to-user-profile" ); }
+    if ( result.type === "project" ) { return t( "Navigates-to-project-details" ); }
+    return t( "Navigates-to-taxon-details" );
+  };
 
   const renderContent = ( ) => {
     switch ( result.type ) {
@@ -104,10 +126,10 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
         {renderContent( )}
       </Pressable>
       <INatIconButton
+        accessibilityHint={infoAccessibilityHint( )}
         accessibilityLabel={t( "More-info" )}
         icon="info-circle-outline"
-        // TODO MOB-1339 follow-up: navigate to the taxon/user/project detail.
-        onPress={( ) => undefined}
+        onPress={navToDetail}
         size={22}
         testID={`UniversalSearchResult.info.${resultId( result )}`}
       />
