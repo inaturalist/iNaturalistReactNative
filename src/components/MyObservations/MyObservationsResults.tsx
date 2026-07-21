@@ -101,6 +101,7 @@ const MyObservationsResults = ( ) => {
   const {
     observationIds: queryObservationIds,
     isServerAuthoritative,
+    isLoading: isLoadingFromQuery,
     isFetchingNextPage: isFetchingNextPageFromQuery,
     fetchNextPage: fetchNextPageFromQuery,
     refetch: refetchFromQuery,
@@ -112,6 +113,10 @@ const MyObservationsResults = ( ) => {
   const observationIds = myObsQueryEnabled
     ? queryObservationIds
     : localObservationIds;
+  const showSearchEmptyState = searchMyObservationsEnabled
+    && !!myObsState.searchedTaxon
+    && !isLoadingFromQuery
+    && observationIds.length === 0;
   const {
     numUnuploadedObservations,
     numObsMissingBasics,
@@ -493,6 +498,7 @@ const MyObservationsResults = ( ) => {
       setOpenSheet={setOpenSheet}
       setSpeciesSortOptionId={setSpeciesSortOptionId}
       showNoResults={showNoResults}
+      showSearchEmptyState={showSearchEmptyState}
       speciesSortOptionId={myObsState.speciesSort}
       taxa={taxa}
       toggleLayout={toggleLayout}
