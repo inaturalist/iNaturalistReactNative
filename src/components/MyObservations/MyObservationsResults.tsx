@@ -97,18 +97,26 @@ const MyObservationsResults = ( ) => {
 
   const localObservationIds = useLocalObservationIds();
   const sortMyObservationsEnabled = useFeatureFlag( FeatureFlag.SortMyObservationsEnabled );
+  const searchMyObservationsEnabled = useFeatureFlag( FeatureFlag.SearchMyObservationsEnabled );
   const {
     observationIds: queryObservationIds,
     isServerAuthoritative,
+    isLoading: isLoadingFromQuery,
     isFetchingNextPage: isFetchingNextPageFromQuery,
     fetchNextPage: fetchNextPageFromQuery,
     refetch: refetchFromQuery,
   } = useMyObservationsQuery( );
-  // Only use server-ordered list when the flag is on and the selected sort requires it
-  const useServerOrder = sortMyObservationsEnabled && isServerAuthoritative;
-  const observationIds = sortMyObservationsEnabled
+  // Only use server-ordered result when at least one of the features that needs it is enabled;
+  // when neither is, we use the plain local list anyway
+  const myObsQueryEnabled = sortMyObservationsEnabled || searchMyObservationsEnabled;
+  const useServerOrder = myObsQueryEnabled && isServerAuthoritative;
+  const observationIds = myObsQueryEnabled
     ? queryObservationIds
     : localObservationIds;
+  const showSearchEmptyState = searchMyObservationsEnabled
+    && !!myObsState.searchedTaxon
+    && !isLoadingFromQuery
+    && observationIds.length === 0;
   const {
     numUnuploadedObservations,
     numObsMissingBasics,
@@ -275,6 +283,13 @@ const MyObservationsResults = ( ) => {
   }, [
     myObsOffsetToRestore,
   ] );
+
+  // Scroll to the top whenever the active taxon search changes
+  useEffect( ( ) => {
+    if ( listRef.current ) {
+      listRef.current.scrollToOffset( { offset: 0, animated: true } );
+    }
+  }, [myObsState.searchedTaxon?.id] );
 
   // API call fetching obs has completed but results are not yet stored in realm
   // for display here
@@ -490,6 +505,7 @@ const MyObservationsResults = ( ) => {
       setOpenSheet={setOpenSheet}
       setSpeciesSortOptionId={setSpeciesSortOptionId}
       showNoResults={showNoResults}
+      showSearchEmptyState={showSearchEmptyState}
       speciesSortOptionId={myObsState.speciesSort}
       taxa={taxa}
       toggleLayout={toggleLayout}
