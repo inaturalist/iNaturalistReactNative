@@ -453,7 +453,7 @@ const getJWT = async (
     if ( !jwtRefreshPromise ) {
       // skip the fetch (and return null) if we're still waiting on backoff
       if ( jwtRefreshBackoffRemainingMs() > 0 ) {
-        return null;
+        return jwtToken ?? null;
       }
       jwtRefreshPromise = fetchFreshJWT( logContext );
     }
