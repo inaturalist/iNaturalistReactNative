@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import {
   act, fireEvent, screen, userEvent, waitFor,
 } from "@testing-library/react-native";
@@ -182,6 +183,8 @@ beforeEach( ( ) => {
   useIconicTaxa.mockReturnValue( ICONIC_TAXA );
   useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
   useLocationSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
+  // Default to online; the offline tests override this per-case.
+  useNetInfo.mockReturnValue( { isConnected: true } );
 } );
 
 afterEach( ( ) => {
@@ -309,6 +312,34 @@ describe( "UniversalSearch screen", ( ) => {
     expect(
       screen.queryByText( i18next.t( "No-results-found-for-that-search" ) ),
     ).toBeNull( );
+  } );
+
+  describe( "offline state", ( ) => {
+    it( "shows the offline notice, not the no-results message, when offline with a query", ( ) => {
+      useNetInfo.mockReturnValue( { isConnected: false } );
+      renderComponent( <UniversalSearch /> );
+
+      typeQuery( "ver" );
+
+      expect(
+        screen.getByText( i18next.t( "You-are-offline-Tap-to-try-again" ) ),
+      ).toBeTruthy( );
+      expect(
+        screen.queryByText( i18next.t( "No-results-found-for-that-search" ) ),
+      ).toBeNull( );
+    } );
+
+    it( "retries the subject search when the offline notice is tapped", async ( ) => {
+      const refetch = jest.fn( );
+      useNetInfo.mockReturnValue( { isConnected: false } );
+      useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch } );
+      renderComponent( <UniversalSearch /> );
+
+      typeQuery( "ver" );
+      await actor.press( screen.getByLabelText( i18next.t( "Internet-Connection-Required" ) ) );
+
+      expect( refetch ).toHaveBeenCalled( );
+    } );
   } );
 
   it( "does not show results until the user has typed a query", ( ) => {
