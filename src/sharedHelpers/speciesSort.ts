@@ -3,7 +3,7 @@ import type { SortDirection, SpeciesCount } from "types/sorting";
 
 export type SpeciesOrderBy = "count";
 
-interface SpeciesSortAPIParams {
+export interface SpeciesSortAPIParams {
   order_by: SpeciesOrderBy;
   order: SortDirection;
 }
@@ -23,10 +23,13 @@ const SPECIES_SORT_TO_API_PARAMS: Record<SPECIES_SORT, SpeciesSortAPIParams> = {
   [SPECIES_SORT.COUNT_ASC]: { order_by: "count", order: "asc" },
 };
 
-// TODO: ExploreV2 will support additional species sort options
-// (observed by me, not observed by me).
-// MyObs will have these count only, but we'll want to define sort options for explore
 export const MY_OBSERVATIONS_SPECIES_SORT_OPTIONS: SPECIES_SORT[] = [
+  SPECIES_SORT.COUNT_DESC,
+  SPECIES_SORT.COUNT_ASC,
+];
+
+// idk if these will ever be different but this feels safer
+export const EXPLORE_SPECIES_SORT_OPTIONS: SPECIES_SORT[] = [
   SPECIES_SORT.COUNT_DESC,
   SPECIES_SORT.COUNT_ASC,
 ];
