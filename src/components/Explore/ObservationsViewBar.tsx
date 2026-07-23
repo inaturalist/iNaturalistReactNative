@@ -29,7 +29,7 @@ const VIEW_OPTION_DEFINITIONS = {
   },
 };
 
-type ViewOption = keyof typeof VIEW_OPTION_DEFINITIONS;
+export type ViewOption = keyof typeof VIEW_OPTION_DEFINITIONS;
 
 interface Props {
   layout: string | null;

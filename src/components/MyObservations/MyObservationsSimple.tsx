@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
+import type { ViewOption } from "components/Explore/ObservationsViewBar";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
@@ -46,6 +47,7 @@ import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
 import LoginSheet from "./LoginSheet";
+import MyObservationsMapView from "./MyObservationsMapView";
 import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
@@ -63,7 +65,7 @@ interface Props {
   handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
-  layout: "list" | "grid";
+  layout: ViewOption;
   listRef?: React.RefObject<FlashListRef<RealmObservation> | null>;
   taxaListRef?: React.RefObject<FlashListRef<SpeciesCount> | null>;
   numTotalObservations?: number;
@@ -424,31 +426,37 @@ const MyObservationsSimple = ( {
             ? <SearchEmptyState />
             : (
               <>
-                <ObservationsFlashList
-                  data={dataFilledWithEmptyBoxes}
-                  dataCanBeFetched={!!currentUser}
-                  fetchFromLastObservation={fetchFromLastObservation}
-                  handlePullToRefresh={handlePullToRefresh}
-                  handleIndividualUploadPress={handleIndividualUploadPress}
-                  hideLoadingWheel={!isFetchingNextPage}
-                  hideMetadata={isDefaultMode}
-                  hideObsUploadStatus={!currentUser}
-                  hideObsStatus={!currentUser}
-                  isSimpleObsStatus={isDefaultMode}
-                  hideRGLabel={!isDefaultMode || !currentUser}
-                  isFetchingNextPage={isFetchingNextPage}
-                  isConnected={isConnected}
-                  obsListKey="MyObservations"
-                  layout={layout}
-                  onEndReached={onEndReached}
-                  onLayout={onListLayout}
-                  onScroll={onScroll}
-                  ref={listRef}
-                  showObservationsEmptyScreen
-                  showNoResults={showNoResults}
-                  testID="MyObservationsAnimatedList"
-                  listHeaderContent={observationsHeader}
-                />
+                { layout === "map"
+                  ? (
+                    <MyObservationsMapView userId={currentUser?.id} />
+                  )
+                  : (
+                    <ObservationsFlashList
+                      data={dataFilledWithEmptyBoxes}
+                      dataCanBeFetched={!!currentUser}
+                      fetchFromLastObservation={fetchFromLastObservation}
+                      handlePullToRefresh={handlePullToRefresh}
+                      handleIndividualUploadPress={handleIndividualUploadPress}
+                      hideLoadingWheel={!isFetchingNextPage}
+                      hideMetadata={isDefaultMode}
+                      hideObsUploadStatus={!currentUser}
+                      hideObsStatus={!currentUser}
+                      isSimpleObsStatus={isDefaultMode}
+                      hideRGLabel={!isDefaultMode || !currentUser}
+                      isFetchingNextPage={isFetchingNextPage}
+                      isConnected={isConnected}
+                      obsListKey="MyObservations"
+                      layout={layout}
+                      onEndReached={onEndReached}
+                      onLayout={onListLayout}
+                      onScroll={onScroll}
+                      ref={listRef}
+                      showObservationsEmptyScreen
+                      showNoResults={showNoResults}
+                      testID="MyObservationsAnimatedList"
+                      listHeaderContent={observationsHeader}
+                    />
+                  )}
                 <ObservationsViewBar
                   layout={layout}
                   updateObservationsView={updateObservationsView}
@@ -456,7 +464,7 @@ const MyObservationsSimple = ( {
                     ? ["grid", "list", "map"]
                     : ["grid", "list"]}
                 />
-                {sortMyObservationsEnabled && (
+                {sortMyObservationsEnabled && layout !== "map" && (
                   <SortButton
                     onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
                     accessibilityLabel={t( "Change-observations-sort-order" )}
