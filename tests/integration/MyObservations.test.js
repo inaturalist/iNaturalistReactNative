@@ -431,6 +431,24 @@ describe( "MyObservations", ( ) => {
           ).toBe( 1 );
         } );
       } );
+
+      describe( "when the persisted layout is map view", ( ) => {
+        beforeEach( ( ) => {
+          zustandStorage.setItem( "myObservationsLayout", "map" );
+        } );
+
+        afterEach( ( ) => {
+          zustandStorage.removeItem( "myObservationsLayout" );
+        } );
+
+        it( "falls back to grid view when the map view feature is disabled", async ( ) => {
+          const realm = global.mockRealms[__filename];
+          expect( realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          const firstObs = mockSyncedObservations[0];
+          await screen.findByTestId( `MyObservations.obsGridItem.${firstObs.uuid}` );
+        } );
+      } );
     } );
 
     describe( "with no observations", ( ) => {
