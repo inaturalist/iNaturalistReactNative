@@ -23,7 +23,7 @@ import {
 } from "uploaders/utils/progressTracker";
 
 export const MS_BEFORE_TOOLBAR_RESET = 5_000;
-const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
+export const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
 
 const { useRealm } = RealmContext;
 
@@ -98,16 +98,28 @@ export default ( canUpload: boolean ) => {
   const uploadObservationAndCatchError = useCallback( async ( observation: RealmObservation ) => {
     const { uuid } = observation;
     setCurrentUpload( observation );
+    // Each upload gets its own abort controller so that a timeout only
+    // cancels this observation and the queue can advance. The store's
+    // session-level abortController only aborts when the user stops all
+    // uploads, which cascades here through the listener.
+    const obsAbortController = new AbortController( );
+    const abortCurrentUpload = ( ) => obsAbortController.abort( );
+    let timeoutID: ReturnType<typeof setTimeout> | undefined;
     try {
-      const timeoutID = setTimeout( ( ) => {
-        abortController.abort( );
-      }, MS_BEFORE_UPLOAD_TIMES_OUT );
-      await uploadObservation( observation, realm, { signal: abortController.signal } );
-      clearTimeout( timeoutID );
+      abortController?.signal.addEventListener( "abort", abortCurrentUpload );
+      if ( abortController?.signal.aborted ) {
+        obsAbortController.abort( );
+      }
+      timeoutID = setTimeout( abortCurrentUpload, MS_BEFORE_UPLOAD_TIMES_OUT );
+      await uploadObservation( observation, realm, { signal: obsAbortController.signal } );
     } catch ( uploadErr ) {
       const uploadError = uploadErr as Error;
       if ( uploadError.name === "AbortError" ) {
-        addUploadError( "aborted", observation.uuid );
+        // A user-initiated stop aborts the session signal and resets upload
+        // state itself, so only a timeout counts as an upload error
+        if ( !abortController?.signal.aborted ) {
+          addUploadError( "aborted", observation.uuid );
+        }
       } else {
         const { message, recoveryPossible, recoveryBy } = handleUploadError( uploadError, t );
         if ( message?.match( /That observation no longer exists./ ) ) {
@@ -129,6 +141,8 @@ export default ( canUpload: boolean ) => {
         }
       }
     } finally {
+      clearTimeout( timeoutID );
+      abortController?.signal.removeEventListener( "abort", abortCurrentUpload );
       removeFromUploadQueue( );
       if (
         uploadQueue.length === 0
