@@ -165,10 +165,8 @@ const MyObservationsResults = ( ) => {
     } );
   };
 
-  const toggleLayout = ( ) => {
-    writeLayoutToStorage( layout === "grid"
-      ? "list"
-      : "grid" );
+  const updateObservationsView = ( value: string ) => {
+    writeLayoutToStorage( value );
   };
 
   const confirmInternetConnection = useCallback( ( ) => {
@@ -508,7 +506,7 @@ const MyObservationsResults = ( ) => {
       showSearchEmptyState={showSearchEmptyState}
       speciesSortOptionId={myObsState.speciesSort}
       taxa={taxa}
-      toggleLayout={toggleLayout}
+      updateObservationsView={updateObservationsView}
     />
   );
 };

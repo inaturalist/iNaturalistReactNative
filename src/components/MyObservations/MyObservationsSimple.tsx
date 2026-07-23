@@ -84,7 +84,7 @@ interface Props {
   showSearchEmptyState: boolean;
   speciesSortOptionId: SPECIES_SORT;
   taxa?: SpeciesCount[];
-  toggleLayout: ( ) => void;
+  updateObservationsView: ( value: string ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
   justFinishedSignup: boolean;
@@ -143,7 +143,7 @@ const MyObservationsSimple = ( {
   showSearchEmptyState,
   speciesSortOptionId,
   taxa,
-  toggleLayout,
+  updateObservationsView,
   fetchMoreTaxa,
   isFetchingTaxa,
   justFinishedSignup,
@@ -449,7 +449,7 @@ const MyObservationsSimple = ( {
                 <ObservationsViewBar
                   hideMap
                   layout={layout}
-                  updateObservationsView={toggleLayout}
+                  updateObservationsView={updateObservationsView}
                 />
                 {sortMyObservationsEnabled && (
                   <SortButton

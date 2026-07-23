@@ -81,7 +81,7 @@ const renderMyObservations = ( layout, showSearchEmptyState = false ) => renderC
       layout={layout}
       observationIds={mockObsIds}
       onEndReached={jest.fn( )}
-      toggleLayout={jest.fn( )}
+      updateObservationsView={jest.fn( )}
       setShowLoginSheet={jest.fn( )}
       activeTab={OBSERVATIONS_TAB}
       showSearchEmptyState={showSearchEmptyState}
