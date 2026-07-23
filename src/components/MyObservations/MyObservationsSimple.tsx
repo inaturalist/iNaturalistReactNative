@@ -519,11 +519,13 @@ const MyObservationsSimple = ( {
             imageComponentOptions={{
               onImageComponentPress: handlePivotCardGridItemPress,
               accessibilityHint: t( "Navigates-to-observation-details" ),
-              imageComponent: (
-                <PivotCardObsGridItem
-                  uuid={observationIds[0].uuid}
-                />
-              ),
+              imageComponent: observationIds.length
+                ? (
+                  <PivotCardObsGridItem
+                    uuid={observationIds[0].uuid}
+                  />
+                )
+                : null,
             }}
           />
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />
