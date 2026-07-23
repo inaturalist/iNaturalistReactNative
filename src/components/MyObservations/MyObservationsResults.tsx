@@ -98,6 +98,9 @@ const MyObservationsResults = ( ) => {
   const localObservationIds = useLocalObservationIds();
   const sortMyObservationsEnabled = useFeatureFlag( FeatureFlag.SortMyObservationsEnabled );
   const searchMyObservationsEnabled = useFeatureFlag( FeatureFlag.SearchMyObservationsEnabled );
+  const myObservationsMapViewEnabled = useFeatureFlag(
+    FeatureFlag.MyObservationsMapViewEnabled,
+  );
   const {
     observationIds: queryObservationIds,
     isServerAuthoritative,
@@ -128,6 +131,14 @@ const MyObservationsResults = ( ) => {
   const currentUser = useCurrentUser( );
   const currentUserId = currentUser?.id;
   const canUpload = !!currentUser && !!isConnected;
+
+  // If map mode becomes unavailable (feature flag disabled or logged out),
+  // fall back to grid rather than getting stuck on an unrenderable view
+  useEffect( ( ) => {
+    if ( layout === "map" && ( !myObservationsMapViewEnabled || !currentUser ) ) {
+      writeLayoutToStorage( "grid" );
+    }
+  }, [layout, myObservationsMapViewEnabled, currentUser, writeLayoutToStorage] );
 
   const { startUploadObservations } = useUploadObservations( canUpload );
   const { syncManually } = useSyncObservations(

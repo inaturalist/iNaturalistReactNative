@@ -158,6 +158,9 @@ const MyObservationsSimple = ( {
   const sortMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SortMyObservationsEnabled,
   );
+  const myObservationsMapViewEnabled = useFeatureFlag(
+    FeatureFlag.MyObservationsMapViewEnabled,
+  );
   const speciesSortLabels = useSpeciesSortLabels( );
   const observationsSortLabels = useObservationsSortLabels( );
   const navigation = useNavigation( );
@@ -447,7 +450,7 @@ const MyObservationsSimple = ( {
                   listHeaderContent={observationsHeader}
                 />
                 <ObservationsViewBar
-                  hideMap
+                  hideMap={!myObservationsMapViewEnabled || !currentUser}
                   layout={layout}
                   updateObservationsView={updateObservationsView}
                 />
