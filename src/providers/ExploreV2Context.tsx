@@ -63,7 +63,8 @@ export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
 export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
-  | { type: "project"; project: Project };
+  | { type: "project"; project: Project }
+  | { type: "unobserved"; user: User };
 
 export interface ExploreV2Filters {
   // Quality grade

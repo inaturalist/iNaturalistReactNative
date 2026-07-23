@@ -15,6 +15,9 @@ export interface ExploreV2QueryParams extends FilterApiParams {
   order_by: ObservationOrderBy;
   order: SortDirection;
   taxon_id?: number;
+  user_id?: number;
+  project_id?: number;
+  unobserved_by_user_id?: number;
   lat?: number;
   lng?: number;
   radius?: number;
@@ -50,6 +53,9 @@ const buildExploreV2QueryParams = (
       break;
     case "project":
       params.project_id = state.subject.project.id;
+      break;
+    case "unobserved":
+      params.unobserved_by_user_id = state.subject.user.id;
       break;
     default:
       break;

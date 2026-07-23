@@ -1352,6 +1352,8 @@ Unknown--user = Unknown
 # Generic error message
 Unknown-error = Unknown error
 Unknown-organism = Unknown organism
+# Header title for the Explore context showing species the user has not observed
+Unobserved = Unobserved
 Unreviewed-observations-only = Unreviewed observations only
 Upload-Complete = Upload Complete
 Upload-in-progress = Upload in progress

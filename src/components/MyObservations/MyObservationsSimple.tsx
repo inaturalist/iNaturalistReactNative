@@ -50,6 +50,7 @@ import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
 import SearchedTaxonBanner from "./Search/SearchedTaxonBanner";
+import SearchEmptyState from "./Search/SearchEmptyState";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
@@ -80,6 +81,7 @@ interface Props {
   setOpenSheet: ( value: ACTIVE_SHEET ) => void;
   setSpeciesSortOptionId: ( value: SPECIES_SORT ) => void;
   showNoResults: boolean;
+  showSearchEmptyState: boolean;
   speciesSortOptionId: SPECIES_SORT;
   taxa?: SpeciesCount[];
   toggleLayout: ( ) => void;
@@ -138,6 +140,7 @@ const MyObservationsSimple = ( {
   setOpenSheet,
   setSpeciesSortOptionId,
   showNoResults,
+  showSearchEmptyState,
   speciesSortOptionId,
   taxa,
   toggleLayout,
@@ -360,6 +363,13 @@ const MyObservationsSimple = ( {
     }
     setObservationsSortOptionId( optionId );
 
+    // scroll to the top of the newly sorted list
+    setTimeout( () => {
+      if ( listRef?.current ) {
+        listRef.current.scrollToOffset( { offset: 0, animated: true } );
+      }
+    }, 0 );
+
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
 
@@ -407,44 +417,48 @@ const MyObservationsSimple = ( {
           <SearchedTaxonBanner />
         )}
         { activeTab === OBSERVATIONS_TAB && (
-          <>
-            <ObservationsFlashList
-              data={dataFilledWithEmptyBoxes}
-              dataCanBeFetched={!!currentUser}
-              fetchFromLastObservation={fetchFromLastObservation}
-              handlePullToRefresh={handlePullToRefresh}
-              handleIndividualUploadPress={handleIndividualUploadPress}
-              hideLoadingWheel={!isFetchingNextPage}
-              hideMetadata={isDefaultMode}
-              hideObsUploadStatus={!currentUser}
-              hideObsStatus={!currentUser}
-              isSimpleObsStatus={isDefaultMode}
-              hideRGLabel={!isDefaultMode || !currentUser}
-              isFetchingNextPage={isFetchingNextPage}
-              isConnected={isConnected}
-              obsListKey="MyObservations"
-              layout={layout}
-              onEndReached={onEndReached}
-              onLayout={onListLayout}
-              onScroll={onScroll}
-              ref={listRef}
-              showObservationsEmptyScreen
-              showNoResults={showNoResults}
-              testID="MyObservationsAnimatedList"
-              listHeaderContent={observationsHeader}
-            />
-            <ObservationsViewBar
-              hideMap
-              layout={layout}
-              updateObservationsView={toggleLayout}
-            />
-            {sortMyObservationsEnabled && (
-              <SortButton
-                onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
-                accessibilityLabel={t( "Change-observations-sort-order" )}
-              />
-            )}
-          </>
+          showSearchEmptyState
+            ? <SearchEmptyState />
+            : (
+              <>
+                <ObservationsFlashList
+                  data={dataFilledWithEmptyBoxes}
+                  dataCanBeFetched={!!currentUser}
+                  fetchFromLastObservation={fetchFromLastObservation}
+                  handlePullToRefresh={handlePullToRefresh}
+                  handleIndividualUploadPress={handleIndividualUploadPress}
+                  hideLoadingWheel={!isFetchingNextPage}
+                  hideMetadata={isDefaultMode}
+                  hideObsUploadStatus={!currentUser}
+                  hideObsStatus={!currentUser}
+                  isSimpleObsStatus={isDefaultMode}
+                  hideRGLabel={!isDefaultMode || !currentUser}
+                  isFetchingNextPage={isFetchingNextPage}
+                  isConnected={isConnected}
+                  obsListKey="MyObservations"
+                  layout={layout}
+                  onEndReached={onEndReached}
+                  onLayout={onListLayout}
+                  onScroll={onScroll}
+                  ref={listRef}
+                  showObservationsEmptyScreen
+                  showNoResults={showNoResults}
+                  testID="MyObservationsAnimatedList"
+                  listHeaderContent={observationsHeader}
+                />
+                <ObservationsViewBar
+                  hideMap
+                  layout={layout}
+                  updateObservationsView={toggleLayout}
+                />
+                {sortMyObservationsEnabled && (
+                  <SortButton
+                    onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
+                    accessibilityLabel={t( "Change-observations-sort-order" )}
+                  />
+                )}
+              </>
+            )
         ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
           <>

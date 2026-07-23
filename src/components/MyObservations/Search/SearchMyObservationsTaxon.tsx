@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import type { ApiTaxon } from "api/types";
 import {
@@ -11,6 +12,7 @@ import {
   useMyObservations,
 } from "providers/MyObservationsContext";
 import React, { useCallback, useState } from "react";
+import { Alert } from "react-native";
 import type { RealmTaxon, RealmUser } from "realmModels/types";
 import { taxonDisplayName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
@@ -22,6 +24,7 @@ const SearchMyObservationsTaxon = ( ) => {
   const { state, dispatch } = useMyObservations( );
   const { searchedTaxon } = state;
   const currentUser = useCurrentUser( ) as RealmUser | null;
+  const { isConnected } = useNetInfo( );
 
   const [taxonQuery, setTaxonQuery] = useState( ( ) => (
     searchedTaxon
@@ -35,6 +38,13 @@ const SearchMyObservationsTaxon = ( ) => {
 
   const onTaxonSelected = useCallback( ( newTaxon: ApiTaxon | null ) => {
     if ( newTaxon && typeof newTaxon.id === "number" && newTaxon.name ) {
+      if ( currentUser && !isConnected ) {
+        Alert.alert(
+          t( "You-are-offline" ),
+          t( "Please-try-again-when-you-are-online" ),
+        );
+        return;
+      }
       // useTaxonSearch can return either ApiTaxon-shaped or RealmTaxon-shaped
       // taxa depending on the source, so we have to check for both here.
       // TODO: normalize taxa at ingest.
@@ -56,7 +66,7 @@ const SearchMyObservationsTaxon = ( ) => {
       dispatch( { type: MY_OBSERVATIONS_ACTION.CLEAR_TAXON_SEARCH } );
     }
     closeScreen( );
-  }, [closeScreen, dispatch] );
+  }, [closeScreen, currentUser, dispatch, isConnected, t] );
 
   const resetSearch = useCallback( ( ) => {
     setTaxonQuery( "" );

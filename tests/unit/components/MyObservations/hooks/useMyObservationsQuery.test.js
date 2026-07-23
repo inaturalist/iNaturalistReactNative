@@ -5,6 +5,7 @@ import useServerOrderedObservations
 import { useMyObservations } from "providers/MyObservationsContext";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import factory from "tests/factory";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
@@ -16,6 +17,11 @@ jest.mock( "components/MyObservations/hooks/useServerOrderedObservations", ( ) =
 jest.mock( "providers/MyObservationsContext", ( ) => ( {
   __esModule: true,
   useMyObservations: jest.fn( ),
+} ) );
+
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
 } ) );
 
 // UNIQUE REALM SETUP
@@ -62,6 +68,8 @@ const defaultServerResult = {
   refetch: jest.fn( ),
 };
 
+const mockUser = factory( "LocalUser" );
+
 beforeEach( ( ) => {
   // clear leftover state from previous test
   const realm = global.mockRealms[mockRealmIdentifier];
@@ -69,6 +77,7 @@ beforeEach( ( ) => {
     realm.deleteAll( );
   }, "clear realm before each useMyObservationsQuery test" );
   useServerOrderedObservations.mockReturnValue( defaultServerResult );
+  useCurrentUser.mockReturnValue( mockUser );
 } );
 
 afterEach( ( ) => {
@@ -155,5 +164,80 @@ describe( "useMyObservationsQuery", ( ) => {
       { uuid: unsyncedObs.uuid },
       otherServerObs,
     ] );
+  } );
+
+  it( "is server authoritative for an active taxon search even under the default sort", ( ) => {
+    const searchedTaxon = { id: 121323, name: "Reptilia" };
+    useMyObservations.mockReturnValue( {
+      state: {
+        observationsSort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+        searchedTaxon,
+      },
+    } );
+    const serverObs = { uuid: factory( "LocalObservation" ).uuid };
+    useServerOrderedObservations.mockReturnValue( {
+      ...defaultServerResult,
+      observationIds: [serverObs],
+    } );
+
+    const { result } = renderHook( ( ) => useMyObservationsQuery( ) );
+
+    expect( result.current.isServerAuthoritative ).toEqual( true );
+    expect( result.current.observationIds ).toEqual( [serverObs] );
+    expect( useServerOrderedObservations ).toHaveBeenCalledWith(
+      expect.objectContaining( { enabled: true, taxonId: searchedTaxon.id } ),
+    );
+  } );
+
+  it( "ignores an active taxon search when there is no current user", ( ) => {
+    useCurrentUser.mockReturnValue( null );
+    const searchedTaxon = { id: 121323, name: "Reptilia" };
+    useMyObservations.mockReturnValue( {
+      state: {
+        observationsSort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+        searchedTaxon,
+      },
+    } );
+    useServerOrderedObservations.mockReturnValue( {
+      ...defaultServerResult,
+      observationIds: [{ uuid: "should-be-ignored-when-logged-out" }],
+    } );
+    const localObs = factory( "LocalObservation", { needs_sync: false } );
+    createObservation( localObs );
+
+    const { result } = renderHook( ( ) => useMyObservationsQuery( ) );
+
+    expect( result.current.isServerAuthoritative ).toEqual( false );
+    expect( result.current.observationIds ).toEqual( [{ uuid: localObs.uuid }] );
+    expect( useServerOrderedObservations ).toHaveBeenCalledWith(
+      expect.objectContaining( { enabled: false } ),
+    );
+  } );
+
+  it( "applies the selected sort to local observations when there is no current user", ( ) => {
+    useCurrentUser.mockReturnValue( null );
+    useMyObservations.mockReturnValue( {
+      state: { observationsSort: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST },
+    } );
+    useServerOrderedObservations.mockReturnValue( {
+      ...defaultServerResult,
+      observationIds: [{ uuid: "should-be-ignored-when-logged-out" }],
+    } );
+    const olderObs = factory( "LocalObservation", { observed_on_string: "2020-01-01T00:00:00" } );
+    const newerObs = factory( "LocalObservation", { observed_on_string: "2022-06-15T00:00:00" } );
+    // create newer-first so a passing test can't be explained by insertion order
+    createObservation( newerObs );
+    createObservation( olderObs );
+
+    const { result } = renderHook( ( ) => useMyObservationsQuery( ) );
+
+    expect( result.current.observationIds ).toEqual( [
+      { uuid: olderObs.uuid },
+      { uuid: newerObs.uuid },
+    ] );
+    expect( result.current.isServerAuthoritative ).toEqual( false );
+    expect( useServerOrderedObservations ).toHaveBeenCalledWith(
+      expect.objectContaining( { enabled: false } ),
+    );
   } );
 } );
