@@ -34,14 +34,13 @@ const MyObservationsMapView = ( { userId }: Props ) => {
   return (
     <View className="flex-1 overflow-hidden h-full">
       <Map
-        currentLocationButtonClassName="left-5 bottom-20"
         initialRegion={WORLDWIDE_REGION}
         isLoading={isLoading}
         regionToAnimate={regionToAnimate}
         showCurrentLocationButton
         showSwitchMapTypeButton
         showsUserLocation
-        switchMapTypeButtonClassName="left-20 bottom-20"
+        switchMapTypeButtonClassName="right-5 bottom-20"
         tileMapParams={{ user_id: userId }}
         withPressableObsTiles
       />

@@ -30,8 +30,8 @@ const SwitchMapTypeButton = ( {
     <INatIconButton
       icon="map-layers"
       className={classnames(
-        "absolute bottom-5 left-5 bg-white rounded-full",
-        switchMapTypeButtonClassName,
+        "absolute bg-white rounded-full",
+        switchMapTypeButtonClassName || "bottom-5 left-5",
       )}
       style={DROP_SHADOW}
       accessibilityLabel={
