@@ -53,7 +53,8 @@ export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
   | { type: "project"; project: Project }
-  | { type: "unobserved"; user: User };
+  | { type: "unobserved"; user: User }
+  | { type: "unknown" };
 
 // To be added to in MOB-1346
 export interface ExploreV2Filters {

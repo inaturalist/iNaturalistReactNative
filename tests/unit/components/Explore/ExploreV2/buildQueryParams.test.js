@@ -48,6 +48,17 @@ describe( "buildExploreV2QueryParams", ( ) => {
       expect( params.user_id ).toBeUndefined( );
       expect( params.taxon_id ).toBeUndefined( );
     } );
+
+    it( "maps an unknown subject to iconic_taxa=[unknown]", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        subject: { type: "unknown" },
+      };
+      const params = buildExploreV2QueryParams( state );
+      expect( params.iconic_taxa ).toEqual( ["unknown"] );
+      expect( params.taxon_id ).toBeUndefined( );
+      expect( params.verifiable ).toBe( true );
+    } );
   } );
 
   describe( "location", ( ) => {

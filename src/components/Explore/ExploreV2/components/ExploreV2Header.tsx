@@ -34,6 +34,8 @@ function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string 
       return subject.project.title;
     case "unobserved":
       return t( "Unobserved" );
+    case "unknown":
+      return t( "Unknown--taxon" );
     default:
       return t( "All-organisms" );
   }
@@ -72,6 +74,13 @@ const SubjectThumbnail = ( { subject }: { subject: ExploreV2Subject } ) => {
           />
         );
     }
+    case "unknown":
+      return (
+        <IconicTaxonIcon
+          imageClassName={[THUMBNAIL_CLASS]}
+          iconicTaxonName="unknown"
+        />
+      );
     case "user":
       return <UserIcon size={62} uri={subject.user.icon_url} />;
     case "project":
