@@ -66,12 +66,23 @@ const authCache: AuthCache = {
   cacheTimeout: 5000,
 };
 
+// module-level tracking of jwt failures. This works around a
+// fault where different parties were competing for retries
+// during downtime or cascading auth failure, sometimes requring
+// user-initiated app restart to heal.
+let jwtRefreshFailureCount = 0;
+let jwtRefreshFailedAt: number | null = null;
+const JWT_REFRESH_BACKOFF_BASE_MS = 5_000;
+const JWT_REFRESH_BACKOFF_MAX_MS = 60_000;
+
 /**
- * Clear cache for isLoggedIn.
+ * Clear cache for isLoggedIn, and any JWT refresh failure backoff.
  */
 const clearAuthCache = ( ): void => {
   authCache.isLoggedIn = null;
   authCache.lastChecked = null;
+  jwtRefreshFailureCount = 0;
+  jwtRefreshFailedAt = null;
 };
 
 async function getSensitiveItem(
@@ -316,6 +327,26 @@ const getAnonymousJWT = (): string => {
 // during downtime.
 let jwtRefreshPromise: Promise<string | null> | null = null;
 
+const jwtRefreshBackoffRemainingMs = ( ): number => {
+  if ( !jwtRefreshFailedAt || jwtRefreshFailureCount === 0 ) { return 0; }
+  const backoff = Math.min(
+    // 2^1, 2^2, 2^3........
+    JWT_REFRESH_BACKOFF_BASE_MS * 2 ** ( jwtRefreshFailureCount - 1 ),
+    JWT_REFRESH_BACKOFF_MAX_MS,
+  );
+  return Math.max( backoff - ( Date.now( ) - jwtRefreshFailedAt ), 0 );
+};
+
+const recordJwtRefreshFailure = ( ): void => {
+  jwtRefreshFailureCount += 1;
+  jwtRefreshFailedAt = Date.now( );
+};
+
+const recordJwtRefreshSuccess = ( ): void => {
+  jwtRefreshFailureCount = 0;
+  jwtRefreshFailedAt = null;
+};
+
 async function fetchFreshJWT( logContext: string | null ): Promise<string | null> {
   try {
     const accessToken = await getSensitiveItem( "accessToken" );
@@ -328,6 +359,7 @@ async function fetchFreshJWT( logContext: string | null ): Promise<string | null
       response = await api.get<{api_token: string}>( "/users/api_token.json" );
     } catch ( getUsersApiTokenError ) {
       logger.error( "Failed to fetch JWT: ", getUsersApiTokenError );
+      recordJwtRefreshFailure( );
       if ( !getUsersApiTokenError ) { return null; }
       throw getUsersApiTokenError;
     }
@@ -337,6 +369,7 @@ async function fetchFreshJWT( logContext: string | null ): Promise<string | null
         `JWT [${logContext}]: Token refresh failed - status: ${response.status}`,
         `- originalError: ${response.originalError} - problem: ${response.problem}`,
       );
+      recordJwtRefreshFailure( );
       // this deletes the user JWT and saved login details when a user is not
       // actually signed in anymore for example, if they installed, deleted,
       // and reinstalled the app without logging out
@@ -354,12 +387,15 @@ async function fetchFreshJWT( logContext: string | null ): Promise<string | null
     // Get newest JWT Token
     const newJwtToken = response.data?.api_token;
     if ( !newJwtToken ) {
+      recordJwtRefreshFailure( );
       throw new Error( "Fetched empty JWT" );
     }
     const newJwtGeneratedAt = Date.now();
 
     await setSensitiveItem( "jwtToken", newJwtToken );
     await setSensitiveItem( "jwtGeneratedAt", newJwtGeneratedAt.toString() );
+
+    recordJwtRefreshSuccess( );
 
     if ( logContext ) {
       logger.info( `JWT [${logContext}]: Token refreshed successfully` );
@@ -415,6 +451,10 @@ const getJWT = async (
     // If a refresh is already in-flight, return that shared promise instead
     // of starting a second concurrent request.
     if ( !jwtRefreshPromise ) {
+      // skip the fetch (and return null) if we're still waiting on backoff
+      if ( jwtRefreshBackoffRemainingMs() > 0 ) {
+        return jwtToken ?? null;
+      }
       jwtRefreshPromise = fetchFreshJWT( logContext );
     }
     return jwtRefreshPromise;
