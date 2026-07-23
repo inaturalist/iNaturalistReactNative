@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native";
+import { screen, userEvent } from "@testing-library/react-native";
 import ExploreV2Header from "components/Explore/ExploreV2/components/ExploreV2Header";
 import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
 import React from "react";
@@ -157,5 +157,25 @@ describe( "ExploreV2Header", () => {
     renderComponent( <ExploreV2Header /> );
 
     expect( screen.getByText( "Nearby" ) ).toBeTruthy();
+  } );
+
+  it( "navigates to Universal Search when the header is tapped", async () => {
+    const actor = userEvent.setup();
+    setState( null );
+    renderComponent( <ExploreV2Header /> );
+
+    await actor.press( screen.getByTestId( "ExploreV2Header.pressable" ) );
+
+    expect( mockNavigate ).toHaveBeenCalledWith( "UniversalSearch" );
+  } );
+
+  it( "navigates to Universal Search when the search button is tapped", async () => {
+    const actor = userEvent.setup();
+    setState( null );
+    renderComponent( <ExploreV2Header /> );
+
+    await actor.press( screen.getByTestId( "ExploreV2Header.searchButton" ) );
+
+    expect( mockNavigate ).toHaveBeenCalledWith( "UniversalSearch" );
   } );
 } );
