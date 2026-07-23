@@ -56,6 +56,7 @@ describe( "buildExploreV2QueryParams", ( ) => {
       };
       const params = buildExploreV2QueryParams( state );
       expect( params.iconic_taxa ).toEqual( ["unknown"] );
+      expect( params.identified ).toBe( false );
       expect( params.taxon_id ).toBeUndefined( );
       expect( params.verifiable ).toBe( true );
     } );

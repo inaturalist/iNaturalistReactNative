@@ -21,6 +21,7 @@ export interface ExploreV2QueryParams {
   radius?: number;
   place_id?: number;
   verifiable?: boolean;
+  identified?: boolean;
 }
 
 export interface NearbyCoords {
@@ -55,6 +56,7 @@ const buildExploreV2QueryParams = (
       break;
     case "unknown":
       params.iconic_taxa = ["unknown"];
+      params.identified = false;
       break;
     default:
       break;
