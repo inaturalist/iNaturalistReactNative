@@ -73,11 +73,11 @@ async function fetchObsByUUIDs(
     uuids,
     {
       fields: {
+        ...Observation.ADVANCED_MODE_LIST_FIELDS,
         user: {
-          id: true,
+          ...Observation.ADVANCED_MODE_LIST_FIELDS.user,
           login: true,
         },
-        ...Observation.ADVANCED_MODE_LIST_FIELDS,
       },
     },
     authOptions,
