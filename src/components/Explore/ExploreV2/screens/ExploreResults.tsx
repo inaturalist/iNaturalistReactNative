@@ -5,8 +5,6 @@ import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
 import ExploreV2Tabs
   from "components/Explore/ExploreV2/components/ExploreV2Tabs";
-import ExploreV2DebugSheet
-  from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import type { NearbyCoords }
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import buildExploreV2QueryParams
@@ -33,6 +31,7 @@ import {
   useObservationsSortLabels,
 } from "sharedHelpers/observationsSort";
 import { useTranslation } from "sharedHooks";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
 import useStoredLayout from "sharedHooks/useStoredLayout";
@@ -49,6 +48,8 @@ interface SortOption {
 
 const ExploreResults = ( ) => {
   const { dispatch, state } = useExploreV2( );
+  const currentUser = useCurrentUser( );
+  const currentUserId = currentUser?.id;
   const {
     hasPermissions,
     hasBlockedPermissions,
@@ -101,8 +102,8 @@ const ExploreResults = ( ) => {
   const canFetch = !needsPermission && nearbyResolved;
 
   const queryParams = useMemo(
-    ( ) => buildExploreV2QueryParams( state, nearbyCoords ),
-    [state, nearbyCoords],
+    ( ) => buildExploreV2QueryParams( state, nearbyCoords, currentUserId ),
+    [state, nearbyCoords, currentUserId],
   );
 
   const {
@@ -193,7 +194,6 @@ const ExploreResults = ( ) => {
                     params={speciesCountParams}
                   />
                 )}
-              <ExploreV2DebugSheet />
               {state.activeTab === OBSERVATIONS_TAB && ( // todo sort btn on species in MOB-1334
                 <SortButton
                   onPress={() => setShowSortSheet( true )}
