@@ -1,17 +1,8 @@
-// @flow
-
 import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
-
-type Props = {
-  layout: ?string,
-  updateObservationsView: Function,
-  viewOptions: string[]
-};
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
@@ -38,11 +29,19 @@ const VIEW_OPTION_DEFINITIONS = {
   },
 };
 
+type ViewOption = keyof typeof VIEW_OPTION_DEFINITIONS;
+
+interface Props {
+  layout: string | null;
+  updateObservationsView: ( value: ViewOption ) => void;
+  viewOptions: ViewOption[];
+}
+
 const ObservationsViewBar = ( {
   layout,
   updateObservationsView,
   viewOptions,
-}: Props ): Node => {
+}: Props ) => {
   const buttons = viewOptions.map( value => ( {
     value,
     ...VIEW_OPTION_DEFINITIONS[value],
