@@ -1,6 +1,7 @@
 import { ActivityIndicator, Map } from "components/SharedComponents";
 import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers";
 import { View } from "components/styledComponents";
+import { useMyObservations } from "providers/MyObservationsContext";
 import React, { useMemo } from "react";
 import type { Region } from "react-native-maps";
 
@@ -22,7 +23,9 @@ const WORLDWIDE_REGION: Region = {
 const activityIndicatorSize = 50;
 
 const MyObservationsMapView = ( { userId }: Props ) => {
-  const { totalBounds, isLoading } = useMyObservationsMapBounds( userId, true );
+  const { state: myObsState } = useMyObservations( );
+  const searchedTaxonId = myObsState.searchedTaxon?.id;
+  const { totalBounds, isLoading } = useMyObservationsMapBounds( userId, searchedTaxonId, true );
 
   const regionToAnimate = useMemo(
     ( ) => ( totalBounds
@@ -41,7 +44,10 @@ const MyObservationsMapView = ( { userId }: Props ) => {
         showSwitchMapTypeButton
         showsUserLocation
         switchMapTypeButtonClassName="right-5 bottom-20"
-        tileMapParams={{ user_id: userId }}
+        tileMapParams={{
+          user_id: userId,
+          ...( searchedTaxonId && { taxon_id: searchedTaxonId } ),
+        }}
         withPressableObsTiles
       />
       {isLoading && (
