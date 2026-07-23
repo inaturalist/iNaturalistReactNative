@@ -450,9 +450,11 @@ const MyObservationsSimple = ( {
                   listHeaderContent={observationsHeader}
                 />
                 <ObservationsViewBar
-                  hideMap={!myObservationsMapViewEnabled || !currentUser}
                   layout={layout}
                   updateObservationsView={updateObservationsView}
+                  viewOptions={myObservationsMapViewEnabled && currentUser
+                    ? ["grid", "list", "map"]
+                    : ["grid", "list"]}
                 />
                 {sortMyObservationsEnabled && (
                   <SortButton

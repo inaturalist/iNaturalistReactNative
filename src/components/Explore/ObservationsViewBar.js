@@ -8,9 +8,9 @@ import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  hideMap?: boolean,
   layout: ?string,
-  updateObservationsView: Function
+  updateObservationsView: Function,
+  viewOptions: string[]
 };
 
 const DROP_SHADOW = getShadow( {
@@ -18,33 +18,35 @@ const DROP_SHADOW = getShadow( {
   elevation: 6,
 } );
 
+// every view option any screen can offer.
+// each caller decides which of these to show and in what order via the `viewOptions` prop.
+const VIEW_OPTION_DEFINITIONS = {
+  map: {
+    icon: "map",
+    accessibilityLabel: "Map",
+    testID: "SegmentedButton.map",
+  },
+  grid: {
+    icon: "grid",
+    accessibilityLabel: "Grid",
+    testID: "SegmentedButton.grid",
+  },
+  list: {
+    icon: "list",
+    accessibilityLabel: "List",
+    testID: "SegmentedButton.list",
+  },
+};
+
 const ObservationsViewBar = ( {
-  hideMap,
   layout,
   updateObservationsView,
+  viewOptions,
 }: Props ): Node => {
-  const buttons = [
-    {
-      value: "grid",
-      icon: "grid",
-      accessibilityLabel: "Grid",
-      testID: "SegmentedButton.grid",
-    },
-    {
-      value: "list",
-      icon: "list",
-      accessibilityLabel: "List",
-      testID: "SegmentedButton.list",
-    },
-  ];
-  if ( !hideMap ) {
-    buttons.unshift( {
-      value: "map",
-      icon: "map",
-      accessibilityLabel: "Map",
-      testID: "SegmentedButton.map",
-    } );
-  }
+  const buttons = viewOptions.map( value => ( {
+    value,
+    ...VIEW_OPTION_DEFINITIONS[value],
+  } ) );
 
   return (
     <View
