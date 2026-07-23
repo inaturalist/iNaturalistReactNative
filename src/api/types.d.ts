@@ -297,4 +297,5 @@ export interface ApiObservationsSearchParams extends ApiParams {
     typeof ORDER_BY_UPDATED_AT |
     typeof ORDER_BY_VOTES;
   return_bounds?: boolean;
+  unobserved_by_user_id?: number;
 }

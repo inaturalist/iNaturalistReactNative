@@ -52,7 +52,8 @@ export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
 export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
-  | { type: "project"; project: Project };
+  | { type: "project"; project: Project }
+  | { type: "unobserved"; user: User };
 
 // To be added to in MOB-1346
 export interface ExploreV2Filters {

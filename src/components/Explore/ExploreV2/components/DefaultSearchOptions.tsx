@@ -83,8 +83,14 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
           accessibilityRole="button"
           accessibilityLabel={t( "Species-I-havent-observed" )}
           className={ROW_CLASSES}
-          // TODO MOB-1345
-          onPress={( ) => undefined}
+          onPress={( ) => onSelectSubject( {
+            type: "unobserved",
+            user: {
+              id: currentUser.id,
+              login: currentUser.login,
+              icon_url: currentUser.icon_url,
+            },
+          } )}
           testID="DefaultSearchOptions.unobserved"
         >
           <Body1>{t( "Species-I-havent-observed" )}</Body1>

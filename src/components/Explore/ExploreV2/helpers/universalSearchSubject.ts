@@ -1,5 +1,6 @@
 import type { UniversalSearchResultItem }
   from "components/Explore/ExploreV2/hooks/useUniversalSearch";
+import type { TFunction } from "i18next";
 import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import { log } from "sharedHelpers/logger";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
@@ -54,6 +55,7 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
 export const subjectToText = (
   subject: ExploreV2Subject,
   commonNameIsPrimary: boolean,
+  t: TFunction,
 ): string => {
   switch ( subject.type ) {
     case "user":
@@ -64,6 +66,8 @@ export const subjectToText = (
       return ( commonNameIsPrimary && subject.taxon.preferred_common_name )
         ? generateTaxonPieces( subject.taxon ).commonName ?? subject.taxon.name
         : subject.taxon.name;
+    case "unobserved":
+      return t( "Species-I-havent-observed" );
     default:
       logger.error( `subjectToText: Unknown explore 
         subject type: ${( subject as { type: string } ).type}` );
