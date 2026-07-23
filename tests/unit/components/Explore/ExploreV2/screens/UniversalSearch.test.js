@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo";
 import {
   act, fireEvent, screen, userEvent, waitFor,
 } from "@testing-library/react-native";
@@ -182,6 +183,8 @@ beforeEach( ( ) => {
   useIconicTaxa.mockReturnValue( ICONIC_TAXA );
   useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
   useLocationSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
+  // Default to online; the offline tests override this per-case.
+  useNetInfo.mockReturnValue( { isConnected: true } );
 } );
 
 afterEach( ( ) => {
@@ -311,6 +314,34 @@ describe( "UniversalSearch screen", ( ) => {
     ).toBeNull( );
   } );
 
+  describe( "offline state", ( ) => {
+    it( "shows the offline notice, not the no-results message, when offline with a query", ( ) => {
+      useNetInfo.mockReturnValue( { isConnected: false } );
+      renderComponent( <UniversalSearch /> );
+
+      typeQuery( "ver" );
+
+      expect(
+        screen.getByText( i18next.t( "You-are-offline-Tap-to-try-again" ) ),
+      ).toBeTruthy( );
+      expect(
+        screen.queryByText( i18next.t( "No-results-found-for-that-search" ) ),
+      ).toBeNull( );
+    } );
+
+    it( "retries the subject search when the offline notice is tapped", async ( ) => {
+      const refetch = jest.fn( );
+      useNetInfo.mockReturnValue( { isConnected: false } );
+      useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch } );
+      renderComponent( <UniversalSearch /> );
+
+      typeQuery( "ver" );
+      await actor.press( screen.getByLabelText( i18next.t( "Internet-Connection-Required" ) ) );
+
+      expect( refetch ).toHaveBeenCalled( );
+    } );
+  } );
+
   it( "does not show results until the user has typed a query", ( ) => {
     useUniversalSearch.mockReturnValue( {
       results: MIXED_RESULTS,
@@ -377,6 +408,30 @@ describe( "UniversalSearch screen", ( ) => {
           subject: expect.objectContaining( {
             type: "user",
             user: expect.objectContaining( { id: 99, login: "tester" } ),
+          } ),
+        } ),
+      );
+    } );
+
+    it( "stages an unobserved subject when the unobserved row is tapped", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await actor.press( screen.getByTestId( "DefaultSearchOptions.unobserved" ) );
+
+      // the selection is staged locally, not written to context until Search
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      // the subject field shows the "Species I haven't observed" label
+      expect(
+        screen.getByDisplayValue( i18next.t( "Species-I-havent-observed" ) ),
+      ).toBeTruthy( );
+
+      await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( {
+          type: "SET_SUBJECT",
+          subject: expect.objectContaining( {
+            type: "unobserved",
+            user: expect.objectContaining( { id: 99 } ),
           } ),
         } ),
       );
@@ -534,8 +589,7 @@ describe( "UniversalSearch screen", ( ) => {
       expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
     } );
 
-    it( "fills the field and stages nearby when Nearby is tapped", async ( ) => {
-      fetchCoarseUserLocation.mockResolvedValue( { latitude: 10, longitude: 20 } );
+    it( "fills the field and stages the nearby intent when Nearby is tapped", async ( ) => {
       renderComponent( <UniversalSearch /> );
 
       focusLocation( );
@@ -547,19 +601,12 @@ describe( "UniversalSearch screen", ( ) => {
       expect( mockDispatch ).not.toHaveBeenCalled( );
 
       await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: "SET_LOCATION_NEARBY",
-        lat: 10,
-        lng: 20,
-        radius: 1,
-      } );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
     } );
 
     it(
-      "stages worldwide when permission is granted but no location fix is available",
+      "stages the nearby intent (no prompting, no fetch) regardless of permission",
       async ( ) => {
-        fetchCoarseUserLocation.mockResolvedValue( null );
-        checkLocationPermissions.mockResolvedValue( "granted" );
         renderComponent( <UniversalSearch /> );
 
         focusLocation( );
@@ -567,35 +614,12 @@ describe( "UniversalSearch screen", ( ) => {
         await waitFor( ( ) => {
           expect( screen.getByDisplayValue( i18next.t( "Nearby" ) ) ).toBeTruthy( );
         } );
-        expect( mockDispatch ).not.toHaveBeenCalled( );
 
-        await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-        expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
-        expect( mockDispatch ).not.toHaveBeenCalledWith(
-          { type: "SET_LOCATION_NEEDS_PERMISSION" },
-        );
-      },
-    );
-
-    it(
-      "stages nearby-needs-permission (without prompting) when permission is missing",
-      async ( ) => {
-        fetchCoarseUserLocation.mockResolvedValue( null );
-        checkLocationPermissions.mockResolvedValue( null );
-        renderComponent( <UniversalSearch /> );
-
-        focusLocation( );
-        await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
-
-        await waitFor( ( ) => {
-          expect( screen.getByDisplayValue( i18next.t( "Nearby" ) ) ).toBeTruthy( );
-        } );
-
+        expect( fetchCoarseUserLocation ).not.toHaveBeenCalled( );
         expect( mockRequestLocationPermissions ).not.toHaveBeenCalled( );
-        expect( mockDispatch ).not.toHaveBeenCalled( );
 
         await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-        expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEEDS_PERMISSION" } );
+        expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
       },
     );
   } );

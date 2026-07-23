@@ -37,23 +37,45 @@ describe( "buildExploreV2QueryParams", ( ) => {
       const params = buildExploreV2QueryParams( state );
       expect( params.project_id ).toBe( 12 );
     } );
+
+    it( "maps an unobserved subject to unobserved_by_user_id", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        subject: { type: "unobserved", user: { id: 99 } },
+      };
+      const params = buildExploreV2QueryParams( state );
+      expect( params.unobserved_by_user_id ).toBe( 99 );
+      expect( params.user_id ).toBeUndefined( );
+      expect( params.taxon_id ).toBeUndefined( );
+    } );
   } );
 
   describe( "location", ( ) => {
-    it( "includes lat/lng/radius in NEARBY mode with coords", ( ) => {
+    it( "includes lat/lng/radius in NEARBY mode when coords are resolved", ( ) => {
       const state = {
         ...initialExploreV2State,
-        location: {
-          placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-          lat: 37.5,
-          lng: -122.1,
-          radius: 1,
-        },
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
       };
-      const params = buildExploreV2QueryParams( state );
+      const params = buildExploreV2QueryParams( state, {
+        lat: 37.5,
+        lng: -122.1,
+        radius: 1,
+      } );
       expect( params.lat ).toBe( 37.5 );
       expect( params.lng ).toBe( -122.1 );
       expect( params.radius ).toBe( 1 );
+      expect( params.place_id ).toBeUndefined( );
+    } );
+
+    it( "omits coords in NEARBY mode when coords are unresolved (worldwide fallback)", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
+      };
+      const params = buildExploreV2QueryParams( state );
+      expect( params.lat ).toBeUndefined( );
+      expect( params.lng ).toBeUndefined( );
+      expect( params.radius ).toBeUndefined( );
       expect( params.place_id ).toBeUndefined( );
     } );
 
@@ -64,17 +86,6 @@ describe( "buildExploreV2QueryParams", ( ) => {
       };
       const params = buildExploreV2QueryParams( state );
       expect( params.lat ).toBeUndefined( );
-      expect( params.place_id ).toBeUndefined( );
-    } );
-
-    it( "omits coords and place in NEEDS_PERMISSION mode", ( ) => {
-      const state = {
-        ...initialExploreV2State,
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION },
-      };
-      const params = buildExploreV2QueryParams( state );
-      expect( params.lat ).toBeUndefined( );
-      expect( params.lng ).toBeUndefined( );
       expect( params.place_id ).toBeUndefined( );
     } );
 
@@ -145,16 +156,15 @@ describe( "buildExploreV2QueryParams", ( ) => {
   it( "combines subject, location, and sort into a single query", ( ) => {
     const state = {
       subject: { type: "taxon", taxon: { id: 42 } },
-      location: {
-        placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-        lat: 37.5,
-        lng: -122.1,
-        radius: 1,
-      },
+      location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
       sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
       filters: {},
     };
-    const params = buildExploreV2QueryParams( state );
+    const params = buildExploreV2QueryParams( state, {
+      lat: 37.5,
+      lng: -122.1,
+      radius: 1,
+    } );
     expect( params ).toEqual( {
       per_page: 20,
       verifiable: true,

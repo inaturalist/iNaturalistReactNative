@@ -72,7 +72,7 @@ jest.mock( "@tanstack/react-query", () => {
 } );
 
 const renderView = ( props = {} ) => renderComponent(
-  <ExploreV2Provider requestLocationPermissions={() => {}}>
+  <ExploreV2Provider>
     <ExploreV2SpeciesView
       enabled
       isConnected

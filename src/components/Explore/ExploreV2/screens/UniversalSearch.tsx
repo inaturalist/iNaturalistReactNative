@@ -31,9 +31,7 @@ import {
 import type { ExploreStackScreenProps } from "navigation/types";
 import type { ExploreV2Subject, Place } from "providers/ExploreV2Context";
 import {
-  defaultExploreV2Location,
   EXPLORE_V2_ACTION,
-  EXPLORE_V2_PLACE_MODE,
   useExploreV2,
 } from "providers/ExploreV2Context";
 import React, { useCallback, useRef, useState } from "react";
@@ -62,8 +60,7 @@ type SearchResultItem = UniversalSearchResultItem | LocationSearchResultItem;
 
 type SelectedLocation =
   | { type: "place"; place: Place }
-  | { type: "nearby"; lat: number; lng: number; radius: number }
-  | { type: "nearby-needs-permission" }
+  | { type: "nearby" }
   | { type: "worldwide" };
 
 const resultKey = ( item: SearchResultItem ): string => {
@@ -138,9 +135,9 @@ const UniversalSearch = ( ) => {
 
   const handleSubjectSelect = useCallback( ( subject: ExploreV2Subject ) => {
     setSelectedSubject( subject );
-    commitSubject( subjectToText( subject, commonNameIsPrimary ) );
+    commitSubject( subjectToText( subject, commonNameIsPrimary, t ) );
     locationInputRef.current?.focus( );
-  }, [commitSubject, commonNameIsPrimary] );
+  }, [commitSubject, commonNameIsPrimary, t] );
 
   const handleLocationSelect = useCallback( ( place: LocationSearchResultItem ) => {
     setSelectedLocation( {
@@ -158,21 +155,8 @@ const UniversalSearch = ( ) => {
     Keyboard.dismiss( );
   }, [commitLocation, t] );
 
-  const handleSelectNearby = useCallback( async ( ) => {
-    const next = await defaultExploreV2Location( );
-    switch ( next.placeMode ) {
-      case EXPLORE_V2_PLACE_MODE.NEARBY:
-        setSelectedLocation( {
-          type: "nearby", lat: next.lat, lng: next.lng, radius: next.radius,
-        } );
-        break;
-      case EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION:
-        setSelectedLocation( { type: "nearby-needs-permission" } );
-        break;
-      default:
-        // Permission granted but no fix available: fall back to worldwide.
-        setSelectedLocation( { type: "worldwide" } );
-    }
+  const handleSelectNearby = useCallback( ( ) => {
+    setSelectedLocation( { type: "nearby" } );
     commitLocation( t( "Nearby" ) );
     Keyboard.dismiss( );
   }, [commitLocation, t] );
@@ -202,15 +186,7 @@ const UniversalSearch = ( ) => {
         } );
         break;
       case "nearby":
-        dispatch( {
-          type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY,
-          lat: selectedLocation.lat,
-          lng: selectedLocation.lng,
-          radius: selectedLocation.radius,
-        } );
-        break;
-      case "nearby-needs-permission":
-        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION } );
+        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } );
         break;
       default:
         dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
@@ -292,6 +268,7 @@ const UniversalSearch = ( ) => {
                 <INatIcon name="magnifying-glass" size={15} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-species-user-or-project" )}
+                  autoCorrect={false}
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
@@ -299,6 +276,7 @@ const UniversalSearch = ( ) => {
                   onFocus={handleSubjectFocus}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
+                  spellCheck={false}
                   testID="UniversalSearch.subjectInput"
                   value={subjectText}
                 />
@@ -307,6 +285,7 @@ const UniversalSearch = ( ) => {
                 <INatIcon name="map-marker-outline" size={15} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-a-location" )}
+                  autoCorrect={false}
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
                   onChangeText={onChangeLocationText}
@@ -314,6 +293,7 @@ const UniversalSearch = ( ) => {
                   placeholder={t( "Search-for-a-location" )}
                   placeholderTextColor={colors.mediumGray}
                   ref={locationInputRef}
+                  spellCheck={false}
                   testID="UniversalSearch.locationInput"
                   value={locationText}
                 />

@@ -124,6 +124,19 @@ describe( "ExploreV2Header", () => {
     expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeTruthy();
   } );
 
+  it( "renders the Unobserved title and location without a subject thumbnail", () => {
+    setState(
+      { type: "unobserved", user: { id: 7, login: "seth_msp" } },
+      { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+    );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.getByText( "Unobserved" ) ).toBeTruthy();
+    expect( screen.getByText( "Worldwide" ) ).toBeTruthy();
+    expect( screen.getByTestId( "ExploreV2Header.unobserved" ) ).toBeTruthy();
+    expect( screen.queryByTestId( "ExploreV2Header.subject" ) ).toBeNull();
+  } );
+
   it( "renders only the place name when there is no subject", () => {
     setState( null );
     renderComponent( <ExploreV2Header /> );
@@ -140,19 +153,7 @@ describe( "ExploreV2Header", () => {
   } );
 
   it( "renders the Nearby label when location is nearby", () => {
-    setState( null, {
-      placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-      lat: 1,
-      lng: 2,
-      radius: 1,
-    } );
-    renderComponent( <ExploreV2Header /> );
-
-    expect( screen.getByText( "Nearby" ) ).toBeTruthy();
-  } );
-
-  it( "renders the Nearby label when nearby is intended but permission is pending", () => {
-    setState( null, { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION } );
+    setState( null, { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY } );
     renderComponent( <ExploreV2Header /> );
 
     expect( screen.getByText( "Nearby" ) ).toBeTruthy();

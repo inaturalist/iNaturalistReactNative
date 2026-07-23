@@ -4,11 +4,12 @@ import React from "react";
 
 import Blog from "./Blog";
 import ProjectPosts from "./ProjectPosts";
+import UserPosts from "./UserPosts";
 
 const Journal = ( ) => {
   const { params } = useRoute<TabStackScreenProps<"Journal">["route"]>( );
   const {
-    journalPostsCount, projectIcon, projectId, projectTitle, userLogin,
+    projectIcon, projectId, projectTitle, userIcon, userId, userLogin,
   } = params || {};
 
   if ( projectId ) {
@@ -21,10 +22,14 @@ const Journal = ( ) => {
     );
   }
 
-  // TODO: posts for one user
-  if ( userLogin ) {
-    console.log( journalPostsCount );
-    return null;
+  if ( userId ) {
+    return (
+      <UserPosts
+        userIcon={userIcon}
+        userId={userId}
+        userLogin={userLogin}
+      />
+    );
   }
 
   return (

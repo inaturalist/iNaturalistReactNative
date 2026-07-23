@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { POST_FOR_PROJECT_FIELDS } from "api/fields";
-import { fetchProjectPosts } from "api/posts";
+import { fetchUserPosts } from "api/posts";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import type { TabStackScreenProps } from "navigation/types";
 import React, {
@@ -15,43 +15,43 @@ import {
 import PostList from "./PostList";
 
 interface Props {
-  projectIcon?: string;
-  projectId: number;
-  projectTitle?: string;
+  userIcon?: string;
+  userId: number;
+  userLogin?: string;
 }
 
-const ProjectPosts = ( {
-  projectIcon,
-  projectId,
-  projectTitle,
+const UserPosts = ( {
+  userIcon,
+  userId,
+  userLogin,
 }: Props ) => {
   const navigation
     = useNavigation<TabStackScreenProps<"Journal">["navigation"]>();
   const { t } = useTranslation();
 
-  const queryKey = ["fetchProjectPosts", projectId];
+  const queryKey = ["fetchUserPosts", userId];
   const queryParams = {
-    id: projectId,
+    id: userId,
     fields: POST_FOR_PROJECT_FIELDS,
   };
 
   const {
-    data: projectPosts,
+    data: userPosts,
     fetchNextPage,
     isFetchingNextPage,
     totalResults: totalPosts,
-  } = useInfiniteScroll( queryKey, fetchProjectPosts, queryParams, {
-    enabled: !!projectId,
+  } = useInfiniteScroll( queryKey, fetchUserPosts, queryParams, {
+    enabled: !!userId,
   } );
 
   const headerOptions = useMemo(
     () => ( {
-      headerTitle: projectTitle,
+      headerTitle: userLogin,
       headerSubtitle: t( "X-JOURNAL_POSTS", {
         count: totalPosts || 0,
       } ),
     } ),
-    [totalPosts, t, projectTitle],
+    [totalPosts, t, userLogin],
   );
 
   useEffect( () => {
@@ -59,16 +59,16 @@ const ProjectPosts = ( {
   }, [headerOptions, navigation] );
 
   const enrichedPosts = useMemo( () => {
-    if ( !projectPosts ) return null;
+    if ( !userPosts ) return null;
 
-    return projectPosts?.map( p => ( {
+    return userPosts?.map( p => ( {
       ...p,
       parent: {
-        id: projectId,
-        icon_url: projectIcon,
+        id: userId,
+        icon_url: userIcon,
       },
     } ) );
-  }, [projectIcon, projectId, projectPosts] );
+  }, [userIcon, userId, userPosts] );
 
   return (
     <ScreenShell>
@@ -81,4 +81,4 @@ const ProjectPosts = ( {
   );
 };
 
-export default ProjectPosts;
+export default UserPosts;
