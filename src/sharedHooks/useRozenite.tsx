@@ -79,6 +79,10 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
     resolvedValue: sortMyObservationsEnabled,
     setOverride: setSortMyObservationsEnabled,
   } = useFeatureFlagForDebug( FeatureFlag.SortMyObservationsEnabled );
+  const {
+    resolvedValue: myObservationsMapViewEnabled,
+    setOverride: setMyObservationsMapViewEnabled,
+  } = useFeatureFlagForDebug( FeatureFlag.MyObservationsMapViewEnabled );
 
   const sections = useMemo(
     () => [
@@ -148,6 +152,15 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
               setSortMyObservationsEnabled( !sortMyObservationsEnabled );
             },
           },
+          {
+            id: "my-observations-map-view",
+            type: "toggle",
+            title: "My Observations Map View",
+            value: myObservationsMapViewEnabled,
+            onUpdate: () => {
+              setMyObservationsMapViewEnabled( !myObservationsMapViewEnabled );
+            },
+          },
         ],
       } ),
     ],
@@ -162,6 +175,8 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
       setSearchMyObservationsEnabled,
       sortMyObservationsEnabled,
       setSortMyObservationsEnabled,
+      myObservationsMapViewEnabled,
+      setMyObservationsMapViewEnabled,
     ],
   );
 
