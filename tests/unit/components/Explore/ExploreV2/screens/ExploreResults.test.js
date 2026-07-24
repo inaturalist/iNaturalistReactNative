@@ -219,8 +219,8 @@ describe( "ExploreResults offline state", ( ) => {
   } );
 
   afterEach( ( ) => {
-    // Restore the shared netinfo mock so later suites see a connected device.
     useNetInfo.mockReturnValue( { isConnected: true } );
+    refresh.mockResolvedValue( { isConnected: true } );
   } );
 
   it( "shows the offline notice instead of the list when disconnected", async ( ) => {
@@ -232,7 +232,8 @@ describe( "ExploreResults offline state", ( ) => {
     expect( screen.queryByTestId( "ExploreV2ObservationsList" ) ).toBeNull( );
   } );
 
-  it( "retries the search when the offline notice is tapped", async ( ) => {
+  it( "retries the search when the offline notice is tapped and we are back online", async ( ) => {
+    refresh.mockResolvedValue( { isConnected: true } );
     const actor = userEvent.setup( );
     renderComponent( <ExploreResults /> );
 
@@ -240,7 +241,7 @@ describe( "ExploreResults offline state", ( ) => {
     await actor.press( offlineNotice );
 
     expect( refresh ).toHaveBeenCalled( );
-    expect( mockHandlePullToRefresh ).toHaveBeenCalled( );
+    await waitFor( ( ) => expect( mockHandlePullToRefresh ).toHaveBeenCalled( ) );
   } );
 } );
 

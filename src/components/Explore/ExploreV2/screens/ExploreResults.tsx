@@ -134,9 +134,12 @@ const ExploreResults = ( ) => {
     totalResults,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
-  const reload = useCallback( ( ) => {
-    refresh( );
-    handlePullToRefresh( );
+  const reload = useCallback( async ( ) => {
+    // only refresh results if we're now connected
+    const { isConnected: isConnectedNow } = await refresh( );
+    if ( isConnectedNow ) {
+      handlePullToRefresh( );
+    }
   }, [handlePullToRefresh] );
 
   const speciesCountParams = useMemo( ( ) => {
@@ -174,7 +177,11 @@ const ExploreResults = ( ) => {
 
   const renderContent = ( ) => {
     if ( isConnected === false ) {
-      return <OfflineNotice onPress={reload} />;
+      return (
+        <View className="flex-1">
+          <OfflineNotice onPress={reload} />
+        </View>
+      );
     }
     if ( needsPermission ) {
       return renderPermissionPrompt( );
