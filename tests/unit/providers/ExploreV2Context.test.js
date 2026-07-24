@@ -5,12 +5,14 @@ import {
   initialExploreV2State,
 } from "providers/ExploreV2Context";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 
 describe( "initialExploreV2State", ( ) => {
   it( "starts with no subject, NEARBY placeMode, newest-upload sort, empty filters", ( ) => {
     expect( initialExploreV2State.subject ).toBeNull( );
     expect( initialExploreV2State.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.NEARBY );
     expect( initialExploreV2State.sortBy ).toBe( OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST );
+    expect( initialExploreV2State.speciesSortBy ).toBe( SPECIES_SORT.COUNT_DESC );
     expect( initialExploreV2State.filters ).toEqual( {} );
   } );
 } );
@@ -30,11 +32,12 @@ describe( "exploreV2Reducer", ( ) => {
       expect( next.subject ).toEqual( { type: "taxon", taxon } );
     } );
 
-    it( "preserves location, sortBy, and filters when changing subject", ( ) => {
+    it( "preserves location, sorts, and filters when changing subject", ( ) => {
       const state = {
         subject: null,
         location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
         sortBy: OBSERVATIONS_SORT.MOST_FAVED,
+        speciesSortBy: SPECIES_SORT.COUNT_ASC,
         filters: { quality_grade: "research" },
       };
       const next = exploreV2Reducer( state, {
@@ -43,6 +46,7 @@ describe( "exploreV2Reducer", ( ) => {
       } );
       expect( next.location ).toEqual( state.location );
       expect( next.sortBy ).toBe( state.sortBy );
+      expect( next.speciesSortBy ).toBe( state.speciesSortBy );
       expect( next.filters ).toEqual( state.filters );
     } );
   } );
@@ -118,11 +122,12 @@ describe( "exploreV2Reducer", ( ) => {
       expect( next.location.place ).toEqual( place );
     } );
 
-    it( "preserves subject, sortBy, and filters when changing location", ( ) => {
+    it( "preserves subject, sorts, and filters when changing location", ( ) => {
       const state = {
         subject: { type: "taxon", taxon: { id: 42 } },
         location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
         sortBy: OBSERVATIONS_SORT.MOST_FAVED,
+        speciesSortBy: SPECIES_SORT.COUNT_ASC,
         filters: { quality_grade: "research" },
       };
       const next = exploreV2Reducer( state, {
@@ -130,6 +135,7 @@ describe( "exploreV2Reducer", ( ) => {
       } );
       expect( next.subject ).toEqual( state.subject );
       expect( next.sortBy ).toBe( state.sortBy );
+      expect( next.speciesSortBy ).toBe( state.speciesSortBy );
       expect( next.filters ).toEqual( state.filters );
     } );
   } );
@@ -141,6 +147,17 @@ describe( "exploreV2Reducer", ( ) => {
         sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST,
       } );
       expect( next.sortBy ).toBe( OBSERVATIONS_SORT.DATE_OBSERVED_NEWEST );
+    } );
+  } );
+
+  describe( EXPLORE_V2_ACTION.SET_SPECIES_SORT, ( ) => {
+    it( "updates speciesSortBy without touching sortBy", ( ) => {
+      const next = exploreV2Reducer( initialExploreV2State, {
+        type: EXPLORE_V2_ACTION.SET_SPECIES_SORT,
+        speciesSortBy: SPECIES_SORT.COUNT_ASC,
+      } );
+      expect( next.speciesSortBy ).toBe( SPECIES_SORT.COUNT_ASC );
+      expect( next.sortBy ).toBe( initialExploreV2State.sortBy );
     } );
   } );
 
@@ -165,6 +182,7 @@ describe( "exploreV2Reducer", ( ) => {
         ...initialExploreV2State,
         subject: { type: "taxon", taxon: { id: 1 } },
         sortBy: OBSERVATIONS_SORT.MOST_FAVED,
+        speciesSortBy: SPECIES_SORT.COUNT_ASC,
       };
       const next = exploreV2Reducer( state, { type: EXPLORE_V2_ACTION.RESET } );
       expect( next ).toEqual( initialExploreV2State );

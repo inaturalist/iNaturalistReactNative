@@ -1,6 +1,6 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 import { useFocusEffect } from "@react-navigation/native";
-import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
 import ExploreV2Tabs
@@ -32,6 +32,12 @@ import {
   OBSERVATIONS_SORT_OPTIONS,
   useObservationsSortLabels,
 } from "sharedHelpers/observationsSort";
+import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
+import {
+  EXPLORE_SPECIES_SORT_OPTIONS,
+  speciesSortToApiParams,
+  useSpeciesSortLabels,
+} from "sharedHelpers/speciesSort";
 import { useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
@@ -41,10 +47,10 @@ import useStoredLayout from "sharedHooks/useStoredLayout";
 // used in our e2e tests on Github Actions
 import fetchCoarseUserLocation from "../../../../sharedHelpers/fetchCoarseUserLocation";
 
-interface SortOption {
+interface SortOption<SortValue> {
   label: string;
   text: string;
-  value: OBSERVATIONS_SORT;
+  value: SortValue;
 }
 
 const ExploreResults = ( ) => {
@@ -59,6 +65,7 @@ const ExploreResults = ( ) => {
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
   const observationsSortLabels = useObservationsSortLabels( );
+  const speciesSortLabels = useSpeciesSortLabels( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreV2ObservationsLayout" );
 
   const sortOptions = OBSERVATIONS_SORT_OPTIONS.reduce(
@@ -71,7 +78,20 @@ const ExploreResults = ( ) => {
       };
       return acc;
     },
-    {} as Record<OBSERVATIONS_SORT, SortOption>,
+    {} as Record<OBSERVATIONS_SORT, SortOption<OBSERVATIONS_SORT>>,
+  );
+
+  const speciesSortOptions = EXPLORE_SPECIES_SORT_OPTIONS.reduce(
+    ( acc, sortBy ) => {
+      const { label, text } = speciesSortLabels[sortBy];
+      acc[sortBy] = {
+        label,
+        text,
+        value: sortBy,
+      };
+      return acc;
+    },
+    {} as Record<SPECIES_SORT, SortOption<SPECIES_SORT>>,
   );
 
   const isNearby = state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY;
@@ -120,6 +140,11 @@ const ExploreResults = ( ) => {
     } = queryParams;
     return filterParams;
   }, [queryParams] );
+
+  const speciesListParams = useMemo( ( ) => ( {
+    ...speciesCountParams,
+    ...speciesSortToApiParams( state.speciesSortBy ),
+  } ), [speciesCountParams, state.speciesSortBy] );
 
   const speciesCount = useSpeciesCount(
     speciesCountParams,
@@ -190,20 +215,23 @@ const ExploreResults = ( ) => {
                   <ExploreV2SpeciesView
                     enabled={canFetch}
                     isConnected={isConnected}
-                    params={speciesCountParams}
+                    params={speciesListParams}
                   />
                 )}
               <ExploreV2DebugSheet />
-              {state.activeTab === OBSERVATIONS_TAB && ( // todo sort btn on species in MOB-1334
+              {( state.activeTab === OBSERVATIONS_TAB
+                || state.activeTab === SPECIES_TAB ) && (
                 <SortButton
                   onPress={() => setShowSortSheet( true )}
-                  accessibilityLabel={t( "Change-observations-sort-order" )}
+                  accessibilityLabel={state.activeTab === OBSERVATIONS_TAB
+                    ? t( "Change-observations-sort-order" )
+                    : t( "Change-species-sort-order" )}
                 />
               )}
             </>
           )}
       </View>
-      {showSortSheet && (
+      {showSortSheet && state.activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet
           headerText={t( "SORT-OBSERVATIONS" )}
           radioValues={sortOptions}
@@ -212,6 +240,21 @@ const ExploreResults = ( ) => {
             dispatch( {
               type: EXPLORE_V2_ACTION.SET_SORT,
               sortBy: sortBy as OBSERVATIONS_SORT,
+            } );
+            setShowSortSheet( false );
+          }}
+          onPressClose={() => setShowSortSheet( false )}
+        />
+      )}
+      {showSortSheet && state.activeTab === SPECIES_TAB && (
+        <RadioButtonSheet
+          headerText={t( "SORT-SPECIES" )}
+          radioValues={speciesSortOptions}
+          selectedValue={state.speciesSortBy}
+          confirm={speciesSortBy => {
+            dispatch( {
+              type: EXPLORE_V2_ACTION.SET_SPECIES_SORT,
+              speciesSortBy: speciesSortBy as SPECIES_SORT,
             } );
             setShowSortSheet( false );
           }}
