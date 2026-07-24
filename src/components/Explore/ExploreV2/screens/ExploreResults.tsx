@@ -205,9 +205,9 @@ const ExploreResults = ( ) => {
                 testID="ExploreV2ObservationsList"
               />
               <ObservationsViewBar
-                hideMap
                 layout={layout}
                 updateObservationsView={writeLayoutToStorage}
+                viewOptions={["grid", "list"]}
               />
             </>
           )

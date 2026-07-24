@@ -25,6 +25,7 @@ export enum FeatureFlag {
   TraditionalProjectsEnabled = "traditionalProjectsEnabled",
   SearchMyObservationsEnabled = "searchMyObservationsEnabled",
   SortMyObservationsEnabled = "sortMyObservationsEnabled",
+  MyObservationsMapViewEnabled = "myObservationsMapViewEnabled",
 }
 
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
@@ -34,6 +35,7 @@ const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   [FeatureFlag.TraditionalProjectsEnabled]: false,
   [FeatureFlag.SearchMyObservationsEnabled]: false,
   [FeatureFlag.SortMyObservationsEnabled]: false,
+  [FeatureFlag.MyObservationsMapViewEnabled]: false,
 };
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
@@ -43,6 +45,7 @@ const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   [FeatureFlag.TraditionalProjectsEnabled]: null,
   [FeatureFlag.SearchMyObservationsEnabled]: null,
   [FeatureFlag.SortMyObservationsEnabled]: null,
+  [FeatureFlag.MyObservationsMapViewEnabled]: null,
 };
 
 const DEFAULT_STATE = {
