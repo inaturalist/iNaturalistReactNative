@@ -1,4 +1,5 @@
-import { screen, waitFor } from "@testing-library/react-native";
+import { refresh, useNetInfo } from "@react-native-community/netinfo";
+import { screen, userEvent, waitFor } from "@testing-library/react-native";
 import ExploreResults from "components/Explore/ExploreV2/screens/ExploreResults";
 import initI18next from "i18n/initI18next";
 import {
@@ -184,5 +185,52 @@ describe( "ExploreResults nearby resolution", ( ) => {
     await waitFor( ( ) => expect( lastScrollArgs( ).enabled ).toBe( true ) );
     expect( lastScrollArgs( ).params.lat ).toBeUndefined( );
     expect( fetchCoarseUserLocation ).not.toHaveBeenCalled( );
+  } );
+} );
+
+describe( "ExploreResults offline state", ( ) => {
+  const mockHandlePullToRefresh = jest.fn( );
+
+  beforeEach( ( ) => {
+    refresh.mockClear( );
+    mockHandlePullToRefresh.mockClear( );
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    mockUseInfiniteExploreScroll.mockReturnValue( {
+      fetchNextPage: jest.fn( ),
+      isFetchingNextPage: false,
+      handlePullToRefresh: mockHandlePullToRefresh,
+      observations: [],
+      totalResults: 0,
+    } );
+    mockHasPermissions = true;
+    useExploreV2.mockReturnValue( {
+      state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+      dispatch: mockDispatch,
+    } );
+  } );
+
+  afterEach( ( ) => {
+    // Restore the shared netinfo mock so later suites see a connected device.
+    useNetInfo.mockReturnValue( { isConnected: true } );
+  } );
+
+  it( "shows the offline notice instead of the list when disconnected", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    expect(
+      await screen.findByText( "You are offline. Tap to try again." ),
+    ).toBeVisible( );
+    expect( screen.queryByTestId( "ExploreV2ObservationsList" ) ).toBeNull( );
+  } );
+
+  it( "retries the search when the offline notice is tapped", async ( ) => {
+    const actor = userEvent.setup( );
+    renderComponent( <ExploreResults /> );
+
+    const offlineNotice = await screen.findByLabelText( "Internet Connection Required" );
+    await actor.press( offlineNotice );
+
+    expect( refresh ).toHaveBeenCalled( );
+    expect( mockHandlePullToRefresh ).toHaveBeenCalled( );
   } );
 } );
