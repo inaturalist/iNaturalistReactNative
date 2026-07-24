@@ -89,15 +89,19 @@ const buildExploreV2QueryParams = (
   }
 
   // Advanced Search filters
-  Object.assign( params, filtersToApiParams( state.filters, viewerId ) );
+  const filterParams = filtersToApiParams( state.filters, viewerId );
+  const paramsWithFilters: ExploreV2QueryParams = {
+    ...params,
+    ...filterParams,
+  };
 
   // `verifiable: true` excludes casual-grade observations, so drop it when the
   // user explicitly asked for casual (mirrors legacy mapParamsToAPI).
-  if ( params.quality_grade?.includes( "casual" ) ) {
-    delete params.verifiable;
+  if ( paramsWithFilters.quality_grade?.includes( "casual" ) ) {
+    delete paramsWithFilters.verifiable;
   }
 
-  return params;
+  return paramsWithFilters;
 };
 
 export default buildExploreV2QueryParams;
