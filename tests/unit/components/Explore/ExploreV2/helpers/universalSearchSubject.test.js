@@ -110,4 +110,11 @@ describe( "subjectToText", ( ) => {
 
     expect( subjectToText( subject, true ) ).toEqual( "Aves" );
   } );
+
+  it( "returns the Unknown label for an unknown subject", ( ) => {
+    const t = key => key;
+    const subject = { type: "unknown" };
+
+    expect( subjectToText( subject, true, t ) ).toEqual( "Unknown--taxon" );
+  } );
 } );

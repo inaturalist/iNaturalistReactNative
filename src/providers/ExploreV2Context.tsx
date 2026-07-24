@@ -13,6 +13,7 @@ import {
 } from "providers/ExploreContext";
 import * as React from "react";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 
 export enum EXPLORE_V2_ACTION {
   SET_SUBJECT = "SET_SUBJECT",
@@ -21,6 +22,7 @@ export enum EXPLORE_V2_ACTION {
   SET_LOCATION_WORLDWIDE = "SET_LOCATION_WORLDWIDE",
   SET_LOCATION_PLACE = "SET_LOCATION_PLACE",
   SET_SORT = "SET_SORT",
+  SET_SPECIES_SORT = "SET_SPECIES_SORT",
   SET_FILTERS = "SET_FILTERS",
   SET_ACTIVE_TAB = "SET_ACTIVE_TAB",
   RESET = "RESET"
@@ -64,7 +66,8 @@ export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
   | { type: "project"; project: Project }
-  | { type: "unobserved"; user: User };
+  | { type: "unobserved"; user: User }
+  | { type: "unknown" };
 
 export interface ExploreV2Filters {
   // Quality grade
@@ -122,6 +125,7 @@ export interface ExploreV2State {
   subject: ExploreV2Subject | null;
   location: ExploreV2LocationState;
   sortBy: OBSERVATIONS_SORT;
+  speciesSortBy: SPECIES_SORT;
   filters: ExploreV2Filters;
   activeTab: ExploreV2Tab;
 }
@@ -136,6 +140,7 @@ export type ExploreV2Action =
     place: Place;
   }
   | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: OBSERVATIONS_SORT }
+  | { type: EXPLORE_V2_ACTION.SET_SPECIES_SORT; speciesSortBy: SPECIES_SORT }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
   | { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB; tab: ExploreV2Tab }
   | { type: EXPLORE_V2_ACTION.RESET };
@@ -144,6 +149,7 @@ export const initialExploreV2State: ExploreV2State = {
   subject: null,
   location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
   sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+  speciesSortBy: SPECIES_SORT.COUNT_DESC,
   filters: defaultExploreV2Filters,
   activeTab: OBSERVATIONS_TAB,
 };
@@ -177,6 +183,8 @@ export function exploreV2Reducer(
       };
     case EXPLORE_V2_ACTION.SET_SORT:
       return { ...state, sortBy: action.sortBy };
+    case EXPLORE_V2_ACTION.SET_SPECIES_SORT:
+      return { ...state, speciesSortBy: action.speciesSortBy };
     case EXPLORE_V2_ACTION.SET_FILTERS:
       return { ...state, filters: action.filters };
     case EXPLORE_V2_ACTION.SET_ACTIVE_TAB:

@@ -13,7 +13,7 @@ import {
 } from "providers/MyObservationsContext";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
-import type { RealmTaxon, RealmUser } from "realmModels/types";
+import type { RealmTaxon } from "realmModels/types";
 import { taxonDisplayName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
@@ -23,7 +23,7 @@ const SearchMyObservationsTaxon = ( ) => {
   const navigation = useNavigation( );
   const { state, dispatch } = useMyObservations( );
   const { searchedTaxon } = state;
-  const currentUser = useCurrentUser( ) as RealmUser | null;
+  const currentUser = useCurrentUser( );
   const { isConnected } = useNetInfo( );
 
   const [taxonQuery, setTaxonQuery] = useState( ( ) => (

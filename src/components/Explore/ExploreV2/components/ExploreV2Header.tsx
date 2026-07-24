@@ -11,7 +11,7 @@ import {
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
-import { Image, View } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents";
 import type { TFunction } from "i18next";
 import type { ExploreStackScreenProps } from "navigation/types";
 import type { ExploreV2LocationState, ExploreV2Subject } from "providers/ExploreV2Context";
@@ -34,6 +34,8 @@ function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string 
       return subject.project.title;
     case "unobserved":
       return t( "Unobserved" );
+    case "unknown":
+      return t( "Unknown--taxon" );
     default:
       return t( "All-organisms" );
   }
@@ -72,6 +74,13 @@ const SubjectThumbnail = ( { subject }: { subject: ExploreV2Subject } ) => {
           />
         );
     }
+    case "unknown":
+      return (
+        <IconicTaxonIcon
+          imageClassName={[THUMBNAIL_CLASS]}
+          iconicTaxonName="unknown"
+        />
+      );
     case "user":
       return <UserIcon size={62} uri={subject.user.icon_url} />;
     case "project":
@@ -205,7 +214,14 @@ const ExploreV2Header = ( ) => {
 
   return (
     <View className="bg-white" testID="ExploreV2Header">
-      <View className="p-4 flex-row items-center">
+      {/* accessible={false} so screen readers can seperately
+      select back button, header content, or search button */}
+      <Pressable
+        accessible={false}
+        className="p-4 flex-row items-center"
+        onPress={() => navigation.navigate( "UniversalSearch" )}
+        testID="ExploreV2Header.pressable"
+      >
         <BackButton />
         {headerContent}
         <ContainedSquareButton
@@ -216,7 +232,7 @@ const ExploreV2Header = ( ) => {
           onPress={() => navigation.navigate( "UniversalSearch" )}
           testID="ExploreV2Header.searchButton"
         />
-      </View>
+      </Pressable>
     </View>
   );
 };
