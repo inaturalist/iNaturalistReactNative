@@ -1,50 +1,51 @@
-// @flow
-
 import { INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
-
-type Props = {
-  hideMap?: boolean,
-  layout: ?string,
-  updateObservationsView: Function
-};
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6,
 } );
 
+// every view option any screen can offer.
+// each caller decides which of these to show and in what order via the `viewOptions` prop.
+const VIEW_OPTION_DEFINITIONS = {
+  map: {
+    icon: "map",
+    accessibilityLabel: "Map",
+    testID: "SegmentedButton.map",
+  },
+  grid: {
+    icon: "grid",
+    accessibilityLabel: "Grid",
+    testID: "SegmentedButton.grid",
+  },
+  list: {
+    icon: "list",
+    accessibilityLabel: "List",
+    testID: "SegmentedButton.list",
+  },
+};
+
+export type ViewOption = keyof typeof VIEW_OPTION_DEFINITIONS;
+
+interface Props {
+  layout: string | null;
+  updateObservationsView: ( value: ViewOption ) => void;
+  viewOptions: ViewOption[];
+}
+
 const ObservationsViewBar = ( {
-  hideMap,
   layout,
   updateObservationsView,
-}: Props ): Node => {
-  const buttons = [
-    {
-      value: "grid",
-      icon: "grid",
-      accessibilityLabel: "Grid",
-      testID: "SegmentedButton.grid",
-    },
-    {
-      value: "list",
-      icon: "list",
-      accessibilityLabel: "List",
-      testID: "SegmentedButton.list",
-    },
-  ];
-  if ( !hideMap ) {
-    buttons.unshift( {
-      value: "map",
-      icon: "map",
-      accessibilityLabel: "Map",
-      testID: "SegmentedButton.map",
-    } );
-  }
+  viewOptions,
+}: Props ) => {
+  const buttons = viewOptions.map( value => ( {
+    value,
+    ...VIEW_OPTION_DEFINITIONS[value],
+  } ) );
 
   return (
     <View

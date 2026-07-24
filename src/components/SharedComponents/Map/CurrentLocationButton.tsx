@@ -28,8 +28,8 @@ const CurrentLocationButton = ( {
       <INatIconButton
         icon="location-arrow"
         className={classnames(
-          "absolute bottom-5 right-5 bg-white rounded-full",
-          currentLocationButtonClassName,
+          "absolute bg-white rounded-full",
+          currentLocationButtonClassName || "bottom-5 right-5",
         )}
         style={DROP_SHADOW}
         accessibilityLabel={t( "Zoom-to-current-location" )}
