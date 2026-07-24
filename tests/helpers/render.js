@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { render, renderHook, screen } from "@testing-library/react-native";
 import App from "components/App";
+import { CurrentUserProvider } from "providers/CurrentUserContext";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -40,15 +41,17 @@ function renderComponent( component, update = null, renderOptions = {} ) {
   const renderMethod = update || render;
   return renderMethod(
     <QueryClientProvider client={queryClient}>
-      <INatPaperProvider>
-        <GestureHandlerRootView className="flex-1">
-          <BottomSheetModalProvider>
-            <NavigationContainer theme={mockNavigationTheme}>
-              { component }
-            </NavigationContainer>
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
-      </INatPaperProvider>
+      <CurrentUserProvider>
+        <INatPaperProvider>
+          <GestureHandlerRootView className="flex-1">
+            <BottomSheetModalProvider>
+              <NavigationContainer theme={mockNavigationTheme}>
+                { component }
+              </NavigationContainer>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+        </INatPaperProvider>
+      </CurrentUserProvider>
     </QueryClientProvider>,
     renderOptions,
   );
@@ -114,17 +117,19 @@ function wrapInQueryClientContainer( component ) {
 
 const Wrapper = ( { children } ) => (
   <QueryClientProvider client={queryClient}>
-    <INatPaperProvider>
-      <GestureHandlerRootView className="flex-1">
-        <BottomSheetModalProvider>
-          <NavigationContainer theme={mockNavigationTheme}>
-            <App>
-              {children}
-            </App>
-          </NavigationContainer>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </INatPaperProvider>
+    <CurrentUserProvider>
+      <INatPaperProvider>
+        <GestureHandlerRootView className="flex-1">
+          <BottomSheetModalProvider>
+            <NavigationContainer theme={mockNavigationTheme}>
+              <App>
+                {children}
+              </App>
+            </NavigationContainer>
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+      </INatPaperProvider>
+    </CurrentUserProvider>
   </QueryClientProvider>
 );
 

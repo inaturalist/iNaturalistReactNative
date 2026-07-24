@@ -20,6 +20,7 @@ import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import OfflineNavigationGuard from "navigation/OfflineNavigationGuard";
+import { CurrentUserProvider } from "providers/CurrentUserContext";
 import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
@@ -158,19 +159,21 @@ const AppWithProviders = ( ) => {
   return (
     <QueryClientProvider client={queryClient}>
       <RealmProvider>
-        <SafeAreaProvider>
-          <INatPaperProvider>
-            <GestureHandlerRootView className="flex-1">
-              <BottomSheetModalProvider>
-                <OfflineNavigationGuard>
-                  <ErrorBoundary>
-                    <App />
-                  </ErrorBoundary>
-                </OfflineNavigationGuard>
-              </BottomSheetModalProvider>
-            </GestureHandlerRootView>
-          </INatPaperProvider>
-        </SafeAreaProvider>
+        <CurrentUserProvider>
+          <SafeAreaProvider>
+            <INatPaperProvider>
+              <GestureHandlerRootView className="flex-1">
+                <BottomSheetModalProvider>
+                  <OfflineNavigationGuard>
+                    <ErrorBoundary>
+                      <App />
+                    </ErrorBoundary>
+                  </OfflineNavigationGuard>
+                </BottomSheetModalProvider>
+              </GestureHandlerRootView>
+            </INatPaperProvider>
+          </SafeAreaProvider>
+        </CurrentUserProvider>
       </RealmProvider>
     </QueryClientProvider>
   );

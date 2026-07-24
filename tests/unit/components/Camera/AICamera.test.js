@@ -2,8 +2,13 @@ import { render, screen } from "@testing-library/react-native";
 import AICamera from "components/Camera/AICamera/AICamera";
 import * as usePredictions from "components/Camera/AICamera/hooks/usePredictions";
 import i18next from "i18next";
+import { CurrentUserProvider } from "providers/CurrentUserContext";
 import React from "react";
 import * as useTaxon from "sharedHooks/useTaxon";
+
+const wrapper = ( { children } ) => (
+  <CurrentUserProvider>{children}</CurrentUserProvider>
+);
 
 const mockTaxonPrediction = {
   id: 144351,
@@ -65,7 +70,7 @@ describe( "AI Camera", ( ) => {
         taxon: mockTaxonPrediction,
       },
     } ) );
-    render( <AICamera /> );
+    render( <AICamera />, { wrapper } );
 
     const taxonResult = screen.getByTestId( `AICamera.taxa.${mockTaxonPrediction.id}` );
 
@@ -80,7 +85,7 @@ describe( "AI Camera", ( ) => {
         taxon: mockTaxonNoPrediction,
       },
     } ) );
-    render( <AICamera /> );
+    render( <AICamera />, { wrapper } );
 
     const scanText = screen.getByText(
       i18next.t( "Point-the-camera-at-an-animal-plant-or-fungus" ),
@@ -94,7 +99,7 @@ describe( "AI Camera", ( ) => {
       ...mockModelLoaded,
       modelLoaded: false,
     } ) );
-    render( <AICamera /> );
+    render( <AICamera />, { wrapper } );
 
     const loadingText = screen.getByText( i18next.t( "Loading-iNaturalists-AI-Camera" ) );
 
@@ -109,7 +114,7 @@ describe( "AI Camera", ( ) => {
         taxon: mockLocalTaxon,
       },
     } ) );
-    render( <AICamera /> );
+    render( <AICamera />, { wrapper } );
 
     const taxonPhoto = screen.getByTestId( "ObsList.photo" );
 
@@ -136,7 +141,7 @@ describe( "AI Camera", ( ) => {
         taxon: mockLocalTaxon,
       },
     } ) );
-    render( <AICamera /> );
+    render( <AICamera />, { wrapper } );
 
     const taxonIcon = screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" );
 

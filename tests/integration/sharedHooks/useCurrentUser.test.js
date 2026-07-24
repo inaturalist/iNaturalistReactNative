@@ -1,4 +1,6 @@
 import { act, renderHook, waitFor } from "@testing-library/react-native";
+import { CurrentUserProvider } from "providers/CurrentUserContext";
+import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useCurrentUser } from "sharedHooks";
 import factory from "tests/factory";
@@ -37,6 +39,10 @@ const signedInUser = ( ) => global.mockRealms[mockRealmIdentifier]
   .objects( "User" )
   .filtered( "signedIn == true" )[0];
 
+const wrapper = ( { children } ) => (
+  <CurrentUserProvider>{children}</CurrentUserProvider>
+);
+
 describe( "useCurrentUser", () => {
   beforeEach( async ( ) => {
     // Write (or reset) the mock user
@@ -46,14 +52,14 @@ describe( "useCurrentUser", () => {
   } );
 
   it( "should return current user", async ( ) => {
-    const { result } = renderHook( () => useCurrentUser() );
+    const { result } = renderHook( () => useCurrentUser(), { wrapper } );
     await waitFor( ( ) => {
       expect( signedInUser().login ).toEqual( result.current.login );
     } );
   } );
 
   it( "should return a detached snapshot, not a live Realm object", async ( ) => {
-    const { result } = renderHook( () => useCurrentUser() );
+    const { result } = renderHook( () => useCurrentUser(), { wrapper } );
     await waitFor( ( ) => {
       expect( result.current ).toBeTruthy();
     } );
@@ -67,7 +73,7 @@ describe( "useCurrentUser", () => {
     safeRealmWrite( realm, ( ) => {
       realm.delete( realm.objects( "User" ) );
     }, "delete users for logged-out test" );
-    const { result } = renderHook( () => useCurrentUser() );
+    const { result } = renderHook( () => useCurrentUser(), { wrapper } );
     await waitFor( ( ) => {
       expect( result.current ).toBeNull();
     } );
@@ -75,7 +81,7 @@ describe( "useCurrentUser", () => {
 
   it( "should keep the same snapshot reference when a write changes no fields", async ( ) => {
     const realm = global.mockRealms[mockRealmIdentifier];
-    const { result } = renderHook( () => useCurrentUser() );
+    const { result } = renderHook( () => useCurrentUser(), { wrapper } );
     const firstSnapshot = result.current;
     await act( async ( ) => {
       safeRealmWrite( realm, ( ) => {
@@ -91,7 +97,7 @@ describe( "useCurrentUser", () => {
 
   it( "should return a new snapshot when a field genuinely changes", async ( ) => {
     const realm = global.mockRealms[mockRealmIdentifier];
-    const { result } = renderHook( () => useCurrentUser() );
+    const { result } = renderHook( () => useCurrentUser(), { wrapper } );
     const firstSnapshot = result.current;
     await act( async ( ) => {
       safeRealmWrite( realm, ( ) => {
