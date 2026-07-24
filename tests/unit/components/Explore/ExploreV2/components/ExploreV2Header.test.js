@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native";
+import { screen, userEvent } from "@testing-library/react-native";
 import ExploreV2Header from "components/Explore/ExploreV2/components/ExploreV2Header";
 import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
 import React from "react";
@@ -124,6 +124,29 @@ describe( "ExploreV2Header", () => {
     expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeTruthy();
   } );
 
+  it( "renders the Unobserved title and location without a subject thumbnail", () => {
+    setState(
+      { type: "unobserved", user: { id: 7, login: "seth_msp" } },
+      { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+    );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.getByText( "Unobserved" ) ).toBeTruthy();
+    expect( screen.getByText( "Worldwide" ) ).toBeTruthy();
+    expect( screen.getByTestId( "ExploreV2Header.unobserved" ) ).toBeTruthy();
+    expect( screen.queryByTestId( "ExploreV2Header.subject" ) ).toBeNull();
+  } );
+
+  it( "renders an unknown subject with the iconic-unknown icon and Unknown label", () => {
+    setState( { type: "unknown" } );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.getByTestId( "ExploreV2Header.subject" ) ).toBeTruthy();
+    expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeTruthy();
+    expect( screen.getByText( "Unknown" ) ).toBeTruthy();
+    expect( screen.getByText( "California" ) ).toBeTruthy();
+  } );
+
   it( "renders only the place name when there is no subject", () => {
     setState( null );
     renderComponent( <ExploreV2Header /> );
@@ -144,5 +167,25 @@ describe( "ExploreV2Header", () => {
     renderComponent( <ExploreV2Header /> );
 
     expect( screen.getByText( "Nearby" ) ).toBeTruthy();
+  } );
+
+  it( "navigates to Universal Search when the header is tapped", async () => {
+    const actor = userEvent.setup();
+    setState( null );
+    renderComponent( <ExploreV2Header /> );
+
+    await actor.press( screen.getByTestId( "ExploreV2Header.pressable" ) );
+
+    expect( mockNavigate ).toHaveBeenCalledWith( "UniversalSearch" );
+  } );
+
+  it( "navigates to Universal Search when the search button is tapped", async () => {
+    const actor = userEvent.setup();
+    setState( null );
+    renderComponent( <ExploreV2Header /> );
+
+    await actor.press( screen.getByTestId( "ExploreV2Header.searchButton" ) );
+
+    expect( mockNavigate ).toHaveBeenCalledWith( "UniversalSearch" );
   } );
 } );

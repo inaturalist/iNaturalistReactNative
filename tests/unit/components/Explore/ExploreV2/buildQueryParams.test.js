@@ -37,6 +37,29 @@ describe( "buildExploreV2QueryParams", ( ) => {
       const params = buildExploreV2QueryParams( state );
       expect( params.project_id ).toBe( 12 );
     } );
+
+    it( "maps an unobserved subject to unobserved_by_user_id", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        subject: { type: "unobserved", user: { id: 99 } },
+      };
+      const params = buildExploreV2QueryParams( state );
+      expect( params.unobserved_by_user_id ).toBe( 99 );
+      expect( params.user_id ).toBeUndefined( );
+      expect( params.taxon_id ).toBeUndefined( );
+    } );
+
+    it( "maps an unknown subject to iconic_taxa=[unknown]", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        subject: { type: "unknown" },
+      };
+      const params = buildExploreV2QueryParams( state );
+      expect( params.iconic_taxa ).toEqual( ["unknown"] );
+      expect( params.identified ).toBe( false );
+      expect( params.taxon_id ).toBeUndefined( );
+      expect( params.verifiable ).toBe( true );
+    } );
   } );
 
   describe( "location", ( ) => {

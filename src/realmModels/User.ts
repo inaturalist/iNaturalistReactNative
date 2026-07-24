@@ -31,7 +31,7 @@ class User extends Realm.Object {
 
   // getting user icon data from production instead of staging
   static uri( user?: RealmUser | ApiUser ) {
-    const iconUrl = ( user as ApiUser )?.icon_url || ( user as RealmUser )?.iconUrl;
+    const iconUrl = user?.icon_url;
     return iconUrl?.replace( "staticdev", "static" );
   }
 
@@ -39,12 +39,36 @@ class User extends Realm.Object {
     return User.uri( user )?.replace( "medium", "thumb" );
   }
 
-  static currentUser( realm: Realm ) {
-    return realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  static currentUser( realm: Realm ): RealmUser | undefined {
+    return realm.objects<RealmUser>( "User" ).filtered( "signedIn == true" )[0];
+  }
+
+  /**
+   * Maps a live Realm User into a plain object
+   *
+   * @param user - a live Realm User
+   * @returns plain user snapshot, or null
+   */
+  static mapRealmToPojo( user?: RealmUser | null ) {
+    if ( !user ) return null;
+    return {
+      id: user.id,
+      identifications_count: user.identifications_count,
+      icon_url: user.icon_url,
+      locale: user.locale,
+      login: user.login,
+      name: user.name,
+      observations_count: user.observations_count,
+      prefers_common_names: user.prefers_common_names,
+      prefers_community_taxa: user.prefers_community_taxa,
+      prefers_scientific_name_first: user.prefers_scientific_name_first,
+      signedIn: user.signedIn,
+    };
   }
 
   static updatePreferences( realm: Realm, newPreferences: TaxonNamesSettings ) {
     const currentUser = User.currentUser( realm );
+    if ( !currentUser ) return;
     safeRealmWrite( realm, ( ) => {
       currentUser.prefers_common_names = newPreferences.prefers_common_names;
       currentUser.prefers_scientific_name_first = newPreferences.prefers_scientific_name_first;
@@ -73,5 +97,7 @@ class User extends Realm.Object {
     },
   };
 }
+
+export type UserPojo = NonNullable<ReturnType<typeof User.mapRealmToPojo>>;
 
 export default User;

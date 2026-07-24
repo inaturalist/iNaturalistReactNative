@@ -76,6 +76,29 @@ describe( "useServerOrderedObservations", ( ) => {
     } ) );
   } );
 
+  it( "includes taxon_id in API params when a taxonId is provided", ( ) => {
+    renderHook( ( ) => useServerOrderedObservations( {
+      sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
+      taxonId: 121323,
+    } ) );
+
+    const [queryKey] = useAuthenticatedInfiniteQuery.mock.calls[0];
+    const [, params] = queryKey;
+    expect( params ).toEqual( expect.objectContaining( {
+      taxon_id: 121323,
+    } ) );
+  } );
+
+  it( "omits taxon_id entirely from API params when no taxonId is provided", ( ) => {
+    renderHook( ( ) => useServerOrderedObservations( {
+      sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
+    } ) );
+
+    const [queryKey] = useAuthenticatedInfiniteQuery.mock.calls[0];
+    const [, params] = queryKey;
+    expect( params ).not.toHaveProperty( "taxon_id" );
+  } );
+
   it( "disables the query when enabled is false or there is no current user", ( ) => {
     const { rerender } = renderHook(
       props => useServerOrderedObservations( props ),

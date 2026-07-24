@@ -135,9 +135,9 @@ const UniversalSearch = ( ) => {
 
   const handleSubjectSelect = useCallback( ( subject: ExploreV2Subject ) => {
     setSelectedSubject( subject );
-    commitSubject( subjectToText( subject, commonNameIsPrimary ) );
+    commitSubject( subjectToText( subject, commonNameIsPrimary, t ) );
     locationInputRef.current?.focus( );
-  }, [commitSubject, commonNameIsPrimary] );
+  }, [commitSubject, commonNameIsPrimary, t] );
 
   const handleLocationSelect = useCallback( ( place: LocationSearchResultItem ) => {
     setSelectedLocation( {

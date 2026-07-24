@@ -37,6 +37,10 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
   const iconicTaxa = useIconicTaxa( );
 
   const handleIconicTaxon = useCallback( ( iconicTaxonName: string ) => {
+    if ( iconicTaxonName === "unknown" ) {
+      onSelectSubject( { type: "unknown" } );
+      return;
+    }
     // Resolve the chooser's name-based callback into a full taxon subject
     const taxaList = ( iconicTaxa
       ? Array.from( iconicTaxa )
@@ -69,7 +73,6 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
           contentContainerStyle={ICONIC_ROW_STYLE}
           onTaxonChosen={handleIconicTaxon}
           testID="DefaultSearchOptions.iconicTaxa"
-          withoutUnknown
         />
       </View>
       {currentUserResult && (
@@ -83,8 +86,14 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
           accessibilityRole="button"
           accessibilityLabel={t( "Species-I-havent-observed" )}
           className={ROW_CLASSES}
-          // TODO MOB-1345
-          onPress={( ) => undefined}
+          onPress={( ) => onSelectSubject( {
+            type: "unobserved",
+            user: {
+              id: currentUser.id,
+              login: currentUser.login,
+              icon_url: currentUser.icon_url,
+            },
+          } )}
           testID="DefaultSearchOptions.unobserved"
         >
           <Body1>{t( "Species-I-havent-observed" )}</Body1>

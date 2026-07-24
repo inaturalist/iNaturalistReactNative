@@ -14,11 +14,14 @@ export interface ExploreV2QueryParams {
   taxon_id?: number;
   user_id?: number;
   project_id?: number;
+  unobserved_by_user_id?: number;
+  iconic_taxa?: string[];
   lat?: number;
   lng?: number;
   radius?: number;
   place_id?: number;
   verifiable?: boolean;
+  identified?: boolean;
 }
 
 export interface NearbyCoords {
@@ -47,6 +50,13 @@ const buildExploreV2QueryParams = (
       break;
     case "project":
       params.project_id = state.subject.project.id;
+      break;
+    case "unobserved":
+      params.unobserved_by_user_id = state.subject.user.id;
+      break;
+    case "unknown":
+      params.iconic_taxa = ["unknown"];
+      params.identified = false;
       break;
     default:
       break;
