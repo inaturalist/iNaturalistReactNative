@@ -37,6 +37,10 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
   const iconicTaxa = useIconicTaxa( );
 
   const handleIconicTaxon = useCallback( ( iconicTaxonName: string ) => {
+    if ( iconicTaxonName === "unknown" ) {
+      onSelectSubject( { type: "unknown" } );
+      return;
+    }
     // Resolve the chooser's name-based callback into a full taxon subject
     const taxaList = ( iconicTaxa
       ? Array.from( iconicTaxa )
@@ -69,7 +73,6 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
           contentContainerStyle={ICONIC_ROW_STYLE}
           onTaxonChosen={handleIconicTaxon}
           testID="DefaultSearchOptions.iconicTaxa"
-          withoutUnknown
         />
       </View>
       {currentUserResult && (

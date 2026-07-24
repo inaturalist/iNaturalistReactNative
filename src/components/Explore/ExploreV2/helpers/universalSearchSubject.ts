@@ -68,6 +68,8 @@ export const subjectToText = (
         : subject.taxon.name;
     case "unobserved":
       return t( "Species-I-havent-observed" );
+    case "unknown":
+      return t( "Unknown--taxon" );
     default:
       logger.error( `subjectToText: Unknown explore 
         subject type: ${( subject as { type: string } ).type}` );
