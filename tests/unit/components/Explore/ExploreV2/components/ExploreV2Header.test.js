@@ -137,6 +137,16 @@ describe( "ExploreV2Header", () => {
     expect( screen.queryByTestId( "ExploreV2Header.subject" ) ).toBeNull();
   } );
 
+  it( "renders an unknown subject with the iconic-unknown icon and Unknown label", () => {
+    setState( { type: "unknown" } );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.getByTestId( "ExploreV2Header.subject" ) ).toBeTruthy();
+    expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeTruthy();
+    expect( screen.getByText( "Unknown" ) ).toBeTruthy();
+    expect( screen.getByText( "California" ) ).toBeTruthy();
+  } );
+
   it( "renders only the place name when there is no subject", () => {
     setState( null );
     renderComponent( <ExploreV2Header /> );
