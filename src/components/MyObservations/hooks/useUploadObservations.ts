@@ -114,12 +114,13 @@ export default ( canUpload: boolean ) => {
       await uploadObservation( observation, realm, { signal: obsAbortController.signal } );
     } catch ( uploadErr ) {
       const uploadError = uploadErr as Error;
+      // stop here if user-initiated. finally still runs.
+      if ( abortController?.signal.aborted ) {
+        return;
+      }
       if ( uploadError.name === "AbortError" ) {
-        // A user-initiated stop aborts the session signal and resets upload
-        // state itself, so only a timeout counts as an upload error
-        if ( !abortController?.signal.aborted ) {
-          addUploadError( "aborted", observation.uuid );
-        }
+        // Only a per-observation timeout reaches here now
+        addUploadError( "aborted", uuid );
       } else {
         const { message, recoveryPossible, recoveryBy } = handleUploadError( uploadError, t );
         if ( message?.match( /That observation no longer exists./ ) ) {
