@@ -1,11 +1,10 @@
 module.exports = {
-  presets: ["module:@react-native/babel-preset"],
+  presets: ["module:@react-native/babel-preset", "nativewind/babel"],
   plugins: [
     "babel-plugin-react-compiler", // must run first!
     "@babel/plugin-transform-export-namespace-from",
     "react-native-worklets-core/plugin",
     "transform-inline-environment-variables",
-    "nativewind/babel",
     ["module-resolver", {
       alias: {
         // constants is a reserved word, so jest won't run if we name the alias constants

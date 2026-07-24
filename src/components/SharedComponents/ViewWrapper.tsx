@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import { View } from "components/styledComponents";
 import { useStackHost } from "navigation/StackHostContext";
 import type { PropsWithChildren } from "react";
@@ -6,6 +5,7 @@ import * as React from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { twMerge } from "tailwind-merge";
 
 interface Props extends PropsWithChildren {
   testID?: string;
@@ -25,7 +25,10 @@ const ScreenShell = ( {
   wrapperClassName,
 }: ScreenShellProps ) => (
   <View
-    className={classnames(
+    // twMerge so callers' classes (e.g. bg-black) beat these defaults; with
+    // nativewind 4 plain concatenation resolves conflicts by stylesheet
+    // order, not string order
+    className={twMerge(
       "flex-1",
       "bg-white",
       wrapperClassName,

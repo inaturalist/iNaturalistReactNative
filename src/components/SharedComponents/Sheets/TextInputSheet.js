@@ -42,7 +42,7 @@ const CharLimit = ( { current = 0, limit = 1, t } ) => {
     currentColor = "text-warningRedDisabled";
   }
   return (
-    <View className="flex-row space-x-1">
+    <View className="flex-row gap-x-1">
       <Body3 className={`${currentColor}`}>
         { t( "Intl-number", { val: current } ) }
       </Body3>

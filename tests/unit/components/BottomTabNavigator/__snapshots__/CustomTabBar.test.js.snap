@@ -21,46 +21,22 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
     <View
       accessibilityRole="tablist"
       style={
-        [
-          [
-            {
-              "flexDirection": "row",
-            },
-            {
-              "backgroundColor": "#ffffff",
-            },
-            {
-              "justifyContent": "space-around",
-            },
-            {
-              "paddingBottom": 4,
-              "paddingLeft": 4,
-              "paddingRight": 4,
-              "paddingTop": 4,
-            },
-            {
-              "marginBottom": 0,
-              "marginLeft": 0,
-              "marginRight": 0,
-              "marginTop": 0,
-            },
-            [
-              {
-                "elevation": 20,
-                "shadowColor": "rgba( 0, 0, 0, 0.25 )",
-                "shadowOffset": {
-                  "height": -2,
-                  "width": 0,
-                },
-                "shadowOpacity": 0.25,
-                "shadowRadius": 2,
-              },
-              {
-                "paddingBottom": 0,
-              },
-            ],
-          ],
-        ]
+        {
+          "backgroundColor": "rgba(255, 255, 255, 1)",
+          "elevation": 20,
+          "flexDirection": "row",
+          "justifyContent": "space-around",
+          "margin": 0,
+          "padding": 4,
+          "paddingBottom": 0,
+          "shadowColor": "rgba( 0, 0, 0, 0.25 )",
+          "shadowOffset": {
+            "height": -2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.25,
+          "shadowRadius": 2,
+        }
       }
       testID="CustomTabBar"
     >
@@ -98,42 +74,22 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          [
-            [
-              {
-                "minHeight": 44,
-              },
-              {
-                "minWidth": 44,
-              },
-              {
-                "alignItems": "center",
-              },
-              {
-                "justifyContent": "flex-end",
-              },
-            ],
-          ]
+          {
+            "alignItems": "center",
+            "justifyContent": "flex-end",
+            "minHeight": 44,
+            "minWidth": 44,
+          }
         }
       >
         <View
           style={
-            [
-              [
-                {
-                  "height": 36,
-                },
-                {
-                  "width": 36,
-                },
-                {
-                  "alignItems": "center",
-                },
-                {
-                  "justifyContent": "center",
-                },
-              ],
-            ]
+            {
+              "alignItems": "center",
+              "height": 36,
+              "justifyContent": "center",
+              "width": 36,
+            }
           }
           testID="Menu"
         >
@@ -163,36 +119,14 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           maxFontSizeMultiplier={1.2}
           numberOfLines={1}
           style={
-            [
-              {
-                "color": "#454545",
-              },
-              {
-                "fontFamily": "Lato-Regular",
-              },
-              [
-                {
-                  "textAlign": "left",
-                },
-                [
-                  {
-                    "fontSize": 11,
-                    "lineHeight": 13.2,
-                  },
-                  {
-                    "fontFamily": "Lato-Regular",
-                  },
-                  [
-                    {
-                      "marginTop": 2,
-                    },
-                    {
-                      "color": "#454545",
-                    },
-                  ],
-                ],
-              ],
-            ]
+            {
+              "color": "rgba(69, 69, 69, 1)",
+              "fontFamily": "Lato-Regular",
+              "fontSize": 11,
+              "lineHeight": 13.199999809265137,
+              "marginTop": 2,
+              "textAlign": "left",
+            }
           }
         >
           Menu
@@ -232,42 +166,22 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          [
-            [
-              {
-                "minHeight": 44,
-              },
-              {
-                "minWidth": 44,
-              },
-              {
-                "alignItems": "center",
-              },
-              {
-                "justifyContent": "flex-end",
-              },
-            ],
-          ]
+          {
+            "alignItems": "center",
+            "justifyContent": "flex-end",
+            "minHeight": 44,
+            "minWidth": 44,
+          }
         }
       >
         <View
           style={
-            [
-              [
-                {
-                  "height": 36,
-                },
-                {
-                  "width": 36,
-                },
-                {
-                  "alignItems": "center",
-                },
-                {
-                  "justifyContent": "center",
-                },
-              ],
-            ]
+            {
+              "alignItems": "center",
+              "height": 36,
+              "justifyContent": "center",
+              "width": 36,
+            }
           }
           testID="RootExplore"
         >
@@ -297,36 +211,14 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           maxFontSizeMultiplier={1.2}
           numberOfLines={1}
           style={
-            [
-              {
-                "color": "#454545",
-              },
-              {
-                "fontFamily": "Lato-Regular",
-              },
-              [
-                {
-                  "textAlign": "left",
-                },
-                [
-                  {
-                    "fontSize": 11,
-                    "lineHeight": 13.2,
-                  },
-                  {
-                    "fontFamily": "Lato-Regular",
-                  },
-                  [
-                    {
-                      "marginTop": 2,
-                    },
-                    {
-                      "color": "#454545",
-                    },
-                  ],
-                ],
-              ],
-            ]
+            {
+              "color": "rgba(69, 69, 69, 1)",
+              "fontFamily": "Lato-Regular",
+              "fontSize": 11,
+              "lineHeight": 13.199999809265137,
+              "marginTop": 2,
+              "textAlign": "left",
+            }
           }
         >
           Explore
@@ -334,30 +226,18 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
       </View>
       <View
         style={
-          [
-            [
-              {
-                "width": 69,
-              },
-              {
-                "height": 60,
-              },
-            ],
-          ]
+          {
+            "height": 60,
+            "width": 69,
+          }
         }
       >
         <View
           style={
-            [
-              [
-                {
-                  "position": "absolute",
-                },
-                {
-                  "top": -13,
-                },
-              ],
-            ]
+            {
+              "position": "absolute",
+              "top": -13,
+            }
           }
         >
           <RCTScrollView
@@ -367,67 +247,34 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             <View>
               <View
                 style={
-                  [
-                    [
-                      {
-                        "paddingTop": 28,
-                      },
-                      {
-                        "backgroundColor": "#E8E8E8",
-                      },
-                      {
-                        "paddingTop": 16,
-                      },
-                      {
-                        "paddingBottom": 0,
-                      },
-                    ],
-                  ]
+                  {
+                    "backgroundColor": "rgba(232, 232, 232, 1)",
+                    "paddingBottom": 0,
+                    "paddingTop": 28,
+                  }
                 }
               >
                 <View
                   style={
-                    [
-                      [
-                        {
-                          "marginTop": -16,
-                        },
-                        {
-                          "paddingBottom": 16,
-                        },
-                        {
-                          "paddingLeft": 16,
-                          "paddingRight": 16,
-                        },
-                      ],
-                    ]
+                    {
+                      "paddingBottom": 16,
+                      "paddingLeft": 16,
+                      "paddingRight": 16,
+                      "rowGap": 16,
+                    }
                   }
                 >
                   <View
                     style={
-                      [
-                        [
-                          {
-                            "flexDirection": "row",
-                          },
-                          {
-                            "justifyContent": "center",
-                          },
-                          {
-                            "width": "100%",
-                          },
-                          {
-                            "flexBasis": "0%",
-                            "flexGrow": 1,
-                            "flexShrink": 1,
-                          },
-                          [
-                            {
-                              "marginTop": 16,
-                            },
-                          ],
-                        ],
-                      ]
+                      {
+                        "columnGap": 16,
+                        "flexBasis": "0%",
+                        "flexDirection": "row",
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "justifyContent": "center",
+                        "width": "100%",
+                      }
                     }
                   >
                     <View
@@ -463,46 +310,29 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                       onResponderTerminationRequest={[Function]}
                       onStartShouldSetResponder={[Function]}
                       style={
-                        [
-                          [
-                            {
-                              "backgroundColor": "#ffffff",
-                            },
-                            {
-                              "width": "50%",
-                            },
-                            {
-                              "alignItems": "center",
-                            },
-                            {
-                              "paddingBottom": 16,
-                              "paddingTop": 16,
-                            },
-                            {
-                              "borderBottomLeftRadius": 8,
-                              "borderBottomRightRadius": 8,
-                              "borderTopLeftRadius": 8,
-                              "borderTopRightRadius": 8,
-                            },
-                            {
-                              "flexBasis": "0%",
-                              "flexGrow": 1,
-                              "flexShrink": 1,
-                            },
-                            {
-                              "shadowColor": "rgba(0, 0, 0, 0.1)",
-                              "shadowOffset": {
-                                "height": 1,
-                                "width": 0,
-                              },
-                              "shadowOpacity": 1,
-                              "shadowRadius": 2,
-                            },
-                            {
-                              "shadowColor": "rgba(0, 0, 0, 0.25)",
-                            },
+                        {
+                          "alignItems": "center",
+                          "backgroundColor": "rgba(255, 255, 255, 1)",
+                          "borderRadius": 8,
+                          "boxShadow": [
+                            0,
+                            0,
+                            "#00000000",
+                            0,
+                            0,
+                            "#00000000",
+                            0,
+                            1,
+                            1,
+                            "#00000040",
                           ],
-                        ]
+                          "flexBasis": "0%",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "paddingBottom": 16,
+                          "paddingTop": 16,
+                          "width": "50%",
+                        }
                       }
                       testID="camera-button"
                     >
@@ -540,57 +370,24 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                         onResponderTerminationRequest={[Function]}
                         onStartShouldSetResponder={[Function]}
                         style={
-                          [
-                            {
-                              "height": 44,
-                              "width": 44,
-                            },
-                            {
-                              "alignItems": "center",
-                              "justifyContent": "center",
-                            },
-                            false,
-                            [
-                              {
-                                "backgroundColor": "#74AC00",
-                              },
-                              {
-                                "borderBottomLeftRadius": 9999,
-                                "borderBottomRightRadius": 9999,
-                                "borderTopLeftRadius": 9999,
-                                "borderTopRightRadius": 9999,
-                              },
-                              {
-                                "height": 36,
-                              },
-                              {
-                                "width": 36,
-                              },
-                              {
-                                "marginBottom": 8,
-                              },
-                            ],
-                            {
-                              "opacity": 1,
-                            },
-                          ]
+                          {
+                            "alignItems": "center",
+                            "backgroundColor": "rgba(116, 172, 0, 1)",
+                            "borderRadius": 9999,
+                            "height": 44,
+                            "justifyContent": "center",
+                            "marginBottom": 8,
+                            "width": 44,
+                          }
                         }
                       >
                         <View
                           style={
-                            [
-                              [
-                                {
-                                  "position": "relative",
-                                },
-                                {
-                                  "left": 0.2,
-                                },
-                                {
-                                  "top": 0.1,
-                                },
-                              ],
-                            ]
+                            {
+                              "left": 0.20000000298023224,
+                              "position": "relative",
+                              "top": 0.10000000149011612,
+                            }
                           }
                         >
                           <Text
@@ -619,28 +416,13 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                       <Text
                         maxFontSizeMultiplier={2}
                         style={
-                          [
-                            {
-                              "color": "#454545",
-                            },
-                            {
-                              "fontFamily": "Lato-Regular",
-                            },
-                            [
-                              {
-                                "textAlign": "left",
-                              },
-                              [
-                                {
-                                  "fontSize": 13,
-                                  "lineHeight": 18,
-                                },
-                                {
-                                  "fontFamily": "Lato-Medium",
-                                },
-                              ],
-                            ],
-                          ]
+                          {
+                            "color": "rgba(69, 69, 69, 1)",
+                            "fontFamily": "Lato-Medium",
+                            "fontSize": 13,
+                            "lineHeight": 18,
+                            "textAlign": "left",
+                          }
                         }
                       >
                         Take photos
@@ -649,29 +431,15 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                   </View>
                   <View
                     style={
-                      [
-                        [
-                          {
-                            "flexDirection": "row",
-                          },
-                          {
-                            "justifyContent": "center",
-                          },
-                          {
-                            "width": "100%",
-                          },
-                          {
-                            "flexBasis": "0%",
-                            "flexGrow": 1,
-                            "flexShrink": 1,
-                          },
-                          [
-                            {
-                              "marginTop": 16,
-                            },
-                          ],
-                        ],
-                      ]
+                      {
+                        "columnGap": 16,
+                        "flexBasis": "0%",
+                        "flexDirection": "row",
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "justifyContent": "center",
+                        "width": "100%",
+                      }
                     }
                   >
                     <View
@@ -707,46 +475,29 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                       onResponderTerminationRequest={[Function]}
                       onStartShouldSetResponder={[Function]}
                       style={
-                        [
-                          [
-                            {
-                              "backgroundColor": "#ffffff",
-                            },
-                            {
-                              "width": "50%",
-                            },
-                            {
-                              "alignItems": "center",
-                            },
-                            {
-                              "paddingBottom": 16,
-                              "paddingTop": 16,
-                            },
-                            {
-                              "borderBottomLeftRadius": 8,
-                              "borderBottomRightRadius": 8,
-                              "borderTopLeftRadius": 8,
-                              "borderTopRightRadius": 8,
-                            },
-                            {
-                              "flexBasis": "0%",
-                              "flexGrow": 1,
-                              "flexShrink": 1,
-                            },
-                            {
-                              "shadowColor": "rgba(0, 0, 0, 0.1)",
-                              "shadowOffset": {
-                                "height": 1,
-                                "width": 0,
-                              },
-                              "shadowOpacity": 1,
-                              "shadowRadius": 2,
-                            },
-                            {
-                              "shadowColor": "rgba(0, 0, 0, 0.25)",
-                            },
+                        {
+                          "alignItems": "center",
+                          "backgroundColor": "rgba(255, 255, 255, 1)",
+                          "borderRadius": 8,
+                          "boxShadow": [
+                            0,
+                            0,
+                            "#00000000",
+                            0,
+                            0,
+                            "#00000000",
+                            0,
+                            1,
+                            1,
+                            "#00000040",
                           ],
-                        ]
+                          "flexBasis": "0%",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "paddingBottom": 16,
+                          "paddingTop": 16,
+                          "width": "50%",
+                        }
                       }
                       testID="record-sound-button"
                     >
@@ -784,57 +535,24 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                         onResponderTerminationRequest={[Function]}
                         onStartShouldSetResponder={[Function]}
                         style={
-                          [
-                            {
-                              "height": 44,
-                              "width": 44,
-                            },
-                            {
-                              "alignItems": "center",
-                              "justifyContent": "center",
-                            },
-                            false,
-                            [
-                              {
-                                "backgroundColor": "#74AC00",
-                              },
-                              {
-                                "borderBottomLeftRadius": 9999,
-                                "borderBottomRightRadius": 9999,
-                                "borderTopLeftRadius": 9999,
-                                "borderTopRightRadius": 9999,
-                              },
-                              {
-                                "height": 36,
-                              },
-                              {
-                                "width": 36,
-                              },
-                              {
-                                "marginBottom": 8,
-                              },
-                            ],
-                            {
-                              "opacity": 1,
-                            },
-                          ]
+                          {
+                            "alignItems": "center",
+                            "backgroundColor": "rgba(116, 172, 0, 1)",
+                            "borderRadius": 9999,
+                            "height": 44,
+                            "justifyContent": "center",
+                            "marginBottom": 8,
+                            "width": 44,
+                          }
                         }
                       >
                         <View
                           style={
-                            [
-                              [
-                                {
-                                  "position": "relative",
-                                },
-                                {
-                                  "left": 0.2,
-                                },
-                                {
-                                  "top": 0.1,
-                                },
-                              ],
-                            ]
+                            {
+                              "left": 0.20000000298023224,
+                              "position": "relative",
+                              "top": 0.10000000149011612,
+                            }
                           }
                         >
                           <Text
@@ -863,28 +581,13 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                       <Text
                         maxFontSizeMultiplier={2}
                         style={
-                          [
-                            {
-                              "color": "#454545",
-                            },
-                            {
-                              "fontFamily": "Lato-Regular",
-                            },
-                            [
-                              {
-                                "textAlign": "left",
-                              },
-                              [
-                                {
-                                  "fontSize": 13,
-                                  "lineHeight": 18,
-                                },
-                                {
-                                  "fontFamily": "Lato-Medium",
-                                },
-                              ],
-                            ],
-                          ]
+                          {
+                            "color": "rgba(69, 69, 69, 1)",
+                            "fontFamily": "Lato-Medium",
+                            "fontSize": 13,
+                            "lineHeight": 18,
+                            "textAlign": "left",
+                          }
                         }
                       >
                         Record a sound
@@ -923,51 +626,29 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                       onResponderTerminationRequest={[Function]}
                       onStartShouldSetResponder={[Function]}
                       style={
-                        [
-                          [
-                            {
-                              "backgroundColor": "#ffffff",
-                            },
-                            {
-                              "width": "50%",
-                            },
-                            {
-                              "alignItems": "center",
-                            },
-                            {
-                              "paddingBottom": 16,
-                              "paddingTop": 16,
-                            },
-                            {
-                              "borderBottomLeftRadius": 8,
-                              "borderBottomRightRadius": 8,
-                              "borderTopLeftRadius": 8,
-                              "borderTopRightRadius": 8,
-                            },
-                            {
-                              "flexBasis": "0%",
-                              "flexGrow": 1,
-                              "flexShrink": 1,
-                            },
-                            {
-                              "shadowColor": "rgba(0, 0, 0, 0.1)",
-                              "shadowOffset": {
-                                "height": 1,
-                                "width": 0,
-                              },
-                              "shadowOpacity": 1,
-                              "shadowRadius": 2,
-                            },
-                            {
-                              "shadowColor": "rgba(0, 0, 0, 0.25)",
-                            },
-                            [
-                              {
-                                "marginLeft": 16,
-                              },
-                            ],
+                        {
+                          "alignItems": "center",
+                          "backgroundColor": "rgba(255, 255, 255, 1)",
+                          "borderRadius": 8,
+                          "boxShadow": [
+                            0,
+                            0,
+                            "#00000000",
+                            0,
+                            0,
+                            "#00000000",
+                            0,
+                            1,
+                            1,
+                            "#00000040",
                           ],
-                        ]
+                          "flexBasis": "0%",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "paddingBottom": 16,
+                          "paddingTop": 16,
+                          "width": "50%",
+                        }
                       }
                       testID="import-media-button"
                     >
@@ -1005,57 +686,24 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                         onResponderTerminationRequest={[Function]}
                         onStartShouldSetResponder={[Function]}
                         style={
-                          [
-                            {
-                              "height": 44,
-                              "width": 44,
-                            },
-                            {
-                              "alignItems": "center",
-                              "justifyContent": "center",
-                            },
-                            false,
-                            [
-                              {
-                                "backgroundColor": "#74AC00",
-                              },
-                              {
-                                "borderBottomLeftRadius": 9999,
-                                "borderBottomRightRadius": 9999,
-                                "borderTopLeftRadius": 9999,
-                                "borderTopRightRadius": 9999,
-                              },
-                              {
-                                "height": 36,
-                              },
-                              {
-                                "width": 36,
-                              },
-                              {
-                                "marginBottom": 8,
-                              },
-                            ],
-                            {
-                              "opacity": 1,
-                            },
-                          ]
+                          {
+                            "alignItems": "center",
+                            "backgroundColor": "rgba(116, 172, 0, 1)",
+                            "borderRadius": 9999,
+                            "height": 44,
+                            "justifyContent": "center",
+                            "marginBottom": 8,
+                            "width": 44,
+                          }
                         }
                       >
                         <View
                           style={
-                            [
-                              [
-                                {
-                                  "position": "relative",
-                                },
-                                {
-                                  "left": 0.2,
-                                },
-                                {
-                                  "top": 0.1,
-                                },
-                              ],
-                            ]
+                            {
+                              "left": 0.20000000298023224,
+                              "position": "relative",
+                              "top": 0.10000000149011612,
+                            }
                           }
                         >
                           <Text
@@ -1084,28 +732,13 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                       <Text
                         maxFontSizeMultiplier={2}
                         style={
-                          [
-                            {
-                              "color": "#454545",
-                            },
-                            {
-                              "fontFamily": "Lato-Regular",
-                            },
-                            [
-                              {
-                                "textAlign": "left",
-                              },
-                              [
-                                {
-                                  "fontSize": 13,
-                                  "lineHeight": 18,
-                                },
-                                {
-                                  "fontFamily": "Lato-Medium",
-                                },
-                              ],
-                            ],
-                          ]
+                          {
+                            "color": "rgba(69, 69, 69, 1)",
+                            "fontFamily": "Lato-Medium",
+                            "fontSize": 13,
+                            "lineHeight": 18,
+                            "textAlign": "left",
+                          }
                         }
                       >
                         Upload photos
@@ -1145,53 +778,25 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                     onResponderTerminationRequest={[Function]}
                     onStartShouldSetResponder={[Function]}
                     style={
-                      [
-                        [
-                          {
-                            "backgroundColor": "#BFBFBF",
-                          },
-                          {
-                            "width": "100%",
-                          },
-                          {
-                            "flexDirection": "row",
-                          },
-                          {
-                            "alignItems": "center",
-                          },
-                          {
-                            "paddingBottom": 10,
-                            "paddingTop": 10,
-                          },
-                          {
-                            "paddingLeft": 20,
-                            "paddingRight": 20,
-                          },
-                          {
-                            "borderBottomLeftRadius": 8,
-                            "borderBottomRightRadius": 8,
-                            "borderTopLeftRadius": 8,
-                            "borderTopRightRadius": 8,
-                          },
-                          [
-                            {
-                              "marginTop": 16,
-                            },
-                          ],
-                        ],
-                      ]
+                      {
+                        "alignItems": "center",
+                        "backgroundColor": "rgba(191, 191, 191, 1)",
+                        "borderRadius": 8,
+                        "flexDirection": "row",
+                        "paddingBottom": 10,
+                        "paddingLeft": 20,
+                        "paddingRight": 20,
+                        "paddingTop": 10,
+                        "width": "100%",
+                      }
                     }
                     testID="observe-without-evidence-button"
                   >
                     <View
                       style={
-                        [
-                          [
-                            {
-                              "marginRight": 8,
-                            },
-                          ],
-                        ]
+                        {
+                          "marginRight": 8,
+                        }
                       }
                     >
                       <Text
@@ -1220,28 +825,13 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                       maxFontSizeMultiplier={1.5}
                       numberOfLines={1}
                       style={
-                        [
-                          {
-                            "color": "#454545",
-                          },
-                          {
-                            "fontFamily": "Lato-Regular",
-                          },
-                          [
-                            {
-                              "textAlign": "left",
-                            },
-                            [
-                              {
-                                "fontSize": 13,
-                                "lineHeight": 18,
-                              },
-                              {
-                                "fontFamily": "Lato-Medium",
-                              },
-                            ],
-                          ],
-                        ]
+                        {
+                          "color": "rgba(69, 69, 69, 1)",
+                          "fontFamily": "Lato-Medium",
+                          "fontSize": 13,
+                          "lineHeight": 18,
+                          "textAlign": "left",
+                        }
                       }
                     >
                       Create observation with no evidence
@@ -1285,38 +875,21 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             onResponderTerminationRequest={[Function]}
             onStartShouldSetResponder={[Function]}
             style={
-              [
-                [
-                  {
-                    "width": 69,
-                  },
-                  {
-                    "height": 69,
-                  },
-                  {
-                    "marginBottom": 5,
-                  },
-                  {
-                    "borderBottomLeftRadius": 9999,
-                    "borderBottomRightRadius": 9999,
-                    "borderTopLeftRadius": 9999,
-                    "borderTopRightRadius": 9999,
-                  },
-                  {
-                    "overflow": "hidden",
-                  },
-                  {
-                    "elevation": 5,
-                    "shadowColor": "rgba( 0, 0, 0, 0.25 )",
-                    "shadowOffset": {
-                      "height": 2,
-                      "width": 0,
-                    },
-                    "shadowOpacity": 0.25,
-                    "shadowRadius": 2,
-                  },
-                ],
-              ]
+              {
+                "borderRadius": 9999,
+                "elevation": 5,
+                "height": 69,
+                "marginBottom": 5,
+                "overflow": "hidden",
+                "shadowColor": "rgba( 0, 0, 0, 0.25 )",
+                "shadowOffset": {
+                  "height": 2,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.25,
+                "shadowRadius": 2,
+                "width": 69,
+              }
             }
             testID="add-obs-button"
           >
@@ -1345,25 +918,13 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
             >
               <View
                 style={
-                  [
-                    [
-                      {
-                        "flexGrow": 1,
-                      },
-                      {
-                        "aspectRatio": 1,
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                    ],
-                  ]
+                  {
+                    "alignItems": "center",
+                    "aspectRatio": 1,
+                    "display": "flex",
+                    "flexGrow": 1,
+                    "justifyContent": "center",
+                  }
                 }
               >
                 <Text
@@ -1426,42 +987,22 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          [
-            [
-              {
-                "minHeight": 44,
-              },
-              {
-                "minWidth": 44,
-              },
-              {
-                "alignItems": "center",
-              },
-              {
-                "justifyContent": "flex-end",
-              },
-            ],
-          ]
+          {
+            "alignItems": "center",
+            "justifyContent": "flex-end",
+            "minHeight": 44,
+            "minWidth": 44,
+          }
         }
       >
         <View
           style={
-            [
-              [
-                {
-                  "height": 36,
-                },
-                {
-                  "width": 36,
-                },
-                {
-                  "alignItems": "center",
-                },
-                {
-                  "justifyContent": "center",
-                },
-              ],
-            ]
+            {
+              "alignItems": "center",
+              "height": 36,
+              "justifyContent": "center",
+              "width": 36,
+            }
           }
           testID="NavButton.personIcon"
         >
@@ -1491,36 +1032,14 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           maxFontSizeMultiplier={1.2}
           numberOfLines={1}
           style={
-            [
-              {
-                "color": "#454545",
-              },
-              {
-                "fontFamily": "Lato-Regular",
-              },
-              [
-                {
-                  "textAlign": "left",
-                },
-                [
-                  {
-                    "fontSize": 11,
-                    "lineHeight": 13.2,
-                  },
-                  {
-                    "fontFamily": "Lato-Regular",
-                  },
-                  [
-                    {
-                      "marginTop": 2,
-                    },
-                    {
-                      "color": "#74AC00",
-                    },
-                  ],
-                ],
-              ],
-            ]
+            {
+              "color": "rgba(116, 172, 0, 1)",
+              "fontFamily": "Lato-Regular",
+              "fontSize": 11,
+              "lineHeight": 13.199999809265137,
+              "marginTop": 2,
+              "textAlign": "left",
+            }
           }
         >
           Me
@@ -1560,54 +1079,30 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          [
-            [
-              {
-                "minHeight": 44,
-              },
-              {
-                "minWidth": 44,
-              },
-              {
-                "alignItems": "center",
-              },
-              {
-                "justifyContent": "flex-end",
-              },
-            ],
-          ]
+          {
+            "alignItems": "center",
+            "justifyContent": "flex-end",
+            "minHeight": 44,
+            "minWidth": 44,
+          }
         }
       >
         <View
           style={
-            [
-              [
-                {
-                  "height": 36,
-                },
-                {
-                  "width": 36,
-                },
-                {
-                  "alignItems": "center",
-                },
-                {
-                  "justifyContent": "center",
-                },
-              ],
-            ]
+            {
+              "alignItems": "center",
+              "height": 36,
+              "justifyContent": "center",
+              "width": 36,
+            }
           }
           testID="Notifications"
         >
           <View
             style={
-              [
-                [
-                  {
-                    "position": "relative",
-                  },
-                ],
-              ]
+              {
+                "position": "relative",
+              }
             }
           >
             <Text
@@ -1637,36 +1132,14 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
           maxFontSizeMultiplier={1.2}
           numberOfLines={1}
           style={
-            [
-              {
-                "color": "#454545",
-              },
-              {
-                "fontFamily": "Lato-Regular",
-              },
-              [
-                {
-                  "textAlign": "left",
-                },
-                [
-                  {
-                    "fontSize": 11,
-                    "lineHeight": 13.2,
-                  },
-                  {
-                    "fontFamily": "Lato-Regular",
-                  },
-                  [
-                    {
-                      "marginTop": 2,
-                    },
-                    {
-                      "color": "#454545",
-                    },
-                  ],
-                ],
-              ],
-            ]
+            {
+              "color": "rgba(69, 69, 69, 1)",
+              "fontFamily": "Lato-Regular",
+              "fontSize": 11,
+              "lineHeight": 13.199999809265137,
+              "marginTop": 2,
+              "textAlign": "left",
+            }
           }
         >
           Activity

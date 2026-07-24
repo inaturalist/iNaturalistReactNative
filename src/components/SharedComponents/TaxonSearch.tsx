@@ -80,7 +80,7 @@ const TaxonSearch = ( {
           autoFocus={query === ""}
         />
         { isLocal && (
-          <View className="flex-row items-center space-x-[19px] mt-[21px]">
+          <View className="flex-row items-center gap-x-[19px] mt-[21px]">
             <View accessibilityElementsHidden importantForAccessibility="no" aria-hidden>
               <INatIcon name="offline" size={34} />
             </View>

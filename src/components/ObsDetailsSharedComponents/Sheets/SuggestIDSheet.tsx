@@ -35,7 +35,7 @@ const SuggestIDSheet = ( {
     onPressClose={onPressClose}
   >
     <>
-      <View className="mx-[26px] space-y-[11px] my-[15px]">
+      <View className="mx-[26px] gap-y-[11px] my-[15px]">
         <List2>
           {t( "Would-you-like-to-suggest-the-following-identification" )}
         </List2>

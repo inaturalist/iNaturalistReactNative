@@ -33,81 +33,33 @@ exports[`Button focus in dark mode should render correctly 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "maxWidth": 500,
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "paddingLeft": 10,
-          "paddingRight": 10,
-        },
-        {
-          "paddingBottom": 13,
-          "paddingTop": 13,
-        },
-        {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
-          "fontFamily": "Lato-Bold",
-        },
-        {
-          "backgroundColor": "#74AC00",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "backgroundColor": "rgba(116, 172, 0, 1)",
+      "borderRadius": 8,
+      "flexDirection": "row",
+      "fontFamily": "Lato-Bold",
+      "justifyContent": "center",
+      "maxWidth": 500,
+      "paddingBottom": 13,
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 13,
+    }
   }
 >
   <Text
     maxFontSizeMultiplier={1.5}
     numberOfLines={3}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 15,
-              "lineHeight": 18,
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "fontFamily": "Lato-Bold",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "#ffffff",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "rgba(255, 255, 255, 1)",
+        "fontFamily": "Lato-Bold",
+        "fontSize": 15,
+        "letterSpacing": 2,
+        "lineHeight": 18,
+        "textAlign": "center",
+      }
     }
     testID="RNButton.text"
   >
@@ -149,81 +101,33 @@ exports[`Button focus in dark mode when disabled should render correctly 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "maxWidth": 500,
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "paddingLeft": 10,
-          "paddingRight": 10,
-        },
-        {
-          "paddingBottom": 13,
-          "paddingTop": 13,
-        },
-        {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
-          "fontFamily": "Lato-Bold",
-        },
-        {
-          "backgroundColor": "#B9D580",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "backgroundColor": "rgba(185, 213, 128, 1)",
+      "borderRadius": 8,
+      "flexDirection": "row",
+      "fontFamily": "Lato-Bold",
+      "justifyContent": "center",
+      "maxWidth": 500,
+      "paddingBottom": 13,
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 13,
+    }
   }
 >
   <Text
     maxFontSizeMultiplier={1.5}
     numberOfLines={3}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 15,
-              "lineHeight": 18,
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "fontFamily": "Lato-Bold",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "#ffffff80",
+        "fontFamily": "Lato-Bold",
+        "fontSize": 15,
+        "letterSpacing": 2,
+        "lineHeight": 18,
+        "textAlign": "center",
+      }
     }
     testID="RNButton.text"
   >
@@ -265,102 +169,35 @@ exports[`Button neutral in dark mode should render correctly 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "maxWidth": 500,
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "paddingLeft": 10,
-          "paddingRight": 10,
-        },
-        {
-          "paddingBottom": 13,
-          "paddingTop": 13,
-        },
-        {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
-          "fontFamily": "Lato-Bold",
-        },
-        {
-          "borderBottomWidth": 1,
-          "borderLeftWidth": 1,
-          "borderRightWidth": 1,
-          "borderTopWidth": 1,
-        },
-        {
-          "borderBottomWidth": 3,
-          "borderLeftWidth": 3,
-          "borderRightWidth": 3,
-          "borderTopWidth": 3,
-        },
-        {
-          "borderBottomColor": "#454545",
-          "borderLeftColor": "#454545",
-          "borderRightColor": "#454545",
-          "borderTopColor": "#454545",
-        },
-        {
-          "backgroundColor": "#ffffff",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "backgroundColor": "rgba(255, 255, 255, 1)",
+      "borderColor": "rgba(69, 69, 69, 1)",
+      "borderRadius": 8,
+      "borderWidth": 3,
+      "flexDirection": "row",
+      "fontFamily": "Lato-Bold",
+      "justifyContent": "center",
+      "maxWidth": 500,
+      "paddingBottom": 13,
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 13,
+    }
   }
 >
   <Text
     maxFontSizeMultiplier={1.5}
     numberOfLines={3}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 15,
-              "lineHeight": 18,
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "fontFamily": "Lato-Bold",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "#ffffff",
-              },
-              {
-                "color": "#454545",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "rgba(69, 69, 69, 1)",
+        "fontFamily": "Lato-Bold",
+        "fontSize": 15,
+        "letterSpacing": 2,
+        "lineHeight": 18,
+        "textAlign": "center",
+      }
     }
     testID="RNButton.text"
   >
@@ -402,99 +239,34 @@ exports[`Button neutral in dark mode when disabled should render correctly 1`] =
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "maxWidth": 500,
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "paddingLeft": 10,
-          "paddingRight": 10,
-        },
-        {
-          "paddingBottom": 13,
-          "paddingTop": 13,
-        },
-        {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
-          "fontFamily": "Lato-Bold",
-        },
-        {
-          "borderBottomWidth": 1,
-          "borderLeftWidth": 1,
-          "borderRightWidth": 1,
-          "borderTopWidth": 1,
-        },
-        {
-          "borderBottomWidth": 3,
-          "borderLeftWidth": 3,
-          "borderRightWidth": 3,
-          "borderTopWidth": 3,
-        },
-        {
-          "borderBottomColor": "#828181",
-          "borderLeftColor": "#828181",
-          "borderRightColor": "#828181",
-          "borderTopColor": "#828181",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "borderColor": "rgba(130, 129, 129, 1)",
+      "borderRadius": 8,
+      "borderWidth": 3,
+      "flexDirection": "row",
+      "fontFamily": "Lato-Bold",
+      "justifyContent": "center",
+      "maxWidth": 500,
+      "paddingBottom": 13,
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 13,
+    }
   }
 >
   <Text
     maxFontSizeMultiplier={1.5}
     numberOfLines={3}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 15,
-              "lineHeight": 18,
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "fontFamily": "Lato-Bold",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-              {
-                "color": "#828181",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "rgba(130, 129, 129, 1)",
+        "fontFamily": "Lato-Bold",
+        "fontSize": 15,
+        "letterSpacing": 2,
+        "lineHeight": 18,
+        "textAlign": "center",
+      }
     }
     testID="RNButton.text"
   >
@@ -536,84 +308,33 @@ exports[`Button primary in dark mode should render correctly 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "maxWidth": 500,
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "paddingLeft": 10,
-          "paddingRight": 10,
-        },
-        {
-          "paddingBottom": 13,
-          "paddingTop": 13,
-        },
-        {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
-          "fontFamily": "Lato-Bold",
-        },
-        {
-          "backgroundColor": "#454545",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "backgroundColor": "rgba(69, 69, 69, 1)",
+      "borderRadius": 8,
+      "flexDirection": "row",
+      "fontFamily": "Lato-Bold",
+      "justifyContent": "center",
+      "maxWidth": 500,
+      "paddingBottom": 13,
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 13,
+    }
   }
 >
   <Text
     maxFontSizeMultiplier={1.5}
     numberOfLines={3}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 15,
-              "lineHeight": 18,
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "fontFamily": "Lato-Bold",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "#ffffff",
-              },
-              {
-                "color": "#ffffff",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "rgba(255, 255, 255, 1)",
+        "fontFamily": "Lato-Bold",
+        "fontSize": 15,
+        "letterSpacing": 2,
+        "lineHeight": 18,
+        "textAlign": "center",
+      }
     }
     testID="RNButton.text"
   >
@@ -655,84 +376,33 @@ exports[`Button primary in dark mode when disabled should render correctly 1`] =
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "maxWidth": 500,
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "paddingLeft": 10,
-          "paddingRight": 10,
-        },
-        {
-          "paddingBottom": 13,
-          "paddingTop": 13,
-        },
-        {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
-          "fontFamily": "Lato-Bold",
-        },
-        {
-          "backgroundColor": "#828181",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "backgroundColor": "rgba(130, 129, 129, 1)",
+      "borderRadius": 8,
+      "flexDirection": "row",
+      "fontFamily": "Lato-Bold",
+      "justifyContent": "center",
+      "maxWidth": 500,
+      "paddingBottom": 13,
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 13,
+    }
   }
 >
   <Text
     maxFontSizeMultiplier={1.5}
     numberOfLines={3}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 15,
-              "lineHeight": 18,
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "fontFamily": "Lato-Bold",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "#ffffff80",
+        "fontFamily": "Lato-Bold",
+        "fontSize": 15,
+        "letterSpacing": 2,
+        "lineHeight": 18,
+        "textAlign": "center",
+      }
     }
     testID="RNButton.text"
   >
@@ -774,81 +444,33 @@ exports[`Button warning in dark mode should render correctly 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "maxWidth": 500,
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "paddingLeft": 10,
-          "paddingRight": 10,
-        },
-        {
-          "paddingBottom": 13,
-          "paddingTop": 13,
-        },
-        {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
-          "fontFamily": "Lato-Bold",
-        },
-        {
-          "backgroundColor": "#9B1010",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "backgroundColor": "rgba(155, 16, 16, 1)",
+      "borderRadius": 8,
+      "flexDirection": "row",
+      "fontFamily": "Lato-Bold",
+      "justifyContent": "center",
+      "maxWidth": 500,
+      "paddingBottom": 13,
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 13,
+    }
   }
 >
   <Text
     maxFontSizeMultiplier={1.5}
     numberOfLines={3}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 15,
-              "lineHeight": 18,
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "fontFamily": "Lato-Bold",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "#ffffff",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "rgba(255, 255, 255, 1)",
+        "fontFamily": "Lato-Bold",
+        "fontSize": 15,
+        "letterSpacing": 2,
+        "lineHeight": 18,
+        "textAlign": "center",
+      }
     }
     testID="RNButton.text"
   >
@@ -890,81 +512,33 @@ exports[`Button warning in dark mode when disabled should render correctly 1`] =
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "maxWidth": 500,
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "center",
-        },
-        {
-          "paddingLeft": 10,
-          "paddingRight": 10,
-        },
-        {
-          "paddingBottom": 13,
-          "paddingTop": 13,
-        },
-        {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
-          "fontFamily": "Lato-Bold",
-        },
-        {
-          "backgroundColor": "#b06365",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "backgroundColor": "rgba(176, 99, 101, 1)",
+      "borderRadius": 8,
+      "flexDirection": "row",
+      "fontFamily": "Lato-Bold",
+      "justifyContent": "center",
+      "maxWidth": 500,
+      "paddingBottom": 13,
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 13,
+    }
   }
 >
   <Text
     maxFontSizeMultiplier={1.5}
     numberOfLines={3}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 15,
-              "lineHeight": 18,
-            },
-            {
-              "letterSpacing": 2,
-            },
-            {
-              "fontFamily": "Lato-Bold",
-            },
-            [
-              {
-                "textAlign": "center",
-              },
-              {
-                "color": "rgba(255, 255, 255, 0.5)",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "#ffffff80",
+        "fontFamily": "Lato-Bold",
+        "fontSize": 15,
+        "letterSpacing": 2,
+        "lineHeight": 18,
+        "textAlign": "center",
+      }
     }
     testID="RNButton.text"
   >

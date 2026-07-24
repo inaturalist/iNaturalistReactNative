@@ -33,6 +33,11 @@ import { useOnboardingShown } from "sharedHelpers/installData";
 import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
 import colors from "styles/tailwindColors";
 
+// inline style instead of className: Animated.View doesn't like
+// being registered with nativewind 4, so className has no effect on it
+const FULL_SIZE_STYLE = { width: "100%", height: "100%" };
+const BACKGROUND_STYLE = { ...FULL_SIZE_STYLE, position: "absolute" };
+
 const SlideItem = props => {
   const {
     item, index,
@@ -40,7 +45,7 @@ const SlideItem = props => {
   const Icon = item.icon;
 
   return (
-    <Animated.View className="w-full h-full">
+    <Animated.View style={FULL_SIZE_STYLE}>
       <View className="flex flex-col items-center w-full justify-end h-full pl-4 pr-4">
         {index === 0
           ? (
@@ -218,8 +223,7 @@ const OnboardingCarousel = ( ) => {
           {ONBOARDING_SLIDES.map( item => (
             <Animated.View
               key={`OnboardingCarouselBackground-${item.title}`}
-              className="absolute w-full h-full"
-              style={item.backgroundAnimation}
+              style={[BACKGROUND_STYLE, item.backgroundAnimation]}
             >
               <Image
                 source={item.background}

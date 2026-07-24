@@ -20,9 +20,6 @@ const logger = log.extend( "INatIconButton" );
 interface Props extends PropsWithChildren {
   accessibilityHint?: string;
   accessibilityLabel: string;
-  // There is probably a better way to indicate that this tailwind prop is
-  // supported everywhere, but I haven't found it yet. ~~~kueda 20241016
-  // eslint-disable-next-line react/no-unused-prop-types
   className?: string;
   color?: string;
   disabled?: boolean;
@@ -60,6 +57,7 @@ const INatIconButton = ( {
   accessibilityHint,
   accessibilityLabel,
   children,
+  className,
   color,
   disabled = false,
   height = MIN_ACCESSIBLE_DIM,
@@ -91,16 +89,6 @@ const INatIconButton = ( {
       "Button needs an accessibility label",
     );
   }
-  const getOpacity = React.useCallback( ( pressed: boolean ) => {
-    if ( disabled ) {
-      return 0.5;
-    }
-    if ( pressed ) {
-      return 0.8;
-    }
-    return 1;
-  }, [disabled] );
-
   const wrapperStyle = React.useMemo( ( ) => ( [
     { width, height },
     WRAPPER_STYLE,
@@ -172,7 +160,7 @@ const INatIconButton = ( {
 
   if ( iconOnly ) {
     return (
-      <View style={wrapperStyle} testID={testID}>
+      <View className={className} style={wrapperStyle} testID={testID}>
         { content }
       </View>
     );
@@ -195,12 +183,17 @@ const INatIconButton = ( {
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
+      // nativewind 4 drops function styles on interop'd components, so the
+      // pressed/disabled opacity is expressed with classes instead
+      className={classnames(
+        className,
+        disabled
+          ? "opacity-50"
+          : "active:opacity-95",
+      )}
       disabled={disabled}
       onPress={handlePressWithTracking}
-      style={( { pressed } ) => [
-        ...wrapperStyle,
-        { opacity: getOpacity( pressed ) },
-      ]}
+      style={wrapperStyle}
       testID={testID}
     >
       { content }

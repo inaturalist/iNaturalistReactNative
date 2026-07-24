@@ -3,12 +3,10 @@
 exports[`PhotoCarousel renders correctly 1`] = `
 <View
   style={
-    [
-      {
-        "height": 54,
-        "padding": 3,
-      },
-    ]
+    {
+      "height": 54,
+      "padding": 3,
+    }
   }
 >
   <RCTScrollView
@@ -42,12 +40,9 @@ exports[`PhotoCarousel renders correctly 1`] = `
         onFocusCapture={[Function]}
         onLayout={[Function]}
         style={
-          [
-            {
-              "flexDirection": "row",
-            },
-            null,
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <View
@@ -83,62 +78,33 @@ exports[`PhotoCarousel renders correctly 1`] = `
         >
           <View
             style={
-              [
-                [
-                  {
-                    "justifyContent": "center",
-                  },
-                  {
-                    "alignItems": "center",
-                  },
-                ],
-              ]
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+              }
             }
           >
             <View
               style={
-                [
-                  [
-                    {
-                      "overflow": "hidden",
-                    },
-                    {
-                      "borderBottomLeftRadius": 4,
-                      "borderBottomRightRadius": 4,
-                      "borderTopLeftRadius": 4,
-                      "borderTopRightRadius": 4,
-                    },
-                    {
-                      "width": 42,
-                    },
-                    {
-                      "marginLeft": 3,
-                      "marginRight": 3,
-                    },
-                  ],
-                ]
+                {
+                  "borderRadius": 4,
+                  "marginLeft": 3,
+                  "marginRight": 3,
+                  "overflow": "hidden",
+                  "width": 42,
+                }
               }
               testID="PhotoCarousel.photo"
             >
               <View
                 accessibilityIgnoresInvertColors={true}
                 style={
-                  [
-                    [
-                      {
-                        "height": "100%",
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                    ],
-                  ]
+                  {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "height": "100%",
+                    "justifyContent": "center",
+                  }
                 }
               >
                 <Image
@@ -148,20 +114,15 @@ exports[`PhotoCarousel renders correctly 1`] = `
                     }
                   }
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      },
-                      {
-                        "height": "100%",
-                        "width": undefined,
-                      },
-                      undefined,
-                    ]
+                    {
+                      "bottom": 0,
+                      "height": undefined,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                      "width": undefined,
+                    }
                   }
                 />
                 <View
@@ -197,16 +158,10 @@ exports[`PhotoCarousel renders correctly 1`] = `
                   onResponderTerminationRequest={[Function]}
                   onStartShouldSetResponder={[Function]}
                   style={
-                    [
-                      [
-                        {
-                          "width": "100%",
-                        },
-                        {
-                          "height": "100%",
-                        },
-                      ],
-                    ]
+                    {
+                      "height": "100%",
+                      "width": "100%",
+                    }
                   }
                   testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
                 />
@@ -219,12 +174,9 @@ exports[`PhotoCarousel renders correctly 1`] = `
         onFocusCapture={[Function]}
         onLayout={[Function]}
         style={
-          [
-            {
-              "flexDirection": "row",
-            },
-            null,
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <View
@@ -260,62 +212,33 @@ exports[`PhotoCarousel renders correctly 1`] = `
         >
           <View
             style={
-              [
-                [
-                  {
-                    "justifyContent": "center",
-                  },
-                  {
-                    "alignItems": "center",
-                  },
-                ],
-              ]
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+              }
             }
           >
             <View
               style={
-                [
-                  [
-                    {
-                      "overflow": "hidden",
-                    },
-                    {
-                      "borderBottomLeftRadius": 4,
-                      "borderBottomRightRadius": 4,
-                      "borderTopLeftRadius": 4,
-                      "borderTopRightRadius": 4,
-                    },
-                    {
-                      "width": 42,
-                    },
-                    {
-                      "marginLeft": 3,
-                      "marginRight": 3,
-                    },
-                  ],
-                ]
+                {
+                  "borderRadius": 4,
+                  "marginLeft": 3,
+                  "marginRight": 3,
+                  "overflow": "hidden",
+                  "width": 42,
+                }
               }
               testID="PhotoCarousel.photo"
             >
               <View
                 accessibilityIgnoresInvertColors={true}
                 style={
-                  [
-                    [
-                      {
-                        "height": "100%",
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                    ],
-                  ]
+                  {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "height": "100%",
+                    "justifyContent": "center",
+                  }
                 }
               >
                 <Image
@@ -325,20 +248,15 @@ exports[`PhotoCarousel renders correctly 1`] = `
                     }
                   }
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      },
-                      {
-                        "height": "100%",
-                        "width": undefined,
-                      },
-                      undefined,
-                    ]
+                    {
+                      "bottom": 0,
+                      "height": undefined,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                      "width": undefined,
+                    }
                   }
                 />
                 <View
@@ -374,16 +292,10 @@ exports[`PhotoCarousel renders correctly 1`] = `
                   onResponderTerminationRequest={[Function]}
                   onStartShouldSetResponder={[Function]}
                   style={
-                    [
-                      [
-                        {
-                          "width": "100%",
-                        },
-                        {
-                          "height": "100%",
-                        },
-                      ],
-                    ]
+                    {
+                      "height": "100%",
+                      "width": "100%",
+                    }
                   }
                   testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg"
                 />
@@ -396,12 +308,9 @@ exports[`PhotoCarousel renders correctly 1`] = `
         onFocusCapture={[Function]}
         onLayout={[Function]}
         style={
-          [
-            {
-              "flexDirection": "row",
-            },
-            null,
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <View
@@ -437,62 +346,33 @@ exports[`PhotoCarousel renders correctly 1`] = `
         >
           <View
             style={
-              [
-                [
-                  {
-                    "justifyContent": "center",
-                  },
-                  {
-                    "alignItems": "center",
-                  },
-                ],
-              ]
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+              }
             }
           >
             <View
               style={
-                [
-                  [
-                    {
-                      "overflow": "hidden",
-                    },
-                    {
-                      "borderBottomLeftRadius": 4,
-                      "borderBottomRightRadius": 4,
-                      "borderTopLeftRadius": 4,
-                      "borderTopRightRadius": 4,
-                    },
-                    {
-                      "width": 42,
-                    },
-                    {
-                      "marginLeft": 3,
-                      "marginRight": 3,
-                    },
-                  ],
-                ]
+                {
+                  "borderRadius": 4,
+                  "marginLeft": 3,
+                  "marginRight": 3,
+                  "overflow": "hidden",
+                  "width": 42,
+                }
               }
               testID="PhotoCarousel.photo"
             >
               <View
                 accessibilityIgnoresInvertColors={true}
                 style={
-                  [
-                    [
-                      {
-                        "height": "100%",
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                    ],
-                  ]
+                  {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "height": "100%",
+                    "justifyContent": "center",
+                  }
                 }
               >
                 <Image
@@ -502,20 +382,15 @@ exports[`PhotoCarousel renders correctly 1`] = `
                     }
                   }
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      },
-                      {
-                        "height": "100%",
-                        "width": undefined,
-                      },
-                      undefined,
-                    ]
+                    {
+                      "bottom": 0,
+                      "height": undefined,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                      "width": undefined,
+                    }
                   }
                 />
                 <View
@@ -551,16 +426,10 @@ exports[`PhotoCarousel renders correctly 1`] = `
                   onResponderTerminationRequest={[Function]}
                   onStartShouldSetResponder={[Function]}
                   style={
-                    [
-                      [
-                        {
-                          "width": "100%",
-                        },
-                        {
-                          "height": "100%",
-                        },
-                      ],
-                    ]
+                    {
+                      "height": "100%",
+                      "width": "100%",
+                    }
                   }
                   testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
                 />
@@ -577,12 +446,10 @@ exports[`PhotoCarousel renders correctly 1`] = `
 exports[`PhotoCarousel renders correctly for large screen 1`] = `
 <View
   style={
-    [
-      {
-        "height": 117,
-        "padding": 8.5,
-      },
-    ]
+    {
+      "height": 117,
+      "padding": 8.5,
+    }
   }
 >
   <RCTScrollView
@@ -616,12 +483,9 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         onFocusCapture={[Function]}
         onLayout={[Function]}
         style={
-          [
-            {
-              "flexDirection": "row",
-            },
-            null,
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <View
@@ -657,67 +521,33 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         >
           <View
             style={
-              [
-                [
-                  {
-                    "justifyContent": "center",
-                  },
-                  {
-                    "alignItems": "center",
-                  },
-                ],
-              ]
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+              }
             }
           >
             <View
               style={
-                [
-                  [
-                    {
-                      "overflow": "hidden",
-                    },
-                    {
-                      "borderBottomLeftRadius": 9,
-                      "borderBottomRightRadius": 9,
-                      "borderTopLeftRadius": 9,
-                      "borderTopRightRadius": 9,
-                    },
-                    {
-                      "width": 83,
-                    },
-                    {
-                      "height": 83,
-                    },
-                    {
-                      "marginBottom": 8.5,
-                      "marginLeft": 8.5,
-                      "marginRight": 8.5,
-                      "marginTop": 8.5,
-                    },
-                  ],
-                ]
+                {
+                  "borderRadius": 9,
+                  "height": 83,
+                  "margin": 8.5,
+                  "overflow": "hidden",
+                  "width": 83,
+                }
               }
               testID="PhotoCarousel.photo"
             >
               <View
                 accessibilityIgnoresInvertColors={true}
                 style={
-                  [
-                    [
-                      {
-                        "height": "100%",
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                    ],
-                  ]
+                  {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "height": "100%",
+                    "justifyContent": "center",
+                  }
                 }
               >
                 <Image
@@ -727,20 +557,15 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                     }
                   }
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      },
-                      {
-                        "height": "100%",
-                        "width": undefined,
-                      },
-                      undefined,
-                    ]
+                    {
+                      "bottom": 0,
+                      "height": undefined,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                      "width": undefined,
+                    }
                   }
                 />
                 <View
@@ -776,16 +601,10 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                   onResponderTerminationRequest={[Function]}
                   onStartShouldSetResponder={[Function]}
                   style={
-                    [
-                      [
-                        {
-                          "width": "100%",
-                        },
-                        {
-                          "height": "100%",
-                        },
-                      ],
-                    ]
+                    {
+                      "height": "100%",
+                      "width": "100%",
+                    }
                   }
                   testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/1/large.jpeg"
                 />
@@ -798,12 +617,9 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         onFocusCapture={[Function]}
         onLayout={[Function]}
         style={
-          [
-            {
-              "flexDirection": "row",
-            },
-            null,
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <View
@@ -839,67 +655,33 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         >
           <View
             style={
-              [
-                [
-                  {
-                    "justifyContent": "center",
-                  },
-                  {
-                    "alignItems": "center",
-                  },
-                ],
-              ]
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+              }
             }
           >
             <View
               style={
-                [
-                  [
-                    {
-                      "overflow": "hidden",
-                    },
-                    {
-                      "borderBottomLeftRadius": 9,
-                      "borderBottomRightRadius": 9,
-                      "borderTopLeftRadius": 9,
-                      "borderTopRightRadius": 9,
-                    },
-                    {
-                      "width": 83,
-                    },
-                    {
-                      "height": 83,
-                    },
-                    {
-                      "marginBottom": 8.5,
-                      "marginLeft": 8.5,
-                      "marginRight": 8.5,
-                      "marginTop": 8.5,
-                    },
-                  ],
-                ]
+                {
+                  "borderRadius": 9,
+                  "height": 83,
+                  "margin": 8.5,
+                  "overflow": "hidden",
+                  "width": 83,
+                }
               }
               testID="PhotoCarousel.photo"
             >
               <View
                 accessibilityIgnoresInvertColors={true}
                 style={
-                  [
-                    [
-                      {
-                        "height": "100%",
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                    ],
-                  ]
+                  {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "height": "100%",
+                    "justifyContent": "center",
+                  }
                 }
               >
                 <Image
@@ -909,20 +691,15 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                     }
                   }
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      },
-                      {
-                        "height": "100%",
-                        "width": undefined,
-                      },
-                      undefined,
-                    ]
+                    {
+                      "bottom": 0,
+                      "height": undefined,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                      "width": undefined,
+                    }
                   }
                 />
                 <View
@@ -958,16 +735,10 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                   onResponderTerminationRequest={[Function]}
                   onStartShouldSetResponder={[Function]}
                   style={
-                    [
-                      [
-                        {
-                          "width": "100%",
-                        },
-                        {
-                          "height": "100%",
-                        },
-                      ],
-                    ]
+                    {
+                      "height": "100%",
+                      "width": "100%",
+                    }
                   }
                   testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/2/large.jpeg"
                 />
@@ -980,12 +751,9 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         onFocusCapture={[Function]}
         onLayout={[Function]}
         style={
-          [
-            {
-              "flexDirection": "row",
-            },
-            null,
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <View
@@ -1021,67 +789,33 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         >
           <View
             style={
-              [
-                [
-                  {
-                    "justifyContent": "center",
-                  },
-                  {
-                    "alignItems": "center",
-                  },
-                ],
-              ]
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+              }
             }
           >
             <View
               style={
-                [
-                  [
-                    {
-                      "overflow": "hidden",
-                    },
-                    {
-                      "borderBottomLeftRadius": 9,
-                      "borderBottomRightRadius": 9,
-                      "borderTopLeftRadius": 9,
-                      "borderTopRightRadius": 9,
-                    },
-                    {
-                      "width": 83,
-                    },
-                    {
-                      "height": 83,
-                    },
-                    {
-                      "marginBottom": 8.5,
-                      "marginLeft": 8.5,
-                      "marginRight": 8.5,
-                      "marginTop": 8.5,
-                    },
-                  ],
-                ]
+                {
+                  "borderRadius": 9,
+                  "height": 83,
+                  "margin": 8.5,
+                  "overflow": "hidden",
+                  "width": 83,
+                }
               }
               testID="PhotoCarousel.photo"
             >
               <View
                 accessibilityIgnoresInvertColors={true}
                 style={
-                  [
-                    [
-                      {
-                        "height": "100%",
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                    ],
-                  ]
+                  {
+                    "alignItems": "center",
+                    "display": "flex",
+                    "height": "100%",
+                    "justifyContent": "center",
+                  }
                 }
               >
                 <Image
@@ -1091,20 +825,15 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                     }
                   }
                   style={
-                    [
-                      {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      },
-                      {
-                        "height": "100%",
-                        "width": undefined,
-                      },
-                      undefined,
-                    ]
+                    {
+                      "bottom": 0,
+                      "height": undefined,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                      "width": undefined,
+                    }
                   }
                 />
                 <View
@@ -1140,16 +869,10 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                   onResponderTerminationRequest={[Function]}
                   onStartShouldSetResponder={[Function]}
                   style={
-                    [
-                      [
-                        {
-                          "width": "100%",
-                        },
-                        {
-                          "height": "100%",
-                        },
-                      ],
-                    ]
+                    {
+                      "height": "100%",
+                      "width": "100%",
+                    }
                   }
                   testID="PhotoCarousel.displayPhoto.https://inaturalist-open-data.s3.amazonaws.com/photos/3/large.jpeg"
                 />

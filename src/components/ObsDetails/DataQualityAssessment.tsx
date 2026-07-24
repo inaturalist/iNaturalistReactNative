@@ -72,9 +72,9 @@ const DataQualityAssessment = ( {
   setNeedsIDVote,
 }: Props ) => {
   const isResearchGrade = qualityGrade === "research";
-  const sectionClass = "flex-row my-[14px] space-x-[11px]";
+  const sectionClass = "flex-row my-[14px] gap-x-[11px]";
   const voteClass = "flex-row mr-[15px] my-[7px] justify-between";
-  const listTextClass = "flex-row shrink space-x-[11px] mr-[11px] items-center";
+  const listTextClass = "flex-row shrink gap-x-[11px] mr-[11px] items-center";
 
   const renderMetricIndicator = ( metric: string ) => {
     const ifAgree = ifMajorityAgree( metric );
@@ -122,7 +122,7 @@ const DataQualityAssessment = ( {
 
   return (
     <ScrollViewWrapper testID="DataQualityAssessment">
-      <View className="mx-[26px] my-[19px] space-y-[9px]">
+      <View className="mx-[26px] my-[19px] gap-y-[9px]">
         <QualityGradeStatus
           qualityGrade={qualityGrade}
           color={
@@ -131,7 +131,7 @@ const DataQualityAssessment = ( {
               : colors.darkGray
           }
         />
-        <View className="flex-row space-x-[7px]">
+        <View className="flex-row gap-x-[7px]">
           {isResearchGrade && (
             <INatIcon
               name="checkmark-circle"
@@ -304,7 +304,7 @@ const DataQualityAssessment = ( {
         />
       </View>
 
-      <View className="my-[30px] mx-[15px] space-y-[11px]">
+      <View className="my-[30px] mx-[15px] gap-y-[11px]">
         <Heading4>{t( "ABOUT-THE-DQA" )}</Heading4>
         <List2>{t( "About-the-DQA-description" )}</List2>
       </View>

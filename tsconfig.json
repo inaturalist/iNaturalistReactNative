@@ -4,25 +4,66 @@
     "baseUrl": ".",
     "moduleResolution": "bundler",
     "paths": {
-      "*": ["src/*"],
-      "appConstants": ["src/appConstants"],
-      "api": ["src/api"],
-      "components": ["src/components"],
-      "dictionaries": ["src/dictionaries"],
-      "i18n": ["src/i18n"],
-      "images": ["src/images"],
-      "navigation": ["src/navigation"],
-      "providers": ["src/providers"],
-      "realmModels": ["src/realmModels"],
-      "sharedHelpers": ["src/sharedHelpers"],
-      "sharedHooks": ["src/sharedHooks"],
-      "stores": ["src/stores"],
-      "styles": ["src/styles"],
-      "tests": ["tests"],
+      "*": [
+        "src/*"
+      ],
+      "appConstants": [
+        "src/appConstants"
+      ],
+      "api": [
+        "src/api"
+      ],
+      "components": [
+        "src/components"
+      ],
+      "dictionaries": [
+        "src/dictionaries"
+      ],
+      "i18n": [
+        "src/i18n"
+      ],
+      "images": [
+        "src/images"
+      ],
+      "navigation": [
+        "src/navigation"
+      ],
+      "providers": [
+        "src/providers"
+      ],
+      "realmModels": [
+        "src/realmModels"
+      ],
+      "sharedHelpers": [
+        "src/sharedHelpers"
+      ],
+      "sharedHooks": [
+        "src/sharedHooks"
+      ],
+      "stores": [
+        "src/stores"
+      ],
+      "styles": [
+        "src/styles"
+      ],
+      "tests": [
+        "tests"
+      ]
     },
     "strict": true,
-    "types": ["nativewind/types", "jest"],
+    "types": [
+      "nativewind/types",
+      "jest"
+    ]
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["flow-typed", "**/node_modules", "**/Pods"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts"
+  ],
+  "exclude": [
+    "flow-typed",
+    "**/node_modules",
+    "**/Pods"
+  ]
 }
