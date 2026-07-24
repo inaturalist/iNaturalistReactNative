@@ -1,5 +1,6 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { screen, userEvent, waitFor } from "@testing-library/react-native";
+import { SPECIES_TAB } from "appConstants/tabs";
 import ExploreResults from "components/Explore/ExploreV2/screens/ExploreResults";
 import initI18next from "i18n/initI18next";
 import {
@@ -8,6 +9,7 @@ import {
   initialExploreV2State,
 } from "providers/ExploreV2Context";
 import React from "react";
+import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -52,6 +54,12 @@ jest.mock( "components/Explore/hooks/useInfiniteExploreScroll", ( ) => ( {
 
 jest.mock( "sharedHooks/useSpeciesCount", ( ) => ( { __esModule: true, default: ( ) => 0 } ) );
 
+const mockExploreV2SpeciesView = jest.fn( ( ) => null );
+jest.mock( "components/Explore/ExploreV2/screens/ExploreV2SpeciesView", ( ) => ( {
+  __esModule: true,
+  default: props => mockExploreV2SpeciesView( props ),
+} ) );
+
 const mockState = location => ( {
   ...initialExploreV2State,
   location,
@@ -68,6 +76,7 @@ beforeEach( ( ) => {
   mockHasBlockedPermissions = false;
   mockDispatch.mockClear( );
   mockRequestPermissions.mockClear( );
+  mockExploreV2SpeciesView.mockClear( );
   fetchCoarseUserLocation.mockReset( );
   mockUseInfiniteExploreScroll.mockReset( );
   mockUseInfiniteExploreScroll.mockReturnValue( {
@@ -232,5 +241,60 @@ describe( "ExploreResults offline state", ( ) => {
 
     expect( refresh ).toHaveBeenCalled( );
     expect( mockHandlePullToRefresh ).toHaveBeenCalled( );
+  } );
+} );
+
+describe( "ExploreResults species sort", ( ) => {
+  const speciesTabState = {
+    ...mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+    activeTab: SPECIES_TAB,
+  };
+
+  const lastSpeciesViewProps = ( ) => mockExploreV2SpeciesView.mock.calls.at( -1 )[0];
+
+  it( "passes default most-observed sort params to the species view", async ( ) => {
+    useExploreV2.mockReturnValue( { state: speciesTabState, dispatch: mockDispatch } );
+
+    renderComponent( <ExploreResults /> );
+
+    await waitFor( ( ) => {
+      const { params } = lastSpeciesViewProps( );
+      expect( params.order_by ).toBe( "count" );
+      expect( params.order ).toBe( "desc" );
+    } );
+    expect( screen.getByLabelText( "Change species sort order" ) ).toBeVisible( );
+  } );
+
+  it( "passes ascending order to the species view when least observed is selected", async ( ) => {
+    useExploreV2.mockReturnValue( {
+      state: { ...speciesTabState, speciesSortBy: SPECIES_SORT.COUNT_ASC },
+      dispatch: mockDispatch,
+    } );
+
+    renderComponent( <ExploreResults /> );
+
+    await waitFor( ( ) => {
+      const { params } = lastSpeciesViewProps( );
+      expect( params.order_by ).toBe( "count" );
+      expect( params.order ).toBe( "asc" );
+    } );
+  } );
+
+  it( "dispatches SET_SPECIES_SORT when a new sort is confirmed in the sheet", async ( ) => {
+    const actor = userEvent.setup( );
+    useExploreV2.mockReturnValue( { state: speciesTabState, dispatch: mockDispatch } );
+
+    renderComponent( <ExploreResults /> );
+
+    await actor.press( await screen.findByLabelText( "Change species sort order" ) );
+    expect( await screen.findByText( "SORT SPECIES" ) ).toBeVisible( );
+
+    await actor.press( screen.getByText( "Least Observed" ) );
+    await actor.press( screen.getByText( "CONFIRM" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith( {
+      type: EXPLORE_V2_ACTION.SET_SPECIES_SORT,
+      speciesSortBy: SPECIES_SORT.COUNT_ASC,
+    } );
   } );
 } );
