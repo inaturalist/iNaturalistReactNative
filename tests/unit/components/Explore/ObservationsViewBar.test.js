@@ -1,6 +1,8 @@
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { render, screen, userEvent } from "@testing-library/react-native";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import React from "react";
+
+const actor = userEvent.setup( );
 
 describe( "ObservationsViewBar", () => {
   it( "renders exactly the buttons listed in viewOptions", () => {
@@ -29,7 +31,7 @@ describe( "ObservationsViewBar", () => {
     expect( screen.queryByTestId( "SegmentedButton.map" ) ).toBeNull( );
   } );
 
-  it( "calls updateObservationsView with the pressed button's value", () => {
+  it( "calls updateObservationsView with the pressed button's value", async () => {
     const updateObservationsView = jest.fn( );
     render(
       <ObservationsViewBar
@@ -39,7 +41,7 @@ describe( "ObservationsViewBar", () => {
       />,
     );
 
-    fireEvent.press( screen.getByTestId( "SegmentedButton.map" ) );
+    await actor.press( screen.getByTestId( "SegmentedButton.map" ) );
 
     expect( updateObservationsView ).toHaveBeenCalledWith( "map" );
   } );
