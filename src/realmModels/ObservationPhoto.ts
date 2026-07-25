@@ -1,7 +1,8 @@
 import { Realm } from "@realm/react";
 import type { ApiObservationPhoto } from "api/types";
 import inatjs, { FileUpload } from "inaturalistjs";
-import type { RealmObservationPhoto, RealmPhoto } from "realmModels/types";
+import type { RealmObservation, RealmObservationPhoto, RealmPhoto } from "realmModels/types";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import * as uuid from "uuid";
 
 import Photo from "./Photo";
@@ -144,9 +145,18 @@ class ObservationPhoto extends Realm.Object {
     }
   }
 
-  static async deleteLocalPhoto( uri: string ) {
+  static async deleteLocalPhoto( uri: string, realm?: Realm, obsUUID?: string ) {
     // delete uri on disk
     Photo.deletePhotoFromDeviceStorage( uri );
+    if ( !realm || !obsUUID ) return;
+    const realmObs = realm.objectForPrimaryKey<RealmObservation>( "Observation", obsUUID );
+    const obsPhotoToDelete = realmObs?.observationPhotos
+      ?.find( p => Photo.getLocalPhotoUri( p.photo?.localFilePath ) === uri );
+    if ( obsPhotoToDelete ) {
+      safeRealmWrite( realm, ( ) => {
+        realm.delete( obsPhotoToDelete );
+      }, "deleting local observation photo in ObservationPhoto" );
+    }
   }
 
   // TODO: I don't know how what the type for currentObservation is outside of this context here,
@@ -155,12 +165,16 @@ class ObservationPhoto extends Realm.Object {
   // linear ticket so I'll skip typing it
   static async deletePhoto(
     uri: string,
-    currentObservation?: { observationPhotos?: { photo: { url?: string }; uuid: string }[] },
+    currentObservation?: {
+      observationPhotos?: { photo: { url?: string }; uuid: string }[];
+      uuid?: string;
+    },
+    realm?: Realm,
   ) {
     if ( uri.includes( "https://" ) ) {
       ObservationPhoto.deleteRemotePhoto( uri, currentObservation );
     } else {
-      ObservationPhoto.deleteLocalPhoto( uri );
+      ObservationPhoto.deleteLocalPhoto( uri, realm, currentObservation?.uuid );
     }
   }
 
