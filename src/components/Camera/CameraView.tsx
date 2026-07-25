@@ -9,7 +9,7 @@ import React, {
   useCallback,
 } from "react";
 import {
-  Dimensions, StyleSheet,
+  Dimensions, Platform, StyleSheet,
 } from "react-native";
 import type {
   PanGesture,
@@ -150,12 +150,17 @@ const CameraView = ( {
     ],
   );
 
+  const gesture
+    = Platform.OS === "android"
+      ? Gesture.Simultaneous( tapToFocus, pinchToZoom )
+      : Gesture.Simultaneous( tapToFocus, panToZoom, pinchToZoom );
+
   // Note that overflow-hidden handles what seems to be a bug in android in
   // which the Camera overflows its view
   return (
     <>
       <GestureDetector
-        gesture={Gesture.Simultaneous( tapToFocus, panToZoom, pinchToZoom )}
+        gesture={gesture}
         className="overflow-hidden"
       >
         <ReanimatedCamera
