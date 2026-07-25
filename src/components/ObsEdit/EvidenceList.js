@@ -187,7 +187,7 @@ const EvidenceList = ( {
       await ObservationSound.deleteLocalObservationSound(
         realm,
         uriToDelete,
-        currentObservation.uuid,
+        currentObservation?.uuid,
       );
       afterMediaDeleted( uriToDelete );
     }
