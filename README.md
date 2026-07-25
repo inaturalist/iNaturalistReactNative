@@ -354,6 +354,7 @@ fastlane prod
             1. Make an observation by importing an existing; save without upload
             1. Make an observation without a photo; save without upload
             1. Upload from the toolbar on MyObs
+            1. Check the Activity tab to show images and all names
         1. Offline
             1. Go into airplane mode
             1. Make an observation by taking a new photo in the AICamera
