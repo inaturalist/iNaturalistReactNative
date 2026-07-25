@@ -6,7 +6,7 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import * as uuid from "uuid";
 
 import Sound from "./Sound";
-import type { RealmObservationSound, RealmSound } from "./types";
+import type { RealmObservation, RealmObservationSound, RealmSound } from "./types";
 
 class ObservationSound extends Realm.Object {
   _created_at?: Date;
@@ -83,9 +83,9 @@ class ObservationSound extends Realm.Object {
   static async deleteLocalObservationSound( realm: Realm, uri: string, obsUUID: string ) {
     // delete uri on disk
     Sound.deleteSoundFromDeviceStorage( uri );
-    const realmObs = realm.objectForPrimaryKey( "Observation", obsUUID );
+    const realmObs = realm.objectForPrimaryKey<RealmObservation>( "Observation", obsUUID );
     const obsSoundToDelete = realmObs?.observationSounds
-      .find( p => p.file_url === uri );
+      .find( p => p.sound?.file_url === uri );
     if ( obsSoundToDelete ) {
       safeRealmWrite( realm, ( ) => {
         realm?.delete( obsSoundToDelete );
