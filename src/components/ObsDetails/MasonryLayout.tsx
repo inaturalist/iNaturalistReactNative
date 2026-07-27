@@ -32,6 +32,8 @@ const photoUrl = ( photo: PhotoItem ): string => (
   Photo.displayLocalOrRemoteLargePhoto( photo )
 );
 
+const isSound = ( item: MediaItem ): boolean => !!item.file_url;
+
 const MasonryLayout = ( { items, onImagePress }: Props ) => {
   const [columns, setColumns] = useState(
     Array.from( { length: numColumns }, () => [] ),
@@ -43,7 +45,7 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
 
       const itemPromises = items.map( async item => {
         // If a sound, just return it
-        if ( item.file_url ) {
+        if ( isSound( item ) ) {
           return item;
         }
         const imageDimensions = await Image.getSize( photoUrl( item ) );
