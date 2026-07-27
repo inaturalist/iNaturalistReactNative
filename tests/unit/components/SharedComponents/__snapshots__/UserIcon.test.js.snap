@@ -13,32 +13,13 @@ exports[`UserIcon displays active user image correctly 1`] = `
       }
     }
     style={
-      [
-        [
-          {
-            "borderBottomLeftRadius": 9999,
-            "borderBottomRightRadius": 9999,
-            "borderTopLeftRadius": 9999,
-            "borderTopRightRadius": 9999,
-          },
-          {
-            "borderBottomWidth": 3,
-            "borderLeftWidth": 3,
-            "borderRightWidth": 3,
-            "borderTopWidth": 3,
-          },
-          {
-            "borderBottomColor": "#74AC00",
-            "borderLeftColor": "#74AC00",
-            "borderRightColor": "#74AC00",
-            "borderTopColor": "#74AC00",
-          },
-          {
-            "height": 40,
-            "width": 40,
-          },
-        ],
-      ]
+      {
+        "borderColor": "rgba(116, 172, 0, 1)",
+        "borderRadius": 9999,
+        "borderWidth": 3,
+        "height": 40,
+        "width": 40,
+      }
     }
   />
 </View>
@@ -57,20 +38,11 @@ exports[`UserIcon displays small user image correctly 1`] = `
       }
     }
     style={
-      [
-        [
-          {
-            "borderBottomLeftRadius": 9999,
-            "borderBottomRightRadius": 9999,
-            "borderTopLeftRadius": 9999,
-            "borderTopRightRadius": 9999,
-          },
-          {
-            "height": 22,
-            "width": 22,
-          },
-        ],
-      ]
+      {
+        "borderRadius": 9999,
+        "height": 22,
+        "width": 22,
+      }
     }
   />
 </View>
@@ -89,20 +61,11 @@ exports[`UserIcon displays user image correctly 1`] = `
       }
     }
     style={
-      [
-        [
-          {
-            "borderBottomLeftRadius": 9999,
-            "borderBottomRightRadius": 9999,
-            "borderTopLeftRadius": 9999,
-            "borderTopRightRadius": 9999,
-          },
-          {
-            "height": 40,
-            "width": 40,
-          },
-        ],
-      ]
+      {
+        "borderRadius": 9999,
+        "height": 40,
+        "width": 40,
+      }
     }
   />
 </View>

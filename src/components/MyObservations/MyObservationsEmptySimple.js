@@ -56,8 +56,12 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
             </Heading2>
           </Pressable>
           <View className="relative w-[141px] self-center">
-            {/* $FlowIgnore[not-a-component] */}
-            <Arrow className="absolute right-[-20px] top-[-23px]" />
+            {/* View wrapper for positioning: className on an svg component
+              * has no effect with nativewind 4 */}
+            <View className="absolute right-[-20px] top-[-23px]">
+              {/* $FlowIgnore[not-a-component] */}
+              <Arrow />
+            </View>
             <GradientButton
               clas
               accessibilityLabel={t( "Add-observations" )}

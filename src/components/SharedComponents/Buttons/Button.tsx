@@ -1,10 +1,10 @@
 import { tailwindFontBold } from "appConstants/fontFamilies";
-import classnames from "classnames";
 import { ActivityIndicator, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React, { useRef, useState } from "react";
 import type { AccessibilityRole, GestureResponderEvent, ViewStyle } from "react-native";
 import colors from "styles/tailwindColors";
+import { twMerge } from "tailwind-merge";
 
 interface ButtonProps {
   accessibilityHint?: string;
@@ -185,7 +185,9 @@ const Button = ( {
     <Pressable
       style={style}
       onPress={handlePress}
-      className={classnames( buttonClasses )}
+      // twMerge so later classes win conflicts (e.g. level-specific bg-*
+      // over a caller bg-*), like class order resolved in nativewind 2
+      className={twMerge( ...buttonClasses )}
       disabled={isDisabled}
       testID={testID}
       // has no accessibilityLabel prop because then the button text is read as label
@@ -211,7 +213,7 @@ const Button = ( {
         </View>
       )}
       <Heading4
-        className={classnames( textClasses )}
+        className={twMerge( ...textClasses )}
         testID={`${testID || "RNButton"}.text`}
         maxFontSizeMultiplier={maxFontSizeMultiplier}
         numberOfLines={3}

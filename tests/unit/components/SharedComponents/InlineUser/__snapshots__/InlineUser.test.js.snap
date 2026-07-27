@@ -35,34 +35,20 @@ exports[`InlineUser renders reliably 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "display": "flex",
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "flexShrink": 1,
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "display": "flex",
+      "flexDirection": "row",
+      "flexShrink": 1,
+    }
   }
   testID="InlineUser"
 >
   <View
     style={
-      [
-        [
-          {
-            "marginRight": 7,
-          },
-        ],
-      ]
+      {
+        "marginRight": 7,
+      }
     }
   >
     <mockUserIcon
@@ -75,33 +61,14 @@ exports[`InlineUser renders reliably 1`] = `
     numberOfLines={1}
     selectable={true}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 13,
-              "lineHeight": 18,
-            },
-            {
-              "fontFamily": "Lato-Medium",
-            },
-            [
-              {
-                "width": "75%",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "rgba(69, 69, 69, 1)",
+        "fontFamily": "Lato-Medium",
+        "fontSize": 13,
+        "lineHeight": 18,
+        "textAlign": "left",
+        "width": "75%",
+      }
     }
   >
     some_login
@@ -144,34 +111,20 @@ exports[`InlineUser when offline renders reliably 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "display": "flex",
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "flexShrink": 1,
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "display": "flex",
+      "flexDirection": "row",
+      "flexShrink": 1,
+    }
   }
   testID="InlineUser"
 >
   <View
     style={
-      [
-        [
-          {
-            "marginRight": 7,
-          },
-        ],
-      ]
+      {
+        "marginRight": 7,
+      }
     }
   >
     <Text
@@ -203,33 +156,14 @@ exports[`InlineUser when offline renders reliably 1`] = `
     numberOfLines={1}
     selectable={true}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 13,
-              "lineHeight": 18,
-            },
-            {
-              "fontFamily": "Lato-Medium",
-            },
-            [
-              {
-                "width": "75%",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "rgba(69, 69, 69, 1)",
+        "fontFamily": "Lato-Medium",
+        "fontSize": 13,
+        "lineHeight": 18,
+        "textAlign": "left",
+        "width": "75%",
+      }
     }
   >
     some_login
@@ -272,34 +206,20 @@ exports[`InlineUser when user has no icon set renders reliably 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    [
-      [
-        {
-          "display": "flex",
-        },
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "flexShrink": 1,
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "display": "flex",
+      "flexDirection": "row",
+      "flexShrink": 1,
+    }
   }
   testID="InlineUser"
 >
   <View
     style={
-      [
-        [
-          {
-            "marginRight": 7,
-          },
-        ],
-      ]
+      {
+        "marginRight": 7,
+      }
     }
   >
     <Text
@@ -331,33 +251,14 @@ exports[`InlineUser when user has no icon set renders reliably 1`] = `
     numberOfLines={1}
     selectable={true}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 13,
-              "lineHeight": 18,
-            },
-            {
-              "fontFamily": "Lato-Medium",
-            },
-            [
-              {
-                "width": "75%",
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "rgba(69, 69, 69, 1)",
+        "fontFamily": "Lato-Medium",
+        "fontSize": 13,
+        "lineHeight": 18,
+        "textAlign": "left",
+        "width": "75%",
+      }
     }
   >
     some_login

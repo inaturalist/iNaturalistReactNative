@@ -4,28 +4,13 @@ exports[`Body3 renders correctly 1`] = `
 <Text
   maxFontSizeMultiplier={2}
   style={
-    [
-      {
-        "color": "#454545",
-      },
-      {
-        "fontFamily": "Lato-Regular",
-      },
-      [
-        {
-          "textAlign": "left",
-        },
-        [
-          {
-            "fontSize": 13,
-            "lineHeight": 18,
-          },
-          {
-            "fontFamily": "Lato-Medium",
-          },
-        ],
-      ],
-    ]
+    {
+      "color": "rgba(69, 69, 69, 1)",
+      "fontFamily": "Lato-Medium",
+      "fontSize": 13,
+      "lineHeight": 18,
+      "textAlign": "left",
+    }
   }
 >
   Body3
