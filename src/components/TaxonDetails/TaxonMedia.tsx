@@ -17,17 +17,17 @@ import { Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Photo from "realmModels/Photo";
 
-type Props = {
-  loading: boolean,
-  onChangeIndex?: Function,
+interface Props {
+  loading: boolean;
+  onChangeIndex?: Function;
   photos: {
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }[],
-  tablet: boolean
+    id?: number;
+    url: string;
+    localFilePath?: string;
+    attribution?: string;
+    licenseCode?: string;
+  }[];
+  tablet: boolean;
 }
 
 const TaxonMedia = ( {
