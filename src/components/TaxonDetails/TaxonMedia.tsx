@@ -24,18 +24,10 @@ interface PhotoItem {
   licenseCode?: string;
 }
 
-interface SoundItem {
-  file_url: string;
-  hidden: boolean;
-}
-
-type MediaItem = PhotoItem | SoundItem;
-
 interface Props {
   loading: boolean;
   onChangeIndex: ( newIndex: number ) => void;
   photos: PhotoItem[];
-  sounds: SoundItem[];
   tablet: boolean;
 }
 
@@ -43,20 +35,18 @@ const TaxonMedia = ( {
   loading,
   onChangeIndex,
   photos = [],
-  sounds = [],
   tablet,
 }: Props ) => {
   const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
-  const items: MediaItem[] = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
   const slideStyle = useMemo( ( ) => ( {
     width,
     height: 420,
   } ), [width] );
 
-  const CarouselSlide: ListRenderItem<MediaItem> = useCallback(
+  const CarouselSlide: ListRenderItem<PhotoItem> = useCallback(
     ( { item } ) => (
       <Pressable
         accessibilityRole="button"
@@ -108,7 +98,7 @@ const TaxonMedia = ( {
       : (
         <Carousel
           testID="photo-scroll"
-          data={items}
+          data={photos}
           renderItem={CarouselSlide}
           onSlideScroll={setIndex}
         />
@@ -118,7 +108,7 @@ const TaxonMedia = ( {
   const renderTablet = () => (
     <View className="w-full h-full">
       <MasonryLayout
-        items={items}
+        items={photos}
         onImagePress={newIndex => {
           setIndex( newIndex );
           setMediaViewerVisible( true );
