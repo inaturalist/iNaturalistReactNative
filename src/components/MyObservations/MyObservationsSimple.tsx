@@ -507,7 +507,7 @@ const MyObservationsSimple = ( {
             },
           ]}
         />
-        {searchMyObservationsEnabled && activeTab === OBSERVATIONS_TAB && (
+        {searchMyObservationsEnabled && (
           <SearchedTaxonBanner />
         )}
         { activeTab === OBSERVATIONS_TAB && (
