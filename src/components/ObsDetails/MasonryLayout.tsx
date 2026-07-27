@@ -32,6 +32,16 @@ interface SizedPhoto extends PhotoItem {
 
 type ProcessedMediaItem = SizedPhoto | SoundItem;
 
+interface EnrichedPhoto extends SizedPhoto {
+  originalIndex: number;
+}
+
+interface EnrichedSound extends SoundItem {
+  originalIndex: number;
+}
+
+type EnrichedMediaItem = EnrichedPhoto | EnrichedSound;
+
 const numColumns = 2;
 const spacing = 6;
 
@@ -42,7 +52,7 @@ const photoUrl = ( photo: PhotoItem ): string => (
 const isSound = ( item: MediaItem ): item is SoundItem => !!item.file_url;
 
 const MasonryLayout = ( { items, onImagePress }: Props ) => {
-  const [columns, setColumns] = useState(
+  const [columns, setColumns] = useState<EnrichedMediaItem[][]>(
     Array.from( { length: numColumns }, () => [] ),
   );
 
@@ -63,8 +73,8 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
 
       itemData.forEach( ( item, i ) => {
         const columnIndex = i % numColumns;
-        item.originalIndex = i;
-        newColumns[columnIndex].push( item );
+        const enrichedItem: EnrichedMediaItem = { ...item, originalIndex: i };
+        newColumns[columnIndex].push( enrichedItem );
       } );
 
       setColumns( newColumns );
