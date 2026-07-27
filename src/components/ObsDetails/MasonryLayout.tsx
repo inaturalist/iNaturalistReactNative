@@ -86,14 +86,14 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
     distributeItems();
   }, [items] );
 
-  const imageStyle = ( item: PhotoItem ) => ( {
+  const imageStyle = ( item: EnrichedPhoto ) => ( {
     width: "100%" as const,
     height: undefined,
     aspectRatio: item.width / item.height,
     marginBottom: spacing,
   } );
 
-  const renderImage = ( item: PhotoItem, index: number, column: number ) => (
+  const renderImage = ( item: EnrichedPhoto, index: number, column: number ) => (
     <PhotoContainer
       key={`MasonryLayout.column${column}.photo_${index}`}
       photo={item}
@@ -102,7 +102,7 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
     />
   );
 
-  const renderSound = ( item: SoundItem, index: number, column: number ) => (
+  const renderSound = ( item: EnrichedSound, index: number, column: number ) => (
     <SoundContainer
       key={`MasonryLayout.column${column}.sound_${index}`}
       sizeClass="w-full aspect-square"
@@ -112,7 +112,7 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
   );
 
   const renderItem = (
-    item: SoundItem | PhotoItem,
+    item: EnrichedMediaItem,
     index: number,
     column: number,
   ) => ( item.file_url
