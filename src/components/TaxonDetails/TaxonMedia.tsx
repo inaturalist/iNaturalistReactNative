@@ -10,6 +10,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import type { ListRenderItem } from "react-native";
 import { Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Photo from "realmModels/Photo";
@@ -27,6 +28,8 @@ interface SoundItem {
   file_url: string;
   hidden: boolean;
 }
+
+type MediaItem = PhotoItem | SoundItem;
 
 interface Props {
   loading: boolean;
@@ -47,13 +50,13 @@ const TaxonMedia = ( {
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
-  const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
+  const items: MediaItem[] = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
   const slideStyle = useMemo( ( ) => ( {
     width,
     height: 420,
   } ), [width] );
 
-  const CarouselSlide = useCallback(
+  const CarouselSlide: ListRenderItem<MediaItem> = useCallback(
     ( { item } ) => (
       <Pressable
         accessibilityRole="button"
