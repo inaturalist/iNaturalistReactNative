@@ -21,7 +21,9 @@ interface SoundItem {
 const numColumns = 2;
 const spacing = 6;
 
-const photoUrl = photo => Photo.displayLocalOrRemoteLargePhoto( photo );
+const photoUrl = ( photo: PhotoItem ): string => (
+  Photo.displayLocalOrRemoteLargePhoto( photo )
+);
 
 const MasonryLayout = ( { items, onImagePress } ) => {
   const [columns, setColumns] = useState(
