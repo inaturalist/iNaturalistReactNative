@@ -40,7 +40,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
           return item;
         }
         const imageDimensions = await Image.getSize( photoUrl( item ) );
-        return Object.assign( item, imageDimensions );
+        return { ...item, ...imageDimensions };
       } );
 
       const itemData = await Promise.all( itemPromises );
