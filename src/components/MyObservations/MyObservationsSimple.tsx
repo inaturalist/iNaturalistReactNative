@@ -1,3 +1,4 @@
+import { refresh } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import type { ViewOption } from "components/Explore/ObservationsViewBar";
@@ -328,6 +329,13 @@ const MyObservationsSimple = ( {
     return data;
   }, [observationIds, layout] );
 
+  const renderMapView = ( ) => {
+    if ( isConnected === false ) {
+      return <OfflineNotice onPress={() => refresh( )} />;
+    }
+    return <MyObservationsMapView userId={currentUser?.id} />;
+  };
+
   const renderOfflineNotice = ( ) => {
     if ( isConnected === false ) {
       return (
@@ -427,9 +435,7 @@ const MyObservationsSimple = ( {
             : (
               <>
                 { layout === "map"
-                  ? (
-                    <MyObservationsMapView userId={currentUser?.id} />
-                  )
+                  ? renderMapView( )
                   : (
                     <ObservationsFlashList
                       data={dataFilledWithEmptyBoxes}
