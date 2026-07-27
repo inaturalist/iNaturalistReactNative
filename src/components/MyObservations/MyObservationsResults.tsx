@@ -406,6 +406,9 @@ const MyObservationsResults = ( ) => {
     {
       user_id: currentUser?.id,
       ...sortAPIParams,
+      ...( myObsState.searchedTaxon?.id
+        ? { taxon_id: myObsState.searchedTaxon.id }
+        : {} ),
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS,
       },
