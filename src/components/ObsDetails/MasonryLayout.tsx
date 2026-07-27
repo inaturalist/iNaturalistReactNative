@@ -5,6 +5,11 @@ import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import Photo from "realmModels/Photo";
 
+interface SoundItem {
+  file_url: string;
+  hidden: boolean;
+}
+
 const numColumns = 2;
 const spacing = 6;
 
@@ -58,7 +63,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     />
   );
 
-  const renderSound = ( item, index, column ) => (
+  const renderSound = ( item: SoundItem, index: number, column: number ) => (
     <SoundContainer
       key={`MasonryLayout.column${column}.sound_${index}`}
       sizeClass="w-full aspect-square"
@@ -67,7 +72,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     />
   );
 
-  const renderItem = ( item, index, column ) => ( item.file_url
+  const renderItem = ( item: SoundItem, index: number, column: number ) => ( item.file_url
     ? renderSound( item, index, column )
     : renderImage( item, index, column ) );
 
