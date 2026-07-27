@@ -115,7 +115,7 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
     item: EnrichedMediaItem,
     index: number,
     column: number,
-  ) => ( item.file_url
+  ) => ( isSound( item )
     ? renderSound( item, index, column )
     : renderImage( item, index, column ) );
 
