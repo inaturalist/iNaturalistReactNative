@@ -1,4 +1,4 @@
-import { useNetInfo } from "@react-native-community/netinfo";
+import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useFocusEffect } from "@react-navigation/native";
 import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import ExploreV2Header
@@ -20,6 +20,7 @@ import ObservationsFlashList from "components/ObservationsFlashList/Observations
 import {
   Body2,
   Button,
+  OfflineNotice,
   RadioButtonSheet,
   ViewWrapper,
 } from "components/SharedComponents";
@@ -133,6 +134,14 @@ const ExploreResults = ( ) => {
     totalResults,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
+  const reload = useCallback( async ( ) => {
+    // only refresh results if we're now connected
+    const { isConnected: isConnectedNow } = await refresh( );
+    if ( isConnectedNow ) {
+      handlePullToRefresh( );
+    }
+  }, [handlePullToRefresh] );
+
   const speciesCountParams = useMemo( ( ) => {
     // take out params that don't apply to species count
     const {
@@ -166,6 +175,70 @@ const ExploreResults = ( ) => {
     </View>
   );
 
+  const renderContent = ( ) => {
+    if ( isConnected === false ) {
+      return (
+        <View className="flex-1">
+          <OfflineNotice onPress={reload} />
+        </View>
+      );
+    }
+    if ( needsPermission ) {
+      return renderPermissionPrompt( );
+    }
+    // more tabs to come in MOB-1347
+    return (
+      <>
+        {state.activeTab === OBSERVATIONS_TAB
+          ? (
+            <>
+              <ObservationsFlashList
+                data={observations}
+                dataCanBeFetched={canFetch}
+                explore
+                handlePullToRefresh={handlePullToRefresh}
+                hideLoadingWheel={!isFetchingNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                isConnected={isConnected}
+                layout={layout === "list"
+                  ? "list"
+                  : "grid"}
+                // bit over a misnomer on this prop; in this case it hides the
+                // ID/comments/quality badges that grid results can technically have
+                hideObsUploadStatus={layout !== "list"}
+                obsListKey="ExploreV2Observations"
+                onEndReached={fetchNextPage}
+                showNoResults={canFetch && totalResults === 0}
+                testID="ExploreV2ObservationsList"
+              />
+              <ObservationsViewBar
+                layout={layout}
+                updateObservationsView={writeLayoutToStorage}
+                viewOptions={["grid", "list"]}
+              />
+            </>
+          )
+          : (
+            <ExploreV2SpeciesView
+              enabled={canFetch}
+              isConnected={isConnected}
+              params={speciesListParams}
+            />
+          )}
+        <ExploreV2DebugSheet />
+        {( state.activeTab === OBSERVATIONS_TAB
+          || state.activeTab === SPECIES_TAB ) && (
+          <SortButton
+            onPress={() => setShowSortSheet( true )}
+            accessibilityLabel={state.activeTab === OBSERVATIONS_TAB
+              ? t( "Change-observations-sort-order" )
+              : t( "Change-species-sort-order" )}
+          />
+        )}
+      </>
+    );
+  };
+
   return (
     <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
@@ -178,58 +251,7 @@ const ExploreResults = ( ) => {
             ? speciesCount
             : undefined}
         />
-        {needsPermission
-          ? renderPermissionPrompt( )
-          : ( // more tabs to come in MOB-1347
-            <>
-              {state.activeTab === OBSERVATIONS_TAB
-                ? (
-                  <>
-                    <ObservationsFlashList
-                      data={observations}
-                      dataCanBeFetched={canFetch}
-                      explore
-                      handlePullToRefresh={handlePullToRefresh}
-                      hideLoadingWheel={!isFetchingNextPage}
-                      isFetchingNextPage={isFetchingNextPage}
-                      isConnected={isConnected}
-                      layout={layout === "list"
-                        ? "list"
-                        : "grid"}
-                      // bit over a misnomer on this prop; in this case it hides the
-                      // ID/comments/quality badges that grid results can technically have
-                      hideObsUploadStatus={layout !== "list"}
-                      obsListKey="ExploreV2Observations"
-                      onEndReached={fetchNextPage}
-                      showNoResults={canFetch && totalResults === 0}
-                      testID="ExploreV2ObservationsList"
-                    />
-                    <ObservationsViewBar
-                      layout={layout}
-                      updateObservationsView={writeLayoutToStorage}
-                      viewOptions={["grid", "list"]}
-                    />
-                  </>
-                )
-                : (
-                  <ExploreV2SpeciesView
-                    enabled={canFetch}
-                    isConnected={isConnected}
-                    params={speciesListParams}
-                  />
-                )}
-              <ExploreV2DebugSheet />
-              {( state.activeTab === OBSERVATIONS_TAB
-                || state.activeTab === SPECIES_TAB ) && (
-                <SortButton
-                  onPress={() => setShowSortSheet( true )}
-                  accessibilityLabel={state.activeTab === OBSERVATIONS_TAB
-                    ? t( "Change-observations-sort-order" )
-                    : t( "Change-species-sort-order" )}
-                />
-              )}
-            </>
-          )}
+        {renderContent( )}
       </View>
       {showSortSheet && state.activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet
