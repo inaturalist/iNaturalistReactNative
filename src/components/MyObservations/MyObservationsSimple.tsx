@@ -92,6 +92,7 @@ interface Props {
   setSpeciesSortOptionId: ( value: SPECIES_SORT ) => void;
   showNoResults: boolean;
   showSearchEmptyState: boolean;
+  showSpeciesSearchEmptyState: boolean;
   speciesSortOptionId: SPECIES_SORT;
   taxa?: SpeciesCount[];
   updateObservationsView: ( value: string ) => void;
@@ -151,6 +152,7 @@ const MyObservationsSimple = ( {
   setSpeciesSortOptionId,
   showNoResults,
   showSearchEmptyState,
+  showSpeciesSearchEmptyState,
   speciesSortOptionId,
   taxa,
   updateObservationsView,
@@ -558,7 +560,11 @@ const MyObservationsSimple = ( {
             />
           </>
         )}
-        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
+        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && (
+          showSpeciesSearchEmptyState
+            ? <SearchEmptyState />
+            : renderOfflineNotice( )
+        )}
       </ViewWrapper>
       {openSheet === ACTIVE_SHEET.SORT && activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet

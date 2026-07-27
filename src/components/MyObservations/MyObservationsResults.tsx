@@ -396,6 +396,7 @@ const MyObservationsResults = ( ) => {
 
   const {
     data: remoteObservedTaxaCounts,
+    isFetching: isLoadingTaxa,
     isFetchingNextPage: isFetchingTaxa,
     fetchNextPage: fetchMoreTaxa,
     totalResults: numTotalTaxaRemote,
@@ -482,6 +483,11 @@ const MyObservationsResults = ( ) => {
     myObsState.speciesSort,
   ] );
 
+  const showSpeciesSearchEmptyState = searchMyObservationsEnabled
+    && !!myObsState.searchedTaxon
+    && !isLoadingTaxa
+    && taxa.length === 0;
+
   if ( !layout ) { return null; }
 
   if ( observationIds.length === 0 && !totalResultsRemote ) {
@@ -532,6 +538,7 @@ const MyObservationsResults = ( ) => {
       setSpeciesSortOptionId={setSpeciesSortOptionId}
       showNoResults={showNoResults}
       showSearchEmptyState={showSearchEmptyState}
+      showSpeciesSearchEmptyState={showSpeciesSearchEmptyState}
       speciesSortOptionId={myObsState.speciesSort}
       taxa={taxa}
       updateObservationsView={updateObservationsView}
