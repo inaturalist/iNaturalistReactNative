@@ -33,7 +33,7 @@ type MediaItem = PhotoItem | SoundItem;
 
 interface Props {
   loading: boolean;
-  onChangeIndex?: Function;
+  onChangeIndex: ( newIndex: number ) => void;
   photos: PhotoItem[];
   sounds: SoundItem[];
   tablet: boolean;
