@@ -1,10 +1,13 @@
 import classNames from "classnames";
 import { Body4, DisplayTaxonName } from "components/SharedComponents";
+import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import {
   Image, LinearGradient, Pressable, View,
 } from "components/styledComponents";
 import React from "react";
-import { useTranslation } from "sharedHooks";
+import { useFeatureFlag, useTranslation } from "sharedHooks";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
 const imageClassNames = [
@@ -35,6 +38,7 @@ const SimpleTaxonGridItem = ( {
 }: Props ) => {
   const { t } = useTranslation();
   const { count } = speciesCount;
+  const searchMyObservationsEnabled = useFeatureFlag( FeatureFlag.SearchMyObservationsEnabled );
 
   return (
     <Pressable
@@ -58,6 +62,18 @@ const SimpleTaxonGridItem = ( {
         start={{ x: 0, y: 0.5 }}
         end={{ x: 0, y: 1 }}
       />
+      { searchMyObservationsEnabled && (
+        <View className="absolute top-0 right-0">
+          <INatIconButton
+            icon="info-circle-outline"
+            size={19}
+            color={colors.white}
+            onPress={navToTaxonDetails}
+            accessibilityLabel={accessibleName}
+            accessibilityHint={t( "Navigates-to-taxon-details" )}
+          />
+        </View>
+      ) }
       <View className="absolute bottom-0 flex p-2 w-full">
         <Body4
           maxFontSizeMultiplier={1.5}
