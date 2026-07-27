@@ -8,10 +8,13 @@ import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
 import IconicTaxonIcon from "components/SharedComponents/IconicTaxonIcon";
 import { Image, Pressable, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
+import type { TFunction } from "i18next";
 import type { ExploreStackScreenProps } from "navigation/types";
 import React from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
+
+type Navigation = ExploreStackScreenProps<"ExploreResults">["navigation"];
 
 interface Props {
   result: UniversalSearchResultItem;
@@ -33,31 +36,28 @@ const resultLabel = ( result: UniversalSearchResultItem ): string => {
   return result.taxon.preferred_common_name || result.taxon.name || "";
 };
 
+const resultHint = ( result: UniversalSearchResultItem, t: TFunction ): string => {
+  if ( result.type === "user" ) { return t( "Navigates-to-user-profile" ); }
+  if ( result.type === "project" ) { return t( "Navigates-to-project-details" ); }
+  return t( "Navigates-to-taxon-details" );
+};
+
+const navToDetail = ( result: UniversalSearchResultItem, navigation: Navigation ) => ( ) => {
+  if ( result.type === "user" ) {
+    navigation.navigate( "UserProfile", { userId: result.user.id } );
+    return;
+  }
+  if ( result.type === "project" ) {
+    navigation.navigate( "ProjectDetails", { id: result.project.id } );
+    return;
+  }
+  navigation.navigate( "TaxonDetails", { id: result.taxon.id } );
+};
+
 const UniversalSearchResult = ( { result, onPress }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
-
-  const infoButtonProps = ( ) => {
-    switch ( result.type ) {
-      case "user":
-        return {
-          hint: t( "Navigates-to-user-profile" ),
-          navToDetail: ( ) => navigation.navigate( "UserProfile", { userId: result.user.id } ),
-        };
-      case "project":
-        return {
-          hint: t( "Navigates-to-project-details" ),
-          navToDetail: ( ) => navigation.navigate( "ProjectDetails", { id: result.project.id } ),
-        };
-      default:
-        return {
-          hint: t( "Navigates-to-taxon-details" ),
-          navToDetail: ( ) => navigation.navigate( "TaxonDetails", { id: result.taxon.id } ),
-        };
-    }
-  };
-  const { hint: infoHint, navToDetail } = infoButtonProps( );
+  const navigation = useNavigation<Navigation>( );
 
   const renderContent = ( ) => {
     switch ( result.type ) {
@@ -128,10 +128,10 @@ const UniversalSearchResult = ( { result, onPress }: Props ) => {
         {renderContent( )}
       </Pressable>
       <INatIconButton
-        accessibilityHint={infoHint}
+        accessibilityHint={resultHint( result, t )}
         accessibilityLabel={t( "More-info" )}
         icon="info-circle-outline"
-        onPress={navToDetail}
+        onPress={navToDetail( result, navigation )}
         size={22}
         testID={`UniversalSearchResult.info.${resultId( result )}`}
       />
