@@ -298,4 +298,53 @@ describe( "MyObservations upload queue", ( ) => {
     expect( useStore.getState( ).errorsByUuid ).toEqual( {} );
     await waitForUploadStateReset( );
   } );
+
+  it( "does not drop an observation when a cancelled upload settles late", async ( ) => {
+    let rejectStaleUpload;
+    const uploadedUuids = [];
+    inatjs.observations.create.mockImplementation( params => {
+      const { uuid } = params.observation;
+      if ( inatjs.observations.create.mock.calls.length === 1 ) {
+        // Deliberately ignores opts.signal, so only the test settles it
+        return new Promise( ( _resolve, reject ) => {
+          rejectStaleUpload = ( ) => reject( newAbortError( ) );
+        } );
+      }
+      // Slow enough that the stale rejection lands mid-queue
+      return new Promise( resolve => {
+        setTimeout( ( ) => {
+          uploadedUuids.push( uuid );
+          resolve( successfulCreateResponse( uuid ) );
+        }, 1000 );
+      } );
+    } );
+
+    await startUploadsViaSyncButton( );
+    const stopUploadButton = await screen.findByLabelText( "Stop upload" );
+    fireEvent.press( stopUploadButton );
+    await waitFor( ( ) => {
+      displayItemByText( /Upload 3 observations/ );
+    }, { timeout: MS_BEFORE_TOOLBAR_RESET + 2000, interval: 500 } );
+
+    // Start a second session, then settle the abandoned first-session upload
+    // while the second session still has observations queued
+    fireEvent.press( screen.getByTestId( "SyncButton" ) );
+    await waitFor( ( ) => {
+      expect( inatjs.observations.create ).toHaveBeenCalledTimes( 2 );
+    } );
+    await act( async ( ) => {
+      rejectStaleUpload( );
+    } );
+
+    // Step the advance so each upload's promise and the effect that queues
+    // the next one get a chance to flush between timer fires
+    for ( let step = 0; step < 6 && uploadedUuids.length < 3; step += 1 ) {
+      // eslint-disable-next-line no-await-in-loop
+      await advanceTimers( 1500 );
+    }
+    expect( uploadedUuids ).toHaveLength( 3 );
+    expect( new Set( uploadedUuids ).size ).toEqual( 3 );
+    expect( useStore.getState( ).errorsByUuid ).toEqual( {} );
+    await waitForUploadStateReset( );
+  } );
 } );

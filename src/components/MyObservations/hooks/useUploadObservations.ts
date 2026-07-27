@@ -144,12 +144,16 @@ export default ( canUpload: boolean ) => {
     } finally {
       clearTimeout( timeoutID );
       abortController?.signal.removeEventListener( "abort", abortCurrentUpload );
-      removeFromUploadQueue( );
-      if (
-        uploadQueue.length === 0
-        && !currentUpload
-      ) {
-        completeUploads( );
+      if ( !abortController?.signal.aborted ) {
+        // stopAllUploads already cleared the queue if the top level controller was aborted
+        // so don't do it a second time if it was
+        removeFromUploadQueue( );
+        if (
+          uploadQueue.length === 0
+          && !currentUpload
+        ) {
+          completeUploads( );
+        }
       }
     }
   }, [
