@@ -25,6 +25,13 @@ interface Props {
   onImagePress: ( index: number ) => void;
 }
 
+interface SizedPhoto extends PhotoItem {
+  width: number;
+  height: number;
+}
+
+type ProcessedMediaItem = SizedPhoto | SoundItem;
+
 const numColumns = 2;
 const spacing = 6;
 
@@ -43,7 +50,7 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
     const distributeItems = async () => {
       const newColumns = Array.from( { length: numColumns }, () => [] );
 
-      const itemPromises = items.map( async item => {
+      const itemPromises = items.map( async ( item ): Promise<ProcessedMediaItem> => {
         // If a sound, just return it
         if ( isSound( item ) ) {
           return item;
