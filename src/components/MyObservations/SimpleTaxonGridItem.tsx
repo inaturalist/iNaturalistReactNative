@@ -75,6 +75,7 @@ const SimpleTaxonGridItem = ( {
             onPress={navToTaxonDetails}
             accessibilityLabel={accessibleName}
             accessibilityHint={t( "Navigates-to-taxon-details" )}
+            testID="SimpleTaxonGridItem.infoButton"
           />
         </View>
       ) }
