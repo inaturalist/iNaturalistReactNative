@@ -11,8 +11,6 @@ interface PhotoItem {
   localFilePath: string;
   attribution: string;
   hidden: boolean;
-  width: number;
-  height: number;
 }
 
 interface SoundItem {
