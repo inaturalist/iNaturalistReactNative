@@ -3,6 +3,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
+import ExploreV2MapView
+  from "components/Explore/ExploreV2/components/ExploreV2MapView";
 import ExploreV2Tabs
   from "components/Explore/ExploreV2/components/ExploreV2Tabs";
 import ExploreV2DebugSheet
@@ -69,6 +71,8 @@ const ExploreResults = ( ) => {
   const speciesSortLabels = useSpeciesSortLabels( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreV2ObservationsLayout" );
 
+  const showMap = layout === "map";
+
   const sortOptions = OBSERVATIONS_SORT_OPTIONS.reduce(
     ( acc, sortBy ) => {
       const { label, text } = observationsSortLabels[sortBy];
@@ -129,8 +133,10 @@ const ExploreResults = ( ) => {
   const {
     fetchNextPage,
     isFetchingNextPage,
+    isLoading,
     handlePullToRefresh,
     observations,
+    totalBounds,
     totalResults,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
@@ -192,29 +198,41 @@ const ExploreResults = ( ) => {
         {state.activeTab === OBSERVATIONS_TAB
           ? (
             <>
-              <ObservationsFlashList
-                data={observations}
-                dataCanBeFetched={canFetch}
-                explore
-                handlePullToRefresh={handlePullToRefresh}
-                hideLoadingWheel={!isFetchingNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-                isConnected={isConnected}
-                layout={layout === "list"
-                  ? "list"
-                  : "grid"}
-                // bit over a misnomer on this prop; in this case it hides the
-                // ID/comments/quality badges that grid results can technically have
-                hideObsUploadStatus={layout !== "list"}
-                obsListKey="ExploreV2Observations"
-                onEndReached={fetchNextPage}
-                showNoResults={canFetch && totalResults === 0}
-                testID="ExploreV2ObservationsList"
-              />
+              {showMap
+                ? (
+                  <ExploreV2MapView
+                    isLoading={isLoading}
+                    nearbyCoords={nearbyCoords}
+                    placeMode={state.location.placeMode}
+                    queryParams={queryParams}
+                    totalBounds={totalBounds}
+                  />
+                )
+                : (
+                  <ObservationsFlashList
+                    data={observations}
+                    dataCanBeFetched={canFetch}
+                    explore
+                    handlePullToRefresh={handlePullToRefresh}
+                    hideLoadingWheel={!isFetchingNextPage}
+                    isFetchingNextPage={isFetchingNextPage}
+                    isConnected={isConnected}
+                    layout={layout === "list"
+                      ? "list"
+                      : "grid"}
+                    // bit over a misnomer on this prop; in this case it hides the
+                    // ID/comments/quality badges that grid results can technically have
+                    hideObsUploadStatus={layout !== "list"}
+                    obsListKey="ExploreV2Observations"
+                    onEndReached={fetchNextPage}
+                    showNoResults={canFetch && totalResults === 0}
+                    testID="ExploreV2ObservationsList"
+                  />
+                )}
               <ObservationsViewBar
                 layout={layout}
                 updateObservationsView={writeLayoutToStorage}
-                viewOptions={["grid", "list"]}
+                viewOptions={["map", "grid", "list"]}
               />
             </>
           )
@@ -226,7 +244,7 @@ const ExploreResults = ( ) => {
             />
           )}
         <ExploreV2DebugSheet />
-        {( state.activeTab === OBSERVATIONS_TAB
+        {( ( state.activeTab === OBSERVATIONS_TAB && !showMap )
           || state.activeTab === SPECIES_TAB ) && (
           <SortButton
             onPress={() => setShowSortSheet( true )}
