@@ -1,12 +1,9 @@
-// @flow
-
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import MasonryLayout from "components/ObsDetails/MasonryLayout";
 import { ActivityIndicator, Carousel } from "components/SharedComponents";
 import {
   Image, Pressable, View,
 } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
@@ -36,7 +33,7 @@ const TaxonMedia = ( {
   photos = [],
   sounds = [],
   tablet,
-}: Props ): Node => {
+}: Props ) => {
   const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
