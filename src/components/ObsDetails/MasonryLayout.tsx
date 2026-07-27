@@ -11,6 +11,8 @@ interface PhotoItem {
   localFilePath: string;
   attribution: string;
   hidden: boolean;
+  width: number;
+  height: number;
 }
 
 interface SoundItem {
@@ -55,8 +57,8 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     distributeItems();
   }, [items] );
 
-  const imageStyle = item => ( {
-    width: "100%",
+  const imageStyle = ( item: PhotoItem ) => ( {
+    width: "100%" as const,
     height: undefined,
     aspectRatio: item.width / item.height,
     marginBottom: spacing,
