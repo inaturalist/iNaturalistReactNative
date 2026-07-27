@@ -1,9 +1,3 @@
-// The first three tests reproduce the pre-fix MOB-1543 bug: one bad upload
-// (hanging, failing, or cancelled) aborted the shared session
-// AbortController and blocked other observations in the upload queue. The
-// last test guards the per-upload abort listener/timer cleanup the fix
-// introduced.
-
 import {
   act, fireEvent, screen, waitFor,
 } from "@testing-library/react-native";
@@ -23,8 +17,6 @@ import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
 
-// Observations without media so the only API request in the upload chain is
-// observations.create, which each test controls call-by-call
 const mockUnsyncedObservations = [
   factory( "LocalObservation", {
     _synced_at: null,
@@ -103,9 +95,6 @@ const startUploadsViaSyncButton = async ( ) => {
   fireEvent.press( screen.getByTestId( "SyncButton" ) );
 };
 
-// Synchronous timer advance wrapped in act so pending promise callbacks and
-// effects flush after the advance; advanceTimersByTimeAsync is too slow for
-// jumps as long as the upload timeout
 const advanceTimers = async ms => {
   await act( async ( ) => {
     jest.advanceTimersByTime( ms );
@@ -268,11 +257,6 @@ describe( "MyObservations upload queue", ( ) => {
     await waitForUploadStateReset( );
   } );
 
-  // Note: this scenario also passed pre-fix (each session mints a fresh
-  // AbortController, so a cancelled session never contaminated the next
-  // one). It pins the fix's cleanup wiring instead: if the session abort
-  // listener or per-upload timeout leaked out of a cancelled session, this
-  // fresh-session re-upload is where it would surface.
   it( "uploads all observations in a new session after user cancelled", async ( ) => {
     inatjs.observations.create.mockImplementation( ( params, opts ) => {
       if ( inatjs.observations.create.mock.calls.length === 1 ) {
