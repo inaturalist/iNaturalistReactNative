@@ -18,6 +18,13 @@ interface SoundItem {
   hidden: boolean;
 }
 
+type MediaItem = PhotoItem | SoundItem;
+
+interface Props {
+  items: MediaItem[];
+  onImagePress: ( index: number ) => void;
+}
+
 const numColumns = 2;
 const spacing = 6;
 
@@ -25,7 +32,7 @@ const photoUrl = ( photo: PhotoItem ): string => (
   Photo.displayLocalOrRemoteLargePhoto( photo )
 );
 
-const MasonryLayout = ( { items, onImagePress } ) => {
+const MasonryLayout = ( { items, onImagePress }: Props ) => {
   const [columns, setColumns] = useState(
     Array.from( { length: numColumns }, () => [] ),
   );
