@@ -5,6 +5,14 @@ import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import Photo from "realmModels/Photo";
 
+interface PhotoItem {
+  id: number;
+  url: string;
+  localFilePath: string;
+  attribution: string;
+  hidden: boolean;
+}
+
 interface SoundItem {
   file_url: string;
   hidden: boolean;
@@ -54,7 +62,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     marginBottom: spacing,
   } );
 
-  const renderImage = ( item, index, column ) => (
+  const renderImage = ( item: PhotoItem, index: number, column: number ) => (
     <PhotoContainer
       key={`MasonryLayout.column${column}.photo_${index}`}
       photo={item}
@@ -72,7 +80,11 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     />
   );
 
-  const renderItem = ( item: SoundItem, index: number, column: number ) => ( item.file_url
+  const renderItem = (
+    item: SoundItem | PhotoItem,
+    index: number,
+    column: number,
+  ) => ( item.file_url
     ? renderSound( item, index, column )
     : renderImage( item, index, column ) );
 
