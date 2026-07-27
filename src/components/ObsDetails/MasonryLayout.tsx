@@ -58,7 +58,10 @@ const MasonryLayout = ( { items, onImagePress }: Props ) => {
 
   useEffect( () => {
     const distributeItems = async () => {
-      const newColumns = Array.from( { length: numColumns }, () => [] );
+      const newColumns: EnrichedMediaItem[][] = Array.from(
+        { length: numColumns },
+        () => [],
+      );
 
       const itemPromises = items.map( async ( item ): Promise<ProcessedMediaItem> => {
         // If a sound, just return it
