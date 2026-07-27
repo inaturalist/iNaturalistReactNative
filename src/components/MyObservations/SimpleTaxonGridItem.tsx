@@ -22,6 +22,7 @@ const imageClassNames = [
 interface Props {
   accessibleName: string;
   navToTaxonDetails: ( ) => void;
+  searchThisTaxon: ( ) => void;
   source: {
     uri: string;
   };
@@ -32,6 +33,7 @@ interface Props {
 const SimpleTaxonGridItem = ( {
   accessibleName,
   navToTaxonDetails,
+  searchThisTaxon,
   source,
   style,
   speciesCount,
@@ -43,7 +45,9 @@ const SimpleTaxonGridItem = ( {
   return (
     <Pressable
       accessibilityRole="button"
-      onPress={navToTaxonDetails}
+      onPress={searchMyObservationsEnabled
+        ? searchThisTaxon
+        : navToTaxonDetails}
       accessibilityLabel={accessibleName}
       testID="SimpleTaxonGridItem"
       className={classNames( imageClassNames )}

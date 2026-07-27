@@ -1,6 +1,7 @@
 import { refresh } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
+import type { ApiTaxon } from "api/types";
 import type { ViewOption } from "components/Explore/ObservationsViewBar";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
@@ -23,11 +24,16 @@ import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
 import { ObservationsStatTab, SpeciesStatTab } from "components/SharedComponents/StatTab";
 import { View } from "components/styledComponents";
+import {
+  MY_OBSERVATIONS_ACTION,
+  useMyObservations,
+} from "providers/MyObservationsContext";
 import React, { useCallback, useMemo } from "react";
 import { Alert } from "react-native";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
+  RealmTaxon,
   RealmUser,
 } from "realmModels/types";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
@@ -156,6 +162,7 @@ const MyObservationsSimple = ( {
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
+  const { dispatch } = useMyObservations( );
   const searchMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SearchMyObservationsEnabled,
   );
@@ -220,6 +227,24 @@ const MyObservationsSimple = ( {
       } )
     );
 
+    const searchThisTaxon = ( ) => {
+      // fetchSpeciesCounts (logged in path) returns ApiTaxon-shaped (snake_case) taxa;
+      // the logged-out path returns real RealmTaxon (camelCase) objects.
+      // SpeciesCount.taxon is only typed as RealmTaxon, so read both shapes the
+      // same way SearchMyObservationsTaxon.tsx does.
+      const taxon = speciesCount.taxon as ApiTaxon & RealmTaxon;
+      dispatch( {
+        type: MY_OBSERVATIONS_ACTION.SET_TAXON_SEARCH,
+        searchTaxon: {
+          id: taxon.id,
+          name: taxon.name || "",
+          preferredCommonName: taxon.preferred_common_name || taxon.preferredCommonName,
+          iconUri: taxon.default_photo?.url || taxon.defaultPhoto?.url,
+        },
+      } );
+      setActiveTab( OBSERVATIONS_TAB );
+    };
+
     const accessibleName = accessibleTaxonName( speciesCount.taxon, currentUser, t );
 
     const source = {
@@ -238,15 +263,18 @@ const MyObservationsSimple = ( {
         style={gridItemStyle}
         speciesCount={speciesCount}
         navToTaxonDetails={navToTaxonDetails}
+        searchThisTaxon={searchThisTaxon}
         accessibleName={accessibleName}
         source={source}
       />
     );
   }, [
     currentUser,
+    dispatch,
     gridItemStyle,
     navigation,
     route.key,
+    setActiveTab,
     t,
   ] );
 
