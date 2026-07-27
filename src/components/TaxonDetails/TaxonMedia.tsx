@@ -14,16 +14,25 @@ import { Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Photo from "realmModels/Photo";
 
+interface PhotoItem {
+  id: number;
+  url: string;
+  localFilePath: string;
+  attribution: string;
+  hidden: boolean;
+  licenseCode?: string;
+}
+
+interface SoundItem {
+  file_url: string;
+  hidden: boolean;
+}
+
 interface Props {
   loading: boolean;
   onChangeIndex?: Function;
-  photos: {
-    id?: number;
-    url: string;
-    localFilePath?: string;
-    attribution?: string;
-    licenseCode?: string;
-  }[];
+  photos: PhotoItem[];
+  sounds: SoundItem[];
   tablet: boolean;
 }
 
