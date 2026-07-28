@@ -152,6 +152,7 @@ const FrameProcessorCamera = ( {
   const cropRatioSV = useSharedValue( cropRatio );
   const useGeomodelSV = useSharedValue( useGeomodel );
   const takingPhotoSV = useSharedValue( takingPhoto );
+  const fpsSV = useSharedValue( fps );
   useEffect( () => {
     confidenceThresholdSV.value = confidenceThreshold;
   }, [confidenceThreshold, confidenceThresholdSV] );
@@ -167,6 +168,9 @@ const FrameProcessorCamera = ( {
   useEffect( () => {
     takingPhotoSV.value = takingPhoto;
   }, [takingPhoto, takingPhotoSV] );
+  useEffect( () => {
+    fpsSV.value = fps;
+  }, [fps, fpsSV] );
 
   const patchedRunAsync = usePatchedRunAsync( );
   const frameProcessor = useFrameProcessor(
@@ -180,7 +184,7 @@ const FrameProcessorCamera = ( {
       // If there is no lastTimestamp, i.e. the first time this runs, do not compare
       if ( lastTimestamp ) {
         const timeSinceLastFrame = timestamp - lastTimestamp;
-        if ( timeSinceLastFrame < 1000 / fps ) {
+        if ( timeSinceLastFrame < 1000 / fpsSV.value ) {
           return;
         }
       }
@@ -225,8 +229,8 @@ const FrameProcessorCamera = ( {
       cropRatioSV,
       useGeomodelSV,
       takingPhotoSV,
+      fpsSV,
       lastTimestamp,
-      fps,
       geoModelCellLocation,
     ],
   );
