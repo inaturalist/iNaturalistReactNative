@@ -2,7 +2,7 @@ import type {
   BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
 import BottomSheet, {
-  BottomSheetModal, BottomSheetScrollView,
+  BottomSheetModal, BottomSheetScrollView, BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
@@ -124,50 +124,57 @@ const StandardBottomSheet = ( {
     return ( ) => dismissSheet( sheet );
   }, [dismissSheet] );
 
-  const content = (
-    <BottomSheetScrollView
-      keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-      scrollEnabled={scrollEnabled}
+  const innerContent = (
+    <View
+      className={classnames(
+        "pt-7",
+        containerClass,
+      )}
+      style={{
+        paddingBottom: bottom,
+      }}
+      onLayout={onLayout}
+      // Not ideal, but @gorhom/bottom-sheet components don't support
+      // testID
+      testID={testID}
     >
-      <View
-        className={classnames(
-          "pt-7",
-          containerClass,
+      {!headerText
+        ? null
+        : (
+          <View className="mx-12 flex">
+            <Heading4
+              testID="bottom-sheet-header"
+              className="w-full text-center"
+            >
+              {headerText}
+            </Heading4>
+          </View>
         )}
-        style={{
-          paddingBottom: bottom,
-        }}
-        onLayout={onLayout}
-        // Not ideal, but @gorhom/bottom-sheet components don't support
-        // testID
-        testID={testID}
-      >
-        {!headerText
-          ? null
-          : (
-            <View className="mx-12 flex">
-              <Heading4
-                testID="bottom-sheet-header"
-                className="w-full text-center"
-              >
-                {headerText}
-              </Heading4>
-            </View>
-          )}
-        {children}
-        {!hideCloseButton && (
-          <INatIconButton
-            icon="close"
-            onPress={handleClose}
-            disabled={hidden}
-            size={19}
-            className="absolute top-3.5 right-3"
-            accessibilityLabel={t( "Close" )}
-          />
-        )}
-      </View>
-    </BottomSheetScrollView>
+      {children}
+      {!hideCloseButton && (
+        <INatIconButton
+          icon="close"
+          onPress={handleClose}
+          disabled={hidden}
+          size={19}
+          className="absolute top-3.5 right-3"
+          accessibilityLabel={t( "Close" )}
+        />
+      )}
+    </View>
   );
+
+  const content = scrollEnabled
+    ? (
+      <BottomSheetScrollView keyboardShouldPersistTaps={keyboardShouldPersistTaps}>
+        {innerContent}
+      </BottomSheetScrollView>
+    )
+    : (
+      <BottomSheetView>
+        {innerContent}
+      </BottomSheetView>
+    );
 
   // Consider splitting into separate files/components or removing `insideModal` usage
   if ( insideModal ) {
