@@ -3,7 +3,6 @@ import {
   SwitchRow,
 } from "components/SharedComponents";
 import React, { useCallback } from "react";
-import { useFeatureFlag } from "sharedHooks";
 import type { FeatureFlagSlice } from "stores/createFeatureFlagSlice";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
@@ -11,8 +10,6 @@ import useStore from "stores/useStore";
 import { H1, H2 } from "./DeveloperSharedComponents";
 
 export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
-  const resolvedValue = useFeatureFlag( featureFlagKey );
-
   const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
   const featureFlagOverrides
     = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
@@ -21,6 +18,10 @@ export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
 
   const rawValue = featureFlagConfig[featureFlagKey];
   const overrideValue = featureFlagOverrides[featureFlagKey];
+
+  const resolvedValue = overrideValue === null
+    ? rawValue
+    : overrideValue;
 
   const setOverride = useCallback(
     ( enabled: boolean ) => storeSetOverride( featureFlagKey, enabled ),
