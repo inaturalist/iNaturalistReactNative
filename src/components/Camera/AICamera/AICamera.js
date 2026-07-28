@@ -222,6 +222,11 @@ const AICamera = ( {
     } );
   };
 
+  const onClassifierError = useCallback(
+    error => handleClassifierError( error ),
+    [],
+  );
+
   const onLog = useCallback(
     event => handleLog( event ),
     [],
@@ -240,7 +245,7 @@ const AICamera = ( {
             numStoredResults={numStoredResults}
             cropRatio={cropRatio}
             onTaxaDetected={handleTaxaDetected}
-            onClassifierError={handleClassifierError}
+            onClassifierError={onClassifierError}
             onDeviceNotSupported={handleDeviceNotSupported}
             onCaptureError={handleCaptureError}
             onCameraError={handleCameraError}

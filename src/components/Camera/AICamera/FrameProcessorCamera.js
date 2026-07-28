@@ -118,10 +118,6 @@ const FrameProcessorCamera = ( {
     };
   }, [navigation, resetCameraOnFocus] );
 
-  const handleError = Worklets.createRunOnJS( error => {
-    onClassifierError( error );
-  } );
-
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
   const useGeomodel = isDefaultMode
     ? hasUserLocation
@@ -183,6 +179,13 @@ const FrameProcessorCamera = ( {
       onTaxaDetected( result );
     } ),
     [lastTimestampSV, onLog, onTaxaDetected],
+  );
+
+  const handleError = useMemo(
+    () => Worklets.createRunOnJS( error => {
+      onClassifierError( error );
+    } ),
+    [onClassifierError],
   );
 
   const patchedRunAsync = usePatchedRunAsync( );
