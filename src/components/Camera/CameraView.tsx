@@ -22,6 +22,7 @@ import {
 import Reanimated from "react-native-reanimated";
 import type {
   CameraDevice, CameraDeviceFormat, CameraProps, CameraRuntimeError,
+  ReadonlyFrameProcessor,
 } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
@@ -34,7 +35,7 @@ interface Props {
   cameraScreen: "standard" | "ai";
   debugFormat: CameraDeviceFormat | undefined;
   device: CameraDevice;
-  frameProcessor?: () => void;
+  frameProcessor?: ReadonlyFrameProcessor;
   onCameraError: ( error: CameraRuntimeError ) => void;
   onCaptureError: ( error: CameraRuntimeError ) => void;
   onClassifierError: ( error: CameraRuntimeError ) => void;
