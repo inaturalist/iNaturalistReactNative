@@ -75,9 +75,7 @@ const TaxonMedia = ( {
   );
 
   useEffect( ( ) => {
-    if ( onChangeIndex ) {
-      onChangeIndex( index );
-    }
+    onChangeIndex( index );
   }, [index, onChangeIndex] );
 
   const currentPhotoUrl = index >= photos.length
