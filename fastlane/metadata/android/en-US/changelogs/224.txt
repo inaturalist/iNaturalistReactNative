@@ -1,0 +1,3 @@
+FIXED
+* Android: Camera zoom stutters and does not stay zoomed
+* Photos and sounds should fully delete when tapping back without saving
