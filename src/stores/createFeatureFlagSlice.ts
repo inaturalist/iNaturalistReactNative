@@ -26,7 +26,12 @@ export enum FeatureFlag {
   SearchMyObservationsEnabled = "searchMyObservationsEnabled",
   SortMyObservationsEnabled = "sortMyObservationsEnabled",
   MyObservationsMapViewEnabled = "myObservationsMapViewEnabled",
+  TestFlightAdminMessageEnabled = "testFlightAdminMessageEnabled",
 }
+
+export const flagsEnabledForAdminsInTestFlight = [
+  FeatureFlag.TestFlightAdminMessageEnabled,
+];
 
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
@@ -36,6 +41,7 @@ const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   [FeatureFlag.SearchMyObservationsEnabled]: false,
   [FeatureFlag.SortMyObservationsEnabled]: false,
   [FeatureFlag.MyObservationsMapViewEnabled]: false,
+  [FeatureFlag.TestFlightAdminMessageEnabled]: false,
 };
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
@@ -46,6 +52,7 @@ const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   [FeatureFlag.SearchMyObservationsEnabled]: null,
   [FeatureFlag.SortMyObservationsEnabled]: null,
   [FeatureFlag.MyObservationsMapViewEnabled]: null,
+  [FeatureFlag.TestFlightAdminMessageEnabled]: null,
 };
 
 const DEFAULT_STATE = {
