@@ -48,6 +48,7 @@ import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
 import LoginSheet from "./LoginSheet";
+import MyObservationsGroupedByIconicTaxaView from "./MyObservationsGroupedByIconicTaxaView";
 import MyObservationsMapView from "./MyObservationsMapView";
 import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
@@ -339,6 +340,45 @@ const MyObservationsSimple = ( {
     return <MyObservationsMapView userId={currentUser?.id} />;
   };
 
+  const renderSmallGridView = ( ) => {
+    if ( isConnected === false ) {
+      return <OfflineNotice onPress={() => refresh( )} />;
+    }
+    return <MyObservationsGroupedByIconicTaxaView />;
+  };
+
+  const renderObservations = ( ) => {
+    if ( layout === "map" ) { return renderMapView( ); }
+    if ( layout === "smallGrid" ) { return renderSmallGridView( ); }
+    return (
+      <ObservationsFlashList
+        data={dataFilledWithEmptyBoxes}
+        dataCanBeFetched={!!currentUser}
+        fetchFromLastObservation={fetchFromLastObservation}
+        handlePullToRefresh={handlePullToRefresh}
+        handleIndividualUploadPress={handleIndividualUploadPress}
+        hideLoadingWheel={!isFetchingNextPage}
+        hideMetadata={isDefaultMode}
+        hideObsUploadStatus={!currentUser}
+        hideObsStatus={!currentUser}
+        isSimpleObsStatus={isDefaultMode}
+        hideRGLabel={!isDefaultMode || !currentUser}
+        isFetchingNextPage={isFetchingNextPage}
+        isConnected={isConnected}
+        obsListKey="MyObservations"
+        layout={layout}
+        onEndReached={onEndReached}
+        onLayout={onListLayout}
+        onScroll={onScroll}
+        ref={listRef}
+        showObservationsEmptyScreen
+        showNoResults={showNoResults}
+        testID="MyObservationsAnimatedList"
+        listHeaderContent={observationsHeader}
+      />
+    );
+  };
+
   const renderOfflineNotice = ( ) => {
     if ( isConnected === false ) {
       return (
@@ -445,35 +485,7 @@ const MyObservationsSimple = ( {
             ? <SearchEmptyState />
             : (
               <>
-                { layout === "map"
-                  ? renderMapView( )
-                  : (
-                    <ObservationsFlashList
-                      data={dataFilledWithEmptyBoxes}
-                      dataCanBeFetched={!!currentUser}
-                      fetchFromLastObservation={fetchFromLastObservation}
-                      handlePullToRefresh={handlePullToRefresh}
-                      handleIndividualUploadPress={handleIndividualUploadPress}
-                      hideLoadingWheel={!isFetchingNextPage}
-                      hideMetadata={isDefaultMode}
-                      hideObsUploadStatus={!currentUser}
-                      hideObsStatus={!currentUser}
-                      isSimpleObsStatus={isDefaultMode}
-                      hideRGLabel={!isDefaultMode || !currentUser}
-                      isFetchingNextPage={isFetchingNextPage}
-                      isConnected={isConnected}
-                      obsListKey="MyObservations"
-                      layout={layout}
-                      onEndReached={onEndReached}
-                      onLayout={onListLayout}
-                      onScroll={onScroll}
-                      ref={listRef}
-                      showObservationsEmptyScreen
-                      showNoResults={showNoResults}
-                      testID="MyObservationsAnimatedList"
-                      listHeaderContent={observationsHeader}
-                    />
-                  )}
+                { renderObservations( ) }
                 <ObservationsViewBar
                   layout={layout}
                   updateObservationsView={updateObservationsView}
