@@ -138,6 +138,7 @@ const FrameProcessorCamera = ( {
   const takingPhotoSV = useSharedValue( takingPhoto );
   const fpsSV = useSharedValue( fps );
   const lastTimestampSV = useSharedValue( undefined );
+  const geoModelCellLocationSV = useSharedValue( geoModelCellLocation );
   useEffect( () => {
     // eslint-disable-next-line
     confidenceThresholdSV.value = confidenceThreshold;
@@ -162,6 +163,10 @@ const FrameProcessorCamera = ( {
     // eslint-disable-next-line
     fpsSV.value = fps;
   }, [fps, fpsSV] );
+  useEffect( () => {
+    // eslint-disable-next-line
+    geoModelCellLocationSV.value = geoModelCellLocation;
+  }, [geoModelCellLocation, geoModelCellLocationSV] );
 
   const handleResults = useMemo(
     () => Worklets.createRunOnJS( ( result, timeTaken ) => {
@@ -222,9 +227,9 @@ const FrameProcessorCamera = ( {
             useGeomodel: useGeomodelSV.value,
             geomodelPath,
             location: {
-              latitude: geoModelCellLocation?.latitude,
-              longitude: geoModelCellLocation?.longitude,
-              elevation: geoModelCellLocation?.elevation,
+              latitude: geoModelCellLocationSV.value?.latitude,
+              longitude: geoModelCellLocationSV.value?.longitude,
+              elevation: geoModelCellLocationSV.value?.elevation,
             },
           } );
           const timeAfter = Date.now();
@@ -247,7 +252,7 @@ const FrameProcessorCamera = ( {
       takingPhotoSV,
       fpsSV,
       lastTimestampSV,
-      geoModelCellLocation,
+      geoModelCellLocationSV,
     ],
   );
 
