@@ -232,16 +232,23 @@ const MyObservationsSimple = ( {
     const searchThisTaxon = ( ) => {
       // fetchSpeciesCounts (logged in path) returns ApiTaxon-shaped (snake_case) taxa;
       // the logged-out path returns real RealmTaxon (camelCase) objects.
-      // SpeciesCount.taxon is only typed as RealmTaxon, so read both shapes the
-      // same way SearchMyObservationsTaxon.tsx does.
-      const taxon = speciesCount.taxon as ApiTaxon & RealmTaxon;
+      // SpeciesCount.taxon is only typed as RealmTaxon, so narrow between both
+      // shapes the same way SearchMyObservationsTaxon.tsx does.
+      const taxon = speciesCount.taxon as ApiTaxon | RealmTaxon;
+      const isRealmTaxon = "isValid" in taxon;
+      const preferredCommonName = isRealmTaxon
+        ? taxon.preferredCommonName
+        : taxon.preferred_common_name;
+      const photo = isRealmTaxon
+        ? taxon.defaultPhoto
+        : taxon.default_photo;
       dispatch( {
         type: MY_OBSERVATIONS_ACTION.SET_TAXON_SEARCH,
         searchTaxon: {
-          id: taxon.id,
+          id: taxonId,
           name: taxon.name || "",
-          preferredCommonName: taxon.preferred_common_name || taxon.preferredCommonName,
-          iconUri: taxon.default_photo?.url || taxon.defaultPhoto?.url,
+          preferredCommonName,
+          iconUri: photo?.url,
         },
       } );
       setActiveTab( OBSERVATIONS_TAB );
