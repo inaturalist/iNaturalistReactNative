@@ -34,7 +34,7 @@ const Blog = ( ) => {
 
   const headerOptions = useMemo(
     () => ( {
-      headerTitle: t( "Blog" ),
+      headerTitle: t( "iNaturalist-Blog" ),
       headerSubtitle: t( "X-JOURNAL_POSTS", {
         count: totalPosts || 0,
       } ),

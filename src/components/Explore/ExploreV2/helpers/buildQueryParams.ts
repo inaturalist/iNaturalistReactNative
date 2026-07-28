@@ -5,20 +5,26 @@ import {
 import { observationSortToApiParams } from "sharedHelpers/observationsSort";
 import type { ObservationOrderBy, SortDirection } from "types/sorting";
 
+import type { FilterApiParams } from "./filtersToApiParams";
+import filtersToApiParams from "./filtersToApiParams";
+
 const PER_PAGE = 20;
 
-export interface ExploreV2QueryParams {
+export interface ExploreV2QueryParams extends FilterApiParams {
   per_page: number;
   order_by: ObservationOrderBy;
   order: SortDirection;
   taxon_id?: number;
   user_id?: number;
   project_id?: number;
+  unobserved_by_user_id?: number;
+  iconic_taxa?: string[];
   lat?: number;
   lng?: number;
   radius?: number;
   place_id?: number;
   verifiable?: boolean;
+  identified?: boolean;
 }
 
 export interface NearbyCoords {
@@ -30,6 +36,8 @@ export interface NearbyCoords {
 const buildExploreV2QueryParams = (
   state: ExploreV2State,
   nearbyCoords?: NearbyCoords,
+  // The signed-in user's id, needed by the reviewed filter (viewer_id param).
+  viewerId?: number | null,
 ): ExploreV2QueryParams => {
   const params: ExploreV2QueryParams = {
     per_page: PER_PAGE,
@@ -47,6 +55,13 @@ const buildExploreV2QueryParams = (
       break;
     case "project":
       params.project_id = state.subject.project.id;
+      break;
+    case "unobserved":
+      params.unobserved_by_user_id = state.subject.user.id;
+      break;
+    case "unknown":
+      params.iconic_taxa = ["unknown"];
+      params.identified = false;
       break;
     default:
       break;
@@ -73,7 +88,20 @@ const buildExploreV2QueryParams = (
     }
   }
 
-  return params;
+  // Advanced Search filters
+  const filterParams = filtersToApiParams( state.filters, viewerId );
+  const paramsWithFilters: ExploreV2QueryParams = {
+    ...params,
+    ...filterParams,
+  };
+
+  // `verifiable: true` excludes casual-grade observations, so drop it when the
+  // user explicitly asked for casual (mirrors legacy mapParamsToAPI).
+  if ( paramsWithFilters.quality_grade?.includes( "casual" ) ) {
+    delete paramsWithFilters.verifiable;
+  }
+
+  return paramsWithFilters;
 };
 
 export default buildExploreV2QueryParams;

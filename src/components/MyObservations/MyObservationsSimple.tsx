@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
+import type { ViewOption } from "components/Explore/ObservationsViewBar";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
@@ -46,10 +47,12 @@ import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
 import LoginSheet from "./LoginSheet";
+import MyObservationsMapView from "./MyObservationsMapView";
 import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
 import SearchedTaxonBanner from "./Search/SearchedTaxonBanner";
+import SearchEmptyState from "./Search/SearchEmptyState";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
@@ -62,7 +65,7 @@ interface Props {
   handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
-  layout: "list" | "grid";
+  layout: ViewOption;
   listRef?: React.RefObject<FlashListRef<RealmObservation> | null>;
   taxaListRef?: React.RefObject<FlashListRef<SpeciesCount> | null>;
   numTotalObservations?: number;
@@ -80,9 +83,10 @@ interface Props {
   setOpenSheet: ( value: ACTIVE_SHEET ) => void;
   setSpeciesSortOptionId: ( value: SPECIES_SORT ) => void;
   showNoResults: boolean;
+  showSearchEmptyState: boolean;
   speciesSortOptionId: SPECIES_SORT;
   taxa?: SpeciesCount[];
-  toggleLayout: ( ) => void;
+  updateObservationsView: ( value: string ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
   justFinishedSignup: boolean;
@@ -138,9 +142,10 @@ const MyObservationsSimple = ( {
   setOpenSheet,
   setSpeciesSortOptionId,
   showNoResults,
+  showSearchEmptyState,
   speciesSortOptionId,
   taxa,
-  toggleLayout,
+  updateObservationsView,
   fetchMoreTaxa,
   isFetchingTaxa,
   justFinishedSignup,
@@ -154,6 +159,9 @@ const MyObservationsSimple = ( {
   );
   const sortMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SortMyObservationsEnabled,
+  );
+  const myObservationsMapViewEnabled = useFeatureFlag(
+    FeatureFlag.MyObservationsMapViewEnabled,
   );
   const speciesSortLabels = useSpeciesSortLabels( );
   const observationsSortLabels = useObservationsSortLabels( );
@@ -414,44 +422,56 @@ const MyObservationsSimple = ( {
           <SearchedTaxonBanner />
         )}
         { activeTab === OBSERVATIONS_TAB && (
-          <>
-            <ObservationsFlashList
-              data={dataFilledWithEmptyBoxes}
-              dataCanBeFetched={!!currentUser}
-              fetchFromLastObservation={fetchFromLastObservation}
-              handlePullToRefresh={handlePullToRefresh}
-              handleIndividualUploadPress={handleIndividualUploadPress}
-              hideLoadingWheel={!isFetchingNextPage}
-              hideMetadata={isDefaultMode}
-              hideObsUploadStatus={!currentUser}
-              hideObsStatus={!currentUser}
-              isSimpleObsStatus={isDefaultMode}
-              hideRGLabel={!isDefaultMode || !currentUser}
-              isFetchingNextPage={isFetchingNextPage}
-              isConnected={isConnected}
-              obsListKey="MyObservations"
-              layout={layout}
-              onEndReached={onEndReached}
-              onLayout={onListLayout}
-              onScroll={onScroll}
-              ref={listRef}
-              showObservationsEmptyScreen
-              showNoResults={showNoResults}
-              testID="MyObservationsAnimatedList"
-              listHeaderContent={observationsHeader}
-            />
-            <ObservationsViewBar
-              hideMap
-              layout={layout}
-              updateObservationsView={toggleLayout}
-            />
-            {sortMyObservationsEnabled && (
-              <SortButton
-                onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
-                accessibilityLabel={t( "Change-observations-sort-order" )}
-              />
-            )}
-          </>
+          showSearchEmptyState
+            ? <SearchEmptyState />
+            : (
+              <>
+                { layout === "map"
+                  ? (
+                    <MyObservationsMapView userId={currentUser?.id} />
+                  )
+                  : (
+                    <ObservationsFlashList
+                      data={dataFilledWithEmptyBoxes}
+                      dataCanBeFetched={!!currentUser}
+                      fetchFromLastObservation={fetchFromLastObservation}
+                      handlePullToRefresh={handlePullToRefresh}
+                      handleIndividualUploadPress={handleIndividualUploadPress}
+                      hideLoadingWheel={!isFetchingNextPage}
+                      hideMetadata={isDefaultMode}
+                      hideObsUploadStatus={!currentUser}
+                      hideObsStatus={!currentUser}
+                      isSimpleObsStatus={isDefaultMode}
+                      hideRGLabel={!isDefaultMode || !currentUser}
+                      isFetchingNextPage={isFetchingNextPage}
+                      isConnected={isConnected}
+                      obsListKey="MyObservations"
+                      layout={layout}
+                      onEndReached={onEndReached}
+                      onLayout={onListLayout}
+                      onScroll={onScroll}
+                      ref={listRef}
+                      showObservationsEmptyScreen
+                      showNoResults={showNoResults}
+                      testID="MyObservationsAnimatedList"
+                      listHeaderContent={observationsHeader}
+                    />
+                  )}
+                <ObservationsViewBar
+                  layout={layout}
+                  updateObservationsView={updateObservationsView}
+                  viewOptions={myObservationsMapViewEnabled && currentUser
+                    ? ["grid", "list", "map"]
+                    : ["grid", "list"]}
+                />
+                {sortMyObservationsEnabled && layout !== "map" && (
+                  <SortButton
+                    onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
+                    accessibilityLabel={t( "Change-observations-sort-order" )}
+                  />
+                )}
+              </>
+            )
         ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
           <>
@@ -512,11 +532,13 @@ const MyObservationsSimple = ( {
             imageComponentOptions={{
               onImageComponentPress: handlePivotCardGridItemPress,
               accessibilityHint: t( "Navigates-to-observation-details" ),
-              imageComponent: (
-                <PivotCardObsGridItem
-                  uuid={observationIds[0].uuid}
-                />
-              ),
+              imageComponent: observationIds.length
+                ? (
+                  <PivotCardObsGridItem
+                    uuid={observationIds[0].uuid}
+                  />
+                )
+                : null,
             }}
           />
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />

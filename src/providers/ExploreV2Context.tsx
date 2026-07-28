@@ -1,7 +1,19 @@
+import type { ApiProjectSummary, ApiUser } from "api/types";
 import type { SPECIES_TAB } from "appConstants/tabs";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import type { TAXONOMIC_RANK } from "providers/ExploreContext";
+import {
+  DATE_OBSERVED,
+  DATE_UPLOADED,
+  ESTABLISHMENT_MEAN,
+  MEDIA,
+  PHOTO_LICENSE,
+  REVIEWED,
+  WILD_STATUS,
+} from "providers/ExploreContext";
 import * as React from "react";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 
 export enum EXPLORE_V2_ACTION {
   SET_SUBJECT = "SET_SUBJECT",
@@ -10,6 +22,7 @@ export enum EXPLORE_V2_ACTION {
   SET_LOCATION_WORLDWIDE = "SET_LOCATION_WORLDWIDE",
   SET_LOCATION_PLACE = "SET_LOCATION_PLACE",
   SET_SORT = "SET_SORT",
+  SET_SPECIES_SORT = "SET_SPECIES_SORT",
   SET_FILTERS = "SET_FILTERS",
   SET_ACTIVE_TAB = "SET_ACTIVE_TAB",
   RESET = "RESET"
@@ -52,12 +65,56 @@ export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
 export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
-  | { type: "project"; project: Project };
+  | { type: "project"; project: Project }
+  | { type: "unobserved"; user: User }
+  | { type: "unknown" };
 
-// To be added to in MOB-1346
 export interface ExploreV2Filters {
-  [key: string]: unknown;
+  // Quality grade
+  researchGrade: boolean;
+  needsID: boolean;
+  casual: boolean;
+  // Taxonomic ranks
+  hrank?: TAXONOMIC_RANK | null;
+  lrank?: TAXONOMIC_RANK | null;
+  // Date observed
+  dateObserved: DATE_OBSERVED;
+  observed_on?: string | null;
+  d1?: string | null;
+  d2?: string | null;
+  months?: number[] | null;
+  // Date uploaded
+  dateUploaded: DATE_UPLOADED;
+  created_on?: string | null;
+  created_d1?: string | null;
+  created_d2?: string | null;
+  // Single-select filters
+  media: MEDIA;
+  establishmentMean: ESTABLISHMENT_MEAN;
+  wildStatus: WILD_STATUS;
+  reviewedFilter: REVIEWED;
+  photoLicense: PHOTO_LICENSE;
+  // Iconic-taxon filter (e.g. "unknown")
+  iconic_taxa?: string[] | null;
+  // User / project, in ExploreV2 parlance we always consider taxon to be the "subject"
+  user?: ApiUser | null;
+  project?: ApiProjectSummary | null;
 }
+
+export const defaultExploreV2Filters: ExploreV2Filters = {
+  researchGrade: true,
+  needsID: true,
+  casual: false,
+  hrank: null,
+  lrank: null,
+  dateObserved: DATE_OBSERVED.ALL,
+  dateUploaded: DATE_UPLOADED.ALL,
+  media: MEDIA.ALL,
+  establishmentMean: ESTABLISHMENT_MEAN.ANY,
+  wildStatus: WILD_STATUS.ALL,
+  reviewedFilter: REVIEWED.ALL,
+  photoLicense: PHOTO_LICENSE.ALL,
+};
 
 export type ExploreV2LocationState =
   | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
@@ -68,6 +125,7 @@ export interface ExploreV2State {
   subject: ExploreV2Subject | null;
   location: ExploreV2LocationState;
   sortBy: OBSERVATIONS_SORT;
+  speciesSortBy: SPECIES_SORT;
   filters: ExploreV2Filters;
   activeTab: ExploreV2Tab;
 }
@@ -82,6 +140,7 @@ export type ExploreV2Action =
     place: Place;
   }
   | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: OBSERVATIONS_SORT }
+  | { type: EXPLORE_V2_ACTION.SET_SPECIES_SORT; speciesSortBy: SPECIES_SORT }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
   | { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB; tab: ExploreV2Tab }
   | { type: EXPLORE_V2_ACTION.RESET };
@@ -90,7 +149,8 @@ export const initialExploreV2State: ExploreV2State = {
   subject: null,
   location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
   sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
-  filters: {},
+  speciesSortBy: SPECIES_SORT.COUNT_DESC,
+  filters: defaultExploreV2Filters,
   activeTab: OBSERVATIONS_TAB,
 };
 
@@ -123,6 +183,8 @@ export function exploreV2Reducer(
       };
     case EXPLORE_V2_ACTION.SET_SORT:
       return { ...state, sortBy: action.sortBy };
+    case EXPLORE_V2_ACTION.SET_SPECIES_SORT:
+      return { ...state, speciesSortBy: action.speciesSortBy };
     case EXPLORE_V2_ACTION.SET_FILTERS:
       return { ...state, filters: action.filters };
     case EXPLORE_V2_ACTION.SET_ACTIVE_TAB:

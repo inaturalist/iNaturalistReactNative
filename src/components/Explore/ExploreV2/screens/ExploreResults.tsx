@@ -1,6 +1,6 @@
-import { useNetInfo } from "@react-native-community/netinfo";
+import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useFocusEffect } from "@react-navigation/native";
-import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
 import ExploreV2Tabs
@@ -20,6 +20,7 @@ import ObservationsFlashList from "components/ObservationsFlashList/Observations
 import {
   Body2,
   Button,
+  OfflineNotice,
   RadioButtonSheet,
   ViewWrapper,
 } from "components/SharedComponents";
@@ -32,7 +33,14 @@ import {
   OBSERVATIONS_SORT_OPTIONS,
   useObservationsSortLabels,
 } from "sharedHelpers/observationsSort";
+import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
+import {
+  EXPLORE_SPECIES_SORT_OPTIONS,
+  speciesSortToApiParams,
+  useSpeciesSortLabels,
+} from "sharedHelpers/speciesSort";
 import { useTranslation } from "sharedHooks";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
 import useStoredLayout from "sharedHooks/useStoredLayout";
@@ -41,14 +49,16 @@ import useStoredLayout from "sharedHooks/useStoredLayout";
 // used in our e2e tests on Github Actions
 import fetchCoarseUserLocation from "../../../../sharedHelpers/fetchCoarseUserLocation";
 
-interface SortOption {
+interface SortOption<SortValue> {
   label: string;
   text: string;
-  value: OBSERVATIONS_SORT;
+  value: SortValue;
 }
 
 const ExploreResults = ( ) => {
   const { dispatch, state } = useExploreV2( );
+  const currentUser = useCurrentUser( );
+  const currentUserId = currentUser?.id;
   const {
     hasPermissions,
     hasBlockedPermissions,
@@ -59,6 +69,7 @@ const ExploreResults = ( ) => {
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
   const observationsSortLabels = useObservationsSortLabels( );
+  const speciesSortLabels = useSpeciesSortLabels( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreV2ObservationsLayout" );
 
   const sortOptions = OBSERVATIONS_SORT_OPTIONS.reduce(
@@ -71,7 +82,20 @@ const ExploreResults = ( ) => {
       };
       return acc;
     },
-    {} as Record<OBSERVATIONS_SORT, SortOption>,
+    {} as Record<OBSERVATIONS_SORT, SortOption<OBSERVATIONS_SORT>>,
+  );
+
+  const speciesSortOptions = EXPLORE_SPECIES_SORT_OPTIONS.reduce(
+    ( acc, sortBy ) => {
+      const { label, text } = speciesSortLabels[sortBy];
+      acc[sortBy] = {
+        label,
+        text,
+        value: sortBy,
+      };
+      return acc;
+    },
+    {} as Record<SPECIES_SORT, SortOption<SPECIES_SORT>>,
   );
 
   const isNearby = state.location.placeMode === EXPLORE_V2_PLACE_MODE.NEARBY;
@@ -101,8 +125,8 @@ const ExploreResults = ( ) => {
   const canFetch = !needsPermission && nearbyResolved;
 
   const queryParams = useMemo(
-    ( ) => buildExploreV2QueryParams( state, nearbyCoords ),
-    [state, nearbyCoords],
+    ( ) => buildExploreV2QueryParams( state, nearbyCoords, currentUserId ),
+    [state, nearbyCoords, currentUserId],
   );
 
   const {
@@ -113,6 +137,14 @@ const ExploreResults = ( ) => {
     totalResults,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
+  const reload = useCallback( async ( ) => {
+    // only refresh results if we're now connected
+    const { isConnected: isConnectedNow } = await refresh( );
+    if ( isConnectedNow ) {
+      handlePullToRefresh( );
+    }
+  }, [handlePullToRefresh] );
+
   const speciesCountParams = useMemo( ( ) => {
     // take out params that don't apply to species count
     const {
@@ -120,6 +152,11 @@ const ExploreResults = ( ) => {
     } = queryParams;
     return filterParams;
   }, [queryParams] );
+
+  const speciesListParams = useMemo( ( ) => ( {
+    ...speciesCountParams,
+    ...speciesSortToApiParams( state.speciesSortBy ),
+  } ), [speciesCountParams, state.speciesSortBy] );
 
   const speciesCount = useSpeciesCount(
     speciesCountParams,
@@ -141,6 +178,70 @@ const ExploreResults = ( ) => {
     </View>
   );
 
+  const renderContent = ( ) => {
+    if ( isConnected === false ) {
+      return (
+        <View className="flex-1">
+          <OfflineNotice onPress={reload} />
+        </View>
+      );
+    }
+    if ( needsPermission ) {
+      return renderPermissionPrompt( );
+    }
+    // more tabs to come in MOB-1347
+    return (
+      <>
+        {state.activeTab === OBSERVATIONS_TAB
+          ? (
+            <>
+              <ObservationsFlashList
+                data={observations}
+                dataCanBeFetched={canFetch}
+                explore
+                handlePullToRefresh={handlePullToRefresh}
+                hideLoadingWheel={!isFetchingNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                isConnected={isConnected}
+                layout={layout === "list"
+                  ? "list"
+                  : "grid"}
+                // bit over a misnomer on this prop; in this case it hides the
+                // ID/comments/quality badges that grid results can technically have
+                hideObsUploadStatus={layout !== "list"}
+                obsListKey="ExploreV2Observations"
+                onEndReached={fetchNextPage}
+                showNoResults={canFetch && totalResults === 0}
+                testID="ExploreV2ObservationsList"
+              />
+              <ObservationsViewBar
+                layout={layout}
+                updateObservationsView={writeLayoutToStorage}
+                viewOptions={["grid", "list"]}
+              />
+            </>
+          )
+          : (
+            <ExploreV2SpeciesView
+              enabled={canFetch}
+              isConnected={isConnected}
+              params={speciesListParams}
+            />
+          )}
+        <ExploreV2DebugSheet />
+        {( state.activeTab === OBSERVATIONS_TAB
+          || state.activeTab === SPECIES_TAB ) && (
+          <SortButton
+            onPress={() => setShowSortSheet( true )}
+            accessibilityLabel={state.activeTab === OBSERVATIONS_TAB
+              ? t( "Change-observations-sort-order" )
+              : t( "Change-species-sort-order" )}
+          />
+        )}
+      </>
+    );
+  };
+
   return (
     <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
@@ -153,57 +254,9 @@ const ExploreResults = ( ) => {
             ? speciesCount
             : undefined}
         />
-        {needsPermission
-          ? renderPermissionPrompt( )
-          : ( // more tabs to come in MOB-1347
-            <>
-              {state.activeTab === OBSERVATIONS_TAB
-                ? (
-                  <>
-                    <ObservationsFlashList
-                      data={observations}
-                      dataCanBeFetched={canFetch}
-                      explore
-                      handlePullToRefresh={handlePullToRefresh}
-                      hideLoadingWheel={!isFetchingNextPage}
-                      isFetchingNextPage={isFetchingNextPage}
-                      isConnected={isConnected}
-                      layout={layout === "list"
-                        ? "list"
-                        : "grid"}
-                      // bit over a misnomer on this prop; in this case it hides the
-                      // ID/comments/quality badges that grid results can technically have
-                      hideObsUploadStatus={layout !== "list"}
-                      obsListKey="ExploreV2Observations"
-                      onEndReached={fetchNextPage}
-                      showNoResults={canFetch && totalResults === 0}
-                      testID="ExploreV2ObservationsList"
-                    />
-                    <ObservationsViewBar
-                      hideMap
-                      layout={layout}
-                      updateObservationsView={writeLayoutToStorage}
-                    />
-                  </>
-                )
-                : (
-                  <ExploreV2SpeciesView
-                    enabled={canFetch}
-                    isConnected={isConnected}
-                    params={speciesCountParams}
-                  />
-                )}
-              <ExploreV2DebugSheet />
-              {state.activeTab === OBSERVATIONS_TAB && ( // todo sort btn on species in MOB-1334
-                <SortButton
-                  onPress={() => setShowSortSheet( true )}
-                  accessibilityLabel={t( "Change-observations-sort-order" )}
-                />
-              )}
-            </>
-          )}
+        {renderContent( )}
       </View>
-      {showSortSheet && (
+      {showSortSheet && state.activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet
           headerText={t( "SORT-OBSERVATIONS" )}
           radioValues={sortOptions}
@@ -212,6 +265,21 @@ const ExploreResults = ( ) => {
             dispatch( {
               type: EXPLORE_V2_ACTION.SET_SORT,
               sortBy: sortBy as OBSERVATIONS_SORT,
+            } );
+            setShowSortSheet( false );
+          }}
+          onPressClose={() => setShowSortSheet( false )}
+        />
+      )}
+      {showSortSheet && state.activeTab === SPECIES_TAB && (
+        <RadioButtonSheet
+          headerText={t( "SORT-SPECIES" )}
+          radioValues={speciesSortOptions}
+          selectedValue={state.speciesSortBy}
+          confirm={speciesSortBy => {
+            dispatch( {
+              type: EXPLORE_V2_ACTION.SET_SPECIES_SORT,
+              speciesSortBy: speciesSortBy as SPECIES_SORT,
             } );
             setShowSortSheet( false );
           }}

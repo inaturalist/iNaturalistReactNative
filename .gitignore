@@ -117,3 +117,7 @@ artifacts/
 
 # Rubocop cache
 **/tmp/rubocop_cache
+
+# Claude Code local config except CLAUDE.md
+.claude/*
+!.claude/CLAUDE.md

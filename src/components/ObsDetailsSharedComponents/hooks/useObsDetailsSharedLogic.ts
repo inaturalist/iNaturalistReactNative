@@ -10,7 +10,9 @@ import {
   useReducer,
 } from "react";
 import Observation from "realmModels/Observation";
-import type { RealmObservation, RealmTaxon, RealmUser } from "realmModels/types";
+import type { RealmObservation, RealmTaxon } from "realmModels/types";
+import type { UserPojo } from "realmModels/User";
+import User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
@@ -132,7 +134,7 @@ interface UseObsDetailsSharedLogicParams {
   markDeletedLocally: ( ) => void;
   setRemoteObsWasDeleted: ( deleted: boolean ) => void;
   fetchRemoteObservationError: { status?: number } | null;
-  currentUser: RealmUser | null;
+  currentUser: UserPojo | null;
   belongsToCurrentUser: boolean;
   isRefetching: boolean;
   refetchRemoteObservation: ( ) => void;
@@ -319,8 +321,9 @@ const useObsDetailsSharedLogic = ( {
         taxon = realm?.objectForPrimaryKey( "Taxon", createdIdent.taxon.id );
       }
       taxon = taxon || createdIdent.taxon;
+      const realmUser = User.currentUser( realm );
       safeRealmWrite( realm, ( ) => {
-        createdIdent.user = currentUser;
+        if ( realmUser ) createdIdent.user = realmUser;
         if ( taxon ) createdIdent.taxon = taxon;
         localObservation?.identifications?.push( createdIdent );
       }, "setting local identification in ObsDetailsContainer" );
@@ -331,7 +334,6 @@ const useObsDetailsSharedLogic = ( {
     }
   }, [
     belongsToCurrentUser,
-    currentUser,
     localObservation?.identifications,
     realm,
     refetchRemoteObservation,
@@ -341,10 +343,11 @@ const useObsDetailsSharedLogic = ( {
   const handleCommentMutationSuccess = useCallback( ( data: ApiComment[] ) => {
     refetchRemoteObservation( );
     if ( belongsToCurrentUser ) {
+      const realmUser = User.currentUser( realm );
       safeRealmWrite( realm, ( ) => {
         const localComments = localObservation?.comments;
         const newComment = data[0];
-        newComment.user = currentUser;
+        if ( realmUser ) newComment.user = realmUser;
         localComments?.push( newComment );
       }, "setting local comment in ObsDetailsContainer" );
       const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
@@ -352,7 +355,6 @@ const useObsDetailsSharedLogic = ( {
     }
   }, [
     belongsToCurrentUser,
-    currentUser,
     localObservation?.comments,
     realm,
     refetchRemoteObservation,
