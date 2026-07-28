@@ -26,6 +26,7 @@ export enum FeatureFlag {
   SearchMyObservationsEnabled = "searchMyObservationsEnabled",
   SortMyObservationsEnabled = "sortMyObservationsEnabled",
   MyObservationsMapViewEnabled = "myObservationsMapViewEnabled",
+  // TODO: remove once MOB-1573 is validated in TestFlight
   TestFlightAdminMessageEnabled = "testFlightAdminMessageEnabled",
 }
 
