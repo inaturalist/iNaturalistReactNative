@@ -1,0 +1,34 @@
+diff --git a/node_modules/@react-native-picker/picker/js/PickerIOS.ios.js b/node_modules/@react-native-picker/picker/js/PickerIOS.ios.js
+index 2d8623d44..34ea816e8 100644
+--- a/node_modules/@react-native-picker/picker/js/PickerIOS.ios.js
++++ b/node_modules/@react-native-picker/picker/js/PickerIOS.ios.js
+@@ -172,7 +172,18 @@ const PickerIOSWithForwardedRef: React.AbstractComponent<
+     const shouldUpdateNativePicker =
+       nativeSelectedIndex.value != null &&
+       nativeSelectedIndex.value !== jsValue;
+-    if (shouldUpdateNativePicker && nativePickerRef.current) {
++    if (!shouldUpdateNativePicker || !nativePickerRef.current) {
++      return undefined;
++    }
++    // `selectedValue` may be arriving from an ancestor whose re-render is
++    // still propagating (e.g. through a portal-based implementation, as
++    // with @gorhom/bottom-sheet's BottomSheetModal), which can lag one
++    // render behind this component's own `nativeSelectedIndex` state
++    // (updated directly from the native onChange event). Deferring this
++    // check gives that ancestor update a chance to arrive before we
++    // conclude JS truly disagrees with native -- otherwise this forces a
++    // visible revert-then-correct animation on every native-driven change.
++    const timeoutId = setTimeout(() => {
+       if (global?.nativeFabricUIManager) {
+         iOSPickerCommands.setNativeSelectedIndex(
+           nativePickerRef.current,
+@@ -183,7 +194,8 @@ const PickerIOSWithForwardedRef: React.AbstractComponent<
+           selectedIndex: jsValue,
+         });
+       }
+-    }
++    }, 0);
++    return () => clearTimeout(timeoutId);
+   }, [selectedValue, nativeSelectedIndex, children]);
+ 
+   const _onChange = React.useCallback(
