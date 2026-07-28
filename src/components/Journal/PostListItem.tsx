@@ -1,4 +1,4 @@
-import type { ApiPost } from "api/types";
+import type { ApiPostForUser } from "api/types";
 import { THUMBNAIL_CLASS } from "appConstants/classNames";
 import {
   Body1,
@@ -13,7 +13,7 @@ import { formatLongDate } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  item: ApiPost;
+  item: ApiPostForUser;
 }
 
 const PostListItem = ( {
@@ -26,7 +26,7 @@ const PostListItem = ( {
   }
 
   return (
-    <View className="bg-white py-3 px-4 flex-row gap-2">
+    <View className="flex-row items-center mx-3 my-2">
       {item.parent.icon_url && (
         <Image
           source={{ uri: item.parent.icon_url }}
@@ -35,7 +35,7 @@ const PostListItem = ( {
           accessibilityIgnoresInvertColors
         />
       )}
-      <View className="flex-1">
+      <View className="ml-3 shrink">
         <Body1 numberOfLines={3}>{item.title}</Body1>
         <List2 className="mt-1">
           {formatLongDate( item.published_at, i18n )}

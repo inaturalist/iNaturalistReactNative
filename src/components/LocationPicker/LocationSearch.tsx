@@ -12,22 +12,14 @@ import { Keyboard } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { getShadow } from "styles/global";
 
+import type { LocationPickerPlace } from "./types";
+
 const DROP_SHADOW = getShadow( );
 
-interface Place {
-  id: string;
-  display_name: string;
-  point_geojson: {
-    coordinates: [number, number];
-  };
-  bounding_box_geojson?: {
-    coordinates: [number, number][][];
-  };
-}
 interface Props {
   locationName: string;
-  updateLocationName: ( _text: string ) => void;
-  selectPlaceResult: ( _place: Place ) => void;
+  updateLocationName: ( name: string ) => void;
+  selectPlaceResult: ( place: LocationPickerPlace ) => void;
   hidePlaceResults: boolean;
 }
 
@@ -72,7 +64,7 @@ const LocationSearch = ( {
         className="absolute top-[65px] right-[26px] left-[26px] bg-white rounded-lg z-100"
         style={DROP_SHADOW}
       >
-        {!hidePlaceResults && placeResults?.map( ( place: Place ) => (
+        {!hidePlaceResults && placeResults?.map( ( place: LocationPickerPlace ) => (
           <Pressable
             accessibilityRole="button"
             key={place.id}

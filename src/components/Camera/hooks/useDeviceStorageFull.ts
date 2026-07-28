@@ -19,13 +19,13 @@ const useDeviceStorageFull = ( ) => {
   const { t } = useTranslation();
   const [deviceStorageFull, setDeviceStorageFull] = useState( false );
 
-  const showStorageFullAlert = useCallback( () => Alert.alert(
+  const showStorageFullAlert = useCallback( ( ) => Alert.alert(
     t( "Device-storage-full" ),
     t( "Device-storage-full-description" ),
     [{ text: t( "OK" ) }],
   ), [t] );
 
-  DeviceInfo.getFreeDiskStorage().then( freeDiskStorage => {
+  DeviceInfo.getFreeDiskStorage( ).then( freeDiskStorage => {
     if ( freeDiskStorage <= MIN_DEVICE_STORAGE ) {
       setDeviceStorageFull( true );
     }

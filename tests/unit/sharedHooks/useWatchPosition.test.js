@@ -2,6 +2,12 @@ import Geolocation from "@react-native-community/geolocation";
 import { renderHook, waitFor } from "@testing-library/react-native";
 import { useWatchPosition } from "sharedHooks";
 
+jest.mock( "@react-navigation/native", () => ( {
+  ...jest.requireActual( "@react-navigation/native" ),
+  // Run the focus callback via useEffect so we don't need a NavigationContainer
+  useFocusEffect: cb => jest.requireActual( "react" ).useEffect( cb, [] ),
+} ) );
+
 const mockPositions = [
   {
     coords: {
@@ -63,6 +69,7 @@ describe( "useWatchPosition with inaccurate location", ( ) => {
 
 describe( "useWatchPosition with accurate location", ( ) => {
   beforeEach( ( ) => {
+    Geolocation.clearWatch.mockClear( );
     Geolocation.watchPosition.mockImplementation( success => {
       setTimeout( ( ) => {
         mockWatchPositionSuccess( ( ) => success( mockPositions[0] ) );

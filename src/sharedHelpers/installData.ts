@@ -10,6 +10,7 @@ const MMKV_ID = "install-data";
 const INSTALL_ID = "installID";
 const ONBOARDING_SHOWN = "onboardingShown";
 export const IS_FRESH_INSTALL = "isFreshInstall";
+export const LAST_CRASH_DATA = "LAST_CRASH_DATA";
 
 // This store is separate from the zustand store b/c it needs to survive sign
 // out, i.e these values should remain untill the app is uninstalled

@@ -9,17 +9,17 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
-  closeModal: ( ) => void;
+  onClose: ( ) => void;
   headerText: string;
-  resetFilters: ( ) => void;
+  onReset: ( ) => void;
   resetDisabled?: boolean;
   testID: string;
 }
 
-const ExploreSearchHeader = ( {
-  closeModal,
+const SearchHeader = ( {
+  onClose,
   headerText,
-  resetFilters,
+  onReset,
   resetDisabled = false,
   testID,
 }: Props ) => {
@@ -30,19 +30,20 @@ const ExploreSearchHeader = ( {
       <View className="w-[50px]">
         <BackButton
           testID={testID}
-          onPress={closeModal}
+          onPress={onClose}
           accessibilityLabel={headerText}
         />
       </View>
       <Heading4 className="flex-1 wrap text-center">{headerText}</Heading4>
       <Pressable
         className={classnames(
-          "w-[50px] items-end",
+          "items-end",
           { "opacity-50": resetDisabled },
         )}
-        onPress={resetFilters}
+        onPress={onReset}
         disabled={resetDisabled}
         accessibilityRole="button"
+        hitSlop={20}
         accessibilityLabel={t( "Reset-verb" )}
         testID={`${testID}.reset`}
       >
@@ -54,4 +55,4 @@ const ExploreSearchHeader = ( {
   );
 };
 
-export default ExploreSearchHeader;
+export default SearchHeader;

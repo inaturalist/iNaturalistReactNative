@@ -481,6 +481,30 @@ function formatProjectsApiDatetimeLong(
   return formatDateString( dateString, i18n.t( "date-format-long" ), i18n, options );
 }
 
+function formatObsFieldDate( date: Date ): string {
+  return formatInTimeZone(
+    date,
+    Intl.DateTimeFormat( ).resolvedOptions( ).timeZone,
+    "yyyy-MM-dd",
+  );
+}
+
+function formatObsFieldTime( date: Date ): string {
+  return formatInTimeZone(
+    date,
+    Intl.DateTimeFormat( ).resolvedOptions( ).timeZone,
+    "HH:mm",
+  );
+}
+
+function formatObsFieldDatetime( date: Date ): string {
+  return formatInTimeZone(
+    date,
+    Intl.DateTimeFormat( ).resolvedOptions( ).timeZone,
+    "yyyy-MM-dd HH:mm",
+  );
+}
+
 export {
   formatApiDatetime,
   formatDateStringFromTimestamp,
@@ -490,6 +514,9 @@ export {
   formatLongDate,
   formatLongDatetime,
   formatMonthYearDate,
+  formatObsFieldDate,
+  formatObsFieldDatetime,
+  formatObsFieldTime,
   formatProjectsApiDatetimeLong,
   getNowISO,
 };

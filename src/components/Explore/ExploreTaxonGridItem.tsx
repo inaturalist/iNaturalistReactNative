@@ -9,9 +9,11 @@ interface Props extends TaxonGridItemProps {
 
 const ExploreTaxonGridItem = ( {
   count,
+  onPress,
   showSpeciesSeenCheckmark = false,
   style,
   taxon,
+  upperRight,
 }: Props ) => {
   const { t } = useTranslation( );
   return (
@@ -21,9 +23,11 @@ const ExploreTaxonGridItem = ( {
           ? t( "X-Observations", { count } )
           : undefined
       }
+      onPress={onPress}
       showSpeciesSeenCheckmark={showSpeciesSeenCheckmark}
       style={style}
       taxon={taxon}
+      upperRight={upperRight}
     />
   );
 };

@@ -5,6 +5,7 @@ import { Alert } from "react-native";
 import type User from "realmModels/User";
 import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useTranslation } from "sharedHooks";
+import useInvalidateUserLists from "sharedHooks/useInvalidateUserLists";
 
 import FollowButton from "./FollowButton";
 
@@ -29,6 +30,7 @@ const FollowButtonContainer = ( {
 }: Props ) => {
   const [loading, setLoading] = useState( false );
   const { t } = useTranslation( );
+  const invalidateUserLists = useInvalidateUserLists( );
 
   const following = relationship?.following;
 
@@ -37,6 +39,7 @@ const FollowButtonContainer = ( {
     {
       onSuccess: () => {
         refetchRelationship();
+        invalidateUserLists();
         setLoading( false );
       },
       onError: error => {
@@ -52,6 +55,7 @@ const FollowButtonContainer = ( {
     {
       onSuccess: () => {
         refetchRelationship();
+        invalidateUserLists();
         setLoading( false );
       },
       onError: error => {

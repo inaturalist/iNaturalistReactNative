@@ -1,0 +1,85 @@
+import DateFieldInput from "components/AddToProjects/FieldInputs/DateFieldInput";
+import NumericFieldInput from "components/AddToProjects/FieldInputs/NumericFieldInput";
+import SelectFieldInput from "components/AddToProjects/FieldInputs/SelectFieldInput";
+import TaxonFieldInput from "components/AddToProjects/FieldInputs/TaxonFieldInput";
+import TextFieldInput from "components/AddToProjects/FieldInputs/TextFieldInput";
+import { Body1, Body4, INatIcon } from "components/SharedComponents";
+import { View } from "components/styledComponents";
+import React from "react";
+import type { RealmObservationField, RealmProjectObservationField } from "realmModels/types";
+import { useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
+
+interface Props {
+  projectObservationField: RealmProjectObservationField;
+  isValid: boolean;
+}
+
+// A field of datatype "text" that has a defined set of allowedValues needs a dedicated
+// picker UI
+const isSelectField = ( obsField: RealmObservationField ) => (
+  obsField.datatype === "text"
+  && obsField.allowedValues.length > 1
+);
+
+const ObservationFieldInput = ( { projectObservationField, isValid }: Props ) => {
+  const { t } = useTranslation( );
+
+  const renderInput = ( obsField?: RealmObservationField ) => {
+    if ( !obsField ) return null;
+    const obsFieldId = obsField.id;
+
+    if ( isSelectField( obsField ) ) {
+      return <SelectFieldInput obsField={obsField} />;
+    }
+
+    switch ( obsField.datatype ) {
+      case "numeric":
+        return <NumericFieldInput obsFieldId={obsFieldId} />;
+      case "text":
+      case "dna":
+        return <TextFieldInput obsFieldId={obsFieldId} />;
+      case "date":
+      case "time":
+      case "datetime":
+        return <DateFieldInput obsField={obsField} />;
+      case "taxon":
+        return <TaxonFieldInput obsFieldId={obsFieldId} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <View className="flex-1 px-4 py-2.5" key={projectObservationField.id}>
+      <View className="flex-1 flex-row justify-between items-center">
+        <Body1 className="flex-1">
+          {projectObservationField.obsField?.name}
+        </Body1>
+        {projectObservationField.required && (
+          <View className="flex-row items-center">
+            <Body4 className="mr-2.5">{t( "Required" )}</Body4>
+            {isValid
+              ? (
+                <INatIcon
+                  name="checkmark-circle"
+                  color={colors.inatGreen}
+                  size={19}
+                />
+              )
+              : (
+                <INatIcon
+                  name="triangle-exclamation"
+                  color={colors.warningRed}
+                  size={19}
+                />
+              )}
+          </View>
+        )}
+      </View>
+      {renderInput( projectObservationField.obsField )}
+    </View>
+  );
+};
+
+export default ObservationFieldInput;

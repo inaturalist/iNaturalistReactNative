@@ -2,16 +2,14 @@ import { screen, userEvent, within } from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
-import useStore from "stores/useStore";
-import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const actor = userEvent.setup( );
+import {
+  mockProjects,
+  resetStore,
+} from "./helpers/setupAddToProjects";
 
-const mockProjects = [
-  factory( "LocalProject" ),
-  factory( "LocalProject" ),
-];
+const actor = userEvent.setup( );
 
 const iconGlyph = name => String.fromCharCode( glyphmap[name] );
 
@@ -28,8 +26,6 @@ jest.mock( "providers/contexts", () => {
   };
 } );
 
-const initialStoreState = useStore.getState( );
-
 function renderAddToProjects( ) {
   return renderComponent(
     <AddToProjects />,
@@ -38,15 +34,7 @@ function renderAddToProjects( ) {
 
 beforeEach( ( ) => {
   jest.clearAllMocks( );
-  useStore.setState( initialStoreState, true );
-  useStore.setState( {
-    currentObservation: {
-      ...factory( "LocalObservation" ),
-      projectObservations: [factory( "LocalProjectObservation", {
-        projectId: mockProjects[0].id,
-      } )],
-    },
-  } );
+  resetStore( );
 } );
 
 describe( "AddToProjects", ( ) => {
@@ -85,16 +73,8 @@ describe( "AddToProjects", ( ) => {
     // TODO: MOB-1503 also check for expanded chooser being shown
   } );
 
-  it( "renders existing project observations as checked", ( ) => {
-    renderAddToProjects( );
-
-    expect(
-      within( screen.getByTestId( `AddToProjects.project.${mockProjects[0].id}` ) )
-        .getByText( iconGlyph( "checkmark-circle" ) ),
-    ).toBeVisible( );
-    expect(
-      within( screen.getByTestId( `AddToProjects.project.${mockProjects[1].id}` ) )
-        .queryByText( iconGlyph( "checkmark-circle" ) ),
-    ).toBeNull( );
-  } );
+  // TODO: MOB-1498
+  // In MOB-1499 we changed the UI state for checked to be entirely driven by OFV validation
+  // jump-starting the UI with existing POFs has not been implemented yet.
+  it.todo( "renders existing project observations as checked" );
 } );

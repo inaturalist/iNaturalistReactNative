@@ -3,6 +3,7 @@
 import {
   ButtonBar,
   SearchBar,
+  SearchHeader,
   ViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -20,7 +21,6 @@ import {
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
-import ExploreSearchHeader from "./ExploreSearchHeader";
 
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
@@ -101,10 +101,10 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
 
   return (
     <ViewWrapper>
-      <ExploreSearchHeader
-        closeModal={closeModal}
+      <SearchHeader
+        onClose={closeModal}
         headerText={t( "SEARCH-USERS" )}
-        resetFilters={resetUser}
+        onReset={resetUser}
         testID="ExploreUserSearch.close"
       />
       <View

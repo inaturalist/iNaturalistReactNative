@@ -1,12 +1,14 @@
 import * as React from "react";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
+type PickerMode = "date" | "time" | "datetime";
+
 interface Props {
   date?: Date;
   toggleDateTimePicker: () => void;
   onDatePicked: ( date: Date ) => void;
   isDateTimePickerVisible: boolean;
-  datetime?: boolean;
+  mode?: PickerMode;
 }
 
 // using component from Seek: https://github.com/inaturalist/SeekReactNative/blob/64ae3df185fffe751aff40ab17e3ff2dd8a74e42/components/UIComponents/DateTimePicker.js
@@ -15,20 +17,22 @@ const EmptyHeader = ( ) => null;
 
 const DatePicker = ( {
   date,
-  datetime = false,
   isDateTimePickerVisible,
+  mode = "date",
   onDatePicked,
   toggleDateTimePicker,
 }: Props ) => {
   const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>( undefined );
   const [isTimeVisible, setisTimeVisible] = React.useState( false );
+  const maxDateForTimePicker = new Date( );
+  maxDateForTimePicker.setHours( 24, 0, 0, 0 );
 
   const _toggleDateTimePicker = ( ) => {
     setisTimeVisible( false );
     toggleDateTimePicker( );
   };
 
-  if ( datetime && isTimeVisible ) {
+  if ( mode === "datetime" && isTimeVisible ) {
     return (
       <DateTimePicker
         display="spinner"
@@ -48,6 +52,25 @@ const DatePicker = ( {
     );
   }
 
+  if ( mode === "time" ) {
+    return (
+      <DateTimePicker
+        display="spinner"
+        customHeaderIOS={EmptyHeader}
+        isDarkModeEnabled={false}
+        themeVariant="light"
+        isVisible={isDateTimePickerVisible}
+        mode="time"
+        onCancel={_toggleDateTimePicker}
+        onConfirm={selectedDate => {
+          onDatePicked( selectedDate );
+          _toggleDateTimePicker( );
+        }}
+        maximumDate={maxDateForTimePicker}
+      />
+    );
+  }
+
   // Base case we want to pick a date
   return (
     <DateTimePicker
@@ -60,7 +83,7 @@ const DatePicker = ( {
       mode="date"
       onCancel={_toggleDateTimePicker}
       onConfirm={selectedDate => {
-        if ( datetime ) {
+        if ( mode === "datetime" ) {
           setSelectedDateNoTime( selectedDateNoTime );
           setisTimeVisible( true );
         } else {

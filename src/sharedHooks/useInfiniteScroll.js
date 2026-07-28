@@ -11,7 +11,7 @@ const useInfiniteScroll = (
   },
 ): Object => {
   const baseParams = {
-    per_page: 10,
+    per_page: 20,
     ttl: -1,
     ...newInputParams,
   };

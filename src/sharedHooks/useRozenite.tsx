@@ -75,6 +75,10 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
     resolvedValue: searchMyObservationsEnabled,
     setOverride: setSearchMyObservationsEnabled,
   } = useFeatureFlagForDebug( FeatureFlag.SearchMyObservationsEnabled );
+  const {
+    resolvedValue: sortMyObservationsEnabled,
+    setOverride: setSortMyObservationsEnabled,
+  } = useFeatureFlagForDebug( FeatureFlag.SortMyObservationsEnabled );
 
   const sections = useMemo(
     () => [
@@ -135,6 +139,15 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
               setSearchMyObservationsEnabled( !searchMyObservationsEnabled );
             },
           },
+          {
+            id: "sort-my-observations",
+            type: "toggle",
+            title: "Sort My Observations",
+            value: sortMyObservationsEnabled,
+            onUpdate: () => {
+              setSortMyObservationsEnabled( !sortMyObservationsEnabled );
+            },
+          },
         ],
       } ),
     ],
@@ -147,6 +160,8 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
       setTraditionalProjectsEnabled,
       searchMyObservationsEnabled,
       setSearchMyObservationsEnabled,
+      sortMyObservationsEnabled,
+      setSortMyObservationsEnabled,
     ],
   );
 

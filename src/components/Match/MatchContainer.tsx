@@ -288,15 +288,12 @@ const MatchContainer = ( ) => {
 
   const {
     isFetchingLocation,
-    stopWatch,
-    subscriptionId,
     userLocation,
   } = useObservationLocation( { shouldFetchLocation } );
 
   const navToLocationPicker = useCallback( ( ) => {
-    stopWatch( subscriptionId );
     navigation.navigate( "LocationPicker" );
-  }, [stopWatch, subscriptionId, navigation] );
+  }, [navigation] );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -464,7 +461,6 @@ const MatchContainer = ( ) => {
       } );
       await saveObservation( getCurrentObservation( ), cameraRollUris, realm );
     }
-    stopWatch( subscriptionId );
     exitObservationFlow( );
   };
 

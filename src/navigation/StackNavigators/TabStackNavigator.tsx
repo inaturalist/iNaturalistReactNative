@@ -7,8 +7,6 @@ import UiLibrary from "components/Developer/UiLibrary";
 import UiLibraryItem from "components/Developer/UiLibraryItem";
 import Donate from "components/Donate/Donate";
 import ExploreContainer from "components/Explore/ExploreContainer";
-import ExploreFiltersContainer from "components/Explore/ExploreFiltersContainer";
-import ExploreSearchContainer from "components/Explore/ExploreSearchContainer";
 import ExploreV2Container from "components/Explore/ExploreV2/ExploreV2Container";
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import Help from "components/Help/Help";
@@ -203,14 +201,6 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           <Stack.Screen
             name="Explore"
             component={ExploreContainer}
-          />
-          <Stack.Screen
-            name="ExploreFilters"
-            component={ExploreFiltersContainer}
-          />
-          <Stack.Screen
-            name="ExploreSearch"
-            component={ExploreSearchContainer}
           />
           <Stack.Screen
             name="ObsDetails"

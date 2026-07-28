@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react-native";
 import useLocationSearch from "components/Explore/ExploreV2/hooks/useLocationSearch";
-import { renderHookInApp } from "tests/helpers/render";
+import { queryClient, renderHookInApp } from "tests/helpers/render";
 
 jest.mock( "api/search" );
 const { fetchSearchResults } = require( "api/search" );
@@ -10,6 +10,7 @@ const MONTENEGRO = { id: 2, display_name: "Montenegro", place_type: 12 };
 
 beforeEach( ( ) => {
   fetchSearchResults.mockReset( );
+  queryClient.clear( );
 } );
 
 describe( "useLocationSearch", ( ) => {
@@ -72,6 +73,6 @@ describe( "useLocationSearch", ( ) => {
     const { result } = renderHookInApp( ( ) => useLocationSearch( "mon" ) );
 
     await waitFor( ( ) => expect( fetchSearchResults ).toHaveBeenCalled( ) );
-    expect( result.current.results ).toEqual( [] );
+    await waitFor( ( ) => expect( result.current.results ).toEqual( [] ) );
   } );
 } );

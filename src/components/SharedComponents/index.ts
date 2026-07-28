@@ -56,6 +56,7 @@ export { default as RadioButtonRow } from "./RadioButtonRow";
 export { default as ScrollableWithStickyHeader } from "./ScrollableWithStickyHeader";
 export { default as ScrollViewWrapper } from "./ScrollViewWrapper";
 export { default as SearchBar } from "./SearchBar";
+export { default as SearchHeader } from "./SearchHeader";
 export { default as BottomSheet } from "./Sheets/BottomSheet";
 export { default as BottomSheetStandardBackdrop } from "./Sheets/BottomSheetStandardBackdrop";
 export { default as BottomSheetV2 } from "./Sheets/BottomSheetV2";

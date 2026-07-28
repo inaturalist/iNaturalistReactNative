@@ -1,5 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import DefaultSearchOptions
+  from "components/Explore/ExploreV2/components/DefaultSearchOptions";
+import LocationDefaultOptions
+  from "components/Explore/ExploreV2/components/LocationDefaultOptions";
 import LocationSearchResult
   from "components/Explore/ExploreV2/components/LocationSearchResult";
 import UniversalSearchResult
@@ -15,9 +19,9 @@ import type { UniversalSearchResultItem }
   from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import useUniversalSearch from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
-import ExploreSearchHeader from "components/Explore/SearchScreens/ExploreSearchHeader";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
+import SearchHeader from "components/SharedComponents/SearchHeader";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import {
@@ -25,8 +29,11 @@ import {
   View,
 } from "components/styledComponents";
 import type { ExploreStackScreenProps } from "navigation/types";
-import type { ExploreV2Subject } from "providers/ExploreV2Context";
-import { EXPLORE_V2_ACTION, useExploreV2 } from "providers/ExploreV2Context";
+import type { ExploreV2Subject, Place } from "providers/ExploreV2Context";
+import {
+  EXPLORE_V2_ACTION,
+  useExploreV2,
+} from "providers/ExploreV2Context";
 import React, { useCallback, useRef, useState } from "react";
 import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
 import { FlatList, Keyboard } from "react-native";
@@ -50,6 +57,11 @@ const INPUT_BOX_CLASSES = classnames(
 // list shows one kind at a time depending on the focused field, but they share a
 // single FlatList so we never conditionally mount/unmount it.
 type SearchResultItem = UniversalSearchResultItem | LocationSearchResultItem;
+
+type SelectedLocation =
+  | { type: "place"; place: Place }
+  | { type: "nearby" }
+  | { type: "worldwide" };
 
 const resultKey = ( item: SearchResultItem ): string => {
   switch ( item.type ) {
@@ -76,6 +88,10 @@ const UniversalSearch = ( ) => {
   // Which field's result list is showing. tracks the last-focused field rather
   // than live focus. Subject autofocuses, so it's the initial value.
   const [resultsField, setResultsField] = useState<"subject" | "location">( "subject" );
+
+  // What the user selected on this instance of the screen
+  const [selectedSubject, setSelectedSubject] = useState<ExploreV2Subject | null>( null );
+  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>( null );
   const {
     text: subjectText,
     debouncedQuery: subjectQuery,
@@ -117,31 +133,66 @@ const UniversalSearch = ( ) => {
     focusLocationField( );
   }, [focusLocationField] );
 
-  const handleSubjectSelect = useCallback( ( selectedSubject: ExploreV2Subject ) => {
-    commitSubject( subjectToText( selectedSubject, commonNameIsPrimary ) );
-    dispatch( { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: selectedSubject } );
+  const handleSubjectSelect = useCallback( ( subject: ExploreV2Subject ) => {
+    setSelectedSubject( subject );
+    commitSubject( subjectToText( subject, commonNameIsPrimary ) );
     locationInputRef.current?.focus( );
-  }, [commitSubject, commonNameIsPrimary, dispatch] );
+  }, [commitSubject, commonNameIsPrimary] );
 
   const handleLocationSelect = useCallback( ( place: LocationSearchResultItem ) => {
-    commitLocation( place.display_name );
-    dispatch( {
-      type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
+    setSelectedLocation( {
+      type: "place",
       place: { id: place.id, display_name: place.display_name },
     } );
+    commitLocation( place.display_name );
     Keyboard.dismiss( );
-  }, [commitLocation, dispatch] );
+  }, [commitLocation] );
+
+  const handleSelectWorldwide = useCallback( ( ) => {
+    setSelectedLocation( { type: "worldwide" } );
+    // commitLocation is for display only so this should be safe
+    commitLocation( t( "Worldwide" ) );
+    Keyboard.dismiss( );
+  }, [commitLocation, t] );
+
+  const handleSelectNearby = useCallback( ( ) => {
+    setSelectedLocation( { type: "nearby" } );
+    commitLocation( t( "Nearby" ) );
+    Keyboard.dismiss( );
+  }, [commitLocation, t] );
 
   const handleReset = useCallback( ( ) => {
     clearSubject( );
     clearLocation( );
+    setSelectedSubject( null );
+    setSelectedLocation( null );
   }, [clearSubject, clearLocation] );
 
   const handleSearch = useCallback( ( ) => {
-    // TODO MOB-1338 follow-up: run the search (default to all organisms /
-    // worldwide when a field is empty). Just dismiss the keyboard for now.
     Keyboard.dismiss( );
-  }, [] );
+    // Commit the composed search to context. Fields left unselected on
+    // this screen fall back to their defaults: no subject → all organisms,
+    // no location → worldwide.
+    dispatch(
+      selectedSubject
+        ? { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: selectedSubject }
+        : { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT },
+    );
+    switch ( selectedLocation?.type ) {
+      case "place":
+        dispatch( {
+          type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
+          place: selectedLocation.place,
+        } );
+        break;
+      case "nearby":
+        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } );
+        break;
+      default:
+        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
+    }
+    navigation.popTo( "ExploreResults" );
+  }, [selectedSubject, selectedLocation, dispatch, navigation] );
 
   const renderItem = useCallback<ListRenderItem<SearchResultItem>>( ( { item } ) => {
     if ( item.type === "place" ) {
@@ -173,13 +224,41 @@ const UniversalSearch = ( ) => {
     ? locationData
     : subjectData;
 
+  const showSubjectDefaults = !showLocation && subjectText.trim().length === 0;
+  const showLocationDefaults = showLocation && locationText.trim().length === 0;
+  let listEmptyComponent;
+  if ( showSubjectDefaults ) {
+    listEmptyComponent = <DefaultSearchOptions onSelectSubject={handleSubjectSelect} />;
+  } else if ( showLocationDefaults ) {
+    listEmptyComponent = (
+      <LocationDefaultOptions
+        onSelectNearby={handleSelectNearby}
+        onSelectWorldwide={handleSelectWorldwide}
+      />
+    );
+  } else {
+    listEmptyComponent = (
+      <EmptySearchResults
+        isLoading={showLocation
+          ? locationIsLoading
+          : isLoading}
+        searchQuery={showLocation
+          ? locationQuery
+          : subjectQuery}
+        refetch={showLocation
+          ? locationRefetch
+          : refetch}
+      />
+    );
+  }
+
   return (
     <ViewWrapper testID="UniversalSearch">
       <View className="bg-white" style={DROP_SHADOW}>
-        <ExploreSearchHeader
+        <SearchHeader
           headerText={t( "SEARCH" )}
-          closeModal={navigation.goBack}
-          resetFilters={handleReset}
+          onClose={navigation.goBack}
+          onReset={handleReset}
           testID="UniversalSearch.back"
         />
         <View className="px-4 pb-4">
@@ -189,6 +268,7 @@ const UniversalSearch = ( ) => {
                 <INatIcon name="magnifying-glass" size={15} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-species-user-or-project" )}
+                  autoCorrect={false}
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
@@ -196,6 +276,7 @@ const UniversalSearch = ( ) => {
                   onFocus={handleSubjectFocus}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
+                  spellCheck={false}
                   testID="UniversalSearch.subjectInput"
                   value={subjectText}
                 />
@@ -204,6 +285,7 @@ const UniversalSearch = ( ) => {
                 <INatIcon name="map-marker-outline" size={15} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-a-location" )}
+                  autoCorrect={false}
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
                   onChangeText={onChangeLocationText}
@@ -211,6 +293,7 @@ const UniversalSearch = ( ) => {
                   placeholder={t( "Search-for-a-location" )}
                   placeholderTextColor={colors.mediumGray}
                   ref={locationInputRef}
+                  spellCheck={false}
                   testID="UniversalSearch.locationInput"
                   value={locationText}
                 />
@@ -246,19 +329,7 @@ const UniversalSearch = ( ) => {
           keyboardShouldPersistTaps="handled"
           keyExtractor={resultKey}
           renderItem={renderItem}
-          ListEmptyComponent={(
-            <EmptySearchResults
-              isLoading={showLocation
-                ? locationIsLoading
-                : isLoading}
-              searchQuery={showLocation
-                ? locationQuery
-                : subjectQuery}
-              refetch={showLocation
-                ? locationRefetch
-                : refetch}
-            />
-          )}
+          ListEmptyComponent={listEmptyComponent}
         />
       </View>
     </ViewWrapper>

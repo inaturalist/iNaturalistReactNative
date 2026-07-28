@@ -13,7 +13,7 @@ import colors from "styles/tailwindColors";
 const DROP_SHADOW = getShadow( { offsetHeight: 4 } );
 
 interface Props {
-  takePhoto: () => Promise<void>;
+  takePhoto: ( ) => Promise<void>;
   disabled: boolean;
   showPrediction?: boolean;
   rotatableAnimatedStyle?: ViewStyle;

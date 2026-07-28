@@ -21,8 +21,15 @@ export interface ExploreV2QueryParams {
   verifiable?: boolean;
 }
 
+export interface NearbyCoords {
+  lat: number;
+  lng: number;
+  radius: number;
+}
+
 const buildExploreV2QueryParams = (
   state: ExploreV2State,
+  nearbyCoords?: NearbyCoords,
 ): ExploreV2QueryParams => {
   const params: ExploreV2QueryParams = {
     per_page: PER_PAGE,
@@ -48,16 +55,16 @@ const buildExploreV2QueryParams = (
   const { location } = state;
   switch ( location.placeMode ) {
     case EXPLORE_V2_PLACE_MODE.NEARBY:
-      params.lat = location.lat;
-      params.lng = location.lng;
-      params.radius = location.radius;
+      if ( nearbyCoords ) {
+        params.lat = nearbyCoords.lat;
+        params.lng = nearbyCoords.lng;
+        params.radius = nearbyCoords.radius;
+      }
       break;
     case EXPLORE_V2_PLACE_MODE.PLACE:
       params.place_id = location.place.id;
       break;
     case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
-    case EXPLORE_V2_PLACE_MODE.UNINITIALIZED:
-    case EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION:
       break;
     default: {
       // Exhaustiveness check: ts fails if a new placeMode is added without a case.

@@ -31,84 +31,105 @@ jest.mock( "api/observations" );
 
 const mockUser = factory( "LocalUser" );
 
-const mockCommentUpdate = factory( "RemoteUpdate", {
-  comment_id: 1,
-  viewed: false,
-  resource_uuid: faker.string.uuid( ),
-} );
-const mockIdentificationUpdate = factory( "RemoteUpdate", {
-  identification_id: 2,
-  viewed: false,
-  resource_uuid: faker.string.uuid( ),
-} );
-const mockData = [mockCommentUpdate, mockIdentificationUpdate];
+let mockCurrentData = [];
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
   default: ( ) => ( {
-    data: mockData,
+    data: mockCurrentData,
   } ),
 } ) );
 
-const mockObservation = factory( "LocalObservation", {
-  comments_viewed: false,
-  identifications_view: false,
+const commentUpdateFor = uuid => factory( "RemoteUpdate", {
+  comment_id: 1,
+  viewed: false,
+  resource_uuid: uuid,
+} );
+const identificationUpdateFor = uuid => factory( "RemoteUpdate", {
+  identification_id: 2,
+  viewed: false,
+  resource_uuid: uuid,
 } );
 
+const writeObs = attrs => {
+  const realm = global.mockRealms[mockRealmIdentifier];
+  safeRealmWrite( realm, ( ) => {
+    realm.deleteAll( );
+    realm.create( "Observation", factory( "LocalObservation", attrs ) );
+  }, "write test observation, useObservationsUpdates test" );
+};
+
+const findObs = uuid => global.mockRealms[mockRealmIdentifier]
+  .objectForPrimaryKey( "Observation", uuid );
+
 describe( "useObservationsUpdates", ( ) => {
-  it( "should return an object", ( ) => {
-    const { result } = renderHook( ( ) => useObservationsUpdates( ) );
-    expect( result.current ).toBeInstanceOf( Object );
+  beforeEach( ( ) => {
+    mockCurrentData = [];
   } );
 
-  describe( "when there is no local observation with the resource_uuid", ( ) => {
-    beforeEach( ( ) => {
-      // Write mock observation to realm
-      safeRealmWrite( global.mockRealms[mockRealmIdentifier], ( ) => {
-        global.mockRealms[mockRealmIdentifier].create( "Observation", mockObservation );
-      }, "write mock observation, useObservationUpdates test" );
-    } );
+  it( "marks comments_viewed false when a matching unread comment arrives", ( ) => {
+    const uuid = faker.string.uuid( );
+    writeObs( { uuid, comments_viewed: true, identifications_viewed: true } );
+    mockCurrentData = [commentUpdateFor( uuid )];
 
-    it( "should return without writing to a local observation", ( ) => {
-      const { result } = renderHook( ( ) => useObservationsUpdates( ) );
-      const observation = global.mockRealms[mockRealmIdentifier]
-        .objectForPrimaryKey( "Observation", mockObservation.uuid );
-      expect( mockCommentUpdate.resource_uuid ).not.toEqual( observation.uuid );
-      expect( mockIdentificationUpdate.resource_uuid ).not.toEqual( observation.uuid );
-      expect( result.current.refetch ).toEqual( undefined );
-    } );
+    renderHook( ( ) => useObservationsUpdates( mockUser ) );
+
+    const observation = findObs( uuid );
+    expect( observation.comments_viewed ).toBe( false );
+    expect( observation.identifications_viewed ).toBe( true );
   } );
 
-  describe.each( [
-    ["comment", [mockCommentUpdate]],
-    ["identification", [mockIdentificationUpdate]],
-    ["both", mockData],
-  ] )( "when the update is a %s", ( ) => {
-    describe.each( [
-      ["viewed fields not initialized", null, null],
-      ["viewed comments and viewed identifications", true, true],
-      ["viewed comments and not viewed identifications", true, false],
-      ["not viewed comments and viewed identifications", false, true],
-      ["not viewed comments and not viewed identifications", false, false],
-    ] )( "when the local observation has %s", ( a1, viewedComments, viewedIdentifications ) => {
-      beforeEach( ( ) => {
-      // Write mock observation to realm
-        safeRealmWrite( global.mockRealms[mockRealmIdentifier], ( ) => {
-          global.mockRealms[mockRealmIdentifier].deleteAll( );
-          global.mockRealms[mockRealmIdentifier].create( "Observation", {
-            ...mockObservation,
-            comments_viewed: viewedComments,
-            identifications_viewed: viewedIdentifications,
-          } );
-        }, "delete all and create observation, useObservationsUpdates test" );
-      } );
+  it( "marks identifications_viewed false when a matching unread identification arrives", ( ) => {
+    const uuid = faker.string.uuid( );
+    writeObs( { uuid, comments_viewed: true, identifications_viewed: true } );
+    mockCurrentData = [identificationUpdateFor( uuid )];
 
-      it( "should write correct viewed status for comments and identifications", ( ) => {
-        renderHook( ( ) => useObservationsUpdates( mockUser ) );
-        const observation = global.mockRealms[mockRealmIdentifier].objects( "Observation" )[0];
-        expect( observation.comments_viewed ).toEqual( viewedComments );
-        expect( observation.identifications_viewed ).toEqual( viewedIdentifications );
-      } );
-    } );
+    renderHook( ( ) => useObservationsUpdates( mockUser ) );
+
+    const observation = findObs( uuid );
+    expect( observation.comments_viewed ).toBe( true );
+    expect( observation.identifications_viewed ).toBe( false );
+  } );
+
+  it( "marks both flags false when matching comment and identification updates arrive", ( ) => {
+    const uuid = faker.string.uuid( );
+    writeObs( { uuid, comments_viewed: true, identifications_viewed: true } );
+    mockCurrentData = [commentUpdateFor( uuid ), identificationUpdateFor( uuid )];
+
+    renderHook( ( ) => useObservationsUpdates( mockUser ) );
+
+    const observation = findObs( uuid );
+    expect( observation.comments_viewed ).toBe( false );
+    expect( observation.identifications_viewed ).toBe( false );
+  } );
+
+  it( "reconciles a locally-unviewed obs back to viewed when viewed elsewhere", ( ) => {
+    const uuid = faker.string.uuid( );
+    writeObs( { uuid, comments_viewed: false, identifications_viewed: false } );
+    // Response contains an update for a different observation.
+    mockCurrentData = [commentUpdateFor( faker.string.uuid( ) )];
+
+    renderHook( ( ) => useObservationsUpdates( mockUser ) );
+
+    const observation = findObs( uuid );
+    expect( observation.comments_viewed ).toBe( true );
+    expect( observation.identifications_viewed ).toBe( true );
+  } );
+
+  it( "skips the sweep when the response reaches per_page limit and may be truncated", ( ) => {
+    const uuid = faker.string.uuid( );
+    writeObs( { uuid, comments_viewed: false, identifications_viewed: false } );
+    // Fill the response to PER_PAGE (100) with updates for unrelated observations,
+    // simulating a user whose server-side unread queue may extend beyond the page.
+    mockCurrentData = Array.from(
+      { length: 100 },
+      ( ) => commentUpdateFor( faker.string.uuid( ) ),
+    );
+
+    renderHook( ( ) => useObservationsUpdates( mockUser ) );
+
+    const observation = findObs( uuid );
+    expect( observation.comments_viewed ).toBe( false );
+    expect( observation.identifications_viewed ).toBe( false );
   } );
 } );

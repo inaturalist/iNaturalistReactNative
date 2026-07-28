@@ -38,7 +38,7 @@ const fetchProjectMembers = async (
   }
 };
 
-const fetchProjectPosts = async (
+const fetchProjectPostsCount = async (
   params: Object = {},
   opts: Object = {},
 ): Promise<?Object> => {
@@ -46,7 +46,7 @@ const fetchProjectPosts = async (
     const response = await inatjs.projects.posts( params, opts );
     return response.total_results;
   } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchProjectPosts", opts } } );
+    return handleError( e, { context: { functionName: "fetchProjectPostsCount", opts } } );
   }
 };
 
@@ -88,7 +88,7 @@ export default searchProjects;
 export {
   fetchMembership,
   fetchProjectMembers,
-  fetchProjectPosts,
+  fetchProjectPostsCount,
   fetchProjects,
   joinProject,
   leaveProject,

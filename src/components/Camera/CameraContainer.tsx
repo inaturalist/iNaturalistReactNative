@@ -109,6 +109,16 @@ const CameraContainer = ( ) => {
     ],
   } );
   const devices = useCameraDevices( );
+  devices.sort( ( a, b ) => {
+    const aMatchesPosition = a.position === cameraPosition
+      ? 0
+      : 1;
+    const bMatchesPosition = b.position === cameraPosition
+      ? 0
+      : 1;
+    return aMatchesPosition - bMatchesPosition;
+  } );
+  const activeDevice = device || devices[0];
   const [loadingDevices, setLoadingDevices] = useState( true );
   const [timeoutId, setTimeoutId] = useState<undefined | ReturnType<typeof setTimeout> | null>(
     undefined,
@@ -120,7 +130,7 @@ const CameraContainer = ( ) => {
     }, 700 ) );
   }
 
-  const hasFlash = device?.hasFlash;
+  const hasFlash = activeDevice?.hasFlash;
   const initialPhotoOptions = {
     // We had this set to true in Seek but received many reports of it not respecting OS-wide sound
     // level and scared away wildlife. So maybe better to just disable it.
@@ -287,16 +297,13 @@ const CameraContainer = ( ) => {
     );
   }
 
-  if ( !loadingDevices && !device ) {
+  if ( !loadingDevices && !activeDevice ) {
     Alert.alert(
       t( "No-Camera-Available" ),
       t( "Could-not-find-a-camera-on-this-device" ),
     );
-    logger.error(
-      "Camera started but no device was found. Length of the list of all devices: ",
-      devices.length,
-    );
-    navigation.goBack();
+    logger.error( "Camera started but no device or fallback was found." );
+    navigation.goBack( );
     return null;
   }
 
@@ -306,7 +313,7 @@ const CameraContainer = ( ) => {
       <CameraWithDevice
         camera={camera}
         cameraType={cameraType}
-        device={device}
+        device={activeDevice}
         flipCamera={flipCamera}
         handleCheckmarkPress={handleNavigation}
         confirmPhotosInProgress={confirmPhotosInProgress}

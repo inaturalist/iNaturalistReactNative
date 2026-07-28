@@ -1,23 +1,20 @@
-// @flow
-
 import {
   WarningSheet,
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  setShowDiscardSheet: Function,
-  hidden?: boolean,
-  onDiscard: Function
+interface Props {
+  setShowDiscardSheet: ( show: boolean ) => void;
+  hidden?: boolean;
+  onDiscard: ( ) => void;
 }
 
 const DiscardChangesSheet = ( {
   setShowDiscardSheet,
   onDiscard,
   hidden,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   return (
@@ -32,9 +29,10 @@ const DiscardChangesSheet = ( {
       confirm={( ) => {
         setShowDiscardSheet( false );
         if ( onDiscard ) {
-          onDiscard();
+          onDiscard( );
         }
       }}
+      loading={false}
     />
   );
 };

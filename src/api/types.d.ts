@@ -1,4 +1,8 @@
 // Generic types, please keep alphabetized
+export interface ApiDefaultResult {
+  id: number;
+}
+
 export interface ApiOpts {
   api_token?: string;
 }
@@ -8,6 +12,10 @@ export interface ApiParams {
   page?: number;
   fields?: "all" | object;
   ttl?: number;
+}
+
+export interface ApiGetByIdParams extends ApiParams {
+  id: number;
 }
 
 export interface ApiPlace {
@@ -22,6 +30,10 @@ export interface ApiPost {
   id: number;
   published_at: string;
   title: string;
+}
+
+// When using POST_FOR_USER_FIELDS
+export interface ApiPostForUser extends ApiPost {
   parent: {
     id: number;
     icon_url: string | null;
