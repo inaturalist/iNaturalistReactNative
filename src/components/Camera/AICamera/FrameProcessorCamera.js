@@ -8,6 +8,7 @@ import InatVision from "components/Camera/helpers/visionPluginWrapper";
 import type { Node } from "react";
 import React, {
   useEffect,
+  useMemo,
   useRef,
 } from "react";
 import { Platform } from "react-native";
@@ -166,20 +167,23 @@ const FrameProcessorCamera = ( {
     fpsSV.value = fps;
   }, [fps, fpsSV] );
 
-  const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
-    // eslint-disable-next-line
-    lastTimestampSV.value = result.timestamp;
-    framesProcessingTime.current.push( timeTaken );
-    if ( framesProcessingTime.current.length === 10 ) {
-      const avgTime
+  const handleResults = useMemo(
+    () => Worklets.createRunOnJS( ( result, timeTaken ) => {
+      // eslint-disable-next-line
+      lastTimestampSV.value = result.timestamp;
+      framesProcessingTime.current.push( timeTaken );
+      if ( framesProcessingTime.current.length === 10 ) {
+        const avgTime
           = framesProcessingTime.current.reduce( ( a, b ) => a + b, 0 ) / 10;
-      onLog( {
-        log: `Average frame processing time over 10 frames: ${avgTime}ms`,
-      } );
-      framesProcessingTime.current = [];
-    }
-    onTaxaDetected( result );
-  } );
+        onLog( {
+          log: `Average frame processing time over 10 frames: ${avgTime}ms`,
+        } );
+        framesProcessingTime.current = [];
+      }
+      onTaxaDetected( result );
+    } ),
+    [lastTimestampSV, onLog, onTaxaDetected],
+  );
 
   const patchedRunAsync = usePatchedRunAsync( );
   const frameProcessor = useFrameProcessor(

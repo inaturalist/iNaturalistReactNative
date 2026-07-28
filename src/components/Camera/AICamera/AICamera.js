@@ -222,6 +222,11 @@ const AICamera = ( {
     } );
   };
 
+  const onLog = useCallback(
+    event => handleLog( event ),
+    [],
+  );
+
   return (
     <>
       {device && (
@@ -239,7 +244,7 @@ const AICamera = ( {
             onDeviceNotSupported={handleDeviceNotSupported}
             onCaptureError={handleCaptureError}
             onCameraError={handleCameraError}
-            onLog={handleLog}
+            onLog={onLog}
             animatedProps={animatedProps}
             panToZoom={panToZoom}
             pinchToZoom={pinchToZoom}

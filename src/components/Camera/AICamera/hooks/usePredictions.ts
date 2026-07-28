@@ -1,5 +1,5 @@
 import { RealmContext } from "providers/contexts";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { Result } from "vision-camera-plugin-inatvision";
 
 const { useRealm } = RealmContext;
@@ -26,44 +26,48 @@ const usePredictions = ( ) => {
   const [cropRatio, setCropRatio] = useState( 1 );
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
-  const handleTaxaDetected = ( cvResult: Result ) => {
-    if ( cvResult && !modelLoaded ) {
-      setModelLoaded( true );
-    }
-    setResultTimestamp( cvResult.timestamp );
-    let prediction = null;
-    const { predictions } = cvResult;
-    // As of react-native-worklets-core v1.3.0 there is a discrepancy in the way
-    // objects are returned from worklets. The "object" returned is not possible
-    // to be used with ...spread syntax or Object.assign which we might be using in other
-    // places that reference these prediction objects here so better to create a real JS object here
-    const branch = predictions
-      .map( p => ( {
-        name: p.name,
-        rank_level: p.rank_level,
-        combined_score: p.combined_score,
-        taxon_id: p.taxon_id,
-      } ) )
-      .sort( ( a, b ) => a.rank_level - b.rank_level );
-    const branchIDs = branch.map( t => t.taxon_id );
-    if ( branch.length > 0 ) {
-      const finestPrediction = branch[0];
-      // Try to find a known iconic taxon in the model results so we can show
-      // an icon if we can't show a photo
-      const iconicTaxon = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 );
-      prediction = {
-        taxon: {
-          rank_level: finestPrediction.rank_level,
-          id: finestPrediction.taxon_id,
-          name: finestPrediction.name,
-          iconic_taxon_name: iconicTaxon?.name,
-        },
-        combined_score: finestPrediction.combined_score,
-        timestamp: cvResult.timestamp,
-      };
-    }
-    setResult( prediction );
-  };
+  const handleTaxaDetected = useCallback(
+    ( cvResult: Result ) => {
+      if ( cvResult && !modelLoaded ) {
+        setModelLoaded( true );
+      }
+      setResultTimestamp( cvResult.timestamp );
+      let prediction = null;
+      const { predictions } = cvResult;
+      // As of react-native-worklets-core v1.3.0 there is a discrepancy in the way
+      // objects are returned from worklets. The "object" returned is not possible
+      // to be used with ...spread syntax or Object.assign which we might be using in other
+      // places that reference these prediction objects here so better to create a
+      // real JS object here
+      const branch = predictions
+        .map( p => ( {
+          name: p.name,
+          rank_level: p.rank_level,
+          combined_score: p.combined_score,
+          taxon_id: p.taxon_id,
+        } ) )
+        .sort( ( a, b ) => a.rank_level - b.rank_level );
+      const branchIDs = branch.map( t => t.taxon_id );
+      if ( branch.length > 0 ) {
+        const finestPrediction = branch[0];
+        // Try to find a known iconic taxon in the model results so we can show
+        // an icon if we can't show a photo
+        const iconicTaxon = iconicTaxa?.find( t => branchIDs.indexOf( t.id ) >= 0 );
+        prediction = {
+          taxon: {
+            rank_level: finestPrediction.rank_level,
+            id: finestPrediction.taxon_id,
+            name: finestPrediction.name,
+            iconic_taxon_name: iconicTaxon?.name,
+          },
+          combined_score: finestPrediction.combined_score,
+          timestamp: cvResult.timestamp,
+        };
+      }
+      setResult( prediction );
+    },
+    [iconicTaxa, modelLoaded],
+  );
 
   return {
     confidenceThreshold,
