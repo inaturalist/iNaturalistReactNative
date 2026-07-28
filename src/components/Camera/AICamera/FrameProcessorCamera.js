@@ -9,7 +9,6 @@ import type { Node } from "react";
 import React, {
   useEffect,
   useRef,
-  useState,
 } from "react";
 import { Platform } from "react-native";
 import { useSharedValue, Worklets } from "react-native-worklets-core";
@@ -79,7 +78,6 @@ const FrameProcessorCamera = ( {
 }: Props ): Node => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const { isDefaultMode } = useLayoutPrefs( );
-  const [lastTimestamp, setLastTimestamp] = useState( undefined );
 
   const navigation = useNavigation();
 
@@ -119,17 +117,6 @@ const FrameProcessorCamera = ( {
     };
   }, [navigation, resetCameraOnFocus] );
 
-  const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
-    setLastTimestamp( result.timestamp );
-    framesProcessingTime.current.push( timeTaken );
-    if ( framesProcessingTime.current.length === 10 ) {
-      const avgTime = framesProcessingTime.current.reduce( ( a, b ) => a + b, 0 ) / 10;
-      onLog( { log: `Average frame processing time over 10 frames: ${avgTime}ms` } );
-      framesProcessingTime.current = [];
-    }
-    onTaxaDetected( result );
-  } );
-
   const handleError = Worklets.createRunOnJS( error => {
     onClassifierError( error );
   } );
@@ -153,24 +140,46 @@ const FrameProcessorCamera = ( {
   const useGeomodelSV = useSharedValue( useGeomodel );
   const takingPhotoSV = useSharedValue( takingPhoto );
   const fpsSV = useSharedValue( fps );
+  const lastTimestampSV = useSharedValue( undefined );
   useEffect( () => {
+    // eslint-disable-next-line
     confidenceThresholdSV.value = confidenceThreshold;
   }, [confidenceThreshold, confidenceThresholdSV] );
   useEffect( () => {
+    // eslint-disable-next-line
     numStoredResultsSV.value = numStoredResults;
   }, [numStoredResults, numStoredResultsSV] );
   useEffect( () => {
+    // eslint-disable-next-line
     cropRatioSV.value = cropRatio;
   }, [cropRatio, cropRatioSV] );
   useEffect( () => {
+    // eslint-disable-next-line
     useGeomodelSV.value = useGeomodel;
   }, [useGeomodel, useGeomodelSV] );
   useEffect( () => {
+    // eslint-disable-next-line
     takingPhotoSV.value = takingPhoto;
   }, [takingPhoto, takingPhotoSV] );
   useEffect( () => {
+    // eslint-disable-next-line
     fpsSV.value = fps;
   }, [fps, fpsSV] );
+
+  const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
+    // eslint-disable-next-line
+    lastTimestampSV.value = result.timestamp;
+    framesProcessingTime.current.push( timeTaken );
+    if ( framesProcessingTime.current.length === 10 ) {
+      const avgTime
+          = framesProcessingTime.current.reduce( ( a, b ) => a + b, 0 ) / 10;
+      onLog( {
+        log: `Average frame processing time over 10 frames: ${avgTime}ms`,
+      } );
+      framesProcessingTime.current = [];
+    }
+    onTaxaDetected( result );
+  } );
 
   const patchedRunAsync = usePatchedRunAsync( );
   const frameProcessor = useFrameProcessor(
@@ -182,14 +191,14 @@ const FrameProcessorCamera = ( {
       }
       const timestamp = Date.now();
       // If there is no lastTimestamp, i.e. the first time this runs, do not compare
-      if ( lastTimestamp ) {
-        const timeSinceLastFrame = timestamp - lastTimestamp;
+      if ( lastTimestampSV.value ) {
+        const timeSinceLastFrame = timestamp - lastTimestampSV.value;
         if ( timeSinceLastFrame < 1000 / fpsSV.value ) {
           return;
         }
       }
 
-      patchedRunAsync( frame, ( ) => {
+      patchedRunAsync( frame, () => {
         "worklet";
 
         // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
@@ -230,7 +239,7 @@ const FrameProcessorCamera = ( {
       useGeomodelSV,
       takingPhotoSV,
       fpsSV,
-      lastTimestamp,
+      lastTimestampSV,
       geoModelCellLocation,
     ],
   );
