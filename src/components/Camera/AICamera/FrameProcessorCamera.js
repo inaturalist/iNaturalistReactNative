@@ -12,7 +12,7 @@ import React, {
   useState,
 } from "react";
 import { Platform } from "react-native";
-import { Worklets } from "react-native-worklets-core";
+import { useSharedValue, Worklets } from "react-native-worklets-core";
 import {
   geomodelPath,
   modelPath,
@@ -134,7 +134,6 @@ const FrameProcessorCamera = ( {
     onClassifierError( error );
   } );
 
-  const patchedRunAsync = usePatchedRunAsync( );
   const hasUserLocation = userLocation?.latitude != null && userLocation?.longitude != null;
   const useGeomodel = isDefaultMode
     ? hasUserLocation
@@ -146,15 +145,39 @@ const FrameProcessorCamera = ( {
   const geoModelCellLocation = hasUserLocation
     ? InatVision.getCellLocation( userLocation )
     : null;
+
+  // SharedValues
+  const confidenceThresholdSV = useSharedValue( confidenceThreshold );
+  const numStoredResultsSV = useSharedValue( numStoredResults );
+  const cropRatioSV = useSharedValue( cropRatio );
+  const useGeomodelSV = useSharedValue( useGeomodel );
+  const takingPhotoSV = useSharedValue( takingPhoto );
+  useEffect( () => {
+    confidenceThresholdSV.value = confidenceThreshold;
+  }, [confidenceThreshold, confidenceThresholdSV] );
+  useEffect( () => {
+    numStoredResultsSV.value = numStoredResults;
+  }, [numStoredResults, numStoredResultsSV] );
+  useEffect( () => {
+    cropRatioSV.value = cropRatio;
+  }, [cropRatio, cropRatioSV] );
+  useEffect( () => {
+    useGeomodelSV.value = useGeomodel;
+  }, [useGeomodel, useGeomodelSV] );
+  useEffect( () => {
+    takingPhotoSV.value = takingPhoto;
+  }, [takingPhoto, takingPhotoSV] );
+
+  const patchedRunAsync = usePatchedRunAsync( );
   const frameProcessor = useFrameProcessor(
     frame => {
       "worklet";
 
-      if ( takingPhoto ) {
+      if ( takingPhotoSV.value ) {
         return;
       }
       const timestamp = Date.now();
-      // If there is no lastTimestamp, i.e. the first time this runs do not compare
+      // If there is no lastTimestamp, i.e. the first time this runs, do not compare
       if ( lastTimestamp ) {
         const timeSinceLastFrame = timestamp - lastTimestamp;
         if ( timeSinceLastFrame < 1000 / fps ) {
@@ -173,10 +196,10 @@ const FrameProcessorCamera = ( {
             version: modelVersion,
             modelPath,
             taxonomyPath,
-            confidenceThreshold,
-            numStoredResults,
-            cropRatio,
-            useGeomodel,
+            confidenceThreshold: confidenceThresholdSV.value,
+            numStoredResults: numStoredResultsSV.value,
+            cropRatio: cropRatioSV.value,
+            useGeomodel: useGeomodelSV.value,
             geomodelPath,
             location: {
               latitude: geoModelCellLocation?.latitude,
@@ -196,13 +219,14 @@ const FrameProcessorCamera = ( {
     [
       patchedRunAsync,
       modelVersion,
-      confidenceThreshold,
-      takingPhoto,
-      numStoredResults,
-      cropRatio,
+      // Shared Values
+      confidenceThresholdSV,
+      numStoredResultsSV,
+      cropRatioSV,
+      useGeomodelSV,
+      takingPhotoSV,
       lastTimestamp,
       fps,
-      useGeomodel,
       geoModelCellLocation,
     ],
   );
