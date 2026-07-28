@@ -261,7 +261,6 @@ const PathStats = () => {
 
 // Temporary diagnostic use of admin/testflight config.
 const TestFlightAdminFeatureFlagTest = () => {
-  console.log( "first" );
   const enabled = useFeatureFlag( FeatureFlag.TestFlightAdminMessageEnabled );
   const label = `Test message "Feature Flags for Admins in TestFlight" is: ${enabled
     ? "Enabled"
