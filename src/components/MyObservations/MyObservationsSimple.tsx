@@ -164,6 +164,9 @@ const MyObservationsSimple = ( {
   const myObservationsMapViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsMapViewEnabled,
   );
+  const myObservationsSmallGridViewEnabled = useFeatureFlag(
+    FeatureFlag.MyObservationsSmallGridViewEnabled,
+  );
   const speciesSortLabels = useSpeciesSortLabels( );
   const observationsSortLabels = useObservationsSortLabels( );
   const navigation = useNavigation( );
@@ -386,6 +389,14 @@ const MyObservationsSimple = ( {
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
 
+  const viewOptions: ViewOption[] = ["grid", "list"];
+  if ( myObservationsSmallGridViewEnabled && currentUser ) {
+    viewOptions.push( "smallGrid" );
+  }
+  if ( myObservationsMapViewEnabled && currentUser ) {
+    viewOptions.push( "map" );
+  }
+
   const handlePivotCardGridItemPress = ( ) => {
     const { uuid } = observationIds[0];
     navigation.navigate( {
@@ -466,9 +477,7 @@ const MyObservationsSimple = ( {
                 <ObservationsViewBar
                   layout={layout}
                   updateObservationsView={updateObservationsView}
-                  viewOptions={myObservationsMapViewEnabled && currentUser
-                    ? ["grid", "list", "map"]
-                    : ["grid", "list"]}
+                  viewOptions={viewOptions}
                 />
                 {sortMyObservationsEnabled && layout !== "map" && (
                   <SortButton
