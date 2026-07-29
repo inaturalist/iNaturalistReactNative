@@ -235,14 +235,19 @@ describe( "ExploreResults offline state", ( ) => {
     refresh.mockResolvedValue( { isConnected: true } );
   } );
 
-  it( "shows the offline notice instead of the list when disconnected", async ( ) => {
-    renderComponent( <ExploreResults /> );
+  it.each( ["map", "grid"] )(
+    "shows the offline notice instead of the results in %s view when disconnected",
+    async layout => {
+      mockLayout = layout;
+      renderComponent( <ExploreResults /> );
 
-    expect(
-      await screen.findByText( "You are offline. Tap to try again." ),
-    ).toBeVisible( );
-    expect( screen.queryByTestId( "ExploreV2ObservationsList" ) ).toBeNull( );
-  } );
+      expect(
+        await screen.findByText( "You are offline. Tap to try again." ),
+      ).toBeVisible( );
+      expect( screen.queryByTestId( "ExploreV2ObservationsList" ) ).toBeNull( );
+      expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+    },
+  );
 
   it( "retries the search when the offline notice is tapped and we are back online", async ( ) => {
     refresh.mockResolvedValue( { isConnected: true } );

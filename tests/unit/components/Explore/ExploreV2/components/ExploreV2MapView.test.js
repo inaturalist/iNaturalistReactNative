@@ -4,6 +4,19 @@ import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
+// Map asks for location permission on mount. Without this the real hook
+// resolves after the test body has finished and React complains about state
+// updates outside of act( ).
+jest.mock( "sharedHooks/useLocationPermission", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    hasPermissions: true,
+    hasBlockedPermissions: false,
+    renderPermissionsGate: ( ) => null,
+    requestPermissions: jest.fn( ),
+  } ),
+} ) );
+
 const mockQueryParams = {
   per_page: 20,
   order_by: "created_at",
