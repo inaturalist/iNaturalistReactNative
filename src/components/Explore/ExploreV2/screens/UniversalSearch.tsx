@@ -19,6 +19,8 @@ import type { UniversalSearchResultItem }
   from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import useUniversalSearch from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
+import ButtonBar from "components/SharedComponents/ButtonBar";
+import Button from "components/SharedComponents/Buttons/Button";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
 import SearchHeader from "components/SharedComponents/SearchHeader";
@@ -332,6 +334,14 @@ const UniversalSearch = ( ) => {
           ListEmptyComponent={listEmptyComponent}
         />
       </View>
+      <ButtonBar>
+        <Button
+          level="focus"
+          onPress={handleSearch}
+          testID="UniversalSearch.stickySearchButton"
+          text={t( "SEARCH--button" )}
+        />
+      </ButtonBar>
     </ViewWrapper>
   );
 };
