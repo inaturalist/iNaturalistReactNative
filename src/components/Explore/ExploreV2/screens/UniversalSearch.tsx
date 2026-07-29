@@ -334,7 +334,7 @@ const UniversalSearch = ( ) => {
           ListEmptyComponent={listEmptyComponent}
         />
       </View>
-      <ButtonBar>
+      <ButtonBar containerClass="bg-white border-t border-lightGray">
         <Button
           level="focus"
           onPress={handleSearch}
