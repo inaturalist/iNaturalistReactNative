@@ -49,7 +49,7 @@ const photoUrl = ( photo: PhotoItem ): string => (
   Photo.displayLocalOrRemoteLargePhoto( photo )
 );
 
-const isSound = ( item: MediaItem ): item is SoundItem => !!item.file_url;
+const isSound = ( item: MediaItem ): item is SoundItem => "file_url" in item;
 
 const MasonryLayout = ( { items, onImagePress }: Props ) => {
   const [columns, setColumns] = useState<EnrichedMediaItem[][]>(
