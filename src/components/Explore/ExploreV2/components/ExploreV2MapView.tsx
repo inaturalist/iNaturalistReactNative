@@ -26,6 +26,7 @@ const activityIndicatorSize = 50;
 interface Props {
   isLoading: boolean;
   nearbyCoords?: NearbyCoords;
+  onCurrentLocationPress?: ( ) => void;
   placeMode: EXPLORE_V2_PLACE_MODE;
   queryParams: ExploreV2QueryParams;
   totalBounds?: ApiTotalBounds;
@@ -34,6 +35,7 @@ interface Props {
 const ExploreV2MapView = ( {
   isLoading,
   nearbyCoords,
+  onCurrentLocationPress,
   placeMode,
   queryParams,
   totalBounds,
@@ -71,6 +73,7 @@ const ExploreV2MapView = ( {
       <Map
         initialRegion={targetRegion || WORLDWIDE_REGION}
         isLoading={isLoading}
+        onCurrentLocationPress={onCurrentLocationPress}
         regionToAnimate={targetRegion}
         showCurrentLocationButton
         showsCompass={false}

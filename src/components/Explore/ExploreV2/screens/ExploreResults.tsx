@@ -121,6 +121,11 @@ const ExploreResults = ( ) => {
     return ( ) => { cancelled = true; };
   }, [isNearby, hasPermissions, hasBlockedPermissions, nearbyCoords, dispatch] ) );
 
+  const handleCurrentLocationPress = useCallback(
+    ( ) => dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } ),
+    [dispatch],
+  );
+
   const needsPermission = isNearby && hasPermissions === false && !hasBlockedPermissions;
   const nearbyResolved = !isNearby || nearbyCoords !== undefined;
   const canFetch = !needsPermission && nearbyResolved;
@@ -203,6 +208,7 @@ const ExploreResults = ( ) => {
                   <ExploreV2MapView
                     isLoading={isLoading}
                     nearbyCoords={nearbyCoords}
+                    onCurrentLocationPress={handleCurrentLocationPress}
                     placeMode={state.location.placeMode}
                     queryParams={queryParams}
                     totalBounds={totalBounds}

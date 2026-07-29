@@ -374,6 +374,17 @@ describe( "ExploreResults observations view", ( ) => {
     ).toBeTruthy( );
   } );
 
+  it( "makes the search nearby when the current location button is pressed", async ( ) => {
+    const actor = userEvent.setup( );
+    renderComponent( <ExploreResults /> );
+
+    await actor.press( await screen.findByTestId( "Map.CurrentLocationButton" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith( {
+      type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY,
+    } );
+  } );
+
   it(
     "shows the permission prompt instead of the map when nearby without permission",
     async ( ) => {
