@@ -54,8 +54,7 @@ const ExploreV2MapView = ( {
         }
         : undefined;
     }
-    // Every other mode supplies bounds, but we can fall back to worldwide
-    // the corncers being undefined here represents a loading state
+    // the corners being undefined here represents a loading state
     const hasBounds = swlat !== undefined
       && swlng !== undefined
       && nelat !== undefined
@@ -64,7 +63,7 @@ const ExploreV2MapView = ( {
       ? getMapRegion( {
         swlat, swlng, nelat, nelng,
       } )
-      : WORLDWIDE_REGION;
+      : undefined;
   }, [placeMode, nearbyCoords, swlat, swlng, nelat, nelng] );
 
   return (
