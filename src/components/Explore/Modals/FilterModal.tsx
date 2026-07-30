@@ -41,6 +41,7 @@ import {
   WILD_STATUS,
 } from "providers/ExploreContext";
 import React, { useState } from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
@@ -65,8 +66,7 @@ interface Props {
   filterByIconicTaxonUnknown: () => void;
   renderLocationPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
   requestLocationPermissions: ( ) => void;
-  // TODO: type this properly when taxon has a type
-  updateTaxon: ( taxon: null | { name: string } ) => void;
+  updateTaxon: ( taxon: RealmTaxon | null ) => void;
   updateLocation: ( location: "worldwide" | ApiPlace ) => void;
   updateUser: ( user: ExploreSearchUser | null, exclude?: boolean ) => void;
   updateProject: ( project: ApiProject ) => void;
@@ -751,7 +751,7 @@ const FilterModal = ( {
                 updateTaxon( null );
               } else {
                 const selectedTaxon = realm
-                  ?.objects( "Taxon" )
+                  ?.objects<RealmTaxon>( "Taxon" )
                   .filtered( "name ==[c] $0", taxonName );
                 const iconicTaxon = selectedTaxon.length > 0
                   ? selectedTaxon[0]
@@ -1355,7 +1355,6 @@ const FilterModal = ( {
       />
       <ExploreUserSearchModal
         showModal={showUserSearchModal}
-        currentUser={currentUser}
         closeModal={() => { setShowUserSearchModal( false ); }}
         updateUser={updateUser}
       />
