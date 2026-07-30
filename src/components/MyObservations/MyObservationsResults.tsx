@@ -104,6 +104,7 @@ const MyObservationsResults = ( ) => {
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
+  const { isConnected } = useNetInfo( );
   const {
     observationIds: queryObservationIds,
     isServerAuthoritative,
@@ -119,8 +120,10 @@ const MyObservationsResults = ( ) => {
   const observationIds = myObsQueryEnabled
     ? queryObservationIds
     : localObservationIds;
-  const showSearchEmptyState = searchMyObservationsEnabled
-    && !!myObsState.searchedTaxon
+  const hasActiveSearch = searchMyObservationsEnabled && !!myObsState.searchedTaxon;
+  const showSearchOfflineNotice = hasActiveSearch && isConnected === false;
+  const showSearchEmptyState = hasActiveSearch
+    && isConnected !== false
     && !isLoadingFromQuery
     && observationIds.length === 0;
   const {
@@ -130,7 +133,6 @@ const MyObservationsResults = ( ) => {
   const prevObservationsLength = useRef( observationIds.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
-  const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const currentUserId = currentUser?.id;
   const canUpload = !!currentUser && !!isConnected;
@@ -483,8 +485,8 @@ const MyObservationsResults = ( ) => {
     myObsState.speciesSort,
   ] );
 
-  const showSpeciesSearchEmptyState = searchMyObservationsEnabled
-    && !!myObsState.searchedTaxon
+  const showSpeciesSearchEmptyState = hasActiveSearch
+    && isConnected !== false
     && !isLoadingTaxa
     && taxa.length === 0;
 
@@ -538,6 +540,7 @@ const MyObservationsResults = ( ) => {
       setSpeciesSortOptionId={setSpeciesSortOptionId}
       showNoResults={showNoResults}
       showSearchEmptyState={showSearchEmptyState}
+      showSearchOfflineNotice={showSearchOfflineNotice}
       showSpeciesSearchEmptyState={showSpeciesSearchEmptyState}
       speciesSortOptionId={myObsState.speciesSort}
       taxa={taxa}

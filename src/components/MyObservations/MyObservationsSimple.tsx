@@ -92,6 +92,7 @@ interface Props {
   setSpeciesSortOptionId: ( value: SPECIES_SORT ) => void;
   showNoResults: boolean;
   showSearchEmptyState: boolean;
+  showSearchOfflineNotice: boolean;
   showSpeciesSearchEmptyState: boolean;
   speciesSortOptionId: SPECIES_SORT;
   taxa?: SpeciesCount[];
@@ -152,6 +153,7 @@ const MyObservationsSimple = ( {
   setSpeciesSortOptionId,
   showNoResults,
   showSearchEmptyState,
+  showSearchOfflineNotice,
   showSpeciesSearchEmptyState,
   speciesSortOptionId,
   taxa,
@@ -181,6 +183,13 @@ const MyObservationsSimple = ( {
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
+  const viewOptions: ViewOption[] = ["grid", "list"];
+  if ( myObservationsSmallGridViewEnabled && currentUser ) {
+    viewOptions.push( "smallGrid" );
+  }
+  if ( myObservationsMapViewEnabled && currentUser ) {
+    viewOptions.push( "map" );
+  }
   const speciesSortLabels = useSpeciesSortLabels( );
   const observationsSortLabels = useObservationsSortLabels( );
   const navigation = useNavigation( );
@@ -422,6 +431,31 @@ const MyObservationsSimple = ( {
     );
   };
 
+  const renderObservationsTabContent = ( ) => {
+    if ( showSearchOfflineNotice ) {
+      return <OfflineNotice onPress={() => refresh( )} />;
+    }
+    if ( showSearchEmptyState ) {
+      return <SearchEmptyState />;
+    }
+    return (
+      <>
+        { renderObservations( ) }
+        <ObservationsViewBar
+          layout={layout}
+          updateObservationsView={updateObservationsView}
+          viewOptions={viewOptions}
+        />
+        {sortMyObservationsEnabled && layout !== "map" && (
+          <SortButton
+            onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
+            accessibilityLabel={t( "Change-observations-sort-order" )}
+          />
+        )}
+      </>
+    );
+  };
+
   const renderOfflineNotice = ( ) => {
     if ( isConnected === false ) {
       return (
@@ -472,14 +506,6 @@ const MyObservationsSimple = ( {
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
 
-  const viewOptions: ViewOption[] = ["grid", "list"];
-  if ( myObservationsSmallGridViewEnabled && currentUser ) {
-    viewOptions.push( "smallGrid" );
-  }
-  if ( myObservationsMapViewEnabled && currentUser ) {
-    viewOptions.push( "map" );
-  }
-
   const handlePivotCardGridItemPress = ( ) => {
     const { uuid } = observationIds[0];
     navigation.navigate( {
@@ -523,26 +549,7 @@ const MyObservationsSimple = ( {
         {searchMyObservationsEnabled && (
           <SearchedTaxonBanner />
         )}
-        { activeTab === OBSERVATIONS_TAB && (
-          showSearchEmptyState
-            ? <SearchEmptyState />
-            : (
-              <>
-                { renderObservations( ) }
-                <ObservationsViewBar
-                  layout={layout}
-                  updateObservationsView={updateObservationsView}
-                  viewOptions={viewOptions}
-                />
-                {sortMyObservationsEnabled && layout !== "map" && (
-                  <SortButton
-                    onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
-                    accessibilityLabel={t( "Change-observations-sort-order" )}
-                  />
-                )}
-              </>
-            )
-        ) }
+        { activeTab === OBSERVATIONS_TAB && renderObservationsTabContent( ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
           <>
             <CustomFlashList
