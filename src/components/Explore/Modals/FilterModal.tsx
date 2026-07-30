@@ -47,6 +47,7 @@ import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
+import useSelectNearbyLocation from "../hooks/useSelectNearbyLocation";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
@@ -93,6 +94,7 @@ const FilterModal = ( {
     isNotInitialState,
     numberOfFilters,
   } = useExplore();
+  const selectNearbyLocation = useSelectNearbyLocation( );
   const {
     casual,
     created_d1: createdD1,
@@ -1345,6 +1347,7 @@ const FilterModal = ( {
       />
       <ExploreLocationSearchModal
         closeModal={() => { setShowLocationSearchModal( false ); }}
+        onSelectNearby={selectNearbyLocation}
         renderPermissionsGate={renderLocationPermissionsGate}
         requestPermissions={requestLocationPermissions}
         showModal={showLocationSearchModal}
