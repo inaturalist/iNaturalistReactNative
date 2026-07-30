@@ -385,16 +385,22 @@ const MyObservationsSimple = ( {
     return data;
   }, [observationIds, layout] );
 
+  const renderOfflineFallback = ( onPress: ( ) => void ) => (
+    <View className="flex-1 items-center justify-center">
+      <OfflineNotice onPress={onPress} />
+    </View>
+  );
+
   const renderMapView = ( ) => {
     if ( isConnected === false ) {
-      return <OfflineNotice onPress={() => refresh( )} />;
+      return renderOfflineFallback( ( ) => refresh( ) );
     }
     return <MyObservationsMapView userId={currentUser?.id} />;
   };
 
   const renderSmallGridView = ( ) => {
     if ( isConnected === false ) {
-      return <OfflineNotice onPress={() => refresh( )} />;
+      return renderOfflineFallback( ( ) => refresh( ) );
     }
     return <MyObservationsGroupedByIconicTaxaView />;
   };
@@ -433,7 +439,7 @@ const MyObservationsSimple = ( {
 
   const renderObservationsTabContent = ( ) => {
     if ( showSearchOfflineNotice ) {
-      return <OfflineNotice onPress={() => refresh( )} />;
+      return renderOfflineFallback( ( ) => refresh( ) );
     }
     if ( showSearchEmptyState ) {
       return <SearchEmptyState />;
