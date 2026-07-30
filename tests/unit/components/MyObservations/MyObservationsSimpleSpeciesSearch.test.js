@@ -41,6 +41,7 @@ const mockSetActiveTab = jest.fn( );
 
 const renderSpeciesTab = ( {
   currentUser = undefined,
+  isConnected = true,
   taxa = mockSpeciesCounts,
   showSpeciesSearchEmptyState = false,
 } = {} ) => renderComponent(
@@ -48,6 +49,7 @@ const renderSpeciesTab = ( {
     <MyObservationsSimple
       activeTab={TAXA_TAB}
       currentUser={currentUser}
+      isConnected={isConnected}
       observationIds={[]}
       onEndReached={jest.fn( )}
       updateObservationsView={jest.fn( )}
@@ -84,6 +86,17 @@ describe( "MyObservationsSimple species tab", ( ) => {
     renderSpeciesTab( { taxa: [], showSpeciesSearchEmptyState: true } );
 
     expect( screen.getByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeTruthy( );
+  } );
+
+  it( "renders the offline notice instead of SearchEmptyState when offline", ( ) => {
+    renderSpeciesTab( {
+      taxa: [],
+      showSpeciesSearchEmptyState: false,
+      isConnected: false,
+    } );
+
+    expect( screen.getByText( "You are offline. Tap to try again." ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeNull( );
   } );
 
   describe( "when the search feature flag is enabled and signed in", ( ) => {
