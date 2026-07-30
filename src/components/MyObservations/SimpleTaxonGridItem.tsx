@@ -5,8 +5,7 @@ import {
   Image, LinearGradient, Pressable, View,
 } from "components/styledComponents";
 import React from "react";
-import { useFeatureFlag, useTranslation } from "sharedHooks";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
@@ -21,6 +20,7 @@ const imageClassNames = [
 
 interface Props {
   accessibleName: string;
+  canSearchFromSpeciesTab: boolean;
   navToTaxonDetails: ( ) => void;
   searchThisTaxon: ( ) => void;
   source: {
@@ -32,6 +32,7 @@ interface Props {
 
 const SimpleTaxonGridItem = ( {
   accessibleName,
+  canSearchFromSpeciesTab,
   navToTaxonDetails,
   searchThisTaxon,
   source,
@@ -40,12 +41,11 @@ const SimpleTaxonGridItem = ( {
 }: Props ) => {
   const { t } = useTranslation();
   const { count } = speciesCount;
-  const searchMyObservationsEnabled = useFeatureFlag( FeatureFlag.SearchMyObservationsEnabled );
 
   return (
     <Pressable
       accessibilityRole="button"
-      onPress={searchMyObservationsEnabled
+      onPress={canSearchFromSpeciesTab
         ? searchThisTaxon
         : navToTaxonDetails}
       accessibilityLabel={accessibleName}
@@ -66,7 +66,7 @@ const SimpleTaxonGridItem = ( {
         start={{ x: 0, y: 0.5 }}
         end={{ x: 0, y: 1 }}
       />
-      { searchMyObservationsEnabled && (
+      { canSearchFromSpeciesTab && (
         <View className="absolute top-0 right-0">
           <INatIconButton
             icon="info-circle-outline"

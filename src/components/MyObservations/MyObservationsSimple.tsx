@@ -168,6 +168,10 @@ const MyObservationsSimple = ( {
   const searchMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SearchMyObservationsEnabled,
   );
+  // For now, searching from the species tab requires a signed-in user. for logged-out
+  // users there's no server-side taxon search to run, since all their obs are local,
+  // so tapping a card will continue to navigate to TaxonDetails.
+  const canSearchFromSpeciesTab = searchMyObservationsEnabled && !!currentUser;
   const sortMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SortMyObservationsEnabled,
   );
@@ -271,6 +275,7 @@ const MyObservationsSimple = ( {
         key={itemKey}
         style={gridItemStyle}
         speciesCount={speciesCount}
+        canSearchFromSpeciesTab={canSearchFromSpeciesTab}
         navToTaxonDetails={navToTaxonDetails}
         searchThisTaxon={searchThisTaxon}
         accessibleName={accessibleName}
@@ -278,6 +283,7 @@ const MyObservationsSimple = ( {
       />
     );
   }, [
+    canSearchFromSpeciesTab,
     currentUser,
     dispatch,
     gridItemStyle,
