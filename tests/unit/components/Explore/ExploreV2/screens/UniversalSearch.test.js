@@ -199,6 +199,7 @@ describe( "UniversalSearch screen", ( ) => {
     expect( screen.getByTestId( "UniversalSearch.subjectInput" ) ).toBeTruthy( );
     expect( screen.getByTestId( "UniversalSearch.locationInput" ) ).toBeTruthy( );
     expect( screen.getByTestId( "UniversalSearch.searchButton" ) ).toBeTruthy( );
+    expect( screen.getByTestId( "UniversalSearch.stickySearchButton" ) ).toBeTruthy( );
     expect( screen.getByTestId( "UniversalSearch.back" ) ).toBeTruthy( );
   } );
 
@@ -749,6 +750,19 @@ describe( "UniversalSearch screen", ( ) => {
       expect( dismissSpy ).toHaveBeenCalled( );
 
       dismissSpy.mockRestore( );
+    } );
+
+    it( "submits the search from the bottom search button", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      const stickySearchButton = screen.getByTestId( "UniversalSearch.stickySearchButton" );
+      expect( stickySearchButton ).toBeTruthy( );
+
+      await actor.press( stickySearchButton );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
     } );
   } );
 } );
