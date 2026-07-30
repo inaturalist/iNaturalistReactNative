@@ -80,7 +80,7 @@ const ExploreTaxonSearch = ( {
         query={taxonQuery}
         renderItem={renderItem}
         setQuery={setTaxonQuery}
-        taxa={taxa as RealmTaxon[]}
+        taxa={taxa}
       />
     </ViewWrapper>
   );
