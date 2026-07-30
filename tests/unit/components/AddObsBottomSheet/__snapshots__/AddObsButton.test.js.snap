@@ -265,7 +265,7 @@ exports[`AddObsButton renders correctly 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
               </View>
             </View>
@@ -509,7 +509,7 @@ exports[`AddObsButton renders correctly 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
               </View>
             </View>
@@ -730,7 +730,7 @@ exports[`AddObsButton renders correctly 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
               </View>
             </View>
@@ -866,7 +866,7 @@ exports[`AddObsButton renders correctly 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
