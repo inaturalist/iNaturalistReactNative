@@ -15,6 +15,8 @@ const mockTaxon = factory( "RemoteTaxon", {
 
 const mockSpeciesCounts = [{ count: 3, taxon: mockTaxon }];
 
+const mockCurrentUser = factory( "LocalUser" );
+
 let mockSearchEnabled = false;
 
 jest.mock( "sharedHooks/useFeatureFlag", ( ) => ( {
@@ -38,12 +40,14 @@ jest.mock( "@react-navigation/native", ( ) => {
 const mockSetActiveTab = jest.fn( );
 
 const renderSpeciesTab = ( {
+  currentUser = undefined,
   taxa = mockSpeciesCounts,
   showSpeciesSearchEmptyState = false,
 } = {} ) => renderComponent(
   <MyObservationsProvider>
     <MyObservationsSimple
       activeTab={TAXA_TAB}
+      currentUser={currentUser}
       observationIds={[]}
       onEndReached={jest.fn( )}
       updateObservationsView={jest.fn( )}
@@ -82,14 +86,14 @@ describe( "MyObservationsSimple species tab", ( ) => {
     expect( screen.getByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeTruthy( );
   } );
 
-  describe( "when the search feature flag is enabled", ( ) => {
+  describe( "when the search feature flag is enabled and signed in", ( ) => {
     beforeEach( ( ) => {
       mockSearchEnabled = true;
     } );
 
     it( "searches the taxon and switches to the observations tab when a "
       + "species card is pressed", async ( ) => {
-      renderSpeciesTab( );
+      renderSpeciesTab( { currentUser: mockCurrentUser } );
 
       await actor.press( screen.getByTestId( "SimpleTaxonGridItem" ) );
 
@@ -102,7 +106,7 @@ describe( "MyObservationsSimple species tab", ( ) => {
 
     it( "navigates to taxon details without searching when the info icon is "
       + "pressed", async ( ) => {
-      renderSpeciesTab( );
+      renderSpeciesTab( { currentUser: mockCurrentUser } );
 
       await actor.press( screen.getByTestId( "SimpleTaxonGridItem.infoButton" ) );
 
@@ -114,9 +118,14 @@ describe( "MyObservationsSimple species tab", ( ) => {
     } );
   } );
 
-  describe( "when the search feature flag is disabled", ( ) => {
-    it( "navigates to taxon details when a species card is pressed", async ( ) => {
-      renderSpeciesTab( );
+  describe( "when the search feature flag is enabled but signed out", ( ) => {
+    beforeEach( ( ) => {
+      mockSearchEnabled = true;
+    } );
+
+    it( "navigates to taxon details instead of searching when a species "
+      + "card is pressed", async ( ) => {
+      renderSpeciesTab( { currentUser: undefined } );
 
       await actor.press( screen.getByTestId( "SimpleTaxonGridItem" ) );
 
@@ -128,7 +137,27 @@ describe( "MyObservationsSimple species tab", ( ) => {
     } );
 
     it( "does not render the info icon button", ( ) => {
-      renderSpeciesTab( );
+      renderSpeciesTab( { currentUser: undefined } );
+
+      expect( screen.queryByTestId( "SimpleTaxonGridItem.infoButton" ) ).toBeNull( );
+    } );
+  } );
+
+  describe( "when the search feature flag is disabled", ( ) => {
+    it( "navigates to taxon details when a species card is pressed", async ( ) => {
+      renderSpeciesTab( { currentUser: mockCurrentUser } );
+
+      await actor.press( screen.getByTestId( "SimpleTaxonGridItem" ) );
+
+      expect( mockedNavigate ).toHaveBeenCalledWith( expect.objectContaining( {
+        name: "TaxonDetails",
+        params: { id: mockTaxon.id },
+      } ) );
+      expect( mockSetActiveTab ).not.toHaveBeenCalled( );
+    } );
+
+    it( "does not render the info icon button", ( ) => {
+      renderSpeciesTab( { currentUser: mockCurrentUser } );
 
       expect( screen.queryByTestId( "SimpleTaxonGridItem.infoButton" ) ).toBeNull( );
     } );
