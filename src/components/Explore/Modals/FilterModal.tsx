@@ -1,6 +1,7 @@
 import type { ApiPlace, ApiProject } from "api/types";
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge";
+import type { ExploreSearchUser } from "components/Explore/SearchScreens/ExploreUserSearch";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
@@ -66,8 +67,7 @@ interface Props {
   // TODO: type this properly when taxon has a type
   updateTaxon: ( taxon: null | { name: string } ) => void;
   updateLocation: ( location: "worldwide" | ApiPlace ) => void;
-  // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
-  updateUser: ( user: null | { login: string } ) => void;
+  updateUser: ( user: ExploreSearchUser | null, exclude?: boolean ) => void;
   updateProject: ( project: ApiProject ) => void;
 }
 

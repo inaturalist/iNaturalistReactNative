@@ -1,30 +1,29 @@
-// @flow
-
+import type { ApiTaxon } from "api/types";
 import {
   SearchHeader,
   TaxonResult,
   TaxonSearch,
   ViewWrapper,
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useState,
 } from "react";
-import { useTranslation } from "sharedHooks";
+import type { RealmTaxon } from "realmModels/types";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
+import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  closeModal: Function,
-  onPressInfo?: Function,
-  updateTaxon: Function
-};
+interface Props {
+  closeModal: ( ) => void;
+  onPressInfo?: ( taxon: RealmTaxon | ApiTaxon ) => void;
+  updateTaxon: ( taxon: RealmTaxon | null ) => void;
+}
 
 const ExploreTaxonSearch = ( {
   closeModal,
   onPressInfo,
   updateTaxon,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const [taxonQuery, setTaxonQuery] = useState( "" );
 
@@ -34,7 +33,7 @@ const ExploreTaxonSearch = ( {
     isLocal,
   } = useTaxonSearch( taxonQuery );
 
-  const onTaxonSelected = useCallback( async newTaxon => {
+  const onTaxonSelected = useCallback( async ( newTaxon: RealmTaxon ) => {
     updateTaxon( newTaxon );
     closeModal();
   }, [closeModal, updateTaxon] );
@@ -47,20 +46,25 @@ const ExploreTaxonSearch = ( {
     [updateTaxon, closeModal],
   );
 
-  const renderItem = useCallback( ( { item: taxon, index } ) => (
-    <TaxonResult
-      first={index === 0}
-      fetchRemote={false}
-      handleTaxonOrEditPress={() => onTaxonSelected( taxon )}
-      onPressInfo={onPressInfo}
-      showCheckmark={false}
-      taxon={taxon}
-      testID={`Search.taxa.${taxon.id}`}
-    />
-  ), [
-    onPressInfo,
-    onTaxonSelected,
-  ] );
+  const renderItem = useCallback(
+    // no-unused-prop-types bug
+    // eslint-disable-next-line react/no-unused-prop-types
+    ( { item: taxon, index }: { item: RealmTaxon; index: number } ) => (
+      <TaxonResult
+        first={index === 0}
+        fetchRemote={false}
+        handleTaxonOrEditPress={() => onTaxonSelected( taxon )}
+        onPressInfo={onPressInfo}
+        showCheckmark={false}
+        taxon={taxon}
+        testID={`Search.taxa.${taxon.id}`}
+      />
+    ),
+    [
+      onPressInfo,
+      onTaxonSelected,
+    ],
+  );
 
   return (
     <ViewWrapper>
@@ -76,7 +80,7 @@ const ExploreTaxonSearch = ( {
         query={taxonQuery}
         renderItem={renderItem}
         setQuery={setTaxonQuery}
-        taxa={taxa}
+        taxa={taxa as RealmTaxon[]}
       />
     </ViewWrapper>
   );
