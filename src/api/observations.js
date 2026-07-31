@@ -216,17 +216,6 @@ const fetchObservers = async ( params: Object = {} ) : Promise<?Object> => {
   }
 };
 
-const fetchIconicTaxaCounts = async (
-  params: Object = {},
-  opts: Object = {},
-) : Promise<?Object> => {
-  try {
-    return await inatjs.observations.iconicTaxaCounts( params, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchIconicTaxaCounts", opts } } );
-  }
-};
-
 const fetchIdentifiers = async ( params: Object = {} ) : Promise<?Object> => {
   try {
     return await inatjs.observations.identifiers( params );
@@ -286,7 +275,6 @@ export {
   createSubscription,
   deleteRemoteObservation,
   faveObservation,
-  fetchIconicTaxaCounts,
   fetchIdentifiers,
   fetchObservationUpdates,
   fetchObservers,

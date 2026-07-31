@@ -1,3 +1,5 @@
+import type { IconicTaxonCountResult } from "api/observationsTyped";
+
 export enum ICONIC_TAXA_GROUP {
   PLANTAE = "plantae",
   AVES = "aves",
@@ -38,12 +40,6 @@ export const ICONIC_TAXA_GROUP_ORDER: ICONIC_TAXA_GROUP[] = [
   ICONIC_TAXA_GROUP.ANIMALIA,
   ICONIC_TAXA_GROUP.OTHER,
 ];
-
-// Shape of a single row from the observations/iconic_taxa_counts API response
-export interface IconicTaxonCountResult {
-  count: number;
-  taxon: { name: string } | null;
-}
 
 export interface IconicTaxaGroupCount {
   category: ICONIC_TAXA_GROUP;
