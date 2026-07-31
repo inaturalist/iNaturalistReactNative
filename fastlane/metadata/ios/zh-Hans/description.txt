@@ -1,12 +1,12 @@
-Your photos of plants, animals, fungi, and more can help protect nature all around the world. iNaturalist is free, nonprofit, and community-powered.
+你拍摄的植物、动物、真菌等照片可以帮助保护全球的自然。 iNaturalist 是免费的、非营利的、由社区驱动的平台。
 
-iNaturalist helps millions of people learn about and document the nature around them. Point your camera at plants, animals, and fungi to get instant identification suggestions, then share your photos or sound recordings as an "observation." Then, see your observation get reviewed by a global community of knowledgeable nature-lovers to turn it into a useful data point for science and conservation efforts. Your everyday moments of curiosity can directly contribute to protecting nature, and you don't need any previous experience or knowledge to get started.
+iNaturalist帮助数百万人了解并记录他们周围的自然。 将相机对准植物、动物和真菌，获得即时的识别建议，然后将照片或录音作为“观察”分享。然后，你的观察结果会被全球一群知识丰富的自然爱好者审阅，转化为科学和保护工作的有用数据点。 你每天的好奇心时刻可以直接助力保护自然，你不需要任何经验或知识也能开始。
 
-iNaturalist is a mission-driven nonprofit dedicated to connecting people to nature and advancing biodiversity science and conservation, and is freely available thanks to the generous support of our community.
+iNaturalist是一家以使命为驱动的非营利组织，致力于连接人们与自然，推动生物多样性科学与保护工作，得益于我们社区的慷慨支持，网站免费开放。
 
 关键功能
-• Identify species from anywhere in the world
-• Contribute to science by sharing your observations
-• Keep a record of species you see
-• Explore and protect biodiversity 
-• Connect with and learn from other nature enthusiasts
+• 识别来自世界任何地方的物种
+• 通过分享您的观察为科学做出贡献
+• 记录你所见物种
+• 探索和保护生物多样性 
+• 与其他自然爱好者交流并向他们学习
