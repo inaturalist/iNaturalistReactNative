@@ -1,11 +1,11 @@
-Try the iNaturalist app!
+试试 iNaturalist 应用吧！
 
-Quick identification: Point your camera at a plant, animal, or other organism to get an instant identification.
+快速鉴定：将您的相机指向植物，动物或其他生物，以得到即时鉴定。
 
-More ways to observe: Press and hold the camera button for more observation options, like recording sounds  and adding multiple photos.
+更多观察方式：长按相机按钮可获得更多观察选项，比如录音和添加多张照片。
 
-Keep up with other naturalists: Check your notifications to see when other people in the iNaturalist community add identifications or ask questions about your observations.
+与其他自然爱好者保持联系：查看您的通知，以了解 iNaturalist 社群中的其他人何时添加鉴定，或对您的观察提问。
 
-Set your preferences: If you're a longtime user and want your app experience to feel more like earlier versions of iNaturalist, you can! Go into Settings, enable Advanced Mode, then select "Edit Observation" in the middle section.
+设置您的偏好：如果您是老用户，并希望您的应用体验更像早期版本的 iNaturalist，您可以这样！ 进入设置，启用高级模式，然后在中间部分选择“编辑观察”。
 
-Thank you for using iNaturalist! Please let us know what you think about the app by using the Feedback form available in the main menu.
+感谢使用 iNaturalist！ 请通过主菜单提供的反馈表单告诉我们您对这款应用的看法。
