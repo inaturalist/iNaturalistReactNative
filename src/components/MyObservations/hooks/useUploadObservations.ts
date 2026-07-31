@@ -107,9 +107,6 @@ export default ( canUpload: boolean ) => {
     let timeoutID: ReturnType<typeof setTimeout> | undefined;
     try {
       abortController?.signal.addEventListener( "abort", abortCurrentUpload );
-      if ( abortController?.signal.aborted ) {
-        obsAbortController.abort( );
-      }
       timeoutID = setTimeout( abortCurrentUpload, MS_BEFORE_UPLOAD_TIMES_OUT );
       await uploadObservation( observation, realm, { signal: obsAbortController.signal } );
     } catch ( uploadErr ) {
