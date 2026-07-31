@@ -83,7 +83,10 @@ const MyObservationsResults = ( ) => {
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
+  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
+  const newRemoteObsSyncedAt = useStore( state => state.newRemoteObsSyncedAt );
+  const clearNewRemoteObsSynced = useStore( state => state.clearNewRemoteObsSynced );
   const uploadStatus = useStore( state => state.uploadStatus );
   const justFinishedSignup: boolean = useStore( state => state.layout.justFinishedSignup );
   // As soon as we leave this screen, the user is no longer considered as just finished signup
@@ -313,6 +316,26 @@ const MyObservationsResults = ( ) => {
       listRef.current.scrollToOffset( { offset: 0, animated: true } );
     }
   }, [myObsState.searchedTaxon?.id] );
+
+  // Scroll to the top when a sync pulls in observations we've never seen locally
+  useEffect( ( ) => {
+    if ( !newRemoteObsSyncedAt ) { return; }
+    if ( useServerOrder ) {
+      clearNewRemoteObsSynced( );
+      return;
+    }
+    listRef.current?.scrollToOffset( { offset: 0, animated: true } );
+    setMyObsOffset( 0 );
+    // Otherwise onListLayout could restore the pre-ObsEdit offset and undo the scroll
+    resetMyObsOffsetToRestore( );
+    clearNewRemoteObsSynced( );
+  }, [
+    clearNewRemoteObsSynced,
+    newRemoteObsSyncedAt,
+    resetMyObsOffsetToRestore,
+    setMyObsOffset,
+    useServerOrder,
+  ] );
 
   // API call fetching obs has completed but results are not yet stored in realm
   // for display here
