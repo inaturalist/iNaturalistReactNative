@@ -34,15 +34,16 @@ const PostListItem = ( {
       : item.parent.icon_url ?? null;
   }, [item.body, item.parent.icon_url] );
 
-  if ( !item ) {
-    return null;
-  }
-
   return (
     <View className="flex-row items-center mx-3 my-2">
       {imgSrc && (
         <Image
           source={{ uri: imgSrc }}
+          // Passing a key here is not ideal for FlashList, but we do actually want to avoid
+          // recycling on images. When Image gets a new `source` prop, it continues displaying
+          // the previously-loaded image until the new source is loaded, which leads to "stale"
+          // images being associated with a post. Passing a key forced an unmount/remount.
+          key={imgSrc}
           className={THUMBNAIL_CLASS}
           accessibilityRole="image"
           accessibilityIgnoresInvertColors
