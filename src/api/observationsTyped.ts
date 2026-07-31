@@ -1,5 +1,6 @@
 import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
+import { ICONIC_TAXA_COUNTS_FIELDS } from "api/fields";
 import type { ApiOpts, ApiParams, ApiResponse } from "api/types";
 import inatjs from "inaturalistjs";
 
@@ -17,7 +18,10 @@ const fetchIconicTaxaCounts = async (
   opts: ApiOpts = {},
 ): Promise<ApiResponse<IconicTaxonCountResult> | null | ErrorWithResponse | INatApiError> => {
   try {
-    return await inatjs.observations.iconicTaxaCounts( params, opts );
+    return await inatjs.observations.iconicTaxaCounts(
+      { fields: ICONIC_TAXA_COUNTS_FIELDS, ...params },
+      opts,
+    );
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
