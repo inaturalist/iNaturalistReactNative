@@ -428,10 +428,15 @@ const MyObservationsResults = ( ) => {
 
   const numTotalObservations = totalResultsRemote || observationIds.length;
 
-  // When a search is active, we want to show a live, search-informed total
+  // When a search is active, we want to show a live, search-informed total for observation and
+  // species counts, otherwise, fallback to the values from zustand
   const displayedObservationsCount = hasActiveSearch
     ? searchTotalResults
     : numOfUserObservations;
+
+  const displayedSpeciesCount = hasActiveSearch
+    ? numTotalTaxa
+    : numOfUserSpecies;
 
   // Pagination for the rendered list follows whichever source is authoritative:
   const isFetchingNextPageForList = useServerOrder
@@ -530,7 +535,7 @@ const MyObservationsResults = ( ) => {
       loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
       taxaListRef={taxaListRef}
       numTotalObservations={displayedObservationsCount}
-      numTotalTaxa={numOfUserSpecies}
+      numTotalTaxa={displayedSpeciesCount}
       numUnuploadedObservations={numUnuploadedObservations}
       numObsMissingBasics={numObsMissingBasics}
       observationIds={observationIds}
