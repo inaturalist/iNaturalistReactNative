@@ -112,6 +112,7 @@ const MyObservationsResults = ( ) => {
     isFetchingNextPage: isFetchingNextPageFromQuery,
     fetchNextPage: fetchNextPageFromQuery,
     refetch: refetchFromQuery,
+    totalResults: searchTotalResults,
   } = useMyObservationsQuery( );
   // Only use server-ordered result when at least one of the features that needs it is enabled;
   // when neither is, we use the plain local list anyway
@@ -427,6 +428,11 @@ const MyObservationsResults = ( ) => {
 
   const numTotalObservations = totalResultsRemote || observationIds.length;
 
+  // When a search is active, we want to show a live, search-informed total
+  const displayedObservationsCount = hasActiveSearch
+    ? searchTotalResults
+    : numOfUserObservations;
+
   // Pagination for the rendered list follows whichever source is authoritative:
   const isFetchingNextPageForList = useServerOrder
     ? isFetchingNextPageFromQuery
@@ -523,7 +529,7 @@ const MyObservationsResults = ( ) => {
       listRef={listRef}
       loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
       taxaListRef={taxaListRef}
-      numTotalObservations={numOfUserObservations}
+      numTotalObservations={displayedObservationsCount}
       numTotalTaxa={numOfUserSpecies}
       numUnuploadedObservations={numUnuploadedObservations}
       numObsMissingBasics={numObsMissingBasics}
