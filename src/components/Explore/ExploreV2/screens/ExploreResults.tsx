@@ -43,6 +43,7 @@ import {
   useSpeciesSortLabels,
 } from "sharedHelpers/speciesSort";
 import { useTranslation } from "sharedHooks";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
 import useStoredLayout from "sharedHooks/useStoredLayout";
@@ -59,6 +60,8 @@ interface SortOption<SortValue> {
 
 const ExploreResults = ( ) => {
   const { dispatch, state } = useExploreV2( );
+  const currentUser = useCurrentUser( );
+  const currentUserId = currentUser?.id;
   const {
     hasPermissions,
     hasBlockedPermissions,
@@ -140,8 +143,8 @@ const ExploreResults = ( ) => {
   const canFetch = !needsPermission && nearbyResolved;
 
   const queryParams = useMemo(
-    ( ) => buildExploreV2QueryParams( state, nearbyCoords ),
-    [state, nearbyCoords],
+    ( ) => buildExploreV2QueryParams( state, nearbyCoords, currentUserId ),
+    [state, nearbyCoords, currentUserId],
   );
 
   const {

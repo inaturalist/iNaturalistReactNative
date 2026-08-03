@@ -101,6 +101,10 @@ const MyObservationsResults = ( ) => {
   const myObservationsMapViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsMapViewEnabled,
   );
+  const myObservationsSmallGridViewEnabled = useFeatureFlag(
+    FeatureFlag.MyObservationsSmallGridViewEnabled,
+  );
+  const { isConnected } = useNetInfo( );
   const {
     observationIds: queryObservationIds,
     isServerAuthoritative,
@@ -116,8 +120,10 @@ const MyObservationsResults = ( ) => {
   const observationIds = myObsQueryEnabled
     ? queryObservationIds
     : localObservationIds;
-  const showSearchEmptyState = searchMyObservationsEnabled
-    && !!myObsState.searchedTaxon
+  const hasActiveSearch = searchMyObservationsEnabled && !!myObsState.searchedTaxon;
+  const showSearchOfflineNotice = hasActiveSearch && isConnected === false;
+  const showSearchEmptyState = hasActiveSearch
+    && isConnected !== false
     && !isLoadingFromQuery
     && observationIds.length === 0;
   const {
@@ -127,18 +133,28 @@ const MyObservationsResults = ( ) => {
   const prevObservationsLength = useRef( observationIds.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
-  const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const currentUserId = currentUser?.id;
   const canUpload = !!currentUser && !!isConnected;
 
-  // If map mode becomes unavailable (feature flag disabled or logged out),
+  // If the current view mode becomes unavailable (feature flag disabled or logged out),
   // fall back to grid rather than getting stuck on an unrenderable view
   useEffect( ( ) => {
-    if ( layout === "map" && ( !myObservationsMapViewEnabled || !currentUser ) ) {
+    const viewUnavailable = (
+      layout === "map" && ( !myObservationsMapViewEnabled || !currentUser )
+    ) || (
+      layout === "smallGrid" && ( !myObservationsSmallGridViewEnabled || !currentUser )
+    );
+    if ( viewUnavailable ) {
       writeLayoutToStorage( "grid" );
     }
-  }, [layout, myObservationsMapViewEnabled, currentUser, writeLayoutToStorage] );
+  }, [
+    layout,
+    myObservationsMapViewEnabled,
+    myObservationsSmallGridViewEnabled,
+    currentUser,
+    writeLayoutToStorage,
+  ] );
 
   const { startUploadObservations } = useUploadObservations( canUpload );
   const { syncManually } = useSyncObservations(
@@ -382,6 +398,7 @@ const MyObservationsResults = ( ) => {
 
   const {
     data: remoteObservedTaxaCounts,
+    isFetching: isLoadingTaxa,
     isFetchingNextPage: isFetchingTaxa,
     fetchNextPage: fetchMoreTaxa,
     totalResults: numTotalTaxaRemote,
@@ -392,6 +409,9 @@ const MyObservationsResults = ( ) => {
     {
       user_id: currentUser?.id,
       ...sortAPIParams,
+      ...( myObsState.searchedTaxon?.id
+        ? { taxon_id: myObsState.searchedTaxon.id }
+        : {} ),
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS,
       },
@@ -465,6 +485,11 @@ const MyObservationsResults = ( ) => {
     myObsState.speciesSort,
   ] );
 
+  const showSpeciesSearchEmptyState = hasActiveSearch
+    && isConnected !== false
+    && !isLoadingTaxa
+    && taxa.length === 0;
+
   if ( !layout ) { return null; }
 
   if ( observationIds.length === 0 && !totalResultsRemote ) {
@@ -515,6 +540,8 @@ const MyObservationsResults = ( ) => {
       setSpeciesSortOptionId={setSpeciesSortOptionId}
       showNoResults={showNoResults}
       showSearchEmptyState={showSearchEmptyState}
+      showSearchOfflineNotice={showSearchOfflineNotice}
+      showSpeciesSearchEmptyState={showSpeciesSearchEmptyState}
       speciesSortOptionId={myObsState.speciesSort}
       taxa={taxa}
       updateObservationsView={updateObservationsView}

@@ -18,39 +18,43 @@ type LocalesResponse = {
   language_in_locale: string;
 }[];
 
+type LocalesOptions = Record<string, { label: string; value: string }>
+
 interface Props {
   onChange: ( newLocale: string ) => void;
 }
 
-const LanguageSetting = ( { onChange }: Props ) => {
-  const { t, i18n } = useTranslation();
-  const [webLocales, setWebLocales] = useState<LocalesResponse>( [] );
-  const webLocalesOptions = Object.fromEntries(
-    webLocales?.map( locale => [locale.locale, {
+const localesToOptions = ( localesResponse: LocalesResponse ) => Object.fromEntries(
+  localesResponse?.map( locale => [
+    locale.locale,
+    {
       label: locale.language_in_locale,
       value: locale.locale,
-    }] ),
-  );
+    },
+  ] ),
+);
+
+const LanguageSetting = ( { onChange }: Props ) => {
+  const { t, i18n } = useTranslation();
+  const [localeOptions, setLocaleOptions] = useState<LocalesOptions | null>( () => {
+    const currentLocales = zustandStorage.getItem( "availableLocales" );
+    return currentLocales
+      ? localesToOptions( JSON.parse( currentLocales as string ) )
+      : null;
+  } );
   const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
 
   useEffect( () => {
     async function fetchLocales() {
-      // Whenever possible, save latest available locales from server
-      const currentLocales = zustandStorage.getItem( "availableLocales" );
-
-      setWebLocales( currentLocales
-        ? JSON.parse( currentLocales )
-        : [] );
-
       const apiToken = await getJWT( );
       const locales = await fetchAvailableLocales( {}, { api_token: apiToken } );
       zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
-      setWebLocales( locales as LocalesResponse );
+      setLocaleOptions( localesToOptions( locales as LocalesResponse ) );
     }
     fetchLocales();
   }, [] );
 
-  if ( webLocales.length === 0 ) {
+  if ( !localeOptions ) {
     return null;
   }
 
@@ -83,7 +87,7 @@ const LanguageSetting = ( { onChange }: Props ) => {
           }}
           onPressClose={() => setLocaleSheetOpen( false )}
           selectedValue={i18n.language}
-          pickerValues={webLocalesOptions}
+          pickerValues={localeOptions}
         />
       )}
     </View>
