@@ -3,7 +3,7 @@ import type { IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
 import { orderIconicTaxaCounts } from "sharedHelpers/iconicTaxaGroupOrder";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
-interface Options {
+interface IconicTaxaObservationCountsOptions {
   enabled?: boolean;
 }
 
@@ -11,7 +11,7 @@ interface Options {
 // returns them ordered most-observed to least-observed, falling back to
 // orderIconicTaxaCounts' tie-break rules
 const useIconicTaxaObservationCounts = (
-  { enabled = true }: Options = {},
+  { enabled = true }: IconicTaxaObservationCountsOptions = {},
 ): IconicTaxaGroupCount[] => {
   const currentUser = useCurrentUser( );
   const params = { user_id: currentUser?.id, ttl: -1 };
