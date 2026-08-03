@@ -20,6 +20,7 @@ import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
+import useSelectNearbyLocation from "../hooks/useSelectNearbyLocation";
 import ExploreHeaderCount from "./ExploreHeaderCount";
 
 type Props = {
@@ -53,6 +54,7 @@ const Header = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { state, numberOfFilters } = useExplore( );
+  const selectNearbyLocation = useSelectNearbyLocation( );
   const { taxon } = state;
   const iconicTaxonNames = state.iconic_taxa || [];
   const [showTaxonSearch, setShowTaxonSearch] = useState( false );
@@ -151,6 +153,7 @@ const Header = ( {
       <ExploreLocationSearchModal
         closeModal={() => { setShowLocationSearch( false ); }}
         hasPermissions={hasLocationPermissions}
+        onSelectNearby={selectNearbyLocation}
         renderPermissionsGate={renderLocationPermissionsGate}
         requestPermissions={requestLocationPermissions}
         showModal={showLocationSearch}
