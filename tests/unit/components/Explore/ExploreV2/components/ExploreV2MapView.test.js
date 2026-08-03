@@ -1,7 +1,9 @@
-import { screen } from "@testing-library/react-native";
+import { act, screen, userEvent } from "@testing-library/react-native";
 import ExploreV2MapView from "components/Explore/ExploreV2/components/ExploreV2MapView";
+import i18next from "i18next";
 import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
 import React from "react";
+import { animateToRegion } from "react-native-maps";
 import { renderComponent } from "tests/helpers/render";
 
 // Map asks for location permission on mount. Without this the real hook
@@ -32,7 +34,7 @@ const mockTotalBounds = {
   nelng: 40,
 };
 
-const renderMapView = props => renderComponent(
+const renderMapView = ( props, update = null ) => renderComponent(
   <ExploreV2MapView
     isLoading={false}
     placeMode={EXPLORE_V2_PLACE_MODE.WORLDWIDE}
@@ -40,11 +42,16 @@ const renderMapView = props => renderComponent(
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />,
+  update,
 );
 
 const mapProps = ( ) => screen.getByTestId( "Map.MapView" ).props;
 
 describe( "ExploreV2MapView", ( ) => {
+  beforeEach( ( ) => {
+    animateToRegion.mockClear( );
+  } );
+
   it( "shows a loading indicator while results are loading", ( ) => {
     renderMapView( { isLoading: true } );
 
@@ -121,5 +128,122 @@ describe( "ExploreV2MapView", ( ) => {
     } );
 
     expect( mapProps( ).initialRegion.latitudeDelta ).toBe( 180 );
+  } );
+
+  it( "does not move the map when the search becomes a map area", ( ) => {
+    const { rerender } = renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
+      totalBounds: mockTotalBounds,
+    } );
+    animateToRegion.mockClear( );
+
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      mapAreaBounds: mockTotalBounds,
+      totalBounds: mockTotalBounds,
+      queryParams: { ...mockQueryParams, swlat: 10 },
+    }, rerender );
+
+    expect( animateToRegion ).not.toHaveBeenCalled( );
+  } );
+
+  it( "keeps ignoring new result bounds while a map area stays up", ( ) => {
+    const { rerender } = renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      mapAreaBounds: mockTotalBounds,
+    } );
+    animateToRegion.mockClear( );
+
+    // Results come back for the map area search
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      mapAreaBounds: mockTotalBounds,
+      totalBounds: {
+        swlat: -80, swlng: -170, nelat: 80, nelng: 170,
+      },
+    }, rerender );
+
+    expect( animateToRegion ).not.toHaveBeenCalled( );
+  } );
+
+  it( "restores the chosen area when the map remounts in map area mode", ( ) => {
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      mapAreaBounds: {
+        swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+      },
+    } );
+
+    expect( mapProps( ).initialRegion ).toEqual( {
+      latitude: 20,
+      longitude: 30,
+      latitudeDelta: 20,
+      longitudeDelta: 20,
+    } );
+  } );
+
+  it( "prefers the chosen area over loaded result bounds when the map remounts", ( ) => {
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      mapAreaBounds: {
+        swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+      },
+      totalBounds: {
+        swlat: 12, swlng: 22, nelat: 14, nelng: 24,
+      },
+    } );
+
+    expect( mapProps( ).initialRegion ).toEqual( {
+      latitude: 20,
+      longitude: 30,
+      latitudeDelta: 20,
+      longitudeDelta: 20,
+    } );
+  } );
+
+  describe( "redo search in map area", ( ) => {
+    const redoSearchButton = ( ) => screen.queryByText(
+      i18next.t( "REDO-SEARCH-IN-MAP-AREA" ),
+    );
+
+    it( "hides the button until the user moves the map", ( ) => {
+      renderMapView( );
+
+      expect( redoSearchButton( ) ).toBeNull( );
+    } );
+
+    it( "shows the button once the user pans the map", ( ) => {
+      renderMapView( );
+
+      act( ( ) => mapProps( ).onPanDrag( ) );
+
+      expect( redoSearchButton( ) ).toBeTruthy( );
+    } );
+
+    it( "reports the visible bounds when the button is pressed", async ( ) => {
+      const actor = userEvent.setup( );
+      const onRedoSearchPress = jest.fn( );
+      renderMapView( { onRedoSearchPress } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+
+      await actor.press( redoSearchButton( ) );
+
+      expect( onRedoSearchPress ).toHaveBeenCalledWith( {
+        swlat: 1,
+        swlng: 2,
+        nelat: 3,
+        nelng: 4,
+      } );
+    } );
+
+    it( "hides the button after it's pressed", async ( ) => {
+      const actor = userEvent.setup( );
+      renderMapView( { onRedoSearchPress: jest.fn( ) } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+
+      await actor.press( redoSearchButton( ) );
+
+      expect( redoSearchButton( ) ).toBeNull( );
+    } );
   } );
 } );
