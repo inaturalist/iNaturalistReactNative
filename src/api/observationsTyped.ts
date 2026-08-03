@@ -9,6 +9,10 @@ export interface IconicTaxonCountResult {
   taxon: { name: string } | null;
 }
 
+// Accepts only a user_id for now, but could be widened to accept a login string or an array of
+// ids or logins. This endpoint was created to assist with building the grouped-by-iconic-taxa
+// view for My Observations, so for now, narrowing to number only is a deliberate simplification
+// for what this feature actually needs.
 export interface IconicTaxaCountsParams extends ApiParams {
   user_id?: number;
 }
