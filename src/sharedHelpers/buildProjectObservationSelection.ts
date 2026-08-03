@@ -18,8 +18,9 @@ export default function buildProjectObservationSelection(
   existingProjectObservations: RealmProjectObservationPojo[] | undefined,
   selectedProjectIds: Set<number>,
 ): BuildProjectObservationSelectionResult {
-  console.log( "existingProjectObservations", existingProjectObservations );
   console.log( "selectedProjectIds", selectedProjectIds );
+  const projectObservations = existingProjectObservations ?? [];
+  console.log( "projectObservations", projectObservations );
   return {
     projectObservations: [],
   };
