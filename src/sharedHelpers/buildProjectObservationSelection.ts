@@ -3,6 +3,7 @@ import type { RealmProjectObservationPojo } from "realmModels/types";
 
 export interface BuildProjectObservationSelectionResult {
   projectObservations: RealmProjectObservationPojo[];
+  projectObservationUuidsToDelete: string[];
 }
 
 export function areProjectIdSetsEqual(
