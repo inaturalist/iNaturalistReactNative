@@ -51,8 +51,14 @@ const AddToProjects = ( ) => {
   const currentObservation = useStore(
     ( state: ObservationFlowSlice ) => state.currentObservation,
   );
+  const initialSelectedProjectIds = new Set(
+    ( currentObservation?.projectObservations ?? [] )
+      .map( po => po.projectId ),
+  );
 
-  const [selectedProjectIds, setSelectedProjectIds] = useState( () => new Set( ) );
+  const [selectedProjectIds, setSelectedProjectIds] = useState(
+    () => initialSelectedProjectIds,
+  );
 
   const joinedProjects = useMemo(
     () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
