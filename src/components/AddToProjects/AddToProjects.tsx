@@ -17,6 +17,9 @@ import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
+import {
+  areProjectIdSetsEqual,
+} from "sharedHelpers/buildProjectObservationSelection";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
 import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
@@ -72,6 +75,11 @@ const AddToProjects = ( ) => {
     },
     [currentObservation, joinedProjects, selectedProjectIds],
   );
+  const selectionUnchanged = areProjectIdSetsEqual(
+    selectedProjectIds,
+    initialSelectedProjectIds,
+  );
+  const saveDisabled = !validationResult.valid || selectionUnchanged;
   const listHeaderComponent = useMemo(
     ( ) => (
       <View className="px-4 pt-5 pb-6">
@@ -250,7 +258,7 @@ const AddToProjects = ( ) => {
             text={t( "SAVE" )}
             onPress={onSave}
             level="neutral"
-            disabled={!validationResult.valid}
+            disabled={saveDisabled}
           />
         </ButtonBar>
       </View>
