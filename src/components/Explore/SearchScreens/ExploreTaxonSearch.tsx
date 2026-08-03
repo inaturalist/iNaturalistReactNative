@@ -9,6 +9,7 @@ import React, {
   useCallback,
   useState,
 } from "react";
+import type { ListRenderItem } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
 import useTaxonSearch from "sharedHooks/useTaxonSearch";
 import useTranslation from "sharedHooks/useTranslation";
@@ -46,10 +47,8 @@ const ExploreTaxonSearch = ( {
     [updateTaxon, closeModal],
   );
 
-  const renderItem = useCallback(
-    // no-unused-prop-types bug
-    // eslint-disable-next-line react/no-unused-prop-types
-    ( { item: taxon, index }: { item: RealmTaxon; index: number } ) => (
+  const renderItem: ListRenderItem<RealmTaxon> = useCallback(
+    ( { item: taxon, index } ) => (
       <TaxonResult
         first={index === 0}
         fetchRemote={false}
