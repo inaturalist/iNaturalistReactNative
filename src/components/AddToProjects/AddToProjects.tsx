@@ -54,6 +54,10 @@ const AddToProjects = ( ) => {
   const currentObservation = useStore(
     ( state: ObservationFlowSlice ) => state.currentObservation,
   );
+  const updateObservationKeys = useStore(
+    ( state: ObservationFlowSlice ) => state.updateObservationKeys,
+  );
+
   const initialSelectedProjectIds = new Set(
     ( currentObservation?.projectObservations ?? [] )
       .map( po => po.projectId ),
@@ -144,13 +148,15 @@ const AddToProjects = ( ) => {
       currentObservation?.projectObservations,
       selectedProjectIds,
     );
-    // Update the currentObservation with this:
-    console.log( "projectObservations", projectObservations );
+    updateObservationKeys( {
+      projectObservations,
+    } );
     navigation.goBack( );
   }, [
     currentObservation,
     navigation,
     selectedProjectIds,
+    updateObservationKeys,
   ] );
 
   const renderExpanded = useCallback(
