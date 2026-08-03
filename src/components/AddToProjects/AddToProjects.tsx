@@ -144,10 +144,12 @@ const AddToProjects = ( ) => {
   const onSave = useCallback( ( ) => {
     const {
       projectObservations,
+      projectObservationUuidsToDelete,
     } = buildProjectObservationSelection(
       currentObservation?.projectObservations,
       selectedProjectIds,
     );
+    console.log( "projectObservationUuidsToDelete", projectObservationUuidsToDelete );
     updateObservationKeys( {
       projectObservations,
     } );

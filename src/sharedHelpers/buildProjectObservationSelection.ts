@@ -21,6 +21,7 @@ export default function buildProjectObservationSelection(
 ): BuildProjectObservationSelectionResult {
   const projectObservations = existingProjectObservations ?? [];
   const nextProjectObservations: RealmProjectObservationPojo[] = [];
+  const nextUuidsToDelete: string[] = [];
 
   // When pressing Save, for each project that is selected we need to check if there
   // already exists a PO (e.g. on ObsEdit by not changing this one while adding another)
@@ -33,7 +34,14 @@ export default function buildProjectObservationSelection(
       nextProjectObservations.push( ProjectObservation.new( projectId ) );
     }
   } );
+
+  projectObservations.forEach( po => {
+    if ( !selectedProjectIds.has( po.projectId ) && po._synced_at != null ) {
+      nextUuidsToDelete.push( po.uuid );
+    }
+  } );
   return {
     projectObservations: nextProjectObservations,
+    projectObservationUuidsToDelete: nextUuidsToDelete,
   };
 }
