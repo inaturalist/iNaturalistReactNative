@@ -17,7 +17,7 @@ const useIconicTaxaObservationCounts = (
   const params = { user_id: currentUser?.id, ttl: -1 };
 
   const { data } = useAuthenticatedQuery(
-    ["useIconicTaxaObservationCounts", params],
+    ["useIconicTaxaObservationCounts", currentUser?.id],
     async optsWithAuth => {
       const response = await fetchIconicTaxaCounts( params, {
         api_token: optsWithAuth.api_token ?? undefined,
