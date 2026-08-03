@@ -1,4 +1,4 @@
-export default function areProjectIdSetsEqual(
+export function areProjectIdSetsEqual(
   first: Set<number>,
   second: Set<number>,
 ): boolean {
@@ -6,4 +6,7 @@ export default function areProjectIdSetsEqual(
     return false;
   }
   return [...first].every( projectId => second.has( projectId ) );
+}
+
+export default function buildProjectObservationSelection() {
 }
