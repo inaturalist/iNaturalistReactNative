@@ -1,3 +1,4 @@
+import type { ApiTotalBounds } from "api/types";
 import type { SPECIES_TAB } from "appConstants/tabs";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
 import * as React from "react";
@@ -10,6 +11,7 @@ export enum EXPLORE_V2_ACTION {
   SET_LOCATION_NEARBY = "SET_LOCATION_NEARBY",
   SET_LOCATION_WORLDWIDE = "SET_LOCATION_WORLDWIDE",
   SET_LOCATION_PLACE = "SET_LOCATION_PLACE",
+  SET_LOCATION_MAP_AREA = "SET_LOCATION_MAP_AREA",
   SET_SORT = "SET_SORT",
   SET_SPECIES_SORT = "SET_SPECIES_SORT",
   SET_FILTERS = "SET_FILTERS",
@@ -20,7 +22,8 @@ export enum EXPLORE_V2_ACTION {
 export enum EXPLORE_V2_PLACE_MODE {
   NEARBY = "NEARBY",
   WORLDWIDE = "WORLDWIDE",
-  PLACE = "PLACE"
+  PLACE = "PLACE",
+  MAP_AREA = "MAP_AREA"
 }
 
 export interface Place {
@@ -66,7 +69,8 @@ export interface ExploreV2Filters {
 export type ExploreV2LocationState =
   | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
   | { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY }
-  | { placeMode: EXPLORE_V2_PLACE_MODE.PLACE; place: Place };
+  | { placeMode: EXPLORE_V2_PLACE_MODE.PLACE; place: Place }
+  | { placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA; bounds: ApiTotalBounds };
 
 export interface ExploreV2State {
   subject: ExploreV2Subject | null;
@@ -85,6 +89,10 @@ export type ExploreV2Action =
   | {
     type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE;
     place: Place;
+  }
+  | {
+    type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA;
+    bounds: ApiTotalBounds;
   }
   | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: OBSERVATIONS_SORT }
   | { type: EXPLORE_V2_ACTION.SET_SPECIES_SORT; speciesSortBy: SPECIES_SORT }
@@ -126,6 +134,14 @@ export function exploreV2Reducer(
         location: {
           placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
           place: action.place,
+        },
+      };
+    case EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA:
+      return {
+        ...state,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+          bounds: action.bounds,
         },
       };
     case EXPLORE_V2_ACTION.SET_SORT:
