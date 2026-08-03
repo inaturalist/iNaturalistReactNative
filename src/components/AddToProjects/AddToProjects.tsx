@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
-import {
+import buildProjectObservationSelection, {
   areProjectIdSetsEqual,
 } from "sharedHelpers/buildProjectObservationSelection";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
@@ -137,9 +137,21 @@ const AddToProjects = ( ) => {
     } );
   }, [] );
 
-  const onSave = ( ) => {
+  const onSave = useCallback( ( ) => {
+    const {
+      projectObservations,
+    } = buildProjectObservationSelection(
+      currentObservation?.projectObservations,
+      selectedProjectIds,
+    );
+    // Update the currentObservation with this:
+    console.log( "projectObservations", projectObservations );
     navigation.goBack( );
-  };
+  }, [
+    currentObservation,
+    navigation,
+    selectedProjectIds,
+  ] );
 
   const renderExpanded = useCallback(
     ( item: RealmProject, projectValid: boolean ) => (
