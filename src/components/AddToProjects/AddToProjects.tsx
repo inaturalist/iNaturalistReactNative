@@ -147,6 +147,7 @@ const AddToProjects = ( ) => {
       projectObservationUuidsToDelete,
     } = buildProjectObservationSelection(
       currentObservation?.projectObservations,
+      currentObservation?.projectObservationUuidsToDelete,
       selectedProjectIds,
     );
     updateObservationKeys( {
