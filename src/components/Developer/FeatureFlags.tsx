@@ -3,6 +3,8 @@ import {
   SwitchRow,
 } from "components/SharedComponents";
 import React, { useCallback } from "react";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import { flagEnabledForAdminTestFlight } from "sharedHooks/useFeatureFlag";
 import type { FeatureFlagSlice } from "stores/createFeatureFlagSlice";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
@@ -10,13 +12,16 @@ import useStore from "stores/useStore";
 import { H1, H2 } from "./DeveloperSharedComponents";
 
 export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
+  const currentUser = useCurrentUser();
   const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
   const featureFlagOverrides
     = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
   const storeSetOverride
     = useStore( ( state: FeatureFlagSlice ) => state.setFeatureFlagDebugOverride );
 
-  const rawValue = featureFlagConfig[featureFlagKey];
+  const isFlagEnabledForAdminTestFlight
+      = flagEnabledForAdminTestFlight( featureFlagKey, currentUser );
+  const rawValue = isFlagEnabledForAdminTestFlight || featureFlagConfig[featureFlagKey];
   const overrideValue = featureFlagOverrides[featureFlagKey];
 
   const resolvedValue = overrideValue === null
