@@ -93,7 +93,7 @@ describe( "AddToProjects", ( ) => {
 
     expect(
       within( screen.getByTestId( `AddToProjects.project.${mockProjects[1].id}` ) )
-        .getByText( iconGlyph( "circle-dots-pencil" ) ),
+        .getByText( iconGlyph( "checkmark-circle" ) ),
     ).toBeVisible( );
 
     // TODO: MOB-1503 also check for expanded chooser being shown
