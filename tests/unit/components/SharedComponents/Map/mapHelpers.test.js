@@ -1,4 +1,41 @@
-import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers";
+import {
+  getMapRegion,
+  regionFromBounds,
+} from "components/SharedComponents/Map/helpers/mapHelpers";
+
+describe( "regionFromBounds", ( ) => {
+  it( "covers exactly the bounds it was given", ( ) => {
+    const region = regionFromBounds( {
+      swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+    } );
+
+    expect( region.latitude ).toBe( 20 );
+    expect( region.longitude ).toBe( 30 );
+    expect( region.latitudeDelta ).toBe( 20 );
+    expect( region.longitudeDelta ).toBe( 20 );
+  } );
+
+  it( "round trips the bounds of a viewport without growing it", ( ) => {
+    const bounds = {
+      swlat: 37.7, swlng: -122.5, nelat: 37.8, nelng: -122.4,
+    };
+    const region = regionFromBounds( bounds );
+
+    expect( region.latitude - ( region.latitudeDelta / 2 ) ).toBeCloseTo( bounds.swlat );
+    expect( region.longitude - ( region.longitudeDelta / 2 ) ).toBeCloseTo( bounds.swlng );
+    expect( region.latitude + ( region.latitudeDelta / 2 ) ).toBeCloseTo( bounds.nelat );
+    expect( region.longitude + ( region.longitudeDelta / 2 ) ).toBeCloseTo( bounds.nelng );
+  } );
+
+  it( "keeps deltas positive when the bounds are inverted", ( ) => {
+    const region = regionFromBounds( {
+      swlat: 30, swlng: 40, nelat: 10, nelng: 20,
+    } );
+
+    expect( region.latitudeDelta ).toBe( 20 );
+    expect( region.longitudeDelta ).toBe( 20 );
+  } );
+} );
 
 describe( "getMapRegion", ( ) => {
   it( "frames the bounds with a bit of padding so the full range is visible", ( ) => {

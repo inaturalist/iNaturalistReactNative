@@ -5,7 +5,10 @@ import type {
 } from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import ActivityIndicator from "components/SharedComponents/ActivityIndicator";
 import Button from "components/SharedComponents/Buttons/Button";
-import { getMapRegion } from "components/SharedComponents/Map/helpers/mapHelpers";
+import {
+  getMapRegion,
+  regionFromBounds,
+} from "components/SharedComponents/Map/helpers/mapHelpers";
 import Map from "components/SharedComponents/Map/Map";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
@@ -33,17 +36,6 @@ const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6,
 } );
-
-const regionFromBounds = ( bounds: ApiTotalBounds ): Region => {
-  const latitudeDelta = Math.abs( bounds.nelat - bounds.swlat );
-  const longitudeDelta = Math.abs( bounds.nelng - bounds.swlng );
-  return {
-    latitude: bounds.nelat - ( latitudeDelta / 2 ),
-    longitude: bounds.nelng - ( longitudeDelta / 2 ),
-    latitudeDelta,
-    longitudeDelta,
-  };
-};
 
 interface Props {
   isLoading: boolean;
