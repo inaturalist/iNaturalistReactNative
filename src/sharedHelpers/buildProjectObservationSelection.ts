@@ -20,7 +20,7 @@ export default function buildProjectObservationSelection(
   existingProjectObservations: RealmProjectObservationPojo[] | undefined,
   selectedProjectIds: Set<number>,
 ): BuildProjectObservationSelectionResult {
-  const projectObservations = existingProjectObservations ?? [];
+  const priorProjectObservations = existingProjectObservations ?? [];
   const nextProjectObservations: RealmProjectObservationPojo[] = [];
   const nextUuidsToDelete: string[] = [];
 
@@ -28,7 +28,7 @@ export default function buildProjectObservationSelection(
   // already exists a PO (e.g. on ObsEdit by not changing this one while adding another)
   // or if we need to create a new PO
   selectedProjectIds.forEach( projectId => {
-    const existingPo = projectObservations.find( po => po.projectId === projectId );
+    const existingPo = priorProjectObservations.find( po => po.projectId === projectId );
     if ( existingPo ) {
       nextProjectObservations.push( existingPo );
     } else {
@@ -36,7 +36,7 @@ export default function buildProjectObservationSelection(
     }
   } );
 
-  projectObservations.forEach( po => {
+  priorProjectObservations.forEach( po => {
     if ( !selectedProjectIds.has( po.projectId ) && po._synced_at != null ) {
       nextUuidsToDelete.push( po.uuid );
     }
