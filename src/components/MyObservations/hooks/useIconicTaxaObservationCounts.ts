@@ -18,17 +18,9 @@ const useIconicTaxaObservationCounts = (
 
   const { data } = useAuthenticatedQuery(
     ["useIconicTaxaObservationCounts", currentUser?.id],
-    async optsWithAuth => {
-      const response = await fetchIconicTaxaCounts( params, {
-        api_token: optsWithAuth.api_token ?? undefined,
-      } );
-      // Narrow out fetchIconicTaxaCounts' declared error cases so `results`
-      // is only ever accessed on a real response.
-      if ( !response || response instanceof Error || !( "results" in response ) ) {
-        throw response;
-      }
-      return response;
-    },
+    optsWithAuth => fetchIconicTaxaCounts( params, {
+      api_token: optsWithAuth.api_token ?? undefined,
+    } ),
     { enabled: enabled && !!currentUser },
   );
 
