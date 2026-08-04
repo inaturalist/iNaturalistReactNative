@@ -79,6 +79,8 @@ Adds-your-vote-of-agreement = Adds your vote of agreement
 Adds-your-vote-of-disagreement = Adds your vote of disagreement
 # Label for toggling app mode between default and advanced settings
 Advanced-Mode = Advanced Mode
+# Header of the advanced search screen
+ADVANCED-SEARCH = ADVANCED SEARCH
 # Link to the advanced search screen with more search filters
 Advanced-Search = Advanced Search
 ADVANCED-SETTINGS = ADVANCED SETTINGS
