@@ -80,7 +80,7 @@ interface ObservationFlowActions {
   setPhotoImporterState: ( options: PhotoImporterOptions ) => void;
   setSavedOrUploadedMultiObsFlow: ( ) => void;
   updateObservations: ( updatedObservations: RealmObservationPojo[] ) => void;
-  updateObservationKeys: ( keysAndValues: Partial<RealmObservationPojo> ) => void;
+  updateObservationKeys: ( keysAndValues: Partial<CurrentObservation> ) => void;
   getCurrentObservation: ( ) => RealmObservationPojo | null;
   prepareObsEdit: ( observation: RealmObservationPojo ) => void;
   prepareCamera: ( ) => void;
