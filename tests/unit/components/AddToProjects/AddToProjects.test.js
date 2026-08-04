@@ -2,16 +2,20 @@ import { screen, userEvent, within } from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
+import useStore from "stores/useStore";
+import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
-
-import {
-  mockProjects,
-  resetStore,
-} from "./helpers/setupAddToProjects";
 
 const actor = userEvent.setup( );
 
 const iconGlyph = name => String.fromCharCode( glyphmap[name] );
+
+const initialStoreState = useStore.getState( );
+
+const mockProjects = [
+  factory( "LocalProject" ),
+  factory( "LocalProject" ),
+];
 
 jest.mock( "providers/contexts", () => {
   const originalModule = jest.requireActual( "providers/contexts" );
@@ -32,9 +36,12 @@ function renderAddToProjects( ) {
   );
 }
 
+beforeAll( async () => {
+  useStore.setState( initialStoreState, true );
+} );
+
 beforeEach( ( ) => {
   jest.clearAllMocks( );
-  resetStore( );
 } );
 
 describe( "AddToProjects", ( ) => {
