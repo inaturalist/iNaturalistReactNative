@@ -1,5 +1,6 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import { useFocusEffect } from "@react-navigation/native";
+import type { ApiTotalBounds } from "api/types";
 import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
@@ -129,6 +130,14 @@ const ExploreResults = ( ) => {
     [dispatch],
   );
 
+  const handleRedoSearchPress = useCallback(
+    ( bounds: ApiTotalBounds ) => dispatch( {
+      type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+      bounds,
+    } ),
+    [dispatch],
+  );
+
   const needsPermission = isNearby && hasPermissions === false && !hasBlockedPermissions;
   const nearbyResolved = !isNearby || nearbyCoords !== undefined;
   const canFetch = !needsPermission && nearbyResolved;
@@ -210,8 +219,12 @@ const ExploreResults = ( ) => {
                 ? (
                   <ExploreV2MapView
                     isLoading={isLoading}
+                    mapAreaBounds={state.location.placeMode === EXPLORE_V2_PLACE_MODE.MAP_AREA
+                      ? state.location.bounds
+                      : undefined}
                     nearbyCoords={nearbyCoords}
                     onCurrentLocationPress={handleCurrentLocationPress}
+                    onRedoSearchPress={handleRedoSearchPress}
                     placeMode={state.location.placeMode}
                     queryParams={queryParams}
                     totalBounds={totalBounds}

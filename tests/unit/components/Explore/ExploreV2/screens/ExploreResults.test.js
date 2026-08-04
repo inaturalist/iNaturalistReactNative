@@ -1,5 +1,7 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
-import { screen, userEvent, waitFor } from "@testing-library/react-native";
+import {
+  act, screen, userEvent, waitFor,
+} from "@testing-library/react-native";
 import { SPECIES_TAB } from "appConstants/tabs";
 import ExploreResults from "components/Explore/ExploreV2/screens/ExploreResults";
 import initI18next from "i18n/initI18next";
@@ -426,5 +428,23 @@ describe( "ExploreResults observations view", ( ) => {
     const map = await screen.findByTestId( "Map.MapView" );
     expect( map.props.initialRegion.latitude ).toBe( 20 );
     expect( map.props.initialRegion.longitude ).toBe( 30 );
+  } );
+
+  it( "searches the visible map area when redo search is pressed", async ( ) => {
+    const actor = userEvent.setup( );
+    renderComponent( <ExploreResults /> );
+
+    const map = await screen.findByTestId( "Map.MapView" );
+    await act( async ( ) => {
+      map.props.onPanDrag( );
+    } );
+    await actor.press( screen.getByText( "REDO SEARCH IN MAP AREA" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith( {
+      type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+      bounds: {
+        swlat: 1, swlng: 2, nelat: 3, nelng: 4,
+      },
+    } );
   } );
 } );
