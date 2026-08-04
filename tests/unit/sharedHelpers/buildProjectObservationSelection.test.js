@@ -91,5 +91,30 @@ describe( "areProjectIdSetsEqual", ( ) => {
       expect( result.projectObservations ).toEqual( [reselectedPo] );
       expect( result.projectObservationUuidsToDelete ).toEqual( [] );
     } );
+
+    it( "carries forward prior session delete uuids and adds newly deselected synced POs", ( ) => {
+      const reselectedPo = factory( "LocalProjectObservation", {
+        projectId: 10,
+        uuid: "reselected-po-uuid",
+        _synced_at: new Date( ),
+      } );
+      const deselectedPo = factory( "LocalProjectObservation", {
+        projectId: 20,
+        uuid: "deselected-po-uuid",
+        _synced_at: new Date( ),
+      } );
+
+      const result = buildProjectObservationSelection(
+        [reselectedPo, deselectedPo],
+        ["prior-session-uuid"],
+        new Set( [10] ),
+      );
+
+      expect( result.projectObservations ).toEqual( [reselectedPo] );
+      expect( result.projectObservationUuidsToDelete ).toEqual( [
+        "prior-session-uuid",
+        "deselected-po-uuid",
+      ] );
+    } );
   } );
 } );
