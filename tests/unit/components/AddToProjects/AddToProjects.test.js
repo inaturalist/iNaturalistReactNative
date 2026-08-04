@@ -117,16 +117,14 @@ describe( "AddToProjects", ( ) => {
   it( "disables SAVE when project selection is unchanged", ( ) => {
     renderAddToProjects( );
 
-    expect( screen.getByTestId( "AddToProjects.saveButton" ) ).toBeDisabled( );
+    expect( screen.getByText( "SAVE" ) ).toBeDisabled();
   } );
 
   it( "enables SAVE after project selection changes", async ( ) => {
     renderAddToProjects( );
 
-    await actor.press(
-      screen.getByTestId( `AddToProjects.project.${mockProjects[0].id}` ),
-    );
+    await actor.press( screen.getByText( mockProjects[0].title ) );
 
-    expect( screen.getByTestId( "AddToProjects.saveButton" ) ).not.toBeDisabled( );
+    expect( screen.getByText( "SAVE" ) ).not.toBeDisabled( );
   } );
 } );
