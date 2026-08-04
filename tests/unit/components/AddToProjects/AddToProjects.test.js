@@ -17,6 +17,15 @@ const mockProjects = [
   factory( "LocalProject" ),
 ];
 
+const mockGoBack = jest.fn( );
+jest.mock( "@react-navigation/native", () => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useNavigation: () => ( { goBack: mockGoBack } ),
+  };
+} );
+
 jest.mock( "providers/contexts", () => {
   const originalModule = jest.requireActual( "providers/contexts" );
   return {
