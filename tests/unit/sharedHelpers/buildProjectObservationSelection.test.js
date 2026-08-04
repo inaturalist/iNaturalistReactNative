@@ -116,5 +116,17 @@ describe( "areProjectIdSetsEqual", ( ) => {
         "deselected-po-uuid",
       ] );
     } );
+
+    it( "handles missing arrays on brand-new observations", ( ) => {
+      const result = buildProjectObservationSelection(
+        undefined,
+        undefined,
+        new Set( [5] ),
+      );
+
+      expect( result.projectObservations ).toHaveLength( 1 );
+      expect( result.projectObservations[0].projectId ).toBe( 5 );
+      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
+    } );
   } );
 } );
