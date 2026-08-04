@@ -98,6 +98,7 @@ export interface ExploreV2Filters {
   iconic_taxa?: string[] | null;
   // User / project, in ExploreV2 parlance we always consider taxon to be the "subject"
   user?: ApiUser | null;
+  excludeUser?: ApiUser | null;
   project?: ApiProjectSummary | null;
 }
 
