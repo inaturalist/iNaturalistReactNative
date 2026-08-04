@@ -117,4 +117,14 @@ describe( "AddToProjects", ( ) => {
 
     expect( screen.getByTestId( "AddToProjects.saveButton" ) ).toBeDisabled( );
   } );
+
+  it( "enables SAVE after project selection changes", async ( ) => {
+    renderAddToProjects( );
+
+    await actor.press(
+      screen.getByTestId( `AddToProjects.project.${mockProjects[0].id}` ),
+    );
+
+    expect( screen.getByTestId( "AddToProjects.saveButton" ) ).not.toBeDisabled( );
+  } );
 } );
