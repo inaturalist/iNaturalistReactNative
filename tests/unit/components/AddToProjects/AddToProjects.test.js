@@ -127,4 +127,21 @@ describe( "AddToProjects", ( ) => {
 
     expect( screen.getByText( "SAVE" ) ).not.toBeDisabled( );
   } );
+
+  it( "persists project selection to Zustand and navigates back on SAVE", async ( ) => {
+    renderAddToProjects( );
+
+    // deselect 0, select 1
+    await actor.press( screen.getByText( mockProjects[0].title ) );
+    await actor.press( screen.getByText( mockProjects[1].title ) );
+    await actor.press( screen.getByText( "SAVE" ) );
+
+    expect(
+      useStore.getState( ).currentObservation?.projectObservations?.map( po => po.projectId ),
+    ).toEqual( [
+      mockProjects[1].id,
+    ] );
+    expect( useStore.getState( ).unsavedChanges ).toBe( true );
+    expect( mockGoBack ).toHaveBeenCalled( );
+  } );
 } );
