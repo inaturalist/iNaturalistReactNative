@@ -56,5 +56,23 @@ describe( "areProjectIdSetsEqual", ( ) => {
       expect( result.projectObservations ).toEqual( [] );
       expect( result.projectObservationUuidsToDelete ).toEqual( ["synced-po-uuid"] );
     } );
+
+    it( "drops never-synced POs without staging deletion", ( ) => {
+      const unsyncedPo = factory( "LocalProjectObservation", {
+        projectId: 10,
+        uuid: "unsynced-po-uuid",
+      } );
+
+      const result = buildProjectObservationSelection(
+        [unsyncedPo],
+        [],
+        new Set( ),
+      );
+
+      expect( result.projectObservations ).toEqual( [] );
+      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
+
+      // TODO: MOB-1508 test that the local realm PO get's deleted in this case
+    } );
   } );
 } );
