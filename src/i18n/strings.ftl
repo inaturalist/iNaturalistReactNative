@@ -1156,6 +1156,8 @@ Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = SEARCH
 # Title for a search interface
 Search = Search
+# Label for the button that submits a search on the universal search screen
+SEARCH--button = SEARCH
 # Placeholder for the location field in universal search
 Search-for-a-location = Search for a location
 Search-for-a-project = Search for a project
