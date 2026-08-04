@@ -39,5 +39,22 @@ describe( "areProjectIdSetsEqual", ( ) => {
       expect( result.projectObservations[0].uuid ).toBeTruthy( );
       expect( result.projectObservationUuidsToDelete ).toEqual( [] );
     } );
+
+    it( "stages synced PO uuids when deselected during an ObsEdit session", ( ) => {
+      const syncedPo = factory( "LocalProjectObservation", {
+        projectId: 10,
+        uuid: "synced-po-uuid",
+        _synced_at: new Date( ),
+      } );
+
+      const result = buildProjectObservationSelection(
+        [syncedPo],
+        [],
+        new Set( ),
+      );
+
+      expect( result.projectObservations ).toEqual( [] );
+      expect( result.projectObservationUuidsToDelete ).toEqual( ["synced-po-uuid"] );
+    } );
   } );
 } );
