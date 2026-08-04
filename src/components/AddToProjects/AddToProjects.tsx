@@ -149,9 +149,9 @@ const AddToProjects = ( ) => {
       currentObservation?.projectObservations,
       selectedProjectIds,
     );
-    console.log( "projectObservationUuidsToDelete", projectObservationUuidsToDelete );
     updateObservationKeys( {
       projectObservations,
+      projectObservationUuidsToDelete,
     } );
     navigation.goBack( );
   }, [
