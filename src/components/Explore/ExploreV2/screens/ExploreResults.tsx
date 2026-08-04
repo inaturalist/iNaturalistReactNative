@@ -3,6 +3,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
+import ExploreV2MapView
+  from "components/Explore/ExploreV2/components/ExploreV2MapView";
 import ExploreV2Tabs
   from "components/Explore/ExploreV2/components/ExploreV2Tabs";
 import ExploreV2DebugSheet
@@ -40,6 +42,7 @@ import {
   useSpeciesSortLabels,
 } from "sharedHelpers/speciesSort";
 import { useTranslation } from "sharedHooks";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
 import useStoredLayout from "sharedHooks/useStoredLayout";
@@ -56,6 +59,8 @@ interface SortOption<SortValue> {
 
 const ExploreResults = ( ) => {
   const { dispatch, state } = useExploreV2( );
+  const currentUser = useCurrentUser( );
+  const currentUserId = currentUser?.id;
   const {
     hasPermissions,
     hasBlockedPermissions,
@@ -68,6 +73,8 @@ const ExploreResults = ( ) => {
   const observationsSortLabels = useObservationsSortLabels( );
   const speciesSortLabels = useSpeciesSortLabels( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreV2ObservationsLayout" );
+
+  const showMap = layout === "map";
 
   const sortOptions = OBSERVATIONS_SORT_OPTIONS.reduce(
     ( acc, sortBy ) => {
@@ -117,20 +124,27 @@ const ExploreResults = ( ) => {
     return ( ) => { cancelled = true; };
   }, [isNearby, hasPermissions, hasBlockedPermissions, nearbyCoords, dispatch] ) );
 
+  const handleCurrentLocationPress = useCallback(
+    ( ) => dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } ),
+    [dispatch],
+  );
+
   const needsPermission = isNearby && hasPermissions === false && !hasBlockedPermissions;
   const nearbyResolved = !isNearby || nearbyCoords !== undefined;
   const canFetch = !needsPermission && nearbyResolved;
 
   const queryParams = useMemo(
-    ( ) => buildExploreV2QueryParams( state, nearbyCoords ),
-    [state, nearbyCoords],
+    ( ) => buildExploreV2QueryParams( state, nearbyCoords, currentUserId ),
+    [state, nearbyCoords, currentUserId],
   );
 
   const {
     fetchNextPage,
     isFetchingNextPage,
+    isLoading,
     handlePullToRefresh,
     observations,
+    totalBounds,
     totalResults,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
@@ -192,29 +206,42 @@ const ExploreResults = ( ) => {
         {state.activeTab === OBSERVATIONS_TAB
           ? (
             <>
-              <ObservationsFlashList
-                data={observations}
-                dataCanBeFetched={canFetch}
-                explore
-                handlePullToRefresh={handlePullToRefresh}
-                hideLoadingWheel={!isFetchingNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-                isConnected={isConnected}
-                layout={layout === "list"
-                  ? "list"
-                  : "grid"}
-                // bit over a misnomer on this prop; in this case it hides the
-                // ID/comments/quality badges that grid results can technically have
-                hideObsUploadStatus={layout !== "list"}
-                obsListKey="ExploreV2Observations"
-                onEndReached={fetchNextPage}
-                showNoResults={canFetch && totalResults === 0}
-                testID="ExploreV2ObservationsList"
-              />
+              {showMap
+                ? (
+                  <ExploreV2MapView
+                    isLoading={isLoading}
+                    nearbyCoords={nearbyCoords}
+                    onCurrentLocationPress={handleCurrentLocationPress}
+                    placeMode={state.location.placeMode}
+                    queryParams={queryParams}
+                    totalBounds={totalBounds}
+                  />
+                )
+                : (
+                  <ObservationsFlashList
+                    data={observations}
+                    dataCanBeFetched={canFetch}
+                    explore
+                    handlePullToRefresh={handlePullToRefresh}
+                    hideLoadingWheel={!isFetchingNextPage}
+                    isFetchingNextPage={isFetchingNextPage}
+                    isConnected={isConnected}
+                    layout={layout === "list"
+                      ? "list"
+                      : "grid"}
+                    // bit over a misnomer on this prop; in this case it hides the
+                    // ID/comments/quality badges that grid results can technically have
+                    hideObsUploadStatus={layout !== "list"}
+                    obsListKey="ExploreV2Observations"
+                    onEndReached={fetchNextPage}
+                    showNoResults={canFetch && totalResults === 0}
+                    testID="ExploreV2ObservationsList"
+                  />
+                )}
               <ObservationsViewBar
                 layout={layout}
                 updateObservationsView={writeLayoutToStorage}
-                viewOptions={["grid", "list"]}
+                viewOptions={["map", "grid", "list"]}
               />
             </>
           )
@@ -226,7 +253,7 @@ const ExploreResults = ( ) => {
             />
           )}
         <ExploreV2DebugSheet />
-        {( state.activeTab === OBSERVATIONS_TAB
+        {( ( state.activeTab === OBSERVATIONS_TAB && !showMap )
           || state.activeTab === SPECIES_TAB ) && (
           <SortButton
             onPress={() => setShowSortSheet( true )}

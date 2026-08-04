@@ -5,35 +5,79 @@ import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import Photo from "realmModels/Photo";
 
+interface PhotoItem {
+  id: number;
+  url: string;
+  localFilePath: string;
+  attribution: string;
+  hidden: boolean;
+}
+
+interface SoundItem {
+  file_url: string;
+  hidden: boolean;
+}
+
+type MediaItem = PhotoItem | SoundItem;
+
+interface Props {
+  items: MediaItem[];
+  onImagePress: ( index: number ) => void;
+}
+
+interface SizedPhoto extends PhotoItem {
+  width: number;
+  height: number;
+}
+
+type ProcessedMediaItem = SizedPhoto | SoundItem;
+
+interface EnrichedPhoto extends SizedPhoto {
+  originalIndex: number;
+}
+
+interface EnrichedSound extends SoundItem {
+  originalIndex: number;
+}
+
+type EnrichedMediaItem = EnrichedPhoto | EnrichedSound;
+
 const numColumns = 2;
 const spacing = 6;
 
-const photoUrl = photo => Photo.displayLocalOrRemoteLargePhoto( photo );
+const photoUrl = ( photo: PhotoItem ): string => (
+  Photo.displayLocalOrRemoteLargePhoto( photo )
+);
 
-const MasonryLayout = ( { items, onImagePress } ) => {
-  const [columns, setColumns] = useState(
+const isSound = ( item: MediaItem ): item is SoundItem => "file_url" in item;
+
+const MasonryLayout = ( { items, onImagePress }: Props ) => {
+  const [columns, setColumns] = useState<EnrichedMediaItem[][]>(
     Array.from( { length: numColumns }, () => [] ),
   );
 
   useEffect( () => {
     const distributeItems = async () => {
-      const newColumns = Array.from( { length: numColumns }, () => [] );
+      const newColumns: EnrichedMediaItem[][] = Array.from(
+        { length: numColumns },
+        () => [],
+      );
 
-      const itemPromises = items.map( async item => {
+      const itemPromises = items.map( async ( item ): Promise<ProcessedMediaItem> => {
         // If a sound, just return it
-        if ( item.file_url ) {
+        if ( isSound( item ) ) {
           return item;
         }
         const imageDimensions = await Image.getSize( photoUrl( item ) );
-        return Object.assign( item, imageDimensions );
+        return { ...item, ...imageDimensions };
       } );
 
       const itemData = await Promise.all( itemPromises );
 
       itemData.forEach( ( item, i ) => {
         const columnIndex = i % numColumns;
-        item.originalIndex = i;
-        newColumns[columnIndex].push( item );
+        const enrichedItem: EnrichedMediaItem = { ...item, originalIndex: i };
+        newColumns[columnIndex].push( enrichedItem );
       } );
 
       setColumns( newColumns );
@@ -42,14 +86,14 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     distributeItems();
   }, [items] );
 
-  const imageStyle = item => ( {
-    width: "100%",
+  const imageStyle = ( item: EnrichedPhoto ) => ( {
+    width: "100%" as const,
     height: undefined,
     aspectRatio: item.width / item.height,
     marginBottom: spacing,
   } );
 
-  const renderImage = ( item, index, column ) => (
+  const renderImage = ( item: EnrichedPhoto, index: number, column: number ) => (
     <PhotoContainer
       key={`MasonryLayout.column${column}.photo_${index}`}
       photo={item}
@@ -58,7 +102,7 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     />
   );
 
-  const renderSound = ( item, index, column ) => (
+  const renderSound = ( item: EnrichedSound, index: number, column: number ) => (
     <SoundContainer
       key={`MasonryLayout.column${column}.sound_${index}`}
       sizeClass="w-full aspect-square"
@@ -67,7 +111,11 @@ const MasonryLayout = ( { items, onImagePress } ) => {
     />
   );
 
-  const renderItem = ( item, index, column ) => ( item.file_url
+  const renderItem = (
+    item: EnrichedMediaItem,
+    index: number,
+    column: number,
+  ) => ( isSound( item )
     ? renderSound( item, index, column )
     : renderImage( item, index, column ) );
 

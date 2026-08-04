@@ -22,6 +22,11 @@ const VIEW_OPTION_DEFINITIONS = {
     accessibilityLabel: "Grid",
     testID: "SegmentedButton.grid",
   },
+  smallGrid: {
+    icon: "small-grid",
+    accessibilityLabel: "Small grid",
+    testID: "SegmentedButton.smallGrid",
+  },
   list: {
     icon: "list",
     accessibilityLabel: "List",

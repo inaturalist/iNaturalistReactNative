@@ -28,6 +28,7 @@ export enum FeatureFlag {
   MyObservationsMapViewEnabled = "myObservationsMapViewEnabled",
   // TODO: remove once MOB-1573 is validated in TestFlight
   TestFlightAdminMessageEnabled = "testFlightAdminMessageEnabled",
+  MyObservationsSmallGridViewEnabled = "myObservationsSmallGridViewEnabled",
 }
 
 export const flagsEnabledForAdminsInTestFlight = [
@@ -43,6 +44,7 @@ const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   [FeatureFlag.SortMyObservationsEnabled]: false,
   [FeatureFlag.MyObservationsMapViewEnabled]: false,
   [FeatureFlag.TestFlightAdminMessageEnabled]: false,
+  [FeatureFlag.MyObservationsSmallGridViewEnabled]: false,
 };
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
@@ -54,6 +56,7 @@ const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   [FeatureFlag.SortMyObservationsEnabled]: null,
   [FeatureFlag.MyObservationsMapViewEnabled]: null,
   [FeatureFlag.TestFlightAdminMessageEnabled]: null,
+  [FeatureFlag.MyObservationsSmallGridViewEnabled]: null,
 };
 
 const DEFAULT_STATE = {

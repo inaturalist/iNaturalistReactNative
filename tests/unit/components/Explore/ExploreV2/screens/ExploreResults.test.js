@@ -60,6 +60,16 @@ jest.mock( "components/Explore/ExploreV2/screens/ExploreV2SpeciesView", ( ) => (
   default: props => mockExploreV2SpeciesView( props ),
 } ) );
 
+let mockLayout = "map";
+const mockWriteLayoutToStorage = jest.fn( );
+jest.mock( "sharedHooks/useStoredLayout", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    layout: mockLayout,
+    writeLayoutToStorage: mockWriteLayoutToStorage,
+  } ),
+} ) );
+
 const mockState = location => ( {
   ...initialExploreV2State,
   location,
@@ -74,6 +84,8 @@ beforeAll( async ( ) => {
 beforeEach( ( ) => {
   mockHasPermissions = undefined;
   mockHasBlockedPermissions = false;
+  mockLayout = "map";
+  mockWriteLayoutToStorage.mockClear( );
   mockDispatch.mockClear( );
   mockRequestPermissions.mockClear( );
   mockExploreV2SpeciesView.mockClear( );
@@ -223,14 +235,19 @@ describe( "ExploreResults offline state", ( ) => {
     refresh.mockResolvedValue( { isConnected: true } );
   } );
 
-  it( "shows the offline notice instead of the list when disconnected", async ( ) => {
-    renderComponent( <ExploreResults /> );
+  it.each( ["map", "grid"] )(
+    "shows the offline notice instead of the results in %s view when disconnected",
+    async layout => {
+      mockLayout = layout;
+      renderComponent( <ExploreResults /> );
 
-    expect(
-      await screen.findByText( "You are offline. Tap to try again." ),
-    ).toBeVisible( );
-    expect( screen.queryByTestId( "ExploreV2ObservationsList" ) ).toBeNull( );
-  } );
+      expect(
+        await screen.findByText( "You are offline. Tap to try again." ),
+      ).toBeVisible( );
+      expect( screen.queryByTestId( "ExploreV2ObservationsList" ) ).toBeNull( );
+      expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+    },
+  );
 
   it( "retries the search when the offline notice is tapped and we are back online", async ( ) => {
     refresh.mockResolvedValue( { isConnected: true } );
@@ -297,5 +314,117 @@ describe( "ExploreResults species sort", ( ) => {
       type: EXPLORE_V2_ACTION.SET_SPECIES_SORT,
       speciesSortBy: SPECIES_SORT.COUNT_ASC,
     } );
+  } );
+} );
+
+describe( "ExploreResults observations view", ( ) => {
+  beforeEach( ( ) => {
+    mockHasPermissions = true;
+    useExploreV2.mockReturnValue( {
+      state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+      dispatch: mockDispatch,
+    } );
+  } );
+
+  it( "offers map, grid, and list views", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByTestId( "SegmentedButton.map" ) ).toBeTruthy( );
+    expect( screen.getByTestId( "SegmentedButton.grid" ) ).toBeTruthy( );
+    expect( screen.getByTestId( "SegmentedButton.list" ) ).toBeTruthy( );
+  } );
+
+  it( "shows the map instead of the list in map view", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByTestId( "Map.MapView" ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "ExploreV2ObservationsList" ) ).toBeNull( );
+  } );
+
+  it( "shows the list instead of the map in grid view", async ( ) => {
+    mockLayout = "grid";
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByTestId( "ExploreV2ObservationsList" ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+  } );
+
+  it( "persists the newly selected view when a view is tapped", async ( ) => {
+    const actor = userEvent.setup( );
+    renderComponent( <ExploreResults /> );
+
+    await actor.press( await screen.findByTestId( "SegmentedButton.grid" ) );
+
+    expect( mockWriteLayoutToStorage ).toHaveBeenCalledWith( "grid" );
+  } );
+
+  it( "hides the sort button in map view", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    await screen.findByTestId( "Map.MapView" );
+    expect( screen.queryByLabelText( "Change observations sort order" ) ).toBeNull( );
+  } );
+
+  it( "shows the sort button in grid view", async ( ) => {
+    mockLayout = "grid";
+    renderComponent( <ExploreResults /> );
+
+    expect(
+      await screen.findByLabelText( "Change observations sort order" ),
+    ).toBeTruthy( );
+  } );
+
+  it( "makes the search nearby when the current location button is pressed", async ( ) => {
+    const actor = userEvent.setup( );
+    renderComponent( <ExploreResults /> );
+
+    await actor.press( await screen.findByTestId( "Map.CurrentLocationButton" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith( {
+      type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY,
+    } );
+  } );
+
+  it(
+    "shows the permission prompt instead of the map when nearby without permission",
+    async ( ) => {
+      mockHasPermissions = false;
+      useExploreV2.mockReturnValue( {
+        state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY } ),
+        dispatch: mockDispatch,
+      } );
+
+      renderComponent( <ExploreResults /> );
+
+      expect( await screen.findByText( /To view nearby organisms/ ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+      expect( screen.queryByTestId( "SegmentedButton.map" ) ).toBeNull( );
+    },
+  );
+
+  it( "frames the map to the bounds of the results", async ( ) => {
+    mockUseInfiniteExploreScroll.mockReturnValue( {
+      fetchNextPage: jest.fn( ),
+      isFetchingNextPage: false,
+      handlePullToRefresh: jest.fn( ),
+      observations: [],
+      totalBounds: {
+        swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+      },
+      totalResults: 1,
+    } );
+    useExploreV2.mockReturnValue( {
+      state: mockState( {
+        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        place: { id: 1, display_name: "Berkeley" },
+      } ),
+      dispatch: mockDispatch,
+    } );
+
+    renderComponent( <ExploreResults /> );
+
+    const map = await screen.findByTestId( "Map.MapView" );
+    expect( map.props.initialRegion.latitude ).toBe( 20 );
+    expect( map.props.initialRegion.longitude ).toBe( 30 );
   } );
 } );

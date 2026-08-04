@@ -6,6 +6,8 @@ interface LayoutHook {
   writeLayoutToStorage: ( newValue: string ) => void;
 }
 
+const MAP_DEFAULT_STORAGE_KEYS = ["exploreObservationsLayout", "exploreV2ObservationsLayout"];
+
 const useStoredLayout = ( storageKey: string ): LayoutHook => {
   const [layout, setLayout] = useState<string | null>( null );
 
@@ -18,7 +20,7 @@ const useStoredLayout = ( storageKey: string ): LayoutHook => {
     const readLayoutFromStorage = async ( ) => {
       // Casting is necessary because zustandStorage.getItem returns string | number | null
       const storedLayout = zustandStorage.getItem( storageKey ) as string | null;
-      const defaultLayout = storageKey === "exploreObservationsLayout"
+      const defaultLayout = MAP_DEFAULT_STORAGE_KEYS.includes( storageKey )
         ? "map"
         : "grid";
       setLayout( storedLayout || defaultLayout );

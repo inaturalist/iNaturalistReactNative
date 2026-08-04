@@ -10,10 +10,6 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import inatPlaceTypes from "dictionaries/places";
-import {
-  EXPLORE_ACTION,
-  useExplore,
-} from "providers/ExploreContext";
 import React, {
   useCallback,
   useMemo,
@@ -35,6 +31,7 @@ const Footer = ( ) => <View className="h-[336px]" />;
 interface Props {
   closeModal: () => void;
   hasPermissions?: boolean;
+  onSelectNearby: ( ) => Promise<void> | void;
   renderPermissionsGate: RenderLocationPermissionsGateFunction;
   requestPermissions: ( ) => void;
   updateLocation: ( location: "worldwide" | ApiPlace ) => void;
@@ -43,12 +40,12 @@ interface Props {
 const ExploreLocationSearch = ( {
   closeModal,
   hasPermissions,
+  onSelectNearby,
   renderPermissionsGate,
   requestPermissions,
   updateLocation,
 }: Props ) => {
   const { t } = useTranslation( );
-  const { dispatch, defaultExploreLocation } = useExplore( );
 
   const [locationName, setLocationName] = useState( "" );
 
@@ -110,14 +107,11 @@ const ExploreLocationSearch = ( {
 
   const setNearbyLocation = useCallback( ( ) => {
     async function getNearbyLocation( ) {
-      const exploreLocation = await defaultExploreLocation( );
-      // exploreLocation has a placeMode already
-      // dispatch( { type: EXPLORE_ACTION.SET_PLACE_MODE_NEARBY } );
-      dispatch( { type: EXPLORE_ACTION.SET_EXPLORE_LOCATION, exploreLocation } );
+      await onSelectNearby( );
       closeModal();
     }
     getNearbyLocation( );
-  }, [dispatch, defaultExploreLocation, closeModal] );
+  }, [onSelectNearby, closeModal] );
 
   const onNearbyPressed = () => {
     if ( hasPermissions ) {

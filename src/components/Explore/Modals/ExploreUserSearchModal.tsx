@@ -1,3 +1,4 @@
+import type { ExploreSearchUser } from "components/Explore/SearchScreens/ExploreUserSearch";
 import ExploreUserSearch from "components/Explore/SearchScreens/ExploreUserSearch";
 import Modal from "components/SharedComponents/Modal";
 import React from "react";
@@ -5,8 +6,7 @@ import React from "react";
 interface Props {
   showModal: boolean;
   closeModal: () => void;
-  // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
-  updateUser: ( user: null | { login: string } ) => void;
+  updateUser: ( user: ExploreSearchUser | null, exclude?: boolean ) => void;
 }
 
 const ExploreUserSearchModal = ( {
