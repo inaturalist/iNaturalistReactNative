@@ -30,5 +30,14 @@ describe( "areProjectIdSetsEqual", ( ) => {
       expect( result.projectObservations ).toEqual( [existingPo] );
       expect( result.projectObservationUuidsToDelete ).toEqual( [] );
     } );
+
+    it( "creates a new PO for newly selected projects", ( ) => {
+      const result = buildProjectObservationSelection( [], [], new Set( [42] ) );
+
+      expect( result.projectObservations ).toHaveLength( 1 );
+      expect( result.projectObservations[0].projectId ).toBe( 42 );
+      expect( result.projectObservations[0].uuid ).toBeTruthy( );
+      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
+    } );
   } );
 } );
