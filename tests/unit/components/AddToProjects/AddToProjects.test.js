@@ -96,7 +96,9 @@ describe( "AddToProjects", ( ) => {
         .getByText( iconGlyph( "checkmark-circle" ) ),
     ).toBeVisible( );
 
-    // TODO: MOB-1503 also check for expanded chooser being shown
+    expect(
+      screen.getByText( mockProjects[1].projectObservationFields[0].obsField.name ),
+    ).toBeVisible();
   } );
 
   it( "renders existing project observations as checked", ( ) => {
