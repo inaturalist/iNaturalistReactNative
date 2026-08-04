@@ -74,5 +74,22 @@ describe( "areProjectIdSetsEqual", ( ) => {
 
       // TODO: MOB-1508 test that the local realm PO get's deleted in this case
     } );
+
+    it( "removes re-selected PO uuid from a prior ObsEdit session delete list", ( ) => {
+      const reselectedPo = factory( "LocalProjectObservation", {
+        projectId: 10,
+        uuid: "reselected-po-uuid",
+        _synced_at: new Date( ),
+      } );
+
+      const result = buildProjectObservationSelection(
+        [reselectedPo],
+        ["reselected-po-uuid"],
+        new Set( [10] ),
+      );
+
+      expect( result.projectObservations ).toEqual( [reselectedPo] );
+      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
+    } );
   } );
 } );
