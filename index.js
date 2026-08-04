@@ -153,34 +153,33 @@ const storageAdapters = [
   } ),
 ];
 
-const AppWithProviders = ( ) => {
+// no-op component to invoke useRozenite alongside <App /> w/ full providers.
+const RozeniteContainer = () => {
   // note: Rozenite plugins are automatically disabled / noops in Production builds
-  useRozenite( {
-    queryClient,
-    storageAdapters,
-  } );
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <RealmProvider>
-        <SafeAreaProvider>
-          <INatPaperProvider>
-            <GestureHandlerRootView className="flex-1">
-              <BottomSheetModalProvider>
-                <OfflineNavigationGuard>
-                  <ErrorBoundary>
-                    <App />
-                  </ErrorBoundary>
-                </OfflineNavigationGuard>
-              </BottomSheetModalProvider>
-            </GestureHandlerRootView>
-          </INatPaperProvider>
-        </SafeAreaProvider>
-      </RealmProvider>
-    </QueryClientProvider>
-  );
+  useRozenite( { storageAdapters } );
+  return null;
 };
 
+const AppWithProviders = ( ) => (
+  <QueryClientProvider client={queryClient}>
+    <RealmProvider>
+      <SafeAreaProvider>
+        <INatPaperProvider>
+          <GestureHandlerRootView className="flex-1">
+            <BottomSheetModalProvider>
+              <OfflineNavigationGuard>
+                <ErrorBoundary>
+                  <App />
+                  <RozeniteContainer />
+                </ErrorBoundary>
+              </OfflineNavigationGuard>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+        </INatPaperProvider>
+      </SafeAreaProvider>
+    </RealmProvider>
+  </QueryClientProvider>
+);
 if ( __DEV__ && shouldHaltLaunchForDebug( ) ) {
   const HaltedWrappedApp = ( ) => <HaltedLaunch><AppWithProviders /></HaltedLaunch>;
   AppRegistry.registerComponent( appName, ( ) => HaltedWrappedApp );
