@@ -51,6 +51,16 @@ beforeAll( async () => {
 
 beforeEach( ( ) => {
   jest.clearAllMocks( );
+  useStore.setState( {
+    currentObservation: {
+      ...factory( "LocalObservation" ),
+      observationFieldValues: [],
+      projectObservationUuidsToDelete: [],
+      projectObservations: [factory( "LocalProjectObservation", {
+        projectId: mockProjects[0].id,
+      } )],
+    },
+  } );
 } );
 
 describe( "AddToProjects", ( ) => {
