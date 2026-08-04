@@ -111,4 +111,10 @@ describe( "AddToProjects", ( ) => {
         ?.checked,
     ).toBe( false );
   } );
+
+  it( "disables SAVE when project selection is unchanged", ( ) => {
+    renderAddToProjects( );
+
+    expect( screen.getByTestId( "AddToProjects.saveButton" ) ).toBeDisabled( );
+  } );
 } );
