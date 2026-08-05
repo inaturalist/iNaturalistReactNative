@@ -30,7 +30,7 @@ exports[`IdentificationsCount renders default reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     maxFontSizeMultiplier={2}
@@ -80,7 +80,7 @@ exports[`IdentificationsCount renders filled reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     maxFontSizeMultiplier={2}
@@ -130,7 +130,7 @@ exports[`IdentificationsCount renders white reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     maxFontSizeMultiplier={2}

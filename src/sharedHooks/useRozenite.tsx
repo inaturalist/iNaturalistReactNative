@@ -9,9 +9,7 @@ import { useRequireProfilerDevTools } from "@rozenite/require-profiler-plugin";
 import type { StorageAdapter } from "@rozenite/storage-plugin";
 import { useRozeniteStoragePlugin } from "@rozenite/storage-plugin";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
-import type {
-  QueryClient,
-} from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useFeatureFlagForDebug } from "components/Developer/FeatureFlags";
 import type { PropsWithChildren } from "react";
 import React, { useMemo, useState } from "react";
@@ -21,7 +19,6 @@ import { store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 interface RozeniteOptions {
-  queryClient: QueryClient;
   storageAdapters: StorageAdapter[];
 }
 
@@ -53,7 +50,8 @@ HaltedLaunch.displayName = "HaltedLaunch";
 // up to where useRozenite is called so it can be used as an option here.
 
 // note: Rozenite plugins are automatically disabled / noops in Production builds
-const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
+const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
+  const queryClient = useQueryClient();
   useTanStackQueryDevTools( queryClient );
   useNetworkActivityDevTools( );
   useRozeniteStoragePlugin( {
@@ -79,6 +77,14 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
     resolvedValue: sortMyObservationsEnabled,
     setOverride: setSortMyObservationsEnabled,
   } = useFeatureFlagForDebug( FeatureFlag.SortMyObservationsEnabled );
+  const {
+    resolvedValue: myObservationsMapViewEnabled,
+    setOverride: setMyObservationsMapViewEnabled,
+  } = useFeatureFlagForDebug( FeatureFlag.MyObservationsMapViewEnabled );
+  const {
+    resolvedValue: myObservationsSmallGridViewEnabled,
+    setOverride: setMyObservationsSmallGridViewEnabled,
+  } = useFeatureFlagForDebug( FeatureFlag.MyObservationsSmallGridViewEnabled );
 
   const sections = useMemo(
     () => [
@@ -148,6 +154,24 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
               setSortMyObservationsEnabled( !sortMyObservationsEnabled );
             },
           },
+          {
+            id: "my-observations-map-view",
+            type: "toggle",
+            title: "My Observations Map View",
+            value: myObservationsMapViewEnabled,
+            onUpdate: () => {
+              setMyObservationsMapViewEnabled( !myObservationsMapViewEnabled );
+            },
+          },
+          {
+            id: "my-observations-small-grid-view",
+            type: "toggle",
+            title: "My Observations Small Grid View",
+            value: myObservationsSmallGridViewEnabled,
+            onUpdate: () => {
+              setMyObservationsSmallGridViewEnabled( !myObservationsSmallGridViewEnabled );
+            },
+          },
         ],
       } ),
     ],
@@ -162,6 +186,10 @@ const useRozenite = ( { queryClient, storageAdapters }: RozeniteOptions ) => {
       setSearchMyObservationsEnabled,
       sortMyObservationsEnabled,
       setSortMyObservationsEnabled,
+      myObservationsMapViewEnabled,
+      setMyObservationsMapViewEnabled,
+      myObservationsSmallGridViewEnabled,
+      setMyObservationsSmallGridViewEnabled,
     ],
   );
 

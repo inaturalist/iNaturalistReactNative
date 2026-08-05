@@ -25,6 +25,17 @@ const mockObsIds = mockObservations.map( ( { uuid } ) => ( { uuid } ) );
 
 let mockObsByUuid = {};
 
+// Defaults to false so search/sort-related tests below are unaffected; only
+// the map view flag is ever toggled on, and only within its own describe block
+let mockMapViewEnabled = false;
+
+jest.mock( "sharedHooks/useFeatureFlag", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( flag => ( flag === "myObservationsMapViewEnabled"
+    ? mockMapViewEnabled
+    : false ) ),
+} ) );
+
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
   return {
@@ -75,15 +86,26 @@ jest.mock( "sharedHooks/useDeviceOrientation", ( ) => ( {
   default: jest.fn( () => ( DEVICE_ORIENTATION_PHONE_PORTRAIT ) ),
 } ) );
 
-const renderMyObservations = layout => renderComponent(
+const renderMyObservations = (
+  layout,
+  showSearchEmptyState = false,
+  currentUser = undefined,
+  showSearchOfflineNotice = false,
+  isConnected = true,
+) => renderComponent(
   <MyObservationsProvider>
     <MyObservationsSimple
+      currentUser={currentUser}
+      isConnected={isConnected}
       layout={layout}
       observationIds={mockObsIds}
       onEndReached={jest.fn( )}
-      toggleLayout={jest.fn( )}
+      handlePullToRefresh={jest.fn( )}
+      updateObservationsView={jest.fn( )}
       setShowLoginSheet={jest.fn( )}
       activeTab={OBSERVATIONS_TAB}
+      showSearchEmptyState={showSearchEmptyState}
+      showSearchOfflineNotice={showSearchOfflineNotice}
     />
   </MyObservationsProvider>,
 );
@@ -131,6 +153,23 @@ describe( "MyObservationsSimple", () => {
     } );
   } );
 
+  it( "renders SearchEmptyState instead of the observations list when a search has no "
+    + "results", ( ) => {
+    renderMyObservations( "list", true );
+
+    expect( screen.getByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "MyObservationsAnimatedList" ) ).toBeNull( );
+  } );
+
+  it( "renders the offline notice instead of SearchEmptyState when a search is active "
+    + "while offline", ( ) => {
+    renderMyObservations( "list", false, undefined, true, false );
+
+    expect( screen.getByText( "You are offline. Tap to try again." ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeNull( );
+    expect( screen.queryByTestId( "MyObservationsAnimatedList" ) ).toBeNull( );
+  } );
+
   describe( "grid view", ( ) => {
     describe( "portrait orientation", ( ) => {
       describe( "on a phone", ( ) => {
@@ -172,6 +211,35 @@ describe( "MyObservationsSimple", () => {
       //     expect( list.props.numColumns ).toEqual( 6 );
       //   } );
       // } );
+    } );
+  } );
+
+  describe( "map view option", ( ) => {
+    const mockCurrentUser = factory( "LocalUser" );
+
+    afterEach( ( ) => {
+      mockMapViewEnabled = false;
+    } );
+
+    it( "is hidden when the feature flag is disabled, even if logged in", ( ) => {
+      mockMapViewEnabled = false;
+      renderMyObservations( "grid", false, mockCurrentUser );
+
+      expect( screen.queryByTestId( "SegmentedButton.map" ) ).toBeNull( );
+    } );
+
+    it( "is hidden when logged out, even if the feature flag is enabled", ( ) => {
+      mockMapViewEnabled = true;
+      renderMyObservations( "grid", false, undefined );
+
+      expect( screen.queryByTestId( "SegmentedButton.map" ) ).toBeNull( );
+    } );
+
+    it( "is shown when the feature flag is enabled and the user is logged in", ( ) => {
+      mockMapViewEnabled = true;
+      renderMyObservations( "grid", false, mockCurrentUser );
+
+      expect( screen.getByTestId( "SegmentedButton.map" ) ).toBeTruthy( );
     } );
   } );
 } );

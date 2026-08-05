@@ -2,6 +2,8 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import DefaultSearchOptions
   from "components/Explore/ExploreV2/components/DefaultSearchOptions";
+import LocationDefaultOptions
+  from "components/Explore/ExploreV2/components/LocationDefaultOptions";
 import LocationSearchResult
   from "components/Explore/ExploreV2/components/LocationSearchResult";
 import UniversalSearchResult
@@ -17,6 +19,8 @@ import type { UniversalSearchResultItem }
   from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import useUniversalSearch from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
+import ButtonBar from "components/SharedComponents/ButtonBar";
+import Button from "components/SharedComponents/Buttons/Button";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import INatIcon from "components/SharedComponents/INatIcon";
 import SearchHeader from "components/SharedComponents/SearchHeader";
@@ -28,7 +32,10 @@ import {
 } from "components/styledComponents";
 import type { ExploreStackScreenProps } from "navigation/types";
 import type { ExploreV2Subject, Place } from "providers/ExploreV2Context";
-import { EXPLORE_V2_ACTION, useExploreV2 } from "providers/ExploreV2Context";
+import {
+  EXPLORE_V2_ACTION,
+  useExploreV2,
+} from "providers/ExploreV2Context";
 import React, { useCallback, useRef, useState } from "react";
 import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
 import { FlatList, Keyboard } from "react-native";
@@ -52,6 +59,11 @@ const INPUT_BOX_CLASSES = classnames(
 // list shows one kind at a time depending on the focused field, but they share a
 // single FlatList so we never conditionally mount/unmount it.
 type SearchResultItem = UniversalSearchResultItem | LocationSearchResultItem;
+
+type SelectedLocation =
+  | { type: "place"; place: Place }
+  | { type: "nearby" }
+  | { type: "worldwide" };
 
 const resultKey = ( item: SearchResultItem ): string => {
   switch ( item.type ) {
@@ -81,7 +93,7 @@ const UniversalSearch = ( ) => {
 
   // What the user selected on this instance of the screen
   const [selectedSubject, setSelectedSubject] = useState<ExploreV2Subject | null>( null );
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>( null );
+  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>( null );
   const {
     text: subjectText,
     debouncedQuery: subjectQuery,
@@ -125,21 +137,37 @@ const UniversalSearch = ( ) => {
 
   const handleSubjectSelect = useCallback( ( subject: ExploreV2Subject ) => {
     setSelectedSubject( subject );
-    commitSubject( subjectToText( subject, commonNameIsPrimary ) );
+    commitSubject( subjectToText( subject, commonNameIsPrimary, t ) );
     locationInputRef.current?.focus( );
-  }, [commitSubject, commonNameIsPrimary] );
+  }, [commitSubject, commonNameIsPrimary, t] );
 
   const handleLocationSelect = useCallback( ( place: LocationSearchResultItem ) => {
-    setSelectedPlace( { id: place.id, display_name: place.display_name } );
+    setSelectedLocation( {
+      type: "place",
+      place: { id: place.id, display_name: place.display_name },
+    } );
     commitLocation( place.display_name );
     Keyboard.dismiss( );
   }, [commitLocation] );
+
+  const handleSelectWorldwide = useCallback( ( ) => {
+    setSelectedLocation( { type: "worldwide" } );
+    // commitLocation is for display only so this should be safe
+    commitLocation( t( "Worldwide" ) );
+    Keyboard.dismiss( );
+  }, [commitLocation, t] );
+
+  const handleSelectNearby = useCallback( ( ) => {
+    setSelectedLocation( { type: "nearby" } );
+    commitLocation( t( "Nearby" ) );
+    Keyboard.dismiss( );
+  }, [commitLocation, t] );
 
   const handleReset = useCallback( ( ) => {
     clearSubject( );
     clearLocation( );
     setSelectedSubject( null );
-    setSelectedPlace( null );
+    setSelectedLocation( null );
   }, [clearSubject, clearLocation] );
 
   const handleSearch = useCallback( ( ) => {
@@ -152,13 +180,21 @@ const UniversalSearch = ( ) => {
         ? { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: selectedSubject }
         : { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT },
     );
-    dispatch(
-      selectedPlace
-        ? { type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE, place: selectedPlace }
-        : { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE },
-    );
+    switch ( selectedLocation?.type ) {
+      case "place":
+        dispatch( {
+          type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
+          place: selectedLocation.place,
+        } );
+        break;
+      case "nearby":
+        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } );
+        break;
+      default:
+        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
+    }
     navigation.popTo( "ExploreResults" );
-  }, [selectedSubject, selectedPlace, dispatch, navigation] );
+  }, [selectedSubject, selectedLocation, dispatch, navigation] );
 
   const renderItem = useCallback<ListRenderItem<SearchResultItem>>( ( { item } ) => {
     if ( item.type === "place" ) {
@@ -190,10 +226,20 @@ const UniversalSearch = ( ) => {
     ? locationData
     : subjectData;
 
-  const showDefaultOptions = !showLocation && !subjectHasQuery;
-  const listEmptyComponent = showDefaultOptions
-    ? ( <DefaultSearchOptions onSelectSubject={handleSubjectSelect} /> )
-    : (
+  const showSubjectDefaults = !showLocation && subjectText.trim().length === 0;
+  const showLocationDefaults = showLocation && locationText.trim().length === 0;
+  let listEmptyComponent;
+  if ( showSubjectDefaults ) {
+    listEmptyComponent = <DefaultSearchOptions onSelectSubject={handleSubjectSelect} />;
+  } else if ( showLocationDefaults ) {
+    listEmptyComponent = (
+      <LocationDefaultOptions
+        onSelectNearby={handleSelectNearby}
+        onSelectWorldwide={handleSelectWorldwide}
+      />
+    );
+  } else {
+    listEmptyComponent = (
       <EmptySearchResults
         isLoading={showLocation
           ? locationIsLoading
@@ -206,6 +252,7 @@ const UniversalSearch = ( ) => {
           : refetch}
       />
     );
+  }
 
   return (
     <ViewWrapper testID="UniversalSearch">
@@ -223,6 +270,7 @@ const UniversalSearch = ( ) => {
                 <INatIcon name="magnifying-glass" size={15} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-species-user-or-project" )}
+                  autoCorrect={false}
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
@@ -230,6 +278,7 @@ const UniversalSearch = ( ) => {
                   onFocus={handleSubjectFocus}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
+                  spellCheck={false}
                   testID="UniversalSearch.subjectInput"
                   value={subjectText}
                 />
@@ -238,6 +287,7 @@ const UniversalSearch = ( ) => {
                 <INatIcon name="map-marker-outline" size={15} color={colors.darkGray} />
                 <TextInput
                   accessibilityLabel={t( "Search-for-a-location" )}
+                  autoCorrect={false}
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
                   onChangeText={onChangeLocationText}
@@ -245,6 +295,7 @@ const UniversalSearch = ( ) => {
                   placeholder={t( "Search-for-a-location" )}
                   placeholderTextColor={colors.mediumGray}
                   ref={locationInputRef}
+                  spellCheck={false}
                   testID="UniversalSearch.locationInput"
                   value={locationText}
                 />
@@ -283,6 +334,14 @@ const UniversalSearch = ( ) => {
           ListEmptyComponent={listEmptyComponent}
         />
       </View>
+      <ButtonBar containerClass="bg-white border-t border-lightGray">
+        <Button
+          level="focus"
+          onPress={handleSearch}
+          testID="UniversalSearch.stickySearchButton"
+          text={t( "SEARCH--button" )}
+        />
+      </ButtonBar>
     </ViewWrapper>
   );
 };

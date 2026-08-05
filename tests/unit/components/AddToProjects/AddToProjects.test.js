@@ -73,16 +73,8 @@ describe( "AddToProjects", ( ) => {
     // TODO: MOB-1503 also check for expanded chooser being shown
   } );
 
-  it( "renders existing project observations as checked", ( ) => {
-    renderAddToProjects( );
-
-    expect(
-      within( screen.getByTestId( `AddToProjects.project.${mockProjects[0].id}` ) )
-        .getByText( iconGlyph( "checkmark-circle" ) ),
-    ).toBeVisible( );
-    expect(
-      within( screen.getByTestId( `AddToProjects.project.${mockProjects[1].id}` ) )
-        .queryByText( iconGlyph( "checkmark-circle" ) ),
-    ).toBeNull( );
-  } );
+  // TODO: MOB-1498
+  // In MOB-1499 we changed the UI state for checked to be entirely driven by OFV validation
+  // jump-starting the UI with existing POFs has not been implemented yet.
+  it.todo( "renders existing project observations as checked" );
 } );

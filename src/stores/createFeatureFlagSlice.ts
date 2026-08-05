@@ -25,7 +25,15 @@ export enum FeatureFlag {
   TraditionalProjectsEnabled = "traditionalProjectsEnabled",
   SearchMyObservationsEnabled = "searchMyObservationsEnabled",
   SortMyObservationsEnabled = "sortMyObservationsEnabled",
+  MyObservationsMapViewEnabled = "myObservationsMapViewEnabled",
+  // TODO: remove once MOB-1573 is validated in TestFlight
+  TestFlightAdminMessageEnabled = "testFlightAdminMessageEnabled",
+  MyObservationsSmallGridViewEnabled = "myObservationsSmallGridViewEnabled",
 }
+
+export const flagsEnabledForAdminsInTestFlight = [
+  FeatureFlag.TestFlightAdminMessageEnabled,
+];
 
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
@@ -34,6 +42,9 @@ const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   [FeatureFlag.TraditionalProjectsEnabled]: false,
   [FeatureFlag.SearchMyObservationsEnabled]: false,
   [FeatureFlag.SortMyObservationsEnabled]: false,
+  [FeatureFlag.MyObservationsMapViewEnabled]: false,
+  [FeatureFlag.TestFlightAdminMessageEnabled]: false,
+  [FeatureFlag.MyObservationsSmallGridViewEnabled]: false,
 };
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
@@ -43,6 +54,9 @@ const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   [FeatureFlag.TraditionalProjectsEnabled]: null,
   [FeatureFlag.SearchMyObservationsEnabled]: null,
   [FeatureFlag.SortMyObservationsEnabled]: null,
+  [FeatureFlag.MyObservationsMapViewEnabled]: null,
+  [FeatureFlag.TestFlightAdminMessageEnabled]: null,
+  [FeatureFlag.MyObservationsSmallGridViewEnabled]: null,
 };
 
 const DEFAULT_STATE = {

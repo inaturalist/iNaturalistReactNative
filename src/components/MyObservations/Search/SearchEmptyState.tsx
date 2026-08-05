@@ -1,6 +1,3 @@
-// TODO: This component is intentionally not rendered anywhere yet.
-// This is the empty state for the Search My Observations feature.
-
 import {
   Body1,
   Button,

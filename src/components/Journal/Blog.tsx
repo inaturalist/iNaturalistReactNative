@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { POST_FOR_USER_FIELDS } from "api/fields";
-import { fetchUserPosts } from "api/posts";
+import { fetchBlogPosts } from "api/posts";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import type { TabStackScreenProps } from "navigation/types";
 import React, {
@@ -18,7 +18,7 @@ const Blog = ( ) => {
   const navigation = useNavigation<TabStackScreenProps<"Journal">["navigation"]>( );
   const { t } = useTranslation( );
 
-  const queryKey = ["fetchUserPosts"];
+  const queryKey = ["fetchBlogPosts"];
   const queryParams = {
     fields: POST_FOR_USER_FIELDS,
   };
@@ -28,13 +28,13 @@ const Blog = ( ) => {
     fetchNextPage,
     isFetchingNextPage,
     totalResults: totalPosts,
-  } = useInfiniteScroll( queryKey, fetchUserPosts, queryParams, {
+  } = useInfiniteScroll( queryKey, fetchBlogPosts, queryParams, {
     enabled: true,
   } );
 
   const headerOptions = useMemo(
     () => ( {
-      headerTitle: t( "Blog" ),
+      headerTitle: t( "iNaturalist-Blog" ),
       headerSubtitle: t( "X-JOURNAL_POSTS", {
         count: totalPosts || 0,
       } ),

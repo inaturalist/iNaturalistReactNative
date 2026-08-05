@@ -17,13 +17,11 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useCurrentUser, useFeatureFlag } from "sharedHooks";
+import { useCurrentUser } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
 import Explore from "./Explore";
-import ExploreV2 from "./ExploreV2";
 import mapParamsToAPI from "./helpers/mapParamsToAPI";
 import useExploreHeaderCount from "./hooks/useExploreHeaderCount";
 
@@ -31,7 +29,6 @@ const RootExploreContainerWithContext = ( ): Node => {
   const navigation = useNavigation( );
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
-  const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
   const rootExploreView = useStore( state => state.rootExploreView );
   const setRootExploreView = useStore( state => state.setRootExploreView );
   const rootStoredParams = useStore( state => state.rootStoredParams );
@@ -214,48 +211,32 @@ const RootExploreContainerWithContext = ( ): Node => {
 
   return (
     <>
-      {!exploreV2Enabled
-        ? (
-          <Explore
-            canFetch={canFetch}
-            closeFiltersModal={closeFiltersModal}
-            count={count}
-            hideBackButton
-            filterByIconicTaxonUnknown={
-              () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
-            }
-            currentExploreView={rootExploreView}
-            setCurrentExploreView={setRootExploreView}
-            isConnected={isConnected}
-            isFetchingHeaderCount={isFetchingHeaderCount}
-            handleUpdateCount={handleUpdateCount}
-            openFiltersModal={openFiltersModal}
-            queryParams={queryParams}
-            showFiltersModal={showFiltersModal}
-            updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
-            updateLocation={updateLocation}
-            updateUser={updateUser}
-            updateProject={updateProject}
-            placeMode={state.placeMode}
-            hasLocationPermissions={hasLocationPermissions}
-            requestLocationPermissions={requestLocationPermissions}
-            startFetching={startFetching}
-            renderLocationPermissionsGate={renderPermissionsGate}
-          />
-        )
-        : (
-          <ExploreV2
-            canFetch={canFetch}
-            currentExploreView={rootExploreView}
-            handleUpdateCount={handleUpdateCount}
-            hasLocationPermissions={hasLocationPermissions}
-            isConnected={isConnected}
-            placeMode={state.placeMode}
-            queryParams={queryParams}
-            renderLocationPermissionsGate={renderPermissionsGate}
-            requestLocationPermissions={requestLocationPermissions}
-          />
-        )}
+      <Explore
+        canFetch={canFetch}
+        closeFiltersModal={closeFiltersModal}
+        count={count}
+        hideBackButton
+        filterByIconicTaxonUnknown={
+          () => dispatch( { type: EXPLORE_ACTION.FILTER_BY_ICONIC_TAXON_UNKNOWN } )
+        }
+        currentExploreView={rootExploreView}
+        setCurrentExploreView={setRootExploreView}
+        isConnected={isConnected}
+        isFetchingHeaderCount={isFetchingHeaderCount}
+        handleUpdateCount={handleUpdateCount}
+        openFiltersModal={openFiltersModal}
+        queryParams={queryParams}
+        showFiltersModal={showFiltersModal}
+        updateTaxon={taxon => dispatch( { type: EXPLORE_ACTION.CHANGE_TAXON, taxon } )}
+        updateLocation={updateLocation}
+        updateUser={updateUser}
+        updateProject={updateProject}
+        placeMode={state.placeMode}
+        hasLocationPermissions={hasLocationPermissions}
+        requestLocationPermissions={requestLocationPermissions}
+        startFetching={startFetching}
+        renderLocationPermissionsGate={renderPermissionsGate}
+      />
       {renderPermissionsGate( {
         onPermissionGranted: async ( ) => {
           await updateLocation( "nearby" );

@@ -11,11 +11,11 @@ import {
   I18nManager,
 } from "react-native";
 
-interface Props extends FlatListProps<object> {
+type CarouselProps<T> = FlatListProps<T> & {
   onSlideScroll: ( index: number ) => void;
-}
+};
 
-const Carousel = ( props: Props ) => (
+const Carousel = <T, >( props: CarouselProps<T> ) => (
   <FlatList
     horizontal
     pagingEnabled

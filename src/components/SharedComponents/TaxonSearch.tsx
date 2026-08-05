@@ -8,6 +8,7 @@ import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import { useStackHost } from "navigation/StackHostContext";
 import React, { useMemo } from "react";
+import type { ListRenderItem } from "react-native";
 import { FlatList } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { RealmTaxon } from "realmModels/types";
@@ -25,9 +26,7 @@ interface Props {
   setQuery: ( newQuery: string ) => void;
   isLoading?: boolean;
   isLocal?: boolean;
-  renderItem: (
-    { item, index }: { item: RealmTaxon; index: number }
-  ) => React.ReactElement<unknown>;
+  renderItem: ListRenderItem<RealmTaxon>;
   taxa: RealmTaxon[];
 }
 

@@ -1,0 +1,2 @@
+FIXED
+* Activity tab not showing observer name

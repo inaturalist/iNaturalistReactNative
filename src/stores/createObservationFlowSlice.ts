@@ -89,7 +89,7 @@ interface ObservationFlowActions {
   setRollbackSnapshot: ( ) => void;
 }
 
-type ObservationFlowSlice = ObservationFlowState & ObservationFlowActions;
+export type ObservationFlowSlice = ObservationFlowState & ObservationFlowActions;
 
 const DEFAULT_STATE: ObservationFlowState = {
   aICameraSuggestion: null,

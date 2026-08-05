@@ -62,7 +62,7 @@ export type SharedStackParamList = {
   // From MatchContainer
   // undefined
   LocationPicker: undefined;
-  // From ExploreSearchContainer, ExploreTaxonSearchModal, MyObservationsSimple,
+  // From ExploreTaxonSearchModal, MyObservationsSimple,
   // ObsDetailsOverview, CommunityTaxon, SavedMatchContainer, ActivityItem, ProjectRequirements
   // TaxonGridItem
   // { id: taxon.id }
@@ -248,8 +248,6 @@ export type BaseTabStackParamList = {
     place?: ApiPlace | null;
     worldwide: boolean;
   };
-  ExploreFilters: undefined;
-  ExploreSearch: undefined;
   // From NotificationsListItem
   // {
   //   uuid: notification.resource_uuid,
@@ -327,8 +325,9 @@ export type BaseTabStackParamList = {
   };
   // From UserProfile
   // {
+  //   userId: user?.id,
+  //   userIcon: user?.icon_url,
   //   userLogin: user?.login,
-  //   journalPostsCount: user?.journal_posts_count,
   // }
   // From ProjectDetails
   // {
@@ -337,11 +336,12 @@ export type BaseTabStackParamList = {
   //   projectTitle: project?.title,
   // }
   Journal: {
-    userLogin?: string;
     projectIcon?: string;
     projectId?: number;
     projectTitle?: string;
-    journalPostsCount?: number;
+    userIcon?: string;
+    userId?: number;
+    userLogin?: string;
   } | undefined;
   Debug: undefined;
   UILibrary: undefined;

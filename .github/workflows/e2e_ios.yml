@@ -15,12 +15,12 @@ concurrency:
   
 jobs:
   checksecret:
-    name: check for oauth client
+    name: check for secrets presence
     runs-on: macos-26
     outputs:
       is_SECRETS_PRESENT_set: ${{ steps.checksecret_job.outputs.is_SECRETS_PRESENT_set }}
     steps:
-      - name: Check whether unity activation requests should be done
+      - name: Check whether secrets are present in the action runner
         id: checksecret_job
         env:
             SECRETS_PRESENT: ${{ secrets.OAUTH_CLIENT_SECRET }}

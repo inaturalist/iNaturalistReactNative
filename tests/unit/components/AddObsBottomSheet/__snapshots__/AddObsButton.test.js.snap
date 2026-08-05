@@ -18,519 +18,106 @@ exports[`AddObsButton renders correctly 1`] = `
       }
     }
   >
-    <RCTScrollView
-      keyboardShouldPersistTaps="never"
-      scrollEnabled={false}
+    <View
+      style={
+        {
+          "backgroundColor": "rgba(232, 232, 232, 1)",
+          "paddingBottom": 0,
+          "paddingTop": 28,
+        }
+      }
     >
-      <View>
+      <View
+        style={
+          {
+            "paddingBottom": 16,
+            "paddingLeft": 16,
+            "paddingRight": 16,
+            "rowGap": 16,
+          }
+        }
+      >
         <View
           style={
             {
-              "backgroundColor": "rgba(232, 232, 232, 1)",
-              "paddingBottom": 0,
-              "paddingTop": 28,
+              "columnGap": 16,
+              "flexBasis": "0%",
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "justifyContent": "center",
+              "width": "100%",
             }
           }
         >
           <View
-            style={
+            accessibilityHint="Navigates to camera"
+            accessibilityLabel="Camera"
+            accessibilityState={
               {
-                "paddingBottom": 16,
-                "paddingLeft": 16,
-                "paddingRight": 16,
-                "rowGap": 16,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderRadius": 8,
+                "boxShadow": [
+                  0,
+                  0,
+                  "#00000000",
+                  0,
+                  0,
+                  "#00000000",
+                  0,
+                  1,
+                  1,
+                  "#00000040",
+                ],
+                "flexBasis": "0%",
+                "flexGrow": 1,
+                "flexShrink": 1,
+                "paddingBottom": 16,
+                "paddingTop": 16,
+                "width": "50%",
+              }
+            }
+            testID="camera-button"
           >
             <View
-              style={
-                {
-                  "columnGap": 16,
-                  "flexBasis": "0%",
-                  "flexDirection": "row",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                  "justifyContent": "center",
-                  "width": "100%",
-                }
-              }
-            >
-              <View
-                accessibilityHint="Navigates to camera"
-                accessibilityLabel="Camera"
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onFocus={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  {
-                    "alignItems": "center",
-                    "backgroundColor": "rgba(255, 255, 255, 1)",
-                    "borderRadius": 8,
-                    "boxShadow": [
-                      0,
-                      0,
-                      "#00000000",
-                      0,
-                      0,
-                      "#00000000",
-                      0,
-                      1,
-                      1,
-                      "#00000040",
-                    ],
-                    "flexBasis": "0%",
-                    "flexGrow": 1,
-                    "flexShrink": 1,
-                    "paddingBottom": 16,
-                    "paddingTop": 16,
-                    "width": "50%",
-                  }
-                }
-                testID="camera-button"
-              >
-                <View
-                  accessibilityHint="Navigates to camera"
-                  accessibilityLabel="Camera"
-                  accessibilityRole="button"
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": false,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
-                  style={
-                    {
-                      "alignItems": "center",
-                      "backgroundColor": "rgba(116, 172, 0, 1)",
-                      "borderRadius": 9999,
-                      "height": 44,
-                      "justifyContent": "center",
-                      "marginBottom": 8,
-                      "width": 44,
-                    }
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "left": 0.20000000298023224,
-                        "position": "relative",
-                        "top": 0.10000000149011612,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#ffffff",
-                            "fontSize": 20,
-                          },
-                          null,
-                          {
-                            "fontFamily": "INatIcon",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    {
-                      "color": "rgba(69, 69, 69, 1)",
-                      "fontFamily": "Lato-Medium",
-                      "fontSize": 13,
-                      "lineHeight": 18,
-                      "textAlign": "left",
-                    }
-                  }
-                >
-                  Take photos
-                </Text>
-              </View>
-            </View>
-            <View
-              style={
-                {
-                  "columnGap": 16,
-                  "flexBasis": "0%",
-                  "flexDirection": "row",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                  "justifyContent": "center",
-                  "width": "100%",
-                }
-              }
-            >
-              <View
-                accessibilityHint="Navigates to sound recorder"
-                accessibilityLabel="Sound recorder"
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onFocus={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  {
-                    "alignItems": "center",
-                    "backgroundColor": "rgba(255, 255, 255, 1)",
-                    "borderRadius": 8,
-                    "boxShadow": [
-                      0,
-                      0,
-                      "#00000000",
-                      0,
-                      0,
-                      "#00000000",
-                      0,
-                      1,
-                      1,
-                      "#00000040",
-                    ],
-                    "flexBasis": "0%",
-                    "flexGrow": 1,
-                    "flexShrink": 1,
-                    "paddingBottom": 16,
-                    "paddingTop": 16,
-                    "width": "50%",
-                  }
-                }
-                testID="record-sound-button"
-              >
-                <View
-                  accessibilityHint="Navigates to sound recorder"
-                  accessibilityLabel="Sound recorder"
-                  accessibilityRole="button"
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": false,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
-                  style={
-                    {
-                      "alignItems": "center",
-                      "backgroundColor": "rgba(116, 172, 0, 1)",
-                      "borderRadius": 9999,
-                      "height": 44,
-                      "justifyContent": "center",
-                      "marginBottom": 8,
-                      "width": 44,
-                    }
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "left": 0.20000000298023224,
-                        "position": "relative",
-                        "top": 0.10000000149011612,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#ffffff",
-                            "fontSize": 20,
-                          },
-                          null,
-                          {
-                            "fontFamily": "INatIcon",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    {
-                      "color": "rgba(69, 69, 69, 1)",
-                      "fontFamily": "Lato-Medium",
-                      "fontSize": 13,
-                      "lineHeight": 18,
-                      "textAlign": "left",
-                    }
-                  }
-                >
-                  Record a sound
-                </Text>
-              </View>
-              <View
-                accessibilityHint="Navigates to photo importer"
-                accessibilityLabel="Photo importer"
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onBlur={[Function]}
-                onClick={[Function]}
-                onFocus={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  {
-                    "alignItems": "center",
-                    "backgroundColor": "rgba(255, 255, 255, 1)",
-                    "borderRadius": 8,
-                    "boxShadow": [
-                      0,
-                      0,
-                      "#00000000",
-                      0,
-                      0,
-                      "#00000000",
-                      0,
-                      1,
-                      1,
-                      "#00000040",
-                    ],
-                    "flexBasis": "0%",
-                    "flexGrow": 1,
-                    "flexShrink": 1,
-                    "paddingBottom": 16,
-                    "paddingTop": 16,
-                    "width": "50%",
-                  }
-                }
-                testID="import-media-button"
-              >
-                <View
-                  accessibilityHint="Navigates to photo importer"
-                  accessibilityLabel="Photo importer"
-                  accessibilityRole="button"
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": false,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
-                  style={
-                    {
-                      "alignItems": "center",
-                      "backgroundColor": "rgba(116, 172, 0, 1)",
-                      "borderRadius": 9999,
-                      "height": 44,
-                      "justifyContent": "center",
-                      "marginBottom": 8,
-                      "width": 44,
-                    }
-                  }
-                >
-                  <View
-                    style={
-                      {
-                        "left": 0.20000000298023224,
-                        "position": "relative",
-                        "top": 0.10000000149011612,
-                      }
-                    }
-                  >
-                    <Text
-                      allowFontScaling={false}
-                      selectable={false}
-                      style={
-                        [
-                          {
-                            "color": "#ffffff",
-                            "fontSize": 20,
-                          },
-                          null,
-                          {
-                            "fontFamily": "INatIcon",
-                            "fontStyle": "normal",
-                            "fontWeight": "normal",
-                          },
-                          {},
-                        ]
-                      }
-                    >
-                      
-                    </Text>
-                  </View>
-                </View>
-                <Text
-                  maxFontSizeMultiplier={2}
-                  style={
-                    {
-                      "color": "rgba(69, 69, 69, 1)",
-                      "fontFamily": "Lato-Medium",
-                      "fontSize": 13,
-                      "lineHeight": 18,
-                      "textAlign": "left",
-                    }
-                  }
-                >
-                  Upload photos
-                </Text>
-              </View>
-            </View>
-            <View
-              accessibilityHint="Navigate to observation edit screen"
-              accessibilityLabel="Observation with no evidence"
+              accessibilityHint="Navigates to camera"
+              accessibilityLabel="Camera"
+              accessibilityRole="button"
               accessibilityState={
                 {
                   "busy": undefined,
                   "checked": undefined,
-                  "disabled": undefined,
+                  "disabled": false,
                   "expanded": undefined,
                   "selected": undefined,
                 }
@@ -558,22 +145,21 @@ exports[`AddObsButton renders correctly 1`] = `
               style={
                 {
                   "alignItems": "center",
-                  "backgroundColor": "rgba(191, 191, 191, 1)",
-                  "borderRadius": 8,
-                  "flexDirection": "row",
-                  "paddingBottom": 10,
-                  "paddingLeft": 20,
-                  "paddingRight": 20,
-                  "paddingTop": 10,
-                  "width": "100%",
+                  "backgroundColor": "rgba(116, 172, 0, 1)",
+                  "borderRadius": 9999,
+                  "height": 44,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 44,
                 }
               }
-              testID="observe-without-evidence-button"
             >
               <View
                 style={
                   {
-                    "marginRight": 8,
+                    "left": 0.20000000298023224,
+                    "position": "relative",
+                    "top": 0.10000000149011612,
                   }
                 }
               >
@@ -583,8 +169,8 @@ exports[`AddObsButton renders correctly 1`] = `
                   style={
                     [
                       {
-                        "color": "#454545",
-                        "fontSize": 24,
+                        "color": "#ffffff",
+                        "fontSize": 20,
                       },
                       null,
                       {
@@ -596,29 +182,436 @@ exports[`AddObsButton renders correctly 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
               </View>
-              <Text
-                maxFontSizeMultiplier={1.5}
-                numberOfLines={1}
+            </View>
+            <Text
+              maxFontSizeMultiplier={2}
+              style={
+                {
+                  "color": "rgba(69, 69, 69, 1)",
+                  "fontFamily": "Lato-Medium",
+                  "fontSize": 13,
+                  "lineHeight": 18,
+                  "textAlign": "left",
+                }
+              }
+            >
+              Take photos
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "columnGap": 16,
+              "flexBasis": "0%",
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "justifyContent": "center",
+              "width": "100%",
+            }
+          }
+        >
+          <View
+            accessibilityHint="Navigates to sound recorder"
+            accessibilityLabel="Sound recorder"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderRadius": 8,
+                "boxShadow": [
+                  0,
+                  0,
+                  "#00000000",
+                  0,
+                  0,
+                  "#00000000",
+                  0,
+                  1,
+                  1,
+                  "#00000040",
+                ],
+                "flexBasis": "0%",
+                "flexGrow": 1,
+                "flexShrink": 1,
+                "paddingBottom": 16,
+                "paddingTop": 16,
+                "width": "50%",
+              }
+            }
+            testID="record-sound-button"
+          >
+            <View
+              accessibilityHint="Navigates to sound recorder"
+              accessibilityLabel="Sound recorder"
+              accessibilityRole="button"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": false,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(116, 172, 0, 1)",
+                  "borderRadius": 9999,
+                  "height": 44,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 44,
+                }
+              }
+            >
+              <View
                 style={
                   {
-                    "color": "rgba(69, 69, 69, 1)",
-                    "fontFamily": "Lato-Medium",
-                    "fontSize": 13,
-                    "lineHeight": 18,
-                    "textAlign": "left",
+                    "left": 0.20000000298023224,
+                    "position": "relative",
+                    "top": 0.10000000149011612,
                   }
                 }
               >
-                Create observation with no evidence
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#ffffff",
+                        "fontSize": 20,
+                      },
+                      null,
+                      {
+                        "fontFamily": "INatIcon",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
+            <Text
+              maxFontSizeMultiplier={2}
+              style={
+                {
+                  "color": "rgba(69, 69, 69, 1)",
+                  "fontFamily": "Lato-Medium",
+                  "fontSize": 13,
+                  "lineHeight": 18,
+                  "textAlign": "left",
+                }
+              }
+            >
+              Record a sound
+            </Text>
+          </View>
+          <View
+            accessibilityHint="Navigates to photo importer"
+            accessibilityLabel="Photo importer"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderRadius": 8,
+                "boxShadow": [
+                  0,
+                  0,
+                  "#00000000",
+                  0,
+                  0,
+                  "#00000000",
+                  0,
+                  1,
+                  1,
+                  "#00000040",
+                ],
+                "flexBasis": "0%",
+                "flexGrow": 1,
+                "flexShrink": 1,
+                "paddingBottom": 16,
+                "paddingTop": 16,
+                "width": "50%",
+              }
+            }
+            testID="import-media-button"
+          >
+            <View
+              accessibilityHint="Navigates to photo importer"
+              accessibilityLabel="Photo importer"
+              accessibilityRole="button"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": false,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(116, 172, 0, 1)",
+                  "borderRadius": 9999,
+                  "height": 44,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 44,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "left": 0.20000000298023224,
+                    "position": "relative",
+                    "top": 0.10000000149011612,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#ffffff",
+                        "fontSize": 20,
+                      },
+                      null,
+                      {
+                        "fontFamily": "INatIcon",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <Text
+              maxFontSizeMultiplier={2}
+              style={
+                {
+                  "color": "rgba(69, 69, 69, 1)",
+                  "fontFamily": "Lato-Medium",
+                  "fontSize": 13,
+                  "lineHeight": 18,
+                  "textAlign": "left",
+                }
+              }
+            >
+              Upload photos
+            </Text>
           </View>
         </View>
+        <View
+          accessibilityHint="Navigate to observation edit screen"
+          accessibilityLabel="Observation with no evidence"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "rgba(191, 191, 191, 1)",
+              "borderRadius": 8,
+              "flexDirection": "row",
+              "paddingBottom": 10,
+              "paddingLeft": 20,
+              "paddingRight": 20,
+              "paddingTop": 10,
+              "width": "100%",
+            }
+          }
+          testID="observe-without-evidence-button"
+        >
+          <View
+            style={
+              {
+                "marginRight": 8,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#454545",
+                    "fontSize": 24,
+                  },
+                  null,
+                  {
+                    "fontFamily": "INatIcon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            maxFontSizeMultiplier={1.5}
+            numberOfLines={1}
+            style={
+              {
+                "color": "rgba(69, 69, 69, 1)",
+                "fontFamily": "Lato-Medium",
+                "fontSize": 13,
+                "lineHeight": 18,
+                "textAlign": "left",
+              }
+            }
+          >
+            Create observation with no evidence
+          </Text>
+        </View>
       </View>
-    </RCTScrollView>
+    </View>
     <View
       accessibilityHint="Opens AI camera."
       accessibilityLabel="Add observations"
@@ -724,7 +717,7 @@ exports[`AddObsButton renders correctly 1`] = `
               ]
             }
           >
-            
+            
           </Text>
         </View>
       </BVLinearGradient>

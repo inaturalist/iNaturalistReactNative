@@ -16,11 +16,11 @@ import PostList from "./PostList";
 
 interface Props {
   projectIcon?: string;
-  projectId?: number;
+  projectId: number;
   projectTitle?: string;
 }
 
-const PostsForProjects = ( {
+const ProjectPosts = ( {
   projectIcon,
   projectId,
   projectTitle,
@@ -81,4 +81,4 @@ const PostsForProjects = ( {
   );
 };
 
-export default PostsForProjects;
+export default ProjectPosts;

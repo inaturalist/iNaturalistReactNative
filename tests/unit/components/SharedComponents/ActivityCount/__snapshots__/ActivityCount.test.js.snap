@@ -30,7 +30,7 @@ exports[`ActivityCount renders reliably 1`] = `
       ]
     }
   >
-    
+    
   </Text>
   <Text
     maxFontSizeMultiplier={2}

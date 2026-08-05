@@ -37,8 +37,10 @@ import {
   useStoredLayout,
   useTranslation,
 } from "sharedHooks";
+import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 import useObservationCounts from "sharedHooks/useObservationCounts";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import {
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
@@ -46,6 +48,7 @@ import useStore, { zustandStorage } from "stores/useStore";
 import type { SpeciesCount } from "types/sorting";
 
 import FullScreenActivityIndicator from "./FullScreenActivityIndicator";
+import useMyObservationsQuery from "./hooks/useMyObservationsQuery";
 import useSyncObservations from "./hooks/useSyncObservations";
 import useUploadObservations from "./hooks/useUploadObservations";
 import MyObservationsEmptySimple from "./MyObservationsEmptySimple";
@@ -53,7 +56,6 @@ import MyObservationsSimple, {
   OBSERVATIONS_TAB,
   TAXA_TAB,
 } from "./MyObservationsSimple";
-import MyObsServerOrderedDebugSheet from "./MyObsServerOrderedDebugSheet";
 
 const { useRealm } = RealmContext;
 
@@ -93,7 +95,38 @@ const MyObservationsResults = ( ) => {
     return unsubscribe;
   }, [navigation, setJustFinishedSignup] );
 
-  const observationIds = useLocalObservationIds();
+  const localObservationIds = useLocalObservationIds();
+  const sortMyObservationsEnabled = useFeatureFlag( FeatureFlag.SortMyObservationsEnabled );
+  const searchMyObservationsEnabled = useFeatureFlag( FeatureFlag.SearchMyObservationsEnabled );
+  const myObservationsMapViewEnabled = useFeatureFlag(
+    FeatureFlag.MyObservationsMapViewEnabled,
+  );
+  const myObservationsSmallGridViewEnabled = useFeatureFlag(
+    FeatureFlag.MyObservationsSmallGridViewEnabled,
+  );
+  const { isConnected } = useNetInfo( );
+  const {
+    observationIds: queryObservationIds,
+    isServerAuthoritative,
+    isLoading: isLoadingFromQuery,
+    isFetchingNextPage: isFetchingNextPageFromQuery,
+    fetchNextPage: fetchNextPageFromQuery,
+    refetch: refetchFromQuery,
+    totalResults: searchTotalResults,
+  } = useMyObservationsQuery( );
+  // Only use server-ordered result when at least one of the features that needs it is enabled;
+  // when neither is, we use the plain local list anyway
+  const myObsQueryEnabled = sortMyObservationsEnabled || searchMyObservationsEnabled;
+  const useServerOrder = myObsQueryEnabled && isServerAuthoritative;
+  const observationIds = myObsQueryEnabled
+    ? queryObservationIds
+    : localObservationIds;
+  const hasActiveSearch = searchMyObservationsEnabled && !!myObsState.searchedTaxon;
+  const showSearchOfflineNotice = hasActiveSearch && isConnected === false;
+  const showSearchEmptyState = hasActiveSearch
+    && isConnected !== false
+    && !isLoadingFromQuery
+    && observationIds.length === 0;
   const {
     numUnuploadedObservations,
     numObsMissingBasics,
@@ -101,10 +134,28 @@ const MyObservationsResults = ( ) => {
   const prevObservationsLength = useRef( observationIds.length );
   const { layout, writeLayoutToStorage } = useStoredLayout( "myObservationsLayout" );
 
-  const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const currentUserId = currentUser?.id;
   const canUpload = !!currentUser && !!isConnected;
+
+  // If the current view mode becomes unavailable (feature flag disabled or logged out),
+  // fall back to grid rather than getting stuck on an unrenderable view
+  useEffect( ( ) => {
+    const viewUnavailable = (
+      layout === "map" && ( !myObservationsMapViewEnabled || !currentUser )
+    ) || (
+      layout === "smallGrid" && ( !myObservationsSmallGridViewEnabled || !currentUser )
+    );
+    if ( viewUnavailable ) {
+      writeLayoutToStorage( "grid" );
+    }
+  }, [
+    layout,
+    myObservationsMapViewEnabled,
+    myObservationsSmallGridViewEnabled,
+    currentUser,
+    writeLayoutToStorage,
+  ] );
 
   const { startUploadObservations } = useUploadObservations( canUpload );
   const { syncManually } = useSyncObservations(
@@ -142,10 +193,8 @@ const MyObservationsResults = ( ) => {
     } );
   };
 
-  const toggleLayout = ( ) => {
-    writeLayoutToStorage( layout === "grid"
-      ? "list"
-      : "grid" );
+  const updateObservationsView = ( value: string ) => {
+    writeLayoutToStorage( value );
   };
 
   const confirmInternetConnection = useCallback( ( ) => {
@@ -244,7 +293,10 @@ const MyObservationsResults = ( ) => {
   const handlePullToRefresh = useCallback( async ( ) => {
     await syncManually( { skipUploads: true } );
     refetchObservationsUpdates( );
-  }, [syncManually, refetchObservationsUpdates] );
+    if ( useServerOrder ) {
+      refetchFromQuery( );
+    }
+  }, [syncManually, refetchObservationsUpdates, useServerOrder, refetchFromQuery] );
 
   // Scroll the list to the offset we need to restore, e.g. when you are
   // scrolled way down, edit an observation, and return. Entering ObsEdit
@@ -257,6 +309,13 @@ const MyObservationsResults = ( ) => {
   }, [
     myObsOffsetToRestore,
   ] );
+
+  // Scroll to the top whenever the active taxon search changes
+  useEffect( ( ) => {
+    if ( listRef.current ) {
+      listRef.current.scrollToOffset( { offset: 0, animated: true } );
+    }
+  }, [myObsState.searchedTaxon?.id] );
 
   // API call fetching obs has completed but results are not yet stored in realm
   // for display here
@@ -340,6 +399,7 @@ const MyObservationsResults = ( ) => {
 
   const {
     data: remoteObservedTaxaCounts,
+    isFetching: isLoadingTaxa,
     isFetchingNextPage: isFetchingTaxa,
     fetchNextPage: fetchMoreTaxa,
     totalResults: numTotalTaxaRemote,
@@ -350,6 +410,9 @@ const MyObservationsResults = ( ) => {
     {
       user_id: currentUser?.id,
       ...sortAPIParams,
+      ...( myObsState.searchedTaxon?.id
+        ? { taxon_id: myObsState.searchedTaxon.id }
+        : {} ),
       fields: {
         taxon: Taxon.LIMITED_TAXON_FIELDS,
       },
@@ -364,6 +427,24 @@ const MyObservationsResults = ( ) => {
     : numTotalTaxaLocal;
 
   const numTotalObservations = totalResultsRemote || observationIds.length;
+
+  // When a search is active, we want to show a live, search-informed total for observation and
+  // species counts, otherwise, fallback to the values from zustand
+  const displayedObservationsCount = hasActiveSearch
+    ? searchTotalResults
+    : numOfUserObservations;
+
+  const displayedSpeciesCount = hasActiveSearch
+    ? numTotalTaxa
+    : numOfUserSpecies;
+
+  // Pagination for the rendered list follows whichever source is authoritative:
+  const isFetchingNextPageForList = useServerOrder
+    ? isFetchingNextPageFromQuery
+    : isFetchingNextPage;
+  const handleEndReached = useServerOrder
+    ? fetchNextPageFromQuery
+    : fetchNextPage;
 
   useEffect( ( ) => {
     // persist this number in zustand so a user can see their latest observations count
@@ -415,9 +496,14 @@ const MyObservationsResults = ( ) => {
     myObsState.speciesSort,
   ] );
 
+  const showSpeciesSearchEmptyState = hasActiveSearch
+    && isConnected !== false
+    && !isLoadingTaxa
+    && taxa.length === 0;
+
   if ( !layout ) { return null; }
 
-  if ( observationIds.length === 0 ) {
+  if ( observationIds.length === 0 && !totalResultsRemote ) {
     return showNoResults
       ? (
         <MyObservationsEmptySimple
@@ -432,45 +518,45 @@ const MyObservationsResults = ( ) => {
   }
 
   return (
-    <>
-      <MyObservationsSimple
-        activeTab={activeTab}
-        currentUser={currentUser}
-        fetchMoreTaxa={fetchMoreTaxa}
-        fetchFromLastObservation={fetchFromLastObservation}
-        handleIndividualUploadPress={handleIndividualUploadPress}
-        handlePullToRefresh={handlePullToRefresh}
-        handleSyncButtonPress={handleSyncButtonPress}
-        isConnected={isConnected}
-        isFetchingNextPage={isFetchingNextPage}
-        isFetchingTaxa={isFetchingTaxa}
-        justFinishedSignup={justFinishedSignup}
-        layout={layout}
-        listRef={listRef}
-        loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
-        taxaListRef={taxaListRef}
-        numTotalObservations={numOfUserObservations}
-        numTotalTaxa={numOfUserSpecies}
-        numUnuploadedObservations={numUnuploadedObservations}
-        numObsMissingBasics={numObsMissingBasics}
-        observationIds={observationIds}
-        observationsSortOptionId={myObsState.observationsSort}
-        onEndReached={fetchNextPage}
-        onListLayout={restoreScrollOffset}
-        onScroll={onScroll}
-        openSheet={openSheet}
-        refetchTaxa={refetchTaxa}
-        setActiveTab={setActiveTab}
-        setObservationsSortOptionId={setObservationsSortOptionId}
-        setOpenSheet={setOpenSheet}
-        setSpeciesSortOptionId={setSpeciesSortOptionId}
-        showNoResults={showNoResults}
-        speciesSortOptionId={myObsState.speciesSort}
-        taxa={taxa}
-        toggleLayout={toggleLayout}
-      />
-      <MyObsServerOrderedDebugSheet />
-    </>
+    <MyObservationsSimple
+      activeTab={activeTab}
+      currentUser={currentUser}
+      fetchMoreTaxa={fetchMoreTaxa}
+      fetchFromLastObservation={fetchFromLastObservation}
+      handleIndividualUploadPress={handleIndividualUploadPress}
+      handlePullToRefresh={handlePullToRefresh}
+      handleSyncButtonPress={handleSyncButtonPress}
+      isConnected={isConnected}
+      isFetchingNextPage={isFetchingNextPageForList}
+      isFetchingTaxa={isFetchingTaxa}
+      justFinishedSignup={justFinishedSignup}
+      layout={layout}
+      listRef={listRef}
+      loggedInWhileInDefaultMode={loggedInWhileInDefaultMode}
+      taxaListRef={taxaListRef}
+      numTotalObservations={displayedObservationsCount}
+      numTotalTaxa={displayedSpeciesCount}
+      numUnuploadedObservations={numUnuploadedObservations}
+      numObsMissingBasics={numObsMissingBasics}
+      observationIds={observationIds}
+      observationsSortOptionId={myObsState.observationsSort}
+      onEndReached={handleEndReached}
+      onListLayout={restoreScrollOffset}
+      onScroll={onScroll}
+      openSheet={openSheet}
+      refetchTaxa={refetchTaxa}
+      setActiveTab={setActiveTab}
+      setObservationsSortOptionId={setObservationsSortOptionId}
+      setOpenSheet={setOpenSheet}
+      setSpeciesSortOptionId={setSpeciesSortOptionId}
+      showNoResults={showNoResults}
+      showSearchEmptyState={showSearchEmptyState}
+      showSearchOfflineNotice={showSearchOfflineNotice}
+      showSpeciesSearchEmptyState={showSpeciesSearchEmptyState}
+      speciesSortOptionId={myObsState.speciesSort}
+      taxa={taxa}
+      updateObservationsView={updateObservationsView}
+    />
   );
 };
 

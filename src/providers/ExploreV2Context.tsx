@@ -1,31 +1,39 @@
+import type { ApiProjectSummary, ApiTotalBounds, ApiUser } from "api/types";
 import type { SPECIES_TAB } from "appConstants/tabs";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import type { TAXONOMIC_RANK } from "providers/ExploreContext";
+import {
+  DATE_OBSERVED,
+  DATE_UPLOADED,
+  ESTABLISHMENT_MEAN,
+  MEDIA,
+  PHOTO_LICENSE,
+  REVIEWED,
+  WILD_STATUS,
+} from "providers/ExploreContext";
 import * as React from "react";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
-
-// Please don't change this to an aliased path or the e2e mock will not get
-// used in our e2e tests on Github Actions
-import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
+import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 
 export enum EXPLORE_V2_ACTION {
   SET_SUBJECT = "SET_SUBJECT",
   CLEAR_SUBJECT = "CLEAR_SUBJECT",
-  SET_LOCATION_NEEDS_PERMISSION = "SET_LOCATION_NEEDS_PERMISSION",
   SET_LOCATION_NEARBY = "SET_LOCATION_NEARBY",
   SET_LOCATION_WORLDWIDE = "SET_LOCATION_WORLDWIDE",
   SET_LOCATION_PLACE = "SET_LOCATION_PLACE",
+  SET_LOCATION_MAP_AREA = "SET_LOCATION_MAP_AREA",
   SET_SORT = "SET_SORT",
+  SET_SPECIES_SORT = "SET_SPECIES_SORT",
   SET_FILTERS = "SET_FILTERS",
   SET_ACTIVE_TAB = "SET_ACTIVE_TAB",
   RESET = "RESET"
 }
 
 export enum EXPLORE_V2_PLACE_MODE {
-  UNINITIALIZED = "UNINITIALIZED",
-  NEEDS_PERMISSION = "NEEDS_PERMISSION",
   NEARBY = "NEARBY",
   WORLDWIDE = "WORLDWIDE",
-  PLACE = "PLACE"
+  PLACE = "PLACE",
+  MAP_AREA = "MAP_AREA"
 }
 
 export interface Place {
@@ -59,29 +67,68 @@ export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
 export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
-  | { type: "project"; project: Project };
+  | { type: "project"; project: Project }
+  | { type: "unobserved"; user: User }
+  | { type: "unknown" };
 
-// To be added to in MOB-1346
 export interface ExploreV2Filters {
-  [key: string]: unknown;
+  // Quality grade
+  researchGrade: boolean;
+  needsID: boolean;
+  casual: boolean;
+  // Taxonomic ranks
+  hrank?: TAXONOMIC_RANK | null;
+  lrank?: TAXONOMIC_RANK | null;
+  // Date observed
+  dateObserved: DATE_OBSERVED;
+  observed_on?: string | null;
+  d1?: string | null;
+  d2?: string | null;
+  months?: number[] | null;
+  // Date uploaded
+  dateUploaded: DATE_UPLOADED;
+  created_on?: string | null;
+  created_d1?: string | null;
+  created_d2?: string | null;
+  // Single-select filters
+  media: MEDIA;
+  establishmentMean: ESTABLISHMENT_MEAN;
+  wildStatus: WILD_STATUS;
+  reviewedFilter: REVIEWED;
+  photoLicense: PHOTO_LICENSE;
+  // Iconic-taxon filter (e.g. "unknown")
+  iconic_taxa?: string[] | null;
+  // User / project, in ExploreV2 parlance we always consider taxon to be the "subject"
+  user?: ApiUser | null;
+  project?: ApiProjectSummary | null;
 }
 
+export const defaultExploreV2Filters: ExploreV2Filters = {
+  researchGrade: true,
+  needsID: true,
+  casual: false,
+  hrank: null,
+  lrank: null,
+  dateObserved: DATE_OBSERVED.ALL,
+  dateUploaded: DATE_UPLOADED.ALL,
+  media: MEDIA.ALL,
+  establishmentMean: ESTABLISHMENT_MEAN.ANY,
+  wildStatus: WILD_STATUS.ALL,
+  reviewedFilter: REVIEWED.ALL,
+  photoLicense: PHOTO_LICENSE.ALL,
+};
+
 export type ExploreV2LocationState =
-  | { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED }
-  | { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION }
   | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
-  | {
-    placeMode: EXPLORE_V2_PLACE_MODE.NEARBY;
-    lat: number;
-    lng: number;
-    radius: number;
-  }
-  | { placeMode: EXPLORE_V2_PLACE_MODE.PLACE; place: Place };
+  | { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY }
+  | { placeMode: EXPLORE_V2_PLACE_MODE.PLACE; place: Place }
+  | { placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA; bounds: ApiTotalBounds };
 
 export interface ExploreV2State {
   subject: ExploreV2Subject | null;
   location: ExploreV2LocationState;
   sortBy: OBSERVATIONS_SORT;
+  speciesSortBy: SPECIES_SORT;
   filters: ExploreV2Filters;
   activeTab: ExploreV2Tab;
 }
@@ -89,28 +136,28 @@ export interface ExploreV2State {
 export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SUBJECT; subject: ExploreV2Subject }
   | { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT }
-  | { type: EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION }
-  | {
-    type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY;
-    lat: number;
-    lng: number;
-    radius: number;
-  }
+  | { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY }
   | { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE }
   | {
     type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE;
     place: Place;
   }
+  | {
+    type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA;
+    bounds: ApiTotalBounds;
+  }
   | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: OBSERVATIONS_SORT }
+  | { type: EXPLORE_V2_ACTION.SET_SPECIES_SORT; speciesSortBy: SPECIES_SORT }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
   | { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB; tab: ExploreV2Tab }
   | { type: EXPLORE_V2_ACTION.RESET };
 
 export const initialExploreV2State: ExploreV2State = {
   subject: null,
-  location: { placeMode: EXPLORE_V2_PLACE_MODE.UNINITIALIZED },
+  location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
   sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
-  filters: {},
+  speciesSortBy: SPECIES_SORT.COUNT_DESC,
+  filters: defaultExploreV2Filters,
   activeTab: OBSERVATIONS_TAB,
 };
 
@@ -123,20 +170,10 @@ export function exploreV2Reducer(
       return { ...state, subject: action.subject };
     case EXPLORE_V2_ACTION.CLEAR_SUBJECT:
       return { ...state, subject: null };
-    case EXPLORE_V2_ACTION.SET_LOCATION_NEEDS_PERMISSION:
-      return {
-        ...state,
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEEDS_PERMISSION },
-      };
     case EXPLORE_V2_ACTION.SET_LOCATION_NEARBY:
       return {
         ...state,
-        location: {
-          placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-          lat: action.lat,
-          lng: action.lng,
-          radius: action.radius,
-        },
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY },
       };
     case EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE:
       return {
@@ -151,8 +188,18 @@ export function exploreV2Reducer(
           place: action.place,
         },
       };
+    case EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA:
+      return {
+        ...state,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+          bounds: action.bounds,
+        },
+      };
     case EXPLORE_V2_ACTION.SET_SORT:
       return { ...state, sortBy: action.sortBy };
+    case EXPLORE_V2_ACTION.SET_SPECIES_SORT:
+      return { ...state, speciesSortBy: action.speciesSortBy };
     case EXPLORE_V2_ACTION.SET_FILTERS:
       return { ...state, filters: action.filters };
     case EXPLORE_V2_ACTION.SET_ACTIVE_TAB:
@@ -167,32 +214,9 @@ export function exploreV2Reducer(
   }
 }
 
-export type DefaultExploreV2Location =
-  | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
-  | {
-    placeMode: EXPLORE_V2_PLACE_MODE.NEARBY;
-    lat: number;
-    lng: number;
-    radius: number;
-  };
-
-export async function defaultExploreV2Location( ): Promise<DefaultExploreV2Location> {
-  const location = await fetchCoarseUserLocation( );
-  if ( !location || !location.latitude ) {
-    return { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE };
-  }
-  return {
-    placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
-    lat: location.latitude,
-    lng: location.longitude,
-    radius: 1,
-  };
-}
-
 interface ExploreV2ContextValue {
   state: ExploreV2State;
   dispatch: ( action: ExploreV2Action ) => void;
-  requestLocationPermissions: ( ) => void;
 }
 
 const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
@@ -201,18 +225,14 @@ const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
 
 interface ExploreV2ProviderProps {
   children: React.ReactNode;
-  requestLocationPermissions: ( ) => void;
 }
 
-export const ExploreV2Provider = ( {
-  children,
-  requestLocationPermissions,
-}: ExploreV2ProviderProps ) => {
+export const ExploreV2Provider = ( { children }: ExploreV2ProviderProps ) => {
   const [state, dispatch] = React.useReducer( exploreV2Reducer, initialExploreV2State );
 
   const value = React.useMemo(
-    () => ( { state, dispatch, requestLocationPermissions } ),
-    [state, requestLocationPermissions],
+    () => ( { state, dispatch } ),
+    [state],
   );
 
   return (

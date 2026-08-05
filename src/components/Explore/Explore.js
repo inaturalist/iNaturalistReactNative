@@ -254,6 +254,7 @@ const Explore = ( {
             <ObservationsViewBar
               layout={layout}
               updateObservationsView={writeLayoutToStorage}
+              viewOptions={["map", "grid", "list"]}
             />
           )}
           {renderMainContent()}
