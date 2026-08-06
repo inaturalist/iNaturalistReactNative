@@ -28,7 +28,6 @@ type Props = {
   // $FlowIgnore
   animatedProps: unknown,
   cameraRef: Object,
-  debugFormat?: Object,
   device: Object,
   onCameraError: Function,
   onCaptureError: Function,
@@ -199,7 +198,6 @@ const FrameProcessorCamera = ( {
       animatedProps={animatedProps}
       cameraRef={cameraRef}
       cameraScreen="ai"
-      debugFormat={debugFormat}
       device={device}
       frameProcessor={frameProcessor}
       onCameraError={async error => {
