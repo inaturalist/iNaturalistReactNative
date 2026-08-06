@@ -49,6 +49,7 @@ const Blog = ( ) => {
   return (
     <ScreenShell>
       <PostList
+        headerTitle={t( "iNaturalist-Blog" )}
         posts={blogPosts ?? []}
         fetchNextPage={fetchNextPage}
         isFetchingNextPage={isFetchingNextPage}

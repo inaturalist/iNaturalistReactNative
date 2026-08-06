@@ -73,6 +73,7 @@ const UserPosts = ( {
   return (
     <ScreenShell>
       <PostList
+        headerTitle={userLogin}
         posts={enrichedPosts}
         fetchNextPage={fetchNextPage}
         isFetchingNextPage={isFetchingNextPage}

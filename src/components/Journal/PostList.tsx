@@ -18,12 +18,19 @@ const CONTAINER_STYLE = {
 const ItemSeparator = () => <View className="border-b border-lightGray" />;
 
 interface Props {
+  headerTitle?: string;
   posts: ApiPostForUser[];
   isFetchingNextPage: boolean;
   fetchNextPage: ( ) => void;
 }
 
-const PostList = ( { posts, isFetchingNextPage, fetchNextPage }: Props ) => {
+const PostList = ( {
+  headerTitle,
+  posts,
+  isFetchingNextPage,
+  fetchNextPage,
+}: Props ) => {
+  console.log( "headerTitle", headerTitle );
   const { isConnected } = useNetInfo();
   const footerComponent = useMemo(
     () => (
