@@ -3,6 +3,7 @@ import {
   Body1,
   List2,
   ScrollViewWrapper,
+  UserText,
 } from "components/SharedComponents";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
@@ -22,7 +23,6 @@ const PostDetails = ( ) => {
     title,
   } = params;
   const { i18n } = useTranslation( );
-  console.log( "body", body );
   useEffect( ( ) => {
     navigation.setOptions( { headerTitle } );
   }, [headerTitle, navigation] );
@@ -36,6 +36,7 @@ const PostDetails = ( ) => {
             <List2>{formatLongDate( published_at, i18n )}</List2>
           </View>
           <Body1>{title}</Body1>
+          <UserText text={body} />
         </View>
       </ScrollViewWrapper>
     </ScreenShell>
