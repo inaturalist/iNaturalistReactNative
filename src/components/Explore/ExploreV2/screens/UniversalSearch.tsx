@@ -1,3 +1,4 @@
+import { BottomTabBarHeightContext } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import DefaultSearchOptions
@@ -36,10 +37,13 @@ import {
   EXPLORE_V2_ACTION,
   useExploreV2,
 } from "providers/ExploreV2Context";
-import React, { useCallback, useRef, useState } from "react";
+import React, {
+  useCallback, useContext, useMemo, useRef, useState,
+} from "react";
 import type { ListRenderItem, TextInput as RNTextInput } from "react-native";
 import { FlatList, Keyboard } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadow } from "styles/global";
@@ -86,6 +90,17 @@ const UniversalSearch = ( ) => {
   const currentUser = useCurrentUser( );
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
+
+  const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
+  const tabBarHeight = useContext( BottomTabBarHeightContext ) ?? 0;
+  const [buttonBarHeight, setButtonBarHeight] = useState( 0 );
+  const listOverlap = keyboardShown
+    ? Math.max( 0, keyboardHeight - tabBarHeight - buttonBarHeight )
+    : 0;
+  const listContentStyle = useMemo(
+    ( ) => ( { paddingBottom: listOverlap } ),
+    [listOverlap],
+  );
 
   // Which field's result list is showing. tracks the last-focused field rather
   // than live focus. Subject autofocuses, so it's the initial value.
@@ -327,14 +342,22 @@ const UniversalSearch = ( ) => {
       <View className="flex-1">
         {/* One always-mounted list; its contents follow the focused field. */}
         <FlatList
+          contentContainerStyle={listContentStyle}
           data={listData}
           keyboardShouldPersistTaps="handled"
           keyExtractor={resultKey}
           renderItem={renderItem}
+          testID="UniversalSearch.results"
           ListEmptyComponent={listEmptyComponent}
         />
       </View>
-      <ButtonBar containerClass="bg-white border-t border-lightGray">
+      <ButtonBar
+        containerClass="bg-white border-t border-lightGray"
+        onLayout={
+          ( { nativeEvent } ) => setButtonBarHeight( nativeEvent.layout.height )
+        }
+        testID="UniversalSearch.buttonBar"
+      >
         <Button
           level="focus"
           onPress={handleSearch}

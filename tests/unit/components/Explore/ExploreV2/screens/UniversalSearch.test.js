@@ -1,4 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
+import { BottomTabBarHeightContext } from "@react-navigation/bottom-tabs";
 import {
   act, fireEvent, screen, userEvent, waitFor,
 } from "@testing-library/react-native";
@@ -6,7 +7,7 @@ import UniversalSearch from "components/Explore/ExploreV2/screens/UniversalSearc
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
-import { Keyboard } from "react-native";
+import { Keyboard, StyleSheet } from "react-native";
 import { renderComponent } from "tests/helpers/render";
 
 const mockNavigate = jest.fn( );
@@ -70,6 +71,12 @@ jest.mock( "sharedHooks/useIconicTaxa", ( ) => ( {
   default: jest.fn( ),
 } ) );
 const useIconicTaxa = require( "sharedHooks/useIconicTaxa" ).default;
+
+jest.mock( "sharedHooks/useKeyboardInfo", ( ) => ( {
+  __esModule: true,
+  default: jest.fn( ),
+} ) );
+const useKeyboardInfo = require( "sharedHooks/useKeyboardInfo" ).default;
 
 const ICONIC_TAXA = [
   {
@@ -160,6 +167,18 @@ const focusLocation = ( ) => {
   fireEvent( screen.getByTestId( "UniversalSearch.locationInput" ), "focus" );
 };
 
+const KEYBOARD_HIDDEN = { keyboardHeight: 0, keyboardShown: false };
+
+const measureButtonBar = height => {
+  fireEvent( screen.getByTestId( "UniversalSearch.buttonBar" ), "layout", {
+    nativeEvent: { layout: { height } },
+  } );
+};
+
+const listPaddingBottom = ( ) => StyleSheet.flatten(
+  screen.getByTestId( "UniversalSearch.results" ).props.contentContainerStyle,
+)?.paddingBottom;
+
 beforeAll( async ( ) => {
   await initI18next( );
 } );
@@ -183,6 +202,7 @@ beforeEach( ( ) => {
   useIconicTaxa.mockReturnValue( ICONIC_TAXA );
   useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
   useLocationSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
+  useKeyboardInfo.mockReturnValue( KEYBOARD_HIDDEN );
   // Default to online; the offline tests override this per-case.
   useNetInfo.mockReturnValue( { isConnected: true } );
 } );
@@ -623,6 +643,52 @@ describe( "UniversalSearch screen", ( ) => {
         expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
       },
     );
+  } );
+
+  describe( "keeping results clear of the keyboard", ( ) => {
+    it( "adds no padding while the keyboard is dismissed", ( ) => {
+      useKeyboardInfo.mockReturnValue( { keyboardHeight: 300, keyboardShown: false } );
+      renderComponent( <UniversalSearch /> );
+
+      measureButtonBar( 80 );
+
+      expect( listPaddingBottom( ) ).toEqual( 0 );
+    } );
+
+    it( "pads the list by the keyboard height minus the button bar", ( ) => {
+      useKeyboardInfo.mockReturnValue( { keyboardHeight: 300, keyboardShown: true } );
+      renderComponent( <UniversalSearch /> );
+
+      expect( listPaddingBottom( ) ).toEqual( 300 );
+
+      measureButtonBar( 80 );
+      expect( listPaddingBottom( ) ).toEqual( 220 );
+    } );
+
+    it( "also subtracts the tab bar height when the screen has one", ( ) => {
+      useKeyboardInfo.mockReturnValue( { keyboardHeight: 300, keyboardShown: true } );
+      renderComponent(
+        <BottomTabBarHeightContext.Provider value={50}>
+          <UniversalSearch />
+        </BottomTabBarHeightContext.Provider>,
+      );
+
+      measureButtonBar( 80 );
+      expect( listPaddingBottom( ) ).toEqual( 170 );
+    } );
+
+    it( "never pads by a negative amount", ( ) => {
+      useKeyboardInfo.mockReturnValue( { keyboardHeight: 100, keyboardShown: true } );
+      renderComponent(
+        <BottomTabBarHeightContext.Provider value={50}>
+          <UniversalSearch />
+        </BottomTabBarHeightContext.Provider>,
+      );
+
+      measureButtonBar( 80 );
+
+      expect( listPaddingBottom( ) ).toEqual( 0 );
+    } );
   } );
 
   it( "navigates to Advanced Search", async ( ) => {
