@@ -798,6 +798,8 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+# Accessibility hint for a journal post in a list of journal posts
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 # Accessibility hint for the main menu bottom tab
 Navigates-to-main-menu = Navigates to main menu.
