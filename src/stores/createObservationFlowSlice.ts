@@ -39,10 +39,15 @@ interface PhotoImporterOptions {
   firstObservationDefaults?: Partial<RealmObservationPojo>;
 }
 
+// Observation-flow only; not Realm schema properties.
+interface CurrentObservation extends RealmObservationPojo {
+  projectObservationUuidsToDelete?: string[];
+}
+
 interface ObservationFlowState {
   aICameraSuggestion: ApiSuggestion | null;
   cameraRollUris: string[];
-  currentObservation: RealmObservationPojo | null;
+  currentObservation: CurrentObservation | null;
   currentObservationIndex: number;
   evidenceToAdd: string[];
   photoLibraryUris: string[];
@@ -75,7 +80,7 @@ interface ObservationFlowActions {
   setPhotoImporterState: ( options: PhotoImporterOptions ) => void;
   setSavedOrUploadedMultiObsFlow: ( ) => void;
   updateObservations: ( updatedObservations: RealmObservationPojo[] ) => void;
-  updateObservationKeys: ( keysAndValues: Partial<RealmObservationPojo> ) => void;
+  updateObservationKeys: ( keysAndValues: Partial<CurrentObservation> ) => void;
   getCurrentObservation: ( ) => RealmObservationPojo | null;
   prepareObsEdit: ( observation: RealmObservationPojo ) => void;
   prepareCamera: ( ) => void;
