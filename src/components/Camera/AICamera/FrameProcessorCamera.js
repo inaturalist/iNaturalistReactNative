@@ -28,12 +28,8 @@ type Props = {
   // $FlowIgnore
   animatedProps: unknown,
   cameraRef: Object,
-  confidenceThreshold?: number,
   debugFormat?: Object,
   device: Object,
-  fps?: number,
-  numStoredResults?: number,
-  cropRatio?: number,
   onCameraError: Function,
   onCaptureError: Function,
   onClassifierError: Function,
@@ -49,20 +45,15 @@ type Props = {
   useLocation: boolean
 };
 
-const DEFAULT_FPS = 1;
-const DEFAULT_CONFIDENCE_THRESHOLD = 70;
-const DEFAULT_NUM_STORED_RESULTS = 5;
-const DEFAULT_CROP_RATIO = 1.0;
+const FPS = 1;
+const CONFIDENCE_THRESHOLD = 70;
+const NUM_STORED_RESULTS = 5;
+const CROP_RATIO = 1.0;
 
 const FrameProcessorCamera = ( {
   animatedProps,
   cameraRef,
-  confidenceThreshold = DEFAULT_CONFIDENCE_THRESHOLD,
-  cropRatio = DEFAULT_CROP_RATIO,
-  debugFormat,
   device,
-  fps = DEFAULT_FPS,
-  numStoredResults = DEFAULT_NUM_STORED_RESULTS,
   onCameraError,
   onCaptureError,
   onClassifierError,
@@ -157,7 +148,7 @@ const FrameProcessorCamera = ( {
       // If there is no lastTimestamp, i.e. the first time this runs do not compare
       if ( lastTimestamp ) {
         const timeSinceLastFrame = timestamp - lastTimestamp;
-        if ( timeSinceLastFrame < 1000 / fps ) {
+        if ( timeSinceLastFrame < 1000 / FPS ) {
           return;
         }
       }
@@ -173,9 +164,9 @@ const FrameProcessorCamera = ( {
             version: modelVersion,
             modelPath,
             taxonomyPath,
-            confidenceThreshold,
-            numStoredResults,
-            cropRatio,
+            confidenceThreshold: CONFIDENCE_THRESHOLD,
+            numStoredResults: NUM_STORED_RESULTS,
+            cropRatio: CROP_RATIO,
             useGeomodel,
             geomodelPath,
             location: {
@@ -196,12 +187,8 @@ const FrameProcessorCamera = ( {
     [
       patchedRunAsync,
       modelVersion,
-      confidenceThreshold,
       takingPhoto,
-      numStoredResults,
-      cropRatio,
       lastTimestamp,
-      fps,
       useGeomodel,
       geoModelCellLocation,
     ],
