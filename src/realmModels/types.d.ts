@@ -142,6 +142,7 @@ export interface RealmUser extends RealmObject {
   prefers_common_names?: boolean;
   prefers_community_taxa?: boolean;
   prefers_scientific_name_first?: boolean;
+  roles?: string[];
   signedIn?: boolean;
 }
 
