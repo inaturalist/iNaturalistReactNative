@@ -13,7 +13,8 @@ import type { Opts } from "linkifyjs";
 import isEqual from "lodash/isEqual";
 import trim from "lodash/trim";
 import MarkdownIt from "markdown-it";
-import * as React from "react";
+import type { PropsWithChildren } from "react";
+import React, { memo, useMemo } from "react";
 import { Linking, useWindowDimensions } from "react-native";
 import WebView from "react-native-webview";
 import type { IOptions } from "sanitize-html";
@@ -99,7 +100,7 @@ const LINKIFY_OPTIONS: Opts = {
   },
 };
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
   text: string;
   htmlStyle?: object;
   contentMargin: number;
@@ -144,7 +145,10 @@ const UserText = ( {
   const { width } = useWindowDimensions( );
   const contentWidth = width - contentMargin;
 
-  const html = buildUserTextHtml( text );
+  // Markdown, sanitization, and linkification are potentially expensive enough on a long
+  // journal post body that we don't want to redo them on every render (haven't tested this
+  // though in any performance metrics sense)
+  const html = useMemo( ( ) => buildUserTextHtml( text ), [text] );
 
   const baseStyle: MixedStyleDeclaration = {
     fontFamily: fontRegular,
@@ -236,4 +240,4 @@ const UserText = ( {
 };
 
 // Memoize to prevent excessive re-renders when HTML component is in a list
-export default React.memo( UserText, ( oldProps, newProps ) => isEqual( oldProps, newProps ) );
+export default memo( UserText, ( oldProps, newProps ) => isEqual( oldProps, newProps ) );
