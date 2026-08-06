@@ -73,7 +73,6 @@ const ProjectPosts = ( {
   return (
     <ScreenShell>
       <PostList
-        headerTitle={projectTitle}
         posts={enrichedPosts}
         fetchNextPage={fetchNextPage}
         isFetchingNextPage={isFetchingNextPage}

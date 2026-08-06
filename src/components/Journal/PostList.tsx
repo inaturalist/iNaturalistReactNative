@@ -20,14 +20,12 @@ const CONTAINER_STYLE = {
 const ItemSeparator = () => <View className="border-b border-lightGray" />;
 
 interface Props {
-  headerTitle?: string;
   posts: ApiPostForUser[];
   isFetchingNextPage: boolean;
   fetchNextPage: ( ) => void;
 }
 
 const PostList = ( {
-  headerTitle,
   posts,
   isFetchingNextPage,
   fetchNextPage,
@@ -50,11 +48,10 @@ const PostList = ( {
   const onPressPost = useCallback( ( post: ApiPostForUser ) => {
     navigation.navigate( "PostDetails", {
       body: post.body,
-      headerTitle: headerTitle ?? "",
       published_at: post.published_at,
       title: post.title,
     } );
-  }, [headerTitle, navigation] );
+  }, [navigation] );
 
   const renderPost: ListRenderItem<ApiPostForUser> = useCallback(
     ( { item } ) => <PostListItem item={item} onPress={onPressPost} />,

@@ -83,6 +83,11 @@ const notificationsTitle = () => (
     {t( "NOTIFICATIONS" )}
   </Heading4>
 );
+const postDetailsTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "JOURNAL-POST" )}
+  </Heading4>
+);
 
 // eslint-disable-next-line i18next/no-literal-string
 const debugTitle = () => <Heading4 className="text-white">DEBUG</Heading4>;
@@ -283,7 +288,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           <Stack.Screen
             name="PostDetails"
             component={FadeInPostDetails}
-            options={LIST_OPTIONS}
+            options={{ headerTitle: postDetailsTitle }}
           />
         </Stack.Group>
         {/* Developer Stack Group */}

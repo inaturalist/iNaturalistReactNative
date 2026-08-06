@@ -701,6 +701,7 @@ JOINED-X-PROJECTS =
         [one] JOINED { $count } PROJECT
        *[other] JOINED { $count } PROJECTS
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] JOURNAL POST

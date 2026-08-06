@@ -345,7 +345,6 @@ export type BaseTabStackParamList = {
   } | undefined;
   PostDetails: {
     body: string;
-    headerTitle: string;
     published_at: string;
     title: string;
   };
