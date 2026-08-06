@@ -17,6 +17,6 @@ describe( "PostList", ( ) => {
   it( "displays a post", async ( ) => {
     renderPostList( );
 
-    expect( await screen.findByText( mockPost.title ) ).toBeTruthy( );
+    expect( await screen.findByText( mockPost.title ) ).toBeVisible( );
   } );
 } );

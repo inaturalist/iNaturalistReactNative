@@ -10,7 +10,7 @@ describe( "PostListItem", ( ) => {
   it( "displays the post title", ( ) => {
     renderComponent( <PostListItem item={mockPost} onPress={jest.fn( )} /> );
 
-    expect( screen.getByText( mockPost.title ) ).toBeTruthy( );
+    expect( screen.getByText( mockPost.title ) ).toBeVisible( );
   } );
 
   it( "calls onPress with the post when pressed", ( ) => {
