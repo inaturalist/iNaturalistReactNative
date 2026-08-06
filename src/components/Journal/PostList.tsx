@@ -7,7 +7,7 @@ import {
   InfiniteScrollLoadingWheel,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import PostListItem from "./PostListItem";
 
@@ -45,8 +45,9 @@ const PostList = ( {
 
   const emptyComponent = useMemo( () => <ActivityIndicator size={50} />, [] );
 
-  const renderPost: ListRenderItem<ApiPostForUser> = ( { item } ) => (
-    <PostListItem item={item} />
+  const renderPost: ListRenderItem<ApiPostForUser> = useCallback(
+    ( { item } ) => <PostListItem item={item} />,
+    [],
   );
 
   return (
