@@ -102,6 +102,7 @@ const LINKIFY_OPTIONS: Opts = {
 interface Props extends React.PropsWithChildren {
   text: string;
   htmlStyle?: object;
+  contentMargin: number;
 }
 
 export function buildUserTextHtml( text: string ): string {
@@ -132,6 +133,7 @@ export function buildUserTextHtml( text: string ): string {
 
 const UserText = ( {
   children,
+  contentMargin = 0,
   htmlStyle,
   text: textProp,
 } : Props ) => {
@@ -140,6 +142,7 @@ const UserText = ( {
   // Allow stringified children to serve as text if no prop provided
   const text = textProp || children?.toString( ) || "";
   const { width } = useWindowDimensions( );
+  const contentWidth = width - contentMargin;
 
   const html = buildUserTextHtml( text );
 
@@ -222,7 +225,7 @@ const UserText = ( {
     <RenderHtml
       baseStyle={baseStyle}
       tagsStyles={tagsStyles}
-      contentWidth={width}
+      contentWidth={contentWidth}
       source={{ html }}
       WebView={WebView}
       systemFonts={fonts}
