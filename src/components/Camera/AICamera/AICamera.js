@@ -228,11 +228,7 @@ const AICamera = ( {
         <View className="w-full h-full absolute z-0">
           <FrameProcessorCamera
             cameraRef={camera}
-            confidenceThreshold={confidenceThreshold}
             device={device}
-            fps={fps}
-            numStoredResults={numStoredResults}
-            cropRatio={cropRatio}
             onTaxaDetected={handleTaxaDetected}
             onClassifierError={handleClassifierError}
             onDeviceNotSupported={handleDeviceNotSupported}
