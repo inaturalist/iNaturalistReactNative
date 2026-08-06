@@ -58,6 +58,7 @@ const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
 
   return {
     handleBackButtonPress,
+    navigateBackOrExitFlow,
     setShowDiscardSheet,
     showDiscardSheet,
   };
