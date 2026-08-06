@@ -229,7 +229,6 @@ const AICamera = ( {
           <FrameProcessorCamera
             cameraRef={camera}
             confidenceThreshold={confidenceThreshold}
-            debugFormat={debugFormat}
             device={device}
             fps={fps}
             numStoredResults={numStoredResults}
