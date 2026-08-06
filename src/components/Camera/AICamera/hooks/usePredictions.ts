@@ -20,10 +20,6 @@ const usePredictions = ( ) => {
   const [result, setResult] = useState<StoredResult | null>( null );
   const [resultTimestamp, setResultTimestamp] = useState<number | undefined>( undefined );
   const [modelLoaded, setModelLoaded] = useState( false );
-  const [confidenceThreshold, setConfidenceThreshold] = useState( 70 );
-  const [fps, setFPS] = useState( 1 );
-  const [numStoredResults, setNumStoredResults] = useState( 5 );
-  const [cropRatio, setCropRatio] = useState( 1 );
   const iconicTaxa = realm?.objects( "Taxon" ).filtered( "isIconic = true" );
 
   const handleTaxaDetected = ( cvResult: Result ) => {
@@ -66,19 +62,11 @@ const usePredictions = ( ) => {
   };
 
   return {
-    confidenceThreshold,
-    fps,
     handleTaxaDetected,
     modelLoaded,
-    numStoredResults,
-    cropRatio,
     result,
     resultTimestamp,
     setResult,
-    setConfidenceThreshold,
-    setFPS,
-    setNumStoredResults,
-    setCropRatio,
   };
 };
 
