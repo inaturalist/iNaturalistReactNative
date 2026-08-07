@@ -22,8 +22,6 @@ export default function buildProjectObservationSelection(
   selectedProjectIds: Set<number>,
 ): BuildProjectObservationSelectionResult {
   const priorProjectObservations = existingProjectObservations ?? [];
-  const priorUuidsToDelete = existingUuidsToDelete ?? [];
-
   const nextProjectObservations: RealmProjectObservationPojo[] = [];
 
   // When pressing Save, for each project that is selected we need to check if there
@@ -46,18 +44,8 @@ export default function buildProjectObservationSelection(
       uuidsToDelete.push( po.uuid );
     }
   } );
-  const keptUuids = new Set( nextProjectObservations.map( po => po.uuid ) );
-  const nextUuidsToDelete = [
-    ...new Set( [
-      // If a PO that was marked as deleted in a prior ObsEdit session, is now re-selected for
-      // addition, we need to keep it out of the to-be-deleted list
-      ...priorUuidsToDelete.filter( uuid => !keptUuids.has( uuid ) ),
-      ...uuidsToDelete,
-    ] ),
-  ];
 
   return {
     projectObservations: nextProjectObservations,
-    projectObservationUuidsToDelete: nextUuidsToDelete,
   };
 }
