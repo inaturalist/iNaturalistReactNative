@@ -30,6 +30,7 @@ export interface FilterApiParams {
   photo_license?: string;
   iconic_taxa?: string[];
   user_id?: number;
+  not_user_id?: number;
   project_id?: number;
 }
 
@@ -108,6 +109,11 @@ const filtersToApiParams = (
   }
 
   if ( filters.user?.id ) { params.user_id = filters.user.id; }
+
+  if ( filters.excludeUser?.id ) {
+    params.not_user_id = filters.excludeUser.id;
+  }
+
   if ( filters.project?.id ) { params.project_id = filters.project.id; }
 
   return params;
