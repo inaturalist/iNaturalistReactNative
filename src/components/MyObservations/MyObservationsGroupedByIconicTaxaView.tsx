@@ -56,9 +56,7 @@ interface HeaderData {
   isOpen: boolean;
 }
 
-interface TileData {
-  uuid: string;
-}
+type GroupedRow = SmallGridItem<string, HeaderData>;
 
 const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) => {
   const { t } = useTranslation( );
@@ -107,32 +105,27 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     } );
   }, [] );
 
-  const data = useMemo( ( ) => {
-    const categoriesWithObservations = ICONIC_TAXA_GROUP_ORDER
-      .filter( category => ( observationsByCategory.get( category )?.length ?? 0 ) > 0 );
+  // Sections are ordered most-observed to least-observed, which is the order iconicTaxaCounts
+  // comes back in.ICONIC_TAXA_GROUP_ORDER is the tie-break order that hook sorts by.
+  const rows = useMemo( ( ) => iconicTaxaCounts.flatMap( ( { category, count } ): GroupedRow[] => {
+    const observations = observationsByCategory.get( category ) ?? [];
+    if ( observations.length === 0 ) return [];
 
-    return categoriesWithObservations.flatMap( ( category ): SmallGridItem<
-      TileData,
-      HeaderData
-    >[] => {
-      const isOpen = !closedCategories.has( category );
-      const count = iconicTaxaCounts.find( c => c.category === category )?.count ?? 0;
-      const headerItem: SmallGridItem<TileData, HeaderData> = {
-        type: "header",
-        key: `header-${category}`,
-        header: { category, count, isOpen },
-      };
-      if ( !isOpen ) return [headerItem];
+    const isOpen = !closedCategories.has( category );
+    const headerRow: GroupedRow = {
+      type: "header",
+      key: `header-${category}`,
+      header: { category, count, isOpen },
+    };
+    if ( !isOpen ) return [headerRow];
 
-      const observations = observationsByCategory.get( category ) ?? [];
-      const tileItems: SmallGridItem<TileData, HeaderData>[] = observations.map( obs => ( {
-        type: "tile",
-        key: obs.uuid,
-        tile: { uuid: obs.uuid },
-      } ) );
-      return [headerItem, ...tileItems];
-    } );
-  }, [observationsByCategory, closedCategories, iconicTaxaCounts] );
+    const tileRows: GroupedRow[] = observations.map( ( { uuid } ) => ( {
+      type: "tile",
+      key: uuid,
+      tile: uuid,
+    } ) );
+    return [headerRow, ...tileRows];
+  } ), [observationsByCategory, closedCategories, iconicTaxaCounts] );
 
   const renderHeader = useCallback( ( header: HeaderData ) => (
     <CollapsibleSectionHeader
@@ -150,8 +143,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
   // holds, but uploadQueue and totalUploadProgress are deps, so during an upload every
   // visible cell re-renders on each progress tick instead of just the uploading ones.
   // Do this in the wire-up ticket.
-  const renderTile = useCallback( ( tile: TileData, width: number, height: number ) => {
-    const { uuid } = tile;
+  const renderTile = useCallback( ( uuid: string, width: number, height: number ) => {
     const { obsNeedsSync, queued, uploadProgress } = getObservationUploadStatus(
       realm,
       uploadQueue,
@@ -234,7 +226,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
 
   return (
     <SmallGrid
-      data={data}
+      data={rows}
       listHeaderContent={listHeaderContent}
       renderHeader={renderHeader}
       renderTile={renderTile}
