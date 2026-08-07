@@ -15,6 +15,7 @@ function findActiveOfv(
     ofv => ofv.obsFieldId === obsFieldId && isActiveOfv( ofv ),
   );
 }
+
 const useObservationFieldValue = ( obsFieldId: number ) => {
   const observationFieldValues = useStore(
     // currentObs is typed as this | null in createObservationFlowSlice.ts but null means the
@@ -29,21 +30,25 @@ const useObservationFieldValue = ( obsFieldId: number ) => {
   const value = existingOfv?.value ?? "";
 
   const setValue = useCallback( ( newValue: string | null ) => {
-    const index = observationFieldValues.findIndex( ofv => ofv.obsFieldId === obsFieldId );
+    const existingRow = observationFieldValues.find( ofv => ofv.obsFieldId === obsFieldId );
 
     let updatedOfvs: RealmObservationFieldValuePojo[];
 
     if ( !newValue || newValue.trim( ) === "" ) {
       // If newValue is from a selection being removed (null | "") remove OFV from the list
       updatedOfvs = observationFieldValues.filter( ofv => ofv.obsFieldId !== obsFieldId );
-    } else if ( index >= 0 ) {
-      // Update existing OFV
-      updatedOfvs = [...observationFieldValues];
-      updatedOfvs[index] = {
-        ...updatedOfvs[index],
-        value: newValue,
-        _updated_at: new Date( ),
-      };
+    } else if ( existingRow ) {
+      updatedOfvs = observationFieldValues.map( ofv => (
+        ofv.obsFieldId === obsFieldId
+          ? {
+            ...ofv,
+            value: newValue,
+            _updated_at: new Date( ),
+            _pendingRemoval: undefined,
+            _pending_deletion: undefined,
+          }
+          : ofv
+      ) );
     } else {
       // Create new OFV
       updatedOfvs = [
