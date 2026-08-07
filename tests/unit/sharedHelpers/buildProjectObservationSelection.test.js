@@ -113,6 +113,34 @@ describe( "areProjectIdSetsEqual", ( ) => {
       } ) );
       expect( result.projectObservations[0]._pending_deletion ).toBeUndefined( );
     } );
+
+    it( "keeps other pending-removal POs when selection changes", ( ) => {
+      const activePo = factory( "LocalProjectObservation", {
+        projectId: 10,
+        uuid: "active-po-uuid",
+        _synced_at: new Date( ),
+      } );
+      const pendingRemovalPo = factory( "LocalProjectObservation", {
+        projectId: 20,
+        uuid: "pending-removal-po-uuid",
+        _synced_at: new Date( ),
+        _pendingRemoval: true,
+      } );
+
+      const result = buildProjectObservationSelection(
+        [activePo, pendingRemovalPo],
+        new Set( [10] ),
+      );
+
+      expect( result.projectObservations ).toEqual( [
+        activePo,
+        {
+          ...pendingRemovalPo,
+          _pendingRemoval: true,
+        },
+      ] );
+    } );
+
     it( "handles missing arrays on brand-new observations", ( ) => {
       const result = buildProjectObservationSelection(
         undefined,
