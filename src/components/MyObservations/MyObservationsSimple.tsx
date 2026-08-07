@@ -402,7 +402,7 @@ const MyObservationsSimple = ( {
     if ( isConnected === false ) {
       return renderOfflineFallback( ( ) => refresh( ) );
     }
-    return <MyObservationsGroupedByIconicTaxaView />;
+    return <MyObservationsGroupedByIconicTaxaView listHeaderContent={observationsHeader} />;
   };
 
   const renderObservations = ( ) => {
