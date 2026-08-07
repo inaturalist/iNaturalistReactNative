@@ -91,6 +91,28 @@ describe( "areProjectIdSetsEqual", ( ) => {
       } )] );
     } );
 
+    it( "clears pending deletion when re-selecting a tombstoned PO", ( ) => {
+      const tombstonedPo = factory( "LocalProjectObservation", {
+        projectId: 10,
+        uuid: "tombstoned-po-uuid",
+        id: 99,
+        _synced_at: new Date( ),
+        _pending_deletion: true,
+      } );
+
+      const result = buildProjectObservationSelection(
+        [tombstonedPo],
+        new Set( [10] ),
+      );
+
+      expect( result.projectObservations[0] ).toEqual( expect.objectContaining( {
+        projectId: 10,
+        uuid: "tombstoned-po-uuid",
+        id: 99,
+        _synced_at: tombstonedPo._synced_at,
+      } ) );
+      expect( result.projectObservations[0]._pending_deletion ).toBeUndefined( );
+    } );
     it( "handles missing arrays on brand-new observations", ( ) => {
       const result = buildProjectObservationSelection(
         undefined,
