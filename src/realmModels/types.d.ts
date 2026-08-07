@@ -84,6 +84,7 @@ export interface RealmProjectObservationPojo extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
   _updated_at?: Date;
+  _pending_deletion?: boolean;
   uuid: string;
   id?: number | null;
   projectId: number;
@@ -98,6 +99,7 @@ export interface RealmObservationFieldValuePojo extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
   _updated_at?: Date;
+  _pending_deletion?: boolean;
   uuid: string;
   id?: number;
   obsFieldId: number;
