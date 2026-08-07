@@ -55,9 +55,9 @@ beforeEach( ( ) => {
     currentObservation: {
       ...factory( "LocalObservation" ),
       observationFieldValues: [],
-      projectObservationUuidsToDelete: [],
       projectObservations: [factory( "LocalProjectObservation", {
         projectId: mockProjects[0].id,
+        _synced_at: new Date( ),
       } )],
     },
   } );
@@ -145,7 +145,7 @@ describe( "AddToProjects", ( ) => {
     expect( mockGoBack ).toHaveBeenCalled( );
   } );
 
-  it( "stages synced project observation uuids for deletion", async ( ) => {
+  it( "soft-deletes synced project observations when deselected", async ( ) => {
     renderAddToProjects();
 
     // deselect 0
@@ -153,24 +153,29 @@ describe( "AddToProjects", ( ) => {
     await actor.press( screen.getByText( "SAVE" ) );
 
     expect( useStore.getState().currentObservation?.projectObservations ).toEqual(
-      [],
+      [expect.objectContaining( {
+        projectId: mockProjects[0].id,
+        _pendingRemoval: true,
+      } )],
     );
-    expect(
-      useStore.getState().currentObservation?.projectObservationUuidsToDelete,
-    ).toEqual( [mockProjects[0].uuid] );
     expect( mockGoBack ).toHaveBeenCalled();
   } );
 
-  it( "merges newly deselected synced PO uuids with a prior delete list on SAVE", async ( ) => {
-    // Same as before each but with a prior uuid t delete
+  it( "soft-deletes only the deselected synced project observation", async ( ) => {
     useStore.setState( {
       currentObservation: {
         ...factory( "LocalObservation" ),
         observationFieldValues: [],
-        projectObservationUuidsToDelete: ["prior-session-uuid"],
         projectObservations: [
           factory( "LocalProjectObservation", {
             projectId: mockProjects[0].id,
+            uuid: "po-0-uuid",
+            _synced_at: new Date( ),
+          } ),
+          factory( "LocalProjectObservation", {
+            projectId: mockProjects[1].id,
+            uuid: "po-1-uuid",
+            _synced_at: new Date( ),
           } ),
         ],
       },
@@ -181,12 +186,24 @@ describe( "AddToProjects", ( ) => {
     await actor.press( screen.getByText( mockProjects[0].title ) );
     await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
 
-    expect( useStore.getState( ).currentObservation?.projectObservations ).toEqual( [] );
-    expect( useStore.getState( ).currentObservation?.projectObservationUuidsToDelete )
-      .toEqual( [
-        "prior-session-uuid",
-        mockProjects[0].uuid,
-      ] );
+    const savedProjectObservations = useStore.getState( )
+      .currentObservation?.projectObservations;
+
+    expect( savedProjectObservations ).toEqual( expect.arrayContaining( [
+      expect.objectContaining( {
+        projectId: mockProjects[0].id,
+        uuid: "po-0-uuid",
+        _pendingRemoval: true,
+      } ),
+      expect.objectContaining( {
+        projectId: mockProjects[1].id,
+        uuid: "po-1-uuid",
+      } ),
+    ] ) );
+    expect( savedProjectObservations ).toHaveLength( 2 );
+    expect(
+      savedProjectObservations?.find( po => po.projectId === mockProjects[1].id )?._pendingRemoval,
+    ).toBeUndefined( );
     expect( mockGoBack ).toHaveBeenCalled( );
   } );
 } );

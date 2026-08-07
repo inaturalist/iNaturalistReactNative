@@ -3,6 +3,19 @@ import ObservationFieldValue from "realmModels/ObservationFieldValue";
 import type { RealmObservationFieldValuePojo, RealmObservationPojo } from "realmModels/types";
 import useStore from "stores/useStore";
 
+function isActiveOfv( ofv: RealmObservationFieldValuePojo ): boolean {
+  return !ofv._pendingRemoval && !ofv._pending_deletion;
+}
+
+function findActiveOfv(
+  observationFieldValues: RealmObservationFieldValuePojo[],
+  obsFieldId: number,
+) {
+  return observationFieldValues.find(
+    ofv => ofv.obsFieldId === obsFieldId && isActiveOfv( ofv ),
+  );
+}
+
 const useObservationFieldValue = ( obsFieldId: number ) => {
   const observationFieldValues = useStore(
     // currentObs is typed as this | null in createObservationFlowSlice.ts but null means the
@@ -13,27 +26,36 @@ const useObservationFieldValue = ( obsFieldId: number ) => {
   );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
 
-  const existingOfv = observationFieldValues.find(
-    ofv => ofv.obsFieldId === obsFieldId,
-  );
+  const existingOfv = findActiveOfv( observationFieldValues, obsFieldId );
   const value = existingOfv?.value ?? "";
 
   const setValue = useCallback( ( newValue: string | null ) => {
-    const index = observationFieldValues.findIndex( ofv => ofv.obsFieldId === obsFieldId );
+    const existingRow = observationFieldValues.find( ofv => ofv.obsFieldId === obsFieldId );
 
     let updatedOfvs: RealmObservationFieldValuePojo[];
 
     if ( !newValue || newValue.trim( ) === "" ) {
-      // If newValue is from a selection being removed (null | "") remove OFV from the list
-      updatedOfvs = observationFieldValues.filter( ofv => ofv.obsFieldId !== obsFieldId );
-    } else if ( index >= 0 ) {
-      // Update existing OFV
-      updatedOfvs = [...observationFieldValues];
-      updatedOfvs[index] = {
-        ...updatedOfvs[index],
-        value: newValue,
-        _updated_at: new Date( ),
-      };
+      if ( existingRow?._synced_at != null ) {
+        updatedOfvs = observationFieldValues.map( ofv => (
+          ofv.obsFieldId === obsFieldId
+            ? { ...ofv, _pendingRemoval: true }
+            : ofv
+        ) );
+      } else {
+        updatedOfvs = observationFieldValues.filter( ofv => ofv.obsFieldId !== obsFieldId );
+      }
+    } else if ( existingRow ) {
+      updatedOfvs = observationFieldValues.map( ofv => (
+        ofv.obsFieldId === obsFieldId
+          ? {
+            ...ofv,
+            value: newValue,
+            _updated_at: new Date( ),
+            _pendingRemoval: undefined,
+            _pending_deletion: undefined,
+          }
+          : ofv
+      ) );
     } else {
       // Create new OFV
       updatedOfvs = [

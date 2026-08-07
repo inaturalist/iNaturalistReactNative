@@ -86,7 +86,6 @@ describe( "ObservationFieldInput", ( ) => {
       currentObservation: {
         ...factory( "LocalObservation" ),
         observationFieldValues: [],
-        projectObservationUuidsToDelete: [],
         projectObservations: [],
       },
     } );
