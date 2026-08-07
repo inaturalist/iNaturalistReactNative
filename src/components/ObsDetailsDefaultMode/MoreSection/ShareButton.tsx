@@ -2,7 +2,6 @@ import {
   Body3,
 } from "components/SharedComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 import { Alert, Platform, Share } from "react-native";
 
@@ -12,7 +11,7 @@ interface Props {
 
 const OBSERVATION_URL = "https://www.inaturalist.org/observations";
 
-const handleShare = async url => {
+const handleShare = async ( url: string ) => {
   const sharingOptions = {
     url: "",
     message: "",
@@ -25,12 +24,12 @@ const handleShare = async url => {
   try {
     return await Share.share( sharingOptions );
   } catch ( err ) {
-    Alert.alert( err.message );
+    Alert.alert( ( err as Error ).message );
     return null;
   }
 };
 
-const ShareButton = ( { id }: Props ): Node => (
+const ShareButton = ( { id }: Props ) => (
   <Body3
     className="underline mt-[11px]"
     onPress={() => handleShare( `${OBSERVATION_URL}/${id}` )}
