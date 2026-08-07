@@ -55,7 +55,6 @@ beforeEach( ( ) => {
     currentObservation: {
       ...factory( "LocalObservation" ),
       observationFieldValues: [],
-      projectObservationUuidsToDelete: [],
       projectObservations: [factory( "LocalProjectObservation", {
         projectId: mockProjects[0].id,
       } )],
@@ -167,7 +166,6 @@ describe( "AddToProjects", ( ) => {
       currentObservation: {
         ...factory( "LocalObservation" ),
         observationFieldValues: [],
-        projectObservationUuidsToDelete: ["prior-session-uuid"],
         projectObservations: [
           factory( "LocalProjectObservation", {
             projectId: mockProjects[0].id,
