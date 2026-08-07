@@ -142,17 +142,13 @@ const AddToProjects = ( ) => {
   }, [] );
 
   const onSave = useCallback( ( ) => {
-    const {
-      projectObservations,
-      projectObservationUuidsToDelete,
-    } = buildProjectObservationSelection(
+    const { projectObservations } = buildProjectObservationSelection(
       currentObservation?.projectObservations,
       currentObservation?.projectObservationUuidsToDelete,
       selectedProjectIds,
     );
     updateObservationKeys( {
       projectObservations,
-      projectObservationUuidsToDelete,
     } );
     navigation.goBack( );
   }, [
