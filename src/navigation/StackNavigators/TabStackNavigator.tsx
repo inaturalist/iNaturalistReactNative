@@ -11,6 +11,7 @@ import ExploreV2Container from "components/Explore/ExploreV2/ExploreV2Container"
 import RootExploreContainer from "components/Explore/RootExploreContainer";
 import Help from "components/Help/Help";
 import Journal from "components/Journal/Journal";
+import PostDetails from "components/Journal/PostDetails";
 import Menu from "components/Menu/Menu";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import Notifications from "components/Notifications/Notifications";
@@ -82,6 +83,11 @@ const notificationsTitle = () => (
     {t( "NOTIFICATIONS" )}
   </Heading4>
 );
+const postDetailsTitle = () => (
+  <Heading4 accessibilityRole="header" numberOfLines={1}>
+    {t( "JOURNAL-POST" )}
+  </Heading4>
+);
 
 // eslint-disable-next-line i18next/no-literal-string
 const debugTitle = () => <Heading4 className="text-white">DEBUG</Heading4>;
@@ -109,6 +115,7 @@ const FadeInProjectList = ( ) => fadeInComponent( <ProjectListContainer /> );
 const FadeInFollowersList = ( ) => fadeInComponent( <FollowersList /> );
 const FadeInFollowingList = ( ) => fadeInComponent( <FollowingList /> );
 const FadeInJournal = ( ) => fadeInComponent( <Journal /> );
+const FadeInPostDetails = ( ) => fadeInComponent( <PostDetails /> );
 
 const BASE_SCREEN_OPTIONS = {
   headerBackButtonDisplayMode: "minimal",
@@ -277,6 +284,11 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
             name="Journal"
             component={FadeInJournal}
             options={LIST_OPTIONS}
+          />
+          <Stack.Screen
+            name="PostDetails"
+            component={FadeInPostDetails}
+            options={{ headerTitle: postDetailsTitle }}
           />
         </Stack.Group>
         {/* Developer Stack Group */}
