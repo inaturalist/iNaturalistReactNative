@@ -284,6 +284,15 @@ class Observation extends Realm.Object {
     if ( !embed ) {
       return embed;
     }
+
+    const { _pendingRemoval, ...restWithoutPendingRemoval } = embed;
+
+    if ( _pendingRemoval || embed._pending_deletion ) {
+      return {
+        ...restWithoutPendingRemoval,
+        _pending_deletion: true,
+      };
+    }
     return embed;
   }
 
