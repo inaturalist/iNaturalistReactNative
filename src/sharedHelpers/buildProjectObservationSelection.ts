@@ -19,6 +19,12 @@ function isSyncedOrTombstonedPo( po: RealmProjectObservationPojo ): boolean {
   return po._synced_at != null || po._pending_deletion === true;
 }
 
+function activatePo( po: RealmProjectObservationPojo ): RealmProjectObservationPojo {
+  // eslint-disable-next-line camelcase
+  const { _pendingRemoval, _pending_deletion, ...rest } = po;
+  return rest;
+}
+
 export default function buildProjectObservationSelection(
   existingProjectObservations: RealmProjectObservationPojo[] | undefined,
   selectedProjectIds: Set<number>,
@@ -26,13 +32,10 @@ export default function buildProjectObservationSelection(
   const priorProjectObservations = existingProjectObservations ?? [];
   const nextProjectObservations: RealmProjectObservationPojo[] = [];
 
-  // When pressing Save, for each project that is selected we need to check if there
-  // already exists a PO (e.g. on ObsEdit by not changing this one while adding another)
-  // or if we need to create a new PO
   selectedProjectIds.forEach( projectId => {
     const existingPo = priorProjectObservations.find( po => po.projectId === projectId );
     if ( existingPo ) {
-      nextProjectObservations.push( existingPo );
+      nextProjectObservations.push( activatePo( existingPo ) );
     } else {
       nextProjectObservations.push( ProjectObservation.new( projectId ) );
     }
