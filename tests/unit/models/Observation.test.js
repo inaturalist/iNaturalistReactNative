@@ -199,5 +199,29 @@ describe( "Observation", ( ) => {
       expect( obs.projectObservations[0].uuid ).toBe( poUuid );
       expect( obs.projectObservations[0]._synced_at ).toEqual( syncedAt );
     } );
+
+    it( "creates Realm tombstones from pending-removal OFVs", async ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncedAt = new Date( "2020-01-02" );
+      const ofvUuid = uuid.v4( ).toLowerCase( );
+
+      const mockOFV = factory( "LocalObservationFieldValue", {
+        uuid: ofvUuid,
+        _synced_at: syncedAt,
+        _pendingRemoval: true,
+      } );
+      await Observation.saveLocalObservationForUpload( {
+        uuid: obsUuid,
+        projectObservations: [],
+        observationFieldValues: [mockOFV],
+        observationPhotos: [],
+        observationSounds: [],
+      }, global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.observationFieldValues ).toHaveLength( 1 );
+      expect( obs.observationFieldValues[0]._pending_deletion ).toBe( true );
+      expect( obs.observationFieldValues[0].uuid ).toBe( ofvUuid );
+    } );
   } );
 } );
