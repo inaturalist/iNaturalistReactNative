@@ -18,8 +18,8 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
       return {
         type: "user",
         user: {
-          id: result.user.id as number,
-          login: result.user.login as string,
+          id: result.user.id,
+          login: result.user.login,
           icon_url: result.user.icon_url,
         },
       };
@@ -36,8 +36,8 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
       return {
         type: "taxon",
         taxon: {
-          id: result.taxon.id as number,
-          name: result.taxon.name as string,
+          id: result.taxon.id,
+          name: result.taxon.name,
           preferred_common_name: result.taxon.preferred_common_name,
           default_photo: result.taxon.default_photo?.url
             ? { url: result.taxon.default_photo.url }

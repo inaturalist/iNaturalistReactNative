@@ -42,9 +42,9 @@ const toSubject = ( {
   user,
   project,
 }: NavigateToExploreOptions ): ExploreV2Subject | null => {
-  if ( taxon?.id && taxon.name ) { return resultToSubject( { type: "taxon", taxon } ); }
-  if ( user?.id && user.login ) { return resultToSubject( { type: "user", user } ); }
-  if ( project?.id && project.title ) { return resultToSubject( { type: "project", project } ); }
+  if ( taxon?.id ) { return resultToSubject( { type: "taxon", taxon } ); }
+  if ( user?.id ) { return resultToSubject( { type: "user", user } ); }
+  if ( project?.id ) { return resultToSubject( { type: "project", project } ); }
   return null;
 };
 
