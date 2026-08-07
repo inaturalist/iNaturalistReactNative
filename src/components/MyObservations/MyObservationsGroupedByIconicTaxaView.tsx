@@ -46,7 +46,11 @@ function iconicTaxaGroupTitles( t: TFunction ): Record<ICONIC_TAXA_GROUP, string
   };
 }
 
-const MyObservationsGroupedByIconicTaxaView = ( ) => {
+interface Props {
+  listHeaderContent?: React.ReactElement | null;
+}
+
+const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) => {
   const { t } = useTranslation( );
   const localObservationIds = useLocalObservationIds( );
   const currentUser = useCurrentUser( );
@@ -103,6 +107,7 @@ const MyObservationsGroupedByIconicTaxaView = ( ) => {
 
   return (
     <ScrollView testID="MyObservationsGroupedByIconicTaxaView">
+      {listHeaderContent}
       {sections.map( ( { category, count, observations } ) => (
         <View key={category}>
           <CollapsibleSectionHeader
