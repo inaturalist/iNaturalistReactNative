@@ -9,6 +9,8 @@ class ProjectObservation extends Realm.Object {
 
   _updated_at?: Date;
 
+  _pending_deletion?: boolean;
+
   needsSync( ) {
     return !this._synced_at || this._synced_at <= this._updated_at;
   }
@@ -47,6 +49,7 @@ class ProjectObservation extends Realm.Object {
       _synced_at: "date?",
       // datetime the PO was updated on the device (i.e. edited locally)
       _updated_at: "date?",
+      _pending_deletion: "bool?",
       uuid: "string",
       id: "int?",
       projectId: "int",
