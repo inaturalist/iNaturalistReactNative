@@ -180,15 +180,14 @@ describe( "Observation", ( ) => {
       const syncedAt = new Date( "2020-01-02" );
       const poUuid = uuid.v4( ).toLowerCase( );
 
+      const mockPO = factory( "LocalProjectObservation", {
+        uuid: poUuid,
+        _synced_at: syncedAt,
+        _pendingRemoval: true,
+      } );
       await Observation.saveLocalObservationForUpload( {
         uuid: obsUuid,
-        projectObservations: [{
-          uuid: poUuid,
-          projectId: 10,
-          id: 99,
-          _synced_at: syncedAt,
-          _pendingRemoval: true,
-        }],
+        projectObservations: [mockPO],
         observationFieldValues: [],
         observationPhotos: [],
         observationSounds: [],
