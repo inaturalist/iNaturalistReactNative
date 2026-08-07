@@ -69,21 +69,26 @@ describe( "areProjectIdSetsEqual", ( ) => {
       expect( result.projectObservations ).toEqual( [] );
     } );
 
-    it( "removes re-selected PO uuid from a prior ObsEdit session delete list", ( ) => {
-      const reselectedPo = factory( "LocalProjectObservation", {
+    it( "preserves uuid when re-selecting after soft-delete", ( ) => {
+      const deselectedPo = factory( "LocalProjectObservation", {
         projectId: 10,
         uuid: "reselected-po-uuid",
+        id: 99,
         _synced_at: new Date( ),
+        _pendingRemoval: true,
       } );
 
       const result = buildProjectObservationSelection(
-        [reselectedPo],
-        ["reselected-po-uuid"],
+        [deselectedPo],
         new Set( [10] ),
       );
 
-      expect( result.projectObservations ).toEqual( [reselectedPo] );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
+      expect( result.projectObservations ).toEqual( [expect.objectContaining( {
+        projectId: 10,
+        uuid: "reselected-po-uuid",
+        id: 99,
+        _synced_at: deselectedPo._synced_at,
+      } )] );
     } );
 
     it( "carries forward prior session delete uuids and adds newly deselected synced POs", ( ) => {
