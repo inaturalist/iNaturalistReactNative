@@ -161,6 +161,23 @@ export const initialExploreV2State: ExploreV2State = {
   activeTab: OBSERVATIONS_TAB,
 };
 
+export interface ExploreV2EntryParams {
+  subject?: ExploreV2Subject | null;
+  location?: ExploreV2LocationState;
+  activeTab?: ExploreV2Tab;
+}
+
+export function initialStateFromEntryParams(
+  params?: ExploreV2EntryParams | null,
+): ExploreV2State {
+  return {
+    ...initialExploreV2State,
+    subject: params?.subject || initialExploreV2State.subject,
+    location: params?.location || initialExploreV2State.location,
+    activeTab: params?.activeTab || initialExploreV2State.activeTab,
+  };
+}
+
 export function exploreV2Reducer(
   state: ExploreV2State,
   action: ExploreV2Action,
@@ -225,10 +242,14 @@ const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
 
 interface ExploreV2ProviderProps {
   children: React.ReactNode;
+  initialState?: ExploreV2State;
 }
 
-export const ExploreV2Provider = ( { children }: ExploreV2ProviderProps ) => {
-  const [state, dispatch] = React.useReducer( exploreV2Reducer, initialExploreV2State );
+export const ExploreV2Provider = ( { children, initialState }: ExploreV2ProviderProps ) => {
+  const [state, dispatch] = React.useReducer(
+    exploreV2Reducer,
+    initialState || initialExploreV2State,
+  );
 
   const value = React.useMemo(
     () => ( { state, dispatch } ),
