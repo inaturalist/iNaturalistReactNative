@@ -223,5 +223,39 @@ describe( "Observation", ( ) => {
       expect( obs.observationFieldValues[0]._pending_deletion ).toBe( true );
       expect( obs.observationFieldValues[0].uuid ).toBe( ofvUuid );
     } );
+
+    it( "writes re-selected POs as active embeds without tombstones", async ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncedAt = new Date( "2020-01-02" );
+      const poUuid = uuid.v4( ).toLowerCase( );
+
+      const mockPO = factory( "LocalProjectObservation", {
+        uuid: poUuid,
+        _synced_at: syncedAt,
+        _pending_deletion: true,
+      } );
+
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", {
+          uuid: obsUuid,
+          _synced_at: syncedAt,
+          _updated_at: syncedAt,
+          projectObservations: [mockPO],
+        } );
+      }, "seed tombstoned PO for re-select save test" );
+
+      delete mockPO._pending_deletion;
+      await Observation.saveLocalObservationForUpload( {
+        uuid: obsUuid,
+        projectObservations: [mockPO],
+        observationFieldValues: [],
+        observationPhotos: [],
+        observationSounds: [],
+      }, global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.projectObservations[0]._pending_deletion ).toBeFalsy( );
+      expect( obs.projectObservations[0]._synced_at ).toBeNull( );
+    } );
   } );
 } );
