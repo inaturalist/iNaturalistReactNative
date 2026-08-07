@@ -60,6 +60,7 @@ const AddToProjects = ( ) => {
 
   const initialSelectedProjectIds = new Set(
     ( currentObservation?.projectObservations ?? [] )
+      .filter( po => !po._pendingRemoval && !po._pending_deletion )
       .map( po => po.projectId ),
   );
 
