@@ -32,15 +32,18 @@ const SmallGrid = <T, >( {
     const itemWidth = isLastInRow
       ? lastTileSize
       : tileSize;
+    const isLastRow = index >= data.length - numColumns;
     return (
       <View
         style={{ width: slotWidth, height: tileSize }}
-        className="items-start mb-[3px]"
+        className={isLastRow
+          ? "items-start"
+          : "items-start mb-[3px]"}
       >
         {renderTile( item, itemWidth, tileSize )}
       </View>
     );
-  }, [numColumns, slotWidth, tileSize, lastTileSize, renderTile] );
+  }, [numColumns, slotWidth, tileSize, lastTileSize, renderTile, data.length] );
 
   return (
     <CustomFlashList
