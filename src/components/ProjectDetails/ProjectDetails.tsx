@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import type { ApiPlace, ProjectRulePreference } from "api/types";
+import { SPECIES_TAB } from "appConstants/tabs";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
@@ -22,9 +23,9 @@ import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import Config from "react-native-config";
 import { openExternalWebBrowser } from "sharedHelpers/util";
-import { useFeatureFlag, useStoredLayout, useTranslation } from "sharedHooks";
+import { useFeatureFlag, useTranslation } from "sharedHooks";
+import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
@@ -67,44 +68,32 @@ const ProjectDetails = ( {
   project, joinProject, leaveProject, loadingProjectMembership,
 }: Props ) => {
   const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
-  const setExploreView = useStore( state => state.setExploreView );
 
   const { t, i18n } = useTranslation( );
   const navigation = useNavigation<TabStackScreenProps<"ProjectDetails">["navigation"]>( );
-
-  const { writeLayoutToStorage } = useStoredLayout( "exploreObservationsLayout" );
+  const navigateToExplore = useNavigateToExplore( );
 
   const [openSheet, setOpenSheet] = useState( NONE );
 
   const onObservationPressed = useCallback(
     ( toMap: boolean ) => {
-      setExploreView( "observations" );
-      if ( toMap ) {
-        writeLayoutToStorage( "map" );
-      }
-      navigation.navigate( "Explore", {
-        // TODO: refactor this to only send an ID to ExploreV2 and not an entire project object
-        // Function is only rendered with a button after null check below
-        project: project as Project,
-        // If selected project has no place, show map in worldwide mode
-        worldwide: !project?.place,
-        // TODO: refactor this to only send an ID to ExploreV2 and not an entire place object
+      navigateToExplore( {
+        project,
         place: project?.place,
+        layout: toMap
+          ? "map"
+          : undefined,
       } );
     },
-    [navigation, project, setExploreView, writeLayoutToStorage],
+    [navigateToExplore, project],
   );
 
   const onSpeciesPressed = useCallback(
-    ( ) => {
-      setExploreView( "species" );
-      navigation.navigate( "Explore", {
-        // Function is only rendered with a button after null check below
-        project: project as Project,
-        worldwide: true,
-      } );
-    },
-    [navigation, project, setExploreView],
+    ( ) => navigateToExplore( {
+      project,
+      tab: SPECIES_TAB,
+    } ),
+    [navigateToExplore, project],
   );
 
   const onMembersPressed = useCallback(

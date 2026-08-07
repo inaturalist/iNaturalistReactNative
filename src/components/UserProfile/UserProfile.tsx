@@ -3,6 +3,7 @@ import type { ErrorWithResponse, INatApiError } from "api/error";
 import { fetchRelationships } from "api/relationships";
 import type { ApiRelationship, ApiUser } from "api/types";
 import { fetchRemoteUser } from "api/users";
+import { OBSERVATIONS_TAB, SPECIES_TAB } from "appConstants/tabs";
 import LoginSheet from "components/MyObservations/LoginSheet";
 import {
   Body2,
@@ -19,6 +20,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
+import type { ExploreV2Tab } from "providers/ExploreV2Context";
 import React, { useCallback, useEffect, useState } from "react";
 import User from "realmModels/User";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
@@ -29,8 +31,8 @@ import {
   useTranslation,
 } from "sharedHooks";
 import useNavigateToAccountSettings from "sharedHooks/useNavigateToAccountSettings";
+import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 import FollowButtonContainer from "./FollowButtonContainer";
@@ -39,7 +41,7 @@ import UnfollowSheet from "./UnfollowSheet";
 const UserProfile = ( ) => {
   const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
 
-  const setExploreView = useStore( state => state.setExploreView );
+  const navigateToExplore = useNavigateToExplore( );
   const navigation = useNavigation <TabStackScreenProps<"UserProfile">["navigation"]>( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute<TabStackScreenProps<"UserProfile">["route"]>();
@@ -128,21 +130,11 @@ const UserProfile = ( ) => {
     );
   }
 
-  const onObservationPressed = ( ) => {
-    setExploreView( "observations" );
-    navigation.navigate( "Explore", {
-      user,
-      worldwide: true,
-    } );
-  };
+  const exploreUser = ( tab: ExploreV2Tab ) => navigateToExplore( { user, tab } );
 
-  const onSpeciesPressed = ( ) => {
-    setExploreView( "species" );
-    navigation.navigate( "Explore", {
-      user,
-      worldwide: true,
-    } );
-  };
+  const onObservationPressed = ( ) => exploreUser( OBSERVATIONS_TAB );
+
+  const onSpeciesPressed = ( ) => exploreUser( SPECIES_TAB );
 
   const onJournalPostsPressed = ( ) => {
     navigation.navigate( "Journal", {
