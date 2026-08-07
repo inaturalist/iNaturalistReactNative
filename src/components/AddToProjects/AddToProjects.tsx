@@ -144,7 +144,6 @@ const AddToProjects = ( ) => {
   const onSave = useCallback( ( ) => {
     const { projectObservations } = buildProjectObservationSelection(
       currentObservation?.projectObservations,
-      currentObservation?.projectObservationUuidsToDelete,
       selectedProjectIds,
     );
     updateObservationKeys( {

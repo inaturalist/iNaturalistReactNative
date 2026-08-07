@@ -18,7 +18,6 @@ export function areProjectIdSetsEqual(
 
 export default function buildProjectObservationSelection(
   existingProjectObservations: RealmProjectObservationPojo[] | undefined,
-  existingUuidsToDelete: string[] | undefined,
   selectedProjectIds: Set<number>,
 ): BuildProjectObservationSelectionResult {
   const priorProjectObservations = existingProjectObservations ?? [];
