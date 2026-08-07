@@ -12,7 +12,7 @@ const logger = log.extend( "syncJoinedProjects.ts" );
 
 const PER_PAGE = 100;
 // Runaway guard, generously above any realistic number of joined projects
-export const MAX_PAGES = 100;
+const MAX_PAGES = 100;
 
 const deleteNotRemoteProjects = ( remoteProjects: number[], realm: Realm ) => {
   if ( !remoteProjects ) { return; }
