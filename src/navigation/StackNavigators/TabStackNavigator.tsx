@@ -162,6 +162,12 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
     = route?.params?.initialRouteName || SCREEN_NAME_OBS_LIST;
 
   const exploreV2Enabled = useFeatureFlag( FeatureFlag.ExploreV2Enabled );
+  const ExploreScreen = exploreV2Enabled
+    ? ExploreV2Container
+    : ExploreContainer;
+  const RootExploreScreen = exploreV2Enabled
+    ? ExploreV2Container
+    : RootExploreContainer;
   return (
     <StackHostProvider value={{ hasBottomTabBar: true }}>
       <Stack.Navigator
@@ -190,9 +196,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           />
           <Stack.Screen
             name={SCREEN_NAME_ROOT_EXPLORE}
-            component={exploreV2Enabled
-              ? ExploreV2Container
-              : RootExploreContainer}
+            component={RootExploreScreen}
             options={{
               ...preventSwipeToGoBack,
               animation: "none",
@@ -200,7 +204,7 @@ const TabStackNavigator = ( { route }: BottomTabProps ) => {
           />
           <Stack.Screen
             name="Explore"
-            component={ExploreContainer}
+            component={ExploreScreen}
           />
           <Stack.Screen
             name="ObsDetails"
