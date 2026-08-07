@@ -57,6 +57,7 @@ beforeEach( ( ) => {
       observationFieldValues: [],
       projectObservations: [factory( "LocalProjectObservation", {
         projectId: mockProjects[0].id,
+        _synced_at: new Date( ),
       } )],
     },
   } );
@@ -144,7 +145,7 @@ describe( "AddToProjects", ( ) => {
     expect( mockGoBack ).toHaveBeenCalled( );
   } );
 
-  it( "stages synced project observation uuids for deletion", async ( ) => {
+  it( "soft-deletes synced project observations when deselected", async ( ) => {
     renderAddToProjects();
 
     // deselect 0
@@ -152,11 +153,11 @@ describe( "AddToProjects", ( ) => {
     await actor.press( screen.getByText( "SAVE" ) );
 
     expect( useStore.getState().currentObservation?.projectObservations ).toEqual(
-      [],
+      [expect.objectContaining( {
+        projectId: mockProjects[0].id,
+        _pendingRemoval: true,
+      } )],
     );
-    expect(
-      useStore.getState().currentObservation?.projectObservationUuidsToDelete,
-    ).toEqual( [mockProjects[0].uuid] );
     expect( mockGoBack ).toHaveBeenCalled();
   } );
 
