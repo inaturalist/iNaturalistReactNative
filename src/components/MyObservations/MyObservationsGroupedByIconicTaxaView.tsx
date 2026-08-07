@@ -2,7 +2,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 import ObsPressable from "components/ObservationsFlashList/ObsPressable";
 import { CollapsibleSectionHeader, SmallGrid } from "components/SharedComponents";
-import { ScrollView, View } from "components/styledComponents";
+import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
 import type { TFunction } from "i18next";
 import { RealmContext } from "providers/contexts";
 import React, { useMemo, useState } from "react";
@@ -50,6 +50,16 @@ interface Props {
   listHeaderContent?: React.ReactElement | null;
 }
 
+interface HeaderData {
+  category: ICONIC_TAXA_GROUP;
+  count: number;
+  isOpen: boolean;
+}
+
+interface TileData {
+  uuid: string;
+}
+
 const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) => {
   const { t } = useTranslation( );
   const localObservationIds = useLocalObservationIds( );
@@ -69,8 +79,8 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
   const titlesByCategory = iconicTaxaGroupTitles( t );
 
   // Temporary testing set up which just distributes the list of local obs across every
-  // category so get can mock up multiple sections.
-  const sections = useMemo( ( ) => {
+  // category so we can mock up multiple sections.
+  const observationsByCategory = useMemo( ( ) => {
     const buckets = new Map<ICONIC_TAXA_GROUP, typeof localObservationIds>(
       ICONIC_TAXA_GROUP_ORDER.map( category => [category, []] ),
     );
@@ -78,23 +88,15 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
       const category = ICONIC_TAXA_GROUP_ORDER[index % ICONIC_TAXA_GROUP_ORDER.length];
       buckets.get( category )?.push( item );
     } );
-    return ICONIC_TAXA_GROUP_ORDER
-      .map( category => ( {
-        category,
-        count: iconicTaxaCounts.find( c => c.category === category )?.count ?? 0,
-        observations: buckets.get( category ) ?? [],
-      } ) )
-      .filter( section => section.observations.length > 0 );
-  }, [localObservationIds, iconicTaxaCounts] );
+    return buckets;
+  }, [localObservationIds] );
 
-  const [openCategories, setOpenCategories] = useState<Set<ICONIC_TAXA_GROUP>>(
-    ( ) => new Set( ICONIC_TAXA_GROUP_ORDER ),
+  const [closedCategories, setClosedCategories] = useState<Set<ICONIC_TAXA_GROUP>>(
+    ( ) => new Set( ),
   );
 
-  if ( !currentUser ) return null;
-
   const toggleCategory = ( category: ICONIC_TAXA_GROUP ) => {
-    setOpenCategories( prev => {
+    setClosedCategories( prev => {
       const next = new Set( prev );
       if ( next.has( category ) ) {
         next.delete( category );
@@ -105,97 +107,120 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     } );
   };
 
+  const data = useMemo( ( ) => {
+    const categoriesWithObservations = ICONIC_TAXA_GROUP_ORDER
+      .filter( category => ( observationsByCategory.get( category )?.length ?? 0 ) > 0 );
+
+    return categoriesWithObservations.flatMap( ( category ): SmallGridItem<
+      TileData,
+      HeaderData
+    >[] => {
+      const isOpen = !closedCategories.has( category );
+      const count = iconicTaxaCounts.find( c => c.category === category )?.count ?? 0;
+      const headerItem: SmallGridItem<TileData, HeaderData> = {
+        type: "header",
+        key: `header-${category}`,
+        header: { category, count, isOpen },
+      };
+      if ( !isOpen ) return [headerItem];
+
+      const observations = observationsByCategory.get( category ) ?? [];
+      const tileItems: SmallGridItem<TileData, HeaderData>[] = observations.map( obs => ( {
+        type: "tile",
+        key: obs.uuid,
+        tile: { uuid: obs.uuid },
+      } ) );
+      return [headerItem, ...tileItems];
+    } );
+  }, [observationsByCategory, closedCategories, iconicTaxaCounts] );
+
+  if ( !currentUser ) return null;
+
+  const renderHeader = ( header: HeaderData ) => (
+    <CollapsibleSectionHeader
+      count={header.count}
+      icon={iconForCategory( header.category )}
+      isOpen={header.isOpen}
+      onToggle={( ) => toggleCategory( header.category )}
+      testID={`MyObservationsGroupedByIconicTaxaView.Header.${header.category}`}
+      title={titlesByCategory[header.category]}
+    />
+  );
+
+  const renderTile = ( tile: TileData, width: number, height: number ) => {
+    const { uuid } = tile;
+    const { obsNeedsSync, queued, uploadProgress } = getObservationUploadStatus(
+      realm,
+      uploadQueue,
+      totalUploadProgress,
+      uuid,
+    );
+
+    const onItemPress = ( ) => {
+      if ( obsNeedsSync && !isDefaultMode ) {
+        const realmObservation = realm.objectForPrimaryKey<RealmObservation>(
+          "Observation",
+          uuid,
+        );
+        if ( realmObservation ) {
+          navigateToObsEdit( realmObservation );
+          return;
+        }
+      }
+      navigation.navigate( {
+        key: `Obs-MyObservationsSmallGrid-${uuid}`,
+        name: "ObsDetails",
+        params: { uuid },
+      } );
+    };
+
+    const onUploadButtonPress = ( ) => {
+      if ( uploadQueue.includes( uuid ) ) return;
+      const observation = realm.objectForPrimaryKey<RealmObservation>( "Observation", uuid );
+      if ( !observation ) return;
+      if ( isDefaultMode && observation.missingBasics( ) ) {
+        navigateToObsEdit( observation );
+        return;
+      }
+      if ( !isConnected ) {
+        Alert.alert(
+          t( "Internet-Connection-Required" ),
+          t( "Please-try-again-when-you-are-connected-to-the-internet" ),
+        );
+        return;
+      }
+      addTotalToolbarIncrements( observation );
+      addToUploadQueue( uuid );
+      if ( uploadStatus === UPLOAD_PENDING ) {
+        setStartUploadObservations( );
+      }
+    };
+
+    return (
+      <ObsPressable
+        currentUser={currentUser}
+        explore={false}
+        height={height}
+        layout="smallGrid"
+        onItemPress={onItemPress}
+        onUploadButtonPress={onUploadButtonPress}
+        queued={queued}
+        unsynced={obsNeedsSync}
+        uploadProgress={uploadProgress}
+        uuid={uuid}
+        width={width}
+      />
+    );
+  };
+
   return (
-    <ScrollView testID="MyObservationsGroupedByIconicTaxaView">
-      {listHeaderContent}
-      {sections.map( ( { category, count, observations } ) => (
-        <View key={category}>
-          <CollapsibleSectionHeader
-            count={count}
-            icon={iconForCategory( category )}
-            isOpen={openCategories.has( category )}
-            onToggle={( ) => toggleCategory( category )}
-            testID={`MyObservationsGroupedByIconicTaxaView.Header.${category}`}
-            title={titlesByCategory[category]}
-          />
-          {openCategories.has( category ) && (
-            <SmallGrid
-              data={observations}
-              keyExtractor={item => item.uuid}
-              renderTile={( item, width, height ) => {
-                const { uuid } = item;
-                const { obsNeedsSync, queued, uploadProgress } = getObservationUploadStatus(
-                  realm,
-                  uploadQueue,
-                  totalUploadProgress,
-                  uuid,
-                );
-
-                const onItemPress = ( ) => {
-                  if ( obsNeedsSync && !isDefaultMode ) {
-                    const realmObservation = realm.objectForPrimaryKey<RealmObservation>(
-                      "Observation",
-                      uuid,
-                    );
-                    if ( realmObservation ) {
-                      navigateToObsEdit( realmObservation );
-                      return;
-                    }
-                  }
-                  navigation.navigate( {
-                    key: `Obs-MyObservationsSmallGrid-${uuid}`,
-                    name: "ObsDetails",
-                    params: { uuid },
-                  } );
-                };
-
-                const onUploadButtonPress = ( ) => {
-                  if ( uploadQueue.includes( uuid ) ) return;
-                  const observation = realm.objectForPrimaryKey<RealmObservation>(
-                    "Observation",
-                    uuid,
-                  );
-                  if ( !observation ) return;
-                  if ( isDefaultMode && observation.missingBasics( ) ) {
-                    navigateToObsEdit( observation );
-                    return;
-                  }
-                  if ( !isConnected ) {
-                    Alert.alert(
-                      t( "Internet-Connection-Required" ),
-                      t( "Please-try-again-when-you-are-connected-to-the-internet" ),
-                    );
-                    return;
-                  }
-                  addTotalToolbarIncrements( observation );
-                  addToUploadQueue( uuid );
-                  if ( uploadStatus === UPLOAD_PENDING ) {
-                    setStartUploadObservations( );
-                  }
-                };
-
-                return (
-                  <ObsPressable
-                    currentUser={currentUser}
-                    explore={false}
-                    height={height}
-                    layout="smallGrid"
-                    onItemPress={onItemPress}
-                    onUploadButtonPress={onUploadButtonPress}
-                    queued={queued}
-                    unsynced={obsNeedsSync}
-                    uploadProgress={uploadProgress}
-                    uuid={uuid}
-                    width={width}
-                  />
-                );
-              }}
-              testID={`MyObservationsGroupedByIconicTaxaView.Grid.${category}`}
-            />
-          )}
-        </View>
-      ) )}
-    </ScrollView>
+    <SmallGrid
+      data={data}
+      listHeaderContent={listHeaderContent}
+      renderHeader={renderHeader}
+      renderTile={renderTile}
+      testID="MyObservationsGroupedByIconicTaxaView"
+    />
   );
 };
 
