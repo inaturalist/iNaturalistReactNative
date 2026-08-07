@@ -280,6 +280,19 @@ class Observation extends Realm.Object {
     return localObs;
   }
 
+  static prepareEmbedForLocalSave( embed ) {
+    if ( !embed ) {
+      return embed;
+    }
+    return embed;
+  }
+
+  static prepareEmbedsForLocalSave( embeds ) {
+    return ( embeds || [] ).map( embed => Observation.prepareEmbedForLocalSave(
+      embed,
+    ) );
+  }
+
   static async saveLocalObservationForUpload( obs, realm ) {
     // make sure local observations have user details for ObsDetail
     const currentUser = User.currentUser( realm );
@@ -308,6 +321,12 @@ class Observation extends Realm.Object {
     const taxon = obs.taxon || null;
     const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
+    const projectObservations = Observation.prepareEmbedsForLocalSave(
+      obs.projectObservations,
+    );
+    const observationFieldValues = Observation.prepareEmbedsForLocalSave(
+      obs.observationFieldValues,
+    );
 
     const obsToSave = {
       // just ...obs causes problems when obs is a realm object
@@ -318,6 +337,8 @@ class Observation extends Realm.Object {
       taxon,
       observationPhotos,
       observationSounds,
+      projectObservations,
+      observationFieldValues,
     };
 
     safeRealmWrite( realm, ( ) => {
