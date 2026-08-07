@@ -3,6 +3,18 @@ import ObservationFieldValue from "realmModels/ObservationFieldValue";
 import type { RealmObservationFieldValuePojo, RealmObservationPojo } from "realmModels/types";
 import useStore from "stores/useStore";
 
+function isActiveOfv( ofv: RealmObservationFieldValuePojo ): boolean {
+  return !ofv._pendingRemoval && !ofv._pending_deletion;
+}
+
+function findActiveOfv(
+  observationFieldValues: RealmObservationFieldValuePojo[],
+  obsFieldId: number,
+) {
+  return observationFieldValues.find(
+    ofv => ofv.obsFieldId === obsFieldId && isActiveOfv( ofv ),
+  );
+}
 const useObservationFieldValue = ( obsFieldId: number ) => {
   const observationFieldValues = useStore(
     // currentObs is typed as this | null in createObservationFlowSlice.ts but null means the
@@ -13,9 +25,7 @@ const useObservationFieldValue = ( obsFieldId: number ) => {
   );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
 
-  const existingOfv = observationFieldValues.find(
-    ofv => ofv.obsFieldId === obsFieldId,
-  );
+  const existingOfv = findActiveOfv( observationFieldValues, obsFieldId );
   const value = existingOfv?.value ?? "";
 
   const setValue = useCallback( ( newValue: string | null ) => {
