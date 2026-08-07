@@ -1,4 +1,5 @@
 import fetchIconicTaxaCounts from "api/observationsTyped";
+import { useMemo } from "react";
 import type { IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
 import { orderIconicTaxaCounts } from "sharedHelpers/iconicTaxaGroupOrder";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
@@ -24,7 +25,7 @@ const useIconicTaxaObservationCounts = (
     { enabled: enabled && !!currentUser },
   );
 
-  return orderIconicTaxaCounts( data?.results ?? [] );
+  return useMemo( ( ) => orderIconicTaxaCounts( data?.results ?? [] ), [data] );
 };
 
 export default useIconicTaxaObservationCounts;

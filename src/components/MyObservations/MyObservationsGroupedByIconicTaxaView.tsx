@@ -5,7 +5,7 @@ import { CollapsibleSectionHeader, SmallGrid } from "components/SharedComponents
 import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
 import type { TFunction } from "i18next";
 import { RealmContext } from "providers/contexts";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Alert } from "react-native";
 import type { RealmObservation } from "realmModels/types";
 import { ICONIC_TAXA_GROUP, ICONIC_TAXA_GROUP_ORDER } from "sharedHelpers/iconicTaxaGroupOrder";
@@ -76,7 +76,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const iconicTaxaCounts = useIconicTaxaObservationCounts( );
-  const titlesByCategory = iconicTaxaGroupTitles( t );
+  const titlesByCategory = useMemo( ( ) => iconicTaxaGroupTitles( t ), [t] );
 
   // Temporary testing set up which just distributes the list of local obs across every
   // category so we can mock up multiple sections.
@@ -95,7 +95,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     ( ) => new Set( ),
   );
 
-  const toggleCategory = ( category: ICONIC_TAXA_GROUP ) => {
+  const toggleCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
     setClosedCategories( prev => {
       const next = new Set( prev );
       if ( next.has( category ) ) {
@@ -105,7 +105,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
       }
       return next;
     } );
-  };
+  }, [] );
 
   const data = useMemo( ( ) => {
     const categoriesWithObservations = ICONIC_TAXA_GROUP_ORDER
@@ -134,9 +134,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     } );
   }, [observationsByCategory, closedCategories, iconicTaxaCounts] );
 
-  if ( !currentUser ) return null;
-
-  const renderHeader = ( header: HeaderData ) => (
+  const renderHeader = useCallback( ( header: HeaderData ) => (
     <CollapsibleSectionHeader
       count={header.count}
       icon={iconForCategory( header.category )}
@@ -145,9 +143,14 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
       testID={`MyObservationsGroupedByIconicTaxaView.Header.${header.category}`}
       title={titlesByCategory[header.category]}
     />
-  );
+  ), [titlesByCategory, toggleCategory] );
 
-  const renderTile = ( tile: TileData, width: number, height: number ) => {
+  // TODO: move the upload status lookup into a per-tile component that subscribes to
+  // the upload store itself. This callback is memoized so SmallGrid's renderItem memo
+  // holds, but uploadQueue and totalUploadProgress are deps, so during an upload every
+  // visible cell re-renders on each progress tick instead of just the uploading ones.
+  // Do this in the wire-up ticket.
+  const renderTile = useCallback( ( tile: TileData, width: number, height: number ) => {
     const { uuid } = tile;
     const { obsNeedsSync, queued, uploadProgress } = getObservationUploadStatus(
       realm,
@@ -211,7 +214,23 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
         width={width}
       />
     );
-  };
+  }, [
+    addToUploadQueue,
+    addTotalToolbarIncrements,
+    currentUser,
+    isConnected,
+    isDefaultMode,
+    navigateToObsEdit,
+    navigation,
+    realm,
+    setStartUploadObservations,
+    t,
+    totalUploadProgress,
+    uploadQueue,
+    uploadStatus,
+  ] );
+
+  if ( !currentUser ) return null;
 
   return (
     <SmallGrid
