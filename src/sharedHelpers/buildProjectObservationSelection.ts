@@ -15,6 +15,10 @@ export function areProjectIdSetsEqual(
   return [...first].every( projectId => second.has( projectId ) );
 }
 
+function isSyncedOrTombstonedPo( po: RealmProjectObservationPojo ): boolean {
+  return po._synced_at != null || po._pending_deletion === true;
+}
+
 export default function buildProjectObservationSelection(
   existingProjectObservations: RealmProjectObservationPojo[] | undefined,
   selectedProjectIds: Set<number>,
@@ -34,12 +38,15 @@ export default function buildProjectObservationSelection(
     }
   } );
 
-  const uuidsToDelete: string[] = [];
   priorProjectObservations.forEach( po => {
-    // If a PO was already synced (= is on remote) but is deselected during
-    // an ObsEdit session, we need to mark it for deletion.
-    if ( !selectedProjectIds.has( po.projectId ) && po._synced_at != null ) {
-      uuidsToDelete.push( po.uuid );
+    if ( selectedProjectIds.has( po.projectId ) ) {
+      return;
+    }
+    if ( isSyncedOrTombstonedPo( po ) ) {
+      nextProjectObservations.push( {
+        ...po,
+        _pendingRemoval: true,
+      } );
     }
   } );
 
