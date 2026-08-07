@@ -280,7 +280,7 @@ class Observation extends Realm.Object {
     return localObs;
   }
 
-  static prepareEmbedForLocalSave( embed, now ) {
+  static prepareEmbedForLocalSave( embed, now, existingEmbed ) {
     if ( !embed ) {
       return embed;
     }
@@ -294,14 +294,26 @@ class Observation extends Realm.Object {
         _updated_at: now,
       };
     }
+
+    const isNew = !existingEmbed;
+    const wasReactivated = existingEmbed?._pending_deletion && !embed._pending_deletion;
+
+    if ( isNew || wasReactivated ) {
+      return {
+        ...embed,
+        _synced_at: null,
+        _updated_at: now,
+      };
+    }
+
     return embed;
   }
 
-  static prepareEmbedsForLocalSave( embeds, now ) {
-    return ( embeds || [] ).map( embed => Observation.prepareEmbedForLocalSave(
-      embed,
-      now,
-    ) );
+  static prepareEmbedsForLocalSave( embeds, now, existingEmbeds ) {
+    return ( embeds || [] ).map( embed => {
+      const existingEmbed = existingEmbeds?.find( e => e.uuid === embed.uuid );
+      return Observation.prepareEmbedForLocalSave( embed, now, existingEmbed );
+    } );
   }
 
   static async saveLocalObservationForUpload( obs, realm ) {
@@ -335,10 +347,12 @@ class Observation extends Realm.Object {
     const projectObservations = Observation.prepareEmbedsForLocalSave(
       obs.projectObservations,
       timestamps._updated_at,
+      existingObservation?.projectObservations,
     );
     const observationFieldValues = Observation.prepareEmbedsForLocalSave(
       obs.observationFieldValues,
       timestamps._updated_at,
+      existingObservation?.observationFieldValues,
     );
 
     const obsToSave = {
