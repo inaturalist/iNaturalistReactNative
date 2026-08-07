@@ -37,7 +37,7 @@ describe( "areProjectIdSetsEqual", ( ) => {
       expect( result.projectObservations[0].uuid ).toBeTruthy( );
     } );
 
-    it( "stages synced PO uuids when deselected during an ObsEdit session", ( ) => {
+    it( "soft-deletes synced POs when deselected during an ObsEdit session", ( ) => {
       const syncedPo = factory( "LocalProjectObservation", {
         projectId: 10,
         uuid: "synced-po-uuid",
@@ -46,12 +46,13 @@ describe( "areProjectIdSetsEqual", ( ) => {
 
       const result = buildProjectObservationSelection(
         [syncedPo],
-        [],
         new Set( ),
       );
 
-      expect( result.projectObservations ).toEqual( [] );
-      expect( result.projectObservationUuidsToDelete ).toEqual( ["synced-po-uuid"] );
+      expect( result.projectObservations ).toEqual( [{
+        ...syncedPo,
+        _pendingRemoval: true,
+      }] );
     } );
 
     it( "drops never-synced POs without staging deletion", ( ) => {
