@@ -35,8 +35,15 @@ const useObservationFieldValue = ( obsFieldId: number ) => {
     let updatedOfvs: RealmObservationFieldValuePojo[];
 
     if ( !newValue || newValue.trim( ) === "" ) {
-      // If newValue is from a selection being removed (null | "") remove OFV from the list
-      updatedOfvs = observationFieldValues.filter( ofv => ofv.obsFieldId !== obsFieldId );
+      if ( existingRow?._synced_at != null ) {
+        updatedOfvs = observationFieldValues.map( ofv => (
+          ofv.obsFieldId === obsFieldId
+            ? { ...ofv, _pendingRemoval: true }
+            : ofv
+        ) );
+      } else {
+        updatedOfvs = observationFieldValues.filter( ofv => ofv.obsFieldId !== obsFieldId );
+      }
     } else if ( existingRow ) {
       updatedOfvs = observationFieldValues.map( ofv => (
         ofv.obsFieldId === obsFieldId
