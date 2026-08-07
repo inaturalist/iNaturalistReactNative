@@ -85,6 +85,9 @@ export interface RealmProjectObservationPojo extends RealmObject {
   _synced_at?: Date;
   _updated_at?: Date;
   _pending_deletion?: boolean;
+  // TODO: we are conflating types of different purposes: this key is Zustand relevant only,
+  // not added to realm
+  _pendingRemoval?: boolean;
   uuid: string;
   id?: number | null;
   projectId: number;
