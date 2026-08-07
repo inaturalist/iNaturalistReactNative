@@ -257,5 +257,38 @@ describe( "Observation", ( ) => {
       expect( obs.projectObservations[0]._pending_deletion ).toBeFalsy( );
       expect( obs.projectObservations[0]._synced_at ).toBeNull( );
     } );
+
+    it( "leaves unchanged synced embed timestamps intact on re-edit", async ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncedAt = new Date( "2020-01-02" );
+      const poUuid = uuid.v4( ).toLowerCase( );
+      const ofvUuid = uuid.v4( ).toLowerCase( );
+
+      const mockPO = factory( "LocalProjectObservation", {
+        uuid: poUuid,
+        _synced_at: syncedAt,
+      } );
+      const mockOFV = factory( "LocalObservationFieldValue", {
+        uuid: ofvUuid,
+        _synced_at: syncedAt,
+      } );
+      const mockObs = factory( "LocalObservation", {
+        uuid: obsUuid,
+        projectObservations: [mockPO],
+        observationFieldValues: [mockOFV],
+        observationPhotos: [],
+        observationSounds: [],
+      } );
+
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", mockObs );
+      }, "seed synced PO/OFV for unchanged re-edit save test" );
+
+      await Observation.saveLocalObservationForUpload( mockObs, global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.projectObservations[0]._synced_at ).toEqual( syncedAt );
+      expect( obs.observationFieldValues[0]._synced_at ).toEqual( syncedAt );
+    } );
   } );
 } );
