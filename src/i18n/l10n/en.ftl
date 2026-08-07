@@ -108,6 +108,8 @@ ALL-USERS-EXCEPT = ALL USERS EXCEPT
 ALLOW-LOCATION-ACCESS = ALLOW LOCATION ACCESS
 # Button asking if user has an existing iNaturalist account
 Already-have-an-iNaturalist-account = Already have an iNaturalist account?
+# Display name for the iconic taxa category for amphibia
+Amphibians = Amphibians
 An-Internet-connection-is-required = An Internet connection is required to load more observations.
 # Message shown to the user after they have left the AI camera where they may
 # have seen a species suggestion but before they land on the match screen,
@@ -147,6 +149,8 @@ APPLY-FILTERS = APPLY FILTERS
 Apply-filters = Apply filters
 # Month of April
 April = April
+# Display name for the iconic taxa category for arachnida
+Arachnids = Arachnids
 Are-you-an-educator = Are you an educator wanting to use iNaturalist with your students?
 Are-you-sure-you-want-to-log-out = Are you sure you want to log out of your iNaturalist account? All observations that haven’t been uploaded to iNaturalist will be deleted.
 attribution-cc-by = some rights reserved (CC BY)
@@ -159,6 +163,8 @@ attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = August
 # Returns user to login screen
 BACK-TO-LOGIN = BACK TO LOGIN
+# Display name for the iconic taxa category for aves
+Birds = Birds
 BLOG = BLOG
 # Accessibility label for bulk import / photo import button
 # These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
@@ -552,6 +558,8 @@ Filters-observations-to-anywhere-in-the-world = Filters observations to anywhere
 # Accessibility hint for the "Nearby" default option in the location search
 Filters-observations-to-your-current-location = Filters observations to your current location.
 # Status when an item has been flagged
+# Display name for the iconic taxa category for actinopterygii
+Fish = Fish
 Flagged = Flagged
 Flash = Flash
 # Label for a button that toggles between the front and back cameras
@@ -566,6 +574,8 @@ FOLLOWING-X-PEOPLE =
 For-most-other-projects-observations-will-automatically-be-included = For most other projects, observations that meet project requirements will automatically be included in projects.
 # Forgot password link
 Forgot-Password = Forgot Password
+# Display name for the iconic taxa category for fungi
+Fungi = Fungi
 GEOPRIVACY = GEOPRIVACY
 Geoprivacy-status = Geoprivacy: { $status }
 # Onboarding message describing one of the reasons to use iNat
@@ -673,6 +683,8 @@ iNaturalists-apps-are-designed-and-developed-3 = iNaturalist's apps are designed
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
 # Title for dialog telling the user that an Internet connection is required
+# Display name for the iconic taxa category for insecta
+Insects = Insects
 Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
 Introduced = Introduced
@@ -712,6 +724,8 @@ July = July
 June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
 # Shows date user last active on iNaturalist on user profile
+# Display name for the iconic taxa category chromista
+Kelp-and-Diatoms = Kelp & Diatoms
 Last-Active-date = Last Active: { $date }
 # Latitude, longitude on a single line
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
@@ -749,6 +763,8 @@ Looks-like-you-havent-observed-this-yet-time-to-keep-exploring =
     Time to keep exploring!
 Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
+# Display name for the iconic taxa category for mammalia
+Mammals = Mammals
 MAP = MAP
 Map-Area = Map Area
 # Month of March
@@ -772,6 +788,8 @@ Membership-in-this-project-is-by-invitation-only = Membership in this project is
 Menu = Menu
 Missing-Date = Missing Date
 MISSING-EVIDENCE = MISSING EVIDENCE
+# Display name for the iconic taxa category for mollusca
+Mollusks = Mollusks
 Monthly-Donor = Monthly Donor
 Months = Months
 MONTHS = MONTHS
@@ -948,6 +966,10 @@ Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
 Organisms-that-are-identified-to-species = Organisms that are identified to species rank or below
+# Display name for the iconic taxa category for other: anything that doesn't fit into another category
+Other = Other
+# Display name for the iconic taxa category for animalia: anything that is an animal, but doesn't fit into a tighter category
+Other-Animals = Other Animals
 OTHER-DATA = OTHER DATA
 OTHER-SUGGESTIONS = OTHER SUGGESTIONS
 # Tab on notifications showing notifications about content created by others.
@@ -961,6 +983,8 @@ PHOTO-LICENSING = PHOTO LICENSING
 Photos = Photos
 Photos-you-take-will-appear-here = Photos you take will appear here
 # Title of screen asking for permission to access the camera when access was denied
+# Display name for the iconic taxa category for plantae
+Plants = Plants
 Please-allow-Camera-Access = Please allow Camera Access
 # Title of screen asking for permission to access location when access was denied
 Please-allow-Location-Access = Please allow Location Access
@@ -998,6 +1022,8 @@ PROJECTS = PROJECTS
 Projects = Projects
 PROJECTS-X = PROJECTS ({ $projectCount })
 # Accessibility label for pull-to-refresh on MyObservations list and grid view
+# Display name for the iconic taxa category for protozoa
+Protozoans = Protozoans
 Pull-to-refresh-and-sync-observations = Pull to refresh and sync observations
 # Accessibility label for pull-to-refresh on Notifications list
 Pull-to-refresh-notifications = Pull to refresh notifications
@@ -1113,6 +1139,8 @@ Removes-this-observations-taxon = Removes this observation's taxon
 Removes-your-vote-of-agreement = Removes your vote of agreement
 # Hint for a button that removes a vote of disagreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
+# Display name for the iconic taxa category for reptilia
+Reptiles = Reptiles
 Required = Required
 # Quality grade indicating observation is accurate and complete enough to
 # share outside of iNat
@@ -1337,6 +1365,8 @@ To-view-nearby-organisms-please-enable-location = To view nearby organisms, plea
 To-view-nearby-projects-please-enable-location = To view nearby projects, please enable location.
 To-view-this-observations-Collection-and-Umbrella-Projects = To view this observation’s Collection and Umbrella Projects, go to its observation page once it’s uploaded.
 Toggle-map-type = Toggle map type
+# Accessibility hint for tapping a collapsible section header
+Toggles-the-section-open-or-closed = Toggles the section open or closed.
 TOP-ID-SUGGESTION = TOP ID SUGGESTION
 Traditional-Project = Traditional Project
 Traditional-Projects = Traditional Projects
