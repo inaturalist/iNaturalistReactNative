@@ -280,7 +280,7 @@ class Observation extends Realm.Object {
     return localObs;
   }
 
-  static prepareEmbedForLocalSave( embed ) {
+  static prepareEmbedForLocalSave( embed, now ) {
     if ( !embed ) {
       return embed;
     }
@@ -291,14 +291,16 @@ class Observation extends Realm.Object {
       return {
         ...restWithoutPendingRemoval,
         _pending_deletion: true,
+        _updated_at: now,
       };
     }
     return embed;
   }
 
-  static prepareEmbedsForLocalSave( embeds ) {
+  static prepareEmbedsForLocalSave( embeds, now ) {
     return ( embeds || [] ).map( embed => Observation.prepareEmbedForLocalSave(
       embed,
+      now,
     ) );
   }
 
@@ -332,9 +334,11 @@ class Observation extends Realm.Object {
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
     const projectObservations = Observation.prepareEmbedsForLocalSave(
       obs.projectObservations,
+      timestamps._updated_at,
     );
     const observationFieldValues = Observation.prepareEmbedsForLocalSave(
       obs.observationFieldValues,
+      timestamps._updated_at,
     );
 
     const obsToSave = {
