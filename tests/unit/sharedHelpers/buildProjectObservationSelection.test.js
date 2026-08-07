@@ -23,21 +23,18 @@ describe( "areProjectIdSetsEqual", ( ) => {
 
       const result = buildProjectObservationSelection(
         [existingPo],
-        [],
         new Set( [10] ),
       );
 
       expect( result.projectObservations ).toEqual( [existingPo] );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
     } );
 
     it( "creates a new PO for newly selected projects", ( ) => {
-      const result = buildProjectObservationSelection( [], [], new Set( [42] ) );
+      const result = buildProjectObservationSelection( [], new Set( [42] ) );
 
       expect( result.projectObservations ).toHaveLength( 1 );
       expect( result.projectObservations[0].projectId ).toBe( 42 );
       expect( result.projectObservations[0].uuid ).toBeTruthy( );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
     } );
 
     it( "stages synced PO uuids when deselected during an ObsEdit session", ( ) => {
@@ -65,14 +62,10 @@ describe( "areProjectIdSetsEqual", ( ) => {
 
       const result = buildProjectObservationSelection(
         [unsyncedPo],
-        [],
         new Set( ),
       );
 
       expect( result.projectObservations ).toEqual( [] );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
-
-      // TODO: MOB-1508 test that the local realm PO get's deleted in this case
     } );
 
     it( "removes re-selected PO uuid from a prior ObsEdit session delete list", ( ) => {
@@ -120,13 +113,11 @@ describe( "areProjectIdSetsEqual", ( ) => {
     it( "handles missing arrays on brand-new observations", ( ) => {
       const result = buildProjectObservationSelection(
         undefined,
-        undefined,
         new Set( [5] ),
       );
 
       expect( result.projectObservations ).toHaveLength( 1 );
       expect( result.projectObservations[0].projectId ).toBe( 5 );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
     } );
   } );
 } );
