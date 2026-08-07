@@ -173,4 +173,32 @@ describe( "Observation", ( ) => {
       expect( unsynced.filtered( `uuid == "${obsUuid}"` ).length ).toBe( 1 );
     } );
   } );
+
+  describe( "saveLocalObservationForUpload", ( ) => {
+    it( "creates Realm tombstones from pending-removal POs", async ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncedAt = new Date( "2020-01-02" );
+      const poUuid = uuid.v4( ).toLowerCase( );
+
+      await Observation.saveLocalObservationForUpload( {
+        uuid: obsUuid,
+        projectObservations: [{
+          uuid: poUuid,
+          projectId: 10,
+          id: 99,
+          _synced_at: syncedAt,
+          _pendingRemoval: true,
+        }],
+        observationFieldValues: [],
+        observationPhotos: [],
+        observationSounds: [],
+      }, global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.projectObservations ).toHaveLength( 1 );
+      expect( obs.projectObservations[0]._pending_deletion ).toBe( true );
+      expect( obs.projectObservations[0].uuid ).toBe( poUuid );
+      expect( obs.projectObservations[0]._synced_at ).toEqual( syncedAt );
+    } );
+  } );
 } );
