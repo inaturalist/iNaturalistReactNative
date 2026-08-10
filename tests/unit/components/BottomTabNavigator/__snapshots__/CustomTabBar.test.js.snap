@@ -245,7 +245,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
               {
                 "backgroundColor": "rgba(232, 232, 232, 1)",
                 "paddingBottom": 0,
-                "paddingTop": 28,
+                "paddingTop": 16,
               }
             }
           >
@@ -369,10 +369,10 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                         "alignItems": "center",
                         "backgroundColor": "rgba(116, 172, 0, 1)",
                         "borderRadius": 9999,
-                        "height": 44,
+                        "height": 36,
                         "justifyContent": "center",
                         "marginBottom": 8,
-                        "width": 44,
+                        "width": 36,
                       }
                     }
                   >
@@ -534,10 +534,10 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                         "alignItems": "center",
                         "backgroundColor": "rgba(116, 172, 0, 1)",
                         "borderRadius": 9999,
-                        "height": 44,
+                        "height": 36,
                         "justifyContent": "center",
                         "marginBottom": 8,
-                        "width": 44,
+                        "width": 36,
                       }
                     }
                   >
@@ -685,10 +685,10 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                         "alignItems": "center",
                         "backgroundColor": "rgba(116, 172, 0, 1)",
                         "borderRadius": 9999,
-                        "height": 44,
+                        "height": 36,
                         "justifyContent": "center",
                         "marginBottom": 8,
-                        "width": 44,
+                        "width": 36,
                       }
                     }
                   >

@@ -60,10 +60,6 @@ const setStyles = ( {
       : "text-white",
   ];
 
-  if ( className ) {
-    buttonClasses.push( className );
-  }
-
   if ( isWarning ) {
     buttonClasses.push( disabled
       ? "bg-warningRedDisabled"
@@ -102,6 +98,11 @@ const setStyles = ( {
     textClasses.push( disabled
       ? "text-darkGrayDisabled"
       : "text-darkGray" );
+  }
+
+  // classnames are resolved with twMerge's "last-wins" so user overrides should go last
+  if ( className ) {
+    buttonClasses.push( className );
   }
 
   return { buttonClasses, textClasses };

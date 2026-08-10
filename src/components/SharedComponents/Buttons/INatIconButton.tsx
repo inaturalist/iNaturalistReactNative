@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { log } from "sharedHelpers/logger";
 import colors from "styles/tailwindColors";
+import { twMerge } from "tailwind-merge";
 
 const logger = log.extend( "INatIconButton" );
 
@@ -41,6 +42,11 @@ interface Props extends PropsWithChildren {
 
 const MIN_ACCESSIBLE_DIM = 44;
 
+// w-11/h-11 = 2.75rem = 44px (MIN_ACCESSIBLE_DIM), expressed as a class rather
+// than an inline style so a caller's own w-/h- className can override it via
+// twMerge instead of being unconditionally beaten by an inline style
+const DEFAULT_DIM_CLASSES = "w-11 h-11";
+
 const WRAPPER_STYLE: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
@@ -60,7 +66,7 @@ const INatIconButton = ( {
   className,
   color,
   disabled = false,
-  height = MIN_ACCESSIBLE_DIM,
+  height,
   icon,
   iconOnly,
   onPress,
@@ -68,18 +74,19 @@ const INatIconButton = ( {
   size = 18,
   style,
   testID,
-  width = MIN_ACCESSIBLE_DIM,
+  width,
   backgroundColor,
   mode,
 }: Props ) => {
-  // width || 0 is to placate flow. width should never be undefined because of
-  // the defaultProps, but I guess flow can't figure that out.
-  if ( ( width || 0 ) < MIN_ACCESSIBLE_DIM ) {
+  // Only validated when explicitly passed: omitting width/height means the
+  // caller is sizing this button via className (falling back to
+  // DEFAULT_DIM_CLASSES below), which we can't statically check here.
+  if ( width !== undefined && width < MIN_ACCESSIBLE_DIM ) {
     throw new Error(
       `Width cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`,
     );
   }
-  if ( ( height || 0 ) < MIN_ACCESSIBLE_DIM ) {
+  if ( height !== undefined && height < MIN_ACCESSIBLE_DIM ) {
     throw new Error(
       `Height cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`,
     );
@@ -89,8 +96,18 @@ const INatIconButton = ( {
       "Button needs an accessibility label",
     );
   }
+  // width/height keys are omitted from this object entirely (not merely set
+  // to undefined) when the caller doesn't pass them: nativewind merges the
+  // resolved className styles into this same style object, and an explicit
+  // `width: undefined` key still overwrites that merged-in value the way
+  // Object.assign would, whereas an absent key does not. Omitting them lets
+  // DEFAULT_DIM_CLASSES (or a caller's own w-/h- className, merged in via
+  // twMerge below) take effect instead.
   const wrapperStyle = React.useMemo( ( ) => ( [
-    { width, height },
+    {
+      ...( width !== undefined && { width } ),
+      ...( height !== undefined && { height } ),
+    },
     WRAPPER_STYLE,
     mode === "contained" && {
       backgroundColor: preventTransparency
@@ -107,6 +124,7 @@ const INatIconButton = ( {
     style,
     width,
   ] );
+  const dimClassName = twMerge( DEFAULT_DIM_CLASSES, className );
 
   const content = (
     <View
@@ -160,7 +178,7 @@ const INatIconButton = ( {
 
   if ( iconOnly ) {
     return (
-      <View className={className} style={wrapperStyle} testID={testID}>
+      <View className={dimClassName} style={wrapperStyle} testID={testID}>
         { content }
       </View>
     );
@@ -186,7 +204,7 @@ const INatIconButton = ( {
       // nativewind 4 drops function styles on interop'd components, so the
       // pressed/disabled opacity is expressed with classes instead
       className={classnames(
-        className,
+        dimClassName,
         disabled
           ? "opacity-50"
           : "active:opacity-95",

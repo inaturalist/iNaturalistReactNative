@@ -7,7 +7,7 @@ import {
   INatIconButton,
 } from "components/SharedComponents";
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
-import { ImageBackground } from "components/styledComponents";
+import { Carousel, ImageBackground } from "components/styledComponents";
 import INatLogo from "images/svg/inat_logo_onboarding.svg";
 import OnBoardingIcon2 from "images/svg/onboarding_icon_2.svg";
 import OnBoardingIcon3 from "images/svg/onboarding_icon_3.svg";
@@ -27,7 +27,6 @@ import {
 } from "react-native";
 import AnimatedDotsCarousel from "react-native-animated-dots-carousel";
 import Animated, { interpolate, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
-import Carousel from "react-native-reanimated-carousel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useOnboardingShown } from "sharedHelpers/installData";
 import startupPerformanceTracker from "sharedHelpers/startupPerformanceTracker";
