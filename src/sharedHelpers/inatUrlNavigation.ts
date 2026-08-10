@@ -57,7 +57,7 @@ export async function openInatUrl(
         navigation.push( "TaxonDetails", { id: taxonID } );
         return true;
       }
-      return true;
+      return false;
     }
     default:
       return false;
