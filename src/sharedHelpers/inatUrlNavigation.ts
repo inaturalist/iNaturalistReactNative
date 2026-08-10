@@ -59,6 +59,14 @@ export async function openInatUrl(
       }
       return false;
     }
+    case "project": {
+      const projectId = parseNumericId( id );
+      if ( projectId ) {
+        navigation.push( "ProjectDetails", { id: projectId } );
+        return true;
+      }
+      return false;
+    }
     default:
       return false;
   }
