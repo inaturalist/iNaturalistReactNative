@@ -36,8 +36,17 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
   if ( !numericId ) {
     return null;
   }
-  console.log( "resource", resource );
-  return null;
+
+  switch ( resource ) {
+    case "observations":
+      return { type: "observation", id: firstSegment };
+    case "taxa":
+      return { type: "taxon", id: firstSegment };
+    case "projects":
+      return { type: "project", id: firstSegment };
+    default:
+      return null;
+  }
 }
 
 export async function openInatUrl(
