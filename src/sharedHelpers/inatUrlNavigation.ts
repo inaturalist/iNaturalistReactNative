@@ -50,9 +50,16 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
 }
 
 export async function openInatUrl(
-  href: string,
+  parsed: InatUrlTarget,
   navigation: NavigationProp<ParamListBase>,
 ): Promise<boolean> {
-  console.log( "href", href );
-  console.log( "navigation", navigation );
+  const { type, id } = parsed;
+  switch ( type ) {
+    case "taxon": {
+      navigation.push( "TaxonDetails", { id } );
+      return true;
+    }
+    default:
+      return false;
+  }
 }
