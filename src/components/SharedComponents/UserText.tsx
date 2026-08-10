@@ -202,7 +202,7 @@ const UserText = ( {
 
   const renderersProps: Partial<RenderersProps> = {
     a: {
-      onPress: ( event, href, htmlAttribs ) => {
+      onPress: async ( event, href, htmlAttribs ) => {
         if ( htmlAttribs.title && htmlAttribs.title.includes( MENTION_TITLE ) ) {
           event.preventDefault( );
           // This is a mention, so we want to navigate to user profile screen
@@ -216,8 +216,11 @@ const UserText = ( {
         const parsed = parseInatUrl( href );
         if ( parsed ) {
           event.preventDefault( );
-          openInatUrl( parsed, navigation );
-          return;
+          const handled = await openInatUrl( parsed, navigation );
+          if ( handled ) {
+            return;
+          }
+          // If not handled fall through to use Linking
         }
         // This is any other regular link
         Linking.openURL( href );
