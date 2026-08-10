@@ -31,7 +31,7 @@ const PostListItem = ( {
     const match = item.body.match( imgSrcPattern );
     return match
       ? match[1]
-      : item.parent.icon_url ?? null;
+      : item.parent.icon_url?.replace( "staticdev", "static" ) ?? null;
   }, [item.body, item.parent.icon_url] );
 
   return (
