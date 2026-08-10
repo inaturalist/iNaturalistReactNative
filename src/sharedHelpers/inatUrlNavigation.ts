@@ -1,4 +1,6 @@
 import type { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { searchObservations } from "api/observations";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 
 const ALLOWED_HOSTS = [
   "www.inaturalist.org",
@@ -64,6 +66,24 @@ export async function openInatUrl(
       const projectId = parseNumericId( id );
       if ( projectId ) {
         navigation.push( "ProjectDetails", { id: projectId } );
+        return true;
+      }
+      return false;
+    }
+    case "observation": {
+      const observationId = parseNumericId( id );
+      // Currently, ObsDetails can only handle a uuid as nav param. So, we do the same thing we do
+      // in useLinking, get a UUID for the ID from the link via the API.
+      const searchParams = { id: observationId };
+      const apiToken = await getJWT( );
+      const options = {
+        api_token: apiToken,
+      };
+      const { results } = await searchObservations( searchParams, options );
+      const uuid = results?.[0]?.uuid;
+
+      if ( uuid ) {
+        navigation.push( "ObsDetails", { uuid } );
         return true;
       }
       return false;
