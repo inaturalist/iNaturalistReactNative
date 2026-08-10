@@ -167,6 +167,7 @@ const PhotoLibrary = ( ) => {
       return;
     }
 
+    // Comment
     if ( !response || response.didCancel || !response.assets || response.errorCode ) {
       // User cancelled selection of photos - close current screen
       if ( response?.errorCode ) {
