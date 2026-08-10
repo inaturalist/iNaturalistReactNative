@@ -11,16 +11,32 @@ export type InatUrlTarget =
   | { type: "observation"; id: string }
   | { type: "taxon"; id: string }
   | { type: "project"; id: string };
+
+function parseNumericId( segment: string ): number | null {
+  const match = segment.match( /^(\d+)/ );
+  if ( !match ) {
+    return null;
+  }
+  return Number( match[1] );
+}
+
 export function parseInatUrl( href: string ): InatUrlTarget | null {
   const { host, pathname } = new URL( href );
   if ( !ALLOWED_HOSTS.includes( host ) ) {
     return null;
   }
+
   const segments = pathname.split( "/" );
   if ( segments.length < 2 ) {
     return null;
   }
-  console.log( "segments", segments );
+
+  const [resource, firstSegment] = segments;
+  const numericId = parseNumericId( firstSegment );
+  if ( !numericId ) {
+    return null;
+  }
+  console.log( "resource", resource );
   return null;
 }
 
