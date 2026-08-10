@@ -8,9 +8,9 @@ const ALLOWED_HOSTS = [
 ];
 
 export type InatUrlTarget =
-  | { type: "observation"; id: string }
-  | { type: "taxon"; id: string }
-  | { type: "project"; id: string };
+  | { type: "observation"; id: number }
+  | { type: "taxon"; id: number }
+  | { type: "project"; id: number };
 
 function parseNumericId( segment: string ): number | null {
   const match = segment.match( /^(\d+)/ );
@@ -39,11 +39,11 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
 
   switch ( resource ) {
     case "observations":
-      return { type: "observation", id: firstSegment };
+      return { type: "observation", id: numericId };
     case "taxa":
-      return { type: "taxon", id: firstSegment };
+      return { type: "taxon", id: numericId };
     case "projects":
-      return { type: "project", id: firstSegment };
+      return { type: "project", id: numericId };
     default:
       return null;
   }
