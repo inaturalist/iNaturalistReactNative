@@ -1,5 +1,6 @@
 import type { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { searchObservations } from "api/observations";
+import { searchProjects } from "api/projects";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 
 const ALLOWED_HOSTS = [
@@ -66,6 +67,24 @@ export async function openInatUrl(
       const projectId = parseNumericId( id );
       if ( projectId ) {
         navigation.push( "ProjectDetails", { id: projectId } );
+        return true;
+      }
+      // Currently, ProjectDetails can not handle slugs as nav param to display a project.
+      // Lookup of a project ID by a given slug is adapted from observations below.
+      const searchParams = {
+        q: id,
+        fields: {
+          slug: true,
+        },
+      };
+      const apiToken = await getJWT( );
+      const options = {
+        api_token: apiToken,
+      };
+      const { results } = await searchProjects( searchParams, options );
+      const project = results?.find( ( result: { slug?: string } ) => result.slug === id );
+      if ( project?.id ) {
+        navigation.push( "ProjectDetails", { id: project.id } );
         return true;
       }
       return false;
