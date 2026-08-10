@@ -26,7 +26,7 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
     return null;
   }
 
-  const segments = pathname.split( "/" );
+  const segments = pathname.split( "/" ).filter( Boolean );
   if ( segments.length < 2 ) {
     return null;
   }
