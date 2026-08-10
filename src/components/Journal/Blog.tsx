@@ -23,8 +23,6 @@ const Blog = ( ) => {
     fields: POST_FOR_USER_FIELDS,
   };
 
-  // Comment to trigger CI
-
   const {
     data: blogPosts,
     fetchNextPage,
