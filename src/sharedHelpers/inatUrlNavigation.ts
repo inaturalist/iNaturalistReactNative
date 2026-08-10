@@ -10,7 +10,7 @@ const ALLOWED_HOSTS = [
 export type InatUrlTarget =
   | { type: "observation"; id: string }
   | { type: "taxon"; id: string }
-  | { type: "project"; id: string }
+  | { type: "project"; id: string };
 export function parseInatUrl( href: string ): InatUrlTarget | null {
   const { host, pathname } = new URL( href );
   if ( !ALLOWED_HOSTS.includes( host ) ) {

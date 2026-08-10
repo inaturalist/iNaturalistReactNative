@@ -213,9 +213,10 @@ const UserText = ( {
           navigation.push( "UserProfile", { login } );
           return;
         }
-        if ( parseInatUrl( href ) ) {
+        const parsed = parseInatUrl( href );
+        if ( parsed ) {
           event.preventDefault( );
-          openInatUrl( href, navigation );
+          openInatUrl( parsed, navigation );
           return;
         }
         // This is any other regular link
