@@ -1,5 +1,4 @@
 import { initialMyObservationsState } from "providers/MyObservationsContext";
-import { ICONIC_TAXA_GROUP } from "sharedHelpers/iconicTaxaGroupOrder";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import useStore from "stores/useStore";
@@ -15,20 +14,35 @@ describe( "initialMyObservationsState", ( ) => {
   } );
 } );
 
-describe( "closed iconic taxa categories", ( ) => {
+describe( "the stored map region", ( ) => {
+  const REGION = {
+    latitude: 10,
+    longitude: 20,
+    latitudeDelta: 0.5,
+    longitudeDelta: 0.5,
+  };
+
   beforeEach( ( ) => {
     useStore.setState( initialStoreState, true );
-    useStore.getState( ).setMyObservationsClosedIconicTaxaCategories(
-      new Set( [ICONIC_TAXA_GROUP.AVES] ),
-    );
+    useStore.getState( ).setMyObservationsMapRegion( REGION );
   } );
 
-  it( "reopens every category when the searched taxon changes", ( ) => {
+  it( "is dropped when the searched taxon changes, so the map refits to the new "
+    + "taxon's bounds", ( ) => {
     useStore.getState( ).updateMyObservations( previous => ( {
       ...previous,
       searchedTaxon: { id: 1, name: "Aves" },
     } ) );
 
-    expect( useStore.getState( ).myObservationsClosedIconicTaxaCategories.size ).toBe( 0 );
+    expect( useStore.getState( ).myObservationsMapRegion ).toBeNull( );
+  } );
+
+  it( "survives changes that are not a new search", ( ) => {
+    useStore.getState( ).updateMyObservations( previous => ( {
+      ...previous,
+      speciesSort: SPECIES_SORT.COUNT_ASC,
+    } ) );
+
+    expect( useStore.getState( ).myObservationsMapRegion ).toEqual( REGION );
   } );
 } );

@@ -64,10 +64,9 @@ const createMyObservationsSlice: StateCreator<MyObservationsSlice> = ( set, get 
     if ( myObservations.searchedTaxon?.id === state.myObservations.searchedTaxon?.id ) {
       return { myObservations };
     }
-    return {
-      myObservations,
-      myObservationsClosedIconicTaxaCategories: new Set<ICONIC_TAXA_GROUP>( ),
-    };
+    // TBD: what to do re: expanded header set when a search becomes active.
+    // do we clear them, or should they re-appear as they were before?
+    return { myObservations, myObservationsMapRegion: null };
   } ),
 
   myObservationsMapRegion: null,
