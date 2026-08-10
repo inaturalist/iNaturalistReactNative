@@ -18,6 +18,7 @@ import { Linking, useWindowDimensions } from "react-native";
 import WebView from "react-native-webview";
 import type { IOptions } from "sanitize-html";
 import sanitizeHtml from "sanitize-html";
+import { openInatUrl, parseInatUrl } from "sharedHelpers/inatUrlNavigation";
 import colors from "styles/tailwindColors";
 
 // Keep aligned with Post::ALLOWED_TAGS in inaturalist/inaturalist (Rails);
@@ -210,6 +211,11 @@ const UserText = ( {
             .replace( MENTION_TITLE, "" )
             .replace( /^@/, "" );
           navigation.push( "UserProfile", { login } );
+          return;
+        }
+        if ( parseInatUrl( href ) ) {
+          event.preventDefault( );
+          openInatUrl( href, navigation );
           return;
         }
         // This is any other regular link
