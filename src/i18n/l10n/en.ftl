@@ -230,9 +230,6 @@ Choose-taxon = Choose taxon
 # Label for button that chooses the best suggestion among a list of suggested
 # taxa for an identification
 Choose-top-taxon = Choose top taxon
-# Label for a button that clears content, like the text entered in a text
-# field
-Clear = Clear
 # Label for a button that closes a window or popup
 Close = Close
 # Accessibility label for a button that closes the permission request screen
@@ -408,8 +405,6 @@ DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Delete photo
 Delete-sound = Delete sound
-# Hint for a button that clears text you entered
-Deletes-entered-text = Deletes entered text
 # Shows the progress of deletions for X of Y observations, but omits the
 # word "observations" so the message won't get cut off on small screens
 # Deleting-x-of-y = Deleting { $currentDeleteCount } of { $total }
