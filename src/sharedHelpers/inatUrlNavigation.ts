@@ -13,10 +13,12 @@ export type InatUrlTarget =
   | { type: "project"; id: string };
 
 function parseNumericId( segment: string ): number | null {
-  if ( !/^\d+$/.test( segment ) ) {
+  // Matches IDs like "1234" and also slugs that start with a number ID "1234-taxon-name"
+  const match = segment.match( /^(\d+)/ );
+  if ( !match ) {
     return null;
   }
-  return Number( segment );
+  return Number( match[1] );
 }
 
 export function parseInatUrl( href: string ): InatUrlTarget | null {
