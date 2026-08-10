@@ -13,11 +13,10 @@ export type InatUrlTarget =
   | { type: "project"; id: string };
 
 function parseNumericId( segment: string ): number | null {
-  const match = segment.match( /^(\d+)/ );
-  if ( !match ) {
+  if ( !/^\d+$/.test( segment ) ) {
     return null;
   }
-  return Number( match[1] );
+  return Number( segment );
 }
 
 export function parseInatUrl( href: string ): InatUrlTarget | null {
