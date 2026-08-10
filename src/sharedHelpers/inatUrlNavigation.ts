@@ -16,7 +16,11 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
   if ( !ALLOWED_HOSTS.includes( host ) ) {
     return null;
   }
-  console.log( "pathname", pathname );
+  const segments = pathname.split( "/" );
+  if ( segments.length < 2 ) {
+    return null;
+  }
+  console.log( "segments", segments );
   return null;
 }
 
