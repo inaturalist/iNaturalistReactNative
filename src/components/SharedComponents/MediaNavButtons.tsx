@@ -63,9 +63,15 @@ const MediaNavButtons = ( {
     {closeHidden
       ? <View className="w-1/3" />
       : (
+        // Same conflict as the checkmark below: CLOSE_CLASSES' h-10/w-10/
+        // rounded-full merged onto the same className as SIDE_BUTTON_CLASSES'
+        // h-full/w-1/3 produced an oblong pill (h-full won height, w-1/3 won
+        // width, rounded-full applied to that tall rectangle) instead of a
+        // 40px circle. CloseButton renders its own correctly-sized circle via
+        // buttonClassName, so the outer wrapper only needs the hit-target.
         <RotatableIconWrapper
           rotatableAnimatedStyle={rotatableAnimatedStyle}
-          containerClass={classnames( CLOSE_CLASSES, SIDE_BUTTON_CLASSES )}
+          containerClass={classnames( SIDE_BUTTON_CLASSES, "justify-center items-center" )}
         >
           <CloseButton
             handleClose={onClose}
