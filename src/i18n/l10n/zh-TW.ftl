@@ -130,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = 選擇使用者名稱
 Choose-taxon = 選擇分類群
 Choose-top-taxon = 選擇最佳建議的分類群
-Clear = 清除
 Close = 關閉
 Close-permission-request-screen = 關閉請求許可權畫面
 Close-search = 關閉搜尋
@@ -228,7 +227,6 @@ Delete-observation = 刪除觀察紀錄
 DELETE-OBSERVATION--question = 要刪除觀察紀錄嗎？
 Delete-photo = 刪除照片
 Delete-sound = 刪除聲音
-Deletes-entered-text = 刪除輸入的文字
 Deleting-x-of-y--observations =
     正刪除 { $total ->
         [one] { $total }
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] 加入了 { $count } 個專案
        *[other] 加入了 { $count } 個專案
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] 日誌貼文
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = 移至 AI 相機
 Navigates-to-bulk-importer = 移至批次匯入
 Navigates-to-camera = 移至相機
 Navigates-to-explore = 移至探索
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = 移至通知

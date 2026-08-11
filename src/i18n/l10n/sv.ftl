@@ -136,7 +136,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VÄLJ ETT ANVÄNDARNAMN
 Choose-taxon = Välj taxon
 Choose-top-taxon = Välj topptaxon
-Clear = Rensa
 Close = Stäng
 Close-permission-request-screen = Stäng skärmen för behörighetsbegäran
 Close-search = Stäng söket
@@ -234,7 +233,6 @@ Delete-observation = Radera fynd
 DELETE-OBSERVATION--question = RADERA FYND?
 Delete-photo = Radera bild
 Delete-sound = Radera ljud
-Deletes-entered-text = Raderar inmatad text
 Deleting-x-of-y--observations =
     Raderar { $currentDeleteCount } { $total ->
         [one] av { $total }
@@ -449,6 +447,7 @@ JOINED-X-PROJECTS =
         [one] GICK MED I { $count } PROJEKT
        *[other] GICK MED I { $count } PROJEKT
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] DAGBOKSINLÄGG
@@ -522,6 +521,7 @@ Navigates-to-AI-camera = Går till AI-kamera
 Navigates-to-bulk-importer = Går till bulkimport
 Navigates-to-camera = Går till kamera
 Navigates-to-explore = Går till utforska
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Går till inloggningsfönstret
 Navigates-to-main-menu = Går till huvudmenyn.
 Navigates-to-notifications = Går till aviseringar

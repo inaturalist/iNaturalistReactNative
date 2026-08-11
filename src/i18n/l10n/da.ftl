@@ -130,7 +130,6 @@ Choose-a-time = Vælg et tid
 CHOOSE-A-USERNAME = VÆLG EN BRUGERNAVN
 Choose-taxon = Vælg takson
 Choose-top-taxon = Vælg øverste takson
-Clear = Ryd
 Close = Luk
 Close-permission-request-screen = Luk tilladelsesanmodningsskærmen
 Close-search = Luk søgning
@@ -228,7 +227,6 @@ Delete-observation = Slet observation
 DELETE-OBSERVATION--question = SLET OBSERVATION?
 Delete-photo = Slet foto
 Delete-sound = Slet lyd
-Deletes-entered-text = Sletter angivet tekst
 Deleting-x-of-y--observations =
     Sletter { $currentDeleteCount } { $total ->
         [one] af { $total }
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] ER TILMELDT { $count } PROJEKT
        *[other] ER TILMELDT { $count } PROJEKTER
     }
+JOURNAL-POST = JOURNALPOST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] JOURNALINDLÆG
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Naviger til AI-kamera
 Navigates-to-bulk-importer = Navigerer til masseimportør
 Navigates-to-camera = Navigerer til kamera
 Navigates-to-explore = Navigerer til udforsk
+Navigates-to-journal-post = Navigerer til journalpost
 Navigates-to-log-in-screen = Gå til login-skærm
 Navigates-to-main-menu = Gå til hovedmenu.
 Navigates-to-notifications = Navigerer til notifikationer
