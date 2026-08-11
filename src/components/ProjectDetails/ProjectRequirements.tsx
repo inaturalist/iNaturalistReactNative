@@ -11,6 +11,7 @@ import sortBy from "lodash/sortBy";
 import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
+import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
@@ -29,6 +30,7 @@ interface Project {
 // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx
 const ProjectRequirements = ( ) => {
   const navigation = useNavigation<TabStackScreenProps<"ProjectRequirements">["navigation"]>( );
+  const navigateToExplore = useNavigateToExplore( );
   const { key, params } = useRoute<TabStackScreenProps<"ProjectRequirements">["route"]>( );
   const { id } = params;
   const { t, i18n } = useTranslation( );
@@ -158,12 +160,7 @@ const ProjectRequirements = ( ) => {
   // Location Requirement
   const createPlaceObject = place => ( {
     text: place.display_name,
-    onPress: ( ) => navigation.navigate( "Explore", {
-      place: {
-        id: place.id,
-        display_name: place.display_name,
-      },
-    } ),
+    onPress: ( ) => navigateToExplore( { place } ),
   } );
 
   const includedPlaces = sortBy( filterRules( "observed_in_place?" ), r => r.place.display_name );
