@@ -1,0 +1,2 @@
+FIXED
+* Tapping X in the Standard camera not working
