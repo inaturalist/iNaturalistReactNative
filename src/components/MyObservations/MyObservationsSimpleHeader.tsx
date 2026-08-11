@@ -109,7 +109,7 @@ const MyObservationsSimpleHeader = ( {
           ? <HeaderUser user={currentUser} isConnected={isConnected} />
           : <Heading3>{ t( "My-Observations" ) }</Heading3>}
         {currentUser && (
-          <View className="flex-row items-center">
+          <View className="flex-row items-center gap-x-[7px]">
             {searchMyObservationsEnabled && (
               <INatIconButton
                 icon="magnifying-glass"
