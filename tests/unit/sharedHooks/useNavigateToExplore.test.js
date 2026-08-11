@@ -38,7 +38,7 @@ beforeEach( ( ) => {
   zustandStorage.removeItem( LEGACY_LAYOUT_KEY );
 } );
 
-describe( "with Explore V2 enabled", ( ) => {
+describe( "with ExploreV2 enabled", ( ) => {
   beforeEach( ( ) => {
     mockExploreV2Enabled = true;
   } );
@@ -118,7 +118,7 @@ describe( "with Explore V2 enabled", ( ) => {
   } );
 } );
 
-describe( "with Explore V2 disabled", ( ) => {
+describe( "with ExploreV2 disabled", ( ) => {
   beforeEach( ( ) => {
     mockExploreV2Enabled = false;
   } );

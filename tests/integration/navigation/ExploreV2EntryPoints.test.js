@@ -16,7 +16,7 @@ import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
 
-// Entry points into Explore V2 from other screens. The equivalent V1 flows live
+// Entry points into ExploreV2 from other screens. The equivalent V1 flows live
 // in Explore.test.js; delete this file's V1 sibling when V1 Explore goes away.
 
 jest.unmock( "@react-navigation/native" );
