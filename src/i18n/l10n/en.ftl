@@ -557,9 +557,9 @@ Filters = Filters
 Filters-observations-to-anywhere-in-the-world = Filters observations to anywhere in the world.
 # Accessibility hint for the "Nearby" default option in the location search
 Filters-observations-to-your-current-location = Filters observations to your current location.
-# Status when an item has been flagged
 # Display name for the iconic taxa category for actinopterygii
 Fish = Fish
+# Status when an item has been flagged
 Flagged = Flagged
 Flash = Flash
 # Label for a button that toggles between the front and back cameras
@@ -682,9 +682,9 @@ iNaturalist-users-who-have-observed = iNaturalist users who have observed a part
 iNaturalists-apps-are-designed-and-developed-3 = iNaturalist's apps are designed, developed, and supported by the iNaturalist team: Yaron Budowski, Amanda Bullington, Tony Iwane, Johannes Klein, Patrick Leary, Joanne Lin, Scott Loarie, Abhas Misraraj, Sylvain Morin, Carrie Seltzer, Alex Shepard, Thea Skaff, Angie Ta, Ken-ichi Ueda, Kirk van Gorkom, Jason Walthall, & Jane Weeden.
 iNaturalists-vision-is-a-world = iNaturalist's vision is a world where everyone can understand and sustain biodiversity through the practice of observing wild organisms and sharing information about them.
 Individual-encounters-with-organisms = Individual encounters with organisms at a particular time and location, usually with evidence
-# Title for dialog telling the user that an Internet connection is required
 # Display name for the iconic taxa category for insecta
 Insects = Insects
+# Title for dialog telling the user that an Internet connection is required
 Internet-Connection-Required = Internet Connection Required
 Intl-number = { $val }
 Introduced = Introduced
@@ -723,9 +723,9 @@ July = July
 # Month of June
 June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
-# Shows date user last active on iNaturalist on user profile
 # Display name for the iconic taxa category chromista
 Kelp-and-Diatoms = Kelp & Diatoms
+# Shows date user last active on iNaturalist on user profile
 Last-Active-date = Last Active: { $date }
 # Latitude, longitude on a single line
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
@@ -982,9 +982,9 @@ Photo-importer = Photo importer
 PHOTO-LICENSING = PHOTO LICENSING
 Photos = Photos
 Photos-you-take-will-appear-here = Photos you take will appear here
-# Title of screen asking for permission to access the camera when access was denied
 # Display name for the iconic taxa category for plantae
 Plants = Plants
+# Title of screen asking for permission to access the camera when access was denied
 Please-allow-Camera-Access = Please allow Camera Access
 # Title of screen asking for permission to access location when access was denied
 Please-allow-Location-Access = Please allow Location Access
@@ -1021,9 +1021,9 @@ PROJECTS = PROJECTS
 # As in iNat projects, collections of observations or observation search filters
 Projects = Projects
 PROJECTS-X = PROJECTS ({ $projectCount })
-# Accessibility label for pull-to-refresh on MyObservations list and grid view
 # Display name for the iconic taxa category for protozoa
 Protozoans = Protozoans
+# Accessibility label for pull-to-refresh on MyObservations list and grid view
 Pull-to-refresh-and-sync-observations = Pull to refresh and sync observations
 # Accessibility label for pull-to-refresh on Notifications list
 Pull-to-refresh-notifications = Pull to refresh notifications
