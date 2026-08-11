@@ -45,6 +45,10 @@ function computeTilePositions<T, H>( data: SmallGridItem<T, H>[] ): Map<number, 
   return positions;
 }
 
+const BottomSpacer = ( ) => (
+  <View className="h-20" />
+);
+
 // Small grid tiles are edge-to-edge (no outer margin) with a fixed gap between them, computed via
 // getSmallGridLayout. Each cell's outer wrapper is sized to slotWidth to match FlashList's
 // internal column-width math, and the visible tile inside it is rendered smaller and left-aligned,
@@ -117,6 +121,7 @@ const SmallGrid = <T, H, >( {
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       ListHeaderComponent={listHeaderContent}
+      ListFooterComponent={BottomSpacer}
       testID={testID}
     />
   );
