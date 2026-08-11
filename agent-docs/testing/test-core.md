@@ -21,6 +21,11 @@
 - Prefer `userEvent` (via `const actor = userEvent.setup()`) over `fireEvent` for presses/taps — it's more realistic and reliable per RNTL guidance.
 - `fireEvent` is still appropriate for `changeText`/focus events and timing-controlled cases (e.g. debounce assertions with fake timers).
 
+### Assertions
+- Pair element queries with semantic RNTL matchers, not `toBeTruthy( )` — `getBy*`/`findBy*` already throw when nothing matches. `toBeVisible( )` is the repo default; prefer `toBeDisabled( )`/`toBeChecked( )`/`toBeExpanded( )` over `toHaveProp( )`. Use `queryBy*` only for non-existence.
+- Element assertions only — `toBeTruthy( )` stays correct for plain values in helper/hook tests.
+- Full matcher list: `docs/guides/llm-guidelines.md` in `@testing-library/react-native`.
+
 ### i18n
 - Initialize i18next in test files that render translated UI: `beforeAll( async () => { await initI18next(); } );` (import `initI18next` from `i18n/initI18next`).
 
