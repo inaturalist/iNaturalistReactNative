@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react-native";
 import ExploreV2SpeciesView
   from "components/Explore/ExploreV2/screens/ExploreV2SpeciesView";
 import initI18next from "i18n/initI18next";
-import { ExploreV2Provider } from "providers/ExploreV2Context";
+import { ExploreV2Provider, initialExploreV2State } from "providers/ExploreV2Context";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -72,7 +72,7 @@ jest.mock( "@tanstack/react-query", () => {
 } );
 
 const renderView = ( props = {} ) => renderComponent(
-  <ExploreV2Provider>
+  <ExploreV2Provider initialState={initialExploreV2State}>
     <ExploreV2SpeciesView
       enabled
       isConnected

@@ -242,14 +242,11 @@ const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
 
 interface ExploreV2ProviderProps {
   children: React.ReactNode;
-  initialState?: ExploreV2State;
+  initialState: ExploreV2State;
 }
 
 export const ExploreV2Provider = ( { children, initialState }: ExploreV2ProviderProps ) => {
-  const [state, dispatch] = React.useReducer(
-    exploreV2Reducer,
-    initialState || initialExploreV2State,
-  );
+  const [state, dispatch] = React.useReducer( exploreV2Reducer, initialState );
 
   const value = React.useMemo(
     () => ( { state, dispatch } ),
