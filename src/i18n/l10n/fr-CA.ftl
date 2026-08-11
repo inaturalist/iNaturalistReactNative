@@ -130,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = CHOISIR UN NOM D'UTILISATEUR
 Choose-taxon = Choisir un taxon
 Choose-top-taxon = Choisir le meilleur taxon
-Clear = Effacer
 Close = Fermer
 Close-permission-request-screen = Fermer la fenêtre de demande d'autorisation
 Close-search = Fermer la recherche
@@ -228,7 +227,6 @@ Delete-observation = Supprimer l'observation
 DELETE-OBSERVATION--question = SUPPRIMER L'OBSERVATION ?
 Delete-photo = Supprimer la photo
 Delete-sound = Supprimer le son
-Deletes-entered-text = Supprimer le texte entré
 Deleting-x-of-y--observations =
     Suppression de { $currentDeleteCount } { $total ->
         [one] observation
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] A REJOINT { $count } PROJET
        *[other] A REJOINT { $count } PROJETS
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] ARTICLE DE JOURNAL
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Naviguer vers la caméra IA
 Navigates-to-bulk-importer = Naviguer vers l'importation en vrac
 Navigates-to-camera = Naviguer vers la caméra
 Navigates-to-explore = Naviguer pour explorer
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Naviguer vers les notifications

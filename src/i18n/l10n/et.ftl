@@ -130,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VALI KASUTAJANIMI
 Choose-taxon = Vali takson
 Choose-top-taxon = Vali kõrgeima taseme takson
-Clear = Tühjenda
 Close = Sulge
 Close-permission-request-screen = Sulge loa nõutamise aken
 Close-search = Sulge otsing
@@ -228,7 +227,6 @@ Delete-observation = Kustuta vaatlus
 DELETE-OBSERVATION--question = KUSTUTA VAATLUS?
 Delete-photo = Kustuta foto
 Delete-sound = Kustuta heli
-Deletes-entered-text = Kustutab sisestatud teksti
 Deleting-x-of-y--observations =
     Kustutan { $currentDeleteCount } { $total ->
         [one] / { $total }
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] LIITUNUD { $count } PROJEKTIGA
        *[other] LIITUNUD { $count } PROJEKTIGA
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] PÄEVIKU SISSEKANNE
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Mine AI-kaamerasse
 Navigates-to-bulk-importer = Mine mass-importijasse
 Navigates-to-camera = Mine kaamerasse
 Navigates-to-explore = Mine avastama
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Mine teavituste juurde

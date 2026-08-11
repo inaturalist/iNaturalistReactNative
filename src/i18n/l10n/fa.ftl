@@ -130,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
 Choose-taxon = تاکسون را انتخاب کنید
 Choose-top-taxon = تاکسون برتر را انتخاب کنید
-Clear = پاک کردن
 Close = بستن
 Close-permission-request-screen = صفحه درخواست مجوز را ببندید
 Close-search = جستجو را ببندید
@@ -228,7 +227,6 @@ Delete-observation = حذف مشاهده
 DELETE-OBSERVATION--question = DELETE OBSERVATION?
 Delete-photo = حذف عکس‌
 Delete-sound = Delete sound
-Deletes-entered-text = Deletes entered text
 Deleting-x-of-y--observations =
     Deleting { $currentDeleteCount } { $total ->
         [one] of { $total }
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] JOINED { $count } PROJECT
        *[other] JOINED { $count } PROJECTS
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] JOURNAL POST
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Navigates to notifications
