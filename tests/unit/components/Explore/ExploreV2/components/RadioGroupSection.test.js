@@ -28,10 +28,10 @@ describe( "RadioGroupSection", ( ) => {
       />,
     );
 
-    expect( screen.getByText( "WILD STATUS" ) ).toBeTruthy( );
-    expect( screen.getByText( "All" ) ).toBeTruthy( );
-    expect( screen.getByText( "Wild" ) ).toBeTruthy( );
-    expect( screen.getByText( "Captive" ) ).toBeTruthy( );
+    expect( screen.getByText( "WILD STATUS" ) ).toBeVisible( );
+    expect( screen.getByText( "All" ) ).toBeVisible( );
+    expect( screen.getByText( "Wild" ) ).toBeVisible( );
+    expect( screen.getByText( "Captive" ) ).toBeVisible( );
   } );
 
   it( "checks only the row matching the selected value", ( ) => {
