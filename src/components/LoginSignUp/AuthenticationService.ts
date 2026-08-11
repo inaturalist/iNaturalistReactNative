@@ -20,7 +20,9 @@ import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
 import RNRestart from "react-native-restart";
 import type { SensitiveInfoError } from "react-native-sensitive-info";
-import RNSInfo, { ErrorCode, isSensitiveInfoError } from "react-native-sensitive-info";
+import {
+  deleteItem, ErrorCode, getItem, hasItem, isSensitiveInfoError, setItem,
+} from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
@@ -58,7 +60,7 @@ interface AuthCache {
 }
 
 /**
- * Cache for isLoggedIn, to avoid making too many calls to RNSInfo.getItem
+ * Cache for isLoggedIn, to avoid making too many calls to getItem
  */
 const authCache: AuthCache = {
   isLoggedIn: null,
@@ -88,17 +90,17 @@ const clearAuthCache = ( ): void => {
 async function getSensitiveItem(
   key: string,
   options = {
-    keychainService: "app" as const,
+    service: "app" as const,
   },
 ) {
   let exists;
   try {
-    exists = await RNSInfo.hasItem( key, options );
+    exists = await hasItem( key, options );
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const hasItemError = e as SensitiveInfoError;
       localLogger.info(
-        `RNSInfo.hasItem error for ${key}: ${hasItemError.message}`,
+        `hasItem error for ${key}: ${hasItemError.message}`,
       );
     }
     throw e;
@@ -108,7 +110,8 @@ async function getSensitiveItem(
   }
 
   try {
-    return await RNSInfo.getItem( key, options );
+    const item = await getItem( key, options );
+    return item?.value ?? null;
   } catch ( e ) {
     if ( isSensitiveInfoError( e ) ) {
       const getItemError = e as SensitiveInfoError;
@@ -116,10 +119,10 @@ async function getSensitiveItem(
         switch ( getItemError.code ) {
           case ErrorCode.NOT_FOUND:
             // Value doesn't exist
-            localLogger.info( `RNSInfo.getItem not available for ${key}` );
+            localLogger.info( `getItem not available for ${key}` );
             break;
           default:
-            localLogger.info( `RNSInfo.getItem unknown error for ${key}: ${getItemError.message}` );
+            localLogger.info( `getItem unknown error for ${key}: ${getItemError.message}` );
             break;
         }
       }
@@ -132,12 +135,12 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
   const actualOptions = {
     // I put the key as overridable by actual options propped in,
     // in case someone wants to build a separate slice at one point.
-    keychainService: "app" as const,
+    service: "app" as const,
     ...options,
     accessControl: "none" as const,
   };
   try {
-    const result = await RNSInfo.setItem( key, value, actualOptions );
+    const result = await setItem( key, value, actualOptions );
     clearAuthCache( );
     return result;
   } catch ( e ) {
@@ -145,7 +148,7 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
       const setItemError = e as SensitiveInfoError;
       if ( isDebugModeSync( ) ) {
         localLogger.info(
-          `RNSInfo.setItem error for ${key}, ${setItemError.code} ${setItemError.message}`,
+          `setItem error for ${key}, ${setItemError.code} ${setItemError.message}`,
         );
       }
     }
@@ -156,11 +159,11 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
 async function deleteSensitiveItem(
   key: string,
   options = {
-    keychainService: "app" as const,
+    service: "app" as const,
   },
 ) {
   try {
-    const result = await RNSInfo.deleteItem( key, options );
+    const result = await deleteItem( key, options );
     clearAuthCache( );
     return result;
   } catch ( e ) {
@@ -168,7 +171,7 @@ async function deleteSensitiveItem(
       const deleteItemError = e as SensitiveInfoError;
       if ( isDebugModeSync() ) {
         localLogger.info(
-          `RNSInfo.deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`,
+          `deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`,
         );
       }
     }
