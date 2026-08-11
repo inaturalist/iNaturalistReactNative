@@ -21,7 +21,7 @@ import {
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import type {
-  CameraDevice, CameraDeviceFormat, CameraProps, CameraRuntimeError,
+  CameraDevice, CameraProps, CameraRuntimeError,
 } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
@@ -32,7 +32,6 @@ interface Props {
   animatedProps: CameraProps;
   cameraRef: React.RefObject<Camera | null>;
   cameraScreen: "standard" | "ai";
-  debugFormat: CameraDeviceFormat | undefined;
   device: CameraDevice;
   frameProcessor?: () => void;
   onCameraError: ( error: CameraRuntimeError ) => void;
@@ -51,7 +50,6 @@ const CameraView = ( {
   animatedProps,
   cameraRef,
   cameraScreen,
-  debugFormat,
   device,
   frameProcessor,
   onCameraError,
@@ -171,7 +169,7 @@ const CameraView = ( {
           // we can't use the native zoom since it doesn't expose a zoom value to JS
           enableZoomGesture={false}
           exposure={exposure}
-          format={debugFormat || format}
+          format={format}
           frameProcessor={frameProcessor}
           isActive={isActive}
           onError={onError}

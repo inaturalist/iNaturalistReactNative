@@ -130,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ユーザー名の選択
 Choose-taxon = 分類群を選択
 Choose-top-taxon = トップ分類群を選択
-Clear = 消去する
 Close = 閉じる
 Close-permission-request-screen = 許可リクエスト画面を閉じる
 Close-search = 検索を閉じる
@@ -228,7 +227,6 @@ Delete-observation = 観察記録を削除
 DELETE-OBSERVATION--question = 観察記録を削除しますか?
 Delete-photo = 写真を削除
 Delete-sound = サウンドを削除
-Deletes-entered-text = 入力されたテキストを削除
 Deleting-x-of-y--observations =
     削除中 { $currentDeleteCount } { $total ->
         [one] の { $total }
@@ -448,6 +446,7 @@ JOINED-X-PROJECTS =
         [one] JOINED { $count } PROJECT
        *[other] JOINED { $count } PROJECTS
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] JOURNAL POST
@@ -521,6 +520,7 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Navigates to notifications

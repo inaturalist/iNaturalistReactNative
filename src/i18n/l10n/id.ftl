@@ -130,7 +130,6 @@ Choose-a-time = Pilih waktu
 CHOOSE-A-USERNAME = PILIH NAMA PENGGUNA
 Choose-taxon = Pilih takson
 Choose-top-taxon = Pilih takson terbaik
-Clear = Bersihkan
 Close = Tutup
 Close-permission-request-screen = Tutup layar permintaan izin
 Close-search = Tutup pencarian
@@ -228,7 +227,6 @@ Delete-observation = Menghapus pengamatan
 DELETE-OBSERVATION--question = HAPUS PENGAMATAN?
 Delete-photo = Hapus foto
 Delete-sound = Hapus suara
-Deletes-entered-text = Hapus tulisan yang dimasukkan
 Deleting-x-of-y--observations =
     Menghapus { $currentDeleteCount } { $total ->
         [one] dari { $total }
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] BERGABUNG DALAM { $count } PROYEK
        *[other] BERGABUNG DALAM { $count } PROYEK
     }
+JOURNAL-POST = POSTINGAN JURNAL
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] POSTINGAN JURNAL
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Pergi ke kamera AI
 Navigates-to-bulk-importer = Pergi ke pengimpor massal
 Navigates-to-camera = Pergi ke kamera
 Navigates-to-explore = Pergi ke jelajah
+Navigates-to-journal-post = Pindah ke postingan jurnal
 Navigates-to-log-in-screen = Pergi ke layar masuk
 Navigates-to-main-menu = Pergi ke menu utama.
 Navigates-to-notifications = Pergi ke notifikasi

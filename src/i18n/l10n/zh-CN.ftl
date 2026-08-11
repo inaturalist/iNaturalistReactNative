@@ -130,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = 请选择一个用户名
 Choose-taxon = 选择一个分类单元
 Choose-top-taxon = 选择顶级分类单元
-Clear = 清除
 Close = 关闭
 Close-permission-request-screen = 关闭权限请求屏幕
 Close-search = 关闭搜索
@@ -228,7 +227,6 @@ Delete-observation = 删除观察
 DELETE-OBSERVATION--question = 删除观察？
 Delete-photo = 删除照片
 Delete-sound = 删除声音
-Deletes-entered-text = 删除输入的文本
 Deleting-x-of-y--observations =
     删除{ $total ->
         [one] { $total }个
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] 加入了{ $count }个项目
        *[other] 加入了{ $count }个项目
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] 条帖子
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = 导航到 AI 相机
 Navigates-to-bulk-importer = 导航到批量导入器
 Navigates-to-camera = 导航到相机
 Navigates-to-explore = 导航到探索
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = 导航到登录界面
 Navigates-to-main-menu = 导航到主菜单。
 Navigates-to-notifications = 导航到通知

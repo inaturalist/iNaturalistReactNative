@@ -130,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ᲛᲝᲛᲮᲛᲐᲠᲔᲑᲚᲘᲡ ᲡᲐᲮᲔᲚᲘᲡ ᲨᲔᲠᲩᲔᲕᲐ
 Choose-taxon = ტაქსონის არჩევა
 Choose-top-taxon = ტოპ ტაქსონის აირჩევა
-Clear = გასუფთავება
 Close = დახურვა
 Close-permission-request-screen = ნებართვის მოთხოვნის ეკრანის დახურვა
 Close-search = ძიების დახურვა
@@ -228,7 +227,6 @@ Delete-observation = დაკვირვების წაშლა
 DELETE-OBSERVATION--question = ᲬᲐᲕᲨᲐᲚᲝᲗ ᲓᲐᲙᲕᲘᲠᲕᲔᲑᲐ?
 Delete-photo = ფოტოს წაშლა
 Delete-sound = ხმის წაშლა
-Deletes-entered-text = წაშლის შეყვანილ ტექსტს
 Deleting-x-of-y--observations =
     იშლება { $currentDeleteCount } დაკვირვება { $total ->
         [one] { $total }-დან
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] ᲒᲐᲬᲔᲕᲠᲘᲐᲜᲔᲑᲣᲚᲘᲐ { $count } ᲞᲠᲝᲔᲥᲢᲨᲘ
        *[other] ᲒᲐᲬᲔᲕᲠᲘᲐᲜᲔᲑᲣᲚᲘᲐ { $count } ᲞᲠᲝᲔᲥᲢᲨᲘ
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] ᲟᲣᲠᲜᲐᲚᲘᲡ ᲞᲝᲡᲢᲘ
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = გადასვლა AI კამერაზე
 Navigates-to-bulk-importer = გადასვლა მასობრივ იმპორტზე
 Navigates-to-camera = გადასვლა კამერაზე
 Navigates-to-explore = გამოკვლევაზე გადასვლა
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = შესვლის გვერდზე გადასვლა
 Navigates-to-main-menu = მთავარ მენიუზე გადასვლა
 Navigates-to-notifications = შეტყობინებებზე გადასვლა

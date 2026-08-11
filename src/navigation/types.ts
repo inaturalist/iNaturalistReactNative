@@ -10,7 +10,26 @@ import type {
   ParamListRoute,
 } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { ApiPlace, ApiUser } from "api/types";
+import type {
+  ExploreV2LocationState,
+  ExploreV2Subject,
+  ExploreV2Tab,
+} from "providers/ExploreV2Context";
+
+export interface ExploreV2EntryParams {
+  subject?: ExploreV2Subject | null;
+  location?: ExploreV2LocationState;
+  activeTab?: ExploreV2Tab;
+}
+
+// Params sent to ExploreV1, read in components/Explore/hooks/useParams.js
+interface LegacyExploreParams {
+  taxon?: { id?: number; name?: string; preferred_common_name?: string | null };
+  user?: { id?: number; login?: string; icon_url?: string | null };
+  project?: { id?: number; title?: string };
+  place?: { id?: number; display_name?: string } | null;
+  worldwide?: boolean;
+}
 
 // Note from the documentation:
 // The type containing the mapping must be a type alias. It cannot be an interface.
@@ -225,29 +244,9 @@ export type BaseTabStackParamList = {
   Menu: undefined;
   ObsList: undefined;
   RootExplore: undefined;
-  // TODO: type for other routes to Explore
-  // From UserProfile
-  // {
-  //   user,
-  //   worldwide: true,
-  // }
-  // From ProjectDetails
-  // {
-  //   project,
-  //   worldwide: true,
-  // }
-  // {
-  //   project,
-  //   // If selected project has no place_id, show map in worldwide mode
-  //   worldwide: !project?.place,
-  //   place: project?.place,
-  // }
-  Explore: {
-    user?: ApiUser;
-    project?: object;
-    place?: ApiPlace | null;
-    worldwide: boolean;
-  };
+  // Explore opened from another screen (TaxonDetails, UserProfile,
+  // ProjectDetails, ProjectRequirements) rather than from the Explore tab.
+  Explore: ExploreV2EntryParams & LegacyExploreParams;
   // From NotificationsListItem
   // {
   //   uuid: notification.resource_uuid,
@@ -343,6 +342,11 @@ export type BaseTabStackParamList = {
     userId?: number;
     userLogin?: string;
   } | undefined;
+  PostDetails: {
+    body: string;
+    published_at: string;
+    title: string;
+  };
   Debug: undefined;
   UILibrary: undefined;
   UiLibraryItem: undefined;

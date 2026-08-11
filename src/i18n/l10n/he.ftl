@@ -130,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = בחר.י שם משתמש
 Choose-taxon = נא לבחור טקסון
 Choose-top-taxon = נא לבחור את הטקסון המתאים ביותר
-Clear = נקה
 Close = סגירה
 Close-permission-request-screen = סגירת מסך בקשת הרשאה
 Close-search = סגור חיפוש
@@ -228,7 +227,6 @@ Delete-observation = מחיקת תצפית
 DELETE-OBSERVATION--question = למחוק את התצפית?
 Delete-photo = מחיקת תמונה
 Delete-sound = מחיקת קול
-Deletes-entered-text = מחיקת טקסט שהוזן
 Deleting-x-of-y--observations =
     מוחק { $currentDeleteCount } { $total ->
         [one] מתוך { $total }
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] הצטרפת לפרויקט { $count }
        *[other] הצטרפת ל-{ $count } פרויקטים
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] פוסט ביומן
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = מנווט למצלמת AI
 Navigates-to-bulk-importer = מנווט למייבא במרוכז
 Navigates-to-camera = מנווט למצלמה
 Navigates-to-explore = מנוות ל'לגלות'
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = מנווט להתראות

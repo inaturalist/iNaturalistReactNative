@@ -133,7 +133,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VALITSE KÄYTTÄJÄNIMI
 Choose-taxon = Valitse taksoni
 Choose-top-taxon = Valitse ylätaksoni
-Clear = Tyhjennä
 Close = Sulje
 Close-permission-request-screen = Sulje lupapyyntönäyttö
 Close-search = Sulje haku
@@ -231,7 +230,6 @@ Delete-observation = Poista havainto
 DELETE-OBSERVATION--question = POISTA HAVAINTO?
 Delete-photo = Poista kuva
 Delete-sound = Poista ääni
-Deletes-entered-text = Poista syötetty teksti
 Deleting-x-of-y--observations =
     Poistetaan { $currentDeleteCount } { $total ->
         [one] havainto { $total }
@@ -446,6 +444,7 @@ JOINED-X-PROJECTS =
         [one] LIITTYNYT { $count } PROJEKTIIN
        *[other] LIITYTTY { $count } PROJEKTIIN
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] PÄIVÄKIRJAN VIESTI
@@ -519,6 +518,7 @@ Navigates-to-AI-camera = Siirry AI-kameraan
 Navigates-to-bulk-importer = Siirry massatuontiin
 Navigates-to-camera = Siirry kameraan
 Navigates-to-explore = Siirry tutkimaan
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Siirry kirjautumiseen
 Navigates-to-main-menu = Siirry päävalikkoon
 Navigates-to-notifications = Siirry ilmoituksiin
