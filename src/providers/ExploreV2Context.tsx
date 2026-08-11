@@ -1,6 +1,7 @@
 import type { ApiProjectSummary, ApiTotalBounds, ApiUser } from "api/types";
 import type { SPECIES_TAB } from "appConstants/tabs";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import type { ExploreV2EntryParams } from "navigation/types";
 import type { TAXONOMIC_RANK } from "providers/ExploreContext";
 import {
   DATE_OBSERVED,
@@ -160,12 +161,6 @@ export const initialExploreV2State: ExploreV2State = {
   filters: defaultExploreV2Filters,
   activeTab: OBSERVATIONS_TAB,
 };
-
-export interface ExploreV2EntryParams {
-  subject?: ExploreV2Subject | null;
-  location?: ExploreV2LocationState;
-  activeTab?: ExploreV2Tab;
-}
 
 export function initialStateFromEntryParams(
   params?: ExploreV2EntryParams | null,

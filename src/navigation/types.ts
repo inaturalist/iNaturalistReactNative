@@ -10,7 +10,17 @@ import type {
   ParamListRoute,
 } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { ExploreV2EntryParams } from "providers/ExploreV2Context";
+import type {
+  ExploreV2LocationState,
+  ExploreV2Subject,
+  ExploreV2Tab,
+} from "providers/ExploreV2Context";
+
+export interface ExploreV2EntryParams {
+  subject?: ExploreV2Subject | null;
+  location?: ExploreV2LocationState;
+  activeTab?: ExploreV2Tab;
+}
 
 // Params read by ExploreV1 in components/Explore/hooks/useParams.js
 export interface LegacyExploreParams {
