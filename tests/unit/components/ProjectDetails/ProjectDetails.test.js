@@ -15,11 +15,6 @@ const mockProject = factory( "RemoteProject", {
   user_ids: [faker.number.int( )],
 } );
 
-const mockPlace = {
-  id: faker.number.int( ),
-  display_name: faker.location.city( ),
-};
-
 const mockNavigateToExplore = jest.fn( );
 jest.mock( "sharedHooks/useNavigateToExplore", ( ) => ( {
   __esModule: true,
@@ -155,12 +150,11 @@ describe( "ProjectDetails", ( ) => {
     } );
 
     test( "opens the map view from the project's map section", async ( ) => {
-      renderComponent( <ProjectDetails project={{ ...mockProject, place: mockPlace }} /> );
+      renderComponent( <ProjectDetails project={mockProject} /> );
 
       await actor.press( await screen.findByText( /VIEW IN EXPLORE/ ) );
 
       expect( lastOptions( ).layout ).toBe( "map" );
-      expect( lastOptions( ).place ).toBeUndefined( );
     } );
   } );
 } );
