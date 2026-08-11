@@ -22,8 +22,8 @@ export interface ExploreV2EntryParams {
   activeTab?: ExploreV2Tab;
 }
 
-// Params read by ExploreV1 in components/Explore/hooks/useParams.js
-export interface LegacyExploreParams {
+// Params sent to ExploreV1, read in components/Explore/hooks/useParams.js
+interface LegacyExploreParams {
   taxon?: { id?: number; name?: string; preferred_common_name?: string | null };
   user?: { id?: number; login?: string; icon_url?: string | null };
   project?: { id?: number; title?: string };
