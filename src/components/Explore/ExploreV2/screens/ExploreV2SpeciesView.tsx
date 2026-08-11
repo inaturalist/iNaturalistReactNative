@@ -9,6 +9,7 @@ import i18n from "i18next";
 import React, { useCallback, useMemo } from "react";
 import Taxon from "realmModels/Taxon";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
+import type { SpeciesSortAPIParams } from "sharedHelpers/speciesSort";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useGridLayout from "sharedHooks/useGridLayout";
 import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
@@ -16,7 +17,7 @@ import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
 export type SpeciesCountQueryParams = Omit<
   ExploreV2QueryParams,
   "order_by" | "order" | "per_page"
->;
+> & SpeciesSortAPIParams;
 
 interface SpeciesCountResult {
   count: number;

@@ -7,6 +7,7 @@ import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermiss
 interface Props {
   closeModal: () => void;
   hasPermissions?: boolean;
+  onSelectNearby: ( ) => Promise<void> | void;
   renderPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
   requestPermissions: ( ) => void;
   showModal: boolean;
@@ -16,6 +17,7 @@ interface Props {
 const ExploreLocationSearchModal = ( {
   closeModal,
   hasPermissions,
+  onSelectNearby,
   renderPermissionsGate,
   requestPermissions,
   showModal,
@@ -30,6 +32,7 @@ const ExploreLocationSearchModal = ( {
       <ExploreLocationSearch
         closeModal={closeModal}
         hasPermissions={hasPermissions}
+        onSelectNearby={onSelectNearby}
         renderPermissionsGate={renderPermissionsGate}
         requestPermissions={requestPermissions}
         updateLocation={updateLocation}

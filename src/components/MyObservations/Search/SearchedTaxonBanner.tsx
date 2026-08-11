@@ -8,7 +8,6 @@ import {
   useMyObservations,
 } from "providers/MyObservationsContext";
 import React from "react";
-import type { RealmUser } from "realmModels/types";
 import { taxonDisplayName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
@@ -17,10 +16,7 @@ const SearchedTaxonBanner = ( ) => {
   const { state, dispatch } = useMyObservations( );
   const { searchedTaxon } = state;
 
-  // The Realm `User` class doesn't declare its schema fields as typed
-  // instance properties (see realmModels/User.ts), so cast to the typed
-  // RealmUser interface to access the user's name-display prefs.
-  const currentUser = useCurrentUser( ) as RealmUser | null;
+  const currentUser = useCurrentUser( );
 
   if ( !searchedTaxon ) return null;
 

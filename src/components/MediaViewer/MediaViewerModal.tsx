@@ -1,31 +1,34 @@
-// @flow
-
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import Modal from "components/SharedComponents/Modal";
-import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  autoPlaySound?: boolean, // automatically start playing a sound when it is visible
-  editable?: boolean,
-  deleting?: boolean,
+interface PhotoItem {
+  attribution?: string;
+  licenseCode?: string;
+  localFilePath?: string;
+  url?: string;
+}
+
+interface SoundItem {
+  file_url: string;
+  hidden: boolean;
+}
+
+interface Props {
+  autoPlaySound?: boolean; // automatically start playing a sound when it is visible
+  editable?: boolean;
+  deleting?: boolean;
   // Optional component to use as the header
-  header?: Function,
-  onClose?: Function,
-  onDeletePhoto?: Function,
-  onDeleteSound?: Function,
-  photos?: {
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }[],
-  sounds?: {
-    file_url: string
-  }[],
-  showModal: boolean,
-  uri?: string | null
+  header?: (
+    { onClose, photoCount }: { onClose: ( ) => void; photoCount: number}
+  ) => React.JSX.Element;
+  onClose?: ( ) => void;
+  onDeletePhoto?: ( uri: string ) => void;
+  onDeleteSound?: ( uri: string ) => void;
+  photos?: PhotoItem[];
+  sounds?: SoundItem[];
+  showModal: boolean;
+  uri?: string | null;
 }
 
 const MediaViewerModal = ( {
@@ -40,7 +43,7 @@ const MediaViewerModal = ( {
   showModal,
   sounds,
   uri,
-}: Props ): Node => (
+}: Props ) => (
   <Modal
     showModal={showModal}
     fullScreen

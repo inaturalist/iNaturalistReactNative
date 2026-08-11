@@ -132,9 +132,9 @@ export interface RealmTaxon extends RealmObject {
 }
 
 export interface RealmUser extends RealmObject {
-  iconUrl?: string;
-  iconUrl?: string;
   id: number;
+  identifications_count?: number;
+  icon_url?: string;
   locale?: string;
   login?: string;
   name?: string;
@@ -142,6 +142,7 @@ export interface RealmUser extends RealmObject {
   prefers_common_names?: boolean;
   prefers_community_taxa?: boolean;
   prefers_scientific_name_first?: boolean;
+  roles?: string[];
   signedIn?: boolean;
 }
 

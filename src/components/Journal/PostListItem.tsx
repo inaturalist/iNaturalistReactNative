@@ -8,9 +8,15 @@ import {
   Image,
   View,
 } from "components/styledComponents";
-import React from "react";
+import React, { useMemo } from "react";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
+
+// we use the first image from the announcement html body
+// as the list post preview. The following regex pattern matches
+// <img ..... src="CAPTURE_GROUP_1"
+// for testing / reference: https://regexr.com/8no7d
+const imgSrcPattern = /<img[^>]*\s+src="([^>\s]+)"/;
 
 interface Props {
   item: ApiPostForUser;
@@ -21,15 +27,23 @@ const PostListItem = ( {
 }: Props ) => {
   const { i18n } = useTranslation( );
 
-  if ( !item ) {
-    return null;
-  }
+  const imgSrc = useMemo( () => {
+    const match = item.body.match( imgSrcPattern );
+    return match
+      ? match[1]
+      : item.parent.icon_url ?? null;
+  }, [item.body, item.parent.icon_url] );
 
   return (
     <View className="flex-row items-center mx-3 my-2">
-      {item.parent.icon_url && (
+      {imgSrc && (
         <Image
-          source={{ uri: item.parent.icon_url }}
+          source={{ uri: imgSrc }}
+          // Passing a key here is not ideal for FlashList, but we do actually want to avoid
+          // recycling on images. When Image gets a new `source` prop, it continues displaying
+          // the previously-loaded image until the new source is loaded, which leads to "stale"
+          // images being associated with a post. Passing a key forced an unmount/remount.
+          key={imgSrc}
           className={THUMBNAIL_CLASS}
           accessibilityRole="image"
           accessibilityIgnoresInvertColors

@@ -1,0 +1,3 @@
+FIXED
+* If one observation failed to upload, it blocked all others in the queue in some cases
+* Duplicative scroll when selecting a language

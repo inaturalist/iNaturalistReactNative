@@ -1,53 +1,52 @@
-// @flow
-
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import MasonryLayout from "components/ObsDetails/MasonryLayout";
 import { ActivityIndicator, Carousel } from "components/SharedComponents";
 import {
   Image, Pressable, View,
 } from "components/styledComponents";
-import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
   useMemo,
   useState,
 } from "react";
+import type { ListRenderItem } from "react-native";
 import { Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Photo from "realmModels/Photo";
 
-type Props = {
-  loading: boolean,
-  onChangeIndex?: Function,
-  photos: {
-    id?: number,
-    url: string,
-    localFilePath?: string,
-    attribution?: string,
-    licenseCode?: string
-  }[],
-  tablet: boolean
+interface PhotoItem {
+  id: number;
+  url: string;
+  localFilePath: string;
+  attribution: string;
+  hidden: boolean;
+  licenseCode?: string;
+}
+
+interface Props {
+  loading: boolean;
+  onChangeIndex: ( newIndex: number ) => void;
+  photos: PhotoItem[];
+  tablet: boolean;
 }
 
 const TaxonMedia = ( {
   loading,
   onChangeIndex,
   photos = [],
-  sounds = [],
   tablet,
-}: Props ): Node => {
+}: Props ) => {
   const { width } = Dimensions.get( "window" );
   const [index, setIndex] = useState( 0 );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
-  const items = useMemo( ( ) => ( [...photos, ...sounds] ), [photos, sounds] );
   const slideStyle = useMemo( ( ) => ( {
     width,
     height: 420,
   } ), [width] );
 
-  const CarouselSlide = useCallback(
+  const CarouselSlide: ListRenderItem<PhotoItem> = useCallback(
     ( { item } ) => (
       <Pressable
         accessibilityRole="button"
@@ -76,9 +75,7 @@ const TaxonMedia = ( {
   );
 
   useEffect( ( ) => {
-    if ( onChangeIndex ) {
-      onChangeIndex( index );
-    }
+    onChangeIndex( index );
   }, [index, onChangeIndex] );
 
   const currentPhotoUrl = index >= photos.length
@@ -99,7 +96,7 @@ const TaxonMedia = ( {
       : (
         <Carousel
           testID="photo-scroll"
-          data={items}
+          data={photos}
           renderItem={CarouselSlide}
           onSlideScroll={setIndex}
         />
@@ -109,7 +106,7 @@ const TaxonMedia = ( {
   const renderTablet = () => (
     <View className="w-full h-full">
       <MasonryLayout
-        items={items}
+        items={photos}
         onImagePress={newIndex => {
           setIndex( newIndex );
           setMediaViewerVisible( true );

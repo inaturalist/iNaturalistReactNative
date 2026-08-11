@@ -64,6 +64,7 @@ const defaultServerResult = {
   isLoading: false,
   isFetchingNextPage: false,
   error: null,
+  totalResults: undefined,
   fetchNextPage: jest.fn( ),
   refetch: jest.fn( ),
 };
@@ -97,6 +98,7 @@ describe( "useMyObservationsQuery", ( ) => {
       isLoading: true,
       isFetchingNextPage: true,
       error: new Error( "should be suppressed for default sort" ),
+      totalResults: 99,
       refetch: serverRefetch,
       fetchNextPage: serverFetchNextPage,
     } );
@@ -110,6 +112,7 @@ describe( "useMyObservationsQuery", ( ) => {
     expect( result.current.isLoading ).toEqual( false );
     expect( result.current.isFetchingNextPage ).toEqual( false );
     expect( result.current.error ).toBeNull( );
+    expect( result.current.totalResults ).toBeUndefined( );
     expect( result.current.refetch ).not.toBe( serverRefetch );
     expect( result.current.fetchNextPage ).not.toBe( serverFetchNextPage );
     expect( useServerOrderedObservations ).toHaveBeenCalledWith(
@@ -127,6 +130,7 @@ describe( "useMyObservationsQuery", ( ) => {
       ...defaultServerResult,
       observationIds: [serverObs],
       isFetchingNextPage: true,
+      totalResults: 7,
       fetchNextPage: serverFetchNextPage,
     } );
     const unsyncedObs = factory( "LocalObservation", { needs_sync: true } );
@@ -140,6 +144,7 @@ describe( "useMyObservationsQuery", ( ) => {
     ] );
     expect( result.current.isServerAuthoritative ).toEqual( true );
     expect( result.current.isFetchingNextPage ).toEqual( true );
+    expect( result.current.totalResults ).toEqual( 7 );
     expect( result.current.fetchNextPage ).toBe( serverFetchNextPage );
     expect( useServerOrderedObservations ).toHaveBeenCalledWith(
       expect.objectContaining( { enabled: true } ),
@@ -164,6 +169,58 @@ describe( "useMyObservationsQuery", ( ) => {
       { uuid: unsyncedObs.uuid },
       otherServerObs,
     ] );
+  } );
+
+  it( "is server authoritative for an active taxon search even under the default sort", ( ) => {
+    const searchedTaxon = { id: 121323, name: "Reptilia" };
+    useMyObservations.mockReturnValue( {
+      state: {
+        observationsSort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+        searchedTaxon,
+      },
+    } );
+    const serverObs = { uuid: factory( "LocalObservation" ).uuid };
+    useServerOrderedObservations.mockReturnValue( {
+      ...defaultServerResult,
+      observationIds: [serverObs],
+      totalResults: 6,
+    } );
+
+    const { result } = renderHook( ( ) => useMyObservationsQuery( ) );
+
+    expect( result.current.isServerAuthoritative ).toEqual( true );
+    expect( result.current.observationIds ).toEqual( [serverObs] );
+    expect( result.current.totalResults ).toEqual( 6 );
+    expect( useServerOrderedObservations ).toHaveBeenCalledWith(
+      expect.objectContaining( { enabled: true, taxonId: searchedTaxon.id } ),
+    );
+  } );
+
+  it( "ignores an active taxon search when there is no current user", ( ) => {
+    useCurrentUser.mockReturnValue( null );
+    const searchedTaxon = { id: 121323, name: "Reptilia" };
+    useMyObservations.mockReturnValue( {
+      state: {
+        observationsSort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+        searchedTaxon,
+      },
+    } );
+    useServerOrderedObservations.mockReturnValue( {
+      ...defaultServerResult,
+      observationIds: [{ uuid: "should-be-ignored-when-logged-out" }],
+      totalResults: 6,
+    } );
+    const localObs = factory( "LocalObservation", { needs_sync: false } );
+    createObservation( localObs );
+
+    const { result } = renderHook( ( ) => useMyObservationsQuery( ) );
+
+    expect( result.current.isServerAuthoritative ).toEqual( false );
+    expect( result.current.observationIds ).toEqual( [{ uuid: localObs.uuid }] );
+    expect( result.current.totalResults ).toBeUndefined( );
+    expect( useServerOrderedObservations ).toHaveBeenCalledWith(
+      expect.objectContaining( { enabled: false } ),
+    );
   } );
 
   it( "applies the selected sort to local observations when there is no current user", ( ) => {

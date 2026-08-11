@@ -1,5 +1,8 @@
+import { refresh } from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
+import type { ApiTaxon } from "api/types";
+import type { ViewOption } from "components/Explore/ObservationsViewBar";
 import ObservationsViewBar from "components/Explore/ObservationsViewBar";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import {
@@ -21,11 +24,16 @@ import SortButton from "components/SharedComponents/Buttons/SortButton";
 import CustomFlashList from "components/SharedComponents/FlashList/CustomFlashList";
 import { ObservationsStatTab, SpeciesStatTab } from "components/SharedComponents/StatTab";
 import { View } from "components/styledComponents";
+import {
+  MY_OBSERVATIONS_ACTION,
+  useMyObservations,
+} from "providers/MyObservationsContext";
 import React, { useCallback, useMemo } from "react";
 import { Alert } from "react-native";
 import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
+  RealmTaxon,
   RealmUser,
 } from "realmModels/types";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
@@ -46,10 +54,13 @@ import colors from "styles/tailwindColors";
 import type { SpeciesCount } from "types/sorting";
 
 import LoginSheet from "./LoginSheet";
+import MyObservationsGroupedByIconicTaxaView from "./MyObservationsGroupedByIconicTaxaView";
+import MyObservationsMapView from "./MyObservationsMapView";
 import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
 import SearchedTaxonBanner from "./Search/SearchedTaxonBanner";
+import SearchEmptyState from "./Search/SearchEmptyState";
 import SimpleHeader from "./SimpleHeader";
 import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
@@ -62,7 +73,7 @@ interface Props {
   handleSyncButtonPress: ( ) => void;
   isConnected: boolean;
   isFetchingNextPage: boolean;
-  layout: "list" | "grid";
+  layout: ViewOption;
   listRef?: React.RefObject<FlashListRef<RealmObservation> | null>;
   taxaListRef?: React.RefObject<FlashListRef<SpeciesCount> | null>;
   numTotalObservations?: number;
@@ -80,9 +91,12 @@ interface Props {
   setOpenSheet: ( value: ACTIVE_SHEET ) => void;
   setSpeciesSortOptionId: ( value: SPECIES_SORT ) => void;
   showNoResults: boolean;
+  showSearchEmptyState: boolean;
+  showSearchOfflineNotice: boolean;
+  showSpeciesSearchEmptyState: boolean;
   speciesSortOptionId: SPECIES_SORT;
   taxa?: SpeciesCount[];
-  toggleLayout: ( ) => void;
+  updateObservationsView: ( value: string ) => void;
   fetchMoreTaxa: ( ) => void;
   isFetchingTaxa?: boolean;
   justFinishedSignup: boolean;
@@ -138,9 +152,12 @@ const MyObservationsSimple = ( {
   setOpenSheet,
   setSpeciesSortOptionId,
   showNoResults,
+  showSearchEmptyState,
+  showSearchOfflineNotice,
+  showSpeciesSearchEmptyState,
   speciesSortOptionId,
   taxa,
-  toggleLayout,
+  updateObservationsView,
   fetchMoreTaxa,
   isFetchingTaxa,
   justFinishedSignup,
@@ -149,12 +166,30 @@ const MyObservationsSimple = ( {
 }: Props ) => {
   const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
+  const { dispatch } = useMyObservations( );
   const searchMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SearchMyObservationsEnabled,
   );
+  // For now, searching from the species tab requires a signed-in user. for logged-out
+  // users there's no server-side taxon search to run, since all their obs are local,
+  // so tapping a card will continue to navigate to TaxonDetails.
+  const canSearchFromSpeciesTab = searchMyObservationsEnabled && !!currentUser;
   const sortMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SortMyObservationsEnabled,
   );
+  const myObservationsMapViewEnabled = useFeatureFlag(
+    FeatureFlag.MyObservationsMapViewEnabled,
+  );
+  const myObservationsSmallGridViewEnabled = useFeatureFlag(
+    FeatureFlag.MyObservationsSmallGridViewEnabled,
+  );
+  const viewOptions: ViewOption[] = ["grid", "list"];
+  if ( myObservationsSmallGridViewEnabled && currentUser ) {
+    viewOptions.push( "smallGrid" );
+  }
+  if ( myObservationsMapViewEnabled && currentUser ) {
+    viewOptions.push( "map" );
+  }
   const speciesSortLabels = useSpeciesSortLabels( );
   const observationsSortLabels = useObservationsSortLabels( );
   const navigation = useNavigation( );
@@ -207,6 +242,31 @@ const MyObservationsSimple = ( {
       } )
     );
 
+    const searchThisTaxon = ( ) => {
+      // fetchSpeciesCounts (logged in path) returns ApiTaxon-shaped (snake_case) taxa;
+      // the logged-out path returns real RealmTaxon (camelCase) objects.
+      // SpeciesCount.taxon is only typed as RealmTaxon, so narrow between both
+      // shapes the same way SearchMyObservationsTaxon.tsx does.
+      const taxon = speciesCount.taxon as ApiTaxon | RealmTaxon;
+      const isRealmTaxon = "isValid" in taxon;
+      const preferredCommonName = isRealmTaxon
+        ? taxon.preferredCommonName
+        : taxon.preferred_common_name;
+      const photo = isRealmTaxon
+        ? taxon.defaultPhoto
+        : taxon.default_photo;
+      dispatch( {
+        type: MY_OBSERVATIONS_ACTION.SET_TAXON_SEARCH,
+        searchTaxon: {
+          id: taxonId,
+          name: taxon.name || "",
+          preferredCommonName,
+          iconUri: photo?.url,
+        },
+      } );
+      setActiveTab( OBSERVATIONS_TAB );
+    };
+
     const accessibleName = accessibleTaxonName( speciesCount.taxon, currentUser, t );
 
     const source = {
@@ -224,16 +284,21 @@ const MyObservationsSimple = ( {
         key={itemKey}
         style={gridItemStyle}
         speciesCount={speciesCount}
+        canSearchFromSpeciesTab={canSearchFromSpeciesTab}
         navToTaxonDetails={navToTaxonDetails}
+        searchThisTaxon={searchThisTaxon}
         accessibleName={accessibleName}
         source={source}
       />
     );
   }, [
+    canSearchFromSpeciesTab,
     currentUser,
+    dispatch,
     gridItemStyle,
     navigation,
     route.key,
+    setActiveTab,
     t,
   ] );
 
@@ -319,6 +384,83 @@ const MyObservationsSimple = ( {
     }
     return data;
   }, [observationIds, layout] );
+
+  const renderOfflineFallback = ( onPress: ( ) => void ) => (
+    <View className="flex-1 items-center justify-center">
+      <OfflineNotice onPress={onPress} />
+    </View>
+  );
+
+  const renderMapView = ( ) => {
+    if ( isConnected === false ) {
+      return renderOfflineFallback( ( ) => refresh( ) );
+    }
+    return <MyObservationsMapView userId={currentUser?.id} />;
+  };
+
+  const renderSmallGridView = ( ) => {
+    if ( isConnected === false ) {
+      return renderOfflineFallback( ( ) => refresh( ) );
+    }
+    return <MyObservationsGroupedByIconicTaxaView />;
+  };
+
+  const renderObservations = ( ) => {
+    if ( layout === "map" ) { return renderMapView( ); }
+    if ( layout === "smallGrid" ) { return renderSmallGridView( ); }
+    return (
+      <ObservationsFlashList
+        data={dataFilledWithEmptyBoxes}
+        dataCanBeFetched={!!currentUser}
+        fetchFromLastObservation={fetchFromLastObservation}
+        handlePullToRefresh={handlePullToRefresh}
+        handleIndividualUploadPress={handleIndividualUploadPress}
+        hideLoadingWheel={!isFetchingNextPage}
+        hideMetadata={isDefaultMode}
+        hideObsUploadStatus={!currentUser}
+        hideObsStatus={!currentUser}
+        isSimpleObsStatus={isDefaultMode}
+        hideRGLabel={!isDefaultMode || !currentUser}
+        isFetchingNextPage={isFetchingNextPage}
+        isConnected={isConnected}
+        obsListKey="MyObservations"
+        layout={layout}
+        onEndReached={onEndReached}
+        onLayout={onListLayout}
+        onScroll={onScroll}
+        ref={listRef}
+        showObservationsEmptyScreen
+        showNoResults={showNoResults}
+        testID="MyObservationsAnimatedList"
+        listHeaderContent={observationsHeader}
+      />
+    );
+  };
+
+  const renderObservationsTabContent = ( ) => {
+    if ( showSearchOfflineNotice ) {
+      return renderOfflineFallback( ( ) => refresh( ) );
+    }
+    if ( showSearchEmptyState ) {
+      return <SearchEmptyState />;
+    }
+    return (
+      <>
+        { renderObservations( ) }
+        <ObservationsViewBar
+          layout={layout}
+          updateObservationsView={updateObservationsView}
+          viewOptions={viewOptions}
+        />
+        {sortMyObservationsEnabled && layout !== "map" && (
+          <SortButton
+            onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
+            accessibilityLabel={t( "Change-observations-sort-order" )}
+          />
+        )}
+      </>
+    );
+  };
 
   const renderOfflineNotice = ( ) => {
     if ( isConnected === false ) {
@@ -410,49 +552,10 @@ const MyObservationsSimple = ( {
             },
           ]}
         />
-        {searchMyObservationsEnabled && activeTab === OBSERVATIONS_TAB && (
+        {searchMyObservationsEnabled && (
           <SearchedTaxonBanner />
         )}
-        { activeTab === OBSERVATIONS_TAB && (
-          <>
-            <ObservationsFlashList
-              data={dataFilledWithEmptyBoxes}
-              dataCanBeFetched={!!currentUser}
-              fetchFromLastObservation={fetchFromLastObservation}
-              handlePullToRefresh={handlePullToRefresh}
-              handleIndividualUploadPress={handleIndividualUploadPress}
-              hideLoadingWheel={!isFetchingNextPage}
-              hideMetadata={isDefaultMode}
-              hideObsUploadStatus={!currentUser}
-              hideObsStatus={!currentUser}
-              isSimpleObsStatus={isDefaultMode}
-              hideRGLabel={!isDefaultMode || !currentUser}
-              isFetchingNextPage={isFetchingNextPage}
-              isConnected={isConnected}
-              obsListKey="MyObservations"
-              layout={layout}
-              onEndReached={onEndReached}
-              onLayout={onListLayout}
-              onScroll={onScroll}
-              ref={listRef}
-              showObservationsEmptyScreen
-              showNoResults={showNoResults}
-              testID="MyObservationsAnimatedList"
-              listHeaderContent={observationsHeader}
-            />
-            <ObservationsViewBar
-              hideMap
-              layout={layout}
-              updateObservationsView={toggleLayout}
-            />
-            {sortMyObservationsEnabled && (
-              <SortButton
-                onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
-                accessibilityLabel={t( "Change-observations-sort-order" )}
-              />
-            )}
-          </>
-        ) }
+        { activeTab === OBSERVATIONS_TAB && renderObservationsTabContent( ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
           <>
             <CustomFlashList
@@ -483,7 +586,11 @@ const MyObservationsSimple = ( {
             />
           </>
         )}
-        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && renderOfflineNotice( )}
+        { ( activeTab === TAXA_TAB && taxa.length === 0 ) && (
+          showSpeciesSearchEmptyState
+            ? <SearchEmptyState />
+            : renderOfflineNotice( )
+        )}
       </ViewWrapper>
       {openSheet === ACTIVE_SHEET.SORT && activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet
@@ -512,11 +619,13 @@ const MyObservationsSimple = ( {
             imageComponentOptions={{
               onImageComponentPress: handlePivotCardGridItemPress,
               accessibilityHint: t( "Navigates-to-observation-details" ),
-              imageComponent: (
-                <PivotCardObsGridItem
-                  uuid={observationIds[0].uuid}
-                />
-              ),
+              imageComponent: observationIds.length
+                ? (
+                  <PivotCardObsGridItem
+                    uuid={observationIds[0].uuid}
+                  />
+                )
+                : null,
             }}
           />
           <FiveObservationCard triggerCondition={numTotalObservations === 5} />

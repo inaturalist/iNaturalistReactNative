@@ -1,4 +1,8 @@
-import { screen, waitFor } from "@testing-library/react-native";
+import { refresh, useNetInfo } from "@react-native-community/netinfo";
+import {
+  act, screen, userEvent, waitFor,
+} from "@testing-library/react-native";
+import { SPECIES_TAB } from "appConstants/tabs";
 import ExploreResults from "components/Explore/ExploreV2/screens/ExploreResults";
 import initI18next from "i18n/initI18next";
 import {
@@ -7,6 +11,7 @@ import {
   initialExploreV2State,
 } from "providers/ExploreV2Context";
 import React from "react";
+import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import { renderComponent } from "tests/helpers/render";
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -51,6 +56,22 @@ jest.mock( "components/Explore/hooks/useInfiniteExploreScroll", ( ) => ( {
 
 jest.mock( "sharedHooks/useSpeciesCount", ( ) => ( { __esModule: true, default: ( ) => 0 } ) );
 
+const mockExploreV2SpeciesView = jest.fn( ( ) => null );
+jest.mock( "components/Explore/ExploreV2/screens/ExploreV2SpeciesView", ( ) => ( {
+  __esModule: true,
+  default: props => mockExploreV2SpeciesView( props ),
+} ) );
+
+let mockLayout = "map";
+const mockWriteLayoutToStorage = jest.fn( );
+jest.mock( "sharedHooks/useStoredLayout", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    layout: mockLayout,
+    writeLayoutToStorage: mockWriteLayoutToStorage,
+  } ),
+} ) );
+
 const mockState = location => ( {
   ...initialExploreV2State,
   location,
@@ -65,8 +86,11 @@ beforeAll( async ( ) => {
 beforeEach( ( ) => {
   mockHasPermissions = undefined;
   mockHasBlockedPermissions = false;
+  mockLayout = "map";
+  mockWriteLayoutToStorage.mockClear( );
   mockDispatch.mockClear( );
   mockRequestPermissions.mockClear( );
+  mockExploreV2SpeciesView.mockClear( );
   fetchCoarseUserLocation.mockReset( );
   mockUseInfiniteExploreScroll.mockReset( );
   mockUseInfiniteExploreScroll.mockReturnValue( {
@@ -184,5 +208,243 @@ describe( "ExploreResults nearby resolution", ( ) => {
     await waitFor( ( ) => expect( lastScrollArgs( ).enabled ).toBe( true ) );
     expect( lastScrollArgs( ).params.lat ).toBeUndefined( );
     expect( fetchCoarseUserLocation ).not.toHaveBeenCalled( );
+  } );
+} );
+
+describe( "ExploreResults offline state", ( ) => {
+  const mockHandlePullToRefresh = jest.fn( );
+
+  beforeEach( ( ) => {
+    refresh.mockClear( );
+    mockHandlePullToRefresh.mockClear( );
+    useNetInfo.mockReturnValue( { isConnected: false } );
+    mockUseInfiniteExploreScroll.mockReturnValue( {
+      fetchNextPage: jest.fn( ),
+      isFetchingNextPage: false,
+      handlePullToRefresh: mockHandlePullToRefresh,
+      observations: [],
+      totalResults: 0,
+    } );
+    mockHasPermissions = true;
+    useExploreV2.mockReturnValue( {
+      state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+      dispatch: mockDispatch,
+    } );
+  } );
+
+  afterEach( ( ) => {
+    useNetInfo.mockReturnValue( { isConnected: true } );
+    refresh.mockResolvedValue( { isConnected: true } );
+  } );
+
+  it.each( ["map", "grid"] )(
+    "shows the offline notice instead of the results in %s view when disconnected",
+    async layout => {
+      mockLayout = layout;
+      renderComponent( <ExploreResults /> );
+
+      expect(
+        await screen.findByText( "You are offline. Tap to try again." ),
+      ).toBeVisible( );
+      expect( screen.queryByTestId( "ExploreV2ObservationsList" ) ).toBeNull( );
+      expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+    },
+  );
+
+  it( "retries the search when the offline notice is tapped and we are back online", async ( ) => {
+    refresh.mockResolvedValue( { isConnected: true } );
+    const actor = userEvent.setup( );
+    renderComponent( <ExploreResults /> );
+
+    const offlineNotice = await screen.findByLabelText( "Internet Connection Required" );
+    await actor.press( offlineNotice );
+
+    expect( refresh ).toHaveBeenCalled( );
+    await waitFor( ( ) => expect( mockHandlePullToRefresh ).toHaveBeenCalled( ) );
+  } );
+} );
+
+describe( "ExploreResults species sort", ( ) => {
+  const speciesTabState = {
+    ...mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+    activeTab: SPECIES_TAB,
+  };
+
+  const lastSpeciesViewProps = ( ) => mockExploreV2SpeciesView.mock.calls.at( -1 )[0];
+
+  it( "passes default most-observed sort params to the species view", async ( ) => {
+    useExploreV2.mockReturnValue( { state: speciesTabState, dispatch: mockDispatch } );
+
+    renderComponent( <ExploreResults /> );
+
+    await waitFor( ( ) => {
+      const { params } = lastSpeciesViewProps( );
+      expect( params.order_by ).toBe( "count" );
+      expect( params.order ).toBe( "desc" );
+    } );
+    expect( screen.getByLabelText( "Change species sort order" ) ).toBeVisible( );
+  } );
+
+  it( "passes ascending order to the species view when least observed is selected", async ( ) => {
+    useExploreV2.mockReturnValue( {
+      state: { ...speciesTabState, speciesSortBy: SPECIES_SORT.COUNT_ASC },
+      dispatch: mockDispatch,
+    } );
+
+    renderComponent( <ExploreResults /> );
+
+    await waitFor( ( ) => {
+      const { params } = lastSpeciesViewProps( );
+      expect( params.order_by ).toBe( "count" );
+      expect( params.order ).toBe( "asc" );
+    } );
+  } );
+
+  it( "dispatches SET_SPECIES_SORT when a new sort is confirmed in the sheet", async ( ) => {
+    const actor = userEvent.setup( );
+    useExploreV2.mockReturnValue( { state: speciesTabState, dispatch: mockDispatch } );
+
+    renderComponent( <ExploreResults /> );
+
+    await actor.press( await screen.findByLabelText( "Change species sort order" ) );
+    expect( await screen.findByText( "SORT SPECIES" ) ).toBeVisible( );
+
+    await actor.press( screen.getByText( "Least Observed" ) );
+    await actor.press( screen.getByText( "CONFIRM" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith( {
+      type: EXPLORE_V2_ACTION.SET_SPECIES_SORT,
+      speciesSortBy: SPECIES_SORT.COUNT_ASC,
+    } );
+  } );
+} );
+
+describe( "ExploreResults observations view", ( ) => {
+  beforeEach( ( ) => {
+    mockHasPermissions = true;
+    useExploreV2.mockReturnValue( {
+      state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+      dispatch: mockDispatch,
+    } );
+  } );
+
+  it( "offers map, grid, and list views", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByTestId( "SegmentedButton.map" ) ).toBeTruthy( );
+    expect( screen.getByTestId( "SegmentedButton.grid" ) ).toBeTruthy( );
+    expect( screen.getByTestId( "SegmentedButton.list" ) ).toBeTruthy( );
+  } );
+
+  it( "shows the map instead of the list in map view", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByTestId( "Map.MapView" ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "ExploreV2ObservationsList" ) ).toBeNull( );
+  } );
+
+  it( "shows the list instead of the map in grid view", async ( ) => {
+    mockLayout = "grid";
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByTestId( "ExploreV2ObservationsList" ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+  } );
+
+  it( "persists the newly selected view when a view is tapped", async ( ) => {
+    const actor = userEvent.setup( );
+    renderComponent( <ExploreResults /> );
+
+    await actor.press( await screen.findByTestId( "SegmentedButton.grid" ) );
+
+    expect( mockWriteLayoutToStorage ).toHaveBeenCalledWith( "grid" );
+  } );
+
+  it( "hides the sort button in map view", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    await screen.findByTestId( "Map.MapView" );
+    expect( screen.queryByLabelText( "Change observations sort order" ) ).toBeNull( );
+  } );
+
+  it( "shows the sort button in grid view", async ( ) => {
+    mockLayout = "grid";
+    renderComponent( <ExploreResults /> );
+
+    expect(
+      await screen.findByLabelText( "Change observations sort order" ),
+    ).toBeTruthy( );
+  } );
+
+  it( "makes the search nearby when the current location button is pressed", async ( ) => {
+    const actor = userEvent.setup( );
+    renderComponent( <ExploreResults /> );
+
+    await actor.press( await screen.findByTestId( "Map.CurrentLocationButton" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith( {
+      type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY,
+    } );
+  } );
+
+  it(
+    "shows the permission prompt instead of the map when nearby without permission",
+    async ( ) => {
+      mockHasPermissions = false;
+      useExploreV2.mockReturnValue( {
+        state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY } ),
+        dispatch: mockDispatch,
+      } );
+
+      renderComponent( <ExploreResults /> );
+
+      expect( await screen.findByText( /To view nearby organisms/ ) ).toBeVisible( );
+      expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+      expect( screen.queryByTestId( "SegmentedButton.map" ) ).toBeNull( );
+    },
+  );
+
+  it( "frames the map to the bounds of the results", async ( ) => {
+    mockUseInfiniteExploreScroll.mockReturnValue( {
+      fetchNextPage: jest.fn( ),
+      isFetchingNextPage: false,
+      handlePullToRefresh: jest.fn( ),
+      observations: [],
+      totalBounds: {
+        swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+      },
+      totalResults: 1,
+    } );
+    useExploreV2.mockReturnValue( {
+      state: mockState( {
+        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        place: { id: 1, display_name: "Berkeley" },
+      } ),
+      dispatch: mockDispatch,
+    } );
+
+    renderComponent( <ExploreResults /> );
+
+    const map = await screen.findByTestId( "Map.MapView" );
+    expect( map.props.initialRegion.latitude ).toBe( 20 );
+    expect( map.props.initialRegion.longitude ).toBe( 30 );
+  } );
+
+  it( "searches the visible map area when redo search is pressed", async ( ) => {
+    const actor = userEvent.setup( );
+    renderComponent( <ExploreResults /> );
+
+    const map = await screen.findByTestId( "Map.MapView" );
+    await act( async ( ) => {
+      map.props.onPanDrag( );
+    } );
+    await actor.press( screen.getByText( "REDO SEARCH IN MAP AREA" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith( {
+      type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+      bounds: {
+        swlat: 1, swlng: 2, nelat: 3, nelng: 4,
+      },
+    } );
   } );
 } );
