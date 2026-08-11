@@ -46,7 +46,7 @@ const getItem = jest.fn( async ( k, o ) => {
   const serviceName = getServiceName( o );
   const service = stores.get( serviceName );
 
-  if ( service ) { return service.get( k ) || null; }
+  if ( service ) { return { value: service.get( k ) || null }; }
   return null;
 } );
 
