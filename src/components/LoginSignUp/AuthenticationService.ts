@@ -19,9 +19,13 @@ import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
 import RNRestart from "react-native-restart";
-import type { SensitiveInfoError } from "react-native-sensitive-info";
 import {
-  deleteItem, ErrorCode, getItem, hasItem, isSensitiveInfoError, setItem,
+  deleteItem,
+  ErrorCode,
+  getItem,
+  hasItem,
+  SensitiveInfoError,
+  setItem,
 } from "react-native-sensitive-info";
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
@@ -97,10 +101,9 @@ async function getSensitiveItem(
   try {
     exists = await hasItem( key, options );
   } catch ( e ) {
-    if ( isSensitiveInfoError( e ) ) {
-      const hasItemError = e as SensitiveInfoError;
+    if ( e instanceof SensitiveInfoError ) {
       localLogger.info(
-        `hasItem error for ${key}: ${hasItemError.message}`,
+        `hasItem error for ${key}: ${e.message}`,
       );
     }
     throw e;
@@ -113,18 +116,15 @@ async function getSensitiveItem(
     const item = await getItem( key, options );
     return item?.value ?? null;
   } catch ( e ) {
-    if ( isSensitiveInfoError( e ) ) {
-      const getItemError = e as SensitiveInfoError;
-      if ( isDebugModeSync() ) {
-        switch ( getItemError.code ) {
-          case ErrorCode.NOT_FOUND:
-            // Value doesn't exist
-            localLogger.info( `getItem not available for ${key}` );
-            break;
-          default:
-            localLogger.info( `getItem unknown error for ${key}: ${getItemError.message}` );
-            break;
-        }
+    if ( e instanceof SensitiveInfoError && isDebugModeSync() ) {
+      switch ( e.code ) {
+        case ErrorCode.NotFound:
+          // Value doesn't exist
+          localLogger.info( `getItem not available for ${key}` );
+          break;
+        default:
+          localLogger.info( `getItem unknown error for ${key}: ${e.message}` );
+          break;
       }
     }
     throw e;
@@ -144,13 +144,10 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
     clearAuthCache( );
     return result;
   } catch ( e ) {
-    if ( isSensitiveInfoError( e ) ) {
-      const setItemError = e as SensitiveInfoError;
-      if ( isDebugModeSync( ) ) {
-        localLogger.info(
-          `setItem error for ${key}, ${setItemError.code} ${setItemError.message}`,
-        );
-      }
+    if ( e instanceof SensitiveInfoError && isDebugModeSync( ) ) {
+      localLogger.info(
+        `setItem error for ${key}, ${e.code} ${e.message}`,
+      );
     }
     throw e;
   }
@@ -167,13 +164,10 @@ async function deleteSensitiveItem(
     clearAuthCache( );
     return result;
   } catch ( e ) {
-    if ( isSensitiveInfoError( e ) ) {
-      const deleteItemError = e as SensitiveInfoError;
-      if ( isDebugModeSync() ) {
-        localLogger.info(
-          `deleteItem error for ${key}, ${deleteItemError.code} ${deleteItemError.message}`,
-        );
-      }
+    if ( e instanceof SensitiveInfoError && isDebugModeSync() ) {
+      localLogger.info(
+        `deleteItem error for ${key}, ${e.code} ${e.message}`,
+      );
     }
     throw e;
   }
