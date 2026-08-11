@@ -10,6 +10,7 @@ import i18next from "i18next";
 import {
   formatApiDatetime,
   formatDifferenceForHumans,
+  formatISODate,
   formatISONoSeconds,
   formatObsFieldDate,
   formatObsFieldDatetime,
@@ -232,6 +233,41 @@ describe( "formatObsFieldDate/Time/Datetime", ( ) => {
 
     it( "stores datetime as UTC date and time", ( ) => {
       expect( formatObsFieldDatetime( picked ) ).toEqual( "2026-01-01 03:30" );
+    } );
+  } );
+} );
+
+describe( "formatISODate", ( ) => {
+  // UTC is already Jan 1, 2026 while New York is still Dec 31, 2025
+  const picked = new Date( "2026-01-01T03:30:00Z" );
+
+  describe( "in America/New_York", ( ) => {
+    let resolvedOptionsSpy;
+
+    beforeAll( () => {
+      resolvedOptionsSpy = jest.spyOn(
+        Intl.DateTimeFormat.prototype,
+        "resolvedOptions",
+      ).mockReturnValue( {
+        calendar: "gregory",
+        locale: "en-US",
+        numberingSystem: "latn",
+        timeZone: "America/New_York",
+      } );
+    } );
+
+    afterAll( () => {
+      resolvedOptionsSpy.mockRestore( );
+    } );
+
+    it( "returns the calendar date on the device, not the UTC date", ( ) => {
+      expect( formatISODate( picked ) ).toEqual( "2025-12-31" );
+    } );
+  } );
+
+  describe( "in UTC", ( ) => {
+    it( "returns the UTC calendar date", ( ) => {
+      expect( formatISODate( picked ) ).toEqual( "2026-01-01" );
     } );
   } );
 } );

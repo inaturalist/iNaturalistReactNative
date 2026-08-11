@@ -42,6 +42,7 @@ import {
 } from "providers/ExploreContext";
 import React, { useState } from "react";
 import type { RealmTaxon } from "realmModels/types";
+import { formatISODate } from "sharedHelpers/dateAndTime";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
@@ -534,7 +535,7 @@ const FilterModal = ( {
   const updateDateObserved = ( {
     newDateObserved, newObservedOn, newD1, newD2, newMonths,
   } ) => {
-    const today = new Date( ).toISOString( ).split( "T" )[0];
+    const today = formatISODate( new Date( ) );
     // Array with the numbers from 1 to 12
     const allMonths = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
 
@@ -564,14 +565,14 @@ const FilterModal = ( {
   const updateObservedExact = date => {
     updateDateObserved( {
       newDateObserved: DATE_OBSERVED.EXACT_DATE,
-      newObservedOn: date.toISOString().split( "T" )[0],
+      newObservedOn: formatISODate( date ),
     } );
   };
 
   const updateObservedStart = date => {
     updateDateObserved( {
       newDateObserved: DATE_OBSERVED.DATE_RANGE,
-      newD1: date.toISOString().split( "T" )[0],
+      newD1: formatISODate( date ),
       newD2: d2,
     } );
   };
@@ -580,7 +581,7 @@ const FilterModal = ( {
     updateDateObserved( {
       newDateObserved: DATE_OBSERVED.DATE_RANGE,
       newD1: d1,
-      newD2: date.toISOString().split( "T" )[0],
+      newD2: formatISODate( date ),
     } );
   };
 
@@ -595,7 +596,7 @@ const FilterModal = ( {
   };
 
   const updateDateUploaded = ( { newDateUploaded, newD1, newD2 } ) => {
-    const today = new Date().toISOString().split( "T" )[0];
+    const today = formatISODate( new Date( ) );
     if ( newDateUploaded === DATE_UPLOADED.ALL ) {
       dispatch( {
         type: EXPLORE_ACTION.SET_DATE_UPLOADED_ALL,
@@ -617,7 +618,7 @@ const FilterModal = ( {
   const updateUploadedStart = date => {
     updateDateUploaded( {
       newDateUploaded: DATE_UPLOADED.DATE_RANGE,
-      newD1: date.toISOString().split( "T" )[0],
+      newD1: formatISODate( date ),
       newD2: createdD2,
     } );
   };
@@ -626,7 +627,7 @@ const FilterModal = ( {
     updateDateUploaded( {
       newDateUploaded: DATE_UPLOADED.DATE_RANGE,
       newD1: createdD1,
-      newD2: date.toISOString().split( "T" )[0],
+      newD2: formatISODate( date ),
     } );
   };
 
@@ -1064,7 +1065,7 @@ const FilterModal = ( {
                   toggleDateTimePicker={() => setOpenSheet( NONE )}
                   onDatePicked={date => updateDateUploaded( {
                     newDateUploaded: DATE_UPLOADED.EXACT_DATE,
-                    newD1: date.toISOString().split( "T" )[0],
+                    newD1: formatISODate( date ),
                   } )}
                 />
               </View>

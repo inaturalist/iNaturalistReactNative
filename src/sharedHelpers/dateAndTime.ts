@@ -481,12 +481,20 @@ function formatProjectsApiDatetimeLong(
   return formatDateString( dateString, i18n.t( "date-format-long" ), i18n, options );
 }
 
-function formatObsFieldDate( date: Date ): string {
+// The calendar date on the device (just "2022-12-31"), e.g. for API params that
+// take a date. Note that Date#toISOString can't be used for this: it converts to
+// UTC first, so for part of every day it returns the wrong date for anyone whose
+// device is not on UTC.
+function formatISODate( date: Date ): string {
   return formatInTimeZone(
     date,
     Intl.DateTimeFormat( ).resolvedOptions( ).timeZone,
     "yyyy-MM-dd",
   );
+}
+
+function formatObsFieldDate( date: Date ): string {
+  return formatISODate( date );
 }
 
 function formatObsFieldTime( date: Date ): string {
@@ -509,6 +517,7 @@ export {
   formatApiDatetime,
   formatDateStringFromTimestamp,
   formatDifferenceForHumans,
+  formatISODate,
   formatISONoSeconds,
   formatISONoTimezone,
   formatLongDate,
