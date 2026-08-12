@@ -134,6 +134,7 @@ class Observation extends Realm.Object {
     observed_on: true,
     observed_time_zone: true,
     place_guess: true,
+    private_geojson: true,
     private_place_guess: true,
     taxon_geoprivacy: true,
     project_observations: PROJECT_OBSERVATION_FIELDS,
