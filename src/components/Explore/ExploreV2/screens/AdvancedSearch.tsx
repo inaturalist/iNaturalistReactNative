@@ -47,6 +47,7 @@ import SearchHeader from "components/SharedComponents/SearchHeader";
 import { TopAndBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { ScrollView, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
+import isEqual from "lodash/isEqual";
 import type { ExploreStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import {
@@ -59,7 +60,7 @@ import {
   EXPLORE_V2_PLACE_MODE,
   useExploreV2,
 } from "providers/ExploreV2Context";
-import React, { useReducer, useState } from "react";
+import React, { useMemo, useReducer, useState } from "react";
 import Taxon from "realmModels/Taxon";
 import { formatObsFieldDate } from "sharedHelpers/dateAndTime";
 import { useCurrentUser, useTranslation } from "sharedHooks";
@@ -78,14 +79,16 @@ const AdvancedSearch = ( ) => {
   const currentUser = useCurrentUser();
 
   const { state: v2State, dispatch: dispatchV2 } = useExploreV2();
-  const [draft, dispatch] = useReducer(
-    advancedSearchReducer,
-    v2State,
-    draftFromV2State,
-  );
+  const [initialDraft] = useState( ( ) => draftFromV2State( v2State ) );
+  const [draft, dispatch] = useReducer( advancedSearchReducer, initialDraft );
   const {
     subject, location, sortBy, filters,
   } = draft;
+
+  const differsFromInitial = useMemo(
+    ( ) => !isEqual( draft, initialDraft ),
+    [draft, initialDraft],
+  );
 
   // Which in-screen search picker (taxon/user/project/location) is open.
   const [openPicker, setOpenPicker] = useState<PickerKind | null>( null );
@@ -640,11 +643,14 @@ const AdvancedSearch = ( ) => {
       <ButtonBar>
         <Button
           disabled={hasError}
-          level="focus"
+          level={differsFromInitial
+            ? "focus"
+            : "primary"}
           text={t( "SEARCH" )}
           onPress={handleSearch}
           accessibilityLabel={t( "Search" )}
           accessibilityState={{ disabled: hasError }}
+          testID="AdvancedSearch.searchButton"
         />
       </ButtonBar>
 
