@@ -55,8 +55,8 @@ const EvidenceSection = ( {
   const obsPhotos = currentObservation?.observationPhotos || currentObservation?.observation_photos;
   const obsSounds = currentObservation?.observationSounds || currentObservation?.observation_sounds;
 
-  const latitude = currentObservation?.latitude;
-  const longitude = currentObservation?.longitude;
+  const latitude = currentObservation?.privateLatitude || currentObservation?.latitude;
+  const longitude = currentObservation?.privateLongitude || currentObservation?.longitude;
   const missingCoords = currentObservation?.missing_coords;
 
   const displayPlaceName = ( ) => {

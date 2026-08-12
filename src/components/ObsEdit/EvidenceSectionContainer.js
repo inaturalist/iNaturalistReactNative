@@ -47,8 +47,8 @@ const EvidenceSectionContainer = ( {
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const [currentPlaceGuess, setCurrentPlaceGuess] = useState( );
 
-  const latitude = currentObservation?.latitude;
-  const longitude = currentObservation?.longitude;
+  const latitude = currentObservation?.privateLatitude || currentObservation?.latitude;
+  const longitude = currentObservation?.privateLongitude || currentObservation?.longitude;
 
   const hasPhotoOrSound = useMemo( ( ) => {
     if ( currentObservation?.observationPhotos?.length > 0
