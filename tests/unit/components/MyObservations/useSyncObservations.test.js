@@ -4,6 +4,7 @@ import inatjs from "inaturalistjs";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import {
   BEGIN_AUTOMATIC_SYNC,
+  SYNC_PENDING,
 } from "stores/createSyncObservationsSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -40,6 +41,7 @@ const syncingStore = {
   syncingStatus: BEGIN_AUTOMATIC_SYNC,
   deleteError: null,
   deletionsCompletedAt: null,
+  newRemoteObsSynced: false,
 };
 
 const mockDeletedIds = [
@@ -209,6 +211,40 @@ describe( "automatic sync while user is logged in", ( ) => {
     renderHook( ( ) => useSyncObservations( currentUserId ) );
     await waitFor( ( ) => {
       expect( inatjs.observations.search ).toHaveBeenCalled( );
+    } );
+  } );
+
+  describe( "detecting new remote observations", ( ) => {
+    it( "should flag new remote obs when a search result is not in realm", async ( ) => {
+      inatjs.observations.search.mockResolvedValue( makeResponse( [
+        factory( "RemoteObservation" ),
+      ] ) );
+      useStore.setState( { ...syncingStore, deleteQueue: [] } );
+      renderHook( ( ) => useSyncObservations( currentUserId ) );
+
+      await waitFor( ( ) => {
+        expect( useStore.getState( ).newRemoteObsSynced ).toBe( true );
+      } );
+    } );
+
+    it( "should not flag new remote obs when results are already in realm", async ( ) => {
+      const existingObservation = factory( "LocalObservation", {
+        _synced_at: faker.date.past( ),
+      } );
+      createObservations(
+        [existingObservation],
+        "write existingObservation, useSyncObservations test",
+      );
+      inatjs.observations.search.mockResolvedValue( makeResponse( [
+        factory( "RemoteObservation", { uuid: existingObservation.uuid } ),
+      ] ) );
+      useStore.setState( { ...syncingStore, deleteQueue: [] } );
+      renderHook( ( ) => useSyncObservations( currentUserId ) );
+
+      await waitFor( ( ) => {
+        expect( useStore.getState( ).syncingStatus ).toEqual( SYNC_PENDING );
+      } );
+      expect( useStore.getState( ).newRemoteObsSynced ).toBe( false );
     } );
   } );
 
