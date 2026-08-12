@@ -223,7 +223,7 @@ const MyObservationsResults = ( ) => {
       ? {
         skipSomeUploads: Observation
           .filterUnsyncedObservations( realm )
-          .filter( ( obs: Observation ) => obs.missingBasics() )
+          .filter( ( obs: Observation ) => obs.missingBasics( ) )
           .map( obs => obs.uuid ),
       }
       : { };
