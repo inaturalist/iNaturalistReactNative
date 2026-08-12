@@ -18,9 +18,9 @@ const handleShare = ( navigation, item?: SharedData | null ) => {
     return;
   }
 
-  const { mimeType, data } = item;
+  const { data } = item;
 
-  if ( !mimeType && !data ) {
+  if ( !data ) {
     // user hasn't shared any images
     return;
   }
