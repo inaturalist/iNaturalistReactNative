@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
+import { SPECIES_TAB } from "appConstants/tabs";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import React from "react";
@@ -22,6 +23,12 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   default: ( ) => ( {
     mutate: mockMutate,
   } ),
+} ) );
+
+const mockNavigateToExplore = jest.fn();
+jest.mock( "sharedHooks/useNavigateToExplore", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockNavigateToExplore,
 } ) );
 
 const mockNavigate = jest.fn();
@@ -51,6 +58,12 @@ jest.mock(
     return <MockName {...props}>{props.children}</MockName>;
   },
 );
+
+const pressExploreCount = label => {
+  renderComponent( <UserProfile /> );
+  fireEvent.press( screen.getByLabelText( t( label ) ) );
+  return mockNavigateToExplore.mock.calls.at( -1 )?.[0];
+};
 
 const renderHeaderRight = ( ) => {
   const lastCall = mockSetOptions.mock.calls.at( -1 );
@@ -106,6 +119,13 @@ describe( "UserProfile", () => {
 
     const projectsButton = await screen.findByText( /VIEW PROJECTS/ );
     expect( projectsButton ).toBeVisible( );
+  } );
+
+  test( "opens species observed by this user on the species tab", ( ) => {
+    const options = pressExploreCount( "See-species-observed-by-this-user-in-Explore" );
+
+    expect( options.user ).toEqual( expect.objectContaining( { id: mockUser.id } ) );
+    expect( options.tab ).toBe( SPECIES_TAB );
   } );
 
   describe( "edit button", () => {

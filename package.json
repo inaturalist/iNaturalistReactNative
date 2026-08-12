@@ -191,7 +191,6 @@
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "chalk": "^5.4.1",
-    "decompress": "^4.2.1",
     "detox": "^20.51.3",
     "dotenv": "^16.4.7",
     "eslint": "^8.57.1",

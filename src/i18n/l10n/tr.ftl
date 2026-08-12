@@ -130,7 +130,6 @@ Choose-a-time = Bir saat seçin
 CHOOSE-A-USERNAME = BİR KULLANICI ADI SEÇ
 Choose-taxon = Takson seç
 Choose-top-taxon = En önerilen taksonu seç
-Clear = Temizle
 Close = Kapat
 Close-permission-request-screen = İzin talebi ekranını kapat
 Close-search = Aramayı kapat
@@ -228,7 +227,6 @@ Delete-observation = Gözlemi sil
 DELETE-OBSERVATION--question = GÖZLEM SİLİNSİN Mİ?
 Delete-photo = Fotoğrafı sil
 Delete-sound = Sesi sil
-Deletes-entered-text = Girilen metni siler
 Deleting-x-of-y--observations =
     { $total ->
         [one] { $total } gözlem siliniyor
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] { $count } PROJEYE KATILDI
        *[other] { $count } PROJEYE KATILDI
     }
+JOURNAL-POST = GÜNLÜK GÖNDERİSİ
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] GÜNLÜK GÖNDERİSİ
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = YZ kamerasına gider
 Navigates-to-bulk-importer = Toplu içe aktarmaya gider
 Navigates-to-camera = Kameraya gider
 Navigates-to-explore = Keşfet'e gider
+Navigates-to-journal-post = Günlük gönderisine yönlendirir
 Navigates-to-log-in-screen = Giriş ekranına gider
 Navigates-to-main-menu = Ana menüye gider
 Navigates-to-notifications = Bildirimlere gider

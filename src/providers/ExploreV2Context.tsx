@@ -1,6 +1,7 @@
 import type { ApiProjectSummary, ApiTotalBounds, ApiUser } from "api/types";
 import type { SPECIES_TAB } from "appConstants/tabs";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import type { ExploreV2EntryParams } from "navigation/types";
 import type { TAXONOMIC_RANK } from "providers/ExploreContext";
 import {
   DATE_OBSERVED,
@@ -161,6 +162,17 @@ export const initialExploreV2State: ExploreV2State = {
   activeTab: OBSERVATIONS_TAB,
 };
 
+export function initialStateFromEntryParams(
+  params?: ExploreV2EntryParams | null,
+): ExploreV2State {
+  return {
+    ...initialExploreV2State,
+    subject: params?.subject || initialExploreV2State.subject,
+    location: params?.location || initialExploreV2State.location,
+    activeTab: params?.activeTab || initialExploreV2State.activeTab,
+  };
+}
+
 export function exploreV2Reducer(
   state: ExploreV2State,
   action: ExploreV2Action,
@@ -225,10 +237,11 @@ const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
 
 interface ExploreV2ProviderProps {
   children: React.ReactNode;
+  initialState: ExploreV2State;
 }
 
-export const ExploreV2Provider = ( { children }: ExploreV2ProviderProps ) => {
-  const [state, dispatch] = React.useReducer( exploreV2Reducer, initialExploreV2State );
+export const ExploreV2Provider = ( { children, initialState }: ExploreV2ProviderProps ) => {
+  const [state, dispatch] = React.useReducer( exploreV2Reducer, initialState );
 
   const value = React.useMemo(
     () => ( { state, dispatch } ),

@@ -133,7 +133,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ВЫБЕРИТЕ ИМЯ ПОЛЬЗОВАТЕЛЯ
 Choose-taxon = Выбрать таксон
 Choose-top-taxon = Выберите топ таксона
-Clear = Очистить
 Close = Закрыть
 Close-permission-request-screen = Закрытие экрана запроса разрешений
 Close-search = Закрыть поиск
@@ -231,7 +230,6 @@ Delete-observation = Удалить наблюдения
 DELETE-OBSERVATION--question = УДАЛИТЬ НАБЛЮДЕНИЕ?
 Delete-photo = Удалить фото
 Delete-sound = Удалить звук
-Deletes-entered-text = Удаляет введенный текст
 Deleting-x-of-y--observations =
     Удаление { $currentDeleteCount } { $total ->
         [one] of { $total }
@@ -446,6 +444,7 @@ JOINED-X-PROJECTS =
         [one] ПРИСОЕДИНИЛСЯ К ОДНОМУ { $count } ПРОЕКТУ
        *[other] ПРИСОЕДИНИЛСЯ К { $count } ПРОЕКТАМ
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] ЗАПИСЬ В ЖУРНАЛЕ
@@ -519,6 +518,7 @@ Navigates-to-AI-camera = Переход к камере с искусствен�
 Navigates-to-bulk-importer = Переход к оптовому импортеру
 Navigates-to-camera = Переход к камере
 Navigates-to-explore = Навигация для исследования
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Переходит к экрану входа в систему
 Navigates-to-main-menu = Переход к главному меню
 Navigates-to-notifications = Переход к уведомлениям

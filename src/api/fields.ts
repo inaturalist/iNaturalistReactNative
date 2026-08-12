@@ -70,3 +70,10 @@ export const POST_FOR_USER_FIELDS = {
     icon_url: true,
   },
 };
+
+export const ICONIC_TAXA_COUNTS_FIELDS = {
+  count: true,
+  taxon: {
+    name: true,
+  },
+};

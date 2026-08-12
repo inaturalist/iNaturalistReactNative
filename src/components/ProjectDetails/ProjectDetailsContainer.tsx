@@ -4,7 +4,6 @@ import {
   PROJECT_DETAIL_FIELDS,
 } from "api/fields";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
-import fetchPlace from "api/places";
 import {
   fetchMembership,
   fetchProjectPostsCount,
@@ -13,7 +12,7 @@ import {
   leaveProject,
 } from "api/projects";
 import type {
-  ApiObservationsSearchResponse, ApiPlace, ApiProject, ApiResponse,
+  ApiObservationsSearchResponse, ApiProject, ApiResponse,
 } from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
@@ -41,15 +40,6 @@ const ProjectDetailsContainer = ( ) => {
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
       fields: PROJECT_DETAIL_FIELDS,
-    }, optsWithAuth ),
-  );
-
-  const fetchProjectPlaceQueryKey = ["projectPlace", "fetchPlace", project?.place_id];
-
-  const { data: projectPlace } = useAuthenticatedQuery<ApiPlace>(
-    fetchProjectPlaceQueryKey,
-    optsWithAuth => fetchPlace( project?.place_id, {
-      fields: "all",
     }, optsWithAuth ),
   );
 
@@ -172,7 +162,6 @@ const ProjectDetailsContainer = ( ) => {
       species_count: speciesCounts?.total_results,
       current_user_is_member: currentMembership === 1,
       current_user_observations_count: usersObservations?.total_results,
-      place: projectPlace,
     };
   }, [
     project,
@@ -181,7 +170,6 @@ const ProjectDetailsContainer = ( ) => {
     speciesCounts?.total_results,
     currentMembership,
     usersObservations?.total_results,
-    projectPlace,
   ] );
 
   return (

@@ -130,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ZADEJTE UŽIVATELSKÉ JMÉNO
 Choose-taxon = Vybrat taxon
 Choose-top-taxon = Vybrat nejlepší taxon
-Clear = Vymazat
 Close = Zavřít
 Close-permission-request-screen = Zavřít obrazovku s žádostí o oprávnění
 Close-search = Zavřít hledání
@@ -228,7 +227,6 @@ Delete-observation = Odstranit pozorování
 DELETE-OBSERVATION--question = SMAZAT POZOROVÁNÍ?
 Delete-photo = Smazat fotografii
 Delete-sound = Smazat zvuk
-Deletes-entered-text = Odstraní vložený text
 Deleting-x-of-y--observations =
     Smazání { $currentDeleteCount } { $total ->
         [one] z { $total }
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] PŘIPOJEN K { $count } PROJEKTU
        *[other] PŘIPOJEN K { $count } PROJEKTŮM
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] ČLÁNEK
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Přejít do AI kamery
 Navigates-to-bulk-importer = Přejděte na dávkový import
 Navigates-to-camera = Přejít do fotoaparátu
 Navigates-to-explore = Přejděte na průzkum
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Přejděte na oznamování
