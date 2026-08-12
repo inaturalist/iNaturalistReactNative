@@ -83,6 +83,7 @@ const MyObservationsResults = ( ) => {
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
+  const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
   const uploadStatus = useStore( state => state.uploadStatus );
   const justFinishedSignup: boolean = useStore( state => state.layout.justFinishedSignup );
@@ -157,10 +158,24 @@ const MyObservationsResults = ( ) => {
     writeLayoutToStorage,
   ] );
 
+  // Scroll to the top when a sync pulls in observations we've never seen locally
+  const scrollToTopForNewRemoteObs = useCallback( ( ) => {
+    if ( useServerOrder ) { return; }
+    listRef.current?.scrollToOffset( { offset: 0, animated: true } );
+    setMyObsOffset( 0 );
+    // Otherwise onListLayout could restore the pre-ObsEdit offset and undo the scroll
+    resetMyObsOffsetToRestore( );
+  }, [
+    resetMyObsOffsetToRestore,
+    setMyObsOffset,
+    useServerOrder,
+  ] );
+
   const { startUploadObservations } = useUploadObservations( canUpload );
   const { syncManually } = useSyncObservations(
     currentUserId,
     startUploadObservations,
+    scrollToTopForNewRemoteObs,
   );
 
   const { refetch: refetchObservationsUpdates } = useObservationsUpdates( !!currentUser );
