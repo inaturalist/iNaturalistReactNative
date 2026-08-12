@@ -35,6 +35,7 @@ const useSyncObservations = (
   const setSyncingStatus = useStore( state => state.setSyncingStatus );
   const completeSync = useStore( state => state.completeSync );
   const resetSyncToolbar = useStore( state => state.resetSyncToolbar );
+  const setNewRemoteObsSynced = useStore( state => state.setNewRemoteObsSynced );
   const removeFromDeleteQueue = useStore( state => state.removeFromDeleteQueue );
   const autoSyncAbortController = useStore( storeState => storeState.autoSyncAbortController );
   const [currentDeletionUuid, setCurrentDeletionUuid] = useState( null );
@@ -124,7 +125,14 @@ const useSyncObservations = (
 
   const fetchRemoteObservations = useCallback( async ( ) => {
     try {
-      await syncRemoteObservations( realm, currentUserId, deletionsCompletedAt );
+      const hasNewObservations = await syncRemoteObservations(
+        realm,
+        currentUserId,
+        deletionsCompletedAt,
+      );
+      if ( hasNewObservations ) {
+        setNewRemoteObsSynced( );
+      }
       return true;
     } catch ( syncRemoteError ) {
       if (
@@ -139,6 +147,7 @@ const useSyncObservations = (
     realm,
     currentUserId,
     deletionsCompletedAt,
+    setNewRemoteObsSynced,
   ] );
 
   const signalAborted = autoSyncAbortController && autoSyncAbortController.signal.aborted;

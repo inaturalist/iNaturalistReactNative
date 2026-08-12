@@ -19,6 +19,8 @@ interface SyncObservationsSlice {
   deleteQueue: string[];
   deletionsCompletedAt: Date | null;
   initialNumDeletionsInQueue: number;
+  // True when a sync has pulled in observations we'd never seen locally
+  newRemoteObsSynced: boolean;
   syncingStatus: SyncingStatus;
 }
 
@@ -29,6 +31,7 @@ const DEFAULT_STATE: SyncObservationsSlice = {
   deleteQueue: [],
   deletionsCompletedAt: null,
   initialNumDeletionsInQueue: 0,
+  newRemoteObsSynced: false,
   syncingStatus: SYNC_PENDING,
 };
 
@@ -72,6 +75,12 @@ const createSyncObservationsSlice: StateCreator<SyncObservationsSlice> = ( set, 
   } ) ),
   setSyncingStatus: ( syncingStatus: SyncingStatus ) => set( ( ) => ( {
     syncingStatus,
+  } ) ),
+  setNewRemoteObsSynced: ( ) => set( ( ) => ( {
+    newRemoteObsSynced: true,
+  } ) ),
+  clearNewRemoteObsSynced: ( ) => set( ( ) => ( {
+    newRemoteObsSynced: false,
   } ) ),
   resetSyncToolbar: ( ) => set( ( ) => ( {
     currentDeleteCount: 1,
