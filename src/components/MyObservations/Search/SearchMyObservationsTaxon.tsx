@@ -96,7 +96,7 @@ const SearchMyObservationsTaxon = ( ) => {
         onClose={closeScreen}
         headerText={t( "SEARCH" )}
         onReset={resetSearch}
-        resetDisabled={!searchedTaxon}
+        resetDisabled={!searchedTaxon && taxonQuery === ""}
         testID="SearchMyObservationsTaxon.close"
       />
       <TaxonSearch
