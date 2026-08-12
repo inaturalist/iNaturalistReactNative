@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import React, { useCallback } from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import type { SharedData } from "sharedHooks/useShare";
 import useShare from "sharedHooks/useShare";
 
 import AppStateListener from "./AppStateListener";
@@ -10,12 +11,7 @@ import useLinking from "./hooks/useLinking";
 import NetworkService from "./NetworkService";
 import StartupService from "./StartupService";
 
-interface SharedItem {
-  mimeType: string;
-  data: string | string[];
-}
-
-const handleShare = ( navigation, item: ?SharedItem ) => {
+const handleShare = ( navigation, item?: SharedData | null ) => {
   if ( !item ) {
     // user hasn't shared any items
     return;
@@ -49,7 +45,7 @@ const App = ( { children }: Props ) => {
   // attempting to make sure that navigation is only called once
   // for performance reasons
   const onShare = useCallback(
-    item => handleShare( navigation, item ),
+    ( item?: SharedData | null ) => handleShare( navigation, item ),
     [navigation],
   );
 
