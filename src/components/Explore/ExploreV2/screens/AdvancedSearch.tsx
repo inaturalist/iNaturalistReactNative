@@ -150,10 +150,20 @@ const AdvancedSearch = ( ) => {
       case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
         dispatchV2( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
         break;
+      case EXPLORE_V2_PLACE_MODE.MAP_AREA:
+        dispatchV2( {
+          type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+          bounds: location.bounds,
+        } );
+        break;
       case EXPLORE_V2_PLACE_MODE.NEARBY:
-      default:
         dispatchV2( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } );
         break;
+      default: {
+        // Exhaustiveness check: ts fails if a new placeMode is added without a case.
+        const _exhaustive: never = location;
+        break;
+      }
     }
     dispatchV2( { type: EXPLORE_V2_ACTION.SET_SORT, sortBy } );
     dispatchV2( { type: EXPLORE_V2_ACTION.SET_FILTERS, filters } );
@@ -205,9 +215,15 @@ const AdvancedSearch = ( ) => {
         return t( "Worldwide" );
       case EXPLORE_V2_PLACE_MODE.PLACE:
         return location.place.display_name ?? "";
+      case EXPLORE_V2_PLACE_MODE.MAP_AREA:
+        return t( "Map-Area" );
       case EXPLORE_V2_PLACE_MODE.NEARBY:
-      default:
         return t( "Nearby" );
+      default: {
+        // Exhaustiveness check: ts fails if a new placeMode is added without a case.
+        const _exhaustive: never = location;
+        return _exhaustive;
+      }
     }
   };
 
