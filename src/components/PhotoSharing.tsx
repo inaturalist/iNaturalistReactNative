@@ -8,10 +8,11 @@ import React, {
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import { useLayoutPrefs } from "sharedHooks";
+import type { SharedData } from "sharedHooks/useShare";
 import useStore from "stores/useStore";
 
 const PhotoSharing = ( ) => {
-  const previousItem = useRef( null );
+  const previousItem = useRef<null | SharedData>( null );
   const navigation = useNavigation<
     NoBottomTabStackScreenProps<"PhotoSharing">["navigation"] &
     TabStackScreenProps<"PhotoSharing">["navigation"]
