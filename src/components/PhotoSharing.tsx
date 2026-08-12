@@ -11,6 +11,8 @@ import { useLayoutPrefs } from "sharedHooks";
 import type { SharedData } from "sharedHooks/useShare";
 import useStore from "stores/useStore";
 
+interface SharedPhoto { image: { uri: string }}
+
 const PhotoSharing = ( ) => {
   const previousItem = useRef<null | SharedData>( null );
   const navigation = useNavigation<
@@ -50,7 +52,7 @@ const PhotoSharing = ( ) => {
     } ),
   ), [navigation] );
 
-  const createObservationAndNavigate = useCallback( async photoUris => {
+  const createObservationAndNavigate = useCallback( async ( photoUris: SharedPhoto[] ) => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
       prepareObsEdit( newObservation );
