@@ -22,8 +22,6 @@ const PhotoSharing = ( ) => {
     TabStackScreenProps<"PhotoSharing">["route"]
   >( );
   const { item } = params;
-  // TODO: seems expected here but not actually defined in App.js the only start point
-  const sharedText = item.extraData?.userInput;
   const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
   const prepareObsEdit = useStore( state => state.prepareObsEdit );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
@@ -55,7 +53,6 @@ const PhotoSharing = ( ) => {
   const createObservationAndNavigate = useCallback( async photoUris => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
-      newObservation.description = sharedText;
       prepareObsEdit( newObservation );
 
       return resetNavigator( isDefaultMode
@@ -68,7 +65,7 @@ const PhotoSharing = ( ) => {
       );
       return null;
     }
-  }, [sharedText, prepareObsEdit, isDefaultMode, resetNavigator, screenAfterPhotoEvidence] );
+  }, [prepareObsEdit, isDefaultMode, resetNavigator, screenAfterPhotoEvidence] );
 
   useEffect( ( ) => {
     const { data } = item;
@@ -81,7 +78,6 @@ const PhotoSharing = ( ) => {
     // navigating through the AddObsBottomSheet
     resetObservationFlowSlice( );
 
-    // TODO: fix TS of the share item
     const photoUris = data
       .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
       .map( x => ( { image: { uri: x.data } } ) );
@@ -90,13 +86,11 @@ const PhotoSharing = ( ) => {
       createObservationAndNavigate( photoUris );
     } else {
       // Go to GroupPhotos screen
-      const firstObservationDefaults = { description: sharedText };
       setPhotoImporterState( {
         photoLibraryUris: photoUris.map( x => x.image.uri ),
         groupedPhotos: photoUris.map( photo => ( {
           photos: [photo],
         } ) ),
-        firstObservationDefaults,
       } );
       resetNavigator( "GroupPhotos" );
     }
@@ -106,7 +100,6 @@ const PhotoSharing = ( ) => {
     navigation,
     resetObservationFlowSlice,
     setPhotoImporterState,
-    sharedText,
     resetNavigator,
   ] );
 
