@@ -31,16 +31,19 @@ export interface AdvancedSearchDraft {
   filters: ExploreV2Filters;
 }
 
-export const draftFromV2State = ( v2: ExploreV2State ): AdvancedSearchDraft => ( {
-  // Only a taxon subject is editable here (the taxon section); user/project are
-  // edited as filters
-  subject: v2.subject?.type === "taxon"
-    ? v2.subject
-    : null,
-  location: v2.location,
-  sortBy: v2.sortBy,
-  filters: v2.filters,
-} );
+export const draftFromV2State = ( v2: ExploreV2State ): AdvancedSearchDraft => {
+  const subjectIsUnknown = v2.subject?.type === "unknown";
+  return {
+    subject: subjectIsUnknown
+      ? null
+      : v2.subject,
+    location: v2.location,
+    sortBy: v2.sortBy,
+    filters: subjectIsUnknown
+      ? { ...v2.filters, iconic_taxa: ["unknown"] }
+      : v2.filters,
+  };
+};
 
 export type SubjectTaxon = Extract<ExploreV2Subject, { type: "taxon" }>["taxon"];
 
@@ -80,6 +83,17 @@ const withFilters = (
   ...draft,
   filters: { ...draft.filters, ...patch },
 } );
+
+// Editing the user or project section supersedes a carried subject of that
+// kind, so the committed subject doesn't contradict the filter.
+const withoutSubjectOfType = (
+  draft: AdvancedSearchDraft,
+  type: ExploreV2Subject["type"],
+): ExploreV2Subject | null => (
+  draft.subject?.type === type
+    ? null
+    : draft.subject
+);
 
 export const advancedSearchReducer = (
   draft: AdvancedSearchDraft,
@@ -121,11 +135,20 @@ export const advancedSearchReducer = (
     case "SET_SORT":
       return { ...draft, sortBy: action.sortBy };
     case "SET_USER":
-      return withFilters( draft, { user: action.user, excludeUser: null } );
+      return {
+        ...withFilters( draft, { user: action.user, excludeUser: null } ),
+        subject: withoutSubjectOfType( draft, "user" ),
+      };
     case "SET_EXCLUDE_USER":
-      return withFilters( draft, { excludeUser: action.user, user: null } );
+      return {
+        ...withFilters( draft, { excludeUser: action.user, user: null } ),
+        subject: withoutSubjectOfType( draft, "user" ),
+      };
     case "SET_PROJECT":
-      return withFilters( draft, { project: action.project } );
+      return {
+        ...withFilters( draft, { project: action.project } ),
+        subject: withoutSubjectOfType( draft, "project" ),
+      };
     case "TOGGLE_RESEARCH_GRADE":
       return withFilters( draft, { researchGrade: !draft.filters.researchGrade } );
     case "TOGGLE_NEEDS_ID":

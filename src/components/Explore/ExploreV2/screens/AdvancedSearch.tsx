@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiPlace, ApiProjectSummary } from "api/types";
+import type { ApiPlace, ApiProjectSummary, ApiUser } from "api/types";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
 import DateFilterSection
   from "components/Explore/ExploreV2/components/DateFilterSection";
@@ -191,7 +191,13 @@ const AdvancedSearch = ( ) => {
     ? subject.taxon
     : null;
 
-  const displayUser = user || excludeUser;
+  const subjectUser: ApiUser | null = subject?.type === "user"
+    ? subject.user
+    : null;
+  const displayUser = user || excludeUser || subjectUser;
+  const displayUserCountText = displayUser?.observations_count === undefined
+    ? ""
+    : t( "X-Observations", { count: displayUser.observations_count } );
 
   const locationText = () => {
     switch ( location.placeMode ) {
@@ -424,7 +430,7 @@ const AdvancedSearch = ( ) => {
                   >
                     <UserListItem
                       item={{ user: displayUser }}
-                      countText={t( "X-Observations", { count: displayUser.observations_count } )}
+                      countText={displayUserCountText}
                       pressable={false}
                     />
                   </SelectedFilterRow>
