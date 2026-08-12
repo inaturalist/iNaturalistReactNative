@@ -4,10 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import type { Node } from "react";
 import React, { useCallback } from "react";
-import {
-  useCurrentUser,
-  useShare,
-} from "sharedHooks";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import useShare from "sharedHooks/useShare";
 
 import AppStateListener from "./AppStateListener";
 import useDeferredStartup from "./hooks/useDeferredStartup";
