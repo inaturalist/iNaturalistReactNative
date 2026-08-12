@@ -88,7 +88,6 @@ attribution-cc-by-nd = niektoré vyhradené práva (CC BY-ND)
 attribution-cc-by-sa = niektoré vyhradené práva (CC BY-SA)
 August = August
 BACK-TO-LOGIN = SPÄŤ NA PRIHLÁSENIE
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Dávkové nahrávanie
 By-exiting-changes-not-saved = Po ukončení sa zmeny vášho pozorovania neuložia.
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ZADAJTE UŽÍVATEĽSKÉ MENO
 Choose-taxon = Vybrať taxón
 Choose-top-taxon = Vybrať najlepšie taxón
-Clear = Vymazať
 Close = Zatvoriť
 Close-permission-request-screen = Zavrieť obrazovku so žiadosťou o oprávnenie
 Close-search = Zavrieť hľadanie
@@ -229,7 +227,6 @@ Delete-observation = Vymazať pozorovanie
 DELETE-OBSERVATION--question = ZMAZAŤ POZOROVANIE?
 Delete-photo = Zmazať fotku
 Delete-sound = Zmazať zvuk
-Deletes-entered-text = Odstráni vložený text
 Deleting-x-of-y--observations =
     Odstránenie { $currentDeleteCount } { $total ->
         [one] z { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = VYLEPŠITE TIETO NÁVRHY POU�
 improving--identification = Zlepšujúce
 INATURALIST-ACCOUNT-SETTINGS = NASTAVENIE ÚČTU INATURALISŤ
 iNaturalist-AI-Camera = AI Fotoaparát iNaturalist
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist môže použiť vašu polohu na to, aby vám poskytol lepšie návrhy identifikácie. Používame ich tiež na nájdenie druhov videných v okolí. Zdieľanie vašej polohy uľahčuje vytváranie užitočných dát pre vedu.
 INATURALIST-COMMUNITY = KOMUNITA INATURALIST
 INATURALIST-FORUM = FÓRUM INATURALIST
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] SLEDUJE JEDEN PROJEKT
        *[other] SLEDUJE { $count } PROJEKTOV
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] PRÍSPEVOK ČASOPISU
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Prejsť do AI kamery
 Navigates-to-bulk-importer = Prejdite na dávkový import
 Navigates-to-camera = Prejsť do fotoaparátu
 Navigates-to-explore = Prejdite na prieskum
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Prejdite na oznamovanie
@@ -771,6 +771,7 @@ Scientific-Name = Vedecký názov
 Scientific-Name-Common-Name = Vedecký názov (všeobecný názov)
 SEARCH = HĽADAŤ
 Search = Hľadať
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = Hľadať projekt
 SEARCH-FOR-A-TAXON = HĽADAŤ TAXON

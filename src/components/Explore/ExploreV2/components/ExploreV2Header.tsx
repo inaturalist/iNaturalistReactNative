@@ -49,6 +49,8 @@ function locationLabel( location: ExploreV2LocationState, t: TFunction ): string
       return t( "Nearby" );
     case EXPLORE_V2_PLACE_MODE.PLACE:
       return location.place.display_name || "";
+    case EXPLORE_V2_PLACE_MODE.MAP_AREA:
+      return t( "Map-Area" );
     default:
       return "";
   }

@@ -3,7 +3,7 @@ import ExploreV2SpeciesGridItem
   from "components/Explore/ExploreV2/components/ExploreV2SpeciesGridItem";
 import { Text } from "components/styledComponents";
 import initI18next from "i18n/initI18next";
-import { ExploreV2Provider, useExploreV2 } from "providers/ExploreV2Context";
+import { ExploreV2Provider, initialExploreV2State, useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
@@ -50,7 +50,7 @@ const StateProbe = () => {
 const actor = userEvent.setup( );
 
 const renderGridItem = ( props = {} ) => renderComponent(
-  <ExploreV2Provider>
+  <ExploreV2Provider initialState={initialExploreV2State}>
     <ExploreV2SpeciesGridItem taxon={mockTaxon} {...props} />
     <StateProbe />
   </ExploreV2Provider>,

@@ -3,13 +3,9 @@ import ObservationFieldInput from "components/AddToProjects/ObservationFieldInpu
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
 import { Pressable as MockPressable, View as MockView } from "react-native";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
-
-import {
-  getObservationFieldValues,
-  resetStore,
-} from "./helpers/setupAddToProjects";
 
 jest.mock( "components/SharedComponents/Sheets/PickerSheet", () => function ( { confirm } ) {
   return (
@@ -68,8 +64,10 @@ jest.mock( "components/SharedComponents/DisplayTaxon", () => function () {
 const actor = userEvent.setup( );
 const iconGlyph = name => String.fromCharCode( glyphmap[name] );
 
+const initialStoreState = useStore.getState( );
+
 const expectStoredOfv = ( value, obsFieldId ) => {
-  expect( getObservationFieldValues( ) ).toEqual( [{
+  expect( useStore.getState( ).currentObservation?.observationFieldValues ).toEqual( [{
     obsFieldId,
     uuid: expect.any( String ),
     value,
@@ -79,8 +77,19 @@ const expectStoredOfv = ( value, obsFieldId ) => {
 };
 
 describe( "ObservationFieldInput", ( ) => {
+  beforeAll( async () => {
+    useStore.setState( initialStoreState, true );
+  } );
+
   beforeEach( ( ) => {
-    resetStore( );
+    useStore.setState( {
+      currentObservation: {
+        ...factory( "LocalObservation" ),
+        observationFieldValues: [],
+        projectObservationUuidsToDelete: [],
+        projectObservations: [],
+      },
+    } );
   } );
 
   it( "renders the field name", ( ) => {

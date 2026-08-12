@@ -26,9 +26,9 @@ describe( "SelectedFilterRow", ( ) => {
   it( "renders its children next to edit and remove controls", ( ) => {
     renderRow( );
 
-    expect( screen.getByText( CHILD_LABEL ) ).toBeTruthy( );
-    expect( screen.getByLabelText( "Change taxon" ) ).toBeTruthy( );
-    expect( screen.getByLabelText( "Remove taxon filter" ) ).toBeTruthy( );
+    expect( screen.getByText( CHILD_LABEL ) ).toBeVisible( );
+    expect( screen.getByLabelText( "Change taxon" ) ).toBeVisible( );
+    expect( screen.getByLabelText( "Remove taxon filter" ) ).toBeVisible( );
   } );
 
   it( "calls onEdit when the row is tapped", async ( ) => {

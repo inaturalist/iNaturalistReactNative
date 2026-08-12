@@ -16,10 +16,8 @@ const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
 
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
 
-  const handleBackButtonPress = useCallback( ( ) => {
-    if ( shouldShowDiscardSheet ) {
-      setShowDiscardSheet( true );
-    } else if ( params?.addEvidence ) {
+  const navigateBackOrExitFlow = useCallback( ( ) => {
+    if ( params?.addEvidence ) {
       navigation.navigate( "ObsEdit" );
     } else {
       exitObservationFlow( );
@@ -28,6 +26,16 @@ const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
     exitObservationFlow,
     navigation,
     params?.addEvidence,
+  ] );
+
+  const handleBackButtonPress = useCallback( ( ) => {
+    if ( shouldShowDiscardSheet ) {
+      setShowDiscardSheet( true );
+    } else {
+      navigateBackOrExitFlow( );
+    }
+  }, [
+    navigateBackOrExitFlow,
     setShowDiscardSheet,
     shouldShowDiscardSheet,
   ] );
@@ -50,6 +58,7 @@ const useBackPress = ( shouldShowDiscardSheet: boolean ) => {
 
   return {
     handleBackButtonPress,
+    navigateBackOrExitFlow,
     setShowDiscardSheet,
     showDiscardSheet,
   };

@@ -88,7 +88,6 @@ attribution-cc-by-nd = bazı hakları saklıdır (CC BY-ND)
 attribution-cc-by-sa = bazı hakları saklıdır (CC BY-SA)
 August = Ağustos
 BACK-TO-LOGIN = GİRİŞE GERİ DÖN
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Toplu içe aktarma
 By-exiting-changes-not-saved = Çıktığınızda, gözleminizdeki değişiklikler kaydedilmeyecektir.
@@ -131,7 +130,6 @@ Choose-a-time = Bir saat seçin
 CHOOSE-A-USERNAME = BİR KULLANICI ADI SEÇ
 Choose-taxon = Takson seç
 Choose-top-taxon = En önerilen taksonu seç
-Clear = Temizle
 Close = Kapat
 Close-permission-request-screen = İzin talebi ekranını kapat
 Close-search = Aramayı kapat
@@ -229,7 +227,6 @@ Delete-observation = Gözlemi sil
 DELETE-OBSERVATION--question = GÖZLEM SİLİNSİN Mİ?
 Delete-photo = Fotoğrafı sil
 Delete-sound = Sesi sil
-Deletes-entered-text = Girilen metni siler
 Deleting-x-of-y--observations =
     { $total ->
         [one] { $total } gözlem siliniyor
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = KONUMUNUZU KULLANARAK BU ÖNE
 improving--identification = Geliştirici
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST HESAP AYARLARI
 iNaturalist-AI-Camera = iNaturalist YZ Kamerası
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist, size daha iyi tanımlama önerileri sunmak için konumunuzu kullanabilir. Ayrıca yakınlarda görülen türleri bulmanıza yardımcı olmak için de kullanıyoruz. Konumunuzu paylaşmak, bilim için yararlı veriler oluşturmayı kolaylaştırır.
 INATURALIST-COMMUNITY = INATURALIST TOPLULUĞU
 INATURALIST-FORUM = INATURALIST FORUMU
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] { $count } PROJEYE KATILDI
        *[other] { $count } PROJEYE KATILDI
     }
+JOURNAL-POST = GÜNLÜK GÖNDERİSİ
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] GÜNLÜK GÖNDERİSİ
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = YZ kamerasına gider
 Navigates-to-bulk-importer = Toplu içe aktarmaya gider
 Navigates-to-camera = Kameraya gider
 Navigates-to-explore = Keşfet'e gider
+Navigates-to-journal-post = Günlük gönderisine yönlendirir
 Navigates-to-log-in-screen = Giriş ekranına gider
 Navigates-to-main-menu = Ana menüye gider
 Navigates-to-notifications = Bildirimlere gider
@@ -771,6 +771,7 @@ Scientific-Name = Bilimsel Ad
 Scientific-Name-Common-Name = Bilimsel Ad (Yaygın Ad)
 SEARCH = ARAMA
 Search = Arama Yap
+SEARCH--button = ARA
 Search-for-a-location = Bir konum ara
 Search-for-a-project = Bir proje ara
 SEARCH-FOR-A-TAXON = BİR TAKSON ARA

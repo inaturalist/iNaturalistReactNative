@@ -88,7 +88,6 @@ attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = Augusts
 BACK-TO-LOGIN = BACK TO LOGIN
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Bulk importer
 By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
 Choose-taxon = Choose taxon
 Choose-top-taxon = Choose top taxon
-Clear = Clear
 Close = Aizvērt
 Close-permission-request-screen = Close permission request screen
 Close-search = Close search
@@ -229,7 +227,6 @@ Delete-observation = Dzēst novērojumu
 DELETE-OBSERVATION--question = DELETE OBSERVATION?
 Delete-photo = Dzēst fotogrāfiju
 Delete-sound = Delete sound
-Deletes-entered-text = Deletes entered text
 Deleting-x-of-y--observations =
     Deleting { $currentDeleteCount } { $total ->
         [one] of { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY 
 improving--identification = Tiek precizēta
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist can use your location to give you better identification suggestions. We also use it to help you find species seen nearby. Sharing your location makes it easier to create useful data for science.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] JOINED { $count } PROJECT
        *[other] JOINED { $count } PROJECTS
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] JOURNAL POST
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Navigates to notifications
@@ -771,6 +771,7 @@ Scientific-Name = Zinātniskais nosaukums
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = SEARCH
 Search = Meklēt
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = Search for a project
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON

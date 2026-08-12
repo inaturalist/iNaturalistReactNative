@@ -16,6 +16,7 @@
 		1956B4912A7C3C1E00BBBDE4 /* link-files-for-build-modes.sh in Resources */ = {isa = PBXBuildFile; fileRef = 1956B4902A7C3C1E00BBBDE4 /* link-files-for-build-modes.sh */; };
 		197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 197A169B2A7C2567001A03DC /* cvmodel.mlmodel */; };
 		197A169E2A7C2567001A03DC /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 197A169C2A7C2567001A03DC /* taxonomy.json */; };
+		203477B66C0047DC8B0AEE7F /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94A8AC86075E41D6B3C0E3E9 /* INatIcon.ttf */; };
 		3DE2C0F71E184822B561A1ED /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A54425709BB4844AFBC680D /* Lato-Italic.ttf */; };
 		54EB1EFEC1F74152902EED02 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C2D97D72EED451C887998A8 /* Lato-BoldItalic.ttf */; };
 		716F7BDCD8B943479083CFAC /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 26972DBD235E42B68E3D5DBC /* Settings.bundle */; };
@@ -32,8 +33,8 @@
 		8FE171A22E97F0780003E759 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8FE171A12E97F0780003E759 /* GoogleService-Info.plist */; };
 		8FF73F732F69C8CE007CF4F0 /* AutoContinueShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF73F722F69C8CE007CF4F0 /* AutoContinueShareViewController.swift */; };
 		AE4DC81B3A87484CB3FD6750 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B0AEEF6CA584BCF9880EB35 /* Lato-Regular.ttf */; };
+		C237572DBA1C4CA0B77F898C /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94A8AC86075E41D6B3C0E3E9 /* INatIcon.ttf */; };
 		E5DFC1C6FBFA45739CE91C69 /* Lato-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69DF855D92EA4ADFB73B47F1 /* Lato-MediumItalic.ttf */; };
-		D224B9770DAC4D9098E09BFF /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54EEE7CC3E4645E4B9CE1AA8 /* INatIcon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,9 +98,9 @@
 		8F346E492CF6912700CED7B4 /* geomodel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = geomodel.mlmodel; sourceTree = "<group>"; };
 		8FE171A12E97F0780003E759 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8FF73F722F69C8CE007CF4F0 /* AutoContinueShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AutoContinueShareViewController.swift; path = "../node_modules/react-native-share-menu/ios/AutoContinueShareViewController.swift"; sourceTree = SOURCE_ROOT; };
+		94A8AC86075E41D6B3C0E3E9 /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F15C1390617A309CE0A194B2 /* Pods_iNaturalistReactNative_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iNaturalistReactNative_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		54EEE7CC3E4645E4B9CE1AA8 /* INatIcon.ttf */ = {isa = PBXFileReference; name = "INatIcon.ttf"; path = "../assets/fonts/INatIcon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,7 +230,7 @@
 				3A9BAF07FCF24F668E2EF5AB /* Lato-Medium.ttf */,
 				69DF855D92EA4ADFB73B47F1 /* Lato-MediumItalic.ttf */,
 				4B0AEEF6CA584BCF9880EB35 /* Lato-Regular.ttf */,
-				54EEE7CC3E4645E4B9CE1AA8 /* INatIcon.ttf */,
+				94A8AC86075E41D6B3C0E3E9 /* INatIcon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -338,7 +339,7 @@
 				E5DFC1C6FBFA45739CE91C69 /* Lato-MediumItalic.ttf in Resources */,
 				AE4DC81B3A87484CB3FD6750 /* Lato-Regular.ttf in Resources */,
 				716F7BDCD8B943479083CFAC /* Settings.bundle in Resources */,
-				D224B9770DAC4D9098E09BFF /* INatIcon.ttf in Resources */,
+				C237572DBA1C4CA0B77F898C /* INatIcon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +350,7 @@
 				8F1AC6792BC1B610002F994B /* PrivacyInfo.xcprivacy in Resources */,
 				8B65ED3129F575C10054CCEF /* MainInterface.storyboard in Resources */,
 				191A91132CD1916800ECC774 /* InfoPlist.xcstrings in Resources */,
+				203477B66C0047DC8B0AEE7F /* INatIcon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,7 +550,7 @@
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNative.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CURRENT_PROJECT_VERSION = 224;
+				CURRENT_PROJECT_VERSION = 225;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -674,7 +676,7 @@
 				CODE_SIGN_ENTITLEMENTS = iNaturalistReactNative/iNaturalistReactNativeRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CURRENT_PROJECT_VERSION = 224;
+				CURRENT_PROJECT_VERSION = 225;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				HEADER_SEARCH_PATHS = (
@@ -990,7 +992,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "iNaturalistReactNative-ShareExtension/iNaturalistReactNative-ShareExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 224;
+				CURRENT_PROJECT_VERSION = 225;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
@@ -1035,7 +1037,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 224;
+				CURRENT_PROJECT_VERSION = 225;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;

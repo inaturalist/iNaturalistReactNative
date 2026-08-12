@@ -1,9 +1,11 @@
+import { SPECIES_TAB } from "appConstants/tabs";
 import {
   defaultExploreV2Filters,
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
   exploreV2Reducer,
   initialExploreV2State,
+  initialStateFromEntryParams,
 } from "providers/ExploreV2Context";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
@@ -15,6 +17,32 @@ describe( "initialExploreV2State", ( ) => {
     expect( initialExploreV2State.sortBy ).toBe( OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST );
     expect( initialExploreV2State.speciesSortBy ).toBe( SPECIES_SORT.COUNT_DESC );
     expect( initialExploreV2State.filters ).toEqual( defaultExploreV2Filters );
+  } );
+} );
+
+describe( "initialStateFromEntryParams", ( ) => {
+  it( "returns the initial state without params, or with a null subject", ( ) => {
+    expect( initialStateFromEntryParams( undefined ) ).toEqual( initialExploreV2State );
+    expect( initialStateFromEntryParams( {} ) ).toEqual( initialExploreV2State );
+    expect( initialStateFromEntryParams( { subject: null } ).subject ).toBeNull( );
+  } );
+
+  it( "seeds subject, location, and tab from an entry point, leaving sort and filters", ( ) => {
+    const subject = { type: "taxon", taxon: { id: 12345, name: "Danaus plexippus" } };
+    const state = initialStateFromEntryParams( {
+      subject,
+      location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: { id: 55 } },
+      activeTab: SPECIES_TAB,
+    } );
+    expect( state.subject ).toEqual( subject );
+    expect( state.location ).toEqual( {
+      placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+      place: { id: 55 },
+    } );
+    expect( state.activeTab ).toBe( SPECIES_TAB );
+    expect( state.sortBy ).toBe( initialExploreV2State.sortBy );
+    expect( state.speciesSortBy ).toBe( initialExploreV2State.speciesSortBy );
+    expect( state.filters ).toEqual( defaultExploreV2Filters );
   } );
 } );
 
@@ -121,6 +149,43 @@ describe( "exploreV2Reducer", ( ) => {
       } );
       expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.PLACE );
       expect( next.location.place ).toEqual( place );
+    } );
+
+    it( "SET_LOCATION_MAP_AREA stores the bounding box, dropping the prior place", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+          place: { id: 5, display_name: "Oakland" },
+        },
+      };
+      const bounds = {
+        swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+      };
+      const next = exploreV2Reducer( state, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+        bounds,
+      } );
+      expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.MAP_AREA );
+      expect( next.location.bounds ).toEqual( bounds );
+      expect( next.location.place ).toBeUndefined( );
+    } );
+
+    it( "SET_LOCATION_WORLDWIDE drops a prior map area's bounds", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+          bounds: {
+            swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+          },
+        },
+      };
+      const next = exploreV2Reducer( state, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE,
+      } );
+      expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.WORLDWIDE );
+      expect( next.location.bounds ).toBeUndefined( );
     } );
 
     it( "preserves subject, sorts, and filters when changing location", ( ) => {

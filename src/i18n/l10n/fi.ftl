@@ -91,7 +91,6 @@ attribution-cc-by-nd = osa oikeuksista pidätetään (CC BY-ND)
 attribution-cc-by-sa = osa oikeuksista pidätetään (CC BY-SA)
 August = elokuu
 BACK-TO-LOGIN = TAKAISIN KIRJAUTUMISEEN
-Blog = Blogi
 BLOG = BLOGI
 Bulk-importer = Massatuonti
 By-exiting-changes-not-saved = Jos poistut, havaintoosi tehtyjä muutoksia ei tallenneta.
@@ -134,7 +133,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VALITSE KÄYTTÄJÄNIMI
 Choose-taxon = Valitse taksoni
 Choose-top-taxon = Valitse ylätaksoni
-Clear = Tyhjennä
 Close = Sulje
 Close-permission-request-screen = Sulje lupapyyntönäyttö
 Close-search = Sulje haku
@@ -232,7 +230,6 @@ Delete-observation = Poista havainto
 DELETE-OBSERVATION--question = POISTA HAVAINTO?
 Delete-photo = Poista kuva
 Delete-sound = Poista ääni
-Deletes-entered-text = Poista syötetty teksti
 Deleting-x-of-y--observations =
     Poistetaan { $currentDeleteCount } { $total ->
         [one] havainto { $total }
@@ -403,6 +400,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = PARANNA EHDOTUKSIA KÄYTTÄM�
 improving--identification = Parannus
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST-TILIN ASETUKSET
 iNaturalist-AI-Camera = iNaturalistin AI-kamera
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist voi käyttää sijaintiasi antaakseen sinulle parempia tunnistusehdotuksia. Käytämme sitä myös auttaaksemme sinua löytämään lähistöllä olevia lajeja. Sijaintisi jakaminen helpottaa hyödyllisen tiedon luomista tieteelle.
 INATURALIST-COMMUNITY = INATURALIST-YHTEISÖ
 INATURALIST-FORUM = INATURALISTIN FOORUMI
@@ -446,6 +444,7 @@ JOINED-X-PROJECTS =
         [one] LIITTYNYT { $count } PROJEKTIIN
        *[other] LIITYTTY { $count } PROJEKTIIN
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] PÄIVÄKIRJAN VIESTI
@@ -519,6 +518,7 @@ Navigates-to-AI-camera = Siirry AI-kameraan
 Navigates-to-bulk-importer = Siirry massatuontiin
 Navigates-to-camera = Siirry kameraan
 Navigates-to-explore = Siirry tutkimaan
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Siirry kirjautumiseen
 Navigates-to-main-menu = Siirry päävalikkoon
 Navigates-to-notifications = Siirry ilmoituksiin
@@ -774,6 +774,7 @@ Scientific-Name = Tieteellinen nimi
 Scientific-Name-Common-Name = Tieteellinen nimi (yleiskielinen nimi)
 SEARCH = HAE
 Search = Hae
+SEARCH--button = SEARCH
 Search-for-a-location = Hae sijaintia
 Search-for-a-project = Hae projektia
 SEARCH-FOR-A-TAXON = HAE TAKSONIA

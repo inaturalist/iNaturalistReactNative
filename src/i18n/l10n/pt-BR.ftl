@@ -88,7 +88,6 @@ attribution-cc-by-nd = alguns direitos reservados (CC BY-ND)
 attribution-cc-by-sa = alguns direitos reservados (CC BY-SA)
 August = Agosto
 BACK-TO-LOGIN = VOLTAR PARA LOGIN
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Importar em massa
 By-exiting-changes-not-saved = Ao sair, as alterações de sua observação não serão salvas
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ESCOLHA UM NOME DE USUÁRIO
 Choose-taxon = Escolha táxon
 Choose-top-taxon = Escolha táxon principal
-Clear = Limpar	
 Close = Fechar
 Close-permission-request-screen = Fechar tela de requisição de permissão
 Close-search = Fechar pesquisa
@@ -229,7 +227,6 @@ Delete-observation = Excluir observação
 DELETE-OBSERVATION--question = EXCLUIR OBSERVAÇÃO?
 Delete-photo = Excluir foto
 Delete-sound = Excluir som
-Deletes-entered-text = Excluir texto inserido
 Deleting-x-of-y--observations =
     Apagando { $currentDeleteCount } { $total ->
         [one] de { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = MELHORE ESTAS SUGESTÕES UTIL
 improving--identification = Melhorando
 INATURALIST-ACCOUNT-SETTINGS = CONFIGURAÇÕES DA CONTA INATURALISTA
 iNaturalist-AI-Camera = Câmera IA do inaturalista
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist pode usar sua localização para lhe dar sugestões de identificação melhores. Também usamos para ajudá-lo a encontrar espécies vistas nas proximidades. Compartilhar sua localização facilita a criação de dados úteis para ciência.
 INATURALIST-COMMUNITY = COMUNIDADE INATURALISTA
 INATURALIST-FORUM = FÓRUM INATURALISTA
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] PARTICIPANDO DE { $count } PROJETO
        *[other] PARTICIPANDO DE { $count } PROJETOS
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] PUBLICAÇÃO DE BOLETIM
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Navegar para a Câmera IA
 Navigates-to-bulk-importer = Navegar para o importador em massa
 Navigates-to-camera = Navegar para a câmera
 Navigates-to-explore = Navegue para o explorar
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navega até a tela de login
 Navigates-to-main-menu = Navega até o menu principal.
 Navigates-to-notifications = Navegar para notificações
@@ -771,6 +771,7 @@ Scientific-Name = Nome Científico
 Scientific-Name-Common-Name = Nome Científico (Nome Comum)
 SEARCH = PESQUISAR
 Search = Pesquisar
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = Pesquisar um projeto
 SEARCH-FOR-A-TAXON = PESQUISAR UM TÁXON

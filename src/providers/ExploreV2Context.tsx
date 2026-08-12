@@ -1,6 +1,7 @@
-import type { ApiProjectSummary, ApiUser } from "api/types";
+import type { ApiProjectSummary, ApiTotalBounds, ApiUser } from "api/types";
 import type { SPECIES_TAB } from "appConstants/tabs";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import type { ExploreV2EntryParams } from "navigation/types";
 import type { TAXONOMIC_RANK } from "providers/ExploreContext";
 import {
   DATE_OBSERVED,
@@ -21,6 +22,7 @@ export enum EXPLORE_V2_ACTION {
   SET_LOCATION_NEARBY = "SET_LOCATION_NEARBY",
   SET_LOCATION_WORLDWIDE = "SET_LOCATION_WORLDWIDE",
   SET_LOCATION_PLACE = "SET_LOCATION_PLACE",
+  SET_LOCATION_MAP_AREA = "SET_LOCATION_MAP_AREA",
   SET_SORT = "SET_SORT",
   SET_SPECIES_SORT = "SET_SPECIES_SORT",
   SET_FILTERS = "SET_FILTERS",
@@ -31,7 +33,8 @@ export enum EXPLORE_V2_ACTION {
 export enum EXPLORE_V2_PLACE_MODE {
   NEARBY = "NEARBY",
   WORLDWIDE = "WORLDWIDE",
-  PLACE = "PLACE"
+  PLACE = "PLACE",
+  MAP_AREA = "MAP_AREA"
 }
 
 export interface Place {
@@ -120,7 +123,8 @@ export const defaultExploreV2Filters: ExploreV2Filters = {
 export type ExploreV2LocationState =
   | { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE }
   | { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY }
-  | { placeMode: EXPLORE_V2_PLACE_MODE.PLACE; place: Place };
+  | { placeMode: EXPLORE_V2_PLACE_MODE.PLACE; place: Place }
+  | { placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA; bounds: ApiTotalBounds };
 
 export interface ExploreV2State {
   subject: ExploreV2Subject | null;
@@ -140,6 +144,10 @@ export type ExploreV2Action =
     type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE;
     place: Place;
   }
+  | {
+    type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA;
+    bounds: ApiTotalBounds;
+  }
   | { type: EXPLORE_V2_ACTION.SET_SORT; sortBy: OBSERVATIONS_SORT }
   | { type: EXPLORE_V2_ACTION.SET_SPECIES_SORT; speciesSortBy: SPECIES_SORT }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
@@ -154,6 +162,17 @@ export const initialExploreV2State: ExploreV2State = {
   filters: defaultExploreV2Filters,
   activeTab: OBSERVATIONS_TAB,
 };
+
+export function initialStateFromEntryParams(
+  params?: ExploreV2EntryParams | null,
+): ExploreV2State {
+  return {
+    ...initialExploreV2State,
+    subject: params?.subject || initialExploreV2State.subject,
+    location: params?.location || initialExploreV2State.location,
+    activeTab: params?.activeTab || initialExploreV2State.activeTab,
+  };
+}
 
 export function exploreV2Reducer(
   state: ExploreV2State,
@@ -180,6 +199,14 @@ export function exploreV2Reducer(
         location: {
           placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
           place: action.place,
+        },
+      };
+    case EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA:
+      return {
+        ...state,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+          bounds: action.bounds,
         },
       };
     case EXPLORE_V2_ACTION.SET_SORT:
@@ -211,10 +238,11 @@ const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
 
 interface ExploreV2ProviderProps {
   children: React.ReactNode;
+  initialState: ExploreV2State;
 }
 
-export const ExploreV2Provider = ( { children }: ExploreV2ProviderProps ) => {
-  const [state, dispatch] = React.useReducer( exploreV2Reducer, initialExploreV2State );
+export const ExploreV2Provider = ( { children, initialState }: ExploreV2ProviderProps ) => {
+  const [state, dispatch] = React.useReducer( exploreV2Reducer, initialState );
 
   const value = React.useMemo(
     () => ( { state, dispatch } ),

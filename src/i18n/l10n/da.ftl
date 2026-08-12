@@ -88,7 +88,6 @@ attribution-cc-by-nd = visse rettigheder forbeholdes (CC BY-ND)
 attribution-cc-by-sa = visse rettigheder forbeholdes (CC BY-SA)
 August = August
 BACK-TO-LOGIN = TILBAGE TIL LOGIN
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Masseimport
 By-exiting-changes-not-saved = Ved at afslutte, vil ændringer til observationen ikke blive gemt.
@@ -131,7 +130,6 @@ Choose-a-time = Vælg et tid
 CHOOSE-A-USERNAME = VÆLG EN BRUGERNAVN
 Choose-taxon = Vælg takson
 Choose-top-taxon = Vælg øverste takson
-Clear = Ryd
 Close = Luk
 Close-permission-request-screen = Luk tilladelsesanmodningsskærmen
 Close-search = Luk søgning
@@ -229,7 +227,6 @@ Delete-observation = Slet observation
 DELETE-OBSERVATION--question = SLET OBSERVATION?
 Delete-photo = Slet foto
 Delete-sound = Slet lyd
-Deletes-entered-text = Sletter angivet tekst
 Deleting-x-of-y--observations =
     Sletter { $currentDeleteCount } { $total ->
         [one] af { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = FORBEDR DISSE FORSLAG VED BRU
 improving--identification = Forbedrende
 INATURALIST-ACCOUNT-SETTINGS = INDSTILLINGER FOR INATURALIST-KONTO
 iNaturalist-AI-Camera = iNaturalist AI-kamera
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist kan bruge placeringen til at levere bedre identifikationsforslag. Vi bruger den også som hjælpe til at finde arter set i nærheden. Deling af placeringen gør det lettere at oprette nyttige data til videnskab.
 INATURALIST-COMMUNITY = INATURALIST-FÆLLESSKAB
 INATURALIST-FORUM = INATURALIST-FORUM
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] ER TILMELDT { $count } PROJEKT
        *[other] ER TILMELDT { $count } PROJEKTER
     }
+JOURNAL-POST = JOURNALPOST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] JOURNALINDLÆG
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Naviger til AI-kamera
 Navigates-to-bulk-importer = Navigerer til masseimportør
 Navigates-to-camera = Navigerer til kamera
 Navigates-to-explore = Navigerer til udforsk
+Navigates-to-journal-post = Navigerer til journalpost
 Navigates-to-log-in-screen = Gå til login-skærm
 Navigates-to-main-menu = Gå til hovedmenu.
 Navigates-to-notifications = Navigerer til notifikationer
@@ -771,6 +771,7 @@ Scientific-Name = Videnskabeligt navn
 Scientific-Name-Common-Name = Videnskabeligt navn (Almindeligt navn)
 SEARCH = SØG
 Search = Søg
+SEARCH--button = SØG
 Search-for-a-location = Søg efter et sted
 Search-for-a-project = Søg efter et projekt
 SEARCH-FOR-A-TAXON = SØG EFTER EN TAKSON

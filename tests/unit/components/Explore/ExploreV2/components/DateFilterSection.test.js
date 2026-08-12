@@ -63,9 +63,9 @@ describe( "DateFilterSection", ( ) => {
   it( "renders the header and the capitalized label of the current mode", ( ) => {
     renderSection( );
 
-    expect( screen.getByText( "DATE OBSERVED" ) ).toBeTruthy( );
-    expect( screen.getByLabelText( "Date observed" ) ).toBeTruthy( );
-    expect( screen.getByText( "ALL" ) ).toBeTruthy( );
+    expect( screen.getByText( "DATE OBSERVED" ) ).toBeVisible( );
+    expect( screen.getByLabelText( "Date observed" ) ).toBeVisible( );
+    expect( screen.getByText( "ALL" ) ).toBeVisible( );
   } );
 
   it( "shows no date controls when the mode is neither exact nor range", ( ) => {
@@ -79,7 +79,7 @@ describe( "DateFilterSection", ( ) => {
   it( "renders children, e.g. the month checkboxes", ( ) => {
     renderSection( { mode: "months" }, <Text>{CHILD_LABEL}</Text> );
 
-    expect( screen.getByText( CHILD_LABEL ) ).toBeTruthy( );
+    expect( screen.getByText( CHILD_LABEL ) ).toBeVisible( );
   } );
 
   describe( "mode sheet", ( ) => {
@@ -88,9 +88,9 @@ describe( "DateFilterSection", ( ) => {
 
       await actor.press( screen.getByLabelText( "Date observed" ) );
 
-      expect( screen.getByText( "Exact Date" ) ).toBeTruthy( );
-      expect( screen.getByText( "Date Range" ) ).toBeTruthy( );
-      expect( screen.getByText( "Months" ) ).toBeTruthy( );
+      expect( screen.getByText( "Exact Date" ) ).toBeVisible( );
+      expect( screen.getByText( "Date Range" ) ).toBeVisible( );
+      expect( screen.getByText( "Months" ) ).toBeVisible( );
     } );
 
     it( "calls onChangeMode with the confirmed mode and closes the sheet", async ( ) => {
@@ -110,8 +110,8 @@ describe( "DateFilterSection", ( ) => {
     it( "shows the selected date", ( ) => {
       renderSection( { mode: "exact", exactDate: "2024-01-15" } );
 
-      expect( screen.getByText( "2024-01-15" ) ).toBeTruthy( );
-      expect( screen.getByText( "CHANGE DATE" ) ).toBeTruthy( );
+      expect( screen.getByText( "2024-01-15" ) ).toBeVisible( );
+      expect( screen.getByText( "CHANGE DATE" ) ).toBeVisible( );
       expect( screen.queryByText( "CHANGE START DATE" ) ).toBeNull( );
     } );
 
@@ -136,10 +136,10 @@ describe( "DateFilterSection", ( ) => {
     it( "shows both ends of the range", ( ) => {
       renderSection( RANGE_PROPS );
 
-      expect( screen.getByText( "2024-01-15" ) ).toBeTruthy( );
-      expect( screen.getByText( "2024-02-20" ) ).toBeTruthy( );
-      expect( screen.getByText( "CHANGE START DATE" ) ).toBeTruthy( );
-      expect( screen.getByText( "CHANGE END DATE" ) ).toBeTruthy( );
+      expect( screen.getByText( "2024-01-15" ) ).toBeVisible( );
+      expect( screen.getByText( "2024-02-20" ) ).toBeVisible( );
+      expect( screen.getByText( "CHANGE START DATE" ) ).toBeVisible( );
+      expect( screen.getByText( "CHANGE END DATE" ) ).toBeVisible( );
       expect( screen.queryByText( "CHANGE DATE" ) ).toBeNull( );
     } );
 
@@ -177,7 +177,7 @@ describe( "DateFilterSection", ( ) => {
 
       expect(
         screen.getByText( "The start date must be before the end date." ),
-      ).toBeTruthy( );
+      ).toBeVisible( );
     } );
 
     it( "does not warn when the range is valid", ( ) => {

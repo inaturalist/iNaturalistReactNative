@@ -88,7 +88,6 @@ attribution-cc-by-nd = mõned õigused kaitstud (CC BY-ND)
 attribution-cc-by-sa = mõned õigused kaitstud (CC BY-SA)
 August = august
 BACK-TO-LOGIN = TAGASI SISSELOGIMA
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Mass-importija
 By-exiting-changes-not-saved = Väljudes ei salvestata muutuseid sinu vaatlusele.
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VALI KASUTAJANIMI
 Choose-taxon = Vali takson
 Choose-top-taxon = Vali kõrgeima taseme takson
-Clear = Tühjenda
 Close = Sulge
 Close-permission-request-screen = Sulge loa nõutamise aken
 Close-search = Sulge otsing
@@ -229,7 +227,6 @@ Delete-observation = Kustuta vaatlus
 DELETE-OBSERVATION--question = KUSTUTA VAATLUS?
 Delete-photo = Kustuta foto
 Delete-sound = Kustuta heli
-Deletes-entered-text = Kustutab sisestatud teksti
 Deleting-x-of-y--observations =
     Kustutan { $currentDeleteCount } { $total ->
         [one] / { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = PARANDA OMA ASUKOHTA KASUTADE
 improving--identification = Täiendaja
 INATURALIST-ACCOUNT-SETTINGS = INATURALISTI KONTO SÄTTED
 iNaturalist-AI-Camera = iNaturalisti AI-kaamera
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist tohib kasutada paremate määratluste soovitamiseks sinu asukohta. Samuti kasutame seda, et aidata sul leida lähedal olevaid liike. Asukoha jagamisel on lihtsam luua teaduse jaoks sobivaid andmeid.
 INATURALIST-COMMUNITY = INATURALISTI KOGUKOND
 INATURALIST-FORUM = INATURALISTI FOORUM
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] LIITUNUD { $count } PROJEKTIGA
        *[other] LIITUNUD { $count } PROJEKTIGA
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] PÄEVIKU SISSEKANNE
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Mine AI-kaamerasse
 Navigates-to-bulk-importer = Mine mass-importijasse
 Navigates-to-camera = Mine kaamerasse
 Navigates-to-explore = Mine avastama
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Mine teavituste juurde
@@ -771,6 +771,7 @@ Scientific-Name = Teaduslik nimi
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = OTSING
 Search = Otsi
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = Otsi projekti
 SEARCH-FOR-A-TAXON = OTSI TAKSONIT

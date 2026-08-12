@@ -88,7 +88,6 @@ attribution-cc-by-nd = einige Rechte vorbehalten (CC BY-ND)
 attribution-cc-by-sa = einige Rechte vorbehalten (CC BY-SA)
 August = August
 BACK-TO-LOGIN = ZURÜCK ZUR ANMELDUNG
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Massenimport
 By-exiting-changes-not-saved = Beim Beenden werden die Änderungen an deiner Beobachtung nicht gespeichert.
@@ -131,7 +130,6 @@ Choose-a-time = Uhrzeit auswählen
 CHOOSE-A-USERNAME = BENUTZERNAMEN WÄHLEN
 Choose-taxon = Taxon wählen
 Choose-top-taxon = Top-Taxon wählen
-Clear = Leeren
 Close = Schließen
 Close-permission-request-screen = Bildschirm für Genehmigungsanfragen schließen
 Close-search = Suche schließen
@@ -229,7 +227,6 @@ Delete-observation = Beobachtung löschen
 DELETE-OBSERVATION--question = BEOBACHTUNG LÖSCHEN?
 Delete-photo = Foto löschen
 Delete-sound = Tonaufnahme löschen
-Deletes-entered-text = Löscht den eingegebenen Text
 Deleting-x-of-y--observations =
     { $currentDeleteCount } { $total ->
         [one] von { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = DIESE VORSCHLÄGE DURCH VERWE
 improving--identification = Verbesserung
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST-KONTOEINSTELLUNGEN
 iNaturalist-AI-Camera = iNaturalist KI-Kamera
+iNaturalist-Blog = iNaturalist-Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist kann den Standort verwenden, um bessere Bestimmungsvorschläge zu liefern. Er verhilft dir auch dazu, Arten zu finden, die du in der Nähe gesehen hast. Wenn du deinen Standort mitteilst, können nützliche Daten für die Wissenschaft erstellt werden.
 INATURALIST-COMMUNITY = INATURALIST-GEMEINSCHAFT
 INATURALIST-FORUM = INATURALIST FORUM
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] IST { $count } PROJEKT BEIGETRETEN
        *[other] IST { $count } PROJEKTEN BEIGETRETEN
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] Journal-Beitrag
@@ -519,6 +518,7 @@ Navigates-to-AI-camera = AI-Kamera öffnen
 Navigates-to-bulk-importer = Navigiert zum Bulk-Importer
 Navigates-to-camera = Zur Kamera wechseln
 Navigates-to-explore = Explorer öffnen
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Anmeldebildschirm öffnen
 Navigates-to-main-menu = Hauptmenü öffnen
 Navigates-to-notifications = Benachrichtigungen öffnen
@@ -774,6 +774,7 @@ Scientific-Name = nur wissenschaftlicher Name
 Scientific-Name-Common-Name = Wissenschaftl. Name (Gebräuchlicher Name)
 SEARCH = SUCHEN
 Search = Suchen
+SEARCH--button = SUCHEN
 Search-for-a-location = Nach einem Standort suchen
 Search-for-a-project = Projektsuche
 SEARCH-FOR-A-TAXON = NACH EINEM TAXON SUCHEN

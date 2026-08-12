@@ -88,7 +88,6 @@ attribution-cc-by-nd = některá vyhrazená práva (CC BY-ND)
 attribution-cc-by-sa = některá vyhrazená práva (CC BY-SA)
 August = Srpen
 BACK-TO-LOGIN = ZPĚT NA PŘIHLÁŠENÍ
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Dávkové nahrávání
 By-exiting-changes-not-saved = Po ukončení se změny vašeho pozorování neuloží.
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ZADEJTE UŽIVATELSKÉ JMÉNO
 Choose-taxon = Vybrat taxon
 Choose-top-taxon = Vybrat nejlepší taxon
-Clear = Vymazat
 Close = Zavřít
 Close-permission-request-screen = Zavřít obrazovku s žádostí o oprávnění
 Close-search = Zavřít hledání
@@ -229,7 +227,6 @@ Delete-observation = Odstranit pozorování
 DELETE-OBSERVATION--question = SMAZAT POZOROVÁNÍ?
 Delete-photo = Smazat fotografii
 Delete-sound = Smazat zvuk
-Deletes-entered-text = Odstraní vložený text
 Deleting-x-of-y--observations =
     Smazání { $currentDeleteCount } { $total ->
         [one] z { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = VYLEPŠETE TYTO NÁVRHY POUŽ
 improving--identification = Zlepšování
 INATURALIST-ACCOUNT-SETTINGS = NASTAVENÍ ÚČTU INATURALIST
 iNaturalist-AI-Camera = AI Fotoaparát iNaturalist
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist může použít vaši polohu k tomu, aby vám poskytl lepší návrhy identifikace. Používáme je také k nalezení druhů viděných v okolí. Sdílení vaší polohy usnadňuje vytváření užitečných dat pro vědu.
 INATURALIST-COMMUNITY = KOMUNITA INATURALIST
 INATURALIST-FORUM = FÓRUM INATURALIST
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] PŘIPOJEN K { $count } PROJEKTU
        *[other] PŘIPOJEN K { $count } PROJEKTŮM
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] ČLÁNEK
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Přejít do AI kamery
 Navigates-to-bulk-importer = Přejděte na dávkový import
 Navigates-to-camera = Přejít do fotoaparátu
 Navigates-to-explore = Přejděte na průzkum
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Přejděte na oznamování
@@ -771,6 +771,7 @@ Scientific-Name = Vědecký název
 Scientific-Name-Common-Name = Vědecký název (obecný název)
 SEARCH = HLEDAT
 Search = Hledat
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = Hledat projekt
 SEARCH-FOR-A-TAXON = HLEDAT TAXON

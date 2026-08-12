@@ -21,6 +21,10 @@ export interface ExploreV2QueryParams extends FilterApiParams {
   lng?: number;
   radius?: number;
   place_id?: number;
+  swlat?: number;
+  swlng?: number;
+  nelat?: number;
+  nelng?: number;
   verifiable?: boolean;
   identified?: boolean;
 }
@@ -76,6 +80,12 @@ const buildExploreV2QueryParams = (
       break;
     case EXPLORE_V2_PLACE_MODE.PLACE:
       params.place_id = location.place.id;
+      break;
+    case EXPLORE_V2_PLACE_MODE.MAP_AREA:
+      params.swlat = location.bounds.swlat;
+      params.swlng = location.bounds.swlng;
+      params.nelat = location.bounds.nelat;
+      params.nelng = location.bounds.nelng;
       break;
     case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
       break;

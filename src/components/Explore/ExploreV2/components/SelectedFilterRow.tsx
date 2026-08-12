@@ -6,9 +6,8 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
 
-interface Props {
+interface Props extends React.PropsWithChildren {
   accessibilityLabel: string;
-  children: React.ReactNode;
   justify?: "justify-between" | "justify-around";
   onEdit: ( ) => void;
   onRemove: ( ) => void;

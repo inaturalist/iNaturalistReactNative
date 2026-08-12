@@ -88,7 +88,6 @@ attribution-cc-by-nd = beberapa hak dilindungi (CC BY-ND)
 attribution-cc-by-sa = beberapa hak dilindungi (CC BY-SA)
 August = Agustus
 BACK-TO-LOGIN = KEMBALI KE HALAMAN MASUK
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Pengimpor massal
 By-exiting-changes-not-saved = Dengan keluar, perubahan pada pengamatan Anda tidak akan disimpan.
@@ -131,7 +130,6 @@ Choose-a-time = Pilih waktu
 CHOOSE-A-USERNAME = PILIH NAMA PENGGUNA
 Choose-taxon = Pilih takson
 Choose-top-taxon = Pilih takson terbaik
-Clear = Bersihkan
 Close = Tutup
 Close-permission-request-screen = Tutup layar permintaan izin
 Close-search = Tutup pencarian
@@ -229,7 +227,6 @@ Delete-observation = Menghapus pengamatan
 DELETE-OBSERVATION--question = HAPUS PENGAMATAN?
 Delete-photo = Hapus foto
 Delete-sound = Hapus suara
-Deletes-entered-text = Hapus tulisan yang dimasukkan
 Deleting-x-of-y--observations =
     Menghapus { $currentDeleteCount } { $total ->
         [one] dari { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = TINGKATKAN KUALITAS REKOMENDA
 improving--identification = Pengembang
 INATURALIST-ACCOUNT-SETTINGS = PENGATURAN AKUN INATURALIST
 iNaturalist-AI-Camera = Kamera AI iNaturalist
+iNaturalist-Blog = Blog iNaturalist
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist dapat menggunakan lokasi Anda untuk memberi Anda saran identifikasi yang lebih baik. Kami juga menggunakannya untuk membantu Anda menemukan spesies yang terlihat di sekitar. Dengan membagikan lokasi Anda, Anda ikut membuat data yang berguna untuk ilmu pengetahuan.
 INATURALIST-COMMUNITY = KOMUNITAS INATURALIST
 INATURALIST-FORUM = FORUM INATURALIST
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] BERGABUNG DALAM { $count } PROYEK
        *[other] BERGABUNG DALAM { $count } PROYEK
     }
+JOURNAL-POST = POSTINGAN JURNAL
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] POSTINGAN JURNAL
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Pergi ke kamera AI
 Navigates-to-bulk-importer = Pergi ke pengimpor massal
 Navigates-to-camera = Pergi ke kamera
 Navigates-to-explore = Pergi ke jelajah
+Navigates-to-journal-post = Pindah ke postingan jurnal
 Navigates-to-log-in-screen = Pergi ke layar masuk
 Navigates-to-main-menu = Pergi ke menu utama.
 Navigates-to-notifications = Pergi ke notifikasi
@@ -603,7 +603,7 @@ Opens-add-comment-form = Membuka formulir tambah komentar.
 Opens-AI-camera = Buka kamera AI.
 Opens-edit-comment-form = Membuka formulir edit komentar.
 Opens-location-permission-prompt = Membuka pertanyaan izin lokasi
-Opens-search-interface = Opens search interface.
+Opens-search-interface = Membuka antarmuka pencarian.
 OR-SIGN-IN-WITH = ATAU MASUK DENGAN
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Atau, Anda dapat mencoba mendapatkan foto yang lebih jelas dengan memperbesar, mendekat, atau mencoba sudut yang berbeda.
 Organism-is-captive = Organisme ini dipelihara
@@ -771,6 +771,7 @@ Scientific-Name = Nama Ilmiah
 Scientific-Name-Common-Name = Nama Ilmiah (Nama Umum)
 SEARCH = CARI
 Search = Cari
+SEARCH--button = CARI
 Search-for-a-location = Cari lokasi
 Search-for-a-project = Cari proyek
 SEARCH-FOR-A-TAXON = CARI TAKSON
@@ -920,7 +921,7 @@ Unknown--taxon = Tidak Diketahui
 Unknown--user = Tidak Diketahui
 Unknown-error = Eror tidak diketahui
 Unknown-organism = Organisme tidak diketahui
-Unobserved = Unobserved
+Unobserved = Belum diamati
 Unreviewed-observations-only = Pengamatan yang belum ditinjau saja
 Upload-Complete = Unggahan Selesai
 Upload-in-progress = Pengunggahan sedang berlangsung

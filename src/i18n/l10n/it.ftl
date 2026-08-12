@@ -88,7 +88,6 @@ attribution-cc-by-nd = alcuni diritti riservati (CC BY-ND)
 attribution-cc-by-sa = alcuni diritti riservati (CC BY-SA)
 August = Agosto
 BACK-TO-LOGIN = TORNA AL LOGIN
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Importo in gruppo
 By-exiting-changes-not-saved = Uscendo, le modifiche alla tua osservazione non verranno salvate.
@@ -131,7 +130,6 @@ Choose-a-time = Scegli un orario
 CHOOSE-A-USERNAME = SCEGLI UN NOME UTENTE
 Choose-taxon = Scegli il taxon
 Choose-top-taxon = Scegli il taxon superiore
-Clear = Cancella
 Close = Chiudi
 Close-permission-request-screen = Chiudi la schermata di richiesta di autorizzazione
 Close-search = Chiudi ricerca
@@ -229,7 +227,6 @@ Delete-observation = Cancella osservazione
 DELETE-OBSERVATION--question = CANCELLA OSSERVAZIONE?
 Delete-photo = Elimina foto
 Delete-sound = Elimina suono
-Deletes-entered-text = Elimina testo inserito
 Deleting-x-of-y--observations =
     Eliminazione di { $currentDeleteCount } { $total ->
         [one] di { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = MIGLIORA QUESTI SUGGERIMENTI 
 improving--identification = Affinamento
 INATURALIST-ACCOUNT-SETTINGS = IMPOSTAZIONI DELL'ACCOUNT INATURALIST
 iNaturalist-AI-Camera = Fotocamera AI iNaturalist
+iNaturalist-Blog = Blog iNaturalist
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist può utilizzare la tua posizione per darti suggerimenti di identificazione migliori. Lo usiamo anche per aiutarti a trovare le specie viste nelle vicinanze. La condivisione della tua posizione semplifica la creazione di dati utili per la scienza.
 INATURALIST-COMMUNITY = COMUNITÀ NATURALISTA
 INATURALIST-FORUM = FORUM NATURALISTA
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [uno] UNITO { $count } PROGETTO
        *[altro] UNITO { $count } PROGETTI
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [uno] POST DEL GIORNALE
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Passa alla fotocamera AI
 Navigates-to-bulk-importer = Passa all'importatore di massa
 Navigates-to-camera = Passa alla telecamera
 Navigates-to-explore = Naviga per esplorare
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Naviga alla schermata di accesso
 Navigates-to-main-menu = Naviga al menu principale.
 Navigates-to-notifications = Passa alle notifiche
@@ -771,6 +771,7 @@ Scientific-Name = Nome Scientifico
 Scientific-Name-Common-Name = Nome scientifico (nome comune)
 SEARCH = RICERCA
 Search = Cerca
+SEARCH--button = CERCA
 Search-for-a-location = Cerca una località
 Search-for-a-project = Cerca un progetto
 SEARCH-FOR-A-TAXON = RICERCA DI UN TAXON
@@ -920,7 +921,7 @@ Unknown--taxon = Sconosciuto
 Unknown--user = Sconosciuto
 Unknown-error = Errore sconosciuto
 Unknown-organism = Organismo sconosciuto
-Unobserved = Unobserved
+Unobserved = Non osservata
 Unreviewed-observations-only = Solo osservazioni non revisionate
 Upload-Complete = Caricamento completato
 Upload-in-progress = Caricamento in corso

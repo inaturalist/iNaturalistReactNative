@@ -88,7 +88,6 @@ attribution-cc-by-nd = חלק מהזכויות שמורות (CC BY-ND)
 attribution-cc-by-sa = חלק מהזכויות שמורות (CC BY-SA)
 August = אוגוסט
 BACK-TO-LOGIN = חזרה להתחברות
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = מייבא במרוכז
 By-exiting-changes-not-saved = אם תצא.י עכשיו, שינויים בתצפית שלך לא יישמרו.
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = בחר.י שם משתמש
 Choose-taxon = נא לבחור טקסון
 Choose-top-taxon = נא לבחור את הטקסון המתאים ביותר
-Clear = נקה
 Close = סגירה
 Close-permission-request-screen = סגירת מסך בקשת הרשאה
 Close-search = סגור חיפוש
@@ -229,7 +227,6 @@ Delete-observation = מחיקת תצפית
 DELETE-OBSERVATION--question = למחוק את התצפית?
 Delete-photo = מחיקת תמונה
 Delete-sound = מחיקת קול
-Deletes-entered-text = מחיקת טקסט שהוזן
 Deleting-x-of-y--observations =
     מוחק { $currentDeleteCount } { $total ->
         [one] מתוך { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = שפרו הצעות אלה ב
 improving--identification = משפר
 INATURALIST-ACCOUNT-SETTINGS = הגדרות חשבון INATURALIST
 iNaturalist-AI-Camera = מצלמת AI iNaturalist
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = ל-iNaturalist יכולת להשתמש במיקום שלך כדי לתת לך הצעות זיהוי טובות יותר. אנו משתמשים בו גם כדי לעזור לך למצוא מינים שנראים בקרבת מקום. שיתוף המיקום שלך מקל עליך ליצור נתונים שימושיים למדע.
 INATURALIST-COMMUNITY = קהילת iNaturalist
 INATURALIST-FORUM = פורום INATURALIST
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] הצטרפת לפרויקט { $count }
        *[other] הצטרפת ל-{ $count } פרויקטים
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] פוסט ביומן
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = מנווט למצלמת AI
 Navigates-to-bulk-importer = מנווט למייבא במרוכז
 Navigates-to-camera = מנווט למצלמה
 Navigates-to-explore = מנוות ל'לגלות'
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = מנווט להתראות
@@ -771,6 +771,7 @@ Scientific-Name = שם מדעי
 Scientific-Name-Common-Name = שם מדעי (שם נפוץ)
 SEARCH = חיפוש
 Search = חיפוש
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = חיפוש פרוייקט
 SEARCH-FOR-A-TAXON = חיפוש טקסון

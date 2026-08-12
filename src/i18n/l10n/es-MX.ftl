@@ -88,7 +88,6 @@ attribution-cc-by-nd = algunos derechos reservadors (CC BY-ND)
 attribution-cc-by-sa = algunos derechos reservados (CC BY-SA)
 August = agosto
 BACK-TO-LOGIN = VOLVER AL INICIO DE SESIÓN
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Importación masiva
 By-exiting-changes-not-saved = Al salir, los cambios en tu observación no serán guardados.
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ELIGE UN NOMBRE DE USUARIO
 Choose-taxon = Elige un especie
 Choose-top-taxon = Elige un taxón superior
-Clear = Borrar
 Close = Cerrar
 Close-permission-request-screen = Cerrar la pantalla de solicitud de permiso
 Close-search = Cerrar búsqueda
@@ -229,7 +227,6 @@ Delete-observation = Borra observación
 DELETE-OBSERVATION--question = ¿ELIMINAR OBSERVACIÓN?
 Delete-photo = Elimina foto
 Delete-sound = Eliminar sonido
-Deletes-entered-text = Eliminar texto introducido
 Deleting-x-of-y--observations =
     Eliminando { $currentDeleteCount } { $total ->
         [one] de { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = MEJORAR ESTAS SUGERENCIAS UTI
 improving--identification = Mejorando
 INATURALIST-ACCOUNT-SETTINGS = CONFIGURACIÓN DE LA CUENTA INATURALIST
 iNaturalist-AI-Camera = Cámara IA iNaturalist
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist puede usar tu ubicación para darte mejores sugerencias de identificación. También lo usamos para ayudarlo a encontrar especies que se ven cerca. Compartir su ubicación facilita la creación de datos útiles para la ciencia.
 INATURALIST-COMMUNITY = COMUNIDAD INATURALIST
 INATURALIST-FORUM = FORO INATURALIST
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [uno] UNIDO { $count } PROYECTO
        *[otro] UNIDO { $count } PROYECTOS
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [uno] PUBLICACIÓN EN EL DIARIO
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Navegar a la cámara IA
 Navigates-to-bulk-importer = Navegar al importador a granel
 Navigates-to-camera = Navegar a la cámara
 Navigates-to-explore = Navegar para explorar
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Navegar a las notificaciones
@@ -603,7 +603,7 @@ Opens-add-comment-form = Abre el formulario de comentarios.
 Opens-AI-camera = Abre la cámara IA.
 Opens-edit-comment-form = Abre el formulario de edición de comentarios.
 Opens-location-permission-prompt = Abre la solicitud de permisos de ubicación
-Opens-search-interface = Opens search interface.
+Opens-search-interface = Abre interfaz de búsqueda.
 OR-SIGN-IN-WITH = O INICIA SESIÓN CON
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = O bien, puede intentar obtener una foto más clara acercando, acercándose o probando un ángulo diferente.
 Organism-is-captive = El organismo está en cautiverio
@@ -771,6 +771,7 @@ Scientific-Name = Nombre científico
 Scientific-Name-Common-Name = Nombre científico (Nombre Común)
 SEARCH = BUSCAR
 Search = Búsqueda
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = Buscar proyecto
 SEARCH-FOR-A-TAXON = BUSCAR UN TAXÓN

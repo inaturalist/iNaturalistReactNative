@@ -130,6 +130,7 @@ const ObservationsFlashList = ( {
     }
     const { uuid } = item;
     const onUploadButtonPress = ( ) => handleIndividualUploadPress( uuid );
+    // TODO: use sharedHelpers/observationUploadStatus helper here
     const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, item );
     const obsUploadState = totalUploadProgress.find( o => o.uuid === uuid );
     const uploadProgress = obsNeedsSync

@@ -88,7 +88,6 @@ attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = აგვისტო
 BACK-TO-LOGIN = ᲨᲔᲡᲕᲚᲐᲖᲔ ᲓᲐᲑᲠᲣᲜᲔᲑᲐ
-Blog = ბლოგი
 BLOG = ᲑᲚᲝᲒᲘ
 Bulk-importer = ჯგუფური იმპორტი
 By-exiting-changes-not-saved = გასვლის შემთხვევაში, თქვენი დაკვირვების ცვლილებები არ შეინახება.
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ᲛᲝᲛᲮᲛᲐᲠᲔᲑᲚᲘᲡ ᲡᲐᲮᲔᲚᲘᲡ ᲨᲔᲠᲩᲔᲕᲐ
 Choose-taxon = ტაქსონის არჩევა
 Choose-top-taxon = ტოპ ტაქსონის აირჩევა
-Clear = გასუფთავება
 Close = დახურვა
 Close-permission-request-screen = ნებართვის მოთხოვნის ეკრანის დახურვა
 Close-search = ძიების დახურვა
@@ -229,7 +227,6 @@ Delete-observation = დაკვირვების წაშლა
 DELETE-OBSERVATION--question = ᲬᲐᲕᲨᲐᲚᲝᲗ ᲓᲐᲙᲕᲘᲠᲕᲔᲑᲐ?
 Delete-photo = ფოტოს წაშლა
 Delete-sound = ხმის წაშლა
-Deletes-entered-text = წაშლის შეყვანილ ტექსტს
 Deleting-x-of-y--observations =
     იშლება { $currentDeleteCount } დაკვირვება { $total ->
         [one] { $total }-დან
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = ᲒᲐᲐᲣᲛᲯᲝᲑᲔ�
 improving--identification = გამაუმჯობესებელი
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST-ᲘᲡ ᲐᲜᲒᲐᲠᲘᲨᲘᲡ ᲞᲐᲠᲐᲛᲔᲢᲠᲔᲑᲘ
 iNaturalist-AI-Camera = iNaturalist-ის AI კამერა
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalist-ს შეუძლია გამოიყენოს თქვენი ადგილმდებარეობა, რათა მოგაწოდოთ იდენტიფიკაციის უკეთესი შეთავაზებები. ჩვენ მას ასევე ვიყენებთ, რათა დაგეხმაროთ სიახლოვეს დაფიქსირებული სახეობების პოვნაში. თქვენი ადგილმდებარეობის გაზიარება ამარტივებს მეცნიერებისთვის სასარგებლო მონაცემების შექმნას.
 INATURALIST-COMMUNITY = INATURALIST-ᲘᲡ ᲗᲔᲛᲘ
 INATURALIST-FORUM = INATURALIST-ᲘᲡ ᲤᲝᲠᲣᲛᲘ
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] ᲒᲐᲬᲔᲕᲠᲘᲐᲜᲔᲑᲣᲚᲘᲐ { $count } ᲞᲠᲝᲔᲥᲢᲨᲘ
        *[other] ᲒᲐᲬᲔᲕᲠᲘᲐᲜᲔᲑᲣᲚᲘᲐ { $count } ᲞᲠᲝᲔᲥᲢᲨᲘ
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] ᲟᲣᲠᲜᲐᲚᲘᲡ ᲞᲝᲡᲢᲘ
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = გადასვლა AI კამერაზე
 Navigates-to-bulk-importer = გადასვლა მასობრივ იმპორტზე
 Navigates-to-camera = გადასვლა კამერაზე
 Navigates-to-explore = გამოკვლევაზე გადასვლა
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = შესვლის გვერდზე გადასვლა
 Navigates-to-main-menu = მთავარ მენიუზე გადასვლა
 Navigates-to-notifications = შეტყობინებებზე გადასვლა
@@ -771,6 +771,7 @@ Scientific-Name = სამეცნიერო სახელწოდებ�
 Scientific-Name-Common-Name = სამეცნიერო სახელი (გავრცელებული სახელი)
 SEARCH = SEARCH
 Search = ძებნა
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = Search for a project
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON

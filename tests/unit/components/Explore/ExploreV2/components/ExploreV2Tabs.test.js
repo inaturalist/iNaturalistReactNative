@@ -1,13 +1,13 @@
 import { screen, userEvent } from "@testing-library/react-native";
 import ExploreV2Tabs from "components/Explore/ExploreV2/components/ExploreV2Tabs";
-import { ExploreV2Provider } from "providers/ExploreV2Context";
+import { ExploreV2Provider, initialExploreV2State } from "providers/ExploreV2Context";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
 const actor = userEvent.setup( );
 
 const renderTabs = props => renderComponent(
-  <ExploreV2Provider>
+  <ExploreV2Provider initialState={initialExploreV2State}>
     <ExploreV2Tabs {...props} />
   </ExploreV2Provider>,
 );

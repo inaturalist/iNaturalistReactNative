@@ -88,7 +88,6 @@ attribution-cc-by-nd = some rights reserved (CC BY-ND)
 attribution-cc-by-sa = some rights reserved (CC BY-SA)
 August = Augusztus
 BACK-TO-LOGIN = BACK TO LOGIN
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = Bulk importer
 By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
 Choose-taxon = Choose taxon
 Choose-top-taxon = Choose top taxon
-Clear = Clear
 Close = Bezárás
 Close-permission-request-screen = Close permission request screen
 Close-search = Close search
@@ -229,7 +227,6 @@ Delete-observation = Megfigyelés törlése
 DELETE-OBSERVATION--question = DELETE OBSERVATION?
 Delete-photo = Fotó törlése
 Delete-sound = Delete sound
-Deletes-entered-text = Deletes entered text
 Deleting-x-of-y--observations =
     Deleting { $currentDeleteCount } { $total ->
         [one] of { $total }
@@ -400,6 +397,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = IMPROVE THESE SUGGESTIONS BY 
 improving--identification = Javító
 INATURALIST-ACCOUNT-SETTINGS = INATURALIST ACCOUNT SETTINGS
 iNaturalist-AI-Camera = iNaturalist AI Camera
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = Az iNaturalist a lokációd alapján pontosabb meghatározásokat tud adni. A lokáció alapján közeli fajokat is tudunk javasolni. A lokáció megosztásával hasznosabb kutatási adatok születnek.
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
@@ -443,6 +441,7 @@ JOINED-X-PROJECTS =
         [one] JOINED { $count } PROJECT
        *[other] JOINED { $count } PROJECTS
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] JOURNAL POST
@@ -516,6 +515,7 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigáció a bejelentkezési képernyőre
 Navigates-to-main-menu = Navigáció a főmenübe
 Navigates-to-notifications = Navigates to notifications
@@ -771,6 +771,7 @@ Scientific-Name = Tudományos név
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = SEARCH
 Search = Keresés
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = Search for a project
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON

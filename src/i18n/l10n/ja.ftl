@@ -88,7 +88,6 @@ attribution-cc-by-nd = いくつかの権利を保有（CC BY-ND）
 attribution-cc-by-sa = いくつかの権利を保有（CC BY-SA）
 August = 8月
 BACK-TO-LOGIN = ログインに戻る
-Blog = Blog
 BLOG = BLOG
 Bulk-importer = 一括インポーター
 By-exiting-changes-not-saved = 終了すると、観察記録への変更は保存されません。
@@ -131,7 +130,6 @@ Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ユーザー名の選択
 Choose-taxon = 分類群を選択
 Choose-top-taxon = トップ分類群を選択
-Clear = 消去する
 Close = 閉じる
 Close-permission-request-screen = 許可リクエスト画面を閉じる
 Close-search = 検索を閉じる
@@ -229,7 +227,6 @@ Delete-observation = 観察記録を削除
 DELETE-OBSERVATION--question = 観察記録を削除しますか?
 Delete-photo = 写真を削除
 Delete-sound = サウンドを削除
-Deletes-entered-text = 入力されたテキストを削除
 Deleting-x-of-y--observations =
     削除中 { $currentDeleteCount } { $total ->
         [one] の { $total }
@@ -405,6 +402,7 @@ IMPROVE-THESE-SUGGESTIONS-BY-USING-YOUR-LOCATION = 位置情報を使用して�
 improving--identification = 改善
 INATURALIST-ACCOUNT-SETTINGS = INATURALISTアカウント設定
 iNaturalist-AI-Camera = iNaturalist AI カメラ
+iNaturalist-Blog = iNaturalist Blog
 iNaturalist-can-use-your-location-to-give-you-better-identification-suggestions = iNaturalistは、あなたの位置情報を使用して、より適切な同定の提案を提供できます。また、近くで見られる種を見つけるのにも使用しています。位置情報を共有すると、科学に役立つデータを簡単に作成できます。
 INATURALIST-COMMUNITY = INATURALIST COMMUNITY
 INATURALIST-FORUM = INATURALIST FORUM
@@ -448,6 +446,7 @@ JOINED-X-PROJECTS =
         [one] JOINED { $count } PROJECT
        *[other] JOINED { $count } PROJECTS
     }
+JOURNAL-POST = JOURNAL POST
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] JOURNAL POST
@@ -521,6 +520,7 @@ Navigates-to-AI-camera = Navigates to AI camera
 Navigates-to-bulk-importer = Navigates to bulk importer
 Navigates-to-camera = Navigates to camera
 Navigates-to-explore = Navigates to explore
+Navigates-to-journal-post = Navigates to journal post
 Navigates-to-log-in-screen = Navigates to log in screen
 Navigates-to-main-menu = Navigates to main menu.
 Navigates-to-notifications = Navigates to notifications
@@ -776,6 +776,7 @@ Scientific-Name = 学名
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = SEARCH
 Search = 検索
+SEARCH--button = SEARCH
 Search-for-a-location = Search for a location
 Search-for-a-project = Search for a project
 SEARCH-FOR-A-TAXON = SEARCH FOR A TAXON
