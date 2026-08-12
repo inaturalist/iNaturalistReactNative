@@ -140,7 +140,7 @@
     "react-native-safe-area-context": "^5.8.0",
     "react-native-screens": "4.15.4",
     "react-native-sensitive-info": "^5.6.2",
-    "react-native-share-menu": "github:inaturalist/react-native-share-menu#iNaturalistReactNative",
+    "react-native-share-menu": "github:inaturalist/react-native-share-menu#892d4ffcad6e48607679c519be2448a3a878834a",
     "react-native-store-review": "^0.4.3",
     "react-native-svg": "^15.15.0",
     "react-native-svg-transformer": "^1.5.2",
