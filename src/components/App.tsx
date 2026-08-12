@@ -13,10 +13,10 @@ import useLinking from "./hooks/useLinking";
 import NetworkService from "./NetworkService";
 import StartupService from "./StartupService";
 
-type SharedItem = {
-  mimeType: string,
-  data: string | string[]
-};
+interface SharedItem {
+  mimeType: string;
+  data: string | string[];
+}
 
 const handleShare = ( navigation, item: ?SharedItem ) => {
   if ( !item ) {
@@ -39,10 +39,10 @@ const handleShare = ( navigation, item: ?SharedItem ) => {
   } );
 };
 
-type Props = {
+interface Props {
   // $FlowIgnore
-  children?: unknown,
-};
+  children?: unknown;
+}
 
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
