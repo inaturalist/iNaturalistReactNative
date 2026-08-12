@@ -68,7 +68,6 @@ const DatePicker = ( { currentObservation, updateObservationKeys }: Props ) => {
         <View className="w-[30px] items-center mr-1">
           <INatIcon size={14} name="clock-outline" />
         </View>
-        {/* $FlowIgnore */}
         <Body2 testID="ObsEdit.time" className={!displayDate( ) && "color-warningRed"}>
           {displayDate( ) || t( "Add-Date-Time" )}
         </Body2>
