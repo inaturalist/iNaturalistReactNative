@@ -15,6 +15,7 @@ import type {
   ExploreV2Subject,
   ExploreV2Tab,
 } from "providers/ExploreV2Context";
+import type { SharedData } from "sharedHooks/useShare";
 
 export interface ExploreV2EntryParams {
   subject?: ExploreV2Subject | null;
@@ -121,12 +122,8 @@ export type SharedStackParamList = {
     usesVision?: boolean;
   };
   // From App.js
-  // item is SharedItem
   PhotoSharing: {
-    item: {
-      mimeType: string;
-      data: string | string[];
-    };
+    item: SharedData;
   };
   // From usePrepareStoreAndNavigate.ts
   // {
