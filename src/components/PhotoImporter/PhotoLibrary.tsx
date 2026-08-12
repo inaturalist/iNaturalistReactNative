@@ -150,7 +150,7 @@ const PhotoLibrary = ( ) => {
     let response;
     try {
       response = await launchImageLibrary( {
-        selectionLimit: fromAICamera
+        selectionLimit: ( fromAICamera && isDefaultMode )
           ? FROM_AICAMERA_MAX_PHOTOS_ALLOWED
           : MAX_PHOTOS_ALLOWED,
         mediaType: "photo",
@@ -286,6 +286,7 @@ const PhotoLibrary = ( ) => {
     fromGroupPhotos,
     photoLibraryUris,
     groupedPhotos,
+    isDefaultMode,
     navigation,
     navToObsEdit,
     navBasedOnUserSettings,

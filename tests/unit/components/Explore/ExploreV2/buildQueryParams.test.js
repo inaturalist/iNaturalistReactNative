@@ -113,6 +113,44 @@ describe( "buildExploreV2QueryParams", ( ) => {
       expect( params.place_id ).toBe( 5 );
       expect( params.lat ).toBeUndefined( );
     } );
+
+    it( "uses the bounding box in MAP_AREA mode", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+          bounds: {
+            swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+          },
+        },
+      };
+      const params = buildExploreV2QueryParams( state );
+      expect( params.swlat ).toBe( 10 );
+      expect( params.swlng ).toBe( 20 );
+      expect( params.nelat ).toBe( 30 );
+      expect( params.nelng ).toBe( 40 );
+    } );
+
+    it( "omits coords and place in MAP_AREA mode, even with nearby coords resolved", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+          bounds: {
+            swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+          },
+        },
+      };
+      const params = buildExploreV2QueryParams( state, {
+        lat: 37.5,
+        lng: -122.1,
+        radius: 1,
+      } );
+      expect( params.lat ).toBeUndefined( );
+      expect( params.lng ).toBeUndefined( );
+      expect( params.radius ).toBeUndefined( );
+      expect( params.place_id ).toBeUndefined( );
+    } );
   } );
 
   describe( "sort", ( ) => {

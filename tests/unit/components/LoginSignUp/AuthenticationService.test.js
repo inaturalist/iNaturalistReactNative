@@ -192,4 +192,37 @@ describe( "getJWT 401 handling", ( ) => {
 
     expect( result ).toBeNull( );
   } );
+
+  it( "backs off and skips a second refresh attempt shortly after a failure", async ( ) => {
+    // Only one interceptor is registered (not .persist()), and net connect
+    // is disabled, so a second real request wouldn't silently succeed
+    // against the real network.
+    const errorSpy = jest.spyOn( console, "error" ).mockImplementation( ( ) => { } );
+    nock.disableNetConnect( );
+    try {
+      const scope = nock( API_HOST )
+        .get( "/users/api_token.json" )
+        .reply( 401 );
+
+      const countFailureLogs = ( ) => errorSpy.mock.calls.filter(
+        ( [msg] ) => typeof msg === "string" && msg.includes( "Token refresh failed" ),
+      ).length;
+
+      const firstResult = await getJWT( );
+      expect( firstResult ).toBeNull( );
+      expect( scope.isDone( ) ).toBe( true );
+      expect( countFailureLogs( ) ).toBe( 1 );
+
+      const secondResult = await getJWT( );
+
+      expect( secondResult ).toBeNull( );
+      // No new "Token refresh failed" log means getJWT skipped the network
+      // call entirely during the backoff window instead of trying (and
+      // failing) again.
+      expect( countFailureLogs( ) ).toBe( 1 );
+    } finally {
+      nock.enableNetConnect( );
+      errorSpy.mockRestore( );
+    }
+  } );
 } );

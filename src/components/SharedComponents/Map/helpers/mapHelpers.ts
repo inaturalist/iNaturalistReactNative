@@ -74,23 +74,28 @@ export function latitudeDeltaToMeters(
   return latitudeDelta * metersPerDegreeLatitude( latitude );
 }
 
-export function getMapRegion( totalBounds: MapBoundaries ): Region {
+export function regionFromBounds( bounds: MapBoundaries ): Region {
   const {
     nelat, nelng, swlat, swlng,
-  } = totalBounds;
-  // Deltas shouldn't be negative
-  const latDelta = Math.abs( Number( nelat ) - Number( swlat ) );
-  const lngDelta = Math.abs( Number( nelng ) - Number( swlng ) );
-  const lat = nelat - ( latDelta / 2 );
-  const lng = nelng - ( lngDelta / 2 );
+  } = bounds;
+  const latitudeDelta = Math.abs( Number( nelat ) - Number( swlat ) );
+  const longitudeDelta = Math.abs( Number( nelng ) - Number( swlng ) );
 
   return {
-    latitude: lat,
-    longitude: lng,
-    // Pad the detlas so the user sees the full range, make sure we don't
-    // specify impossible deltas like 190 degrees of latitude
-    latitudeDelta: Math.min( latDelta + latDelta * 0.4, 89 ),
-    longitudeDelta: Math.min( lngDelta + lngDelta * 0.4, 179 ),
+    latitude: nelat - ( latitudeDelta / 2 ),
+    longitude: nelng - ( longitudeDelta / 2 ),
+    latitudeDelta,
+    longitudeDelta,
+  };
+}
+
+export function getMapRegion( totalBounds: MapBoundaries ): Region {
+  const { latitudeDelta, longitudeDelta, ...center } = regionFromBounds( totalBounds );
+
+  return {
+    ...center,
+    latitudeDelta: Math.min( latitudeDelta + latitudeDelta * 0.4, 89 ),
+    longitudeDelta: Math.min( longitudeDelta + longitudeDelta * 0.4, 179 ),
   };
 }
 

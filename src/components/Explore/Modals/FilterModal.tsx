@@ -1,6 +1,7 @@
 import type { ApiPlace, ApiProject } from "api/types";
 import classNames from "classnames";
 import NumberBadge from "components/Explore/NumberBadge";
+import type { ExploreSearchUser } from "components/Explore/SearchScreens/ExploreUserSearch";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
@@ -40,12 +41,14 @@ import {
   WILD_STATUS,
 } from "providers/ExploreContext";
 import React, { useState } from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import type { LocationPermissionCallbacks } from "sharedHooks/useLocationPermission";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import placeGuessText from "../helpers/placeGuessText";
+import useSelectNearbyLocation from "../hooks/useSelectNearbyLocation";
 import ExploreLocationSearchModal from "./ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "./ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "./ExploreTaxonSearchModal";
@@ -63,11 +66,9 @@ interface Props {
   filterByIconicTaxonUnknown: () => void;
   renderLocationPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
   requestLocationPermissions: ( ) => void;
-  // TODO: type this properly when taxon has a type
-  updateTaxon: ( taxon: null | { name: string } ) => void;
+  updateTaxon: ( taxon: RealmTaxon | null ) => void;
   updateLocation: ( location: "worldwide" | ApiPlace ) => void;
-  // TODO: Param not typed yet, because ExploreUserSearch is not typed yet
-  updateUser: ( user: null | { login: string } ) => void;
+  updateUser: ( user: ExploreSearchUser | null, exclude?: boolean ) => void;
   updateProject: ( project: ApiProject ) => void;
 }
 
@@ -93,6 +94,7 @@ const FilterModal = ( {
     isNotInitialState,
     numberOfFilters,
   } = useExplore();
+  const selectNearbyLocation = useSelectNearbyLocation( );
   const {
     casual,
     created_d1: createdD1,
@@ -749,7 +751,7 @@ const FilterModal = ( {
                 updateTaxon( null );
               } else {
                 const selectedTaxon = realm
-                  ?.objects( "Taxon" )
+                  ?.objects<RealmTaxon>( "Taxon" )
                   .filtered( "name ==[c] $0", taxonName );
                 const iconicTaxon = selectedTaxon.length > 0
                   ? selectedTaxon[0]
@@ -1345,6 +1347,7 @@ const FilterModal = ( {
       />
       <ExploreLocationSearchModal
         closeModal={() => { setShowLocationSearchModal( false ); }}
+        onSelectNearby={selectNearbyLocation}
         renderPermissionsGate={renderLocationPermissionsGate}
         requestPermissions={requestLocationPermissions}
         showModal={showLocationSearchModal}
@@ -1352,7 +1355,6 @@ const FilterModal = ( {
       />
       <ExploreUserSearchModal
         showModal={showUserSearchModal}
-        currentUser={currentUser}
         closeModal={() => { setShowUserSearchModal( false ); }}
         updateUser={updateUser}
       />

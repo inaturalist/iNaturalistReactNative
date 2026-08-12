@@ -1,6 +1,6 @@
 // @flow
 
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
@@ -84,7 +84,6 @@ const StandardCamera = ( {
     rotatableAnimatedStyle,
     rotation,
   } = useRotation( );
-  const navigation = useNavigation( );
   const insets = useSafeAreaInsets();
 
   const cameraUris = useStore( state => state.cameraUris );
@@ -111,6 +110,7 @@ const StandardCamera = ( {
   const photosTaken = newPhotoUris.length > 0 && totalObsPhotoUris > 0;
   const {
     handleBackButtonPress,
+    navigateBackOrExitFlow,
     setShowDiscardSheet,
     showDiscardSheet,
   } = useBackPress( photosTaken );
@@ -148,8 +148,13 @@ const StandardCamera = ( {
       deletePhotoByUri( uri );
     } );
     setNewPhotoUris( [] );
-    navigation.goBack( );
-  }, [deletePhotoByUri, navigation, newPhotoUris, setNewPhotoUris] );
+    navigateBackOrExitFlow( );
+  }, [
+    deletePhotoByUri,
+    navigateBackOrExitFlow,
+    newPhotoUris,
+    setNewPhotoUris,
+  ] );
 
   const handleTakePhoto = useCallback( ( ) => {
     if ( disallowAddingPhotos ) {

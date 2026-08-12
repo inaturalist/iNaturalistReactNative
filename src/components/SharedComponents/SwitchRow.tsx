@@ -6,11 +6,11 @@ import { Switch } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 interface Props {
-  classNames: string;
+  classNames?: string;
   disabled?: boolean;
   label: string;
   onValueChange: ( newValue: boolean ) => void;
-  testID: string;
+  testID?: string;
   value: boolean;
 }
 

@@ -158,6 +158,22 @@ describe( "ObsDetailsScreen", ( ) => {
     } );
   } );
 
+  describe( "when the observation has not been fetched yet", ( ) => {
+    it( "renders a loading indicator", ( ) => {
+      jest.spyOn( useLocalObservation, "default" ).mockImplementation( () => ( {
+        localObservation: null,
+        markDeletedLocally: jest.fn( ),
+        markViewedLocally: jest.fn( ),
+      } ) );
+
+      renderComponent( <ObsDetailsScreen /> );
+
+      expect( screen.getByTestId( "ObsDetails.loading" ) ).toBeTruthy( );
+      expect( screen.queryByTestId( "ObsDetails.container" ) ).toBeFalsy( );
+      expect( screen.queryByTestId( "SavedMatch.container" ) ).toBeFalsy( );
+    } );
+  } );
+
   describe( "when showSavedMatch is false", ( ) => {
     it( "renders ObsDetailsContainer when observation is synced", ( ) => {
       const syncedLocalObservation = {
@@ -175,6 +191,7 @@ describe( "ObsDetailsScreen", ( ) => {
 
       expect( screen.getByTestId( "ObsDetails.container" ) ).toBeTruthy( );
       expect( screen.queryByTestId( "SavedMatch.container" ) ).toBeFalsy( );
+      expect( screen.queryByTestId( "ObsDetails.loading" ) ).toBeFalsy( );
     } );
 
     it(

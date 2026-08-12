@@ -62,6 +62,7 @@ class User extends Realm.Object {
       prefers_common_names: user.prefers_common_names,
       prefers_community_taxa: user.prefers_community_taxa,
       prefers_scientific_name_first: user.prefers_scientific_name_first,
+      roles: Array.from( user.roles || [] ),
       signedIn: user.signedIn,
     };
   }
@@ -93,6 +94,7 @@ class User extends Realm.Object {
       prefers_common_names: "bool?",
       prefers_community_taxa: "bool?",
       prefers_scientific_name_first: "bool?",
+      roles: "string[]",
       signedIn: "bool?",
     },
   };

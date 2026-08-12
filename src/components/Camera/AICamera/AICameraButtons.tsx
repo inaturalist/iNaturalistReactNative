@@ -11,30 +11,18 @@ import React from "react";
 import type { ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import type { CameraDeviceFormat, TakePhotoOptions } from "react-native-vision-camera";
+import type { TakePhotoOptions } from "react-native-vision-camera";
 import { useLayoutPrefs } from "sharedHooks";
-
-import AIDebugButton from "./AIDebugButton";
 
 const isTablet = DeviceInfo.isTablet();
 
 interface Props {
   handleZoomButtonPress: ( ) => void;
-  confidenceThreshold?: number;
-  cropRatio?: string;
   flipCamera: ( ) => void;
-  fps?: number;
   handleClose: ( ) => void;
   hasFlash: boolean;
   modelLoaded: boolean;
-  numStoredResults?: number;
   rotatableAnimatedStyle: ViewStyle;
-  debugFormat?: CameraDeviceFormat;
-  setConfidenceThreshold: ( value: number ) => void;
-  setCropRatio: ( value: number ) => void;
-  setFPS: ( value: number ) => void;
-  setNumStoredResults: ( value: number ) => void;
-  changeDebugFormat?: ( ) => void;
   showPrediction: boolean;
   showZoomButton: boolean;
   takePhoto: () => Promise<void>;
@@ -49,21 +37,11 @@ interface Props {
 
 const AICameraButtons = ( {
   handleZoomButtonPress,
-  changeDebugFormat,
-  confidenceThreshold,
-  cropRatio,
-  debugFormat,
   flipCamera,
-  fps,
   handleClose,
   hasFlash,
   modelLoaded,
-  numStoredResults,
   rotatableAnimatedStyle,
-  setConfidenceThreshold,
-  setCropRatio,
-  setFPS,
-  setNumStoredResults,
   showPrediction,
   showZoomButton,
   takePhoto,
@@ -125,25 +103,6 @@ const AICameraButtons = ( {
         className="absolute right-0 bottom-[6px] h-full justify-end items-end flex gap-y-9"
         pointerEvents="box-none"
       >
-        <AIDebugButton
-          confidenceThreshold={confidenceThreshold}
-          setConfidenceThreshold={setConfidenceThreshold}
-          fps={fps}
-          setFPS={setFPS}
-          numStoredResults={numStoredResults}
-          setNumStoredResults={setNumStoredResults}
-          cropRatio={cropRatio}
-          setCropRatio={setCropRatio}
-          debugFormat={debugFormat}
-          changeDebugFormat={changeDebugFormat}
-          // TODO: The following are just to get accessibility tests to pass...
-          // without making anything truly accessible. The test seems to think
-          // AIDebugButton is itself not accessible, but it's really
-          // complaining about the sliders within. If the sliders make it into
-          // production, they'll need to be made to pass that test.
-          accessibilityRole="adjustable"
-          accessibilityValue={{ min: 0, max: 100, now: 50 }}
-        />
         {!isDefaultMode && (
           <View>
             <Location

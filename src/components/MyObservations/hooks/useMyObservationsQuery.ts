@@ -18,6 +18,7 @@ interface UseMyObservationsQueryResult {
   isLoading: boolean;
   isFetchingNextPage: boolean;
   error: Error | null;
+  totalResults?: number;
   refetch: ( ) => void;
   fetchNextPage: ( ) => void;
 }
@@ -49,6 +50,7 @@ const useMyObservationsQuery = ( ): UseMyObservationsQueryResult => {
     isLoading,
     isFetchingNextPage,
     error,
+    totalResults,
     fetchNextPage,
     refetch,
   } = useServerOrderedObservations( {
@@ -104,6 +106,9 @@ const useMyObservationsQuery = ( ): UseMyObservationsQueryResult => {
     error: isServerAuthoritative
       ? error
       : null,
+    totalResults: isServerAuthoritative
+      ? totalResults
+      : undefined,
     // pagination only applies to the server-authoritative case; the default sort is handled by
     // useInfiniteObservationsScroll, and locally-sorted data for logged-out users loads from Realm
     refetch: isServerAuthoritative

@@ -81,6 +81,21 @@ describe( "StandardCamera navigation with advanced user layout", ( ) => {
         // expect( screen.getByText( /Use iNaturalist to identify/ ) ).toBeVisible( );
       } );
     } );
+
+    it( "should leave the camera when discard tapped after taking a photo", async ( ) => {
+      renderApp( );
+      await navigateToStandardCameraFromMyObs( );
+      const takePhotoButton = await screen.findByLabelText( /Take photo/ );
+      await actor.press( takePhotoButton );
+      const cameraNavButtons = await screen.findByTestId( "CameraNavButtons" );
+      const closeButton = await within( cameraNavButtons ).findByLabelText( "Close" );
+      await actor.press( closeButton );
+      const discardButton = await screen.findByText( "DISCARD" );
+      await actor.press( discardButton );
+      await waitFor( ( ) => {
+        expect( screen.queryByTestId( "CameraNavButtons" ) ).toBeNull( );
+      } );
+    } );
   } );
 
   it( "should advance to ObsEdit when photo taken and checkmark tapped", async () => {

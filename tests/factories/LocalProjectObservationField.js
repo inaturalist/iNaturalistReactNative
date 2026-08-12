@@ -6,5 +6,5 @@ export default define( "LocalProjectObservationField", faker => ( {
   id: faker.number.int( ),
   obsField: ofFactory( "LocalObservationField" ),
   position: faker.number.int( ),
-  required: true,
+  required: false,
 } ) );

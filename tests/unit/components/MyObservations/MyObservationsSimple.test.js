@@ -90,17 +90,22 @@ const renderMyObservations = (
   layout,
   showSearchEmptyState = false,
   currentUser = undefined,
+  showSearchOfflineNotice = false,
+  isConnected = true,
 ) => renderComponent(
   <MyObservationsProvider>
     <MyObservationsSimple
       currentUser={currentUser}
+      isConnected={isConnected}
       layout={layout}
       observationIds={mockObsIds}
       onEndReached={jest.fn( )}
+      handlePullToRefresh={jest.fn( )}
       updateObservationsView={jest.fn( )}
       setShowLoginSheet={jest.fn( )}
       activeTab={OBSERVATIONS_TAB}
       showSearchEmptyState={showSearchEmptyState}
+      showSearchOfflineNotice={showSearchOfflineNotice}
     />
   </MyObservationsProvider>,
 );
@@ -153,6 +158,15 @@ describe( "MyObservationsSimple", () => {
     renderMyObservations( "list", true );
 
     expect( screen.getByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "MyObservationsAnimatedList" ) ).toBeNull( );
+  } );
+
+  it( "renders the offline notice instead of SearchEmptyState when a search is active "
+    + "while offline", ( ) => {
+    renderMyObservations( "list", false, undefined, true, false );
+
+    expect( screen.getByText( "You are offline. Tap to try again." ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeNull( );
     expect( screen.queryByTestId( "MyObservationsAnimatedList" ) ).toBeNull( );
   } );
 

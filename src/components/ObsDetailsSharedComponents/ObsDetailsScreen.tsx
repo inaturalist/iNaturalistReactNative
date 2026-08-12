@@ -3,6 +3,9 @@ import { useRoute } from "@react-navigation/native";
 import SavedMatchContainer from "components/ObsDetailsDefaultMode/SavedMatch/SavedMatchContainer";
 import ObsDetailsContainer
   from "components/ObsDetailsSharedComponents/ObsDetailsContainer";
+import ActivityIndicator from "components/SharedComponents/ActivityIndicator";
+import { ScreenShell } from "components/SharedComponents/ViewWrapper";
+import { View } from "components/styledComponents";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
@@ -66,6 +69,20 @@ const ObsDetailsScreen = () => {
       <SavedMatchContainer
         observation={observation}
       />
+    );
+  }
+
+  const isLoadingObservation = !observation
+    && fetchRemoteObservationEnabled
+    && !fetchRemoteObservationError;
+
+  if ( isLoadingObservation ) {
+    return (
+      <ScreenShell testID="ObsDetails.loading">
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size={50} />
+        </View>
+      </ScreenShell>
     );
   }
 

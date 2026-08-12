@@ -16,7 +16,7 @@ export type ActionType = "upload" | "attach" | "update";
 
 interface UploadOptions {
   api_token?: string;
-  signal: AbortController;
+  signal: AbortSignal;
 }
 
 interface MediaApiResponse {

@@ -25,6 +25,7 @@ interface Props extends PropsWithChildren {
   containerClass?: string;
   onLayout?: ( event: LayoutChangeEvent ) => void;
   sticky?: boolean;
+  testID?: string;
   buttonConfiguration?: ButtonConfiguration[];
 }
 
@@ -35,6 +36,7 @@ const ButtonBar = ( {
   buttonConfiguration,
   onLayout,
   sticky,
+  testID,
 }: Props ) => {
   const { bottom } = useSafeAreaInsets( );
   const layoutClassNames = sticky
@@ -55,6 +57,7 @@ const ButtonBar = ( {
       style={[DROP_SHADOW, sticky
         ? { paddingBottom: bottom }
         : undefined]}
+      testID={testID}
     >
       {buttonConfiguration && buttonConfiguration.map( button => {
         const {

@@ -23,7 +23,7 @@ import {
 } from "uploaders/utils/progressTracker";
 
 export const MS_BEFORE_TOOLBAR_RESET = 5_000;
-const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
+export const MS_BEFORE_UPLOAD_TIMES_OUT = 60_000 * 5;
 
 const { useRealm } = RealmContext;
 
@@ -98,16 +98,26 @@ export default ( canUpload: boolean ) => {
   const uploadObservationAndCatchError = useCallback( async ( observation: RealmObservation ) => {
     const { uuid } = observation;
     setCurrentUpload( observation );
+    // Each upload gets its own abort controller so that a timeout only
+    // cancels this observation and the queue can advance. The store's
+    // session-level abortController only aborts when the user stops all
+    // uploads, which cascades here through the listener.
+    const obsAbortController = new AbortController( );
+    const abortCurrentUpload = ( ) => obsAbortController.abort( );
+    let timeoutID: ReturnType<typeof setTimeout> | undefined;
     try {
-      const timeoutID = setTimeout( ( ) => {
-        abortController.abort( );
-      }, MS_BEFORE_UPLOAD_TIMES_OUT );
-      await uploadObservation( observation, realm, { signal: abortController.signal } );
-      clearTimeout( timeoutID );
+      abortController?.signal.addEventListener( "abort", abortCurrentUpload );
+      timeoutID = setTimeout( abortCurrentUpload, MS_BEFORE_UPLOAD_TIMES_OUT );
+      await uploadObservation( observation, realm, { signal: obsAbortController.signal } );
     } catch ( uploadErr ) {
       const uploadError = uploadErr as Error;
+      // stop here if user-initiated. finally still runs.
+      if ( abortController?.signal.aborted ) {
+        return;
+      }
       if ( uploadError.name === "AbortError" ) {
-        addUploadError( "aborted", observation.uuid );
+        // Only a per-observation timeout reaches here now
+        addUploadError( "aborted", uuid );
       } else {
         const { message, recoveryPossible, recoveryBy } = handleUploadError( uploadError, t );
         if ( message?.match( /That observation no longer exists./ ) ) {
@@ -129,12 +139,18 @@ export default ( canUpload: boolean ) => {
         }
       }
     } finally {
-      removeFromUploadQueue( );
-      if (
-        uploadQueue.length === 0
-        && !currentUpload
-      ) {
-        completeUploads( );
+      clearTimeout( timeoutID );
+      abortController?.signal.removeEventListener( "abort", abortCurrentUpload );
+      if ( !abortController?.signal.aborted ) {
+        // stopAllUploads already cleared the queue if the top level controller was aborted
+        // so don't do it a second time if it was
+        removeFromUploadQueue( );
+        if (
+          uploadQueue.length === 0
+          && !currentUpload
+        ) {
+          completeUploads( );
+        }
       }
     }
   }, [

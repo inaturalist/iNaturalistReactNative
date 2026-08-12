@@ -61,6 +61,8 @@ npm run lint:tsc        # TypeScript checking
 
 **Note on `lint:tsc`:** The repo has a large pre-existing TypeScript error baseline (over 1,000 errors), so a clean run is not expected. The standard is to add no new errors in files you touch — verify by filtering the tsc output for your filenames and comparing against the pre-change state. TS7016 implicit-`any` errors from importing untyped `.js` modules are part of the accepted baseline; do not add `@ts-ignore` comments for them.
 
+**Never silence a type error you can't honestly fix.** Casts (`as unknown as X`), non-null `!`, and widening a type to `object`/`Function` quiet `tsc` while leaving the mismatch in shipped code. If an error is a legitimate mismatch that can't be resolved within the scope of your change, leave it reported
+
 ### Translations
 ```bash
 # Build translation JSON from Fluent files

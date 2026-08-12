@@ -123,6 +123,43 @@ describe( "exploreV2Reducer", ( ) => {
       expect( next.location.place ).toEqual( place );
     } );
 
+    it( "SET_LOCATION_MAP_AREA stores the bounding box, dropping the prior place", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+          place: { id: 5, display_name: "Oakland" },
+        },
+      };
+      const bounds = {
+        swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+      };
+      const next = exploreV2Reducer( state, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+        bounds,
+      } );
+      expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.MAP_AREA );
+      expect( next.location.bounds ).toEqual( bounds );
+      expect( next.location.place ).toBeUndefined( );
+    } );
+
+    it( "SET_LOCATION_WORLDWIDE drops a prior map area's bounds", ( ) => {
+      const state = {
+        ...initialExploreV2State,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+          bounds: {
+            swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+          },
+        },
+      };
+      const next = exploreV2Reducer( state, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE,
+      } );
+      expect( next.location.placeMode ).toBe( EXPLORE_V2_PLACE_MODE.WORLDWIDE );
+      expect( next.location.bounds ).toBeUndefined( );
+    } );
+
     it( "preserves subject, sorts, and filters when changing location", ( ) => {
       const state = {
         subject: { type: "taxon", taxon: { id: 42 } },

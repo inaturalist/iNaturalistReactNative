@@ -111,7 +111,7 @@ describe( "UserProfile", () => {
   describe( "edit button", () => {
     test( "is shown when viewing your own profile", async () => {
       jest.spyOn( useCurrentUser, "default" )
-        .mockImplementation( () => ( { login: mockUser.login } ) );
+        .mockImplementation( () => ( { login: mockUser.login, roles: [] } ) );
 
       renderComponent( <UserProfile /> );
       renderHeaderRight( );
@@ -121,7 +121,7 @@ describe( "UserProfile", () => {
 
     test( "is not shown when viewing another user's profile", async () => {
       jest.spyOn( useCurrentUser, "default" )
-        .mockImplementation( () => ( { login: "someone-else" } ) );
+        .mockImplementation( () => ( { login: "someone-else", roles: [] } ) );
 
       renderComponent( <UserProfile /> );
       renderHeaderRight( );
@@ -131,7 +131,7 @@ describe( "UserProfile", () => {
 
     test( "navigates to account settings when pressed", async () => {
       jest.spyOn( useCurrentUser, "default" )
-        .mockImplementation( () => ( { login: mockUser.login } ) );
+        .mockImplementation( () => ( { login: mockUser.login, roles: [] } ) );
 
       renderComponent( <UserProfile /> );
       renderHeaderRight( );

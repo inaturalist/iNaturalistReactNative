@@ -1,23 +1,22 @@
-// @flow
-
-import {
-  ButtonBar,
-  SearchBar,
-  SearchHeader,
-  ViewWrapper,
-} from "components/SharedComponents";
+import type { ApiUser } from "api/types";
+import type { ButtonConfiguration } from "components/SharedComponents/ButtonBar";
+import ButtonBar from "components/SharedComponents/ButtonBar";
+import SearchBar from "components/SharedComponents/SearchBar";
+import SearchHeader from "components/SharedComponents/SearchHeader";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import UserList from "components/UserList/UserList";
-import type { Node } from "react";
 import React, {
   useCallback,
   useMemo,
   useState,
 } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  useCurrentUser, useKeyboardInfo, useTranslation, useUserSearch,
-} from "sharedHooks";
+import type { UserPojo } from "realmModels/User";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
+import useTranslation from "sharedHooks/useTranslation";
+import useUserSearch from "sharedHooks/useUserSearch";
 import { getShadow } from "styles/global";
 
 import EmptySearchResults from "./EmptySearchResults";
@@ -26,12 +25,14 @@ const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
 } );
 
-type Props = {
-  closeModal: Function,
-  updateUser: Function
-};
+export type ExploreSearchUser = ApiUser | UserPojo;
 
-const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
+interface Props {
+  closeModal: ( ) => void;
+  updateUser: ( user: ExploreSearchUser | null, exclude?: boolean ) => void;
+}
+
+const ExploreUserSearch = ( { closeModal, updateUser }: Props ) => {
   const [userQuery, setUserQuery] = useState( "" );
   const { t } = useTranslation();
   const { bottom } = useSafeAreaInsets( );
@@ -39,7 +40,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
   const { keyboardHeight, keyboardShown } = useKeyboardInfo();
   const { users: userList = [], isLoading, refetch } = useUserSearch( userQuery );
 
-  const onUserSelected = useCallback( async ( user, exclude ) => {
+  const onUserSelected = useCallback( async ( user: ExploreSearchUser, exclude?: boolean ) => {
     if ( !user.id && !user.login ) {
       // If both of those are missing, we can not query by user
       // TODO: user facing error message
@@ -76,7 +77,7 @@ const ExploreUserSearch = ( { closeModal, updateUser }: Props ): Node => {
       : <View style={{ paddingBottom: bottom }} />
   );
 
-  const buttons = [
+  const buttons: ButtonConfiguration[] = [
     {
       title: t( "BY-ME" ),
       onPress: () => {

@@ -93,18 +93,10 @@ const AICamera = ( {
     rotatableAnimatedStyle,
   } = useRotation( );
   const {
-    confidenceThreshold,
-    fps,
     handleTaxaDetected,
     modelLoaded,
-    numStoredResults,
     result,
     setResult,
-    cropRatio,
-    setConfidenceThreshold,
-    setFPS,
-    setNumStoredResults,
-    setCropRatio,
   } = usePredictions( );
   const [inactive, setInactive] = React.useState( false );
   const [initialVolume, setInitialVolume] = useState( null );
@@ -113,14 +105,6 @@ const AICamera = ( {
   const [userDisabledLocation, setUserDisabledLocation] = useState( false );
   const useLocation = hasLocationPermissions && !userDisabledLocation;
   const [locationStatusVisible, setLocationStatusVisible] = useState( false );
-
-  const [debugFormatIndex, setDebugFormatIndex] = useState( 0 );
-  const changeDebugFormat = ( ) => {
-    setDebugFormatIndex( prev => ( prev + 1 ) % device.formats.length );
-  };
-  const debugFormat = isDebug
-    ? device.formats[debugFormatIndex]
-    : undefined;
 
   const toggleLocation = () => {
     if ( !useLocation && !hasLocationPermissions ) {
@@ -228,12 +212,7 @@ const AICamera = ( {
         <View className="w-full h-full absolute z-0">
           <FrameProcessorCamera
             cameraRef={camera}
-            confidenceThreshold={confidenceThreshold}
-            debugFormat={debugFormat}
             device={device}
-            fps={fps}
-            numStoredResults={numStoredResults}
-            cropRatio={cropRatio}
             onTaxaDetected={handleTaxaDetected}
             onClassifierError={handleClassifierError}
             onDeviceNotSupported={handleDeviceNotSupported}
@@ -317,21 +296,11 @@ const AICamera = ( {
       <FadeInOutView takingPhoto={takingPhoto} cameraType="AI" />
       <AICameraButtons
         handleZoomButtonPress={handleZoomButtonPress}
-        changeDebugFormat={changeDebugFormat}
-        confidenceThreshold={confidenceThreshold}
-        cropRatio={cropRatio}
-        debugFormat={debugFormat}
         flipCamera={onFlipCamera}
-        fps={fps}
         hasFlash={hasFlash}
         handleClose={handleClose}
         modelLoaded={modelLoaded}
-        numStoredResults={numStoredResults}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
-        setConfidenceThreshold={setConfidenceThreshold}
-        setCropRatio={setCropRatio}
-        setFPS={setFPS}
-        setNumStoredResults={setNumStoredResults}
         showPrediction={showPrediction}
         showZoomButton={showZoomButton}
         takePhoto={handleTakePhoto}

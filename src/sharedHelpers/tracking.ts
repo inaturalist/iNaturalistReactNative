@@ -1,5 +1,7 @@
 import {
-  getAnalytics, logEvent,
+  getAnalytics,
+  logEvent,
+  logScreenView,
   setAnalyticsCollectionEnabled,
 } from "@react-native-firebase/analytics";
 import { getPerformance } from "@react-native-firebase/perf";
@@ -37,9 +39,11 @@ export const logFirebaseScreenView = (
 ) => {
   try {
     const analytics = getAnalytics();
-    logEvent( analytics, "screen_view", {
-      firebase_screen: screenName,
-      firebase_screen_class: screenName,
+    logScreenView( analytics, {
+      screen_name: screenName,
+      // Firebase automatically reports screen_class, the native class e.g., MainActivity.java.
+      // In a pure RN app, this could be misleading so we _explicitly_ override this with "NA"
+      screen_class: "NA",
     } );
   } catch ( error ) {
     logger.error( "Error logging firebase screen view", JSON.stringify( error ) );

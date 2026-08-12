@@ -169,6 +169,18 @@ describe( "ExploreV2Header", () => {
     expect( screen.getByText( "Nearby" ) ).toBeTruthy();
   } );
 
+  it( "renders the Map Area label when location is a map area", () => {
+    setState( null, {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      bounds: {
+        swlat: 1, swlng: 2, nelat: 3, nelng: 4,
+      },
+    } );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.getByText( "Map Area" ) ).toBeTruthy();
+  } );
+
   it( "navigates to Universal Search when the header is tapped", async () => {
     const actor = userEvent.setup();
     setState( null );
