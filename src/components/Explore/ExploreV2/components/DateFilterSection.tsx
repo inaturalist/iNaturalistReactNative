@@ -9,6 +9,7 @@ import {
   RadioButtonSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { DATE_OBSERVED, DATE_UPLOADED } from "providers/ExploreContext";
 import React, { useState } from "react";
 import { formatObsFieldDate } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
@@ -18,32 +19,33 @@ const toISODate = ( date: Date ): string => formatObsFieldDate( date );
 
 type OpenSheet = "mode" | "exact" | "start" | "end" | null;
 
-interface ModeOption {
+export type DateFilterMode = DATE_OBSERVED | DATE_UPLOADED;
+
+interface ModeOption<TMode extends DateFilterMode> {
   label: string;
   labelCaps: string;
   text?: string;
-  value: string;
+  value: TMode;
 }
 
-interface Props {
+interface Props<TMode extends DateFilterMode> extends React.PropsWithChildren {
   accessibilityLabel: string;
-  children?: React.ReactNode;
   exactDate?: string | null;
-  exactMode: string;
+  exactMode: TMode;
   headerText: string;
-  mode: string;
-  modeValues: Record<string, ModeOption>;
+  mode: TMode;
+  modeValues: Record<TMode, ModeOption<TMode>> & { [key: string]: ModeOption<TMode> };
   onChangeExactDate: ( isoDate: string ) => void;
-  onChangeMode: ( mode: string ) => void;
+  onChangeMode: ( mode: TMode ) => void;
   onChangeRangeEnd: ( isoDate: string ) => void;
   onChangeRangeStart: ( isoDate: string ) => void;
   rangeEnd?: string | null;
   rangeEndBeforeStart?: boolean;
-  rangeMode: string;
+  rangeMode: TMode;
   rangeStart?: string | null;
 }
 
-const DateFilterSection = ( {
+const DateFilterSection = <TMode extends DateFilterMode>( {
   accessibilityLabel,
   children,
   exactDate,
@@ -59,7 +61,7 @@ const DateFilterSection = ( {
   rangeEndBeforeStart,
   rangeMode,
   rangeStart,
-}: Props ) => {
+}: Props<TMode> ) => {
   const { t } = useTranslation( );
   const [openSheet, setOpenSheet] = useState<OpenSheet>( null );
   const closeSheet = ( ) => setOpenSheet( null );
@@ -145,7 +147,7 @@ const DateFilterSection = ( {
         <RadioButtonSheet
           headerText={headerText}
           confirm={newMode => {
-            onChangeMode( String( newMode ) );
+            onChangeMode( newMode );
             closeSheet( );
           }}
           onPressClose={closeSheet}

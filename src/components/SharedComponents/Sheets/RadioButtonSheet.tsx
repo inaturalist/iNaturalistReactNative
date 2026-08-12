@@ -9,30 +9,32 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type RadioSheetPrimitive = boolean | number | string;
 
-interface Props {
+export interface RadioSheetOption<ValueT extends RadioSheetPrimitive> {
+  buttonText?: string;
+  icon?: string;
+  label?: string;
+  labelComponent?: React.JSX.Element;
+  text?: string;
+  value: ValueT;
+}
+
+interface Props<ValueT extends RadioSheetPrimitive> {
   bottomComponent?: React.JSX.Element;
   buttonRowClassName?: string;
-  confirm: ( _checkedValue: RadioSheetPrimitive ) => void;
+  confirm: ( _checkedValue: ValueT ) => void;
   confirmText?: string;
   headerText: string;
   insideModal?: boolean;
   loading?: boolean;
   onPressClose?: ( ) => void;
   requireSelectionChange?: boolean;
-  radioValues: Record<string, {
-    buttonText?: string;
-    icon?: string;
-    label?: string;
-    labelComponent?: React.JSX.Element;
-    text?: string;
-    value: RadioSheetPrimitive;
-  }>;
-  selectedValue?: RadioSheetPrimitive;
+  radioValues: Record<string, RadioSheetOption<ValueT>>;
+  selectedValue: ValueT;
   testID?: string;
   topDescriptionText?: React.JSX.Element;
 }
 
-const RadioButtonSheet = ( {
+const RadioButtonSheet = <ValueT extends RadioSheetPrimitive>( {
   bottomComponent,
   buttonRowClassName,
   confirm,
@@ -43,10 +45,10 @@ const RadioButtonSheet = ( {
   onPressClose,
   radioValues,
   requireSelectionChange = true,
-  selectedValue = "none",
+  selectedValue,
   testID,
   topDescriptionText,
-}: Props ) => {
+}: Props<ValueT> ) => {
   const { t } = useTranslation( );
   const [checkedValue, setCheckedValue] = useState( selectedValue );
 
@@ -69,6 +71,7 @@ const RadioButtonSheet = ( {
   );
 
   const confirmLabel = confirmText || t( "CONFIRM" );
+  const buttonLabel = radioValues[String( checkedValue )]?.buttonText ?? confirmLabel;
 
   return (
     <BottomSheet
@@ -91,8 +94,8 @@ const RadioButtonSheet = ( {
           }}
           disabled={confirmBlockedByDirtyCheck || loading}
           loading={loading}
-          text={radioValues[checkedValue]?.buttonText ?? confirmLabel}
-          accessibilityLabel={radioValues[checkedValue]?.buttonText ?? confirmLabel}
+          text={buttonLabel}
+          accessibilityLabel={buttonLabel}
         />
       </View>
     </BottomSheet>
