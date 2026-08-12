@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import RootStackNavigator from "navigation/RootStackNavigator";
+import type { PropsWithChildren } from "react";
 import React, { useCallback } from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import type { SharedData } from "sharedHooks/useShare";
@@ -32,14 +33,9 @@ const handleShare = ( navigation, item?: SharedData | null ) => {
   } );
 };
 
-interface Props {
-  // $FlowIgnore
-  children?: unknown;
-}
-
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
-const App = ( { children }: Props ) => {
+const App = ( { children }: PropsWithChildren ) => {
   const navigation = useNavigation( );
 
   // attempting to make sure that navigation is only called once
