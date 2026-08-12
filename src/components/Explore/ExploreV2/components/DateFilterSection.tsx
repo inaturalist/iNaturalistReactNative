@@ -34,7 +34,7 @@ interface Props<TMode extends DateFilterMode> extends React.PropsWithChildren {
   exactMode: TMode;
   headerText: string;
   mode: TMode;
-  modeValues: Record<TMode, ModeOption<TMode>> & { [key: string]: ModeOption<TMode> };
+  modeValues: { [K in TMode]: ModeOption<K> };
   onChangeExactDate: ( isoDate: string ) => void;
   onChangeMode: ( mode: TMode ) => void;
   onChangeRangeEnd: ( isoDate: string ) => void;
@@ -70,7 +70,7 @@ const DateFilterSection = <TMode extends DateFilterMode>( {
     <View className="mb-7">
       <Heading4 className="mb-5">{headerText}</Heading4>
       <Button
-        text={modeValues[mode]?.labelCaps}
+        text={modeValues[mode].labelCaps}
         className="shrink mb-7"
         dropdown
         onPress={( ) => setOpenSheet( "mode" )}
