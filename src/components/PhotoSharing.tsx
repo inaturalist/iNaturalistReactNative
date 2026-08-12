@@ -73,6 +73,10 @@ const PhotoSharing = ( ) => {
   useEffect( ( ) => {
     const { data } = item;
 
+    if ( data === null ) {
+      return;
+    }
+
     // when sharing, we need to reset zustand like we do while
     // navigating through the AddObsBottomSheet
     resetObservationFlowSlice( );
