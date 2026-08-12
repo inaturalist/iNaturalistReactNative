@@ -57,6 +57,7 @@ const EvidenceSection = ( {
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
+  const missingCoords = currentObservation?.missing_coords;
 
   const displayPlaceName = ( ) => {
     let placeName = "";
@@ -64,17 +65,17 @@ const EvidenceSection = ( {
       placeName = currentObservation?.place_guess;
     } else if ( isFetchingLocation ) {
       placeName = t( "Fetching-location" );
-    } else if ( !latitude || !longitude ) {
+    } else if ( missingCoords ) {
       return t( "Add-Location" );
     }
     return placeName;
   };
 
   const displayLocation = ( ) => {
-    if ( isFetchingLocation && ( !latitude || !longitude ) ) {
+    if ( isFetchingLocation && missingCoords ) {
       return t( "Stay-on-this-screen" );
     }
-    if ( !latitude || !longitude ) {
+    if ( missingCoords ) {
       return t( "No-Location" );
     }
     return t( "Lat-Lon-Acc", {
