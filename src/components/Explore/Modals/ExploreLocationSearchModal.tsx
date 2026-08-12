@@ -8,8 +8,8 @@ interface Props {
   closeModal: () => void;
   hasPermissions?: boolean;
   onSelectNearby: ( ) => Promise<void> | void;
-  renderPermissionsGate: ( options: LocationPermissionCallbacks ) => React.FC;
-  requestPermissions: ( ) => void;
+  renderPermissionsGate?: ( options: LocationPermissionCallbacks ) => React.FC;
+  requestPermissions?: ( ) => void;
   showModal: boolean;
   updateLocation: ( location: "worldwide" | ApiPlace ) => void;
 }
