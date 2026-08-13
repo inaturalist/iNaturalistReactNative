@@ -76,7 +76,9 @@ const OtherDataSection = ( {
 
   const traditionalProjectsEnabled = useFeatureFlag( FeatureFlag.TraditionalProjectsEnabled );
 
-  const projectCount = currentObservation?.projectObservations?.length ?? 0;
+  const projectCount = ( currentObservation?.projectObservations ?? [] )
+    .filter( po => !po._pendingRemoval && !po._pending_deletion )
+    .length;
   const projectsLabel = projectCount > 0
     ? t( "Added-to-X-Projects", { count: projectCount } )
     : t( "Add-to-Projects" );

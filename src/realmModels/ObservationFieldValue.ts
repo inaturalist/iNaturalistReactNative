@@ -1,6 +1,9 @@
 import { Realm } from "@realm/react";
 import type { ApiObservationFieldValue } from "api/types";
-import type { RealmObservationPojo } from "realmModels/types";
+import type {
+  RealmObservationFieldValuePojo,
+  RealmObservationPojo,
+} from "realmModels/types";
 import * as uuid from "uuid";
 
 class ObservationFieldValue extends Realm.Object {
@@ -9,6 +12,8 @@ class ObservationFieldValue extends Realm.Object {
   _synced_at?: Date;
 
   _updated_at?: Date;
+
+  _pending_deletion?: boolean;
 
   needsSync( ) {
     return !this._synced_at || this._synced_at <= this._updated_at;
@@ -31,12 +36,25 @@ class ObservationFieldValue extends Realm.Object {
     };
   }
 
+  static isActive( ofv: RealmObservationFieldValuePojo ) {
+    return !ofv._pendingRemoval && !ofv._pending_deletion;
+  }
+
   static findForObsField(
     observation: RealmObservationPojo,
     obsFieldId: number,
   ) {
     return observation.observationFieldValues.find(
       ofv => ofv.obsFieldId === obsFieldId,
+    );
+  }
+
+  static findActiveForObsField(
+    observation: RealmObservationPojo,
+    obsFieldId: number,
+  ) {
+    return observation.observationFieldValues.find(
+      ofv => ofv.obsFieldId === obsFieldId && ObservationFieldValue.isActive( ofv ),
     );
   }
 
@@ -61,6 +79,7 @@ class ObservationFieldValue extends Realm.Object {
       _synced_at: "date?",
       // datetime the OFV was updated on the device (i.e. edited locally)
       _updated_at: "date?",
+      _pending_deletion: "bool?",
       uuid: "string",
       id: "int?",
       obsFieldId: "int",

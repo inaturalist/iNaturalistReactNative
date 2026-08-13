@@ -281,6 +281,41 @@ class Observation extends Realm.Object {
     return localObs;
   }
 
+  static prepareEmbedForLocalSave( embed, now, existingEmbed ) {
+    if ( !embed ) {
+      return embed;
+    }
+
+    const { _pendingRemoval, ...restWithoutPendingRemoval } = embed;
+
+    if ( _pendingRemoval || embed._pending_deletion ) {
+      return {
+        ...restWithoutPendingRemoval,
+        _pending_deletion: true,
+        _updated_at: now,
+      };
+    }
+
+    const isNew = !existingEmbed;
+    const wasReactivated = existingEmbed?._pending_deletion && !embed._pending_deletion;
+    if ( isNew || wasReactivated ) {
+      return {
+        ...embed,
+        _synced_at: null,
+        _updated_at: now,
+      };
+    }
+
+    return embed;
+  }
+
+  static prepareEmbedsForLocalSave( embeds, now, existingEmbeds ) {
+    return ( embeds || [] ).map( embed => {
+      const existingEmbed = existingEmbeds?.find( e => e.uuid === embed.uuid );
+      return Observation.prepareEmbedForLocalSave( embed, now, existingEmbed );
+    } );
+  }
+
   static async saveLocalObservationForUpload( obs, realm ) {
     // make sure local observations have user details for ObsDetail
     const currentUser = User.currentUser( realm );
@@ -309,6 +344,16 @@ class Observation extends Realm.Object {
     const taxon = obs.taxon || null;
     const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
+    const projectObservations = Observation.prepareEmbedsForLocalSave(
+      obs.projectObservations,
+      timestamps._updated_at,
+      existingObservation?.projectObservations,
+    );
+    const observationFieldValues = Observation.prepareEmbedsForLocalSave(
+      obs.observationFieldValues,
+      timestamps._updated_at,
+      existingObservation?.observationFieldValues,
+    );
 
     const obsToSave = {
       // just ...obs causes problems when obs is a realm object
@@ -319,6 +364,8 @@ class Observation extends Realm.Object {
       taxon,
       observationPhotos,
       observationSounds,
+      projectObservations,
+      observationFieldValues,
     };
 
     safeRealmWrite( realm, ( ) => {
