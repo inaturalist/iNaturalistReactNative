@@ -31,19 +31,12 @@ export interface AdvancedSearchDraft {
   filters: ExploreV2Filters;
 }
 
-export const draftFromV2State = ( v2: ExploreV2State ): AdvancedSearchDraft => {
-  const subjectIsUnknown = v2.subject?.type === "unknown";
-  return {
-    subject: subjectIsUnknown
-      ? null
-      : v2.subject,
-    location: v2.location,
-    sortBy: v2.sortBy,
-    filters: subjectIsUnknown
-      ? { ...v2.filters, iconic_taxa: ["unknown"] }
-      : v2.filters,
-  };
-};
+export const draftFromV2State = ( v2: ExploreV2State ): AdvancedSearchDraft => ( {
+  subject: v2.subject,
+  location: v2.location,
+  sortBy: v2.sortBy,
+  filters: v2.filters,
+} );
 
 export type SubjectTaxon = Extract<ExploreV2Subject, { type: "taxon" }>["taxon"];
 
@@ -101,22 +94,15 @@ export const advancedSearchReducer = (
 ): AdvancedSearchDraft => {
   switch ( action.type ) {
     case "SET_TAXON":
-      // Selecting a taxon supersedes the "unknown" iconic-taxon filter.
       return {
         ...draft,
         subject: action.taxon
           ? { type: "taxon", taxon: action.taxon }
           : null,
-        filters: { ...draft.filters, iconic_taxa: null },
       };
     case "FILTER_BY_ICONIC_UNKNOWN":
-      // "unknown" is not a taxon; it clears the taxon subject and filters for
-      // observations not associated with any iconic taxon.
-      return {
-        ...draft,
-        subject: null,
-        filters: { ...draft.filters, iconic_taxa: ["unknown"] },
-      };
+      // special case -- not a taxon
+      return { ...draft, subject: { type: "unknown" } };
     case "SET_LOCATION_PLACE":
       return {
         ...draft,

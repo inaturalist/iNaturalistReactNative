@@ -54,7 +54,6 @@ import {
   DATE_OBSERVED,
   DATE_UPLOADED,
 } from "providers/ExploreContext";
-import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import {
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
@@ -130,17 +129,9 @@ const AdvancedSearch = ( ) => {
   const closePicker = ( ) => setOpenPicker( null );
 
   const handleSearch = () => {
-    // "Unknown" is the one iconic-taxon choice ExploreV2 also models as a
-    // subject, and only the subject path adds `identified: false` to the query.
-    // Commit it as a subject so the results match the same choice made in
-    // universal search, and so the results header names it.
-    const subjectToCommit: ExploreV2Subject | null = subject
-      ?? ( ( filters.iconic_taxa || [] ).includes( "unknown" )
-        ? { type: "unknown" }
-        : null );
     dispatchV2(
-      subjectToCommit
-        ? { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: subjectToCommit }
+      subject
+        ? { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject }
         : { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT },
     );
     switch ( location.placeMode ) {
@@ -183,7 +174,6 @@ const AdvancedSearch = ( ) => {
     establishmentMean,
     excludeUser,
     hrank,
-    iconic_taxa: iconicTaxonNames,
     lrank,
     media,
     months,
@@ -200,6 +190,12 @@ const AdvancedSearch = ( ) => {
   const taxon = subject?.type === "taxon"
     ? subject.taxon
     : null;
+  const taxonUnknown = subject?.type === "unknown";
+  const chosenIconicTaxa = ( ) => {
+    if ( taxonUnknown ) { return ["unknown"]; }
+    if ( taxon?.name ) { return [taxon.name.toLowerCase()]; }
+    return [];
+  };
 
   const subjectUser: ApiUser | null = subject?.type === "user"
     ? subject.user
@@ -320,7 +316,7 @@ const AdvancedSearch = ( ) => {
         <View className="mb-7">
           <Heading4 className="px-4 mb-5">{t( "TAXON" )}</Heading4>
           <View className="px-4 mb-5">
-            {( taxon || ( iconicTaxonNames || [] ).indexOf( "unknown" ) >= 0 )
+            {( taxon || taxonUnknown )
               ? (
                 <SelectedFilterRow
                   accessibilityLabel={t( "Change-taxon" )}
@@ -346,12 +342,10 @@ const AdvancedSearch = ( ) => {
           </View>
           <IconicTaxonChooser
             before
-            chosen={iconicTaxonNames || ( taxon?.name
-              ? [taxon.name.toLowerCase()]
-              : [] )}
+            chosen={chosenIconicTaxa()}
             onTaxonChosen={( taxonName: string ) => {
               if ( taxonName === "unknown" ) {
-                if ( ( iconicTaxonNames || [] ).indexOf( taxonName ) >= 0 ) {
+                if ( taxonUnknown ) {
                   updateTaxon( null );
                 } else {
                   filterByIconicTaxonUnknown();

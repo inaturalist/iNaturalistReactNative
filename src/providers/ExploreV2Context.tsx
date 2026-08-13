@@ -91,8 +91,6 @@ export interface ExploreV2Filters {
   wildStatus: WILD_STATUS;
   reviewedFilter: REVIEWED;
   photoLicense: PHOTO_LICENSE;
-  // Iconic-taxon filter (e.g. "unknown")
-  iconic_taxa?: string[] | null;
   // User / project, in ExploreV2 parlance we always consider taxon to be the "subject"
   user?: ApiUser | null;
   excludeUser?: ApiUser | null;
