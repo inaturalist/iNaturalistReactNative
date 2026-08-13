@@ -62,6 +62,23 @@ describe( "ObservationFieldValue", () => {
       expect( ObservationFieldValue.isActive( { obsFieldId: 1, value: "x" } ) ).toBe( true );
     } );
   } );
+
+  describe( "findActiveForObsField", () => {
+    it( "should find an active OFV by obsFieldId", () => {
+      const obs = {
+        observationFieldValues: [
+          { obsFieldId: 10, value: "a" },
+          { obsFieldId: 20, value: "b", _pendingRemoval: true },
+          { obsFieldId: 30, value: "c", _pending_deletion: true },
+        ],
+      };
+      expect( ObservationFieldValue.findActiveForObsField( obs, 10 )?.value ).toBe( "a" );
+      expect( ObservationFieldValue.findActiveForObsField( obs, 20 ) ).toBeUndefined();
+      expect( ObservationFieldValue.findActiveForObsField( obs, 30 ) ).toBeUndefined();
+      expect( ObservationFieldValue.findActiveForObsField( obs, 99 ) ).toBeUndefined();
+    } );
+  } );
+
   describe( "mapApiToRealm", () => {
     it( "should map API OFV with sync metadata", () => {
       const mockRemoteOfv = factory( "RemoteObservationFieldValue" );
