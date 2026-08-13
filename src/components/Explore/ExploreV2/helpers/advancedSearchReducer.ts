@@ -88,9 +88,9 @@ const withFilters = (
 // kind, so the committed subject doesn't contradict the filter.
 const withoutSubjectOfType = (
   draft: AdvancedSearchDraft,
-  type: ExploreV2Subject["type"],
+  ...types: ExploreV2Subject["type"][]
 ): ExploreV2Subject | null => (
-  draft.subject?.type === type
+  draft.subject && types.includes( draft.subject.type )
     ? null
     : draft.subject
 );
@@ -134,15 +134,18 @@ export const advancedSearchReducer = (
       };
     case "SET_SORT":
       return { ...draft, sortBy: action.sortBy };
+    // Within the scope of advanced search, we only set a taxon as the subject
+    // and all other subjects go in the filter blob
+    // and if a non-taxon subject came in initially, it has to be excluded via withoutSubjectOfType
     case "SET_USER":
       return {
         ...withFilters( draft, { user: action.user, excludeUser: null } ),
-        subject: withoutSubjectOfType( draft, "user" ),
+        subject: withoutSubjectOfType( draft, "user", "unobserved" ),
       };
     case "SET_EXCLUDE_USER":
       return {
         ...withFilters( draft, { excludeUser: action.user, user: null } ),
-        subject: withoutSubjectOfType( draft, "user" ),
+        subject: withoutSubjectOfType( draft, "user", "unobserved" ),
       };
     case "SET_PROJECT":
       return {

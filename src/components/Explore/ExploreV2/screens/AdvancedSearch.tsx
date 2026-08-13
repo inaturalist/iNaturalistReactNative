@@ -205,6 +205,10 @@ const AdvancedSearch = ( ) => {
     ? subject.user
     : null;
   const displayUser = user || excludeUser || subjectUser;
+  const subjectProject: ApiProjectSummary | null = subject?.type === "project"
+    ? subject.project
+    : null;
+  const displayProject = project || subjectProject;
   const displayUserCountText = displayUser?.observations_count === undefined
     ? ""
     : t( "X-Observations", { count: displayUser.observations_count } );
@@ -467,7 +471,7 @@ const AdvancedSearch = ( ) => {
           <View className="mb-7">
             <Heading4 className="mb-5">{t( "PROJECT" )}</Heading4>
             <View className="mb-5">
-              {project
+              {displayProject
                 ? (
                   <SelectedFilterRow
                     accessibilityLabel={t( "Change-project" )}
@@ -475,7 +479,7 @@ const AdvancedSearch = ( ) => {
                     onRemove={() => updateProject( null )}
                     removeAccessibilityLabel={t( "Remove-project-filter" )}
                   >
-                    <ProjectListItem item={project} />
+                    <ProjectListItem item={displayProject} />
                   </SelectedFilterRow>
                 )
                 : (

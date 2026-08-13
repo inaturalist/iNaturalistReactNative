@@ -57,18 +57,12 @@ interface User {
   icon_url?: string;
 }
 
-interface Project {
-  id: number;
-  title: string;
-  icon?: string;
-}
-
 export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
 
 export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
-  | { type: "project"; project: Project }
+  | { type: "project"; project: ApiProjectSummary }
   | { type: "unobserved"; user: User }
   | { type: "unknown" };
 

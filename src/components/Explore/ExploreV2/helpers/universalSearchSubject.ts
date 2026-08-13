@@ -26,11 +26,7 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
     case "project":
       return {
         type: "project",
-        project: {
-          id: result.project.id,
-          title: result.project.title,
-          icon: result.project.icon,
-        },
+        project: result.project,
       };
     case "taxon":
       return {
