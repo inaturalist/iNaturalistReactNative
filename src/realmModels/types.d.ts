@@ -192,6 +192,7 @@ export interface RealmObservationPojo {
 }
 
 export interface RealmObservation extends RealmObservationPojo {
+  missingCoords: ( ) => boolean;
   missingBasics: ( ) => boolean;
   needsSync: ( ) => boolean;
   observationFieldValues: RealmObservationFieldValue[];

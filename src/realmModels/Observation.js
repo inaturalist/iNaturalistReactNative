@@ -134,6 +134,7 @@ class Observation extends Realm.Object {
     observed_on: true,
     observed_time_zone: true,
     place_guess: true,
+    private_geojson: true,
     private_place_guess: true,
     taxon_geoprivacy: true,
     project_observations: PROJECT_OBSERVATION_FIELDS,
@@ -375,11 +376,14 @@ class Observation extends Realm.Object {
         : null,
       comments_viewed: obs.comments_viewed,
       identifications_viewed: obs.identifications_viewed,
+      missing_coords: typeof obs.missingCoords === "function"
+        ? obs.missingCoords( )
+        : undefined,
       missing_basics: typeof obs.missingBasics === "function"
-        ? obs.missingBasics()
+        ? obs.missingBasics( )
         : undefined,
       needs_sync: typeof obs.needsSync === "function"
-        ? obs.needsSync()
+        ? obs.needsSync( )
         : obs.needs_sync,
     };
   }
@@ -632,11 +636,17 @@ class Observation extends Realm.Object {
     return this.votes.filter( vote => vote?.vote_scope === null );
   }
 
+  missingCoords() {
+    const missingCoords = typeof this.latitude !== "number"
+      && typeof this.longitude !== "number"
+      && typeof this.privateLatitude !== "number"
+      && typeof this.privateLongitude !== "number";
+    return missingCoords;
+  }
+
   missingBasics() {
     const missingDate = !Date.parse( this.observed_on_string ) && !this.time_observed_at;
-    const missingCoords = typeof ( this.latitude ) !== "number"
-      && typeof ( this.privateLatitude ) !== "number";
-    return missingDate || missingCoords;
+    return missingDate || this.missingCoords( );
   }
 }
 
