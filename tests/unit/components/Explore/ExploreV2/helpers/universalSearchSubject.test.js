@@ -41,6 +41,7 @@ describe( "resultToSubject", ( ) => {
       project: {
         id: 9,
         title: "InverteFest",
+        project_type: "collection",
         icon: "https://example.com/p.jpg",
       },
     } );
