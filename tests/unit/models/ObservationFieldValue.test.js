@@ -37,6 +37,17 @@ describe( "ObservationFieldValue", () => {
       expect( ObservationFieldValue.findForObsField( obs, 10 )?.value ).toBe( "a" );
       expect( ObservationFieldValue.findForObsField( obs, 99 ) ).toBeUndefined();
     } );
+
+    it( "should find an OFV pending removal or deletion", () => {
+      const obs = {
+        observationFieldValues: [
+          { obsFieldId: 10, value: "a", _pendingRemoval: true },
+          { obsFieldId: 20, value: "b", _pending_deletion: true },
+        ],
+      };
+      expect( ObservationFieldValue.findForObsField( obs, 10 )?.value ).toBe( "a" );
+      expect( ObservationFieldValue.findForObsField( obs, 20 )?.value ).toBe( "b" );
+    } );
   } );
 
   describe( "mapApiToRealm", () => {
