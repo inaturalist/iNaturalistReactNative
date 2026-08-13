@@ -50,6 +50,18 @@ describe( "ObservationFieldValue", () => {
     } );
   } );
 
+  describe( "isActive", () => {
+    it( "should return false when pending removal or deletion", () => {
+      expect( ObservationFieldValue.isActive( { obsFieldId: 1, _pendingRemoval: true } ) )
+        .toBe( false );
+      expect( ObservationFieldValue.isActive( { obsFieldId: 1, _pending_deletion: true } ) )
+        .toBe( false );
+    } );
+
+    it( "should return true for a normal OFV", () => {
+      expect( ObservationFieldValue.isActive( { obsFieldId: 1, value: "x" } ) ).toBe( true );
+    } );
+  } );
   describe( "mapApiToRealm", () => {
     it( "should map API OFV with sync metadata", () => {
       const mockRemoteOfv = factory( "RemoteObservationFieldValue" );
