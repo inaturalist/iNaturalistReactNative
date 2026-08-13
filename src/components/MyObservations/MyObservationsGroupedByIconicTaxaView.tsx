@@ -1,25 +1,13 @@
-import { useNetInfo } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
-import ObsPressable from "components/ObservationsFlashList/ObsPressable";
 import { CollapsibleSectionHeader, SmallGrid } from "components/SharedComponents";
 import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
 import type { TFunction } from "i18next";
-import { RealmContext } from "providers/contexts";
 import React, { useCallback, useMemo, useState } from "react";
-import { Alert } from "react-native";
-import type { RealmObservation } from "realmModels/types";
 import { ICONIC_TAXA_GROUP, ICONIC_TAXA_GROUP_ORDER } from "sharedHelpers/iconicTaxaGroupOrder";
-import getObservationUploadStatus from "sharedHelpers/observationUploadStatus";
-import {
-  useCurrentUser, useLayoutPrefs, useNavigateToObsEdit, useTranslation,
-} from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
-import { UPLOAD_PENDING } from "stores/createUploadObservationsSlice";
-import useStore from "stores/useStore";
 
 import useIconicTaxaObservationCounts from "./hooks/useIconicTaxaObservationCounts";
-
-const { useRealm } = RealmContext;
+import SmallGridObsItemContainer from "./SmallGridObsItemContainer";
 
 function iconForCategory( category: ICONIC_TAXA_GROUP ) {
   return category === ICONIC_TAXA_GROUP.OTHER
@@ -62,17 +50,6 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
   const { t } = useTranslation( );
   const localObservationIds = useLocalObservationIds( );
   const currentUser = useCurrentUser( );
-  const navigation = useNavigation( );
-  const realm = useRealm( );
-  const { isDefaultMode } = useLayoutPrefs( );
-  const navigateToObsEdit = useNavigateToObsEdit( );
-  const { isConnected } = useNetInfo( );
-  const uploadQueue = useStore( state => state.uploadQueue );
-  const totalUploadProgress = useStore( state => state.totalUploadProgress );
-  const uploadStatus = useStore( state => state.uploadStatus );
-  const addToUploadQueue = useStore( state => state.addToUploadQueue );
-  const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
-  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const iconicTaxaCounts = useIconicTaxaObservationCounts( );
   const titlesByCategory = useMemo( ( ) => iconicTaxaGroupTitles( t ), [t] );
 
@@ -138,89 +115,14 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     />
   ), [titlesByCategory, toggleCategory] );
 
-  // TODO: move the upload status lookup into a per-tile component that subscribes to
-  // the upload store itself. This callback is memoized so SmallGrid's renderItem memo
-  // holds, but uploadQueue and totalUploadProgress are deps, so during an upload every
-  // visible cell re-renders on each progress tick instead of just the uploading ones.
-  // Do this in the wire-up ticket.
-  const renderTile = useCallback( ( uuid: string, width: number, height: number ) => {
-    const { obsNeedsSync, queued, uploadProgress } = getObservationUploadStatus(
-      realm,
-      uploadQueue,
-      totalUploadProgress,
-      uuid,
-    );
-
-    const onItemPress = ( ) => {
-      if ( obsNeedsSync && !isDefaultMode ) {
-        const realmObservation = realm.objectForPrimaryKey<RealmObservation>(
-          "Observation",
-          uuid,
-        );
-        if ( realmObservation ) {
-          navigateToObsEdit( realmObservation );
-          return;
-        }
-      }
-      navigation.navigate( {
-        key: `Obs-MyObservationsSmallGrid-${uuid}`,
-        name: "ObsDetails",
-        params: { uuid },
-      } );
-    };
-
-    const onUploadButtonPress = ( ) => {
-      if ( uploadQueue.includes( uuid ) ) return;
-      const observation = realm.objectForPrimaryKey<RealmObservation>( "Observation", uuid );
-      if ( !observation ) return;
-      if ( isDefaultMode && observation.missingBasics( ) ) {
-        navigateToObsEdit( observation );
-        return;
-      }
-      if ( !isConnected ) {
-        Alert.alert(
-          t( "Internet-Connection-Required" ),
-          t( "Please-try-again-when-you-are-connected-to-the-internet" ),
-        );
-        return;
-      }
-      addTotalToolbarIncrements( observation );
-      addToUploadQueue( uuid );
-      if ( uploadStatus === UPLOAD_PENDING ) {
-        setStartUploadObservations( );
-      }
-    };
-
-    return (
-      <ObsPressable
-        currentUser={currentUser}
-        explore={false}
-        height={height}
-        layout="smallGrid"
-        onItemPress={onItemPress}
-        onUploadButtonPress={onUploadButtonPress}
-        queued={queued}
-        unsynced={obsNeedsSync}
-        uploadProgress={uploadProgress}
-        uuid={uuid}
-        width={width}
-      />
-    );
-  }, [
-    addToUploadQueue,
-    addTotalToolbarIncrements,
-    currentUser,
-    isConnected,
-    isDefaultMode,
-    navigateToObsEdit,
-    navigation,
-    realm,
-    setStartUploadObservations,
-    t,
-    totalUploadProgress,
-    uploadQueue,
-    uploadStatus,
-  ] );
+  const renderTile = useCallback( ( uuid: string, width: number, height: number ) => (
+    <SmallGridObsItemContainer
+      currentUser={currentUser}
+      height={height}
+      uuid={uuid}
+      width={width}
+    />
+  ), [currentUser] );
 
   if ( !currentUser ) return null;
 

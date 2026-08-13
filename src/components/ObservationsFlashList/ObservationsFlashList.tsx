@@ -130,7 +130,11 @@ const ObservationsFlashList = ( {
     }
     const { uuid } = item;
     const onUploadButtonPress = ( ) => handleIndividualUploadPress( uuid );
-    // TODO: use sharedHelpers/observationUploadStatus helper here
+    // TODO: may want push this into one connected wrapper that serves list, grid, and small-grid
+    // layouts (probably folded into ObsPressable) that subscribes to the upload store with
+    // narrow selectors, the way MyObservations/SmallGridObsItemContainer now does. Computing it
+    // here means every visible cell re-renders on every upload progress tick, and each one runs
+    // isUnsyncedObservation, which filters the whole Observation table.
     const obsNeedsSync = RealmObservation.isUnsyncedObservation( realm, item );
     const obsUploadState = totalUploadProgress.find( o => o.uuid === uuid );
     const uploadProgress = obsNeedsSync
