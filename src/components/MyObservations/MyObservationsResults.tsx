@@ -157,10 +157,21 @@ const MyObservationsResults = ( ) => {
     writeLayoutToStorage,
   ] );
 
+  // Scroll to the top when a sync pulls in observations we've never seen locally
+  const scrollToTopForNewRemoteObs = useCallback( ( ) => {
+    if ( useServerOrder ) { return; }
+    listRef.current?.scrollToOffset( { offset: 0, animated: true } );
+    setMyObsOffset( 0 );
+  }, [
+    setMyObsOffset,
+    useServerOrder,
+  ] );
+
   const { startUploadObservations } = useUploadObservations( canUpload );
   const { syncManually } = useSyncObservations(
     currentUserId,
     startUploadObservations,
+    scrollToTopForNewRemoteObs,
   );
 
   const { refetch: refetchObservationsUpdates } = useObservationsUpdates( !!currentUser );
