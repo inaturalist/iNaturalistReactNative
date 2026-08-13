@@ -27,10 +27,13 @@ import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Realm from "realm";
+import realmConfig from "realmModels/index";
 import {
   getInstallID,
   store as installDataMMKVStorage,
   LAST_CRASH_DATA,
+  PENDING_REALM_WIPE,
 } from "sharedHelpers/installData";
 import { reactQueryRetry } from "sharedHelpers/logging";
 import DeviceInfo from "react-native-device-info";
@@ -123,6 +126,17 @@ setNativeExceptionHandler(
   true, // Force quit the app to prevent zombie states
   true, // Enable on iOS
 );
+
+// AuthenticationService's signOut may set this just before a RNRestart()
+// to give us a chance to clear realm before setting it up with RealmProvider
+if ( installDataMMKVStorage.getBoolean( PENDING_REALM_WIPE ) ) {
+  installDataMMKVStorage.set( PENDING_REALM_WIPE, false );
+  try {
+    Realm.deleteFile( realmConfig );
+  } catch ( error ) {
+    logger.error( "Failed to delete realm file flagged by signOut", error );
+  }
+}
 
 initI18next();
 

@@ -195,12 +195,8 @@ const Menu = ( ) => {
   };
 
   const onSignOut = async ( ) => {
-    await signOut( { realm, clearRealm: true, queryClient } );
+    await signOut( { clearRealm: true, queryClient } );
     setModalState( null );
-
-    // TODO might be necessary to restart the app at this point. We just
-    // deleted the realm file on disk, but the RealmProvider may still have a
-    // copy of realm in local state
     navigation.goBack( );
   };
 
