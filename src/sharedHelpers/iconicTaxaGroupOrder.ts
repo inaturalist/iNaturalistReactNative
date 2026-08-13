@@ -1,20 +1,21 @@
 import type { IconicTaxonCountResult } from "api/observationsTyped";
 
+// These values are exactly the API's allowed `iconic_taxa` values
 export enum ICONIC_TAXA_GROUP {
-  PLANTAE = "plantae",
-  AVES = "aves",
-  INSECTA = "insecta",
-  ARACHNIDA = "arachnida",
-  FUNGI = "fungi",
-  MOLLUSCA = "mollusca",
-  MAMMALIA = "mammalia",
-  AMPHIBIA = "amphibia",
-  REPTILIA = "reptilia",
-  ACTINOPTERYGII = "actinopterygii",
-  CHROMISTA = "chromista",
-  PROTOZOA = "protozoa",
-  ANIMALIA = "animalia",
-  OTHER = "other",
+  PLANTAE = "Plantae",
+  AVES = "Aves",
+  INSECTA = "Insecta",
+  ARACHNIDA = "Arachnida",
+  FUNGI = "Fungi",
+  MOLLUSCA = "Mollusca",
+  MAMMALIA = "Mammalia",
+  AMPHIBIA = "Amphibia",
+  REPTILIA = "Reptilia",
+  ACTINOPTERYGII = "Actinopterygii",
+  CHROMISTA = "Chromista",
+  PROTOZOA = "Protozoa",
+  ANIMALIA = "Animalia",
+  OTHER = "unknown",
 }
 
 // This is the tie-break order for the grouped-by-iconic-taxa view: when two or more
@@ -41,6 +42,11 @@ export const ICONIC_TAXA_GROUP_ORDER: ICONIC_TAXA_GROUP[] = [
   ICONIC_TAXA_GROUP.OTHER,
 ];
 
+// gets the INatIcon glyph for a category, e.g. "iconic-plantae" or, for OTHER, "iconic-unknown"
+export function iconicTaxaGroupIcon( category: ICONIC_TAXA_GROUP ): string {
+  return `iconic-${category.toLowerCase( )}`;
+}
+
 export interface IconicTaxaGroupCount {
   category: ICONIC_TAXA_GROUP;
   count: number;
@@ -50,7 +56,7 @@ function getIconicTaxaGroupForResult( result: IconicTaxonCountResult ): ICONIC_T
   if ( !result.taxon ) {
     return ICONIC_TAXA_GROUP.OTHER;
   }
-  return result.taxon.name.toLowerCase( ) as ICONIC_TAXA_GROUP;
+  return result.taxon.name as ICONIC_TAXA_GROUP;
 }
 
 // Orders iconic taxa counts most-observed to least-observed. Categories missing

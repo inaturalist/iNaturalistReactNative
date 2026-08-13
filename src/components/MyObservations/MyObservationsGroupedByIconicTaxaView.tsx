@@ -2,18 +2,16 @@ import { CollapsibleSectionHeader, SmallGrid } from "components/SharedComponents
 import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
 import type { TFunction } from "i18next";
 import React, { useCallback, useMemo, useState } from "react";
-import { ICONIC_TAXA_GROUP, ICONIC_TAXA_GROUP_ORDER } from "sharedHelpers/iconicTaxaGroupOrder";
+import {
+  ICONIC_TAXA_GROUP,
+  ICONIC_TAXA_GROUP_ORDER,
+  iconicTaxaGroupIcon,
+} from "sharedHelpers/iconicTaxaGroupOrder";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 
 import useIconicTaxaObservationCounts from "./hooks/useIconicTaxaObservationCounts";
 import SmallGridObsItemContainer from "./SmallGridObsItemContainer";
-
-function iconForCategory( category: ICONIC_TAXA_GROUP ) {
-  return category === ICONIC_TAXA_GROUP.OTHER
-    ? "iconic-unknown"
-    : `iconic-${category}`;
-}
 
 function iconicTaxaGroupTitles( t: TFunction ): Record<ICONIC_TAXA_GROUP, string> {
   return {
@@ -107,7 +105,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
   const renderHeader = useCallback( ( header: HeaderData ) => (
     <CollapsibleSectionHeader
       count={header.count}
-      icon={iconForCategory( header.category )}
+      icon={iconicTaxaGroupIcon( header.category )}
       isOpen={header.isOpen}
       onToggle={( ) => toggleCategory( header.category )}
       testID={`MyObservationsGroupedByIconicTaxaView.Header.${header.category}`}
