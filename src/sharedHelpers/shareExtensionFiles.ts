@@ -1,7 +1,10 @@
 import {
   DocumentDirectoryPath,
 } from "@dr.pogodin/react-native-fs";
+import { log } from "sharedHelpers/logger";
 import { unlink } from "sharedHelpers/util";
+
+const logger = log.extend( "shareExtensionFiles" );
 
 export function isShareExtensionPhotoUri( pathOrUri: string ): boolean {
   if ( !pathOrUri || pathOrUri.match( /^ph:/ ) ) {
@@ -26,7 +29,7 @@ export async function unlinkShareExtensionSourceIfNeeded( pathOrUri: string ): P
   }
   try {
     await unlink( pathForUnlink( pathOrUri ) );
-  } catch {
-    // Best-effort cleanup; do not fail observation creation
+  } catch ( error ) {
+    logger.error( `Failed to unlink share-extension source ${error}` );
   }
 }
