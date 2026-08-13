@@ -23,6 +23,7 @@ import type { SubjectTaxon }
   from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
 import { advancedSearchReducer, draftFromV2State }
   from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
+import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
 import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "components/Explore/Modals/ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "components/Explore/Modals/ExploreTaxonSearchModal";
@@ -49,7 +50,6 @@ import { ScrollView, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
 import isEqual from "lodash/isEqual";
 import type { ExploreStackScreenProps } from "navigation/types";
-import { RealmContext } from "providers/contexts";
 import {
   DATE_OBSERVED,
   DATE_UPLOADED,
@@ -63,18 +63,21 @@ import React, { useMemo, useReducer, useState } from "react";
 import Taxon from "realmModels/Taxon";
 import { formatObsFieldDate } from "sharedHelpers/dateAndTime";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-
-const { useRealm } = RealmContext;
+import useIconicTaxa from "sharedHooks/useIconicTaxa";
 
 type SheetName = "sortBy" | "hrank" | "lrank" | "photoLicense";
 
 type PickerKind = "taxon" | "user" | "project" | "location";
 
+const ALL_MONTHS = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
+
+const isoToday = ( ) => formatObsFieldDate( new Date( ) );
+
 const AdvancedSearch = ( ) => {
   const navigation
     = useNavigation<ExploreStackScreenProps<"AdvancedSearch">["navigation"]>();
   const { t } = useTranslation();
-  const realm = useRealm();
+  const iconicTaxa = useIconicTaxa();
   const currentUser = useCurrentUser();
 
   const { state: v2State, dispatch: dispatchV2 } = useExploreV2();
@@ -209,24 +212,6 @@ const AdvancedSearch = ( ) => {
     ? ""
     : t( "X-Observations", { count: displayUser.observations_count } );
 
-  const locationText = () => {
-    switch ( location.placeMode ) {
-      case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
-        return t( "Worldwide" );
-      case EXPLORE_V2_PLACE_MODE.PLACE:
-        return location.place.display_name ?? "";
-      case EXPLORE_V2_PLACE_MODE.MAP_AREA:
-        return t( "Map-Area" );
-      case EXPLORE_V2_PLACE_MODE.NEARBY:
-        return t( "Nearby" );
-      default: {
-        // Exhaustiveness check: ts fails if a new placeMode is added without a case.
-        const _exhaustive: never = location;
-        return _exhaustive;
-      }
-    }
-  };
-
   const sortByValues = getSortByValues( t );
   const taxonomicRankValues = getTaxonomicRankValues( t );
   const dateObservedValues = getDateObservedValues( t );
@@ -237,8 +222,7 @@ const AdvancedSearch = ( ) => {
   const updateDateObserved = ( {
     newDateObserved, newObservedOn, newD1, newD2, newMonths,
   } ) => {
-    const today = formatObsFieldDate( new Date( ) );
-    const allMonths = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
+    const today = isoToday( );
 
     if ( newDateObserved === DATE_OBSERVED.ALL ) {
       dispatch( {
@@ -258,7 +242,7 @@ const AdvancedSearch = ( ) => {
     } else if ( newDateObserved === DATE_OBSERVED.MONTHS ) {
       dispatch( {
         type: "SET_DATE_OBSERVED_MONTHS",
-        months: newMonths || allMonths,
+        months: newMonths || ALL_MONTHS,
       } );
     }
   };
@@ -275,7 +259,7 @@ const AdvancedSearch = ( ) => {
   };
 
   const updateDateUploaded = ( { newDateUploaded, newD1, newD2 } ) => {
-    const today = formatObsFieldDate( new Date( ) );
+    const today = isoToday( );
     if ( newDateUploaded === DATE_UPLOADED.ALL ) {
       dispatch( {
         type: "SET_DATE_UPLOADED_ALL",
@@ -353,9 +337,8 @@ const AdvancedSearch = ( ) => {
               } else if ( taxon?.name?.toLowerCase() === taxonName ) {
                 updateTaxon( null );
               } else {
-                const selectedTaxon = realm
-                  ?.objects( "Taxon" )
-                  .filtered( "name ==[c] $0", taxonName );
+                const selectedTaxon = iconicTaxa
+                  ?.filtered( "name ==[c] $0", taxonName );
                 const iconicTaxon = selectedTaxon && selectedTaxon.length > 0
                   ? Taxon.mapRealmToPojo( selectedTaxon[0] )
                   : null;
@@ -372,7 +355,7 @@ const AdvancedSearch = ( ) => {
               <View>
                 <View className="flex-row items-center mb-5">
                   <INatIcon name="location" size={15} />
-                  <Body3 className="ml-4">{locationText()}</Body3>
+                  <Body3 className="ml-4">{locationLabel( location, t )}</Body3>
                 </View>
                 <Button
                   text={t( "EDIT-LOCATION" )}
