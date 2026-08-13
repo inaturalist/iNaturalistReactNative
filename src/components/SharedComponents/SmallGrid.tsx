@@ -1,4 +1,4 @@
-import type { ListRenderItem } from "@shopify/flash-list";
+import type { FlashListRef, ListRenderItem } from "@shopify/flash-list";
 import { CustomFlashList } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
@@ -17,25 +17,42 @@ export interface SmallGridTileRow<T> {
   tile: T;
 }
 
-export type SmallGridItem<T, H> = SmallGridHeaderRow<H> | SmallGridTileRow<T>;
+// A row that spans the full width of the grid, for stuff like a loading indicator or an
+// error message at the end of a section.
+export interface SmallGridSpanRow<S> {
+  type: "span";
+  key: string;
+  itemType?: string;
+  content: S;
+}
 
-interface Props<T, H> {
-  data: SmallGridItem<T, H>[];
+export type SmallGridItem<T, H, S = never> =
+  SmallGridHeaderRow<H> | SmallGridTileRow<T> | SmallGridSpanRow<S>;
+
+interface Props<T, H, S> {
+  data: SmallGridItem<T, H, S>[];
+  listFooterContent?: React.ReactElement | null;
   listHeaderContent?: React.ReactElement | null;
+  onEndReached?: ( ) => void;
+  ref?: React.Ref<FlashListRef<SmallGridItem<T, H, S>>>;
+  refreshControl?: React.ReactElement;
   renderHeader: ( header: H ) => React.ReactElement;
+  renderSpan?: ( content: S ) => React.ReactElement;
   renderTile: ( tile: T, width: number, height: number ) => React.ReactElement;
   testID?: string;
 }
 
 // Maps each tile's index in data to its position within its own section (the
-// run of tiles following a header). A header spans the full row, so the tiles
-// after it start a fresh row, so a tile's column comes from its position in
-// its section, not its index in the whole list.
-function computeTilePositions<T, H>( data: SmallGridItem<T, H>[] ): Map<number, number> {
+// run of tiles following a header). A header (or span) takes up a whole
+// row, so the tiles after it start a fresh row, so a tile's column comes
+// from its position in its section, not its index in the whole list.
+export function computeTilePositions<T, H, S>(
+  data: SmallGridItem<T, H, S>[],
+): Map<number, number> {
   const positions = new Map<number, number>( );
   let position = 0;
   data.forEach( ( item, index ) => {
-    if ( item.type === "header" ) {
+    if ( item.type !== "tile" ) {
       position = 0;
       return;
     }
@@ -53,13 +70,18 @@ const BottomSpacer = ( ) => (
 // getSmallGridLayout. Each cell's outer wrapper is sized to slotWidth to match FlashList's
 // internal column-width math, and the visible tile inside it is rendered smaller and left-aligned,
 // so the size difference reads as the gap.
-const SmallGrid = <T, H, >( {
+const SmallGrid = <T, H, S = never, >( {
   data,
+  listFooterContent,
   listHeaderContent,
+  onEndReached,
+  ref,
+  refreshControl,
   renderHeader,
+  renderSpan,
   renderTile,
   testID,
-}: Props<T, H> ) => {
+}: Props<T, H, S> ) => {
   const { width } = useWindowDimensions( );
   const {
     numColumns, slotWidth, tileSize, lastTileSize,
@@ -68,22 +90,32 @@ const SmallGrid = <T, H, >( {
   const tilePositions = useMemo( ( ) => computeTilePositions( data ), [data] );
 
   const getItemType = useCallback(
-    ( item: SmallGridItem<T, H> ) => item.type,
+    ( item: SmallGridItem<T, H, S> ) => (
+      item.type === "span"
+        ? `span-${item.itemType ?? "default"}`
+        : item.type
+    ),
     [],
   );
 
   const overrideItemLayout = useCallback(
-    ( layout: { span?: number }, item: SmallGridItem<T, H> ) => {
-      if ( item.type === "header" ) {
+    ( layout: { span?: number }, item: SmallGridItem<T, H, S> ) => {
+      if ( item.type !== "tile" ) {
         layout.span = numColumns;
       }
     },
     [numColumns],
   );
 
-  const renderItem: ListRenderItem<SmallGridItem<T, H>> = useCallback( ( { item, index } ) => {
+  const renderItem: ListRenderItem<SmallGridItem<T, H, S>> = useCallback( ( { item, index } ) => {
     if ( item.type === "header" ) {
       return renderHeader( item.header );
+    }
+
+    if ( item.type === "span" ) {
+      return renderSpan
+        ? renderSpan( item.content )
+        : null;
     }
 
     const position = tilePositions.get( index ) ?? 0;
@@ -104,12 +136,28 @@ const SmallGrid = <T, H, >( {
         {renderTile( item.tile, itemWidth, tileSize )}
       </View>
     );
-  }, [numColumns, slotWidth, tileSize, lastTileSize, renderHeader, renderTile, tilePositions] );
+  }, [
+    lastTileSize,
+    numColumns,
+    renderHeader,
+    renderSpan,
+    renderTile,
+    slotWidth,
+    tilePositions,
+    tileSize,
+  ] );
 
   const keyExtractor = useCallback(
-    ( item: SmallGridItem<T, H> ) => item.key,
+    ( item: SmallGridItem<T, H, S> ) => item.key,
     [],
   );
+
+  const listFooter = useMemo( ( ) => (
+    <>
+      {listFooterContent}
+      <BottomSpacer />
+    </>
+  ), [listFooterContent] );
 
   return (
     <CustomFlashList
@@ -117,11 +165,14 @@ const SmallGrid = <T, H, >( {
       data={data}
       numColumns={numColumns}
       getItemType={getItemType}
+      onEndReached={onEndReached}
       overrideItemLayout={overrideItemLayout}
+      ref={ref}
+      refreshControl={refreshControl}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       ListHeaderComponent={listHeaderContent}
-      ListFooterComponent={BottomSpacer}
+      ListFooterComponent={listFooter}
       testID={testID}
     />
   );
