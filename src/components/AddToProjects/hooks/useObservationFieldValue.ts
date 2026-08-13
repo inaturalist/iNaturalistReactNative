@@ -3,34 +3,28 @@ import ObservationFieldValue from "realmModels/ObservationFieldValue";
 import type { RealmObservationFieldValuePojo, RealmObservationPojo } from "realmModels/types";
 import useStore from "stores/useStore";
 
-function isActiveOfv( ofv: RealmObservationFieldValuePojo ): boolean {
-  return !ofv._pendingRemoval && !ofv._pending_deletion;
-}
-
-function findActiveOfv(
-  observationFieldValues: RealmObservationFieldValuePojo[],
-  obsFieldId: number,
-) {
-  return observationFieldValues.find(
-    ofv => ofv.obsFieldId === obsFieldId && isActiveOfv( ofv ),
-  );
-}
-
 const useObservationFieldValue = ( obsFieldId: number ) => {
-  const observationFieldValues = useStore(
+  const currentObservation = useStore(
     // currentObs is typed as this | null in createObservationFlowSlice.ts but null means the
     // obs create flow has not been initialized yet. The screen that uses this hook to add obs
     // to projects should only be reachable after currentObs has been initialized in zustand.
     // If it isn't I'd prefer us to error out here to notice it.
-    state => ( state.currentObservation as RealmObservationPojo ).observationFieldValues,
+    state => state.currentObservation as RealmObservationPojo,
   );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const { observationFieldValues } = currentObservation;
 
-  const existingOfv = findActiveOfv( observationFieldValues, obsFieldId );
+  const existingOfv = ObservationFieldValue.findActiveForObsField(
+    currentObservation,
+    obsFieldId,
+  );
   const value = existingOfv?.value ?? "";
 
   const setValue = useCallback( ( newValue: string | null ) => {
-    const existingRow = observationFieldValues.find( ofv => ofv.obsFieldId === obsFieldId );
+    const existingRow = ObservationFieldValue.findForObsField(
+      currentObservation,
+      obsFieldId,
+    );
 
     let updatedOfvs: RealmObservationFieldValuePojo[];
 
@@ -65,7 +59,7 @@ const useObservationFieldValue = ( obsFieldId: number ) => {
     }
 
     updateObservationKeys( { observationFieldValues: updatedOfvs } );
-  }, [obsFieldId, observationFieldValues, updateObservationKeys] );
+  }, [currentObservation, obsFieldId, observationFieldValues, updateObservationKeys] );
 
   return { value, setValue };
 };

@@ -1,6 +1,9 @@
 import { Realm } from "@realm/react";
 import type { ApiObservationFieldValue } from "api/types";
-import type { RealmObservationPojo } from "realmModels/types";
+import type {
+  RealmObservationFieldValuePojo,
+  RealmObservationPojo,
+} from "realmModels/types";
 import * as uuid from "uuid";
 
 class ObservationFieldValue extends Realm.Object {
@@ -33,12 +36,25 @@ class ObservationFieldValue extends Realm.Object {
     };
   }
 
+  static isActive( ofv: RealmObservationFieldValuePojo ) {
+    return !ofv._pendingRemoval && !ofv._pending_deletion;
+  }
+
   static findForObsField(
     observation: RealmObservationPojo,
     obsFieldId: number,
   ) {
     return observation.observationFieldValues.find(
       ofv => ofv.obsFieldId === obsFieldId,
+    );
+  }
+
+  static findActiveForObsField(
+    observation: RealmObservationPojo,
+    obsFieldId: number,
+  ) {
+    return observation.observationFieldValues.find(
+      ofv => ofv.obsFieldId === obsFieldId && ObservationFieldValue.isActive( ofv ),
     );
   }
 
