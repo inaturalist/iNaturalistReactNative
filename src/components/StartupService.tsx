@@ -48,7 +48,7 @@ const StartupService = ( ) => {
         if ( isFreshInstall ) {
           store.set( IS_FRESH_INSTALL, false );
           if ( !currentUser ) {
-            await signOut( { realm, clearRealm: true } );
+            await signOut( { clearRealm: true } );
           }
         }
       };
