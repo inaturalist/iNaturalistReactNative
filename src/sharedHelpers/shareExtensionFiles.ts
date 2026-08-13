@@ -25,7 +25,9 @@ export async function unlinkShareExtensionSourceIfNeeded( pathOrUri: string ): P
     return;
   }
   try {
-    await unlink( pathForUnlink( pathOrUri ) );
+    // await unlink( pathForUnlink( pathOrUri ) );
+    console.log( pathForUnlink( pathOrUri ) );
+    console.log( unlink );
   } catch {
     // Best-effort cleanup; do not fail observation creation
   }

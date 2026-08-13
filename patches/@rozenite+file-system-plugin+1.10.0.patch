@@ -1,0 +1,31 @@
+diff --git a/node_modules/@rozenite/file-system-plugin/dist/react-native/chunks/fileSystemProvider.require.js b/node_modules/@rozenite/file-system-plugin/dist/react-native/chunks/fileSystemProvider.require.js
+index 41eec75..4c2efd8 100644
+--- a/node_modules/@rozenite/file-system-plugin/dist/react-native/chunks/fileSystemProvider.require.js
++++ b/node_modules/@rozenite/file-system-plugin/dist/react-native/chunks/fileSystemProvider.require.js
+@@ -183,7 +183,7 @@ function P(e) {
+     provider: "rnfs",
+     async getRoots() {
+       const t = [];
+-      return t.push({
++      t.push({
+         id: "rnfs.DocumentDirectoryPath",
+         label: "Document Directory",
+         path: f(e.DocumentDirectoryPath)
+@@ -204,6 +204,17 @@ function P(e) {
+         label: "Main Bundle",
+         path: f(e.MainBundlePath)
+       }), t;
++      if (typeof e.pathForGroup === "function") {
++        const appGroupPath = await e.pathForGroup("group.org.inaturalist.iNaturalistMobile");
++        if (appGroupPath) {
++          t.push({
++            id: "rnfs.ShareExtensionAppGroup",
++            label: "Shared/AppGroup",
++            path: f(appGroupPath),
++          });
++        }
++      }
++      return t;      
+     },
+     async listDir(t) {
+       const s = m(t), n = (await e.readDir(s)).map((i) => {
