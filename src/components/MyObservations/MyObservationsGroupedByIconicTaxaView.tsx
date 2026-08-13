@@ -11,6 +11,8 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 
 import useIconicTaxaObservationCounts from "./hooks/useIconicTaxaObservationCounts";
+import useUnsyncedObservationIdsByIconicTaxon
+  from "./hooks/useUnsyncedObservationIdsByIconicTaxon";
 import SmallGridObsItemContainer from "./SmallGridObsItemContainer";
 
 function iconicTaxaGroupTitles( t: TFunction ): Record<ICONIC_TAXA_GROUP, string> {
@@ -49,20 +51,29 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
   const localObservationIds = useLocalObservationIds( );
   const currentUser = useCurrentUser( );
   const iconicTaxaCounts = useIconicTaxaObservationCounts( );
+  const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( );
   const titlesByCategory = useMemo( ( ) => iconicTaxaGroupTitles( t ), [t] );
 
-  // Temporary testing set up which just distributes the list of local obs across every
-  // category so we can mock up multiple sections.
+  // Unsynced obs are bucketed for real, by their local taxon. The rest are still a temporary.
+  // TODO: per-category fetching.
   const observationsByCategory = useMemo( ( ) => {
-    const buckets = new Map<ICONIC_TAXA_GROUP, typeof localObservationIds>(
-      ICONIC_TAXA_GROUP_ORDER.map( category => [category, []] ),
+    const pinnedUuids = new Set(
+      [...unsyncedByCategory.values( )].flat( ),
     );
-    localObservationIds.forEach( ( item, index ) => {
-      const category = ICONIC_TAXA_GROUP_ORDER[index % ICONIC_TAXA_GROUP_ORDER.length];
-      buckets.get( category )?.push( item );
-    } );
+    const buckets = new Map<ICONIC_TAXA_GROUP, string[]>(
+      ICONIC_TAXA_GROUP_ORDER.map( category => [
+        category,
+        [...unsyncedByCategory.get( category ) ?? []],
+      ] ),
+    );
+    localObservationIds
+      .filter( ( { uuid } ) => !pinnedUuids.has( uuid ) )
+      .forEach( ( { uuid }, index ) => {
+        const category = ICONIC_TAXA_GROUP_ORDER[index % ICONIC_TAXA_GROUP_ORDER.length];
+        buckets.get( category )?.push( uuid );
+      } );
     return buckets;
-  }, [localObservationIds] );
+  }, [localObservationIds, unsyncedByCategory] );
 
   const [closedCategories, setClosedCategories] = useState<Set<ICONIC_TAXA_GROUP>>(
     ( ) => new Set( ),
@@ -94,7 +105,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     };
     if ( !isOpen ) return [headerRow];
 
-    const tileRows: GroupedRow[] = observations.map( ( { uuid } ) => ( {
+    const tileRows: GroupedRow[] = observations.map( uuid => ( {
       type: "tile",
       key: uuid,
       tile: uuid,

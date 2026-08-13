@@ -47,8 +47,8 @@ const SmallGridObsItemContainer = ( {
   const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
 
   const observation = useObject<RealmObservation>( "Observation", uuid );
-  // Not the needs_sync column, which is only written when an observation is created and in
-  // the schema 55 migration, so it can be stale
+  // Not the needs_sync column, which is cleared as soon as the observation record itself gets a
+  // server id, even if its photos or sounds are still uploading
   const obsNeedsSync = observation?.needsSync( ) ?? false;
 
   // undefined means "not currently uploading", which is how ObsUploadStatus decides whether
