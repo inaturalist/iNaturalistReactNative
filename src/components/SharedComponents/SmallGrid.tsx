@@ -125,18 +125,18 @@ const SmallGrid = <T, H, S = never, >( {
 
     const position = tilePositions.get( index ) ?? 0;
     const isLastInRow = position % numColumns === numColumns - 1;
-    const isFirstRowInSection = position < numColumns;
     const itemWidth = isLastInRow
       ? lastTileSize
       : tileSize;
-    const marginTop = isFirstRowInSection
-      ? 0
-      : SMALL_GRID_GAP;
 
     return (
       <View
         className="items-start"
-        style={{ width: slotWidth, height: tileSize, marginTop }}
+        style={{
+          width: slotWidth,
+          height: tileSize + SMALL_GRID_GAP,
+          paddingTop: SMALL_GRID_GAP,
+        }}
       >
         {renderTile( item.tile, itemWidth, tileSize )}
       </View>
