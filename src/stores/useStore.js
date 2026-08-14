@@ -2,6 +2,7 @@ import merge from "lodash/merge";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import createExploreRecentSearchesSlice from "./createExploreRecentSearchesSlice";
 import createExploreSlice from "./createExploreSlice";
 import createFeatureFlagSlice from "./createFeatureFlagSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
@@ -31,6 +32,7 @@ const useStore = create( persist(
   ( ...args ) => {
     // Let's make our slices
     const slices = [
+      createExploreRecentSearchesSlice( ...args ),
       createExploreSlice( ...args ),
       createFeatureFlagSlice( ...args ),
       createFirebaseTraceSlice( ...args ),
@@ -79,6 +81,10 @@ const useStore = create( persist(
       // Vestigial un-namespaced values in the layout slice
       isAdvancedUser: state.isAdvancedUser,
       obsDetailsTab: state.obsDetailsTab,
+      exploreRecentSearches: {
+        subjects: state.exploreRecentSearches.subjects,
+        places: state.exploreRecentSearches.places,
+      },
 
       // Dynamically select all values in the layout slice's namespace
       layout: ( Object.keys( state.layout ).reduce( ( memo, key ) => {
