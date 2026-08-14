@@ -19,6 +19,7 @@ import {
 } from "providers/ExploreV2Context";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
+import factory from "tests/factory";
 
 const TAXON = {
   id: 745,
@@ -28,10 +29,18 @@ const TAXON = {
   rank_level: 10,
 };
 
-const USER = { id: 7, login: "seth_msp", observations_count: 5 };
-const OTHER_USER = { id: 8, login: "kueda", observations_count: 500 };
-const PROJECT = { id: 9, title: "InverteFest", project_type: "collection" };
-const OTHER_PROJECT = { id: 10, title: "City Nature Challenge", project_type: "umbrella" };
+const USER = factory( "RemoteUser", { id: 7, login: "seth_msp" } );
+const OTHER_USER = factory( "RemoteUser", { id: 8, login: "kueda" } );
+const PROJECT = factory( "RemoteProject", {
+  id: 9,
+  title: "InverteFest",
+  project_type: "collection",
+} );
+const OTHER_PROJECT = factory( "RemoteProject", {
+  id: 10,
+  title: "City Nature Challenge",
+  project_type: "umbrella",
+} );
 const PLACE = { id: 1, display_name: "Monterey, CA, US" };
 
 const makeDraft = ( { filters, ...overrides } = {} ) => ( {

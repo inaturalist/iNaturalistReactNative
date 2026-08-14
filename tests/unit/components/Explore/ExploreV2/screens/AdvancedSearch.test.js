@@ -12,6 +12,7 @@ import {
 } from "providers/ExploreV2Context";
 import React from "react";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 const mockGoBack = jest.fn( );
@@ -52,13 +53,12 @@ jest.mock( "sharedHooks/useIconicTaxa", ( ) => ( {
 } ) );
 const useIconicTaxa = require( "sharedHooks/useIconicTaxa" ).default;
 
-const CURRENT_USER = {
+const CURRENT_USER = factory( "LocalUser", {
   id: 99,
   login: "tester",
-  observations_count: 42,
   prefers_common_names: true,
   prefers_scientific_name_first: false,
-};
+} );
 
 const TAXON = {
   id: 745,
@@ -77,14 +77,12 @@ const BIRDS = {
   iconic_taxon_name: "Aves",
 };
 
-const USER = { id: 7, login: "seth_msp", observations_count: 5 };
-const PROJECT = {
+const USER = factory( "RemoteUser", { id: 7, login: "seth_msp" } );
+const PROJECT = factory( "RemoteProject", {
   id: 9,
   title: "InverteFest",
   project_type: "collection",
-  rule_preferences: [],
-  icon: "https://example.com/p.jpg",
-};
+} );
 const PLACE = { id: 1, display_name: "Monterey, CA, US" };
 const BOUNDS = {
   swlat: 1, swlng: 2, nelat: 3, nelng: 4,
