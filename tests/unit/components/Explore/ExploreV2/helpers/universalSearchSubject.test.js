@@ -26,24 +26,17 @@ describe( "resultToSubject", ( ) => {
   } );
 
   it( "maps a project result to a project subject", ( ) => {
-    const result = {
-      type: "project",
-      project: {
-        id: 9,
-        title: "InverteFest",
-        project_type: "collection",
-        icon: "https://example.com/p.jpg",
-      },
+    const project = {
+      id: 9,
+      title: "InverteFest",
+      project_type: "collection",
+      icon: "https://example.com/p.jpg",
+      rule_preferences: [{ field: "d1", value: "2024-01-01" }],
     };
 
-    expect( resultToSubject( result ) ).toEqual( {
+    expect( resultToSubject( { type: "project", project } ) ).toEqual( {
       type: "project",
-      project: {
-        id: 9,
-        title: "InverteFest",
-        project_type: "collection",
-        icon: "https://example.com/p.jpg",
-      },
+      project,
     } );
   } );
 
