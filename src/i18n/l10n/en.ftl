@@ -1311,6 +1311,9 @@ Syncing = Syncing...
 Take-photo = Take photo
 Take-photos = Take photos
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+# Shown in place of a group of observations that failed to load, prompting the user to
+# request them again
+Tap-to-try-loading-again = Tap to try loading again
 # label in project requirements
 Taxa = Taxa
 TAXON = TAXON

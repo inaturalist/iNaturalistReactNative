@@ -1,4 +1,4 @@
-import type { FlashListRef, ListRenderItem } from "@shopify/flash-list";
+import type { FlashListRef, ListRenderItem, ViewToken } from "@shopify/flash-list";
 import { CustomFlashList } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback, useMemo } from "react";
@@ -34,6 +34,10 @@ interface Props<T, H, S> {
   listFooterContent?: React.ReactElement | null;
   listHeaderContent?: React.ReactElement | null;
   onEndReached?: ( ) => void;
+  onViewableItemsChanged?: ( info: {
+    viewableItems: ViewToken<SmallGridItem<T, H, S>>[];
+    changed: ViewToken<SmallGridItem<T, H, S>>[];
+  } ) => void;
   ref?: React.Ref<FlashListRef<SmallGridItem<T, H, S>>>;
   refreshControl?: React.ReactElement;
   renderHeader: ( header: H ) => React.ReactElement;
@@ -75,6 +79,7 @@ const SmallGrid = <T, H, S = never, >( {
   listFooterContent,
   listHeaderContent,
   onEndReached,
+  onViewableItemsChanged,
   ref,
   refreshControl,
   renderHeader,
@@ -166,6 +171,7 @@ const SmallGrid = <T, H, S = never, >( {
       numColumns={numColumns}
       getItemType={getItemType}
       onEndReached={onEndReached}
+      onViewableItemsChanged={onViewableItemsChanged}
       overrideItemLayout={overrideItemLayout}
       ref={ref}
       refreshControl={refreshControl}

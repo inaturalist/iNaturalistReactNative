@@ -85,6 +85,20 @@ export function buildIconicTaxaRows( {
   } );
 }
 
+// Index of the last tile in the list, which is where the observations a user can actually
+// scroll through run out.
+//
+// This is not the end of the list: every category renders a header whether or not it has been
+// fetched, so below the last tile sits a stack of headers for categories that haven't loaded
+// yet. Waiting for onEndReached would mean waiting for the user to scroll past all of those
+// first, so paging triggers off this instead.
+export function lastTileRowIndex( rows: IconicTaxaRow[] ): number {
+  for ( let index = rows.length - 1; index >= 0; index -= 1 ) {
+    if ( rows[index].type === "tile" ) return index;
+  }
+  return -1;
+}
+
 // determines which section should load its next page when the user reaches the bottom of the list.
 // Returns null when the deepest section is exhausted, which is the caller's signal to activate the
 // next category instead.

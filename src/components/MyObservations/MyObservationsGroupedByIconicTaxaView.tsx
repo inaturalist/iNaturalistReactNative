@@ -1,16 +1,28 @@
-import { CollapsibleSectionHeader, SmallGrid } from "components/SharedComponents";
-import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
-import type { TFunction } from "i18next";
-import React, { useCallback, useMemo, useState } from "react";
+import type { FlashListRef } from "@shopify/flash-list";
 import {
-  ICONIC_TAXA_GROUP,
-  ICONIC_TAXA_GROUP_ORDER,
-  iconicTaxaGroupIcon,
-} from "sharedHelpers/iconicTaxaGroupOrder";
+  ActivityIndicator,
+  Body3,
+  CollapsibleSectionHeader,
+  SmallGrid,
+} from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
+import type { TFunction } from "i18next";
+import { useMyObservations } from "providers/MyObservationsContext";
+import React, {
+  useCallback, useEffect, useMemo, useRef, useState,
+} from "react";
+import { ICONIC_TAXA_GROUP, iconicTaxaGroupIcon } from "sharedHelpers/iconicTaxaGroupOrder";
+import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 
+import type {
+  IconicTaxaHeader,
+  IconicTaxaRow,
+  IconicTaxaSpan,
+} from "./helpers/iconicTaxaSections";
+import { buildIconicTaxaRows, lastTileRowIndex } from "./helpers/iconicTaxaSections";
 import useIconicTaxaObservationCounts from "./hooks/useIconicTaxaObservationCounts";
+import useIconicTaxaSectionObservations from "./hooks/useIconicTaxaSectionObservations";
 import useUnsyncedObservationIdsByIconicTaxon
   from "./hooks/useUnsyncedObservationIdsByIconicTaxon";
 import SmallGridObsItemContainer from "./SmallGridObsItemContainer";
@@ -38,82 +50,104 @@ interface Props {
   listHeaderContent?: React.ReactElement | null;
 }
 
-interface HeaderData {
-  category: ICONIC_TAXA_GROUP;
-  count: number;
-  isOpen: boolean;
+// Which categories the user has collapsed, tracked alongside the sort they were collapsed
+// under so changing sort reopens everything without an effect
+interface CollapseState {
+  sortBy: OBSERVATIONS_SORT;
+  categories: Set<ICONIC_TAXA_GROUP>;
 }
 
-type GroupedRow = SmallGridItem<string, HeaderData>;
+const NONE_COLLAPSED: Set<ICONIC_TAXA_GROUP> = new Set( );
+
+// How many tiles ahead of the last loaded one to start fetching.
+const PREFETCH_TILES = 15;
 
 const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) => {
   const { t } = useTranslation( );
-  const localObservationIds = useLocalObservationIds( );
   const currentUser = useCurrentUser( );
-  const iconicTaxaCounts = useIconicTaxaObservationCounts( );
-  const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( );
+  const { state } = useMyObservations( );
+  const { observationsSort } = state;
+  const listRef = useRef<FlashListRef<IconicTaxaRow>>( null );
+
   const titlesByCategory = useMemo( ( ) => iconicTaxaGroupTitles( t ), [t] );
 
-  // Unsynced obs are bucketed for real, by their local taxon. The rest are still a temporary.
-  // TODO: per-category fetching.
-  const observationsByCategory = useMemo( ( ) => {
-    const pinnedUuids = new Set(
-      [...unsyncedByCategory.values( )].flat( ),
-    );
-    const buckets = new Map<ICONIC_TAXA_GROUP, string[]>(
-      ICONIC_TAXA_GROUP_ORDER.map( category => [
-        category,
-        [...unsyncedByCategory.get( category ) ?? []],
-      ] ),
-    );
-    localObservationIds
-      .filter( ( { uuid } ) => !pinnedUuids.has( uuid ) )
-      .forEach( ( { uuid }, index ) => {
-        const category = ICONIC_TAXA_GROUP_ORDER[index % ICONIC_TAXA_GROUP_ORDER.length];
-        buckets.get( category )?.push( uuid );
-      } );
-    return buckets;
-  }, [localObservationIds, unsyncedByCategory] );
+  const {
+    counts,
+    isLoading: isLoadingCounts,
+  } = useIconicTaxaObservationCounts( );
+  const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( );
 
-  const [closedCategories, setClosedCategories] = useState<Set<ICONIC_TAXA_GROUP>>(
-    ( ) => new Set( ),
-  );
+  const [collapseState, setCollapseState] = useState<CollapseState>( {
+    sortBy: observationsSort,
+    categories: NONE_COLLAPSED,
+  } );
+  const collapsedCategories = collapseState.sortBy === observationsSort
+    ? collapseState.categories
+    : NONE_COLLAPSED;
+
+  const {
+    sections,
+    advanceFrontier,
+    deepenOrAdvance,
+    retryCategory,
+  } = useIconicTaxaSectionObservations( {
+    collapsedCategories,
+    enabled: !!currentUser,
+    orderedCounts: counts,
+    sortBy: observationsSort,
+  } );
+
+  // Changing sort re-sorts every section's contents, so the list the user was reading is gone.
+  // Put them back at the top.
+  useEffect( ( ) => {
+    listRef.current?.scrollToOffset( { animated: false, offset: 0 } );
+  }, [observationsSort] );
 
   const toggleCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
-    setClosedCategories( prev => {
-      const next = new Set( prev );
-      if ( next.has( category ) ) {
-        next.delete( category );
-      } else {
-        next.add( category );
-      }
-      return next;
-    } );
+    const isCollapsing = !collapsedCategories.has( category );
+    const categories = new Set( collapsedCategories );
+    if ( isCollapsing ) {
+      categories.add( category );
+    } else {
+      categories.delete( category );
+    }
+    setCollapseState( { sortBy: observationsSort, categories } );
+    // Collapsing is the user saying they're done with this category, so start loading the next
+    // one now rather than making them scroll to trigger it
+    if ( isCollapsing ) advanceFrontier( );
+  }, [advanceFrontier, collapsedCategories, observationsSort] );
+
+  // Until the counts land every category reads as zero, so they'd render in the tie-break order
+  // and then visibly reshuffle into count order a moment later. Show nothing but the spinner
+  // until we know the real order.
+  const rows = useMemo( ( ) => ( isLoadingCounts
+    ? []
+    : buildIconicTaxaRows( {
+      collapsedCategories,
+      orderedCounts: counts,
+      sections,
+      unsyncedByCategory,
+    } ) ), [collapsedCategories, counts, isLoadingCounts, sections, unsyncedByCategory] );
+
+  // Read through a ref so the handler identity stays stable. FlashList subscribes to it, and
+  // swapping it on every render churns that subscription.
+  const lastTileIndex = useMemo( ( ) => lastTileRowIndex( rows ), [rows] );
+  const prefetchRef = useRef( { deepenOrAdvance, lastTileIndex } );
+  useEffect( ( ) => {
+    prefetchRef.current = { deepenOrAdvance, lastTileIndex };
+  }, [deepenOrAdvance, lastTileIndex] );
+
+  const onViewableItemsChanged = useCallback( ( { viewableItems }: {
+    viewableItems: { index: number | null }[];
+  } ) => {
+    const { deepenOrAdvance: deepen, lastTileIndex } = prefetchRef.current;
+    if ( lastTileIndex < 0 ) return;
+    const lastVisibleIndex = viewableItems[viewableItems.length - 1]?.index;
+    if ( lastVisibleIndex == null ) return;
+    if ( lastVisibleIndex >= lastTileIndex - PREFETCH_TILES ) deepen( );
   }, [] );
 
-  // Sections are ordered most-observed to least-observed, which is the order iconicTaxaCounts
-  // comes back in.ICONIC_TAXA_GROUP_ORDER is the tie-break order that hook sorts by.
-  const rows = useMemo( ( ) => iconicTaxaCounts.flatMap( ( { category, count } ): GroupedRow[] => {
-    const observations = observationsByCategory.get( category ) ?? [];
-    if ( observations.length === 0 ) return [];
-
-    const isOpen = !closedCategories.has( category );
-    const headerRow: GroupedRow = {
-      type: "header",
-      key: `header-${category}`,
-      header: { category, count, isOpen },
-    };
-    if ( !isOpen ) return [headerRow];
-
-    const tileRows: GroupedRow[] = observations.map( uuid => ( {
-      type: "tile",
-      key: uuid,
-      tile: uuid,
-    } ) );
-    return [headerRow, ...tileRows];
-  } ), [observationsByCategory, closedCategories, iconicTaxaCounts] );
-
-  const renderHeader = useCallback( ( header: HeaderData ) => (
+  const renderHeader = useCallback( ( header: IconicTaxaHeader ) => (
     <CollapsibleSectionHeader
       count={header.count}
       icon={iconicTaxaGroupIcon( header.category )}
@@ -124,6 +158,29 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     />
   ), [titlesByCategory, toggleCategory] );
 
+  const renderSpan = useCallback( ( span: IconicTaxaSpan ) => {
+    if ( span.kind === "error" ) {
+      return (
+        <Pressable
+          accessibilityRole="button"
+          className="py-4 items-center"
+          onPress={( ) => retryCategory( span.category )}
+          testID={`MyObservationsGroupedByIconicTaxaView.SectionError.${span.category}`}
+        >
+          <Body3>{t( "Tap-to-try-loading-again" )}</Body3>
+        </Pressable>
+      );
+    }
+    return (
+      <View
+        className="py-4"
+        testID={`MyObservationsGroupedByIconicTaxaView.SectionLoading.${span.category}`}
+      >
+        <ActivityIndicator />
+      </View>
+    );
+  }, [retryCategory, t] );
+
   const renderTile = useCallback( ( uuid: string, width: number, height: number ) => (
     <SmallGridObsItemContainer
       currentUser={currentUser}
@@ -133,13 +190,26 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     />
   ), [currentUser] );
 
+  const listFooterContent = useMemo( ( ) => ( isLoadingCounts
+    ? (
+      <View className="py-8">
+        <ActivityIndicator />
+      </View>
+    )
+    : null ), [isLoadingCounts] );
+
   if ( !currentUser ) return null;
 
   return (
     <SmallGrid
       data={rows}
+      listFooterContent={listFooterContent}
       listHeaderContent={listHeaderContent}
+      onEndReached={deepenOrAdvance}
+      onViewableItemsChanged={onViewableItemsChanged}
+      ref={listRef}
       renderHeader={renderHeader}
+      renderSpan={renderSpan}
       renderTile={renderTile}
       testID="MyObservationsGroupedByIconicTaxaView"
     />

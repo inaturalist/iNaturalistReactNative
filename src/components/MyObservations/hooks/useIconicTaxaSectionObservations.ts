@@ -1,4 +1,4 @@
-import { useQueries } from "@tanstack/react-query";
+import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
@@ -53,6 +53,7 @@ interface Result {
   // load the next page of the section the user has scrolled into, or, if that section is
   // finished, start the next category. Safe to call on every onEndReached.
   deepenOrAdvance: ( ) => void;
+  retryCategory: ( category: ICONIC_TAXA_GROUP ) => void;
   resetPagination: ( ) => void;
 }
 
@@ -72,6 +73,7 @@ const useIconicTaxaSectionObservations = ( {
 }: Params ): Result => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+  const queryClient = useQueryClient( );
 
   const sortParams = useMemo( ( ) => observationSortToApiParams( sortBy ), [sortBy] );
   const sortKey = `${sortParams.order_by}-${sortParams.order}`;
@@ -250,6 +252,12 @@ const useIconicTaxaSectionObservations = ( {
     setPages,
   ] );
 
+  const retryCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
+    queryClient.refetchQueries( {
+      queryKey: ["useIconicTaxaSectionObservations", currentUser?.id, sortParams, category],
+    } );
+  }, [currentUser?.id, queryClient, sortParams] );
+
   // Back to the top, as if the view had just opened
   const resetPagination = useCallback( ( ) => setPages( {} ), [setPages] );
 
@@ -257,6 +265,7 @@ const useIconicTaxaSectionObservations = ( {
     sections,
     advanceFrontier,
     deepenOrAdvance,
+    retryCategory,
     resetPagination,
   };
 };

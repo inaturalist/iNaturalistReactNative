@@ -1,6 +1,7 @@
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
 import {
   buildIconicTaxaRows,
+  lastTileRowIndex,
   selectCategoryToDeepen,
 } from "components/MyObservations/helpers/iconicTaxaSections";
 import { ICONIC_TAXA_GROUP, ICONIC_TAXA_GROUP_ORDER } from "sharedHelpers/iconicTaxaGroupOrder";
@@ -102,6 +103,25 @@ describe( "buildIconicTaxaRows", ( ) => {
 
     expect( tileKeys( rows ) ).toEqual( ["server-1"] );
     expect( rows.filter( row => row.type === "span" )[0] ).toMatchObject( { itemType: "error" } );
+  } );
+} );
+
+describe( "lastTileRowIndex", ( ) => {
+  it( "ignores the headers of categories that haven't loaded yet, so paging can trigger "
+    + "before the user scrolls past them", ( ) => {
+    const rows = buildRows( {
+      sections: new Map( [
+        [ICONIC_TAXA_GROUP.PLANTAE, section( { uuids: ["a", "b"] } )],
+      ] ),
+    } );
+
+    // one header per category, and the only tiles are Plantae's two
+    expect( lastTileRowIndex( rows ) ).toBe( 2 );
+    expect( rows ).toHaveLength( ICONIC_TAXA_GROUP_ORDER.length + 2 );
+  } );
+
+  it( "returns -1 when nothing has loaded", ( ) => {
+    expect( lastTileRowIndex( buildRows( ) ) ).toBe( -1 );
   } );
 } );
 
