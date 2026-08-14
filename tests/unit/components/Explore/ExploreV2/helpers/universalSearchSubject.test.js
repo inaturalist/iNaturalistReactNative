@@ -1,11 +1,44 @@
 import {
   resultToSubject,
+  subjectToResult,
   subjectToText,
 } from "components/Explore/ExploreV2/helpers/universalSearchSubject";
 
+const USER_RESULT = {
+  type: "user",
+  user: {
+    id: 7,
+    login: "seth_msp",
+    icon_url: "https://example.com/u.jpg",
+    observations_count: 5,
+  },
+};
+
+const PROJECT_RESULT = {
+  type: "project",
+  project: {
+    id: 9,
+    title: "InverteFest",
+    project_type: "collection",
+    rule_preferences: [],
+    icon: "https://example.com/p.jpg",
+  },
+};
+
+const TAXON_RESULT = {
+  type: "taxon",
+  taxon: {
+    id: 12,
+    name: "Eumyias thalassinus",
+    preferred_common_name: "Verditer Flycatcher",
+    iconic_taxon_name: "Aves",
+    default_photo: { url: "https://example.com/t.jpg" },
+  },
+};
+
 describe( "resultToSubject", ( ) => {
   it( "maps a user result to a user subject", ( ) => {
-    const result = {
+    expect( resultToSubject( USER_RESULT ) ).toEqual( {
       type: "user",
       user: {
         id: 7,
@@ -13,52 +46,24 @@ describe( "resultToSubject", ( ) => {
         icon_url: "https://example.com/u.jpg",
         observations_count: 5,
       },
-    };
-
-    expect( resultToSubject( result ) ).toEqual( {
-      type: "user",
-      user: {
-        id: 7,
-        login: "seth_msp",
-        icon_url: "https://example.com/u.jpg",
-      },
     } );
   } );
 
   it( "maps a project result to a project subject", ( ) => {
-    const result = {
+    expect( resultToSubject( PROJECT_RESULT ) ).toEqual( {
       type: "project",
       project: {
         id: 9,
         title: "InverteFest",
         project_type: "collection",
-        icon: "https://example.com/p.jpg",
-      },
-    };
-
-    expect( resultToSubject( result ) ).toEqual( {
-      type: "project",
-      project: {
-        id: 9,
-        title: "InverteFest",
+        rule_preferences: [],
         icon: "https://example.com/p.jpg",
       },
     } );
   } );
 
   it( "maps a taxon result to a taxon subject", ( ) => {
-    const result = {
-      type: "taxon",
-      taxon: {
-        id: 12,
-        name: "Eumyias thalassinus",
-        preferred_common_name: "Verditer Flycatcher",
-        iconic_taxon_name: "Aves",
-        default_photo: { url: "https://example.com/t.jpg" },
-      },
-    };
-
-    expect( resultToSubject( result ) ).toEqual( {
+    expect( resultToSubject( TAXON_RESULT ) ).toEqual( {
       type: "taxon",
       taxon: {
         id: 12,
@@ -68,6 +73,20 @@ describe( "resultToSubject", ( ) => {
         default_photo: { url: "https://example.com/t.jpg" },
       },
     } );
+  } );
+} );
+
+describe( "subjectToResult", ( ) => {
+  it.each( [USER_RESULT, PROJECT_RESULT, TAXON_RESULT] )(
+    "round trips a $type result",
+    result => {
+      expect( subjectToResult( resultToSubject( result ) ) ).toEqual( result );
+    },
+  );
+
+  it( "returns null for subjects that never came from a search result", ( ) => {
+    expect( subjectToResult( { type: "unknown" } ) ).toBeNull( );
+    expect( subjectToResult( { type: "unobserved", user: { id: 7 } } ) ).toBeNull( );
   } );
 } );
 
