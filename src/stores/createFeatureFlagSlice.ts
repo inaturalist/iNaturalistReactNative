@@ -34,7 +34,6 @@ export enum FeatureFlag {
 export const flagsEnabledForAdminsInTestFlight = [
   FeatureFlag.TestFlightAdminMessageEnabled,
   FeatureFlag.SearchMyObservationsEnabled,
-  FeatureFlag.SortMyObservationsEnabled,
   FeatureFlag.MyObservationsMapViewEnabled,
 ];
 
@@ -44,7 +43,7 @@ const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   [FeatureFlag.NewsEnabled]: false,
   [FeatureFlag.TraditionalProjectsEnabled]: false,
   [FeatureFlag.SearchMyObservationsEnabled]: false,
-  [FeatureFlag.SortMyObservationsEnabled]: false,
+  [FeatureFlag.SortMyObservationsEnabled]: true,
   [FeatureFlag.MyObservationsMapViewEnabled]: false,
   [FeatureFlag.TestFlightAdminMessageEnabled]: false,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: false,
