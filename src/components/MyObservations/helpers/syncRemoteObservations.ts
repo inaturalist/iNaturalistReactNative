@@ -24,7 +24,12 @@ async function syncRemoteObservations( realm, currentUserId: number, deletionsCo
   }
   const apiToken = await getJWT( );
   const { results } = await searchObservations( searchParams, { api_token: apiToken } );
+
+  const hasNewObservations = ( results || [] ).some(
+    ( obs: { uuid: string } ) => !realm.objectForPrimaryKey( "Observation", obs.uuid ),
+  );
   await Observation.upsertRemoteObservations( results, realm );
+  return hasNewObservations;
 }
 
 export default syncRemoteObservations;

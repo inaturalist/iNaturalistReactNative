@@ -71,8 +71,7 @@ const SearchMyObservationsTaxon = ( ) => {
   const resetSearch = useCallback( ( ) => {
     setTaxonQuery( "" );
     dispatch( { type: MY_OBSERVATIONS_ACTION.CLEAR_TAXON_SEARCH } );
-    closeScreen( );
-  }, [closeScreen, dispatch] );
+  }, [dispatch] );
 
   const renderItem = useCallback(
     // no-unused-prop-types failing for components defined at runtime seems to
@@ -97,7 +96,7 @@ const SearchMyObservationsTaxon = ( ) => {
         onClose={closeScreen}
         headerText={t( "SEARCH" )}
         onReset={resetSearch}
-        resetDisabled={!searchedTaxon}
+        resetDisabled={!searchedTaxon && taxonQuery === ""}
         testID="SearchMyObservationsTaxon.close"
       />
       <TaxonSearch

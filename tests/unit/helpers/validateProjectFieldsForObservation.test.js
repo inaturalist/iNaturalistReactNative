@@ -152,6 +152,30 @@ describe( "validateProjectFieldsForObservation", () => {
       expect( result.errors[0].reason ).toBe( MISSING_REQUIRED );
     } );
 
+    it( "should return MISSING_REQUIRED when a required field OFV is pending removal", () => {
+      const mockProject = {
+        title: "Mushrooms of Bavaria",
+        projectObservationFields: [{
+          required: true,
+          obsField: {
+            allowedValues: [],
+            id: 10,
+            name: "Habitat",
+          },
+        }],
+      };
+      const mockObservation = {
+        observationFieldValues: [{
+          obsFieldId: 10,
+          value: "shrubland",
+          _pendingRemoval: true,
+        }],
+      };
+      const result = validateProjectFieldsForObservation( mockObservation, [mockProject] );
+      expect( result.valid ).toBe( false );
+      expect( result.errors[0].reason ).toBe( MISSING_REQUIRED );
+    } );
+
     it( "should be valid when a required field's OFV is non-empty after trim", () => {
       const mockProject = {
         projectObservationFields: [{

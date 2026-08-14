@@ -106,6 +106,21 @@ describe( "OtherDataSection", () => {
       expect( screen.getByText( "Add to Projects" ) ).toBeVisible( );
     } );
 
+    it( "excludes pending-removal projects from the count", ( ) => {
+      renderOtherDataSection( {
+        currentObservation: {
+          ...factory( "LocalObservation" ),
+          projectObservations: [
+            { projectId: 1 },
+            { projectId: 2, _pendingRemoval: true },
+          ],
+        },
+      } );
+
+      expect( screen.getByLabelText( /Added to 1 Project/ ) ).toBeVisible( );
+      expect( screen.getByText( "Added to 1 Project" ) ).toBeVisible( );
+    } );
+
     it( "shows Added to N Projects when projects are selected", ( ) => {
       renderOtherDataSection( {
         currentObservation: {
