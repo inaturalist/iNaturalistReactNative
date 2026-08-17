@@ -35,7 +35,7 @@ const PhotoSharing = ( ) => {
   const setPhotoImporterState = useStore(
     ( state: ObservationFlowSlice ) => state.setPhotoImporterState,
   );
-  const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs();
+  const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs( );
   const [navigationHandled, setNavigationHandled] = useState<boolean | null>( null );
 
   const resetNavigator = useCallback( (
