@@ -10,6 +10,8 @@
  * runtime can interleave user interactions between them.
  */
 import { cleanupLogFiles } from "components/Developer/logManagementHelpers";
+import { isLoggedIn } from "components/LoginSignUp/AuthenticationService";
+import { navigationRef } from "navigation/navigationUtils";
 import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import User from "realmModels/User";
@@ -84,6 +86,13 @@ const useDeferredStartup = ( ) => {
   const { i18n } = useTranslation( );
 
   useEffect( ( ) => {
+    const id0 = deferTask( "checkLoggedInStatuses", async () => {
+      const currentUser = User.currentUser( realm );
+      if ( currentUser && !( await isLoggedIn() ) && navigationRef.isReady() ) {
+        logger.info( "currentUser and isLoggedIn contradict, routing to re-login" );
+        navigationRef.navigate( "LoginStackNavigator", { screen: "Login" } );
+      }
+    }, 500 );
     // Diagnostic tasks that we need to finish even on a busy thread
     // should have a timeout to ensure they run eventually.
     const id1 = deferTask( "checkForPreviousCrash", checkForPreviousCrash, 30000 );
@@ -118,6 +127,7 @@ const useDeferredStartup = ( ) => {
     }, 30000 );
 
     return ( ) => {
+      cancelIdleCallback( id0 );
       cancelIdleCallback( id1 );
       cancelIdleCallback( id2 );
       cancelIdleCallback( id3 );
