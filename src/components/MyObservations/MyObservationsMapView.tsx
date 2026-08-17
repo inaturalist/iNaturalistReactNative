@@ -5,9 +5,11 @@ import { useMyObservations } from "providers/MyObservationsContext";
 import React, { useMemo } from "react";
 import type { Region } from "react-native-maps";
 
+import Announcements from "./Announcements";
 import useMyObservationsMapBounds from "./hooks/useMyObservationsMapBounds";
 
 interface Props {
+  isConnected: boolean;
   userId?: number;
 }
 
@@ -22,9 +24,10 @@ const WORLDWIDE_REGION: Region = {
 
 const activityIndicatorSize = 50;
 
-const MyObservationsMapView = ( { userId }: Props ) => {
+const MyObservationsMapView = ( { isConnected, userId }: Props ) => {
   const { state: myObsState } = useMyObservations( );
   const searchedTaxonId = myObsState.searchedTaxon?.id;
+  const searchActive = !!myObsState.searchedTaxon;
   const { totalBounds, isLoading } = useMyObservationsMapBounds( userId, searchedTaxonId, true );
 
   const regionToAnimate = useMemo(
@@ -36,28 +39,31 @@ const MyObservationsMapView = ( { userId }: Props ) => {
 
   return (
     <View className="flex-1 overflow-hidden h-full">
-      <Map
-        initialRegion={WORLDWIDE_REGION}
-        isLoading={isLoading}
-        regionToAnimate={regionToAnimate}
-        showCurrentLocationButton
-        showSwitchMapTypeButton
-        showsUserLocation
-        switchMapTypeButtonClassName="right-5 bottom-20"
-        tileMapParams={{
-          user_id: userId,
-          ...( searchedTaxonId && { taxon_id: searchedTaxonId } ),
-        }}
-        withPressableObsTiles
-      />
-      {isLoading && (
-        <View
-          className="absolute inset-0 items-center justify-center"
-          testID="MyObservationsMapView.loading"
-        >
-          <ActivityIndicator size={activityIndicatorSize} />
-        </View>
-      )}
+      {!searchActive && <Announcements isConnected={isConnected} />}
+      <View className="flex-1 overflow-hidden">
+        <Map
+          initialRegion={WORLDWIDE_REGION}
+          isLoading={isLoading}
+          regionToAnimate={regionToAnimate}
+          showCurrentLocationButton
+          showSwitchMapTypeButton
+          showsUserLocation
+          switchMapTypeButtonClassName="right-5 bottom-20"
+          tileMapParams={{
+            user_id: userId,
+            ...( searchedTaxonId && { taxon_id: searchedTaxonId } ),
+          }}
+          withPressableObsTiles
+        />
+        {isLoading && (
+          <View
+            className="absolute inset-0 items-center justify-center"
+            testID="MyObservationsMapView.loading"
+          >
+            <ActivityIndicator size={activityIndicatorSize} />
+          </View>
+        )}
+      </View>
     </View>
   );
 };
