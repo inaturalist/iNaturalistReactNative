@@ -23,20 +23,35 @@ import {
 } from "providers/ExploreV2Context";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 
+// Advanced search only keeps a taxon or "unknown" as a subject
+export type AdvancedSearchSubject = Extract<
+  ExploreV2Subject,
+  { type: "taxon" | "unknown" }
+>;
+
 // The draft is a subset of ExploreV2State
 export interface AdvancedSearchDraft {
-  subject: ExploreV2Subject | null;
+  subject: AdvancedSearchSubject | null;
   location: ExploreV2LocationState;
   sortBy: OBSERVATIONS_SORT;
   filters: ExploreV2Filters;
 }
 
-export const draftFromV2State = ( v2: ExploreV2State ): AdvancedSearchDraft => ( {
-  subject: v2.subject,
-  location: v2.location,
-  sortBy: v2.sortBy,
-  filters: v2.filters,
-} );
+// Only taxon goes in the subject. user/project live in the filter blob
+export const draftFromV2State = ( v2: ExploreV2State ): AdvancedSearchDraft => {
+  const { subject } = v2;
+  const base = { location: v2.location, sortBy: v2.sortBy };
+  switch ( subject?.type ) {
+    case "user":
+      return { ...base, subject: null, filters: { ...v2.filters, user: subject.user } };
+    case "project":
+      return { ...base, subject: null, filters: { ...v2.filters, project: subject.project } };
+    case "unobserved":
+      return { ...base, subject: null, filters: v2.filters };
+    default:
+      return { ...base, subject: subject ?? null, filters: v2.filters };
+  }
+};
 
 export type SubjectTaxon = Extract<ExploreV2Subject, { type: "taxon" }>["taxon"];
 
@@ -77,17 +92,6 @@ const withFilters = (
   filters: { ...draft.filters, ...patch },
 } );
 
-// Editing the user or project section supersedes a carried subject of that
-// kind, so the committed subject doesn't contradict the filter.
-const withoutSubjectOfType = (
-  draft: AdvancedSearchDraft,
-  ...types: ExploreV2Subject["type"][]
-): ExploreV2Subject | null => (
-  draft.subject && types.includes( draft.subject.type )
-    ? null
-    : draft.subject
-);
-
 export const advancedSearchReducer = (
   draft: AdvancedSearchDraft,
   action: AdvancedSearchAction,
@@ -120,24 +124,12 @@ export const advancedSearchReducer = (
       };
     case "SET_SORT":
       return { ...draft, sortBy: action.sortBy };
-    // Within the scope of advanced search, we only set a taxon as the subject
-    // and all other subjects go in the filter blob
-    // and if a non-taxon subject came in initially, it has to be excluded via withoutSubjectOfType
     case "SET_USER":
-      return {
-        ...withFilters( draft, { user: action.user, excludeUser: null } ),
-        subject: withoutSubjectOfType( draft, "user", "unobserved" ),
-      };
+      return withFilters( draft, { user: action.user, excludeUser: null } );
     case "SET_EXCLUDE_USER":
-      return {
-        ...withFilters( draft, { excludeUser: action.user, user: null } ),
-        subject: withoutSubjectOfType( draft, "user", "unobserved" ),
-      };
+      return withFilters( draft, { excludeUser: action.user, user: null } );
     case "SET_PROJECT":
-      return {
-        ...withFilters( draft, { project: action.project } ),
-        subject: withoutSubjectOfType( draft, "project" ),
-      };
+      return withFilters( draft, { project: action.project } );
     case "TOGGLE_RESEARCH_GRADE":
       return withFilters( draft, { researchGrade: !draft.filters.researchGrade } );
     case "TOGGLE_NEEDS_ID":
