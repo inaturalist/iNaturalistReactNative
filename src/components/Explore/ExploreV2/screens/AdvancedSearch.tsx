@@ -21,8 +21,11 @@ import {
 } from "components/Explore/ExploreV2/helpers/advancedSearchOptions";
 import type { SubjectTaxon }
   from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
-import { advancedSearchReducer, draftFromV2State }
-  from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
+import {
+  advancedSearchReducer,
+  defaultAdvancedSearchDraft,
+  draftFromV2State,
+} from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
 import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
 import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "components/Explore/Modals/ExploreProjectSearchModal";
@@ -90,6 +93,11 @@ const AdvancedSearch = ( ) => {
   const differsFromInitial = useMemo(
     ( ) => !isEqual( draft, initialDraft ),
     [draft, initialDraft],
+  );
+
+  const resetDisabled = useMemo(
+    ( ) => isEqual( draft, defaultAdvancedSearchDraft ),
+    [draft],
   );
 
   // Which in-screen search picker (taxon/user/project/location) is open.
@@ -283,6 +291,7 @@ const AdvancedSearch = ( ) => {
         headerText={t( "ADVANCED-SEARCH" )}
         onClose={() => navigation.goBack()}
         onReset={() => dispatch( { type: "RESET" } )}
+        resetDisabled={resetDisabled}
         testID="AdvancedSearch.back"
       />
 

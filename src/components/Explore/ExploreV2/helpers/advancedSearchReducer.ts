@@ -53,6 +53,13 @@ export const draftFromV2State = ( v2: ExploreV2State ): AdvancedSearchDraft => {
   }
 };
 
+export const defaultAdvancedSearchDraft: AdvancedSearchDraft = {
+  subject: null,
+  location: { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+  sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+  filters: defaultExploreV2Filters,
+};
+
 export type SubjectTaxon = Extract<ExploreV2Subject, { type: "taxon" }>["taxon"];
 
 export type AdvancedSearchAction =
@@ -217,12 +224,7 @@ export const advancedSearchReducer = (
     case "SET_PHOTO_LICENSE":
       return withFilters( draft, { photoLicense: action.photoLicense } );
     case "RESET":
-      return {
-        subject: null,
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
-        sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
-        filters: defaultExploreV2Filters,
-      };
+      return defaultAdvancedSearchDraft;
     default: {
       // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
       const _exhaustive: never = action;
