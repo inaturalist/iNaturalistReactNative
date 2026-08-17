@@ -48,6 +48,7 @@ import {
   RadioButtonSheet,
 } from "components/SharedComponents";
 import SearchHeader from "components/SharedComponents/SearchHeader";
+import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import { TopAndBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { ScrollView, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
@@ -99,6 +100,15 @@ const AdvancedSearch = ( ) => {
     ( ) => isEqual( draft, defaultAdvancedSearchDraft ),
     [draft],
   );
+
+  const [showDiscardSheet, setShowDiscardSheet] = useState( false );
+  const handleBack = ( ) => {
+    if ( differsFromInitial ) {
+      setShowDiscardSheet( true );
+      return;
+    }
+    navigation.goBack( );
+  };
 
   // Which in-screen search picker (taxon/user/project/location) is open.
   const [openPicker, setOpenPicker] = useState<PickerKind | null>( null );
@@ -289,7 +299,7 @@ const AdvancedSearch = ( ) => {
     <TopAndBottomInsetViewWrapper testID="AdvancedSearch">
       <SearchHeader
         headerText={t( "ADVANCED-SEARCH" )}
-        onClose={() => navigation.goBack()}
+        onClose={handleBack}
         onReset={() => dispatch( { type: "RESET" } )}
         resetDisabled={resetDisabled}
         testID="AdvancedSearch.back"
@@ -753,6 +763,21 @@ const AdvancedSearch = ( ) => {
           closeModal={closePicker}
           onSelectNearby={() => dispatch( { type: "SET_LOCATION_NEARBY" } )}
           updateLocation={updateLocation}
+        />
+      )}
+      {showDiscardSheet && (
+        <WarningSheet
+          onPressClose={( ) => setShowDiscardSheet( false )}
+          confirm={( ) => {
+            setShowDiscardSheet( false );
+            navigation.goBack( );
+          }}
+          headerText={t( "DISCARD-FILTER-CHANGES" )}
+          text={t( "You-changed-filters-will-be-discarded" )}
+          buttonText={t( "DISCARD-CHANGES" )}
+          handleSecondButtonPress={( ) => setShowDiscardSheet( false )}
+          secondButtonText={t( "CANCEL" )}
+          loading={false}
         />
       )}
     </TopAndBottomInsetViewWrapper>
