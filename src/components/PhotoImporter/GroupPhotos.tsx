@@ -27,14 +27,6 @@ const emptyItemStyle = {
   borderColor: colors.mediumGray,
 } as const;
 
-interface Item {
-  photos: {
-    image: {
-      uri: string;
-    };
-  }[];
-}
-
 type GroupPhotosListItem = GroupedPhoto | { empty: true };
 
 function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
@@ -47,8 +39,8 @@ interface Props {
   isCreatingObservations: boolean;
   navBasedOnUserSettings: ( ) => void;
   removePhotos: ( ) => void;
-  selectedObservations: Item[];
-  selectObservationPhotos: ( isSelected: boolean, item: Item ) => void;
+  selectedObservations: GroupedPhoto[];
+  selectObservationPhotos: ( isSelected: boolean, item: GroupedPhoto ) => void;
   separatePhotos: ( ) => void;
   totalPhotos: number;
 }
@@ -83,7 +75,7 @@ const GroupPhotos = ( {
   const obsWithMultiplePhotosSelected
     = selectedObservations?.[0]?.photos?.length > 1;
 
-  const renderImage = useCallback( ( item: Item ) => (
+  const renderImage = useCallback( ( item: GroupedPhoto ) => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
