@@ -16,7 +16,7 @@ export enum MAP_TYPES {
   HYBRID = "hybrid",
 }
 
-interface LayoutSlice {
+export interface LayoutSlice {
   isAdvancedUser: boolean;
   obsDetailsTab: OBS_DETAILS_TAB;
   setObsDetailsTab: ( obsDetailsTab: OBS_DETAILS_TAB ) => void;
