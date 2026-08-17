@@ -49,7 +49,7 @@ import {
 } from "components/SharedComponents";
 import SearchHeader from "components/SharedComponents/SearchHeader";
 import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
-import { TopAndBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
+import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { ScrollView, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
 import isEqual from "lodash/isEqual";
@@ -296,7 +296,7 @@ const AdvancedSearch = ( ) => {
   const hasError = observedEndBeforeStart || uploadedEndBeforeStart || noMonthsSelected;
 
   return (
-    <TopAndBottomInsetViewWrapper testID="AdvancedSearch">
+    <SharedStackViewWrapper testID="AdvancedSearch">
       <SearchHeader
         headerText={t( "ADVANCED-SEARCH" )}
         onClose={handleBack}
@@ -653,7 +653,7 @@ const AdvancedSearch = ( ) => {
           </View>
         </View>
       </ScrollView>
-      <ButtonBar>
+      <ButtonBar containerClass="bg-white border-t border-lightGray">
         <Button
           disabled={hasError}
           level={differsFromInitial
@@ -780,7 +780,7 @@ const AdvancedSearch = ( ) => {
           loading={false}
         />
       )}
-    </TopAndBottomInsetViewWrapper>
+    </SharedStackViewWrapper>
   );
 };
 
