@@ -1,8 +1,5 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { useLayoutPrefs } from "sharedHooks";
@@ -11,7 +8,7 @@ import useStore from "stores/useStore";
 import GroupPhotos from "./GroupPhotos";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
-const GroupPhotosContainer = ( ): Node => {
+const GroupPhotosContainer = ( ) => {
   const navigation = useNavigation( );
   const {
     screenAfterPhotoEvidence, isDefaultMode,
