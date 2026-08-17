@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
+import { unlinkIfShareExtensionSource } from "sharedHelpers/shareExtensionFiles";
 import { useLayoutPrefs } from "sharedHooks";
 import type { SharedData } from "sharedHooks/useShare";
 import useStore from "stores/useStore";
@@ -55,6 +56,8 @@ const PhotoSharing = ( ) => {
   const createObservationAndNavigate = useCallback( async ( photoUris: SharedPhoto[] ) => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
+      // We call this fct here only after a photoUris.length === 1 check
+      await unlinkIfShareExtensionSource( photoUris[0] );
       prepareObsEdit( newObservation );
 
       return resetNavigator( isDefaultMode
