@@ -4,6 +4,7 @@ import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { useLayoutPrefs } from "sharedHooks";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 import GroupPhotos from "./GroupPhotos";
@@ -22,10 +23,19 @@ const GroupPhotosContainer = ( ) => {
   const {
     screenAfterPhotoEvidence, isDefaultMode,
   } = useLayoutPrefs( );
-  const setObservations = useStore( state => state.setObservations );
-  const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
-  const groupedPhotos: { photos: object[] }[] = useStore( state => state.groupedPhotos );
-  const firstObservationDefaults = useStore( state => state.firstObservationDefaults ) || {};
+
+  const setObservations = useStore(
+    ( state: ObservationFlowSlice ) => state.setObservations,
+  );
+  const setGroupedPhotos = useStore(
+    ( state: ObservationFlowSlice ) => state.setGroupedPhotos,
+  );
+  const groupedPhotos = useStore(
+    ( state: ObservationFlowSlice ) => state.groupedPhotos,
+  );
+  const firstObservationDefaults = useStore(
+    ( state: ObservationFlowSlice ) => state.firstObservationDefaults,
+  ) || {};
 
   const [selectedObservations, setSelectedObservations] = useState<Item[]>( [] );
   const [isCreatingObservations, setIsCreatingObservations] = useState( false );
