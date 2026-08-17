@@ -4,7 +4,7 @@ import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import { useLayoutPrefs } from "sharedHooks";
-import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
+import type { GroupedPhoto, ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 import GroupPhotos from "./GroupPhotos";
@@ -69,7 +69,7 @@ const GroupPhotosContainer = ( ) => {
       return;
     }
 
-    const newObsList = [];
+    const newObsList: GroupedPhoto[] = [];
 
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
     const mostRecentPhoto = orderedPhotos[0];
@@ -111,7 +111,7 @@ const GroupPhotosContainer = ( ) => {
       return;
     }
 
-    const separatedPhotos = [];
+    const separatedPhotos: GroupedPhoto[] = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of grouped photos, with selected photos split into individual observations
@@ -131,7 +131,7 @@ const GroupPhotosContainer = ( ) => {
   };
 
   const removePhotos = () => {
-    const removedFromGroup = [];
+    const removedFromGroup: GroupedPhoto[] = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of grouped photos, with selected photos removed

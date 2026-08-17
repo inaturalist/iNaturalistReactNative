@@ -16,6 +16,7 @@ import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { useGridLayout, useTranslation } from "sharedHooks";
+import type { GroupedPhoto } from "stores/createObservationFlowSlice";
 import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
@@ -34,7 +35,7 @@ interface Item {
   }[];
 }
 
-type GroupPhotosListItem = Item | { empty: true };
+type GroupPhotosListItem = GroupedPhoto | { empty: true };
 
 function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
   return "empty" in item && item.empty === true;
@@ -42,7 +43,7 @@ function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
 
 interface Props {
   combinePhotos: ( ) => void;
-  groupedPhotos: Item[];
+  groupedPhotos: GroupedPhoto[];
   isCreatingObservations: boolean;
   navBasedOnUserSettings: ( ) => void;
   removePhotos: ( ) => void;
