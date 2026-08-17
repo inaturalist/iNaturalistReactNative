@@ -202,9 +202,6 @@ const AdvancedSearch = ( ) => {
 
   const displayUser = user || excludeUser;
   const displayProject = project;
-  const displayUserCountText = displayUser?.observations_count === undefined
-    ? ""
-    : t( "X-Observations", { count: displayUser.observations_count } );
 
   const sortByValues = getSortByValues( t );
   const taxonomicRankValues = getTaxonomicRankValues( t );
@@ -421,7 +418,7 @@ const AdvancedSearch = ( ) => {
                   >
                     <UserListItem
                       item={{ user: displayUser }}
-                      countText={displayUserCountText}
+                      countText={t( "X-Observations", { count: displayUser.observations_count } )}
                       pressable={false}
                     />
                   </SelectedFilterRow>

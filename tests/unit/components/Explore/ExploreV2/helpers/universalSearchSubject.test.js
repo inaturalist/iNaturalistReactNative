@@ -21,6 +21,7 @@ describe( "resultToSubject", ( ) => {
         id: 7,
         login: "seth_msp",
         icon_url: "https://example.com/u.jpg",
+        observations_count: 5,
       },
     } );
   } );

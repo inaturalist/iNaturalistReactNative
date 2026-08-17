@@ -21,6 +21,7 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
           id: result.user.id,
           login: result.user.login,
           icon_url: result.user.icon_url,
+          observations_count: result.user.observations_count,
         },
       };
     case "project":
