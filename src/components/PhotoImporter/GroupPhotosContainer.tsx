@@ -24,7 +24,7 @@ const GroupPhotosContainer = ( ) => {
   } = useLayoutPrefs( );
   const setObservations = useStore( state => state.setObservations );
   const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
-  const groupedPhotos = useStore( state => state.groupedPhotos );
+  const groupedPhotos: { photos: object[] }[] = useStore( state => state.groupedPhotos );
   const firstObservationDefaults = useStore( state => state.firstObservationDefaults ) || {};
 
   const [selectedObservations, setSelectedObservations] = useState<Item[]>( [] );
