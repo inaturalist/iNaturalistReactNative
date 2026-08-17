@@ -5,7 +5,6 @@ import { photoUploadPath } from "appConstants/paths";
 import { Platform } from "react-native";
 import type { RealmPhoto } from "realmModels/types";
 import resizeImage from "sharedHelpers/resizeImage";
-import { unlinkShareExtensionSourceIfNeeded } from "sharedHelpers/shareExtensionFiles";
 import { unlink } from "sharedHelpers/util";
 
 class Photo extends Realm.Object {
@@ -62,8 +61,6 @@ class Photo extends Realm.Object {
         onlyScaleDown: true,
       },
     } );
-
-    await unlinkShareExtensionSourceIfNeeded( pathOrUri );
 
     return uri;
   }
