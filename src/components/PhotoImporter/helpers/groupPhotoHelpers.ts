@@ -1,8 +1,6 @@
-// @flow
-
 const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
 
-const flattenAndOrderSelectedPhotos = ( selectedObservations: ?Object[] ): Object[] => {
+const flattenAndOrderSelectedPhotos = ( selectedObservations: object[] ): object[] => {
   // combine selected observations into a single array
   let combinedPhotos = [];
   selectedObservations?.forEach( obs => {
