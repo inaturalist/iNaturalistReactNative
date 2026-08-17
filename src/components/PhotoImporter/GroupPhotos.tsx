@@ -12,6 +12,7 @@ import {
 } from "components/SharedComponents";
 import { BottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { useGridLayout, useTranslation } from "sharedHooks";
@@ -63,7 +64,7 @@ const GroupPhotos = ( {
   totalPhotos,
 }: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"GroupPhotos">["navigation"]>( );
   const {
     flashListStyle,
     gridItemStyle,
