@@ -23,7 +23,10 @@ function pathForUnlink( pathOrUri: string ): string {
   return pathOrUri;
 }
 
-export async function unlinkShareExtensionSourceIfNeeded( pathOrUri: string ): Promise<void> {
+interface SharedPhoto { image: { uri: string }}
+
+export async function unlinkIfShareExtensionSource( sharedPhoto: SharedPhoto ): Promise<void> {
+  const pathOrUri = sharedPhoto.image.uri;
   if ( !isShareExtensionPhotoUri( pathOrUri ) ) {
     return;
   }
