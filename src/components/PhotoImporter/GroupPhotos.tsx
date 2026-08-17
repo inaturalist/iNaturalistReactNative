@@ -43,7 +43,7 @@ function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
 interface Props {
   combinePhotos: ( ) => void;
   groupedPhotos: Item[];
-  isCreatingObservations?: boolean;
+  isCreatingObservations: boolean;
   navBasedOnUserSettings: ( ) => void;
   removePhotos: ( ) => void;
   selectedObservations: Item[];
