@@ -1,4 +1,6 @@
-const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
+const sortByTime = (
+  array: { timestamp: number }[],
+) => array.sort( ( a, b ) => b.timestamp - a.timestamp );
 
 const flattenAndOrderSelectedPhotos = ( selectedObservations: object[] ): object[] => {
   // combine selected observations into a single array
