@@ -158,7 +158,11 @@ export const advancedSearchReducer = (
       } );
     case "SET_DATE_OBSERVED_ALL":
       return withFilters( draft, {
-        dateObserved: DATE_OBSERVED.ALL, observed_on: null, d1: null, d2: null, months: null,
+        dateObserved: DATE_OBSERVED.ALL,
+        observed_on: null,
+        d1: null,
+        d2: null,
+        months: null,
       } );
     case "SET_DATE_OBSERVED_EXACT":
       return withFilters( draft, {
@@ -186,7 +190,10 @@ export const advancedSearchReducer = (
       } );
     case "SET_DATE_UPLOADED_ALL":
       return withFilters( draft, {
-        dateUploaded: DATE_UPLOADED.ALL, created_on: null, created_d1: null, created_d2: null,
+        dateUploaded: DATE_UPLOADED.ALL,
+        created_on: null,
+        created_d1: null,
+        created_d2: null,
       } );
     case "SET_DATE_UPLOADED_EXACT":
       return withFilters( draft, {
