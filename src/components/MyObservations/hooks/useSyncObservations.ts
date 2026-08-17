@@ -23,6 +23,8 @@ const { useRealm } = RealmContext;
 const useSyncObservations = (
   currentUserId: number,
   startUploadObservations: ( _skipSomeUuids: string[] | undefined ) => void,
+  // Called when a sync pulls in observations we'd never seen locally
+  onNewRemoteObservations?: ( ) => void,
 ) => {
   const { isConnected } = useNetInfo( );
   const loggedIn = !!( currentUserId );
@@ -124,7 +126,14 @@ const useSyncObservations = (
 
   const fetchRemoteObservations = useCallback( async ( ) => {
     try {
-      await syncRemoteObservations( realm, currentUserId, deletionsCompletedAt );
+      const hasNewObservations = await syncRemoteObservations(
+        realm,
+        currentUserId,
+        deletionsCompletedAt,
+      );
+      if ( hasNewObservations ) {
+        onNewRemoteObservations?.( );
+      }
       return true;
     } catch ( syncRemoteError ) {
       if (
@@ -139,6 +148,7 @@ const useSyncObservations = (
     realm,
     currentUserId,
     deletionsCompletedAt,
+    onNewRemoteObservations,
   ] );
 
   const signalAborted = autoSyncAbortController && autoSyncAbortController.signal.aborted;

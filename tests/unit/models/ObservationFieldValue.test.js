@@ -37,6 +37,46 @@ describe( "ObservationFieldValue", () => {
       expect( ObservationFieldValue.findForObsField( obs, 10 )?.value ).toBe( "a" );
       expect( ObservationFieldValue.findForObsField( obs, 99 ) ).toBeUndefined();
     } );
+
+    it( "should find an OFV pending removal or deletion", () => {
+      const obs = {
+        observationFieldValues: [
+          { obsFieldId: 10, value: "a", _pendingRemoval: true },
+          { obsFieldId: 20, value: "b", _pending_deletion: true },
+        ],
+      };
+      expect( ObservationFieldValue.findForObsField( obs, 10 )?.value ).toBe( "a" );
+      expect( ObservationFieldValue.findForObsField( obs, 20 )?.value ).toBe( "b" );
+    } );
+  } );
+
+  describe( "isActive", () => {
+    it( "should return false when pending removal or deletion", () => {
+      expect( ObservationFieldValue.isActive( { obsFieldId: 1, _pendingRemoval: true } ) )
+        .toBe( false );
+      expect( ObservationFieldValue.isActive( { obsFieldId: 1, _pending_deletion: true } ) )
+        .toBe( false );
+    } );
+
+    it( "should return true for a normal OFV", () => {
+      expect( ObservationFieldValue.isActive( { obsFieldId: 1, value: "x" } ) ).toBe( true );
+    } );
+  } );
+
+  describe( "findActiveForObsField", () => {
+    it( "should find an active OFV by obsFieldId", () => {
+      const obs = {
+        observationFieldValues: [
+          { obsFieldId: 10, value: "a" },
+          { obsFieldId: 20, value: "b", _pendingRemoval: true },
+          { obsFieldId: 30, value: "c", _pending_deletion: true },
+        ],
+      };
+      expect( ObservationFieldValue.findActiveForObsField( obs, 10 )?.value ).toBe( "a" );
+      expect( ObservationFieldValue.findActiveForObsField( obs, 20 ) ).toBeUndefined();
+      expect( ObservationFieldValue.findActiveForObsField( obs, 30 ) ).toBeUndefined();
+      expect( ObservationFieldValue.findActiveForObsField( obs, 99 ) ).toBeUndefined();
+    } );
   } );
 
   describe( "mapApiToRealm", () => {

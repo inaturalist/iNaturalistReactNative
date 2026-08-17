@@ -60,6 +60,7 @@ const AddToProjects = ( ) => {
 
   const initialSelectedProjectIds = new Set(
     ( currentObservation?.projectObservations ?? [] )
+      .filter( po => !po._pendingRemoval && !po._pending_deletion )
       .map( po => po.projectId ),
   );
 
@@ -142,17 +143,12 @@ const AddToProjects = ( ) => {
   }, [] );
 
   const onSave = useCallback( ( ) => {
-    const {
-      projectObservations,
-      projectObservationUuidsToDelete,
-    } = buildProjectObservationSelection(
+    const { projectObservations } = buildProjectObservationSelection(
       currentObservation?.projectObservations,
-      currentObservation?.projectObservationUuidsToDelete,
       selectedProjectIds,
     );
     updateObservationKeys( {
       projectObservations,
-      projectObservationUuidsToDelete,
     } );
     navigation.goBack( );
   }, [
