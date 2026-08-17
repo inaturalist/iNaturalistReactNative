@@ -9,6 +9,14 @@ import useStore from "stores/useStore";
 import GroupPhotos from "./GroupPhotos";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
+interface Item {
+  photos: {
+    image: {
+      uri: string;
+    };
+  }[];
+}
+
 const GroupPhotosContainer = ( ) => {
   const navigation = useNavigation<NoBottomTabStackScreenProps<"GroupPhotos">["navigation"]>( );
   const {
@@ -19,7 +27,7 @@ const GroupPhotosContainer = ( ) => {
   const groupedPhotos = useStore( state => state.groupedPhotos );
   const firstObservationDefaults = useStore( state => state.firstObservationDefaults ) || {};
 
-  const [selectedObservations, setSelectedObservations] = useState( [] );
+  const [selectedObservations, setSelectedObservations] = useState<Item[]>( [] );
   const [isCreatingObservations, setIsCreatingObservations] = useState( false );
   const totalPhotos = groupedPhotos
     .reduce( ( count, current ) => count + current.photos.length, 0 );
@@ -34,7 +42,7 @@ const GroupPhotosContainer = ( ) => {
     } );
   }, [totalPhotos, groupedPhotos, navigation] );
 
-  const selectObservationPhotos = ( isSelected, observation ) => {
+  const selectObservationPhotos = ( isSelected: boolean, observation: Item ) => {
     if ( !isSelected ) {
       const updatedObservations = selectedObservations.concat( observation );
       setSelectedObservations( [...updatedObservations] );
