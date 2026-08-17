@@ -88,9 +88,7 @@ const ObsEdit = ( ): Node => {
     navigation.navigate( "LocationPicker" );
   };
 
-  const latitude = currentObservation?.latitude;
-  const longitude = currentObservation?.longitude;
-  const hasLocation = !!( latitude && longitude );
+  const hasLocation = !currentObservation.missing_coords;
   const onLocationPress = ( ) => {
     if ( !hasLocation && !hasLocationPermission ) {
       requestLocationPermission( );

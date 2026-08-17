@@ -3,7 +3,6 @@ import type { RealmProjectObservationPojo } from "realmModels/types";
 
 export interface BuildProjectObservationSelectionResult {
   projectObservations: RealmProjectObservationPojo[];
-  projectObservationUuidsToDelete: string[];
 }
 
 export function areProjectIdSetsEqual(
@@ -16,48 +15,45 @@ export function areProjectIdSetsEqual(
   return [...first].every( projectId => second.has( projectId ) );
 }
 
+function isSyncedOrTombstonedPo( po: RealmProjectObservationPojo ): boolean {
+  return po._synced_at != null || po._pending_deletion === true;
+}
+
+function activatePo( po: RealmProjectObservationPojo ): RealmProjectObservationPojo {
+  // eslint-disable-next-line camelcase
+  const { _pendingRemoval, _pending_deletion, ...rest } = po;
+  return rest;
+}
+
 export default function buildProjectObservationSelection(
   existingProjectObservations: RealmProjectObservationPojo[] | undefined,
-  existingUuidsToDelete: string[] | undefined,
   selectedProjectIds: Set<number>,
 ): BuildProjectObservationSelectionResult {
   const priorProjectObservations = existingProjectObservations ?? [];
-  const priorUuidsToDelete = existingUuidsToDelete ?? [];
-
   const nextProjectObservations: RealmProjectObservationPojo[] = [];
 
-  // When pressing Save, for each project that is selected we need to check if there
-  // already exists a PO (e.g. on ObsEdit by not changing this one while adding another)
-  // or if we need to create a new PO
   selectedProjectIds.forEach( projectId => {
     const existingPo = priorProjectObservations.find( po => po.projectId === projectId );
     if ( existingPo ) {
-      nextProjectObservations.push( existingPo );
+      nextProjectObservations.push( activatePo( existingPo ) );
     } else {
       nextProjectObservations.push( ProjectObservation.new( projectId ) );
     }
   } );
 
-  const uuidsToDelete: string[] = [];
   priorProjectObservations.forEach( po => {
-    // If a PO was already synced (= is on remote) but is deselected during
-    // an ObsEdit session, we need to mark it for deletion.
-    if ( !selectedProjectIds.has( po.projectId ) && po._synced_at != null ) {
-      uuidsToDelete.push( po.uuid );
+    if ( selectedProjectIds.has( po.projectId ) ) {
+      return;
+    }
+    if ( isSyncedOrTombstonedPo( po ) ) {
+      nextProjectObservations.push( {
+        ...po,
+        _pendingRemoval: true,
+      } );
     }
   } );
-  const keptUuids = new Set( nextProjectObservations.map( po => po.uuid ) );
-  const nextUuidsToDelete = [
-    ...new Set( [
-      // If a PO that was marked as deleted in a prior ObsEdit session, is now re-selected for
-      // addition, we need to keep it out of the to-be-deleted list
-      ...priorUuidsToDelete.filter( uuid => !keptUuids.has( uuid ) ),
-      ...uuidsToDelete,
-    ] ),
-  ];
 
   return {
     projectObservations: nextProjectObservations,
-    projectObservationUuidsToDelete: nextUuidsToDelete,
   };
 }

@@ -10,7 +10,12 @@ describe( "resultToSubject", ( ) => {
 
     expect( resultToSubject( { type: "user", user } ) ).toEqual( {
       type: "user",
-      user: { id: 7, login: "seth_msp", icon_url: user.icon_url },
+      user: {
+        id: 7,
+        login: "seth_msp",
+        icon_url: user.icon_url,
+        observations_count: user.observations_count,
+      },
     } );
   } );
 

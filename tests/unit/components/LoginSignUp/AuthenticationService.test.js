@@ -11,7 +11,7 @@ import {
 import inatjs from "inaturalistjs";
 import { navigationRef } from "navigation/navigationUtils";
 import nock from "nock";
-import RNSInfo from "react-native-sensitive-info";
+import RNSInfo, { deleteItem } from "react-native-sensitive-info";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 
@@ -123,7 +123,7 @@ describe( "getJWT 401 handling", ( ) => {
     navigationRef.isReady.mockReturnValue( true );
     navigationRef.navigate.mockClear( );
     // deleteItem is already a jest.fn() in the mock — clear its call history directly
-    RNSInfo.deleteItem.mockClear( );
+    deleteItem.mockClear( );
   } );
 
   afterEach( ( ) => {
@@ -139,7 +139,7 @@ describe( "getJWT 401 handling", ( ) => {
     await getJWT( );
 
     // signOut deletes "username" from storage; the 401 path should not
-    const deletedKeys = RNSInfo.deleteItem.mock.calls.map( ( [key] ) => key );
+    const deletedKeys = deleteItem.mock.calls.map( ( [key] ) => key );
     expect( deletedKeys ).not.toContain( "username" );
   } );
 

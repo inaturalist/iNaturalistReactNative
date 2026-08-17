@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiPlace, ApiProjectSummary, ApiUser } from "api/types";
+import type { ApiPlace, ApiProjectSummary } from "api/types";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
 import DateFilterSection
   from "components/Explore/ExploreV2/components/DateFilterSection";
@@ -21,8 +21,11 @@ import {
 } from "components/Explore/ExploreV2/helpers/advancedSearchOptions";
 import type { SubjectTaxon }
   from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
-import { advancedSearchReducer, draftFromV2State }
-  from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
+import {
+  advancedSearchReducer,
+  defaultAdvancedSearchDraft,
+  draftFromV2State,
+} from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
 import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
 import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "components/Explore/Modals/ExploreProjectSearchModal";
@@ -45,7 +48,8 @@ import {
   RadioButtonSheet,
 } from "components/SharedComponents";
 import SearchHeader from "components/SharedComponents/SearchHeader";
-import { TopAndBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
+import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
+import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { ScrollView, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
 import isEqual from "lodash/isEqual";
@@ -91,6 +95,20 @@ const AdvancedSearch = ( ) => {
     ( ) => !isEqual( draft, initialDraft ),
     [draft, initialDraft],
   );
+
+  const resetDisabled = useMemo(
+    ( ) => isEqual( draft, defaultAdvancedSearchDraft ),
+    [draft],
+  );
+
+  const [showDiscardSheet, setShowDiscardSheet] = useState( false );
+  const handleBack = ( ) => {
+    if ( differsFromInitial ) {
+      setShowDiscardSheet( true );
+      return;
+    }
+    navigation.goBack( );
+  };
 
   // Which in-screen search picker (taxon/user/project/location) is open.
   const [openPicker, setOpenPicker] = useState<PickerKind | null>( null );
@@ -200,17 +218,8 @@ const AdvancedSearch = ( ) => {
     return [];
   };
 
-  const subjectUser: ApiUser | null = subject?.type === "user"
-    ? subject.user
-    : null;
-  const displayUser = user || excludeUser || subjectUser;
-  const subjectProject: ApiProjectSummary | null = subject?.type === "project"
-    ? subject.project
-    : null;
-  const displayProject = project || subjectProject;
-  const displayUserCountText = displayUser?.observations_count === undefined
-    ? ""
-    : t( "X-Observations", { count: displayUser.observations_count } );
+  const displayUser = user || excludeUser;
+  const displayProject = project;
 
   const sortByValues = getSortByValues( t );
   const taxonomicRankValues = getTaxonomicRankValues( t );
@@ -287,11 +296,12 @@ const AdvancedSearch = ( ) => {
   const hasError = observedEndBeforeStart || uploadedEndBeforeStart || noMonthsSelected;
 
   return (
-    <TopAndBottomInsetViewWrapper testID="AdvancedSearch">
+    <SharedStackViewWrapper testID="AdvancedSearch">
       <SearchHeader
         headerText={t( "ADVANCED-SEARCH" )}
-        onClose={() => navigation.goBack()}
+        onClose={handleBack}
         onReset={() => dispatch( { type: "RESET" } )}
+        resetDisabled={resetDisabled}
         testID="AdvancedSearch.back"
       />
 
@@ -427,7 +437,7 @@ const AdvancedSearch = ( ) => {
                   >
                     <UserListItem
                       item={{ user: displayUser }}
-                      countText={displayUserCountText}
+                      countText={t( "X-Observations", { count: displayUser.observations_count } )}
                       pressable={false}
                     />
                   </SelectedFilterRow>
@@ -643,7 +653,7 @@ const AdvancedSearch = ( ) => {
           </View>
         </View>
       </ScrollView>
-      <ButtonBar>
+      <ButtonBar containerClass="bg-white border-t border-lightGray">
         <Button
           disabled={hasError}
           level={differsFromInitial
@@ -755,7 +765,22 @@ const AdvancedSearch = ( ) => {
           updateLocation={updateLocation}
         />
       )}
-    </TopAndBottomInsetViewWrapper>
+      {showDiscardSheet && (
+        <WarningSheet
+          onPressClose={( ) => setShowDiscardSheet( false )}
+          confirm={( ) => {
+            setShowDiscardSheet( false );
+            navigation.goBack( );
+          }}
+          headerText={t( "DISCARD-FILTER-CHANGES" )}
+          text={t( "You-changed-filters-will-be-discarded" )}
+          buttonText={t( "DISCARD-CHANGES" )}
+          handleSecondButtonPress={( ) => setShowDiscardSheet( false )}
+          secondButtonText={t( "CANCEL" )}
+          loading={false}
+        />
+      )}
+    </SharedStackViewWrapper>
   );
 };
 

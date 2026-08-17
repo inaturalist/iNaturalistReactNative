@@ -173,4 +173,122 @@ describe( "Observation", ( ) => {
       expect( unsynced.filtered( `uuid == "${obsUuid}"` ).length ).toBe( 1 );
     } );
   } );
+
+  describe( "saveLocalObservationForUpload", ( ) => {
+    it( "creates Realm tombstones from pending-removal POs", async ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncedAt = new Date( "2020-01-02" );
+      const poUuid = uuid.v4( ).toLowerCase( );
+
+      const mockPO = factory( "LocalProjectObservation", {
+        uuid: poUuid,
+        _synced_at: syncedAt,
+        _pendingRemoval: true,
+      } );
+      await Observation.saveLocalObservationForUpload( {
+        uuid: obsUuid,
+        projectObservations: [mockPO],
+        observationFieldValues: [],
+        observationPhotos: [],
+        observationSounds: [],
+      }, global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.projectObservations ).toHaveLength( 1 );
+      expect( obs.projectObservations[0]._pending_deletion ).toBe( true );
+      expect( obs.projectObservations[0].uuid ).toBe( poUuid );
+      expect( obs.projectObservations[0]._synced_at ).toEqual( syncedAt );
+    } );
+
+    it( "creates Realm tombstones from pending-removal OFVs", async ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncedAt = new Date( "2020-01-02" );
+      const ofvUuid = uuid.v4( ).toLowerCase( );
+
+      const mockOFV = factory( "LocalObservationFieldValue", {
+        uuid: ofvUuid,
+        _synced_at: syncedAt,
+        _pendingRemoval: true,
+      } );
+      await Observation.saveLocalObservationForUpload( {
+        uuid: obsUuid,
+        projectObservations: [],
+        observationFieldValues: [mockOFV],
+        observationPhotos: [],
+        observationSounds: [],
+      }, global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.observationFieldValues ).toHaveLength( 1 );
+      expect( obs.observationFieldValues[0]._pending_deletion ).toBe( true );
+      expect( obs.observationFieldValues[0].uuid ).toBe( ofvUuid );
+    } );
+
+    it( "writes re-selected POs as active embeds without tombstones", async ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncedAt = new Date( "2020-01-02" );
+      const poUuid = uuid.v4( ).toLowerCase( );
+
+      const mockPO = factory( "LocalProjectObservation", {
+        uuid: poUuid,
+        _synced_at: syncedAt,
+        _pending_deletion: true,
+      } );
+
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", {
+          uuid: obsUuid,
+          _synced_at: syncedAt,
+          _updated_at: syncedAt,
+          projectObservations: [mockPO],
+        } );
+      }, "seed tombstoned PO for re-select save test" );
+
+      delete mockPO._pending_deletion;
+      await Observation.saveLocalObservationForUpload( {
+        uuid: obsUuid,
+        projectObservations: [mockPO],
+        observationFieldValues: [],
+        observationPhotos: [],
+        observationSounds: [],
+      }, global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.projectObservations[0]._pending_deletion ).toBeFalsy( );
+      expect( obs.projectObservations[0]._synced_at ).toBeNull( );
+    } );
+
+    it( "leaves unchanged synced embed timestamps intact on re-edit", async ( ) => {
+      const obsUuid = uuid.v4( );
+      const syncedAt = new Date( "2020-01-02" );
+      const poUuid = uuid.v4( ).toLowerCase( );
+      const ofvUuid = uuid.v4( ).toLowerCase( );
+
+      const mockPO = factory( "LocalProjectObservation", {
+        uuid: poUuid,
+        _synced_at: syncedAt,
+      } );
+      const mockOFV = factory( "LocalObservationFieldValue", {
+        uuid: ofvUuid,
+        _synced_at: syncedAt,
+      } );
+      const mockObs = factory( "LocalObservation", {
+        uuid: obsUuid,
+        projectObservations: [mockPO],
+        observationFieldValues: [mockOFV],
+        observationPhotos: [],
+        observationSounds: [],
+      } );
+
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", mockObs );
+      }, "seed synced PO/OFV for unchanged re-edit save test" );
+
+      await Observation.saveLocalObservationForUpload( mockObs, global.realm );
+
+      const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
+      expect( obs.projectObservations[0]._synced_at ).toEqual( syncedAt );
+      expect( obs.observationFieldValues[0]._synced_at ).toEqual( syncedAt );
+    } );
+  } );
 } );

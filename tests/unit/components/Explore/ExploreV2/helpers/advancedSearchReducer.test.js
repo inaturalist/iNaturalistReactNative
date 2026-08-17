@@ -36,11 +36,6 @@ const PROJECT = factory( "RemoteProject", {
   title: "InverteFest",
   project_type: "collection",
 } );
-const OTHER_PROJECT = factory( "RemoteProject", {
-  id: 10,
-  title: "City Nature Challenge",
-  project_type: "umbrella",
-} );
 const PLACE = { id: 1, display_name: "Monterey, CA, US" };
 
 const makeDraft = ( { filters, ...overrides } = {} ) => ( {
@@ -51,16 +46,21 @@ const makeDraft = ( { filters, ...overrides } = {} ) => ( {
   ...overrides,
 } );
 
+const makeV2State = ( overrides = {} ) => ( {
+  subject: { type: "taxon", taxon: TAXON },
+  location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: PLACE },
+  sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
+  speciesSortBy: SPECIES_SORT.COUNT_DESC,
+  filters: defaultExploreV2Filters,
+  activeTab: OBSERVATIONS_TAB,
+  ...overrides,
+} );
+
 describe( "draftFromV2State", ( ) => {
   it( "copies only the parts of explore state that advanced search edits", ( ) => {
-    const v2State = {
-      subject: { type: "taxon", taxon: TAXON },
-      location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: PLACE },
-      sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
-      speciesSortBy: SPECIES_SORT.COUNT_DESC,
+    const v2State = makeV2State( {
       filters: { ...defaultExploreV2Filters, casual: true },
-      activeTab: OBSERVATIONS_TAB,
-    };
+    } );
 
     expect( draftFromV2State( v2State ) ).toEqual( {
       subject: { type: "taxon", taxon: TAXON },
@@ -68,6 +68,37 @@ describe( "draftFromV2State", ( ) => {
       sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
       filters: { ...defaultExploreV2Filters, casual: true },
     } );
+  } );
+
+  it( "moves a user subject into the user filter", ( ) => {
+    const draft = draftFromV2State( makeV2State( { subject: { type: "user", user: USER } } ) );
+
+    expect( draft.subject ).toBeNull( );
+    expect( draft.filters.user ).toEqual( USER );
+  } );
+
+  it( "moves a project subject into the project filter", ( ) => {
+    const draft = draftFromV2State(
+      makeV2State( { subject: { type: "project", project: PROJECT } } ),
+    );
+
+    expect( draft.subject ).toBeNull( );
+    expect( draft.filters.project ).toEqual( PROJECT );
+  } );
+
+  it( "drops an unobserved subject, which advanced search cannot express", ( ) => {
+    const draft = draftFromV2State(
+      makeV2State( { subject: { type: "unobserved", user: USER } } ),
+    );
+
+    expect( draft.subject ).toBeNull( );
+    expect( draft.filters ).toEqual( defaultExploreV2Filters );
+  } );
+
+  it( "keeps an unknown subject", ( ) => {
+    const draft = draftFromV2State( makeV2State( { subject: { type: "unknown" } } ) );
+
+    expect( draft.subject ).toEqual( { type: "unknown" } );
   } );
 } );
 
@@ -173,27 +204,6 @@ describe( "advancedSearchReducer", ( ) => {
       expect( newDraft.filters.user ).toBeNull( );
     } );
 
-    it( "supersedes a carried user subject", ( ) => {
-      const draft = makeDraft( { subject: { type: "user", user: OTHER_USER } } );
-
-      const newDraft = advancedSearchReducer( draft, { type: "SET_USER", user: USER } );
-
-      expect( newDraft.subject ).toBeNull( );
-      expect( newDraft.filters.user ).toEqual( USER );
-    } );
-
-    it( "supersedes a carried unobserved subject", ( ) => {
-      const draft = makeDraft( { subject: { type: "unobserved", user: OTHER_USER } } );
-
-      const newDraft = advancedSearchReducer( draft, {
-        type: "SET_EXCLUDE_USER",
-        user: USER,
-      } );
-
-      expect( newDraft.subject ).toBeNull( );
-      expect( newDraft.filters.excludeUser ).toEqual( USER );
-    } );
-
     it( "keeps a carried taxon subject", ( ) => {
       const draft = makeDraft( { subject: { type: "taxon", taxon: TAXON } } );
 
@@ -218,27 +228,15 @@ describe( "advancedSearchReducer", ( ) => {
       expect( withoutProject.filters.project ).toBeNull( );
     } );
 
-    it( "supersedes a carried project subject", ( ) => {
-      const draft = makeDraft( { subject: { type: "project", project: OTHER_PROJECT } } );
+    it( "keeps a carried taxon subject", ( ) => {
+      const draft = makeDraft( { subject: { type: "taxon", taxon: TAXON } } );
 
       const newDraft = advancedSearchReducer( draft, {
         type: "SET_PROJECT",
         project: PROJECT,
       } );
 
-      expect( newDraft.subject ).toBeNull( );
-      expect( newDraft.filters.project ).toEqual( PROJECT );
-    } );
-
-    it( "keeps a carried user subject", ( ) => {
-      const draft = makeDraft( { subject: { type: "user", user: USER } } );
-
-      const newDraft = advancedSearchReducer( draft, {
-        type: "SET_PROJECT",
-        project: PROJECT,
-      } );
-
-      expect( newDraft.subject ).toEqual( { type: "user", user: USER } );
+      expect( newDraft.subject ).toEqual( { type: "taxon", taxon: TAXON } );
     } );
   } );
 

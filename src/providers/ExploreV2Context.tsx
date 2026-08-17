@@ -55,6 +55,7 @@ interface User {
   id: number;
   login: string;
   icon_url?: string;
+  observations_count?: number;
 }
 
 export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
