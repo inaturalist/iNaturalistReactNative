@@ -10,6 +10,7 @@ import Observation from "realmModels/Observation";
 import { unlinkIfShareExtensionSource } from "sharedHelpers/shareExtensionFiles";
 import { useLayoutPrefs } from "sharedHooks";
 import type { SharedData } from "sharedHooks/useShare";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 interface SharedPhoto { image: { uri: string }}
@@ -25,9 +26,15 @@ const PhotoSharing = ( ) => {
     TabStackScreenProps<"PhotoSharing">["route"]
   >( );
   const { item } = params;
-  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
-  const prepareObsEdit = useStore( state => state.prepareObsEdit );
-  const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
+  const resetObservationFlowSlice = useStore(
+    ( state: ObservationFlowSlice ) => state.resetObservationFlowSlice,
+  );
+  const prepareObsEdit = useStore(
+    ( state: ObservationFlowSlice ) => state.prepareObsEdit,
+  );
+  const setPhotoImporterState = useStore(
+    ( state: ObservationFlowSlice ) => state.setPhotoImporterState,
+  );
   const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs();
   const [navigationHandled, setNavigationHandled] = useState( null );
 
