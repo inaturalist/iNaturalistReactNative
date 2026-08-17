@@ -26,6 +26,7 @@ export interface GroupedPhoto {
     image: {
         uri: string;
     };
+    timestamp: number;
   }[];
 }
 
