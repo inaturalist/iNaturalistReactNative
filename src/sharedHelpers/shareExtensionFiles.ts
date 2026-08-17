@@ -36,3 +36,11 @@ export async function unlinkIfShareExtensionSource( sharedPhoto: SharedPhoto ): 
     logger.error( `Failed to unlink share-extension source ${error}` );
   }
 }
+
+export async function unlinkIfShareExtensionSources(
+  sharedPhotos: SharedPhoto[],
+): Promise<void> {
+  await Promise.all(
+    sharedPhotos.map( sharedPhoto => unlinkIfShareExtensionSource( sharedPhoto ) ),
+  );
+}
