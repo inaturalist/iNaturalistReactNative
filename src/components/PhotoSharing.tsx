@@ -36,7 +36,7 @@ const PhotoSharing = ( ) => {
     ( state: ObservationFlowSlice ) => state.setPhotoImporterState,
   );
   const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs();
-  const [navigationHandled, setNavigationHandled] = useState( null );
+  const [navigationHandled, setNavigationHandled] = useState<boolean | null>( null );
 
   const resetNavigator = useCallback( (
     screen: "Match" | "ObsEdit" | "Suggestions" | "GroupPhotos",
