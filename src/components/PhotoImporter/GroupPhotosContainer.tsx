@@ -3,6 +3,7 @@ import { t } from "i18next";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
+import { moveSharedGroupedPhotos } from "sharedHelpers/shareExtensionFiles";
 import { useLayoutPrefs } from "sharedHooks";
 import type { GroupedPhoto, ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
@@ -21,6 +22,9 @@ const GroupPhotosContainer = ( ) => {
   );
   const setGroupedPhotos = useStore(
     ( state: ObservationFlowSlice ) => state.setGroupedPhotos,
+  );
+  const setPhotoImporterState = useStore(
+    ( state: ObservationFlowSlice ) => state.setPhotoImporterState,
   );
   const groupedPhotos = useStore(
     ( state: ObservationFlowSlice ) => state.groupedPhotos,
@@ -144,7 +148,17 @@ const GroupPhotosContainer = ( ) => {
 
   const navBasedOnUserSettings = async ( ) => {
     setIsCreatingObservations( true );
-    const newObservations = await Promise.all( groupedPhotos.map(
+    const updatedGroupedPhotos = await moveSharedGroupedPhotos(
+      groupedPhotos,
+    );
+    setGroupedPhotos( updatedGroupedPhotos );
+    setPhotoImporterState( {
+      groupedPhotos: updatedGroupedPhotos,
+      photoLibraryUris: updatedGroupedPhotos.flatMap(
+        group => group.photos.map( photo => photo.image.uri ),
+      ),
+    } );
+    const newObservations = await Promise.all( updatedGroupedPhotos.map(
       ( { photos } ) => Observation.createObservationWithPhotos( photos ),
     ) );
     // If there are default attributes for new observations, assign them
