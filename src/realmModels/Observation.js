@@ -504,6 +504,9 @@ class Observation extends Realm.Object {
     }
   };
 
+  // Type of photos is
+  // Passed in from PhotoSharing:
+  // { image: { uri: string }[]
   static createObservationWithPhotos = async photos => {
     const newLocalObs = await Observation.createObservationFromGalleryPhotos( photos );
     newLocalObs.observationPhotos = await ObservationPhoto

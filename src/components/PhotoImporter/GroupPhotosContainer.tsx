@@ -1,42 +1,59 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
-import { t } from "i18next";
-import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
+import React, { useEffect, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
-import { useLayoutPrefs } from "sharedHooks";
+import { moveSharedGroupedPhotos } from "sharedHelpers/shareExtensionFiles";
+import { useLayoutPrefs, useTranslation } from "sharedHooks";
+import type { GroupedPhoto, ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 import GroupPhotos from "./GroupPhotos";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
-const GroupPhotosContainer = ( ): Node => {
-  const navigation = useNavigation( );
+const GroupPhotosContainer = ( ) => {
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"GroupPhotos">["navigation"]>( );
   const {
     screenAfterPhotoEvidence, isDefaultMode,
   } = useLayoutPrefs( );
-  const setObservations = useStore( state => state.setObservations );
-  const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
-  const groupedPhotos = useStore( state => state.groupedPhotos );
-  const firstObservationDefaults = useStore( state => state.firstObservationDefaults ) || {};
 
-  const [selectedObservations, setSelectedObservations] = useState( [] );
+  const setObservations = useStore(
+    ( state: ObservationFlowSlice ) => state.setObservations,
+  );
+  const setGroupedPhotos = useStore(
+    ( state: ObservationFlowSlice ) => state.setGroupedPhotos,
+  );
+  const setPhotoImporterState = useStore(
+    ( state: ObservationFlowSlice ) => state.setPhotoImporterState,
+  );
+  const groupedPhotos = useStore(
+    ( state: ObservationFlowSlice ) => state.groupedPhotos,
+  );
+  const firstObservationDefaults = useStore(
+    ( state: ObservationFlowSlice ) => state.firstObservationDefaults,
+  ) || {};
+
+  const { t } = useTranslation( );
+  const [selectedObservations, setSelectedObservations] = useState<GroupedPhoto[]>( [] );
   const [isCreatingObservations, setIsCreatingObservations] = useState( false );
   const totalPhotos = groupedPhotos
     .reduce( ( count, current ) => count + current.photos.length, 0 );
 
-  useEffect( ( ) => {
-    navigation.setOptions( {
+  const headerOptions = useMemo(
+    () => ( {
       headerTitle: t( "Group-Photos" ),
       headerSubtitle: t( "X-PHOTOS-X-OBSERVATIONS", {
         photoCount: totalPhotos,
         observationCount: groupedPhotos.length,
       } ),
-    } );
-  }, [totalPhotos, groupedPhotos, navigation] );
+    } ),
+    [t, totalPhotos, groupedPhotos.length],
+  );
 
-  const selectObservationPhotos = ( isSelected, observation ) => {
+  useEffect( ( ) => {
+    navigation.setOptions( headerOptions );
+  }, [headerOptions, navigation] );
+
+  const selectObservationPhotos = ( isSelected: boolean, observation: GroupedPhoto ) => {
     if ( !isSelected ) {
       const updatedObservations = selectedObservations.concat( observation );
       setSelectedObservations( [...updatedObservations] );
@@ -53,7 +70,7 @@ const GroupPhotosContainer = ( ): Node => {
       return;
     }
 
-    const newObsList = [];
+    const newObsList: GroupedPhoto[] = [];
 
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
     const mostRecentPhoto = orderedPhotos[0];
@@ -95,7 +112,7 @@ const GroupPhotosContainer = ( ): Node => {
       return;
     }
 
-    const separatedPhotos = [];
+    const separatedPhotos: GroupedPhoto[] = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of grouped photos, with selected photos split into individual observations
@@ -115,7 +132,7 @@ const GroupPhotosContainer = ( ): Node => {
   };
 
   const removePhotos = () => {
-    const removedFromGroup = [];
+    const removedFromGroup: GroupedPhoto[] = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of grouped photos, with selected photos removed
@@ -136,7 +153,17 @@ const GroupPhotosContainer = ( ): Node => {
 
   const navBasedOnUserSettings = async ( ) => {
     setIsCreatingObservations( true );
-    const newObservations = await Promise.all( groupedPhotos.map(
+    const updatedGroupedPhotos = await moveSharedGroupedPhotos(
+      groupedPhotos,
+    );
+    setGroupedPhotos( updatedGroupedPhotos );
+    setPhotoImporterState( {
+      groupedPhotos: updatedGroupedPhotos,
+      photoLibraryUris: updatedGroupedPhotos.flatMap(
+        group => group.photos.map( photo => photo.image.uri ),
+      ),
+    } );
+    const newObservations = await Promise.all( updatedGroupedPhotos.map(
       ( { photos } ) => Observation.createObservationWithPhotos( photos ),
     ) );
     // If there are default attributes for new observations, assign them
