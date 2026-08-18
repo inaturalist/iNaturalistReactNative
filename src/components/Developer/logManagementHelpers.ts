@@ -63,17 +63,6 @@ export async function cleanupLogFiles() {
   await Promise.allSettled( olderLogs.map( ( { path } ) => unlink( path ) ) );
 }
 
-export async function deleteLegacyLogFile() {
-  try {
-    await unlink( legacyLogfilePath );
-  } catch ( deleteFileError ) {
-    if ( deleteFileError instanceof Error && deleteFileError.message.match( /no such file/ ) ) {
-      return;
-    }
-    throw deleteFileError;
-  }
-}
-
 const appVersion = getVersion();
 const buildVersion = getBuildNumber();
 const device = getSystemName();
@@ -127,10 +116,6 @@ async function emailLogFile( path: string ) {
       Alert.alert( error, event );
     },
   );
-}
-
-export async function getLegacyLogfileExists() {
-  return exists( legacyLogfilePath );
 }
 
 export const temporaryLogForSharingPath
