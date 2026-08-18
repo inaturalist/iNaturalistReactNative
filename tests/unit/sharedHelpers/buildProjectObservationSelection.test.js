@@ -23,24 +23,21 @@ describe( "areProjectIdSetsEqual", ( ) => {
 
       const result = buildProjectObservationSelection(
         [existingPo],
-        [],
         new Set( [10] ),
       );
 
       expect( result.projectObservations ).toEqual( [existingPo] );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
     } );
 
     it( "creates a new PO for newly selected projects", ( ) => {
-      const result = buildProjectObservationSelection( [], [], new Set( [42] ) );
+      const result = buildProjectObservationSelection( [], new Set( [42] ) );
 
       expect( result.projectObservations ).toHaveLength( 1 );
       expect( result.projectObservations[0].projectId ).toBe( 42 );
       expect( result.projectObservations[0].uuid ).toBeTruthy( );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
     } );
 
-    it( "stages synced PO uuids when deselected during an ObsEdit session", ( ) => {
+    it( "soft-deletes synced POs when deselected during an ObsEdit session", ( ) => {
       const syncedPo = factory( "LocalProjectObservation", {
         projectId: 10,
         uuid: "synced-po-uuid",
@@ -49,12 +46,13 @@ describe( "areProjectIdSetsEqual", ( ) => {
 
       const result = buildProjectObservationSelection(
         [syncedPo],
-        [],
         new Set( ),
       );
 
-      expect( result.projectObservations ).toEqual( [] );
-      expect( result.projectObservationUuidsToDelete ).toEqual( ["synced-po-uuid"] );
+      expect( result.projectObservations ).toEqual( [{
+        ...syncedPo,
+        _pendingRemoval: true,
+      }] );
     } );
 
     it( "drops never-synced POs without staging deletion", ( ) => {
@@ -65,68 +63,92 @@ describe( "areProjectIdSetsEqual", ( ) => {
 
       const result = buildProjectObservationSelection(
         [unsyncedPo],
-        [],
         new Set( ),
       );
 
       expect( result.projectObservations ).toEqual( [] );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
-
-      // TODO: MOB-1508 test that the local realm PO get's deleted in this case
     } );
 
-    it( "removes re-selected PO uuid from a prior ObsEdit session delete list", ( ) => {
-      const reselectedPo = factory( "LocalProjectObservation", {
-        projectId: 10,
-        uuid: "reselected-po-uuid",
-        _synced_at: new Date( ),
-      } );
-
-      const result = buildProjectObservationSelection(
-        [reselectedPo],
-        ["reselected-po-uuid"],
-        new Set( [10] ),
-      );
-
-      expect( result.projectObservations ).toEqual( [reselectedPo] );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
-    } );
-
-    it( "carries forward prior session delete uuids and adds newly deselected synced POs", ( ) => {
-      const reselectedPo = factory( "LocalProjectObservation", {
-        projectId: 10,
-        uuid: "reselected-po-uuid",
-        _synced_at: new Date( ),
-      } );
+    it( "preserves uuid when re-selecting after soft-delete", ( ) => {
       const deselectedPo = factory( "LocalProjectObservation", {
-        projectId: 20,
-        uuid: "deselected-po-uuid",
+        projectId: 10,
+        uuid: "reselected-po-uuid",
+        id: 99,
         _synced_at: new Date( ),
+        _pendingRemoval: true,
       } );
 
       const result = buildProjectObservationSelection(
-        [reselectedPo, deselectedPo],
-        ["prior-session-uuid"],
+        [deselectedPo],
         new Set( [10] ),
       );
 
-      expect( result.projectObservations ).toEqual( [reselectedPo] );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [
-        "prior-session-uuid",
-        "deselected-po-uuid",
+      expect( result.projectObservations ).toEqual( [expect.objectContaining( {
+        projectId: 10,
+        uuid: "reselected-po-uuid",
+        id: 99,
+        _synced_at: deselectedPo._synced_at,
+      } )] );
+    } );
+
+    it( "clears pending deletion when re-selecting a tombstoned PO", ( ) => {
+      const tombstonedPo = factory( "LocalProjectObservation", {
+        projectId: 10,
+        uuid: "tombstoned-po-uuid",
+        id: 99,
+        _synced_at: new Date( ),
+        _pending_deletion: true,
+      } );
+
+      const result = buildProjectObservationSelection(
+        [tombstonedPo],
+        new Set( [10] ),
+      );
+
+      expect( result.projectObservations[0] ).toEqual( expect.objectContaining( {
+        projectId: 10,
+        uuid: "tombstoned-po-uuid",
+        id: 99,
+        _synced_at: tombstonedPo._synced_at,
+      } ) );
+      expect( result.projectObservations[0]._pending_deletion ).toBeUndefined( );
+    } );
+
+    it( "keeps other pending-removal POs when selection changes", ( ) => {
+      const activePo = factory( "LocalProjectObservation", {
+        projectId: 10,
+        uuid: "active-po-uuid",
+        _synced_at: new Date( ),
+      } );
+      const pendingRemovalPo = factory( "LocalProjectObservation", {
+        projectId: 20,
+        uuid: "pending-removal-po-uuid",
+        _synced_at: new Date( ),
+        _pendingRemoval: true,
+      } );
+
+      const result = buildProjectObservationSelection(
+        [activePo, pendingRemovalPo],
+        new Set( [10] ),
+      );
+
+      expect( result.projectObservations ).toEqual( [
+        activePo,
+        {
+          ...pendingRemovalPo,
+          _pendingRemoval: true,
+        },
       ] );
     } );
 
     it( "handles missing arrays on brand-new observations", ( ) => {
       const result = buildProjectObservationSelection(
         undefined,
-        undefined,
         new Set( [5] ),
       );
 
       expect( result.projectObservations ).toHaveLength( 1 );
       expect( result.projectObservations[0].projectId ).toBe( 5 );
-      expect( result.projectObservationUuidsToDelete ).toEqual( [] );
     } );
   } );
 } );

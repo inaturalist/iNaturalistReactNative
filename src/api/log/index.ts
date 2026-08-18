@@ -32,10 +32,11 @@ function isError( value: unknown ): value is { message?: string; stack?: string 
 }
 
 // If we have anything that looks like:
-// [someObj, 'asdfasdf', 3, { [extraSentinelKey]: { id: 1, ... } }]
-// where the _last_ rest param is an obj w/ exactly this sentinel property w/ primitive fields,
-// we infer that last item as intended for the special `extra` API field
-// we return that separately and strip it from the "normal" rest params for later handling
+// [someObj, 'asdfasdf', 3, { [extraSentinelKey]: true, id: 1, ... }]
+// where the _last_ rest param is an obj flagged w/ this sentinel property and otherwise
+// has only primitive fields, we infer that last item as intended for the special `extra`
+// API field. we return that separately and strip it from the "normal" rest params for
+// later handling
 function extractExtra( rawMsg: unknown ) {
   const nonExtraResult = {
     messageParams: rawMsg,
@@ -46,18 +47,17 @@ function extractExtra( rawMsg: unknown ) {
   if ( !Array.isArray( rawMsg ) || rawMsg.length < 2 ) {
     return nonExtraResult;
   }
-  // make sure maybeExtra looks like { extra: ??? }
+  // make sure maybeExtra looks like { [extraSentinelKey]: true, ... }
   const extraWrapperCandidate = rawMsg.at( -1 );
   if (
     !isObject( extraWrapperCandidate )
-    // limit to _exactly_ just this property to minimize accidentally classifying `extra`
-    || Object.keys( extraWrapperCandidate ).length !== 1
     || !( extraSentinelKey in extraWrapperCandidate )
+    || extraWrapperCandidate[extraSentinelKey] !== true
   ) {
     return nonExtraResult;
   }
   // make sure our extra is actually valid for the API
-  const extraCandidate = extraWrapperCandidate[extraSentinelKey];
+  const { [extraSentinelKey]: _sentinel, ...extraCandidate } = extraWrapperCandidate;
   if ( !isObjectWithPrimitiveValues( extraCandidate ) ) {
     console.warn( "[ERROR log.ts] `extra` must be a non-nested object with primitive values" );
     return nonExtraResult;

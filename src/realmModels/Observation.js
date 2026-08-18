@@ -134,6 +134,7 @@ class Observation extends Realm.Object {
     observed_on: true,
     observed_time_zone: true,
     place_guess: true,
+    private_geojson: true,
     private_place_guess: true,
     taxon_geoprivacy: true,
     project_observations: PROJECT_OBSERVATION_FIELDS,
@@ -280,6 +281,41 @@ class Observation extends Realm.Object {
     return localObs;
   }
 
+  static prepareEmbedForLocalSave( embed, now, existingEmbed ) {
+    if ( !embed ) {
+      return embed;
+    }
+
+    const { _pendingRemoval, ...restWithoutPendingRemoval } = embed;
+
+    if ( _pendingRemoval || embed._pending_deletion ) {
+      return {
+        ...restWithoutPendingRemoval,
+        _pending_deletion: true,
+        _updated_at: now,
+      };
+    }
+
+    const isNew = !existingEmbed;
+    const wasReactivated = existingEmbed?._pending_deletion && !embed._pending_deletion;
+    if ( isNew || wasReactivated ) {
+      return {
+        ...embed,
+        _synced_at: null,
+        _updated_at: now,
+      };
+    }
+
+    return embed;
+  }
+
+  static prepareEmbedsForLocalSave( embeds, now, existingEmbeds ) {
+    return ( embeds || [] ).map( embed => {
+      const existingEmbed = existingEmbeds?.find( e => e.uuid === embed.uuid );
+      return Observation.prepareEmbedForLocalSave( embed, now, existingEmbed );
+    } );
+  }
+
   static async saveLocalObservationForUpload( obs, realm ) {
     // make sure local observations have user details for ObsDetail
     const currentUser = User.currentUser( realm );
@@ -308,6 +344,16 @@ class Observation extends Realm.Object {
     const taxon = obs.taxon || null;
     const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
+    const projectObservations = Observation.prepareEmbedsForLocalSave(
+      obs.projectObservations,
+      timestamps._updated_at,
+      existingObservation?.projectObservations,
+    );
+    const observationFieldValues = Observation.prepareEmbedsForLocalSave(
+      obs.observationFieldValues,
+      timestamps._updated_at,
+      existingObservation?.observationFieldValues,
+    );
 
     const obsToSave = {
       // just ...obs causes problems when obs is a realm object
@@ -318,6 +364,8 @@ class Observation extends Realm.Object {
       taxon,
       observationPhotos,
       observationSounds,
+      projectObservations,
+      observationFieldValues,
     };
 
     safeRealmWrite( realm, ( ) => {
@@ -375,11 +423,14 @@ class Observation extends Realm.Object {
         : null,
       comments_viewed: obs.comments_viewed,
       identifications_viewed: obs.identifications_viewed,
+      missing_coords: typeof obs.missingCoords === "function"
+        ? obs.missingCoords( )
+        : undefined,
       missing_basics: typeof obs.missingBasics === "function"
-        ? obs.missingBasics()
+        ? obs.missingBasics( )
         : undefined,
       needs_sync: typeof obs.needsSync === "function"
-        ? obs.needsSync()
+        ? obs.needsSync( )
         : obs.needs_sync,
     };
   }
@@ -453,6 +504,9 @@ class Observation extends Realm.Object {
     }
   };
 
+  // Type of photos is
+  // Passed in from PhotoSharing:
+  // { image: { uri: string }[]
   static createObservationWithPhotos = async photos => {
     const newLocalObs = await Observation.createObservationFromGalleryPhotos( photos );
     newLocalObs.observationPhotos = await ObservationPhoto
@@ -632,11 +686,17 @@ class Observation extends Realm.Object {
     return this.votes.filter( vote => vote?.vote_scope === null );
   }
 
+  missingCoords() {
+    const missingCoords = typeof this.latitude !== "number"
+      && typeof this.longitude !== "number"
+      && typeof this.privateLatitude !== "number"
+      && typeof this.privateLongitude !== "number";
+    return missingCoords;
+  }
+
   missingBasics() {
     const missingDate = !Date.parse( this.observed_on_string ) && !this.time_observed_at;
-    const missingCoords = typeof ( this.latitude ) !== "number"
-      && typeof ( this.privateLatitude ) !== "number";
-    return missingDate || missingCoords;
+    return missingDate || this.missingCoords( );
   }
 }
 

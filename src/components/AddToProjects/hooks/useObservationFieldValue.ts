@@ -4,36 +4,52 @@ import type { RealmObservationFieldValuePojo, RealmObservationPojo } from "realm
 import useStore from "stores/useStore";
 
 const useObservationFieldValue = ( obsFieldId: number ) => {
-  const observationFieldValues = useStore(
+  const currentObservation = useStore(
     // currentObs is typed as this | null in createObservationFlowSlice.ts but null means the
     // obs create flow has not been initialized yet. The screen that uses this hook to add obs
     // to projects should only be reachable after currentObs has been initialized in zustand.
     // If it isn't I'd prefer us to error out here to notice it.
-    state => ( state.currentObservation as RealmObservationPojo ).observationFieldValues,
+    state => state.currentObservation as RealmObservationPojo,
   );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
+  const { observationFieldValues } = currentObservation;
 
-  const existingOfv = observationFieldValues.find(
-    ofv => ofv.obsFieldId === obsFieldId,
+  const existingOfv = ObservationFieldValue.findActiveForObsField(
+    currentObservation,
+    obsFieldId,
   );
   const value = existingOfv?.value ?? "";
 
   const setValue = useCallback( ( newValue: string | null ) => {
-    const index = observationFieldValues.findIndex( ofv => ofv.obsFieldId === obsFieldId );
+    const existingRow = ObservationFieldValue.findForObsField(
+      currentObservation,
+      obsFieldId,
+    );
 
     let updatedOfvs: RealmObservationFieldValuePojo[];
 
     if ( !newValue || newValue.trim( ) === "" ) {
-      // If newValue is from a selection being removed (null | "") remove OFV from the list
-      updatedOfvs = observationFieldValues.filter( ofv => ofv.obsFieldId !== obsFieldId );
-    } else if ( index >= 0 ) {
-      // Update existing OFV
-      updatedOfvs = [...observationFieldValues];
-      updatedOfvs[index] = {
-        ...updatedOfvs[index],
-        value: newValue,
-        _updated_at: new Date( ),
-      };
+      if ( existingRow?._synced_at != null ) {
+        updatedOfvs = observationFieldValues.map( ofv => (
+          ofv.obsFieldId === obsFieldId
+            ? { ...ofv, _pendingRemoval: true }
+            : ofv
+        ) );
+      } else {
+        updatedOfvs = observationFieldValues.filter( ofv => ofv.obsFieldId !== obsFieldId );
+      }
+    } else if ( existingRow ) {
+      updatedOfvs = observationFieldValues.map( ofv => (
+        ofv.obsFieldId === obsFieldId
+          ? {
+            ...ofv,
+            value: newValue,
+            _updated_at: new Date( ),
+            _pendingRemoval: undefined,
+            _pending_deletion: undefined,
+          }
+          : ofv
+      ) );
     } else {
       // Create new OFV
       updatedOfvs = [
@@ -43,7 +59,7 @@ const useObservationFieldValue = ( obsFieldId: number ) => {
     }
 
     updateObservationKeys( { observationFieldValues: updatedOfvs } );
-  }, [obsFieldId, observationFieldValues, updateObservationKeys] );
+  }, [currentObservation, obsFieldId, observationFieldValues, updateObservationKeys] );
 
   return { value, setValue };
 };

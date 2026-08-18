@@ -56,8 +56,8 @@ import { isObjectWithPrimitiveValues } from "sharedHelpers/runtimeTypeUtil";
 // input. That is:
 // log.infoWithExtra(1, 2, 3, { userId: 0 })
 // becomes
-// [1, 2, 3, { [magicExtraKey]: { userId: 0 }}]
-// The trasport looks at its args, sees if the last one is a `{ [magicKey]: {} }` and if so,
+// [1, 2, 3, { [magicExtraKey]: true, userId: 0 }]
+// The trasport looks at its args, sees if the last one is a `{ [magicKey]: true, ... }` and if so,
 // separates that value from the rest of the log args as if it was indeed passed separately. The log
 // API would receive: { message, "1 2 3", extra: { userId: 0 } }
 
@@ -94,7 +94,7 @@ const extractExtraForLogWrapper = ( rawMsg: unknown ) => {
   ) {
     return null;
   }
-  return { [extraSentinelKey]: extraCandidate };
+  return { [extraSentinelKey]: true, ...extraCandidate };
 };
 
 const wrapLogFunctionWithExtra = (

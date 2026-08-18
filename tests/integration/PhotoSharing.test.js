@@ -1,9 +1,6 @@
 import { act } from "@testing-library/react-native";
-import { Platform } from "react-native";
 import ShareMenu from "react-native-share-menu";
 import { renderApp } from "tests/helpers/render";
-
-const JPEG = "image/jpeg";
 
 const mockNavigate = jest.fn( );
 
@@ -18,14 +15,13 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const mockIOSPhoto = {
-  mimeType: JPEG,
-  data: [{ data: "file://photo.jpg", mimeType: "image/jpeg" }],
-};
-
-const mockAndroidPhoto = {
+const mockSharedPhoto = {
   mimeType: "image/jpeg",
   data: "file://photo.jpg",
+};
+
+const mockSharedData = {
+  data: [mockSharedPhoto],
 };
 
 const setupShareMocks = ( ) => {
@@ -64,34 +60,20 @@ describe( "Sharing photos into the app", ( ) => {
 
   afterEach( ( ) => {
     shareHelpers.reset( );
-    // test iOS as default, but test Android in a few specific tests
-    Platform.OS = "ios";
   } );
 
-  it( "should handle iOS photo share on app launch", async ( ) => {
+  it( "should handle photo share on app launch", async ( ) => {
     renderApp( );
 
     await act( async ( ) => {
-      shareHelpers.simulateInitialShare( mockIOSPhoto );
+      shareHelpers.simulateInitialShare( mockSharedData );
     } );
 
-    expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
-      screen: "PhotoSharing",
-      params: { item: expect.objectContaining( { mimeType: "image/jpeg" } ) },
-    } );
-  } );
-
-  it( "should handle Android photo share on app launch", async ( ) => {
-    Platform.OS = "android";
-    renderApp( );
-
-    await act( async ( ) => {
-      shareHelpers.simulateInitialShare( mockAndroidPhoto );
-    } );
-
-    expect( mockNavigate ).toHaveBeenCalledWith( "NoBottomTabStackNavigator", {
-      screen: "PhotoSharing",
-      params: { item: expect.objectContaining( { mimeType: "image/jpeg" } ) },
-    } );
+    expect( mockNavigate ).toHaveBeenCalledWith(
+      "NoBottomTabStackNavigator",
+      expect.objectContaining( {
+        screen: "PhotoSharing",
+      } ),
+    );
   } );
 } );

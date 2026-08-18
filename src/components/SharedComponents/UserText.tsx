@@ -19,6 +19,7 @@ import { Linking, useWindowDimensions } from "react-native";
 import WebView from "react-native-webview";
 import type { IOptions } from "sanitize-html";
 import sanitizeHtml from "sanitize-html";
+import { openInatUrl, parseInatUrl } from "sharedHelpers/inatUrlNavigation";
 import colors from "styles/tailwindColors";
 
 // Keep aligned with Post::ALLOWED_TAGS in inaturalist/inaturalist (Rails);
@@ -208,7 +209,7 @@ const UserText = ( {
 
   const renderersProps: Partial<RenderersProps> = {
     a: {
-      onPress: ( event, href, htmlAttribs ) => {
+      onPress: async ( event, href, htmlAttribs ) => {
         if ( htmlAttribs.title && htmlAttribs.title.includes( MENTION_TITLE ) ) {
           event.preventDefault( );
           // This is a mention, so we want to navigate to user profile screen
@@ -218,6 +219,15 @@ const UserText = ( {
             .replace( /^@/, "" );
           navigation.push( "UserProfile", { login } );
           return;
+        }
+        const parsed = parseInatUrl( href );
+        if ( parsed ) {
+          event.preventDefault( );
+          const handled = await openInatUrl( parsed, navigation );
+          if ( handled ) {
+            return;
+          }
+          // If not handled fall through to use Linking
         }
         // This is any other regular link
         Linking.openURL( href );
