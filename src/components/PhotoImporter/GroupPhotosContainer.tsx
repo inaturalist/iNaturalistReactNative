@@ -1,10 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import { t } from "i18next";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import { moveSharedGroupedPhotos } from "sharedHelpers/shareExtensionFiles";
-import { useLayoutPrefs } from "sharedHooks";
+import { useLayoutPrefs, useTranslation } from "sharedHooks";
 import type { GroupedPhoto, ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
@@ -33,20 +32,26 @@ const GroupPhotosContainer = ( ) => {
     ( state: ObservationFlowSlice ) => state.firstObservationDefaults,
   ) || {};
 
+  const { t } = useTranslation( );
   const [selectedObservations, setSelectedObservations] = useState<GroupedPhoto[]>( [] );
   const [isCreatingObservations, setIsCreatingObservations] = useState( false );
   const totalPhotos = groupedPhotos
     .reduce( ( count, current ) => count + current.photos.length, 0 );
 
-  useEffect( ( ) => {
-    navigation.setOptions( {
+  const headerOptions = useMemo(
+    () => ( {
       headerTitle: t( "Group-Photos" ),
       headerSubtitle: t( "X-PHOTOS-X-OBSERVATIONS", {
         photoCount: totalPhotos,
         observationCount: groupedPhotos.length,
       } ),
-    } );
-  }, [totalPhotos, groupedPhotos, navigation] );
+    } ),
+    [t, totalPhotos, groupedPhotos.length],
+  );
+
+  useEffect( ( ) => {
+    navigation.setOptions( headerOptions );
+  }, [headerOptions, navigation] );
 
   const selectObservationPhotos = ( isSelected: boolean, observation: GroupedPhoto ) => {
     if ( !isSelected ) {
