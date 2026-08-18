@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { ListRenderItem } from "@shopify/flash-list";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
+  ActivityIndicator,
   Body2,
   Button,
   ButtonBar,
@@ -135,17 +136,25 @@ const GroupPhotos = ( {
 
   return (
     <BottomInsetViewWrapper>
-      <CustomFlashList
-        ListHeaderComponent={headerComponent}
-        contentContainerStyle={flashListStyle}
-        data={data}
-        extraData={extraData}
-        key={numColumns}
-        keyExtractor={extractKey}
-        numColumns={numColumns}
-        renderItem={renderItem}
-        testID="GroupPhotos.list"
-      />
+      {isCreatingObservations
+        ? (
+          <ActivityIndicator
+            className="flex-1 justify-center items-center"
+          />
+        )
+        : (
+          <CustomFlashList
+            ListHeaderComponent={headerComponent}
+            contentContainerStyle={flashListStyle}
+            data={data}
+            extraData={extraData}
+            key={numColumns}
+            keyExtractor={extractKey}
+            numColumns={numColumns}
+            renderItem={renderItem}
+            testID="GroupPhotos.list"
+          />
+        )}
       <FloatingActionBar
         show={selectedObservations.length > 0 && typeof buttonBarHeight === "number"}
         position="bottomStart"
