@@ -44,6 +44,7 @@ export interface MyObservationsSlice {
   // switches views.
   myObservationsMapRegion: Region | null;
   setMyObservationsMapRegion: ( _region: Region | null ) => void;
+  // TODO: the small grid view will wire this up in #3911.
   myObservationsClosedIconicTaxaCategories: Set<ICONIC_TAXA_GROUP>;
   setMyObservationsClosedIconicTaxaCategories: ( _closed: Set<ICONIC_TAXA_GROUP> ) => void;
   clearMyObservationsViewState: ( ) => void;
