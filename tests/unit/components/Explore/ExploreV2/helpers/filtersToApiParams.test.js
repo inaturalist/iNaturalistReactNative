@@ -187,13 +187,6 @@ describe( "filtersToApiParams", ( ) => {
     } );
   } );
 
-  describe( "iconic taxa", ( ) => {
-    it( "maps a non-empty iconic_taxa array", ( ) => {
-      const params = filtersToApiParams( makeFilters( { iconic_taxa: ["Aves", "Insecta"] } ) );
-      expect( params.iconic_taxa ).toEqual( ["Aves", "Insecta"] );
-    } );
-  } );
-
   describe( "user and project", ( ) => {
     it( "maps user id and project id", ( ) => {
       const params = filtersToApiParams( makeFilters( {

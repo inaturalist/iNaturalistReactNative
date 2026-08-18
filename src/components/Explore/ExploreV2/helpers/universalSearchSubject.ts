@@ -21,16 +21,13 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
           id: result.user.id,
           login: result.user.login,
           icon_url: result.user.icon_url,
+          observations_count: result.user.observations_count,
         },
       };
     case "project":
       return {
         type: "project",
-        project: {
-          id: result.project.id,
-          title: result.project.title,
-          icon: result.project.icon,
-        },
+        project: result.project,
       };
     case "taxon":
       return {

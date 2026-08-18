@@ -28,7 +28,6 @@ export interface FilterApiParams {
   reviewed?: boolean;
   viewer_id?: number;
   photo_license?: string;
-  iconic_taxa?: string[];
   user_id?: number;
   not_user_id?: number;
   project_id?: number;
@@ -102,10 +101,6 @@ const filtersToApiParams = (
   if ( filters.photoLicense !== PHOTO_LICENSE.ALL ) {
     const license = PHOTO_LICENSE_PARAMS[filters.photoLicense];
     if ( license ) { params.photo_license = license; }
-  }
-
-  if ( filters.iconic_taxa && filters.iconic_taxa.length > 0 ) {
-    params.iconic_taxa = filters.iconic_taxa;
   }
 
   if ( filters.user?.id ) { params.user_id = filters.user.id; }
