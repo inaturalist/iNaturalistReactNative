@@ -55,6 +55,15 @@ export interface MyObservationsSlice {
   myObsOffsetToRestore: number;
   setMyObsOffsetToRestore: ( ) => void;
   resetMyObsOffsetToRestore: ( ) => void;
+
+  // Nothing reads or writes these yet. The live values are read straight from
+  // MMKV in MyObservationsResults, AddObsButton, and SimpleUploadBannerContainer.
+  // Kept here as the destination for MOB-1374, which moves that direct MMKV
+  // access into the store.
+  numOfUserObservations: number;
+  setNumOfUserObservations: ( _newNum: number ) => void;
+  numOfUserSpecies: number;
+  setNumOfUserSpecies: ( _newNum: number ) => void;
 }
 
 const createMyObservationsSlice: StateCreator<MyObservationsSlice> = ( set, get ) => ( {
@@ -85,6 +94,11 @@ const createMyObservationsSlice: StateCreator<MyObservationsSlice> = ( set, get 
   myObsOffsetToRestore: 0,
   setMyObsOffsetToRestore: ( ) => set( { myObsOffsetToRestore: get( ).myObsOffset } ),
   resetMyObsOffsetToRestore: ( ) => set( { myObsOffsetToRestore: 0 } ),
+
+  numOfUserObservations: 0,
+  setNumOfUserObservations: newNum => set( { numOfUserObservations: newNum } ),
+  numOfUserSpecies: 0,
+  setNumOfUserSpecies: newNum => set( { numOfUserSpecies: newNum } ),
 } );
 
 export default createMyObservationsSlice;
