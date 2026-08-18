@@ -16,7 +16,7 @@ export function isShareExtensionPhotoUri( pathOrUri: string ): boolean {
   return pathOrUri.includes( "Shared/AppGroup" );
 }
 
-function pathForUnlink( pathOrUri: string ): string {
+function pathForFilesystem( pathOrUri: string ): string {
   if ( pathOrUri.match( /^file:\/\// ) ) {
     return pathOrUri.replace( /^file:\/\//, "" );
   }
@@ -31,7 +31,7 @@ export async function unlinkIfShareExtensionSource( sharedPhoto: SharedPhoto ): 
     return;
   }
   try {
-    await unlink( pathForUnlink( pathOrUri ) );
+    await unlink( pathForFilesystem( pathOrUri ) );
   } catch ( error ) {
     logger.error( `Failed to unlink share-extension source ${error}` );
   }
