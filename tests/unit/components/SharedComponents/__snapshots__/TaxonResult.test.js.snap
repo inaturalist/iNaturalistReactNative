@@ -3,32 +3,15 @@
 exports[`TaxonResult should render correctly 1`] = `
 <View
   style={
-    [
-      [
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-        {
-          "justifyContent": "space-between",
-        },
-        {
-          "paddingLeft": 16,
-          "paddingRight": 16,
-        },
-        {
-          "borderBottomWidth": 1,
-        },
-        {
-          "borderBottomColor": "#E8E8E8",
-          "borderLeftColor": "#E8E8E8",
-          "borderRightColor": "#E8E8E8",
-          "borderTopColor": "#E8E8E8",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "borderBottomWidth": 1,
+      "borderColor": "rgba(232, 232, 232, 1)",
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "paddingLeft": 16,
+      "paddingRight": 16,
+    }
   }
 >
   <View
@@ -65,174 +48,71 @@ exports[`TaxonResult should render correctly 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={
-      [
-        [
-          {
-            "flexDirection": "row",
-          },
-          {
-            "alignItems": "center",
-          },
-          {
-            "flexShrink": 1,
-          },
-          {
-            "paddingBottom": 12,
-            "paddingTop": 12,
-          },
-        ],
-      ]
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "flexShrink": 1,
+        "paddingBottom": 12,
+        "paddingTop": 12,
+      }
     }
   >
     <View
       style={
-        [
-          [
-            {
-              "width": 62,
-            },
-            {
-              "height": 62,
-            },
-            {
-              "justifyContent": "center",
-            },
-            {
-              "position": "relative",
-            },
-          ],
-        ]
+        {
+          "height": 62,
+          "justifyContent": "center",
+          "position": "relative",
+          "width": 62,
+        }
       }
     >
       <View
         style={
-          [
-            [
-              {
-                "maxHeight": 210,
-              },
-              {
-                "overflow": "hidden",
-              },
-              {
-                "position": "relative",
-              },
-              {
-                "borderBottomLeftRadius": 8,
-                "borderBottomRightRadius": 8,
-                "borderTopLeftRadius": 8,
-                "borderTopRightRadius": 8,
-              },
-              {
-                "height": 62,
-              },
-              {
-                "width": 62,
-              },
-              {
-                "justifyContent": "center",
-              },
-              {
-                "alignItems": "center",
-              },
-              {
-                "borderBottomWidth": 2,
-                "borderLeftWidth": 2,
-                "borderRightWidth": 2,
-                "borderTopWidth": 2,
-              },
-              [
-                {
-                  "borderBottomLeftRadius": 12,
-                  "borderBottomRightRadius": 12,
-                  "borderTopLeftRadius": 12,
-                  "borderTopRightRadius": 12,
-                },
-              ],
-            ],
-          ]
+          {
+            "alignItems": "center",
+            "borderRadius": 12,
+            "borderWidth": 2,
+            "height": 62,
+            "justifyContent": "center",
+            "maxHeight": 210,
+            "overflow": "hidden",
+            "position": "relative",
+            "width": 62,
+          }
         }
         testID="undefined.photo"
       >
         <View
           style={
-            [
-              [
-                {
-                  "flexGrow": 1,
-                },
-                {
-                  "aspectRatio": 1,
-                },
-                {
-                  "position": "relative",
-                },
-              ],
-            ]
+            {
+              "aspectRatio": 1,
+              "flexGrow": 1,
+              "position": "relative",
+            }
           }
         >
           <View
             style={
-              [
-                [
-                  {
-                    "position": "absolute",
-                  },
-                  {
-                    "width": "100%",
-                  },
-                  {
-                    "height": "100%",
-                  },
-                ],
-              ]
+              {
+                "height": "100%",
+                "position": "absolute",
+                "width": "100%",
+              }
             }
           >
             <View
               style={
-                [
-                  [
-                    {
-                      "flexShrink": 1,
-                    },
-                    {
-                      "justifyContent": "center",
-                    },
-                    {
-                      "alignItems": "center",
-                    },
-                    {
-                      "borderBottomLeftRadius": 12,
-                      "borderBottomRightRadius": 12,
-                      "borderTopLeftRadius": 12,
-                      "borderTopRightRadius": 12,
-                    },
-                    {
-                      "borderBottomWidth": 2,
-                      "borderLeftWidth": 2,
-                      "borderRightWidth": 2,
-                      "borderTopWidth": 2,
-                    },
-                    {
-                      "borderBottomColor": "#E8E8E8",
-                      "borderLeftColor": "#E8E8E8",
-                      "borderRightColor": "#E8E8E8",
-                      "borderTopColor": "#E8E8E8",
-                    },
-                    {
-                      "flexGrow": 1,
-                    },
-                    {
-                      "aspectRatio": 1,
-                    },
-                    {
-                      "borderBottomWidth": 0,
-                      "borderLeftWidth": 0,
-                      "borderRightWidth": 0,
-                      "borderTopWidth": 0,
-                    },
-                  ],
-                ]
+                {
+                  "alignItems": "center",
+                  "aspectRatio": 1,
+                  "borderColor": "rgba(232, 232, 232, 1)",
+                  "borderRadius": 12,
+                  "borderWidth": 2,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "justifyContent": "center",
+                }
               }
               testID="IconicTaxonName.iconicTaxonIcon"
             >
@@ -264,32 +144,19 @@ exports[`TaxonResult should render correctly 1`] = `
     </View>
     <View
       style={
-        [
-          [
-            {
-              "flexShrink": 1,
-            },
-            {
-              "marginLeft": 12,
-            },
-            {
-              "flexBasis": "0%",
-              "flexGrow": 1,
-              "flexShrink": 1,
-            },
-          ],
-        ]
+        {
+          "flexBasis": "0%",
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "marginLeft": 12,
+        }
       }
     >
       <View
         style={
-          [
-            [
-              {
-                "display": "flex",
-              },
-            ],
-          ]
+          {
+            "display": "flex",
+          }
         }
         testID="display-taxon-name.1"
       >
@@ -298,33 +165,13 @@ exports[`TaxonResult should render correctly 1`] = `
           maxFontSizeMultiplier={1.5}
           numberOfLines={3}
           style={
-            [
-              {
-                "color": "#454545",
-              },
-              {
-                "fontFamily": "Lato-Regular",
-              },
-              [
-                {
-                  "textAlign": "left",
-                },
-                [
-                  {
-                    "fontSize": 17,
-                    "lineHeight": 20.4,
-                  },
-                  {
-                    "fontFamily": "Lato-Medium",
-                  },
-                  [
-                    {
-                      "color": "#454545",
-                    },
-                  ],
-                ],
-              ],
-            ]
+            {
+              "color": "rgba(69, 69, 69, 1)",
+              "fontFamily": "Lato-Medium",
+              "fontSize": 17,
+              "lineHeight": 20.399999618530273,
+              "textAlign": "left",
+            }
           }
         >
           Birds
@@ -332,36 +179,14 @@ exports[`TaxonResult should render correctly 1`] = `
         <Text
           maxFontSizeMultiplier={2}
           style={
-            [
-              {
-                "color": "#454545",
-              },
-              {
-                "fontFamily": "Lato-Regular",
-              },
-              [
-                {
-                  "textAlign": "left",
-                },
-                [
-                  {
-                    "fontSize": 13,
-                    "lineHeight": 18,
-                  },
-                  {
-                    "fontFamily": "Lato-Medium",
-                  },
-                  [
-                    {
-                      "color": "#454545",
-                    },
-                    {
-                      "marginTop": 3,
-                    },
-                  ],
-                ],
-              ],
-            ]
+            {
+              "color": "rgba(69, 69, 69, 1)",
+              "fontFamily": "Lato-Medium",
+              "fontSize": 13,
+              "lineHeight": 18,
+              "marginTop": 3,
+              "textAlign": "left",
+            }
           }
         >
           Family
@@ -369,39 +194,14 @@ exports[`TaxonResult should render correctly 1`] = `
           <Text
             maxFontSizeMultiplier={1.5}
             style={
-              [
-                {
-                  "color": "#454545",
-                },
-                {
-                  "fontFamily": "Lato-Regular",
-                },
-                [
-                  {
-                    "textAlign": "left",
-                  },
-                  [
-                    {
-                      "fontSize": 13,
-                      "lineHeight": 18,
-                    },
-                    {
-                      "fontFamily": "Lato-Medium",
-                    },
-                    [
-                      {
-                        "fontWeight": "400",
-                      },
-                      {
-                        "color": "#454545",
-                      },
-                      {
-                        "fontWeight": "300",
-                      },
-                    ],
-                  ],
-                ],
-              ]
+              {
+                "color": "rgba(69, 69, 69, 1)",
+                "fontFamily": "Lato-Medium",
+                "fontSize": 13,
+                "fontWeight": "300",
+                "lineHeight": 18,
+                "textAlign": "left",
+              }
             }
           >
             Aves
@@ -412,16 +212,10 @@ exports[`TaxonResult should render correctly 1`] = `
   </View>
   <View
     style={
-      [
-        [
-          {
-            "flexDirection": "row",
-          },
-          {
-            "alignItems": "center",
-          },
-        ],
-      ]
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
     }
   >
     <View
@@ -458,38 +252,21 @@ exports[`TaxonResult should render correctly 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "height": 44,
-            "width": 44,
-          },
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-          },
-          false,
-          undefined,
-          {
-            "opacity": 1,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "height": 44,
+          "justifyContent": "center",
+          "width": 44,
+        }
       }
     >
       <View
         style={
-          [
-            [
-              {
-                "position": "relative",
-              },
-              {
-                "left": 0.2,
-              },
-              {
-                "top": 0.1,
-              },
-            ],
-          ]
+          {
+            "left": 0.20000000298023224,
+            "position": "relative",
+            "top": 0.10000000149011612,
+          }
         }
       >
         <Text
@@ -548,43 +325,23 @@ exports[`TaxonResult should render correctly 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "height": 44,
-            "width": 44,
-          },
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-          },
-          false,
-          [
-            {
-              "marginLeft": 8,
-            },
-          ],
-          {
-            "opacity": 1,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "height": 44,
+          "justifyContent": "center",
+          "marginLeft": 8,
+          "width": 44,
+        }
       }
       testID="undefined.checkmark"
     >
       <View
         style={
-          [
-            [
-              {
-                "position": "relative",
-              },
-              {
-                "left": 0.2,
-              },
-              {
-                "top": 0.1,
-              },
-            ],
-          ]
+          {
+            "left": 0.20000000298023224,
+            "position": "relative",
+            "top": 0.10000000149011612,
+          }
         }
       >
         <Text

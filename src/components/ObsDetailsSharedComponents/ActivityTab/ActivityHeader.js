@@ -126,12 +126,12 @@ const ActivityHeader = ( {
   return (
     <View className={classnames( "flex-row justify-between", classNameMargin )}>
       <InlineUser user={user} isConnected={isConnected} />
-      <View className="flex-row items-center space-x-[15px] -mr-[15px]">
+      <View className="flex-row items-center gap-x-[15px] -mr-[15px]">
         {renderIcon()}
         {renderStatus()}
         {/*
           Note that even though the date is conditionally rendered, we need to
-          wrap it in a View that's always there so the space-x-[] can be
+          wrap it in a View that's always there so the gap-x-[] can be
           calculated
         */}
         <View>
