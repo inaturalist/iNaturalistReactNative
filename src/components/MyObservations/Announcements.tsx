@@ -46,11 +46,15 @@ type WebshellProps = ComponentProps<typeof Webshell>;
 
 const AutoheightWebView
 = ( webshellProps: WebshellProps ) => {
-  const { autoheightWebshellProps } = useAutoheight( {
+  const { autoheightWebshellProps, contentSize } = useAutoheight( {
     webshellProps,
   } );
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Webshell {...autoheightWebshellProps} />;
+  return (
+    <View style={{ height: contentSize.height }}>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <Webshell {...autoheightWebshellProps} />
+    </View>
+  );
 };
 
 interface Props {
