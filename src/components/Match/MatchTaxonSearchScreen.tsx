@@ -78,6 +78,7 @@ const MatchTaxonSearchScreen = ( ) => {
 
   return (
     <TaxonSearch
+      focusAfterTransition
       isLoading={isLoading}
       isLocal={isLocal}
       query={taxonQuery}
