@@ -153,7 +153,6 @@ const DateFilterSection = <TMode extends DateFilterMode>( {
           onPressClose={closeSheet}
           radioValues={modeValues}
           selectedValue={mode}
-          insideModal
         />
       )}
     </View>

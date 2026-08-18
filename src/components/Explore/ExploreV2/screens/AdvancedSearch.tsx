@@ -681,7 +681,6 @@ const AdvancedSearch = ( ) => {
           onPressClose={closeSheet}
           radioValues={sortByValues}
           selectedValue={sortBy}
-          insideModal
         />
       )}
       {openSheet === "hrank" && (
@@ -697,7 +696,6 @@ const AdvancedSearch = ( ) => {
           onPressClose={closeSheet}
           pickerValues={taxonomicRankValues}
           selectedValue={hrank}
-          insideModal
         />
       )}
       {openSheet === "lrank" && (
@@ -713,7 +711,6 @@ const AdvancedSearch = ( ) => {
           onPressClose={closeSheet}
           pickerValues={taxonomicRankValues}
           selectedValue={lrank}
-          insideModal
         />
       )}
       {openSheet === "photoLicense" && (
@@ -729,7 +726,6 @@ const AdvancedSearch = ( ) => {
           onPressClose={closeSheet}
           radioValues={photoLicenseValues}
           selectedValue={photoLicense}
-          insideModal
         />
       )}
       {openPicker === "taxon" && (
