@@ -1,4 +1,4 @@
-import { useNavigation, usePreventRemove } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
@@ -13,7 +13,13 @@ import {
 import { SharedStackBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
@@ -69,6 +75,8 @@ const AddToProjects = ( ) => {
     () => initialSelectedProjectIds,
   );
   const [showMissingInfoSheet, setShowMissingInfoSheet] = useState( false );
+  const isSavingRef = useRef( false );
+  const isLeavingRef = useRef( false );
 
   const joinedProjects = useMemo(
     () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
@@ -88,9 +96,20 @@ const AddToProjects = ( ) => {
   );
   const saveDisabled = !validationResult.valid || selectionUnchanged;
 
-  usePreventRemove( !validationResult.valid, () => {
-    setShowMissingInfoSheet( true );
-  } );
+  useEffect( ( ) => {
+    const unsubscribe = navigation.addListener( "beforeRemove", event => {
+      if ( isSavingRef.current || isLeavingRef.current ) {
+        return;
+      }
+      if ( validationResult.valid ) {
+        return;
+      }
+      event.preventDefault( );
+      setShowMissingInfoSheet( true );
+    } );
+
+    return unsubscribe;
+  }, [navigation, validationResult.valid] );
 
   const listHeaderComponent = useMemo(
     ( ) => (
@@ -150,6 +169,7 @@ const AddToProjects = ( ) => {
   }, [] );
 
   const onSave = useCallback( ( ) => {
+    isSavingRef.current = true;
     const { projectObservations } = buildProjectObservationSelection(
       currentObservation?.projectObservations,
       selectedProjectIds,
@@ -170,6 +190,7 @@ const AddToProjects = ( ) => {
   }, [] );
 
   const onLeave = useCallback( ( ) => {
+    isLeavingRef.current = true;
     setShowMissingInfoSheet( false );
     navigation.goBack( );
   }, [
