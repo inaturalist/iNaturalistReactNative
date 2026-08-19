@@ -2,8 +2,8 @@ import merge from "lodash/merge";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import createExploreRecentSearchesSlice from "./createExploreRecentSearchesSlice";
 import createExploreSlice from "./createExploreSlice";
+import createExploreV2RecentSearchesSlice from "./createExploreV2RecentSearchesSlice";
 import createFeatureFlagSlice from "./createFeatureFlagSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
@@ -32,7 +32,7 @@ const useStore = create( persist(
   ( ...args ) => {
     // Let's make our slices
     const slices = [
-      createExploreRecentSearchesSlice( ...args ),
+      createExploreV2RecentSearchesSlice( ...args ),
       createExploreSlice( ...args ),
       createFeatureFlagSlice( ...args ),
       createFirebaseTraceSlice( ...args ),

@@ -3,7 +3,7 @@ import {
   placeKey,
   RECENT_LIMIT,
   subjectKey,
-} from "stores/createExploreRecentSearchesSlice";
+} from "stores/createExploreV2RecentSearchesSlice";
 import useStore, { zustandStorage } from "stores/useStore";
 
 const taxonSubject = id => ( { type: "taxon", taxon: { id, name: `Taxon ${id}` } } );

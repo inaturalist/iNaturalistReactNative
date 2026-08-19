@@ -37,7 +37,7 @@ export const addRecent = <T>(
     ...items.filter( existing => keyFn( existing ) !== keyFn( item ) ),
   ].slice( 0, cap );
 
-export interface ExploreRecentSearchesSlice {
+export interface ExploreV2RecentSearchesSlice {
   exploreRecentSearches: {
     subjects: ExploreV2Subject[];
     places: Place[];
@@ -50,7 +50,7 @@ export interface ExploreRecentSearchesSlice {
 // Recent Explore searches, shown in the default state of the Universal Search
 // fields. These hold search *ingredients*, not whole searches: a recent subject
 // sets the subject and nothing else, a recent place fills the location field.
-const createExploreRecentSearchesSlice: StateCreator<ExploreRecentSearchesSlice> = set => ( {
+const createExploreV2RecentSearchesSlice: StateCreator<ExploreV2RecentSearchesSlice> = set => ( {
   exploreRecentSearches: {
     subjects: [],
     places: [],
@@ -84,4 +84,4 @@ const createExploreRecentSearchesSlice: StateCreator<ExploreRecentSearchesSlice>
   },
 } );
 
-export default createExploreRecentSearchesSlice;
+export default createExploreV2RecentSearchesSlice;

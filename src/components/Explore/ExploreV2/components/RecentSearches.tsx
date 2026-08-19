@@ -8,8 +8,8 @@ import { View } from "components/styledComponents";
 import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import React from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import type { ExploreRecentSearchesSlice } from "stores/createExploreRecentSearchesSlice";
-import { subjectKey } from "stores/createExploreRecentSearchesSlice";
+import type { ExploreV2RecentSearchesSlice } from "stores/createExploreV2RecentSearchesSlice";
+import { subjectKey } from "stores/createExploreV2RecentSearchesSlice";
 import useStore from "stores/useStore";
 
 interface Props {
@@ -24,7 +24,7 @@ interface RecentRow {
 const RecentSearches = ( { onSelectSubject }: Props ) => {
   const currentUser = useCurrentUser( );
   const subjects = useStore(
-    ( state: ExploreRecentSearchesSlice ) => state.exploreRecentSearches.subjects,
+    ( state: ExploreV2RecentSearchesSlice ) => state.exploreRecentSearches.subjects,
   );
 
   const rows = subjects

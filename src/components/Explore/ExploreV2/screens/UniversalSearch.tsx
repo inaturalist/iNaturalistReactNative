@@ -47,7 +47,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
-import type { ExploreRecentSearchesSlice } from "stores/createExploreRecentSearchesSlice";
+import type { ExploreV2RecentSearchesSlice } from "stores/createExploreV2RecentSearchesSlice";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -95,10 +95,10 @@ const UniversalSearch = ( ) => {
     && currentUser?.prefers_scientific_name_first !== true;
 
   const recordSubject = useStore(
-    ( state: ExploreRecentSearchesSlice ) => state.exploreRecentSearches.recordSubject,
+    ( state: ExploreV2RecentSearchesSlice ) => state.exploreRecentSearches.recordSubject,
   );
   const recordPlace = useStore(
-    ( state: ExploreRecentSearchesSlice ) => state.exploreRecentSearches.recordPlace,
+    ( state: ExploreV2RecentSearchesSlice ) => state.exploreRecentSearches.recordPlace,
   );
 
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
