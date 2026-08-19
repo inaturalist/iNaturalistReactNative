@@ -8,6 +8,7 @@ import {
   ButtonBar,
   CustomFlashList,
   INatIcon,
+  WarningSheet,
 } from "components/SharedComponents";
 import { SharedStackBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
@@ -279,6 +280,19 @@ const AddToProjects = ( ) => {
           />
         </ButtonBar>
       </View>
+      {true && (
+        <WarningSheet
+          buttonText={t( "LEAVE" )}
+          confirm={() => console.log( "leave" )}
+          handleSecondButtonPress={() => console.log( "keep editing" )}
+          headerText={t( "MISSING-INFO" )}
+          loading={false}
+          onPressClose={() => console.log( "keep editing" )}
+          secondButtonText={t( "KEEP-EDITING" )}
+          testID="MissingInfoSheet"
+          text={t( "One-or-more-projects-still-need-required-info" )}
+        />
+      )}
     </SharedStackBottomInsetViewWrapper>
   );
 };
