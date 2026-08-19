@@ -68,6 +68,7 @@ const AddToProjects = ( ) => {
   const [selectedProjectIds, setSelectedProjectIds] = useState(
     () => initialSelectedProjectIds,
   );
+  const [showMissingInfoSheet, setShowMissingInfoSheet] = useState( false );
 
   const joinedProjects = useMemo(
     () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
@@ -160,9 +161,11 @@ const AddToProjects = ( ) => {
   ] );
 
   const onKeepEditing = useCallback( ( ) => {
+    setShowMissingInfoSheet( false );
   }, [] );
 
   const onLeave = useCallback( ( ) => {
+    setShowMissingInfoSheet( false );
   }, [
   ] );
 
@@ -287,7 +290,7 @@ const AddToProjects = ( ) => {
           />
         </ButtonBar>
       </View>
-      {true && (
+      {showMissingInfoSheet && (
         <WarningSheet
           buttonText={t( "LEAVE" )}
           confirm={onLeave}
