@@ -94,7 +94,6 @@ const AddToProjects = ( ) => {
     selectedProjectIds,
     initialSelectedProjectIds,
   );
-  const saveDisabled = !validationResult.valid || selectionUnchanged;
 
   useEffect( ( ) => {
     const unsubscribe = navigation.addListener( "beforeRemove", event => {
@@ -314,7 +313,7 @@ const AddToProjects = ( ) => {
             text={t( "SAVE" )}
             onPress={onSave}
             level="neutral"
-            disabled={saveDisabled}
+            disabled={selectionUnchanged}
           />
         </ButtonBar>
       </View>
