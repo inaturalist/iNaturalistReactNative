@@ -171,7 +171,9 @@ const AddToProjects = ( ) => {
 
   const onLeave = useCallback( ( ) => {
     setShowMissingInfoSheet( false );
+    navigation.goBack( );
   }, [
+    navigation,
   ] );
 
   const renderExpanded = useCallback(
