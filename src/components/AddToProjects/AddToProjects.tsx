@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, usePreventRemove } from "@react-navigation/native";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
   Body1,
@@ -87,6 +87,11 @@ const AddToProjects = ( ) => {
     initialSelectedProjectIds,
   );
   const saveDisabled = !validationResult.valid || selectionUnchanged;
+
+  usePreventRemove( !validationResult.valid, () => {
+    setShowMissingInfoSheet( true );
+  } );
+
   const listHeaderComponent = useMemo(
     ( ) => (
       <View className="px-4 pt-5 pb-6">
