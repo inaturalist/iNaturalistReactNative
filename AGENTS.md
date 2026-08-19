@@ -149,7 +149,7 @@ The app uses a hybrid state management approach:
 
 - **MMKV** - Fast key-value storage via `zustandStorage` for Zustand persistence
 
-**Details:** working with Realm objects in the React layer (live-object gotchas, the missing Realm→API converter, `mapTo` field-name debt) is documented in `agent-docs/architecture/realm-and-zustand.md`.
+**Details:** working with Realm objects in the React layer (live-object gotchas, the missing Realm→API converter, `mapTo` field-name debt) is documented in `agent-docs/architecture/realm-and-zustand.md`. Photo and sound storage paths, lifecycle, and cleanup are in `agent-docs/architecture/media-filesystem-lifecycle.md`.
 
 ### API Layer
 
@@ -311,7 +311,7 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 
 In-depth architecture and convention docs for both humans and AI agents. Read the relevant doc before exploring or modifying a subsystem — it captures patterns that aren't obvious from the code alone.
 
-- `architecture/` — `upload-system.md`, `navigation-patterns.md`, `api-layer.md`, `realm-and-zustand.md` (includes working with Realm objects in the React layer)
+- `architecture/` — `upload-system.md`, `navigation-patterns.md`, `api-layer.md`, `realm-and-zustand.md` (includes working with Realm objects in the React layer), `media-filesystem-lifecycle.md`
 - `conventions/` — `component-conventions.md`, `i18n-conventions.md`, `import-aliases.md`, `typescript.md`
 - `testing/` — `test-core.md`, `test-components.md`, `integration-test-analysis.md`, `e2e.md` (Detox + Maestro + iOS verification)
 
