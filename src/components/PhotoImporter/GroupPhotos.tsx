@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { ListRenderItem } from "@shopify/flash-list";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import {
+  ActivityIndicator,
   Body2,
   Button,
   ButtonBar,
@@ -12,9 +13,11 @@ import {
 } from "components/SharedComponents";
 import { BottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { useGridLayout, useTranslation } from "sharedHooks";
+import type { GroupedPhoto } from "stores/createObservationFlowSlice";
 import colors from "styles/tailwindColors";
 
 import GroupPhotoImage from "./GroupPhotoImage";
@@ -25,15 +28,7 @@ const emptyItemStyle = {
   borderColor: colors.mediumGray,
 } as const;
 
-interface Item {
-  photos: {
-    image: {
-      uri: string;
-    };
-  }[];
-}
-
-type GroupPhotosListItem = Item | { empty: true };
+type GroupPhotosListItem = GroupedPhoto | { empty: true };
 
 function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
   return "empty" in item && item.empty === true;
@@ -41,12 +36,12 @@ function isEmptyGridItem( item: GroupPhotosListItem ): item is { empty: true } {
 
 interface Props {
   combinePhotos: ( ) => void;
-  groupedPhotos: Item[];
-  isCreatingObservations?: boolean;
+  groupedPhotos: GroupedPhoto[];
+  isCreatingObservations: boolean;
   navBasedOnUserSettings: ( ) => void;
   removePhotos: ( ) => void;
-  selectedObservations: Item[];
-  selectObservationPhotos: ( isSelected: boolean, item: Item ) => void;
+  selectedObservations: GroupedPhoto[];
+  selectObservationPhotos: ( isSelected: boolean, item: GroupedPhoto ) => void;
   separatePhotos: ( ) => void;
   totalPhotos: number;
 }
@@ -63,7 +58,7 @@ const GroupPhotos = ( {
   totalPhotos,
 }: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"GroupPhotos">["navigation"]>( );
   const {
     flashListStyle,
     gridItemStyle,
@@ -81,7 +76,7 @@ const GroupPhotos = ( {
   const obsWithMultiplePhotosSelected
     = selectedObservations?.[0]?.photos?.length > 1;
 
-  const renderImage = useCallback( ( item: Item ) => (
+  const renderImage = useCallback( ( item: GroupedPhoto ) => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
@@ -141,17 +136,25 @@ const GroupPhotos = ( {
 
   return (
     <BottomInsetViewWrapper>
-      <CustomFlashList
-        ListHeaderComponent={headerComponent}
-        contentContainerStyle={flashListStyle}
-        data={data}
-        extraData={extraData}
-        key={numColumns}
-        keyExtractor={extractKey}
-        numColumns={numColumns}
-        renderItem={renderItem}
-        testID="GroupPhotos.list"
-      />
+      {isCreatingObservations
+        ? (
+          <ActivityIndicator
+            className="flex-1 justify-center items-center"
+          />
+        )
+        : (
+          <CustomFlashList
+            ListHeaderComponent={headerComponent}
+            contentContainerStyle={flashListStyle}
+            data={data}
+            extraData={extraData}
+            key={numColumns}
+            keyExtractor={extractKey}
+            numColumns={numColumns}
+            renderItem={renderItem}
+            testID="GroupPhotos.list"
+          />
+        )}
       <FloatingActionBar
         show={selectedObservations.length > 0 && typeof buttonBarHeight === "number"}
         position="bottomStart"

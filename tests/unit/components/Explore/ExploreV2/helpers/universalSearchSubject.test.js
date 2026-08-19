@@ -21,6 +21,7 @@ describe( "resultToSubject", ( ) => {
         id: 7,
         login: "seth_msp",
         icon_url: "https://example.com/u.jpg",
+        observations_count: 5,
       },
     } );
   } );
@@ -41,6 +42,7 @@ describe( "resultToSubject", ( ) => {
       project: {
         id: 9,
         title: "InverteFest",
+        project_type: "collection",
         icon: "https://example.com/p.jpg",
       },
     } );

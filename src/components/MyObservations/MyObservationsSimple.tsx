@@ -395,7 +395,12 @@ const MyObservationsSimple = ( {
     if ( isConnected === false ) {
       return renderOfflineFallback( ( ) => refresh( ) );
     }
-    return <MyObservationsMapView userId={currentUser?.id} />;
+    return (
+      <MyObservationsMapView
+        isConnected={isConnected}
+        userId={currentUser?.id}
+      />
+    );
   };
 
   const renderSmallGridView = ( ) => {

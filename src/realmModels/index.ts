@@ -43,7 +43,7 @@ export default {
     User,
     Vote,
   ],
-  schemaVersion: 71,
+  schemaVersion: 72,
   path: `${DocumentDirectoryPath}/db.realm`,
   // https://github.com/realm/realm-js/pull/6076 embedded constraints
   migrationOptions: {

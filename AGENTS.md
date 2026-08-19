@@ -126,7 +126,7 @@ The app uses a hybrid state management approach:
   - `createSyncObservationsSlice` - Syncing observations from server
   - `createLayoutSlice` - UI preferences and flags (default vs advanced mode, obs-detail tab, screen-after-photo, shown-once flags)
   - `createExploreSlice` / `createRootExploreSlice` - Explore screen filters and state
-  - `createMyObsSlice` - My Observations filters
+  - `createMyObservationsSlice` - My Observations sort, search, per-view state, and scroll position
   - `createFeatureFlagSlice` - Feature flag state
   - See `src/stores/` for the complete list of slices.
 
@@ -135,6 +135,7 @@ The app uses a hybrid state management approach:
 - **React Context** - Feature-specific state:
   - `ExploreContext` - Complex explore screen state
   - `RealmContext` - Realm database access
+  - Note that a context mounted inside a bottom-tab screen does **not** survive tab switches or a trip to the camera — the tab tree is unmounted and reset out from under it. State that needs to last a session belongs in a Zustand slice; see the "Screen state that has to live in Zustand" section of the doc linked below.
 
 **Details:** store architecture, MMKV persistence, and the Realm/Zustand division of responsibilities are in `agent-docs/architecture/realm-and-zustand.md`.
 

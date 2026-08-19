@@ -39,7 +39,7 @@ const buildExploreV2QueryParams = (
   state: ExploreV2State,
   nearbyCoords?: NearbyCoords,
   // The signed-in user's id, needed by the reviewed filter (viewer_id param).
-  viewerId?: number | null,
+  currentUserId?: number | null,
 ): ExploreV2QueryParams => {
   const params: ExploreV2QueryParams = {
     per_page: PER_PAGE,
@@ -97,7 +97,7 @@ const buildExploreV2QueryParams = (
   }
 
   // Advanced Search filters
-  const filterParams = filtersToApiParams( state.filters, viewerId );
+  const filterParams = filtersToApiParams( state.filters, currentUserId );
   const paramsWithFilters: ExploreV2QueryParams = {
     ...params,
     ...filterParams,

@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { THUMBNAIL_CLASS } from "appConstants/classNames";
+import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
 import {
   Body1,
   Body3,
@@ -14,11 +15,8 @@ import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { TFunction } from "i18next";
 import type { ExploreStackScreenProps } from "navigation/types";
-import type { ExploreV2LocationState, ExploreV2Subject } from "providers/ExploreV2Context";
-import {
-  EXPLORE_V2_PLACE_MODE,
-  useExploreV2,
-} from "providers/ExploreV2Context";
+import type { ExploreV2Subject } from "providers/ExploreV2Context";
+import { useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -38,21 +36,6 @@ function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string 
       return t( "Unknown--taxon" );
     default:
       return t( "All-organisms" );
-  }
-}
-
-function locationLabel( location: ExploreV2LocationState, t: TFunction ): string {
-  switch ( location.placeMode ) {
-    case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
-      return t( "Worldwide" );
-    case EXPLORE_V2_PLACE_MODE.NEARBY:
-      return t( "Nearby" );
-    case EXPLORE_V2_PLACE_MODE.PLACE:
-      return location.place.display_name || "";
-    case EXPLORE_V2_PLACE_MODE.MAP_AREA:
-      return t( "Map-Area" );
-    default:
-      return "";
   }
 }
 

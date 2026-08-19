@@ -41,6 +41,7 @@ import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 import useObservationCounts from "sharedHooks/useObservationCounts";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import type { MyObservationsSlice } from "stores/createMyObservationsSlice";
 import {
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
@@ -84,6 +85,8 @@ const MyObservationsResults = ( ) => {
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
+  const clearMyObservationsViewState: MyObservationsSlice["clearMyObservationsViewState"]
+    = useStore( ( state: MyObservationsSlice ) => state.clearMyObservationsViewState );
   const uploadStatus = useStore( state => state.uploadStatus );
   const justFinishedSignup: boolean = useStore( state => state.layout.justFinishedSignup );
   // As soon as we leave this screen, the user is no longer considered as just finished signup
@@ -147,9 +150,11 @@ const MyObservationsResults = ( ) => {
       layout === "smallGrid" && ( !myObservationsSmallGridViewEnabled || !currentUser )
     );
     if ( viewUnavailable ) {
+      clearMyObservationsViewState( );
       writeLayoutToStorage( "grid" );
     }
   }, [
+    clearMyObservationsViewState,
     layout,
     myObservationsMapViewEnabled,
     myObservationsSmallGridViewEnabled,
@@ -157,10 +162,21 @@ const MyObservationsResults = ( ) => {
     writeLayoutToStorage,
   ] );
 
+  // Scroll to the top when a sync pulls in observations we've never seen locally
+  const scrollToTopForNewRemoteObs = useCallback( ( ) => {
+    if ( useServerOrder ) { return; }
+    listRef.current?.scrollToOffset( { offset: 0, animated: true } );
+    setMyObsOffset( 0 );
+  }, [
+    setMyObsOffset,
+    useServerOrder,
+  ] );
+
   const { startUploadObservations } = useUploadObservations( canUpload );
   const { syncManually } = useSyncObservations(
     currentUserId,
     startUploadObservations,
+    scrollToTopForNewRemoteObs,
   );
 
   const { refetch: refetchObservationsUpdates } = useObservationsUpdates( !!currentUser );
@@ -194,6 +210,12 @@ const MyObservationsResults = ( ) => {
   };
 
   const updateObservationsView = ( value: string ) => {
+    // Map position and closed/expanded taxa categories belong to the view the user was in.
+    // Returning to MyObs from elsewhere in the app should restore the view you left, but
+    // switching views should reset the view to its default state.
+    if ( value !== layout ) {
+      clearMyObservationsViewState( );
+    }
     writeLayoutToStorage( value );
   };
 
