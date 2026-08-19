@@ -159,6 +159,13 @@ const AddToProjects = ( ) => {
     updateObservationKeys,
   ] );
 
+  const onKeepEditing = useCallback( ( ) => {
+  }, [] );
+
+  const onLeave = useCallback( ( ) => {
+  }, [
+  ] );
+
   const renderExpanded = useCallback(
     ( item: RealmProject, projectValid: boolean ) => (
       <View className="bg-lightGrayOpaque">
@@ -283,11 +290,11 @@ const AddToProjects = ( ) => {
       {true && (
         <WarningSheet
           buttonText={t( "LEAVE" )}
-          confirm={() => console.log( "leave" )}
-          handleSecondButtonPress={() => console.log( "keep editing" )}
+          confirm={onLeave}
+          handleSecondButtonPress={onKeepEditing}
           headerText={t( "MISSING-INFO" )}
           loading={false}
-          onPressClose={() => console.log( "keep editing" )}
+          onPressClose={onKeepEditing}
           secondButtonText={t( "KEEP-EDITING" )}
           testID="MissingInfoSheet"
           text={t( "One-or-more-projects-still-need-required-info" )}
