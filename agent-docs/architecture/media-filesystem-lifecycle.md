@@ -171,7 +171,7 @@ Used by `clearSyncedMediaForUpload` for `photoUploads` and `soundUploads`:
 
 1. **Keep list:** Filenames from unsynced observations (`observationPhotos._synced_at == nil` / `observationSounds._synced_at == nil`).
 2. **30-day skip:** Files modified in the last 30 days (`TRASHABLE_VINTAGE_MS`) are never deleted — avoids race where the file was written just before the observation was saved to Realm.
-3. **5GB overflow:** If the kept + skipped files still exceed 5GB, delete largest-then-oldest files (excluding keep-list entries and files modified in the last 24h).
+**5GB overflow (currently unreachable):** Intended to delete largest-then-oldest files — excluding keep-list entries and files modified in the last 24h — when kept + skipped files exceed 5GB. As written the branch never runs: `deletionPromises` is not awaited, so `totalSize` is still `0` when compared against the limit and the function returns early. Don't plan around this rule until it's fixed.
 
 ## Manual Deletion
 
