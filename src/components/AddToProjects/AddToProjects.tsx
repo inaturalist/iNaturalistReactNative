@@ -95,6 +95,16 @@ const AddToProjects = ( ) => {
     initialSelectedProjectIds,
   );
 
+  const commitProjectSelection = useCallback( ( ) => {
+    const { projectObservations } = buildProjectObservationSelection(
+      currentObservation?.projectObservations,
+      selectedProjectIds,
+    );
+    updateObservationKeys( {
+      projectObservations,
+    } );
+  }, [currentObservation, selectedProjectIds, updateObservationKeys] );
+
   useEffect( ( ) => {
     const unsubscribe = navigation.addListener( "beforeRemove", event => {
       if ( isSavingRef.current || isLeavingRef.current ) {
@@ -169,20 +179,9 @@ const AddToProjects = ( ) => {
 
   const onSave = useCallback( ( ) => {
     isSavingRef.current = true;
-    const { projectObservations } = buildProjectObservationSelection(
-      currentObservation?.projectObservations,
-      selectedProjectIds,
-    );
-    updateObservationKeys( {
-      projectObservations,
-    } );
+    commitProjectSelection( );
     navigation.goBack( );
-  }, [
-    currentObservation,
-    navigation,
-    selectedProjectIds,
-    updateObservationKeys,
-  ] );
+  }, [commitProjectSelection, navigation] );
 
   const onKeepEditing = useCallback( ( ) => {
     setShowMissingInfoSheet( false );
