@@ -249,6 +249,51 @@ describe( "AddToProjects", ( ) => {
       } );
       expect( mockGoBack ).not.toHaveBeenCalled( );
     } );
+
+    it( "persists only completed projects when LEAVE is pressed", async ( ) => {
+      const sharedObsFieldId = mockProjects[0].projectObservationFields[0].obsField.id;
+      // Start with the first project's input completed and saved
+      useStore.setState( {
+        currentObservation: {
+          ...factory( "LocalObservation" ),
+          observationFieldValues: [
+            factory( "LocalObservationFieldValue", {
+              obsFieldId: sharedObsFieldId,
+              value: "completed-value",
+            } ),
+          ],
+          projectObservations: [factory( "LocalProjectObservation", {
+            projectId: mockProjects[0].id,
+            _synced_at: new Date( ),
+          } )],
+        },
+      } );
+
+      renderAddToProjects( );
+
+      // Select the second project but do not complete it
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+      await waitFor( ( ) => {
+        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
+      } );
+      await actor.press( screen.getByText( "LEAVE" ) );
+
+      // Expect only the previous state, no additions
+      expect(
+        useStore.getState( ).currentObservation?.projectObservations?.map( po => po.projectId ),
+      ).toEqual( [mockProjects[0].id] );
+      expect( useStore.getState( ).currentObservation?.observationFieldValues ).toEqual( [
+        expect.objectContaining( {
+          obsFieldId: sharedObsFieldId,
+          value: "completed-value",
+        } ),
+      ] );
+      await waitFor( ( ) => {
+        expect( mockGoBack ).toHaveBeenCalled( );
+      } );
+    } );
+
     it( "navigates back when LEAVE is pressed from SAVE with incomplete selections", async ( ) => {
       renderAddToProjects( );
 
