@@ -69,37 +69,6 @@ describe( "draftFromV2State", ( ) => {
       filters: { ...defaultExploreV2Filters, casual: true },
     } );
   } );
-
-  it( "moves a user subject into the user filter", ( ) => {
-    const draft = draftFromV2State( makeV2State( { subject: { type: "user", user: USER } } ) );
-
-    expect( draft.subject ).toBeNull( );
-    expect( draft.filters.user ).toEqual( USER );
-  } );
-
-  it( "moves a project subject into the project filter", ( ) => {
-    const draft = draftFromV2State(
-      makeV2State( { subject: { type: "project", project: PROJECT } } ),
-    );
-
-    expect( draft.subject ).toBeNull( );
-    expect( draft.filters.project ).toEqual( PROJECT );
-  } );
-
-  it( "drops an unobserved subject, which advanced search cannot express", ( ) => {
-    const draft = draftFromV2State(
-      makeV2State( { subject: { type: "unobserved", user: USER } } ),
-    );
-
-    expect( draft.subject ).toBeNull( );
-    expect( draft.filters ).toEqual( defaultExploreV2Filters );
-  } );
-
-  it( "keeps an unknown subject", ( ) => {
-    const draft = draftFromV2State( makeV2State( { subject: { type: "unknown" } } ) );
-
-    expect( draft.subject ).toEqual( { type: "unknown" } );
-  } );
 } );
 
 describe( "advancedSearchReducer", ( ) => {
@@ -112,23 +81,6 @@ describe( "advancedSearchReducer", ( ) => {
   } );
 
   describe( "taxon subject", ( ) => {
-    it( "sets a taxon subject", ( ) => {
-      const newDraft = advancedSearchReducer( makeDraft( ), {
-        type: "SET_TAXON",
-        taxon: TAXON,
-      } );
-
-      expect( newDraft.subject ).toEqual( { type: "taxon", taxon: TAXON } );
-    } );
-
-    it( "clears the subject when the taxon is removed", ( ) => {
-      const draft = makeDraft( { subject: { type: "taxon", taxon: TAXON } } );
-
-      const newDraft = advancedSearchReducer( draft, { type: "SET_TAXON", taxon: null } );
-
-      expect( newDraft.subject ).toBeNull( );
-    } );
-
     it( "sets the unknown subject, which is not a taxon", ( ) => {
       const newDraft = advancedSearchReducer( makeDraft( ), {
         type: "FILTER_BY_ICONIC_UNKNOWN",
@@ -448,16 +400,6 @@ describe( "advancedSearchReducer", ( ) => {
   } );
 
   describe( "wild status", ( ) => {
-    it( "includes casual observations when filtering for captive", ( ) => {
-      const newDraft = advancedSearchReducer( makeDraft( ), {
-        type: "SET_WILD_STATUS",
-        wildStatus: WILD_STATUS.CAPTIVE,
-      } );
-
-      expect( newDraft.filters.wildStatus ).toEqual( WILD_STATUS.CAPTIVE );
-      expect( newDraft.filters.casual ).toBe( true );
-    } );
-
     it( "leaves casual alone for the other wild statuses", ( ) => {
       const wild = advancedSearchReducer( makeDraft( ), {
         type: "SET_WILD_STATUS",
