@@ -270,7 +270,6 @@ describe( "SimpleUploadBannerContainer", () => {
     useStore.setState( {
       uploadStatus: UPLOAD_PENDING,
       syncingStatus: SYNC_PENDING,
-      numOfUserObservations: 1,
     } );
     setStoreStateLayout( {
       isDefaultMode: false,

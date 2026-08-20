@@ -100,6 +100,7 @@ const SearchMyObservationsTaxon = ( ) => {
         testID="SearchMyObservationsTaxon.close"
       />
       <TaxonSearch
+        focusAfterTransition
         isLoading={isLoading}
         isLocal={isLocal}
         query={taxonQuery}

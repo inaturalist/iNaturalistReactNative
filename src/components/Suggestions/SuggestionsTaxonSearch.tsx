@@ -31,6 +31,7 @@ const SuggestionsTaxonSearch = ( ) => {
 
   return (
     <TaxonSearch
+      focusAfterTransition
       isLoading={isLoading}
       isLocal={isLocal}
       query={taxonQuery}

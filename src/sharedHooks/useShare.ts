@@ -1,7 +1,15 @@
 import { useEffect } from "react";
 import ShareMenu from "react-native-share-menu";
 
-const useShare = ( onShare: ( ) => void ): void => {
+export interface SharedData {
+ data: {
+  mimeType: string;
+  data: string;
+ }[] | null;
+ extraData?: unknown;
+}
+
+const useShare = ( onShare: ( data?: SharedData | null ) => void ): void => {
   useEffect( ( ) => {
     ShareMenu.getInitialShare( onShare );
   }, [onShare] );

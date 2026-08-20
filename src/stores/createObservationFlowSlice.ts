@@ -21,8 +21,13 @@ interface RollbackSnapshot {
   unsavedChanges: boolean;
 }
 
-interface GroupedPhoto {
-  photos: string[];
+export interface GroupedPhoto {
+  photos: {
+    image: {
+        uri: string;
+    };
+    timestamp: number;
+  }[];
 }
 
 interface CameraStateOptions {
