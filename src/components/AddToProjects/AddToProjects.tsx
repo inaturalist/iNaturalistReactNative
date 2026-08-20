@@ -75,7 +75,6 @@ const AddToProjects = ( ) => {
     () => initialSelectedProjectIds,
   );
   const [showMissingInfoSheet, setShowMissingInfoSheet] = useState( false );
-  const isSavingRef = useRef( false );
   const isLeavingRef = useRef( false );
 
   const joinedProjects = useMemo(
@@ -106,19 +105,14 @@ const AddToProjects = ( ) => {
   }, [currentObservation, selectedProjectIds, updateObservationKeys] );
 
   useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "beforeRemove", event => {
-      if ( isSavingRef.current || isLeavingRef.current ) {
-        return;
-      }
+    const unsubscribe = navigation.addListener( "beforeRemove", ( ) => {
       if ( validationResult.valid ) {
-        return;
+        commitProjectSelection( );
       }
-      event.preventDefault( );
-      setShowMissingInfoSheet( true );
     } );
 
     return unsubscribe;
-  }, [navigation, validationResult.valid] );
+  }, [navigation, validationResult.valid, commitProjectSelection] );
 
   const listHeaderComponent = useMemo(
     ( ) => (
