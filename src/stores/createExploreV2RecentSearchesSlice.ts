@@ -25,7 +25,7 @@ export const subjectKey = ( subject: ExploreV2Subject ): string => {
 
 export const placeKey = ( place: Place ): string => `place-${place.id}`;
 
-// Newest first, unique by key, capped. Recording something already in the list
+// Newest first, unique by key, capped at 10. Recording something already in the list
 // bumps it to the front instead of duplicating it.
 export const addRecent = <T>(
   items: T[],
@@ -47,9 +47,6 @@ export interface ExploreV2RecentSearchesSlice {
   };
 }
 
-// Recent Explore searches, shown in the default state of the Universal Search
-// fields. These hold search *ingredients*, not whole searches: a recent subject
-// sets the subject and nothing else, a recent place fills the location field.
 const createExploreV2RecentSearchesSlice: StateCreator<ExploreV2RecentSearchesSlice> = set => ( {
   exploreRecentSearches: {
     subjects: [],
