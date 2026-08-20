@@ -19,6 +19,8 @@ import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import { useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
+import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string {
@@ -170,6 +172,13 @@ const ExploreV2Header = ( ) => {
   const { state } = useExploreV2( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
+  const advancedSearchMode = useStore(
+    ( storeState: ExploreV2AdvancedSearchSlice ) => storeState
+      .exploreV2AdvancedSearch.advancedSearchMode,
+  );
+  const searchScreen = advancedSearchMode
+    ? "AdvancedSearch"
+    : "UniversalSearch";
 
   const { subject } = state;
   const place = locationLabel( state.location, t );
@@ -204,17 +213,21 @@ const ExploreV2Header = ( ) => {
       <Pressable
         accessible={false}
         className="p-4 flex-row items-center"
-        onPress={() => navigation.navigate( "UniversalSearch" )}
+        onPress={() => navigation.navigate( searchScreen )}
         testID="ExploreV2Header.pressable"
       >
         <BackButton />
         {headerContent}
         <ContainedSquareButton
           accessibilityHint={t( "Opens-search-interface" )}
-          accessibilityLabel={t( "Search" )}
+          accessibilityLabel={advancedSearchMode
+            ? t( "Filters" )
+            : t( "Search" )}
           backgroundColor={colors.inatGreen}
-          icon="magnifying-glass"
-          onPress={() => navigation.navigate( "UniversalSearch" )}
+          icon={advancedSearchMode
+            ? "sliders"
+            : "magnifying-glass"}
+          onPress={() => navigation.navigate( searchScreen )}
           testID="ExploreV2Header.searchButton"
         />
       </Pressable>
