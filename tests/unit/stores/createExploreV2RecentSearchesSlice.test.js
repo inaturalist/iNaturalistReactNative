@@ -56,23 +56,18 @@ describe( "addRecent", ( ) => {
 } );
 
 describe( "exploreRecentSearches", ( ) => {
-  it( "records subjects newest first, bumping a repeat instead of duplicating it", ( ) => {
+  it( "records each list newest first, bumping a repeat instead of duplicating it", ( ) => {
     recents( ).recordSubject( taxonSubject( 1 ) );
     recents( ).recordSubject( taxonSubject( 2 ) );
     recents( ).recordSubject( taxonSubject( 1 ) );
-
-    expect( recents( ).subjects.map( subjectKey ) ).toEqual( ["taxon-1", "taxon-2"] );
-  } );
-
-  it( "records places without touching subjects", ( ) => {
-    recents( ).recordSubject( taxonSubject( 12 ) );
     recents( ).recordPlace( place( 1 ) );
     recents( ).recordPlace( place( 2 ) );
     recents( ).recordPlace( place( 1 ) );
 
+    // Each list keeps its own order, and recording one leaves the other alone
     const { places, subjects } = recents( );
+    expect( subjects.map( subjectKey ) ).toEqual( ["taxon-1", "taxon-2"] );
     expect( places.map( placeKey ) ).toEqual( ["place-1", "place-2"] );
-    expect( subjects ).toHaveLength( 1 );
   } );
 
   it( "clears both lists", ( ) => {
