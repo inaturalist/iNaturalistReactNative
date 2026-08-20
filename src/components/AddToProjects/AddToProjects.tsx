@@ -23,10 +23,11 @@ import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
-import applyCompletedProjectLeave from "sharedHelpers/applyCompletedProjectLeave";
 import buildProjectObservationSelection, {
   areProjectIdSetsEqual,
 } from "sharedHelpers/buildProjectObservationSelection";
+// eslint-disable-next-line max-len
+import type { ProjectFieldValidationError } from "sharedHelpers/validateProjectFieldsForObservation";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
 import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
@@ -44,6 +45,20 @@ const DROP_SHADOW = getShadow( {
 } );
 
 const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
+
+function getCompletedProjectIds(
+  selectedProjectIds: Set<number>,
+  validationErrors: ProjectFieldValidationError[],
+): Set<number> {
+  const invalidProjectIds = new Set(
+    validationErrors.map( error => error.projectId ),
+  );
+  return new Set(
+    [...selectedProjectIds].filter(
+      projectId => !invalidProjectIds.has( projectId ),
+    ),
+  );
+}
 
 const AddToProjects = ( ) => {
   const { t } = useTranslation( );
@@ -185,21 +200,33 @@ const AddToProjects = ( ) => {
 
   const onLeave = useCallback( ( ) => {
     setShowMissingInfoSheet( false );
-    // TODO: what needs to be discarded here?
-    const {
-      projectObservations,
-      // observationFieldValues,
-    } = applyCompletedProjectLeave(
-      currentObservation,
+
+    // Get which projects have completed all required inputs, i.e. no validation errors
+    const completedProjectIds = getCompletedProjectIds(
+      selectedProjectIds,
+      validationResult.errors,
+    );
+
+    // Remove incomplete projects' POs
+    const { projectObservations: existingProjectObservations }
+      = currentObservation || {};
+    const { projectObservations } = buildProjectObservationSelection(
+      existingProjectObservations,
+      completedProjectIds,
     );
     updateObservationKeys( {
       projectObservations,
     } );
+
+    // TODO: Last two steps are same as a commitProjectSelection, so we don't need to do it again
+    // in the nav back listener actually.
     navigation.goBack( );
   }, [
     currentObservation,
     navigation,
+    selectedProjectIds,
     updateObservationKeys,
+    validationResult.errors,
   ] );
 
   const renderExpanded = useCallback(
