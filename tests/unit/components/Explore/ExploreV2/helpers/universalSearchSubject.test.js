@@ -2,49 +2,34 @@ import {
   resultToSubject,
   subjectToText,
 } from "components/Explore/ExploreV2/helpers/universalSearchSubject";
+import factory from "tests/factory";
 
 describe( "resultToSubject", ( ) => {
-  it( "maps a user result to a user subject", ( ) => {
-    const result = {
-      type: "user",
-      user: {
-        id: 7,
-        login: "seth_msp",
-        icon_url: "https://example.com/u.jpg",
-        observations_count: 5,
-      },
-    };
+  it( "maps a user result to a user subject, keeping only the fields it needs", ( ) => {
+    const user = factory( "RemoteUser", { id: 7, login: "seth_msp" } );
 
-    expect( resultToSubject( result ) ).toEqual( {
+    expect( resultToSubject( { type: "user", user } ) ).toEqual( {
       type: "user",
       user: {
         id: 7,
         login: "seth_msp",
-        icon_url: "https://example.com/u.jpg",
-        observations_count: 5,
+        icon_url: user.icon_url,
+        observations_count: user.observations_count,
       },
     } );
   } );
 
   it( "maps a project result to a project subject", ( ) => {
-    const result = {
-      type: "project",
-      project: {
-        id: 9,
-        title: "InverteFest",
-        project_type: "collection",
-        icon: "https://example.com/p.jpg",
-      },
-    };
+    const project = factory( "RemoteProject", {
+      id: 9,
+      title: "InverteFest",
+      project_type: "collection",
+      rule_preferences: [{ field: "d1", value: "2024-01-01" }],
+    } );
 
-    expect( resultToSubject( result ) ).toEqual( {
+    expect( resultToSubject( { type: "project", project } ) ).toEqual( {
       type: "project",
-      project: {
-        id: 9,
-        title: "InverteFest",
-        project_type: "collection",
-        icon: "https://example.com/p.jpg",
-      },
+      project,
     } );
   } );
 
