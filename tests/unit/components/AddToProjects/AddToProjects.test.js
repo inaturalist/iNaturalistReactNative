@@ -1,4 +1,6 @@
-import { screen, userEvent, within } from "@testing-library/react-native";
+import {
+  screen, userEvent, waitFor, within,
+} from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
@@ -206,5 +208,33 @@ describe( "AddToProjects", ( ) => {
       savedProjectObservations?.find( po => po.projectId === mockProjects[1].id )?._pendingRemoval,
     ).toBeUndefined( );
     expect( mockGoBack ).toHaveBeenCalled( );
+  } );
+
+  describe( "when a selected project has a required field", ( ) => {
+    beforeAll( ( ) => {
+      mockProjects[1].projectObservationFields[0].required = true;
+    } );
+
+    afterAll( ( ) => {
+      mockProjects.forEach( project => {
+        project.projectObservationFields.forEach( pof => {
+          pof.required = false;
+        } );
+      } );
+    } );
+
+    it( "shows Missing info sheet when SAVE is pressed with an empty required field", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+
+      expect( screen.getByTestId( "AddToProjects.saveButton" ) ).not.toBeDisabled( );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+
+      await waitFor( ( ) => {
+        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
+      } );
+      expect( mockGoBack ).not.toHaveBeenCalled( );
+    } );
   } );
 } );
