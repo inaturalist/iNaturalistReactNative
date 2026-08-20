@@ -1,6 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { THUMBNAIL_CLASS } from "appConstants/classNames";
+import countFilters from "components/Explore/ExploreV2/helpers/countFilters";
 import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
+import NumberBadge from "components/Explore/NumberBadge";
 import {
   Body1,
   Body3,
@@ -179,6 +181,7 @@ const ExploreV2Header = ( ) => {
   const searchScreen = advancedSearchMode
     ? "AdvancedSearch"
     : "UniversalSearch";
+  const filterCount = countFilters( state.filters );
 
   const { subject } = state;
   const place = locationLabel( state.location, t );
@@ -218,18 +221,31 @@ const ExploreV2Header = ( ) => {
       >
         <BackButton />
         {headerContent}
-        <ContainedSquareButton
-          accessibilityHint={t( "Opens-search-interface" )}
-          accessibilityLabel={advancedSearchMode
-            ? t( "Filters" )
-            : t( "Search" )}
-          backgroundColor={colors.inatGreen}
-          icon={advancedSearchMode
-            ? "sliders"
-            : "magnifying-glass"}
-          onPress={() => navigation.navigate( searchScreen )}
-          testID="ExploreV2Header.searchButton"
-        />
+        <View>
+          <ContainedSquareButton
+            accessibilityHint={t( "Opens-search-interface" )}
+            accessibilityLabel={advancedSearchMode
+              ? t( "Filters" )
+              : t( "Search" )}
+            backgroundColor={colors.inatGreen}
+            icon={advancedSearchMode
+              ? "sliders"
+              : "magnifying-glass"}
+            onPress={() => navigation.navigate( searchScreen )}
+            testID="ExploreV2Header.searchButton"
+          />
+          {filterCount > 0 && (
+            <View
+              accessibilityElementsHidden
+              className="absolute top-[-10px] right-[-10px]"
+              importantForAccessibility="no-hide-descendants"
+              pointerEvents="none"
+              testID="ExploreV2Header.filterCount"
+            >
+              <NumberBadge number={filterCount} light />
+            </View>
+          )}
+        </View>
       </Pressable>
     </View>
   );
