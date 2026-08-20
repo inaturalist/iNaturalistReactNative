@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
+import applyCompletedProjectLeave from "sharedHelpers/applyCompletedProjectLeave";
 import buildProjectObservationSelection, {
   areProjectIdSetsEqual,
 } from "sharedHelpers/buildProjectObservationSelection";
@@ -184,9 +185,21 @@ const AddToProjects = ( ) => {
 
   const onLeave = useCallback( ( ) => {
     setShowMissingInfoSheet( false );
+    // TODO: what needs to be discarded here?
+    const {
+      projectObservations,
+      // observationFieldValues,
+    } = applyCompletedProjectLeave(
+      currentObservation,
+    );
+    updateObservationKeys( {
+      projectObservations,
+    } );
     navigation.goBack( );
   }, [
+    currentObservation,
     navigation,
+    updateObservationKeys,
   ] );
 
   const renderExpanded = useCallback(
