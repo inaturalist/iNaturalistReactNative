@@ -18,6 +18,7 @@ const mockProjects = [
 ];
 
 const mockGoBack = jest.fn( );
+
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -117,7 +118,7 @@ describe( "AddToProjects", ( ) => {
   it( "disables SAVE when project selection is unchanged", ( ) => {
     renderAddToProjects( );
 
-    expect( screen.getByText( "SAVE" ) ).toBeDisabled();
+    expect( screen.getByText( "SAVE" ) ).toBeDisabled( );
   } );
 
   it( "enables SAVE after project selection changes", async ( ) => {
@@ -158,7 +159,7 @@ describe( "AddToProjects", ( ) => {
         _pendingRemoval: true,
       } )],
     );
-    expect( mockGoBack ).toHaveBeenCalled();
+    expect( mockGoBack ).toHaveBeenCalled( );
   } );
 
   it( "soft-deletes only the deselected synced project observation", async ( ) => {
