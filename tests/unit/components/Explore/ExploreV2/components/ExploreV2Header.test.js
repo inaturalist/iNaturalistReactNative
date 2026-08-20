@@ -2,6 +2,7 @@ import { screen, userEvent } from "@testing-library/react-native";
 import ExploreV2Header from "components/Explore/ExploreV2/components/ExploreV2Header";
 import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
 import React from "react";
+import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 
 const mockNavigate = jest.fn();
@@ -49,6 +50,7 @@ const setState = ( subject, location = PLACE_LOCATION ) => {
 describe( "ExploreV2Header", () => {
   beforeEach( () => {
     mockNavigate.mockClear();
+    useStore.getState().exploreV2AdvancedSearch.setAdvancedSearchMode( false );
   } );
 
   it( "renders a user subject with login and location", () => {
@@ -196,8 +198,20 @@ describe( "ExploreV2Header", () => {
     setState( null );
     renderComponent( <ExploreV2Header /> );
 
-    await actor.press( screen.getByTestId( "ExploreV2Header.searchButton" ) );
+    await actor.press( screen.getByLabelText( "Search" ) );
 
     expect( mockNavigate ).toHaveBeenCalledWith( "UniversalSearch" );
+  } );
+
+  it( "navigates to Advanced Search from a filters button in advanced search mode", async () => {
+    const actor = userEvent.setup();
+    useStore.getState().exploreV2AdvancedSearch.setAdvancedSearchMode( true );
+    setState( null );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.queryByLabelText( "Search" ) ).toBeNull();
+    await actor.press( screen.getByLabelText( "Filters" ) );
+
+    expect( mockNavigate ).toHaveBeenCalledWith( "AdvancedSearch" );
   } );
 } );
