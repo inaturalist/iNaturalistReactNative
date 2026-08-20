@@ -15,7 +15,6 @@ import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -118,16 +117,6 @@ const AddToProjects = ( ) => {
     } );
   }, [currentObservation, selectedProjectIds, updateObservationKeys] );
 
-  useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "beforeRemove", ( ) => {
-      if ( validationResult.valid ) {
-        commitProjectSelection( );
-      }
-    } );
-
-    return unsubscribe;
-  }, [navigation, validationResult.valid, commitProjectSelection] );
-
   const listHeaderComponent = useMemo(
     ( ) => (
       <View className="px-4 pt-5 pb-6">
@@ -218,8 +207,6 @@ const AddToProjects = ( ) => {
       projectObservations,
     } );
 
-    // TODO: Last two steps are same as a commitProjectSelection, so we don't need to do it again
-    // in the nav back listener actually.
     navigation.goBack( );
   }, [
     currentObservation,
