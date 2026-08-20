@@ -249,5 +249,19 @@ describe( "AddToProjects", ( ) => {
       } );
       expect( mockGoBack ).not.toHaveBeenCalled( );
     } );
+    it( "navigates back when LEAVE is pressed from SAVE with incomplete selections", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+      await waitFor( ( ) => {
+        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
+      } );
+      await actor.press( screen.getByText( "LEAVE" ) );
+
+      await waitFor( ( ) => {
+        expect( mockGoBack ).toHaveBeenCalled( );
+      } );
+    } );
   } );
 } );
