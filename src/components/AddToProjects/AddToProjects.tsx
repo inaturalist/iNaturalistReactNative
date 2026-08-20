@@ -178,10 +178,13 @@ const AddToProjects = ( ) => {
   }, [] );
 
   const onSave = useCallback( ( ) => {
-    isSavingRef.current = true;
-    commitProjectSelection( );
-    navigation.goBack( );
-  }, [commitProjectSelection, navigation] );
+    if ( validationResult.valid ) {
+      commitProjectSelection( );
+      navigation.goBack( );
+    } else {
+      setShowMissingInfoSheet( true );
+    }
+  }, [commitProjectSelection, navigation, validationResult.valid] );
 
   const onKeepEditing = useCallback( ( ) => {
     setShowMissingInfoSheet( false );
