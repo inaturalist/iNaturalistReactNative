@@ -17,7 +17,6 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -75,7 +74,6 @@ const AddToProjects = ( ) => {
     () => initialSelectedProjectIds,
   );
   const [showMissingInfoSheet, setShowMissingInfoSheet] = useState( false );
-  const isLeavingRef = useRef( false );
 
   const joinedProjects = useMemo(
     () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
@@ -185,7 +183,6 @@ const AddToProjects = ( ) => {
   }, [] );
 
   const onLeave = useCallback( ( ) => {
-    isLeavingRef.current = true;
     setShowMissingInfoSheet( false );
     navigation.goBack( );
   }, [
