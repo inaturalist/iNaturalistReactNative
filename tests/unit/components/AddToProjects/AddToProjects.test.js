@@ -236,5 +236,18 @@ describe( "AddToProjects", ( ) => {
       } );
       expect( mockGoBack ).not.toHaveBeenCalled( );
     } );
+
+    it( "keeps editing when Missing info sheet is dismissed", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+      await actor.press( screen.getByText( "KEEP EDITING" ) );
+
+      await waitFor( ( ) => {
+        expect( screen.queryByTestId( "MissingInfoSheet" ) ).toBeNull( );
+      } );
+      expect( mockGoBack ).not.toHaveBeenCalled( );
+    } );
   } );
 } );
