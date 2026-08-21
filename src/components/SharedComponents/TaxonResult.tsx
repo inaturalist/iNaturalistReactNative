@@ -15,7 +15,6 @@ import type {
 } from "navigation/types";
 import type { PropsWithChildren } from "react";
 import React from "react";
-import type { GestureResponderEvent } from "react-native";
 import type { RealmTaxon, RealmTaxonPhoto } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
@@ -35,7 +34,7 @@ interface TaxonResultProps {
   first?: boolean;
   fromLocal?: boolean;
   handleRemovePress?: () => void;
-  handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
+  handleTaxonOrEditPress?: ( taxon?: RealmTaxon | ApiTaxon ) => void;
   hideInfoButton?: boolean;
   hideNavButtons?: boolean;
   lastScreen?: "Suggestions";
@@ -162,6 +161,13 @@ const TaxonResult = ( {
   const rowAccessibilityHint = handleTaxonOrEditPress
     ? accessibilityLabel
     : t( "Navigates-to-taxon-details" );
+  const handleRowPress = React.useCallback( ( ) => {
+    if ( handleTaxonOrEditPress ) {
+      handleTaxonOrEditPress( usableTaxon );
+      return;
+    }
+    navToTaxonDetails( );
+  }, [handleTaxonOrEditPress, navToTaxonDetails, usableTaxon] );
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -171,7 +177,7 @@ const TaxonResult = ( {
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
           testID={testID}
-          onPress={handleTaxonOrEditPress || navToTaxonDetails}
+          onPress={handleRowPress}
           accessible
           accessibilityRole={rowAccessibilityRole}
           accessibilityLabel={accessibleName}
@@ -182,8 +188,7 @@ const TaxonResult = ( {
       )
   ), [
     accessibleName,
-    handleTaxonOrEditPress,
-    navToTaxonDetails,
+    handleRowPress,
     rowAccessibilityHint,
     rowAccessibilityRole,
     testID,
