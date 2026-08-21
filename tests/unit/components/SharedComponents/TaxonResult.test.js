@@ -24,8 +24,8 @@ describe( "TaxonResult", () => {
   it( "should render correctly", () => {
     render(
       <TaxonResult
-        accessibilityLabel="this is the taxon"
         taxon={mockTaxon}
+        testID="TaxonResult.test"
       />,
     );
 
