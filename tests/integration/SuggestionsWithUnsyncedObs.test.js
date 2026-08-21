@@ -228,7 +228,7 @@ const setupAppWithSignedInUser = async hasLocation => {
 //       expect( offlineNotice ).toBeTruthy( );
 //     }, { timeout: 10000 } );
 //     const topOfflineTaxonResultButton = await screen.findByTestId(
-//       `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+//       `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}`
 //     );
 //     expect( topOfflineTaxonResultButton ).toBeTruthy( );
 //     await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );

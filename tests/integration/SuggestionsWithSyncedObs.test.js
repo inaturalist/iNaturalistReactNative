@@ -139,7 +139,7 @@ afterEach( ( ) => {
 //     const suggestIdButton = await screen.findByText( "SUGGEST ID" );
 //     await act( async ( ) => actor.press( suggestIdButton ) );
 //     await screen.findByTestId(
-//       `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+//       `SuggestionsList.taxa.${topSuggestion.taxon.id}`
 //     );
 //     const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
 //     await actor.press( searchButton );
@@ -155,7 +155,7 @@ afterEach( ( ) => {
 //     const addIdButton = await screen.findByText( "ADD AN ID" );
 //     await actor.press( addIdButton );
 //     await screen.findByTestId(
-//       `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`
+//       `SuggestionsList.taxa.${topSuggestion.taxon.id}`
 //     );
 //     const searchButton = await screen.findByText( "SEARCH FOR A TAXON" );
 //     await actor.press( searchButton );
@@ -177,7 +177,7 @@ afterEach( ( ) => {
 //         )
 //       );
 //       const taxonResultButton = await screen.findByTestId(
-//         `Search.taxa.${mockSearchResultTaxon.id}.checkmark`
+//         `Search.taxa.${mockSearchResultTaxon.id}`
 //       );
 //       expect( taxonResultButton ).toBeTruthy( );
 //       await actor.press( taxonResultButton );
@@ -209,7 +209,7 @@ afterEach( ( ) => {
 //         )
 //       );
 //       const taxonResultButton = await screen.findByTestId(
-//         `Search.taxa.${mockSearchResultTaxon.id}.checkmark`
+//         `Search.taxa.${mockSearchResultTaxon.id}`
 //       );
 //       expect( taxonResultButton ).toBeTruthy( );
 //       await actor.press( taxonResultButton );
