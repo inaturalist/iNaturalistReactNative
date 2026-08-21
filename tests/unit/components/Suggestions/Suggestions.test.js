@@ -140,7 +140,7 @@ describe( "Suggestions", ( ) => {
     } );
   } );
 
-  it( "should create an id when checkmark is pressed", async ( ) => {
+  it( "should create an id when taxon is pressed", async ( ) => {
     renderComponent( <Suggestions
       suggestions={{
         ...initialSuggestions,
@@ -149,9 +149,9 @@ describe( "Suggestions", ( ) => {
       onTaxonChosen={mockCreateId}
     /> );
     const testID = `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`;
-    const checkmark = screen.getByTestId( `${testID}.checkmark` );
-    expect( checkmark ).toBeVisible( );
-    fireEvent.press( checkmark );
+    const taxonResult = screen.getByTestId( testID );
+    expect( taxonResult ).toBeVisible( );
+    fireEvent.press( taxonResult );
     await waitFor( ( ) => {
       expect( mockCreateId ).toHaveBeenCalled( );
     } );
