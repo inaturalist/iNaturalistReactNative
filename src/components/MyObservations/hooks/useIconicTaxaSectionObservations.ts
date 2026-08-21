@@ -4,7 +4,9 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
 import { selectCategoryToDeepen } from "components/MyObservations/helpers/iconicTaxaSections";
 import { RealmContext } from "providers/contexts";
-import { useCallback, useMemo, useState } from "react";
+import {
+  useCallback, useEffect, useMemo, useState,
+} from "react";
 import Observation from "realmModels/Observation";
 import type { ICONIC_TAXA_GROUP, IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
 import { log } from "sharedHelpers/logger";
@@ -16,6 +18,8 @@ import { useCurrentUser } from "sharedHooks";
 const { useRealm } = RealmContext;
 
 const logger = log.extend( "useIconicTaxaSectionObservations" );
+
+export const QUERY_KEY = "useIconicTaxaSectionObservations";
 
 export const PER_PAGE = 20;
 
@@ -54,6 +58,7 @@ interface Result {
   // finished, start the next category. Safe to call on every onEndReached.
   deepenOrAdvance: ( ) => void;
   retryCategory: ( category: ICONIC_TAXA_GROUP ) => void;
+  refreshSections: ( ) => void;
   resetPagination: ( ) => void;
 }
 
@@ -155,7 +160,7 @@ const useIconicTaxaSectionObservations = ( {
   const results = useQueries( {
     queries: descriptors.map( ( { category, page } ) => ( {
       queryKey: [
-        "useIconicTaxaSectionObservations",
+        QUERY_KEY,
         currentUser?.id,
         sortParams,
         category,
@@ -254,18 +259,31 @@ const useIconicTaxaSectionObservations = ( {
 
   const retryCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
     queryClient.refetchQueries( {
-      queryKey: ["useIconicTaxaSectionObservations", currentUser?.id, sortParams, category],
+      queryKey: [QUERY_KEY, currentUser?.id, sortParams, category],
     } );
   }, [currentUser?.id, queryClient, sortParams] );
 
   // Back to the top, as if the view had just opened
   const resetPagination = useCallback( ( ) => setPages( {} ), [setPages] );
 
+  const [refreshCount, setRefreshCount] = useState( 0 );
+
+  const refreshSections = useCallback( ( ) => {
+    resetPagination( );
+    setRefreshCount( count => count + 1 );
+  }, [resetPagination] );
+
+  useEffect( ( ) => {
+    if ( refreshCount === 0 ) return;
+    queryClient.refetchQueries( { queryKey: [QUERY_KEY] } );
+  }, [queryClient, refreshCount] );
+
   return {
     sections,
     advanceFrontier,
     deepenOrAdvance,
     retryCategory,
+    refreshSections,
     resetPagination,
   };
 };

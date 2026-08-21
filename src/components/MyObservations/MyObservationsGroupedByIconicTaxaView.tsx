@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Body3,
   CollapsibleSectionHeader,
+  CustomRefreshControl,
   SmallGrid,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
@@ -47,6 +48,7 @@ function iconicTaxaGroupTitles( t: TFunction ): Record<ICONIC_TAXA_GROUP, string
 }
 
 interface Props {
+  handlePullToRefresh: ( ) => Promise<void>;
   listHeaderContent?: React.ReactElement | null;
 }
 
@@ -62,7 +64,10 @@ const NONE_COLLAPSED: Set<ICONIC_TAXA_GROUP> = new Set( );
 // How many tiles ahead of the last loaded one to start fetching.
 const PREFETCH_TILES = 15;
 
-const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) => {
+const MyObservationsGroupedByIconicTaxaView = ( {
+  handlePullToRefresh,
+  listHeaderContent,
+}: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const { state } = useMyObservations( );
@@ -74,6 +79,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
   const {
     counts,
     isLoading: isLoadingCounts,
+    refetch: refetchCounts,
   } = useIconicTaxaObservationCounts( );
   const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( );
 
@@ -89,6 +95,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     sections,
     advanceFrontier,
     deepenOrAdvance,
+    refreshSections,
     retryCategory,
   } = useIconicTaxaSectionObservations( {
     collapsedCategories,
@@ -146,6 +153,26 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     if ( lastVisibleIndex == null ) return;
     if ( lastVisibleIndex >= lastTileIndex - PREFETCH_TILES ) deepen( );
   }, [] );
+
+  const [refreshing, setRefreshing] = useState( false );
+
+  // Taxa counts determine section order and the section queries drive their contents, so a refresh
+  // has to cover both
+  const onRefresh = useCallback( async ( ) => {
+    setRefreshing( true );
+    await handlePullToRefresh( );
+    refetchCounts( );
+    refreshSections( );
+    setRefreshing( false );
+  }, [handlePullToRefresh, refetchCounts, refreshSections] );
+
+  const refreshControl = useMemo( ( ) => (
+    <CustomRefreshControl
+      accessibilityLabel={t( "Pull-to-refresh-and-sync-observations" )}
+      onRefresh={onRefresh}
+      refreshing={refreshing}
+    />
+  ), [onRefresh, refreshing, t] );
 
   const renderHeader = useCallback( ( header: IconicTaxaHeader ) => (
     <CollapsibleSectionHeader
@@ -208,6 +235,7 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
       onEndReached={deepenOrAdvance}
       onViewableItemsChanged={onViewableItemsChanged}
       ref={listRef}
+      refreshControl={refreshControl}
       renderHeader={renderHeader}
       renderSpan={renderSpan}
       renderTile={renderTile}

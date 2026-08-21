@@ -11,6 +11,7 @@ interface IconicTaxaObservationCountsOptions {
 interface IconicTaxaObservationCountsResult {
   counts: IconicTaxaGroupCount[];
   isLoading: boolean;
+  refetch: ( ) => void;
 }
 
 // Fetches the current user's observation counts per iconic taxa category and
@@ -26,7 +27,7 @@ const useIconicTaxaObservationCounts = (
   const currentUser = useCurrentUser( );
   const params = { user_id: currentUser?.id, ttl: -1 };
 
-  const { data, isLoading } = useAuthenticatedQuery(
+  const { data, isLoading, refetch } = useAuthenticatedQuery(
     ["useIconicTaxaObservationCounts", currentUser?.id],
     optsWithAuth => fetchIconicTaxaCounts( params, {
       api_token: optsWithAuth.api_token ?? undefined,
@@ -36,7 +37,7 @@ const useIconicTaxaObservationCounts = (
 
   const counts = useMemo( ( ) => orderIconicTaxaCounts( data?.results ?? [] ), [data] );
 
-  return { counts, isLoading };
+  return { counts, isLoading, refetch };
 };
 
 export default useIconicTaxaObservationCounts;

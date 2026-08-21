@@ -70,7 +70,7 @@ interface Props {
   currentUser?: RealmUser;
   fetchFromLastObservation: ( id: number ) => void;
   handleIndividualUploadPress: ( uuid: string ) => void;
-  handlePullToRefresh: ( ) => void;
+  handlePullToRefresh: ( ) => Promise<void>;
   handleSyncButtonPress: ( ) => void;
   hasActiveSearch: boolean;
   isConnected: boolean;
@@ -414,6 +414,7 @@ const MyObservationsSimple = ( {
     if ( hasActiveSearch ) {
       return (
         <MyObservationsSmallGridSearchResults
+          handlePullToRefresh={handlePullToRefresh}
           isFetchingNextPage={isFetchingNextPage}
           listHeaderContent={observationsHeader}
           observationIds={observationIds}
@@ -421,7 +422,12 @@ const MyObservationsSimple = ( {
         />
       );
     }
-    return <MyObservationsGroupedByIconicTaxaView listHeaderContent={observationsHeader} />;
+    return (
+      <MyObservationsGroupedByIconicTaxaView
+        handlePullToRefresh={handlePullToRefresh}
+        listHeaderContent={observationsHeader}
+      />
+    );
   };
 
   const renderObservations = ( ) => {

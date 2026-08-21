@@ -1,14 +1,15 @@
-import { ActivityIndicator, SmallGrid } from "components/SharedComponents";
+import { ActivityIndicator, CustomRefreshControl, SmallGrid } from "components/SharedComponents";
 import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
 import { View } from "components/styledComponents";
-import React, { useCallback, useMemo } from "react";
-import { useCurrentUser } from "sharedHooks";
+import React, { useCallback, useMemo, useState } from "react";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 import SmallGridObsItemContainer from "./SmallGridObsItemContainer";
 
 type SearchResultRow = SmallGridItem<string, never>;
 
 interface Props {
+  handlePullToRefresh: ( ) => Promise<void>;
   isFetchingNextPage: boolean;
   listHeaderContent?: React.ReactElement | null;
   observationIds: { uuid: string }[];
@@ -17,12 +18,29 @@ interface Props {
 
 // This is the small grid while a taxon search is active; one flat grid of results with no headers.
 const MyObservationsSmallGridSearchResults = ( {
+  handlePullToRefresh,
   isFetchingNextPage,
   listHeaderContent,
   observationIds,
   onEndReached,
 }: Props ) => {
   const currentUser = useCurrentUser( );
+  const { t } = useTranslation( );
+  const [refreshing, setRefreshing] = useState( false );
+
+  const onRefresh = useCallback( async ( ) => {
+    setRefreshing( true );
+    await handlePullToRefresh( );
+    setRefreshing( false );
+  }, [handlePullToRefresh] );
+
+  const refreshControl = useMemo( ( ) => (
+    <CustomRefreshControl
+      accessibilityLabel={t( "Pull-to-refresh-and-sync-observations" )}
+      onRefresh={onRefresh}
+      refreshing={refreshing}
+    />
+  ), [onRefresh, refreshing, t] );
 
   const rows = useMemo<SearchResultRow[]>( ( ) => observationIds.map( ( { uuid } ) => ( {
     type: "tile",
@@ -61,6 +79,7 @@ const MyObservationsSmallGridSearchResults = ( {
       listFooterContent={listFooterContent}
       listHeaderContent={listHeaderContent}
       onEndReached={onEndReached}
+      refreshControl={refreshControl}
       renderTile={renderTile}
       testID="MyObservationsSmallGridSearchResults"
     />
