@@ -155,9 +155,6 @@ const TaxonResult = ( {
     taxonImage,
     isRepresentativeButOtherTaxon,
   ] );
-  const rowAccessibilityHint = handleTaxonOrEditPress
-    ? accessibilityLabel
-    : t( "Navigates-to-taxon-details" );
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -171,14 +168,14 @@ const TaxonResult = ( {
           accessible
           accessibilityRole="button"
           accessibilityLabel={accessibleName}
-          accessibilityHint={rowAccessibilityHint}
+          accessibilityHint={accessibilityLabel}
         >
           { props.children }
         </Pressable>
       )
   ), [
     accessibleName,
-    rowAccessibilityHint,
+    accessibilityLabel,
     handleTaxonOrEditPress,
     usableTaxon,
     testID,
