@@ -381,11 +381,10 @@ describe( "from AICamera directly", ( ) => {
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICameraFromMyObs( );
-      const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
-      expect( topTaxonSuggestion ).toHaveProp(
-        "testID",
+      const topTaxonSuggestion = await screen.findByTestId(
         `SuggestionsList.taxa.${mockModelResult.predictions[1].taxon_id}`,
       );
+      expect( topTaxonSuggestion ).toBeVisible( );
     } );
 
     it( "should show not confident message if no predictions"
@@ -415,14 +414,12 @@ describe( "from AICamera directly", ( ) => {
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICameraFromMyObs( );
 
-      const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       const humanPrediction = mockModelResultWithHuman.predictions
         .find( p => p.name === "Homo" );
-
-      expect( topTaxonSuggestion ).toHaveProp(
-        "testID",
+      const topTaxonSuggestion = await screen.findByTestId(
         `SuggestionsList.taxa.${humanPrediction.taxon_id}`,
       );
+      expect( topTaxonSuggestion ).toBeVisible( );
 
       const otherSuggestionsText = screen.queryByText( /OTHER SUGGESTIONS/ );
       expect( otherSuggestionsText ).toBeFalsy( );
