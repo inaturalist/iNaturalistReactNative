@@ -14,6 +14,7 @@ import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
 const mockCreateId = jest.fn( );
+const mockOnTaxonChosen = jest.fn( );
 
 const initialStoreState = useStore.getState( );
 
@@ -68,6 +69,7 @@ describe( "Suggestions", ( ) => {
         ...initialSuggestions,
         otherSuggestions: mockSuggestionsList,
       }}
+      onTaxonChosen={mockOnTaxonChosen}
     /> );
     const taxonTopResult = screen.getByTestId(
       `SuggestionsList.taxa.${mockSuggestionsList[0].taxon.id}`,
@@ -116,6 +118,7 @@ describe( "Suggestions", ( ) => {
         <Suggestions
           suggestions={initialSuggestions}
           isLoading
+          onTaxonChosen={mockOnTaxonChosen}
         />,
       );
       const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
@@ -131,6 +134,7 @@ describe( "Suggestions", ( ) => {
         <Suggestions
           suggestions={initialSuggestions}
           isLoading
+          onTaxonChosen={mockOnTaxonChosen}
         />,
       );
       const loadingText = screen.getByText( /iNaturalist is loading ID suggestions.../ );
