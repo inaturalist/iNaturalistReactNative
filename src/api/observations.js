@@ -208,19 +208,25 @@ const deleteRemoteObservation = async (
   }
 };
 
-const fetchObservers = async ( params: Object = {} ) : Promise<?Object> => {
+const fetchObservers = async (
+  params: Object = {},
+  opts: Object = {},
+) : Promise<?Object> => {
   try {
-    return inatjs.observations.observers( params );
+    return inatjs.observations.observers( params, opts );
   } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchObservers" }, throw: true } );
+    return handleError( e, { context: { functionName: "fetchObservers", opts }, throw: true } );
   }
 };
 
-const fetchIdentifiers = async ( params: Object = {} ) : Promise<?Object> => {
+const fetchIdentifiers = async (
+  params: Object = {},
+  opts: Object = {},
+) : Promise<?Object> => {
   try {
-    return await inatjs.observations.identifiers( params );
+    return await inatjs.observations.identifiers( params, opts );
   } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchIdentifiers" } } );
+    return handleError( e, { context: { functionName: "fetchIdentifiers", opts } } );
   }
 };
 
