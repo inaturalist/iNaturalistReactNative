@@ -4,7 +4,7 @@ import type Heading5 from "components/SharedComponents/Typography/Heading5";
 import { View } from "components/styledComponents";
 import React from "react";
 import type { GestureResponderEvent } from "react-native";
-import { TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity, useWindowDimensions } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -29,9 +29,16 @@ interface Props {
   tabs: Tab[];
   TabComponent?: React.FC<TabComponentProps>;
   TextComponent?: typeof Heading4 | typeof Heading5;
+  scrollable?: boolean;
 }
 
 const EMPTY_TABS: Tab[] = [];
+
+// first two tabs need to occupy less than 100% of the screen width
+// so the user can be cued by a third option peeking out
+const SCROLLABLE_TAB_WIDTH_RATIO = 0.45;
+
+const SCROLL_STYLE = { flexGrow: 0 };
 
 const Tabs = ( {
   activeId,
@@ -39,60 +46,87 @@ const Tabs = ( {
   tabs = EMPTY_TABS,
   TabComponent,
   TextComponent = Heading4,
+  scrollable = false,
 }: Props ) => {
   const { t } = useTranslation();
+  const { width } = useWindowDimensions( );
+  const scrollableTabStyle = { width: width * SCROLLABLE_TAB_WIDTH_RATIO };
+
+  const renderedTabs = tabs.map( ( {
+    id, text, onPress, testID, renderComponent,
+  } ) => {
+    const active = activeId === id;
+    let tabContent: React.ReactNode;
+    if ( renderComponent ) {
+      tabContent = renderComponent( );
+    } else if ( TabComponent ) {
+      tabContent = <TabComponent id={id} text={text} />;
+    } else {
+      tabContent = (
+        <TextComponent
+          className="self-center pt-4 pb-3"
+          maxFontSizeMultiplier={1.5}
+          numberOfLines={1}
+        >
+          {text}
+        </TextComponent>
+      );
+    }
+    return (
+      <View
+        key={id}
+        className={scrollable
+          ? undefined
+          : "flex-1"}
+        style={scrollable
+          ? scrollableTabStyle
+          : undefined}
+      >
+        <TouchableOpacity
+          onPress={( ...args ) => {
+            if ( !active ) {
+              onPress( ...args );
+            }
+          }}
+          testID={testID || `${id}-tab`}
+          accessibilityRole="tab"
+          accessibilityLabel={text}
+          accessibilityHint={t( "Switches-to-tab", { tab: text } )}
+          accessibilityState={{
+            selected: active,
+            expanded: active,
+          }}
+        >
+          {tabContent}
+          { active && (
+            <View
+              className="h-[4px] rounded-t"
+              style={{ backgroundColor: activeColor }}
+            />
+          ) }
+        </TouchableOpacity>
+      </View>
+    );
+  } );
+
   return (
     <>
-      <View className="flex flex-row" accessibilityRole="tablist">
-        {tabs.map( ( {
-          id, text, onPress, testID, renderComponent,
-        } ) => {
-          const active = activeId === id;
-          let tabContent: React.ReactNode;
-          if ( renderComponent ) {
-            tabContent = renderComponent( );
-          } else if ( TabComponent ) {
-            tabContent = <TabComponent id={id} text={text} />;
-          } else {
-            tabContent = (
-              <TextComponent
-                className="self-center pt-4 pb-3"
-                maxFontSizeMultiplier={1.5}
-                numberOfLines={1}
-              >
-                {text}
-              </TextComponent>
-            );
-          }
-          return (
-            <View key={id} className="flex-1">
-              <TouchableOpacity
-                onPress={( ...args ) => {
-                  if ( !active ) {
-                    onPress( ...args );
-                  }
-                }}
-                testID={testID || `${id}-tab`}
-                accessibilityRole="tab"
-                accessibilityLabel={text}
-                accessibilityHint={t( "Switches-to-tab", { tab: text } )}
-                accessibilityState={{
-                  selected: active,
-                  expanded: active,
-                }}
-              >
-                {tabContent}
-                { active && (
-                  <View
-                    className="h-[4px] rounded-t"
-                    style={{ backgroundColor: activeColor }}
-                  />
-                ) }
-              </TouchableOpacity>
-            </View>
-          );
-        } )}
-      </View>
+      {scrollable
+        ? (
+          <ScrollView
+            accessibilityRole="tablist"
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={SCROLL_STYLE}
+          >
+            {renderedTabs}
+          </ScrollView>
+        )
+        : (
+          <View className="flex flex-row" accessibilityRole="tablist">
+            {renderedTabs}
+          </View>
+        )}
       <Divider />
     </>
   );
