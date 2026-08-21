@@ -170,6 +170,7 @@ const TaxonResult = ( {
         <Pressable
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
+          testID={testID}
           onPress={handleTaxonOrEditPress || navToTaxonDetails}
           accessible
           accessibilityRole={rowAccessibilityRole}
@@ -185,6 +186,7 @@ const TaxonResult = ( {
     navToTaxonDetails,
     rowAccessibilityHint,
     rowAccessibilityRole,
+    testID,
     unpressable,
   ] );
 
@@ -203,7 +205,6 @@ const TaxonResult = ( {
           },
         )
       }
-      testID={testID}
     >
       <TaxonResultMain
         className={

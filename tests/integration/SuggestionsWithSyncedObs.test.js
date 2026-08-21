@@ -260,7 +260,7 @@ describe( "Suggestions", ( ) => {
     await navigateToSuggestionsForObservation( observations[0] );
     const taxonId = topSuggestion.taxon.id;
     const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${taxonId}.checkmark`,
+      `SuggestionsList.taxa.${taxonId}`,
     );
     expect( topTaxonResultButton ).toBeVisible( );
     await actor.press( topTaxonResultButton );
@@ -296,7 +296,7 @@ describe( "Suggestions", ( ) => {
     const { observations } = await setupAppWithSignedInUser( );
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const topTaxonResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
+      `SuggestionsList.taxa.${topSuggestion.taxon.id}`,
     );
     expect( topTaxonResultButton ).toBeTruthy( );
     await actor.press( topTaxonResultButton );

@@ -259,7 +259,7 @@ describe( "from ObsEdit with human observation", () => {
     const { observations } = await setupAppWithSignedInUser();
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const humanResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`,
+      `SuggestionsList.taxa.${humanSuggestion.taxon.id}`,
     );
     expect( humanResultButton ).toBeVisible();
     const human = screen.getByText( /Homo sapiens/ );
@@ -384,7 +384,7 @@ describe( "from AICamera directly", ( ) => {
       const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       expect( topTaxonSuggestion ).toHaveProp(
         "testID",
-        `SuggestionsList.taxa.${mockModelResult.predictions[1].taxon_id}.checkmark`,
+        `SuggestionsList.taxa.${mockModelResult.predictions[1].taxon_id}`,
       );
     } );
 
@@ -402,7 +402,7 @@ describe( "from AICamera directly", ( ) => {
         expect( notConfidentText ).toBeVisible( );
       } );
       const otherSuggestion = await screen.findByTestId(
-        `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`,
+        `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}`,
       );
       expect( otherSuggestion ).toBeVisible( );
     } );
@@ -421,7 +421,7 @@ describe( "from AICamera directly", ( ) => {
 
       expect( topTaxonSuggestion ).toHaveProp(
         "testID",
-        `SuggestionsList.taxa.${humanPrediction.taxon_id}.checkmark`,
+        `SuggestionsList.taxa.${humanPrediction.taxon_id}`,
       );
 
       const otherSuggestionsText = screen.queryByText( /OTHER SUGGESTIONS/ );

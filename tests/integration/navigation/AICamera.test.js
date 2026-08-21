@@ -133,7 +133,7 @@ const actor = userEvent.setup( );
 
 const navToObsEditWithTopSuggestion = async ( ) => {
   const topTaxonResultButton = await screen.findByTestId(
-    `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
+    `SuggestionsList.taxa.${topSuggestion.taxon.id}`,
   );
   await actor.press( topTaxonResultButton );
   const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );
