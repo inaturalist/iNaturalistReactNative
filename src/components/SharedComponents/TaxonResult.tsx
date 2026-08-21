@@ -165,7 +165,7 @@ const TaxonResult = ( {
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable
       // eslint-disable-next-line react/jsx-props-no-spreading
-      ? <View {...props}>{ props.children }</View>
+      ? <View {...props} testID={testID}>{ props.children }</View>
       : (
         <Pressable
           // eslint-disable-next-line react/jsx-props-no-spreading
