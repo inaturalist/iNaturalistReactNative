@@ -32,9 +32,9 @@ exports[`TaxonResult should render correctly 1`] = `
   }
 >
   <View
-    accessibilityHint="Navigates to taxon details"
+    accessibilityHint="Chooses taxon"
     accessibilityLabel="Birds (Aves)"
-    accessibilityRole="link"
+    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
