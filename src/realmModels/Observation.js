@@ -423,9 +423,6 @@ class Observation extends Realm.Object {
         : null,
       comments_viewed: obs.comments_viewed,
       identifications_viewed: obs.identifications_viewed,
-      missing_coords: typeof obs.missingCoords === "function"
-        ? obs.missingCoords( )
-        : undefined,
       missing_basics: typeof obs.missingBasics === "function"
         ? obs.missingBasics( )
         : undefined,
@@ -504,6 +501,9 @@ class Observation extends Realm.Object {
     }
   };
 
+  // Type of photos is
+  // Passed in from PhotoSharing:
+  // { image: { uri: string }[]
   static createObservationWithPhotos = async photos => {
     const newLocalObs = await Observation.createObservationFromGalleryPhotos( photos );
     newLocalObs.observationPhotos = await ObservationPhoto

@@ -2,8 +2,8 @@ import { screen, userEvent, within } from "@testing-library/react-native";
 import MyObservationsSimple, { OBSERVATIONS_TAB, TAXA_TAB }
   from "components/MyObservations/MyObservationsSimple";
 import initI18next from "i18n/initI18next";
-import { MyObservationsProvider } from "providers/MyObservationsContext";
 import React from "react";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -45,22 +45,22 @@ const renderSpeciesTab = ( {
   taxa = mockSpeciesCounts,
   showSpeciesSearchEmptyState = false,
 } = {} ) => renderComponent(
-  <MyObservationsProvider>
-    <MyObservationsSimple
-      activeTab={TAXA_TAB}
-      currentUser={currentUser}
-      isConnected={isConnected}
-      observationIds={[]}
-      onEndReached={jest.fn( )}
-      updateObservationsView={jest.fn( )}
-      setActiveTab={mockSetActiveTab}
-      taxa={taxa}
-      showSpeciesSearchEmptyState={showSpeciesSearchEmptyState}
-      fetchMoreTaxa={jest.fn( )}
-      refetchTaxa={jest.fn( )}
-    />
-  </MyObservationsProvider>,
+  <MyObservationsSimple
+    activeTab={TAXA_TAB}
+    currentUser={currentUser}
+    isConnected={isConnected}
+    observationIds={[]}
+    onEndReached={jest.fn( )}
+    updateObservationsView={jest.fn( )}
+    setActiveTab={mockSetActiveTab}
+    taxa={taxa}
+    showSpeciesSearchEmptyState={showSpeciesSearchEmptyState}
+    fetchMoreTaxa={jest.fn( )}
+    refetchTaxa={jest.fn( )}
+  />,
 );
+
+const initialStoreState = useStore.getState( );
 
 const actor = userEvent.setup( );
 
@@ -70,6 +70,7 @@ beforeAll( async ( ) => {
 } );
 
 beforeEach( ( ) => {
+  useStore.setState( initialStoreState, true );
   mockSearchEnabled = false;
   mockedNavigate.mockClear( );
   mockSetActiveTab.mockClear( );

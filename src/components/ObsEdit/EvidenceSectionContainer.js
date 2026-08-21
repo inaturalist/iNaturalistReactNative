@@ -49,8 +49,7 @@ const EvidenceSectionContainer = ( {
 
   const latitude = currentObservation?.privateLatitude || currentObservation?.latitude;
   const longitude = currentObservation?.privateLongitude || currentObservation?.longitude;
-
-  const missingCoords = currentObservation?.missing_coords;
+  const hasLocation = latitude && longitude;
 
   const hasPhotoOrSound = useMemo( ( ) => {
     if ( currentObservation?.observationPhotos?.length > 0
@@ -130,7 +129,7 @@ const EvidenceSectionContainer = ( {
     setPassesEvidenceTest,
   ] );
 
-  const locationTextClassNames = missingCoords
+  const locationTextClassNames = !hasLocation
     ? ["color-warningRed mr-8"]
     : ["mr-8"];
 
@@ -156,12 +155,12 @@ const EvidenceSectionContainer = ( {
         setCurrentPlaceGuess( placeGuess );
       }
     }
-    if ( !missingCoords && !currentObservation?.place_guess ) {
+    if ( hasLocation && !currentObservation?.place_guess ) {
       setPlaceGuess( );
     }
   }, [
     currentObservation?.place_guess,
-    missingCoords,
+    hasLocation,
     latitude,
     longitude,
     updateObservationKeys,

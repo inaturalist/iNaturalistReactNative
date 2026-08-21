@@ -7,7 +7,7 @@ import createExploreV2RecentSearchesSlice from "./createExploreV2RecentSearchesS
 import createFeatureFlagSlice from "./createFeatureFlagSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
-import createMyObsSlice from "./createMyObsSlice";
+import createMyObservationsSlice from "./createMyObservationsSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
 import createRootExploreSlice from "./createRootExploreSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
@@ -37,7 +37,7 @@ const useStore = create( persist(
       createFeatureFlagSlice( ...args ),
       createFirebaseTraceSlice( ...args ),
       createLayoutSlice( ...args ),
-      createMyObsSlice( ...args ),
+      createMyObservationsSlice( ...args ),
       createObservationFlowSlice( ...args ),
       createRootExploreSlice( ...args ),
       createSyncObservationsSlice( ...args ),

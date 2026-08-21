@@ -109,10 +109,11 @@ const MyObservationsSimpleHeader = ( {
           ? <HeaderUser user={currentUser} isConnected={isConnected} />
           : <Heading3>{ t( "My-Observations" ) }</Heading3>}
         {currentUser && (
-          <View className="flex-row items-center gap-x-[7px]">
+          <View className="flex-row items-center">
             {searchMyObservationsEnabled && (
               <INatIconButton
                 icon="magnifying-glass"
+                className="mr-[7px]"
                 onPress={handleSearchButtonPress}
                 color={searchActive
                   ? colors.inatGreen
