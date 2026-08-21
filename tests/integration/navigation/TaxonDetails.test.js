@@ -108,7 +108,8 @@ describe( "TaxonDetails", ( ) => {
       topSuggestion.taxon.name,
     );
     expect( suggestedTaxonName ).toBeVisible();
-    await actor.press( suggestedTaxonName );
+    const [infoButton] = await screen.findAllByLabelText( "More info" );
+    await actor.press( infoButton );
     const taxonDetailsScreen = await screen.findByTestId(
       `TaxonDetails.${topSuggestion.taxon.id}`,
     );
