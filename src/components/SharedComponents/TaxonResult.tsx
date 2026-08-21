@@ -294,7 +294,7 @@ const TaxonResult = ( {
                 <INatIconButton
                   icon="edit"
                   size={20}
-                  onPress={handleTaxonOrEditPress}
+                  onPress={( ) => handleTaxonOrEditPress( )}
                   accessibilityLabel={t( "Edit-identification" )}
                   accessibilityHint={t( "Edits-this-observations-taxon" )}
                 />
