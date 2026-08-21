@@ -67,7 +67,7 @@ const MatchTaxonSearchScreen = ( ) => {
         accessibilityLabel={t( "Choose-taxon" )}
         fetchRemote={false}
         first={index === 0}
-        handleCheckmarkPress={() => setSelectedTaxon( taxon )}
+        handleTaxonOrEditPress={() => setSelectedTaxon( taxon )}
         hideNavButtons
         taxon={taxon}
         testID={`Search.taxa.${taxon.id}`}

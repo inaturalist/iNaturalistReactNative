@@ -22,7 +22,7 @@ const SuggestionsTaxonSearch = ( ) => {
       accessibilityLabel={t( "Choose-taxon" )}
       fetchRemote={false}
       first={index === 0}
-      handleCheckmarkPress={() => navigateWithTaxonSelected( taxon )}
+      handleTaxonOrEditPress={() => navigateWithTaxonSelected( taxon )}
       hideNavButtons
       taxon={taxon}
       testID={`Search.taxa.${taxon.id}`}

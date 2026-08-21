@@ -34,7 +34,6 @@ interface TaxonResultProps {
   fetchRemote?: boolean;
   first?: boolean;
   fromLocal?: boolean;
-  handleCheckmarkPress: ( taxon: object ) => void;
   handleRemovePress?: () => void;
   handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
   hideInfoButton?: boolean;
