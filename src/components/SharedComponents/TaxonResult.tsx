@@ -56,7 +56,6 @@ interface TaxonResultMainProps extends PropsWithChildren {
 }
 
 const TaxonResult = ( {
-  accessibilityLabel,
   activeColor,
   asListItem = true,
   clearBackground,
@@ -66,7 +65,6 @@ const TaxonResult = ( {
   fetchRemote = true,
   first = false,
   fromLocal = true,
-  handleCheckmarkPress,
   handleRemovePress,
   handleTaxonOrEditPress,
   hideInfoButton = false,
@@ -74,7 +72,6 @@ const TaxonResult = ( {
   lastScreen,
   onPressInfo,
   retryQuery = true,
-  showCheckmark = true,
   showEditButton = false,
   showRemoveButton = false,
   taxon: taxonProp,
@@ -278,21 +275,6 @@ const TaxonResult = ( {
               )}
               accessibilityLabel={t( "More-info" )}
               accessibilityHint={t( "Navigates-to-taxon-details" )}
-            />
-          )}
-          { showCheckmark && (
-            <INatIconButton
-              className="ml-2"
-              icon="checkmark-circle-outline"
-              size={40}
-              color={String(
-                clearBackground
-                  ? colors?.white
-                  : colors?.darkGray,
-              )}
-              onPress={() => handleCheckmarkPress( usableTaxon )}
-              accessibilityLabel={accessibilityLabel}
-              testID={`${testID}.checkmark`}
             />
           )}
           { showEditButton && handleTaxonOrEditPress
