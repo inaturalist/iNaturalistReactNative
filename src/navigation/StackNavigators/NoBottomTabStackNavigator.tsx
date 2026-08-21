@@ -80,8 +80,9 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
 // granting add-only permission, the user can never grant it again until they
 // uninstall the app. We *may* want to bring this back to handle writing to
 // albums, but for now this works. ~~~~kueda20240829
-
-// TODO verify this is true for Android
+//
+// On Android, ACCESS_MEDIA_LOCATION is requested inside PhotoLibrary before the
+// picker opens (MOB-1656); import is not blocked if the user denies it.
 const PhotoLibraryContainerWithPermission = ( ) => (
   <PhotoLibrary />
 );
