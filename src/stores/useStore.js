@@ -81,10 +81,6 @@ const useStore = create( persist(
       // Vestigial un-namespaced values in the layout slice
       isAdvancedUser: state.isAdvancedUser,
       obsDetailsTab: state.obsDetailsTab,
-      exploreRecentSearches: {
-        subjects: state.exploreRecentSearches.subjects,
-        places: state.exploreRecentSearches.places,
-      },
 
       // Dynamically select all values in the layout slice's namespace
       layout: ( Object.keys( state.layout ).reduce( ( memo, key ) => {
@@ -93,6 +89,11 @@ const useStore = create( persist(
         }
         return memo;
       }, {} ) ),
+
+      exploreRecentSearches: {
+        subjects: state.exploreRecentSearches.subjects,
+        places: state.exploreRecentSearches.places,
+      },
     } ),
     storage: createJSONStorage( () => zustandStorage ),
     // We need to deep merge to persist nested objects, like layout
