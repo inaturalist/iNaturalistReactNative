@@ -132,3 +132,11 @@ export async function requestWriteMediaPermission( ) {
   );
   return result === RESULTS.GRANTED;
 }
+
+export async function requestReadWriteMediaPermissions( ) {
+  if ( Platform.OS !== "android" ) return true;
+  const result = permissionResultFromMultiple(
+    await requestMultiple( READ_WRITE_MEDIA_PERMISSIONS ),
+  );
+  return result === RESULTS.GRANTED;
+}
