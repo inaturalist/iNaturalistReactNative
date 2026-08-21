@@ -721,6 +721,7 @@ July = July
 # Month of June
 June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
+KEEP-EDITING = KEEP EDITING
 # Display name for the iconic taxa category chromista
 Kelp-and-Diatoms = Kelp & Diatoms
 # Shows date user last active on iNaturalist on user profile
@@ -786,6 +787,7 @@ Membership-in-this-project-is-by-invitation-only = Membership in this project is
 Menu = Menu
 Missing-Date = Missing Date
 MISSING-EVIDENCE = MISSING EVIDENCE
+MISSING-INFO = MISSING INFO
 # Display name for the iconic taxa category for mollusca
 Mollusks = Mollusks
 Monthly-Donor = Monthly Donor
@@ -946,6 +948,7 @@ OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
 Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
+One-or-more-projects-still-need-required-info = One or more projects still need required info. Leave and only the completed ones will be saved.
 # Adjective, as in geoprivacy
 Open = Open
 OPEN-EMAIL = OPEN EMAIL
