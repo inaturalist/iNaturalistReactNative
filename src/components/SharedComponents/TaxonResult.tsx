@@ -158,13 +158,6 @@ const TaxonResult = ( {
   const rowAccessibilityHint = handleTaxonOrEditPress
     ? accessibilityLabel
     : t( "Navigates-to-taxon-details" );
-  const handleRowPress = React.useCallback( ( ) => {
-    if ( handleTaxonOrEditPress ) {
-      handleTaxonOrEditPress( usableTaxon );
-      return;
-    }
-    navToTaxonDetails( );
-  }, [handleTaxonOrEditPress, navToTaxonDetails, usableTaxon] );
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -174,7 +167,7 @@ const TaxonResult = ( {
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
           testID={testID}
-          onPress={handleRowPress}
+          onPress={( ) => handleTaxonOrEditPress( usableTaxon )}
           accessible
           accessibilityRole="button"
           accessibilityLabel={accessibleName}
@@ -185,8 +178,9 @@ const TaxonResult = ( {
       )
   ), [
     accessibleName,
-    handleRowPress,
     rowAccessibilityHint,
+    handleTaxonOrEditPress,
+    usableTaxon,
     testID,
     unpressable,
   ] );
