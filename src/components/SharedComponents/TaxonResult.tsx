@@ -24,7 +24,7 @@ import colors from "styles/tailwindColors";
 import ConfidenceInterval from "./ConfidenceInterval";
 
 interface TaxonResultProps {
-  accessibilityLabel: string;
+  accessibilityLabel?: string;
   activeColor?: string;
   asListItem?: boolean;
   clearBackground?: boolean;
@@ -54,6 +54,7 @@ interface TaxonResultMainProps extends PropsWithChildren {
 }
 
 const TaxonResult = ( {
+  accessibilityLabel,
   activeColor,
   asListItem = true,
   clearBackground,
@@ -155,6 +156,12 @@ const TaxonResult = ( {
     taxonImage,
     isRepresentativeButOtherTaxon,
   ] );
+  const rowAccessibilityRole = handleTaxonOrEditPress
+    ? "button"
+    : "link";
+  const rowAccessibilityHint = handleTaxonOrEditPress
+    ? accessibilityLabel
+    : t( "Navigates-to-taxon-details" );
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -165,9 +172,9 @@ const TaxonResult = ( {
           {...props}
           onPress={handleTaxonOrEditPress || navToTaxonDetails}
           accessible
-          accessibilityRole="link"
+          accessibilityRole={rowAccessibilityRole}
           accessibilityLabel={accessibleName}
-          accessibilityHint={t( "Navigates-to-taxon-details" )}
+          accessibilityHint={rowAccessibilityHint}
         >
           { props.children }
         </Pressable>
@@ -176,7 +183,8 @@ const TaxonResult = ( {
     accessibleName,
     handleTaxonOrEditPress,
     navToTaxonDetails,
-    t,
+    rowAccessibilityHint,
+    rowAccessibilityRole,
     unpressable,
   ] );
 
