@@ -40,7 +40,8 @@ interface Props<T, H, S> {
   } ) => void;
   ref?: React.Ref<FlashListRef<SmallGridItem<T, H, S>>>;
   refreshControl?: React.ReactElement;
-  renderHeader: ( header: H ) => React.ReactElement;
+  // optional so a caller can render a flat grid with no sections at all
+  renderHeader?: ( header: H ) => React.ReactElement;
   renderSpan?: ( content: S ) => React.ReactElement;
   renderTile: ( tile: T, width: number, height: number ) => React.ReactElement;
   testID?: string;
@@ -114,7 +115,9 @@ const SmallGrid = <T, H, S = never, >( {
 
   const renderItem: ListRenderItem<SmallGridItem<T, H, S>> = useCallback( ( { item, index } ) => {
     if ( item.type === "header" ) {
-      return renderHeader( item.header );
+      return renderHeader
+        ? renderHeader( item.header )
+        : null;
     }
 
     if ( item.type === "span" ) {
