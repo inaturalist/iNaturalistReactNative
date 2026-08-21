@@ -12,6 +12,7 @@ import {
 } from "providers/ExploreV2Context";
 import React from "react";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -115,6 +116,9 @@ const pressSearch = ( ) => actor.press( screen.getByTestId( "AdvancedSearch.sear
 
 const qualityGrade = key => screen.getByRole( "radio", { name: t( key ) } );
 
+const advancedSearchMode = ( ) => useStore
+  .getState( ).exploreV2AdvancedSearch.advancedSearchMode;
+
 const committedFilters = ( ) => mockDispatch.mock.calls
   .map( ( [action] ) => action )
   .find( action => action.type === EXPLORE_V2_ACTION.SET_FILTERS )
@@ -128,6 +132,7 @@ beforeEach( ( ) => {
   mockGoBack.mockClear( );
   mockPopTo.mockClear( );
   mockDispatch.mockClear( );
+  useStore.getState( ).exploreV2AdvancedSearch.setAdvancedSearchMode( false );
   useCurrentUser.mockReturnValue( CURRENT_USER );
   useIconicTaxa.mockReturnValue( iconicTaxaCollection( [BIRDS] ) );
   setExploreState( );
@@ -173,6 +178,7 @@ describe( "AdvancedSearch screen", ( ) => {
 
     expect( mockGoBack ).toHaveBeenCalled( );
     expect( mockDispatch ).not.toHaveBeenCalled( );
+    expect( advancedSearchMode( ) ).toBe( false );
   } );
 
   describe( "seeding from the current explore search", ( ) => {
@@ -376,6 +382,14 @@ describe( "AdvancedSearch screen", ( ) => {
         tab: OBSERVATIONS_TAB,
       } );
       expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
+    } );
+
+    it( "puts explore into advanced search mode", async ( ) => {
+      renderComponent( <AdvancedSearch /> );
+
+      await pressSearch( );
+
+      expect( advancedSearchMode( ) ).toBe( true );
     } );
 
     it( "carries a nearby search through untouched", async ( ) => {
