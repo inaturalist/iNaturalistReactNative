@@ -4,7 +4,7 @@ export interface ApiDefaultResult {
 }
 
 export interface ApiOpts {
-  api_token?: string;
+  api_token?: string | null;
 }
 
 export interface ApiParams {
