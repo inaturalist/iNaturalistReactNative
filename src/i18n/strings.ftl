@@ -1504,6 +1504,12 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
+# Label for a count of identifiers that appears above this text
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 # Subtitle for a screen showing a list of journal posts
 X-JOURNAL_POSTS =
     { $count ->
@@ -1542,6 +1548,12 @@ X-Observers =
     { $count ->
         [one] { $count } Observer
        *[other] { $count } Observers
+    }
+# Label for a count of observers that appears above this text
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 # Progress or position indicator, e.g. when viewing 2 of 3 observations, or 3
 # of 10 photos
