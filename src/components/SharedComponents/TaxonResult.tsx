@@ -155,9 +155,6 @@ const TaxonResult = ( {
     taxonImage,
     isRepresentativeButOtherTaxon,
   ] );
-  const rowAccessibilityRole = handleTaxonOrEditPress
-    ? "button"
-    : "link";
   const rowAccessibilityHint = handleTaxonOrEditPress
     ? accessibilityLabel
     : t( "Navigates-to-taxon-details" );
@@ -179,7 +176,7 @@ const TaxonResult = ( {
           testID={testID}
           onPress={handleRowPress}
           accessible
-          accessibilityRole={rowAccessibilityRole}
+          accessibilityRole="button"
           accessibilityLabel={accessibleName}
           accessibilityHint={rowAccessibilityHint}
         >
@@ -190,7 +187,6 @@ const TaxonResult = ( {
     accessibleName,
     handleRowPress,
     rowAccessibilityHint,
-    rowAccessibilityRole,
     testID,
     unpressable,
   ] );
