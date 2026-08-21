@@ -22,6 +22,7 @@ import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { log } from "sharedHelpers/logger";
+import { requestReadWriteMediaPermissions } from "sharedHelpers/permissions";
 import { sleep } from "sharedHelpers/util";
 import { useLayoutPrefs } from "sharedHooks";
 import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
@@ -144,6 +145,10 @@ const PhotoLibrary = ( ) => {
       // iOS has annoying transition of the screen - that if we don't wait enough time,
       // the launchImageLibrary would halt and not return (and not showing any image picker)
       await sleep( 500 );
+    } else {
+      // Android: ACCESS_MEDIA_LOCATION must be granted before the picker copies photos,
+      // or GPS EXIF is redacted from the cached copy we read later (MOB-1656).
+      await requestReadWriteMediaPermissions( );
     }
 
     // According to the native code of the image picker library, it never rejects the promise,

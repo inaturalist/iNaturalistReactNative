@@ -7,15 +7,15 @@ import type {
   GeolocationResponse,
 } from "@react-native-community/geolocation";
 import Geolocation from "@react-native-community/geolocation";
-import {
-  LOCATION_PERMISSIONS,
-  permissionResultFromMultiple,
-} from "components/SharedComponents/PermissionGateContainer";
 import { Platform } from "react-native";
 import {
   checkMultiple,
   RESULTS,
 } from "react-native-permissions";
+import {
+  LOCATION_PERMISSIONS,
+  permissionResultFromMultiple,
+} from "sharedHelpers/permissions";
 
 export function getCurrentPosition(
   success: ( position: GeolocationResponse ) => void,

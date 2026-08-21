@@ -1,16 +1,16 @@
 import type { SaveToCameraRollOptions } from "@react-native-camera-roll/camera-roll";
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
-import {
-  permissionResultFromMultiple,
-  READ_WRITE_MEDIA_PERMISSIONS,
-  requestWriteMediaPermission,
-} from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import {
   Alert,
 } from "react-native";
 import { checkMultiple, RESULTS } from "react-native-permissions";
 import { log } from "sharedHelpers/logger";
+import {
+  permissionResultFromMultiple,
+  READ_WRITE_MEDIA_PERMISSIONS,
+  requestWriteMediaPermission,
+} from "sharedHelpers/permissions";
 
 import { displayName as appName } from "../../../../app.json";
 
