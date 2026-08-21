@@ -4,7 +4,9 @@ import type { ApiTaxon } from "api/types";
 import ExploreFlashList from "components/Explore/ExploreFlashList";
 import ExploreV2SpeciesGridItem
   from "components/Explore/ExploreV2/components/ExploreV2SpeciesGridItem";
-import type { ExploreV2QueryParams } from "components/Explore/ExploreV2/helpers/buildQueryParams";
+import type {
+  ExploreV2BaseQueryParams,
+} from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import i18n from "i18next";
 import React, { useCallback, useMemo } from "react";
 import Taxon from "realmModels/Taxon";
@@ -14,10 +16,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useGridLayout from "sharedHooks/useGridLayout";
 import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
 
-export type SpeciesCountQueryParams = Omit<
-  ExploreV2QueryParams,
-  "order_by" | "order" | "per_page"
-> & SpeciesSortAPIParams;
+export type SpeciesCountQueryParams = ExploreV2BaseQueryParams & SpeciesSortAPIParams;
 
 interface SpeciesCountResult {
   count: number;
