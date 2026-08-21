@@ -15,7 +15,6 @@ import type {
 } from "navigation/types";
 import type { PropsWithChildren } from "react";
 import React from "react";
-import type { GestureResponderEvent } from "react-native";
 import type { RealmTaxon, RealmTaxonPhoto } from "realmModels/types";
 import { accessibleTaxonName } from "sharedHelpers/taxon";
 import { useCurrentUser, useTaxon, useTranslation } from "sharedHooks";
@@ -24,7 +23,7 @@ import colors from "styles/tailwindColors";
 import ConfidenceInterval from "./ConfidenceInterval";
 
 interface TaxonResultProps {
-  accessibilityLabel: string;
+  accessibilityHint?: string;
   activeColor?: string;
   asListItem?: boolean;
   clearBackground?: boolean;
@@ -34,14 +33,12 @@ interface TaxonResultProps {
   fetchRemote?: boolean;
   first?: boolean;
   fromLocal?: boolean;
-  handleCheckmarkPress: ( taxon: object ) => void;
   handleRemovePress?: () => void;
-  handleTaxonOrEditPress?: ( _event?: GestureResponderEvent ) => void;
+  handleTaxonOrEditPress?: ( taxon?: RealmTaxon | ApiTaxon ) => void;
   hideInfoButton?: boolean;
   hideNavButtons?: boolean;
   lastScreen?: "Suggestions";
   onPressInfo?: ( taxon: RealmTaxon | ApiTaxon ) => void;
-  showCheckmark?: boolean;
   showEditButton?: boolean;
   showRemoveButton?: boolean;
   taxon: RealmTaxon | ApiTaxon;
@@ -56,7 +53,7 @@ interface TaxonResultMainProps extends PropsWithChildren {
 }
 
 const TaxonResult = ( {
-  accessibilityLabel,
+  accessibilityHint,
   activeColor,
   asListItem = true,
   clearBackground,
@@ -66,7 +63,6 @@ const TaxonResult = ( {
   fetchRemote = true,
   first = false,
   fromLocal = true,
-  handleCheckmarkPress,
   handleRemovePress,
   handleTaxonOrEditPress,
   hideInfoButton = false,
@@ -74,7 +70,6 @@ const TaxonResult = ( {
   lastScreen,
   onPressInfo,
   retryQuery = true,
-  showCheckmark = true,
   showEditButton = false,
   showRemoveButton = false,
   taxon: taxonProp,
@@ -103,6 +98,10 @@ const TaxonResult = ( {
       "MatchTaxonSearchScreen" | "Suggestions" | "SuggestionsTaxonSearch"
     >["navigation"]
   >( );
+
+  if ( !unpressable && handleTaxonOrEditPress === undefined ) {
+    throw new Error( "You have to provide a primary onPress action!" );
+  }
 
   const currentUser = useCurrentUser( );
 
@@ -163,25 +162,27 @@ const TaxonResult = ( {
   const TaxonResultMain = React.useCallback( ( props: TaxonResultMainProps ) => (
     unpressable
       // eslint-disable-next-line react/jsx-props-no-spreading
-      ? <View {...props}>{ props.children }</View>
+      ? <View {...props} testID={testID}>{ props.children }</View>
       : (
         <Pressable
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
-          onPress={handleTaxonOrEditPress || navToTaxonDetails}
+          testID={testID}
+          onPress={( ) => handleTaxonOrEditPress( usableTaxon )}
           accessible
-          accessibilityRole="link"
+          accessibilityRole="button"
           accessibilityLabel={accessibleName}
-          accessibilityHint={t( "Navigates-to-taxon-details" )}
+          accessibilityHint={accessibilityHint}
         >
           { props.children }
         </Pressable>
       )
   ), [
     accessibleName,
+    accessibilityHint,
     handleTaxonOrEditPress,
-    navToTaxonDetails,
-    t,
+    usableTaxon,
+    testID,
     unpressable,
   ] );
 
@@ -200,7 +201,6 @@ const TaxonResult = ( {
           },
         )
       }
-      testID={testID}
     >
       <TaxonResultMain
         className={
@@ -280,27 +280,12 @@ const TaxonResult = ( {
               accessibilityHint={t( "Navigates-to-taxon-details" )}
             />
           )}
-          { showCheckmark && (
-            <INatIconButton
-              className="ml-2"
-              icon="checkmark-circle-outline"
-              size={40}
-              color={String(
-                clearBackground
-                  ? colors?.white
-                  : colors?.darkGray,
-              )}
-              onPress={() => handleCheckmarkPress( usableTaxon )}
-              accessibilityLabel={accessibilityLabel}
-              testID={`${testID}.checkmark`}
-            />
-          )}
           { showEditButton && handleTaxonOrEditPress
               && (
                 <INatIconButton
                   icon="edit"
                   size={20}
-                  onPress={handleTaxonOrEditPress}
+                  onPress={( ) => handleTaxonOrEditPress( )}
                   accessibilityLabel={t( "Edit-identification" )}
                   accessibilityHint={t( "Edits-this-observations-taxon" )}
                 />

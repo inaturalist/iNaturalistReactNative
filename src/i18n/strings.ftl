@@ -233,11 +233,11 @@ Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 # Label for a text input field during sign up to choose a username
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
-# Label for button that chooses a taxon
-Choose-taxon = Choose taxon
-# Label for button that chooses the best suggestion among a list of suggested
+# Accessibility hint for a button that chooses a taxon
+Chooses-taxon = Chooses taxon
+# Accessibility hint for button that chooses the best suggestion among a list of suggested
 # taxa for an identification
-Choose-top-taxon = Choose top taxon
+Chooses-top-taxon = Chooses top taxon
 # Label for a button that closes a window or popup
 Close = Close
 # Accessibility label for a button that closes the permission request screen
@@ -483,7 +483,7 @@ EDIT-LOCATION = EDIT LOCATION
 Edit-location = Edit location
 Edit-Observation = Edit Observation
 Edit-your-profile-change-your-settings = Edit your profile, change your notifications settings, and manage all other parts of your account.
-# Label for button that edits an observation's taxon
+# Accessibility hint for button that edits an observation's taxon
 Edits-this-observations-taxon = Edits this observation's taxon
 EDUCATORS = EDUCATORS
 EMAIL = EMAIL
