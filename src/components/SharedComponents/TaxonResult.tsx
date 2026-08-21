@@ -99,6 +99,10 @@ const TaxonResult = ( {
     >["navigation"]
   >( );
 
+  if ( !unpressable && handleTaxonOrEditPress === undefined ) {
+    throw new Error( "You have to provide a primary onPress action!" );
+  }
+
   const currentUser = useCurrentUser( );
 
   // thinking about future performance, it might make more sense to batch
