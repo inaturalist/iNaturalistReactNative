@@ -173,7 +173,6 @@ const IdentificationSection = ( {
             handleRemovePress={removeTaxon}
             hideInfoButton
             hideNavButtons
-            showCheckmark={false}
             showEditButton
             showRemoveButton
             taxon={identTaxon}

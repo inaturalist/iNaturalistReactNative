@@ -41,7 +41,6 @@ interface TaxonResultProps {
   hideNavButtons?: boolean;
   lastScreen?: "Suggestions";
   onPressInfo?: ( taxon: RealmTaxon | ApiTaxon ) => void;
-  showCheckmark?: boolean;
   showEditButton?: boolean;
   showRemoveButton?: boolean;
   taxon: RealmTaxon | ApiTaxon;

@@ -31,7 +31,6 @@ const Suggestion = ( {
     confidencePosition="text"
     fetchRemote={false}
     first
-    showCheckmark
     handleCheckmarkPress={onTaxonChosen}
     hideNavButtons
     lastScreen="Suggestions"
