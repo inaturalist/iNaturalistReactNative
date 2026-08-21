@@ -64,7 +64,7 @@ const MatchTaxonSearchScreen = ( ) => {
     // eslint-disable-next-line react/no-unused-prop-types
     ( { item: taxon, index }: { item: ApiTaxon; index: number } ) => (
       <TaxonResult
-        accessibilityLabel={t( "Choose-taxon" )}
+        accessibilityHint={t( "Chooses-taxon" )}
         fetchRemote={false}
         first={index === 0}
         handleTaxonOrEditPress={() => setSelectedTaxon( taxon )}

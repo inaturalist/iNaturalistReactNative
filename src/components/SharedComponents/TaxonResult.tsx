@@ -23,7 +23,7 @@ import colors from "styles/tailwindColors";
 import ConfidenceInterval from "./ConfidenceInterval";
 
 interface TaxonResultProps {
-  accessibilityLabel?: string;
+  accessibilityHint?: string;
   activeColor?: string;
   asListItem?: boolean;
   clearBackground?: boolean;
@@ -53,7 +53,7 @@ interface TaxonResultMainProps extends PropsWithChildren {
 }
 
 const TaxonResult = ( {
-  accessibilityLabel,
+  accessibilityHint,
   activeColor,
   asListItem = true,
   clearBackground,
@@ -168,14 +168,14 @@ const TaxonResult = ( {
           accessible
           accessibilityRole="button"
           accessibilityLabel={accessibleName}
-          accessibilityHint={accessibilityLabel}
+          accessibilityHint={accessibilityHint}
         >
           { props.children }
         </Pressable>
       )
   ), [
     accessibleName,
-    accessibilityLabel,
+    accessibilityHint,
     handleTaxonOrEditPress,
     usableTaxon,
     testID,

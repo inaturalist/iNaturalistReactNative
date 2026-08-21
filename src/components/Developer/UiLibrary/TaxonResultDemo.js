@@ -41,21 +41,18 @@ const TaxonResultDemo = ( ) => (
       <Heading1>Remote data loading</Heading1>
       <TaxonResult
         taxon={AVES}
-        accessibilityLabel="ui library"
       />
       <Heading1>Taxon w/ photo</Heading1>
       <TaxonResult
         taxon={makeTaxonWithPhoto()}
         fetchRemote={false}
         fromLocal={false}
-        accessibilityLabel="ui library"
       />
       <Heading1>Iconic taxon</Heading1>
       <TaxonResult
         taxon={AVES}
         fetchRemote={false}
         fromLocal={false}
-        accessibilityLabel="ui library"
       />
     </View>
   </ScrollViewWrapper>

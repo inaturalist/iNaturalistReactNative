@@ -19,7 +19,7 @@ const SuggestionsTaxonSearch = ( ) => {
 
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
-      accessibilityLabel={t( "Choose-taxon" )}
+      accessibilityHint={t( "Chooses-taxon" )}
       fetchRemote={false}
       first={index === 0}
       handleTaxonOrEditPress={() => navigateWithTaxonSelected( taxon )}
