@@ -49,8 +49,7 @@ afterEach( () => {
 jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   __esModule: true,
   default: {
-    OS: "ios",
-    select: jest.fn(),
+    ...jest.requireActual( "react-native/Libraries/Utilities/Platform" ).default,
     Version: 11,
   },
 } ) );
