@@ -1,7 +1,7 @@
 import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
 import { OBSERVATION_FIELD_VALUE_FIELDS } from "api/fields";
-import type { ApiOpts } from "api/types";
+import type { ApiDefaultResult, ApiOpts, ApiResponse } from "api/types";
 import inatjs from "inaturalistjs";
 
 const PARAMS = {
@@ -20,10 +20,10 @@ export interface ObservationFieldValueUpdateParams extends ObservationFieldValue
   id: string; // uuid
 }
 
-const createObservationFieldValue = async (
+const createObservationFieldValue = async <T = ApiDefaultResult>(
   params: ObservationFieldValueAttributes,
   opts: ApiOpts = {},
-): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
     const { results } = await inatjs.observation_field_values.create(
       { ...PARAMS, ...params },
