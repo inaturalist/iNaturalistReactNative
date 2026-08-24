@@ -1,5 +1,6 @@
 import {
   createObservationFieldValue,
+  updateObservationFieldValue,
 } from "api/observationFieldValues";
 import { createProjectObservation } from "api/projectObservations";
 import type Realm from "realm";
@@ -53,6 +54,10 @@ async function uploadSingleObservationFieldValue(
   let response;
   if ( ofv.wasSynced( ) && ofv.id ) {
     console.log( "update branch" );
+    response = await updateObservationFieldValue(
+      { id: ofv.uuid, ...params },
+      options,
+    );
   } else {
     response = await createObservationFieldValue( params, options );
   }
