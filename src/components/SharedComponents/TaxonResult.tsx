@@ -109,6 +109,10 @@ const TaxonResult = ( {
     >["navigation"]
   >( );
 
+  // With the current implementation and usage throughout the app of this component,
+  // we either want it to be not pressable or we want it pressable and we provide a
+  // onPress callback. Since I removed the default onPress function for none being propped in,
+  // I added this error to assert correct prop usage.
   if ( !unpressable && handleTaxonOrEditPress === undefined ) {
     throw new Error( "You have to provide a primary onPress action!" );
   }
