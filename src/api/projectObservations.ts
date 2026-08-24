@@ -12,7 +12,6 @@ export interface ProjectObservationWriteParams {
   project_observation: {
     observation_id: string;
     project_id: number;
-    uuid: string;
   };
 }
 
