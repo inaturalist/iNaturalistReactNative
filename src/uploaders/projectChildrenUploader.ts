@@ -42,7 +42,6 @@ async function uploadSingleProjectObservation(
     project_observation: {
       observation_id: obsUUID,
       project_id: po.projectId,
-      uuid: po.uuid,
     },
   };
   const response = await createProjectObservation( params, options );
