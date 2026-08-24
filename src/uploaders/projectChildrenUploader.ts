@@ -10,11 +10,24 @@ interface UploadOptions {
   signal: AbortSignal;
 }
 function filterDirtyOfvs( observation: RealmObservation ): RealmObservationFieldValue[] {
-  return observation.observationFieldValues;
+  // Single upload-time gate combining timestamp dirty (needsSync),
+  // not tombstoned (_pending_deletion), and non-empty value.
+  return observation.observationFieldValues.filter(
+    ofv => ofv.needsSync( )
+    && !ofv._pending_deletion
+    && ofv.value != null
+    && ofv.value !== "",
+  );
 }
 
 function filterDirtyPos( observation: RealmObservation ): RealmProjectObservation[] {
-  return observation.projectObservations;
+  // Single upload-time gate combining timestamp dirty (needsSync),
+  // not tombstoned (_pending_deletion), and non-empty value.
+  return observation.projectObservations.filter(
+    po => po.needsSync( )
+      && !po._pending_deletion
+      && !po.wasSynced( ),
+  );
 }
 
 async function uploadProjectChildren(
