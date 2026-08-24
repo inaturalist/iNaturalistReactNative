@@ -164,6 +164,23 @@ describe( "uploadObservation", () => {
       mockRealm,
     );
   } );
+
+  it( "should mark the record as uploaded after project children upload", async () => {
+    await uploadObservation( mockObservation, mockRealm );
+
+    expect( projectChildrenUploader.uploadProjectChildren ).toHaveBeenCalled();
+    expect( uploaders.markRecordUploaded ).toHaveBeenCalledWith(
+      mockObservation.uuid,
+      null,
+      "Observation",
+      expect.anything(),
+      mockRealm,
+    );
+    const childrenCallOrder = projectChildrenUploader.uploadProjectChildren
+      .mock.invocationCallOrder[0];
+    const markCallOrder = uploaders.markRecordUploaded.mock.invocationCallOrder[0];
+    expect( childrenCallOrder ).toBeLessThan( markCallOrder );
+  } );
   it( "should mark the record as uploaded after media is attached", async () => {
     await uploadObservation( mockObservation, mockRealm );
 
