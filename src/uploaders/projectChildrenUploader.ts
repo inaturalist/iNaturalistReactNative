@@ -33,14 +33,13 @@ function filterDirtyPos( observation: RealmObservation ): RealmProjectObservatio
 
 async function uploadSingleProjectObservation(
   po: RealmProjectObservation,
-  obsUUID: string,
   observationUUID: string,
   options: UploadOptions,
   realm: Realm,
 ): Promise<void> {
   const params = {
     project_observation: {
-      observation_id: obsUUID,
+      observation_id: observationUUID,
       project_id: po.projectId,
     },
   };
@@ -69,7 +68,6 @@ async function uploadProjectChildren(
     dirtyPos.map( po => uploadSingleProjectObservation(
       po,
       obsUUID,
-      observation.uuid,
       options,
       realm,
     ) ),
