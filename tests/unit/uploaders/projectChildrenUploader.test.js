@@ -1,70 +1,62 @@
+import factory from "tests/factory";
 import {
   filterDirtyOfvs,
   filterDirtyPos,
 } from "uploaders/projectChildrenUploader";
 
+const dirtyOfv = ( overrides = {} ) => factory( "LocalObservationFieldValue", {
+  id: null,
+  needsSync: jest.fn( () => true ),
+  wasSynced: jest.fn( () => false ),
+  _pending_deletion: false,
+  ...overrides,
+} );
+
+const dirtyPo = ( overrides = {} ) => factory( "LocalProjectObservation", {
+  needsSync: jest.fn( () => true ),
+  wasSynced: jest.fn( () => false ),
+  _pending_deletion: false,
+  ...overrides,
+} );
+
 describe( "projectChildrenUploader", () => {
   describe( "filterDirtyOfvs", () => {
     it( "includes unsynced OFVs with a value", () => {
-      const ofv = {
-        needsSync: () => true,
-        _pending_deletion: false,
-        value: "shrubland",
-      };
-      const observation = { observationFieldValues: [ofv] };
+      const ofv = dirtyOfv( { value: "shrubland" } );
+      const observation = factory( "LocalObservation", {
+        observationFieldValues: [ofv],
+      } );
       expect( filterDirtyOfvs( observation ) ).toEqual( [ofv] );
     } );
 
     it( "excludes tombstoned and empty OFVs", () => {
-      const observation = {
+      const observation = factory( "LocalObservation", {
         observationFieldValues: [
-          {
-            needsSync: () => true,
-            _pending_deletion: true,
-            value: "x",
-          },
-          {
-            needsSync: () => true,
-            _pending_deletion: false,
-            value: "",
-          },
-          {
-            needsSync: () => false,
-            _pending_deletion: false,
-            value: "y",
-          },
+          dirtyOfv( { _pending_deletion: true, value: "x" } ),
+          dirtyOfv( { value: "" } ),
+          dirtyOfv( { needsSync: jest.fn( () => false ), value: "y" } ),
         ],
-      };
+      } );
       expect( filterDirtyOfvs( observation ) ).toEqual( [] );
     } );
   } );
 
   describe( "filterDirtyPos", () => {
     it( "includes never-synced POs that need sync", () => {
-      const po = {
-        needsSync: () => true,
-        _pending_deletion: false,
-        wasSynced: () => false,
-      };
-      const observation = { projectObservations: [po] };
+      const po = dirtyPo( );
+      const observation = factory( "LocalObservation", {
+        projectObservations: [po],
+      } );
       expect( filterDirtyPos( observation ) ).toEqual( [po] );
     } );
 
     it( "excludes tombstoned and already-synced POs", () => {
-      const observation = {
+      const observation = factory( "LocalObservation", {
         projectObservations: [
-          {
-            needsSync: () => true,
-            _pending_deletion: true,
-            wasSynced: () => false,
-          },
-          {
-            needsSync: () => true,
-            _pending_deletion: false,
-            wasSynced: () => true,
-          },
+          dirtyPo( { _pending_deletion: true } ),
+          dirtyPo( { wasSynced: jest.fn( () => true ) } ),
         ],
-      };
+      } );
       expect( filterDirtyPos( observation ) ).toEqual( [] );
     } );
   } );
