@@ -22,7 +22,7 @@ import colors from "styles/tailwindColors";
 
 import ConfidenceInterval from "./ConfidenceInterval";
 
-interface TaxonResultProps {
+interface TaxonResultBaseProps {
   accessibilityHint?: string;
   activeColor?: string;
   asListItem?: boolean;
@@ -34,7 +34,6 @@ interface TaxonResultProps {
   first?: boolean;
   fromLocal?: boolean;
   handleRemovePress?: () => void;
-  handleTaxonOrEditPress?: ( taxon?: RealmTaxon | ApiTaxon ) => void;
   hideInfoButton?: boolean;
   hideNavButtons?: boolean;
   lastScreen?: "Suggestions";
@@ -43,10 +42,21 @@ interface TaxonResultProps {
   showRemoveButton?: boolean;
   taxon: RealmTaxon | ApiTaxon;
   testID: string;
-  unpressable?: boolean; // Overrides other props controlling interactive elements
   vision?: boolean;
   white?: boolean;
 }
+
+type TaxonResultProps = TaxonResultBaseProps &
+  (
+    | {
+        unpressable: true; // Overrides other props controlling interactive elements
+        handleTaxonOrEditPress?: never;
+      }
+    | {
+        unpressable?: false;
+        handleTaxonOrEditPress: ( taxon?: RealmTaxon | ApiTaxon ) => void;
+      }
+  );
 
 interface TaxonResultMainProps extends PropsWithChildren {
   className?: string;
