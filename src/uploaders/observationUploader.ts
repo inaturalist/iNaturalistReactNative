@@ -15,6 +15,7 @@ import {
   attachMediaToObservation,
   uploadObservationMedia,
 } from "uploaders/mediaUploader";
+import { uploadProjectChildren } from "uploaders/projectChildrenUploader";
 import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
 import { trackObservationUpload } from "uploaders/utils/progressTracker";
 
@@ -186,10 +187,12 @@ async function uploadObservation(
   try {
     const apiToken = await validateAndGetToken( );
     const childrenStartTime = Date.now( );
-    console.log( "apiToken", apiToken );
-    console.log( "obsUUID", obsUUID );
-    console.log( "observation.observationFieldValues", observation.observationFieldValues );
-    console.log( "observation.projectObservations", observation.projectObservations );
+    await uploadProjectChildren(
+      obsUUID,
+      observation,
+      { ...opts, api_token: apiToken },
+      realm,
+    );
     childrenDuration = Date.now( ) - childrenStartTime;
   } catch ( error ) {
     const {
