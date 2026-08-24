@@ -44,6 +44,8 @@ interface Props<T, H, S> {
   renderHeader?: ( header: H ) => React.ReactElement;
   renderSpan?: ( content: S ) => React.ReactElement;
   renderTile: ( tile: T, width: number, height: number ) => React.ReactElement;
+  // pins each section header to the top of the list while its section is scrolling past
+  stickyHeaders?: boolean;
   testID?: string;
 }
 
@@ -67,6 +69,17 @@ export function computeTilePositions<T, H, S>(
   return positions;
 }
 
+// Indexes of the header rows, which we need to know in order to pin them.
+export function computeStickyHeaderIndices<T, H, S>(
+  data: SmallGridItem<T, H, S>[],
+): number[] {
+  const indices: number[] = [];
+  data.forEach( ( item, index ) => {
+    if ( item.type === "header" ) indices.push( index );
+  } );
+  return indices;
+}
+
 const BottomSpacer = ( ) => (
   <View className="h-20" />
 );
@@ -86,6 +99,7 @@ const SmallGrid = <T, H, S = never, >( {
   renderHeader,
   renderSpan,
   renderTile,
+  stickyHeaders = false,
   testID,
 }: Props<T, H, S> ) => {
   const { width } = useWindowDimensions( );
@@ -94,6 +108,13 @@ const SmallGrid = <T, H, S = never, >( {
   } = getSmallGridLayout( width );
 
   const tilePositions = useMemo( ( ) => computeTilePositions( data ), [data] );
+
+  const stickyHeaderIndices = useMemo(
+    ( ) => ( stickyHeaders
+      ? computeStickyHeaderIndices( data )
+      : undefined ),
+    [data, stickyHeaders],
+  );
 
   const getItemType = useCallback(
     ( item: SmallGridItem<T, H, S> ) => (
@@ -182,6 +203,7 @@ const SmallGrid = <T, H, S = never, >( {
       keyExtractor={keyExtractor}
       ListHeaderComponent={listHeaderContent}
       ListFooterComponent={listFooter}
+      stickyHeaderIndices={stickyHeaderIndices}
       testID={testID}
     />
   );

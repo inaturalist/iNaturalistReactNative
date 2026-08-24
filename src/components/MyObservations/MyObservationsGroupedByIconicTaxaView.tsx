@@ -110,20 +110,6 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     listRef.current?.scrollToOffset( { animated: false, offset: 0 } );
   }, [observationsSort] );
 
-  const toggleCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
-    const isCollapsing = !collapsedCategories.has( category );
-    const categories = new Set( collapsedCategories );
-    if ( isCollapsing ) {
-      categories.add( category );
-    } else {
-      categories.delete( category );
-    }
-    setCollapseState( { sortBy: observationsSort, categories } );
-    // Collapsing is the user saying they're done with this category, so start loading the next
-    // one now rather than making them scroll to trigger it
-    if ( isCollapsing ) advanceFrontier( );
-  }, [advanceFrontier, collapsedCategories, observationsSort] );
-
   // Until the counts land every category reads as zero, so they'd render in the tie-break order
   // and then visibly reshuffle into count order a moment later. Show nothing but the spinner
   // until we know the real order.
@@ -144,15 +130,54 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     prefetchRef.current = { deepenOrAdvance, lastTileIndex };
   }, [deepenOrAdvance, lastTileIndex] );
 
+  // Tells us which row is at the top of the screen, so collapsing can tell whether the user is
+  // inside the section they just closed or looking at its header from outside
+  const firstVisibleIndexRef = useRef( 0 );
+
   const onViewableItemsChanged = useCallback( ( { viewableItems }: {
     viewableItems: { index: number | null }[];
   } ) => {
+    firstVisibleIndexRef.current = viewableItems[0]?.index ?? 0;
     const { deepenOrAdvance: deepen, lastTileIndex } = prefetchRef.current;
     if ( lastTileIndex < 0 ) return;
     const lastVisibleIndex = viewableItems[viewableItems.length - 1]?.index;
     if ( lastVisibleIndex == null ) return;
     if ( lastVisibleIndex >= lastTileIndex - PREFETCH_TILES ) deepen( );
   }, [] );
+
+  // #region managing sticky header toggling and scroll position
+
+  // Row index to put back at the top of the screen once a collapse has re-rendered
+  const pinHeaderRowRef = useRef<number | null>( null );
+
+  const toggleCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
+    const isCollapsing = !collapsedCategories.has( category );
+    const categories = new Set( collapsedCategories );
+    if ( isCollapsing ) {
+      categories.add( category );
+    } else {
+      categories.delete( category );
+    }
+    setCollapseState( { sortBy: observationsSort, categories } );
+    if ( !isCollapsing ) return;
+
+    const headerRow = rows.findIndex(
+      row => row.type === "header" && row.header.category === category,
+    );
+    if ( headerRow >= 0 && headerRow < firstVisibleIndexRef.current ) {
+      pinHeaderRowRef.current = headerRow;
+    }
+
+    advanceFrontier( );
+  }, [advanceFrontier, collapsedCategories, observationsSort, rows] );
+
+  useEffect( ( ) => {
+    const index = pinHeaderRowRef.current;
+    if ( index === null ) return;
+    pinHeaderRowRef.current = null;
+    listRef.current?.scrollToIndex( { animated: false, index, viewPosition: 0 } );
+  }, [rows] );
+  // #endregion
 
   const [refreshing, setRefreshing] = useState( false );
 
@@ -239,6 +264,7 @@ const MyObservationsGroupedByIconicTaxaView = ( {
       renderHeader={renderHeader}
       renderSpan={renderSpan}
       renderTile={renderTile}
+      stickyHeaders
       testID="MyObservationsGroupedByIconicTaxaView"
     />
   );

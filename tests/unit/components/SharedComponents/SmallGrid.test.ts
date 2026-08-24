@@ -1,5 +1,8 @@
 import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
-import { computeTilePositions } from "components/SharedComponents/SmallGrid";
+import {
+  computeStickyHeaderIndices,
+  computeTilePositions,
+} from "components/SharedComponents/SmallGrid";
 
 type Row = SmallGridItem<string, string, string>;
 
@@ -58,5 +61,21 @@ describe( "computeTilePositions", ( ) => {
 
   it( "returns an empty map for an empty list", ( ) => {
     expect( computeTilePositions( [] ).size ).toBe( 0 );
+  } );
+} );
+
+describe( "computeStickyHeaderIndices", ( ) => {
+  it( "returns the index of every header, skipping tiles and span rows", ( ) => {
+    const data = [
+      header( "h1" ), tile( "a" ), tile( "b" ), span( "loading" ),
+      header( "h2" ), tile( "c" ),
+      header( "h3" ),
+    ];
+
+    expect( computeStickyHeaderIndices( data ) ).toEqual( [0, 4, 6] );
+  } );
+
+  it( "returns an empty list when there are no headers", ( ) => {
+    expect( computeStickyHeaderIndices( [tile( "a" ), span( "loading" )] ) ).toEqual( [] );
   } );
 } );
