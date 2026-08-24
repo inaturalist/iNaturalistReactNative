@@ -1,3 +1,4 @@
+import { createProjectObservation } from "api/projectObservations";
 import type Realm from "realm";
 import type {
   RealmObservation,
@@ -30,6 +31,30 @@ function filterDirtyPos( observation: RealmObservation ): RealmProjectObservatio
   );
 }
 
+async function uploadSingleProjectObservation(
+  po: RealmProjectObservation,
+  obsUUID: string,
+  observationUUID: string,
+  options: UploadOptions,
+  realm: Realm,
+): Promise<void> {
+  const params = {
+    project_observation: {
+      observation_id: obsUUID,
+      project_id: po.projectId,
+      uuid: po.uuid,
+    },
+  };
+  const response = await createProjectObservation( params, options );
+
+  console.log( "response", response );
+
+  // TODO: update realm
+  console.log( "observationUUID", observationUUID );
+  console.log( "realm", realm );
+  // );
+}
+
 async function uploadProjectChildren(
   obsUUID: string,
   observation: RealmObservation,
@@ -40,11 +65,16 @@ async function uploadProjectChildren(
   const dirtyPos = filterDirtyPos( observation );
 
   console.log( "dirtyOfvs", dirtyOfvs );
-  console.log( "dirtyPos", dirtyPos );
 
-  console.log( "obsUUID", obsUUID );
-  console.log( "options", options );
-  console.log( "realm", realm );
+  await Promise.all(
+    dirtyPos.map( po => uploadSingleProjectObservation(
+      po,
+      obsUUID,
+      observation.uuid,
+      options,
+      realm,
+    ) ),
+  );
 }
 
 export {
