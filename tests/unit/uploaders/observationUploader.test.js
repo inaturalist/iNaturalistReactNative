@@ -4,11 +4,13 @@ import factory from "tests/factory";
 import * as uploaders from "uploaders";
 import * as mediaUploader from "uploaders/mediaUploader";
 import uploadObservation from "uploaders/observationUploader";
+import * as projectChildrenUploader from "uploaders/projectChildrenUploader";
 import * as progressTracker from "uploaders/utils/progressTracker";
 
 jest.mock( "components/LoginSignUp/AuthenticationService" );
 jest.mock( "uploaders/utils/progressTracker" );
 jest.mock( "uploaders/mediaUploader" );
+jest.mock( "uploaders/projectChildrenUploader" );
 jest.mock( "uploaders" );
 jest.mock( "api/observations" );
 jest.mock( "sharedHelpers/safeRealmWrite", () => jest.fn() );
@@ -61,12 +63,14 @@ describe( "uploadObservation", () => {
     } );
 
     apiObservations.createObservation.mockResolvedValue( {
-      results: [{ uuid: mockObservation.uuid }],
+      results: [{ uuid: mockObservation.uuid, id: 12345 }],
     } );
 
     apiObservations.updateObservation.mockResolvedValue( {
-      results: [{ uuid: mockObservation.uuid }],
+      results: [{ uuid: mockObservation.uuid, id: 12345 }],
     } );
+
+    projectChildrenUploader.uploadProjectChildren.mockResolvedValue( undefined );
   } );
 
   it( "should start and complete progress tracking", async () => {
@@ -150,6 +154,16 @@ describe( "uploadObservation", () => {
     },
   );
 
+  it( "should call uploadProjectChildren after media is attached", async () => {
+    await uploadObservation( mockObservation, mockRealm );
+
+    expect( projectChildrenUploader.uploadProjectChildren ).toHaveBeenCalledWith(
+      mockObservation.uuid,
+      mockObservation,
+      expect.objectContaining( { api_token: "test-json-web-token" } ),
+      mockRealm,
+    );
+  } );
   it( "should mark the record as uploaded after media is attached", async () => {
     await uploadObservation( mockObservation, mockRealm );
 
