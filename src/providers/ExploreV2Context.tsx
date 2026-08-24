@@ -40,6 +40,7 @@ export enum EXPLORE_V2_PLACE_MODE {
 export interface Place {
   id: number;
   display_name?: string;
+  place_type?: number | null;
 }
 
 interface Taxon {

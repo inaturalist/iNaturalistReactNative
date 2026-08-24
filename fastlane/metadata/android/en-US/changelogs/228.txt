@@ -1,0 +1,3 @@
+FIXED
+* Links to observations, taxa, and projects should open in the app
+* Private-location observations not showing their location on ObsEdit

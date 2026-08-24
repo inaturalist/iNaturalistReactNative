@@ -1,4 +1,6 @@
-import { screen, userEvent, within } from "@testing-library/react-native";
+import {
+  screen, userEvent, waitFor, within,
+} from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
@@ -18,6 +20,7 @@ const mockProjects = [
 ];
 
 const mockGoBack = jest.fn( );
+
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -117,7 +120,7 @@ describe( "AddToProjects", ( ) => {
   it( "disables SAVE when project selection is unchanged", ( ) => {
     renderAddToProjects( );
 
-    expect( screen.getByText( "SAVE" ) ).toBeDisabled();
+    expect( screen.getByText( "SAVE" ) ).toBeDisabled( );
   } );
 
   it( "enables SAVE after project selection changes", async ( ) => {
@@ -158,7 +161,7 @@ describe( "AddToProjects", ( ) => {
         _pendingRemoval: true,
       } )],
     );
-    expect( mockGoBack ).toHaveBeenCalled();
+    expect( mockGoBack ).toHaveBeenCalled( );
   } );
 
   it( "soft-deletes only the deselected synced project observation", async ( ) => {
@@ -205,5 +208,105 @@ describe( "AddToProjects", ( ) => {
       savedProjectObservations?.find( po => po.projectId === mockProjects[1].id )?._pendingRemoval,
     ).toBeUndefined( );
     expect( mockGoBack ).toHaveBeenCalled( );
+  } );
+
+  describe( "when a selected project has a required field", ( ) => {
+    beforeAll( ( ) => {
+      mockProjects[1].projectObservationFields[0].required = true;
+    } );
+
+    afterAll( ( ) => {
+      mockProjects.forEach( project => {
+        project.projectObservationFields.forEach( pof => {
+          pof.required = false;
+        } );
+      } );
+    } );
+
+    it( "shows Missing info sheet when SAVE is pressed with an empty required field", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+
+      expect( screen.getByTestId( "AddToProjects.saveButton" ) ).not.toBeDisabled( );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+
+      await waitFor( ( ) => {
+        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
+      } );
+      expect( mockGoBack ).not.toHaveBeenCalled( );
+    } );
+
+    it( "keeps editing when Missing info sheet is dismissed", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+      await actor.press( screen.getByText( "KEEP EDITING" ) );
+
+      await waitFor( ( ) => {
+        expect( screen.queryByTestId( "MissingInfoSheet" ) ).toBeNull( );
+      } );
+      expect( mockGoBack ).not.toHaveBeenCalled( );
+    } );
+
+    it( "persists only completed projects when LEAVE is pressed", async ( ) => {
+      const sharedObsFieldId = mockProjects[0].projectObservationFields[0].obsField.id;
+      // Start with the first project's input completed and saved
+      useStore.setState( {
+        currentObservation: {
+          ...factory( "LocalObservation" ),
+          observationFieldValues: [
+            factory( "LocalObservationFieldValue", {
+              obsFieldId: sharedObsFieldId,
+              value: "completed-value",
+            } ),
+          ],
+          projectObservations: [factory( "LocalProjectObservation", {
+            projectId: mockProjects[0].id,
+            _synced_at: new Date( ),
+          } )],
+        },
+      } );
+
+      renderAddToProjects( );
+
+      // Select the second project but do not complete it
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+      await waitFor( ( ) => {
+        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
+      } );
+      await actor.press( screen.getByText( "LEAVE" ) );
+
+      // Expect only the previous state, no additions
+      expect(
+        useStore.getState( ).currentObservation?.projectObservations?.map( po => po.projectId ),
+      ).toEqual( [mockProjects[0].id] );
+      expect( useStore.getState( ).currentObservation?.observationFieldValues ).toEqual( [
+        expect.objectContaining( {
+          obsFieldId: sharedObsFieldId,
+          value: "completed-value",
+        } ),
+      ] );
+      await waitFor( ( ) => {
+        expect( mockGoBack ).toHaveBeenCalled( );
+      } );
+    } );
+
+    it( "navigates back when LEAVE is pressed from SAVE with incomplete selections", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+      await waitFor( ( ) => {
+        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
+      } );
+      await actor.press( screen.getByText( "LEAVE" ) );
+
+      await waitFor( ( ) => {
+        expect( mockGoBack ).toHaveBeenCalled( );
+      } );
+    } );
   } );
 } );

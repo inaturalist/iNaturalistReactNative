@@ -451,7 +451,7 @@ JOINED-X-PROJECTS =
         [one] LIITTYNYT { $count } PROJEKTIIN
        *[other] LIITYTTY { $count } PROJEKTIIN
     }
-JOURNAL-POST = JOURNAL POST
+JOURNAL-POST = PÄIVÄKIRJAMERKINTÄ
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] PÄIVÄKIRJAN VIESTI
@@ -528,7 +528,7 @@ Navigates-to-AI-camera = Siirry AI-kameraan
 Navigates-to-bulk-importer = Siirry massatuontiin
 Navigates-to-camera = Siirry kameraan
 Navigates-to-explore = Siirry tutkimaan
-Navigates-to-journal-post = Navigates to journal post
+Navigates-to-journal-post = Siirry päiväkirjamerkintään
 Navigates-to-log-in-screen = Siirry kirjautumiseen
 Navigates-to-main-menu = Siirry päävalikkoon
 Navigates-to-notifications = Siirry ilmoituksiin
