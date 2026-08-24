@@ -13,40 +13,59 @@ describe( "projectChildrenUploader", () => {
       };
       const observation = { observationFieldValues: [ofv] };
       expect( filterDirtyOfvs( observation ) ).toEqual( [ofv] );
+    } );
 
-      it( "excludes tombstoned and empty OFVs", () => {
-        const observation = {
-          observationFieldValues: [
-            {
-              needsSync: () => true,
-              _pending_deletion: true,
-              value: "x",
-            },
-            {
-              needsSync: () => true,
-              _pending_deletion: false,
-              value: "",
-            },
-            {
-              needsSync: () => false,
-              _pending_deletion: false,
-              value: "y",
-            },
-          ],
-        };
-        expect( filterDirtyOfvs( observation ) ).toEqual( [] );
-      } );
-      describe( "filterDirtyPos", () => {
-        it( "includes never-synced POs that need sync", () => {
-          const po = {
+    it( "excludes tombstoned and empty OFVs", () => {
+      const observation = {
+        observationFieldValues: [
+          {
+            needsSync: () => true,
+            _pending_deletion: true,
+            value: "x",
+          },
+          {
             needsSync: () => true,
             _pending_deletion: false,
+            value: "",
+          },
+          {
+            needsSync: () => false,
+            _pending_deletion: false,
+            value: "y",
+          },
+        ],
+      };
+      expect( filterDirtyOfvs( observation ) ).toEqual( [] );
+    } );
+  } );
+
+  describe( "filterDirtyPos", () => {
+    it( "includes never-synced POs that need sync", () => {
+      const po = {
+        needsSync: () => true,
+        _pending_deletion: false,
+        wasSynced: () => false,
+      };
+      const observation = { projectObservations: [po] };
+      expect( filterDirtyPos( observation ) ).toEqual( [po] );
+    } );
+
+    it( "excludes tombstoned and already-synced POs", () => {
+      const observation = {
+        projectObservations: [
+          {
+            needsSync: () => true,
+            _pending_deletion: true,
             wasSynced: () => false,
-          };
-          const observation = { projectObservations: [po] };
-          expect( filterDirtyPos( observation ) ).toEqual( [po] );
-        } );
-      } );
+          },
+          {
+            needsSync: () => true,
+            _pending_deletion: false,
+            wasSynced: () => true,
+          },
+        ],
+      };
+      expect( filterDirtyPos( observation ) ).toEqual( [] );
     } );
   } );
 } );
