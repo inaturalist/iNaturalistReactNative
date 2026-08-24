@@ -1,8 +1,14 @@
-import factory from "tests/factory";
+import * as observationFieldValuesApi from "api/observationFieldValues";
+import factory, { makeResponse } from "tests/factory";
 import {
   filterDirtyOfvs,
   filterDirtyPos,
+  uploadProjectChildren,
 } from "uploaders/projectChildrenUploader";
+
+jest.mock( "api/observationFieldValues" );
+const mockOpts = { api_token: "test-token", signal: new AbortController().signal };
+let mockRealm;
 
 const dirtyOfv = ( overrides = {} ) => factory( "LocalObservationFieldValue", {
   id: null,
@@ -17,6 +23,17 @@ const dirtyPo = ( overrides = {} ) => factory( "LocalProjectObservation", {
   wasSynced: jest.fn( () => false ),
   _pending_deletion: false,
   ...overrides,
+} );
+
+beforeEach( () => {
+  jest.clearAllMocks();
+  mockRealm = { isClosed: false };
+  observationFieldValuesApi.createObservationFieldValue.mockResolvedValue(
+    makeResponse( [{ id: 101 }] ),
+  );
+  observationFieldValuesApi.updateObservationFieldValue.mockResolvedValue(
+    makeResponse( [{ id: 102 }] ),
+  );
 } );
 
 describe( "projectChildrenUploader", () => {
@@ -58,6 +75,38 @@ describe( "projectChildrenUploader", () => {
         ],
       } );
       expect( filterDirtyPos( observation ) ).toEqual( [] );
+    } );
+  } );
+
+  describe( "uploadProjectChildren", () => {
+    it( "PUTs OFVs that were previously synced", async () => {
+      const ofv = dirtyOfv( {
+        uuid: "ofv-uuid",
+        obsFieldId: 10,
+        value: "female",
+        id: 55,
+        wasSynced: jest.fn( () => true ),
+      } );
+      const observation = factory( "LocalObservation", {
+        uuid: "obs-uuid",
+        observationFieldValues: [ofv],
+        projectObservations: [],
+      } );
+
+      await uploadProjectChildren( "obs-uuid", observation, mockOpts, mockRealm );
+
+      expect( observationFieldValuesApi.updateObservationFieldValue ).toHaveBeenCalledWith(
+        {
+          id: "ofv-uuid",
+          observation_field_value: {
+            observation_id: "obs-uuid",
+            observation_field_id: 10,
+            value: "female",
+          },
+        },
+        mockOpts,
+      );
+      expect( observationFieldValuesApi.createObservationFieldValue ).not.toHaveBeenCalled();
     } );
   } );
 } );
