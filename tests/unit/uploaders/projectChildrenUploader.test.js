@@ -1,4 +1,5 @@
 import * as observationFieldValuesApi from "api/observationFieldValues";
+import * as projectObservationsApi from "api/projectObservations";
 import factory, { makeResponse } from "tests/factory";
 import { markRecordUploaded } from "uploaders";
 import {
@@ -8,6 +9,7 @@ import {
 } from "uploaders/projectChildrenUploader";
 
 jest.mock( "api/observationFieldValues" );
+jest.mock( "api/projectObservations" );
 jest.mock( "uploaders" );
 
 const mockOpts = { api_token: "test-token", signal: new AbortController().signal };
@@ -36,6 +38,9 @@ beforeEach( () => {
   );
   observationFieldValuesApi.updateObservationFieldValue.mockResolvedValue(
     makeResponse( [{ id: 102 }] ),
+  );
+  projectObservationsApi.createProjectObservation.mockResolvedValue(
+    makeResponse( [{ id: 201 }] ),
   );
 } );
 
@@ -82,6 +87,60 @@ describe( "projectChildrenUploader", () => {
   } );
 
   describe( "uploadProjectChildren", () => {
+    it( "POSTs dirty OFVs then POSTs dirty POs using the observation uuid", async () => {
+      const ofv = dirtyOfv( {
+        uuid: "ofv-uuid",
+        obsFieldId: 10,
+        value: "male",
+      } );
+      const po = dirtyPo( {
+        uuid: "po-uuid",
+        projectId: 508,
+      } );
+      const observation = factory( "LocalObservation", {
+        uuid: "obs-uuid",
+        observationFieldValues: [ofv],
+        projectObservations: [po],
+      } );
+
+      await uploadProjectChildren( "obs-uuid", observation, mockOpts, mockRealm );
+
+      expect( observationFieldValuesApi.createObservationFieldValue ).toHaveBeenCalledWith(
+        {
+          observation_field_value: {
+            observation_id: "obs-uuid",
+            observation_field_id: 10,
+            value: "male",
+          },
+        },
+        mockOpts,
+      );
+      expect( projectObservationsApi.createProjectObservation ).toHaveBeenCalledWith(
+        {
+          project_observation: {
+            observation_id: "obs-uuid",
+            project_id: 508,
+          },
+        },
+        mockOpts,
+      );
+      expect( markRecordUploaded ).toHaveBeenCalledTimes( 2 );
+      expect( markRecordUploaded ).toHaveBeenCalledWith(
+        "obs-uuid",
+        "ofv-uuid",
+        "ObservationFieldValue",
+        makeResponse( [{ id: 101 }] ),
+        mockRealm,
+      );
+      expect( markRecordUploaded ).toHaveBeenCalledWith(
+        "obs-uuid",
+        "po-uuid",
+        "ProjectObservation",
+        makeResponse( [{ id: 201 }] ),
+        mockRealm,
+      );
+    } );
+
     it( "POSTs multiple dirty OFVs in parallel", async () => {
       const ofvOne = dirtyOfv( {
         uuid: "ofv-uuid-1",
