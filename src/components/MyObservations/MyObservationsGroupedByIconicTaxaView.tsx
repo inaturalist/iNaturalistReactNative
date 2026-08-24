@@ -21,7 +21,11 @@ import type {
   IconicTaxaRow,
   IconicTaxaSpan,
 } from "./helpers/iconicTaxaSections";
-import { buildIconicTaxaRows, lastTileRowIndex } from "./helpers/iconicTaxaSections";
+import {
+  buildIconicTaxaRows,
+  sectionRangeAtRow,
+  sectionRowRanges,
+} from "./helpers/iconicTaxaSections";
 import useIconicTaxaObservationCounts from "./hooks/useIconicTaxaObservationCounts";
 import useIconicTaxaSectionObservations from "./hooks/useIconicTaxaSectionObservations";
 import useUnsyncedObservationIdsByIconicTaxon
@@ -94,6 +98,7 @@ const MyObservationsGroupedByIconicTaxaView = ( {
   const {
     sections,
     advanceFrontier,
+    deepenCategory,
     deepenOrAdvance,
     refreshSections,
     retryCategory,
@@ -122,13 +127,14 @@ const MyObservationsGroupedByIconicTaxaView = ( {
       unsyncedByCategory,
     } ) ), [collapsedCategories, counts, isLoadingCounts, sections, unsyncedByCategory] );
 
+  const sectionRanges = useMemo( ( ) => sectionRowRanges( rows ), [rows] );
+
   // Read through a ref so the handler identity stays stable. FlashList subscribes to it, and
   // swapping it on every render churns that subscription.
-  const lastTileIndex = useMemo( ( ) => lastTileRowIndex( rows ), [rows] );
-  const prefetchRef = useRef( { deepenOrAdvance, lastTileIndex } );
+  const prefetchRef = useRef( { deepenCategory, sectionRanges } );
   useEffect( ( ) => {
-    prefetchRef.current = { deepenOrAdvance, lastTileIndex };
-  }, [deepenOrAdvance, lastTileIndex] );
+    prefetchRef.current = { deepenCategory, sectionRanges };
+  }, [deepenCategory, sectionRanges] );
 
   // Tells us which row is at the top of the screen, so collapsing can tell whether the user is
   // inside the section they just closed or looking at its header from outside
@@ -138,11 +144,12 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     viewableItems: { index: number | null }[];
   } ) => {
     firstVisibleIndexRef.current = viewableItems[0]?.index ?? 0;
-    const { deepenOrAdvance: deepen, lastTileIndex } = prefetchRef.current;
-    if ( lastTileIndex < 0 ) return;
+    const { deepenCategory: deepen, sectionRanges: ranges } = prefetchRef.current;
     const lastVisibleIndex = viewableItems[viewableItems.length - 1]?.index;
     if ( lastVisibleIndex == null ) return;
-    if ( lastVisibleIndex >= lastTileIndex - PREFETCH_TILES ) deepen( );
+    const range = sectionRangeAtRow( ranges, lastVisibleIndex );
+    if ( !range || range.lastTileRow < 0 ) return;
+    if ( lastVisibleIndex >= range.lastTileRow - PREFETCH_TILES ) deepen( range.category );
   }, [] );
 
   // #region managing sticky header toggling and scroll position

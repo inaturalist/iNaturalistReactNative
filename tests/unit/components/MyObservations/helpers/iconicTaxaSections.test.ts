@@ -1,7 +1,8 @@
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
 import {
   buildIconicTaxaRows,
-  lastTileRowIndex,
+  sectionRangeAtRow,
+  sectionRowRanges,
   selectCategoryToDeepen,
 } from "components/MyObservations/helpers/iconicTaxaSections";
 import { ICONIC_TAXA_GROUP, ICONIC_TAXA_GROUP_ORDER } from "sharedHelpers/iconicTaxaGroupOrder";
@@ -106,25 +107,6 @@ describe( "buildIconicTaxaRows", ( ) => {
   } );
 } );
 
-describe( "lastTileRowIndex", ( ) => {
-  it( "ignores the headers of categories that haven't loaded yet, so paging can trigger "
-    + "before the user scrolls past them", ( ) => {
-    const rows = buildRows( {
-      sections: new Map( [
-        [ICONIC_TAXA_GROUP.PLANTAE, section( { uuids: ["a", "b"] } )],
-      ] ),
-    } );
-
-    // one header per category, and the only tiles are Plantae's two
-    expect( lastTileRowIndex( rows ) ).toBe( 2 );
-    expect( rows ).toHaveLength( ICONIC_TAXA_GROUP_ORDER.length + 2 );
-  } );
-
-  it( "returns -1 when nothing has loaded", ( ) => {
-    expect( lastTileRowIndex( buildRows( ) ) ).toBe( -1 );
-  } );
-} );
-
 describe( "selectCategoryToDeepen", ( ) => {
   const order = [ICONIC_TAXA_GROUP.PLANTAE, ICONIC_TAXA_GROUP.AVES, ICONIC_TAXA_GROUP.INSECTA];
   const noneCollapsed = new Set<ICONIC_TAXA_GROUP>( );
@@ -169,5 +151,53 @@ describe( "selectCategoryToDeepen", ( ) => {
     expect( selectCategoryToDeepen( order, sections, collapsed ) ).toBeNull( );
     expect( selectCategoryToDeepen( order, sections, noneCollapsed ) )
       .toBe( ICONIC_TAXA_GROUP.PLANTAE );
+  } );
+} );
+
+describe( "sectionRowRanges", ( ) => {
+  it( "reports where each section ends, which is not where the list ends", ( ) => {
+    const rows = buildRows( {
+      sections: new Map( [
+        [ICONIC_TAXA_GROUP.PLANTAE, section( { uuids: ["a", "b"] } )],
+        [ICONIC_TAXA_GROUP.AVES, section( { uuids: ["c"] } )],
+      ] ),
+    } );
+
+    const ranges = sectionRowRanges( rows );
+    const plantae = ranges.find( range => range.category === ICONIC_TAXA_GROUP.PLANTAE );
+
+    // Plantae's tiles run out long before the list does, since every remaining category still
+    // renders a header below it
+    expect( plantae?.lastTileRow ).toBe( 2 );
+    expect( rows.length - 1 ).toBeGreaterThan( plantae!.lastTileRow );
+  } );
+
+  it( "gives a collapsed or empty section a range covering only its header", ( ) => {
+    const rows = buildRows( {
+      collapsedCategories: new Set( [ICONIC_TAXA_GROUP.PLANTAE] ),
+      sections: new Map( [[ICONIC_TAXA_GROUP.PLANTAE, section( { uuids: ["a"] } )]] ),
+    } );
+
+    const plantae = sectionRowRanges( rows )
+      .find( range => range.category === ICONIC_TAXA_GROUP.PLANTAE );
+
+    expect( plantae?.headerRow ).toBe( plantae?.lastRow );
+    expect( plantae?.lastTileRow ).toBe( -1 );
+  } );
+} );
+
+describe( "sectionRangeAtRow", ( ) => {
+  it( "finds the section a row belongs to, header and tiles alike", ( ) => {
+    const rows = buildRows( {
+      sections: new Map( [
+        [ICONIC_TAXA_GROUP.PLANTAE, section( { uuids: ["a", "b"] } )],
+        [ICONIC_TAXA_GROUP.AVES, section( { uuids: ["c"] } )],
+      ] ),
+    } );
+    const ranges = sectionRowRanges( rows );
+
+    expect( sectionRangeAtRow( ranges, 0 )?.category ).toBe( ICONIC_TAXA_GROUP.PLANTAE );
+    expect( sectionRangeAtRow( ranges, 2 )?.category ).toBe( ICONIC_TAXA_GROUP.PLANTAE );
+    expect( sectionRangeAtRow( ranges, 4 )?.category ).toBe( ICONIC_TAXA_GROUP.AVES );
   } );
 } );

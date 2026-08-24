@@ -85,18 +85,46 @@ export function buildIconicTaxaRows( {
   } );
 }
 
-// Index of the last tile in the list, which is where the observations a user can actually
-// scroll through run out.
+// Where each section starts and ends in the row list, so a caller can tell which section a
+// visible row belongs to and how close it is to the end of that section's loaded tiles.
 //
-// This is not the end of the list: every category renders a header whether or not it has been
-// fetched, so below the last tile sits a stack of headers for categories that haven't loaded
-// yet. Waiting for onEndReached would mean waiting for the user to scroll past all of those
-// first, so paging triggers off this instead.
-export function lastTileRowIndex( rows: IconicTaxaRow[] ): number {
-  for ( let index = rows.length - 1; index >= 0; index -= 1 ) {
-    if ( rows[index].type === "tile" ) return index;
-  }
-  return -1;
+// Sections are not necessarily loaded in list order: collapsing a partly-loaded section and
+// reopening it later leaves it above sections that have loaded since, so the end of the list
+// says nothing about the end of the section the user is actually reading.
+export interface IconicTaxaSectionRange {
+  category: ICONIC_TAXA_GROUP;
+  headerRow: number;
+  // last row of the section, whatever its type; equals headerRow when collapsed or empty
+  lastRow: number;
+  // last tile of the section, or -1 if it has none loaded
+  lastTileRow: number;
+}
+
+export function sectionRowRanges( rows: IconicTaxaRow[] ): IconicTaxaSectionRange[] {
+  const ranges: IconicTaxaSectionRange[] = [];
+  rows.forEach( ( row, index ) => {
+    if ( row.type === "header" ) {
+      ranges.push( {
+        category: row.header.category,
+        headerRow: index,
+        lastRow: index,
+        lastTileRow: -1,
+      } );
+      return;
+    }
+    const current = ranges[ranges.length - 1];
+    if ( !current ) return;
+    current.lastRow = index;
+    if ( row.type === "tile" ) current.lastTileRow = index;
+  } );
+  return ranges;
+}
+
+export function sectionRangeAtRow(
+  ranges: IconicTaxaSectionRange[],
+  row: number,
+): IconicTaxaSectionRange | undefined {
+  return ranges.find( range => row >= range.headerRow && row <= range.lastRow );
 }
 
 // determines which section should load its next page when the user reaches the bottom of the list.

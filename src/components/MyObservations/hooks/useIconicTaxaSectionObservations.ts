@@ -57,6 +57,9 @@ interface Result {
   // load the next page of the section the user has scrolled into, or, if that section is
   // finished, start the next category. Safe to call on every onEndReached.
   deepenOrAdvance: ( ) => void;
+  // same, for a specific section. Sections aren't necessarily loaded in list order, so the one
+  // the user is reading isn't always the deepest one deepenOrAdvance would pick.
+  deepenCategory: ( category: ICONIC_TAXA_GROUP ) => void;
   retryCategory: ( category: ICONIC_TAXA_GROUP ) => void;
   refreshSections: ( ) => void;
   resetPagination: ( ) => void;
@@ -257,6 +260,29 @@ const useIconicTaxaSectionObservations = ( {
     setPages,
   ] );
 
+  const deepenCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
+    if ( anyFetching ) return;
+    const section = sections.get( category );
+    if ( !section?.isActivated || section.isError ) return;
+    if ( collapsedCategories.has( category ) ) return;
+    if ( !section.hasMore ) {
+      // Nothing left in this one, so get a head start on a category that hasn't loaded yet
+      advanceFrontier( );
+      return;
+    }
+    setPages( {
+      ...pagesByCategory,
+      [category]: ( pagesByCategory[category] ?? 0 ) + 1,
+    } );
+  }, [
+    advanceFrontier,
+    anyFetching,
+    collapsedCategories,
+    pagesByCategory,
+    sections,
+    setPages,
+  ] );
+
   const retryCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
     queryClient.refetchQueries( {
       queryKey: [QUERY_KEY, currentUser?.id, sortParams, category],
@@ -282,6 +308,7 @@ const useIconicTaxaSectionObservations = ( {
     sections,
     advanceFrontier,
     deepenOrAdvance,
+    deepenCategory,
     retryCategory,
     refreshSections,
     resetPagination,
