@@ -181,6 +181,16 @@ describe( "uploadObservation", () => {
     const markCallOrder = uploaders.markRecordUploaded.mock.invocationCallOrder[0];
     expect( childrenCallOrder ).toBeLessThan( markCallOrder );
   } );
+
+  it( "should throw an error if project children upload fails", async () => {
+    projectChildrenUploader.uploadProjectChildren
+      .mockRejectedValue( new Error( "Project Children Error" ) );
+
+    await expect( uploadObservation( mockObservation, mockRealm ) )
+      .rejects.toThrow( "Project Children Error" );
+    expect( uploaders.markRecordUploaded ).not.toHaveBeenCalled();
+  } );
+
   it( "should mark the record as uploaded after media is attached", async () => {
     await uploadObservation( mockObservation, mockRealm );
 
