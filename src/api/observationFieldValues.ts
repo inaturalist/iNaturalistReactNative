@@ -38,10 +38,10 @@ const createObservationFieldValue = async <T = ApiDefaultResult>(
   }
 };
 
-const updateObservationFieldValue = async (
+const updateObservationFieldValue = async <T = ApiDefaultResult>(
   params: ObservationFieldValueUpdateParams,
   opts: ApiOpts = {},
-): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
     const { results } = await inatjs.observation_field_values.update(
       { ...PARAMS, ...params },
