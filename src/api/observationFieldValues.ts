@@ -43,11 +43,11 @@ const updateObservationFieldValue = async <T = ApiDefaultResult>(
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    const { results } = await inatjs.observation_field_values.update(
+    const response = await inatjs.observation_field_values.update(
       { ...PARAMS, ...params },
       opts,
     );
-    return results;
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
