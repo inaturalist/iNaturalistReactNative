@@ -1,4 +1,6 @@
 import type { ApiTaxon } from "api/types";
+import RecentSearches
+  from "components/Explore/ExploreV2/components/RecentSearches";
 import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
 import { resultToSubject }
@@ -99,6 +101,7 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
           <Body1>{t( "Species-I-havent-observed" )}</Body1>
         </Pressable>
       )}
+      <RecentSearches onSelectSubject={onSelectSubject} />
     </ScrollView>
   );
 };
