@@ -10,7 +10,7 @@ import { getInatLocaleFromSystemLocale } from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import nock from "nock";
-import RNSInfo from "react-native-sensitive-info";
+import { deleteItem, setItem } from "react-native-sensitive-info";
 import changeLanguage from "sharedHelpers/changeLanguage";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { makeResponse } from "tests/factory";
@@ -18,7 +18,7 @@ import { makeResponse } from "tests/factory";
 const TEST_JWT = "test-json-web-token";
 const TEST_ACCESS_TOKEN = "test-access-token";
 const rnsiOptions = {
-  keychainService: "app",
+  service: "app",
 };
 
 async function signOut( options = {} ) {
@@ -35,20 +35,20 @@ async function signOut( options = {} ) {
   }, "deleting entire realm in signOut function, user.js" );
   const systemLocale = getInatLocaleFromSystemLocale( );
   changeLanguage( systemLocale );
-  await RNSInfo.deleteItem( "username", rnsiOptions );
-  await RNSInfo.deleteItem( "jwtToken", rnsiOptions );
-  await RNSInfo.deleteItem( "jwtGeneratedAt", rnsiOptions );
-  await RNSInfo.deleteItem( "accessToken", rnsiOptions );
+  await deleteItem( "username", rnsiOptions );
+  await deleteItem( "jwtToken", rnsiOptions );
+  await deleteItem( "jwtGeneratedAt", rnsiOptions );
+  await deleteItem( "accessToken", rnsiOptions );
   clearAuthCache( );
   inatjs.users.me.mockClear( );
 }
 
 async function signIn( user, options = {} ) {
   const realm = options.realm || global.realm;
-  await RNSInfo.setItem( "username", user.login, rnsiOptions );
-  await RNSInfo.setItem( "jwtToken", TEST_JWT, rnsiOptions );
-  await RNSInfo.setItem( "jwtGeneratedAt", Date.now( ).toString( ), rnsiOptions );
-  await RNSInfo.setItem( "accessToken", TEST_ACCESS_TOKEN, rnsiOptions );
+  await setItem( "username", user.login, rnsiOptions );
+  await setItem( "jwtToken", TEST_JWT, rnsiOptions );
+  await setItem( "jwtGeneratedAt", Date.now( ).toString( ), rnsiOptions );
+  await setItem( "accessToken", TEST_ACCESS_TOKEN, rnsiOptions );
   clearAuthCache( );
   inatjs.users.me.mockResolvedValue( makeResponse( [user] ) );
   user.signedIn = true;

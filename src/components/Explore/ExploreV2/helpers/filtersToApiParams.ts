@@ -28,8 +28,8 @@ export interface FilterApiParams {
   reviewed?: boolean;
   viewer_id?: number;
   photo_license?: string;
-  iconic_taxa?: string[];
   user_id?: number;
+  not_user_id?: number;
   project_id?: number;
 }
 
@@ -103,11 +103,12 @@ const filtersToApiParams = (
     if ( license ) { params.photo_license = license; }
   }
 
-  if ( filters.iconic_taxa && filters.iconic_taxa.length > 0 ) {
-    params.iconic_taxa = filters.iconic_taxa;
+  if ( filters.user?.id ) { params.user_id = filters.user.id; }
+
+  if ( filters.excludeUser?.id ) {
+    params.not_user_id = filters.excludeUser.id;
   }
 
-  if ( filters.user?.id ) { params.user_id = filters.user.id; }
   if ( filters.project?.id ) { params.project_id = filters.project.id; }
 
   return params;

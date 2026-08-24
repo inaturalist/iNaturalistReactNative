@@ -7,11 +7,16 @@ import React, {
 } from "react";
 import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
+import { unlinkIfShareExtensionSource } from "sharedHelpers/shareExtensionFiles";
 import { useLayoutPrefs } from "sharedHooks";
+import type { SharedData } from "sharedHooks/useShare";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
+interface SharedPhoto { image: { uri: string }}
+
 const PhotoSharing = ( ) => {
-  const previousItem = useRef( null );
+  const previousItem = useRef<null | SharedData>( null );
   const navigation = useNavigation<
     NoBottomTabStackScreenProps<"PhotoSharing">["navigation"] &
     TabStackScreenProps<"PhotoSharing">["navigation"]
@@ -21,13 +26,17 @@ const PhotoSharing = ( ) => {
     TabStackScreenProps<"PhotoSharing">["route"]
   >( );
   const { item } = params;
-  // TODO: seems expected here but not actually defined in App.js the only start point
-  const sharedText = item.extraData?.userInput;
-  const resetObservationFlowSlice = useStore( state => state.resetObservationFlowSlice );
-  const prepareObsEdit = useStore( state => state.prepareObsEdit );
-  const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
-  const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs();
-  const [navigationHandled, setNavigationHandled] = useState( null );
+  const resetObservationFlowSlice = useStore(
+    ( state: ObservationFlowSlice ) => state.resetObservationFlowSlice,
+  );
+  const prepareObsEdit = useStore(
+    ( state: ObservationFlowSlice ) => state.prepareObsEdit,
+  );
+  const setPhotoImporterState = useStore(
+    ( state: ObservationFlowSlice ) => state.setPhotoImporterState,
+  );
+  const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs( );
+  const [navigationHandled, setNavigationHandled] = useState<boolean | null>( null );
 
   const resetNavigator = useCallback( (
     screen: "Match" | "ObsEdit" | "Suggestions" | "GroupPhotos",
@@ -51,10 +60,11 @@ const PhotoSharing = ( ) => {
     } ),
   ), [navigation] );
 
-  const createObservationAndNavigate = useCallback( async photoUris => {
+  const createObservationAndNavigate = useCallback( async ( photoUris: SharedPhoto[] ) => {
     try {
       const newObservation = await Observation.createObservationWithPhotos( photoUris );
-      newObservation.description = sharedText;
+      // We call this fct here only after a photoUris.length === 1 check
+      await unlinkIfShareExtensionSource( photoUris[0] );
       prepareObsEdit( newObservation );
 
       return resetNavigator( isDefaultMode
@@ -67,16 +77,19 @@ const PhotoSharing = ( ) => {
       );
       return null;
     }
-  }, [sharedText, prepareObsEdit, isDefaultMode, resetNavigator, screenAfterPhotoEvidence] );
+  }, [prepareObsEdit, isDefaultMode, resetNavigator, screenAfterPhotoEvidence] );
 
   useEffect( ( ) => {
     const { data } = item;
+
+    if ( data === null ) {
+      return;
+    }
 
     // when sharing, we need to reset zustand like we do while
     // navigating through the AddObsBottomSheet
     resetObservationFlowSlice( );
 
-    // TODO: fix TS of the share item
     const photoUris = data
       .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
       .map( x => ( { image: { uri: x.data } } ) );
@@ -85,13 +98,11 @@ const PhotoSharing = ( ) => {
       createObservationAndNavigate( photoUris );
     } else {
       // Go to GroupPhotos screen
-      const firstObservationDefaults = { description: sharedText };
       setPhotoImporterState( {
         photoLibraryUris: photoUris.map( x => x.image.uri ),
         groupedPhotos: photoUris.map( photo => ( {
           photos: [photo],
         } ) ),
-        firstObservationDefaults,
       } );
       resetNavigator( "GroupPhotos" );
     }
@@ -101,7 +112,6 @@ const PhotoSharing = ( ) => {
     navigation,
     resetObservationFlowSlice,
     setPhotoImporterState,
-    sharedText,
     resetNavigator,
   ] );
 

@@ -11,6 +11,7 @@ import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
 import {
   resultToSubject,
+  subjectToResult,
   subjectToText,
 } from "components/Explore/ExploreV2/helpers/universalSearchSubject";
 import type { LocationSearchResultItem }
@@ -46,6 +47,8 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
+import type { ExploreV2RecentSearchesSlice } from "stores/createExploreV2RecentSearchesSlice";
+import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -90,6 +93,13 @@ const UniversalSearch = ( ) => {
   const currentUser = useCurrentUser( );
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
+
+  const recordSubject = useStore(
+    ( state: ExploreV2RecentSearchesSlice ) => state.exploreRecentSearches.recordSubject,
+  );
+  const recordPlace = useStore(
+    ( state: ExploreV2RecentSearchesSlice ) => state.exploreRecentSearches.recordPlace,
+  );
 
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
   const tabBarHeight = useContext( BottomTabBarHeightContext ) ?? 0;
@@ -156,14 +166,19 @@ const UniversalSearch = ( ) => {
     locationInputRef.current?.focus( );
   }, [commitSubject, commonNameIsPrimary, t] );
 
-  const handleLocationSelect = useCallback( ( place: LocationSearchResultItem ) => {
-    setSelectedLocation( {
-      type: "place",
-      place: { id: place.id, display_name: place.display_name },
-    } );
-    commitLocation( place.display_name );
+  const handlePlaceSelect = useCallback( ( place: Place ) => {
+    setSelectedLocation( { type: "place", place } );
+    commitLocation( place.display_name ?? "" );
     Keyboard.dismiss( );
   }, [commitLocation] );
+
+  const handleLocationSelect = useCallback( ( place: LocationSearchResultItem ) => {
+    handlePlaceSelect( {
+      id: place.id,
+      display_name: place.display_name,
+      place_type: place.place_type,
+    } );
+  }, [handlePlaceSelect] );
 
   const handleSelectWorldwide = useCallback( ( ) => {
     setSelectedLocation( { type: "worldwide" } );
@@ -208,8 +223,13 @@ const UniversalSearch = ( ) => {
       default:
         dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
     }
+    // Record recent subject if it's from an autocomplete result
+    if ( selectedSubject && subjectToResult( selectedSubject ) ) {
+      recordSubject( selectedSubject );
+    }
+    if ( selectedLocation?.type === "place" ) { recordPlace( selectedLocation.place ); }
     navigation.popTo( "ExploreResults" );
-  }, [selectedSubject, selectedLocation, dispatch, navigation] );
+  }, [selectedSubject, selectedLocation, dispatch, navigation, recordSubject, recordPlace] );
 
   const renderItem = useCallback<ListRenderItem<SearchResultItem>>( ( { item } ) => {
     if ( item.type === "place" ) {
@@ -250,6 +270,7 @@ const UniversalSearch = ( ) => {
     listEmptyComponent = (
       <LocationDefaultOptions
         onSelectNearby={handleSelectNearby}
+        onSelectPlace={handlePlaceSelect}
         onSelectWorldwide={handleSelectWorldwide}
       />
     );

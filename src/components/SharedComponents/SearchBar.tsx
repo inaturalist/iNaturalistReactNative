@@ -2,7 +2,9 @@ import { fontRegular } from "appConstants/fontFamilies";
 import classNames from "classnames";
 import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useCallback, useRef, useState } from "react";
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from "react";
 import type { TextInput as RNTextInput } from "react-native";
 import { Keyboard } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
@@ -44,6 +46,18 @@ const SearchBar = ( {
   const [localValue, setLocalValue] = useState( value );
 
   const debounceTimeout = useRef<ReturnType<typeof setTimeout>>( undefined );
+  const [previousValue, setPreviousValue] = useState( value );
+
+  // Let the parent change the text from the outside, e.g. if we want to reset the search.
+  if ( value !== previousValue ) {
+    setPreviousValue( value );
+    setLocalValue( value );
+  }
+
+  // Drop any debounce still in flight when the parent changes the value and on unmount.
+  useEffect( ( ) => ( ) => {
+    clearTimeout( debounceTimeout.current );
+  }, [previousValue] );
 
   const debouncedHandleTextChange = useCallback( ( text: string ) => {
     setLocalValue( text );

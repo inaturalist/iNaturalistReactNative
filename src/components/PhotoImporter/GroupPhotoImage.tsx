@@ -2,18 +2,12 @@ import ObsImagePreview from "components/ObservationsFlashList/ObsImagePreview";
 import { Pressable } from "components/styledComponents";
 import React from "react";
 import type { ViewStyle } from "react-native";
+import type { GroupedPhoto } from "stores/createObservationFlowSlice";
 
-interface Item {
-  photos: {
-    image: {
-      uri: string;
-    };
-  }[];
-}
 interface Props {
-  item: Item;
-  selectedObservations: Item[];
-  selectObservationPhotos: ( isSelected: boolean, item: Item ) => void;
+  item: GroupedPhoto;
+  selectedObservations: GroupedPhoto[];
+  selectObservationPhotos: ( isSelected: boolean, item: GroupedPhoto ) => void;
   style?: ViewStyle;
 }
 

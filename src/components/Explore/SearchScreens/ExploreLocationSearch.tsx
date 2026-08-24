@@ -32,8 +32,9 @@ interface Props {
   closeModal: () => void;
   hasPermissions?: boolean;
   onSelectNearby: ( ) => Promise<void> | void;
-  renderPermissionsGate: RenderLocationPermissionsGateFunction;
-  requestPermissions: ( ) => void;
+  // Optional: exploreV2 relies on ExploreResults for all perms handling
+  renderPermissionsGate?: RenderLocationPermissionsGateFunction;
+  requestPermissions?: ( ) => void;
   updateLocation: ( location: "worldwide" | ApiPlace ) => void;
 }
 
@@ -114,7 +115,7 @@ const ExploreLocationSearch = ( {
   }, [onSelectNearby, closeModal] );
 
   const onNearbyPressed = () => {
-    if ( hasPermissions ) {
+    if ( hasPermissions || !requestPermissions ) {
       setNearbyLocation( );
     } else {
       requestPermissions( );
@@ -173,7 +174,7 @@ const ExploreLocationSearch = ( {
         ListEmptyComponent={emptyListComponent}
         ListFooterComponent={Footer}
       />
-      {renderPermissionsGate( { onPermissionGranted: setNearbyLocation } )}
+      {renderPermissionsGate?.( { onPermissionGranted: setNearbyLocation } )}
     </ViewWrapper>
   );
 };

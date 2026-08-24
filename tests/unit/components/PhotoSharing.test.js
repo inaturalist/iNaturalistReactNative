@@ -58,7 +58,7 @@ const setupMocks = ( overrides = {} ) => {
     isDefaultMode: mocks.isDefaultMode,
   } );
 
-  Observation.createObservationWithPhotos.mockResolvedValue( { description: "" } );
+  Observation.createObservationWithPhotos.mockResolvedValue( );
 
   return {
     ...mocks,
@@ -70,7 +70,7 @@ const setupMocks = ( overrides = {} ) => {
 };
 
 const mockShare = {
-  data: [{ data: "file://photo.jpg", mimeType: "image/jpeg" }],
+  data: [{ data: "file://photo.jpg", mimeType: JPEG }],
 };
 
 const expectNavigationReset = ( mockDispatch, screenName, lastScreen = "PhotoSharing" ) => {
@@ -94,14 +94,9 @@ describe( "PhotoSharing", ( ) => {
   } );
 
   describe( "Share Single Photo", ( ) => {
-    const singlePhotoData = {
-      ...mockShare,
-      extraData: { userInput: "Share photo with description" },
-    };
-
     it( "should handle single photo in default mode", async ( ) => {
       const mocks = setupMocks( );
-      mockUseRoute.mockReturnValue( createMockRoute( singlePhotoData ) );
+      mockUseRoute.mockReturnValue( createMockRoute( mockShare ) );
 
       renderComponent( <PhotoSharing /> );
 
@@ -113,15 +108,13 @@ describe( "PhotoSharing", ( ) => {
       expect( Observation.createObservationWithPhotos ).toHaveBeenCalledWith( [
         { image: { uri: "file://photo.jpg" } },
       ] );
-      expect( mocks.prepareObsEdit ).toHaveBeenCalledWith(
-        expect.objectContaining( { description: "Share photo with description" } ),
-      );
+      expect( mocks.prepareObsEdit ).toHaveBeenCalled( );
       expectNavigationReset( mocks.dispatch, "Match" );
     } );
 
     it( "should handle single photo in advanced mode", async ( ) => {
       const mocks = setupMocks( { isDefaultMode: false, screenAfterPhotoEvidence: "ObsEdit" } );
-      mockUseRoute.mockReturnValue( createMockRoute( singlePhotoData ) );
+      mockUseRoute.mockReturnValue( createMockRoute( mockShare ) );
 
       renderComponent( <PhotoSharing /> );
 
@@ -136,7 +129,7 @@ describe( "PhotoSharing", ( ) => {
       const mocks = setupMocks( );
       const error = new Error( "Creation failed" );
       Observation.createObservationWithPhotos.mockRejectedValue( error );
-      mockUseRoute.mockReturnValue( createMockRoute( singlePhotoData ) );
+      mockUseRoute.mockReturnValue( createMockRoute( mockShare ) );
 
       renderComponent( <PhotoSharing /> );
 
@@ -148,30 +141,14 @@ describe( "PhotoSharing", ( ) => {
       } );
       expect( mocks.dispatch ).not.toHaveBeenCalled( );
     } );
-
-    it( "should handle photo with no description", async ( ) => {
-      const mocks = setupMocks( );
-
-      mockUseRoute.mockReturnValue( createMockRoute( mockShare ) );
-
-      renderComponent( <PhotoSharing /> );
-
-      await waitFor( ( ) => {
-        expect( mocks.prepareObsEdit ).toHaveBeenCalledWith(
-          expect.objectContaining( { description: undefined } ),
-        );
-      } );
-    } );
   } );
 
   describe( "Share Multiple Photos", ( ) => {
     const multiplePhotosData = {
-      mimeType: JPEG,
       data: [
         { data: "file://photo1.jpg", mimeType: JPEG },
         { data: "file://photo2.jpg", mimeType: JPEG },
       ],
-      extraData: { userInput: "Multiple photos" },
     };
 
     it( "should navigate to GroupPhotos for multiple photos", async ( ) => {
@@ -187,7 +164,6 @@ describe( "PhotoSharing", ( ) => {
             { photos: [{ image: { uri: "file://photo1.jpg" } }] },
             { photos: [{ image: { uri: "file://photo2.jpg" } }] },
           ],
-          firstObservationDefaults: { description: "Multiple photos" },
         } );
       } );
       expectNavigationReset( mocks.dispatch, "GroupPhotos" );

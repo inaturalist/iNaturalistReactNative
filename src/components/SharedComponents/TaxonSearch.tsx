@@ -1,3 +1,6 @@
+import type { ParamListBase } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import EmptySearchResults from "components/Explore/SearchScreens/EmptySearchResults";
 import {
   Body2,
@@ -7,8 +10,10 @@ import {
 import { ScreenShell } from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import { useStackHost } from "navigation/StackHostContext";
-import React, { useMemo } from "react";
-import type { ListRenderItem } from "react-native";
+import React, {
+  useEffect, useEffectEvent, useMemo, useRef,
+} from "react";
+import type { ListRenderItem, TextInput } from "react-native";
 import { FlatList } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { RealmTaxon } from "realmModels/types";
@@ -24,6 +29,11 @@ const EMPTY_TAXA: RealmTaxon[] = [];
 interface Props {
   query?: string;
   setQuery: ( newQuery: string ) => void;
+  // Delay focusing (and thus showing the keyboard for) the search input
+  // until the screen's push/fade transition finishes, instead of focusing
+  // on mount, which makes the transition janky. Only meaningful when this
+  // component is rendered as its own navigation screen.
+  focusAfterTransition?: boolean;
   isLoading?: boolean;
   isLocal?: boolean;
   renderItem: ListRenderItem<RealmTaxon>;
@@ -31,6 +41,7 @@ interface Props {
 }
 
 const TaxonSearch = ( {
+  focusAfterTransition = false,
   isLoading = false,
   isLocal = false,
   query = "",
@@ -45,6 +56,29 @@ const TaxonSearch = ( {
     : 0;
   const { t } = useTranslation( );
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>( );
+  const searchInputRef = useRef<TextInput>( null );
+
+  // onTransitionEnd here is defined as an effectEvent so that the listener
+  // is not redefined when `query` changes which would otherwise be an effect dep
+  // https://react.dev/reference/react/useEffectEvent#using-an-event-in-an-effect
+  const onTransitionEnd = useEffectEvent( ( e: { data: { closing: boolean } } ) => {
+    // the "closing" data is signaling this _is_ basically closing, i.e., "we're done"
+    if ( !e.data?.closing && query === "" ) {
+      searchInputRef.current?.focus( );
+    }
+  } );
+
+  useEffect( ( ) => {
+    if ( !focusAfterTransition ) {
+      return ( ) => {};
+    }
+    const unsubscribeTransitionEnd = navigation.addListener(
+      "transitionEnd",
+      onTransitionEnd,
+    );
+    return unsubscribeTransitionEnd;
+  }, [focusAfterTransition, navigation] );
 
   const emptyListComponent = useMemo( ( ) => (
     query.length > 0
@@ -76,7 +110,8 @@ const TaxonSearch = ( {
           handleTextChange={setQuery}
           value={query}
           testID="SearchTaxon"
-          autoFocus={query === ""}
+          autoFocus={!focusAfterTransition && query === ""}
+          input={searchInputRef}
         />
         { isLocal && (
           <View className="flex-row items-center gap-x-[19px] mt-[21px]">

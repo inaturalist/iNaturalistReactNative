@@ -40,6 +40,7 @@ export enum EXPLORE_V2_PLACE_MODE {
 export interface Place {
   id: number;
   display_name?: string;
+  place_type?: number | null;
 }
 
 interface Taxon {
@@ -55,12 +56,7 @@ interface User {
   id: number;
   login: string;
   icon_url?: string;
-}
-
-interface Project {
-  id: number;
-  title: string;
-  icon?: string;
+  observations_count?: number;
 }
 
 export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
@@ -68,7 +64,7 @@ export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
 export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
-  | { type: "project"; project: Project }
+  | { type: "project"; project: ApiProjectSummary }
   | { type: "unobserved"; user: User }
   | { type: "unknown" };
 
@@ -97,10 +93,9 @@ export interface ExploreV2Filters {
   wildStatus: WILD_STATUS;
   reviewedFilter: REVIEWED;
   photoLicense: PHOTO_LICENSE;
-  // Iconic-taxon filter (e.g. "unknown")
-  iconic_taxa?: string[] | null;
   // User / project, in ExploreV2 parlance we always consider taxon to be the "subject"
   user?: ApiUser | null;
+  excludeUser?: ApiUser | null;
   project?: ApiProjectSummary | null;
 }
 

@@ -1,15 +1,12 @@
-// @flow
-
 import "../../global.css";
 
 import { useNavigation } from "@react-navigation/native";
 import RootStackNavigator from "navigation/RootStackNavigator";
-import type { Node } from "react";
+import type { PropsWithChildren } from "react";
 import React, { useCallback } from "react";
-import {
-  useCurrentUser,
-  useShare,
-} from "sharedHooks";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import type { SharedData } from "sharedHooks/useShare";
+import useShare from "sharedHooks/useShare";
 
 import AppStateListener from "./AppStateListener";
 import useDeferredStartup from "./hooks/useDeferredStartup";
@@ -17,20 +14,15 @@ import useLinking from "./hooks/useLinking";
 import NetworkService from "./NetworkService";
 import StartupService from "./StartupService";
 
-type SharedItem = {
-  mimeType: string,
-  data: string | string[]
-};
-
-const handleShare = ( navigation, item: ?SharedItem ) => {
+const handleShare = ( navigation, item?: SharedData | null ) => {
   if ( !item ) {
     // user hasn't shared any items
     return;
   }
 
-  const { mimeType, data } = item;
+  const { data } = item;
 
-  if ( !mimeType && !data ) {
+  if ( !data ) {
     // user hasn't shared any images
     return;
   }
@@ -43,20 +35,15 @@ const handleShare = ( navigation, item: ?SharedItem ) => {
   } );
 };
 
-type Props = {
-  // $FlowIgnore
-  children?: unknown,
-};
-
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
-const App = ( { children }: Props ): Node => {
+const App = ( { children }: PropsWithChildren ) => {
   const navigation = useNavigation( );
 
   // attempting to make sure that navigation is only called once
   // for performance reasons
   const onShare = useCallback(
-    item => handleShare( navigation, item ),
+    ( item?: SharedData | null ) => handleShare( navigation, item ),
     [navigation],
   );
 

@@ -3919,17 +3919,19 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - SensitiveInfo (5.6.2):
+  - SensitiveInfo (6.1.5):
     - boost
     - DoubleConversion
     - fast_float
     - fmt
     - glog
     - hermes-engine
+    - NitroModules
     - RCT-Folly
     - RCT-Folly/Fabric
     - RCTRequired
     - RCTTypeSafety
+    - React-callinvoker
     - React-Core
     - React-debug
     - React-Fabric
@@ -4557,11 +4559,11 @@ SPEC CHECKSUMS:
   RNPermissions: 79345e03d8bede3692368496ec89dcc4768585b5
   RNReanimated: c7f41b239964ff97c0ac083b2f1801d3d754516e
   RNScreens: 4f2aed147a2775017923789d8a0a2d377712ec2e
-  RNShareMenu: 37257caed054715d69cd3c9a25a034113ec720ef
+  RNShareMenu: 85b0a3d8b0d34e4b088d8a18600bc0a0b69a96a6
   RNStoreReview: 8f6061907efb6474757db004ee8faac728fd2ada
   RNSVG: c7b9ee1f2352f984e79d6e3238645b81ced60516
   RNWorklets: a3184955a41f2be46898a937e2821469c8c8da42
-  SensitiveInfo: 09107b865dc23b4e9c0a61ec01385387bf3391a8
+  SensitiveInfo: ddf05bc892a97c058f167057582e6a2d05e99c54
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   VisionCamera: 0044a94f7489f19e19d5938e97dfc36f4784af3c
   VisionCameraPluginInatVision: 3b006a7a434ddfc23d789729b6d98e451f90c4e4

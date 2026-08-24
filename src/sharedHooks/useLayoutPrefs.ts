@@ -1,7 +1,8 @@
+import type { LayoutSlice } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
 
 // Wraps values from the layout slice with descriptive names
-const selector = state => ( {
+const selector = ( state : LayoutSlice ) => ( {
   // Vestigial stuff
   obsDetailsTab: state.obsDetailsTab,
   setObsDetailsTab: state.setObsDetailsTab,

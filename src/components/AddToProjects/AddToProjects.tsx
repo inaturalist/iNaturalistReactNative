@@ -8,11 +8,16 @@ import {
   ButtonBar,
   CustomFlashList,
   INatIcon,
+  WarningSheet,
 } from "components/SharedComponents";
 import { SharedStackBottomInsetViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
@@ -20,6 +25,8 @@ import type { RealmProject } from "realmModels/types";
 import buildProjectObservationSelection, {
   areProjectIdSetsEqual,
 } from "sharedHelpers/buildProjectObservationSelection";
+// eslint-disable-next-line max-len
+import type { ProjectFieldValidationError } from "sharedHelpers/validateProjectFieldsForObservation";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
 import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
@@ -37,6 +44,20 @@ const DROP_SHADOW = getShadow( {
 } );
 
 const ItemSeparator = ( ) => <View className="border-b border-lightGray" />;
+
+function getCompletedProjectIds(
+  selectedProjectIds: Set<number>,
+  validationErrors: ProjectFieldValidationError[],
+): Set<number> {
+  const invalidProjectIds = new Set(
+    validationErrors.map( error => error.projectId ),
+  );
+  return new Set(
+    [...selectedProjectIds].filter(
+      projectId => !invalidProjectIds.has( projectId ),
+    ),
+  );
+}
 
 const AddToProjects = ( ) => {
   const { t } = useTranslation( );
@@ -60,12 +81,14 @@ const AddToProjects = ( ) => {
 
   const initialSelectedProjectIds = new Set(
     ( currentObservation?.projectObservations ?? [] )
+      .filter( po => !po._pendingRemoval && !po._pending_deletion )
       .map( po => po.projectId ),
   );
 
   const [selectedProjectIds, setSelectedProjectIds] = useState(
     () => initialSelectedProjectIds,
   );
+  const [showMissingInfoSheet, setShowMissingInfoSheet] = useState( false );
 
   const joinedProjects = useMemo(
     () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
@@ -83,7 +106,17 @@ const AddToProjects = ( ) => {
     selectedProjectIds,
     initialSelectedProjectIds,
   );
-  const saveDisabled = !validationResult.valid || selectionUnchanged;
+
+  const commitProjectSelection = useCallback( ( ) => {
+    const { projectObservations } = buildProjectObservationSelection(
+      currentObservation?.projectObservations,
+      selectedProjectIds,
+    );
+    updateObservationKeys( {
+      projectObservations,
+    } );
+  }, [currentObservation, selectedProjectIds, updateObservationKeys] );
+
   const listHeaderComponent = useMemo(
     ( ) => (
       <View className="px-4 pt-5 pb-6">
@@ -142,24 +175,45 @@ const AddToProjects = ( ) => {
   }, [] );
 
   const onSave = useCallback( ( ) => {
-    const {
-      projectObservations,
-      projectObservationUuidsToDelete,
-    } = buildProjectObservationSelection(
-      currentObservation?.projectObservations,
-      currentObservation?.projectObservationUuidsToDelete,
+    if ( validationResult.valid ) {
+      commitProjectSelection( );
+      navigation.goBack( );
+    } else {
+      setShowMissingInfoSheet( true );
+    }
+  }, [commitProjectSelection, navigation, validationResult.valid] );
+
+  const onKeepEditing = useCallback( ( ) => {
+    setShowMissingInfoSheet( false );
+  }, [] );
+
+  const onLeave = useCallback( ( ) => {
+    setShowMissingInfoSheet( false );
+
+    // Get which projects have completed all required inputs, i.e. no validation errors
+    const completedProjectIds = getCompletedProjectIds(
       selectedProjectIds,
+      validationResult.errors,
+    );
+
+    // Remove incomplete projects' POs
+    const { projectObservations: existingProjectObservations }
+      = currentObservation || {};
+    const { projectObservations } = buildProjectObservationSelection(
+      existingProjectObservations,
+      completedProjectIds,
     );
     updateObservationKeys( {
       projectObservations,
-      projectObservationUuidsToDelete,
     } );
+
     navigation.goBack( );
   }, [
     currentObservation,
     navigation,
     selectedProjectIds,
     updateObservationKeys,
+    validationResult.errors,
   ] );
 
   const renderExpanded = useCallback(
@@ -279,10 +333,23 @@ const AddToProjects = ( ) => {
             text={t( "SAVE" )}
             onPress={onSave}
             level="neutral"
-            disabled={saveDisabled}
+            disabled={selectionUnchanged}
           />
         </ButtonBar>
       </View>
+      {showMissingInfoSheet && (
+        <WarningSheet
+          buttonText={t( "LEAVE" )}
+          confirm={onLeave}
+          handleSecondButtonPress={onKeepEditing}
+          headerText={t( "MISSING-INFO" )}
+          loading={false}
+          onPressClose={onKeepEditing}
+          secondButtonText={t( "KEEP-EDITING" )}
+          testID="MissingInfoSheet"
+          text={t( "One-or-more-projects-still-need-required-info" )}
+        />
+      )}
     </SharedStackBottomInsetViewWrapper>
   );
 };

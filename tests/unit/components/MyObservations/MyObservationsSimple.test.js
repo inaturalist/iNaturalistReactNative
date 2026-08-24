@@ -1,10 +1,10 @@
 import { screen } from "@testing-library/react-native";
 import MyObservationsSimple, { OBSERVATIONS_TAB }
   from "components/MyObservations/MyObservationsSimple";
-import { MyObservationsProvider } from "providers/MyObservationsContext";
 import React from "react";
 // import DeviceInfo from "react-native-device-info";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
@@ -93,22 +93,22 @@ const renderMyObservations = (
   showSearchOfflineNotice = false,
   isConnected = true,
 ) => renderComponent(
-  <MyObservationsProvider>
-    <MyObservationsSimple
-      currentUser={currentUser}
-      isConnected={isConnected}
-      layout={layout}
-      observationIds={mockObsIds}
-      onEndReached={jest.fn( )}
-      handlePullToRefresh={jest.fn( )}
-      updateObservationsView={jest.fn( )}
-      setShowLoginSheet={jest.fn( )}
-      activeTab={OBSERVATIONS_TAB}
-      showSearchEmptyState={showSearchEmptyState}
-      showSearchOfflineNotice={showSearchOfflineNotice}
-    />
-  </MyObservationsProvider>,
+  <MyObservationsSimple
+    currentUser={currentUser}
+    isConnected={isConnected}
+    layout={layout}
+    observationIds={mockObsIds}
+    onEndReached={jest.fn( )}
+    handlePullToRefresh={jest.fn( )}
+    updateObservationsView={jest.fn( )}
+    setShowLoginSheet={jest.fn( )}
+    activeTab={OBSERVATIONS_TAB}
+    showSearchEmptyState={showSearchEmptyState}
+    showSearchOfflineNotice={showSearchOfflineNotice}
+  />,
 );
+
+const initialStoreState = useStore.getState( );
 
 describe( "MyObservationsSimple", () => {
   beforeAll( async () => {
@@ -116,6 +116,7 @@ describe( "MyObservationsSimple", () => {
   } );
 
   beforeEach( () => {
+    useStore.setState( initialStoreState, true );
     mockObsByUuid = {};
     mockObservations.forEach( obs => {
       mockObsByUuid[obs.uuid] = obs;
