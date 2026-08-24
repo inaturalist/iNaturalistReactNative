@@ -1,5 +1,6 @@
 import * as observationFieldValuesApi from "api/observationFieldValues";
 import factory, { makeResponse } from "tests/factory";
+import { markRecordUploaded } from "uploaders";
 import {
   filterDirtyOfvs,
   filterDirtyPos,
@@ -7,6 +8,8 @@ import {
 } from "uploaders/projectChildrenUploader";
 
 jest.mock( "api/observationFieldValues" );
+jest.mock( "uploaders" );
+
 const mockOpts = { api_token: "test-token", signal: new AbortController().signal };
 let mockRealm;
 
@@ -79,6 +82,49 @@ describe( "projectChildrenUploader", () => {
   } );
 
   describe( "uploadProjectChildren", () => {
+    it( "POSTs multiple dirty OFVs in parallel", async () => {
+      const ofvOne = dirtyOfv( {
+        uuid: "ofv-uuid-1",
+        obsFieldId: 10,
+        value: "male",
+      } );
+      const ofvTwo = dirtyOfv( {
+        uuid: "ofv-uuid-2",
+        obsFieldId: 20,
+        value: "shrubland",
+      } );
+      const observation = factory( "LocalObservation", {
+        uuid: "obs-uuid",
+        observationFieldValues: [ofvOne, ofvTwo],
+        projectObservations: [],
+      } );
+
+      await uploadProjectChildren( "obs-uuid", observation, mockOpts, mockRealm );
+
+      expect( observationFieldValuesApi.createObservationFieldValue ).toHaveBeenCalledTimes( 2 );
+      expect( observationFieldValuesApi.createObservationFieldValue ).toHaveBeenCalledWith(
+        {
+          observation_field_value: {
+            observation_id: "obs-uuid",
+            observation_field_id: 10,
+            value: "male",
+          },
+        },
+        mockOpts,
+      );
+      expect( observationFieldValuesApi.createObservationFieldValue ).toHaveBeenCalledWith(
+        {
+          observation_field_value: {
+            observation_id: "obs-uuid",
+            observation_field_id: 20,
+            value: "shrubland",
+          },
+        },
+        mockOpts,
+      );
+      expect( markRecordUploaded ).toHaveBeenCalledTimes( 2 );
+    } );
+
     it( "PUTs OFVs that were previously synced", async () => {
       const ofv = dirtyOfv( {
         uuid: "ofv-uuid",
