@@ -25,11 +25,11 @@ const createObservationFieldValue = async <T = ApiDefaultResult>(
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    const { results } = await inatjs.observation_field_values.create(
+    const response = await inatjs.observation_field_values.create(
       { ...PARAMS, ...params },
       opts,
     );
-    return results;
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
