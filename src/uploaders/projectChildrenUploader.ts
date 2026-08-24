@@ -1,3 +1,6 @@
+import {
+  createObservationFieldValue,
+} from "api/observationFieldValues";
 import { createProjectObservation } from "api/projectObservations";
 import type Realm from "realm";
 import type {
@@ -29,6 +32,37 @@ function filterDirtyPos( observation: RealmObservation ): RealmProjectObservatio
     po => po.needsSync( )
       && !po._pending_deletion
       && !po.wasSynced( ),
+  );
+}
+
+async function uploadSingleObservationFieldValue(
+  ofv: RealmObservationFieldValue,
+  observationUUID: string,
+  options: UploadOptions,
+  realm: Realm,
+): Promise<void> {
+  const params = {
+    observation_field_value: {
+      observation_id: observationUUID,
+      observation_field_id: ofv.obsFieldId,
+      // We have filtered out empty OFVs in previous step, so type is string
+      value: ofv.value as string,
+    },
+  };
+
+  let response;
+  if ( ofv.wasSynced( ) && ofv.id ) {
+    console.log( "update branch" );
+  } else {
+    response = await createObservationFieldValue( params, options );
+  }
+
+  markRecordUploaded(
+    observationUUID,
+    ofv.uuid,
+    "ObservationFieldValue",
+    response,
+    realm,
   );
 }
 
@@ -64,7 +98,17 @@ async function uploadProjectChildren(
   const dirtyOfvs = filterDirtyOfvs( observation );
   const dirtyPos = filterDirtyPos( observation );
 
-  console.log( "dirtyOfvs", dirtyOfvs );
+  // The two batches need to be in sequence; PO phase waits until all OFVs settle.
+  // Because some POs might need a just uploaded OFV to not 422
+  // Can be parallel within each phase.
+  await Promise.all(
+    dirtyOfvs.map( ofv => uploadSingleObservationFieldValue(
+      ofv,
+      obsUUID,
+      options,
+      realm,
+    ) ),
+  );
 
   await Promise.all(
     dirtyPos.map( po => uploadSingleProjectObservation(
