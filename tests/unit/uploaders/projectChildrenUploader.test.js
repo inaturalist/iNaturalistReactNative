@@ -13,6 +13,29 @@ describe( "projectChildrenUploader", () => {
       };
       const observation = { observationFieldValues: [ofv] };
       expect( filterDirtyOfvs( observation ) ).toEqual( [ofv] );
+
+      it( "excludes tombstoned and empty OFVs", () => {
+        const observation = {
+          observationFieldValues: [
+            {
+              needsSync: () => true,
+              _pending_deletion: true,
+              value: "x",
+            },
+            {
+              needsSync: () => true,
+              _pending_deletion: false,
+              value: "",
+            },
+            {
+              needsSync: () => false,
+              _pending_deletion: false,
+              value: "y",
+            },
+          ],
+        };
+        expect( filterDirtyOfvs( observation ) ).toEqual( [] );
+      } );
       describe( "filterDirtyPos", () => {
         it( "includes never-synced POs that need sync", () => {
           const po = {
