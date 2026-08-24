@@ -290,6 +290,7 @@ const ExploreResults = ( ) => {
       case IDENTIFIERS_TAB:
         return (
           <ExploreV2UsersView
+            key={state.activeTab}
             enabled={canFetch}
             isConnected={isConnected}
             params={baseSearchParams}
