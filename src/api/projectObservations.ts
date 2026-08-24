@@ -27,8 +27,8 @@ const createProjectObservation = async (
   opts: ApiOpts = {},
 ): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
   try {
-    const { results } = await inatjs.project_observations.create( { ...PARAMS, ...params }, opts );
-    return results;
+    const response = await inatjs.project_observations.create( { ...PARAMS, ...params }, opts );
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
