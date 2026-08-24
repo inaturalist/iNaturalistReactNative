@@ -5,6 +5,7 @@ import type {
   RealmObservationFieldValue,
   RealmProjectObservation,
 } from "realmModels/types";
+import { markRecordUploaded } from "uploaders";
 
 interface UploadOptions {
   api_token?: string;
@@ -45,12 +46,13 @@ async function uploadSingleProjectObservation(
   };
   const response = await createProjectObservation( params, options );
 
-  console.log( "response", response );
-
-  // TODO: update realm
-  console.log( "observationUUID", observationUUID );
-  console.log( "realm", realm );
-  // );
+  markRecordUploaded(
+    observationUUID,
+    po.uuid,
+    "ProjectObservation",
+    response,
+    realm,
+  );
 }
 
 async function uploadProjectChildren(
