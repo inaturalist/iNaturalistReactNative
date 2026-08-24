@@ -36,7 +36,7 @@ const EMPTY_TABS: Tab[] = [];
 
 // first two tabs need to occupy less than 100% of the screen width
 // so the user can be cued by a third option peeking out
-const SCROLLABLE_TAB_WIDTH_RATIO = 0.42;
+export const SCROLLABLE_TAB_WIDTH_RATIO = 0.42;
 
 const SCROLL_STYLE = { flexGrow: 0 };
 
