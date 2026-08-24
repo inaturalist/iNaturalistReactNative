@@ -127,7 +127,14 @@ const Map = ( {
   } );
   const { isDebug } = useDebugMode( );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
-  const [currentZoom, setCurrentZoom] = useState( 0 );
+  // on iOS, onRegionChangeComplete does not fire when the map mounts with initialRegion
+  // Until the map reports a region of its own, derive the zoom from the region we're mounting with.
+  const [reportedZoom, setReportedZoom] = useState<number | null>( null );
+  const currentZoom = reportedZoom ?? (
+    initialRegion?.longitudeDelta
+      ? calculateZoom( screenWidth, initialRegion.longitudeDelta )
+      : 0
+  );
   const navigation = useNavigation( );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const [userLocation, setUserLocation] = useState<{
@@ -363,7 +370,7 @@ const Map = ( {
         setAndroidLocalRegion( newRegion );
       }
     }
-    setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
+    setReportedZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
   }, [
     previousTileUrl,
     tileUrlTemplate,
