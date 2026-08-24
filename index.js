@@ -23,11 +23,12 @@ import OfflineNavigationGuard from "navigation/OfflineNavigationGuard";
 import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
-import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import {
+  getActiveEnvironment,
   getInstallID,
   store as installDataMMKVStorage,
   LAST_CRASH_DATA,
@@ -128,13 +129,23 @@ initI18next();
 
 // Configure inatjs to use the chosen URLs
 inatjs.setConfig( {
-  apiURL: Config.API_URL,
-  writeApiURL: Config.API_URL,
+  apiURL: EnvConfig.API_URL,
+  writeApiURL: EnvConfig.API_URL,
   userAgent: getUserAgent(),
   headers: {
     "X-Installation-ID": getInstallID( ),
   },
 } );
+
+const activeEnvironment = getActiveEnvironment();
+if ( activeEnvironment ) {
+  // Reminder that this build isn't pointed at the default/production
+  // environment, set via the Developer screen's environment switcher
+  Alert.alert(
+    "Non-default environment",
+    `This app is running against the ${activeEnvironment} environment.`,
+  );
+}
 
 const queryClient = new QueryClient( {
   defaultOptions: {

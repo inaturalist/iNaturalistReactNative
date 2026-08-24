@@ -11,6 +11,7 @@ const INSTALL_ID = "installID";
 const ONBOARDING_SHOWN = "onboardingShown";
 export const IS_FRESH_INSTALL = "isFreshInstall";
 export const LAST_CRASH_DATA = "LAST_CRASH_DATA";
+const ACTIVE_ENVIRONMENT = "activeEnvironment";
 
 // This store is separate from the zustand store b/c it needs to survive sign
 // out, i.e these values should remain untill the app is uninstalled
@@ -49,4 +50,20 @@ export function getInstallID( ) {
 // used in a component, so no need to expose any other getters/setters
 export function useOnboardingShown() {
   return useMMKVBoolean( ONBOARDING_SHOWN, store );
+}
+
+// The baked-in environment prefix (e.g. "STAGING") the app should read
+// Config vars through, or undefined for the default environment. Lives in
+// this sign-out-surviving store because switching environments triggers a
+// hard sign out.
+export function getActiveEnvironment(): string | undefined {
+  return store.getString( ACTIVE_ENVIRONMENT );
+}
+
+export function setActiveEnvironment( prefix: string | null ) {
+  if ( prefix ) {
+    store.set( ACTIVE_ENVIRONMENT, prefix );
+  } else {
+    store.delete( ACTIVE_ENVIRONMENT );
+  }
 }

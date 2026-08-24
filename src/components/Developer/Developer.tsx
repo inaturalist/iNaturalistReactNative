@@ -5,20 +5,27 @@ import {
   DocumentDirectoryPath,
 } from "@dr.pogodin/react-native-fs";
 import { useNavigation } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
+import { switchEnvironment } from "components/LoginSignUp/AuthenticationService";
 import {
   Button,
   ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import { RealmContext } from "providers/contexts";
 import React, { useState } from "react";
-import { I18nManager, Platform, Text } from "react-native";
+import {
+  Alert, I18nManager, Platform, Text,
+} from "react-native";
 import Config from "react-native-config";
 import DeviceInfo from "react-native-device-info";
 import RNRestart from "react-native-restart";
+import { EnvConfig, getAvailableEnvironments } from "sharedHelpers/envConfig";
+import { getActiveEnvironment } from "sharedHelpers/installData";
 import { useFeatureFlag } from "sharedHooks";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
@@ -34,6 +41,8 @@ import {
   emailRecentLogs,
   shareRecentLogs,
 } from "./logManagementHelpers";
+
+const { useRealm } = RealmContext;
 
 const modelFileName = Platform.select( {
   ios: Config.IOS_MODEL_FILE_NAME,
@@ -247,14 +256,61 @@ const PathStats = () => {
       <P>
         <CODE>{Config.API_URL}</CODE>
       </P>
-      <H2>Config.API_URL</H2>
+      <H2>EnvConfig.API_URL (active)</H2>
       <P>
-        <CODE>{Config.API_URL}</CODE>
+        <CODE>{EnvConfig.API_URL}</CODE>
       </P>
       <H2>getUserAgent()</H2>
       <P>
         <CODE>{getUserAgent()}</CODE>
       </P>
+    </>
+  );
+};
+
+const EnvironmentSwitcher = () => {
+  const realm = useRealm();
+  const queryClient = useQueryClient();
+  const activeEnvironment = getActiveEnvironment();
+  const availableEnvironments = getAvailableEnvironments();
+
+  const confirmSwitch = ( prefix: string | null ) => {
+    Alert.alert(
+      "Switch environment?",
+      "This will sign you out, delete all local Realm data, and restart "
+        + `the app on ${prefix ?? "default"}.`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Switch",
+          style: "destructive",
+          onPress: () => switchEnvironment( prefix, { realm, queryClient } ),
+        },
+      ],
+    );
+  };
+
+  return (
+    <>
+      <H1>Environment</H1>
+      <P>
+        <CODE>{`Active: ${activeEnvironment ?? "default"}`}</CODE>
+      </P>
+      <Button
+        onPress={() => confirmSwitch( null )}
+        text="USE DEFAULT"
+        className="mb-5"
+        disabled={!activeEnvironment}
+      />
+      {availableEnvironments.map( env => (
+        <Button
+          key={env}
+          onPress={() => confirmSwitch( env )}
+          text={`SWITCH TO ${env}`}
+          className="mb-5"
+          disabled={activeEnvironment === env}
+        />
+      ) )}
     </>
   );
 };
@@ -292,6 +348,7 @@ const Developer = () => {
         <ComputerVisionStats />
         <FeatureFlags />
         <PathStats />
+        <EnvironmentSwitcher />
         <AppFileSizes />
         {/* TODO: remove once MOB-1573 is validated in TestFlight */}
         <TestFlightAdminFeatureFlagTest />

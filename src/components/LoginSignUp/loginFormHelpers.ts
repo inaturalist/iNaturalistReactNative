@@ -8,8 +8,8 @@ import {
 } from "@react-native-google-signin/google-signin";
 import { t } from "i18next";
 import { Alert } from "react-native";
-import Config from "react-native-config";
 import type Realm from "realm";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import { log } from "sharedHelpers/logger";
 
 import type { AuthenticateUserResult } from "./AuthenticationService";
@@ -90,8 +90,8 @@ async function signInWithApple( realm: Realm ): Promise<AuthenticateUserResult> 
 }
 
 GoogleSignin.configure( {
-  iosClientId: Config.GOOGLE_IOS_CLIENT_ID,
-  webClientId: Config.GOOGLE_WEB_CLIENT_ID,
+  iosClientId: EnvConfig.GOOGLE_IOS_CLIENT_ID,
+  webClientId: EnvConfig.GOOGLE_WEB_CLIENT_ID,
   scopes: [
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
