@@ -96,12 +96,18 @@ describe( "markRecordUploaded", () => {
   test( "should update an ObservationFieldValue record correctly", () => {
     markRecordUploaded( "obs123", "ofv123", "ObservationFieldValue", mockResponse, mockRealm );
 
+    expect( mockRealm.objectForPrimaryKey ).toHaveBeenCalledWith( "Observation", "obs123" );
+    expect( safeRealmWrite ).toHaveBeenCalledTimes( 1 );
+
     expect( mockOfv.id ).toBe( 12345 );
     expect( mockOfv._synced_at ).toBeInstanceOf( Date );
   } );
 
   test( "should update a ProjectObservation record correctly", () => {
     markRecordUploaded( "obs123", "po123", "ProjectObservation", mockResponse, mockRealm );
+
+    expect( mockRealm.objectForPrimaryKey ).toHaveBeenCalledWith( "Observation", "obs123" );
+    expect( safeRealmWrite ).toHaveBeenCalledTimes( 1 );
 
     expect( mockPo.id ).toBe( 12345 );
     expect( mockPo._synced_at ).toBeInstanceOf( Date );
