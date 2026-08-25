@@ -5,6 +5,7 @@ import type {
   RealmObservation,
   RealmProjectObservation,
 } from "realmModels/types";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 interface DeleteOptions {
   api_token?: string;
@@ -48,4 +49,8 @@ export default async function syncProjectChildDeletions(
   await Promise.all(
     posToDelete.map( po => deleteRemoteProjectObservation( po, options ) ),
   );
+  // Remove realm entry
+  posToDelete.forEach( po => safeRealmWrite( realm, ( ) => {
+    realm.delete( po );
+  }, "deleting synced project observation from Realm" ) );
 }
