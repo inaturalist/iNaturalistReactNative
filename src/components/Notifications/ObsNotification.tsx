@@ -31,12 +31,12 @@ const ObsNotification = ( { notification }: Props ) => {
   };
   return (
     <View
-      className="shrink flex-row space-x-[10px]"
+      className="shrink flex-row gap-x-[10px]"
     >
       <ObservationIcon observation={notification.resource} />
-      <View className="flex-col shrink justify-center space-y-[8px]">
+      <View className="flex-col shrink justify-center gap-y-[8px]">
         <ObsNotificationText notification={notification} />
-        <View className="flex-row space-x-[8px]">
+        <View className="flex-row gap-x-[8px]">
           {
             type
               && (
