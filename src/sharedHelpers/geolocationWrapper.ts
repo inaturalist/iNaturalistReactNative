@@ -49,18 +49,23 @@ export function clearWatch( watchID: number ) {
 // Known bug in react-native-geolocation: getCurrentPosition does not work on
 // Android when enableHighAccuracy: true and maximumAge: 0.
 // See: https://github.com/michalchudziak/react-native-geolocation/issues/272
-// Added OS-specific conditions to both options below
-// to handle this issue and make it work properly on Android.
+// we also need to provide Android a max age here which can impact `getLastLocation` calls
+const ANDROID_MAXIMUM_AGE_MS = 5000;
+
 export const highAccuracyOptions = {
   enableHighAccuracy: true,
   timeout: 10000,
-  ...( Platform.OS === "ios" && { maximumAge: 0 } ),
+  maximumAge: Platform.OS === "ios"
+    ? 0
+    : ANDROID_MAXIMUM_AGE_MS,
 } as const;
 
 export const lowAccuracyOptions = {
   enableHighAccuracy: false,
   timeout: 2000,
-  ...( Platform.OS === "ios" && { maximumAge: 0 } ),
+  maximumAge: Platform.OS === "ios"
+    ? 0
+    : ANDROID_MAXIMUM_AGE_MS,
 } as const;
 
 export const getCurrentPositionWithOptions = (

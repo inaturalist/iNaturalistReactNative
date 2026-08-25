@@ -31,7 +31,7 @@ const AI_CAMERA_SUPPORTED = ( Platform.OS === "ios" && majorVersionIOS >= 11 )
   || ( Platform.OS === "android" && Platform.Version > 21 );
 
 const GREEN_CIRCLE_CLASS = "bg-inatGreen rounded-full h-[36px] w-[36px] mb-2";
-const ROW_CLASS = "flex-row justify-center space-x-4 w-full flex-1";
+const ROW_CLASS = "flex-row justify-center gap-x-4 w-full flex-1";
 
 const AddObsBottomSheet = ( {
   closeBottomSheet, navAndCloseBottomSheet, hidden,

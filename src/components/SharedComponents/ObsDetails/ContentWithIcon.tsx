@@ -17,7 +17,7 @@ const ContentWithIcon = ( {
   children,
 }: Props ) => (
   <View
-    className={classNames( "flex-row space-x-[5px]", classNameMargin )}
+    className={classNames( "flex-row gap-x-[5px]", classNameMargin )}
     testID={`ContentWithIcon.${icon}`}
   >
     <INatIcon name={icon} size={size} />
