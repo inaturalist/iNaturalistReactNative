@@ -1,56 +1,48 @@
-import classnames from "classnames";
 import { View } from "components/styledComponents";
-import React, { ReactComponent } from "react";
+import React, { ReactComponent, useEffect } from "react";
 import Reanimated, {
-  FadeIn, Keyframe,
+  useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming,
 } from "react-native-reanimated";
 
 type Props = {
-  iconWrapperClasses: string;
-  layout: "horizontal" | "vertical";
   fadeInIcon: ReactComponent;
   fadeOutIcon: ReactComponent;
+  uniqueKey: string;
 }
 const AnimatedView = Reanimated.createAnimatedComponent( View );
 
-const keyframe = new Keyframe( {
-  0: { opacity: 0 },
-  40: { opacity: 1 },
-  100: { opacity: 0 },
-} );
-
 const FadeOutFadeInIcon = ( {
-  iconWrapperClasses,
-  layout,
   fadeInIcon,
   fadeOutIcon,
+  uniqueKey,
 }: Props ) => {
-  const fadeOutUploadCompleteIcon = (
-    <AnimatedView
-      entering={keyframe.duration( 2000 )}
-    >
-      {fadeOutIcon}
-    </AnimatedView>
-  );
+  const checkmarkOpacity = useSharedValue( 0 );
+  const statusOpacity = useSharedValue( 0 );
 
-  const fadeInObsStatusComponent = (
-    <AnimatedView entering={FadeIn.duration( 1000 ).delay( 2000 )}>
-      {fadeInIcon}
-    </AnimatedView>
-  );
+  useEffect( ( ) => {
+    checkmarkOpacity.value = withSequence(
+      withTiming( 1, { duration: 800 } ),
+      withDelay( 700, withTiming( 0, { duration: 500 } ) ),
+    );
+    statusOpacity.value = withDelay( 1500, withTiming( 1, { duration: 800 } ) );
+  }, [checkmarkOpacity, statusOpacity] );
+
+  const checkmarkStyle = useAnimatedStyle( ( ) => ( { opacity: checkmarkOpacity.value } ) );
+  const statusStyle = useAnimatedStyle( ( ) => ( { opacity: statusOpacity.value } ) );
+
   return (
-    <>
-      <View
-        className={classnames( "absolute h-full justify-center", {
-          "bottom-0": layout === "horizontal",
-        } )}
+    <View>
+      <AnimatedView
+        className="absolute h-full justify-center"
+        style={checkmarkStyle}
+        testID={`UploadIcon.complete.${uniqueKey}`}
       >
-        <View className={iconWrapperClasses}>
-          {fadeOutUploadCompleteIcon}
-        </View>
-      </View>
-      {fadeInObsStatusComponent}
-    </>
+        {fadeOutIcon}
+      </AnimatedView>
+      <AnimatedView style={statusStyle}>
+        {fadeInIcon}
+      </AnimatedView>
+    </View>
   );
 };
 export default FadeOutFadeInIcon;
