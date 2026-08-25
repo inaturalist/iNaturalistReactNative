@@ -82,7 +82,6 @@ const SearchMyObservationsTaxon = ( ) => {
         first={index === 0}
         fetchRemote={false}
         handleTaxonOrEditPress={( ) => onTaxonSelected( taxon )}
-        showCheckmark={false}
         taxon={taxon}
         testID={`SearchMyObservations.taxa.${taxon.id}`}
       />
@@ -100,6 +99,7 @@ const SearchMyObservationsTaxon = ( ) => {
         testID="SearchMyObservationsTaxon.close"
       />
       <TaxonSearch
+        focusAfterTransition
         isLoading={isLoading}
         isLocal={isLocal}
         query={taxonQuery}

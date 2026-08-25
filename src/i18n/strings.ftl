@@ -233,11 +233,11 @@ Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 # Label for a text input field during sign up to choose a username
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
-# Label for button that chooses a taxon
-Choose-taxon = Choose taxon
-# Label for button that chooses the best suggestion among a list of suggested
+# Accessibility hint for a button that chooses a taxon
+Chooses-taxon = Chooses taxon
+# Accessibility hint for button that chooses the best suggestion among a list of suggested
 # taxa for an identification
-Choose-top-taxon = Choose top taxon
+Chooses-top-taxon = Chooses top taxon
 # Label for a button that closes a window or popup
 Close = Close
 # Accessibility label for a button that closes the permission request screen
@@ -483,7 +483,7 @@ EDIT-LOCATION = EDIT LOCATION
 Edit-location = Edit location
 Edit-Observation = Edit Observation
 Edit-your-profile-change-your-settings = Edit your profile, change your notifications settings, and manage all other parts of your account.
-# Label for button that edits an observation's taxon
+# Accessibility hint for button that edits an observation's taxon
 Edits-this-observations-taxon = Edits this observation's taxon
 EDUCATORS = EDUCATORS
 EMAIL = EMAIL
@@ -721,6 +721,7 @@ July = July
 # Month of June
 June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
+KEEP-EDITING = KEEP EDITING
 # Display name for the iconic taxa category chromista
 Kelp-and-Diatoms = Kelp & Diatoms
 # Shows date user last active on iNaturalist on user profile
@@ -786,6 +787,7 @@ Membership-in-this-project-is-by-invitation-only = Membership in this project is
 Menu = Menu
 Missing-Date = Missing Date
 MISSING-EVIDENCE = MISSING EVIDENCE
+MISSING-INFO = MISSING INFO
 # Display name for the iconic taxa category for mollusca
 Mollusks = Mollusks
 Monthly-Donor = Monthly Donor
@@ -946,6 +948,7 @@ OK = OK
 # Sort order, refers to newest or oldest date
 Oldest-to-newest = Oldest to newest
 Once-you-create-and-upload-observations = Once you create & upload observations, other members of our community can add identifications to help your observations reach research grade.
+One-or-more-projects-still-need-required-info = One or more projects still need required info. Leave and only the completed ones will be saved.
 # Adjective, as in geoprivacy
 Open = Open
 OPEN-EMAIL = OPEN EMAIL
