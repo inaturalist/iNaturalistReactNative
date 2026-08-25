@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native";
+import { screen, userEvent } from "@testing-library/react-native";
 import ProjectDetails from "components/ProjectDetails/ProjectDetails";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import React from "react";
@@ -14,6 +14,12 @@ const mockProject = factory( "RemoteProject", {
   project_type: "collection",
   user_ids: [faker.number.int( )],
 } );
+
+const mockNavigateToExplore = jest.fn( );
+jest.mock( "sharedHooks/useNavigateToExplore", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockNavigateToExplore,
+} ) );
 
 const mockProjectWithDateRange = factory( "RemoteProject", {
   ...mockProject,
@@ -133,5 +139,22 @@ describe( "ProjectDetails", ( ) => {
     /> );
     const dateRange = await screen.findByText( "Mar 7, 2024 - Mar 14, 2024" );
     expect( dateRange ).toBeTruthy( );
+  } );
+
+  describe( "explore entry points", ( ) => {
+    const actor = userEvent.setup( );
+    const lastOptions = ( ) => mockNavigateToExplore.mock.calls.at( -1 )[0];
+
+    beforeEach( ( ) => {
+      mockNavigateToExplore.mockClear( );
+    } );
+
+    test( "opens the map view from the project's map section", async ( ) => {
+      renderComponent( <ProjectDetails project={mockProject} /> );
+
+      await actor.press( await screen.findByText( /VIEW IN EXPLORE/ ) );
+
+      expect( lastOptions( ).layout ).toBe( "map" );
+    } );
   } );
 } );

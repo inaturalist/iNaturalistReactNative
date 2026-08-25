@@ -17,6 +17,9 @@ import { useTranslation } from "react-i18next";
 import type { ListRenderItem } from "react-native";
 import Project from "realmModels/Project";
 import type { RealmProject } from "realmModels/types";
+import buildProjectObservationSelection, {
+  areProjectIdSetsEqual,
+} from "sharedHelpers/buildProjectObservationSelection";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
 import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
@@ -51,8 +54,19 @@ const AddToProjects = ( ) => {
   const currentObservation = useStore(
     ( state: ObservationFlowSlice ) => state.currentObservation,
   );
+  const updateObservationKeys = useStore(
+    ( state: ObservationFlowSlice ) => state.updateObservationKeys,
+  );
 
-  const [selectedProjectIds, setSelectedProjectIds] = useState( () => new Set( ) );
+  const initialSelectedProjectIds = new Set(
+    ( currentObservation?.projectObservations ?? [] )
+      .filter( po => !po._pendingRemoval && !po._pending_deletion )
+      .map( po => po.projectId ),
+  );
+
+  const [selectedProjectIds, setSelectedProjectIds] = useState(
+    () => initialSelectedProjectIds,
+  );
 
   const joinedProjects = useMemo(
     () => joinedProjectsCollection.map( jp => Project.mapRealmToPojo( jp ) ),
@@ -66,6 +80,11 @@ const AddToProjects = ( ) => {
     },
     [currentObservation, joinedProjects, selectedProjectIds],
   );
+  const selectionUnchanged = areProjectIdSetsEqual(
+    selectedProjectIds,
+    initialSelectedProjectIds,
+  );
+  const saveDisabled = !validationResult.valid || selectionUnchanged;
   const listHeaderComponent = useMemo(
     ( ) => (
       <View className="px-4 pt-5 pb-6">
@@ -123,9 +142,21 @@ const AddToProjects = ( ) => {
     } );
   }, [] );
 
-  const onSave = ( ) => {
+  const onSave = useCallback( ( ) => {
+    const { projectObservations } = buildProjectObservationSelection(
+      currentObservation?.projectObservations,
+      selectedProjectIds,
+    );
+    updateObservationKeys( {
+      projectObservations,
+    } );
     navigation.goBack( );
-  };
+  }, [
+    currentObservation,
+    navigation,
+    selectedProjectIds,
+    updateObservationKeys,
+  ] );
 
   const renderExpanded = useCallback(
     ( item: RealmProject, projectValid: boolean ) => (
@@ -244,7 +275,7 @@ const AddToProjects = ( ) => {
             text={t( "SAVE" )}
             onPress={onSave}
             level="neutral"
-            disabled={!validationResult.valid}
+            disabled={saveDisabled}
           />
         </ButtonBar>
       </View>

@@ -40,9 +40,9 @@ const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   [FeatureFlag.ExploreV2Enabled]: false,
   [FeatureFlag.NewsEnabled]: false,
   [FeatureFlag.TraditionalProjectsEnabled]: false,
-  [FeatureFlag.SearchMyObservationsEnabled]: false,
-  [FeatureFlag.SortMyObservationsEnabled]: false,
-  [FeatureFlag.MyObservationsMapViewEnabled]: false,
+  [FeatureFlag.SearchMyObservationsEnabled]: true,
+  [FeatureFlag.SortMyObservationsEnabled]: true,
+  [FeatureFlag.MyObservationsMapViewEnabled]: true,
   [FeatureFlag.TestFlightAdminMessageEnabled]: false,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: false,
 };

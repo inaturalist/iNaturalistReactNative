@@ -89,7 +89,7 @@ export default function validateProjectFieldsForObservation(
     project.projectObservationFields.forEach( pof => {
       const { obsField } = pof;
       if ( !obsField ) { return; }
-      const ofv = ObservationFieldValue.findForObsField( observation, obsField.id );
+      const ofv = ObservationFieldValue.findActiveForObsField( observation, obsField.id );
       const reason = validateProjectFieldValue( pof, ofv?.value );
       if ( reason ) {
         errors.push( {

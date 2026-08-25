@@ -1,10 +1,8 @@
 export interface LocationPickerObservation {
   latitude?: number;
   longitude?: number;
-
   privateLatitude?: number;
   privateLongitude?: number;
-
   positional_accuracy?: number;
 }
 

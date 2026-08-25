@@ -1,12 +1,7 @@
 import MyObservationsStackNavigator
   from "navigation/StackNavigators/MyObservationsStackNavigator";
-import { MyObservationsProvider } from "providers/MyObservationsContext";
 import React from "react";
 
-const MyObservationsContainer = ( ) => (
-  <MyObservationsProvider>
-    <MyObservationsStackNavigator />
-  </MyObservationsProvider>
-);
+const MyObservationsContainer = ( ) => <MyObservationsStackNavigator />;
 
 export default MyObservationsContainer;

@@ -1,4 +1,5 @@
 import { useNetInfo } from "@react-native-community/netinfo";
+import { useNavigation } from "@react-navigation/native";
 import type { ListRenderItem } from "@shopify/flash-list";
 import type { ApiPostForUser } from "api/types";
 import {
@@ -7,7 +8,8 @@ import {
   InfiniteScrollLoadingWheel,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useMemo } from "react";
+import type { TabStackScreenProps } from "navigation/types";
+import React, { useCallback, useMemo } from "react";
 
 import PostListItem from "./PostListItem";
 
@@ -23,7 +25,12 @@ interface Props {
   fetchNextPage: ( ) => void;
 }
 
-const PostList = ( { posts, isFetchingNextPage, fetchNextPage }: Props ) => {
+const PostList = ( {
+  posts,
+  isFetchingNextPage,
+  fetchNextPage,
+}: Props ) => {
+  const navigation = useNavigation<TabStackScreenProps<"Journal">["navigation"]>( );
   const { isConnected } = useNetInfo();
   const footerComponent = useMemo(
     () => (
@@ -38,8 +45,17 @@ const PostList = ( { posts, isFetchingNextPage, fetchNextPage }: Props ) => {
 
   const emptyComponent = useMemo( () => <ActivityIndicator size={50} />, [] );
 
-  const renderPost: ListRenderItem<ApiPostForUser> = ( { item } ) => (
-    <PostListItem item={item} />
+  const onPressPost = useCallback( ( post: ApiPostForUser ) => {
+    navigation.navigate( "PostDetails", {
+      body: post.body,
+      published_at: post.published_at,
+      title: post.title,
+    } );
+  }, [navigation] );
+
+  const renderPost: ListRenderItem<ApiPostForUser> = useCallback(
+    ( { item } ) => <PostListItem item={item} onPress={onPressPost} />,
+    [onPressPost],
   );
 
   return (

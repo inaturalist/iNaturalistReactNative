@@ -6,9 +6,10 @@ import {
 } from "components/SharedComponents";
 import {
   Image,
+  Pressable,
   View,
 } from "components/styledComponents";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { formatLongDate } from "sharedHelpers/dateAndTime";
 import { useTranslation } from "sharedHooks";
 
@@ -20,22 +21,33 @@ const imgSrcPattern = /<img[^>]*\s+src="([^>\s]+)"/;
 
 interface Props {
   item: ApiPostForUser;
+  onPress: ( post: ApiPostForUser ) => void;
 }
 
 const PostListItem = ( {
   item,
+  onPress,
 }: Props ) => {
-  const { i18n } = useTranslation( );
+  const { i18n, t } = useTranslation( );
 
   const imgSrc = useMemo( () => {
     const match = item.body.match( imgSrcPattern );
     return match
       ? match[1]
-      : item.parent.icon_url ?? null;
+      : item.parent.icon_url?.replace( "staticdev", "static" ) ?? null;
   }, [item.body, item.parent.icon_url] );
 
+  const handlePress = useCallback( ( ) => onPress( item ), [item, onPress] );
+
   return (
-    <View className="flex-row items-center mx-3 my-2">
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={item.title}
+      accessibilityHint={t( "Navigates-to-journal-post" )}
+      className="flex-row items-center mx-3 my-2"
+      onPress={handlePress}
+      testID={`PostListItem.${item.id}`}
+    >
       {imgSrc && (
         <Image
           source={{ uri: imgSrc }}
@@ -55,7 +67,7 @@ const PostListItem = ( {
           {formatLongDate( item.published_at, i18n )}
         </List2>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

@@ -1,6 +1,7 @@
 import type { ApiProjectSummary, ApiTotalBounds, ApiUser } from "api/types";
 import type { SPECIES_TAB } from "appConstants/tabs";
 import { OBSERVATIONS_TAB } from "appConstants/tabs";
+import type { ExploreV2EntryParams } from "navigation/types";
 import type { TAXONOMIC_RANK } from "providers/ExploreContext";
 import {
   DATE_OBSERVED,
@@ -54,12 +55,7 @@ interface User {
   id: number;
   login: string;
   icon_url?: string;
-}
-
-interface Project {
-  id: number;
-  title: string;
-  icon?: string;
+  observations_count?: number;
 }
 
 export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
@@ -67,7 +63,7 @@ export type ExploreV2Tab = typeof OBSERVATIONS_TAB | typeof SPECIES_TAB;
 export type ExploreV2Subject =
   | { type: "taxon"; taxon: Taxon }
   | { type: "user"; user: User }
-  | { type: "project"; project: Project }
+  | { type: "project"; project: ApiProjectSummary }
   | { type: "unobserved"; user: User }
   | { type: "unknown" };
 
@@ -96,10 +92,9 @@ export interface ExploreV2Filters {
   wildStatus: WILD_STATUS;
   reviewedFilter: REVIEWED;
   photoLicense: PHOTO_LICENSE;
-  // Iconic-taxon filter (e.g. "unknown")
-  iconic_taxa?: string[] | null;
   // User / project, in ExploreV2 parlance we always consider taxon to be the "subject"
   user?: ApiUser | null;
+  excludeUser?: ApiUser | null;
   project?: ApiProjectSummary | null;
 }
 
@@ -160,6 +155,17 @@ export const initialExploreV2State: ExploreV2State = {
   filters: defaultExploreV2Filters,
   activeTab: OBSERVATIONS_TAB,
 };
+
+export function initialStateFromEntryParams(
+  params?: ExploreV2EntryParams | null,
+): ExploreV2State {
+  return {
+    ...initialExploreV2State,
+    subject: params?.subject || initialExploreV2State.subject,
+    location: params?.location || initialExploreV2State.location,
+    activeTab: params?.activeTab || initialExploreV2State.activeTab,
+  };
+}
 
 export function exploreV2Reducer(
   state: ExploreV2State,
@@ -225,10 +231,11 @@ const ExploreV2Context = React.createContext<ExploreV2ContextValue | undefined>(
 
 interface ExploreV2ProviderProps {
   children: React.ReactNode;
+  initialState: ExploreV2State;
 }
 
-export const ExploreV2Provider = ( { children }: ExploreV2ProviderProps ) => {
-  const [state, dispatch] = React.useReducer( exploreV2Reducer, initialExploreV2State );
+export const ExploreV2Provider = ( { children, initialState }: ExploreV2ProviderProps ) => {
+  const [state, dispatch] = React.useReducer( exploreV2Reducer, initialState );
 
   const value = React.useMemo(
     () => ( { state, dispatch } ),

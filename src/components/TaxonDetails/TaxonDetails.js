@@ -49,6 +49,7 @@ import {
   useTranslation,
   useUserMe,
 } from "sharedHooks";
+import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -86,12 +87,12 @@ const TaxonDetails = ( ): Node => {
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
   const currentEditingObservation = useStore( state => state.currentObservation );
   const getCurrentObservation = useStore( state => state.getCurrentObservation );
-  const setExploreView = useStore( state => state.setExploreView );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
 
   // Hooks
   const navigation = useNavigation( );
+  const navigateToExplore = useNavigateToExplore( );
   const { params } = useRoute( );
   const {
     id, hideNavButtons, firstPhotoID, representativePhoto,
@@ -331,13 +332,7 @@ const TaxonDetails = ( ): Node => {
         <View className="ml-2">
           <INatIconButton
             icon="magnifying-glass"
-            onPress={( ) => {
-              setExploreView( "observations" );
-              navigation.navigate( "Explore", {
-                taxon,
-                worldwide: true,
-              } );
-            }}
+            onPress={( ) => navigateToExplore( { taxon } )}
             accessibilityLabel={t( "See-observations-of-this-taxon-in-explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             size={20}
@@ -352,8 +347,7 @@ const TaxonDetails = ( ): Node => {
   ), [
     currentUserHasSeenTaxon,
     showExploreButton,
-    navigation,
-    setExploreView,
+    navigateToExplore,
     t,
     taxon,
   ] );

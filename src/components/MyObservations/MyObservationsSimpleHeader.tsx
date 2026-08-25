@@ -113,6 +113,7 @@ const MyObservationsSimpleHeader = ( {
             {searchMyObservationsEnabled && (
               <INatIconButton
                 icon="magnifying-glass"
+                className="mr-[7px]"
                 onPress={handleSearchButtonPress}
                 color={searchActive
                   ? colors.inatGreen

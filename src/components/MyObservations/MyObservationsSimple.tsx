@@ -395,14 +395,19 @@ const MyObservationsSimple = ( {
     if ( isConnected === false ) {
       return renderOfflineFallback( ( ) => refresh( ) );
     }
-    return <MyObservationsMapView userId={currentUser?.id} />;
+    return (
+      <MyObservationsMapView
+        isConnected={isConnected}
+        userId={currentUser?.id}
+      />
+    );
   };
 
   const renderSmallGridView = ( ) => {
     if ( isConnected === false ) {
       return renderOfflineFallback( ( ) => refresh( ) );
     }
-    return <MyObservationsGroupedByIconicTaxaView />;
+    return <MyObservationsGroupedByIconicTaxaView listHeaderContent={observationsHeader} />;
   };
 
   const renderObservations = ( ) => {

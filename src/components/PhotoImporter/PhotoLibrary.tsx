@@ -25,6 +25,7 @@ import { log } from "sharedHelpers/logger";
 import { sleep } from "sharedHelpers/util";
 import { useLayoutPrefs } from "sharedHooks";
 import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "PhotoLibrary" );
@@ -45,8 +46,12 @@ const PhotoLibrary = ( ) => {
 
   const [photoLibraryShown, setPhotoLibraryShown] = useState( false );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
-  const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
-  const groupedPhotos = useStore( state => state.groupedPhotos );
+  const setGroupedPhotos = useStore(
+    ( state: ObservationFlowSlice ) => state.setGroupedPhotos,
+  );
+  const groupedPhotos = useStore(
+    ( state: ObservationFlowSlice ) => state.groupedPhotos,
+  );
   const updateObservations = useStore( state => state.updateObservations );
   const photoLibraryUris = useStore( state => state.photoLibraryUris );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
@@ -150,7 +155,7 @@ const PhotoLibrary = ( ) => {
     let response;
     try {
       response = await launchImageLibrary( {
-        selectionLimit: fromAICamera
+        selectionLimit: ( fromAICamera && isDefaultMode )
           ? FROM_AICAMERA_MAX_PHOTOS_ALLOWED
           : MAX_PHOTOS_ALLOWED,
         mediaType: "photo",
@@ -286,6 +291,7 @@ const PhotoLibrary = ( ) => {
     fromGroupPhotos,
     photoLibraryUris,
     groupedPhotos,
+    isDefaultMode,
     navigation,
     navToObsEdit,
     navBasedOnUserSettings,

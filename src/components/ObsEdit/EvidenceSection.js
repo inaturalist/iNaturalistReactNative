@@ -55,8 +55,9 @@ const EvidenceSection = ( {
   const obsPhotos = currentObservation?.observationPhotos || currentObservation?.observation_photos;
   const obsSounds = currentObservation?.observationSounds || currentObservation?.observation_sounds;
 
-  const latitude = currentObservation?.latitude;
-  const longitude = currentObservation?.longitude;
+  const latitude = currentObservation?.privateLatitude || currentObservation?.latitude;
+  const longitude = currentObservation?.privateLongitude || currentObservation?.longitude;
+  const hasLocation = latitude && longitude;
 
   const displayPlaceName = ( ) => {
     let placeName = "";
@@ -64,17 +65,17 @@ const EvidenceSection = ( {
       placeName = currentObservation?.place_guess;
     } else if ( isFetchingLocation ) {
       placeName = t( "Fetching-location" );
-    } else if ( !latitude || !longitude ) {
+    } else if ( !hasLocation ) {
       return t( "Add-Location" );
     }
     return placeName;
   };
 
   const displayLocation = ( ) => {
-    if ( isFetchingLocation && ( !latitude || !longitude ) ) {
+    if ( isFetchingLocation && !hasLocation ) {
       return t( "Stay-on-this-screen" );
     }
-    if ( !latitude || !longitude ) {
+    if ( !hasLocation ) {
       return t( "No-Location" );
     }
     return t( "Lat-Lon-Acc", {
