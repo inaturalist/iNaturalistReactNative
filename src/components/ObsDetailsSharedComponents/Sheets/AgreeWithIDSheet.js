@@ -50,7 +50,7 @@ const AgreeWithIDSheet = ( {
     onPressClose={onPressClose}
   >
     <View
-      className="mx-[26px] space-y-[11px] my-[15px]"
+      className="mx-[26px] gap-y-[11px] my-[15px]"
     >
       <List2 className="text-darkGray">
         {t( "Agree-with-ID-description" )}

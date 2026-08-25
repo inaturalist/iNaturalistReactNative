@@ -7,19 +7,22 @@ import type { PropsWithChildren } from "react";
 import React from "react";
 import type { AnimatedStyle } from "react-native-reanimated";
 
-const BUTTON_DIM = 40;
-
 const SIDE_BUTTON_CLASSES = [
   "w-1/3",
   "h-full",
   "bg-black",
 ];
 
+// h-10/w-10 = 2.5rem = 40px. Written as the literal Tailwind scale class
+// rather than an interpolated `h-[${BUTTON_DIM}px]` string: nativewind 4
+// compiles classes from a static scan of source text, so a template literal
+// never matches anything in the compiled stylesheet and silently produces no
+// style at all.
 const CHECKMARK_CLASSES = [
   "bg-inatGreen",
   "rounded-full",
-  `h-[${BUTTON_DIM}px]`,
-  `w-[${BUTTON_DIM}px]`,
+  "h-10",
+  "w-10",
   "justify-center",
   "items-center",
 ];
@@ -27,8 +30,8 @@ const CHECKMARK_CLASSES = [
 const CLOSE_CLASSES = [
   "bg-mediumGrayGhost",
   "rounded-full",
-  `h-[${BUTTON_DIM}px]`,
-  `w-[${BUTTON_DIM}px]`,
+  "h-10",
+  "w-10",
   "justify-center",
   "items-center",
 ];
@@ -60,9 +63,15 @@ const MediaNavButtons = ( {
     {closeHidden
       ? <View className="w-1/3" />
       : (
+        // Same conflict as the checkmark below: CLOSE_CLASSES' h-10/w-10/
+        // rounded-full merged onto the same className as SIDE_BUTTON_CLASSES'
+        // h-full/w-1/3 produced an oblong pill (h-full won height, w-1/3 won
+        // width, rounded-full applied to that tall rectangle) instead of a
+        // 40px circle. CloseButton renders its own correctly-sized circle via
+        // buttonClassName, so the outer wrapper only needs the hit-target.
         <RotatableIconWrapper
           rotatableAnimatedStyle={rotatableAnimatedStyle}
-          containerClass={classnames( CLOSE_CLASSES, SIDE_BUTTON_CLASSES )}
+          containerClass={classnames( SIDE_BUTTON_CLASSES, "justify-center items-center" )}
         >
           <CloseButton
             handleClose={onClose}
@@ -73,18 +82,27 @@ const MediaNavButtons = ( {
     {children}
     {mediaCaptured && !confirmHidden
       ? (
+        // Fixed size lives on this inner View, not on containerClass: the
+        // outer wrapper's className used to merge CHECKMARK_CLASSES (w-10
+        // h-10) with SIDE_BUTTON_CLASSES (w-1/3 h-full) on one element, which
+        // is a genuine same-property conflict nativewind 4 can't resolve the
+        // way v2 did (v2 let whichever was listed last win; v4 resolves by
+        // stylesheet order instead). Splitting them onto separate elements
+        // avoids the conflict entirely rather than relying on either order.
         <RotatableIconWrapper
           rotatableAnimatedStyle={rotatableAnimatedStyle}
-          containerClass={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )}
+          containerClass={classnames( SIDE_BUTTON_CLASSES, "justify-center items-center" )}
         >
-          <GreenCheckmark
-            disabled={disabled}
-            handleCheckmarkPress={onConfirm}
-          />
+          <View className={classnames( CHECKMARK_CLASSES )}>
+            <GreenCheckmark
+              disabled={disabled}
+              handleCheckmarkPress={onConfirm}
+            />
+          </View>
         </RotatableIconWrapper>
       )
       : (
-        <View className={classnames( CHECKMARK_CLASSES, SIDE_BUTTON_CLASSES )} />
+        <View className={classnames( SIDE_BUTTON_CLASSES )} />
       )}
   </View>
 );
