@@ -4,12 +4,14 @@ import factory from "tests/factory";
 import * as uploaders from "uploaders";
 import * as mediaUploader from "uploaders/mediaUploader";
 import uploadObservation from "uploaders/observationUploader";
+import projectChildrenDeleter from "uploaders/projectChildrenDeleter";
 import * as projectChildrenUploader from "uploaders/projectChildrenUploader";
 import * as progressTracker from "uploaders/utils/progressTracker";
 
 jest.mock( "components/LoginSignUp/AuthenticationService" );
 jest.mock( "uploaders/utils/progressTracker" );
 jest.mock( "uploaders/mediaUploader" );
+jest.mock( "uploaders/projectChildrenDeleter" );
 jest.mock( "uploaders/projectChildrenUploader" );
 jest.mock( "uploaders" );
 jest.mock( "api/observations" );
@@ -70,6 +72,7 @@ describe( "uploadObservation", () => {
       results: [{ uuid: mockObservation.uuid, id: 12345 }],
     } );
 
+    projectChildrenDeleter.syncProjectChildDeletions.mockResolvedValue( undefined );
     projectChildrenUploader.uploadProjectChildren.mockResolvedValue( undefined );
   } );
 
