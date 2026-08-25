@@ -319,6 +319,7 @@ const AddToProjects = ( ) => {
         ListFooterComponent={listFooterComponent}
         data={joinedProjects}
         keyExtractor={( project: RealmProject ) => String( project.id )}
+        keyboardDismissMode="on-drag"
         renderItem={renderProject}
         ItemSeparatorComponent={ItemSeparator}
       />
