@@ -44,8 +44,7 @@ afterEach( () => {
 jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   __esModule: true,
   default: {
-    OS: "ios",
-    select: jest.fn(),
+    ...jest.requireActual( "react-native/Libraries/Utilities/Platform" ).default,
     Version: 11,
   },
 } ) );
@@ -196,7 +195,7 @@ describe( "Suggestions", ( ) => {
         await renderAppWithObservations( observations, __filename );
         await navigateToSuggestionsViaObsEditForObservation( observations[0] );
         const topTaxonResultButton = await screen.findByTestId(
-          `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
+          `SuggestionsList.taxa.${topSuggestion.taxon.id}`,
         );
         expect( topTaxonResultButton ).toBeTruthy( );
         await actor.press( topTaxonResultButton );
@@ -210,7 +209,7 @@ describe( "Suggestions", ( ) => {
       await renderAppWithObservations( observations, __filename );
       await navigateToSuggestionsViaObsEditForObservation( observations[0] );
       const otherTaxonResultButton = await screen.findByTestId(
-        `SuggestionsList.taxa.${otherSuggestion.taxon.id}.checkmark`,
+        `SuggestionsList.taxa.${otherSuggestion.taxon.id}`,
       );
       expect( otherTaxonResultButton ).toBeTruthy( );
       await actor.press( otherTaxonResultButton );
@@ -319,7 +318,7 @@ describe( "Suggestions", ( ) => {
           ),
         );
         const taxonResultButton = await screen.findByTestId(
-          `Search.taxa.${mockSearchResultTaxon.id}.checkmark`,
+          `Search.taxa.${mockSearchResultTaxon.id}`,
         );
         expect( taxonResultButton ).toBeTruthy( );
         await actor.press( taxonResultButton );

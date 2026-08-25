@@ -82,7 +82,6 @@ const SearchMyObservationsTaxon = ( ) => {
         first={index === 0}
         fetchRemote={false}
         handleTaxonOrEditPress={( ) => onTaxonSelected( taxon )}
-        showCheckmark={false}
         taxon={taxon}
         testID={`SearchMyObservations.taxa.${taxon.id}`}
       />
