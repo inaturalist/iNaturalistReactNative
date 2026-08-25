@@ -187,12 +187,8 @@ async function uploadObservation(
   try {
     const apiToken = await validateAndGetToken( );
     const childrenStartTime = Date.now( );
-    await uploadProjectChildren(
-      obsUUID,
-      observation,
-      { ...opts, api_token: apiToken },
-      realm,
-    );
+    const childOptions = { ...opts, api_token: apiToken };
+    await uploadProjectChildren( obsUUID, observation, childOptions, realm );
     childrenDuration = Date.now( ) - childrenStartTime;
   } catch ( error ) {
     const {
