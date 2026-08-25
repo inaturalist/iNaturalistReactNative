@@ -1,3 +1,4 @@
+import { INatApiError } from "api/error";
 import { deleteProjectObservation } from "api/projectObservations";
 import type Realm from "realm";
 import type {
@@ -10,6 +11,11 @@ interface DeleteOptions {
   signal: AbortSignal;
 }
 
+function isDeleteSuccess( error: unknown ): boolean {
+  return error instanceof INatApiError
+    && ( error.status === 404 || error.status === 403 );
+}
+
 async function deleteRemoteProjectObservation(
   po: RealmProjectObservation,
   options: DeleteOptions,
@@ -19,7 +25,13 @@ async function deleteRemoteProjectObservation(
   if ( !po.wasSynced( ) ) {
     return;
   }
-  await deleteProjectObservation( po.uuid, options );
+  try {
+    await deleteProjectObservation( po.uuid, options );
+  } catch ( error ) {
+    if ( !isDeleteSuccess( error ) ) {
+      throw error;
+    }
+  }
 }
 
 export default async function syncProjectChildDeletions(
@@ -31,7 +43,6 @@ export default async function syncProjectChildDeletions(
   const ofvsToDelete = observation.observationFieldValues.filter( ofv => ofv._pending_deletion );
 
   console.log( "ofvsToDelete", ofvsToDelete );
-  console.log( "options", options );
   console.log( "realm", realm );
 
   await Promise.all(
