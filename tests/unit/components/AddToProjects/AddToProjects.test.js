@@ -258,6 +258,17 @@ describe( "AddToProjects", ( ) => {
       } );
     } );
 
+    it( "shows a pencil icon on the project row", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+
+      expect(
+        within( screen.getByTestId( `AddToProjects.project.${mockProjects[1].id}` ) )
+          .getByText( iconGlyph( "circle-dots-pencil" ) ),
+      ).toBeVisible( );
+    } );
+
     it( "shows Missing info sheet when SAVE is pressed with an empty required field", async ( ) => {
       renderAddToProjects( );
 
