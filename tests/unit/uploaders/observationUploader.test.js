@@ -4,7 +4,7 @@ import factory from "tests/factory";
 import * as uploaders from "uploaders";
 import * as mediaUploader from "uploaders/mediaUploader";
 import uploadObservation from "uploaders/observationUploader";
-import projectChildrenDeleter from "uploaders/projectChildrenDeleter";
+import syncProjectChildDeletions from "uploaders/projectChildrenDeleter";
 import * as projectChildrenUploader from "uploaders/projectChildrenUploader";
 import * as progressTracker from "uploaders/utils/progressTracker";
 
@@ -72,7 +72,7 @@ describe( "uploadObservation", () => {
       results: [{ uuid: mockObservation.uuid, id: 12345 }],
     } );
 
-    projectChildrenDeleter.syncProjectChildDeletions.mockResolvedValue( undefined );
+    syncProjectChildDeletions.mockResolvedValue( undefined );
     projectChildrenUploader.uploadProjectChildren.mockResolvedValue( undefined );
   } );
 
@@ -183,6 +183,16 @@ describe( "uploadObservation", () => {
       .mock.invocationCallOrder[0];
     const markCallOrder = uploaders.markRecordUploaded.mock.invocationCallOrder[0];
     expect( childrenCallOrder ).toBeLessThan( markCallOrder );
+  } );
+
+  it( "should throw an error if project children delete fails", async () => {
+    syncProjectChildDeletions
+      .mockRejectedValue( new Error( "Project Children Delete Error" ) );
+
+    await expect( uploadObservation( mockObservation, mockRealm ) )
+      .rejects.toThrow( "Project Children Delete Error" );
+    expect( projectChildrenUploader.uploadProjectChildren ).not.toHaveBeenCalled( );
+    expect( uploaders.markRecordUploaded ).not.toHaveBeenCalled( );
   } );
 
   it( "should throw an error if project children upload fails", async () => {
