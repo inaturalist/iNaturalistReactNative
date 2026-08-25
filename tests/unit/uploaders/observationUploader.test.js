@@ -157,6 +157,27 @@ describe( "uploadObservation", () => {
     },
   );
 
+  it( "should call syncProjectChildDeletions before uploadProjectChildren", async () => {
+    await uploadObservation( mockObservation, mockRealm );
+
+    expect( syncProjectChildDeletions ).toHaveBeenCalledWith(
+      mockObservation,
+      expect.objectContaining( { api_token: "test-json-web-token" } ),
+      mockRealm,
+    );
+    expect( projectChildrenUploader.uploadProjectChildren ).toHaveBeenCalledWith(
+      mockObservation.uuid,
+      mockObservation,
+      expect.objectContaining( { api_token: "test-json-web-token" } ),
+      mockRealm,
+    );
+    expect(
+      syncProjectChildDeletions.mock.invocationCallOrder[0],
+    ).toBeLessThan(
+      projectChildrenUploader.uploadProjectChildren.mock.invocationCallOrder[0],
+    );
+  } );
+
   it( "should call uploadProjectChildren after media is attached", async () => {
     await uploadObservation( mockObservation, mockRealm );
 
