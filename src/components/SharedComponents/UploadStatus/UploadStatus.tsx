@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { CircleDots, INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { PropsWithChildren, ReactComponent } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 import React from "react";
 import { useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -26,7 +26,7 @@ interface Props extends PropsWithChildren {
   progress: number;
   uniqueKey: string;
   queued: boolean;
-  obsStatus: ReactComponent;
+  obsStatus: ReactNode;
 }
 
 const UploadStatus = ( {

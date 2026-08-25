@@ -1,12 +1,13 @@
 import { View } from "components/styledComponents";
-import React, { ReactComponent, useEffect } from "react";
+import type { ReactNode } from "react";
+import React, { useEffect } from "react";
 import Reanimated, {
   useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming,
 } from "react-native-reanimated";
 
-type Props = {
-  fadeInIcon: ReactComponent;
-  fadeOutIcon: ReactComponent;
+interface Props {
+  fadeInIcon: ReactNode;
+  fadeOutIcon: ReactNode;
   uniqueKey: string;
 }
 const AnimatedView = Reanimated.createAnimatedComponent( View );
