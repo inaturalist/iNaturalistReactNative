@@ -1,8 +1,10 @@
 import { INatApiError } from "api/error";
+import { deleteObservationFieldValue } from "api/observationFieldValues";
 import { deleteProjectObservation } from "api/projectObservations";
 import type Realm from "realm";
 import type {
   RealmObservation,
+  RealmObservationFieldValue,
   RealmProjectObservation,
 } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
@@ -35,6 +37,22 @@ async function deleteRemoteProjectObservation(
   }
 }
 
+async function deleteRemoteObservationFieldValue(
+  ofv: RealmObservationFieldValue,
+  options: DeleteOptions,
+): Promise<void> {
+  if ( !ofv.wasSynced( ) ) {
+    return;
+  }
+  try {
+    await deleteObservationFieldValue( ofv.uuid, options );
+  } catch ( error ) {
+    if ( !isDeleteSuccess( error ) ) {
+      throw error;
+    }
+  }
+}
+
 export default async function syncProjectChildDeletions(
   observation: RealmObservation,
   options: DeleteOptions,
@@ -43,9 +61,10 @@ export default async function syncProjectChildDeletions(
   const posToDelete = observation.projectObservations.filter( po => po._pending_deletion );
   const ofvsToDelete = observation.observationFieldValues.filter( ofv => ofv._pending_deletion );
 
-  console.log( "ofvsToDelete", ofvsToDelete );
-  console.log( "realm", realm );
-
+  // The two batches need to be in sequence; OFV phase waits until all POs settle.
+  // Because some OFVs might be required for some POs, so deleteing a PO in such a case
+  // will error out 422.
+  // Can be parallel within each phase.
   await Promise.all(
     posToDelete.map( po => deleteRemoteProjectObservation( po, options ) ),
   );
@@ -53,4 +72,12 @@ export default async function syncProjectChildDeletions(
   posToDelete.forEach( po => safeRealmWrite( realm, ( ) => {
     realm.delete( po );
   }, "deleting synced project observation from Realm" ) );
+
+  await Promise.all(
+    ofvsToDelete.map( ofv => deleteRemoteObservationFieldValue( ofv, options ) ),
+  );
+  // Remove realm entry
+  ofvsToDelete.forEach( ofv => safeRealmWrite( realm, ( ) => {
+    realm.delete( ofv );
+  }, "deleting synced observation field value from Realm" ) );
 }
