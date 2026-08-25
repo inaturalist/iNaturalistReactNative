@@ -85,7 +85,7 @@ index 21970d5..b1cd9e9 100644
          String videoQualityString = options.getString("videoQuality");
          if (!TextUtils.isEmpty(videoQualityString) && !videoQualityString.toLowerCase().equals("high")) {
 diff --git a/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/Utils.java b/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/Utils.java
-index 9b035ac..11a645f 100644
+index 9b035ac..fc11022 100644
 --- a/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/Utils.java
 +++ b/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/Utils.java
 @@ -134,6 +134,9 @@ public class Utils {
@@ -128,7 +128,7 @@ index 9b035ac..11a645f 100644
              }
  
          } catch (Exception e) {
-@@ -257,6 +263,50 @@ public class Utils {
+@@ -257,6 +263,52 @@ public class Utils {
          }
      }
  
@@ -136,10 +136,12 @@ index 9b035ac..11a645f 100644
 +    private static void copyExif(Uri sourceUri, Uri destUri, Context context) {
 +        String[] exifTags = {
 +            ExifInterface.TAG_DATETIME,
++            ExifInterface.TAG_DATETIME_ORIGINAL,
 +            ExifInterface.TAG_GPS_LATITUDE,
 +            ExifInterface.TAG_GPS_LATITUDE_REF,
 +            ExifInterface.TAG_GPS_LONGITUDE,
 +            ExifInterface.TAG_GPS_LONGITUDE_REF,
++            ExifInterface.TAG_GPS_H_POSITIONING_ERROR,
 +            ExifInterface.TAG_GPS_ALTITUDE,
 +            ExifInterface.TAG_ORIENTATION,
 +            ExifInterface.TAG_WHITE_BALANCE,
