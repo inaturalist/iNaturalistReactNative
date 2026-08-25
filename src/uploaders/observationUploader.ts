@@ -15,6 +15,7 @@ import {
   attachMediaToObservation,
   uploadObservationMedia,
 } from "uploaders/mediaUploader";
+import syncProjectChildDeletions from "uploaders/projectChildrenDeleter";
 import { uploadProjectChildren } from "uploaders/projectChildrenUploader";
 import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
 import { trackObservationUpload } from "uploaders/utils/progressTracker";
@@ -188,6 +189,7 @@ async function uploadObservation(
     const apiToken = await validateAndGetToken( );
     const childrenStartTime = Date.now( );
     const childOptions = { ...opts, api_token: apiToken };
+    await syncProjectChildDeletions( observation, childOptions, realm );
     await uploadProjectChildren( obsUUID, observation, childOptions, realm );
     childrenDuration = Date.now( ) - childrenStartTime;
   } catch ( error ) {
