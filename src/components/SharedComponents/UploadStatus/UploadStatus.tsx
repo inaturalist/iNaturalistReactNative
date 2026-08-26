@@ -142,7 +142,7 @@ const UploadStatus = ( {
           </View>
         )}
         fadeInIcon={(
-          <View className={wrapperClassName}>
+          <View className={classnames( wrapperClassName, "h-[44px]" )}>
             {showObsStatus && obsStatus}
           </View>
         )}
