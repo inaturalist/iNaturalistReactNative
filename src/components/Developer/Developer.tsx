@@ -14,21 +14,21 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
-  Alert, I18nManager, Platform, Text,
+  I18nManager, Platform, Text,
 } from "react-native";
 import Config from "react-native-config";
 import DeviceInfo from "react-native-device-info";
 import RNRestart from "react-native-restart";
-import { EnvConfig, getAvailableEnvironments } from "sharedHelpers/envConfig";
-import { getEnvironmentOverride, setEnvironmentOverride } from "sharedHelpers/installData";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import { useFeatureFlag } from "sharedHooks";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 import {
   CODE, H1, H2, P,
 } from "./DeveloperSharedComponents";
+import EnvironmentSwitcher from "./EnvironmentSwitcher";
 import FeatureFlags from "./FeatureFlags";
 import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
@@ -263,58 +263,6 @@ const PathStats = () => {
   );
 };
 
-const defaultEnvironmentLabel = __DEV__
-  ? "the default environment"
-  : "Production";
-
-const EnvironmentSwitcher = () => {
-  const activeEnvironment = useMemo( () => getEnvironmentOverride(), [] );
-  const availableEnvironments = getAvailableEnvironments();
-
-  const confirmSwitch = ( prefix: string | null ) => {
-    Alert.alert(
-      "Switch environment?",
-      "This will sign you out, delete all observations, and restart "
-        + `the app on ${prefix ?? defaultEnvironmentLabel}`,
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Switch",
-          style: "destructive",
-          onPress: () => {
-            setEnvironmentOverride( prefix );
-            // signOut (after moving file)
-          },
-        },
-      ],
-    );
-  };
-
-  return (
-    <>
-      <H1>Environment</H1>
-      <P>
-        <CODE>{`Active: ${activeEnvironment ?? "default"}`}</CODE>
-      </P>
-      <Button
-        onPress={() => confirmSwitch( null )}
-        text="USE DEFAULT"
-        className="mb-5"
-        disabled={!activeEnvironment}
-      />
-      {availableEnvironments.map( env => (
-        <Button
-          key={env}
-          onPress={() => confirmSwitch( env )}
-          text={`SWITCH TO ${env}`}
-          className="mb-5"
-          disabled={activeEnvironment === env}
-        />
-      ) )}
-    </>
-  );
-};
-
 // Temporary diagnostic use of admin/testflight config.
 const TestFlightAdminFeatureFlagTest = () => {
   const enabled = useFeatureFlag( FeatureFlag.TestFlightAdminMessageEnabled );
@@ -345,10 +293,10 @@ const Developer = () => {
       <View className="p-5">
         <LogOptions />
         <DebugTools />
+        <EnvironmentSwitcher />
         <ComputerVisionStats />
         <FeatureFlags />
         <PathStats />
-        <EnvironmentSwitcher />
         <AppFileSizes />
         {/* TODO: remove once MOB-1573 is validated in TestFlight */}
         <TestFlightAdminFeatureFlagTest />
