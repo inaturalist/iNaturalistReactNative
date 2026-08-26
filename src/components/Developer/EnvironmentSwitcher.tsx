@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { getAvailableEnvironments } from "sharedHelpers/envConfig";
 import { getEnvironmentOverride, setEnvironmentOverride } from "sharedHelpers/installData";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import {
   CODE, H1, P,
@@ -29,6 +30,14 @@ const EnvironmentSwitcher = () => {
 
   const activeEnvironment = useMemo( () => getEnvironmentOverride(), [] );
   const availableEnvironments = getAvailableEnvironments();
+
+  const isAdmin = useCurrentUser()?.roles.includes( "admin" );
+
+  // hide unless we're an admin user or have a set override we want to unset.
+  // This is so that admin users can switch environments and still test logged out.
+  if ( !activeEnvironment && !isAdmin ) {
+    return null;
+  }
 
   const confirmSwitch = ( prefix: string | null ) => {
     Alert.alert(
