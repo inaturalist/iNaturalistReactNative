@@ -226,7 +226,7 @@ const MyObservationsGroupedByIconicTaxaView = ( {
         className="py-4"
         testID={`MyObservationsGroupedByIconicTaxaView.SectionLoading.${span.category}`}
       >
-        <ActivityIndicator />
+        <ActivityIndicator size="small" />
       </View>
     );
   }, [retryCategory, t] );
@@ -243,7 +243,7 @@ const MyObservationsGroupedByIconicTaxaView = ( {
   const listFooterContent = useMemo( ( ) => ( isLoadingCounts
     ? (
       <View className="py-8">
-        <ActivityIndicator />
+        <ActivityIndicator size="small" />
       </View>
     )
     : null ), [isLoadingCounts] );
