@@ -17,30 +17,30 @@ const FadeOutFadeInIcon = ( {
   fadeOutIcon,
   uniqueKey,
 }: Props ) => {
-  const checkmarkOpacity = useSharedValue( 0 );
-  const statusOpacity = useSharedValue( 0 );
+  const fadeOutOpacity = useSharedValue( 0 );
+  const fadeInOpacity = useSharedValue( 0 );
 
   useEffect( ( ) => {
-    checkmarkOpacity.value = withSequence(
+    fadeOutOpacity.value = withSequence(
       withTiming( 1, { duration: 800 } ),
       withDelay( 700, withTiming( 0, { duration: 500 } ) ),
     );
-    statusOpacity.value = withDelay( 1500, withTiming( 1, { duration: 800 } ) );
-  }, [checkmarkOpacity, statusOpacity] );
+    fadeInOpacity.value = withDelay( 1500, withTiming( 1, { duration: 800 } ) );
+  }, [fadeOutOpacity, fadeInOpacity] );
 
-  const checkmarkStyle = useAnimatedStyle( ( ) => ( { opacity: checkmarkOpacity.value } ) );
-  const statusStyle = useAnimatedStyle( ( ) => ( { opacity: statusOpacity.value } ) );
+  const fadeOutStyle = useAnimatedStyle( ( ) => ( { opacity: fadeOutOpacity.value } ) );
+  const fadeInStyle = useAnimatedStyle( ( ) => ( { opacity: fadeInOpacity.value } ) );
 
   return (
     <View>
       <AnimatedView
         className="absolute h-full justify-center"
-        style={checkmarkStyle}
+        style={fadeOutStyle}
         testID={`UploadIcon.complete.${uniqueKey}`}
       >
         {fadeOutIcon}
       </AnimatedView>
-      <AnimatedView style={statusStyle}>
+      <AnimatedView style={fadeInStyle}>
         {fadeInIcon}
       </AnimatedView>
     </View>
