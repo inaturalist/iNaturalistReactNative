@@ -102,7 +102,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                   "color": "#454545",
                   "fontSize": 26,
                 },
-                null,
+                {},
                 {
                   "fontFamily": "INatIcon",
                   "fontStyle": "normal",
@@ -194,7 +194,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                   "color": "#454545",
                   "fontSize": 26,
                 },
-                null,
+                {},
                 {
                   "fontFamily": "INatIcon",
                   "fontStyle": "normal",
@@ -394,7 +394,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                               "color": "#ffffff",
                               "fontSize": 20,
                             },
-                            null,
+                            {},
                             {
                               "fontFamily": "INatIcon",
                               "fontStyle": "normal",
@@ -559,7 +559,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                               "color": "#ffffff",
                               "fontSize": 20,
                             },
-                            null,
+                            {},
                             {
                               "fontFamily": "INatIcon",
                               "fontStyle": "normal",
@@ -710,7 +710,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                               "color": "#ffffff",
                               "fontSize": 20,
                             },
-                            null,
+                            {},
                             {
                               "fontFamily": "INatIcon",
                               "fontStyle": "normal",
@@ -803,7 +803,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                           "color": "#454545",
                           "fontSize": 24,
                         },
-                        null,
+                        {},
                         {
                           "fontFamily": "INatIcon",
                           "fontStyle": "normal",
@@ -929,7 +929,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                         "color": "#ffffff",
                         "fontSize": 31,
                       },
-                      null,
+                      {},
                       {
                         "fontFamily": "INatIcon",
                         "fontStyle": "normal",
@@ -1008,7 +1008,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                   "color": "#74AC00",
                   "fontSize": 32,
                 },
-                null,
+                {},
                 {
                   "fontFamily": "INatIcon",
                   "fontStyle": "normal",
@@ -1107,7 +1107,7 @@ exports[`CustomTabBar with advanced user layout should render correctly 1`] = `
                     "color": "#454545",
                     "fontSize": 26,
                   },
-                  null,
+                  {},
                   {
                     "fontFamily": "INatIcon",
                     "fontStyle": "normal",
