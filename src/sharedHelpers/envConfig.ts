@@ -1,5 +1,5 @@
 import Config from "react-native-config";
-import { getActiveEnvironment } from "sharedHelpers/installData";
+import { getEnvironmentOverride } from "sharedHelpers/installData";
 
 // Add a new prefix here (and the matching <PREFIX>_* vars in .env) to make
 // another baked-in environment selectable from the Developer screen.
@@ -26,9 +26,9 @@ export function getAvailableEnvironments(): string[] {
 }
 
 function resolveEnvValue( key: RuntimeEnvKey ): string | undefined {
-  const activePrefix = getActiveEnvironment();
-  if ( !activePrefix ) return Config[key];
-  return Config[`${activePrefix}_${key}`] || Config[key];
+  const environmentOverridePrefix = getEnvironmentOverride();
+  if ( !environmentOverridePrefix ) return Config[key];
+  return Config[`${environmentOverridePrefix}_${key}`] || Config[key];
 }
 
 // Computed once when the JS bundle loads. Every environment switch ends in

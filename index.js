@@ -28,7 +28,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { EnvConfig } from "sharedHelpers/envConfig";
 import {
-  getActiveEnvironment,
   getInstallID,
   store as installDataMMKVStorage,
   LAST_CRASH_DATA,
@@ -136,16 +135,6 @@ inatjs.setConfig( {
     "X-Installation-ID": getInstallID( ),
   },
 } );
-
-const activeEnvironment = getActiveEnvironment();
-if ( activeEnvironment ) {
-  // Reminder that this build isn't pointed at the default/production
-  // environment, set via the Developer screen's environment switcher
-  Alert.alert(
-    "Non-default environment",
-    `This app is running against the ${activeEnvironment} environment.`,
-  );
-}
 
 const queryClient = new QueryClient( {
   defaultOptions: {

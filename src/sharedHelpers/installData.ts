@@ -11,7 +11,7 @@ const INSTALL_ID = "installID";
 const ONBOARDING_SHOWN = "onboardingShown";
 export const IS_FRESH_INSTALL = "isFreshInstall";
 export const LAST_CRASH_DATA = "LAST_CRASH_DATA";
-const ACTIVE_ENVIRONMENT = "activeEnvironment";
+const ENVIRONMENT_OVERRIDE = "activeEnvironment";
 
 // This store is separate from the zustand store b/c it needs to survive sign
 // out, i.e these values should remain untill the app is uninstalled
@@ -56,14 +56,14 @@ export function useOnboardingShown() {
 // Config vars through, or undefined for the default environment. Lives in
 // this sign-out-surviving store because switching environments triggers a
 // hard sign out.
-export function getActiveEnvironment(): string | undefined {
-  return store.getString( ACTIVE_ENVIRONMENT );
+export function getEnvironmentOverride(): string | undefined {
+  return store.getString( ENVIRONMENT_OVERRIDE );
 }
 
-export function setActiveEnvironment( prefix: string | null ) {
+export function setEnvironmentOverride( prefix: string | null ) {
   if ( prefix ) {
-    store.set( ACTIVE_ENVIRONMENT, prefix );
+    store.set( ENVIRONMENT_OVERRIDE, prefix );
   } else {
-    store.delete( ACTIVE_ENVIRONMENT );
+    store.delete( ENVIRONMENT_OVERRIDE );
   }
 }

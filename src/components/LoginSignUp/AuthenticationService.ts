@@ -30,7 +30,7 @@ import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
 import { EnvConfig } from "sharedHelpers/envConfig";
-import { getInstallID, setActiveEnvironment } from "sharedHelpers/installData";
+import { getInstallID } from "sharedHelpers/installData";
 import { log, logFileDirectory, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
@@ -51,8 +51,8 @@ const localLogger = logWithoutRemote.extend( "AuthenticationService" );
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
 const API_HOST: string = EnvConfig.OAUTH_API_URL
-  || process.env.OAUTH_API_URL
-  || "https://www.inaturalist.org";
+ || process.env.OAUTH_API_URL
+ || "https://www.inaturalist.org";
 
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time
 // (safe margin). Actually they expire in 24 hours, but ideally they would
@@ -220,12 +220,19 @@ const isLoggedIn = async (): Promise<boolean> => {
 };
 
 /**
- * Clears everything sign-out needs to clear except the Realm database:
- * cookies/session, React Query cache, firebase collection, locale, secure
- * storage, user-generated-data directories, and Zustand-persisted MMKV.
+ * Signs out the user
+ *
+ * @returns {Promise<void>}
  */
-const clearUserDataExceptRealm = async (
-  options: { queryClient?: QueryClient } = {},
+const signOut = async (
+  options: {
+    realm?: Realm;
+    clearRealm?: boolean;
+    queryClient?: QueryClient;
+  } = {
+    clearRealm: false,
+    queryClient: undefined,
+  },
 ) => {
   // This makes sure also any cookies will be deleted too (MOB-589)
   const apiClient = createAPI();
@@ -260,71 +267,26 @@ const clearUserDataExceptRealm = async (
 
   // delete all keys from mmkv
   zustandMMKVBackingStorage.clearAll( );
-};
 
-/**
- * Deletes all records in the realm db, including the ones accessible
- * through the copy of realm provided by RealmProvider
- */
-const deleteRealmData = ( realm: Realm ) => {
-  realm.beginTransaction();
-  try {
-    realm.deleteAll();
-    realm.commitTransaction();
-  } catch ( _realmError ) {
-    realm.cancelTransaction();
-    // If we failed to wipe all the data in realm, delete the realm file.
-    // Note that deleting the realm file *all* the time seems to cause
-    // problems in Android when the app is force quit, as in sometimes it
-    // seems to just delete the file even if you didn't sign out
-    Realm.deleteFile( realmConfig );
-  }
-};
-
-/**
- * Signs out the user
- *
- * @returns {Promise<void>}
- */
-const signOut = async (
-  options: {
-    realm?: Realm;
-    clearRealm?: boolean;
-    queryClient?: QueryClient;
-  } = {
-    clearRealm: false,
-    queryClient: undefined,
-  },
-) => {
-  await clearUserDataExceptRealm( options );
-
-  if ( options.clearRealm && options.realm ) {
-    deleteRealmData( options.realm );
+  if ( options.clearRealm ) {
+    if ( options.realm ) {
+      // Delete all the records in the realm db, including the ones accessible
+      // through the copy of realm provided by RealmProvider
+      options.realm.beginTransaction();
+      try {
+        options.realm.deleteAll();
+        options.realm.commitTransaction();
+      } catch ( _realmError ) {
+        options.realm.cancelTransaction();
+        // If we failed to wipe all the data in realm, delete the realm file.
+        // Note that deleting the realm file *all* the time seems to cause
+        // problems in Android when the app is force quit, as in sometimes it
+        // seems to just delete the file even if you didn't sign out
+        Realm.deleteFile( realmConfig );
+      }
+    }
   }
 
-  RNRestart.restart( );
-};
-
-/**
- * Switches the baked-in environment (e.g. to "STAGING", or null for the
- * default) the app reads Config vars through. Since a different
- * environment means a different backend, this signs the user out and wipes
- * all local data first, exactly like signOut, then restarts the app so the
- * new environment's Config values take effect.
- *
- * The active-environment flag is only written once the rest of the
- * clearing has succeeded, and before the (irreversible) Realm wipe, so a
- * failure earlier in cleanup can't leave the app half-switched.
- *
- * @returns {Promise<void>}
- */
-const switchEnvironment = async (
-  newEnvironmentPrefix: string | null,
-  options: { realm: Realm; queryClient?: QueryClient },
-) => {
-  await clearUserDataExceptRealm( options );
-  setActiveEnvironment( newEnvironmentPrefix );
-  deleteRealmData( options.realm );
   RNRestart.restart( );
 };
 
@@ -825,5 +787,4 @@ export {
   registerUser,
   resetPassword,
   signOut,
-  switchEnvironment,
 };

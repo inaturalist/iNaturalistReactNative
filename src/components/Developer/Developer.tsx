@@ -5,19 +5,16 @@ import {
   DocumentDirectoryPath,
 } from "@dr.pogodin/react-native-fs";
 import { useNavigation } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
-import { switchEnvironment } from "components/LoginSignUp/AuthenticationService";
 import {
   Button,
   ScrollViewWrapper,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { RealmContext } from "providers/contexts";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Alert, I18nManager, Platform, Text,
 } from "react-native";
@@ -25,7 +22,7 @@ import Config from "react-native-config";
 import DeviceInfo from "react-native-device-info";
 import RNRestart from "react-native-restart";
 import { EnvConfig, getAvailableEnvironments } from "sharedHelpers/envConfig";
-import { getActiveEnvironment } from "sharedHelpers/installData";
+import { getEnvironmentOverride, setEnvironmentOverride } from "sharedHelpers/installData";
 import { useFeatureFlag } from "sharedHooks";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
@@ -41,8 +38,6 @@ import {
   emailRecentLogs,
   shareRecentLogs,
 } from "./logManagementHelpers";
-
-const { useRealm } = RealmContext;
 
 const modelFileName = Platform.select( {
   ios: Config.IOS_MODEL_FILE_NAME,
@@ -268,23 +263,28 @@ const PathStats = () => {
   );
 };
 
+const defaultEnvironmentLabel = __DEV__
+  ? "the default environment"
+  : "Production";
+
 const EnvironmentSwitcher = () => {
-  const realm = useRealm();
-  const queryClient = useQueryClient();
-  const activeEnvironment = getActiveEnvironment();
+  const activeEnvironment = useMemo( () => getEnvironmentOverride(), [] );
   const availableEnvironments = getAvailableEnvironments();
 
   const confirmSwitch = ( prefix: string | null ) => {
     Alert.alert(
       "Switch environment?",
-      "This will sign you out, delete all local Realm data, and restart "
-        + `the app on ${prefix ?? "default"}.`,
+      "This will sign you out, delete all observations, and restart "
+        + `the app on ${prefix ?? defaultEnvironmentLabel}`,
       [
         { text: "Cancel", style: "cancel" },
         {
           text: "Switch",
           style: "destructive",
-          onPress: () => switchEnvironment( prefix, { realm, queryClient } ),
+          onPress: () => {
+            setEnvironmentOverride( prefix );
+            // signOut (after moving file)
+          },
         },
       ],
     );
