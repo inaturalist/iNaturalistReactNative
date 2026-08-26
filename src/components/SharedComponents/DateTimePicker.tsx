@@ -22,7 +22,6 @@ const DatePicker = ( {
   onDatePicked,
   toggleDateTimePicker,
 }: Props ) => {
-  const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>( undefined );
   const [isTimeVisible, setisTimeVisible] = React.useState( false );
   const maxDateForTimePicker = new Date( );
   maxDateForTimePicker.setHours( 24, 0, 0, 0 );
@@ -47,7 +46,6 @@ const DatePicker = ( {
           onDatePicked( selectedDate );
           _toggleDateTimePicker( );
         }}
-        date={selectedDateNoTime}
       />
     );
   }
@@ -84,7 +82,6 @@ const DatePicker = ( {
       onCancel={_toggleDateTimePicker}
       onConfirm={selectedDate => {
         if ( mode === "datetime" ) {
-          setSelectedDateNoTime( selectedDateNoTime );
           setisTimeVisible( true );
         } else {
           onDatePicked( selectedDate );
