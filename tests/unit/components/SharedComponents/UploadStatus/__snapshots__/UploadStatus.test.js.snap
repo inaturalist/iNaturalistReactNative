@@ -11,79 +11,104 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
     }
   }
 >
-  <View
-    collapsable={false}
-    entering={
-      InnerKeyframe {
-        "build": [Function],
-        "definitions": {
-          "0": {
-            "opacity": 0,
-          },
-          "100": {
-            "opacity": 0,
-          },
-          "40": {
-            "opacity": 1,
-          },
-        },
-        "durationV": 2000,
-        "parsedAnimation": [Function],
-        "reduceMotionV": "system",
-      }
-    }
-    jestAnimatedProps={
-      {
-        "value": {},
-      }
-    }
-    jestAnimatedStyle={
-      {
-        "value": {},
-      }
-    }
-    testID="UploadIcon.complete.undefined"
-  >
+  <View>
     <View
-      style={
+      className="absolute h-full justify-center"
+      collapsable={false}
+      jestAnimatedProps={
         {
-          "width": 44,
+          "value": {},
         }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {
+            "opacity": 0,
+          },
+        }
+      }
+      jestInlineStyle={{}}
+      style={
+        [
+          {
+            "opacity": 0,
+          },
+        ]
+      }
+      testID="UploadIcon.complete.undefined"
+    >
+      <View
+        style={
+          {
+            "width": 44,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "height": 44,
+              "justifyContent": "center",
+              "width": 44,
+            }
+          }
+          testID="UploadStatus.Complete"
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#74AC00",
+                  "fontSize": 28,
+                },
+                null,
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      collapsable={false}
+      jestAnimatedProps={
+        {
+          "value": {},
+        }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {
+            "opacity": 0,
+          },
+        }
+      }
+      jestInlineStyle={{}}
+      style={
+        [
+          {
+            "opacity": 0,
+          },
+        ]
       }
     >
       <View
         style={
           {
-            "alignItems": "center",
-            "height": 44,
-            "justifyContent": "center",
             "width": 44,
           }
         }
-        testID="UploadStatus.Complete"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#74AC00",
-                "fontSize": 28,
-              },
-              null,
-              {
-                "fontFamily": "INatIcon",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </View>
+      />
     </View>
   </View>
 </View>

@@ -7,7 +7,6 @@ import { useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import FadeOutFadeInIcon from "./FadeOutFadeInIcon";
-import FadeOutIcon from "./FadeOutIcon";
 import UploadCompleteIcon from "./UploadCompleteIcon";
 import UploadProgressIcon from "./UploadProgressIcon";
 
@@ -129,34 +128,25 @@ const UploadStatus = ( {
       );
     }
 
-    if ( !isDefaultMode && layout === "vertical" ) {
-      return (
-        <FadeOutFadeInIcon
-          uniqueKey={uniqueKey}
-          fadeOutIcon={(
-            <View className={wrapperClassName}>
-              <UploadCompleteIcon
-                iconClasses={iconClasses}
-                completeColor={completeColor}
-              />
-            </View>
-          )}
-          fadeInIcon={<View className={wrapperClassName}>{obsStatus}</View>}
-        />
-      );
-    }
+    const showObsStatus = !isDefaultMode && layout === "vertical";
 
     return (
-      <FadeOutIcon
+      <FadeOutFadeInIcon
         uniqueKey={uniqueKey}
-      >
-        <View className={wrapperClassName}>
-          <UploadCompleteIcon
-            iconClasses={iconClasses}
-            completeColor={completeColor}
-          />
-        </View>
-      </FadeOutIcon>
+        fadeOutIcon={(
+          <View className={wrapperClassName}>
+            <UploadCompleteIcon
+              iconClasses={iconClasses}
+              completeColor={completeColor}
+            />
+          </View>
+        )}
+        fadeInIcon={(
+          <View className={wrapperClassName}>
+            {showObsStatus && obsStatus}
+          </View>
+        )}
+      />
     );
   };
 
