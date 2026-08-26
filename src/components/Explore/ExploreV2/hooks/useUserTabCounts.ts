@@ -1,4 +1,5 @@
-import { fetchIdentifiers, fetchObservers } from "api/observations";
+import type { ApiUserCount } from "api/observationsTyped";
+import { fetchIdentifiers, fetchObservers } from "api/observationsTyped";
 import type { ApiResponse } from "api/types";
 import type {
   ExploreV2BaseQueryParams,
@@ -20,13 +21,13 @@ const useUserTabCounts = (
 ): UserTabCounts => {
   const countParams = { ...params, per_page: 0, ttl: -1 };
 
-  const { data: observersData } = useAuthenticatedQuery<ApiResponse<object>>(
+  const { data: observersData } = useAuthenticatedQuery<ApiResponse<ApiUserCount> | null>(
     ["exploreV2ObserversCount", countParams],
     optsWithAuth => fetchObservers( countParams, optsWithAuth ),
     { enabled },
   );
 
-  const { data: identifiersData } = useAuthenticatedQuery<ApiResponse<object>>(
+  const { data: identifiersData } = useAuthenticatedQuery<ApiResponse<ApiUserCount> | null>(
     ["exploreV2IdentifiersCount", countParams],
     optsWithAuth => fetchIdentifiers( countParams, optsWithAuth ),
     { enabled },
