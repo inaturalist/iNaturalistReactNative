@@ -218,6 +218,16 @@ const isLoggedIn = async (): Promise<boolean> => {
 };
 
 /**
+ * Deletes the OAuth access token from sensitive storage. Used for debug flows
+ * that need to test re-login without a full sign-out.
+ *
+ * @returns {Promise<void>}
+ */
+const deleteAccessToken = async (): Promise<void> => {
+  await deleteSensitiveItem( "accessToken" );
+};
+
+/**
  * Signs out the user
  *
  * @returns {Promise<void>}
@@ -777,6 +787,7 @@ export {
   authenticateUser,
   authenticateUserByAssertion,
   clearAuthCache,
+  deleteAccessToken,
   emailAvailable,
   getAnonymousJWT,
   getJWT,
