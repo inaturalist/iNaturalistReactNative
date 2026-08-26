@@ -2,7 +2,6 @@ import { useQueries, useQueryClient } from "@tanstack/react-query";
 import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
-import { selectCategoryToDeepen } from "components/MyObservations/helpers/iconicTaxaSections";
 import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useMemo, useState,
@@ -54,11 +53,8 @@ interface Result {
   sections: Map<ICONIC_TAXA_GROUP, IconicTaxaSectionState>;
   // start fetching the next category that has anything to fetch
   advanceFrontier: ( ) => void;
-  // load the next page of the section the user has scrolled into, or, if that section is
-  // finished, start the next category. Safe to call on every onEndReached.
-  deepenOrAdvance: ( ) => void;
-  // same, for a specific section. Sections aren't necessarily loaded in list order, so the one
-  // the user is reading isn't always the deepest one deepenOrAdvance would pick.
+  // load the next page of a section, or start the next category when that one has nothing
+  // left to load. Safe to call on every scroll.
   deepenCategory: ( category: ICONIC_TAXA_GROUP ) => void;
   retryCategory: ( category: ICONIC_TAXA_GROUP ) => void;
   refreshSections: ( ) => void;
@@ -235,38 +231,11 @@ const useIconicTaxaSectionObservations = ( {
     setPages( { ...pagesByCategory, [next.category]: 1 } );
   }, [orderedCounts, pagesByCategory, setPages] );
 
-  const deepenOrAdvance = useCallback( ( ) => {
-    if ( anyFetching ) return;
-    const category = selectCategoryToDeepen(
-      orderedCounts.map( count => count.category ),
-      sections,
-      collapsedCategories,
-    );
-    if ( !category ) {
-      advanceFrontier( );
-      return;
-    }
-    setPages( {
-      ...pagesByCategory,
-      [category]: ( pagesByCategory[category] ?? 0 ) + 1,
-    } );
-  }, [
-    advanceFrontier,
-    anyFetching,
-    collapsedCategories,
-    orderedCounts,
-    pagesByCategory,
-    sections,
-    setPages,
-  ] );
-
   const deepenCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
     if ( anyFetching ) return;
     const section = sections.get( category );
-    if ( !section?.isActivated || section.isError ) return;
-    if ( collapsedCategories.has( category ) ) return;
-    if ( !section.hasMore ) {
-      // Nothing left in this one, so get a head start on a category that hasn't loaded yet
+    if ( section?.isError || collapsedCategories.has( category ) ) return;
+    if ( !section?.isActivated || !section.hasMore ) {
       advanceFrontier( );
       return;
     }
@@ -307,7 +276,6 @@ const useIconicTaxaSectionObservations = ( {
   return {
     sections,
     advanceFrontier,
-    deepenOrAdvance,
     deepenCategory,
     retryCategory,
     refreshSections,

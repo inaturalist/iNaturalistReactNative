@@ -118,7 +118,7 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     const { result } = renderSectionsHook( );
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
 
-    act( ( ) => result.current.deepenOrAdvance( ) );
+    act( ( ) => result.current.deepenCategory( ICONIC_TAXA_GROUP.PLANTAE ) );
 
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
     expect( paramsOfLastSearch( ) ).toMatchObject( {
@@ -127,15 +127,15 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     } );
   } );
 
-  it( "moves on to the next category once the current one is fully loaded, without "
-    + "being collapsed", async ( ) => {
+  it( "starts the next category when the one the user is in has nothing left to load, "
+    + "without being collapsed", async ( ) => {
     searchObservations.mockResolvedValue( pageOf( ["a"], 1 ) );
     const { result } = renderSectionsHook( );
     await waitFor( ( ) => {
       expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).hasMore ).toBe( false );
     } );
 
-    act( ( ) => result.current.deepenOrAdvance( ) );
+    act( ( ) => result.current.deepenCategory( ICONIC_TAXA_GROUP.PLANTAE ) );
 
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
     expect( paramsOfLastSearch( ) ).toMatchObject( {
@@ -166,7 +166,7 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     + "re-requesting every loaded page under the new order", async ( ) => {
     const { rerender, result } = renderSectionsHook( );
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
-    act( ( ) => result.current.deepenOrAdvance( ) );
+    act( ( ) => result.current.deepenCategory( ICONIC_TAXA_GROUP.PLANTAE ) );
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
     searchObservations.mockClear( );
 

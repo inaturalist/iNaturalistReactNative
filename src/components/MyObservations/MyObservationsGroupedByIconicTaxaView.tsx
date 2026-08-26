@@ -99,7 +99,6 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     sections,
     advanceFrontier,
     deepenCategory,
-    deepenOrAdvance,
     refreshSections,
     retryCategory,
   } = useIconicTaxaSectionObservations( {
@@ -148,8 +147,10 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     const lastVisibleIndex = viewableItems[viewableItems.length - 1]?.index;
     if ( lastVisibleIndex == null ) return;
     const range = sectionRangeAtRow( ranges, lastVisibleIndex );
-    if ( !range || range.lastTileRow < 0 ) return;
-    if ( lastVisibleIndex >= range.lastTileRow - PREFETCH_TILES ) deepen( range.category );
+    if ( !range ) return;
+    const nearEndOfSection = range.lastTileRow < 0
+      || lastVisibleIndex >= range.lastTileRow - PREFETCH_TILES;
+    if ( nearEndOfSection ) deepen( range.category );
   }, [] );
 
   // #region managing sticky header toggling and scroll position
@@ -264,7 +265,6 @@ const MyObservationsGroupedByIconicTaxaView = ( {
       data={rows}
       listFooterContent={listFooterContent}
       listHeaderContent={listHeaderContent}
-      onEndReached={deepenOrAdvance}
       onViewableItemsChanged={onViewableItemsChanged}
       ref={listRef}
       refreshControl={refreshControl}

@@ -126,28 +126,3 @@ export function sectionRangeAtRow(
 ): IconicTaxaSectionRange | undefined {
   return ranges.find( range => row >= range.headerRow && row <= range.lastRow );
 }
-
-// determines which section should load its next page when the user reaches the bottom of the list.
-// Returns null when the deepest section is exhausted, which is the caller's signal to activate the
-// next category instead.
-//
-// Also returns null while anything is fetching, which serializes requests and acts as the guard
-// against FlashList firing onEndReached repeatedly through a single overscroll.
-export function selectCategoryToDeepen(
-  orderedCategories: ICONIC_TAXA_GROUP[],
-  sections: Map<ICONIC_TAXA_GROUP, IconicTaxaSectionState>,
-  collapsedCategories: Set<ICONIC_TAXA_GROUP>,
-): ICONIC_TAXA_GROUP | null {
-  if ( [...sections.values( )].some( section => section.isFetching ) ) return null;
-
-  for ( let i = orderedCategories.length - 1; i >= 0; i -= 1 ) {
-    const category = orderedCategories[i];
-    const section = sections.get( category );
-    const canDeepen = section?.isActivated
-      && section.hasMore
-      && !section.isError
-      && !collapsedCategories.has( category );
-    if ( canDeepen ) return category;
-  }
-  return null;
-}

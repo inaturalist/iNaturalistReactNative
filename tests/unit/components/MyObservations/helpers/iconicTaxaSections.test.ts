@@ -3,7 +3,6 @@ import {
   buildIconicTaxaRows,
   sectionRangeAtRow,
   sectionRowRanges,
-  selectCategoryToDeepen,
 } from "components/MyObservations/helpers/iconicTaxaSections";
 import { ICONIC_TAXA_GROUP, ICONIC_TAXA_GROUP_ORDER } from "sharedHelpers/iconicTaxaGroupOrder";
 
@@ -104,53 +103,6 @@ describe( "buildIconicTaxaRows", ( ) => {
 
     expect( tileKeys( rows ) ).toEqual( ["server-1"] );
     expect( rows.filter( row => row.type === "span" )[0] ).toMatchObject( { itemType: "error" } );
-  } );
-} );
-
-describe( "selectCategoryToDeepen", ( ) => {
-  const order = [ICONIC_TAXA_GROUP.PLANTAE, ICONIC_TAXA_GROUP.AVES, ICONIC_TAXA_GROUP.INSECTA];
-  const noneCollapsed = new Set<ICONIC_TAXA_GROUP>( );
-
-  it( "fetches more for the last section that still has pages", ( ) => {
-    const sections = new Map( [
-      [ICONIC_TAXA_GROUP.PLANTAE, section( { hasMore: true } )],
-      [ICONIC_TAXA_GROUP.AVES, section( { hasMore: true } )],
-    ] );
-
-    expect( selectCategoryToDeepen( order, sections, noneCollapsed ) )
-      .toBe( ICONIC_TAXA_GROUP.AVES );
-  } );
-
-  it( "returns null when the deepest section is exhausted, so the caller activates the "
-    + "next category instead", ( ) => {
-    const sections = new Map( [
-      [ICONIC_TAXA_GROUP.PLANTAE, section( { hasMore: false } )],
-    ] );
-
-    expect( selectCategoryToDeepen( order, sections, noneCollapsed ) ).toBeNull( );
-  } );
-
-  it( "returns null while any section is fetching, so repeated onEndReached events during "
-    + "one overscroll don't stack up requests", ( ) => {
-    const sections = new Map( [
-      [ICONIC_TAXA_GROUP.PLANTAE, section( { hasMore: true } )],
-      [ICONIC_TAXA_GROUP.AVES, section( { isFetching: true, hasMore: true } )],
-    ] );
-
-    expect( selectCategoryToDeepen( order, sections, noneCollapsed ) ).toBeNull( );
-  } );
-
-  it( "skips collapsed, errored, and never-activated sections", ( ) => {
-    const sections = new Map( [
-      [ICONIC_TAXA_GROUP.PLANTAE, section( { hasMore: true } )],
-      [ICONIC_TAXA_GROUP.AVES, section( { hasMore: true, isError: true } )],
-      [ICONIC_TAXA_GROUP.INSECTA, section( { hasMore: true, isActivated: false } )],
-    ] );
-    const collapsed = new Set( [ICONIC_TAXA_GROUP.PLANTAE] );
-
-    expect( selectCategoryToDeepen( order, sections, collapsed ) ).toBeNull( );
-    expect( selectCategoryToDeepen( order, sections, noneCollapsed ) )
-      .toBe( ICONIC_TAXA_GROUP.PLANTAE );
   } );
 } );
 
