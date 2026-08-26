@@ -49,8 +49,7 @@ afterEach( () => {
 jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   __esModule: true,
   default: {
-    OS: "ios",
-    select: jest.fn(),
+    ...jest.requireActual( "react-native/Libraries/Utilities/Platform" ).default,
     Version: 11,
   },
 } ) );
@@ -133,7 +132,7 @@ const actor = userEvent.setup( );
 
 const navToObsEditWithTopSuggestion = async ( ) => {
   const topTaxonResultButton = await screen.findByTestId(
-    `SuggestionsList.taxa.${topSuggestion.taxon.id}.checkmark`,
+    `SuggestionsList.taxa.${topSuggestion.taxon.id}`,
   );
   await actor.press( topTaxonResultButton );
   const evidenceList = await screen.findByTestId( "EvidenceList.DraggableFlatList" );

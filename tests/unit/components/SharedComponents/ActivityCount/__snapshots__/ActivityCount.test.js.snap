@@ -5,16 +5,10 @@ exports[`ActivityCount renders reliably 1`] = `
   accessibilityLabel="1"
   accessible={true}
   style={
-    [
-      [
-        {
-          "flexDirection": "row",
-        },
-        {
-          "alignItems": "center",
-        },
-      ],
-    ]
+    {
+      "alignItems": "center",
+      "flexDirection": "row",
+    }
   }
 >
   <Text
@@ -41,33 +35,14 @@ exports[`ActivityCount renders reliably 1`] = `
   <Text
     maxFontSizeMultiplier={2}
     style={
-      [
-        {
-          "color": "#454545",
-        },
-        {
-          "fontFamily": "Lato-Regular",
-        },
-        [
-          {
-            "textAlign": "left",
-          },
-          [
-            {
-              "fontSize": 13,
-              "lineHeight": 18,
-            },
-            {
-              "fontFamily": "Lato-Medium",
-            },
-            [
-              {
-                "marginLeft": 6,
-              },
-            ],
-          ],
-        ],
-      ]
+      {
+        "color": "rgba(69, 69, 69, 1)",
+        "fontFamily": "Lato-Medium",
+        "fontSize": 13,
+        "lineHeight": 18,
+        "marginLeft": 6,
+        "textAlign": "left",
+      }
     }
     testID="some_id"
   >

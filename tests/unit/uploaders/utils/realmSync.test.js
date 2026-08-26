@@ -8,6 +8,8 @@ describe( "markRecordUploaded", () => {
   let mockObservation;
   let mockObsPhoto;
   let mockObsSound;
+  let mockOfv;
+  let mockPo;
   let mockPhoto;
   let mockSound;
   let mockResponse;
@@ -17,6 +19,8 @@ describe( "markRecordUploaded", () => {
 
     mockObsPhoto = { uuid: "photo123", id: null, _synced_at: null };
     mockObsSound = { uuid: "sound123", id: null, _synced_at: null };
+    mockOfv = { uuid: "ofv123", id: null, _synced_at: null };
+    mockPo = { uuid: "po123", id: null, _synced_at: null };
     mockPhoto = { id: null, _synced_at: null };
     mockSound = { id: null, _synced_at: null };
 
@@ -27,6 +31,8 @@ describe( "markRecordUploaded", () => {
       needs_sync: true,
       observationPhotos: [mockObsPhoto],
       observationSounds: [mockObsSound],
+      observationFieldValues: [mockOfv],
+      projectObservations: [mockPo],
     };
 
     mockResponse = {
@@ -85,6 +91,26 @@ describe( "markRecordUploaded", () => {
     expect( mockObsSound._synced_at ).toBeInstanceOf( Date );
     // needs_sync should not be modified for ObservationSound
     expect( mockObsSound.needs_sync ).toBeUndefined();
+  } );
+
+  test( "should update an ObservationFieldValue record correctly", () => {
+    markRecordUploaded( "obs123", "ofv123", "ObservationFieldValue", mockResponse, mockRealm );
+
+    expect( mockRealm.objectForPrimaryKey ).toHaveBeenCalledWith( "Observation", "obs123" );
+    expect( safeRealmWrite ).toHaveBeenCalledTimes( 1 );
+
+    expect( mockOfv.id ).toBe( 12345 );
+    expect( mockOfv._synced_at ).toBeInstanceOf( Date );
+  } );
+
+  test( "should update a ProjectObservation record correctly", () => {
+    markRecordUploaded( "obs123", "po123", "ProjectObservation", mockResponse, mockRealm );
+
+    expect( mockRealm.objectForPrimaryKey ).toHaveBeenCalledWith( "Observation", "obs123" );
+    expect( safeRealmWrite ).toHaveBeenCalledTimes( 1 );
+
+    expect( mockPo.id ).toBe( 12345 );
+    expect( mockPo._synced_at ).toBeInstanceOf( Date );
   } );
 
   test( "should update a Photo record correctly with options.record", () => {

@@ -99,8 +99,7 @@ jobs:
         gradle-version: '9.0.0'
 
     - name: Install JS dependencies
-      run: |
-        npm install
+      run: npm ci
 
     - name: Download the small example cv and geomodel
       run: |
@@ -159,24 +158,8 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
 
-      - name: Cache node modules
-        uses: actions/cache@v5
-        id: cache
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('**/package-lock.json') }}
-
-      # supposedly our current cache includes native modules like Realm
-      # that have compiled binaries specific to the environment where they were installed
-      # which might not be the same as the github actions environment
-      # so we need to rebuild them
-      - name: Rebuild native modules
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: npm rebuild
-
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install
+        run: npm ci
 
       # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
       # This will be available for all subsequent steps

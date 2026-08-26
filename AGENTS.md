@@ -210,7 +210,7 @@ Translation system using Fluent and i18next:
 - Some legacy components use StyleSheet.create()
 - **React Native Paper** - Material Design components for some UI elements
 
-**Details:** component structure, styling, and accessibility conventions are in `agent-docs/conventions/component-conventions.md`.
+**Details:** component structure, styling, and accessibility conventions are in `agent-docs/conventions/component-conventions.md`. For NativeWind 4-specific gotchas (className resolution, class-conflict order, third-party component registration), see `agent-docs/conventions/nativewind-v4.md`.
 
 ### Module Aliases
 
@@ -311,8 +311,8 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 
 In-depth architecture and convention docs for both humans and AI agents. Read the relevant doc before exploring or modifying a subsystem — it captures patterns that aren't obvious from the code alone.
 
-- `architecture/` — `upload-system.md`, `navigation-patterns.md`, `api-layer.md`, `realm-and-zustand.md` (includes working with Realm objects in the React layer), `media-filesystem-lifecycle.md`
-- `conventions/` — `component-conventions.md`, `i18n-conventions.md`, `import-aliases.md`, `typescript.md`
+- `architecture/` — `upload-system.md`, `navigation-patterns.md`, `api-layer.md`, `realm-and-zustand.md` (includes working with Realm objects in the React layer)
+- `conventions/` — `component-conventions.md`, `i18n-conventions.md`, `import-aliases.md`, `typescript.md`, `nativewind-v4.md` (className resolution gotchas from the NativeWind 2→4 migration)
 - `testing/` — `test-core.md`, `test-components.md`, `integration-test-analysis.md`, `e2e.md` (Detox + Maestro + iOS verification)
 
 ## Common Pitfalls

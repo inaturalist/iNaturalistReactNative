@@ -8,12 +8,14 @@ const ignorePatterns = "node_modules/(?!(jest-)?@react-native|react-native|"
 const config: Config = {
   moduleNameMapper: {
     "\\.svg": "<rootDir>/tests/mocks/svgMock.js",
+    "\\.css$": "<rootDir>/tests/mocks/cssMock.js",
   },
   preset: "react-native",
   setupFiles: [
     "./node_modules/react-native-gesture-handler/jestSetup.js",
     "./node_modules/@react-native-google-signin/google-signin/jest/build/jest/setup.js",
     "<rootDir>/tests/jest.setup.js",
+    "<rootDir>/tests/nativewind.setup.js",
   ],
   globalSetup: "<rootDir>/tests/jest.globalSetup.js",
   setupFilesAfterEnv: [
