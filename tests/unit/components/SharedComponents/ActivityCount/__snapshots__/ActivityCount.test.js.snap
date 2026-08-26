@@ -20,7 +20,7 @@ exports[`ActivityCount renders reliably 1`] = `
           "color": "#454545",
           "fontSize": 14,
         },
-        null,
+        {},
         {
           "fontFamily": "INatIcon",
           "fontStyle": "normal",

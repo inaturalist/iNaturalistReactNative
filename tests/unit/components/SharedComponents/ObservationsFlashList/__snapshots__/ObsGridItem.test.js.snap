@@ -54,7 +54,7 @@ exports[`ObsGridItem for an observation with a photo should render 1`] = `
                 "color": "#BFBFBF33",
                 "fontSize": 100,
               },
-              null,
+              {},
               {
                 "fontFamily": "INatIcon",
                 "fontStyle": "normal",
@@ -198,7 +198,7 @@ exports[`ObsGridItem for an observation without a photo should render 1`] = `
                 "color": "#BFBFBF33",
                 "fontSize": 100,
               },
-              null,
+              {},
               {
                 "fontFamily": "INatIcon",
                 "fontStyle": "normal",
