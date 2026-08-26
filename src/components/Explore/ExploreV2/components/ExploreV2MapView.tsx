@@ -107,6 +107,22 @@ const ExploreV2MapView = ( {
 
   const initialRegion = mapAreaRegion || targetRegion || WORLDWIDE_REGION;
 
+  // when the map is moved by anything other than a user panning,
+  // do not show the "Redo search in this area" button
+  const [lastCameraTarget, setLastCameraTarget] = useState( regionToAnimate );
+  if ( regionToAnimate !== lastCameraTarget ) {
+    setLastCameraTarget( regionToAnimate );
+    setShowRedoSearch( false );
+  }
+
+  // waitingForTargetRegion is true when we have switched place modes but don't have bounds yet
+  // down below, we unmount Map during this state because of a bug that sometimes results in
+  // the map showing no results after an animation.
+  // this is a workaround and might be able to reverted some day
+  const waitingForTargetRegion = placeMode !== EXPLORE_V2_PLACE_MODE.WORLDWIDE
+    && !mapAreaRegion
+    && !targetRegion;
+
   const handleRedoSearchPress = useCallback( async ( ) => {
     setShowRedoSearch( false );
     const bounds = await mapRef.current?.getMapBoundaries( );
@@ -121,21 +137,23 @@ const ExploreV2MapView = ( {
 
   return (
     <View className="flex-1 overflow-hidden h-full">
-      <Map
-        ref={mapRef}
-        initialRegion={initialRegion}
-        isLoading={isLoading}
-        onCurrentLocationPress={onCurrentLocationPress}
-        onPanDrag={( ) => setShowRedoSearch( true )}
-        regionToAnimate={regionToAnimate}
-        showCurrentLocationButton
-        showsCompass={false}
-        showSwitchMapTypeButton
-        showsUserLocation
-        switchMapTypeButtonClassName="right-5 bottom-20"
-        tileMapParams={queryParams}
-        withPressableObsTiles
-      />
+      {!waitingForTargetRegion && (
+        <Map
+          ref={mapRef}
+          initialRegion={initialRegion}
+          isLoading={isLoading}
+          onCurrentLocationPress={onCurrentLocationPress}
+          onPanDrag={( ) => setShowRedoSearch( true )}
+          regionToAnimate={regionToAnimate}
+          showCurrentLocationButton
+          showsCompass={false}
+          showSwitchMapTypeButton
+          showsUserLocation
+          switchMapTypeButtonClassName="right-5 bottom-20"
+          tileMapParams={queryParams}
+          withPressableObsTiles
+        />
+      )}
       {showRedoSearch && (
         <View
           className="absolute top-5 left-0 right-0 items-center z-10"
@@ -149,7 +167,7 @@ const ExploreV2MapView = ( {
           />
         </View>
       )}
-      {isLoading && (
+      {( isLoading || waitingForTargetRegion ) && (
         <View
           className="absolute top-0 bottom-0 left-0 right-0 items-center justify-center"
           testID="ExploreV2MapView.loading"
