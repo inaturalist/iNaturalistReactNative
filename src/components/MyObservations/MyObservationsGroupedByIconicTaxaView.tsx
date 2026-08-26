@@ -98,8 +98,8 @@ const MyObservationsGroupedByIconicTaxaView = ( {
   const {
     sections,
     advanceFrontier,
-    deepenCategory,
     refreshSections,
+    nearingEndOfSection,
     retryCategory,
   } = useIconicTaxaSectionObservations( {
     collapsedCategories,
@@ -130,10 +130,10 @@ const MyObservationsGroupedByIconicTaxaView = ( {
 
   // Read through a ref so the handler identity stays stable. FlashList subscribes to it, and
   // swapping it on every render churns that subscription.
-  const prefetchRef = useRef( { deepenCategory, sectionRanges } );
+  const prefetchRef = useRef( { nearingEndOfSection, sectionRanges } );
   useEffect( ( ) => {
-    prefetchRef.current = { deepenCategory, sectionRanges };
-  }, [deepenCategory, sectionRanges] );
+    prefetchRef.current = { nearingEndOfSection, sectionRanges };
+  }, [nearingEndOfSection, sectionRanges] );
 
   // Tells us which row is at the top of the screen, so collapsing can tell whether the user is
   // inside the section they just closed or looking at its header from outside
@@ -143,14 +143,14 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     viewableItems: { index: number | null }[];
   } ) => {
     firstVisibleIndexRef.current = viewableItems[0]?.index ?? 0;
-    const { deepenCategory: deepen, sectionRanges: ranges } = prefetchRef.current;
+    const { nearingEndOfSection, sectionRanges: ranges } = prefetchRef.current;
     const lastVisibleIndex = viewableItems[viewableItems.length - 1]?.index;
     if ( lastVisibleIndex == null ) return;
     const range = sectionRangeAtRow( ranges, lastVisibleIndex );
     if ( !range ) return;
-    const nearEndOfSection = range.lastTileRow < 0
+    const isNearEnd = range.lastTileRow < 0
       || lastVisibleIndex >= range.lastTileRow - PREFETCH_TILES;
-    if ( nearEndOfSection ) deepen( range.category );
+    if ( isNearEnd ) nearingEndOfSection( range.category );
   }, [] );
 
   // #region managing sticky header toggling and scroll position

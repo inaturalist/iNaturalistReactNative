@@ -118,7 +118,7 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     const { result } = renderSectionsHook( );
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
 
-    act( ( ) => result.current.deepenCategory( ICONIC_TAXA_GROUP.PLANTAE ) );
+    act( ( ) => result.current.nearingEndOfSection( ICONIC_TAXA_GROUP.PLANTAE ) );
 
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
     expect( paramsOfLastSearch( ) ).toMatchObject( {
@@ -135,7 +135,7 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
       expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).hasMore ).toBe( false );
     } );
 
-    act( ( ) => result.current.deepenCategory( ICONIC_TAXA_GROUP.PLANTAE ) );
+    act( ( ) => result.current.nearingEndOfSection( ICONIC_TAXA_GROUP.PLANTAE ) );
 
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
     expect( paramsOfLastSearch( ) ).toMatchObject( {
@@ -166,7 +166,7 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     + "re-requesting every loaded page under the new order", async ( ) => {
     const { rerender, result } = renderSectionsHook( );
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
-    act( ( ) => result.current.deepenCategory( ICONIC_TAXA_GROUP.PLANTAE ) );
+    act( ( ) => result.current.nearingEndOfSection( ICONIC_TAXA_GROUP.PLANTAE ) );
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
     searchObservations.mockClear( );
 

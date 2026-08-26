@@ -53,9 +53,14 @@ interface Result {
   sections: Map<ICONIC_TAXA_GROUP, IconicTaxaSectionState>;
   // start fetching the next category that has anything to fetch
   advanceFrontier: ( ) => void;
-  // load the next page of a section, or start the next category when that one has nothing
-  // left to load. Safe to call on every scroll.
-  deepenCategory: ( category: ICONIC_TAXA_GROUP ) => void;
+  // The caller knows only that the user is near the end of one category's tiles;
+  // so we need to manage the following states:
+  //
+  //   something already in flight     -> nothing, so scrolling can't stack up requests
+  //   errored, or collapsed           -> nothing; a failed section waits for retryCategory
+  //   the category has pages left     -> fetch its next page
+  //   never fetched, or fully loaded  -> start the next category that has anything to fetch
+  nearingEndOfSection: ( category: ICONIC_TAXA_GROUP ) => void;
   retryCategory: ( category: ICONIC_TAXA_GROUP ) => void;
   refreshSections: ( ) => void;
   resetPagination: ( ) => void;
@@ -231,7 +236,8 @@ const useIconicTaxaSectionObservations = ( {
     setPages( { ...pagesByCategory, [next.category]: 1 } );
   }, [orderedCounts, pagesByCategory, setPages] );
 
-  const deepenCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
+  // See the Result type above for the full set of cases this decides between
+  const nearingEndOfSection = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
     if ( anyFetching ) return;
     const section = sections.get( category );
     if ( section?.isError || collapsedCategories.has( category ) ) return;
@@ -276,7 +282,7 @@ const useIconicTaxaSectionObservations = ( {
   return {
     sections,
     advanceFrontier,
-    deepenCategory,
+    nearingEndOfSection,
     retryCategory,
     refreshSections,
     resetPagination,
