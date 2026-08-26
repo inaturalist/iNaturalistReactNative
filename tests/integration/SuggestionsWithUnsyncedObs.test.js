@@ -89,8 +89,7 @@ const mockModelResultWithHuman = {
 jest.mock( "react-native/Libraries/Utilities/Platform", () => ( {
   __esModule: true,
   default: {
-    OS: "ios",
-    select: jest.fn(),
+    ...jest.requireActual( "react-native/Libraries/Utilities/Platform" ).default,
     Version: 11,
   },
 } ) );
@@ -228,7 +227,7 @@ const setupAppWithSignedInUser = async hasLocation => {
 //       expect( offlineNotice ).toBeTruthy( );
 //     }, { timeout: 10000 } );
 //     const topOfflineTaxonResultButton = await screen.findByTestId(
-//       `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}.checkmark`
+//       `SuggestionsList.taxa.${mockModelResult.predictions[0].taxon_id}`
 //     );
 //     expect( topOfflineTaxonResultButton ).toBeTruthy( );
 //     await act( async ( ) => actor.press( topOfflineTaxonResultButton ) );
@@ -259,7 +258,7 @@ describe( "from ObsEdit with human observation", () => {
     const { observations } = await setupAppWithSignedInUser();
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const humanResultButton = await screen.findByTestId(
-      `SuggestionsList.taxa.${humanSuggestion.taxon.id}.checkmark`,
+      `SuggestionsList.taxa.${humanSuggestion.taxon.id}`,
     );
     expect( humanResultButton ).toBeVisible();
     const human = screen.getByText( /Homo sapiens/ );
@@ -381,11 +380,10 @@ describe( "from AICamera directly", ( ) => {
       useNetInfo.mockImplementation( ( ) => ( { isConnected: false } ) );
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICameraFromMyObs( );
-      const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
-      expect( topTaxonSuggestion ).toHaveProp(
-        "testID",
-        `SuggestionsList.taxa.${mockModelResult.predictions[1].taxon_id}.checkmark`,
+      const topTaxonSuggestion = await screen.findByTestId(
+        `SuggestionsList.taxa.${mockModelResult.predictions[1].taxon_id}`,
       );
+      expect( topTaxonSuggestion ).toBeVisible( );
     } );
 
     it( "should show not confident message if no predictions"
@@ -402,7 +400,7 @@ describe( "from AICamera directly", ( ) => {
         expect( notConfidentText ).toBeVisible( );
       } );
       const otherSuggestion = await screen.findByTestId(
-        `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}.checkmark`,
+        `SuggestionsList.taxa.${mockModelResultNoConfidence.predictions[1].taxon_id}`,
       );
       expect( otherSuggestion ).toBeVisible( );
     } );
@@ -415,14 +413,12 @@ describe( "from AICamera directly", ( ) => {
       await setupAppWithSignedInUser( );
       await navigateToSuggestionsViaAICameraFromMyObs( );
 
-      const topTaxonSuggestion = await screen.findByLabelText( /Choose top taxon/ );
       const humanPrediction = mockModelResultWithHuman.predictions
         .find( p => p.name === "Homo" );
-
-      expect( topTaxonSuggestion ).toHaveProp(
-        "testID",
-        `SuggestionsList.taxa.${humanPrediction.taxon_id}.checkmark`,
+      const topTaxonSuggestion = await screen.findByTestId(
+        `SuggestionsList.taxa.${humanPrediction.taxon_id}`,
       );
+      expect( topTaxonSuggestion ).toBeVisible( );
 
       const otherSuggestionsText = screen.queryByText( /OTHER SUGGESTIONS/ );
       expect( otherSuggestionsText ).toBeFalsy( );

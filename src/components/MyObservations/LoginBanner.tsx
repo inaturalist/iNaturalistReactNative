@@ -51,7 +51,7 @@ const LoginBanner = ( {
                 items-center
                 justify-center
                 p-[20px]
-                space-x-[12px]
+                gap-x-[12px]
                 bg-white
                 rounded-xl"
                 onPress={( ) => navigation.navigate( "LoginStackNavigator" )}

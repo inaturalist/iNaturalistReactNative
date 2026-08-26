@@ -86,8 +86,6 @@ const Header = ( {
                   <DisplayTaxon
                     accessibilityLabel={t( "Change-taxon-filter" )}
                     taxon={taxon || "unknown"}
-                    showInfoButton={false}
-                    showCheckmark={false}
                     handlePress={() => setShowTaxonSearch( true )}
                   />
                 )

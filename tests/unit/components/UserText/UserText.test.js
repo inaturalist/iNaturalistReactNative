@@ -39,7 +39,7 @@ describe( "Sanitization", () => {
     expect( await screen.findByLabelText( altText ) ).toBeTruthy();
 
     // default font size is 14, check if no change
-    expect( screen.queryByText( pTagText ) ).toHaveProperty( "props.style.0.fontSize", 16 );
+    expect( screen.queryByText( pTagText ) ).toHaveProperty( "props.style.fontSize", 16 );
   } );
 
   it( "links all @ mentions", () => {
@@ -114,7 +114,7 @@ describe( "Basic Rendering", () => {
 
     expect( screen.queryByText( testText ) ).toBeFalsy();
     expect( screen.queryByText( "This is Heading 1" ) )
-      .toHaveProperty( "props.style.0.fontWeight", "bold" );
+      .toHaveProperty( "props.style.fontWeight", "bold" );
   } );
 
   it( "renders html", () => {
@@ -125,9 +125,9 @@ describe( "Basic Rendering", () => {
 
     expect( screen.queryByText( testText ) ).toBeFalsy();
     expect( screen.queryByText( "Welcome to" ) )
-      .not.toHaveProperty( "props.style.0.fontWeight", "bold" );
+      .not.toHaveProperty( "props.style.fontWeight", "bold" );
     expect( screen.queryByText( "iNaturalist" ) )
-      .toHaveProperty( "props.style.0.fontWeight", "bold" );
+      .toHaveProperty( "props.style.fontWeight", "bold" );
   } );
 
   // Cannot test table and list rendering, at least using this type of test.

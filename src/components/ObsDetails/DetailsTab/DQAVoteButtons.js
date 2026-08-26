@@ -123,7 +123,7 @@ const DQAVoteButtons = ( {
   };
 
   return (
-    <View className="flex-row items-center justify-between w-[97px] space-x-[11px]">
+    <View className="flex-row items-center justify-between w-[97px] gap-x-[11px]">
       <View className="flex-row items-center w-1/2">
         {renderAgree()}
         {renderVoteCount( true, metric, votes )}
