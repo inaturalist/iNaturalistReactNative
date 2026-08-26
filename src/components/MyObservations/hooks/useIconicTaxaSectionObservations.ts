@@ -3,9 +3,7 @@ import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
 import { RealmContext } from "providers/contexts";
-import {
-  useCallback, useEffect, useMemo, useState,
-} from "react";
+import { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import type { ICONIC_TAXA_GROUP, IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
 import { log } from "sharedHelpers/logger";
@@ -63,7 +61,6 @@ interface Result {
   nearingEndOfSection: ( category: ICONIC_TAXA_GROUP ) => void;
   retryCategory: ( category: ICONIC_TAXA_GROUP ) => void;
   refreshSections: ( ) => void;
-  resetPagination: ( ) => void;
 }
 
 // Paginates each iconic taxa section independently.
@@ -264,20 +261,16 @@ const useIconicTaxaSectionObservations = ( {
     } );
   }, [currentUser?.id, queryClient, sortParams] );
 
-  // Back to the top, as if the view had just opened
-  const resetPagination = useCallback( ( ) => setPages( {} ), [setPages] );
-
-  const [refreshCount, setRefreshCount] = useState( 0 );
-
   const refreshSections = useCallback( ( ) => {
-    resetPagination( );
-    setRefreshCount( count => count + 1 );
-  }, [resetPagination] );
-
-  useEffect( ( ) => {
-    if ( refreshCount === 0 ) return;
-    queryClient.refetchQueries( { queryKey: [QUERY_KEY] } );
-  }, [queryClient, refreshCount] );
+    // Marks every page stale and refetches only the ones currently mounted; the rest reload
+    // when the user scrolls back to them. This is deliberately invalidateQueries rather than
+    // refetchQueries, which matches inactive queries too and would fan out into one request
+    // per cached page — the same thing the refetchOn* flags above exist to prevent.
+    //
+    // Pages are keyed by category, so a refresh that reorders sections doesn't invalidate
+    // what's already loaded; there's no reason to make the user fetch it all again.
+    queryClient.invalidateQueries( { queryKey: [QUERY_KEY] } );
+  }, [queryClient] );
 
   return {
     sections,
@@ -285,7 +278,6 @@ const useIconicTaxaSectionObservations = ( {
     nearingEndOfSection,
     retryCategory,
     refreshSections,
-    resetPagination,
   };
 };
 
