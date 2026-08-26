@@ -1,5 +1,5 @@
 // @flow
-import { fetchIdentifiers } from "api/observations";
+import { fetchIdentifiers } from "api/observationsTyped";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import User from "realmModels/User";
