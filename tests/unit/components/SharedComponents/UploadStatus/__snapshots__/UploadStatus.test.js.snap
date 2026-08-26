@@ -71,7 +71,7 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
                 "color": "#74AC00",
                 "fontSize": 28,
               },
-              null,
+              {},
               {
                 "fontFamily": "INatIcon",
                 "fontStyle": "normal",
@@ -135,7 +135,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% 1`]
                 "color": "#454545",
                 "fontSize": 15,
               },
-              null,
+              {},
               {
                 "fontFamily": "INatIcon",
                 "fontStyle": "normal",
@@ -207,7 +207,7 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
                 "color": "#454545",
                 "fontSize": 15,
               },
-              null,
+              {},
               {
                 "fontFamily": "INatIcon",
                 "fontStyle": "normal",
@@ -261,7 +261,7 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
                 "color": "#454545",
                 "fontSize": 33,
               },
-              null,
+              {},
               {
                 "fontFamily": "INatIcon",
                 "fontStyle": "normal",
@@ -374,7 +374,7 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
                     "color": "#454545",
                     "fontSize": 15,
                   },
-                  null,
+                  {},
                   {
                     "fontFamily": "INatIcon",
                     "fontStyle": "normal",
@@ -428,7 +428,7 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
                     "color": "#454545",
                     "fontSize": 33,
                   },
-                  null,
+                  {},
                   {
                     "fontFamily": "INatIcon",
                     "fontStyle": "normal",
