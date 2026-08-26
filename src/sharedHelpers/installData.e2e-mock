@@ -4,6 +4,7 @@ import * as uuid from "uuid";
 const INSTALL_ID = "installID";
 const ONBOARDING_SHOWN = "onboardingShown";
 export const IS_FRESH_INSTALL = "isFreshInstall";
+const ENVIRONMENT_OVERRIDE = "environmentOverride";
 
 const data = new Map();
 
@@ -23,6 +24,18 @@ export function getInstallID( ) {
   // Skip setting IS_FRESH_INSTALL in e2e to avoid triggering
   // RNRestart.restart() which kills the Detox instrumentation process
   return newID;
+}
+
+export function getEnvironmentOverride( ) {
+  return store.getString( ENVIRONMENT_OVERRIDE );
+}
+
+export function setEnvironmentOverride( prefix ) {
+  if ( prefix ) {
+    store.set( ENVIRONMENT_OVERRIDE, prefix );
+  } else {
+    store.delete( ENVIRONMENT_OVERRIDE );
+  }
 }
 
 // Subscribers that get notified when onboardingShown changes, so all
