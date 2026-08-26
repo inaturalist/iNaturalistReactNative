@@ -3,14 +3,14 @@ import { searchObservations } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import type { IconicTaxaSectionState } from "components/MyObservations/helpers/iconicTaxaSections";
 import { RealmContext } from "providers/contexts";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import type { ICONIC_TAXA_GROUP, IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
 import { log } from "sharedHelpers/logger";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { observationSortToApiParams } from "sharedHelpers/observationsSort";
-import { useCurrentUser } from "sharedHooks";
+import { useCurrentUser, useStateResetOn } from "sharedHooks";
 
 const { useRealm } = RealmContext;
 
@@ -33,12 +33,7 @@ interface IconicTaxonPage {
 // so this doubles as the activation frontier.
 type PagesByCategory = Partial<Record<ICONIC_TAXA_GROUP, number>>;
 
-// Pages are tracked alongside the sort they were fetched under, so changing sort discards them
-// on the next render
-interface PageState {
-  sortKey: string;
-  pages: PagesByCategory;
-}
+const NOTHING_REQUESTED: PagesByCategory = {};
 
 interface Params {
   collapsedCategories: Set<ICONIC_TAXA_GROUP>;
@@ -84,27 +79,23 @@ const useIconicTaxaSectionObservations = ( {
   const sortParams = useMemo( ( ) => observationSortToApiParams( sortBy ), [sortBy] );
   const sortKey = `${sortParams.order_by}-${sortParams.order}`;
 
-  const [pageState, setPageState] = useState<PageState>( { sortKey, pages: {} } );
+  // Changing sort invalidates every page, so this starts over rather than re-requesting them
+  // all under the new order
+  const [requestedPages, setPages] = useStateResetOn( sortKey, NOTHING_REQUESTED );
 
+  // Before the user has asked for anything, the most-observed category is treated as already
+  // requested so it starts loading on this render; everything below it waits for them to
+  // scroll or collapse their way down. Seeded rather than written back, so requestedPages
+  // stays honest about what the user has actually asked for. Categories the server has nothing
+  // for are skipped: their header still renders and will show any locally-saved observations,
+  // but there's nothing to request.
   const pagesByCategory = useMemo( ( ) => {
-    const pages = pageState.sortKey === sortKey
-      ? pageState.pages
-      : {};
-    if ( Object.keys( pages ).length > 0 ) return pages;
-    // Nothing requested yet, either because the view just opened or because the sort changed.
-    // Seed the most-observed category so it starts loading on this render; everything below it
-    // waits for the user to scroll or collapse their way down. Categories the server has
-    // nothing for are skipped: their header still renders and will show any locally-saved
-    // observations, but there's nothing to request.
+    if ( Object.keys( requestedPages ).length > 0 ) return requestedPages;
     const first = orderedCounts.find( ( { count } ) => count > 0 );
     return first
       ? { [first.category]: 1 }
-      : pages;
-  }, [orderedCounts, pageState, sortKey] );
-
-  const setPages = useCallback( ( pages: PagesByCategory ) => {
-    setPageState( { sortKey, pages } );
-  }, [sortKey] );
+      : requestedPages;
+  }, [orderedCounts, requestedPages] );
 
   const descriptors = useMemo( ( ) => orderedCounts.flatMap( ( { category } ) => {
     const highestPage = pagesByCategory[category] ?? 0;

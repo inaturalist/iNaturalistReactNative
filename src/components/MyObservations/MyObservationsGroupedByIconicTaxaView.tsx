@@ -13,8 +13,7 @@ import React, {
   useCallback, useEffect, useMemo, useRef, useState,
 } from "react";
 import { ICONIC_TAXA_GROUP, iconicTaxaGroupIcon } from "sharedHelpers/iconicTaxaGroupOrder";
-import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useCurrentUser, useStateResetOn, useTranslation } from "sharedHooks";
 
 import type {
   IconicTaxaHeader,
@@ -56,13 +55,6 @@ interface Props {
   listHeaderContent?: React.ReactElement | null;
 }
 
-// Which categories the user has collapsed, tracked alongside the sort they were collapsed
-// under so changing sort reopens everything without an effect
-interface CollapseState {
-  sortBy: OBSERVATIONS_SORT;
-  categories: Set<ICONIC_TAXA_GROUP>;
-}
-
 const NONE_COLLAPSED: Set<ICONIC_TAXA_GROUP> = new Set( );
 
 // How many tiles ahead of the last loaded one to start fetching.
@@ -87,13 +79,11 @@ const MyObservationsGroupedByIconicTaxaView = ( {
   } = useIconicTaxaObservationCounts( );
   const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( );
 
-  const [collapseState, setCollapseState] = useState<CollapseState>( {
-    sortBy: observationsSort,
-    categories: NONE_COLLAPSED,
-  } );
-  const collapsedCategories = collapseState.sortBy === observationsSort
-    ? collapseState.categories
-    : NONE_COLLAPSED;
+  // Changing sort reopens every section, since the list they were collapsed against is gone
+  const [collapsedCategories, setCollapsedCategories] = useStateResetOn(
+    observationsSort,
+    NONE_COLLAPSED,
+  );
 
   const {
     sections,
@@ -166,7 +156,7 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     } else {
       categories.delete( category );
     }
-    setCollapseState( { sortBy: observationsSort, categories } );
+    setCollapsedCategories( categories );
     if ( !isCollapsing ) return;
 
     const headerRow = rows.findIndex(
@@ -177,7 +167,7 @@ const MyObservationsGroupedByIconicTaxaView = ( {
     }
 
     advanceFrontier( );
-  }, [advanceFrontier, collapsedCategories, observationsSort, rows] );
+  }, [advanceFrontier, collapsedCategories, rows, setCollapsedCategories] );
 
   useEffect( ( ) => {
     const index = pinHeaderRowRef.current;
