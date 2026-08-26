@@ -1,5 +1,5 @@
 import { screen, userEvent } from "@testing-library/react-native";
-import { fetchIdentifiers, fetchObservers } from "api/observations";
+import { fetchIdentifiers, fetchObservers } from "api/observationsTyped";
 import { IDENTIFIERS_TAB, OBSERVERS_TAB } from "appConstants/tabs";
 import ExploreV2UsersView
   from "components/Explore/ExploreV2/screens/ExploreV2UsersView";

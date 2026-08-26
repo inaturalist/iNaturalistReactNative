@@ -1,4 +1,4 @@
-import { fetchIdentifiers, fetchObservers } from "api/observations";
+import { fetchIdentifiers, fetchObservers } from "api/observationsTyped";
 import { IDENTIFIERS_TAB, OBSERVERS_TAB } from "appConstants/tabs";
 import ExploreFlashList from "components/Explore/ExploreFlashList";
 import type {

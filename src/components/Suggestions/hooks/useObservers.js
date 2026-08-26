@@ -1,6 +1,6 @@
 // @flow
 
-import { fetchObservers } from "api/observations";
+import { fetchObservers } from "api/observationsTyped";
 import { useAuthenticatedQuery } from "sharedHooks";
 
 const params = {

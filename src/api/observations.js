@@ -188,28 +188,6 @@ const deleteRemoteObservation = async (
   }
 };
 
-const fetchObservers = async (
-  params: Object = {},
-  opts: Object = {},
-) : Promise<?Object> => {
-  try {
-    return inatjs.observations.observers( params, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchObservers", opts }, throw: true } );
-  }
-};
-
-const fetchIdentifiers = async (
-  params: Object = {},
-  opts: Object = {},
-) : Promise<?Object> => {
-  try {
-    return await inatjs.observations.identifiers( params, opts );
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchIdentifiers", opts } } );
-  }
-};
-
 const fetchSpeciesCounts = async (
   params: Object = {},
   opts: Object = {},
@@ -261,9 +239,7 @@ export {
   createSubscription,
   deleteRemoteObservation,
   faveObservation,
-  fetchIdentifiers,
   fetchObservationUpdates,
-  fetchObservers,
   fetchRemoteObservation,
   fetchRemoteObservations,
   fetchSpeciesCounts,
