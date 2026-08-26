@@ -5,29 +5,19 @@ exports[`Tabs should render correctly 1`] = `
   <View
     accessibilityRole="tablist"
     style={
-      [
-        [
-          {
-            "display": "flex",
-          },
-          {
-            "flexDirection": "row",
-          },
-        ],
-      ]
+      {
+        "display": "flex",
+        "flexDirection": "row",
+      }
     }
   >
     <View
       style={
-        [
-          [
-            {
-              "flexBasis": "0%",
-              "flexGrow": 1,
-              "flexShrink": 1,
-            },
-          ],
-        ]
+        {
+          "flexBasis": "0%",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        }
       }
     >
       <View
@@ -72,77 +62,40 @@ exports[`Tabs should render correctly 1`] = `
           maxFontSizeMultiplier={1.5}
           numberOfLines={1}
           style={
-            [
-              {
-                "color": "#454545",
-              },
-              {
-                "fontFamily": "Lato-Regular",
-              },
-              [
-                {
-                  "textAlign": "left",
-                },
-                [
-                  {
-                    "fontSize": 15,
-                    "lineHeight": 18,
-                  },
-                  {
-                    "letterSpacing": 2,
-                  },
-                  {
-                    "fontFamily": "Lato-Bold",
-                  },
-                  [
-                    {
-                      "alignSelf": "center",
-                    },
-                    {
-                      "paddingTop": 16,
-                    },
-                    {
-                      "paddingBottom": 12,
-                    },
-                  ],
-                ],
-              ],
-            ]
+            {
+              "alignSelf": "center",
+              "color": "rgba(69, 69, 69, 1)",
+              "fontFamily": "Lato-Bold",
+              "fontSize": 15,
+              "letterSpacing": 2,
+              "lineHeight": 18,
+              "paddingBottom": 12,
+              "paddingTop": 16,
+              "textAlign": "left",
+            }
           }
         >
           TAB_1
         </Text>
         <View
           style={
-            [
-              [
-                {
-                  "height": 4,
-                },
-                {
-                  "borderTopLeftRadius": 7,
-                  "borderTopRightRadius": 7,
-                },
-                {
-                  "backgroundColor": "#454545",
-                },
-              ],
-            ]
+            {
+              "backgroundColor": "#454545",
+              "borderTopLeftRadius": 7,
+              "borderTopRightRadius": 7,
+              "height": 4,
+            }
           }
         />
       </View>
     </View>
     <View
       style={
-        [
-          [
-            {
-              "flexBasis": "0%",
-              "flexGrow": 1,
-              "flexShrink": 1,
-            },
-          ],
-        ]
+        {
+          "flexBasis": "0%",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        }
       }
     >
       <View
@@ -187,42 +140,17 @@ exports[`Tabs should render correctly 1`] = `
           maxFontSizeMultiplier={1.5}
           numberOfLines={1}
           style={
-            [
-              {
-                "color": "#454545",
-              },
-              {
-                "fontFamily": "Lato-Regular",
-              },
-              [
-                {
-                  "textAlign": "left",
-                },
-                [
-                  {
-                    "fontSize": 15,
-                    "lineHeight": 18,
-                  },
-                  {
-                    "letterSpacing": 2,
-                  },
-                  {
-                    "fontFamily": "Lato-Bold",
-                  },
-                  [
-                    {
-                      "alignSelf": "center",
-                    },
-                    {
-                      "paddingTop": 16,
-                    },
-                    {
-                      "paddingBottom": 12,
-                    },
-                  ],
-                ],
-              ],
-            ]
+            {
+              "alignSelf": "center",
+              "color": "rgba(69, 69, 69, 1)",
+              "fontFamily": "Lato-Bold",
+              "fontSize": 15,
+              "letterSpacing": 2,
+              "lineHeight": 18,
+              "paddingBottom": 12,
+              "paddingTop": 16,
+              "textAlign": "left",
+            }
           }
         >
           TAB_2
@@ -232,16 +160,10 @@ exports[`Tabs should render correctly 1`] = `
   </View>,
   <View
     style={
-      [
-        [
-          {
-            "height": 1,
-          },
-          {
-            "backgroundColor": "#E8E8E8",
-          },
-        ],
-      ]
+      {
+        "backgroundColor": "rgba(232, 232, 232, 1)",
+        "height": 1,
+      }
     }
   />,
 ]

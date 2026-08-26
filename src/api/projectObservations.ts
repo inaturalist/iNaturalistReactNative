@@ -1,7 +1,7 @@
 import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
 import { PROJECT_OBSERVATION_FIELDS } from "api/fields";
-import type { ApiOpts } from "api/types";
+import type { ApiDefaultResult, ApiOpts, ApiResponse } from "api/types";
 import inatjs from "inaturalistjs";
 
 const PARAMS = {
@@ -22,13 +22,13 @@ export interface ProjectObservationUpdateParams {
   };
 }
 
-const createProjectObservation = async (
+const createProjectObservation = async <T = ApiDefaultResult>(
   params: ProjectObservationWriteParams,
   opts: ApiOpts = {},
-): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    const { results } = await inatjs.project_observations.create( { ...PARAMS, ...params }, opts );
-    return results;
+    const response = await inatjs.project_observations.create( { ...PARAMS, ...params }, opts );
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,

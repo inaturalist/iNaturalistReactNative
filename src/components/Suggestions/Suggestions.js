@@ -69,7 +69,7 @@ const Suggestions = ( {
 
   const renderSuggestion = useCallback( ( { item: suggestion } ) => (
     <Suggestion
-      accessibilityLabel={t( "Choose-taxon" )}
+      accessibilityHint={t( "Chooses-taxon" )}
       suggestion={suggestion}
       onTaxonChosen={onTaxonChosen}
     />
@@ -146,7 +146,7 @@ const Suggestions = ( {
     return (
       <View className="bg-inatGreen/[.13]">
         <Suggestion
-          accessibilityLabel={t( "Choose-top-taxon" )}
+          accessibilityHint={t( "Chooses-top-taxon" )}
           suggestion={item}
           onTaxonChosen={onTaxonChosen}
         />
