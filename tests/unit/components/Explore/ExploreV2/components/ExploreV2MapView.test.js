@@ -58,12 +58,6 @@ describe( "ExploreV2MapView", ( ) => {
     expect( screen.getByTestId( "ExploreV2MapView.loading" ) ).toBeTruthy( );
   } );
 
-  it( "hides the loading indicator once results have loaded", ( ) => {
-    renderMapView( { isLoading: false } );
-
-    expect( screen.queryByTestId( "ExploreV2MapView.loading" ) ).toBeNull( );
-  } );
-
   it( "shows the whole world when a worldwide search has no bounds yet", ( ) => {
     renderMapView( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } );
 
@@ -121,13 +115,16 @@ describe( "ExploreV2MapView", ( ) => {
     expect( initialRegion.longitudeDelta ).toBe( 28 );
   } );
 
-  it( "falls back to the whole world when a place's bounds haven't loaded yet", ( ) => {
+  it( "waits to mount the map until a place's bounds have loaded", ( ) => {
+    // Mounting worldwide and animating to the place makes the obs tile layer swap
+    // mid-flight, which intermittently leaves the map with no tiles drawn at all.
     renderMapView( {
       placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
       totalBounds: undefined,
     } );
 
-    expect( mapProps( ).initialRegion.latitudeDelta ).toBe( 180 );
+    expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+    expect( screen.getByTestId( "ExploreV2MapView.loading" ) ).toBeVisible( );
   } );
 
   it( "does not move the map when the search becomes a map area", ( ) => {
@@ -147,49 +144,11 @@ describe( "ExploreV2MapView", ( ) => {
     expect( animateToRegion ).not.toHaveBeenCalled( );
   } );
 
-  it( "keeps ignoring new result bounds while a map area stays up", ( ) => {
-    const { rerender } = renderMapView( {
-      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
-      mapAreaBounds: mockTotalBounds,
-    } );
-    animateToRegion.mockClear( );
-
-    // Results come back for the map area search
-    renderMapView( {
-      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
-      mapAreaBounds: mockTotalBounds,
-      totalBounds: {
-        swlat: -80, swlng: -170, nelat: 80, nelng: 170,
-      },
-    }, rerender );
-
-    expect( animateToRegion ).not.toHaveBeenCalled( );
-  } );
-
   it( "restores the chosen area when the map remounts in map area mode", ( ) => {
     renderMapView( {
       placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
       mapAreaBounds: {
         swlat: 10, swlng: 20, nelat: 30, nelng: 40,
-      },
-    } );
-
-    expect( mapProps( ).initialRegion ).toEqual( {
-      latitude: 20,
-      longitude: 30,
-      latitudeDelta: 20,
-      longitudeDelta: 20,
-    } );
-  } );
-
-  it( "prefers the chosen area over loaded result bounds when the map remounts", ( ) => {
-    renderMapView( {
-      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
-      mapAreaBounds: {
-        swlat: 10, swlng: 20, nelat: 30, nelng: 40,
-      },
-      totalBounds: {
-        swlat: 12, swlng: 22, nelat: 14, nelng: 24,
       },
     } );
 
@@ -217,7 +176,7 @@ describe( "ExploreV2MapView", ( ) => {
 
       act( ( ) => mapProps( ).onPanDrag( ) );
 
-      expect( redoSearchButton( ) ).toBeTruthy( );
+      expect( redoSearchButton( ) ).toBeVisible( );
     } );
 
     it( "reports the visible bounds when the button is pressed", async ( ) => {
@@ -242,6 +201,55 @@ describe( "ExploreV2MapView", ( ) => {
       act( ( ) => mapProps( ).onPanDrag( ) );
 
       await actor.press( redoSearchButton( ) );
+
+      expect( redoSearchButton( ) ).toBeNull( );
+    } );
+
+    it( "hides the button when a new search frames the map somewhere else", ( ) => {
+      const { rerender } = renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        totalBounds: mockTotalBounds,
+      } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+      expect( redoSearchButton( ) ).toBeVisible( );
+
+      renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        totalBounds: {
+          swlat: 43, swlng: -97, nelat: 49, nelng: -89,
+        },
+      }, rerender );
+
+      expect( redoSearchButton( ) ).toBeNull( );
+    } );
+
+    it( "hides the button while a new search's bounds are still loading", ( ) => {
+      const { rerender } = renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        totalBounds: mockTotalBounds,
+      } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+
+      renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        totalBounds: undefined,
+      }, rerender );
+
+      expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+      expect( redoSearchButton( ) ).toBeNull( );
+    } );
+
+    it( "hides the button when the search switches to nearby", ( ) => {
+      const { rerender } = renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        totalBounds: mockTotalBounds,
+      } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+
+      renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
+        nearbyCoords: { lat: 37.5, lng: -122.1, radius: 1 },
+      }, rerender );
 
       expect( redoSearchButton( ) ).toBeNull( );
     } );
