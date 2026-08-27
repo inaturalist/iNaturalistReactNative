@@ -118,9 +118,10 @@ artifacts/
 # Rubocop cache
 **/tmp/rubocop_cache
 
-# Claude Code local config except CLAUDE.md
+# Claude Code local config except CLAUDE.md and shared skills
 .claude/*
 !.claude/CLAUDE.md
+!.claude/skills/
 
 # Compiled tailwind CSS for jest (tests/jest.globalSetup.js)
 tests/.cache/
