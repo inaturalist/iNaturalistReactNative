@@ -14,7 +14,7 @@ function delay( ms ) {
 }
 
 describe( "Signed in user", () => {
-  beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
+  beforeAll( async ( ) => iNatE2eBeforeAll( ) );
   beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
   afterEach( async ( ) => iNatE2eAfterEach( device ) );
 

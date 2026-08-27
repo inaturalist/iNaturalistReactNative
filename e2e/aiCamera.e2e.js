@@ -10,7 +10,7 @@ import uploadObservation from "./sharedFlows/uploadObservation";
 const TIMEOUT = 10_000;
 
 describe( "AICamera", () => {
-  beforeAll( async () => iNatE2eBeforeAll( device ) );
+  beforeAll( async () => iNatE2eBeforeAll( ) );
   beforeEach( async () => iNatE2eBeforeEach( device ) );
   afterEach( async () => iNatE2eAfterEach( device ) );
 
