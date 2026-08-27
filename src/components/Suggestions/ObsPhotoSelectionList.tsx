@@ -31,7 +31,7 @@ const ObsPhotoSelectionList = ( {
     >
       <View
         className={classnames(
-          "rounded-lg overflow-hidden",
+          "w-[83px] h-[83px] rounded-lg",
           {
             "border-inatGreen border-[3px]": selectedPhotoUri === item,
           },
