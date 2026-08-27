@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Platform } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 type PickerMode = "date" | "time" | "datetime";
@@ -30,6 +31,25 @@ const DatePicker = ( {
     setisTimeVisible( false );
     toggleDateTimePicker( );
   };
+
+  if ( Platform.OS === "android" && mode === "datetime" ) {
+    return (
+      <DateTimePicker
+        display="spinner"
+        isDarkModeEnabled={false}
+        themeVariant="light"
+        isVisible={isDateTimePickerVisible}
+        maximumDate={new Date( )}
+        mode="datetime"
+        onCancel={toggleDateTimePicker}
+        onConfirm={selectedDate => {
+          onDatePicked( selectedDate );
+          toggleDateTimePicker( );
+        }}
+        date={date || new Date( )}
+      />
+    );
+  }
 
   if ( mode === "datetime" && isTimeVisible ) {
     return (
