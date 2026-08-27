@@ -334,7 +334,7 @@ const Menu = ( ) => {
         </Pressable>
 
         {/* Menu Items */}
-        <View>
+        <View className="pb-[128px]">
           {Object.entries( menuItems ).map( ( [key, item] ) => (
             <MenuItem
               key={key}
