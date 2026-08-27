@@ -15,6 +15,7 @@ interface UploadOptions {
   api_token?: string;
   signal: AbortSignal;
 }
+
 function filterDirtyOfvs( observation: RealmObservation ): RealmObservationFieldValue[] {
   // Single upload-time gate combining timestamp dirty (needsSync),
   // not tombstoned (_pending_deletion), and non-empty value.
@@ -53,7 +54,6 @@ async function uploadSingleObservationFieldValue(
 
   let response;
   if ( ofv.wasSynced( ) && ofv.id ) {
-    console.log( "update branch" );
     response = await updateObservationFieldValue(
       { id: ofv.uuid, ...params },
       options,
