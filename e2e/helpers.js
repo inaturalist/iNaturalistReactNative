@@ -16,34 +16,25 @@ function execPromise( command ) {
   } );
 }
 
-export async function iNatE2eBeforeAll( ) {
+export async function iNatE2eBeforeAll( device ) {
   await resetUserForTesting();
-}
 
-async function pushAndroidTestImage() {
-  // Push a test image into the app's external files directory so the mock
-  // camera can use it as a photo source (copyAssetsFileIOS is iOS-only).
-  // The directory is created by the app on first launch, so we ensure it
-  // exists before pushing.
-  await execPromise(
-    "adb shell mkdir -p /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/",
-  );
-  await execPromise(
-    "adb push e2e/animal.jpg"
-      + " /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/e2e_test.jpg",
-  );
+  if ( device.getPlatform( ) === "android" ) {
+    // Push a test image into the app's external files directory so the mock
+    // camera can use it as a photo source (copyAssetsFileIOS is iOS-only).
+    // The directory is created by the app on first launch, so we ensure it
+    // exists before pushing.
+    await execPromise(
+      "adb shell mkdir -p /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/",
+    );
+    await execPromise(
+      "adb push e2e/animal.jpg"
+        + " /sdcard/Android/data/org.inaturalist.iNaturalistMobile/files/e2e_test.jpg",
+    );
+  }
 }
 
 export async function iNatE2eBeforeEach( device ) {
-  // we have known issues with stale/conflicting data
-  // for dependability & data wipe, we reinstall before each test
-  await device.uninstallApp();
-  await device.installApp();
-
-  if ( device.getPlatform( ) === "android" ) {
-    await pushAndroidTestImage();
-  }
-
   const launchAppOptions = {
     newInstance: true,
     permissions: {
