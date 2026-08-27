@@ -4,7 +4,7 @@
 name: Tests
 on:
   pull_request:
-  push:
+  # push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

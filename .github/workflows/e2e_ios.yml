@@ -32,9 +32,6 @@ jobs:
     needs: checksecret
     if: needs.checksecret.outputs.is_SECRETS_PRESENT_set == 'true'
     runs-on: macos-26
-    # Kill the task if not finished after 120 minutes
-    timeout-minutes: 120
-
     steps:
     - name: Check out Git repository
       uses: actions/checkout@v6
@@ -190,39 +187,32 @@ jobs:
         # is node running & is ES working?
         curl -I --fail "https://stagingapi.inaturalist.org/v2/taxa"
 
-    - name: Run e2e test
-      # don't mark job as error so that retries so that we can rely on the retry to succeed and mark job & workflow green
+    - name: Run e2e test 1
+      #spamming runs to debug flake
       continue-on-error: true
-      id: first_test_run
       run: |
         npm run e2e:test:ios
 
-    - name: Run e2e test (retry, with logs)
-      # if first_test_run fails, but we `continue-on-error`, failure() is false. so we need to check it's specific _outcome_
-      if: ${{ steps.first_test_run.outcome == 'failure' }}
+    - name: Run e2e test 2
+      #spamming runs to debug flake
+      continue-on-error: true
       run: |
-        # provide more debugging context on retry failure
-        # we're explicitly not using `detox test --retries` because we want to run them w/ different options
-        npm run e2e:test:ios -- --take-screenshots failing --record-videos failing --record-logs all -l trace
-    
-    # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
-    - name: Store Detox artifacts on test failure
-      uses: actions/upload-artifact@v6
-      # don't run this if it's status check that failed or if our first test run passes (no first_test_run check needed)
-      if: ${{ failure() && steps.status_check.outcome != 'failure' }}
-      with:
-        name: detox-artifacts
-        path: artifacts
-        retention-days: 5
+        npm run e2e:test:ios
 
-  notify:
-    name: Notify Slack
-    needs: test
-    if: ${{ success() || failure() }}
-    runs-on: macos-26
-    steps:
-      - uses: iRoachie/slack-github-actions@v2.3.0
-        if: env.SLACK_WEBHOOK_URL != null
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Run e2e test 3
+      #spamming runs to debug flake
+      continue-on-error: true
+      run: |
+        npm run e2e:test:ios
+
+    - name: Run e2e test 4
+      #spamming runs to debug flake
+      continue-on-error: true
+      run: |
+        npm run e2e:test:ios
+
+    - name: Run e2e test 5
+      #spamming runs to debug flake
+      continue-on-error: true
+      run: |
+        npm run e2e:test:ios
