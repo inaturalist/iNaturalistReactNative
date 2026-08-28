@@ -21,6 +21,9 @@ function clearObservationUploadError(
   if ( !observation?.uploadErrorMessage ) {
     return;
   }
+  safeRealmWrite( realm, ( ) => {
+    observation.uploadErrorMessage = null;
+  }, "clearing observation upload error" );
 }
 
 export {
