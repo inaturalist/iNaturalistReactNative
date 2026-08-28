@@ -13,9 +13,8 @@ function persistObservationUploadError(
   if ( !observation ) {
     return;
   }
-  const message = JSON.stringify( error );
   safeRealmWrite( realm, ( ) => {
-    observation.uploadErrorMessage = message;
+    observation.uploadErrorMessage = error.message;
   }, "persisting observation upload error" );
 }
 
