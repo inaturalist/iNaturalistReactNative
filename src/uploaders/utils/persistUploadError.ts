@@ -18,6 +18,9 @@ function clearObservationUploadError(
     return;
   }
   const observation = realm.objectForPrimaryKey( "Observation", obsUuid );
+  if ( !observation?.uploadErrorMessage ) {
+    return;
+  }
 }
 
 export {
