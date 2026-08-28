@@ -1,4 +1,5 @@
 import type Realm from "realm";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 function persistObservationUploadError(
   realm: Realm,
