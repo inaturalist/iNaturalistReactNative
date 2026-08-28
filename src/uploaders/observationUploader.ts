@@ -18,6 +18,9 @@ import {
 import syncProjectChildDeletions from "uploaders/projectChildrenDeleter";
 import { uploadProjectChildren } from "uploaders/projectChildrenUploader";
 import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
+import {
+  clearObservationUploadError,
+} from "uploaders/utils/persistUploadError";
 import { trackObservationUpload } from "uploaders/utils/progressTracker";
 
 const logger = log.extend( "observationUploader" );
@@ -97,6 +100,8 @@ async function uploadObservation(
   const uploadStartTime = Date.now( );
   const obsProgress = trackObservationUpload( observation.uuid );
   obsProgress.start( );
+
+  clearObservationUploadError( realm, observation.uuid );
 
   const newObs = prepareObservationForUpload( observation );
 
