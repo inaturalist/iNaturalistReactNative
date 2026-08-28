@@ -644,6 +644,7 @@ class Observation extends Realm.Object {
       privateLatitude: "double?",
       privateLongitude: "double?",
       needs_sync: { type: "bool", default: false, indexed: true },
+      uploadErrorMessage: "string?",
     },
   };
 
