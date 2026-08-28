@@ -458,6 +458,7 @@ class Observation extends Realm.Object {
       privateLongitude: obs.privateLongitude,
       taxon_geoprivacy: obs.taxon_geoprivacy,
       time_observed_at: obs.time_observed_at,
+      uploadErrorMessage: obs.uploadErrorMessage,
     };
   }
 
