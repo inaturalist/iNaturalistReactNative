@@ -101,7 +101,7 @@ async function uploadObservation(
   const obsProgress = trackObservationUpload( observation.uuid );
   obsProgress.start( );
 
-  clearObservationUploadError( realm, observation.uuid );
+  clearObservationUploadError( realm, observation );
 
   const newObs = prepareObservationForUpload( observation );
 
