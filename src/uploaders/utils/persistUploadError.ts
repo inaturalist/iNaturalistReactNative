@@ -1,36 +1,32 @@
 import type Realm from "realm";
+import type { RealmObservation } from "realmModels/types";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 function persistObservationUploadError(
   realm: Realm,
-  obsUuid: string,
-  error: Error,
+  realmObservation: RealmObservation,
+  uploadErrorMessage: string,
 ): void {
   if ( !realm || realm.isClosed ) {
     return;
   }
-  const observation = realm.objectForPrimaryKey( "Observation", obsUuid );
-  if ( !observation ) {
-    return;
-  }
   safeRealmWrite( realm, ( ) => {
-    observation.uploadErrorMessage = error.message;
+    realmObservation.uploadErrorMessage = uploadErrorMessage;
   }, "persisting observation upload error" );
 }
 
 function clearObservationUploadError(
   realm: Realm,
-  obsUuid: string,
+  realmObservation: RealmObservation,
 ): void {
   if ( !realm || realm.isClosed ) {
     return;
   }
-  const observation = realm.objectForPrimaryKey( "Observation", obsUuid );
-  if ( !observation?.uploadErrorMessage ) {
+  if ( !realmObservation?.uploadErrorMessage ) {
     return;
   }
   safeRealmWrite( realm, ( ) => {
-    observation.uploadErrorMessage = null;
+    realmObservation.uploadErrorMessage = null;
   }, "clearing observation upload error" );
 }
 
