@@ -1,9 +1,10 @@
+import { INatApiError } from "api/error";
 import {
   createObservation,
   updateObservation,
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import { AppState } from "react-native";
+import { Alert, AppState } from "react-native";
 import type Realm from "realm";
 import type { RealmObservation, RealmObservationPojo } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
@@ -17,7 +18,11 @@ import {
 } from "uploaders/mediaUploader";
 import syncProjectChildDeletions from "uploaders/projectChildrenDeleter";
 import { uploadProjectChildren } from "uploaders/projectChildrenUploader";
-import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
+import {
+  formatUploadErrorMessage,
+  RecoverableError,
+  RECOVERY_BY,
+} from "uploaders/utils/errorHandling";
 import {
   clearObservationUploadError,
 } from "uploaders/utils/persistUploadError";
@@ -206,6 +211,13 @@ async function uploadObservation(
       + ": Project children upload failed",
       error,
     );
+    if (
+      error instanceof INatApiError
+      && error.status === 422
+    ) {
+      const displayMessage = formatUploadErrorMessage( error );
+      Alert.alert( "Error", displayMessage );
+    }
     error.message = `Project children upload failed: ${error.message}`;
     throw error;
   }
