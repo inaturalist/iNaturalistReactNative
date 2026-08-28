@@ -3,6 +3,7 @@ import type Realm from "realm";
 function persistObservationUploadError(
   realm: Realm,
   obsUuid: string,
+  error: Error,
 ): void {
   if ( !realm || realm.isClosed ) {
     return;
@@ -11,6 +12,10 @@ function persistObservationUploadError(
   if ( !observation ) {
     return;
   }
+  const message = JSON.stringify( error );
+  safeRealmWrite( realm, ( ) => {
+    observation.uploadErrorMessage = message;
+  }, "persisting observation upload error" );
 }
 
 function clearObservationUploadError(
