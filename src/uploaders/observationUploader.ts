@@ -20,7 +20,6 @@ import { uploadProjectChildren } from "uploaders/projectChildrenUploader";
 import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
 import {
   clearObservationUploadError,
-  persistObservationUploadError,
 } from "uploaders/utils/persistUploadError";
 import { trackObservationUpload } from "uploaders/utils/progressTracker";
 
@@ -128,7 +127,6 @@ async function uploadObservation(
       error,
     );
     error.message = `Media upload failed: ${error.message}`;
-    persistObservationUploadError( realm, observation.uuid, error );
     throw error;
   }
 
@@ -159,7 +157,6 @@ async function uploadObservation(
       error,
     );
     error.message = `Observation upload failed: ${error.message}`;
-    persistObservationUploadError( realm, observation.uuid, error );
     throw error;
   }
 
@@ -188,7 +185,6 @@ async function uploadObservation(
       error,
     );
     error.message = `Media attachment failed: ${error.message}`;
-    persistObservationUploadError( realm, observation.uuid, error );
     throw error;
   }
 
@@ -211,7 +207,6 @@ async function uploadObservation(
       error,
     );
     error.message = `Project children upload failed: ${error.message}`;
-    persistObservationUploadError( realm, observation.uuid, error );
     throw error;
   }
 
@@ -228,7 +223,6 @@ async function uploadObservation(
       error,
     );
     const realmError = new Error( `Realm update failed: ${error.message}` );
-    persistObservationUploadError( realm, observation.uuid, realmError );
     throw realmError;
   }
 

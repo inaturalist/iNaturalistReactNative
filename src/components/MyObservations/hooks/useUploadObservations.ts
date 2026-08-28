@@ -18,6 +18,7 @@ import useStore from "stores/useStore";
 import { handleUploadError } from "uploaders";
 import uploadObservation from "uploaders/observationUploader";
 import { RECOVERY_BY } from "uploaders/utils/errorHandling";
+import { persistObservationUploadError } from "uploaders/utils/persistUploadError";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS,
 } from "uploaders/utils/progressTracker";
@@ -120,6 +121,7 @@ export default ( canUpload: boolean ) => {
         addUploadError( "aborted", uuid );
       } else {
         const { message, recoveryPossible, recoveryBy } = handleUploadError( uploadError, t );
+        persistObservationUploadError( realm, observation, message );
         if ( message?.match( /That observation no longer exists./ ) ) {
           // 20240531 amanda - it seems like we have to update the UI
           // for the progress bar before actually deleting the observation
