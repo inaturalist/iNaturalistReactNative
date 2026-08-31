@@ -2,6 +2,7 @@ import { screen, userEvent, within } from "@testing-library/react-native";
 import SavedSearches from "components/Explore/ExploreV2/components/SavedSearches";
 import initI18next from "i18n/initI18next";
 import React from "react";
+import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 import {
   savedSearch as buildSavedSearch,
@@ -58,5 +59,16 @@ describe( "SavedSearches", ( ) => {
     await actor.press( await screen.findByTestId( `SavedSearchRow.${search.key}` ) );
 
     expect( onSelectSearch ).toHaveBeenCalledWith( search );
+  } );
+
+  it( "drops a row from the store when its delete action is used", async ( ) => {
+    const search = savedSearch( 1 );
+    setSavedSearches( [search] );
+
+    renderComponent( <SavedSearches onSelectSearch={jest.fn( )} /> );
+    const actor = userEvent.setup( );
+    await actor.press( await screen.findByTestId( `SavedSearchRow.delete.${search.key}` ) );
+
+    expect( useStore.getState( ).exploreSavedSearches.searches ).toEqual( [] );
   } );
 } );
