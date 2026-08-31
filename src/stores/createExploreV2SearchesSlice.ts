@@ -1,7 +1,9 @@
-import type { ExploreV2Subject, Place } from "providers/ExploreV2Context";
+import type { ExploreV2State, ExploreV2Subject, Place } from "providers/ExploreV2Context";
 import type { StateCreator } from "zustand";
 
 export const RECENT_LIMIT = 10;
+
+export const SAVED_LIMIT = 20;
 
 export const subjectKey = ( subject: ExploreV2Subject ): string => {
   switch ( subject.type ) {
@@ -16,7 +18,6 @@ export const subjectKey = ( subject: ExploreV2Subject ): string => {
     case "unknown":
       return "unknown";
     default: {
-      // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
       const _exhaustive: never = subject;
       return _exhaustive;
     }
@@ -37,6 +38,20 @@ export const addRecent = <T>(
     ...items.filter( existing => keyFn( existing ) !== keyFn( item ) ),
   ].slice( 0, cap );
 
+// Everything about an Explore search except which tab it was viewed in, plus how we identify
+// it and when it was saved
+export type SavedSearch = {
+  key: string;
+  savedAt: number;
+} & Omit<ExploreV2State, "activeTab">;
+
+// What a caller hands us. The key comes from savedSearchKey in the ExploreV2 helpers --
+// computing it here would mean importing the Explore context at runtime, and useStore is
+// imported by enough of the app (i18n included) that dragging the provider graph in with it
+// breaks unrelated modules. Types from that module are fine, they are erased. The timestamp
+// is ours to set.
+export type SavedSearchInput = Omit<SavedSearch, "savedAt">;
+
 export interface ExploreV2SearchesSlice {
   exploreRecentSearches: {
     subjects: ExploreV2Subject[];
@@ -44,6 +59,13 @@ export interface ExploreV2SearchesSlice {
     recordSubject: ( _subject: ExploreV2Subject ) => void;
     recordPlace: ( _place: Place ) => void;
     clearRecents: ( ) => void;
+  };
+  exploreSavedSearches: {
+    searches: SavedSearch[];
+    // Saving a search that is already saved removes it, so one control can do both
+    saveSearch: ( _search: SavedSearchInput ) => void;
+    removeSearch: ( _key: string ) => void;
+    clearSavedSearches: ( ) => void;
   };
 }
 
@@ -77,6 +99,35 @@ const createExploreV2SearchesSlice: StateCreator<ExploreV2SearchesSlice> = set =
         subjects: [],
         places: [],
       },
+    } ) ),
+  },
+  exploreSavedSearches: {
+    searches: [],
+    saveSearch: search => set( state => {
+      const { key } = search;
+      const { searches } = state.exploreSavedSearches;
+      const withoutSearch = searches.filter( saved => saved.key !== key );
+      if ( withoutSearch.length !== searches.length ) {
+        return {
+          exploreSavedSearches: { ...state.exploreSavedSearches, searches: withoutSearch },
+        };
+      }
+      if ( searches.length >= SAVED_LIMIT ) { return state; }
+      return {
+        exploreSavedSearches: {
+          ...state.exploreSavedSearches,
+          searches: [{ ...search, savedAt: Date.now( ) }, ...searches],
+        },
+      };
+    } ),
+    removeSearch: key => set( state => ( {
+      exploreSavedSearches: {
+        ...state.exploreSavedSearches,
+        searches: state.exploreSavedSearches.searches.filter( saved => saved.key !== key ),
+      },
+    } ) ),
+    clearSavedSearches: ( ) => set( state => ( {
+      exploreSavedSearches: { ...state.exploreSavedSearches, searches: [] },
     } ) ),
   },
 } );

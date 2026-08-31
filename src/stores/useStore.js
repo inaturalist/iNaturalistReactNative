@@ -96,6 +96,10 @@ const useStore = create( persist(
         subjects: state.exploreRecentSearches.subjects,
         places: state.exploreRecentSearches.places,
       },
+
+      exploreSavedSearches: {
+        searches: state.exploreSavedSearches.searches,
+      },
     } ),
     storage: createJSONStorage( () => zustandStorage ),
     // We need to deep merge to persist nested objects, like layout
