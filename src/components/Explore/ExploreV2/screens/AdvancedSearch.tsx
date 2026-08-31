@@ -5,6 +5,7 @@ import DateFilterSection
   from "components/Explore/ExploreV2/components/DateFilterSection";
 import RadioGroupSection
   from "components/Explore/ExploreV2/components/RadioGroupSection";
+import SavedSearches from "components/Explore/ExploreV2/components/SavedSearches";
 import SelectedFilterRow
   from "components/Explore/ExploreV2/components/SelectedFilterRow";
 import {
@@ -26,6 +27,7 @@ import {
   defaultAdvancedSearchDraft,
   draftFromV2State,
 } from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
+import applySavedSearch from "components/Explore/ExploreV2/helpers/applySavedSearch";
 import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
 import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "components/Explore/Modals/ExploreProjectSearchModal";
@@ -48,6 +50,7 @@ import {
   RadioButtonSheet,
 } from "components/SharedComponents";
 import SearchHeader from "components/SharedComponents/SearchHeader";
+import BottomSheetV2 from "components/SharedComponents/Sheets/BottomSheetV2";
 import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { ScrollView, View } from "components/styledComponents";
@@ -63,12 +66,15 @@ import {
   EXPLORE_V2_PLACE_MODE,
   useExploreV2,
 } from "providers/ExploreV2Context";
-import React, { useMemo, useReducer, useState } from "react";
+import React, {
+  useCallback, useMemo, useReducer, useState,
+} from "react";
 import Taxon from "realmModels/Taxon";
 import { formatObsFieldDate } from "sharedHelpers/dateAndTime";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useIconicTaxa from "sharedHooks/useIconicTaxa";
 import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
+import type { ExploreV2SearchesSlice, SavedSearch } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 
 type SheetName = "sortBy" | "hrank" | "lrank" | "photoLicense";
@@ -90,6 +96,9 @@ const AdvancedSearch = ( ) => {
   const setAdvancedSearchMode = useStore(
     ( state: ExploreV2AdvancedSearchSlice ) => state.exploreV2AdvancedSearch.setAdvancedSearchMode,
   );
+  const savedSearchCount = useStore(
+    ( state: ExploreV2SearchesSlice ) => state.exploreSavedSearches.searches.length,
+  );
   const [initialDraft] = useState( ( ) => draftFromV2State( v2State ) );
   const [draft, dispatch] = useReducer( advancedSearchReducer, initialDraft );
   const {
@@ -107,6 +116,7 @@ const AdvancedSearch = ( ) => {
   );
 
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
+  const [showSavedSearches, setShowSavedSearches] = useState( false );
   const handleBack = ( ) => {
     if ( differsFromInitial ) {
       setShowDiscardSheet( true );
@@ -153,6 +163,13 @@ const AdvancedSearch = ( ) => {
   };
 
   const closePicker = ( ) => setOpenPicker( null );
+
+  const handleApplySavedSearch = useCallback( ( search: SavedSearch ) => {
+    setShowSavedSearches( false );
+    applySavedSearch( search, dispatchV2 );
+    setAdvancedSearchMode( true );
+    navigation.popTo( "ExploreResults" );
+  }, [dispatchV2, navigation, setAdvancedSearchMode] );
 
   const handleSearch = () => {
     dispatchV2(
@@ -312,6 +329,20 @@ const AdvancedSearch = ( ) => {
       />
 
       <ScrollView className="py-4">
+        {savedSearchCount > 0 && (
+          <View className="mb-7">
+            <Heading4 className="px-4 mb-5">{t( "SAVED-SEARCHES" )}</Heading4>
+            <View className="px-4">
+              <Button
+                text={t( "CHOOSE-A-SAVED-SEARCH" )}
+                onPress={( ) => setShowSavedSearches( true )}
+                accessibilityLabel={t( "Choose-a-saved-search" )}
+                testID="AdvancedSearch.savedSearchesButton"
+              />
+            </View>
+          </View>
+        )}
+
         {/* Taxon Section */}
         <View className="mb-7">
           <Heading4 className="px-4 mb-5">{t( "TAXON" )}</Heading4>
@@ -766,6 +797,14 @@ const AdvancedSearch = ( ) => {
           onSelectNearby={() => dispatch( { type: "SET_LOCATION_NEARBY" } )}
           updateLocation={updateLocation}
         />
+      )}
+      {showSavedSearches && (
+        <BottomSheetV2
+          headerText={t( "SAVED-SEARCHES" )}
+          onPressClose={( ) => setShowSavedSearches( false )}
+        >
+          <SavedSearches hideHeader onSelectSearch={handleApplySavedSearch} />
+        </BottomSheetV2>
       )}
       {showDiscardSheet && (
         <WarningSheet
