@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } Identificador
        *[other] { $count } Identificadores
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } PUBLICAÇÃO DE BOLETIM
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } Observador
        *[other] { $count } Observadores
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

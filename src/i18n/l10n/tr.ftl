@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } Tanımlayıcı
        *[other] { $count } Tanımlayıcı
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } GÜNLÜK GÖNDERİSİ
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } Gözlemci
        *[other] { $count } Gözlemci
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->
