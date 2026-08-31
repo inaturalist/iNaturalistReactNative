@@ -230,6 +230,10 @@ Change-zoom = Change zoom
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+# Button on the advanced search screen that opens the list of saved searches
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
+# Accessibility label for the button that opens the list of saved searches
+Choose-a-saved-search = Choose a saved search
 Choose-a-time = Choose a time
 # Label for a text input field during sign up to choose a username
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
@@ -412,6 +416,8 @@ Delete-observation = Delete observation
 DELETE-OBSERVATION--question = DELETE OBSERVATION?
 # Button label or accessibility label for an element that deletes a photo
 Delete-photo = Delete photo
+# Accessibility label for the control that deletes a saved search
+Delete-saved-search = Delete saved search
 Delete-sound = Delete sound
 # Shows the progress of deletions for X of Y observations, but omits the
 # word "observations" so the message won't get cut off on small screens
@@ -1111,6 +1117,8 @@ Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
+# Heading above the list of recently used searches
+Recent-searches = Recent searches
 # Help text for the button that opens the sound recorder
 Record-a-sound = Record a sound
 # Title of screen asking for permission to access the microphone
@@ -1135,6 +1143,8 @@ Remove-identification = Remove identification
 Remove-Photos = Remove Photos
 Remove-project-filter = Remove project filter
 Remove-taxon-filter = Remove taxon filter
+# Accessibility label for the star button when the current search is already saved
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Remove user filter
 # Label for button that removes an observation's taxon
 Removes-this-observations-taxon = Removes this observation's taxon
@@ -1180,7 +1190,17 @@ Save-all-observations = Save all observations
 SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
+# Accessibility label for the star button that saves the current search
+Save-this-search = Save this search
 Saved-Observation = Saved observation, in queue to upload
+# Title of the sheet shown when the user has saved as many searches as we can keep
+Saved-search-limit-reached = You have saved as many searches as we can keep
+# Body of that sheet. { $count } is the maximum number of saved searches we keep
+Saved-search-limit-reached-body = You can keep { $count } saved searches. Remove one to save another.
+# Heading above the list of searches the user has saved
+Saved-searches = Saved searches
+# Heading of the saved searches section on the advanced search screen
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 # Title for a search interface
@@ -1482,6 +1502,12 @@ x-failed =
     { $count ->
         [one] { $count } failed
        *[other] { $count } failed
+    }
+# Number of filters applied to a saved search
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 # Subtitle for a screen showing the list of followers a user has
 X-FOLLOWERS =
