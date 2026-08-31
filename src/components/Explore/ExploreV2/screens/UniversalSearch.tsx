@@ -9,6 +9,7 @@ import LocationSearchResult
   from "components/Explore/ExploreV2/components/LocationSearchResult";
 import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
+import applySavedSearch from "components/Explore/ExploreV2/helpers/applySavedSearch";
 import {
   resultToSubject,
   subjectToResult,
@@ -47,7 +48,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
-import type { ExploreV2SearchesSlice } from "stores/createExploreV2SearchesSlice";
+import type { ExploreV2SearchesSlice, SavedSearch } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -193,6 +194,11 @@ const UniversalSearch = ( ) => {
     Keyboard.dismiss( );
   }, [commitLocation, t] );
 
+  const handleSelectSavedSearch = useCallback( ( search: SavedSearch ) => {
+    applySavedSearch( search, dispatch );
+    navigation.popTo( "ExploreResults" );
+  }, [dispatch, navigation] );
+
   const handleReset = useCallback( ( ) => {
     clearSubject( );
     clearLocation( );
@@ -265,7 +271,12 @@ const UniversalSearch = ( ) => {
   const showLocationDefaults = showLocation && locationText.trim().length === 0;
   let listEmptyComponent;
   if ( showSubjectDefaults ) {
-    listEmptyComponent = <DefaultSearchOptions onSelectSubject={handleSubjectSelect} />;
+    listEmptyComponent = (
+      <DefaultSearchOptions
+        onSelectSavedSearch={handleSelectSavedSearch}
+        onSelectSubject={handleSubjectSelect}
+      />
+    );
   } else if ( showLocationDefaults ) {
     listEmptyComponent = (
       <LocationDefaultOptions

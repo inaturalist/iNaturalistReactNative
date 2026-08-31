@@ -1,6 +1,8 @@
 import type { ApiTaxon } from "api/types";
 import RecentSearches
   from "components/Explore/ExploreV2/components/RecentSearches";
+import SavedSearches
+  from "components/Explore/ExploreV2/components/SavedSearches";
 import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
 import { resultToSubject }
@@ -17,8 +19,10 @@ import type { RealmTaxon } from "realmModels/types";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIconicTaxa from "sharedHooks/useIconicTaxa";
 import useTranslation from "sharedHooks/useTranslation";
+import type { SavedSearch } from "stores/createExploreV2SearchesSlice";
 
 interface Props {
+  onSelectSavedSearch: ( search: SavedSearch ) => void;
   onSelectSubject: ( subject: ExploreV2Subject ) => void;
 }
 
@@ -32,7 +36,7 @@ const ICONIC_ROW_STYLE = {
 
 const EMPTY_CHOSEN: string[] = [];
 
-const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
+const DefaultSearchOptions = ( { onSelectSavedSearch, onSelectSubject }: Props ) => {
   const { t } = useTranslation( );
 
   const currentUser = useCurrentUser( );
@@ -101,6 +105,7 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
           <Body1>{t( "Species-I-havent-observed" )}</Body1>
         </Pressable>
       )}
+      <SavedSearches onSelectSearch={onSelectSavedSearch} />
       <RecentSearches onSelectSubject={onSelectSubject} />
     </ScrollView>
   );
