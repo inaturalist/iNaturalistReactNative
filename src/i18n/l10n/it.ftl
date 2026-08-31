@@ -1037,6 +1037,11 @@ X-Identifiers =
         [uno] { $count } Identificatore
        *[altro] { $count } Identificatori
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } POST DEL DIARIO
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [uno] { $count } Osservatore
        *[altro] { $count } Osservatori
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

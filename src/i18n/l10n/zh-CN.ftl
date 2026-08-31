@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count }个鉴定者
        *[other] { $count }个鉴定者
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count }个关注者
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] 1个观察者
        *[other] { $count }个观察者
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $y ->
