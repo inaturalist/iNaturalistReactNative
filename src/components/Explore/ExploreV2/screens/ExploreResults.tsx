@@ -8,12 +8,15 @@ import ExploreV2MapView
   from "components/Explore/ExploreV2/components/ExploreV2MapView";
 import ExploreV2Tabs
   from "components/Explore/ExploreV2/components/ExploreV2Tabs";
+import SaveSearchButton
+  from "components/Explore/ExploreV2/components/SaveSearchButton";
 import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import type { NearbyCoords }
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
+import savedSearchKey from "components/Explore/ExploreV2/helpers/savedSearchKey";
 import ExploreV2SpeciesView
   from "components/Explore/ExploreV2/screens/ExploreV2SpeciesView";
 import useInfiniteExploreScroll
@@ -28,6 +31,7 @@ import {
   ViewWrapper,
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
+import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useCallback, useMemo, useState } from "react";
@@ -47,6 +51,9 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
 import useStoredLayout from "sharedHooks/useStoredLayout";
+import type { ExploreV2SearchesSlice, SavedSearch } from "stores/createExploreV2SearchesSlice";
+import { SAVED_LIMIT } from "stores/createExploreV2SearchesSlice";
+import useStore from "stores/useStore";
 
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
@@ -71,6 +78,13 @@ const ExploreResults = ( ) => {
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
+  const [showSavedLimitSheet, setShowSavedLimitSheet] = useState( false );
+  const savedSearches: SavedSearch[] = useStore(
+    ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.searches,
+  );
+  const saveSearch = useStore(
+    ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.saveSearch,
+  );
   const observationsSortLabels = useObservationsSortLabels( );
   const speciesSortLabels = useSpeciesSortLabels( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreV2ObservationsLayout" );
@@ -198,6 +212,35 @@ const ExploreResults = ( ) => {
     </View>
   );
 
+  const {
+    subject, location, filters, sortBy, speciesSortBy,
+  } = state;
+  const currentSearchKey = useMemo(
+    ( ) => savedSearchKey( { subject, location, filters } ),
+    [filters, location, subject],
+  );
+  const isSaved = savedSearches.some( saved => saved.key === currentSearchKey );
+
+  const handleSavePress = useCallback( ( ) => {
+    if ( !isSaved && savedSearches.length >= SAVED_LIMIT ) {
+      setShowSavedLimitSheet( true );
+      return;
+    }
+    saveSearch( {
+      key: currentSearchKey, subject, location, sortBy, speciesSortBy, filters,
+    } );
+  }, [
+    currentSearchKey,
+    filters,
+    isSaved,
+    location,
+    savedSearches.length,
+    saveSearch,
+    sortBy,
+    speciesSortBy,
+    subject,
+  ] );
+
   const renderContent = ( ) => {
     if ( isConnected === false ) {
       return (
@@ -292,6 +335,16 @@ const ExploreResults = ( ) => {
             : undefined}
         />
         {renderContent( )}
+        <SaveSearchButton
+          className={
+            // Above the map's layers and current-location buttons, or above SortButton
+            state.activeTab === OBSERVATIONS_TAB && showMap
+              ? "bottom-[140px]"
+              : "bottom-[76px]"
+          }
+          isSaved={isSaved}
+          onPress={handleSavePress}
+        />
       </View>
       {showSortSheet && state.activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet
@@ -321,6 +374,18 @@ const ExploreResults = ( ) => {
             setShowSortSheet( false );
           }}
           onPressClose={() => setShowSortSheet( false )}
+        />
+      )}
+      {showSavedLimitSheet && (
+        <WarningSheet
+          buttonText={t( "OK" )}
+          buttonType="primary"
+          confirm={( ) => setShowSavedLimitSheet( false )}
+          headerText={t( "Saved-search-limit-reached" )}
+          loading={false}
+          onPressClose={( ) => setShowSavedLimitSheet( false )}
+          testID="ExploreResults.savedLimitSheet"
+          text={t( "Saved-search-limit-reached-body", { count: SAVED_LIMIT } )}
         />
       )}
       {renderPermissionsGate( {} )}
