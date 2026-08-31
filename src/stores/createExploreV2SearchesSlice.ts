@@ -37,7 +37,7 @@ export const addRecent = <T>(
     ...items.filter( existing => keyFn( existing ) !== keyFn( item ) ),
   ].slice( 0, cap );
 
-export interface ExploreV2RecentSearchesSlice {
+export interface ExploreV2SearchesSlice {
   exploreRecentSearches: {
     subjects: ExploreV2Subject[];
     places: Place[];
@@ -47,7 +47,7 @@ export interface ExploreV2RecentSearchesSlice {
   };
 }
 
-const createExploreV2RecentSearchesSlice: StateCreator<ExploreV2RecentSearchesSlice> = set => ( {
+const createExploreV2SearchesSlice: StateCreator<ExploreV2SearchesSlice> = set => ( {
   exploreRecentSearches: {
     subjects: [],
     places: [],
@@ -81,4 +81,4 @@ const createExploreV2RecentSearchesSlice: StateCreator<ExploreV2RecentSearchesSl
   },
 } );
 
-export default createExploreV2RecentSearchesSlice;
+export default createExploreV2SearchesSlice;
