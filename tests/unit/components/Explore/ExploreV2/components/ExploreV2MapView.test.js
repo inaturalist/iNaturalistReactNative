@@ -39,6 +39,7 @@ const renderMapView = ( props, update = null ) => renderComponent(
     isLoading={false}
     placeMode={EXPLORE_V2_PLACE_MODE.WORLDWIDE}
     queryParams={mockQueryParams}
+    queryStatus="success"
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />,
@@ -120,11 +121,23 @@ describe( "ExploreV2MapView", ( ) => {
     // mid-flight, which intermittently leaves the map with no tiles drawn at all.
     renderMapView( {
       placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+      queryStatus: "pending",
       totalBounds: undefined,
     } );
 
     expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
     expect( screen.getByTestId( "ExploreV2MapView.loading" ) ).toBeVisible( );
+  } );
+
+  it( "shows the whole world when a place search fails", ( ) => {
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+      queryStatus: "error",
+      totalBounds: undefined,
+    } );
+
+    expect( mapProps( ).initialRegion.latitudeDelta ).toBe( 180 );
+    expect( screen.queryByTestId( "ExploreV2MapView.loading" ) ).toBeNull( );
   } );
 
   it( "does not move the map when the search becomes a map area", ( ) => {
@@ -232,7 +245,25 @@ describe( "ExploreV2MapView", ( ) => {
 
       renderMapView( {
         placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        queryStatus: "pending",
         totalBounds: undefined,
+      }, rerender );
+
+      expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
+      expect( redoSearchButton( ) ).toBeNull( );
+    } );
+
+    it( "hides the button while the map waits for the user's location", ( ) => {
+      const { rerender } = renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+        mapAreaBounds: mockTotalBounds,
+      } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+      expect( redoSearchButton( ) ).toBeVisible( );
+
+      renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
+        nearbyCoords: undefined,
       }, rerender );
 
       expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );

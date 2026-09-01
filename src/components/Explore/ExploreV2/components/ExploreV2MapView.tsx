@@ -1,3 +1,4 @@
+import type { QueryStatus } from "@tanstack/react-query";
 import type { ApiTotalBounds } from "api/types";
 import type {
   ExploreV2QueryParams,
@@ -45,6 +46,7 @@ interface Props {
   onRedoSearchPress?: ( _bounds: ApiTotalBounds ) => void;
   placeMode: EXPLORE_V2_PLACE_MODE;
   queryParams: ExploreV2QueryParams;
+  queryStatus: QueryStatus;
   totalBounds?: ApiTotalBounds;
 }
 
@@ -56,6 +58,7 @@ const ExploreV2MapView = ( {
   onRedoSearchPress,
   placeMode,
   queryParams,
+  queryStatus,
   totalBounds,
 }: Props ) => {
   const { t } = useTranslation( );
@@ -65,21 +68,20 @@ const ExploreV2MapView = ( {
     swlat, swlng, nelat, nelng,
   } = totalBounds || {};
 
-  // The region the camera should be showing for the current context
-  const targetRegion = useMemo( ( ): Region | undefined => {
-    if ( placeMode === EXPLORE_V2_PLACE_MODE.NEARBY ) {
-      return nearbyCoords
-        ? {
-          latitude: nearbyCoords.lat,
-          longitude: nearbyCoords.lng,
-          latitudeDelta: NEARBY_DELTA,
-          longitudeDelta: NEARBY_DELTA,
-        }
-        : undefined;
-    }
-    // the corners being undefined here represents a loading state
-    const hasBounds = placeMode !== EXPLORE_V2_PLACE_MODE.MAP_AREA
-      && swlat !== undefined
+  const nearbyRegion = useMemo( ( ): Region | undefined => (
+    nearbyCoords
+      ? {
+        latitude: nearbyCoords.lat,
+        longitude: nearbyCoords.lng,
+        latitudeDelta: NEARBY_DELTA,
+        longitudeDelta: NEARBY_DELTA,
+      }
+      : undefined
+  ), [nearbyCoords] );
+
+  // the corners being undefined here represents a loading state
+  const boundsRegion = useMemo( ( ): Region | undefined => {
+    const hasBounds = swlat !== undefined
       && swlng !== undefined
       && nelat !== undefined
       && nelng !== undefined;
@@ -88,7 +90,17 @@ const ExploreV2MapView = ( {
         swlat, swlng, nelat, nelng,
       } )
       : undefined;
-  }, [placeMode, nearbyCoords, swlat, swlng, nelat, nelng] );
+  }, [swlat, swlng, nelat, nelng] );
+
+  // The region the camera should be showing for the current context
+  const targetRegion = useMemo( ( ): Region | undefined => {
+    if ( placeMode === EXPLORE_V2_PLACE_MODE.NEARBY ) return nearbyRegion;
+    // we don't move the map after mount for MAP_AREA bc the bounds there are
+    // always set imperatively by the user moving the map themself
+    return placeMode === EXPLORE_V2_PLACE_MODE.MAP_AREA
+      ? undefined
+      : boundsRegion;
+  }, [placeMode, nearbyRegion, boundsRegion] );
 
   // in exploreV2, we unmount the map when switching between views
   // where ExploreV1 moves it off the screen, still mounted
@@ -99,21 +111,10 @@ const ExploreV2MapView = ( {
       : undefined
   ), [placeMode, mapAreaBounds] );
 
-  // moves the map after mount, we *don't* want this for MAP_AREA bc
-  // the bounds there are always set imperatively by the user moving the map themself
-  const regionToAnimate = placeMode === EXPLORE_V2_PLACE_MODE.MAP_AREA
-    ? undefined
-    : targetRegion;
-
   const initialRegion = mapAreaRegion || targetRegion || WORLDWIDE_REGION;
 
-  // when the map is moved by anything other than a user panning,
-  // do not show the "Redo search in this area" button
-  const [lastCameraTarget, setLastCameraTarget] = useState( regionToAnimate );
-  if ( regionToAnimate !== lastCameraTarget ) {
-    setLastCameraTarget( regionToAnimate );
-    setShowRedoSearch( false );
-  }
+  const placeBoundsSettled = placeMode === EXPLORE_V2_PLACE_MODE.PLACE
+    && queryStatus !== "pending";
 
   // waitingForTargetRegion is true when we have switched place modes but don't have bounds yet
   // down below, we unmount Map during this state because of a bug that sometimes results in
@@ -121,7 +122,20 @@ const ExploreV2MapView = ( {
   // this is a workaround and might be able to reverted some day
   const waitingForTargetRegion = placeMode !== EXPLORE_V2_PLACE_MODE.WORLDWIDE
     && !mapAreaRegion
-    && !targetRegion;
+    && !targetRegion
+    && !placeBoundsSettled;
+
+  // when the map is moved by anything other than a user panning,
+  // do not show the "Redo search in this area" button
+  const [lastCameraTarget, setLastCameraTarget] = useState( targetRegion );
+  if ( targetRegion !== lastCameraTarget ) {
+    setLastCameraTarget( targetRegion );
+    setShowRedoSearch( false );
+  }
+  // there is no map to redo the search in while we're waiting for one
+  if ( waitingForTargetRegion && showRedoSearch ) {
+    setShowRedoSearch( false );
+  }
 
   const handleRedoSearchPress = useCallback( async ( ) => {
     setShowRedoSearch( false );
@@ -144,7 +158,7 @@ const ExploreV2MapView = ( {
           isLoading={isLoading}
           onCurrentLocationPress={onCurrentLocationPress}
           onPanDrag={( ) => setShowRedoSearch( true )}
-          regionToAnimate={regionToAnimate}
+          regionToAnimate={targetRegion}
           showCurrentLocationButton
           showsCompass={false}
           showSwitchMapTypeButton

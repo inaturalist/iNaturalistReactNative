@@ -168,6 +168,7 @@ const ExploreResults = ( ) => {
     isLoading,
     handlePullToRefresh,
     observations,
+    status,
     totalBounds,
     totalResults,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
@@ -235,6 +236,7 @@ const ExploreResults = ( ) => {
                   onRedoSearchPress={handleRedoSearchPress}
                   placeMode={state.location.placeMode}
                   queryParams={queryParams}
+                  queryStatus={status}
                   totalBounds={totalBounds}
                 />
               )
