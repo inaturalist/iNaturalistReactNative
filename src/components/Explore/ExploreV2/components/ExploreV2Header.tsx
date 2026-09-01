@@ -169,7 +169,11 @@ const SubjectHeader = ( {
   </View>
 );
 
-const ExploreV2Header = ( ) => {
+interface Props {
+  showBackButton: boolean;
+}
+
+const ExploreV2Header = ( { showBackButton }: Props ) => {
   const { t } = useTranslation( );
   const { state } = useExploreV2( );
   const currentUser = useCurrentUser( );
@@ -219,7 +223,7 @@ const ExploreV2Header = ( ) => {
         onPress={() => navigation.navigate( searchScreen )}
         testID="ExploreV2Header.pressable"
       >
-        <BackButton />
+        {showBackButton && <BackButton />}
         {headerContent}
         <View>
           <ContainedSquareButton
