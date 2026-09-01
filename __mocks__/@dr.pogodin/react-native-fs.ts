@@ -8,7 +8,7 @@ module.exports = {
   exists: jest.fn( async name => !name.includes( "sentinelFiles" ) ),
   moveFile: async ( ) => "testdata",
   copyFile: async ( ) => "testdata",
-  copyAssetsFileIOS: async ( ) => "testdata",
+  copyAssetsFileIOS: jest.fn( async ( ) => "testdata" ),
   stat: jest.fn( ( ) => ( {
     mtime: new Date(),
   } ) ),

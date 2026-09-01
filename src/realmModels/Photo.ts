@@ -31,6 +31,7 @@ class Photo extends Realm.Object {
 
   static async resizeImageForUpload( pathOrUri: string ): Promise<string> {
     const width = 2048;
+    const quality = 90;
     await mkdir( photoUploadPath );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
 
@@ -47,7 +48,14 @@ class Photo extends Realm.Object {
     // with the resizer.
     if ( Platform.OS === "ios" && pathOrUri.match( /^ph:/ ) ) {
       const outPath = `${photoUploadPath}/${outFilename}`;
-      const outUri = await copyAssetsFileIOS( pathOrUri, outPath, width, width );
+      const outUri = await copyAssetsFileIOS(
+        pathOrUri,
+        outPath,
+        width,
+        width,
+        1.0, // scale
+        quality / 100, // compression
+      );
       return outUri;
     }
 
@@ -59,6 +67,7 @@ class Photo extends Realm.Object {
 
     const uri = await resizeImage( uriForResize, {
       width,
+      quality,
       outputPath: photoUploadPath,
       imageOptions: {
         mode: "contain",
