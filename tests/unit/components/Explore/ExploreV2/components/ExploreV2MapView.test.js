@@ -131,7 +131,7 @@ describe( "ExploreV2MapView", ( ) => {
     expect( screen.queryByTestId( "ExploreV2MapView.loading" ) ).toBeNull( );
   } );
 
-  it( "does not move the map when the search becomes a map area", ( ) => {
+  it( "moves the map to an area chosen somewhere else, like a saved search", ( ) => {
     const { rerender } = renderMapView( {
       placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
       totalBounds: mockTotalBounds,
@@ -140,9 +140,36 @@ describe( "ExploreV2MapView", ( ) => {
 
     renderMapView( {
       placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
-      mapAreaBounds: mockTotalBounds,
+      mapAreaBounds: {
+        swlat: 43, swlng: -97, nelat: 49, nelng: -89,
+      },
       totalBounds: mockTotalBounds,
-      queryParams: { ...mockQueryParams, swlat: 10 },
+      queryParams: { ...mockQueryParams, swlat: 43 },
+    }, rerender );
+
+    expect( animateToRegion ).toHaveBeenCalledWith( {
+      latitude: 46,
+      longitude: -93,
+      latitudeDelta: 6,
+      longitudeDelta: 8,
+    } );
+  } );
+
+  it( "does not move the map back to an area the user just panned to", async ( ) => {
+    const actor = userEvent.setup( );
+    const { rerender } = renderMapView( { onRedoSearchPress: jest.fn( ) } );
+    act( ( ) => mapProps( ).onPanDrag( ) );
+    // the bounds the mocked map reports for what the user panned to
+    await actor.press( screen.getByText( i18next.t( "REDO-SEARCH-IN-MAP-AREA" ) ) );
+    animateToRegion.mockClear( );
+
+    // those same bounds come back around as the search's map area
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      mapAreaBounds: {
+        swlat: 1, swlng: 2, nelat: 3, nelng: 4,
+      },
+      queryParams: { ...mockQueryParams, swlat: 1 },
     }, rerender );
 
     expect( animateToRegion ).not.toHaveBeenCalled( );

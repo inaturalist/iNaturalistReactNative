@@ -32,6 +32,13 @@ const WORLDWIDE_REGION: Region = {
 
 const activityIndicatorSize = 50;
 
+const sameBounds = ( a?: ApiTotalBounds, b?: ApiTotalBounds ) => (
+  a?.swlat === b?.swlat
+  && a?.swlng === b?.swlng
+  && a?.nelat === b?.nelat
+  && a?.nelng === b?.nelng
+);
+
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6,
@@ -89,16 +96,6 @@ const ExploreV2MapView = ( {
       : undefined;
   }, [swlat, swlng, nelat, nelng] );
 
-  // The region the camera should be showing for the current context
-  const targetRegion = useMemo( ( ): Region | undefined => {
-    if ( placeMode === EXPLORE_V2_PLACE_MODE.NEARBY ) return nearbyRegion;
-    // we don't move the map after mount for MAP_AREA bc the bounds there are
-    // always set imperatively by the user moving the map themself
-    return placeMode === EXPLORE_V2_PLACE_MODE.MAP_AREA
-      ? undefined
-      : boundsRegion;
-  }, [placeMode, nearbyRegion, boundsRegion] );
-
   // in exploreV2, we unmount the map when switching between views
   // where ExploreV1 moves it off the screen, still mounted
   // mapAreaRegion specifies the initial map area for the remount after switching views
@@ -107,6 +104,23 @@ const ExploreV2MapView = ( {
       ? regionFromBounds( mapAreaBounds )
       : undefined
   ), [placeMode, mapAreaBounds] );
+
+  // Map area bounds come from two places: this map reporting what the user
+  // panned to, and a saved search handing us an area chosen somewhere else. The
+  // camera only has to move for the second kind, so remember the bounds we
+  // reported ourselves, starting with whatever we mounted with.
+  const [reportedBounds, setReportedBounds] = useState( mapAreaBounds );
+
+  // The region the camera should be showing for the current context
+  const targetRegion = useMemo( ( ): Region | undefined => {
+    if ( placeMode === EXPLORE_V2_PLACE_MODE.NEARBY ) return nearbyRegion;
+    if ( placeMode === EXPLORE_V2_PLACE_MODE.MAP_AREA ) {
+      return sameBounds( mapAreaBounds, reportedBounds )
+        ? undefined
+        : mapAreaRegion;
+    }
+    return boundsRegion;
+  }, [placeMode, nearbyRegion, boundsRegion, mapAreaBounds, mapAreaRegion, reportedBounds] );
 
   const initialRegion = mapAreaRegion || targetRegion || WORLDWIDE_REGION;
 
@@ -122,12 +136,14 @@ const ExploreV2MapView = ( {
     setShowRedoSearch( false );
     const bounds = await mapRef.current?.getMapBoundaries( );
     if ( !bounds ) return;
-    onRedoSearchPress?.( {
+    const newBounds = {
       swlat: bounds.southWest.latitude,
       swlng: bounds.southWest.longitude,
       nelat: bounds.northEast.latitude,
       nelng: bounds.northEast.longitude,
-    } );
+    };
+    setReportedBounds( newBounds );
+    onRedoSearchPress?.( newBounds );
   }, [onRedoSearchPress] );
 
   return (
