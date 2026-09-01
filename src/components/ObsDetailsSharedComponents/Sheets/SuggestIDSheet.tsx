@@ -30,6 +30,7 @@ const SuggestIDSheet = ( {
   onPressClose,
 }: Props ): React.ReactNode => (
   <BottomSheetV2
+    contentClassName="pt-0"
     headerText={t( "SUGGEST-ID" )}
     hidden={hidden}
     onPressClose={onPressClose}

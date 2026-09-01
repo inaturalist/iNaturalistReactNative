@@ -15,7 +15,8 @@ const SearchSectionHeader = ( {
   title,
 }: Props ) => (
   <View
-    className="flex-row items-center px-[15px] py-[4px] bg-white"
+    className="flex-row items-center px-[15px] py-[3px] bg-white
+      border-t border-b border-lightGray -mt-px"
     testID={testID}
   >
     <INatIcon name={icon} size={12} />

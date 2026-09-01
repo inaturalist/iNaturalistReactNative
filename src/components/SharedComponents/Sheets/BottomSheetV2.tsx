@@ -39,6 +39,7 @@ const STICKY_HEADER = [0];
 
 interface Props {
   children: React.JSX.Element;
+  contentClassName?: string;
   hidden?: boolean;
   headerText?: string;
   onPressClose?: ( ) => void;
@@ -47,6 +48,7 @@ interface Props {
 
 const BottomSheetV2 = ( {
   children,
+  contentClassName = "pt-2",
   hidden,
   headerText,
   onPressClose,
@@ -113,8 +115,11 @@ const BottomSheetV2 = ( {
       accessible={false}
       onDismiss={handleDismiss}
     >
-      <BottomSheetScrollView stickyHeaderIndices={STICKY_HEADER}>
-        <View className="pt-7 bg-white">
+      <BottomSheetScrollView
+        alwaysBounceVertical={false}
+        stickyHeaderIndices={STICKY_HEADER}
+      >
+        <View className="pt-7 pb-3 bg-white">
           {!headerText
             ? null
             : (
@@ -136,6 +141,7 @@ const BottomSheetV2 = ( {
           />
         </View>
         <View
+          className={contentClassName}
           style={{
             paddingBottom: bottom,
           }}
