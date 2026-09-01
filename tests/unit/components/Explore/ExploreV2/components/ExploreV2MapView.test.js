@@ -59,6 +59,12 @@ describe( "ExploreV2MapView", ( ) => {
     expect( screen.getByTestId( "ExploreV2MapView.loading" ) ).toBeTruthy( );
   } );
 
+  it( "hides the loading indicator once results have loaded", ( ) => {
+    renderMapView( { isLoading: false } );
+
+    expect( screen.queryByTestId( "ExploreV2MapView.loading" ) ).toBeNull( );
+  } );
+
   it( "shows the whole world when a worldwide search has no bounds yet", ( ) => {
     renderMapView( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } );
 
@@ -157,11 +163,49 @@ describe( "ExploreV2MapView", ( ) => {
     expect( animateToRegion ).not.toHaveBeenCalled( );
   } );
 
+  it( "keeps ignoring new result bounds while a map area stays up", ( ) => {
+    const { rerender } = renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      mapAreaBounds: mockTotalBounds,
+    } );
+    animateToRegion.mockClear( );
+
+    // Results come back for the map area search
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      mapAreaBounds: mockTotalBounds,
+      totalBounds: {
+        swlat: -80, swlng: -170, nelat: 80, nelng: 170,
+      },
+    }, rerender );
+
+    expect( animateToRegion ).not.toHaveBeenCalled( );
+  } );
+
   it( "restores the chosen area when the map remounts in map area mode", ( ) => {
     renderMapView( {
       placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
       mapAreaBounds: {
         swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+      },
+    } );
+
+    expect( mapProps( ).initialRegion ).toEqual( {
+      latitude: 20,
+      longitude: 30,
+      latitudeDelta: 20,
+      longitudeDelta: 20,
+    } );
+  } );
+
+  it( "prefers the chosen area over loaded result bounds when the map remounts", ( ) => {
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+      mapAreaBounds: {
+        swlat: 10, swlng: 20, nelat: 30, nelng: 40,
+      },
+      totalBounds: {
+        swlat: 12, swlng: 22, nelat: 14, nelng: 24,
       },
     } );
 
