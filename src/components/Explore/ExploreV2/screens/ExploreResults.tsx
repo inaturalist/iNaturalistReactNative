@@ -341,7 +341,7 @@ const ExploreResults = ( ) => {
             className={
               state.activeTab === OBSERVATIONS_TAB && showMap
                 ? "bottom-[140px]"
-                : "bottom-[76px]"
+                : "bottom-[82px]"
             }
             isSaved={isSaved}
             onPress={handleSavePress}
