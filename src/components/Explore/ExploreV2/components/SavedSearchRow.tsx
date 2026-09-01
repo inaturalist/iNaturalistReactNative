@@ -36,15 +36,18 @@ const SavedSearchRow = ( { onDelete, onPress, search }: Props ) => {
   }, [onDelete] );
 
   const renderDeleteAction = ( ) => (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={t( "Delete-saved-search" )}
-      className="w-[84px] bg-warningRed items-center justify-center"
-      onPress={onDelete}
-      testID={`SavedSearchRow.delete.${search.key}`}
-    >
-      <INatIcon name="trash-outline" size={22} color={colors.white} />
-    </Pressable>
+    <View className="w-[84px] items-center justify-center">
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={t( "Delete-saved-search" )}
+        className="w-[40px] h-[40px] rounded-full bg-warningRed items-center justify-center"
+        hitSlop={12}
+        onPress={onDelete}
+        testID={`SavedSearchRow.delete.${search.key}`}
+      >
+        <INatIcon name="trash-outline" size={22} color={colors.white} />
+      </Pressable>
+    </View>
   );
 
   return (
