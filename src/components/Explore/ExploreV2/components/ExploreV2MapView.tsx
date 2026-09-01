@@ -1,4 +1,3 @@
-import type { QueryStatus } from "@tanstack/react-query";
 import type { ApiTotalBounds } from "api/types";
 import type {
   ExploreV2QueryParams,
@@ -46,7 +45,6 @@ interface Props {
   onRedoSearchPress?: ( _bounds: ApiTotalBounds ) => void;
   placeMode: EXPLORE_V2_PLACE_MODE;
   queryParams: ExploreV2QueryParams;
-  queryStatus: QueryStatus;
   totalBounds?: ApiTotalBounds;
 }
 
@@ -58,7 +56,6 @@ const ExploreV2MapView = ( {
   onRedoSearchPress,
   placeMode,
   queryParams,
-  queryStatus,
   totalBounds,
 }: Props ) => {
   const { t } = useTranslation( );
@@ -113,27 +110,11 @@ const ExploreV2MapView = ( {
 
   const initialRegion = mapAreaRegion || targetRegion || WORLDWIDE_REGION;
 
-  const placeBoundsSettled = placeMode === EXPLORE_V2_PLACE_MODE.PLACE
-    && queryStatus !== "pending";
-
-  // waitingForTargetRegion is true when we have switched place modes but don't have bounds yet
-  // down below, we unmount Map during this state because of a bug that sometimes results in
-  // the map showing no results after an animation.
-  // this is a workaround and might be able to reverted some day
-  const waitingForTargetRegion = placeMode !== EXPLORE_V2_PLACE_MODE.WORLDWIDE
-    && !mapAreaRegion
-    && !targetRegion
-    && !placeBoundsSettled;
-
-  // when the map is moved by anything other than a user panning,
-  // do not show the "Redo search in this area" button
-  const [lastCameraTarget, setLastCameraTarget] = useState( targetRegion );
-  if ( targetRegion !== lastCameraTarget ) {
-    setLastCameraTarget( targetRegion );
-    setShowRedoSearch( false );
-  }
-  // there is no map to redo the search in while we're waiting for one
-  if ( waitingForTargetRegion && showRedoSearch ) {
+  // when the map is moved by anything other than a user panning, or the search
+  // moves out from under it, do not show the "Redo search in this area" button
+  const [lastSearch, setLastSearch] = useState( { placeMode, targetRegion } );
+  if ( placeMode !== lastSearch.placeMode || targetRegion !== lastSearch.targetRegion ) {
+    setLastSearch( { placeMode, targetRegion } );
     setShowRedoSearch( false );
   }
 
@@ -151,23 +132,21 @@ const ExploreV2MapView = ( {
 
   return (
     <View className="flex-1 overflow-hidden h-full">
-      {!waitingForTargetRegion && (
-        <Map
-          ref={mapRef}
-          initialRegion={initialRegion}
-          isLoading={isLoading}
-          onCurrentLocationPress={onCurrentLocationPress}
-          onPanDrag={( ) => setShowRedoSearch( true )}
-          regionToAnimate={targetRegion}
-          showCurrentLocationButton
-          showsCompass={false}
-          showSwitchMapTypeButton
-          showsUserLocation
-          switchMapTypeButtonClassName="right-5 bottom-20"
-          tileMapParams={queryParams}
-          withPressableObsTiles
-        />
-      )}
+      <Map
+        ref={mapRef}
+        initialRegion={initialRegion}
+        isLoading={isLoading}
+        onCurrentLocationPress={onCurrentLocationPress}
+        onPanDrag={( ) => setShowRedoSearch( true )}
+        regionToAnimate={targetRegion}
+        showCurrentLocationButton
+        showsCompass={false}
+        showSwitchMapTypeButton
+        showsUserLocation
+        switchMapTypeButtonClassName="right-5 bottom-20"
+        tileMapParams={queryParams}
+        withPressableObsTiles
+      />
       {showRedoSearch && (
         <View
           className="absolute top-5 left-0 right-0 items-center z-10"
@@ -181,7 +160,7 @@ const ExploreV2MapView = ( {
           />
         </View>
       )}
-      {( isLoading || waitingForTargetRegion ) && (
+      {isLoading && (
         <View
           className="absolute top-0 bottom-0 left-0 right-0 items-center justify-center"
           testID="ExploreV2MapView.loading"

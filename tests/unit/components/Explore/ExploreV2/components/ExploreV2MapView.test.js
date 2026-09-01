@@ -39,7 +39,6 @@ const renderMapView = ( props, update = null ) => renderComponent(
     isLoading={false}
     placeMode={EXPLORE_V2_PLACE_MODE.WORLDWIDE}
     queryParams={mockQueryParams}
-    queryStatus="success"
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />,
@@ -122,23 +121,9 @@ describe( "ExploreV2MapView", ( ) => {
     expect( initialRegion.longitudeDelta ).toBe( 28 );
   } );
 
-  it( "waits to mount the map until a place's bounds have loaded", ( ) => {
-    // Mounting worldwide and animating to the place makes the obs tile layer swap
-    // mid-flight, which intermittently leaves the map with no tiles drawn at all.
+  it( "keeps the map up at world scale until a place's bounds load", ( ) => {
     renderMapView( {
       placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
-      queryStatus: "pending",
-      totalBounds: undefined,
-    } );
-
-    expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
-    expect( screen.getByTestId( "ExploreV2MapView.loading" ) ).toBeVisible( );
-  } );
-
-  it( "shows the whole world when a place search fails", ( ) => {
-    renderMapView( {
-      placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
-      queryStatus: "error",
       totalBounds: undefined,
     } );
 
@@ -289,11 +274,9 @@ describe( "ExploreV2MapView", ( ) => {
 
       renderMapView( {
         placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
-        queryStatus: "pending",
         totalBounds: undefined,
       }, rerender );
 
-      expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
       expect( redoSearchButton( ) ).toBeNull( );
     } );
 
@@ -310,7 +293,6 @@ describe( "ExploreV2MapView", ( ) => {
         nearbyCoords: undefined,
       }, rerender );
 
-      expect( screen.queryByTestId( "Map.MapView" ) ).toBeNull( );
       expect( redoSearchButton( ) ).toBeNull( );
     } );
 
