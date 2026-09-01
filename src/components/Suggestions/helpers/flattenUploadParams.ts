@@ -1,9 +1,5 @@
-import { mkdir } from "@dr.pogodin/react-native-fs";
-import { computerVisionPath } from "appConstants/paths";
 import { FileUpload } from "inaturalistjs";
-import resizeImage from "sharedHelpers/resizeImage";
-
-const outputPath = computerVisionPath;
+import resizeImageForComputerVision from "sharedHelpers/resizeImageForComputerVision";
 
 interface FlattenUploadArgs {
   image: {
@@ -13,18 +9,8 @@ interface FlattenUploadArgs {
   };
 }
 
-const flattenUploadParams = async (
-  uri: string,
-): Promise<FlattenUploadArgs> => {
-  await mkdir( outputPath );
-  const uploadUri = await resizeImage( uri, {
-    // this max width/height is the same as the legacy Android app
-    // we always want the width/height to be bigger than 299x299
-    // and want to preserve the aspect ratio (not crunch the image down into a square)
-    // for the best results
-    width: 640,
-    outputPath,
-  } );
+const flattenUploadParams = async ( uri: string ): Promise<FlattenUploadArgs> => {
+  const uploadUri = await resizeImageForComputerVision( uri );
 
   const params: FlattenUploadArgs = {
     image: new FileUpload( {
