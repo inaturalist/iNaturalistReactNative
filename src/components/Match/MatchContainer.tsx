@@ -143,6 +143,8 @@ const MatchContainer = ( ) => {
   const observationPhoto = obsPhotos?.[0]?.photo?.url
     || obsPhotos?.[0]?.photo?.localFilePath;
 
+  const cvPhotoUri = obsPhotos?.[0]?.photo?.cvFilePath || observationPhoto;
+
   const realm = useRealm( );
   const exitObservationFlow = useExitObservationFlow( {
     skipStoreReset: true,
@@ -241,7 +243,7 @@ const MatchContainer = ( ) => {
     suggestions,
     usingOfflineSuggestions,
     refetchSuggestions,
-  } = useSuggestions( observationPhoto, {
+  } = useSuggestions( cvPhotoUri, {
     shouldFetchOnlineSuggestions,
     onFetchError,
     onFetched,
@@ -385,12 +387,12 @@ const MatchContainer = ( ) => {
     if ( isConnected === false ) {
       return;
     }
-    const newImageParams = await createUploadParams( observationPhoto, shouldUseEvidenceLocation );
+    const newImageParams = await createUploadParams( cvPhotoUri, shouldUseEvidenceLocation );
     dispatch( { type: "SET_UPLOAD_PARAMS", scoreImageParams: newImageParams } );
   }, [
     createUploadParams,
     isConnected,
-    observationPhoto,
+    cvPhotoUri,
     shouldUseEvidenceLocation,
   ] );
 

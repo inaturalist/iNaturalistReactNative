@@ -1,3 +1,4 @@
+import { computerVisionPath } from "appConstants/paths";
 import { FileUpload } from "inaturalistjs";
 import resizeImageForComputerVision from "sharedHelpers/resizeImageForComputerVision";
 
@@ -10,7 +11,9 @@ interface FlattenUploadArgs {
 }
 
 const flattenUploadParams = async ( uri: string ): Promise<FlattenUploadArgs> => {
-  const uploadUri = await resizeImageForComputerVision( uri );
+  const uploadUri = uri.includes( computerVisionPath )
+    ? uri
+    : await resizeImageForComputerVision( uri );
 
   const params: FlattenUploadArgs = {
     image: new FileUpload( {

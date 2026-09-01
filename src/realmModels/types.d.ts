@@ -23,6 +23,10 @@ export interface RealmPhoto extends RealmObject {
   localFilePath?: string;
 }
 
+export interface RealmPhotoPojo extends RealmPhoto {
+  cvFilePath?: string | null;
+}
+
 export interface RealmSound extends RealmObject {
   _created_at?: Date;
   _synced_at?: Date;
@@ -37,7 +41,7 @@ export interface RealmObservationPhotoPojo extends RealmObject {
   uuid: string;
   id?: number;
   originalPhotoUri?: string;
-  photo: RealmPhoto;
+  photo: RealmPhotoPojo;
   position?: number;
 }
 

@@ -126,6 +126,13 @@ const SuggestionsContainer = ( ) => {
     ( ) => ObservationPhoto.mapObsPhotoUris( currentObservation ),
     [currentObservation],
   );
+  // Prefer the full-quality copy made at capture time, so computer vision
+  // doesn't see the compressed upload copy (MOB-1622). Looked up by display
+  // uri because that's what the photo carousel selects with.
+  const cvPhotoUriFor = useCallback( ( uri: string ) => {
+    const index = photoUris.indexOf( uri );
+    return currentObservation?.observationPhotos?.[index]?.photo?.cvFilePath || uri;
+  }, [currentObservation, photoUris] );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
 
   const evidenceHasLocation = !!currentObservation?.latitude;
@@ -233,7 +240,7 @@ const SuggestionsContainer = ( ) => {
     suggestions,
     usingOfflineSuggestions,
     urlWillCrashOffline,
-  } = useSuggestions( selectedPhotoUri, {
+  } = useSuggestions( cvPhotoUriFor( selectedPhotoUri ), {
     shouldFetchOnlineSuggestions,
     onFetchError,
     onFetched,
@@ -243,7 +250,7 @@ const SuggestionsContainer = ( ) => {
   } );
 
   const createUploadParams = useCallback( async ( uri: string, showLocation: boolean ) => {
-    const newImageParams = await flattenUploadParams( uri );
+    const newImageParams = await flattenUploadParams( cvPhotoUriFor( uri ) );
     if ( showLocation && currentObservation?.latitude ) {
       newImageParams.lat = currentObservation?.latitude;
       newImageParams.lng = currentObservation?.longitude;
@@ -251,6 +258,7 @@ const SuggestionsContainer = ( ) => {
     return newImageParams;
   }, [
     currentObservation,
+    cvPhotoUriFor,
   ] );
 
   const navigateWithTaxonSelected = useNavigateWithTaxonSelected( { vision: true } );
@@ -358,7 +366,7 @@ const SuggestionsContainer = ( ) => {
   const onPermissionGranted = useCallback( async ( ) => {
     const userLocation = await fetchCoarseUserLocation( );
     updateObservationKeys( userLocation );
-    const newImageParams = await flattenUploadParams( selectedPhotoUri );
+    const newImageParams = await createUploadParams( selectedPhotoUri, false );
     newImageParams.lat = userLocation?.latitude;
     newImageParams.lng = userLocation?.longitude;
     dispatch( {
@@ -366,7 +374,7 @@ const SuggestionsContainer = ( ) => {
       shouldUseEvidenceLocation: true,
       scoreImageParams: newImageParams,
     } );
-  }, [selectedPhotoUri, updateObservationKeys] );
+  }, [createUploadParams, selectedPhotoUri, updateObservationKeys] );
 
   const debugData = {
     timedOut,

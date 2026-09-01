@@ -4,8 +4,12 @@ import type { ApiPhoto } from "api/types";
 import { photoUploadPath } from "appConstants/paths";
 import { Platform } from "react-native";
 import type { RealmPhoto } from "realmModels/types";
+import { log } from "sharedHelpers/logger";
 import resizeImage from "sharedHelpers/resizeImage";
+import resizeImageForComputerVision from "sharedHelpers/resizeImageForComputerVision";
 import { unlink } from "sharedHelpers/util";
+
+const logger = log.extend( "Photo" );
 
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
@@ -66,11 +70,20 @@ class Photo extends Realm.Object {
   }
 
   static async new( uri: string ) {
-    const localFilePath = await Photo.resizeImageForUpload( uri );
+    // Both resizes decode the same original, so run them concurrently
+    const [localFilePath, cvFilePath] = await Promise.all( [
+      Photo.resizeImageForUpload( uri ),
+      resizeImageForComputerVision( uri ).catch( resizeError => {
+        logger.error( "Failed to resize photo for computer vision", resizeError );
+        return null;
+      } ),
+    ] );
+
     return {
       _created_at: new Date( ),
       _updated_at: new Date( ),
       localFilePath,
+      cvFilePath,
     };
   }
 
