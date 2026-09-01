@@ -155,6 +155,7 @@ const ExploreResults = ( ) => {
   const needsPermission = isNearby && hasPermissions === false && !hasBlockedPermissions;
   const nearbyResolved = !isNearby || nearbyCoords !== undefined;
   const canFetch = !needsPermission && nearbyResolved;
+  const showingResults = isConnected !== false && !needsPermission;
 
   const queryParams = useMemo(
     ( ) => buildExploreV2QueryParams( state, nearbyCoords, currentUserId ),
@@ -335,16 +336,17 @@ const ExploreResults = ( ) => {
             : undefined}
         />
         {renderContent( )}
-        <SaveSearchButton
-          className={
-            // Above the map's layers and current-location buttons, or above SortButton
-            state.activeTab === OBSERVATIONS_TAB && showMap
-              ? "bottom-[140px]"
-              : "bottom-[76px]"
-          }
-          isSaved={isSaved}
-          onPress={handleSavePress}
-        />
+        {showingResults && (
+          <SaveSearchButton
+            className={
+              state.activeTab === OBSERVATIONS_TAB && showMap
+                ? "bottom-[140px]"
+                : "bottom-[76px]"
+            }
+            isSaved={isSaved}
+            onPress={handleSavePress}
+          />
+        )}
       </View>
       {showSortSheet && state.activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet
