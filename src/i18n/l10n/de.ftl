@@ -132,8 +132,8 @@ Choose-a-date = Datum auswählen
 Choose-a-date-time = Datum und Uhrzeit auswählen
 Choose-a-time = Uhrzeit auswählen
 CHOOSE-A-USERNAME = BENUTZERNAMEN WÄHLEN
-Choose-taxon = Taxon wählen
-Choose-top-taxon = Top-Taxon wählen
+Chooses-taxon = Wählt ein Taxon aus
+Chooses-top-taxon = Wählt das empfohlene Taxon aus
 Close = Schließen
 Close-permission-request-screen = Bildschirm für Genehmigungsanfragen schließen
 Close-search = Suche schließen
@@ -1040,6 +1040,11 @@ X-Identifiers =
         [one] { $count } BestimmerIn
        *[other] { $count } Bestimmende
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] BESTIMMER
+       *[other] BESTIMMER
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1074,6 +1079,11 @@ X-Observers =
     { $count ->
         [one] { $count } Beobachter
        *[other] { $count } Beobachter
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] BEOBACHTER
+       *[other] BEOBACHTER
     }
 X-of-Y =
     { $x ->

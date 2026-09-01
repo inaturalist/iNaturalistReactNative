@@ -318,7 +318,9 @@ const AddToProjects = ( ) => {
         ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}
         data={joinedProjects}
+        extraData={validationResult}
         keyExtractor={( project: RealmProject ) => String( project.id )}
+        keyboardDismissMode="on-drag"
         renderItem={renderProject}
         ItemSeparatorComponent={ItemSeparator}
       />

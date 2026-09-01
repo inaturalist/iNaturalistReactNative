@@ -107,6 +107,49 @@ Already applied in `Button.tsx`, `ViewWrapper.tsx`, `BottomSheet.tsx`,
 component that accepts a `className` prop *and* has its own default classes,
 use `twMerge`, not `classnames()`, to combine them.
 
+**The same trap fires with no caller involved** — an unconditional base class
+plus a conditional override of that same property, in one `classnames()` call:
+
+```js
+// BROKEN — bg-inatGreen never wins, because .bg-white is emitted later
+className={classnames( "bg-white items-center", {
+  "bg-inatGreen": isWhiteOnGreenStyling,
+} )}
+```
+
+This shipped on `main` as MOB-1725: the upload banner's green lost to the
+unconditional `bg-white` while `text-white` beat `text-darkGray`, leaving white
+text on a white background — invisible, but still laid out and still tappable.
+
+**Which side wins** is whichever value Tailwind emits later. For colors that's
+the key order of `colors` in `tailwind.config.js`, so a base of `bg-white` or
+`text-white` beats nearly any override — and reordering that config can break a
+component nobody touched.
+
+**Fix:** never emit two classes for the same property. A ternary makes the
+conflict structurally impossible rather than merely resolving it:
+
+```js
+// CORRECT
+className={classnames(
+  "items-center",
+  isWhiteOnGreenStyling
+    ? "bg-inatGreen"
+    : "bg-white",
+)}
+```
+
+Mutually exclusive object keys (`{ "bg-white": a, "bg-warningRed": b }`) are
+equally safe. For longer build-ups, wrap the call: `twMerge( classnames( ... ) )`.
+
+**Don't just swap `classnames()` for `twMerge()`** — `twMerge` silently ignores
+object arguments, so a find-and-replace deletes every conditional class:
+
+```js
+twMerge( "bg-white", { "bg-inatGreen": true } )                // => "bg-white"     dropped
+twMerge( classnames( "bg-white", { "bg-inatGreen": true } ) )  // => "bg-inatGreen" correct
+```
+
 ## 3. An inline `style` always beats a `className` for the same property
 
 This is a plain CSS/RN fact that v2's resolution model happened to route around,
@@ -263,6 +306,7 @@ jest.mock( "some/Component", () => {
 |---|---|
 | `className` has no visible effect at all | Component isn't registered — see #1 |
 | A caller's override class isn't winning over a component's own default class | Plain `classnames()` merge instead of `twMerge` — see #2 |
+| An element renders in its default color/spacing when a condition should have overridden it | Unconditional base class plus a conditional override of the same property — see #2 |
 | A numeric prop (`width`, `height`, alignment, etc.) should be overridable by className but isn't | An unconditional inline `style` value is beating the className — see #3 |
 | Conditionally-omitted style value still seems to apply | A style key is set to `undefined` instead of omitted — see #3 |
 | An arbitrary-value class (`h-[${x}px]`) has zero effect | Template-literal interpolation never compiles — see #4 |

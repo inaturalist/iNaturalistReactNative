@@ -132,8 +132,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ZADEJTE UŽIVATELSKÉ JMÉNO
-Choose-taxon = Vybrat taxon
-Choose-top-taxon = Vybrat nejlepší taxon
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = Zavřít
 Close-permission-request-screen = Zavřít obrazovku s žádostí o oprávnění
 Close-search = Zavřít hledání
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } Pozorovatel
        *[other] { $count } Pozorovatelé
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

@@ -5,7 +5,7 @@ import { CHUCKS_PAD } from "appConstants/e2e";
 import {
   LOCATION_PERMISSIONS,
   permissionResultFromMultiple
-} from "components/SharedComponents/PermissionGateContainer";
+} from "sharedHelpers/permissions";
 import { Platform } from "react-native";
 import {
   checkMultiple,

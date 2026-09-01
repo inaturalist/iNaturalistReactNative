@@ -135,8 +135,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ВЫБЕРИТЕ ИМЯ ПОЛЬЗОВАТЕЛЯ
-Choose-taxon = Выбрать таксон
-Choose-top-taxon = Выберите топ таксона
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = Закрыть
 Close-permission-request-screen = Закрытие экрана запроса разрешений
 Close-search = Закрыть поиск
@@ -1040,6 +1040,11 @@ X-Identifiers =
         [one] { $count } идентификатор
        *[other] { $count } идентификаторов
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } ЗАПИСЬ В ЖУРНАЛЕ
@@ -1074,6 +1079,11 @@ X-Observers =
     { $count ->
         [one] { $count } наблюдатель
        *[other] { $count } наблюдателей
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

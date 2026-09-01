@@ -132,8 +132,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = 選擇使用者名稱
-Choose-taxon = 選擇分類群
-Choose-top-taxon = 選擇最佳建議的分類群
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = 關閉
 Close-permission-request-screen = 關閉請求許可權畫面
 Close-search = 關閉搜尋
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } 位鑑定者
        *[other] { $count } 位鑑定者
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } 位觀察者
        *[other] { $count } 位觀察者
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $y ->

@@ -132,8 +132,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ᲛᲝᲛᲮᲛᲐᲠᲔᲑᲚᲘᲡ ᲡᲐᲮᲔᲚᲘᲡ ᲨᲔᲠᲩᲔᲕᲐ
-Choose-taxon = ტაქსონის არჩევა
-Choose-top-taxon = ტოპ ტაქსონის აირჩევა
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = დახურვა
 Close-permission-request-screen = ნებართვის მოთხოვნის ეკრანის დახურვა
 Close-search = ძიების დახურვა
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } ამომცნობი
        *[other] { $count } ამომცნობი
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } Observer
        *[other] { $count } Observers
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

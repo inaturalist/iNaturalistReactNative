@@ -132,8 +132,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ESCOLHA UM NOME DE UTILIZADOR
-Choose-taxon = Escolha taxon
-Choose-top-taxon = Escolha o taxon superior
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = Fechar
 Close-permission-request-screen = Fechar ecrã de pedido de permissão
 Close-search = Fechar pesquisa
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [um] { $count } Identificador
        *[outros] { $count } Identificadores
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [um] { $count } Observador
        *[outros] { $count } Observadores
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

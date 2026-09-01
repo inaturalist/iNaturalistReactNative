@@ -132,8 +132,8 @@ Choose-a-date = Wybierz datę
 Choose-a-date-time = Wybierz datę i godzinę
 Choose-a-time = Wybierz czas
 CHOOSE-A-USERNAME = WYBIERZ NAZWĘ UŻYTKOWNIKA
-Choose-taxon = Wybierz takson
-Choose-top-taxon = Wybierz najtrafniejszy takson
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = Zamknij
 Close-permission-request-screen = Zamknij ekran żądania uprawnień
 Close-search = Zakończ wyszukiwanie
@@ -1049,6 +1049,11 @@ X-Identifiers =
         [few] { $count } Identyfikujących
        *[many] { $count } Identyfikujących
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1083,6 +1088,11 @@ X-Observers =
     { $count ->
         [jeden] { $count } Obserwator
        *[inne] { $count } Obserwatorów
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->
