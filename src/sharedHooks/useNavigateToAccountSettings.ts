@@ -3,7 +3,6 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
 import type { TabStackScreenProps } from "navigation/types";
-import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import Config from "react-native-config";
@@ -11,8 +10,6 @@ import { EventRegister } from "react-native-event-listeners";
 
 import useLayoutPrefs from "./useLayoutPrefs";
 import useTranslation from "./useTranslation";
-
-const { useRealm } = RealmContext;
 
 const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
@@ -24,7 +21,6 @@ interface Options {
 }
 
 const useNavigateToAccountSettings = ( { onFinish }: Options = {} ) => {
-  const realm = useRealm( );
   const { isConnected } = useNetInfo( );
   const navigation = useNavigation<
     TabStackScreenProps<"UserProfile" | "Settings">["navigation"]
@@ -80,7 +76,7 @@ const useNavigateToAccountSettings = ( { onFinish }: Options = {} ) => {
             t( "It-may-take-up-to-an-hour-to-remove-content" ),
           );
           // sign out
-          await signOut( { realm, clearRealm: true, queryClient } );
+          await signOut( { clearRealm: true, queryClient } );
           // revert back to default mode
           setIsDefaultMode( true );
           // navigate to My Obs
@@ -95,7 +91,7 @@ const useNavigateToAccountSettings = ( { onFinish }: Options = {} ) => {
         return true;
       },
     } );
-  }, [isConnected, navigation, queryClient, realm, setIsDefaultMode, t] );
+  }, [isConnected, navigation, queryClient, setIsDefaultMode, t] );
 
   return navigateToAccountSettings;
 };

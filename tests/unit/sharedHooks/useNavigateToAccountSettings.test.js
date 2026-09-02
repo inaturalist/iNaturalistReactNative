@@ -20,13 +20,6 @@ jest.mock( "sharedHooks/useLayoutPrefs", () => ( {
   default: () => ( { setIsDefaultMode: mockSetIsDefaultMode } ),
 } ) );
 
-const mockRealm = {};
-jest.mock( "providers/contexts", () => ( {
-  RealmContext: {
-    useRealm: () => mockRealm,
-  },
-} ) );
-
 const mockQueryClient = {};
 jest.mock( "@tanstack/react-query", () => ( {
   ...jest.requireActual( "@tanstack/react-query" ),
@@ -85,7 +78,7 @@ describe( "useNavigateToAccountSettings", () => {
     await Promise.resolve();
 
     expect( signOut ).toHaveBeenCalledWith(
-      expect.objectContaining( { realm: mockRealm, clearRealm: true } ),
+      expect.objectContaining( { clearRealm: true } ),
     );
     expect( mockSetIsDefaultMode ).toHaveBeenCalledWith( true );
     expect( mockNavigate ).toHaveBeenCalledWith( "ObsList" );

@@ -21,16 +21,19 @@ import * as RNLocalize from "react-native-localize";
 import RNRestart from "react-native-restart";
 import {
   deleteItem,
-  ErrorCode,
-  getItem,
+  ErrorCode, getItem,
   hasItem,
   SensitiveInfoError,
   setItem,
 } from "react-native-sensitive-info";
-import Realm, { UpdateMode } from "realm";
-import realmConfig from "realmModels/index";
+import type Realm from "realm";
+import { UpdateMode } from "realm";
 import changeLanguage from "sharedHelpers/changeLanguage";
-import { getInstallID } from "sharedHelpers/installData";
+import {
+  getInstallID,
+  PENDING_REALM_WIPE,
+  store as installDataStore,
+} from "sharedHelpers/installData";
 import { log, logFileDirectory, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
@@ -277,22 +280,11 @@ const signOut = async (
   zustandMMKVBackingStorage.clearAll( );
 
   if ( options.clearRealm ) {
-    if ( options.realm ) {
-      // Delete all the records in the realm db, including the ones accessible
-      // through the copy of realm provided by RealmProvider
-      options.realm.beginTransaction();
-      try {
-        options.realm.deleteAll();
-        options.realm.commitTransaction();
-      } catch ( _realmError ) {
-        options.realm.cancelTransaction();
-        // If we failed to wipe all the data in realm, delete the realm file.
-        // Note that deleting the realm file *all* the time seems to cause
-        // problems in Android when the app is force quit, as in sometimes it
-        // seems to just delete the file even if you didn't sign out
-        Realm.deleteFile( realmConfig );
-      }
-    }
+    // We have outstanding issues with live Realm references which make clearing
+    // Realm in this app instance problematic, leading to potential crashes (MOB-139)
+    // We know that we're _right_ about to RNRestart() the app so set a flag here to
+    // let the new instance do it before we've even mounted the RealmProvider.
+    installDataStore.set( PENDING_REALM_WIPE, true );
   }
 
   RNRestart.restart( );

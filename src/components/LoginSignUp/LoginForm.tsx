@@ -65,7 +65,7 @@ const LoginForm = ( {
   const [showModal, setShowModal] = useState( false );
 
   const onSignOut = async () => {
-    await signOut( { realm, clearRealm: true } );
+    await signOut( { clearRealm: true } );
   };
 
   const renderSignOutButton = useCallback(
