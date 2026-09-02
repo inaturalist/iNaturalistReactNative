@@ -116,11 +116,16 @@ const mapParamsToAPI = ( params: Object, currentUser: Object ): Object => {
     filteredParams.photo_license = licenseParams[params.photoLicense];
   }
 
+  if ( params.excludeUser?.id ) {
+    filteredParams.not_user_id = params.excludeUser.id;
+  }
+
   delete filteredParams.taxon;
   delete filteredParams.place_guess;
   delete filteredParams.placeMode;
   delete filteredParams.user;
   delete filteredParams.project;
+  delete filteredParams.excludeUser;
   delete filteredParams.sortBy;
   delete filteredParams.researchGrade;
   delete filteredParams.needsID;

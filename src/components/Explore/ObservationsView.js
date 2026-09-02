@@ -3,22 +3,14 @@
 import {
   useNetInfo,
 } from "@react-native-community/netinfo";
-import {
-  searchObservations,
-} from "api/observations";
 import useInfiniteExploreScroll from "components/Explore/hooks/useInfiniteExploreScroll";
 import ObservationsFlashList from "components/ObservationsFlashList/ObservationsFlashList";
 import { View } from "components/styledComponents";
-import {
-  useExplore,
-} from "providers/ExploreContext";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import { Dimensions } from "react-native";
 import {
-  useCurrentUser,
   useDeviceOrientation,
-  useQuery,
 } from "sharedHooks";
 
 import MapView from "./MapView";
@@ -46,25 +38,6 @@ const ObservationsView = ( {
   renderLocationPermissionsGate,
   requestLocationPermissions,
 }: Props ): Node => {
-  const currentUser = useCurrentUser( );
-  const { state } = useExplore();
-  const { excludeUser } = state;
-
-  // get total count of current users obs
-  // TODO: enable fields if it makes sense? I dont know if {} equals all fields or no fields
-  const { data: currentUserObs } = useQuery(
-    ["fetchCurrentUserObservations"],
-    ( ) => searchObservations( {
-      user_id: currentUser?.id,
-      ...queryParams,
-      fields: {
-      },
-    } ),
-    {
-      enabled: ( !!currentUser && !!excludeUser ),
-    },
-  );
-
   const {
     fetchNextPage,
     isFetchingNextPage,
@@ -75,11 +48,6 @@ const ObservationsView = ( {
     isLoading,
   } = useInfiniteExploreScroll( { params: queryParams, enabled: canFetch } );
 
-  const curUserObsCount = currentUserObs?.total_results;
-  const totalCount = ( excludeUser && currentUserObs && observations.length > 0 )
-    ? totalResults - curUserObsCount
-    : totalResults;
-
   const {
     isLandscapeMode,
     isTablet,
@@ -88,8 +56,8 @@ const ObservationsView = ( {
   } = useDeviceOrientation( );
 
   useEffect( ( ) => {
-    handleUpdateCount( "observations", totalCount );
-  }, [handleUpdateCount, totalCount] );
+    handleUpdateCount( "observations", totalResults );
+  }, [handleUpdateCount, totalResults] );
 
   const { isConnected } = useNetInfo( );
 
