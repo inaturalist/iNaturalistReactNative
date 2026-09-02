@@ -132,8 +132,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ユーザー名の選択
-Choose-taxon = 分類群を選択
-Choose-top-taxon = トップ分類群を選択
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = 閉じる
 Close-permission-request-screen = 許可リクエスト画面を閉じる
 Close-search = 検索を閉じる
@@ -1042,6 +1042,11 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1076,6 +1081,11 @@ X-Observers =
     { $count ->
         [one] { $count } Observer
        *[other] { $count } Observers
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

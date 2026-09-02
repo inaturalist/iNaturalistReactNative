@@ -132,8 +132,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = 请选择一个用户名
-Choose-taxon = 选择一个分类单元
-Choose-top-taxon = 选择顶级分类单元
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = 关闭
 Close-permission-request-screen = 关闭权限请求屏幕
 Close-search = 关闭搜索
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count }个鉴定者
        *[other] { $count }个鉴定者
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count }个关注者
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] 1个观察者
        *[other] { $count }个观察者
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $y ->

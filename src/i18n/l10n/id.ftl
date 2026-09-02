@@ -132,8 +132,8 @@ Choose-a-date = Pilih tanggal
 Choose-a-date-time = Pilih tanggal & waktu
 Choose-a-time = Pilih waktu
 CHOOSE-A-USERNAME = PILIH NAMA PENGGUNA
-Choose-taxon = Pilih takson
-Choose-top-taxon = Pilih takson terbaik
+Chooses-taxon = Memilih takson
+Chooses-top-taxon = Memilih takson teratas
 Close = Tutup
 Close-permission-request-screen = Tutup layar permintaan izin
 Close-search = Tutup pencarian
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } Pengidentifikasi
        *[other] { $count } Pengidentifikasi
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] PENGENAL
+       *[other] PENGENAL
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } POSTINGAN JURNAL
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } Pengamat
        *[other] { $count } Pengamat
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] PENGAMAT
+       *[other] PENGAMAT
     }
 X-of-Y =
     { $x ->

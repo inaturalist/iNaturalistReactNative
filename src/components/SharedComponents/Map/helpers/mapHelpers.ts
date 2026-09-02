@@ -5,12 +5,23 @@ import { EnvConfig } from "sharedHelpers/envConfig";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 
 export const OBSCURATION_CELL_SIZE = 0.2;
-// tiles should be requested from tiles.inaturalist.org for better resource
-// balancing
 const API_URL = EnvConfig.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
-export const TILE_URL = API_URL.match( /api\.inaturalist\.org/ )
-  ? API_URL.replace( "api.inaturalist", "tiles.inaturalist" )
-  : API_URL;
+
+function getTileUrl( apiUrl: string ) {
+  try {
+    const parsedUrl = new URL( apiUrl );
+    if ( parsedUrl.hostname === "api.inaturalist.org" ) {
+      // tiles should be requested from tiles.inaturalist.org for better resource
+      // balancing
+      parsedUrl.hostname = "tiles.inaturalist.org";
+      return parsedUrl.toString();
+    }
+    return apiUrl;
+  } catch {
+    return apiUrl;
+  }
+}
+export const TILE_URL = getTileUrl( API_URL );
 const POINT_TILES_ENDPOINT = `${TILE_URL}/points`;
 
 export function calculateZoom( width: number, delta: number ) {

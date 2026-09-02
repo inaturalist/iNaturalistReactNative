@@ -132,8 +132,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = בחר.י שם משתמש
-Choose-taxon = נא לבחור טקסון
-Choose-top-taxon = נא לבחור את הטקסון המתאים ביותר
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = סגירה
 Close-permission-request-screen = סגירת מסך בקשת הרשאה
 Close-search = סגור חיפוש
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } מזהה
        *[other] { $count } מזהים.ות
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } מתצפת.ת
        *[other] { $count } מתצפתים.ות
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

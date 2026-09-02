@@ -40,12 +40,15 @@ class Project extends Realm.Object {
   }
 
   static mapRealmToPojo( realmProject: RealmProject ) {
+    const pojoPOFs = realmProject.projectObservationFields
+      .map( pof => ProjectObservationField.mapRealmToPojo( pof ) );
     return {
       icon: realmProject.icon,
       id: realmProject.id,
-      projectObservationFields: realmProject.projectObservationFields.length > 0
-        ? realmProject.projectObservationFields
-          .map( pof => ProjectObservationField.mapRealmToPojo( pof ) )
+      projectObservationFields: pojoPOFs.length > 0
+        ? pojoPOFs
+          // Add to projects screen should display them in this order
+          .sort( ( a, b ) => a.position - b.position )
         : [],
       project_type: realmProject.project_type,
       title: realmProject.title,

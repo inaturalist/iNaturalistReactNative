@@ -172,7 +172,7 @@ exports[`AddObsButton renders correctly 1`] = `
                         "color": "#ffffff",
                         "fontSize": 20,
                       },
-                      null,
+                      {},
                       {
                         "fontFamily": "INatIcon",
                         "fontStyle": "normal",
@@ -337,7 +337,7 @@ exports[`AddObsButton renders correctly 1`] = `
                         "color": "#ffffff",
                         "fontSize": 20,
                       },
-                      null,
+                      {},
                       {
                         "fontFamily": "INatIcon",
                         "fontStyle": "normal",
@@ -488,7 +488,7 @@ exports[`AddObsButton renders correctly 1`] = `
                         "color": "#ffffff",
                         "fontSize": 20,
                       },
-                      null,
+                      {},
                       {
                         "fontFamily": "INatIcon",
                         "fontStyle": "normal",
@@ -581,7 +581,7 @@ exports[`AddObsButton renders correctly 1`] = `
                     "color": "#454545",
                     "fontSize": 24,
                   },
-                  null,
+                  {},
                   {
                     "fontFamily": "INatIcon",
                     "fontStyle": "normal",
@@ -707,7 +707,7 @@ exports[`AddObsButton renders correctly 1`] = `
                   "color": "#ffffff",
                   "fontSize": 47,
                 },
-                null,
+                {},
                 {
                   "fontFamily": "INatIcon",
                   "fontStyle": "normal",

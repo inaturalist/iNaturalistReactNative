@@ -11,6 +11,7 @@ import { useRozeniteStoragePlugin } from "@rozenite/storage-plugin";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 import { useQueryClient } from "@tanstack/react-query";
 import { useFeatureFlagForDebug } from "components/Developer/FeatureFlags";
+import { deleteAccessToken } from "components/LoginSignUp/AuthenticationService";
 import type { PropsWithChildren } from "react";
 import React, { useMemo, useState } from "react";
 import { Button, View } from "react-native";
@@ -91,18 +92,30 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
       createSection( {
         id: "operations",
         title: "Operations",
-        items: [{
-          id: "halt-launch",
-          type: "button",
-          title: "Restart & Halt",
-          description:
-            "Restarts the app and renders a placeholder root component. "
-            + "Useful for attaching a debugger or starting a profiling session.",
-          onPress: () => {
-            installDataMMKVStorage.set( launchHaltStorageKey, true );
-            RNRestart.restart();
+        items: [
+          {
+            id: "halt-launch",
+            type: "button",
+            title: "Restart & Halt",
+            description:
+              "Restarts the app and renders a placeholder root component. "
+              + "Useful for attaching a debugger or starting a profiling session.",
+            onPress: () => {
+              installDataMMKVStorage.set( launchHaltStorageKey, true );
+              RNRestart.restart();
+            },
           },
-        },
+          {
+            id: "nuke-access-token",
+            type: "button",
+            title: "Nuke access token",
+            description:
+              "Deletes the OAuth access token from sensitive storage. "
+              + "Leaves the Realm user and JWT in place for testing re-login mid-session.",
+            onPress: () => {
+              deleteAccessToken();
+            },
+          },
         ],
       } ),
       createSection( {

@@ -132,8 +132,8 @@ Choose-a-date = Bir tarih seçin
 Choose-a-date-time = Bir tarih ve saat seçin
 Choose-a-time = Bir saat seçin
 CHOOSE-A-USERNAME = BİR KULLANICI ADI SEÇ
-Choose-taxon = Takson seç
-Choose-top-taxon = En önerilen taksonu seç
+Chooses-taxon = Taksonu seçer
+Chooses-top-taxon = En uygun taksonu seçer
 Close = Kapat
 Close-permission-request-screen = İzin talebi ekranını kapat
 Close-search = Aramayı kapat
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } Tanımlayıcı
        *[other] { $count } Tanımlayıcı
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } GÜNLÜK GÖNDERİSİ
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } Gözlemci
        *[other] { $count } Gözlemci
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

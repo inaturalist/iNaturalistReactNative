@@ -1,9 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import { Tabs } from "components/SharedComponents";
+import Tabs, { SCROLLABLE_TAB_WIDTH_RATIO } from "components/SharedComponents/Tabs/Tabs";
 import React from "react";
+import { Dimensions, ScrollView } from "react-native";
 
 const TAB_1 = "TAB_1";
 const TAB_2 = "TAB_2";
+const TAB_3 = "TAB_3";
+const TAB_4 = "TAB_4";
 const tab1Click = jest.fn();
 const tab2Click = jest.fn();
 
@@ -61,5 +64,37 @@ describe( "Tabs", () => {
     fireEvent.press( tab2 );
     expect( tab1Click ).not.toHaveBeenCalled();
     expect( tab2Click ).toHaveBeenCalled();
+  } );
+} );
+
+describe( "scrollable Tabs", () => {
+  const { width } = Dimensions.get( "window" );
+  const tabWidth = width * SCROLLABLE_TAB_WIDTH_RATIO;
+  const scrollableTabs = [TAB_1, TAB_2, TAB_3, TAB_4].map( id => ( {
+    id,
+    text: id,
+    onPress: jest.fn( ),
+  } ) );
+
+  beforeEach( () => {
+    ScrollView.prototype.scrollTo.mockClear( );
+  } );
+
+  it( "should keep the strip at the start when the first tab is active", () => {
+    render( <Tabs tabs={scrollableTabs} activeId={TAB_1} scrollable /> );
+
+    expect( ScrollView.prototype.scrollTo ).toHaveBeenCalledWith(
+      { x: 0, animated: false },
+    );
+  } );
+
+  it( "should scroll the newly active tab into view when the user changes tabs", () => {
+    render( <Tabs tabs={scrollableTabs} activeId={TAB_1} scrollable /> );
+    ScrollView.prototype.scrollTo.mockClear( );
+    screen.update( <Tabs tabs={scrollableTabs} activeId={TAB_3} scrollable /> );
+
+    expect( ScrollView.prototype.scrollTo ).toHaveBeenCalledWith(
+      { x: 2.5 * tabWidth - width / 2, animated: true },
+    );
   } );
 } );

@@ -19,11 +19,8 @@ import {
   I18nManager, Platform, Text,
 } from "react-native";
 import Config from "react-native-config";
-import DeviceInfo from "react-native-device-info";
 import RNRestart from "react-native-restart";
 import { EnvConfig } from "sharedHelpers/envConfig";
-import { useFeatureFlag } from "sharedHooks";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 import {
   CODE, H1, H2, P,
@@ -263,30 +260,6 @@ const PathStats = () => {
   );
 };
 
-// Temporary diagnostic use of admin/testflight config.
-const TestFlightAdminFeatureFlagTest = () => {
-  const enabled = useFeatureFlag( FeatureFlag.TestFlightAdminMessageEnabled );
-  const label = `Test message "Feature Flags for Admins in TestFlight" is: ${enabled
-    ? "Enabled"
-    : "Disabled"}`;
-  // eslint-disable-next-line max-len
-  const description = "(Should be \"Enabled\" if user is logged in and this is a build installed from TestFlight OR if the feature flag is manually overridden above.)";
-  // eslint-disable-next-line max-len
-  const resolvedInstallerPackageName = `Resolved DeviceInfo.getInstallerPackageNameSync(): ${DeviceInfo.getInstallerPackageNameSync()}`;
-  return (
-    <>
-      <H1>Temporary Feature Flag Config Test</H1>
-      <P>
-        {label}
-      </P>
-      <P>{description}</P>
-      <P>
-        {resolvedInstallerPackageName}
-      </P>
-    </>
-  );
-};
-
 const Developer = () => {
   return (
     <ScrollViewWrapper>
@@ -298,8 +271,6 @@ const Developer = () => {
         <FeatureFlags />
         <PathStats />
         <AppFileSizes />
-        {/* TODO: remove once MOB-1573 is validated in TestFlight */}
-        <TestFlightAdminFeatureFlagTest />
       </View>
 
     </ScrollViewWrapper>

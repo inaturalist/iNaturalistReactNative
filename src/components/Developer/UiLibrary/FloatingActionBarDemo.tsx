@@ -4,6 +4,7 @@ import {
   INatIconButton,
 } from "components/SharedComponents";
 import React from "react";
+import { Alert } from "react-native";
 import colors from "styles/tailwindColors";
 
 /* eslint-disable i18next/no-literal-string */
@@ -12,6 +13,7 @@ const FloatingActionBarDemo = ( ) => (
   <FloatingActionBar
     position="bottomEnd"
     containerClass="mx-4 px-2 pb-2 rounded-md"
+    footerHeight={0}
     endY={80}
     show
   >
@@ -23,6 +25,7 @@ const FloatingActionBarDemo = ( ) => (
       color={colors.white}
       backgroundColor={colors.inatGreen}
       accessibilityLabel="Star"
+      onPress={() => Alert.alert( "pressed!" )}
     />
   </FloatingActionBar>
 );

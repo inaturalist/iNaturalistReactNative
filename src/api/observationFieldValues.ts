@@ -56,13 +56,13 @@ const updateObservationFieldValue = async <T = ApiDefaultResult>(
   }
 };
 
-const deleteObservationFieldValue = async (
+const deleteObservationFieldValue = async <T = ApiDefaultResult>(
   id: string, // uuid
   opts: ApiOpts = {},
-): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    const { results } = await inatjs.observation_field_values.delete( { id }, opts );
-    return results;
+    const response = await inatjs.observation_field_values.delete( { id }, opts );
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
