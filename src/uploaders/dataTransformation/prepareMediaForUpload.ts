@@ -7,10 +7,11 @@ function prepareMediaForUpload(
   type: EvidenceType,
   action: ActionType,
   observationId?: number | null,
+  uploadUri?: string | null,
 ): object {
   if ( type === "Photo" ) {
     if ( action === "upload" ) {
-      return ObservationPhoto.mapPhotoForUpload( media );
+      return ObservationPhoto.mapPhotoForUpload( media, uploadUri );
     }
   } else if ( type === "ObservationPhoto" ) {
     if ( action === "attach" ) {

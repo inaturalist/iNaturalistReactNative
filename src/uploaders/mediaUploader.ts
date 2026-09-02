@@ -1,6 +1,7 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
 import type Realm from "realm";
+import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
   RealmObservationPhoto,
@@ -8,9 +9,14 @@ import type {
   RealmPhoto,
   RealmSound,
 } from "realmModels/types";
+import compressPhotoForUpload from "sharedHelpers/compressPhotoForUpload";
+import { log } from "sharedHelpers/logger";
+import { unlink } from "sharedHelpers/util";
 import prepareMediaForUpload from "uploaders/dataTransformation/prepareMediaForUpload";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 import markRecordUploaded from "uploaders/utils/realmSync";
+
+const logger = log.extend( "mediaUploader" );
 
 export type EvidenceType = "Photo" | "ObservationPhoto" | "Sound" | "ObservationSound";
 export type ActionType = "upload" | "attach" | "update";
@@ -88,6 +94,20 @@ interface MediaItems {
   unsyncedObservationSounds: RealmObservationSound[];
 }
 
+const compressPhotoUri = async ( evidence: Evidence ): Promise<string | null> => {
+  const localFilePath = "localFilePath" in evidence
+    ? evidence.localFilePath
+    : undefined;
+  const localUri = Photo.getLocalPhotoUri( localFilePath );
+  if ( !localUri ) return null;
+  try {
+    return await compressPhotoForUpload( localUri );
+  } catch ( compressionError ) {
+    logger.error( "Failed to compress photo for upload", compressionError );
+    return null;
+  }
+};
+
 const uploadSingleEvidence = async (
   evidence: Evidence,
   type: EvidenceType,
@@ -98,44 +118,53 @@ const uploadSingleEvidence = async (
   observationUUID: string,
   realm: Realm,
 ): Promise<MediaApiResponse | null> => {
-  const params = prepareMediaForUpload(
-    evidence,
-    type,
-    action,
-    observationId,
-  );
-  const evidenceUUID = evidence.uuid;
+  const compressedUri = ( type === "Photo" && action === "upload" )
+    ? await compressPhotoUri( evidence )
+    : null;
 
-  // Determine if this is an upload or an attachment operation
-  // for progress tracking
-  const isAttachOperation = observationId != null;
-  const evidenceProgress = trackEvidenceUpload( observationUUID );
+  try {
+    const params = prepareMediaForUpload(
+      evidence,
+      type,
+      action,
+      observationId,
+      compressedUri,
+    );
+    const evidenceUUID = evidence.uuid;
 
-  const response = await createOrUpdateEvidence(
-    apiEndpoint,
-    params,
-    options,
-  );
+    // Determine if this is an upload or an attachment operation
+    // for progress tracking
+    const isAttachOperation = observationId != null;
+    const evidenceProgress = trackEvidenceUpload( observationUUID );
 
-  if ( !response ) {
-    throw new Error( `Failed to upload ${type} ${evidenceUUID}: no response from server` );
-  }
+    const response = await createOrUpdateEvidence(
+      apiEndpoint,
+      params,
+      options,
+    );
 
-  if ( response && observationUUID ) {
-    // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
-    markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
-      record: evidence,
-    } );
-    if ( isAttachOperation ) {
-      // This is attaching evidence to an observation
-      evidenceProgress.attached( );
-    } else {
-      // This is uploading evidence
-      evidenceProgress.uploaded( );
+    if ( !response ) {
+      throw new Error( `Failed to upload ${type} ${evidenceUUID}: no response from server` );
     }
-  }
 
-  return response;
+    if ( response && observationUUID ) {
+      // TODO: can't mark records as uploaded by primary key for ObsPhotos and ObsSound anymore
+      markRecordUploaded( observationUUID, evidenceUUID, type, response, realm, {
+        record: evidence,
+      } );
+      if ( isAttachOperation ) {
+        // This is attaching evidence to an observation
+        evidenceProgress.attached( );
+      } else {
+        // This is uploading evidence
+        evidenceProgress.uploaded( );
+      }
+    }
+
+    return response;
+  } finally {
+    await unlink( compressedUri );
+  }
 };
 
 interface Operation {
