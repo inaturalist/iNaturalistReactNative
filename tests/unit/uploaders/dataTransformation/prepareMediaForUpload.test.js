@@ -92,6 +92,7 @@ describe( "prepareMediaForUpload", () => {
 
     expect( ObservationPhoto.mapPhotoForUpload ).toHaveBeenCalledWith(
       mockPhoto,
+      undefined,
     );
 
     expect( result ).toEqual( {
@@ -101,6 +102,22 @@ describe( "prepareMediaForUpload", () => {
         type: "image/jpeg",
       } ),
     } );
+  } );
+
+  test( "should pass a compressed upload uri through to the Photo mapper", () => {
+    const compressedUri = "file://compressedPhotoUploads/photo.jpg";
+    prepareMediaForUpload(
+      mockPhoto,
+      "Photo",
+      "upload",
+      null,
+      compressedUri,
+    );
+
+    expect( ObservationPhoto.mapPhotoForUpload ).toHaveBeenCalledWith(
+      mockPhoto,
+      compressedUri,
+    );
   } );
 
   test( "should map ObservationPhoto attachment", () => {
