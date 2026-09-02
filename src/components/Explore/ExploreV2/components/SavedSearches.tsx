@@ -44,7 +44,7 @@ const SavedSearches = ( { hideHeader = false }: Props ) => {
     <View testID="SavedSearches">
       {!hideHeader && (
         <SearchSectionHeader
-          icon="star"
+          icon="star-bold-outline"
           testID="SavedSearches.header"
           title={t( "Saved-searches" )}
         />
