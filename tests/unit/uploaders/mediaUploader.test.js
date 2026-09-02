@@ -1,17 +1,26 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
+import compressPhotoForUpload from "sharedHelpers/compressPhotoForUpload";
+import { unlink } from "sharedHelpers/util";
 import { prepareMediaForUpload } from "uploaders";
 import { attachMediaToObservation, uploadObservationMedia } from "uploaders/mediaUploader";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 
 jest.mock( "api/observations" );
 jest.mock( "inaturalistjs" );
+jest.mock( "sharedHelpers/compressPhotoForUpload" );
+jest.mock( "sharedHelpers/util", () => ( {
+  ...jest.requireActual( "sharedHelpers/util" ),
+  unlink: jest.fn(),
+} ) );
 jest.mock( "uploaders" );
 jest.mock( "uploaders/utils/progressTracker" );
 
 const mockedCreateOrUpdateEvidence = jest.mocked( createOrUpdateEvidence );
 const mockedPrepareMediaForUpload = jest.mocked( prepareMediaForUpload );
 const mockedTrackEvidenceUpload = jest.mocked( trackEvidenceUpload );
+const mockedCompressPhotoForUpload = jest.mocked( compressPhotoForUpload );
+const mockedUnlink = jest.mocked( unlink );
 
 describe( "mediaUploader", () => {
   beforeEach( () => {
@@ -156,6 +165,7 @@ describe( "mediaUploader", () => {
         "ObservationPhoto",
         "attach",
         observationUUID,
+        null,
       );
 
       expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
@@ -163,6 +173,7 @@ describe( "mediaUploader", () => {
         "ObservationSound",
         "attach",
         observationUUID,
+        null,
       );
 
       expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
@@ -170,6 +181,7 @@ describe( "mediaUploader", () => {
         "ObservationPhoto",
         "update",
         observationUUID,
+        null,
       );
 
       expect( mockedCreateOrUpdateEvidence ).toHaveBeenCalledWith(
@@ -291,6 +303,56 @@ describe( "mediaUploader", () => {
 
       expect( trackEvidenceUpload ).toHaveBeenCalledWith( "obs-uuid-123" );
       expect( mockProgress.attached ).toHaveBeenCalled();
+    } );
+  } );
+
+  describe( "photo compression", () => {
+    const compressedUri = "file://document/directory/path/compressedPhotoUploads/photo1.jpg";
+    const observationWithLocalPhoto = () => ( {
+      uuid: "obs-uuid-123",
+      observationPhotos: [
+        {
+          wasSynced: () => false,
+          photo: {
+            uuid: "photo-uuid-1",
+            localFilePath: "file://document/directory/path/photoUploads/photo1.jpg",
+          },
+        },
+      ],
+      observationSounds: [],
+    } );
+
+    it( "should delete the compressed copy once the photo has been uploaded", async () => {
+      mockedCompressPhotoForUpload.mockResolvedValue( compressedUri );
+
+      await uploadObservationMedia( observationWithLocalPhoto(), {}, {} );
+
+      expect( mockedUnlink ).toHaveBeenCalledWith( compressedUri );
+    } );
+
+    it( "should delete the compressed copy even when the upload fails", async () => {
+      mockedCompressPhotoForUpload.mockResolvedValue( compressedUri );
+      mockedCreateOrUpdateEvidence.mockRejectedValue( new Error( "API Error" ) );
+
+      await expect( uploadObservationMedia( observationWithLocalPhoto(), {}, {} ) )
+        .rejects.toThrow( "API Error" );
+
+      expect( mockedUnlink ).toHaveBeenCalledWith( compressedUri );
+    } );
+
+    it( "should still upload the original photo when compression fails", async () => {
+      mockedCompressPhotoForUpload.mockRejectedValue( new Error( "Resizer Error" ) );
+
+      await uploadObservationMedia( observationWithLocalPhoto(), {}, {} );
+
+      expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 1 );
+      expect( mockedPrepareMediaForUpload ).toHaveBeenCalledWith(
+        expect.anything(),
+        "Photo",
+        "upload",
+        null,
+        null,
+      );
     } );
   } );
 
