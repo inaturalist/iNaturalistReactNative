@@ -108,6 +108,14 @@ const compressPhotoUri = async ( evidence: Evidence ): Promise<string | null> =>
   }
 };
 
+const discardCompressedPhoto = async ( compressedUri: string | null ) => {
+  try {
+    await unlink( compressedUri );
+  } catch ( unlinkError ) {
+    logger.error( "Failed to remove compressed photo after upload", unlinkError );
+  }
+};
+
 const uploadSingleEvidence = async (
   evidence: Evidence,
   type: EvidenceType,
@@ -163,7 +171,7 @@ const uploadSingleEvidence = async (
 
     return response;
   } finally {
-    await unlink( compressedUri );
+    await discardCompressedPhoto( compressedUri );
   }
 };
 
