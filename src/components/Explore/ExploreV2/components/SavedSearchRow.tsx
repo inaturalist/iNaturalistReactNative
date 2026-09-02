@@ -36,7 +36,11 @@ const SavedSearchRow = ( { onDelete, onPress, search }: Props ) => {
   }, [onDelete] );
 
   const renderDeleteAction = ( ) => (
-    <View className="w-[84px] items-center justify-center">
+    <View
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      className="w-[84px] items-center justify-center"
+    >
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={t( "Delete-saved-search" )}

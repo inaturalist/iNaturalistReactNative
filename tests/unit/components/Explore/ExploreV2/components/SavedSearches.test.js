@@ -1,4 +1,6 @@
-import { screen, userEvent, within } from "@testing-library/react-native";
+import {
+  fireEvent, screen, userEvent, within,
+} from "@testing-library/react-native";
 import SavedSearches from "components/Explore/ExploreV2/components/SavedSearches";
 import initI18next from "i18n/initI18next";
 import React from "react";
@@ -66,9 +68,26 @@ describe( "SavedSearches", ( ) => {
     setSavedSearches( [search] );
 
     renderComponent( <SavedSearches onSelectSearch={jest.fn( )} /> );
-    const actor = userEvent.setup( );
-    await actor.press( await screen.findByTestId( `SavedSearchRow.delete.${search.key}` ) );
+    fireEvent(
+      await screen.findByTestId( `SavedSearchRow.${search.key}` ),
+      "accessibilityAction",
+      { nativeEvent: { actionName: "delete" } },
+    );
 
     expect( useStore.getState( ).exploreSavedSearches.searches ).toEqual( [] );
+  } );
+
+  it( "keeps the swipe-away delete button out of the accessibility tree", async ( ) => {
+    const search = savedSearch( 1 );
+    setSavedSearches( [search] );
+
+    renderComponent( <SavedSearches onSelectSearch={jest.fn( )} /> );
+    await screen.findByTestId( `SavedSearchRow.${search.key}` );
+
+    expect( screen.queryByTestId( `SavedSearchRow.delete.${search.key}` ) ).toBeNull( );
+    expect( screen.getByTestId(
+      `SavedSearchRow.delete.${search.key}`,
+      { includeHiddenElements: true },
+    ) ).toBeTruthy( );
   } );
 } );

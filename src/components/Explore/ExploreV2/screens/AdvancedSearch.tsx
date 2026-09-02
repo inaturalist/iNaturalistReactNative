@@ -117,6 +117,7 @@ const AdvancedSearch = ( ) => {
 
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
   const [showSavedSearches, setShowSavedSearches] = useState( false );
+  const savedSearchesOpen = showSavedSearches && savedSearchCount > 0;
   const handleBack = ( ) => {
     if ( differsFromInitial ) {
       setShowDiscardSheet( true );
@@ -798,7 +799,7 @@ const AdvancedSearch = ( ) => {
           updateLocation={updateLocation}
         />
       )}
-      {showSavedSearches && (
+      {savedSearchesOpen && (
         <BottomSheetV2
           headerText={t( "SAVED-SEARCHES" )}
           onPressClose={( ) => setShowSavedSearches( false )}
