@@ -21,9 +21,6 @@ export interface RealmPhoto extends RealmObject {
   licenseCode?: License;
   url?: string;
   localFilePath?: string;
-}
-
-export interface RealmPhotoPojo extends RealmPhoto {
   cvFilePath?: string | null;
 }
 
@@ -41,7 +38,7 @@ export interface RealmObservationPhotoPojo extends RealmObject {
   uuid: string;
   id?: number;
   originalPhotoUri?: string;
-  photo: RealmPhotoPojo;
+  photo: RealmPhoto;
   position?: number;
 }
 

@@ -16,7 +16,6 @@ import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import User from "realmModels/User";
 import {
-  clearComputerVisionPhotos,
   clearGalleryPhotos,
   clearRollbackPhotos,
   clearRotatedOriginalPhotosDirectory,
@@ -106,7 +105,6 @@ const useDeferredStartup = ( ) => {
     // user interactions between potentially slow filesystem operations.
     const id4 = deferTask( "clearRotatedOriginalPhotos", clearRotatedOriginalPhotosDirectory );
     const id5 = deferTask( "clearGalleryPhotos", clearGalleryPhotos );
-    const id6 = deferTask( "clearComputerVisionPhotos", clearComputerVisionPhotos );
     const id7 = deferTask( "clearSyncedMediaForUpload", () => clearSyncedMediaForUpload( realm ) );
     const id8 = deferTask( "clearRollbackPhotos", clearRollbackPhotos );
 
@@ -133,7 +131,6 @@ const useDeferredStartup = ( ) => {
       cancelIdleCallback( id3 );
       cancelIdleCallback( id4 );
       cancelIdleCallback( id5 );
-      cancelIdleCallback( id6 );
       cancelIdleCallback( id7 );
       cancelIdleCallback( id8 );
       cancelIdleCallback( id9 );

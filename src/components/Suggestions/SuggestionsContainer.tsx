@@ -11,6 +11,7 @@ import React, {
   useReducer,
 } from "react";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import Photo from "realmModels/Photo";
 import {
   useLastScreen,
   useLocationPermission,
@@ -131,7 +132,8 @@ const SuggestionsContainer = ( ) => {
   // uri because that's what the photo carousel selects with.
   const cvPhotoUriFor = useCallback( ( uri: string ) => {
     const index = photoUris.indexOf( uri );
-    return currentObservation?.observationPhotos?.[index]?.photo?.cvFilePath || uri;
+    const cvFilePath = currentObservation?.observationPhotos?.[index]?.photo?.cvFilePath;
+    return Photo.getCvPhotoUri( cvFilePath ) || uri;
   }, [currentObservation, photoUris] );
   const updateObservationKeys = useStore( state => state.updateObservationKeys );
 

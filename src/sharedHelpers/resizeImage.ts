@@ -1,4 +1,5 @@
 import ImageResizer from "@bam.tech/react-native-image-resizer";
+import { Platform } from "react-native";
 
 const resizeImage = async (
   pathOrUri: string,
@@ -23,10 +24,15 @@ const resizeImage = async (
     imageOptions,
   } = options;
 
+  // Work around path / uri bug: https://github.com/bamlab/react-native-image-resizer/issues/328
+  const uriForResize = ( Platform.OS === "ios" && pathOrUri.match( /^\// ) )
+    ? `file://${pathOrUri}`
+    : pathOrUri;
+
   // Note that the default behavior of this library is to resize to contain,
   // i.e. it will not adjust aspect ratio
   const resizedPhoto = await ImageResizer.createResizedImage(
-    pathOrUri,
+    uriForResize,
     width, // maxWidth
     height || width, // maxHeight
     "JPEG", // compressFormat

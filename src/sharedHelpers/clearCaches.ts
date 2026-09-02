@@ -14,6 +14,7 @@ interface RealmObservation {
   observationPhotos: {
     photo: {
       localFilePath: string;
+      cvFilePath?: string | null;
     };
   }[];
   observationSounds: {
@@ -29,11 +30,6 @@ const clearRotatedOriginalPhotosDirectory = async ( ) => {
 
 const clearGalleryPhotos = async ( ) => {
   await removeAllFilesFromDirectory( photoLibraryPhotosPath );
-};
-
-const clearComputerVisionPhotos = async ( ) => {
-  // Clears resized images used for inatjs.computervision.score_image
-  await removeAllFilesFromDirectory( computerVisionPath );
 };
 
 // this hook checks to see which localFilePaths are still needed in photoUploads/
@@ -58,6 +54,19 @@ const clearSyncedMediaForUpload = async realm => {
     //  eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     unsyncedPhotoFileNames,
+  );
+
+  // A synced photo's cvFilePath is dropped by the post-upload upsert, so only
+  // an unsynced photo's copy is still reachable and worth keeping
+  const unsyncedCvFileNames = unsyncedObservationsWithPhotos
+    .map( observation => observation.observationPhotos.map(
+      op => op.photo.cvFilePath?.split( "computerVisionSuggestions/" )?.at( 1 ),
+    ) )
+    .flat( )
+    .filter( ( name ): name is string => !!name );
+  await removeSyncedFilesFromDirectory(
+    computerVisionPath,
+    unsyncedCvFileNames,
   );
 
   // Clean out sounds
@@ -85,7 +94,6 @@ const clearRollbackPhotos = async ( ) => {
 };
 
 export {
-  clearComputerVisionPhotos,
   clearGalleryPhotos,
   clearRollbackPhotos,
   clearRotatedOriginalPhotosDirectory,

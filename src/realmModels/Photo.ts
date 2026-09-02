@@ -1,7 +1,7 @@
 import { copyAssetsFileIOS, mkdir } from "@dr.pogodin/react-native-fs";
 import { Realm } from "@realm/react";
 import type { ApiPhoto } from "api/types";
-import { photoUploadPath } from "appConstants/paths";
+import { computerVisionPath, photoUploadPath } from "appConstants/paths";
 import { Platform } from "react-native";
 import type { RealmPhoto } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
@@ -59,13 +59,7 @@ class Photo extends Realm.Object {
       return outUri;
     }
 
-    // Work around path / uri bug: https://github.com/bamlab/react-native-image-resizer/issues/328
-    let uriForResize = pathOrUri;
-    if ( Platform.OS === "ios" && uriForResize.match( /^\// ) ) {
-      uriForResize = `file://${uriForResize}`;
-    }
-
-    const uri = await resizeImage( uriForResize, {
+    const uri = await resizeImage( pathOrUri, {
       width,
       quality,
       outputPath: photoUploadPath,
@@ -102,6 +96,12 @@ class Photo extends Realm.Object {
     const pieces = localPathOrUri?.split( "photoUploads/" );
     if ( !pieces || pieces.length <= 1 ) return null;
     return `file://${photoUploadPath}/${pieces[1]}`;
+  }
+
+  static getCvPhotoUri( cvPathOrUri?: string | null ) {
+    const pieces = cvPathOrUri?.split( "computerVisionSuggestions/" );
+    if ( !pieces || pieces.length <= 1 ) return null;
+    return `file://${computerVisionPath}/${pieces[1]}`;
   }
 
   static displayLargePhoto( url?: string ) {
@@ -150,6 +150,7 @@ class Photo extends Realm.Object {
       license_code: { type: "string", mapTo: "licenseCode", optional: true },
       url: "string?",
       localFilePath: "string?",
+      cvFilePath: "string?",
       hidden: "bool?",
     },
   };

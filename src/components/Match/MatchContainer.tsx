@@ -23,6 +23,7 @@ import React, {
   useEffect, useMemo, useReducer, useRef, useState,
 } from "react";
 import type { ScrollView } from "react-native";
+import Photo from "realmModels/Photo";
 import type { RealmPhoto, RealmTaxon } from "realmModels/types";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import saveObservation from "sharedHelpers/saveObservation";
@@ -143,7 +144,7 @@ const MatchContainer = ( ) => {
   const observationPhoto = obsPhotos?.[0]?.photo?.url
     || obsPhotos?.[0]?.photo?.localFilePath;
 
-  const cvPhotoUri = obsPhotos?.[0]?.photo?.cvFilePath || observationPhoto;
+  const cvPhotoUri = Photo.getCvPhotoUri( obsPhotos?.[0]?.photo?.cvFilePath ) || observationPhoto;
 
   const realm = useRealm( );
   const exitObservationFlow = useExitObservationFlow( {
