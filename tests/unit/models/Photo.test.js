@@ -49,20 +49,19 @@ describe( "Photo.new", ( ) => {
 } );
 
 describe( "the computer vision copy's lifetime", ( ) => {
-  it( "does not survive a Realm write, so consumers must fall back", async ( ) => {
+  it( "survives a Realm write, so a re-opened draft still scores full quality", async ( ) => {
     const realm = useRealm( );
     const obs = await Observation.new( );
     obs.observationPhotos = await ObservationPhoto.createObsPhotosWithPosition(
       [CAMERA_ORIGINAL],
       { position: 0, local: true },
     );
-    expect( obs.observationPhotos[0].photo.cvFilePath ).toBeTruthy( );
+    const { cvFilePath } = obs.observationPhotos[0].photo;
+    expect( cvFilePath ).toContain( "computerVisionSuggestions" );
 
     const saved = await Observation.saveLocalObservationForUpload( obs, realm );
 
-    // cvFilePath is deliberately not in the Photo schema; Realm drops it
-    // rather than throwing, so a saved photo falls back to localFilePath
     expect( saved.observationPhotos[0].photo.localFilePath ).toBeTruthy( );
-    expect( saved.observationPhotos[0].photo.cvFilePath ).toBeUndefined( );
+    expect( saved.observationPhotos[0].photo.cvFilePath ).toEqual( cvFilePath );
   } );
 } );
