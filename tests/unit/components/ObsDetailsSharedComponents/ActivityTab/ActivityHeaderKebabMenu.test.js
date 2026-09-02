@@ -8,7 +8,7 @@ import { renderComponent } from "tests/helpers/render";
 
 const mockUser = factory( "LocalUser", {
   id: 0,
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   iconUrl: faker.image.url( ),
 } );
 
