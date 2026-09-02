@@ -20,7 +20,7 @@ import type {
 import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
 import { log } from "sharedHelpers/logger";
 import { hasWriteMediaPermission } from "sharedHelpers/permissions";
-import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
+import { completeSentinelFile, createSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
 import { useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
@@ -80,9 +80,9 @@ const CameraContainer = ( ) => {
     await logStage( sentinelFileName, stageName, stageData );
   }, [cameraType, sentinelFileName] );
 
-  const deleteStageIfAICamera = useCallback( async ( ) => {
+  const completeStageIfAICamera = useCallback( async ( ) => {
     if ( cameraType !== "AI" ) { return; }
-    await deleteSentinelFile( sentinelFileName );
+    await completeSentinelFile( sentinelFileName );
   }, [cameraType, sentinelFileName] );
 
   const {
@@ -187,7 +187,7 @@ const CameraContainer = ( ) => {
         userLocation: accurateUserLocation,
         newPhotoState,
         logStageIfAICamera,
-        deleteStageIfAICamera,
+        completeStageIfAICamera,
         visionResult,
       } );
     } finally {
@@ -197,7 +197,7 @@ const CameraContainer = ( ) => {
   }, [
     prepareStoreAndNavigate,
     logStageIfAICamera,
-    deleteStageIfAICamera,
+    completeStageIfAICamera,
     startFirebaseTrace,
   ] );
 
