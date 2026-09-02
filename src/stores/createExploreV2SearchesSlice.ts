@@ -1,4 +1,4 @@
-import type { ExploreV2State, ExploreV2Subject, Place } from "providers/ExploreV2Context";
+import type { ExploreV2Search, ExploreV2Subject, Place } from "providers/ExploreV2Context";
 import type { StateCreator } from "zustand";
 
 export const RECENT_LIMIT = 10;
@@ -38,12 +38,11 @@ export const addRecent = <T>(
     ...items.filter( existing => keyFn( existing ) !== keyFn( item ) ),
   ].slice( 0, cap );
 
-// Everything about an Explore search except which tab it was viewed in, plus how we identify
-// it and when it was saved
+// A search plus how we identify it and when it was saved
 export type SavedSearch = {
   key: string;
   savedAt: number;
-} & Omit<ExploreV2State, "activeTab">;
+} & ExploreV2Search;
 
 // What a caller hands us. The key comes from savedSearchKey in the ExploreV2 helpers --
 // computing it here would mean importing the Explore context at runtime, and useStore is
@@ -62,7 +61,6 @@ export interface ExploreV2SearchesSlice {
   };
   exploreSavedSearches: {
     searches: SavedSearch[];
-    // Saving a search that is already saved removes it, so one control can do both
     saveSearch: ( _search: SavedSearchInput ) => void;
     removeSearch: ( _key: string ) => void;
     clearSavedSearches: ( ) => void;
@@ -103,23 +101,15 @@ const createExploreV2SearchesSlice: StateCreator<ExploreV2SearchesSlice> = set =
   },
   exploreSavedSearches: {
     searches: [],
-    saveSearch: search => set( state => {
-      const { key } = search;
-      const { searches } = state.exploreSavedSearches;
-      const withoutSearch = searches.filter( saved => saved.key !== key );
-      if ( withoutSearch.length !== searches.length ) {
-        return {
-          exploreSavedSearches: { ...state.exploreSavedSearches, searches: withoutSearch },
-        };
-      }
-      if ( searches.length >= SAVED_LIMIT ) { return state; }
-      return {
-        exploreSavedSearches: {
-          ...state.exploreSavedSearches,
-          searches: [{ ...search, savedAt: Date.now( ) }, ...searches],
-        },
-      };
-    } ),
+    saveSearch: search => set( state => ( {
+      exploreSavedSearches: {
+        ...state.exploreSavedSearches,
+        searches: [
+          { ...search, savedAt: Date.now( ) },
+          ...state.exploreSavedSearches.searches,
+        ],
+      },
+    } ) ),
     removeSearch: key => set( state => ( {
       exploreSavedSearches: {
         ...state.exploreSavedSearches,

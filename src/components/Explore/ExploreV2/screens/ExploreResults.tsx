@@ -85,6 +85,9 @@ const ExploreResults = ( ) => {
   const saveSearch = useStore(
     ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.saveSearch,
   );
+  const removeSearch = useStore(
+    ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.removeSearch,
+  );
   const observationsSortLabels = useObservationsSortLabels( );
   const speciesSortLabels = useSpeciesSortLabels( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreV2ObservationsLayout" );
@@ -222,25 +225,17 @@ const ExploreResults = ( ) => {
   );
   const isSaved = savedSearches.some( saved => saved.key === currentSearchKey );
 
-  const handleSavePress = useCallback( ( ) => {
-    if ( !isSaved && savedSearches.length >= SAVED_LIMIT ) {
+  const handleSavePress = ( ) => {
+    if ( isSaved ) {
+      removeSearch( currentSearchKey );
+    } else if ( savedSearches.length >= SAVED_LIMIT ) {
       setShowSavedLimitSheet( true );
-      return;
+    } else {
+      saveSearch( {
+        key: currentSearchKey, subject, location, sortBy, speciesSortBy, filters,
+      } );
     }
-    saveSearch( {
-      key: currentSearchKey, subject, location, sortBy, speciesSortBy, filters,
-    } );
-  }, [
-    currentSearchKey,
-    filters,
-    isSaved,
-    location,
-    savedSearches.length,
-    saveSearch,
-    sortBy,
-    speciesSortBy,
-    subject,
-  ] );
+  };
 
   const renderContent = ( ) => {
     if ( isConnected === false ) {

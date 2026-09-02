@@ -27,7 +27,6 @@ import {
   defaultAdvancedSearchDraft,
   draftFromV2State,
 } from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
-import applySavedSearch from "components/Explore/ExploreV2/helpers/applySavedSearch";
 import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
 import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "components/Explore/Modals/ExploreProjectSearchModal";
@@ -63,18 +62,15 @@ import {
 } from "providers/ExploreContext";
 import {
   EXPLORE_V2_ACTION,
-  EXPLORE_V2_PLACE_MODE,
   useExploreV2,
 } from "providers/ExploreV2Context";
-import React, {
-  useCallback, useMemo, useReducer, useState,
-} from "react";
+import React, { useMemo, useReducer, useState } from "react";
 import Taxon from "realmModels/Taxon";
 import { formatObsFieldDate } from "sharedHelpers/dateAndTime";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useIconicTaxa from "sharedHooks/useIconicTaxa";
 import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
-import type { ExploreV2SearchesSlice, SavedSearch } from "stores/createExploreV2SearchesSlice";
+import type { ExploreV2SearchesSlice } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 
 type SheetName = "sortBy" | "hrank" | "lrank" | "photoLicense";
@@ -165,43 +161,13 @@ const AdvancedSearch = ( ) => {
 
   const closePicker = ( ) => setOpenPicker( null );
 
-  const handleApplySavedSearch = useCallback( ( search: SavedSearch ) => {
-    setShowSavedSearches( false );
-    applySavedSearch( search, dispatchV2 );
-    setAdvancedSearchMode( true );
-    navigation.popTo( "ExploreResults" );
-  }, [dispatchV2, navigation, setAdvancedSearchMode] );
-
   const handleSearch = () => {
-    dispatchV2(
-      subject
-        ? { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject }
-        : { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT },
-    );
-    switch ( location.placeMode ) {
-      case EXPLORE_V2_PLACE_MODE.PLACE:
-        dispatchV2( { type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE, place: location.place } );
-        break;
-      case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
-        dispatchV2( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
-        break;
-      case EXPLORE_V2_PLACE_MODE.MAP_AREA:
-        dispatchV2( {
-          type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
-          bounds: location.bounds,
-        } );
-        break;
-      case EXPLORE_V2_PLACE_MODE.NEARBY:
-        dispatchV2( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } );
-        break;
-      default: {
-        // Exhaustiveness check: ts fails if a new placeMode is added without a case.
-        const _exhaustive: never = location;
-        break;
-      }
-    }
-    dispatchV2( { type: EXPLORE_V2_ACTION.SET_SORT, sortBy } );
-    dispatchV2( { type: EXPLORE_V2_ACTION.SET_FILTERS, filters } );
+    dispatchV2( {
+      type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+      search: {
+        subject, location, sortBy, speciesSortBy: v2State.speciesSortBy, filters,
+      },
+    } );
     dispatchV2( { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB, tab: OBSERVATIONS_TAB } );
     setAdvancedSearchMode( true );
     navigation.popTo( "ExploreResults" );
@@ -804,7 +770,7 @@ const AdvancedSearch = ( ) => {
           headerText={t( "SAVED-SEARCHES" )}
           onPressClose={( ) => setShowSavedSearches( false )}
         >
-          <SavedSearches hideHeader onSelectSearch={handleApplySavedSearch} />
+          <SavedSearches hideHeader />
         </BottomSheetV2>
       )}
       {showDiscardSheet && (
