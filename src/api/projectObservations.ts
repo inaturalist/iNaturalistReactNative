@@ -37,13 +37,13 @@ const createProjectObservation = async <T = ApiDefaultResult>(
   }
 };
 
-const updateProjectObservation = async (
+const updateProjectObservation = async <T = ApiDefaultResult>(
   params: ProjectObservationUpdateParams,
   opts: ApiOpts = {},
-): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    const { results } = await inatjs.project_observations.update( { ...PARAMS, ...params }, opts );
-    return results;
+    const response = await inatjs.project_observations.update( { ...PARAMS, ...params }, opts );
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
@@ -52,13 +52,13 @@ const updateProjectObservation = async (
   }
 };
 
-const deleteProjectObservation = async (
+const deleteProjectObservation = async <T = ApiDefaultResult>(
   id: string, // uuid
   opts: ApiOpts = {},
-): Promise<Record<string, unknown> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
-    const { results } = await inatjs.project_observations.delete( { id }, opts );
-    return results;
+    const response = await inatjs.project_observations.delete( { id }, opts );
+    return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,

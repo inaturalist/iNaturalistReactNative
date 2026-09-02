@@ -132,8 +132,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
-Choose-taxon = تاکسون را انتخاب کنید
-Choose-top-taxon = تاکسون برتر را انتخاب کنید
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = بستن
 Close-permission-request-screen = صفحه درخواست مجوز را ببندید
 Close-search = جستجو را ببندید
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } Identifier
        *[other] { $count } Identifiers
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } Observer
        *[other] { $count } Observers
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

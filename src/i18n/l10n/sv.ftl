@@ -138,8 +138,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VÄLJ ETT ANVÄNDARNAMN
-Choose-taxon = Välj taxon
-Choose-top-taxon = Välj topptaxon
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = Stäng
 Close-permission-request-screen = Stäng skärmen för behörighetsbegäran
 Close-search = Stäng söket
@@ -1043,6 +1043,11 @@ X-Identifiers =
         [one] { $count } bestämmare
        *[other] { $count } bestämmare
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1077,6 +1082,11 @@ X-Observers =
     { $count ->
         [one] { $count } Observatör
        *[other] { $count } Observatörer
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

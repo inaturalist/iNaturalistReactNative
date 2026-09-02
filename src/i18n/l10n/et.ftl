@@ -132,8 +132,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VALI KASUTAJANIMI
-Choose-taxon = Vali takson
-Choose-top-taxon = Vali kõrgeima taseme takson
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = Sulge
 Close-permission-request-screen = Sulge loa nõutamise aken
 Close-search = Sulge otsing
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } määratleja
        *[other] { $count } määratlejat
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } vaatleja
        *[other] { $count } vaatlejat
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

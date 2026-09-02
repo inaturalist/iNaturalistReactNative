@@ -2,7 +2,9 @@ import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import {
   act, screen, userEvent, waitFor,
 } from "@testing-library/react-native";
-import { SPECIES_TAB } from "appConstants/tabs";
+import {
+  IDENTIFIERS_TAB, OBSERVATIONS_TAB, OBSERVERS_TAB, SPECIES_TAB,
+} from "appConstants/tabs";
 import ExploreResults from "components/Explore/ExploreV2/screens/ExploreResults";
 import initI18next from "i18n/initI18next";
 import {
@@ -65,6 +67,24 @@ jest.mock( "components/Explore/ExploreV2/screens/ExploreV2SpeciesView", ( ) => (
   default: props => mockExploreV2SpeciesView( props ),
 } ) );
 
+const mockExploreV2UsersView = jest.fn( ( ) => null );
+jest.mock( "components/Explore/ExploreV2/screens/ExploreV2UsersView", ( ) => ( {
+  __esModule: true,
+  default: props => mockExploreV2UsersView( props ),
+} ) );
+
+const lastUsersViewTab = ( ) => mockExploreV2UsersView.mock.calls.at( -1 )?.[0]?.tab;
+
+let mockUserTabCounts = { observersCount: null, identifiersCount: null };
+const mockUseUserTabCounts = jest.fn( );
+jest.mock( "components/Explore/ExploreV2/hooks/useUserTabCounts", ( ) => ( {
+  __esModule: true,
+  default: ( ...args ) => {
+    mockUseUserTabCounts( ...args );
+    return mockUserTabCounts;
+  },
+} ) );
+
 let mockLayout = "map";
 const mockWriteLayoutToStorage = jest.fn( );
 jest.mock( "sharedHooks/useStoredLayout", ( ) => ( {
@@ -94,6 +114,10 @@ beforeEach( ( ) => {
   mockDispatch.mockClear( );
   mockRequestPermissions.mockClear( );
   mockExploreV2SpeciesView.mockClear( );
+  mockExploreV2UsersView.mockClear( );
+  mockUseUserTabCounts.mockClear( );
+  mockUserTabCounts = { observersCount: null, identifiersCount: null };
+  useStore.getState( ).exploreV2AdvancedSearch.setAdvancedSearchMode( false );
   fetchCoarseUserLocation.mockReset( );
   mockUseInfiniteExploreScroll.mockReset( );
   mockUseInfiniteExploreScroll.mockReturnValue( {
@@ -497,5 +521,74 @@ describe( "ExploreResults saved searches", ( ) => {
 
     expect( await screen.findByText( /Remove one to save another/ ) ).toBeVisible( );
     expect( savedSearches( ).searches ).toHaveLength( SAVED_LIMIT );
+  } );
+} );
+
+describe( "ExploreResults observers and identifiers tabs", ( ) => {
+  const advancedState = tab => ( {
+    ...mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+    activeTab: tab,
+  } );
+
+  beforeEach( ( ) => {
+    useStore.getState( ).exploreV2AdvancedSearch.setAdvancedSearchMode( true );
+  } );
+
+  it.each( [OBSERVERS_TAB, IDENTIFIERS_TAB] )(
+    "shows the users list on the %s tab",
+    async tab => {
+      useExploreV2.mockReturnValue( {
+        state: advancedState( tab ),
+        dispatch: mockDispatch,
+      } );
+
+      renderComponent( <ExploreResults /> );
+
+      await waitFor( ( ) => {
+        expect( lastUsersViewTab( ) ).toBe( tab );
+      } );
+    },
+  );
+
+  it( "shows the observer and identifier counts in the tabs", async ( ) => {
+    mockUserTabCounts = { observersCount: 8, identifiersCount: 5 };
+    useExploreV2.mockReturnValue( {
+      state: advancedState( OBSERVERS_TAB ),
+      dispatch: mockDispatch,
+    } );
+
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByText( "8" ) ).toBeVisible( );
+    expect( screen.getByText( "5" ) ).toBeVisible( );
+  } );
+
+  it( "offers no sort on the observers tab", async ( ) => {
+    useExploreV2.mockReturnValue( {
+      state: advancedState( OBSERVERS_TAB ),
+      dispatch: mockDispatch,
+    } );
+
+    renderComponent( <ExploreResults /> );
+
+    await waitFor( ( ) => {
+      expect( mockExploreV2UsersView ).toHaveBeenCalled( );
+    } );
+    expect( screen.queryByLabelText( "Change observations sort order" ) ).toBeNull( );
+  } );
+
+  it( "does not count observers or identifiers outside of advanced search mode", async ( ) => {
+    useStore.getState( ).exploreV2AdvancedSearch.setAdvancedSearchMode( false );
+    useExploreV2.mockReturnValue( {
+      state: advancedState( OBSERVATIONS_TAB ),
+      dispatch: mockDispatch,
+    } );
+
+    renderComponent( <ExploreResults /> );
+
+    await waitFor( ( ) => {
+      expect( mockUseUserTabCounts ).toHaveBeenCalled( );
+    } );
+    expect( mockUseUserTabCounts.mock.calls.at( -1 )[1] ).toEqual( { enabled: false } );
   } );
 } );

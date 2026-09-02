@@ -72,7 +72,7 @@ exports[`ContainedSquareButton renders correctly 1`] = `
               "color": "#ffffff",
               "fontSize": 20,
             },
-            null,
+            {},
             {
               "fontFamily": "INatIcon",
               "fontStyle": "normal",

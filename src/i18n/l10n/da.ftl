@@ -132,8 +132,8 @@ Choose-a-date = Vælg en dato
 Choose-a-date-time = Vælg en dato og tid
 Choose-a-time = Vælg et tid
 CHOOSE-A-USERNAME = VÆLG EN BRUGERNAVN
-Choose-taxon = Vælg takson
-Choose-top-taxon = Vælg øverste takson
+Chooses-taxon = Vælger taxon
+Chooses-top-taxon = Vælg top-taxon
 Close = Luk
 Close-permission-request-screen = Luk tilladelsesanmodningsskærmen
 Close-search = Luk søgning
@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } identifikator
        *[other] { $count } identifikatorer
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIKATOR
+       *[other] IDENTIFIKATORER
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNALINDLÆG
@@ -1073,6 +1078,11 @@ X-Observers =
     { $count ->
         [one] { $count } observertør
        *[other] { $count } observertører
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVATØR
+       *[other] OBSERVATØRER
     }
 X-of-Y =
     { $x ->
