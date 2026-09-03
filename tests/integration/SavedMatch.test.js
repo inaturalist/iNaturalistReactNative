@@ -57,7 +57,7 @@ const mockObservation = factory( "LocalObservation", {
     },
   } ),
   user: factory( "LocalUser", {
-    login: faker.internet.userName( ),
+    login: faker.internet.username( ),
     iconUrl: faker.image.url( ),
     locale: "en",
   } ),

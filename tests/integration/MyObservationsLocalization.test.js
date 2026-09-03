@@ -33,13 +33,13 @@ afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
 const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   iconUrl: faker.image.url( ),
   locale: "en",
 } );
 
 // const mockSpanishUser = factory( "LocalUser", {
-//   login: faker.internet.userName( ),
+//   login: faker.internet.username( ),
 //   iconUrl: faker.image.url( ),
 //   locale: "es"
 // } );
