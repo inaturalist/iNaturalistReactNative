@@ -1,4 +1,5 @@
 import type { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { StackActions } from "@react-navigation/native";
 import { searchObservations } from "api/observations";
 import { searchProjects } from "api/projects";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
@@ -49,6 +50,8 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
   }
 }
 
+// We use dispatch(StackActions.push(...)) instead of navigation.push() so the
+// Rozenite control's nav ref can call this outside of a Screen. They behave the same.
 export async function openInatUrl(
   parsed: InatUrlTarget,
   navigation: NavigationProp<ParamListBase>,
@@ -58,7 +61,7 @@ export async function openInatUrl(
     case "taxon": {
       const taxonID = parseNumericId( id );
       if ( taxonID ) {
-        navigation.push( "TaxonDetails", { id: taxonID } );
+        navigation.dispatch( StackActions.push( "TaxonDetails", { id: taxonID } ) );
         return true;
       }
       return false;
@@ -66,7 +69,7 @@ export async function openInatUrl(
     case "project": {
       const projectId = parseNumericId( id );
       if ( projectId ) {
-        navigation.push( "ProjectDetails", { id: projectId } );
+        navigation.dispatch( StackActions.push( "ProjectDetails", { id: projectId } ) );
         return true;
       }
       // Currently, ProjectDetails can not handle slugs as nav param to display a project.
@@ -84,7 +87,7 @@ export async function openInatUrl(
       const { results } = await searchProjects( searchParams, options );
       const project = results?.find( ( result: { slug?: string } ) => result.slug === id );
       if ( project?.id ) {
-        navigation.push( "ProjectDetails", { id: project.id } );
+        navigation.dispatch( StackActions.push( "ProjectDetails", { id: project.id } ) );
         return true;
       }
       return false;
@@ -102,7 +105,7 @@ export async function openInatUrl(
       const uuid = results?.[0]?.uuid;
 
       if ( uuid ) {
-        navigation.push( "ObsDetails", { uuid } );
+        navigation.dispatch( StackActions.push( "ObsDetails", { uuid } ) );
         return true;
       }
       return false;
