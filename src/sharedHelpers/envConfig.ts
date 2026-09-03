@@ -11,8 +11,6 @@ const RUNTIME_ENV_KEYS = [
   "JWT_ANONYMOUS_API_SECRET",
   "OAUTH_CLIENT_ID",
   "OAUTH_CLIENT_SECRET",
-  "GOOGLE_WEB_CLIENT_ID",
-  "GOOGLE_IOS_CLIENT_ID",
 ] as const;
 
 type RuntimeEnvKey = typeof RUNTIME_ENV_KEYS[number];
