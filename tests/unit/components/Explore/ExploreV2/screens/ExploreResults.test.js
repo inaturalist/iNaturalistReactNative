@@ -495,6 +495,7 @@ describe( "ExploreResults saved searches", ( ) => {
 
     expect( savedSearches( ).searches ).toHaveLength( 1 );
     expect( await screen.findByLabelText( "Remove this saved search" ) ).toBeVisible( );
+    expect( screen.getByText( "ADDED TO SAVED SEARCHES" ) ).toBeOnTheScreen( );
   } );
 
   it( "unsaves it when the filled star is tapped", async ( ) => {
@@ -506,6 +507,7 @@ describe( "ExploreResults saved searches", ( ) => {
 
     expect( savedSearches( ).searches ).toEqual( [] );
     expect( await screen.findByLabelText( "Save this search" ) ).toBeVisible( );
+    expect( screen.getByText( "REMOVED FROM SAVED SEARCHES" ) ).toBeOnTheScreen( );
   } );
 
   it( "explains the limit instead of saving when there is no room left", async ( ) => {
