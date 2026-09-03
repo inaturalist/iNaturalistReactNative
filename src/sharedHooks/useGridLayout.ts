@@ -3,7 +3,7 @@ import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation } from "sharedHooks";
 
 const GUTTER = 15;
-export const HALF_GUTTER = GUTTER / 2;
+const HALF_GUTTER = GUTTER / 2;
 const TAB_BAR_HEIGHT = 80;
 
 const flashListStyle = {

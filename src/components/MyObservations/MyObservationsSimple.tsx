@@ -434,7 +434,6 @@ const MyObservationsSimple = ( {
         onLayout={onListLayout}
         onScroll={onScroll}
         ref={listRef}
-        showObservationsEmptyScreen
         showNoResults={showNoResults}
         testID="MyObservationsAnimatedList"
         listHeaderContent={observationsHeader}
