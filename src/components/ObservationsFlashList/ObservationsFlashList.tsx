@@ -27,6 +27,7 @@ import {
   useNavigateToObsEdit,
   useTranslation,
 } from "sharedHooks";
+import { HALF_GUTTER } from "sharedHooks/useGridLayout";
 import useStore from "stores/useStore";
 
 import ObsPressable from "./ObsPressable";
@@ -230,10 +231,18 @@ const ObservationsFlashList = ( {
   ] );
 
   const emptyContent = useMemo( ( ) => {
+    // correct for grid layout's gutter to prevent layout
+    // change on empty state going between grid & list
+    const emptyContentStyle = {
+      marginTop: layout === "list"
+        ? 150
+        : 150 - HALF_GUTTER,
+    };
+
     const showEmptyScreen = showObservationsEmptyScreen
       ? null
       : (
-        <Body3 className="self-center mt-[150px]">
+        <Body3 className="self-center" style={emptyContentStyle}>
           {t( "No-results-found-try-different-search" )}
         </Body3>
       );
@@ -241,11 +250,12 @@ const ObservationsFlashList = ( {
     return showNoResults
       ? showEmptyScreen
       : (
-        <View className="self-center mt-[150px]">
+        <View className="self-center" style={emptyContentStyle}>
           <ActivityIndicator size={50} testID="ObservationsFlashList.loading" />
         </View>
       );
   }, [
+    layout,
     showObservationsEmptyScreen,
     showNoResults,
     t,
