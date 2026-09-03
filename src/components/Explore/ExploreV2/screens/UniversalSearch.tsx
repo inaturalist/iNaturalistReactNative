@@ -1,5 +1,6 @@
 import { BottomTabBarHeightContext } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
+import type { ApiTotalBounds } from "api/types";
 import classnames from "classnames";
 import DefaultSearchOptions
   from "components/Explore/ExploreV2/components/DefaultSearchOptions";
@@ -9,6 +10,7 @@ import LocationSearchResult
   from "components/Explore/ExploreV2/components/LocationSearchResult";
 import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
+import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
 import {
   resultToSubject,
   subjectToResult,
@@ -33,9 +35,14 @@ import {
   View,
 } from "components/styledComponents";
 import type { ExploreStackScreenProps } from "navigation/types";
-import type { ExploreV2Subject, Place } from "providers/ExploreV2Context";
+import type {
+  ExploreV2LocationState,
+  ExploreV2Subject,
+  Place,
+} from "providers/ExploreV2Context";
 import {
   EXPLORE_V2_ACTION,
+  EXPLORE_V2_PLACE_MODE,
   useExploreV2,
 } from "providers/ExploreV2Context";
 import React, {
@@ -70,7 +77,27 @@ type SearchResultItem = UniversalSearchResultItem | LocationSearchResultItem;
 type SelectedLocation =
   | { type: "place"; place: Place }
   | { type: "nearby" }
-  | { type: "worldwide" };
+  | { type: "worldwide" }
+  | { type: "mapArea"; bounds: ApiTotalBounds };
+
+// The location the user is already looking at, staged so that changing only the
+// subject keeps the place instead of resetting it to worldwide. Re-committing
+// the same location is idempotent, which is how AdvancedSearch does it too.
+const selectedLocationFromState = (
+  location: ExploreV2LocationState,
+): SelectedLocation => {
+  switch ( location.placeMode ) {
+    case EXPLORE_V2_PLACE_MODE.PLACE:
+      return { type: "place", place: location.place };
+    case EXPLORE_V2_PLACE_MODE.NEARBY:
+      return { type: "nearby" };
+    case EXPLORE_V2_PLACE_MODE.MAP_AREA:
+      return { type: "mapArea", bounds: location.bounds };
+    case EXPLORE_V2_PLACE_MODE.WORLDWIDE:
+    default:
+      return { type: "worldwide" };
+  }
+};
 
 const resultKey = ( item: SearchResultItem ): string => {
   switch ( item.type ) {
@@ -89,7 +116,7 @@ const resultKey = ( item: SearchResultItem ): string => {
 const UniversalSearch = ( ) => {
   const navigation = useNavigation<ExploreStackScreenProps<"UniversalSearch">["navigation"]>( );
   const { t } = useTranslation( );
-  const { dispatch } = useExploreV2( );
+  const { dispatch, state } = useExploreV2( );
   const currentUser = useCurrentUser( );
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
@@ -116,27 +143,65 @@ const UniversalSearch = ( ) => {
   // than live focus. Subject autofocuses, so it's the initial value.
   const [resultsField, setResultsField] = useState<"subject" | "location">( "subject" );
 
-  // What the user selected on this instance of the screen
-  const [selectedSubject, setSelectedSubject] = useState<ExploreV2Subject | null>( null );
-  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>( null );
+  // What the user selected on this instance of the screen. Both fields are
+  // seeded from the search in force, so leaving either alone keeps it and
+  // typing over the selection replaces it.
+  const [selectedSubject, setSelectedSubject] = useState<ExploreV2Subject | null>(
+    ( ) => state.subject,
+  );
+  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>(
+    ( ) => selectedLocationFromState( state.location ),
+  );
+  const seededSubjectText = state.subject
+    ? subjectToText( state.subject, commonNameIsPrimary, t )
+    : "";
+  // iOS drops a selection applied while the field is becoming first responder,
+  // so selectTextOnFocus does nothing for the focus that happens at mount (see
+  // facebook/react-native#30585, #44307). The public `selection` prop holds it
+  // instead. Control is released as soon as the user acts so the caret behaves
+  // normally after that.
+  const [subjectSelection, setSubjectSelection] = useState<
+    { start: number; end: number } | undefined
+  >( seededSubjectText.length > 0
+    ? { start: 0, end: seededSubjectText.length }
+    : undefined );
+  const releaseSubjectSelection = useCallback(
+    ( ) => setSubjectSelection( undefined ),
+    [],
+  );
+  // Worldwide is the absence of a place filter, so leave the field showing its
+  // placeholder there; any other mode is a place worth keeping in view.
+  const seededLocationText = state.location.placeMode === EXPLORE_V2_PLACE_MODE.WORLDWIDE
+    ? ""
+    : locationLabel( state.location, t );
   const {
     text: subjectText,
     debouncedQuery: subjectQuery,
     hasQuery: subjectHasQuery,
+    holdsSelection: subjectHoldsSelection,
     onChangeText: onChangeSubjectText,
     handleFocus: focusSubjectField,
     commit: commitSubject,
     clear: clearSubject,
-  } = useSearchField( );
+  } = useSearchField( {
+    initialText: seededSubjectText,
+    clearOnFocus: false,
+  } );
   const {
     text: locationText,
     debouncedQuery: locationQuery,
     hasQuery: locationHasQuery,
+    holdsSelection: locationHoldsSelection,
     onChangeText: onChangeLocationText,
     handleFocus: focusLocationField,
     commit: commitLocation,
     clear: clearLocation,
-  } = useSearchField( );
+  } = useSearchField( {
+    initialText: seededLocationText,
+    // Keep the seeded place visible instead of wiping it on focus; the input's
+    // selectTextOnFocus means the first keystroke replaces it.
+    clearOnFocus: false,
+  } );
 
   const locationInputRef = useRef<RNTextInput>( null );
 
@@ -159,6 +224,19 @@ const UniversalSearch = ( ) => {
     setResultsField( "location" );
     focusLocationField( );
   }, [focusLocationField] );
+
+  // Typing drops the staged value. Without this, a seeded or previously chosen
+  // subject/place would still be committed while the field shows something else.
+  const handleChangeSubjectText = useCallback( ( nextText: string ) => {
+    setSelectedSubject( null );
+    setSubjectSelection( undefined );
+    onChangeSubjectText( nextText );
+  }, [onChangeSubjectText] );
+
+  const handleChangeLocationText = useCallback( ( nextText: string ) => {
+    setSelectedLocation( null );
+    onChangeLocationText( nextText );
+  }, [onChangeLocationText] );
 
   const handleSubjectSelect = useCallback( ( subject: ExploreV2Subject ) => {
     setSelectedSubject( subject );
@@ -220,6 +298,12 @@ const UniversalSearch = ( ) => {
       case "nearby":
         dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } );
         break;
+      case "mapArea":
+        dispatch( {
+          type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+          bounds: selectedLocation.bounds,
+        } );
+        break;
       default:
         dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
     }
@@ -261,8 +345,12 @@ const UniversalSearch = ( ) => {
     ? locationData
     : subjectData;
 
-  const showSubjectDefaults = !showLocation && subjectText.trim().length === 0;
-  const showLocationDefaults = showLocation && locationText.trim().length === 0;
+  // A seeded or chosen value leaves text in the field, so gate on "nothing
+  // typed yet" rather than "empty" or the launchpad would be hidden behind it.
+  const showSubjectDefaults = !showLocation
+    && ( subjectHoldsSelection || subjectText.trim().length === 0 );
+  const showLocationDefaults = showLocation
+    && ( locationHoldsSelection || locationText.trim().length === 0 );
   let listEmptyComponent;
   if ( showSubjectDefaults ) {
     listEmptyComponent = <DefaultSearchOptions onSelectSubject={handleSubjectSelect} />;
@@ -310,10 +398,13 @@ const UniversalSearch = ( ) => {
                   autoFocus
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
-                  onChangeText={onChangeSubjectText}
+                  onChangeText={handleChangeSubjectText}
                   onFocus={handleSubjectFocus}
+                  onSelectionChange={releaseSubjectSelection}
                   placeholder={t( "Search-for-species-user-or-project" )}
                   placeholderTextColor={colors.mediumGray}
+                  selectTextOnFocus
+                  selection={subjectSelection}
                   spellCheck={false}
                   testID="UniversalSearch.subjectInput"
                   value={subjectText}
@@ -326,11 +417,12 @@ const UniversalSearch = ( ) => {
                   autoCorrect={false}
                   className="flex-1 ml-2 text-md font-Lato-Regular"
                   numberOfLines={1}
-                  onChangeText={onChangeLocationText}
+                  onChangeText={handleChangeLocationText}
                   onFocus={handleLocationFocus}
                   placeholder={t( "Search-for-a-location" )}
                   placeholderTextColor={colors.mediumGray}
                   ref={locationInputRef}
+                  selectTextOnFocus
                   spellCheck={false}
                   testID="UniversalSearch.locationInput"
                   value={locationText}
