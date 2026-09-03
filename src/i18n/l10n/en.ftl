@@ -66,6 +66,8 @@ Add-observations = Add observations
 Add-optional-notes = Add optional notes
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
+# Toast shown after the user saves the current Explore search
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -1146,6 +1148,8 @@ Remove-taxon-filter = Remove taxon filter
 # Accessibility label for the star button when the current search is already saved
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Remove user filter
+# Toast shown after the user un-saves a saved Explore search
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 # Label for button that removes an observation's taxon
 Removes-this-observations-taxon = Removes this observation's taxon
 # Hint for a button that removes a vote of agreement

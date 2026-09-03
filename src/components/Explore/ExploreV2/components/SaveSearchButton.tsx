@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
@@ -12,12 +11,11 @@ const DROP_SHADOW = getShadow( {
 } );
 
 interface Props {
-  className: string;
   isSaved: boolean;
   onPress: ( ) => void;
 }
 
-const SaveSearchButton = ( { className, isSaved, onPress }: Props ) => {
+const SaveSearchButton = ( { isSaved, onPress }: Props ) => {
   const { t } = useTranslation( );
 
   return (
@@ -25,11 +23,7 @@ const SaveSearchButton = ( { className, isSaved, onPress }: Props ) => {
       accessibilityLabel={isSaved
         ? t( "Remove-this-saved-search" )
         : t( "Save-this-search" )}
-      className={classnames(
-        "bg-white rounded-full h-[46px] w-[46px] border-[1px] border-lightGray",
-        "absolute z-10 right-5",
-        className,
-      )}
+      className="bg-white rounded-full h-[46px] w-[46px] border-[1px] border-lightGray"
       color={isSaved
         ? colors.inatGreen
         : colors.darkGray}

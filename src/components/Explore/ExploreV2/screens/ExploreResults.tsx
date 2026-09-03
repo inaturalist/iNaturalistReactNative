@@ -7,6 +7,7 @@ import {
   OBSERVERS_TAB,
   SPECIES_TAB,
 } from "appConstants/tabs";
+import classnames from "classnames";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
 import ExploreV2MapView
@@ -41,6 +42,7 @@ import {
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
+import Toast from "components/SharedComponents/Toast";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useCallback, useMemo, useState } from "react";
@@ -75,6 +77,8 @@ interface SortOption<SortValue> {
   value: SortValue;
 }
 
+type SaveToast = "added" | "removed";
+
 const ExploreResults = ( ) => {
   const { dispatch, state } = useExploreV2( );
   const currentUser = useCurrentUser( );
@@ -89,6 +93,7 @@ const ExploreResults = ( ) => {
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
   const [showSavedLimitSheet, setShowSavedLimitSheet] = useState( false );
+  const [saveToast, setSaveToast] = useState<SaveToast | null>( null );
   const savedSearches: SavedSearch[] = useStore(
     ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.searches,
   );
@@ -247,12 +252,14 @@ const ExploreResults = ( ) => {
   const handleSavePress = ( ) => {
     if ( isSaved ) {
       removeSearch( currentSearchKey );
+      setSaveToast( "removed" );
     } else if ( savedSearches.length >= SAVED_LIMIT ) {
       setShowSavedLimitSheet( true );
     } else {
       saveSearch( {
         key: currentSearchKey, subject, location, sortBy, speciesSortBy, filters,
       } );
+      setSaveToast( "added" );
     }
   };
 
@@ -382,15 +389,31 @@ const ExploreResults = ( ) => {
         />
         {renderContent( )}
         {showingResults && (
-          <SaveSearchButton
-            className={
+          <View
+            className={classnames(
+              "absolute left-5 right-5 z-10 flex-row items-center justify-end gap-5",
               state.activeTab === OBSERVATIONS_TAB && showMap
                 ? "bottom-[140px]"
-                : "bottom-[82px]"
-            }
-            isSaved={isSaved}
-            onPress={handleSavePress}
-          />
+                : "bottom-[82px]",
+            )}
+            pointerEvents="box-none"
+          >
+            {saveToast && (
+              <View className="flex-1">
+                <Toast
+                  onHide={( ) => setSaveToast( null )}
+                  testID="ExploreResults.saveToast"
+                  text={saveToast === "added"
+                    ? t( "ADDED-TO-SAVED-SEARCHES" )
+                    : t( "REMOVED-FROM-SAVED-SEARCHES" )}
+                />
+              </View>
+            )}
+            <SaveSearchButton
+              isSaved={isSaved}
+              onPress={handleSavePress}
+            />
+          </View>
         )}
       </View>
       {showSortSheet && state.activeTab === OBSERVATIONS_TAB && (
