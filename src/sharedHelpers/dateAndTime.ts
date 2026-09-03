@@ -4,6 +4,7 @@
 // names that are specific to particular views,
 // like "myObsDateFormat"
 
+import type { Locale } from "date-fns";
 import {
   differenceInDays,
   differenceInHours,
@@ -301,13 +302,17 @@ const ZONE_ABBREVIATION_TOKEN = /z+/;
 // won't extend that data, so detect the failure per call: a bare "GMT" abbreviation for a zone
 // whose real offset (computed via a separate, unaffected code path) isn't
 // actually zero.
-function timeZoneAbbreviationIsUnreliable( date: Date, timeZone: string ): boolean {
-  const offset = formatInTimeZone( date, timeZone, "xxx" );
+function timeZoneAbbreviationIsUnreliable(
+  date: Date,
+  timeZone: string,
+  locale: Locale,
+): boolean {
+  const offset = formatInTimeZone( date, timeZone, "xxx", { locale } );
   if ( offset === "+00:00" ) {
     // Actually UTC/GMT, so a "GMT" abbreviation would be correct
     return false;
   }
-  return formatInTimeZone( date, timeZone, "zzz" ) === "GMT";
+  return formatInTimeZone( date, timeZone, "zzz", { locale } ) === "GMT";
 }
 
 interface FormatDateStringOptions {
@@ -371,10 +376,11 @@ function formatDateString(
   }
 
   try {
+    const locale = dateFnsLocale( i18n.language );
     let formatString = fmt;
     if (
       ZONE_ABBREVIATION_TOKEN.test( formatString )
-      && timeZoneAbbreviationIsUnreliable( parsedDate, timeZone )
+      && timeZoneAbbreviationIsUnreliable( parsedDate, timeZone, locale )
     ) {
       // Fall back to a numeric offset (e.g. "GMT+10") instead of an
       // abbreviation Hermes can't reliably resolve for this zone
@@ -384,7 +390,7 @@ function formatDateString(
       parsedDate,
       timeZone,
       formatString,
-      { locale: dateFnsLocale( i18n.language ) },
+      { locale },
     );
   } catch ( error ) {
     console.warn( "Error formatting date", error );
