@@ -59,6 +59,8 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
             </Heading2>
           </Pressable>
           <View className="relative w-[141px] self-center">
+            {/* View wrapper for positioning: className on an svg component
+              * has no effect with nativewind 4 */}
             <View
               className="absolute right-[-20px] top-[-23px]"
               style={I18nManager.isRTL && MIRRORED}
