@@ -20,7 +20,7 @@ import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
 jest.unmock( "@react-navigation/native" );
 
 const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   iconUrl: faker.image.url( ),
   locale: "en",
   species_count: faker.number.int(),

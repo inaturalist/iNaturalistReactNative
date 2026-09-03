@@ -6,11 +6,11 @@ import { ExploreV2Provider, initialStateFromEntryParams } from "providers/Explor
 import React from "react";
 
 const ExploreV2Container = ( ) => {
-  const { params } = useRoute<TabStackScreenProps<"Explore" | "RootExplore">["route"]>( );
+  const { name, params } = useRoute<TabStackScreenProps<"Explore" | "RootExplore">["route"]>( );
 
   return (
     <ExploreV2Provider initialState={initialStateFromEntryParams( params )}>
-      <ExploreStackNavigator />
+      <ExploreStackNavigator showBackButton={name !== "RootExplore"} />
     </ExploreV2Provider>
   );
 };

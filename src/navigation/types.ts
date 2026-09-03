@@ -219,7 +219,7 @@ export type OnboardingStackParamList = {
 // The type containing the mapping must be a type alias. It cannot be an interface.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type ExploreStackParamList = {
-  ExploreResults: undefined;
+  ExploreResults: { showBackButton?: boolean } | undefined;
   UniversalSearch: undefined;
   AdvancedSearch: undefined;
 };

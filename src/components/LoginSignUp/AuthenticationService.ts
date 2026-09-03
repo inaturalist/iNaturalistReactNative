@@ -16,7 +16,6 @@ import i18next from "i18next";
 import rs from "jsrsasign";
 import { navigationRef } from "navigation/navigationUtils";
 import { Alert, Platform } from "react-native";
-import Config from "react-native-config";
 import * as RNLocalize from "react-native-localize";
 import RNRestart from "react-native-restart";
 import {
@@ -30,6 +29,7 @@ import {
 import Realm, { UpdateMode } from "realm";
 import realmConfig from "realmModels/index";
 import changeLanguage from "sharedHelpers/changeLanguage";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import { getInstallID } from "sharedHelpers/installData";
 import { log, logFileDirectory, logWithoutRemote } from "sharedHelpers/logger";
 import removeAllFilesFromDirectory from "sharedHelpers/removeAllFilesFromDirectory";
@@ -50,7 +50,9 @@ const localLogger = logWithoutRemote.extend( "AuthenticationService" );
 
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
-const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
+const API_HOST: string = EnvConfig.OAUTH_API_URL
+ || process.env.OAUTH_API_URL
+ || "https://www.inaturalist.org";
 
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time
 // (safe margin). Actually they expire in 24 hours, but ideally they would
@@ -325,7 +327,7 @@ const getAnonymousJWT = (): string => {
     exp: Date.now() / 1000 + 300,
   };
 
-  return encodeJWT( claims, Config.JWT_ANONYMOUS_API_SECRET || "not-a-real-secret", "HS512" );
+  return encodeJWT( claims, EnvConfig.JWT_ANONYMOUS_API_SECRET || "not-a-real-secret", "HS512" );
 };
 
 // Shared promise for any in-flight token refresh. Concurrent callers that
@@ -573,8 +575,8 @@ async function verifyCredentials(
   const formData = {
     format: "json",
     grant_type: "password",
-    client_id: Config.OAUTH_CLIENT_ID,
-    client_secret: Config.OAUTH_CLIENT_SECRET,
+    client_id: EnvConfig.OAUTH_CLIENT_ID,
+    client_secret: EnvConfig.OAUTH_CLIENT_SECRET,
     password,
     username,
     locale: i18next.language,
@@ -676,8 +678,8 @@ async function authenticateUserByAssertion(
 ): Promise<AuthenticateUserResult> {
   const apiClient = createAPI( { Accept: "application/json" } );
   const formData = {
-    client_id: Config.OAUTH_CLIENT_ID,
-    client_secret: Config.OAUTH_CLIENT_SECRET,
+    client_id: EnvConfig.OAUTH_CLIENT_ID,
+    client_secret: EnvConfig.OAUTH_CLIENT_SECRET,
     locale: i18next.language,
     assertion,
     assertion_type: assertionType,

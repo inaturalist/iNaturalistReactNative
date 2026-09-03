@@ -24,6 +24,7 @@ jest.mock( "@react-navigation/native", ( ) => {
   return {
     ...actualNav,
     useFocusEffect: cb => jest.requireActual( "react" ).useEffect( cb, [] ),
+    useRoute: ( ) => ( { params: {} } ),
   };
 } );
 

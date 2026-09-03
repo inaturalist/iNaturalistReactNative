@@ -89,6 +89,53 @@ describe( "formatApiDatetime", ( ) => {
       "should return a localized datetime for a local observation created_at date",
     );
     it.todo( "should optionally show the date in the original time zone" );
+
+    describe( "when Intl mis-resolves the zone abbreviation (Hermes bug)", () => {
+      let formatToPartsSpy;
+
+      beforeAll( () => {
+        const original = Intl.DateTimeFormat.prototype.formatToParts;
+        // Simulates https://github.com/facebook/hermes/issues/1601: Hermes
+        // resolves timeZoneName to the literal string "GMT" for *some*
+        // zones (here, only the one under test) instead of the real
+        // abbreviation, while other zones keep resolving correctly
+        formatToPartsSpy = jest.spyOn(
+          Intl.DateTimeFormat.prototype,
+          "formatToParts",
+        ).mockImplementation( function mockFormatToParts( date ) {
+          const parts = original.call( this, date );
+          const resolvedOptions = this.resolvedOptions( );
+          if ( !resolvedOptions.timeZoneName || resolvedOptions.timeZone !== "Australia/Sydney" ) {
+            return parts;
+          }
+          return parts.map( part => (
+            part.type === "timeZoneName"
+              ? { ...part, value: "GMT" }
+              : part
+          ) );
+        } );
+      } );
+
+      afterAll( () => {
+        formatToPartsSpy.mockRestore( );
+      } );
+
+      it( "falls back to a numeric offset instead of the unreliable abbreviation", () => {
+        expect(
+          formatApiDatetime(
+            "2023-01-02T08:00:00+01:00",
+            i18next,
+            { timeZone: "Australia/Sydney" },
+          ),
+        ).toEqual( "1/2/23 6:00 PM GMT+11" );
+      } );
+
+      it( "still shows a real GMT/UTC abbreviation for an actually-zero offset", () => {
+        expect(
+          formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next, { timeZone: "UTC" } ),
+        ).toEqual( "1/2/23 7:00 AM UTC" );
+      } );
+    } );
   } );
 
   describe( "in es-MX", ( ) => {

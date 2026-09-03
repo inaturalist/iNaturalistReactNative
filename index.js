@@ -23,10 +23,10 @@ import OfflineNavigationGuard from "navigation/OfflineNavigationGuard";
 import INatPaperProvider from "providers/INatPaperProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
-import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import {
   getInstallID,
   store as installDataMMKVStorage,
@@ -125,8 +125,8 @@ initI18next();
 
 // Configure inatjs to use the chosen URLs
 inatjs.setConfig( {
-  apiURL: Config.API_URL,
-  writeApiURL: Config.API_URL,
+  apiURL: EnvConfig.API_URL,
+  writeApiURL: EnvConfig.API_URL,
   userAgent: getUserAgent(),
   headers: {
     "X-Installation-ID": getInstallID( ),

@@ -14,7 +14,7 @@ import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 const initialPersistedStoreState = useStore.getState( );
 
 const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   icon_url: faker.image.url( ),
 } );
 

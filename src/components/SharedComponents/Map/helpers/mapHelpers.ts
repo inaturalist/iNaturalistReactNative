@@ -1,18 +1,18 @@
 import type { MapBoundaries } from "providers/ExploreContext";
-import Config from "react-native-config";
 import type { LatLng, Region } from "react-native-maps";
 import createUTFPosition from "sharedHelpers/createUTFPosition";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 
 export const OBSCURATION_CELL_SIZE = 0.2;
-// tiles should be requested from tiles.inaturalist.org for better resource
-// balancing
-const API_URL = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
+const API_URL = EnvConfig.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
 
 function getTileUrl( apiUrl: string ) {
   try {
     const parsedUrl = new URL( apiUrl );
     if ( parsedUrl.hostname === "api.inaturalist.org" ) {
+      // tiles should be requested from tiles.inaturalist.org for better resource
+      // balancing
       parsedUrl.hostname = "tiles.inaturalist.org";
       return parsedUrl.toString();
     }

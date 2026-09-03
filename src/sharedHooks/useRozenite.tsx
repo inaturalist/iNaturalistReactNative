@@ -1,4 +1,5 @@
 import * as RNFS from "@dr.pogodin/react-native-fs";
+import { useNavigation } from "@react-navigation/native";
 import { createSection, useRozeniteControlsPlugin } from "@rozenite/controls-plugin";
 import {
   createRNFSAdapter,
@@ -16,6 +17,7 @@ import type { PropsWithChildren } from "react";
 import React, { useMemo, useState } from "react";
 import { Button, View } from "react-native";
 import RNRestart from "react-native-restart";
+import { openInatUrl, parseInatUrl } from "sharedHelpers/inatUrlNavigation";
 import { store as installDataMMKVStorage } from "sharedHelpers/installData";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
@@ -52,6 +54,8 @@ HaltedLaunch.displayName = "HaltedLaunch";
 
 // note: Rozenite plugins are automatically disabled / noops in Production builds
 const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
+  const [pastedInatUrl, setPastedInatUrl] = useState( "" );
+  const navigation = useNavigation();
   const queryClient = useQueryClient();
   useTanStackQueryDevTools( queryClient );
   useNetworkActivityDevTools( );
@@ -103,6 +107,26 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
             onPress: () => {
               installDataMMKVStorage.set( launchHaltStorageKey, true );
               RNRestart.restart();
+            },
+          },
+          {
+            id: "open-inat-url",
+            type: "input",
+            title: "Open iNat URL",
+            description: "Paste an observation, taxon, or project URL to navigate to it.",
+            value: pastedInatUrl,
+            placeholder: "https://www.inaturalist.org/observations/12345",
+            applyLabel: "Go",
+            validate: ( next: string ) => ( parseInatUrl( next )
+              ? { valid: true }
+              : { valid: false, message: "Not a recognized iNaturalist URL." } ),
+            onUpdate: async ( next: string ) => {
+              setPastedInatUrl( next );
+              const parsed = parseInatUrl( next );
+              // known ts errors, tolerating this in dev-only code
+              if ( parsed && navigation.isReady( ) ) {
+                await openInatUrl( parsed, navigation );
+              }
             },
           },
           {
@@ -189,6 +213,8 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
       } ),
     ],
     [
+      pastedInatUrl,
+      navigation,
       exploreV2Enabled,
       setExploreV2Enabled,
       newsEnabled,
