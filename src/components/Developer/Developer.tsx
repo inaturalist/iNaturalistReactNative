@@ -15,13 +15,17 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useState } from "react";
-import { I18nManager, Platform, Text } from "react-native";
+import {
+  I18nManager, Platform, Text,
+} from "react-native";
 import Config from "react-native-config";
 import RNRestart from "react-native-restart";
+import { EnvConfig } from "sharedHelpers/envConfig";
 
 import {
   CODE, H1, H2, P,
 } from "./DeveloperSharedComponents";
+import EnvironmentSwitcher from "./EnvironmentSwitcher";
 import FeatureFlags from "./FeatureFlags";
 import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
@@ -244,9 +248,9 @@ const PathStats = () => {
       <P>
         <CODE>{Config.API_URL}</CODE>
       </P>
-      <H2>Config.API_URL</H2>
+      <H2>EnvConfig.API_URL (active)</H2>
       <P>
-        <CODE>{Config.API_URL}</CODE>
+        <CODE>{EnvConfig.API_URL}</CODE>
       </P>
       <H2>getUserAgent()</H2>
       <P>
@@ -262,6 +266,7 @@ const Developer = () => {
       <View className="p-5">
         <LogOptions />
         <DebugTools />
+        <EnvironmentSwitcher />
         <ComputerVisionStats />
         <FeatureFlags />
         <PathStats />

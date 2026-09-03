@@ -9,6 +9,7 @@ import type { SharedData } from "sharedHooks/useShare";
 import useShare from "sharedHooks/useShare";
 
 import AppStateListener from "./AppStateListener";
+import EnvironmentNotice from "./EnvironmentNotice";
 import useDeferredStartup from "./hooks/useDeferredStartup";
 import useLinking from "./hooks/useLinking";
 import NetworkService from "./NetworkService";
@@ -60,6 +61,7 @@ const App = ( { children }: PropsWithChildren ) => {
       <StartupService />
       <NetworkService />
       <AppStateListener />
+      <EnvironmentNotice />
       {children || <RootStackNavigator />}
     </>
   );

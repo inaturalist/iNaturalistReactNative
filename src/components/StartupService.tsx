@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import Realm from "realm";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
@@ -17,7 +18,7 @@ Realm.setLogLevel( "warn" );
 // better to ping our own website to check for site uptime
 // with no rendering required, per issue #1770
 NetInfo.configure( {
-  reachabilityUrl: "https://www.inaturalist.org/ping",
+  reachabilityUrl: `${EnvConfig.OAUTH_API_URL}/ping`,
   reachabilityHeaders: {
     "User-Agent": getUserAgent( ),
   },
