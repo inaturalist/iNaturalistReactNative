@@ -254,7 +254,7 @@ const ExploreResults = ( ) => {
       case "removed":
         return t( "REMOVED-FROM-SAVED-SEARCHES" );
       default:
-        return t( "SAVED-SEARCH-FAILED-X-MAX", { count: SAVED_LIMIT } );
+        return t( "SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X", { count: SAVED_LIMIT } );
     }
   };
 

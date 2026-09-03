@@ -1199,7 +1199,7 @@ Save-this-search = Save this search
 Saved-Observation = Saved observation, in queue to upload
 # Toast shown when the user tries to save a search but has already saved as many
 # as we can keep. { $count } is the maximum number of saved searches we keep
-SAVED-SEARCH-FAILED-X-MAX = SAVED SEARCH FAILED, { $count } MAX
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
 # Heading above the list of searches the user has saved
 Saved-searches = Saved searches
 # Heading of the saved searches section on the advanced search screen

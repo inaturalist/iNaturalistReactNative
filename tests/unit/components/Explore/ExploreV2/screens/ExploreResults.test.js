@@ -522,7 +522,7 @@ describe( "ExploreResults saved searches", ( ) => {
     await actor.press( await screen.findByLabelText( "Save this search" ) );
 
     expect(
-      await screen.findByText( `SAVED SEARCH FAILED, ${SAVED_LIMIT} MAX` ),
+      await screen.findByText( `SAVED SEARCH NOT ADDED, MAXIMUM OF ${SAVED_LIMIT}` ),
     ).toBeOnTheScreen( );
     expect( savedSearches( ).searches ).toHaveLength( SAVED_LIMIT );
   } );
