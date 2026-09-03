@@ -1037,6 +1037,11 @@ X-Identifiers =
         [one] { $count } Pengidentifikasi
        *[other] { $count } Pengidentifikasi
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] PENGENAL
+       *[other] PENGENAL
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } POSTINGAN JURNAL
@@ -1071,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } Pengamat
        *[other] { $count } Pengamat
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] PENGAMAT
+       *[other] PENGAMAT
     }
 X-of-Y =
     { $x ->

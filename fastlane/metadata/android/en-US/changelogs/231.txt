@@ -1,0 +1,3 @@
+FIXED
+* Images disappear as user selects them for suggestions
+* Sometimes not importing location from photos
