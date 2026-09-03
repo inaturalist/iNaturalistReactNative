@@ -147,7 +147,7 @@ const UniversalSearch = ( ) => {
     refetch: locationRefetch,
   } = useLocationSearch( locationQuery );
 
-  const bothFilled = subjectText.length > 0 && locationText.length > 0;
+  const bothSelected = selectedSubject !== null && selectedLocation !== null;
   const showLocation = resultsField === "location";
 
   const handleSubjectFocus = useCallback( ( ) => {
@@ -340,7 +340,7 @@ const UniversalSearch = ( ) => {
             <View className="ml-3">
               <ContainedSquareButton
                 accessibilityLabel={t( "Search" )}
-                backgroundColor={bothFilled
+                backgroundColor={bothSelected
                   ? colors.inatGreen
                   : colors.darkGray}
                 icon="magnifying-glass"
