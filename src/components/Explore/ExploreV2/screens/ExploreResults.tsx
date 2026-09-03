@@ -1,5 +1,5 @@
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import type { ApiTotalBounds } from "api/types";
 import {
   IDENTIFIERS_TAB,
@@ -38,6 +38,7 @@ import {
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
 import { View } from "components/styledComponents";
+import type { ExploreStackScreenProps } from "navigation/types";
 import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
 import React, { useCallback, useMemo, useState } from "react";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
@@ -71,6 +72,7 @@ interface SortOption<SortValue> {
 
 const ExploreResults = ( ) => {
   const { dispatch, state } = useExploreV2( );
+  const { params } = useRoute<ExploreStackScreenProps<"ExploreResults">["route"]>( );
   const currentUser = useCurrentUser( );
   const currentUserId = currentUser?.id;
   const {
@@ -327,7 +329,7 @@ const ExploreResults = ( ) => {
   return (
     <ViewWrapper testID="ExploreResults" wrapperClassName="overflow-hidden">
       <View className="flex-1 overflow-hidden">
-        <ExploreV2Header />
+        <ExploreV2Header showBackButton={Boolean( params?.showBackButton )} />
         <ExploreV2Tabs
           observationsCount={canFetch
             ? totalResults
