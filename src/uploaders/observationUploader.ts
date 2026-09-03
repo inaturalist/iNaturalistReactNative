@@ -190,7 +190,9 @@ async function uploadObservation(
     const childrenStartTime = Date.now( );
     const childOptions = { ...opts, api_token: apiToken };
     await syncProjectChildDeletions( observation, childOptions, realm );
-    await uploadProjectChildren( obsUUID, observation, childOptions, realm );
+    if ( obsUUID ) {
+      await uploadProjectChildren( obsUUID, observation, childOptions, realm );
+    }
     childrenDuration = Date.now( ) - childrenStartTime;
   } catch ( error ) {
     const {
