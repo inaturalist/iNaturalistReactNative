@@ -57,7 +57,7 @@ const Toast = ( {
       <Pressable
         accessibilityLabel={text}
         accessibilityRole="button"
-        className="bg-white rounded-lg px-[10px] py-2"
+        className="bg-white rounded-lg px-[10px] py-2 self-center max-w-[220px]"
         onPress={onHide}
         testID={testID}
       >
