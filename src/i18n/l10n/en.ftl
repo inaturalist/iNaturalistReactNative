@@ -1197,10 +1197,9 @@ SAVE-LOCATION = SAVE LOCATION
 # Accessibility label for the star button that saves the current search
 Save-this-search = Save this search
 Saved-Observation = Saved observation, in queue to upload
-# Title of the sheet shown when the user has saved as many searches as we can keep
-Saved-search-limit-reached = You have saved as many searches as we can keep
-# Body of that sheet. { $count } is the maximum number of saved searches we keep
-Saved-search-limit-reached-body = You can keep { $count } saved searches. Remove one to save another.
+# Toast shown when the user tries to save a search but has already saved as many
+# as we can keep. { $count } is the maximum number of saved searches we keep
+SAVED-SEARCH-FAILED-X-MAX = SAVED SEARCH FAILED, { $count } MAX
 # Heading above the list of searches the user has saved
 Saved-searches = Saved searches
 # Heading of the saved searches section on the advanced search screen

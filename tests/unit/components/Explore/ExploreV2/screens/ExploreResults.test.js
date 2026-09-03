@@ -510,7 +510,7 @@ describe( "ExploreResults saved searches", ( ) => {
     expect( screen.getByText( "REMOVED FROM SAVED SEARCHES" ) ).toBeOnTheScreen( );
   } );
 
-  it( "explains the limit instead of saving when there is no room left", async ( ) => {
+  it( "warns instead of saving when there is no room left", async ( ) => {
     setSavedSearches(
       Array.from( { length: SAVED_LIMIT } ).map(
         ( _item, i ) => savedSearch( { subject: taxonSubject( i ) } ),
@@ -521,7 +521,9 @@ describe( "ExploreResults saved searches", ( ) => {
     const actor = userEvent.setup( );
     await actor.press( await screen.findByLabelText( "Save this search" ) );
 
-    expect( await screen.findByText( /Remove one to save another/ ) ).toBeVisible( );
+    expect(
+      await screen.findByText( `SAVED SEARCH FAILED, ${SAVED_LIMIT} MAX` ),
+    ).toBeOnTheScreen( );
     expect( savedSearches( ).searches ).toHaveLength( SAVED_LIMIT );
   } );
 } );

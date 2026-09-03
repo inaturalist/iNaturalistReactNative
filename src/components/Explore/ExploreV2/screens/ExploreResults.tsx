@@ -41,7 +41,6 @@ import {
   ViewWrapper,
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
-import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import Toast from "components/SharedComponents/Toast";
 import { View } from "components/styledComponents";
 import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
@@ -77,7 +76,7 @@ interface SortOption<SortValue> {
   value: SortValue;
 }
 
-type SaveToast = "added" | "removed";
+type SaveToast = "added" | "removed" | "limitReached";
 
 const ExploreResults = ( ) => {
   const { dispatch, state } = useExploreV2( );
@@ -92,7 +91,6 @@ const ExploreResults = ( ) => {
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
-  const [showSavedLimitSheet, setShowSavedLimitSheet] = useState( false );
   const [saveToast, setSaveToast] = useState<SaveToast | null>( null );
   const savedSearches: SavedSearch[] = useStore(
     ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.searches,
@@ -249,12 +247,23 @@ const ExploreResults = ( ) => {
   );
   const isSaved = savedSearches.some( saved => saved.key === currentSearchKey );
 
+  const saveToastText = ( toast: SaveToast ) => {
+    switch ( toast ) {
+      case "added":
+        return t( "ADDED-TO-SAVED-SEARCHES" );
+      case "removed":
+        return t( "REMOVED-FROM-SAVED-SEARCHES" );
+      default:
+        return t( "SAVED-SEARCH-FAILED-X-MAX", { count: SAVED_LIMIT } );
+    }
+  };
+
   const handleSavePress = ( ) => {
     if ( isSaved ) {
       removeSearch( currentSearchKey );
       setSaveToast( "removed" );
     } else if ( savedSearches.length >= SAVED_LIMIT ) {
-      setShowSavedLimitSheet( true );
+      setSaveToast( "limitReached" );
     } else {
       saveSearch( {
         key: currentSearchKey, subject, location, sortBy, speciesSortBy, filters,
@@ -403,9 +412,7 @@ const ExploreResults = ( ) => {
                 <Toast
                   onHide={( ) => setSaveToast( null )}
                   testID="ExploreResults.saveToast"
-                  text={saveToast === "added"
-                    ? t( "ADDED-TO-SAVED-SEARCHES" )
-                    : t( "REMOVED-FROM-SAVED-SEARCHES" )}
+                  text={saveToastText( saveToast )}
                 />
               </View>
             )}
@@ -444,18 +451,6 @@ const ExploreResults = ( ) => {
             setShowSortSheet( false );
           }}
           onPressClose={() => setShowSortSheet( false )}
-        />
-      )}
-      {showSavedLimitSheet && (
-        <WarningSheet
-          buttonText={t( "OK" )}
-          buttonType="primary"
-          confirm={( ) => setShowSavedLimitSheet( false )}
-          headerText={t( "Saved-search-limit-reached" )}
-          loading={false}
-          onPressClose={( ) => setShowSavedLimitSheet( false )}
-          testID="ExploreResults.savedLimitSheet"
-          text={t( "Saved-search-limit-reached-body", { count: SAVED_LIMIT } )}
         />
       )}
       {renderPermissionsGate( {} )}
