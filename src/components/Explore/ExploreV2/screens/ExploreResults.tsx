@@ -399,7 +399,7 @@ const ExploreResults = ( ) => {
             pointerEvents="box-none"
           >
             {saveToast && (
-              <View className="flex-1">
+              <View className="shrink">
                 <Toast
                   onHide={( ) => setSaveToast( null )}
                   testID="ExploreResults.saveToast"
