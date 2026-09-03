@@ -7,6 +7,7 @@ import UniversalSearchResult
   from "components/Explore/ExploreV2/components/UniversalSearchResult";
 import { resultToSubject }
   from "components/Explore/ExploreV2/helpers/universalSearchSubject";
+import useApplySavedSearch from "components/Explore/ExploreV2/hooks/useApplySavedSearch";
 import type { UniversalSearchResultItem }
   from "components/Explore/ExploreV2/hooks/useUniversalSearch";
 import IconicTaxonChooser from "components/SharedComponents/IconicTaxonChooser";
@@ -36,6 +37,7 @@ const EMPTY_CHOSEN: string[] = [];
 
 const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
   const { t } = useTranslation( );
+  const applySavedSearch = useApplySavedSearch( );
 
   const currentUser = useCurrentUser( );
   const iconicTaxa = useIconicTaxa( );
@@ -103,7 +105,7 @@ const DefaultSearchOptions = ( { onSelectSubject }: Props ) => {
           <Body1>{t( "Species-I-havent-observed" )}</Body1>
         </Pressable>
       )}
-      <SavedSearches />
+      <SavedSearches onSelect={applySavedSearch} />
       <RecentSearches onSelectSubject={onSelectSubject} />
     </ScrollView>
   );

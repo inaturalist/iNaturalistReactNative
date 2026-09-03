@@ -28,6 +28,7 @@ import {
   draftFromV2State,
 } from "components/Explore/ExploreV2/helpers/advancedSearchReducer";
 import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
+import useApplySavedSearch from "components/Explore/ExploreV2/hooks/useApplySavedSearch";
 import ExploreLocationSearchModal from "components/Explore/Modals/ExploreLocationSearchModal";
 import ExploreProjectSearchModal from "components/Explore/Modals/ExploreProjectSearchModal";
 import ExploreTaxonSearchModal from "components/Explore/Modals/ExploreTaxonSearchModal";
@@ -95,6 +96,7 @@ const AdvancedSearch = ( ) => {
   const savedSearchCount = useStore(
     ( state: ExploreV2SearchesSlice ) => state.exploreSavedSearches.searches.length,
   );
+  const applySavedSearch = useApplySavedSearch( );
   const [initialDraft] = useState( ( ) => draftFromV2State( v2State ) );
   const [draft, dispatch] = useReducer( advancedSearchReducer, initialDraft );
   const {
@@ -770,7 +772,7 @@ const AdvancedSearch = ( ) => {
           headerText={t( "SAVED-SEARCHES" )}
           onPressClose={( ) => setShowSavedSearches( false )}
         >
-          <SavedSearches hideHeader />
+          <SavedSearches hideHeader onSelect={applySavedSearch} />
         </BottomSheetV2>
       )}
       {showDiscardSheet && (
