@@ -3,7 +3,7 @@ import type {
   GeolocationResponse,
 } from "@react-native-community/geolocation";
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 // Please don't change this to an aliased path or the e2e mock will not get
 // used in our e2e tests on Github Actions
@@ -32,9 +32,11 @@ const useWatchPosition = ( options: {
   const { shouldFetchLocation } = options;
   const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
   const [isWatching, setIsWatching] = useState( false );
+  const cancelledRef = useRef( false );
 
   useFocusEffect( useCallback( ( ) => {
     if ( !shouldFetchLocation ) return ( ) => {};
+    cancelledRef.current = false;
 
     let id: number | null = null;
 
@@ -43,10 +45,11 @@ const useWatchPosition = ( options: {
         clearWatch( id );
         id = null;
       }
-      setIsWatching( false );
+      if ( !cancelledRef.current ) setIsWatching( false );
     };
 
     const success = ( position: GeolocationResponse ) => {
+      if ( cancelledRef.current ) return;
       const age = Date.now() - position.timestamp;
       // 20260710 - FLGMwt: I don't know if this is necessary since
       // we're passing maxAge: 0, but left it during a refactor for safety
@@ -67,6 +70,7 @@ const useWatchPosition = ( options: {
     };
 
     const failure = ( error: GeolocationError ) => {
+      if ( cancelledRef.current ) return;
       console.warn( "useWatchPosition error:", error );
       stop( );
     };
@@ -75,6 +79,7 @@ const useWatchPosition = ( options: {
     setIsWatching( true );
 
     return ( ) => {
+      cancelledRef.current = true;
       stop( );
       setUserLocation( null );
     };
