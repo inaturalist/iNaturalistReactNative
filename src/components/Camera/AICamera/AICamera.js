@@ -14,7 +14,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores";
-import { deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
+import { completeSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
 import { logFirebaseEvent } from "sharedHelpers/tracking";
 import {
   useDebugMode,
@@ -197,7 +197,7 @@ const AICamera = ( {
   }, [handleTakePhoto, hasTakenPhoto, initialVolume] );
 
   const handleClose = async ( ) => {
-    await deleteSentinelFile( sentinelFileName );
+    await completeSentinelFile( sentinelFileName );
     navigation.navigate( "TabNavigator", {
       screen: "ObservationsTab",
       params: {
@@ -310,7 +310,7 @@ const AICamera = ( {
         zoomTextValue={zoomTextValue}
         useLocation={useLocation}
         toggleLocation={toggleLocation}
-        deleteSentinelFile={() => deleteSentinelFile( sentinelFileName )}
+        completeSentinelFile={() => completeSentinelFile( sentinelFileName )}
       />
     </>
   );
