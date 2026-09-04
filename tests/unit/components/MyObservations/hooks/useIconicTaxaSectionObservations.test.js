@@ -19,6 +19,10 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: jest.fn( ),
 } ) );
+jest.mock( "sharedHelpers/logging", ( ) => ( {
+  handleRetryDelay: ( ) => 0,
+  reactQueryRetry: ( ) => false,
+} ) );
 jest.mock( "providers/contexts", ( ) => {
   const originalModule = jest.requireActual( "providers/contexts" );
   return {
@@ -196,5 +200,19 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     expect( invalidateQueries ).toHaveBeenCalledWith( {
       queryKey: [QUERY_KEY, mockUser.id, { order_by: "created_at", order: "desc" }],
     } );
+  } );
+
+  it( "fails the section when its observations can't be written to Realm, rather than "
+    + "rendering tiles that have nothing to hydrate from", async ( ) => {
+    Observation.upsertRemoteObservations.mockImplementation( ( ) => {
+      throw new Error( "realm write failed" );
+    } );
+
+    const { result } = renderSectionsHook( );
+
+    await waitFor( ( ) => {
+      expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).isError ).toBe( true );
+    } );
+    expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).uuids ).toEqual( [] );
   } );
 } );

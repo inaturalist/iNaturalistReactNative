@@ -6,15 +6,12 @@ import { RealmContext } from "providers/contexts";
 import { useCallback, useMemo } from "react";
 import Observation from "realmModels/Observation";
 import type { ICONIC_TAXA_GROUP, IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
-import { log } from "sharedHelpers/logger";
 import { handleRetryDelay, reactQueryRetry } from "sharedHelpers/logging";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { observationSortToApiParams } from "sharedHelpers/observationsSort";
 import { useCurrentUser, useStateResetOn } from "sharedHooks";
 
 const { useRealm } = RealmContext;
-
-const logger = log.extend( "useIconicTaxaSectionObservations" );
 
 export const QUERY_KEY = "useIconicTaxaSectionObservations";
 
@@ -151,6 +148,9 @@ const useIconicTaxaSectionObservations = ( {
 
   const results = useQueries( {
     queries: descriptors.map( ( { category, page } ) => ( {
+      // realm is a handle to the one open database rather than something the results vary by,
+      // so it doesn't belong in the key
+      // eslint-disable-next-line @tanstack/query/exhaustive-deps
       queryKey: [
         QUERY_KEY,
         currentUser?.id,
@@ -170,11 +170,10 @@ const useIconicTaxaSectionObservations = ( {
           ttl: -1,
         }, { api_token: apiToken } );
         const observations = response?.results || [];
-        try {
-          Observation.upsertRemoteObservations( observations, realm );
-        } catch ( upsertError ) {
-          logger.error( "Failed to upsert iconic taxa section observations", upsertError );
-        }
+        // Deliberately not caught: tiles hydrate from Realm by uuid, so a page whose
+        // observations didn't make it into Realm can't render. Failing the query puts the
+        // section into its error state, with a retry, instead of a run of blank tiles.
+        Observation.upsertRemoteObservations( observations, realm );
         return {
           totalResults: response?.total_results ?? 0,
           uuids: observations.map( ( { uuid }: { uuid: string } ) => uuid ),
