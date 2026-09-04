@@ -193,7 +193,7 @@ const useIconicTaxaSectionObservations = ( {
       retry: ( failureCount: number, error: unknown ) => reactQueryRetry(
         failureCount,
         error,
-        { queryKey: ["useIconicTaxaSectionObservations", category] },
+        { queryKey: [QUERY_KEY, category] },
       ),
       retryDelay: ( failureCount: number, error: unknown ) => handleRetryDelay(
         failureCount,
