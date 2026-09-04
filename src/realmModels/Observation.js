@@ -458,6 +458,7 @@ class Observation extends Realm.Object {
       privateLongitude: obs.privateLongitude,
       taxon_geoprivacy: obs.taxon_geoprivacy,
       time_observed_at: obs.time_observed_at,
+      uploadErrorMessage: obs.uploadErrorMessage,
     };
   }
 
@@ -644,6 +645,7 @@ class Observation extends Realm.Object {
       privateLatitude: "double?",
       privateLongitude: "double?",
       needs_sync: { type: "bool", default: false, indexed: true },
+      uploadErrorMessage: "string?",
     },
   };
 
