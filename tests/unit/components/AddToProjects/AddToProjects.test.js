@@ -285,6 +285,16 @@ describe( "AddToProjects", ( ) => {
       ).toBeVisible( );
     } );
 
+    it( "shows the incomplete required-fields banner when a required field is empty", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+
+      expect(
+        screen.getByText( "To add to this project, all required fields must be filled" ),
+      ).toBeVisible( );
+    } );
+
     it( "shows Missing info sheet when SAVE is pressed with an empty required field", async ( ) => {
       renderAddToProjects( );
 
