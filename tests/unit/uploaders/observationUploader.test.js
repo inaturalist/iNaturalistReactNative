@@ -178,6 +178,18 @@ describe( "uploadObservation", () => {
     );
   } );
 
+  it( "should skip project children create when observation upload returns no uuid", async () => {
+    apiObservations.createObservation.mockResolvedValue( {
+      results: [{ id: 12345 }],
+    } );
+
+    await uploadObservation( mockObservation, mockRealm );
+
+    expect( syncProjectChildDeletions ).toHaveBeenCalled( );
+    expect( projectChildrenUploader.uploadProjectChildren ).not.toHaveBeenCalled( );
+    expect( uploaders.markRecordUploaded ).toHaveBeenCalled( );
+  } );
+
   it( "should call uploadProjectChildren after media is attached", async () => {
     await uploadObservation( mockObservation, mockRealm );
 

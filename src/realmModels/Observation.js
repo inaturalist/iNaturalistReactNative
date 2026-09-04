@@ -299,8 +299,7 @@ class Observation extends Realm.Object {
     }
 
     const isNew = !existingEmbed;
-    const wasReactivated = existingEmbed?._pending_deletion && !embed._pending_deletion;
-    if ( isNew || wasReactivated ) {
+    if ( isNew ) {
       return {
         ...embed,
         _synced_at: null,

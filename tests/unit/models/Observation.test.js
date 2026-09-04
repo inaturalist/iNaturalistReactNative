@@ -228,9 +228,11 @@ describe( "Observation", ( ) => {
       const obsUuid = uuid.v4( );
       const syncedAt = new Date( "2020-01-02" );
       const poUuid = uuid.v4( ).toLowerCase( );
+      const poId = 4242;
 
       const mockPO = factory( "LocalProjectObservation", {
         uuid: poUuid,
+        id: poId,
         _synced_at: syncedAt,
         _pending_deletion: true,
       } );
@@ -255,7 +257,9 @@ describe( "Observation", ( ) => {
 
       const obs = global.realm.objectForPrimaryKey( "Observation", obsUuid );
       expect( obs.projectObservations[0]._pending_deletion ).toBeFalsy( );
-      expect( obs.projectObservations[0]._synced_at ).toBeNull( );
+      expect( obs.projectObservations[0].uuid ).toBe( poUuid );
+      expect( obs.projectObservations[0].id ).toBe( poId );
+      expect( obs.projectObservations[0]._synced_at ).toEqual( syncedAt );
     } );
 
     it( "leaves unchanged synced embed timestamps intact on re-edit", async ( ) => {
