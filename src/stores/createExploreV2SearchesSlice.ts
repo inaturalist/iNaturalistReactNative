@@ -44,11 +44,8 @@ export type SavedSearch = {
   savedAt: number;
 } & ExploreV2Search;
 
-// What a caller hands us. The key comes from savedSearchKey in the ExploreV2 helpers --
-// computing it here would mean importing the Explore context at runtime, and useStore is
-// imported by enough of the app (i18n included) that dragging the provider graph in with it
-// breaks unrelated modules. Types from that module are fine, they are erased. The timestamp
-// is ours to set.
+// What a caller hands us. The key comes from savedSearchKey in the ExploreV2 helpers, which
+// imports subjectKey from here. computing it in the slice would be circular.
 export type SavedSearchInput = Omit<SavedSearch, "savedAt">;
 
 export interface ExploreV2SearchesSlice {

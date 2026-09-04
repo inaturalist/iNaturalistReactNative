@@ -305,7 +305,6 @@ const AdvancedSearch = ( ) => {
               <Button
                 text={t( "CHOOSE-A-SAVED-SEARCH" )}
                 onPress={( ) => setShowSavedSearches( true )}
-                accessibilityLabel={t( "Choose-a-saved-search" )}
                 testID="AdvancedSearch.savedSearchesButton"
               />
             </View>
