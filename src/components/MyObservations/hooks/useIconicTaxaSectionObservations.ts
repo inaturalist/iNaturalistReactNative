@@ -54,10 +54,13 @@ interface Result {
 
 // Paginates each iconic taxa section independently.
 //
-// useInfiniteQuery can't be called once per category, so this
-// models pagination as one useQueries over a flat list of (category, page) descriptors built
-// from state. Requesting a page means bumping a number; React Query does the rest, and pages a
-// user has already scrolled past stay cached when they scroll back up.
+// This models pagination as one useQueries over a flat list of (category, page) descriptors built
+// from state, so requesting a page means bumping a number and letting React Query do the rest.
+// Pages a user has already scrolled past stay cached for when they scroll back up.
+//
+// A useInfiniteQuery per category is possible too: rules of hooks forbids a loop, but hook-only
+// sibling components could each own one and pass their data up. That swaps this bookkeeping for
+// components that exist only to fetch. Worth revisiting if we run into issue with this approach.
 //
 // Only one request is ever in flight: activation walks down the categories one at a time
 const useIconicTaxaSectionObservations = ( {
