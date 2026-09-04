@@ -21,10 +21,7 @@ export const PER_PAGE = 20;
 // React Query's default of 0 would refetch every page a heavy user has loaded on every remount.
 const STALE_TIME = 1000 * 60 * 5;
 
-interface IconicTaxonPage {
-  totalResults: number;
-  uuids: string[];
-}
+type IconicTaxonPage = string[];
 
 // Highest page number requested per category. A category with no entry has never been fetched,
 // so this doubles as the activation frontier.
@@ -131,10 +128,7 @@ const useIconicTaxaSectionObservations = ( {
 
     // Offset pagination can repeat an observation across pages if the underlying set shifts
     // between requests, and a repeated uuid would be a duplicate key in the list
-    const uuids = [...new Set( pages.flatMap( page => page.data?.uuids ?? [] ) )];
-    // Until the first page lands we only know the count, which is close enough to decide
-    // whether there's more to ask for
-    const totalResults = pages[0]?.data?.totalResults ?? count;
+    const uuids = [...new Set( pages.flatMap( page => page.data ?? [] ) )];
 
     return {
       category,
@@ -142,7 +136,7 @@ const useIconicTaxaSectionObservations = ( {
       isActivated: highestPage > 0,
       isFetching: pages.some( page => page.isPending ),
       isError: pages.some( page => page.isError ),
-      hasMore: highestPage * PER_PAGE < totalResults,
+      hasMore: highestPage * PER_PAGE < count,
     };
   } ), [orderedCounts, pageIndexesByCategory, pagesByCategory] );
 
@@ -174,10 +168,7 @@ const useIconicTaxaSectionObservations = ( {
         // observations didn't make it into Realm can't render. Failing the query puts the
         // section into its error state, with a retry, instead of a run of blank tiles.
         Observation.upsertRemoteObservations( observations, realm );
-        return {
-          totalResults: response?.total_results ?? 0,
-          uuids: observations.map( ( { uuid }: { uuid: string } ) => uuid ),
-        };
+        return observations.map( ( { uuid }: { uuid: string } ) => uuid );
       },
       enabled: enabled && !!currentUser,
       staleTime: STALE_TIME,

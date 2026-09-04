@@ -43,10 +43,7 @@ const orderedCounts = [
   { category: ICONIC_TAXA_GROUP.INSECTA, count: 0 },
 ];
 
-const pageOf = ( uuids, totalResults ) => ( {
-  results: uuids.map( uuid => ( { uuid } ) ),
-  total_results: totalResults,
-} );
+const pageOf = uuids => ( { results: uuids.map( uuid => ( { uuid } ) ) } );
 
 const renderSectionsHook = ( overrides = {} ) => {
   const queryClient = new QueryClient( {
@@ -76,7 +73,7 @@ const paramsOfLastSearch = ( ) => searchObservations.mock.calls.at( -1 )[0];
 beforeEach( ( ) => {
   jest.clearAllMocks( );
   useCurrentUser.mockReturnValue( mockUser );
-  searchObservations.mockResolvedValue( pageOf( ["a", "b"], 45 ) );
+  searchObservations.mockResolvedValue( pageOf( ["a", "b"] ) );
   jest.spyOn( Observation, "upsertRemoteObservations" ).mockImplementation( ( ) => undefined );
 } );
 
@@ -137,11 +134,19 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
 
   it( "starts the next category when the one the user is in has nothing left to load, "
     + "without being collapsed", async ( ) => {
-    searchObservations.mockResolvedValue( pageOf( ["a"], 1 ) );
-    const { result } = renderSectionsHook( );
-    await waitFor( ( ) => {
-      expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).hasMore ).toBe( false );
+    searchObservations.mockResolvedValue( pageOf( ["a"] ) );
+    const { result } = renderSectionsHook( {
+      orderedCounts: [
+        { category: ICONIC_TAXA_GROUP.PLANTAE, count: 1 },
+        { category: ICONIC_TAXA_GROUP.AVES, count: 30 },
+        { category: ICONIC_TAXA_GROUP.INSECTA, count: 0 },
+      ],
     } );
+    // hasMore comes from the counts, so waiting on it wouldn't tell us the page had landed
+    await waitFor( ( ) => {
+      expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).uuids ).toEqual( ["a"] );
+    } );
+    expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).hasMore ).toBe( false );
 
     act( ( ) => result.current.nearingEndOfSection( ICONIC_TAXA_GROUP.PLANTAE ) );
 
@@ -156,7 +161,7 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
   } );
 
   it( "skips categories the server has no observations for", async ( ) => {
-    searchObservations.mockResolvedValue( pageOf( ["a"], 1 ) );
+    searchObservations.mockResolvedValue( pageOf( ["a"] ) );
     const { result } = renderSectionsHook( );
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
 
