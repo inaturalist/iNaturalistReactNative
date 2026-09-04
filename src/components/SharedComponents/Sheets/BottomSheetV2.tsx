@@ -3,11 +3,10 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
-import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback, useEffect, useRef } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
@@ -19,6 +18,8 @@ import { useTranslation } from "sharedHooks";
 // To start, it contains just what's necessary for the usage in SuggestIDSheet.
 
 const { width } = Dimensions.get( "window" );
+
+const MAX_HEIGHT_FRACTION = 0.9;
 
 const styles = StyleSheet.create( {
   marginOnWide: {
@@ -36,6 +37,7 @@ const noHandle = ( ) => <></>;
 
 interface Props {
   children: React.JSX.Element;
+  contentClassName?: string;
   hidden?: boolean;
   headerText?: string;
   onPressClose?: ( ) => void;
@@ -44,12 +46,14 @@ interface Props {
 
 const BottomSheetV2 = ( {
   children,
+  contentClassName = "pt-2",
   hidden,
   headerText,
   onPressClose,
   onDismiss,
 }: Props ): React.JSX.Element | null => {
   const { bottom } = useSafeAreaInsets( );
+  const { height: windowHeight } = useWindowDimensions( );
   const { t } = useTranslation( );
   const sheetRef = useRef<BottomSheetModal>( null );
   const skipNextOnDismissRef = useRef( false );
@@ -98,22 +102,22 @@ const BottomSheetV2 = ( {
     <BottomSheetModal
       backdropComponent={renderBackdrop}
       enableDynamicSizing
+      // disable swipe down to close
+      enableContentPanningGesture={false}
       handleComponent={noHandle}
+      maxDynamicContentSize={windowHeight * MAX_HEIGHT_FRACTION}
       index={0}
       ref={sheetRef}
       style={styles.marginOnWide}
       accessible={false}
       onDismiss={handleDismiss}
     >
-      <BottomSheetScrollView>
-        <View
-          className={classnames(
-            "pt-7",
-          )}
-          style={{
-            paddingBottom: bottom,
-          }}
-        >
+      <BottomSheetScrollView
+        alwaysBounceVertical={false}
+        // scrolling down doesn't scroll header
+        stickyHeaderIndices={[0]}
+      >
+        <View className="pt-7 pb-3 bg-white">
           {!headerText
             ? null
             : (
@@ -126,7 +130,6 @@ const BottomSheetV2 = ( {
                 </Heading4>
               </View>
             )}
-          {children}
           <INatIconButton
             icon="close"
             onPress={handlePressClose}
@@ -134,6 +137,14 @@ const BottomSheetV2 = ( {
             className="absolute top-3.5 right-3"
             accessibilityLabel={t( "Close" )}
           />
+        </View>
+        <View
+          className={contentClassName}
+          style={{
+            paddingBottom: bottom,
+          }}
+        >
+          {children}
         </View>
       </BottomSheetScrollView>
     </BottomSheetModal>

@@ -1,18 +1,21 @@
+import { defaultExploreV2Filters } from "providers/ExploreV2Context";
+import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
   addRecent,
   placeKey,
   RECENT_LIMIT,
   subjectKey,
-} from "stores/createExploreV2RecentSearchesSlice";
+} from "stores/createExploreV2SearchesSlice";
 import useStore, { zustandStorage } from "stores/useStore";
-
-const taxonSubject = id => ( { type: "taxon", taxon: { id, name: `Taxon ${id}` } } );
-const place = id => ( { id, display_name: `Place ${id}`, place_type: 9 } );
+import { place, savedSearch as search, taxonSubject } from "tests/helpers/savedSearch";
 
 const recents = ( ) => useStore.getState( ).exploreRecentSearches;
+const saved = ( ) => useStore.getState( ).exploreSavedSearches;
 
 beforeEach( ( ) => {
   recents( ).clearRecents( );
+  saved( ).clearSavedSearches( );
 } );
 
 describe( "subjectKey", ( ) => {
@@ -91,5 +94,49 @@ describe( "exploreRecentSearches", ( ) => {
       subjects: [taxonSubject( 12 )],
       places: [place( 1 )],
     } );
+  } );
+} );
+
+describe( "exploreSavedSearches", ( ) => {
+  it( "saves newest first", ( ) => {
+    saved( ).saveSearch( search( ) );
+    saved( ).saveSearch( search( { subject: taxonSubject( 13 ) } ) );
+
+    expect( saved( ).searches.map( s => s.subject.taxon.id ) ).toEqual( [13, 12] );
+  } );
+
+  it( "keeps the sort it was saved with", ( ) => {
+    saved( ).saveSearch( search( { sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST } ) );
+
+    expect( saved( ).searches[0].sortBy ).toEqual( OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST );
+    expect( saved( ).searches[0].speciesSortBy ).toEqual( SPECIES_SORT.COUNT_DESC );
+  } );
+
+  it( "removes a search by key", ( ) => {
+    saved( ).saveSearch( search( ) );
+    saved( ).removeSearch( saved( ).searches[0].key );
+
+    expect( saved( ).searches ).toEqual( [] );
+  } );
+
+  it( "clears the whole list", ( ) => {
+    saved( ).saveSearch( search( ) );
+    saved( ).saveSearch( search( { subject: taxonSubject( 13 ) } ) );
+
+    saved( ).clearSavedSearches( );
+
+    expect( saved( ).searches ).toEqual( [] );
+  } );
+
+  it( "persists, so saved searches survive a restart", async ( ) => {
+    saved( ).saveSearch( search( ) );
+    // let the persist middleware flush
+    await Promise.resolve( );
+
+    const persisted = JSON.parse( zustandStorage.getItem( "persisted-zustand" ) );
+    expect( persisted.state.exploreSavedSearches.searches ).toHaveLength( 1 );
+    expect( persisted.state.exploreSavedSearches.searches[0].filters ).toEqual(
+      defaultExploreV2Filters,
+    );
   } );
 } );

@@ -7,18 +7,22 @@ import {
   OBSERVERS_TAB,
   SPECIES_TAB,
 } from "appConstants/tabs";
+import classnames from "classnames";
 import ExploreV2Header
   from "components/Explore/ExploreV2/components/ExploreV2Header";
 import ExploreV2MapView
   from "components/Explore/ExploreV2/components/ExploreV2MapView";
 import ExploreV2Tabs
   from "components/Explore/ExploreV2/components/ExploreV2Tabs";
+import SaveSearchButton
+  from "components/Explore/ExploreV2/components/SaveSearchButton";
 import ExploreV2DebugSheet
   from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import type { NearbyCoords }
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import buildExploreV2QueryParams
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
+import savedSearchKey from "components/Explore/ExploreV2/helpers/savedSearchKey";
 import useUserTabCounts
   from "components/Explore/ExploreV2/hooks/useUserTabCounts";
 import ExploreV2SpeciesView
@@ -37,6 +41,7 @@ import {
   ViewWrapper,
 } from "components/SharedComponents";
 import SortButton from "components/SharedComponents/Buttons/SortButton";
+import Toast from "components/SharedComponents/Toast";
 import { View } from "components/styledComponents";
 import type { ExploreStackScreenProps } from "navigation/types";
 import { EXPLORE_V2_ACTION, EXPLORE_V2_PLACE_MODE, useExploreV2 } from "providers/ExploreV2Context";
@@ -58,6 +63,8 @@ import useLocationPermission from "sharedHooks/useLocationPermission";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
 import useStoredLayout from "sharedHooks/useStoredLayout";
 import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
+import type { ExploreV2SearchesSlice, SavedSearch } from "stores/createExploreV2SearchesSlice";
+import { SAVED_LIMIT } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 
 // Please don't change this to an aliased path or the e2e mock will not get
@@ -69,6 +76,8 @@ interface SortOption<SortValue> {
   text: string;
   value: SortValue;
 }
+
+type SaveToast = "added" | "removed" | "limitReached";
 
 const ExploreResults = ( ) => {
   const { dispatch, state } = useExploreV2( );
@@ -84,6 +93,16 @@ const ExploreResults = ( ) => {
   const { isConnected } = useNetInfo( );
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
+  const [saveToast, setSaveToast] = useState<SaveToast | null>( null );
+  const savedSearches: SavedSearch[] = useStore(
+    ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.searches,
+  );
+  const saveSearch = useStore(
+    ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.saveSearch,
+  );
+  const removeSearch = useStore(
+    ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.removeSearch,
+  );
   const observationsSortLabels = useObservationsSortLabels( );
   const speciesSortLabels = useSpeciesSortLabels( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreV2ObservationsLayout" );
@@ -158,6 +177,7 @@ const ExploreResults = ( ) => {
   const needsPermission = isNearby && hasPermissions === false && !hasBlockedPermissions;
   const nearbyResolved = !isNearby || nearbyCoords !== undefined;
   const canFetch = !needsPermission && nearbyResolved;
+  const showingResults = isConnected !== false && !needsPermission;
 
   const queryParams = useMemo(
     ( ) => buildExploreV2QueryParams( state, nearbyCoords, currentUserId ),
@@ -219,6 +239,40 @@ const ExploreResults = ( ) => {
       />
     </View>
   );
+
+  const {
+    subject, location, filters, sortBy, speciesSortBy,
+  } = state;
+  const currentSearchKey = useMemo(
+    ( ) => savedSearchKey( { subject, location, filters } ),
+    [filters, location, subject],
+  );
+  const isSaved = savedSearches.some( saved => saved.key === currentSearchKey );
+
+  const saveToastText = ( toast: SaveToast ) => {
+    switch ( toast ) {
+      case "added":
+        return t( "ADDED-TO-SAVED-SEARCHES" );
+      case "removed":
+        return t( "REMOVED-FROM-SAVED-SEARCHES" );
+      default:
+        return t( "SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X", { count: SAVED_LIMIT } );
+    }
+  };
+
+  const handleSavePress = ( ) => {
+    if ( isSaved ) {
+      removeSearch( currentSearchKey );
+      setSaveToast( "removed" );
+    } else if ( savedSearches.length >= SAVED_LIMIT ) {
+      setSaveToast( "limitReached" );
+    } else {
+      saveSearch( {
+        key: currentSearchKey, subject, location, sortBy, speciesSortBy, filters,
+      } );
+      setSaveToast( "added" );
+    }
+  };
 
   const renderTabContent = ( ) => {
     switch ( state.activeTab ) {
@@ -345,6 +399,31 @@ const ExploreResults = ( ) => {
             : undefined}
         />
         {renderContent( )}
+        {showingResults && (
+          <View
+            className={classnames(
+              "absolute left-5 right-5 z-10 flex-row items-center justify-end gap-5",
+              state.activeTab === OBSERVATIONS_TAB && showMap
+                ? "bottom-[140px]"
+                : "bottom-[82px]",
+            )}
+            pointerEvents="box-none"
+          >
+            {saveToast && (
+              <View className="shrink">
+                <Toast
+                  onHide={( ) => setSaveToast( null )}
+                  testID="ExploreResults.saveToast"
+                  text={saveToastText( saveToast )}
+                />
+              </View>
+            )}
+            <SaveSearchButton
+              isSaved={isSaved}
+              onPress={handleSavePress}
+            />
+          </View>
+        )}
       </View>
       {showSortSheet && state.activeTab === OBSERVATIONS_TAB && (
         <RadioButtonSheet

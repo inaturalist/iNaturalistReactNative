@@ -14,8 +14,10 @@ import {
 } from "providers/ExploreV2Context";
 import React from "react";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
+import { SAVED_LIMIT } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
+import { savedSearch, setSavedSearches, taxonSubject } from "tests/helpers/savedSearch";
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -472,6 +474,58 @@ describe( "ExploreResults observations view", ( ) => {
         swlat: 1, swlng: 2, nelat: 3, nelng: 4,
       },
     } );
+  } );
+} );
+
+describe( "ExploreResults saved searches", ( ) => {
+  const savedSearches = ( ) => useStore.getState( ).exploreSavedSearches;
+
+  beforeEach( ( ) => {
+    setSavedSearches( [] );
+    useExploreV2.mockReturnValue( {
+      state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+      dispatch: mockDispatch,
+    } );
+  } );
+
+  it( "saves the current search when the star is tapped", async ( ) => {
+    renderComponent( <ExploreResults /> );
+    const actor = userEvent.setup( );
+
+    await actor.press( await screen.findByLabelText( "Save this search" ) );
+
+    expect( savedSearches( ).searches ).toHaveLength( 1 );
+    expect( await screen.findByLabelText( "Remove this saved search" ) ).toBeVisible( );
+    expect( screen.getByText( "ADDED TO SAVED SEARCHES" ) ).toBeOnTheScreen( );
+  } );
+
+  it( "unsaves it when the filled star is tapped", async ( ) => {
+    renderComponent( <ExploreResults /> );
+    const actor = userEvent.setup( );
+
+    await actor.press( await screen.findByLabelText( "Save this search" ) );
+    await actor.press( await screen.findByLabelText( "Remove this saved search" ) );
+
+    expect( savedSearches( ).searches ).toEqual( [] );
+    expect( await screen.findByLabelText( "Save this search" ) ).toBeVisible( );
+    expect( screen.getByText( "REMOVED FROM SAVED SEARCHES" ) ).toBeOnTheScreen( );
+  } );
+
+  it( "warns instead of saving when there is no room left", async ( ) => {
+    setSavedSearches(
+      Array.from( { length: SAVED_LIMIT } ).map(
+        ( _item, i ) => savedSearch( { subject: taxonSubject( i ) } ),
+      ),
+    );
+
+    renderComponent( <ExploreResults /> );
+    const actor = userEvent.setup( );
+    await actor.press( await screen.findByLabelText( "Save this search" ) );
+
+    expect(
+      await screen.findByText( `SAVED SEARCH NOT ADDED, MAXIMUM OF ${SAVED_LIMIT}` ),
+    ).toBeOnTheScreen( );
+    expect( savedSearches( ).searches ).toHaveLength( SAVED_LIMIT );
   } );
 } );
 

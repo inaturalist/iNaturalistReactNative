@@ -242,6 +242,43 @@ describe( "exploreV2Reducer", ( ) => {
     } );
   } );
 
+  describe( EXPLORE_V2_ACTION.APPLY_SEARCH, ( ) => {
+    const PLACE = { id: 1, display_name: "Minnesota, US", place_type: 9 };
+    // Every field differs from the initial state, so a field left unapplied shows up
+    const search = {
+      subject: { type: "taxon", taxon: { id: 12, name: "Opuntia fragilis" } },
+      location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: PLACE },
+      sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
+      speciesSortBy: SPECIES_SORT.COUNT_ASC,
+      filters: { ...defaultExploreV2Filters, casual: true },
+    };
+
+    it( "applies the subject, location, both sort orders, and the filters at once", ( ) => {
+      const next = exploreV2Reducer( initialExploreV2State, {
+        type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+        search,
+      } );
+      expect( next ).toEqual( { ...initialExploreV2State, ...search } );
+    } );
+
+    it( "clears the subject for a search that has none", ( ) => {
+      const next = exploreV2Reducer(
+        { ...initialExploreV2State, subject: search.subject },
+        { type: EXPLORE_V2_ACTION.APPLY_SEARCH, search: { ...search, subject: null } },
+      );
+      expect( next.subject ).toBeNull( );
+    } );
+
+    it( "keeps bookkeeping fields on a saved search out of the state", ( ) => {
+      const next = exploreV2Reducer( initialExploreV2State, {
+        type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+        search: { ...search, key: "abc", savedAt: 1 },
+      } );
+      expect( next ).not.toHaveProperty( "key" );
+      expect( next ).not.toHaveProperty( "savedAt" );
+    } );
+  } );
+
   describe( EXPLORE_V2_ACTION.RESET, ( ) => {
     it( "returns initial state", ( ) => {
       const state = {
