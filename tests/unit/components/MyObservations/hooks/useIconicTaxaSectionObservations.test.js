@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
 import { searchObservations } from "api/observations";
-import useIconicTaxaSectionObservations
-  from "components/MyObservations/hooks/useIconicTaxaSectionObservations";
+import useIconicTaxaSectionObservations, {
+  QUERY_KEY,
+} from "components/MyObservations/hooks/useIconicTaxaSectionObservations";
 import React from "react";
 import Observation from "realmModels/Observation";
 import { ICONIC_TAXA_GROUP } from "sharedHelpers/iconicTaxaGroupOrder";
@@ -50,17 +51,20 @@ const renderSectionsHook = ( overrides = {} ) => {
   const wrapper = ( { children } ) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
-  return renderHook(
-    props => useIconicTaxaSectionObservations( {
-      collapsedCategories: new Set( ),
-      enabled: true,
-      orderedCounts,
-      sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
-      ...overrides,
-      ...props,
-    } ),
-    { initialProps: {}, wrapper },
-  );
+  return {
+    ...renderHook(
+      props => useIconicTaxaSectionObservations( {
+        collapsedCategories: new Set( ),
+        enabled: true,
+        orderedCounts,
+        sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
+        ...overrides,
+        ...props,
+      } ),
+      { initialProps: {}, wrapper },
+    ),
+    queryClient,
+  };
 };
 
 const paramsOfLastSearch = ( ) => searchObservations.mock.calls.at( -1 )[0];
@@ -178,6 +182,19 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
       order_by: "observed_on",
       order: "asc",
       page: 1,
+    } );
+  } );
+
+  it( "refreshes only the pages belonging to the current user and sort, so another "
+    + "instance's queries aren't marked stale", async ( ) => {
+    const { queryClient, result } = renderSectionsHook( );
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+    const invalidateQueries = jest.spyOn( queryClient, "invalidateQueries" );
+
+    act( ( ) => result.current.refreshSections( ) );
+
+    expect( invalidateQueries ).toHaveBeenCalledWith( {
+      queryKey: [QUERY_KEY, mockUser.id, { order_by: "created_at", order: "desc" }],
     } );
   } );
 } );

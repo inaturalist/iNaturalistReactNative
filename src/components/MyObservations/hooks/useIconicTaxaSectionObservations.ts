@@ -253,15 +253,10 @@ const useIconicTaxaSectionObservations = ( {
   }, [currentUser?.id, queryClient, sortParams] );
 
   const refreshSections = useCallback( ( ) => {
-    // Marks every page stale and refetches only the ones currently mounted; the rest reload
-    // when the user scrolls back to them. This is deliberately invalidateQueries rather than
-    // refetchQueries, which matches inactive queries too and would fan out into one request
-    // per cached page — the same thing the refetchOn* flags above exist to prevent.
-    //
-    // Pages are keyed by category, so a refresh that reorders sections doesn't invalidate
-    // what's already loaded; there's no reason to make the user fetch it all again.
-    queryClient.invalidateQueries( { queryKey: [QUERY_KEY] } );
-  }, [queryClient] );
+    // Scoped to the current user and sort selection. Pages cached under another sort, or
+    // another user, would otherwise refire the moment they were rendered again.
+    queryClient.invalidateQueries( { queryKey: [QUERY_KEY, currentUser?.id, sortParams] } );
+  }, [currentUser?.id, queryClient, sortParams] );
 
   return {
     sections,
