@@ -86,3 +86,16 @@ describe( "orderIconicTaxaCounts", () => {
     expect( ordered.find( o => o.category === ICONIC_TAXA_GROUP.OTHER )?.count ).toBe( 3 );
   } );
 } );
+
+describe( "ICONIC_TAXA_GROUP", () => {
+  // We send these values to the API as iconic_taxa, and it rejects anything outside this list
+  // with a 422 so a wrong value would break the iconic taxa sections.
+  it( "uses exactly the API's allowed iconic_taxa values", () => {
+    const apiAllowedValues = [
+      "Actinopterygii", "Animalia", "Amphibia", "Arachnida", "Aves", "Chromista", "Fungi",
+      "Insecta", "Mammalia", "Mollusca", "Reptilia", "Plantae", "Protozoa", "unknown",
+    ];
+
+    expect( [...ICONIC_TAXA_GROUP_ORDER].sort( ) ).toEqual( apiAllowedValues.sort( ) );
+  } );
+} );

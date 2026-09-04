@@ -58,6 +58,7 @@ import MyObservationsGroupedByIconicTaxaView from "./MyObservationsGroupedByIcon
 import MyObservationsMapView from "./MyObservationsMapView";
 import { ACTIVE_SHEET } from "./MyObservationsResults";
 import MyObservationsSimpleHeader from "./MyObservationsSimpleHeader";
+import MyObservationsSmallGridSearchResults from "./MyObservationsSmallGridSearchResults";
 import PivotCardObsGridItem from "./PivotCardObsGridItem";
 import SearchedTaxonBanner from "./Search/SearchedTaxonBanner";
 import SearchEmptyState from "./Search/SearchEmptyState";
@@ -69,8 +70,9 @@ interface Props {
   currentUser?: RealmUser;
   fetchFromLastObservation: ( id: number ) => void;
   handleIndividualUploadPress: ( uuid: string ) => void;
-  handlePullToRefresh: ( ) => void;
+  handlePullToRefresh: ( ) => Promise<void>;
   handleSyncButtonPress: ( ) => void;
+  hasActiveSearch: boolean;
   isConnected: boolean;
   isFetchingNextPage: boolean;
   layout: ViewOption;
@@ -132,6 +134,7 @@ const MyObservationsSimple = ( {
   handleIndividualUploadPress,
   handlePullToRefresh,
   handleSyncButtonPress,
+  hasActiveSearch,
   isConnected,
   isFetchingNextPage,
   layout,
@@ -407,7 +410,24 @@ const MyObservationsSimple = ( {
     if ( isConnected === false ) {
       return renderOfflineFallback( ( ) => refresh( ) );
     }
-    return <MyObservationsGroupedByIconicTaxaView listHeaderContent={observationsHeader} />;
+    // searching while in small grid view should show a flat grid
+    if ( hasActiveSearch ) {
+      return (
+        <MyObservationsSmallGridSearchResults
+          handlePullToRefresh={handlePullToRefresh}
+          isFetchingNextPage={isFetchingNextPage}
+          listHeaderContent={observationsHeader}
+          observationIds={observationIds}
+          onEndReached={onEndReached}
+        />
+      );
+    }
+    return (
+      <MyObservationsGroupedByIconicTaxaView
+        handlePullToRefresh={handlePullToRefresh}
+        listHeaderContent={observationsHeader}
+      />
+    );
   };
 
   const renderObservations = ( ) => {
