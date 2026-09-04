@@ -35,8 +35,8 @@ ADD-LOCATION-FOR-BETTER-IDS = ДОБАВЬТЕ МЕСТОПО́ЛОЖЕНИЕ Д
 Add-location-to-refresh-suggestions = Добавьте местоположение, чтобы облегчить предлагаемые идентификации
 Add-observations = Добавить наблюдения
 Add-optional-notes = Добавить заметки
-Add-to-Projects = Add to Projects
-ADD-TO-PROJECTS = ADD TO PROJECTS
+Add-to-Projects = Добавить в проекты
+ADD-TO-PROJECTS = ДОБАВИТЬ В ПРОЕКТЫ
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
