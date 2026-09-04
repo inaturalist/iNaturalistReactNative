@@ -35,8 +35,6 @@ const styles = StyleSheet.create( {
 // eslint-disable-next-line
 const noHandle = ( ) => <></>;
 
-const STICKY_HEADER = [0];
-
 interface Props {
   children: React.JSX.Element;
   contentClassName?: string;
@@ -104,8 +102,7 @@ const BottomSheetV2 = ( {
     <BottomSheetModal
       backdropComponent={renderBackdrop}
       enableDynamicSizing
-      // There is no handle to drag, and dragging the content only ever snaps back, so the
-      // gesture does nothing but risk leaving the sheet somewhere it should not be
+      // disable swipe down to close
       enableContentPanningGesture={false}
       handleComponent={noHandle}
       maxDynamicContentSize={windowHeight * MAX_HEIGHT_FRACTION}
@@ -117,7 +114,8 @@ const BottomSheetV2 = ( {
     >
       <BottomSheetScrollView
         alwaysBounceVertical={false}
-        stickyHeaderIndices={STICKY_HEADER}
+        // scrolling down doesn't scroll header
+        stickyHeaderIndices={[0]}
       >
         <View className="pt-7 pb-3 bg-white">
           {!headerText
