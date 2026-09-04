@@ -295,6 +295,33 @@ describe( "AddToProjects", ( ) => {
       ).toBeVisible( );
     } );
 
+    it( "shows completed required-fields banner when all required fields are filled", async ( ) => {
+      const requiredObsFieldId = mockProjects[1].projectObservationFields[0].obsField.id;
+      useStore.setState( {
+        currentObservation: {
+          ...factory( "LocalObservation" ),
+          observationFieldValues: [
+            factory( "LocalObservationFieldValue", {
+              obsFieldId: requiredObsFieldId,
+              value: "completed-value",
+            } ),
+          ],
+          projectObservations: [factory( "LocalProjectObservation", {
+            projectId: mockProjects[0].id,
+            _synced_at: new Date( ),
+          } )],
+        },
+      } );
+
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+
+      expect(
+        screen.getByText( "All required fields have been filled" ),
+      ).toBeVisible( );
+    } );
+
     it( "shows Missing info sheet when SAVE is pressed with an empty required field", async ( ) => {
       renderAddToProjects( );
 
