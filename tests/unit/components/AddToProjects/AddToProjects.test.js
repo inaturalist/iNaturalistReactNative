@@ -104,6 +104,22 @@ describe( "AddToProjects", ( ) => {
     ).toBeVisible();
   } );
 
+  it( "does not show status banner when a selected project has only optional fields", async ( ) => {
+    renderAddToProjects( );
+
+    await actor.press( screen.getByText( mockProjects[1].title ) );
+
+    expect(
+      screen.getByText( mockProjects[1].projectObservationFields[0].obsField.name ),
+    ).toBeVisible( );
+    expect(
+      screen.queryByText( "All required fields have been filled" ),
+    ).toBeNull( );
+    expect(
+      screen.queryByText( "To add to this project, all required fields must be filled" ),
+    ).toBeNull( );
+  } );
+
   describe( "when a selected project has fields out of position order", ( ) => {
     const originalFields = mockProjects[0].projectObservationFields;
     const unsortedFields = [
