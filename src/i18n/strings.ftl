@@ -234,8 +234,6 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 # Button on the advanced search screen that opens the list of saved searches
 CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
-# Accessibility label for the button that opens the list of saved searches
-Choose-a-saved-search = Choose a saved search
 Choose-a-time = Choose a time
 # Label for a text input field during sign up to choose a username
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
@@ -1221,6 +1219,9 @@ Search-for-a-taxon = Search for a taxon
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = SEARCH LOCATION
 SEARCH-PROJECTS = SEARCH PROJECTS
+# Accessibility label for a saved search, combining what is being searched for with where,
+# e.g. "Fungi, California"
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA

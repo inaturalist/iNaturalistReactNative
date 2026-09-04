@@ -27,6 +27,7 @@ const SavedSearchRow = ( { onDelete, onPress, search }: Props ) => {
   const currentUser = useCurrentUser( );
   const { subject } = search;
   const place = locationLabel( search.location, t );
+  const subjectText = subjectLabel( subject, t );
   const filterCount = countFilters( search.filters );
 
   // A swipe is not reachable with a screen reader, so the same action is also offered as an
@@ -61,7 +62,9 @@ const SavedSearchRow = ( { onDelete, onPress, search }: Props ) => {
     >
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={`${subjectLabel( subject, t )}, ${place}`}
+        accessibilityLabel={place
+          ? t( "Search-subject-comma-place", { place, subject: subjectText } )
+          : subjectText}
         accessibilityActions={[{ name: "delete", label: t( "Delete-saved-search" ) }]}
         className="flex-row items-center px-[15px] py-[11px] border-b border-lightGray bg-white"
         onAccessibilityAction={handleAccessibilityAction}
@@ -81,7 +84,7 @@ const SavedSearchRow = ( { onDelete, onPress, search }: Props ) => {
             )
             : (
               <Body1 numberOfLines={1} ellipsizeMode="tail">
-                {subjectLabel( subject, t )}
+                {subjectText}
               </Body1>
             )}
           <LocationSubtitle place={place} />

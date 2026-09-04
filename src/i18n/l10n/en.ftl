@@ -1206,6 +1206,7 @@ Scientific-Name = Scientific Name
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 # Title for a search interface
 SEARCH = SEARCH
+# Title for a search interface
 Search = Search
 # Label for the button that submits a search on the universal search screen
 SEARCH--button = SEARCH
@@ -1218,7 +1219,6 @@ Search-for-a-taxon = Search for a taxon
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = SEARCH LOCATION
 SEARCH-PROJECTS = SEARCH PROJECTS
-# Title for a search interface
 # Accessibility label for a saved search, combining what is being searched for with where,
 # e.g. "Fungi, California"
 Search-subject-comma-place = { $subject }, { $place }
