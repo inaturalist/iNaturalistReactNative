@@ -1,8 +1,10 @@
 import fetchIconicTaxaCounts from "api/observationsTyped";
-import { useMemo } from "react";
 import type { IconicTaxaGroupCount } from "sharedHelpers/iconicTaxaGroupOrder";
 import { orderIconicTaxaCounts } from "sharedHelpers/iconicTaxaGroupOrder";
 import { useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
+
+// Every category at zero, in the tie-break order, for before the counts land
+const NO_COUNTS = orderIconicTaxaCounts( [] );
 
 interface IconicTaxaObservationCountsOptions {
   enabled?: boolean;
@@ -27,17 +29,18 @@ const useIconicTaxaObservationCounts = (
   const currentUser = useCurrentUser( );
   const params = { user_id: currentUser?.id, ttl: -1 };
 
-  const { data, isLoading, refetch } = useAuthenticatedQuery(
+  const { data, isLoading, refetch } = useAuthenticatedQuery<IconicTaxaGroupCount[]>(
     ["useIconicTaxaObservationCounts", currentUser?.id],
-    optsWithAuth => fetchIconicTaxaCounts( params, {
-      api_token: optsWithAuth.api_token ?? undefined,
-    } ),
+    async optsWithAuth => {
+      const response = await fetchIconicTaxaCounts( params, {
+        api_token: optsWithAuth.api_token ?? undefined,
+      } );
+      return orderIconicTaxaCounts( response?.results ?? [] );
+    },
     { enabled: enabled && !!currentUser },
   );
 
-  const counts = useMemo( ( ) => orderIconicTaxaCounts( data?.results ?? [] ), [data] );
-
-  return { counts, isLoading, refetch };
+  return { counts: data ?? NO_COUNTS, isLoading, refetch };
 };
 
 export default useIconicTaxaObservationCounts;
