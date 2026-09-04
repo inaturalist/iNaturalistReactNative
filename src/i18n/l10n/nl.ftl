@@ -1045,8 +1045,8 @@ X-Identifiers =
     }
 X-IDENTIFIERS--below-number =
     { $count ->
-        [one] IDENTIFIER
-       *[other] IDENTIFIERS
+        [one] EXPERT
+       *[other] EXPERTS
     }
 X-JOURNAL_POSTS =
     { $count ->
