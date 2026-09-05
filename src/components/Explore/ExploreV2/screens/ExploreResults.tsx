@@ -222,7 +222,8 @@ const ExploreResults = ( ) => {
 
   const renderTabContent = ( ) => {
     switch ( state.activeTab ) {
-      case OBSERVATIONS_TAB:
+      case OBSERVATIONS_TAB: {
+        const hasNoResults = canFetch && totalResults === 0;
         return (
           <>
             {showMap
@@ -257,7 +258,7 @@ const ExploreResults = ( ) => {
                   hideObsUploadStatus={layout !== "list"}
                   obsListKey="ExploreV2Observations"
                   onEndReached={fetchNextPage}
-                  showNoResults={canFetch && totalResults === 0}
+                  showNoResults={hasNoResults}
                   testID="ExploreV2ObservationsList"
                 />
               )}
@@ -266,7 +267,8 @@ const ExploreResults = ( ) => {
               updateObservationsView={writeLayoutToStorage}
               viewOptions={["map", "grid", "list"]}
             />
-            {!showMap && (
+            {/* Nothing to sort when there are no results */}
+            {!showMap && !hasNoResults && (
               <SortButton
                 onPress={() => setShowSortSheet( true )}
                 accessibilityLabel={t( "Change-observations-sort-order" )}
@@ -274,7 +276,9 @@ const ExploreResults = ( ) => {
             )}
           </>
         );
-      case SPECIES_TAB:
+      }
+      case SPECIES_TAB: {
+        const speciesHasNoResults = canFetch && speciesCount === 0;
         return (
           <>
             <ExploreV2SpeciesView
@@ -282,12 +286,16 @@ const ExploreResults = ( ) => {
               isConnected={isConnected}
               params={speciesListParams}
             />
-            <SortButton
-              onPress={() => setShowSortSheet( true )}
-              accessibilityLabel={t( "Change-species-sort-order" )}
-            />
+            {/* Nothing to sort when there are no results */}
+            {!speciesHasNoResults && (
+              <SortButton
+                onPress={() => setShowSortSheet( true )}
+                accessibilityLabel={t( "Change-species-sort-order" )}
+              />
+            )}
           </>
         );
+      }
       case OBSERVERS_TAB:
       case IDENTIFIERS_TAB:
         return (
