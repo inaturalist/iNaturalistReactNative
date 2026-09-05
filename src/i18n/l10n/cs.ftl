@@ -883,6 +883,7 @@ Syncing = Synchronizuji...
 Take-photo = Vyfotit
 Take-photos = Take photos
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxony
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = ZOBRAZENÍ JMEN TAXONŮ

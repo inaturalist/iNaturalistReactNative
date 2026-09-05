@@ -883,6 +883,7 @@ Syncing = Синхрондалуда...
 Take-photo = Take photo
 Take-photos = Take photos
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Таксондар
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY

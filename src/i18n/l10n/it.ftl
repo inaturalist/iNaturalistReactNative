@@ -883,6 +883,7 @@ Syncing = Sincronizzando...
 Take-photo = Scattare foto
 Take-photos = Scatta foto
 Tap-here-to-switch-to-Advanced-Mode = Tocca qui per passare alla Modalità Avanzata
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = VISUALIZZAZIONE DEI NOMI DEI TAXON

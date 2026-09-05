@@ -883,6 +883,7 @@ Syncing = Senkronize Ediliyor...
 Take-photo = Fotoğraf çek
 Take-photos = Fotoğraf çek
 Tap-here-to-switch-to-Advanced-Mode = Gelişmiş Mod'a geçmek için buraya dokunun
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taksonlar
 TAXON = TAKSON
 TAXON-NAMES-DISPLAY = TAKSON ADI GÖRÜNÜMÜ

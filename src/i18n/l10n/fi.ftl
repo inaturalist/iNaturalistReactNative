@@ -886,6 +886,7 @@ Syncing = Synkronoidaan...
 Take-photo = Ota kuva
 Take-photos = Ota kuvia
 Tap-here-to-switch-to-Advanced-Mode = Napauta tästä vaihtaaksesi Edistyneeseen tilaan
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taksonit
 TAXON = TAKSONI
 TAXON-NAMES-DISPLAY = TAKSONIEN NIMIEN NÄYTTÖ

@@ -883,6 +883,7 @@ Syncing = Synkroniserer...
 Take-photo = Tag foto
 Take-photos = Tag fotos
 Tap-here-to-switch-to-Advanced-Mode = Tryk her for at skifte til Avanceret tilstand
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taksa
 TAXON = TAKSON
 TAXON-NAMES-DISPLAY = TAKSONNAVNEVISNING
