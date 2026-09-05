@@ -883,6 +883,7 @@ Syncing = 동기화 중...
 Take-photo = Take photo
 Take-photos = Take photos
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = 분류군
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY

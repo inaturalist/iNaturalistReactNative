@@ -889,6 +889,7 @@ Syncing = Synkar...
 Take-photo = Ta bild
 Take-photos = Ta bilder
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = VISNING AV TAXONNAMN

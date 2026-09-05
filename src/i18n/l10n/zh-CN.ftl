@@ -883,6 +883,7 @@ Syncing = 上传中
 Take-photo = 拍照
 Take-photos = 拍照
 Tap-here-to-switch-to-Advanced-Mode = 点击这里切换到高级模式
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = 分类群
 TAXON = 分类单元
 TAXON-NAMES-DISPLAY = 分类学名称的展示方式

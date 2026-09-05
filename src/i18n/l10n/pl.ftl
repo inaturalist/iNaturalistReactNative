@@ -889,6 +889,7 @@ Syncing = Synchronizacja...
 Take-photo = Zrób zdjęcie
 Take-photos = Take photos
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taksony
 TAXON = TAKSONU
 TAXON-NAMES-DISPLAY = WYŚWIETLANIE NAZW TAKSONÓW

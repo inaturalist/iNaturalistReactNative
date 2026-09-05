@@ -883,6 +883,7 @@ Syncing = Sinkronisasi...
 Take-photo = Ambil gambar
 Take-photos = Ambil gambar
 Tap-here-to-switch-to-Advanced-Mode = Ketuk di sini untuk beralih ke Mode Lanjutan
+Tap-to-try-loading-again = Ketuk untuk mencoba memuat lagi
 Taxa = Taksa
 TAXON = TAKSON
 TAXON-NAMES-DISPLAY = TAMPILAN NAMA TAKSON

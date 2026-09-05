@@ -883,6 +883,7 @@ Syncing = מסנכרן...
 Take-photo = צלמ.י תמונה
 Take-photos = צלמ.י תמונות
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = טקסונים
 TAXON = טקסון
 TAXON-NAMES-DISPLAY = תצוגת שמות טקסונים

@@ -889,6 +889,7 @@ Syncing = Synchroniseren...
 Take-photo = Neem foto
 Take-photos = Neem fotos
 Tap-here-to-switch-to-Advanced-Mode = Tik hier om over te schakelen naar de geavanceerde modus.
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = TAXONNAAM WEERGAVE
