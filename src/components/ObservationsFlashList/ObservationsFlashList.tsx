@@ -239,27 +239,19 @@ const ObservationsFlashList = ( {
     layout,
   ] );
 
-  const emptyContent = useMemo( ( ) => {
-    const emptyContentStyle = {
-      flex: 1,
-      alignItems: "center" as const,
-      justifyContent: "center" as const,
-    };
-
-    return showNoResults
-      ? (
-        <View style={emptyContentStyle}>
+  const emptyContent = useMemo( ( ) => (
+    <View className="flex-1 items-center justify-center">
+      {showNoResults
+        ? (
           <Body3 className="text-center px-10">
             {t( "No-results-found-try-different-search" )}
           </Body3>
-        </View>
-      )
-      : (
-        <View style={emptyContentStyle}>
+        )
+        : (
           <ActivityIndicator size={50} testID="ObservationsFlashList.loading" />
-        </View>
-      );
-  }, [
+        )}
+    </View>
+  ), [
     showNoResults,
     t,
   ] );
