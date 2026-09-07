@@ -73,6 +73,17 @@ jobs:
       run: |
         gem update cocoapods xcodeproj
         cd ios && pod install && cd ..
+        # TODO: remove after getting the "expected" checsum post-osx27 hacks
+        cat ios/Podfile.lock
+        exit 1
+
+    - name: Capture CI Podfile.lock
+      uses: actions/upload-artifact@v6
+      if: failure()
+      with:
+        name: podfile checkin
+        path: ios/Podfile.lock
+        retention-days: 1
 
     - name: Add secrets to GoogleService-Info.plist
       env:
@@ -215,14 +226,14 @@ jobs:
         path: artifacts
         retention-days: 5
 
-  notify:
-    name: Notify Slack
-    needs: test
-    if: ${{ success() || failure() }}
-    runs-on: macos-26
-    steps:
-      - uses: iRoachie/slack-github-actions@v2.3.0
-        if: env.SLACK_WEBHOOK_URL != null
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # notify:
+  #   name: Notify Slack
+  #   needs: test
+  #   if: ${{ success() || failure() }}
+  #   runs-on: macos-26
+  #   steps:
+  #     - uses: iRoachie/slack-github-actions@v2.3.0
+  #       if: env.SLACK_WEBHOOK_URL != null
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
