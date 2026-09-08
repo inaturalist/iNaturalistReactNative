@@ -65,6 +65,7 @@
     "@react-native-firebase/analytics": "^23.8.8",
     "@react-native-firebase/app": "^23.8.8",
     "@react-native-firebase/perf": "^23.8.8",
+    "@react-native-firebase/remote-config": "^23.8.8",
     "@react-native-google-signin/google-signin": "^13.1.0",
     "@react-native-picker/picker": "^2.11.4",
     "@react-native-vector-icons/common": "^12.3.0",

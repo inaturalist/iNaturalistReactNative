@@ -140,6 +140,14 @@ jest.mock( "@react-native-firebase/perf", () => ( {
   } ) ),
 } ) );
 
+jest.mock( "@react-native-firebase/remote-config", () => ( {
+  getRemoteConfig: jest.fn( ( ) => ( {} ) ),
+  setConfigSettings: jest.fn( ),
+  setDefaults: jest.fn( ),
+  fetchAndActivate: jest.fn( ),
+  getValue: jest.fn( ( ) => ( { asBoolean: () => false } ) ),
+} ) );
+
 jest.mock( "react-native-legal", () => ( {
   launchLicenseListScreen: jest.fn(),
 } ) );

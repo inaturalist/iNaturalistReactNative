@@ -28,13 +28,14 @@ export enum FeatureFlag {
   SortMyObservationsEnabled = "sortMyObservationsEnabled",
   MyObservationsMapViewEnabled = "myObservationsMapViewEnabled",
   MyObservationsSmallGridViewEnabled = "myObservationsSmallGridViewEnabled",
+  MeIconTestEnabled = "meIconTestEnabled",
 }
 
 export const flagsEnabledForAdminsInTestFlight = [
   FeatureFlag.ExploreV2Enabled,
 ];
 
-const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
+export const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
   [FeatureFlag.ExploreV2Enabled]: false,
   [FeatureFlag.NewsEnabled]: false,
@@ -43,6 +44,7 @@ const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   [FeatureFlag.SortMyObservationsEnabled]: true,
   [FeatureFlag.MyObservationsMapViewEnabled]: true,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: false,
+  [FeatureFlag.MeIconTestEnabled]: false,
 };
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
@@ -54,6 +56,7 @@ const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   [FeatureFlag.SortMyObservationsEnabled]: null,
   [FeatureFlag.MyObservationsMapViewEnabled]: null,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: null,
+  [FeatureFlag.MeIconTestEnabled]: null,
 };
 
 const DEFAULT_STATE = {
@@ -70,6 +73,11 @@ export interface FeatureFlagSlice {
    * DO NOT call this anywhere except from the Feature Flag management in the "Debug" screen
    */
   setFeatureFlagDebugOverride: ( featureFlagKey: FeatureFlag, override: boolean | null ) => void;
+  /**
+   * Replaces the entire feature flag config, e.g. with the result of a
+   * Firebase Remote Config fetch. Does not affect debug overrides.
+   */
+  setFeatureFlagConfig: ( config: Record<FeatureFlag, boolean> ) => void;
 }
 
 const createFeatureFlagSlice: StateCreator<FeatureFlagSlice> = set => ( {
@@ -80,6 +88,10 @@ const createFeatureFlagSlice: StateCreator<FeatureFlagSlice> = set => ( {
       ...state.featureFlagDebugOverrides,
       [featureFlagKey]: override,
     },
+  } ) ),
+  setFeatureFlagConfig: config => set( state => ( {
+    ...state,
+    featureFlagConfig: config,
   } ) ),
 } );
 

@@ -41,7 +41,6 @@ PODS:
   - FasterImage (1.7.2):
     - FasterImage/Nuke (= 1.7.2)
     - FasterImage/NukeUI (= 1.7.2)
-    - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
     - React-Codegen
@@ -49,7 +48,6 @@ PODS:
     - React-RCTFabric
     - ReactCommon/turbomodule/core
   - FasterImage/Nuke (1.7.2):
-    - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
     - React-Codegen
@@ -57,7 +55,6 @@ PODS:
     - React-RCTFabric
     - ReactCommon/turbomodule/core
   - FasterImage/NukeUI (1.7.2):
-    - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
     - React-Codegen
@@ -70,6 +67,9 @@ PODS:
   - Firebase/Performance (12.10.0):
     - Firebase/CoreOnly
     - FirebasePerformance (~> 12.10.0)
+  - Firebase/RemoteConfig (12.10.0):
+    - Firebase/CoreOnly
+    - FirebaseRemoteConfig (~> 12.10.0)
   - FirebaseABTesting (12.10.0):
     - FirebaseCore (~> 12.10.0)
   - FirebaseAnalytics/Core (12.10.0):
@@ -2322,7 +2322,6 @@ PODS:
     - SocketRocket
     - Yoga
   - react-native-keep-awake (1.3.1):
-    - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
     - React-Codegen
@@ -3452,6 +3451,36 @@ PODS:
     - RNFBApp
     - SocketRocket
     - Yoga
+  - RNFBRemoteConfig (23.8.8):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - Firebase/RemoteConfig (= 12.10.0)
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - RNFBApp
+    - SocketRocket
+    - Yoga
   - RNGestureHandler (2.30.0):
     - boost
     - DoubleConversion
@@ -4109,6 +4138,7 @@ DEPENDENCIES:
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBPerf (from `../node_modules/@react-native-firebase/perf`)"
+  - "RNFBRemoteConfig (from `../node_modules/@react-native-firebase/remote-config`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNLocalize (from `../node_modules/react-native-localize`)
@@ -4384,6 +4414,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBPerf:
     :path: "../node_modules/@react-native-firebase/perf"
+  RNFBRemoteConfig:
+    :path: "../node_modules/@react-native-firebase/remote-config"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
@@ -4420,7 +4452,7 @@ SPEC CHECKSUMS:
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   Exify: 2f39027dc3fa5809c3fbbf32e11ba9d3d755a85b
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
-  FasterImage: 0543472141d8f64716efdeb3bb886a6fe814f3b9
+  FasterImage: a42cb019ff9e5ed36ac296e538974d81f34a9c16
   FBLazyVector: 07433c4ab85da44d0b5ceac374ff4e1d57c7aa23
   Firebase: 99f203d3a114c6ba591f3b32263a9626e450af65
   FirebaseABTesting: fae111fe5476bd9e249968d0c85cd036385404ba
@@ -4493,8 +4525,8 @@ SPEC CHECKSUMS:
   react-native-geolocation: 49d39b53dfeb6c22ff1ad69e71ac9c7981affdaa
   react-native-get-random-values: 5c2e7ce0c1eedefde8e97fe60152601887fcfa08
   react-native-image-picker: 6051cfd030121b880a58f1cc0e5e33e9887804e4
-  react-native-image-resizer: a889f67073804003f19da3721ef5593df569b45b
-  react-native-keep-awake: a351e6f67006b47f316ae2b17ee8ee69386167f4
+  react-native-image-resizer: 7c72364fac80d303c060325e5a740b89dfe5c4ba
+  react-native-keep-awake: 212dcf68d5b61f56e1f81c7ee8c96edf09075661
   react-native-mail: 6e83813066984b26403d3fdfe79ac7bb31857e3c
   react-native-maps: d9f48d8d482153c618b982f9c54878ee7062714e
   react-native-mmkv: 7b9c7469fa0a7e463f9411ad3e4fe273bd5ff030
@@ -4553,6 +4585,7 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 223d73ff7869b088a177a09b015c6e6b0fa74836
   RNFBApp: 3f43568008b1abdef6b743ecb62829ff9fb27b0d
   RNFBPerf: f071c3710149382557a7ca0d315610a50e505847
+  RNFBRemoteConfig: fe16838345a0a2a614d0112f0a502f6aa42033cd
   RNGestureHandler: c6327cf6e2bd384dc90351ccfff0da8142d62f54
   RNGoogleSignin: b126da02b9402311c8093e72b064a7e85d139921
   RNLocalize: d8ccb568b40c72c767714db3808ce66a1ecf444a
@@ -4569,6 +4602,6 @@ SPEC CHECKSUMS:
   VisionCameraPluginInatVision: 3b006a7a434ddfc23d789729b6d98e451f90c4e4
   Yoga: 36c8d57a563ad609c1f7342857de6e23fa1edd5a
 
-PODFILE CHECKSUM: 73e24a8590e365c9fec451abf69476ae07116d98
+PODFILE CHECKSUM: 6e6464f25c3270615bdd7421bbdfeef5c2a296b3
 
 COCOAPODS: 1.15.2

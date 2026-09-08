@@ -21,6 +21,8 @@ import {
 import Config from "react-native-config";
 import RNRestart from "react-native-restart";
 import { EnvConfig } from "sharedHelpers/envConfig";
+import { fetchAndActivateFeatureFlags } from "sharedHelpers/remoteConfig";
+import useStore from "stores/useStore";
 
 import {
   CODE, H1, H2, P,
@@ -232,6 +234,25 @@ const DebugTools = () => {
   );
 };
 
+const RemoteFeatureFlagFetch = () => {
+  const [isFetching, setIsFetching] = useState( false );
+  const setFeatureFlagConfig = useStore( state => state.setFeatureFlagConfig );
+
+  return (
+    <Button
+      onPress={async () => {
+        setIsFetching( true );
+        const config = await fetchAndActivateFeatureFlags();
+        setFeatureFlagConfig( config );
+        setIsFetching( false );
+      }}
+      disabled={isFetching}
+      text="FETCH REMOTE CONFIG"
+      className="mb-5"
+    />
+  );
+};
+
 const PathStats = () => {
   return (
     <>
@@ -269,6 +290,7 @@ const Developer = () => {
         <EnvironmentSwitcher />
         <ComputerVisionStats />
         <FeatureFlags />
+        <RemoteFeatureFlagFetch />
         <PathStats />
         <AppFileSizes />
       </View>

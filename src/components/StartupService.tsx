@@ -12,6 +12,8 @@ import { EnvConfig } from "sharedHelpers/envConfig";
 import { IS_FRESH_INSTALL, store } from "sharedHelpers/installData";
 import { log } from "sharedHelpers/logger";
 import { addARCameraFiles } from "sharedHelpers/mlModel";
+import { fetchAndActivateFeatureFlags } from "sharedHelpers/remoteConfig";
+import useStore from "stores/useStore";
 
 Realm.setLogLevel( "warn" );
 
@@ -37,6 +39,7 @@ const geolocationConfig = {
 const StartupService = ( ) => {
   const realm = useRealm( );
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0]?.isValid( );
+  const setFeatureFlagConfig = useStore( state => state.setFeatureFlagConfig );
 
   useEffect( ( ) => {
     const initializeApp = async ( ) => {
@@ -61,6 +64,11 @@ const StartupService = ( ) => {
 
       try {
         await checkForSignedInUser( );
+
+        // don't await: feature flags shouldn't block startup, and useFeatureFlag
+        // consumers already re-render reactively when featureFlagConfig changes
+        fetchAndActivateFeatureFlags( ).then( setFeatureFlagConfig );
+
         // TODO: this sounds like something we should move to DeferredStartupService,
         // but we do need these files for the CV camera to work. So, for the subset of user that
         // open the app straight to camera we need to test that doing this deferred does not impact
@@ -89,7 +97,7 @@ const StartupService = ( ) => {
     };
 
     initializeApp( );
-  }, [realm, currentUser] );
+  }, [realm, currentUser, setFeatureFlagConfig] );
 
   return null;
 };

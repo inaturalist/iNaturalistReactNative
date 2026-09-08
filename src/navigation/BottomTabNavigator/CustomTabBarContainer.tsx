@@ -9,7 +9,8 @@ import {
 } from "navigation/StackNavigators/TabStackNavigator";
 import React, { useCallback, useMemo } from "react";
 import User from "realmModels/User";
-import { useCurrentUser, useTranslation } from "sharedHooks";
+import { useCurrentUser, useFeatureFlag, useTranslation } from "sharedHooks";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 import CustomTabBar from "./CustomTabBar";
 
@@ -53,6 +54,7 @@ const getActiveTab = ( activeTabName: TabName ): ScreenName => {
 const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
+  const isMeIconOverrideEnabled = useFeatureFlag( FeatureFlag.MeIconTestEnabled );
 
   const activeTabIndex = state?.index;
   const activeTabName = state?.routes[activeTabIndex]?.name as TabName;
@@ -135,7 +137,9 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       icon: "person",
       userIconUri,
       testID: "NavButton.personIcon",
-      accessibilityLabel: t( "My-Observations--bottom-tab" ),
+      accessibilityLabel: isMeIconOverrideEnabled
+        ? "flag is on"
+        : "flag is off",
       accessibilityHint: t( "Navigates-to-your-observations" ),
       size: 32,
       onPress: ( ) => handleTabPress( "ObservationsTab", SCREEN_NAME_OBS_LIST ),
@@ -150,12 +154,7 @@ const CustomTabBarContainer: React.FC<Props> = ( { navigation, state } ) => {
       onPress: ( ) => handleTabPress( "NotificationsTab", SCREEN_NAME_NOTIFICATIONS ),
       active: SCREEN_NAME_NOTIFICATIONS === activeTab,
     },
-  ] ), [
-    activeTab,
-    userIconUri,
-    t,
-    handleTabPress,
-  ] );
+  ] ), [t, activeTab, userIconUri, isMeIconOverrideEnabled, handleTabPress] );
 
   return (
     <CustomTabBar
