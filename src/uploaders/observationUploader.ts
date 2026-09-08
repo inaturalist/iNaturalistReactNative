@@ -1,9 +1,10 @@
+import { INatApiError } from "api/error";
 import {
   createObservation,
   updateObservation,
 } from "api/observations";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import { AppState } from "react-native";
+import { Alert, AppState } from "react-native";
 import type Realm from "realm";
 import type { RealmObservation, RealmObservationPojo } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
@@ -17,7 +18,14 @@ import {
 } from "uploaders/mediaUploader";
 import syncProjectChildDeletions from "uploaders/projectChildrenDeleter";
 import { uploadProjectChildren } from "uploaders/projectChildrenUploader";
-import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
+import {
+  formatUploadErrorMessage,
+  RecoverableError,
+  RECOVERY_BY,
+} from "uploaders/utils/errorHandling";
+import {
+  clearObservationUploadError,
+} from "uploaders/utils/persistUploadError";
 import { trackObservationUpload } from "uploaders/utils/progressTracker";
 
 const logger = log.extend( "observationUploader" );
@@ -97,6 +105,8 @@ async function uploadObservation(
   const uploadStartTime = Date.now( );
   const obsProgress = trackObservationUpload( observation.uuid );
   obsProgress.start( );
+
+  clearObservationUploadError( realm, observation );
 
   const newObs = prepareObservationForUpload( observation );
 
@@ -190,7 +200,9 @@ async function uploadObservation(
     const childrenStartTime = Date.now( );
     const childOptions = { ...opts, api_token: apiToken };
     await syncProjectChildDeletions( observation, childOptions, realm );
-    await uploadProjectChildren( obsUUID, observation, childOptions, realm );
+    if ( obsUUID ) {
+      await uploadProjectChildren( obsUUID, observation, childOptions, realm );
+    }
     childrenDuration = Date.now( ) - childrenStartTime;
   } catch ( error ) {
     const {
@@ -201,6 +213,13 @@ async function uploadObservation(
       + ": Project children upload failed",
       error,
     );
+    if (
+      error instanceof INatApiError
+      && error.status === 422
+    ) {
+      const displayMessage = formatUploadErrorMessage( error );
+      Alert.alert( "Error", displayMessage );
+    }
     error.message = `Project children upload failed: ${error.message}`;
     throw error;
   }
@@ -217,7 +236,8 @@ async function uploadObservation(
       + ": Realm update failed",
       error,
     );
-    throw new Error( `Realm update failed: ${error.message}` );
+    const realmError = new Error( `Realm update failed: ${error.message}` );
+    throw realmError;
   }
 
   const totalDuration = Date.now( ) - uploadStartTime;

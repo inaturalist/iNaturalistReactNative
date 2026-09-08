@@ -548,6 +548,7 @@ const MyObservationsResults = ( ) => {
       handleIndividualUploadPress={handleIndividualUploadPress}
       handlePullToRefresh={handlePullToRefresh}
       handleSyncButtonPress={handleSyncButtonPress}
+      hasActiveSearch={hasActiveSearch}
       isConnected={isConnected}
       isFetchingNextPage={isFetchingNextPageForList}
       isFetchingTaxa={isFetchingTaxa}

@@ -945,7 +945,7 @@
   "X-Identifications": "{ $count ->\n  [one] { $count } Determinatie\n *[other] { $count } Determinaties\n}",
   "x-identifications": "{ $count ->\n  [one] { $count } determinatie\n *[other] { $count } determinaties\n}",
   "X-Identifiers": "{ $count ->\n  [one] { $count } Identifier\n *[other] { $count } Identifiers\n}",
-  "X-IDENTIFIERS--below-number": "{ $count ->\n  [one] IDENTIFIER\n *[other] IDENTIFIERS\n}",
+  "X-IDENTIFIERS--below-number": "{ $count ->\n  [one] EXPERT\n *[other] EXPERTS\n}",
   "X-JOURNAL_POSTS": "{ $count ->\n  [one] { $count } DAGBOEK POST\n *[other] { $count } DAGBOEK POSTS\n}",
   "X-MEMBERS": "{ $count ->\n  [one] { $count } LID\n *[other] { $count } LEDEN\n}",
   "X-Observations": "{ $count ->\n  [one] 1 Waarneming\n *[other] { $count } Waarnemingen\n}",
