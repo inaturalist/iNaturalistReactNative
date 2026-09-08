@@ -30,6 +30,7 @@ const TaxonFieldInput = ( { obsFieldId }: Props ) => {
       <ExploreTaxonSearchModal
         showModal={showModal}
         closeModal={( ) => setShowModal( false )}
+        hideInfoButton
         updateTaxon={updateTaxon}
       />
       {value && taxon
