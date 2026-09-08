@@ -34,6 +34,7 @@ Add-observations = Pridať pozorovanie
 Add-optional-notes = Pridať voliteľné poznámky
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -130,6 +131,7 @@ Change-zoom = Zmeniť priblíženie
 CHECK-YOUR-EMAIL = SKONTROLUJTE VÁŠ E-MAIL
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ZADAJTE UŽÍVATEĽSKÉ MENO
 Chooses-taxon = Chooses taxon
@@ -230,6 +232,7 @@ Delete-current-observation = Odstrániť aktuálne pozorovania
 Delete-observation = Vymazať pozorovanie
 DELETE-OBSERVATION--question = ZMAZAŤ POZOROVANIE?
 Delete-photo = Zmazať fotku
+Delete-saved-search = Delete saved search
 Delete-sound = Zmazať zvuk
 Deleting-x-of-y--observations =
     Odstránenie { $currentDeleteCount } { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = zoosekcia
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoopodsekcia
 Read-more-on-Wikipedia = Prečítajte si viac na Wikipédii
+Recent-searches = Recent searches
 Record-a-sound = Nahrať zvuk
 Record-animal-sounds = Nahrávajte zvuky zvierat
 RECORD-NEW-SOUND = NAHRAJTE NOVÝ ZVUK
@@ -757,7 +761,9 @@ Remove-identification = Odstrániť identifikáciu
 Remove-Photos = Odstrániť fotky
 Remove-project-filter = Odstrániť filter projektu
 Remove-taxon-filter = Odstrániť filter taxónu
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Odstrániť užívateľský filter
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Odstráni taxóny tohto pozorovania
 Removes-your-vote-of-agreement = Odstráni vaše hlasovanie o dohode
 Removes-your-vote-of-disagreement = Odstráni váš nesúhlas
@@ -784,7 +790,11 @@ Save-all-observations = Uložiť všetky pozorovania
 SAVE-CHANGES = ULOŽIŤ ZMENY
 SAVE-FOR-LATER = ULOŽIŤ NA NESKOR
 SAVE-LOCATION = ULOŽIŤ LOKALITU
+Save-this-search = Save this search
 Saved-Observation = Uložené pozorovania, ktoré sú vo fronte na nahranie
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Vedecký názov
 Scientific-Name-Common-Name = Vedecký názov (všeobecný názov)
 SEARCH = HĽADAŤ
@@ -797,6 +807,7 @@ Search-for-a-taxon = Hľadať taxón
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = HĽADAŤ LOKALITU
 SEARCH-PROJECTS = HĽADAŤ PROJEKTY
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Hľadať návrhy s polohou
 Search-suggestions-without-location = Hľadať návrhy bez polohy
 SEARCH-TAXA = HĽADAŤ TAXON
@@ -883,6 +894,7 @@ Syncing = Prebieha synchronizácia...
 Take-photo = Vyfotiť
 Take-photos = Take photos
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxóny
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = ZOBRAZENIE MEN TAXÓNOV
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } zlyhal
        *[other] { $count } zlyhalo
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->
