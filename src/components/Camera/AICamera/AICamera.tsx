@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
@@ -7,11 +5,12 @@ import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, { useCallback, useEffect, useState } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import type { CameraDevice } from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores";
 import { completeSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
@@ -21,6 +20,7 @@ import {
   useLayoutPrefs,
   useTranslation,
 } from "sharedHooks";
+import type { UserLocation } from "sharedHooks/useWatchPosition";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -38,7 +38,7 @@ import LocationStatus from "./LocationStatus";
 
 const isTablet = DeviceInfo.isTablet();
 
-const getResultContainerClassName = insetsTop => {
+const getResultContainerClassName = ( insetsTop: number ) => {
   const widthClassName = isTablet
     ? "w-[493px]"
     : "w-[346px]";
@@ -60,19 +60,20 @@ const getResultContainerClassName = insetsTop => {
 //   preferred_common_name: "Old World Flycatchers and Chats"
 // };
 
-type Props = {
-  camera: Object,
-  device: Object,
-  flipCamera: Function,
-  isLandscapeMode: boolean,
-  toggleFlash: Function,
-  takingPhoto: boolean,
-  takePhotoAndStoreUri: Function,
-  takePhotoOptions: Object,
-  userLocation?: Object, // UserLocation | null
-  hasLocationPermissions: boolean,
-  requestLocationPermissions: () => void,
-};
+interface Props {
+  camera: object;
+  device: CameraDevice;
+  flipCamera: ( ) => void;
+  isLandscapeMode: boolean;
+  toggleFlash: ( ) => void;
+  takingPhoto: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  takePhotoAndStoreUri: Function;
+  takePhotoOptions: object;
+  userLocation: UserLocation | null;
+  hasLocationPermissions: boolean;
+  requestLocationPermissions: () => void;
+}
 
 const AICamera = ( {
   camera,
@@ -86,8 +87,8 @@ const AICamera = ( {
   userLocation,
   hasLocationPermissions,
   requestLocationPermissions,
-}: Props ): Node => {
-  const navigation = useNavigation( );
+}: Props ) => {
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
 
@@ -112,8 +113,8 @@ const AICamera = ( {
     result,
     setResult,
   } = usePredictions( );
-  const [inactive, setInactive] = React.useState( false );
-  const [initialVolume, setInitialVolume] = useState( null );
+  const [inactive, setInactive] = useState( false );
+  const [initialVolume, setInitialVolume] = useState<number | null>( null );
   const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
 
   const [userDisabledLocation, setUserDisabledLocation] = useState( false );
@@ -264,7 +265,7 @@ const AICamera = ( {
                 clearBackground
                 confidence={
                   isDefaultMode
-                    ? null
+                    ? undefined
                     : convertScoreToConfidence( result?.combined_score )
                 }
                 unpressable

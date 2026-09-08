@@ -17,8 +17,7 @@ interface Props {
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;
   confirmPhotosInProgress: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  toggleFlash: Function;
+  toggleFlash: ( ) => void;
   takingPhoto: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   takePhotoAndStoreUri: Function;
