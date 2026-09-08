@@ -21,7 +21,7 @@ import {
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
-import Config from "react-native-config";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import { openExternalWebBrowser } from "sharedHelpers/util";
 import { useFeatureFlag, useTranslation } from "sharedHooks";
 import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
@@ -37,7 +37,7 @@ const NONE = "NONE";
 const JOIN = "JOIN";
 const LEAVE = "LEAVE";
 
-const PROJECT_URL = `${Config.OAUTH_API_URL}/projects`;
+const PROJECT_URL = `${EnvConfig.OAUTH_API_URL}/projects`;
 
 interface Project {
   current_user_is_member: boolean;

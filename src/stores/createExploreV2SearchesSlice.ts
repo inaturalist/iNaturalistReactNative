@@ -1,7 +1,9 @@
-import type { ExploreV2Subject, Place } from "providers/ExploreV2Context";
+import type { ExploreV2Search, ExploreV2Subject, Place } from "providers/ExploreV2Context";
 import type { StateCreator } from "zustand";
 
 export const RECENT_LIMIT = 10;
+
+export const SAVED_LIMIT = 20;
 
 export const subjectKey = ( subject: ExploreV2Subject ): string => {
   switch ( subject.type ) {
@@ -16,7 +18,6 @@ export const subjectKey = ( subject: ExploreV2Subject ): string => {
     case "unknown":
       return "unknown";
     default: {
-      // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
       const _exhaustive: never = subject;
       return _exhaustive;
     }
@@ -37,7 +38,17 @@ export const addRecent = <T>(
     ...items.filter( existing => keyFn( existing ) !== keyFn( item ) ),
   ].slice( 0, cap );
 
-export interface ExploreV2RecentSearchesSlice {
+// A search plus how we identify it and when it was saved
+export type SavedSearch = {
+  key: string;
+  savedAt: number;
+} & ExploreV2Search;
+
+// What a caller hands us. The key comes from savedSearchKey in the ExploreV2 helpers, which
+// imports subjectKey from here. computing it in the slice would be circular.
+export type SavedSearchInput = Omit<SavedSearch, "savedAt">;
+
+export interface ExploreV2SearchesSlice {
   exploreRecentSearches: {
     subjects: ExploreV2Subject[];
     places: Place[];
@@ -45,9 +56,15 @@ export interface ExploreV2RecentSearchesSlice {
     recordPlace: ( _place: Place ) => void;
     clearRecents: ( ) => void;
   };
+  exploreSavedSearches: {
+    searches: SavedSearch[];
+    saveSearch: ( _search: SavedSearchInput ) => void;
+    removeSearch: ( _key: string ) => void;
+    clearSavedSearches: ( ) => void;
+  };
 }
 
-const createExploreV2RecentSearchesSlice: StateCreator<ExploreV2RecentSearchesSlice> = set => ( {
+const createExploreV2SearchesSlice: StateCreator<ExploreV2SearchesSlice> = set => ( {
   exploreRecentSearches: {
     subjects: [],
     places: [],
@@ -79,6 +96,27 @@ const createExploreV2RecentSearchesSlice: StateCreator<ExploreV2RecentSearchesSl
       },
     } ) ),
   },
+  exploreSavedSearches: {
+    searches: [],
+    saveSearch: search => set( state => ( {
+      exploreSavedSearches: {
+        ...state.exploreSavedSearches,
+        searches: [
+          { ...search, savedAt: Date.now( ) },
+          ...state.exploreSavedSearches.searches,
+        ],
+      },
+    } ) ),
+    removeSearch: key => set( state => ( {
+      exploreSavedSearches: {
+        ...state.exploreSavedSearches,
+        searches: state.exploreSavedSearches.searches.filter( saved => saved.key !== key ),
+      },
+    } ) ),
+    clearSavedSearches: ( ) => set( state => ( {
+      exploreSavedSearches: { ...state.exploreSavedSearches, searches: [] },
+    } ) ),
+  },
 } );
 
-export default createExploreV2RecentSearchesSlice;
+export default createExploreV2SearchesSlice;

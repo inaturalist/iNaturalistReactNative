@@ -208,21 +208,6 @@ const MapView = ( {
 
   return (
     <View className="flex-1 overflow-hidden h-full">
-      <View className="z-10">
-        {showRedoSearchButton && (
-          <View
-            className="mx-auto"
-            style={DROP_SHADOW}
-          >
-            <Button
-              text={t( "REDO-SEARCH-IN-MAP-AREA" )}
-              level="focus"
-              className="top-[60px] absolute self-center"
-              onPress={handleRedoSearch}
-            />
-          </View>
-        )}
-      </View>
       <Map
         ref={mapRef}
         currentLocationButtonClassName="left-5 bottom-20"
@@ -239,6 +224,20 @@ const MapView = ( {
         onCurrentLocationPress={handleCurrentLocationPress}
         isLoading={isLoading}
       />
+      {showRedoSearchButton && (
+        <View
+          className="absolute top-[60px] left-0 right-0 items-center z-10"
+          pointerEvents="box-none"
+        >
+          <View style={DROP_SHADOW}>
+            <Button
+              text={t( "REDO-SEARCH-IN-MAP-AREA" )}
+              level="focus"
+              onPress={handleRedoSearch}
+            />
+          </View>
+        </View>
+      )}
       {isLoading && (
         <View style={centeredLoadingWheel} testID="activity-indicator">
           <ActivityIndicator size={activityIndicatorSize} />

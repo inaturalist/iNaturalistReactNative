@@ -93,7 +93,7 @@ const makeUnsyncedObservations = options => ( [
 ] );
 
 const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   iconUrl: faker.image.url( ),
   locale: "en",
 } );

@@ -63,24 +63,24 @@ const ObservationsViewBar = ( {
         const isFirst = i === 0;
         const isLast = i === buttons.length - 1;
         const outerBorderStyle = {
-          borderTopLeftRadius: isFirst
+          borderTopStartRadius: isFirst
             ? 20
             : 0,
-          borderBottomLeftRadius: isFirst
+          borderBottomStartRadius: isFirst
             ? 20
             : 0,
-          borderTopRightRadius: isLast
+          borderTopEndRadius: isLast
             ? 20
             : 0,
-          borderBottomRightRadius: isLast
+          borderBottomEndRadius: isLast
             ? 20
             : 0,
         };
         const spacerStyle = {
-          borderRightWidth: isLast
+          borderEndWidth: isLast
             ? 0
             : 1,
-          borderRightColor: colors.lightGray,
+          borderEndColor: colors.lightGray,
         };
         const backgroundColor = {
           backgroundColor: checked

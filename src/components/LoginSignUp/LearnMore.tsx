@@ -4,13 +4,13 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useCallback } from "react";
-import Config from "react-native-config";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import { useTranslation } from "sharedHooks";
 
 import Header from "./Header";
 import LoginSignUpWrapper from "./LoginSignUpWrapper";
 
-const BASE_URL = Config.OAUTH_API_URL;
+const BASE_URL = EnvConfig.OAUTH_API_URL;
 
 const LearnMore = ( ) => {
   const { t } = useTranslation( );

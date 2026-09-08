@@ -9,6 +9,7 @@ const mockTaxon = factory( "RemoteTaxon", {
   id: 123,
   name: "Calidris alba",
   preferred_common_name: "Sanderling",
+  iconic_taxon_name: "Aves",
 } );
 
 const mockSpeciesCount = { count: 3, taxon: mockTaxon };
@@ -18,13 +19,16 @@ const mockSearchThisTaxon = jest.fn( );
 
 const actor = userEvent.setup( );
 
-const renderGridItem = ( { canSearchFromSpeciesTab = false } = {} ) => renderComponent(
+const renderGridItem = ( {
+  canSearchFromSpeciesTab = false,
+  source = { uri: "https://example.com/photo.jpg" },
+} = {} ) => renderComponent(
   <SimpleTaxonGridItem
     accessibleName="Sanderling"
     canSearchFromSpeciesTab={canSearchFromSpeciesTab}
     navToTaxonDetails={mockNavToTaxonDetails}
     searchThisTaxon={mockSearchThisTaxon}
-    source={{ uri: "https://example.com/photo.jpg" }}
+    source={source}
     speciesCount={mockSpeciesCount}
   />,
 );
@@ -39,6 +43,20 @@ beforeEach( ( ) => {
 } );
 
 describe( "SimpleTaxonGridItem", ( ) => {
+  it( "renders the iconic taxon icon behind the photo", ( ) => {
+    renderGridItem( );
+
+    expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeVisible( );
+    expect( screen.getByTestId( "TaxonGridItem.photo" ) ).toBeVisible( );
+  } );
+
+  it( "renders the iconic taxon icon when there is no photo to show", ( ) => {
+    renderGridItem( { source: { uri: undefined } } );
+
+    expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeVisible( );
+    expect( screen.queryByTestId( "TaxonGridItem.photo" ) ).toBeNull( );
+  } );
+
   describe( "when canSearchFromSpeciesTab is false", ( ) => {
     it( "navigates to taxon details when the card is pressed", async ( ) => {
       renderGridItem( { canSearchFromSpeciesTab: false } );

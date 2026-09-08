@@ -182,6 +182,8 @@ jest.mock( "sharedHelpers/installData", ( ) => ( {
   // this mock
   useOnboardingShown: jest.fn( ( ) => [true, jest.fn()] ),
   getInstallID: jest.fn( ( ) => "fake-installation-id" ),
+  getEnvironmentOverride: jest.fn( ( ) => undefined ),
+  setEnvironmentOverride: jest.fn( ( ) => { } ),
 } ) );
 
 jest.mock( "components/SharedComponents/Buttons/Button", () => {
