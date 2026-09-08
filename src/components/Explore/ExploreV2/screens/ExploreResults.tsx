@@ -244,8 +244,10 @@ const ExploreResults = ( ) => {
     subject, location, filters, sortBy, speciesSortBy,
   } = state;
   const currentSearchKey = useMemo(
-    ( ) => savedSearchKey( { subject, location, filters } ),
-    [filters, location, subject],
+    ( ) => savedSearchKey( {
+      subject, location, sortBy, speciesSortBy, filters,
+    } ),
+    [filters, location, sortBy, speciesSortBy, subject],
   );
   const isSaved = savedSearches.some( saved => saved.key === currentSearchKey );
 

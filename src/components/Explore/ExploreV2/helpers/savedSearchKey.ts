@@ -1,12 +1,10 @@
-import type { ExploreV2Filters, ExploreV2LocationState } from "providers/ExploreV2Context";
+import type {
+  ExploreV2Filters, ExploreV2LocationState, ExploreV2Search,
+} from "providers/ExploreV2Context";
 import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
-import type { SavedSearch } from "stores/createExploreV2SearchesSlice";
 import { subjectKey } from "stores/createExploreV2SearchesSlice";
 
-// The parts of a search that decide whether two saved searches are the same one. Sort is
-// deliberately absent: a row shows subject, location and filter count, so two entries
-// differing only in sort order would look identical and read as a duplicate.
-export type SavedSearchIdentity = Pick<SavedSearch, "subject" | "location" | "filters">;
+export type SavedSearchIdentity = ExploreV2Search;
 
 const locationKey = ( location: ExploreV2LocationState ): string => {
   switch ( location.placeMode ) {
@@ -67,12 +65,21 @@ const filtersKey = ( filters: ExploreV2Filters ): string => {
     .join( ";" );
 };
 
-const savedSearchKey = ( search: SavedSearchIdentity ): string => [
-  search.subject
-    ? subjectKey( search.subject )
-    : "none",
-  locationKey( search.location ),
-  filtersKey( search.filters ),
-].join( "|" );
+const savedSearchKey = ( search: SavedSearchIdentity ): string => {
+  const parts: Record<keyof SavedSearchIdentity, string> = {
+    subject: search.subject
+      ? subjectKey( search.subject )
+      : "none",
+    location: locationKey( search.location ),
+    sortBy: search.sortBy,
+    speciesSortBy: search.speciesSortBy,
+    filters: filtersKey( search.filters ),
+  };
+
+  return ( Object.keys( parts ) as ( keyof SavedSearchIdentity )[] )
+    .sort( )
+    .map( field => `${field}=${parts[field]}` )
+    .join( "|" );
+};
 
 export default savedSearchKey;
