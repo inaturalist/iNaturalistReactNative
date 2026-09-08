@@ -38,6 +38,20 @@ import LocationStatus from "./LocationStatus";
 
 const isTablet = DeviceInfo.isTablet();
 
+const getResultContainerClassName = insetsTop => {
+  const widthClassName = isTablet
+    ? "w-[493px]"
+    : "w-[346px]";
+  const phoneTopClassName = insetsTop > 0
+    ? "top-14"
+    : "top-8";
+  const topClassName = isTablet
+    ? ""
+    : phoneTopClassName;
+
+  return classnames( "self-center", widthClassName, topClassName );
+};
+
 // const exampleTaxonResult = {
 //   id: 12704,
 //   name: "Muscicapidae",
@@ -241,11 +255,7 @@ const AICamera = ( {
         className="w-full h-[219px]"
       >
         <View
-          className={classnames( "self-center", {
-            "w-[493px]": isTablet,
-            "w-[346px] top-8": !isTablet,
-            "top-14": insets.top > 0,
-          } )}
+          className={getResultContainerClassName( insets.top )}
         >
           {showPrediction && result
             ? (
