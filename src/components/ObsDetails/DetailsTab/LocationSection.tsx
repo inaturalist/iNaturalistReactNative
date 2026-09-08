@@ -135,7 +135,7 @@ const LocationSection = ( { observation }: Props ) => {
           />
         </>
       )}
-      <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
+      <View className={`mt-[11px] gap-y-[11px] ${sectionClass}`}>
         <ObservationLocation observation={observation} details />
         {observation.obscured && (
           <ObscurationExplanation

@@ -5,105 +5,111 @@ exports[`UploadStatus displays complete icon when progress is 1 1`] = `
   accessibilityLabel="Upload Complete"
   accessible={true}
   style={
-    [
-      [
-        {
-          "justifyContent": "center",
-        },
-        {
-          "height": 65,
-        },
-      ],
-    ]
+    {
+      "height": 65,
+      "justifyContent": "center",
+    }
   }
 >
-  <View
-    collapsable={false}
-    entering={
-      InnerKeyframe {
-        "build": [Function],
-        "definitions": {
-          "0": {
-            "opacity": 0,
-          },
-          "100": {
-            "opacity": 0,
-          },
-          "40": {
-            "opacity": 1,
-          },
-        },
-        "durationV": 2000,
-        "parsedAnimation": [Function],
-        "reduceMotionV": "system",
-      }
-    }
-    jestAnimatedProps={
-      {
-        "value": {},
-      }
-    }
-    jestAnimatedStyle={
-      {
-        "value": {},
-      }
-    }
-    testID="UploadIcon.complete.undefined"
-  >
+  <View>
     <View
+      className="absolute h-full justify-center"
+      collapsable={false}
+      jestAnimatedProps={
+        {
+          "value": {},
+        }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {
+            "opacity": 0,
+          },
+        }
+      }
+      jestInlineStyle={{}}
       style={
         [
-          [
+          {
+            "opacity": 0,
+          },
+        ]
+      }
+      testID="UploadIcon.complete.undefined"
+    >
+      <View
+        style={
+          {
+            "width": 44,
+          }
+        }
+      >
+        <View
+          style={
             {
+              "alignItems": "center",
+              "height": 44,
+              "justifyContent": "center",
               "width": 44,
-            },
-          ],
+            }
+          }
+          testID="UploadStatus.Complete"
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#74AC00",
+                  "fontSize": 28,
+                },
+                {},
+                {
+                  "fontFamily": "INatIcon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      collapsable={false}
+      jestAnimatedProps={
+        {
+          "value": {},
+        }
+      }
+      jestAnimatedStyle={
+        {
+          "value": {
+            "opacity": 0,
+          },
+        }
+      }
+      jestInlineStyle={{}}
+      style={
+        [
+          {
+            "opacity": 0,
+          },
         ]
       }
     >
       <View
         style={
-          [
-            [
-              {
-                "alignItems": "center",
-              },
-              {
-                "justifyContent": "center",
-              },
-              {
-                "width": 44,
-              },
-              {
-                "height": 44,
-              },
-            ],
-          ]
-        }
-        testID="UploadStatus.Complete"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#74AC00",
-                "fontSize": 28,
-              },
-              null,
-              {
-                "fontFamily": "INatIcon",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
+          {
+            "height": 44,
+            "width": 44,
           }
-        >
-          
-        </Text>
-      </View>
+        }
+      />
     </View>
   </View>
 </View>
@@ -114,66 +120,36 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% 1`]
   accessibilityLabel="Upload 50 percent complete"
   accessible={true}
   style={
-    [
-      [
-        {
-          "justifyContent": "center",
-        },
-        {
-          "height": 65,
-        },
-      ],
-    ]
+    {
+      "height": 65,
+      "justifyContent": "center",
+    }
   }
 >
   <View
     style={
-      [
-        [
-          {
-            "width": 44,
-          },
-        ],
-      ]
+      {
+        "width": 44,
+      }
     }
   >
     <View
       accessibilityLabel="Upload in progress"
       style={
-        [
-          [
-            {
-              "alignItems": "center",
-            },
-            {
-              "justifyContent": "center",
-            },
-            {
-              "width": 44,
-            },
-            {
-              "height": 44,
-            },
-            {
-              "justifyContent": "center",
-            },
-            {
-              "alignItems": "center",
-            },
-          ],
-        ]
+        {
+          "alignItems": "center",
+          "height": 44,
+          "justifyContent": "center",
+          "width": 44,
+        }
       }
       testID="UploadIcon.progress.undefined"
     >
       <View
         style={
-          [
-            [
-              {
-                "position": "absolute",
-              },
-            ],
-          ]
+          {
+            "position": "absolute",
+          }
         }
       >
         <Text
@@ -185,7 +161,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% 1`]
                 "color": "#454545",
                 "fontSize": 15,
               },
-              null,
+              {},
               {
                 "fontFamily": "INatIcon",
                 "fontStyle": "normal",
@@ -218,52 +194,34 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
   accessibilityLabel="Saved observation, in queue to upload"
   accessible={true}
   style={
-    [
-      [
-        {
-          "justifyContent": "center",
-        },
-        {
-          "height": 65,
-        },
-      ],
-    ]
+    {
+      "height": 65,
+      "justifyContent": "center",
+    }
   }
 >
   <View
     style={
-      [
-        [
-          {
-            "width": 44,
-          },
-        ],
-      ]
+      {
+        "width": 44,
+      }
     }
   >
     <View
       style={
-        [
-          [
-            {
-              "justifyContent": "center",
-            },
-            {
-              "alignItems": "center",
-            },
-          ],
-        ]
+        {
+          "alignItems": "center",
+          "height": 44,
+          "justifyContent": "center",
+          "width": 44,
+        }
       }
     >
       <View
         style={
-          [
-            [
-              {
-                "position": "absolute",
-              },
-            ],
-          ]
+          {
+            "position": "absolute",
+          }
         }
       >
         <Text
@@ -275,7 +233,7 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
                 "color": "#454545",
                 "fontSize": 15,
               },
-              null,
+              {},
               {
                 "fontFamily": "INatIcon",
                 "fontStyle": "normal",
@@ -309,15 +267,13 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
         jestInlineStyle={{}}
         style={
           [
-            [
-              {
-                "transform": [
-                  {
-                    "rotateZ": "0deg",
-                  },
-                ],
-              },
-            ],
+            {
+              "transform": [
+                {
+                  "rotateZ": "0deg",
+                },
+              ],
+            },
           ]
         }
         testID="UploadStatus.QueuedRotatingIcon"
@@ -331,7 +287,7 @@ exports[`UploadStatus displays rotating circle progress when upload is queued bu
                 "color": "#454545",
                 "fontSize": 33,
               },
-              null,
+              {},
               {
                 "fontFamily": "INatIcon",
                 "fontStyle": "normal",
@@ -354,27 +310,17 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
   accessibilityLabel="Saved observation, in queue to upload"
   accessible={true}
   style={
-    [
-      [
-        {
-          "justifyContent": "center",
-        },
-        {
-          "height": 65,
-        },
-      ],
-    ]
+    {
+      "height": 65,
+      "justifyContent": "center",
+    }
   }
 >
   <View
     style={
-      [
-        [
-          {
-            "width": 44,
-          },
-        ],
-      ]
+      {
+        "width": 44,
+      }
     }
   >
     <View
@@ -410,64 +356,39 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        [
-          {
-            "height": 44,
-            "width": 44,
-          },
-          {
-            "alignItems": "center",
-            "justifyContent": "center",
-          },
-          false,
-          undefined,
-          {
-            "opacity": 1,
-          },
-        ]
+        {
+          "alignItems": "center",
+          "height": 44,
+          "justifyContent": "center",
+          "width": 44,
+        }
       }
       testID="UploadIcon.start.undefined"
     >
       <View
         style={
-          [
-            [
-              {
-                "position": "relative",
-              },
-              {
-                "left": 0.2,
-              },
-              {
-                "top": 0.1,
-              },
-            ],
-          ]
+          {
+            "left": 0.20000000298023224,
+            "position": "relative",
+            "top": 0.10000000149011612,
+          }
         }
       >
         <View
           style={
-            [
-              [
-                {
-                  "justifyContent": "center",
-                },
-                {
-                  "alignItems": "center",
-                },
-              ],
-            ]
+            {
+              "alignItems": "center",
+              "height": 44,
+              "justifyContent": "center",
+              "width": 44,
+            }
           }
         >
           <View
             style={
-              [
-                [
-                  {
-                    "position": "absolute",
-                  },
-                ],
-              ]
+              {
+                "position": "absolute",
+              }
             }
           >
             <Text
@@ -479,7 +400,7 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
                     "color": "#454545",
                     "fontSize": 15,
                   },
-                  null,
+                  {},
                   {
                     "fontFamily": "INatIcon",
                     "fontStyle": "normal",
@@ -513,15 +434,13 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
             jestInlineStyle={{}}
             style={
               [
-                [
-                  {
-                    "transform": [
-                      {
-                        "rotateZ": "0deg",
-                      },
-                    ],
-                  },
-                ],
+                {
+                  "transform": [
+                    {
+                      "rotateZ": "0deg",
+                    },
+                  ],
+                },
               ]
             }
             testID="UploadStatus.QueuedRotatingIcon"
@@ -535,7 +454,7 @@ exports[`UploadStatus displays start icon when upload is unsynced and not queued
                     "color": "#454545",
                     "fontSize": 33,
                   },
-                  null,
+                  {},
                   {
                     "fontFamily": "INatIcon",
                     "fontStyle": "normal",

@@ -19,10 +19,10 @@ const SuggestionsTaxonSearch = ( ) => {
 
   const renderTaxonResult = useCallback( ( { item: taxon, index } ) => (
     <TaxonResult
-      accessibilityLabel={t( "Choose-taxon" )}
+      accessibilityHint={t( "Chooses-taxon" )}
       fetchRemote={false}
       first={index === 0}
-      handleCheckmarkPress={() => navigateWithTaxonSelected( taxon )}
+      handleTaxonOrEditPress={() => navigateWithTaxonSelected( taxon )}
       hideNavButtons
       taxon={taxon}
       testID={`Search.taxa.${taxon.id}`}
@@ -31,6 +31,7 @@ const SuggestionsTaxonSearch = ( ) => {
 
   return (
     <TaxonSearch
+      focusAfterTransition
       isLoading={isLoading}
       isLocal={isLocal}
       query={taxonQuery}

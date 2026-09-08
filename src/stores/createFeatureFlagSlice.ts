@@ -33,6 +33,7 @@ export enum FeatureFlag {
 
 export const flagsEnabledForAdminsInTestFlight = [
   FeatureFlag.TestFlightAdminMessageEnabled,
+  FeatureFlag.ExploreV2Enabled,
 ];
 
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {

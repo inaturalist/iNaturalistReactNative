@@ -1,9 +1,8 @@
-import PermissionGateContainer, {
-  LOCATION_PERMISSIONS,
-} from "components/SharedComponents/PermissionGateContainer";
+import PermissionGateContainer from "components/SharedComponents/PermissionGateContainer";
 import { t } from "i18next";
 import type { PropsWithChildren } from "react";
 import React from "react";
+import { LOCATION_PERMISSIONS } from "sharedHelpers/permissions";
 
 interface Props extends PropsWithChildren {
   permissionNeeded?: boolean;

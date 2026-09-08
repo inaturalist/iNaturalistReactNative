@@ -83,7 +83,7 @@ const ObservationLocation = ( {
       displayPrivacy = "Open";
     }
     const geoprivacyInner = (
-      <View className="flex-row space-x-[2px]">
+      <View className="flex-row gap-x-[2px]">
         <Body4
           className="text-darkGray"
           numberOfLines={1}
@@ -104,7 +104,7 @@ const ObservationLocation = ( {
   ] );
 
   const inner = useMemo( ( ) => (
-    <View className="flex-1 flex-col space-y-[11px]">
+    <View className="flex-1 flex-col gap-y-[11px]">
       <Body4
         className="text-darkGray"
         ellipsizeMode="tail"

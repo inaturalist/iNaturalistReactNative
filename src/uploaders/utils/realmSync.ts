@@ -26,6 +26,10 @@ function findRecordInRealm(
     return observation.observationPhotos?.find( op => op.uuid === recordUUID ) || null;
   } if ( type === "ObservationSound" ) {
     return observation.observationSounds?.find( os => os.uuid === recordUUID ) || null;
+  } if ( type === "ObservationFieldValue" ) {
+    return observation.observationFieldValues?.find( ofv => ofv.uuid === recordUUID ) || null;
+  } if ( type === "ProjectObservation" ) {
+    return observation.projectObservations?.find( po => po.uuid === recordUUID ) || null;
   }
 
   return null;

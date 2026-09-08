@@ -63,7 +63,7 @@ const WithdrawIDSheet = ( {
       headerText={t( "WITHDRAW-ID-QUESTION" )}
     >
       <View
-        className="mx-[26px] space-y-[11px] my-[15px]"
+        className="mx-[26px] gap-y-[11px] my-[15px]"
       >
         {showTaxon( taxon )}
         <ButtonBar buttonConfiguration={buttons} containerClass="pt-[15px]" />

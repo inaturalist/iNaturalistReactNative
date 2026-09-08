@@ -1,13 +1,13 @@
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
-import {
-  LOCATION_PERMISSIONS,
-  permissionResultFromMultiple,
-} from "components/SharedComponents/PermissionGateContainer";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   checkMultiple,
   RESULTS,
 } from "react-native-permissions";
+import {
+  LOCATION_PERMISSIONS,
+  permissionResultFromMultiple,
+} from "sharedHelpers/permissions";
 
 // PermissionGate callbacks need to use useCallback, otherwise they'll
 // trigger re-renders if/when they change

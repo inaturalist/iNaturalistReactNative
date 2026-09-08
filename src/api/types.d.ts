@@ -4,7 +4,7 @@ export interface ApiDefaultResult {
 }
 
 export interface ApiOpts {
-  api_token?: string;
+  api_token?: string | null;
 }
 
 export interface ApiParams {
@@ -281,11 +281,49 @@ export const ORDER_BY_VOTES = "votes";
 export const ORDER_ASC = "asc";
 export const ORDER_DESC = "desc";
 
-export interface ApiObservationsSearchParams extends ApiParams {
+// Filters accepted by every endpoint backed by the observations search, e.g. /observations,
+// /observations/observers, /observations/identifiers. Sorting and pagination params differ by
+// endpoint, so those belong on the per-endpoint params interfaces.
+export interface ApiObservationFilterParams extends ApiParams {
+  captive?: boolean;
   created_d1?: string;
   created_d2?: string;
+  created_on?: string;
   d1?: string;
   d2?: string;
+  endemic?: boolean;
+  hrank?: string;
+  iconic_taxa?: string[];
+  identified?: boolean;
+  introduced?: boolean;
+  lat?: number;
+  lng?: number;
+  lrank?: string;
+  month?: number[];
+  native?: boolean;
+  nelat?: number;
+  nelng?: number;
+  not_user_id?: number;
+  observed_on?: string;
+  photo_license?: string;
+  photos?: boolean;
+  place_id?: number;
+  project_id?: number;
+  quality_grade?: string[];
+  radius?: number;
+  reviewed?: boolean;
+  sounds?: boolean;
+  swlat?: number;
+  swlng?: number;
+  taxon_id?: number;
+  taxon_ids?: number[];
+  unobserved_by_user_id?: number;
+  user_id?: number;
+  verifiable?: boolean;
+  viewer_id?: number;
+}
+
+export interface ApiObservationsSearchParams extends ApiObservationFilterParams {
   id_below?: number;
   order?: typeof ORDER_ASC | typeof ORDER_DESC;
   order_by?: typeof ORDER_BY_CREATED_AT |
@@ -297,6 +335,4 @@ export interface ApiObservationsSearchParams extends ApiParams {
     typeof ORDER_BY_UPDATED_AT |
     typeof ORDER_BY_VOTES;
   return_bounds?: boolean;
-  not_user_id?: number;
-  unobserved_by_user_id?: number;
 }

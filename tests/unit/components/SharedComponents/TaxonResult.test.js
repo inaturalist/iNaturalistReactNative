@@ -24,8 +24,10 @@ describe( "TaxonResult", () => {
   it( "should render correctly", () => {
     render(
       <TaxonResult
-        accessibilityLabel="this is the taxon"
+        accessibilityHint="Chooses taxon"
+        handleTaxonOrEditPress={jest.fn( )}
         taxon={mockTaxon}
+        testID="TaxonResult.test"
       />,
     );
 

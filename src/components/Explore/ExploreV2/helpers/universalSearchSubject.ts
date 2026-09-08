@@ -49,6 +49,23 @@ export const resultToSubject = ( result: UniversalSearchResultItem ): ExploreV2S
   }
 };
 
+// Inverse of resultToSubject. Subjects that never came from a search
+// result (unobserved, unknown) have no result form and return null.
+export const subjectToResult = (
+  subject: ExploreV2Subject,
+): UniversalSearchResultItem | null => {
+  switch ( subject.type ) {
+    case "taxon":
+      return { type: "taxon", taxon: subject.taxon };
+    case "user":
+      return { type: "user", user: subject.user };
+    case "project":
+      return { type: "project", project: subject.project };
+    default:
+      return null;
+  }
+};
+
 export const subjectToText = (
   subject: ExploreV2Subject,
   commonNameIsPrimary: boolean,

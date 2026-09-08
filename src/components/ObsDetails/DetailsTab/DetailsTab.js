@@ -111,7 +111,7 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
       ? colors.inatGreen
       : colors.darkGray;
     return (
-      <View className="flex-1 flex-col space-y-[8px] items-center">
+      <View className="flex-1 flex-col gap-y-[8px] items-center">
         <QualityGradeStatus qualityGrade={option} opacity={opacity} color={color} />
         <Body4 className={labelClassName}>{ qualityGradeOption( option ) }</Body4>
       </View>
@@ -153,7 +153,7 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
       <Divider />
       <View className={`${sectionClass} flex-col`}>
         <Heading4 className={headingClass}>{t( "DATA-QUALITY" )}</Heading4>
-        <View className="space-y-[15px]">
+        <View className="gap-y-[15px]">
           <View className="flex-row justify-around">
             {displayQualityGradeOption( "casual" )}
             {displayQualityGradeOption( "needs_id" )}
@@ -173,7 +173,7 @@ const DetailsTab = ( { currentUser, observation }: Props ): Node => {
       </View>
       <Divider />
       <ProjectSection observation={observation} />
-      <View className={`${sectionClass} space-y-[11px]`}>
+      <View className={`${sectionClass} gap-y-[11px]`}>
         <Heading4 className={headingClass}>{t( "OTHER-DATA" )}</Heading4>
         <Attribution observation={observation} />
         {application && (

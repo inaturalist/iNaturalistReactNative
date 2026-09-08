@@ -5,9 +5,6 @@ import {
   useCameraDevices,
 } from "components/Camera/helpers/visionCameraWrapper";
 import { ActivityIndicator } from "components/SharedComponents";
-import {
-  hasWriteMediaPermission,
-} from "components/SharedComponents/PermissionGateContainer";
 import { View } from "components/styledComponents";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React, {
@@ -22,6 +19,7 @@ import type {
 } from "react-native-vision-camera";
 import fetchAccurateUserLocation from "sharedHelpers/fetchAccurateUserLocation";
 import { log } from "sharedHelpers/logger";
+import { hasWriteMediaPermission } from "sharedHelpers/permissions";
 import { createSentinelFile, deleteSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
 import { useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";

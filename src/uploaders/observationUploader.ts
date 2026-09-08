@@ -15,6 +15,8 @@ import {
   attachMediaToObservation,
   uploadObservationMedia,
 } from "uploaders/mediaUploader";
+import syncProjectChildDeletions from "uploaders/projectChildrenDeleter";
+import { uploadProjectChildren } from "uploaders/projectChildrenUploader";
 import { RecoverableError, RECOVERY_BY } from "uploaders/utils/errorHandling";
 import { trackObservationUpload } from "uploaders/utils/progressTracker";
 
@@ -153,6 +155,7 @@ async function uploadObservation(
     throw error;
   }
 
+  // Server UUID
   const { uuid: obsUUID } = response.results[0];
 
   // Step 3: attach media to observation with revalidated token
@@ -180,7 +183,29 @@ async function uploadObservation(
     throw error;
   }
 
-  // Step 4: mark observation as uploaded in realm
+  // Step 4: upload project field values and project observations
+  let childrenDuration = 0;
+  try {
+    const apiToken = await validateAndGetToken( );
+    const childrenStartTime = Date.now( );
+    const childOptions = { ...opts, api_token: apiToken };
+    await syncProjectChildDeletions( observation, childOptions, realm );
+    await uploadProjectChildren( obsUUID, observation, childOptions, realm );
+    childrenDuration = Date.now( ) - childrenStartTime;
+  } catch ( error ) {
+    const {
+      errorContext, totalDuration,
+    } = createErrorContext( "project_children_upload", uploadStartTime );
+    logger.error(
+      `Upload: Failed ${observation.uuid} after ${totalDuration}ms - ${errorContext}`
+      + ": Project children upload failed",
+      error,
+    );
+    error.message = `Project children upload failed: ${error.message}`;
+    throw error;
+  }
+
+  // Step 5: mark observation as uploaded in realm
   try {
     markRecordUploaded( observation.uuid, null, "Observation", response, realm );
   } catch ( error ) {
@@ -201,6 +226,7 @@ async function uploadObservation(
   logger.info(
     `Upload: Completed ${observation.uuid} - total: ${totalDuration}ms`
       + `, media: ${mediaDuration}ms, obs: ${obsDuration}ms, attach: ${attachDuration}ms`
+      + `, children: ${childrenDuration}ms`
       + `, uploaded items: ${uploadedMediaCount}`,
   );
 

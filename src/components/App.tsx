@@ -1,3 +1,5 @@
+import "../../global.css";
+
 import { useNavigation } from "@react-navigation/native";
 import RootStackNavigator from "navigation/RootStackNavigator";
 import type { PropsWithChildren } from "react";

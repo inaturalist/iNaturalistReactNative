@@ -166,14 +166,13 @@ const IdentificationSection = ( {
       {identTaxon && (
         <View className="mt-5 mx-6">
           <TaxonResult
-            accessibilityLabel={t( "Edits-this-observations-taxon" )}
+            accessibilityHint={t( "Edits-this-observations-taxon" )}
             asListItem={false}
             fetchRemote={false}
             handleTaxonOrEditPress={navToSuggestions}
             handleRemovePress={removeTaxon}
             hideInfoButton
             hideNavButtons
-            showCheckmark={false}
             showEditButton
             showRemoveButton
             taxon={identTaxon}

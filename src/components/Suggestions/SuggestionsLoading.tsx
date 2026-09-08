@@ -26,7 +26,7 @@ const SuggestionsLoading = ( {
     <>
       <View className="pt-6" />
       <Suggestion
-        accessibilityLabel={t( "Choose-taxon" )}
+        accessibilityHint={t( "Chooses-taxon" )}
         suggestion={aiCameraSuggestion}
         onTaxonChosen={onTaxonChosen}
       />

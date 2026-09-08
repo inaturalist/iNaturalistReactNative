@@ -7,7 +7,7 @@ import "react-native-get-random-values";
 import "react-native-url-polyfill/auto";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Alert, AppRegistry, LogBox } from "react-native";
+import { Alert, AppRegistry } from "react-native";
 import { getCurrentRoute } from "navigation/navigationUtils";
 import zustandMMKVBackingStorage from "stores/zustandMMKVBackingStorage";
 import {
@@ -42,10 +42,7 @@ import { getUserAgent } from "./src/api/userAgent";
 
 const logger = log.extend( "index.js" );
 
-LogBox.ignoreLogs( [
-  // ignore deprecation warning from Firebase. Will be handled with MOB-1630.
-  /Firebase Web modular SDK API/,
-] );
+this.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
 
 // Log all unhandled promise rejections in release builds. Otherwise they will
 // die in silence. Debug builds have a more useful UI w/ desymbolicated stack

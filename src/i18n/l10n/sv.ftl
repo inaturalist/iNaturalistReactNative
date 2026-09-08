@@ -138,8 +138,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VÄLJ ETT ANVÄNDARNAMN
-Choose-taxon = Välj taxon
-Choose-top-taxon = Välj topptaxon
+Chooses-taxon = Chooses taxon
+Chooses-top-taxon = Chooses top taxon
 Close = Stäng
 Close-permission-request-screen = Stäng skärmen för behörighetsbegäran
 Close-search = Stäng söket
@@ -463,6 +463,7 @@ JOURNAL-POSTS-WITHOUT-NUMBER =
 July = juli
 June = juni
 Just-make-sure-the-organism-is-wild = Se bara till att organismen är vild (inte ett husdjur, ett djurparksdjur eller en trädgårdsväxt)
+KEEP-EDITING = KEEP EDITING
 Kelp-and-Diatoms = Kelp & Diatoms
 Last-Active-date = Senast aktiv: { $date }
 Lat-Lon = { NUMBER($latitude, maximumFraktionDigits: 6) }, { NUMBER($longitude, maximumFraktionDigits: 6) }
@@ -513,6 +514,7 @@ Membership-in-this-project-is-by-invitation-only = Membership in this project is
 Menu = Meny
 Missing-Date = Datum saknas
 MISSING-EVIDENCE = BELÄGG SAKNAS
+MISSING-INFO = MISSING INFO
 Mollusks = Mollusks
 Monthly-Donor = Månatlig bidragsgivare
 Months = Månader
@@ -611,6 +613,7 @@ Offline-suggestions-may-differ-from-online = Offline-förslag kan skilja sig fr�
 OK = OK
 Oldest-to-newest = Äldst till nyast
 Once-you-create-and-upload-observations = När du börjat skapa och ladda upp fynd kan andra medlemmar i vår community lägga till bestämningar för att hjälpa dina fynd att nå forskningsklass.
+One-or-more-projects-still-need-required-info = One or more projects still need required info. Leave and only the completed ones will be saved.
 Open = Öppen
 OPEN-EMAIL = ÖPPNA E-POST
 Open-menu = Öppna menyn.
@@ -1040,6 +1043,11 @@ X-Identifiers =
         [one] { $count } bestämmare
        *[other] { $count } bestämmare
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1074,6 +1082,11 @@ X-Observers =
     { $count ->
         [one] { $count } Observatör
        *[other] { $count } Observatörer
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

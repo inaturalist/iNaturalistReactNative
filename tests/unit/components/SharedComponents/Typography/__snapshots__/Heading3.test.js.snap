@@ -4,28 +4,13 @@ exports[`Heading3 renders correctly 1`] = `
 <Text
   maxFontSizeMultiplier={2}
   style={
-    [
-      {
-        "color": "#454545",
-      },
-      {
-        "fontFamily": "Lato-Regular",
-      },
-      [
-        {
-          "textAlign": "left",
-        },
-        [
-          {
-            "fontSize": 18,
-            "lineHeight": 21.6,
-          },
-          {
-            "fontFamily": "Lato-Bold",
-          },
-        ],
-      ],
-    ]
+    {
+      "color": "rgba(69, 69, 69, 1)",
+      "fontFamily": "Lato-Bold",
+      "fontSize": 18,
+      "lineHeight": 21.600000381469727,
+      "textAlign": "left",
+    }
   }
 >
   Heading3

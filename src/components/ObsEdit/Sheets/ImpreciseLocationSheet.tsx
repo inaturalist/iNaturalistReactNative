@@ -1,16 +1,13 @@
-// @flow
-
 import { REQUIRED_LOCATION_ACCURACY } from "components/LocationPicker/CrosshairCircle";
 import { TextSheet } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  setShowImpreciseLocationSheet: Function
+interface Props {
+  setShowImpreciseLocationSheet: ( show: boolean ) => void;
 }
 
-const ImpreciseLocationSheet = ( { setShowImpreciseLocationSheet }: Props ): Node => {
+const ImpreciseLocationSheet = ( { setShowImpreciseLocationSheet }: Props ) => {
   const { t } = useTranslation( );
 
   return (

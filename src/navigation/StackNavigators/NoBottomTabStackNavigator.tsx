@@ -8,10 +8,7 @@ import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer"
 import PhotoLibrary from "components/PhotoImporter/PhotoLibrary";
 import { Heading4 } from "components/SharedComponents";
 import Mortal from "components/SharedComponents/Mortal";
-import PermissionGateContainer, {
-  AUDIO_PERMISSIONS,
-  CAMERA_PERMISSIONS,
-} from "components/SharedComponents/PermissionGateContainer";
+import PermissionGateContainer from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import ContextHeader from "navigation/ContextHeader";
@@ -23,6 +20,10 @@ import {
 import { StackHostProvider } from "navigation/StackHostContext";
 import type { NoBottomTabStackParamList } from "navigation/types";
 import React from "react";
+import {
+  AUDIO_PERMISSIONS,
+  CAMERA_PERMISSIONS,
+} from "sharedHelpers/permissions";
 
 import SharedStackScreens from "./SharedStackScreens";
 
@@ -79,8 +80,9 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
 // granting add-only permission, the user can never grant it again until they
 // uninstall the app. We *may* want to bring this back to handle writing to
 // albums, but for now this works. ~~~~kueda20240829
-
-// TODO verify this is true for Android
+//
+// On Android, ACCESS_MEDIA_LOCATION is requested inside PhotoLibrary before the
+// picker opens (MOB-1656); import is not blocked if the user denies it.
 const PhotoLibraryContainerWithPermission = ( ) => (
   <PhotoLibrary />
 );

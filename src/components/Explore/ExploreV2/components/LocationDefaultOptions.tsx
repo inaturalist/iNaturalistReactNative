@@ -1,6 +1,9 @@
+import RecentLocations
+  from "components/Explore/ExploreV2/components/RecentLocations";
 import INatIcon from "components/SharedComponents/INatIcon";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import { Pressable, View } from "components/styledComponents";
+import type { Place } from "providers/ExploreV2Context";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
@@ -8,11 +11,16 @@ import colors from "styles/tailwindColors";
 interface Props {
   onSelectNearby: ( ) => void;
   onSelectWorldwide: ( ) => void;
+  onSelectPlace: ( _place: Place ) => void;
 }
 
 const ROW_CLASSES = "flex-row items-center px-[15px] py-[11px] border-b border-lightGray";
 
-const LocationDefaultOptions = ( { onSelectNearby, onSelectWorldwide }: Props ) => {
+const LocationDefaultOptions = ( {
+  onSelectNearby,
+  onSelectWorldwide,
+  onSelectPlace,
+}: Props ) => {
   const { t } = useTranslation( );
 
   return (
@@ -39,6 +47,7 @@ const LocationDefaultOptions = ( { onSelectNearby, onSelectWorldwide }: Props ) 
         <INatIcon name="earth" size={15} color={colors.darkGray} />
         <Body1 className="ml-[10px]">{t( "Worldwide" )}</Body1>
       </Pressable>
+      <RecentLocations onSelectPlace={onSelectPlace} />
     </View>
   );
 };

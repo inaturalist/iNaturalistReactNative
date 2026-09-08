@@ -8,6 +8,7 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import { Keyboard, StyleSheet } from "react-native";
+import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 
 const mockNavigate = jest.fn( );
@@ -167,6 +168,8 @@ const focusLocation = ( ) => {
   fireEvent( screen.getByTestId( "UniversalSearch.locationInput" ), "focus" );
 };
 
+const pressSearch = ( ) => actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+
 const KEYBOARD_HIDDEN = { keyboardHeight: 0, keyboardShown: false };
 
 const measureButtonBar = height => {
@@ -183,8 +186,11 @@ beforeAll( async ( ) => {
   await initI18next( );
 } );
 
+const recents = ( ) => useStore.getState( ).exploreRecentSearches;
+
 beforeEach( ( ) => {
   jest.useFakeTimers( );
+  recents( ).clearRecents( );
   mockNavigate.mockClear( );
   mockPopTo.mockClear( );
   mockDispatch.mockClear( );
@@ -721,10 +727,6 @@ describe( "UniversalSearch screen", ( ) => {
       await actor.press( screen.getByTestId( "LocationSearchResult.1" ) );
     };
 
-    const pressSearch = ( ) => actor.press(
-      screen.getByTestId( "UniversalSearch.searchButton" ),
-    );
-
     it( "navigates to ExploreResults when the search button is pressed", async ( ) => {
       renderComponent( <UniversalSearch /> );
 
@@ -771,7 +773,7 @@ describe( "UniversalSearch screen", ( ) => {
       expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
       expect( mockDispatch ).toHaveBeenCalledWith( {
         type: "SET_LOCATION_PLACE",
-        place: { id: 1, display_name: "Monterey, CA, US" },
+        place: { id: 1, display_name: "Monterey, CA, US", place_type: 9 },
       } );
     } );
 
@@ -787,7 +789,7 @@ describe( "UniversalSearch screen", ( ) => {
       );
       expect( mockDispatch ).toHaveBeenCalledWith( {
         type: "SET_LOCATION_PLACE",
-        place: { id: 1, display_name: "Monterey, CA, US" },
+        place: { id: 1, display_name: "Monterey, CA, US", place_type: 9 },
       } );
       expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
       expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
@@ -829,6 +831,127 @@ describe( "UniversalSearch screen", ( ) => {
       expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
       expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
       expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
+    } );
+
+    it( "records the searched subject and place as recents", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await selectSubject( );
+      await selectPlace( );
+      await pressSearch( );
+
+      expect( recents( ).subjects ).toEqual( [
+        expect.objectContaining( { type: "user", user: expect.objectContaining( { id: 7 } ) } ),
+      ] );
+      expect( recents( ).places ).toEqual( [
+        { id: 1, display_name: "Monterey, CA, US", place_type: 9 },
+      ] );
+    } );
+
+    it( "records nothing when the search has no subject and no place", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+      await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
+      expect( recents( ).subjects ).toEqual( [] );
+      expect( recents( ).places ).toEqual( [] );
+    } );
+
+    it( "does not record a subject that can't be shown as a recent row", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await actor.press( screen.getByTestId( "DefaultSearchOptions.unobserved" ) );
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith(
+        expect.objectContaining( { type: "SET_SUBJECT" } ),
+      );
+      expect( recents( ).subjects ).toEqual( [] );
+    } );
+
+    it( "does not record a place the user picked but did not search", async ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      await selectPlace( );
+
+      expect( recents( ).places ).toEqual( [] );
+    } );
+  } );
+
+  describe( "recent searches", ( ) => {
+    const TAXON_SUBJECT = {
+      type: "taxon",
+      taxon: {
+        id: 12,
+        name: "Eumyias thalassinus",
+        preferred_common_name: "Verditer Flycatcher",
+        iconic_taxon_name: "Aves",
+        default_photo: { url: "https://example.com/t.jpg" },
+      },
+    };
+    const MONTEREY = { id: 1, display_name: "Monterey, CA, US", place_type: 9 };
+
+    it( "lists recent subjects beneath the subject defaults", ( ) => {
+      recents( ).recordSubject( TAXON_SUBJECT );
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByTestId( "DefaultSearchOptions" ) ).toBeVisible( );
+      expect( screen.getByTestId( "RecentSearches" ) ).toBeVisible( );
+      expect( screen.getByTestId( "UniversalSearchResult.taxon.12" ) ).toBeVisible( );
+    } );
+
+    it( "stages a recent subject, then commits it on Search", async ( ) => {
+      recents( ).recordSubject( TAXON_SUBJECT );
+      renderComponent( <UniversalSearch /> );
+
+      await actor.press( screen.getByTestId( "UniversalSearchResult.taxon.12" ) );
+
+      // Tapping a recent only fills the field; nothing is committed yet
+      expect( screen.getByDisplayValue( "Verditer Flycatcher" ) ).toBeVisible( );
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      expect( mockPopTo ).not.toHaveBeenCalled( );
+
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_SUBJECT",
+        subject: TAXON_SUBJECT,
+      } );
+      expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
+    } );
+
+    it( "lists recent places beneath the location defaults", ( ) => {
+      recents( ).recordPlace( MONTEREY );
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+
+      expect( screen.getByTestId( "LocationDefaultOptions" ) ).toBeVisible( );
+      expect( screen.getByTestId( "RecentLocations" ) ).toBeVisible( );
+      expect( screen.getByText( MONTEREY.display_name ) ).toBeVisible( );
+    } );
+
+    it( "stages a recent place, then commits it on Search", async ( ) => {
+      recents( ).recordPlace( MONTEREY );
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+      await actor.press( screen.getByTestId( "LocationSearchResult.1" ) );
+
+      // Tapping a recent only fills the field; nothing is committed yet
+      expect( screen.getByDisplayValue( MONTEREY.display_name ) ).toBeVisible( );
+      expect( mockDispatch ).not.toHaveBeenCalled( );
+      expect( mockPopTo ).not.toHaveBeenCalled( );
+
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_LOCATION_PLACE",
+        place: MONTEREY,
+      } );
     } );
   } );
 } );

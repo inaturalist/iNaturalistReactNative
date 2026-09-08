@@ -1,11 +1,12 @@
+import { PaperActivityIndicator } from "components/styledComponents";
 import React from "react";
 import type { ViewStyle } from "react-native";
 import type { MD3Theme } from "react-native-paper";
-import { ActivityIndicator as RNPActivityIndicator } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 interface Props {
   animating?: boolean;
+  className?: string;
   color?: string;
   hidesWhenStopped?: boolean;
   size?: number | "small" | "large";
@@ -16,6 +17,7 @@ interface Props {
 
 const ActivityIndicator = ( {
   animating,
+  className,
   color = colors.inatGreen,
   hidesWhenStopped,
   size = 100,
@@ -23,8 +25,9 @@ const ActivityIndicator = ( {
   testID,
   theme,
 }: Props ) => (
-  <RNPActivityIndicator
+  <PaperActivityIndicator
     animating={animating}
+    className={className}
     color={color}
     hidesWhenStopped={hidesWhenStopped}
     size={size}

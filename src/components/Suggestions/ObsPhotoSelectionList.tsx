@@ -31,7 +31,7 @@ const ObsPhotoSelectionList = ( {
     >
       <View
         className={classnames(
-          "rounded-lg overflow-hidden",
+          "w-[83px] h-[83px] rounded-lg",
           {
             "border-inatGreen border-[3px]": selectedPhotoUri === item,
           },
@@ -41,7 +41,13 @@ const ObsPhotoSelectionList = ( {
         <Image
           source={{ uri: item }}
           accessibilityIgnoresInvertColors
-          className="w-full h-full"
+          className={classnames(
+            "w-full h-full",
+            // Match the inner edge of the selected border, i.e. rounded-lg minus 3px border width
+            selectedPhotoUri === item
+              ? "rounded-[5px]"
+              : "rounded-lg",
+          )}
         />
       </View>
     </Pressable>

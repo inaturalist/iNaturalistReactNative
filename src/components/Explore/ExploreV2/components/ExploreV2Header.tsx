@@ -1,6 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { THUMBNAIL_CLASS } from "appConstants/classNames";
+import countFilters from "components/Explore/ExploreV2/helpers/countFilters";
 import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
+import NumberBadge from "components/Explore/NumberBadge";
 import {
   Body1,
   Body3,
@@ -19,6 +21,8 @@ import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import { useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
+import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
+import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
 function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string {
@@ -170,6 +174,14 @@ const ExploreV2Header = ( ) => {
   const { state } = useExploreV2( );
   const currentUser = useCurrentUser( );
   const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
+  const advancedSearchMode = useStore(
+    ( storeState: ExploreV2AdvancedSearchSlice ) => storeState
+      .exploreV2AdvancedSearch.advancedSearchMode,
+  );
+  const searchScreen = advancedSearchMode
+    ? "AdvancedSearch"
+    : "UniversalSearch";
+  const filterCount = countFilters( state.filters );
 
   const { subject } = state;
   const place = locationLabel( state.location, t );
@@ -204,19 +216,36 @@ const ExploreV2Header = ( ) => {
       <Pressable
         accessible={false}
         className="p-4 flex-row items-center"
-        onPress={() => navigation.navigate( "UniversalSearch" )}
+        onPress={() => navigation.navigate( searchScreen )}
         testID="ExploreV2Header.pressable"
       >
         <BackButton />
         {headerContent}
-        <ContainedSquareButton
-          accessibilityHint={t( "Opens-search-interface" )}
-          accessibilityLabel={t( "Search" )}
-          backgroundColor={colors.inatGreen}
-          icon="magnifying-glass"
-          onPress={() => navigation.navigate( "UniversalSearch" )}
-          testID="ExploreV2Header.searchButton"
-        />
+        <View>
+          <ContainedSquareButton
+            accessibilityHint={t( "Opens-search-interface" )}
+            accessibilityLabel={advancedSearchMode
+              ? t( "Filters" )
+              : t( "Search" )}
+            backgroundColor={colors.inatGreen}
+            icon={advancedSearchMode
+              ? "sliders"
+              : "magnifying-glass"}
+            onPress={() => navigation.navigate( searchScreen )}
+            testID="ExploreV2Header.searchButton"
+          />
+          {filterCount > 0 && (
+            <View
+              accessibilityElementsHidden
+              className="absolute top-[-10px] right-[-10px]"
+              importantForAccessibility="no-hide-descendants"
+              pointerEvents="none"
+              testID="ExploreV2Header.filterCount"
+            >
+              <NumberBadge number={filterCount} light />
+            </View>
+          )}
+        </View>
       </Pressable>
     </View>
   );

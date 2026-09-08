@@ -29,6 +29,12 @@ export interface ExploreV2QueryParams extends FilterApiParams {
   identified?: boolean;
 }
 
+// sans the paging and sorting params that only apply to the observations search
+export type ExploreV2BaseQueryParams = Omit<
+  ExploreV2QueryParams,
+  "order_by" | "order" | "per_page"
+>;
+
 export interface NearbyCoords {
   lat: number;
   lng: number;

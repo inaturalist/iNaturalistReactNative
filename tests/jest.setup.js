@@ -194,15 +194,18 @@ jest.mock( "components/SharedComponents/Buttons/Button", () => {
 } );
 
 jest.mock( "navigation/FadeInView", () => {
-  const React = require( "react" );
-  const { View } = require( "react-native" );
+  // jest.requireActual instead of require: nativewind's babel plugin rewrites
+  // React.createElement from a plain require("react") to reference a hoisted
+  // import, which jest.mock factories aren't allowed to touch
+  const React = jest.requireActual( "react" );
+  const { View } = jest.requireActual( "react-native" );
 
   return jest.fn( ( { children } ) => React.createElement( View, null, children ) );
 } );
 
 jest.mock( "components/Camera/FadeInOutView", () => {
-  const React = require( "react" );
-  const { View } = require( "react-native" );
+  const React = jest.requireActual( "react" );
+  const { View } = jest.requireActual( "react-native" );
 
   return jest.fn( ( ) => React.createElement( View, null ) );
 } );

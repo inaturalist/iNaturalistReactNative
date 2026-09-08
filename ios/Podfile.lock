@@ -3658,7 +3658,7 @@ PODS:
     - RNWorklets
     - SocketRocket
     - Yoga
-  - RNScreens (4.15.4):
+  - RNScreens (4.25.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -3685,10 +3685,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNScreens/common (= 4.15.4)
+    - RNScreens/common (= 4.25.2)
     - SocketRocket
     - Yoga
-  - RNScreens/common (4.15.4):
+  - RNScreens/common (4.25.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -4435,14 +4435,14 @@ SPEC CHECKSUMS:
   FirebaseSessions: dba7635960740ad77cc2f3387d90ff22a7942f82
   FirebaseSharedSwift: 3d1e448b7202e36821a492941c84592d1308ea14
   fmt: 530618a01105dae0fa3a2f27c81ae11fa8f67eac
-  glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
+  glog: 0456694f3aaf09460b660ea327cfc11defbeea4c
   GoogleAppMeasurement: 57270ccc2b77472d7e85c4cbe45972564eff78bb
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
-  hermes-engine: 519ba93bfb8ec86f1e75f691899c3efcd409c449
+  hermes-engine: f37e1d6f1eb198649a60b3f17b6f685a6ac12470
   LicensePlist: 91465ee0724beab897ed5482775c5d3932a3f379
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
@@ -4558,7 +4558,7 @@ SPEC CHECKSUMS:
   RNLocalize: d8ccb568b40c72c767714db3808ce66a1ecf444a
   RNPermissions: 79345e03d8bede3692368496ec89dcc4768585b5
   RNReanimated: c7f41b239964ff97c0ac083b2f1801d3d754516e
-  RNScreens: 4f2aed147a2775017923789d8a0a2d377712ec2e
+  RNScreens: cfb11dc33b79eac5e09a10b25e1ad0c2499d5b8b
   RNShareMenu: 85b0a3d8b0d34e4b088d8a18600bc0a0b69a96a6
   RNStoreReview: 8f6061907efb6474757db004ee8faac728fd2ada
   RNSVG: c7b9ee1f2352f984e79d6e3238645b81ced60516

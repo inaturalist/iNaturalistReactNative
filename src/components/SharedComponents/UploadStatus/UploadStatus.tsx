@@ -1,13 +1,12 @@
 import classnames from "classnames";
 import { CircleDots, INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { PropsWithChildren, ReactComponent } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 import React from "react";
 import { useLayoutPrefs, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import FadeOutFadeInIcon from "./FadeOutFadeInIcon";
-import FadeOutIcon from "./FadeOutIcon";
 import UploadCompleteIcon from "./UploadCompleteIcon";
 import UploadProgressIcon from "./UploadProgressIcon";
 
@@ -26,7 +25,7 @@ interface Props extends PropsWithChildren {
   progress: number;
   uniqueKey: string;
   queued: boolean;
-  obsStatus: ReactComponent;
+  obsStatus: ReactNode;
 }
 
 const UploadStatus = ( {
@@ -129,34 +128,25 @@ const UploadStatus = ( {
       );
     }
 
-    if ( !isDefaultMode && layout === "vertical" ) {
-      return (
-        <FadeOutFadeInIcon
-          uniqueKey={uniqueKey}
-          fadeOutIcon={(
-            <View className={wrapperClassName}>
-              <UploadCompleteIcon
-                iconClasses={iconClasses}
-                completeColor={completeColor}
-              />
-            </View>
-          )}
-          fadeInIcon={<View className={wrapperClassName}>{obsStatus}</View>}
-        />
-      );
-    }
+    const showObsStatus = !isDefaultMode && layout === "vertical";
 
     return (
-      <FadeOutIcon
+      <FadeOutFadeInIcon
         uniqueKey={uniqueKey}
-      >
-        <View className={wrapperClassName}>
-          <UploadCompleteIcon
-            iconClasses={iconClasses}
-            completeColor={completeColor}
-          />
-        </View>
-      </FadeOutIcon>
+        fadeOutIcon={(
+          <View className={wrapperClassName}>
+            <UploadCompleteIcon
+              iconClasses={iconClasses}
+              completeColor={completeColor}
+            />
+          </View>
+        )}
+        fadeInIcon={(
+          <View className={classnames( wrapperClassName, "h-[44px]" )}>
+            {showObsStatus && obsStatus}
+          </View>
+        )}
+      />
     );
   };
 

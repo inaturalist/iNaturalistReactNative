@@ -13,7 +13,11 @@ beforeAll( async ( ) => {
 describe( "LocationDefaultOptions", ( ) => {
   it( "renders the Nearby and Worldwide default rows", ( ) => {
     renderComponent(
-      <LocationDefaultOptions onSelectNearby={jest.fn( )} onSelectWorldwide={jest.fn( )} />,
+      <LocationDefaultOptions
+        onSelectNearby={jest.fn( )}
+        onSelectPlace={jest.fn( )}
+        onSelectWorldwide={jest.fn( )}
+      />,
     );
 
     expect( screen.getByTestId( "LocationDefaultOptions" ) ).toBeTruthy( );
@@ -27,7 +31,11 @@ describe( "LocationDefaultOptions", ( ) => {
     const actor = userEvent.setup( );
     const onSelectNearby = jest.fn( );
     renderComponent(
-      <LocationDefaultOptions onSelectNearby={onSelectNearby} onSelectWorldwide={jest.fn( )} />,
+      <LocationDefaultOptions
+        onSelectNearby={onSelectNearby}
+        onSelectPlace={jest.fn( )}
+        onSelectWorldwide={jest.fn( )}
+      />,
     );
 
     await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
@@ -39,7 +47,11 @@ describe( "LocationDefaultOptions", ( ) => {
     const actor = userEvent.setup( );
     const onSelectWorldwide = jest.fn( );
     renderComponent(
-      <LocationDefaultOptions onSelectNearby={jest.fn( )} onSelectWorldwide={onSelectWorldwide} />,
+      <LocationDefaultOptions
+        onSelectNearby={jest.fn( )}
+        onSelectPlace={jest.fn( )}
+        onSelectWorldwide={onSelectWorldwide}
+      />,
     );
 
     await actor.press( screen.getByRole( "button", { name: i18next.t( "Worldwide" ) } ) );

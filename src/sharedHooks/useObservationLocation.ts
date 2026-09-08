@@ -1,6 +1,6 @@
 import { useFocusEffect } from "@react-navigation/native";
-import { hasOnlyCoarseLocation } from "components/SharedComponents/PermissionGateContainer";
 import { useCallback, useRef, useState } from "react";
+import { hasOnlyCoarseLocation } from "sharedHelpers/permissions";
 
 import fetchCoarseUserLocation from "../sharedHelpers/fetchCoarseUserLocation";
 import type { UserLocation } from "./useWatchPosition";

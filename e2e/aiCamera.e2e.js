@@ -55,11 +55,6 @@ describe( "AICamera", () => {
         : suggestionAttributes.identifier.split( "." ).pop();
       await firstSuggestion.tap();
 
-      // On Taxon Detail
-      const selectTaxonButon = element( by.id( "TaxonDetails.SelectButton" ) );
-      await waitFor( selectTaxonButon ).toBeVisible().withTimeout( TIMEOUT );
-      await selectTaxonButon.tap();
-
       await uploadObservation( { upload: true } );
 
       // Check that the display taxon name is visible

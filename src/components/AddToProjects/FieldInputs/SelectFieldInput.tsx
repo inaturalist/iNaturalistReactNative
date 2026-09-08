@@ -37,7 +37,7 @@ const SelectFieldInput = ( { obsField }: Props ) => {
             setValue( newValue );
             setSheetOpen( false );
           }}
-          selectedValue={value}
+          selectedValue={value || obsField.allowedValues[0]}
           pickerValues={pickerValues}
         />
       )}

@@ -14,7 +14,7 @@ jest.mock( "sharedHooks/useWatchPosition", () => ( {
 } ) );
 
 const mockHasOnlyCoarseLocation = jest.fn( );
-jest.mock( "components/SharedComponents/PermissionGateContainer", () => ( {
+jest.mock( "sharedHelpers/permissions", () => ( {
   hasOnlyCoarseLocation: ( ...args ) => mockHasOnlyCoarseLocation( ...args ),
 } ) );
 

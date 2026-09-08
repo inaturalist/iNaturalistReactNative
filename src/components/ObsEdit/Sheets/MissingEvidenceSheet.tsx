@@ -1,17 +1,14 @@
-// @flow
-
 import {
   TextSheet,
 } from "components/SharedComponents";
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  setShowMissingEvidenceSheet: Function
+interface Props {
+  setShowMissingEvidenceSheet: ( show: boolean ) => void;
 }
 
-const MissingEvidenceSheet = ( { setShowMissingEvidenceSheet }: Props ): Node => {
+const MissingEvidenceSheet = ( { setShowMissingEvidenceSheet }: Props ) => {
   const { t } = useTranslation( );
 
   return (

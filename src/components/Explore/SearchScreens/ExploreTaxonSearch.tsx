@@ -54,7 +54,6 @@ const ExploreTaxonSearch = ( {
         fetchRemote={false}
         handleTaxonOrEditPress={() => onTaxonSelected( taxon )}
         onPressInfo={onPressInfo}
-        showCheckmark={false}
         taxon={taxon}
         testID={`Search.taxa.${taxon.id}`}
       />

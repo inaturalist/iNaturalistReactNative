@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import colors from "styles/tailwindColors";
 
 import Icon from "./INatIcon";
@@ -83,13 +84,16 @@ const ALIASES: Aliases = {
 const INatIcon = ( {
   testID, name, color, size, dropShadow,
 }: Props ) => {
-  const style = dropShadow
-    ? {
+  const style = {
+    // Android has a default line padding that we should disable
+    // for glyph based icons to prevent them from affecting layout
+    ...( Platform.OS === "android" && { includeFontPadding: false } ),
+    ...( dropShadow && {
       shadowOpacity: 2,
       textShadowRadius: 4,
       textShadowOffset: { width: 2, height: 2 },
-    }
-    : null;
+    } ),
+  };
   return (
     <Icon
       testID={testID}

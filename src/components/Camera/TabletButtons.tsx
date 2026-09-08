@@ -14,24 +14,27 @@ import Location from "./Buttons/Location";
 import TakePhoto from "./Buttons/TakePhoto";
 import Zoom from "./Buttons/Zoom";
 
-const CAMERA_BUTTON_DIM = 40;
-
+// h-10/w-10 = 2.5rem = 40px. Written as the literal Tailwind scale class
+// rather than an interpolated `h-[${CAMERA_BUTTON_DIM}px]` string: nativewind
+// 4 compiles classes from a static scan of source text, so a template
+// literal never matches anything in the compiled stylesheet and silently
+// produces no style at all.
 const checkmarkClasses = [
   "bg-inatGreen",
   "rounded-full",
-  `h-[${CAMERA_BUTTON_DIM}px]`,
-  `w-[${CAMERA_BUTTON_DIM}px]`,
+  "h-10",
+  "w-10",
   "justify-center",
   "items-center",
 ].join( " " );
 
 const cameraOptionsClasses = [
   "bg-black/50",
-  `h-[${CAMERA_BUTTON_DIM}px]`,
+  "h-10",
   "items-center",
   "justify-center",
   "rounded-full",
-  `w-[${CAMERA_BUTTON_DIM}px]`,
+  "w-10",
 ].join( " " );
 
 interface Props {
@@ -65,8 +68,8 @@ const CameraButtonPlaceholder = ( { extraClassName }: { extraClassName?: string 
     aria-hidden
     className={classnames(
       // "bg-deeppink",
-      `w-[${CAMERA_BUTTON_DIM}px]`,
-      `h-[${CAMERA_BUTTON_DIM}px]`,
+      "w-10",
+      "h-10",
       extraClassName,
     )}
   />

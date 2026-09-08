@@ -135,8 +135,8 @@ Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VALITSE KÄYTTÄJÄNIMI
-Choose-taxon = Valitse taksoni
-Choose-top-taxon = Valitse ylätaksoni
+Chooses-taxon = Valitse taksoni
+Chooses-top-taxon = Valitse ylätaksoni
 Close = Sulje
 Close-permission-request-screen = Sulje lupapyyntönäyttö
 Close-search = Sulje haku
@@ -451,7 +451,7 @@ JOINED-X-PROJECTS =
         [one] LIITTYNYT { $count } PROJEKTIIN
        *[other] LIITYTTY { $count } PROJEKTIIN
     }
-JOURNAL-POST = JOURNAL POST
+JOURNAL-POST = PÄIVÄKIRJAMERKINTÄ
 JOURNAL-POSTS-WITHOUT-NUMBER =
     { $count ->
         [one] PÄIVÄKIRJAN VIESTI
@@ -460,6 +460,7 @@ JOURNAL-POSTS-WITHOUT-NUMBER =
 July = heinäkuu
 June = kesäkuu
 Just-make-sure-the-organism-is-wild = Varmista, että eliö on villi (ei lemmikki, eläintarhan eläin tai puutarhakasvi)
+KEEP-EDITING = JATKA MUOKKAAMISTA
 Kelp-and-Diatoms = Kelp & Diatoms
 Last-Active-date = Viimeksi aktiivinen: { $date }
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
@@ -510,6 +511,7 @@ Membership-in-this-project-is-by-invitation-only = Membership in this project is
 Menu = Valikko
 Missing-Date = Puuttuva päivämäärä
 MISSING-EVIDENCE = PUUTTUVAT TODISTE
+MISSING-INFO = PUUTTUVAT TIEDOT
 Mollusks = Mollusks
 Monthly-Donor = Kuukausittainen lahjoittaja
 Months = Kuukaudet
@@ -528,7 +530,7 @@ Navigates-to-AI-camera = Siirry AI-kameraan
 Navigates-to-bulk-importer = Siirry massatuontiin
 Navigates-to-camera = Siirry kameraan
 Navigates-to-explore = Siirry tutkimaan
-Navigates-to-journal-post = Navigates to journal post
+Navigates-to-journal-post = Siirry päiväkirjamerkintään
 Navigates-to-log-in-screen = Siirry kirjautumiseen
 Navigates-to-main-menu = Siirry päävalikkoon
 Navigates-to-notifications = Siirry ilmoituksiin
@@ -608,6 +610,7 @@ Offline-suggestions-may-differ-from-online = Offline-ehdotukset voivat poiketa o
 OK = OK
 Oldest-to-newest = Vanhimmasta uusimpaan
 Once-you-create-and-upload-observations = Kun luot havaintoja ja lataat havaintoja, muut yhteisömme jäsenet voivat lisätä tunnistuksia, jotka auttavat havaintojasi saavuttamaan tutkimustason.
+One-or-more-projects-still-need-required-info = Yksi tai useampi projekti tarvitsee vielä lisätietoja. Jos poistut, vain valmiit tallennetaan.
 Open = Avoin
 OPEN-EMAIL = AVAA SÄHKÖPOSTI
 Open-menu = Avaa valikko.
@@ -1037,6 +1040,11 @@ X-Identifiers =
         [one] { $count } tunnistaja
        *[other] { $count } tunnistajaa
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] TUNNISTUS
+       *[other] TUNNISTUSTA
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } JOURNAL POST
@@ -1071,6 +1079,11 @@ X-Observers =
     { $count ->
         [one] { $count } havainnoija
        *[other] { $count } havainnoijaa
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] HAVAINNOIJA
+       *[other] HAVAINNOIJAA
     }
 X-of-Y =
     { $x ->

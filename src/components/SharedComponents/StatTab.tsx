@@ -54,3 +54,25 @@ export const SpeciesStatTab = ( { count, wrapperClassName }: VariantProps ) => {
     />
   );
 };
+
+export const ObserversStatTab = ( { count, wrapperClassName }: VariantProps ) => {
+  const { t } = useTranslation( );
+  return (
+    <StatTab
+      stat={count}
+      label={t( "X-OBSERVERS--below-number", { count } )}
+      wrapperClassName={wrapperClassName}
+    />
+  );
+};
+
+export const IdentifiersStatTab = ( { count, wrapperClassName }: VariantProps ) => {
+  const { t } = useTranslation( );
+  return (
+    <StatTab
+      stat={count}
+      label={t( "X-IDENTIFIERS--below-number", { count } )}
+      wrapperClassName={wrapperClassName}
+    />
+  );
+};

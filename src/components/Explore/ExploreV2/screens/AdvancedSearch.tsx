@@ -68,6 +68,8 @@ import Taxon from "realmModels/Taxon";
 import { formatObsFieldDate } from "sharedHelpers/dateAndTime";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useIconicTaxa from "sharedHooks/useIconicTaxa";
+import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
+import useStore from "stores/useStore";
 
 type SheetName = "sortBy" | "hrank" | "lrank" | "photoLicense";
 
@@ -85,6 +87,9 @@ const AdvancedSearch = ( ) => {
   const currentUser = useCurrentUser();
 
   const { state: v2State, dispatch: dispatchV2 } = useExploreV2();
+  const setAdvancedSearchMode = useStore(
+    ( state: ExploreV2AdvancedSearchSlice ) => state.exploreV2AdvancedSearch.setAdvancedSearchMode,
+  );
   const [initialDraft] = useState( ( ) => draftFromV2State( v2State ) );
   const [draft, dispatch] = useReducer( advancedSearchReducer, initialDraft );
   const {
@@ -180,6 +185,7 @@ const AdvancedSearch = ( ) => {
     dispatchV2( { type: EXPLORE_V2_ACTION.SET_SORT, sortBy } );
     dispatchV2( { type: EXPLORE_V2_ACTION.SET_FILTERS, filters } );
     dispatchV2( { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB, tab: OBSERVATIONS_TAB } );
+    setAdvancedSearchMode( true );
     navigation.popTo( "ExploreResults" );
   };
 

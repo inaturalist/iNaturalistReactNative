@@ -1,7 +1,9 @@
 import { screen, userEvent } from "@testing-library/react-native";
 import ExploreV2Header from "components/Explore/ExploreV2/components/ExploreV2Header";
-import { EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
+import { MEDIA } from "providers/ExploreContext";
+import { defaultExploreV2Filters, EXPLORE_V2_PLACE_MODE } from "providers/ExploreV2Context";
 import React from "react";
+import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 
 const mockNavigate = jest.fn();
@@ -35,13 +37,13 @@ const PLACE_LOCATION = {
   place: { id: 1, display_name: "California" },
 };
 
-const setState = ( subject, location = PLACE_LOCATION ) => {
+const setState = ( subject, location = PLACE_LOCATION, filters = defaultExploreV2Filters ) => {
   useExploreV2.mockReturnValue( {
     state: {
       subject,
       location,
       sortBy: "created_at",
-      filters: {},
+      filters,
     },
   } );
 };
@@ -49,6 +51,7 @@ const setState = ( subject, location = PLACE_LOCATION ) => {
 describe( "ExploreV2Header", () => {
   beforeEach( () => {
     mockNavigate.mockClear();
+    useStore.getState().exploreV2AdvancedSearch.setAdvancedSearchMode( false );
   } );
 
   it( "renders a user subject with login and location", () => {
@@ -196,8 +199,43 @@ describe( "ExploreV2Header", () => {
     setState( null );
     renderComponent( <ExploreV2Header /> );
 
-    await actor.press( screen.getByTestId( "ExploreV2Header.searchButton" ) );
+    await actor.press( screen.getByLabelText( "Search" ) );
 
     expect( mockNavigate ).toHaveBeenCalledWith( "UniversalSearch" );
+  } );
+
+  it( "navigates to Advanced Search from a filters button in advanced search mode", async () => {
+    const actor = userEvent.setup();
+    useStore.getState().exploreV2AdvancedSearch.setAdvancedSearchMode( true );
+    setState( null );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.queryByLabelText( "Search" ) ).toBeNull();
+    await actor.press( screen.getByLabelText( "Filters" ) );
+
+    expect( mockNavigate ).toHaveBeenCalledWith( "AdvancedSearch" );
+  } );
+
+  it( "badges the filters button with the number of filters applied", () => {
+    useStore.getState().exploreV2AdvancedSearch.setAdvancedSearchMode( true );
+    setState( null, PLACE_LOCATION, {
+      ...defaultExploreV2Filters,
+      casual: true,
+      media: MEDIA.SOUNDS,
+    } );
+    renderComponent( <ExploreV2Header /> );
+
+    expect( screen.getByText( "2", { includeHiddenElements: true } ) ).toBeTruthy();
+  } );
+
+  it( "shows no badge when the search has no filters", () => {
+    useStore.getState().exploreV2AdvancedSearch.setAdvancedSearchMode( true );
+    setState( null );
+    renderComponent( <ExploreV2Header /> );
+
+    expect(
+      screen.queryByTestId( "ExploreV2Header.filterCount", { includeHiddenElements: true } ),
+    ).toBeNull();
+    expect( screen.getByLabelText( "Filters" ) ).toBeVisible();
   } );
 } );

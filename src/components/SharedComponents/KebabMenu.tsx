@@ -1,4 +1,4 @@
-import { tailwindFontMedium } from "appConstants/fontFamilies";
+import { fontMedium } from "appConstants/fontFamilies";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import type { PropsWithChildren } from "react";
 import React from "react";
@@ -40,7 +40,7 @@ const MENU_CONTENT_STYLE = {
 // the advantages of Menu.Item, hence the custom style
 const MENU_ITEM_TITLE_STYLE = {
   fontSize: 13,
-  fontFamily: tailwindFontMedium,
+  fontFamily: fontMedium,
   lineHeight: 18,
   color: colors.darkGray,
 } as const;

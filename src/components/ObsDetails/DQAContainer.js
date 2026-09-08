@@ -282,7 +282,7 @@ const DQAContainer = ( ): React.Node => {
         hideCloseButton
         onPressClose={( ) => resetButtonsOnError( )}
       >
-        <View className="px-[26px] py-[20px] flex-col space-y-[20px]">
+        <View className="px-[26px] py-[20px] flex-col gap-y-[20px]">
           <List2 className="text-darkGray">{t( "Error-voting-in-DQA-description" )}</List2>
           <Button
             text={t( "OK" )}
@@ -296,7 +296,7 @@ const DQAContainer = ( ): React.Node => {
         hideCloseButton
         onPressClose={( ) => setHideOfflineSheet( true )}
       >
-        <View className="px-[26px] py-[20px] flex-col space-y-[20px]">
+        <View className="px-[26px] py-[20px] flex-col gap-y-[20px]">
           <List2 className="text-darkGray">{t( "Offline-DQA-description" )}</List2>
           <Button
             text={t( "OK" )}

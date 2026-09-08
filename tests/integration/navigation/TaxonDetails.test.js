@@ -108,7 +108,8 @@ describe( "TaxonDetails", ( ) => {
       topSuggestion.taxon.name,
     );
     expect( suggestedTaxonName ).toBeVisible();
-    await actor.press( suggestedTaxonName );
+    const [infoButton] = await screen.findAllByLabelText( "More info" );
+    await actor.press( infoButton );
     const taxonDetailsScreen = await screen.findByTestId(
       `TaxonDetails.${topSuggestion.taxon.id}`,
     );
@@ -181,8 +182,9 @@ describe( "TaxonDetails", ( ) => {
     await waitFor( async () => {
       expect( await screen.findByText( searchedTaxon.name ) ).toBeVisible();
     } );
-    const searchedTaxonName = await screen.findByText( searchedTaxon.name );
-    await actor.press( searchedTaxonName );
+    // Nav to TaxonDetails
+    const [infoButton] = await screen.findAllByLabelText( "More info" );
+    await actor.press( infoButton );
 
     const taxonDetailsScreen = await screen.findByTestId(
       `TaxonDetails.${searchedTaxon.id}`,

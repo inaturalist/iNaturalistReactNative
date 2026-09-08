@@ -43,7 +43,7 @@ Adds-ID = Tanımlama ekler
 Adds-your-vote-of-agreement = Onayınızı ekler
 Adds-your-vote-of-disagreement = Katılmama oyunuzu ekler
 Advanced-Mode = Gelişmiş Mod
-ADVANCED-SEARCH = ADVANCED SEARCH
+ADVANCED-SEARCH = GELİŞMİŞ ARAMA
 Advanced-Search = Gelişmiş Arama
 ADVANCED-SETTINGS = GELİŞMİŞ AYARLAR
 Affiliation = Üyelik: { $site }
@@ -132,8 +132,8 @@ Choose-a-date = Bir tarih seçin
 Choose-a-date-time = Bir tarih ve saat seçin
 Choose-a-time = Bir saat seçin
 CHOOSE-A-USERNAME = BİR KULLANICI ADI SEÇ
-Choose-taxon = Takson seç
-Choose-top-taxon = En önerilen taksonu seç
+Chooses-taxon = Taksonu seçer
+Chooses-top-taxon = En uygun taksonu seçer
 Close = Kapat
 Close-permission-request-screen = İzin talebi ekranını kapat
 Close-search = Aramayı kapat
@@ -457,6 +457,7 @@ JOURNAL-POSTS-WITHOUT-NUMBER =
 July = Temmuz
 June = Haziran
 Just-make-sure-the-organism-is-wild = Sadece organizmanın yabani olduğundan emin olun (evcil hayvan, hayvanat bahçesi hayvanı veya bahçe bitkisi değil)
+KEEP-EDITING = DÜZENLEMEYİ SÜRDÜR
 Kelp-and-Diatoms = Kelpler & Diatomlar
 Last-Active-date = Son Aktiflik: { $date }
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
@@ -507,6 +508,7 @@ Membership-in-this-project-is-by-invitation-only = Bu projeye katılım sadece d
 Menu = Menü
 Missing-Date = Eksik Tarih
 MISSING-EVIDENCE = EKSİK KANIT
+MISSING-INFO = EKSİK BİLGİ
 Mollusks = Yumuşakçalar
 Monthly-Donor = Aylık Bağışçı
 Months = Aylar
@@ -605,6 +607,7 @@ Offline-suggestions-may-differ-from-online = Çevrim dışı öneriler çevrim i
 OK = TAMAM
 Oldest-to-newest = En eskiden en yeniye
 Once-you-create-and-upload-observations = Gözlemleri oluşturup yükledikten sonra, topluluğumuzun diğer üyeleri gözlemlerinizin araştırma sınıfına ulaşmasına yardımcı olmak için tanımlama ekleyebilir.
+One-or-more-projects-still-need-required-info = Bir veya daha çok proje için gerekli bilgiler hâlâ eksik. Ayrılırsanız yalnızca tamamlanmış olanlar kaydedilecek.
 Open = Açık
 OPEN-EMAIL = E-POSTAYI AÇ
 Open-menu = Menüyü aç.
@@ -1034,6 +1037,11 @@ X-Identifiers =
         [one] { $count } Tanımlayıcı
        *[other] { $count } Tanımlayıcı
     }
+X-IDENTIFIERS--below-number =
+    { $count ->
+        [one] IDENTIFIER
+       *[other] IDENTIFIERS
+    }
 X-JOURNAL_POSTS =
     { $count ->
         [one] { $count } GÜNLÜK GÖNDERİSİ
@@ -1068,6 +1076,11 @@ X-Observers =
     { $count ->
         [one] { $count } Gözlemci
        *[other] { $count } Gözlemci
+    }
+X-OBSERVERS--below-number =
+    { $count ->
+        [one] OBSERVER
+       *[other] OBSERVERS
     }
 X-of-Y =
     { $x ->

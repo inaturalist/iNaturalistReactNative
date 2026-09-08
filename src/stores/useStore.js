@@ -3,6 +3,8 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import createExploreSlice from "./createExploreSlice";
+import createExploreV2AdvancedSearchSlice from "./createExploreV2AdvancedSearchSlice";
+import createExploreV2RecentSearchesSlice from "./createExploreV2RecentSearchesSlice";
 import createFeatureFlagSlice from "./createFeatureFlagSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
 import createLayoutSlice from "./createLayoutSlice";
@@ -31,7 +33,9 @@ const useStore = create( persist(
   ( ...args ) => {
     // Let's make our slices
     const slices = [
+      createExploreV2RecentSearchesSlice( ...args ),
       createExploreSlice( ...args ),
+      createExploreV2AdvancedSearchSlice( ...args ),
       createFeatureFlagSlice( ...args ),
       createFirebaseTraceSlice( ...args ),
       createLayoutSlice( ...args ),
@@ -87,6 +91,11 @@ const useStore = create( persist(
         }
         return memo;
       }, {} ) ),
+
+      exploreRecentSearches: {
+        subjects: state.exploreRecentSearches.subjects,
+        places: state.exploreRecentSearches.places,
+      },
     } ),
     storage: createJSONStorage( () => zustandStorage ),
     // We need to deep merge to persist nested objects, like layout

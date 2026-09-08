@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react-native";
 import useUniversalSearch from "components/Explore/ExploreV2/hooks/useUniversalSearch";
-import { renderHookInApp } from "tests/helpers/render";
+import { queryClient, renderHookInApp } from "tests/helpers/render";
 
 jest.mock( "api/search" );
 const { search } = require( "api/search" );
@@ -24,6 +24,7 @@ const PROJECT_RESULT = {
 
 beforeEach( ( ) => {
   search.mockReset( );
+  queryClient.clear( );
 } );
 
 describe( "useUniversalSearch", ( ) => {

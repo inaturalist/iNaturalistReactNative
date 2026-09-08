@@ -4,7 +4,6 @@ import type {
 import BottomSheet, {
   BottomSheetModal, BottomSheetScrollView, BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import classnames from "classnames";
 import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, {
@@ -15,6 +14,7 @@ import React, {
 import { Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
+import { twMerge } from "tailwind-merge";
 
 const { width } = Dimensions.get( "window" );
 const marginOnWide = {
@@ -126,7 +126,9 @@ const StandardBottomSheet = ( {
 
   const innerContent = (
     <View
-      className={classnames(
+      // twMerge so that caller class correctly overrides default instead of
+      // relying on stylesheet order
+      className={twMerge(
         "pt-7",
         containerClass,
       )}

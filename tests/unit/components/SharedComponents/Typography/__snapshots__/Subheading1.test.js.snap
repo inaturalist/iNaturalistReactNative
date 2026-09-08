@@ -4,28 +4,13 @@ exports[`Subheading1 renders correctly 1`] = `
 <Text
   maxFontSizeMultiplier={2}
   style={
-    [
-      {
-        "color": "#454545",
-      },
-      {
-        "fontFamily": "Lato-Regular",
-      },
-      [
-        {
-          "textAlign": "left",
-        },
-        [
-          {
-            "fontSize": 20,
-            "lineHeight": 24,
-          },
-          {
-            "fontFamily": "Lato-Regular",
-          },
-        ],
-      ],
-    ]
+    {
+      "color": "rgba(69, 69, 69, 1)",
+      "fontFamily": "Lato-Regular",
+      "fontSize": 20,
+      "lineHeight": 24,
+      "textAlign": "left",
+    }
   }
 >
   Subheading1
