@@ -32,13 +32,13 @@ describe( "fetchAndActivateFeatureFlags", () => {
 
   it( "returns a boolean for every FeatureFlag, reflecting remote values", async () => {
     mockGetValue.mockImplementation( ( _remoteConfig, key ) => ( {
-      asBoolean: () => key === FeatureFlag.NewsEnabled,
+      asBoolean: () => key === FeatureFlag.MeIconTestEnabled,
     } ) );
 
     const config = await fetchAndActivateFeatureFlags();
 
     expect( Object.keys( config ).sort() ).toEqual( Object.values( FeatureFlag ).sort() );
-    expect( config[FeatureFlag.NewsEnabled] ).toBe( true );
+    expect( config[FeatureFlag.MeIconTestEnabled] ).toBe( true );
     expect( config[FeatureFlag.ExploreV2Enabled] ).toBe( false );
   } );
 

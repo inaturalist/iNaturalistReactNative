@@ -18,9 +18,12 @@ const MINIMUM_FETCH_INTERVAL_MILLIS = __DEV__
 export const getRemoteFeatureFlagConfig = (): Record<FeatureFlag, boolean> => {
   const remoteConfig = getRemoteConfig();
   const config = { ...initialFeatureFlagConfig };
-  Object.values( FeatureFlag ).forEach( featureFlagKey => {
-    config[featureFlagKey] = getValue( remoteConfig, featureFlagKey ).asBoolean();
-  } );
+  Object.values( FeatureFlag )
+    // limit initial test to internal-only UI
+    .filter( featureFlagKey => featureFlagKey === FeatureFlag.MeIconTestEnabled )
+    .forEach( featureFlagKey => {
+      config[featureFlagKey] = getValue( remoteConfig, featureFlagKey ).asBoolean();
+    } );
   return config;
 };
 
