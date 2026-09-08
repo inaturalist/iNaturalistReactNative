@@ -37,6 +37,7 @@ Add-observations = Добавить наблюдения
 Add-optional-notes = Добавить заметки
 Add-to-Projects = Добавить в проекты
 ADD-TO-PROJECTS = ДОБАВИТЬ В ПРОЕКТЫ
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -133,6 +134,7 @@ Change-zoom = Изменение зума
 CHECK-YOUR-EMAIL = ПРОВЕРЬТЕ ВАШУ ЭЛЕКТРОННУЮ ПОЧТУ!
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ВЫБЕРИТЕ ИМЯ ПОЛЬЗОВАТЕЛЯ
 Chooses-taxon = Chooses taxon
@@ -233,6 +235,7 @@ Delete-current-observation = Удалить текущее наблюдение
 Delete-observation = Удалить наблюдения
 DELETE-OBSERVATION--question = УДАЛИТЬ НАБЛЮДЕНИЕ?
 Delete-photo = Удалить фото
+Delete-saved-search = Delete saved search
 Delete-sound = Удалить звук
 Deleting-x-of-y--observations =
     Удаление { $currentDeleteCount } { $total ->
@@ -745,6 +748,7 @@ Ranks-Zoosection = Зоосекция
 Ranks-ZOOSUBSECTION = ЗООПОДРАЗДЕЛ
 Ranks-Zoosubsection = Зооподсекция
 Read-more-on-Wikipedia = Подробнее в Википедии
+Recent-searches = Recent searches
 Record-a-sound = Запишите аудио
 Record-animal-sounds = Записывайте звуки животных
 RECORD-NEW-SOUND = ЗАПИСЬ НОВОГО ЗВУКА
@@ -760,7 +764,9 @@ Remove-identification = Удалить идентификацию
 Remove-Photos = Удалить фотографии
 Remove-project-filter = Удалить фильтр по проекту
 Remove-taxon-filter = Удалить фильтр таксона
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Удалить пользовательский фильтр
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Удаляет таксон этого наблюдения
 Removes-your-vote-of-agreement = Удаляет ваш голос согласия
 Removes-your-vote-of-disagreement = Удаляет ваш голос несогласия
@@ -787,7 +793,11 @@ Save-all-observations = Сохранить все наблюдения
 SAVE-CHANGES = СОХРАНИТЬ ИЗМЕНЕНИЯ
 SAVE-FOR-LATER = СОХРАНИТЬ НА ПОТОМ
 SAVE-LOCATION = СОХРАНИТЬ МЕСТОПОЛОЖЕНИЕ
+Save-this-search = Save this search
 Saved-Observation = Сохраненное наблюдение, в очереди на загрузку
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Научное название
 Scientific-Name-Common-Name = Научное название (общее название)
 SEARCH = ИСКАТЬ
@@ -800,6 +810,7 @@ Search-for-a-taxon = Поиск таксона
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = ПОИСК МЕСТОПОЛОЖЕНИЯ
 SEARCH-PROJECTS = ПОИСК ПРОЕКТОВ
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Варианты поиска с указанием местоположения
 Search-suggestions-without-location = Варианты поиска без местоположения
 SEARCH-TAXA = ПОИСК ТАКСОНОВ
@@ -886,6 +897,7 @@ Syncing = Синхронизация...
 Take-photo = Сделать фото
 Take-photos = Сфотографировать
 Tap-here-to-switch-to-Advanced-Mode = Нажмите здесь, чтобы переключиться в расширенный режим
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Таксоны
 TAXON = ТАКСОН
 TAXON-NAMES-DISPLAY = ОТОБРАЖЕНИЕ НАЗВАНИЙ ТАКСОНОВ
@@ -1019,6 +1031,11 @@ x-failed =
     { $count ->
         [one] { $count } неуспешно
        *[other] { $count } неуспешно
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

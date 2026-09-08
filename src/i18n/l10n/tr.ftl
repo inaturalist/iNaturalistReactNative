@@ -34,6 +34,7 @@ Add-observations = Gözlemleri ekle
 Add-optional-notes = İsteğe bağlı not ekle
 Add-to-Projects = Projelere Ekle
 ADD-TO-PROJECTS = PROJELERE EKLE
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Eklendi: { $count } { $count ->
         [one] Projeye
@@ -130,6 +131,7 @@ Change-zoom = Yakınlaştırmayı değiştir
 CHECK-YOUR-EMAIL = E-POSTANIZI KONTROL EDİN!
 Choose-a-date = Bir tarih seçin
 Choose-a-date-time = Bir tarih ve saat seçin
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Bir saat seçin
 CHOOSE-A-USERNAME = BİR KULLANICI ADI SEÇ
 Chooses-taxon = Taksonu seçer
@@ -230,6 +232,7 @@ Delete-current-observation = Mevcut gözlemi sil
 Delete-observation = Gözlemi sil
 DELETE-OBSERVATION--question = GÖZLEM SİLİNSİN Mİ?
 Delete-photo = Fotoğrafı sil
+Delete-saved-search = Delete saved search
 Delete-sound = Sesi sil
 Deleting-x-of-y--observations =
     { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = Zoobölüm
 Ranks-ZOOSUBSECTION = ZOO ALT SEKSİYON
 Ranks-Zoosubsection = Zooaltbölüm
 Read-more-on-Wikipedia = Vikipedi'den daha fazlasını okuyun
+Recent-searches = Recent searches
 Record-a-sound = Ses kaydet
 Record-animal-sounds = Hayvan seslerini kaydet
 RECORD-NEW-SOUND = YENİ SES KAYDET
@@ -757,7 +761,9 @@ Remove-identification = Tanımlamayı kaldır
 Remove-Photos = Fotoğrafları Kaldır
 Remove-project-filter = Proje filtresini kaldır
 Remove-taxon-filter = Takson filtresini kaldır
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Kullanıcı filtresini kaldır
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Bu gözlemin taksonunu kaldırır
 Removes-your-vote-of-agreement = Uyuşma oyunuzu kaldırır
 Removes-your-vote-of-disagreement = Uyuşmazlık oyunuzu kaldırır
@@ -784,7 +790,11 @@ Save-all-observations = Tüm gözlemleri kaydet
 SAVE-CHANGES = DEĞİŞİKLİKLERİ KAYDET
 SAVE-FOR-LATER = DAHA SONRASI İÇİN KAYDET
 SAVE-LOCATION = KONUMU KAYDET
+Save-this-search = Save this search
 Saved-Observation = Gözlem kaydedildi, yükleme kuyruğunda
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Bilimsel Ad
 Scientific-Name-Common-Name = Bilimsel Ad (Yaygın Ad)
 SEARCH = ARAMA
@@ -797,6 +807,7 @@ Search-for-a-taxon = Bir takson ara
 Search-for-species-user-or-project = Tür, kullanıcı veya proje ara
 SEARCH-LOCATION = KONUM ARA
 SEARCH-PROJECTS = PROJE ARA
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Konum ile arama önerileri
 Search-suggestions-without-location = Konumsuz arama önerileri
 SEARCH-TAXA = TAKSON ARA
@@ -883,6 +894,7 @@ Syncing = Senkronize Ediliyor...
 Take-photo = Fotoğraf çek
 Take-photos = Fotoğraf çek
 Tap-here-to-switch-to-Advanced-Mode = Gelişmiş Mod'a geçmek için buraya dokunun
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taksonlar
 TAXON = TAKSON
 TAXON-NAMES-DISPLAY = TAKSON ADI GÖRÜNÜMÜ
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } başarısız
        *[other] { $count } başarısız
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->
