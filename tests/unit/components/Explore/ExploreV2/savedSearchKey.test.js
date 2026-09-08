@@ -9,7 +9,7 @@ describe( "savedSearchKey", ( ) => {
     expect( savedSearchKey( search( ) ) ).toEqual( savedSearchKey( search( ) ) );
   } );
 
-  it( "changes when the subject, the location, or any filter changes", ( ) => {
+  it( "changes when the subject, the location, the sort, or any filter changes", ( ) => {
     const base = savedSearchKey( search( ) );
 
     expect( savedSearchKey( search( { subject: taxonSubject( 13 ) } ) ) ).not.toEqual( base );
@@ -19,13 +19,20 @@ describe( "savedSearchKey", ( ) => {
     expect( savedSearchKey( search( {
       filters: { ...defaultExploreV2Filters, casual: true },
     } ) ) ).not.toEqual( base );
-  } );
-
-  it( "ignores sort order, so the same search under a different sort is the same search", ( ) => {
     expect( savedSearchKey( search( {
       sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
+    } ) ) ).not.toEqual( base );
+    expect( savedSearchKey( search( {
       speciesSortBy: SPECIES_SORT.COUNT_ASC,
-    } ) ) ).toEqual( savedSearchKey( search( ) ) );
+    } ) ) ).not.toEqual( base );
+  } );
+
+  it( "tells the two sorts apart, so changing one leaves the other's key alone", ( ) => {
+    expect( savedSearchKey( search( {
+      sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
+    } ) ) ).not.toEqual( savedSearchKey( search( {
+      speciesSortBy: SPECIES_SORT.COUNT_ASC,
+    } ) ) );
   } );
 
   it( "tells apart a search with no subject and one for unobserved species", ( ) => {
