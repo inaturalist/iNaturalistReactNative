@@ -1,16 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
+import type { RefObject } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import type { CameraDevice } from "react-native-vision-camera";
+import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import convertScoreToConfidence from "sharedHelpers/convertScores";
 import { completeSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
@@ -61,7 +63,7 @@ const getResultContainerClassName = ( insetsTop: number ) => {
 // };
 
 interface Props {
-  camera: object;
+  camera: RefObject<Camera | null>;
   device: CameraDevice;
   flipCamera: ( ) => void;
   isLandscapeMode: boolean;
@@ -69,7 +71,7 @@ interface Props {
   takingPhoto: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   takePhotoAndStoreUri: Function;
-  takePhotoOptions: object;
+  takePhotoOptions: TakePhotoOptions;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
   requestLocationPermissions: () => void;
