@@ -119,10 +119,12 @@ const qualityGrade = key => screen.getByRole( "radio", { name: t( key ) } );
 const advancedSearchMode = ( ) => useStore
   .getState( ).exploreV2AdvancedSearch.advancedSearchMode;
 
-const committedFilters = ( ) => mockDispatch.mock.calls
+const committedSearch = ( ) => mockDispatch.mock.calls
   .map( ( [action] ) => action )
-  .find( action => action.type === EXPLORE_V2_ACTION.SET_FILTERS )
-  ?.filters;
+  .find( action => action.type === EXPLORE_V2_ACTION.APPLY_SEARCH )
+  ?.search;
+
+const committedFilters = ( ) => committedSearch( )?.filters;
 
 beforeAll( async ( ) => {
   await initI18next( );
@@ -248,7 +250,7 @@ describe( "AdvancedSearch screen", ( ) => {
       expect( screen.getByText( t( "SEARCH-FOR-A-TAXON" ) ) ).toBeVisible( );
 
       await pressSearch( );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT } );
+      expect( committedSearch( ).subject ).toBeNull( );
     } );
 
     it( "picks an iconic taxon from the chooser", async ( ) => {
@@ -259,12 +261,9 @@ describe( "AdvancedSearch screen", ( ) => {
       expect( screen.getByText( "Birds" ) ).toBeVisible( );
 
       await pressSearch( );
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: EXPLORE_V2_ACTION.SET_SUBJECT,
-        subject: {
-          type: "taxon",
-          taxon: expect.objectContaining( { id: BIRDS.id, name: BIRDS.name } ),
-        },
+      expect( committedSearch( ).subject ).toEqual( {
+        type: "taxon",
+        taxon: expect.objectContaining( { id: BIRDS.id, name: BIRDS.name } ),
       } );
     } );
 
@@ -279,7 +278,7 @@ describe( "AdvancedSearch screen", ( ) => {
       expect( screen.queryByText( "Birds" ) ).toBeNull( );
 
       await pressSearch( );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT } );
+      expect( committedSearch( ).subject ).toBeNull( );
     } );
 
     it( "removes a carried unknown subject", async ( ) => {
@@ -292,7 +291,7 @@ describe( "AdvancedSearch screen", ( ) => {
       expect( screen.getByText( t( "SEARCH-FOR-A-TAXON" ) ) ).toBeVisible( );
 
       await pressSearch( );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT } );
+      expect( committedSearch( ).subject ).toBeNull( );
     } );
   } );
 
@@ -363,19 +362,13 @@ describe( "AdvancedSearch screen", ( ) => {
 
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: EXPLORE_V2_ACTION.SET_SUBJECT,
+      expect( committedSearch( ) ).toEqual( {
         subject: { type: "taxon", taxon: TAXON },
-      } );
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
-        place: PLACE,
-      } );
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: EXPLORE_V2_ACTION.SET_SORT,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: PLACE },
         sortBy: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
+        speciesSortBy: initialExploreV2State.speciesSortBy,
+        filters: defaultExploreV2Filters,
       } );
-      expect( committedFilters( ) ).toEqual( defaultExploreV2Filters );
       // advanced search always lands on the observations tab
       expect( mockDispatch ).toHaveBeenCalledWith( {
         type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB,
@@ -400,8 +393,8 @@ describe( "AdvancedSearch screen", ( ) => {
 
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY,
+      expect( committedSearch( ).location ).toEqual( {
+        placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
       } );
     } );
 
@@ -415,8 +408,8 @@ describe( "AdvancedSearch screen", ( ) => {
 
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+      expect( committedSearch( ).location ).toEqual( {
+        placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
         bounds: BOUNDS,
       } );
     } );
@@ -432,7 +425,7 @@ describe( "AdvancedSearch screen", ( ) => {
       await actor.press( screen.getByLabelText( t( "Remove-user-filter" ) ) );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT } );
+      expect( committedSearch( ).subject ).toBeNull( );
     } );
   } );
 
@@ -455,11 +448,11 @@ describe( "AdvancedSearch screen", ( ) => {
 
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT } );
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE,
+      expect( committedSearch( ) ).toMatchObject( {
+        subject: null,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+        filters: defaultExploreV2Filters,
       } );
-      expect( committedFilters( ) ).toEqual( defaultExploreV2Filters );
     } );
   } );
 

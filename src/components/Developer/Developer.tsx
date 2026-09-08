@@ -15,16 +15,17 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React, { useState } from "react";
-import { I18nManager, Platform, Text } from "react-native";
+import {
+  I18nManager, Platform, Text,
+} from "react-native";
 import Config from "react-native-config";
-import DeviceInfo from "react-native-device-info";
 import RNRestart from "react-native-restart";
-import { useFeatureFlag } from "sharedHooks";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import { EnvConfig } from "sharedHelpers/envConfig";
 
 import {
   CODE, H1, H2, P,
 } from "./DeveloperSharedComponents";
+import EnvironmentSwitcher from "./EnvironmentSwitcher";
 import FeatureFlags from "./FeatureFlags";
 import type { DirectoryEntrySize } from "./hooks/useAppSize";
 import useAppSize, {
@@ -247,37 +248,13 @@ const PathStats = () => {
       <P>
         <CODE>{Config.API_URL}</CODE>
       </P>
-      <H2>Config.API_URL</H2>
+      <H2>EnvConfig.API_URL (active)</H2>
       <P>
-        <CODE>{Config.API_URL}</CODE>
+        <CODE>{EnvConfig.API_URL}</CODE>
       </P>
       <H2>getUserAgent()</H2>
       <P>
         <CODE>{getUserAgent()}</CODE>
-      </P>
-    </>
-  );
-};
-
-// Temporary diagnostic use of admin/testflight config.
-const TestFlightAdminFeatureFlagTest = () => {
-  const enabled = useFeatureFlag( FeatureFlag.TestFlightAdminMessageEnabled );
-  const label = `Test message "Feature Flags for Admins in TestFlight" is: ${enabled
-    ? "Enabled"
-    : "Disabled"}`;
-  // eslint-disable-next-line max-len
-  const description = "(Should be \"Enabled\" if user is logged in and this is a build installed from TestFlight OR if the feature flag is manually overridden above.)";
-  // eslint-disable-next-line max-len
-  const resolvedInstallerPackageName = `Resolved DeviceInfo.getInstallerPackageNameSync(): ${DeviceInfo.getInstallerPackageNameSync()}`;
-  return (
-    <>
-      <H1>Temporary Feature Flag Config Test</H1>
-      <P>
-        {label}
-      </P>
-      <P>{description}</P>
-      <P>
-        {resolvedInstallerPackageName}
       </P>
     </>
   );
@@ -289,12 +266,11 @@ const Developer = () => {
       <View className="p-5">
         <LogOptions />
         <DebugTools />
+        <EnvironmentSwitcher />
         <ComputerVisionStats />
         <FeatureFlags />
         <PathStats />
         <AppFileSizes />
-        {/* TODO: remove once MOB-1573 is validated in TestFlight */}
-        <TestFlightAdminFeatureFlagTest />
       </View>
 
     </ScrollViewWrapper>

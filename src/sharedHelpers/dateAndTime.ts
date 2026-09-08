@@ -4,6 +4,7 @@
 // names that are specific to particular views,
 // like "myObsDateFormat"
 
+import type { Locale } from "date-fns";
 import {
   differenceInDays,
   differenceInHours,
@@ -290,6 +291,30 @@ function formatDifferenceForHumans( date: Date | string, i18n: i18next ) {
   return format( d, i18n.t( "date-format-month-day" ), formatOpts );
 }
 
+const ZONE_ABBREVIATION_TOKEN = /z+/;
+
+// Hermes' Intl.DateTimeFormat has incomplete ICU time zone name data for
+// some zones (seen so far: Australia/Sydney, Asia/Kolkata, Asia/Singapore)
+// and silently resolves the abbreviated zone name to the literal string
+// "GMT" instead of the real timezone abbreviation (like "AEST") - see
+// https://github.com/facebook/hermes/issues/1601 and
+// https://github.com/marnusw/date-fns-tz/issues/306. Hermes has said they
+// won't extend that data, so detect the failure per call: a bare "GMT" abbreviation for a zone
+// whose real offset (computed via a separate, unaffected code path) isn't
+// actually zero.
+function timeZoneAbbreviationIsUnreliable(
+  date: Date,
+  timeZone: string,
+  locale: Locale,
+): boolean {
+  const offset = formatInTimeZone( date, timeZone, "xxx", { locale } );
+  if ( offset === "+00:00" ) {
+    // Actually UTC/GMT, so a "GMT" abbreviation would be correct
+    return false;
+  }
+  return formatInTimeZone( date, timeZone, "zzz", { locale } ) === "GMT";
+}
+
 interface FormatDateStringOptions {
   // Display the time as literally expressed in the dateString, i.e. don't
   // assume it's in any time zone
@@ -351,11 +376,21 @@ function formatDateString(
   }
 
   try {
+    const locale = dateFnsLocale( i18n.language );
+    let formatString = fmt;
+    if (
+      ZONE_ABBREVIATION_TOKEN.test( formatString )
+      && timeZoneAbbreviationIsUnreliable( parsedDate, timeZone, locale )
+    ) {
+      // Fall back to a numeric offset (e.g. "GMT+10") instead of an
+      // abbreviation Hermes can't reliably resolve for this zone
+      formatString = formatString.replace( ZONE_ABBREVIATION_TOKEN, "O" );
+    }
     return formatInTimeZone(
       parsedDate,
       timeZone,
-      fmt,
-      { locale: dateFnsLocale( i18n.language ) },
+      formatString,
+      { locale },
     );
   } catch ( error ) {
     console.warn( "Error formatting date", error );

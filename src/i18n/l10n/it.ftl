@@ -34,6 +34,7 @@ Add-observations = Aggiungere osservazioni
 Add-optional-notes = Aggiungi note opzionali
 Add-to-Projects = Aggiungi a Progetti
 ADD-TO-PROJECTS = AGGIUNGI AI PROGETTI
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Aggiunta a { $count } { $count ->
         [one] Progetto
@@ -130,6 +131,7 @@ Change-zoom = Cambia zoom
 CHECK-YOUR-EMAIL = CONTROLLA LA TUA EMAIL!
 Choose-a-date = Scegli una data
 Choose-a-date-time = Scegli una data e ora
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Scegli un orario
 CHOOSE-A-USERNAME = SCEGLI UN NOME UTENTE
 Chooses-taxon = Chooses taxon
@@ -230,6 +232,7 @@ Delete-current-observation = Elimina l'osservazione corrente
 Delete-observation = Cancella osservazione
 DELETE-OBSERVATION--question = CANCELLA OSSERVAZIONE?
 Delete-photo = Elimina foto
+Delete-saved-search = Delete saved search
 Delete-sound = Elimina suono
 Deleting-x-of-y--observations =
     Eliminazione di { $currentDeleteCount } { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = Zoosezione
 Ranks-ZOOSUBSECTION = ZOOSOTTOSEZIONE
 Ranks-Zoosubsection = Zoosottosezione
 Read-more-on-Wikipedia = Leggi di più su Wikipedia
+Recent-searches = Recent searches
 Record-a-sound = Registrare un suono
 Record-animal-sounds = Registra i versi degli animali
 RECORD-NEW-SOUND = REGISTRA UN NUOVO SUONO
@@ -757,7 +761,9 @@ Remove-identification = Rimuovi l'identificazione
 Remove-Photos = Rimuovi foto
 Remove-project-filter = Rimuovi filtro progetto
 Remove-taxon-filter = Rimuovi il filtro taxon
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Rimuovi filtro utente
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Rimuove il taxon di questa osservazione
 Removes-your-vote-of-agreement = Rimuove il tuo voto di accordo
 Removes-your-vote-of-disagreement = Rimuove il tuo voto di disaccordo
@@ -784,7 +790,11 @@ Save-all-observations = Salva tutte le osservazioni
 SAVE-CHANGES = SALVA MODIFICHE
 SAVE-FOR-LATER = SALVA PER DOPO
 SAVE-LOCATION = SALVA POSIZIONE
+Save-this-search = Save this search
 Saved-Observation = Osservazione salvata, in coda per il caricamento
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Nome Scientifico
 Scientific-Name-Common-Name = Nome scientifico (nome comune)
 SEARCH = RICERCA
@@ -797,6 +807,7 @@ Search-for-a-taxon = Cerca un taxon
 Search-for-species-user-or-project = Cerca per specie, utente o progetto
 SEARCH-LOCATION = CERCA LA POSIZIONE
 SEARCH-PROJECTS = CERCA PROGETTI
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Suggerimenti di ricerca con posizione
 Search-suggestions-without-location = Suggerimenti di ricerca senza posizione
 SEARCH-TAXA = CERCA I TAXA
@@ -883,6 +894,7 @@ Syncing = Sincronizzando...
 Take-photo = Scattare foto
 Take-photos = Scatta foto
 Tap-here-to-switch-to-Advanced-Mode = Tocca qui per passare alla Modalità Avanzata
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = VISUALIZZAZIONE DEI NOMI DEI TAXON
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [uno] { $count } fallito
        *[altro] { $count } fallito
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

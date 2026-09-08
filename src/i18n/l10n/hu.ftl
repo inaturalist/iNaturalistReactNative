@@ -34,6 +34,7 @@ Add-observations = Add observations
 Add-optional-notes = Add optional notes
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
+ADDED-TO-SAVED-SEARCHES = HOZZÁADVA A MENTETT KERESÉSEKHEZ
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -130,6 +131,7 @@ Change-zoom = Change zoom
 CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = MENTETT KERESÉS VÁLASZTÁSA
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = CHOOSE A USERNAME
 Chooses-taxon = Javasolt taxon kiválasztása
@@ -230,6 +232,7 @@ Delete-current-observation = Delete current observation
 Delete-observation = Megfigyelés törlése
 DELETE-OBSERVATION--question = DELETE OBSERVATION?
 Delete-photo = Fotó törlése
+Delete-saved-search = Mentett keresés törlése
 Delete-sound = Delete sound
 Deleting-x-of-y--observations =
     Deleting { $currentDeleteCount } { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = Osztag
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Alosztag
 Read-more-on-Wikipedia = Read more on Wikipedia
+Recent-searches = Legutóbbi keresések
 Record-a-sound = Hangfelvétel
 Record-animal-sounds = Állati hangok rögzítése
 RECORD-NEW-SOUND = RECORD NEW SOUND
@@ -757,7 +761,9 @@ Remove-identification = Meghatározás eltávolítása
 Remove-Photos = Remove Photos
 Remove-project-filter = Projektszűrő eltávolítása
 Remove-taxon-filter = Remove taxon filter
+Remove-this-saved-search = E mentett keresés eltávolítása
 Remove-user-filter = Remove user filter
+REMOVED-FROM-SAVED-SEARCHES = A MENTETT KERESÉSEKBŐL ELTÁVOLÍTVA
 Removes-this-observations-taxon = Removes this observation's taxon
 Removes-your-vote-of-agreement = Removes your vote of agreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
@@ -784,7 +790,11 @@ Save-all-observations = Save all observations
 SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
+Save-this-search = Keresés mentése
 Saved-Observation = Saved observation, in queue to upload
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = MENTÉST NEM SIKERÜLT, MAXIMUM { $count }
+Saved-searches = Mentett keresések
+SAVED-SEARCHES = MENTETT KERESÉSEK
 Scientific-Name = Tudományos név
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = SEARCH
@@ -797,6 +807,7 @@ Search-for-a-taxon = Search for a taxon
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = SEARCH LOCATION
 SEARCH-PROJECTS = SEARCH PROJECTS
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Search suggestions with location
 Search-suggestions-without-location = Search suggestions without location
 SEARCH-TAXA = SEARCH TAXA
@@ -883,6 +894,7 @@ Syncing = Szinkronizálás...
 Take-photo = Take photo
 Take-photos = Fényképezés
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxon
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } hibába ütközött
        *[other] { $count } hibába ütközött
+    }
+X-filters =
+    { $count ->
+        [one] { $count } szűrő
+       *[other] { $count } szűrő
     }
 X-FOLLOWERS =
     { $count ->

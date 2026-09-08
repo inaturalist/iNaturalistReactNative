@@ -75,6 +75,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     uris,
     userLocation,
     logStageIfAICamera,
+    completeStageIfAICamera,
     visionResult,
   ) => {
     const newObservation = await Observation.new( );
@@ -100,21 +101,30 @@ const usePrepareStoreAndNavigate = ( ) => {
       newObservation.taxon = visionResult.taxon;
     }
     setObservations( [newObservation] );
+    // Not awaited so navigation isn't blocked; .finally() keeps this after
+    // the stages logged above.
     handleSavingToPhotoLibrary(
       uris,
       userLocation,
       logStageIfAICamera,
-    ).catch( e => logger.error( "createObsWithCameraPhotos: error saving to photo library", e ) );
+    )
+      .catch( e => logger.error( "createObsWithCameraPhotos: error saving to photo library", e ) )
+      .finally( ( ) => {
+        completeStageIfAICamera( );
+        setSentinelFileName( null );
+      } );
   }, [
     isDefaultMode,
     screenAfterPhotoEvidence,
     setObservations,
+    setSentinelFileName,
     handleSavingToPhotoLibrary,
   ] );
 
   const updateObsWithCameraPhotos = useCallback( async (
     userLocation,
     logStageIfAICamera,
+    completeStageIfAICamera,
   ) => {
     const obsPhotos = await ObservationPhoto.createObsPhotosWithPosition(
       evidenceToAdd,
@@ -129,11 +139,18 @@ const usePrepareStoreAndNavigate = ( ) => {
     const updatedObservations = [...observations];
     updatedObservations[currentObservationIndex] = updatedCurrentObservation;
     updateObservations( updatedObservations );
+    // Not awaited so navigation isn't blocked; .finally() keeps this after
+    // the stages logged above.
     handleSavingToPhotoLibrary(
       evidenceToAdd,
       userLocation,
       logStageIfAICamera,
-    ).catch( e => logger.error( "updateObsWithCameraPhotos: error saving to photo library", e ) );
+    )
+      .catch( e => logger.error( "updateObsWithCameraPhotos: error saving to photo library", e ) )
+      .finally( ( ) => {
+        completeStageIfAICamera( );
+        setSentinelFileName( null );
+      } );
   }, [
     evidenceToAdd,
     numOfObsPhotos,
@@ -141,6 +158,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     observations,
     currentObservationIndex,
     updateObservations,
+    setSentinelFileName,
     handleSavingToPhotoLibrary,
   ] );
 
@@ -148,7 +166,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     userLocation,
     newPhotoState,
     logStageIfAICamera,
-    deleteStageIfAICamera,
+    completeStageIfAICamera,
     visionResult,
   } ) => {
     if ( userLocation !== null ) {
@@ -158,9 +176,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     // new observation
     const uris = newPhotoState?.cameraUris || cameraUris;
     if ( addEvidence ) {
-      await updateObsWithCameraPhotos( userLocation, logStageIfAICamera );
-      await deleteStageIfAICamera( );
-      setSentinelFileName( null );
+      await updateObsWithCameraPhotos( userLocation, logStageIfAICamera, completeStageIfAICamera );
       return navigation.navigate( "ObsEdit", { lastScreen: "Camera" } );
     }
 
@@ -168,10 +184,9 @@ const usePrepareStoreAndNavigate = ( ) => {
       uris,
       userLocation,
       logStageIfAICamera,
+      completeStageIfAICamera,
       visionResult,
     );
-    await deleteStageIfAICamera( );
-    setSentinelFileName( null );
 
     // Camera (multicapture and ai) in default mode should only go to Match screen
     if ( isDefaultMode ) {
@@ -189,7 +204,6 @@ const usePrepareStoreAndNavigate = ( ) => {
     cameraUris,
     addEvidence,
     createObsWithCameraPhotos,
-    setSentinelFileName,
     navigation,
     updateObsWithCameraPhotos,
     screenAfterPhotoEvidence,

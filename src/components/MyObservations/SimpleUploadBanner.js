@@ -68,9 +68,12 @@ const SimpleUploadBanner = ( {
 
   const renderUploadStatusText = () => (
     <View
-      className={classnames( "bg-white items-center", {
-        "bg-inatGreen": isWhiteOnGreenStyling,
-      } )}
+      className={classnames(
+        "items-center",
+        isWhiteOnGreenStyling
+          ? "bg-inatGreen"
+          : "bg-white",
+      )}
     >
       <View className="flex-row items-center">
         {status.text && (
@@ -81,9 +84,12 @@ const SimpleUploadBanner = ( {
             className="shrink-[2] ml-2"
           >
             <Body2
-              className={classnames( "text-darkGray py-3 text-center", {
-                "text-white": isWhiteOnGreenStyling,
-              } )}
+              className={classnames(
+                "py-3 text-center",
+                isWhiteOnGreenStyling
+                  ? "text-white"
+                  : "text-darkGray",
+              )}
               numberOfLines={2}
             >
               {status.text}

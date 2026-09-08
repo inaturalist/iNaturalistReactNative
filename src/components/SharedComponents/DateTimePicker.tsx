@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Platform } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 type PickerMode = "date" | "time" | "datetime";
@@ -22,7 +23,6 @@ const DatePicker = ( {
   onDatePicked,
   toggleDateTimePicker,
 }: Props ) => {
-  const [selectedDateNoTime, setSelectedDateNoTime] = React.useState<Date | undefined>( undefined );
   const [isTimeVisible, setisTimeVisible] = React.useState( false );
   const maxDateForTimePicker = new Date( );
   maxDateForTimePicker.setHours( 24, 0, 0, 0 );
@@ -31,6 +31,25 @@ const DatePicker = ( {
     setisTimeVisible( false );
     toggleDateTimePicker( );
   };
+
+  if ( Platform.OS === "android" && mode === "datetime" ) {
+    return (
+      <DateTimePicker
+        display="spinner"
+        isDarkModeEnabled={false}
+        themeVariant="light"
+        isVisible={isDateTimePickerVisible}
+        maximumDate={new Date( )}
+        mode="datetime"
+        onCancel={toggleDateTimePicker}
+        onConfirm={selectedDate => {
+          onDatePicked( selectedDate );
+          toggleDateTimePicker( );
+        }}
+        date={date || new Date( )}
+      />
+    );
+  }
 
   if ( mode === "datetime" && isTimeVisible ) {
     return (
@@ -47,7 +66,6 @@ const DatePicker = ( {
           onDatePicked( selectedDate );
           _toggleDateTimePicker( );
         }}
-        date={selectedDateNoTime}
       />
     );
   }
@@ -84,7 +102,6 @@ const DatePicker = ( {
       onCancel={_toggleDateTimePicker}
       onConfirm={selectedDate => {
         if ( mode === "datetime" ) {
-          setSelectedDateNoTime( selectedDateNoTime );
           setisTimeVisible( true );
         } else {
           onDatePicked( selectedDate );

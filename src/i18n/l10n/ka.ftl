@@ -34,6 +34,7 @@ Add-observations = დაკვირვებების დამატებ
 Add-optional-notes = სურვილისამებრ დაამატეთ ჩანაწერები
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -130,6 +131,7 @@ Change-zoom = მასშტაბირების შეცვლა
 CHECK-YOUR-EMAIL = ᲨᲔᲐᲛᲝᲬᲛᲔᲗ ᲗᲥᲕᲔᲜᲘ ᲔᲚᲤᲝᲡᲢᲐ!
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ᲛᲝᲛᲮᲛᲐᲠᲔᲑᲚᲘᲡ ᲡᲐᲮᲔᲚᲘᲡ ᲨᲔᲠᲩᲔᲕᲐ
 Chooses-taxon = Chooses taxon
@@ -230,6 +232,7 @@ Delete-current-observation = მიმდინარე დაკვირვ�
 Delete-observation = დაკვირვების წაშლა
 DELETE-OBSERVATION--question = ᲬᲐᲕᲨᲐᲚᲝᲗ ᲓᲐᲙᲕᲘᲠᲕᲔᲑᲐ?
 Delete-photo = ფოტოს წაშლა
+Delete-saved-search = Delete saved search
 Delete-sound = ხმის წაშლა
 Deleting-x-of-y--observations =
     იშლება { $currentDeleteCount } დაკვირვება { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = Zoosection
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoosubsection
 Read-more-on-Wikipedia = Read more on Wikipedia
+Recent-searches = Recent searches
 Record-a-sound = Record a sound
 Record-animal-sounds = Record animal sounds
 RECORD-NEW-SOUND = RECORD NEW SOUND
@@ -757,7 +761,9 @@ Remove-identification = Remove identification
 Remove-Photos = Remove Photos
 Remove-project-filter = Remove project filter
 Remove-taxon-filter = Remove taxon filter
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Remove user filter
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Removes this observation's taxon
 Removes-your-vote-of-agreement = წაშლის თქვენს თანხმობას
 Removes-your-vote-of-disagreement = წაშლის თქვენს არდათანხმებას
@@ -784,7 +790,11 @@ Save-all-observations = Save all observations
 SAVE-CHANGES = SAVE CHANGES
 SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = ᲐᲓᲒᲘᲚᲛᲓᲔᲑᲐᲠᲔᲝᲑᲘᲡ ᲨᲔᲜᲐᲮᲕᲐ
+Save-this-search = Save this search
 Saved-Observation = Saved observation, in queue to upload
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = სამეცნიერო სახელწოდება
 Scientific-Name-Common-Name = სამეცნიერო სახელი (გავრცელებული სახელი)
 SEARCH = SEARCH
@@ -797,6 +807,7 @@ Search-for-a-taxon = Search for a taxon
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = ᲐᲓᲒᲘᲚᲛᲓᲔᲑᲐᲠᲔᲝᲑᲘᲡ ᲫᲘᲔᲑᲐ
 SEARCH-PROJECTS = SEARCH PROJECTS
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = შეთავაზებების ძიება ადგილმდებარეობით
 Search-suggestions-without-location = შეთავაზებების ძიება ადგილმდებარეობის გარეშე
 SEARCH-TAXA = SEARCH TAXA
@@ -883,6 +894,7 @@ Syncing = სინქრონიზაცია...
 Take-photo = Take photo
 Take-photos = Take photos
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = TAXON NAMES DISPLAY
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } failed
        *[other] { $count } failed
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

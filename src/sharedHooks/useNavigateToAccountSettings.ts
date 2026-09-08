@@ -6,15 +6,15 @@ import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import { useCallback, useEffect, useState } from "react";
 import { Alert } from "react-native";
-import Config from "react-native-config";
 import { EventRegister } from "react-native-event-listeners";
+import { EnvConfig } from "sharedHelpers/envConfig";
 
 import useLayoutPrefs from "./useLayoutPrefs";
 import useTranslation from "./useTranslation";
 
 const { useRealm } = RealmContext;
 
-const SETTINGS_URL = `${Config.OAUTH_API_URL}/users/edit?noh1=true`;
+const SETTINGS_URL = `${EnvConfig.OAUTH_API_URL}/users/edit?noh1=true`;
 const FINISHED_WEB_SETTINGS = "finished-web-settings";
 
 interface Options {
@@ -88,7 +88,7 @@ const useNavigateToAccountSettings = ( { onFinish }: Options = {} ) => {
         }
         // If the webview navigates to a URL that indicates the account
         // was deleted, sign the current user out of the app
-        if ( url === `${Config.OAUTH_API_URL}/?account_deleted=true` ) {
+        if ( url === `${EnvConfig.OAUTH_API_URL}/?account_deleted=true` ) {
           signOutGoHome( );
           return false;
         }

@@ -104,6 +104,57 @@ describe( "AddToProjects", ( ) => {
     ).toBeVisible();
   } );
 
+  it( "does not show status banner when a selected project has only optional fields", async ( ) => {
+    renderAddToProjects( );
+
+    await actor.press( screen.getByText( mockProjects[1].title ) );
+
+    expect(
+      screen.getByText( mockProjects[1].projectObservationFields[0].obsField.name ),
+    ).toBeVisible( );
+    expect(
+      screen.queryByText( "All required fields have been filled" ),
+    ).toBeNull( );
+    expect(
+      screen.queryByText( "To add to this project, all required fields must be filled" ),
+    ).toBeNull( );
+  } );
+
+  describe( "when a selected project has fields out of position order", ( ) => {
+    const originalFields = mockProjects[0].projectObservationFields;
+    const unsortedFields = [
+      factory( "LocalProjectObservationField", {
+        position: 2,
+        obsField: factory( "LocalObservationField", { name: "Field C" } ),
+      } ),
+      factory( "LocalProjectObservationField", {
+        position: 0,
+        obsField: factory( "LocalObservationField", { name: "Field A" } ),
+      } ),
+      factory( "LocalProjectObservationField", {
+        position: 1,
+        obsField: factory( "LocalObservationField", { name: "Field B" } ),
+      } ),
+    ];
+
+    beforeAll( ( ) => {
+      mockProjects[0].projectObservationFields = unsortedFields;
+    } );
+
+    afterAll( ( ) => {
+      mockProjects[0].projectObservationFields = originalFields;
+    } );
+
+    it( "renders fields sorted by position", ( ) => {
+      renderAddToProjects( );
+
+      const fieldNames = screen.getAllByText( /Field [ABC]/ ).map(
+        node => node.props.children,
+      );
+      expect( fieldNames ).toEqual( ["Field A", "Field B", "Field C"] );
+    } );
+  } );
+
   it( "renders existing project observations as checked", ( ) => {
     renderAddToProjects( );
 
@@ -221,6 +272,54 @@ describe( "AddToProjects", ( ) => {
           pof.required = false;
         } );
       } );
+    } );
+
+    it( "shows a pencil icon on the project row", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+
+      expect(
+        within( screen.getByTestId( `AddToProjects.project.${mockProjects[1].id}` ) )
+          .getByText( iconGlyph( "circle-dots-pencil" ) ),
+      ).toBeVisible( );
+    } );
+
+    it( "shows the incomplete required-fields banner when a required field is empty", async ( ) => {
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+
+      expect(
+        screen.getByText( "To add to this project, all required fields must be filled" ),
+      ).toBeVisible( );
+    } );
+
+    it( "shows completed required-fields banner when all required fields are filled", async ( ) => {
+      const requiredObsFieldId = mockProjects[1].projectObservationFields[0].obsField.id;
+      useStore.setState( {
+        currentObservation: {
+          ...factory( "LocalObservation" ),
+          observationFieldValues: [
+            factory( "LocalObservationFieldValue", {
+              obsFieldId: requiredObsFieldId,
+              value: "completed-value",
+            } ),
+          ],
+          projectObservations: [factory( "LocalProjectObservation", {
+            projectId: mockProjects[0].id,
+            _synced_at: new Date( ),
+          } )],
+        },
+      } );
+
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+
+      expect(
+        screen.getByText( "All required fields have been filled" ),
+      ).toBeVisible( );
     } );
 
     it( "shows Missing info sheet when SAVE is pressed with an empty required field", async ( ) => {

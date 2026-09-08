@@ -1,0 +1,6 @@
+FIXED
+* On longer remote hikes sometimes an older stale location was used for a new observation
+* Some UI issues when scrolling lists with active searches on the Me tab
+
+UPDATED
+* Lists of taxa no longer show a checkmark icon

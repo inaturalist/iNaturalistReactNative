@@ -8,6 +8,9 @@ import { sentinelFilePath } from "../appConstants/paths";
 
 const logger = log.extend( "sentinelFiles" );
 
+// a sentinel with this stage is considered "clean" and not in need of reporting
+const FLOW_COMPLETE_STAGE = "flow_complete";
+
 const accessFullFilePath = ( fileName: string ) => `${sentinelFilePath}/${fileName}`;
 
 const generateSentinelFileName = ( screenName: string ): string => {
@@ -59,14 +62,14 @@ const logStage = async (
   }
 };
 
-const deleteSentinelFile = async ( sentinelFileName: string ): Promise<void> => {
-  try {
-    const fullFilePath = accessFullFilePath( sentinelFileName );
-    await unlink( fullFilePath );
-  } catch ( error ) {
-    console.error( "Failed to delete sentinel file:", error, sentinelFileName );
-  }
-};
+// marks flow as complete / non-problematic. sentinel flow writes are fire-and-forget
+// by design so that we don't hang during the critical path. We might have in-flight
+// flow writes at the time of "success" so instead of deleting the sentinel file, mark
+// as complete and let startup handle cleanup
+const completeSentinelFile = ( sentinelFileName: string ): Promise<void> => logStage(
+  sentinelFileName,
+  FLOW_COMPLETE_STAGE,
+);
 
 const logSentinelFiles = async ( ) => {
   const directoryExists = await exists( sentinelFilePath );
@@ -74,19 +77,26 @@ const logSentinelFiles = async ( ) => {
   const files = await readDir( sentinelFilePath );
 
   files.forEach( async file => {
-    const existingContent = await readFile( file.path, "utf8" );
-
-    const sentinelData = JSON.parse( existingContent );
-    if ( sentinelData.stages && sentinelData.stages.length > 0 ) {
-      logger.error( "Camera flow error: ", existingContent );
+    try {
+      const existingContent = await readFile( file.path, "utf8" );
+      const sentinelData = JSON.parse( existingContent );
+      const stages = sentinelData.stages || [];
+      const completedNormally = stages
+        .some( stage => stage.name === FLOW_COMPLETE_STAGE );
+      if ( stages.length > 0 && !completedNormally ) {
+        logger.error( "Camera flow error: ", existingContent );
+      }
+    } catch ( error ) {
+      logger.error( "Failed to process sentinel file:", error, file.path );
+    } finally {
+      await unlink( file.path );
     }
-    await unlink( file.path );
   } );
 };
 
 export {
+  completeSentinelFile,
   createSentinelFile,
-  deleteSentinelFile,
   logSentinelFiles,
   logStage,
 };

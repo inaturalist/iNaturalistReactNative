@@ -34,6 +34,7 @@ Add-observations = 新增觀察紀錄
 Add-optional-notes = 新增選填的註記
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -130,6 +131,7 @@ Change-zoom = 更改縮放
 CHECK-YOUR-EMAIL = 檢查您的電子郵件！
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = 選擇使用者名稱
 Chooses-taxon = Chooses taxon
@@ -230,6 +232,7 @@ Delete-current-observation = 刪除目前的觀察紀錄
 Delete-observation = 刪除觀察紀錄
 DELETE-OBSERVATION--question = 要刪除觀察紀錄嗎？
 Delete-photo = 刪除照片
+Delete-saved-search = Delete saved search
 Delete-sound = 刪除聲音
 Deleting-x-of-y--observations =
     正刪除 { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = 派
 Ranks-ZOOSUBSECTION = 亞派
 Ranks-Zoosubsection = 亞派
 Read-more-on-Wikipedia = 在維基百科上閱讀更多資訊
+Recent-searches = Recent searches
 Record-a-sound = 錄音
 Record-animal-sounds = 錄製動物的聲音
 RECORD-NEW-SOUND = 新建立錄音
@@ -757,7 +761,9 @@ Remove-identification = 移除鑑定
 Remove-Photos = 刪除照片
 Remove-project-filter = 移除專案篩選條件
 Remove-taxon-filter = 刪除分類群篩選條件
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = 刪除使用者篩選條件
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = 刪除此觀察紀錄的分類群
 Removes-your-vote-of-agreement = 刪除您投的同意票
 Removes-your-vote-of-disagreement = 刪除您的不同意票
@@ -784,7 +790,11 @@ Save-all-observations = 儲存所有觀察紀錄
 SAVE-CHANGES = 儲存更動
 SAVE-FOR-LATER = 稍後儲存
 SAVE-LOCATION = 儲存地點
+Save-this-search = Save this search
 Saved-Observation = 已儲存觀察記錄，正在佇列上傳中
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = 學名
 Scientific-Name-Common-Name = 學名(俗名)
 SEARCH = 搜尋
@@ -797,6 +807,7 @@ Search-for-a-taxon = 搜尋分類群
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = 搜尋地點
 SEARCH-PROJECTS = 搜尋專案
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = 包含位置的搜尋建議
 Search-suggestions-without-location = 不包含位置的搜尋建議
 SEARCH-TAXA = 搜尋分類群
@@ -883,6 +894,7 @@ Syncing = 同步中...
 Take-photo = 拍照
 Take-photos = 拍照
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = 分類群
 TAXON = 分類群
 TAXON-NAMES-DISPLAY = 分類群名稱的顯示
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } 筆失敗
        *[other] { $count } 筆失敗
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->
