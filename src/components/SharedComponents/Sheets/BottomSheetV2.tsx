@@ -38,6 +38,7 @@ const noHandle = ( ) => <></>;
 interface Props {
   children: React.JSX.Element;
   contentClassName?: string;
+  enableSwipeToClose?: boolean;
   hidden?: boolean;
   headerText?: string;
   onPressClose?: ( ) => void;
@@ -47,6 +48,7 @@ interface Props {
 const BottomSheetV2 = ( {
   children,
   contentClassName = "pt-2",
+  enableSwipeToClose = true,
   hidden,
   headerText,
   onPressClose,
@@ -102,8 +104,8 @@ const BottomSheetV2 = ( {
     <BottomSheetModal
       backdropComponent={renderBackdrop}
       enableDynamicSizing
-      // disable swipe down to close
-      enableContentPanningGesture={false}
+      // There is no handle, so panning the content is the only way to drag the sheet closed
+      enableContentPanningGesture={enableSwipeToClose}
       handleComponent={noHandle}
       maxDynamicContentSize={windowHeight * MAX_HEIGHT_FRACTION}
       index={0}

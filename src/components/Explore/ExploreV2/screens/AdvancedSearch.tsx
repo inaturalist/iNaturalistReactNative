@@ -768,6 +768,7 @@ const AdvancedSearch = ( ) => {
       )}
       {savedSearchesOpen && (
         <BottomSheetV2
+          enableSwipeToClose={false}
           headerText={t( "SAVED-SEARCHES" )}
           onPressClose={( ) => setShowSavedSearches( false )}
         >
