@@ -22,12 +22,10 @@ describe( "Signed in user", () => {
     const addObsButton = element( by.id( "add-obs-button" ) );
     await waitFor( addObsButton ).toBeVisible().withTimeout( TIMEOUT );
     await addObsButton.tap();
-    await expect( element( by.id( "observe-without-evidence-button" ) ) ).toBeVisible();
-    // Observe without evidence
     const obsWithoutEvidenceButton = element(
       by.id( "observe-without-evidence-button" ),
     );
-    await expect( obsWithoutEvidenceButton ).toBeVisible();
+    await waitFor( obsWithoutEvidenceButton ).toBeVisible().withTimeout( TIMEOUT );
     await obsWithoutEvidenceButton.tap();
 
     await uploadObservation( options );
