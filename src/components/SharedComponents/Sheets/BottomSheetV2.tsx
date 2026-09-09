@@ -7,6 +7,7 @@ import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "component
 import { View } from "components/styledComponents";
 import React, { useCallback, useEffect, useRef } from "react";
 import { Dimensions, StyleSheet, useWindowDimensions } from "react-native";
+import { ReduceMotion } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 
@@ -113,6 +114,7 @@ const BottomSheetV2 = ( {
       style={styles.marginOnWide}
       accessible={false}
       onDismiss={handleDismiss}
+      overrideReduceMotion={ReduceMotion.Never}
     >
       <BottomSheetScrollView
         alwaysBounceVertical={false}
