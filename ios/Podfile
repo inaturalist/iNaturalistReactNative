@@ -92,6 +92,19 @@ target "iNaturalistReactNative" do
       end
     end
 
+    # react_native_post_install only bumps each pod's main native target, missing the
+    # auto-generated *_Privacy resource bundle sub-targets, which keep whatever low
+    # IPHONEOS_DEPLOYMENT_TARGET their podspec declared. Newer Xcode versions drop
+    # support for those old targets, so bump every target here too.
+    installer.pods_project.targets.each do | target |
+      target.build_configurations.each do | build_config |
+        current_target = build_config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"]
+        if current_target && current_target.to_f < min_ios_version_supported.to_f
+          build_config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = min_ios_version_supported
+        end
+      end
+    end
+
     # react_native_post_install(installer)
     `sed -i -e  $'s/__IPHONE_10_0/__IPHONE_12_0/' Pods/RCT-Folly/folly/portability/Time.h`
   end
