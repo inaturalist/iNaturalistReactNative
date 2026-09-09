@@ -55,6 +55,20 @@
                                                  inWindow:self.window
                                         initialProperties:@{}
                                             launchOptions:launchOptions];
+
+  // Unlike RCTLinkingManager (which reads its initial URL back out of
+  // launchOptions above), ShareMenuManager's cold-launch handoff only
+  // happens through this application:openURL:options: call — under the old
+  // AppDelegate-only lifecycle iOS made this same call right after
+  // didFinishLaunchingWithOptions: for a cold URL-launch, but UIScene
+  // delivers cold-launch URLs solely via connectionOptions here, never via
+  // scene:openURLContexts:. Without this, sharing to the app while it's not
+  // running silently drops the share.
+  if (urlContext != nil) {
+    [ShareMenuManager application:[UIApplication sharedApplication]
+                           openURL:urlContext.URL
+                           options:[self openURLOptionsFromSceneOptions:urlContext.options]];
+  }
 }
 
 // Warm-launch equivalent of AppDelegate's application:openURL:options: —
@@ -62,19 +76,25 @@
 - (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts
 {
   for (UIOpenURLContext *context in URLContexts) {
-    NSMutableDictionary<UIApplicationOpenURLOptionsKey, id> *options = [NSMutableDictionary dictionary];
-    if (context.options.sourceApplication != nil) {
-      options[UIApplicationOpenURLOptionsSourceApplicationKey] = context.options.sourceApplication;
-    }
-    if (context.options.annotation != nil) {
-      options[UIApplicationOpenURLOptionsAnnotationKey] = context.options.annotation;
-    }
-    options[UIApplicationOpenURLOptionsOpenInPlaceKey] = @(context.options.openInPlace);
+    NSDictionary<UIApplicationOpenURLOptionsKey, id> *options = [self openURLOptionsFromSceneOptions:context.options];
 
     // https://reactnative.dev/docs/linking#get-the-deep-link
     [ShareMenuManager application:[UIApplication sharedApplication] openURL:context.URL options:options];
     [RCTLinkingManager application:[UIApplication sharedApplication] openURL:context.URL options:options];
   }
+}
+
+- (NSDictionary<UIApplicationOpenURLOptionsKey, id> *)openURLOptionsFromSceneOptions:(UISceneOpenURLOptions *)sceneOptions
+{
+  NSMutableDictionary<UIApplicationOpenURLOptionsKey, id> *options = [NSMutableDictionary dictionary];
+  if (sceneOptions.sourceApplication != nil) {
+    options[UIApplicationOpenURLOptionsSourceApplicationKey] = sceneOptions.sourceApplication;
+  }
+  if (sceneOptions.annotation != nil) {
+    options[UIApplicationOpenURLOptionsAnnotationKey] = sceneOptions.annotation;
+  }
+  options[UIApplicationOpenURLOptionsOpenInPlaceKey] = @(sceneOptions.openInPlace);
+  return options;
 }
 
 // Warm-launch equivalent of AppDelegate's application:continueUserActivity:restorationHandler:
