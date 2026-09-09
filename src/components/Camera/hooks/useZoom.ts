@@ -1,3 +1,4 @@
+import clamp from "lodash/clamp";
 import indexOf from "lodash/indexOf";
 import last from "lodash/last";
 import {
@@ -45,11 +46,6 @@ const useZoom = ( device: CameraDevice ): object => {
   }, [device?.physicalDevices] );
   const minZoom = device?.minZoom ?? 1;
   const neutralZoom = device?.neutralZoom ?? 2;
-  // this maxZoom zooms to 3x magnification on an iPhone 15 Pro
-  // currently the camera viewport is different than the photo taken
-  // so the photo taken with this zoom looks accurate compared with the native camera
-  // photo taken, but the camera preview looks a little too small
-  const maxZoomWithButton = neutralZoom ** 2.5;
   const maxZoomWithPinch = Math.min( device.maxZoom ?? 1, MAX_ZOOM_FACTOR );
   const initialZoom = !device?.isMultiCam
     ? minZoom
@@ -58,7 +54,28 @@ const useZoom = ( device: CameraDevice ): object => {
   const startZoom = useSharedValue( initialZoom );
   const [zoomTextValue, setZoomTextValue] = useState( initialZoomTextValue );
 
-  const zoomButtonValues = [minZoom, neutralZoom, maxZoomWithButton];
+  // goal here is to turn the display labels (some subset of .5, 1, 3) into the zoom factor for
+  // zoom.set so the result matches what the native camera shows for that label
+  //
+  // The labels are magnifications relative to the main wide lens. neutralZoom is the zoom
+  // factor at which that main lens is active, so factor = neutralZoom * label.
+  // ios/android anchor their zoom scales differently, which is why neutralZoom differs:
+  //   - Android puts the wide lens at 1.0 and the ultra-wide below it (minZoom ~0.5-0.67),
+  //     so neutralZoom is always 1 and the labels already are the zoom factors.
+  //   - iOS puts the widest lens at 1.0, so on any iPhone with an ultra-wide the default lens
+  //     sits at 2.0 and neutralZoom is 2. Without an ultra-wide it is 1.
+  // The clamp keeps requests inside the device's real range
+  //
+  // notably 3x is that threshold for handing off to the telephoto lens on the 15 Pro
+  // but for more recent Pros, that threshold is 5x so maybe we want to account for that someday
+  const zoomButtonValues = useMemo(
+    ( ) => zoomButtonOptions.map( option => clamp(
+      neutralZoom * Number( option ),
+      minZoom,
+      maxZoomWithPinch,
+    ) ),
+    [maxZoomWithPinch, minZoom, neutralZoom, zoomButtonOptions],
+  );
 
   useEffect( ( ) => {
     const newInitialZoom = !device?.isMultiCam
@@ -90,19 +107,17 @@ const useZoom = ( device: CameraDevice ): object => {
   }, [initialZoom, initialZoomTextValue, zoom] );
 
   const updateZoomTextValue = useCallback( ( newZoom: number ) => {
-    const closestZoomTextValue = zoomButtonOptions.reduce(
-      ( prev, curr ) => {
-        if ( newZoom === minZoom ) {
-          return zoomButtonOptions[0];
-        }
-        return (
-          Math.abs( curr - newZoom ) < Math.abs( prev - newZoom )
-            ? curr
-            : prev );
-      },
+    // Compare against the zoom factors the buttons map to, not the labels themselves: a
+    // label like "3" is a magnification, while newZoom is a device zoom factor.
+    const closestIndex = zoomButtonValues.reduce(
+      ( closest, value, index ) => (
+        Math.abs( value - newZoom ) < Math.abs( zoomButtonValues[closest] - newZoom )
+          ? index
+          : closest ),
+      0,
     );
-    setZoomTextValue( closestZoomTextValue );
-  }, [zoomButtonOptions, minZoom] );
+    setZoomTextValue( zoomButtonOptions[closestIndex] );
+  }, [zoomButtonOptions, zoomButtonValues] );
 
   const onZoomChange = useCallback( ( newValue: number ) => {
     "worklet";
