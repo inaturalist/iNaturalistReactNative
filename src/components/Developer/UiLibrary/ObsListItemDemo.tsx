@@ -8,7 +8,7 @@ import {
 import { View } from "components/styledComponents";
 import React from "react";
 
-export function makeObservation( options = {} ) {
+export function makeObservation( options: Record<string, unknown> = {} ) {
   return {
     uuid: faker.string.uuid( ),
     missingBasics: ( ) => false,
@@ -16,7 +16,7 @@ export function makeObservation( options = {} ) {
   };
 }
 
-export function makePhoto( options = { } ) {
+export function makePhoto( options: Record<string, unknown> = { } ) {
   return {
     id: faker.number.int( ),
     attribution: faker.lorem.sentence( ),
@@ -26,7 +26,7 @@ export function makePhoto( options = { } ) {
   };
 }
 
-export function makeObservationPhoto( options = {} ) {
+export function makeObservationPhoto( options: Record<string, unknown> = {} ) {
   return {
     uuid: faker.string.uuid( ),
     photo: makePhoto( ),
@@ -34,7 +34,7 @@ export function makeObservationPhoto( options = {} ) {
   };
 }
 
-export function makeObservationSound( options = {} ) {
+export function makeObservationSound( options: Record<string, unknown> = {} ) {
   return {
     uuid: faker.string.uuid( ),
     file_url: faker.system.filePath( ),
