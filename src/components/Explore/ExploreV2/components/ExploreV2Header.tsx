@@ -131,7 +131,7 @@ const ExploreV2Header = ( { showBackButton }: Props ) => {
       select back button, header content, or search button */}
       <Pressable
         accessible={false}
-        className="p-4 flex-row items-center"
+        className="px-4 pt-1 pb-[5px] flex-row items-center"
         onPress={() => navigation.navigate( searchScreen )}
         testID="ExploreV2Header.pressable"
       >
