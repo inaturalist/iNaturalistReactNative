@@ -217,44 +217,50 @@ const AddToProjects = ( ) => {
   ] );
 
   const renderExpanded = useCallback(
-    ( item: RealmProject, projectValid: boolean ) => (
-      <View className="bg-lightGrayOpaque">
-        {!projectValid
-          ? (
-            <View className="px-4 py-2.5 flex-row justify-center items-center">
-              <INatIcon
-                name="triangle-exclamation"
-                color={colors.warningRed}
-                size={19}
-              />
-              <Body3 className="ml-2.5">
-                {t( "To-add-to-this-project-all-required-fields-must-be-filled" )}
-              </Body3>
-            </View>
-          )
-          : (
-            <View className="px-4 py-2.5 flex-row justify-center items-center">
-              <INatIcon
-                name="checkmark-circle"
-                color={colors.inatGreen}
-                size={19}
-              />
-              <Body3 className="ml-2.5">
-                {t( "All-required-fields-have-been-filled" )}
-              </Body3>
-            </View>
+    ( item: RealmProject, projectValid: boolean ) => {
+      const hasRequiredFields = item.projectObservationFields.some( pof => pof.required );
+
+      return (
+        <View className="bg-lightGrayOpaque">
+          {hasRequiredFields && (
+            !projectValid
+              ? (
+                <View className="px-4 py-2.5 flex-row justify-center items-center">
+                  <INatIcon
+                    name="triangle-exclamation"
+                    color={colors.warningRed}
+                    size={19}
+                  />
+                  <Body3 className="ml-2.5">
+                    {t( "To-add-to-this-project-all-required-fields-must-be-filled" )}
+                  </Body3>
+                </View>
+              )
+              : (
+                <View className="px-4 py-2.5 flex-row justify-center items-center">
+                  <INatIcon
+                    name="checkmark-circle"
+                    color={colors.inatGreen}
+                    size={19}
+                  />
+                  <Body3 className="ml-2.5">
+                    {t( "All-required-fields-have-been-filled" )}
+                  </Body3>
+                </View>
+              )
           )}
-        {item.projectObservationFields.map( pof => (
-          <ObservationFieldInput
-            key={pof.id}
-            projectObservationField={pof}
-            isValid={!validationResult.errors.some(
-              error => error.obsFieldId === pof.obsField?.id,
-            )}
-          />
-        ) )}
-      </View>
-    ),
+          {item.projectObservationFields.map( pof => (
+            <ObservationFieldInput
+              key={pof.id}
+              projectObservationField={pof}
+              isValid={!validationResult.errors.some(
+                error => error.obsFieldId === pof.obsField?.id,
+              )}
+            />
+          ) )}
+        </View>
+      );
+    },
     [validationResult, t],
   );
 

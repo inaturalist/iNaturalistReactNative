@@ -14,8 +14,10 @@ import {
 } from "providers/ExploreV2Context";
 import React from "react";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
+import { SAVED_LIMIT } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
+import { savedSearch, setSavedSearches, taxonSubject } from "tests/helpers/savedSearch";
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -58,7 +60,11 @@ jest.mock( "components/Explore/hooks/useInfiniteExploreScroll", ( ) => ( {
   default: args => mockUseInfiniteExploreScroll( args ),
 } ) );
 
-jest.mock( "sharedHooks/useSpeciesCount", ( ) => ( { __esModule: true, default: ( ) => 0 } ) );
+const mockUseSpeciesCount = jest.fn( );
+jest.mock( "sharedHooks/useSpeciesCount", ( ) => ( {
+  __esModule: true,
+  default: ( ...args ) => mockUseSpeciesCount( ...args ),
+} ) );
 
 const mockExploreV2SpeciesView = jest.fn( ( ) => null );
 jest.mock( "components/Explore/ExploreV2/screens/ExploreV2SpeciesView", ( ) => ( {
@@ -126,6 +132,8 @@ beforeEach( ( ) => {
     observations: [],
     totalResults: 0,
   } );
+  mockUseSpeciesCount.mockReset( );
+  mockUseSpeciesCount.mockReturnValue( 0 );
 } );
 
 describe( "ExploreResults nearby resolution", ( ) => {
@@ -296,6 +304,12 @@ describe( "ExploreResults species sort", ( ) => {
     activeTab: SPECIES_TAB,
   };
 
+  beforeEach( ( ) => {
+    // These tests exercise the sort UI itself, not the zero-results state
+    // (see "ExploreResults species tab - no results" below).
+    mockUseSpeciesCount.mockReturnValue( 1 );
+  } );
+
   const lastSpeciesViewProps = ( ) => mockExploreV2SpeciesView.mock.calls.at( -1 )[0];
 
   it( "passes default most-observed sort params to the species view", async ( ) => {
@@ -345,12 +359,44 @@ describe( "ExploreResults species sort", ( ) => {
   } );
 } );
 
+describe( "ExploreResults species tab - no results", ( ) => {
+  const speciesTabState = {
+    ...mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+    activeTab: SPECIES_TAB,
+  };
+
+  beforeEach( ( ) => {
+    mockUseSpeciesCount.mockReturnValue( 0 );
+    useExploreV2.mockReturnValue( { state: speciesTabState, dispatch: mockDispatch } );
+  } );
+
+  it( "hides the sort button when there are no species results", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    await waitFor( ( ) => {
+      expect( mockExploreV2SpeciesView ).toHaveBeenCalled( );
+    } );
+    expect( screen.queryByLabelText( "Change species sort order" ) ).toBeNull( );
+  } );
+} );
+
 describe( "ExploreResults observations view", ( ) => {
   beforeEach( ( ) => {
     mockHasPermissions = true;
     useExploreV2.mockReturnValue( {
       state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
       dispatch: mockDispatch,
+    } );
+    // These tests exercise the map/list views themselves, not the
+    // zero-results state (see "ExploreResults observations view - no
+    // results" below) -- give them a non-zero default so the map isn't
+    // replaced by the no-results message out from under them.
+    mockUseInfiniteExploreScroll.mockReturnValue( {
+      fetchNextPage: jest.fn( ),
+      isFetchingNextPage: false,
+      handlePullToRefresh: jest.fn( ),
+      observations: [],
+      totalResults: 1,
     } );
   } );
 
@@ -472,6 +518,103 @@ describe( "ExploreResults observations view", ( ) => {
         swlat: 1, swlng: 2, nelat: 3, nelng: 4,
       },
     } );
+  } );
+} );
+
+describe( "ExploreResults saved searches", ( ) => {
+  const savedSearches = ( ) => useStore.getState( ).exploreSavedSearches;
+
+  beforeEach( ( ) => {
+    setSavedSearches( [] );
+    useExploreV2.mockReturnValue( {
+      state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+      dispatch: mockDispatch,
+    } );
+  } );
+
+  it( "saves the current search when the star is tapped", async ( ) => {
+    renderComponent( <ExploreResults /> );
+    const actor = userEvent.setup( );
+
+    await actor.press( await screen.findByLabelText( "Save this search" ) );
+
+    expect( savedSearches( ).searches ).toHaveLength( 1 );
+    expect( await screen.findByLabelText( "Remove this saved search" ) ).toBeVisible( );
+    expect( screen.getByText( "ADDED TO SAVED SEARCHES" ) ).toBeOnTheScreen( );
+  } );
+
+  it( "unsaves it when the filled star is tapped", async ( ) => {
+    renderComponent( <ExploreResults /> );
+    const actor = userEvent.setup( );
+
+    await actor.press( await screen.findByLabelText( "Save this search" ) );
+    await actor.press( await screen.findByLabelText( "Remove this saved search" ) );
+
+    expect( savedSearches( ).searches ).toEqual( [] );
+    expect( await screen.findByLabelText( "Save this search" ) ).toBeVisible( );
+    expect( screen.getByText( "REMOVED FROM SAVED SEARCHES" ) ).toBeOnTheScreen( );
+  } );
+
+  it( "warns instead of saving when there is no room left", async ( ) => {
+    setSavedSearches(
+      Array.from( { length: SAVED_LIMIT } ).map(
+        ( _item, i ) => savedSearch( { subject: taxonSubject( i ) } ),
+      ),
+    );
+
+    renderComponent( <ExploreResults /> );
+    const actor = userEvent.setup( );
+    await actor.press( await screen.findByLabelText( "Save this search" ) );
+
+    expect(
+      await screen.findByText( `SAVED SEARCH NOT ADDED, MAXIMUM OF ${SAVED_LIMIT}` ),
+    ).toBeOnTheScreen( );
+    expect( savedSearches( ).searches ).toHaveLength( SAVED_LIMIT );
+  } );
+} );
+
+describe( "ExploreResults observations view - no results", ( ) => {
+  beforeEach( ( ) => {
+    mockHasPermissions = true;
+    useExploreV2.mockReturnValue( {
+      state: mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ),
+      dispatch: mockDispatch,
+    } );
+    mockUseInfiniteExploreScroll.mockReturnValue( {
+      fetchNextPage: jest.fn( ),
+      isFetchingNextPage: false,
+      isLoading: false,
+      handlePullToRefresh: jest.fn( ),
+      observations: [],
+      totalResults: 0,
+    } );
+  } );
+
+  it( "still renders the map with no no-results message when there are no results", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByTestId( "Map.MapView" ) ).toBeTruthy( );
+    expect( screen.queryByText( /No results found/ ) ).toBeNull( );
+  } );
+
+  it( "hides the sort button in map view when there are no results", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    await screen.findByTestId( "Map.MapView" );
+    expect( screen.queryByLabelText( "Change observations sort order" ) ).toBeNull( );
+  } );
+
+  it( "still shows the segmented view buttons when there are no results", async ( ) => {
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByTestId( "SegmentedButton.map" ) ).toBeTruthy( );
+  } );
+
+  it( "shows the no-results message in grid view too", async ( ) => {
+    mockLayout = "grid";
+    renderComponent( <ExploreResults /> );
+
+    expect( await screen.findByText( /No results found/ ) ).toBeVisible( );
   } );
 } );
 

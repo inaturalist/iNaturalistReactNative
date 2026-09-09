@@ -142,15 +142,23 @@ const About = ( ) => {
               {t( "Licenses" )}
             </UnderlinedLink>
             {isDebug && (
-              <Button
-                text="TURN OFF DEBUG MODE"
-                className="mt-5 bg-deeppink"
-                level="primary"
-                onPress={() => {
-                  setCount( 0 );
-                  toggleDebug();
-                }}
-              />
+              <>
+                <Button
+                  text="TURN OFF DEBUG MODE"
+                  className="mt-5 bg-deeppink"
+                  level="primary"
+                  onPress={() => {
+                    setCount( 0 );
+                    toggleDebug();
+                  }}
+                />
+                <Button
+                  text="GO TO DEBUG OPTIONS"
+                  className="mt-5 bg-deeppink"
+                  level="primary"
+                  onPress={() => navigation.navigate( "Debug" )}
+                />
+              </>
             )}
           </View>
         )}

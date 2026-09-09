@@ -34,6 +34,7 @@ Add-observations = Lisa vaatluseid
 Add-optional-notes = Lisa soovi korral märkuseid
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -130,6 +131,7 @@ Change-zoom = Muuda suurendusastet
 CHECK-YOUR-EMAIL = KONTROLLI OMA E-POSTI!
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VALI KASUTAJANIMI
 Chooses-taxon = Chooses taxon
@@ -230,6 +232,7 @@ Delete-current-observation = Kustuta see vaatlus
 Delete-observation = Kustuta vaatlus
 DELETE-OBSERVATION--question = KUSTUTA VAATLUS?
 Delete-photo = Kustuta foto
+Delete-saved-search = Delete saved search
 Delete-sound = Kustuta heli
 Deleting-x-of-y--observations =
     Kustutan { $currentDeleteCount } { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = Zooloogiline sektsioon
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zooloogiline alamsektsioon
 Read-more-on-Wikipedia = Loe edasi Vikipeediast
+Recent-searches = Recent searches
 Record-a-sound = Salvesta heli
 Record-animal-sounds = Record animal sounds
 RECORD-NEW-SOUND = SALVESTA UUS HELI
@@ -757,7 +761,9 @@ Remove-identification = Eemalda määratlus
 Remove-Photos = Eemalda foto
 Remove-project-filter = Eemalda projekti filter
 Remove-taxon-filter = Eemalda taksoni filter
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Eemalda kasutaja filter
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Eemaldab sellev aatluse taksoni
 Removes-your-vote-of-agreement = Eemaldab sinu nõustumise
 Removes-your-vote-of-disagreement = Eemaldab sinu mittenõustumise
@@ -784,7 +790,11 @@ Save-all-observations = Salvesta kõik vaatlused
 SAVE-CHANGES = SALVESTA MUUTUSED
 SAVE-FOR-LATER = SÄILITA HILISEMAKS
 SAVE-LOCATION = SALVESTA ASUKOHT
+Save-this-search = Save this search
 Saved-Observation = Salvestatud vaatlused, mis ootavad üleslaadimist
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Teaduslik nimi
 Scientific-Name-Common-Name = Scientific Name (Common Name)
 SEARCH = OTSING
@@ -797,6 +807,7 @@ Search-for-a-taxon = Otsi taksonit
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = OTSI ASUKOHTA
 SEARCH-PROJECTS = OTSI PROJEKTI
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Asukohaga otsingusoovitused
 Search-suggestions-without-location = Asukohata otsingusoovitused
 SEARCH-TAXA = OTSI TAKSONIT
@@ -883,6 +894,7 @@ Syncing = Sünkroniseerin...
 Take-photo = Pildista
 Take-photos = Take photos
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taksonid
 TAXON = TAKSON
 TAXON-NAMES-DISPLAY = TAKSONITE KUVAMINE
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } failed
        *[other] { $count } failed
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

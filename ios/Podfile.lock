@@ -179,7 +179,7 @@ PODS:
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
-  - NitroModules (0.35.9):
+  - NitroModules (0.36.5):
     - boost
     - DoubleConversion
     - fast_float
@@ -4446,7 +4446,7 @@ SPEC CHECKSUMS:
   LicensePlist: 91465ee0724beab897ed5482775c5d3932a3f379
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
-  NitroModules: d2d7b8a417d5f498ef5affa78d82113ad8c35c59
+  NitroModules: d52aaa5db99af2be4c2b171460e3a7541d78fe4d
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   RCT-Folly: b29feb752b08042c62badaef7d453f3bb5e6ae23

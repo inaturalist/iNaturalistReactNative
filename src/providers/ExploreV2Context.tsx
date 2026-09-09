@@ -27,6 +27,7 @@ export enum EXPLORE_V2_ACTION {
   SET_SPECIES_SORT = "SET_SPECIES_SORT",
   SET_FILTERS = "SET_FILTERS",
   SET_ACTIVE_TAB = "SET_ACTIVE_TAB",
+  APPLY_SEARCH = "APPLY_SEARCH",
   RESET = "RESET"
 }
 
@@ -133,6 +134,9 @@ export interface ExploreV2State {
   activeTab: ExploreV2Tab;
 }
 
+// Everything that defines a search, as opposed to how the results are being viewed
+export type ExploreV2Search = Omit<ExploreV2State, "activeTab">;
+
 export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SUBJECT; subject: ExploreV2Subject }
   | { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT }
@@ -150,6 +154,7 @@ export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SPECIES_SORT; speciesSortBy: SPECIES_SORT }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
   | { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB; tab: ExploreV2Tab }
+  | { type: EXPLORE_V2_ACTION.APPLY_SEARCH; search: ExploreV2Search }
   | { type: EXPLORE_V2_ACTION.RESET };
 
 export const initialExploreV2State: ExploreV2State = {
@@ -215,6 +220,14 @@ export function exploreV2Reducer(
       return { ...state, filters: action.filters };
     case EXPLORE_V2_ACTION.SET_ACTIVE_TAB:
       return { ...state, activeTab: action.tab };
+    case EXPLORE_V2_ACTION.APPLY_SEARCH: {
+      const {
+        subject, location, sortBy, speciesSortBy, filters,
+      } = action.search;
+      return {
+        ...state, subject, location, sortBy, speciesSortBy, filters,
+      };
+    }
     case EXPLORE_V2_ACTION.RESET:
       return initialExploreV2State;
     default: {

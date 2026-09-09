@@ -40,6 +40,7 @@ Add-observations = Waarnemingen toevoegen
 Add-optional-notes = Optionele notities toevoegen
 Add-to-Projects = Voeg toe aan projecten
 ADD-TO-PROJECTS = VOEG TOE AAN PROJECTEN
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Toegevoegd aan { $count } { $count ->
         [one] project
@@ -136,6 +137,7 @@ Change-zoom = Wijzig zoom
 CHECK-YOUR-EMAIL = CONTROLEER JE E-MAIL!
 Choose-a-date = Kies een datum
 Choose-a-date-time = Kies een datum & tijd
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Kies een tijdstip
 CHOOSE-A-USERNAME = KIES EEN GEBRUIKERSNAAM
 Chooses-taxon = Kies een taxon
@@ -236,6 +238,7 @@ Delete-current-observation = Verwijder huidige waarneming
 Delete-observation = Verwijder observatie
 DELETE-OBSERVATION--question = VERWIJDER WAARNEMING?
 Delete-photo = Foto verwijderen
+Delete-saved-search = Delete saved search
 Delete-sound = Geluid verwijderen
 Deleting-x-of-y--observations =
     Verwijderen { $currentDeleteCount } { $total ->
@@ -748,6 +751,7 @@ Ranks-Zoosection = Zoösectie
 Ranks-ZOOSUBSECTION = ZOO-ONDERSECTIE
 Ranks-Zoosubsection = Zoö-ondersectie
 Read-more-on-Wikipedia = Lees meer op Wikipedia
+Recent-searches = Recent searches
 Record-a-sound = Een geluid opnemen
 Record-animal-sounds = Geluid opnemen
 RECORD-NEW-SOUND = NEEM NIEUW GELUID OP
@@ -763,7 +767,9 @@ Remove-identification = Determinatie verwijderen
 Remove-Photos = Verwijder foto's
 Remove-project-filter = Verwijder projectfilter
 Remove-taxon-filter = Verwijder taxonfilter
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Verwijder gebruikersfilter
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Verwijdert het taxon van deze waarneming
 Removes-your-vote-of-agreement = Verwijdert jouw stem van overeenkomst
 Removes-your-vote-of-disagreement = Verwijdert je stem van meningsverschil
@@ -790,7 +796,11 @@ Save-all-observations = Sla alle waarnemingen op
 SAVE-CHANGES = WIJZIGINGEN OPSLAAN
 SAVE-FOR-LATER = OPSLAAN VOOR LATER
 SAVE-LOCATION = LOCATIE OPSLAAN
+Save-this-search = Save this search
 Saved-Observation = Waarneming opgeslagen, in wachtrij om te uploaden
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Wetenschappelijke naam
 Scientific-Name-Common-Name = Wetenschappelijke naam (lokale volksnaam)
 SEARCH = ZOEK
@@ -803,6 +813,7 @@ Search-for-a-taxon = Zoek naar een taxon
 Search-for-species-user-or-project = Zoek naar soorten, gebruiker of project
 SEARCH-LOCATION = ZOEK LOCATIE
 SEARCH-PROJECTS = ZOEK PROJECTEN
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Zoek suggesties met locatie
 Search-suggestions-without-location = Zoek suggesties zonder locatie te gebruiken
 SEARCH-TAXA = ZOEK TAXA
@@ -889,6 +900,7 @@ Syncing = Synchroniseren...
 Take-photo = Neem foto
 Take-photos = Neem fotos
 Tap-here-to-switch-to-Advanced-Mode = Tik hier om over te schakelen naar de geavanceerde modus.
+Tap-to-try-loading-again = Tik om opnieuw te laden
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = TAXONNAAM WEERGAVE
@@ -1022,6 +1034,11 @@ x-failed =
     { $count ->
         [one] { $count } is mislukt
        *[other] { $count } zijn mislukt
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

@@ -64,7 +64,6 @@ interface Props {
   ref?: React.Ref<FlashListRef<( { uuid: string} )>>;
   listHeaderContent?: React.ReactElement | null;
   showNoResults?: boolean;
-  showObservationsEmptyScreen?: boolean;
   testID: string;
 }
 
@@ -91,7 +90,6 @@ const ObservationsFlashList = ( {
   ref,
   listHeaderContent,
   showNoResults,
-  showObservationsEmptyScreen,
   testID,
 }: Props ) => {
   const {
@@ -221,36 +219,43 @@ const ObservationsFlashList = ( {
     layout,
   ] );
 
+  const isEmpty = data.length === 0;
+
   const contentContainerStyle = useMemo( ( ) => {
-    if ( layout === "list" ) { return contentContainerStyleProp; }
+    // flexGrow so the content container fills the available height when
+    // there's no data -- otherwise it shrinks to fit only the empty state,
+    // and the centering below has no room to center within.
+    // Grid's extra padding (item gutters, tab bar clearance) only matters
+    // when there are grid items to space out -- skip it while empty so the
+    // empty state doesn't need to compensate for padding it doesn't need.
+    if ( layout === "list" || isEmpty ) {
+      return { flexGrow: 1, ...contentContainerStyleProp };
+    }
     return {
+      flexGrow: 1,
       ...flashListStyle,
       ...contentContainerStyleProp,
     };
   }, [
     contentContainerStyleProp,
     flashListStyle,
+    isEmpty,
     layout,
   ] );
 
-  const emptyContent = useMemo( ( ) => {
-    const showEmptyScreen = showObservationsEmptyScreen
-      ? null
-      : (
-        <Body3 className="self-center mt-[150px]">
-          {t( "No-results-found-try-different-search" )}
-        </Body3>
-      );
-
-    return showNoResults
-      ? showEmptyScreen
-      : (
-        <View className="self-center mt-[150px]">
+  const emptyContent = useMemo( ( ) => (
+    <View className="flex-1 items-center justify-center">
+      {showNoResults
+        ? (
+          <Body3 className="text-center px-10">
+            {t( "No-results-found-try-different-search" )}
+          </Body3>
+        )
+        : (
           <ActivityIndicator size={50} testID="ObservationsFlashList.loading" />
-        </View>
-      );
-  }, [
-    showObservationsEmptyScreen,
+        )}
+    </View>
+  ), [
     showNoResults,
     t,
   ] );
