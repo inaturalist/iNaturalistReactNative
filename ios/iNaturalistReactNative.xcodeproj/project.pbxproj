@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		085DD3205807404CAFC32228 /* Lato-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A9BAF07FCF24F668E2EF5AB /* Lato-Medium.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
+		06D371A7475E493398D649FE /* SceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BD86F7C1F414D9BB09D5CAF /* SceneDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		191A91132CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
@@ -68,6 +69,8 @@
 		13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNaturalistReactNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iNaturalistReactNative/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = iNaturalistReactNative/AppDelegate.mm; sourceTree = "<group>"; };
+		0B318FF5021543108AFFEC5C /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneDelegate.h; path = iNaturalistReactNative/SceneDelegate.h; sourceTree = "<group>"; };
+		2BD86F7C1F414D9BB09D5CAF /* SceneDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SceneDelegate.mm; path = iNaturalistReactNative/SceneDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iNaturalistReactNative/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iNaturalistReactNative/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iNaturalistReactNative/main.m; sourceTree = "<group>"; };
@@ -135,6 +138,8 @@
 				8B8BAD0429F54EB300CE5C9F /* iNaturalistReactNative.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+				0B318FF5021543108AFFEC5C /* SceneDelegate.h */,
+				2BD86F7C1F414D9BB09D5CAF /* SceneDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -504,6 +509,7 @@
 			files = (
 				8F346E4A2CF6912700CED7B4 /* geomodel.mlmodel in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				06D371A7475E493398D649FE /* SceneDelegate.mm in Sources */,
 				197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
