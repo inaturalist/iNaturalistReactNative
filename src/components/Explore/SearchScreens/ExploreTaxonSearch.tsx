@@ -16,12 +16,14 @@ import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
   closeModal: ( ) => void;
+  hideInfoButton?: boolean;
   onPressInfo?: ( taxon: RealmTaxon | ApiTaxon ) => void;
   updateTaxon: ( taxon: RealmTaxon | null ) => void;
 }
 
 const ExploreTaxonSearch = ( {
   closeModal,
+  hideInfoButton = false,
   onPressInfo,
   updateTaxon,
 }: Props ) => {
@@ -53,12 +55,14 @@ const ExploreTaxonSearch = ( {
         first={index === 0}
         fetchRemote={false}
         handleTaxonOrEditPress={() => onTaxonSelected( taxon )}
+        hideInfoButton={hideInfoButton}
         onPressInfo={onPressInfo}
         taxon={taxon}
         testID={`Search.taxa.${taxon.id}`}
       />
     ),
     [
+      hideInfoButton,
       onPressInfo,
       onTaxonSelected,
     ],

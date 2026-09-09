@@ -5,7 +5,7 @@ import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 
 const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   iconUrl: faker.image.url( ),
   locale: "en",
   prefers_common_names: true,

@@ -1,7 +1,9 @@
+import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import { View } from "components/styledComponents";
+import type { RefObject } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
-import type { CameraDevice } from "react-native-vision-camera";
+import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
 
@@ -13,19 +15,18 @@ const isTablet = DeviceInfo.isTablet( );
 interface Props {
   cameraType: "AI" | "Standard";
   device: CameraDevice;
-  camera: object;
+  camera: RefObject<Camera | null>;
   flipCamera: ( ) => void;
   handleCheckmarkPress: ( ) => void;
   confirmPhotosInProgress: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  toggleFlash: Function;
+  toggleFlash: ( ) => void;
   takingPhoto: boolean;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   takePhotoAndStoreUri: Function;
   newPhotoUris: object[];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   setNewPhotoUris: Function;
-  takePhotoOptions: object;
+  takePhotoOptions: TakePhotoOptions;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
   requestLocationPermissions: () => void;

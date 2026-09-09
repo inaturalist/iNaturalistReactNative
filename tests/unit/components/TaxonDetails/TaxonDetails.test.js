@@ -44,7 +44,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   icon_url: faker.image.url( ),
 } );
 

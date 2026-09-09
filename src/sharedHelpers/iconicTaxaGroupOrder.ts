@@ -1,20 +1,21 @@
 import type { IconicTaxonCountResult } from "api/observationsTyped";
 
+// These values are exactly the API's allowed `iconic_taxa` values
 export enum ICONIC_TAXA_GROUP {
-  PLANTAE = "plantae",
-  AVES = "aves",
-  INSECTA = "insecta",
-  ARACHNIDA = "arachnida",
-  FUNGI = "fungi",
-  MOLLUSCA = "mollusca",
-  MAMMALIA = "mammalia",
-  AMPHIBIA = "amphibia",
-  REPTILIA = "reptilia",
-  ACTINOPTERYGII = "actinopterygii",
-  CHROMISTA = "chromista",
-  PROTOZOA = "protozoa",
-  ANIMALIA = "animalia",
-  OTHER = "other",
+  PLANTAE = "Plantae",
+  AVES = "Aves",
+  INSECTA = "Insecta",
+  ARACHNIDA = "Arachnida",
+  FUNGI = "Fungi",
+  MOLLUSCA = "Mollusca",
+  MAMMALIA = "Mammalia",
+  AMPHIBIA = "Amphibia",
+  REPTILIA = "Reptilia",
+  ACTINOPTERYGII = "Actinopterygii",
+  CHROMISTA = "Chromista",
+  PROTOZOA = "Protozoa",
+  ANIMALIA = "Animalia",
+  OTHER = "unknown",
 }
 
 // This is the tie-break order for the grouped-by-iconic-taxa view: when two or more
@@ -41,16 +42,23 @@ export const ICONIC_TAXA_GROUP_ORDER: ICONIC_TAXA_GROUP[] = [
   ICONIC_TAXA_GROUP.OTHER,
 ];
 
+// gets the INatIcon glyph for a category, e.g. "iconic-plantae" or, for OTHER, "iconic-unknown"
+export function iconicTaxaGroupIcon( category: ICONIC_TAXA_GROUP ): string {
+  return `iconic-${category.toLowerCase( )}`;
+}
+
+const CATEGORY_VALUES = new Set<string>( ICONIC_TAXA_GROUP_ORDER );
+
+// Anything we can't place goess in OTHER, which is the API's "unknown" bucket.
+export function iconicTaxaGroupForTaxonName( name?: string | null ): ICONIC_TAXA_GROUP {
+  return name && CATEGORY_VALUES.has( name )
+    ? name as ICONIC_TAXA_GROUP
+    : ICONIC_TAXA_GROUP.OTHER;
+}
+
 export interface IconicTaxaGroupCount {
   category: ICONIC_TAXA_GROUP;
   count: number;
-}
-
-function getIconicTaxaGroupForResult( result: IconicTaxonCountResult ): ICONIC_TAXA_GROUP {
-  if ( !result.taxon ) {
-    return ICONIC_TAXA_GROUP.OTHER;
-  }
-  return result.taxon.name.toLowerCase( ) as ICONIC_TAXA_GROUP;
 }
 
 // Orders iconic taxa counts most-observed to least-observed. Categories missing
@@ -65,7 +73,7 @@ export function orderIconicTaxaCounts(
   }, {} as Record<ICONIC_TAXA_GROUP, number> );
 
   results.forEach( result => {
-    countsByCategory[getIconicTaxaGroupForResult( result )] = result.count;
+    countsByCategory[iconicTaxaGroupForTaxonName( result.taxon?.name )] = result.count;
   } );
 
   return [...ICONIC_TAXA_GROUP_ORDER]

@@ -37,6 +37,7 @@ Add-observations = Lisää havaintoja
 Add-optional-notes = Lisää valinnaisia merkintöjä
 Add-to-Projects = Lisää projekteihin
 ADD-TO-PROJECTS = LISÄÄ PROJEKTEIHIN
+ADDED-TO-SAVED-SEARCHES = LISÄTTY TALLENNETTUIHIN HAKUIHIN
 Added-to-X-Projects =
     Lisätty { $count } { $count ->
         [one] projekti
@@ -133,6 +134,7 @@ Change-zoom = Muuta zoomausta
 CHECK-YOUR-EMAIL = TARKISTA SÄHKÖPOSTISI!
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = VALITSE TALLENNETTU HAKU
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VALITSE KÄYTTÄJÄNIMI
 Chooses-taxon = Valitse taksoni
@@ -233,6 +235,7 @@ Delete-current-observation = Poista nykyinen havainto
 Delete-observation = Poista havainto
 DELETE-OBSERVATION--question = POISTA HAVAINTO?
 Delete-photo = Poista kuva
+Delete-saved-search = Poista tallennettu haku
 Delete-sound = Poista ääni
 Deleting-x-of-y--observations =
     Poistetaan { $currentDeleteCount } { $total ->
@@ -745,6 +748,7 @@ Ranks-Zoosection = Sektio
 Ranks-ZOOSUBSECTION = Alasektio
 Ranks-Zoosubsection = Alasektio
 Read-more-on-Wikipedia = Lue lisää Wikipediasta
+Recent-searches = Viimeaikaiset haut
 Record-a-sound = Tallenna ääntä
 Record-animal-sounds = Tallenna eläinten ääniä
 RECORD-NEW-SOUND = TALLENNA UUSI ÄÄNI
@@ -760,7 +764,9 @@ Remove-identification = Poista tunnistus
 Remove-Photos = Poista valokuvat
 Remove-project-filter = Poista projektin suodatin
 Remove-taxon-filter = Poista taksonisuodatin
+Remove-this-saved-search = Poista tämä tallennettu haku
 Remove-user-filter = Poista käyttäjäsuodatin
+REMOVED-FROM-SAVED-SEARCHES = POISTETTU TALLENNETUISTA HAUISTA
 Removes-this-observations-taxon = Poistaa tämän havainnon taksonin.
 Removes-your-vote-of-agreement = Poistaa hyväksymisäänesi
 Removes-your-vote-of-disagreement = Poistaa erimielisyysäänesi
@@ -787,7 +793,11 @@ Save-all-observations = Tallenna kaikki havainnot
 SAVE-CHANGES = TALLENNA MUUTOKSET
 SAVE-FOR-LATER = TALLENNA MYÖHEMMÄKSI
 SAVE-LOCATION = TALLENNA SIJAINTI
+Save-this-search = Tallenna tämä haku
 Saved-Observation = Tallennettu havainto, latausjonossa
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = TALLENNETTUA HAKUA EI LISÄTTY, ENINTÄÄN { $count }
+Saved-searches = Tallennetut haut
+SAVED-SEARCHES = TALLENNETUT HAUT
 Scientific-Name = Tieteellinen nimi
 Scientific-Name-Common-Name = Tieteellinen nimi (yleiskielinen nimi)
 SEARCH = HAE
@@ -800,6 +810,7 @@ Search-for-a-taxon = Hae sijaintia
 Search-for-species-user-or-project = Hae lajia, käyttäjää tai projektia
 SEARCH-LOCATION = HAE SIJAINTIA
 SEARCH-PROJECTS = HAE PROJEKTEJA
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Hakuehdotuksia sijainnin perusteella
 Search-suggestions-without-location = Hakuehdotukset ilman sijaintia
 SEARCH-TAXA = HAE TAKSONIA
@@ -886,6 +897,7 @@ Syncing = Synkronoidaan...
 Take-photo = Ota kuva
 Take-photos = Ota kuvia
 Tap-here-to-switch-to-Advanced-Mode = Napauta tästä vaihtaaksesi Edistyneeseen tilaan
+Tap-to-try-loading-again = Napauta yrittääksesi ladata uudelleen
 Taxa = Taksonit
 TAXON = TAKSONI
 TAXON-NAMES-DISPLAY = TAKSONIEN NIMIEN NÄYTTÖ
@@ -1019,6 +1031,11 @@ x-failed =
     { $count ->
         [one] { $count } epäonnistui
        *[other] { $count } epäonnistui
+    }
+X-filters =
+    { $count ->
+        [one] { $count } rajaus
+       *[other] { $count } rajausta
     }
 X-FOLLOWERS =
     { $count ->

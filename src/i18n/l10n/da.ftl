@@ -34,6 +34,7 @@ Add-observations = Tilføj observationer
 Add-optional-notes = Tilføj valgfrie notater
 Add-to-Projects = Føj til projekter
 ADD-TO-PROJECTS = FØJ TIL PROJEKTER
+ADDED-TO-SAVED-SEARCHES = FØJET TIL GEMTE SØGNINGER
 Added-to-X-Projects =
     Føjet til { $count } { $count ->
         [one] projekt
@@ -130,6 +131,7 @@ Change-zoom = Skift zoom
 CHECK-YOUR-EMAIL = TJEK INDBAKKEN!
 Choose-a-date = Vælg en dato
 Choose-a-date-time = Vælg en dato og tid
+CHOOSE-A-SAVED-SEARCH = VÆLG EN GEMT SØGNING
 Choose-a-time = Vælg et tid
 CHOOSE-A-USERNAME = VÆLG EN BRUGERNAVN
 Chooses-taxon = Vælger taxon
@@ -230,6 +232,7 @@ Delete-current-observation = Slet aktuel observation
 Delete-observation = Slet observation
 DELETE-OBSERVATION--question = SLET OBSERVATION?
 Delete-photo = Slet foto
+Delete-saved-search = Slet gemt søgning
 Delete-sound = Slet lyd
 Deleting-x-of-y--observations =
     Sletter { $currentDeleteCount } { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = Zoosektion
 Ranks-ZOOSUBSECTION = ZOOUNDERSEKTION
 Ranks-Zoosubsection = Zooundersektion
 Read-more-on-Wikipedia = Læs mere på Wikipedia
+Recent-searches = Seneste søgninger
 Record-a-sound = Optag lyd
 Record-animal-sounds = Optag dyrelyde
 RECORD-NEW-SOUND = OPTAG NY LYD
@@ -757,7 +761,9 @@ Remove-identification = Fjern identifikation
 Remove-Photos = Fjern fotos
 Remove-project-filter = Fjern projektfilter
 Remove-taxon-filter = Fjern taksonfilter
+Remove-this-saved-search = Fjern denne gemte søgning
 Remove-user-filter = Fjern brugerfilter
+REMOVED-FROM-SAVED-SEARCHES = FJERNET FRA GEMTE SØGNINGER
 Removes-this-observations-taxon = Fjerner denne observations takson
 Removes-your-vote-of-agreement = Fjerner egen stemme for enighed
 Removes-your-vote-of-disagreement = Fjerner egen stemme for uenighed
@@ -784,7 +790,11 @@ Save-all-observations = Gem alle observationer
 SAVE-CHANGES = GEM ÆNDRINGER
 SAVE-FOR-LATER = GEM TIL SENERE
 SAVE-LOCATION = GEM PLACERING
+Save-this-search = Gem denne søgning
 Saved-Observation = Gemt observation, i kø til upload
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = GEMT SØGNING IKKE TILFØJET, MAKSIMUM { $count }
+Saved-searches = Gemte søgninger
+SAVED-SEARCHES = GEMTE SØGNINGER
 Scientific-Name = Videnskabeligt navn
 Scientific-Name-Common-Name = Videnskabeligt navn (Almindeligt navn)
 SEARCH = SØG
@@ -797,6 +807,7 @@ Search-for-a-taxon = Søg efter en takson
 Search-for-species-user-or-project = Søg efter art, bruger eller projekt
 SEARCH-LOCATION = SØGEPLACERING
 SEARCH-PROJECTS = SØG I PROJEKTER
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Søg i forslag med placering
 Search-suggestions-without-location = Søg i forslag uden placering
 SEARCH-TAXA = SØG I TAKSA
@@ -883,6 +894,7 @@ Syncing = Synkroniserer...
 Take-photo = Tag foto
 Take-photos = Tag fotos
 Tap-here-to-switch-to-Advanced-Mode = Tryk her for at skifte til Avanceret tilstand
+Tap-to-try-loading-again = Tryk for at prøve at indlæse igen
 Taxa = Taksa
 TAXON = TAKSON
 TAXON-NAMES-DISPLAY = TAKSONNAVNEVISNING
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } mislykkedes
        *[other] { $count } mislykkedes
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filtre
     }
 X-FOLLOWERS =
     { $count ->

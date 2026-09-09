@@ -12,7 +12,7 @@ const mockUuid = "test-123";
 
 const mockCurrentUser = factory( "LocalUser", {
   id: 123,
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
 } );
 
 const mockLocalObservation = factory( "LocalObservation", {

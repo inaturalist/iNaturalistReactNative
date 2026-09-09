@@ -13,9 +13,12 @@ import {
 import Arrow from "images/svg/curved_arrow_down.svg";
 import type { Node } from "react";
 import React from "react";
+import { I18nManager } from "react-native";
 import { useTranslation } from "sharedHooks";
 
 import LoginBanner from "./LoginBanner";
+
+const MIRRORED = { transform: [{ rotateY: "180deg" }] };
 
 interface Props {
   currentUser: Object | null;
@@ -58,7 +61,10 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
           <View className="relative w-[141px] self-center">
             {/* View wrapper for positioning: className on an svg component
               * has no effect with nativewind 4 */}
-            <View className="absolute right-[-20px] top-[-23px]">
+            <View
+              className="absolute right-[-20px] top-[-23px]"
+              style={I18nManager.isRTL && MIRRORED}
+            >
               {/* $FlowIgnore[not-a-component] */}
               <Arrow />
             </View>
