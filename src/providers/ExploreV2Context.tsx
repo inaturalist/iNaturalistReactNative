@@ -132,10 +132,14 @@ export interface ExploreV2State {
   speciesSortBy: SPECIES_SORT;
   filters: ExploreV2Filters;
   activeTab: ExploreV2Tab;
+  // Bumped each time a whole search is applied from outside the results screen, e.g. a
+  // saved search. Lets a view tell "the search moved out from under me" apart from
+  // "the same search re-rendered", which the search fields alone can't when they're equal.
+  appliedSearchCount: number;
 }
 
 // Everything that defines a search, as opposed to how the results are being viewed
-export type ExploreV2Search = Omit<ExploreV2State, "activeTab">;
+export type ExploreV2Search = Omit<ExploreV2State, "activeTab" | "appliedSearchCount">;
 
 export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SUBJECT; subject: ExploreV2Subject }
@@ -164,6 +168,7 @@ export const initialExploreV2State: ExploreV2State = {
   speciesSortBy: SPECIES_SORT.COUNT_DESC,
   filters: defaultExploreV2Filters,
   activeTab: OBSERVATIONS_TAB,
+  appliedSearchCount: 0,
 };
 
 export function initialStateFromEntryParams(
@@ -224,18 +229,14 @@ export function exploreV2Reducer(
       const {
         subject, location, sortBy, speciesSortBy, filters,
       } = action.search;
-      // Fresh location and bounds objects, so applying the same saved search
-      // again still reads as a change to consumers that compare by reference
-      const appliedLocation = location.placeMode === EXPLORE_V2_PLACE_MODE.MAP_AREA
-        ? { ...location, bounds: { ...location.bounds } }
-        : { ...location };
       return {
         ...state,
         subject,
-        location: appliedLocation,
+        location,
         sortBy,
         speciesSortBy,
         filters,
+        appliedSearchCount: state.appliedSearchCount + 1,
       };
     }
     case EXPLORE_V2_ACTION.RESET:

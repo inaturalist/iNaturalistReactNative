@@ -36,6 +36,7 @@ const mockTotalBounds = {
 
 const renderMapView = ( props, update = null ) => renderComponent(
   <ExploreV2MapView
+    appliedSearchCount={0}
     isLoading={false}
     placeMode={EXPLORE_V2_PLACE_MODE.WORLDWIDE}
     queryParams={mockQueryParams}
@@ -131,48 +132,147 @@ describe( "ExploreV2MapView", ( ) => {
     expect( screen.queryByTestId( "ExploreV2MapView.loading" ) ).toBeNull( );
   } );
 
-  it( "moves the map to an area chosen somewhere else, like a saved search", ( ) => {
-    const { rerender } = renderMapView( {
-      placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
-      totalBounds: mockTotalBounds,
-    } );
-    animateToRegion.mockClear( );
-
-    renderMapView( {
-      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
-      mapAreaBounds: {
-        swlat: 43, swlng: -97, nelat: 49, nelng: -89,
-      },
-      totalBounds: mockTotalBounds,
-      queryParams: { ...mockQueryParams, swlat: 43 },
-    }, rerender );
-
-    expect( animateToRegion ).toHaveBeenCalledWith( {
+  describe( "applied searches", ( ) => {
+    const savedArea = {
+      swlat: 43, swlng: -97, nelat: 49, nelng: -89,
+    };
+    const savedAreaRegion = {
       latitude: 46,
       longitude: -93,
       latitudeDelta: 6,
       longitudeDelta: 8,
+    };
+
+    it( "moves the map to an area chosen somewhere else, like a saved search", ( ) => {
+      const { rerender } = renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
+        totalBounds: mockTotalBounds,
+      } );
+      animateToRegion.mockClear( );
+
+      renderMapView( {
+        appliedSearchCount: 1,
+        placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+        mapAreaBounds: savedArea,
+        totalBounds: mockTotalBounds,
+        queryParams: { ...mockQueryParams, swlat: 43 },
+      }, rerender );
+
+      expect( animateToRegion ).toHaveBeenCalledWith( savedAreaRegion );
     } );
-  } );
 
-  it( "does not move the map back to an area the user just panned to", async ( ) => {
-    const actor = userEvent.setup( );
-    const { rerender } = renderMapView( { onRedoSearchPress: jest.fn( ) } );
-    act( ( ) => mapProps( ).onPanDrag( ) );
-    // the bounds the mocked map reports for what the user panned to
-    await actor.press( screen.getByText( i18next.t( "REDO-SEARCH-IN-MAP-AREA" ) ) );
-    animateToRegion.mockClear( );
+    it( "does not move the map back to an area the user just panned to", async ( ) => {
+      const actor = userEvent.setup( );
+      const onRedoSearchPress = jest.fn( );
+      const { rerender } = renderMapView( { onRedoSearchPress } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+      await actor.press( screen.getByText( i18next.t( "REDO-SEARCH-IN-MAP-AREA" ) ) );
+      animateToRegion.mockClear( );
 
-    // those same bounds come back around as the search's map area
-    renderMapView( {
-      placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
-      mapAreaBounds: {
-        swlat: 1, swlng: 2, nelat: 3, nelng: 4,
-      },
-      queryParams: { ...mockQueryParams, swlat: 1 },
-    }, rerender );
+      // the bounds the map reported come back around as the search's map area
+      renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+        mapAreaBounds: onRedoSearchPress.mock.calls[0][0],
+        queryParams: { ...mockQueryParams, swlat: 1 },
+      }, rerender );
 
-    expect( animateToRegion ).not.toHaveBeenCalled( );
+      expect( animateToRegion ).not.toHaveBeenCalled( );
+    } );
+
+    it( "moves the map back to a saved area even when it matches the last redo", async ( ) => {
+      // Saved map area searches are made from the map's own redo, so their bounds equal
+      // the bounds it reported. Panning away and applying one must still bring the map back.
+      const actor = userEvent.setup( );
+      const onRedoSearchPress = jest.fn( );
+      const { rerender } = renderMapView( { onRedoSearchPress } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+      await actor.press( screen.getByText( i18next.t( "REDO-SEARCH-IN-MAP-AREA" ) ) );
+      const reportedBounds = onRedoSearchPress.mock.calls[0][0];
+      renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+        mapAreaBounds: reportedBounds,
+      }, rerender );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+      animateToRegion.mockClear( );
+
+      renderMapView( {
+        appliedSearchCount: 1,
+        placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+        mapAreaBounds: reportedBounds,
+      }, rerender );
+
+      expect( animateToRegion ).toHaveBeenCalledWith( {
+        latitude: 2,
+        longitude: 3,
+        latitudeDelta: 2,
+        longitudeDelta: 2,
+      } );
+      expect( screen.queryByText( i18next.t( "REDO-SEARCH-IN-MAP-AREA" ) ) ).toBeNull( );
+    } );
+
+    it( "leaves a redo alone after an applied search", async ( ) => {
+      const actor = userEvent.setup( );
+      const onRedoSearchPress = jest.fn( );
+      const { rerender } = renderMapView( {
+        appliedSearchCount: 1,
+        placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+        mapAreaBounds: savedArea,
+        onRedoSearchPress,
+      } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+      await actor.press( screen.getByText( i18next.t( "REDO-SEARCH-IN-MAP-AREA" ) ) );
+      animateToRegion.mockClear( );
+
+      renderMapView( {
+        appliedSearchCount: 1,
+        placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+        mapAreaBounds: onRedoSearchPress.mock.calls[0][0],
+        onRedoSearchPress,
+      }, rerender );
+
+      expect( animateToRegion ).not.toHaveBeenCalled( );
+    } );
+
+    it( "re-frames a place search that is applied again after panning away", ( ) => {
+      const { rerender } = renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        totalBounds: mockTotalBounds,
+      } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+      animateToRegion.mockClear( );
+
+      renderMapView( {
+        appliedSearchCount: 1,
+        placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+        totalBounds: mockTotalBounds,
+      }, rerender );
+
+      expect( animateToRegion ).toHaveBeenCalledWith( mapProps( ).initialRegion );
+      expect( screen.queryByText( i18next.t( "REDO-SEARCH-IN-MAP-AREA" ) ) ).toBeNull( );
+    } );
+
+    it( "re-frames a nearby search that is applied again after panning away", ( ) => {
+      const nearbyCoords = { lat: 37.5, lng: -122.1, radius: 1 };
+      const { rerender } = renderMapView( {
+        placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
+        nearbyCoords,
+      } );
+      act( ( ) => mapProps( ).onPanDrag( ) );
+      animateToRegion.mockClear( );
+
+      renderMapView( {
+        appliedSearchCount: 1,
+        placeMode: EXPLORE_V2_PLACE_MODE.NEARBY,
+        nearbyCoords,
+      }, rerender );
+
+      expect( animateToRegion ).toHaveBeenCalledWith( {
+        latitude: 37.5,
+        longitude: -122.1,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      } );
+    } );
   } );
 
   it( "keeps ignoring new result bounds while a map area stays up", ( ) => {

@@ -285,6 +285,7 @@ const ExploreResults = ( ) => {
             {showMap
               ? (
                 <ExploreV2MapView
+                  appliedSearchCount={state.appliedSearchCount}
                   isLoading={isLoading}
                   mapAreaBounds={state.location.placeMode === EXPLORE_V2_PLACE_MODE.MAP_AREA
                     ? state.location.bounds

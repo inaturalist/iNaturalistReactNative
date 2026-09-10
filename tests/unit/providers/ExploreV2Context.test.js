@@ -258,7 +258,7 @@ describe( "exploreV2Reducer", ( ) => {
         type: EXPLORE_V2_ACTION.APPLY_SEARCH,
         search,
       } );
-      expect( next ).toEqual( { ...initialExploreV2State, ...search } );
+      expect( next ).toEqual( { ...initialExploreV2State, ...search, appliedSearchCount: 1 } );
     } );
 
     it( "clears the subject for a search that has none", ( ) => {
@@ -278,26 +278,31 @@ describe( "exploreV2Reducer", ( ) => {
       expect( next ).not.toHaveProperty( "savedAt" );
     } );
 
-    it( "hands out fresh map area bounds so re-applying the same search reads as a change", ( ) => {
-      const mapAreaSearch = {
-        ...search,
-        location: {
-          placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
-          bounds: {
-            swlat: 1, swlng: 2, nelat: 3, nelng: 4,
-          },
-        },
-      };
+    it( "counts every applied search, so applying one twice still reads as a change", ( ) => {
       const first = exploreV2Reducer( initialExploreV2State, {
         type: EXPLORE_V2_ACTION.APPLY_SEARCH,
-        search: mapAreaSearch,
+        search,
       } );
       const second = exploreV2Reducer( first, {
         type: EXPLORE_V2_ACTION.APPLY_SEARCH,
-        search: mapAreaSearch,
+        search,
       } );
-      expect( second.location ).toEqual( first.location );
-      expect( second.location.bounds ).not.toBe( first.location.bounds );
+      expect( first.appliedSearchCount ).toBe( 1 );
+      expect( second.appliedSearchCount ).toBe( 2 );
+    } );
+
+    it( "does not count a map area the user chose on the map", ( ) => {
+      const applied = exploreV2Reducer( initialExploreV2State, {
+        type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+        search,
+      } );
+      const redone = exploreV2Reducer( applied, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+        bounds: {
+          swlat: 1, swlng: 2, nelat: 3, nelng: 4,
+        },
+      } );
+      expect( redone.appliedSearchCount ).toBe( applied.appliedSearchCount );
     } );
   } );
 

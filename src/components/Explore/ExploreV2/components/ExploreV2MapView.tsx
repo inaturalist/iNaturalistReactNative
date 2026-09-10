@@ -32,19 +32,13 @@ const WORLDWIDE_REGION: Region = {
 
 const activityIndicatorSize = 50;
 
-const sameBounds = ( a?: ApiTotalBounds, b?: ApiTotalBounds ) => (
-  a?.swlat === b?.swlat
-  && a?.swlng === b?.swlng
-  && a?.nelat === b?.nelat
-  && a?.nelng === b?.nelng
-);
-
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6,
 } );
 
 interface Props {
+  appliedSearchCount: number;
   isLoading: boolean;
   mapAreaBounds?: ApiTotalBounds;
   nearbyCoords?: NearbyCoords;
@@ -56,6 +50,7 @@ interface Props {
 }
 
 const ExploreV2MapView = ( {
+  appliedSearchCount,
   isLoading,
   mapAreaBounds,
   nearbyCoords,
@@ -111,24 +106,40 @@ const ExploreV2MapView = ( {
       : undefined
   ), [placeMode, mapAreaBounds] );
 
-  // Map area bounds come from two places: this map reporting what the user
-  // panned to, and a saved search handing us an area chosen somewhere else. The
-  // camera only has to move for the second kind, so remember the bounds we
-  // reported ourselves, starting with whatever we mounted with.
-  const [reportedBounds, setReportedBounds] = useState( mapAreaBounds );
+  // Map area bounds come from two places: this map reporting where the user panned
+  // (the map is already there, so the camera must not chase them), and a saved search
+  // handing us an area chosen somewhere else (the camera has to move). The search's
+  // appliedSearchCount tells them apart: remember which applied search our last redo
+  // belonged to, and any map area arriving under a newer count came from outside.
+  const [redoAppliedSearchCount, setRedoAppliedSearchCount] = useState( appliedSearchCount );
 
   // The region the camera should be showing for the current context
-  const targetRegion = useMemo( ( ): Region | undefined => {
+  const cameraRegion = useMemo( ( ): Region | undefined => {
     if ( placeMode === EXPLORE_V2_PLACE_MODE.NEARBY ) return nearbyRegion;
     if ( placeMode === EXPLORE_V2_PLACE_MODE.MAP_AREA ) {
-      return sameBounds( mapAreaBounds, reportedBounds )
+      return appliedSearchCount === redoAppliedSearchCount
         ? undefined
         : mapAreaRegion;
     }
     return boundsRegion;
-  }, [placeMode, nearbyRegion, boundsRegion, mapAreaBounds, mapAreaRegion, reportedBounds] );
+  }, [
+    placeMode,
+    nearbyRegion,
+    boundsRegion,
+    mapAreaRegion,
+    appliedSearchCount,
+    redoAppliedSearchCount,
+  ] );
 
-  const initialRegion = mapAreaRegion || targetRegion || WORLDWIDE_REGION;
+  // Re-applying a saved search can land on the exact coordinates the user panned away from.
+  // The map moves its camera when this object changes, so stamp it with the applied search
+  // it belongs to: identical coordinates under a new count are still a new request.
+  const targetRegion = useMemo(
+    ( ) => cameraRegion && { ...cameraRegion, appliedSearchCount },
+    [cameraRegion, appliedSearchCount],
+  );
+
+  const initialRegion = mapAreaRegion || cameraRegion || WORLDWIDE_REGION;
 
   const showRedoSearch = pannedFrom !== null
     && pannedFrom.placeMode === placeMode
@@ -138,15 +149,14 @@ const ExploreV2MapView = ( {
     setPannedFrom( null );
     const bounds = await mapRef.current?.getMapBoundaries( );
     if ( !bounds ) return;
-    const newBounds = {
+    setRedoAppliedSearchCount( appliedSearchCount );
+    onRedoSearchPress?.( {
       swlat: bounds.southWest.latitude,
       swlng: bounds.southWest.longitude,
       nelat: bounds.northEast.latitude,
       nelng: bounds.northEast.longitude,
-    };
-    setReportedBounds( newBounds );
-    onRedoSearchPress?.( newBounds );
-  }, [onRedoSearchPress] );
+    } );
+  }, [appliedSearchCount, onRedoSearchPress] );
 
   return (
     <View className="flex-1 overflow-hidden h-full">
