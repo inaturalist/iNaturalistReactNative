@@ -7,6 +7,7 @@ import ActivityIndicator from "components/SharedComponents/ActivityIndicator";
 import Button from "components/SharedComponents/Buttons/Button";
 import {
   getMapRegion,
+  longitudeSpan,
   regionFromBounds,
 } from "components/SharedComponents/Map/helpers/mapHelpers";
 import Map from "components/SharedComponents/Map/Map";
@@ -33,18 +34,13 @@ const WORLDWIDE_REGION: Region = {
 const activityIndicatorSize = 50;
 
 // A worldwide search frames the map on the results so a regional taxon isn't off screen,
-// but for a global result set the API's total_bounds are not something to frame on: they
-// either cover the globe or collapse to a sliver along one axis (an antimeridian artifact).
+// but for a global result set the API's total_bounds cover the globe and are not something
+// to frame on.
 const isGlobalBounds = ( {
   swlat, swlng, nelat, nelng,
-}: ApiTotalBounds ) => {
-  const latSpan = Math.abs( nelat - swlat );
-  const lngSpan = Math.abs( nelng - swlng );
-  const coversGlobe = latSpan >= 120 || lngSpan >= 300;
-  const collapsedOnOneAxis = Math.min( latSpan, lngSpan ) < 0.001
-    && Math.max( latSpan, lngSpan ) > 1;
-  return coversGlobe || collapsedOnOneAxis;
-};
+}: ApiTotalBounds ) => (
+  Math.abs( nelat - swlat ) >= 120 || longitudeSpan( swlng, nelng ) >= 300
+);
 
 const regionForResults = ( bounds: ApiTotalBounds, placeMode: EXPLORE_V2_PLACE_MODE ) => (
   placeMode === EXPLORE_V2_PLACE_MODE.WORLDWIDE && isGlobalBounds( bounds )

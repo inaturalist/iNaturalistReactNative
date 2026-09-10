@@ -144,12 +144,13 @@ describe( "ExploreV2MapView", ( ) => {
     expect( mapProps( ).initialRegion.longitudeDelta ).toBe( 180 );
   } );
 
-  it( "shows the whole world when a worldwide search's bounds collapse to a sliver", ( ) => {
-    // What the API hands back for a global result set: full latitude, no longitude
+  it( "shows the whole world when a worldwide search's bounds wrap the whole globe", ( ) => {
+    // What the API hands back for Animalia: a 360 degree box encoded as an
+    // antimeridian crossing that ends just west of 0
     renderMapView( {
       placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
       totalBounds: {
-        swlat: -41.7, swlng: -2.5e-7, nelat: 47.3, nelng: -8.3e-8,
+        swlat: -84.41, swlng: 0, nelat: 89.99, nelng: -1.68e-7,
       },
     } );
 
@@ -159,6 +160,34 @@ describe( "ExploreV2MapView", ( ) => {
       latitudeDelta: 180,
       longitudeDelta: 180,
     } );
+  } );
+
+  it( "frames a worldwide search on a taxon that straddles the antimeridian", ( ) => {
+    // Prosopeia tabuensis, a Fijian parrot: 11 degrees wide, not 352
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
+      totalBounds: {
+        swlat: -21.39, swlng: 177.19, nelat: -16.55, nelng: -174.91,
+      },
+    } );
+
+    const { initialRegion } = mapProps( );
+    expect( initialRegion.longitudeDelta ).toBeCloseTo( 7.9 * 1.4 );
+    expect( initialRegion.longitude ).toBeCloseTo( -178.86 );
+  } );
+
+  it( "frames a place that crosses the antimeridian on the right side of the world", ( ) => {
+    // The United States, wrapping via the Aleutians
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+      totalBounds: {
+        swlat: 18.8, swlng: 172.61, nelat: 71.44, nelng: -66.8,
+      },
+    } );
+
+    const { initialRegion } = mapProps( );
+    expect( initialRegion.longitude ).toBeCloseTo( -127.095 );
+    expect( initialRegion.longitudeDelta ).toBeCloseTo( 168.83 );
   } );
 
   it( "still frames a place whose bounds happen to span the globe", ( ) => {
