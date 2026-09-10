@@ -44,16 +44,21 @@ describe( "AddToProjects", ( ) => {
   const mockObservations = [observation];
 
   describe( "from ObsEdit", ( ) => {
-    async function navigateToObsEditOrObsDetails( observations ) {
+    async function navigateToAddToProjectsViaObsEdit( observations ) {
       await renderAppWithObservations( observations, __filename );
       const observationGridItem = await screen.findByTestId(
         `MyObservations.obsGridItem.${observations[0].uuid}`,
       );
       await actor.press( observationGridItem );
+      const addToProjectsRow = await screen.findByLabelText(
+        /Add to Projects|Added to \d+ Project/,
+      );
+      await actor.press( addToProjectsRow );
+      await screen.findByTestId( "add-to-projects" );
     }
 
     it( "should show the chooser", async () => {
-      await navigateToObsEditOrObsDetails( mockObservations );
+      await navigateToAddToProjectsViaObsEdit( mockObservations );
     } );
   } );
 } );
