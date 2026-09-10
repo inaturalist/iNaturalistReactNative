@@ -151,9 +151,11 @@ const ExploreV2MapView = ( {
     redoAppliedSearchCount,
   ] );
 
-  // Re-applying a saved search can land on the exact coordinates the user panned away from.
-  // The map moves its camera when this object changes, so stamp it with the applied search
-  // it belongs to: identical coordinates under a new count are still a new request.
+  // cameraRegion is what we show based on a search, but the user can have panned away so we can't
+  // count on it being the currently shown area
+  //
+  // when applying a search with the same cameraRegion, fold in appliedSearchCount so it resolves as
+  // a new object and the map will animate to it, handling a case where the user is panned away
   const targetRegion = useMemo(
     ( ) => cameraRegion && { ...cameraRegion, appliedSearchCount },
     [cameraRegion, appliedSearchCount],
