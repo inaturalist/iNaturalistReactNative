@@ -112,13 +112,19 @@ export function regionFromBounds( bounds: MapBoundaries ): Region {
   };
 }
 
+// The widest spans a map will actually display. Android silently ignores a region whose
+// latitude span reaches the poles, leaving the camera wherever it already was, so a region
+// meant to show the whole world has to ask for a little less than all of it.
+export const MAX_LATITUDE_DELTA = 89;
+export const MAX_LONGITUDE_DELTA = 179;
+
 export function getMapRegion( totalBounds: MapBoundaries ): Region {
   const { latitudeDelta, longitudeDelta, ...center } = regionFromBounds( totalBounds );
 
   return {
     ...center,
-    latitudeDelta: Math.min( latitudeDelta + latitudeDelta * 0.4, 89 ),
-    longitudeDelta: Math.min( longitudeDelta + longitudeDelta * 0.4, 179 ),
+    latitudeDelta: Math.min( latitudeDelta + latitudeDelta * 0.4, MAX_LATITUDE_DELTA ),
+    longitudeDelta: Math.min( longitudeDelta + longitudeDelta * 0.4, MAX_LONGITUDE_DELTA ),
   };
 }
 

@@ -8,6 +8,8 @@ import Button from "components/SharedComponents/Buttons/Button";
 import {
   getMapRegion,
   longitudeSpan,
+  MAX_LATITUDE_DELTA,
+  MAX_LONGITUDE_DELTA,
   regionFromBounds,
 } from "components/SharedComponents/Map/helpers/mapHelpers";
 import Map from "components/SharedComponents/Map/Map";
@@ -27,8 +29,8 @@ const NEARBY_DELTA = 0.02;
 const WORLDWIDE_REGION: Region = {
   latitude: 0,
   longitude: 0,
-  latitudeDelta: 180,
-  longitudeDelta: 180,
+  latitudeDelta: MAX_LATITUDE_DELTA,
+  longitudeDelta: MAX_LONGITUDE_DELTA,
 };
 
 const activityIndicatorSize = 50;

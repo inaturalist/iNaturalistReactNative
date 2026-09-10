@@ -71,8 +71,8 @@ describe( "ExploreV2MapView", ( ) => {
     expect( mapProps( ).initialRegion ).toEqual( {
       latitude: 0,
       longitude: 0,
-      latitudeDelta: 180,
-      longitudeDelta: 180,
+      latitudeDelta: 89,
+      longitudeDelta: 179,
     } );
   } );
 
@@ -128,7 +128,7 @@ describe( "ExploreV2MapView", ( ) => {
       totalBounds: undefined,
     } );
 
-    expect( mapProps( ).initialRegion.latitudeDelta ).toBe( 180 );
+    expect( mapProps( ).initialRegion.latitudeDelta ).toBe( 89 );
     expect( screen.queryByTestId( "ExploreV2MapView.loading" ) ).toBeNull( );
   } );
 
@@ -140,8 +140,8 @@ describe( "ExploreV2MapView", ( ) => {
       },
     } );
 
-    expect( mapProps( ).initialRegion.latitudeDelta ).toBe( 180 );
-    expect( mapProps( ).initialRegion.longitudeDelta ).toBe( 180 );
+    expect( mapProps( ).initialRegion.latitudeDelta ).toBe( 89 );
+    expect( mapProps( ).initialRegion.longitudeDelta ).toBe( 179 );
   } );
 
   it( "shows the whole world when a worldwide search's bounds wrap the whole globe", ( ) => {
@@ -157,8 +157,8 @@ describe( "ExploreV2MapView", ( ) => {
     expect( mapProps( ).initialRegion ).toEqual( {
       latitude: 0,
       longitude: 0,
-      latitudeDelta: 180,
-      longitudeDelta: 180,
+      latitudeDelta: 89,
+      longitudeDelta: 179,
     } );
   } );
 
