@@ -113,7 +113,7 @@ const ExploreV2Header = ( { showBackButton }: Props ) => {
         scientificNameFirst={currentUser?.prefers_scientific_name_first}
       />
     );
-  } else if ( subject?.type === "unobserved" ) {
+  } else if ( subject?.type === "unobserved" || state.filters.unobservedByUser ) {
     headerContent = (
       <TitleHeader
         title={t( "Unobserved" )}
