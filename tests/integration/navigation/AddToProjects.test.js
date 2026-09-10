@@ -7,6 +7,10 @@ import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
+// We're explicitly testing navigation here so we want react-navigation
+// working normally
+jest.unmock( "@react-navigation/native" );
+
 // // UNIQUE REALM SETUP
 const mockRealmIdentifier = __filename;
 const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll } = setupUniqueRealm(
