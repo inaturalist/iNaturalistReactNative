@@ -243,30 +243,16 @@ const UniversalSearch = ( ) => {
     // Commit the composed search to context. Fields left unselected on
     // this screen fall back to their defaults: no subject → all organisms,
     // no location → worldwide.
-    dispatch(
-      selectedSubject
-        ? { type: EXPLORE_V2_ACTION.SET_SUBJECT, subject: selectedSubject }
-        : { type: EXPLORE_V2_ACTION.CLEAR_SUBJECT },
-    );
-    switch ( selectedLocation?.placeMode ) {
-      case EXPLORE_V2_PLACE_MODE.PLACE:
-        dispatch( {
-          type: EXPLORE_V2_ACTION.SET_LOCATION_PLACE,
-          place: selectedLocation.place,
-        } );
-        break;
-      case EXPLORE_V2_PLACE_MODE.NEARBY:
-        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_NEARBY } );
-        break;
-      case EXPLORE_V2_PLACE_MODE.MAP_AREA:
-        dispatch( {
-          type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
-          bounds: selectedLocation.bounds,
-        } );
-        break;
-      default:
-        dispatch( { type: EXPLORE_V2_ACTION.SET_LOCATION_WORLDWIDE } );
-    }
+    dispatch( {
+      type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+      search: {
+        subject: selectedSubject,
+        location: selectedLocation ?? { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
+        sortBy: state.sortBy,
+        speciesSortBy: state.speciesSortBy,
+        filters: state.filters,
+      },
+    } );
     // Record recent subject if it's from an autocomplete result
     if ( selectedSubject && subjectToResult( selectedSubject ) ) {
       recordSubject( selectedSubject );
@@ -275,7 +261,17 @@ const UniversalSearch = ( ) => {
       recordPlace( selectedLocation.place );
     }
     navigation.popTo( "ExploreResults" );
-  }, [selectedSubject, selectedLocation, dispatch, navigation, recordSubject, recordPlace] );
+  }, [
+    selectedSubject,
+    selectedLocation,
+    state.sortBy,
+    state.speciesSortBy,
+    state.filters,
+    dispatch,
+    navigation,
+    recordSubject,
+    recordPlace,
+  ] );
 
   const renderItem = useCallback<ListRenderItem<SearchResultItem>>( ( { item } ) => {
     if ( item.type === "place" ) {

@@ -147,6 +147,8 @@ const PLACE_RESULTS = [
 // The screen seeds its fields from the search currently in force, so tests need
 // a realistic location: the reducer never leaves it undefined.
 const WORLDWIDE = { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE };
+const NEARBY = { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY };
+const atPlace = place => ( { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place } );
 
 const mockSearchInForce = ( search = {} ) => {
   useExploreV2.mockReturnValue( {
@@ -155,6 +157,18 @@ const mockSearchInForce = ( search = {} ) => {
     requestLocationPermissions: mockRequestLocationPermissions,
   } );
 };
+
+// The screen commits the composed search in a single APPLY_SEARCH, so these
+// name the subject and location that landed rather than per-field actions.
+const expectCommitted = search => expect( mockDispatch ).toHaveBeenCalledWith( {
+  type: "APPLY_SEARCH",
+  search: expect.objectContaining( search ),
+} );
+
+const expectNotCommitted = search => expect( mockDispatch ).not.toHaveBeenCalledWith( {
+  type: "APPLY_SEARCH",
+  search: expect.objectContaining( search ),
+} );
 
 const actor = userEvent.setup( );
 
@@ -316,16 +330,13 @@ describe( "UniversalSearch screen", ( ) => {
       expect( subjectInput.props.selectTextOnFocus ).toBe( true );
 
       await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-      expect( mockDispatch ).toHaveBeenCalledWith(
-        expect.objectContaining( {
-          type: "SET_SUBJECT",
-          subject: expect.objectContaining( {
-            type: "user",
-            user: expect.objectContaining( { id: 7, login: "seth_msp" } ),
-          } ),
+      expectCommitted( {
+        subject: expect.objectContaining( {
+          type: "user",
+          user: expect.objectContaining( { id: 7, login: "seth_msp" } ),
         } ),
-      );
-      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      } );
+      expectNotCommitted( { subject: null } );
     },
   );
 
@@ -418,15 +429,12 @@ describe( "UniversalSearch screen", ( ) => {
       expect( screen.getByDisplayValue( "Plants" ) ).toBeTruthy( );
 
       await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-      expect( mockDispatch ).toHaveBeenCalledWith(
-        expect.objectContaining( {
-          type: "SET_SUBJECT",
-          subject: expect.objectContaining( {
-            type: "taxon",
-            taxon: expect.objectContaining( { id: 47126, name: "Plantae" } ),
-          } ),
+      expectCommitted( {
+        subject: expect.objectContaining( {
+          type: "taxon",
+          taxon: expect.objectContaining( { id: 47126, name: "Plantae" } ),
         } ),
-      );
+      } );
     } );
 
     it( "stages the current user as the subject when their profile row is tapped", async ( ) => {
@@ -439,15 +447,12 @@ describe( "UniversalSearch screen", ( ) => {
       expect( screen.getByDisplayValue( "tester" ) ).toBeTruthy( );
 
       await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-      expect( mockDispatch ).toHaveBeenCalledWith(
-        expect.objectContaining( {
-          type: "SET_SUBJECT",
-          subject: expect.objectContaining( {
-            type: "user",
-            user: expect.objectContaining( { id: 99, login: "tester" } ),
-          } ),
+      expectCommitted( {
+        subject: expect.objectContaining( {
+          type: "user",
+          user: expect.objectContaining( { id: 99, login: "tester" } ),
         } ),
-      );
+      } );
     } );
 
     it( "stages an unobserved subject when the unobserved row is tapped", async ( ) => {
@@ -463,15 +468,12 @@ describe( "UniversalSearch screen", ( ) => {
       ).toBeTruthy( );
 
       await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-      expect( mockDispatch ).toHaveBeenCalledWith(
-        expect.objectContaining( {
-          type: "SET_SUBJECT",
-          subject: expect.objectContaining( {
-            type: "unobserved",
-            user: expect.objectContaining( { id: 99 } ),
-          } ),
+      expectCommitted( {
+        subject: expect.objectContaining( {
+          type: "unobserved",
+          user: expect.objectContaining( { id: 99 } ),
         } ),
-      );
+      } );
     } );
 
     it( "hides the current user row when logged out", ( ) => {
@@ -616,8 +618,8 @@ describe( "UniversalSearch screen", ( ) => {
       } );
 
       await pressSearch( );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
-      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expectCommitted( { location: NEARBY } );
+      expectNotCommitted( { location: WORLDWIDE } );
     } );
 
     it( "fills the field and stages worldwide when Worldwide is tapped", async ( ) => {
@@ -630,7 +632,7 @@ describe( "UniversalSearch screen", ( ) => {
       expect( screen.getByDisplayValue( i18next.t( "Worldwide" ) ) ).toBeTruthy( );
 
       await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expectCommitted( { location: WORLDWIDE } );
     } );
 
     it( "fills the field and stages the nearby intent when Nearby is tapped", async ( ) => {
@@ -645,7 +647,7 @@ describe( "UniversalSearch screen", ( ) => {
       expect( mockDispatch ).not.toHaveBeenCalled( );
 
       await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
+      expectCommitted( { location: NEARBY } );
     } );
 
     it(
@@ -663,7 +665,7 @@ describe( "UniversalSearch screen", ( ) => {
         expect( mockRequestLocationPermissions ).not.toHaveBeenCalled( );
 
         await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-        expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
+        expectCommitted( { location: NEARBY } );
       },
     );
   } );
@@ -757,8 +759,8 @@ describe( "UniversalSearch screen", ( ) => {
 
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expectCommitted( { subject: null } );
+      expectCommitted( { location: WORLDWIDE } );
     } );
 
     it( "commits the subject + worldwide when only a subject is selected", async ( ) => {
@@ -767,17 +769,14 @@ describe( "UniversalSearch screen", ( ) => {
       await selectSubject( );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith(
-        expect.objectContaining( {
-          type: "SET_SUBJECT",
-          subject: expect.objectContaining( {
-            type: "user",
-            user: expect.objectContaining( { id: 7 } ),
-          } ),
+      expectCommitted( {
+        subject: expect.objectContaining( {
+          type: "user",
+          user: expect.objectContaining( { id: 7 } ),
         } ),
-      );
+      } );
       // location was left untouched → worldwide
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expectCommitted( { location: WORLDWIDE } );
     } );
 
     it( "commits all organisms + the place when only a location is selected", async ( ) => {
@@ -787,10 +786,9 @@ describe( "UniversalSearch screen", ( ) => {
       await pressSearch( );
 
       // subject was left untouched → all organisms
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: "SET_LOCATION_PLACE",
-        place: { id: 1, display_name: "Monterey, CA, US", place_type: 9 },
+      expectCommitted( { subject: null } );
+      expectCommitted( {
+        location: atPlace( { id: 1, display_name: "Monterey, CA, US", place_type: 9 } ),
       } );
     } );
 
@@ -801,15 +799,12 @@ describe( "UniversalSearch screen", ( ) => {
       await selectPlace( );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith(
-        expect.objectContaining( { type: "SET_SUBJECT" } ),
-      );
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: "SET_LOCATION_PLACE",
-        place: { id: 1, display_name: "Monterey, CA, US", place_type: 9 },
+      expectCommitted( { subject: expect.any( Object ) } );
+      expectCommitted( {
+        location: atPlace( { id: 1, display_name: "Monterey, CA, US", place_type: 9 } ),
       } );
-      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
-      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expectNotCommitted( { subject: null } );
+      expectNotCommitted( { location: WORLDWIDE } );
     } );
 
     it( "does not commit anything after Reset clears the staged selections", async ( ) => {
@@ -822,8 +817,8 @@ describe( "UniversalSearch screen", ( ) => {
       await pressSearch( );
 
       // Reset cleared the staged picks, so Search falls back to the defaults.
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expectCommitted( { subject: null } );
+      expectCommitted( { location: WORLDWIDE } );
     } );
 
     it( "dismisses the keyboard when the search button is pressed", async ( ) => {
@@ -845,8 +840,8 @@ describe( "UniversalSearch screen", ( ) => {
 
       await actor.press( stickySearchButton );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expectCommitted( { subject: null } );
+      expectCommitted( { location: WORLDWIDE } );
       expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
     } );
 
@@ -872,7 +867,7 @@ describe( "UniversalSearch screen", ( ) => {
       await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
+      expectCommitted( { location: NEARBY } );
       expect( recents( ).subjects ).toEqual( [] );
       expect( recents( ).places ).toEqual( [] );
     } );
@@ -883,9 +878,7 @@ describe( "UniversalSearch screen", ( ) => {
       await actor.press( screen.getByTestId( "DefaultSearchOptions.unobserved" ) );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith(
-        expect.objectContaining( { type: "SET_SUBJECT" } ),
-      );
+      expectCommitted( { subject: expect.any( Object ) } );
       expect( recents( ).subjects ).toEqual( [] );
     } );
 
@@ -933,10 +926,7 @@ describe( "UniversalSearch screen", ( ) => {
 
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: "SET_SUBJECT",
-        subject: TAXON_SUBJECT,
-      } );
+      expectCommitted( { subject: TAXON_SUBJECT } );
       expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
     } );
 
@@ -965,9 +955,8 @@ describe( "UniversalSearch screen", ( ) => {
 
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: "SET_LOCATION_PLACE",
-        place: MONTEREY,
+      expectCommitted( {
+        location: atPlace( MONTEREY ),
       } );
     } );
   } );
@@ -1000,7 +989,7 @@ describe( "UniversalSearch screen", ( ) => {
 
     it( "shows the place from the current search in the location field", ( ) => {
       mockSearchInForce( {
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+        location: atPlace( MONTEREY ),
       } );
       renderComponent( <UniversalSearch /> );
 
@@ -1051,7 +1040,7 @@ describe( "UniversalSearch screen", ( ) => {
     it( "does not search for the seeded text", ( ) => {
       mockSearchInForce( {
         subject: TAXON_SUBJECT,
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+        location: atPlace( MONTEREY ),
       } );
       renderComponent( <UniversalSearch /> );
 
@@ -1062,7 +1051,7 @@ describe( "UniversalSearch screen", ( ) => {
     it( "still offers the default options under a seeded field", ( ) => {
       mockSearchInForce( {
         subject: TAXON_SUBJECT,
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+        location: atPlace( MONTEREY ),
       } );
       renderComponent( <UniversalSearch /> );
 
@@ -1082,9 +1071,8 @@ describe( "UniversalSearch screen", ( ) => {
       await stageSubject( );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: "SET_LOCATION_MAP_AREA",
-        bounds: MAP_AREA_BOUNDS,
+      expectCommitted( {
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA, bounds: MAP_AREA_BOUNDS },
       } );
     } );
 
@@ -1096,16 +1084,13 @@ describe( "UniversalSearch screen", ( ) => {
       await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: "SET_SUBJECT",
-        subject: TAXON_SUBJECT,
-      } );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
+      expectCommitted( { subject: TAXON_SUBJECT } );
+      expectCommitted( { location: NEARBY } );
     } );
 
     it( "replaces the seeded place when the user picks a different one", async ( ) => {
       mockSearchInForce( {
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+        location: atPlace( MONTEREY ),
       } );
       useLocationSearch.mockReturnValue( {
         results: PLACE_RESULTS,
@@ -1118,9 +1103,8 @@ describe( "UniversalSearch screen", ( ) => {
       await actor.press( screen.getByTestId( "LocationSearchResult.2" ) );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( {
-        type: "SET_LOCATION_PLACE",
-        place: { id: 2, display_name: "Montenegro", place_type: 12 },
+      expectCommitted( {
+        location: atPlace( { id: 2, display_name: "Montenegro", place_type: 12 } ),
       } );
     } );
 
@@ -1132,25 +1116,25 @@ describe( "UniversalSearch screen", ( ) => {
       typeQuery( "zzzzz" );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expectCommitted( { subject: null } );
     } );
 
     it( "falls back to worldwide once the seeded location is cleared", async ( ) => {
       mockSearchInForce( {
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+        location: atPlace( MONTEREY ),
       } );
       renderComponent( <UniversalSearch /> );
 
       fireEvent.changeText( screen.getByTestId( "UniversalSearch.locationInput" ), "" );
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expectCommitted( { location: WORLDWIDE } );
     } );
 
     it( "returns to the empty state when Reset is pressed", async ( ) => {
       mockSearchInForce( {
         subject: TAXON_SUBJECT,
-        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+        location: atPlace( MONTEREY ),
       } );
       renderComponent( <UniversalSearch /> );
 
@@ -1161,8 +1145,8 @@ describe( "UniversalSearch screen", ( ) => {
 
       await pressSearch( );
 
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
-      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+      expectCommitted( { subject: null } );
+      expectCommitted( { location: WORLDWIDE } );
     } );
   } );
 } );
