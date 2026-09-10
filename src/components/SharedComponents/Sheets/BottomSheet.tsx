@@ -12,6 +12,7 @@ import React, {
   useRef,
 } from "react";
 import { Dimensions } from "react-native";
+import { ReduceMotion } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "sharedHooks";
 import { twMerge } from "tailwind-merge";
@@ -192,6 +193,7 @@ const StandardBottomSheet = ( {
         onClose={handleClose}
         enablePanDownToClose={enablePanDownToClose}
         enableContentPanningGesture={enableContentPanningGesture}
+        overrideReduceMotion={ReduceMotion.Never}
       >
         {content}
       </BottomSheet>
@@ -210,6 +212,7 @@ const StandardBottomSheet = ( {
       onDismiss={handleClose}
       enablePanDownToClose={enablePanDownToClose}
       enableContentPanningGesture={enableContentPanningGesture}
+      overrideReduceMotion={ReduceMotion.Never}
     >
       {content}
     </BottomSheetModal>

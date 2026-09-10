@@ -58,7 +58,7 @@ const SOUND_RECORDER_OPTIONS = {
   headerTitleAlign: "center",
 } as const;
 
-const CameraContainerWithPermission = ( ) => fadeInComponent(
+const CameraContainerWithPermission = ( ) => (
   <Mortal>
     <PermissionGateContainer
       permissions={CAMERA_PERMISSIONS}
@@ -72,7 +72,7 @@ const CameraContainerWithPermission = ( ) => fadeInComponent(
     >
       <CameraContainer />
     </PermissionGateContainer>
-  </Mortal>,
+  </Mortal>
 );
 
 // On iOS we don't actually need PHOTO LIBRARY permission to import photos,
