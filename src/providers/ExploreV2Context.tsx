@@ -224,8 +224,18 @@ export function exploreV2Reducer(
       const {
         subject, location, sortBy, speciesSortBy, filters,
       } = action.search;
+      // Fresh location and bounds objects, so applying the same saved search
+      // again still reads as a change to consumers that compare by reference
+      const appliedLocation = location.placeMode === EXPLORE_V2_PLACE_MODE.MAP_AREA
+        ? { ...location, bounds: { ...location.bounds } }
+        : { ...location };
       return {
-        ...state, subject, location, sortBy, speciesSortBy, filters,
+        ...state,
+        subject,
+        location: appliedLocation,
+        sortBy,
+        speciesSortBy,
+        filters,
       };
     }
     case EXPLORE_V2_ACTION.RESET:

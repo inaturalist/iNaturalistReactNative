@@ -277,6 +277,28 @@ describe( "exploreV2Reducer", ( ) => {
       expect( next ).not.toHaveProperty( "key" );
       expect( next ).not.toHaveProperty( "savedAt" );
     } );
+
+    it( "hands out fresh map area bounds so re-applying the same search reads as a change", ( ) => {
+      const mapAreaSearch = {
+        ...search,
+        location: {
+          placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA,
+          bounds: {
+            swlat: 1, swlng: 2, nelat: 3, nelng: 4,
+          },
+        },
+      };
+      const first = exploreV2Reducer( initialExploreV2State, {
+        type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+        search: mapAreaSearch,
+      } );
+      const second = exploreV2Reducer( first, {
+        type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+        search: mapAreaSearch,
+      } );
+      expect( second.location ).toEqual( first.location );
+      expect( second.location.bounds ).not.toBe( first.location.bounds );
+    } );
   } );
 
   describe( EXPLORE_V2_ACTION.RESET, ( ) => {
