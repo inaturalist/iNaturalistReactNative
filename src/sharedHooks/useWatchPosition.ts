@@ -45,7 +45,7 @@ const useWatchPosition = ( options: {
         clearWatch( id );
         id = null;
       }
-      if ( !cancelledRef.current ) setIsWatching( false );
+      setIsWatching( false );
     };
 
     const success = ( position: GeolocationResponse ) => {
