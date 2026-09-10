@@ -11,7 +11,7 @@ import React from "react";
 
 import { makePhoto } from "./ObsListItemDemo";
 
-function makeTaxon( options = {} ) {
+function makeTaxon( options: Record<string, unknown> = {} ) {
   return {
     uuid: faker.string.uuid( ),
     id: faker.number.int( ),
@@ -23,7 +23,7 @@ function makeTaxon( options = {} ) {
   };
 }
 
-export function makeTaxonPhoto( options = {} ) {
+export function makeTaxonPhoto( options: Record<string, unknown> = {} ) {
   return {
     uuid: faker.string.uuid( ),
     photo: makePhoto( ),
@@ -65,12 +65,6 @@ const TaxonGridItemDemo = ( ) => (
             default_photo: makePhoto( ),
           } )}
           showSpeciesSeenCheckmark
-          style={STYLE}
-        />
-        <Heading2 className="my-2">w/ Count</Heading2>
-        <TaxonGridItem
-          taxon={makeTaxon()}
-          count={9999}
           style={STYLE}
         />
       </View>

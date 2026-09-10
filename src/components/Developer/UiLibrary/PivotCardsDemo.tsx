@@ -19,11 +19,14 @@ const Buttons = ( ) => {
   const resetShownOnce = useStore( state => state.layout.resetShownOnce );
   const [modalIndex, setModalIndex] = useState( -1 );
 
-  const setShowingModal = index => {
+  const setShowingModal = ( index: number ) => {
     setModalIndex( index );
   };
 
-  const pivotCards = [
+  const pivotCards: {
+    title: string;
+    component: React.ComponentType<{ triggerCondition: boolean }>;
+  }[] = [
     {
       title: "Account Creation",
       component: AccountCreationCard,
@@ -58,7 +61,7 @@ const Buttons = ( ) => {
         }}
       />
       {pivotCards.map( ( { title, component }, index ) => (
-        <View className="p-4">
+        <View className="p-4" key={title}>
           <Button
             className="mb-2"
             level="primary"
