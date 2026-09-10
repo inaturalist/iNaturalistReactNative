@@ -137,8 +137,12 @@ describe( "recent searches in Explore", ( ) => {
       );
     } );
 
-    // Search again with nothing selected, so the subject goes back to all organisms
+    // Reopening the search shows the taxon that was already searched
     await openUniversalSearch( );
+    expect(
+      screen.getByDisplayValue( mockTaxon.preferred_common_name ),
+    ).toBeVisible( );
+    await actor.press( screen.getByTestId( "UniversalSearch.back.reset" ) );
     await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
     await screen.findByTestId( "ExploreResults" );
     expect(

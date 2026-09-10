@@ -34,7 +34,7 @@ jest.mock( "providers/ExploreV2Context", ( ) => {
     useExploreV2: jest.fn( ),
   };
 } );
-const { useExploreV2 } = require( "providers/ExploreV2Context" );
+const { useExploreV2, EXPLORE_V2_PLACE_MODE } = require( "providers/ExploreV2Context" );
 
 jest.mock( "components/Explore/ExploreV2/hooks/useUniversalSearch" );
 const useUniversalSearch = require(
@@ -144,6 +144,18 @@ const PLACE_RESULTS = [
   },
 ];
 
+// The screen seeds its fields from the search currently in force, so tests need
+// a realistic location: the reducer never leaves it undefined.
+const WORLDWIDE = { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE };
+
+const mockSearchInForce = ( search = {} ) => {
+  useExploreV2.mockReturnValue( {
+    dispatch: mockDispatch,
+    state: { subject: null, location: WORLDWIDE, ...search },
+    requestLocationPermissions: mockRequestLocationPermissions,
+  } );
+};
+
 const actor = userEvent.setup( );
 
 const typeQuery = text => {
@@ -199,11 +211,7 @@ beforeEach( ( ) => {
   // Default to location permission granted; the no-permission case overrides this.
   checkLocationPermissions.mockReset( );
   checkLocationPermissions.mockResolvedValue( "granted" );
-  useExploreV2.mockReturnValue( {
-    dispatch: mockDispatch,
-    state: {},
-    requestLocationPermissions: mockRequestLocationPermissions,
-  } );
+  mockSearchInForce( );
   useCurrentUser.mockReturnValue( CURRENT_USER );
   useIconicTaxa.mockReturnValue( ICONIC_TAXA );
   useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
@@ -287,7 +295,7 @@ describe( "UniversalSearch screen", ( ) => {
   } );
 
   it(
-    "clears the field but keeps the staged subject when refocusing after a selection",
+    "keeps the filled field and the staged subject when refocusing after a selection",
     async ( ) => {
       useUniversalSearch.mockReturnValue( {
         results: MIXED_RESULTS,
@@ -300,10 +308,12 @@ describe( "UniversalSearch screen", ( ) => {
       await actor.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
       expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
 
-      fireEvent( screen.getByTestId( "UniversalSearch.subjectInput" ), "focus" );
+      const subjectInput = screen.getByTestId( "UniversalSearch.subjectInput" );
+      fireEvent( subjectInput, "focus" );
 
-      // the field is cleared for a fresh search...
-      expect( screen.queryByDisplayValue( "seth_msp" ) ).toBeNull( );
+      // the choice stays in view; typing over it is what replaces it
+      expect( screen.getByDisplayValue( "seth_msp" ) ).toBeTruthy( );
+      expect( subjectInput.props.selectTextOnFocus ).toBe( true );
 
       await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
       expect( mockDispatch ).toHaveBeenCalledWith(
@@ -588,7 +598,7 @@ describe( "UniversalSearch screen", ( ) => {
       expect( screen.queryByTestId( "LocationDefaultOptions" ) ).toBeNull( );
     } );
 
-    it( "hides the defaults after a selection and restores them on re-focus", async ( ) => {
+    it( "keeps the defaults up after a selection so another can be picked", async ( ) => {
       renderComponent( <UniversalSearch /> );
 
       focusLocation( );
@@ -597,10 +607,17 @@ describe( "UniversalSearch screen", ( ) => {
       await waitFor( ( ) => {
         expect( screen.getByDisplayValue( i18next.t( "Worldwide" ) ) ).toBeTruthy( );
       } );
-      expect( screen.queryByTestId( "LocationDefaultOptions" ) ).toBeNull( );
+      // A filled field is a staged choice, not a query, so the rows stay up
+      expect( screen.getByTestId( "LocationDefaultOptions" ) ).toBeVisible( );
 
-      focusLocation( );
-      expect( screen.getByTestId( "LocationDefaultOptions" ) ).toBeTruthy( );
+      await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
+      await waitFor( ( ) => {
+        expect( screen.getByDisplayValue( i18next.t( "Nearby" ) ) ).toBeTruthy( );
+      } );
+
+      await pressSearch( );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
+      expect( mockDispatch ).not.toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
     } );
 
     it( "fills the field and stages worldwide when Worldwide is tapped", async ( ) => {
@@ -952,6 +969,200 @@ describe( "UniversalSearch screen", ( ) => {
         type: "SET_LOCATION_PLACE",
         place: MONTEREY,
       } );
+    } );
+  } );
+
+  describe( "seeding from the search in force", ( ) => {
+    const MONTEREY = { id: 1, display_name: "Monterey, CA, US", place_type: 9 };
+    const MAP_AREA_BOUNDS = {
+      swlat: 36, swlng: -122, nelat: 37, nelng: -121,
+    };
+    const TAXON_SUBJECT = {
+      type: "taxon",
+      taxon: {
+        id: 12,
+        name: "Eumyias thalassinus",
+        preferred_common_name: "Verditer Flycatcher",
+        iconic_taxon_name: "Aves",
+        default_photo: { url: "https://example.com/t.jpg" },
+      },
+    };
+
+    const stageSubject = async ( ) => {
+      useUniversalSearch.mockReturnValue( {
+        results: MIXED_RESULTS,
+        isLoading: false,
+        refetch: jest.fn( ),
+      } );
+      typeQuery( "ver" );
+      await actor.press( screen.getByTestId( "UniversalSearchResult.user.7" ) );
+    };
+
+    it( "shows the place from the current search in the location field", ( ) => {
+      mockSearchInForce( {
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByDisplayValue( MONTEREY.display_name ) ).toBeVisible( );
+    } );
+
+    it( "shows nearby in the location field when the current search is nearby", ( ) => {
+      mockSearchInForce( { location: { placeMode: EXPLORE_V2_PLACE_MODE.NEARBY } } );
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByDisplayValue( i18next.t( "Nearby" ) ) ).toBeVisible( );
+    } );
+
+    it( "shows the map area in the location field after a redo search in map area", ( ) => {
+      mockSearchInForce( {
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA, bounds: MAP_AREA_BOUNDS },
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByDisplayValue( i18next.t( "Map-Area" ) ) ).toBeVisible( );
+    } );
+
+    it( "leaves the location field on its placeholder for a worldwide search", ( ) => {
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByTestId( "UniversalSearch.locationInput" ) ).toHaveDisplayValue( "" );
+    } );
+
+    it( "shows the subject from the current search in the subject field", ( ) => {
+      mockSearchInForce( { subject: TAXON_SUBJECT } );
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByDisplayValue( "Verditer Flycatcher" ) ).toBeVisible( );
+    } );
+
+    it( "selects the seeded subject text so typing replaces it", ( ) => {
+      mockSearchInForce( { subject: TAXON_SUBJECT } );
+      renderComponent( <UniversalSearch /> );
+
+      // The field autofocuses at mount, where iOS ignores selectTextOnFocus, so
+      // the initial select-all rides on the selection prop instead.
+      expect( screen.getByTestId( "UniversalSearch.subjectInput" ).props.selection ).toEqual( {
+        start: 0,
+        end: "Verditer Flycatcher".length,
+      } );
+    } );
+
+    it( "does not search for the seeded text", ( ) => {
+      mockSearchInForce( {
+        subject: TAXON_SUBJECT,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      expect( useUniversalSearch ).toHaveBeenCalledWith( "" );
+      expect( useLocationSearch ).toHaveBeenCalledWith( "" );
+    } );
+
+    it( "still offers the default options under a seeded field", ( ) => {
+      mockSearchInForce( {
+        subject: TAXON_SUBJECT,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      expect( screen.getByTestId( "DefaultSearchOptions" ) ).toBeVisible( );
+
+      focusLocation( );
+
+      expect( screen.getByTestId( "LocationDefaultOptions" ) ).toBeVisible( );
+    } );
+
+    it( "keeps the current map area when only the subject is changed", async ( ) => {
+      mockSearchInForce( {
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.MAP_AREA, bounds: MAP_AREA_BOUNDS },
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      await stageSubject( );
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_LOCATION_MAP_AREA",
+        bounds: MAP_AREA_BOUNDS,
+      } );
+    } );
+
+    it( "keeps the current subject when only the location is changed", async ( ) => {
+      mockSearchInForce( { subject: TAXON_SUBJECT } );
+      renderComponent( <UniversalSearch /> );
+
+      focusLocation( );
+      await actor.press( screen.getByRole( "button", { name: i18next.t( "Nearby" ) } ) );
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_SUBJECT",
+        subject: TAXON_SUBJECT,
+      } );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_NEARBY" } );
+    } );
+
+    it( "replaces the seeded place when the user picks a different one", async ( ) => {
+      mockSearchInForce( {
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+      } );
+      useLocationSearch.mockReturnValue( {
+        results: PLACE_RESULTS,
+        isLoading: false,
+        refetch: jest.fn( ),
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      typeLocationQuery( "mon" );
+      await actor.press( screen.getByTestId( "LocationSearchResult.2" ) );
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_LOCATION_PLACE",
+        place: { id: 2, display_name: "Montenegro", place_type: 12 },
+      } );
+    } );
+
+    it( "drops the seeded subject once the user types over it", async ( ) => {
+      mockSearchInForce( { subject: TAXON_SUBJECT } );
+      useUniversalSearch.mockReturnValue( { results: [], isLoading: false, refetch: jest.fn( ) } );
+      renderComponent( <UniversalSearch /> );
+
+      typeQuery( "zzzzz" );
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+    } );
+
+    it( "falls back to worldwide once the seeded location is cleared", async ( ) => {
+      mockSearchInForce( {
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      fireEvent.changeText( screen.getByTestId( "UniversalSearch.locationInput" ), "" );
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
+    } );
+
+    it( "returns to the empty state when Reset is pressed", async ( ) => {
+      mockSearchInForce( {
+        subject: TAXON_SUBJECT,
+        location: { placeMode: EXPLORE_V2_PLACE_MODE.PLACE, place: MONTEREY },
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      await actor.press( screen.getByText( i18next.t( "Reset-verb" ) ) );
+
+      expect( screen.getByTestId( "UniversalSearch.subjectInput" ) ).toHaveDisplayValue( "" );
+      expect( screen.getByTestId( "UniversalSearch.locationInput" ) ).toHaveDisplayValue( "" );
+
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "CLEAR_SUBJECT" } );
+      expect( mockDispatch ).toHaveBeenCalledWith( { type: "SET_LOCATION_WORLDWIDE" } );
     } );
   } );
 } );
