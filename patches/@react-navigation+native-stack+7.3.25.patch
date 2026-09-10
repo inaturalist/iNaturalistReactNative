@@ -1,0 +1,20 @@
+diff --git a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
+index e76cf6b..ea00d19 100644
+--- a/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
++++ b/node_modules/@react-navigation/native-stack/lib/module/views/useHeaderConfigProps.js
+@@ -121,6 +121,7 @@ export function useHeaderConfigProps({
+   const children = /*#__PURE__*/_jsxs(_Fragment, {
+     children: [Platform.OS === 'ios' ? /*#__PURE__*/_jsxs(_Fragment, {
+       children: [headerLeftElement != null ? /*#__PURE__*/_jsx(ScreenStackHeaderLeftView, {
++        hidesSharedBackground: true,
+         children: headerLeftElement
+       }) : null, headerTitleElement != null ? /*#__PURE__*/_jsx(ScreenStackHeaderCenterView, {
+         children: headerTitleElement
+@@ -160,6 +161,7 @@ export function useHeaderConfigProps({
+     }), headerBackImageSource !== undefined ? /*#__PURE__*/_jsx(ScreenStackHeaderBackButtonImage, {
+       source: headerBackImageSource
+     }) : null, headerRightElement != null ? /*#__PURE__*/_jsx(ScreenStackHeaderRightView, {
++      hidesSharedBackground: true,
+       children: headerRightElement
+     }) : null, hasHeaderSearchBar ? /*#__PURE__*/_jsx(ScreenStackHeaderSearchBarView, {
+       children: /*#__PURE__*/_jsx(SearchBar, {

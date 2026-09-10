@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06D371A7475E493398D649FE /* SceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BD86F7C1F414D9BB09D5CAF /* SceneDelegate.mm */; };
 		085DD3205807404CAFC32228 /* Lato-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A9BAF07FCF24F668E2EF5AB /* Lato-Medium.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
-		06D371A7475E493398D649FE /* SceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BD86F7C1F414D9BB09D5CAF /* SceneDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		191A91132CD1916800ECC774 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 191A91122CD1916800ECC774 /* InfoPlist.xcstrings */; };
@@ -66,11 +66,10 @@
 		00752F4ADC554701A45A848A /* Lato-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Bold.ttf"; path = "../assets/fonts/Lato-Bold.ttf"; sourceTree = "<group>"; };
 		05015AADE3E87F2B8A8D3211 /* Pods_iNaturalistReactNative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iNaturalistReactNative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		06E20E5358FDFF430DB96A37 /* Pods-iNaturalistReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.debug.xcconfig"; sourceTree = "<group>"; };
+		0B318FF5021543108AFFEC5C /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneDelegate.h; path = iNaturalistReactNative/SceneDelegate.h; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNaturalistReactNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iNaturalistReactNative/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = iNaturalistReactNative/AppDelegate.mm; sourceTree = "<group>"; };
-		0B318FF5021543108AFFEC5C /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneDelegate.h; path = iNaturalistReactNative/SceneDelegate.h; sourceTree = "<group>"; };
-		2BD86F7C1F414D9BB09D5CAF /* SceneDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SceneDelegate.mm; path = iNaturalistReactNative/SceneDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iNaturalistReactNative/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iNaturalistReactNative/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iNaturalistReactNative/main.m; sourceTree = "<group>"; };
@@ -82,6 +81,7 @@
 		19A5877328F8E3310016D128 /* iNaturalistReactNative-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iNaturalistReactNative-Bridging-Header.h"; sourceTree = "<group>"; };
 		2026574BDF8A628C18EE2CBC /* Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		26972DBD235E42B68E3D5DBC /* Settings.bundle */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Settings.bundle; sourceTree = "<group>"; };
+		2BD86F7C1F414D9BB09D5CAF /* SceneDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SceneDelegate.mm; path = iNaturalistReactNative/SceneDelegate.mm; sourceTree = "<group>"; };
 		3A3C226CE960FF6279D7C2EA /* Pods-iNaturalistReactNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.release.xcconfig"; sourceTree = "<group>"; };
 		3A54425709BB4844AFBC680D /* Lato-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Italic.ttf"; path = "../assets/fonts/Lato-Italic.ttf"; sourceTree = "<group>"; };
 		3A9BAF07FCF24F668E2EF5AB /* Lato-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Medium.ttf"; path = "../assets/fonts/Lato-Medium.ttf"; sourceTree = "<group>"; };
