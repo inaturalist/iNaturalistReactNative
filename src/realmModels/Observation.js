@@ -480,8 +480,8 @@ class Observation extends Realm.Object {
   };
 
   static isUnsyncedObservation = ( realm, obs ) => {
-    const obsList = Observation.filterUnsyncedObservations( realm );
-    const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
+    const unsyncedObs = realm.objects( "Observation" )
+      .filtered( `uuid == "${obs.uuid}" && ( ${UNSYNCED_FILTER} )` );
     return unsyncedObs.length > 0;
   };
 
