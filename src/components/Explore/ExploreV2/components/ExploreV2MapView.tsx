@@ -165,6 +165,14 @@ const ExploreV2MapView = ( {
     && pannedFrom.placeMode === placeMode
     && pannedFrom.targetRegion === targetRegion;
 
+  const handlePanDrag = useCallback( ( ) => {
+    setPannedFrom( previous => (
+      previous?.placeMode === placeMode && previous?.targetRegion === targetRegion
+        ? previous
+        : { placeMode, targetRegion }
+    ) );
+  }, [placeMode, targetRegion] );
+
   const handleRedoSearchPress = useCallback( async ( ) => {
     setPannedFrom( null );
     const bounds = await mapRef.current?.getMapBoundaries( );
@@ -185,7 +193,7 @@ const ExploreV2MapView = ( {
         initialRegion={initialRegion}
         isLoading={isLoading}
         onCurrentLocationPress={onCurrentLocationPress}
-        onPanDrag={( ) => setPannedFrom( { placeMode, targetRegion } )}
+        onPanDrag={handlePanDrag}
         regionToAnimate={targetRegion}
         showCurrentLocationButton
         showsCompass={false}
