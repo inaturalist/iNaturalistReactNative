@@ -1,11 +1,14 @@
 /* eslint no-console: 0 */
 
 import fs from "fs";
+import path from "path";
+import yargs from "yargs";
+
 import {
   copyAndroidTitle,
   removeUnsupportedDirectories,
   renameDirectories,
-} from "i18n/i18ncli/fastlane";
+} from "./i18ncli/fastlane";
 import {
   jsonifyLocalizations,
   normalize,
@@ -14,22 +17,18 @@ import {
   untranslatable,
   unused,
   validate,
-} from "i18n/i18ncli/ftl";
-import path from "path";
-import yargs from "yargs";
+} from "./i18ncli/ftl";
 
-// Write loadTranslations.js, a file with a function that statically loads
-// translation files given a locale
+// Write src/i18n/loadTranslations.ts, a file with a function that
+// statically loads translation files given a locale
 const writeLoadTranslations = async ( ) => {
   const locales = await supportedLocales( );
-  const outPath = path.join( __dirname, "loadTranslations.js" );
+  const outPath = path.join( __dirname, "..", "src", "i18n", "loadTranslations.ts" );
   const out = fs.createWriteStream( outPath );
-  const commentPathPieces = __filename.split( path.sep );
-  const commentPath = path.join(
-    ...commentPathPieces.slice( commentPathPieces.indexOf( "src" ), commentPathPieces.length ),
-  );
+  const repoRoot = path.join( __dirname, ".." );
+  const commentPath = path.relative( repoRoot, __filename );
   out.write( `// AUTO-GENERATED. See ${commentPath}\n` );
-  out.write( "export default locale => {\n" );
+  out.write( "export default ( locale: string ): Record<string, unknown> => {\n" );
   locales.forEach(
     locale => out.write(
       `  if ( locale === "${locale}" ) { return require( "./l10n/${locale}.ftl.json" ); }\n`,

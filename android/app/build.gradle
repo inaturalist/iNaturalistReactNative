@@ -107,8 +107,8 @@ android {
         applicationId "org.inaturalist.iNaturalistMobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 231
-        versionName "1.1.1"
+        versionCode 232
+        versionName "1.1.2"
         manifestPlaceholders = [ GMAPS_API_KEY:project.env.get("GMAPS_API_KEY") ]
         // Detox Android setup
         testBuildType System.getProperty('testBuildType', 'debug')

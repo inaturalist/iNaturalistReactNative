@@ -4,7 +4,7 @@ import {
   CachesDirectoryPath,
   DocumentDirectoryPath,
 } from "@dr.pogodin/react-native-fs";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { INatApiError, INatApiTooManyRequestsError } from "api/error";
 import { getUserAgent } from "api/userAgent";
 import classnames from "classnames";
@@ -21,6 +21,7 @@ import {
 import Config from "react-native-config";
 import RNRestart from "react-native-restart";
 import { EnvConfig } from "sharedHelpers/envConfig";
+import useStore from "stores/useStore";
 
 import {
   CODE, H1, H2, P,
@@ -166,6 +167,7 @@ const ComputerVisionStats = () => {
 
 const DebugTools = () => {
   const navigation = useNavigation();
+  const toggleDebugMode = useStore( state => state.layout.toggleDebugMode );
 
   const toggleRTLandLTR = async () => {
     const { isRTL, forceRTL } = I18nManager;
@@ -175,6 +177,20 @@ const DebugTools = () => {
   return (
     <>
       <H1>Debug tools</H1>
+      <Button
+        onPress={() => {
+          toggleDebugMode();
+          navigation.dispatch(
+            // reset to Menu at least so we don't awkwardly send you back to About
+            CommonActions.reset( {
+              index: 0,
+              routes: [{ name: "Menu" }],
+            } ),
+          );
+        }}
+        text="DISABLE DEBUG MODE"
+        className="mb-5"
+      />
       <Button
         onPress={() => navigation.navigate( "LoginStackNavigator" )}
         text="LOG IN AGAIN"

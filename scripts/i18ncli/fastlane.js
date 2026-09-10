@@ -188,7 +188,6 @@ const FASTLANE_METADATA_PATH = path.join(
   __dirname,
   "..",
   "..",
-  "..",
   "fastlane/metadata",
 );
 
