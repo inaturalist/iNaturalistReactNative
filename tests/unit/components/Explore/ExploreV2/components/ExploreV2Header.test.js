@@ -152,6 +152,59 @@ describe( "ExploreV2Header", () => {
     expect( screen.getByText( "California" ) ).toBeTruthy();
   } );
 
+  it( "renders the user an Advanced Search filters by, with their icon and location", () => {
+    setState( null, PLACE_LOCATION, {
+      ...defaultExploreV2Filters,
+      user: { id: 7, login: "seth_msp", icon_url: "https://example.com/u.jpg" },
+    } );
+    renderComponent( <ExploreV2Header showBackButton={false} /> );
+
+    expect( screen.getByText( "seth_msp" ) ).toBeVisible();
+    expect( screen.getByTestId( "UserIcon.photo" ) ).toBeVisible();
+    expect( screen.getByText( "California" ) ).toBeVisible();
+  } );
+
+  it( "renders the project an Advanced Search filters by, with its icon and location", () => {
+    setState( null, PLACE_LOCATION, {
+      ...defaultExploreV2Filters,
+      project: { id: 9, title: "Backyard Birds", icon: "https://example.com/p.jpg" },
+    } );
+    renderComponent( <ExploreV2Header showBackButton={false} /> );
+
+    expect( screen.getByText( "Backyard Birds" ) ).toBeVisible();
+    expect( screen.getByTestId( "ExploreV2Header.projectImage" ) ).toBeVisible();
+    expect( screen.getByText( "California" ) ).toBeVisible();
+  } );
+
+  it( "renders the user rather than the project when both are filtered by", () => {
+    setState( null, PLACE_LOCATION, {
+      ...defaultExploreV2Filters,
+      user: { id: 7, login: "seth_msp" },
+      project: { id: 9, title: "Backyard Birds" },
+    } );
+    renderComponent( <ExploreV2Header showBackButton={false} /> );
+
+    expect( screen.getByText( "seth_msp" ) ).toBeVisible();
+    expect( screen.queryByText( "Backyard Birds" ) ).toBeNull();
+  } );
+
+  it( "renders the taxon rather than a filtered user or project", () => {
+    setState(
+      { type: "taxon", taxon: { id: 12, name: "Eumyias thalassinus", iconic_taxon_name: "Aves" } },
+      PLACE_LOCATION,
+      {
+        ...defaultExploreV2Filters,
+        user: { id: 7, login: "seth_msp" },
+        project: { id: 9, title: "Backyard Birds" },
+      },
+    );
+    renderComponent( <ExploreV2Header showBackButton={false} /> );
+
+    expect( screen.queryByText( "seth_msp" ) ).toBeNull();
+    expect( screen.queryByText( "Backyard Birds" ) ).toBeNull();
+    expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) ).toBeVisible();
+  } );
+
   it( "renders only the place name when there is no subject", () => {
     setState( null );
     renderComponent( <ExploreV2Header showBackButton={false} /> );
