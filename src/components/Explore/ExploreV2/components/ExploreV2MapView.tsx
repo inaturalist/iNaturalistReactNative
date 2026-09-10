@@ -67,7 +67,13 @@ const ExploreV2MapView = ( {
 }: Props ) => {
   const { t } = useTranslation( );
   const mapRef = useRef<MapView | null>( null );
-  const [showRedoSearch, setShowRedoSearch] = useState( false );
+  // The search the user panned away from. The "Redo search in this area"
+  // button shows only while that is still the current search, so a new search
+  // moving the map out from under the user hides it without a reset.
+  const [pannedFrom, setPannedFrom] = useState<{
+    placeMode: EXPLORE_V2_PLACE_MODE;
+    targetRegion?: Region;
+  } | null>( null );
   const {
     swlat, swlng, nelat, nelng,
   } = totalBounds || {};
@@ -124,16 +130,12 @@ const ExploreV2MapView = ( {
 
   const initialRegion = mapAreaRegion || targetRegion || WORLDWIDE_REGION;
 
-  // when the map is moved by anything other than a user panning, or the search
-  // moves out from under it, do not show the "Redo search in this area" button
-  const [lastSearch, setLastSearch] = useState( { placeMode, targetRegion } );
-  if ( placeMode !== lastSearch.placeMode || targetRegion !== lastSearch.targetRegion ) {
-    setLastSearch( { placeMode, targetRegion } );
-    setShowRedoSearch( false );
-  }
+  const showRedoSearch = pannedFrom !== null
+    && pannedFrom.placeMode === placeMode
+    && pannedFrom.targetRegion === targetRegion;
 
   const handleRedoSearchPress = useCallback( async ( ) => {
-    setShowRedoSearch( false );
+    setPannedFrom( null );
     const bounds = await mapRef.current?.getMapBoundaries( );
     if ( !bounds ) return;
     const newBounds = {
@@ -153,7 +155,7 @@ const ExploreV2MapView = ( {
         initialRegion={initialRegion}
         isLoading={isLoading}
         onCurrentLocationPress={onCurrentLocationPress}
-        onPanDrag={( ) => setShowRedoSearch( true )}
+        onPanDrag={( ) => setPannedFrom( { placeMode, targetRegion } )}
         regionToAnimate={targetRegion}
         showCurrentLocationButton
         showsCompass={false}
