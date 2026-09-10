@@ -32,6 +32,26 @@ const WORLDWIDE_REGION: Region = {
 
 const activityIndicatorSize = 50;
 
+// A worldwide search frames the map on the results so a regional taxon isn't off screen,
+// but for a global result set the API's total_bounds are not something to frame on: they
+// either cover the globe or collapse to a sliver along one axis (an antimeridian artifact).
+const isGlobalBounds = ( {
+  swlat, swlng, nelat, nelng,
+}: ApiTotalBounds ) => {
+  const latSpan = Math.abs( nelat - swlat );
+  const lngSpan = Math.abs( nelng - swlng );
+  const coversGlobe = latSpan >= 120 || lngSpan >= 300;
+  const collapsedOnOneAxis = Math.min( latSpan, lngSpan ) < 0.001
+    && Math.max( latSpan, lngSpan ) > 1;
+  return coversGlobe || collapsedOnOneAxis;
+};
+
+const regionForResults = ( bounds: ApiTotalBounds, placeMode: EXPLORE_V2_PLACE_MODE ) => (
+  placeMode === EXPLORE_V2_PLACE_MODE.WORLDWIDE && isGlobalBounds( bounds )
+    ? WORLDWIDE_REGION
+    : getMapRegion( bounds )
+);
+
 const DROP_SHADOW = getShadow( {
   offsetHeight: 4,
   elevation: 6,
@@ -91,11 +111,11 @@ const ExploreV2MapView = ( {
       && nelat !== undefined
       && nelng !== undefined;
     return hasBounds
-      ? getMapRegion( {
+      ? regionForResults( {
         swlat, swlng, nelat, nelng,
-      } )
+      }, placeMode )
       : undefined;
-  }, [swlat, swlng, nelat, nelng] );
+  }, [swlat, swlng, nelat, nelng, placeMode] );
 
   // in exploreV2, we unmount the map when switching between views
   // where ExploreV1 moves it off the screen, still mounted

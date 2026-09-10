@@ -132,6 +132,48 @@ describe( "ExploreV2MapView", ( ) => {
     expect( screen.queryByTestId( "ExploreV2MapView.loading" ) ).toBeNull( );
   } );
 
+  it( "shows the whole world when a worldwide search's bounds cover the globe", ( ) => {
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
+      totalBounds: {
+        swlat: -85, swlng: -180, nelat: 85, nelng: 180,
+      },
+    } );
+
+    expect( mapProps( ).initialRegion.latitudeDelta ).toBe( 180 );
+    expect( mapProps( ).initialRegion.longitudeDelta ).toBe( 180 );
+  } );
+
+  it( "shows the whole world when a worldwide search's bounds collapse to a sliver", ( ) => {
+    // What the API hands back for a global result set: full latitude, no longitude
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE,
+      totalBounds: {
+        swlat: -41.7, swlng: -2.5e-7, nelat: 47.3, nelng: -8.3e-8,
+      },
+    } );
+
+    expect( mapProps( ).initialRegion ).toEqual( {
+      latitude: 0,
+      longitude: 0,
+      latitudeDelta: 180,
+      longitudeDelta: 180,
+    } );
+  } );
+
+  it( "still frames a place whose bounds happen to span the globe", ( ) => {
+    renderMapView( {
+      placeMode: EXPLORE_V2_PLACE_MODE.PLACE,
+      totalBounds: {
+        swlat: -85, swlng: -180, nelat: 85, nelng: 180,
+      },
+    } );
+
+    // getMapRegion caps the deltas, so this is the framed result, not the worldwide default
+    expect( mapProps( ).initialRegion.latitudeDelta ).toBe( 89 );
+    expect( mapProps( ).initialRegion.longitudeDelta ).toBe( 179 );
+  } );
+
   describe( "applied searches", ( ) => {
     const savedArea = {
       swlat: 43, swlng: -97, nelat: 49, nelng: -89,
