@@ -1,5 +1,4 @@
 import {
-  fireEvent,
   screen,
   userEvent,
   waitFor,
@@ -9,10 +8,11 @@ import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import factory, { makeResponse } from "tests/factory";
 import {
+  enableExploreV2,
+  focusSearchField,
   lastObservationsSearchParams,
   navigateToExplore,
   openUniversalSearch,
-  resetExploreV2,
   searchForTaxon,
   submitUniversalSearch,
   typeIntoSearchField,
@@ -31,8 +31,9 @@ const mockUser = factory( "LocalUser", {
 } );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  name: "Eumyias thalassinus",
-  preferred_common_name: "Verditer Flycatcher",
+  id: 745,
+  name: "Silphium perfoliatum",
+  preferred_common_name: "Cup Plant",
   rank: "species",
   rank_level: 10,
 } );
@@ -92,7 +93,7 @@ beforeAll( async ( ) => {
 
 beforeEach( async ( ) => {
   setStoreStateLayout( { isDefaultMode: false, isAllAddObsOptionsMode: true } );
-  resetExploreV2( );
+  enableExploreV2( );
   mockAutocomplete( );
   inatjs.observations.search.mockClear( );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
@@ -127,7 +128,7 @@ describe( "searching from Universal Search", ( ) => {
     await navigateToExplore( );
     await openUniversalSearch( );
 
-    typeIntoSearchField( "UniversalSearch.locationInput", "oakland" );
+    await typeIntoSearchField( "UniversalSearch.locationInput", "oakland" );
     await actor.press( await screen.findByText( mockPlace.display_name ) );
     await submitUniversalSearch( );
 
@@ -140,7 +141,7 @@ describe( "searching from Universal Search", ( ) => {
 
     // The place is remembered for the next search
     await openUniversalSearch( );
-    fireEvent( screen.getByTestId( "UniversalSearch.locationInput" ), "focus" );
+    await focusSearchField( "UniversalSearch.locationInput" );
     expect(
       within( await screen.findByTestId( "RecentLocations" ) )
         .getByText( mockPlace.display_name ),

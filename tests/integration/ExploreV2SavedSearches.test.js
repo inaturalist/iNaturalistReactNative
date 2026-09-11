@@ -9,10 +9,10 @@ import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import factory, { makeResponse } from "tests/factory";
 import {
+  enableExploreV2,
   lastObservationsSearchParams,
   navigateToExplore,
   openUniversalSearch,
-  resetExploreV2,
   searchForTaxon,
   submitUniversalSearch,
 } from "tests/helpers/exploreV2";
@@ -30,8 +30,9 @@ const mockUser = factory( "LocalUser", {
 } );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  name: "Eumyias thalassinus",
-  preferred_common_name: "Verditer Flycatcher",
+  id: 745,
+  name: "Silphium perfoliatum",
+  preferred_common_name: "Cup Plant",
   rank: "species",
   rank_level: 10,
 } );
@@ -86,7 +87,7 @@ beforeAll( async ( ) => {
 
 beforeEach( async ( ) => {
   setStoreStateLayout( { isDefaultMode: false, isAllAddObsOptionsMode: true } );
-  resetExploreV2( );
+  enableExploreV2( );
   inatjs.observations.search.mockClear( );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 } );

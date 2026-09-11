@@ -1,6 +1,5 @@
 import {
   act,
-  fireEvent,
   screen,
   userEvent,
   within,
@@ -10,22 +9,15 @@ import useStore from "stores/useStore";
 
 const actor = userEvent.setup( );
 
-/** Turns on ExploreV2 and clears the search state that persists between tests. */
-export const resetExploreV2 = ( ) => act( ( ) => {
+/** Turns on ExploreV2. Search state needs no clearing here: jest.post-setup resets every
+ * store after each test. */
+export const enableExploreV2 = ( ) => act( ( ) => {
   useStore.setState( state => ( {
     featureFlagConfig: {
       ...state.featureFlagConfig,
       exploreV2Enabled: true,
     },
   } ) );
-  const {
-    exploreRecentSearches,
-    exploreSavedSearches,
-    exploreV2AdvancedSearch,
-  } = useStore.getState( );
-  exploreRecentSearches.clearRecents( );
-  exploreSavedSearches.clearSavedSearches( );
-  exploreV2AdvancedSearch.setAdvancedSearchMode( false );
 } );
 
 export async function navigateToExplore( ) {
@@ -41,15 +33,19 @@ export async function openUniversalSearch( ) {
 }
 
 /** Types into a Universal Search field and lets the debounced autocomplete run.
- * Needs fake timers. */
-export function typeIntoSearchField( testID, text ) {
-  const input = screen.getByTestId( testID );
-  // The result list follows the focused field, and only the subject field autofocuses
-  fireEvent( input, "focus" );
-  fireEvent.changeText( input, text );
+ * Needs fake timers. The result list follows the focused field and only the subject field
+ * autofocuses, so skipBlur keeps this field focused after typing. */
+export async function typeIntoSearchField( testID, text ) {
+  await actor.type( screen.getByTestId( testID ), text, { skipBlur: true } );
   act( ( ) => {
     jest.advanceTimersByTime( 400 );
   } );
+}
+
+/** Focuses a Universal Search field without typing. userEvent has no focus action and its
+ * press( ) does not emit focus, so type an empty string. */
+export async function focusSearchField( testID ) {
+  await typeIntoSearchField( testID, "" );
 }
 
 export async function submitUniversalSearch( ) {
@@ -59,7 +55,7 @@ export async function submitUniversalSearch( ) {
 
 /** Picks a taxon from the subject autocomplete and searches for it. */
 export async function searchForTaxon( taxon ) {
-  typeIntoSearchField( "UniversalSearch.subjectInput", taxon.name );
+  await typeIntoSearchField( "UniversalSearch.subjectInput", taxon.name );
   await actor.press( await screen.findByTestId( `UniversalSearchResult.taxon.${taxon.id}` ) );
   await submitUniversalSearch( );
 }
