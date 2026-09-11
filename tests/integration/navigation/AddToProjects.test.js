@@ -5,6 +5,7 @@ import {
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
+import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 
 // We're explicitly testing navigation here so we want react-navigation
@@ -34,6 +35,12 @@ afterAll( uniqueRealmAfterAll );
 // // /UNIQUE REALM SETUP
 
 const actor = userEvent.setup( );
+
+beforeEach( () => {
+  setStoreStateLayout( {
+    isDefaultMode: false,
+  } );
+} );
 
 describe( "AddToProjects from ObsEdit", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
