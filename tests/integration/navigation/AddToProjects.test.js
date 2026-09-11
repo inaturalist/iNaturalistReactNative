@@ -1,4 +1,4 @@
-import { screen, userEvent } from "@testing-library/react-native";
+import { screen, userEvent, waitFor } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
@@ -130,5 +130,17 @@ describe( "AddToProjects from ObsEdit", ( ) => {
     expect( screen.getByTestId( "add-to-projects" ) ).toBeVisible();
     expect( screen.getByText( "ADD TO PROJECTS" ) ).toBeVisible();
     expect( screen.queryByText( /Edit Observation/ ) ).toBeNull( );
+  } );
+
+  it( "should return to ObsEdit when the header back button is pressed", async () => {
+    // Default for project factory is to create with one required POF
+    await navigateToAddToProjectsViaObsEdit( mockObservations );
+    const backButton = await screen.findByTestId( "header-back-button" );
+    await actor.press( backButton );
+    // Assert on ObsEdit
+    await waitFor( ( ) => {
+      expect( screen.getByText( /Edit Observation/ ) ).toBeVisible( );
+    } );
+    expect( screen.queryByText( "ADD TO PROJECTS" ) ).toBeNull( );
   } );
 } );
