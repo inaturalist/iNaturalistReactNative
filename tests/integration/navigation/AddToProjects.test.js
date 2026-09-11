@@ -2,9 +2,10 @@ import {
   screen,
   userEvent,
 } from "@testing-library/react-native";
+import inatjs from "inaturalistjs";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
-import factory from "tests/factory";
+import factory, { makeResponse } from "tests/factory";
 import {
   mockInteractionManagerRunAfterInteractions,
 } from "tests/helpers/addObsBottomSheet";
@@ -57,9 +58,19 @@ const observation = factory( "LocalObservation", {
 
 const mockObservations = [observation];
 
+const mockProject = factory( "RemoteProject", {
+  title: faker.lorem.sentence(),
+  icon: faker.image.url(),
+  header_image_url: faker.image.url(),
+  description: faker.lorem.paragraph(),
+  project_type: "",
+  user_ids: [faker.number.int()],
+} );
+
 beforeAll( async () => {
   jest.useFakeTimers();
   mockInteractionManagerRunAfterInteractions();
+  inatjs.users.projects.mockResolvedValue( makeResponse( [mockProject] ) );
   useStore.setState( {
     featureFlagConfig: {
       [FeatureFlag.TraditionalProjectsEnabled]: true,
@@ -104,5 +115,8 @@ describe( "AddToProjects from ObsEdit", ( ) => {
 
   it( "should show the chooser", async () => {
     await navigateToAddToProjectsViaObsEdit( mockObservations );
+    // Assert on chooser
+    expect( screen.getByTestId( "AddToProjects.list" ) ).toBeVisible( );
+    expect( screen.getByTestId( `AddToProjects.project.${mockProject.id}` ) ).toBeVisible( );
   } );
 } );
