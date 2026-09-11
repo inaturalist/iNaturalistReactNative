@@ -48,6 +48,15 @@ const mockUser = factory( "LocalUser", {
   locale: "en",
 } );
 
+const observation = factory( "LocalObservation", {
+  _created_at: faker.date.past(),
+  taxon: factory( "LocalTaxon", {
+    name: faker.person.firstName(),
+  } ),
+} );
+
+const mockObservations = [observation];
+
 beforeAll( async () => {
   jest.useFakeTimers();
   mockInteractionManagerRunAfterInteractions();
@@ -75,21 +84,14 @@ describe( "AddToProjects from ObsEdit", ( ) => {
     signOut( { realm: global.mockRealms[__filename] } );
   } );
 
-  const observation = factory( "LocalObservation", {
-    _created_at: faker.date.past(),
-    taxon: factory( "LocalTaxon", {
-      name: faker.person.firstName(),
-    } ),
-  } );
-
-  const mockObservations = [observation];
-
   async function navigateToAddToProjectsViaObsEdit( observations ) {
+    // Nav to ObsEdit
     await renderAppWithObservations( observations, __filename );
     const observationGridItem = await screen.findByTestId(
       `MyObservations.obsGridItem.${observations[0].uuid}`,
     );
     await actor.press( observationGridItem );
+    // Nav to Add To Projects
     const addToProjectsRow = await screen.findByLabelText(
       /Add to Projects|Added to \d+ Project/,
     );
