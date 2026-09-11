@@ -2,6 +2,8 @@ import {
   screen,
   userEvent,
 } from "@testing-library/react-native";
+import { FeatureFlag } from "stores/createFeatureFlagSlice";
+import useStore from "stores/useStore";
 import factory from "tests/factory";
 import {
   mockInteractionManagerRunAfterInteractions,
@@ -42,6 +44,11 @@ const actor = userEvent.setup( );
 beforeAll( async () => {
   jest.useFakeTimers();
   mockInteractionManagerRunAfterInteractions();
+  useStore.setState( {
+    featureFlagConfig: {
+      [FeatureFlag.TraditionalProjectsEnabled]: true,
+    },
+  } );
 } );
 
 beforeEach( () => {
