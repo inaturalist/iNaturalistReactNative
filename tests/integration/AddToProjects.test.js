@@ -73,7 +73,8 @@ async function selectProjectAndExpand( projectId ) {
 }
 
 async function fillRequiredTextField( value ) {
-  await screen.findByText( mockProject.project_observation_fields[0].observation_field.name );
+  const obsField = mockProject.project_observation_fields[0].observation_field;
+  await screen.findByText( obsField.name );
   const textInput = screen.getAllByPlaceholderText( "Enter a response" ).find(
     node => typeof node.props.onChangeText === "function",
   );
@@ -84,6 +85,14 @@ async function fillRequiredTextField( value ) {
   } finally {
     jest.useFakeTimers( );
   }
+  await waitFor( ( ) => {
+    const { currentObservation } = useStore.getState( );
+    expect( currentObservation?.observationFieldValues ).toEqual(
+      expect.arrayContaining( [
+        expect.objectContaining( { obsFieldId: obsField.id, value } ),
+      ] ),
+    );
+  } );
 }
 
 beforeAll( async () => {
