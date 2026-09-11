@@ -1,12 +1,55 @@
-import AddToProjects from "components/AddToProjects/AddToProjects";
+import { screen, userEvent } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
-import React from "react";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import { mockInteractionManagerRunAfterInteractions } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
-import { renderAppWithComponent } from "tests/helpers/render";
+import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
+import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { signIn, signOut } from "tests/helpers/user";
+
+// We're explicitly using navigation here
+jest.unmock( "@react-navigation/native" );
+
+// // UNIQUE REALM SETUP
+const mockRealmIdentifier = __filename;
+const { mockRealmModelsIndex, uniqueRealmBeforeAll, uniqueRealmAfterAll }
+  = setupUniqueRealm( mockRealmIdentifier );
+jest.mock( "realmModels/index", () => mockRealmModelsIndex );
+jest.mock( "providers/contexts", () => {
+  const originalModule = jest.requireActual( "providers/contexts" );
+  const { makeRealmHooks } = jest.requireActual( "tests/helpers/uniqueRealm" );
+  return {
+    __esModule: true,
+    ...originalModule,
+    RealmContext: {
+      ...originalModule.RealmContext,
+      ...makeRealmHooks( __filename ),
+    },
+  };
+} );
+beforeAll( uniqueRealmBeforeAll );
+afterAll( uniqueRealmAfterAll );
+// // /UNIQUE REALM SETUP
+
+const actor = userEvent.setup();
+
+const mockUser = factory( "LocalUser", {
+  login: faker.internet.username(),
+  iconUrl: faker.image.url(),
+  locale: "en",
+} );
+
+const observation = factory( "LocalObservation", {
+  _created_at: faker.date.past(),
+  taxon: factory( "LocalTaxon", {
+    name: faker.person.firstName(),
+  } ),
+} );
+
+const mockObservations = [observation];
 
 const mockProject = factory( "RemoteProject", {
   title: faker.lorem.sentence(),
@@ -18,6 +61,8 @@ const mockProject = factory( "RemoteProject", {
 } );
 
 beforeAll( async () => {
+  jest.useFakeTimers();
+  mockInteractionManagerRunAfterInteractions();
   inatjs.users.projects.mockResolvedValue( makeResponse( [mockProject] ) );
 } );
 
@@ -35,7 +80,33 @@ beforeEach( () => {
 describe( "AddToProjects", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
-  it( "should persist PO and OFV on save", async ( ) => {
-    renderAppWithComponent( <AddToProjects /> );
+  beforeEach( async () => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+  } );
+
+  afterEach( () => {
+    signOut( { realm: global.mockRealms[__filename] } );
+  } );
+
+  async function navigateToAddToProjectsViaObsEdit( observations ) {
+    // Nav to ObsEdit
+    await renderAppWithObservations( observations, __filename );
+    const observationGridItem = await screen.findByTestId(
+      `MyObservations.obsGridItem.${observations[0].uuid}`,
+    );
+    await actor.press( observationGridItem );
+    // Nav to Add To Projects
+    const addToProjectsRow = await screen.findByLabelText(
+      /Add to Projects|Added to \d+ Project/,
+    );
+    await actor.press( addToProjectsRow );
+    await screen.findByTestId( "add-to-projects" );
+    // Assert on Add To Projects screen
+    expect( screen.getByTestId( "add-to-projects" ) ).toBeVisible();
+    expect( screen.getByText( "ADD TO PROJECTS" ) ).toBeVisible();
+  }
+
+  it( "persists PO and OFV to Realm after chooser save and ObsEdit save", async () => {
+    await navigateToAddToProjectsViaObsEdit( mockObservations );
   } );
 } );
