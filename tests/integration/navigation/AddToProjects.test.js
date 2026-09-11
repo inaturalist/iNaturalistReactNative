@@ -64,6 +64,22 @@ const mockProject = factory( "RemoteProject", {
   user_ids: [faker.number.int()],
 } );
 
+const attachedObservation = factory( "LocalObservation", {
+  _created_at: faker.date.past(),
+  taxon: factory( "LocalTaxon", {
+    name: faker.person.firstName(),
+  } ),
+  projectObservations: [
+    factory( "LocalProjectObservation", {
+      projectId: mockProject.id,
+      needsSync: jest.fn( () => true ),
+      wasSynced: jest.fn( () => false ),
+    } ),
+  ],
+} );
+
+const mockAttachedObservations = [attachedObservation];
+
 beforeAll( async () => {
   jest.useFakeTimers();
   mockInteractionManagerRunAfterInteractions();
@@ -142,5 +158,13 @@ describe( "AddToProjects from ObsEdit", ( ) => {
       expect( screen.getByText( /Edit Observation/ ) ).toBeVisible( );
     } );
     expect( screen.queryByText( "ADD TO PROJECTS" ) ).toBeNull( );
+  } );
+
+  it( "should open the chooser with an attached project pre-selected", async () => {
+    // Default for project factory is to create with one required POF
+    await navigateToAddToProjectsViaObsEdit( mockAttachedObservations );
+
+    const projectRow = screen.getByTestId( `AddToProjects.project.${mockProject.id}` );
+    expect( projectRow.props.accessibilityState?.checked ).toBe( true );
   } );
 } );
