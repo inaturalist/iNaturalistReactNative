@@ -1,6 +1,4 @@
 import {
-  act,
-  fireEvent,
   screen,
   userEvent,
   waitFor,
@@ -8,8 +6,15 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
-import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import {
+  lastObservationsSearchParams,
+  navigateToExplore,
+  openUniversalSearch,
+  resetExploreV2,
+  searchForTaxon,
+  submitUniversalSearch,
+} from "tests/helpers/exploreV2";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -59,17 +64,6 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const enableExploreV2 = ( ) => act( ( ) => {
-  useStore.setState( state => ( {
-    featureFlagConfig: {
-      ...state.featureFlagConfig,
-      exploreV2Enabled: true,
-    },
-  } ) );
-} );
-
-const recents = ( ) => useStore.getState( ).exploreRecentSearches;
-
 const actor = userEvent.setup( );
 
 beforeAll( async ( ) => {
@@ -89,8 +83,7 @@ beforeAll( async ( ) => {
 
 beforeEach( async ( ) => {
   setStoreStateLayout( { isDefaultMode: false, isAllAddObsOptionsMode: true } );
-  enableExploreV2( );
-  recents( ).clearRecents( );
+  resetExploreV2( );
   inatjs.observations.search.mockClear( );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 } );
@@ -101,46 +94,20 @@ afterEach( async ( ) => {
 
 global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
-const navigateToExplore = async ( ) => {
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  await actor.press( await within( tabBar ).findByText( "Explore" ) );
-  await screen.findByTestId( "ExploreResults" );
-};
-
-const openUniversalSearch = async ( ) => {
-  const header = await screen.findByTestId( "ExploreV2Header" );
-  await actor.press( within( header ).getByTestId( "ExploreV2Header.searchButton" ) );
-  await screen.findByTestId( "UniversalSearch" );
-};
-
-const searchForTaxon = async ( ) => {
-  fireEvent.changeText( screen.getByTestId( "UniversalSearch.subjectInput" ), "verditer" );
-  act( ( ) => {
-    jest.advanceTimersByTime( 400 );
-  } );
-  await actor.press( await screen.findByTestId( `UniversalSearchResult.taxon.${mockTaxon.id}` ) );
-  await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-  await screen.findByTestId( "ExploreResults" );
-};
-
 describe( "recent searches in Explore", ( ) => {
   it( "offers a searched subject as a recent search and searches it again", async ( ) => {
     renderApp( );
     await navigateToExplore( );
     await openUniversalSearch( );
-    await searchForTaxon( );
+    await searchForTaxon( mockTaxon );
 
     await waitFor( ( ) => {
-      expect( inatjs.observations.search ).toHaveBeenCalledWith(
-        expect.objectContaining( { taxon_id: mockTaxon.id } ),
-        expect.anything( ),
-      );
+      expect( lastObservationsSearchParams( ) ).toMatchObject( { taxon_id: mockTaxon.id } );
     } );
 
     // Search again with nothing selected, so the subject goes back to all organisms
     await openUniversalSearch( );
-    await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-    await screen.findByTestId( "ExploreResults" );
+    await submitUniversalSearch( );
     expect(
       within( await screen.findByTestId( "ExploreV2Header" ) )
         .queryByTestId( "ExploreV2Header.subject" ),
@@ -155,9 +122,8 @@ describe( "recent searches in Explore", ( ) => {
 
     // Tapping it fills the subject field, and searching from there restores it
     await actor.press( recentRow );
-    await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+    await submitUniversalSearch( );
 
-    await screen.findByTestId( "ExploreResults" );
     const header = await screen.findByTestId( "ExploreV2Header" );
     expect( within( header ).getByTestId( "ExploreV2Header.subject" ) ).toBeVisible( );
     expect( within( header ).getByText( mockTaxon.name ) ).toBeVisible( );
