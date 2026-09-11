@@ -1,7 +1,4 @@
-import {
-  screen,
-  userEvent,
-} from "@testing-library/react-native";
+import { screen, userEvent } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
@@ -118,5 +115,20 @@ describe( "AddToProjects from ObsEdit", ( ) => {
     // Assert on chooser
     expect( screen.getByTestId( "AddToProjects.list" ) ).toBeVisible( );
     expect( screen.getByTestId( `AddToProjects.project.${mockProject.id}` ) ).toBeVisible( );
+  } );
+
+  it( "should stay on the chooser when SAVE is blocked by missing required fields", async ( ) => {
+    // Default for project factory is to create with one required POF
+    await navigateToAddToProjectsViaObsEdit( mockObservations );
+    await actor.press( screen.getByTestId( `AddToProjects.project.${mockProject.id}` ) );
+    const saveButton = screen.getByTestId( "AddToProjects.saveButton" );
+    expect( saveButton ).not.toBeDisabled( );
+    await actor.press( saveButton );
+    // Assert we are still on Add To Projects
+    expect( await screen.findByTestId( "MissingInfoSheet" ) ).toBeVisible( );
+    // Assert on Add To Projects screen
+    expect( screen.getByTestId( "add-to-projects" ) ).toBeVisible();
+    expect( screen.getByText( "ADD TO PROJECTS" ) ).toBeVisible();
+    expect( screen.queryByText( /Edit Observation/ ) ).toBeNull( );
   } );
 } );
