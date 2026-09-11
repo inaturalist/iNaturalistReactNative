@@ -38,6 +38,7 @@ afterAll( uniqueRealmAfterAll );
 // // /UNIQUE REALM SETUP
 
 const actor = userEvent.setup();
+const realm = () => global.mockRealms[__filename];
 
 const mockUser = factory( "LocalUser", {
   login: faker.internet.username(),
@@ -75,8 +76,7 @@ async function selectProjectAndExpand( projectId ) {
   } );
 }
 
-async function fillRequiredTextField( value ) {
-  const obsField = mockProject.project_observation_fields[0].observation_field;
+async function fillRequiredTextField( value, obsField ) {
   await screen.findByText( obsField.name );
   const textInput = screen.getAllByPlaceholderText( "Enter a response" ).find(
     node => typeof node.props.onChangeText === "function",
@@ -149,11 +149,20 @@ describe( "AddToProjects", ( ) => {
 
     await selectProjectAndExpand( mockProject.id );
     const fieldValue = "shrubland";
-    await fillRequiredTextField( fieldValue );
+    const obsField = mockProject.project_observation_fields[0].observation_field;
+    await fillRequiredTextField( fieldValue, obsField );
     // Save
     const saveButton = screen.getByTestId( "AddToProjects.saveButton" );
     await actor.press( saveButton );
     // Assert we are on ObsEdit now is done in /navigation test
     await saveObsEditObservation( );
+
+    const savedObs = realm( ).objectForPrimaryKey( "Observation", observation.uuid );
+    expect( savedObs.projectObservations ).toHaveLength( 1 );
+    expect( savedObs.projectObservations[0].projectId ).toBe( mockProject.id );
+    expect( savedObs.projectObservations[0]._pending_deletion ).toBeFalsy( );
+    expect( savedObs.observationFieldValues ).toHaveLength( 1 );
+    expect( savedObs.observationFieldValues[0].obsFieldId ).toBe( obsField.id );
+    expect( savedObs.observationFieldValues[0].value ).toBe( fieldValue );
   } );
 } );
