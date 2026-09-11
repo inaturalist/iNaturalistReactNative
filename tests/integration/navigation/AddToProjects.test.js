@@ -35,7 +35,7 @@ afterAll( uniqueRealmAfterAll );
 
 const actor = userEvent.setup( );
 
-describe( "AddToProjects", ( ) => {
+describe( "AddToProjects from ObsEdit", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
   const observation = factory( "LocalObservation", {
@@ -47,22 +47,20 @@ describe( "AddToProjects", ( ) => {
 
   const mockObservations = [observation];
 
-  describe( "from ObsEdit", ( ) => {
-    async function navigateToAddToProjectsViaObsEdit( observations ) {
-      await renderAppWithObservations( observations, __filename );
-      const observationGridItem = await screen.findByTestId(
-        `MyObservations.obsGridItem.${observations[0].uuid}`,
-      );
-      await actor.press( observationGridItem );
-      const addToProjectsRow = await screen.findByLabelText(
-        /Add to Projects|Added to \d+ Project/,
-      );
-      await actor.press( addToProjectsRow );
-      await screen.findByTestId( "add-to-projects" );
-    }
+  async function navigateToAddToProjectsViaObsEdit( observations ) {
+    await renderAppWithObservations( observations, __filename );
+    const observationGridItem = await screen.findByTestId(
+      `MyObservations.obsGridItem.${observations[0].uuid}`,
+    );
+    await actor.press( observationGridItem );
+    const addToProjectsRow = await screen.findByLabelText(
+      /Add to Projects|Added to \d+ Project/,
+    );
+    await actor.press( addToProjectsRow );
+    await screen.findByTestId( "add-to-projects" );
+  }
 
-    it( "should show the chooser", async () => {
-      await navigateToAddToProjectsViaObsEdit( mockObservations );
-    } );
+  it( "should show the chooser", async () => {
+    await navigateToAddToProjectsViaObsEdit( mockObservations );
   } );
 } );
