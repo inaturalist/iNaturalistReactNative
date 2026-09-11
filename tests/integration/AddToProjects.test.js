@@ -73,8 +73,17 @@ async function selectProjectAndExpand( projectId ) {
 }
 
 async function fillRequiredTextField( value ) {
-  console.log( "value", value );
   await screen.findByText( mockProject.project_observation_fields[0].observation_field.name );
+  const textInput = screen.getAllByPlaceholderText( "Enter a response" ).find(
+    node => typeof node.props.onChangeText === "function",
+  );
+  expect( textInput ).toBeTruthy( );
+  jest.useRealTimers( );
+  try {
+    await actor.type( textInput, value );
+  } finally {
+    jest.useFakeTimers( );
+  }
 }
 
 beforeAll( async () => {
