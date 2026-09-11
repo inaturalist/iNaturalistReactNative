@@ -7,13 +7,6 @@ import {
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
-import { signIn, signOut } from "tests/helpers/user";
-
-const mockUser = factory( "LocalUser", {
-  login: faker.internet.username(),
-  iconUrl: faker.image.url(),
-  locale: "en",
-} );
 
 const mockProject = factory( "RemoteProject", {
   title: faker.lorem.sentence(),
@@ -43,14 +36,6 @@ beforeEach( () => {
 
 describe( "AddToProjects", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
-
-  beforeEach( async () => {
-    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
-  } );
-
-  afterEach( () => {
-    signOut( { realm: global.mockRealms[__filename] } );
-  } );
 
   it( "should persist PO and OFV on save", async ( ) => {
   } );
