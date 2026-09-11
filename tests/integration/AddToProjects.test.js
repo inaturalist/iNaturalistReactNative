@@ -1,4 +1,6 @@
+import AddToProjects from "components/AddToProjects/AddToProjects";
 import inatjs from "inaturalistjs";
+import React from "react";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
@@ -6,6 +8,7 @@ import {
   mockInteractionManagerRunAfterInteractions,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
+import { renderAppWithComponent } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 
 const mockProject = factory( "RemoteProject", {
@@ -38,5 +41,6 @@ describe( "AddToProjects", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
   it( "should persist PO and OFV on save", async ( ) => {
+    renderAppWithComponent( <AddToProjects /> );
   } );
 } );
