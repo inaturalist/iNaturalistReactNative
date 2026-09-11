@@ -72,6 +72,11 @@ async function selectProjectAndExpand( projectId ) {
   } );
 }
 
+async function fillRequiredTextField( value ) {
+  console.log( "value", value );
+  await screen.findByText( mockProject.project_observation_fields[0].observation_field.name );
+}
+
 beforeAll( async () => {
   jest.useFakeTimers();
   mockInteractionManagerRunAfterInteractions();
@@ -122,6 +127,7 @@ describe( "AddToProjects", ( ) => {
     await navigateToAddToProjectsViaObsEdit( mockObservations );
 
     await selectProjectAndExpand( mockProject.id );
-    // await fillRequiredTextField( fieldValue, projectId );
+    const fieldValue = "shrubland";
+    await fillRequiredTextField( fieldValue );
   } );
 } );
