@@ -3,7 +3,10 @@ import inatjs from "inaturalistjs";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
-import { mockInteractionManagerRunAfterInteractions } from "tests/helpers/addObsBottomSheet";
+import {
+  mockInteractionManagerRunAfterInteractions,
+  saveObsEditObservation,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -147,5 +150,10 @@ describe( "AddToProjects", ( ) => {
     await selectProjectAndExpand( mockProject.id );
     const fieldValue = "shrubland";
     await fillRequiredTextField( fieldValue );
+    // Save
+    const saveButton = screen.getByTestId( "AddToProjects.saveButton" );
+    await actor.press( saveButton );
+    // Assert we are on ObsEdit now is done in /navigation test
+    await saveObsEditObservation( );
   } );
 } );
