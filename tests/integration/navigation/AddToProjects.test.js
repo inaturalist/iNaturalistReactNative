@@ -71,16 +71,16 @@ beforeAll( async () => {
   jest.useFakeTimers();
   mockInteractionManagerRunAfterInteractions();
   inatjs.users.projects.mockResolvedValue( makeResponse( [mockProject] ) );
-  useStore.setState( {
-    featureFlagConfig: {
-      [FeatureFlag.TraditionalProjectsEnabled]: true,
-    },
-  } );
 } );
 
 beforeEach( () => {
   setStoreStateLayout( {
     isDefaultMode: false,
+  } );
+  useStore.setState( {
+    featureFlagConfig: {
+      [FeatureFlag.TraditionalProjectsEnabled]: true,
+    },
   } );
 } );
 
