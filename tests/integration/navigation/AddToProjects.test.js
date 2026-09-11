@@ -95,6 +95,9 @@ describe( "AddToProjects from ObsEdit", ( ) => {
     );
     await actor.press( addToProjectsRow );
     await screen.findByTestId( "add-to-projects" );
+    // Assert on Add To Projects screen
+    expect( screen.getByTestId( "add-to-projects" ) ).toBeVisible();
+    expect( screen.getByText( "ADD TO PROJECTS" ) ).toBeVisible();
   }
 
   it( "should show the chooser", async () => {
