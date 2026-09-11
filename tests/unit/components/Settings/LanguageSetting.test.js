@@ -30,7 +30,8 @@ describe( "LanguageSetting", ( ) => {
       locale: "es-CO",
     }] ) );
 
-    renderComponent( <LanguageSetting onChange={jest.fn( )} /> );
+    const onChange = jest.fn( );
+    renderComponent( <LanguageSetting onChange={onChange} /> );
 
     expect( i18n.language ).toEqual( "en" );
     const changeLanguageButton = await screen.findByText( /CHANGE APP LANGUAGE/ );
@@ -47,6 +48,6 @@ describe( "LanguageSetting", ( ) => {
     const confirmText = await screen.findByText( "CONFIRM" );
     expect( confirmText ).toBeVisible( );
     fireEvent.press( confirmText );
-    expect( i18n.language ).toEqual( "es-CO" );
+    expect( onChange ).toHaveBeenCalledWith( "es-CO" );
   } );
 } );

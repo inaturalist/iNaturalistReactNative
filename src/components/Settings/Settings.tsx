@@ -7,6 +7,7 @@ import React, { useCallback } from "react";
 import {
   View,
 } from "react-native";
+import changeLanguage from "sharedHelpers/changeLanguage";
 import {
   useCurrentUser,
   useLayoutPrefs,
@@ -14,6 +15,7 @@ import {
 } from "sharedHooks";
 
 import AdvancedSettings from "./AdvancedSettings";
+import LanguageSetting from "./LanguageSetting";
 import LoggedInDefaultSettings from "./LoggedInDefaultSettings";
 
 const Settings = ( ) => {
@@ -45,7 +47,13 @@ const Settings = ( ) => {
           label={t( "Advanced-Mode" )}
         />
         {isAdvancedMode && <AdvancedSettings />}
-        {currentUser && <LoggedInDefaultSettings />}
+        {currentUser
+          ? <LoggedInDefaultSettings onLocaleChange={changeLanguage} />
+          : (
+            <View className="mt-[30px]">
+              <LanguageSetting onChange={changeLanguage} />
+            </View>
+          )}
       </View>
     </ScrollViewWrapper>
   );

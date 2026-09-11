@@ -1,5 +1,4 @@
 import fetchAvailableLocales from "api/translations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import {
   Button,
   Heading4,
@@ -7,11 +6,9 @@ import {
   UnderlinedLink,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React, { useEffect, useState } from "react";
-import changeLanguage from "sharedHelpers/changeLanguage";
+import React, { useState } from "react";
 import { openExternalWebBrowser } from "sharedHelpers/util";
-import { useTranslation } from "sharedHooks";
-import { zustandStorage } from "stores/useStore";
+import { useQuery, useTranslation } from "sharedHooks";
 
 type LocalesResponse = {
   locale: string;
@@ -24,8 +21,10 @@ interface Props {
   onChange: ( newLocale: string ) => void;
 }
 
-const localesToOptions = ( localesResponse: LocalesResponse ) => Object.fromEntries(
-  localesResponse?.map( locale => [
+const localesToOptions = (
+  localesResponse?: LocalesResponse,
+): LocalesOptions => Object.fromEntries(
+  ( localesResponse ?? [] ).map( locale => [
     locale.locale,
     {
       label: locale.language_in_locale,
@@ -36,25 +35,16 @@ const localesToOptions = ( localesResponse: LocalesResponse ) => Object.fromEntr
 
 const LanguageSetting = ( { onChange }: Props ) => {
   const { t, i18n } = useTranslation();
-  const [localeOptions, setLocaleOptions] = useState<LocalesOptions | null>( () => {
-    const currentLocales = zustandStorage.getItem( "availableLocales" );
-    return currentLocales
-      ? localesToOptions( JSON.parse( currentLocales as string ) )
-      : null;
-  } );
   const [localeSheetOpen, setLocaleSheetOpen] = useState( false );
 
-  useEffect( () => {
-    async function fetchLocales() {
-      const apiToken = await getJWT( );
-      const locales = await fetchAvailableLocales( {}, { api_token: apiToken } );
-      zustandStorage.setItem( "availableLocales", JSON.stringify( locales ) );
-      setLocaleOptions( localesToOptions( locales as LocalesResponse ) );
-    }
-    fetchLocales();
-  }, [] );
+  const { data: locales } = useQuery(
+    ["fetchAvailableLocales"],
+    ( ) => fetchAvailableLocales( {} ),
+  );
 
-  if ( !localeOptions ) {
+  const localeOptions = localesToOptions( locales as LocalesResponse | undefined );
+
+  if ( Object.keys( localeOptions ).length === 0 ) {
     return null;
   }
 
@@ -81,8 +71,6 @@ const LanguageSetting = ( { onChange }: Props ) => {
           headerText={t( "APP-LANGUAGE" )}
           confirm={( newLocale: string ) => {
             setLocaleSheetOpen( false );
-            // Remember the new locale locally
-            changeLanguage( newLocale );
             onChange( newLocale );
           }}
           onPressClose={() => setLocaleSheetOpen( false )}

@@ -21,7 +21,11 @@ import TaxonNamesSetting from "./TaxonNamesSetting";
 
 const { useRealm } = RealmContext;
 
-const LoggedInDefaultSettings = ( ) => {
+interface Props {
+  onLocaleChange: ( newLocale: string ) => void;
+}
+
+const LoggedInDefaultSettings = ( { onLocaleChange }: Props ) => {
   const realm = useRealm( );
   const { t } = useTranslation( );
   const {
@@ -72,6 +76,7 @@ const LoggedInDefaultSettings = ( ) => {
       />
       <LanguageSetting
         onChange={newLocale => {
+          onLocaleChange( newLocale );
           QueueItem.enqueue(
             realm,
             JSON.stringify( {
