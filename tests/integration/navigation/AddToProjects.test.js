@@ -165,7 +165,20 @@ describe( "AddToProjects from ObsEdit", ( ) => {
     await navigateToAddToProjectsViaObsEdit( mockObservations );
     // Open chooser and fill required OFV
     await actor.press( screen.getByTestId( `AddToProjects.project.${mockProject.id}` ) );
-    // TODO: find OFV and select a value
+    // Find OFV and type value
+    await screen.findByText(
+      mockProject.project_observation_fields[0].observation_field.name,
+    );
+    const textInput = screen.getAllByPlaceholderText( "Enter a response" ).find(
+      node => typeof node.props.onChangeText === "function",
+    );
+    expect( textInput ).toBeTruthy();
+    jest.useRealTimers();
+    try {
+      await actor.type( textInput, "forest edge" );
+    } finally {
+      jest.useFakeTimers();
+    }
     // Save
     const saveButton = screen.getByTestId( "AddToProjects.saveButton" );
     expect( saveButton ).not.toBeDisabled();
