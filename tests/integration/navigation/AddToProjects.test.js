@@ -160,6 +160,23 @@ describe( "AddToProjects from ObsEdit", ( ) => {
     expect( screen.queryByText( "ADD TO PROJECTS" ) ).toBeNull( );
   } );
 
+  it( "should return to ObsEdit after SAVE with a valid selection change", async () => {
+    // Default for project factory is to create with one required POF
+    await navigateToAddToProjectsViaObsEdit( mockObservations );
+    // Open chooser and fill required OFV
+    await actor.press( screen.getByTestId( `AddToProjects.project.${mockProject.id}` ) );
+    // TODO: find OFV and select a value
+    // Save
+    const saveButton = screen.getByTestId( "AddToProjects.saveButton" );
+    expect( saveButton ).not.toBeDisabled();
+    await actor.press( saveButton );
+    // Assert on ObsEdit
+    await waitFor( () => {
+      expect( screen.getByText( /Edit Observation/ ) ).toBeVisible();
+    } );
+    expect( screen.queryByText( "ADD TO PROJECTS" ) ).toBeNull();
+  } );
+
   it( "should open the chooser with an attached project pre-selected", async () => {
     // Default for project factory is to create with one required POF
     await navigateToAddToProjectsViaObsEdit( mockAttachedObservations );
