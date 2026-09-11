@@ -12,6 +12,7 @@ import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
+import { signIn, signOut } from "tests/helpers/user";
 
 // We're explicitly testing navigation here so we want react-navigation
 // working normally
@@ -41,6 +42,12 @@ afterAll( uniqueRealmAfterAll );
 
 const actor = userEvent.setup( );
 
+const mockUser = factory( "LocalUser", {
+  login: faker.internet.username(),
+  iconUrl: faker.image.url(),
+  locale: "en",
+} );
+
 beforeAll( async () => {
   jest.useFakeTimers();
   mockInteractionManagerRunAfterInteractions();
@@ -59,6 +66,14 @@ beforeEach( () => {
 
 describe( "AddToProjects from ObsEdit", ( ) => {
   global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
+
+  beforeEach( async () => {
+    await signIn( mockUser, { realm: global.mockRealms[__filename] } );
+  } );
+
+  afterEach( () => {
+    signOut( { realm: global.mockRealms[__filename] } );
+  } );
 
   const observation = factory( "LocalObservation", {
     _created_at: faker.date.past(),
