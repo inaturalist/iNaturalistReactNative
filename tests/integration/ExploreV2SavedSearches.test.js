@@ -5,6 +5,7 @@ import {
   within,
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
+import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import factory, { makeResponse } from "tests/factory";
 import {
@@ -67,6 +68,8 @@ afterAll( uniqueRealmAfterAll );
 
 const actor = userEvent.setup( );
 
+const t = key => i18next.t( key );
+
 beforeAll( async ( ) => {
   await initI18next( );
   jest.useFakeTimers( );
@@ -95,38 +98,46 @@ afterEach( async ( ) => {
 
 global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
-describe( "recent searches in Explore", ( ) => {
-  it( "offers a searched subject as a recent search and searches it again", async ( ) => {
+describe( "saved searches", ( ) => {
+  it( "saves the search, runs it again later, and unsaves it", async ( ) => {
     renderApp( );
     await navigateToExplore( );
     await openUniversalSearch( );
     await searchForTaxon( mockTaxon );
 
+    await actor.press( await screen.findByLabelText( t( "Save-this-search" ) ) );
+
+    // The toast fades in, so it is on the screen before it is visible
+    expect( await screen.findByText( t( "ADDED-TO-SAVED-SEARCHES" ) ) ).toBeOnTheScreen( );
+    expect( await screen.findByLabelText( t( "Remove-this-saved-search" ) ) ).toBeVisible( );
+
+    // Search with nothing selected, which goes back to all organisms worldwide, so applying
+    // the saved search has something to change
+    await openUniversalSearch( );
+    await submitUniversalSearch( );
+    await waitFor( ( ) => {
+      expect( lastObservationsSearchParams( ) ).not.toHaveProperty( "taxon_id" );
+    } );
+    expect( await screen.findByLabelText( t( "Save-this-search" ) ) ).toBeVisible( );
+
+    await openUniversalSearch( );
+    const savedList = await screen.findByTestId( "SavedSearches" );
+    await actor.press( within( savedList ).getByText( mockTaxon.name ) );
+
+    await screen.findByTestId( "ExploreResults" );
     await waitFor( ( ) => {
       expect( lastObservationsSearchParams( ) ).toMatchObject( { taxon_id: mockTaxon.id } );
     } );
-
-    // Search again with nothing selected, so the subject goes back to all organisms
-    await openUniversalSearch( );
-    await submitUniversalSearch( );
-    expect(
-      within( await screen.findByTestId( "ExploreV2Header" ) )
-        .queryByTestId( "ExploreV2Header.subject" ),
-    ).toBeNull( );
-
-    // The taxon is offered as a recent search
-    await openUniversalSearch( );
-    const recentRow = within( await screen.findByTestId( "RecentSearches" ) ).getByTestId(
-      `UniversalSearchResult.taxon.${mockTaxon.id}`,
-    );
-    expect( recentRow ).toBeVisible( );
-
-    // Tapping it fills the subject field, and searching from there restores it
-    await actor.press( recentRow );
-    await submitUniversalSearch( );
-
     const header = await screen.findByTestId( "ExploreV2Header" );
     expect( within( header ).getByTestId( "ExploreV2Header.subject" ) ).toBeVisible( );
-    expect( within( header ).getByText( mockTaxon.name ) ).toBeVisible( );
+
+    const removeStar = await screen.findByLabelText( t( "Remove-this-saved-search" ) );
+    expect( removeStar ).toBeVisible( );
+
+    await actor.press( removeStar );
+
+    expect( await screen.findByText( t( "REMOVED-FROM-SAVED-SEARCHES" ) ) ).toBeOnTheScreen( );
+    await openUniversalSearch( );
+    expect( screen.queryByTestId( "SavedSearches" ) ).toBeNull( );
   } );
 } );

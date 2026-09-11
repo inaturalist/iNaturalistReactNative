@@ -1,5 +1,4 @@
 import {
-  act,
   screen,
   userEvent,
   waitFor,
@@ -8,8 +7,9 @@ import {
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
-import useStore, { zustandStorage } from "stores/useStore";
+import { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import { enableExploreV2 } from "tests/helpers/exploreV2";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -84,15 +84,6 @@ jest.mock( "providers/contexts", ( ) => {
 beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
-
-const enableExploreV2 = ( ) => act( ( ) => {
-  useStore.setState( state => ( {
-    featureFlagConfig: {
-      ...state.featureFlagConfig,
-      exploreV2Enabled: true,
-    },
-  } ) );
-} );
 
 beforeAll( async ( ) => {
   await initI18next( );
