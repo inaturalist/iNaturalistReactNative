@@ -20,10 +20,10 @@ index 708c7d1..ed5b33c 100644
  | height       | OK  | OK      | OK  | BOTH        | NO                   | Asset dimensions                                                                                                                                                                                                                                                               |
  | fileSize     | OK  | OK      | NO  | BOTH        | NO                   | The file size                                                                                                                                                                                                                                                                  |
 diff --git a/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModuleImpl.java b/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModuleImpl.java
-index 56149f1..48ea38c 100644
+index 56149f1..631ea9e 100644
 --- a/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModuleImpl.java
 +++ b/node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModuleImpl.java
-@@ -162,7 +162,37 @@ public class ImagePickerModuleImpl implements ActivityEventListener {
+@@ -162,7 +162,38 @@ public class ImagePickerModuleImpl implements ActivityEventListener {
          }
  
          try {
@@ -34,9 +34,10 @@ index 56149f1..48ea38c 100644
 +                // of that selector - so we need a hybrid approach which shows
 +                Intent pickIntent = new Intent(Intent.ACTION_PICK);
 +                if (!isSingleSelect) {
-+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-+                        pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-+                    } else {
++                    // EXTRA_ALLOW_MULTIPLE is what ACTION_PICK handlers like Google Photos honor;
++                    // EXTRA_PICK_IMAGES_MAX below is additionally needed for the system Photo Picker on 13+.
++                    pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
++                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 +                        if ((selectionLimit != 1) && (!libraryIntent.getAction().equals(Intent.ACTION_GET_CONTENT)))  {
 +                            int maxNum = selectionLimit;
 +                            if (selectionLimit == 0) maxNum = MediaStore.getPickImagesMaxLimit();
