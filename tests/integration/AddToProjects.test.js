@@ -164,5 +164,8 @@ describe( "AddToProjects", ( ) => {
     expect( savedObs.observationFieldValues ).toHaveLength( 1 );
     expect( savedObs.observationFieldValues[0].obsFieldId ).toBe( obsField.id );
     expect( savedObs.observationFieldValues[0].value ).toBe( fieldValue );
+    // No upload should happen
+    expect( inatjs.project_observations.create ).not.toHaveBeenCalled( );
+    expect( inatjs.observation_field_values.create ).not.toHaveBeenCalled( );
   } );
 } );
