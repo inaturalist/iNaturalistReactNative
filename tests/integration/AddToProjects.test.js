@@ -1,4 +1,4 @@
-import { screen, userEvent } from "@testing-library/react-native";
+import { screen, userEvent, waitFor } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
@@ -60,6 +60,18 @@ const mockProject = factory( "RemoteProject", {
   user_ids: [faker.number.int()],
 } );
 
+async function selectProjectAndExpand( projectId ) {
+  const projectRow = await waitFor( ( ) => {
+    const row = screen.getByTestId( `AddToProjects.project.${projectId}` );
+    expect( row ).toBeVisible( );
+    return row;
+  } );
+  await actor.press( projectRow );
+  await waitFor( ( ) => {
+    expect( screen.getAllByLabelText( "Enter a response" ).length ).toBeGreaterThan( 0 );
+  } );
+}
+
 beforeAll( async () => {
   jest.useFakeTimers();
   mockInteractionManagerRunAfterInteractions();
@@ -108,5 +120,8 @@ describe( "AddToProjects", ( ) => {
 
   it( "persists PO and OFV to Realm after chooser save and ObsEdit save", async () => {
     await navigateToAddToProjectsViaObsEdit( mockObservations );
+
+    await selectProjectAndExpand( mockProject.id );
+    // await fillRequiredTextField( fieldValue, projectId );
   } );
 } );
