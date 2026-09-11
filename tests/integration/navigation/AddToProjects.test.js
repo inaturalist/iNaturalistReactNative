@@ -3,6 +3,9 @@ import {
   userEvent,
 } from "@testing-library/react-native";
 import factory from "tests/factory";
+import {
+  mockInteractionManagerRunAfterInteractions,
+} from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
@@ -35,6 +38,11 @@ afterAll( uniqueRealmAfterAll );
 // // /UNIQUE REALM SETUP
 
 const actor = userEvent.setup( );
+
+beforeAll( async () => {
+  jest.useFakeTimers();
+  mockInteractionManagerRunAfterInteractions();
+} );
 
 beforeEach( () => {
   setStoreStateLayout( {
