@@ -100,7 +100,7 @@ export interface ExploreV2Filters {
   photoLicense: PHOTO_LICENSE;
   // User / project, in ExploreV2 parlance we always consider taxon to be the "subject"
   user?: ApiUser | null;
-  excludeUser?: ApiUser | null;
+  unobservedByUser?: ApiUser | null;
   project?: ApiProjectSummary | null;
 }
 

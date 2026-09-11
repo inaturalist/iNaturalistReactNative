@@ -29,7 +29,7 @@ export interface FilterApiParams {
   viewer_id?: number;
   photo_license?: string;
   user_id?: number;
-  not_user_id?: number;
+  unobserved_by_user_id?: number;
   project_id?: number;
 }
 
@@ -105,8 +105,8 @@ const filtersToApiParams = (
 
   if ( filters.user?.id ) { params.user_id = filters.user.id; }
 
-  if ( filters.excludeUser?.id ) {
-    params.not_user_id = filters.excludeUser.id;
+  if ( filters.unobservedByUser?.id ) {
+    params.unobserved_by_user_id = filters.unobservedByUser.id;
   }
 
   if ( filters.project?.id ) { params.project_id = filters.project.id; }

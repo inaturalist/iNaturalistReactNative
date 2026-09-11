@@ -196,5 +196,14 @@ describe( "filtersToApiParams", ( ) => {
       expect( params.user_id ).toBe( 7 );
       expect( params.project_id ).toBe( 9 );
     } );
+
+    it( "maps an unobserved-by user alongside a project", ( ) => {
+      const params = filtersToApiParams( makeFilters( {
+        unobservedByUser: { id: 7 },
+        project: { id: 9 },
+      } ) );
+      expect( params.unobserved_by_user_id ).toBe( 7 );
+      expect( params.project_id ).toBe( 9 );
+    } );
   } );
 } );

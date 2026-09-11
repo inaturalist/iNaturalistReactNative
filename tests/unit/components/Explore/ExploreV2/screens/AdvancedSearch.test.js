@@ -222,13 +222,13 @@ describe( "AdvancedSearch screen", ( ) => {
       expect( screen.queryByText( t( "FILTER-BY-A-PROJECT" ) ) ).toBeNull( );
     } );
 
-    it( "shows an excluded user under an all-users-except heading", ( ) => {
-      setExploreState( { filters: { excludeUser: USER } } );
+    it( "shows a carried unobserved subject in the user section", ( ) => {
+      setExploreState( { subject: { type: "unobserved", user: CURRENT_USER } } );
       renderComponent( <AdvancedSearch /> );
 
-      expect( screen.getByText( t( "ALL-USERS-EXCEPT" ) ) ).toBeVisible( );
-      expect( screen.queryByText( t( "USER" ) ) ).toBeNull( );
-      expect( screen.getByText( USER.login ) ).toBeVisible( );
+      expect( screen.getByText( t( "USER" ) ) ).toBeVisible( );
+      expect( screen.getByText( t( "Species-I-havent-observed" ) ) ).toBeVisible( );
+      expect( screen.queryByText( t( "FILTER-BY-A-USER" ) ) ).toBeNull( );
     } );
 
     it( "shows the unknown subject as an unknown taxon", ( ) => {
@@ -414,18 +414,25 @@ describe( "AdvancedSearch screen", ( ) => {
       } );
     } );
 
-    it( "clears a carried subject that the user replaced with a user filter", async ( ) => {
-      setExploreState( {
-        subject: { type: "unobserved", user: CURRENT_USER },
-        filters: { user: USER },
-      } );
+    it( "commits a carried unobserved subject as a filter that survives the search", async ( ) => {
+      setExploreState( { subject: { type: "unobserved", user: CURRENT_USER } } );
       renderComponent( <AdvancedSearch /> );
 
-      // Editing the user section supersedes the unobserved subject.
+      await pressSearch( );
+
+      expect( committedSearch( ).subject ).toBeNull( );
+      expect( committedFilters( ).unobservedByUser.id ).toEqual( CURRENT_USER.id );
+    } );
+
+    it( "removes a carried unobserved subject the user cleared", async ( ) => {
+      setExploreState( { subject: { type: "unobserved", user: CURRENT_USER } } );
+      renderComponent( <AdvancedSearch /> );
+
       await actor.press( screen.getByLabelText( t( "Remove-user-filter" ) ) );
       await pressSearch( );
 
       expect( committedSearch( ).subject ).toBeNull( );
+      expect( committedFilters( ).unobservedByUser ).toBeNull( );
     } );
   } );
 
