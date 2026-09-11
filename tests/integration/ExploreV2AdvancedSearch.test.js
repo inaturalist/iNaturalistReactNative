@@ -40,6 +40,12 @@ const mockObserver = factory( "RemoteUser", {
   login: faker.internet.username( ),
 } );
 
+const mockObserverCounts = [mockObserver, factory( "RemoteUser" )]
+  .map( user => ( { user, observation_count: 7 } ) );
+
+const mockIdentifierCounts = [mockObserver, factory( "RemoteUser" ), factory( "RemoteUser" )]
+  .map( user => ( { user, count: 5 } ) );
+
 jest.mock( "sharedHelpers/fetchCoarseUserLocation", ( ) => ( {
   __esModule: true,
   default: ( ) => Promise.resolve( { latitude: 37, longitude: 34 } ),
@@ -79,12 +85,8 @@ beforeAll( async ( ) => {
     count: 1,
     taxon: mockTaxon,
   }] ) );
-  inatjs.observations.observers.mockResolvedValue( makeResponse(
-    [{ user: mockObserver, observation_count: 7 }],
-  ) );
-  inatjs.observations.identifiers.mockResolvedValue( makeResponse(
-    [{ user: mockObserver, count: 3 }],
-  ) );
+  inatjs.observations.observers.mockResolvedValue( makeResponse( mockObserverCounts ) );
+  inatjs.observations.identifiers.mockResolvedValue( makeResponse( mockIdentifierCounts ) );
 } );
 
 beforeEach( async ( ) => {
@@ -148,11 +150,16 @@ describe( "advanced search", ( ) => {
       await actor.press( screen.getByText( t( "Sounds" ) ) );
       await submitAdvancedSearch( );
 
-      expect( await screen.findByTestId( "ExploreV2Tabs.identifiers" ) ).toBeVisible( );
-      // The tab shows the count from the observers endpoint
+      // Each tab shows the count from its own endpoint
       const observersTab = await screen.findByTestId( "ExploreV2Tabs.observers" );
+      const identifiersTab = await screen.findByTestId( "ExploreV2Tabs.identifiers" );
       await waitFor( ( ) => {
-        expect( within( observersTab ).getByText( "1" ) ).toBeVisible( );
+        expect(
+          within( observersTab ).getByText( String( mockObserverCounts.length ) ),
+        ).toBeVisible( );
+        expect(
+          within( identifiersTab ).getByText( String( mockIdentifierCounts.length ) ),
+        ).toBeVisible( );
       } );
 
       await actor.press( observersTab );
