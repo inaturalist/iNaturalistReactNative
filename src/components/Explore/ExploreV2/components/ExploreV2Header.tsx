@@ -5,6 +5,7 @@ import SubjectThumbnail
   from "components/Explore/ExploreV2/components/SubjectThumbnail";
 import countFilters from "components/Explore/ExploreV2/helpers/countFilters";
 import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
+import primarySubject from "components/Explore/ExploreV2/helpers/primarySubject";
 import subjectLabel from "components/Explore/ExploreV2/helpers/subjectLabel";
 import NumberBadge from "components/Explore/NumberBadge";
 import {
@@ -99,21 +100,21 @@ const ExploreV2Header = ( { showBackButton }: Props ) => {
     : "UniversalSearch";
   const filterCount = countFilters( state.filters );
 
-  const { subject } = state;
   const place = locationLabel( state.location, t );
+  const primary = primarySubject( state );
 
   let headerContent;
-  if ( subject && subject.type !== "unobserved" ) {
+  if ( primary.display === "subject" ) {
     headerContent = (
       <SubjectHeader
-        subject={subject}
-        label={subjectLabel( subject, t )}
+        subject={primary.subject}
+        label={subjectLabel( primary.subject, t )}
         place={place}
         prefersCommonNames={currentUser?.prefers_common_names}
         scientificNameFirst={currentUser?.prefers_scientific_name_first}
       />
     );
-  } else if ( subject?.type === "unobserved" || state.filters.unobservedByUser ) {
+  } else if ( primary.display === "unobserved" ) {
     headerContent = (
       <TitleHeader
         title={t( "Unobserved" )}
