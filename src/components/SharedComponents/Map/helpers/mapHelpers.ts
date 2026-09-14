@@ -85,16 +85,28 @@ export function latitudeDeltaToMeters(
   return latitudeDelta * metersPerDegreeLatitude( latitude );
 }
 
+// Width in degrees of a bounding box, measured eastward from swlng to nelng.
+// A box crossing the antimeridian is encoded swlng > nelng
+export function longitudeSpan( swlng: number, nelng: number ): number {
+  const span = Number( nelng ) - Number( swlng );
+  return span < 0
+    ? span + 360
+    : span;
+}
+
 export function regionFromBounds( bounds: MapBoundaries ): Region {
   const {
     nelat, nelng, swlat, swlng,
   } = bounds;
   const latitudeDelta = Math.abs( Number( nelat ) - Number( swlat ) );
-  const longitudeDelta = Math.abs( Number( nelng ) - Number( swlng ) );
+  const longitudeDelta = longitudeSpan( swlng, nelng );
+  const longitude = Number( swlng ) + ( longitudeDelta / 2 );
 
   return {
-    latitude: nelat - ( latitudeDelta / 2 ),
-    longitude: nelng - ( longitudeDelta / 2 ),
+    latitude: Math.min( Number( swlat ), Number( nelat ) ) + ( latitudeDelta / 2 ),
+    longitude: longitude > 180
+      ? longitude - 360
+      : longitude,
     latitudeDelta,
     longitudeDelta,
   };
