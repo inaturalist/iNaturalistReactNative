@@ -21,16 +21,16 @@ describe( "Toast", ( ) => {
   } );
 
   it( "shows the text and announces it to screen readers", ( ) => {
-    render( <Toast onHide={jest.fn( )} text="ADDED TO SAVED SEARCHES" /> );
+    render( <Toast onHide={jest.fn( )} text="Added to Saved Searches" /> );
 
-    expect( screen.getByText( "ADDED TO SAVED SEARCHES" ) ).toBeOnTheScreen( );
+    expect( screen.getByText( "Added to Saved Searches" ) ).toBeOnTheScreen( );
     expect( AccessibilityInfo.announceForAccessibility )
-      .toHaveBeenCalledWith( "ADDED TO SAVED SEARCHES" );
+      .toHaveBeenCalledWith( "Added to Saved Searches" );
   } );
 
   it( "calls onHide only after it has been shown for a while", ( ) => {
     const onHide = jest.fn( );
-    render( <Toast onHide={onHide} text="ADDED TO SAVED SEARCHES" /> );
+    render( <Toast onHide={onHide} text="Added to Saved Searches" /> );
 
     advance( 500 );
     expect( onHide ).not.toHaveBeenCalled( );
@@ -41,7 +41,7 @@ describe( "Toast", ( ) => {
 
   it( "calls onHide right away when tapped", ( ) => {
     const onHide = jest.fn( );
-    render( <Toast onHide={onHide} testID="toast" text="ADDED TO SAVED SEARCHES" /> );
+    render( <Toast onHide={onHide} testID="toast" text="Added to Saved Searches" /> );
 
     fireEvent.press( screen.getByTestId( "toast" ) );
 
@@ -50,15 +50,15 @@ describe( "Toast", ( ) => {
 
   it( "starts over instead of hiding early when the text changes mid-way", ( ) => {
     const onHide = jest.fn( );
-    const { rerender } = render( <Toast onHide={onHide} text="ADDED TO SAVED SEARCHES" /> );
+    const { rerender } = render( <Toast onHide={onHide} text="Added to Saved Searches" /> );
     advance( 1000 );
 
-    rerender( <Toast onHide={onHide} text="REMOVED FROM SAVED SEARCHES" /> );
+    rerender( <Toast onHide={onHide} text="Removed from Saved Searches" /> );
 
     // Past the point where the first toast alone would have finished
     advance( 1000 );
     expect( onHide ).not.toHaveBeenCalled( );
-    expect( screen.getByText( "REMOVED FROM SAVED SEARCHES" ) ).toBeOnTheScreen( );
+    expect( screen.getByText( "Removed from Saved Searches" ) ).toBeOnTheScreen( );
 
     advance( LONGER_THAN_ONE_TOAST );
     expect( onHide ).toHaveBeenCalledTimes( 1 );

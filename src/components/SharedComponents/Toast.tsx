@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import INatIcon from "components/SharedComponents/INatIcon";
 import Body1 from "components/SharedComponents/Typography/Body1";
-import { Pressable, View } from "components/styledComponents";
+import { Pressable } from "components/styledComponents";
 import React, { useCallback, useEffect, useRef } from "react";
 import { AccessibilityInfo } from "react-native";
 import Animated, {
@@ -22,7 +22,6 @@ const FADE_OUT_DURATION = 200;
 interface Props {
   icon?: string;
   onHide: ( ) => void;
-  onPress?: ( ) => void;
   testID?: string;
   text: string;
   variant?: "light" | "dark";
@@ -30,7 +29,7 @@ interface Props {
 }
 
 const Toast = ( {
-  icon, onHide, onPress, testID, text, variant = "light", wrapperClassName,
+  icon, onHide, testID, text, variant = "light", wrapperClassName,
 }: Props ) => {
   const opacity = useSharedValue( 0 );
   const animatedStyle = useAnimatedStyle( ( ) => ( { opacity: opacity.get( ) } ) );
@@ -63,53 +62,37 @@ const Toast = ( {
 
   const isDark = variant === "dark";
   const containerClassName = classnames(
-    "flex-row self-center items-center rounded-lg",
+    "flex-row self-center items-center gap-2 rounded-lg",
     isDark
       ? "bg-darkGray/50 p-2"
       : "bg-white px-[10px] py-[7px] max-w-[220px]",
     wrapperClassName,
   );
-  const textClassName = classnames(
-    isDark
-      ? "text-white"
-      : "text-darkGray text-center",
-    icon && "ml-2",
-  );
-  const content = (
-    <>
-      {icon && (
-        <INatIcon
-          name={icon}
-          size={19}
-          color={isDark
-            ? colors.white
-            : colors.darkGray}
-        />
-      )}
-      <Body1 className={textClassName}>{text}</Body1>
-    </>
-  );
+  const textClassName = isDark
+    ? "text-white"
+    : "text-darkGray text-center";
 
   // inline style for opacity instead of className: Animated.View doesn't like className
   return (
     <Animated.View pointerEvents="box-none" style={animatedStyle}>
-      {onPress
-        ? (
-          <Pressable
-            accessibilityLabel={text}
-            accessibilityRole="button"
-            className={containerClassName}
-            onPress={onPress}
-            testID={testID}
-          >
-            {content}
-          </Pressable>
-        )
-        : (
-          <View className={containerClassName} testID={testID}>
-            {content}
-          </View>
+      <Pressable
+        accessibilityLabel={text}
+        accessibilityRole="button"
+        className={containerClassName}
+        onPress={onHide}
+        testID={testID}
+      >
+        {icon && (
+          <INatIcon
+            name={icon}
+            size={19}
+            color={isDark
+              ? colors.white
+              : colors.darkGray}
+          />
         )}
+        <Body1 className={textClassName}>{text}</Body1>
+      </Pressable>
     </Animated.View>
   );
 };

@@ -427,7 +427,6 @@ const ExploreResults = ( ) => {
               >
                 <Toast
                   onHide={( ) => setSaveToast( null )}
-                  onPress={( ) => setSaveToast( null )}
                   testID="ExploreResults.saveToast"
                   text={saveToastText( saveToast )}
                 />
