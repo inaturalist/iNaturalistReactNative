@@ -5,7 +5,6 @@ import { Pressable } from "components/styledComponents";
 import React, { useCallback, useEffect, useRef } from "react";
 import { AccessibilityInfo } from "react-native";
 import Animated, {
-  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -56,8 +55,6 @@ const Toast = ( {
         ),
       ),
     );
-
-    return ( ) => cancelAnimation( opacity );
   }, [handleHide, opacity, text] );
 
   const isDark = variant === "dark";

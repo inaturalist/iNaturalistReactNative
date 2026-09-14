@@ -1,11 +1,12 @@
 import {
   act, fireEvent, render, screen,
 } from "@testing-library/react-native";
+import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import Toast from "components/SharedComponents/Toast";
 import React from "react";
 import { AccessibilityInfo } from "react-native";
 
-const LONGER_THAN_ONE_TOAST = 2000;
+const ONE_TOAST = 200 + 2000 + 200;
 
 const advance = ms => act( ( ) => { jest.advanceTimersByTime( ms ); } );
 
@@ -28,14 +29,22 @@ describe( "Toast", ( ) => {
       .toHaveBeenCalledWith( "Added to Saved Searches" );
   } );
 
-  it( "calls onHide only after it has been shown for a while", ( ) => {
+  it( "shows the icon when one is given", ( ) => {
+    render( <Toast icon="map-marker-outline" onHide={jest.fn( )} text="Using location" /> );
+
+    const glyph = String.fromCodePoint( glyphmap["map-marker-outline"] );
+    expect( screen.getByText( glyph ) ).toBeOnTheScreen( );
+    expect( screen.getByText( "Using location" ) ).toBeOnTheScreen( );
+  } );
+
+  it( "calls onHide only after the full toast has played", ( ) => {
     const onHide = jest.fn( );
     render( <Toast onHide={onHide} text="Added to Saved Searches" /> );
 
-    advance( 500 );
+    advance( ONE_TOAST - 100 );
     expect( onHide ).not.toHaveBeenCalled( );
 
-    advance( LONGER_THAN_ONE_TOAST );
+    advance( 200 );
     expect( onHide ).toHaveBeenCalledTimes( 1 );
   } );
 
@@ -55,12 +64,13 @@ describe( "Toast", ( ) => {
 
     rerender( <Toast onHide={onHide} text="Removed from Saved Searches" /> );
 
-    // Past the point where the first toast alone would have finished
-    advance( 1000 );
+    // 2500ms after mount: the first toast alone would have finished by now
+    advance( 1500 );
     expect( onHide ).not.toHaveBeenCalled( );
     expect( screen.getByText( "Removed from Saved Searches" ) ).toBeOnTheScreen( );
 
-    advance( LONGER_THAN_ONE_TOAST );
+    // 2500ms after the text change: the restarted toast has finished
+    advance( 1000 );
     expect( onHide ).toHaveBeenCalledTimes( 1 );
   } );
 } );
