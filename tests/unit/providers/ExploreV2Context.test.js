@@ -258,7 +258,7 @@ describe( "exploreV2Reducer", ( ) => {
         type: EXPLORE_V2_ACTION.APPLY_SEARCH,
         search,
       } );
-      expect( next ).toEqual( { ...initialExploreV2State, ...search } );
+      expect( next ).toEqual( { ...initialExploreV2State, ...search, appliedSearchCount: 1 } );
     } );
 
     it( "clears the subject for a search that has none", ( ) => {
@@ -276,6 +276,33 @@ describe( "exploreV2Reducer", ( ) => {
       } );
       expect( next ).not.toHaveProperty( "key" );
       expect( next ).not.toHaveProperty( "savedAt" );
+    } );
+
+    it( "counts every applied search, so applying one twice still reads as a change", ( ) => {
+      const first = exploreV2Reducer( initialExploreV2State, {
+        type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+        search,
+      } );
+      const second = exploreV2Reducer( first, {
+        type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+        search,
+      } );
+      expect( first.appliedSearchCount ).toBe( 1 );
+      expect( second.appliedSearchCount ).toBe( 2 );
+    } );
+
+    it( "does not count a map area the user chose on the map", ( ) => {
+      const applied = exploreV2Reducer( initialExploreV2State, {
+        type: EXPLORE_V2_ACTION.APPLY_SEARCH,
+        search,
+      } );
+      const redone = exploreV2Reducer( applied, {
+        type: EXPLORE_V2_ACTION.SET_LOCATION_MAP_AREA,
+        bounds: {
+          swlat: 1, swlng: 2, nelat: 3, nelng: 4,
+        },
+      } );
+      expect( redone.appliedSearchCount ).toBe( applied.appliedSearchCount );
     } );
   } );
 
