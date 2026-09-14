@@ -5,6 +5,7 @@ import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
+import Toast from "components/SharedComponents/Toast";
 import { View } from "components/styledComponents";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
 import type { RefObject } from "react";
@@ -36,7 +37,6 @@ import {
 import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 import usePredictions from "./hooks/usePredictions";
-import LocationStatus from "./LocationStatus";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -287,11 +287,19 @@ const AICamera = ( {
                   : t( "Loading-iNaturalists-AI-Camera" )}
               </Body1>
             )}
-          <LocationStatus
-            useLocation={useLocation}
-            visible={locationStatusVisible}
-            onAnimationEnd={handleLocationStatusEnd}
-          />
+          {locationStatusVisible && (
+            <Toast
+              icon={useLocation
+                ? "map-marker-outline"
+                : "map-marker-outline-off"}
+              onHide={handleLocationStatusEnd}
+              text={useLocation
+                ? t( "Using-location" )
+                : t( "Ignoring-location" )}
+              variant="dark"
+              wrapperClassName="mt-4"
+            />
+          )}
           {isDebug && result && (
             <Body1 className="text-deeppink self-center mt-[22px]">
               {`Age of result: ${Date.now() - result.timestamp}ms`}
