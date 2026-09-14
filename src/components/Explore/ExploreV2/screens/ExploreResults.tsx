@@ -254,11 +254,11 @@ const ExploreResults = ( ) => {
   const saveToastText = ( toast: SaveToast ) => {
     switch ( toast ) {
       case "added":
-        return t( "ADDED-TO-SAVED-SEARCHES" );
+        return t( "Added-to-Saved-Searches" );
       case "removed":
-        return t( "REMOVED-FROM-SAVED-SEARCHES" );
+        return t( "Removed-from-Saved-Searches" );
       default:
-        return t( "SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X", { count: SAVED_LIMIT } );
+        return t( "Saved-search-not-added-maximum-of-X", { count: SAVED_LIMIT } );
     }
   };
 
@@ -412,7 +412,7 @@ const ExploreResults = ( ) => {
         {showingResults && (
           <View
             className={classnames(
-              "absolute left-5 right-5 z-10 flex-row items-center justify-end gap-5",
+              "absolute left-5 right-5 z-10 flex-row items-center justify-end",
               state.activeTab === OBSERVATIONS_TAB && showMap
                 ? "bottom-[140px]"
                 : "bottom-[82px]",
@@ -420,9 +420,13 @@ const ExploreResults = ( ) => {
             pointerEvents="box-none"
           >
             {saveToast && (
-              <View className="shrink">
+              <View
+                className="absolute left-0 right-0 items-center"
+                pointerEvents="box-none"
+              >
                 <Toast
                   onHide={( ) => setSaveToast( null )}
+                  onPress={( ) => setSaveToast( null )}
                   testID="ExploreResults.saveToast"
                   text={saveToastText( saveToast )}
                 />
