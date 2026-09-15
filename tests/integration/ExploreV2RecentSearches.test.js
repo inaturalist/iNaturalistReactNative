@@ -12,6 +12,7 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
@@ -59,15 +60,6 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const enableExploreV2 = ( ) => act( ( ) => {
-  useStore.setState( state => ( {
-    featureFlagConfig: {
-      ...state.featureFlagConfig,
-      exploreV2Enabled: true,
-    },
-  } ) );
-} );
-
 const recents = ( ) => useStore.getState( ).exploreRecentSearches;
 
 const actor = userEvent.setup( );
@@ -89,7 +81,7 @@ beforeAll( async ( ) => {
 
 beforeEach( async ( ) => {
   setStoreStateLayout( { isDefaultMode: false, isAllAddObsOptionsMode: true } );
-  enableExploreV2( );
+  setStoreStateFeatureFlags( { exploreV2Enabled: true } );
   recents( ).clearRecents( );
   inatjs.observations.search.mockClear( );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
