@@ -1,5 +1,4 @@
 import {
-  act,
   screen,
   userEvent,
   waitFor,
@@ -8,10 +7,11 @@ import {
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import Observation from "realmModels/Observation";
-import useStore, { zustandStorage } from "stores/useStore";
+import { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
@@ -85,15 +85,6 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const enableExploreV2 = ( ) => act( ( ) => {
-  useStore.setState( state => ( {
-    featureFlagConfig: {
-      ...state.featureFlagConfig,
-      exploreV2Enabled: true,
-    },
-  } ) );
-} );
-
 beforeAll( async ( ) => {
   await initI18next( );
   jest.useFakeTimers( );
@@ -121,7 +112,7 @@ beforeEach( ( ) => {
     isAllAddObsOptionsMode: true,
   } );
   zustandStorage.setItem( "exploreV2ObservationsLayout", "grid" );
-  enableExploreV2( );
+  setStoreStateFeatureFlags( { exploreV2Enabled: true } );
   mockFetchUserLocation.mockClear( );
   inatjs.observations.search.mockClear( );
   inatjs.observations.speciesCounts.mockClear( );

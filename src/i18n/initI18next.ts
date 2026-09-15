@@ -3,6 +3,7 @@
 // https://www.i18next.com/misc/migration-guide#v20.x.x-to-v21.0.0
 import "intl-pluralrules";
 
+import type { InitOptions } from "i18next";
 import i18next from "i18next";
 // i18next plugin to use Fluent (https://projectfluent.org) format for
 // translated text... though not the actual .ftl file format. Instead it
@@ -26,11 +27,11 @@ import { zustandStorage } from "stores/useStore";
 // generate before building the app
 import loadTranslations, { SUPPORTED_LOCALES } from "./loadTranslations";
 
-function cleanLocaleName( locale ) {
+function cleanLocaleName( locale: string ): string {
   return locale.replace( "_", "-" ).replace( /@.*/, "" );
 }
 
-export function getInatLocaleFromSystemLocale() {
+export function getInatLocaleFromSystemLocale(): string {
   const systemLocale = RNLocalize.getLocales( )?.[0]?.languageTag || "en";
   const candidateLocale = cleanLocaleName( systemLocale );
   let inatLocale = candidateLocale;
@@ -43,14 +44,14 @@ export function getInatLocaleFromSystemLocale() {
   return inatLocale;
 }
 
-function getInatNextLocale() {
+function getInatNextLocale( ): string {
   const currentLocale = zustandStorage.getItem( "currentLocale" );
   return currentLocale || getInatLocaleFromSystemLocale( );
 }
 
 const LOCALE = cleanLocaleName( getInatNextLocale( ) );
 
-export const I18NEXT_CONFIG = {
+export const I18NEXT_CONFIG: InitOptions = {
   // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
   lng: LOCALE,
   interpolation: {
@@ -59,7 +60,9 @@ export const I18NEXT_CONFIG = {
   react: {
     // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
     useSuspense: false,
-    defaultTransParent: Text,
+    // i18next's types only allow an HTML tag name here, but the Trans
+    // component happily accepts (and, on RN, requires) a component instead
+    defaultTransParent: Text as unknown as string,
   },
   // For some reason this is how you pass options to i18next-fluent, per
   // https://github.com/i18next/i18next-fluent?tab=readme-ov-file#options
@@ -67,12 +70,12 @@ export const I18NEXT_CONFIG = {
     fluentBundleOptions: {
       useIsolating: false,
       functions: {
-        VOWORCON: ( [txt] ) => (
+        VOWORCON: ( [txt]: [string] ) => (
           "aeiou".indexOf( txt[0].toLowerCase( ) ) >= 0
             ? "vow"
             : "con"
         ),
-        JOIN: ( args, opts = {} ) => args
+        JOIN: ( args: unknown[], opts: { separator?: string } = {} ) => args
           .filter( Boolean )
           .filter( s => typeof ( s ) === "string" )
           .join( opts.separator ),
@@ -81,7 +84,7 @@ export const I18NEXT_CONFIG = {
   },
   // All languages should fallback to English, some regional variants should
   // fall back to another region
-  fallbackLng: code => {
+  fallbackLng: ( code: string ) => {
     if ( !code ) {
       return ["en"];
     }
@@ -97,12 +100,12 @@ export const I18NEXT_CONFIG = {
   },
 };
 
-export default async function initI18next( config = {} ) {
+export default async function initI18next( config: InitOptions = {} ) {
   // Initialize and configure i18next
   return i18next
     .use( initReactI18next )
     .use( Fluent )
-    .use( resourcesToBackend( ( locale, namespace, callback ) => {
+    .use( resourcesToBackend( ( locale: string, _namespace: string, callback ) => {
       // Note that we're not using i18next namespaces at present
       callback( null, loadTranslations( locale ) );
     } ) )

@@ -56,17 +56,25 @@ const Buttons = ( ) => {
           className="mb-2"
           level="primary"
           text="PRIMARY DISABLED"
+          onPress={() => {}}
           disabled
         />
-        <Button className="mb-2" text="NEUTRAL DISABLED" disabled />
-        <Button className="mb-2" level="focus" text="FOCUS DISABLED" disabled />
+        <Button className="mb-2" text="NEUTRAL DISABLED" onPress={() => {}} disabled />
+        <Button
+          className="mb-2"
+          level="focus"
+          text="FOCUS DISABLED"
+          onPress={() => {}}
+          disabled
+        />
         <Button
           className="mb-2"
           level="warning"
           text="WARNING DISABLED"
+          onPress={() => {}}
           disabled
         />
-        <Button className="mb-2" loading text="LOADING BUTTON" />
+        <Button className="mb-2" loading text="LOADING BUTTON" onPress={() => {}} />
         <Button
           className="mb-2"
           text="Tap to show alert"
@@ -75,14 +83,14 @@ const Buttons = ( ) => {
 
         <Heading2>Multiple Buttons With Focus</Heading2>
         <View className="flex-row justify-between">
-          <Button className="my-2" text="LEFT" />
-          <Button className="my-2 grow ml-3" level="focus" text="RIGHT" />
+          <Button className="my-2" text="LEFT" onPress={() => {}} />
+          <Button className="my-2 grow ml-3" level="focus" text="RIGHT" onPress={() => {}} />
         </View>
 
         <Heading2>Multiple Buttons Without Focus</Heading2>
         <View className="flex-row">
-          <Button className="my-2 grow" text="LEFT" />
-          <Button className="my-2 ml-3 grow" text="RIGHT" />
+          <Button className="my-2 grow" text="LEFT" onPress={() => {}} />
+          <Button className="my-2 ml-3 grow" text="RIGHT" onPress={() => {}} />
         </View>
 
         <Heading2>AddObsButton</Heading2>
@@ -96,7 +104,7 @@ const Buttons = ( ) => {
         <View className="flex flex-row justify-between">
           <View>
             <Body2>Default</Body2>
-            <EvidenceButton icon="camera" accessibilityLabel="Camera" />
+            <EvidenceButton icon="camera" accessibilityLabel="Camera" handlePress={() => {}} />
           </View>
           <View>
             <Body2>Disabled</Body2>
@@ -104,6 +112,7 @@ const Buttons = ( ) => {
               icon="microphone"
               disabled
               accessibilityLabel="Sound recorder"
+              handlePress={() => {}}
             />
           </View>
           <View>
@@ -111,6 +120,7 @@ const Buttons = ( ) => {
             <EvidenceButton
               icon="microphone"
               accessibilityLabel="Sound Recorder"
+              handlePress={() => {}}
             />
           </View>
         </View>
@@ -165,6 +175,7 @@ const Buttons = ( ) => {
               mode="contained"
               backgroundColor={colors.warningRed}
               color={colors.white}
+              onPress={() => {}}
               disabled
             />
           </View>
@@ -176,6 +187,7 @@ const Buttons = ( ) => {
               mode="contained"
               backgroundColor={colors.darkGray}
               color={colors.white}
+              onPress={() => {}}
             />
           </View>
           <View>
@@ -186,6 +198,7 @@ const Buttons = ( ) => {
               mode="contained"
               backgroundColor={colors.darkGray}
               color={colors.white}
+              onPress={() => {}}
               disabled
             />
           </View>
@@ -201,6 +214,7 @@ const Buttons = ( ) => {
               color={colors.deepPink}
               backgroundColor={colors.yellow}
               size={44}
+              onPress={() => {}}
             />
             <INatIconButton
               icon="chevron-right-circle"
@@ -210,6 +224,7 @@ const Buttons = ( ) => {
               color={colors.deepPink}
               backgroundColor={colors.yellow}
               size={44}
+              onPress={() => {}}
             />
           </View>
         </View>

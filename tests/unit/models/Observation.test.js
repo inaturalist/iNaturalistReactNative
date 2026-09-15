@@ -174,6 +174,39 @@ describe( "Observation", ( ) => {
     } );
   } );
 
+  describe( "isUnsyncedObservation", ( ) => {
+    it( "should return true for an unsynced observation", ( ) => {
+      const obsUuid = uuid.v4( );
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", {
+          uuid: obsUuid,
+          _synced_at: null,
+        } );
+      }, "create unsynced obs" );
+
+      expect(
+        Observation.isUnsyncedObservation( global.realm, { uuid: obsUuid } ),
+      ).toBe( true );
+    } );
+
+    it( "should return false for a synced observation", ( ) => {
+      const obsUuid = uuid.v4( );
+      const updatedDate = new Date( "2020-01-01" );
+      const syncDate = new Date( "2020-01-02" );
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Observation", {
+          uuid: obsUuid,
+          _synced_at: syncDate,
+          _updated_at: updatedDate,
+        } );
+      }, "create synced obs" );
+
+      expect(
+        Observation.isUnsyncedObservation( global.realm, { uuid: obsUuid } ),
+      ).toBe( false );
+    } );
+  } );
+
   describe( "saveLocalObservationForUpload", ( ) => {
     it( "creates Realm tombstones from pending-removal POs", async ( ) => {
       const obsUuid = uuid.v4( );

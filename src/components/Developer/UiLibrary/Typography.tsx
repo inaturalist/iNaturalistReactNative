@@ -47,7 +47,7 @@ const Typography = ( ) => {
         <Body2 className={fontMonoClass}>{userText}</Body2>
         <Heading4 className="mt-2">Result</Heading4>
         <UnderlinedLink className="my-2">UnderlinedLink</UnderlinedLink>
-        <UserText text={userText} />
+        <UserText text={userText} contentMargin={0} />
       </View>
     </ScrollViewWrapper>
   );

@@ -169,7 +169,7 @@ module.exports = {
     ],
     "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
     "@typescript-eslint/no-require-imports": ["error", {
-      allow: ["\\.(png|jpg|jpeg|gif|svg)$"],
+      allow: ["\\.(png|jpg|jpeg|gif|svg|json)$"],
     }],
     "@typescript-eslint/no-unsafe-function-type": 1,
     "@typescript-eslint/consistent-type-imports": ["error", {

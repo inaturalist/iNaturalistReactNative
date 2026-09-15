@@ -1,5 +1,5 @@
-// AUTO-GENERATED. See src/i18n/i18ncli.js
-export default locale => {
+// AUTO-GENERATED. See scripts/i18ncli.js
+export default ( locale: string ): Record<string, unknown> => {
   if ( locale === "zh-TW" ) { return require( "./l10n/zh-TW.ftl.json" ); }
   if ( locale === "zh-HK" ) { return require( "./l10n/zh-HK.ftl.json" ); }
   if ( locale === "zh-CN" ) { return require( "./l10n/zh-CN.ftl.json" ); }

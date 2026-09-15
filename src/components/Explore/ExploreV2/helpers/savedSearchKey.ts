@@ -55,7 +55,7 @@ const filtersKey = ( filters: ExploreV2Filters ): string => {
     reviewedFilter: filters.reviewedFilter,
     photoLicense: filters.photoLicense,
     user: String( filters.user?.id ?? "" ),
-    excludeUser: String( filters.excludeUser?.id ?? "" ),
+    unobservedByUser: String( filters.unobservedByUser?.id ?? "" ),
     project: String( filters.project?.id ?? "" ),
   };
 

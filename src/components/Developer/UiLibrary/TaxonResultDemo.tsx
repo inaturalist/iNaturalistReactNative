@@ -19,7 +19,7 @@ const AVES = {
   isIconic: true,
 };
 
-function makeTaxonWithPhoto( options = {} ) {
+function makeTaxonWithPhoto( options: Record<string, unknown> = {} ) {
   return {
     _synced_at: faker.date.past( ),
     id: faker.number.int( ),
@@ -40,11 +40,13 @@ const TaxonResultDemo = ( ) => (
     <View className="p-2">
       <Heading1>Remote data loading</Heading1>
       <TaxonResult
+        testID="TaxonResultDemo.remote"
         taxon={AVES}
         handleTaxonOrEditPress={taxon => console.log( "TaxonResult pressed for taxon: ", taxon )}
       />
       <Heading1>Taxon w/ photo</Heading1>
       <TaxonResult
+        testID="TaxonResultDemo.withPhoto"
         taxon={makeTaxonWithPhoto()}
         fetchRemote={false}
         fromLocal={false}
@@ -52,6 +54,7 @@ const TaxonResultDemo = ( ) => (
       />
       <Heading1>Iconic taxon</Heading1>
       <TaxonResult
+        testID="TaxonResultDemo.iconic"
         taxon={AVES}
         fetchRemote={false}
         fromLocal={false}

@@ -32,7 +32,6 @@ import {
 } from "components/SharedComponents";
 import { ScrollView, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React, { useState } from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
@@ -41,7 +40,7 @@ const { useRealm } = RealmContext;
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const Misc = (): Node => {
+const Misc = ( ) => {
   const { t } = useTranslation();
   const currentUser = useCurrentUser();
   const userId = currentUser?.id;
@@ -98,6 +97,7 @@ const Misc = (): Node => {
         <Heading2 className="my-2">Checkbox</Heading2>
         <Checkbox
           text="This is a checkbox"
+          accessibilityLabel="This is a checkbox"
           isChecked={isChecked}
           onPress={( ) => setIsChecked( !isChecked )}
         />
@@ -112,8 +112,10 @@ const Misc = (): Node => {
           <View>
             <Body2 className="my-2">InlineUser</Body2>
             <InlineUser
+              isConnected={false}
               user={
                 currentUser || {
+                  id: 999999,
                   icon_url:
                     "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
                   login: "turtletamer74",
@@ -125,7 +127,7 @@ const Misc = (): Node => {
             <Body2 className="my-2">
               InlineUser for a user that has no icon set
             </Body2>
-            <InlineUser user={{ login: "frogfinder23" }} />
+            <InlineUser isConnected={false} user={{ id: 999998, login: "frogfinder23" }} />
           </View>
         </View>
 
@@ -336,13 +338,16 @@ const Misc = (): Node => {
         <Heading2 className="my-2">ActivityItem</Heading2>
         <ActivityItem item={exampleId} currentUserId={userId} />
         <Heading2 className="my-2">Search Bar</Heading2>
-        <SearchBar value="search is a really great thing that we should all love" />
+        <SearchBar
+          value="search is a really great thing that we should all love"
+          handleTextChange={() => {}}
+        />
         <Heading2 className="my-2">Confidence Interval</Heading2>
         <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
         <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
         <IconicTaxonChooser
           chosen={["aves"]}
-          before={<Button text={t( "ADD-AN-ID" )} className="rounded-full" />}
+          before={<Button text={t( "ADD-AN-ID" )} className="rounded-full" onPress={() => {}} />}
           onTaxonChosen={taxon => console.log( "taxon selected:", taxon )}
         />
         <Heading1 className="my-2">DisplayTaxonName</Heading1>
@@ -371,6 +376,7 @@ const Misc = (): Node => {
             title: "Project Title",
             project_type: "collection",
             icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
+            rule_preferences: [],
           }}
         />
         <ProjectListItem
@@ -379,6 +385,7 @@ const Misc = (): Node => {
             title: "Project Title with a very long title that should wrap to the next line",
             project_type: "collection",
             icon: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
+            rule_preferences: [],
           }}
         />
         <Heading1 className="my-2">RadioButtonRow</Heading1>

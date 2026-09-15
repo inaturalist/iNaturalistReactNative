@@ -18,7 +18,7 @@ import uniq from "lodash/uniq";
 import path from "path";
 import util from "util";
 
-const I18N_BASE_PATH = path.join( __dirname, ".." );
+const I18N_BASE_PATH = path.join( __dirname, "..", "..", "src", "i18n" );
 
 // Exceptions to the rule that all locales should be specified as two-letter
 // language code only

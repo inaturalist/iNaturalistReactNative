@@ -4,7 +4,7 @@ import { defaultExploreV2Filters } from "providers/ExploreV2Context";
 const countedDefaults = {
   ...defaultExploreV2Filters,
   user: null,
-  excludeUser: null,
+  unobservedByUser: null,
   project: null,
 };
 

@@ -5,13 +5,17 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import React from "react";
+import { Platform } from "react-native";
 import * as StoreReview from "react-native-store-review";
 import { openExternalWebBrowser } from "sharedHelpers/util";
+
+const donateUrl = Platform.OS === "ios"
+  ? "https://www.inaturalist.org/donate?segment=gmiOSrn&utm_campaign=default&utm_medium=mobile&utm_source=iOSrn"
+  : "https://www.inaturalist.org/donate?segment=gmAndroidrn&utm_campaign=default&utm_medium=mobile&utm_source=Androidrn";
 
 const Donate = () => {
   // const navigation = useNavigation( );
   const onDonatePress = async ( ) => {
-    const url = "https://www.inaturalist.org/donate?utm_campaign=default&utm_medium=mobile&utm_source=iNatRN";
     // Temporarily disable in-app donation until we can convince Apple that we
     // really are a non-profit
     // navigation.navigate( "FullPageWebView", {
@@ -20,7 +24,7 @@ const Donate = () => {
     //   loggedIn: false,
     //   skipSetSourceInShouldStartLoadWithRequest: true
     // } );
-    openExternalWebBrowser( url );
+    openExternalWebBrowser( donateUrl );
   };
 
   const onReviewPress = ( ) => {

@@ -34,7 +34,7 @@ describe( "countFilters", ( ) => {
 
   it.each( [
     ["a user", "user"],
-    ["an excluded user", "excludeUser"],
+    ["a user whose observed taxa are excluded", "unobservedByUser"],
   ] )( "counts %s", ( _name, key ) => {
     const user = factory( "RemoteUser" );
     expect( countFilters( withFilters( { [key]: user } ) ) ).toEqual( 1 );

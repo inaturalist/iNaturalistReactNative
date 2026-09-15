@@ -52,6 +52,7 @@ import {
 import SearchHeader from "components/SharedComponents/SearchHeader";
 import BottomSheetV2 from "components/SharedComponents/Sheets/BottomSheetV2";
 import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
+import Body1 from "components/SharedComponents/Typography/Body1";
 import { SharedStackViewWrapper } from "components/SharedComponents/ViewWrapper";
 import { ScrollView, View } from "components/styledComponents";
 import UserListItem from "components/UserList/UserListItem";
@@ -138,11 +139,21 @@ const AdvancedSearch = ( ) => {
     type: "FILTER_BY_ICONIC_UNKNOWN",
   } );
 
-  const updateUser = ( selectedUser: ExploreSearchUser | null, exclude?: boolean ) => dispatch(
-    exclude
-      ? { type: "SET_EXCLUDE_USER", user: selectedUser }
-      : { type: "SET_USER", user: selectedUser },
-  );
+  const updateUser = ( selectedUser: ExploreSearchUser | null ) => dispatch( {
+    type: "SET_USER",
+    user: selectedUser,
+  } );
+
+  const updateUnobservedByUser = ( selectedUser: ExploreSearchUser ) => dispatch( {
+    type: "SET_UNOBSERVED_BY_USER",
+    user: {
+      id: selectedUser.id,
+      login: selectedUser.login,
+      icon_url: selectedUser.icon_url,
+    },
+  } );
+
+  const clearUserFilters = ( ) => dispatch( { type: "SET_USER", user: null } );
 
   const updateProject = ( selectedProject: ApiProjectSummary | null ) => dispatch( {
     type: "SET_PROJECT",
@@ -185,7 +196,6 @@ const AdvancedSearch = ( ) => {
     dateObserved,
     dateUploaded,
     establishmentMean,
-    excludeUser,
     hrank,
     lrank,
     media,
@@ -196,6 +206,7 @@ const AdvancedSearch = ( ) => {
     project,
     researchGrade,
     reviewedFilter,
+    unobservedByUser,
     user,
     wildStatus,
   } = filters;
@@ -210,7 +221,6 @@ const AdvancedSearch = ( ) => {
     return [];
   };
 
-  const displayUser = user || excludeUser;
   const displayProject = project;
 
   const sortByValues = getSortByValues( t );
@@ -425,37 +435,42 @@ const AdvancedSearch = ( ) => {
 
           {/* User Section */}
           <View className="mb-7">
-            <Heading4 className="mb-5">
-              {excludeUser
-                ? t( "ALL-USERS-EXCEPT" )
-                : t( "USER" )}
-            </Heading4>
+            <Heading4 className="mb-5">{t( "USER" )}</Heading4>
             <View className="mb-5">
-              {displayUser
-                ? (
-                  <SelectedFilterRow
-                    accessibilityLabel={t( "Change-user" )}
-                    justify="justify-around"
-                    onEdit={() => setOpenPicker( "user" )}
-                    onRemove={() => updateUser( null )}
-                    removeAccessibilityLabel={t( "Remove-user-filter" )}
-                  >
-                    <UserListItem
-                      item={{ user: displayUser }}
-                      countText={t( "X-Observations", { count: displayUser.observations_count } )}
-                      pressable={false}
-                    />
-                  </SelectedFilterRow>
-                )
-                : (
-                  <Button
-                    text={t( "FILTER-BY-A-USER" )}
-                    onPress={() => {
-                      setOpenPicker( "user" );
-                    }}
-                    accessibilityLabel={t( "Filter" )}
+              {unobservedByUser && (
+                <SelectedFilterRow
+                  accessibilityLabel={t( "Change-user" )}
+                  onEdit={() => setOpenPicker( "user" )}
+                  onRemove={clearUserFilters}
+                  removeAccessibilityLabel={t( "Remove-user-filter" )}
+                >
+                  <Body1>{t( "Species-I-havent-observed" )}</Body1>
+                </SelectedFilterRow>
+              )}
+              {user && (
+                <SelectedFilterRow
+                  accessibilityLabel={t( "Change-user" )}
+                  justify="justify-around"
+                  onEdit={() => setOpenPicker( "user" )}
+                  onRemove={clearUserFilters}
+                  removeAccessibilityLabel={t( "Remove-user-filter" )}
+                >
+                  <UserListItem
+                    item={{ user }}
+                    countText={t( "X-Observations", { count: user.observations_count } )}
+                    pressable={false}
                   />
-                )}
+                </SelectedFilterRow>
+              )}
+              {!user && !unobservedByUser && (
+                <Button
+                  text={t( "FILTER-BY-A-USER" )}
+                  onPress={() => {
+                    setOpenPicker( "user" );
+                  }}
+                  accessibilityLabel={t( "Filter" )}
+                />
+              )}
             </View>
           </View>
 
@@ -749,6 +764,7 @@ const AdvancedSearch = ( ) => {
           showModal
           closeModal={closePicker}
           updateUser={updateUser}
+          onSelectUnobserved={updateUnobservedByUser}
         />
       )}
       {openPicker === "project" && (
