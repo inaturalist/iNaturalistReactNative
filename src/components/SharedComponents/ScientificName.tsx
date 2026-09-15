@@ -54,7 +54,6 @@ const ScientificName = ( {
         maxFontSizeMultiplier={maxFontSizeMultiplier}
         key={`DisplayTaxonName-${keyBase}-${taxonId}-${rankLevel}-${piece}-${random( 0, 10000 )}`}
         className={classNames(
-          "font-normal",
           textClassName,
           {
             "font-light": !isTitle,
