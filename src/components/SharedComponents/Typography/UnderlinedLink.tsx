@@ -1,11 +1,11 @@
 import { tailwindFontBold } from "appConstants/fontFamilies";
 import classnames from "classnames";
 import React from "react";
-import type { TextProps } from "react-native";
 
 import InatText from "./InatText";
+import type { TypographyProps } from "./types";
 
-const UnderlinedLink = ( props: TextProps ) => (
+const UnderlinedLink = ( props: TypographyProps ) => (
   <InatText
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}

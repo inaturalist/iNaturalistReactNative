@@ -1,16 +1,16 @@
 import {
   Body4,
 } from "components/SharedComponents";
+import type { TypographyProps } from "components/SharedComponents/Typography/types";
 import { View } from "components/styledComponents";
 import React from "react";
-import type { TextProps } from "react-native";
 
 interface Props {
   label: string;
-  LabelComponent?: React.ComponentType<TextProps>;
+  LabelComponent?: React.ComponentType<TypographyProps>;
   valueSelectable?: boolean;
   value: string | number;
-  ValueComponent?: React.ComponentType<TextProps>;
+  ValueComponent?: React.ComponentType<TypographyProps>;
 }
 
 const LabelColonValue = ( {

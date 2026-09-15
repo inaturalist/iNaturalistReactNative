@@ -4,9 +4,9 @@ import {
   Body1, Body3, Body4,
 } from "components/SharedComponents";
 import ScientificName from "components/SharedComponents/ScientificName";
+import type { TypographyProps } from "components/SharedComponents/Typography/types";
 import { Text, View } from "components/styledComponents";
 import React, { useMemo } from "react";
-import type { TextProps } from "react-native";
 import type { RealmTaxon } from "realmModels/types";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
@@ -22,7 +22,7 @@ const rankNames: Record<number, string> = {
 };
 
 interface Props {
-  bottomTextComponent?: React.ComponentType<TextProps>;
+  bottomTextComponent?: React.ComponentType<TypographyProps>;
   color?: string;
   ellipsizeCommonName?: boolean;
   numberOfLinesBottomText?: number;
@@ -36,7 +36,7 @@ interface Props {
   small?: boolean;
   taxon?: RealmTaxon | ApiTaxon;
   textCentered?: boolean;
-  topTextComponent?: React.ComponentType<TextProps>;
+  topTextComponent?: React.ComponentType<TypographyProps>;
   underlineTopText?: boolean;
   withdrawn?: boolean;
 }

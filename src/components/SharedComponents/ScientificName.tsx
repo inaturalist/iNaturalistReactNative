@@ -1,14 +1,14 @@
 import classNames from "classnames";
 import { Body3 } from "components/SharedComponents";
+import type { TypographyProps } from "components/SharedComponents/Typography/types";
 import random from "lodash/random";
 import React from "react";
-import type { TextProps } from "react-native";
 import Taxon from "realmModels/Taxon";
 import { translatedRank } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
-  fontComponent: React.ComponentType<TextProps>;
+  fontComponent: React.ComponentType<TypographyProps>;
   isHorizontal: boolean;
   isFirst?: boolean;
   isTitle?: boolean;

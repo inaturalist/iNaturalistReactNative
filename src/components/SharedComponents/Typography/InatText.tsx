@@ -2,10 +2,12 @@
 import {
   tailwindFontRegular,
 } from "appConstants/fontFamilies";
-import type { ComponentProps } from "react";
 import React from "react";
 import { Text } from "react-native";
 import { twMerge } from "tailwind-merge";
+
+import resolveFontClassName from "./fontResolver";
+import type { TypographyProps } from "./types";
 
 export const TYPOGRAPHY_CLASSES = [
   "text-darkGray",
@@ -24,12 +26,14 @@ const TEXT_ALIGN_CLASS = /(?:^|\s)text-(?:left|center|right|justify|start|end)(?
 // In nativewind 4, conflicting classes on one element resolve by stylesheet
 // order, not className order, so these defaults must be merged with twMerge
 // (later class wins per property) for caller classes to override them
-const InatText = ( { className, style, ...props }: ComponentProps<typeof Text> ) => {
-  const mergedClassName = twMerge(
+const InatText = ( { className, style, ...props }: TypographyProps ) => {
+  // final className result goes resolveFontClassName to land on exactly _one_ font-related class
+  // See MOB-1526
+  const mergedClassName = resolveFontClassName( twMerge(
     ...TYPOGRAPHY_CLASSES,
     tailwindFontRegular,
     className,
-  );
+  ) );
   return (
     <Text
       maxFontSizeMultiplier={2}
