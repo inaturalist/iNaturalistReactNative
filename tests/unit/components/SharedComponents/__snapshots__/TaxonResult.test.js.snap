@@ -190,7 +190,21 @@ exports[`TaxonResult should render correctly 1`] = `
             }
           }
         >
-          Family
+          <Text
+            maxFontSizeMultiplier={1.5}
+            style={
+              {
+                "color": "rgba(69, 69, 69, 1)",
+                "fontFamily": "Lato-Medium",
+                "fontSize": 13,
+                "fontWeight": "300",
+                "lineHeight": 18,
+                "textAlign": "left",
+              }
+            }
+          >
+            Family
+          </Text>
            
           <Text
             maxFontSizeMultiplier={1.5}
