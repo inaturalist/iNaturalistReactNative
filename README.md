@@ -274,6 +274,13 @@ We have a custom set of icons stored as SVG files and compiled into a font. New 
 1. `npm run icons`
 1. Rebuild the app (you'll have newly-linked assets that won't hot reload)
 
+## Fonts
+
+The `Lato-*.ttf` files in `assets/fonts/` carry a modification that must be
+reapplied any time one of them is replaced or a new static weight is added —
+see [`agent-docs/conventions/fonts.md`](agent-docs/conventions/fonts.md)
+before touching them.
+
 ## Logging with Sentinel Files
 
 A sentinel file is a file that is created at the beginning of an interaction flow and deleted when the user successfully completes the flow. If the user does not successfully complete the flow, the file remains until it can be reported to a monitoring system. Details about the flow may be written to the file while the flow is in progress, providing developers with details about what the user did and when they exited the flow. This can be helpful for debugging issues related to cameras freezing, location requests stalling, or other difficult to reproduce hardware issues. Related code is in `sharedHelpers/sentinelFiles.ts`. The first user flow where we implemented this is the Camera, so you can look there for an example. To implement:

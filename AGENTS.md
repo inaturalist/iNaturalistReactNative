@@ -210,7 +210,7 @@ Translation system using Fluent and i18next:
 - Some legacy components use StyleSheet.create()
 - **React Native Paper** - Material Design components for some UI elements
 
-**Details:** component structure, styling, and accessibility conventions are in `agent-docs/conventions/component-conventions.md`. For NativeWind 4-specific gotchas (className resolution, class-conflict order, third-party component registration), see `agent-docs/conventions/nativewind-v4.md`.
+**Details:** component structure, styling, and accessibility conventions are in `agent-docs/conventions/component-conventions.md`. For NativeWind 4-specific gotchas (className resolution, class-conflict order, third-party component registration), see `agent-docs/conventions/nativewind-v4.md`. For the Lato font family-naming requirement and the `resolveFontClassName` safeguard, see `agent-docs/conventions/fonts.md`.
 
 ### Module Aliases
 
@@ -312,7 +312,7 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 In-depth architecture and convention docs for both humans and AI agents. Read the relevant doc before exploring or modifying a subsystem — it captures patterns that aren't obvious from the code alone.
 
 - `architecture/` — `upload-system.md`, `navigation-patterns.md`, `api-layer.md`, `realm-and-zustand.md` (includes working with Realm objects in the React layer)
-- `conventions/` — `component-conventions.md`, `i18n-conventions.md`, `import-aliases.md`, `typescript.md`, `nativewind-v4.md` (className resolution gotchas from the NativeWind 2→4 migration)
+- `conventions/` — `component-conventions.md`, `i18n-conventions.md`, `import-aliases.md`, `typescript.md`, `nativewind-v4.md` (className resolution gotchas from the NativeWind 2→4 migration), `fonts.md` (Lato font family-naming requirement and the `resolveFontClassName` safeguard)
 - `testing/` — `test-core.md`, `test-components.md`, `integration-test-analysis.md`, `e2e.md` (Detox + Maestro + iOS verification)
 
 ## Common Pitfalls
@@ -325,3 +325,4 @@ In-depth architecture and convention docs for both humans and AI agents. Read th
 6. **M-series Mac Android builds:** May need specific NDK version (see `android/build.gradle`)
 7. **i18next in tests:** Must initialize with `await initI18next()` in `beforeAll`
 8. **Detox simulator:** Create simulator matching `.detoxrc.js` config in Xcode
+9. **Font updates:** The `Lato-*.ttf` files in `assets/fonts/` have been modified so each weight/style has its own unique internal font family name, working around an iOS font-matching bug (MOB-1868). Any replacement or new Lato font file needs the same treatment before it's dropped in — see `agent-docs/conventions/fonts.md`. This isn't automated or enforced by CI; it's easy to miss since a font binary diff doesn't show it in review. Typography components still just use ordinary `italic`/`font-bold`/etc. classes — `InatText` reconciles those into the correct file via `resolveFontClassName` (see `Typography/fontResolver.ts`), so no call site needs to reference the Lato-specific classes directly.
