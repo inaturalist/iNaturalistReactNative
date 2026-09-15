@@ -1,13 +1,13 @@
 import { screen, userEvent, waitFor } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import {
   mockInteractionManagerRunAfterInteractions,
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
+import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
@@ -90,11 +90,8 @@ beforeEach( () => {
   setStoreStateLayout( {
     isDefaultMode: false,
   } );
-  useStore.setState( {
-    featureFlagConfig: {
-      ...state.featureFlagConfig,
-      [FeatureFlag.TraditionalProjectsEnabled]: true,
-    },
+  setStoreStateFeatureFlags( {
+    [FeatureFlag.TraditionalProjectsEnabled]: true,
   } );
 } );
 

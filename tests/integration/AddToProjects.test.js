@@ -9,6 +9,7 @@ import {
 } from "tests/helpers/addObsBottomSheet";
 import faker from "tests/helpers/faker";
 import { renderAppWithObservations } from "tests/helpers/render";
+import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
@@ -108,10 +109,8 @@ beforeEach( () => {
   setStoreStateLayout( {
     isDefaultMode: false,
   } );
-  useStore.setState( {
-    featureFlagConfig: {
-      [FeatureFlag.TraditionalProjectsEnabled]: true,
-    },
+  setStoreStateFeatureFlags( {
+    [FeatureFlag.TraditionalProjectsEnabled]: true,
   } );
 } );
 
