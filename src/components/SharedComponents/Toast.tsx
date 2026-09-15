@@ -59,10 +59,10 @@ const Toast = ( {
 
   const isDark = variant === "dark";
   const containerClassName = classnames(
-    "flex-row self-center items-center gap-2 rounded-lg",
+    "flex-row self-center items-center gap-2 rounded-lg p-2",
     isDark
-      ? "bg-darkGray/50 p-2"
-      : "bg-white px-[10px] py-[7px] max-w-[220px]",
+      ? "bg-darkGray/50"
+      : "bg-white max-w-[220px]",
     wrapperClassName,
   );
   const textClassName = isDark
