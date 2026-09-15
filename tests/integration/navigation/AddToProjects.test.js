@@ -92,6 +92,7 @@ beforeEach( () => {
   } );
   useStore.setState( {
     featureFlagConfig: {
+      ...state.featureFlagConfig,
       [FeatureFlag.TraditionalProjectsEnabled]: true,
     },
   } );
