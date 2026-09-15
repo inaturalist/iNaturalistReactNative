@@ -145,7 +145,11 @@ const GroupPhotos = ( {
         : (
           <CustomFlashList
             ListHeaderComponent={headerComponent}
-            contentContainerStyle={flashListStyle}
+            contentContainerStyle={{
+              ...flashListStyle,
+              // account for absolutely positioned import button
+              paddingBottom: flashListStyle.paddingBottom + 50,
+            }}
             data={data}
             extraData={extraData}
             key={numColumns}
