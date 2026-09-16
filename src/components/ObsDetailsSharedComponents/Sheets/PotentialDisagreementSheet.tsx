@@ -1,8 +1,10 @@
 import type { ApiTaxon } from "api/types";
 import {
   Body1,
+  Button,
   DisplayTaxon,
   DisplayTaxonName,
+  INatIcon,
   List2,
   RadioButtonSheet,
 } from "components/SharedComponents";
@@ -13,6 +15,9 @@ import type { RealmTaxon } from "realmModels/types";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 
 interface Props {
+  editIdentBody: () => void;
+  hidden?: boolean;
+  identBody?: string;
   loading?: boolean;
   onPressClose: () => void;
   onPotentialDisagreePressed: ( _checkedValue: boolean ) => void;
@@ -21,6 +26,9 @@ interface Props {
 }
 
 const PotentialDisagreementSheet = ( {
+  editIdentBody,
+  hidden,
+  identBody,
   loading,
   onPressClose,
   onPotentialDisagreePressed,
@@ -83,8 +91,28 @@ const PotentialDisagreementSheet = ( {
 
   const bottomComponent = (
     <View className="mx-6 mb-6">
+      {identBody && (
+        <View className="flex-row items-center bg-lightGray p-[15px] rounded mb-[15px]">
+          <INatIcon name="add-comment-outline" size={22} />
+          <List2 className="ml-[7px] text-darkGray flex-1">
+            {identBody}
+          </List2>
+        </View>
+      )}
       <DisplayTaxon taxon={newTaxon} />
     </View>
+  );
+
+  const commentButton = (
+    <Button
+      text={identBody
+        ? t( "EDIT-COMMENT" )
+        : t( "ADD-COMMENT" )}
+      onPress={editIdentBody}
+      disabled={loading}
+      testID="PotentialDisagreementSheet.commentButton"
+      accessibilityHint={t( "Opens-add-comment-form" )}
+    />
   );
 
   return (
@@ -94,11 +122,13 @@ const PotentialDisagreementSheet = ( {
       confirm={checkBoxValue => {
         onPotentialDisagreePressed( checkBoxValue );
       }}
+      hidden={hidden}
       loading={loading}
-      confirmText={t( "SUBMIT-ID-SUGGESTION" )}
+      confirmText={t( "SUBMIT" )}
       onPressClose={onPressClose}
       radioValues={radioValues}
       requireSelectionChange={false}
+      secondaryButton={commentButton}
       selectedValue={radioValues.unsure.value}
       topDescriptionText={topDescriptionText}
       bottomComponent={bottomComponent}

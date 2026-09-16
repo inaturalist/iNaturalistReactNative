@@ -1327,7 +1327,6 @@ Stop-verb = Stop
 # Accessibility hint for a button that stops the recording of a sound
 Stops-recording-sound = Stops recording sound
 SUBMIT = SUBMIT
-SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 # Identification category
 supporting--identification = Supporting
