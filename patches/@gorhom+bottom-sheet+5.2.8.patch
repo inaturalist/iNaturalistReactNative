@@ -1,0 +1,39 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/bottomSheet/BottomSheet.js b/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/bottomSheet/BottomSheet.js
+index 40725c0..08a4cbe 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/bottomSheet/BottomSheet.js
++++ b/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/bottomSheet/BottomSheet.js
+@@ -1274,6 +1274,8 @@ const BottomSheetComponent = /*#__PURE__*/(0, _react.forwardRef)(function Bottom
+               accessibilityLabel: _providedAccessibilityLabel ?? undefined,
+               keyboardBehavior: keyboardBehavior,
+               detached: detached,
++              animationConfigs: _providedAnimationConfigs,
++              overrideReduceMotion: _providedOverrideReduceMotion,
+               children: [children, footerComponent ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_bottomSheetFooter.BottomSheetFooterContainer, {
+                 footerComponent: footerComponent
+               }) : null]
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/module/components/bottomSheet/BottomSheet.js b/node_modules/@gorhom/bottom-sheet/lib/module/components/bottomSheet/BottomSheet.js
+index 561ad52..05554bc 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/module/components/bottomSheet/BottomSheet.js
++++ b/node_modules/@gorhom/bottom-sheet/lib/module/components/bottomSheet/BottomSheet.js
+@@ -1267,6 +1267,8 @@ const BottomSheetComponent = /*#__PURE__*/forwardRef(function BottomSheet(props,
+               accessibilityLabel: _providedAccessibilityLabel ?? undefined,
+               keyboardBehavior: keyboardBehavior,
+               detached: detached,
++              animationConfigs: _providedAnimationConfigs,
++              overrideReduceMotion: _providedOverrideReduceMotion,
+               children: [children, footerComponent ? /*#__PURE__*/_jsx(BottomSheetFooterContainer, {
+                 footerComponent: footerComponent
+               }) : null]
+diff --git a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheet/BottomSheet.tsx b/node_modules/@gorhom/bottom-sheet/src/components/bottomSheet/BottomSheet.tsx
+index 6748c93..94c01c1 100644
+--- a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheet/BottomSheet.tsx
++++ b/node_modules/@gorhom/bottom-sheet/src/components/bottomSheet/BottomSheet.tsx
+@@ -1815,6 +1815,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
+                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+                   keyboardBehavior={keyboardBehavior}
+                   detached={detached}
++                  animationConfigs={_providedAnimationConfigs}
++                  overrideReduceMotion={_providedOverrideReduceMotion}
+                 >
+                   {children}
+                   {footerComponent ? (
