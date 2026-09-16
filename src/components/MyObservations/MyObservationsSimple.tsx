@@ -124,6 +124,8 @@ interface ObservationsSortOption {
   value: OBSERVATIONS_SORT;
 }
 
+const STAT_TAB_PADDING = "pt-[10px] px-3 pb-3";
+
 export const OBSERVATIONS_TAB = "observations";
 export const TAXA_TAB = "taxa";
 
@@ -563,7 +565,10 @@ const MyObservationsSimple = ( {
               text: t( "Observations" ),
               onPress: () => setActiveTab( OBSERVATIONS_TAB ),
               renderComponent: ( ) => (
-                <ObservationsStatTab count={numTotalObservations} />
+                <ObservationsStatTab
+                  count={numTotalObservations}
+                  wrapperClassName={STAT_TAB_PADDING}
+                />
               ),
             },
             {
@@ -571,7 +576,10 @@ const MyObservationsSimple = ( {
               text: t( "Species" ),
               onPress: () => setActiveTab( TAXA_TAB ),
               renderComponent: ( ) => (
-                <SpeciesStatTab count={numTotalTaxa} />
+                <SpeciesStatTab
+                  count={numTotalTaxa}
+                  wrapperClassName={STAT_TAB_PADDING}
+                />
               ),
             },
           ]}
