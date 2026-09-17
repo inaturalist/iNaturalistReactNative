@@ -23,9 +23,8 @@ interface Props {
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
   takePhotoAndStoreUri: ( options: SavePhotoOptions ) => string;
-  newPhotoUris: object[];
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  setNewPhotoUris: Function;
+  newPhotoUris: string[];
+  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
   takePhotoOptions: TakePhotoOptions;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
