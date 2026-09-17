@@ -2,6 +2,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Pressable, View } from "components/styledComponents";
