@@ -60,9 +60,7 @@ const logger = log.extend( "CameraContainer" );
 
 const CameraContainer = ( ) => {
   const startFirebaseTrace = useStore( state => state.startFirebaseTrace );
-  const currentObservation = useStore(
-    ( state: ObservationFlowSlice ) => state.currentObservation,
-  );
+  const currentObservation = useStore( state => state.currentObservation );
   const setCameraState = useStore(
     ( state: ObservationFlowSlice ) => state.setCameraState,
   );
