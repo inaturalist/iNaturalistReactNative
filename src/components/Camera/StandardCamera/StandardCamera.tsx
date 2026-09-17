@@ -6,6 +6,7 @@ import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
+import type { RefObject } from "react";
 import React, {
   useCallback, useEffect,
   useMemo,
@@ -37,10 +38,10 @@ const isTablet = DeviceInfo.isTablet( );
 export const MAX_PHOTOS_ALLOWED = 20;
 
 interface Props {
-  camera: object;
   device: object;
   flipCamera: Function;
   handleCheckmarkPress: Function;
+  camera: RefObject<Camera | null>;
   confirmPhotosInProgress: boolean;
   isLandscapeMode: boolean;
   toggleFlash: Function;
