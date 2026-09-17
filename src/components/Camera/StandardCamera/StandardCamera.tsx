@@ -99,7 +99,7 @@ const StandardCamera = ( {
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const [showAlert, setShowAlert] = useState( false );
-  const [initialVolume, setInitialVolume] = useState( null );
+  const [initialVolume, setInitialVolume] = useState<number | null>( null );
 
   const { screenWidth } = useDeviceOrientation( );
 
