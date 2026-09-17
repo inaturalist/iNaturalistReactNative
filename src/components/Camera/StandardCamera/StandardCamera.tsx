@@ -9,7 +9,8 @@ import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { RefObject } from "react";
 import React, {
-  useCallback, useEffect,
+  useCallback,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -85,7 +86,7 @@ const StandardCamera = ( {
     rotatableAnimatedStyle,
     rotation,
   } = useRotation( );
-  const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets( );
 
   const cameraUris = useStore(
     ( state: ObservationFlowSlice ) => state.cameraUris,
