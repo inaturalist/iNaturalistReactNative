@@ -104,7 +104,7 @@ const MyObservationsSimpleHeader = ( {
         numUploadableObservations={numUploadableObservations}
         currentUser={currentUser}
       />
-      <View className="flex-row justify-between items-center px-5 py-1">
+      <View className="flex-row justify-between items-center px-5 pb-1">
         {currentUser
           ? <HeaderUser user={currentUser} isConnected={isConnected} />
           : <Heading3>{ t( "My-Observations" ) }</Heading3>}
