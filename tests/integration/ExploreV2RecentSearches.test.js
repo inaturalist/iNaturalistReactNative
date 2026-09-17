@@ -12,6 +12,7 @@ import {
   lastObservationsSearchParams,
   navigateToExplore,
   openUniversalSearch,
+  resetUniversalSearch,
   searchForTaxon,
   submitUniversalSearch,
 } from "tests/helpers/exploreV2";
@@ -106,8 +107,12 @@ describe( "recent searches in Explore", ( ) => {
       expect( lastObservationsSearchParams( ) ).toMatchObject( { taxon_id: mockTaxon.id } );
     } );
 
-    // Search again with nothing selected, so the subject goes back to all organisms
+    // Reopening the search shows the taxon that was already searched
     await openUniversalSearch( );
+    expect(
+      screen.getByDisplayValue( mockTaxon.preferred_common_name ),
+    ).toBeVisible( );
+    await resetUniversalSearch( );
     await submitUniversalSearch( );
     expect(
       within( await screen.findByTestId( "ExploreV2Header" ) )

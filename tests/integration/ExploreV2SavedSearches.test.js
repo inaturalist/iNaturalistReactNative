@@ -13,6 +13,7 @@ import {
   lastObservationsSearchParams,
   navigateToExplore,
   openUniversalSearch,
+  resetUniversalSearch,
   searchForTaxon,
   submitUniversalSearch,
 } from "tests/helpers/exploreV2";
@@ -108,12 +109,13 @@ describe( "saved searches", ( ) => {
     await actor.press( await screen.findByLabelText( t( "Save-this-search" ) ) );
 
     // The toast fades in, so it is on the screen before it is visible
-    expect( await screen.findByText( t( "ADDED-TO-SAVED-SEARCHES" ) ) ).toBeOnTheScreen( );
+    expect( await screen.findByText( t( "Added-to-Saved-Searches" ) ) ).toBeOnTheScreen( );
     expect( await screen.findByLabelText( t( "Remove-this-saved-search" ) ) ).toBeVisible( );
 
-    // Search with nothing selected, which goes back to all organisms worldwide, so applying
+    // Clear the subject, so the search goes back to all organisms worldwide and applying
     // the saved search has something to change
     await openUniversalSearch( );
+    await resetUniversalSearch( );
     await submitUniversalSearch( );
     await waitFor( ( ) => {
       expect( lastObservationsSearchParams( ) ).not.toHaveProperty( "taxon_id" );
@@ -136,7 +138,7 @@ describe( "saved searches", ( ) => {
 
     await actor.press( removeStar );
 
-    expect( await screen.findByText( t( "REMOVED-FROM-SAVED-SEARCHES" ) ) ).toBeOnTheScreen( );
+    expect( await screen.findByText( t( "Removed-from-Saved-Searches" ) ) ).toBeOnTheScreen( );
     await openUniversalSearch( );
     expect( screen.queryByTestId( "SavedSearches" ) ).toBeNull( );
   } );

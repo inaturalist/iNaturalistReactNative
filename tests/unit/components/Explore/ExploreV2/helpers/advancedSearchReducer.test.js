@@ -135,24 +135,24 @@ describe( "advancedSearchReducer", ( ) => {
   } );
 
   describe( "user filter", ( ) => {
-    it( "sets a user and clears any excluded user", ( ) => {
-      const draft = makeDraft( { filters: { excludeUser: OTHER_USER } } );
+    it( "sets a user and clears an unobserved-by user", ( ) => {
+      const draft = makeDraft( { filters: { unobservedByUser: OTHER_USER } } );
 
       const newDraft = advancedSearchReducer( draft, { type: "SET_USER", user: USER } );
 
       expect( newDraft.filters.user ).toEqual( USER );
-      expect( newDraft.filters.excludeUser ).toBeNull( );
+      expect( newDraft.filters.unobservedByUser ).toBeNull( );
     } );
 
-    it( "sets an excluded user and clears any user", ( ) => {
+    it( "sets an unobserved-by user and clears any user", ( ) => {
       const draft = makeDraft( { filters: { user: USER } } );
 
       const newDraft = advancedSearchReducer( draft, {
-        type: "SET_EXCLUDE_USER",
+        type: "SET_UNOBSERVED_BY_USER",
         user: OTHER_USER,
       } );
 
-      expect( newDraft.filters.excludeUser ).toEqual( OTHER_USER );
+      expect( newDraft.filters.unobservedByUser ).toEqual( OTHER_USER );
       expect( newDraft.filters.user ).toBeNull( );
     } );
 

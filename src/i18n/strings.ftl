@@ -67,7 +67,7 @@ Add-optional-notes = Add optional notes
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
 # Toast shown after the user saves the current Explore search
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -1147,7 +1147,7 @@ Remove-taxon-filter = Remove taxon filter
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Remove user filter
 # Toast shown after the user un-saves a saved Explore search
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 # Label for button that removes an observation's taxon
 Removes-this-observations-taxon = Removes this observation's taxon
 # Hint for a button that removes a vote of agreement
@@ -1197,7 +1197,7 @@ Save-this-search = Save this search
 Saved-Observation = Saved observation, in queue to upload
 # Toast shown when the user tries to save a search but has already saved as many
 # as we can keep. { $count } is the maximum number of saved searches we keep
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 # Heading above the list of searches the user has saved
 Saved-searches = Saved searches
 # Heading of the saved searches section on the advanced search screen

@@ -12,6 +12,7 @@ import factory, { makeResponse } from "tests/factory";
 import { enableExploreV2 } from "tests/helpers/exploreV2";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
@@ -112,7 +113,7 @@ beforeEach( ( ) => {
     isAllAddObsOptionsMode: true,
   } );
   zustandStorage.setItem( "exploreV2ObservationsLayout", "grid" );
-  enableExploreV2( );
+  setStoreStateFeatureFlags( { exploreV2Enabled: true } );
   mockFetchUserLocation.mockClear( );
   inatjs.observations.search.mockClear( );
   inatjs.observations.speciesCounts.mockClear( );

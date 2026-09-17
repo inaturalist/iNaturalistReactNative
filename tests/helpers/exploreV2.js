@@ -48,6 +48,11 @@ export async function focusSearchField( testID ) {
   await typeIntoSearchField( testID, "" );
 }
 
+/** Clears the search Universal Search reopened with, i.e. the search currently applied. */
+export async function resetUniversalSearch( ) {
+  await actor.press( screen.getByTestId( "UniversalSearch.back.reset" ) );
+}
+
 export async function submitUniversalSearch( ) {
   await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
   await screen.findByTestId( "ExploreResults" );

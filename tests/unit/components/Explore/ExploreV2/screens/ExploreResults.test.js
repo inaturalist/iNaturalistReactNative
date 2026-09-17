@@ -540,7 +540,7 @@ describe( "ExploreResults saved searches", ( ) => {
 
     expect( savedSearches( ).searches ).toHaveLength( 1 );
     expect( await screen.findByLabelText( "Remove this saved search" ) ).toBeVisible( );
-    expect( screen.getByText( "ADDED TO SAVED SEARCHES" ) ).toBeOnTheScreen( );
+    expect( screen.getByText( "Added to Saved Searches" ) ).toBeOnTheScreen( );
   } );
 
   it( "unsaves it when the filled star is tapped", async ( ) => {
@@ -552,7 +552,7 @@ describe( "ExploreResults saved searches", ( ) => {
 
     expect( savedSearches( ).searches ).toEqual( [] );
     expect( await screen.findByLabelText( "Save this search" ) ).toBeVisible( );
-    expect( screen.getByText( "REMOVED FROM SAVED SEARCHES" ) ).toBeOnTheScreen( );
+    expect( screen.getByText( "Removed from Saved Searches" ) ).toBeOnTheScreen( );
   } );
 
   it( "warns instead of saving when there is no room left", async ( ) => {
@@ -567,7 +567,7 @@ describe( "ExploreResults saved searches", ( ) => {
     await actor.press( await screen.findByLabelText( "Save this search" ) );
 
     expect(
-      await screen.findByText( `SAVED SEARCH NOT ADDED, MAXIMUM OF ${SAVED_LIMIT}` ),
+      await screen.findByText( `Saved search not added, maximum of ${SAVED_LIMIT}` ),
     ).toBeOnTheScreen( );
     expect( savedSearches( ).searches ).toHaveLength( SAVED_LIMIT );
   } );

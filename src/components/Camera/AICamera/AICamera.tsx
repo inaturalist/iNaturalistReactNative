@@ -5,6 +5,7 @@ import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
+import Toast from "components/SharedComponents/Toast";
 import { View } from "components/styledComponents";
 import type { NoBottomTabStackScreenProps } from "navigation/types";
 import type { RefObject } from "react";
@@ -23,9 +24,11 @@ import {
   useTranslation,
 } from "sharedHooks";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
+import type { SavePhotoOptions } from "../CameraContainer";
 import {
   handleCameraError,
   handleCaptureError,
@@ -36,7 +39,6 @@ import {
 import AICameraButtons from "./AICameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 import usePredictions from "./hooks/usePredictions";
-import LocationStatus from "./LocationStatus";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -69,8 +71,7 @@ interface Props {
   isLandscapeMode: boolean;
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  takePhotoAndStoreUri: Function;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
   takePhotoOptions: TakePhotoOptions;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
@@ -91,8 +92,12 @@ const AICamera = ( {
   requestLocationPermissions,
 }: Props ) => {
   const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
-  const sentinelFileName = useStore( state => state.sentinelFileName );
-  const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
+  const sentinelFileName = useStore(
+    ( state: ObservationFlowSlice ) => state.sentinelFileName,
+  );
+  const setAICameraSuggestion = useStore(
+    ( state: ObservationFlowSlice ) => state.setAICameraSuggestion,
+  );
 
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
@@ -287,11 +292,19 @@ const AICamera = ( {
                   : t( "Loading-iNaturalists-AI-Camera" )}
               </Body1>
             )}
-          <LocationStatus
-            useLocation={useLocation}
-            visible={locationStatusVisible}
-            onAnimationEnd={handleLocationStatusEnd}
-          />
+          {locationStatusVisible && (
+            <Toast
+              icon={useLocation
+                ? "map-marker-outline"
+                : "map-marker-outline-off"}
+              onHide={handleLocationStatusEnd}
+              text={useLocation
+                ? t( "Using-location" )
+                : t( "Ignoring-location" )}
+              variant="dark"
+              wrapperClassName="mt-4"
+            />
+          )}
           {isDebug && result && (
             <Body1 className="text-deeppink self-center mt-[22px]">
               {`Age of result: ${Date.now() - result.timestamp}ms`}
