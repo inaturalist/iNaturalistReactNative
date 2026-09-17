@@ -71,11 +71,11 @@ const FrameProcessorCamera = ( {
 }: Props ) => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const { isDefaultMode } = useLayoutPrefs( );
-  const [lastTimestamp, setLastTimestamp] = useState( undefined );
+  const [lastTimestamp, setLastTimestamp] = useState<number | undefined>( undefined );
 
-  const navigation = useNavigation();
+  const navigation = useNavigation( );
 
-  const framesProcessingTime = useRef( [] );
+  const framesProcessingTime = useRef<number[]>( [] );
 
   // When useLocation changes, we need to reset the stored results
   useEffect( () => {
