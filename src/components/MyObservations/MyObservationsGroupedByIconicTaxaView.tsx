@@ -13,7 +13,9 @@ import React, {
   useCallback, useEffect, useMemo, useRef, useState,
 } from "react";
 import { ICONIC_TAXA_GROUP, iconicTaxaGroupIcon } from "sharedHelpers/iconicTaxaGroupOrder";
-import { useCurrentUser, useStateResetOn, useTranslation } from "sharedHooks";
+import { useCurrentUser, useTranslation } from "sharedHooks";
+import type { MyObservationsSlice } from "stores/createMyObservationsSlice";
+import useStore from "stores/useStore";
 
 import type {
   IconicTaxaHeader,
@@ -55,8 +57,6 @@ interface Props {
   listHeaderContent?: React.ReactElement | null;
 }
 
-const NONE_COLLAPSED: Set<ICONIC_TAXA_GROUP> = new Set( );
-
 // How many tiles ahead of the last loaded one to start fetching.
 const PREFETCH_TILES = 15;
 
@@ -79,11 +79,15 @@ const MyObservationsGroupedByIconicTaxaView = ( {
   } = useIconicTaxaObservationCounts( );
   const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( );
 
-  // Changing sort reopens every section, since the list they were collapsed against is gone
-  const [collapsedCategories, setCollapsedCategories] = useStateResetOn(
-    observationsSort,
-    NONE_COLLAPSED,
-  );
+  const collapsedCategories: MyObservationsSlice["myObservationsClosedIconicTaxaCategories"]
+    = useStore(
+      ( state: MyObservationsSlice ) => state.myObservationsClosedIconicTaxaCategories,
+    );
+  const setCollapsedCategories:
+    MyObservationsSlice["setMyObservationsClosedIconicTaxaCategories"]
+    = useStore(
+      ( state: MyObservationsSlice ) => state.setMyObservationsClosedIconicTaxaCategories,
+    );
 
   const {
     sections,
