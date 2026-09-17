@@ -1,11 +1,9 @@
-// @flow
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView";
 import {
   useFrameProcessor,
 } from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
-import type { Node } from "react";
 import React, {
   useEffect,
   useRef,
@@ -24,25 +22,24 @@ import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
 import useStore from "stores/useStore";
 
-type Props = {
-  // $FlowIgnore
-  animatedProps: unknown,
-  cameraRef: Object,
-  device: Object,
-  onCameraError: Function,
-  onCaptureError: Function,
-  onClassifierError: Function,
-  onDeviceNotSupported: Function,
-  onLog: Function,
-  onTaxaDetected: Function,
-  panToZoom: Function,
-  pinchToZoom: Function,
-  takingPhoto: boolean,
-  inactive?: boolean,
-  resetCameraOnFocus: Function,
-  userLocation?: Object, // UserLocation | null
-  useLocation: boolean
-};
+interface Props {
+  animatedProps: unknown;
+  cameraRef: object;
+  device: object;
+  onCameraError: Function;
+  onCaptureError: Function;
+  onClassifierError: Function;
+  onDeviceNotSupported: Function;
+  onLog: Function;
+  onTaxaDetected: Function;
+  panToZoom: Function;
+  pinchToZoom: Function;
+  takingPhoto: boolean;
+  inactive?: boolean;
+  resetCameraOnFocus: Function;
+  userLocation?: object; // UserLocation | null
+  useLocation: boolean;
+}
 
 const FPS = 1;
 const CONFIDENCE_THRESHOLD = 70;
