@@ -1,17 +1,27 @@
-// @flow
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView";
+import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import {
   useFrameProcessor,
 } from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
-import type { Node } from "react";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
+import type { RefObject } from "react";
 import React, {
   useEffect,
   useRef,
   useState,
 } from "react";
 import { Platform } from "react-native";
+import type {
+  PanGesture,
+  PinchGesture,
+} from "react-native-gesture-handler";
+import type {
+  CameraDevice,
+  CameraProps,
+  CameraRuntimeError,
+} from "react-native-vision-camera";
 import { Worklets } from "react-native-worklets-core";
 import {
   geomodelPath,
@@ -22,27 +32,29 @@ import {
 import { logStage } from "sharedHelpers/sentinelFiles";
 import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
+import type { UserLocation } from "sharedHooks/useWatchPosition";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
+import type { Result } from "vision-camera-plugin-inatvision";
 
-type Props = {
-  // $FlowIgnore
-  animatedProps: unknown,
-  cameraRef: Object,
-  device: Object,
-  onCameraError: Function,
-  onCaptureError: Function,
-  onClassifierError: Function,
-  onDeviceNotSupported: Function,
-  onLog: Function,
-  onTaxaDetected: Function,
-  panToZoom: Function,
-  pinchToZoom: Function,
-  takingPhoto: boolean,
-  inactive?: boolean,
-  resetCameraOnFocus: Function,
-  userLocation?: Object, // UserLocation | null
-  useLocation: boolean
-};
+interface Props {
+  animatedProps: CameraProps;
+  cameraRef: RefObject<Camera | null>;
+  device: CameraDevice;
+  onCameraError: ( error: CameraRuntimeError ) => void;
+  onCaptureError: ( error: CameraRuntimeError ) => void;
+  onClassifierError: ( error: CameraRuntimeError ) => void;
+  onDeviceNotSupported: ( error: CameraRuntimeError ) => void;
+  onLog: ( event: { log: string } ) => void;
+  onTaxaDetected: ( result: Result ) => void;
+  panToZoom: PanGesture;
+  pinchToZoom: PinchGesture;
+  takingPhoto: boolean;
+  inactive?: boolean;
+  resetCameraOnFocus: () => void;
+  userLocation?: UserLocation | null;
+  useLocation: boolean;
+}
 
 const FPS = 1;
 const CONFIDENCE_THRESHOLD = 70;
@@ -66,50 +78,52 @@ const FrameProcessorCamera = ( {
   resetCameraOnFocus,
   userLocation,
   useLocation,
-}: Props ): Node => {
-  const sentinelFileName = useStore( state => state.sentinelFileName );
+}: Props ) => {
+  const sentinelFileName = useStore(
+    ( state: ObservationFlowSlice ) => state.sentinelFileName,
+  );
   const { isDefaultMode } = useLayoutPrefs( );
-  const [lastTimestamp, setLastTimestamp] = useState( undefined );
+  const [lastTimestamp, setLastTimestamp] = useState<number | undefined>( undefined );
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
 
-  const framesProcessingTime = useRef( [] );
+  const framesProcessingTime = useRef<number[]>( [] );
 
   // When useLocation changes, we need to reset the stored results
   useEffect( () => {
-    InatVision.resetStoredResults();
+    InatVision.resetStoredResults( );
   }, [useLocation] );
 
-  useEffect( () => {
+  useEffect( ( ) => {
     // This registers a listener for the frame processor plugin's log events
     // iOS part exposes no logging, so calling it would crash
     if ( Platform.OS === "android" ) {
-      InatVision.addLogListener( event => {
+      InatVision.addLogListener( ( event: { log: string } ) => {
         // The vision-plugin events are in this format { log: "string" }
         onLog( event );
       } );
     }
 
     return () => {
-      InatVision.removeLogListener();
+      InatVision.removeLogListener( );
     };
   }, [onLog] );
 
   useEffect( () => {
     const resetAll = () => {
-      InatVision.resetStoredResults();
-      resetCameraOnFocus();
+      InatVision.resetStoredResults( );
+      resetCameraOnFocus( );
     };
     const unsubscribeFocus = navigation.addListener( "focus", resetAll );
     const unsubscribeBlur = navigation.addListener( "blur", resetAll );
 
     return () => {
-      unsubscribeFocus();
-      unsubscribeBlur();
+      unsubscribeFocus( );
+      unsubscribeBlur( );
     };
   }, [navigation, resetCameraOnFocus] );
 
-  const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
+  const handleResults = Worklets.createRunOnJS( ( result: Result, timeTaken: number ) => {
     setLastTimestamp( result.timestamp );
     framesProcessingTime.current.push( timeTaken );
     if ( framesProcessingTime.current.length === 10 ) {
@@ -120,7 +134,7 @@ const FrameProcessorCamera = ( {
     onTaxaDetected( result );
   } );
 
-  const handleError = Worklets.createRunOnJS( error => {
+  const handleError = Worklets.createRunOnJS( ( error: CameraRuntimeError ) => {
     onClassifierError( error );
   } );
 
@@ -157,7 +171,7 @@ const FrameProcessorCamera = ( {
 
         // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
         // react-native-worklets-core documentation for what is supported in those worklets.
-        const timeBefore = Date.now();
+        const timeBefore = Date.now( );
         try {
           const result = InatVision.inatVision( frame, {
             version: modelVersion,

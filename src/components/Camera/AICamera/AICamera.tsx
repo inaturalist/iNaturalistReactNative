@@ -24,9 +24,11 @@ import {
   useTranslation,
 } from "sharedHooks";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
+import type { SavePhotoOptions } from "../CameraContainer";
 import {
   handleCameraError,
   handleCaptureError,
@@ -69,8 +71,7 @@ interface Props {
   isLandscapeMode: boolean;
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  takePhotoAndStoreUri: Function;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
   takePhotoOptions: TakePhotoOptions;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
@@ -91,8 +92,12 @@ const AICamera = ( {
   requestLocationPermissions,
 }: Props ) => {
   const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
-  const sentinelFileName = useStore( state => state.sentinelFileName );
-  const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
+  const sentinelFileName = useStore(
+    ( state: ObservationFlowSlice ) => state.sentinelFileName,
+  );
+  const setAICameraSuggestion = useStore(
+    ( state: ObservationFlowSlice ) => state.setAICameraSuggestion,
+  );
 
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );

@@ -3,6 +3,7 @@ import { MediaNavButtons } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
+import type { AnimatedStyle } from "react-native-reanimated";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -12,7 +13,7 @@ interface Props {
   handleCheckmarkPress: ( ) => void;
   handleClose: ( ) => void;
   photosTaken: boolean;
-  rotatableAnimatedStyle: object;
+  rotatableAnimatedStyle: AnimatedStyle;
   takePhoto: ( ) => Promise<void>;
 }
 

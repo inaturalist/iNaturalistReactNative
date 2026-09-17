@@ -14,6 +14,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -58,7 +59,9 @@ const PhotoCarousel = ( {
   deletePhotoMode,
   setDeletePhotoMode,
 }: Props ) => {
-  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
+  const deletePhotoFromObservation = useStore(
+    ( state: ObservationFlowSlice ) => state.deletePhotoFromObservation,
+  );
   const { t } = useTranslation( );
   const [tappedPhotoIndex, setTappedPhotoIndex] = useState( -1 );
   const photoClasses = isLargeScreen

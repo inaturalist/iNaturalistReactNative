@@ -11,6 +11,7 @@ import {
   useLayoutPrefs,
 } from "sharedHooks";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 // Relative import so MOCK_MODE=e2e resolves fetchPlaceName.e2e-mock (Metro sourceExts).
@@ -23,17 +24,39 @@ const usePrepareStoreAndNavigate = ( ) => {
   const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
   const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const addEvidence = params?.addEvidence;
-  const setObservations = useStore( state => state.setObservations );
-  const updateObservations = useStore( state => state.updateObservations );
-  const evidenceToAdd = useStore( state => state.evidenceToAdd );
-  const cameraUris = useStore( state => state.cameraUris );
-  const currentObservation = useStore( state => state.currentObservation );
-  const addCameraRollUris = useStore( state => state.addCameraRollUris );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const observations = useStore( state => state.observations );
-  const setSavingPhoto = useStore( state => state.setSavingPhoto );
-  const setCameraState = useStore( state => state.setCameraState );
-  const setSentinelFileName = useStore( state => state.setSentinelFileName );
+  const setObservations = useStore(
+    ( state: ObservationFlowSlice ) => state.setObservations,
+  );
+  const updateObservations = useStore(
+    ( state: ObservationFlowSlice ) => state.updateObservations,
+  );
+  const evidenceToAdd = useStore(
+    ( state: ObservationFlowSlice ) => state.evidenceToAdd,
+  );
+  const cameraUris = useStore(
+    ( state: ObservationFlowSlice ) => state.cameraUris,
+  );
+  const currentObservation = useStore(
+    ( state: ObservationFlowSlice ) => state.currentObservation,
+  );
+  const addCameraRollUris = useStore(
+    ( state: ObservationFlowSlice ) => state.addCameraRollUris,
+  );
+  const currentObservationIndex = useStore(
+    ( state: ObservationFlowSlice ) => state.currentObservationIndex,
+  );
+  const observations = useStore(
+    ( state: ObservationFlowSlice ) => state.observations,
+  );
+  const setSavingPhoto = useStore(
+    ( state: ObservationFlowSlice ) => state.setSavingPhoto,
+  );
+  const setCameraState = useStore(
+    ( state: ObservationFlowSlice ) => state.setCameraState,
+  );
+  const setSentinelFileName = useStore(
+    ( state: ObservationFlowSlice ) => state.setSentinelFileName,
+  );
   const { screenAfterPhotoEvidence, isDefaultMode } = useLayoutPrefs( );
 
   const { deviceStorageFull, showStorageFullAlert } = useDeviceStorageFull( );

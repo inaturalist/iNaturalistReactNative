@@ -24,6 +24,7 @@ import { completeSentinelFile, createSentinelFile, logStage } from "sharedHelper
 import { useTranslation } from "sharedHooks";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import { FIREBASE_TRACE_ATTRIBUTES, FIREBASE_TRACES } from "stores/createFirebaseTraceSlice";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 import CameraWithDevice from "./CameraWithDevice";
@@ -46,7 +47,7 @@ interface StoredResult {
   timestamp: number;
 }
 
-interface SavePhotoOptions {
+export interface SavePhotoOptions {
   replaceExisting?: boolean;
   inactivateCallback?: () => void;
   navigateImmediately?: boolean;
@@ -58,15 +59,31 @@ export const MAX_PHOTOS_ALLOWED = 20;
 const logger = log.extend( "CameraContainer" );
 
 const CameraContainer = ( ) => {
-  const currentObservation = useStore( state => state.currentObservation );
-  const setCameraState = useStore( state => state.setCameraState );
-  const evidenceToAdd = useStore( state => state.evidenceToAdd );
-  const cameraUris = useStore( state => state.cameraUris );
-  const newPhotoUris = useStore( state => state.newPhotoUris );
-  const setNewPhotoUris = useStore( state => state.setNewPhotoUris );
-  const sentinelFileName = useStore( state => state.sentinelFileName );
-  const setSentinelFileName = useStore( state => state.setSentinelFileName );
   const startFirebaseTrace = useStore( state => state.startFirebaseTrace );
+  const currentObservation = useStore(
+    ( state: ObservationFlowSlice ) => state.currentObservation,
+  );
+  const setCameraState = useStore(
+    ( state: ObservationFlowSlice ) => state.setCameraState,
+  );
+  const evidenceToAdd = useStore(
+    ( state: ObservationFlowSlice ) => state.evidenceToAdd,
+  );
+  const cameraUris = useStore(
+    ( state: ObservationFlowSlice ) => state.cameraUris,
+  );
+  const newPhotoUris = useStore(
+    ( state: ObservationFlowSlice ) => state.newPhotoUris,
+  );
+  const setNewPhotoUris = useStore(
+    ( state: ObservationFlowSlice ) => state.setNewPhotoUris,
+  );
+  const sentinelFileName = useStore(
+    ( state: ObservationFlowSlice ) => state.sentinelFileName,
+  );
+  const setSentinelFileName = useStore(
+    ( state: ObservationFlowSlice ) => state.setSentinelFileName,
+  );
 
   const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>();
   const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
