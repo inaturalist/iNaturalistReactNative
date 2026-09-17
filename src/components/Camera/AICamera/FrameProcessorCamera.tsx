@@ -1,9 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import CameraView from "components/Camera/CameraView";
+import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import {
   useFrameProcessor,
 } from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
+import type { RefObject } from "react";
 import React, {
   useEffect,
   useRef,
@@ -35,6 +37,7 @@ interface Props {
   animatedProps: unknown;
   cameraRef: object;
   device: object;
+  cameraRef: RefObject<Camera | null>;
   onCameraError: ( error: CameraRuntimeError ) => void;
   onCaptureError: ( error: CameraRuntimeError ) => void;
   onClassifierError: ( error: CameraRuntimeError ) => void;
