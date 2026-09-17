@@ -10,6 +10,10 @@ import React, {
   useState,
 } from "react";
 import { Platform } from "react-native";
+import type {
+  PanGesture,
+  PinchGesture,
+} from "react-native-gesture-handler";
 import { Worklets } from "react-native-worklets-core";
 import {
   geomodelPath,
@@ -32,8 +36,8 @@ interface Props {
   onDeviceNotSupported: Function;
   onLog: Function;
   onTaxaDetected: Function;
-  panToZoom: Function;
-  pinchToZoom: Function;
+  panToZoom: PanGesture;
+  pinchToZoom: PinchGesture;
   takingPhoto: boolean;
   inactive?: boolean;
   resetCameraOnFocus: Function;
