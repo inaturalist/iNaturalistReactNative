@@ -39,20 +39,20 @@ const isTablet = DeviceInfo.isTablet( );
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
-type Props = {
-  camera: Object,
-  device: Object,
-  flipCamera: Function,
-  handleCheckmarkPress: Function,
-  confirmPhotosInProgress: boolean,
-  isLandscapeMode: boolean,
-  toggleFlash: Function,
-  takingPhoto: boolean,
-  takePhotoAndStoreUri: Function,
-  takePhotoOptions: Object,
-  newPhotoUris: Object[],
-  setNewPhotoUris: Function
-};
+interface Props {
+  camera: object;
+  device: object;
+  flipCamera: Function;
+  handleCheckmarkPress: Function;
+  confirmPhotosInProgress: boolean;
+  isLandscapeMode: boolean;
+  toggleFlash: Function;
+  takingPhoto: boolean;
+  takePhotoAndStoreUri: Function;
+  takePhotoOptions: object;
+  newPhotoUris: object[];
+  setNewPhotoUris: Function;
+}
 
 const StandardCamera = ( {
   camera,
