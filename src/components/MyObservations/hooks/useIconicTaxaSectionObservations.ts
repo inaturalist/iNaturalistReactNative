@@ -38,7 +38,7 @@ interface Params {
 
 interface Result {
   sections: Map<ICONIC_TAXA_GROUP, IconicTaxaSectionState>;
-  // start fetching the next category that has anything to fetch
+  // start fetching the next category that has anything to fetch and isn't collapsed
   advanceFrontier: ( ) => void;
   // The caller knows only that the user is near the end of one category's tiles;
   // so we need to manage the following states:
@@ -85,14 +85,16 @@ const useIconicTaxaSectionObservations = ( {
   // scroll or collapse their way down. Seeded rather than written back, so requestedPages
   // stays honest about what the user has actually asked for. Categories the server has nothing
   // for are skipped: their header still renders and will show any locally-saved observations,
-  // but there's nothing to request.
+  // but there's nothing to request. Collapsed categories are skipped too.
   const pagesByCategory = useMemo( ( ) => {
     if ( Object.keys( requestedPages ).length > 0 ) return requestedPages;
-    const first = orderedCounts.find( ( { count } ) => count > 0 );
+    const first = orderedCounts.find(
+      ( { category, count } ) => count > 0 && !collapsedCategories.has( category ),
+    );
     return first
       ? { [first.category]: 1 }
       : requestedPages;
-  }, [orderedCounts, requestedPages] );
+  }, [collapsedCategories, orderedCounts, requestedPages] );
 
   const descriptors = useMemo( ( ) => orderedCounts.flatMap( ( { category } ) => {
     const highestPage = pagesByCategory[category] ?? 0;
@@ -210,12 +212,12 @@ const useIconicTaxaSectionObservations = ( {
   );
 
   const advanceFrontier = useCallback( ( ) => {
-    const next = orderedCounts.find(
-      ( { category, count } ) => count > 0 && !pagesByCategory[category],
-    );
+    const next = orderedCounts.find( ( { category, count } ) => count > 0
+      && !pagesByCategory[category]
+      && !collapsedCategories.has( category ) );
     if ( !next ) return;
     setPages( { ...pagesByCategory, [next.category]: 1 } );
-  }, [orderedCounts, pagesByCategory, setPages] );
+  }, [collapsedCategories, orderedCounts, pagesByCategory, setPages] );
 
   // See the Result type above for the full set of cases this decides between
   const nearingEndOfSection = useCallback( ( category: ICONIC_TAXA_GROUP ) => {

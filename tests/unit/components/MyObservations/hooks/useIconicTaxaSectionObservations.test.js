@@ -175,6 +175,58 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     expect( searchObservations ).toHaveBeenCalledTimes( 2 );
   } );
 
+  it( "skips collapsed categories when deciding what to load first, so coming back to a view "
+    + "with the top section closed still loads the sections below it", async ( ) => {
+    renderSectionsHook( { collapsedCategories: new Set( [ICONIC_TAXA_GROUP.PLANTAE] ) } );
+
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+    expect( paramsOfLastSearch( ) ).toMatchObject( {
+      iconic_taxa: [ICONIC_TAXA_GROUP.AVES],
+      page: 1,
+    } );
+  } );
+
+  it( "passes over collapsed categories when advancing the frontier, rather than spending "
+    + "the one in-flight request on a section the user can't see", async ( ) => {
+    const { result } = renderSectionsHook( {
+      collapsedCategories: new Set( [ICONIC_TAXA_GROUP.AVES] ),
+      orderedCounts: [
+        { category: ICONIC_TAXA_GROUP.PLANTAE, count: 45 },
+        { category: ICONIC_TAXA_GROUP.AVES, count: 30 },
+        { category: ICONIC_TAXA_GROUP.INSECTA, count: 20 },
+      ],
+    } );
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+
+    act( ( ) => result.current.advanceFrontier( ) );
+
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
+    expect( paramsOfLastSearch( ) ).toMatchObject( {
+      iconic_taxa: [ICONIC_TAXA_GROUP.INSECTA],
+      page: 1,
+    } );
+  } );
+
+  it( "requests nothing while every category with observations is collapsed, and starts "
+    + "loading again when one is reopened", async ( ) => {
+    const { rerender, result } = renderSectionsHook( {
+      collapsedCategories: new Set( [ICONIC_TAXA_GROUP.PLANTAE, ICONIC_TAXA_GROUP.AVES] ),
+    } );
+
+    await waitFor( ( ) => {
+      expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).isActivated ).toBe( false );
+    } );
+    expect( searchObservations ).not.toHaveBeenCalled( );
+
+    rerender( { collapsedCategories: new Set( [ICONIC_TAXA_GROUP.AVES] ) } );
+
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+    expect( paramsOfLastSearch( ) ).toMatchObject( {
+      iconic_taxa: [ICONIC_TAXA_GROUP.PLANTAE],
+      page: 1,
+    } );
+  } );
+
   it( "starts over from the first category when the sort changes, rather than "
     + "re-requesting every loaded page under the new order", async ( ) => {
     const { rerender, result } = renderSectionsHook( );
