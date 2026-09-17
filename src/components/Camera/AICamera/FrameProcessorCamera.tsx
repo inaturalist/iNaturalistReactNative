@@ -14,6 +14,9 @@ import type {
   PanGesture,
   PinchGesture,
 } from "react-native-gesture-handler";
+import type {
+  CameraRuntimeError,
+} from "react-native-vision-camera";
 import { Worklets } from "react-native-worklets-core";
 import {
   geomodelPath,
@@ -32,12 +35,12 @@ interface Props {
   animatedProps: unknown;
   cameraRef: object;
   device: object;
-  onCameraError: Function;
-  onCaptureError: Function;
-  onClassifierError: Function;
-  onDeviceNotSupported: Function;
-  onLog: Function;
-  onTaxaDetected: Function;
+  onCameraError: ( error: CameraRuntimeError ) => void;
+  onCaptureError: ( error: CameraRuntimeError ) => void;
+  onClassifierError: ( error: CameraRuntimeError ) => void;
+  onDeviceNotSupported: ( error: CameraRuntimeError ) => void;
+  onLog: ( event: { log: string } ) => void;
+  onTaxaDetected: ( result: Result ) => void;
   panToZoom: PanGesture;
   pinchToZoom: PinchGesture;
   takingPhoto: boolean;
@@ -87,7 +90,7 @@ const FrameProcessorCamera = ( {
     // This registers a listener for the frame processor plugin's log events
     // iOS part exposes no logging, so calling it would crash
     if ( Platform.OS === "android" ) {
-      InatVision.addLogListener( event => {
+      InatVision.addLogListener( ( event: { log: string } ) => {
         // The vision-plugin events are in this format { log: "string" }
         onLog( event );
       } );
@@ -123,7 +126,7 @@ const FrameProcessorCamera = ( {
     onTaxaDetected( result );
   } );
 
-  const handleError = Worklets.createRunOnJS( error => {
+  const handleError = Worklets.createRunOnJS( ( error: CameraRuntimeError ) => {
     onClassifierError( error );
   } );
 
