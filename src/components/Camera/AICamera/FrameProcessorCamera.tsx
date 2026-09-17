@@ -68,7 +68,7 @@ const FrameProcessorCamera = ( {
   resetCameraOnFocus,
   userLocation,
   useLocation,
-}: Props ): Node => {
+}: Props ) => {
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const { isDefaultMode } = useLayoutPrefs( );
   const [lastTimestamp, setLastTimestamp] = useState( undefined );
