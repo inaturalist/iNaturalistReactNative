@@ -26,6 +26,7 @@ import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
 import useStore from "stores/useStore";
+import type { Result } from "vision-camera-plugin-inatvision";
 
 interface Props {
   animatedProps: unknown;
@@ -111,7 +112,7 @@ const FrameProcessorCamera = ( {
     };
   }, [navigation, resetCameraOnFocus] );
 
-  const handleResults = Worklets.createRunOnJS( ( result, timeTaken ) => {
+  const handleResults = Worklets.createRunOnJS( ( result: Result, timeTaken: number ) => {
     setLastTimestamp( result.timestamp );
     framesProcessingTime.current.push( timeTaken );
     if ( framesProcessingTime.current.length === 10 ) {
