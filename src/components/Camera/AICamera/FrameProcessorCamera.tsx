@@ -24,6 +24,7 @@ import {
 import { logStage } from "sharedHelpers/sentinelFiles";
 import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
+import type { UserLocation } from "sharedHooks/useWatchPosition";
 import useStore from "stores/useStore";
 
 interface Props {
@@ -41,7 +42,7 @@ interface Props {
   takingPhoto: boolean;
   inactive?: boolean;
   resetCameraOnFocus: Function;
-  userLocation?: object; // UserLocation | null
+  userLocation?: UserLocation | null;
   useLocation: boolean;
 }
 
