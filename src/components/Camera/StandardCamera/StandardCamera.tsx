@@ -1,5 +1,3 @@
-// @flow
-
 import { useFocusEffect } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
@@ -8,7 +6,6 @@ import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React, {
   useCallback, useEffect,
   useMemo,
@@ -67,7 +64,7 @@ const StandardCamera = ( {
   takePhotoOptions,
   newPhotoUris,
   setNewPhotoUris,
-}: Props ): Node => {
+}: Props ) => {
   "use no memo";
 
   const hasFlash = device?.hasFlash;
