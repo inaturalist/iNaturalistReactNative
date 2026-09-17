@@ -21,6 +21,7 @@ import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation } from "sharedHooks";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 import {
@@ -86,10 +87,18 @@ const StandardCamera = ( {
   } = useRotation( );
   const insets = useSafeAreaInsets();
 
-  const cameraUris = useStore( state => state.cameraUris );
-  const prepareCamera = useStore( state => state.prepareCamera );
-  const photoLibraryUris = useStore( state => state.photoLibraryUris );
-  const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
+  const cameraUris = useStore(
+    ( state: ObservationFlowSlice ) => state.cameraUris,
+  );
+  const prepareCamera = useStore(
+    ( state: ObservationFlowSlice ) => state.prepareCamera,
+  );
+  const photoLibraryUris = useStore(
+    ( state: ObservationFlowSlice ) => state.photoLibraryUris,
+  );
+  const deletePhotoFromObservation = useStore(
+    ( state: ObservationFlowSlice ) => state.deletePhotoFromObservation,
+  );
 
   const totalObsPhotoUris = useMemo(
     ( ) => [...cameraUris, ...photoLibraryUris].length,
