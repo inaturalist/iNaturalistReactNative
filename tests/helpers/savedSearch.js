@@ -24,7 +24,7 @@ export const savedSearch = ( overrides = {} ) => {
   return { ...search, key: savedSearchKey( search ), savedAt };
 };
 
-// Seeds the store with saved searches, the one place in the suite that reaches into the slice
+// Seeds the store with saved searches, the one place in the suite that writes to the slice
 export const setSavedSearches = searches => act( ( ) => {
   useStore.setState( state => ( {
     exploreSavedSearches: { ...state.exploreSavedSearches, searches },
