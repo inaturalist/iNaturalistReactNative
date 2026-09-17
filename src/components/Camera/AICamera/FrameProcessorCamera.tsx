@@ -91,10 +91,10 @@ const FrameProcessorCamera = ( {
 
   // When useLocation changes, we need to reset the stored results
   useEffect( () => {
-    InatVision.resetStoredResults();
+    InatVision.resetStoredResults( );
   }, [useLocation] );
 
-  useEffect( () => {
+  useEffect( ( ) => {
     // This registers a listener for the frame processor plugin's log events
     // iOS part exposes no logging, so calling it would crash
     if ( Platform.OS === "android" ) {
@@ -105,21 +105,21 @@ const FrameProcessorCamera = ( {
     }
 
     return () => {
-      InatVision.removeLogListener();
+      InatVision.removeLogListener( );
     };
   }, [onLog] );
 
   useEffect( () => {
     const resetAll = () => {
-      InatVision.resetStoredResults();
-      resetCameraOnFocus();
+      InatVision.resetStoredResults( );
+      resetCameraOnFocus( );
     };
     const unsubscribeFocus = navigation.addListener( "focus", resetAll );
     const unsubscribeBlur = navigation.addListener( "blur", resetAll );
 
     return () => {
-      unsubscribeFocus();
-      unsubscribeBlur();
+      unsubscribeFocus( );
+      unsubscribeBlur( );
     };
   }, [navigation, resetCameraOnFocus] );
 
@@ -171,7 +171,7 @@ const FrameProcessorCamera = ( {
 
         // Reminder: this is a worklet, running on a C++ thread. Make sure to check the
         // react-native-worklets-core documentation for what is supported in those worklets.
-        const timeBefore = Date.now();
+        const timeBefore = Date.now( );
         try {
           const result = InatVision.inatVision( frame, {
             version: modelVersion,
