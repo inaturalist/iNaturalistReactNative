@@ -22,7 +22,7 @@ interface Props {
   confirmPhotosInProgress: boolean;
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
-  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => string;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
   newPhotoUris: string[];
   setNewPhotoUris: ( newPhotoUris: string[] ) => void;
   takePhotoOptions: TakePhotoOptions;

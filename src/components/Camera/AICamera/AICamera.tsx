@@ -71,7 +71,7 @@ interface Props {
   isLandscapeMode: boolean;
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
-  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => string;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
   takePhotoOptions: TakePhotoOptions;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;
