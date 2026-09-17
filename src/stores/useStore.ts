@@ -1,35 +1,62 @@
 import merge from "lodash/merge";
 import { create } from "zustand";
+import type { StateStorage } from "zustand/middleware";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import type { ExploreSlice } from "./createExploreSlice";
 import createExploreSlice from "./createExploreSlice";
+import type { ExploreV2AdvancedSearchSlice } from "./createExploreV2AdvancedSearchSlice";
 import createExploreV2AdvancedSearchSlice from "./createExploreV2AdvancedSearchSlice";
+import type { ExploreV2SearchesSlice } from "./createExploreV2SearchesSlice";
 import createExploreV2SearchesSlice from "./createExploreV2SearchesSlice";
+import type { FeatureFlagSlice } from "./createFeatureFlagSlice";
 import createFeatureFlagSlice from "./createFeatureFlagSlice";
+import type { FirebaseTraceSlice } from "./createFirebaseTraceSlice";
 import createFirebaseTraceSlice from "./createFirebaseTraceSlice";
+import type { LayoutSlice } from "./createLayoutSlice";
 import createLayoutSlice from "./createLayoutSlice";
+import type { MyObservationsSlice } from "./createMyObservationsSlice";
 import createMyObservationsSlice from "./createMyObservationsSlice";
+import type { ObservationFlowSlice } from "./createObservationFlowSlice";
 import createObservationFlowSlice from "./createObservationFlowSlice";
+import type { RootExploreSlice } from "./createRootExploreSlice";
 import createRootExploreSlice from "./createRootExploreSlice";
+import type { SyncObservationsSlice } from "./createSyncObservationsSlice";
 import createSyncObservationsSlice from "./createSyncObservationsSlice";
+import type { UploadObservationsSlice } from "./createUploadObservationsSlice";
 import createUploadObservationsSlice from "./createUploadObservationsSlice";
 import storage from "./zustandMMKVBackingStorage";
+
+type StoreState =
+  ExploreSlice
+  & ExploreV2AdvancedSearchSlice
+  & ExploreV2SearchesSlice
+  & FeatureFlagSlice
+  & FirebaseTraceSlice
+  & LayoutSlice
+  & MyObservationsSlice
+  & ObservationFlowSlice
+  & RootExploreSlice
+  & SyncObservationsSlice
+  & UploadObservationsSlice;
 
 // TODO do *not* export this. This allows any consumer to overwrite *any* part
 // of state, circumventing any getter/setter logic we have in the stores. If
 // you need to modify state, you should be doing so through a store.
-export const zustandStorage = {
-  setItem: ( name, value ) => storage.set( name, value ),
-  getItem: name => {
+export const zustandStorage: StateStorage = {
+  setItem: ( name: string, value: string ) => storage.set( name, value ),
+  getItem: ( name: string ) => {
     const value = storage.getString( name ) || storage.getNumber( name );
-    return value ?? null;
+    return value === undefined
+      ? null
+      : String( value );
   },
-  removeItem: name => storage.delete( name ),
+  removeItem: ( name: string ) => storage.delete( name ),
 };
 
 // Using slices to separate store for Explore and Observation creation flow
 // https://docs.pmnd.rs/zustand/guides/slices-pattern
-const useStore = create( persist(
+const useStore = create<StoreState>()( persist(
   ( ...args ) => {
     // Let's make our slices
     const slices = [
@@ -51,7 +78,7 @@ const useStore = create( persist(
     // clobbering can happen silently... which is bad.
     const allKeys = slices.map( slice => Object.keys( slice ) ).flat( );
     const keyCounts = allKeys.reduce(
-      ( memo, curr ) => {
+      ( memo: Record<string, number>, curr ) => {
         memo[curr] ||= 0;
         memo[curr] += 1;
         return memo;
@@ -59,7 +86,7 @@ const useStore = create( persist(
       {},
     );
     const nonUniqueKeys = Object.keys( keyCounts ).reduce(
-      ( memo, curr ) => {
+      ( memo: string[], curr ) => {
         if ( keyCounts[curr] > 1 ) memo.push( curr );
         return memo;
       },
@@ -75,7 +102,7 @@ const useStore = create( persist(
     return slices.reduce(
       ( memo, curr ) => ( { ...memo, ...curr } ),
       {},
-    );
+    ) as StoreState;
   },
   {
     name: "persisted-zustand",
@@ -85,12 +112,15 @@ const useStore = create( persist(
       obsDetailsTab: state.obsDetailsTab,
 
       // Dynamically select all values in the layout slice's namespace
-      layout: ( Object.keys( state.layout ).reduce( ( memo, key ) => {
-        if ( typeof ( state.layout[key] ) !== "function" ) {
-          memo[key] = state.layout[key];
-        }
-        return memo;
-      }, {} ) ),
+      layout: ( ( Object.keys( state.layout ) as ( keyof LayoutSlice["layout"] )[] ).reduce(
+        ( memo: Record<string, unknown>, key ) => {
+          if ( typeof ( state.layout[key] ) !== "function" ) {
+            memo[key] = state.layout[key];
+          }
+          return memo;
+        },
+        {},
+      ) ),
 
       exploreRecentSearches: {
         subjects: state.exploreRecentSearches.subjects,
