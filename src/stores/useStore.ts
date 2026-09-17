@@ -43,13 +43,11 @@ type StoreState =
 // TODO do *not* export this. This allows any consumer to overwrite *any* part
 // of state, circumventing any getter/setter logic we have in the stores. If
 // you need to modify state, you should be doing so through a store.
-export const zustandStorage: StateStorage = {
-  setItem: ( name: string, value: string ) => storage.set( name, value ),
+export const zustandStorage = {
+  setItem: ( name: string, value: string | number ) => storage.set( name, value ),
   getItem: ( name: string ) => {
     const value = storage.getString( name ) || storage.getNumber( name );
-    return value === undefined
-      ? null
-      : String( value );
+    return value ?? null;
   },
   removeItem: ( name: string ) => storage.delete( name ),
 };
@@ -131,7 +129,13 @@ const useStore = create<StoreState>()( persist(
         searches: state.exploreSavedSearches.searches,
       },
     } ),
-    storage: createJSONStorage( () => zustandStorage ),
+    // zustandStorage's getItem actually returns string | number | null instead of zustand's
+    // expected string | null. There are some keys in this store (at least `numOfUserObservations`)
+    // which are now fully managed _outside_ of zustand which used to be a mix of both.
+    // Fixing this situation is tracked in MOB-1372.
+    // Casting this here allows for getting most of the useStore typing benefit w/o fixing that
+    // functional change just yet.
+    storage: createJSONStorage( () => zustandStorage as unknown as StateStorage ),
     // We need to deep merge to persist nested objects, like layout
     // https://zustand.docs.pmnd.rs/middlewares/persist#persisting-a-state-with-nested-objects
     merge: ( persisted, current ) => merge( current, persisted ),
