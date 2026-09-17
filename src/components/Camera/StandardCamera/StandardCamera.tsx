@@ -15,6 +15,7 @@ import React, {
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -38,18 +39,18 @@ const isTablet = DeviceInfo.isTablet( );
 export const MAX_PHOTOS_ALLOWED = 20;
 
 interface Props {
-  device: object;
   flipCamera: Function;
   handleCheckmarkPress: Function;
   camera: RefObject<Camera | null>;
+  device: CameraDevice;
   confirmPhotosInProgress: boolean;
   isLandscapeMode: boolean;
   toggleFlash: Function;
   takingPhoto: boolean;
   takePhotoAndStoreUri: Function;
-  takePhotoOptions: object;
   newPhotoUris: object[];
   setNewPhotoUris: Function;
+  takePhotoOptions: TakePhotoOptions;
 }
 
 const StandardCamera = ( {
