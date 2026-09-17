@@ -41,7 +41,7 @@ interface Props {
   pinchToZoom: PinchGesture;
   takingPhoto: boolean;
   inactive?: boolean;
-  resetCameraOnFocus: Function;
+  resetCameraOnFocus: () => void;
   userLocation?: UserLocation | null;
   useLocation: boolean;
 }
