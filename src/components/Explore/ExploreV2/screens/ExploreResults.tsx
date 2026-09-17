@@ -62,8 +62,6 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocationPermission from "sharedHooks/useLocationPermission";
 import useSpeciesCount from "sharedHooks/useSpeciesCount";
 import useStoredLayout from "sharedHooks/useStoredLayout";
-import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
-import type { ExploreV2SearchesSlice, SavedSearch } from "stores/createExploreV2SearchesSlice";
 import { SAVED_LIMIT } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 
@@ -94,21 +92,14 @@ const ExploreResults = ( ) => {
   const { t } = useTranslation( );
   const [showSortSheet, setShowSortSheet] = useState( false );
   const [saveToast, setSaveToast] = useState<SaveToast | null>( null );
-  const savedSearches: SavedSearch[] = useStore(
-    ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.searches,
-  );
-  const saveSearch = useStore(
-    ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.saveSearch,
-  );
-  const removeSearch = useStore(
-    ( storeState: ExploreV2SearchesSlice ) => storeState.exploreSavedSearches.removeSearch,
-  );
+  const savedSearches = useStore( storeState => storeState.exploreSavedSearches.searches );
+  const saveSearch = useStore( storeState => storeState.exploreSavedSearches.saveSearch );
+  const removeSearch = useStore( storeState => storeState.exploreSavedSearches.removeSearch );
   const observationsSortLabels = useObservationsSortLabels( );
   const speciesSortLabels = useSpeciesSortLabels( );
   const { layout, writeLayoutToStorage } = useStoredLayout( "exploreV2ObservationsLayout" );
   const advancedSearchMode = useStore(
-    ( storeState: ExploreV2AdvancedSearchSlice ) => storeState
-      .exploreV2AdvancedSearch.advancedSearchMode,
+    storeState => storeState.exploreV2AdvancedSearch.advancedSearchMode,
   );
 
   const showMap = layout === "map";
