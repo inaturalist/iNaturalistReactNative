@@ -32,6 +32,7 @@ import { logStage } from "sharedHelpers/sentinelFiles";
 import usePatchedRunAsync from "sharedHelpers/visionCameraPatches";
 import { useLayoutPrefs } from "sharedHooks";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
+import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 import type { Result } from "vision-camera-plugin-inatvision";
 
@@ -77,7 +78,9 @@ const FrameProcessorCamera = ( {
   userLocation,
   useLocation,
 }: Props ) => {
-  const sentinelFileName = useStore( state => state.sentinelFileName );
+  const sentinelFileName = useStore(
+    ( state: ObservationFlowSlice ) => state.sentinelFileName,
+  );
   const { isDefaultMode } = useLayoutPrefs( );
   const [lastTimestamp, setLastTimestamp] = useState<number | undefined>( undefined );
 
