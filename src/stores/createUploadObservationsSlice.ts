@@ -20,7 +20,7 @@ interface TotalUploadProgress {
   totalProgress: number;
 }
 
-interface UploadObservationsSlice {
+export interface UploadObservationsSlice {
   abortController: AbortController | null;
   currentUpload: RealmObservation | null;
   errorsByUuid: object;
