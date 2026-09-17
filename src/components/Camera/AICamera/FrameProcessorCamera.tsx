@@ -5,6 +5,7 @@ import {
   useFrameProcessor,
 } from "components/Camera/helpers/visionCameraWrapper";
 import InatVision from "components/Camera/helpers/visionPluginWrapper";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import type { RefObject } from "react";
 import React, {
   useEffect,
@@ -84,7 +85,7 @@ const FrameProcessorCamera = ( {
   const { isDefaultMode } = useLayoutPrefs( );
   const [lastTimestamp, setLastTimestamp] = useState<number | undefined>( undefined );
 
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
 
   const framesProcessingTime = useRef<number[]>( [] );
 
