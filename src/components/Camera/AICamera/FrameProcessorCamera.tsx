@@ -17,6 +17,8 @@ import type {
   PinchGesture,
 } from "react-native-gesture-handler";
 import type {
+  CameraDevice,
+  CameraProps,
   CameraRuntimeError,
 } from "react-native-vision-camera";
 import { Worklets } from "react-native-worklets-core";
@@ -34,10 +36,9 @@ import useStore from "stores/useStore";
 import type { Result } from "vision-camera-plugin-inatvision";
 
 interface Props {
-  animatedProps: unknown;
-  cameraRef: object;
-  device: object;
+  animatedProps: CameraProps;
   cameraRef: RefObject<Camera | null>;
+  device: CameraDevice;
   onCameraError: ( error: CameraRuntimeError ) => void;
   onCaptureError: ( error: CameraRuntimeError ) => void;
   onClassifierError: ( error: CameraRuntimeError ) => void;
