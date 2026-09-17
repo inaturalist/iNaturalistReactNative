@@ -8,6 +8,7 @@ import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
 
 import AICamera from "./AICamera/AICamera";
+import type { SavePhotoOptions } from "./CameraContainer";
 import StandardCamera from "./StandardCamera/StandardCamera";
 
 const isTablet = DeviceInfo.isTablet( );
@@ -21,8 +22,7 @@ interface Props {
   confirmPhotosInProgress: boolean;
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  takePhotoAndStoreUri: Function;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => string;
   newPhotoUris: object[];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   setNewPhotoUris: Function;

@@ -47,7 +47,7 @@ interface StoredResult {
   timestamp: number;
 }
 
-interface SavePhotoOptions {
+export interface SavePhotoOptions {
   replaceExisting?: boolean;
   inactivateCallback?: () => void;
   navigateImmediately?: boolean;

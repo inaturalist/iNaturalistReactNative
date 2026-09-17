@@ -25,6 +25,7 @@ import { useDeviceOrientation } from "sharedHooks";
 import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
+import type { SavePhotoOptions } from "../CameraContainer";
 import {
   handleCameraError,
   handleCaptureError,
@@ -50,7 +51,7 @@ interface Props {
   isLandscapeMode: boolean;
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
-  takePhotoAndStoreUri: Function;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => string;
   takePhotoOptions: TakePhotoOptions;
   newPhotoUris: string[];
   setNewPhotoUris: ( newPhotoUris: string[] ) => void;
