@@ -49,9 +49,9 @@ interface Props {
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
   takePhotoAndStoreUri: Function;
-  newPhotoUris: object[];
-  setNewPhotoUris: Function;
   takePhotoOptions: TakePhotoOptions;
+  newPhotoUris: string[];
+  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
 }
 
 const StandardCamera = ( {
