@@ -105,6 +105,7 @@ const PotentialDisagreementSheet = ( {
 
   const commentButton = (
     <Button
+      className="flex-1"
       text={identBody
         ? t( "EDIT-COMMENT" )
         : t( "ADD-COMMENT" )}

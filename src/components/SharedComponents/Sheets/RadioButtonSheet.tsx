@@ -77,8 +77,9 @@ const RadioButtonSheet = <ValueT extends RadioSheetPrimitive>( {
   const confirmLabel = confirmText || t( "CONFIRM" );
   const buttonLabel = radioValues[String( checkedValue )]?.buttonText ?? confirmLabel;
 
-  const confirmButton = (
+  const renderConfirmButton = ( className?: string ) => (
     <Button
+      className={className}
       level="primary"
       onPress={( ) => {
         confirm( checkedValue );
@@ -107,12 +108,12 @@ const RadioButtonSheet = <ValueT extends RadioSheetPrimitive>( {
         {bottomComponent}
         {secondaryButton
           ? (
-            <View className="flex-row">
-              <View className="flex-1 mr-2">{secondaryButton}</View>
-              <View className="flex-1 ml-2">{confirmButton}</View>
+            <View className="flex-row gap-x-4">
+              {secondaryButton}
+              {renderConfirmButton( "flex-1" )}
             </View>
           )
-          : confirmButton}
+          : renderConfirmButton( )}
       </View>
     </BottomSheet>
   );
