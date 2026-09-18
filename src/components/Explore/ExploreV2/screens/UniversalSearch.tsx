@@ -53,7 +53,6 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
-import type { ExploreV2SearchesSlice } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -95,12 +94,8 @@ const UniversalSearch = ( ) => {
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
 
-  const recordSubject = useStore(
-    ( state: ExploreV2SearchesSlice ) => state.exploreRecentSearches.recordSubject,
-  );
-  const recordPlace = useStore(
-    ( state: ExploreV2SearchesSlice ) => state.exploreRecentSearches.recordPlace,
-  );
+  const recordSubject = useStore( state => state.exploreRecentSearches.recordSubject );
+  const recordPlace = useStore( state => state.exploreRecentSearches.recordPlace );
 
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
   const tabBarHeight = useContext( BottomTabBarHeightContext ) ?? 0;

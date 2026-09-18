@@ -1,11 +1,7 @@
 import { useCallback, useMemo } from "react";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
-import type {
-  MyObservationsSlice,
-  MyObservationsState,
-  MyObservationsTaxon,
-} from "stores/createMyObservationsSlice";
+import type { MyObservationsState, MyObservationsTaxon } from "stores/createMyObservationsSlice";
 import { initialMyObservationsState } from "stores/createMyObservationsSlice";
 import useStore from "stores/useStore";
 
@@ -69,12 +65,8 @@ export function useMyObservations( ): MyObservationsContextValue {
   // { state, dispatch } would allocate a new object on every store change
   // anywhere in the app, re-rendering all of My Observations during uploads
   // and syncs.
-  const state: MyObservationsState = useStore(
-    ( storeState: MyObservationsSlice ) => storeState.myObservations,
-  );
-  const updateMyObservations: MyObservationsSlice["updateMyObservations"] = useStore(
-    ( storeState: MyObservationsSlice ) => storeState.updateMyObservations,
-  );
+  const state: MyObservationsState = useStore( storeState => storeState.myObservations );
+  const updateMyObservations = useStore( storeState => storeState.updateMyObservations );
 
   const dispatch = useCallback(
     ( action: MyObservationsAction ) => updateMyObservations(
