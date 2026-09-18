@@ -24,7 +24,6 @@ import {
   useTranslation,
 } from "sharedHooks";
 import type { UserLocation } from "sharedHooks/useWatchPosition";
-import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -92,12 +91,8 @@ const AICamera = ( {
   requestLocationPermissions,
 }: Props ) => {
   const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
-  const sentinelFileName = useStore(
-    ( state: ObservationFlowSlice ) => state.sentinelFileName,
-  );
-  const setAICameraSuggestion = useStore(
-    ( state: ObservationFlowSlice ) => state.setAICameraSuggestion,
-  );
+  const sentinelFileName = useStore( state => state.sentinelFileName );
+  const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
 
   const hasFlash = device?.hasFlash;
   const { isDebug } = useDebugMode( );
