@@ -40,7 +40,7 @@ Add-observations = Lägg till fynd
 Add-optional-notes = Lägg till valfria anteckningar
 Add-to-Projects = Lägg till i Projekt
 ADD-TO-PROJECTS = LÄGG TILL I PROJEKT
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Lades till i { $count } { $count ->
         [ett] Projekt
@@ -769,7 +769,7 @@ Remove-project-filter = Ta bort projektfilter
 Remove-taxon-filter = Ta bort taxonfilter
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Ta bort användarfilter
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = Tar bort detta fynds taxon
 Removes-your-vote-of-agreement = Tar bort din röst för medhåll
 Removes-your-vote-of-disagreement = Tar bort din röst för oenighet
@@ -798,7 +798,7 @@ SAVE-FOR-LATER = SPARA TILL SENARE
 SAVE-LOCATION = SPARA PLATS
 Save-this-search = Save this search
 Saved-Observation = Sparat fynd, köat för uppladdning
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Saved searches
 SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Vetenskapligt namn

@@ -34,7 +34,7 @@ Add-observations = Gözlemleri ekle
 Add-optional-notes = İsteğe bağlı not ekle
 Add-to-Projects = Projelere Ekle
 ADD-TO-PROJECTS = PROJELERE EKLE
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Eklendi: { $count } { $count ->
         [one] Projeye
@@ -763,7 +763,7 @@ Remove-project-filter = Proje filtresini kaldır
 Remove-taxon-filter = Takson filtresini kaldır
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Kullanıcı filtresini kaldır
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = Bu gözlemin taksonunu kaldırır
 Removes-your-vote-of-agreement = Uyuşma oyunuzu kaldırır
 Removes-your-vote-of-disagreement = Uyuşmazlık oyunuzu kaldırır
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = DAHA SONRASI İÇİN KAYDET
 SAVE-LOCATION = KONUMU KAYDET
 Save-this-search = Save this search
 Saved-Observation = Gözlem kaydedildi, yükleme kuyruğunda
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Saved searches
 SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Bilimsel Ad

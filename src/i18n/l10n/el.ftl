@@ -34,7 +34,7 @@ Add-observations = Προσθήκη παρατηρήσεων
 Add-optional-notes = Προσθήκη προαιρετικών σημειώσεων
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ΠΡΟΣΘΗΚΗ ΣΤΑ ΠΡΟΤΖΕΚΤ
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -763,7 +763,7 @@ Remove-project-filter = Κατάργηση φίλτρου έργου
 Remove-taxon-filter = Κατάργηση φίλτρου ταξινομικής κατηγορίας
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Κατάργηση φίλτρου χρήστη
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = Αφαιρεί την ταξινομική κατηγορία αυτής της παρατήρησης
 Removes-your-vote-of-agreement = Αφαιρεί την ψήφο συμφωνίας σας
 Removes-your-vote-of-disagreement = Αφαιρεί την ψήφο διαφωνίας σας
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = ΑΠΟΘΉΚΕΥΣΗ ΓΙΑ ΑΡΓΌΤΕΡΑ
 SAVE-LOCATION = ΑΠΟΘΗΚΕΥΣΗ ΤΟΠΟΘΕΣΙΑΣ
 Save-this-search = Save this search
 Saved-Observation = Αποθηκευμένη παρατήρηση, στην ουρά για μεταφόρτωση
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Saved searches
 SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Επιστημονική Ονομασία

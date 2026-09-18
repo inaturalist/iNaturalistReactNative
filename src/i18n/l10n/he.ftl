@@ -34,7 +34,7 @@ Add-observations = הוספת תצפיות
 Add-optional-notes = הוספת הערות אופציונליות
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -763,7 +763,7 @@ Remove-project-filter = הסרת מסנן פרויקטים
 Remove-taxon-filter = הסרת מסנן טקסונים
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = הסרת מסנן משתמש
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = מסיר את הטקסון של תצפית זו
 Removes-your-vote-of-agreement = מסיר את הצבעת ההסכמה שלך
 Removes-your-vote-of-disagreement = מסיר את הצבעת אי-ההסכמה שלך
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = שמור למועד מאוחר יותר
 SAVE-LOCATION = שמירת מיקום
 Save-this-search = Save this search
 Saved-Observation = התצפית נשמרה, בתור להעלאה
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Saved searches
 SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = שם מדעי
