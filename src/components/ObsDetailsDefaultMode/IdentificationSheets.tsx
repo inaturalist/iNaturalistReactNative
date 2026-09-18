@@ -98,6 +98,7 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
       return {
         ...state,
         showPotentialDisagreementSheet: true,
+        showSuggestIdSheet: false,
       };
     case SET_NEW_IDENTIFICATION:
       return {
@@ -211,8 +212,9 @@ const IdentificationSheets: React.FC<Props> = ( {
   const onChangeIdentBody = useCallback( ( body: string ) => dispatch( {
     type: SET_NEW_IDENTIFICATION,
     taxon: newIdentification?.taxon || agreeIdentification?.taxon,
+    vision: newIdentification?.vision,
     body,
-  } ), [newIdentification?.taxon, agreeIdentification?.taxon] );
+  } ), [newIdentification?.taxon, newIdentification?.vision, agreeIdentification?.taxon] );
 
   const onCloseIdentBodySheet = useCallback( ( ) => {
     dispatch( { type: HIDE_EDIT_IDENT_BODY_SHEET } );
@@ -455,6 +457,9 @@ const IdentificationSheets: React.FC<Props> = ( {
       )}
       {showPotentialDisagreementSheet && newIdentification && (
         <PotentialDisagreementSheet
+          editIdentBody={editIdentBody}
+          hidden={showIdentBodySheet}
+          identBody={newIdentification.body}
           loading={isCreateIdPending}
           onPotentialDisagreePressed={onPotentialDisagreePressed}
           onPressClose={potentialDisagreeSheetDiscardChanges}
