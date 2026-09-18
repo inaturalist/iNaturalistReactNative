@@ -9,3 +9,9 @@ export const tailwindFontRegular = "font-Lato-Regular";
 export const tailwindFontMedium = "font-Lato-Medium";
 
 export const tailwindFontBold = "font-Lato-Bold";
+
+export const tailwindFontRegularItalic = "font-Lato-Italic";
+
+export const tailwindFontMediumItalic = "font-Lato-MediumItalic";
+
+export const tailwindFontBoldItalic = "font-Lato-BoldItalic";
