@@ -12,7 +12,7 @@ type SyncingStatus = typeof SYNC_PENDING
   | typeof MANUAL_SYNC_IN_PROGRESS
   | typeof AUTOMATIC_SYNC_IN_PROGRESS;
 
-interface SyncObservationsSlice {
+export interface SyncObservationsSlice {
   autoSyncAbortController: AbortController | null;
   currentDeleteCount: number;
   deleteError: string | null;
