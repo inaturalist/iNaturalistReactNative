@@ -1,0 +1,2 @@
+FIXED
+* Revert a previous change to fix blank screens
