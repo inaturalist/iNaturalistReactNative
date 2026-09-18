@@ -34,7 +34,7 @@ Add-observations = Tambah pengamatan
 Add-optional-notes = Tambahkan catatan opsional
 Add-to-Projects = Tambahkan ke Proyek
 ADD-TO-PROJECTS = TAMBAHKAN KE PROYEK
-ADDED-TO-SAVED-SEARCHES = DITAMBAHKAN KE PENCARIAN YANG DISIMPAN
+Added-to-Saved-Searches = Ditambahkan ke Pencarian yang Disimpan
 Added-to-X-Projects =
     Ditambahkan ke { $count } { $count ->
         [satu] Proyek
@@ -763,7 +763,7 @@ Remove-project-filter = Hapus saringan proyek
 Remove-taxon-filter = Hapus penyaring takson
 Remove-this-saved-search = Hapus pencarian yang disimpan ini
 Remove-user-filter = Hapus saringan pengguna
-REMOVED-FROM-SAVED-SEARCHES = DIHAPUS DARI PENCARIAN YANG DISIMPAN
+Removed-from-Saved-Searches = Dihapus dari Pencarian yang Disimpan
 Removes-this-observations-taxon = Hapus takson pengamatan ini
 Removes-your-vote-of-agreement = Mencabut suara setuju dari Anda
 Removes-your-vote-of-disagreement = Mencabut suara tidak setuju dari Anda
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = SIMPAN UNTUK NANTI
 SAVE-LOCATION = SIMPAN LOKASI
 Save-this-search = Simpan pencarian ini
 Saved-Observation = Pengamatan tersimpan, dalam antrean untuk diunggah
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = PENCARIAN YANG DISIMPAN TIDAK TERTAMBAH, MAKSIMAL { $count }
+Saved-search-not-added-maximum-of-X = Pencarian yang disimpan tidak ditambahkan, maksimal { $count }
 Saved-searches = Pencarian yang disimpan
 SAVED-SEARCHES = PENCARIAN YANG DISIMPAN
 Scientific-Name = Nama Ilmiah

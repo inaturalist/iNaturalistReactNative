@@ -37,7 +37,7 @@ Add-observations = Lisää havaintoja
 Add-optional-notes = Lisää valinnaisia merkintöjä
 Add-to-Projects = Lisää projekteihin
 ADD-TO-PROJECTS = LISÄÄ PROJEKTEIHIN
-ADDED-TO-SAVED-SEARCHES = LISÄTTY TALLENNETTUIHIN HAKUIHIN
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Lisätty { $count } { $count ->
         [one] projekti
@@ -766,7 +766,7 @@ Remove-project-filter = Poista projektin suodatin
 Remove-taxon-filter = Poista taksonisuodatin
 Remove-this-saved-search = Poista tämä tallennettu haku
 Remove-user-filter = Poista käyttäjäsuodatin
-REMOVED-FROM-SAVED-SEARCHES = POISTETTU TALLENNETUISTA HAUISTA
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = Poistaa tämän havainnon taksonin.
 Removes-your-vote-of-agreement = Poistaa hyväksymisäänesi
 Removes-your-vote-of-disagreement = Poistaa erimielisyysäänesi
@@ -795,7 +795,7 @@ SAVE-FOR-LATER = TALLENNA MYÖHEMMÄKSI
 SAVE-LOCATION = TALLENNA SIJAINTI
 Save-this-search = Tallenna tämä haku
 Saved-Observation = Tallennettu havainto, latausjonossa
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = TALLENNETTUA HAKUA EI LISÄTTY, ENINTÄÄN { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Tallennetut haut
 SAVED-SEARCHES = TALLENNETUT HAUT
 Scientific-Name = Tieteellinen nimi

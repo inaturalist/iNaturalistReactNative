@@ -34,7 +34,7 @@ Add-observations = Add observations
 Add-optional-notes = Add optional notes
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
-ADDED-TO-SAVED-SEARCHES = HOZZÁADVA A MENTETT KERESÉSEKHEZ
+Added-to-Saved-Searches = Hozzáadva a mentett keresésekhez
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -763,7 +763,7 @@ Remove-project-filter = Projektszűrő eltávolítása
 Remove-taxon-filter = Remove taxon filter
 Remove-this-saved-search = E mentett keresés eltávolítása
 Remove-user-filter = Remove user filter
-REMOVED-FROM-SAVED-SEARCHES = A MENTETT KERESÉSEKBŐL ELTÁVOLÍTVA
+Removed-from-Saved-Searches = Eltávolítva a mentett keresésekből
 Removes-this-observations-taxon = Removes this observation's taxon
 Removes-your-vote-of-agreement = Removes your vote of agreement
 Removes-your-vote-of-disagreement = Removes your vote of disagreement
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = SAVE FOR LATER
 SAVE-LOCATION = SAVE LOCATION
 Save-this-search = Keresés mentése
 Saved-Observation = Saved observation, in queue to upload
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = MENTÉST NEM SIKERÜLT, MAXIMUM { $count }
+Saved-search-not-added-maximum-of-X = Keresés mentése nem sikerült, maximum { $count }
 Saved-searches = Mentett keresések
 SAVED-SEARCHES = MENTETT KERESÉSEK
 Scientific-Name = Tudományos név
