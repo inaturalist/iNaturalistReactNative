@@ -20,7 +20,7 @@ interface TotalUploadProgress {
   totalProgress: number;
 }
 
-export interface UploadObservationsSlice {
+export interface UploadObservationsState {
   abortController: AbortController | null;
   currentUpload: RealmObservation | null;
   errorsByUuid: object;
@@ -34,7 +34,27 @@ export interface UploadObservationsSlice {
   uploadStatus: UploadStatus;
 }
 
-const DEFAULT_STATE: UploadObservationsSlice = {
+export interface UploadObservationsSlice extends UploadObservationsState {
+  resetUploadObservationsSlice: ( ) => void;
+  addUploadError: ( error: string, obsUUID: string ) => void;
+  stopAllUploads: ( ) => void;
+  setCannotUploadObservations: ( ) => void;
+  setStartUploadObservations: ( ) => void;
+  completeUploads: ( ) => void;
+  updateTotalUploadProgress: ( uuid: string, increment: number ) => void;
+  setUploadStatus: ( uploadStatus: UploadStatus ) => void;
+  addToUploadQueue: ( uuids: string | string[] ) => void;
+  removeFromUploadQueue: ( ) => void;
+  setCurrentUpload: ( observation: RealmObservation ) => void;
+  setTotalToolbarIncrements: ( queuedObservations: RealmObservation[] ) => void;
+  addTotalToolbarIncrements: ( observation: RealmObservation | null ) => void;
+  removeDeletedObsFromUploadQueue: ( uuid: string ) => void;
+  getTotalUploadErrors: ( ) => number;
+  getNumUploadedWithoutErrors: ( ) => number;
+  getCompletedUploads: ( ) => number;
+}
+
+const DEFAULT_STATE: UploadObservationsState = {
   abortController: null,
   currentUpload: null,
   errorsByUuid: {},
