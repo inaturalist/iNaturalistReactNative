@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { createComment } from "api/comments";
 import { createIdentification } from "api/identifications";
 import type {
@@ -18,15 +18,30 @@ import React, {
   useCallback,
   useEffect,
   useReducer,
+  useRef,
 } from "react";
 import { Alert, Platform } from "react-native";
 import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
+import { log } from "sharedHelpers/logger";
 import {
   useAuthenticatedMutation,
+  useRouteEvent,
   useTranslation,
 } from "sharedHooks";
 
 const { useRealm } = RealmContext;
+
+const logger = log.extend( "IdentificationSheets" );
+
+type ObsDetailsParams = TabStackScreenProps<"ObsDetails">["route"]["params"];
+
+// These params say "the user just picked a taxon", not "this screen is showing
+// a taxon", so they are consumed once and cleared. See useRouteEvent.
+const IDENT_EVENT_KEYS = [
+  "identAt",
+  "identTaxonId",
+  "identTaxonFromVision",
+] as const satisfies readonly ( keyof ObsDetailsParams )[];
 
 const textInputStyle = Platform.OS === "android"
   ? {
@@ -60,11 +75,9 @@ interface IdentState {
   newIdentification: Identification | null;
   showPotentialDisagreementSheet: boolean;
   showSuggestIdSheet: boolean;
-  identTaxon?: Taxon | null;
 }
 
 type IdentAction =
-  | { type: "CLEAR_SUGGESTED_TAXON" }
   | { type: "CONFIRM_ID" }
   | { type: "HIDE_EDIT_IDENT_BODY_SHEET" }
   | { type: "HIDE_POTENTIAL_DISAGREEMENT_SHEET" }
@@ -79,10 +92,8 @@ const initialIdentState: IdentState = {
   newIdentification: null,
   showPotentialDisagreementSheet: false,
   showSuggestIdSheet: false,
-  identTaxon: null,
 };
 
-const CLEAR_SUGGESTED_TAXON = "CLEAR_SUGGESTED_TAXON";
 const CONFIRM_ID = "CONFIRM_ID";
 const HIDE_EDIT_IDENT_BODY_SHEET = "HIDE_EDIT_IDENT_BODY_SHEET";
 const HIDE_POTENTIAL_DISAGREEMENT_SHEET = "HIDE_POTENTIAL_DISAGREEMENT_SHEET";
@@ -107,7 +118,6 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
           body: action.body,
           vision: action.vision,
         },
-        identTaxon: action.taxon,
       };
     case CONFIRM_ID:
       return { ...state, showSuggestIdSheet: true };
@@ -115,7 +125,6 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
       return {
         ...state,
         showPotentialDisagreementSheet: false,
-        identTaxon: null,
         newIdentification: null,
       };
     case SHOW_EDIT_IDENT_BODY_SHEET:
@@ -135,10 +144,7 @@ export const identReducer = ( state: IdentState, action: IdentAction ): IdentSta
         showSuggestIdSheet: false,
         showIdentBodySheet: false,
         newIdentification: null,
-        identTaxon: null,
       };
-    case CLEAR_SUGGESTED_TAXON:
-      return { ...state, identTaxon: null };
     case HIDE_SUGGESTED_ID_SHEET:
       return {
         ...state,
@@ -178,18 +184,11 @@ const IdentificationSheets: React.FC<Props> = ( {
   showAgreeWithIdSheet,
 }: Props ) => {
   const { params } = useRoute<TabStackScreenProps<"ObsDetails">["route"]>( );
-  const navigation = useNavigation<TabStackScreenProps<"ObsDetails">["navigation"]>( );
-  const {
-    identAt,
-    identTaxonId,
-    identTaxonFromVision,
-    uuid,
-  } = params;
+  const { uuid } = params;
   const [state, dispatch] = useReducer( identReducer, initialIdentState );
 
   const {
     showIdentBodySheet,
-    identTaxon,
     newIdentification,
     showPotentialDisagreementSheet,
     showSuggestIdSheet,
@@ -229,12 +228,7 @@ const IdentificationSheets: React.FC<Props> = ( {
   } = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
-      onSuccess: data => {
-        handleIdentificationMutationSuccess( data );
-        if ( uuid ) {
-          dispatch( { type: CLEAR_SUGGESTED_TAXON } );
-        }
-      },
+      onSuccess: data => handleIdentificationMutationSuccess( data ),
       onError: ( e: Error ) => {
         let error = null;
         if ( e ) {
@@ -247,9 +241,6 @@ const IdentificationSheets: React.FC<Props> = ( {
       onSettled: () => {
         dispatch( { type: SUBMIT_IDENTIFICATION } );
         closeAgreeWithIdSheet( );
-        navigation.setParams(
-          { identAt: undefined, identTaxonId: undefined, identTaxonFromVision: undefined },
-        );
       },
     },
   );
@@ -272,53 +263,70 @@ const IdentificationSheets: React.FC<Props> = ( {
         && observationTaxon.ancestor_ids.includes( taxon?.id );
   }, [observation] );
 
-  // Translates identification-related params to local state and shows appropriate sheet
+  // Read through a ref so this effect does not depend on the observation.
+  // hasPotentialDisagreement is rebuilt whenever `observation` is replaced,
+  // which happens on every remote refetch, and this effect starts the whole
+  // flow -- so depending on it restarted the flow on an unrelated refetch.
+  const hasPotentialDisagreementRef = useRef( hasPotentialDisagreement );
   useEffect( ( ) => {
-    let cancelled = false;
+    hasPotentialDisagreementRef.current = hasPotentialDisagreement;
+  }, [hasPotentialDisagreement] );
 
-    async function handleIdentificationNavigation() {
-      if ( !identTaxonId ) {
-        dispatch( { type: CLEAR_SUGGESTED_TAXON } );
-        return;
-      }
+  // Fetching the taxon is async, so two navigation events in quick succession
+  // can have their fetches resolve out of order. Each event takes an id and
+  // only the latest may act, so a stale one neither dispatches nor complains.
+  const latestFlowId = useRef( 0 );
 
+  // Unmounting invalidates whatever is in flight, by the same rule
+  useEffect( ( ) => ( ) => {
+    latestFlowId.current += 1;
+  }, [] );
+
+  // Translates an identification navigation event into local state and shows
+  // the appropriate sheet. The params are cleared on delivery, so this cannot
+  // re-run and restart a flow the user has already finished or dismissed.
+  const onIdentificationEvent = useCallback( ( event: Partial<ObsDetailsParams> ) => {
+    const { identTaxonId, identTaxonFromVision } = event;
+    if ( !identTaxonId ) return;
+
+    latestFlowId.current += 1;
+    const flowId = latestFlowId.current;
+
+    const startFlow = async ( ) => {
       let taxon = realm.objectForPrimaryKey( "Taxon", identTaxonId );
       if ( !taxon ) {
         taxon = await fetchTaxonAndSave( identTaxonId, realm );
       }
+      if ( flowId !== latestFlowId.current ) return;
 
-      if ( cancelled ) return;
+      // Decided once, here. Re-deriving it when the user presses the button
+      // can give a different answer, because the observation it comes from is
+      // replaced on every remote refetch.
+      const isDisagreement = !!hasPotentialDisagreementRef.current( taxon );
 
       dispatch( {
         type: SET_NEW_IDENTIFICATION,
         taxon,
         vision: identTaxonFromVision,
       } );
-
-      const isDisagreement = hasPotentialDisagreement( taxon );
-
-      if ( isDisagreement ) {
-        dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
-      } else {
-        dispatch( { type: CONFIRM_ID } );
-      }
-    }
-
-    handleIdentificationNavigation();
-
-    return () => {
-      cancelled = true;
+      dispatch( {
+        type: isDisagreement
+          ? SHOW_POTENTIAL_DISAGREEMENT_SHEET
+          : CONFIRM_ID,
+      } );
     };
-  }, [
-    // This should change with every new navigation event back to ObsDetails,
-    // so even if identTaxonId doesn't change, e.g. you add an ID of taxon X,
-    // cancel, then add another ID of taxon X, we still update the identTaxon
-    identAt,
-    identTaxonId,
-    identTaxonFromVision,
-    hasPotentialDisagreement,
-    realm,
-  ] );
+
+    startFlow( ).catch( ( e: Error ) => {
+      // A superseded or unmounted flow has nothing to report
+      if ( flowId !== latestFlowId.current ) return;
+      // The params are consumed on delivery, so nothing will retry this for
+      // us. Tell the user rather than leaving them looking at no sheet.
+      logger.error( "Failed to start identification flow", e );
+      showErrorAlert( t( "Something-went-wrong" ) );
+    } );
+  }, [realm, showErrorAlert, t] );
+
+  useRouteEvent<ObsDetailsParams>( IDENT_EVENT_KEYS, onIdentificationEvent );
 
   const onAgree = useCallback( ( ident: Identification ) => {
     const agreeParams = {
@@ -352,17 +360,14 @@ const IdentificationSheets: React.FC<Props> = ( {
     createIdentificationMutate( { identification: idParams } );
   }, [createIdentificationMutate, newIdentification, uuid, loadActivityItem] );
 
+  // No disagreement check here. Whether this identification disagrees is
+  // settled when the flow starts, by which sheet gets opened -- the suggest ID
+  // sheet only appears when it does not. Re-deriving it on press used to give
+  // a different answer, because the observation it comes from is replaced on
+  // every remote refetch.
   const onSuggestId = useCallback( ( ) => {
-    if ( hasPotentialDisagreement( identTaxon ) ) {
-      dispatch( { type: "SHOW_POTENTIAL_DISAGREEMENT_SHEET" } );
-    } else {
-      doSuggestId();
-    }
-  }, [
-    doSuggestId,
-    hasPotentialDisagreement,
-    identTaxon,
-  ] );
+    doSuggestId();
+  }, [doSuggestId] );
 
   const onPotentialDisagreePressed = useCallback( ( potentialDisagree?: boolean ) => {
     doSuggestId( potentialDisagree );

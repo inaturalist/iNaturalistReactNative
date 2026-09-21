@@ -1,5 +1,7 @@
-import { useRoute } from "@react-navigation/native";
-import { screen, waitFor } from "@testing-library/react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  act, screen, userEvent, waitFor,
+} from "@testing-library/react-native";
 import IdentificationSheets,
 { identReducer } from "components/ObsDetailsDefaultMode/IdentificationSheets";
 import { t } from "i18next";
@@ -14,6 +16,7 @@ jest.mock( "sharedHooks/useAuthenticatedMutation" );
 jest.mock( "@react-navigation/native", () => ( {
   ...jest.requireActual( "@react-navigation/native" ),
   useRoute: jest.fn(),
+  useNavigation: jest.fn(),
 } ) );
 
 const mockRealm = {
@@ -40,6 +43,7 @@ const mockMutate = jest.fn();
 describe( "IdentificationSheets", () => {
   beforeEach( () => {
     jest.clearAllMocks();
+    useNavigation.mockReturnValue( { setParams: jest.fn() } );
 
     useAuthenticatedMutation.mockImplementation( ( mutationFn, options ) => ( {
       mutate: params => {
@@ -146,7 +150,6 @@ describe( "IdentificationSheets", () => {
       newIdentification: null,
       showPotentialDisagreementSheet: false,
       showSuggestIdSheet: false,
-      identTaxon: null,
     };
 
     it( "handles SET_NEW_IDENTIFICATION action", () => {
@@ -172,7 +175,6 @@ describe( "IdentificationSheets", () => {
         showPotentialDisagreementSheet: true,
         showSuggestIdSheet: true,
         newIdentification: { taxon: { id: 123 } },
-        identTaxon: { id: 123 },
       };
       const action = { type: "SUBMIT_IDENTIFICATION" };
       const newState = identReducer( stateWithData, action );
@@ -180,7 +182,6 @@ describe( "IdentificationSheets", () => {
       expect( newState.showPotentialDisagreementSheet ).toBe( false );
       expect( newState.showSuggestIdSheet ).toBe( false );
       expect( newState.newIdentification ).toBeNull();
-      expect( newState.identTaxon ).toBeNull();
     } );
   } );
 
@@ -208,6 +209,179 @@ describe( "IdentificationSheets", () => {
       expect(
         screen.getByText( t( "Sorry-this-observation-was-deleted" ) ),
       ).toBeVisible();
+    } );
+  } );
+
+  // `identTaxonId` stays in the route params until a successful submit clears
+  // them in onSettled, and the params -> state effect depends on
+  // hasPotentialDisagreement, whose identity changes every time
+  // observationShown is replaced. observationShown is replaced on every remote
+  // refetch (focus, reconnect, any comment or ID mutation), so the effect
+  // re-runs and re-dispatches CONFIRM_ID / SET_NEW_IDENTIFICATION long after
+  // the user is done with the flow.
+  describe( "when the observation is refetched while route params still hold a taxon", () => {
+    const suggestPrompt = "Would-you-like-to-suggest-the-following-identification";
+
+    beforeEach( () => {
+      mockRealm.objectForPrimaryKey.mockReturnValue( { ...mockTaxon } );
+      useRoute.mockReturnValue( {
+        params: {
+          identTaxonId: mockTaxon.id,
+          uuid: mockObservation.uuid,
+        },
+      } );
+    } );
+
+    it( "does not reopen the suggest ID sheet the user already closed", async () => {
+      const { rerender } = renderComponent(
+        <IdentificationSheets {...defaultProps} observation={mockObservation} />,
+      );
+
+      expect( await screen.findByText( t( suggestPrompt ) ) ).toBeVisible();
+
+      await userEvent.press( screen.getByLabelText( t( "Close" ) ) );
+      expect( screen.queryByText( t( suggestPrompt ) ) ).toBeNull();
+
+      // A remote refetch hands down a new observation object identity, exactly
+      // as Observation.mapApiToRealm does on every settle
+      renderComponent(
+        <IdentificationSheets {...defaultProps} observation={{ ...mockObservation }} />,
+        rerender,
+      );
+
+      await waitFor( () => {
+        expect( screen.queryByText( t( suggestPrompt ) ) ).toBeNull();
+      } );
+    } );
+
+    it( "keeps a comment the user already typed", async () => {
+      const { rerender } = renderComponent(
+        <IdentificationSheets {...defaultProps} observation={mockObservation} />,
+      );
+
+      expect( await screen.findByText( t( suggestPrompt ) ) ).toBeVisible();
+
+      await userEvent.press( await screen.findByTestId( "SuggestID.commentButton" ) );
+      await userEvent.type(
+        await screen.findByTestId( "TextInputSheet.notes" ),
+        "Looks like a juvenile",
+      );
+      await userEvent.press( screen.getByTestId( "TextInputSheet.confirm" ) );
+
+      expect( await screen.findByText( "Looks like a juvenile" ) ).toBeVisible();
+
+      renderComponent(
+        <IdentificationSheets {...defaultProps} observation={{ ...mockObservation }} />,
+        rerender,
+      );
+
+      await waitFor( () => {
+        expect( screen.getByText( "Looks like a juvenile" ) ).toBeVisible();
+      } );
+    } );
+  } );
+
+  // The user's report: the ID submitted, the observation view updated, and the
+  // sheet stayed up. This checks the submit path is self-consistent when a
+  // refetch lands afterwards. The setParams assertion covers useRouteEvent
+  // clearing the params on delivery, which is what makes the flow one-shot.
+  describe( "after a successful submit", () => {
+    const suggestPrompt = "Would-you-like-to-suggest-the-following-identification";
+
+    it( "closes the sheet and leaves it closed when the observation refetches", async () => {
+      // React Navigation merges SET_PARAMS into a NEW params object rather
+      // than mutating the existing one, which is what lets useRouteEvent hand
+      // the handler a stable snapshot. The mock has to behave the same way.
+      let params = {
+        identTaxonId: mockTaxon.id,
+        identAt: 1,
+        uuid: mockObservation.uuid,
+      };
+      const setParams = jest.fn( next => {
+        params = { ...params, ...next };
+      } );
+      useNavigation.mockReturnValue( { setParams } );
+      useRoute.mockImplementation( () => ( { params } ) );
+      mockRealm.objectForPrimaryKey.mockReturnValue( { ...mockTaxon } );
+
+      const { rerender } = renderComponent(
+        <IdentificationSheets {...defaultProps} observation={mockObservation} />,
+      );
+
+      expect( await screen.findByText( t( suggestPrompt ) ) ).toBeVisible();
+
+      await userEvent.press( screen.getByTestId( "SuggestIDSheet.cvSuggestionsButton" ) );
+
+      expect( mockMutate ).toHaveBeenCalled();
+      expect( setParams ).toHaveBeenCalledWith( {
+        identAt: undefined,
+        identTaxonId: undefined,
+        identTaxonFromVision: undefined,
+      } );
+      expect( screen.queryByText( t( suggestPrompt ) ) ).toBeNull();
+
+      // The refetch kicked off in onSuccess settles a moment later
+      renderComponent(
+        <IdentificationSheets {...defaultProps} observation={{ ...mockObservation }} />,
+        rerender,
+      );
+
+      await waitFor( () => {
+        expect( screen.queryByText( t( suggestPrompt ) ) ).toBeNull();
+      } );
+    } );
+  } );
+
+  // Fetching the taxon is async, so two navigations in quick succession can
+  // resolve out of order. The stale one must not win.
+  describe( "two identification navigations in quick succession", () => {
+    it( "ignores an earlier taxon fetch that resolves after a later one", async () => {
+      const taxonA = { ...mockTaxon, id: 111, preferred_common_name: "Alpha Bee" };
+      const taxonB = { ...mockTaxon, id: 222, preferred_common_name: "Beta Bee" };
+
+      let resolveA = ( ) => {};
+      fetchTaxonAndSave.mockImplementation( id => {
+        if ( id === 111 ) {
+          return new Promise( res => {
+            resolveA = ( ) => res( taxonA );
+          } );
+        }
+        return Promise.resolve( taxonB );
+      } );
+      // force the async fetch path for both
+      mockRealm.objectForPrimaryKey.mockReturnValue( null );
+
+      // React Navigation merges SET_PARAMS into a NEW params object, and
+      // useRouteEvent keys on that identity, so the mock has to do the same
+      let params = { uuid: mockObservation.uuid, identTaxonId: 111, identAt: 1 };
+      useNavigation.mockReturnValue( {
+        setParams: jest.fn( next => {
+          params = { ...params, ...next };
+        } ),
+      } );
+      useRoute.mockImplementation( () => ( { params } ) );
+
+      const { rerender } = renderComponent(
+        <IdentificationSheets {...defaultProps} observation={mockObservation} />,
+      );
+
+      // Second navigation arrives while the first fetch is still pending
+      params = { ...params, identTaxonId: 222, identAt: 2 };
+      renderComponent(
+        <IdentificationSheets {...defaultProps} observation={mockObservation} />,
+        rerender,
+      );
+
+      expect( await screen.findByText( "Beta Bee" ) ).toBeVisible();
+
+      // The stale fetch now resolves. Flush it and any resulting render so
+      // the assertions below cannot pass simply by running too early.
+      await act( async () => {
+        resolveA();
+      } );
+
+      expect( screen.getByText( "Beta Bee" ) ).toBeVisible();
+      expect( screen.queryByText( "Alpha Bee" ) ).toBeNull();
     } );
   } );
 } );

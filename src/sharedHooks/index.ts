@@ -23,6 +23,7 @@ export { default as useNavigateToObsEdit } from "./useNavigateToObsEdit";
 export { default as useObservationsUpdates } from "./useObservationsUpdates";
 export { default as useQuery } from "./useQuery";
 export { default as useRemoteObservation } from "./useRemoteObservation";
+export { default as useRouteEvent } from "./useRouteEvent";
 export { default as useScrollToOffset } from "./useScrollToOffset";
 export { default as useShare } from "./useShare";
 export { default as useStateResetOn } from "./useStateResetOn";
