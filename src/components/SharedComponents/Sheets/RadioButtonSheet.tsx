@@ -24,11 +24,13 @@ interface Props<ValueT extends RadioSheetPrimitive> {
   confirm: ( _checkedValue: ValueT ) => void;
   confirmText?: string;
   headerText: string;
+  hidden?: boolean;
   insideModal?: boolean;
   loading?: boolean;
   onPressClose?: ( ) => void;
   requireSelectionChange?: boolean;
   radioValues: Record<string, RadioSheetOption<ValueT>>;
+  secondaryButton?: React.JSX.Element;
   selectedValue: ValueT;
   testID?: string;
   topDescriptionText?: React.JSX.Element;
@@ -40,11 +42,13 @@ const RadioButtonSheet = <ValueT extends RadioSheetPrimitive>( {
   confirm,
   confirmText,
   headerText,
+  hidden,
   insideModal,
   loading,
   onPressClose,
   radioValues,
   requireSelectionChange = true,
+  secondaryButton,
   selectedValue,
   testID,
   topDescriptionText,
@@ -73,9 +77,24 @@ const RadioButtonSheet = <ValueT extends RadioSheetPrimitive>( {
   const confirmLabel = confirmText || t( "CONFIRM" );
   const buttonLabel = radioValues[String( checkedValue )]?.buttonText ?? confirmLabel;
 
+  const renderConfirmButton = ( className?: string ) => (
+    <Button
+      className={className}
+      level="primary"
+      onPress={( ) => {
+        confirm( checkedValue );
+      }}
+      disabled={confirmBlockedByDirtyCheck || loading}
+      loading={loading}
+      text={buttonLabel}
+      accessibilityLabel={buttonLabel}
+    />
+  );
+
   return (
     <BottomSheet
       headerText={headerText}
+      hidden={hidden}
       insideModal={insideModal}
       onPressClose={onPressClose}
       testID={testID}
@@ -87,16 +106,14 @@ const RadioButtonSheet = <ValueT extends RadioSheetPrimitive>( {
           {Object.keys( radioValues ).map( radioRow => radioButtonRow( radioRow ) )}
         </View>
         {bottomComponent}
-        <Button
-          level="primary"
-          onPress={( ) => {
-            confirm( checkedValue );
-          }}
-          disabled={confirmBlockedByDirtyCheck || loading}
-          loading={loading}
-          text={buttonLabel}
-          accessibilityLabel={buttonLabel}
-        />
+        {secondaryButton
+          ? (
+            <View className="flex-row gap-x-4">
+              {secondaryButton}
+              {renderConfirmButton( "flex-1" )}
+            </View>
+          )
+          : renderConfirmButton( )}
       </View>
     </BottomSheet>
   );

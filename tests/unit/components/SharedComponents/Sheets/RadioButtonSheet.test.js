@@ -1,10 +1,11 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import { RadioButtonSheet } from "components/SharedComponents";
+import { Button, RadioButtonSheet } from "components/SharedComponents";
 import React from "react";
 import { renderComponent } from "tests/helpers/render";
 
 const mockHandleClose = jest.fn( );
 const mockConfirm = jest.fn( );
+const mockSecondaryPress = jest.fn( );
 
 const mockRadioValues = {
   first: {
@@ -90,5 +91,37 @@ describe( "RadioButtonSheet", () => {
     fireEvent.press( button );
 
     expect( mockConfirm ).toHaveBeenCalledWith( "value-2" );
+  } );
+
+  it( "renders a secondary button that fires independently of confirm", ( ) => {
+    renderComponent(
+      <RadioButtonSheet
+        onPressClose={mockHandleClose}
+        confirm={mockConfirm}
+        headerText="header text"
+        radioValues={mockRadioValues}
+        requireSelectionChange={false}
+        secondaryButton={(
+          <Button
+            text="secondary action"
+            onPress={mockSecondaryPress}
+            testID="RadioButtonSheet.secondaryButton"
+          />
+        )}
+        selectedValue={mockRadioValues.first.value}
+      />,
+    );
+
+    const secondaryButton = screen.getByTestId( "RadioButtonSheet.secondaryButton" );
+    expect( secondaryButton ).toBeVisible( );
+    const confirmButton = screen.getByText( "CONFIRM" );
+    expect( confirmButton ).toBeVisible( );
+
+    fireEvent.press( secondaryButton );
+    expect( mockSecondaryPress ).toHaveBeenCalledTimes( 1 );
+    expect( mockConfirm ).not.toHaveBeenCalled( );
+
+    fireEvent.press( confirmButton );
+    expect( mockConfirm ).toHaveBeenCalledWith( "value-1" );
   } );
 } );
