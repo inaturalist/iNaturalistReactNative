@@ -50,7 +50,7 @@
     "@candlefinance/faster-image": "^1.7.2",
     "@dr.pogodin/react-native-fs": "^2.38.2",
     "@formidable-webview/webshell": "^2.6.0",
-    "@gorhom/bottom-sheet": "^5.2.8",
+    "@gorhom/bottom-sheet": "^5.2.14",
     "@invertase/react-native-apple-authentication": "^2.4.0",
     "@likashefqet/react-native-image-zoom": "^4.2.0",
     "@lodev09/react-native-exify": "^1.0.3",
