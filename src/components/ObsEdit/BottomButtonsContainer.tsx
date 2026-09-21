@@ -50,6 +50,7 @@ const BottomButtonsContainer = ( {
     state => state.incrementTotalSavedObservations,
   );
   const isNewObs = !currentObservation._created_at;
+  const wasSynced = !!currentObservation?._synced_at;
   const hasPhotos = currentObservation.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
 
@@ -66,7 +67,9 @@ const BottomButtonsContainer = ( {
 
   const passesTests = passesEvidenceTest && hasIdentification;
 
-  const canUpload = !!( currentUser && isConnected );
+  const isOffline = isConnected === false;
+
+  const canUpload = !!currentUser && !isOffline;
   const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
 
   const setNextScreen = useCallback( async ( type: ButtonTypeNonNull ) => {
@@ -82,7 +85,8 @@ const BottomButtonsContainer = ( {
       resetMyObsOffsetToRestore( );
       setMyObsOffset( 0 );
     }
-    if ( type === UPLOAD ) {
+    const shouldUpload = type === UPLOAD || ( wasSynced && unsavedChanges && !isOffline );
+    if ( shouldUpload ) {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
@@ -117,6 +121,7 @@ const BottomButtonsContainer = ( {
     exitObservationFlow,
     incrementTotalSavedObservations,
     isNewObs,
+    isOffline,
     observations,
     realm,
     resetMyObsOffsetToRestore,
@@ -125,6 +130,8 @@ const BottomButtonsContainer = ( {
     setSavedOrUploadedMultiObsFlow,
     startUploadsFromMultiObsEdit,
     transitionAnimation,
+    unsavedChanges,
+    wasSynced,
   ] );
 
   const showMissingEvidence = useCallback( ( ) => {
@@ -176,13 +183,13 @@ const BottomButtonsContainer = ( {
       )}
       <BottomButtons
         buttonPressed={buttonPressed}
-        canSaveOnly={!currentUser || !isConnected}
+        canSaveOnly={!currentUser || isOffline}
         handlePress={handlePress}
         loading={loading}
         showFocusedChangesButton={unsavedChanges}
         showFocusedUploadButton={!!passesTests}
         showHalfOpacity={!passesEvidenceTest}
-        wasSynced={!!( currentObservation?._synced_at )}
+        wasSynced={wasSynced}
       />
     </>
   );
