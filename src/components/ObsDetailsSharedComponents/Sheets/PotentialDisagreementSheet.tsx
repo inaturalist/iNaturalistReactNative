@@ -1,6 +1,7 @@
 import type { ApiTaxon } from "api/types";
 import {
   Body1,
+  Body3,
   Button,
   DisplayTaxon,
   DisplayTaxonName,
@@ -90,16 +91,18 @@ const PotentialDisagreementSheet = ( {
   );
 
   const bottomComponent = (
-    <View className="mx-6 mb-6">
+    <View className="mb-6">
       {identBody && (
-        <View className="flex-row items-center bg-lightGray p-[15px] rounded mb-[15px]">
-          <INatIcon name="add-comment-outline" size={22} />
-          <List2 className="ml-[7px] text-darkGray flex-1">
+        <View className="flex-row items-center bg-lightGray p-4 rounded-lg mx-3 mb-[18px]">
+          <INatIcon name="add-comment-outline" size={25} />
+          <Body3 className="ml-[13px] text-darkGray flex-1">
             {identBody}
-          </List2>
+          </Body3>
         </View>
       )}
-      <DisplayTaxon taxon={newTaxon} />
+      <View className="mx-6">
+        <DisplayTaxon taxon={newTaxon} />
+      </View>
     </View>
   );
 
