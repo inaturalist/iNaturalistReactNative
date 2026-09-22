@@ -16,7 +16,8 @@ import type { StateCreator } from "zustand";
 // overriding its default "live" status. This is done through the "Debug" / "Developer" screen.
 // These are not persisted so will be reset to their defaults on app start.
 
-// TODO: move this to more a more global type definition scope
+// When adding a new feature flag, consider creating a Linear ticket to track removing the
+// flag and obviated dead code
 export enum FeatureFlag {
   // flags should use positive language ending with `Enabled`
   // MyFeatureFlagEnabled = "myFeatureFlagEnabled",
@@ -26,25 +27,19 @@ export enum FeatureFlag {
   SearchMyObservationsEnabled = "searchMyObservationsEnabled",
   SortMyObservationsEnabled = "sortMyObservationsEnabled",
   MyObservationsMapViewEnabled = "myObservationsMapViewEnabled",
-  // TODO: remove once MOB-1573 is validated in TestFlight
-  TestFlightAdminMessageEnabled = "testFlightAdminMessageEnabled",
   MyObservationsSmallGridViewEnabled = "myObservationsSmallGridViewEnabled",
 }
 
-export const flagsEnabledForAdminsInTestFlight = [
-  FeatureFlag.TestFlightAdminMessageEnabled,
-  FeatureFlag.ExploreV2Enabled,
-];
+export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [];
 
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
-  [FeatureFlag.ExploreV2Enabled]: false,
+  [FeatureFlag.ExploreV2Enabled]: true,
   [FeatureFlag.NewsEnabled]: false,
   [FeatureFlag.TraditionalProjectsEnabled]: false,
   [FeatureFlag.SearchMyObservationsEnabled]: true,
   [FeatureFlag.SortMyObservationsEnabled]: true,
   [FeatureFlag.MyObservationsMapViewEnabled]: true,
-  [FeatureFlag.TestFlightAdminMessageEnabled]: false,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: false,
 };
 
@@ -56,7 +51,6 @@ const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   [FeatureFlag.SearchMyObservationsEnabled]: null,
   [FeatureFlag.SortMyObservationsEnabled]: null,
   [FeatureFlag.MyObservationsMapViewEnabled]: null,
-  [FeatureFlag.TestFlightAdminMessageEnabled]: null,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: null,
 };
 

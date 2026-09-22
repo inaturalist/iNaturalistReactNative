@@ -69,6 +69,28 @@ jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 // we can remove this once the fix is released
 jest.mock( "react-native-worklets", () => require( "react-native-worklets/src/mock" ) );
 
+// Reanimated 4.4 + draggable-flatlist: prebuilt scroll handlers in node_modules
+// lack __closure on some renders, crashing useHandler in Jest (Object.keys on
+// undefined). FlatList stand-in is enough for evidence-list integration tests.
+jest.mock( "react-native-draggable-flatlist", () => {
+  const React = jest.requireActual( "react" );
+  const { FlatList, View } = jest.requireActual( "react-native" );
+
+  const DraggableFlatList = React.forwardRef( ( props, ref ) => (
+    React.createElement( FlatList, { ...props, ref } )
+  ) );
+
+  const ScaleDecorator = ( { children } ) => (
+    React.createElement( View, null, children )
+  );
+
+  return {
+    __esModule: true,
+    default: DraggableFlatList,
+    ScaleDecorator,
+  };
+} );
+
 require( "react-native-reanimated" ).setUpTests();
 
 // Some test environments may need a little more time
@@ -182,6 +204,8 @@ jest.mock( "sharedHelpers/installData", ( ) => ( {
   // this mock
   useOnboardingShown: jest.fn( ( ) => [true, jest.fn()] ),
   getInstallID: jest.fn( ( ) => "fake-installation-id" ),
+  getEnvironmentOverride: jest.fn( ( ) => undefined ),
+  setEnvironmentOverride: jest.fn( ( ) => { } ),
 } ) );
 
 jest.mock( "components/SharedComponents/Buttons/Button", () => {

@@ -37,7 +37,7 @@ const mockObservation = factory( "LocalObservation", {
     },
   } ),
   user: factory( "LocalUser", {
-    login: faker.internet.userName( ),
+    login: faker.internet.username( ),
     iconUrl: faker.image.url( ),
     locale: "en",
   } ),
@@ -60,7 +60,7 @@ const mockNoEvidenceObservation = factory( "LocalObservation", {
     },
   } ),
   user: factory( "LocalUser", {
-    login: faker.internet.userName( ),
+    login: faker.internet.username( ),
     iconUrl: faker.image.url( ),
     locale: "en",
   } ),
@@ -69,7 +69,7 @@ const mockNoEvidenceObservation = factory( "LocalObservation", {
 mockNoEvidenceObservation.observationPhotos = [];
 mockNoEvidenceObservation.observationSounds = [];
 const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   iconUrl: faker.image.url( ),
   id: "1234",
 } );

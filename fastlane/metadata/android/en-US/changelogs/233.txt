@@ -1,0 +1,7 @@
+FIXED
+* Zoom button on some cameras
+* Import multiple photos from library on some devices
+* No need to log in to choose app language
+
+NEW
+* More ways to explore other users' data

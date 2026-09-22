@@ -34,6 +34,7 @@ Add-observations = Přidat pozorování
 Add-optional-notes = Přidat volitelné poznámky
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -130,6 +131,7 @@ Change-zoom = Změnit přiblížení
 CHECK-YOUR-EMAIL = ZKONTROLUJTE VÁŠ E-MAIL
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = ZADEJTE UŽIVATELSKÉ JMÉNO
 Chooses-taxon = Chooses taxon
@@ -230,6 +232,7 @@ Delete-current-observation = Odstranit aktuální pozorování
 Delete-observation = Odstranit pozorování
 DELETE-OBSERVATION--question = SMAZAT POZOROVÁNÍ?
 Delete-photo = Smazat fotografii
+Delete-saved-search = Delete saved search
 Delete-sound = Smazat zvuk
 Deleting-x-of-y--observations =
     Smazání { $currentDeleteCount } { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = zoosekce
 Ranks-ZOOSUBSECTION = ZOOSUBSECTION
 Ranks-Zoosubsection = Zoopodsekce
 Read-more-on-Wikipedia = Přečtěte si více na Wikipedii
+Recent-searches = Recent searches
 Record-a-sound = Nahrát zvuk
 Record-animal-sounds = Nahrávejte zvuky zvířat
 RECORD-NEW-SOUND = NAHRAJTE NOVÝ ZVUK
@@ -757,7 +761,9 @@ Remove-identification = Odebrat identifikaci
 Remove-Photos = Odstranit fotky
 Remove-project-filter = Odstranit filtr projektu
 Remove-taxon-filter = Odstranit filtr taxonu
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Odstranit uživatelský filtr
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Odstraní taxony tohoto pozorování
 Removes-your-vote-of-agreement = Odstraní vaše hlasování o dohodě
 Removes-your-vote-of-disagreement = Odstraní váš nesouhlas
@@ -784,7 +790,11 @@ Save-all-observations = Uložit všechna pozorování
 SAVE-CHANGES = ULOŽIT ZMĚNY
 SAVE-FOR-LATER = ULOŽIT NA POZDĚJI
 SAVE-LOCATION = ULOŽIT LOKALITU
+Save-this-search = Save this search
 Saved-Observation = Uložené pozorování, které jsou ve frontě k nahrání
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Vědecký název
 Scientific-Name-Common-Name = Vědecký název (obecný název)
 SEARCH = HLEDAT
@@ -797,6 +807,7 @@ Search-for-a-taxon = Hledat taxon
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = HLEDAT LOKALITU
 SEARCH-PROJECTS = HLEDAT PROJEKTY
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Hledat návrhy s polohou
 Search-suggestions-without-location = Hledat návrhy bez polohy
 SEARCH-TAXA = HLEDAT TAXON
@@ -883,6 +894,7 @@ Syncing = Synchronizuji...
 Take-photo = Vyfotit
 Take-photos = Take photos
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxony
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = ZOBRAZENÍ JMEN TAXONŮ
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } failed
        *[other] { $count } failed
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

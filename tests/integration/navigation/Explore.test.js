@@ -11,6 +11,7 @@ import Observation from "realmModels/Observation";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
@@ -20,7 +21,7 @@ import { signIn, signOut, TEST_JWT } from "tests/helpers/user";
 jest.unmock( "@react-navigation/native" );
 
 const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   iconUrl: faker.image.url( ),
   locale: "en",
   species_count: faker.number.int(),
@@ -91,6 +92,7 @@ beforeEach( ( ) => {
     isDefaultMode: false,
     isAllAddObsOptionsMode: true,
   } );
+  setStoreStateFeatureFlags( { exploreV2Enabled: false } );
 } );
 
 const actor = userEvent.setup( );

@@ -1,31 +1,35 @@
-import { useNetInfo } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
-import ObsPressable from "components/ObservationsFlashList/ObsPressable";
-import { CollapsibleSectionHeader, SmallGrid } from "components/SharedComponents";
-import type { SmallGridItem } from "components/SharedComponents/SmallGrid";
-import type { TFunction } from "i18next";
-import { RealmContext } from "providers/contexts";
-import React, { useCallback, useMemo, useState } from "react";
-import { Alert } from "react-native";
-import type { RealmObservation } from "realmModels/types";
-import { ICONIC_TAXA_GROUP, ICONIC_TAXA_GROUP_ORDER } from "sharedHelpers/iconicTaxaGroupOrder";
-import getObservationUploadStatus from "sharedHelpers/observationUploadStatus";
+import type { FlashListRef } from "@shopify/flash-list";
 import {
-  useCurrentUser, useLayoutPrefs, useNavigateToObsEdit, useTranslation,
-} from "sharedHooks";
-import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
-import { UPLOAD_PENDING } from "stores/createUploadObservationsSlice";
-import useStore from "stores/useStore";
+  ActivityIndicator,
+  Body3,
+  CollapsibleSectionHeader,
+  CustomRefreshControl,
+  SmallGrid,
+} from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
+import type { TFunction } from "i18next";
+import { useMyObservations } from "providers/MyObservationsContext";
+import React, {
+  useCallback, useEffect, useMemo, useRef, useState,
+} from "react";
+import { ICONIC_TAXA_GROUP, iconicTaxaGroupIcon } from "sharedHelpers/iconicTaxaGroupOrder";
+import { useCurrentUser, useStateResetOn, useTranslation } from "sharedHooks";
 
+import type {
+  IconicTaxaHeader,
+  IconicTaxaRow,
+  IconicTaxaSpan,
+} from "./helpers/iconicTaxaSections";
+import {
+  buildIconicTaxaRows,
+  sectionRangeAtRow,
+  sectionRowRanges,
+} from "./helpers/iconicTaxaSections";
 import useIconicTaxaObservationCounts from "./hooks/useIconicTaxaObservationCounts";
-
-const { useRealm } = RealmContext;
-
-function iconForCategory( category: ICONIC_TAXA_GROUP ) {
-  return category === ICONIC_TAXA_GROUP.OTHER
-    ? "iconic-unknown"
-    : `iconic-${category}`;
-}
+import useIconicTaxaSectionObservations from "./hooks/useIconicTaxaSectionObservations";
+import useUnsyncedObservationIdsByIconicTaxon
+  from "./hooks/useUnsyncedObservationIdsByIconicTaxon";
+import SmallGridObsItemContainer from "./SmallGridObsItemContainer";
 
 function iconicTaxaGroupTitles( t: TFunction ): Record<ICONIC_TAXA_GROUP, string> {
   return {
@@ -47,90 +51,156 @@ function iconicTaxaGroupTitles( t: TFunction ): Record<ICONIC_TAXA_GROUP, string
 }
 
 interface Props {
+  handlePullToRefresh: ( ) => Promise<void>;
   listHeaderContent?: React.ReactElement | null;
 }
 
-interface HeaderData {
-  category: ICONIC_TAXA_GROUP;
-  count: number;
-  isOpen: boolean;
-}
+const NONE_COLLAPSED: Set<ICONIC_TAXA_GROUP> = new Set( );
 
-type GroupedRow = SmallGridItem<string, HeaderData>;
+// How many tiles ahead of the last loaded one to start fetching.
+const PREFETCH_TILES = 15;
 
-const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) => {
+const MyObservationsGroupedByIconicTaxaView = ( {
+  handlePullToRefresh,
+  listHeaderContent,
+}: Props ) => {
   const { t } = useTranslation( );
-  const localObservationIds = useLocalObservationIds( );
   const currentUser = useCurrentUser( );
-  const navigation = useNavigation( );
-  const realm = useRealm( );
-  const { isDefaultMode } = useLayoutPrefs( );
-  const navigateToObsEdit = useNavigateToObsEdit( );
-  const { isConnected } = useNetInfo( );
-  const uploadQueue = useStore( state => state.uploadQueue );
-  const totalUploadProgress = useStore( state => state.totalUploadProgress );
-  const uploadStatus = useStore( state => state.uploadStatus );
-  const addToUploadQueue = useStore( state => state.addToUploadQueue );
-  const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
-  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
-  const iconicTaxaCounts = useIconicTaxaObservationCounts( );
+  const { state } = useMyObservations( );
+  const { observationsSort } = state;
+  const listRef = useRef<FlashListRef<IconicTaxaRow>>( null );
+
   const titlesByCategory = useMemo( ( ) => iconicTaxaGroupTitles( t ), [t] );
 
-  // Temporary testing set up which just distributes the list of local obs across every
-  // category so we can mock up multiple sections.
-  const observationsByCategory = useMemo( ( ) => {
-    const buckets = new Map<ICONIC_TAXA_GROUP, typeof localObservationIds>(
-      ICONIC_TAXA_GROUP_ORDER.map( category => [category, []] ),
-    );
-    localObservationIds.forEach( ( item, index ) => {
-      const category = ICONIC_TAXA_GROUP_ORDER[index % ICONIC_TAXA_GROUP_ORDER.length];
-      buckets.get( category )?.push( item );
-    } );
-    return buckets;
-  }, [localObservationIds] );
+  const {
+    counts,
+    isLoading: isLoadingCounts,
+    refetch: refetchCounts,
+  } = useIconicTaxaObservationCounts( );
+  const unsyncedByCategory = useUnsyncedObservationIdsByIconicTaxon( );
 
-  const [closedCategories, setClosedCategories] = useState<Set<ICONIC_TAXA_GROUP>>(
-    ( ) => new Set( ),
+  // Changing sort reopens every section, since the list they were collapsed against is gone
+  const [collapsedCategories, setCollapsedCategories] = useStateResetOn(
+    observationsSort,
+    NONE_COLLAPSED,
   );
 
-  const toggleCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
-    setClosedCategories( prev => {
-      const next = new Set( prev );
-      if ( next.has( category ) ) {
-        next.delete( category );
-      } else {
-        next.add( category );
-      }
-      return next;
-    } );
+  const {
+    sections,
+    advanceFrontier,
+    refreshSections,
+    nearingEndOfSection,
+    retryCategory,
+  } = useIconicTaxaSectionObservations( {
+    collapsedCategories,
+    enabled: !!currentUser,
+    orderedCounts: counts,
+    sortBy: observationsSort,
+  } );
+
+  // Changing sort re-sorts every section's contents, so the list the user was reading is gone.
+  // Put them back at the top.
+  useEffect( ( ) => {
+    listRef.current?.scrollToOffset( { animated: false, offset: 0 } );
+  }, [observationsSort] );
+
+  // Until the counts land every category reads as zero, so they'd render in the tie-break order
+  // and then visibly reshuffle into count order a moment later. Show nothing but the spinner
+  // until we know the real order.
+  const rows = useMemo( ( ) => ( isLoadingCounts
+    ? []
+    : buildIconicTaxaRows( {
+      collapsedCategories,
+      orderedCounts: counts,
+      sections,
+      unsyncedByCategory,
+    } ) ), [collapsedCategories, counts, isLoadingCounts, sections, unsyncedByCategory] );
+
+  const sectionRanges = useMemo( ( ) => sectionRowRanges( rows ), [rows] );
+
+  // Read through a ref so the handler identity stays stable. FlashList subscribes to it, and
+  // swapping it on every render churns that subscription.
+  const prefetchRef = useRef( { nearingEndOfSection, sectionRanges } );
+  useEffect( ( ) => {
+    prefetchRef.current = { nearingEndOfSection, sectionRanges };
+  }, [nearingEndOfSection, sectionRanges] );
+
+  // Tells us which row is at the top of the screen, so collapsing can tell whether the user is
+  // inside the section they just closed or looking at its header from outside
+  const firstVisibleIndexRef = useRef( 0 );
+
+  const onViewableItemsChanged = useCallback( ( { viewableItems }: {
+    viewableItems: { index: number | null }[];
+  } ) => {
+    firstVisibleIndexRef.current = viewableItems[0]?.index ?? 0;
+    const { nearingEndOfSection, sectionRanges: ranges } = prefetchRef.current;
+    const lastVisibleIndex = viewableItems[viewableItems.length - 1]?.index;
+    if ( lastVisibleIndex == null ) return;
+    const range = sectionRangeAtRow( ranges, lastVisibleIndex );
+    if ( !range ) return;
+    const isNearEnd = range.lastTileRow < 0
+      || lastVisibleIndex >= range.lastTileRow - PREFETCH_TILES;
+    if ( isNearEnd ) nearingEndOfSection( range.category );
   }, [] );
 
-  // Sections are ordered most-observed to least-observed, which is the order iconicTaxaCounts
-  // comes back in.ICONIC_TAXA_GROUP_ORDER is the tie-break order that hook sorts by.
-  const rows = useMemo( ( ) => iconicTaxaCounts.flatMap( ( { category, count } ): GroupedRow[] => {
-    const observations = observationsByCategory.get( category ) ?? [];
-    if ( observations.length === 0 ) return [];
+  // #region managing sticky header toggling and scroll position
 
-    const isOpen = !closedCategories.has( category );
-    const headerRow: GroupedRow = {
-      type: "header",
-      key: `header-${category}`,
-      header: { category, count, isOpen },
-    };
-    if ( !isOpen ) return [headerRow];
+  // Row index to put back at the top of the screen once a collapse has re-rendered
+  const pinHeaderRowRef = useRef<number | null>( null );
 
-    const tileRows: GroupedRow[] = observations.map( ( { uuid } ) => ( {
-      type: "tile",
-      key: uuid,
-      tile: uuid,
-    } ) );
-    return [headerRow, ...tileRows];
-  } ), [observationsByCategory, closedCategories, iconicTaxaCounts] );
+  const toggleCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
+    const isCollapsing = !collapsedCategories.has( category );
+    const categories = new Set( collapsedCategories );
+    if ( isCollapsing ) {
+      categories.add( category );
+    } else {
+      categories.delete( category );
+    }
+    setCollapsedCategories( categories );
+    if ( !isCollapsing ) return;
 
-  const renderHeader = useCallback( ( header: HeaderData ) => (
+    const headerRow = rows.findIndex(
+      row => row.type === "header" && row.header.category === category,
+    );
+    if ( headerRow >= 0 && headerRow < firstVisibleIndexRef.current ) {
+      pinHeaderRowRef.current = headerRow;
+    }
+
+    advanceFrontier( );
+  }, [advanceFrontier, collapsedCategories, rows, setCollapsedCategories] );
+
+  useEffect( ( ) => {
+    const index = pinHeaderRowRef.current;
+    if ( index === null ) return;
+    pinHeaderRowRef.current = null;
+    listRef.current?.scrollToIndex( { animated: false, index, viewPosition: 0 } );
+  }, [rows] );
+  // #endregion
+
+  const [refreshing, setRefreshing] = useState( false );
+
+  // Taxa counts determine section order and the section queries drive their contents, so a refresh
+  // has to cover both
+  const onRefresh = useCallback( async ( ) => {
+    setRefreshing( true );
+    await handlePullToRefresh( );
+    refetchCounts( );
+    refreshSections( );
+    setRefreshing( false );
+  }, [handlePullToRefresh, refetchCounts, refreshSections] );
+
+  const refreshControl = useMemo( ( ) => (
+    <CustomRefreshControl
+      accessibilityLabel={t( "Pull-to-refresh-and-sync-observations" )}
+      onRefresh={onRefresh}
+      refreshing={refreshing}
+    />
+  ), [onRefresh, refreshing, t] );
+
+  const renderHeader = useCallback( ( header: IconicTaxaHeader ) => (
     <CollapsibleSectionHeader
       count={header.count}
-      icon={iconForCategory( header.category )}
+      icon={iconicTaxaGroupIcon( header.category )}
       isOpen={header.isOpen}
       onToggle={( ) => toggleCategory( header.category )}
       testID={`MyObservationsGroupedByIconicTaxaView.Header.${header.category}`}
@@ -138,98 +208,60 @@ const MyObservationsGroupedByIconicTaxaView = ( { listHeaderContent }: Props ) =
     />
   ), [titlesByCategory, toggleCategory] );
 
-  // TODO: move the upload status lookup into a per-tile component that subscribes to
-  // the upload store itself. This callback is memoized so SmallGrid's renderItem memo
-  // holds, but uploadQueue and totalUploadProgress are deps, so during an upload every
-  // visible cell re-renders on each progress tick instead of just the uploading ones.
-  // Do this in the wire-up ticket.
-  const renderTile = useCallback( ( uuid: string, width: number, height: number ) => {
-    const { obsNeedsSync, queued, uploadProgress } = getObservationUploadStatus(
-      realm,
-      uploadQueue,
-      totalUploadProgress,
-      uuid,
-    );
-
-    const onItemPress = ( ) => {
-      if ( obsNeedsSync && !isDefaultMode ) {
-        const realmObservation = realm.objectForPrimaryKey<RealmObservation>(
-          "Observation",
-          uuid,
-        );
-        if ( realmObservation ) {
-          navigateToObsEdit( realmObservation );
-          return;
-        }
-      }
-      navigation.navigate( {
-        key: `Obs-MyObservationsSmallGrid-${uuid}`,
-        name: "ObsDetails",
-        params: { uuid },
-      } );
-    };
-
-    const onUploadButtonPress = ( ) => {
-      if ( uploadQueue.includes( uuid ) ) return;
-      const observation = realm.objectForPrimaryKey<RealmObservation>( "Observation", uuid );
-      if ( !observation ) return;
-      if ( isDefaultMode && observation.missingBasics( ) ) {
-        navigateToObsEdit( observation );
-        return;
-      }
-      if ( !isConnected ) {
-        Alert.alert(
-          t( "Internet-Connection-Required" ),
-          t( "Please-try-again-when-you-are-connected-to-the-internet" ),
-        );
-        return;
-      }
-      addTotalToolbarIncrements( observation );
-      addToUploadQueue( uuid );
-      if ( uploadStatus === UPLOAD_PENDING ) {
-        setStartUploadObservations( );
-      }
-    };
-
+  const renderSpan = useCallback( ( span: IconicTaxaSpan ) => {
+    if ( span.kind === "error" ) {
+      return (
+        <Pressable
+          accessibilityRole="button"
+          className="py-4 items-center"
+          onPress={( ) => retryCategory( span.category )}
+          testID={`MyObservationsGroupedByIconicTaxaView.SectionError.${span.category}`}
+        >
+          <Body3>{t( "Tap-to-try-loading-again" )}</Body3>
+        </Pressable>
+      );
+    }
     return (
-      <ObsPressable
-        currentUser={currentUser}
-        explore={false}
-        height={height}
-        layout="smallGrid"
-        onItemPress={onItemPress}
-        onUploadButtonPress={onUploadButtonPress}
-        queued={queued}
-        unsynced={obsNeedsSync}
-        uploadProgress={uploadProgress}
-        uuid={uuid}
-        width={width}
-      />
+      <View
+        className="py-4"
+        testID={`MyObservationsGroupedByIconicTaxaView.SectionLoading.${span.category}`}
+      >
+        <ActivityIndicator size="small" />
+      </View>
     );
-  }, [
-    addToUploadQueue,
-    addTotalToolbarIncrements,
-    currentUser,
-    isConnected,
-    isDefaultMode,
-    navigateToObsEdit,
-    navigation,
-    realm,
-    setStartUploadObservations,
-    t,
-    totalUploadProgress,
-    uploadQueue,
-    uploadStatus,
-  ] );
+  }, [retryCategory, t] );
+
+  const renderTile = useCallback( ( uuid: string, width: number, height: number ) => (
+    <SmallGridObsItemContainer
+      currentUser={currentUser}
+      height={height}
+      uuid={uuid}
+      width={width}
+    />
+  ), [currentUser] );
+
+  const listFooterContent = useMemo( ( ) => ( isLoadingCounts
+    ? (
+      <View className="py-8">
+        <ActivityIndicator size="small" />
+      </View>
+    )
+    : null ), [isLoadingCounts] );
 
   if ( !currentUser ) return null;
 
   return (
     <SmallGrid
       data={rows}
+      listFooterContent={listFooterContent}
       listHeaderContent={listHeaderContent}
+      onViewableItemsChanged={onViewableItemsChanged}
+      ref={listRef}
+      refreshControl={refreshControl}
       renderHeader={renderHeader}
+      renderSpan={renderSpan}
       renderTile={renderTile}
+      stickyHeaders
       testID="MyObservationsGroupedByIconicTaxaView"
     />
   );

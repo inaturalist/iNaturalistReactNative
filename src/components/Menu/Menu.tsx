@@ -272,8 +272,7 @@ const Menu = ( ) => {
   }, [currentUser, isConnected, layoutPrefs, realm, t] );
 
   return (
-    <ScrollView
-      bounces={false}
+    <View
       className="bg-white h-full"
       style={{ paddingTop: top, paddingBottom: bottom }}
     >
@@ -288,7 +287,7 @@ const Menu = ( ) => {
               ? t( "Navigates-to-user-profile" )
               : t( "Navigates-to-log-in-screen" )
           }
-          className="px-[26px] pt-[68px] pb-[31px] border-b border-lightGray"
+          className="px-[26px] py-[31px] border-b border-lightGray"
           onPress={( ) => {
             if ( !currentUser ) {
               navigation.navigate( "LoginStackNavigator" );
@@ -334,7 +333,10 @@ const Menu = ( ) => {
         </Pressable>
 
         {/* Menu Items */}
-        <View>
+        <ScrollView
+          bounces={false}
+          contentContainerClassName="pb-[128px]"
+        >
           {Object.entries( menuItems ).map( ( [key, item] ) => (
             <MenuItem
               key={key}
@@ -352,7 +354,7 @@ const Menu = ( ) => {
               }}
             />
           ) )}
-        </View>
+        </ScrollView>
       </View>
 
       {modalState === MenuModalState.ConfirmLogout && (
@@ -377,7 +379,7 @@ const Menu = ( ) => {
           maxLength={1000}
         />
       )}
-    </ScrollView>
+    </View>
   );
 };
 

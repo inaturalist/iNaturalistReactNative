@@ -17,12 +17,8 @@ import {
   getNextPageParamForExplore,
 } from "../helpers/exploreParams";
 
-interface ExcludeUser {
-  id: number;
-}
-
 interface UseInfiniteExploreScrollParams {
-  params: ApiObservationsSearchParams & { excludeUser?: ExcludeUser };
+  params: ApiObservationsSearchParams;
   enabled: boolean;
 }
 
@@ -48,7 +44,9 @@ const useInfiniteExploreScroll = (
       // the most data we display in the UI on any Observations view in Explore
       // is the same amount of data we show for the Advanced list mode in MyObservations
       ...Observation.ADVANCED_MODE_LIST_FIELDS,
-      user: { // included here for "exclude by current user" in explore filters
+      // login is needed so ObsListItem can tell whether an observation belongs
+      // to the current user (geoprivacy/obscured handling differs in that case)
+      user: {
         id: true,
         uuid: true,
         login: true,
@@ -56,8 +54,6 @@ const useInfiniteExploreScroll = (
     },
     ttl: -1,
   } ), [newInputParams] );
-
-  const excludedUser: ExcludeUser | undefined = newInputParams.excludeUser;
 
   const queryKey = ["useInfiniteExploreScroll", newInputParams];
 
@@ -96,15 +92,8 @@ const useInfiniteExploreScroll = (
 
   const pages = data?.pages as ApiObservationsSearchResponse[] | undefined;
 
-  let observations: ApiObservation[] = flatten( pages?.map( r => r.results ) ) || [];
+  const observations: ApiObservation[] = flatten( pages?.map( r => r.results ) ) || [];
   let totalResults: number | null | undefined = pages?.[0]?.total_results;
-  let filtered = [];
-
-  // filter out obs from excluded user and adjust count
-  if ( excludedUser && observations ) {
-    filtered = observations.filter( observation => observation?.user?.id !== excludedUser.id );
-    observations = filtered;
-  }
 
   if ( totalResults !== 0 && !totalResults ) {
     totalResults = null;

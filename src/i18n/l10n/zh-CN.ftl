@@ -34,6 +34,7 @@ Add-observations = 添加观察
 Add-optional-notes = 添加可选注释
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -130,6 +131,7 @@ Change-zoom = 更改缩放
 CHECK-YOUR-EMAIL = 检查您的电子邮件！
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = 请选择一个用户名
 Chooses-taxon = Chooses taxon
@@ -230,6 +232,7 @@ Delete-current-observation = 删除当前观察
 Delete-observation = 删除观察
 DELETE-OBSERVATION--question = 删除观察？
 Delete-photo = 删除照片
+Delete-saved-search = Delete saved search
 Delete-sound = 删除声音
 Deleting-x-of-y--observations =
     删除{ $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = 派
 Ranks-ZOOSUBSECTION = 亚派
 Ranks-Zoosubsection = 亚派
 Read-more-on-Wikipedia = 在 Wikipedia 上阅读更多
+Recent-searches = Recent searches
 Record-a-sound = 录制声音
 Record-animal-sounds = 录制动物的声音
 RECORD-NEW-SOUND = 录制新声音
@@ -757,7 +761,9 @@ Remove-identification = 删除身份证明
 Remove-Photos = 删除照片
 Remove-project-filter = 删除项目筛选器
 Remove-taxon-filter = 删除分类单元筛选器
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = 删除用户筛选器
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = 移除此观察记录的分类单元
 Removes-your-vote-of-agreement = 移除您的同意意见投票
 Removes-your-vote-of-disagreement = 移除您的不同意意见投票
@@ -784,7 +790,11 @@ Save-all-observations = 保存所有观察
 SAVE-CHANGES = 保存更改
 SAVE-FOR-LATER = 留待以后
 SAVE-LOCATION = 保存位置
+Save-this-search = Save this search
 Saved-Observation = 在队列中保存观察记录以上传
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = 学名
 Scientific-Name-Common-Name = 学名（通用名）
 SEARCH = 搜索
@@ -797,6 +807,7 @@ Search-for-a-taxon = 搜索分类单元
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = 搜索位置
 SEARCH-PROJECTS = 搜索项目
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = 搜索基于位置的建议
 Search-suggestions-without-location = 搜索不基于位置的建议
 SEARCH-TAXA = 搜索分类群
@@ -883,6 +894,7 @@ Syncing = 上传中
 Take-photo = 拍照
 Take-photos = 拍照
 Tap-here-to-switch-to-Advanced-Mode = 点击这里切换到高级模式
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = 分类群
 TAXON = 分类单元
 TAXON-NAMES-DISPLAY = 分类学名称的展示方式
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count }个不成功
        *[other] { $count }个不成功
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

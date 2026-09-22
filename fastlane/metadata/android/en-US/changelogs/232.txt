@@ -1,0 +1,5 @@
+FIXED
+* Explore: some UI issues with searching for "Not by me"
+* iOS: Observation Detail incorrectly displaying time zone as GMT
+* Android: back button tap dismissing app
+* Android: time picker not showing up in Edit Observation

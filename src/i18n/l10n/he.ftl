@@ -34,6 +34,7 @@ Add-observations = הוספת תצפיות
 Add-optional-notes = הוספת הערות אופציונליות
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -130,6 +131,7 @@ Change-zoom = שינוי גודל תצוגה
 CHECK-YOUR-EMAIL = נא לבדוק את הדוא"ל שלך!
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = בחר.י שם משתמש
 Chooses-taxon = Chooses taxon
@@ -230,6 +232,7 @@ Delete-current-observation = מחיקת התצפית הנוכחית
 Delete-observation = מחיקת תצפית
 DELETE-OBSERVATION--question = למחוק את התצפית?
 Delete-photo = מחיקת תמונה
+Delete-saved-search = Delete saved search
 Delete-sound = מחיקת קול
 Deleting-x-of-y--observations =
     מוחק { $currentDeleteCount } { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = זואוסקציה
 Ranks-ZOOSUBSECTION = זואו-תת-סקציה
 Ranks-Zoosubsection = זואו-תת-סקציה
 Read-more-on-Wikipedia = קראו עוד בויקיפדיה
+Recent-searches = Recent searches
 Record-a-sound = הקלטת קול
 Record-animal-sounds = הקלטת קולות של בעלי חיים
 RECORD-NEW-SOUND = הקלטת קול חדש
@@ -757,7 +761,9 @@ Remove-identification = הסרת זיהוי
 Remove-Photos = הסרת תמונות
 Remove-project-filter = הסרת מסנן פרויקטים
 Remove-taxon-filter = הסרת מסנן טקסונים
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = הסרת מסנן משתמש
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = מסיר את הטקסון של תצפית זו
 Removes-your-vote-of-agreement = מסיר את הצבעת ההסכמה שלך
 Removes-your-vote-of-disagreement = מסיר את הצבעת אי-ההסכמה שלך
@@ -784,7 +790,11 @@ Save-all-observations = שמור את כל התצפיות
 SAVE-CHANGES = שמירת שינויים
 SAVE-FOR-LATER = שמור למועד מאוחר יותר
 SAVE-LOCATION = שמירת מיקום
+Save-this-search = Save this search
 Saved-Observation = התצפית נשמרה, בתור להעלאה
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = שם מדעי
 Scientific-Name-Common-Name = שם מדעי (שם נפוץ)
 SEARCH = חיפוש
@@ -797,6 +807,7 @@ Search-for-a-taxon = חיפוש טקסון
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = חיפוש מיקום
 SEARCH-PROJECTS = חיפוש פרויקטים
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = הצעות חיפוש עם מיקום
 Search-suggestions-without-location = הצעות חיפוש ללא מיקום
 SEARCH-TAXA = חיפוש טקסונים
@@ -883,6 +894,7 @@ Syncing = מסנכרן...
 Take-photo = צלמ.י תמונה
 Take-photos = צלמ.י תמונות
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = טקסונים
 TAXON = טקסון
 TAXON-NAMES-DISPLAY = תצוגת שמות טקסונים
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } נכשל
        *[other] { $count } נכשלו
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

@@ -25,6 +25,7 @@ export { default as useQuery } from "./useQuery";
 export { default as useRemoteObservation } from "./useRemoteObservation";
 export { default as useScrollToOffset } from "./useScrollToOffset";
 export { default as useShare } from "./useShare";
+export { default as useStateResetOn } from "./useStateResetOn";
 export { default as useStoredLayout } from "./useStoredLayout";
 export { default as useSuggestions } from "./useSuggestions/useSuggestions";
 export { default as useTaxon } from "./useTaxon";

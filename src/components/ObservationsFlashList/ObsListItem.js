@@ -2,6 +2,7 @@
 import classnames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
+  Body4,
   DateDisplay,
   DisplayTaxonName,
   Heading6,
@@ -57,6 +58,8 @@ const ObsListItem = ( {
   const { t } = useTranslation();
   const uploadStatus = useStore( state => state.uploadStatus );
   const { isDebug } = useDebugMode( );
+  const showUploadErrorMessage = isDebug
+    && observation.uploadErrorMessage;
 
   // made an API change so we're no longer storing user for every observation in realm,
   // because we already know all observations belong to the logged in user. so we need
@@ -146,6 +149,14 @@ const ObsListItem = ( {
           <Heading6 className="mt-[10px] text-inatGreen">
             {t( "RESEARCH-GRADE--quality-grade" )}
           </Heading6>
+        )}
+        {showUploadErrorMessage && (
+          <Body4
+            className="mt-1 text-warningRed"
+            numberOfLines={2}
+          >
+            {observation.uploadErrorMessage}
+          </Body4>
         )}
       </View>
       <View

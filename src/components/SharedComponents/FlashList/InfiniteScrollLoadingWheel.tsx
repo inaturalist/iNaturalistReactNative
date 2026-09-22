@@ -23,7 +23,14 @@ const InfiniteScrollLoadingWheel = ( {
     ? "h-[128px] py-16"
     : "h-64 py-16";
   if ( hideLoadingWheel ) {
-    return <View className={loadingWheelClass} testID="InfiniteScrollLoadingWheel.footerView" />;
+    return (
+      <View
+        className={layout === "list"
+          ? "h-20"
+          : undefined}
+        testID="InfiniteScrollLoadingWheel.footerView"
+      />
+    );
   }
   return (
     <View className={classnames( loadingWheelClass, {

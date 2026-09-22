@@ -1,21 +1,21 @@
 import { useNavigation } from "@react-navigation/native";
-import { THUMBNAIL_CLASS } from "appConstants/classNames";
+import LocationSubtitle
+  from "components/Explore/ExploreV2/components/LocationSubtitle";
+import SubjectThumbnail
+  from "components/Explore/ExploreV2/components/SubjectThumbnail";
 import countFilters from "components/Explore/ExploreV2/helpers/countFilters";
 import locationLabel from "components/Explore/ExploreV2/helpers/locationLabel";
+import primarySubject from "components/Explore/ExploreV2/helpers/primarySubject";
+import subjectLabel from "components/Explore/ExploreV2/helpers/subjectLabel";
 import NumberBadge from "components/Explore/NumberBadge";
 import {
   Body1,
-  Body3,
   Heading2,
-  IconicTaxonIcon,
-  INatIcon,
-  UserIcon,
 } from "components/SharedComponents";
 import BackButton from "components/SharedComponents/Buttons/BackButton";
 import ContainedSquareButton from "components/SharedComponents/Buttons/ContainedSquareButton";
 import DisplayTaxonName from "components/SharedComponents/DisplayTaxonName";
-import { Image, Pressable, View } from "components/styledComponents";
-import type { TFunction } from "i18next";
+import { Pressable, View } from "components/styledComponents";
 import type { ExploreStackScreenProps } from "navigation/types";
 import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import { useExploreV2 } from "providers/ExploreV2Context";
@@ -24,93 +24,6 @@ import { useCurrentUser, useTranslation } from "sharedHooks";
 import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
-
-function subjectLabel( subject: ExploreV2Subject | null, t: TFunction ): string {
-  if ( !subject ) { return t( "All-organisms" ); }
-  switch ( subject.type ) {
-    case "taxon":
-      return subject.taxon.name;
-    case "user":
-      return subject.user.login;
-    case "project":
-      return subject.project.title;
-    case "unobserved":
-      return t( "Unobserved" );
-    case "unknown":
-      return t( "Unknown--taxon" );
-    default:
-      return t( "All-organisms" );
-  }
-}
-
-const SubjectThumbnail = ( { subject }: { subject: ExploreV2Subject } ) => {
-  switch ( subject.type ) {
-    case "taxon": {
-      const photo = subject.taxon.default_photo?.url;
-      return photo
-        ? (
-          <Image
-            source={{ uri: photo }}
-            className={THUMBNAIL_CLASS}
-            accessibilityIgnoresInvertColors
-            testID="ExploreV2Header.taxonImage"
-          />
-        )
-        : (
-          <IconicTaxonIcon
-            imageClassName={[THUMBNAIL_CLASS]}
-            iconicTaxonName={subject.taxon.iconic_taxon_name}
-          />
-        );
-    }
-    case "unknown":
-      return (
-        <IconicTaxonIcon
-          imageClassName={[THUMBNAIL_CLASS]}
-          iconicTaxonName="unknown"
-        />
-      );
-    case "user":
-      return <UserIcon size={62} uri={subject.user.icon_url} />;
-    case "project":
-      return subject.project.icon
-        ? (
-          <Image
-            source={{ uri: subject.project.icon }}
-            className={THUMBNAIL_CLASS}
-            accessibilityIgnoresInvertColors
-            testID="ExploreV2Header.projectImage"
-          />
-        )
-        : (
-          <View
-            className={`${THUMBNAIL_CLASS} bg-lightGray items-center justify-center`}
-            testID="ExploreV2Header.projectFallbackIcon"
-          >
-            <INatIcon name="briefcase" size={28} color={colors.darkGray} />
-          </View>
-        );
-    default:
-      return null;
-  }
-};
-
-const LocationSubtitle = ( { place }: { place: string } ) => {
-  if ( !place ) { return null; }
-  return (
-    <View className="flex-row items-center pt-[5px]">
-      <INatIcon name="location" size={15} />
-      <Body3
-        maxFontSizeMultiplier={1.5}
-        className="ml-[5px]"
-        numberOfLines={1}
-        ellipsizeMode="tail"
-      >
-        {place}
-      </Body3>
-    </View>
-  );
-};
 
 const TitleHeader = ( {
   title,
@@ -169,7 +82,11 @@ const SubjectHeader = ( {
   </View>
 );
 
-const ExploreV2Header = ( ) => {
+interface Props {
+  showBackButton: boolean;
+}
+
+const ExploreV2Header = ( { showBackButton }: Props ) => {
   const { t } = useTranslation( );
   const { state } = useExploreV2( );
   const currentUser = useCurrentUser( );
@@ -183,21 +100,21 @@ const ExploreV2Header = ( ) => {
     : "UniversalSearch";
   const filterCount = countFilters( state.filters );
 
-  const { subject } = state;
   const place = locationLabel( state.location, t );
+  const primary = primarySubject( state );
 
   let headerContent;
-  if ( subject && subject.type !== "unobserved" ) {
+  if ( primary.display === "subject" ) {
     headerContent = (
       <SubjectHeader
-        subject={subject}
-        label={subjectLabel( subject, t )}
+        subject={primary.subject}
+        label={subjectLabel( primary.subject, t )}
         place={place}
         prefersCommonNames={currentUser?.prefers_common_names}
         scientificNameFirst={currentUser?.prefers_scientific_name_first}
       />
     );
-  } else if ( subject?.type === "unobserved" ) {
+  } else if ( primary.display === "unobserved" ) {
     headerContent = (
       <TitleHeader
         title={t( "Unobserved" )}
@@ -215,11 +132,11 @@ const ExploreV2Header = ( ) => {
       select back button, header content, or search button */}
       <Pressable
         accessible={false}
-        className="p-4 flex-row items-center"
+        className="px-4 pt-1 pb-[10px] flex-row items-center"
         onPress={() => navigation.navigate( searchScreen )}
         testID="ExploreV2Header.pressable"
       >
-        <BackButton />
+        {showBackButton && <BackButton />}
         {headerContent}
         <View>
           <ContainedSquareButton

@@ -34,6 +34,7 @@ Add-observations = Προσθήκη παρατηρήσεων
 Add-optional-notes = Προσθήκη προαιρετικών σημειώσεων
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ΠΡΟΣΘΗΚΗ ΣΤΑ ΠΡΟΤΖΕΚΤ
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -130,6 +131,7 @@ Change-zoom = Αλλαγή ζουμ
 CHECK-YOUR-EMAIL = ΕΛΈΓΞΤΕ ΤΟ EMAIL ΣΑΣ!
 Choose-a-date = Επιλογή ημερομηνίας
 Choose-a-date-time = Επιλογή ημερομηνίας και ώρας
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Επιλογή ώρας
 CHOOSE-A-USERNAME = ΕΠΙΛΈΞΤΕ ΈΝΑ ΌΝΟΜΑ ΧΡΉΣΤΗ
 Chooses-taxon = Chooses taxon
@@ -230,6 +232,7 @@ Delete-current-observation = Διαγραφή τρέχουσας παρατήρ�
 Delete-observation = Διέγραψε παρατήρηση
 DELETE-OBSERVATION--question = ΔΙΑΓΡΑΦΉ ΠΑΡΑΤΉΡΗΣΗΣ;
 Delete-photo = Διαγραφή φωτογραφίας
+Delete-saved-search = Delete saved search
 Delete-sound = Διαγραφή ήχου
 Deleting-x-of-y--observations =
     Deleting { $currentDeleteCount } { $total ->
@@ -742,6 +745,7 @@ Ranks-Zoosection = Ενότητα ζώων
 Ranks-ZOOSUBSECTION = ΖΩΟΥΠΟΤΜΗΜΑ
 Ranks-Zoosubsection = Υποενότητα ζώων
 Read-more-on-Wikipedia = Διαβάστε περισσότερα στη Wikipedia
+Recent-searches = Recent searches
 Record-a-sound = Εγγραφή ήχου
 Record-animal-sounds = Καταγράψτε ήχους ζώων
 RECORD-NEW-SOUND = ΕΓΓΡΑΦΉ ΝΈΟΥ ΉΧΟΥ
@@ -757,7 +761,9 @@ Remove-identification = Κατάργηση αναγνώρισης
 Remove-Photos = Κατάργηση φωτογραφιών
 Remove-project-filter = Κατάργηση φίλτρου έργου
 Remove-taxon-filter = Κατάργηση φίλτρου ταξινομικής κατηγορίας
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Κατάργηση φίλτρου χρήστη
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Αφαιρεί την ταξινομική κατηγορία αυτής της παρατήρησης
 Removes-your-vote-of-agreement = Αφαιρεί την ψήφο συμφωνίας σας
 Removes-your-vote-of-disagreement = Αφαιρεί την ψήφο διαφωνίας σας
@@ -784,7 +790,11 @@ Save-all-observations = Αποθήκευση όλων των παρατηρήσ�
 SAVE-CHANGES = ΑΠΟΘΉΚΕΥΣΗ ΑΛΛΑΓΏΝ
 SAVE-FOR-LATER = ΑΠΟΘΉΚΕΥΣΗ ΓΙΑ ΑΡΓΌΤΕΡΑ
 SAVE-LOCATION = ΑΠΟΘΗΚΕΥΣΗ ΤΟΠΟΘΕΣΙΑΣ
+Save-this-search = Save this search
 Saved-Observation = Αποθηκευμένη παρατήρηση, στην ουρά για μεταφόρτωση
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Επιστημονική Ονομασία
 Scientific-Name-Common-Name = Επιστημονική ονομασία (κοινή ονομασία)
 SEARCH = ΑΝΑΖΉΤΗΣΗ
@@ -797,6 +807,7 @@ Search-for-a-taxon = Αναζήτηση ταξινομικής κατηγορί�
 Search-for-species-user-or-project = Αναζήτηση ειδών, χρηστών ή πρότζεκτ
 SEARCH-LOCATION = ΑΝΑΖΗΤΗΣΗ ΤΟΠΟΘΕΣΙΑΣ
 SEARCH-PROJECTS = ΑΝΑΖΉΤΗΣΗ ΈΡΓΩΝ
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Προτάσεις αναζήτησης με τοποθεσία
 Search-suggestions-without-location = Προτάσεις αναζήτησης χωρίς τοποθεσία
 SEARCH-TAXA = ΑΝΑΖΉΤΗΣΗ TAXA
@@ -883,6 +894,7 @@ Syncing = Γίνεται συγχρονισμός...
 Take-photo = Λήψη φωτογραφίας
 Take-photos = Λήψη φωτογραφιών
 Tap-here-to-switch-to-Advanced-Mode = Πάτα εδώ για αλλαγή σε Προηγμένη λειτουργία
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxa
 TAXON = ΤΑΞΙΝΟΜΙΚΉ ΚΑΤΗΓΟΡΊΑ
 TAXON-NAMES-DISPLAY = ΕΜΦΆΝΙΣΗ ΟΝΟΜΆΤΩΝ ΤΑΞΙΝΟΜΙΚΏΝ ΚΑΤΗΓΟΡΙΏΝ
@@ -1016,6 +1028,11 @@ x-failed =
     { $count ->
         [one] { $count } απέτυχε
        *[other] { $count } απέτυχαν
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

@@ -2,7 +2,7 @@ import { define } from "factoria";
 
 export default define( "RemoteUser", faker => ( {
   name: faker.person.fullName(),
-  login: faker.internet.userName(),
+  login: faker.internet.username(),
   email: faker.internet.email(),
   id: faker.number.int(),
   icon_url: faker.image.url(),

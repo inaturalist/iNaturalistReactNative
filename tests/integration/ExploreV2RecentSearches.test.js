@@ -12,6 +12,7 @@ import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
+import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
@@ -19,7 +20,7 @@ import { signIn, signOut } from "tests/helpers/user";
 jest.unmock( "@react-navigation/native" );
 
 const mockUser = factory( "LocalUser", {
-  login: faker.internet.userName( ),
+  login: faker.internet.username( ),
   locale: "en",
 } );
 
@@ -59,15 +60,6 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const enableExploreV2 = ( ) => act( ( ) => {
-  useStore.setState( state => ( {
-    featureFlagConfig: {
-      ...state.featureFlagConfig,
-      exploreV2Enabled: true,
-    },
-  } ) );
-} );
-
 const recents = ( ) => useStore.getState( ).exploreRecentSearches;
 
 const actor = userEvent.setup( );
@@ -89,7 +81,7 @@ beforeAll( async ( ) => {
 
 beforeEach( async ( ) => {
   setStoreStateLayout( { isDefaultMode: false, isAllAddObsOptionsMode: true } );
-  enableExploreV2( );
+  setStoreStateFeatureFlags( { exploreV2Enabled: true } );
   recents( ).clearRecents( );
   inatjs.observations.search.mockClear( );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
@@ -137,8 +129,12 @@ describe( "recent searches in Explore", ( ) => {
       );
     } );
 
-    // Search again with nothing selected, so the subject goes back to all organisms
+    // Reopening the search shows the taxon that was already searched
     await openUniversalSearch( );
+    expect(
+      screen.getByDisplayValue( mockTaxon.preferred_common_name ),
+    ).toBeVisible( );
+    await actor.press( screen.getByTestId( "UniversalSearch.back.reset" ) );
     await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
     await screen.findByTestId( "ExploreResults" );
     expect(

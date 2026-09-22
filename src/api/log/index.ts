@@ -2,15 +2,15 @@ import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
 // eslint-disable-next-line import/no-cycle
 import { getAnonymousJWT, getJWT } from "components/LoginSignUp/AuthenticationService";
-import Config from "react-native-config";
 import type { transportFunctionType } from "react-native-logs";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import { getInstallID } from "sharedHelpers/installData";
 import { isObject, isObjectWithPrimitiveValues } from "sharedHelpers/runtimeTypeUtil";
 
 import { extraSentinelKey } from "./enhanceLoggerWithExtra";
 
 const API_HOST: string
-    = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
+    = EnvConfig.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
 
 const api = create( {
   baseURL: API_HOST,

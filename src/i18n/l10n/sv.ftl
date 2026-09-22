@@ -40,6 +40,7 @@ Add-observations = Lägg till fynd
 Add-optional-notes = Lägg till valfria anteckningar
 Add-to-Projects = Lägg till i Projekt
 ADD-TO-PROJECTS = LÄGG TILL I PROJEKT
+ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
 Added-to-X-Projects =
     Lades till i { $count } { $count ->
         [ett] Projekt
@@ -136,6 +137,7 @@ Change-zoom = Ändra zoom
 CHECK-YOUR-EMAIL = KOLLA DIN EPOST!
 Choose-a-date = Choose a date
 Choose-a-date-time = Choose a date & time
+CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
 Choose-a-time = Choose a time
 CHOOSE-A-USERNAME = VÄLJ ETT ANVÄNDARNAMN
 Chooses-taxon = Chooses taxon
@@ -236,6 +238,7 @@ Delete-current-observation = Radera aktuellt fynd
 Delete-observation = Radera fynd
 DELETE-OBSERVATION--question = RADERA FYND?
 Delete-photo = Radera bild
+Delete-saved-search = Delete saved search
 Delete-sound = Radera ljud
 Deleting-x-of-y--observations =
     Raderar { $currentDeleteCount } { $total ->
@@ -748,6 +751,7 @@ Ranks-Zoosection = Zoosektion
 Ranks-ZOOSUBSECTION = ZOOUNDERSEKTION
 Ranks-Zoosubsection = Zooundersektion
 Read-more-on-Wikipedia = Läs mer på Wikipedia
+Recent-searches = Recent searches
 Record-a-sound = Spela in ett ljud
 Record-animal-sounds = Spela in djurläten
 RECORD-NEW-SOUND = SPELA IN NYTT LJUD
@@ -763,7 +767,9 @@ Remove-identification = Ta bort bestämning
 Remove-Photos = Ta bort bilder
 Remove-project-filter = Ta bort projektfilter
 Remove-taxon-filter = Ta bort taxonfilter
+Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Ta bort användarfilter
+REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
 Removes-this-observations-taxon = Tar bort detta fynds taxon
 Removes-your-vote-of-agreement = Tar bort din röst för medhåll
 Removes-your-vote-of-disagreement = Tar bort din röst för oenighet
@@ -790,7 +796,11 @@ Save-all-observations = Spara alla fynd
 SAVE-CHANGES = SPARA ÄNDRINGAR
 SAVE-FOR-LATER = SPARA TILL SENARE
 SAVE-LOCATION = SPARA PLATS
+Save-this-search = Save this search
 Saved-Observation = Sparat fynd, köat för uppladdning
+SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-searches = Saved searches
+SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Vetenskapligt namn
 Scientific-Name-Common-Name = Vetenskapligt namn (vardagligt namn)
 SEARCH = SÖK
@@ -803,6 +813,7 @@ Search-for-a-taxon = Sök efter ett taxon
 Search-for-species-user-or-project = Search for species, user, or project
 SEARCH-LOCATION = SÖK PLATS
 SEARCH-PROJECTS = SÖK PROJEKT
+Search-subject-comma-place = { $subject }, { $place }
 Search-suggestions-with-location = Sök förslag med plats
 Search-suggestions-without-location = Sök förslag utan plats
 SEARCH-TAXA = SÖK TAXA
@@ -889,6 +900,7 @@ Syncing = Synkar...
 Take-photo = Ta bild
 Take-photos = Ta bilder
 Tap-here-to-switch-to-Advanced-Mode = Tap here to switch to Advanced Mode
+Tap-to-try-loading-again = Tap to try loading again
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = VISNING AV TAXONNAMN
@@ -1022,6 +1034,11 @@ x-failed =
     { $count ->
         [one] { $count } misslyckades
        *[other] { $count } misslyckades
+    }
+X-filters =
+    { $count ->
+        [one] { $count } filter
+       *[other] { $count } filters
     }
 X-FOLLOWERS =
     { $count ->

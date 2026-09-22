@@ -37,17 +37,25 @@ export interface AdvancedSearchDraft {
   filters: ExploreV2Filters;
 }
 
-// Only taxon goes in the subject. user/project live in the filter blob
+// Only taxon goes in the subject. user/project/unobserved live in the filter blob
 export const draftFromV2State = ( v2: ExploreV2State ): AdvancedSearchDraft => {
   const { subject } = v2;
   const base = { location: v2.location, sortBy: v2.sortBy };
   switch ( subject?.type ) {
     case "user":
-      return { ...base, subject: null, filters: { ...v2.filters, user: subject.user } };
+      return {
+        ...base,
+        subject: null,
+        filters: { ...v2.filters, user: subject.user, unobservedByUser: null },
+      };
     case "project":
       return { ...base, subject: null, filters: { ...v2.filters, project: subject.project } };
     case "unobserved":
-      return { ...base, subject: null, filters: v2.filters };
+      return {
+        ...base,
+        subject: null,
+        filters: { ...v2.filters, unobservedByUser: subject.user, user: null },
+      };
     default:
       return { ...base, subject: subject ?? null, filters: v2.filters };
   }
@@ -70,7 +78,7 @@ export type AdvancedSearchAction =
   | { type: "SET_LOCATION_WORLDWIDE" }
   | { type: "SET_SORT"; sortBy: OBSERVATIONS_SORT }
   | { type: "SET_USER"; user: ApiUser | null }
-  | { type: "SET_EXCLUDE_USER"; user: ApiUser | null }
+  | { type: "SET_UNOBSERVED_BY_USER"; user: ApiUser | null }
   | { type: "SET_PROJECT"; project: ApiProjectSummary | null }
   | { type: "TOGGLE_RESEARCH_GRADE" }
   | { type: "TOGGLE_NEEDS_ID" }
@@ -132,9 +140,9 @@ export const advancedSearchReducer = (
     case "SET_SORT":
       return { ...draft, sortBy: action.sortBy };
     case "SET_USER":
-      return withFilters( draft, { user: action.user, excludeUser: null } );
-    case "SET_EXCLUDE_USER":
-      return withFilters( draft, { excludeUser: action.user, user: null } );
+      return withFilters( draft, { user: action.user, unobservedByUser: null } );
+    case "SET_UNOBSERVED_BY_USER":
+      return withFilters( draft, { unobservedByUser: action.user, user: null } );
     case "SET_PROJECT":
       return withFilters( draft, { project: action.project } );
     case "TOGGLE_RESEARCH_GRADE":

@@ -1,16 +1,27 @@
 import type { MapBoundaries } from "providers/ExploreContext";
-import Config from "react-native-config";
 import type { LatLng, Region } from "react-native-maps";
 import createUTFPosition from "sharedHelpers/createUTFPosition";
+import { EnvConfig } from "sharedHelpers/envConfig";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 
 export const OBSCURATION_CELL_SIZE = 0.2;
-// tiles should be requested from tiles.inaturalist.org for better resource
-// balancing
-const API_URL = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
-export const TILE_URL = API_URL.match( /api\.inaturalist\.org/ )
-  ? API_URL.replace( "api.inaturalist", "tiles.inaturalist" )
-  : API_URL;
+const API_URL = EnvConfig.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
+
+function getTileUrl( apiUrl: string ) {
+  try {
+    const parsedUrl = new URL( apiUrl );
+    if ( parsedUrl.hostname === "api.inaturalist.org" ) {
+      // tiles should be requested from tiles.inaturalist.org for better resource
+      // balancing
+      parsedUrl.hostname = "tiles.inaturalist.org";
+      return parsedUrl.toString();
+    }
+    return apiUrl;
+  } catch {
+    return apiUrl;
+  }
+}
+export const TILE_URL = getTileUrl( API_URL );
 const POINT_TILES_ENDPOINT = `${TILE_URL}/points`;
 
 export function calculateZoom( width: number, delta: number ) {
@@ -74,16 +85,28 @@ export function latitudeDeltaToMeters(
   return latitudeDelta * metersPerDegreeLatitude( latitude );
 }
 
+// Width in degrees of a bounding box, measured eastward from swlng to nelng.
+// A box crossing the antimeridian is encoded swlng > nelng
+export function longitudeSpan( swlng: number, nelng: number ): number {
+  const span = Number( nelng ) - Number( swlng );
+  return span < 0
+    ? span + 360
+    : span;
+}
+
 export function regionFromBounds( bounds: MapBoundaries ): Region {
   const {
     nelat, nelng, swlat, swlng,
   } = bounds;
   const latitudeDelta = Math.abs( Number( nelat ) - Number( swlat ) );
-  const longitudeDelta = Math.abs( Number( nelng ) - Number( swlng ) );
+  const longitudeDelta = longitudeSpan( swlng, nelng );
+  const longitude = Number( swlng ) + ( longitudeDelta / 2 );
 
   return {
-    latitude: nelat - ( latitudeDelta / 2 ),
-    longitude: nelng - ( longitudeDelta / 2 ),
+    latitude: Math.min( Number( swlat ), Number( nelat ) ) + ( latitudeDelta / 2 ),
+    longitude: longitude > 180
+      ? longitude - 360
+      : longitude,
     latitudeDelta,
     longitudeDelta,
   };

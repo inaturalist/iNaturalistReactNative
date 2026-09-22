@@ -299,8 +299,7 @@ class Observation extends Realm.Object {
     }
 
     const isNew = !existingEmbed;
-    const wasReactivated = existingEmbed?._pending_deletion && !embed._pending_deletion;
-    if ( isNew || wasReactivated ) {
+    if ( isNew ) {
       return {
         ...embed,
         _synced_at: null,
@@ -458,6 +457,7 @@ class Observation extends Realm.Object {
       privateLongitude: obs.privateLongitude,
       taxon_geoprivacy: obs.taxon_geoprivacy,
       time_observed_at: obs.time_observed_at,
+      uploadErrorMessage: obs.uploadErrorMessage,
     };
   }
 
@@ -480,8 +480,8 @@ class Observation extends Realm.Object {
   };
 
   static isUnsyncedObservation = ( realm, obs ) => {
-    const obsList = Observation.filterUnsyncedObservations( realm );
-    const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
+    const unsyncedObs = realm.objects( "Observation" )
+      .filtered( `uuid == "${obs.uuid}" && ( ${UNSYNCED_FILTER} )` );
     return unsyncedObs.length > 0;
   };
 
@@ -644,6 +644,7 @@ class Observation extends Realm.Object {
       privateLatitude: "double?",
       privateLongitude: "double?",
       needs_sync: { type: "bool", default: false, indexed: true },
+      uploadErrorMessage: "string?",
     },
   };
 

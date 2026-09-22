@@ -9,13 +9,13 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   rotatableAnimatedStyle: ViewStyle;
-  deleteSentinelFile: ( ) => Promise<void>;
+  completeSentinelFile: ( ) => Promise<void>;
   disabled?: boolean;
 }
 
 const PhotoLibraryIcon = ( {
   rotatableAnimatedStyle,
-  deleteSentinelFile,
+  completeSentinelFile,
   disabled,
 }: Props ) => {
   const { t } = useTranslation( );
@@ -36,7 +36,7 @@ const PhotoLibraryIcon = ( {
           "rounded",
         )}
         onPress={() => {
-          deleteSentinelFile();
+          completeSentinelFile();
           navigation.push( "PhotoLibrary", {
             cmonBack: true,
             lastScreen: "Camera",

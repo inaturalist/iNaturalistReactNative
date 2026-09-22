@@ -132,7 +132,14 @@ const Map = ( {
   } );
   const { isDebug } = useDebugMode( );
   const { screenWidth, screenHeight } = useDeviceOrientation( );
-  const [currentZoom, setCurrentZoom] = useState( 0 );
+  // on iOS, onRegionChangeComplete does not fire when the map mounts with initialRegion
+  // Until the map reports a region of its own, derive the zoom from the region we're mounting with.
+  const [reportedZoom, setReportedZoom] = useState<number | null>( null );
+  const currentZoom = reportedZoom ?? (
+    initialRegion?.longitudeDelta
+      ? calculateZoom( screenWidth, initialRegion.longitudeDelta )
+      : 0
+  );
   const navigation = useNavigation( );
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const [userLocation, setUserLocation] = useState<{
@@ -333,14 +340,6 @@ const Map = ( {
     ? `${TILE_URL}/points/{z}/{x}/{y}.png?${queryString}&color=%2374ac00`
     : `${TILE_URL}/grid/{z}/{x}/{y}.png?${queryString}`;
 
-  // In Android, MapView does not reliably process tileUrlTemplate changes.
-  // Thus, we do not change tileUrlTemplate on Android anymore but first shut
-  // down the currently active obs tiles and then restart them with the new
-  // obs tile url. This is done by detecting changes to tileUrlTemplate and
-  // rendering <MapView> once without <UrlTile>.
-
-  const [previousTileUrl, setPreviousTileUrl] = useState( tileUrlTemplate );
-
   const handleRegionChangeComplete = useCallback( async (
     newRegion: Region,
     { isGesture }: { isGesture?: boolean },
@@ -350,9 +349,6 @@ const Map = ( {
     // changes and gesture.isGesture is available to test for user interaction.
     let shouldSkipRegionUpdate = false;
     if ( Platform.OS === "android" && !isGesture ) {
-      if ( previousTileUrl !== tileUrlTemplate ) {
-        setPreviousTileUrl( tileUrlTemplate );
-      }
       if ( !onMapReadyHasFiredAndroid && onMapReady ) {
         setOnMapReadyHasFiredAndroid( true );
         onMapReady();
@@ -368,10 +364,8 @@ const Map = ( {
         setAndroidLocalRegion( newRegion );
       }
     }
-    setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
+    setReportedZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
   }, [
-    previousTileUrl,
-    tileUrlTemplate,
     onMapReadyHasFiredAndroid,
     onMapReady,
     onRegionChangeComplete,
@@ -409,30 +403,9 @@ const Map = ( {
     }
   };
 
-  const shouldOverlayObsTiles = ( withPressableObsTiles || withObsTiles )
-    && (
-      Platform.OS !== "android"
-      || previousTileUrl === tileUrlTemplate
-    );
+  const shouldOverlayObsTiles = withPressableObsTiles || withObsTiles;
 
-  // In Android, when we render a single frame of <MapView> without <UrlTile>
-  // we use a tiny region increase of 0.001% to get onRegionChangeComplete to
-  // fire and update the obs tile url. This change is too small to be visible.
-  const fuzzRegion = ( curRegion: Region ) => (
-    {
-      ...curRegion,
-      latitudeDelta: 1.00001 * curRegion.latitudeDelta,
-      longitudeDelta: 1.00001 * curRegion.longitudeDelta,
-    } );
-  const unfuzzedMapRegion = setRegion( );
-  const shouldFuzzRegion = (
-    Platform.OS === "android"
-    && unfuzzedMapRegion
-    && previousTileUrl !== tileUrlTemplate
-  );
-  const mapRegion = shouldFuzzRegion
-    ? fuzzRegion( unfuzzedMapRegion )
-    : unfuzzedMapRegion;
+  const mapRegion = setRegion( );
 
   const renderDebugZoomLevel = ( ) => {
     if ( isDebug ) {

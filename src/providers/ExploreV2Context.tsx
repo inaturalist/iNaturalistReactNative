@@ -27,6 +27,7 @@ export enum EXPLORE_V2_ACTION {
   SET_SPECIES_SORT = "SET_SPECIES_SORT",
   SET_FILTERS = "SET_FILTERS",
   SET_ACTIVE_TAB = "SET_ACTIVE_TAB",
+  APPLY_SEARCH = "APPLY_SEARCH",
   RESET = "RESET"
 }
 
@@ -99,7 +100,7 @@ export interface ExploreV2Filters {
   photoLicense: PHOTO_LICENSE;
   // User / project, in ExploreV2 parlance we always consider taxon to be the "subject"
   user?: ApiUser | null;
-  excludeUser?: ApiUser | null;
+  unobservedByUser?: ApiUser | null;
   project?: ApiProjectSummary | null;
 }
 
@@ -131,7 +132,14 @@ export interface ExploreV2State {
   speciesSortBy: SPECIES_SORT;
   filters: ExploreV2Filters;
   activeTab: ExploreV2Tab;
+  // Bumped each time a whole search is applied from outside the results screen, e.g. a
+  // saved search. Lets a view tell "the search moved out from under me" apart from
+  // "the same search re-rendered", which the search fields alone can't when they're equal.
+  appliedSearchCount: number;
 }
+
+// Everything that defines a search, as opposed to how the results are being viewed
+export type ExploreV2Search = Omit<ExploreV2State, "activeTab" | "appliedSearchCount">;
 
 export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SUBJECT; subject: ExploreV2Subject }
@@ -150,6 +158,7 @@ export type ExploreV2Action =
   | { type: EXPLORE_V2_ACTION.SET_SPECIES_SORT; speciesSortBy: SPECIES_SORT }
   | { type: EXPLORE_V2_ACTION.SET_FILTERS; filters: ExploreV2Filters }
   | { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB; tab: ExploreV2Tab }
+  | { type: EXPLORE_V2_ACTION.APPLY_SEARCH; search: ExploreV2Search }
   | { type: EXPLORE_V2_ACTION.RESET };
 
 export const initialExploreV2State: ExploreV2State = {
@@ -159,6 +168,7 @@ export const initialExploreV2State: ExploreV2State = {
   speciesSortBy: SPECIES_SORT.COUNT_DESC,
   filters: defaultExploreV2Filters,
   activeTab: OBSERVATIONS_TAB,
+  appliedSearchCount: 0,
 };
 
 export function initialStateFromEntryParams(
@@ -215,6 +225,20 @@ export function exploreV2Reducer(
       return { ...state, filters: action.filters };
     case EXPLORE_V2_ACTION.SET_ACTIVE_TAB:
       return { ...state, activeTab: action.tab };
+    case EXPLORE_V2_ACTION.APPLY_SEARCH: {
+      const {
+        subject, location, sortBy, speciesSortBy, filters,
+      } = action.search;
+      return {
+        ...state,
+        subject,
+        location,
+        sortBy,
+        speciesSortBy,
+        filters,
+        appliedSearchCount: state.appliedSearchCount + 1,
+      };
+    }
     case EXPLORE_V2_ACTION.RESET:
       return initialExploreV2State;
     default: {

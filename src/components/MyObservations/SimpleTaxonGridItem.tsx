@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Body4, DisplayTaxonName } from "components/SharedComponents";
+import { Body4, DisplayTaxonName, IconicTaxonIcon } from "components/SharedComponents";
 import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import {
   Image, LinearGradient, Pressable, View,
@@ -53,13 +53,23 @@ const SimpleTaxonGridItem = ( {
       className={classNames( imageClassNames )}
       style={style}
     >
-      <Image
-        source={source}
-        className="grow aspect-square"
-        testID="TaxonGridItem.photo"
-        accessibilityIgnoresInvertColors
-        fadeDuration={0}
-      />
+      <View className="absolute w-full h-full">
+        <IconicTaxonIcon
+          imageClassName={["grow", "aspect-square", "border-0"]}
+          iconicTaxonName={speciesCount?.taxon?.iconic_taxon_name}
+          isBackground
+          size={100}
+        />
+      </View>
+      { source?.uri && (
+        <Image
+          source={source}
+          className="grow aspect-square"
+          testID="TaxonGridItem.photo"
+          accessibilityIgnoresInvertColors
+          fadeDuration={0}
+        />
+      ) }
       <LinearGradient
         colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.6) 100%)"]}
         className="absolute w-full h-full"

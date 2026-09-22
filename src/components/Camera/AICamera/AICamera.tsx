@@ -1,0 +1,340 @@
+import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
+import FadeInOutView from "components/Camera/FadeInOutView";
+import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
+import useRotation from "components/Camera/hooks/useRotation";
+import useZoom from "components/Camera/hooks/useZoom";
+import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
+import Toast from "components/SharedComponents/Toast";
+import { View } from "components/styledComponents";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
+import type { RefObject } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import DeviceInfo from "react-native-device-info";
+import LinearGradient from "react-native-linear-gradient";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
+import { VolumeManager } from "react-native-volume-manager";
+import convertScoreToConfidence from "sharedHelpers/convertScores";
+import { completeSentinelFile, logStage } from "sharedHelpers/sentinelFiles";
+import { logFirebaseEvent } from "sharedHelpers/tracking";
+import {
+  useDebugMode,
+  useLayoutPrefs,
+  useTranslation,
+} from "sharedHooks";
+import type { UserLocation } from "sharedHooks/useWatchPosition";
+import useStore from "stores/useStore";
+import colors from "styles/tailwindColors";
+
+import {
+  handleCameraError,
+  handleCaptureError,
+  handleClassifierError,
+  handleDeviceNotSupported,
+  handleLog,
+} from "../helpers";
+import AICameraButtons from "./AICameraButtons";
+import FrameProcessorCamera from "./FrameProcessorCamera";
+import usePredictions from "./hooks/usePredictions";
+
+const isTablet = DeviceInfo.isTablet();
+
+const getResultContainerClassName = ( insetsTop: number ) => {
+  const widthClassName = isTablet
+    ? "w-[493px]"
+    : "w-[346px]";
+  const phoneTopClassName = insetsTop > 0
+    ? "top-14"
+    : "top-8";
+  const topClassName = isTablet
+    ? ""
+    : phoneTopClassName;
+
+  return classnames( "self-center", widthClassName, topClassName );
+};
+
+// const exampleTaxonResult = {
+//   id: 12704,
+//   name: "Muscicapidae",
+//   rank: "family",
+//   rank_level: 30,
+//   preferred_common_name: "Old World Flycatchers and Chats"
+// };
+
+interface Props {
+  camera: RefObject<Camera | null>;
+  device: CameraDevice;
+  flipCamera: ( ) => void;
+  isLandscapeMode: boolean;
+  toggleFlash: ( ) => void;
+  takingPhoto: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  takePhotoAndStoreUri: Function;
+  takePhotoOptions: TakePhotoOptions;
+  userLocation: UserLocation | null;
+  hasLocationPermissions: boolean;
+  requestLocationPermissions: () => void;
+}
+
+const AICamera = ( {
+  camera,
+  device,
+  flipCamera,
+  isLandscapeMode,
+  toggleFlash,
+  takingPhoto,
+  takePhotoAndStoreUri,
+  takePhotoOptions,
+  userLocation,
+  hasLocationPermissions,
+  requestLocationPermissions,
+}: Props ) => {
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
+  const sentinelFileName = useStore( state => state.sentinelFileName );
+  const setAICameraSuggestion = useStore( state => state.setAICameraSuggestion );
+
+  const hasFlash = device?.hasFlash;
+  const { isDebug } = useDebugMode( );
+  const { isDefaultMode } = useLayoutPrefs( );
+  const {
+    animatedProps,
+    handleZoomButtonPress,
+    panToZoom,
+    pinchToZoom,
+    showZoomButton,
+    zoomTextValue,
+    resetZoom,
+  } = useZoom( device );
+  const {
+    rotatableAnimatedStyle,
+  } = useRotation( );
+  const {
+    handleTaxaDetected,
+    modelLoaded,
+    result,
+    setResult,
+  } = usePredictions( );
+  const [inactive, setInactive] = useState( false );
+  const [initialVolume, setInitialVolume] = useState<number | null>( null );
+  const [hasTakenPhoto, setHasTakenPhoto] = useState( false );
+
+  const [userDisabledLocation, setUserDisabledLocation] = useState( false );
+  const useLocation = hasLocationPermissions && !userDisabledLocation;
+  const [locationStatusVisible, setLocationStatusVisible] = useState( false );
+
+  const toggleLocation = () => {
+    if ( !useLocation && !hasLocationPermissions ) {
+      requestLocationPermissions( );
+      return;
+    }
+    setUserDisabledLocation( prev => !prev );
+    // Always show status when button is pressed
+    setLocationStatusVisible( true );
+  };
+
+  const handleLocationStatusEnd = ( ) => {
+    setLocationStatusVisible( false );
+  };
+
+  const { t } = useTranslation();
+
+  const resetCameraOnFocus = useCallback( ( ) => {
+    setResult( null );
+    resetZoom( );
+  }, [resetZoom, setResult] );
+
+  // only show predictions when rank is order or lower, like we do on Seek
+  const showPrediction = ( result && result?.taxon?.rank_level <= 40 ) || false;
+
+  const insets = useSafeAreaInsets( );
+
+  const onFlipCamera = () => {
+    resetZoom( );
+    flipCamera( );
+  };
+
+  const handleTakePhoto = useCallback( async ( ) => {
+    await logStage( sentinelFileName, "take_photo_start" );
+    setHasTakenPhoto( true );
+    logFirebaseEvent( "ai_camera_shutter_tap", { hasLocationPermissions } );
+    // this feels a little duplicative, but we're currently using aICameraSuggestion
+    // to show the loading screen in Suggestions *without* setting an observation.taxon,
+    // and we're using visionResult to populate ObsEdit *with* the taxon
+    // before aICameraSuggestion has finished being stored.
+    // would be nice to refactor and set this more uniformly once the UX is more stable
+    // and we're fully certain we don't want to populate observation.taxon on Suggestions -> ObsEdit
+    const visionResult = showPrediction
+      ? result
+      : null;
+    setAICameraSuggestion( visionResult );
+
+    await takePhotoAndStoreUri( {
+      replaceExisting: true,
+      inactivateCallback: () => setInactive( true ),
+      navigateImmediately: true,
+      visionResult,
+    } );
+    setHasTakenPhoto( false );
+  }, [
+    showPrediction,
+    setAICameraSuggestion,
+    sentinelFileName,
+    takePhotoAndStoreUri,
+    result,
+    hasLocationPermissions,
+  ] );
+
+  useEffect( () => {
+    if ( initialVolume === null ) {
+      // Fetch the current volume to set the initial state
+      VolumeManager.getVolume()
+        .then( volume => {
+          setInitialVolume( volume.volume );
+        } );
+    }
+
+    const volumeListener = VolumeManager.addVolumeListener( async ( ) => {
+      if ( initialVolume !== null && !hasTakenPhoto ) {
+        // Hardware volume button pressed - take a photo
+        await handleTakePhoto();
+
+        // Revert the volume to its previous state
+        VolumeManager.setVolume( initialVolume );
+      }
+    } );
+
+    // Suppress the native volume UI
+    VolumeManager.showNativeVolumeUI( { enabled: false } );
+
+    return () => {
+      volumeListener.remove();
+      VolumeManager.showNativeVolumeUI( { enabled: true } );
+    };
+  }, [handleTakePhoto, hasTakenPhoto, initialVolume] );
+
+  const handleClose = async ( ) => {
+    await completeSentinelFile( sentinelFileName );
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsTab",
+      params: {
+        screen: "ObsList",
+      },
+    } );
+  };
+
+  return (
+    <>
+      {device && (
+        <View className="w-full h-full absolute z-0">
+          <FrameProcessorCamera
+            cameraRef={camera}
+            device={device}
+            onTaxaDetected={handleTaxaDetected}
+            onClassifierError={handleClassifierError}
+            onDeviceNotSupported={handleDeviceNotSupported}
+            onCaptureError={handleCaptureError}
+            onCameraError={handleCameraError}
+            onLog={handleLog}
+            animatedProps={animatedProps}
+            panToZoom={panToZoom}
+            pinchToZoom={pinchToZoom}
+            takingPhoto={takingPhoto}
+            inactive={inactive}
+            resetCameraOnFocus={resetCameraOnFocus}
+            userLocation={userLocation}
+            useLocation={useLocation}
+          />
+        </View>
+      )}
+      <LinearGradient
+        colors={[colors.black, "rgba(0, 0, 0, 0)"]}
+        locations={[
+          0.001,
+          isTablet && isLandscapeMode
+            ? 0.3
+            : 1,
+        ]}
+        className="w-full h-[219px]"
+      >
+        <View
+          className={getResultContainerClassName( insets.top )}
+        >
+          {showPrediction && result
+            ? (
+              <TaxonResult
+                asListItem={false}
+                clearBackground
+                confidence={
+                  isDefaultMode
+                    ? undefined
+                    : convertScoreToConfidence( result?.combined_score )
+                }
+                unpressable
+                taxon={result?.taxon}
+                testID={`AICamera.taxa.${result?.taxon?.id}`}
+                white
+                // my thinking here is that we're already making this API call over and over
+                // every second when a prediction comes back, and we likely don't want to
+                // 3x that in low network conditions if every request is failing
+                retryQuery={false}
+              />
+            )
+            : (
+              <Body1 className="text-white self-center text-center mt-[22px]">
+                {modelLoaded
+                  ? t( "Point-the-camera-at-an-animal-plant-or-fungus" )
+                  : t( "Loading-iNaturalists-AI-Camera" )}
+              </Body1>
+            )}
+          {locationStatusVisible && (
+            <Toast
+              icon={useLocation
+                ? "map-marker-outline"
+                : "map-marker-outline-off"}
+              onHide={handleLocationStatusEnd}
+              text={useLocation
+                ? t( "Using-location" )
+                : t( "Ignoring-location" )}
+              variant="dark"
+              wrapperClassName="mt-4"
+            />
+          )}
+          {isDebug && result && (
+            <Body1 className="text-deeppink self-center mt-[22px]">
+              {`Age of result: ${Date.now() - result.timestamp}ms`}
+            </Body1>
+          )}
+        </View>
+      </LinearGradient>
+      {!modelLoaded && (
+        <View className="absolute left-1/2 top-1/2">
+          <View className="right-[57px] bottom-[57px]">
+            <INatIcon name="inaturalist" size={114} color={colors.white} />
+          </View>
+        </View>
+      )}
+      <FadeInOutView takingPhoto={takingPhoto} cameraType="AI" />
+      <AICameraButtons
+        handleZoomButtonPress={handleZoomButtonPress}
+        flipCamera={onFlipCamera}
+        hasFlash={hasFlash}
+        handleClose={handleClose}
+        modelLoaded={modelLoaded}
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
+        showPrediction={showPrediction}
+        showZoomButton={showZoomButton}
+        takePhoto={handleTakePhoto}
+        takePhotoOptions={takePhotoOptions}
+        takingPhoto={takingPhoto}
+        toggleFlash={toggleFlash}
+        zoomTextValue={zoomTextValue}
+        useLocation={useLocation}
+        toggleLocation={toggleLocation}
+        completeSentinelFile={() => completeSentinelFile( sentinelFileName )}
+      />
+    </>
+  );
+};
+
+export default AICamera;

@@ -32,7 +32,7 @@ interface Props {
   zoomTextValue: string;
   useLocation: boolean;
   toggleLocation: ( ) => void;
-  deleteSentinelFile: ( ) => Promise<void>;
+  completeSentinelFile: ( ) => Promise<void>;
 }
 
 const AICameraButtons = ( {
@@ -51,7 +51,7 @@ const AICameraButtons = ( {
   zoomTextValue,
   useLocation,
   toggleLocation,
-  deleteSentinelFile,
+  completeSentinelFile,
 }: Props ) => {
   const { bottom } = useSafeAreaInsets( );
   const { isDefaultMode } = useLayoutPrefs();
@@ -78,7 +78,7 @@ const AICameraButtons = ( {
         useLocation={useLocation}
         toggleLocation={toggleLocation}
         isDefaultMode={isDefaultMode}
-        deleteSentinelFile={deleteSentinelFile}
+        completeSentinelFile={completeSentinelFile}
       />
     );
   }
@@ -139,7 +139,7 @@ const AICameraButtons = ( {
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             disabled={takingPhoto}
-            deleteSentinelFile={deleteSentinelFile}
+            completeSentinelFile={completeSentinelFile}
           />
         </View>
       </View>

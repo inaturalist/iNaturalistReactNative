@@ -13,11 +13,16 @@ import React from "react";
 // useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
 const Stack = createNativeStackNavigator<ExploreStackParamList>( );
 
-const ExploreStackNavigator = ( ) => (
+interface Props {
+  showBackButton: boolean;
+}
+
+const ExploreStackNavigator = ( { showBackButton }: Props ) => (
   <Stack.Navigator initialRouteName="ExploreResults">
     <Stack.Screen
       name="ExploreResults"
       component={ExploreResults}
+      initialParams={{ showBackButton }}
       options={hideHeader}
     />
     <Stack.Screen

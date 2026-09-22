@@ -16,7 +16,6 @@ export interface ExploreV2QueryParams extends FilterApiParams {
   order: SortDirection;
   taxon_id?: number;
   iconic_taxa?: string[];
-  unobserved_by_user_id?: number;
   lat?: number;
   lng?: number;
   radius?: number;

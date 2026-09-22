@@ -57,7 +57,7 @@ interface Props {
   useLocation: boolean;
   toggleLocation: ( ) => void;
   isDefaultMode: boolean;
-  deleteSentinelFile: ( ) => Promise<void>;
+  completeSentinelFile: ( ) => Promise<void>;
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -95,7 +95,7 @@ const TabletButtons = ( {
   useLocation,
   toggleLocation,
   isDefaultMode,
-  deleteSentinelFile,
+  completeSentinelFile,
 }: Props ) => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -170,7 +170,7 @@ const TabletButtons = ( {
           <PhotoLibraryIcon
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             disabled={disabledPhotoLibrary}
-            deleteSentinelFile={deleteSentinelFile}
+            completeSentinelFile={completeSentinelFile}
           />
         </View>
       ) }

@@ -18,6 +18,7 @@ describe( "ObservationsView", () => {
   it( "should show a footer loading wheel when new observations are fetched", ( ) => {
     renderComponent(
       <ObservationsFlashList
+        data={[]}
         hideLoadingWheel={false}
         isConnected
       />,
@@ -30,6 +31,7 @@ describe( "ObservationsView", () => {
   it( "should show no internet text when user is offline", ( ) => {
     renderComponent(
       <ObservationsFlashList
+        data={[]}
         hideLoadingWheel={false}
         isConnected={false}
       />,
@@ -42,6 +44,7 @@ describe( "ObservationsView", () => {
   it( "should show a footer view when loading wheel is hidden", ( ) => {
     renderComponent(
       <ObservationsFlashList
+        data={[]}
         hideLoadingWheel
         isConnected
       />,

@@ -1,0 +1,80 @@
+import {
+  AccountCreationCard,
+  FiftyObservationCard,
+  FiveObservationCard,
+  NotificationOnboarding,
+  OneObservationCard,
+} from "components/OnboardingModal/PivotCards";
+import {
+  Button,
+  ScrollViewWrapper,
+} from "components/SharedComponents";
+import { View } from "components/styledComponents";
+import React, { useState } from "react";
+import useStore from "stores/useStore";
+
+/* eslint-disable i18next/no-literal-string */
+/* eslint-disable react/no-unescaped-entities */
+const Buttons = ( ) => {
+  const resetShownOnce = useStore( state => state.layout.resetShownOnce );
+  const [modalIndex, setModalIndex] = useState( -1 );
+
+  const setShowingModal = ( index: number ) => {
+    setModalIndex( index );
+  };
+
+  const pivotCards: {
+    title: string;
+    component: React.ComponentType<{ triggerCondition: boolean }>;
+  }[] = [
+    {
+      title: "Account Creation",
+      component: AccountCreationCard,
+    },
+    {
+      title: "First Observation",
+      component: OneObservationCard,
+    },
+    {
+      title: "Five Observation",
+      component: FiveObservationCard,
+    },
+    {
+      title: "Fifty Observation",
+      component: FiftyObservationCard,
+    },
+    {
+      title: "Notification Onboarding",
+      component: NotificationOnboarding,
+    },
+  ];
+
+  return (
+    <ScrollViewWrapper>
+      <Button
+        className="mb-2"
+        level="primary"
+        text="Reset shown state"
+        onPress={() => {
+          resetShownOnce( );
+          setModalIndex( -1 );
+        }}
+      />
+      {pivotCards.map( ( { title, component }, index ) => (
+        <View className="p-4" key={title}>
+          <Button
+            className="mb-2"
+            level="primary"
+            text={title}
+            onPress={() => setShowingModal( index )}
+          />
+          {React.createElement( component, {
+            triggerCondition: modalIndex === index,
+          } )}
+        </View>
+      ) )}
+    </ScrollViewWrapper>
+  );
+};
+
+export default Buttons;

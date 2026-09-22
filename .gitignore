@@ -118,7 +118,7 @@ artifacts/
 # Rubocop cache
 **/tmp/rubocop_cache
 
-# Claude Code local config except CLAUDE.md
+# Claude Code local config except CLAUDE.md and shared skills
 .claude/*
 !.claude/CLAUDE.md
 

@@ -7,6 +7,7 @@ import type { RealmTaxon } from "realmModels/types";
 
 interface Props {
   closeModal: ( ) => void;
+  hideInfoButton?: boolean;
   onPressInfo?: ( ) => void;
   showModal: boolean;
   updateTaxon: ( taxon: RealmTaxon | null ) => void;
@@ -14,6 +15,7 @@ interface Props {
 
 const ExploreTaxonSearchModal = ( {
   closeModal,
+  hideInfoButton = false,
   onPressInfo,
   showModal,
   updateTaxon,
@@ -28,6 +30,7 @@ const ExploreTaxonSearchModal = ( {
       modal={(
         <ExploreTaxonSearch
           closeModal={closeModal}
+          hideInfoButton={hideInfoButton}
           onPressInfo={( taxon: RealmTaxon | ApiTaxon ) => {
             navigation.push( "TaxonDetails", { id: taxon.id } );
             closeModal();

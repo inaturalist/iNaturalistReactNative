@@ -20,6 +20,21 @@ Object.defineProperty( RecoverableError.prototype, "name", {
   value: "RecoverableError",
 } );
 
+export function formatUploadErrorMessage(
+  uploadError: Error | INatApiError | RecoverableError,
+): string {
+  return uploadError.json.errors.map( e => {
+    if ( e.message?.errors ) {
+      if ( typeof ( e.message.errors.flat ) === "function" ) {
+        return e.message.errors.flat( ).join( ", " );
+      }
+      return String( e.message.errors );
+    }
+    // 410 error for observations previously deleted uses e.message?.error format
+    return e.message?.error || e.message;
+  } ).join( ", " );
+}
+
 function handleUploadError(
   uploadError: Error | INatApiError | RecoverableError,
   t: TFunction,
@@ -32,16 +47,7 @@ function handleUploadError(
   let recoveryPossible = false;
   if ( uploadError?.json?.errors ) {
     // TODO localize comma join
-    message = uploadError.json.errors.map( e => {
-      if ( e.message?.errors ) {
-        if ( typeof ( e.message.errors.flat ) === "function" ) {
-          return e.message.errors.flat( ).join( ", " );
-        }
-        return String( e.message.errors );
-      }
-      // 410 error for observations previously deleted uses e.message?.error format
-      return e.message?.error || e.message;
-    } ).join( ", " );
+    message = formatUploadErrorMessage( uploadError );
   } else if ( uploadError.message?.match( /Network request failed/ ) ) {
     message = t( "Connection-problem-Please-try-again-later" );
     recoveryPossible = true;

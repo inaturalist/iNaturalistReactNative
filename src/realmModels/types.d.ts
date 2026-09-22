@@ -195,6 +195,7 @@ export interface RealmObservationPojo {
   taxon_geoprivacy?: "open" | "private" | "obscured" | null;
   time_observed_at?: string;
   timeObservedAt?: string;
+  uploadErrorMessage?: string | null;
   user: RealmUser;
   uuid: string;
 }
