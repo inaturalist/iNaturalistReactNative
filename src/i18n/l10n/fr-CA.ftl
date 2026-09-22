@@ -34,7 +34,7 @@ Add-observations = Ajouter des observations
 Add-optional-notes = Ajouter notes optionnelles
 Add-to-Projects = Ajouter aux projets
 ADD-TO-PROJECTS = AJOUTER AUX PROJETS
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Ajouté à { $count } { $count ->
         [un] projet
@@ -763,7 +763,7 @@ Remove-project-filter = Supprimer le filtre Projet
 Remove-taxon-filter = Enlever le filtre de taxon
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Enlever le filtre d'utilisateur
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = Enlève le taxon de cette observation
 Removes-your-vote-of-agreement = Enlève votre vote d'accord
 Removes-your-vote-of-disagreement = Enlève votre vote de désaccord
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = ENREGISTRER POUR PLUS TARD
 SAVE-LOCATION = ENREGISTRER LA POSITION
 Save-this-search = Save this search
 Saved-Observation = Observation sauvegardée, en attente de publication
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Saved searches
 SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Nom scientifique

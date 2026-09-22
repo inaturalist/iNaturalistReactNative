@@ -34,7 +34,7 @@ Add-observations = Přidat pozorování
 Add-optional-notes = Přidat volitelné poznámky
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -763,7 +763,7 @@ Remove-project-filter = Odstranit filtr projektu
 Remove-taxon-filter = Odstranit filtr taxonu
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Odstranit uživatelský filtr
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = Odstraní taxony tohoto pozorování
 Removes-your-vote-of-agreement = Odstraní vaše hlasování o dohodě
 Removes-your-vote-of-disagreement = Odstraní váš nesouhlas
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = ULOŽIT NA POZDĚJI
 SAVE-LOCATION = ULOŽIT LOKALITU
 Save-this-search = Save this search
 Saved-Observation = Uložené pozorování, které jsou ve frontě k nahrání
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Saved searches
 SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Vědecký název

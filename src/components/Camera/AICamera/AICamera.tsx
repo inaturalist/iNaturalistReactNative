@@ -27,6 +27,7 @@ import type { UserLocation } from "sharedHooks/useWatchPosition";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
+import type { SavePhotoOptions } from "../CameraContainer";
 import {
   handleCameraError,
   handleCaptureError,
@@ -69,8 +70,7 @@ interface Props {
   isLandscapeMode: boolean;
   toggleFlash: ( ) => void;
   takingPhoto: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  takePhotoAndStoreUri: Function;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
   takePhotoOptions: TakePhotoOptions;
   userLocation: UserLocation | null;
   hasLocationPermissions: boolean;

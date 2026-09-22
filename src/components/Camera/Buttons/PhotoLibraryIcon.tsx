@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { INatIconButton } from "components/SharedComponents";
+import type { NoBottomTabStackScreenProps } from "navigation/types";
 import React from "react";
 import type { ViewStyle } from "react-native";
 import { useTranslation } from "sharedHooks";
@@ -19,7 +20,7 @@ const PhotoLibraryIcon = ( {
   disabled,
 }: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>( );
 
   return (
     <RotatableIconWrapper

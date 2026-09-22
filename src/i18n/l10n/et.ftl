@@ -34,7 +34,7 @@ Add-observations = Lisa vaatluseid
 Add-optional-notes = Lisa soovi korral märkuseid
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -763,7 +763,7 @@ Remove-project-filter = Eemalda projekti filter
 Remove-taxon-filter = Eemalda taksoni filter
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Eemalda kasutaja filter
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = Eemaldab sellev aatluse taksoni
 Removes-your-vote-of-agreement = Eemaldab sinu nõustumise
 Removes-your-vote-of-disagreement = Eemaldab sinu mittenõustumise
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = SÄILITA HILISEMAKS
 SAVE-LOCATION = SALVESTA ASUKOHT
 Save-this-search = Save this search
 Saved-Observation = Salvestatud vaatlused, mis ootavad üleslaadimist
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Saved searches
 SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Teaduslik nimi

@@ -1,28 +1,30 @@
-// @flow
-
 import { useFocusEffect } from "@react-navigation/native";
 import classnames from "classnames";
 import CameraView from "components/Camera/CameraView";
 import FadeInOutView from "components/Camera/FadeInOutView";
+import type { Camera } from "components/Camera/helpers/visionCameraWrapper";
 import useRotation from "components/Camera/hooks/useRotation";
 import useZoom from "components/Camera/hooks/useZoom";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
+import type { RefObject } from "react";
 import React, {
-  useCallback, useEffect,
+  useCallback,
+  useEffect,
   useMemo,
   useState,
 } from "react";
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import type { CameraDevice, TakePhotoOptions } from "react-native-vision-camera";
 import { VolumeManager } from "react-native-volume-manager";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation } from "sharedHooks";
 import useStore from "stores/useStore";
 
+import type { SavePhotoOptions } from "../CameraContainer";
 import {
   handleCameraError,
   handleCaptureError,
@@ -39,20 +41,20 @@ const isTablet = DeviceInfo.isTablet( );
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
-type Props = {
-  camera: Object,
-  device: Object,
-  flipCamera: Function,
-  handleCheckmarkPress: Function,
-  confirmPhotosInProgress: boolean,
-  isLandscapeMode: boolean,
-  toggleFlash: Function,
-  takingPhoto: boolean,
-  takePhotoAndStoreUri: Function,
-  takePhotoOptions: Object,
-  newPhotoUris: Object[],
-  setNewPhotoUris: Function
-};
+interface Props {
+  camera: RefObject<Camera | null>;
+  device: CameraDevice;
+  flipCamera: ( ) => void;
+  handleCheckmarkPress: ( ) => void;
+  confirmPhotosInProgress: boolean;
+  isLandscapeMode: boolean;
+  toggleFlash: ( ) => void;
+  takingPhoto: boolean;
+  takePhotoAndStoreUri: ( options: SavePhotoOptions ) => Promise<string>;
+  takePhotoOptions: TakePhotoOptions;
+  newPhotoUris: string[];
+  setNewPhotoUris: ( newPhotoUris: string[] ) => void;
+}
 
 const StandardCamera = ( {
   camera,
@@ -67,7 +69,7 @@ const StandardCamera = ( {
   takePhotoOptions,
   newPhotoUris,
   setNewPhotoUris,
-}: Props ): Node => {
+}: Props ) => {
   "use no memo";
 
   const hasFlash = device?.hasFlash;
@@ -84,7 +86,7 @@ const StandardCamera = ( {
     rotatableAnimatedStyle,
     rotation,
   } = useRotation( );
-  const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets( );
 
   const cameraUris = useStore( state => state.cameraUris );
   const prepareCamera = useStore( state => state.prepareCamera );
@@ -99,7 +101,7 @@ const StandardCamera = ( {
   const disallowAddingPhotos = totalObsPhotoUris >= MAX_PHOTOS_ALLOWED;
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const [showAlert, setShowAlert] = useState( false );
-  const [initialVolume, setInitialVolume] = useState( null );
+  const [initialVolume, setInitialVolume] = useState<number | null>( null );
 
   const { screenWidth } = useDeviceOrientation( );
 

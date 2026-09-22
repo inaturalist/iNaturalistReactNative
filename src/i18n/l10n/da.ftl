@@ -34,7 +34,7 @@ Add-observations = Tilføj observationer
 Add-optional-notes = Tilføj valgfrie notater
 Add-to-Projects = Føj til projekter
 ADD-TO-PROJECTS = FØJ TIL PROJEKTER
-ADDED-TO-SAVED-SEARCHES = FØJET TIL GEMTE SØGNINGER
+Added-to-Saved-Searches = Føjet til Gemte søgninger
 Added-to-X-Projects =
     Føjet til { $count } { $count ->
         [one] projekt
@@ -763,7 +763,7 @@ Remove-project-filter = Fjern projektfilter
 Remove-taxon-filter = Fjern taksonfilter
 Remove-this-saved-search = Fjern denne gemte søgning
 Remove-user-filter = Fjern brugerfilter
-REMOVED-FROM-SAVED-SEARCHES = FJERNET FRA GEMTE SØGNINGER
+Removed-from-Saved-Searches = Fjernet fra Gemte søgninger
 Removes-this-observations-taxon = Fjerner denne observations takson
 Removes-your-vote-of-agreement = Fjerner egen stemme for enighed
 Removes-your-vote-of-disagreement = Fjerner egen stemme for uenighed
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = GEM TIL SENERE
 SAVE-LOCATION = GEM PLACERING
 Save-this-search = Gem denne søgning
 Saved-Observation = Gemt observation, i kø til upload
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = GEMT SØGNING IKKE TILFØJET, MAKSIMUM { $count }
+Saved-search-not-added-maximum-of-X = Gemt søgning ikke tilføjet, maksimalt { $count }
 Saved-searches = Gemte søgninger
 SAVED-SEARCHES = GEMTE SØGNINGER
 Scientific-Name = Videnskabeligt navn

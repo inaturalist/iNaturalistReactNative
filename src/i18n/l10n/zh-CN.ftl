@@ -34,7 +34,7 @@ Add-observations = 添加观察
 Add-optional-notes = 添加可选注释
 Add-to-Projects = Add to Projects
 ADD-TO-PROJECTS = ADD TO PROJECTS
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Added to { $count } { $count ->
         [one] Project
@@ -763,7 +763,7 @@ Remove-project-filter = 删除项目筛选器
 Remove-taxon-filter = 删除分类单元筛选器
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = 删除用户筛选器
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = 移除此观察记录的分类单元
 Removes-your-vote-of-agreement = 移除您的同意意见投票
 Removes-your-vote-of-disagreement = 移除您的不同意意见投票
@@ -792,7 +792,7 @@ SAVE-FOR-LATER = 留待以后
 SAVE-LOCATION = 保存位置
 Save-this-search = Save this search
 Saved-Observation = 在队列中保存观察记录以上传
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Saved searches
 SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = 学名

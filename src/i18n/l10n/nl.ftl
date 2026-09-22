@@ -40,7 +40,7 @@ Add-observations = Waarnemingen toevoegen
 Add-optional-notes = Optionele notities toevoegen
 Add-to-Projects = Voeg toe aan projecten
 ADD-TO-PROJECTS = VOEG TOE AAN PROJECTEN
-ADDED-TO-SAVED-SEARCHES = ADDED TO SAVED SEARCHES
+Added-to-Saved-Searches = Added to Saved Searches
 Added-to-X-Projects =
     Toegevoegd aan { $count } { $count ->
         [one] project
@@ -769,7 +769,7 @@ Remove-project-filter = Verwijder projectfilter
 Remove-taxon-filter = Verwijder taxonfilter
 Remove-this-saved-search = Remove this saved search
 Remove-user-filter = Verwijder gebruikersfilter
-REMOVED-FROM-SAVED-SEARCHES = REMOVED FROM SAVED SEARCHES
+Removed-from-Saved-Searches = Removed from Saved Searches
 Removes-this-observations-taxon = Verwijdert het taxon van deze waarneming
 Removes-your-vote-of-agreement = Verwijdert jouw stem van overeenkomst
 Removes-your-vote-of-disagreement = Verwijdert je stem van meningsverschil
@@ -798,7 +798,7 @@ SAVE-FOR-LATER = OPSLAAN VOOR LATER
 SAVE-LOCATION = LOCATIE OPSLAAN
 Save-this-search = Save this search
 Saved-Observation = Waarneming opgeslagen, in wachtrij om te uploaden
-SAVED-SEARCH-NOT-ADDED-MAXIMUM-OF-X = SAVED SEARCH NOT ADDED, MAXIMUM OF { $count }
+Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
 Saved-searches = Saved searches
 SAVED-SEARCHES = SAVED SEARCHES
 Scientific-Name = Wetenschappelijke naam
