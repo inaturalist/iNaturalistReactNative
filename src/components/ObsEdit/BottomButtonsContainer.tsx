@@ -85,7 +85,7 @@ const BottomButtonsContainer = ( {
       resetMyObsOffsetToRestore( );
       setMyObsOffset( 0 );
     }
-    const shouldUpload = type === UPLOAD || ( wasSynced && unsavedChanges && !isOffline );
+    const shouldUpload = type === UPLOAD || ( wasSynced && !isOffline );
     if ( shouldUpload ) {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
@@ -130,7 +130,6 @@ const BottomButtonsContainer = ( {
     setSavedOrUploadedMultiObsFlow,
     startUploadsFromMultiObsEdit,
     transitionAnimation,
-    unsavedChanges,
     wasSynced,
   ] );
 

@@ -141,13 +141,13 @@ describe( "BottomButtonsContainer", () => {
       expect( mockStartUploadsFromMultiObsEdit ).not.toHaveBeenCalled( );
     } );
 
-    it( "does not upload a synced observation that was not edited", async ( ) => {
+    it( "uploads immediately when an unedited synced observation is saved", async ( ) => {
       useStore.setState( { unsavedChanges: false } );
 
       await saveObservationWithButton( mockObservation, "ObsEdit.saveChangesButton" );
 
-      expect( useStore.getState( ).uploadQueue ).toHaveLength( 0 );
-      expect( mockStartUploadsFromMultiObsEdit ).not.toHaveBeenCalled( );
+      expect( useStore.getState( ).uploadQueue ).toEqual( [mockObservation.uuid] );
+      expect( mockStartUploadsFromMultiObsEdit ).toHaveBeenCalled( );
     } );
 
     it( "does not upload an edited observation that was never synced", async ( ) => {
