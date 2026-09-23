@@ -12,7 +12,7 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   error: string | undefined;
-  handleSyncButtonPress: Function;
+  handleSyncButtonPress: ( ) => void;
   progress: number;
   syncDisabled: boolean;
   showsCancelUploadButton: boolean;
@@ -21,7 +21,7 @@ interface Props {
     text: string;
     styling: string;
   };
-  stopAllUploads: Function;
+  stopAllUploads: ( ) => void;
 }
 
 const SimpleUploadBanner = ( {
