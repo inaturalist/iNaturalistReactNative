@@ -39,7 +39,6 @@ function renderBottomButtonsContainer( props = {} ) {
   return renderComponent(
     <BottomButtonsContainer
       passesEvidenceTest
-      observations={[]}
       currentObservation={mockObservation}
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       transitionAnimation={() => {}}
@@ -55,7 +54,6 @@ describe( "BottomButtonsContainer", () => {
     // expect(
     //   <BottomButtonsContainer
     //     passesEvidenceTest
-    //     observations={[]}
     //     currentObservation={mockObservation}
     //     // eslint-disable-next-line @typescript-eslint/no-empty-function
     //     transitionAnimation={() => {}}
@@ -112,7 +110,6 @@ describe( "BottomButtonsContainer", () => {
     async function saveObservationWithButton( observation, testID ) {
       renderBottomButtonsContainer( {
         currentObservation: observation,
-        observations: [observation],
       } );
       await actor.press( screen.getByTestId( testID ) );
     }
@@ -128,6 +125,16 @@ describe( "BottomButtonsContainer", () => {
 
     it( "does not upload an edited synced observation while offline", async ( ) => {
       useNetInfo.mockReturnValue( { isConnected: false } );
+      useStore.setState( { unsavedChanges: true } );
+
+      await saveObservationWithButton( mockObservation, "ObsEdit.saveButton" );
+
+      expect( useStore.getState( ).uploadQueue ).toHaveLength( 0 );
+      expect( mockStartUploadsFromMultiObsEdit ).not.toHaveBeenCalled( );
+    } );
+
+    it( "does not upload an edited synced observation while signed out", async ( ) => {
+      jest.spyOn( useCurrentUser, "default" ).mockImplementation( ( ) => null );
       useStore.setState( { unsavedChanges: true } );
 
       await saveObservationWithButton( mockObservation, "ObsEdit.saveButton" );

@@ -14,7 +14,7 @@ import {
 import useStore from "stores/useStore";
 
 import type { ButtonType, ButtonTypeNonNull } from "./BottomButtons";
-import BottomButtons, { UPLOAD } from "./BottomButtons";
+import BottomButtons, { SAVE_CHANGES, UPLOAD } from "./BottomButtons";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
@@ -22,7 +22,6 @@ const { useRealm } = RealmContext;
 
 interface Props {
   passesEvidenceTest: boolean;
-  observations: object[];
   currentObservation: RealmObservation;
   transitionAnimation: ( ) => void;
 }
@@ -30,13 +29,13 @@ interface Props {
 const BottomButtonsContainer = ( {
   passesEvidenceTest,
   currentObservation,
-  observations,
   transitionAnimation,
 }: Props ) => {
   const { isConnected } = useNetInfo( );
   const currentUser = useCurrentUser( );
   const cameraRollUris = useStore( state => state.cameraRollUris );
   const unsavedChanges = useStore( state => state.unsavedChanges );
+  const isMultiObs = useStore( state => state.observations.length > 1 );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
@@ -70,7 +69,7 @@ const BottomButtonsContainer = ( {
 
   const setNextScreen = useCallback( async ( type: ButtonTypeNonNull ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
-    if ( savedObservation && observations?.length > 1 ) {
+    if ( savedObservation && isMultiObs ) {
       transitionAnimation();
       setSavedOrUploadedMultiObsFlow( );
     }
@@ -81,7 +80,7 @@ const BottomButtonsContainer = ( {
       resetMyObsOffsetToRestore( );
       setMyObsOffset( 0 );
     }
-    const shouldUpload = type === UPLOAD || ( wasSynced && unsavedChanges && !isOffline );
+    const shouldUpload = type === UPLOAD || ( type === SAVE_CHANGES && unsavedChanges );
     if ( shouldUpload ) {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
@@ -92,11 +91,11 @@ const BottomButtonsContainer = ( {
     }
 
     setButtonPressed( null );
-    if ( observations.length === 1 ) {
+    if ( isMultiObs ) {
+      removeCurrentObservation( );
+    } else {
       // If this is the last observation, we're done
       exitObservationFlow( );
-    } else {
-      removeCurrentObservation( );
     }
   }, [
     addToUploadQueue,
@@ -105,9 +104,8 @@ const BottomButtonsContainer = ( {
     currentObservation,
     exitObservationFlow,
     incrementTotalSavedObservations,
+    isMultiObs,
     isNewObs,
-    isOffline,
-    observations,
     realm,
     removeCurrentObservation,
     resetMyObsOffsetToRestore,
@@ -116,7 +114,6 @@ const BottomButtonsContainer = ( {
     startUploadsFromMultiObsEdit,
     transitionAnimation,
     unsavedChanges,
-    wasSynced,
   ] );
 
   const showMissingEvidence = useCallback( ( ) => {

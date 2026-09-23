@@ -15,9 +15,10 @@ const DROP_SHADOW = getShadow( {
 
 export const UPLOAD = "upload";
 export const SAVE = "save";
+export const SAVE_CHANGES = "saveChanges";
 
-export type ButtonType = typeof SAVE | typeof UPLOAD | null;
-export type ButtonTypeNonNull = typeof SAVE | typeof UPLOAD;
+export type ButtonTypeNonNull = typeof SAVE | typeof SAVE_CHANGES | typeof UPLOAD;
+export type ButtonType = ButtonTypeNonNull | null;
 
 interface Props {
   buttonPressed: ButtonType;
@@ -40,19 +41,18 @@ const BottomButtons = ( {
 }: Props ) => {
   const { t } = useTranslation( );
 
-  const isSaving = buttonPressed === SAVE;
   const disabled = buttonPressed !== null;
 
   const saveChangesButton = (
     <Button
       className="px-[25px]"
-      onPress={( ) => handlePress( SAVE )}
+      onPress={( ) => handlePress( SAVE_CHANGES )}
       testID="ObsEdit.saveChangesButton"
       text={t( "SAVE-CHANGES" )}
       level={showFocusedChangesButton
         ? "focus"
         : "neutral"}
-      loading={isSaving}
+      loading={buttonPressed === SAVE_CHANGES}
       disabled={disabled}
     />
   );
@@ -64,7 +64,7 @@ const BottomButtons = ( {
     testID: "ObsEdit.saveButton",
     disabled,
     level: "neutral",
-    loading: isSaving,
+    loading: buttonPressed === SAVE,
     className: "px-[25px]",
   };
 
