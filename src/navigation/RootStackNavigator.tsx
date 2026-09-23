@@ -20,20 +20,21 @@ const RootStackNavigator = ( ) => {
 
   return (
     <Stack.Navigator screenOptions={{ ...hideHeader, ...preventSwipeToGoBack, animation: "none" }}>
-      {!onboardingShown
-        ? (
-          <Stack.Screen
-            name="OnboardingStackNavigator"
-            component={OnboardingStackNavigator}
-          />
-        )
-        : (
-          <Stack.Screen
-            name="TabNavigator"
-            component={BottomTabNavigator}
-          />
+      {!onboardingShown && (
+        <Stack.Screen
+          name="OnboardingStackNavigator"
+          component={OnboardingStackNavigator}
+        />
+      )}
+      {/*
+        Registered even while onboarding is shown so the carousel can exit to
+        Login with TabNavigator beneath it
+      */}
+      <Stack.Screen
+        name="TabNavigator"
+        component={BottomTabNavigator}
+      />
 
-        )}
       <Stack.Screen
         name="NoBottomTabStackNavigator"
         component={NoBottomTabStackNavigator}
