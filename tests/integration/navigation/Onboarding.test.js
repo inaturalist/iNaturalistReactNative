@@ -10,14 +10,27 @@ import { renderApp } from "tests/helpers/render";
 // working normally
 jest.unmock( "@react-navigation/native" );
 
+// Shared across every caller, like the real MMKV-backed hook, so the root
+// navigator sees the carousel set the flag
+const mockOnboarding = { shown: false, listeners: new Set( ) };
 jest.mock( "sharedHelpers/installData", ( ) => {
   const actual = jest.requireActual( "sharedHelpers/installData" );
-  const { useState } = jest.requireActual( "react" );
+  const { useCallback, useEffect, useState } = jest.requireActual( "react" );
   return {
     ...actual,
     useOnboardingShown: ( ) => {
-      const [shown, setShown] = useState( false );
-      return [shown, setShown];
+      const [shown, setShown] = useState( mockOnboarding.shown );
+      useEffect( ( ) => {
+        const listener = ( ) => setShown( mockOnboarding.shown );
+        mockOnboarding.listeners.add( listener );
+        listener( );
+        return ( ) => { mockOnboarding.listeners.delete( listener ); };
+      }, [] );
+      const setOnboardingShown = useCallback( value => {
+        mockOnboarding.shown = value;
+        mockOnboarding.listeners.forEach( listener => listener( ) );
+      }, [] );
+      return [shown, setOnboardingShown];
     },
     getInstallID: jest.fn( ( ) => "fake-installation-id" ),
     getEnvironmentOverride: jest.fn( ( ) => undefined ),
@@ -44,11 +57,16 @@ describe( "Onboarding", ( ) => {
     jest.spyOn( Image, "prefetch" ).mockResolvedValue( true );
   } );
 
+  beforeEach( ( ) => {
+    mockOnboarding.shown = false;
+  } );
+
   it( "shows the login screen after the carousel is closed", async ( ) => {
     renderApp( );
     await closeCarousel( );
     expect( await screen.findByTestId( "Login.email" ) ).toBeVisible( );
     expect( screen.queryByTestId( "OnboardingCarousel" ) ).toBeNull( );
+    expect( mockOnboarding.shown ).toBe( true );
   } );
 
   it( "shows my observations after closing the login screen", async ( ) => {
