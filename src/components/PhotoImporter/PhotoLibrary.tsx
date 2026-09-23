@@ -251,7 +251,7 @@ const PhotoLibrary = ( ) => {
 
         const updatedObservations = [...observations];
         updatedObservations[currentObservationIndex] = updatedCurrentObservation;
-        updateObservations( updatedObservations );
+        updateObservations( updatedObservations, true );
 
         navToObsEdit();
         setPhotoLibraryShown( false );

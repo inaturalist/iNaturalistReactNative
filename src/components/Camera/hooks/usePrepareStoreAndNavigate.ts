@@ -138,7 +138,7 @@ const usePrepareStoreAndNavigate = ( ) => {
 
     const updatedObservations = [...observations];
     updatedObservations[currentObservationIndex] = updatedCurrentObservation;
-    updateObservations( updatedObservations );
+    updateObservations( updatedObservations, true );
     // Not awaited so navigation isn't blocked; .finally() keeps this after
     // the stages logged above.
     handleSavingToPhotoLibrary(

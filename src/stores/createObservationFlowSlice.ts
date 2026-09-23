@@ -79,7 +79,10 @@ interface ObservationFlowActions {
   setObservations: ( updatedObservations: RealmObservationPojo[] ) => void;
   setPhotoImporterState: ( options: PhotoImporterOptions ) => void;
   setSavedOrUploadedMultiObsFlow: ( ) => void;
-  updateObservations: ( updatedObservations: RealmObservationPojo[] ) => void;
+  updateObservations: (
+    updatedObservations: RealmObservationPojo[],
+    setUnsavedChanges?: boolean,
+  ) => void;
   updateObservationKeys: ( keysAndValues: Partial<RealmObservationPojo> ) => void;
   getCurrentObservation: ( ) => RealmObservationPojo | null;
   prepareObsEdit: ( observation: RealmObservationPojo ) => void;
@@ -283,11 +286,13 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
   } ),
   updateObservations: (
     updatedObservations: RealmObservationPojo[],
+    setUnsavedChanges = false,
   ) => set( state => ( {
     observations: updatedObservations
       .map( observationToJSON )
       .filter( Boolean ) as RealmObservationPojo[],
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
+    ...( setUnsavedChanges && { unsavedChanges: true } ),
   } ) ),
   updateObservationKeys: ( keysAndValues, setUnsavedChanges = true ) => set( state => ( {
     observations: updateObservationKeysWithState( keysAndValues, state ),
