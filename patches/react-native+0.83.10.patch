@@ -42,3 +42,16 @@ index 030ef4d..2a67ffe 100644
            if (key !== nextValue) {
              if (0 === indent && "children" === _key)
                (isDeeplyEqual = "\u00a0\u00a0".repeat(indent) + _key),
+diff --git a/node_modules/react-native/ReactCommon/react/renderer/textlayoutmanager/platform/ios/react/renderer/textlayoutmanager/RCTFontUtils.mm b/node_modules/react-native/ReactCommon/react/renderer/textlayoutmanager/platform/ios/react/renderer/textlayoutmanager/RCTFontUtils.mm
+index 9b04cad..b2b2762 100644
+--- a/node_modules/react-native/ReactCommon/react/renderer/textlayoutmanager/platform/ios/react/renderer/textlayoutmanager/RCTFontUtils.mm
++++ b/node_modules/react-native/ReactCommon/react/renderer/textlayoutmanager/platform/ios/react/renderer/textlayoutmanager/RCTFontUtils.mm
+@@ -361,7 +361,7 @@ static UIFontDescriptorSystemDesign RCTGetFontDescriptorSystemDesign(NSString *f
+       font = [UIFont fontWithName:fontProperties.family size:effectiveFontSize];
+       if (font != nullptr) {
+         fontNames = [UIFont fontNamesForFamilyName:font.familyName];
+-        fontWeight = (fontWeight != 0.0) ?: RCTGetFontWeight(font);
++        fontWeight = (fontWeight != 0.0) ? fontWeight : RCTGetFontWeight(font);
+       } else {
+         // Failback to system font.
+         font = RCTDefaultFontWithFontProperties(fontProperties);
