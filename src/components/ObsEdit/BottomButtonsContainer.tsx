@@ -69,10 +69,6 @@ const BottomButtonsContainer = ( {
 
   const setNextScreen = useCallback( async ( type: ButtonTypeNonNull ) => {
     const savedObservation = await saveObservation( currentObservation, cameraRollUris, realm );
-    if ( savedObservation && isMultiObs ) {
-      transitionAnimation();
-      setSavedOrUploadedMultiObsFlow( );
-    }
     // If we are saving a new observations, reset the stored my obs offset to
     // restore b/c we want MyObs rendered in its default state with this new
     // observation visible at the top
@@ -92,6 +88,8 @@ const BottomButtonsContainer = ( {
 
     setButtonPressed( null );
     if ( isMultiObs ) {
+      transitionAnimation( );
+      setSavedOrUploadedMultiObsFlow( );
       removeCurrentObservation( );
     } else {
       // If this is the last observation, we're done
