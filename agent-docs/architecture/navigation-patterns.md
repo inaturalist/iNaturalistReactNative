@@ -8,8 +8,8 @@ React Navigation 7 with nested NativeStack and BottomTab navigators. All four bo
 
 ```
 RootStackNavigator (NativeStack)
-├── OnboardingStackNavigator (rendered at root when !onboardingShown; replaces the tab navigator, not a modal over it)
-├── BottomTabNavigator (shown when onboarded)
+├── OnboardingStackNavigator (registered first, as the initial route, only when !onboardingShown)
+├── BottomTabNavigator (always registered, so it can sit beneath Login when onboarding exits)
 │   ├── MenuTab → TabStackNavigator (initialRouteName: Menu)
 │   ├── ExploreTab → TabStackNavigator (initialRouteName: RootExplore)
 │   ├── ObservationsTab → TabStackNavigator (initialRouteName: ObsList)
@@ -108,7 +108,7 @@ const { lastScreen, uuid } = params || {};
 
 Manual implementation via React Native's `Linking` API (no React Navigation linking config):
 - Allowed host: `www.inaturalist.org` only
-- `/observations/{id}` → ObsDetails screen
+- `/observations/{id}` → ObsDetails screen, deferred until `onboardingShown` (the reset to TabNavigator would otherwise remove the onboarding carousel)
 - Email confirmed URLs → LoginStackNavigator with `emailConfirmed: true`
 - Fetches observation data from API before navigating
 

@@ -97,8 +97,8 @@ npm run clean-start
 The app uses React Navigation 7 with `@react-navigation/native-stack` and `@react-navigation/bottom-tabs` in a nested hierarchy:
 
 1. **RootStackNavigator** (NativeStack, top level) - `src/navigation/RootStackNavigator.tsx`
-   - **OnboardingStackNavigator** - Rendered in place of the tab navigator when `!onboardingShown` (not a modal over it)
-   - **BottomTabNavigator** - Shown when `onboardingShown`. Contains four tabs:
+   - **OnboardingStackNavigator** - Registered first (so it's the initial route) only when `!onboardingShown`; closing the carousel resets the root to TabNavigator with Login on top
+   - **BottomTabNavigator** - Always registered, so root-level resets to `TabNavigator` succeed even during onboarding and remove the carousel without setting `onboardingShown`; guard such entry points (e.g. deep links in `useLinking`). Contains four tabs:
      - `MenuTab` → TabStackNavigator (initialRouteName: "Menu")
      - `ExploreTab` → TabStackNavigator (initialRouteName: "RootExplore")
      - `ObservationsTab` → TabStackNavigator (initialRouteName: "ObsList")
