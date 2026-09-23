@@ -59,7 +59,6 @@ const BottomButtonsContainer = ( {
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
   const [buttonPressed, setButtonPressed] = useState<ButtonType>( null );
-  const [loading, setLoading] = useState( false );
   const exitObservationFlow = useExitObservationFlow( );
 
   const hasIdentification = currentObservation.taxon
@@ -90,7 +89,6 @@ const BottomButtonsContainer = ( {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
-      if ( observations?.length > 1 ) { transitionAnimation( ); }
       startUploadsFromMultiObsEdit( );
     } else {
       incrementTotalSavedObservations( );
@@ -103,13 +101,11 @@ const BottomButtonsContainer = ( {
     } else if ( currentObservationIndex === observations.length - 1 ) {
       observations.pop( );
       setCurrentObservationIndex( currentObservationIndex - 1, observations );
-      setLoading( false );
       setButtonPressed( null );
     } else {
       observations.splice( currentObservationIndex, 1 );
       // this seems necessary for rerendering the ObsEdit screen
       setCurrentObservationIndex( currentObservationIndex, observations );
-      setLoading( false );
       setButtonPressed( null );
     }
   }, [
@@ -164,7 +160,6 @@ const BottomButtonsContainer = ( {
 
   const handlePress = useCallback( ( type: ButtonTypeNonNull ) => {
     if ( showMissingEvidence( ) ) { return; }
-    setLoading( true );
     setButtonPressed( type );
     setNextScreen( type );
   }, [setNextScreen, showMissingEvidence] );
@@ -185,7 +180,6 @@ const BottomButtonsContainer = ( {
         buttonPressed={buttonPressed}
         canSaveOnly={!currentUser || isOffline}
         handlePress={handlePress}
-        loading={loading}
         showFocusedChangesButton={unsavedChanges}
         showFocusedUploadButton={!!passesTests}
         showHalfOpacity={!passesEvidenceTest}

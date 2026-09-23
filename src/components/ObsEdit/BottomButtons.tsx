@@ -23,7 +23,6 @@ interface Props {
   buttonPressed: ButtonType;
   canSaveOnly: boolean;
   handlePress: ( type: ButtonTypeNonNull ) => void;
-  loading: boolean;
   showFocusedChangesButton: boolean;
   showFocusedUploadButton: boolean;
   showHalfOpacity: boolean;
@@ -34,7 +33,6 @@ const BottomButtons = ( {
   buttonPressed,
   canSaveOnly,
   handlePress,
-  loading,
   showFocusedChangesButton,
   showFocusedUploadButton,
   showHalfOpacity,
@@ -42,7 +40,7 @@ const BottomButtons = ( {
 }: Props ) => {
   const { t } = useTranslation( );
 
-  const isSaving = buttonPressed === SAVE && loading;
+  const isSaving = buttonPressed === SAVE;
   const disabled = buttonPressed !== null;
 
   const saveChangesButton = (
@@ -75,7 +73,7 @@ const BottomButtons = ( {
     onPress: ( ) => handlePress( UPLOAD ),
     isPrimary: true,
     testID: "ObsEdit.uploadButton",
-    loading: buttonPressed === UPLOAD && loading,
+    loading: buttonPressed === UPLOAD,
     level: showFocusedUploadButton
       ? "focus"
       : "neutral",
