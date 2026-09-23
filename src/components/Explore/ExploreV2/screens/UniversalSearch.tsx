@@ -1,5 +1,10 @@
 import { BottomTabBarHeightContext } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
+import {
+  IDENTIFIERS_TAB,
+  OBSERVATIONS_TAB,
+  OBSERVERS_TAB,
+} from "appConstants/tabs";
 import classnames from "classnames";
 import DefaultSearchOptions
   from "components/Explore/ExploreV2/components/DefaultSearchOptions";
@@ -238,7 +243,12 @@ const UniversalSearch = ( ) => {
         filters: defaultExploreV2Filters,
       },
     } );
+    // A standard search carries no filters, so it leaves advanced mode. The
+    // Observers and Identifiers tabs only exist there, so step off them too.
     setAdvancedSearchMode( false );
+    if ( state.activeTab === OBSERVERS_TAB || state.activeTab === IDENTIFIERS_TAB ) {
+      dispatch( { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB, tab: OBSERVATIONS_TAB } );
+    }
     // Record recent subject if it's from an autocomplete result
     if ( selectedSubject && subjectToResult( selectedSubject ) ) {
       recordSubject( selectedSubject );
@@ -252,6 +262,7 @@ const UniversalSearch = ( ) => {
     selectedLocation,
     state.sortBy,
     state.speciesSortBy,
+    state.activeTab,
     dispatch,
     setAdvancedSearchMode,
     navigation,

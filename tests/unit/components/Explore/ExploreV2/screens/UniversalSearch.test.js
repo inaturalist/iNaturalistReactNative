@@ -3,6 +3,10 @@ import { BottomTabBarHeightContext } from "@react-navigation/bottom-tabs";
 import {
   act, fireEvent, screen, userEvent, waitFor,
 } from "@testing-library/react-native";
+import {
+  OBSERVATIONS_TAB,
+  OBSERVERS_TAB,
+} from "appConstants/tabs";
 import UniversalSearch from "components/Explore/ExploreV2/screens/UniversalSearch";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -788,6 +792,19 @@ describe( "UniversalSearch screen", ( ) => {
       await pressSearch( );
 
       expect( useStore.getState( ).exploreV2AdvancedSearch.advancedSearchMode ).toBe( false );
+    } );
+
+    it( "returns to the observations tab from an advanced-only tab", async ( ) => {
+      useStore.getState( ).exploreV2AdvancedSearch.setAdvancedSearchMode( true );
+      mockSearchInForce( { activeTab: OBSERVERS_TAB } );
+      renderComponent( <UniversalSearch /> );
+
+      await pressSearch( );
+
+      expect( mockDispatch ).toHaveBeenCalledWith( {
+        type: "SET_ACTIVE_TAB",
+        tab: OBSERVATIONS_TAB,
+      } );
     } );
 
     it( "commits all organisms + worldwide when nothing is selected", async ( ) => {
