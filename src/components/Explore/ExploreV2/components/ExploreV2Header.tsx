@@ -21,7 +21,6 @@ import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import { useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
 import { useCurrentUser, useTranslation } from "sharedHooks";
-import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -92,8 +91,7 @@ const ExploreV2Header = ( { showBackButton }: Props ) => {
   const currentUser = useCurrentUser( );
   const navigation = useNavigation<ExploreStackScreenProps<"ExploreResults">["navigation"]>( );
   const advancedSearchMode = useStore(
-    ( storeState: ExploreV2AdvancedSearchSlice ) => storeState
-      .exploreV2AdvancedSearch.advancedSearchMode,
+    storeState => storeState.exploreV2AdvancedSearch.advancedSearchMode,
   );
   const searchScreen = advancedSearchMode
     ? "AdvancedSearch"

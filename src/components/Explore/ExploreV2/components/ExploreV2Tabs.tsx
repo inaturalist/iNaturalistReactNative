@@ -16,7 +16,6 @@ import { View } from "components/styledComponents";
 import { EXPLORE_V2_ACTION, useExploreV2 } from "providers/ExploreV2Context";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
-import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
 import useStore from "stores/useStore";
 import colors from "styles/tailwindColors";
 
@@ -36,8 +35,7 @@ const ExploreV2Tabs = ( {
   const { t } = useTranslation( );
   const { state, dispatch } = useExploreV2( );
   const advancedSearchMode = useStore(
-    ( storeState: ExploreV2AdvancedSearchSlice ) => storeState
-      .exploreV2AdvancedSearch.advancedSearchMode,
+    storeState => storeState.exploreV2AdvancedSearch.advancedSearchMode,
   );
 
   const tabs: Tab[] = [
