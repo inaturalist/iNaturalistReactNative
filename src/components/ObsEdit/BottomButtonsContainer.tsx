@@ -46,7 +46,7 @@ const BottomButtonsContainer = ( {
     state => state.incrementTotalSavedObservations,
   );
   const isNewObs = !currentObservation._created_at;
-  const wasSynced = !!currentObservation?._synced_at;
+  const wasSynced = !!currentObservation._synced_at;
   const hasPhotos = currentObservation.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
 
@@ -62,9 +62,7 @@ const BottomButtonsContainer = ( {
 
   const passesTests = passesEvidenceTest && hasIdentification;
 
-  const isOffline = isConnected === false;
-
-  const canUpload = !!currentUser && !isOffline;
+  const canUpload = !!( currentUser && isConnected );
   const { startUploadsFromMultiObsEdit } = useUploadObservations( canUpload );
 
   const setNextScreen = useCallback( async ( type: ButtonTypeNonNull ) => {
@@ -162,7 +160,7 @@ const BottomButtonsContainer = ( {
       )}
       <BottomButtons
         buttonPressed={buttonPressed}
-        canSaveOnly={!currentUser || isOffline}
+        canSaveOnly={!currentUser || !isConnected}
         handlePress={handlePress}
         showFocusedChangesButton={unsavedChanges}
         showFocusedUploadButton={!!passesTests}
