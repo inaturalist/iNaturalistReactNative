@@ -888,7 +888,6 @@ Stop-upload = Остановить загрузку
 Stop-verb = Остановить
 Stops-recording-sound = Останавливает запись звука
 SUBMIT = ОТПРАВИТЬ
-SUBMIT-ID-SUGGESTION = ОТПРАВИТЬ ПРЕДЛОЖЕНИЕ ПО ИДЕНТИФИКАТОРУ
 SUGGEST-ID = ПРЕДЛОЖИТЬ ID
 supporting--identification = Поддерживающая
 Switches-to-tab = Переключается на { $tab } вешалка.

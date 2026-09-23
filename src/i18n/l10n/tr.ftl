@@ -885,7 +885,6 @@ Stop-upload = Yüklemeyi durdur
 Stop-verb = Dur
 Stops-recording-sound = Ses kaydını durdurur
 SUBMIT = GÖNDER
-SUBMIT-ID-SUGGESTION = TANIMLAMA ÖNERİSİNİ GÖNDER
 SUGGEST-ID = TANIMLAMA ÖNER
 supporting--identification = Destekleyici
 Switches-to-tab = { $tab } sekmesine geçer.

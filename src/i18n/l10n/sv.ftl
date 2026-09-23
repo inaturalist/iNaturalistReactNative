@@ -891,7 +891,6 @@ Stop-upload = Stoppa uppladdning
 Stop-verb = Stoppa
 Stops-recording-sound = Stoppar ljudinspelning
 SUBMIT = SKICKA IN
-SUBMIT-ID-SUGGESTION = SKICKA IN FÖRSLAG
 SUGGEST-ID = FÖRESLÅ BESTÄMNING
 supporting--identification = Håller med
 Switches-to-tab = Byter till { $tab }-flik.

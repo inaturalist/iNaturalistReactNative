@@ -891,7 +891,6 @@ Stop-upload = Zatrzymywanie przesyłania
 Stop-verb = Stop
 Stops-recording-sound = Zatrzymuje nagrywanie dźwięku
 SUBMIT = PRZEŚLIJ
-SUBMIT-ID-SUGGESTION = PRZEŚLIJ SUGESTIĘ DOTYCZĄCĄ DOWODU TOŻSAMOŚCI
 SUGGEST-ID = ZAPROPONUJ ID
 supporting--identification = Podtrzymujące
 Switches-to-tab = Przełącza się na { $tab } zakładka.

@@ -885,7 +885,6 @@ Stop-upload = Stop upload
 Stop-verb = შეჩერება
 Stops-recording-sound = Stops recording sound
 SUBMIT = SUBMIT
-SUBMIT-ID-SUGGESTION = ID-ᲘᲡ ᲨᲔᲗᲐᲕᲐᲖᲔᲑᲘᲡ ᲒᲐᲒᲖᲐᲕᲜᲐ
 SUGGEST-ID = SUGGEST ID
 supporting--identification = მხარდამჭერი
 Switches-to-tab = Switches to { $tab } tab.
