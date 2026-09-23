@@ -6,13 +6,13 @@ export const BEGIN_AUTOMATIC_SYNC = "begin-automatic-sync";
 export const MANUAL_SYNC_IN_PROGRESS = "manual-sync-progress";
 export const AUTOMATIC_SYNC_IN_PROGRESS = "automatic-sync-progress";
 
-export type SyncingStatus = typeof SYNC_PENDING
+type SyncingStatus = typeof SYNC_PENDING
   | typeof BEGIN_MANUAL_SYNC
   | typeof BEGIN_AUTOMATIC_SYNC
   | typeof MANUAL_SYNC_IN_PROGRESS
   | typeof AUTOMATIC_SYNC_IN_PROGRESS;
 
-export interface SyncObservationsState {
+interface SyncObservationsState {
   autoSyncAbortController: AbortController | null;
   currentDeleteCount: number;
   deleteError: string | null;
@@ -22,7 +22,7 @@ export interface SyncObservationsState {
   syncingStatus: SyncingStatus;
 }
 
-export interface SyncObservationsSlice extends SyncObservationsState {
+interface SyncObservationsActions {
   addToDeleteQueue: ( uuids: string[] ) => void;
   removeFromDeleteQueue: ( ) => void;
   startNextDeletion: ( ) => void;
@@ -35,6 +35,8 @@ export interface SyncObservationsSlice extends SyncObservationsState {
   startAutomaticSync: ( ) => void;
   completeSync: ( ) => void;
 }
+
+export type SyncObservationsSlice = SyncObservationsState & SyncObservationsActions;
 
 const DEFAULT_STATE: SyncObservationsState = {
   autoSyncAbortController: null,
