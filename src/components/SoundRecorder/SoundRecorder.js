@@ -56,9 +56,7 @@ const SoundRecorder = (): Node => {
   const [resetWarningShown, setResetWarningShown] = useState( false );
   const meteringHistory = useRef( [] );
   const currentObservation = useStore( state => state.currentObservation );
-  const observations = useStore( state => state.observations );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const updateObservations = useStore( state => state.updateObservations );
+  const updateCurrentObservation = useStore( state => state.updateCurrentObservation );
 
   const [
     status,
@@ -83,9 +81,7 @@ const SoundRecorder = (): Node => {
       updatedCurrentObservation = Observation
         .appendObsSounds( [obsSound], updatedCurrentObservation );
 
-      const updatedObservations = [...observations];
-      updatedObservations[currentObservationIndex] = updatedCurrentObservation;
-      updateObservations( updatedObservations, true );
+      updateCurrentObservation( updatedCurrentObservation );
     }
   };
 

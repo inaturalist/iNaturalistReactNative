@@ -53,12 +53,10 @@ const PhotoLibrary = ( ) => {
   const groupedPhotos = useStore(
     ( state: ObservationFlowSlice ) => state.groupedPhotos,
   );
-  const updateObservations = useStore( state => state.updateObservations );
+  const updateCurrentObservation = useStore( state => state.updateCurrentObservation );
   const photoLibraryUris = useStore( state => state.photoLibraryUris );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const currentObservation = useStore( state => state.currentObservation );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const observations = useStore( state => state.observations );
   const numOfObsPhotos: number = currentObservation?.observationPhotos?.length || 0;
   const exitObservationFlow = useExitObservationFlow( );
 
@@ -249,9 +247,7 @@ const PhotoLibrary = ( ) => {
         updatedCurrentObservation = Observation
           .appendObsPhotos( obsPhotos, updatedCurrentObservation );
 
-        const updatedObservations = [...observations];
-        updatedObservations[currentObservationIndex] = updatedCurrentObservation;
-        updateObservations( updatedObservations, true );
+        updateCurrentObservation( updatedCurrentObservation );
 
         navToObsEdit();
         setPhotoLibraryShown( false );
@@ -290,7 +286,6 @@ const PhotoLibrary = ( ) => {
     }
   }, [
     currentObservation,
-    currentObservationIndex,
     evidenceToAdd,
     exitObservationFlow,
     fromGroupPhotos,
@@ -301,13 +296,12 @@ const PhotoLibrary = ( ) => {
     navToObsEdit,
     navBasedOnUserSettings,
     numOfObsPhotos,
-    observations,
     params,
     photoLibraryShown,
     setGroupedPhotos,
     setPhotoImporterState,
     skipGroupPhotos,
-    updateObservations,
+    updateCurrentObservation,
     fromAICamera,
   ] );
 

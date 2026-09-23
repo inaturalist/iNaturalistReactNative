@@ -24,13 +24,11 @@ const usePrepareStoreAndNavigate = ( ) => {
   const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );
   const addEvidence = params?.addEvidence;
   const setObservations = useStore( state => state.setObservations );
-  const updateObservations = useStore( state => state.updateObservations );
+  const updateCurrentObservation = useStore( state => state.updateCurrentObservation );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
   const cameraUris = useStore( state => state.cameraUris );
   const currentObservation = useStore( state => state.currentObservation );
   const addCameraRollUris = useStore( state => state.addCameraRollUris );
-  const currentObservationIndex = useStore( state => state.currentObservationIndex );
-  const observations = useStore( state => state.observations );
   const setSavingPhoto = useStore( state => state.setSavingPhoto );
   const setCameraState = useStore( state => state.setCameraState );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
@@ -136,9 +134,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     const updatedCurrentObservation = Observation
       .appendObsPhotos( obsPhotos, currentObservation );
 
-    const updatedObservations = [...observations];
-    updatedObservations[currentObservationIndex] = updatedCurrentObservation;
-    updateObservations( updatedObservations, true );
+    updateCurrentObservation( updatedCurrentObservation );
     // Not awaited so navigation isn't blocked; .finally() keeps this after
     // the stages logged above.
     handleSavingToPhotoLibrary(
@@ -155,9 +151,7 @@ const usePrepareStoreAndNavigate = ( ) => {
     evidenceToAdd,
     numOfObsPhotos,
     currentObservation,
-    observations,
-    currentObservationIndex,
-    updateObservations,
+    updateCurrentObservation,
     setSentinelFileName,
     handleSavingToPhotoLibrary,
   ] );

@@ -8,13 +8,7 @@ beforeEach( ( ) => {
 } );
 
 describe( "updateObservations", ( ) => {
-  it( "marks the observation as having unsaved changes when asked to", ( ) => {
-    useStore.getState( ).updateObservations( [observation], true );
-
-    expect( useStore.getState( ).unsavedChanges ).toBe( true );
-  } );
-
-  it( "leaves unsaved changes alone by default", ( ) => {
+  it( "does not mark the observation as having unsaved changes", ( ) => {
     useStore.getState( ).updateObservations( [observation] );
 
     expect( useStore.getState( ).unsavedChanges ).toBe( false );
@@ -23,6 +17,33 @@ describe( "updateObservations", ( ) => {
   it( "does not clear unsaved changes made earlier", ( ) => {
     useStore.getState( ).updateObservationKeys( { description: "edited" } );
     useStore.getState( ).updateObservations( [useStore.getState( ).currentObservation] );
+
+    expect( useStore.getState( ).unsavedChanges ).toBe( true );
+  } );
+} );
+
+describe( "updateCurrentObservation", ( ) => {
+  const observations = [
+    factory( "LocalObservation" ),
+    factory( "LocalObservation" ),
+  ];
+
+  beforeEach( ( ) => {
+    useStore.getState( ).updateObservations( observations );
+    useStore.getState( ).setCurrentObservationIndex( 1 );
+  } );
+
+  it( "replaces only the current observation", ( ) => {
+    const updatedObservation = { ...observations[1], description: "edited" };
+    useStore.getState( ).updateCurrentObservation( updatedObservation );
+
+    const state = useStore.getState( );
+    expect( state.observations ).toEqual( [observations[0], updatedObservation] );
+    expect( state.currentObservation ).toEqual( updatedObservation );
+  } );
+
+  it( "marks the observation as having unsaved changes", ( ) => {
+    useStore.getState( ).updateCurrentObservation( observations[1] );
 
     expect( useStore.getState( ).unsavedChanges ).toBe( true );
   } );

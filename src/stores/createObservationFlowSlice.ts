@@ -80,10 +80,8 @@ interface ObservationFlowActions {
   setObservations: ( updatedObservations: RealmObservationPojo[] ) => void;
   setPhotoImporterState: ( options: PhotoImporterOptions ) => void;
   setSavedOrUploadedMultiObsFlow: ( ) => void;
-  updateObservations: (
-    updatedObservations: RealmObservationPojo[],
-    setUnsavedChanges?: boolean,
-  ) => void;
+  updateCurrentObservation: ( updatedObservation: RealmObservationPojo ) => void;
+  updateObservations: ( updatedObservations: RealmObservationPojo[] ) => void;
   updateObservationKeys: ( keysAndValues: Partial<RealmObservationPojo> ) => void;
   getCurrentObservation: ( ) => RealmObservationPojo | null;
   prepareObsEdit: ( observation: RealmObservationPojo ) => void;
@@ -298,15 +296,22 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
   setSavedOrUploadedMultiObsFlow: ( ) => set( {
     savedOrUploadedMultiObsFlow: true,
   } ),
+  updateCurrentObservation: ( updatedObservation: RealmObservationPojo ) => set( state => {
+    const observations = [...state.observations];
+    observations[state.currentObservationIndex] = updatedObservation;
+    return {
+      observations,
+      currentObservation: updatedObservation,
+      unsavedChanges: true,
+    };
+  } ),
   updateObservations: (
     updatedObservations: RealmObservationPojo[],
-    setUnsavedChanges = false,
   ) => set( state => ( {
     observations: updatedObservations
       .map( observationToJSON )
       .filter( Boolean ) as RealmObservationPojo[],
     currentObservation: observationToJSON( updatedObservations[state.currentObservationIndex] ),
-    ...( setUnsavedChanges && { unsavedChanges: true } ),
   } ) ),
   updateObservationKeys: ( keysAndValues, setUnsavedChanges = true ) => set( state => ( {
     observations: updateObservationKeysWithState( keysAndValues, state ),
