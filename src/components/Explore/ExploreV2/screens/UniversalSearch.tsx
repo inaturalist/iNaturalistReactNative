@@ -40,6 +40,7 @@ import type {
   Place,
 } from "providers/ExploreV2Context";
 import {
+  defaultExploreV2Filters,
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
   useExploreV2,
@@ -96,6 +97,9 @@ const UniversalSearch = ( ) => {
 
   const recordSubject = useStore( state => state.exploreRecentSearches.recordSubject );
   const recordPlace = useStore( state => state.exploreRecentSearches.recordPlace );
+  const setAdvancedSearchMode = useStore(
+    state => state.exploreV2AdvancedSearch.setAdvancedSearchMode,
+  );
 
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
   const tabBarHeight = useContext( BottomTabBarHeightContext ) ?? 0;
@@ -231,9 +235,10 @@ const UniversalSearch = ( ) => {
         location: selectedLocation ?? { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
         sortBy: state.sortBy,
         speciesSortBy: state.speciesSortBy,
-        filters: state.filters,
+        filters: defaultExploreV2Filters,
       },
     } );
+    setAdvancedSearchMode( false );
     // Record recent subject if it's from an autocomplete result
     if ( selectedSubject && subjectToResult( selectedSubject ) ) {
       recordSubject( selectedSubject );
@@ -247,8 +252,8 @@ const UniversalSearch = ( ) => {
     selectedLocation,
     state.sortBy,
     state.speciesSortBy,
-    state.filters,
     dispatch,
+    setAdvancedSearchMode,
     navigation,
     recordSubject,
     recordPlace,
@@ -378,7 +383,7 @@ const UniversalSearch = ( ) => {
           </View>
           <View className="mt-3 items-end">
             <Body3
-              onPress={( ) => navigation.navigate( "AdvancedSearch" )}
+              onPress={( ) => navigation.replace( "AdvancedSearch" )}
               style={UNDERLINE_STYLE}
             >
               {t( "Advanced-Search" )}

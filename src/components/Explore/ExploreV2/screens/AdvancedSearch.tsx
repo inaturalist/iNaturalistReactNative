@@ -304,6 +304,13 @@ const AdvancedSearch = ( ) => {
       />
 
       <ScrollView className="py-4">
+        <View className="px-4 mb-7">
+          <Button
+            text={t( "RETURN-TO-STANDARD-SEARCH" )}
+            onPress={( ) => navigation.replace( "UniversalSearch" )}
+            testID="AdvancedSearch.returnToStandardSearch"
+          />
+        </View>
         {savedSearchCount > 0 && (
           <View className="mb-7">
             <Heading4 className="px-4 mb-5">{t( "SAVED-SEARCHES" )}</Heading4>
