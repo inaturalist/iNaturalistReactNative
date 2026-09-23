@@ -13,18 +13,18 @@ import React from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  error: ?string,
-  handleSyncButtonPress: Function,
-  progress: number,
-  syncDisabled: boolean,
-  showsCancelUploadButton: boolean,
-  showsCheckmark: boolean,
+interface Props {
+  error: ?string;
+  handleSyncButtonPress: Function;
+  progress: number;
+  syncDisabled: boolean;
+  showsCancelUploadButton: boolean;
+  showsCheckmark: boolean;
   status: {
-    text: string,
-    styling: string
-  },
-  stopAllUploads: Function
+    text: string;
+    styling: string;
+  };
+  stopAllUploads: Function;
 }
 
 const SimpleUploadBanner = ( {
