@@ -160,10 +160,8 @@ const ObsEdit = ( ): Node => {
         {currentObservation && (
           <BottomButtonsContainer
             currentObservation={currentObservation}
-            currentObservationIndex={currentObservationIndex}
             observations={observations}
             passesEvidenceTest={passesEvidenceTest}
-            setCurrentObservationIndex={setCurrentObservationIndex}
             transitionAnimation={fade}
           />
         )}

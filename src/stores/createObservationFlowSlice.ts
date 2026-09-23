@@ -69,6 +69,7 @@ interface ObservationFlowState {
 interface ObservationFlowActions {
   deletePhotoFromObservation: ( uri: string ) => void;
   deleteSoundFromObservation: ( uri: string ) => void;
+  removeCurrentObservation: ( ) => void;
   resetObservationFlowSlice: ( ) => void;
   addCameraRollUris: ( uris: string[] ) => void;
   setSavingPhoto: ( saving: boolean ) => void;
@@ -226,6 +227,19 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
       observations: newObservations,
       currentObservation: newObservation,
       unsavedChanges: true,
+    };
+  } ),
+  removeCurrentObservation: ( ) => set( state => {
+    const observations = state.observations
+      .filter( ( _, index ) => index !== state.currentObservationIndex );
+    const currentObservationIndex = Math.max(
+      0,
+      Math.min( state.currentObservationIndex, observations.length - 1 ),
+    );
+    return {
+      observations,
+      currentObservationIndex,
+      currentObservation: observations[currentObservationIndex] || null,
     };
   } ),
   resetObservationFlowSlice: ( ) => set( DEFAULT_STATE ),

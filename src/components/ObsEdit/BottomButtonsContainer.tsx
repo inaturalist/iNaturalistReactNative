@@ -24,17 +24,13 @@ interface Props {
   passesEvidenceTest: boolean;
   observations: object[];
   currentObservation: RealmObservation;
-  currentObservationIndex: number;
-  setCurrentObservationIndex: ( index: number, observations: object[] ) => void;
   transitionAnimation: ( ) => void;
 }
 
 const BottomButtonsContainer = ( {
   passesEvidenceTest,
   currentObservation,
-  currentObservationIndex,
   observations,
-  setCurrentObservationIndex,
   transitionAnimation,
 }: Props ) => {
   const { isConnected } = useNetInfo( );
@@ -45,6 +41,7 @@ const BottomButtonsContainer = ( {
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
+  const removeCurrentObservation = useStore( state => state.removeCurrentObservation );
   const setSavedOrUploadedMultiObsFlow = useStore( state => state.setSavedOrUploadedMultiObsFlow );
   const incrementTotalSavedObservations = useStore(
     state => state.incrementTotalSavedObservations,
@@ -94,34 +91,26 @@ const BottomButtonsContainer = ( {
       incrementTotalSavedObservations( );
     }
 
+    setButtonPressed( null );
     if ( observations.length === 1 ) {
-      setButtonPressed( null );
       // If this is the last observation, we're done
       exitObservationFlow( );
-    } else if ( currentObservationIndex === observations.length - 1 ) {
-      observations.pop( );
-      setCurrentObservationIndex( currentObservationIndex - 1, observations );
-      setButtonPressed( null );
     } else {
-      observations.splice( currentObservationIndex, 1 );
-      // this seems necessary for rerendering the ObsEdit screen
-      setCurrentObservationIndex( currentObservationIndex, observations );
-      setButtonPressed( null );
+      removeCurrentObservation( );
     }
   }, [
     addToUploadQueue,
     addTotalToolbarIncrements,
     cameraRollUris,
     currentObservation,
-    currentObservationIndex,
     exitObservationFlow,
     incrementTotalSavedObservations,
     isNewObs,
     isOffline,
     observations,
     realm,
+    removeCurrentObservation,
     resetMyObsOffsetToRestore,
-    setCurrentObservationIndex,
     setMyObsOffset,
     setSavedOrUploadedMultiObsFlow,
     startUploadsFromMultiObsEdit,

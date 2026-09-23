@@ -41,8 +41,6 @@ function renderBottomButtonsContainer( props = {} ) {
       passesEvidenceTest
       observations={[]}
       currentObservation={mockObservation}
-      currentObservationIndex={0}
-      setCurrentObservationIndex={0}
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       transitionAnimation={() => {}}
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -59,8 +57,6 @@ describe( "BottomButtonsContainer", () => {
     //     passesEvidenceTest
     //     observations={[]}
     //     currentObservation={mockObservation}
-    //     currentObservationIndex={0}
-    //     setCurrentObservationIndex={0}
     //     // eslint-disable-next-line @typescript-eslint/no-empty-function
     //     transitionAnimation={() => {}}
     //     // eslint-disable-next-line react/jsx-props-no-spreading
@@ -117,7 +113,6 @@ describe( "BottomButtonsContainer", () => {
       renderBottomButtonsContainer( {
         currentObservation: observation,
         observations: [observation],
-        setCurrentObservationIndex: jest.fn( ),
       } );
       await actor.press( screen.getByTestId( testID ) );
     }
