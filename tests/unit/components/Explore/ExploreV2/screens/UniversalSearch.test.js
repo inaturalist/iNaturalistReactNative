@@ -8,11 +8,14 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import React from "react";
 import { Keyboard, StyleSheet } from "react-native";
+import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import useStore from "stores/useStore";
 import { renderComponent } from "tests/helpers/render";
 
 const mockNavigate = jest.fn( );
 const mockPopTo = jest.fn( );
+const mockReplace = jest.fn( );
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -20,6 +23,7 @@ jest.mock( "@react-navigation/native", ( ) => {
     useNavigation: ( ) => ( {
       navigate: mockNavigate,
       popTo: mockPopTo,
+      replace: mockReplace,
       goBack: jest.fn( ),
       canGoBack: ( ) => true,
     } ),
@@ -34,7 +38,11 @@ jest.mock( "providers/ExploreV2Context", ( ) => {
     useExploreV2: jest.fn( ),
   };
 } );
-const { useExploreV2, EXPLORE_V2_PLACE_MODE } = require( "providers/ExploreV2Context" );
+const {
+  defaultExploreV2Filters,
+  useExploreV2,
+  EXPLORE_V2_PLACE_MODE,
+} = require( "providers/ExploreV2Context" );
 
 jest.mock( "components/Explore/ExploreV2/hooks/useUniversalSearch" );
 const useUniversalSearch = require(
@@ -219,7 +227,9 @@ beforeEach( ( ) => {
   recents( ).clearRecents( );
   mockNavigate.mockClear( );
   mockPopTo.mockClear( );
+  mockReplace.mockClear( );
   mockDispatch.mockClear( );
+  useStore.getState( ).exploreV2AdvancedSearch.setAdvancedSearchMode( false );
   mockRequestLocationPermissions.mockClear( );
   fetchCoarseUserLocation.mockReset( );
   // Default to location permission granted; the no-permission case overrides this.
@@ -716,12 +726,12 @@ describe( "UniversalSearch screen", ( ) => {
     } );
   } );
 
-  it( "navigates to Advanced Search", async ( ) => {
+  it( "switches to Advanced Search in place", async ( ) => {
     renderComponent( <UniversalSearch /> );
 
     await actor.press( screen.getByText( i18next.t( "Advanced-Search" ) ) );
 
-    expect( mockNavigate ).toHaveBeenCalledWith( "AdvancedSearch" );
+    expect( mockReplace ).toHaveBeenCalledWith( "AdvancedSearch" );
   } );
 
   describe( "search submission", ( ) => {
@@ -752,6 +762,32 @@ describe( "UniversalSearch screen", ( ) => {
       await pressSearch( );
 
       expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
+    } );
+
+    it( "clears filters but keeps the sort order in effect", async ( ) => {
+      mockSearchInForce( {
+        sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST,
+        speciesSortBy: SPECIES_SORT.COUNT_ASC,
+        filters: { ...defaultExploreV2Filters, casual: true },
+      } );
+      renderComponent( <UniversalSearch /> );
+
+      await pressSearch( );
+
+      expectCommitted( {
+        sortBy: OBSERVATIONS_SORT.DATE_UPLOADED_OLDEST,
+        speciesSortBy: SPECIES_SORT.COUNT_ASC,
+        filters: defaultExploreV2Filters,
+      } );
+    } );
+
+    it( "leaves advanced search mode", async ( ) => {
+      useStore.getState( ).exploreV2AdvancedSearch.setAdvancedSearchMode( true );
+      renderComponent( <UniversalSearch /> );
+
+      await pressSearch( );
+
+      expect( useStore.getState( ).exploreV2AdvancedSearch.advancedSearchMode ).toBe( false );
     } );
 
     it( "commits all organisms + worldwide when nothing is selected", async ( ) => {
