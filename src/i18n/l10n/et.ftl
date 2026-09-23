@@ -885,7 +885,6 @@ Stop-upload = Katkesta üleslaadimine
 Stop-verb = Peata
 Stops-recording-sound = Lõpetab heli salvestamise
 SUBMIT = SAADA
-SUBMIT-ID-SUGGESTION = PAKU MÄÄRATLUS
 SUGGEST-ID = PAKU MÄÄRATLUS
 supporting--identification = Toetab
 Switches-to-tab = Läheb sakki { $tab }

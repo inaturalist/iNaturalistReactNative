@@ -885,7 +885,6 @@ Stop-upload = Detener carga
 Stop-verb = Detener
 Stops-recording-sound = Detiene la grabación de sonido
 SUBMIT = ENVIAR
-SUBMIT-ID-SUGGESTION = ENVIAR SUGERENCIA DE ID
 SUGGEST-ID = SUGERIR ID
 supporting--identification = Coincidente
 Switches-to-tab = Cambia a la pestaña { $tab }

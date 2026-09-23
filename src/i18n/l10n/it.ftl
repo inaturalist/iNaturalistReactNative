@@ -885,7 +885,6 @@ Stop-upload = Termina caricamento
 Stop-verb = Interrompi
 Stops-recording-sound = Interrompe la registrazione del suono
 SUBMIT = INVIA
-SUBMIT-ID-SUGGESTION = INVIA SUGGERIMENTO ID
 SUGGEST-ID = SUGGERISCI ID
 supporting--identification = Di conferma
 Switches-to-tab = Passa a { $tab } scheda.

@@ -890,7 +890,6 @@ Stop-upload = アップロード中止
 Stop-verb = 停止
 Stops-recording-sound = Stops recording sound
 SUBMIT = SUBMIT
-SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 supporting--identification = サポート
 Switches-to-tab = Switches to { $tab } tab.

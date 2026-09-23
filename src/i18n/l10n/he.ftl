@@ -885,7 +885,6 @@ Stop-upload = הפסקת סנכרון
 Stop-verb = עצור
 Stops-recording-sound = מפסיק להקליט קול
 SUBMIT = שליחה
-SUBMIT-ID-SUGGESTION = הגשת הצעת הזיהוי
 SUGGEST-ID = הצעת זיהוי
 supporting--identification = תומך
 Switches-to-tab = עובר ללשונית { $tab }.

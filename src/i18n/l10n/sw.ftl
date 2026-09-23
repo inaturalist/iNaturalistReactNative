@@ -885,7 +885,6 @@ Stop-upload = Stop upload
 Stop-verb = Simama
 Stops-recording-sound = Stops recording sound
 SUBMIT = SUBMIT
-SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 supporting--identification = Supporting
 Switches-to-tab = Switches to { $tab } tab.

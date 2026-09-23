@@ -885,7 +885,6 @@ Stop-upload = Zastavit nahrávání
 Stop-verb = Zastavit
 Stops-recording-sound = Zastaví nahrávání zvuku
 SUBMIT = ODESLAT
-SUBMIT-ID-SUGGESTION = ODESLAT NÁVRH ID
 SUGGEST-ID = NAVRHNOUT ID
 supporting--identification = Podpora
 Switches-to-tab = Přepne na kartu { $tab }.

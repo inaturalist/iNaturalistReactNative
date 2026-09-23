@@ -885,7 +885,6 @@ Stop-upload = 停止上傳
 Stop-verb = 停止
 Stops-recording-sound = 停止錄音
 SUBMIT = 提出
-SUBMIT-ID-SUGGESTION = 提出物種鑑定
 SUGGEST-ID = 建議物種
 supporting--identification = 支持
 Switches-to-tab = 切換到{ $tab }分頁
