@@ -6,8 +6,6 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches:
-      - 'main'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -195,7 +193,7 @@ jobs:
       continue-on-error: true
       id: first_test_run
       run: |
-        npm run e2e:test:ios
+        npm run e2e:test -- --debug-synchronization 3000 --loglevel trace
 
     - name: Run e2e test (retry, with logs)
       # if first_test_run fails, but we `continue-on-error`, failure() is false. so we need to check it's specific _outcome_
@@ -215,14 +213,14 @@ jobs:
         path: artifacts
         retention-days: 5
 
-  notify:
-    name: Notify Slack
-    needs: test
-    if: ${{ success() || failure() }}
-    runs-on: macos-26
-    steps:
-      - uses: iRoachie/slack-github-actions@v2.3.0
-        if: env.SLACK_WEBHOOK_URL != null
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # notify:
+  #   name: Notify Slack
+  #   needs: test
+  #   if: ${{ success() || failure() }}
+  #   runs-on: macos-26
+  #   steps:
+  #     - uses: iRoachie/slack-github-actions@v2.3.0
+  #       if: env.SLACK_WEBHOOK_URL != null
+  #       env:
+  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
