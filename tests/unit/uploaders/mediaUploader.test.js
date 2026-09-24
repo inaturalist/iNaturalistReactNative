@@ -1,12 +1,12 @@
 import { createOrUpdateEvidence } from "api/observations";
 import inatjs from "inaturalistjs";
-import { prepareMediaForUpload } from "uploaders";
+import prepareMediaForUpload from "uploaders/dataTransformation/prepareMediaForUpload";
 import { attachMediaToObservation, uploadObservationMedia } from "uploaders/mediaUploader";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 
 jest.mock( "api/observations" );
 jest.mock( "inaturalistjs" );
-jest.mock( "uploaders" );
+jest.mock( "uploaders/dataTransformation/prepareMediaForUpload" );
 jest.mock( "uploaders/utils/progressTracker" );
 
 const mockedCreateOrUpdateEvidence = jest.mocked( createOrUpdateEvidence );
