@@ -98,7 +98,7 @@ The app uses React Navigation 7 with `@react-navigation/native-stack` and `@reac
 
 1. **RootStackNavigator** (NativeStack, top level) - `src/navigation/RootStackNavigator.tsx`
    - **OnboardingStackNavigator** - Registered first (so it's the initial route) only when `!onboardingShown`; closing the carousel resets the root to TabNavigator with Login on top
-   - **BottomTabNavigator** - Always registered, so root-level resets to `TabNavigator` succeed even during onboarding and remove the carousel without setting `onboardingShown`; guard such entry points (e.g. deep links in `useLinking`). Contains four tabs:
+   - **BottomTabNavigator** - Always registered, because the carousel's exit reset targets `TabNavigator` before `onboardingShown` flips (React Navigation drops a reset naming an unregistered route). As a result, any root-level reset to `TabNavigator` during onboarding removes the carousel without setting `onboardingShown` — including `/observations/{id}` deep links via `navigateToObsDetails`, which are intentionally left unguarded. Contains four tabs:
      - `MenuTab` → TabStackNavigator (initialRouteName: "Menu")
      - `ExploreTab` → TabStackNavigator (initialRouteName: "RootExplore")
      - `ObservationsTab` → TabStackNavigator (initialRouteName: "ObsList")

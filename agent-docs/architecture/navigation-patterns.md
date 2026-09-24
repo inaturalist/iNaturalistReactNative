@@ -108,7 +108,7 @@ const { lastScreen, uuid } = params || {};
 
 Manual implementation via React Native's `Linking` API (no React Navigation linking config):
 - Allowed host: `www.inaturalist.org` only
-- `/observations/{id}` → ObsDetails screen, deferred until `onboardingShown` (the reset to TabNavigator would otherwise remove the onboarding carousel)
+- `/observations/{id}` → ObsDetails screen. Not deferred during onboarding: the reset to TabNavigator removes the carousel without setting `onboardingShown`, so the carousel returns on next launch
 - Email confirmed URLs → LoginStackNavigator with `emailConfirmed: true`
 - Fetches observation data from API before navigating
 
