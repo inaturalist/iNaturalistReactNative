@@ -1,5 +1,3 @@
-// @flow
-
 import classnames from "classnames";
 import {
   Body2,
@@ -8,23 +6,22 @@ import {
   UploadProgressBar,
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  error: ?string,
-  handleSyncButtonPress: Function,
-  progress: number,
-  syncDisabled: boolean,
-  showsCancelUploadButton: boolean,
-  showsCheckmark: boolean,
+interface Props {
+  error: string | undefined;
+  handleSyncButtonPress: ( ) => void;
+  progress: number;
+  syncDisabled: boolean;
+  showsCancelUploadButton: boolean;
+  showsCheckmark: boolean;
   status: {
-    text: string,
-    styling: string
-  },
-  stopAllUploads: Function
+    text: string;
+    styling: string;
+  };
+  stopAllUploads: ( ) => void;
 }
 
 const SimpleUploadBanner = ( {
@@ -36,7 +33,7 @@ const SimpleUploadBanner = ( {
   showsCheckmark = false,
   status,
   stopAllUploads,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
 
   const isWhiteOnGreenStyling = status.styling === "white-on-green";
