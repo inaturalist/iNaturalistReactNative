@@ -20,7 +20,7 @@ interface TotalUploadProgress {
   totalProgress: number;
 }
 
-export interface UploadObservationsSlice {
+interface UploadObservationsState {
   abortController: AbortController | null;
   currentUpload: RealmObservation | null;
   errorsByUuid: object;
@@ -34,7 +34,29 @@ export interface UploadObservationsSlice {
   uploadStatus: UploadStatus;
 }
 
-const DEFAULT_STATE: UploadObservationsSlice = {
+interface UploadObservationsActions {
+  resetUploadObservationsSlice: ( ) => void;
+  addUploadError: ( error: string, obsUUID: string ) => void;
+  stopAllUploads: ( ) => void;
+  setCannotUploadObservations: ( ) => void;
+  setStartUploadObservations: ( ) => void;
+  completeUploads: ( ) => void;
+  updateTotalUploadProgress: ( uuid: string, increment: number ) => void;
+  setUploadStatus: ( uploadStatus: UploadStatus ) => void;
+  addToUploadQueue: ( uuids: string | string[] ) => void;
+  removeFromUploadQueue: ( ) => void;
+  setCurrentUpload: ( observation: RealmObservation ) => void;
+  setTotalToolbarIncrements: ( queuedObservations: RealmObservation[] ) => void;
+  addTotalToolbarIncrements: ( observation: RealmObservation | null ) => void;
+  removeDeletedObsFromUploadQueue: ( uuid: string ) => void;
+  getTotalUploadErrors: ( ) => number;
+  getNumUploadedWithoutErrors: ( ) => number;
+  getCompletedUploads: ( ) => number;
+}
+
+export type UploadObservationsSlice = UploadObservationsState & UploadObservationsActions;
+
+const DEFAULT_STATE: UploadObservationsState = {
   abortController: null,
   currentUpload: null,
   errorsByUuid: {},
@@ -51,7 +73,10 @@ const DEFAULT_STATE: UploadObservationsSlice = {
   uploadStatus: UPLOAD_PENDING,
 };
 
-const countEvidenceIncrements = ( upload, evidence ) => {
+const countEvidenceIncrements = (
+  upload: RealmObservation | null,
+  evidence: "observationPhotos" | "observationSounds",
+): number => {
   const evidenceToUpload = upload?.[evidence];
   if ( evidenceToUpload && evidenceToUpload.length > 0 ) {
     const evidenceNeedsUpdate = evidenceToUpload
@@ -66,30 +91,37 @@ const countEvidenceIncrements = ( upload, evidence ) => {
   return 0;
 };
 
-const countTotalIncrements = upload => 1
+const countTotalIncrements = ( upload: RealmObservation | null ): number => 1
   + countEvidenceIncrements( upload, "observationPhotos" )
   + countEvidenceIncrements( upload, "observationSounds" );
 
-const createUploadProgressObj = ( upload, increment ) => ( {
+const createUploadProgressObj = ( upload: RealmObservation, increment: number ) => ( {
   uuid: upload.uuid,
   currentIncrements: increment,
   totalIncrements: countTotalIncrements( upload ),
 } );
 
-const countMappedIncrements = list => list.reduce(
+const countMappedIncrements = ( list: number[] ): number => list.reduce(
   ( count, current ) => count + Number( current ),
   0,
 );
 
-const setCurrentToolbarIncrements = totalUploadProgress => countMappedIncrements(
+const setCurrentToolbarIncrements = (
+  totalUploadProgress: TotalUploadProgress[],
+): number => countMappedIncrements(
   totalUploadProgress.map( u => u.currentIncrements ),
 );
 
-const calculateTotalToolbarIncrements = uploads => countMappedIncrements(
+const calculateTotalToolbarIncrements = (
+  uploads: ( RealmObservation | null )[],
+): number => countMappedIncrements(
   uploads.map( u => countTotalIncrements( u ) ),
 );
 
-const setTotalToolbarProgress = ( totalToolbarIncrements, totalUploadProgress ) => (
+const setTotalToolbarProgress = (
+  totalToolbarIncrements: number,
+  totalUploadProgress: TotalUploadProgress[],
+): number => (
   totalToolbarIncrements > 0
     ? setCurrentToolbarIncrements( totalUploadProgress ) / totalToolbarIncrements
     : 0
