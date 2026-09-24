@@ -6,14 +6,12 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import navigateToObsDetails from "components/ObsDetails/helpers/navigateToObsDetails";
 import { useCallback, useEffect, useState } from "react";
 import { Linking } from "react-native";
-import { useOnboardingShown } from "sharedHelpers/installData";
 
 const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
 const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
 
 const useLinking = ( currentUser?: object ) => {
   const navigation = useNavigation( );
-  const [onboardingShown] = useOnboardingShown( );
   const [observationId, setObservationId] = useState<string | null>( null );
 
   const navigateConfirmedUser = useCallback( ( ) => {
@@ -80,10 +78,10 @@ const useLinking = ( currentUser?: object ) => {
   }, [handleUrl] );
 
   useEffect( ( ) => {
-    if ( observationId && onboardingShown ) {
+    if ( observationId ) {
       navigateToObservations( );
     }
-  }, [observationId, onboardingShown, navigateToObservations] );
+  }, [observationId, navigateToObservations] );
 };
 
 export default useLinking;
