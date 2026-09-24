@@ -55,15 +55,20 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
 
   const pages = data?.pages;
   const allResults = pages?.map( page => page?.results );
-  const projects = flatten( allResults ).sort( ( a, b ) => {
-    if ( a.title < b.title ) {
-      return -1;
-    }
-    if ( a.title > b.title ) {
-      return 1;
-    }
-    return 0;
-  } );
+  const flattenedProjects = flatten( allResults );
+  // If the server has a requested order, keep it (e.g. Nearby tab's order_by=distance);
+  // otherwise, alphabetize
+  const projects = baseParams.order_by
+    ? flattenedProjects
+    : flattenedProjects.sort( ( a, b ) => {
+      if ( a.title < b.title ) {
+        return -1;
+      }
+      if ( a.title > b.title ) {
+        return 1;
+      }
+      return 0;
+    } );
 
   return {
     isFetching,
