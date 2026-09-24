@@ -14,6 +14,8 @@ const mockObservation = factory( "LocalObservation", {
 
 const mockUser = factory( "LocalUser" );
 
+const defaultUseNetInfo = useNetInfo.getMockImplementation( );
+
 const mockStartUploadsFromMultiObsEdit = jest.fn( );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
@@ -108,13 +110,14 @@ describe( "BottomButtonsContainer", () => {
     } );
 
     afterEach( ( ) => {
-      useNetInfo.mockReturnValue( { isConnected: true } );
+      useNetInfo.mockImplementation( defaultUseNetInfo );
     } );
 
-    async function saveObservationWithButton( observation, testID ) {
+    async function saveObservationWithButton( observation, testID, props = {} ) {
       renderBottomButtonsContainer( {
         currentObservation: observation,
         observations: [observation],
+        ...props,
       } );
       await actor.press( screen.getByTestId( testID ) );
     }
@@ -127,7 +130,13 @@ describe( "BottomButtonsContainer", () => {
     } );
 
     it( "does not upload an edited synced observation while offline", async ( ) => {
-      useNetInfo.mockReturnValue( { isConnected: false } );
+      useNetInfo.mockReturnValue( {
+        ...defaultUseNetInfo( ),
+        type: "none",
+        isConnected: false,
+        isInternetReachable: false,
+        details: null,
+      } );
 
       await saveObservationWithButton( mockObservation, "ObsEdit.saveButton" );
 
