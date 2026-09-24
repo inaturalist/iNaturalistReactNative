@@ -8,6 +8,17 @@ const dirtyPo = ( overrides = {} ) => factory( "LocalProjectObservation", {
   ...overrides,
 } );
 
+const unsyncedObsPhoto = ( overrides = {} ) => factory( "LocalObservationPhoto", {
+  wasSynced: jest.fn( () => false ),
+  ...overrides,
+} );
+
+const syncedObsPhoto = ( overrides = {} ) => factory( "LocalObservationPhoto", {
+  wasSynced: jest.fn( () => true ),
+  needsSync: jest.fn( () => true ),
+  ...overrides,
+} );
+
 beforeEach( () => {
   useStore.getState().resetUploadObservationsSlice( );
 } );
@@ -65,5 +76,44 @@ describe( "setTotalToolbarIncrements", ( ) => {
     useStore.getState().setTotalToolbarIncrements( [observation] );
 
     expect( useStore.getState().totalToolbarIncrements ).toBe( 1 );
+  } );
+
+  it( "adds 1 increment per unsynced observation photo", ( ) => {
+    const observation = factory( "LocalObservation", {
+      observationPhotos: [unsyncedObsPhoto( )],
+      observationSounds: [],
+      projectObservations: [],
+    } );
+
+    useStore.getState().setTotalToolbarIncrements( [observation] );
+
+    expect( useStore.getState().totalToolbarIncrements ).toBe( 2 );
+  } );
+
+  it( "adds 1 increment per each unsynced observation photo", ( ) => {
+    const observation = factory( "LocalObservation", {
+      observationPhotos: [
+        unsyncedObsPhoto( ),
+        unsyncedObsPhoto( ),
+      ],
+      observationSounds: [],
+      projectObservations: [],
+    } );
+
+    useStore.getState().setTotalToolbarIncrements( [observation] );
+
+    expect( useStore.getState().totalToolbarIncrements ).toBe( 3 );
+  } );
+
+  it( "adds half an increment for a previously synced observation photo", ( ) => {
+    const observation = factory( "LocalObservation", {
+      observationPhotos: [syncedObsPhoto( )],
+      observationSounds: [],
+      projectObservations: [],
+    } );
+
+    useStore.getState().setTotalToolbarIncrements( [observation] );
+
+    expect( useStore.getState().totalToolbarIncrements ).toBe( 1.5 );
   } );
 } );
