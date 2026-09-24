@@ -7,6 +7,7 @@ import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
 jest.mock( "api/observations" );
 jest.mock( "inaturalistjs" );
 jest.mock( "uploaders/dataTransformation/prepareMediaForUpload" );
+jest.mock( "uploaders/utils/realmSync" );
 jest.mock( "uploaders/utils/progressTracker" );
 
 const mockedCreateOrUpdateEvidence = jest.mocked( createOrUpdateEvidence );
