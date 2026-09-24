@@ -1,16 +1,16 @@
 import * as observationFieldValuesApi from "api/observationFieldValues";
 import * as projectObservationsApi from "api/projectObservations";
 import factory, { makeResponse } from "tests/factory";
-import { markRecordUploaded } from "uploaders";
 import {
   filterDirtyOfvs,
   filterDirtyPos,
   uploadProjectChildren,
 } from "uploaders/projectChildrenUploader";
+import markRecordUploaded from "uploaders/utils/realmSync";
 
 jest.mock( "api/observationFieldValues" );
 jest.mock( "api/projectObservations" );
-jest.mock( "uploaders" );
+jest.mock( "uploaders/utils/realmSync" );
 
 const mockOpts = { api_token: "test-token", signal: new AbortController().signal };
 let mockRealm;
