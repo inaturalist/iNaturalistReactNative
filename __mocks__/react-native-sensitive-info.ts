@@ -1,5 +1,26 @@
 let clearAuthCache = () => {}; // Default no-op function
 
+const ErrorCode = {
+  IntegrityViolation: "E_INTEGRITY_VIOLATION",
+};
+
+class SensitiveInfoError extends Error {
+  code: string;
+
+  constructor( code: string, message: string ) {
+    super( message );
+    this.name = "SensitiveInfoError";
+    this.code = code;
+  }
+}
+
+class IntegrityViolationError extends SensitiveInfoError {
+  constructor( message = "Integrity check failed for stored secret." ) {
+    super( ErrorCode.IntegrityViolation, message );
+    this.name = "IntegrityViolationError";
+  }
+}
+
 // Try to get clearAuthCache function safely
 try {
   const authModule = require( "components/LoginSignUp/AuthenticationService" );
@@ -88,4 +109,7 @@ module.exports = {
   getItem,
   hasItem,
   stores,
+  ErrorCode,
+  IntegrityViolationError,
+  SensitiveInfoError,
 };
