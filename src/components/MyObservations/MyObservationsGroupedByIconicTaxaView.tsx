@@ -91,6 +91,7 @@ const MyObservationsGroupedByIconicTaxaView = ( {
 
   const {
     sections,
+    activateCategory,
     advanceFrontier,
     refreshSections,
     nearingEndOfSection,
@@ -161,7 +162,11 @@ const MyObservationsGroupedByIconicTaxaView = ( {
       categories.delete( category );
     }
     setCollapsedCategories( categories );
-    if ( !isCollapsing ) return;
+
+    if ( !isCollapsing ) {
+      activateCategory( category );
+      return;
+    }
 
     const headerRow = rows.findIndex(
       row => row.type === "header" && row.header.category === category,
@@ -170,8 +175,14 @@ const MyObservationsGroupedByIconicTaxaView = ( {
       pinHeaderRowRef.current = headerRow;
     }
 
-    advanceFrontier( );
-  }, [advanceFrontier, collapsedCategories, rows, setCollapsedCategories] );
+    advanceFrontier( categories );
+  }, [
+    activateCategory,
+    advanceFrontier,
+    collapsedCategories,
+    rows,
+    setCollapsedCategories,
+  ] );
 
   useEffect( ( ) => {
     const index = pinHeaderRowRef.current;

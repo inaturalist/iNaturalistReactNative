@@ -39,7 +39,9 @@ interface Params {
 interface Result {
   sections: Map<ICONIC_TAXA_GROUP, IconicTaxaSectionState>;
   // start fetching the next category that has anything to fetch and isn't collapsed
-  advanceFrontier: ( ) => void;
+  advanceFrontier: ( _closed: Set<ICONIC_TAXA_GROUP> ) => void;
+  // request the first page for a specific category when the user opens it
+  activateCategory: ( _category: ICONIC_TAXA_GROUP ) => void;
   // The caller knows only that the user is near the end of one category's tiles;
   // so we need to manage the following states:
   //
@@ -62,7 +64,10 @@ interface Result {
 // sibling components could each own one and pass their data up. That swaps this bookkeeping for
 // components that exist only to fetch. Worth revisiting if we run into issue with this approach.
 //
-// Only one request is ever in flight: activation walks down the categories one at a time
+// Scrolling shouldn't stack up requests: nearingEndOfSection ignores anything that arrives while
+// a fetch is running, so activation walks down the categories one at a time.
+// However, a user opening a section (activateCategory) will fetch a page even if something else
+// is still loading.
 const useIconicTaxaSectionObservations = ( {
   collapsedCategories,
   enabled,
@@ -211,13 +216,22 @@ const useIconicTaxaSectionObservations = ( {
     [sections],
   );
 
-  const advanceFrontier = useCallback( ( ) => {
+  const advanceFrontier = useCallback( ( closed: Set<ICONIC_TAXA_GROUP> ) => {
     const next = orderedCounts.find( ( { category, count } ) => count > 0
       && !pagesByCategory[category]
-      && !collapsedCategories.has( category ) );
+      && !closed.has( category ) );
     if ( !next ) return;
     setPages( { ...pagesByCategory, [next.category]: 1 } );
-  }, [collapsedCategories, orderedCounts, pagesByCategory, setPages] );
+  }, [orderedCounts, pagesByCategory, setPages] );
+
+  // Ask for a specific section rather than whatever the frontier would pick next,
+  // since the section a user tapped can sit below categories that are still unrequested.
+  const activateCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
+    if ( pagesByCategory[category] ) return;
+    const entry = orderedCounts.find( counted => counted.category === category );
+    if ( !entry || entry.count === 0 ) return;
+    setPages( { ...pagesByCategory, [category]: 1 } );
+  }, [orderedCounts, pagesByCategory, setPages] );
 
   // See the Result type above for the full set of cases this decides between
   const nearingEndOfSection = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
@@ -225,7 +239,7 @@ const useIconicTaxaSectionObservations = ( {
     const section = sections.get( category );
     if ( section?.isError || collapsedCategories.has( category ) ) return;
     if ( !section?.isActivated || !section.hasMore ) {
-      advanceFrontier( );
+      advanceFrontier( collapsedCategories );
       return;
     }
     setPages( {
@@ -256,6 +270,7 @@ const useIconicTaxaSectionObservations = ( {
   return {
     sections,
     advanceFrontier,
+    activateCategory,
     nearingEndOfSection,
     retryCategory,
     refreshSections,
