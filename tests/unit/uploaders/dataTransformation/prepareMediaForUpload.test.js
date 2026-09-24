@@ -3,9 +3,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
-import {
-  prepareMediaForUpload,
-} from "uploaders";
+import prepareMediaForUpload from "uploaders/dataTransformation/prepareMediaForUpload";
 
 jest.mock( "realmModels/ObservationPhoto", () => ( {
   mapPhotoForUpload: jest.fn(),

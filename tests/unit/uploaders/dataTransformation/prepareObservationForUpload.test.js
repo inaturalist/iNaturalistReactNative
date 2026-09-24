@@ -1,9 +1,7 @@
 import Observation from "realmModels/Observation";
 import factory from "tests/factory";
 import faker from "tests/helpers/faker";
-import {
-  prepareObservationForUpload,
-} from "uploaders";
+import prepareObservationForUpload from "uploaders/dataTransformation/prepareObservationForUpload";
 
 jest.mock( "realmModels/Observation", () => ( {
   mapObservationForUpload: jest.fn(),
