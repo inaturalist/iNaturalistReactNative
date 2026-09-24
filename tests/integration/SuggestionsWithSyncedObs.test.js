@@ -7,6 +7,7 @@ import {
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import Identification from "realmModels/Identification";
+import { UPLOAD_COMPLETE } from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -324,7 +325,20 @@ describe( "Suggestions", ( ) => {
     const savedObservation = global.mockRealms[__filename]
       .objectForPrimaryKey( "Observation", observations[0].uuid );
     expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
+    await waitFor( ( ) => {
+      expect( useStore.getState( ).uploadStatus ).toBe( UPLOAD_COMPLETE );
+    } );
     expect( inatjs.observations.update ).toHaveBeenCalledTimes( 1 );
+    expect( inatjs.observations.update ).toHaveBeenCalledWith(
+      expect.objectContaining( {
+        id: observations[0].uuid,
+        observation: expect.objectContaining( {
+          owners_identification_from_vision: true,
+          taxon_id: topSuggestion.taxon.id,
+        } ),
+      } ),
+      expect.anything( ),
+    );
   } );
 
   it.todo( "should create an identification when accessed from Explore" );
