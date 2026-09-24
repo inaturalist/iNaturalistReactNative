@@ -1,7 +1,7 @@
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import remove from "lodash/remove";
 import type { RealmObservation } from "realmModels/types";
-import { filterDirtyPos } from "uploaders/projectChildrenUploader";
+import filterDirtyPos from "uploaders/dataTransformation/filterDirtyPos";
 import type { StateCreator } from "zustand";
 
 export const UPLOAD_CANCELLED = "cancelled";
