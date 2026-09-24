@@ -124,6 +124,22 @@ async function getSensitiveItem(
           // Value doesn't exist
           localLogger.info( `getItem not available for ${key}` );
           break;
+        case ErrorCode.IntegrityViolation:
+          try {
+            if ( key === "jwtToken" ) {
+              localLogger.info( "IntegrityViolation error for jwtToken, trying deleting" );
+              await deleteItem( "jwtToken", options );
+              await deleteItem( "jwtGeneratedAt", options );
+            }
+            clearAuthCache( );
+          } catch ( deleteError ) {
+            if ( deleteError instanceof SensitiveInfoError && isDebugModeSync() ) {
+              localLogger.info(
+                `Error deleting jwtToken or jwtGeneratedAt: ${deleteError.message}`,
+              );
+            }
+          }
+          break;
         default:
           localLogger.info( `getItem unknown error for ${key}: ${e.message}` );
           break;
