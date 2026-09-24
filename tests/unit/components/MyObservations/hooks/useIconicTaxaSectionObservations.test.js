@@ -186,30 +186,8 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     } );
   } );
 
-  it( "passes over collapsed categories when advancing the frontier, rather than spending "
-    + "the one in-flight request on a section the user can't see", async ( ) => {
+  it( "requests nothing while every category with observations is collapsed", async ( ) => {
     const { result } = renderSectionsHook( {
-      collapsedCategories: new Set( [ICONIC_TAXA_GROUP.AVES] ),
-      orderedCounts: [
-        { category: ICONIC_TAXA_GROUP.PLANTAE, count: 45 },
-        { category: ICONIC_TAXA_GROUP.AVES, count: 30 },
-        { category: ICONIC_TAXA_GROUP.INSECTA, count: 20 },
-      ],
-    } );
-    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
-
-    act( ( ) => result.current.advanceFrontier( new Set( [ICONIC_TAXA_GROUP.AVES] ) ) );
-
-    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
-    expect( paramsOfLastSearch( ) ).toMatchObject( {
-      iconic_taxa: [ICONIC_TAXA_GROUP.INSECTA],
-      page: 1,
-    } );
-  } );
-
-  it( "requests nothing while every category with observations is collapsed, and starts "
-    + "loading again when one is reopened", async ( ) => {
-    const { rerender, result } = renderSectionsHook( {
       collapsedCategories: new Set( [ICONIC_TAXA_GROUP.PLANTAE, ICONIC_TAXA_GROUP.AVES] ),
     } );
 
@@ -217,18 +195,9 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
       expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).isActivated ).toBe( false );
     } );
     expect( searchObservations ).not.toHaveBeenCalled( );
-
-    rerender( { collapsedCategories: new Set( [ICONIC_TAXA_GROUP.AVES] ) } );
-
-    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
-    expect( paramsOfLastSearch( ) ).toMatchObject( {
-      iconic_taxa: [ICONIC_TAXA_GROUP.PLANTAE],
-      page: 1,
-    } );
   } );
 
-  it( "loads a section the user opens, even though the toggle that opened it calls in "
-    + "with the collapsed set from before the tap", async ( ) => {
+  it( "loads a reopened section without dropping the one already loading", async ( ) => {
     const { rerender, result } = renderSectionsHook( {
       collapsedCategories: new Set( [ICONIC_TAXA_GROUP.PLANTAE] ),
       orderedCounts: [

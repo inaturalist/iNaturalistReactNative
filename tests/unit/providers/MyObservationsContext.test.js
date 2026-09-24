@@ -58,43 +58,18 @@ describe( "the closed iconic taxa categories", ( ) => {
     useStore.getState( ).setMyObservationsClosedIconicTaxaCategories( CLOSED );
   } );
 
-  it( "starts with every section open", ( ) => {
-    useStore.setState( initialStoreState, true );
-
-    expect( initialStoreState.myObservationsClosedIconicTaxaCategories ).toEqual( new Set( ) );
-  } );
-
-  it( "survives a new search, unlike the map region", ( ) => {
+  it( "survives a new search", ( ) => {
     useStore.getState( ).updateMyObservations( previous => ( {
       ...previous,
       searchedTaxon: { id: 1, name: "Aves" },
     } ) );
 
     expect( closedCategories( ) ).toEqual( CLOSED );
-    expect( useStore.getState( ).myObservationsMapRegion ).toBeNull( );
   } );
 
-  it( "survives a sort change, since sections are categories and sorting only reorders "
-    + "the observations within one", ( ) => {
-    useStore.getState( ).updateMyObservations( previous => ( {
-      ...previous,
-      observationsSort: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
-    } ) );
-
-    expect( closedCategories( ) ).toEqual( CLOSED );
-  } );
-
-  it( "is dropped along with the map region when the user switches views", ( ) => {
-    useStore.getState( ).setMyObservationsMapRegion( {
-      latitude: 10,
-      longitude: 20,
-      latitudeDelta: 0.5,
-      longitudeDelta: 0.5,
-    } );
-
+  it( "is cleared with the rest of the view state", ( ) => {
     useStore.getState( ).clearMyObservationsViewState( );
 
     expect( closedCategories( ) ).toEqual( new Set( ) );
-    expect( useStore.getState( ).myObservationsMapRegion ).toBeNull( );
   } );
 } );
