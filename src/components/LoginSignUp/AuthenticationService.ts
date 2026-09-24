@@ -111,7 +111,7 @@ async function getSensitiveItem(
     exists = await hasItem( key, options );
   } catch ( e ) {
     if ( e instanceof SensitiveInfoError ) {
-      logDebugInfo(
+      localLogger.info(
         `hasItem error for ${key}: ${e.message}`,
       );
     }
