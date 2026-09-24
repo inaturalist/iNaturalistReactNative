@@ -10,6 +10,7 @@ import type {
   RealmProjectObservation,
 } from "realmModels/types";
 import { markRecordUploaded } from "uploaders";
+import { trackProjectAttachment } from "uploaders/utils/progressTracker";
 
 interface UploadOptions {
   api_token?: string;
@@ -115,6 +116,8 @@ async function uploadProjectChildren(
     ) ),
   );
 
+  const projectAttachmentProgress = trackProjectAttachment( obsUUID );
+  projectAttachmentProgress.start( );
   await Promise.all(
     dirtyPos.map( po => uploadSingleProjectObservation(
       po,
@@ -123,6 +126,7 @@ async function uploadProjectChildren(
       realm,
     ) ),
   );
+  projectAttachmentProgress.complete( );
 }
 
 export {
