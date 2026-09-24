@@ -87,6 +87,9 @@ const BottomButtonsContainer = ( {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
+      if ( type === UPLOAD ) {
+        transitionAnimation();
+      }
       startUploadsFromMultiObsEdit( );
     } else {
       incrementTotalSavedObservations( );
