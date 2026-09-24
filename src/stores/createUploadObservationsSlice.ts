@@ -1,6 +1,7 @@
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import remove from "lodash/remove";
 import type { RealmObservation } from "realmModels/types";
+import { filterDirtyPos } from "uploaders/projectChildrenUploader";
 import type { StateCreator } from "zustand";
 
 export const UPLOAD_CANCELLED = "cancelled";
@@ -91,9 +92,21 @@ const countEvidenceIncrements = (
   return 0;
 };
 
+const countProjectAttachmentIncrements = (
+  upload: RealmObservation | null,
+): number => {
+  if ( !upload ) {
+    return 0;
+  }
+  return filterDirtyPos( upload ).length > 0
+    ? 1
+    : 0;
+};
+
 const countTotalIncrements = ( upload: RealmObservation | null ): number => 1
   + countEvidenceIncrements( upload, "observationPhotos" )
-  + countEvidenceIncrements( upload, "observationSounds" );
+  + countEvidenceIncrements( upload, "observationSounds" )
+  + countProjectAttachmentIncrements( upload );
 
 const createUploadProgressObj = ( upload: RealmObservation, increment: number ) => ( {
   uuid: upload.uuid,
