@@ -8,8 +8,9 @@ import type {
   RealmPhoto,
   RealmSound,
 } from "realmModels/types";
-import { markRecordUploaded, prepareMediaForUpload } from "uploaders";
+import prepareMediaForUpload from "uploaders/dataTransformation/prepareMediaForUpload";
 import { trackEvidenceUpload } from "uploaders/utils/progressTracker";
+import markRecordUploaded from "uploaders/utils/realmSync";
 
 export type EvidenceType = "Photo" | "ObservationPhoto" | "Sound" | "ObservationSound";
 export type ActionType = "upload" | "attach" | "update";
