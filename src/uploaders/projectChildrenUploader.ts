@@ -9,8 +9,8 @@ import type {
   RealmObservationFieldValue,
   RealmProjectObservation,
 } from "realmModels/types";
-import { markRecordUploaded } from "uploaders";
 import { trackProjectAttachment } from "uploaders/utils/progressTracker";
+import markRecordUploaded from "uploaders/utils/realmSync";
 
 interface UploadOptions {
   api_token?: string;
