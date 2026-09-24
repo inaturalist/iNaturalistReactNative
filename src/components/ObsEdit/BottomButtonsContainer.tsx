@@ -50,6 +50,7 @@ const BottomButtonsContainer = ( {
     state => state.incrementTotalSavedObservations,
   );
   const isNewObs = !currentObservation._created_at;
+  const wasSynced = !!currentObservation?._synced_at;
   const hasPhotos = currentObservation.observationPhotos?.length > 0;
   const hasImportedPhotos = hasPhotos && cameraRollUris.length === 0;
 
@@ -82,11 +83,10 @@ const BottomButtonsContainer = ( {
       resetMyObsOffsetToRestore( );
       setMyObsOffset( 0 );
     }
-    if ( type === UPLOAD ) {
+    if ( type === UPLOAD || ( wasSynced && canUpload ) ) {
       const { uuid } = savedObservation;
       addTotalToolbarIncrements( savedObservation );
       addToUploadQueue( uuid );
-      transitionAnimation();
       startUploadsFromMultiObsEdit( );
     } else {
       incrementTotalSavedObservations( );
@@ -112,6 +112,7 @@ const BottomButtonsContainer = ( {
     addToUploadQueue,
     addTotalToolbarIncrements,
     cameraRollUris,
+    canUpload,
     currentObservation,
     currentObservationIndex,
     exitObservationFlow,
@@ -125,6 +126,7 @@ const BottomButtonsContainer = ( {
     setSavedOrUploadedMultiObsFlow,
     startUploadsFromMultiObsEdit,
     transitionAnimation,
+    wasSynced,
   ] );
 
   const showMissingEvidence = useCallback( ( ) => {
@@ -182,7 +184,7 @@ const BottomButtonsContainer = ( {
         showFocusedChangesButton={unsavedChanges}
         showFocusedUploadButton={!!passesTests}
         showHalfOpacity={!passesEvidenceTest}
-        wasSynced={!!( currentObservation?._synced_at )}
+        wasSynced={wasSynced}
       />
     </>
   );
