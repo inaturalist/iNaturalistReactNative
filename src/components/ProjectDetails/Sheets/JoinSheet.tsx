@@ -62,6 +62,7 @@ const JoinSheet = ( {
       radioValues={radioValues}
       requireSelectionChange={false}
       loading={loading}
+      testID="JoinSheet"
       onPressClose={onPressClose}
       secondaryButton={cancelButton}
       topDescriptionText={topDescriptionText}
