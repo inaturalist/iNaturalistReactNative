@@ -29,12 +29,12 @@ class User extends Realm.Object {
   };
 
   // getting user icon data from production instead of staging
-  static uri( user?: { icon_url?: string } ) {
+  static uri( user?: { icon_url?: string | null } ) {
     const iconUrl = user?.icon_url;
     return iconUrl?.replace( "staticdev", "static" );
   }
 
-  static thumbUri( user?: { icon_url?: string } ) {
+  static thumbUri( user?: { icon_url?: string | null } ) {
     return User.uri( user )?.replace( "medium", "thumb" );
   }
 
