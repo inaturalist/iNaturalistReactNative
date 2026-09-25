@@ -18,6 +18,7 @@ import { renderComponent } from "tests/helpers/render";
 
 const mockGoBack = jest.fn( );
 const mockPopTo = jest.fn( );
+const mockReplace = jest.fn( );
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -27,6 +28,7 @@ jest.mock( "@react-navigation/native", ( ) => {
       navigate: jest.fn( ),
       popTo: mockPopTo,
       push: jest.fn( ),
+      replace: mockReplace,
       canGoBack: ( ) => true,
     } ),
   };
@@ -133,6 +135,7 @@ beforeAll( async ( ) => {
 beforeEach( ( ) => {
   mockGoBack.mockClear( );
   mockPopTo.mockClear( );
+  mockReplace.mockClear( );
   mockDispatch.mockClear( );
   useStore.getState( ).exploreV2AdvancedSearch.setAdvancedSearchMode( false );
   useCurrentUser.mockReturnValue( CURRENT_USER );
@@ -181,6 +184,57 @@ describe( "AdvancedSearch screen", ( ) => {
     expect( mockGoBack ).toHaveBeenCalled( );
     expect( mockDispatch ).not.toHaveBeenCalled( );
     expect( advancedSearchMode( ) ).toBe( false );
+  } );
+
+  describe( "leaving with unsaved changes", ( ) => {
+    const pressReturnToStandardSearch = ( ) => actor.press(
+      screen.getByTestId( "AdvancedSearch.returnToStandardSearch" ),
+    );
+
+    it( "returns to standard search without asking when nothing changed", async ( ) => {
+      renderComponent( <AdvancedSearch /> );
+
+      await pressReturnToStandardSearch( );
+
+      expect( mockReplace ).toHaveBeenCalledWith( "UniversalSearch" );
+      expect( screen.queryByText( t( "DISCARD-FILTER-CHANGES" ) ) ).toBeNull( );
+    } );
+
+    it( "asks before returning to standard search and goes on discard", async ( ) => {
+      renderComponent( <AdvancedSearch /> );
+      await actor.press( screen.getByText( t( "Casual--quality-grade" ) ) );
+
+      await pressReturnToStandardSearch( );
+
+      expect( mockReplace ).not.toHaveBeenCalled( );
+      expect( screen.getByText( t( "DISCARD-FILTER-CHANGES" ) ) ).toBeVisible( );
+      await actor.press( screen.getByText( t( "DISCARD-CHANGES" ) ) );
+      expect( mockReplace ).toHaveBeenCalledWith( "UniversalSearch" );
+      expect( mockGoBack ).not.toHaveBeenCalled( );
+    } );
+
+    it( "stays put when the discard is canceled", async ( ) => {
+      renderComponent( <AdvancedSearch /> );
+      await actor.press( screen.getByText( t( "Casual--quality-grade" ) ) );
+
+      await pressReturnToStandardSearch( );
+      await actor.press( screen.getByText( t( "CANCEL" ) ) );
+
+      expect( mockReplace ).not.toHaveBeenCalled( );
+      expect( screen.queryByText( t( "DISCARD-FILTER-CHANGES" ) ) ).toBeNull( );
+    } );
+
+    it( "asks before going back and goes back on discard", async ( ) => {
+      renderComponent( <AdvancedSearch /> );
+      await actor.press( screen.getByText( t( "Casual--quality-grade" ) ) );
+
+      await actor.press( screen.getByTestId( "AdvancedSearch.back" ) );
+
+      expect( mockGoBack ).not.toHaveBeenCalled( );
+      await actor.press( screen.getByText( t( "DISCARD-CHANGES" ) ) );
+      expect( mockGoBack ).toHaveBeenCalled( );
+      expect( mockReplace ).not.toHaveBeenCalled( );
+    } );
   } );
 
   describe( "seeding from the current explore search", ( ) => {

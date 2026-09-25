@@ -1176,6 +1176,8 @@ Reset-verb = Reset
 RESTART-APP = RESTART APP
 # Label for button that restores a withdrawn identification
 Restore = Restore
+# Button on the advanced search screen that switches to the simpler search screen
+RETURN-TO-STANDARD-SEARCH = RETURN TO STANDARD SEARCH
 Reveal = Reveal
 REVIEW-INATURALIST = REVIEW INATURALIST
 # Title for section of observation filters for controls over whether you have
