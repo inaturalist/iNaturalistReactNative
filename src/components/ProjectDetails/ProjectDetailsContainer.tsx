@@ -22,6 +22,7 @@ import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
+import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
 
 const logger = log.extend( "ProjectDetailsContainer" );
 const { useRealm } = RealmContext;
@@ -127,7 +128,8 @@ const ProjectDetailsContainer = ( ) => {
     },
   );
 
-  const handleJoinProjectPress = ( ) => {
+  const handleJoinProjectPress = ( access?: COORDINATE_ACCESS ) => {
+    console.log( "access", access );
     if ( currentUser ) {
       setLoading( true );
       joinProjectMutate( );

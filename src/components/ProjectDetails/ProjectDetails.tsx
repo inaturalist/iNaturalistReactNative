@@ -30,6 +30,7 @@ import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
+import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
 import JoinSheet from "./Sheets/JoinSheet";
 
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
@@ -58,7 +59,7 @@ interface Project {
 }
 
 interface Props {
-  joinProject: ( ) => void;
+  joinProject: ( _access?: COORDINATE_ACCESS ) => void;
   leaveProject: ( ) => void;
   loadingProjectMembership: boolean;
   project: Project | null;
