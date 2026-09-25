@@ -474,9 +474,6 @@ DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
 # Label for a button that dismisses announcements
 Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
-# Project-join-curator-coordinate-access-any = Yes, no matter who adds the observation to the project
-# Project-join-curator-coordinate-access-none = No
-# Project-join-curator-coordinate-access-observer = Yes, but only if I add the observation to the project myself
 # Curator hidden-coordinate access when joining a traditional project
 Do-you-want-private-coordinates-visible-to-curators = Do you want to make your private/obscured observation coordinates visible to the project curators?
 DONATE = DONATE
@@ -861,6 +858,7 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
+No = No
 # Error message when no camera can be found
 No-Camera-Available = No Camera Available
 # Alert dialog title when attempting to send email but no email is installed
@@ -1674,6 +1672,8 @@ x-uploads-failed =
         [one] { $count } upload failed
        *[other] { $count } uploads failed
     }
+Yes-but-only-if-I-add-the-observation-to-the-project-myself = Yes, but only if I add the observation to the project myself
+Yes-no-matter-who-adds-the-observation-to-the-project = Yes, no matter who adds the observation to the project
 You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
