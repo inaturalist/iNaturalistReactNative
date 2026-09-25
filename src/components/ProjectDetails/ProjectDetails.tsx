@@ -198,6 +198,9 @@ const ProjectDetails = ( {
         {project.description && (
           <UserText text={project.description} htmlStyle={userTextStyle} />
         )}
+        <Heading4 className="mb-3 mt-5">
+          {t( "PROJECT-ADMINS" )}
+        </Heading4>
         {project.project_type === "collection" && (
           <>
             <Heading4 className="mb-3 mt-5">

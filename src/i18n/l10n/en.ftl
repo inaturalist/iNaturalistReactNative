@@ -1022,6 +1022,8 @@ PRIVACY-POLICY = PRIVACY POLICY
 Private = Private
 # As in an iNat project, a collection of observations or observation search filters
 PROJECT = PROJECT
+# Heading for administrators on the project detail page
+PROJECT-ADMINS = PROJECT ADMINS
 Project-Members-Only = Project Members Only
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
 project-start-time-datetime = Start time: { $datetime }
