@@ -30,6 +30,8 @@ import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
+import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
+import JoinSheet from "./Sheets/JoinSheet";
 
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
@@ -57,14 +59,17 @@ interface Project {
 }
 
 interface Props {
-  project: Project | null;
-  joinProject: ( ) => void;
+  joinProject: ( _access?: COORDINATE_ACCESS ) => void;
   leaveProject: ( ) => void;
   loadingProjectMembership: boolean;
+  project: Project | null;
 }
 
 const ProjectDetails = ( {
-  project, joinProject, leaveProject, loadingProjectMembership,
+  joinProject,
+  leaveProject,
+  loadingProjectMembership,
+  project,
 }: Props ) => {
   const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
 
@@ -256,7 +261,17 @@ const ProjectDetails = ( {
           {t( "View-in-browser" )}
         </Body4>
       </View>
-      {openSheet === JOIN && (
+      {openSheet === JOIN && project.project_type === "" && (
+        <JoinSheet
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
+            joinProject( coordinateAccess );
+            setOpenSheet( NONE );
+          }}
+          loading={loadingProjectMembership}
+        />
+      )}
+      {openSheet === JOIN && project.project_type !== "" && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {

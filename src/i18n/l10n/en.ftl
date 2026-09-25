@@ -276,6 +276,8 @@ COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 Confidence--label = Confidence
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
+# Join traditional project after choosing curator coordinate access
+CONFIRM-AND-JOIN = CONFIRM & JOIN
 Congratulations-You-made-your-first-observation = Congratulations! You made your first observation!
 # Onboarding carousel header second screen
 Connect-with-expert-naturalists = Connect with expert naturalists
@@ -472,6 +474,8 @@ DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
 # Label for a button that dismisses announcements
 Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
+# Curator hidden-coordinate access when joining a traditional project
+Do-you-want-private-coordinates-visible-to-curators = Do you want to make your private/obscured observation coordinates visible to the project curators?
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 # Label for a button the user taps when a task is complete
@@ -756,6 +760,8 @@ Loads-content-that-requires-an-Internet-connection = Loads content that requires
 LOCATION = LOCATION
 Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
+# Header for traditonal projects join flow: curator access to hidden observation coordinates (not device GPS)
+LOCATION-PERMISSIONS = LOCATION PERMISSIONS
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
 LOG-IN = LOG IN
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
@@ -852,6 +858,7 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
+No = No
 # Error message when no camera can be found
 No-Camera-Available = No Camera Available
 # Alert dialog title when attempting to send email but no email is installed
@@ -1667,6 +1674,8 @@ x-uploads-failed =
         [one] { $count } upload failed
        *[other] { $count } uploads failed
     }
+Yes-but-only-if-I-add-the-observation-to-the-project-myself = Yes, but only if I add the observation to the project myself
+Yes-no-matter-who-adds-the-observation-to-the-project = Yes, no matter who adds the observation to the project
 You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.

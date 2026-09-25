@@ -22,6 +22,7 @@ import { log } from "sharedHelpers/logger";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
+import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
 
 const logger = log.extend( "ProjectDetailsContainer" );
 const { useRealm } = RealmContext;
@@ -95,7 +96,7 @@ const ProjectDetailsContainer = ( ) => {
   const queryClient = useQueryClient( );
 
   const { mutate: joinProjectMutate } = useAuthenticatedMutation(
-    ( _, optsWithAuth ) => joinProject( { id }, optsWithAuth ),
+    ( mutationParams, optsWithAuth ) => joinProject( { id, ...mutationParams }, optsWithAuth ),
     {
       onSuccess: ( ) => {
         // project is not undefined here because we call the mutation in the child
@@ -127,10 +128,13 @@ const ProjectDetailsContainer = ( ) => {
     },
   );
 
-  const handleJoinProjectPress = ( ) => {
+  const handleJoinProjectPress = ( access?: COORDINATE_ACCESS ) => {
     if ( currentUser ) {
       setLoading( true );
-      joinProjectMutate( );
+      const mutationParams = access
+        ? { project_user: { preferred_curator_coordinate_access: access } }
+        : { };
+      joinProjectMutate( mutationParams );
     } else {
       navigation.navigate( "LoginStackNavigator", {
         screen: "Login",
