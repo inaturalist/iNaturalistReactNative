@@ -18,6 +18,7 @@ import {
 import {
   Image, ImageBackground, View,
 } from "components/styledComponents";
+import UserListItem from "components/UserList/UserListItem";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
@@ -199,9 +200,22 @@ const ProjectDetails = ( {
           <UserText text={project.description} htmlStyle={userTextStyle} />
         )}
         {project.admins && project.admins.length > 0 && (
-          <Heading4 className="mb-3 mt-5">
-            {t( "PROJECT-ADMINS" )}
-          </Heading4>
+          <View className="mb-8">
+            <Heading4 className="mb-3">
+              {t( "PROJECT-ADMINS" )}
+            </Heading4>
+            {project.admins.map( admin => {
+              const { user } = admin;
+              return (
+                <UserListItem
+                  key={user.id}
+                  item={{ user }}
+                  countText=""
+                  onPress={( ) => navigation.navigate( "UserProfile", { userId: user.id } )}
+                />
+              );
+            } )}
+          </View>
         )}
         {project.project_type === "collection" && (
           <>
