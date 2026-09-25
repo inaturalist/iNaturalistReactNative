@@ -1,8 +1,12 @@
 import {
+  Body3,
   Button,
   RadioButtonSheet,
 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
+import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
+
 interface Props {
   confirm: ( ) => void;
   loading?: boolean;
@@ -28,6 +32,12 @@ const JoinSheet = ( {
     />
   );
 
+  const topDescriptionText = (
+    <View className="px-3 pb-2">
+      <Body3>{t( "Do-you-want-private-coordinates-visible-to-curators" )}</Body3>
+    </View>
+  );
+
   return (
     <RadioButtonSheet
       confirm={confirm}
@@ -36,6 +46,7 @@ const JoinSheet = ( {
       loading={loading}
       onPressClose={onPressClose}
       secondaryButton={cancelButton}
+      topDescriptionText={topDescriptionText}
     />
   );
 };
