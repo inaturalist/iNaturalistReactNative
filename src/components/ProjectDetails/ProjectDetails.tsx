@@ -264,8 +264,8 @@ const ProjectDetails = ( {
       {openSheet === JOIN && project.project_type === "" && (
         <JoinSheet
           onPressClose={( ) => setOpenSheet( NONE )}
-          confirm={( ) => {
-            joinProject( );
+          confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
+            joinProject( coordinateAccess );
             setOpenSheet( NONE );
           }}
           loading={loadingProjectMembership}
