@@ -57,10 +57,10 @@ interface Project {
 }
 
 interface Props {
-  project: Project | null;
   joinProject: ( ) => void;
   leaveProject: ( ) => void;
   loadingProjectMembership: boolean;
+  project: Project | null;
 }
 
 const ProjectDetails = ( {
