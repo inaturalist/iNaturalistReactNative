@@ -229,42 +229,46 @@ const ProjectDetails = ( {
             />
           </View>
         )}
-        <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
-        <Button
-          level="neutral"
-          text={t( "VIEW-IN-EXPLORE" )}
-          onPress={( ) => onObservationPressed( true )}
-        />
-        <Heading4 className="mb-3 mt-5">
+        <View className="mb-8">
+          <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
+          <Button
+            level="neutral"
+            text={t( "VIEW-IN-EXPLORE" )}
+            onPress={( ) => onObservationPressed( true )}
+          />
+        </View>
+        <View className="mb-8">
+          <Heading4 className="mb-3">
+            {!project.current_user_is_member
+              ? t( "JOIN-PROJECT" )
+              : t( "LEAVE-PROJECT" )}
+          </Heading4>
           {!project.current_user_is_member
-            ? t( "JOIN-PROJECT" )
-            : t( "LEAVE-PROJECT" )}
-        </Heading4>
-        {!project.current_user_is_member
-          ? (
-            <Button
-              level="neutral"
-              text={t( "JOIN" )}
-              onPress={( ) => {
-                if ( project.membership_model === "inviteonly" ) {
-                  Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
-                } else {
-                  setOpenSheet( JOIN );
-                }
-              }}
-              loading={loadingProjectMembership}
-              disabled={loadingProjectMembership}
-            />
-          )
-          : (
-            <Button
-              level="neutral"
-              text={t( "LEAVE" )}
-              onPress={( ) => setOpenSheet( LEAVE )}
-              loading={loadingProjectMembership}
-              disabled={loadingProjectMembership}
-            />
-          )}
+            ? (
+              <Button
+                level="neutral"
+                text={t( "JOIN" )}
+                onPress={( ) => {
+                  if ( project.membership_model === "inviteonly" ) {
+                    Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
+                  } else {
+                    setOpenSheet( JOIN );
+                  }
+                }}
+                loading={loadingProjectMembership}
+                disabled={loadingProjectMembership}
+              />
+            )
+            : (
+              <Button
+                level="neutral"
+                text={t( "LEAVE" )}
+                onPress={( ) => setOpenSheet( LEAVE )}
+                loading={loadingProjectMembership}
+                disabled={loadingProjectMembership}
+              />
+            )}
+        </View>
         <AboutProjectType projectType={project.project_type} />
         <Body4
           className="underline mt-[11px]"
