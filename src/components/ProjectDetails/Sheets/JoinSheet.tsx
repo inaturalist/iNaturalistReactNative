@@ -7,8 +7,14 @@ import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
+enum CHECKBOX_VALUE {
+  OBSERVER = "observer",
+  ANY = "any",
+  NONE = "none",
+}
+
 interface Props {
-  confirm: ( ) => void;
+  confirm: ( checkboxValue: CHECKBOX_VALUE ) => void;
   loading?: boolean;
   onPressClose: ( ) => void;
 }
@@ -18,22 +24,21 @@ const JoinSheet = ( {
   loading,
   onPressClose,
 }: Props ) => {
-  console.log( "confirm", confirm );
   const { t } = useTranslation( );
 
   const radioValues = useMemo(
     () => ( {
       observer: {
         label: t( "Yes-but-only-if-I-add-the-observation-to-the-project-myself" ),
-        value: "observer",
+        value: CHECKBOX_VALUE.OBSERVER,
       },
       any: {
         label: t( "Yes-no-matter-who-adds-the-observation-to-the-project" ),
-        value: "any",
+        value: CHECKBOX_VALUE.ANY,
       },
       none: {
         label: t( "No" ),
-        value: "none",
+        value: CHECKBOX_VALUE.NONE,
       },
     } ),
     [t],
