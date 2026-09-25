@@ -218,17 +218,16 @@ const ProjectDetails = ( {
           </View>
         )}
         {project.project_type === "collection" && (
-          <>
-            <Heading4 className="mb-3 mt-5">
+          <View className="mb-8">
+            <Heading4 className="mb-3">
               {t( "PROJECT-REQUIREMENTS" )}
             </Heading4>
             <Button
-              className="mb-5"
               level="neutral"
               text={t( "VIEW-PROJECT-REQUIREMENTS" )}
               onPress={( ) => navigation.navigate( "ProjectRequirements", { id: project.id } )}
             />
-          </>
+          </View>
         )}
         <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
         <Button
