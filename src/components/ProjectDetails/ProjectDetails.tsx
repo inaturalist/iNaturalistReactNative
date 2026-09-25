@@ -259,7 +259,22 @@ const ProjectDetails = ( {
           {t( "View-in-browser" )}
         </Body4>
       </View>
-      {openSheet === JOIN && (
+      {openSheet === JOIN && project.project_type === "" && (
+        <WarningSheet
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( ) => {
+            joinProject( );
+            setOpenSheet( NONE );
+          }}
+          headerText={t( "JOIN-PROJECT--question" )}
+          buttonText={t( "JOIN" )}
+          handleSecondButtonPress={( ) => setOpenSheet( NONE )}
+          secondButtonText={t( "CANCEL" )}
+          loading={loadingProjectMembership}
+          buttonType="primary"
+        />
+      )}
+      {openSheet === JOIN && project.project_type !== "" && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {
