@@ -7,14 +7,14 @@ import { View } from "components/styledComponents";
 import React, { useMemo } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
-enum CHECKBOX_VALUE {
+export enum COORDINATE_ACCESS {
   OBSERVER = "observer",
   ANY = "any",
   NONE = "none",
 }
 
 interface Props {
-  confirm: ( checkboxValue: CHECKBOX_VALUE ) => void;
+  confirm: ( checkboxValue: COORDINATE_ACCESS ) => void;
   loading?: boolean;
   onPressClose: ( ) => void;
 }
@@ -30,15 +30,15 @@ const JoinSheet = ( {
     () => ( {
       observer: {
         label: t( "Yes-but-only-if-I-add-the-observation-to-the-project-myself" ),
-        value: CHECKBOX_VALUE.OBSERVER,
+        value: COORDINATE_ACCESS.OBSERVER,
       },
       any: {
         label: t( "Yes-no-matter-who-adds-the-observation-to-the-project" ),
-        value: CHECKBOX_VALUE.ANY,
+        value: COORDINATE_ACCESS.ANY,
       },
       none: {
         label: t( "No" ),
-        value: CHECKBOX_VALUE.NONE,
+        value: COORDINATE_ACCESS.NONE,
       },
     } ),
     [t],
