@@ -30,6 +30,7 @@ import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
+import JoinSheet from "./Sheets/JoinSheet";
 
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
@@ -260,18 +261,13 @@ const ProjectDetails = ( {
         </Body4>
       </View>
       {openSheet === JOIN && project.project_type === "" && (
-        <WarningSheet
+        <JoinSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {
             joinProject( );
             setOpenSheet( NONE );
           }}
-          headerText={t( "JOIN-PROJECT--question" )}
-          buttonText={t( "JOIN" )}
-          handleSecondButtonPress={( ) => setOpenSheet( NONE )}
-          secondButtonText={t( "CANCEL" )}
           loading={loadingProjectMembership}
-          buttonType="primary"
         />
       )}
       {openSheet === JOIN && project.project_type !== "" && (
