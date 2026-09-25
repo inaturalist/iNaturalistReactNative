@@ -129,10 +129,12 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const handleJoinProjectPress = ( access?: COORDINATE_ACCESS ) => {
-    console.log( "access", access );
     if ( currentUser ) {
       setLoading( true );
-      joinProjectMutate( );
+      const mutationParams = access
+        ? { project_user: { preferred_curator_coordinate_access: access } }
+        : { };
+      joinProjectMutate( mutationParams );
     } else {
       navigation.navigate( "LoginStackNavigator", {
         screen: "Login",
