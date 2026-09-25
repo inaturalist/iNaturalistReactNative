@@ -19,9 +19,6 @@ const JoinSheet = ( {
   onPressClose,
 }: Props ) => {
   console.log( "confirm", confirm );
-  console.log( "loading", loading );
-  console.log( "onPressClose", onPressClose );
-
   const { t } = useTranslation( );
 
   const radioValues = useMemo(
