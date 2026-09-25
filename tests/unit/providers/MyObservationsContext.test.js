@@ -1,4 +1,5 @@
 import { initialMyObservationsState } from "providers/MyObservationsContext";
+import { ICONIC_TAXA_GROUP } from "sharedHelpers/iconicTaxaGroupOrder";
 import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import useStore from "stores/useStore";
@@ -44,5 +45,31 @@ describe( "the stored map region", ( ) => {
     } ) );
 
     expect( useStore.getState( ).myObservationsMapRegion ).toEqual( REGION );
+  } );
+} );
+
+describe( "the closed iconic taxa categories", ( ) => {
+  const CLOSED = new Set( [ICONIC_TAXA_GROUP.AVES] );
+
+  const closedCategories = ( ) => useStore.getState( ).myObservationsClosedIconicTaxaCategories;
+
+  beforeEach( ( ) => {
+    useStore.setState( initialStoreState, true );
+    useStore.getState( ).setMyObservationsClosedIconicTaxaCategories( CLOSED );
+  } );
+
+  it( "survives a new search", ( ) => {
+    useStore.getState( ).updateMyObservations( previous => ( {
+      ...previous,
+      searchedTaxon: { id: 1, name: "Aves" },
+    } ) );
+
+    expect( closedCategories( ) ).toEqual( CLOSED );
+  } );
+
+  it( "is cleared with the rest of the view state", ( ) => {
+    useStore.getState( ).clearMyObservationsViewState( );
+
+    expect( closedCategories( ) ).toEqual( new Set( ) );
   } );
 } );

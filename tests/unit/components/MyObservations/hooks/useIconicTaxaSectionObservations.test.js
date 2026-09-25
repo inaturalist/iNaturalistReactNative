@@ -165,14 +165,95 @@ describe( "useIconicTaxaSectionObservations", ( ) => {
     const { result } = renderSectionsHook( );
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
 
-    act( ( ) => result.current.advanceFrontier( ) );
+    act( ( ) => result.current.advanceFrontier( new Set( ) ) );
     await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 2 ) );
-    act( ( ) => result.current.advanceFrontier( ) );
+    act( ( ) => result.current.advanceFrontier( new Set( ) ) );
 
     await waitFor( ( ) => {
       expect( result.current.sections.get( ICONIC_TAXA_GROUP.INSECTA ).isActivated ).toBe( false );
     } );
     expect( searchObservations ).toHaveBeenCalledTimes( 2 );
+  } );
+
+  it( "skips collapsed categories when deciding what to load first, so coming back to a view "
+    + "with the top section closed still loads the sections below it", async ( ) => {
+    renderSectionsHook( { collapsedCategories: new Set( [ICONIC_TAXA_GROUP.PLANTAE] ) } );
+
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+    expect( paramsOfLastSearch( ) ).toMatchObject( {
+      iconic_taxa: [ICONIC_TAXA_GROUP.AVES],
+      page: 1,
+    } );
+  } );
+
+  it( "requests nothing while every category with observations is collapsed", async ( ) => {
+    const { result } = renderSectionsHook( {
+      collapsedCategories: new Set( [ICONIC_TAXA_GROUP.PLANTAE, ICONIC_TAXA_GROUP.AVES] ),
+    } );
+
+    await waitFor( ( ) => {
+      expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).isActivated ).toBe( false );
+    } );
+    expect( searchObservations ).not.toHaveBeenCalled( );
+  } );
+
+  it( "loads a reopened section without dropping the one already loading", async ( ) => {
+    const { rerender, result } = renderSectionsHook( {
+      collapsedCategories: new Set( [ICONIC_TAXA_GROUP.PLANTAE] ),
+      orderedCounts: [
+        { category: ICONIC_TAXA_GROUP.PLANTAE, count: 45 },
+        { category: ICONIC_TAXA_GROUP.AVES, count: 30 },
+        { category: ICONIC_TAXA_GROUP.INSECTA, count: 20 },
+      ],
+    } );
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+    searchObservations.mockClear( );
+
+    // toggleCategory writes the collapsed set and calls in from the same handler, holding the
+    // render it fired from, so the call lands before the reopen has re-rendered
+    act( ( ) => result.current.activateCategory( ICONIC_TAXA_GROUP.PLANTAE ) );
+    rerender( { collapsedCategories: new Set( ) } );
+
+    await waitFor( ( ) => {
+      expect( result.current.sections.get( ICONIC_TAXA_GROUP.PLANTAE ).isActivated ).toBe( true );
+    } );
+    expect( result.current.sections.get( ICONIC_TAXA_GROUP.AVES ).isActivated ).toBe( true );
+  } );
+
+  it( "takes the collapsed set from the toggle that just closed a section, so it doesn't "
+    + "advance onto the section the user has closed", async ( ) => {
+    const { rerender, result } = renderSectionsHook( {
+      orderedCounts: [
+        { category: ICONIC_TAXA_GROUP.PLANTAE, count: 45 },
+        { category: ICONIC_TAXA_GROUP.AVES, count: 30 },
+        { category: ICONIC_TAXA_GROUP.INSECTA, count: 20 },
+      ],
+    } );
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+    searchObservations.mockClear( );
+
+    // the user closes Aves, which it has not loaded yet
+    const closed = new Set( [ICONIC_TAXA_GROUP.AVES] );
+    act( ( ) => result.current.advanceFrontier( closed ) );
+    rerender( { collapsedCategories: closed } );
+
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+    expect( paramsOfLastSearch( ) ).toMatchObject( {
+      iconic_taxa: [ICONIC_TAXA_GROUP.INSECTA],
+    } );
+  } );
+
+  it( "does not request a category the server has nothing for when it is opened", async ( ) => {
+    const { result } = renderSectionsHook( );
+    await waitFor( ( ) => expect( searchObservations ).toHaveBeenCalledTimes( 1 ) );
+    searchObservations.mockClear( );
+
+    act( ( ) => result.current.activateCategory( ICONIC_TAXA_GROUP.INSECTA ) );
+
+    await waitFor( ( ) => {
+      expect( result.current.sections.get( ICONIC_TAXA_GROUP.INSECTA ).isActivated ).toBe( false );
+    } );
+    expect( searchObservations ).not.toHaveBeenCalled( );
   } );
 
   it( "starts over from the first category when the sort changes, rather than "
