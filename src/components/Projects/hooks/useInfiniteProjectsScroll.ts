@@ -1,3 +1,4 @@
+import type { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import { searchProjects } from "api/projects";
 import flatten from "lodash/flatten";
 import {
@@ -8,6 +9,9 @@ const ITEMS_PER_PAGE = 20;
 
 interface UseInfiniteProjectsScrollOptions {
   params: {
+    fields: typeof PROJECT_SUMMARY_FIELDS;
+    q: string;
+    memberId: number | undefined;
     lat: number | undefined;
     lng: number | undefined;
     featured: boolean | undefined;
