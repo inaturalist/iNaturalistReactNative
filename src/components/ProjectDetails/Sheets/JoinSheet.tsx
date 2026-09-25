@@ -60,6 +60,7 @@ const JoinSheet = ( {
       confirmText={t( "CONFIRM-AND-JOIN" )}
       headerText={t( "LOCATION-PERMISSIONS" )}
       radioValues={radioValues}
+      requireSelectionChange={false}
       loading={loading}
       onPressClose={onPressClose}
       secondaryButton={cancelButton}
