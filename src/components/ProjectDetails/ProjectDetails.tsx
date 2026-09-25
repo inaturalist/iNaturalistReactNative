@@ -72,7 +72,10 @@ interface Props {
 }
 
 const ProjectDetails = ( {
-  project, joinProject, leaveProject, loadingProjectMembership,
+  joinProject,
+  leaveProject,
+  loadingProjectMembership,
+  project,
 }: Props ) => {
   const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
 
