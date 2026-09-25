@@ -6,7 +6,17 @@ import {
 
 const ITEMS_PER_PAGE = 20;
 
-const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object ): object => {
+interface UseInfiniteProjectsScrollOptions {
+  params: {
+    featured: boolean | undefined;
+    spam: boolean | undefined;
+  };
+  enabled: boolean;
+}
+
+const useInfiniteProjectsScroll = (
+  { params: newInputParams, enabled }: UseInfiniteProjectsScrollOptions,
+): object => {
   const baseParams = {
     ...newInputParams,
     per_page: ITEMS_PER_PAGE,
