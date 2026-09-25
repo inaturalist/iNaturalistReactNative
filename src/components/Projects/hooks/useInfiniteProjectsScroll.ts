@@ -1,3 +1,4 @@
+import type { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import { searchProjects } from "api/projects";
 import flatten from "lodash/flatten";
 import {
@@ -6,7 +7,23 @@ import {
 
 const ITEMS_PER_PAGE = 20;
 
-const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object ): object => {
+interface UseInfiniteProjectsScrollOptions {
+  params: {
+    fields: typeof PROJECT_SUMMARY_FIELDS;
+    q: string;
+    memberId: number | undefined;
+    lat: number | undefined;
+    lng: number | undefined;
+    featured: boolean | undefined;
+    order_by: "distance" | undefined;
+    spam: boolean | undefined;
+  };
+  enabled: boolean;
+}
+
+const useInfiniteProjectsScroll = (
+  { params: newInputParams, enabled }: UseInfiniteProjectsScrollOptions,
+): object => {
   const baseParams = {
     ...newInputParams,
     per_page: ITEMS_PER_PAGE,
