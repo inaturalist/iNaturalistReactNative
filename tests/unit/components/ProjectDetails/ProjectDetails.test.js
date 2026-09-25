@@ -7,6 +7,14 @@ import faker from "tests/helpers/faker";
 import { renderComponent, wrapInQueryClientContainer } from "tests/helpers/render";
 
 const mockProject = factory( "RemoteProject", {
+  admins: [
+    {
+      user: factory( "RemoteUser", { login: "admin_one" } ),
+    },
+    {
+      user: factory( "RemoteUser", { login: "admin_two" } ),
+    },
+  ],
   title: faker.lorem.sentence( ),
   icon: faker.image.url( ),
   header_image_url: faker.image.url( ),
@@ -139,6 +147,36 @@ describe( "ProjectDetails", ( ) => {
     /> );
     const dateRange = await screen.findByText( "Mar 7, 2024 - Mar 14, 2024" );
     expect( dateRange ).toBeTruthy( );
+  } );
+
+  describe( "project admins section", ( ) => {
+    test( "shows project admins for all project types", async ( ) => {
+      renderComponent(
+        <ProjectDetails
+          project={mockProject}
+        />,
+      );
+
+      expect( screen.getByText( /PROJECT ADMINS/ ) ).toBeVisible( );
+      expect( screen.getByText( "admin_one" ) ).toBeVisible( );
+      expect( screen.getByText( "admin_two" ) ).toBeVisible( );
+    } );
+
+    test( "hides project admins when admins is null or empty", ( ) => {
+      renderComponent(
+        <ProjectDetails
+          project={{ ...mockProject, admins: null }}
+        />,
+      );
+      expect( screen.queryByText( /PROJECT ADMINS/ ) ).toBeNull( );
+
+      renderComponent(
+        <ProjectDetails
+          project={{ ...mockProject, admins: [] }}
+        />,
+      );
+      expect( screen.queryByText( /PROJECT ADMINS/ ) ).toBeNull( );
+    } );
   } );
 
   describe( "explore entry points", ( ) => {
