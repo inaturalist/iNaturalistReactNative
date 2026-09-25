@@ -18,7 +18,10 @@ import React, { useMemo, useState } from "react";
 import { Button, View } from "react-native";
 import RNRestart from "react-native-restart";
 import { openInatUrl, parseInatUrl } from "sharedHelpers/inatUrlNavigation";
-import { store as installDataMMKVStorage } from "sharedHelpers/installData";
+import {
+  store as installDataMMKVStorage,
+  useOnboardingShown,
+} from "sharedHelpers/installData";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 
 interface RozeniteOptions {
@@ -26,6 +29,7 @@ interface RozeniteOptions {
 }
 
 const launchHaltStorageKey = "haltLaunch";
+
 // eslint-disable-next-line arrow-body-style
 export const shouldHaltLaunchForDebug = ( ) => {
   const result = installDataMMKVStorage.getBoolean( launchHaltStorageKey ) || false;
@@ -55,6 +59,7 @@ HaltedLaunch.displayName = "HaltedLaunch";
 // note: Rozenite plugins are automatically disabled / noops in Production builds
 const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
   const [pastedInatUrl, setPastedInatUrl] = useState( "" );
+  const [onboardingShown, setOnboardingShown] = useOnboardingShown( );
   const navigation = useNavigation();
   const queryClient = useQueryClient();
   useTanStackQueryDevTools( queryClient );
@@ -107,6 +112,15 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
             onPress: () => {
               installDataMMKVStorage.set( launchHaltStorageKey, true );
               RNRestart.restart();
+            },
+          },
+          {
+            id: "onboarding-shown",
+            type: "toggle",
+            title: "Onboarding shown",
+            value: !!onboardingShown,
+            onUpdate: () => {
+              setOnboardingShown( !onboardingShown );
             },
           },
           {
@@ -214,6 +228,8 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
     ],
     [
       pastedInatUrl,
+      onboardingShown,
+      setOnboardingShown,
       navigation,
       exploreV2Enabled,
       setExploreV2Enabled,
