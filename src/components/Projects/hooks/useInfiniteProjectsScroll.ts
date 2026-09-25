@@ -8,6 +8,8 @@ const ITEMS_PER_PAGE = 20;
 
 interface UseInfiniteProjectsScrollOptions {
   params: {
+    lat: number | undefined;
+    lng: number | undefined;
     featured: boolean | undefined;
     order_by: "distance" | undefined;
     spam: boolean | undefined;
