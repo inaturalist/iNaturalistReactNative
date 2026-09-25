@@ -1,4 +1,5 @@
 import {
+  Button,
   RadioButtonSheet,
 } from "components/SharedComponents";
 import useTranslation from "sharedHooks/useTranslation";
@@ -18,6 +19,15 @@ const JoinSheet = ( {
   console.log( "onPressClose", onPressClose );
 
   const { t } = useTranslation( );
+  const cancelButton = (
+    <Button
+      level="neutral"
+      text={t( "CANCEL" )}
+      onPress={onPressClose}
+      disabled={loading}
+    />
+  );
+
   return (
     <RadioButtonSheet
       confirm={confirm}
@@ -25,6 +35,7 @@ const JoinSheet = ( {
       headerText={t( "LOCATION-PERMISSIONS" )}
       loading={loading}
       onPressClose={onPressClose}
+      secondaryButton={cancelButton}
     />
   );
 };
