@@ -67,6 +67,7 @@ const JoinSheet = ( {
       radioValues={radioValues}
       requireSelectionChange={false}
       loading={loading}
+      selectedValue={COORDINATE_ACCESS.OBSERVER}
       testID="JoinSheet"
       onPressClose={onPressClose}
       secondaryButton={cancelButton}
