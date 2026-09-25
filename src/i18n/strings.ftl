@@ -276,6 +276,8 @@ COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 Confidence--label = Confidence
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
+# Join traditional project after choosing curator coordinate access
+CONFIRM-AND-JOIN = CONFIRM & JOIN
 Congratulations-You-made-your-first-observation = Congratulations! You made your first observation!
 # Onboarding carousel header second screen
 Connect-with-expert-naturalists = Connect with expert naturalists

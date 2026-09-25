@@ -21,6 +21,7 @@ const JoinSheet = ( {
   return (
     <RadioButtonSheet
       confirm={confirm}
+      confirmText={t( "CONFIRM-AND-JOIN" )}
       headerText={t( "LOCATION-PERMISSIONS" )}
       loading={loading}
       onPressClose={onPressClose}
