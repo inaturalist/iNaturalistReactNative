@@ -148,6 +148,7 @@ const ProjectDetailsContainer = ( ) => {
     if ( !project ) return null;
 
     return {
+      admins: project.admins,
       description: project.description,
       header_image_url: project.header_image_url,
       icon: project.icon,
