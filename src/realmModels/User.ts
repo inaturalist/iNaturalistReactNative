@@ -1,4 +1,3 @@
-import type { ApiUser } from "api/types";
 import type { ObjectSchema } from "realm";
 import Realm from "realm";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
@@ -30,12 +29,12 @@ class User extends Realm.Object {
   };
 
   // getting user icon data from production instead of staging
-  static uri( user?: RealmUser | ApiUser ) {
+  static uri( user?: { icon_url?: string } ) {
     const iconUrl = user?.icon_url;
     return iconUrl?.replace( "staticdev", "static" );
   }
 
-  static thumbUri( user?: RealmUser | ApiUser ) {
+  static thumbUri( user?: { icon_url?: string } ) {
     return User.uri( user )?.replace( "medium", "thumb" );
   }
 
