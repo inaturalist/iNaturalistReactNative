@@ -195,10 +195,12 @@ const ProjectDetails = ( {
           onJournalPostsPressed={onJournalPostsPressed}
           newsEnabled={newsEnabled}
         />
-        <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
-        {project.description && (
-          <UserText text={project.description} htmlStyle={userTextStyle} />
-        )}
+        <View className="mt-8">
+          <Heading4 className="mb-3">{t( "ABOUT" )}</Heading4>
+          {project.description && (
+            <UserText text={project.description} htmlStyle={userTextStyle} />
+          )}
+        </View>
         {project.admins && project.admins.length > 0 && (
           <View className="mb-8">
             <Heading4 className="mb-3">
