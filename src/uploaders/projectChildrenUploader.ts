@@ -9,7 +9,9 @@ import type {
   RealmObservationFieldValue,
   RealmProjectObservation,
 } from "realmModels/types";
-import { markRecordUploaded } from "uploaders";
+import filterDirtyPos from "uploaders/dataTransformation/filterDirtyPos";
+import { trackProjectAttachment } from "uploaders/utils/progressTracker";
+import markRecordUploaded from "uploaders/utils/realmSync";
 
 interface UploadOptions {
   api_token?: string;
@@ -24,16 +26,6 @@ function filterDirtyOfvs( observation: RealmObservation ): RealmObservationField
     && !ofv._pending_deletion
     && ofv.value != null
     && ofv.value !== "",
-  );
-}
-
-function filterDirtyPos( observation: RealmObservation ): RealmProjectObservation[] {
-  // Single upload-time gate combining timestamp dirty (needsSync),
-  // not tombstoned (_pending_deletion), and non-empty value.
-  return observation.projectObservations.filter(
-    po => po.needsSync( )
-      && !po._pending_deletion
-      && !po.wasSynced( ),
   );
 }
 
@@ -115,6 +107,8 @@ async function uploadProjectChildren(
     ) ),
   );
 
+  const projectAttachmentProgress = trackProjectAttachment( obsUUID );
+  projectAttachmentProgress.start( );
   await Promise.all(
     dirtyPos.map( po => uploadSingleProjectObservation(
       po,
@@ -123,10 +117,10 @@ async function uploadProjectChildren(
       realm,
     ) ),
   );
+  projectAttachmentProgress.complete( );
 }
 
 export {
   filterDirtyOfvs,
-  filterDirtyPos,
   uploadProjectChildren,
 };

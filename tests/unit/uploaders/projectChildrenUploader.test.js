@@ -1,16 +1,15 @@
 import * as observationFieldValuesApi from "api/observationFieldValues";
 import * as projectObservationsApi from "api/projectObservations";
 import factory, { makeResponse } from "tests/factory";
-import { markRecordUploaded } from "uploaders";
 import {
   filterDirtyOfvs,
-  filterDirtyPos,
   uploadProjectChildren,
 } from "uploaders/projectChildrenUploader";
+import markRecordUploaded from "uploaders/utils/realmSync";
 
 jest.mock( "api/observationFieldValues" );
 jest.mock( "api/projectObservations" );
-jest.mock( "uploaders" );
+jest.mock( "uploaders/utils/realmSync" );
 
 const mockOpts = { api_token: "test-token", signal: new AbortController().signal };
 let mockRealm;
@@ -63,26 +62,6 @@ describe( "projectChildrenUploader", () => {
         ],
       } );
       expect( filterDirtyOfvs( observation ) ).toEqual( [] );
-    } );
-  } );
-
-  describe( "filterDirtyPos", () => {
-    it( "includes never-synced POs that need sync", () => {
-      const po = dirtyPo( );
-      const observation = factory( "LocalObservation", {
-        projectObservations: [po],
-      } );
-      expect( filterDirtyPos( observation ) ).toEqual( [po] );
-    } );
-
-    it( "excludes tombstoned and already-synced POs", () => {
-      const observation = factory( "LocalObservation", {
-        projectObservations: [
-          dirtyPo( { _pending_deletion: true } ),
-          dirtyPo( { wasSynced: jest.fn( () => true ) } ),
-        ],
-      } );
-      expect( filterDirtyPos( observation ) ).toEqual( [] );
     } );
   } );
 
