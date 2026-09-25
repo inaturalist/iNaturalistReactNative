@@ -4,7 +4,7 @@ import {
   RadioButtonSheet,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import React from "react";
+import React, { useMemo } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 interface Props {
@@ -23,6 +23,25 @@ const JoinSheet = ( {
   console.log( "onPressClose", onPressClose );
 
   const { t } = useTranslation( );
+
+  const radioValues = useMemo(
+    () => ( {
+      observer: {
+        label: t( "Yes-but-only-if-I-add-the-observation-to-the-project-myself" ),
+        value: "observer",
+      },
+      any: {
+        label: t( "Yes-no-matter-who-adds-the-observation-to-the-project" ),
+        value: "any",
+      },
+      none: {
+        label: t( "No" ),
+        value: "none",
+      },
+    } ),
+    [t],
+  );
+
   const cancelButton = (
     <Button
       level="neutral"
@@ -43,6 +62,7 @@ const JoinSheet = ( {
       confirm={confirm}
       confirmText={t( "CONFIRM-AND-JOIN" )}
       headerText={t( "LOCATION-PERMISSIONS" )}
+      radioValues={radioValues}
       loading={loading}
       onPressClose={onPressClose}
       secondaryButton={cancelButton}
