@@ -18,6 +18,7 @@ import {
 import {
   Image, ImageBackground, View,
 } from "components/styledComponents";
+import UserListItem from "components/UserList/UserListItem";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
@@ -40,6 +41,13 @@ const LEAVE = "LEAVE";
 const PROJECT_URL = `${EnvConfig.OAUTH_API_URL}/projects`;
 
 interface Project {
+  admins?: {
+    user: {
+      icon_url: string | null;
+      id: number;
+      login: string;
+    };
+  }[] | null;
   current_user_is_member: boolean;
   current_user_observations_count?: number;
   description: string;
@@ -194,62 +202,85 @@ const ProjectDetails = ( {
           onJournalPostsPressed={onJournalPostsPressed}
           newsEnabled={newsEnabled}
         />
-        <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
-        {project.description && (
-          <UserText text={project.description} htmlStyle={userTextStyle} />
+        <View className="mt-8">
+          <Heading4 className="mb-3">{t( "ABOUT" )}</Heading4>
+          {project.description && (
+            <UserText text={project.description} htmlStyle={userTextStyle} />
+          )}
+        </View>
+        {project.admins && project.admins.length > 0 && (
+          <View className="mt-8">
+            <Heading4 className="mb-3">
+              {t( "PROJECT-ADMINS" )}
+            </Heading4>
+            {project.admins.map( admin => {
+              const { user } = admin;
+              return (
+                <UserListItem
+                  key={user.id}
+                  item={{ user }}
+                  countText=""
+                  onPress={( ) => navigation.navigate( "UserProfile", { userId: user.id } )}
+                />
+              );
+            } )}
+          </View>
         )}
         {project.project_type === "collection" && (
-          <>
-            <Heading4 className="mb-3 mt-5">
+          <View className="mt-8">
+            <Heading4 className="mb-3">
               {t( "PROJECT-REQUIREMENTS" )}
             </Heading4>
             <Button
-              className="mb-5"
               level="neutral"
               text={t( "VIEW-PROJECT-REQUIREMENTS" )}
               onPress={( ) => navigation.navigate( "ProjectRequirements", { id: project.id } )}
             />
-          </>
+          </View>
         )}
-        <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
-        <Button
-          level="neutral"
-          text={t( "VIEW-IN-EXPLORE" )}
-          onPress={( ) => onObservationPressed( true )}
-        />
-        <Heading4 className="mb-3 mt-5">
+        <View className="mt-8">
+          <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
+          <Button
+            level="neutral"
+            text={t( "VIEW-IN-EXPLORE" )}
+            onPress={( ) => onObservationPressed( true )}
+          />
+        </View>
+        <View className="mt-8">
+          <Heading4 className="mb-3">
+            {!project.current_user_is_member
+              ? t( "JOIN-PROJECT" )
+              : t( "LEAVE-PROJECT" )}
+          </Heading4>
           {!project.current_user_is_member
-            ? t( "JOIN-PROJECT" )
-            : t( "LEAVE-PROJECT" )}
-        </Heading4>
-        {!project.current_user_is_member
-          ? (
-            <Button
-              level="neutral"
-              text={t( "JOIN" )}
-              onPress={( ) => {
-                if ( project.membership_model === "inviteonly" ) {
-                  Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
-                } else {
-                  setOpenSheet( JOIN );
-                }
-              }}
-              loading={loadingProjectMembership}
-              disabled={loadingProjectMembership}
-            />
-          )
-          : (
-            <Button
-              level="neutral"
-              text={t( "LEAVE" )}
-              onPress={( ) => setOpenSheet( LEAVE )}
-              loading={loadingProjectMembership}
-              disabled={loadingProjectMembership}
-            />
-          )}
+            ? (
+              <Button
+                level="neutral"
+                text={t( "JOIN" )}
+                onPress={( ) => {
+                  if ( project.membership_model === "inviteonly" ) {
+                    Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
+                  } else {
+                    setOpenSheet( JOIN );
+                  }
+                }}
+                loading={loadingProjectMembership}
+                disabled={loadingProjectMembership}
+              />
+            )
+            : (
+              <Button
+                level="neutral"
+                text={t( "LEAVE" )}
+                onPress={( ) => setOpenSheet( LEAVE )}
+                loading={loadingProjectMembership}
+                disabled={loadingProjectMembership}
+              />
+            )}
+        </View>
         <AboutProjectType projectType={project.project_type} />
         <Body4
-          className="underline mt-[11px]"
+          className="underline mt-8"
           accessibilityRole="link"
           onPress={async ( ) => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
         >

@@ -71,6 +71,13 @@ export interface ApiProjectSummary {
 
 // Result from using PROJECT_DETAIL_FIELDS
 export interface ApiProject extends ApiProjectSummary {
+  admins: {
+    user: {
+      icon_url: string | null;
+      id: number;
+      login: string;
+    };
+  }[] | null;
   description: string;
   header_image_url: string | null;
   membership_model: "inviteonly" | "open" | null;

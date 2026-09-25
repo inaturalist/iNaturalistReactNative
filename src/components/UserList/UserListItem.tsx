@@ -12,7 +12,14 @@ import { useTranslation } from "sharedHooks";
 type IconVariant = "mention" | "medium";
 
 interface Props {
-  item: object;
+  item: {
+    user: {
+      id: number | undefined | null;
+      icon_url: string | undefined | null;
+      login: string | undefined | null;
+
+    };
+  };
   countText: string;
   onPress?: ( ) => void;
   accessibilityLabel?: string;

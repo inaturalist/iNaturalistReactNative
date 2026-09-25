@@ -1,6 +1,7 @@
 import {
   Body2, Heading4,
 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
@@ -28,10 +29,10 @@ const AboutProjectType = ( { projectType }: Props ) => {
   const selectedProjectType = projectTypes[projectType] || projectTypes.traditional;
 
   return (
-    <>
-      <Heading4 className="mt-5 mb-3">{selectedProjectType.header}</Heading4>
+    <View className="mt-8">
+      <Heading4 className="mb-3">{selectedProjectType.header}</Heading4>
       <Body2>{selectedProjectType.about}</Body2>
-    </>
+    </View>
   );
 };
 
