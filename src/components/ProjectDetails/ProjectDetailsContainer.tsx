@@ -96,7 +96,7 @@ const ProjectDetailsContainer = ( ) => {
   const queryClient = useQueryClient( );
 
   const { mutate: joinProjectMutate } = useAuthenticatedMutation(
-    ( _, optsWithAuth ) => joinProject( { id }, optsWithAuth ),
+    ( mutationParams, optsWithAuth ) => joinProject( { id, ...mutationParams }, optsWithAuth ),
     {
       onSuccess: ( ) => {
         // project is not undefined here because we call the mutation in the child
