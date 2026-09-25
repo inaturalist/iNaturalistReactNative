@@ -41,6 +41,13 @@ const LEAVE = "LEAVE";
 const PROJECT_URL = `${EnvConfig.OAUTH_API_URL}/projects`;
 
 interface Project {
+  admins?: {
+    user: {
+      icon_url: string | null;
+      id: number;
+      login: string;
+    };
+  }[] | null;
   current_user_is_member: boolean;
   current_user_observations_count?: number;
   description: string;
