@@ -29,7 +29,7 @@ const AboutProjectType = ( { projectType }: Props ) => {
   const selectedProjectType = projectTypes[projectType] || projectTypes.traditional;
 
   return (
-    <View className="mb-8">
+    <View className="mt-8">
       <Heading4 className="mb-3">{selectedProjectType.header}</Heading4>
       <Body2>{selectedProjectType.about}</Body2>
     </View>

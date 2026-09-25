@@ -202,7 +202,7 @@ const ProjectDetails = ( {
           )}
         </View>
         {project.admins && project.admins.length > 0 && (
-          <View className="mb-8">
+          <View className="mt-8">
             <Heading4 className="mb-3">
               {t( "PROJECT-ADMINS" )}
             </Heading4>
@@ -220,7 +220,7 @@ const ProjectDetails = ( {
           </View>
         )}
         {project.project_type === "collection" && (
-          <View className="mb-8">
+          <View className="mt-8">
             <Heading4 className="mb-3">
               {t( "PROJECT-REQUIREMENTS" )}
             </Heading4>
@@ -231,7 +231,7 @@ const ProjectDetails = ( {
             />
           </View>
         )}
-        <View className="mb-8">
+        <View className="mt-8">
           <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
           <Button
             level="neutral"
@@ -239,7 +239,7 @@ const ProjectDetails = ( {
             onPress={( ) => onObservationPressed( true )}
           />
         </View>
-        <View className="mb-8">
+        <View className="mt-8">
           <Heading4 className="mb-3">
             {!project.current_user_is_member
               ? t( "JOIN-PROJECT" )
@@ -273,7 +273,7 @@ const ProjectDetails = ( {
         </View>
         <AboutProjectType projectType={project.project_type} />
         <Body4
-          className="underline"
+          className="underline mt-8"
           accessibilityRole="link"
           onPress={async ( ) => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
         >
