@@ -474,6 +474,11 @@ DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
 # Label for a button that dismisses announcements
 Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
+# Project-join-curator-coordinate-access-any = Yes, no matter who adds the observation to the project
+# Project-join-curator-coordinate-access-none = No
+# Project-join-curator-coordinate-access-observer = Yes, but only if I add the observation to the project myself
+# Curator hidden-coordinate access when joining a traditional project
+Do-you-want-private-coordinates-visible-to-curators = Do you want to make your private/obscured observation coordinates visible to the project curators?
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 # Label for a button the user taps when a task is complete
