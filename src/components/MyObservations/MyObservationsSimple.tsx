@@ -267,6 +267,7 @@ const MyObservationsSimple = ( {
           name: taxon.name || "",
           preferredCommonName,
           iconUri: photo?.url,
+          iconicTaxonName: taxon.iconic_taxon_name,
         },
       } );
       setActiveTab( OBSERVATIONS_TAB );
