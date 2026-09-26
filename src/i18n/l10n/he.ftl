@@ -779,6 +779,7 @@ RESET-SOUND-header = לאפס את הקול?
 Reset-verb = איפוס
 RESTART-APP = הפעל מחדש את האפליקציה
 Restore = שחזור
+RETURN-TO-STANDARD-SEARCH = RETURN TO STANDARD SEARCH
 Reveal = לחשוף
 REVIEW-INATURALIST = משוב על INATURALIST
 REVIEWED = נסקרו

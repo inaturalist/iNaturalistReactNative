@@ -779,6 +779,7 @@ RESET-SOUND-header = 重新錄音？
 Reset-verb = 重設
 RESTART-APP = 重新啟動 app
 Restore = 還原
+RETURN-TO-STANDARD-SEARCH = RETURN TO STANDARD SEARCH
 Reveal = 顯示
 REVIEW-INATURALIST = 評論愛自然(iNaturalist)
 REVIEWED = 已檢閱
