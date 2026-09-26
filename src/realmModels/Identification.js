@@ -24,15 +24,6 @@ class Identification extends Realm.Object {
     vision: true,
   };
 
-  static mimicRealmMappedPropertiesSchema( id ) {
-    return {
-      ...id,
-      createdAt: id.created_at,
-      flags: id.flags || [],
-      taxon: Taxon.mapApiToRealm( id.taxon ),
-    };
-  }
-
   static mapIdentificationForMyObsAdvancedMode( id ) {
     return {
       uuid: id.uuid,
