@@ -782,6 +782,7 @@ RESET-SOUND-header = СБРОСИТЬ ЗВУК?
 Reset-verb = Сброс
 RESTART-APP = ПЕРЕЗАПУСТИТЬ ПРИЛОЖЕНИЕ
 Restore = Восстановить
+RETURN-TO-STANDARD-SEARCH = RETURN TO STANDARD SEARCH
 Reveal = Обнаруживать
 REVIEW-INATURALIST = ОБЗОР INATURALIST
 REVIEWED = ОТЗЫВЫ

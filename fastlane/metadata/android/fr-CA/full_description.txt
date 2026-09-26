@@ -4,7 +4,7 @@ iNaturalist helps millions of people learn about and document the nature around 
 
 iNaturalist is a mission-driven nonprofit dedicated to connecting people to nature and advancing biodiversity science and conservation, and is freely available thanks to the generous support of our community.
 
-KEY FEATURES
+CARACTÉRISTIQUES CLÉS
 • Identify species from anywhere in the world
 • Contribute to science by sharing your observations
 • Keep a record of species you see

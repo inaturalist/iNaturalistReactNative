@@ -779,6 +779,7 @@ RESET-SOUND-header = ΕΠΑΝΑΦΟΡΆ ΉΧΟΥ;
 Reset-verb = Εκκαθάριση
 RESTART-APP = ΕΠΑΝΕΚΚΙΝΉΣΤΕ ΤΗΝ ΕΦΑΡΜΟΓΉ
 Restore = Επαναφορά
+RETURN-TO-STANDARD-SEARCH = RETURN TO STANDARD SEARCH
 Reveal = Αποκαλύπτω
 REVIEW-INATURALIST = ΑΝΑΘΕΏΡΗΣΗ INATURALIST
 REVIEWED = ΑΞΙΟΛΌΓΗΣΗ

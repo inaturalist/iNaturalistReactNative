@@ -779,6 +779,7 @@ RESET-SOUND-header = 重置声音？
 Reset-verb = 重设
 RESTART-APP = 重启应用程序
 Restore = 恢复
+RETURN-TO-STANDARD-SEARCH = RETURN TO STANDARD SEARCH
 Reveal = 显示密码
 REVIEW-INATURALIST = 评论INATURALIST
 REVIEWED = 已复核
