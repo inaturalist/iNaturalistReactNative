@@ -66,6 +66,7 @@ interface ApiProjectObservationField {
 }
 
 type Operator =
+  | "has_observation_field?"
   | "georeferenced?"
   | "captive?"
   | "coordinates_shareable_by_project_curators?"
