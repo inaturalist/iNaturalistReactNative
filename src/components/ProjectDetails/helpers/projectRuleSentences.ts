@@ -1,4 +1,5 @@
 import type {
+  ApiProjectObservationField,
   ApiProjectObservationRule,
 } from "api/types";
 import type { TFunction } from "i18next";
@@ -37,11 +38,14 @@ console.log( "ruleToSentence", ruleToSentence );
 
 const buildProjectRuleSentences = (
   rules: ApiProjectObservationRule[] | undefined,
+  projectObservationFields: ApiProjectObservationField[] | undefined,
   t: TFunction,
 ): string[] => {
   if ( !rules?.length ) {
     return [];
   }
+
+  console.log( "projectObservationFields", projectObservationFields );
 
   return rules.map( rule => {
     const sentence = ruleToSentence( rule, t );

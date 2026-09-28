@@ -139,6 +139,7 @@ const ProjectDetails = ( {
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
   const projectRuleSentences = buildProjectRuleSentences(
     project.project_observation_rules,
+    project.project_observation_fields,
     t,
   );
 
