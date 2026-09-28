@@ -43,15 +43,7 @@ const useInfiniteProjectsScroll = (
   } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }, optsWithAuth ) => {
-      const params = {
-        ...baseParams,
-      };
-
-      if ( pageParam ) {
-        params.page = pageParam;
-      } else {
-        params.page = 1;
-      }
+      const params = { ...baseParams, page: pageParam || 1 };
       return searchProjects( params, optsWithAuth );
     },
     // TO DO: we need to properly type queryOptions in useAuthenticatedInfiniteQuery
