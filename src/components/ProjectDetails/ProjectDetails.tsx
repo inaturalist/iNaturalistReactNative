@@ -218,6 +218,7 @@ const ProjectDetails = ( {
               return (
                 <UserListItem
                   key={user.id}
+                  // TODO: do we need an a11y label here?
                   item={{ user }}
                   countText=""
                   onPress={( ) => navigation.navigate( "UserProfile", { userId: user.id } )}
