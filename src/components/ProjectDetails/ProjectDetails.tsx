@@ -33,6 +33,8 @@ import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
 import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
 import JoinSheet from "./Sheets/JoinSheet";
+import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
+import LeaveSheet from "./Sheets/LeaveSheet";
 
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
@@ -68,7 +70,7 @@ interface Project {
 
 interface Props {
   joinProject: ( _access?: COORDINATE_ACCESS ) => void;
-  leaveProject: ( ) => void;
+  leaveProject: ( _keep?: LEAVE_KEEP ) => void;
   loadingProjectMembership: boolean;
   project: Project | null;
 }
@@ -318,7 +320,17 @@ const ProjectDetails = ( {
           buttonType="primary"
         />
       )}
-      {openSheet === LEAVE && (
+      {openSheet === LEAVE && project.project_type === "" && (
+        <LeaveSheet
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( keep: LEAVE_KEEP ) => {
+            leaveProject( keep );
+            setOpenSheet( NONE );
+          }}
+          loading={loadingProjectMembership}
+        />
+      )}
+      {openSheet === LEAVE && project.project_type !== "" && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {
