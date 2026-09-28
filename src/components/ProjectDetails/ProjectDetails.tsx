@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import type {
+  ApiProjectObservationField,
   ApiProjectObservationRule,
   ProjectRulePreference,
 } from "api/types";
@@ -63,6 +64,7 @@ interface Project {
   membership_model: "inviteonly" | "open" | null;
   members_count?: number;
   observations_count?: number;
+  project_observation_fields?: ApiProjectObservationField[];
   project_observation_rules?: ApiProjectObservationRule[];
   project_type: "collection" | "umbrella" | "";
   rule_preferences: ProjectRulePreference[];

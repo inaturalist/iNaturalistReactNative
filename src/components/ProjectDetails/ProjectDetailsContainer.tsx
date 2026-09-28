@@ -155,6 +155,7 @@ const ProjectDetailsContainer = ( ) => {
       icon: project.icon,
       id: project.id,
       membership_model: project.membership_model,
+      project_observation_fields: project.project_observation_fields,
       project_observation_rules: project.project_observation_rules,
       project_type: project.project_type,
       rule_preferences: project.rule_preferences,
