@@ -58,6 +58,7 @@ const LeaveSheet = ( {
     <RadioButtonSheet
       confirm={confirm}
       confirmText={t( "LEAVE" )}
+      confirmLevel="warning"
       headerText={t( "LEAVE-PROJECT--question" )}
       radioValues={radioValues}
       requireSelectionChange={false}
