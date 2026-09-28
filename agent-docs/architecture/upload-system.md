@@ -84,7 +84,8 @@ Results are sorted by `_created_at` **descending** (newest first) via `.sorted("
 Event-driven via `EventRegister`:
 - `trackObservationUpload(uuid)` → emits `INCREMENT_SINGLE_UPLOAD_PROGRESS` with 0.5 increments
 - `trackEvidenceUpload(uuid)` → emits for each photo/sound upload and attachment
-- Per-observation total = 1 (obs) + count(unsynced photos/sounds) × 1 + count(previously-synced-but-modified photos/sounds) × 0.5. (Each *unsynced* item emits twice — once on upload, once on attach — at 0.5 each, netting 1; only already-synced-but-changed evidence contributes 0.5.)
+- `trackProjectAttachment(uuid)` → emits `INCREMENT_SINGLE_UPLOAD_PROGRESS` with 0.5 increments
+- Per-observation total = 1 (obs) + count(unsynced photos/sounds) × 1 + count(previously-synced-but-modified photos/sounds) × 0.5 + 0 or 1 (project attachment). (Each *unsynced* media item emits twice — once on upload, once on attach — at 0.5 each, netting 1; only already-synced-but-changed evidence contributes 0.5.)
 - Toolbar progress = sum(currentIncrements) / sum(totalIncrements)
 
 ## Keep-Awake

@@ -109,4 +109,22 @@ describe( "progressTracker", ( ) => {
       [observationUUID, progressTracker.HALF_INCREMENT],
     );
   } );
+
+  test( "trackProjectAttachment should return start and complete functions", ( ) => {
+    const observationUUID = "test-uuid";
+    const { start, complete } = progressTracker.trackProjectAttachment( observationUUID );
+
+    start( );
+    expect( emitMock ).toHaveBeenCalledWith(
+      progressTracker.INCREMENT_SINGLE_UPLOAD_PROGRESS,
+      [observationUUID, progressTracker.HALF_INCREMENT],
+    );
+
+    complete( );
+    expect( emitMock ).toHaveBeenCalledTimes( 2 );
+    expect( emitMock ).toHaveBeenLastCalledWith(
+      progressTracker.INCREMENT_SINGLE_UPLOAD_PROGRESS,
+      [observationUUID, progressTracker.HALF_INCREMENT],
+    );
+  } );
 } );

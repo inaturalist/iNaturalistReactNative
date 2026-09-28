@@ -32,8 +32,16 @@ function trackEvidenceUpload( observationUUID: string ) {
   };
 }
 
+function trackProjectAttachment( observationUUID: string ) {
+  return {
+    start: () => emitProgress( observationUUID, HALF_INCREMENT ),
+    complete: () => emitProgress( observationUUID, HALF_INCREMENT ),
+  };
+}
+
 export {
   emitProgress,
   trackEvidenceUpload,
   trackObservationUpload,
+  trackProjectAttachment,
 };
