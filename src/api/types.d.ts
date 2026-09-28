@@ -74,6 +74,7 @@ type Operator =
 
 export interface ApiProjectObservationRule {
   id: number;
+  operand_id: number | null;
   operator: Operator;
 }
 
