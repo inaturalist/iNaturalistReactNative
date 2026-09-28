@@ -60,6 +60,23 @@ interface ApiProjectObservationField {
   required: boolean | null;
 }
 
+type Operator =
+  | "georeferenced?"
+  | "captive?"
+  | "coordinates_shareable_by_project_curators?"
+  | "has_a_photo?"
+  | "has_a_sound?"
+  | "has_media?"
+  | "identified?"
+  | "verifiable?"
+  | "wild?"
+  | "on_list?";
+
+export interface ApiProjectObservationRule {
+  id: number;
+  operator: Operator;
+}
+
 // Result from using PROJECT_SUMMARY_FIELDS
 export interface ApiProjectSummary {
   icon: string;
@@ -83,6 +100,7 @@ export interface ApiProject extends ApiProjectSummary {
   membership_model: "inviteonly" | "open" | null;
   place_id: number | null;
   project_observation_fields: ApiProjectObservationField[];
+  project_observation_rules: ApiProjectObservationRule[];
   user_ids: number[];
 }
 
