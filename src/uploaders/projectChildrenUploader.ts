@@ -107,17 +107,19 @@ async function uploadProjectChildren(
     ) ),
   );
 
-  const projectAttachmentProgress = trackProjectAttachment( obsUUID );
-  projectAttachmentProgress.start( );
-  await Promise.all(
-    dirtyPos.map( po => uploadSingleProjectObservation(
-      po,
-      obsUUID,
-      options,
-      realm,
-    ) ),
-  );
-  projectAttachmentProgress.complete( );
+  if ( dirtyPos.length > 0 ) {
+    const projectAttachmentProgress = trackProjectAttachment( obsUUID );
+    projectAttachmentProgress.start( );
+    await Promise.all(
+      dirtyPos.map( po => uploadSingleProjectObservation(
+        po,
+        obsUUID,
+        options,
+        realm,
+      ) ),
+    );
+    projectAttachmentProgress.complete( );
+  }
 }
 
 export {
