@@ -111,14 +111,6 @@ class Taxon extends Realm.Object {
 
   static INFRAHYBRID_LEVEL = 5;
 
-  static mimicRealmMappedPropertiesSchema( taxon ) {
-    return {
-      ...taxon,
-      default_photo: Photo.mapApiToRealm( taxon?.default_photo ),
-      preferredCommonName: taxon.preferred_common_name,
-    };
-  }
-
   static compileSearchableName( taxon ) {
     const names = [
       taxon.name,
