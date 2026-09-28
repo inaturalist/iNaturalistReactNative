@@ -634,12 +634,6 @@ If-an-account-with-that-email-exists = If an account with that email exists, we'
 If-the-only-reason-youre-leaving-is-to-stop-project-curators = If the only reason you're leaving is to stop project curators from viewing your hidden coordinates.
 # Body of an error alert when signing in with a third party fails (e.g. Apple, Google)
 If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
-# Explanation that observations are removed from a collection project
-If-you-leave-x-of-your-observations-removed =
-    If you leave this traditional project, { $count ->
-        [one] 1 of your observations
-       *[other] { $count } of your observations
-    } will also be removed from this project.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = If you save this observation and upload it to iNaturalist, other people may be able to help identify it.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
 If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.

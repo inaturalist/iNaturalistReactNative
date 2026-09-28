@@ -63,21 +63,6 @@ const ProjectDetailsContainer = ( ) => {
     } ),
   );
 
-  const { data: usersObservations } = useAuthenticatedQuery<ApiObservationsSearchResponse>(
-    ["searchObservationsByUserInProject", id],
-    optsWithAuth => searchObservations(
-      {
-        project_id: id,
-        user_id: currentUser?.id,
-        per_page: 0,
-      },
-      optsWithAuth,
-    ),
-    {
-      enabled: !!currentUser,
-    },
-  );
-
   const speciesCountsQueryKey = ["fetchSpeciesCounts", id];
   const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse<object>>(
     speciesCountsQueryKey,
@@ -191,7 +176,6 @@ const ProjectDetailsContainer = ( ) => {
       observations_count: projectStats?.total_results,
       species_count: speciesCounts?.total_results,
       current_user_is_member: currentMembership === 1,
-      current_user_observations_count: usersObservations?.total_results,
     };
   }, [
     project,
@@ -199,7 +183,6 @@ const ProjectDetailsContainer = ( ) => {
     projectStats?.total_results,
     speciesCounts?.total_results,
     currentMembership,
-    usersObservations?.total_results,
   ] );
 
   return (
