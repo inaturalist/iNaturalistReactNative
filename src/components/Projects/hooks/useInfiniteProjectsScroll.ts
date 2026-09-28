@@ -1,3 +1,4 @@
+import type { PROJECT_SUMMARY_FIELDS } from "api/fields";
 import { searchProjects } from "api/projects";
 import flatten from "lodash/flatten";
 import {
@@ -6,7 +7,23 @@ import {
 
 const ITEMS_PER_PAGE = 20;
 
-const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object ): object => {
+export interface UseInfiniteProjectsScrollOptions {
+  params: {
+    fields: typeof PROJECT_SUMMARY_FIELDS;
+    q: string;
+    member_id?: number;
+    lat?: number;
+    lng?: number;
+    featured?: boolean;
+    order_by?: "distance";
+    spam?: boolean;
+  };
+  enabled: boolean;
+}
+
+const useInfiniteProjectsScroll = (
+  { params: newInputParams, enabled }: UseInfiniteProjectsScrollOptions,
+) => {
   const baseParams = {
     ...newInputParams,
     per_page: ITEMS_PER_PAGE,
@@ -26,15 +43,7 @@ const useInfiniteProjectsScroll = ( { params: newInputParams, enabled }: object 
   } = useAuthenticatedInfiniteQuery(
     queryKey,
     async ( { pageParam }, optsWithAuth ) => {
-      const params = {
-        ...baseParams,
-      };
-
-      if ( pageParam ) {
-        params.page = pageParam;
-      } else {
-        params.page = 1;
-      }
+      const params = { ...baseParams, page: pageParam || 1 };
       return searchProjects( params, optsWithAuth );
     },
     // TO DO: we need to properly type queryOptions in useAuthenticatedInfiniteQuery
