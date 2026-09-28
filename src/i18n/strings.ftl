@@ -1026,6 +1026,8 @@ PROJECT = PROJECT
 PROJECT-ADMINS = PROJECT ADMINS
 Project-Members-Only = Project Members Only
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
+# Heading for the rules section on the project detail page
+PROJECT-RULES = PROJECT RULES
 project-start-time-datetime = Start time: { $datetime }
 # As in iNat project, collections of observations or observation search filters
 PROJECTS = PROJECTS

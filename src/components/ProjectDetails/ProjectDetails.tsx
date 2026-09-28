@@ -226,6 +226,11 @@ const ProjectDetails = ( {
             } )}
           </View>
         )}
+        {project.project_type === "" && (
+          <View className="mt-8">
+            <Heading4 className="mb-3">{t( "PROJECT-RULES" )}</Heading4>
+          </View>
+        )}
         {project.project_type === "collection" && (
           <View className="mt-8">
             <Heading4 className="mb-3">
