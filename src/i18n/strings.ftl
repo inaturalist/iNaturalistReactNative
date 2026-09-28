@@ -631,6 +631,7 @@ Identify-organisms-in-real-time-with-your-camera = Identify organisms in real ti
 # Onboarding slides
 Identify-species-anywhere = Identify species anywhere
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
+If-the-only-reason-youre-leaving-is-to-stop-project-curators = If the only reason you're leaving is to stop project curators from viewing your hidden coordinates.
 # Body of an error alert when signing in with a third party fails (e.g. Apple, Google)
 If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
 # Explanation that observations are removed from a collection project
@@ -732,6 +733,7 @@ July = July
 June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
 KEEP-EDITING = KEEP EDITING
+Keep-in-mind-that-project-curators = Keep in mind that project curators will still be able to add your observations to their project unless you change your account settings.
 # Display name for the iconic taxa category chromista
 Kelp-and-Diatoms = Kelp & Diatoms
 # Shows date user last active on iNaturalist on user profile
@@ -753,6 +755,10 @@ LEAVE-PROJECT = LEAVE PROJECT
 # Asking for confirmation if the user wants to leave this project
 LEAVE-PROJECT--question = LEAVE PROJECT?
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
+# Traditional project leave: keep observations in project
+Leave-your-observations-in-this-project = Leave your observations in this project
+# Traditional project leave: keep observations but revoke hidden coordinate access
+Leave-your-observations-revoke-hidden-coordinates = Leave your observations in this project but prevent curators from viewing their hidden coordinates
 Lets-reset-your-password = Let’s reset your password.
 Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
@@ -1145,6 +1151,8 @@ Recording-stopped-Tap-to-play-the-current-recording = Recording stopped. Tap to 
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
 # Label for a button that removes a vote of agreement
 Remove-agreement = Remove agreement
+# Traditional project leave: remove all observations from project
+Remove-all-your-observations-from-this-project = Remove all your observations from this project
 # Label for a button that removes a vote of disagreement
 Remove-disagreement = Remove disagreement
 Remove-favorite = Remove favorite
@@ -1720,6 +1728,7 @@ Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 # Title for modal shown to users after they make five observations
 Your-observations-can-help-science = Your observations can help science!
+Your-observations-will-stay-in-the-project = Your observations will stay in the project and curators will still be able to view their hidden coordinates.
 # Title for modal shown after account creation
 Youre-ready-to-share-your-observations = You’re ready to share your observations!
 # Text prompting the user to open Settings to grant permission after

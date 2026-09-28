@@ -27,13 +27,18 @@ const LeaveSheet = ( {
   const radioValues = useMemo(
     () => ( {
       keep: {
+        label: t( "Leave-your-observations-in-this-project" ),
+        text: t( "Your-observations-will-stay-in-the-project" ),
         value: LEAVE_KEEP.KEEP,
       },
       revoke: {
+        label: t( "Leave-your-observations-revoke-hidden-coordinates" ),
+        text: t( "If-the-only-reason-youre-leaving-is-to-stop-project-curators" ),
         value: LEAVE_KEEP.REVOKE,
       },
       remove: {
-        label: t( "No" ),
+        label: t( "Remove-all-your-observations-from-this-project" ),
+        text: t( "Keep-in-mind-that-project-curators" ),
         value: LEAVE_KEEP.REMOVE,
       },
     } ),
