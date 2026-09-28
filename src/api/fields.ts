@@ -39,6 +39,9 @@ export const PROJECT_DETAIL_FIELDS = {
   membership_model: true,
   place_id: true,
   project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
+  project_observation_rules: {
+    operator: true,
+  },
   user_ids: true,
 };
 
