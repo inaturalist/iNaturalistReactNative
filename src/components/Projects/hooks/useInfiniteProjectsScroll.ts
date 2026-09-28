@@ -7,7 +7,7 @@ import {
 
 const ITEMS_PER_PAGE = 20;
 
-interface UseInfiniteProjectsScrollOptions {
+export interface UseInfiniteProjectsScrollOptions {
   params: {
     fields: typeof PROJECT_SUMMARY_FIELDS;
     q: string;

@@ -9,6 +9,7 @@ import {
 
 import type { UserLocation } from "../../sharedHelpers/fetchCoarseUserLocation";
 import fetchCoarseUserLocation from "../../sharedHelpers/fetchCoarseUserLocation";
+import type { UseInfiniteProjectsScrollOptions } from "./hooks/useInfiniteProjectsScroll";
 import useInfiniteProjectsScroll from "./hooks/useInfiniteProjectsScroll";
 import Projects from "./Projects";
 
@@ -32,7 +33,7 @@ const ProjectsContainer = ( ) => {
   const { hasPermissions, renderPermissionsGate, requestPermissions } = useLocationPermission( );
   const [userLocation, setUserLocation] = useState<UserLocation | null>( null );
 
-  const apiParams = {
+  const apiParams: UseInfiniteProjectsScrollOptions["params"] = {
     fields: PROJECT_SUMMARY_FIELDS,
   };
 
