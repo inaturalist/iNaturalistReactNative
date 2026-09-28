@@ -40,6 +40,7 @@ export const PROJECT_DETAIL_FIELDS = {
   place_id: true,
   project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
   project_observation_rules: {
+    operand_id: true,
     operator: true,
   },
   user_ids: true,
