@@ -38,11 +38,11 @@ const ProjectDetailsContainer = ( ) => {
   const [loading, setLoading] = useState( false );
 
   const fetchProjectsQueryKey = ["projectDetails", "fetchProjects", id];
-
   const { data: project } = useAuthenticatedQuery<ApiProject>(
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
       fields: PROJECT_DETAIL_FIELDS,
+      ttl: -1,
     }, optsWithAuth ),
   );
 
@@ -53,11 +53,13 @@ const ProjectDetailsContainer = ( ) => {
     }, optsWithAuth ),
   );
 
+  const projectStatsQueryKey = ["searchObservations", "projectStats", id];
   const { data: projectStats } = useAuthenticatedQuery<ApiObservationsSearchResponse>(
-    ["searchObservations", "projectStats", id],
+    projectStatsQueryKey,
     ( ) => searchObservations( {
       project_id: id,
       per_page: 0,
+      ttl: -1,
     } ),
   );
 
@@ -76,11 +78,13 @@ const ProjectDetailsContainer = ( ) => {
     },
   );
 
+  const speciesCountsQueryKey = ["fetchSpeciesCounts", id];
   const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse<object>>(
-    ["fetchSpeciesCounts", id],
+    speciesCountsQueryKey,
     ( ) => fetchSpeciesCounts( {
       project_id: id,
       per_page: 0,
+      ttl: -1,
     } ),
   );
 
@@ -89,6 +93,7 @@ const ProjectDetailsContainer = ( ) => {
     membershipQueryKey,
     optsWithAuth => fetchMembership( {
       id,
+      ttl: -1,
     }, optsWithAuth ),
     {
       enabled: !!( currentUser ),
@@ -104,7 +109,8 @@ const ProjectDetailsContainer = ( ) => {
         // project is not undefined here because we call the mutation in the child
         // which has a !project check before rendering the buttons that call here
         Project.upsertRemoteProjects( [project as ApiProject], realm );
-        queryClient.invalidateQueries( membershipQueryKey );
+        queryClient.invalidateQueries( { queryKey: membershipQueryKey } );
+        queryClient.invalidateQueries( { queryKey: fetchProjectsQueryKey } );
       },
       onError: error => {
         // project is not undefined here because we call the mutation in the child
@@ -125,7 +131,10 @@ const ProjectDetailsContainer = ( ) => {
             realm.delete( joinedProject );
           }, "removing project from realm after leave" );
         }
-        queryClient.invalidateQueries( membershipQueryKey );
+        queryClient.invalidateQueries( { queryKey: membershipQueryKey } );
+        queryClient.invalidateQueries( { queryKey: fetchProjectsQueryKey } );
+        queryClient.invalidateQueries( { queryKey: projectStatsQueryKey } );
+        queryClient.invalidateQueries( { queryKey: speciesCountsQueryKey } );
       },
       onError: error => {
         // project is not undefined here because we call the mutation in the child
