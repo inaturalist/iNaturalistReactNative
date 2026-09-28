@@ -24,6 +24,7 @@ const FIELDS = {
   default_photo: {
     url: true,
   },
+  iconic_taxon_name: true,
   name: true,
   preferred_common_name: true,
   rank: true,
