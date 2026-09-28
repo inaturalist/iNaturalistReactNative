@@ -11,7 +11,7 @@ interface UseInfiniteProjectsScrollOptions {
   params: {
     fields: typeof PROJECT_SUMMARY_FIELDS;
     q: string;
-    memberId: number | undefined;
+    member_id: number | undefined;
     lat: number | undefined;
     lng: number | undefined;
     featured: boolean | undefined;
