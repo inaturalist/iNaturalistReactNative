@@ -23,6 +23,7 @@ import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from 
 
 import ProjectDetails from "./ProjectDetails";
 import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
+import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
 
 const logger = log.extend( "ProjectDetailsContainer" );
 const { useRealm } = RealmContext;
@@ -114,7 +115,7 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const { mutate: leaveProjectMutate } = useAuthenticatedMutation(
-    ( _, optsWithAuth ) => leaveProject( { id }, optsWithAuth ),
+    ( mutationParams, optsWithAuth ) => leaveProject( { id, ...mutationParams }, optsWithAuth ),
     {
       onSuccess: ( ) => {
         queryClient.invalidateQueries( membershipQueryKey );
@@ -127,6 +128,14 @@ const ProjectDetailsContainer = ( ) => {
       onSettled: ( ) => setLoading( false ),
     },
   );
+
+  const handleLeaveProjectPress = ( keep?: LEAVE_KEEP ) => {
+    setLoading( true );
+    const mutationParams = keep
+      ? { keep }
+      : { };
+    leaveProjectMutate( mutationParams );
+  };
 
   const handleJoinProjectPress = ( access?: COORDINATE_ACCESS ) => {
     if ( currentUser ) {
@@ -181,10 +190,7 @@ const ProjectDetailsContainer = ( ) => {
     <ProjectDetails
       project={enrichedProject}
       joinProject={handleJoinProjectPress}
-      leaveProject={( ) => {
-        setLoading( true );
-        leaveProjectMutate( );
-      }}
+      leaveProject={handleLeaveProjectPress}
       loadingProjectMembership={loading}
     />
   );
