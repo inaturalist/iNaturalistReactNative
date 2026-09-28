@@ -7,6 +7,7 @@ import { SPECIES_TAB } from "appConstants/tabs";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
+  Body2,
   Body4,
   Button,
   Heading1,
@@ -34,6 +35,7 @@ import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
+import buildProjectRuleSentences from "./helpers/projectRuleSentences";
 
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
@@ -133,6 +135,10 @@ const ProjectDetails = ( {
   const userTextStyle = { lineHeight: 26 };
 
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
+  const projectRuleSentences = buildProjectRuleSentences(
+    project.project_observation_rules,
+    t,
+  );
 
   const displayBriefcase = ( ) => (
     <INatIcon
@@ -233,6 +239,11 @@ const ProjectDetails = ( {
         {project.project_type === "" && (
           <View className="mt-8">
             <Heading4 className="mb-3">{t( "PROJECT-RULES" )}</Heading4>
+            {projectRuleSentences.map( sentence => (
+              <Body2 key={sentence} className="mb-1">
+                {`• ${sentence}`}
+              </Body2>
+            ) )}
           </View>
         )}
         {project.project_type === "collection" && (
