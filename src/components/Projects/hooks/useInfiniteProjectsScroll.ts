@@ -23,7 +23,7 @@ export interface UseInfiniteProjectsScrollOptions {
 
 const useInfiniteProjectsScroll = (
   { params: newInputParams, enabled }: UseInfiniteProjectsScrollOptions,
-): object => {
+) => {
   const baseParams = {
     ...newInputParams,
     per_page: ITEMS_PER_PAGE,
