@@ -34,3 +34,19 @@ const ruleToSentence = (
 };
 
 console.log( "ruleToSentence", ruleToSentence );
+
+const buildProjectRuleSentences = (
+  rules: ApiProjectObservationRule[] | undefined,
+  t: TFunction,
+): string[] => {
+  if ( !rules?.length ) {
+    return [];
+  }
+
+  return rules.map( rule => {
+    const sentence = ruleToSentence( rule, t );
+    return sentence;
+  } ).filter( text => text !== null );
+};
+
+export default buildProjectRuleSentences;
