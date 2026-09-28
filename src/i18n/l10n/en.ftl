@@ -806,6 +806,15 @@ MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Label for species sort order, this option is selected by default
 Most-Observed-Default = Most Observed (Default)
+must-be-captive-cultivated = must be captive / cultivated
+must-be-georeferenced = must be georeferenced
+must-be-identified = must be identified
+must-be-on-list = must be on list
+must-be-verifiable = must be verifiable
+must-be-wild = must be wild
+must-have-a-photo = must have a photo
+must-have-a-sound = must have a sound
+must-have-media = must have media
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
@@ -942,6 +951,7 @@ OBSERVE-ORGANISMS = OBSERVE ORGANISMS
 OBSERVED-AT--label = OBSERVED AT
 # This label is used in ObsDetails to describe the observation location
 OBSERVED-IN--label = OBSERVED IN
+observer-must-allow-project-curators-to-view-coordinates = observer must allow project curators to view coordinates
 Observers = Observers
 # Section in Explore that shows people who added observations given a set of search filters
 Observers-View = Observers View
