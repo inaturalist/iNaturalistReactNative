@@ -19,6 +19,7 @@ import { RealmContext } from "providers/contexts";
 import React, { useMemo, useState } from "react";
 import Project from "realmModels/Project";
 import { log } from "sharedHelpers/logger";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
@@ -118,6 +119,12 @@ const ProjectDetailsContainer = ( ) => {
     ( mutationParams, optsWithAuth ) => leaveProject( { id, ...mutationParams }, optsWithAuth ),
     {
       onSuccess: ( ) => {
+        const joinedProject = realm.objectForPrimaryKey( "Project", id );
+        if ( joinedProject ) {
+          safeRealmWrite( realm, ( ) => {
+            realm.delete( joinedProject );
+          }, "removing project from realm after leave" );
+        }
         queryClient.invalidateQueries( membershipQueryKey );
       },
       onError: error => {
