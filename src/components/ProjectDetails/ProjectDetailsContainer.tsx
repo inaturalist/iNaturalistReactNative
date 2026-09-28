@@ -42,6 +42,7 @@ const ProjectDetailsContainer = ( ) => {
   const { data: project } = useAuthenticatedQuery<ApiProject>(
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
+      rule_details: true,
       fields: PROJECT_DETAIL_FIELDS,
       rule_details: true,
       ttl: -1,
