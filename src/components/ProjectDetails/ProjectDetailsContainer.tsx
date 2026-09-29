@@ -174,6 +174,11 @@ const ProjectDetailsContainer = ( ) => {
   };
 
   const handleUpdateCoordinateAccess = ( access: COORDINATE_ACCESS ) => {
+    if ( !currentMembership ) {
+      return;
+    }
+    const currentMembershipID = currentMembership.results[0].id;
+    console.log( "currentMembershipID", currentMembershipID );
     setLoading( true );
   };
 
