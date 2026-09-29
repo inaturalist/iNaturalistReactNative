@@ -23,6 +23,7 @@ interface Props {
 
 const CoordinateAccessSheet = ( {
   confirm,
+  confirmText,
   loading,
   onPressClose,
   testID,
