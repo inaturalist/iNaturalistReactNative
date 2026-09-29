@@ -1,0 +1,87 @@
+// @flow
+
+import inatjs from "inaturalistjs";
+
+import handleError from "./error";
+
+const FIELDS = {
+  title: true,
+  icon: true,
+  project_type: true,
+};
+
+const PARAMS = {
+  fields: FIELDS,
+};
+
+const fetchProjects = async (
+  id: number,
+  params: Object = {},
+  opts: Object = {},
+): Promise<?Object> => {
+  try {
+    const { results } = await inatjs.projects.fetch( id, params, opts );
+    return results[0];
+  } catch ( e ) {
+    return handleError( e, { context: { functionName: "fetchProjects", id, opts } } );
+  }
+};
+
+const fetchProjectMembers = async (
+  params: Object = {},
+  opts: Object = {},
+): Promise<?Object> => {
+  try {
+    return await inatjs.projects.members( params, opts );
+  } catch ( e ) {
+    return handleError( e, { context: { functionName: "fetchProjectMembers", opts } } );
+  }
+};
+
+const fetchProjectPostsCount = async (
+  params: Object = {},
+  opts: Object = {},
+): Promise<?Object> => {
+  try {
+    const response = await inatjs.projects.posts( params, opts );
+    return response.total_results;
+  } catch ( e ) {
+    return handleError( e, { context: { functionName: "fetchProjectPostsCount", opts } } );
+  }
+};
+
+const searchProjects = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+  try {
+    return await inatjs.projects.search( { ...PARAMS, ...params }, opts );
+  } catch ( e ) {
+    return handleError( e, { context: { functionName: "searchProjects", opts } } );
+  }
+};
+
+const joinProject = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+  try {
+    return await inatjs.projects.join( { ...PARAMS, ...params }, opts );
+  } catch ( e ) {
+    return handleError( e, { context: { functionName: "joinProject", opts } } );
+  }
+};
+
+const leaveProject = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
+  try {
+    return await inatjs.projects.leave( { ...PARAMS, ...params }, opts );
+  } catch ( e ) {
+    return handleError( e, { context: { functionName: "leaveProject", opts } } );
+  }
+};
+
+
+export default searchProjects;
+
+export {
+  fetchProjectMembers,
+  fetchProjectPostsCount,
+  fetchProjects,
+  joinProject,
+  leaveProject,
+  searchProjects,
+};
