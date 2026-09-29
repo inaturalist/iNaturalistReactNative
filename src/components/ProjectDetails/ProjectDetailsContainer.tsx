@@ -193,7 +193,6 @@ const ProjectDetailsContainer = ( ) => {
       return;
     }
     const currentMembershipID = currentMembership.results[0].id;
-    console.log( "currentMembershipID", currentMembershipID );
     setLoading( true );
     updateCoordinateAccessMutate( {
       id: currentMembershipID,
