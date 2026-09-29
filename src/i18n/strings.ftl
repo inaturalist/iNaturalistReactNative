@@ -776,6 +776,8 @@ Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 # Display name for the iconic taxa category for mammalia
 Mammals = Mammals
+# Project detail section heading when the current user is a member
+MANAGE-MEMBERSHIP = MANAGE MEMBERSHIP
 MAP = MAP
 Map-Area = Map Area
 # Month of March
