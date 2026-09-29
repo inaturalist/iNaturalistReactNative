@@ -14,7 +14,7 @@ export enum COORDINATE_ACCESS {
 }
 
 interface Props {
-  confirm: ( checkboxValue: COORDINATE_ACCESS ) => void;
+  confirm: ( coordinateAccess: COORDINATE_ACCESS ) => void;
   loading?: boolean;
   onPressClose: ( ) => void;
 }
