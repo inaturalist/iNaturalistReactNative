@@ -312,6 +312,105 @@ describe( "mediaUploader", () => {
         .rejects.toThrow( "API Error" );
     } );
 
+    describe( "retrying connection failures", () => {
+      const networkError = ( ) => new TypeError( "Network request failed" );
+      const observation = {
+        uuid: "obs-uuid-123",
+        observationPhotos: [
+          { wasSynced: () => false, photo: { uuid: "photo-uuid-1", url: "photo1.jpg" } },
+        ],
+        observationSounds: [],
+      };
+      const realm = {};
+      let mockProgress;
+
+      beforeEach( () => {
+        jest.useFakeTimers();
+        mockProgress = { attached: jest.fn(), uploaded: jest.fn() };
+        mockedTrackEvidenceUpload.mockReturnValue( mockProgress );
+      } );
+
+      afterEach( () => {
+        jest.useRealTimers();
+      } );
+
+      it( "should retry a photo upload after a connection failure", async () => {
+        mockedCreateOrUpdateEvidence
+          .mockRejectedValueOnce( networkError( ) )
+          .mockResolvedValueOnce( { id: 123 } );
+        const options = { api_token: "test-token", signal: new AbortController( ).signal };
+
+        const upload = uploadObservationMedia( observation, options, realm );
+        await jest.runAllTimersAsync();
+        await upload;
+
+        expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 2 );
+        expect( mockProgress.uploaded ).toHaveBeenCalledTimes( 1 );
+      } );
+
+      it( "should throw the connection failure after exhausting retries", async () => {
+        mockedCreateOrUpdateEvidence.mockRejectedValue( networkError( ) );
+        const options = { api_token: "test-token", signal: new AbortController( ).signal };
+
+        const upload = uploadObservationMedia( observation, options, realm );
+        const assertion = expect( upload ).rejects.toThrow( "Network request failed" );
+        await jest.runAllTimersAsync();
+        await assertion;
+
+        expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 3 );
+        expect( mockProgress.uploaded ).not.toHaveBeenCalled();
+      } );
+
+      it( "should not retry errors that are not connection failures", async () => {
+        mockedCreateOrUpdateEvidence.mockRejectedValue( new Error( "API Error" ) );
+        const options = { api_token: "test-token", signal: new AbortController( ).signal };
+
+        await expect( uploadObservationMedia( observation, options, realm ) )
+          .rejects.toThrow( "API Error" );
+        expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 1 );
+      } );
+
+      it( "should not retry when the upload was already aborted", async () => {
+        mockedCreateOrUpdateEvidence.mockRejectedValue( networkError( ) );
+        const abortController = new AbortController( );
+        abortController.abort( );
+        const options = { api_token: "test-token", signal: abortController.signal };
+
+        await expect( uploadObservationMedia( observation, options, realm ) )
+          .rejects.toThrow( "Network request failed" );
+        expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 1 );
+      } );
+
+      it( "should throw an AbortError when aborted while waiting to retry", async () => {
+        mockedCreateOrUpdateEvidence.mockRejectedValue( networkError( ) );
+        const abortController = new AbortController( );
+        const options = { api_token: "test-token", signal: abortController.signal };
+
+        const upload = uploadObservationMedia( observation, options, realm );
+        const assertion = expect( upload ).rejects.toMatchObject( { name: "AbortError" } );
+        await jest.advanceTimersByTimeAsync( 100 );
+        abortController.abort( );
+        await jest.runAllTimersAsync();
+        await assertion;
+
+        expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 1 );
+      } );
+
+      it( "should not retry attaching photos to an observation", async () => {
+        mockedCreateOrUpdateEvidence.mockRejectedValue( networkError( ) );
+        const mediaItems = {
+          unsyncedObservationPhotos: [{ uuid: "photo-uuid-1", url: "photo1.jpg" }],
+          modifiedObservationPhotos: [],
+          unsyncedObservationSounds: [],
+        };
+        const options = { api_token: "test-token", signal: new AbortController( ).signal };
+
+        await expect( attachMediaToObservation( "obs-uuid-123", mediaItems, options, realm ) )
+          .rejects.toThrow( "Network request failed" );
+        expect( createOrUpdateEvidence ).toHaveBeenCalledTimes( 1 );
+      } );
+    } );
+
     it( "should filter out null photos", async () => {
       const observation = {
         uuid: "obs-uuid-123",

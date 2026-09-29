@@ -88,6 +88,43 @@ interface MediaItems {
   unsyncedObservationSounds: RealmObservationSound[];
 }
 
+const UPLOAD_RETRY_DELAYS_MS = [500, 1500];
+
+const isConnectionFailure = ( error: unknown ) => error instanceof TypeError
+  && /Network request failed/.test( error.message );
+
+const createAbortError = ( ) => {
+  const abortError = new Error( "Aborted" );
+  abortError.name = "AbortError";
+  return abortError;
+};
+
+const wait = ( ms: number ) => new Promise( resolve => { setTimeout( resolve, ms ); } );
+
+// Only for multipart photo/sound uploads, which the networking layer can't replay
+const createEvidenceWithRetry = async (
+  apiEndpoint: ApiEndpoint,
+  params: object,
+  options: UploadOptions,
+): Promise<MediaApiResponse | null> => {
+  for ( let attempt = 0; ; attempt += 1 ) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      return await createOrUpdateEvidence( apiEndpoint, params, options );
+    } catch ( error ) {
+      const delay = UPLOAD_RETRY_DELAYS_MS[attempt];
+      if ( delay === undefined || !isConnectionFailure( error ) || options.signal.aborted ) {
+        throw error;
+      }
+      // eslint-disable-next-line no-await-in-loop
+      await wait( delay );
+      if ( options.signal.aborted ) {
+        throw createAbortError( );
+      }
+    }
+  }
+};
+
 const uploadSingleEvidence = async (
   evidence: Evidence,
   type: EvidenceType,
@@ -111,11 +148,9 @@ const uploadSingleEvidence = async (
   const isAttachOperation = observationId != null;
   const evidenceProgress = trackEvidenceUpload( observationUUID );
 
-  const response = await createOrUpdateEvidence(
-    apiEndpoint,
-    params,
-    options,
-  );
+  const response = action === "upload"
+    ? await createEvidenceWithRetry( apiEndpoint, params, options )
+    : await createOrUpdateEvidence( apiEndpoint, params, options );
 
   if ( !response ) {
     throw new Error( `Failed to upload ${type} ${evidenceUUID}: no response from server` );
