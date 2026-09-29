@@ -603,6 +603,7 @@
   "PRIVACY-POLICY": "PRIVACY POLICY",
   "Private": "Private",
   "PROJECT": "PROJECT",
+  "PROJECT-ADMINS": "PROJECT ADMINS",
   "Project-Members-Only": "Project Members Only",
   "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
   "project-start-time-datetime": "Start time: { $datetime }",
