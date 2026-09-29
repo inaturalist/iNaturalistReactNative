@@ -320,6 +320,16 @@ const ProjectDetails = ( {
           loading={loadingProjectMembership}
         />
       )}
+      {openSheet === EDIT_COORDINATE_ACCESS && project.project_type === "" && (
+        <CoordinateAccessSheet
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
+            console.log( "coordinateAccess", coordinateAccess );
+            setOpenSheet( NONE );
+          }}
+          loading={loadingProjectMembership}
+        />
+      )}
       {openSheet === JOIN && project.project_type !== "" && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
