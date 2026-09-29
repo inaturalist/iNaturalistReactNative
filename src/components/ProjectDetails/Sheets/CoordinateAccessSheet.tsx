@@ -19,7 +19,7 @@ interface Props {
   onPressClose: ( ) => void;
 }
 
-const JoinSheet = ( {
+const CoordinateAccessSheet = ( {
   confirm,
   loading,
   onPressClose,
@@ -76,4 +76,4 @@ const JoinSheet = ( {
   );
 };
 
-export default JoinSheet;
+export default CoordinateAccessSheet;
