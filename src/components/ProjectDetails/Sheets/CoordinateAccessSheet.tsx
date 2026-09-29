@@ -15,6 +15,7 @@ export enum COORDINATE_ACCESS {
 
 interface Props {
   confirm: ( coordinateAccess: COORDINATE_ACCESS ) => void;
+  confirmText: string;
   loading?: boolean;
   onPressClose: ( ) => void;
 }
@@ -62,7 +63,7 @@ const CoordinateAccessSheet = ( {
   return (
     <RadioButtonSheet
       confirm={confirm}
-      confirmText={t( "CONFIRM-AND-JOIN" )}
+      confirmText={confirmText}
       headerText={t( "LOCATION-PERMISSIONS" )}
       radioValues={radioValues}
       requireSelectionChange={false}
