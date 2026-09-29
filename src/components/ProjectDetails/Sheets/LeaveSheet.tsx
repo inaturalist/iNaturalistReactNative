@@ -12,7 +12,7 @@ export enum LEAVE_KEEP {
 }
 
 interface Props {
-  confirm: ( checkboxValue: LEAVE_KEEP ) => void;
+  confirm: ( leaveKeep: LEAVE_KEEP ) => void;
   loading?: boolean;
   onPressClose: ( ) => void;
 }
