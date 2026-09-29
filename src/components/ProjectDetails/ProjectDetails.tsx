@@ -317,6 +317,7 @@ const ProjectDetails = ( {
             joinProject( coordinateAccess );
             setOpenSheet( NONE );
           }}
+          confirmText={t( "CONFIRM-AND-JOIN" )}
           loading={loadingProjectMembership}
         />
       )}
@@ -327,6 +328,7 @@ const ProjectDetails = ( {
             console.log( "coordinateAccess", coordinateAccess );
             setOpenSheet( NONE );
           }}
+          confirmText={t( "CONFIRM" )}
           loading={loadingProjectMembership}
         />
       )}
