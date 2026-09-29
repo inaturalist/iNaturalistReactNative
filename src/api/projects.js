@@ -74,7 +74,6 @@ const leaveProject = async ( params: Object = {}, opts: Object = {} ): Promise<?
   }
 };
 
-
 export default searchProjects;
 
 export {
