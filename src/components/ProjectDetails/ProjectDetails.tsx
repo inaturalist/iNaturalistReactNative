@@ -41,6 +41,7 @@ const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/gene
 const NONE = "NONE";
 const JOIN = "JOIN";
 const LEAVE = "LEAVE";
+const EDIT_COORDINATE_ACCESS = "EDIT_COORDINATE_ACCESS";
 
 const PROJECT_URL = `${EnvConfig.OAUTH_API_URL}/projects`;
 
@@ -278,6 +279,16 @@ const ProjectDetails = ( {
             )
             : (
               <>
+                {project.project_type === "" && (
+                  <Button
+                    level="neutral"
+                    className="mb-3"
+                    text={t( "EDIT-LOCATION-PERMISSIONS" )}
+                    onPress={( ) => setOpenSheet( EDIT_COORDINATE_ACCESS )}
+                    loading={loadingProjectMembership}
+                    disabled={loadingProjectMembership}
+                  />
+                )}
                 <Button
                   level="neutral"
                   text={t( "LEAVE-PROJECT" )}
