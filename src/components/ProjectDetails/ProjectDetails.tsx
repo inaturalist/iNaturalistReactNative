@@ -258,7 +258,7 @@ const ProjectDetails = ( {
           <Heading4 className="mb-3">
             {!project.current_user_is_member
               ? t( "JOIN-PROJECT" )
-              : t( "LEAVE-PROJECT" )}
+              : t( "MANAGE-MEMBERSHIP" )}
           </Heading4>
           {!project.current_user_is_member
             ? (
