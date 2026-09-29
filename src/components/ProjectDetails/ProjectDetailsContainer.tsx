@@ -23,7 +23,7 @@ import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
-import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
+import type { COORDINATE_ACCESS } from "./Sheets/CoordinateAccessSheet";
 import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
 
 const logger = log.extend( "ProjectDetailsContainer" );
