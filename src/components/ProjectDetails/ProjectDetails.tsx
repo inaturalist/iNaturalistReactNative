@@ -76,6 +76,7 @@ interface Props {
   leaveProject: ( _keep?: LEAVE_KEEP ) => void;
   loadingProjectMembership: boolean;
   project: Project | null;
+  updateCoordinateAccess: ( _access: COORDINATE_ACCESS ) => void;
 }
 
 const ProjectDetails = ( {
@@ -83,6 +84,7 @@ const ProjectDetails = ( {
   leaveProject,
   loadingProjectMembership,
   project,
+  updateCoordinateAccess,
 }: Props ) => {
   const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
 
@@ -326,7 +328,7 @@ const ProjectDetails = ( {
         <CoordinateAccessSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
-            console.log( "coordinateAccess", coordinateAccess );
+            updateCoordinateAccess( coordinateAccess );
             setOpenSheet( NONE );
           }}
           confirmText={t( "CONFIRM" )}
