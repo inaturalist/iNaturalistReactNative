@@ -14,12 +14,14 @@ export enum LEAVE_KEEP {
 interface Props {
   confirm: ( leaveKeep: LEAVE_KEEP ) => void;
   loading?: boolean;
+  observationsCount: number;
   onPressClose: ( ) => void;
 }
 
 const LeaveSheet = ( {
   confirm,
   loading,
+  observationsCount,
   onPressClose,
 }: Props ) => {
   const { t } = useTranslation( );
@@ -37,12 +39,15 @@ const LeaveSheet = ( {
         value: LEAVE_KEEP.REVOKE,
       },
       remove: {
-        label: t( "Remove-all-your-observations-from-this-project" ),
+        label: t(
+          "Remove-all-your-observations-from-this-project-X",
+          { count: observationsCount },
+        ),
         text: t( "Keep-in-mind-that-project-curators" ),
         value: LEAVE_KEEP.REMOVE,
       },
     } ),
-    [t],
+    [observationsCount, t],
   );
 
   const cancelButton = (

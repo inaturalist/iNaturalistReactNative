@@ -707,7 +707,7 @@
   "Recording-stopped-Tap-to-play-the-current-recording": "Recording stopped. Tap to play the current recording.",
   "REDO-SEARCH-IN-MAP-AREA": "REDO SEARCH IN MAP AREA",
   "Remove-agreement": "Remove agreement",
-  "Remove-all-your-observations-from-this-project": "Remove all your observations from this project",
+  "Remove-all-your-observations-from-this-project-X": "Remove all your observations from this project ({ $count })",
   "Remove-disagreement": "Remove disagreement",
   "Remove-favorite": "Remove favorite",
   "Remove-identification": "Remove identification",

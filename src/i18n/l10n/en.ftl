@@ -1145,8 +1145,8 @@ Recording-stopped-Tap-to-play-the-current-recording = Recording stopped. Tap to 
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
 # Label for a button that removes a vote of agreement
 Remove-agreement = Remove agreement
-# Traditional project leave: remove all observations from project
-Remove-all-your-observations-from-this-project = Remove all your observations from this project
+# Traditional project leave: remove all observations from project, showing a count of how many obs will be removed
+Remove-all-your-observations-from-this-project-X = Remove all your observations from this project ({ $count })
 # Label for a button that removes a vote of disagreement
 Remove-disagreement = Remove disagreement
 Remove-favorite = Remove favorite

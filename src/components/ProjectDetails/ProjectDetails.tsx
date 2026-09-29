@@ -328,6 +328,7 @@ const ProjectDetails = ( {
             setOpenSheet( NONE );
           }}
           loading={loadingProjectMembership}
+          observationsCount={project.current_user_observations_count}
         />
       )}
       {openSheet === LEAVE && project.project_type !== "" && (
