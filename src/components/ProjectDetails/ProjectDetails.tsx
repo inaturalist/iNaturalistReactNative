@@ -31,8 +31,10 @@ import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
-import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
-import JoinSheet from "./Sheets/JoinSheet";
+import type {
+  COORDINATE_ACCESS,
+} from "./Sheets/CoordinateAccessSheet";
+import CoordinateAccessSheet from "./Sheets/CoordinateAccessSheet";
 import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
 import LeaveSheet from "./Sheets/LeaveSheet";
 
@@ -309,7 +311,7 @@ const ProjectDetails = ( {
         </Body4>
       </View>
       {openSheet === JOIN && project.project_type === "" && (
-        <JoinSheet
+        <CoordinateAccessSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
             joinProject( coordinateAccess );
