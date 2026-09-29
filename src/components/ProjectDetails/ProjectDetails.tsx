@@ -33,6 +33,8 @@ import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
 import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
 import JoinSheet from "./Sheets/JoinSheet";
+import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
+import LeaveSheet from "./Sheets/LeaveSheet";
 
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
@@ -68,7 +70,7 @@ interface Project {
 
 interface Props {
   joinProject: ( _access?: COORDINATE_ACCESS ) => void;
-  leaveProject: ( ) => void;
+  leaveProject: ( _keep?: LEAVE_KEEP ) => void;
   loadingProjectMembership: boolean;
   project: Project | null;
 }
@@ -318,7 +320,18 @@ const ProjectDetails = ( {
           buttonType="primary"
         />
       )}
-      {openSheet === LEAVE && (
+      {openSheet === LEAVE && project.project_type === "" && (
+        <LeaveSheet
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( keep: LEAVE_KEEP ) => {
+            leaveProject( keep );
+            setOpenSheet( NONE );
+          }}
+          loading={loadingProjectMembership}
+          observationsCount={project.current_user_observations_count}
+        />
+      )}
+      {openSheet === LEAVE && project.project_type !== "" && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {
@@ -326,13 +339,6 @@ const ProjectDetails = ( {
             setOpenSheet( NONE );
           }}
           headerText={t( "LEAVE-PROJECT--question" )}
-          text={
-            project.project_type === ""
-            && project.current_user_observations_count > 0
-            && t( "If-you-leave-x-of-your-observations-removed", {
-              count: project.current_user_observations_count,
-            } )
-          }
           buttonText={t( "LEAVE" )}
           handleSecondButtonPress={( ) => setOpenSheet( NONE )}
           secondButtonText={t( "CANCEL" )}

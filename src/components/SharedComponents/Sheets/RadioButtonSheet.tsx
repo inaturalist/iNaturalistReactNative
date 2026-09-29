@@ -22,6 +22,7 @@ interface Props<ValueT extends RadioSheetPrimitive> {
   bottomComponent?: React.JSX.Element;
   buttonRowClassName?: string;
   confirm: ( _checkedValue: ValueT ) => void;
+  confirmLevel?: string;
   confirmText?: string;
   headerText: string;
   hidden?: boolean;
@@ -40,6 +41,7 @@ const RadioButtonSheet = <ValueT extends RadioSheetPrimitive>( {
   bottomComponent,
   buttonRowClassName,
   confirm,
+  confirmLevel = "primary",
   confirmText,
   headerText,
   hidden,
@@ -80,7 +82,7 @@ const RadioButtonSheet = <ValueT extends RadioSheetPrimitive>( {
   const renderConfirmButton = ( className?: string ) => (
     <Button
       className={className}
-      level="primary"
+      level={confirmLevel}
       onPress={( ) => {
         confirm( checkedValue );
       }}

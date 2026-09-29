@@ -19,10 +19,12 @@ import { RealmContext } from "providers/contexts";
 import React, { useMemo, useState } from "react";
 import Project from "realmModels/Project";
 import { log } from "sharedHelpers/logger";
+import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
 import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
+import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
 
 const logger = log.extend( "ProjectDetailsContainer" );
 const { useRealm } = RealmContext;
@@ -36,11 +38,11 @@ const ProjectDetailsContainer = ( ) => {
   const [loading, setLoading] = useState( false );
 
   const fetchProjectsQueryKey = ["projectDetails", "fetchProjects", id];
-
   const { data: project } = useAuthenticatedQuery<ApiProject>(
     fetchProjectsQueryKey,
     optsWithAuth => fetchProjects( id, {
       fields: PROJECT_DETAIL_FIELDS,
+      ttl: -1,
     }, optsWithAuth ),
   );
 
@@ -51,11 +53,13 @@ const ProjectDetailsContainer = ( ) => {
     }, optsWithAuth ),
   );
 
+  const projectStatsQueryKey = ["searchObservations", "projectStats", id];
   const { data: projectStats } = useAuthenticatedQuery<ApiObservationsSearchResponse>(
-    ["searchObservations", "projectStats", id],
+    projectStatsQueryKey,
     ( ) => searchObservations( {
       project_id: id,
       per_page: 0,
+      ttl: -1,
     } ),
   );
 
@@ -74,11 +78,13 @@ const ProjectDetailsContainer = ( ) => {
     },
   );
 
+  const speciesCountsQueryKey = ["fetchSpeciesCounts", id];
   const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse<object>>(
-    ["fetchSpeciesCounts", id],
+    speciesCountsQueryKey,
     ( ) => fetchSpeciesCounts( {
       project_id: id,
       per_page: 0,
+      ttl: -1,
     } ),
   );
 
@@ -87,6 +93,7 @@ const ProjectDetailsContainer = ( ) => {
     membershipQueryKey,
     optsWithAuth => fetchMembership( {
       id,
+      ttl: -1,
     }, optsWithAuth ),
     {
       enabled: !!( currentUser ),
@@ -102,7 +109,8 @@ const ProjectDetailsContainer = ( ) => {
         // project is not undefined here because we call the mutation in the child
         // which has a !project check before rendering the buttons that call here
         Project.upsertRemoteProjects( [project as ApiProject], realm );
-        queryClient.invalidateQueries( membershipQueryKey );
+        queryClient.invalidateQueries( { queryKey: membershipQueryKey } );
+        queryClient.invalidateQueries( { queryKey: fetchProjectsQueryKey } );
       },
       onError: error => {
         // project is not undefined here because we call the mutation in the child
@@ -114,10 +122,19 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const { mutate: leaveProjectMutate } = useAuthenticatedMutation(
-    ( _, optsWithAuth ) => leaveProject( { id }, optsWithAuth ),
+    ( mutationParams, optsWithAuth ) => leaveProject( { id, ...mutationParams }, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        queryClient.invalidateQueries( membershipQueryKey );
+        const joinedProject = realm.objectForPrimaryKey( "Project", id );
+        if ( joinedProject ) {
+          safeRealmWrite( realm, ( ) => {
+            realm.delete( joinedProject );
+          }, "removing project from realm after leave" );
+        }
+        queryClient.invalidateQueries( { queryKey: membershipQueryKey } );
+        queryClient.invalidateQueries( { queryKey: fetchProjectsQueryKey } );
+        queryClient.invalidateQueries( { queryKey: projectStatsQueryKey } );
+        queryClient.invalidateQueries( { queryKey: speciesCountsQueryKey } );
       },
       onError: error => {
         // project is not undefined here because we call the mutation in the child
@@ -127,6 +144,14 @@ const ProjectDetailsContainer = ( ) => {
       onSettled: ( ) => setLoading( false ),
     },
   );
+
+  const handleLeaveProjectPress = ( keep?: LEAVE_KEEP ) => {
+    setLoading( true );
+    const mutationParams = keep
+      ? { keep }
+      : { };
+    leaveProjectMutate( mutationParams );
+  };
 
   const handleJoinProjectPress = ( access?: COORDINATE_ACCESS ) => {
     if ( currentUser ) {
@@ -181,10 +206,7 @@ const ProjectDetailsContainer = ( ) => {
     <ProjectDetails
       project={enrichedProject}
       joinProject={handleJoinProjectPress}
-      leaveProject={( ) => {
-        setLoading( true );
-        leaveProjectMutate( );
-      }}
+      leaveProject={handleLeaveProjectPress}
       loadingProjectMembership={loading}
     />
   );
