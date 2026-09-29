@@ -1,6 +1,5 @@
 import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
-// import { PROJECT_OBSERVATION_FIELDS } from "api/fields";
 import type { ApiDefaultResult, ApiOpts, ApiResponse } from "api/types";
 import type { COORDINATE_ACCESS } from "components/ProjectDetails/Sheets/CoordinateAccessSheet";
 import inatjs from "inaturalistjs";
@@ -12,15 +11,10 @@ import { EnvConfig } from "sharedHelpers/envConfig";
 // from the configured v2 URL instead of changing the global config.
 const V1_API_URL = ( EnvConfig.API_URL || "" ).replace( /\/v2\/?$/, "/v1" );
 
-const PARAMS = {
-  fields: "all",
-  // fields: PROJECT_OBSERVATION_FIELDS,
-};
-
 export interface ProjectUserUpdateParams {
-  id: number;
-  // id: string; // uuid
+  id: number; // int ID
   project_user: {
+    // TODO: this param is not working with API v2 but is working with v1
     preferred_curator_coordinate_access: COORDINATE_ACCESS;
   };
 }
@@ -31,7 +25,7 @@ const updateProjectUser = async <T = ApiDefaultResult>(
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
     const response = await inatjs.project_users.update(
-      { ...PARAMS, ...params },
+      params,
       { ...opts, apiURL: V1_API_URL },
     );
     return response;
