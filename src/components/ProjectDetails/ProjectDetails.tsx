@@ -277,13 +277,15 @@ const ProjectDetails = ( {
               />
             )
             : (
-              <Button
-                level="neutral"
-                text={t( "LEAVE" )}
-                onPress={( ) => setOpenSheet( LEAVE )}
-                loading={loadingProjectMembership}
-                disabled={loadingProjectMembership}
-              />
+              <>
+                <Button
+                  level="neutral"
+                  text={t( "LEAVE-PROJECT" )}
+                  onPress={( ) => setOpenSheet( LEAVE )}
+                  loading={loadingProjectMembership}
+                  disabled={loadingProjectMembership}
+                />
+              </>
             )}
         </View>
         <AboutProjectType projectType={project.project_type} />
