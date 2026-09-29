@@ -174,6 +174,10 @@ const ProjectDetailsContainer = ( ) => {
     }
   };
 
+  const handleUpdateCoordinateAccess = ( access: COORDINATE_ACCESS ) => {
+    setLoading( true );
+  };
+
   const enrichedProject = useMemo( ( ) => {
     if ( !project ) return null;
 
@@ -209,6 +213,7 @@ const ProjectDetailsContainer = ( ) => {
       joinProject={handleJoinProjectPress}
       leaveProject={handleLeaveProjectPress}
       loadingProjectMembership={loading}
+      updateCoordinateAccess={handleUpdateCoordinateAccess}
     />
   );
 };
