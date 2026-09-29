@@ -60,6 +60,7 @@ const SearchMyObservationsTaxon = ( ) => {
           name: newTaxon.name,
           preferredCommonName,
           iconUri,
+          iconicTaxonName: newTaxon.iconic_taxon_name,
         },
       } );
     } else {

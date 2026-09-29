@@ -17,6 +17,7 @@ export interface MyObservationsTaxon {
   name: string;
   preferredCommonName?: string;
   iconUri?: string;
+  iconicTaxonName?: string;
 }
 
 export interface MyObservationsState {
