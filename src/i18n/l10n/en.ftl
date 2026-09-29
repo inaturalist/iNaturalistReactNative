@@ -491,6 +491,8 @@ Edit-identification = Edit identification
 EDIT-LOCATION = EDIT LOCATION
 # Label for interactive element that takes you to a location choosing screen
 Edit-location = Edit location
+# Traditional project membership: edit curator access to hidden observation coordinates (not device GPS)
+EDIT-LOCATION-PERMISSIONS = EDIT LOCATION PERMISSIONS
 Edit-Observation = Edit Observation
 Edit-your-profile-change-your-settings = Edit your profile, change your notifications settings, and manage all other parts of your account.
 # Accessibility hint for button that edits an observation's taxon
@@ -776,6 +778,8 @@ Lowest = Lowest
 LOWEST-RANK = LOWEST RANK
 # Display name for the iconic taxa category for mammalia
 Mammals = Mammals
+# Project detail section heading when the current user is a member
+MANAGE-MEMBERSHIP = MANAGE MEMBERSHIP
 MAP = MAP
 Map-Area = Map Area
 # Month of March
