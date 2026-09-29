@@ -338,13 +338,6 @@ const ProjectDetails = ( {
             setOpenSheet( NONE );
           }}
           headerText={t( "LEAVE-PROJECT--question" )}
-          text={
-            project.project_type === ""
-            && project.current_user_observations_count > 0
-            && t( "If-you-leave-x-of-your-observations-removed", {
-              count: project.current_user_observations_count,
-            } )
-          }
           buttonText={t( "LEAVE" )}
           handleSecondButtonPress={( ) => setOpenSheet( NONE )}
           secondButtonText={t( "CANCEL" )}
