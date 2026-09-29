@@ -18,12 +18,14 @@ interface Props {
   confirmText: string;
   loading?: boolean;
   onPressClose: ( ) => void;
+  testID: string;
 }
 
 const CoordinateAccessSheet = ( {
   confirm,
   loading,
   onPressClose,
+  testID,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -69,7 +71,7 @@ const CoordinateAccessSheet = ( {
       requireSelectionChange={false}
       loading={loading}
       selectedValue={COORDINATE_ACCESS.OBSERVER}
-      testID="JoinSheet"
+      testID={testID}
       onPressClose={onPressClose}
       secondaryButton={cancelButton}
       topDescriptionText={topDescriptionText}

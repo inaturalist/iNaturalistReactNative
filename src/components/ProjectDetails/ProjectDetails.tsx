@@ -319,6 +319,7 @@ const ProjectDetails = ( {
           }}
           confirmText={t( "CONFIRM-AND-JOIN" )}
           loading={loadingProjectMembership}
+          testID="JoinSheet"
         />
       )}
       {openSheet === EDIT_COORDINATE_ACCESS && project.project_type === "" && (
@@ -330,6 +331,7 @@ const ProjectDetails = ( {
           }}
           confirmText={t( "CONFIRM" )}
           loading={loadingProjectMembership}
+          testID="EditCoordinateAccessSheet"
         />
       )}
       {openSheet === JOIN && project.project_type !== "" && (
