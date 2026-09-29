@@ -11,6 +11,7 @@ import {
   leaveProject,
 } from "api/projects";
 import fetchProjectMembership from "api/projectsTyped";
+import { updateProjectUser } from "api/projectUsers";
 import type {
   ApiObservationsSearchResponse, ApiProject, ApiResponse,
 } from "api/types";
@@ -153,6 +154,20 @@ const ProjectDetailsContainer = ( ) => {
     leaveProjectMutate( mutationParams );
   };
 
+  const { mutate: updateCoordinateAccessMutate } = useAuthenticatedMutation(
+    ( mutationParams, optsWithAuth ) => updateProjectUser( mutationParams, optsWithAuth ),
+    {
+      onError: error => {
+        logger.error(
+          "could not update project user coordinate access: ",
+          ( project as ApiProject ).id,
+          error,
+        );
+      },
+      onSettled: ( ) => setLoading( false ),
+    },
+  );
+
   const handleJoinProjectPress = ( access?: COORDINATE_ACCESS ) => {
     if ( currentUser ) {
       setLoading( true );
@@ -180,6 +195,10 @@ const ProjectDetailsContainer = ( ) => {
     const currentMembershipID = currentMembership.results[0].id;
     console.log( "currentMembershipID", currentMembershipID );
     setLoading( true );
+    updateCoordinateAccessMutate( {
+      id: currentMembershipID,
+      project_user: { preferred_curator_coordinate_access: access },
+    } );
   };
 
   const enrichedProject = useMemo( ( ) => {
