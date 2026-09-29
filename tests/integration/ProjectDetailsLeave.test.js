@@ -2,7 +2,6 @@ import {
   screen,
   userEvent,
   waitFor,
-  within,
 } from "@testing-library/react-native";
 import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import initI18next from "i18n/initI18next";
@@ -35,7 +34,6 @@ jest.mock( "providers/contexts", ( ) => {
 } );
 beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
-// /UNIQUE REALM SETUP
 
 const realm = ( ) => global.mockRealms[__filename];
 
@@ -50,7 +48,7 @@ const mockRemoteProject = factory( "RemoteProject", {
   icon: faker.image.url( ),
   header_image_url: faker.image.url( ),
   description: faker.lorem.paragraph( ),
-  project_type: "",
+  project_type: "collection",
   membership_model: "open",
   user_ids: [faker.number.int( )],
 } );
@@ -104,18 +102,17 @@ describe( "ProjectDetails leave", ( ) => {
     renderAppWithComponent( <ProjectDetailsContainer /> );
 
     expect( await screen.findByText( mockRemoteProject.title ) ).toBeVisible( );
-    expect( await screen.findByText( "LEAVE" ) ).toBeVisible( );
+    expect( await screen.findByText( "LEAVE PROJECT" ) ).toBeVisible( );
 
+    await actor.press( screen.getByText( "LEAVE PROJECT" ) );
+
+    expect( await screen.findByText( "LEAVE PROJECT?" ) ).toBeVisible( );
     await actor.press( screen.getByText( "LEAVE" ) );
-
-    const leaveSheet = await screen.findByTestId( "LeaveSheet" );
-    await actor.press( within( leaveSheet ).getByText( "LEAVE" ) );
 
     await waitFor( ( ) => {
       expect( inatjs.projects.leave ).toHaveBeenCalledWith(
         expect.objectContaining( {
           id: mockRemoteProject.id,
-          keep: "true",
         } ),
         expect.anything( ),
       );
