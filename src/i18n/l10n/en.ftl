@@ -858,6 +858,7 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
+# As a categorical answer to the question presented on joining traditional projects: Do you want private coordinates be shared?
 No = No
 # Error message when no camera can be found
 No-Camera-Available = No Camera Available
