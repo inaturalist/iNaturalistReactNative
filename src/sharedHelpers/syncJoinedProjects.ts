@@ -49,6 +49,7 @@ async function syncJoinedProjects(
         per_page: PER_PAGE,
         page,
         fields: PROJECT_SUMMARY_POF_FIELDS,
+        rule_details: true,
         ttl: -1,
       };
       // eslint-disable-next-line no-await-in-loop
