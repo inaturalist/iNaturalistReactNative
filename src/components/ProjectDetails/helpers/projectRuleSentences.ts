@@ -4,11 +4,26 @@ import type {
 } from "api/types";
 import type { TFunction } from "i18next";
 
+const observationFieldNameById = (
+  projectObservationFields: ApiProjectObservationField[] | undefined,
+): Map<number, string> => {
+  const map = new Map<number, string>( );
+  projectObservationFields?.forEach( pof => {
+    map.set( pof.observation_field.id, pof.observation_field.name );
+  } );
+  return map;
+};
+
 const ruleToSentence = (
   rule: ApiProjectObservationRule,
+  fieldNamesByID: Map<number, string>,
   t: TFunction,
 ): string | null => {
   switch ( rule.operator ) {
+    case "has_observation_field?": {
+      const name = fieldNamesByID.get( rule.operand_id );
+      return t( "must-have-observation-field-x-filled-out", { name } );
+    }
     case "georeferenced?":
       return t( "must-be-georeferenced" );
     case "captive?":
@@ -45,10 +60,9 @@ const buildProjectRuleSentences = (
     return [];
   }
 
-  console.log( "projectObservationFields", projectObservationFields );
-
+  const fieldNamesByID = observationFieldNameById( projectObservationFields );
   return rules.map( rule => {
-    const sentence = ruleToSentence( rule, t );
+    const sentence = ruleToSentence( rule, fieldNamesByID, t );
     return sentence;
   } ).filter( text => text !== null );
 };

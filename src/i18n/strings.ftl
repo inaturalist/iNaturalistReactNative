@@ -815,6 +815,7 @@ must-be-wild = must be wild
 must-have-a-photo = must have a photo
 must-have-a-sound = must have a sound
 must-have-media = must have media
+must-have-observation-field-x-filled-out = must have observation field "{ $name }" filled out
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT

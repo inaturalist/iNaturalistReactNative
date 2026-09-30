@@ -478,6 +478,7 @@
   "must-have-a-photo": "must have a photo",
   "must-have-a-sound": "must have a sound",
   "must-have-media": "must have media",
+  "must-have-observation-field-x-filled-out": "must have observation field \"{ $name }\" filled out",
   "MY-CONTENT--notifications": "MY CONTENT",
   "My-Observations": "My Observations",
   "My-Observations--bottom-tab": "Me",
