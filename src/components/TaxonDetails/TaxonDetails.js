@@ -398,50 +398,53 @@ const TaxonDetails = ( ): Node => {
   return (
     <SharedStackViewWrapper>
       <StatusBar barStyle="dark-content" />
-      <ScrollView
-        testID={`TaxonDetails.${taxon?.id}`}
-        onScroll={handleScroll}
-        contentContainerStyle={SCROLL_VIEW_STYLE}
-        scrollEventThrottle={16}
-        stickyHeaderIndices={[0]}
-      >
-        <TaxonDetailsHeader
-          invertToWhiteBackground={
-            fromMatch
-              ? true
-              : invertToWhiteBackground
-          }
-          hasTitle={fromMatch}
-          headerRightType={headerRightType}
-          onPressSearch={
-            fromMatch
-              ? ( ) => navigation.navigate( "MatchTaxonSearchScreen" )
-              : undefined
-          }
-          taxon={taxon}
-        />
-        <View className="flex flex-1 flex-grow bg-black -mt-[64px]">
-          <View className="w-full h-[420px] shrink-1">
-            {displayTaxonMedia()}
-            <View
-              className="absolute bottom-0 p-0 w-full"
-              pointerEvents="box-none"
-            >
-              {isConnected && !isTablet && photos.length > 1 && displayScrollDots()}
-              {taxon && displayTaxonTitle()}
+      <View className="flex-1">
+        <ScrollView
+          testID={`TaxonDetails.${taxon?.id}`}
+          onScroll={handleScroll}
+          contentContainerStyle={SCROLL_VIEW_STYLE}
+          scrollEventThrottle={16}
+        >
+          <View className="flex flex-1 flex-grow bg-black">
+            <View className="w-full h-[420px] shrink-1">
+              {displayTaxonMedia()}
+              <View
+                className="absolute bottom-0 p-0 w-full"
+                pointerEvents="box-none"
+              >
+                {isConnected && !isTablet && photos.length > 1 && displayScrollDots()}
+                {taxon && displayTaxonTitle()}
+              </View>
+            </View>
+            <View className="bg-white py-5 h-full flex-1">
+              {displayTaxonDetails( )}
             </View>
           </View>
-          <View className="bg-white py-5 h-full flex-1">
-            {displayTaxonDetails( )}
-          </View>
+          <MediaViewerModal
+            showModal={mediaViewerVisible}
+            onClose={( ) => setMediaViewerVisible( false )}
+            photos={photos}
+            header={renderHeader}
+          />
+        </ScrollView>
+        <View className="absolute top-0 left-0 right-0">
+          <TaxonDetailsHeader
+            invertToWhiteBackground={
+              fromMatch
+                ? true
+                : invertToWhiteBackground
+            }
+            hasTitle={fromMatch}
+            headerRightType={headerRightType}
+            onPressSearch={
+              fromMatch
+                ? ( ) => navigation.navigate( "MatchTaxonSearchScreen" )
+                : undefined
+            }
+            taxon={taxon}
+          />
         </View>
-        <MediaViewerModal
-          showModal={mediaViewerVisible}
-          onClose={( ) => setMediaViewerVisible( false )}
-          photos={photos}
-          header={renderHeader}
-        />
-      </ScrollView>
+      </View>
       {fromMatch && (
         <MatchSaveDiscardButtons
           handlePress={async action => {
