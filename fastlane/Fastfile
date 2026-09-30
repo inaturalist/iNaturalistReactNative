@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
+require "dotenv"
 require "fileutils"
 require "spaceship"
+
+ROOT_DIR = File.expand_path( "..", __dir__ )
+# Fastlane loads fastlane/.env first; supplement with repo-root .env for app build
+# config (e.g. ANDROID_MODEL_FILE_NAME) without overriding fastlane-only secrets.
+Dotenv.load( File.join( ROOT_DIR, ".env" ) )
 
 appfile_path = File.join( __dir__, "Appfile" )
 unless File.exist?( appfile_path )
