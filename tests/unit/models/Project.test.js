@@ -30,6 +30,19 @@ describe( "Project", ( ) => {
       expect( mappedProject.projectObservationFields ).toHaveLength( 1 );
       expect( mappedProject.project_type ).toBe( mockRemoteProject.project_type );
     } );
+
+    it( "maps rules and rule preferences", ( ) => {
+      const mockRemoteProject = factory( "RemoteProject", {
+        project_observation_rules: [factory( "RemoteProjectObservationRule" )],
+        rule_preferences: [{ field: "quality_grade", value: "research,needs_id" }],
+      } );
+      const mappedProject = Project.mapApiToRealm( mockRemoteProject );
+
+      expect( mappedProject.project_observation_rules ).toHaveLength( 1 );
+      expect( mappedProject.rule_preferences ).toEqual( [
+        { field: "quality_grade", value: "research,needs_id" },
+      ] );
+    } );
   } );
 
   describe( "upsertRemoteProjects", ( ) => {
@@ -47,6 +60,41 @@ describe( "Project", ( ) => {
       expect( pof1.obsField.id ).toBe(
         mockRemoteProject.project_observation_fields[0].observation_field.id,
       );
+    } );
+
+    it( "persists rules and rule preferences that survive mapRealmToPojo", ( ) => {
+      const mockRule = factory( "RemoteProjectObservationRule" );
+      const mockRemoteProject = factory( "RemoteProject", {
+        project_observation_rules: [mockRule],
+        rule_preferences: [
+          { field: "d1", value: "2026-09-10" },
+          { field: "members_only", value: null },
+        ],
+      } );
+      Project.upsertRemoteProjects( [mockRemoteProject], global.realm );
+
+      const upsertedProject = global.realm.objectForPrimaryKey( "Project", mockRemoteProject.id );
+      const pojo = Project.mapRealmToPojo( upsertedProject );
+      expect( pojo.project_observation_rules ).toEqual( [mockRule] );
+      expect( pojo.rule_preferences ).toEqual( mockRemoteProject.rule_preferences );
+    } );
+
+    it( "replaces cached rules on re-sync", ( ) => {
+      const mockRemoteProject = factory( "RemoteProject", {
+        project_observation_rules: [
+          factory( "RemoteProjectObservationRule" ),
+          factory( "RemoteProjectObservationRule" ),
+        ],
+      } );
+      Project.upsertRemoteProjects( [mockRemoteProject], global.realm );
+      const newRule = factory( "RemoteProjectObservationRule" );
+      Project.upsertRemoteProjects( [{
+        ...mockRemoteProject,
+        project_observation_rules: [newRule],
+      }], global.realm );
+
+      const upsertedProject = global.realm.objectForPrimaryKey( "Project", mockRemoteProject.id );
+      expect( upsertedProject.project_observation_rules.map( r => r.id ) ).toEqual( [newRule.id] );
     } );
   } );
 } );
