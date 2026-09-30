@@ -11,9 +11,13 @@ describe( "getNextPageParamForExplore", ( ) => {
     const params = { order_by: "observed_on" };
     expect( getNextPageParamForExplore( page, params ) ).toMatch( /\d{4}-\d{2}-\d{2}/ );
   } );
-  it( "should return a date string if order_by is created_at", ( ) => {
+  it( "should return an obs id if order_by is created_at", ( ) => {
     const params = { order_by: "created_at" };
-    expect( getNextPageParamForExplore( page, params ) ).toMatch( /\d{4}-\d{2}-\d{2}/ );
+    expect( getNextPageParamForExplore( page, params ) ).toEqual( page.results[0].id );
+  } );
+  it( "should return an obs id if order_by is created_at and order is asc", ( ) => {
+    const params = { order_by: "created_at", order: "asc" };
+    expect( getNextPageParamForExplore( page, params ) ).toEqual( page.results[0].id );
   } );
   it( "should return an obs id if order_by is blank", ( ) => {
     const params = { };
@@ -48,15 +52,36 @@ describe( "addPageParamsForExplore", ( ) => {
     const params = { pageParam: dateString, order_by: "observed_on", order: "asc" };
     expect( addPageParamsForExplore( params ).d1 ).toEqual( dateString );
   } );
-  it( "should set created_d2 if order_by is created_at and order is default desc", ( ) => {
-    const dateString = faker.date.recent( ).toISOString( );
-    const params = { pageParam: dateString, order_by: "created_at" };
-    expect( addPageParamsForExplore( params ).created_d2 ).toEqual( dateString );
+  it( "should set id_below if order_by is created_at and order is default desc", ( ) => {
+    const params = { pageParam: 123, order_by: "created_at" };
+    expect( addPageParamsForExplore( params ).id_below ).toEqual( params.pageParam );
   } );
-  it( "should set created_d1 if order_by is created_at and order is asc", ( ) => {
-    const dateString = faker.date.recent( ).toISOString( );
-    const params = { pageParam: dateString, order_by: "created_at", order: "asc" };
-    expect( addPageParamsForExplore( params ).created_d1 ).toEqual( dateString );
+  it( "should set id_above if order_by is created_at and order is asc", ( ) => {
+    const params = { pageParam: 123, order_by: "created_at", order: "asc" };
+    expect( addPageParamsForExplore( params ).id_above ).toEqual( params.pageParam );
+  } );
+  it( "should not change a date uploaded range if order_by is created_at", ( ) => {
+    const params = {
+      pageParam: 123,
+      order_by: "created_at",
+      created_d1: "2015-07-22",
+      created_d2: "2026-07-22",
+    };
+    const newParams = addPageParamsForExplore( params );
+    expect( newParams.created_d1 ).toEqual( "2015-07-22" );
+    expect( newParams.created_d2 ).toEqual( "2026-07-22" );
+  } );
+  it( "should not change a date uploaded range if order_by is created_at and order is asc", ( ) => {
+    const params = {
+      pageParam: 123,
+      order_by: "created_at",
+      order: "asc",
+      created_d1: "2015-07-22",
+      created_d2: "2026-07-22",
+    };
+    const newParams = addPageParamsForExplore( params );
+    expect( newParams.created_d1 ).toEqual( "2015-07-22" );
+    expect( newParams.created_d2 ).toEqual( "2026-07-22" );
   } );
   it( "should set page if order_by is votes", ( ) => {
     const params = { order_by: "votes", pageParam: 1 };
