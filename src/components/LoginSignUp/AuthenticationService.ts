@@ -598,8 +598,12 @@ async function verifyCredentials(
   const formData = {
     format: "json",
     grant_type: "password",
-    client_id: EnvConfig.OAUTH_CLIENT_ID,
-    client_secret: EnvConfig.OAUTH_CLIENT_SECRET,
+    client_id: Platform.OS === "android"
+      ? EnvConfig.ANDROID_OAUTH_CLIENT_ID
+      : EnvConfig.IOS_OAUTH_CLIENT_ID,
+    client_secret: Platform.OS === "android"
+      ? EnvConfig.ANDROID_OAUTH_CLIENT_SECRET
+      : EnvConfig.IOS_OAUTH_CLIENT_SECRET,
     password,
     username,
     locale: i18next.language,
@@ -701,8 +705,12 @@ async function authenticateUserByAssertion(
 ): Promise<AuthenticateUserResult> {
   const apiClient = createAPI( { Accept: "application/json" } );
   const formData = {
-    client_id: EnvConfig.OAUTH_CLIENT_ID,
-    client_secret: EnvConfig.OAUTH_CLIENT_SECRET,
+    client_id: Platform.OS === "android"
+      ? EnvConfig.ANDROID_OAUTH_CLIENT_ID
+      : EnvConfig.IOS_OAUTH_CLIENT_ID,
+    client_secret: Platform.OS === "android"
+      ? EnvConfig.ANDROID_OAUTH_CLIENT_SECRET
+      : EnvConfig.IOS_OAUTH_CLIENT_SECRET,
     locale: i18next.language,
     assertion,
     assertion_type: assertionType,
