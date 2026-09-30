@@ -61,7 +61,6 @@ interface ApiProjectObservationField {
 }
 
 type Operator =
-  | "has_observation_field?"
   | "georeferenced?"
   | "captive?"
   | "coordinates_shareable_by_project_curators?"
@@ -73,11 +72,22 @@ type Operator =
   | "wild?"
   | "on_list?";
 
-export interface ApiProjectObservationRule {
+type OperatorWithOperand =
+  | "has_observation_field?";
+
+interface Rule {
   id: number;
-  operand_id: number | null;
+  operand_id: null;
   operator: Operator;
 }
+
+interface RuleWithOperand {
+  id: number;
+  operand_id: number;
+  operator: OperatorWithOperand;
+}
+
+type ApiProjectObservationRule = Rule | RuleWithOperand
 
 // Result from using PROJECT_SUMMARY_FIELDS
 export interface ApiProjectSummary {
