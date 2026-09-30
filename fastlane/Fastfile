@@ -367,6 +367,8 @@ platform :ios do
     # Build iOS app
     get_certificates
     get_provisioning_profile
+    share_bundle_id = ENV.fetch("IOS_SHARE_BUNDLE_ID")
+    get_provisioning_profile(app_identifier: share_bundle_id)
     ipa_path = get_ipa_path
     if File.exist?( ipa_path )
       UI.important "IPA already exists at #{ipa_path}"
