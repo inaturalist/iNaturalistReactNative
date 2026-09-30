@@ -32,8 +32,8 @@ required_env_vars.each do | env_var |
   next unless ENV[env_var].to_s.empty?
 
   UI.abort_with_message! <<~NO_ENV_ERROR.gsub( /\s+/, " " ).strip
-    ENV is missing #{env_var}. Add the value to .env or populate your ENV in
-    another way.
+    ENV is missing #{env_var}. Add the value to fastlane/.env (see fastlane/env.example)
+    or populate your ENV in another way.
   NO_ENV_ERROR
 end
 
