@@ -885,7 +885,6 @@ Stop-upload = Stop upload
 Stop-verb = Тоқтату
 Stops-recording-sound = Stops recording sound
 SUBMIT = SUBMIT
-SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 supporting--identification = Қолдау
 Switches-to-tab = Switches to { $tab } tab.

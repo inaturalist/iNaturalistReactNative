@@ -885,7 +885,6 @@ Stop-upload = Berhenti mengunggah
 Stop-verb = Hentikan
 Stops-recording-sound = Berhenti merekam suara
 SUBMIT = KIRIM
-SUBMIT-ID-SUGGESTION = KIRIM REKOMENDASI ID
 SUGGEST-ID = SARANKAN ID
 supporting--identification = Mendukung
 Switches-to-tab = Berpindah ke tab { $tab }.

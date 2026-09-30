@@ -1,5 +1,6 @@
 import type { LayoutSlice } from "stores/createLayoutSlice";
 import useStore from "stores/useStore";
+import { useShallow } from "zustand/react/shallow";
 
 // Wraps values from the layout slice with descriptive names
 const selector = ( state : LayoutSlice ) => ( {
@@ -11,7 +12,6 @@ const selector = ( state : LayoutSlice ) => ( {
   // newer stuff
   ...state.layout,
 } );
-
-const useLayoutPrefs = ( ) => useStore( selector );
+const useLayoutPrefs = ( ) => useStore( useShallow( selector ) );
 
 export default useLayoutPrefs;

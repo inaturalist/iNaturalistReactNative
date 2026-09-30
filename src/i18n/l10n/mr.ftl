@@ -885,7 +885,6 @@ Stop-upload = Stop upload
 Stop-verb = थांबवा
 Stops-recording-sound = Stops recording sound
 SUBMIT = SUBMIT
-SUBMIT-ID-SUGGESTION = SUBMIT ID SUGGESTION
 SUGGEST-ID = SUGGEST ID
 supporting--identification = संमतीदर्शक
 Switches-to-tab = Switches to { $tab } tab.

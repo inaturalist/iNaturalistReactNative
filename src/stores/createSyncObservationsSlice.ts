@@ -12,7 +12,7 @@ type SyncingStatus = typeof SYNC_PENDING
   | typeof MANUAL_SYNC_IN_PROGRESS
   | typeof AUTOMATIC_SYNC_IN_PROGRESS;
 
-export interface SyncObservationsSlice {
+interface SyncObservationsState {
   autoSyncAbortController: AbortController | null;
   currentDeleteCount: number;
   deleteError: string | null;
@@ -22,7 +22,23 @@ export interface SyncObservationsSlice {
   syncingStatus: SyncingStatus;
 }
 
-const DEFAULT_STATE: SyncObservationsSlice = {
+interface SyncObservationsActions {
+  addToDeleteQueue: ( uuids: string[] ) => void;
+  removeFromDeleteQueue: ( ) => void;
+  startNextDeletion: ( ) => void;
+  completeLocalDeletions: ( ) => void;
+  resetSyncObservationsSlice: ( ) => void;
+  setDeletionError: ( message: string ) => void;
+  setSyncingStatus: ( syncingStatus: SyncingStatus ) => void;
+  resetSyncToolbar: ( ) => void;
+  startManualSync: ( ) => void;
+  startAutomaticSync: ( ) => void;
+  completeSync: ( ) => void;
+}
+
+export type SyncObservationsSlice = SyncObservationsState & SyncObservationsActions;
+
+const DEFAULT_STATE: SyncObservationsState = {
   autoSyncAbortController: null,
   currentDeleteCount: 1,
   deleteError: null,

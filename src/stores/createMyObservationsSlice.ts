@@ -17,6 +17,7 @@ export interface MyObservationsTaxon {
   name: string;
   preferredCommonName?: string;
   iconUri?: string;
+  iconicTaxonName?: string;
 }
 
 export interface MyObservationsState {
@@ -24,6 +25,8 @@ export interface MyObservationsState {
   speciesSort: SPECIES_SORT;
   searchedTaxon: MyObservationsTaxon | null;
 }
+
+const NONE_CLOSED: Set<ICONIC_TAXA_GROUP> = new Set( );
 
 export const initialMyObservationsState: MyObservationsState = {
   observationsSort: OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST,
@@ -44,7 +47,6 @@ export interface MyObservationsSlice {
   // switches views.
   myObservationsMapRegion: Region | null;
   setMyObservationsMapRegion: ( _region: Region | null ) => void;
-  // TODO: the small grid view will wire this up in #3911.
   myObservationsClosedIconicTaxaCategories: Set<ICONIC_TAXA_GROUP>;
   setMyObservationsClosedIconicTaxaCategories: ( _closed: Set<ICONIC_TAXA_GROUP> ) => void;
   clearMyObservationsViewState: ( ) => void;
@@ -74,20 +76,21 @@ const createMyObservationsSlice: StateCreator<MyObservationsSlice> = ( set, get 
     if ( myObservations.searchedTaxon?.id === state.myObservations.searchedTaxon?.id ) {
       return { myObservations };
     }
-    // TBD: what to do re: expanded header set when a search becomes active.
-    // do we clear them, or should they re-appear as they were before?
+    // The collapsed set of iconic taxa categories will survive a search. headers are hidden while
+    // a search is active, and  clearing the search should put the user back in the view they left.
+    // Same for sort: we'll re-order only the currently expanded sections.
     return { myObservations, myObservationsMapRegion: null };
   } ),
 
   myObservationsMapRegion: null,
   setMyObservationsMapRegion: region => set( { myObservationsMapRegion: region } ),
-  myObservationsClosedIconicTaxaCategories: new Set( ),
+  myObservationsClosedIconicTaxaCategories: NONE_CLOSED,
   setMyObservationsClosedIconicTaxaCategories: closed => set( {
     myObservationsClosedIconicTaxaCategories: closed,
   } ),
   clearMyObservationsViewState: ( ) => set( {
     myObservationsMapRegion: null,
-    myObservationsClosedIconicTaxaCategories: new Set( ),
+    myObservationsClosedIconicTaxaCategories: NONE_CLOSED,
   } ),
 
   myObsOffset: 0,

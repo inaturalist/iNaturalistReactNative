@@ -98,6 +98,36 @@ describe( "Observation", ( ) => {
         mockRemoteObservation.project_observations[0].project_id,
       );
     } );
+
+    it( "should not wipe a stored taxon photo when the taxon has no default_photo", ( ) => {
+      const taxonId = 47126;
+      const photoUrl = "https://example.com/plantae/square.jpg";
+      safeRealmWrite( global.realm, ( ) => {
+        global.realm.create( "Taxon", {
+          id: taxonId,
+          name: "Plantae",
+          default_photo: { id: 1, url: photoUrl },
+        }, "modified" );
+      }, "create Taxon for upsertRemoteObservations test" );
+
+      // Shaped like a MyObs list fetch, which limits taxon fields and omits
+      // default_photo
+      const mockRemoteObservation = factory( "RemoteObservation", {
+        taxon: {
+          id: taxonId,
+          name: "Plantae",
+          preferred_common_name: "Plants",
+          rank: "kingdom",
+          rank_level: 70,
+        },
+      } );
+
+      Observation.upsertRemoteObservations( [mockRemoteObservation], global.realm );
+
+      const taxon = global.realm.objectForPrimaryKey( "Taxon", taxonId );
+      expect( taxon.preferred_common_name ).toBe( "Plants" );
+      expect( taxon.default_photo?.url ).toBe( photoUrl );
+    } );
   } );
 
   describe( "needsSync", ( ) => {

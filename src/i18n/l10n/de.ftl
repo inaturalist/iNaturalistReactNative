@@ -888,7 +888,6 @@ Stop-upload = Hochladen abbrechen
 Stop-verb = Stopp
 Stops-recording-sound = Beendet die Tonaufnahme
 SUBMIT = Einreichen
-SUBMIT-ID-SUGGESTION = BESTIMMUNGSVORSCHLAG (ID) EINREICHEN
 SUGGEST-ID = BESTIMMUNG VORSCHLAGEN
 supporting--identification = bestätigend
 Switches-to-tab = Wechselt zum Tab { $tab }.

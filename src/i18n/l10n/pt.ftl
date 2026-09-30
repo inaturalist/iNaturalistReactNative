@@ -885,7 +885,6 @@ Stop-upload = Parar upload
 Stop-verb = Parar
 Stops-recording-sound = Para de gravar som
 SUBMIT = ENVIAR
-SUBMIT-ID-SUGGESTION = ENVIAR SUGESTÃO DE ID
 SUGGEST-ID = SUGERIR ID
 supporting--identification = Concordante
 Switches-to-tab = Muda para { $tab } separador.

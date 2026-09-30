@@ -1,3 +1,4 @@
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import {
   Body1,
   Button,
@@ -74,6 +75,7 @@ const SlideItem = props => {
 const OnboardingCarousel = ( ) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [onboardingShown, setOnboardingShown] = useOnboardingShown();
+  const navigation = useNavigation( );
   const insets = useSafeAreaInsets( );
   const { width } = useWindowDimensions();
   const { t } = useTranslation( );
@@ -83,6 +85,15 @@ const OnboardingCarousel = ( ) => {
   const [imagesLoaded, setImagesLoaded] = useState( false );
 
   const closeModal = () => {
+    navigation.getParent( )?.dispatch(
+      CommonActions.reset( {
+        index: 1,
+        routes: [
+          { name: "TabNavigator" },
+          { name: "LoginStackNavigator", params: { screen: "Login" } },
+        ],
+      } ),
+    );
     setOnboardingShown( true );
   };
 

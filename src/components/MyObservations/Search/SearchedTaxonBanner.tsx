@@ -1,5 +1,6 @@
 import {
   Body3,
+  IconicTaxonIcon,
   INatIconButton,
 } from "components/SharedComponents";
 import { Image, View } from "components/styledComponents";
@@ -29,13 +30,22 @@ const SearchedTaxonBanner = ( ) => {
     >
       <View className="flex-1 flex-row items-center gap-x-[10px]">
         <View className="w-[44px] h-[44px] bg-lightGray">
-          {searchedTaxon.iconUri && (
-            <Image
-              source={{ uri: searchedTaxon.iconUri }}
-              className="w-full h-full"
-              accessibilityIgnoresInvertColors
-            />
-          )}
+          {searchedTaxon.iconUri
+            ? (
+              <Image
+                source={{ uri: searchedTaxon.iconUri }}
+                className="w-full h-full"
+                accessibilityIgnoresInvertColors
+              />
+            )
+            : (
+              <IconicTaxonIcon
+                iconicTaxonName={searchedTaxon.iconicTaxonName}
+                imageClassName={["w-full", "h-full"]}
+                isBackground
+                size={24}
+              />
+            )}
         </View>
         <Body3 className="flex-1" numberOfLines={1}>
           {displayName}

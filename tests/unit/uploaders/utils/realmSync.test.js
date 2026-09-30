@@ -1,5 +1,5 @@
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
-import { markRecordUploaded } from "uploaders";
+import markRecordUploaded from "uploaders/utils/realmSync";
 
 jest.mock( "sharedHelpers/safeRealmWrite" );
 

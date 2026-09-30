@@ -301,7 +301,7 @@ const ProjectRequirements = ( ) => {
             ) )}
           </>
         )}
-      <View className="pt-2 pb-8 px-4">
+      <View className="pb-4 px-4">
         <AboutProjectType projectType="collection" />
       </View>
     </ScrollViewWrapper>

@@ -71,7 +71,7 @@ const FloatingActionBar = ( {
       velocity: 1,
       tension: 2,
       friction: 8,
-      useNativeDriver: true,
+      useNativeDriver: false,
     };
 
     const toValue = show

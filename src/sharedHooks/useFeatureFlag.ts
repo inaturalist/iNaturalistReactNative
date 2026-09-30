@@ -1,7 +1,7 @@
 import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import type { UserPojo } from "realmModels/User";
-import type { FeatureFlag, FeatureFlagSlice } from "stores/createFeatureFlagSlice";
+import type { FeatureFlag } from "stores/createFeatureFlagSlice";
 import { flagsEnabledForAdminsInTestFlight } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
@@ -21,9 +21,8 @@ export const flagEnabledForAdminTestFlight = (
 
 const useFeatureFlag = ( featureFlagKey: FeatureFlag ) => {
   const currentUser = useCurrentUser();
-  const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
-  const featureFlagOverrides
-    = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
+  const featureFlagConfig = useStore( state => state.featureFlagConfig );
+  const featureFlagOverrides = useStore( state => state.featureFlagDebugOverrides );
   const override = featureFlagOverrides[featureFlagKey];
   if ( override !== null ) {
     return override;

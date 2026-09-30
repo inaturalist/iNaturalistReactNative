@@ -885,7 +885,6 @@ Stop-upload = 停止上传
 Stop-verb = 停止
 Stops-recording-sound = 停止录制声音
 SUBMIT = 提交
-SUBMIT-ID-SUGGESTION = 提交鉴定建议
 SUGGEST-ID = 建议鉴定
 supporting--identification = 支持的
 Switches-to-tab = 切换到 { $tab } 选项卡。

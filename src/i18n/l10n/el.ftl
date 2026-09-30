@@ -885,7 +885,6 @@ Stop-upload = Διακοπή μεταφόρτωσης
 Stop-verb = Διακοπή
 Stops-recording-sound = Διακόπτει την εγγραφή ήχου
 SUBMIT = ΥΠΟΒΆΛΛΩ
-SUBMIT-ID-SUGGESTION = ΥΠΟΒΟΛΉ ΠΡΌΤΑΣΗΣ ΤΑΥΤΌΤΗΤΑΣ
 SUGGEST-ID = ΠΡΟΤΕΊΝΕΤΕ ID
 supporting--identification = Υποστηρικτικό
 Switches-to-tab = Μεταβαίνει σε { $tab } καρτέλα.

@@ -38,8 +38,10 @@ interface Params {
 
 interface Result {
   sections: Map<ICONIC_TAXA_GROUP, IconicTaxaSectionState>;
-  // start fetching the next category that has anything to fetch
-  advanceFrontier: ( ) => void;
+  // start fetching the next category that has anything to fetch and isn't collapsed
+  advanceFrontier: ( _closed: Set<ICONIC_TAXA_GROUP> ) => void;
+  // request the first page for a specific category when the user opens it
+  activateCategory: ( _category: ICONIC_TAXA_GROUP ) => void;
   // The caller knows only that the user is near the end of one category's tiles;
   // so we need to manage the following states:
   //
@@ -62,7 +64,10 @@ interface Result {
 // sibling components could each own one and pass their data up. That swaps this bookkeeping for
 // components that exist only to fetch. Worth revisiting if we run into issue with this approach.
 //
-// Only one request is ever in flight: activation walks down the categories one at a time
+// Scrolling shouldn't stack up requests: nearingEndOfSection ignores anything that arrives while
+// a fetch is running, so activation walks down the categories one at a time.
+// However, a user opening a section (activateCategory) will fetch a page even if something else
+// is still loading.
 const useIconicTaxaSectionObservations = ( {
   collapsedCategories,
   enabled,
@@ -85,14 +90,16 @@ const useIconicTaxaSectionObservations = ( {
   // scroll or collapse their way down. Seeded rather than written back, so requestedPages
   // stays honest about what the user has actually asked for. Categories the server has nothing
   // for are skipped: their header still renders and will show any locally-saved observations,
-  // but there's nothing to request.
+  // but there's nothing to request. Collapsed categories are skipped too.
   const pagesByCategory = useMemo( ( ) => {
     if ( Object.keys( requestedPages ).length > 0 ) return requestedPages;
-    const first = orderedCounts.find( ( { count } ) => count > 0 );
+    const first = orderedCounts.find(
+      ( { category, count } ) => count > 0 && !collapsedCategories.has( category ),
+    );
     return first
       ? { [first.category]: 1 }
       : requestedPages;
-  }, [orderedCounts, requestedPages] );
+  }, [collapsedCategories, orderedCounts, requestedPages] );
 
   const descriptors = useMemo( ( ) => orderedCounts.flatMap( ( { category } ) => {
     const highestPage = pagesByCategory[category] ?? 0;
@@ -209,12 +216,21 @@ const useIconicTaxaSectionObservations = ( {
     [sections],
   );
 
-  const advanceFrontier = useCallback( ( ) => {
-    const next = orderedCounts.find(
-      ( { category, count } ) => count > 0 && !pagesByCategory[category],
-    );
+  const advanceFrontier = useCallback( ( closed: Set<ICONIC_TAXA_GROUP> ) => {
+    const next = orderedCounts.find( ( { category, count } ) => count > 0
+      && !pagesByCategory[category]
+      && !closed.has( category ) );
     if ( !next ) return;
     setPages( { ...pagesByCategory, [next.category]: 1 } );
+  }, [orderedCounts, pagesByCategory, setPages] );
+
+  // Ask for a specific section rather than whatever the frontier would pick next,
+  // since the section a user tapped can sit below categories that are still unrequested.
+  const activateCategory = useCallback( ( category: ICONIC_TAXA_GROUP ) => {
+    if ( pagesByCategory[category] ) return;
+    const entry = orderedCounts.find( counted => counted.category === category );
+    if ( !entry || entry.count === 0 ) return;
+    setPages( { ...pagesByCategory, [category]: 1 } );
   }, [orderedCounts, pagesByCategory, setPages] );
 
   // See the Result type above for the full set of cases this decides between
@@ -223,7 +239,7 @@ const useIconicTaxaSectionObservations = ( {
     const section = sections.get( category );
     if ( section?.isError || collapsedCategories.has( category ) ) return;
     if ( !section?.isActivated || !section.hasMore ) {
-      advanceFrontier( );
+      advanceFrontier( collapsedCategories );
       return;
     }
     setPages( {
@@ -254,6 +270,7 @@ const useIconicTaxaSectionObservations = ( {
   return {
     sections,
     advanceFrontier,
+    activateCategory,
     nearingEndOfSection,
     retryCategory,
     refreshSections,

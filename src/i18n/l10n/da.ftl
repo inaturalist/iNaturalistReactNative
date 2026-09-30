@@ -885,7 +885,6 @@ Stop-upload = Stop upload
 Stop-verb = Stop
 Stops-recording-sound = Stopper lydoptagelse
 SUBMIT = INDSEND
-SUBMIT-ID-SUGGESTION = INDSEND ID-FORSLAG
 SUGGEST-ID = FORESLÅ ID
 supporting--identification = Understøttende
 Switches-to-tab = Skifter til fanen { $tab }

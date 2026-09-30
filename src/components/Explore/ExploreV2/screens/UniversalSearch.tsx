@@ -1,5 +1,10 @@
 import { BottomTabBarHeightContext } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
+import {
+  IDENTIFIERS_TAB,
+  OBSERVATIONS_TAB,
+  OBSERVERS_TAB,
+} from "appConstants/tabs";
 import classnames from "classnames";
 import DefaultSearchOptions
   from "components/Explore/ExploreV2/components/DefaultSearchOptions";
@@ -40,6 +45,7 @@ import type {
   Place,
 } from "providers/ExploreV2Context";
 import {
+  defaultExploreV2Filters,
   EXPLORE_V2_ACTION,
   EXPLORE_V2_PLACE_MODE,
   useExploreV2,
@@ -53,7 +59,6 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
 import useSearchField from "sharedHooks/useSearchField";
 import useTranslation from "sharedHooks/useTranslation";
-import type { ExploreV2SearchesSlice } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -95,11 +100,10 @@ const UniversalSearch = ( ) => {
   const commonNameIsPrimary = currentUser?.prefers_common_names !== false
     && currentUser?.prefers_scientific_name_first !== true;
 
-  const recordSubject = useStore(
-    ( state: ExploreV2SearchesSlice ) => state.exploreRecentSearches.recordSubject,
-  );
-  const recordPlace = useStore(
-    ( state: ExploreV2SearchesSlice ) => state.exploreRecentSearches.recordPlace,
+  const recordSubject = useStore( state => state.exploreRecentSearches.recordSubject );
+  const recordPlace = useStore( state => state.exploreRecentSearches.recordPlace );
+  const setAdvancedSearchMode = useStore(
+    state => state.exploreV2AdvancedSearch.setAdvancedSearchMode,
   );
 
   const { keyboardHeight, keyboardShown } = useKeyboardInfo( );
@@ -236,9 +240,15 @@ const UniversalSearch = ( ) => {
         location: selectedLocation ?? { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE },
         sortBy: state.sortBy,
         speciesSortBy: state.speciesSortBy,
-        filters: state.filters,
+        filters: defaultExploreV2Filters,
       },
     } );
+    // A standard search carries no filters, so it leaves advanced mode. The
+    // Observers and Identifiers tabs only exist there, so step off them too.
+    setAdvancedSearchMode( false );
+    if ( state.activeTab === OBSERVERS_TAB || state.activeTab === IDENTIFIERS_TAB ) {
+      dispatch( { type: EXPLORE_V2_ACTION.SET_ACTIVE_TAB, tab: OBSERVATIONS_TAB } );
+    }
     // Record recent subject if it's from an autocomplete result
     if ( selectedSubject && subjectToResult( selectedSubject ) ) {
       recordSubject( selectedSubject );
@@ -252,8 +262,9 @@ const UniversalSearch = ( ) => {
     selectedLocation,
     state.sortBy,
     state.speciesSortBy,
-    state.filters,
+    state.activeTab,
     dispatch,
+    setAdvancedSearchMode,
     navigation,
     recordSubject,
     recordPlace,
@@ -383,7 +394,7 @@ const UniversalSearch = ( ) => {
           </View>
           <View className="mt-3 items-end">
             <Body3
-              onPress={( ) => navigation.navigate( "AdvancedSearch" )}
+              onPress={( ) => navigation.replace( "AdvancedSearch" )}
               style={UNDERLINE_STYLE}
             >
               {t( "Advanced-Search" )}

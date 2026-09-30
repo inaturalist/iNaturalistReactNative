@@ -15,9 +15,8 @@ import {
   UPLOAD_IN_PROGRESS,
 } from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
-import { handleUploadError } from "uploaders";
 import uploadObservation from "uploaders/observationUploader";
-import { RECOVERY_BY } from "uploaders/utils/errorHandling";
+import handleUploadError, { RECOVERY_BY } from "uploaders/utils/errorHandling";
 import { persistObservationUploadError } from "uploaders/utils/persistUploadError";
 import {
   INCREMENT_SINGLE_UPLOAD_PROGRESS,

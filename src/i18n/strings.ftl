@@ -276,6 +276,8 @@ COMMUNITY-GUIDELINES = COMMUNITY GUIDELINES
 Confidence--label = Confidence
 # Button that confirms a choice the user has made
 CONFIRM = CONFIRM
+# Join traditional project after choosing curator coordinate access
+CONFIRM-AND-JOIN = CONFIRM & JOIN
 Congratulations-You-made-your-first-observation = Congratulations! You made your first observation!
 # Onboarding carousel header second screen
 Connect-with-expert-naturalists = Connect with expert naturalists
@@ -472,6 +474,8 @@ DISCOVER-NATURE-AROUND-YOU = DISCOVER NATURE AROUND YOU
 # Label for a button that dismisses announcements
 Dismiss-announcement = Dismiss announcement
 Do-you-know-what-group-this-is-in = Do you know what group this is in?
+# Curator hidden-coordinate access when joining a traditional project
+Do-you-want-private-coordinates-visible-to-curators = Do you want to make your private/obscured observation coordinates visible to the project curators?
 DONATE = DONATE
 DONATE-TO-INATURALIST = DONATE TO INATURALIST
 # Label for a button the user taps when a task is complete
@@ -627,14 +631,9 @@ Identify-organisms-in-real-time-with-your-camera = Identify organisms in real ti
 # Onboarding slides
 Identify-species-anywhere = Identify species anywhere
 If-an-account-with-that-email-exists = If an account with that email exists, we've sent password reset instructions to your email.
+If-the-only-reason-youre-leaving-is-to-stop-project-curators = If the only reason you're leaving is to stop project curators from viewing your hidden coordinates.
 # Body of an error alert when signing in with a third party fails (e.g. Apple, Google)
 If-you-have-an-existing-account-try-sign-in-reset = If you have an existing iNat account, try signing in with your username and password, or try resetting your password using the email address associated with your account.
-# Explanation that observations are removed from a collection project
-If-you-leave-x-of-your-observations-removed =
-    If you leave this traditional project, { $count ->
-        [one] 1 of your observations
-       *[other] { $count } of your observations
-    } will also be removed from this project.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = If you save this observation and upload it to iNaturalist, other people may be able to help identify it.
 If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city's observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
 If-youre-an-experienced-user-try-switching-to-Advanced-Mode = You have uploaded more than 100 observations. Try Advanced Mode for more ways to add and manage observations.
@@ -728,6 +727,7 @@ July = July
 June = June
 Just-make-sure-the-organism-is-wild = Just make sure the organism is wild (not a pet, zoo animal, or garden plant)
 KEEP-EDITING = KEEP EDITING
+Keep-in-mind-that-project-curators = Keep in mind that project curators will still be able to add your observations to their project unless you change your account settings.
 # Display name for the iconic taxa category chromista
 Kelp-and-Diatoms = Kelp & Diatoms
 # Shows date user last active on iNaturalist on user profile
@@ -749,6 +749,10 @@ LEAVE-PROJECT = LEAVE PROJECT
 # Asking for confirmation if the user wants to leave this project
 LEAVE-PROJECT--question = LEAVE PROJECT?
 LEAVE-US-A-REVIEW = LEAVE US A REVIEW!
+# Traditional project leave: keep observations in project
+Leave-your-observations-in-this-project = Leave your observations in this project
+# Traditional project leave: keep observations but revoke hidden coordinate access
+Leave-your-observations-revoke-hidden-coordinates = Leave your observations in this project but prevent curators from viewing their hidden coordinates
 Lets-reset-your-password = Let’s reset your password.
 Licenses = Licenses
 Loading-iNaturalists-AI-Camera = Loading iNaturalist's AI Camera
@@ -756,6 +760,8 @@ Loads-content-that-requires-an-Internet-connection = Loads content that requires
 LOCATION = LOCATION
 Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
+# Header for traditonal projects join flow: curator access to hidden observation coordinates (not device GPS)
+LOCATION-PERMISSIONS = LOCATION PERMISSIONS
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
 LOG-IN = LOG IN
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
@@ -852,6 +858,8 @@ Newest-to-oldest = Newest to oldest
 Next-observation = Next observation
 # Accessibility label for a button that goes to the next slide on onboarding cards
 Next-slide = Next slide
+# As a categorical answer to the question presented on joining traditional projects: Do you want private coordinates be shared?
+No = No
 # Error message when no camera can be found
 No-Camera-Available = No Camera Available
 # Alert dialog title when attempting to send email but no email is installed
@@ -1022,6 +1030,8 @@ PRIVACY-POLICY = PRIVACY POLICY
 Private = Private
 # As in an iNat project, a collection of observations or observation search filters
 PROJECT = PROJECT
+# Heading for administrators on the project detail page
+PROJECT-ADMINS = PROJECT ADMINS
 Project-Members-Only = Project Members Only
 PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
 project-start-time-datetime = Start time: { $datetime }
@@ -1135,6 +1145,8 @@ Recording-stopped-Tap-to-play-the-current-recording = Recording stopped. Tap to 
 REDO-SEARCH-IN-MAP-AREA = REDO SEARCH IN MAP AREA
 # Label for a button that removes a vote of agreement
 Remove-agreement = Remove agreement
+# Traditional project leave: remove all observations from project, showing a count of how many obs will be removed
+Remove-all-your-observations-from-this-project-X = Remove all your observations from this project ({ $count })
 # Label for a button that removes a vote of disagreement
 Remove-disagreement = Remove disagreement
 Remove-favorite = Remove favorite
@@ -1176,6 +1188,8 @@ Reset-verb = Reset
 RESTART-APP = RESTART APP
 # Label for button that restores a withdrawn identification
 Restore = Restore
+# Button on the advanced search screen that switches to the simpler search screen
+RETURN-TO-STANDARD-SEARCH = RETURN TO STANDARD SEARCH
 Reveal = Reveal
 REVIEW-INATURALIST = REVIEW INATURALIST
 # Title for section of observation filters for controls over whether you have
@@ -1665,6 +1679,8 @@ x-uploads-failed =
         [one] { $count } upload failed
        *[other] { $count } uploads failed
     }
+Yes-but-only-if-I-add-the-observation-to-the-project-myself = Yes, but only if I add the observation to the project myself
+Yes-no-matter-who-adds-the-observation-to-the-project = Yes, no matter who adds the observation to the project
 You-are-offline = You are offline
 You-are-offline-Tap-to-reload = You are offline. Tap to reload.
 You-are-offline-Tap-to-try-again = You are offline. Tap to try again.
@@ -1706,6 +1722,7 @@ Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
 Your-location-uncertainty-is-over-x-km = Your location uncertainty is over { $x } km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 # Title for modal shown to users after they make five observations
 Your-observations-can-help-science = Your observations can help science!
+Your-observations-will-stay-in-the-project = Your observations will stay in the project and curators will still be able to view their hidden coordinates.
 # Title for modal shown after account creation
 Youre-ready-to-share-your-observations = You’re ready to share your observations!
 # Text prompting the user to open Settings to grant permission after

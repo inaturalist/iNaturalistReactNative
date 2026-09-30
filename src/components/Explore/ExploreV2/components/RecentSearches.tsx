@@ -11,7 +11,6 @@ import type { ExploreV2Subject } from "providers/ExploreV2Context";
 import React from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
-import type { ExploreV2SearchesSlice } from "stores/createExploreV2SearchesSlice";
 import { subjectKey } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 
@@ -27,9 +26,7 @@ interface RecentRow {
 const RecentSearches = ( { onSelectSubject }: Props ) => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
-  const subjects = useStore(
-    ( state: ExploreV2SearchesSlice ) => state.exploreRecentSearches.subjects,
-  );
+  const subjects = useStore( state => state.exploreRecentSearches.subjects );
 
   const rows = subjects
     .map( subject => ( { subject, result: subjectToResult( subject ) } ) )
