@@ -128,6 +128,11 @@ const Menu = ( ) => {
       icon: "heart",
       color: colors.inatGreen,
     },
+    news: {
+      label: t( "BLOG" ),
+      navigation: "Journal",
+      icon: "blog",
+    },
     help: {
       label: t( "HELP" ),
       navigation: "Help",
@@ -150,12 +155,6 @@ const Menu = ( ) => {
           showOfflineAlert( t );
         }
       },
-    },
-
-    news: {
-      label: t( "BLOG" ),
-      navigation: "Journal",
-      icon: "blog",
     },
 
     ...( currentUser
