@@ -331,6 +331,7 @@ export interface ApiObservationFilterParams extends ApiParams {
 }
 
 export interface ApiObservationsSearchParams extends ApiObservationFilterParams {
+  id_above?: number;
   id_below?: number;
   order?: typeof ORDER_ASC | typeof ORDER_DESC;
   order_by?: typeof ORDER_BY_CREATED_AT |
