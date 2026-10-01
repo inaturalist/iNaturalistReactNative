@@ -155,7 +155,7 @@ const Menu = ( ) => {
     news: {
       label: t( "BLOG" ),
       navigation: "Journal",
-      icon: "leaf",
+      icon: "blog",
     },
 
     ...( currentUser
