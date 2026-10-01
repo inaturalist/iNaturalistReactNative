@@ -23,10 +23,9 @@ import { valueToBreakpoint } from "sharedHelpers/breakpoint";
 import { log } from "sharedHelpers/logger";
 import getStorageMetrics from "sharedHelpers/storageMetrics";
 import {
-  useCurrentUser, useDebugMode, useFeatureFlag,
+  useCurrentUser, useDebugMode,
   useLayoutPrefs, useTranslation,
 } from "sharedHooks";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import MenuItem from "./MenuItem";
@@ -110,7 +109,6 @@ const Menu = ( ) => {
   const { isConnected } = useNetInfo( );
 
   const layoutPrefs = useLayoutPrefs();
-  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
   const [modalState, setModalState] = useState<MenuModalState | null>( null );
 
   const menuItems: Record<string, MenuOption> = {
@@ -154,15 +152,11 @@ const Menu = ( ) => {
       },
     },
 
-    ...( newsEnabled
-      ? {
-        news: {
-          label: t( "BLOG" ),
-          navigation: "Journal",
-          icon: "leaf",
-        },
-      }
-      : {} ),
+    news: {
+      label: t( "BLOG" ),
+      navigation: "Journal",
+      icon: "leaf",
+    },
 
     ...( currentUser
       ? {

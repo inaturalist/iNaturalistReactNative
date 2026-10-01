@@ -73,8 +73,6 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
   } );
   const { resolvedValue: exploreV2Enabled, setOverride: setExploreV2Enabled }
     = useFeatureFlagForDebug( FeatureFlag.ExploreV2Enabled );
-  const { resolvedValue: newsEnabled, setOverride: setNewsEnabled }
-    = useFeatureFlagForDebug( FeatureFlag.NewsEnabled );
   const {
     resolvedValue: traditionalProjectsEnabled,
     setOverride: setTraditionalProjectsEnabled,
@@ -170,15 +168,6 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
             },
           },
           {
-            id: "news",
-            type: "toggle",
-            title: "Blog",
-            value: newsEnabled,
-            onUpdate: () => {
-              setNewsEnabled( !newsEnabled );
-            },
-          },
-          {
             id: "traditional-projects",
             type: "toggle",
             title: "TraditionalProjects",
@@ -233,8 +222,6 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
       navigation,
       exploreV2Enabled,
       setExploreV2Enabled,
-      newsEnabled,
-      setNewsEnabled,
       traditionalProjectsEnabled,
       setTraditionalProjectsEnabled,
       searchMyObservationsEnabled,
