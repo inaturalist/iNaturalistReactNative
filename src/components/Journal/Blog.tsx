@@ -46,6 +46,7 @@ const Blog = ( ) => {
     navigation.setOptions( headerOptions );
   }, [headerOptions, navigation] );
 
+  // TODO: filter out non-blog posts (or change API params or endpoint?)
   return (
     <ScreenShell>
       <PostList
