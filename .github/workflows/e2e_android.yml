@@ -22,7 +22,7 @@ jobs:
       - name: Check whether secrets are present in the action runner
         id: checksecret_job
         env:
-            SECRETS_PRESENT: ${{ secrets.OAUTH_CLIENT_SECRET }}
+            SECRETS_PRESENT: ${{ secrets.ANDROID_OAUTH_CLIENT_SECRET }}
         run: |
             echo "is_SECRETS_PRESENT_set: ${{ env.SECRETS_PRESENT != '' }}"
             echo "::set-output name=is_SECRETS_PRESENT_set::${{ env.SECRETS_PRESENT != '' }}"
@@ -40,13 +40,24 @@ jobs:
     # Generate the secret files needed for a release build
     - name: Create .env file
       env:
-        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+        IOS_OAUTH_CLIENT_ID: ${{ secrets.IOS_OAUTH_CLIENT_ID }}
+        IOS_OAUTH_CLIENT_SECRET: ${{ secrets.IOS_OAUTH_CLIENT_SECRET }}
+        ANDROID_OAUTH_CLIENT_ID: ${{ secrets.ANDROID_OAUTH_CLIENT_ID }}
+        ANDROID_OAUTH_CLIENT_SECRET: ${{ secrets.ANDROID_OAUTH_CLIENT_SECRET }}
         E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
         E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
         JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
         GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' "$JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+      run: |
+        printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nIOS_OAUTH_CLIENT_ID=%s\nIOS_OAUTH_CLIENT_SECRET=%s\nANDROID_OAUTH_CLIENT_ID=%s\nANDROID_OAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' \
+        "$JWT_ANONYMOUS_API_SECRET" \
+        "$IOS_OAUTH_CLIENT_ID" \
+        "$IOS_OAUTH_CLIENT_SECRET" \
+        "$ANDROID_OAUTH_CLIENT_ID" \
+        "$ANDROID_OAUTH_CLIENT_SECRET" \
+        "$E2E_TEST_USERNAME" \
+        "$E2E_TEST_PASSWORD" \
+        "$GMAPS_API_KEY" > .env
 
     - name: Add secrets to google-services.json
       env:
@@ -169,16 +180,21 @@ jobs:
       # Generate the secret files needed for a release build
       - name: Create .env file
         env:
-          OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-          OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+          IOS_OAUTH_CLIENT_ID: ${{ secrets.IOS_OAUTH_CLIENT_ID }}
+          IOS_OAUTH_CLIENT_SECRET: ${{ secrets.IOS_OAUTH_CLIENT_SECRET }}
+          ANDROID_OAUTH_CLIENT_ID: ${{ secrets.ANDROID_OAUTH_CLIENT_ID }}
+          ANDROID_OAUTH_CLIENT_SECRET: ${{ secrets.ANDROID_OAUTH_CLIENT_SECRET }}
           E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
           E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
           JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+          GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
         run: |
-          printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' \
+          printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nIOS_OAUTH_CLIENT_ID=%s\nIOS_OAUTH_CLIENT_SECRET=%s\nANDROID_OAUTH_CLIENT_ID=%s\nANDROID_OAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.tflite\nANDROID_TAXONOMY_FILE_NAME=taxonomy.csv\nANDROID_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.tflite\nIOS_MODEL_FILE_NAME=INatVision_Small_2_fact256_8bit.mlmodel\nIOS_TAXONOMY_FILE_NAME=taxonomy.json\nIOS_GEOMODEL_FILE_NAME=INatGeomodel_Small_2_8bit.mlmodel\nCV_MODEL_VERSION=small_2\n' \
           "$JWT_ANONYMOUS_API_SECRET" \
-          "$OAUTH_CLIENT_ID" \
-          "$OAUTH_CLIENT_SECRET" \
+          "$IOS_OAUTH_CLIENT_ID" \
+          "$IOS_OAUTH_CLIENT_SECRET" \
+          "$ANDROID_OAUTH_CLIENT_ID" \
+          "$ANDROID_OAUTH_CLIENT_SECRET" \
           "$E2E_TEST_USERNAME" \
           "$E2E_TEST_PASSWORD" \
           "$GMAPS_API_KEY" > .env
