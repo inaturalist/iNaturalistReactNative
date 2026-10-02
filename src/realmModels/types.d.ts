@@ -72,11 +72,33 @@ export interface RealmProjectObservationField extends RealmObject {
   required: boolean;
 }
 
+export interface RealmProjectObservationRule extends RealmObject {
+  id: number;
+  operand_id?: number;
+  operand_type?: string;
+  operator: string;
+  place_display_name?: string;
+  project_title?: string;
+  taxon_ancestor_ids: number[];
+  taxon_name?: string;
+  taxon_preferred_common_name?: string;
+  taxon_rank?: string;
+  taxon_rank_level?: number;
+  user_login?: string;
+}
+
+export interface RealmProjectRulePreference extends RealmObject {
+  field: string;
+  value?: string;
+}
+
 export interface RealmProject extends RealmObject {
   icon?: string;
   id: number;
   projectObservationFields: RealmProjectObservationField[];
+  project_observation_rules: RealmProjectObservationRule[];
   project_type?: string;
+  rule_preferences: RealmProjectRulePreference[];
   title?: string;
 }
 
