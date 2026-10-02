@@ -47,9 +47,14 @@ class Photo extends Realm.Object {
       return outUri;
     }
 
-    // Work around path / uri bug: https://github.com/bamlab/react-native-image-resizer/issues/328
+    // The resizer needs a file:// URI for bare paths on both platforms.
+    // iOS: it rejects them outright (https://github.com/bamlab/react-native-image-resizer/issues/328).
+    // Android: some android cameras capture photos in landscape orientation and then
+    // add an EXIF tag that indicates it should be rotated to portrait for display
+    // the native code uses ContentResolver, which can't open a path with no scheme and thus skips
+    // rotation and strips the tag, so rotated gallery imports come out sideways
     let uriForResize = pathOrUri;
-    if ( Platform.OS === "ios" && uriForResize.match( /^\// ) ) {
+    if ( uriForResize.match( /^\// ) ) {
       uriForResize = `file://${uriForResize}`;
     }
 

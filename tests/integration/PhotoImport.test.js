@@ -1,8 +1,11 @@
+import ImageResizer from "@bam.tech/react-native-image-resizer";
 import {
   screen,
   userEvent,
 } from "@testing-library/react-native";
+import * as paths from "appConstants/paths";
 import initI18next from "i18n/initI18next";
+import { Platform } from "react-native";
 import * as ImagePicker from "react-native-image-picker";
 import { SCREEN_AFTER_PHOTO_EVIDENCE } from "stores/createLayoutSlice";
 import factory from "tests/factory";
@@ -161,5 +164,43 @@ describe( "Photo Import", ( ) => {
     await groupPhotosIntoObservation();
     await screen.findByTestId( "ObsEdit.saveButton", {}, { timeout: 10_000 } );
     await saveObservationWithPhoto( { skipMyObsWait: true } );
+  } );
+
+  describe( "on Android", ( ) => {
+    const defaultPlatformOS = Platform.OS;
+    // The mocked DocumentDirectoryPath is relative; on a device it's absolute
+    const androidGalleryPath
+      = "/data/user/0/org.inaturalist.iNaturalistMobile/files/galleryPhotos";
+    const pickerUri = `content://media/picker/0/com.android.providers.media.photopicker/media/${
+      mockFileName
+    }`;
+
+    beforeEach( ( ) => {
+      Platform.OS = "android";
+      // Platform.select is hardwired to iOS under Jest
+      jest.spyOn( Platform, "select" ).mockImplementation(
+        spec => ( "android" in spec
+          ? spec.android
+          : spec.default ),
+      );
+      jest.replaceProperty( paths, "photoLibraryPhotosPath", androidGalleryPath );
+      jest.spyOn( ImagePicker, "launchImageLibrary" ).mockImplementation( ( ) => ( {
+        assets: [{ uri: pickerUri, fileName: mockFileName }],
+      } ) );
+      ImageResizer.createResizedImage.mockClear( );
+    } );
+
+    afterEach( ( ) => {
+      Platform.OS = defaultPlatformOS;
+      jest.restoreAllMocks( );
+    } );
+
+    it( "should resize the gallery copy of a picked photo via a file:// URI", async ( ) => {
+      renderApp( );
+      await navigateToPhotoImporterFromMyObs();
+      await saveObservationWithPhoto();
+      const resizedUris = ImageResizer.createResizedImage.mock.calls.map( ( [uri] ) => uri );
+      expect( resizedUris ).toContain( `file://${androidGalleryPath}/${mockFileName}` );
+    } );
   } );
 } );
