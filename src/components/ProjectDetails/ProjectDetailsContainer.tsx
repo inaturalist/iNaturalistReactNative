@@ -189,10 +189,10 @@ const ProjectDetailsContainer = ( ) => {
   };
 
   const handleUpdateCoordinateAccess = ( access: COORDINATE_ACCESS ) => {
-    const currentMembershipID = currentMembership.results[0].id;
-    if ( !currentMembershipID ) {
+    if ( !currentMembership || !currentMembership.results[0] ) {
       return;
     }
+    const currentMembershipID = currentMembership.results[0].id;
     setLoading( true );
     updateCoordinateAccessMutate( {
       id: currentMembershipID,
