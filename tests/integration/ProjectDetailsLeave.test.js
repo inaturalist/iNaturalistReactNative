@@ -48,7 +48,7 @@ const mockRemoteProject = factory( "RemoteProject", {
   icon: faker.image.url( ),
   header_image_url: faker.image.url( ),
   description: faker.lorem.paragraph( ),
-  project_type: "collection",
+  project_type: "",
   membership_model: "open",
   user_ids: [faker.number.int( )],
 } );
