@@ -20,7 +20,6 @@ interface Props {
   onSpeciesPressed: () => void;
   onMembersPressed?: () => void;
   onJournalPostsPressed?: () => void;
-  newsEnabled?: boolean;
 }
 
 interface CountProps {
@@ -90,7 +89,6 @@ const OverviewCounts = ( {
   onSpeciesPressed,
   onMembersPressed,
   onJournalPostsPressed,
-  newsEnabled,
 }: Props ) => (
   <View className="flex-row mt-[30px]">
     <CountPressable
@@ -123,23 +121,13 @@ const OverviewCounts = ( {
         onPress={onMembersPressed}
       />
     )}
-    {newsEnabled
-      ? (
-        <CountPressable
-          accessibilityLabel={t( "See-journal-posts" )}
-          count={counts.journal_posts_count}
-          label={t( "JOURNAL-POSTS-WITHOUT-NUMBER", { count: counts.journal_posts_count } )}
-          icon="book"
-          onPress={onJournalPostsPressed}
-        />
-      )
-      : (
-        <Count
-          count={counts.journal_posts_count}
-          label={t( "JOURNAL-POSTS-WITHOUT-NUMBER", { count: counts.journal_posts_count } )}
-          icon="book"
-        />
-      )}
+    <CountPressable
+      accessibilityLabel={t( "See-journal-posts" )}
+      count={counts.journal_posts_count}
+      label={t( "JOURNAL-POSTS-WITHOUT-NUMBER", { count: counts.journal_posts_count } )}
+      icon="book"
+      onPress={onJournalPostsPressed}
+    />
   </View>
 );
 

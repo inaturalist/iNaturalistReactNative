@@ -24,9 +24,8 @@ import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { EnvConfig } from "sharedHelpers/envConfig";
 import { openExternalWebBrowser } from "sharedHelpers/util";
-import { useFeatureFlag, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
@@ -81,8 +80,6 @@ const ProjectDetails = ( {
   loadingProjectMembership,
   project,
 }: Props ) => {
-  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
-
   const { t, i18n } = useTranslation( );
   const navigation = useNavigation<TabStackScreenProps<"ProjectDetails">["navigation"]>( );
   const navigateToExplore = useNavigateToExplore( );
@@ -207,7 +204,6 @@ const ProjectDetails = ( {
           onSpeciesPressed={onSpeciesPressed}
           onMembersPressed={onMembersPressed}
           onJournalPostsPressed={onJournalPostsPressed}
-          newsEnabled={newsEnabled}
         />
         <View className="mt-8">
           <Heading4 className="mb-3">{t( "ABOUT" )}</Heading4>
