@@ -217,7 +217,7 @@ const ProjectDetailsContainer = ( ) => {
       journal_posts_count: projectPosts,
       observations_count: projectStats?.total_results,
       species_count: speciesCounts?.total_results,
-      current_user_is_member: !!currentMembership,
+      current_user_is_member: ( currentMembership?.total_results ?? 0 ) > 0,
       current_user_observations_count: usersObservations?.total_results,
     };
   }, [
