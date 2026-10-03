@@ -15,14 +15,18 @@ export enum COORDINATE_ACCESS {
 
 interface Props {
   confirm: ( coordinateAccess: COORDINATE_ACCESS ) => void;
+  confirmText: string;
   loading?: boolean;
   onPressClose: ( ) => void;
+  testID: string;
 }
 
-const JoinSheet = ( {
+const CoordinateAccessSheet = ( {
   confirm,
+  confirmText,
   loading,
   onPressClose,
+  testID,
 }: Props ) => {
   const { t } = useTranslation( );
 
@@ -62,13 +66,13 @@ const JoinSheet = ( {
   return (
     <RadioButtonSheet
       confirm={confirm}
-      confirmText={t( "CONFIRM-AND-JOIN" )}
+      confirmText={confirmText}
       headerText={t( "LOCATION-PERMISSIONS" )}
       radioValues={radioValues}
       requireSelectionChange={false}
       loading={loading}
       selectedValue={COORDINATE_ACCESS.OBSERVER}
-      testID="JoinSheet"
+      testID={testID}
       onPressClose={onPressClose}
       secondaryButton={cancelButton}
       topDescriptionText={topDescriptionText}
@@ -76,4 +80,4 @@ const JoinSheet = ( {
   );
 };
 
-export default JoinSheet;
+export default CoordinateAccessSheet;

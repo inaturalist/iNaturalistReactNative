@@ -74,19 +74,9 @@ const leaveProject = async ( params: Object = {}, opts: Object = {} ): Promise<?
   }
 };
 
-const fetchMembership = async ( params: Object = {}, opts: Object = {} ): Promise<?Object> => {
-  try {
-    const response = await inatjs.projects.membership( { ...PARAMS, ...params }, opts );
-    return response.total_results;
-  } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchMembership", opts } } );
-  }
-};
-
 export default searchProjects;
 
 export {
-  fetchMembership,
   fetchProjectMembers,
   fetchProjectPostsCount,
   fetchProjects,
