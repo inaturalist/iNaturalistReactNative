@@ -1323,8 +1323,8 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add existing sounds to your observations."
+            "state" : "translated",
+            "value" : "Adaugă sunetele existente la observațiile tale."
           }
         },
         "ru" : {
@@ -1803,8 +1803,8 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Camera access lets you use the AI Camera and take photos."
+            "state" : "translated",
+            "value" : "Accesul la cameră îți permite să folosești AI Camera și să faci fotografii."
           }
         },
         "ru" : {
@@ -3244,8 +3244,8 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Record sound observations of nature."
+            "state" : "translated",
+            "value" : "Înregistrează observații sonore din natură."
           }
         },
         "ru" : {
@@ -3724,8 +3724,8 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export iNaturalist photos to your library."
+            "state" : "translated",
+            "value" : "Exportă fotografiile iNaturalist în biblioteca ta."
           }
         },
         "ru" : {
@@ -4204,8 +4204,8 @@
         },
         "ro" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Export and import iNaturalist photos to and from your library."
+            "state" : "translated",
+            "value" : "Exportă și importă fotografii iNaturalist în și din biblioteca ta."
           }
         },
         "ru" : {
