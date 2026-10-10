@@ -34,7 +34,7 @@ Add-observations = Aggiungere osservazioni
 Add-optional-notes = Aggiungi note opzionali
 Add-to-Projects = Aggiungi a Progetti
 ADD-TO-PROJECTS = AGGIUNGI AI PROGETTI
-Added-to-Saved-Searches = Added to Saved Searches
+Added-to-Saved-Searches = Aggiunto alle ricerche salvate
 Added-to-X-Projects =
     Aggiunta a { $count } { $count ->
         [one] Progetto
@@ -131,11 +131,11 @@ Change-zoom = Cambia zoom
 CHECK-YOUR-EMAIL = CONTROLLA LA TUA EMAIL!
 Choose-a-date = Scegli una data
 Choose-a-date-time = Scegli una data e ora
-CHOOSE-A-SAVED-SEARCH = CHOOSE A SAVED SEARCH
+CHOOSE-A-SAVED-SEARCH = SCEGLI UNA RICERCA SALVATA
 Choose-a-time = Scegli un orario
 CHOOSE-A-USERNAME = SCEGLI UN NOME UTENTE
-Chooses-taxon = Chooses taxon
-Chooses-top-taxon = Chooses top taxon
+Chooses-taxon = Sceglie il taxon
+Chooses-top-taxon = Sceglie il taxon superiore
 Close = Chiudi
 Close-permission-request-screen = Chiudi la schermata di richiesta di autorizzazione
 Close-search = Chiudi ricerca
@@ -154,6 +154,7 @@ Community-Guidelines = Linee guida della comunità
 COMMUNITY-GUIDELINES = ORIENTAMENTI COMUNITARI
 Confidence--label = Attendibilità
 CONFIRM = CONFERMA
+CONFIRM-AND-JOIN = CONFERMA & UNISCITI
 Congratulations-You-made-your-first-observation = Felicitazioni! Hai fatto la tua prima osservazione!
 Connect-with-expert-naturalists = Entra in contatto con naturalisti esperti
 Connect-with-other-naturalists = Connettiti con altri naturalisti e partecipa a conversazioni.
@@ -232,7 +233,7 @@ Delete-current-observation = Elimina l'osservazione corrente
 Delete-observation = Cancella osservazione
 DELETE-OBSERVATION--question = CANCELLA OSSERVAZIONE?
 Delete-photo = Elimina foto
-Delete-saved-search = Delete saved search
+Delete-saved-search = Elimina ricerca salvata
 Delete-sound = Elimina suono
 Deleting-x-of-y--observations =
     Eliminazione di { $currentDeleteCount } { $total ->
@@ -268,6 +269,7 @@ DISCARD-X-OBSERVATIONS =
 DISCOVER-NATURE-AROUND-YOU = SCOPRI LA NATURA CHE TI CIRCONDA
 Dismiss-announcement = Ignora annuncio
 Do-you-know-what-group-this-is-in = Sai in quale gruppo si trova?
+Do-you-want-private-coordinates-visible-to-curators = Vuoi rendere visibili le coordinate private/oscurate delle tue osservazioni ai curatori del progetto?
 DONATE = DONA
 DONATE-TO-INATURALIST = DONA AD INATURALIST
 DONE = FINITO
@@ -382,12 +384,8 @@ IDENTIFY = IDENTIFICA
 Identify-organisms-in-real-time-with-your-camera = Identifica gli organismi in tempo reale con la tua fotocamera
 Identify-species-anywhere = Identifica le specie ovunque
 If-an-account-with-that-email-exists = Se esiste un account con quell'indirizzo e-mail, abbiamo inviato le istruzioni per la reimpostazione della password al tuo indirizzo e-mail.
+If-the-only-reason-youre-leaving-is-to-stop-project-curators = Se l'unica ragione per cui tu stai abbandonando il progetto è la volontà di impedire ai curatori di vedere le coordinate nascoste.
 If-you-have-an-existing-account-try-sign-in-reset = Se disponi di un account iNat esistente, prova ad accedere con il tuo nome utente e password oppure prova a reimpostare la password utilizzando l'indirizzo e-mail associato al tuo account.
-If-you-leave-x-of-your-observations-removed =
-    Se si abbandona questo progetto tradizionale, { $count ->
-        [una] 1 delle tue osservazioni
-       *[altro] { $count } delle tue osservazioni
-    } verrà rimosso anche da questo progetto.
 If-you-save-this-observation-and-upload-it-to-iNaturalist = Se salvi questa osservazione e la carichi su iNaturalist, altre persone potrebbero essere in grado di aiutarti a identificarla.
 If-you-want-to-collate-compare-promote = Se si desidera raccogliere, confrontare o promuovere un insieme di progetti esistenti, è consigliabile utilizzare un progetto Umbrella. Ad esempio, la City Nature Challenge 2018, che ha raccolto oltre 60 progetti, è stata un'ottima landing page in cui chiunque può confrontare le osservazioni di ogni città. Sia i progetti di raccolta che quelli tradizionali possono essere utilizzati in un progetto Umbrella e fino a 500 progetti possono essere raggruppati da un progetto Umbrella.
 If-youre-an-experienced-user-try-switching-to-Advanced-Mode = Hai caricato più di 100 osservazioni. Prova la Modalità Avanzata per altri modi per aggiungere e gestire le osservazioni.
@@ -461,6 +459,7 @@ July = Luglio
 June = Giugno
 Just-make-sure-the-organism-is-wild = Assicurati solo che l'organismo sia selvatico (non un animale domestico, un animale da zoo o una pianta da giardino)
 KEEP-EDITING = CONTINUA A MODIFICARE
+Keep-in-mind-that-project-curators = Tieni presente che i curatori del progetto saranno ancora in grado di aggiungere le tue osservazioni al loro progetto a meno che tu non modifichi le impostazioni del tuo account.
 Kelp-and-Diatoms = Alghe e Diatomee
 Last-Active-date = Ultima attività: { $date }
 Lat-Lon = { NUMBER($latitude, maximumFractionDigits: 6) }, { NUMBER($longitude, maximumFractionDigits: 6) }
@@ -475,6 +474,8 @@ LEAVE = PARTIRE
 LEAVE-PROJECT = ABBANDONA IL PROGETTO
 LEAVE-PROJECT--question = ABBANDONARE IL PROGETTO?
 LEAVE-US-A-REVIEW = LASCIACI UNA RECENSIONE!
+Leave-your-observations-in-this-project = Lasca le osservazioni in questo progetto
+Leave-your-observations-revoke-hidden-coordinates = Lascia le tue osservazioni in questo progetto ma impedisci ai curatori di vedere le loro coordinate nascoste
 Lets-reset-your-password = Reimpostiamo la password.
 Licenses = Licenze
 Loading-iNaturalists-AI-Camera = Caricamento della fotocamera AI di iNaturalist
@@ -482,6 +483,7 @@ Loads-content-that-requires-an-Internet-connection = Carica i contenuti che rich
 LOCATION = UBICAZIONE
 Location = Localizzazione
 Location-accuracy-is-too-imprecise = L'accuratezza della posizione è troppo imprecisa per facilitare gli identificatori. Si prega di ingrandire.
+LOCATION-PERMISSIONS = PERMESSI DI POSIZIONE
 LOCATION-TOO-IMPRECISE = POSIZIONE TROPPO IMPRECISA
 LOG-IN = ACCEDI
 LOG-IN-TO-INATURALIST = ACCEDI A INATURALIST
@@ -551,6 +553,7 @@ New-Observation = Nuova Osservazione
 Newest-to-oldest = Dal più recente al più vecchio
 Next-observation = Prossima osservazione
 Next-slide = Diapositiva successiva
+No = No
 No-Camera-Available = Nessuna fotocamera disponibile
 No-email-app-installed = Nessuna app di posta elettronica installata
 No-email-app-installed-body = Se hai un altro modo per inviare email, l'indirizzo è { $address }
@@ -659,6 +662,7 @@ Privacy-Policy = Informativa sulla privacy
 PRIVACY-POLICY = INFORMATIVA SULLA PRIVACY
 Private = Privato
 PROJECT = PROGETTO
+PROJECT-ADMINS = AMMINISTRATORI DEL PROGETTO
 Project-Members-Only = Solo Membri del Progetto
 PROJECT-REQUIREMENTS = REQUISITI DEL PROGETTO
 project-start-time-datetime = Orario di inizio: { $datetime }
@@ -745,7 +749,7 @@ Ranks-Zoosection = Zoosezione
 Ranks-ZOOSUBSECTION = ZOOSOTTOSEZIONE
 Ranks-Zoosubsection = Zoosottosezione
 Read-more-on-Wikipedia = Leggi di più su Wikipedia
-Recent-searches = Recent searches
+Recent-searches = Ricerche recenti
 Record-a-sound = Registrare un suono
 Record-animal-sounds = Registra i versi degli animali
 RECORD-NEW-SOUND = REGISTRA UN NUOVO SUONO
@@ -755,15 +759,16 @@ Recording-sound = Registrazione del suono
 Recording-stopped-Tap-to-play-the-current-recording = La registrazione è stata interrotta. Toccare per riprodurre la registrazione corrente.
 REDO-SEARCH-IN-MAP-AREA = RIPETI LA RICERCA NELL'AREA DELLA MAPPA
 Remove-agreement = Rimuovi accordo
+Remove-all-your-observations-from-this-project-X = Rimuovi tutte le tue osservazioni da questo progetto ({ $count })
 Remove-disagreement = Rimuovi il disaccordo
 Remove-favorite = Rimuovi preferito
 Remove-identification = Rimuovi l'identificazione
 Remove-Photos = Rimuovi foto
 Remove-project-filter = Rimuovi filtro progetto
 Remove-taxon-filter = Rimuovi il filtro taxon
-Remove-this-saved-search = Remove this saved search
+Remove-this-saved-search = Rimuovi questa ricerca salvata
 Remove-user-filter = Rimuovi filtro utente
-Removed-from-Saved-Searches = Removed from Saved Searches
+Removed-from-Saved-Searches = Rimosso dalle ricerche salvate
 Removes-this-observations-taxon = Rimuove il taxon di questa osservazione
 Removes-your-vote-of-agreement = Rimuove il tuo voto di accordo
 Removes-your-vote-of-disagreement = Rimuove il tuo voto di disaccordo
@@ -779,6 +784,7 @@ RESET-SOUND-header = RIPRISTINA L'AUDIO?
 Reset-verb = Ripristina
 RESTART-APP = RIAVVIA L'APP
 Restore = Ripristina
+RETURN-TO-STANDARD-SEARCH = RITORNA ALLA RICERCA STANDARD
 Reveal = Rivelare
 REVIEW-INATURALIST = RECENSIONE INATURALIST
 REVIEWED = RECENSIONE
@@ -790,11 +796,11 @@ Save-all-observations = Salva tutte le osservazioni
 SAVE-CHANGES = SALVA MODIFICHE
 SAVE-FOR-LATER = SALVA PER DOPO
 SAVE-LOCATION = SALVA POSIZIONE
-Save-this-search = Save this search
+Save-this-search = Salva questa ricerca
 Saved-Observation = Osservazione salvata, in coda per il caricamento
-Saved-search-not-added-maximum-of-X = Saved search not added, maximum of { $count }
-Saved-searches = Saved searches
-SAVED-SEARCHES = SAVED SEARCHES
+Saved-search-not-added-maximum-of-X = Ricerca salvata non aggiunta, massimo di { $count }
+Saved-searches = Ricerche salvate
+SAVED-SEARCHES = RICERCHE SALVATE
 Scientific-Name = Nome Scientifico
 Scientific-Name-Common-Name = Nome scientifico (nome comune)
 SEARCH = RICERCA
@@ -893,7 +899,7 @@ Syncing = Sincronizzando...
 Take-photo = Scattare foto
 Take-photos = Scatta foto
 Tap-here-to-switch-to-Advanced-Mode = Tocca qui per passare alla Modalità Avanzata
-Tap-to-try-loading-again = Tap to try loading again
+Tap-to-try-loading-again = Tocca per riprovare a caricare
 Taxa = Taxa
 TAXON = TAXON
 TAXON-NAMES-DISPLAY = VISUALIZZAZIONE DEI NOMI DEI TAXON
@@ -1030,8 +1036,8 @@ x-failed =
     }
 X-filters =
     { $count ->
-        [one] { $count } filter
-       *[other] { $count } filters
+        [one] { $count } filtro
+       *[other] { $count } filtri
     }
 X-FOLLOWERS =
     { $count ->
@@ -1055,8 +1061,8 @@ X-Identifiers =
     }
 X-IDENTIFIERS--below-number =
     { $count ->
-        [one] IDENTIFIER
-       *[other] IDENTIFIERS
+        [one] IDENTIFICATORE
+       *[other] IDENTIFICATORO
     }
 X-JOURNAL_POSTS =
     { $count ->
@@ -1095,8 +1101,8 @@ X-Observers =
     }
 X-OBSERVERS--below-number =
     { $count ->
-        [one] OBSERVER
-       *[other] OBSERVERS
+        [one] OSSERVATORE
+       *[other] OSSERVATORI
     }
 X-of-Y =
     { $x ->
@@ -1165,6 +1171,8 @@ x-uploads-failed =
         [uno] { $count } Caricamento non riuscito
        *[altro] { $count } Caricamenti non riusciti
     }
+Yes-but-only-if-I-add-the-observation-to-the-project-myself = Sì, ma solo se ho aggiunto io stesso l'osservazione al progetto.
+Yes-no-matter-who-adds-the-observation-to-the-project = Sì, non importa chi aggiunge l'osservazione al progetto
 You-are-offline = Sei offline
 You-are-offline-Tap-to-reload = Sei offline. Tocca per ricaricare.
 You-are-offline-Tap-to-try-again = Sei offline. Tocca per riprovare.
@@ -1201,6 +1209,7 @@ Your-donation-to-iNaturalist = La tua donazione a iNaturalist sostiene il miglio
 Your-email-is-confirmed = La tua email è confermata! Effettua l'accesso per continuare.
 Your-location-uncertainty-is-over-x-km = L'incertezza sulla tua posizione è finita { $x } km, che è troppo alto per essere utile agli identificatori. Modifica la posizione e ingrandisci fino a quando il cerchio di precisione diventa verde ed è centrato sul punto in cui hai osservato l'organismo.
 Your-observations-can-help-science = Le tue osservazioni possono aiutare la scienza!
+Your-observations-will-stay-in-the-project = Le tue osservazioni rimarranno nel progetto e i curatori saranno ancora in grado di vedere le relative coordinate nascoste.
 Youre-ready-to-share-your-observations = Sei pronto a condividere le tue osservazioni!
 Youve-denied-permission-prompt = Hai negato l'autorizzazione. Si prega di concedere l'autorizzazione nell'app delle impostazioni.
 Youve-previously-denied-camera-permissions = In precedenza hai negato le autorizzazioni della fotocamera, quindi abilitale nelle impostazioni.
