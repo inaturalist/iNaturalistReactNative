@@ -68,7 +68,10 @@ describe( "Project", ( ) => {
         project_observation_rules: [mockRule],
         rule_preferences: [
           { field: "d1", value: "2026-09-10" },
-          { field: "members_only", value: null },
+          { field: "members_only", value: true },
+          { field: "photos", value: false },
+          { field: "numeric", value: 3 },
+          { field: "sounds", value: null },
         ],
       } );
       Project.upsertRemoteProjects( [mockRemoteProject], global.realm );

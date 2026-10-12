@@ -22,7 +22,7 @@ class ProjectRulePreference extends Realm.Object {
     embedded: true,
     properties: {
       field: "string",
-      value: "string?",
+      value: "mixed",
     },
   };
 }

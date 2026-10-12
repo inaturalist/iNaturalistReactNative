@@ -43,7 +43,8 @@ export interface ApiPostForUser extends ApiPost {
 
 export interface ProjectRulePreference {
   field: string;
-  value: string | null;
+  // e.g. members_only is a boolean
+  value: string | number | boolean | null;
 }
 
 interface ApiObservationField {

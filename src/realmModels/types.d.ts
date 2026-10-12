@@ -89,7 +89,7 @@ export interface RealmProjectObservationRule extends RealmObject {
 
 export interface RealmProjectRulePreference extends RealmObject {
   field: string;
-  value?: string;
+  value?: string | number | boolean | null;
 }
 
 export interface RealmProject extends RealmObject {

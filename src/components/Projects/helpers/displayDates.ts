@@ -12,7 +12,13 @@ interface FormattedProjectDate {
   shouldDisplayDateRange: boolean;
 }
 
-const getFieldValue = ( item: ProjectRulePreference[] ) => item?.[0]?.value ?? null;
+// Date and month preferences are always strings
+const getFieldValue = ( item: ProjectRulePreference[] ) => {
+  const value = item?.[0]?.value;
+  return typeof value === "string"
+    ? value
+    : null;
+};
 
 // https://github.com/inaturalist/inaturalist/blob/0994c85e2b87661042289ff080d3fc29ed8e70b3/app/webpack/projects/show/components/requirements.jsx#L100C3-L114C4
 const formatProjectDate = (
