@@ -21,6 +21,9 @@ interface ApiObservationsSearchParamsForInfiniteQuery extends ApiObservationsSea
 // possible, i.e. when sorting by date created or date observed. Other
 // sorts must use the page param and suffer the limitations described
 // above.
+//
+// Date created sorts use id_below / id_above rather than created_d1 /
+// created_d2 because observation ids are assigned in upload order
 function getNextPageParamForExplore(
   lastPage: ApiObservationsSearchResponse,
   params: ApiObservationsSearchParams,
@@ -33,14 +36,17 @@ function getNextPageParamForExplore(
   // results, we're done and can stop requesting new pages.
   if ( !lastObs ) return null;
 
-  // Datetime sorts need to use d1 / d2 or created_d1 / created_d2 to
-  // paginate results, so were storing a datetime from the last observation
-  // as the "page" and we'll use that to adjust the query when we perform
-  // it
-  if ( ["observed_on", "created_at"].includes( String( orderBy ) ) ) {
-    const lastObsDate = orderBy === "observed_on"
-      ? lastObs?.time_observed_at
-      : lastObs?.created_at;
+  // Date created sorts paginate by id, so we store the id of the last
+  // observation as the "page"
+  if ( orderBy === "created_at" ) {
+    return lastObs.id;
+  }
+
+  // Date observed sorts need to use d1 / d2 to paginate results, so we're
+  // storing a datetime from the last observation as the "page" and we'll use
+  // that to adjust the query when we perform it
+  if ( orderBy === "observed_on" ) {
+    const lastObsDate = lastObs?.time_observed_at;
 
     // If there are results but the last one doesn't have a datetime, we're
     // also done... but this is probably impossible.
@@ -92,14 +98,13 @@ function addPageParamsForExplore( params: ApiObservationsSearchParamsForInfinite
     } else {
       newParams.d2 = pageParam;
     }
-  } else if ( newParams.order_by === "created_at" && typeof ( pageParam ) === "string" ) {
-    // If we're ordering by date created, we are "paginating" by date and
-    // getNextPageParam will have set the pageParam to a date string from
-    // the last obs in the previous page
+  } else if ( newParams.order_by === "created_at" && typeof ( pageParam ) === "number" ) {
+    // If we're ordering by date created, getNextPageParam will have set the
+    // pageParam to the id of the last obs in the previous page
     if ( params.order === "asc" ) {
-      newParams.created_d1 = pageParam;
+      newParams.id_above = pageParam;
     } else {
-      newParams.created_d2 = pageParam;
+      newParams.id_below = pageParam;
     }
   } else if ( typeof ( newParams.order_by ) === "string" && typeof ( pageParam ) === "number" ) {
     // If this is any kind of sort other than the date sorts and isn't the
