@@ -35,7 +35,7 @@ const FollowButtonContainer = ( {
   const following = relationship?.following;
 
   const { mutate: createRelationshipsMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => createRelationships( params, optsWithAuth ),
+    createRelationships,
     {
       onSuccess: () => {
         refetchRelationship();
@@ -51,7 +51,7 @@ const FollowButtonContainer = ( {
   );
 
   const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
+    updateRelationships,
     {
       onSuccess: () => {
         refetchRelationship();
