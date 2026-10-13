@@ -42,7 +42,7 @@ const fetchUserMe = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) 
 };
 
 const fetchRemoteUser = async (
-  id: number | string,
+  id: number | string | null | undefined,
   params: ApiUntypedParams = {},
   opts: ApiOpts = {},
 ) => {
