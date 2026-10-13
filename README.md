@@ -300,6 +300,7 @@ We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the de
 
 1. Make a [Github personal access token](https://github.com/settings/tokens/) with repo access in the `GITHUB_API_TOKEN` environmental variable.
 1. `cp android/example-keystore.properties android/keystore.properties` and fill in the relevant values provided by another member of iNat staff.
+1. `cp fastlane/env.example fastlane/.env` and fill in the relevant values provided by another member of iNat staff.
 1. `cp fastlane/example-Appfile fastlane/Appfile` and fill in the relevant values provided by another member of iNat staff.
 1. Work with iNat staff to either get a new Apple ID or associate an existing one with the iNat Apple development team
 1. Sign in to Xcode with your Apple ID

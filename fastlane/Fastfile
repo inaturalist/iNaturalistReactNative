@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
+require "dotenv"
 require "fileutils"
 require "spaceship"
+
+ROOT_DIR = File.expand_path( "..", __dir__ )
+# Fastlane loads fastlane/.env first; supplement with repo-root .env for app build
+# config (e.g. ANDROID_MODEL_FILE_NAME) without overriding fastlane-only secrets.
+Dotenv.load( File.join( ROOT_DIR, ".env" ) )
 
 appfile_path = File.join( __dir__, "Appfile" )
 unless File.exist?( appfile_path )
@@ -23,6 +29,7 @@ forbidden_env_vars.each do | env_var |
 end
 
 required_env_vars = [
+  "GITHUB_TOKEN",
   "IOS_PROVISIONING_PROFILE_NAME",
   "IOS_SHARE_BUNDLE_ID",
   "IOS_SHARE_PROVISIONING_PROFILE_NAME"
@@ -31,8 +38,8 @@ required_env_vars.each do | env_var |
   next unless ENV[env_var].to_s.empty?
 
   UI.abort_with_message! <<~NO_ENV_ERROR.gsub( /\s+/, " " ).strip
-    ENV is missing #{env_var}. Add the value to .env or populate your ENV in
-    another way.
+    ENV is missing #{env_var}. Add the value to fastlane/.env (see fastlane/env.example)
+    or populate your ENV in another way.
   NO_ENV_ERROR
 end
 
@@ -360,6 +367,8 @@ platform :ios do
     # Build iOS app
     get_certificates
     get_provisioning_profile
+    share_bundle_id = ENV.fetch( "IOS_SHARE_BUNDLE_ID" )
+    get_provisioning_profile( app_identifier: share_bundle_id )
     ipa_path = get_ipa_path
     if File.exist?( ipa_path )
       UI.important "IPA already exists at #{ipa_path}"
