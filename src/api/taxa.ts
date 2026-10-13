@@ -1,8 +1,8 @@
-// @flow
-
 import inatjs from "inaturalistjs";
 
+import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
+import type { ApiOpts, ApiUntypedParams } from "./types";
 
 const ANCESTOR_FIELDS = {
   name: true,
@@ -36,12 +36,24 @@ const PARAMS = {
   fields: FIELDS,
 };
 
-function mapTaxonPhotoToLocalSchema( taxonPhoto ) {
+interface RemotePhotoWithLicense {
+  photo: {
+    licenseCode?: string | null;
+    license_code?: string | null;
+  };
+}
+
+interface RemoteTaxonWithPhotos {
+  taxonPhotos?: RemotePhotoWithLicense[];
+  taxon_photos?: RemotePhotoWithLicense[];
+}
+
+function mapTaxonPhotoToLocalSchema<T extends RemotePhotoWithLicense>( taxonPhoto: T ): T {
   taxonPhoto.photo.licenseCode = taxonPhoto.photo.licenseCode
     || taxonPhoto.photo.license_code;
   return taxonPhoto;
 }
-function mapToLocalSchema( taxon ) {
+function mapToLocalSchema<T extends RemoteTaxonWithPhotos>( taxon: T ): T {
   taxon.taxonPhotos = taxon?.taxonPhotos?.map( mapTaxonPhotoToLocalSchema );
   taxon.taxon_photos = taxon?.taxon_photos?.map( mapTaxonPhotoToLocalSchema );
   return taxon;
@@ -49,9 +61,9 @@ function mapToLocalSchema( taxon ) {
 
 async function fetchTaxon(
   id: number | number[],
-  params: Object = {},
-  opts: Object = {},
-): Promise<?Object> {
+  params: ApiUntypedParams = {},
+  opts: ApiOpts = {},
+) {
   try {
     const fetchParams = {
       ...PARAMS,
@@ -93,17 +105,20 @@ async function fetchTaxon(
     }
     return response;
   } catch ( e ) {
-    return handleError( e, { context: { functionName: "fetchTaxon", id, opts } } );
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "fetchTaxon", id, opts } },
+    );
   }
 }
 
-async function searchTaxa( params: Object = {}, opts: Object = {} ): Promise<?Object> {
+async function searchTaxa( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) {
   try {
     const searchParams = { ...PARAMS, ...params };
     const { results } = await inatjs.taxa.search( searchParams, opts );
     return results;
   } catch ( e ) {
-    return handleError( e, { context: { functionName: "searchTaxa", opts } } );
+    return handleError( e as ErrorWithResponse, { context: { functionName: "searchTaxa", opts } } );
   }
 }
 

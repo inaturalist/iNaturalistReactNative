@@ -18,6 +18,9 @@ export interface ApiGetByIdParams extends ApiParams {
   id: number;
 }
 
+// Params for wrappers that don't have endpoint-specific types yet
+export type ApiUntypedParams = object;
+
 export interface ApiPlace {
   id?: number;
   name?: string;
