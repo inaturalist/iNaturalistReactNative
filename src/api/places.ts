@@ -1,6 +1,5 @@
 import inatjs from "inaturalistjs";
 
-import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -16,7 +15,7 @@ const fetchPlace = async (
       : null;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "fetchPlace", id, opts } },
     );
   }

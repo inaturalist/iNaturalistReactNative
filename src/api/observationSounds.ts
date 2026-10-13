@@ -1,6 +1,5 @@
 import inatjs from "inaturalistjs";
 
-import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -12,7 +11,7 @@ const deleteRemoteObservationSound = async (
     return await inatjs.observation_sounds.delete( params, opts );
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "deleteRemoteObservationSound", opts } },
     );
   }

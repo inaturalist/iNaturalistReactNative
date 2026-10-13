@@ -1,4 +1,3 @@
-import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
 import { OBSERVATION_FIELD_VALUE_FIELDS } from "api/fields";
 import type { ApiDefaultResult, ApiOpts, ApiResponse } from "api/types";
@@ -23,7 +22,7 @@ export interface ObservationFieldValueUpdateParams extends ObservationFieldValue
 const createObservationFieldValue = async <T = ApiDefaultResult>(
   params: ObservationFieldValueAttributes,
   opts: ApiOpts = {},
-): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null> => {
   try {
     const response = await inatjs.observation_field_values.create(
       { ...PARAMS, ...params },
@@ -32,7 +31,7 @@ const createObservationFieldValue = async <T = ApiDefaultResult>(
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "createObservationFieldValue", opts } },
     );
   }
@@ -41,7 +40,7 @@ const createObservationFieldValue = async <T = ApiDefaultResult>(
 const updateObservationFieldValue = async <T = ApiDefaultResult>(
   params: ObservationFieldValueUpdateParams,
   opts: ApiOpts = {},
-): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null> => {
   try {
     const response = await inatjs.observation_field_values.update(
       { ...PARAMS, ...params },
@@ -50,7 +49,7 @@ const updateObservationFieldValue = async <T = ApiDefaultResult>(
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "updateObservationFieldValue", opts } },
     );
   }
@@ -59,13 +58,13 @@ const updateObservationFieldValue = async <T = ApiDefaultResult>(
 const deleteObservationFieldValue = async <T = ApiDefaultResult>(
   id: string, // uuid
   opts: ApiOpts = {},
-): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null> => {
   try {
     const response = await inatjs.observation_field_values.delete( { id }, opts );
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "deleteObservationFieldValue", id, opts } },
     );
   }

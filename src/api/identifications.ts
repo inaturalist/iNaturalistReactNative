@@ -1,7 +1,6 @@
 import inatjs from "inaturalistjs";
 import Identification from "realmModels/Identification";
 
-import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -18,7 +17,7 @@ const createIdentification = async (
     return results;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "createIdentification", opts } },
     );
   }
@@ -33,7 +32,7 @@ const updateIdentification = async (
     return results;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "updateIdentification", opts } },
     );
   }

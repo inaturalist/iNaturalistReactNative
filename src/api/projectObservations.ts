@@ -1,4 +1,3 @@
-import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
 import { PROJECT_OBSERVATION_FIELDS } from "api/fields";
 import type { ApiDefaultResult, ApiOpts, ApiResponse } from "api/types";
@@ -25,13 +24,13 @@ export interface ProjectObservationUpdateParams {
 const createProjectObservation = async <T = ApiDefaultResult>(
   params: ProjectObservationWriteParams,
   opts: ApiOpts = {},
-): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null> => {
   try {
     const response = await inatjs.project_observations.create( { ...PARAMS, ...params }, opts );
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "createProjectObservation", opts } },
     );
   }
@@ -40,13 +39,13 @@ const createProjectObservation = async <T = ApiDefaultResult>(
 const updateProjectObservation = async <T = ApiDefaultResult>(
   params: ProjectObservationUpdateParams,
   opts: ApiOpts = {},
-): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null> => {
   try {
     const response = await inatjs.project_observations.update( { ...PARAMS, ...params }, opts );
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "updateProjectObservation", opts } },
     );
   }
@@ -55,13 +54,13 @@ const updateProjectObservation = async <T = ApiDefaultResult>(
 const deleteProjectObservation = async <T = ApiDefaultResult>(
   id: string, // uuid
   opts: ApiOpts = {},
-): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
+): Promise<ApiResponse<T> | null> => {
   try {
     const response = await inatjs.project_observations.delete( { id }, opts );
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "deleteProjectObservation", id, opts } },
     );
   }

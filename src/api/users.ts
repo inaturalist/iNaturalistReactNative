@@ -1,6 +1,5 @@
 import inatjs from "inaturalistjs";
 
-import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -37,7 +36,7 @@ const fetchUserMe = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) 
     const response = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
     return response?.results[0];
   } catch ( e ) {
-    return handleError( e as ErrorWithResponse, { throw: true } );
+    return handleError( e, { throw: true } );
   }
 };
 
@@ -56,7 +55,7 @@ const fetchRemoteUser = async (
     return results[0];
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "fetchRemoteUser", id, opts } },
     );
   }
@@ -71,7 +70,7 @@ const fetchUsers = async (
     return await inatjs.users.fetch( ids, params, opts );
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "fetchUsers", ids, opts } },
     );
   }
@@ -90,7 +89,7 @@ const blockUser = async (
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "blockUser", id, opts } },
     );
   }
@@ -109,7 +108,7 @@ const muteUser = async (
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "muteUser", id, opts } },
     );
   }
@@ -128,7 +127,7 @@ const unblockUser = async (
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "unblockUser", id, opts } },
     );
   }
@@ -147,7 +146,7 @@ const unmuteUser = async (
     return response;
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "unmuteUser", id, opts } },
     );
   }
@@ -158,7 +157,7 @@ const updateUsers = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) 
     return await inatjs.users.update( params, opts );
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "updateUsers", opts } },
     );
   }
@@ -173,7 +172,7 @@ const fetchUserEmailAvailable = async (
     return await inatjs.users.emailAvailable( { email }, { ...params, ...opts } );
   } catch ( e ) {
     return handleError(
-      e as ErrorWithResponse,
+      e,
       { context: { functionName: "fetchUserEmailAvailable", email, opts } },
     );
   }
