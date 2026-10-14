@@ -64,9 +64,10 @@ jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
-// Reanimated 4.4 + Worklets 0.9: Jest loads native worklets which fails in Node. See:
-// https://github.com/software-mansion/react-native-reanimated/discussions/8806
-// we can remove this once the fix is released
+// Worklets resolves its .native files under Jest's react-native preset, which
+// crashes in Node. Upstream's opt-in fix is react-native-worklets/jest/resolver
+// (software-mansion/react-native-reanimated#8988), but it replaces the RN
+// preset's resolver, so we mock the package instead.
 jest.mock( "react-native-worklets", () => require( "react-native-worklets/src/mock" ) );
 
 // Reanimated 4.4 + draggable-flatlist: prebuilt scroll handlers in node_modules
