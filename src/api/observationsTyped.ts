@@ -1,3 +1,4 @@
+import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
 import { ICONIC_TAXA_COUNTS_FIELDS } from "api/fields";
 import type {
@@ -26,7 +27,7 @@ export interface IconicTaxaCountsParams extends ApiParams {
 const fetchIconicTaxaCounts = async (
   params: IconicTaxaCountsParams = {},
   opts: ApiOpts = {},
-): Promise<ApiResponse<IconicTaxonCountResult> | null> => {
+): Promise<ApiResponse<IconicTaxonCountResult> | null | ErrorWithResponse | INatApiError> => {
   try {
     return await inatjs.observations.iconicTaxaCounts(
       { fields: ICONIC_TAXA_COUNTS_FIELDS, ...params },
@@ -34,7 +35,7 @@ const fetchIconicTaxaCounts = async (
     );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchIconicTaxaCounts", opts } },
     );
   }
@@ -71,7 +72,7 @@ const fetchObservers = async (
     return await inatjs.observations.observers( params, opts );
   } catch ( e ) {
     await handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchObservers", opts } },
     );
     return null;
@@ -86,7 +87,7 @@ const fetchIdentifiers = async (
     return await inatjs.observations.identifiers( params, opts );
   } catch ( e ) {
     await handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchIdentifiers", opts } },
     );
     return null;

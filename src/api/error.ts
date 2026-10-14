@@ -79,44 +79,24 @@ export interface ErrorWithResponse {
   routeParams?: Record<string, unknown>;
 }
 
-type ErrorResponse = NonNullable<ErrorWithResponse["response"]>;
-
-function hasResponse( e: unknown ): e is { response: ErrorResponse } {
-  return typeof e === "object" && e !== null
-    && "response" in e
-    && typeof e.response === "object" && e.response !== null
-    && "status" in e.response && typeof e.response.status === "number"
-    && "url" in e.response && typeof e.response.url === "string"
-    && "json" in e.response && typeof e.response.json === "function";
-}
-
-function readField( e: unknown, key: string ): unknown {
-  return typeof e === "object" && e !== null
-    ? Reflect.get( e, key )
-    : undefined;
-}
-
 function createContext(
-  e: unknown,
+  e: ErrorWithResponse,
   options: HandleErrorOptions,
   extraContext: Record<string, unknown> | null,
 ) {
-  const response = hasResponse( e )
-    ? e.response
-    : null;
   const context = {
     queryKey: options?.queryKey
       ? JSON.stringify( options.queryKey )
       : "unknown",
     failureCount: options?.failureCount,
     timestamp: new Date().toISOString(),
-    errorType: readField( e, "name" ) || "Unknown",
-    status: readField( e, "status" ) || ( response
-      ? response.status
+    errorType: e?.name || "Unknown",
+    status: e?.status || ( e.response
+      ? e.response.status
       : null ),
-    url: response?.url,
-    routeName: options?.routeName || readField( e, "routeName" ),
-    routeParams: options?.routeParams || readField( e, "routeParams" ),
+    url: e?.response?.url,
+    routeName: options?.routeName || e?.routeName,
+    routeParams: options?.routeParams || e?.routeParams,
     ...( extraContext || {} ),
   };
   // Remove nullish values (null or undefined) from context
@@ -127,29 +107,18 @@ function createContext(
   );
 }
 
-// Throws unless called with `throw: false`, and even then it throws for
-// 401s, 429s, and errors without a response
-function handleError(
-  e: unknown,
-  options?: HandleErrorOptions & { throw?: true },
-): Promise<never>;
-function handleError(
-  e: unknown,
-  options: HandleErrorOptions,
-): Promise<INatApiError | ErrorWithResponse>;
 async function handleError(
-  e: unknown,
+  e: ErrorWithResponse,
   options: HandleErrorOptions = {},
 ): Promise<INatApiError | ErrorWithResponse> {
   // Get context from options if available
   const originalContext = options?.context || null;
   const context = createContext( e, options, originalContext );
-  if ( !hasResponse( e ) ) {
-    const status = readField( e, "status" );
-    if ( status === 429 ) {
+  if ( !e.response ) {
+    if ( e.status === 429 ) {
       logger.error( "429 without a response in handleError:", JSON.stringify( context ) );
       throw new INatApiTooManyRequestsError( context );
-    } else if ( status === 401 ) {
+    } else if ( e.status === 401 ) {
       logger.error( "401 without a response in handleError:", JSON.stringify( context ) );
       throw new INatApiUnauthorizedError( context );
     }

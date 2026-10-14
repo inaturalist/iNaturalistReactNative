@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 
+import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -35,7 +36,7 @@ const searchObservations = async ( params: ApiUntypedParams = {}, opts: ApiOpts 
     return response;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "searchObservations", opts } },
     );
   }
@@ -46,7 +47,7 @@ const faveObservation = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {
     return await inatjs.observations.fave( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "faveObservation", opts } },
     );
   }
@@ -57,7 +58,7 @@ const unfaveObservation = async ( params: ApiUntypedParams = {}, opts: ApiOpts =
     return await inatjs.observations.unfave( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "unfaveObservation", opts } },
     );
   }
@@ -82,7 +83,7 @@ const fetchRemoteObservation = async (
     return null;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchRemoteObservation", uuid, opts } },
     );
   }
@@ -107,7 +108,7 @@ const fetchRemoteObservations = async (
     return null;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchRemoteObservations", uuids, opts } },
     );
   }
@@ -118,7 +119,7 @@ const markAsReviewed = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {}
     return await inatjs.observations.review( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "markAsReviewed", opts } },
     );
   }
@@ -132,7 +133,7 @@ const markObservationUpdatesViewed = async (
     return await inatjs.observations.viewedUpdates( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "markObservationUpdatesViewed", opts } },
     );
   }
@@ -146,7 +147,7 @@ const createObservation = async (
     return await inatjs.observations.create( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "createObservation", opts } },
     );
   }
@@ -160,7 +161,7 @@ const updateObservation = async (
     return await inatjs.observations.update( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "updateObservation", opts } },
     );
   }
@@ -179,7 +180,7 @@ const createOrUpdateEvidence = async <P extends ApiUntypedParams, O extends ApiO
     return await apiEndpoint( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "createOrUpdateEvidence", opts } },
     );
   }
@@ -194,7 +195,7 @@ const fetchObservationUpdates = async (
     return results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchObservationUpdates", opts } },
     );
   }
@@ -212,7 +213,7 @@ const fetchUnviewedObservationUpdatesCount = async (
     }, opts );
     return updatesCount;
   } catch ( e ) {
-    return handleError( e, {
+    return handleError( e as ErrorWithResponse, {
       context: {
         functionName: "fetchUnviewedObservationUpdatesCount",
         opts,
@@ -229,7 +230,7 @@ const deleteRemoteObservation = async (
     return await inatjs.observations.delete( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "deleteRemoteObservation", opts } },
     );
   }
@@ -243,7 +244,7 @@ const fetchSpeciesCounts = async (
     return inatjs.observations.speciesCounts( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchSpeciesCounts", opts } },
     );
   }
@@ -257,7 +258,7 @@ const checkForDeletedObservations = async (
     return await inatjs.observations.deleted( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "checkForDeletedObservations", opts } },
     );
   }
@@ -271,7 +272,7 @@ const fetchSubscriptions = async (
     return inatjs.observations.subscriptions( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchSubscriptions", opts } },
     );
   }
@@ -285,7 +286,7 @@ const createSubscription = async (
     return inatjs.observations.subscribe( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "createSubscription", opts } },
     );
   }

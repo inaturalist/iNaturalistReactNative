@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 
+import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -12,7 +13,7 @@ const setQualityMetric = async (
     return response.results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "setQualityMetric", opts } },
     );
   }
@@ -27,7 +28,7 @@ const deleteQualityMetric = async (
     return results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "deleteQualityMetric", opts } },
     );
   }
@@ -42,7 +43,7 @@ const fetchQualityMetrics = async (
     return response.results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchQualityMetrics", opts } },
     );
   }

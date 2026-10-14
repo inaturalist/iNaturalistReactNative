@@ -1,6 +1,7 @@
 import inatjs from "inaturalistjs";
 import Comment from "realmModels/Comment";
 
+import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -17,7 +18,7 @@ const createComment = async (
     return results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "createComment", opts } },
     );
   }
@@ -32,7 +33,7 @@ const updateComment = async (
     return results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "updateComment", opts } },
     );
   }
@@ -47,7 +48,7 @@ const deleteComments = async (
     return results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "deleteComments", id, opts } },
     );
   }

@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 
+import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -13,7 +14,7 @@ const fetchRelationships = async ( params: ApiUntypedParams = {}, opts: ApiOpts 
     return results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchRelationships", opts } },
     );
   }
@@ -24,7 +25,7 @@ const createRelationships = async ( params: ApiUntypedParams = {}, opts: ApiOpts
     return await inatjs.relationships.create( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "createRelationships", opts } },
     );
   }
@@ -35,7 +36,7 @@ const updateRelationships = async ( params: ApiUntypedParams = {}, opts: ApiOpts
     return await inatjs.relationships.update( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "updateRelationships", opts } },
     );
   }

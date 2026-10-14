@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 
+import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -105,7 +106,7 @@ async function fetchTaxon(
     return response;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchTaxon", id, opts } },
     );
   }
@@ -117,7 +118,7 @@ async function searchTaxa( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) {
     const { results } = await inatjs.taxa.search( searchParams, opts );
     return results;
   } catch ( e ) {
-    return handleError( e, { context: { functionName: "searchTaxa", opts } } );
+    return handleError( e as ErrorWithResponse, { context: { functionName: "searchTaxa", opts } } );
   }
 }
 

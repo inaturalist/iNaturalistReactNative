@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 
+import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -23,7 +24,7 @@ const fetchProjects = async (
     return results[0];
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchProjects", id, opts } },
     );
   }
@@ -37,7 +38,7 @@ const fetchProjectMembers = async (
     return await inatjs.projects.members( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchProjectMembers", opts } },
     );
   }
@@ -52,7 +53,7 @@ const fetchProjectPostsCount = async (
     return response.total_results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchProjectPostsCount", opts } },
     );
   }
@@ -63,7 +64,7 @@ const searchProjects = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {}
     return await inatjs.projects.search( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "searchProjects", opts } },
     );
   }
@@ -74,7 +75,7 @@ const joinProject = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} ) 
     return await inatjs.projects.join( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "joinProject", opts } },
     );
   }
@@ -85,7 +86,7 @@ const leaveProject = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {} )
     return await inatjs.projects.leave( { ...PARAMS, ...params }, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "leaveProject", opts } },
     );
   }
@@ -97,7 +98,7 @@ const fetchMembership = async ( params: ApiUntypedParams = {}, opts: ApiOpts = {
     return response.total_results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "fetchMembership", opts } },
     );
   }

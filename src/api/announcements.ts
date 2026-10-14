@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 
+import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
 import type { ApiOpts, ApiUntypedParams } from "./types";
 
@@ -25,7 +26,7 @@ const searchAnnouncements = async ( params: ApiUntypedParams = {}, opts: ApiOpts
     return results;
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "searchAnnouncements", opts } },
     );
   }
@@ -36,7 +37,7 @@ const dismissAnnouncement = async ( params: ApiUntypedParams = {}, opts: ApiOpts
     return await inatjs.announcements.dismiss( params, opts );
   } catch ( e ) {
     return handleError(
-      e,
+      e as ErrorWithResponse,
       { context: { functionName: "dismissAnnouncement", opts } },
     );
   }
