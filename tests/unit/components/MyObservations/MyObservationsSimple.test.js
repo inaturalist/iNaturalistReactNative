@@ -25,15 +25,10 @@ const mockObsIds = mockObservations.map( ( { uuid } ) => ( { uuid } ) );
 
 let mockObsByUuid = {};
 
-// Defaults to false so search/sort-related tests below are unaffected; only
-// the map view flag is ever toggled on, and only within its own describe block
-let mockMapViewEnabled = false;
-
+// Keeps the remaining flag-gated view (small grid) off for these tests
 jest.mock( "sharedHooks/useFeatureFlag", ( ) => ( {
   __esModule: true,
-  default: jest.fn( flag => ( flag === "myObservationsMapViewEnabled"
-    ? mockMapViewEnabled
-    : false ) ),
+  default: jest.fn( ( ) => false ),
 } ) );
 
 jest.mock( "providers/contexts", ( ) => {
@@ -218,26 +213,13 @@ describe( "MyObservationsSimple", () => {
   describe( "map view option", ( ) => {
     const mockCurrentUser = factory( "LocalUser" );
 
-    afterEach( ( ) => {
-      mockMapViewEnabled = false;
-    } );
-
-    it( "is hidden when the feature flag is disabled, even if logged in", ( ) => {
-      mockMapViewEnabled = false;
-      renderMyObservations( "grid", false, mockCurrentUser );
-
-      expect( screen.queryByTestId( "SegmentedButton.map" ) ).toBeNull( );
-    } );
-
-    it( "is hidden when logged out, even if the feature flag is enabled", ( ) => {
-      mockMapViewEnabled = true;
+    it( "is hidden when logged out", ( ) => {
       renderMyObservations( "grid", false, undefined );
 
       expect( screen.queryByTestId( "SegmentedButton.map" ) ).toBeNull( );
     } );
 
-    it( "is shown when the feature flag is enabled and the user is logged in", ( ) => {
-      mockMapViewEnabled = true;
+    it( "is shown when the user is logged in", ( ) => {
       renderMyObservations( "grid", false, mockCurrentUser );
 
       expect( screen.getByTestId( "SegmentedButton.map" ) ).toBeTruthy( );

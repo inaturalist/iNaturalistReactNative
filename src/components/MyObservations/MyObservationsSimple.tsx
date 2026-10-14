@@ -172,19 +172,10 @@ const MyObservationsSimple = ( {
   const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
   const { dispatch } = useMyObservations( );
-  const searchMyObservationsEnabled = useFeatureFlag(
-    FeatureFlag.SearchMyObservationsEnabled,
-  );
   // For now, searching from the species tab requires a signed-in user. for logged-out
   // users there's no server-side taxon search to run, since all their obs are local,
   // so tapping a card will continue to navigate to TaxonDetails.
-  const canSearchFromSpeciesTab = searchMyObservationsEnabled && !!currentUser;
-  const sortMyObservationsEnabled = useFeatureFlag(
-    FeatureFlag.SortMyObservationsEnabled,
-  );
-  const myObservationsMapViewEnabled = useFeatureFlag(
-    FeatureFlag.MyObservationsMapViewEnabled,
-  );
+  const canSearchFromSpeciesTab = !!currentUser;
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
@@ -192,7 +183,7 @@ const MyObservationsSimple = ( {
   if ( myObservationsSmallGridViewEnabled && currentUser ) {
     viewOptions.push( "smallGrid" );
   }
-  if ( myObservationsMapViewEnabled && currentUser ) {
+  if ( currentUser ) {
     viewOptions.push( "map" );
   }
   const speciesSortLabels = useSpeciesSortLabels( );
@@ -479,7 +470,7 @@ const MyObservationsSimple = ( {
           updateObservationsView={updateObservationsView}
           viewOptions={viewOptions}
         />
-        {sortMyObservationsEnabled && layout !== "map" && (
+        {layout !== "map" && (
           <SortButton
             onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
             accessibilityLabel={t( "Change-observations-sort-order" )}
@@ -585,9 +576,7 @@ const MyObservationsSimple = ( {
             },
           ]}
         />
-        {searchMyObservationsEnabled && (
-          <SearchedTaxonBanner />
-        )}
+        <SearchedTaxonBanner />
         { activeTab === OBSERVATIONS_TAB && renderObservationsTabContent( ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
           <>
