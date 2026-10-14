@@ -95,7 +95,6 @@ const MyObservationsResults = ( ) => {
     return unsubscribe;
   }, [navigation, setJustFinishedSignup] );
 
-  const searchMyObservationsEnabled = useFeatureFlag( FeatureFlag.SearchMyObservationsEnabled );
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
@@ -109,7 +108,7 @@ const MyObservationsResults = ( ) => {
     refetch: refetchFromQuery,
     totalResults: searchTotalResults,
   } = useMyObservationsQuery( );
-  const hasActiveSearch = searchMyObservationsEnabled && !!myObsState.searchedTaxon;
+  const hasActiveSearch = !!myObsState.searchedTaxon;
   const showSearchOfflineNotice = hasActiveSearch && isConnected === false;
   const showSearchEmptyState = hasActiveSearch
     && isConnected !== false

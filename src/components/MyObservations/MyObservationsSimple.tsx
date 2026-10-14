@@ -172,13 +172,10 @@ const MyObservationsSimple = ( {
   const { isDefaultMode } = useLayoutPrefs( );
   const { t } = useTranslation( );
   const { dispatch } = useMyObservations( );
-  const searchMyObservationsEnabled = useFeatureFlag(
-    FeatureFlag.SearchMyObservationsEnabled,
-  );
   // For now, searching from the species tab requires a signed-in user. for logged-out
   // users there's no server-side taxon search to run, since all their obs are local,
   // so tapping a card will continue to navigate to TaxonDetails.
-  const canSearchFromSpeciesTab = searchMyObservationsEnabled && !!currentUser;
+  const canSearchFromSpeciesTab = !!currentUser;
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
@@ -579,9 +576,7 @@ const MyObservationsSimple = ( {
             },
           ]}
         />
-        {searchMyObservationsEnabled && (
-          <SearchedTaxonBanner />
-        )}
+        <SearchedTaxonBanner />
         { activeTab === OBSERVATIONS_TAB && renderObservationsTabContent( ) }
         { ( activeTab === TAXA_TAB && taxa.length > 0 ) && (
           <>
