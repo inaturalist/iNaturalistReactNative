@@ -25,7 +25,7 @@ const mockObsIds = mockObservations.map( ( { uuid } ) => ( { uuid } ) );
 
 let mockObsByUuid = {};
 
-// Defaults to false so search/sort-related tests below are unaffected
+// Keeps the remaining flag-gated view (small grid) off for these tests
 jest.mock( "sharedHooks/useFeatureFlag", ( ) => ( {
   __esModule: true,
   default: jest.fn( ( ) => false ),

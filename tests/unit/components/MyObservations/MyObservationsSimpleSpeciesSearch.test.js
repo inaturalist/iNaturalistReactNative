@@ -17,13 +17,9 @@ const mockSpeciesCounts = [{ count: 3, taxon: mockTaxon }];
 
 const mockCurrentUser = factory( "LocalUser" );
 
-let mockSearchEnabled = false;
-
 jest.mock( "sharedHooks/useFeatureFlag", ( ) => ( {
   __esModule: true,
-  default: jest.fn( flag => ( flag === "searchMyObservationsEnabled"
-    ? mockSearchEnabled
-    : false ) ),
+  default: jest.fn( ( ) => false ),
 } ) );
 
 const mockedNavigate = jest.fn( );
@@ -71,7 +67,6 @@ beforeAll( async ( ) => {
 
 beforeEach( ( ) => {
   useStore.setState( initialStoreState, true );
-  mockSearchEnabled = false;
   mockedNavigate.mockClear( );
   mockSetActiveTab.mockClear( );
 } );
@@ -100,11 +95,7 @@ describe( "MyObservationsSimple species tab", ( ) => {
     expect( screen.queryByTestId( "MyObservationsSearchEmptyState.reset" ) ).toBeNull( );
   } );
 
-  describe( "when the search feature flag is enabled and signed in", ( ) => {
-    beforeEach( ( ) => {
-      mockSearchEnabled = true;
-    } );
-
+  describe( "when signed in", ( ) => {
     it( "searches the taxon and switches to the observations tab when a "
       + "species card is pressed", async ( ) => {
       renderSpeciesTab( { currentUser: mockCurrentUser } );
@@ -132,11 +123,7 @@ describe( "MyObservationsSimple species tab", ( ) => {
     } );
   } );
 
-  describe( "when the search feature flag is enabled but signed out", ( ) => {
-    beforeEach( ( ) => {
-      mockSearchEnabled = true;
-    } );
-
+  describe( "when signed out", ( ) => {
     it( "navigates to taxon details instead of searching when a species "
       + "card is pressed", async ( ) => {
       renderSpeciesTab( { currentUser: undefined } );
@@ -152,26 +139,6 @@ describe( "MyObservationsSimple species tab", ( ) => {
 
     it( "does not render the info icon button", ( ) => {
       renderSpeciesTab( { currentUser: undefined } );
-
-      expect( screen.queryByTestId( "SimpleTaxonGridItem.infoButton" ) ).toBeNull( );
-    } );
-  } );
-
-  describe( "when the search feature flag is disabled", ( ) => {
-    it( "navigates to taxon details when a species card is pressed", async ( ) => {
-      renderSpeciesTab( { currentUser: mockCurrentUser } );
-
-      await actor.press( screen.getByTestId( "SimpleTaxonGridItem" ) );
-
-      expect( mockedNavigate ).toHaveBeenCalledWith( expect.objectContaining( {
-        name: "TaxonDetails",
-        params: { id: mockTaxon.id },
-      } ) );
-      expect( mockSetActiveTab ).not.toHaveBeenCalled( );
-    } );
-
-    it( "does not render the info icon button", ( ) => {
-      renderSpeciesTab( { currentUser: mockCurrentUser } );
 
       expect( screen.queryByTestId( "SimpleTaxonGridItem.infoButton" ) ).toBeNull( );
     } );
