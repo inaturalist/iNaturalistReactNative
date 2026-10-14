@@ -191,11 +191,20 @@ export interface ApiProjectObservationRule {
   user?: ApiUser;
 }
 
+// FYI "", "bioblitz", "contest", and "assessment" are all traditional
+export type ApiProjectType =
+  | "collection"
+  | "umbrella"
+  | ""
+  | "bioblitz"
+  | "contest"
+  | "assessment";
+
 // Result from using PROJECT_SUMMARY_FIELDS
 export interface ApiProjectSummary {
   icon: string;
   id: number;
-  project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
+  project_type: ApiProjectType;
   rule_preferences: ProjectRulePreference[];
   title: string;
 }

@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ProjectRulePreference } from "api/types";
+import type { ApiProjectType, ProjectRulePreference } from "api/types";
 import { SPECIES_TAB } from "appConstants/tabs";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
@@ -63,7 +63,7 @@ interface Project {
   membership_model: "inviteonly" | "open" | null;
   members_count?: number;
   observations_count?: number;
-  project_type: "collection" | "umbrella" | "";
+  project_type: ApiProjectType;
   rule_preferences: ProjectRulePreference[];
   species_count?: number;
   title: string;
