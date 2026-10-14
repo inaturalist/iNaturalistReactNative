@@ -179,9 +179,6 @@ const MyObservationsSimple = ( {
   // users there's no server-side taxon search to run, since all their obs are local,
   // so tapping a card will continue to navigate to TaxonDetails.
   const canSearchFromSpeciesTab = searchMyObservationsEnabled && !!currentUser;
-  const sortMyObservationsEnabled = useFeatureFlag(
-    FeatureFlag.SortMyObservationsEnabled,
-  );
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
@@ -476,7 +473,7 @@ const MyObservationsSimple = ( {
           updateObservationsView={updateObservationsView}
           viewOptions={viewOptions}
         />
-        {sortMyObservationsEnabled && layout !== "map" && (
+        {layout !== "map" && (
           <SortButton
             onPress={() => setOpenSheet( ACTIVE_SHEET.SORT )}
             accessibilityLabel={t( "Change-observations-sort-order" )}

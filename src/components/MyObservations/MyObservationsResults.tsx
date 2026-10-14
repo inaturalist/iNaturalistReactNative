@@ -38,7 +38,6 @@ import {
   useTranslation,
 } from "sharedHooks";
 import useFeatureFlag from "sharedHooks/useFeatureFlag";
-import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 import useObservationCounts from "sharedHooks/useObservationCounts";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import {
@@ -96,15 +95,13 @@ const MyObservationsResults = ( ) => {
     return unsubscribe;
   }, [navigation, setJustFinishedSignup] );
 
-  const localObservationIds = useLocalObservationIds();
-  const sortMyObservationsEnabled = useFeatureFlag( FeatureFlag.SortMyObservationsEnabled );
   const searchMyObservationsEnabled = useFeatureFlag( FeatureFlag.SearchMyObservationsEnabled );
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
   const { isConnected } = useNetInfo( );
   const {
-    observationIds: queryObservationIds,
+    observationIds,
     isServerAuthoritative,
     isLoading: isLoadingFromQuery,
     isFetchingNextPage: isFetchingNextPageFromQuery,
@@ -112,13 +109,6 @@ const MyObservationsResults = ( ) => {
     refetch: refetchFromQuery,
     totalResults: searchTotalResults,
   } = useMyObservationsQuery( );
-  // Only use server-ordered result when at least one of the features that needs it is enabled;
-  // when neither is, we use the plain local list anyway
-  const myObsQueryEnabled = sortMyObservationsEnabled || searchMyObservationsEnabled;
-  const useServerOrder = myObsQueryEnabled && isServerAuthoritative;
-  const observationIds = myObsQueryEnabled
-    ? queryObservationIds
-    : localObservationIds;
   const hasActiveSearch = searchMyObservationsEnabled && !!myObsState.searchedTaxon;
   const showSearchOfflineNotice = hasActiveSearch && isConnected === false;
   const showSearchEmptyState = hasActiveSearch
@@ -158,12 +148,12 @@ const MyObservationsResults = ( ) => {
 
   // Scroll to the top when a sync pulls in observations we've never seen locally
   const scrollToTopForNewRemoteObs = useCallback( ( ) => {
-    if ( useServerOrder ) { return; }
+    if ( isServerAuthoritative ) { return; }
     listRef.current?.scrollToOffset( { offset: 0, animated: true } );
     setMyObsOffset( 0 );
   }, [
     setMyObsOffset,
-    useServerOrder,
+    isServerAuthoritative,
   ] );
 
   const { startUploadObservations } = useUploadObservations( canUpload );
@@ -309,10 +299,10 @@ const MyObservationsResults = ( ) => {
   const handlePullToRefresh = useCallback( async ( ) => {
     await syncManually( { skipUploads: true } );
     refetchObservationsUpdates( );
-    if ( useServerOrder ) {
+    if ( isServerAuthoritative ) {
       refetchFromQuery( );
     }
-  }, [syncManually, refetchObservationsUpdates, useServerOrder, refetchFromQuery] );
+  }, [syncManually, refetchObservationsUpdates, isServerAuthoritative, refetchFromQuery] );
 
   // Scroll the list to the offset we need to restore, e.g. when you are
   // scrolled way down, edit an observation, and return. Entering ObsEdit
@@ -455,10 +445,10 @@ const MyObservationsResults = ( ) => {
     : numOfUserSpecies;
 
   // Pagination for the rendered list follows whichever source is authoritative:
-  const isFetchingNextPageForList = useServerOrder
+  const isFetchingNextPageForList = isServerAuthoritative
     ? isFetchingNextPageFromQuery
     : isFetchingNextPage;
-  const handleEndReached = useServerOrder
+  const handleEndReached = isServerAuthoritative
     ? fetchNextPageFromQuery
     : fetchNextPage;
 

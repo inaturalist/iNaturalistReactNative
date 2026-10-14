@@ -84,10 +84,6 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
     setOverride: setSearchMyObservationsEnabled,
   } = useFeatureFlagForDebug( FeatureFlag.SearchMyObservationsEnabled );
   const {
-    resolvedValue: sortMyObservationsEnabled,
-    setOverride: setSortMyObservationsEnabled,
-  } = useFeatureFlagForDebug( FeatureFlag.SortMyObservationsEnabled );
-  const {
     resolvedValue: myObservationsSmallGridViewEnabled,
     setOverride: setMyObservationsSmallGridViewEnabled,
   } = useFeatureFlagForDebug( FeatureFlag.MyObservationsSmallGridViewEnabled );
@@ -193,15 +189,6 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
             },
           },
           {
-            id: "sort-my-observations",
-            type: "toggle",
-            title: "Sort My Observations",
-            value: sortMyObservationsEnabled,
-            onUpdate: () => {
-              setSortMyObservationsEnabled( !sortMyObservationsEnabled );
-            },
-          },
-          {
             id: "my-observations-small-grid-view",
             type: "toggle",
             title: "My Observations Small Grid View",
@@ -226,8 +213,6 @@ const useRozenite = ( { storageAdapters }: RozeniteOptions ) => {
       setTraditionalProjectsEnabled,
       searchMyObservationsEnabled,
       setSearchMyObservationsEnabled,
-      sortMyObservationsEnabled,
-      setSortMyObservationsEnabled,
       myObservationsSmallGridViewEnabled,
       setMyObservationsSmallGridViewEnabled,
     ],
