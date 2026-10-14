@@ -182,9 +182,6 @@ const MyObservationsSimple = ( {
   const sortMyObservationsEnabled = useFeatureFlag(
     FeatureFlag.SortMyObservationsEnabled,
   );
-  const myObservationsMapViewEnabled = useFeatureFlag(
-    FeatureFlag.MyObservationsMapViewEnabled,
-  );
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
@@ -192,7 +189,7 @@ const MyObservationsSimple = ( {
   if ( myObservationsSmallGridViewEnabled && currentUser ) {
     viewOptions.push( "smallGrid" );
   }
-  if ( myObservationsMapViewEnabled && currentUser ) {
+  if ( currentUser ) {
     viewOptions.push( "map" );
   }
   const speciesSortLabels = useSpeciesSortLabels( );

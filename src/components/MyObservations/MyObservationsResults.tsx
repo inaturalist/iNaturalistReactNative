@@ -99,9 +99,6 @@ const MyObservationsResults = ( ) => {
   const localObservationIds = useLocalObservationIds();
   const sortMyObservationsEnabled = useFeatureFlag( FeatureFlag.SortMyObservationsEnabled );
   const searchMyObservationsEnabled = useFeatureFlag( FeatureFlag.SearchMyObservationsEnabled );
-  const myObservationsMapViewEnabled = useFeatureFlag(
-    FeatureFlag.MyObservationsMapViewEnabled,
-  );
   const myObservationsSmallGridViewEnabled = useFeatureFlag(
     FeatureFlag.MyObservationsSmallGridViewEnabled,
   );
@@ -143,7 +140,7 @@ const MyObservationsResults = ( ) => {
   // fall back to grid rather than getting stuck on an unrenderable view
   useEffect( ( ) => {
     const viewUnavailable = (
-      layout === "map" && ( !myObservationsMapViewEnabled || !currentUser )
+      layout === "map" && !currentUser
     ) || (
       layout === "smallGrid" && ( !myObservationsSmallGridViewEnabled || !currentUser )
     );
@@ -154,7 +151,6 @@ const MyObservationsResults = ( ) => {
   }, [
     clearMyObservationsViewState,
     layout,
-    myObservationsMapViewEnabled,
     myObservationsSmallGridViewEnabled,
     currentUser,
     writeLayoutToStorage,
