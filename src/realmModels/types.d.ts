@@ -80,6 +80,8 @@ export interface RealmProjectObservationRule extends RealmObject {
   place_display_name?: string;
   project_title?: string;
   taxon_ancestor_ids: number[];
+  taxon_default_photo_url?: string;
+  taxon_iconic_taxon_name?: string;
   taxon_name?: string;
   taxon_preferred_common_name?: string;
   taxon_rank?: string;
@@ -93,6 +95,8 @@ export interface RealmProjectRulePreference extends RealmObject {
 }
 
 export interface RealmProject extends RealmObject {
+  bioblitz_d1?: string;
+  bioblitz_d2?: string;
   icon?: string;
   id: number;
   projectObservationFields: RealmProjectObservationField[];

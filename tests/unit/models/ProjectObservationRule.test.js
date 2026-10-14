@@ -32,6 +32,13 @@ describe( "ProjectObservationRule", ( ) => {
       expect( roundTrip( mockRule ) ).toEqual( mockRule );
     } );
 
+    it( "omits the taxon photo when the API omits it", ( ) => {
+      const mockRule = factory( "RemoteProjectObservationRule" );
+      delete mockRule.taxon.default_photo;
+
+      expect( roundTrip( mockRule ).taxon ).not.toHaveProperty( "default_photo" );
+    } );
+
     it( "rebuilds place, user, and project operands", ( ) => {
       const placeRule = {
         id: 1,

@@ -29,6 +29,10 @@ const PROJECT_OBSERVATION_RULE_FIELDS = {
   },
   taxon: {
     ancestor_ids: true,
+    default_photo: {
+      url: true,
+    },
+    iconic_taxon_name: true,
     id: true,
     name: true,
     preferred_common_name: true,
@@ -75,6 +79,10 @@ export const PROJECT_SUMMARY_POF_FIELDS = {
   ...PROJECT_SUMMARY_FIELDS,
   project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
   project_observation_rules: PROJECT_OBSERVATION_RULE_FIELDS,
+  search_parameters: {
+    field: true,
+    value: true,
+  },
 };
 
 export const PROJECT_FIELDS_ALL = "all";

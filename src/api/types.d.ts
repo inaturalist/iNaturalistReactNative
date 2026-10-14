@@ -47,6 +47,12 @@ export interface ProjectRulePreference {
   value: string | number | boolean | null;
 }
 
+export interface ProjectSearchParameter {
+  field: string;
+  // e.g. d1 is a date string, place_id is an array of IDs
+  value: string | number | boolean | ( string | number )[] | null;
+}
+
 interface ApiObservationField {
   allowed_values: string | null;
   datatype: string;
@@ -221,6 +227,7 @@ export interface ApiProject extends ApiProjectSummary {
 export interface ApiProjectSummaryWithPOF extends ApiProjectSummary {
   project_observation_fields: ApiProjectObservationField[];
   project_observation_rules: ApiProjectObservationRule[];
+  search_parameters?: ProjectSearchParameter[];
 }
 
 export interface ApiComment {
