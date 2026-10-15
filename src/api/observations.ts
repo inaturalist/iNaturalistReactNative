@@ -2,23 +2,16 @@ import inatjs from "inaturalistjs";
 
 import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
-import type { ApiOpts, ApiUntypedParams } from "./types";
-
-interface RemotePhotoWithLicense {
-  photo: {
-    licenseCode?: string | null;
-    license_code?: string | null;
-  };
-}
+import type { ApiOpts, ApiPhotoWithLicense, ApiUntypedParams } from "./types";
 
 interface RemoteObservationWithPhotos {
-  observationPhotos?: RemotePhotoWithLicense[];
-  observation_photos?: RemotePhotoWithLicense[];
+  observationPhotos?: ApiPhotoWithLicense[];
+  observation_photos?: ApiPhotoWithLicense[];
 }
 
 // I tried doing this in Observation.js but got mysterious Realm errors. More
 // could be here, but this solves an immediate problem with schema mismatch
-function mapObsPhotoToLocalSchema<T extends RemotePhotoWithLicense>( obsPhoto: T ): T {
+function mapObsPhotoToLocalSchema<T extends ApiPhotoWithLicense>( obsPhoto: T ): T {
   obsPhoto.photo.licenseCode = obsPhoto.photo.licenseCode
     || obsPhoto.photo.license_code;
   return obsPhoto;

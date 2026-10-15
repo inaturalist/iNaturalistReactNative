@@ -153,6 +153,13 @@ export interface ApiObservationPhoto {
   uuid?: string;
 }
 
+export interface ApiPhotoWithLicense {
+  photo: {
+    licenseCode?: string | null;
+    license_code?: string | null;
+  };
+}
+
 export interface ApiObservationSound {
   id?: number;
   sound?: ApiSound;
