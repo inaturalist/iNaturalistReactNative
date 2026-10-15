@@ -1,12 +1,12 @@
 import RotatableIconWrapper from "components/Camera/RotatableIconWrapper";
 import { TransparentCircleButton } from "components/SharedComponents";
 import React from "react";
-import type { ViewStyle } from "react-native";
+import type { AnimatedStyle } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 
 interface Props {
   handleClose: ( ) => void;
-  rotatableAnimatedStyle?: ViewStyle;
+  rotatableAnimatedStyle?: AnimatedStyle;
 }
 
 const Close = ( { handleClose, rotatableAnimatedStyle }: Props ) => {
