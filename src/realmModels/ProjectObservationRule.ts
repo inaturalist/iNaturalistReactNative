@@ -53,7 +53,9 @@ class ProjectObservationRule extends Realm.Object {
             ...( realmRule.taxon_default_photo_url && {
               default_photo: { url: realmRule.taxon_default_photo_url },
             } ),
-            iconic_taxon_name: realmRule.taxon_iconic_taxon_name,
+            ...( realmRule.taxon_iconic_taxon_name && {
+              iconic_taxon_name: realmRule.taxon_iconic_taxon_name,
+            } ),
             id: operandId,
             name: realmRule.taxon_name,
             preferred_common_name: realmRule.taxon_preferred_common_name,
