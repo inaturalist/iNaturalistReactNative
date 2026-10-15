@@ -191,7 +191,7 @@ export interface ApiProjectObservationRule {
   user?: ApiUser;
 }
 
-// FYI "", "bioblitz", "contest", and "assessment" are all traditional
+// "", "bioblitz", "contest", and "assessment" are all traditional
 export type ApiProjectType =
   | "collection"
   | "umbrella"
