@@ -44,6 +44,13 @@ jest.mock( "providers/contexts", ( ) => {
   };
 } );
 
+jest.mock( "sharedHooks/useListItemObservation", ( ) => ( {
+  __esModule: true,
+  default: uuid => ( uuid
+    ? mockObsByUuid[uuid] ?? null
+    : null ),
+} ) );
+
 const DEVICE_ORIENTATION_PHONE_PORTRAIT = {
   deviceOrientation: "portrait",
   isTablet: false,
