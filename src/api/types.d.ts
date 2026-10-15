@@ -19,6 +19,9 @@ export interface ApiGetByIdParams extends ApiParams {
   id: number;
 }
 
+// Params for wrappers that don't have endpoint-specific types yet
+export type ApiUntypedParams = object;
+
 export interface ApiPlace {
   id?: number;
   name?: string;
@@ -119,6 +122,13 @@ export interface ApiObservationPhoto {
   photo?: ApiPhoto;
   position?: number;
   uuid?: string;
+}
+
+export interface ApiPhotoWithLicense {
+  photo: {
+    licenseCode?: string | null;
+    license_code?: string | null;
+  };
 }
 
 export interface ApiObservationSound {

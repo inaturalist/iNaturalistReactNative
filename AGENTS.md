@@ -155,7 +155,7 @@ The app uses a hybrid state management approach:
 
 API calls are organized in `src/api/`:
 - Uses `inaturalistjs` library as the primary API client
-- Wrapper functions in `src/api/*.{js,ts}` handle error logging and data transformation (the layer is mid-migration to TypeScript)
+- Wrapper functions in `src/api/*.ts` handle error logging and data transformation (most return types are still inferred as `any` from the untyped `inaturalistjs` client)
 - API responses are transformed to match local Realm schema
 - Base API URL configured via `.env` file (`API_URL`)
 

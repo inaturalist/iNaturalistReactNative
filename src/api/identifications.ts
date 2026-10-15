@@ -1,35 +1,41 @@
-// @flow
-
 import inatjs from "inaturalistjs";
 import Identification from "realmModels/Identification";
 
+import type { ErrorWithResponse } from "./error";
 import handleError from "./error";
+import type { ApiOpts, ApiUntypedParams } from "./types";
 
 const PARAMS = {
   fields: Identification.ID_FIELDS,
 };
 
 const createIdentification = async (
-  params: Object = {},
-  opts: Object = {},
-): Promise<?Object> => {
+  params: ApiUntypedParams = {},
+  opts: ApiOpts = {},
+) => {
   try {
     const { results } = await inatjs.identifications.create( { ...PARAMS, ...params }, opts );
     return results;
   } catch ( e ) {
-    return handleError( e, { context: { functionName: "createIdentification", opts } } );
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "createIdentification", opts } },
+    );
   }
 };
 
 const updateIdentification = async (
-  params: Object = {},
-  opts: Object = {},
-): Promise<?Object> => {
+  params: ApiUntypedParams = {},
+  opts: ApiOpts = {},
+) => {
   try {
     const { results } = await inatjs.identifications.update( { ...PARAMS, ...params }, opts );
     return results;
   } catch ( e ) {
-    return handleError( e, { context: { functionName: "updateIdentification", opts } } );
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "updateIdentification", opts } },
+    );
   }
 };
 
