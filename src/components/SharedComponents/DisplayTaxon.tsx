@@ -13,7 +13,7 @@ interface Props {
   accessibilityHint?: string;
   accessibilityLabel?: string;
   bottomTextComponent?: () => React.JSX.Element;
-  handlePress: () => void;
+  handlePress?: () => void;
   taxon: object;
   testID?: string;
   topTextComponent?: () => React.JSX.Element;
@@ -44,7 +44,9 @@ const DisplayTaxon = ( {
 
   return (
     <Pressable
-      accessibilityRole="button"
+      accessibilityRole={handlePress
+        ? "button"
+        : undefined}
       className="flex-row items-center shrink"
       onPress={handlePress}
       testID={testID}
