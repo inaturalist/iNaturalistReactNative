@@ -79,10 +79,6 @@ export const PROJECT_SUMMARY_POF_FIELDS = {
   ...PROJECT_SUMMARY_FIELDS,
   project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
   project_observation_rules: PROJECT_OBSERVATION_RULE_FIELDS,
-  search_parameters: {
-    field: true,
-    value: true,
-  },
 };
 
 export const PROJECT_FIELDS_ALL = "all";

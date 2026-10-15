@@ -45,47 +45,6 @@ describe( "Project", ( ) => {
     } );
   } );
 
-  describe( "bioblitz window", ( ) => {
-    const searchParameters = [
-      { field: "d1", value: "2015-03-12T22:00:00.000-07:00" },
-      { field: "d2", value: "2015-03-14" },
-      { field: "place_id", value: [77892] },
-    ];
-
-    it( "maps d1 and d2 search parameters for bioblitz projects", ( ) => {
-      const mappedProject = Project.mapApiToRealm( factory( "RemoteProject", {
-        project_type: "bioblitz",
-        search_parameters: searchParameters,
-      } ) );
-
-      expect( mappedProject.bioblitz_d1 ).toBe( "2015-03-12T22:00:00.000-07:00" );
-      expect( mappedProject.bioblitz_d2 ).toBe( "2015-03-14" );
-    } );
-
-    it( "ignores date search parameters for other project types", ( ) => {
-      const mappedProject = Project.mapApiToRealm( factory( "RemoteProject", {
-        project_type: "collection",
-        search_parameters: searchParameters,
-      } ) );
-
-      expect( mappedProject.bioblitz_d1 ).toBeUndefined( );
-      expect( mappedProject.bioblitz_d2 ).toBeUndefined( );
-    } );
-
-    it( "persists the window so it survives mapRealmToPojo", ( ) => {
-      const mockRemoteProject = factory( "RemoteProject", {
-        project_type: "bioblitz",
-        search_parameters: searchParameters,
-      } );
-      Project.upsertRemoteProjects( [mockRemoteProject], global.realm );
-
-      const upsertedProject = global.realm.objectForPrimaryKey( "Project", mockRemoteProject.id );
-      const pojo = Project.mapRealmToPojo( upsertedProject );
-      expect( pojo.bioblitz_d1 ).toBe( "2015-03-12T22:00:00.000-07:00" );
-      expect( pojo.bioblitz_d2 ).toBe( "2015-03-14" );
-    } );
-  } );
-
   describe( "upsertRemoteProjects", ( ) => {
     it( "upserts projects and embedded POF and OF", ( ) => {
       const mockRemoteProject = factory( "RemoteProject" );

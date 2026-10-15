@@ -95,8 +95,6 @@ export interface RealmProjectRulePreference extends RealmObject {
 }
 
 export interface RealmProject extends RealmObject {
-  bioblitz_d1?: string;
-  bioblitz_d2?: string;
   icon?: string;
   id: number;
   projectObservationFields: RealmProjectObservationField[];
