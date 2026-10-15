@@ -157,7 +157,7 @@ describe( "AddToProjects", ( ) => {
     expect( screen.getByText( "ADD TO PROJECTS" ) ).toBeVisible();
   }
 
-  it( "lists every traditional project type but not collection projects", async () => {
+  it( "lists assessment and traditional projects but not collection projects", async () => {
     await navigateToAddToProjectsViaObsEdit( mockObservations );
 
     expect(

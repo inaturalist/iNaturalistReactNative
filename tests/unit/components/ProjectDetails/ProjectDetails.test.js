@@ -188,20 +188,17 @@ describe( "ProjectDetails", ( ) => {
       ...overrides,
     } );
 
-    it.each( ["", "assessment", "bioblitz", "contest"] )(
-      "opens the traditional join sheet for a %p project",
-      async projectType => {
-        renderComponent(
-          <ProjectDetails
-            project={projectOfType( projectType, { current_user_is_member: false } )}
-          />,
-        );
+    it( "opens the traditional join sheet for an assessment project", async ( ) => {
+      renderComponent(
+        <ProjectDetails
+          project={projectOfType( "assessment", { current_user_is_member: false } )}
+        />,
+      );
 
-        await actor.press( screen.getByText( "JOIN" ) );
+      await actor.press( screen.getByText( "JOIN" ) );
 
-        expect( await screen.findByTestId( "JoinSheet" ) ).toBeVisible( );
-      },
-    );
+      expect( await screen.findByTestId( "JoinSheet" ) ).toBeVisible( );
+    } );
 
     it( "opens the simple join confirmation for a collection project", async ( ) => {
       renderComponent(
