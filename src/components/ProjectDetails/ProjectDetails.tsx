@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ProjectRulePreference } from "api/types";
+import type { ApiProjectType, ProjectRulePreference } from "api/types";
 import { SPECIES_TAB } from "appConstants/tabs";
 import classnames from "classnames";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
+import isTraditionalProject from "components/Projects/helpers/isTraditionalProject";
 import {
   Body4,
   Button,
@@ -62,7 +63,7 @@ interface Project {
   membership_model: "inviteonly" | "open" | null;
   members_count?: number;
   observations_count?: number;
-  project_type: "collection" | "umbrella" | "";
+  project_type: ApiProjectType;
   rule_preferences: ProjectRulePreference[];
   species_count?: number;
   title: string;
@@ -136,6 +137,7 @@ const ProjectDetails = ( {
   const userTextStyle = { lineHeight: 26 };
 
   const { projectDate, shouldDisplayDateRange } = formatProjectDate( project, t, i18n );
+  const isTraditional = isTraditionalProject( project.project_type );
 
   const displayBriefcase = ( ) => (
     <INatIcon
@@ -295,7 +297,7 @@ const ProjectDetails = ( {
           {t( "View-in-browser" )}
         </Body4>
       </View>
-      {openSheet === JOIN && project.project_type === "" && (
+      {openSheet === JOIN && isTraditional && (
         <JoinSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
@@ -305,7 +307,7 @@ const ProjectDetails = ( {
           loading={loadingProjectMembership}
         />
       )}
-      {openSheet === JOIN && project.project_type !== "" && (
+      {openSheet === JOIN && !isTraditional && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {
@@ -320,7 +322,7 @@ const ProjectDetails = ( {
           buttonType="primary"
         />
       )}
-      {openSheet === LEAVE && project.project_type === "" && (
+      {openSheet === LEAVE && isTraditional && (
         <LeaveSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( keep: LEAVE_KEEP ) => {
@@ -331,7 +333,7 @@ const ProjectDetails = ( {
           observationsCount={project.current_user_observations_count}
         />
       )}
-      {openSheet === LEAVE && project.project_type !== "" && (
+      {openSheet === LEAVE && !isTraditional && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {

@@ -1,7 +1,8 @@
+import type { ApiProjectType } from "api/types";
 import type { TFunction } from "i18next";
 
 const displayProjectType = (
-  projectType: "collection" | "umbrella" | "",
+  projectType: ApiProjectType,
   t: TFunction,
 ) => {
   if ( projectType === "collection" ) {

@@ -179,6 +179,53 @@ describe( "ProjectDetails", ( ) => {
     } );
   } );
 
+  describe( "membership sheets", ( ) => {
+    const actor = userEvent.setup( );
+    const projectOfType = ( projectType, overrides = {} ) => ( {
+      ...mockProject,
+      project_type: projectType,
+      membership_model: "open",
+      ...overrides,
+    } );
+
+    it( "opens the traditional join sheet for an assessment project", async ( ) => {
+      renderComponent(
+        <ProjectDetails
+          project={projectOfType( "assessment", { current_user_is_member: false } )}
+        />,
+      );
+
+      await actor.press( screen.getByText( "JOIN" ) );
+
+      expect( await screen.findByTestId( "JoinSheet" ) ).toBeVisible( );
+    } );
+
+    it( "opens the simple join confirmation for a collection project", async ( ) => {
+      renderComponent(
+        <ProjectDetails
+          project={projectOfType( "collection", { current_user_is_member: false } )}
+        />,
+      );
+
+      await actor.press( screen.getByText( "JOIN" ) );
+
+      expect( await screen.findByText( "JOIN PROJECT?" ) ).toBeVisible( );
+      expect( screen.queryByTestId( "JoinSheet" ) ).toBeNull( );
+    } );
+
+    it( "opens the traditional leave sheet for an assessment project", async ( ) => {
+      renderComponent(
+        <ProjectDetails
+          project={projectOfType( "assessment", { current_user_is_member: true } )}
+        />,
+      );
+
+      await actor.press( screen.getByText( "LEAVE" ) );
+
+      expect( await screen.findByTestId( "LeaveSheet" ) ).toBeVisible( );
+    } );
+  } );
+
   describe( "explore entry points", ( ) => {
     const actor = userEvent.setup( );
     const lastOptions = ( ) => mockNavigateToExplore.mock.calls.at( -1 )[0];

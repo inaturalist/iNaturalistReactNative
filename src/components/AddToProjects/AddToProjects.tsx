@@ -1,6 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import ProjectListItem from "components/ProjectList/ProjectListItem";
 import {
+  NON_TRADITIONAL_PROJECT_TYPES,
+} from "components/Projects/helpers/isTraditionalProject";
+import {
   Body1,
   Body2,
   Body3,
@@ -66,8 +69,7 @@ const AddToProjects = ( ) => {
     {
       type: Project,
       query: projects => projects
-      // \"\" project type for traditional projects is an empty string
-        .filtered( "project_type == \"\" OR project_type == null" ),
+        .filtered( "NOT (project_type IN $0)", NON_TRADITIONAL_PROJECT_TYPES ),
     },
     [],
   );
