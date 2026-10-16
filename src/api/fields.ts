@@ -32,7 +32,6 @@ const PROJECT_OBSERVATION_RULE_FIELDS = {
     default_photo: {
       url: true,
     },
-    iconic_taxon_name: true,
     id: true,
     name: true,
     preferred_common_name: true,

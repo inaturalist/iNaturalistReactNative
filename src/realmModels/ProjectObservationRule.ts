@@ -18,7 +18,6 @@ class ProjectObservationRule extends Realm.Object {
       // other ancestry sources in that case
       taxon_ancestor_ids: apiRule.taxon?.ancestor_ids || [],
       taxon_default_photo_url: apiRule.taxon?.default_photo?.url,
-      taxon_iconic_taxon_name: apiRule.taxon?.iconic_taxon_name,
       taxon_name: apiRule.taxon?.name,
       taxon_preferred_common_name: apiRule.taxon?.preferred_common_name,
       taxon_rank: apiRule.taxon?.rank,
@@ -53,9 +52,6 @@ class ProjectObservationRule extends Realm.Object {
             ...( realmRule.taxon_default_photo_url && {
               default_photo: { url: realmRule.taxon_default_photo_url },
             } ),
-            ...( realmRule.taxon_iconic_taxon_name && {
-              iconic_taxon_name: realmRule.taxon_iconic_taxon_name,
-            } ),
             id: operandId,
             name: realmRule.taxon_name,
             preferred_common_name: realmRule.taxon_preferred_common_name,
@@ -89,7 +85,6 @@ class ProjectObservationRule extends Realm.Object {
       project_title: "string?",
       taxon_ancestor_ids: "int[]",
       taxon_default_photo_url: "string?",
-      taxon_iconic_taxon_name: "string?",
       taxon_name: "string?",
       taxon_preferred_common_name: "string?",
       taxon_rank: "string?",

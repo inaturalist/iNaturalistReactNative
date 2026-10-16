@@ -12,7 +12,6 @@ export default define( "RemoteProjectObservationRule", faker => {
       default_photo: {
         url: faker.image.url( ),
       },
-      iconic_taxon_name: "Animalia",
       id: taxonId,
       name: faker.lorem.word( ),
       preferred_common_name: faker.lorem.word( ),
