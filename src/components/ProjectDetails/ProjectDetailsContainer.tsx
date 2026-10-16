@@ -5,12 +5,12 @@ import {
 } from "api/fields";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
 import {
+  fetchProjectMembership,
   fetchProjectPostsCount,
   fetchProjects,
   joinProject,
   leaveProject,
 } from "api/projects";
-import fetchProjectMembership from "api/projectsTyped";
 import { updateProjectUser } from "api/projectUsers";
 import type {
   ApiObservationsSearchResponse, ApiProject, ApiResponse,
