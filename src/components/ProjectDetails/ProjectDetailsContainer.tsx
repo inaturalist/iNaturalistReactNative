@@ -5,7 +5,7 @@ import {
 } from "api/fields";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
 import {
-  fetchMembership,
+  fetchProjectMembership,
   fetchProjectPostsCount,
   fetchProjects,
   joinProject,
@@ -89,10 +89,10 @@ const ProjectDetailsContainer = ( ) => {
     } ),
   );
 
-  const membershipQueryKey = ["fetchMembership", id];
-  const { data: currentMembership } = useAuthenticatedQuery<number>(
+  const membershipQueryKey = ["fetchProjectMembership", id];
+  const { data: currentMembership } = useAuthenticatedQuery(
     membershipQueryKey,
-    optsWithAuth => fetchMembership( {
+    optsWithAuth => fetchProjectMembership( {
       id,
       ttl: -1,
     }, optsWithAuth ),
@@ -195,7 +195,7 @@ const ProjectDetailsContainer = ( ) => {
       journal_posts_count: projectPosts,
       observations_count: projectStats?.total_results,
       species_count: speciesCounts?.total_results,
-      current_user_is_member: currentMembership === 1,
+      current_user_is_member: currentMembership?.total_results === 1,
       current_user_observations_count: usersObservations?.total_results,
     };
   }, [
@@ -203,7 +203,7 @@ const ProjectDetailsContainer = ( ) => {
     projectPosts,
     projectStats?.total_results,
     speciesCounts?.total_results,
-    currentMembership,
+    currentMembership?.total_results,
     usersObservations?.total_results,
   ] );
 
