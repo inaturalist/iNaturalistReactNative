@@ -51,8 +51,11 @@ describe( "validateProjectRules", ( ) => {
       ["captive?", { captive_flag: true }, "pass"],
       ["captive?", { captive_flag: false }, "fail"],
       ["wild?", { captive_flag: false }, "pass"],
-      ["wild?", { captive_flag: null }, "pass"],
       ["wild?", { captive_flag: true }, "fail"],
+      ["captive?", { captive_flag: null }, "unknown"],
+      ["captive?", { captive_flag: undefined }, "unknown"],
+      ["wild?", { captive_flag: null }, "unknown"],
+      ["wild?", { captive_flag: undefined }, "unknown"],
       ["georeferenced?", { latitude: 37.7, longitude: -122.4 }, "pass"],
       ["georeferenced?", { latitude: 0, longitude: 0 }, "pass"],
       ["georeferenced?", { privateLatitude: 37.7, privateLongitude: -122.4 }, "pass"],
@@ -161,40 +164,38 @@ describe( "validateProjectRules", ( ) => {
 
 describe( "validateProjectRulesForObservation", ( ) => {
   it( "should fail only georeferenced? for an identified observation without coordinates", ( ) => {
-    const mockProject = project( [taxonRule( AVES_ID ), rule( "georeferenced?" )] );
-    const result = validateProjectRulesForObservation(
+    const groups = validateProjectRulesForObservation(
       observation( { taxon: sanderling } ),
-      [mockProject],
+      [project( [taxonRule( AVES_ID ), rule( "georeferenced?" )] )],
     );
-    expect( result.valid ).toBe( false );
-    expect( result.errors ).toEqual( [expect.objectContaining( {
-      operator: "georeferenced?",
-      projectId: mockProject.id,
-      status: "fail",
-    } )] );
+    expect( groups.map( group => [group.operator, group.status] ) ).toEqual( [
+      ["georeferenced?", "fail"],
+      ["in_taxon?", "pass"],
+    ] );
   } );
 
-  it( "should not block on rules only the server can check", ( ) => {
-    const result = validateProjectRulesForObservation( observation( ), [
+  it( "should leave rules only the server can check unknown", ( ) => {
+    const groups = validateProjectRulesForObservation( observation( ), [
       project( [rule( "verifiable?" ), rule( "observed_in_place?" )] ),
     ] );
-    expect( result.valid ).toBe( true );
-    expect( result.groups.map( group => group.status ) ).toEqual( ["unknown", "unknown"] );
+    expect( groups.map( group => group.status ) ).toEqual( ["unknown", "unknown"] );
   } );
 
-  it( "should report errors only for the failing project", ( ) => {
+  it( "should return each project's groups", ( ) => {
     const passingProject = project( [rule( "wild?" )] );
     const failingProject = project( [rule( "identified?" )] );
-    const result = validateProjectRulesForObservation(
+    const groups = validateProjectRulesForObservation(
       observation( ),
       [passingProject, failingProject],
     );
-    expect( result.groups ).toHaveLength( 2 );
-    expect( result.errors.map( error => error.projectId ) ).toEqual( [failingProject.id] );
+    expect( groups.map( group => [group.projectId, group.status] ) ).toEqual( [
+      [passingProject.id, "pass"],
+      [failingProject.id, "fail"],
+    ] );
   } );
 
-  it( "should be valid without an observation", ( ) => {
+  it( "should return no groups without an observation", ( ) => {
     expect( validateProjectRulesForObservation( null, [project( [rule( "identified?" )] )] ) )
-      .toEqual( { errors: [], groups: [], valid: true } );
+      .toEqual( [] );
   } );
 } );

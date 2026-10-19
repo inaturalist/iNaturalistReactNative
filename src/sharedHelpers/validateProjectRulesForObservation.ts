@@ -48,20 +48,21 @@ export interface ProjectRuleGroup {
   status: ProjectRuleStatus;
 }
 
-export interface ProjectRulesValidationResult {
-  valid: boolean;
-  // Every displayed rule group in display order, including unknown ones
-  groups: ProjectRuleGroup[];
-  errors: ProjectRuleGroup[];
-}
-
 const statusFrom = ( passes: boolean ): ProjectRuleStatus => (
   passes
     ? "pass"
     : "fail"
 );
 
-const isCaptive = ( observation: RealmObservationPojo ) => observation.captive_flag === true;
+// captive_flag is the owner's vote, which the API never returns, so synced
+// observations leave captivity to the server unless it was set on the device
+const evaluateCaptive = (
+  observation: RealmObservationPojo,
+  captive: boolean,
+): ProjectRuleStatus => {
+  if ( observation.captive_flag == null ) return "unknown";
+  return statusFrom( observation.captive_flag === captive );
+};
 
 const isGeoreferenced = ( observation: RealmObservationPojo ) => (
   typeof observation.latitude === "number" && typeof observation.longitude === "number"
@@ -104,9 +105,9 @@ const evaluateRule = (
 ): ProjectRuleStatus => {
   switch ( rule.operator ) {
     case "captive?":
-      return statusFrom( isCaptive( observation ) );
+      return evaluateCaptive( observation, true );
     case "wild?":
-      return statusFrom( !isCaptive( observation ) );
+      return evaluateCaptive( observation, false );
     case "georeferenced?":
       return statusFrom( isGeoreferenced( observation ) );
     case "has_a_photo?":
@@ -156,12 +157,11 @@ export function validateProjectRules(
   } );
 }
 
+// Every displayed rule group of each project, in display order
 export default function validateProjectRulesForObservation(
   observation: RealmObservationPojo | null,
   projects: ProjectToValidate[],
-): ProjectRulesValidationResult {
-  if ( !observation ) return { valid: true, errors: [], groups: [] };
-  const groups = projects.flatMap( project => validateProjectRules( observation, project ) );
-  const errors = groups.filter( group => group.status === "fail" );
-  return { valid: errors.length === 0, errors, groups };
+): ProjectRuleGroup[] {
+  if ( !observation ) return [];
+  return projects.flatMap( project => validateProjectRules( observation, project ) );
 }

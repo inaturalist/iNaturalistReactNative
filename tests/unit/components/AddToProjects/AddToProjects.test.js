@@ -293,6 +293,15 @@ describe( "AddToProjects", ( ) => {
       ];
     } );
 
+    beforeEach( ( ) => {
+      useStore.setState( {
+        currentObservation: {
+          ...useStore.getState( ).currentObservation,
+          captive_flag: false,
+        },
+      } );
+    } );
+
     afterAll( ( ) => {
       rulesProject.projectObservationFields = originalFields;
       rulesProject.project_observation_rules = [];
@@ -308,8 +317,8 @@ describe( "AddToProjects", ( ) => {
       expect( screen.getByText( "Verifiable" ) ).toBeVisible( );
       expect( screen.getByText( "Specific identification" ) ).toBeVisible( );
       expect(
-        screen.getByText( "To add to this project, all required fields must be filled" ),
-      ).toBeVisible( );
+        screen.queryByText( "To add to this project, all required fields must be filled" ),
+      ).toBeNull( );
     } );
 
     it( "shows pass and fail icons for rules checked on the device", async ( ) => {
@@ -344,56 +353,19 @@ describe( "AddToProjects", ( ) => {
       expect( taxonRow.queryByRole( "button" ) ).toBeNull( );
     } );
 
-    it( "shows Missing info sheet when SAVE is pressed with a failing rule", async ( ) => {
+    it( "saves without blocking when a rule fails", async ( ) => {
       renderAddToProjects( );
 
       await actor.press( screen.getByText( rulesProject.title ) );
+      expect( within( ruleRow( "identified?" ) ).getByText( iconGlyph( "triangle-exclamation" ) ) )
+        .toBeVisible( );
       await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
 
-      await waitFor( ( ) => {
-        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
-      } );
-      expect( mockGoBack ).not.toHaveBeenCalled( );
-    } );
-
-    it( "saves when device-checked rules pass and a server-only rule is unknown", async ( ) => {
-      useStore.setState( {
-        currentObservation: {
-          ...useStore.getState( ).currentObservation,
-          taxon: { ancestor_ids: [48460, 1, 3, 4789], id: 4789 },
-        },
-      } );
-      renderAddToProjects( );
-
-      await actor.press( screen.getByText( rulesProject.title ) );
-
-      expect(
-        screen.getByText( "All required fields have been filled" ),
-      ).toBeVisible( );
-      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
-
+      expect( screen.queryByTestId( "MissingInfoSheet" ) ).toBeNull( );
       expect(
         useStore.getState( ).currentObservation?.projectObservations?.map( po => po.projectId ),
       ).toEqual( [mockProjects[0].id, rulesProject.id] );
       expect( mockGoBack ).toHaveBeenCalled( );
-    } );
-
-    it( "drops the project with a failing rule when LEAVE is pressed", async ( ) => {
-      renderAddToProjects( );
-
-      await actor.press( screen.getByText( rulesProject.title ) );
-      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
-      await waitFor( ( ) => {
-        expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
-      } );
-      await actor.press( screen.getByText( "LEAVE" ) );
-
-      expect(
-        useStore.getState( ).currentObservation?.projectObservations?.map( po => po.projectId ),
-      ).toEqual( [mockProjects[0].id] );
-      await waitFor( ( ) => {
-        expect( mockGoBack ).toHaveBeenCalled( );
-      } );
     } );
   } );
 
