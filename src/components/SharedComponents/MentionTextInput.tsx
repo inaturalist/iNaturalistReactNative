@@ -13,15 +13,10 @@ import React, {
 } from "react";
 import type { TextInput as RNTextInput, TextInputProps } from "react-native";
 import { ScrollView, StyleSheet } from "react-native";
+import { getMentionAtCursor, insertMention } from "sharedHelpers/mentions";
 import { useTranslation } from "sharedHooks";
 import useUserSearch from "sharedHooks/useUserSearch";
 
-// Matches @username at the end of the input string.
-// \B ensures @ doesn't follow a word char (prevents matching emails)
-// Username must start with a letter
-// $ anchor means mentions only trigger when typing at the end of the text;
-// editing mid-text won't show the dropdown (would require cursor tracking)
-const MENTION_MATCH = /\B@([A-Za-z][\w-]*)$/;
 const DEBOUNCE_MS = 400;
 const MENTION_LIST_MAX_HEIGHT = 200;
 const MIN_INPUT_HEIGHT = 80;
@@ -38,19 +33,6 @@ interface MentionTextInputProps extends Omit<TextInputProps, "value" | "onChange
   ref?: React.Ref<MentionTextInputHandle>;
   onChangeText: ( text: string ) => void;
   InputComponent?: React.ComponentType<TextInputProps>;
-}
-
-function getMentionQuery( value: string ): string {
-  const match = value.match( MENTION_MATCH );
-  return match
-    ? match[1]
-    : "";
-}
-
-function getLastAtIndex( value: string ): number {
-  const match = value.match( MENTION_MATCH );
-  if ( !match || match.index === undefined ) return -1;
-  return match.index;
 }
 
 const MentionTextInput = ( {
@@ -87,7 +69,8 @@ const MentionTextInput = ( {
       clearTimeout( debounceRef.current );
     }
 
-    const query = getMentionQuery( text );
+    // Mentions currently only trigger when typing at the end of the text
+    const query = getMentionAtCursor( text, text.length )?.query ?? "";
     if ( query === "" ) {
       setDebouncedQuery( "" );
       return;
@@ -104,8 +87,9 @@ const MentionTextInput = ( {
   const handleSelectUser = useCallback(
     ( item: { login?: string } ) => {
       const username = item?.login;
-      const lastAt = getLastAtIndex( currentValue );
-      const newValue = `${currentValue.slice( 0, lastAt )}@${username} `;
+      const mention = getMentionAtCursor( currentValue, currentValue.length );
+      if ( !username || !mention ) return;
+      const { text: newValue } = insertMention( currentValue, mention, username );
       inputRef.current?.setNativeProps( { text: newValue } );
       if ( debounceRef.current ) {
         clearTimeout( debounceRef.current );
@@ -117,7 +101,7 @@ const MentionTextInput = ( {
     [currentValue, onChangeText],
   );
 
-  const showList = getMentionQuery( currentValue ).length > 0;
+  const showList = !!getMentionAtCursor( currentValue, currentValue.length )?.query;
 
   const inputStyle = useMemo( ( ) => {
     if ( !showList ) return style;
