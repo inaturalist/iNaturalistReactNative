@@ -1,6 +1,4 @@
-import validateProjectRulesForObservation, {
-  validateProjectRules,
-} from "sharedHelpers/validateProjectRulesForObservation";
+import { validateProjectRules } from "sharedHelpers/validateProjectRulesForObservation";
 import factory from "tests/factory";
 
 const AVES_ID = 3;
@@ -159,43 +157,5 @@ describe( "validateProjectRules", ( ) => {
       const rules = [rule( "has_observation_field?" )];
       expect( validateProjectRules( observation( ), project( rules ) ) ).toEqual( [] );
     } );
-  } );
-} );
-
-describe( "validateProjectRulesForObservation", ( ) => {
-  it( "should fail only georeferenced? for an identified observation without coordinates", ( ) => {
-    const groups = validateProjectRulesForObservation(
-      observation( { taxon: sanderling } ),
-      [project( [taxonRule( AVES_ID ), rule( "georeferenced?" )] )],
-    );
-    expect( groups.map( group => [group.operator, group.status] ) ).toEqual( [
-      ["georeferenced?", "fail"],
-      ["in_taxon?", "pass"],
-    ] );
-  } );
-
-  it( "should leave rules only the server can check unknown", ( ) => {
-    const groups = validateProjectRulesForObservation( observation( ), [
-      project( [rule( "verifiable?" ), rule( "observed_in_place?" )] ),
-    ] );
-    expect( groups.map( group => group.status ) ).toEqual( ["unknown", "unknown"] );
-  } );
-
-  it( "should return each project's groups", ( ) => {
-    const passingProject = project( [rule( "wild?" )] );
-    const failingProject = project( [rule( "identified?" )] );
-    const groups = validateProjectRulesForObservation(
-      observation( ),
-      [passingProject, failingProject],
-    );
-    expect( groups.map( group => [group.projectId, group.status] ) ).toEqual( [
-      [passingProject.id, "pass"],
-      [failingProject.id, "fail"],
-    ] );
-  } );
-
-  it( "should return no groups without an observation", ( ) => {
-    expect( validateProjectRulesForObservation( null, [project( [rule( "identified?" )] )] ) )
-      .toEqual( [] );
   } );
 } );

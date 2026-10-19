@@ -5,6 +5,7 @@ import { View } from "components/styledComponents";
 import type { TFunction } from "i18next";
 import React from "react";
 import type {
+  DisplayedRuleOperator,
   ProjectRuleGroup,
   ProjectRuleStatus,
 } from "sharedHelpers/validateProjectRulesForObservation";
@@ -13,37 +14,25 @@ import colors from "styles/tailwindColors";
 
 interface Props {
   group: ProjectRuleGroup;
+  projectId: number;
 }
 
-const ruleHeader = ( operator: string, t: TFunction ) => {
-  switch ( operator ) {
-    case "captive?":
-      return t( "Captive-Cultivated" );
-    case "wild?":
-      return t( "Wild" );
-    case "coordinates_shareable_by_project_curators?":
-      return t( "Location-permissions--project-rule" );
-    case "georeferenced?":
-      return t( "Location" );
-    case "observed_in_place?":
-      return t( "Specific-location--project-rule" );
-    case "has_a_photo?":
-      return t( "Photo--project-rule" );
-    case "has_a_sound?":
-      return t( "Sound--project-rule" );
-    case "has_media?":
-      return t( "Media--project-rule" );
-    case "verifiable?":
-      return t( "Verifiable--project-rule" );
-    case "identified?":
-      return t( "Identification--project-rule" );
-    case "in_taxon?":
-      return t( "Specific-identification--project-rule" );
-    case "on_list?":
-      return t( "Must-be-on-Project-List--project-rule" );
-    default:
-      return null;
-  }
+const ruleHeader = ( operator: DisplayedRuleOperator, t: TFunction ) => {
+  const headers: Record<DisplayedRuleOperator, string> = {
+    "captive?": t( "Captive-Cultivated" ),
+    "wild?": t( "Wild" ),
+    "coordinates_shareable_by_project_curators?": t( "Location-permissions--project-rule" ),
+    "georeferenced?": t( "Location" ),
+    "observed_in_place?": t( "Specific-location--project-rule" ),
+    "has_a_photo?": t( "Photo--project-rule" ),
+    "has_a_sound?": t( "Sound--project-rule" ),
+    "has_media?": t( "Media--project-rule" ),
+    "verifiable?": t( "Verifiable--project-rule" ),
+    "identified?": t( "Identification--project-rule" ),
+    "in_taxon?": t( "Specific-identification--project-rule" ),
+    "on_list?": t( "Must-be-on-Project-List--project-rule" ),
+  };
+  return headers[operator];
 };
 
 const renderStatusIcon = ( status: ProjectRuleStatus ) => {
@@ -57,13 +46,13 @@ const renderStatusIcon = ( status: ProjectRuleStatus ) => {
   }
 };
 
-const ProjectRuleRow = ( { group }: Props ) => {
+const ProjectRuleRow = ( { group, projectId }: Props ) => {
   const { t } = useTranslation( );
 
   return (
     <View
       className="px-4 py-2.5"
-      testID={`ProjectRuleRow.${group.projectId}.${group.operator}`}
+      testID={`ProjectRuleRow.${projectId}.${group.operator}`}
     >
       <View className="flex-row justify-between items-center">
         <Body1 className="flex-1">{ruleHeader( group.operator, t )}</Body1>

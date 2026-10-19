@@ -28,7 +28,8 @@ import buildProjectObservationSelection, {
 // eslint-disable-next-line max-len
 import type { ProjectFieldValidationError } from "sharedHelpers/validateProjectFieldsForObservation";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
-import validateProjectRulesForObservation from "sharedHelpers/validateProjectRulesForObservation";
+import type { ProjectRuleGroup } from "sharedHelpers/validateProjectRulesForObservation";
+import { validateProjectRules } from "sharedHelpers/validateProjectRulesForObservation";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -92,18 +93,10 @@ const AddToProjects = ( ) => {
     [joinedProjectsCollection],
   );
 
-  // Only field errors gate SAVE; rules are shown for the user's information
-  // and left to the server to enforce
-  const { validationResult, ruleGroups } = useMemo(
+  const validationResult = useMemo(
     () => {
       const selectedProjects = joinedProjects.filter( jp => selectedProjectIds.has( jp.id ) );
-      return {
-        validationResult: validateProjectFieldsForObservation(
-          currentObservation,
-          selectedProjects,
-        ),
-        ruleGroups: validateProjectRulesForObservation( currentObservation, selectedProjects ),
-      };
+      return validateProjectFieldsForObservation( currentObservation, selectedProjects );
     },
     [currentObservation, joinedProjects, selectedProjectIds],
   );
@@ -222,9 +215,8 @@ const AddToProjects = ( ) => {
   ] );
 
   const renderExpanded = useCallback(
-    ( item: RealmProject, projectValid: boolean ) => {
+    ( item: RealmProject, projectValid: boolean, ruleGroups: ProjectRuleGroup[] ) => {
       const hasRequiredFields = item.projectObservationFields.some( pof => pof.required );
-      const projectRuleGroups = ruleGroups.filter( group => group.projectId === item.id );
 
       return (
         <View className="bg-lightGrayOpaque">
@@ -255,8 +247,8 @@ const AddToProjects = ( ) => {
                 </View>
               )
           )}
-          {projectRuleGroups.map( group => (
-            <ProjectRuleRow key={group.operator} group={group} />
+          {ruleGroups.map( group => (
+            <ProjectRuleRow key={group.operator} group={group} projectId={item.id} />
           ) )}
           {item.projectObservationFields.map( pof => (
             <ObservationFieldInput
@@ -270,7 +262,7 @@ const AddToProjects = ( ) => {
         </View>
       );
     },
-    [ruleGroups, validationResult, t],
+    [validationResult, t],
   );
 
   const renderRightIcon = useCallback(
@@ -297,8 +289,12 @@ const AddToProjects = ( ) => {
   const renderProject: ListRenderItem<RealmProject> = useCallback(
     ( { item } ) => {
       const isSelected = selectedProjectIds.has( item.id );
-      const canExpand = item.projectObservationFields.length > 0
-        || ruleGroups.some( group => group.projectId === item.id );
+      // Rules are shown for the user's information and left to the server to
+      // enforce, so only field errors gate SAVE
+      const ruleGroups = isSelected && currentObservation
+        ? validateProjectRules( currentObservation, item )
+        : [];
+      const canExpand = item.projectObservationFields.length > 0 || ruleGroups.length > 0;
       const projectValid = !validationResult.errors.some(
         error => error.projectId === item?.id,
       );
@@ -319,14 +315,14 @@ const AddToProjects = ( ) => {
             </View>
             {renderRightIcon( isSelected, projectValid )}
           </Pressable>
-          {canExpand && isSelected && renderExpanded( item, projectValid )}
+          {canExpand && isSelected && renderExpanded( item, projectValid, ruleGroups )}
         </View>
       );
     },
     [
+      currentObservation,
       renderExpanded,
       renderRightIcon,
-      ruleGroups,
       selectedProjectIds,
       toggleProject,
       validationResult,

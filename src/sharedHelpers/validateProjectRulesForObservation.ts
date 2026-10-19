@@ -24,8 +24,9 @@ export const DISPLAYED_RULE_OPERATORS = [
   "on_list?",
 ] as const;
 
+export type DisplayedRuleOperator = ( typeof DISPLAYED_RULE_OPERATORS )[number];
+
 interface RuleTaxon {
-  ancestor_ids?: number[];
   id: number;
 }
 
@@ -42,8 +43,7 @@ interface ProjectToValidate {
 }
 
 export interface ProjectRuleGroup {
-  operator: string;
-  projectId: number;
+  operator: DisplayedRuleOperator;
   rules: ProjectRuleToValidate[];
   status: ProjectRuleStatus;
 }
@@ -89,7 +89,7 @@ const evaluateInTaxon = (
   observation: RealmObservationPojo,
   rule: ProjectRuleToValidate,
 ): ProjectRuleStatus => {
-  const ruleTaxonId = rule.taxon?.id ?? rule.operand_id;
+  const ruleTaxonId = rule.operand_id;
   if ( ruleTaxonId == null ) return "unknown";
   const taxonId = observationTaxonId( observation );
   if ( taxonId == null ) return "pass";
@@ -150,18 +150,8 @@ export function validateProjectRules(
     if ( rules.length === 0 ) return [];
     return [{
       operator,
-      projectId: project.id,
       rules,
       status: combineGroup( rules.map( rule => evaluateRule( observation, rule ) ) ),
     }];
   } );
-}
-
-// Every displayed rule group of each project, in display order
-export default function validateProjectRulesForObservation(
-  observation: RealmObservationPojo | null,
-  projects: ProjectToValidate[],
-): ProjectRuleGroup[] {
-  if ( !observation ) return [];
-  return projects.flatMap( project => validateProjectRules( observation, project ) );
 }
