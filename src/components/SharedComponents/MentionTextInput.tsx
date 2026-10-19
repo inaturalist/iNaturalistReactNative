@@ -11,7 +11,11 @@ import React, {
   useRef,
   useState,
 } from "react";
-import type { TextInput as RNTextInput, TextInputProps } from "react-native";
+import type {
+  TextInput as RNTextInput,
+  TextInputProps,
+  TextInputSelectionChangeEvent,
+} from "react-native";
 import { ScrollView, StyleSheet } from "react-native";
 import { getMentionAtCursor, insertMention } from "sharedHelpers/mentions";
 import { useTranslation } from "sharedHooks";
@@ -57,40 +61,100 @@ const MentionTextInput = ( {
   const inputRef = useRef<RNTextInput | null>( null );
   const [debouncedQuery, setDebouncedQuery] = useState( "" );
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>( null );
+  // Cursor position, or null when a range of text is selected. iOS and
+  // Android fire onChangeText and onSelectionChange in different orders, so
+  // both handlers read the latest text and cursor from refs, and the state
+  // copy of the cursor is only used for rendering
+  const [cursor, setCursor] = useState<number | null>( currentValue.length );
+  const cursorRef = useRef<number | null>( currentValue.length );
+  const textRef = useRef( currentValue );
+  // The last text JS gave the native input, as defaultValue or through
+  // setNativeProps. Fabric ignores a text prop that matches this, even if
+  // the user has typed since, so see handleSelectUser
+  const lastPushedTextRef = useRef( defaultValue );
+  // Cursor position right after the user picked from the list. When
+  // punctuation follows the mention, the cursor sits at the end of a complete
+  // mention, so keep the list closed until the user types or moves the cursor
+  const [pickedAt, setPickedAt] = useState<number | null>( null );
+  const pickedAtRef = useRef<number | null>( null );
+  const clearPickedAt = useCallback( ( ) => {
+    pickedAtRef.current = null;
+    setPickedAt( null );
+  }, [] );
 
   useImperativeHandle( ref, ( ) => ( {
     clear: ( ) => inputRef.current?.clear( ),
   } ) );
 
-  const handleChangeText = useCallback( ( text: string ) => {
-    onChangeText( text );
-
+  // Always debounced, including clearing the query, so the brief mismatch
+  // between text and cursor while the two native events arrive never
+  // reaches the search
+  const updateQuery = useCallback( ( text: string, position: number | null ) => {
     if ( debounceRef.current ) {
       clearTimeout( debounceRef.current );
     }
-
-    // Mentions currently only trigger when typing at the end of the text
-    const query = getMentionAtCursor( text, text.length )?.query ?? "";
-    if ( query === "" ) {
-      setDebouncedQuery( "" );
-      return;
-    }
-
+    const query = position === null || pickedAtRef.current !== null
+      ? ""
+      : getMentionAtCursor( text, position )?.query ?? "";
     debounceRef.current = setTimeout( ( ) => {
       setDebouncedQuery( query );
       debounceRef.current = null;
     }, DEBOUNCE_MS );
-  }, [onChangeText] );
+  }, [] );
+
+  const handleChangeText = useCallback( ( text: string ) => {
+    onChangeText( text );
+    textRef.current = text;
+    clearPickedAt( );
+    updateQuery( text, cursorRef.current );
+  }, [clearPickedAt, onChangeText, updateQuery] );
+
+  const handleSelectionChange = useCallback(
+    ( event: TextInputSelectionChangeEvent ) => {
+      const { start, end } = event.nativeEvent.selection;
+      const position = start === end
+        ? end
+        : null;
+      cursorRef.current = position;
+      setCursor( position );
+      // Android reports the cursor move from setSelection after a pick
+      if ( position !== pickedAtRef.current ) {
+        clearPickedAt( );
+      }
+      updateQuery( textRef.current, position );
+    },
+    [clearPickedAt, updateQuery],
+  );
 
   const { users, isLoading } = useUserSearch( debouncedQuery );
 
   const handleSelectUser = useCallback(
     ( item: { login?: string } ) => {
       const username = item?.login;
-      const mention = getMentionAtCursor( currentValue, currentValue.length );
+      const position = cursorRef.current;
+      const mention = position === null
+        ? null
+        : getMentionAtCursor( textRef.current, position );
       if ( !username || !mention ) return;
-      const { text: newValue } = insertMention( currentValue, mention, username );
+      const { text: newValue, cursor: newCursor } = insertMention(
+        textRef.current,
+        mention,
+        username,
+      );
+      if ( newValue === lastPushedTextRef.current ) {
+        // Change the text prop first so the native side applies the new
+        // text, e.g. when the user removes a mention and picks the same
+        // user again
+        inputRef.current?.setNativeProps( { text: textRef.current } );
+      }
       inputRef.current?.setNativeProps( { text: newValue } );
+      lastPushedTextRef.current = newValue;
+      inputRef.current?.setSelection( newCursor, newCursor );
+      textRef.current = newValue;
+      cursorRef.current = newCursor;
+      setCursor( newCursor );
+      pickedAtRef.current = newCursor;
+      setPickedAt( newCursor );
       if ( debounceRef.current ) {
         clearTimeout( debounceRef.current );
         debounceRef.current = null;
@@ -98,10 +162,12 @@ const MentionTextInput = ( {
       setDebouncedQuery( "" );
       onChangeText( newValue );
     },
-    [currentValue, onChangeText],
+    [onChangeText],
   );
 
-  const showList = !!getMentionAtCursor( currentValue, currentValue.length )?.query;
+  const showList = cursor !== null
+    && pickedAt === null
+    && !!getMentionAtCursor( currentValue, cursor )?.query;
 
   const inputStyle = useMemo( ( ) => {
     if ( !showList ) return style;
@@ -141,6 +207,7 @@ const MentionTextInput = ( {
         maxLength={maxLength}
         multiline={multiline}
         onChangeText={handleChangeText}
+        onSelectionChange={handleSelectionChange}
         placeholder={placeholder}
         style={inputStyle}
         testID={testID}
