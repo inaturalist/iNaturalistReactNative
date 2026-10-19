@@ -19,12 +19,12 @@ describe( "getMentionAtCursor", () => {
     } );
   } );
 
-  it( "includes the rest of the username after the cursor", () => {
-    const text = "hello @kueda and goodbye";
+  it( "ends the mention at the cursor", () => {
+    const text = "hello @kuand goodbye";
     expect( getMentionAtCursor( text, 9 ) ).toEqual( {
       query: "ku",
       start: 6,
-      end: 12,
+      end: 9,
     } );
   } );
 
@@ -75,8 +75,17 @@ describe( "insertMention", () => {
     } );
   } );
 
-  it( "replaces a partially typed username in the middle of the text", () => {
-    const text = "hello @kuxx and goodbye";
+  it( "keeps a space that already follows the mention", () => {
+    const text = "hello @ku and goodbye";
+    const mention = mentionAt( text, 9 );
+    expect( insertMention( text, mention, "kueda" ) ).toEqual( {
+      text: "hello @kueda and goodbye",
+      cursor: 13,
+    } );
+  } );
+
+  it( "keeps letters after the cursor, separated by a space", () => {
+    const text = "hello @kuand goodbye";
     const mention = mentionAt( text, 9 );
     expect( insertMention( text, mention, "kueda" ) ).toEqual( {
       text: "hello @kueda and goodbye",
