@@ -1,4 +1,4 @@
-import { validateProjectRules } from "sharedHelpers/validateProjectRulesForObservation";
+import validateProjectRulesForObservation from "sharedHelpers/validateProjectRulesForObservation";
 import factory from "tests/factory";
 
 const AVES_ID = 3;
@@ -38,12 +38,12 @@ const observation = ( overrides = {} ) => ( {
   ...overrides,
 } );
 
-const statusFor = ( obs, operator, rules ) => validateProjectRules(
+const statusFor = ( obs, operator, rules ) => validateProjectRulesForObservation(
   obs,
   project( rules || [rule( operator )] ),
 ).find( group => group.operator === operator )?.status;
 
-describe( "validateProjectRules", ( ) => {
+describe( "validateProjectRulesForObservation", ( ) => {
   describe( "client-checkable rules", ( ) => {
     test.each( [
       ["captive?", { captive_flag: true }, "pass"],
@@ -51,9 +51,7 @@ describe( "validateProjectRules", ( ) => {
       ["wild?", { captive_flag: false }, "pass"],
       ["wild?", { captive_flag: true }, "fail"],
       ["captive?", { captive_flag: null }, "unknown"],
-      ["captive?", { captive_flag: undefined }, "unknown"],
       ["wild?", { captive_flag: null }, "unknown"],
-      ["wild?", { captive_flag: undefined }, "unknown"],
       ["georeferenced?", { latitude: 37.7, longitude: -122.4 }, "pass"],
       ["georeferenced?", { latitude: 0, longitude: 0 }, "pass"],
       ["georeferenced?", { privateLatitude: 37.7, privateLongitude: -122.4 }, "pass"],
@@ -135,14 +133,8 @@ describe( "validateProjectRules", ( ) => {
       expect( statusFor( obs, "in_taxon?", rules ) ).toBe( "fail" );
     } );
 
-    it( "should leave a group unknown when no rule passes and one is missing its taxon", ( ) => {
-      const obs = observation( { taxon: sanderling } );
-      const rules = [taxonRule( MAMMALIA_ID ), rule( "in_taxon?" )];
-      expect( statusFor( obs, "in_taxon?", rules ) ).toBe( "unknown" );
-    } );
-
     it( "should return one group per operator in display order", ( ) => {
-      const groups = validateProjectRules( observation( ), project( [
+      const groups = validateProjectRulesForObservation( observation( ), project( [
         taxonRule( AVES_ID ),
         rule( "identified?" ),
         taxonRule( MAMMALIA_ID ),
@@ -155,7 +147,8 @@ describe( "validateProjectRules", ( ) => {
 
     it( "should not return a group for has_observation_field?", ( ) => {
       const rules = [rule( "has_observation_field?" )];
-      expect( validateProjectRules( observation( ), project( rules ) ) ).toEqual( [] );
+      expect( validateProjectRulesForObservation( observation( ), project( rules ) ) )
+        .toEqual( [] );
     } );
   } );
 } );

@@ -1,15 +1,11 @@
 import type { RealmObservationPojo } from "realmModels/types";
 
-// Validates an observation against the membership rules
-// (project_observation_rules) of traditional projects
-
 export type ProjectRuleStatus = "pass" | "fail" | "unknown";
 
-// The operators traditional project admins can choose from, in display
-// order. Rules with any other operator, e.g. the has_observation_field? rule
-// the server adds for a required observation field, are not displayed or
-// validated here.
-export const DISPLAYED_RULE_OPERATORS = [
+// The operators traditional project admins can choose from, in display order.
+// Others, e.g. the has_observation_field? rule the server adds for a required
+// observation field, are skipped.
+const DISPLAYED_RULE_OPERATORS = [
   "captive?",
   "wild?",
   "coordinates_shareable_by_project_curators?",
@@ -30,7 +26,7 @@ interface RuleTaxon {
   id: number;
 }
 
-export interface ProjectRuleToValidate {
+interface ProjectRuleToValidate {
   id: number;
   operand_id?: number | null;
   operator: string;
@@ -54,8 +50,8 @@ const statusFrom = ( passes: boolean ): ProjectRuleStatus => (
     : "fail"
 );
 
-// captive_flag is the owner's vote, which the API never returns, so synced
-// observations leave captivity to the server unless it was set on the device
+// captive_flag is the owner's vote, which the API never returns, so it's only
+// known for observations created or edited on this device
 const evaluateCaptive = (
   observation: RealmObservationPojo,
   captive: boolean,
@@ -89,14 +85,12 @@ const evaluateInTaxon = (
   observation: RealmObservationPojo,
   rule: ProjectRuleToValidate,
 ): ProjectRuleStatus => {
-  const ruleTaxonId = rule.operand_id;
-  if ( ruleTaxonId == null ) return "unknown";
   const taxonId = observationTaxonId( observation );
   if ( taxonId == null ) return "pass";
-  if ( taxonId === ruleTaxonId ) return "pass";
+  if ( taxonId === rule.operand_id ) return "pass";
   const ancestorIds = observation.taxon?.ancestor_ids;
   if ( !ancestorIds || ancestorIds.length === 0 ) return "unknown";
-  return statusFrom( ancestorIds.includes( ruleTaxonId ) );
+  return statusFrom( ancestorIds.some( id => id === rule.operand_id ) );
 };
 
 const evaluateRule = (
@@ -127,7 +121,7 @@ const evaluateRule = (
   }
 };
 
-// Within a group of rules sharing an operator only one needs to pass
+// A group fails only if every rule in it fails
 const combineGroup = ( statuses: ProjectRuleStatus[] ): ProjectRuleStatus => {
   if ( statuses.includes( "pass" ) ) return "pass";
   if ( statuses.includes( "unknown" ) ) return "unknown";
@@ -135,12 +129,12 @@ const combineGroup = ( statuses: ProjectRuleStatus[] ): ProjectRuleStatus => {
 };
 
 /**
- * Evaluates one project's membership rules. Rules sharing an operator are
+ * Evaluates one traditional project's membership rules. Rules sharing an operator are
  * combined with OR and different operators with AND, so the observation
  * passes when no group fails. Groups that can't be checked on the device
  * are "unknown" and left to the server.
  */
-export function validateProjectRules(
+export default function validateProjectRulesForObservation(
   observation: RealmObservationPojo,
   project: ProjectToValidate,
 ): ProjectRuleGroup[] {

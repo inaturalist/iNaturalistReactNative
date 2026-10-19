@@ -29,7 +29,7 @@ import buildProjectObservationSelection, {
 import type { ProjectFieldValidationError } from "sharedHelpers/validateProjectFieldsForObservation";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
 import type { ProjectRuleGroup } from "sharedHelpers/validateProjectRulesForObservation";
-import { validateProjectRules } from "sharedHelpers/validateProjectRulesForObservation";
+import validateProjectRulesForObservation from "sharedHelpers/validateProjectRulesForObservation";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -292,7 +292,7 @@ const AddToProjects = ( ) => {
       // Rules are shown for the user's information and left to the server to
       // enforce, so only field errors gate SAVE
       const ruleGroups = isSelected && currentObservation
-        ? validateProjectRules( currentObservation, item )
+        ? validateProjectRulesForObservation( currentObservation, item )
         : [];
       const canExpand = item.projectObservationFields.length > 0 || ruleGroups.length > 0;
       const projectValid = !validationResult.errors.some(
