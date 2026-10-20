@@ -431,17 +431,28 @@ const MyObservationsResults = ( ) => {
     ? numTotalTaxaRemote
     : numTotalTaxaLocal;
 
-  const numTotalObservations = totalResultsRemote || observationIds.length;
+  // We want to show the server's totals when signed in, and local counts when signed out.
+  let freshObservationsCount: number | undefined;
+  if ( !currentUser ) {
+    freshObservationsCount = observationIds.length;
+  } else if ( typeof totalResultsRemote === "number" ) {
+    // A signed-in user with no uploaded obs should still see their local count
+    freshObservationsCount = totalResultsRemote || observationIds.length;
+  }
+  const freshSpeciesCount = hasActiveSearch
+    ? undefined
+    : numTotalTaxa;
 
   // When a search is active, we want to show a live, search-informed total for observation and
-  // species counts, otherwise, fallback to the values from zustand
+  // species counts. Otherwise show the fresh totals, falling back to the last stored totals
+  // when we don't have fresh ones (e.g. offline or still loading)
   const displayedObservationsCount = hasActiveSearch
     ? searchTotalResults
-    : numOfUserObservations;
+    : freshObservationsCount ?? numOfUserObservations;
 
   const displayedSpeciesCount = hasActiveSearch
     ? numTotalTaxa
-    : numOfUserSpecies;
+    : freshSpeciesCount ?? numOfUserSpecies;
 
   // Pagination for the rendered list follows whichever source is authoritative:
   const isFetchingNextPageForList = isServerAuthoritative
@@ -452,20 +463,22 @@ const MyObservationsResults = ( ) => {
     : fetchNextPage;
 
   useEffect( ( ) => {
-    // persist this number in zustand so a user can see their latest observations count
-    // even if they're offline
-    if ( numTotalObservations > numOfUserObservations ) {
-      zustandStorage.setItem( "numOfUserObservations", numTotalObservations );
+    // persist the latest observations count in zustand so a user can see it offline.
+    if (
+      typeof freshObservationsCount === "number"
+      && freshObservationsCount !== numOfUserObservations
+    ) {
+      zustandStorage.setItem( "numOfUserObservations", freshObservationsCount );
     }
-  }, [numTotalObservations, numOfUserObservations] );
+  }, [freshObservationsCount, numOfUserObservations] );
 
   useEffect( ( ) => {
-    // persist this number in zustand so a user can see their latest species count
-    // even if they're offline
-    if ( numTotalTaxa > numOfUserSpecies ) {
-      zustandStorage.setItem( "numOfUserSpecies", numTotalTaxa );
+    // persist the latest species count in zustand so a user can see it offline. Counts can
+    // go down (e.g. deleted obs), so store any change, not just increases
+    if ( typeof freshSpeciesCount === "number" && freshSpeciesCount !== numOfUserSpecies ) {
+      zustandStorage.setItem( "numOfUserSpecies", freshSpeciesCount );
     }
-  }, [numTotalTaxa, numOfUserSpecies] );
+  }, [freshSpeciesCount, numOfUserSpecies] );
 
   useEffect( () => {
     const newObservationCount = observationIds.length - prevObservationsLength.current;
