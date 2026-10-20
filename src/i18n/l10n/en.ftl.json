@@ -547,6 +547,7 @@
   "Observations-added-recently-appear-first": "Observations added recently appear first",
   "Observations-need-location-date--warning": "iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.",
   "Observations-View": "Observations View",
+  "Observations-with-the-most-faves-appear-first": "Observations with the most faves appear first",
   "Observations-with-the-most-recent-date-appear-first": "Observations with the most recent date appear first",
   "Observations-with-the-oldest-date-appear-first": "Observations with the oldest date appear first",
   "OBSERVATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] OBSERVATION\n *[other] OBSERVATIONS\n}",
