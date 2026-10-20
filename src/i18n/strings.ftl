@@ -934,6 +934,8 @@ Observations-added-recently-appear-first = Observations added recently appear fi
 Observations-need-location-date--warning = iNaturalist observations need a location and date to be useful to scientists. Please check observations with this icon before uploading.
 Observations-View = Observations View
 # Description for observations sort order
+Observations-with-the-most-faves-appear-first = Observations with the most faves appear first
+# Description for observations sort order
 Observations-with-the-most-recent-date-appear-first = Observations with the most recent date appear first
 # Description for observations sort order
 Observations-with-the-oldest-date-appear-first = Observations with the oldest date appear first
