@@ -10,6 +10,7 @@ import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 type Props = {
   classNameMargin?: string,
+  mentionSuggestions?: Object[],
   idWithdrawn?: boolean,
   isConnected?: boolean,
   item: Object,
@@ -22,6 +23,7 @@ type Props = {
 
 const ActivityHeaderContainer = ( {
   classNameMargin,
+  mentionSuggestions,
   idWithdrawn,
   isConnected,
   item,
@@ -123,6 +125,7 @@ const ActivityHeaderContainer = ( {
       idWithdrawn={idWithdrawn}
       classNameMargin={classNameMargin}
       flagged={flagged}
+      mentionSuggestions={mentionSuggestions}
       updateCommentBody={updateCommentBody}
       deleteComment={deleteUserComment}
       updateIdentification={updateIdentification}

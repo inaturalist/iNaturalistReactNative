@@ -23,6 +23,7 @@ import React from "react";
 
 type Props = {
   currentUserId?: number,
+  mentionSuggestions?: Object[],
   isFirstDisplay: boolean,
   isConnected: boolean,
   item: Object,
@@ -38,6 +39,7 @@ type Props = {
 
 const ActivityItem = ( {
   currentUserId,
+  mentionSuggestions,
   isFirstDisplay,
   isConnected,
   item,
@@ -98,6 +100,7 @@ const ActivityItem = ( {
     <View className="flex-column" testID="ObsDetails.ActivityItem">
       <View className="mx-[15px] pb-[7px]">
         <ActivityHeaderContainer
+          mentionSuggestions={mentionSuggestions}
           item={item}
           refetchRemoteObservation={refetchRemoteObservation}
           idWithdrawn={idWithdrawn}
