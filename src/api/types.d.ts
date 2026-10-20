@@ -11,12 +11,16 @@ export interface ApiParams {
   per_page?: number;
   page?: number;
   fields?: "all" | object;
+  rule_details?: boolean;
   ttl?: number;
 }
 
 export interface ApiGetByIdParams extends ApiParams {
   id: number;
 }
+
+// Params for wrappers that don't have endpoint-specific types yet
+export type ApiUntypedParams = object;
 
 export interface ApiPlace {
   id?: number;
@@ -42,7 +46,8 @@ export interface ApiPostForUser extends ApiPost {
 
 export interface ProjectRulePreference {
   field: string;
-  value: string | null;
+  // e.g. members_only is a boolean
+  value: string | number | boolean | null;
 }
 
 interface ApiObservationField {
@@ -58,37 +63,6 @@ interface ApiProjectObservationField {
   observation_field: ApiObservationField;
   position: number;
   required: boolean | null;
-}
-
-// Result from using PROJECT_SUMMARY_FIELDS
-export interface ApiProjectSummary {
-  icon: string;
-  id: number;
-  project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
-  rule_preferences: ProjectRulePreference[];
-  title: string;
-}
-
-// Result from using PROJECT_DETAIL_FIELDS
-export interface ApiProject extends ApiProjectSummary {
-  admins: {
-    user: {
-      icon_url: string | null;
-      id: number;
-      login: string;
-    };
-  }[] | null;
-  description: string;
-  header_image_url: string | null;
-  membership_model: "inviteonly" | "open" | null;
-  place_id: number | null;
-  project_observation_fields: ApiProjectObservationField[];
-  user_ids: number[];
-}
-
-// Result from using PROJECT_SUMMARY_POF_FIELDS
-export interface ApiProjectSummaryWithPOF extends ApiProjectSummary {
-  project_observation_fields: ApiProjectObservationField[];
 }
 
 export interface ApiResponse<T> {
@@ -150,6 +124,13 @@ export interface ApiObservationPhoto {
   uuid?: string;
 }
 
+export interface ApiPhotoWithLicense {
+  photo: {
+    licenseCode?: string | null;
+    license_code?: string | null;
+  };
+}
+
 export interface ApiObservationSound {
   id?: number;
   sound?: ApiSound;
@@ -158,12 +139,14 @@ export interface ApiObservationSound {
 }
 
 export interface ApiTaxon {
+  ancestor_ids?: number[];
   default_photo?: ApiPhoto;
   representative_photo?: ApiPhoto;
   iconic_taxon_name?: string;
   id?: number;
   name?: string;
   preferred_common_name?: string;
+  rank?: string;
   rank_level?: number;
   taxonPhotos?: { photo: ApiPhoto }[];
   defaultPhoto?: ApiPhoto;
@@ -192,6 +175,53 @@ export interface ApiUser extends ApiRecord {
     name?: string;
   };
   species_count?: number;
+}
+
+// Operand objects are only present when fetched with rule_details: true
+export interface ApiProjectObservationRule {
+  id: number;
+  operand_id: number | null;
+  // e.g. "Taxon", "Place", "User", "Project", "ObservationField"; null for
+  // operand-less rules like "verifiable?"
+  operand_type: string | null;
+  operator: string;
+  place?: ApiPlace;
+  project?: { id: number; title: string };
+  taxon?: ApiTaxon;
+  user?: ApiUser;
+}
+
+// Result from using PROJECT_SUMMARY_FIELDS
+export interface ApiProjectSummary {
+  icon: string;
+  id: number;
+  project_type: "collection" | "umbrella" | ""; // FYI "" means "traditional"
+  rule_preferences: ProjectRulePreference[];
+  title: string;
+}
+
+// Result from using PROJECT_DETAIL_FIELDS
+export interface ApiProject extends ApiProjectSummary {
+  admins: {
+    user: {
+      icon_url: string | null;
+      id: number;
+      login: string;
+    };
+  }[] | null;
+  description: string;
+  header_image_url: string | null;
+  membership_model: "inviteonly" | "open" | null;
+  place_id: number | null;
+  project_observation_fields: ApiProjectObservationField[];
+  project_observation_rules: ApiProjectObservationRule[];
+  user_ids: number[];
+}
+
+// Result from using PROJECT_SUMMARY_POF_FIELDS
+export interface ApiProjectSummaryWithPOF extends ApiProjectSummary {
+  project_observation_fields: ApiProjectObservationField[];
+  project_observation_rules: ApiProjectObservationRule[];
 }
 
 export interface ApiComment {

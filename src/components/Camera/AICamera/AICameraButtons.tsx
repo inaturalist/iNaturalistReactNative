@@ -8,8 +8,8 @@ import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
 import { View } from "components/styledComponents";
 import React from "react";
-import type { ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import type { AnimatedStyle } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { TakePhotoOptions } from "react-native-vision-camera";
 import { useLayoutPrefs } from "sharedHooks";
@@ -22,7 +22,7 @@ interface Props {
   handleClose: ( ) => void;
   hasFlash: boolean;
   modelLoaded: boolean;
-  rotatableAnimatedStyle: ViewStyle;
+  rotatableAnimatedStyle: AnimatedStyle;
   showPrediction: boolean;
   showZoomButton: boolean;
   takePhoto: () => Promise<void>;

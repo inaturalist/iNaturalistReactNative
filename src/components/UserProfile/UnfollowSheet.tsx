@@ -21,7 +21,7 @@ const UnfollowSheet = ( {
   const invalidateUserLists = useInvalidateUserLists( );
 
   const { mutate: updateRelationshipsMutate } = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => updateRelationships( params, optsWithAuth ),
+    updateRelationships,
     {
       onSuccess: () => {
         setShowUnfollowSheet( false );

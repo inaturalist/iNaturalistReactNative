@@ -24,15 +24,16 @@ import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { EnvConfig } from "sharedHelpers/envConfig";
 import { openExternalWebBrowser } from "sharedHelpers/util";
-import { useFeatureFlag, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 import useNavigateToExplore from "sharedHooks/useNavigateToExplore";
-import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
-import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
-import JoinSheet from "./Sheets/JoinSheet";
+import type {
+  COORDINATE_ACCESS,
+} from "./Sheets/CoordinateAccessSheet";
+import CoordinateAccessSheet from "./Sheets/CoordinateAccessSheet";
 import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
 import LeaveSheet from "./Sheets/LeaveSheet";
 
@@ -41,6 +42,7 @@ const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/gene
 const NONE = "NONE";
 const JOIN = "JOIN";
 const LEAVE = "LEAVE";
+const EDIT_COORDINATE_ACCESS = "EDIT_COORDINATE_ACCESS";
 
 const PROJECT_URL = `${EnvConfig.OAUTH_API_URL}/projects`;
 
@@ -73,6 +75,7 @@ interface Props {
   leaveProject: ( _keep?: LEAVE_KEEP ) => void;
   loadingProjectMembership: boolean;
   project: Project | null;
+  updateCoordinateAccess: ( _access: COORDINATE_ACCESS ) => void;
 }
 
 const ProjectDetails = ( {
@@ -80,9 +83,8 @@ const ProjectDetails = ( {
   leaveProject,
   loadingProjectMembership,
   project,
+  updateCoordinateAccess,
 }: Props ) => {
-  const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
-
   const { t, i18n } = useTranslation( );
   const navigation = useNavigation<TabStackScreenProps<"ProjectDetails">["navigation"]>( );
   const navigateToExplore = useNavigateToExplore( );
@@ -207,7 +209,6 @@ const ProjectDetails = ( {
           onSpeciesPressed={onSpeciesPressed}
           onMembersPressed={onMembersPressed}
           onJournalPostsPressed={onJournalPostsPressed}
-          newsEnabled={newsEnabled}
         />
         <View className="mt-8">
           <Heading4 className="mb-3">{t( "ABOUT" )}</Heading4>
@@ -258,7 +259,7 @@ const ProjectDetails = ( {
           <Heading4 className="mb-3">
             {!project.current_user_is_member
               ? t( "JOIN-PROJECT" )
-              : t( "LEAVE-PROJECT" )}
+              : t( "MANAGE-MEMBERSHIP" )}
           </Heading4>
           {!project.current_user_is_member
             ? (
@@ -277,13 +278,25 @@ const ProjectDetails = ( {
               />
             )
             : (
-              <Button
-                level="neutral"
-                text={t( "LEAVE" )}
-                onPress={( ) => setOpenSheet( LEAVE )}
-                loading={loadingProjectMembership}
-                disabled={loadingProjectMembership}
-              />
+              <>
+                {project.project_type === "" && (
+                  <Button
+                    level="neutral"
+                    className="mb-3"
+                    text={t( "EDIT-LOCATION-PERMISSIONS" )}
+                    onPress={( ) => setOpenSheet( EDIT_COORDINATE_ACCESS )}
+                    loading={loadingProjectMembership}
+                    disabled={loadingProjectMembership}
+                  />
+                )}
+                <Button
+                  level="neutral"
+                  text={t( "LEAVE-PROJECT" )}
+                  onPress={( ) => setOpenSheet( LEAVE )}
+                  loading={loadingProjectMembership}
+                  disabled={loadingProjectMembership}
+                />
+              </>
             )}
         </View>
         <AboutProjectType projectType={project.project_type} />
@@ -296,13 +309,27 @@ const ProjectDetails = ( {
         </Body4>
       </View>
       {openSheet === JOIN && project.project_type === "" && (
-        <JoinSheet
+        <CoordinateAccessSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
             joinProject( coordinateAccess );
             setOpenSheet( NONE );
           }}
+          confirmText={t( "CONFIRM-AND-JOIN" )}
           loading={loadingProjectMembership}
+          testID="JoinSheet"
+        />
+      )}
+      {openSheet === EDIT_COORDINATE_ACCESS && project.project_type === "" && (
+        <CoordinateAccessSheet
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
+            updateCoordinateAccess( coordinateAccess );
+            setOpenSheet( NONE );
+          }}
+          confirmText={t( "CONFIRM" )}
+          loading={loadingProjectMembership}
+          testID="EditCoordinateAccessSheet"
         />
       )}
       {openSheet === JOIN && project.project_type !== "" && (

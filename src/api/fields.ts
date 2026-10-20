@@ -13,6 +13,34 @@ const PROJECT_OBSERVATION_FIELDS_FIELDS = {
   required: true,
 };
 
+// Operand objects (taxon, place, etc.) are only returned with rule_details: true
+const PROJECT_OBSERVATION_RULE_FIELDS = {
+  id: true,
+  operand_id: true,
+  operand_type: true,
+  operator: true,
+  place: {
+    display_name: true,
+    id: true,
+  },
+  project: {
+    id: true,
+    title: true,
+  },
+  taxon: {
+    ancestor_ids: true,
+    id: true,
+    name: true,
+    preferred_common_name: true,
+    rank: true,
+    rank_level: true,
+  },
+  user: {
+    id: true,
+    login: true,
+  },
+};
+
 export const PROJECT_SUMMARY_FIELDS = {
   icon: true,
   id: true,
@@ -39,12 +67,14 @@ export const PROJECT_DETAIL_FIELDS = {
   membership_model: true,
   place_id: true,
   project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
+  project_observation_rules: PROJECT_OBSERVATION_RULE_FIELDS,
   user_ids: true,
 };
 
 export const PROJECT_SUMMARY_POF_FIELDS = {
   ...PROJECT_SUMMARY_FIELDS,
   project_observation_fields: PROJECT_OBSERVATION_FIELDS_FIELDS,
+  project_observation_rules: PROJECT_OBSERVATION_RULE_FIELDS,
 };
 
 export const PROJECT_FIELDS_ALL = "all";

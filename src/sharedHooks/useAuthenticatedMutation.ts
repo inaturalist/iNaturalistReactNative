@@ -7,8 +7,8 @@ import { log } from "../../react-native-logs.config";
 
 const logger = log.extend( "useAuthenticatedMutation" );
 
-type MutationFunction<Response> = (
-  params: unknown, options: { api_token: string | null }
+type MutationFunction<Response, Variables> = (
+  params: Variables, options: { api_token: string | null }
 ) => Promise<Response>;
 
 // At the time of writing, there is no type representing the response type of API errors,
@@ -18,10 +18,10 @@ type MutationError = any;
 
 // Should work like React Query's useMutation except it calls the queryFunction
 // with an object that includes the JWT
-const useAuthenticatedMutation = <Response>(
-  mutationFunction: MutationFunction<Response>,
-  mutationOptions: UseMutationOptions = {},
-) => useMutation<Response, MutationError>( {
+const useAuthenticatedMutation = <Response, Variables>(
+  mutationFunction: MutationFunction<Response, Variables>,
+  mutationOptions: UseMutationOptions<Response, MutationError, Variables> = {},
+) => useMutation<Response, MutationError, Variables>( {
   mutationFn: async params => {
     // Note, getJWTToken() takes care of fetching a new token if the existing
     // one is expired. We *could* store the token in state with useState if

@@ -22,11 +22,7 @@ export enum FeatureFlag {
   // flags should use positive language ending with `Enabled`
   // MyFeatureFlagEnabled = "myFeatureFlagEnabled",
   ExploreV2Enabled = "exploreV2Enabled",
-  NewsEnabled = "newsEnabled",
   TraditionalProjectsEnabled = "traditionalProjectsEnabled",
-  SearchMyObservationsEnabled = "searchMyObservationsEnabled",
-  SortMyObservationsEnabled = "sortMyObservationsEnabled",
-  MyObservationsMapViewEnabled = "myObservationsMapViewEnabled",
   MyObservationsSmallGridViewEnabled = "myObservationsSmallGridViewEnabled",
 }
 
@@ -35,22 +31,14 @@ export const flagsEnabledForAdminsInTestFlight: FeatureFlag[] = [];
 const initialFeatureFlagConfig: Record<FeatureFlag, boolean> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: false,
   [FeatureFlag.ExploreV2Enabled]: true,
-  [FeatureFlag.NewsEnabled]: false,
   [FeatureFlag.TraditionalProjectsEnabled]: false,
-  [FeatureFlag.SearchMyObservationsEnabled]: true,
-  [FeatureFlag.SortMyObservationsEnabled]: true,
-  [FeatureFlag.MyObservationsMapViewEnabled]: true,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: false,
 };
 
 const initialFeatureFlagDebugOverrides: Record<FeatureFlag, boolean | null> = {
   // [FeatureFlag.MyFeatureFlagEnabled]: null,
   [FeatureFlag.ExploreV2Enabled]: null,
-  [FeatureFlag.NewsEnabled]: null,
   [FeatureFlag.TraditionalProjectsEnabled]: null,
-  [FeatureFlag.SearchMyObservationsEnabled]: null,
-  [FeatureFlag.SortMyObservationsEnabled]: null,
-  [FeatureFlag.MyObservationsMapViewEnabled]: null,
   [FeatureFlag.MyObservationsSmallGridViewEnabled]: null,
 };
 

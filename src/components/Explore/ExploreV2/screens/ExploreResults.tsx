@@ -16,8 +16,6 @@ import ExploreV2Tabs
   from "components/Explore/ExploreV2/components/ExploreV2Tabs";
 import SaveSearchButton
   from "components/Explore/ExploreV2/components/SaveSearchButton";
-import ExploreV2DebugSheet
-  from "components/Explore/ExploreV2/ExploreV2DebugSheet";
 import type { NearbyCoords }
   from "components/Explore/ExploreV2/helpers/buildQueryParams";
 import buildExploreV2QueryParams
@@ -374,12 +372,7 @@ const ExploreResults = ( ) => {
     if ( needsPermission ) {
       return renderPermissionPrompt( );
     }
-    return (
-      <>
-        {renderTabContent( )}
-        <ExploreV2DebugSheet />
-      </>
-    );
+    return renderTabContent( );
   };
 
   return (

@@ -184,15 +184,13 @@ const UserText = ( {
       marginTop: 8,
     },
     h4: {
-      fontSize: 15,
-      letterSpacing: 2,
-      lineHeight: 18,
+      fontSize: 16,
+      lineHeight: 22,
       marginBottom: 8,
       marginTop: 8,
     },
     h5: {
       fontSize: 11,
-      letterSpacing: 2,
       lineHeight: 13.2,
       marginBottom: 6,
       marginTop: 6,
