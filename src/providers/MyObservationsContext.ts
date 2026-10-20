@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import type { MyObservationsState, MyObservationsTaxon } from "stores/createMyObservationsSlice";
 import { initialMyObservationsState } from "stores/createMyObservationsSlice";
@@ -22,7 +22,7 @@ export enum MY_OBSERVATIONS_ACTION {
 export type MyObservationsAction =
   | {
     type: MY_OBSERVATIONS_ACTION.SET_OBSERVATIONS_SORT;
-    observationsSort: OBSERVATIONS_SORT;
+    observationsSort: MyObservationsSort;
   }
   | {
     type: MY_OBSERVATIONS_ACTION.SET_SPECIES_SORT;
