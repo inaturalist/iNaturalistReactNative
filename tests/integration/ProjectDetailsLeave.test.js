@@ -104,9 +104,9 @@ describe( "ProjectDetails leave", ( ) => {
     renderAppWithComponent( <ProjectDetailsContainer /> );
 
     expect( await screen.findByText( mockRemoteProject.title ) ).toBeVisible( );
-    expect( await screen.findByText( "LEAVE" ) ).toBeVisible( );
+    expect( await screen.findByText( "LEAVE PROJECT" ) ).toBeVisible( );
 
-    await actor.press( screen.getByText( "LEAVE" ) );
+    await actor.press( screen.getByText( "LEAVE PROJECT" ) );
 
     const leaveSheet = await screen.findByTestId( "LeaveSheet" );
     await actor.press( within( leaveSheet ).getByText( "LEAVE" ) );
