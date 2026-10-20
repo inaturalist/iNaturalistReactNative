@@ -3,8 +3,8 @@ import Flash from "components/Camera/Buttons/Flash";
 import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
 import React from "react";
-import type { ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import type { AnimatedStyle } from "react-native-reanimated";
 import type { TakePhotoOptions } from "react-native-vision-camera";
 
 const isTablet = DeviceInfo.isTablet( );
@@ -14,7 +14,7 @@ interface Props {
   handleClose: ( ) => void;
   disabled: boolean;
   photosTaken: boolean;
-  rotatableAnimatedStyle: ViewStyle;
+  rotatableAnimatedStyle: AnimatedStyle;
   handleCheckmarkPress: ( ) => void;
   toggleFlash: ( ) => void;
   flipCamera: ( ) => void;

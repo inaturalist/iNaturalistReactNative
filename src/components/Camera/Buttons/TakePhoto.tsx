@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import React from "react";
-import type { ViewStyle } from "react-native";
+import type { AnimatedStyle } from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -16,7 +16,7 @@ interface Props {
   takePhoto: ( ) => Promise<void>;
   disabled: boolean;
   showPrediction?: boolean;
-  rotatableAnimatedStyle?: ViewStyle;
+  rotatableAnimatedStyle?: AnimatedStyle;
 }
 
 const TakePhoto = ( {
