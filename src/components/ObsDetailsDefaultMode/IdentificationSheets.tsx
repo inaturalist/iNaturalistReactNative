@@ -21,8 +21,12 @@ import React, {
 } from "react";
 import { Alert, Platform } from "react-native";
 import fetchTaxonAndSave from "sharedHelpers/fetchTaxonAndSave";
+import type { ObservationWithActivity } from "sharedHelpers/getObservationParticipants";
+import getObservationParticipants from "sharedHelpers/getObservationParticipants";
+import { MENTION_SUGGESTION_LIMIT } from "sharedHelpers/mentions";
 import {
   useAuthenticatedMutation,
+  useCurrentUser,
   useTranslation,
 } from "sharedHooks";
 
@@ -44,9 +48,11 @@ interface Observation extends Record<string, unknown> {
   taxon?: Taxon;
   community_taxon?: Taxon;
   prefers_community_taxon: boolean | null;
-  user?: {
+  user?: NonNullable<ObservationWithActivity["user"]> & {
     prefers_community_taxa: boolean;
   };
+  comments?: ObservationWithActivity["comments"];
+  identifications?: ObservationWithActivity["identifications"];
 }
 
 interface Identification {
@@ -198,6 +204,14 @@ const IdentificationSheets: React.FC<Props> = ( {
 
   const realm = useRealm( );
   const { t } = useTranslation( );
+  const currentUser = useCurrentUser( );
+
+  // Built only while a comment sheet is open, and rebuilt when one opens: on
+  // the user's own observations, observation can be a live Realm object that
+  // gains comments without its reference changing
+  const mentionSuggestions = showAddCommentSheet || showIdentBodySheet
+    ? getObservationParticipants( observation, currentUser?.id, MENTION_SUGGESTION_LIMIT )
+    : [];
 
   const hasComment = ( newIdentification?.body || "" ).length > 0;
 
@@ -427,6 +441,7 @@ const IdentificationSheets: React.FC<Props> = ( {
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
           mentionsEnabled
+          mentionSuggestions={mentionSuggestions}
           onPressClose={hideAddCommentSheet}
           headerText={addCommentHeaderText}
           textInputStyle={textInputStyle}
@@ -438,6 +453,7 @@ const IdentificationSheets: React.FC<Props> = ( {
         <TextInputSheet
           buttonText={t( "CONFIRM" )}
           mentionsEnabled
+          mentionSuggestions={mentionSuggestions}
           onPressClose={onCloseIdentBodySheet}
           headerText={addCommentHeaderText}
           textInputStyle={textInputStyle}

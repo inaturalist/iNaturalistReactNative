@@ -65,4 +65,5 @@ function getObservationParticipants(
   return participants.slice( 0, limit );
 }
 
+export type { ObservationWithActivity };
 export default getObservationParticipants;
