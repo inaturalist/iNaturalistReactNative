@@ -246,7 +246,7 @@ Available aliases: `api`, `appConstants`, `components`, `dictionaries`, `i18n`, 
 - Test user behavior, not implementation details
 - Assert on queried elements with RNTL matchers (`toBeVisible`, `toBeDisabled`), not `toBeTruthy` — `getBy*` already throws when the element is absent. Plain values in helper/hook tests are unaffected.
 - E2E tests require real iNaturalist credentials in `.env` (`E2E_TEST_USERNAME`, `E2E_TEST_PASSWORD`)
-- **Details:** unit/component/integration conventions — factory overrides, `userEvent` vs `fireEvent`, mocking, running a single test — in `agent-docs/testing/` (start with `test-core.md`); end-to-end (Detox + Maestro) in `agent-docs/testing/e2e.md`
+- **Details:** unit/component/integration conventions — factory overrides, `userEvent` vs `fireEvent`, mocking, running a single test — in `agent-docs/testing/` (start with `test-core.md`); end-to-end (Detox + Maestro) in `agent-docs/testing/e2e.md`; scroll performance benchmarking (Android) in `agent-docs/testing/scroll-benchmarking.md`
 
 ## Code Style & Conventions
 
@@ -313,7 +313,7 @@ In-depth architecture and convention docs for both humans and AI agents. Read th
 
 - `architecture/` — `upload-system.md`, `navigation-patterns.md`, `api-layer.md`, `realm-and-zustand.md` (includes working with Realm objects in the React layer)
 - `conventions/` — `component-conventions.md`, `i18n-conventions.md`, `import-aliases.md`, `typescript.md`, `nativewind-v4.md` (className resolution gotchas from the NativeWind 2→4 migration)
-- `testing/` — `test-core.md`, `test-components.md`, `integration-test-analysis.md`, `e2e.md` (Detox + Maestro + iOS verification)
+- `testing/` — `test-core.md`, `test-components.md`, `integration-test-analysis.md`, `e2e.md` (Detox + Maestro + iOS verification), `scroll-benchmarking.md` (measuring list scroll performance on Android)
 
 ## Common Pitfalls
 
