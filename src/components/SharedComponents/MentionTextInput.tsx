@@ -1,3 +1,4 @@
+import type { ApiUser } from "api/types";
 import {
   ActivityIndicator,
   Body3,
@@ -17,7 +18,11 @@ import type {
   TextInputSelectionChangeEvent,
 } from "react-native";
 import { ScrollView, StyleSheet } from "react-native";
-import { getMentionAtCursor, insertMention } from "sharedHelpers/mentions";
+import {
+  getMentionAtCursor,
+  insertMention,
+  MENTION_SUGGESTION_LIMIT,
+} from "sharedHelpers/mentions";
 import { useTranslation } from "sharedHooks";
 import useUserSearch from "sharedHooks/useUserSearch";
 
@@ -37,7 +42,38 @@ interface MentionTextInputProps extends Omit<TextInputProps, "value" | "onChange
   ref?: React.Ref<MentionTextInputHandle>;
   onChangeText: ( text: string ) => void;
   InputComponent?: React.ComponentType<TextInputProps>;
+  // Users to show as soon as the user types "@", and above the search results
+  // when they match what's typed, e.g. the current participants on an observation
+  suggestedUsers?: ApiUser[];
 }
+
+const startsWithQuery = ( user: ApiUser, query: string ) => {
+  const lowerQuery = query.toLowerCase( );
+  return !!user.login?.toLowerCase( ).startsWith( lowerQuery )
+    || !!user.name?.toLowerCase( ).startsWith( lowerQuery );
+};
+
+interface MentionListItemProps {
+  onSelect: ( user: ApiUser ) => void;
+  showDivider: boolean;
+  user: ApiUser;
+}
+
+const MentionListItem = ( { onSelect, showDivider, user }: MentionListItemProps ) => {
+  const { t } = useTranslation( );
+  return (
+    <View>
+      {showDivider && <View className="border-b border-lightGray" />}
+      <UserListItem
+        item={{ user }}
+        countText=""
+        onPress={( ) => onSelect( user )}
+        accessibilityLabel={t( "Select-user" )}
+        iconVariant="mention"
+      />
+    </View>
+  );
+};
 
 const MentionTextInput = ( {
   accessibilityLabel,
@@ -53,6 +89,7 @@ const MentionTextInput = ( {
   placeholder,
   ref,
   style,
+  suggestedUsers,
   testID,
 }: MentionTextInputProps ) => {
   const { t } = useTranslation( );
@@ -165,9 +202,23 @@ const MentionTextInput = ( {
     [onChangeText],
   );
 
-  const showList = cursor !== null
-    && pickedAt === null
-    && !!getMentionAtCursor( currentValue, cursor )?.query;
+  const mention = cursor === null || pickedAt !== null
+    ? null
+    : getMentionAtCursor( currentValue, cursor );
+  const query = mention?.query ?? "";
+
+  const listedUsers = useMemo( ( ) => {
+    const matchingSuggestions = ( suggestedUsers ?? [] )
+      .filter( user => startsWithQuery( user, query ) );
+    const searchResults = query === ""
+      ? []
+      : users.filter( user => !matchingSuggestions.some( match => match.id === user.id ) );
+    return [...matchingSuggestions, ...searchResults].slice( 0, MENTION_SUGGESTION_LIMIT );
+  }, [query, suggestedUsers, users] );
+
+  const showList = !!mention && ( query !== "" || listedUsers.length > 0 );
+  // The search hasn't caught up with what's typed yet
+  const isSearchPending = query !== "" && ( debouncedQuery !== query || isLoading );
 
   const inputStyle = useMemo( ( ) => {
     if ( !showList ) return style;
@@ -181,7 +232,7 @@ const MentionTextInput = ( {
     return style;
   }, [style, showList] );
 
-  const emptyListContent = isLoading
+  const emptyListContent = isSearchPending
     ? (
       <View className="p-4 items-center justify-center min-h-[200px]">
         <ActivityIndicator size="small" />
@@ -217,19 +268,15 @@ const MentionTextInput = ( {
           className="bg-white border border-lightGray rounded-lg overflow-hidden max-h-[200px]"
         >
           <ScrollView keyboardShouldPersistTaps="handled">
-            {users.length === 0
+            {listedUsers.length === 0
               ? emptyListContent
-              : users.map( ( item, index ) => (
-                <View key={item.id}>
-                  {index > 0 && <View className="border-b border-lightGray" />}
-                  <UserListItem
-                    item={{ user: item }}
-                    countText=""
-                    onPress={( ) => handleSelectUser( item )}
-                    accessibilityLabel={t( "Select-user" )}
-                    iconVariant="mention"
-                  />
-                </View>
+              : listedUsers.map( ( user, index ) => (
+                <MentionListItem
+                  key={user.id}
+                  onSelect={handleSelectUser}
+                  showDivider={index > 0}
+                  user={user}
+                />
               ) )}
           </ScrollView>
         </View>
