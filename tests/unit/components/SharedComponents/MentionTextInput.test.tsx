@@ -1,4 +1,5 @@
 import { act, fireEvent, screen } from "@testing-library/react-native";
+import type { ApiUser } from "api/types";
 import MentionTextInput from "components/SharedComponents/MentionTextInput";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import type { TextInputProps } from "react-native";
@@ -6,14 +7,18 @@ import { TextInput } from "react-native";
 import factory from "tests/factory";
 import { renderComponent } from "tests/helpers/render";
 
-const mockUser = factory( "RemoteUser", { login: "kueda" } );
+const mockUser = factory( "RemoteUser", { login: "kueda", name: "Ken-ichi Ueda" } );
+const observer = factory( "RemoteUser", { login: "kirk", name: "Jim Kirk" } );
+const commenter = factory( "RemoteUser", { login: "tiwane", name: "Tony Iwane" } );
+const searchOnlyUser = factory( "RemoteUser", { login: "kimberly", name: "Kim B" } );
 
-const mockUseUserSearch = jest.fn( ( query: string ) => ( {
+const defaultUserSearch = ( query: string ) => ( {
   users: query
     ? [mockUser]
     : [],
   isLoading: false,
-} ) );
+} );
+const mockUseUserSearch = jest.fn( defaultUserSearch );
 jest.mock( "sharedHooks/useUserSearch", ( ) => ( {
   __esModule: true,
   default: ( query: string ) => mockUseUserSearch( query ),
@@ -35,7 +40,12 @@ const MockInput = forwardRef( ( props: TextInputProps, ref ) => {
 
 const mockOnChangeText = jest.fn( );
 
-const Harness = ( { initialValue = "" }: { initialValue?: string } ) => {
+interface HarnessProps {
+  initialValue?: string;
+  suggestedUsers?: ApiUser[];
+}
+
+const Harness = ( { initialValue = "", suggestedUsers }: HarnessProps ) => {
   const [value, setValue] = useState( initialValue );
   return (
     <MentionTextInput
@@ -46,10 +56,15 @@ const Harness = ( { initialValue = "" }: { initialValue?: string } ) => {
         mockOnChangeText( text );
         setValue( text );
       }}
+      suggestedUsers={suggestedUsers}
       testID="MentionTextInput.input"
     />
   );
 };
+
+const listedLogins = ( ) => screen
+  .queryAllByText( /^[a-z0-9_-]+$/ )
+  .map( node => node.props.children );
 
 const typeAt = ( text: string, cursor: number ) => {
   const input = screen.getByTestId( "MentionTextInput.input" );
@@ -62,6 +77,7 @@ const typeAt = ( text: string, cursor: number ) => {
 describe( "MentionTextInput", ( ) => {
   beforeEach( ( ) => {
     jest.clearAllMocks( );
+    mockUseUserSearch.mockImplementation( defaultUserSearch );
     jest.useFakeTimers( );
   } );
 
@@ -156,5 +172,71 @@ describe( "MentionTextInput", ( ) => {
     act( ( ) => { jest.advanceTimersByTime( 400 ); } );
     expect( mockUseUserSearch ).toHaveBeenLastCalledWith( "kuedax" );
     expect( screen.getByText( "kueda" ) ).toBeVisible( );
+  } );
+
+  describe( "with suggested users", ( ) => {
+    it( "shows them as soon as a bare @ is typed", ( ) => {
+      renderComponent( <Harness suggestedUsers={[observer, commenter]} /> );
+      typeAt( "hi @", 4 );
+      expect( listedLogins( ) ).toEqual( ["kirk", "tiwane"] );
+      act( ( ) => { jest.advanceTimersByTime( 400 ); } );
+      expect( mockUseUserSearch ).not.toHaveBeenCalledWith( expect.stringMatching( /.+/ ) );
+    } );
+
+    it( "shows nothing for a bare @ without suggestions", ( ) => {
+      renderComponent( <Harness suggestedUsers={[]} /> );
+      typeAt( "hi @", 4 );
+      act( ( ) => { jest.advanceTimersByTime( 400 ); } );
+      expect( listedLogins( ) ).toEqual( [] );
+      expect( screen.queryByText( /No results/ ) ).toBeNull( );
+    } );
+
+    it( "filters them by login or name before the search runs", ( ) => {
+      renderComponent( <Harness suggestedUsers={[observer, commenter]} /> );
+      typeAt( "@K", 2 );
+      expect( listedLogins( ) ).toEqual( ["kirk"] );
+      typeAt( "@To", 3 );
+      expect( listedLogins( ) ).toEqual( ["tiwane"] );
+    } );
+
+    it( "adds search results below them without duplicates", ( ) => {
+      mockUseUserSearch.mockImplementation( query => ( {
+        users: query
+          ? [mockUser, searchOnlyUser]
+          : [],
+        isLoading: false,
+      } ) );
+      renderComponent( <Harness suggestedUsers={[mockUser, observer]} /> );
+      typeAt( "@k", 2 );
+      act( ( ) => { jest.advanceTimersByTime( 400 ); } );
+      expect( listedLogins( ) ).toEqual( ["kueda", "kirk", "kimberly"] );
+    } );
+
+    it( "caps the list", ( ) => {
+      const manyUsers = Array.from( { length: 12 }, ( _, index ) => factory( "RemoteUser", {
+        login: `user${index}`,
+        name: "Someone",
+      } ) );
+      renderComponent( <Harness suggestedUsers={manyUsers} /> );
+      typeAt( "@", 1 );
+      expect( listedLogins( ) ).toHaveLength( 10 );
+    } );
+
+    it( "inserts a picked suggestion", ( ) => {
+      renderComponent( <Harness suggestedUsers={[observer]} /> );
+      typeAt( "thanks @", 8 );
+      fireEvent.press( screen.getByText( "kirk" ) );
+      expect( mockSetNativeProps ).toHaveBeenLastCalledWith( { text: "thanks @kirk " } );
+      expect( listedLogins( ) ).toEqual( [] );
+    } );
+  } );
+
+  it( "shows a spinner instead of no results while the search is pending", ( ) => {
+    mockUseUserSearch.mockImplementation( ( ) => ( { users: [], isLoading: false } ) );
+    renderComponent( <Harness /> );
+    typeAt( "@zz", 3 );
+    expect( screen.queryByText( /No results/ ) ).toBeNull( );
+    act( ( ) => { jest.advanceTimersByTime( 400 ); } );
+    expect( screen.getByText( /No results/ ) ).toBeVisible( );
   } );
 } );

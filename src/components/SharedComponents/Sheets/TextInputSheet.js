@@ -25,6 +25,8 @@ type Props = {
   confirm: Function,
   description?: string,
   mentionsEnabled?: boolean,
+  // Users to suggest for @mentions, e.g. current participants on an observation
+  mentionSuggestions?: Object[],
   onPressClose: Function,
   headerText: string,
   initialInput?: string,
@@ -60,6 +62,7 @@ const TextInputSheet = ( {
   confirm,
   description,
   mentionsEnabled = false,
+  mentionSuggestions,
   onPressClose,
   headerText,
   initialInput,
@@ -134,6 +137,7 @@ const TextInputSheet = ( {
                 onChangeText={setInput}
                 placeholder={placeholder}
                 style={[inputStyle, textInputStyle]}
+                suggestedUsers={mentionSuggestions}
                 testID="TextInputSheet.notes"
                 defaultValue={initialInput ?? ""}
               />

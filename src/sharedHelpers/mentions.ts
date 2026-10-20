@@ -4,6 +4,9 @@
 // Username must start with a letter; the username is optional so a bare "@"
 // also matches
 const MENTION_BEFORE_CURSOR = /\B@([A-Za-z][\w-]*)?$/;
+// Most users the mention list shows; matches the per_page of the user search
+const MENTION_SUGGESTION_LIMIT = 10;
+
 const STARTS_WITH_USERNAME_CHAR = /^[\w-]/;
 
 interface Mention {
@@ -51,4 +54,4 @@ function insertMention(
 }
 
 export type { Mention };
-export { getMentionAtCursor, insertMention };
+export { getMentionAtCursor, insertMention, MENTION_SUGGESTION_LIMIT };
