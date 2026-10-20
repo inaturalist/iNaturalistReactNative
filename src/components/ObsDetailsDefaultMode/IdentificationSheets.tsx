@@ -17,6 +17,7 @@ import { RealmContext } from "providers/contexts";
 import React, {
   useCallback,
   useEffect,
+  useMemo,
   useReducer,
 } from "react";
 import { Alert, Platform } from "react-native";
@@ -206,12 +207,10 @@ const IdentificationSheets: React.FC<Props> = ( {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
 
-  // Built only while a comment sheet is open, and rebuilt when one opens: on
-  // the user's own observations, observation can be a live Realm object that
-  // gains comments without its reference changing
-  const mentionSuggestions = showAddCommentSheet || showIdentBodySheet
-    ? getObservationParticipants( observation, currentUser?.id, MENTION_SUGGESTION_LIMIT )
-    : [];
+  const mentionSuggestions = useMemo(
+    ( ) => getObservationParticipants( observation, currentUser?.id, MENTION_SUGGESTION_LIMIT ),
+    [observation, currentUser?.id],
+  );
 
   const hasComment = ( newIdentification?.body || "" ).length > 0;
 
