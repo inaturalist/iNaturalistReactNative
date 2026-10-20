@@ -9,14 +9,17 @@ const fetchBlogPosts = async <T = ApiDefaultResult>(
   params: ApiParams = {},
   opts: ApiOpts = {},
 ): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
+  // A user JWT makes Rails use that account's network site and include project
+  // journal posts. Omitting it keeps this feed on the API host site, iNaturalist.org.
+  const { api_token: _apiToken, ...publicOpts } = opts;
   try {
-    const response = await inatjs.posts.for_user( params, opts );
+    const response = await inatjs.posts.for_user( params, publicOpts );
     if ( !response ) { return null; }
     return response;
   } catch ( e ) {
     return handleError(
       e as ErrorWithResponse,
-      { context: { functionName: "fetchBlogPosts", opts } },
+      { context: { functionName: "fetchBlogPosts", opts: publicOpts } },
     );
   }
 };
