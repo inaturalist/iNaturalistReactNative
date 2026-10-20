@@ -5,7 +5,6 @@ import {
 import React, { useCallback } from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import { flagEnabledForAdminTestFlight } from "sharedHooks/useFeatureFlag";
-import type { FeatureFlagSlice } from "stores/createFeatureFlagSlice";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
 import useStore from "stores/useStore";
 
@@ -13,11 +12,9 @@ import { H1, H2 } from "./DeveloperSharedComponents";
 
 export const useFeatureFlagForDebug = ( featureFlagKey: FeatureFlag ) => {
   const currentUser = useCurrentUser();
-  const featureFlagConfig = useStore( ( state: FeatureFlagSlice ) => state.featureFlagConfig );
-  const featureFlagOverrides
-    = useStore( ( state: FeatureFlagSlice ) => state.featureFlagDebugOverrides );
-  const storeSetOverride
-    = useStore( ( state: FeatureFlagSlice ) => state.setFeatureFlagDebugOverride );
+  const featureFlagConfig = useStore( state => state.featureFlagConfig );
+  const featureFlagOverrides = useStore( state => state.featureFlagDebugOverrides );
+  const storeSetOverride = useStore( state => state.setFeatureFlagDebugOverride );
 
   const isFlagEnabledForAdminTestFlight
       = flagEnabledForAdminTestFlight( featureFlagKey, currentUser );

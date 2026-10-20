@@ -1,6 +1,4 @@
 import {
-  act,
-  fireEvent,
   screen,
   userEvent,
   waitFor,
@@ -8,11 +6,18 @@ import {
 } from "@testing-library/react-native";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
-import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
+import {
+  enableExploreV2,
+  lastObservationsSearchParams,
+  navigateToExplore,
+  openUniversalSearch,
+  resetUniversalSearch,
+  searchForTaxon,
+  submitUniversalSearch,
+} from "tests/helpers/exploreV2";
 import faker from "tests/helpers/faker";
 import { renderApp } from "tests/helpers/render";
-import setStoreStateFeatureFlags from "tests/helpers/setStoreStateFeatureFlags";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
@@ -25,8 +30,9 @@ const mockUser = factory( "LocalUser", {
 } );
 
 const mockTaxon = factory( "RemoteTaxon", {
-  name: "Eumyias thalassinus",
-  preferred_common_name: "Verditer Flycatcher",
+  id: 745,
+  name: "Silphium perfoliatum",
+  preferred_common_name: "Cup Plant",
   rank: "species",
   rank_level: 10,
 } );
@@ -60,8 +66,6 @@ beforeAll( uniqueRealmBeforeAll );
 afterAll( uniqueRealmAfterAll );
 // /UNIQUE REALM SETUP
 
-const recents = ( ) => useStore.getState( ).exploreRecentSearches;
-
 const actor = userEvent.setup( );
 
 beforeAll( async ( ) => {
@@ -81,8 +85,7 @@ beforeAll( async ( ) => {
 
 beforeEach( async ( ) => {
   setStoreStateLayout( { isDefaultMode: false, isAllAddObsOptionsMode: true } );
-  setStoreStateFeatureFlags( { exploreV2Enabled: true } );
-  recents( ).clearRecents( );
+  enableExploreV2( );
   inatjs.observations.search.mockClear( );
   await signIn( mockUser, { realm: global.mockRealms[__filename] } );
 } );
@@ -93,40 +96,15 @@ afterEach( async ( ) => {
 
 global.withAnimatedTimeTravelEnabled( { skipFakeTimers: true } );
 
-const navigateToExplore = async ( ) => {
-  const tabBar = await screen.findByTestId( "CustomTabBar" );
-  await actor.press( await within( tabBar ).findByText( "Explore" ) );
-  await screen.findByTestId( "ExploreResults" );
-};
-
-const openUniversalSearch = async ( ) => {
-  const header = await screen.findByTestId( "ExploreV2Header" );
-  await actor.press( within( header ).getByTestId( "ExploreV2Header.searchButton" ) );
-  await screen.findByTestId( "UniversalSearch" );
-};
-
-const searchForTaxon = async ( ) => {
-  fireEvent.changeText( screen.getByTestId( "UniversalSearch.subjectInput" ), "verditer" );
-  act( ( ) => {
-    jest.advanceTimersByTime( 400 );
-  } );
-  await actor.press( await screen.findByTestId( `UniversalSearchResult.taxon.${mockTaxon.id}` ) );
-  await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-  await screen.findByTestId( "ExploreResults" );
-};
-
 describe( "recent searches in Explore", ( ) => {
   it( "offers a searched subject as a recent search and searches it again", async ( ) => {
     renderApp( );
     await navigateToExplore( );
     await openUniversalSearch( );
-    await searchForTaxon( );
+    await searchForTaxon( mockTaxon );
 
     await waitFor( ( ) => {
-      expect( inatjs.observations.search ).toHaveBeenCalledWith(
-        expect.objectContaining( { taxon_id: mockTaxon.id } ),
-        expect.anything( ),
-      );
+      expect( lastObservationsSearchParams( ) ).toMatchObject( { taxon_id: mockTaxon.id } );
     } );
 
     // Reopening the search shows the taxon that was already searched
@@ -134,9 +112,8 @@ describe( "recent searches in Explore", ( ) => {
     expect(
       screen.getByDisplayValue( mockTaxon.preferred_common_name ),
     ).toBeVisible( );
-    await actor.press( screen.getByTestId( "UniversalSearch.back.reset" ) );
-    await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
-    await screen.findByTestId( "ExploreResults" );
+    await resetUniversalSearch( );
+    await submitUniversalSearch( );
     expect(
       within( await screen.findByTestId( "ExploreV2Header" ) )
         .queryByTestId( "ExploreV2Header.subject" ),
@@ -151,9 +128,8 @@ describe( "recent searches in Explore", ( ) => {
 
     // Tapping it fills the subject field, and searching from there restores it
     await actor.press( recentRow );
-    await actor.press( screen.getByTestId( "UniversalSearch.searchButton" ) );
+    await submitUniversalSearch( );
 
-    await screen.findByTestId( "ExploreResults" );
     const header = await screen.findByTestId( "ExploreV2Header" );
     expect( within( header ).getByTestId( "ExploreV2Header.subject" ) ).toBeVisible( );
     expect( within( header ).getByText( mockTaxon.name ) ).toBeVisible( );

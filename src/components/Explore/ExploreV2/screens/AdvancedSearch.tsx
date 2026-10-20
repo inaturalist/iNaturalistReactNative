@@ -71,13 +71,13 @@ import Taxon from "realmModels/Taxon";
 import { formatObsFieldDate } from "sharedHelpers/dateAndTime";
 import { useCurrentUser, useTranslation } from "sharedHooks";
 import useIconicTaxa from "sharedHooks/useIconicTaxa";
-import type { ExploreV2AdvancedSearchSlice } from "stores/createExploreV2AdvancedSearchSlice";
-import type { ExploreV2SearchesSlice } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 
 type SheetName = "sortBy" | "hrank" | "lrank" | "photoLicense";
 
 type PickerKind = "taxon" | "user" | "project" | "location";
+
+type ExitTarget = "back" | "standardSearch";
 
 const ALL_MONTHS = new Array( 12 ).fill( 0 ).map( ( _, i ) => i + 1 );
 
@@ -92,11 +92,9 @@ const AdvancedSearch = ( ) => {
 
   const { state: v2State, dispatch: dispatchV2 } = useExploreV2();
   const setAdvancedSearchMode = useStore(
-    ( state: ExploreV2AdvancedSearchSlice ) => state.exploreV2AdvancedSearch.setAdvancedSearchMode,
+    state => state.exploreV2AdvancedSearch.setAdvancedSearchMode,
   );
-  const savedSearchCount = useStore(
-    ( state: ExploreV2SearchesSlice ) => state.exploreSavedSearches.searches.length,
-  );
+  const savedSearchCount = useStore( state => state.exploreSavedSearches.searches.length );
   const applySavedSearch = useApplySavedSearch( );
   const [initialDraft] = useState( ( ) => draftFromV2State( v2State ) );
   const [draft, dispatch] = useReducer( advancedSearchReducer, initialDraft );
@@ -114,15 +112,22 @@ const AdvancedSearch = ( ) => {
     [draft],
   );
 
-  const [showDiscardSheet, setShowDiscardSheet] = useState( false );
+  const [pendingExit, setPendingExit] = useState<ExitTarget | null>( null );
   const [showSavedSearches, setShowSavedSearches] = useState( false );
   const savedSearchesOpen = showSavedSearches && savedSearchCount > 0;
-  const handleBack = ( ) => {
+  const exit = ( target: ExitTarget ) => {
+    if ( target === "standardSearch" ) {
+      navigation.replace( "UniversalSearch" );
+    } else {
+      navigation.goBack( );
+    }
+  };
+  const requestExit = ( target: ExitTarget ) => {
     if ( differsFromInitial ) {
-      setShowDiscardSheet( true );
+      setPendingExit( target );
       return;
     }
-    navigation.goBack( );
+    exit( target );
   };
 
   // Which in-screen search picker (taxon/user/project/location) is open.
@@ -301,13 +306,20 @@ const AdvancedSearch = ( ) => {
     <SharedStackViewWrapper testID="AdvancedSearch">
       <SearchHeader
         headerText={t( "ADVANCED-SEARCH" )}
-        onClose={handleBack}
+        onClose={( ) => requestExit( "back" )}
         onReset={() => dispatch( { type: "RESET" } )}
         resetDisabled={resetDisabled}
         testID="AdvancedSearch.back"
       />
 
       <ScrollView className="py-4">
+        <View className="px-4 mb-7">
+          <Button
+            text={t( "RETURN-TO-STANDARD-SEARCH" )}
+            onPress={( ) => requestExit( "standardSearch" )}
+            testID="AdvancedSearch.returnToStandardSearch"
+          />
+        </View>
         {savedSearchCount > 0 && (
           <View className="mb-7">
             <Heading4 className="px-4 mb-5">{t( "SAVED-SEARCHES" )}</Heading4>
@@ -791,17 +803,17 @@ const AdvancedSearch = ( ) => {
           <SavedSearches hideHeader onSelect={applySavedSearch} />
         </BottomSheetV2>
       )}
-      {showDiscardSheet && (
+      {pendingExit && (
         <WarningSheet
-          onPressClose={( ) => setShowDiscardSheet( false )}
+          onPressClose={( ) => setPendingExit( null )}
           confirm={( ) => {
-            setShowDiscardSheet( false );
-            navigation.goBack( );
+            setPendingExit( null );
+            exit( pendingExit );
           }}
           headerText={t( "DISCARD-FILTER-CHANGES" )}
           text={t( "You-changed-filters-will-be-discarded" )}
           buttonText={t( "DISCARD-CHANGES" )}
-          handleSecondButtonPress={( ) => setShowDiscardSheet( false )}
+          handleSecondButtonPress={( ) => setPendingExit( null )}
           secondButtonText={t( "CANCEL" )}
           loading={false}
         />

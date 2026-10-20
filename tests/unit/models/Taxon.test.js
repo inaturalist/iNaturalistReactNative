@@ -2,6 +2,26 @@ import Taxon from "realmModels/Taxon";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 
 describe( "Taxon", ( ) => {
+  describe( "mapApiToRealm", ( ) => {
+    it( "maps default_photo when the API taxon has one", ( ) => {
+      const result = Taxon.mapApiToRealm( {
+        id: "1",
+        default_photo: { id: 7, url: "https://example.com/photo.jpg" },
+      } );
+      expect( result.id ).toBe( 1 );
+      expect( result.default_photo.url ).toBe( "https://example.com/photo.jpg" );
+      expect( result.default_photo._synced_at ).toBeInstanceOf( Date );
+    } );
+
+    it( "omits default_photo when the API taxon does not include it", ( ) => {
+      expect( Taxon.mapApiToRealm( { id: 1 } ) ).not.toHaveProperty( "default_photo" );
+    } );
+
+    it( "keeps an explicit null default_photo so a removed photo is cleared", ( ) => {
+      expect( Taxon.mapApiToRealm( { id: 1, default_photo: null } ).default_photo ).toBeNull( );
+    } );
+  } );
+
   describe( "mapRealmToPojo", ( ) => {
     it( "returns the value unchanged when given null or undefined", ( ) => {
       expect( Taxon.mapRealmToPojo( null ) ).toBeNull( );

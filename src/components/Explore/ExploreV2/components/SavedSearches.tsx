@@ -4,7 +4,7 @@ import SearchSectionHeader
 import { View } from "components/styledComponents";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
-import type { ExploreV2SearchesSlice, SavedSearch } from "stores/createExploreV2SearchesSlice";
+import type { SavedSearch } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 
 interface Props {
@@ -14,12 +14,8 @@ interface Props {
 
 const SavedSearches = ( { hideHeader = false, onSelect }: Props ) => {
   const { t } = useTranslation( );
-  const searches: SavedSearch[] = useStore(
-    ( state: ExploreV2SearchesSlice ) => state.exploreSavedSearches.searches,
-  );
-  const removeSearch = useStore(
-    ( state: ExploreV2SearchesSlice ) => state.exploreSavedSearches.removeSearch,
-  );
+  const searches = useStore( state => state.exploreSavedSearches.searches );
+  const removeSearch = useStore( state => state.exploreSavedSearches.removeSearch );
 
   if ( searches.length === 0 ) { return null; }
 

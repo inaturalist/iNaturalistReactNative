@@ -18,6 +18,7 @@ import {
 import {
   Image, ImageBackground, View,
 } from "components/styledComponents";
+import UserListItem from "components/UserList/UserListItem";
 import type { TabStackScreenProps } from "navigation/types";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
@@ -30,6 +31,10 @@ import colors from "styles/tailwindColors";
 
 import formatProjectDate from "../Projects/helpers/displayDates";
 import AboutProjectType from "./AboutProjectType";
+import type { COORDINATE_ACCESS } from "./Sheets/JoinSheet";
+import JoinSheet from "./Sheets/JoinSheet";
+import type { LEAVE_KEEP } from "./Sheets/LeaveSheet";
+import LeaveSheet from "./Sheets/LeaveSheet";
 
 const defaultProjectIcon = "https://www.inaturalist.org/attachment_defaults/general/span2.png";
 
@@ -40,6 +45,13 @@ const LEAVE = "LEAVE";
 const PROJECT_URL = `${EnvConfig.OAUTH_API_URL}/projects`;
 
 interface Project {
+  admins?: {
+    user: {
+      icon_url: string | null;
+      id: number;
+      login: string;
+    };
+  }[] | null;
   current_user_is_member: boolean;
   current_user_observations_count?: number;
   description: string;
@@ -57,14 +69,17 @@ interface Project {
 }
 
 interface Props {
-  project: Project | null;
-  joinProject: ( ) => void;
-  leaveProject: ( ) => void;
+  joinProject: ( _access?: COORDINATE_ACCESS ) => void;
+  leaveProject: ( _keep?: LEAVE_KEEP ) => void;
   loadingProjectMembership: boolean;
+  project: Project | null;
 }
 
 const ProjectDetails = ( {
-  project, joinProject, leaveProject, loadingProjectMembership,
+  joinProject,
+  leaveProject,
+  loadingProjectMembership,
+  project,
 }: Props ) => {
   const newsEnabled = useFeatureFlag( FeatureFlag.NewsEnabled );
 
@@ -194,69 +209,103 @@ const ProjectDetails = ( {
           onJournalPostsPressed={onJournalPostsPressed}
           newsEnabled={newsEnabled}
         />
-        <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
-        {project.description && (
-          <UserText text={project.description} htmlStyle={userTextStyle} />
+        <View className="mt-8">
+          <Heading4 className="mb-3">{t( "ABOUT" )}</Heading4>
+          {project.description && (
+            <UserText text={project.description} htmlStyle={userTextStyle} />
+          )}
+        </View>
+        {project.admins && project.admins.length > 0 && (
+          <View className="mt-8">
+            <Heading4 className="mb-3">
+              {t( "PROJECT-ADMINS" )}
+            </Heading4>
+            {project.admins.map( admin => {
+              const { user } = admin;
+              return (
+                <UserListItem
+                  key={user.id}
+                  // TODO: do we need an a11y label here?
+                  item={{ user }}
+                  countText=""
+                  onPress={( ) => navigation.navigate( "UserProfile", { userId: user.id } )}
+                />
+              );
+            } )}
+          </View>
         )}
         {project.project_type === "collection" && (
-          <>
-            <Heading4 className="mb-3 mt-5">
+          <View className="mt-8">
+            <Heading4 className="mb-3">
               {t( "PROJECT-REQUIREMENTS" )}
             </Heading4>
             <Button
-              className="mb-5"
               level="neutral"
               text={t( "VIEW-PROJECT-REQUIREMENTS" )}
               onPress={( ) => navigation.navigate( "ProjectRequirements", { id: project.id } )}
             />
-          </>
+          </View>
         )}
-        <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
-        <Button
-          level="neutral"
-          text={t( "VIEW-IN-EXPLORE" )}
-          onPress={( ) => onObservationPressed( true )}
-        />
-        <Heading4 className="mb-3 mt-5">
+        <View className="mt-8">
+          <Heading4 className="mb-3">{t( "MAP" )}</Heading4>
+          <Button
+            level="neutral"
+            text={t( "VIEW-IN-EXPLORE" )}
+            onPress={( ) => onObservationPressed( true )}
+          />
+        </View>
+        <View className="mt-8">
+          <Heading4 className="mb-3">
+            {!project.current_user_is_member
+              ? t( "JOIN-PROJECT" )
+              : t( "LEAVE-PROJECT" )}
+          </Heading4>
           {!project.current_user_is_member
-            ? t( "JOIN-PROJECT" )
-            : t( "LEAVE-PROJECT" )}
-        </Heading4>
-        {!project.current_user_is_member
-          ? (
-            <Button
-              level="neutral"
-              text={t( "JOIN" )}
-              onPress={( ) => {
-                if ( project.membership_model === "inviteonly" ) {
-                  Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
-                } else {
-                  setOpenSheet( JOIN );
-                }
-              }}
-              loading={loadingProjectMembership}
-              disabled={loadingProjectMembership}
-            />
-          )
-          : (
-            <Button
-              level="neutral"
-              text={t( "LEAVE" )}
-              onPress={( ) => setOpenSheet( LEAVE )}
-              loading={loadingProjectMembership}
-              disabled={loadingProjectMembership}
-            />
-          )}
+            ? (
+              <Button
+                level="neutral"
+                text={t( "JOIN" )}
+                onPress={( ) => {
+                  if ( project.membership_model === "inviteonly" ) {
+                    Alert.alert( t( "Membership-in-this-project-is-by-invitation-only" ) );
+                  } else {
+                    setOpenSheet( JOIN );
+                  }
+                }}
+                loading={loadingProjectMembership}
+                disabled={loadingProjectMembership}
+              />
+            )
+            : (
+              <Button
+                level="neutral"
+                text={t( "LEAVE" )}
+                onPress={( ) => setOpenSheet( LEAVE )}
+                loading={loadingProjectMembership}
+                disabled={loadingProjectMembership}
+              />
+            )}
+        </View>
         <AboutProjectType projectType={project.project_type} />
         <Body4
-          className="underline mt-[11px]"
+          className="underline mt-8"
           accessibilityRole="link"
           onPress={async ( ) => openExternalWebBrowser( `${PROJECT_URL}/${project.id}` )}
         >
           {t( "View-in-browser" )}
         </Body4>
       </View>
-      {openSheet === JOIN && (
+      {openSheet === JOIN && project.project_type === "" && (
+        <JoinSheet
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( coordinateAccess: COORDINATE_ACCESS ) => {
+            joinProject( coordinateAccess );
+            setOpenSheet( NONE );
+          }}
+          loading={loadingProjectMembership}
+        />
+      )}
+      {openSheet === JOIN && project.project_type !== "" && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {
@@ -271,7 +320,18 @@ const ProjectDetails = ( {
           buttonType="primary"
         />
       )}
-      {openSheet === LEAVE && (
+      {openSheet === LEAVE && project.project_type === "" && (
+        <LeaveSheet
+          onPressClose={( ) => setOpenSheet( NONE )}
+          confirm={( keep: LEAVE_KEEP ) => {
+            leaveProject( keep );
+            setOpenSheet( NONE );
+          }}
+          loading={loadingProjectMembership}
+          observationsCount={project.current_user_observations_count}
+        />
+      )}
+      {openSheet === LEAVE && project.project_type !== "" && (
         <WarningSheet
           onPressClose={( ) => setOpenSheet( NONE )}
           confirm={( ) => {
@@ -279,13 +339,6 @@ const ProjectDetails = ( {
             setOpenSheet( NONE );
           }}
           headerText={t( "LEAVE-PROJECT--question" )}
-          text={
-            project.project_type === ""
-            && project.current_user_observations_count > 0
-            && t( "If-you-leave-x-of-your-observations-removed", {
-              count: project.current_user_observations_count,
-            } )
-          }
           buttonText={t( "LEAVE" )}
           handleSecondButtonPress={( ) => setOpenSheet( NONE )}
           secondButtonText={t( "CANCEL" )}

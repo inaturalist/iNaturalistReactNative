@@ -1,4 +1,5 @@
 import {
+  fireEvent,
   screen, userEvent, waitFor, within,
 } from "@testing-library/react-native";
 import AddToProjects from "components/AddToProjects/AddToProjects";
@@ -334,6 +335,43 @@ describe( "AddToProjects", ( ) => {
         expect( screen.getByTestId( "MissingInfoSheet" ) ).toBeVisible( );
       } );
       expect( mockGoBack ).not.toHaveBeenCalled( );
+    } );
+
+    it( "persists PO and required OFV to Zustand on SAVE after selecting a value", async ( ) => {
+      const requiredObsField = mockProjects[1].projectObservationFields[0].obsField;
+      const requiredObsFieldId = requiredObsField.id;
+      const selectedValue = requiredObsField.allowedValues[1];
+
+      renderAddToProjects( );
+
+      await actor.press( screen.getByText( mockProjects[1].title ) );
+      // Project 0 is already selected in beforeEach, so two pickers are visible
+      const [, projectOneSelectResponse] = screen.getAllByText( "Select a response" );
+      await actor.press( projectOneSelectResponse );
+
+      const picker = await screen.findByTestId( "ReactNativePicker" );
+      fireEvent( picker, "onValueChange", selectedValue );
+      fireEvent.press( screen.getByText( "CONFIRM" ) );
+
+      await actor.press( screen.getByTestId( "AddToProjects.saveButton" ) );
+
+      expect(
+        useStore.getState( ).currentObservation?.projectObservations?.map( po => po.projectId ),
+      ).toEqual( [
+        mockProjects[0].id,
+        mockProjects[1].id,
+      ] );
+      expect( useStore.getState( ).currentObservation?.observationFieldValues ).toEqual(
+        expect.arrayContaining( [
+          expect.objectContaining( {
+            obsFieldId: requiredObsFieldId,
+            value: selectedValue,
+          } ),
+        ] ),
+      );
+      expect( useStore.getState( ).unsavedChanges ).toBe( true );
+      expect( mockGoBack ).toHaveBeenCalled( );
+      expect( screen.queryByTestId( "MissingInfoSheet" ) ).toBeNull( );
     } );
 
     it( "keeps editing when Missing info sheet is dismissed", async ( ) => {

@@ -4,7 +4,7 @@ const DEFAULT_STATE = {
   exploreView: "observations",
 };
 
-interface ExploreSlice {
+export interface ExploreSlice {
   exploreView: string;
   setExploreView: ( _view: string ) => void;
 }

@@ -26,7 +26,6 @@ import { requestReadWriteMediaPermissions } from "sharedHelpers/permissions";
 import { sleep } from "sharedHelpers/util";
 import { useLayoutPrefs } from "sharedHooks";
 import useExitObservationFlow from "sharedHooks/useExitObservationFlow";
-import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 const logger = log.extend( "PhotoLibrary" );
@@ -47,12 +46,8 @@ const PhotoLibrary = ( ) => {
 
   const [photoLibraryShown, setPhotoLibraryShown] = useState( false );
   const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
-  const setGroupedPhotos = useStore(
-    ( state: ObservationFlowSlice ) => state.setGroupedPhotos,
-  );
-  const groupedPhotos = useStore(
-    ( state: ObservationFlowSlice ) => state.groupedPhotos,
-  );
+  const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
+  const groupedPhotos = useStore( state => state.groupedPhotos );
   const updateObservations = useStore( state => state.updateObservations );
   const photoLibraryUris = useStore( state => state.photoLibraryUris );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );

@@ -6,7 +6,7 @@ import {
   lowAccuracyOptions,
 } from "./geolocationWrapper";
 
-interface UserLocation {
+export interface UserLocation {
   latitude: number;
   longitude: number;
   positional_accuracy: number;

@@ -133,7 +133,7 @@ const useZoom = ( device: CameraDevice ) => {
     scheduleOnRN( updateZoomTextValue, newZoom );
   }, [maxZoomWithPinch, minZoom, updateZoomTextValue, startZoom, zoom] );
 
-  const animatedProps = useAnimatedProps < CameraProps >(
+  const animatedProps = useAnimatedProps<CameraProps>(
     () => ( { zoom: zoom.get( ) } ),
   );
 

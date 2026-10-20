@@ -5,7 +5,7 @@ const DEFAULT_STATE = {
   rootExploreView: "observations",
 };
 
-interface RootExploreSlice {
+export interface RootExploreSlice {
   rootStoredParams: object;
   setRootStoredParams: ( _params: object ) => void;
   rootExploreView: string;

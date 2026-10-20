@@ -3,7 +3,6 @@ import LocationSearchResult
 import { View } from "components/styledComponents";
 import type { Place } from "providers/ExploreV2Context";
 import React from "react";
-import type { ExploreV2SearchesSlice } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
 
 interface Props {
@@ -11,9 +10,7 @@ interface Props {
 }
 
 const RecentLocations = ( { onSelectPlace }: Props ) => {
-  const places = useStore(
-    ( state: ExploreV2SearchesSlice ) => state.exploreRecentSearches.places,
-  );
+  const places = useStore( state => state.exploreRecentSearches.places );
 
   if ( places.length === 0 ) { return null; }
 

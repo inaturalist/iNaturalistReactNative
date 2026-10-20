@@ -1,0 +1,4 @@
+UPDATED
+* Bug fixes and performance improvements
+* New users are prompted to login on first app open
+* Joining and leaving traditional projects now offers same data choices as web

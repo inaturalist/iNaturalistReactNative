@@ -1,19 +1,21 @@
 import * as apiObservations from "api/observations";
 import * as authService from "components/LoginSignUp/AuthenticationService";
 import factory from "tests/factory";
-import * as uploaders from "uploaders";
+import prepareObservationForUpload from "uploaders/dataTransformation/prepareObservationForUpload";
 import * as mediaUploader from "uploaders/mediaUploader";
 import uploadObservation from "uploaders/observationUploader";
 import syncProjectChildDeletions from "uploaders/projectChildrenDeleter";
 import * as projectChildrenUploader from "uploaders/projectChildrenUploader";
 import * as progressTracker from "uploaders/utils/progressTracker";
+import markRecordUploaded from "uploaders/utils/realmSync";
 
 jest.mock( "components/LoginSignUp/AuthenticationService" );
 jest.mock( "uploaders/utils/progressTracker" );
 jest.mock( "uploaders/mediaUploader" );
 jest.mock( "uploaders/projectChildrenDeleter" );
 jest.mock( "uploaders/projectChildrenUploader" );
-jest.mock( "uploaders" );
+jest.mock( "uploaders/dataTransformation/prepareObservationForUpload" );
+jest.mock( "uploaders/utils/realmSync" );
 jest.mock( "api/observations" );
 jest.mock( "sharedHelpers/safeRealmWrite", () => jest.fn() );
 jest.mock( "realmModels/Observation", () => {
@@ -59,7 +61,7 @@ describe( "uploadObservation", () => {
     mediaUploader.uploadObservationMedia.mockResolvedValue( mockMediaItems );
     mediaUploader.attachMediaToObservation.mockResolvedValue( undefined );
 
-    uploaders.prepareObservationForUpload.mockReturnValue( {
+    prepareObservationForUpload.mockReturnValue( {
       uuid: mockObservation.uuid,
       taxon_id: 12345,
     } );
@@ -98,7 +100,7 @@ describe( "uploadObservation", () => {
 
   it( "should prepare the observation for upload", async () => {
     await uploadObservation( mockObservation, mockRealm );
-    expect( uploaders.prepareObservationForUpload ).toHaveBeenCalledWith( mockObservation );
+    expect( prepareObservationForUpload ).toHaveBeenCalledWith( mockObservation );
   } );
 
   it( "should create a new observation if it was not previously synced", async () => {
@@ -187,7 +189,7 @@ describe( "uploadObservation", () => {
 
     expect( syncProjectChildDeletions ).toHaveBeenCalled( );
     expect( projectChildrenUploader.uploadProjectChildren ).not.toHaveBeenCalled( );
-    expect( uploaders.markRecordUploaded ).toHaveBeenCalled( );
+    expect( markRecordUploaded ).toHaveBeenCalled( );
   } );
 
   it( "should call uploadProjectChildren after media is attached", async () => {
@@ -205,7 +207,7 @@ describe( "uploadObservation", () => {
     await uploadObservation( mockObservation, mockRealm );
 
     expect( projectChildrenUploader.uploadProjectChildren ).toHaveBeenCalled();
-    expect( uploaders.markRecordUploaded ).toHaveBeenCalledWith(
+    expect( markRecordUploaded ).toHaveBeenCalledWith(
       mockObservation.uuid,
       null,
       "Observation",
@@ -214,7 +216,7 @@ describe( "uploadObservation", () => {
     );
     const childrenCallOrder = projectChildrenUploader.uploadProjectChildren
       .mock.invocationCallOrder[0];
-    const markCallOrder = uploaders.markRecordUploaded.mock.invocationCallOrder[0];
+    const markCallOrder = markRecordUploaded.mock.invocationCallOrder[0];
     expect( childrenCallOrder ).toBeLessThan( markCallOrder );
   } );
 
@@ -225,7 +227,7 @@ describe( "uploadObservation", () => {
     await expect( uploadObservation( mockObservation, mockRealm ) )
       .rejects.toThrow( "Project Children Delete Error" );
     expect( projectChildrenUploader.uploadProjectChildren ).not.toHaveBeenCalled( );
-    expect( uploaders.markRecordUploaded ).not.toHaveBeenCalled( );
+    expect( markRecordUploaded ).not.toHaveBeenCalled( );
   } );
 
   it( "should throw an error if project children upload fails", async () => {
@@ -234,13 +236,13 @@ describe( "uploadObservation", () => {
 
     await expect( uploadObservation( mockObservation, mockRealm ) )
       .rejects.toThrow( "Project Children Error" );
-    expect( uploaders.markRecordUploaded ).not.toHaveBeenCalled();
+    expect( markRecordUploaded ).not.toHaveBeenCalled();
   } );
 
   it( "should mark the record as uploaded after media is attached", async () => {
     await uploadObservation( mockObservation, mockRealm );
 
-    expect( uploaders.markRecordUploaded ).toHaveBeenCalledWith(
+    expect( markRecordUploaded ).toHaveBeenCalledWith(
       mockObservation.uuid,
       null,
       "Observation",
@@ -295,7 +297,7 @@ describe( "uploadObservation", () => {
 
     // Should not attempt to attach media or mark as uploaded
     expect( mediaUploader.attachMediaToObservation ).not.toHaveBeenCalled();
-    expect( uploaders.markRecordUploaded ).not.toHaveBeenCalled();
+    expect( markRecordUploaded ).not.toHaveBeenCalled();
   } );
 
   it( "should pass custom options to API calls", async () => {

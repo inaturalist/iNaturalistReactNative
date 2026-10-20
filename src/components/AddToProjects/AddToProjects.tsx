@@ -28,7 +28,6 @@ import buildProjectObservationSelection, {
 // eslint-disable-next-line max-len
 import type { ProjectFieldValidationError } from "sharedHelpers/validateProjectFieldsForObservation";
 import validateProjectFieldsForObservation from "sharedHelpers/validateProjectFieldsForObservation";
-import type { ObservationFlowSlice } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 import { getShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -72,12 +71,8 @@ const AddToProjects = ( ) => {
     },
     [],
   );
-  const currentObservation = useStore(
-    ( state: ObservationFlowSlice ) => state.currentObservation,
-  );
-  const updateObservationKeys = useStore(
-    ( state: ObservationFlowSlice ) => state.updateObservationKeys,
-  );
+  const currentObservation = useStore( state => state.currentObservation );
+  const updateObservationKeys = useStore( state => state.updateObservationKeys );
 
   const initialSelectedProjectIds = new Set(
     ( currentObservation?.projectObservations ?? [] )

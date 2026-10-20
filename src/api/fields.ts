@@ -26,6 +26,14 @@ export const PROJECT_SUMMARY_FIELDS = {
 
 export const PROJECT_DETAIL_FIELDS = {
   ...PROJECT_SUMMARY_FIELDS,
+  admins: {
+    user: {
+      // These are the fields we need to show the UserListItem component
+      icon_url: true,
+      id: true,
+      login: true,
+    },
+  },
   description: true,
   header_image_url: true,
   membership_model: true,

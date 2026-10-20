@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import { moveSharedGroupedPhotos } from "sharedHelpers/shareExtensionFiles";
 import { useLayoutPrefs, useTranslation } from "sharedHooks";
-import type { GroupedPhoto, ObservationFlowSlice } from "stores/createObservationFlowSlice";
+import type { GroupedPhoto } from "stores/createObservationFlowSlice";
 import useStore from "stores/useStore";
 
 import GroupPhotos from "./GroupPhotos";
@@ -16,21 +16,11 @@ const GroupPhotosContainer = ( ) => {
     screenAfterPhotoEvidence, isDefaultMode,
   } = useLayoutPrefs( );
 
-  const setObservations = useStore(
-    ( state: ObservationFlowSlice ) => state.setObservations,
-  );
-  const setGroupedPhotos = useStore(
-    ( state: ObservationFlowSlice ) => state.setGroupedPhotos,
-  );
-  const setPhotoImporterState = useStore(
-    ( state: ObservationFlowSlice ) => state.setPhotoImporterState,
-  );
-  const groupedPhotos = useStore(
-    ( state: ObservationFlowSlice ) => state.groupedPhotos,
-  );
-  const firstObservationDefaults = useStore(
-    ( state: ObservationFlowSlice ) => state.firstObservationDefaults,
-  ) || {};
+  const setObservations = useStore( state => state.setObservations );
+  const setGroupedPhotos = useStore( state => state.setGroupedPhotos );
+  const setPhotoImporterState = useStore( state => state.setPhotoImporterState );
+  const groupedPhotos = useStore( state => state.groupedPhotos );
+  const firstObservationDefaults = useStore( state => state.firstObservationDefaults ) || {};
 
   const { t } = useTranslation( );
   const [selectedObservations, setSelectedObservations] = useState<GroupedPhoto[]>( [] );

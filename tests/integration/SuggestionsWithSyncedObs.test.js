@@ -7,6 +7,7 @@ import {
 } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
 import Identification from "realmModels/Identification";
+import { UPLOAD_COMPLETE } from "stores/createUploadObservationsSlice";
 import useStore from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
@@ -99,6 +100,10 @@ afterEach( ( ) => {
   inatjs.taxa.fetch.mockReset( );
   inatjs.observations.viewedUpdates.mockReset( );
   inatjs.identifications.create.mockReset( );
+  inatjs.observations.update.mockReset( );
+  inatjs.observation_photos.create.mockReset( );
+  inatjs.observation_photos.update.mockReset( );
+  inatjs.photos.create.mockReset( );
   signOut( { realm: global.mockRealms[__filename] } );
 } );
 
@@ -294,6 +299,13 @@ describe( "Suggestions", ( ) => {
 
   it( "should update observation with vision=true via ObsEdit", async ( ) => {
     const { observations } = await setupAppWithSignedInUser( );
+    inatjs.observations.update.mockResolvedValue( makeResponse( [{
+      id: observations[0].id,
+      uuid: observations[0].uuid,
+    }] ) );
+    inatjs.observation_photos.create.mockResolvedValue( makeResponse( [{ id: 1 }] ) );
+    inatjs.observation_photos.update.mockResolvedValue( makeResponse( [{ id: 1 }] ) );
+    inatjs.photos.create.mockResolvedValue( makeResponse( [{ id: 1 }] ) );
     await navigateToSuggestionsForObservationViaObsEdit( observations[0] );
     const topTaxonResultButton = await screen.findByTestId(
       `SuggestionsList.taxa.${topSuggestion.taxon.id}`,
@@ -313,6 +325,20 @@ describe( "Suggestions", ( ) => {
     const savedObservation = global.mockRealms[__filename]
       .objectForPrimaryKey( "Observation", observations[0].uuid );
     expect( savedObservation ).toHaveProperty( "owners_identification_from_vision", true );
+    await waitFor( ( ) => {
+      expect( useStore.getState( ).uploadStatus ).toBe( UPLOAD_COMPLETE );
+    } );
+    expect( inatjs.observations.update ).toHaveBeenCalledTimes( 1 );
+    expect( inatjs.observations.update ).toHaveBeenCalledWith(
+      expect.objectContaining( {
+        id: observations[0].uuid,
+        observation: expect.objectContaining( {
+          owners_identification_from_vision: true,
+          taxon_id: topSuggestion.taxon.id,
+        } ),
+      } ),
+      expect.anything( ),
+    );
   } );
 
   it.todo( "should create an identification when accessed from Explore" );

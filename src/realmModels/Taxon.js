@@ -111,14 +111,6 @@ class Taxon extends Realm.Object {
 
   static INFRAHYBRID_LEVEL = 5;
 
-  static mimicRealmMappedPropertiesSchema( taxon ) {
-    return {
-      ...taxon,
-      default_photo: Photo.mapApiToRealm( taxon?.default_photo ),
-      preferredCommonName: taxon.preferred_common_name,
-    };
-  }
-
   static compileSearchableName( taxon ) {
     const names = [
       taxon.name,
@@ -153,11 +145,16 @@ class Taxon extends Realm.Object {
    * @returns {object}
    */
   static mapApiToRealm( taxon, _realm = null ) {
-    return {
+    const mappedTaxon = {
       ...taxon,
       id: Number( taxon?.id ),
-      default_photo: Photo.mapApiToRealm( taxon?.default_photo ),
     };
+    // we should only map default_photo when the API actually sends one; many requests
+    // omit this field, and writing an empty Photo wipes the one already stored in Realm
+    if ( taxon?.default_photo ) {
+      mappedTaxon.default_photo = Photo.mapApiToRealm( taxon.default_photo );
+    }
+    return mappedTaxon;
   }
 
   /**

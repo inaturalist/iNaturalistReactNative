@@ -1,19 +1,28 @@
 import * as observationFieldValuesApi from "api/observationFieldValues";
 import * as projectObservationsApi from "api/projectObservations";
+import { EventRegister } from "react-native-event-listeners";
 import factory, { makeResponse } from "tests/factory";
-import { markRecordUploaded } from "uploaders";
 import {
   filterDirtyOfvs,
-  filterDirtyPos,
   uploadProjectChildren,
 } from "uploaders/projectChildrenUploader";
+import {
+  HALF_INCREMENT,
+  INCREMENT_SINGLE_UPLOAD_PROGRESS,
+} from "uploaders/utils/progressTracker";
+import markRecordUploaded from "uploaders/utils/realmSync";
 
 jest.mock( "api/observationFieldValues" );
 jest.mock( "api/projectObservations" );
-jest.mock( "uploaders" );
+jest.mock( "uploaders/utils/realmSync" );
 
 const mockOpts = { api_token: "test-token", signal: new AbortController().signal };
 let mockRealm;
+let emitSpy;
+
+const projectAttachmentProgressCalls = observationUUID => emitSpy.mock.calls.filter(
+  ( [event, [uuid]] ) => event === INCREMENT_SINGLE_UPLOAD_PROGRESS && uuid === observationUUID,
+);
 
 const dirtyOfv = ( overrides = {} ) => factory( "LocalObservationFieldValue", {
   id: null,
@@ -33,6 +42,7 @@ const dirtyPo = ( overrides = {} ) => factory( "LocalProjectObservation", {
 beforeEach( () => {
   jest.clearAllMocks();
   mockRealm = { isClosed: false };
+  emitSpy = jest.spyOn( EventRegister, "emit" );
   observationFieldValuesApi.createObservationFieldValue.mockResolvedValue(
     makeResponse( [{ id: 101 }] ),
   );
@@ -42,6 +52,10 @@ beforeEach( () => {
   projectObservationsApi.createProjectObservation.mockResolvedValue(
     makeResponse( [{ id: 201 }] ),
   );
+} );
+
+afterEach( () => {
+  emitSpy.mockRestore( );
 } );
 
 describe( "projectChildrenUploader", () => {
@@ -63,26 +77,6 @@ describe( "projectChildrenUploader", () => {
         ],
       } );
       expect( filterDirtyOfvs( observation ) ).toEqual( [] );
-    } );
-  } );
-
-  describe( "filterDirtyPos", () => {
-    it( "includes never-synced POs that need sync", () => {
-      const po = dirtyPo( );
-      const observation = factory( "LocalObservation", {
-        projectObservations: [po],
-      } );
-      expect( filterDirtyPos( observation ) ).toEqual( [po] );
-    } );
-
-    it( "excludes tombstoned and already-synced POs", () => {
-      const observation = factory( "LocalObservation", {
-        projectObservations: [
-          dirtyPo( { _pending_deletion: true } ),
-          dirtyPo( { wasSynced: jest.fn( () => true ) } ),
-        ],
-      } );
-      expect( filterDirtyPos( observation ) ).toEqual( [] );
     } );
   } );
 
@@ -139,6 +133,10 @@ describe( "projectChildrenUploader", () => {
         makeResponse( [{ id: 201 }] ),
         mockRealm,
       );
+      expect( projectAttachmentProgressCalls( "obs-uuid" ) ).toEqual( [
+        [INCREMENT_SINGLE_UPLOAD_PROGRESS, ["obs-uuid", HALF_INCREMENT]],
+        [INCREMENT_SINGLE_UPLOAD_PROGRESS, ["obs-uuid", HALF_INCREMENT]],
+      ] );
     } );
 
     it( "POSTs multiple dirty OFVs in parallel", async () => {
@@ -182,6 +180,7 @@ describe( "projectChildrenUploader", () => {
         mockOpts,
       );
       expect( markRecordUploaded ).toHaveBeenCalledTimes( 2 );
+      expect( projectAttachmentProgressCalls( "obs-uuid" ) ).toEqual( [] );
     } );
 
     it( "PUTs OFVs that were previously synced", async () => {

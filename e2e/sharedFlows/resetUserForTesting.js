@@ -44,8 +44,8 @@ export default async function resetUserForTesting() {
   const formData = {
     format: "json",
     grant_type: "password",
-    client_id: Config.OAUTH_CLIENT_ID,
-    client_secret: Config.OAUTH_CLIENT_SECRET,
+    client_id: Config.IOS_OAUTH_CLIENT_ID,
+    client_secret: Config.IOS_OAUTH_CLIENT_SECRET,
     username: Config.E2E_TEST_USERNAME,
     password: Config.E2E_TEST_PASSWORD,
     locale: "en",

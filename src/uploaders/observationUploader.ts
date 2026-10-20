@@ -8,10 +8,7 @@ import { Alert, AppState } from "react-native";
 import type Realm from "realm";
 import type { RealmObservation, RealmObservationPojo } from "realmModels/types";
 import { log } from "sharedHelpers/logger";
-import {
-  markRecordUploaded,
-  prepareObservationForUpload,
-} from "uploaders";
+import prepareObservationForUpload from "uploaders/dataTransformation/prepareObservationForUpload";
 import {
   attachMediaToObservation,
   uploadObservationMedia,
@@ -27,6 +24,7 @@ import {
   clearObservationUploadError,
 } from "uploaders/utils/persistUploadError";
 import { trackObservationUpload } from "uploaders/utils/progressTracker";
+import markRecordUploaded from "uploaders/utils/realmSync";
 
 const logger = log.extend( "observationUploader" );
 

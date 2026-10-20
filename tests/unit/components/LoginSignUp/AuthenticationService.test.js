@@ -11,9 +11,22 @@ import {
 import inatjs from "inaturalistjs";
 import { navigationRef } from "navigation/navigationUtils";
 import nock from "nock";
-import RNSInfo, { deleteItem } from "react-native-sensitive-info";
+import RNSInfo, {
+  deleteItem,
+  getItem,
+  IntegrityViolationError,
+} from "react-native-sensitive-info";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
+
+const defaultGetItemImplementation = async ( key, o ) => {
+  const serviceName = o?.service || "default";
+  const store = RNSInfo.stores.get( serviceName );
+  if ( store ) {
+    return { value: store.get( key ) || null };
+  }
+  return null;
+};
 
 jest.mock( "navigation/navigationUtils", ( ) => ( {
   navigationRef: {
@@ -224,5 +237,62 @@ describe( "getJWT 401 handling", ( ) => {
       nock.enableNetConnect( );
       errorSpy.mockRestore( );
     }
+  } );
+} );
+
+describe( "getJWT secure storage integrity handling", ( ) => {
+  beforeEach( ( ) => {
+    clearAuthCache( );
+
+    const service = new Map( );
+    service.set( "accessToken", "test-access-token" );
+    service.set( "jwtToken", JWT );
+    service.set( "jwtGeneratedAt", Date.now( ).toString( ) );
+    RNSInfo.stores.set( "app", service );
+
+    navigationRef.isReady.mockReturnValue( true );
+    navigationRef.navigate.mockClear( );
+    deleteItem.mockClear( );
+    getItem.mockReset( );
+    getItem.mockImplementation( defaultGetItemImplementation );
+  } );
+
+  afterEach( ( ) => {
+    RNSInfo.stores.clear( );
+    nock.cleanAll( );
+    getItem.mockReset( );
+    getItem.mockImplementation( defaultGetItemImplementation );
+  } );
+
+  it( "discards corrupted jwtToken, then refreshes on the next getJWT", async ( ) => {
+    const refreshedJwt = "refreshed_jwt_token";
+    const integrityMessage = (
+      "[E_INTEGRITY_VIOLATION] Tampering detected for key \"jwtToken\" in service \"app\"."
+    );
+
+    getItem.mockImplementationOnce( async () => {
+      throw new IntegrityViolationError( integrityMessage );
+    } );
+
+    await expect( getJWT( ) ).rejects.toThrow( integrityMessage );
+
+    expect( deleteItem ).toHaveBeenCalledWith( "jwtToken", { service: "app" } );
+    expect( deleteItem ).toHaveBeenCalledWith( "jwtGeneratedAt", { service: "app" } );
+
+    deleteItem.mockClear( );
+
+    const scope = nock( API_HOST, {
+      reqheaders: {
+        authorization: "Bearer test-access-token",
+      },
+    } )
+      .get( "/users/api_token.json" )
+      .reply( 200, { api_token: refreshedJwt } );
+
+    const result = await getJWT( );
+
+    expect( result ).toEqual( refreshedJwt );
+    expect( navigationRef.navigate ).not.toHaveBeenCalled( );
+    scope.done( );
   } );
 } );

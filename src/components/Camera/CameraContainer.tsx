@@ -46,7 +46,7 @@ interface StoredResult {
   timestamp: number;
 }
 
-interface SavePhotoOptions {
+export interface SavePhotoOptions {
   replaceExisting?: boolean;
   inactivateCallback?: () => void;
   navigateImmediately?: boolean;
@@ -58,6 +58,7 @@ export const MAX_PHOTOS_ALLOWED = 20;
 const logger = log.extend( "CameraContainer" );
 
 const CameraContainer = ( ) => {
+  const startFirebaseTrace = useStore( state => state.startFirebaseTrace );
   const currentObservation = useStore( state => state.currentObservation );
   const setCameraState = useStore( state => state.setCameraState );
   const evidenceToAdd = useStore( state => state.evidenceToAdd );
@@ -66,7 +67,6 @@ const CameraContainer = ( ) => {
   const setNewPhotoUris = useStore( state => state.setNewPhotoUris );
   const sentinelFileName = useStore( state => state.sentinelFileName );
   const setSentinelFileName = useStore( state => state.setSentinelFileName );
-  const startFirebaseTrace = useStore( state => state.startFirebaseTrace );
 
   const navigation = useNavigation<NoBottomTabStackScreenProps<"Camera">["navigation"]>();
   const { params } = useRoute<NoBottomTabStackScreenProps<"Camera">["route"]>( );

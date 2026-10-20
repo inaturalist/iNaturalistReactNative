@@ -48,6 +48,13 @@ const logger = log.extend( "AuthenticationService" );
 // potential for infinite loops.
 const localLogger = logWithoutRemote.extend( "AuthenticationService" );
 
+const logDebugInfo = ( infoText: string ): void => {
+  if ( !isDebugModeSync( ) ) {
+    return;
+  }
+  localLogger.info( infoText );
+};
+
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
 const API_HOST: string = EnvConfig.OAUTH_API_URL
@@ -118,14 +125,30 @@ async function getSensitiveItem(
     const item = await getItem( key, options );
     return item?.value ?? null;
   } catch ( e ) {
-    if ( e instanceof SensitiveInfoError && isDebugModeSync() ) {
+    if ( e instanceof SensitiveInfoError ) {
       switch ( e.code ) {
         case ErrorCode.NotFound:
           // Value doesn't exist
-          localLogger.info( `getItem not available for ${key}` );
+          logDebugInfo( `getItem not available for ${key}` );
+          break;
+        case ErrorCode.IntegrityViolation:
+          try {
+            if ( key === "jwtToken" ) {
+              logDebugInfo( "IntegrityViolation error for jwtToken, trying deleting" );
+              await deleteItem( "jwtToken", options );
+              await deleteItem( "jwtGeneratedAt", options );
+            }
+            clearAuthCache( );
+          } catch ( deleteError ) {
+            if ( deleteError instanceof SensitiveInfoError ) {
+              logDebugInfo(
+                `Error deleting jwtToken or jwtGeneratedAt: ${deleteError.message}`,
+              );
+            }
+          }
           break;
         default:
-          localLogger.info( `getItem unknown error for ${key}: ${e.message}` );
+          logDebugInfo( `getItem unknown error for ${key}: ${e.message}` );
           break;
       }
     }
@@ -146,8 +169,8 @@ async function setSensitiveItem( key: string, value: string, options = {} ) {
     clearAuthCache( );
     return result;
   } catch ( e ) {
-    if ( e instanceof SensitiveInfoError && isDebugModeSync( ) ) {
-      localLogger.info(
+    if ( e instanceof SensitiveInfoError ) {
+      logDebugInfo(
         `setItem error for ${key}, ${e.code} ${e.message}`,
       );
     }
@@ -166,8 +189,8 @@ async function deleteSensitiveItem(
     clearAuthCache( );
     return result;
   } catch ( e ) {
-    if ( e instanceof SensitiveInfoError && isDebugModeSync() ) {
-      localLogger.info(
+    if ( e instanceof SensitiveInfoError ) {
+      logDebugInfo(
         `deleteItem error for ${key}, ${e.code} ${e.message}`,
       );
     }
@@ -575,8 +598,12 @@ async function verifyCredentials(
   const formData = {
     format: "json",
     grant_type: "password",
-    client_id: EnvConfig.OAUTH_CLIENT_ID,
-    client_secret: EnvConfig.OAUTH_CLIENT_SECRET,
+    client_id: Platform.OS === "android"
+      ? EnvConfig.ANDROID_OAUTH_CLIENT_ID
+      : EnvConfig.IOS_OAUTH_CLIENT_ID,
+    client_secret: Platform.OS === "android"
+      ? EnvConfig.ANDROID_OAUTH_CLIENT_SECRET
+      : EnvConfig.IOS_OAUTH_CLIENT_SECRET,
     password,
     username,
     locale: i18next.language,
@@ -678,8 +705,12 @@ async function authenticateUserByAssertion(
 ): Promise<AuthenticateUserResult> {
   const apiClient = createAPI( { Accept: "application/json" } );
   const formData = {
-    client_id: EnvConfig.OAUTH_CLIENT_ID,
-    client_secret: EnvConfig.OAUTH_CLIENT_SECRET,
+    client_id: Platform.OS === "android"
+      ? EnvConfig.ANDROID_OAUTH_CLIENT_ID
+      : EnvConfig.IOS_OAUTH_CLIENT_ID,
+    client_secret: Platform.OS === "android"
+      ? EnvConfig.ANDROID_OAUTH_CLIENT_SECRET
+      : EnvConfig.IOS_OAUTH_CLIENT_SECRET,
     locale: i18next.language,
     assertion,
     assertion_type: assertionType,

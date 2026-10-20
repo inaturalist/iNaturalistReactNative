@@ -41,7 +41,6 @@ import useFeatureFlag from "sharedHooks/useFeatureFlag";
 import useLocalObservationIds from "sharedHooks/useLocalObservationIds";
 import useObservationCounts from "sharedHooks/useObservationCounts";
 import { FeatureFlag } from "stores/createFeatureFlagSlice";
-import type { MyObservationsSlice } from "stores/createMyObservationsSlice";
 import {
   UPLOAD_PENDING,
 } from "stores/createUploadObservationsSlice";
@@ -77,16 +76,15 @@ const MyObservationsResults = ( ) => {
 
   const { state: myObsState, dispatch: myObsDispatch } = useMyObservations( );
 
-  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const uploadQueue = useStore( state => state.uploadQueue );
+  const setStartUploadObservations = useStore( state => state.setStartUploadObservations );
   const addToUploadQueue = useStore( state => state.addToUploadQueue );
   const addTotalToolbarIncrements = useStore( state => state.addTotalToolbarIncrements );
   const startManualSync = useStore( state => state.startManualSync );
   const startAutomaticSync = useStore( state => state.startAutomaticSync );
   const myObsOffsetToRestore = useStore( state => state.myObsOffsetToRestore );
   const setMyObsOffset = useStore( state => state.setMyObsOffset );
-  const clearMyObservationsViewState: MyObservationsSlice["clearMyObservationsViewState"]
-    = useStore( ( state: MyObservationsSlice ) => state.clearMyObservationsViewState );
+  const clearMyObservationsViewState = useStore( state => state.clearMyObservationsViewState );
   const uploadStatus = useStore( state => state.uploadStatus );
   const justFinishedSignup: boolean = useStore( state => state.layout.justFinishedSignup );
   // As soon as we leave this screen, the user is no longer considered as just finished signup

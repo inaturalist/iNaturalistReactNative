@@ -71,6 +71,13 @@ export interface ApiProjectSummary {
 
 // Result from using PROJECT_DETAIL_FIELDS
 export interface ApiProject extends ApiProjectSummary {
+  admins: {
+    user: {
+      icon_url: string | null;
+      id: number;
+      login: string;
+    };
+  }[] | null;
   description: string;
   header_image_url: string | null;
   membership_model: "inviteonly" | "open" | null;
@@ -324,6 +331,7 @@ export interface ApiObservationFilterParams extends ApiParams {
 }
 
 export interface ApiObservationsSearchParams extends ApiObservationFilterParams {
+  id_above?: number;
   id_below?: number;
   order?: typeof ORDER_ASC | typeof ORDER_DESC;
   order_by?: typeof ORDER_BY_CREATED_AT |

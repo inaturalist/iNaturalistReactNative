@@ -17,9 +17,11 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 1. Run `npm install`
 1. Run `npx pod-install` or `cd ios && pod install` from the root directory
 1. `cp env.example .env.staging` for staging and `cp env.example .env` for production and fill in appropriate values. This is not part of the code repo (contains secrets, such as OAuth client ID).
+1. **Debug builds** (`npm run ios`, `npm run android`, or Xcode Debug) read **`.env.staging` only**; **Release** builds read **`.env` only**. Creating `.env` alone does not configure a local Debug build.
 1. To run on Android, do this `cp android/example-keystore.properties android/keystore.properties`. Fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff.
-1. Firebase is optional, you can remove it if you don't need it. If you do want to use it, you have to add platform-specific config files that are not part of the code repo.
+1. Firebase is optional, you can remove it if you don't need it (that is remove all packages and references in the entire codebase). If you do not remove it, Firebase config is required for the app to launch (native code calls `[FIRApp configure]` at startup). If you do want to use it, you have to add platform-specific config files that are not part of the code repo.
     1. On iOS, `cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.staging.plist` and `cp ios/GoogleService-Info.example.plist ios/GoogleService-Info.production.plist`, and fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff.
+    1. On iOS, at launch, Firebase aborts if the bundled plist is missing or if `API_KEY` is not a valid Firebase key (exactly **39 characters**, starting with **`A`**, alphanumeric plus `-` and `_` only).
     1. On Android, `cp android/app/google-services.example.json android/app/src/debug/google-services.json` and `cp android/app/google-services.example.json android/app/src/release/google-services.json`, and fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff.
 1. Add AI Camera model and taxonomy files. The computer vision model and Geomodel files are not part of the code repo, and have to be installed. The app itself will load the model file with the filename specified in a .env file. On Android, the current file names are specified in these env variables `ANDROID_MODEL_FILE_NAME`, `ANDROID_TAXONOMY_FILE_NAME`, and `ANDROID_GEOMODEL_FILE_NAME`. On iOS, the current file names are specified in these env variables `IOS_MODEL_FILE_NAME`, `IOS_TAXONOMY_FILE_NAME`, and `IOS_GEOMODEL_FILE_NAME`. After a fresh clone of the repo and copying the env.example file (see above), you have to add the files by following these steps:
     1. Add the example model files by executing `npm run add-example-model`. If that does not work continue with the next step.
@@ -298,6 +300,7 @@ We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the de
 
 1. Make a [Github personal access token](https://github.com/settings/tokens/) with repo access in the `GITHUB_API_TOKEN` environmental variable.
 1. `cp android/example-keystore.properties android/keystore.properties` and fill in the relevant values provided by another member of iNat staff.
+1. `cp fastlane/env.example fastlane/.env` and fill in the relevant values provided by another member of iNat staff.
 1. `cp fastlane/example-Appfile fastlane/Appfile` and fill in the relevant values provided by another member of iNat staff.
 1. Work with iNat staff to either get a new Apple ID or associate an existing one with the iNat Apple development team
 1. Sign in to Xcode with your Apple ID
@@ -372,8 +375,7 @@ fastlane prod
             1. Upload the previously only saved observation
     1. Install a "release" build on an Android device and repeat iOS steps
 1. Write release notes based on commits since the last release. Try to keep them brief but emphasize what's new and what's fixed. Just keep them in a text editor; you'll save them at a later step.
-1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version if the only changes were bug fixes, bump minor version if there were new features, and bump the major version if the app was completely re-written or can't import data from previous versions.
-1. `npm install` to set the version in `package-lock.json`
+1. Edit `package.json`, `package-lock.json`, `/ios/iNaturalistReactNative/Info.plist`, `ios/iNaturalistReactNative.xcodeproj/project.pbxproj`, and `android/app/build.gradle` to update the `version` per semantic versioning rules: bump the patch version if the only changes were bug fixes, bump minor version if there were new features, and bump the major version if the app was completely re-written or can't import data from previous versions.
 1. `npm run legal-generate` to re-generate the licenses to show in the app (based on current dependencies)
 1. Commit changes
 1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote. (:wq to save and exit)
