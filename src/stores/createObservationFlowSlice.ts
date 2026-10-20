@@ -239,7 +239,6 @@ const createObservationFlowSlice: StateCreator<ObservationFlowSlice> = ( set, ge
 
     return ( {
       cameraRollUris: savedUris,
-      savingPhoto: false,
     } );
   } ),
   setSavingPhoto: ( saving: boolean ) => set( { savingPhoto: saving } ),
