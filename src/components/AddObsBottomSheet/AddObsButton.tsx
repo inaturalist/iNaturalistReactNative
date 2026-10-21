@@ -1,5 +1,3 @@
-// @flow
-
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
 import AddObsTooltip from "components/AddObsBottomSheet/AddObsTooltip";
@@ -12,7 +10,7 @@ import useStore, { zustandStorage } from "stores/useStore";
 
 const logger = log.extend( "AddObsButton" );
 
-const AddObsButton = ( ): React.Node => {
+const AddObsButton = ( ) => {
   const [showBottomSheet, setShowBottomSheet] = React.useState( false );
   const [showTooltip, setShowTooltip] = React.useState( false );
   const [currentRoute, setCurrentRoute] = React.useState( null );
