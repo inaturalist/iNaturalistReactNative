@@ -23,10 +23,10 @@ const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get( );
 
 const DELETION_STARTED_PROGRESS = 0.25;
 
-type Props = {
-  numUploadableObservations: number,
-  handleSyncButtonPress: Function,
-  currentUser: Object
+interface Props {
+  numUploadableObservations: number;
+  handleSyncButtonPress: Function;
+  currentUser: object;
 }
 
 const SimpleUploadBannerContainer = ( {
