@@ -1,4 +1,4 @@
-import type { IconicTaxonCountResult } from "api/observationsTyped";
+import type { IconicTaxonCountResult } from "api/observations";
 
 // These values are exactly the API's allowed `iconic_taxa` values
 export enum ICONIC_TAXA_GROUP {

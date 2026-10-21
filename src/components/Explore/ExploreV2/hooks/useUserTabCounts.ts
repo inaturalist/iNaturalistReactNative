@@ -1,5 +1,5 @@
-import type { ApiIdentifierCount, ApiObserverCount } from "api/observationsTyped";
-import { fetchIdentifiers, fetchObservers } from "api/observationsTyped";
+import type { ApiIdentifierCount, ApiObserverCount } from "api/observations";
+import { fetchIdentifiers, fetchObservers } from "api/observations";
 import type { ApiResponse } from "api/types";
 import type {
   ExploreV2BaseQueryParams,
