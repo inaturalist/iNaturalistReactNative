@@ -5,7 +5,7 @@ import { useTranslation } from "sharedHooks";
 
 interface Props {
   textClassName?: string;
-  currentUser: { id: number };
+  currentUser: { id: number } | null;
   observation: object;
 }
 
