@@ -1,8 +1,6 @@
-// @flow
-
-import type { Node } from "react";
 import React, { useCallback, useMemo } from "react";
 import { Dimensions, PixelRatio } from "react-native";
+import type { UserPojo } from "realmModels/User";
 import {
   useTranslation,
 } from "sharedHooks";
@@ -25,15 +23,15 @@ const DELETION_STARTED_PROGRESS = 0.25;
 
 interface Props {
   numUploadableObservations: number;
-  handleSyncButtonPress: Function;
-  currentUser: object;
+  handleSyncButtonPress: ( ) => void;
+  currentUser: UserPojo | null;
 }
 
 const SimpleUploadBannerContainer = ( {
   handleSyncButtonPress,
   numUploadableObservations,
   currentUser,
-}: Props ): Node => {
+}: Props ) => {
   const numOfUserObservations = zustandStorage.getItem( "numOfUserObservations" );
   const currentDeleteCount = useStore( state => state.currentDeleteCount );
   const deleteError = useStore( state => state.deleteError );
