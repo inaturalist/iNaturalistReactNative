@@ -172,6 +172,7 @@ const TextInputSheet = ( {
             // If the confirm() callback returns false, something went wrong
             // and the user may need to edit the text or do something else
             // before we close the sheet
+            // TODO: confirm is async in some cases
             if ( confirm( input ) !== false ) {
               dismissKeyboardAndClose( );
             }
