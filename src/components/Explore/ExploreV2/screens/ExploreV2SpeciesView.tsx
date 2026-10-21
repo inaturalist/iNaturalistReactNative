@@ -1,6 +1,7 @@
 import { useQueries } from "@tanstack/react-query";
+import { SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
-import type { ApiTaxon } from "api/types";
+import type { ApiSpeciesCountSummary, ApiTaxon } from "api/types";
 import ExploreFlashList from "components/Explore/ExploreFlashList";
 import ExploreV2SpeciesGridItem
   from "components/Explore/ExploreV2/components/ExploreV2SpeciesGridItem";
@@ -74,15 +75,11 @@ const ExploreV2SpeciesView = ( { enabled, isConnected, params }: Props ) => {
   const observedIds = useQueries( {
     queries: taxonIdChunks.map( chunk => ( {
       queryKey: ["exploreV2SpeciesCountsSeen", currentUser?.id, chunk],
-      queryFn: ( ) => fetchSpeciesCounts( {
+      queryFn: ( ) => fetchSpeciesCounts<ApiSpeciesCountSummary>( {
         user_id: currentUser?.id,
         taxon_id: chunk,
         per_page: chunk.length,
-        fields: {
-          taxon: {
-            id: true,
-          },
-        },
+        fields: SPECIES_COUNTS_SUMMARY_FIELDS,
       } ),
       enabled: !!( currentUser && chunk.length > 0 ),
       // we don't really need to worry about a user's life list changing on this screen

@@ -115,3 +115,18 @@ export const ICONIC_TAXA_COUNTS_FIELDS = {
     name: true,
   },
 };
+
+export const SPECIES_COUNTS_SUMMARY_FIELDS = {
+  taxon: {
+    id: true,
+  },
+};
+
+export const SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS = {
+  taxon: {
+    iconic_taxon_name: true,
+    id: true,
+    name: true,
+    preferred_common_name: true,
+  },
+};

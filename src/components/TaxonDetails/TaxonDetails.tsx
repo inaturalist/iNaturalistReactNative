@@ -5,7 +5,9 @@ import {
   useNavigationState,
   useRoute,
 } from "@react-navigation/native";
+import { SPECIES_COUNTS_SUMMARY_FIELDS } from "api/fields";
 import { fetchSpeciesCounts } from "api/observations";
+import type { ApiSpeciesCountSummary } from "api/types";
 import MatchSaveDiscardButtons from "components/Match/SaveDiscardButtons";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
@@ -182,14 +184,10 @@ const TaxonDetails = ( ) => {
 
   const { data: seenByCurrentUser } = useQuery(
     ["fetchSpeciesCounts", taxon?.id],
-    ( ) => fetchSpeciesCounts( {
+    ( ) => fetchSpeciesCounts<ApiSpeciesCountSummary>( {
       user_id: currentUser?.id,
       taxon_id: taxon?.id,
-      fields: {
-        taxon: {
-          id: true,
-        },
-      },
+      fields: SPECIES_COUNTS_SUMMARY_FIELDS,
     } ),
     {
       enabled: !!( taxon && taxon?.id !== 0 && taxon?.rank_level <= 10 && currentUser ),

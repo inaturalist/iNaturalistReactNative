@@ -374,3 +374,20 @@ export interface ApiObservationsSearchParams extends ApiObservationFilterParams 
     typeof ORDER_BY_VOTES;
   return_bounds?: boolean;
 }
+
+// When using SPECIES_COUNTS_SUMMARY_FIELDS
+export interface ApiSpeciesCountSummary extends ApiRecord {
+  taxon: {
+    id: number;
+  };
+}
+
+// When using SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS
+export interface ApiSpeciesCountVerboseSummary extends ApiRecord {
+  taxon: {
+    iconic_taxon_name: string;
+    id: number;
+    name: string;
+    preferred_common_name: string;
+  };
+}

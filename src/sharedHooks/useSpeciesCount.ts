@@ -1,5 +1,5 @@
 import { fetchSpeciesCounts } from "api/observations";
-import type { ApiParams, ApiResponse } from "api/types";
+import type { ApiParams } from "api/types";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 export interface SpeciesCountParams extends ApiParams {
