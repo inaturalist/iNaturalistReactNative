@@ -26,7 +26,7 @@ const useSpeciesCount = (
 ): number | null => {
   const countParams = { ...params, per_page: 0, ttl: -1 };
 
-  const { data } = useAuthenticatedQuery<ApiResponse<object>>(
+  const { data } = useAuthenticatedQuery(
     [keyPrefix, countParams],
     optsWithAuth => fetchSpeciesCounts( countParams, optsWithAuth ),
     { enabled },
