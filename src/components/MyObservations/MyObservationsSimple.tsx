@@ -34,8 +34,8 @@ import Photo from "realmModels/Photo";
 import type {
   RealmObservation,
   RealmTaxon,
-  RealmUser,
 } from "realmModels/types";
+import type { UserPojo } from "realmModels/User";
 import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import {
   OBSERVATIONS_SORT_OPTIONS,
@@ -67,7 +67,7 @@ import SimpleTaxonGridItem from "./SimpleTaxonGridItem";
 
 interface Props {
   activeTab: string;
-  currentUser?: RealmUser;
+  currentUser: UserPojo | null;
   fetchFromLastObservation: ( id: number ) => void;
   handleIndividualUploadPress: ( uuid: string ) => void;
   handlePullToRefresh: ( ) => Promise<void>;
