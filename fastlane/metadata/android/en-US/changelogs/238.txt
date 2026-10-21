@@ -1,0 +1,6 @@
+FIXED
+* Bug fixes and performance improvements
+
+NEW
+* Screen for Blog, Project and Users journal posts
+* Section to edit coordinate access for traditional projects
