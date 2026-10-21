@@ -1,5 +1,3 @@
-// @flow
-
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import { fontRegular } from "appConstants/fontFamilies";
 import {
@@ -7,7 +5,6 @@ import {
   MentionTextInput,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React, { useMemo, useState } from "react";
 import { Keyboard } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -20,17 +17,17 @@ import colors from "styles/tailwindColors";
 // (e.g. iPhone SE) will jerk around a bit to avoid the top inset
 const TARGET_INPUT_HEIGHT = 220;
 
-type Props = {
-  buttonText: string,
-  confirm: Function,
-  description?: string,
-  mentionsEnabled?: boolean,
-  onPressClose: Function,
-  headerText: string,
-  initialInput?: string,
-  maxLength?: number,
-  placeholder?: string,
-  textInputStyle?: Object
+interface Props {
+  buttonText: string;
+  confirm: Function;
+  description?: string;
+  mentionsEnabled?: boolean;
+  onPressClose: Function;
+  headerText: string;
+  initialInput?: string;
+  maxLength?: number;
+  placeholder?: string;
+  textInputStyle?: object;
 }
 
 const CharLimit = ( { current = 0, limit = 1, t } ) => {
@@ -66,7 +63,7 @@ const TextInputSheet = ( {
   maxLength,
   placeholder,
   textInputStyle,
-}: Props ): Node => {
+}: Props ) => {
   const [input, setInput] = useState( initialInput );
   const { t } = useTranslation( );
   const { nonKeyboardHeight } = useKeyboardInfo( TARGET_INPUT_HEIGHT );
