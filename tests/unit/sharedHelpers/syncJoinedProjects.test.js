@@ -1,4 +1,4 @@
-import fetchUserProjects from "api/usersTyped";
+import { fetchUserProjects } from "api/users";
 import Project from "realmModels/Project";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import syncJoinedProjects from "sharedHelpers/syncJoinedProjects";

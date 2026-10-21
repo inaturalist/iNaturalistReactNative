@@ -1,8 +1,9 @@
+import type { ErrorWithResponse, INatApiError } from "api/error";
+import handleError from "api/error";
+import type {
+  ApiDefaultResult, ApiGetByIdParams, ApiOpts, ApiResponse, ApiUntypedParams,
+} from "api/types";
 import inatjs from "inaturalistjs";
-
-import type { ErrorWithResponse } from "./error";
-import handleError from "./error";
-import type { ApiOpts, ApiUntypedParams } from "./types";
 
 const REMOTE_USER_FIELDS = {
   created_at: true,
@@ -58,6 +59,22 @@ const fetchRemoteUser = async (
     return handleError(
       e as ErrorWithResponse,
       { context: { functionName: "fetchRemoteUser", id, opts } },
+    );
+  }
+};
+
+const fetchUserProjects = async <T = ApiDefaultResult>(
+  params: ApiGetByIdParams,
+  opts: ApiOpts = {},
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
+  try {
+    const response = await inatjs.users.projects( params, opts );
+    if ( !response ) { return null; }
+    return response;
+  } catch ( e ) {
+    return handleError(
+      e as ErrorWithResponse,
+      { context: { functionName: "fetchUserProjects", opts } },
     );
   }
 };
@@ -184,6 +201,7 @@ export {
   fetchRemoteUser,
   fetchUserEmailAvailable,
   fetchUserMe,
+  fetchUserProjects,
   fetchUsers,
   muteUser,
   unblockUser,
