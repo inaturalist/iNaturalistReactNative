@@ -5,6 +5,7 @@ import {
   MentionTextInput,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { TFunction } from "i18next";
 import React, { useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { Keyboard } from "react-native";
@@ -20,10 +21,10 @@ const TARGET_INPUT_HEIGHT = 220;
 
 interface Props {
   buttonText: string;
-  confirm: Function;
+  confirm: ( input: string | undefined ) => boolean;
   description?: string;
   mentionsEnabled?: boolean;
-  onPressClose: Function;
+  onPressClose: ( ) => void;
   headerText: string;
   initialInput?: string;
   maxLength?: number;
@@ -31,7 +32,11 @@ interface Props {
   textInputStyle?: object;
 }
 
-const CharLimit = ( { current = 0, limit = 1, t } ) => {
+const CharLimit = ( { current = 0, limit = 1, t }: {
+  current?: number;
+  limit?: number;
+  t: TFunction;
+} ) => {
   let currentColor = "text-darkGrayDisabled";
   if ( current / limit >= 1 ) {
     currentColor = "text-warningRed";
