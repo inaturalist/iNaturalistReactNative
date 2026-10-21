@@ -7,13 +7,14 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import flatten from "lodash/flatten";
+import { initialMyObservationsState } from "providers/MyObservationsContext";
 import React from "react";
 import safeRealmWrite from "sharedHelpers/safeRealmWrite";
 import { sleep } from "sharedHelpers/util";
-import { zustandStorage } from "stores/useStore";
+import useStore, { zustandStorage } from "stores/useStore";
 import factory, { makeResponse } from "tests/factory";
 import faker from "tests/helpers/faker";
-import { renderAppWithComponent } from "tests/helpers/render";
+import { queryClient, renderAppWithComponent } from "tests/helpers/render";
 import setStoreStateLayout from "tests/helpers/setStoreStateLayout";
 import setupUniqueRealm from "tests/helpers/uniqueRealm";
 import { signIn, signOut } from "tests/helpers/user";
@@ -396,6 +397,71 @@ describe( "MyObservations", ( ) => {
         } );
 
         expect( inatjs.observations.deleted ).toHaveBeenCalled();
+      } );
+
+      describe( "observation and species counts", ( ) => {
+        const mockRemoteCountsResponse = totalResults => ( {
+          ...makeResponse( ),
+          total_results: totalResults,
+        } );
+
+        beforeEach( ( ) => {
+          queryClient.clear( );
+          zustandStorage.setItem( "numOfUserObservations", 1026 );
+          zustandStorage.setItem( "numOfUserSpecies", 499 );
+        } );
+
+        afterEach( ( ) => {
+          queryClient.clear( );
+          inatjs.observations.search.mockResolvedValue( makeResponse( ) );
+          inatjs.observations.speciesCounts.mockResolvedValue( makeResponse( ) );
+          useStore.setState( { myObservations: initialMyObservationsState } );
+        } );
+
+        it( "shows server counts lower than the stored counts and stores them", async ( ) => {
+          inatjs.observations.search.mockResolvedValue( mockRemoteCountsResponse( 812 ) );
+          inatjs.observations.speciesCounts.mockResolvedValue( mockRemoteCountsResponse( 461 ) );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          expect( await screen.findByText( "812" ) ).toBeVisible( );
+          expect( await screen.findByText( "461" ) ).toBeVisible( );
+          await waitFor( ( ) => {
+            expect( zustandStorage.getItem( "numOfUserObservations" ) ).toEqual( 812 );
+          } );
+          expect( zustandStorage.getItem( "numOfUserSpecies" ) ).toEqual( 461 );
+        } );
+
+        it( "shows stored counts while server counts are unavailable", async ( ) => {
+          inatjs.observations.search.mockReturnValue( new Promise( ( ) => { } ) );
+          inatjs.observations.speciesCounts.mockReturnValue( new Promise( ( ) => { } ) );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          expect( await screen.findByText( "1,026" ) ).toBeVisible( );
+          expect( screen.getByText( "499" ) ).toBeVisible( );
+          expect( zustandStorage.getItem( "numOfUserObservations" ) ).toEqual( 1026 );
+          expect( zustandStorage.getItem( "numOfUserSpecies" ) ).toEqual( 499 );
+        } );
+
+        it( "does not store a species count filtered by a taxon search", async ( ) => {
+          const searchedTaxon = factory( "RemoteTaxon" );
+          useStore.setState( {
+            myObservations: {
+              ...initialMyObservationsState,
+              searchedTaxon: { id: searchedTaxon.id, name: searchedTaxon.name },
+            },
+          } );
+          inatjs.observations.search.mockResolvedValue( makeResponse( [
+            factory( "RemoteObservation", { taxon: searchedTaxon } ),
+          ] ) );
+          inatjs.observations.speciesCounts.mockResolvedValue( mockRemoteCountsResponse( 3 ) );
+          renderAppWithComponent( <MyObservationsContainer /> );
+          await waitFor( ( ) => {
+            expect( inatjs.observations.speciesCounts ).toHaveBeenCalledWith(
+              expect.objectContaining( { taxon_id: searchedTaxon.id } ),
+              expect.anything( ),
+            );
+          } );
+          expect( await screen.findByText( "3" ) ).toBeVisible( );
+          expect( zustandStorage.getItem( "numOfUserSpecies" ) ).toEqual( 499 );
+        } );
       } );
 
       describe( "on screen focus", () => {
