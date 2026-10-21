@@ -25,6 +25,7 @@ import { View } from "components/styledComponents";
 import i18n from "i18next";
 import compact from "lodash/compact";
 import find from "lodash/find";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -88,9 +89,15 @@ const TaxonDetails = ( ) => {
   const resetMyObsOffsetToRestore = useStore( state => state.resetMyObsOffsetToRestore );
 
   // Hooks
-  const navigation = useNavigation( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"TaxonDetails">["navigation"] &
+    TabStackScreenProps<"TaxonDetails">["navigation"]
+  >( );
   const navigateToExplore = useNavigateToExplore( );
-  const { params } = useRoute( );
+  const { params } = useRoute<
+    NoBottomTabStackScreenProps<"TaxonDetails">["route"] &
+    TabStackScreenProps<"TaxonDetails">["route"]
+  >( );
   const {
     id, hideNavButtons, firstPhotoID, representativePhoto,
   } = params;
