@@ -2,6 +2,7 @@ import type { ErrorWithResponse, INatApiError } from "api/error";
 import handleError from "api/error";
 import { ICONIC_TAXA_COUNTS_FIELDS } from "api/fields";
 import type {
+  ApiDefaultResult,
   ApiObservationFilterParams,
   ApiObservationsSearchParams,
   ApiOpts,
@@ -332,10 +333,10 @@ export interface SpeciesCountsParams extends ApiParams {
   user_id?: number;
 }
 
-const fetchSpeciesCounts = async (
+const fetchSpeciesCounts = async <T = ApiDefaultResult>(
   params: SpeciesCountsParams = {},
   opts: ApiOpts = {},
-) => {
+): Promise<ApiResponse<T> | null | ErrorWithResponse | INatApiError> => {
   try {
     return inatjs.observations.speciesCounts( params, opts );
   } catch ( e ) {
