@@ -1,8 +1,10 @@
+import type { ParamListRoute } from "@react-navigation/native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import AddObsBottomSheet from "components/AddObsBottomSheet/AddObsBottomSheet";
 import AddObsTooltip from "components/AddObsBottomSheet/AddObsTooltip";
 import GradientButton from "components/SharedComponents/Buttons/GradientButton";
 import { navigationRef } from "navigation/navigationUtils";
+import type { RootStackParamList } from "navigation/types";
 import * as React from "react";
 import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
@@ -15,7 +17,9 @@ const logger = log.extend( "AddObsButton" );
 const AddObsButton = ( ) => {
   const [showBottomSheet, setShowBottomSheet] = React.useState( false );
   const [showTooltip, setShowTooltip] = React.useState( false );
-  const [currentRoute, setCurrentRoute] = React.useState( null );
+  const [currentRoute, setCurrentRoute] = React.useState<
+    ParamListRoute<RootStackParamList> | undefined | null
+  >( null );
 
   const { t } = useTranslation();
 
