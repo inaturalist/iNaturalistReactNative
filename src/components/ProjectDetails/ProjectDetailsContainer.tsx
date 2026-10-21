@@ -81,7 +81,7 @@ const ProjectDetailsContainer = ( ) => {
   );
 
   const speciesCountsQueryKey = ["fetchSpeciesCounts", id];
-  const { data: speciesCounts } = useAuthenticatedQuery<ApiResponse<object>>(
+  const { data: speciesCounts } = useAuthenticatedQuery(
     speciesCountsQueryKey,
     ( ) => fetchSpeciesCounts( {
       project_id: id,
