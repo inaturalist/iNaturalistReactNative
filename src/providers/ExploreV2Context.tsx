@@ -174,11 +174,15 @@ export const initialExploreV2State: ExploreV2State = {
 export function initialStateFromEntryParams(
   params?: ExploreV2EntryParams | null,
 ): ExploreV2State {
-  return {
+  const base = {
     ...initialExploreV2State,
-    subject: params?.subject || initialExploreV2State.subject,
-    location: params?.location || initialExploreV2State.location,
-    activeTab: params?.activeTab || initialExploreV2State.activeTab,
+    ...params?.search,
+  };
+  return {
+    ...base,
+    subject: params?.subject || base.subject,
+    location: params?.location || base.location,
+    activeTab: params?.activeTab || base.activeTab,
   };
 }
 
