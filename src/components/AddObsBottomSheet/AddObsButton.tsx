@@ -8,6 +8,8 @@ import { log } from "sharedHelpers/logger";
 import { useCurrentUser, useLayoutPrefs, useTranslation } from "sharedHooks";
 import useStore, { zustandStorage } from "stores/useStore";
 
+import ADD_OBS_SCREENS from "./types";
+
 const logger = log.extend( "AddObsButton" );
 
 const AddObsButton = ( ) => {
@@ -113,10 +115,14 @@ const AddObsButton = ( ) => {
     logger.info( `isAdvancedUser: ${isAllAddObsOptionsMode}` );
   }, [isAllAddObsOptionsMode] );
 
-  type Screen = "ObsEdit" | "Camera" | "PhotoLibrary" | "SoundRecorder";
-  const navAndCloseBottomSheet = ( screen: Screen, params ) => {
-    if ( screen !== "ObsEdit" ) {
-      resetObservationFlowSlice( );
+  const navAndCloseBottomSheet = (
+    screen: ADD_OBS_SCREENS,
+    params?: {
+      camera?: string;
+    },
+  ) => {
+    if ( screen !== ADD_OBS_SCREENS.OBS_EDIT ) {
+      resetObservationFlowSlice();
     }
 
     // we need to reset the navigation stack whenever a user navigates from the AddObs wheel,
@@ -141,9 +147,11 @@ const AddObsButton = ( ) => {
       } ),
     );
 
-    closeBottomSheet( );
+    closeBottomSheet();
   };
-  const navToARCamera = ( ) => { navAndCloseBottomSheet( "Camera", { camera: "AI" } ); };
+  const navToARCamera = ( ) => {
+    navAndCloseBottomSheet( ADD_OBS_SCREENS.CAMERA, { camera: "AI" } );
+  };
 
   // #endregion
 
