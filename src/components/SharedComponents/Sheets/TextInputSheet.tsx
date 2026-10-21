@@ -6,6 +6,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import React, { useMemo, useState } from "react";
+import type { LayoutChangeEvent } from "react-native";
 import { Keyboard } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useKeyboardInfo from "sharedHooks/useKeyboardInfo";
@@ -99,7 +100,7 @@ const TextInputSheet = ( {
       onPressClose={dismissKeyboardAndClose}
       headerText={headerText}
       keyboardShouldPersistTaps="always"
-      onLayout={event => {
+      onLayout={( event: LayoutChangeEvent ) => {
         const { height } = event.nativeEvent.layout;
         // Only do this once. Device height isn't going to change
         if ( sheetHeight === 0 ) {
