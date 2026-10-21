@@ -18,19 +18,6 @@ interface RemoteObservationWithPhotos {
   observation_photos?: ApiPhotoWithLicense[];
 }
 
-export interface IconicTaxonCountResult {
-  count: number;
-  taxon: { name: string } | null;
-}
-
-// Accepts only a user_id for now, but could be widened to accept a login string or an array of
-// ids or logins. This endpoint was created to assist with building the grouped-by-iconic-taxa
-// view for My Observations, so for now, narrowing to number only is a deliberate simplification
-// for what this feature actually needs.
-export interface IconicTaxaCountsParams extends ApiParams {
-  user_id?: number;
-}
-
 export interface ApiObserverCount {
   observation_count: number;
   species_count?: number;
@@ -238,6 +225,19 @@ const createOrUpdateEvidence = async <P extends ApiUntypedParams, O extends ApiO
     );
   }
 };
+
+// Accepts only a user_id for now, but could be widened to accept a login string or an array of
+// ids or logins. This endpoint was created to assist with building the grouped-by-iconic-taxa
+// view for My Observations, so for now, narrowing to number only is a deliberate simplification
+// for what this feature actually needs.
+export interface IconicTaxaCountsParams extends ApiParams {
+  user_id?: number;
+}
+
+export interface IconicTaxonCountResult {
+  count: number;
+  taxon: { name: string } | null;
+}
 
 const fetchIconicTaxaCounts = async (
   params: IconicTaxaCountsParams = {},
