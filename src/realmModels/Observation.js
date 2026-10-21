@@ -105,6 +105,7 @@ class Observation extends Realm.Object {
     },
     quality_grade: true,
     taxon: {
+      iconic_taxon_name: true,
       id: true,
       name: true,
       preferred_common_name: true,
