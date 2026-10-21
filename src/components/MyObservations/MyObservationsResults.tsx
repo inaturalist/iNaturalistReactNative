@@ -4,6 +4,7 @@ import {
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { FlashListRef } from "@shopify/flash-list";
 import { fetchSpeciesCounts } from "api/observations";
+import type { ApiSpeciesCountDetails } from "api/types";
 import { RealmContext } from "providers/contexts";
 import {
   MY_OBSERVATIONS_ACTION,
@@ -411,7 +412,7 @@ const MyObservationsResults = ( ) => {
     refetch: refetchTaxa,
   } = useInfiniteScroll(
     `MyObsSimple-fetchSpeciesCounts-${currentUser?.id}-${myObsState.speciesSort}`,
-    fetchSpeciesCounts,
+    fetchSpeciesCounts<ApiSpeciesCountDetails>,
     {
       user_id: currentUser?.id,
       ...sortAPIParams,

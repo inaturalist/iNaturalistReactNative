@@ -1,3 +1,5 @@
+import Taxon from "realmModels/Taxon";
+
 const OBSERVATION_FIELD_FIELDS = {
   allowed_values: true,
   datatype: true,
@@ -129,4 +131,8 @@ export const SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS = {
     name: true,
     preferred_common_name: true,
   },
+};
+
+export const SPECIES_COUNTS_DETAILS_FIELDS = {
+  taxon: Taxon.LIMITED_TAXON_FIELDS,
 };

@@ -385,9 +385,36 @@ export interface ApiSpeciesCountSummary extends ApiRecord {
 // When using SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS
 export interface ApiSpeciesCountVerboseSummary extends ApiRecord {
   taxon: {
+    // TODO: check actual API types (nullable)
     iconic_taxon_name: string;
     id: number;
     name: string;
     preferred_common_name: string;
   };
+}
+
+// When using Taxon.LIMITED_TAXON_FIELDS
+// TODO: check if this is an extend of existing types
+// TODO: check actual API types (nullable)
+export interface ApiTaxonLimited extends ApiRecord {
+  ancestor_ids: number[];
+  default_photo: {
+    id: number;
+    url: string;
+  };
+  representative_photo: {
+    id: number;
+    url: string;
+  };
+  iconic_taxon_name: string;
+  name: string;
+  preferred_common_name: string;
+  rank: string;
+  rank_level: number;
+  taxonPhotos: { photo: { url: string } }[];
+}
+
+// When using SPECIES_COUNTS_DETAILS_FIELDS
+export interface ApiSpeciesCountDetails extends ApiRecord {
+  taxon: ApiTaxonLimited;
 }
