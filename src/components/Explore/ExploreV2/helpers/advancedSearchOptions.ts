@@ -47,6 +47,11 @@ export const getSortByValues = ( t: TFunction ) => ( {
     text: t( "Oldest-to-newest" ),
     value: OBSERVATIONS_SORT.DATE_OBSERVED_OLDEST,
   },
+  [OBSERVATIONS_SORT.MOST_FAVED]: {
+    label: t( "Most-faved" ),
+    labelCaps: t( "MOST-FAVED" ),
+    value: OBSERVATIONS_SORT.MOST_FAVED,
+  },
 } );
 
 export const getTaxonomicRankValues = ( t: TFunction ) => Object.fromEntries( [

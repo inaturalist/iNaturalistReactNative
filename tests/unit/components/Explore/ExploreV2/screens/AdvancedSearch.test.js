@@ -431,6 +431,18 @@ describe( "AdvancedSearch screen", ( ) => {
       expect( mockPopTo ).toHaveBeenCalledWith( "ExploreResults" );
     } );
 
+    it( "commits most faved when it is picked as the sort order", async ( ) => {
+      renderComponent( <AdvancedSearch /> );
+
+      await actor.press( screen.getByLabelText( t( "Sort-by" ) ) );
+      await actor.press( screen.getByText( t( "Most-faved" ) ) );
+      await actor.press( screen.getByText( t( "CONFIRM" ) ) );
+      expect( screen.getByText( t( "MOST-FAVED" ) ) ).toBeVisible( );
+
+      await pressSearch( );
+      expect( committedSearch( ) ).toMatchObject( { sortBy: OBSERVATIONS_SORT.MOST_FAVED } );
+    } );
+
     it( "puts explore into advanced search mode", async ( ) => {
       renderComponent( <AdvancedSearch /> );
 

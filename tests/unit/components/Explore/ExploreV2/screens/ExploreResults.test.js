@@ -13,6 +13,7 @@ import {
   initialExploreV2State,
 } from "providers/ExploreV2Context";
 import React from "react";
+import { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
 import { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import { SAVED_LIMIT } from "stores/createExploreV2SearchesSlice";
 import useStore from "stores/useStore";
@@ -295,6 +296,58 @@ describe( "ExploreResults offline state", ( ) => {
 
     expect( refresh ).toHaveBeenCalled( );
     await waitFor( ( ) => expect( mockHandlePullToRefresh ).toHaveBeenCalled( ) );
+  } );
+} );
+
+describe( "ExploreResults observations sort", ( ) => {
+  beforeEach( ( ) => {
+    mockHasPermissions = true;
+    mockLayout = "grid";
+    mockUseInfiniteExploreScroll.mockReturnValue( {
+      fetchNextPage: jest.fn( ),
+      isFetchingNextPage: false,
+      handlePullToRefresh: jest.fn( ),
+      observations: [],
+      totalResults: 1,
+    } );
+  } );
+
+  const openSortSheet = async sortBy => {
+    const actor = userEvent.setup( );
+    useExploreV2.mockReturnValue( {
+      state: { ...mockState( { placeMode: EXPLORE_V2_PLACE_MODE.WORLDWIDE } ), sortBy },
+      dispatch: mockDispatch,
+    } );
+    renderComponent( <ExploreResults /> );
+    await actor.press( await screen.findByLabelText( "Change observations sort order" ) );
+    expect( await screen.findByText( "SORT OBSERVATIONS" ) ).toBeVisible( );
+    return actor;
+  };
+
+  it( "does not offer most faved outside of advanced search mode", async ( ) => {
+    await openSortSheet( OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST );
+
+    expect( screen.getByText( "Date Added: Newest (Default)" ) ).toBeVisible( );
+    expect( screen.queryByText( "Most faved" ) ).toBeNull( );
+  } );
+
+  it( "offers most faved in advanced search mode", async ( ) => {
+    useStore.getState( ).exploreV2AdvancedSearch.setAdvancedSearchMode( true );
+    const actor = await openSortSheet( OBSERVATIONS_SORT.DATE_UPLOADED_NEWEST );
+
+    await actor.press( screen.getByText( "Most faved" ) );
+    await actor.press( screen.getByText( "CONFIRM" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith( {
+      type: EXPLORE_V2_ACTION.SET_SORT,
+      sortBy: OBSERVATIONS_SORT.MOST_FAVED,
+    } );
+  } );
+
+  it( "keeps offering most faved while it is the active sort in standard mode", async ( ) => {
+    await openSortSheet( OBSERVATIONS_SORT.MOST_FAVED );
+
+    expect( screen.getByText( "Most faved" ) ).toBeVisible( );
   } );
 } );
 
