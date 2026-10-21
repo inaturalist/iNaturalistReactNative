@@ -12,6 +12,7 @@ import type {
   ApiUser,
 } from "api/types";
 import inatjs from "inaturalistjs";
+import type { SortDirection } from "types/sorting";
 
 interface RemoteObservationWithPhotos {
   observationPhotos?: ApiPhotoWithLicense[];
@@ -321,8 +322,18 @@ const deleteRemoteObservation = async (
   }
 };
 
+export interface SpeciesCountsParams extends ApiParams {
+  lat?: number;
+  lng?: number;
+  order?: SortDirection;
+  order_by?: "count";
+  project_id?: number;
+  taxon_id?: number | number[];
+  user_id?: number;
+}
+
 const fetchSpeciesCounts = async (
-  params: ApiUntypedParams = {},
+  params: SpeciesCountsParams = {},
   opts: ApiOpts = {},
 ) => {
   try {
