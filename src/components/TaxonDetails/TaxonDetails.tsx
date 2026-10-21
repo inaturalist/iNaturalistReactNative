@@ -1,5 +1,3 @@
-// @flow
-
 import { refresh, useNetInfo } from "@react-native-community/netinfo";
 import {
   StackActions,
@@ -28,7 +26,6 @@ import i18n from "i18next";
 import compact from "lodash/compact";
 import find from "lodash/find";
 import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ScrollView,
@@ -76,7 +73,7 @@ const { useRealm } = RealmContext;
 
 const isTablet = DeviceInfo.isTablet();
 
-const TaxonDetails = ( ): Node => {
+const TaxonDetails = ( ) => {
   // Local state
   const [invertToWhiteBackground, setInvertToWhiteBackground] = useState( false );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
