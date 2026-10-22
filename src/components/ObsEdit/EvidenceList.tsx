@@ -12,6 +12,7 @@ import React, {
   useCallback, useMemo, useState,
 } from "react";
 import { Alert } from "react-native";
+import type { RenderItem } from "react-native-draggable-flatlist";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
@@ -85,8 +86,8 @@ const EvidenceList = ( {
     updateObservationKeys,
   ] );
 
-  const renderPhoto = useCallback(
-    ( { item: obsPhotoUri, _getIndex, drag } ) => (
+  const renderPhoto: RenderItem<string> = useCallback(
+    ( { item: obsPhotoUri, drag } ) => (
       <ScaleDecorator>
         <Pressable
           onLongPress={drag}
