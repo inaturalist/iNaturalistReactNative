@@ -1,5 +1,3 @@
-// @flow
-
 import deleteRemoteObservationSound from "api/observationSounds";
 import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
@@ -10,7 +8,6 @@ import {
 import findIndex from "lodash/findIndex";
 import sortBy from "lodash/sortBy";
 import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React, {
   useCallback, useMemo, useState,
 } from "react";
@@ -28,21 +25,21 @@ import colors from "styles/tailwindColors";
 const { useRealm } = RealmContext;
 const logger = log.extend( "EvidenceList" );
 
-type Props = {
-  handleAddEvidence?: Function,
+interface Props {
+  handleAddEvidence?: Function;
   observationSounds?: {
-    id?: number,
+    id?: number;
     sound: {
-      file_url: string,
-    },
-    uuid: string
-  }[]
+      file_url: string;
+    };
+    uuid: string;
+  }[];
 }
 
 const EvidenceList = ( {
   handleAddEvidence,
   observationSounds = [],
-}: Props ): Node => {
+}: Props ) => {
   const currentObservation = useStore( state => state.currentObservation );
 
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
