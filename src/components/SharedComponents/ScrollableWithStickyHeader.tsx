@@ -39,7 +39,7 @@ import { Animated } from "react-native";
 import { useDeviceOrientation } from "sharedHooks";
 
 interface Props {
-  onScroll?: Function;
+  onScroll?: ( ) => void;
   renderHeader: Function;
   renderScrollable: Function;
 }
