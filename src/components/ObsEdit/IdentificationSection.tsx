@@ -147,7 +147,7 @@ const IdentificationSection = ( {
             // user chose unknown
             taxonName === "unknown"
             // user tapped the selected iconic taxon to unselect
-            || identTaxon.name === capitalizedTaxonName
+            || identTaxon?.name === capitalizedTaxonName
           ) {
             updateObservationKeys( { taxon: undefined } );
           } else {
