@@ -40,8 +40,8 @@ import { useDeviceOrientation } from "sharedHooks";
 
 interface Props {
   onScroll?: ( ) => void;
-  renderHeader: Function;
-  renderScrollable: Function;
+  renderHeader: ( props ) => React.JSX.Element;
+  renderScrollable: ( props ) => React.JSX.Element;
 }
 
 const ScrollableWithStickyHeader = ( {
