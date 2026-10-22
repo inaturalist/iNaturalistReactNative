@@ -1,4 +1,3 @@
-// @flow
 import { useNavigation } from "@react-navigation/native";
 import { AccountCreationCard } from "components/OnboardingModal/PivotCards";
 import {
@@ -11,7 +10,6 @@ import {
   Pressable, View,
 } from "components/styledComponents";
 import Arrow from "images/svg/curved_arrow_down.svg";
-import type { Node } from "react";
 import React from "react";
 import { I18nManager } from "react-native";
 import { useTranslation } from "sharedHooks";
@@ -21,13 +19,13 @@ import LoginBanner from "./LoginBanner";
 const MIRRORED = { transform: [{ rotateY: "180deg" }] };
 
 interface Props {
-  currentUser: Object | null;
+  currentUser: object | null;
   isConnected: boolean;
   justFinishedSignup: boolean;
 }
 
 const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSignup }:
-  Props ): Node => {
+  Props ) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
