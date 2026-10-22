@@ -1,5 +1,3 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
@@ -12,18 +10,17 @@ import {
 import { View } from "components/styledComponents";
 import capitalize from "lodash/capitalize";
 import { RealmContext } from "providers/contexts";
-import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
-type Props = {
-  currentObservation: Object,
-  resetScreen: boolean,
-  setResetScreen: Function,
-  updateObservationKeys: Function
+interface Props {
+  currentObservation: object;
+  resetScreen: boolean;
+  setResetScreen: Function;
+  updateObservationKeys: Function;
 }
 
 const IdentificationSection = ( {
@@ -31,7 +28,7 @@ const IdentificationSection = ( {
   resetScreen,
   setResetScreen,
   updateObservationKeys,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const realm = useRealm( );
