@@ -13,7 +13,7 @@ import {
 } from "api/projects";
 import { updateProjectUser } from "api/projectUsers";
 import type {
-  ApiObservationsSearchResponse, ApiProject, ApiResponse,
+  ApiObservationsSearchResponse, ApiProject,
 } from "api/types";
 import type { TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
