@@ -12,16 +12,23 @@ import capitalize from "lodash/capitalize";
 import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback, useEffect } from "react";
+import type { RealmTaxon } from "realmModels/types";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
 interface Props {
-  currentObservation: object;
+  currentObservation: {
+    taxon?: {
+      name: string;
+      rank_level: number;
+    };
+    observationPhotos: object[];
+  };
   resetScreen: boolean;
   setResetScreen: Function;
-  updateObservationKeys: Function;
+  updateObservationKeys: ( param: { taxon: RealmTaxon | undefined } ) => void;
 }
 
 const IdentificationSection = ( {
@@ -140,7 +147,7 @@ const IdentificationSection = ( {
             // user chose unknown
             taxonName === "unknown"
             // user tapped the selected iconic taxon to unselect
-            || identTaxon?.name === capitalizedTaxonName
+            || identTaxon.name === capitalizedTaxonName
           ) {
             updateObservationKeys( { taxon: undefined } );
           } else {
