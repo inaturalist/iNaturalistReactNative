@@ -25,13 +25,16 @@ import colors from "styles/tailwindColors";
 const { useRealm } = RealmContext;
 const logger = log.extend( "EvidenceList" );
 
+interface SoundItem {
+  file_url: string;
+  hidden: boolean;
+}
+
 interface Props {
-  handleAddEvidence?: Function;
+  handleAddEvidence?: ( ) => void;
   observationSounds?: {
     id?: number;
-    sound: {
-      file_url: string;
-    };
+    sound: SoundItem;
     uuid: string;
   }[];
 }
@@ -48,7 +51,7 @@ const EvidenceList = ( {
   const savingPhoto = useStore( state => state.savingPhoto );
   const realm = useRealm( );
   const { t } = useTranslation( );
-  const [selectedMediaUri, setSelectedMediaUri]: [string | null, Function] = useState( null );
+  const [selectedMediaUri, setSelectedMediaUri] = useState<string | null>( null );
   const [deleting, setDeleting] = useState( false );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
