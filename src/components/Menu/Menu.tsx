@@ -12,11 +12,14 @@ import {
   WarningSheet,
 } from "components/SharedComponents";
 import { Pressable, ScrollView, View } from "components/styledComponents";
+import DonateIcon from "images/svg/donate.svg";
 import { RealmContext } from "providers/contexts";
+import type { FC } from "react";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import type { SvgProps } from "react-native-svg";
 import Observation from "realmModels/Observation";
 import User from "realmModels/User";
 import { valueToBreakpoint } from "sharedHelpers/breakpoint";
@@ -34,7 +37,8 @@ const { useRealm } = RealmContext;
 
 interface BaseMenuOption {
   label: string;
-  icon: string;
+  // INatIcon glyph name, or an SVG component for multicolor icons
+  icon: string | FC<SvgProps>;
   color?: string;
   testID?: string;
   isLogout?: boolean;
@@ -125,8 +129,7 @@ const Menu = ( ) => {
     donate: {
       label: t( "DONATE" ),
       navigation: "Donate",
-      icon: "heart",
-      color: colors.inatGreen,
+      icon: DonateIcon,
     },
     news: {
       label: t( "BLOG" ),
