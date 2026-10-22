@@ -44,6 +44,8 @@ const EvidenceList = ( {
   handleAddEvidence,
   observationSounds = [],
 }: Props ) => {
+  // TODO: TS says this can be null, we should probably add an early render null then, although
+  // it may also just be that in the lifecycle of currentObservation it will never be null here
   const currentObservation = useStore( state => state.currentObservation );
 
   const deletePhotoFromObservation = useStore( state => state.deletePhotoFromObservation );
