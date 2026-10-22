@@ -27,7 +27,7 @@ interface Props {
     observationPhotos: object[];
   };
   resetScreen: boolean;
-  setResetScreen: Function;
+  setResetScreen: ( resetScreen: boolean ) => void;
   updateObservationKeys: ( param: { taxon: RealmTaxon | undefined } ) => void;
 }
 
