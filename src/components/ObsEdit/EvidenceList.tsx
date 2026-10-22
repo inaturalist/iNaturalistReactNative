@@ -12,7 +12,7 @@ import React, {
   useCallback, useMemo, useState,
 } from "react";
 import { Alert } from "react-native";
-import type { RenderItem } from "react-native-draggable-flatlist";
+import type { DragEndParams, RenderItem } from "react-native-draggable-flatlist";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import ObservationSound from "realmModels/ObservationSound";
@@ -69,7 +69,7 @@ const EvidenceList = ( {
     ...observationSounds.map( obsSound => obsSound.sound.file_url ),
   ] ), [photoUris, observationSounds] );
 
-  const handleDragAndDrop = useCallback( ( { data: newPhotoPositions } ) => {
+  const handleDragAndDrop = useCallback( ( { data: newPhotoPositions }: DragEndParams<string> ) => {
     const newObsPhotos = observationPhotos.map( ( obsPhoto => {
       const { photo } = obsPhoto;
       const photoUri = Photo.displayLocalOrRemoteSquarePhoto( photo );
@@ -160,7 +160,7 @@ const EvidenceList = ( {
     </Pressable>
   ), [handleAddEvidence, t] );
 
-  const afterMediaDeleted = useCallback( deletedUri => {
+  const afterMediaDeleted = useCallback( ( deletedUri: string ) => {
     // If there was was only one item and it was deleted, close the modal by
     // nullifying the selected media URI. Otherwise, choose the last
     // remaining item.
@@ -177,13 +177,13 @@ const EvidenceList = ( {
     ( params, optsWithAuth ) => deleteRemoteObservationSound( params, optsWithAuth ),
   );
 
-  const onDeletePhoto = useCallback( async uriToDelete => {
+  const onDeletePhoto = useCallback( async ( uriToDelete: string ) => {
     await ObservationPhoto.deletePhoto( uriToDelete, currentObservation, realm );
     deletePhotoFromObservation( uriToDelete );
     afterMediaDeleted( uriToDelete );
   }, [afterMediaDeleted, currentObservation, deletePhotoFromObservation, realm] );
 
-  const onDeleteSound = useCallback( async uriToDelete => {
+  const onDeleteSound = useCallback( async ( uriToDelete: string ) => {
     const obsSound = observationSounds.find( os => os.sound.file_url === uriToDelete );
     async function removeLocalSound( ) {
       deleteSoundFromObservation( uriToDelete );
