@@ -70,6 +70,7 @@ const MyObservationsEmptySimple = ( { currentUser, isConnected, justFinishedSign
               <Arrow />
             </View>
             <GradientButton
+              // TODO: what is this?
               clas
               accessibilityLabel={t( "Add-observations" )}
               sizeClassName="w-[141px] h-[141px] self-center"
