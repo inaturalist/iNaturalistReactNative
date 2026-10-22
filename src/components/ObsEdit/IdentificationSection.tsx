@@ -9,6 +9,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import capitalize from "lodash/capitalize";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import { RealmContext } from "providers/contexts";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "sharedHooks";
@@ -30,7 +31,10 @@ const IdentificationSection = ( {
   updateObservationKeys,
 }: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"ObsEdit">["navigation"] &
+    TabStackScreenProps<"ObsEdit">["navigation"]
+  >( );
   const realm = useRealm( );
 
   const identTaxon = currentObservation?.taxon;
