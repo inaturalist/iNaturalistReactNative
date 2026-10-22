@@ -617,6 +617,8 @@ ID-Suggestions = ID Suggestions
 # Identification Status
 ID-Withdrawn = ID Withdrawn
 IDENTIFICATION = IDENTIFICATION
+# Header for a project rule requiring an observation to be identified
+Identification--project-rule = Identification
 # Accessibility label for a button that shows options for an identification
 Identification-options = Identification options
 IDENTIFICATIONS-WITHOUT-NUMBER =
@@ -764,6 +766,9 @@ Location = Location
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 # Header for traditonal projects join flow: curator access to hidden observation coordinates (not device GPS)
 LOCATION-PERMISSIONS = LOCATION PERMISSIONS
+# Header for a project rule requiring the observer to let project curators see
+# the true locations of their observations
+Location-permissions--project-rule = Location permissions
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
 LOG-IN = LOG IN
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
@@ -791,6 +796,8 @@ maverick--identification = Maverick
 # Month of May
 May = May
 MEDIA = MEDIA
+# Header for a project rule requiring an observation to have photos or sounds
+Media--project-rule = Media
 # label in project requirements
 Media-Type = Media Type
 MEMBERS-WITHOUT-NUMBER =
@@ -816,6 +823,9 @@ MOST-FAVED = MOST FAVED
 Most-faved = Most faved
 # Label for species sort order, this option is selected by default
 Most-Observed-Default = Most Observed (Default)
+# Header for a project rule requiring an observation's taxon to be on the
+# project's list of taxa
+Must-be-on-Project-List--project-rule = Must be on Project List
 # Title for section in Notifications showing notifications about observations
 # created by the viewer. Should be 16 characters or fewer or it will be ellipsized.
 MY-CONTENT--notifications = MY CONTENT
@@ -1001,6 +1011,8 @@ OTHERS--notifications = OTHERS
 PASSWORD = PASSWORD
 # Title showing user profile details about who a user follows and is following
 PEOPLE--title = PEOPLE
+# Header for a project rule requiring an observation to have a photo
+Photo--project-rule = Photo
 Photo-importer = Photo importer
 PHOTO-LICENSING = PHOTO LICENSING
 Photos = Photos
@@ -1306,6 +1318,8 @@ Sort-by = Sort by
 SORT-OBSERVATIONS = SORT OBSERVATIONS
 # Label for species sort menu
 SORT-SPECIES = SORT SPECIES
+# Header for a project rule requiring an observation to have a sound
+Sound--project-rule = Sound
 # Character separating current position and total duration when playing a
 # sound, e.g. 00:12 / 03:00 uses "/" as the separator. This can be anything,
 # but it should be very short.
@@ -1331,6 +1345,12 @@ SPECIES-WITHOUT-NUMBER =
         [one] SPECIES
        *[other] SPECIES
     }
+# Header for a project rule requiring an observation to be identified as one
+# of the taxa listed below it
+Specific-identification--project-rule = Specific identification
+# Header for a project rule requiring an observation to be in a place chosen
+# by the project
+Specific-location--project-rule = Specific location
 # Label for the standard map type
 Standard--map-type = Standard
 Start-must-be-before-end = The start date must be before the end date.
@@ -1471,6 +1491,9 @@ USERNAME-OR-EMAIL = USERNAME OR EMAIL
 # label in project requirements
 Users = Users
 Using-location = Using location
+# Header for a project rule requiring an observation to be eligible for
+# Research Grade
+Verifiable--project-rule = Verifiable
 # Onboarding carousel slide 3 description
 Verified-IDs-are-used-for-science-and-conservation = Verified IDs are used for science and conservation
 # Listing of app and build versions

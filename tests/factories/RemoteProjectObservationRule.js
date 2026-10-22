@@ -9,6 +9,10 @@ export default define( "RemoteProjectObservationRule", faker => {
     operator: "in_taxon?",
     taxon: {
       ancestor_ids: [48460, 1, taxonId],
+      default_photo: {
+        url: faker.image.url( ),
+      },
+      iconic_taxon_name: "Animalia",
       id: taxonId,
       name: faker.lorem.word( ),
       preferred_common_name: faker.lorem.word( ),

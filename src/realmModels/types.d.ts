@@ -80,6 +80,8 @@ export interface RealmProjectObservationRule extends RealmObject {
   place_display_name?: string;
   project_title?: string;
   taxon_ancestor_ids: number[];
+  taxon_default_photo_url?: string;
+  taxon_iconic_taxon_name?: string;
   taxon_name?: string;
   taxon_preferred_common_name?: string;
   taxon_rank?: string;
