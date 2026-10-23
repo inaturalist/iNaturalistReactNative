@@ -1,0 +1,154 @@
+import validateProjectRulesForObservation from "sharedHelpers/validateProjectRulesForObservation";
+import factory from "tests/factory";
+
+const AVES_ID = 3;
+const SANDERLING_ID = 4789;
+const MAMMALIA_ID = 40151;
+
+const rule = ( operator, overrides = {} ) => ( {
+  id: Math.floor( Math.random( ) * 1_000_000 ),
+  operator,
+  ...overrides,
+} );
+
+const taxonRule = taxonId => rule( "in_taxon?", {
+  operand_id: taxonId,
+  operand_type: "Taxon",
+  taxon: { ancestor_ids: [48460, 1, taxonId], id: taxonId, name: "Taxon" },
+} );
+
+const project = rules => factory( "LocalProject", {
+  project_observation_rules: rules,
+} );
+
+const sanderling = {
+  ancestor_ids: [48460, 1, 2, 355675, AVES_ID, 67566, SANDERLING_ID],
+  id: SANDERLING_ID,
+};
+
+const observation = ( overrides = {} ) => ( {
+  ...factory( "LocalObservation" ),
+  captive_flag: false,
+  latitude: null,
+  longitude: null,
+  privateLatitude: null,
+  privateLongitude: null,
+  taxon: null,
+  taxon_id: null,
+  ...overrides,
+} );
+
+const statusFor = ( obs, operator, rules ) => validateProjectRulesForObservation(
+  obs,
+  project( rules || [rule( operator )] ),
+).find( group => group.operator === operator )?.status;
+
+describe( "validateProjectRulesForObservation", ( ) => {
+  describe( "client-checkable rules", ( ) => {
+    test.each( [
+      ["captive?", { captive_flag: true }, "pass"],
+      ["captive?", { captive_flag: false }, "fail"],
+      ["wild?", { captive_flag: false }, "pass"],
+      ["wild?", { captive_flag: true }, "fail"],
+      ["captive?", { captive_flag: null }, "unknown"],
+      ["wild?", { captive_flag: null }, "unknown"],
+      ["georeferenced?", { latitude: 37.7, longitude: -122.4 }, "pass"],
+      ["georeferenced?", { latitude: 0, longitude: 0 }, "pass"],
+      ["georeferenced?", { privateLatitude: 37.7, privateLongitude: -122.4 }, "pass"],
+      ["georeferenced?", { latitude: 37.7 }, "fail"],
+      ["georeferenced?", {}, "fail"],
+      ["has_a_photo?", { observationPhotos: [factory( "LocalObservationPhoto" )] }, "pass"],
+      ["has_a_photo?", { observationSounds: [factory( "LocalObservationSound" )] }, "fail"],
+      ["has_a_sound?", { observationSounds: [factory( "LocalObservationSound" )] }, "pass"],
+      ["has_a_sound?", { observationPhotos: [factory( "LocalObservationPhoto" )] }, "fail"],
+      ["has_media?", { observationPhotos: [factory( "LocalObservationPhoto" )] }, "pass"],
+      ["has_media?", { observationSounds: [factory( "LocalObservationSound" )] }, "pass"],
+      ["has_media?", {}, "fail"],
+      ["identified?", { taxon: sanderling }, "pass"],
+      ["identified?", { taxon_id: SANDERLING_ID }, "pass"],
+      ["identified?", {}, "fail"],
+    ] )( "%s with %p should %s", ( operator, overrides, expected ) => {
+      expect( statusFor( observation( overrides ), operator ) ).toBe( expected );
+    } );
+  } );
+
+  describe( "server-only rules", ( ) => {
+    test.each( [
+      ["coordinates_shareable_by_project_curators?"],
+      ["observed_in_place?"],
+      ["on_list?"],
+      ["verifiable?"],
+    ] )( "%s should be unknown", operator => {
+      const obs = observation( {
+        latitude: 37.7,
+        longitude: -122.4,
+        observationPhotos: [factory( "LocalObservationPhoto" )],
+        taxon: sanderling,
+      } );
+      expect( statusFor( obs, operator ) ).toBe( "unknown" );
+    } );
+  } );
+
+  describe( "in_taxon?", ( ) => {
+    it( "should pass when the observation taxon is the rule taxon", ( ) => {
+      const obs = observation( { taxon: sanderling } );
+      expect( statusFor( obs, "in_taxon?", [taxonRule( SANDERLING_ID )] ) ).toBe( "pass" );
+    } );
+
+    it( "should pass when the rule taxon is an ancestor", ( ) => {
+      const obs = observation( { taxon: sanderling } );
+      expect( statusFor( obs, "in_taxon?", [taxonRule( AVES_ID )] ) ).toBe( "pass" );
+    } );
+
+    it( "should fail when the rule taxon is not an ancestor", ( ) => {
+      const obs = observation( { taxon: sanderling } );
+      expect( statusFor( obs, "in_taxon?", [taxonRule( MAMMALIA_ID )] ) ).toBe( "fail" );
+    } );
+
+    it( "should pass when the observation has no taxon, like the server", ( ) => {
+      expect( statusFor( observation( ), "in_taxon?", [taxonRule( AVES_ID )] ) ).toBe( "pass" );
+    } );
+
+    it( "should be unknown when the observation taxon has no ancestry", ( ) => {
+      const obs = observation( { taxon: { ancestor_ids: [], id: SANDERLING_ID + 1 } } );
+      expect( statusFor( obs, "in_taxon?", [taxonRule( AVES_ID )] ) ).toBe( "unknown" );
+    } );
+
+    it( "should be unknown when only the taxon ID is known", ( ) => {
+      const obs = observation( { taxon_id: SANDERLING_ID + 1 } );
+      expect( statusFor( obs, "in_taxon?", [taxonRule( AVES_ID )] ) ).toBe( "unknown" );
+    } );
+  } );
+
+  describe( "combining rules", ( ) => {
+    it( "should pass a group when any rule with that operator passes", ( ) => {
+      const obs = observation( { taxon: sanderling } );
+      const rules = [taxonRule( MAMMALIA_ID ), taxonRule( AVES_ID )];
+      expect( statusFor( obs, "in_taxon?", rules ) ).toBe( "pass" );
+    } );
+
+    it( "should fail a group when every rule with that operator fails", ( ) => {
+      const obs = observation( { taxon: sanderling } );
+      const rules = [taxonRule( MAMMALIA_ID ), taxonRule( 47126 )];
+      expect( statusFor( obs, "in_taxon?", rules ) ).toBe( "fail" );
+    } );
+
+    it( "should return one group per operator in display order", ( ) => {
+      const groups = validateProjectRulesForObservation( observation( ), project( [
+        taxonRule( AVES_ID ),
+        rule( "identified?" ),
+        taxonRule( MAMMALIA_ID ),
+        rule( "wild?" ),
+      ] ) );
+      expect( groups.map( group => group.operator ) )
+        .toEqual( ["wild?", "identified?", "in_taxon?"] );
+      expect( groups[2].rules ).toHaveLength( 2 );
+    } );
+
+    it( "should not return a group for has_observation_field?", ( ) => {
+      const rules = [rule( "has_observation_field?" )];
+      expect( validateProjectRulesForObservation( observation( ), project( rules ) ) )
+        .toEqual( [] );
+    } );
+  } );
+} );

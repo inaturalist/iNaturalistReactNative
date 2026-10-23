@@ -29,6 +29,9 @@ const PROJECT_OBSERVATION_RULE_FIELDS = {
   },
   taxon: {
     ancestor_ids: true,
+    default_photo: {
+      url: true,
+    },
     id: true,
     name: true,
     preferred_common_name: true,
