@@ -1,25 +1,22 @@
-// @flow
-
 import { useNavigation } from "@react-navigation/native";
 import {
   BottomSheet, EvidenceButton, List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import type { Node } from "react";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
-type Props = {
-  disableAddingMoreEvidence: boolean,
-  hidden?: boolean,
-  onClose: Function
+interface Props {
+  disableAddingMoreEvidence: boolean;
+  hidden?: boolean;
+  onClose: ( ) => void;
 }
 
 const AddEvidenceSheet = ( {
   disableAddingMoreEvidence,
   hidden,
   onClose,
-}: Props ): Node => {
+}: Props ) => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
