@@ -1,5 +1,3 @@
-// @flow
-
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   Body3,
@@ -7,14 +5,13 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  observation: Object
+interface Props {
+  observation: object;
 }
 
-const StatusSection = ( { observation }: Props ): Node => {
+const StatusSection = ( { observation }: Props ) => {
   if ( !observation ) return null;
 
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
