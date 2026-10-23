@@ -3,6 +3,7 @@ import {
   BottomSheet, EvidenceButton, List2,
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import type { NoBottomTabStackScreenProps, TabStackScreenProps } from "navigation/types";
 import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -18,7 +19,10 @@ const AddEvidenceSheet = ( {
   onClose,
 }: Props ) => {
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
+  const navigation = useNavigation<
+    NoBottomTabStackScreenProps<"ObsEdit">["navigation"] &
+    TabStackScreenProps<"ObsEdit">["navigation"]
+  >( );
 
   return (
     <BottomSheet
