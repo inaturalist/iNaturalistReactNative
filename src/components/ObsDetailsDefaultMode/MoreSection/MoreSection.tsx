@@ -11,13 +11,19 @@ import ShareButton from "./ShareButton";
 import ViewInBrowserButton from "./ViewInBrowserButton";
 
 interface Props {
-  observation: object;
+  // TODO: can it be undefined and null or just one
+  observation?: {
+    id: number;
+    non_traditional_projects?: object[];
+    project_observations?: object[];
+    uuid: string;
+  } | null;
 }
 
 const MoreSection = ( { observation }: Props ) => {
-  const observationUUID = observation?.uuid;
-
   if ( !observation ) return null;
+
+  const observationUUID = observation.uuid;
 
   return (
     <View className="m-4 mb-8">
