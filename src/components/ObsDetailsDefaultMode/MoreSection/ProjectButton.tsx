@@ -1,12 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
-import type { ApiObservation } from "api/types";
 import { Body3 } from "components/SharedComponents";
 import { t } from "i18next";
 import type { TabStackScreenProps } from "navigation/types";
 import React from "react";
 
 interface Props {
-  observation: ApiObservation;
+  observation: {
+    uuid: string;
+    project_observations?: object[];
+    non_traditional_projects?: object[];
+  };
 }
 
 const ProjectButton = ( { observation }: Props ) => {
