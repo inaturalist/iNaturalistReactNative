@@ -5,6 +5,7 @@ import { renderHookInApp } from "tests/helpers/render";
 jest.mock( "api/observations", () => ( {
   fetchIdentifiers: jest.fn( ),
   fetchObservers: jest.fn( ),
+  fetchSpeciesCounts: jest.fn( ),
 } ) );
 const { fetchIdentifiers, fetchObservers } = require( "api/observations" );
 
