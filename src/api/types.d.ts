@@ -80,19 +80,19 @@ type Operator =
 type OperatorWithOperand =
   | "has_observation_field?";
 
-interface Rule {
+interface ApiRule {
   id: number;
   operand_id: null;
   operator: Operator;
 }
 
-interface RuleWithOperand {
+interface ApiRuleWithOperand {
   id: number;
   operand_id: number;
   operator: OperatorWithOperand;
 }
 
-type ApiProjectObservationRule = Rule | RuleWithOperand
+type ApiProjectObservationRule = ApiRule | ApiRuleWithOperand
 
 export interface ApiResponse<T> {
   total_results: number;
