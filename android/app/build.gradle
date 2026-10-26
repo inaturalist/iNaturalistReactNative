@@ -9,7 +9,8 @@ apply plugin: "com.google.firebase.firebase-perf"
 // https://github.com/luggit/react-native-config#android-1
  project.ext.envConfigFiles = [
     debug: ".env.staging",
-    release: ".env"
+    release: ".env",
+    preview: ".env.staging"
 ]
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -61,6 +62,19 @@ react {
      
     /* Autolinking */
     autolinkLibrariesWithApp()
+}
+
+// The preview variant only exists with -PpreviewVersionCode, so aggregate tasks like the
+// Fastfile's `bundle` and `build` don't try to build it. The versionCode override lets each
+// preview build upgrade the last one, even across PR branches with different versionCodes.
+def previewVersionCode = project.findProperty("previewVersionCode")
+androidComponents {
+    beforeVariants(selector().withBuildType("preview")) { variantBuilder ->
+        variantBuilder.enable = previewVersionCode != null
+    }
+    onVariants(selector().withBuildType("preview")) { variant ->
+        variant.outputs.each { it.versionCode.set(previewVersionCode.toInteger()) }
+    }
 }
 
 
@@ -144,6 +158,19 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             // Detox Android setup
             proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
+        }
+        // Per-PR builds for Firebase App Distribution (.github/workflows/android_preview.yml).
+        // Installs alongside the Play Store app and points at staging.
+        preview {
+            initWith release
+            applicationIdSuffix ".preview"
+            // The committed debug key, so preview builds can update each other without CI secrets
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ["release"]
+            // The RN Gradle plugin sets this for release after initWith has already copied it
+            manifestPlaceholders["usesCleartextTraffic"] = "false"
+            // react-native-config finds BuildConfig via the package name, which the suffix changes
+            resValue "string", "build_config_package", "org.inaturalist.iNaturalistMobile"
         }
     }
 
