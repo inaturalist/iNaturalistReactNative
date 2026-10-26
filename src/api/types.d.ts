@@ -419,6 +419,6 @@ export interface ApiTaxonLimited extends ApiRecord {
 }
 
 // When using SPECIES_COUNTS_DETAILS_FIELDS
-export interface ApiSpeciesCountDetails extends ApiRecord {
+export interface ApiSpeciesCountDetails extends ApiCount {
   taxon: ApiTaxonLimited;
 }
