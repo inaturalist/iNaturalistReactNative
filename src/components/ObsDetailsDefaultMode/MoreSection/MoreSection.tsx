@@ -11,13 +11,12 @@ import ShareButton from "./ShareButton";
 import ViewInBrowserButton from "./ViewInBrowserButton";
 
 interface Props {
-  // TODO: can it be undefined and null or just one
-  observation?: {
+  observation: {
     id: number;
     non_traditional_projects?: object[];
     project_observations?: object[];
     uuid: string;
-  } | null;
+  };
 }
 
 const MoreSection = ( { observation }: Props ) => {
