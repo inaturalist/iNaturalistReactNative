@@ -388,12 +388,11 @@ export interface ApiSpeciesCountSummary extends ApiRecord {
 // When using SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS
 export interface ApiSpeciesCountVerboseSummary extends ApiCount {
   taxon: {
-    // TODO: check actual API types (nullable)
-    iconic_taxon_name: string;
+    iconic_taxon_name: string | null;
     id: number;
     name: string;
-    preferred_common_name: string;
-  };
+    preferred_common_name: string | null;
+  } | null;
 }
 
 // When using Taxon.LIMITED_TAXON_FIELDS
