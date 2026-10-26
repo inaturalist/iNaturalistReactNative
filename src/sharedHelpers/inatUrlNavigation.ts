@@ -14,7 +14,9 @@ const ALLOWED_HOSTS = [
 export type InatUrlTarget =
   | { type: "observation"; id: string }
   | { type: "taxon"; id: string }
-  | { type: "project"; id: string };
+  | { type: "project"; id: string }
+  | { type: "user"; userId: number }
+  | { type: "user"; login: string };
 
 function parseNumericId( segment: string ): number | null {
   // Matches IDs like "1234" and also slugs that start with a number ID "1234-taxon-name"
@@ -45,6 +47,13 @@ export function parseInatUrl( href: string ): InatUrlTarget | null {
       return { type: "taxon", id: firstSegment };
     case "projects":
       return { type: "project", id: firstSegment };
+    case "people": {
+      const loginOrId = decodeURIComponent( firstSegment );
+      if ( /^\d+$/.test( loginOrId ) ) {
+        return { type: "user", userId: Number( loginOrId ) };
+      }
+      return { type: "user", login: loginOrId };
+    }
     default:
       return null;
   }
@@ -56,10 +65,9 @@ export async function openInatUrl(
   parsed: InatUrlTarget,
   navigation: NavigationProp<ParamListBase>,
 ): Promise<boolean> {
-  const { type, id } = parsed;
-  switch ( type ) {
+  switch ( parsed.type ) {
     case "taxon": {
-      const taxonID = parseNumericId( id );
+      const taxonID = parseNumericId( parsed.id );
       if ( taxonID ) {
         navigation.dispatch( StackActions.push( "TaxonDetails", { id: taxonID } ) );
         return true;
@@ -67,7 +75,7 @@ export async function openInatUrl(
       return false;
     }
     case "project": {
-      const projectId = parseNumericId( id );
+      const projectId = parseNumericId( parsed.id );
       if ( projectId ) {
         navigation.dispatch( StackActions.push( "ProjectDetails", { id: projectId } ) );
         return true;
@@ -75,7 +83,7 @@ export async function openInatUrl(
       // Currently, ProjectDetails can not handle slugs as nav param to display a project.
       // Lookup of a project ID by a given slug is adapted from observations below.
       const searchParams = {
-        q: id,
+        q: parsed.id,
         fields: {
           slug: true,
         },
@@ -85,7 +93,9 @@ export async function openInatUrl(
         api_token: apiToken,
       };
       const { results } = await searchProjects( searchParams, options );
-      const project = results?.find( ( result: { slug?: string } ) => result.slug === id );
+      const project = results?.find(
+        ( result: { slug?: string } ) => result.slug === parsed.id,
+      );
       if ( project?.id ) {
         navigation.dispatch( StackActions.push( "ProjectDetails", { id: project.id } ) );
         return true;
@@ -93,7 +103,7 @@ export async function openInatUrl(
       return false;
     }
     case "observation": {
-      const observationId = parseNumericId( id );
+      const observationId = parseNumericId( parsed.id );
       // Currently, ObsDetails can only handle a uuid as nav param. So, we do the same thing we do
       // in useLinking, get a UUID for the ID from the link via the API.
       const searchParams = { id: observationId };
@@ -109,6 +119,14 @@ export async function openInatUrl(
         return true;
       }
       return false;
+    }
+    case "user": {
+      if ( "userId" in parsed ) {
+        navigation.dispatch( StackActions.push( "UserProfile", { userId: parsed.userId } ) );
+      } else {
+        navigation.dispatch( StackActions.push( "UserProfile", { login: parsed.login } ) );
+      }
+      return true;
     }
     default:
       return false;

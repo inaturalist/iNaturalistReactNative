@@ -1,7 +1,27 @@
-import { getDefaultNormalizer, render, screen } from "@testing-library/react-native";
+import { StackActions } from "@react-navigation/native";
+import {
+  getDefaultNormalizer,
+  render,
+  screen,
+  userEvent,
+} from "@testing-library/react-native";
 import UserText from "components/SharedComponents/UserText";
 import trim from "lodash/trim";
 import React from "react";
+import { Linking } from "react-native";
+
+const mockDispatch = jest.fn( );
+const mockPush = jest.fn( );
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useNavigation: ( ) => ( {
+      dispatch: mockDispatch,
+      push: mockPush,
+    } ),
+  };
+} );
 
 describe( "Sanitization", () => {
   it( "does not render HTML tags we don't support", () => {
@@ -133,4 +153,31 @@ describe( "Basic Rendering", () => {
   // Cannot test table and list rendering, at least using this type of test.
   // Cannot tell if tables and lists are rendered successfully from component hierachy.
   // Possibly because of the components being rendered with an internal renderer in native module.
+} );
+
+describe( "people URL links", ( ) => {
+  beforeEach( ( ) => {
+    mockDispatch.mockClear( );
+    mockPush.mockClear( );
+    jest.spyOn( Linking, "openURL" ).mockResolvedValue( undefined );
+  } );
+
+  afterEach( ( ) => {
+    Linking.openURL.mockRestore( );
+  } );
+
+  it( "opens UserProfile for an existing people anchor", async ( ) => {
+    const actor = userEvent.setup( );
+    const testText = (
+      "<a href=\"https://www.inaturalist.org/people/example\">@example</a>"
+    );
+    render( <UserText text={testText} /> );
+
+    await actor.press( screen.getByRole( "link" ) );
+
+    expect( mockDispatch ).toHaveBeenCalledWith(
+      StackActions.push( "UserProfile", { login: "example" } ),
+    );
+    expect( Linking.openURL ).not.toHaveBeenCalled( );
+  } );
 } );
