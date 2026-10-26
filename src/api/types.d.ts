@@ -396,24 +396,26 @@ export interface ApiSpeciesCountVerboseSummary extends ApiCount {
 }
 
 // When using Taxon.LIMITED_TAXON_FIELDS
-// TODO: check if this is an extend of existing types
-// TODO: check actual API types (nullable)
 export interface ApiTaxonLimited extends ApiRecord {
   ancestor_ids: number[];
   default_photo: {
     id: number;
-    url: string;
-  };
-  representative_photo: {
-    id: number;
-    url: string;
-  };
-  iconic_taxon_name: string;
+    url: string | null;
+  } | null;
+  iconic_taxon_name: string | null;
   name: string;
-  preferred_common_name: string;
+  preferred_common_name: string | null;
   rank: string;
   rank_level: number;
-  taxonPhotos: { photo: { url: string } }[];
+  representative_photo: {
+    id: number;
+    url: string | null;
+  } | null;
+  taxonPhotos: {
+    photo: {
+      url: string | null;
+    } | null;
+  }[];
 }
 
 // When using SPECIES_COUNTS_DETAILS_FIELDS
