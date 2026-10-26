@@ -2,11 +2,7 @@ import { act, waitFor } from "@testing-library/react-native";
 import useUserTabCounts from "components/Explore/ExploreV2/hooks/useUserTabCounts";
 import { renderHookInApp } from "tests/helpers/render";
 
-jest.mock( "api/observations", () => ( {
-  fetchIdentifiers: jest.fn( ),
-  fetchObservers: jest.fn( ),
-  fetchSpeciesCounts: jest.fn( ),
-} ) );
+jest.mock( "api/observations" );
 const { fetchIdentifiers, fetchObservers } = require( "api/observations" );
 
 const PARAMS = { taxon_id: 12, place_id: 1 };
