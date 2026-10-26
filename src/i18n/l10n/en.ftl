@@ -819,6 +819,8 @@ Most-Observed-Default = Most Observed (Default)
 must-be-captive-cultivated = must be captive / cultivated
 must-be-georeferenced = must be georeferenced
 must-be-identified = must be identified
+must-be-in-taxon = must be in taxon { $name }
+must-be-observed-in-place = must be observed in { $place }
 must-be-on-list = must be on list
 must-be-verifiable = must be verifiable
 must-be-wild = must be wild
@@ -995,6 +997,8 @@ Opens-edit-comment-form = Opens edit comment form.
 Opens-location-permission-prompt = Opens location permission prompt
 # Accessibility hint for search button in Explore header that navigates to the search interface
 Opens-search-interface = Opens search interface.
+# Connector placed between any number of alternative project rule sentences
+or--project-rule = or
 OR-SIGN-IN-WITH = OR SIGN IN WITH
 Or-you-can-try-to-get-a-clearer-photo-by-zooming-in-getting-closer = Or, you can try to get a clearer photo by zooming in, getting closer, or trying a different angle.
 # Picker prompt on observation edit
