@@ -36,9 +36,9 @@ import type {
   RealmTaxon,
 } from "realmModels/types";
 import type { UserPojo } from "realmModels/User";
-import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import {
-  OBSERVATIONS_SORT_OPTIONS,
+  MY_OBSERVATIONS_SORT_OPTIONS,
   useObservationsSortLabels,
 } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
@@ -83,13 +83,13 @@ interface Props {
   numUnuploadedObservations: number;
   numObsMissingBasics: number;
   observationIds: { uuid: string }[];
-  observationsSortOptionId: OBSERVATIONS_SORT;
+  observationsSortOptionId: MyObservationsSort;
   onEndReached: ( ) => void;
   onListLayout?: ( ) => void;
   onScroll?: ( ) => void;
   openSheet: ACTIVE_SHEET;
   setActiveTab: ( newTab: string ) => void;
-  setObservationsSortOptionId: ( value: OBSERVATIONS_SORT ) => void;
+  setObservationsSortOptionId: ( value: MyObservationsSort ) => void;
   setOpenSheet: ( value: ACTIVE_SHEET ) => void;
   setSpeciesSortOptionId: ( value: SPECIES_SORT ) => void;
   showNoResults: boolean;
@@ -121,7 +121,7 @@ interface TaxaSortOption {
 interface ObservationsSortOption {
   label: string;
   text?: string;
-  value: OBSERVATIONS_SORT;
+  value: MyObservationsSort;
 }
 
 const STAT_TAB_PADDING = "pt-[10px] px-3 pb-3";
@@ -213,7 +213,7 @@ const MyObservationsSimple = ( {
     {} as Record<SPECIES_SORT, TaxaSortOption>,
   );
 
-  const observationsSortOptions = OBSERVATIONS_SORT_OPTIONS.reduce(
+  const observationsSortOptions = MY_OBSERVATIONS_SORT_OPTIONS.reduce(
     ( acc, sortBy ) => {
       const { label, text } = observationsSortLabels[sortBy];
       acc[sortBy] = {
@@ -223,7 +223,7 @@ const MyObservationsSimple = ( {
       };
       return acc;
     },
-    {} as Record<OBSERVATIONS_SORT, ObservationsSortOption>,
+    {} as Record<MyObservationsSort, ObservationsSortOption>,
   );
 
   const renderTaxaItem = useCallback( ( { item: speciesCount }: TaxaFlashListRenderItemProps ) => {
@@ -513,7 +513,7 @@ const MyObservationsSimple = ( {
     setOpenSheet( ACTIVE_SHEET.NONE );
   };
 
-  const handleObservationsSortConfirm = ( optionId: OBSERVATIONS_SORT ) => {
+  const handleObservationsSortConfirm = ( optionId: MyObservationsSort ) => {
     if ( currentUser && !isConnected ) {
       showOfflineAlert( );
       return;
@@ -619,7 +619,7 @@ const MyObservationsSimple = ( {
           headerText={t( "SORT-OBSERVATIONS" )}
           radioValues={observationsSortOptions}
           selectedValue={observationsSortOptionId}
-          confirm={optionId => handleObservationsSortConfirm( optionId as OBSERVATIONS_SORT )}
+          confirm={optionId => handleObservationsSortConfirm( optionId as MyObservationsSort )}
           onPressClose={() => setOpenSheet( ACTIVE_SHEET.NONE )}
         />
       )}

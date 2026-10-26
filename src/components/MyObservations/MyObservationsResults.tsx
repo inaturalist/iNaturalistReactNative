@@ -22,7 +22,7 @@ import { Alert } from "react-native";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import type { RealmObservation } from "realmModels/types";
-import type { OBSERVATIONS_SORT } from "sharedHelpers/observationsSort";
+import type { MyObservationsSort } from "sharedHelpers/observationsSort";
 import type { SPECIES_SORT } from "sharedHelpers/speciesSort";
 import {
   sortSpeciesCounts,
@@ -189,7 +189,7 @@ const MyObservationsResults = ( ) => {
     } );
   };
 
-  const setObservationsSortOptionId = ( value: OBSERVATIONS_SORT ) => {
+  const setObservationsSortOptionId = ( value: MyObservationsSort ) => {
     myObsDispatch( {
       type: MY_OBSERVATIONS_ACTION.SET_OBSERVATIONS_SORT,
       observationsSort: value,
