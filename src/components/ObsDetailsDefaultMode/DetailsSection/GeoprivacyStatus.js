@@ -1,14 +1,16 @@
+// @flow
 import { Body3 } from "components/SharedComponents";
+import type { Node } from "react";
 import React, { useMemo } from "react";
 import { useTranslation } from "sharedHooks";
 
-interface Props {
-  geoprivacy: string | null;
-}
+type Props = {
+  geoprivacy: string | null
+};
 
 const GeoprivacyStatus = ( {
   geoprivacy,
-}: Props ) => {
+}: Props ): Node => {
   const { t } = useTranslation( );
 
   const displayGeoprivacy = useMemo( ( ) => {
