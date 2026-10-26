@@ -75,6 +75,7 @@ jobs:
         FIREBASE_STAGING_API_KEY: ${{ secrets.FIREBASE_STAGING_API_KEY }}
       run: |
         GOOGLE_SERVICES_JSON=android/app/src/preview/google-services.json
+        mkdir -p "$(dirname "$GOOGLE_SERVICES_JSON")"
         cp android/app/google-services.example.json "$GOOGLE_SERVICES_JSON"
         sed -i "s/your_project_number/${FIREBASE_PROJECT_NUMBER//\//\\/}/g" "$GOOGLE_SERVICES_JSON"
         sed -i "s/your_project_id/${FIREBASE_PROJECT_ID//\//\\/}/g" "$GOOGLE_SERVICES_JSON"
