@@ -1,5 +1,3 @@
-import Taxon from "realmModels/Taxon";
-
 const OBSERVATION_FIELD_FIELDS = {
   allowed_values: true,
   datatype: true,
@@ -133,6 +131,28 @@ export const SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS = {
   },
 };
 
+export const LIMITED_TAXON_FIELDS = {
+  ancestor_ids: true,
+  default_photo: {
+    id: true,
+    url: true,
+  },
+  representative_photo: {
+    id: true,
+    url: true,
+  },
+  iconic_taxon_name: true,
+  name: true,
+  preferred_common_name: true,
+  rank: true,
+  rank_level: true,
+  taxon_photos: {
+    photo: {
+      url: true,
+    },
+  },
+};
+
 export const SPECIES_COUNTS_DETAILS_FIELDS = {
-  taxon: Taxon.LIMITED_TAXON_FIELDS,
+  taxon: LIMITED_TAXON_FIELDS,
 };
