@@ -20,29 +20,6 @@ interface RemoteObservationWithPhotos {
   observation_photos?: ApiPhotoWithLicense[];
 }
 
-export interface ApiObserverCount {
-  observation_count: number;
-  species_count?: number;
-  user: ApiUser;
-  user_id?: number;
-}
-
-export interface ApiIdentifierCount {
-  count: number;
-  user: ApiUser;
-  user_id?: number;
-}
-
-export interface ObserverCountsParams extends ApiObservationFilterParams {
-  order?: ApiObservationsSearchParams["order"];
-  order_by?: "observation_count" | "species_count";
-}
-
-export interface IdentifierCountsParams extends ApiObservationFilterParams {
-  order?: ApiObservationsSearchParams["order"];
-  order_by?: ApiObservationsSearchParams["order_by"];
-}
-
 // I tried doing this in Observation.js but got mysterious Realm errors. More
 // could be here, but this solves an immediate problem with schema mismatch
 function mapObsPhotoToLocalSchema<T extends ApiPhotoWithLicense>( obsPhoto: T ): T {
@@ -90,6 +67,18 @@ const unfaveObservation = async ( params: ApiUntypedParams = {}, opts: ApiOpts =
     );
   }
 };
+
+export interface ObserverCountsParams extends ApiObservationFilterParams {
+  order?: ApiObservationsSearchParams["order"];
+  order_by?: "observation_count" | "species_count";
+}
+
+export interface ApiObserverCount {
+  observation_count: number;
+  species_count?: number;
+  user: ApiUser;
+  user_id?: number;
+}
 
 const fetchObservers = async (
   params: ObserverCountsParams = {},
@@ -257,6 +246,17 @@ const fetchIconicTaxaCounts = async (
     );
   }
 };
+
+export interface IdentifierCountsParams extends ApiObservationFilterParams {
+  order?: ApiObservationsSearchParams["order"];
+  order_by?: ApiObservationsSearchParams["order_by"];
+}
+
+export interface ApiIdentifierCount {
+  count: number;
+  user: ApiUser;
+  user_id?: number;
+}
 
 const fetchIdentifiers = async (
   params: IdentifierCountsParams = {},
