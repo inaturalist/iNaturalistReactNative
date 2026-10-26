@@ -1,9 +1,16 @@
 import { Body3 } from "components/SharedComponents";
 import React, { useMemo } from "react";
+import {
+  GEOPRIVACY_OBSCURED,
+  GEOPRIVACY_OPEN,
+  GEOPRIVACY_PRIVATE,
+} from "realmModels/Observation";
 import { useTranslation } from "sharedHooks";
 
+type Geoprivacy = null | "open" | "obscured" | "private";
+
 interface Props {
-  geoprivacy: string | null;
+  geoprivacy: Geoprivacy;
 }
 
 const GeoprivacyStatus = ( {
@@ -12,22 +19,22 @@ const GeoprivacyStatus = ( {
   const { t } = useTranslation( );
 
   const displayGeoprivacy = useMemo( ( ) => {
-    if ( geoprivacy === "obscured" ) {
+    if ( geoprivacy === GEOPRIVACY_OBSCURED ) {
       return t( "Obscured" );
-    } if ( geoprivacy === "private" ) {
+    } if ( geoprivacy === GEOPRIVACY_PRIVATE ) {
       return t( "Private" );
     }
     return t( "Open" );
   }, [geoprivacy, t] );
 
   let displayPrivacy = displayGeoprivacy;
-  if ( displayPrivacy === "private" ) {
+  if ( displayPrivacy === GEOPRIVACY_PRIVATE ) {
     displayPrivacy = "Private";
   }
-  if ( displayPrivacy === "obscured" ) {
+  if ( displayPrivacy === GEOPRIVACY_OBSCURED ) {
     displayPrivacy = "Obscured";
   }
-  if ( displayPrivacy === null || displayPrivacy === "open" ) {
+  if ( displayPrivacy === null || displayPrivacy === GEOPRIVACY_OPEN ) {
     displayPrivacy = "Open";
   }
 
