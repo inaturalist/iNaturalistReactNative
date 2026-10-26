@@ -151,7 +151,7 @@ const AddObsButton = ( ) => {
       } ),
     );
 
-    closeBottomSheet();
+    closeBottomSheet( );
   };
   const navToARCamera = ( ) => {
     navAndCloseBottomSheet( ADD_OBS_SCREENS.CAMERA, { camera: "AI" } );
