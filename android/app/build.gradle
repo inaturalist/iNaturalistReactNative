@@ -67,13 +67,21 @@ react {
 // The preview variant only exists with -PpreviewVersionCode, so aggregate tasks like the
 // Fastfile's `bundle` and `build` don't try to build it. The versionCode override lets each
 // preview build upgrade the last one, even across PR branches with different versionCodes.
+// previewDescription is appended to versionName so App Distribution lists what each build is;
+// versionName ends up in the User-Agent, so it must be ASCII.
 def previewVersionCode = project.findProperty("previewVersionCode")
+def previewDescription = project.findProperty("previewDescription")
 androidComponents {
     beforeVariants(selector().withBuildType("preview")) { variantBuilder ->
         variantBuilder.enable = previewVersionCode != null
     }
     onVariants(selector().withBuildType("preview")) { variant ->
-        variant.outputs.each { it.versionCode.set(previewVersionCode.toInteger()) }
+        variant.outputs.each { output ->
+            output.versionCode.set(previewVersionCode.toInteger())
+            if (previewDescription) {
+                output.versionName.set("${android.defaultConfig.versionName} ${previewDescription}")
+            }
+        }
     }
 }
 
@@ -171,6 +179,8 @@ android {
             manifestPlaceholders["usesCleartextTraffic"] = "false"
             // react-native-config finds BuildConfig via the package name, which the suffix changes
             resValue "string", "build_config_package", "org.inaturalist.iNaturalistMobile"
+            // CI names each build after its PR so testers can tell which one is installed
+            resValue "string", "app_name", project.findProperty("previewAppName") ?: "iNat Preview"
         }
     }
 

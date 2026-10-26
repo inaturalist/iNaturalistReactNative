@@ -1,7 +1,7 @@
 name: Android Preview
 # Builds a PR's Android APK and distributes it with Firebase App Distribution. Add the
 # `build-preview` label to a PR to build it; pushes rebuild while the label is on. The build
-# installs as "iNat Preview" next to the Play Store app and points at staging.
+# installs as "iNat #<PR number>" next to the Play Store app and points at staging.
 #
 # One-time setup:
 # - Firebase: in the FIREBASE_PROJECT_ID project, add an Android app for
@@ -109,12 +109,22 @@ jobs:
 
     - name: Build APK
       working-directory: android
+      env:
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
       # Every physical phone (incl. 32-bit-only ones) and Apple silicon emulators; release also
       # builds x86/x86_64, which only Intel emulators and Chromebooks need
       run: |
+        # The description lands in versionName, which AGP writes unescaped into BuildConfig.java
+        # and the app sends in its User-Agent (OkHttp rejects non-ASCII headers), so keep it to
+        # characters that are safe in both
+        TITLE=$(printf '%s' "$PR_TITLE" | LC_ALL=C tr -cd "A-Za-z0-9 ._,:()#/!?+'-" \
+          | tr -s ' ' | cut -c1-50 | sed 's/[[:space:]]*$//')
         ./gradlew assemblePreview \
           -PreactNativeArchitectures=arm64-v8a,armeabi-v7a \
-          -PpreviewVersionCode=${{ github.run_number }}
+          -PpreviewVersionCode=${{ github.run_number }} \
+          "-PpreviewAppName=iNat #$PR_NUMBER" \
+          "-PpreviewDescription=#$PR_NUMBER: $TITLE"
 
     - name: Distribute with Firebase App Distribution
       id: distribute
@@ -124,12 +134,14 @@ jobs:
         FIREBASE_PREVIEW_GROUPS: ${{ vars.FIREBASE_PREVIEW_GROUPS }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
         PR_TITLE: ${{ github.event.pull_request.title }}
+        HEAD_REF: ${{ github.event.pull_request.head.ref }}
         HEAD_SHA: ${{ github.event.pull_request.head.sha }}
       run: |
         set -o pipefail
         export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-credentials.json"
         printf '%s' "$FIREBASE_APP_DISTRIBUTION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS"
-        printf '#%s %s\n%s\n' "$PR_NUMBER" "$PR_TITLE" "${HEAD_SHA:0:7}" > "$RUNNER_TEMP/release-notes.txt"
+        printf '#%s %s\n%s @ %s\n' "$PR_NUMBER" "$PR_TITLE" "$HEAD_REF" "${HEAD_SHA:0:7}" \
+          > "$RUNNER_TEMP/release-notes.txt"
         npx --yes firebase-tools@15.33.0 appdistribution:distribute \
           android/app/build/outputs/apk/preview/*-preview.apk \
           --app "$FIREBASE_PREVIEW_GOOGLE_APP_ID" \
@@ -158,7 +170,7 @@ jobs:
         BODY="$MARKER
         **Android preview** for ${HEAD_SHA:0:7}: $LINK
 
-        Installs as \"iNat Preview\" next to the Play Store app and uses staging."
+        Installs as \"iNat #$PR_NUMBER\" next to the Play Store app and uses staging."
         # Update one comment per PR instead of adding a new one per push
         COMMENT_ID=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" --paginate \
           --jq ".[] | select(.body | startswith(\"$MARKER\")) | .id" | tail -n 1)
