@@ -14,7 +14,7 @@ enum QUALITY_GRADE {
 }
 
 interface Props {
-  observation?: {
+  observation: {
     qualityGrade?: QUALITY_GRADE;
     quality_grade?: QUALITY_GRADE;
   };
