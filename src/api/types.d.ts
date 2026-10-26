@@ -1,6 +1,9 @@
-// Generic types, please keep alphabetized
 export interface ApiDefaultResult {
   id: number;
+}
+
+export interface ApiCount {
+  count: number;
 }
 
 export interface ApiOpts {
@@ -383,7 +386,7 @@ export interface ApiSpeciesCountSummary extends ApiRecord {
 }
 
 // When using SPECIES_COUNTS_VERBOSE_SUMMARY_FIELDS
-export interface ApiSpeciesCountVerboseSummary extends ApiRecord {
+export interface ApiSpeciesCountVerboseSummary extends ApiCount {
   taxon: {
     // TODO: check actual API types (nullable)
     iconic_taxon_name: string;
