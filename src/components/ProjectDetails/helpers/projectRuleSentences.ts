@@ -38,6 +38,10 @@ const ruleToSentence = (
       return t( "must-have-media" );
     case "identified?":
       return t( "must-be-identified" );
+    case "observed_in_place?": {
+      const placeName = rule.place?.display_name;
+      return t( "must-be-observed-in-place", { placeName } );
+    }
     case "verifiable?":
       return t( "must-be-verifiable" );
     case "wild?":

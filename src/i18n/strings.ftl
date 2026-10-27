@@ -819,6 +819,7 @@ Most-Observed-Default = Most Observed (Default)
 must-be-captive-cultivated = must be captive / cultivated
 must-be-georeferenced = must be georeferenced
 must-be-identified = must be identified
+must-be-observed-in-place = must be observed in { $placeName }
 must-be-on-list = must be on list
 must-be-verifiable = must be verifiable
 must-be-wild = must be wild
